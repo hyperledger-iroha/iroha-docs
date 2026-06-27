@@ -405,11 +405,18 @@ The JavaScript SDK does not currently expose direct native escrow transaction
 builders. For JavaScript or TypeScript applications that deploy Kotodama
 contracts, compile escrow host calls with the Kotodama compiler.
 
+Native escrow host calls require explicit access hints because the compiler
+cannot derive narrower access sets for opaque escrow ISIs. Use wildcard hints on
+exported entrypoints that call `escrow_*` builtins.
+
 ```js
 import { compileKotodamaProgram } from "@iroha/iroha-js/kotodama-compiler";
 
 const source = `
 seiyaku MarketplaceEscrow {
+  meta { abi_version: 1; }
+
+  #[access(read="*", write="*")]
   kotoage fn run() permission(Admin) {
     let asset = asset_definition("62Fk4FPcMuLvW5QjDGNF2a4jAmjM");
     let offer = name("aitai_offer");
