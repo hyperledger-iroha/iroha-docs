@@ -329,6 +329,10 @@ function sidebarChain(): DefaultTheme.SidebarItem[] {
           link: '/blockchain/ram-lfe',
         },
         {
+          text: 'Native Asset Escrow',
+          link: '/blockchain/escrow',
+        },
+        {
           text: 'Instructions',
           link: '/blockchain/instructions',
         },

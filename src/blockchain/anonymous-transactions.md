@@ -196,6 +196,9 @@ escrowed value. The parties and escrow state are still recorded in the
 escrow record, but the funding, release, cancellation, and resolution legs
 use shielded nullifiers and output commitments.
 
+For detailed escrow ISI behavior and examples, see
+[Native Asset Escrow](/blockchain/escrow.md#anonymous-escrow).
+
 The lifecycle is:
 
 1. `OpenAnonymousAssetEscrow` spends shielded funding notes and creates one

@@ -119,6 +119,14 @@ if #available(iOS 15.0, macOS 12.0, *) {
 `UnshieldRequest` validate canonical account IDs and canonical unprefixed
 Base58 asset-definition IDs before signing.
 
+## Native Escrow
+
+Swift builds marketplace and anonymous escrow instructions as Norito JSON
+payloads through `NativeEscrowInstructionBuilders` or the equivalent
+`IrohaSDK.build*Escrow*` helpers. See
+[Native Asset Escrow](/blockchain/escrow.md#swift-and-ios) for examples,
+anonymous proof fields, and the dispute resolver permission token.
+
 ## Signing
 
 `Keypair` is the Ed25519 convenience API. For other algorithms, construct an
@@ -178,6 +186,8 @@ The Swift source currently includes:
 - account-address and I105 helpers through `AccountAddress` and `AccountId`
 - Ed25519, secp256k1, ML-DSA, BLS, GOST, and SM2 signing surfaces, with native
   bridge support where required
+- native escrow instruction payload builders for marketplace and anonymous
+  escrow
 - Connect WebSocket, frame, crypto, session, queue, replay, and diagnostics
   helpers
 - Offline V2 note, receipt, QR stream, and transaction models

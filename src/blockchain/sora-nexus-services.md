@@ -95,27 +95,16 @@ on-chain asset custody. It should use the native escrow instruction family
 instead of a contract-owned escrow account for new numeric-asset custody
 flows.
 
-Native escrow keeps custody in the ledger:
+Native escrow keeps custody in the ledger. The seller opens an offer with
+`OpenAssetEscrow`, the buyer accepts and marks off-chain payment with
+`AcceptAssetEscrow` and `MarkEscrowPaymentSent`, and the seller releases
+with `ReleaseAssetEscrow` or cancels before payment is marked. If buyer and
+seller disagree, either party can open a dispute and a resolver with
+`CanResolveEscrowDispute` can split the locked amount.
 
-1. The seller opens an offer with `OpenAssetEscrow`, selecting an
-   `EscrowId`, asset definition, amount, and optional evidence hashes.
-2. Iroha moves the seller's numeric asset into a deterministic protocol
-   custody account and records an `AssetEscrowRecord`.
-3. The buyer accepts with `AcceptAssetEscrow` and marks the off-chain
-   payment as sent with `MarkEscrowPaymentSent`.
-4. The seller releases the funds with `ReleaseAssetEscrow`, cancels before
-   payment is marked with `CancelAssetEscrow`, or a party opens a dispute
-   with `OpenEscrowDispute`.
-5. A resolver with `CanResolveEscrowDispute` can close a disputed escrow
-   with `ResolveEscrowDispute`, splitting the locked amount between buyer
-   and seller.
-
-While an escrow is active, generic asset debits from the custody account
-are rejected. Release, cancellation, and dispute resolution are the
-intended custody exit paths. Evidence fields store hashes, not invoice
-files, chat logs, or other off-chain payloads; publish larger evidence
-bundles through SoraFS or another audited storage path and attach the
-digest to the escrow.
+For the full lifecycle, generic asset locks, anonymous escrow, queries,
+events, and Rust examples, see
+[Native Asset Escrow](/blockchain/escrow.md).
 
 | Aitai surface                                                                                                                                                 | Use it for                                                                                |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
@@ -123,39 +112,8 @@ digest to the escrow.
 | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`       | Shielded offers where the funding and closing movements are carried by proof attachments. |
 | `OpenEscrowDispute`, `ResolveEscrowDispute`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute`                                                    | Dispute entry and court-style resolution.                                                 |
 | `FindAssetEscrowById`, `FindAssetEscrowsBySeller`, `FindAssetEscrowsByBuyer`, `FindAssetEscrowsByStatus`                                                      | App status pages, reconciliation jobs, and support tooling.                               |
-| `EscrowEventFilter`                                                                                                                                           | Live lifecycle subscriptions by escrow id, seller, buyer, status, or event kind.          |
+| `EscrowEventFilter`                                                                                                                                           | Live transparent escrow subscriptions by escrow id, seller, buyer, status, or event kind. |
 | Kotodama `escrow_open_offer`, `escrow_accept`, `escrow_mark_payment_sent`, `escrow_release`, `escrow_cancel`, `escrow_open_dispute`, `escrow_resolve_dispute` | Contract wrapper calls that still need IVM/Kotodama compatibility.                        |
-
-An SDK-backed transparent offer follows this shape:
-
-```rust
-use iroha::data_model::{
-    isi::escrow::{
-        AcceptAssetEscrow, MarkEscrowPaymentSent, OpenAssetEscrow,
-        ReleaseAssetEscrow,
-    },
-    prelude::*,
-};
-use iroha_crypto::Hash;
-
-let escrow_id = EscrowId::new(Hash::new("aitai-offer-001"));
-let asset_definition_id: AssetDefinitionId =
-    "62Fk4FPcMuLvW5QjDGNF2a4jAmjM".parse()?;
-
-seller_client.submit_blocking(OpenAssetEscrow::with_evidence_hashes(
-    escrow_id,
-    asset_definition_id,
-    Numeric::from(40_u64),
-    vec![Hash::new("fiat-invoice")],
-))?;
-
-buyer_client.submit_blocking(AcceptAssetEscrow::new(escrow_id))?;
-buyer_client.submit_blocking(MarkEscrowPaymentSent::new(escrow_id))?;
-seller_client.submit_blocking(ReleaseAssetEscrow::new(escrow_id))?;
-
-let record = seller_client.query_single(FindAssetEscrowById::new(escrow_id))?;
-assert_eq!(record.status, AssetEscrowStatus::Released);
-```
 
 For public Taira or Minamoto usage, treat the off-chain payment rail and
 any support or court workflow as application policy. Iroha records the

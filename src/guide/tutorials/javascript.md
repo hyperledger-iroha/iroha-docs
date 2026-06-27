@@ -99,12 +99,22 @@ import { OfflineQrStream } from "@iroha/iroha-js";
 For browser-only Connect bootstrap, use `@iroha/iroha-js/connect-browser`
 instead of importing the Node-first `ToriiClient` surface.
 
+## Native Escrow
+
+JavaScript and TypeScript applications can use native escrow through Kotodama
+contracts. Compile escrow host calls with
+`@iroha/iroha-js/kotodama-compiler`; direct native escrow transaction builders
+are not currently exposed by the JavaScript SDK. See
+[Native Asset Escrow](/blockchain/escrow.md#javascript-and-typescript-kotodama)
+for the escrow host-call example.
+
 ## Current Coverage
 
 The SDK focuses on:
 
 - Torii HTTP and WebSocket helpers
 - Norito transaction and instruction builders
+- Kotodama compilation, including escrow host-call builtins
 - Ed25519 signing and key generation
 - pagination and retry helpers
 - Connect browser bootstrap helpers

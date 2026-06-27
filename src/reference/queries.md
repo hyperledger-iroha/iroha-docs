@@ -64,6 +64,10 @@ hand. The names below are the current query types exposed by
 
 ## Escrow and Proof Records
 
+Escrow queries inspect the records created by
+[native asset escrow ISIs](/blockchain/escrow.md), including marketplace
+escrows, generic asset locks, and anonymous escrow records.
+
 | Query | Purpose |
 | --- | --- |
 | `FindAssetEscrows` | List asset escrow records. |

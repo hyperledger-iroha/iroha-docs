@@ -68,6 +68,11 @@ practice, inspect:
 - `crates/iroha/README.md`
 - `crates/iroha_cli/README.md`
 
+For ledger-managed escrow workflows, see
+[Native Asset Escrow](/blockchain/escrow.md#rust-sdk). The Rust data model
+currently has the most complete typed coverage for marketplace escrow, generic
+asset locks, anonymous escrow, queries, and events.
+
 You can regenerate a local CLI help snapshot with:
 
 ```bash

@@ -254,7 +254,13 @@ instruction variant that does not have a Python helper yet.
 | RWA lifecycle | `merge_rwas`, `redeem_rwa`, `freeze_rwa`, `unfreeze_rwa`, `hold_rwa`, `release_rwa` |
 | ExecuteTrigger | `execute_trigger` |
 | Repo/settlement extensions | `repo_initiate`, `repo_unwind`, `repo_margin_call`, `settlement_dvp`, `settlement_pvp` |
+| Native asset locks | `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, `expire_asset_lock`, plus client `*_and_wait` helpers |
 | Grant/Revoke, SetParameter, Log, Custom, Upgrade, and less common register/unregister variants | `Instruction.from_json` or `TransactionBuilder.add_instruction_json` with canonical `InstructionBox` JSON |
+
+For escrow-style conditional payments, see
+[Native Asset Escrow](/blockchain/escrow.md#python-asset-locks). Python
+currently exposes first-class helpers for generic asset locks; marketplace and
+anonymous escrow helpers are not first-class Python methods yet.
 
 ### Register Domains, Accounts, and Assets
 
