@@ -84,6 +84,16 @@ Extend the same pattern to read `https://taira.sora.org/v1/domains?limit=5` or
 `https://taira.sora.org/v1/assets/definitions?limit=5`. Use the Android SDK
 for key handling and signed transactions after the read-only route is reachable.
 
+## Native Escrow
+
+Kotlin/JVM callers can construct marketplace and anonymous escrow instructions
+with typed `InstructionTemplate` classes such as
+`OpenAssetEscrowInstruction`, `AcceptAssetEscrowInstruction`, and
+`ResolveEscrowDisputeInstruction`. Android Java callers can use the matching
+`NativeEscrowInstructions.*` builders. See
+[Native Asset Escrow](/blockchain/escrow.md#kotlin-and-jvm) for examples and
+permission constants.
+
 ## Current Coverage
 
 The Android/JVM SDK currently focuses on:
@@ -94,6 +104,7 @@ The Android/JVM SDK currently focuses on:
 - offline note, QR, and subscription helpers
 - account address and multisig utilities
 - generated instruction helpers for NFT and RWA flows
+- native escrow instruction templates for marketplace and anonymous escrow
 
 ## Upstream References
 

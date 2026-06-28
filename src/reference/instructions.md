@@ -18,6 +18,9 @@ The current data model exposes these built-in instruction families:
 | [`Upgrade`](/blockchain/instructions.md#other-instructions) | executor upgrade |
 | [`Log`](/blockchain/instructions.md#other-instructions) | executor log entry |
 | [`CustomInstruction`](/blockchain/instructions.md#other-instructions) | executor-specific JSON payload |
+| [Native asset escrow](/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
+| [Generic asset locks](/blockchain/escrow.md#generic-asset-locks) | `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, `ExpireAssetLock` |
+| [Anonymous asset escrow](/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
 
 Additional Iroha 3 modules may register domain-specific instruction types
 through the instruction registry. For the schema-level list generated from the
@@ -44,6 +47,7 @@ class InstructionBox {
     Upgrade
     Log
     CustomInstruction
+    NativeEscrowInstructions
 }
 
 class RegisterBox {
@@ -71,9 +75,17 @@ class MetadataBoxes {
     Trigger
 }
 
+class NativeEscrowInstructions {
+    OpenAssetEscrow
+    OpenAssetLock
+    OpenAnonymousAssetEscrow
+    ResolveEscrowDispute
+}
+
 InstructionBox --> RegisterBox
 InstructionBox --> TransferBox
 InstructionBox --> MetadataBoxes
+InstructionBox --> NativeEscrowInstructions
 ```
 
 :::

@@ -16,6 +16,7 @@ Here is the full list of Iroha Special Instructions:
 | [SetParameter](#setparameter)                             | Set a chain-wide parameter.                      |
 | [Grant/Revoke](#grant-revoke)                             | Give or remove permissions and roles.            |
 | [Transfer](#transfer)                                     | Transfer ownership or asset value.               |
+| [Native escrow and asset locks](#native-escrow-and-asset-locks) | Lock numeric assets in protocol custody.     |
 | [ExecuteTrigger](#executetrigger)                         | Execute triggers.                                |
 | [Log/Custom/Upgrade](#other-instructions)                 | Log, extend, or upgrade runtime behavior.        |
 
@@ -43,6 +44,7 @@ all you need is the object that you want to register.
 | [SetParameter](#setparameter)                             | chain parameters                                                                                        |                      |
 | [Grant/Revoke](#grant-revoke)                             | [roles, permission tokens](/blockchain/permissions.md)                                                  | accounts or roles    |
 | [Transfer](#transfer)                                     | domains, asset definitions, numeric assets, NFTs                                                        | accounts             |
+| [Native escrow and asset locks](#native-escrow-and-asset-locks) | numeric asset escrows, asset locks, anonymous escrow commitments                                    | buyers, destinations, or dispute splits |
 | [ExecuteTrigger](#executetrigger)                         | triggers                                                                                                |                      |
 | [Log/Custom/Upgrade](#other-instructions)                 | logs, executor-specific payloads, executor upgrades                                                     |                      |
 
@@ -55,6 +57,7 @@ they touch:
 | Domain           | register/unregister domains, transfer domain ownership, update domain metadata                               |
 | Asset definition | register/unregister definitions, transfer ownership, update metadata                                         |
 | Asset            | mint/burn numeric quantity, transfer numeric quantity                                                        |
+| Escrow           | open, accept, mark payment sent, release, cancel, dispute, resolve, draw down, or expire native custody records |
 | NFT              | register/unregister NFTs, transfer ownership, update metadata                                                |
 | RWA              | register lots, transfer quantity, hold/release, freeze/unfreeze, redeem, merge, update metadata and controls |
 | Trigger          | register/unregister, mint/burn trigger repetitions, execute trigger, update trigger metadata                 |
@@ -344,6 +347,27 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger nft transfer --id 'badge$docs.universal' --from "$ALICE" --to "$BOB"
 ```
+
+## Native Escrow and Asset Locks
+
+Native escrow instructions lock numeric assets in ledger-managed protocol
+custody. They are used for marketplace-style settlement, generic asset
+locks, and anonymous shielded escrow flows.
+
+Marketplace escrow uses `OpenAssetEscrow`, `AcceptAssetEscrow`,
+`MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`,
+`OpenEscrowDispute`, and `ResolveEscrowDispute`. Generic asset locks use
+`OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, and
+`ExpireAssetLock`. Anonymous escrow mirrors the marketplace lifecycle with
+`OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`,
+`MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`,
+`CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, and
+`ResolveAnonymousEscrowDispute`.
+
+These ISIs do not currently have first-class CLI commands. Use typed SDK
+builders or serialized instruction payloads, and see
+[Native Asset Escrow](/blockchain/escrow.md) for lifecycle details,
+permissions, queries, events, and Rust examples.
 
 ## Grant/Revoke
 

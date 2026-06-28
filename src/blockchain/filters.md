@@ -38,7 +38,7 @@ pay the cost of trigger or subscriber matching.
 | `Soradns` | Resolver directory governance events |
 | `Sorafs` | SoraFS gateway compliance events |
 | `SpaceDirectory` | Space Directory manifest lifecycle events |
-| `Escrow` | Native asset escrow lifecycle events |
+| `Escrow` | Transparent native asset escrow lifecycle events |
 | `Offline` | Offline settlement events |
 | `Oracle` | Oracle feed events |
 | `Social` | Viral incentive events |
@@ -79,6 +79,7 @@ so the filter input matches the query output type.
 See also:
 
 - [Events](/blockchain/events.md)
+- [Native Asset Escrow](/blockchain/escrow.md#queries-and-events)
 - [Triggers](/blockchain/triggers.md)
 - [Queries](/blockchain/queries.md)
 - [Query reference](/reference/queries.md)
