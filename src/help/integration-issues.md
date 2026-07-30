@@ -1,7 +1,7 @@
 # Troubleshooting Integration Issues
 
-This section offers troubleshooting tips for issues with Iroha 2 and Iroha 3
-integration. If the issue you are experiencing is not described here,
+This section offers troubleshooting tips for Iroha 3 integration. If the issue
+you are experiencing is not described here,
 contact us via [Telegram](https://t.me/hyperledgeriroha).
 
 ## Client cannot connect
@@ -45,8 +45,8 @@ Most transaction failures are caused by identity or authorization mismatch:
 - the account is not registered in genesis or by a prior transaction
 - the account lacks the permission token or role required by the runtime
   validator
-- object IDs use old Iroha 2-era forms instead of current canonical forms
-  such as `domain.dataspace`
+- a domain ID is missing its dataspace qualification, such as
+  `domain.dataspace`
 
 Use `--output-format text` while debugging CLI commands so errors are easier
 to read:

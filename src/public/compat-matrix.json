@@ -2,10 +2,10 @@
   "source": {
     "repo": "hyperledger-iroha/iroha",
     "repo_url": "https://github.com/hyperledger-iroha/iroha",
-    "branch": "i23-features",
-    "branch_url": "https://github.com/hyperledger-iroha/iroha/tree/i23-features",
-    "commit": "b530168a7468",
-    "generated_at": "2026-04-28"
+    "revision": "477335e8207fa9a88eebfaed835ff170718c54f1",
+    "revision_url": "https://github.com/hyperledger-iroha/iroha/commit/477335e8207fa9a88eebfaed835ff170718c54f1",
+    "generated_at": "2026-07-30",
+    "verification": "not-run"
   },
   "included_sdks": [
     {
@@ -25,322 +25,75 @@
     },
     {
       "name": "Swift"
-    },
-    {
-      "name": "C# / .NET"
     }
   ],
   "stories": [
     {
-      "name": "Account address and I105 rendering",
+      "name": "Canonical account identity and I105 rendering",
       "results": [
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        }
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" }
       ]
     },
     {
       "name": "Canonical Torii request signing",
       "results": [
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        }
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" }
       ]
     },
     {
-      "name": "Norito payload encoding and fixture parity",
+      "name": "Norito payload and shared-fixture parity",
       "results": [
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        }
-      ]
-    },
-    {
-      "name": "Torii read, query, and RPC clients",
-      "results": [
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        }
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" }
       ]
     },
     {
       "name": "Transaction build, sign, submit, and status polling",
       "results": [
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        }
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" }
       ]
     },
     {
-      "name": "Core ledger flow builders",
+      "name": "Queries, events, and subscription streams",
       "results": [
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        }
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" }
       ]
     },
     {
-      "name": "Event, SSE, and subscription streams",
+      "name": "Offline wallet and payment flows",
       "results": [
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        }
-      ]
-    },
-    {
-      "name": "Multisig and policy TTL helpers",
-      "results": [
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        }
-      ]
-    },
-    {
-      "name": "Offline V2 and wallet readiness",
-      "results": [
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        }
-      ]
-    },
-    {
-      "name": "SoraFS and gateway helpers",
-      "results": [
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        }
-      ]
-    },
-    {
-      "name": "RWA/NFT explorer and instruction helpers",
-      "results": [
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        }
-      ]
-    },
-    {
-      "name": "Live testnet smoke lane",
-      "results": [
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        },
-        {
-          "status": "ok"
-        }
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" }
       ]
     }
   ]

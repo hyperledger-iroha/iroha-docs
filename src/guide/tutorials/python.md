@@ -1391,5 +1391,5 @@ The Python SDK already includes helpers for:
 - `python/iroha_python/DESIGN.md`
 - `python/iroha_python/src/iroha_python`
 
-Those files track the current Python surface more accurately than the older
-Iroha 2-era examples that used the `iroha2` package name.
+Those files are the source of truth for the Python surface in the pinned
+workspace revision.

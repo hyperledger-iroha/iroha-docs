@@ -581,8 +581,7 @@ the proposer announces a session for `(height, view, payload_hash)`, peers
 exchange chunks, and `READY`/`DELIVER` signals track whether enough validators
 observed the same payload.
 
-With DA enabled, a peer considers the pending block payload available when
-either:
+In Iroha 3, a peer considers the pending block payload available when either:
 
 - the local pending block bytes hash to the expected payload hash, or
 - RBC has recovered a payload matching the block hash, height, view, and
@@ -604,8 +603,8 @@ view-change paths can proceed.
 
 ### Operator Notes
 
-Consensus profiles that enable DA add RBC-backed payload dissemination,
-manifest guards, DA bundle validation, and recovery telemetry. The peer
+Iroha 3 consensus profiles include RBC-backed payload dissemination, manifest
+guards, DA bundle validation, and recovery telemetry. The peer
 template exposes `[sumeragi.da]` limits for commitments and proof openings per
 block, plus `[sumeragi.advanced.da]` timeout multipliers for quorum and
 availability behavior. Keep these settings consistent across validators in one

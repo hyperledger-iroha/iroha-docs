@@ -4,36 +4,13 @@ import { withBase } from 'vitepress'
 
 # Consensus
 
-Each time you send a transaction to Iroha, it gets put into a queue. When
-it's time to produce a new block, the queue is emptied, and the consensus
-process begins. This process is equal parts common sense and black
-magic[^1].
+Transactions enter a queue before Sumeragi proposes them in a block.
+Validators independently validate and execute the proposal, then sign only
+the state transition they can reproduce. A block commits after the required
+validator quorum agrees on that result and the matching payload is available.
 
-The mundane aspect is that a special set of peers needs to take the
-transaction queue and reproduce the same world state. If the world state
-cannot be reproduced for some reason or another, none of the transactions
-get committed to a block.
-
-The consensus starts over from scratch by choosing a different special set
-of peers. This is where the black magic comes in. There is a number of
-things that are fine-tuned: the number of peers in the voting process, the
-way in which subsequent voting peers are chosen, and the way in which the
-peers communicate that consensus has failed. Because this changes the view
-of the world, the process is called a _view change_. The exact reason for
-why the view was changed is encoded in the _view change proof_, but
-decoding that information is an advanced topic that we won't cover here.
-
-The reasoning behind this algorithm is simple: if someone had some evil
-peers and connected them to the existing network, if they tried to fake
-data, some good™ peers would not get the same (evil™) world state. If
-that's the case, the evil™ peers would not be allowed to participate in
-consensus, and you would eventually produce a block using only good™
-peers.
-
-As a natural consequence, if any changes to the world state are made
-without the use of ISI, the good™ peers cannot know of them. They won't be
-able to reproduce the hash of the world state, and thus consensus will
-fail. The same thing happens if the peers have different instructions.
+All Iroha 3 networks use the data-availability and reliable-broadcast paths.
+They are consensus requirements, not optional deployment features.
 
 ## Sumeragi
 
@@ -213,11 +190,11 @@ recovery traffic cannot grow without limit.
 
 RBC is not a separate consensus decision and it does not replace the commit
 certificate. A block still finalizes only when the peer has a valid commit
-certificate and the matching payload locally. When data availability is
-enabled, RBC contributes availability evidence and payload recovery, but
-commit progress is driven by the commit certificate plus local payload. If
-the certificate arrives before the payload, the peer can recover the
-payload through RBC or block sync and then commit.
+certificate and the matching payload locally. RBC contributes mandatory
+availability evidence and payload recovery, while commit progress is driven by
+the commit certificate plus local payload. If the certificate arrives before
+the payload, the peer can recover the payload through RBC or block sync and
+then commit.
 
 Operationally, RBC is useful for diagnosing missing-payload and
 data-availability bottlenecks:
@@ -241,8 +218,3 @@ receives deterministic storage names such as `blocks/lane_000_core` and
 `merge_ledger/lane_000_core_merge.log`; lane lifecycle changes can
 provision, retire, or relabel those segments without changing the global
 block order.
-
-[^1]:
-    For prospective wizards, the
-    [Iroha 2 Whitepaper](https://github.com/hyperledger-iroha/iroha/blob/i23-features/docs/source/iroha_2_whitepaper.md)
-    is a good start.

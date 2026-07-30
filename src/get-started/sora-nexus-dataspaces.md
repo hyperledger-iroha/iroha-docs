@@ -311,9 +311,9 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-Recent CLI builds infer the Taira `chain_discriminant` from the `chain`
-value or from `taira.sora.org`, but keeping it explicit makes the config
-portable across older builds.
+The CLI can infer the Taira `chain_discriminant` from the `chain` value or
+from `taira.sora.org`, but keeping it explicit makes the client configuration
+self-contained.
 
 Run a read-only check:
 
@@ -810,8 +810,8 @@ smoke tests, monitoring, and governance evidence are complete.
 
 ## Related Pages
 
-- [Install Iroha 3](/get-started/install-iroha-2.md)
-- [Operate Iroha 3 via CLI](/get-started/operate-iroha-2-via-cli.md)
+- [Install Iroha 3](/get-started/install-iroha.md)
+- [Operate Iroha 3 via CLI](/get-started/operate-iroha-via-cli.md)
 - [Sponsor fees for a private dataspace](/get-started/private-dataspace-fee-sponsor.md)
 - [Torii endpoints](/reference/torii-endpoints.md)
 - [Genesis reference](/reference/genesis.md)

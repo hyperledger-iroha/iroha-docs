@@ -126,7 +126,7 @@ Special Instructions:
 
 See also:
 
-- [CLI guide](/get-started/operate-iroha-2-via-cli.md)
+- [CLI guide](/get-started/operate-iroha-via-cli.md)
 - [Rust tutorial](/guide/tutorials/rust.md)
 - [Python tutorial](/guide/tutorials/python.md)
 - [JavaScript/TypeScript tutorial](/guide/tutorials/javascript.md)

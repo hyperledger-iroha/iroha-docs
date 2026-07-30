@@ -1,7 +1,7 @@
 # Generating Cryptographic Keys
 
-Use `kagami keys` to generate client, peer, and validator key material for the
-current Iroha 2 and Iroha 3 codebase.
+Use `kagami keys` to generate client, peer, and validator key material for
+Iroha 3.
 
 ## Basic Usage
 

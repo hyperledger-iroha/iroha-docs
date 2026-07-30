@@ -17,7 +17,7 @@ For the current state of the project, start with the reference CLI and the
 workspace itself:
 
 ```bash
-git clone --branch i23-features https://github.com/hyperledger-iroha/iroha.git
+git clone https://github.com/hyperledger-iroha/iroha.git
 cd iroha
 cargo build --workspace
 ```
@@ -54,11 +54,11 @@ they require a faucet-funded account and live testnet availability.
 
 ## Using the Rust Client Crate
 
-For the current source state, depend on the `i23-features` branch directly:
+Pin the Iroha Git revision used by your network:
 
 ```toml
 [dependencies]
-iroha = { git = "https://github.com/hyperledger-iroha/iroha.git", branch = "i23-features", package = "iroha" }
+iroha = { git = "https://github.com/hyperledger-iroha/iroha.git", rev = "<IROHA_COMMIT>", package = "iroha" }
 ```
 
 If you need the most complete examples of how the Rust surfaces are used in
@@ -82,5 +82,6 @@ cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/Com
 ## Notes
 
 - The CLI currently provides better coverage than the standalone crate docs.
-- The workspace targets `std`; IVM/no-std builds are not the default path.
+- The entire workspace targets Rust `std`. WASM and `no_std` builds are not
+  supported.
 - For operator-style flows, the CLI documentation is the most current source.

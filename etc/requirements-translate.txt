@@ -1,0 +1,3 @@
+ctranslate2==4.6.0
+transformers==4.46.3
+sentencepiece==0.2.1

@@ -1,7 +1,7 @@
 # Troubleshooting Installation Issues
 
-This section offers troubleshooting tips for issues with Iroha 2 and Iroha 3
-installation. If the issue you are experiencing is not described here,
+This section offers troubleshooting tips for Iroha 3 installation. If the
+issue you are experiencing is not described here,
 contact us via [Telegram](https://t.me/hyperledgeriroha).
 
 ## Quick checks
@@ -11,8 +11,8 @@ Most installation failures come from one of four places:
 - a Rust toolchain older than the version pinned by the upstream workspace
 - `cargo` or `rustc` resolving to a different installation than `rustup`
 - missing system build tools such as a C compiler, `pkg-config`, or CMake
-- stale generated snippets or local build artifacts after switching between
-  Iroha branches
+- stale generated snippets or local build artifacts after changing source
+  revisions
 
 From the Iroha source checkout, start with:
 
@@ -23,9 +23,9 @@ rustc --version
 cargo metadata --no-deps
 ```
 
-If `cargo metadata` fails, fix the local toolchain before running docs
-commands such as `pnpm get-snippets`, because the docs may invoke Kagami to
-generate the current data-model schema.
+If `cargo metadata` fails, fix the local toolchain before running
+`pnpm refresh:iroha --source /path/to/iroha`, because the refresh can invoke
+Kagami to generate the current data-model schema.
 
 ## Troubleshooting Rust Toolchain
 

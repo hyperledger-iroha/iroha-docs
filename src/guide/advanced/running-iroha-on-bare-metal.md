@@ -18,21 +18,12 @@ This produces:
 - `target/release/iroha` for the CLI
 - `target/release/kagami` for key, genesis, and localnet generation
 
-The same workspace also builds `iroha2`/`iroha2d` and `iroha3`/`iroha3d`
-aliases when scripts need to make the selected track explicit.
-
 ## 2. Generate a Local Network
 
 Generate a four-peer Iroha 3 localnet:
 
 ```bash
 target/release/kagami localnet --build-line iroha3 --peers 4 --out-dir ./localnet
-```
-
-For an Iroha 2-style localnet, set the build line explicitly:
-
-```bash
-target/release/kagami localnet --build-line iroha2 --peers 4 --out-dir ./localnet-iroha2
 ```
 
 The output directory contains the generated `genesis.json`,
@@ -79,5 +70,5 @@ Stop the generated localnet with:
 - Treat changes to genesis or consensus topology as coordinated migrations, not
   single-peer file edits.
 
-For containerized local development, use the [Launch Iroha 3](../../get-started/launch-iroha-2.md)
+For containerized local development, use the [Launch Iroha 3](../../get-started/launch-iroha.md)
 Docker Compose workflow.

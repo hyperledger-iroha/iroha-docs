@@ -12,6 +12,15 @@
   --vp-c-brand-soft: var(--vp-c-red-soft);
 }
 
+html[dir='rtl'] {
+  direction: rtl;
+}
+
+html[dir='rtl'] .VPDoc .content-container,
+html[dir='rtl'] .VPDocAside {
+  text-align: right;
+}
+
 .VPSidebarItem.level-0 .text {
   font-weight: 500 !important;
   color: var(--vp-c-text-1);

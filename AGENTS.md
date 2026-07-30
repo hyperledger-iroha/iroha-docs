@@ -1,38 +1,65 @@
 # Agent Handbook
 
-## Purpose
-- This repo hosts the VitePress-powered documentation for Hyperledger Iroha 2.
-- Page sources live under `src/`; shared utilities and scripts live in `etc/`.
-- The site pulls code snippets via the custom CLI (`pnpm get-snippets`) and may call an external compatibility matrix service.
+## Repository Purpose
 
-## Environment
-- Use Node.js 18+ and pnpm 9 (enforced by `packageManager` entry).
-- After cloning, run `pnpm install` (postinstall will fetch snippets automatically).
-- Provide these optional env vars when needed:
-  - `VITE_COMPAT_MATRIX_URL` – URL of the compatibility matrix service (required for matrix pages to load).
-  - `VITE_FEEDBACK_URL` – enables the “Share feedback” button.
+- This repository is the canonical home for public, in-depth Hyperledger Iroha
+  3 documentation and publishes to <https://docs.iroha.tech/>.
+- The implementation repository may keep concise contributor notes,
+  code-coupled specifications, Rustdoc, and generated test material. Do not
+  duplicate public guides there.
+- Treat the current Iroha implementation, configuration defaults, schemas, and
+  tests as behavioral truth. Replace stale claims instead of preserving release
+  history or migration guidance.
 
-## Key Commands
-- `pnpm dev` – start local VitePress dev server.
-- `pnpm build` – generate static site output.
-- `pnpm serve` – preview built site.
-- `pnpm get-snippets` – refresh embedded code samples from source repos.
-- `pnpm cli --help` – inspect additional CLI utilities in `etc/cli`.
+## Site and Tooling
 
-## Quality Gates
-- `pnpm format:fix` / `pnpm format:check` – Prettier + ESLint formatting.
-- `pnpm lint` – eslint rules for TS/Vue sources.
-- `pnpm typecheck` – TypeScript no-emit validation.
-- `pnpm test` – Vitest suite (unit tests for CLI helpers and link validators).
+- Preserve the VitePress architecture and keep the production base path at `/`.
+- Use Node.js 24 and pnpm 9. Install with `pnpm install --frozen-lockfile`.
+- Normal install, test, and build commands must not fetch Iroha source or
+  require `../iroha`.
+- Never source generated material from a mutable branch. The only supported
+  refresh is `pnpm refresh:iroha --source /path/to/iroha`, using the exact
+  commit in `provenance/iroha.json`.
+- Keep generated snippets, OpenAPI, schemas, CLI output, and provenance hashes
+  checked in. Review their diffs like source code.
 
-## Project Layout Highlights
-- `src/index.md` – landing page entry point; other directories mirror published doc sections.
-- `src/example_code/` – language-specific code embedded into tutorials.
-- `etc/` – snippet tooling, schema definitions, link validators.
-- `uno.config.ts`, `vitest.config.ts`, `tsconfig.json` – UnoCSS, Vitest, and TS setup used by tooling and IDEs.
+## Content Policy
 
-## Workflow Tips
-- Maintain deterministic snippet output: update snippet source repos before running `pnpm get-snippets`.
-- For content edits, build locally (`pnpm dev` or `pnpm build`) to verify navigation and layout.
-- Keep new articles within `src/<section>/`; add them to VitePress sidebar config if navigation needs updates.
-- When changing CLI utilities, extend tests in `etc/*.spec.ts` and run `pnpm test`.
+- Document the first Iroha 3 release only. Do not add historical comparisons,
+  retired runtime targets, compatibility archives, or redirects for unpublished
+  routes.
+- Prefer concise local contributor instructions in the implementation
+  repository and put tutorials, architecture, operations, SDK, and API guidance
+  here.
+- When implementation behavior changes, update the English source and all
+  affected translations in the same change.
+- Keep code, identifiers, commands, URLs, and wire-format details unchanged in
+  translations.
+
+## Internationalization
+
+- English pages live at the root of `src/`.
+- Maintained locale trees are `es`, `pt`, `fr`, `ru`, `ar`, `ur`, `ja`, `he`,
+  `my`, `ka`, `hy`, `az`, `kk`, `ba`, `am`, `dz`, `uz`, `mn`, `zh-hant`, and
+  `zh-hans`.
+- Every locale must have exact page-for-page route parity with English.
+- Translated frontmatter must include `translation_locale`,
+  `translation_source`, `translation_source_hash`, and
+  `translation_status: machine-validated`.
+- Arabic, Hebrew, and Urdu are right-to-left locales. Preserve their direction
+  metadata and verify layout behavior.
+
+## Commands
+
+- `pnpm dev` — start the local site.
+- `pnpm build` — build the production site.
+- `pnpm format:check` / `pnpm format:fix` — check or apply formatting.
+- `pnpm lint` — lint TypeScript and Vue sources.
+- `pnpm typecheck` — run TypeScript validation.
+- `pnpm test` — run Vitest once.
+- `pnpm translate` — regenerate all maintained translations.
+- `pnpm validate` — enforce content, locale parity, and provenance policies.
+- `pnpm cli validate-links .vitepress/dist` — validate built links.
+
+Keep changes focused, add tests for tooling behavior, and report the checks run
+in pull requests.

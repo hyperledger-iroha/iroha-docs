@@ -1,8 +1,8 @@
 # Iroha Explained
 
-Iroha 3 is the Nexus-oriented track of the Hyperledger Iroha workspace. It
-shares the same core components as Iroha 2 but adds the Nexus execution
-model for data spaces and multi-lane routing.
+Iroha 3 is the first-release Hyperledger Iroha platform. The same core
+supports self-hosted networks and the SORA Nexus execution model for data
+spaces and multi-lane routing.
 
 ## Core Building Blocks
 
@@ -11,6 +11,7 @@ model for data spaces and multi-lane routing.
 - **Sumeragi** handles consensus
 - **Norito** is the [canonical binary format](/reference/norito.md)
 - **IVM** runs portable smart contracts and bytecode
+- **Kotodama** compiles high-level `.ko` contracts to IVM `.to` bytecode
 - **Kagami** prepares keys, genesis, profiles, and localnets
 - **SORA Nexus service planes** add Soracloud, Inrou, SoraNet, SoraFS, and
   SoraDNS for app hosting, privacy transport, storage, and naming
@@ -20,8 +21,6 @@ model for data spaces and multi-lane routing.
 Every change to world state still happens through transactions.
 Transactions carry instructions or IVM bytecode, and Torii is the main way
 clients submit them or observe their effects.
-
-What changes in Iroha 3 is the deployment shape:
 
 - Nexus-aware configurations can define multiple lanes
 - data spaces isolate workloads while staying part of the same ledger model
@@ -96,20 +95,17 @@ profile choices encoded in the bundled catalog and routing policy;
 operators can define a different catalog when they need different dataspace
 boundaries.
 
-## What Operators Notice First
+Sumeragi always uses data availability and reliable broadcast. These paths are
+part of the Iroha 3 consensus protocol and cannot be disabled by a deployment
+profile.
 
-Compared with the older single-lane documentation set, operators will
-notice these changes most quickly:
-
-- richer status and telemetry endpoints
-- explicit genesis `consensus_mode` and PoP-aware topology
-- SORA Nexus profiles under `defaults/nexus/`
-- more CLI coverage for consensus and operator diagnostics
+Runtime behavior is sourced from configuration files and on-chain parameters.
+Environment variables are not production feature gates.
 
 ## Read Next
 
 - [SORA Nexus services](/blockchain/sora-nexus-services.md)
-- [Launch Iroha 3](/get-started/launch-iroha-2.md)
+- [Launch Iroha 3](/get-started/launch-iroha.md)
 - [World, WSV, and Kura storage](/blockchain/world.md)
 - [Genesis reference](/reference/genesis.md)
 - [Torii endpoints](/reference/torii-endpoints.md)

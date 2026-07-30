@@ -12,7 +12,5 @@ Start here for:
 - [Norito](/reference/norito.md)
 - [Compatibility matrix](/reference/compatibility-matrix.md)
 
-For the broader upstream documentation map, see:
-
-- [docs/README.md](https://github.com/hyperledger-iroha/iroha/blob/i23-features/docs/README.md)
-- [docs/source/README.md](https://github.com/hyperledger-iroha/iroha/blob/i23-features/docs/source/README.md)
+For implementation source and code-adjacent specifications, see the
+[Iroha repository](https://github.com/hyperledger-iroha/iroha).

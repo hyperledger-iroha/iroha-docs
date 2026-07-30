@@ -73,7 +73,7 @@ NFT lifecycle operations use Iroha Special Instructions:
 
 These examples assume you have launched a local network and have the
 generated client configuration from the
-[CLI guide](/get-started/operate-iroha-2-via-cli.md):
+[CLI guide](/get-started/operate-iroha-via-cli.md):
 
 ```bash
 export IROHA_CONFIG=./localnet/client.toml

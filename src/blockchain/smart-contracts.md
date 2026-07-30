@@ -10,9 +10,14 @@ supports:
 - `Executable::IvmProved`: Iroha VM bytecode with a precomputed instruction
   overlay and proof commitments
 
-Older Iroha 2-era contract examples used legacy helper crates and boxed
-query snippets. Current Iroha 3 contract work should target the Iroha VM
-and current SDK builders instead.
+Kotodama is Iroha's high-level smart-contract language. A `.ko` source file
+compiles to deterministic IVM bytecode, conventionally stored as a `.to`
+artifact for deployment. Kotodama targets IVM; it is not a standalone RISC-V
+or WebAssembly target.
+
+The first release supports only ABI version 1. The syscall and pointer-ABI
+policy is enforced unconditionally by contract admission and execution; there
+is no runtime compatibility toggle.
 
 ## When To Use Smart Contracts
 

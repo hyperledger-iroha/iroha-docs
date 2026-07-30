@@ -1,54 +1,45 @@
 name: Pull Request CI
+
 on:
   pull_request:
     branches: [main]
+
+permissions:
+  contents: read
+
 jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v3
+      - uses: pnpm/action-setup@v4
         with:
-          node-version: 22
+          version: 9.12.1
+          run_install: false
 
-      # --- Install with caching
-      # https://github.com/pnpm/action-setup#use-cache-to-reduce-installation-time
-
-      - name: Enable Corepack
-        run: |
-          npm i -g corepack@latest
-          corepack enable
-
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        run: |
-          echo "pnpm_cache_dir=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
+      - uses: actions/setup-node@v4
         with:
-          path: |
-            ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
-            /home/runner/.cache/Cypress
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+          node-version: 24
+          cache: pnpm
 
       - name: Install packages
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
-      - name: Type check
-        run: pnpm typecheck
+      - name: Check formatting
+        run: pnpm format:check
 
       - name: Lint
         run: pnpm lint
 
-      - name: Format
-        run: pnpm format:check
+      - name: Type check
+        run: pnpm typecheck
 
       - name: Run tests
         run: pnpm test
+
+      - name: Validate content, locales, and provenance
+        run: pnpm validate
 
       - name: Build
         run: pnpm build
@@ -56,5 +47,4 @@ jobs:
       - name: Validate links
         run: pnpm cli validate-links .vitepress/dist
         env:
-          # chalk has a color detection bug
           FORCE_COLOR: 2

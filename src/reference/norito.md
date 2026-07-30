@@ -49,9 +49,9 @@ typed value.
 ## Layout Flags
 
 Norito stores layout choices in the final header byte. The default v1 helpers
-emit `COMPACT_LEN` (`0x02`) for compact per-value length prefixes. Legacy
-fixed-width length prefixes remain readable when callers explicitly encode
-with `flags = 0x00`.
+emit `COMPACT_LEN` (`0x02`) for compact per-value length prefixes. Explicit
+fixed-width length prefixes remain readable when callers encode with
+`flags = 0x00`.
 
 | Flag | Hex | Status | Effect |
 | --- | ---: | --- | --- |
@@ -253,6 +253,5 @@ Norito so routing, billing, replay, and audit evidence stay reproducible.
 
 ## Upstream References
 
-- [Norito format specification](https://github.com/hyperledger-iroha/iroha/blob/i23-features/norito.md)
-- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/i23-features/crates/norito/README.md)
-- [Norito streaming design notes](https://github.com/hyperledger-iroha/iroha/blob/i23-features/docs/source/norito_streaming.md)
+- [Norito format specification](https://github.com/hyperledger-iroha/iroha/blob/main/norito.md)
+- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/norito/README.md)

@@ -549,7 +549,7 @@ printf '{
 ## Related Pages
 
 - [Connect to SORA Nexus Dataspaces](/get-started/sora-nexus-dataspaces.md)
-- [Operate Iroha 3 via CLI](/get-started/operate-iroha-2-via-cli.md)
+- [Operate Iroha 3 via CLI](/get-started/operate-iroha-via-cli.md)
 - [Assets](/blockchain/assets.md)
 - [Permissions](/blockchain/permissions.md)
 - [Permission Tokens](/reference/permissions.md)

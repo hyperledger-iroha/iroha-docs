@@ -1,19 +1,10 @@
 # Working with Iroha Binaries
 
-The current Iroha 2 and Iroha 3 operator workflow revolves around three
-primary binaries:
+The Iroha 3 operator workflow revolves around three primary binaries:
 
-- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/i23-features/crates/irohad) for running a peer daemon
-- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/i23-features/crates/iroha_cli) for CLI and operator commands
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/i23-features/crates/iroha_kagami) for keys, genesis, localnets, and profiles
-
-The source tree also exposes track-specific aliases:
-
-- `iroha2` and `iroha3` for CLI flows
-- `iroha2d` and `iroha3d` for daemon startup
-
-Use those aliases when scripts need to make the selected build line explicit.
-Use `iroha` and `irohad` for general examples and shared automation.
+- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad) for running a peer daemon
+- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_cli) for CLI and operator commands
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_kagami) for keys, genesis, localnets, and profiles
 
 ## Build from Source
 
@@ -31,8 +22,6 @@ To inspect the command surface:
 ./target/release/irohad --help
 ./target/release/iroha --help
 ./target/release/kagami --help
-./target/release/iroha3 --help
-./target/release/iroha3d --help
 ```
 
 ## Run Directly from the Repository
@@ -43,8 +32,6 @@ If you do not want to install anything globally, use `cargo run`:
 cargo run --bin irohad -- --help
 cargo run --bin iroha -- --help
 cargo run --bin kagami -- --help
-cargo run --bin iroha3 -- --help
-cargo run --bin iroha3d -- --help
 ```
 
 ## Docker Image
@@ -78,4 +65,3 @@ docker compose -f ./localnet/docker-compose.yml up
 - Use `irohad` when you are starting or operating peers.
 - Use `iroha` when you need to query the ledger, submit transactions, or inspect operator endpoints.
 - Use `kagami` when you need keys, genesis manifests, profile bundles, or localnet assets.
-- Use `iroha2`/`iroha2d` or `iroha3`/`iroha3d` when a script must pin the Iroha track.

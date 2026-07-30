@@ -1,18 +1,16 @@
 # Operate Iroha 3 via CLI
 
-The `iroha` binary is the shared CLI for the current Iroha 2 and Iroha 3
-codebase. The same source tree also exposes `iroha2` and `iroha3` aliases for
-track-specific scripting, while `iroha` remains the stable command used in
-these examples.
+The `iroha` binary is the command-line client for Iroha 3. Use it to query
+ledger state, submit transactions, and inspect operator endpoints.
 
 ## 1. Prerequisites
 
 Start a local network first:
 
-- [Launch Iroha 3](./launch-iroha-2.md)
+- [Launch Iroha 3](./launch-iroha.md)
 
 The examples below assume the generated client configuration from the localnet
-created in [Launch Iroha 3](./launch-iroha-2.md):
+created in [Launch Iroha 3](./launch-iroha.md):
 
 ```bash
 ./localnet/client.toml
@@ -171,7 +169,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml ops sumeragi params
 - [SDK tutorials](/guide/tutorials/)
 - [Torii endpoints](/reference/torii-endpoints.md)
 - [Working with Iroha binaries](/reference/binaries.md)
-- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/i23-features/crates/iroha_cli/README.md)
+- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_cli/README.md)
 
 To regenerate a full Markdown help snapshot from the source checkout, run:
 

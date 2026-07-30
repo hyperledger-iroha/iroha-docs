@@ -52,7 +52,7 @@ Current RAM-LFE support is centered on three backend identifiers:
 
 | Backend | Use |
 | --- | --- |
-| `hkdf-sha3-512-prf-v1` | Historical commitment-bound PRF evaluation. |
+| `hkdf-sha3-512-prf-v1` | Commitment-bound PRF evaluation. |
 | `bfv-affine-sha3-256-v1` | BFV-backed secret affine evaluation over encrypted identifier slots. |
 | `bfv-programmed-sha3-256-v1` | BFV-backed programmed execution over encrypted registers and memory lanes. |
 

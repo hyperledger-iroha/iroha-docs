@@ -193,23 +193,11 @@ The Swift source currently includes:
 - Offline V2 note, receipt, QR stream, and transaction models
 - SoraFS, data-availability, and proof-attachment helpers
 
-## In-Tree Samples
+## API Examples
 
-The upstream workspace contains Swift/iOS example directories under
-`examples/ios/`, but the project manifests are not a reliable source of current
-setup instructions:
-
-- `examples/ios/ConnectMinimalApp` is a SwiftPM executable harness, but its
-  package manifest currently resolves `../../IrohaSwift` to
-  `examples/IrohaSwift`, and its source references Connect helpers that are not
-  present in `IrohaSwift/Sources`.
-- `examples/ios/NoritoDemo` and `examples/ios/NoritoDemoXcode` contain SwiftUI
-  code that imports `IrohaSwift` and conditionally uses `NoritoBridgeKit`, but
-  their checked-in project manifests do not declare the `IrohaSwift` package
-  dependency.
-
-Use `IrohaSwift/Sources/IrohaSwift` and `IrohaSwift/Tests/IrohaSwiftTests` as
-the current API references until those sample manifests are brought back in sync.
+Use `IrohaSwift/Sources/IrohaSwift` for the public implementation and
+`IrohaSwift/Tests/IrohaSwiftTests` for tested usage examples from the same
+source revision.
 
 ## Source References
 
@@ -220,4 +208,3 @@ the current API references until those sample manifests are brought back in sync
 - `IrohaSwift/Sources/IrohaSwift/TransactionEncoder.swift`
 - `IrohaSwift/Sources/IrohaSwift/ConnectClient.swift`
 - `IrohaSwift/Sources/IrohaSwift/ConnectSession.swift`
-- `examples/ios/ConnectMinimalApp/Package.swift`

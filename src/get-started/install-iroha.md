@@ -15,7 +15,7 @@ Install these first:
 ## 2. Clone the Workspace
 
 ```bash
-git clone --branch i23-features https://github.com/hyperledger-iroha/iroha.git
+git clone https://github.com/hyperledger-iroha/iroha.git
 cd iroha
 ```
 
@@ -58,4 +58,4 @@ Compose file that matches the checked-out code:
 - `kagami localnet` for native local peer scripts
 - `kagami docker` for Docker Compose generated from a localnet directory
 
-Continue with [Launch Iroha 3](/get-started/launch-iroha-2.md).
+Continue with [Launch Iroha 3](/get-started/launch-iroha.md).

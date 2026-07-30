@@ -168,7 +168,7 @@ process of registering objects in a blockchain:
 
 | Language              | Guide                                                                                                   |
 | --------------------- | ------------------------------------------------------------------------------------------------------- |
-| CLI                   | Use the [Iroha CLI](/get-started/operate-iroha-2-via-cli.md) to register domains, accounts, and assets. |
+| CLI                   | Use the [Iroha CLI](/get-started/operate-iroha-via-cli.md) to register domains, accounts, and assets. |
 | Rust                  | Use the [Rust tutorial](/guide/tutorials/rust.md).                                                      |
 | Kotlin/Java           | Use the [Kotlin/Java tutorial](/guide/tutorials/kotlin-java.md).                                        |
 | Python                | Use the [Python tutorial](/guide/tutorials/python.md).                                                  |
@@ -274,7 +274,7 @@ never have `$-1.0` of an asset or burn a negative amount and get a mint.
 Refer to one of the language-specific guides to walk you through the
 process of minting assets in a blockchain:
 
-- [CLI](/get-started/operate-iroha-2-via-cli.md)
+- [CLI](/get-started/operate-iroha-via-cli.md)
 - [Rust](/guide/tutorials/rust.md)
 - [Kotlin/Java](/guide/tutorials/kotlin-java.md)
 - [Python](/guide/tutorials/python.md)
@@ -282,7 +282,7 @@ process of minting assets in a blockchain:
 
 Here are examples of burning assets:
 
-- [CLI](/get-started/operate-iroha-2-via-cli.md)
+- [CLI](/get-started/operate-iroha-via-cli.md)
 - [Rust](/guide/tutorials/rust.md)
 
 Mint and burn numeric assets:
@@ -321,7 +321,7 @@ instructions described in [Real-World Assets](/blockchain/rwas.md).
 To do this, an account have to be granted the
 [permission to transfer assets](/reference/permissions.md). Refer to an
 example on how to transfer assets with
-[CLI](/get-started/operate-iroha-2-via-cli.md) or
+[CLI](/get-started/operate-iroha-via-cli.md) or
 [Rust](/guide/tutorials/rust.md).
 
 Transfer numeric assets:

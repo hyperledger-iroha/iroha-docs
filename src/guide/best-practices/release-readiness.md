@@ -15,7 +15,7 @@ through shared testnet and production gates deliberately.
 - Capture expected transaction hashes, statuses, events, and state reads in
   test artifacts.
 
-See [Launch Iroha 3](/get-started/launch-iroha-2.md) and
+See [Launch Iroha 3](/get-started/launch-iroha.md) and
 [SDK Tutorials](/guide/tutorials/).
 
 ## Shared Testnet Gate

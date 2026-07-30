@@ -87,4 +87,4 @@ docker compose -f ./localnet/docker-compose.yml down
 ```
 
 After the network is running, continue with
-[Operate Iroha 3 via CLI](/get-started/operate-iroha-2-via-cli.md).
+[Operate Iroha 3 via CLI](/get-started/operate-iroha-via-cli.md).

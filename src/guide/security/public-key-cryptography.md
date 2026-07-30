@@ -25,8 +25,6 @@ for development and controlled test networks. Production integrations should
 use a secret manager, hardware-backed key storage, or another audited signing
 boundary.
 
-**This is currently a reference implementation that will _not_ be a part of the production release.**
-
 :::
 
 Registering a new account entails generating controller material, such as an

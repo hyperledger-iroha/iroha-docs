@@ -1,8 +1,7 @@
 # Data Model
 
-Iroha stores ledger state in the `World`. The current model keeps the same
-high-level entities as Iroha 2 while changing several identifiers for Iroha
-3 and Nexus flows:
+Iroha stores ledger state in the `World`. Its first-release data model uses
+the following canonical identities and entities:
 
 - domains are dataspace-qualified, for example `payments.universal`
 - accounts are canonical and domainless; the account ID is derived from the

@@ -1,13 +1,6 @@
 # `irohad` CLI
 
-`irohad` starts an Iroha peer daemon. The same crate also builds
-track-specific daemon aliases:
-
-- `iroha3d` for the Iroha 3 build line
-- `iroha2d` for the Iroha 2 build line
-
-Use `irohad` or `iroha3d` for current Iroha 3 examples unless a deployment
-script intentionally pins the Iroha 2 profile.
+`irohad` starts an Iroha 3 peer daemon.
 
 ```shell
 irohad --config path/to/config.toml
@@ -82,7 +75,6 @@ irohad --language en-US
 ## `--sora` {#arg-sora}
 
 - **Type:** flag
-- **ENV:** `IROHA_SORA_PROFILE`
 
 Enable the Sora Nexus feature profile for SoraFS, the SoraNet handshake, and
 multi-lane consensus flows.

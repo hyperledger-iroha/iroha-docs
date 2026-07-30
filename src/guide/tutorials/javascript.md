@@ -46,7 +46,7 @@ console.log(keys.publicKey);
 
 ## Try Taira Read-Only
 
-Use built-in `fetch` in Node.js 18+ to probe Taira before adding signing and
+Use built-in `fetch` in Node.js 24 to probe Taira before adding signing and
 Norito transaction code:
 
 ```js

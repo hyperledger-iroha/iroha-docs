@@ -3,7 +3,7 @@
 A **transaction** is a signed request to execute work on the blockchain.
 The executable payload can be an ordered sequence of
 [instructions](./instructions.md), a contract call, IVM bytecode, or a
-proved IVM execution. See [Smart Contracts](./wasm.md) for the current
+proved IVM execution. See [Smart Contracts](./smart-contracts.md) for the current
 contract execution model.
 
 All interactions in the blockchain are done via transactions.
@@ -90,10 +90,10 @@ Iroha has two offline transaction workflows:
   token reaches the ledger.
 
 Offline V2 is the maintained offline payment surface. Torii exposes
-`GET /v1/offline/v2/readiness` for feature discovery; legacy offline
-allowance, reserve, revocation, transfer-history, and cash HTTP routes are
-not published. Offline V2 note issuance, audit, and redemption are
-submitted as normal transaction instructions:
+`GET /v1/offline/v2/readiness` for feature discovery. Allowance, reserve,
+revocation, transfer-history, and cash HTTP routes are not published. Offline
+V2 note issuance, audit, and redemption are submitted as normal transaction
+instructions:
 
 Check the public Taira readiness flags:
 

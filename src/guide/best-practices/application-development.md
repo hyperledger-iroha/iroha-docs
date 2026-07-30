@@ -74,6 +74,6 @@ For the Taira MCP workflow, see
 - Pin SDK and binary versions together using the
   [Compatibility Matrix](/reference/compatibility-matrix.md).
 - Keep generated client code, snippets, and examples synchronized with the
-  upstream workspace rather than copying older Iroha 2 examples forward.
+  pinned upstream workspace revision.
 - Add unit tests for transaction-building code and integration tests for
   the smallest read and write paths your application depends on.

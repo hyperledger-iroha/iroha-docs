@@ -1,7 +1,7 @@
 # Event Trigger Example
 
-This example describes the shape of an event trigger in the current Iroha
-model without depending on older `account@domain` or `asset#domain` literals.
+This example uses canonical domainless account IDs and projected asset
+definitions in the Iroha 3 data model.
 
 Suppose a network has:
 

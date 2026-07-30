@@ -1,8 +1,7 @@
 # Metadata and Ledger Storage Choices
 
-Older Iroha documentation described a separate `Store` asset type for
-arbitrary key-value data. The current data model does not use that asset
-type. Use the following options instead.
+The Iroha 3 data model has no separate `Store` asset type for arbitrary
+key-value data. Use the following storage choices.
 
 ## Metadata
 

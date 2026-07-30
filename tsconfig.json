@@ -101,5 +101,5 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
   "include": ["."],
-  "exclude": ["src/snippets/**/*", ".vitepress/cache", "dist", "node_modules"]
+  "exclude": [".vitepress/cache", "dist", "node_modules"]
 }

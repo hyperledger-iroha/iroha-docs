@@ -1,113 +1,83 @@
-# Android, Kotlin, and Java
+# Kotlin, Android, and Java
 
-The current JVM-facing mobile SDK in the workspace is `IrohaAndroid`. It
-ships Android and JVM artifacts for Kotlin and Java applications.
+The Kotlin SDK is the default client stack for JVM and Android applications.
+It lives under `kotlin/` in the Iroha repository and is split by platform so
+portable code does not acquire Android dependencies.
 
-## Gradle Setup
+## Modules
 
-Point Gradle at the Maven repository that hosts the published artifacts and add
-the dependencies you need:
+| Artifact | Type | Use |
+| --- | --- | --- |
+| `org.hyperledger.iroha.sdk:core-jvm` | JAR | Pure Kotlin/JVM Norito, data model, crypto, transaction, Torii, and protocol code |
+| `org.hyperledger.iroha.sdk:client-android` | AAR | Android keystore, device telemetry, and JNI-backed client integrations |
+| `org.hyperledger.iroha.sdk:offline-wallet-android` | AAR | Android offline-wallet transports and integration built on `client-android` |
+
+The artifacts are not yet published to Maven Central. Build and publish them
+locally from the pinned Iroha source revision:
+
+```bash
+cd kotlin
+./gradlew publishToMavenLocal
+```
+
+Then select only the artifact your application needs:
 
 ```kotlin
 repositories {
-    google()
-    mavenCentral()
-    maven { url = uri("../../artifacts/android/maven") }
+    mavenLocal()
 }
 
 dependencies {
-    implementation("org.hyperledger.iroha:iroha-android:<version>")
+    implementation("org.hyperledger.iroha.sdk:core-jvm:0.1.0")
+    // Android client features:
+    // implementation("org.hyperledger.iroha.sdk:client-android:0.1.0")
+    // Android offline-wallet features:
+    // implementation("org.hyperledger.iroha.sdk:offline-wallet-android:0.1.0")
 }
 ```
 
-The checked-in Android and JVM publication scripts currently use the
-`iroha-android` artifact ID. There is no separate `iroha-android-jvm` artifact
-ID in the source build.
+`core-jvm` contains no Android dependencies. Keep Android client and keystore
+code in `client-android`, and use `offline-wallet-android` for Android-only
+offline-wallet and JNI flows.
 
-## Local Sample Build
+## Kotlin and Java Compatibility
 
-```bash
-./gradlew -p java/iroha_android :samples-android:assembleDebug \
-  -PirohaAndroidUsePublished=true \
-  -PirohaAndroidRepoDir=$PWD/../artifacts/android/maven
-```
+The public API is Kotlin-first and provides Java interop where JVM callers need
+it. During the SDK transition, equivalent changes are mirrored in the
+corresponding `java/` implementation, but new Android integrations should start
+with the Kotlin artifacts above.
 
-## Quickstart
+All Kotlin modules enforce JDK 8 API compatibility at compile time with
+`-Xjdk-release=8`, even though the build toolchain itself uses JDK 21. Do not
+use JDK 9+ APIs in SDK code.
 
-```java
-import org.hyperledger.iroha.android.address.AccountAddress;
+## Build and Test
 
-byte[] key = new byte[32];
-AccountAddress address = AccountAddress.fromAccount(key, "ed25519");
-System.out.println(address.canonicalHex());
-System.out.println(address.toI105(753));
-
-AccountAddress.DisplayFormats formats = address.displayFormats();
-System.out.println(formats.i105);
-System.out.println(formats.i105Warning);
-```
-
-## Try Taira Read-Only
-
-For a plain JVM smoke test, use Java's built-in HTTP client before adding SDK
-transaction signing:
-
-```java
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-
-public class TairaProbe {
-  public static void main(String[] args) throws Exception {
-    var client = HttpClient.newHttpClient();
-    var request = HttpRequest.newBuilder()
-        .uri(URI.create("https://taira.sora.org/status"))
-        .GET()
-        .build();
-
-    var response = client.send(request, HttpResponse.BodyHandlers.ofString());
-    System.out.println(response.statusCode());
-    System.out.println(response.body());
-  }
-}
-```
-
-Save it as `TairaProbe.java`, then run it with JDK 11 or newer:
+Run the portable JVM tests:
 
 ```bash
-javac TairaProbe.java
-java TairaProbe
+cd kotlin
+./gradlew :core-jvm:test --console=plain
 ```
 
-Extend the same pattern to read `https://taira.sora.org/v1/domains?limit=5` or
-`https://taira.sora.org/v1/assets/definitions?limit=5`. Use the Android SDK
-for key handling and signed transactions after the read-only route is reachable.
+Build the Android artifacts:
 
-## Native Escrow
-
-Kotlin/JVM callers can construct marketplace and anonymous escrow instructions
-with typed `InstructionTemplate` classes such as
-`OpenAssetEscrowInstruction`, `AcceptAssetEscrowInstruction`, and
-`ResolveEscrowDisputeInstruction`. Android Java callers can use the matching
-`NativeEscrowInstructions.*` builders. See
-[Native Asset Escrow](/blockchain/escrow.md#kotlin-and-jvm) for examples and
-permission constants.
+```bash
+./gradlew :client-android:assembleRelease \
+  :offline-wallet-android:assembleRelease --quiet
+```
 
 ## Current Coverage
 
-The Android/JVM SDK currently focuses on:
+The Kotlin SDK includes:
 
-- key management and secure-storage backends
-- Norito encoding via the shared Java implementation
-- Torii HTTP, streaming, and Norito RPC clients
-- offline note, QR, and subscription helpers
-- account address and multisig utilities
-- generated instruction helpers for NFT and RWA flows
-- native escrow instruction templates for marketplace and anonymous escrow
+- Norito encoding and decoding
+- canonical account and asset address handling
+- transaction building, signing, and offline envelopes
+- Torii HTTP, WebSocket, and SSE clients
+- multisignature, subscription, SoraFS, Nexus, and Connect models
+- Android keystore and device telemetry integrations
+- Android offline QR, Nearby, and NFC transports
 
-## Upstream References
-
-- `java/iroha_android/README.md`
-- `java/iroha_android/build.gradle.kts`
-- `java/iroha_android/samples-android`
+See the [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/main/kotlin/README.md)
+for module-specific APIs and exact build commands.

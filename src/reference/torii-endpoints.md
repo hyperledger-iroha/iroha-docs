@@ -1,10 +1,9 @@
 # Torii Endpoints
 
-Torii is the HTTP, SSE, and WebSocket gateway for current Iroha deployments.
-In the Iroha 3 track it serves both ledger-facing APIs and a broad set of
-operator endpoints.
+Torii is the HTTP, SSE, and WebSocket gateway for Iroha 3. It serves both
+ledger-facing APIs and operator endpoints.
 
-The important protocol change from older docs is simple:
+The current protocol rules are:
 
 - the canonical binary format is **Norito**
 - many endpoints also support JSON when you send `Accept: application/json`
@@ -268,8 +267,8 @@ application that talks directly to Torii through the local `@iroha/iroha-js`
 binding and includes a `/kaigi` route for browser-native one-to-one media.
 
 Use the demo with
-[`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/i23-features/javascript/iroha_js)
-from the Iroha `i23-features` branch:
+[`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/main/javascript/iroha_js)
+from the Iroha source repository:
 
 ```bash
 git clone https://github.com/soramitsu/iroha-demo-javascript.git
@@ -409,7 +408,6 @@ iroha --config ./localnet/client.toml ops sumeragi collectors
 
 ## Upstream References
 
-- [README.md API and Observability](https://github.com/hyperledger-iroha/iroha/blob/i23-features/README.md)
-- [docs/source/telemetry.md](https://github.com/hyperledger-iroha/iroha/blob/i23-features/docs/source/telemetry.md)
-- [ISO 20022 bridge implementation](https://github.com/hyperledger-iroha/iroha/blob/i23-features/crates/iroha_torii/src/iso20022_bridge.rs)
-- [Settlement ISO mapping](https://github.com/hyperledger-iroha/iroha/blob/i23-features/docs/portal/docs/finance/settlement-iso-mapping.md)
+- [README API and observability overview](https://github.com/hyperledger-iroha/iroha/blob/main/README.md)
+- [ISO 20022 bridge implementation](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_torii/src/iso20022_bridge.rs)
+- [Performance and metrics](/guide/advanced/metrics.md)

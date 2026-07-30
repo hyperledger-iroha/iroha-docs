@@ -16,11 +16,11 @@ interface Matrix {
 interface MatrixSource {
   repo?: string
   repo_url?: string
-  branch?: string
-  branch_url?: string
-  commit?: string
+  revision?: string
+  revision_url?: string
   dirty?: boolean
   generated_at?: string
+  verification?: string
 }
 
 interface MatrixSdkDeclaration {
@@ -148,11 +148,11 @@ const matrixSource = computed(() => {
   return {
     repo: source.repo,
     repoUrl: toHttpUrl(source.repo_url),
-    branch: source.branch,
-    branchUrl: toHttpUrl(source.branch_url),
-    commit: source.commit,
+    revision: source.revision,
+    revisionUrl: toHttpUrl(source.revision_url),
     dirty: source.dirty,
     generatedAt: source.generated_at,
+    verification: source.verification,
   }
 })
 
@@ -207,26 +207,26 @@ const rejectionReason = computed(() => {
         {{ matrixSource.repo }}
       </a>
       <span v-else-if="matrixSource.repo">{{ matrixSource.repo }}</span>
-      <template v-if="matrixSource.branch">
-        | branch
+      <template v-if="matrixSource.revision">
+        | revision
         <a
-          v-if="matrixSource.branchUrl"
-          :href="matrixSource.branchUrl"
+          v-if="matrixSource.revisionUrl"
+          :href="matrixSource.revisionUrl"
           target="_blank"
           rel="noreferrer"
         >
-          {{ matrixSource.branch }}
+          {{ matrixSource.revision }}
         </a>
-        <span v-else>{{ matrixSource.branch }}</span>
-      </template>
-      <template v-if="matrixSource.commit">
-        | {{ matrixSource.commit }}
+        <span v-else>{{ matrixSource.revision }}</span>
       </template>
       <template v-if="matrixSource.dirty">
         | dirty worktree
       </template>
       <template v-if="matrixSource.generatedAt">
         | generated {{ matrixSource.generatedAt }}
+      </template>
+      <template v-if="matrixSource.verification">
+        | verification {{ matrixSource.verification }}
       </template>
     </p>
   </div>

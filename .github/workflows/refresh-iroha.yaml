@@ -1,0 +1,48 @@
+name: Refresh pinned Iroha references
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out documentation
+        uses: actions/checkout@v4
+
+      - name: Read pinned Iroha commit
+        id: source
+        run: |
+          node -e "const manifest = require('./provenance/iroha.json'); process.stdout.write('commit=' + manifest.source.commit + '\n')" >> "$GITHUB_OUTPUT"
+
+      - name: Check out pinned Iroha source
+        uses: actions/checkout@v4
+        with:
+          repository: hyperledger-iroha/iroha
+          ref: ${{ steps.source.outputs.commit }}
+          path: .upstream/iroha
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.1
+          run_install: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install packages
+        run: pnpm install --frozen-lockfile
+
+      - name: Refresh checked-in references
+        run: pnpm refresh:iroha --source .upstream/iroha
+
+      - name: Validate provenance
+        run: pnpm validate:provenance
+
+      - name: Require a clean generated snapshot
+        run: git diff --exit-code

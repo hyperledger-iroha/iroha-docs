@@ -13,7 +13,7 @@ hero:
   #actions:
   #- theme: alt
   #  text: View on GitHub
-  #  link: https://github.com/hyperledger-iroha/iroha/tree/i23-features
+  #  link: https://github.com/hyperledger-iroha/iroha
 
 features:
   - icon:

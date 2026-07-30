@@ -272,5 +272,5 @@ Without these details, a TPS number should be treated as anecdotal.
 
 - [Chaos Testing with Izanami](./chaos-testing.md)
 - [Torii endpoints](../../reference/torii-endpoints.md)
-- [Operate Iroha 3 via CLI](../../get-started/operate-iroha-2-via-cli.md)
+- [Operate Iroha 3 via CLI](../../get-started/operate-iroha-via-cli.md)
 - [Peer configuration reference](../../reference/peer-config/params.md)

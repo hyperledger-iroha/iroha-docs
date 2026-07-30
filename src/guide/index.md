@@ -17,8 +17,8 @@ network.
 
 ## Recommended Path
 
-1. [Install Iroha 3](/get-started/install-iroha-2.md) and
-   [launch a local network](/get-started/launch-iroha-2.md).
+1. [Install Iroha 3](/get-started/install-iroha.md) and
+   [launch a local network](/get-started/launch-iroha.md).
 2. Pick an [SDK tutorial](/guide/tutorials/) and submit a small
    transaction.
 3. Review
