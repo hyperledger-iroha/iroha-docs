@@ -81,7 +81,7 @@ irohad --language en-US
 
 - Тип: флаг
 
-Сораны ҡуҙғатыу Nexus үҙенсәлек профиле өсөн SoraFS, Рәсәй Федерацияһы SoraNet ҡул ҡыҫыу, һәм күп юллы консенсус ағымы.
+SoraFS өсөн Sora Nexus функцияһы профиле, SoraNet ҡул һелкеү һәм күп юллы консенсус ағымдары булдырыу.
 
 ```shell
 irohad --config path/to/iroha.toml --sora
@@ -89,7 +89,7 @@ irohad --config path/to/iroha.toml --sora
 
 ## `--fastpq-execution-mode` {#arg-fastpq-execution-mode}
 
-- Тип: `auto`, `cpu`, йәки `gpu`
+- Тип: `auto`, `cpu` йәки `gpu`
 
 FASTPQ проверканы үтәү режимын күсерә.
 
@@ -99,7 +99,7 @@ irohad --fastpq-execution-mode auto
 
 ## `--fastpq-poseidon-mode` {#arg-fastpq-poseidon-mode}
 
-- Тип: `auto`, `cpu`, йәки `gpu`
+- Тип: `auto`, `cpu` йәки `gpu`
 
 FASTPQ Посейдон торбаһы режимын үтәгеҙ.
 

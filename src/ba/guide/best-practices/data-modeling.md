@@ -17,7 +17,7 @@ translation_engine: nllb-200-ct2
 - Конфигурация һәм һынауҙарҙа Iroha исемдәре каноник анализлауҙан һуң осраҡҡа һиҙгер була.
 - Тест һәм производство идентификацияһын исемдәр, домендар һәм конфигурация файл юлдары менән асыҡтан-асыҡ айырып тороу.
 
-Күрәһегеҙме [Домендар](/ba/blockchain/domains.md), [Иҫәпкә алыуҙар](/ba/blockchain/accounts.md), һәм [Исемләү](/ba/reference/naming.md).
+[Домендар](/ba/blockchain/domains.md), [Хәҡиҡәттәр](/ba/blockchain/accounts.md) һәм [ Исемдәр](/ba/reference/naming.md).
 
 ## Активтар һәм NFTs {#assets-and-nfts}
 
@@ -35,7 +35,7 @@ translation_engine: nllb-200-ct2
 - Оло документтар, журналдар, шәхси ҡулланыусы мәғлүмәттәрен йәки юғары кимәлдәге ҡушымталарҙы метамәғлүмәттә туранан-тура һаҡламағыҙ.
 - Метамәғлүмәттәр селтәрҙән тыш мәғлүмәттәрҙе күрһәткәндә, контент хэшигы, URI, SoraFS юлы, манифест референсы йәки компакт йөкләмә кеүек тикшерелеүсе белешмәне һаҡларға кәрәк.
 
-Күрегеҙ . [Метамәғлүмәттәрҙе һәм иҫәп яҙмаларын һаҡлау мөмкинлектәрен](/ba/guide/configure/metadata-and-store-assets.md) һәм [Метамәғлүмәттәр](/ba/blockchain/metadata.md).
+[Metadata and Ledger Storage Choices](/ba/guide/configure/metadata-and-store-assets.md) һәм [Metadata](/ba/blockchain/metadata.md) ҡарағыҙ.
 
 ## Миҙгел буйынса рөхсәт {#permissions-by-model}
 
@@ -44,7 +44,7 @@ translation_engine: nllb-200-ct2
 - Митинг, яғыу, тиҫтерҙәр менән идара итеү, башҡарыусы үҙгәрештәр, ҡуҙғатыуҙар менән идара итеү һәм метамәғлүмәттәрҙең мутацияһы өсөн рөхсәттәрҙе юғары йоғонто яһарлыҡ хоҡуҡтар итеп ҡарағыҙ.
 - Ваҡытлы рөхсәт алыу өсөн асыҡтан-асыҡ кире ҡағыу һәм ротация процедураларын өҫтәгеҙ.
 
-Күрәһегеҙме [Разрешениелар](/ba/blockchain/permissions.md) һәм [Рөхсәт биреү билдәләре](/ba/reference/permissions.md).
+[Ирекләүҙәр](/ba/blockchain/permissions.md) һәм [Ирекләү токендары](/ba/reference/permissions.md) ҡара.
 
 ## Һорау формаһы {#query-shape}
 

@@ -6,45 +6,29 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Hisobvaraqlar {#accounts}
+# Hisob-kitoblar {#accounts}
 
-Hisobvaraq - bu bitimlarni imzolash va katta hisob qaydnomasini tuzish mumkin bo'lgan organ.
-Hozirgi vaqtda Iroha 3 ma'lumotlar modeli, `AccountId` kanonik va domensiz:
-u hisob boshqaruvchisidan kelib chiqdi va kanonik ravishda quyidagicha kodiflanadi: I105.
-Inson oʻqishi mumkin boʻlgan domen va maʼlumotlar maydonining kontekstlari alohida hisob nomiga tegishli
-bog'lanishlar.
+Hisobvaraq - bu bitimlarni imzolash va o'z hisobvarag'ining holati bo'lishi mumkin bo'lgan organ. Hozirgi Iroha 3 ma'lumotlar modelida, `AccountId` kanonik va domensiz: u hisob boshqaruvchisidan kelib chiqadi va kanonik ravishda I105 sifatida kodlanadi. Inson o'qishi mumkin bo'lgan domen va ma'lumotlar maydonining konteksti alohida hisob-alias bog'liqliklarga tegishli.
 
-## Qurilish {#structure}
+## Tashkilot {#structure}
 
-Ro'yxatdan o'tgan `Account` tarkibida:
+Ro'yxatga olingan `Account` tarkibida quyidagilar mavjud:
 
 - `id`: kanonik `AccountId`
-- `metadata`: Oʻzboshimchalik bilan hisoblangan metadotlar
+- `metadata`: o'zboshimchalik bilan hisobdan olingan metadotlar
 - `label`: ko'rsatkichni o'zgartirish
-- `uaid`: fakultativ Universal hisob raqami ID qo'llaniladi Nexus oqimlari
-- `opaque_ids`: hisob raqamiga bog'liq shaffof identifikatorlar UAID
+- `uaid`: Nexus oqimlari tomonidan foydalaniladigan fakultativ universal hisobvaraq ID
+- `opaque_ids`: hisobning UAID bilan bog'liq shaffof identifikatorlar;
 
-Hisobot yaratish uchun ishlatiladigan tranzaksiya yuklari `NewAccount`. U oʻz ichiga oladi .
-bir xil identifikatsiya, metadotlar, etiket, UAID, va shaffof ID O'zbekiston Respublikasi
-ro'yxatdan o'tgan hisob raqami.
+Hisobot yaratish uchun ishlatiladigan tranzaksiya faydali yuk `NewAccount`. U ro'yxatdan o'tgan hisobda ishlatiladigan xuddi shu identifikatsiya, metadatalar, etiket, UAID va shaffof bo'lmagan ID maydonlarini o'z ichiga oladi.
 
-`uaid` kanonik hujjatni to'ldiradi `AccountId`; uni almashtirmaydi. Uni ishlating
-qachon Nexus Xizmatlar uchun barqaror foydalanuvchi yoki tashkilot tomonidan
-ma'lumotlar maydonlari, maxfiylikni saqlab turadigan ro'yxatdan o'tish yoki xizmat ko'rsatish imkoniyatlarini qidirish.
-ish vaqti bir-birni saqlab qoladi UAID-hisobga ko'rsatkich, shaffof identifikatorlarni talab qiladi
-bir yo'l orqali o'rnatilishi UAID, va ikkilamchi yoki to'qnashuvchi shaffof bo'lmagan
-identifikatorlar.
-[FHE va UAID](/uz/blockchain/sora-nexus-services.md#fhe-and-uaid) uchun Nexus
-xizmat qatlamining oqimi.
+`uaid` kanonik qo'shimchalar `AccountId`; bu uni almashtirmaydi. Nexus xizmatlarga ma'lumotlar maydonlari bo'ylab barqaror foydalanuvchi yoki tashkilot muomalasi, maxfiylikni saqlaydigan ro'yxatdan o'tish kerak, yoki xizmat ko'rsatish imkoniyatlarini qidirish. Ish vaqti bir-bir UAID- hisob raqamiga ko'rsatkich, shaffof bo'lmagan identifikatorlarni UAID, va ikkilamchi yoki to'qnashadigan shaffof bo'lmagan identifikatorlarni rad etadi. [FHE va UAID](/uz/blockchain/sora-nexus-services.md#fhe-and-uaid) uchun Nexus xizmat qatlamining oqimi.
 
 ## Hisobvaraqlar {#account-controllers}
 
-Boshqaruvchi hisobda qanday harakatlarga ruxsat berilishini belgilaydi.
-oqim Ed25519 kalit juftlik foydalanadi, lekin ma'lumotlar modeli ham boyroq
-nazoratchilar, masalan, ko'p imzolar siyosati nazoratchilari.
+Muayyan mijoz oqimida Ed25519 kalit juftligi ishlatiladi, ammo ma'lumotlar modeli multisignature siyosati boshqaruvchilari kabi boyroq nazoratchilarni ham qo'llab-quvvatlaydi.
 
-Mijoz konfiguratsiyasi imzolash vakolatini tengdoshlardan alohida saqlash
-konfiguratsiya:
+Mijoz konfiguratsiyasi imzolash vakolatini tengdoshlari konfiguratsiyasidan alohida saqlashadi:
 
 ```toml
 [account]
@@ -52,22 +36,18 @@ public_key = "ed0120..."
 private_key = { digest_function = "ed25519", payload = "..." }
 ```
 
-Koʻring [mijoz konfiguratsiyasi](/uz/guide/configure/client-configuration.md) va
-[kalit avlod](/uz/guide/security/generating-cryptographic-keys.md) uchun
-joriy kalit formatlar.
+Joriy kalit formatlari uchun [klient konfiguratsiyasini](/uz/guide/configure/client-configuration.md) va [kiylarni ishlab chiqarishni](/uz/guide/security/generating-cryptographic-keys.md) ko'ring.
 
-## Uni sinab koʻring . Taira {#try-it-on-taira}
+## Taira bilan sinab ko'ring. {#try-it-on-taira}
 
-Bir nechta ilohiy hikoyalarni roʻyxatga oling IDs jamoatchilikdan Taira sinov tarmog'i:
+Umumiy Taira testnetdan bir nechta kanonik hisobotni IDs ro'yxatga oling:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/accounts?limit=5' \
   | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
 ```
 
-Hisobvaraq aktivlarini tekshirish uchun hisobni nusxa olish ID birinchi chaqiriqdan boshlab va URL-kodlash
-uni yo'lga qo'yishdan oldin. Python Snippet buni birinchi marta qiladi
-ro'yxatga olingan hisobvaraq:
+Hisobvaraqlarni tekshirish uchun birinchi chaqiruvdan ID hisobini nusxa olish va uni yo'lga qo'yishdan oldin URL kodlash. Ushbu Python chiziq birinchi ro'yxatga olingan hisob uchun shunday qiladi:
 
 ```bash
 python3 - <<'PY'
@@ -87,40 +67,33 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-Bu ommaviy kitoblar. Hisobotni yaratish yoki yangilash imzolangan bitimdir
-va kran mablag ' bilan ta'minlanishini talab qiladi Taira ko'rsatkichlar
-[Bogʻlanish SORA Nexus Ma'lumotlar maydonlari](/uz/get-started/sora-nexus-dataspaces.md).
+Bu ommaviy o'qishlar. hisobni yaratish yoki yangilash imzolangan tranzaksiya bo'lib, [da tasvirlangan kran mablag'i bilan ta'minlanadigan Taira sozlashini talab qiladi SORA Nexus ma'lumotlar joylariga ulanish](/uz/get-started/sora-nexus-dataspaces.md) .
 
-## Ro'yxatga olish va ruxsatnomalar {#registration-and-permissions}
+## Ro'yxatdan o'tish va ruxsatlar {#registration-and-permissions}
 
-Hisobotlar ro'yxatdan o'tkazilgan va ro'yxatga olinmagan
-[`Register` va `Unregister`](/uz/blockchain/instructions.md#un-register)
-ko'rsatmalar. Aktiv ishga tushirish vaqtini tasdiqlovchi hisoblarni kim yaratishi mumkinligini hal qiladi
-va qaysi ruxsatnoma tokenlari yoki rollari talab qilinadi.
+Hisobotlar [`Register` va `Unregister`](/uz/blockchain/instructions.md#un-register) umumiy yo'l-yo'riqlari bilan ro'yxatdan o'tkaziladi va ro'yxatga olinmaydi. Aktiv ishga tushirish vaqtini tasdiqlovchi hisoblarni kim yaratishi mumkinligini va qaysi ruxsat belgisi yoki rollar kerakligini hal qiladi.
 
-Ro'yxatdan o'tganidan so'ng, hisob quyidagilarni amalga oshirishi mumkin:
+Hisobot ro'yxatdan o'tganidan so'ng quyidagilarni amalga oshirishi mumkin:
 
 - bitimlarni imzolash
 - aktivlarni ushlab turish
 - o'z domenlari
-- roli va ruxsatnoma belgisini olish
-- saqlash metadatalari
-- alias, rekey, tiklash va Nexus kimlik oqishi, ular
-  xususiyatlari qoʻllanilgan
+- rolalar va ruxsatnoma tokenlarini olish
+- Metadatalarni saqlash
+- ushbu xususiyatlarni qo'llab-quvvatlagan holda alias, rekey, tiklash va Nexus identifikatsiya oqimlarida ishtirok etish
 
 ## Kimlik muammolarini hal qilish {#troubleshooting-identity-issues}
 
 Agar bitim kutilmagan tarzda rad etilsa, quyidagilarni tekshirib ko'ring:
 
-- mijozning ommaviy kaliti imzolash uchun ishlatilgan xususiy kalitiga mos keladi
-- hisob qayd etilgan bo'lsa yoki amalga oshirilgan
-- vakolatli organning yo'l-yo'riq bilan talab qilingan ruxsatnomalari mavjud
-- qat'iy hisob maydonlarida kanonik I105 hisob ID, o'qilishi mumkin bo'lganda
-  nomlar aktiv hisob-kitobi bilan bog'liq bo'lib chiqariladi
+- mijozning ommaviy kaliti imzolash uchun ishlatilgan xususiy kalitiga mos keladi;
+- hisob qayd etilgan bo'lsa yoki amalga oshirilgan bitim bilan
+- ko'rsatma talab qilingan ruxsatlarga ega bo'lgan organ
+- qat'iy hisob maydonlarida I105 kanonik ID hisobi ishlatiladi, o'qiladigan nomlar esa aktiv hisob-alias bilan bog'liq holda hal etiladi.
 
 Shuningdek qarang:
 
 - [Ruxsatnomalar](/uz/blockchain/permissions.md)
 - [Metadatalar](/uz/blockchain/metadata.md)
-- [Mijozning konfiguratsiyasi](/uz/guide/configure/client-configuration.md)
+- [Xizmatchi konfiguratsiyasi](/uz/guide/configure/client-configuration.md)
 - [SORA Nexus ma'lumotlar maydonlari](/uz/get-started/sora-nexus-dataspaces.md)

@@ -6,68 +6,51 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Tadbirlar {#events}
+# O'yinlar {#events}
 
-Vaqt o'tib, blokchayn ichida ba'zi narsalar sodir bo'lganda hodisalar chiqariladi.
-yangi hisob yaratilgan yoki blok qo'yilgan.
-hodisalar:
+Ba'zi narsalar blokcheyn ichida sodir bo'lganda, masalan, yangi hisob yaratilganda yoki blok qo'yilganda hodisalar chiqariladi. Turli turdagi voqealar mavjud:
 
 - pipeline hodisalari
 - ma'lumotlar hodisalari
 - vaqt hodisalari
-- ijro jarayonlarini qoʻzgʻatish
+- ijro etish hodisalarini ishga tushirish
 
 ## Pipeline hodisalari {#pipeline-events}
 
-Pipeline hodisalari tranzaksiyalar taqdim etilganda, bajarilganda yoki
-Blokka qo'shilgan. Pipeline hodisasi quyidagi ma'lumotlarni o'z ichiga oladi:
-hodisani (transaksiyani yoki blokni) keltirib chiqargan entitetning turi, uning hash
-va maqomi. `Validating` (valiyatsiya jarayonida),
-`Rejected`, yoki `Committed`. Agar tashkilot rad etilgan bo'lsa,
-rad etilishi ko'zda tutilgan.
+Pipeline hodisalari blokga tranzaksiyalar taqdim etilganda, bajarilganda yoki topshirilganda chiqariladi. Pipeline hodisasi quyidagi ma'lumotlarni o'z ichiga oladi: voqea (tranzaksiya yoki blok) ni keltirib chiqargan entitetning turi, uning hash va holati. Ma'lumotlar `Validating` (ishlab borayotgan tasdiqlash), `Rejected` yoki `Committed` bo'lishi mumkin.
 
-### Uni sinab koʻring . Taira {#try-it-on-taira}
+### Taira bilan sinab ko'ring. {#try-it-on-taira}
 
-Jamoatchilik quvuridagi hodisalar oqimi oʻrnatilganligini tekshirish:
+Ommaviy gaz quvuridagi hodisalar oqimi oʻrnatilganligini tekshirish:
 
 ```bash
 curl -fsSI https://taira.sora.org/v1/events/sse \
   | sed -n '1,12p'
 ```
 
-O'tishni ochmasdan tekshirib ko'rishingiz mumkin bo'lgan darrov tasvir uchun, yaqinda o'qigan
-Eksploratorlar bilan amalga oshiriladigan operatsiyalar:
+Ochiq oqishni saqlab qolmasdan tekshirib ko'rishingiz mumkin bo'lgan fotosurat uchun, so'nggi Explorer bitimlarini o'qing:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=5' \
   | jq '{pagination, txs: [.items[] | {hash, block, status, executable}]}'
 ```
 
-Ochiq SSE jonli tadbirlar kerak bo'lganda terminaldagi yo'nalish:
+To'g'ridan-to'g'ri tadbirlar kerak bo'lganda terminaldagi SSE yo'nalishini oching:
 
 ```bash
 curl -fsS -N https://taira.sora.org/v1/events/sse
 ```
 
-Agar oqim ochiq bo'lganda hech qanday bitimlar taqdim etilmasa, buyruq qolishi mumkin
-yo'l sog'lom bo'lsa ham, tinchlik.
+Agar oqim ochiq bo'lganida hech qanday bitimlar taqdim etilmasa, yo'nalish sog'lom bo'lsa-da, buyruq xalos bo'lishi mumkin.
 
 ## Ma'lumotlar hodisalari {#data-events}
 
-Ma'lumotlar hodisalari katta ma'lumotlar bilan bog'liq o'zgarishlar bo'lganda chiqarilgan
-tengdoshlar, domenlar, hisob raqamlari, aktivlar, aktivlarning ta'riflanishi sifatida; NFTs, qo'zg'atuvchilar,
-roli, zanjirdagi konfiguratsiya, ijrochi holati, dalillar, maxfiy aktivlar;
-ko'priklar yoki SORA/Nexus-o'ziga xos obyektlar.
-[ma'lumotlar hodisasi filtrlari](./filters.md#data-event-filters).
+Ma'lumotlar hodisalari katta ma'lumotlarga, masalan, tengdoshlar, domenlar, hisoblar, aktivlar, aktivlarning ta'riflari, NFTs, qo'zg'atuvchilar, rollar, zanjirdagi konfiguratsiya, ijrochi davlat, dalillar, maxfiy aktivlar, ko'priklar yoki SORA/Nexus-mahsus ob'ektlar bilan bog'liq o'zgarishlar sodir bo'lganda chiqarilgan. Ushbu turdagi hodisalar [ ma'lumotlar hodisalari filtrlarida ](./filters.md#data-event-filters) ishlatiladi.
 
-## Vaqtidagi voqealar {#time-events}
+## Vaqtdagi voqealar {#time-events}
 
-Vaqtdagi hodisalar dunyoga qarash oʻzgarishga tayyor boʻlganda yuboriladi
-[vaqtni ishga tushirish](./triggers.md#time-triggers).
+Vaqti hodisalari dunyo holati ko'rinishi [ vaqtni qo'zg'atish uchun tayyor bo'lganda chiqarilgan ](./triggers.md#time-triggers).
 
-## Trigger o'tkazish hodisalari {#trigger-execution-events}
+## Qoʻzgʻatish jarayonlari {#trigger-execution-events}
 
-Trigger o'tkazuvchi hodisalar
-[`ExecuteTrigger`](./instructions.md#executetrigger) ta'lim berish
-Trigger tugallanish hodisalari trigger harakatidan keyin chiqariladi
-tugadi.
+[`ExecuteTrigger`](./instructions.md#executetrigger) ko'rsatmasi bajarilganda trigger ijro etish hodisalari chiqarilgan. Triggerni tugatish hodisalari trigger harakatini tugatgandan so'ng chiqariladi.

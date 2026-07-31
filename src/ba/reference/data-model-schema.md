@@ -8,6 +8,6 @@ translation_engine: nllb-200-ct2
 
 # Мәғлүмәт моделе схемаһы {#data-model-schema}
 
-Был бит менән булдырылған `kagami advanced schema` (Ҡиәмәт көнөндә) ҡойолған [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) документация яңыртыу эш ағымы менән теркәлгән ревизия. күрһәтелгән фотоһүрәт был репозиторийға тикшерелә, шуға күрә нормаль документация төҙөлөшө Iroha сығанаҡтан килеп сығыу.
+Был бит менән булдырылған `kagami advanced schema` (Ҡиәмәт көнөндә) ҡойолған [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) документация яңыртыу эш ағымы менән теркәлгән ревизия. күрһәтелгән фотоһүрәт был репозиторийға тикшерелә шул тиклем нормаль документация төҙөлөшө талап итмәй Iroha сығанаҡтан килеп сығыу.
 
 <DataModelSchema />

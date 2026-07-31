@@ -17,7 +17,7 @@ Iroha актив - иҫәптә тотолған һанлы баланс. Һәр
 - `id`: конфиденциаль активтарҙы билдәләү адресы
 - `name`: кеше уҡый торған дисплей исеме
 - `description`: кеше уҡырға мөмкин булған факультатив һүрәтләмә
-- `alias`: факультатив ҡушаматтар `<name>#<domain>.<dataspace>` йәки `<name>#<dataspace>` формаһы
+- `alias`: `<name>#<domain>.<dataspace>` йәки `<name>#<dataspace>` формаһындағы факультатив исемдәр.
 - `spec`: баланстар өсөн һанлы аныҡлыҡ һәм сикләүҙәр
 - `mintable`: минтабильлек сәйәсәте
 - `logo`: факультатив `SoraFS` URI
@@ -27,7 +27,7 @@ Iroha актив - иҫәптә тотолған һанлы баланс. Һәр
 - `total_quantity`: дөйөм сығарылған күләм
 - `confidential_policy`: һаҡланған активтар операциялары өсөн сәйәсәт
 
-Активтар билдәләмәһе IDs Ҡағиҙәләр исем һәм домендан төҙөлгәндә, Iroha шул домен/исем проекцияһын һаҡлай ала UX һәм һорауҙар, әммә кананик текст формаһы генерацияланған адрес булып тора.
+Ассит билдәләмәһе IDs - каноник үтә күренмәле адрестар. Ҡасан билдәләмә домендан һәм исемдән төҙөлә, Iroha шул домен/исем проекцияһын UX һәм һорауҙар өсөн һаҡлай ала, әммә каноник текст формаһы барлыҡҡа килгән адрес булып тора.
 
 ## Активтар балансы {#asset-balance}
 
@@ -89,9 +89,9 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-Өс өлгөһө лә уҡыла. Taira, ҡулланыу кран-финансланған иҫәбенә һәм һаҡланған ағымы [Ҡатнашыу SORA Nexus Мәғлүмәт базалары](/ba/get-started/sora-nexus-dataspaces.md).
+Өс миҫал да уҡыла. Taira буйынса активтарҙы яғыу, яндырыу йәки күсереү өсөн кран менән тәьмин ителгән иҫәп һәм һаҡланған ағымды ҡулланығыҙ [SORA Nexus Мәғлүмәт биттәренә тоташтырыу ](/ba/get-started/sora-nexus-dataspaces.md).
 
-Түләү өсөн түләү Taira актив өлгөһө, кран ярҙамсыһын һаҡларға [Testnet-ты алығыҙ XOR тураһында Taira](/ba/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) тип `taira_faucet_claim.py`, һуңынан иң тәүҙә кран активын талап итеп, уны транзакция газ активы булараҡ ҡулланырға:
+Түләүле Taira актив миҫалы өсөн, кран ярҙамсыһын һаҡлағыҙ [Get Testnet XOR on Taira](/ba/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) as `taira_faucet_claim.py`, һуңынан башта кран активын талап итегеҙ һәм уны транзакция газ активы итеп ҡулланығыҙ:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
@@ -101,7 +101,7 @@ python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
 printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
 ```
 
-Шунан индерегеҙ `--metadata ./taira.tx-metadata.json` тураһында `ledger asset mint`, `ledger asset burn`, һәм `ledger asset transfer` бойороҡтар.
+Һуңынан `ledger asset mint`, `ledger asset burn` һәм `ledger asset transfer` командаларында `--metadata ./taira.tx-metadata.json` индерергә.
 
 ## Инструкциялар {#instructions}
 
@@ -117,6 +117,6 @@ printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
 - [CLI күрһәтмәһе](/ba/get-started/operate-iroha-via-cli.md)
 - [Rust дәреслеге](/ba/guide/tutorials/rust.md)
 - [Python дәреслеге](/ba/guide/tutorials/python.md)
-- [JavaScript/TypeScript дәреслеге](/ba/guide/tutorials/javascript.md)
+- [JavaScript/TypeScript дәреслек](/ba/guide/tutorials/javascript.md)
 - [Мәғлүмәт моделе](/ba/blockchain/data-model.md)
 - [NFTs](/ba/blockchain/nfts.md)

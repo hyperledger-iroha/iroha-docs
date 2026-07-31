@@ -6,26 +6,24 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# La référence à la Genèse {#genesis-reference}
+# La référence de la Genèse {#genesis-reference}
 
-Dans le courant Iroha 3 flux de travail, une `genesis.json` le manifeste décrit la première
-les transactions et paramètres qui seront appliqués au démarrage du réseau.
+Dans le flux de travail Iroha 3 actuel, un manifeste `genesis.json` décrit les premières transactions et paramètres qui seront appliqués lorsque le réseau sera démarré.
 
-L'artefact signé distribué à des pairs est un Norito- codé `.nrt` fichier
-produit par `kagami genesis sign`.
+L'artefact signé distribué à des pairs est un fichier `.nrt` codé Norito produit par `kagami genesis sign`.
 
 ## Principaux champs {#main-fields}
 
 Un manifeste génétique peut définir:
 
 - `chain` pour l'identifiant de la chaîne
-- `executor` pour un parcours de mise à niveau par code octal optionnel
-- `ivm_dir` pour IVM bibliothèques utilisées par les déclencheurs et les mises à niveau
-- `consensus_mode` pour le mode initial annoncé dans le manifeste
-- `transactions` pour les mises à jour de paramètres, instructions, déclencheurs et topologie ordonnées
-- `crypto` pour la première photo cryptographique
+- `executor` pour une voie de mise à niveau par code octal optionnelle d'exécuteur
+- `ivm_dir` pour les bibliothèques IVM utilisées par des déclencheurs et des mises à niveau
+- `consensus_mode` pour le mode initial annoncé par le manifeste
+- `transactions` pour les mises à jour des paramètres, les instructions, les déclencheurs et la topologie
+- `crypto` pour le premier instantané de cryptage
 
-À l'intérieur `transactions`, Les entrées de topologie sont des identifiants par paires et PoPs ensemble:
+Dans `transactions`, les entrées de topologie associent des identifiants par pairs et PoPs ensemble:
 
 ```json
 {
@@ -34,9 +32,9 @@ Un manifeste génétique peut définir:
 }
 ```
 
-## Générer un manifeste {#generate-a-manifest}
+## Créer un manifeste {#generate-a-manifest}
 
-Utilisation Kagami pour générer un modèle:
+Utilisez Kagami pour générer un modèle:
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
@@ -45,13 +43,11 @@ cargo run -p iroha_kagami -- genesis generate \
   --genesis-public-key <PUBLIC_KEY> > genesis.json
 ```
 
-Pour le public SORA Nexus espace de données, `npos` est le mode de consensus attendu.
-Autres Iroha 3 les déploiements peuvent utiliser des permis ou des NPoS selon l'objectif
-le profil.
+Pour l'espace de données public SORA Nexus, `npos` est le mode consensus attendu. D'autres déploiements Iroha 3 peuvent utiliser permis ou NPoS selon le profil cible.
 
 ## Signez le manifeste {#sign-the-manifest}
 
-Après avoir édité et validé le JSON, signer dans un déployable `.nrt` bloc:
+Après avoir modifié et validé le JSON, signez-le dans un bloc `.nrt` déployable:
 
 ```bash
 cargo run -p iroha_kagami -- genesis sign genesis.json \
@@ -59,11 +55,9 @@ cargo run -p iroha_kagami -- genesis sign genesis.json \
   --out-file genesis.signed.nrt
 ```
 
-`kagami genesis sign` lisent la clé publique de génèse du manifeste et utilise
-la clé privée fournie, le grain et l'algorithme pour produire la signature déployable
-Le résultat est le fichier que les pairs devraient se référer à partir de leur configuration.
+`kagami genesis sign` lit la clé publique génèse du manifeste et utilise la clé privée fournie, le grain et l'algorithme pour produire le bloc signé déployable.
 
-## Configuration `irohad` {#configure-irohad}
+## La configuration `irohad` {#configure-irohad}
 
 Pointez le démon sur le bloc de génèse signé:
 
@@ -73,7 +67,7 @@ file = "genesis.signed.nrt"
 public_key = "<PUBLIC_KEY>"
 ```
 
-## Outils connexes {#related-tools}
+## Les outils connexes {#related-tools}
 
 - `kagami genesis validate`
 - `kagami genesis normalize`
@@ -81,5 +75,4 @@ public_key = "<PUBLIC_KEY>"
 - `kagami localnet`
 - `cargo xtask kagami-profiles`
 
-Pour les détails de la mise en œuvre du générateur et des commandes, voir le
-[Kagami README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_kagami/README.md).
+Pour les détails de la mise en œuvre du générateur et des commandes, voir le [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_kagami/README.md).

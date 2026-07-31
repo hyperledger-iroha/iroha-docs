@@ -16,7 +16,7 @@ La matriz se compone de:
 - SDKs a través de las columnas restantes
 - Los símbolos de estado para los datos cubiertos, fallidos y ausentes
 
-Los escenarios sin evidencia de la revisión fijada se muestran como datos faltantes en lugar de heredar resultados de otra revisión de fuente.
+Solo los resultados verificados por el flujo de trabajo de actualización se informan como cubiertos o fallidos. Los escenarios sin evidencia de la revisión fijada se muestran como datos perdidos en lugar de heredar resultados de otra fuente Revisión.
 
 <CompatibilityMatrixTable />
 

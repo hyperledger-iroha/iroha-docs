@@ -6,19 +6,17 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Oʻrnatish Iroha 3 {#install-iroha-3}
+# Iroha 3 o'rnatish {#install-iroha-3}
 
-Ushbu sahifa joriy instalatsiya ish oqimini oʻz ichiga oladi Iroha 3 asbob-uskunalar zanjiri
-va yuqori oqimdan foydalanuvchi ikkilamchi `hyperledger-iroha/iroha` ish joyi.
+Ushbu sahifa Iroha 3 asbob-uskunalar zanjirining joriy o'rnatish ish oqimini va `hyperledger-iroha/iroha` yuqori tomondan ishlaydigan ish maydonidan foydalanuvchi binariylarni qamrab oladi.
 
-## 1. Kerak-sharoitlar {#_1-prerequisites}
+## 1. Oldindan ko'rsatilgan shartlar {#_1-prerequisites}
 
-Avval quyidagilarni oʻrnating:
+Avval bularni oʻrnating:
 
-- [rustup](https://www.rust-lang.org/tools/install), Shunday qilib,
-  `rust-toolchain.toml` asbob-uskunalar zanjiri (`1.93.1`) avtomatik ravishda o ' rnatilgan
+- [rustup](https://www.rust-lang.org/tools/install), shuning uchun o'rnatilgan `rust-toolchain.toml` asboblar zanjirini (`1.93.1`) avtomatik ravishda o'rnatadi
 - `git`
-- ixtiyoriy ravishda, Docker va Docker Compose mahalliy ko'p tenglamli tezkor ishga tushirish uchun
+- Docker va Docker Compose lokal ko'p tenglamli tezkor ishga tushirish uchun;
 
 ## 2. Ish joyini klonlash {#_2-clone-the-workspace}
 
@@ -35,15 +33,15 @@ Hamma narsani quring:
 cargo build --workspace
 ```
 
-Kichikroq operatorga mo'ljallangan qurilish uchun faqat asosiy ikkilamchilarni yig'ish:
+Kichikroq operatorga mo'ljallangan qurilish uchun, faqat asosiy ikkilamchilarni yig'ish:
 
 ```bash
 cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ```
 
-Natijada hosil boʻlgan ikkilamchilar quyidagicha yozilgan: `target/debug/` yoki `target/release/`.
+Natijada hosil bo'ladigan ikkilamchilar `target/debug/` yoki `target/release/` raqamiga yoziladi.
 
-## 4. Qurilgan vositalarni tekshirish {#_4-verify-the-installed-tools}
+## 4. O'rnatilgan vositalarni tekshirish {#_4-verify-the-installed-tools}
 
 ```bash
 cargo run --bin irohad -- --help
@@ -51,19 +49,17 @@ cargo run --bin iroha -- --help
 cargo run --bin kagami -- --help
 ```
 
-Siz odatda ishlatadigan uchta ikkilamchi quyidagilardir:
+Siz odatda ishlatadigan uchta ikkilamchi quyidagilar:
 
-- `irohad` tengdoshlar uchun
+- `irohad` tengdoshlari uchun
 - `iroha` uchun CLI qo'llash Torii va operator oxirgi nuqtalari
-- `kagami` kalitlar, genesis manifestlari va lokalnet profillari uchun
+- `kagami` kalitlar, genesis manifestlari va localnet profillari uchun
 
-## 5. O'z navbatida lokalnet va Docker Yoʻl {#_5-optional-localnet-and-docker-path}
+## 5. O'rinli Localnet va Docker yo'l {#_5-optional-localnet-and-docker-path}
 
-Hozirgi manba tomonidan qo'llab-quvvatlanadigan lokal tarmoq oqimi Kagami. U tengdoshlarni yozadi
-konfig, genesis artefaktlari, mijoz konfig, yordamchi skriptlar va fakultativ
-Checked-out kodga mos keladigan faylni yozish:
+Hozirgi manba tomonidan qo'llab-quvvatlanadigan lokalnet oqimi Kagami tomonidan yaratilgan. U tengdoshlari konfiguratsiyasi, genesis artefaktlari, mijoz konfiguratsiyasi, yordamchi skriptlar va checked-out kodga mos bo'lgan tanlovli Compose faylini yozadi:
 
-- `kagami localnet` mahalliy tengdoshlari nusxalari uchun
-- `kagami docker` uchun Docker Compose lokalnet direktoriyasidan yaratilgan
+- `kagami localnet` mahalliy tengdoshlari uchun skriptlar
+- `kagami docker` uchun Docker Compose lokalnet ko'rsatkichidan hosil qilingan
 
-davom eting [Uchratish Iroha 3](/uz/get-started/launch-iroha.md).
+[Lancing Iroha 3](/uz/get-started/launch-iroha.md) bilan davom eting.

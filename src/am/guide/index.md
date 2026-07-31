@@ -8,35 +8,22 @@ translation_engine: nllb-200-ct2
 
 # መመሪያ {#guide}
 
-ይህንን ክፍል ሲገነቡ፣ ሲያገለግሉ ወይም ሲቀላቀሉ ይጠቀሙ
-Iroha. ከ SDK የመጀመሪያው ደንበኛ ትምህርት, ከዚያም ወደ
-ከተጋራው አጠቃቀም ጋር ከመተባበርዎ በፊት ምርጥ ልምዶች እና የአስተናጋጅ ማጣቀሻዎች
-አውታረመረብ።
+Iroha ን ሲገነቡ ፣ በሚሰሩበት ጊዜ ወይም ሲዋሃዱ ይህንን ክፍል ይጠቀሙ። ለመጀመሪያው ደንበኛ ከ SDK ትምህርቶች ጋር ይጀምሩ ፣ ከዚያ ከተጋራ አውታረመረብ ጋር ከማሰማራትዎ በፊት ወደ ምርጥ ልምዶች እና ኦፕሬተር ማጣቀሻዎች ይሂዱ ።
 
 ## ክፍሎች {#sections}
 
-| ክፍል                                                      | ለመጠቀም                                                                                                                  |
+|ክፍል |ይጠቀሙበት |
 | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
-| [SDK ትምህርቶች](/am/guide/tutorials/)                           | የቋንቋ-ተኮር ደንበኛ ማዋቀር እና ናሙና መተግበሪያዎች                                                                      |
-| [ምርጥ ልምዶች](/am/guide/best-practices/)                     | በዲዛይን፣ በመረጃ ሞዴሊንግ፣ በማሰማራት፣ በአሠራር፣ በደህንነት እና ለመልቀቅ ዝግጁነት የተከፋፈሉ የምርት ላይ የተመሠረቱ መመሪያዎች |
-| [አወቃቀር እና አስተዳደር](/am/guide/configure/overview.md) | የአካባቢያዊ የእኩዮች ውቅር, ጅምር, የደንበኛ ውቅር, ቁልፎች እና የእኩዮች አስተዳደር                                          |
-| [ደህንነት](/am/guide/security/)                                 | ቁልፍ አያያዝ፣ የአሠራር ደህንነት፣ VPNs, የማጭበርበሪያ ቁጥጥር እና የፍቃድ ንፅህና                                          |
-| [የተራቀቁ ሥራዎች](/am/guide/advanced/metrics.md)            | መለኪያዎች፣ የአፈፃፀም ቁጥጥር፣ የሁከት ሙከራ፣ ትኩስ ዳግም መጫን እና ባዶ ብረት ሥራ                                            |
+| [SDK ትምህርቶች](/am/guide/tutorials/) |የቋንቋ-ተኮር ደንበኛ ማዋቀር እና ናሙና መተግበሪያዎች |
+| [ምርጥ ልምዶች](/am/guide/best-practices/) |በዲዛይን፣ በመረጃ ሞዴሊንግ፣ በማሰማራት፣ በአሠራር፣ በደህንነት እና ለመልቀቂያ ዝግጁነት የሚመሩ የምርት አቅጣጫዎች |
+| [ማዋቀር እና አስተዳደር ](/am/guide/configure/overview.md) |አካባቢያዊ የእኩዮች ውቅር፣ ጅማሬ፣ የደንበኛ ውቅር፣ ቁልፎች እና የእኩዮች አስተዳደር |
+| [ደህንነት](/am/guide/security/) |ቁልፍ አያያዝ፣ የአሠራር ደህንነት፣ VPNs ፣ የማጭበርበር ቁጥጥር እና የፍቃድ ንፅህና |
+| [የላቀ ስራዎች](/am/guide/advanced/metrics.md) |መለኪያዎች፣ የአፈፃፀም ምርመራዎች፣ የሁከት ሙከራዎች፣ ትኩስ ዳግም መጫን እና ባዶ ብረት ሥራ |
 
 ## የሚመከረው መንገድ {#recommended-path}
 
-1. [መጫን Iroha 3](/am/get-started/install-iroha.md) እና
-   [አካባቢያዊ አውታረመረብን ማስጀመር](/am/get-started/launch-iroha.md).
-2. አንዱን ምረጥ [SDK አጋዥ](/am/guide/tutorials/) እና ትንሽ ማቅረብ
-   ግብይት.
-3. ግምገማ
-   [አፕሊኬሽን ልማት](/am/guide/best-practices/application-development.md)
-   እና [የውሂብ ሞዴሊንግ](/am/guide/best-practices/data-modeling.md) በፊት
-   ማመልከቻውን መፍጠር API.
-4. አጠቃቀም [የአውታረ መረብ ልማት](/am/guide/best-practices/network-deployment.md),
-   [ሥራዎች](/am/guide/best-practices/operations.md), እና
-   [ደህንነት እና መዳረሻ](/am/guide/best-practices/security-and-access.md)
-   የተጋራ ወይም የምርት አውታረመረብ ከመሥራቱ በፊት።
-5. ይከተሉ [ለመልቀቅ ዝግጁ መሆን](/am/guide/best-practices/release-readiness.md)
-   አካባቢያዊ ልማት ወደ Taira, Minamoto, ወይም ሌላ
-   የቀጥታ ስርጭት.
+1. [Iroha 3](/am/get-started/install-iroha.md) ይጫኑ እና [አካባቢያዊ አውታረ መረብ ይጀምሩ ](/am/get-started/launch-iroha.md).
+2. አንድ [SDK መመሪያ ይምረጡ ](/am/guide/tutorials/) እና ትንሽ ግብይት ያቅርቡ.
+3. ግምገማ [የመተግበሪያ ልማት](/am/guide/best-practices/application-development.md) እና [የመረጃ ሞዴሊንግ](/am/guide/best-practices/data-modeling.md) ማመልከቻውን ከመቅረጹ በፊት API.
+4. አጠቃቀም [የአውታረ መረብ ልማት](/am/guide/best-practices/network-deployment.md), [ሥራዎች](/am/guide/best-practices/operations.md), እና [ደህንነት እና መዳረሻ](/am/guide/best-practices/security-and-access.md) የተጋራ ወይም የምርት አውታረመረብ ከመሥራቱ በፊት።
+5. [ከአካባቢያዊ ልማት ወደ Taira፣ Minamoto ወይም ሌላ የቀጥታ ስርጭት ሲያስተዋውቁ ለመልቀቅ ዝግጁነት ](/am/guide/best-practices/release-readiness.md) ይከተሉ.

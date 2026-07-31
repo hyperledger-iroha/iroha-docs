@@ -8,18 +8,18 @@ translation_engine: nllb-200-ct2
 
 # `irohad` CLI {#irohad-cli}
 
-`irohad` эхлэнэ Iroha 3 Дундаг дамон.
+`irohad` нь Iroha 3 зэрэглэлийн даймон эхэлнэ.
 
 ```shell
 irohad --config path/to/config.toml
 ```
 
-## `--config` {#arg-config}
+## `--config`  {#arg-config}
 
-- **Үргэлт:** Файлын замыг
-- **Нүүр хуудас** `-c`
+- Үргэлт: Файлын замаар
+- Нэрлэг: `-c`
 
-Тэнд хүрэх зам [зохион байгуулалт](/mn/reference/peer-config/index.md) Хөгжлийн баримт.
+[ конфигурацын ](/mn/reference/peer-config/index.md) файлын чиглэл.
 
 ```shell
 irohad --config path/to/iroha.toml
@@ -27,10 +27,9 @@ irohad --config path/to/iroha.toml
 
 ## `--genesis-manifest-json` {#arg-genesis-manifest-json}
 
-- **Үргэлт:** Файлын замыг
+- Үргэлт: Файлын замаар
 
-Женезисийн манифест рүү сонголттой зам JSON Энэ файлыг ашиглаж
-эхлүүлэлтийг Kagami.
+JSON файлын эх үүсвэрийн манифест рүү сонголттой замыг ашиглах. Хөдөлгөөн нь Kagami үүсгэсэн манифестээс эхлэлийг баталгаажуулахдаа үүнийг хэрэглэх.
 
 ```shell
 irohad --config path/to/iroha.toml --genesis-manifest-json path/to/genesis.manifest.json
@@ -38,10 +37,10 @@ irohad --config path/to/iroha.toml --genesis-manifest-json path/to/genesis.manif
 
 ## `--trace-config` {#arg-trace-config}
 
-Байгууллагын уншиж, шинжилгээ хийх бүртгэлийг шалгах боломжтой. Байгууллагын асуудлыг шийдвэрлэхэд ашигтай байж болно.
+Энэ нь конфигурацийг уншиж, шинжилгээ хийх заалтын тэмдэглэлийг ашиглаж болно.
 
-- **Үргэлт:** галт тэрэг
-- **ENV:** `TRACE_CONFIG`
+- Үргэлт: далбаа
+- ENV: `TRACE_CONFIG`
 
 ```shell
 irohad --trace-config
@@ -49,15 +48,13 @@ irohad --trace-config
 
 ## `--terminal-colors` {#arg-terminal-colors}
 
-- **Үргэлт:** Булийн `--terminal-colors=false` эсвэл
-  `--terminal-colors=true`
-- **Үндсэн дүрэм:** Автошилт үнэлгээний терминалын дэмжлэг
-- **ENV:** `TERMINAL_COLORS`
+- Үргэлт: Булейн, `--terminal-colors=false` эсвэл `--terminal-colors=true`
+- Урьдчилсан хэлбэр: Автошигварын дэглэмийн дэмжлэг
+- ENV: `TERMINAL_COLORS`
 
-Хөдөлмөрийг ашиглах эсэх ANSI- өнгөтэй үр дүн эсвэл үгүй.
+ANSI өнгөтэй гарах боломжийг олгох эсэх.
 
-Үүнээс өмнө Iroha түстүү гаралтай гарах боломжийг терминал нь дэмждэг эсэхийг тогтоодог
-Эсвэл үгүй.
+Үндсэн хуулийн дагуу Iroha нь төмөрлөгийн үр дүнг дэмждэг эсэхийг тодорхойлдог.
 
 Өргөдлийн өнгийг тодорхой хүчингүй болгох:
 
@@ -72,9 +69,9 @@ irohad
 
 ## `--language` {#arg-language}
 
-- **Үргэлт:** Хонгил
+- Үргэлж:
 
-Даемон мессежүүдэд ашигладаг систем хэлг устгаарай.
+Даемон мессежүүдэд ашигладаг системийн хэлийг татан буулгаарай.
 
 ```shell
 irohad --language en-US
@@ -82,10 +79,9 @@ irohad --language en-US
 
 ## `--sora` {#arg-sora}
 
-- **Үргэлт:** галт тэрэг
+- Үргэлт: далбаа
 
-Сорог ашиглах боломжтой Nexus онцлог шинж чанар SoraFS, УИХ-ын гишүүн SoraNet гарын үсэг,
-олон чиглэлээр тохиролцох урсгал.
+SoraFS-ийн Sora Nexus хувилбарын хувилбар, SoraNet -ийн гарын үсэг хээлт болон олон замаар тохиролцох урсгалыг идэвхжүүлэх.
 
 ```shell
 irohad --config path/to/iroha.toml --sora
@@ -93,9 +89,9 @@ irohad --config path/to/iroha.toml --sora
 
 ## `--fastpq-execution-mode` {#arg-fastpq-execution-mode}
 
-- **Үргэлт:** `auto`, `cpu`, эсвэл `gpu`
+- Үргэлт: `auto`, `cpu`, эсвэл `gpu`
 
-Үргэлт FASTPQ Сургууль гүйцэтгэх хэв маяг.
+FASTPQ проверын гүйцэтгэх хэлбэрийг давтаарай.
 
 ```shell
 irohad --fastpq-execution-mode auto
@@ -103,9 +99,9 @@ irohad --fastpq-execution-mode auto
 
 ## `--fastpq-poseidon-mode` {#arg-fastpq-poseidon-mode}
 
-- **Үргэлт:** `auto`, `cpu`, эсвэл `gpu`
+- Үргэлт: `auto`, `cpu`, эсвэл `gpu`
 
-Үргэлт FASTPQ Посейдон урсгалын хэлбэр.
+FASTPQ Посейдон төмөрөгний хэлбэрээр зайлуулах.
 
 ```shell
 irohad --fastpq-poseidon-mode cpu
@@ -113,9 +109,9 @@ irohad --fastpq-poseidon-mode cpu
 
 ## `--fastpq-device-class` {#arg-fastpq-device-class}
 
-- **Үргэлт:** Хонгил
+- Үргэлж:
 
-Үргэлж FASTPQ Телеметрийн төхөөрөмжийн ангиллын тэмдэг.
+FASTPQ телеметрийн төхөөрөмжийн ангиллын тэмдэглэлийг давтаарай.
 
 ```shell
 irohad --fastpq-device-class apple-m4
@@ -123,9 +119,9 @@ irohad --fastpq-device-class apple-m4
 
 ## `--fastpq-chip-family` {#arg-fastpq-chip-family}
 
-- **Үргэлт:** Хонгил
+- Үргэлж:
 
-Үргэлж FASTPQ Телеметрийн чипүүдийн гэр бүлийн тэмдэг.
+FASTPQ телеметрийн чипүүдийн гэр бүлгийн тэмдэгтийг давтаарай.
 
 ```shell
 irohad --fastpq-chip-family m4
@@ -133,9 +129,9 @@ irohad --fastpq-chip-family m4
 
 ## `--fastpq-gpu-kind` {#arg-fastpq-gpu-kind}
 
-- **Үргэлт:** Хонгил
+- Үргэлж:
 
-Үргэлж FASTPQ телеметри GPU-Тийм л тэмдэг.
+FASTPQ телеметрийн GPU хэлбэрээр тэмдэглэгдэх хэсгийг давхруулна.
 
 ```shell
 irohad --fastpq-gpu-kind integrated

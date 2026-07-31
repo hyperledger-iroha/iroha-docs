@@ -80,7 +80,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 
 ## Validadores de permissão {#permission-validators}
 
-As permissões existem para que apenas contas com o token de permissão necessário possam executar uma ação protegida.
+As permissões existem para que apenas as contas com o token de permissão necessário possam executar uma ação protegida. O executador padrão verifica as permissões durante a execução de instruções, consultas e expressões.
 
 A superfície padrão do validador é agrupada por área de contabilidade:
 

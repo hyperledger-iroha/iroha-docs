@@ -8,58 +8,50 @@ translation_engine: nllb-200-ct2
 
 # סימני רשות {#permission-tokens}
 
-דף זה רשימה של סוגים מקובלים של סימני הרשיונות חשופים על ידי הזמנים הנוכחיים
-Iroha מודל הנתונים של מבצע. עבור המדריך המושגי לתפקידים ולרשיונות,
-ראו [רשיונות](/he/blockchain/permissions.md).
+דף זה מפרט את סוגי הרשיונות המקובלים של סימן רשיונות שנחשפו על ידי מודל הנתונים הנוכחי Iroha. עבור המדריך המושגי לתפקידים ורשיונות, ראה [רשויות](/he/blockchain/permissions.md).
 
-בדיקות רשיונות מבוקשות על ידי מדריך ההישג הפעיל.
-שמות למטה מתארים את שטח מדיניות סטנדרטי, אבל רשת יכולה להתאים
-אישור זמן ההפעלה על ידי העדכון של המבצע.
+בדיקות הרשיונות מבוקשות על ידי המאשר ל- runtime פעיל. שמות הטייקונים למטה מתארים את פני המדיניות הסטנדרטית, אך רשת יכולה להתאים אישור ל- run time על ידי העלאת האפגניזציה.
 
 ## סימנים מקובלים {#default-tokens}
 
-| סימן רשות | קטגוריה | מבצע |
+|סימן אישור|קטגוריה |מבצע |
 | --- | --- | --- |
-| `CanManagePeers` | עמיתים | רשום, לא רשום, או אחרת לנהל עמיתים. |
-| `CanManageLaneRelayEmergency` | עמיתים | לנהל את בקרות המנוחה למסלול חירום. |
-| `CanRegisterDomain` | תחום | רשום דומיין. |
-| `CanUnregisterDomain` | תחום | לא להירשם דומיין. |
-| `CanModifyDomainMetadata` | תחום | לשנות מטא נתונים של תחום. |
-| `CanRegisterAccount` | חשבון | רשום חשבון. |
-| `CanUnregisterAccount` | חשבון | לא להירשם חשבון. |
-| `CanModifyAccountMetadata` | חשבון | לשנות את הנתונים המעטה של החשבון. |
-| `CanUnregisterAssetDefinition` | הגדרה של נכסים | לא רשום הגדרה של נכס. |
-| `CanModifyAssetDefinitionMetadata` | הגדרה של נכסים | לשנות מטא-מידע של הגדרת נכס. |
-| `CanMintAssetWithDefinition` | נכסים | נכסים של מטבעות עבור הגדרה ספציפית. |
-| `CanBurnAssetWithDefinition` | נכסים | לשרוף נכסים עבור הגדרה ספציפית. |
-| `CanTransferAssetWithDefinition` | נכסים | העברת נכסים להגדרה ספציפית. |
-| `CanMintAsset` | נכסים | כותב סכום נכסים ספציפי. |
-| `CanBurnAsset` | נכסים | לשרוף איזון נכסים ספציפי. |
-| `CanTransferAsset` | נכסים | להעביר סכום נכסים ספציפי. |
-| `CanRegisterNft` | NFT | רשום NFT. |
-| `CanUnregisterNft` | NFT | לא רשום NFT. |
-| `CanTransferNft` | NFT | להעביר NFT. |
-| `CanModifyNftMetadata` | NFT | שינויים NFT מטא-מנתונים. |
-| `CanSetParameters` | פרמטרים | להגדיר פרמטרים של ההשפעה על שרשרת. |
-| `CanManageRoles` | תפקידים | רשום, לא רשום, להעניק או לבטל תפקידים. |
-| `CanRegisterTrigger` | מפיץ | רשום את ההדק. |
-| `CanExecuteTrigger` | מפיץ | תפעיל כפתור. |
-| `CanUnregisterTrigger` | מפיץ | תבטל את ההדק. |
-| `CanModifyTrigger` | מפיץ | שינו את הגדרת ההדק. |
-| `CanModifyTriggerMetadata` | מפיץ | שינו את הנתונים המפעילים. |
-| `CanUpgradeExecutor` | מבצע | העדוף את המפעיל של זמן ההפעלה. |
-| `CanRegisterSmartContractCode` | חוזה חכם | רשום קוד חוזה חכם. |
-| `CanUseFeeSponsor` | Nexus | תשלום Nexus תשלום לחשבון ספונסר מסוים. |
+|`CanManagePeers` |בן זוג|להירשם, לא להירשם או אחרת לנהל עמינים. |
+|`CanManageLaneRelayEmergency` |בן זוג|לנהל את בקרות המנוחה למסלול חירום. |
+|`CanRegisterDomain` |תחום |רשום דומיין.|
+|`CanUnregisterDomain` |תחום |תבטל רישום תחום.|
+|`CanModifyDomainMetadata` |תחום |לשנות מטא נתונים של תחום. |
+|`CanRegisterAccount` |חשבון |רשום חשבון.|
+|`CanUnregisterAccount` |חשבון |תבטל את החשבון.|
+|`CanModifyAccountMetadata` |חשבון |לשנות מטא נתונים של חשבון. |
+|`CanUnregisterAssetDefinition` |הגדרה של נכסים |לא רשום תיאור נכס. |
+|`CanModifyAssetDefinitionMetadata` |הגדרה של נכסים |לשנות מטא-מידע על הגדרת נכסים. |
+|`CanMintAssetWithDefinition` |נכסים |נכסי מטבעות עבור הגדרה ספציפית. |
+|`CanBurnAssetWithDefinition` |נכסים |לשרוף נכסים עבור הגדרה ספציפית. |
+|`CanTransferAssetWithDefinition` |נכסים |העברת נכסים להגדרה ספציפית. |
+|`CanMintAsset` |נכסים |כותב סכום נכסים ספציפי. |
+|`CanBurnAsset` |נכסים |לשרוף סכום נכסים ספציפי.|
+|`CanTransferAsset` |נכסים |להעביר סכום נכסים מסוים. |
+|`CanRegisterNft` |NFT |רשום NFT. |
+|`CanUnregisterNft` |NFT |לא רשום את NFT. |
+|`CanTransferNft` |NFT |להעביר NFT. |
+|`CanModifyNftMetadata` |NFT |לשנות NFT מטא נתונים. |
+|`CanSetParameters` |פרמטרים |להגדיר פרמטרים של ההסדרים על שרשרת. |
+|`CanManageRoles` |תפקידים |רשום, לא רשום, לתת או לבטל תפקידים. |
+|`CanRegisterTrigger` |תפעיל |רשום את ההדק.|
+|`CanExecuteTrigger` |תפעיל |להוציא לפועל את ההדק.|
+|`CanUnregisterTrigger` |תפעיל |תבטל את ההדק.|
+|`CanModifyTrigger` |תפעיל |שינו את הגדרת ההדק. |
+|`CanModifyTriggerMetadata` |תפעיל |שינו את הנתונים המפעילים. |
+|`CanUpgradeExecutor` |יצרן |לשפר את המפעיל של זמן ההפעלה. |
+|`CanRegisterSmartContractCode` |חוזה חכם.|רשום קוד חוזה חכם. |
+|`CanUseFeeSponsor` |Nexus |כנסת דמי Nexus לחשבון ספונסר מסוים. |
 
 ## בעלות {#ownership}
 
-סימני רשות רגישים לבעלים חייבים להתייחס לאובייקט הקנוני IDs משמש
-לדוגמה, הרשויות של חשבונות מתייחסות לקנוניקה
-חשבון ללא דומיין IDs, רשיונות דומיין מתייחסים `domain.dataspace` תחום
-IDs, והרשיונות של נכסים מתייחסים להגדרה הקנוניקה של נכס או נכס. IDs.
+סימני אישור רגישים לבעלים חייבים להתייחס לאובייקט הקנוני IDs שימוש במודל הנתונים הנוכחי. לדוגמה, רשיונות חשבון מתייחסים לחשבון קנוני ללא דומיין IDs, רשיונות תחום מתייחסים `domain.dataspace` תחום IDs, רשיונות נכסים מתייחסים להגדרה קנוניקה של נכס או נכס. IDs.
 
-כאשר עסקה נכשלת עם טעות אישור, לבדוק את שני הצדדים:
+כאשר עסקה נכשלת עם טעות אישור, בדוק את שני הצדדים:
 
-- החשבון המחתם על העסקה הוא החשבון הקנוני הנחמד
-- סימן או תפקיד אישור נתן עבור האובייקט המדויק ID בשימוש ב
-  הוראות
+- החשבון אשר חותם על העסקה הוא החשבון הקנוני הנצפה.
+- סימן רשות או תפקיד נתן עבור האובייקט המדויק ID המשמש בהוראה.

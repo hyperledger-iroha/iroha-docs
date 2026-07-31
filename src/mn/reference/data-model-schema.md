@@ -8,10 +8,6 @@ translation_engine: nllb-200-ct2
 
 # Мэдээллийн загварын схема {#data-model-schema}
 
-Энэ хуудсыг `kagami advanced schema` Хүрэлхийлсэн
-[`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha)
-Documentation refresh workflow-д бүртгэгдсэн шинэчлэл
-Энэ хадгаламж дээр шалгарсан тул хэвийн баримтын бүтээн байгуулалт шаардлагагүй
-нэг Iroha Эх сурвалжийн төлбөр.
+Энэ хуудас нь `kagami advanced schema` Зүрхлэгдсэнээс [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) баримт бичгийн шинэчлэл ажлын урсгал бүртгэгдсэн хяналтын зураг нь энэ хадгаламж дээр шалгарна баримт бичгийн бүтээн байгуулалтын шаардлагагүй Iroha эх үүсвэрийн төлбөр тооцоо.
 
 <DataModelSchema />

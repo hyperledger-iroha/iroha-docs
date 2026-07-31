@@ -6,13 +6,11 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# חומצה מחודשת Iroha ב- Docker ספינה {#hot-reload-iroha-in-a-docker-container}
+# כביסה חמה Iroha בקונtejnר Docker {#hot-reload-iroha-in-a-docker-container}
 
-השתמשו בהחמץ חם רק לתיקון מקומי. עבור פיתוח מקומי נורמלי, מעדיפים
-לבנות מחדש את התמונה או להפעיל מחדש את התמונות שנוצרו Docker Compose ערימה מ
-טרי Kagami חבילה.
+השתמש בהחזרת חם רק לחיזוק מקומי. עבור פיתוח מקומי נורמלי, העדיף לבנות מחדש את התמונה או להפעיל מחדש את סטק Docker Compose שנוצר מעבורת Kagami חדשה .
 
-## תחליף את הדוגמנית השותפת {#replace-the-peer-binary}
+## תחליף את הדוגמנית השותפה {#replace-the-peer-binary}
 
 לבנות בינרי דיימון תואם ללינוקס ממרחב העבודה העליון:
 
@@ -20,21 +18,18 @@ translation_engine: nllb-200-ct2
 cargo build --release -p irohad --target x86_64-unknown-linux-musl
 ```
 
-העתק אותו לתוך מיכל עמיתי פועל, ואז להפעיל מחדש את המיכל:
+העתק את זה לתוך מיכל משותף פועל, ולאחר מכן להפעיל מחדש את המכול:
 
 ```bash
 docker cp target/x86_64-unknown-linux-musl/release/irohad <container>:/usr/local/bin/irohad
 docker restart <container>
 ```
 
-שימוש `docker ps` כדי לאשר את שם המכולה.
-מיכלים מוגדרים על ידי: `./localnet/docker-compose.yml`.
+להשתמש ב- `docker ps` כדי לאשר את שם המכולה. בשבילה המיוצרת, המכולות הדוגמנות מוגדרות על ידי `./localnet/docker-compose.yml`.
 
-## תחזור על בראשית ברשת חד פעמית {#recommit-genesis-in-a-disposable-network}
+## תחזיר את בראשית לרשת חד פעמית {#recommit-genesis-in-a-disposable-network}
 
-עמיתים מבצעים גנזה רק כאשר האחסון שלו ריק. Docker
-רשת, עצר את הרכבת, להסיר את המצב המובנה, לשחזר או להחליף את
-חבורת גנזה חתומה, ולהתחל מחדש:
+עמיתים מבצעים גנזה רק כאשר האחסון שלו ריק. עבור רשת חד פעמית Docker, עצור את המגרר, להסיר את מצב המיוצר, לשחזר או להחליף את חבורת הגנזה חתומה, ולהתחיל מחדש:
 
 ```bash
 docker compose -f ./localnet/docker-compose.yml down
@@ -43,12 +38,8 @@ cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyper
 docker compose -f ./localnet/docker-compose.yml up
 ```
 
-אל תחליפו את הגנזה על רשת ששלמתה יש לשמור.
+אל תחליפו את הגנזה ברשת שדרכו לשמור על מצבם.
 
 ## השתמשו בהקנה מותאמת {#use-custom-configuration}
 
-ההשפעה הנוכחית של השותפים היא TOML. קשור או העתק את המוצר
-`config.toml`, `genesis.signed.nrt`, וקבצים מפתח קשורים לקונtejnר
-נתיבים צפויים על ידי התמונה, ואז להפעיל מחדש את הדירוג. לשמור את הקבצים שנוצרו
-יחד; מיזוג קבצים שונים Kagami רכיבים יכולים לייצר דיזריאליזציה או
-כשל הסכמה.
+הקונפיגורציה הנוכחית של הדוגמא היא TOML. לחבר או להעתיק את הקבצים המובנים `config.toml`, `genesis.signed.nrt`, וקבצים מפתח קשורים לדרכי הכביסה הנצפו על ידי התמונה, ולאחר מכן להפעיל מחדש את הדוגמא. שמרו על הקבצים שנוצרו יחד; ערבוב קבצים ממסלולים שונים Kagami יכול לגרום לכישלונות של דזריאליזציה או הסכמה.

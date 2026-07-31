@@ -8,10 +8,8 @@ translation_engine: nllb-200-ct2
 
 # ድጋፍ ያግኙ {#receive-support}
 
-ከጊዜ ወደ ጊዜ ስለ Iroha ከህብረተሰባችን ጋር በፍጥነት ለመገናኘት ሦስት መንገዶች አሉ: ቴሌግራም, Discord, እና GitHub.
+ከጊዜ ወደ ጊዜ ስለ Iroha በዝርዝር ከሌሎች ጋር መወያየት የምትፈልግባቸው ጥያቄዎች ሊኖሩህ ይችላሉ። ከማኅበረሰባችን ጋር በፍጥነት ለመገናኘት ሦስት መንገዶች አሉ- ቴሌግራም ፣ ዲኮርድ እና GitHub።
 
-ማህበረሰቡ የሚጠቀምበት [ቴሌግራም](https://t.me/hyperledgeriroha) እና
-[LF Decentralized Trust አለመግባባት](https://discord.gg/hyperledger) ለ
-በመገናኛ ብዙሃን ላይ `iroha` የፕሮጀክቱ ጥያቄዎች የሚቀርቡበት ሰርጥ።
+ማህበረሰቡ ለግንኙነት [ቴሌግራም](https://t.me/hyperledgeriroha) እና [ LF Decentralized Trust Discord](https://discord.gg/hyperledger) ይጠቀማል ። ለፕሮጀክት ጥያቄዎች የ `iroha` ቻናልን ይጠቀሙ።
 
-በመጨረሻም [አንድ መፍጠር GitHub ጉዳይ](https://github.com/hyperledger-iroha/iroha/issues/new/choose), ሰነዶችን ለማዘመን ጥያቄ ይሁን፣ ለዋናው ቡድን የቀረበው ሐሳብ ወይም ያገኘኸው ሳንካ።
+በመጨረሻም [ አንድ GitHub ችግር መፍጠር ይችላሉ](https://github.com/hyperledger-iroha/iroha/issues/new/choose)፣ ሰነዶችን ለማዘመን ጥያቄ ፣ ለዋናው ቡድን ሀሳብ ወይም ያገኘኸው ስህተት ይሁን ።

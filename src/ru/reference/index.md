@@ -8,17 +8,15 @@ translation_engine: nllb-200-ct2
 
 # Ссылка {#reference}
 
-В данном разделе отслеживается текущий справочный материал, ориентированный на оператора для
-Iroha 3 Документы.
+В данном разделе отслеживается текущий справочный материал, обращенный к оператору, для набора документов Iroha 3.
 
-Начните с:
+Начинайте здесь:
 
-- [Работа с Iroha двойные](/ru/reference/binaries.md)
+- [Работа с бинарными системами Iroha](/ru/reference/binaries.md)
 - [Ссылка на Бытие](/ru/reference/genesis.md)
-- [Torii конечные точки](/ru/reference/torii-endpoints.md)
-- [Torii API консоль](/ru/reference/torii-api-console.md)
+- [конечные точки Torii](/ru/reference/torii-endpoints.md)
+- [Консоль Torii API ](/ru/reference/torii-api-console.md)
 - [Norito](/ru/reference/norito.md)
-- [Матрица совместимости](/ru/reference/compatibility-matrix.md)
+- [Матрица совместимости ](/ru/reference/compatibility-matrix.md)
 
-Для источника реализации и сопутствующих спецификаций кода см.
-[Iroha хранилище](https://github.com/hyperledger-iroha/iroha).
+Для источников и сопутствующих спецификаций внедрения см. хранилище [Iroha ](https://github.com/hyperledger-iroha/iroha).

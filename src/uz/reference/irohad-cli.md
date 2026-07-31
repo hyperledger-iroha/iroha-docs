@@ -8,18 +8,18 @@ translation_engine: nllb-200-ct2
 
 # `irohad` CLI {#irohad-cli}
 
-`irohad` boshlanadi Iroha 3 Tengdosh daimon.
+`irohad` bir Iroha 3 tengdosh daemonni boshlaydi.
 
 ```shell
 irohad --config path/to/config.toml
 ```
 
-## `--config` {#arg-config}
+## `--config`  {#arg-config}
 
-- **Tur:** Fayl yoʻli
-- **Alias:** `-c`
+- Fayl turi: Fayl yoʻli
+- Alias: `-c`
 
-Yoʻl [konfiguratsiya](/uz/reference/peer-config/index.md) fayl.
+[ konfiguratsiyasi ](/uz/reference/peer-config/index.md) fayliga yo'l.
 
 ```shell
 irohad --config path/to/iroha.toml
@@ -27,10 +27,9 @@ irohad --config path/to/iroha.toml
 
 ## `--genesis-manifest-json` {#arg-genesis-manifest-json}
 
-- **Tur:** Fayl yoʻli
+- Fayl turi: Fayl yoʻli
 
-Genesis manifestiga bo'lgan fakultativ yo'l JSON Fayldan foydalaning.
-boshlang ' ich bilan yaratilgan manifestni tasdiqlaydi Kagami.
+Genesis manifest JSON fayliga bo'lgan tanlov yo'li. Ishlab chiqarish Kagami tomonidan ishlab chiqarilgan manifestga qarshi ishga tushishni tasdiqlaganda buni ishlating.
 
 ```shell
 irohad --config path/to/iroha.toml --genesis-manifest-json path/to/genesis.manifest.json
@@ -38,10 +37,10 @@ irohad --config path/to/iroha.toml --genesis-manifest-json path/to/genesis.manif
 
 ## `--trace-config` {#arg-trace-config}
 
-Konfiguratsiyalarni o'qish va tahlil qilishning iz loglarini qo'llaydi.
+Konfiguratsiyalarni oʻqish va tahlil qilishning iz logini qoʻllaydi. Konfiguratsiya muammosini hal qilish uchun foydali bo'lishi mumkin.
 
-- **Tur:** bayroq
-- **ENV:** `TRACE_CONFIG`
+- Tur: bayroq
+- ENV: `TRACE_CONFIG`
 
 ```shell
 irohad --trace-config
@@ -49,17 +48,15 @@ irohad --trace-config
 
 ## `--terminal-colors` {#arg-terminal-colors}
 
-- **Tur:** Bo'l, ham `--terminal-colors=false` yoki
-  `--terminal-colors=true`
-- **Dastlabki:** avtomatik aniqlash terminalini qo'llab-quvvatlash
-- **ENV:** `TERMINAL_COLORS`
+- Tur: `--terminal-colors=false` yoki `--terminal-colors=true` bo'lgan boolian
+- Andoza: avtomatik aniqlash terminalini qo'llab-quvvatlash
+- ENV: `TERMINAL_COLORS`
 
-O ' z kuchini yo ' qotganligi ANSI- rangli chiqish yoki yo'q.
+ANSI rangli chiqarishni qo'llash yoki yo'qligini aniqlash.
 
-Ko'rsatilgan holda, Iroha terminal rangli chiqarishni qo'llab-quvvatlayapti yoki yo'qmi aniqlaydi
-yoki yo'q.
+Andoza ravishda Iroha terminal rangli chiqindilarni qo'llab-quvvatlaydi yoki yo'qligini aniqlaydi.
 
-Ranglarni aniq oʻchirish uchun:
+Ranglarni ochiqchasiga oʻchirish:
 
 ```shell
 irohad --terminal-colors=false
@@ -72,7 +69,7 @@ irohad
 
 ## `--language` {#arg-language}
 
-- **Tur:** Tovush
+- Tovush turi: simlar
 
 Daemon xabarlari uchun ishlatiladigan tizim tilini bekor qiling.
 
@@ -82,10 +79,9 @@ irohad --language en-US
 
 ## `--sora` {#arg-sora}
 
-- **Tur:** bayroq
+- Tur: bayroq
 
-Sora-ni qoʻllash Nexus uchun xususiyat profil SoraFS, ko'rsatilgan SoraNet qo'lni to'plash va
-ko'p yo'nalishdagi konsensus oqimlari.
+SoraFS uchun Sora Nexus xususiyatining profilini, SoraNet qo'lquvini va ko'p yo'nalishdagi konsensus oqimlarini o'rnating.
 
 ```shell
 irohad --config path/to/iroha.toml --sora
@@ -93,9 +89,9 @@ irohad --config path/to/iroha.toml --sora
 
 ## `--fastpq-execution-mode` {#arg-fastpq-execution-mode}
 
-- **Tur:** `auto`, `cpu`, yoki `gpu`
+- Tur: `auto`, `cpu` yoki `gpu`
 
-Oʻchirish FASTPQ Provor ijro etish usuli.
+FASTPQ provayderni o'tkazish rejimini bekor qiling.
 
 ```shell
 irohad --fastpq-execution-mode auto
@@ -103,9 +99,9 @@ irohad --fastpq-execution-mode auto
 
 ## `--fastpq-poseidon-mode` {#arg-fastpq-poseidon-mode}
 
-- **Tur:** `auto`, `cpu`, yoki `gpu`
+- Tur: `auto`, `cpu` yoki `gpu`
 
-Oʻchirish FASTPQ Poseidon quvur usuli.
+FASTPQ Poseidon quvurini o'chirib tashlang.
 
 ```shell
 irohad --fastpq-poseidon-mode cpu
@@ -113,9 +109,9 @@ irohad --fastpq-poseidon-mode cpu
 
 ## `--fastpq-device-class` {#arg-fastpq-device-class}
 
-- **Tur:** Tovush
+- Tovush turi: simlar
 
-O ' zgarish FASTPQ Telemetriya qurilmasi sinfidagi etiketasi.
+FASTPQ telemetriya qurilmalari sinfidagi etiketani bekor qiling.
 
 ```shell
 irohad --fastpq-device-class apple-m4
@@ -123,9 +119,9 @@ irohad --fastpq-device-class apple-m4
 
 ## `--fastpq-chip-family` {#arg-fastpq-chip-family}
 
-- **Tur:** Tovush
+- Tovush turi: simlar
 
-O ' zgarish FASTPQ telemetriya chiplar oilasi etiketi.
+FASTPQ telemetriya chiplar oilasi etiketini bekor qiling.
 
 ```shell
 irohad --fastpq-chip-family m4
@@ -133,9 +129,9 @@ irohad --fastpq-chip-family m4
 
 ## `--fastpq-gpu-kind` {#arg-fastpq-gpu-kind}
 
-- **Tur:** Tovush
+- Tovush turi: simlar
 
-O ' zgarish FASTPQ telemetriya GPU- O'sha kabi etiket.
+FASTPQ telemetriyasi GPU turidagi etiketani bekor qiling.
 
 ```shell
 irohad --fastpq-gpu-kind integrated

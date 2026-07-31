@@ -44,7 +44,7 @@ cargo run --bin iroha -- taira doctor \
   --json
 ```
 
-Маршрут кимәлендә тикшереүҙәр өсөн ҡулланыу Torii Ул - JSON API туранан-тура:
+Маршрут кимәлендәге тикшереүҙәр өсөн Torii туранан-тура JSON API менән ҡулланығыҙ:
 
 ```bash
 curl -fsS https://taira.sora.org/status \

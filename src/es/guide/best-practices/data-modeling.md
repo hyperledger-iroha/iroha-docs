@@ -39,7 +39,7 @@ Véase [Metadatos y opciones de almacenamiento del libro mayor](/es/guide/config
 
 ## Permisos por modelo {#permissions-by-model}
 
-- Una función llamada por un trabajo o servicio es más fácil de auditar que una función llamada por una amplia capacidad técnica.
+- Los roles de diseño se centran en las operaciones comerciales, no en las comodidades de implementación. Una función nombrada en honor a un trabajo o servicio es más fácil de auditar que una función nombrada por una amplia capacidad técnica.
 - Obtenga los tokens de permiso para el objeto más pequeño que satisfaga el flujo de trabajo.
 - Trate los permisos para minar, quemar, gestión de pares, cambios de ejecutores, gestión de disparos y mutación de metadatos como permisos de alto impacto.
 - Añadir procedimientos de revocación y rotación explícitos para permisos temporales.

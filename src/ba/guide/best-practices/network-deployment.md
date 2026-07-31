@@ -26,7 +26,7 @@ Iroha селтәрен координацияланған система ите�
 - Күҙәтеүселәр тауыш бирмәй, тәҡдим итмәй һәм йыя алмай, әммә улар барыбер һаҡлауҙы, блок синхронлаштырыуҙы һәм селтәрҙәрҙең биҙәк киңлеген ҡулланалар.
 - Генез, башҡарыусы һәм топология үҙгәрештәрен бер тигеҙ редакциялар урынына координацияланған миграциялар тип ҡарағыҙ.
 
-Күрәһегеҙме [Башланмыш](/ba/reference/genesis.md), [Тиҫтерҙәр менән идара итеү](/ba/guide/configure/peer-management.md), һәм [Эшмәкәрлек һәм күрһәткестәр](/ba/guide/advanced/metrics.md#node-count-and-quorum).
+[Genesis](/ba/reference/genesis.md), [Peer Management](/ba/guide/configure/peer-management.md) һәм [Performance and Metrics](/ba/guide/advanced/metrics.md#node-count-and-quorum).
 
 ## Torii һәм селтәренә инеү {#torii-and-network-access}
 
@@ -35,7 +35,7 @@ Iroha селтәрен координацияланған система ите�
 - Тирә-яҡ мөхит өсөн кәрәкле һуңғы нөктәләрҙе генә баҫтырыу.
 - Тыңлаусы адрестарҙы хост-локаль интерфейстарға бәйлә, әгәр тиҫтерҙәр алыҫ арауыҡты туранан-тура ҡабул итергә тейеш түгел.
 
-Күрәһегеҙме [Torii Һөҙәк пункттар](/ba/reference/torii-endpoints.md) һәм [Виртуаль шәхси селтәрҙәр](/ba/guide/security/vpn.md).
+[Torii Һөҙәк пункттар](/ba/reference/torii-endpoints.md) һәм [ Виртуаль шәхси селтәрҙәр ](/ba/guide/security/vpn.md).
 
 ## Консенсус һәм ҡеүәт {#consensus-and-capacity}
 

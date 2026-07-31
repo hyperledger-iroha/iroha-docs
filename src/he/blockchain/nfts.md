@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # NFTs {#nfts}
 
-א Iroha NFT הוא אובייקט ספרים ייחודי עם בעל אחד. NFTs כאשר רשום זקוק לזהות משלו, נתונים מטאטא, אירועים מחזור החיים וסימנטיקה של העברת הבעלות, אבל לא צריך איזון מספרי.
+א Iroha NFT הוא אובייקט ספרים ייחודי עם בעל אחד. NFTs כאשר רשום זקוק לזהות משלו, מטא-מנתונים, אירועים במחזור החיים וסימנטיקה של העברת הבעלות. אבל לא צריך איזון מספרי.
 
 שלא כמו מספר. [נכס](/he/blockchain/assets.md), ע"י NFT אין לו מדויק, יכולת להכנת או כמויות לכל חשבון. NFT קיימת כאובייקט רשום אחד, והיכולת להיות בעלת היא מעקב ישירות על האובייקט.
 
@@ -20,7 +20,7 @@ translation_engine: nllb-200-ct2
 - `content`: מטא נתונים המתארים את NFT
 - `owned_by`: החשבון שייך ל- NFT
 
-ה- `content` שדה הוא `Metadata` תשאיר את זה קומפקטי: שמור שדות תיאוריים, ראיות יציבות, חישובים, URIs, או SoraFS מאחסן מסמכים גדולים, מדיה או יישום גבוה-צ'ורן מצב מחוץ למשרשרת ולשמור רק התייחסות NFT.
+שדה `content` הוא מפה של `Metadata`. שמור אותו קומפקטי: שמור שם את השדות המתארים, התייחסויות יציבות, האשיזים, URIs או SoraFS דרכים. שמור מסמכים גדולים, מדיה או מצב היישום עם צ'ורן גבוה מחוץ למשרשרת ותשמור רק על התייחסות אפשרית לאמת על NFT.
 
 ## נסה את זה על Taira {#try-it-on-taira}
 
@@ -38,7 +38,7 @@ curl -fsS https://taira.sora.org/openapi.json \
   | jq -r '.paths | keys[] | select(startswith("/v1/nfts") or startswith("/v1/explorer/nfts"))'
 ```
 
-ריקה. `items` מספריה היא תגובה תקפה ברשת מבחן ציבורית. NFTs בדף הנוכחי, לא שזה NFT ההוראות לא זמינות.
+מערך ריק `items` הוא תגובה בתוקף ברשת מבחן ציבורית. זה אומר שאין NFTs בדף הנוכחי, לא כי ההוראות NFT אינן זמינות.
 
 ## NFT IDs {#nft-ids}
 
@@ -49,7 +49,7 @@ name$domain
 name$domain.dataspace
 ```
 
-לדוגמה, `badge$docs.universal` מגדיר את `badge` NFT ב- `docs.universal` אם חלל הנתונים נמחק, המבחן הנוכחי משתמש ב `universal` מרחב נתונים, אז `badge$docs` פותרת `badge$docs.universal`.
+לדוגמה, `badge$docs.universal` מזהה את `badge` NFT בשטח הנתונים של `docs.universal`. אם חלל הנתונים נמנע, המבחן הנוכחי משתמש בחלל הנתנים של `universal`, כך ש`badge$docs` מתברר ל- `badge$docs.universal`
 
 השתמש בשמות יציבים עבור NFT IDs. ה- ID הוא זהות האובייקט המשמשת בהוראות, בקשות, אישורים, פילטר אירועים ותייחסויות היישום.
 
@@ -57,10 +57,10 @@ name$domain.dataspace
 
 שימוש NFT בתפעול מחזור החיים Iroha הוראות מיוחדות:
 
-- [`Register`](/he/blockchain/instructions.md#un-register) יוצר את NFT עם ראשית `content`.
+- [`Register`](/he/blockchain/instructions.md#un-register) יוצר את NFT עם ראשונית `content`.
 - [`Unregister`](/he/blockchain/instructions.md#un-register) מסיר את NFT.
 - [`Transfer`](/he/blockchain/instructions.md#transfer) שינויים `owned_by`.
-- [`SetKeyValue` ו `RemoveKeyValue`](/he/blockchain/instructions.md#setkeyvalue-removekeyvalue) עדכון NFT נתונים מטאטא.
+- [`SetKeyValue` ו`RemoveKeyValue` ](/he/blockchain/instructions.md#setkeyvalue-removekeyvalue) מעדכן NFT מטא נתונים.
 
 ## נסה את זה מקומו {#try-it-locally}
 
@@ -72,7 +72,7 @@ export NFT_DOMAIN=wonderland.universal
 export NFT_ID='badge_intro$wonderland.universal'
 ```
 
-הרשת המקומית המיוצרת כבר מתוכננת `wonderland.universal` ושל SNS כדי להשתמש בתחום אחר, ליצור אותו תחילה עם ההצהרה `app alias setup plan` ו `app alias setup apply` זרימת עבודה המתוארת ב: [תחומים](/he/blockchain/domains.md#registration).
+הרשת המקומית שנוצרה כבר מערכת את `wonderland.universal` ואת החוזה של SNS שלה. כדי להשתמש בתחום אחר, ליצור אותו קודם עם זרם העבודה ההצהירתי `app alias setup plan` ו `app alias setup apply` המתואר ב [Domains](/he/blockchain/domains.md#registration).
 
 רשום NFT. ההרשמה קוראת את התוכן הראשוני JSON מתוך הכניסה סטנדרטית:
 
@@ -134,7 +134,7 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
 
 שימוש [`FindNfts`](/he/reference/queries.md#assets-nfts-and-rwas) לרשום NFTs ו [`FindNftsByAccountId`](/he/reference/queries.md#assets-nfts-and-rwas) לרשום NFTs בבעלות חשבון.
 
-NFT עדכונים של רישום, חיסול, העברה ונתונים מטאטא יוצרים NFT אירועים נתונים. `Nft` מסנן אירועי נתונים כאשר נרשמים לשינויים בספרה או תפעילים של בנייה המגיבים ל NFT אירועים במחזור החיים.
+עדכונים NFT של רישום, חיסול, העברה ונתונים מטאטא יוצרים אירועי נתונים NFT. השתמשו ב-filter של אירועי מידע `Nft` בעת ההרשאה לשינויים בספר הספרים או בבניית גורמים המגיבים לאירועים של מחזור החיים NFT.
 
 ## רשיונות {#permissions}
 

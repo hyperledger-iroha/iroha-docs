@@ -6,6 +6,6 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# CSD/RTGS አገናኞች የዕውቀት ማስረጃ  {#csd-rtgs-linkages-proof-of-concept}
+# CSD/RTGS አገናኞች የንድፍ ማስረጃ  {#csd-rtgs-linkages-proof-of-concept}
 
-በዚህ ሰነድ ውስጥ CSD/RTGS ግንኙነቶች PoC በ Iroha. ይህ ፕሮጀክት ከአስያ የልማት ባንክ እና ከፉጂቱ ጋር በመተባበር የተሰራ ነው። ሌሎች ተሳታፊዎች እንደ R3 ኮርዳ፣ Hyperledger ካክቲ (ካክቲ) Hyperledger ጨርቅ እና ሌሎች ብዙ ታዋቂ የብሎክቼይን መፍትሄዎች. 
+በዚህ ሰነድ ውስጥ CSD/RTGS አገናኞችን PoC በ Iroha በኩል ማከናወን እንገልጻለን ። ይህ ፕሮጀክት ከአስያ የልማት ባንክ እና ከፉጂቱሱ ጋር በመተባበር የተከናወነ ነው ። ሌሎች ተሳታፊዎች እንደ R3 ኮርዳ ፣ Hyperledger ካክቱስ (ካኪቲ) ፣ Hyperledger ፋብሪካ እና ሌሎች ብዙ ታዋቂ የብሎክቼን መፍትሄዎች ያሉ ቴክኖሎጂዎችን ተጠቅመዋል። 

@@ -6,23 +6,23 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# ጋር መሥራት Iroha የሁለትዮሽ {#working-with-iroha-binaries}
+# ከ Iroha ባነሪዎች ጋር መሥራት {#working-with-iroha-binaries}
 
-የ Iroha 3 የኦፕሬተር የሥራ ፍሰት በሦስት ዋና ባነሪዎች ዙሪያ ይሽከረከራል-
+የ Iroha 3 ኦፕሬተር የስራ ፍሰት በሦስት ዋና ባናሪዎች ዙሪያ ይሽከረከራል።
 
-- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad) የእኩዮችን ዳይሞን ለማስተዳደር
-- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_cli) ለ CLI እና የኦፕሬተር ትዕዛዞች
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_kagami) ቁልፎች፣ ጅማሬዎች፣ የቦታ መረብ እና መገለጫዎች
+- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad) የእኩዮችን ዳይሞን ለማስኬድ
+- [ለ CLI እና ለኦፕሬተር ትዕዛዞች `iroha`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_cli)
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_kagami) ለቁልፎች ፣ ለጀኔዝስ ፣ ለአካባቢያዊ አውታረ መረቦች እና ለመገለጫዎች
 
-## ምንጭህን በመመርኮዝ ሥራ {#build-from-source}
+## ምንጭን በመመርኮዝ መገንባት {#build-from-source}
 
-ከስራ ቦታ ሥር:
+ከስራ ቦታው ስርጭት:
 
 ```bash
 cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ```
 
-ከዚያ በኋላ የሚለቀቁ ባናሪዎች በ `target/release/`.
+ከዚያ በኋላ የተለቀቁ ባናሪዎች በ `target/release/` ይገኛሉ ።
 
 የመቆጣጠሪያውን ወለል ለመመርመር:
 
@@ -34,7 +34,7 @@ cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 
 ## በቀጥታ ከመደብር ይሂዱ {#run-directly-from-the-repository}
 
-በዓለም አቀፍ ደረጃ ማንኛውንም ነገር መጫን የማይፈልጉ ከሆነ `cargo run`:
+ምንም ነገር በዓለም አቀፍ ደረጃ መጫን የማይፈልጉ ከሆነ `cargo run` ን ይጠቀሙ:
 
 ```bash
 cargo run --bin irohad -- --help
@@ -44,23 +44,21 @@ cargo run --bin kagami -- --help
 
 ## Docker ምስል {#docker-image}
 
-የስራ ቦታ አጠቃቀም `kagami localnet` እና `kagami docker` ለማመንጨት
-Docker Compose ከተረጋገጠው ኮድ ጋር የሚዛመዱ ፋይሎች። `hyperledger/iroha:dev`
-ምስሉ ከተፈጠሩት ፋይሎች ጋር ጥቅም ላይ ሊውል ይችላል።
+የስራ ቦታ አጠቃቀሞች `kagami localnet` እና `kagami docker` ለማመንጨት Docker Compose ከተረጋገጠው ኮድ ጋር የሚዛመዱ ፋይሎች። `hyperledger/iroha:dev` ምስሉ ከእነዚያ የተፈጠሩ ፋይሎች ጋር ጥቅም ላይ ሊውል ይችላል።
 
-አሂድ CLI በአንድ መያዣ ውስጥ:
+CLI በአንድ መያዣ ውስጥ ይጫኑ:
 
 ```bash
 docker run -t hyperledger/iroha:dev iroha --help
 ```
 
-ሩጫ Kagami በአንድ መያዣ ውስጥ:
+Kagami በአንድ መያዣ ውስጥ ይሂዱ:
 
 ```bash
 docker run -t hyperledger/iroha:dev kagami --help
 ```
 
-ለባልደረባ ጅምር, አንድ አካባቢያዊኔት ማመንጨት እና መጀመሪያ ፋይል ያጠናቅቁ:
+ለባልደረባ ጅምር, አንድ አካባቢያዊኔት ማመንጨት እና በመጀመሪያ ፋይል ያጠናቅቁ:
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
@@ -68,8 +66,8 @@ cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyper
 docker compose -f ./localnet/docker-compose.yml up
 ```
 
-## የትኛውን ባነሪ መጠቀም አለብኝ? {#which-binary-should-i-use}
+## የትኛውን ባናሪ መጠቀም አለብኝ? {#which-binary-should-i-use}
 
-- አጠቃቀም `irohad` የእኩዮችን ሥራ ሲጀምሩ ወይም ሲያካሂዱ.
-- አጠቃቀም `iroha` የመረጃ ቋቱን መጠየቅ፣ ግብይቶችን ማቅረብ ወይም የኦፕሬተሩ መጨረሻ ነጥቦችን መመርመር ሲያስፈልግህ።
-- አጠቃቀም `kagami` ቁልፎችን፣ የጄኔሲስ ማኒፌስቶችን፣ የመገለጫ ጥቅሎችን ወይም የአካባቢ ኔት ሀብቶችን በሚፈልጉበት ጊዜ።
+- የእኩዮቻችሁን ሥራ ሲጀምሩ ወይም ሲያከናውኑ `irohad` ይጠቀሙ።
+- መለያውን ለመጠየቅ፣ ግብይቶችን ለማቅረብ ወይም የኦፕሬተሩ መጨረሻ ነጥቦችን ለመፈተሽ በሚፈልጉበት ጊዜ `iroha` ይጠቀሙ።
+- ቁልፎችን፣ የጄኔሲስ መገለጫዎችን፣ የመገለጫ ጥቅሎችን ወይም አካባቢያዊ ኔት ንብረቶችን በሚፈልጉበት ጊዜ `kagami` ይጠቀሙ።

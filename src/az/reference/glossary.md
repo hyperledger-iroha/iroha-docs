@@ -58,7 +58,7 @@ Blokçeyn kontekstində bir aktiv blokçeyndə dəyərli bir obyektin təmsilçi
 
 Belə aktivlər bir-biri ilə əvəz edilə biləcəyi üçün eyni növ digər aktivlərə asanlıqla dəyişdirilə bilər.
 
-Məsələn, eyni valyutanın bütün vahidləri dəyəri ilə bərabərdir və mallar almaq üçün istifadə edilə bilər.
+Məsələn, eyni valyutanın bütün vahidləri qiymətlərində bərabərdir və mal almaq üçün istifadə edilə bilər. Ümumiyyətlə, pul və sikkələrin istifadəsi istisna olmaqla, gövdəli aktivlər eyni görünüşdədir.
 
 ### Fungible olmayan aktivlər {#non-fungible-assets}
 
@@ -80,7 +80,7 @@ Bir aktiv eyni növdən daha çox nəşr edilə bilsə, istehsal oluna bilər.
 
 ## Bizanslı səhv tolerantlığı (BFT) {#byzantine-fault-tolerance-bft}
 
-Iroha öz peer-to-peer şəbəkəsində 33% -ə qədər zərərli aktyorlarla işləyə bilən bir şəbəkədə düzgün işləmək qabiliyyəti.
+Zərərli aktyorların müəyyən bir faizini ehtiva edən şəbəkə ilə düzgün işləmək imkanı. Iroha öz peer-to-peer şəbəkəsində 33% -ə qədər zərərli aktyorla işləyə bilir.
 
 ## Iroha Komponentlər {#iroha-components}
 
@@ -152,7 +152,7 @@ Dünya vəziyyətinə baxışını dəyişdirmədən oxumağı xahiş etmək. [B
 
 ## Görünüş dəyişikliyi {#view-change}
 
-Bu, ümumiyyətlə yeni [Liderin seçilməsini tələb edir ](#leader).
+Konsensus əldə etmək cəhdinin uğursuz olması halında baş verən proses. Adətən bu, yeni [Liderin ](#leader) seçilməsini tələb edir.
 
 ## Dünya vəziyyətinə baxış (WSV) {#world-state-view-wsv}
 

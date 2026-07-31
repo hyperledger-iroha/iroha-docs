@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # Suallar {#queries}
 
-Iroha sorğuları kitabın vəziyyətini mutasiya etmədən oxumuşdur.
+Iroha sorğuları kitabın vəziyyətini mutasiya etmədən oxuyur. Mövcud məlumat modeli iki geniş sorğu şəklini açıqlayır:
 
 - bir obyekt və ya bir dəyər qaytaran tək suallar
 - İterativ suallar, bir axını və ya kolleksiyanı geri qaytarır və sorğu növünün dəstəklədiyi filtrləmə, sıralama, proyeksiya və səhifələşdirmə ilə birləşə bilər.

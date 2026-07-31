@@ -61,7 +61,7 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
 iroha --config ./localnet/client.toml ops sumeragi params
 ```
 
-Телеметрия күреүсәнлеге конфигурацияланған профилгә бәйле. `extended` кәрәк саҡта `/metrics`, һәм ҡулланыу `full` һынауҙар ваҡытында, әгәр һеҙ шулай уҡ кәрәк деталь Sumeragi оператор маршруттары.
+Телеметрия күреүсәнлеге конфигурацияланған профилгә бәйле. `/metrics` кәрәк саҡта `extended` ҡулланығыҙ, ә һынау барышында `full` ҡулланығыҙ, әгәр һеҙгә шулай уҡ Sumeragi операторы маршруттары ла кәрәк икән.
 
 ```toml
 telemetry_enabled = true
@@ -70,7 +70,7 @@ telemetry_profile = "full"
 
 ## Эшмәкәрлек таҫмалары {#performance-bands}
 
-Был диапазондарҙы маҡсатлы үтәүсәнлектә күҙәтелгән хәрәкәт өсөн ҡулланыу `Y` TPS һәм кисектереү бюджеты `L` Миллисекундтар. Эш йөкләмәһен йылытыу, тотороҡло торош һәм иң кәм тигәндә бер осоро көтөлгән юғары йөкләмәне үҙ эсенә алыу өсөн үтәй.
+`Y` TPS һәм задержка бюджеты `L` миллисекундтарҙа күҙәтелгән ваҡытта был диапазондарҙы ҡулланығыҙ.
 
 |Тамаша |Шарттар |Мәғәнәһе |
 | --- | --- | --- |
@@ -196,7 +196,7 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
 |Задержәне йөкмәтергә |`histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |p95/p99-ны латенция бюджеты менән сағыштырығыҙ |
 |Көҙгө тәрәнлеге |`queue_size`, `sumeragi_tx_queue_depth` |Иң юғары йөкләнеш ваҡытында сикләүҙәр һаҡланырға тейеш .|
 |Кәрәкле сираттың тығыҙлығы |`sumeragi_tx_queue_saturated` |Тотороҡло булмаған нуль кимәлендәге уртаса йөкләмә |
-|Үҙгәрештәрҙе ҡара | `view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` |Үҫешле ҡиммәттәр ваҡытлыса, топология, файҙалы йөкләмә йәки селтәр проблемаһын күрһәтә. |
+|Үҙгәрештәрҙе ҡара |`view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` |Үҫешле ҡиммәттәр ваҡытлыса, топология, файҙалы йөкләмә йәки селтәр проблемаһын күрһәтә. |
 |Ҡалған хәбәрҙәр |`dropped_messages`, `sumeragi_consensus_message_handling_total` |Йыш ҡына йөкләнеү ваҡытында түбән төшөүе latency spikes аңлата . |
 |RBC баҫым |`sumeragi_rbc_store_pressure`, `sumeragi_rbc_backpressure_deferrals_total` |Яҡшы йөк ташыуҙы тергеҙеү һәм һаҡланыу өсөн нуль булмаған баҫым нөктәләре |
 |Кворумға килегеҙ |`sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` |Иҫәпләнгән ҡултамғалар тиҙ арала кәрәкле кворумға етергә тейеш .|
@@ -251,5 +251,5 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
 
 - [Izanami менән Хаос һынауҙары](./chaos-testing.md)
 - [Torii сикләү пункттары](../../reference/torii-endpoints.md)
-- [Эшләгеҙ Iroha 3 аша CLI](../../get-started/operate-iroha-via-cli.md)
+- [Iroha 3 аша хәрәкәт итеү CLI ](../../get-started/operate-iroha-via-cli.md)
 - [Тиҫтерҙәр менән конфигурация буйынса референс](../../reference/peer-config/params.md)

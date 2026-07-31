@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 Esta página lista os tipos padrão de tokens de permissão expostos pelo atual modelo de dados do executor Iroha. Para o guia conceitual de funções e permissões, veja [Permissões](/pt/blockchain/permissions.md).
 
-Os nomes do tipo de token abaixo descrevem a superfície padrão da política, mas uma rede pode personalizar a validação do runtime atualizando o executor.
+As verificações de autorização são executadas pelo validador ativo do tempo de execução. Os nomes dos tipos de tokens abaixo descrevem a superfície de política padrão, mas uma rede pode personalizar a validação do runtime atualizando o Executor.
 
 ## Tokens padrão {#default-tokens}
 

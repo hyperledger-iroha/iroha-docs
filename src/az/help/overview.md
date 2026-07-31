@@ -19,7 +19,7 @@ Bu bölmə işləyərkən problemlərlə üzləşsəniz kömək etmək üçün n
 
 ## Anahtarları yoxlayın. {#check-the-keys}
 
-Əksər problemlər uyğun olmayan açarların nəticəsində yaranır.
+Əksər problemlər eşqi olmayan açarların nəticəsində yaranır. Ona görə də məsləhət görürük ki, bu qaydalara əməl olun: Əgər bir şey səhv olarsa, əvvəlcə açarları yoxlayın.
 
 Burada bir sürətli izah: həmyaşıdların açarları etibarlı həmyaşıdalar arasında olan açarlarla uyğunlaşmadıqda yaranan səhv mesajlarını fərqləndirmək mümkün deyil, çünki bu həmyaşıdın ictimai açarını aşkar edəcəkdir. Beləliklə, ətraf mühit dəyişənləri vasitəsilə müəyyən edilmiş açarları olan Helm xəritələriniz və ya Kubernetes yerləşdirmələriniz varsa, daha yüksək səviyyəli uğursuzluqları araşdırmadan əvvəl [`public_key`](/az/reference/peer-config/params.md#param-public-key), [`private_key`](/az/reference/peer-config/params.md#param-private-key) və [`trusted_peers`](/az/reference/peer-config/params.md#param-trusted-peers) qiymətlərini müqayisə edin.
 

@@ -6,28 +6,21 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# አወቃቀር እና አስተዳደር {#configuration-and-management}
+# አወቃቀርና አስተዳደር {#configuration-and-management}
 
-Iroha ውቅር ሁለት አምራች ደረጃዎች አሉት:
+Iroha ውቅር ሁለት የማረጋገጫ ደረጃዎች አሉት:
 
-- **አካባቢያዊ የባልደረባ እና የደንበኛ ውቅር**, ውስጥ የተከማቹ TOML ፋይሎች እና ማንበብ
-  የሂደት ማስጀመር
-- **በሰንሰለት ላይ ያለው ውቅር**, በግብይቶች የተለወጡ
-  [`SetParameter`](/am/blockchain/instructions.md#setparameter)
+- በ TOML ፋይሎች ውስጥ የተከማቸ እና ሂደት ሲጀምር የሚነበብ የአካባቢያዊ የእኩዮች እና የደንበኛ ውቅር
+- በ [ `SetParameter`](/am/blockchain/instructions.md#setparameter) በኩል በሚደረጉ ግብይቶች የተለወጠ የሰንሰለት ውቅር።
 
-የአገናኝ ማንነት, አድራሻዎች, ምዝገባ, ማከማቻ እና
-የደንበኛ ፊርማ ቁልፎች. መስማማት አለባቸው እሴቶች ላይ ሰንሰለት ላይ ውቅር ይጠቀሙ
-በአውታረ መረብ እና በዴትሪሚኒስት መንገድ እንደገና ይጫወታል.
+የአገናኝ መታወቂያ, አድራሻዎች, ምዝገባ, ማከማቻ እና የደንበኛ ፊርማ ቁልፎች አካባቢያዊ ውቅር ይጠቀሙ. አውታረ መረቡ መስማማት እና በዴትሚኒስቲክ ዳግም መጫወት ያለባቸው እሴቶች ላይ ሰንሰለት ላይ ውቅር ይጠቀም.
 
-የምርት ባህሪ ከነዚህ ውቅር ንብርብሮች መምጣት አለበት.
-የሙከራ ግብዓቶችን ለአካባቢያዊ መሳሪያዎች ለማቅረብ ተለዋዋጮች ምቹ ሊሆኑ ይችላሉ ፣ ግን
-እነሱ የምርት ባህሪ በሮች አይደሉም እና የተሰማሩትን አይተኩም
-ውቅር።
+የምርት ባህሪ ከእነዚህ የቅንብብር ንብርብሮች መምጣት አለበት ። የአካባቢ ተለዋዋጮች ለአካባቢያዊ መሳሪያዎች የሙከራ ግብዓቶችን ለማቅረብ ምቹ ሊሆኑ ይችላሉ ፣ ግን እነሱ የምርት ባህሪያት በሮች አይደሉም እና የተሰማሩትን ውቅር አይተኩም ።
 
-ዋናዎቹ የግንባታ መግቢያ ነጥቦች:
+ዋናዎቹ የመግቢያ ነጥቦች የሚከተሉት ናቸው:
 
-- [ዘፍጥረት](/am/guide/configure/genesis.md)
+- [ዘፍጥረት ](/am/guide/configure/genesis.md)
 - [የደንበኛው ውቅር](/am/guide/configure/client-configuration.md)
-- [የአውታረ መረብ ማሰማራት ቁልፎች](/am/guide/configure/keys-for-network-deployment.md)
-- [በባዶ ብረት ላይ እየሮጠ](/am/guide/advanced/running-iroha-on-bare-metal.md)
-- [የአቻ ውቅር ማጣቀሻ](/am/reference/peer-config/index.md)
+- [የአውታረ መረብ ማሰማራት ቁልፎች ](/am/guide/configure/keys-for-network-deployment.md)
+- [በባዶ ብረት ላይ የሚሰራ ](/am/guide/advanced/running-iroha-on-bare-metal.md)
+- [የእኩዮች ውቅር ማጣቀሻ ](/am/reference/peer-config/index.md)

@@ -6,10 +6,9 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# נתונים מטאטא {#metadata}
+# מטאדאטה {#metadata}
 
-מטאדאטה היא מפה של ערך מפתח מבוקש המוסמך לאובייקטים של ספר הגדול.
-`Name` הערכים והערכים הם JSON (`Json`) מטענים מועילים.
+מטאדאטה היא מפה של ערך מפתח מבוקש הקשורת לאובייקטים במספר. המפתחות הן ערכים `Name` והערכים הם עומסי תועלת JSON (`Json`).
 
 האובייקטים הבאים יכולים להכיל מטא נתונים:
 
@@ -22,18 +21,13 @@ translation_engine: nllb-200-ct2
 - תפעילים
 - עסקאות
 
-השתמשו בתנתונים מטאטא עבור שדות תיאוריים קטנים או אינדקסינג שייכים למספר
-מטענים שימושיים גדולים צריכים להיות מאוחסנים מחוץ WSV ונקרא ב-
-מזין, URI, או SoraFS דרך.
+השתמשו בתנתונים מטא עבור שדות תיאוריים או אינדקסינג קטנים שייכים למצב ספריה. עומסים מועילים גדולים צריכים להיות מאוחסנים מחוץ ל- WSV ומועדגים על ידי מסלול דיג'סט, URI, או SoraFS.
 
-לקבלת הדרכה בחירת מטא-מנתונים, נכסים, NFTs, RWAs, או מחוץ למשרשרת
-אחסון, ראה
-[אמצעי אחסון נתונים מטאטא ונתונים גדולים](/he/guide/configure/metadata-and-store-assets.md).
+לקבלת הוראות על בחירת נתונים מטאטא, נכסים NFTs, RWAs או אחסון מחוץ לרשת, ראה [הבחירות לאחסון נתונים מטטאטא ונתונים ספריים ](/he/guide/configure/metadata-and-store-assets.md).
 
-## נסה את זה. Taira {#try-it-on-taira}
+## נסה את זה על Taira {#try-it-on-taira}
 
-הנתונים המטאטאניים נראים באמצעות קריאת משאבים רגילה. Taira
-הגדרות נכסים שיש בהן כיום מעטא נתונים:
+נתונים מטאטא נראים באמצעות קריאת משאבים רגילה. פקודה זו רשימה הגדרות נכסים Taira שיש להם כיום נתונים מטטא:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=100' \
@@ -42,7 +36,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=100' \
     | {id, name, metadata}'
 ```
 
-השתמשו באותו דפוס עבור תחומים וחשבות:
+השתמשו בדפוס זהה עבור דומנים וחשבות:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
@@ -52,26 +46,20 @@ curl -fsS 'https://taira.sora.org/v1/accounts?limit=20' \
   | jq '.items[] | select((.metadata // {} | length) > 0)'
 ```
 
-מתייחס לתוצאת ריקה כنتيجة תקפה. Taira
-האובייקטים אינם נושאים מטא נתונים, לא כי נקודת הסיום נכשלה.
+מתייחס לתוצאת ריקה כתוצאה תקפה. זה אומר שהדף הנוכחי של Taira אובייקטים אינו מכיל מטא נתונים, לא כי נקודת הסיום נכשלה.
 
 ## עדכון נתונים מטאטא {#updating-metadata}
 
-הנתונים המטא משתנים עם Iroha הוראות מיוחדות:
+הנתונים המטאטאליים משתנים עם הוראות מיוחדות Iroha:
 
-- [`SetKeyValue`](/he/blockchain/instructions.md#setkeyvalue-removekeyvalue)
-  מכניס או מחליף מפתח
-- [`RemoveKeyValue`](/he/blockchain/instructions.md#setkeyvalue-removekeyvalue)
-  מוריד מפתח.
+- [`SetKeyValue`](/he/blockchain/instructions.md#setkeyvalue-removekeyvalue) מדביקים או מחליפים מפתח
+- [`RemoveKeyValue`](/he/blockchain/instructions.md#setkeyvalue-removekeyvalue) מסיר מפתח
 
-לרשות המגיש את העסקה חייב להיות הרשיון הנדרש.
-על ידי אישור זמן הפעלה פעיל. עבור פני השטח של הרשאות מקובלות, ראה
-[סימני רשות](/he/reference/permissions.md).
+לרשות המגיש את העסקה חייב להיות הרשיון הנדרש על ידי מתוקן הזמן הפעיל. עבור שטח הרשיונות המקובל, ראה [Tokens Permission ](/he/reference/permissions.md).
 
 ## אירועים {#events}
 
-אירועי נתונים נחשפים כאשר מתנתונים משתנים.
-`MetadataChanged<Id>`:
+אירועי נתונים יוצרים כאשר מתנתונים משתנים. עומס השימוש של אירוע כללי הוא `MetadataChanged<Id>`:
 
 ```mermaid
 classDiagram
@@ -93,22 +81,10 @@ MetadataChanged --> AssetDefinitionMetadataChanged
 MetadataChanged --> DomainMetadataChanged
 ```
 
-שימוש [פילטר אירועי נתונים](/he/blockchain/filters.md#data-event-filters) ל
-לחתום רק על אירועים של מטא נתונים עבור סוג הארגון או אובייקט ID זה
-זה חשוב לאינטגרציה.
+השתמשו ב- [filters של אירועים נתונים ](/he/blockchain/filters.md#data-event-filters) כדי לחתום רק על אירועי מטא נתונים עבור סוג הארגון או אובייקט ID החשוב לאינטגרציה.
 
 ## שאלות {#queries}
 
-הנתונים המטאטאליים חוזרים כחלק מהאובייקט הנדרש. למשל, שימוש
-[`FindAccountById`](/he/reference/queries.md#accounts-and-permissions),
-[`FindDomainById`](/he/reference/queries.md#domains-and-peers), או
-[`FindAssetDefinitionById`](/he/reference/queries.md#assets-nfts-and-rwas).
-שימוש [`FindNfts`](/he/reference/queries.md#assets-nfts-and-rwas) או
-[`FindNftsByAccountId`](/he/reference/queries.md#assets-nfts-and-rwas) עבור
-NFTs, ו [`FindRwas`](/he/reference/queries.md#assets-nfts-and-rwas) עבור RWA
-אז קרא את שדה הנתונים של האובייקט. NFT תשובות השאלות חושפות את
-NFT `content` מפה כמתא נתונים.
+נתונים מטאטא חוזרים כחלק מהאובייקט שאל. לדוגמה, השתמש [`FindAccountById`](/he/reference/queries.md#accounts-and-permissions), [`FindDomainById`](/he/reference/queries.md#domains-and-peers), או [`FindAssetDefinitionById`](/he/reference/queries.md#assets-nfts-and-rwas). השתמש [`FindNfts`](/he/reference/queries.md#assets-nfts-and-rwas) או [`FindNftsByAccountId`](/he/reference/queries.md#assets-nfts-and-rwas) עבור NFTs, ו [`FindRwas`](/he/reference/queries.md#assets-nfts-and-rwas) עבור RWA הרבה. ואז לקרוא את שדה הנתונים המתאים של האובייקט. תשובות השאלות של NFT חושפות את המפה NFT `content` כמטאטא נתונים רשומים.
 
-מפתחות הנתונים המטאטאליים הם חלק ממדינה של הספר הגדול, אז לשמור אותם יציבים ולהימנע
-קודינג גרסה ספציפית לתطبيق תופס לתוך שם המפתח כאשר JSON
-הערך יכול לשאת את הגרסה הזאת באופן מפורש.
+מפתחות הנתונים מטאטא הם חלק ממצב הספרים, אז לשמור אותם יציבים ולהימנע מקודד גרסה ספציפית יישום ל-churn לתוך שם המפתח כאשר ערך JSON יכול לשאת את הגרסה הזו באופן בולט.

@@ -120,7 +120,7 @@ curl -fsS https://taira.sora.org/openapi.json \
   | jq -r '.paths | keys[] | select(startswith("/v1/rwas") or startswith("/v1/explorer/rwas"))'
 ```
 
-A saída vazia `items` é esperada quando ainda não foram registados lotes públicos.
+Espera-se uma saída vazia `items` quando ainda não tiverem sido registados lotes públicos. Registo, transferência, retenção, congelamento e resgate são transações assinadas.
 
 ## Tenta. {#try-it}
 

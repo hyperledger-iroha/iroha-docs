@@ -6,48 +6,41 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# SDK الدروس {#sdk-tutorials}
+# SDK دروس {#sdk-tutorials}
 
-هذه الصفحات تلخيص Iroha 3 نقاط دخول العملاء التي يتم شحنها من المركز الرئيسي
-مساحة العمل، بما في ذلك أسماء الحزم القنونيّة، وسلك التثبيت، والحد الأدنى
-نقاط البداية
+هذه الصفحات تلخص نقاط دخول العميل Iroha 3 التي يتم إرسالها من مساحة العمل الرئيسية، بما في ذلك أسماء الحزم التقليدية وسبل التثبيت ونقاط بداية ضئيلة.
 
 ## النظام الموصى به {#recommended-order}
 
 1. [التثبيت Iroha 3](/ar/get-started/install-iroha.md)
-2. [إطلاق Iroha 3](/ar/get-started/launch-iroha.md)
-3. اختر واحدة SDK:
+2. [الإطلاق Iroha 3](/ar/get-started/launch-iroha.md)
+3. اختر SDK:
    - [Rust](/ar/guide/tutorials/rust.md)
    - [Python](/ar/guide/tutorials/python.md)
-   - [JavaScript / TypeScript](/ar/guide/tutorials/javascript.md)
-   - [Kotlin, Android, والجافا](/ar/guide/tutorials/kotlin-java.md)
-   - [Swift و (iOS)](/ar/guide/tutorials/swift.md)
-4. مراجعة [تطبيقات العينة](/ar/guide/tutorials/sample-apps.md) عندما تريد
-   إشارة كاملة لتطبيق العميل.
-5. الاستخدام [مدمج Kaigi](/ar/guide/tutorials/kaigi.md) عندما تريد إضافة
-   إجتماعات صوتية / فيديو مدعومة محفظة إلى تطبيقك الخاص.
-6. الاستخدام [Musubi الحزم](/ar/guide/tutorials/musubi.md) عندما تحتاج إلى إعادة استخدامها
-   Kotodama المكتبات المصدرة مع الاعتمادات على السلسلة التسجيلية.
+   - [JavaScript /TypeScript ](/ar/guide/tutorials/javascript.md)
+   - [Kotlin، Android، وجافا](/ar/guide/tutorials/kotlin-java.md)
+   - [Swift و iOS](/ar/guide/tutorials/swift.md)
+4. مراجعة تطبيقات نموذج [](/ar/guide/tutorials/sample-apps.md) عندما تريد مرجعًا كاملًا لتطبيق العميل.
+5. استخدم [Embed Kaigi](/ar/guide/tutorials/kaigi.md) عندما ترغب في إضافة اجتماعات صوتية/فيديو مدعومة محفظة إلى تطبيقك.
+6. استخدم حزم [Musubi](/ar/guide/tutorials/musubi.md) عندما تحتاج إلى مكتبات مصدر Kotodama قابلة لإعادة الاستخدام مع اعتمادات سجل متصلة بالسلسلة.
 
 ## العينات {#samples}
 
-يحتوي مساحة العمل في الأعلى من التيار على JavaScript وصفات و Swift نموذج iOS
-للمشاريع Android, تبدأ Kotlin SDK الوحدات واختباراتها.
+يحتوي مساحة العمل السابقة على وصفات JavaScript ومشاريع عينة Swift/iOS. بالنسبة إلى Android، ابدأ بمودولات Kotlin SDK واختباراتها.
 
-- [استعراض نموذج التطبيقات](/ar/guide/tutorials/sample-apps.md)
-- [مدمج Kaigi في JavaScript التطبيق](/ar/guide/tutorials/kaigi.md)
+- [استعراض نموذج من التطبيقات](/ar/guide/tutorials/sample-apps.md)
+- [إدماج Kaigi في تطبيق JavaScript ](/ar/guide/tutorials/kaigi.md)
 
 ## مصدر الحقيقة {#source-of-truth}
 
-جميعهم SDK الصفحات هنا مشتقة من مساحة العمل السابقة الحالية:
+جميع الصفحات SDK هنا مشتقة من مساحة العمل السابقة الحالية:
 
 - `crates/iroha`
 - `python/iroha_python`
 - `javascript/iroha_js`
 - `kotlin`
-- `java/iroha_android` (جافا المرآة من Kotlin- أولاً Android السطح)
+- `java/iroha_android` (مرآة جاوا لسطح Kotlin - الأول Android)
 - `IrohaSwift`
 - `crates/musubi`
 
-عندما تكون في شك، تفضل README و البيانات المتعلقة بالحزم في تلك المجلات؛
-أنها تصف مراجعة المصدر التي تقوم ببناءها
+عندما تكون في شك، تفضل README والحزمة البيانات الأساسية في تلك الإرشادات؛ فإنها تصف مراجعة المصدر التي تقوم ببناءها.

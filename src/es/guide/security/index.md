@@ -12,7 +12,7 @@ Al utilizar Iroha o cualquier otro libro mayor de cadena de bloques para ese asu
 
 ### Navegación {#navigation}
 
-En esta sección podrá aprender acerca de varios aspectos de la seguridad de su red Iroha.
+En esta sección podrá aprender acerca de varios aspectos de la seguridad de su red Iroha. Para obtener más información, elija uno de los siguientes temas:
 
 - [Principios de seguridad](./security-principles):
 

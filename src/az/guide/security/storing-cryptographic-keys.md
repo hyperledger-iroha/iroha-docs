@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # Kriptografik açarların saxlanması {#storing-cryptographic-keys}
 
-Xüsusi məlumatlarınız yalnız kriptografik açarları qorumaq üçün <abbr title="Operational Security">OPSEC</abbr> üsullarını tətbiq etsəniz məxfi qalacaq. Həmişə ehtiyatlı olun və şəxsi açarınızı bölüşməkdən çəkinin, onu yalnız etibarlı şəxslərə məxsus olan mənzil açarlarınız kimi qəbul edin.
+Həssas məlumatlarınız yalnız kriptografik açarları qorumaq üçün <abbr title="Operational Security">OPSEC</abbr> üsullarını tətbiq etsəniz məxfi qalacaq. Sosial mühəndislik təhdidləri, kiminsə nüfuzlu bir şəxsiyyət kimi özünü göstərərək sizi manipulyasiya etməyə çalışır ki, onlara sizin hüququnuzu versin. özəl kriptografik açar, realdır. Həmişə ehtiyatlı olun və şəxsi açarınızı bölüşməkdən çəkinin, ona dairənizin açarlarını etibarlı insanlar üçün saxladığınız kimi davranın. Yalnız fərdlər.
 
 <abbr title="Operational Security">OPSEC</abbr> və onun ən yaxşı təcrübələri haqqında daha ətraflı məlumat üçün bax: [Əməliyyat təhlükəsizliyi ](./operational-security)
 
@@ -20,7 +20,7 @@ Bir çox Iroha memarlıq qərarları Secure Shell (`SSH`) protokolunun prinsipl�
 
 ### SSH və SSH Agentindən istifadə etməklə {#using-ssh-and-ssh-agent}
 
-Secure Shell Protocol (`SSH`) bir kriptografik şəbəkə protokoludur ki, SSH açarlarından istifadə edərək uzaqdakı maşınlara təhlükəsiz giriş imkanı təmin edir. Bu kontekstdə `SSH` iki əsas təsdiqləmə mexanizmini təklif edir: ənənəvi şifrə əsaslı yanaşma və daha təhlükəsiz ictimai-xüsusi açar cüt metodu.
+Secure Shell Protocol (`SSH`) bir virtual qapı kimi xidmət edən kriptografik şəbəkə protokoludur. SSH açarlarından istifadə edərək uzaqdan qurulan maşınlara təhlükəsiz giriş imkanı təmin etmək. Bu, fiziki mövcudluğun lazımsızlığı olmadan sistemlərlə uzaqdan ünsiyyət qurmaq üçün səmərəli bir yol təmin edir. Bu baxımdan `SSH` iki əsas etibarlaşdırma mexanizmini təklif edir: Ənənəvi şifrə əsaslı yanaşma və daha təhlükəsiz ictimai-xüsusi açar cütü metodu.
 
 `SSH` haqqında daha ətraflı məlumat üçün [-ə baxın, əlaqəli SSH Akademiyanın mövzusunda](https://www.ssh.com/academy/ssh).
 
@@ -51,7 +51,7 @@ KeePassXC'nin necə qurulması barədə təlimatlar üçün aşağıdakı [Konfi
 
 ![KeePassXC: `Main` ekran UI](../../../img/KeePassXC.png)
 
-KeePassXC Bu sistem təkcə şifrələri deyil, həm də `SSH` Key saxlama üçün istifadə edildikdə, bu şifrə meneceri `ssh-agent` saxlanılan açarları ilə, sonra tezliklə yaddaşdan çıxarılır KeePassXC Pencerə bağlanıb.
+KeePassXC gücləndirilmiş təhlükəsizlik, çeviklik və nəzarət təklif edir. Yalnız şifrələri yox, `SSH` açarlarını da saxlayır. Anahtar saxlama üçün istifadə edildikdə, bu şifrə meneceri `ssh-agent`-yə saxlanan açarları təmin edir. KeePassXC pəncərəsi bağlandıqdan sonra tezliklə yaddaşından çıxarılır.
 
 ::: xəsarət
 

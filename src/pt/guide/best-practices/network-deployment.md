@@ -32,7 +32,7 @@ Ver [Gênesis](/pt/reference/genesis.md), [ Gerenciamento entre pares](/pt/guide
 
 - Colocar Torii atrás de um proxy ou firewall inverso quando estiver exposto fora do host ou da rede privada.
 - Terminar TLS e aplicar controles básicos de autenticação, limitação de taxa e tamanho do pedido na borda quando a implantação os exigir.
-- As rotas de operador e telemetria deverão ser mais restritas do que as rotas públicas de somente leitura.
+- Publicar apenas os pontos finais necessários para o ambiente. As rotas de operador e de telemetria deverão ser mais restritas do que as rotas públicas de leitura única.
 - Ligue os endereços do ouvinte às interfaces host-locais quando os pares não devem aceitar o tráfego remoto diretamente.
 
 Veja [Torii Pontos finais](/pt/reference/torii-endpoints.md) e [ Redes privadas virtuais ](/pt/guide/security/vpn.md).

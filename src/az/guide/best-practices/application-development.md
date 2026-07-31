@@ -13,8 +13,8 @@ Iroha tətbiqləri əməliyyat davranışını açıq şəkildə göstərməlidi
 ## Müştəri quruluşu {#client-setup}
 
 - Tətbiq mənbə kodundan kənarda müştəri konfigurasiyasını saxlayın. Zəngini yükləyin ID, Torii URL, imza hesabı və əməliyyat parametrləri ətraf mühitə aid quruluşdan.
-- `client.toml` fayllarını localnet, Taira, Minamoto və özəl şəbəkələr üçün ayrı saxlayın.
-- Çox qısa bir ömrü normal şəbəkə narahatlığı altında sona çata bilər, lakin çox uzun biri ikiqat təqdimatları əsaslandırmaq daha çətin edə bilər.
+- `client.toml` fayllarını localnet, Taira, Minamoto və özəl şəbəkələr üçün ayrı saxlayın. Kopyalaşdırılmış testnet imzalanıcısı heç vaxt əsas şəbəkə imzalançısı olmamalıdır.
+- Transaction ömrünü və status vaxtlarını bilə-bilə təyin edin. Çox qısa bir ömrü normal şəbəkə narahatlığı altında sona çata bilər, çox uzun biri isə ikiqat təqdimatları daha çətinləşdirə bilər. Məntiq haqqında.
 - `nonce = true` yalnız təkrarlanan əməliyyatların ayrı-ayrı hashləri olması lazım olduqda istifadə edin. İdempotent iş əməliyyatları üçün bir tətbiq tələbini saxlayın və yenidən istifadə edin ID belə ki, yenidən cəhdlər izləyə bilər.
 
 Mövcud TOML sahələri üçün [Müxfilik Konfigurasiyası](/az/guide/configure/client-configuration.md)-ə baxın.
@@ -24,7 +24,7 @@ Mövcud TOML sahələri üçün [Müxfilik Konfigurasiyası](/az/guide/configure
 - Mümkün olduğu təqdirdə xam JSON və ya silsilə ilə yığılmış pay yükləri əvəzinə SDK tiplənmiş təlimatlardan əməliyyatları qur.
 - Preflight vacib yalnız oxunma sualları ilə yazır: hesabın mövcudluğu, aktiv balansları, icazə statusu, ödəniş aktivlərinin mövcudluğu və hədəf obyektinin statusu.
 - Ödəniş hashini, səlahiyyətli hesabı, təlimatların ümumiləşdirilməsini və təqdim etməzdən əvvəl gözlənilən vəziyyət dəyişikliyini qeyd edin.
-- `Rejected`, `Expired` ilə müalicə olun və vaxt təxirə salınması nəticələri fərqli olur.
+- `Rejected`, `Expired` ilə müalicə olun və vaxt məhdudlaşdırma nəticələri fərqli olsun. Timeout, müştərinin son vəziyyətə əməl etmədiyini göstərir; bu şəbəkənin əməliyyatı görmədiyini sübut etmir.
 - Müvəffəqiyyətlə yazıldıqdan sonra, nəticədə olan vəziyyəti iş əməliyyatına uyğun bir sorğu və ya hadisə yoxlama nöqtəsi ilə təsdiqləyin.
 
 Əməliyyat mexanikası üçün [Əməliyyatları ](/az/blockchain/transactions.md) baxın.

@@ -438,7 +438,7 @@ LOG_LEVEL=INFO
 
 ### `logger.filter` {#param-logger-filter}
 
-[`logger.level`](#param-logger-level)ལས་ལྷག་སྟེ་ ཐོ་བཀོད་འབད་ཡོད་པའི་ཐོ་ཡིག་གི་ཐོ་བཀོད་འདི་ སེལ་འཐུ་འབད།
+[`logger.level`](#param-logger-level)ལས་ལྷག་པའི་ ལེགས་སྦྱར་ཅན་གྱི་ཐོ་ཡིག་བརྟག་དཔྱད་ཐིག་ཁྲ། དམིགས་གཏད་རེ་ལུ་ ཐོ་བཀོད་འབད་ནིའི་ཚིག་དོན་ཚུ་ རང་ལུགས་བཟོ་བཅོས་འབད་ཚུགས།
 
 <param-table type=string env=LOG_FILTER>
 <template #type>

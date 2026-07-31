@@ -8,33 +8,31 @@ translation_engine: nllb-200-ct2
 
 # Iroha ልዩ መመሪያዎች {#iroha-special-instructions}
 
-የአሁኑ የውሂብ ሞዴል እነዚህን ውስጣዊ የመማሪያ ቤተሰቦች ያጋልጣል:
+የአሁኑ የውሂብ ሞዴል እነዚህን ውስጣዊ የትምህርት ቤተሰቦች ያጋልጣል:
 
-| መመሪያ | የተለያዩ ዓይነቶች |
+|መመሪያ |ተለዋዋጮች|
 | --- | --- |
-| [`RegisterBox`](/am/blockchain/instructions.md#un-register) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Role`, `Trigger`, `RegisterPeerWithPop` |
-| [`UnregisterBox`](/am/blockchain/instructions.md#un-register) | `Peer`, `Domain`, `Account`, `AssetDefinition`, `Nft`, `Role`, `Trigger` |
-| [`MintBox`](/am/blockchain/instructions.md#mint-burn) | ቁጥር `Asset`, የመነሻ መድገም |
-| [`BurnBox`](/am/blockchain/instructions.md#mint-burn) | ቁጥር `Asset`, የመነሻ መድገም |
-| [`TransferBox`](/am/blockchain/instructions.md#transfer) | `Domain`, `AssetDefinition`, ቁጥር `Asset`, `Nft` |
-| [`SetKeyValueBox`](/am/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` ሜታዳታ |
-| [`RemoveKeyValueBox`](/am/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` ሜታዳታ |
-| [`GrantBox`](/am/blockchain/instructions.md#grant-revoke) | የመለያ ፈቃድ፣ የሂሳብ ሚና፣ የመለያ ፈቃድ |
-| [`RevokeBox`](/am/blockchain/instructions.md#grant-revoke) | ከሂሳብ ፈቃድ፣ ከሂሳብ ድርሻ፣ ከድርሻ ፈቃድ |
-| [`SetParameter`](/am/blockchain/instructions.md#setparameter) | ሰንሰለት መለኪያዎች ዝመና |
-| [`ExecuteTrigger`](/am/blockchain/instructions.md#executetrigger) | ማስነሻ አፈጻጸም |
-| [`Upgrade`](/am/blockchain/instructions.md#other-instructions) | አስፈፃሚ ማሻሻያ |
-| [`Log`](/am/blockchain/instructions.md#other-instructions) | አስፈፃሚ መዝገብ መግቢያ |
-| [`CustomInstruction`](/am/blockchain/instructions.md#other-instructions) | ለሥራ አስፈፃሚው የተወሰነ JSON የዋጋ ጭነት |
-| [የአገሬው ነዋሪ ንብረት ማስከበሪያ](/am/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
-| [አጠቃላይ የንብረት መቆለፊያዎች](/am/blockchain/escrow.md#generic-asset-locks) | `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, `ExpireAssetLock` |
-| [የማይታወቁ ንብረቶች ዋስትና](/am/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
+| [`RegisterBox`](/am/blockchain/instructions.md#un-register)| `Domain`, `Account`, `AssetDefinition`, `Nft`, `Role`, `Trigger`, `RegisterPeerWithPop` |
+| [`UnregisterBox`](/am/blockchain/instructions.md#un-register)| `Peer`, `Domain`, `Account`, `AssetDefinition`, `Nft`, `Role`, `Trigger` |
+| [`MintBox`](/am/blockchain/instructions.md#mint-burn)|የቁጥር `Asset`፣ ተደጋጋሚ ድርጊቶችን ያስነሳል |
+| [`BurnBox`](/am/blockchain/instructions.md#mint-burn)|የቁጥር `Asset`፣ ተደጋጋሚ ድርጊቶችን ያስነሳል |
+| [`TransferBox`](/am/blockchain/instructions.md#transfer)|`Domain`, `AssetDefinition`, ቁጥራዊ `Asset`, `Nft` |
+| [`SetKeyValueBox`](/am/blockchain/instructions.md#setkeyvalue-removekeyvalue)| `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` ሜታዳታ |
+| [`RemoveKeyValueBox`](/am/blockchain/instructions.md#setkeyvalue-removekeyvalue)| `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` ሜታዳታ |
+| [`GrantBox`](/am/blockchain/instructions.md#grant-revoke)|የሂሳብ መለያ ፈቃድ፣ የሒሳብ ሚና፣ የድርሻ ፈቃድ |
+| [`RevokeBox`](/am/blockchain/instructions.md#grant-revoke)|ከሂሳብ ፈቃድ፣ ከሂሳብ ድርሻ፣ ከድርሻ ፈቃድ |
+| [`SetParameter`](/am/blockchain/instructions.md#setparameter)|ሰንሰለት መለኪያዎች ዝመና |
+| [`ExecuteTrigger`](/am/blockchain/instructions.md#executetrigger)|ማስነሳት አፈጻጸም |
+| [`Upgrade`](/am/blockchain/instructions.md#other-instructions)|አስፈጻሚ ማሻሻያ |
+| [`Log`](/am/blockchain/instructions.md#other-instructions)|አስፈጻሚ መዝገብ መግቢያ |
+| [`CustomInstruction`](/am/blockchain/instructions.md#other-instructions)|ለሥራ አስፈፃሚው የተለዩ JSON ጥቅማጥቅሞች |
+| [](/am/blockchain/escrow.md)  የአገር ውስጥ ንብረቶች ዋስትና| `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
+| [አጠቃላይ የንብረት መዝጊያዎች ](/am/blockchain/escrow.md#generic-asset-locks) |`OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, `ExpireAssetLock` |
+| [የማይታወቁ ንብረቶች ዋስትና ](/am/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
 
-ተጨማሪ Iroha 3 ሞጁሎች ለጎራ የተወሰኑ የትምህርት ዓይነቶችን መመዝገብ ይችላሉ
-በሂደቱ ላይ የተቀመጠውን የሥርዓት ደረጃ ዝርዝር
-የአሁኑ ምንጭ ዛፍ፣ ተመልከት [የመረጃ ሞዴል መርሃግብር](./data-model-schema.md).
+ተጨማሪ Iroha 3 ሞጁሎች በትእዛዝ መዝገብ አማካኝነት የጎራ-ተኮር የትምህርት ዓይነቶችን መመዝገብ ይችላሉ። ከአሁኑ ምንጭ ዛፍ ለተፈጠረው የስኪማ ደረጃ ዝርዝር ፣ [የዳታ ሞዴል ስኬም](./data-model-schema.md)ን ይመልከቱ።
 
-::: details ሰንጠረዥ፦ መሠረታዊ መመሪያ ቤተሰቦች
+::: details ሰንጠረዥ፦ የቤተሰብ መሠረታዊ መመሪያ
 
 ```mermaid
 classDiagram

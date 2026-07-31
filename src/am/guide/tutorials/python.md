@@ -8,40 +8,28 @@ translation_engine: nllb-200-ct2
 
 # Python {#python}
 
-የ Python SDK በስራ ቦታው ውስጥ `iroha-python`. የመጀመሪያው Iroha 3
-የጊዜ ገደብ Torii እና Norito ገጽታዎች። የፓኬጅ ስሪት
-ወይም የእርስዎ ውህደት ጥቅም ላይ የዋለው ምንጭ ማሻሻያ SDK እና ኖድ ላይ ይቆዩ
-ተመሳሳይ የሽቦ ቅርጸት ማሻሻያ።
+በቅድሚያ የስራ ቦታ ውስጥ ያለው Python SDK `iroha-python` ነው። የመጀመሪያው Iroha 3 ስሪት የአሁኑን Torii እና Norito ወለሎችን ያነጣጥራል ። የፓኬጅ ስሪት ወይም በመቀላቀልዎ ጥቅም ላይ የዋለው ምንጭ ማሻሻያ ይጫኑ ፣ ስለሆነም SDK እና አንጓው በተመሳሳይ ገመድ ቅርጸት ማሻሻያ ላይ ይቆያሉ።
 
-ከዚህ በታች የተጠቀሱት የንባብ-ብቻ ምሳሌዎች ከሕዝብ ጋር ተጣጥፈዋል Taira በ
-`https://taira.sora.org`. የሚቀይሩ ምሳሌዎች የግብይት አብነቶች ናቸው
-እውነተኛ ያስፈልጋል Taira ባለስልጣን፣ የግል ቁልፍ፣ የጋዝ ሜታዳታ እና ማንኛውም ኦፕሬተር
-የዒላማው መንገድ ከመስጠታቸው በፊት የሚጠይቋቸው ቶከኖች።
+ከዚህ በታች የተጠቀሱት የንባብ-ብቻ ምሳሌዎች ከህዝብ Taira ጋር በ `https://taira.sora.org` ላይ ተፈትነዋል ። የመለዋወጥ ምሳሌዎች የትራንስክሽን አብነቶች ናቸው ፣ እነሱ ከመቅረባቸው በፊት እውነተኛ Taira ባለስልጣን ፣ የግል ቁልፍ ፣ የጋዝ ሜታዳታ እና በዒላማው መንገድ የሚፈለጉትን ማንኛውንም የአስተናጋጅ ምልክት ይጠይቃሉ።
 
-የሚከተሉትን ምሳሌዎች በዚህ ቅደም ተከተል ይጠቀሙ
+ምሳሌዎቹን በዚህ ቅደም ተከተል ይጠቀሙ:
 
-| ደረጃ | ከሕዝብ ጋር ይወዳደሩ Taira? | የሚያስፈልግህ ነገር |
+|ደረጃ |በህዝብ Taira ላይ ሩጫ?|የሚያስፈልግህ ነገር|
 | --- | --- | --- |
-| የደንበኞችን ጥሪዎች ለማንበብ ብቻ | አዎን | Python ፓኬጅ እና የአውታረ መረብ መዳረሻ |
-| የአካባቢው ፊርማ እና መመሪያ ገንቢዎች | የኔትወርክ ጥሪ የለም `submit()` | ተወላጅ ማራዘሚያ እና ቁልፍ ቁሳቁስ |
-| የሽያጭ ግብይቶች እና የአገልግሎት ጥሪዎች | በራስህ የገንዘብ አጠቃቀም ብቻ | ባለሥልጣን መለያ፣ የግል ቁልፍ፣ ሰንሰለት ID, የክፍያ ሜታዳታ፣ የክፍያው ሀብት ቀሪ ሂሳብ እና የመንገድ ምልክት |
-| ክፈፍ ኮዴኮች, crypto, እና ያገናኙ GPU ረዳቶች | አካባቢያዊ ብቻ | የአገር ውስጥ ማራዘሚያ; GPU ረዳቶችም CUDA-የተሳካ የጀርባ ማቆሚያ |
+|ለማንበብ ብቻ የሚደረጉ የደንበኛ ጥሪዎች |አዎ .|Python ጥቅል እና የአውታረ መረብ መዳረሻ |
+|የአካባቢው ፊርማ እና መመሪያ ገንቢዎች |እስከ `submit()` ድረስ የኔትወርክ ጥሪ የለም |የአፍ መፍቻ ማራዘሚያ እና ቁልፍ ቁሳቁስ |
+|የዝውውር ግብይቶች እና የአገልግሎት ጥሪዎች|ከራስህ የገንዘብ ድጋፍ ጋር ብቻ።|ባለሥልጣኑ መለያ፣ የግል ቁልፍ፣ ሰንሰለት ID ፣ የክፍያ ሜታዳታ፣ የክፍያው ንብረቶች ቀሪ ሂሳብ እና የመንገድ ትኮኖች |
+|ክፈፍ ኮዴኮች, ምስጠራ, እና GPU ረዳቶች ያገናኙ |አካባቢያዊ ብቻ |የአገር ውስጥ ማራዘሚያ; GPU ረዳቶች ደግሞ CUDA-አቅም ያለው የጀርባ  ያስፈልጋቸዋል|
 
 ## መጫን {#install}
 
-የፓኬጅ ሜታዳታ ስም `iroha-python`. ያልተደገፈ አይመስሉ PyPI
-መጫን የቀጥታ ጋር ይዛመዳል Taira አውታረ መረብ. አንድ መንኮራኩር ወይም ምንጭ ማረጋገጫ ይጫኑ
-የእርስዎን ውህደት ግቦች ወደ አናት ላይ ተመሳሳይ ማሻሻያ የተገነባ ነበር:
+የፓኬጅ ሜታዳታ ስም `iroha-python` ነው. ያልተጫነ PyPI መጫን ከቀጥታ Taira አውታረመረብ ጋር ይጣጣማል ብለው አይገምቱ ። ከመቀላቀል ግቦችዎ ውስጥ ከተገነባው ተመሳሳይ ዥረት ማሻሻያ የተገነባ የጎማ ወይም ምንጭ ካሳ ይጫኑ:
 
 ```bash
 python -m pip install /path/to/iroha_python-*.whl
 ```
 
-ፕሮጀክትዎ በቀጥታ የስራ ቦታን የሚወስድ ከሆነ, Python
-ጥገኛነት እና መጠቀም ምሳሌዎችን ለማስኬድ በፊት ተወላጅ ማራዘሚያ ለመገንባት
-`Instruction`, `TransactionDraft`, ፊርማ፣ ምስጠራ፣ SoraFS የአገሬው ተወላጅ ረዳቶች፣ GPU
-ረዳቶች, ወይም አገናኝ ክፈፍ ኮዴኮች.
-`python/iroha_python/README.md`, ከዚያ በኋላ የአገር ውስጥ ኤክስፖርት ጭነት:
+ፕሮጀክትዎ የስራ ቦታውን በቀጥታ የሚጠቀም ከሆነ Python ጥገኛዎችን ይጫኑ እና `Instruction`, `TransactionDraft`, ፊርማ ፣ ምስጠራ ፣ SoraFS ተወላጅ ረዳቶች ፣ GPU ረዳቶች ወይም አገናኝ ክፈፍ ኮዴኮችን የሚጠቀሙ ምሳሌዎችን ከማስኬድዎ በፊት የአገር ውስጥ ቅጥያውን ይገንቡ ። ከቅድመ ፍሰት `python/iroha_python/README.md` የግንባታ ትዕዛዙን ይጠቀሙ፣ ከዚያም የአገር ውስጥ ኤክስፖርት ጭነት መሆኑን ያረጋግጡ:
 
 ```bash
 cd python/iroha_python
@@ -53,13 +41,11 @@ print(generate_ed25519_keypair().public_key.hex())
 PY
 ```
 
-ከሆነ `create_torii_client` ከውጭ የሚመጣ ነገር ግን `Instruction` ወይም
-`generate_ed25519_keypair` ውድቀቶች, ንጹህ Python ፓኬጅ ይገኛል ነገር ግን
-የአገር ውስጥ ማራዘሚያ አይደለም.
+`create_torii_client` ከውጭ የሚመጣው ነገር ግን `Instruction` ወይም `generate_ed25519_keypair` ካልተሳካለት የንጹህ Python ጥቅል ይገኛል፤ የአገር ውስጥ ማራዘሚያ ግን አይገኝም።
 
 ## ፈጣን ጅምር {#quickstart}
 
-ከሕዝብ የሚነበብ ብቻ Taira የመጨረሻ ነጥቦች
+ከህዝብ የሚነበቡ Taira የመጨረሻ ነጥቦች ይጀምሩ:
 
 ```python
 from iroha_python import (
@@ -77,16 +63,11 @@ for account in accounts.items:
     print(account.id)
 ```
 
-## የተጋራ ማዋቀር {#shared-setup}
+## የጋራ ማዋቀር {#shared-setup}
 
-ይህን ቅንብር በመጠቀም ለዝውውር አብነቶች ይጠቀሙ.
-Taira ባለስልጣን፣ የግል ቁልፍ፣ ቶከን እና ንብረት/ሂሳብ IDs ከተሰማራችሁበት ጊዜ
-ከማቅረባቸው በፊት።
+ለውጦች አብነቶች ይህን ቅንብር ይጠቀሙ. ከመላክዎ በፊት እያንዳንዱን ቦታ መያዣ በ Taira ባለስልጣን, የግል ቁልፍ, ቶከን እና ንብረት / ሂሳብ IDs ይተካሉ.
 
-`authority` ግብይቱን የሚፈርመው ሂሳብ ነው። `private_key` ማመሳሰል አለበት
-ይህ መለያ፣ `CHAIN_ID` የዒላማው አውታረመረብ ጋር የሚዛመድ መሆን አለበት ፣ እና `TX_METADATA` መሆን አለበት
-ከዚህ በታች የተዘረዘሩት የክፍያ መስኮች በኔትወርኩ የሚጠበቁ ናቸው።
-ሆን ተብሎ ያልታሰበ ስለሆነ በአጋጣሚ አልተላለፈም።
+`authority` ግብይቱን የሚፈርመው አካውንት ነው። `private_key` ከዚያ አካውንት ጋር ይዛመዳል ፣ `CHAIN_ID` ከዒላማው አውታረመረብ ጋር መሆን አለበት ፣ እና `TX_METADATA` በአውታረ መረቡ የሚጠበቁ የክፍያ መስኮችን ማካተት አለበት። ከዚህ በታች ያሉት የመቀመጫ ባለቤቶች ሆን ተብሎ ልክ ያልሆኑ ናቸው ስለሆነም በአጋጣሚ አልተላኩም።
 
 ```python
 from iroha_python import (
@@ -133,19 +114,13 @@ def submit(*instructions):
     )
 ```
 
-`Instruction.*` ጥሪዎች ብቻ የግንባታ መመሪያ ጥቅማጥቅሞች. `submit()` ነው
-የትኛው ነጥብ SDK ግብይቱን ይፈርማል፣ ወደ Torii, እና አንድ ይጠብቃል
-ሁኔታ።
+`Instruction.*` የሚጠራው የግንባታ መመሪያ ጥቅማጥቅሞችን ብቻ ነው ። `submit()` SDK ግብይቱን በሚፈርምበት ፣ ወደ Torii በሚልክበት እና ሁኔታውን እስኪጠብቅበት ጊዜ ነው።
 
-## ክፍያዎች እና ጋዝ {#fees-and-gas}
+## ክፍያዎችና ጋዝ {#fees-and-gas}
 
-መጻፍ ግብይቶች ክፍያ ሜታዳታ እና የገንዘብ ክፍያ ንብረት ቀሪ ያስፈልጋል. Taira,
-የክፍያ አክሲዮን በሕዝብ ቧንቧ የሚደገፍ ሲሆን የግብይት ሜታዳታ
-ያካትታል `gas_asset_id`. ላይ Minamoto, ክፍያዎች በሪል የሚከፈሉ ናቸው XOR እና ሀብቱ
-ID ከዚያ አውታረመረብ ውቅር የመጣ ነው።
+በ Taira ላይ, የክፍያ ንብረቱ በሕዝባዊ ቧንቧ ይደገፋል እና የግብይት ሜታዳታ `gas_asset_id` ማካተት አለበት. በ Minamoto ላይ, ክፍያዎች በእውነተኛ XOR ይከፈላሉ እናም ንብረቱ ID ከዚያ አውታረመረብ ውቅር የመጣ ነው.
 
-የክፍያ ሜታ መረጃዎች በግለሰብ መመሪያ ላይ ሳይሆን በግብይት ውስጥ ይገኛሉ።
-`submit()` ከጣቢያዎች በላይ ረዳት `TX_METADATA` ለሚያካሂደው እያንዳንዱ ግብይት:
+የክፍያ ሜታዳታ በግለሰብ መመሪያዎች ላይ ሳይሆን ለግብይት ያካትታል ። ከላይ ያለው `submit()` ረዳት ለሚገነባው እያንዳንዱ ግብይት `TX_METADATA` ያያይዛል-
 
 ```python
 TX_METADATA = {
@@ -170,9 +145,7 @@ envelope, status = client.build_and_submit_transaction(
 )
 ```
 
-ደብዳቤ ከመላክህ በፊት ባለሥልጣኑ ሂሳብ በቂ ክፍያ እንዳለው ያረጋግጥ
-ትክክለኛውን ቧንቧ እና ንብረት ID የኔትወርክ-ተኮር ናቸው; ይህ ነው Taira
-ቅርፅ:
+ጽሁፎችን ከመላክዎ በፊት ባለሥልጣኑ መለያ በቂ የክፍያ ንብረትን እንዳለው ያረጋግጡ ። ትክክለኛው ቧንቧ እና ንብረቱ ID ለኔትወርክ የተወሰኑ ናቸው ፣ ይህ Taira ቅርጽ ነው-
 
 ```python
 FEE_ASSET_DEFINITION = "6TEAJqbb8oEPmLncoNiMRbLEK6tw"
@@ -190,11 +163,9 @@ if not fee_assets.items:
     raise RuntimeError("fund the authority account with the Taira fee asset first")
 ```
 
-ቧንቧው ኮንክሪትውን ይመልሳል `asset_id` ለሂሳብ ሚዛን ምርመራ ጥቅም ላይ ይውላል.
-`gas_asset_id` ሜታዳታ መስክ የዋጋ አክሲዮን መግለጫን ይጠቀማል ID.
+የቧንቧው ኮንክሪት ተመልሶ ይመጣል `asset_id` ሚዛን ለመፈተሽ ጥቅም ላይ ይውላል. `gas_asset_id` ሜታዳታ መስክ የዋጋ ንብረትን ትርጉም ይጠቀማል ID.
 
-የማጣቀሻዎችን በማዋሃድ የመተግበሪያ ሜታዳታ ከክፍያ ሜታዳታ የተለየ እንዲሆን ማድረግ
-ግብይት ሲፈጽሙ:
+አንድ ግብይት በሚፈጥሩበት ጊዜ ካርታዎችን በማዋሃድ የመተግበሪያ ሜታዳታ ከክፍያ ሜታዳታ በተለየ ሁኔታ ይያዙ:
 
 ```python
 APP_METADATA = {"source": "python-docs"}
@@ -210,13 +181,11 @@ draft = TransactionDraft(
 )
 ```
 
-የክፍያ ሜታ መረጃን ካላስወገድክ፣ የተሳሳተውን የክፍያው ንብረት ተጠቅመህ ወይም ያልተደገፈ
-ሂሳብ, አንድ እውነተኛ አውታረ መረብ እንኳ መመሪያ ከሆነ ግብይቱን ውድቅ ማድረግ አለበት
-በሌላ በኩል የዋጋ ጭነት ትክክለኛ ነው.
+የክፍያ ሜታዳታዎችን ካላስወገዳችሁ፣ የተሳሳተውን የክፍያው ንብረትን ከተጠቀሙ ወይም ያልተደገፈ አካውንት በመጠቀም ከፈረማችሁ፣ እውነተኛ አውታረ መረብ የትእዛዝ ጭነት በሌላ መንገድ ትክክለኛ ቢሆንም እንኳ ግብይቱን ውድቅ ሊያደርግ ይገባል።
 
-## Taira-የተረጋገጡ የንባብ-ብቻ ጥሪዎች {#taira-checked-read-only-calls}
+## Taira-የተረጋገጡ የንባብ ብቻ ጥሪዎች {#taira-checked-read-only-calls}
 
-እነዚህ ጥሪዎች በሕዝብ ላይ በተሳካ ሁኔታ ተመልሰዋል Taira:
+እነዚህ ጥሪዎች በህዝብ Taira ላይ በተሳካ ሁኔታ ተመልሰዋል-
 
 ```python
 client = create_torii_client("https://taira.sora.org")
@@ -243,52 +212,34 @@ print(time_now.now_ms, len(time_status.samples), sumeragi.leader_index)
 print(connect.enabled, connect.sessions_active)
 ```
 
-እንደ `/v1/status`, የሕዝብ እኩዮች ዝርዝር፣ Sumeragi RBC ናሙና መውሰድ ፣ ኖድ
-የአስተዳዳሪ ቅጽበታዊ ገጽ እይታዎች እና የ Connect መተግበሪያ ምዝገባ አስተዳደር በይፋ አልነበሩም
-ላይ ይገኛል Taira በቼክ ወቅት `request_json("GET", "/status")` ለ
-የሕዝብ ኖት ሁኔታ ጥቅማጥቅም ጭነት Taira.
+እንደ `/v1/status`, የሕዝብ የእኩዮች ዝርዝር፣ Sumeragi RBC ናሙና መውሰድ ፣ የአገናኝ አስተዳዳሪ ቅጽበታዊ ገጽ እይታዎች እና የ Connect መተግበሪያ ምዝገባ አስተዳደር በይፋ አይገኙም ነበር Taira በምርመራው ወቅት `request_json("GET", "/status")` የሕዝብ ኖት ሁኔታ ጥቅማጥቅም ጭነት ላይ Taira.
 
 ## የግንባታ መመሪያ {#instruction-builders}
 
-የ SDK በጣም የተለመዱ የትምህርት ቤተሰቦች እና
-JSON የመጀመሪያ ደረጃ ያልሆኑ ተለዋዋጮች ለማምለጫ መውጫ Python ዘዴዎች ገና.
-የሚከተሉት ቁርጥራጮች የተለወጡ የግብይት አብነቶች ናቸው
-ለሕዝብ የቀረበ Taira ያለ ፊርማ ሂሳብ።
+የ SDK በጣም የተለመዱ የትምህርት ቤተሰቦች እና አንድ JSON የመጀመሪያ ደረጃ ያልሆኑ ተለዋዋጮች ለማምለጫ መውጫ በር Python የሚከተሉት ቁርጥራጮች ተለዋዋጭ የግብይት አብነቶች ናቸው እና ለሕዝብ አልተሰጡም Taira ያለ ፊርማ ሂሳብ።
 
-በሚኖሩበት ጊዜ የተጻፉ ረዳቶችን ይመርጣሉ: እነሱ መደበኛ ናቸው Python እሴቶች እና ውድቀቶች
-የተለመዱ ቅርጾችን መጠቀም `Instruction.from_json` አንድ
-የትእዛዝ ተለዋዋጭ Python ረዳት ገና.
+እነሱ በሚኖሩበት ጊዜ የተጻፉ ረዳቶችን ይመርጣሉ-የ Python እሴቶች መደበኛ ይሆናሉ እና ልክ ያልሆኑ ቅርጾችን ቀደም ብለው ያበላሻሉ። ገና የ Python ረዳት የሌለው የትእዛዝ ተለዋዋጭ ሲያስፈልግዎት ብቻ `Instruction.from_json` ን ይጠቀሙ ።
 
-| የትምህርት ቤተሰብ | Python ወለል |
+|የትምህርት ቤተሰብ |Python ገጽ |
 | --- | --- |
-| መመዝገብ | `register_account`, `register_asset_definition_numeric`, `register_rwa`, `register_time_trigger`, `register_precommit_trigger`; `register_domain` ለጄኔዝ / ቡትስታፕ መሳሪያዎች የተወሰነ ነው |
-| ምዝገባን ማጥፋት | `unregister_trigger`; አጠቃቀም `Instruction.from_json` ለሌሎች ተለዋዋጮች |
-| የወይን ጠጅ/የተቃጠለ | `mint_asset_numeric`, `burn_asset_numeric`, `mint_trigger_repetitions`, `burn_trigger_repetitions` |
-| ማስተላለፍ | `transfer_asset_numeric`, `transfer_domain`, `transfer_asset_definition`, `transfer_nft`, `transfer_rwa`, `force_transfer_rwa` |
-| ሜታዳታ እና ቁጥጥር | `set_account_key_value`, `remove_account_key_value`, `set_rwa_controls`, `set_rwa_key_value`, `remove_rwa_key_value` |
-| RWA የሕይወት ዑደት | `merge_rwas`, `redeem_rwa`, `freeze_rwa`, `unfreeze_rwa`, `hold_rwa`, `release_rwa` |
-| ExecuteTrigger | `execute_trigger` |
-| የመልሶ ማቋቋም/የመዋቅር መስፋፋት | `repo_initiate`, `repo_unwind`, `repo_margin_call`, `settlement_dvp`, `settlement_pvp` |
-| የአገሬው ንብረት መቆለፊያዎች | `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, `expire_asset_lock`, በተጨማሪም ደንበኛ `*_and_wait` ረዳቶች |
-| Grant/Revoke፣ SetParameter, መዝገብ, ብጁ, ማሻሻያ እና በጣም የተለመዱ የሪጅስትር/የማይመዘገቡት ተለዋዋጮች | `Instruction.from_json` ወይም `TransactionBuilder.add_instruction_json` ከካኖኒካል ጋር `InstructionBox` JSON |
+|መመዝገብ | `register_account`, `register_asset_definition_numeric`, `register_rwa`, `register_time_trigger`, `register_precommit_trigger`; `register_domain` ለጄኔሲስ / ቡትስትራፕ መሳሪያዎች የተወሰነ ነው |
+|ተመዝግቧል |`unregister_trigger`፤ ለሌሎች ተለዋዋጮች `Instruction.from_json` መጠቀም |
+|ሜንት/በርን |`mint_asset_numeric`, `burn_asset_numeric`, `mint_trigger_repetitions`, `burn_trigger_repetitions` |
+|ማስተላለፍ | `transfer_asset_numeric`, `transfer_domain`, `transfer_asset_definition`, `transfer_nft`, `transfer_rwa`, `force_transfer_rwa` |
+|ሜታዳታ እና ቁጥጥር |`set_account_key_value`, `remove_account_key_value`, `set_rwa_controls`, `set_rwa_key_value`, `remove_rwa_key_value` |
+|RWA የሕይወት ዑደት| `merge_rwas`, `redeem_rwa`, `freeze_rwa`, `unfreeze_rwa`, `hold_rwa`, `release_rwa` |
+|ExecuteTrigger |`execute_trigger` |
+|የመልሶ ማቋቋም/የመዋቅር ቅጥያዎች |`repo_initiate`, `repo_unwind`, `repo_margin_call`, `settlement_dvp`, `settlement_pvp` |
+|የአገር ውስጥ ሀብት መቆለፊያዎች |`open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, `expire_asset_lock`፣ እና የደንበኛ `*_and_wait` ረዳቶች |
+|Grant/Revoque, SetParameter, Log, Custom, Upgrade፣ እና እምብዛም ያልተለመዱ የምዝገባ/የማይመዘገቡ ተለዋዋጮች |`Instruction.from_json` ወይም `TransactionBuilder.add_instruction_json` ካኖኒካዊ `InstructionBox` JSON ጋር |
 
-በኤስሮው አሠራር የሚደረጉ የዋጋ ክፍያዎችን በተመለከተ፣ ተመልከት
-[የአገር ውስጥ ንብረት ማስከበሪያ](/am/blockchain/escrow.md#python-asset-locks). Python
-በአሁኑ ጊዜ ለጄኔሪክ ሀብት መቆለፊያዎች የመጀመሪያ ደረጃ ረዳቶችን ያጋልጣል; የገበያ ቦታ እና
-የማይታወቁ የኤስሮው ረዳቶች የመጀመሪያ ደረጃ አይደሉም Python ዘዴዎች ገና.
+በኤስሮው አዝማሚያ የሚደረጉ ውስን ክፍያዎችን በተመለከተ, ተመልከት [የአገር ውስጥ ንብረት ማስከበሪያ](/am/blockchain/escrow.md#python-asset-locks). Python በአሁኑ ጊዜ ለአጠቃላይ የንብረት መቆለፊያዎች የመጀመሪያ ደረጃ ረዳቶችን ያጋልጣል; የገበያ ቦታ እና የማይታወቁ ኤስሮይ ረዳቶች የመጀመሪያ ደረጃ አይደሉም ። Python ዘዴዎች ገና.
 
 ### ጎራዎችን ያዘጋጁ፣ ከዚያም ሂሳቦችን እና ንብረቶችን ይመዝገቡ {#set-up-domains-then-register-accounts-and-assets}
 
-የተለመደ ጎራ መፍጠር የሚከናወነው በአዋጅ ስም ዕቅድ አውጪ በኩል ነው SNS
-ኪራይ፣ የባለቤትነት አቅም፣ የዋጋ ማስከበሪያ ጥበቃ እና የጎራ ሁኔታ በአንድ ላይ ይመረመራሉ።
-ሚስጥር የሌለበት `AliasSetupPlanRequestV1` የእርስዎ ዓላማ SDK ወይም
-የቦርድ አገልግሎት, ከዚያም ይጠቀሙ `iroha app alias setup plan` እና
-`iroha app alias setup apply`. አትቀበሉት `Instruction.register_domain`
-ከመተግበሪያ ግብይት; ያ ገንቢ ለጀኔስ / ቡትስትራፕ ይቆያል
-መሳሪያዎች።
+የተለመደ ጎራ መፍጠር የዲክላረቲቭ ቅጽል ፕላንደር በኩል ይሄዳል ስለዚህ SNS ኪራይ, ባለቤት ችሎታ, ጥቅስ ጠባቂ, እና ጎራ ሁኔታ አንድ ላይ ይፈትሹ. `AliasSetupPlanRequestV1` የእርስዎ ዓላማ SDK ወይም የቦርድ አገልግሎት, ከዚያም ይጠቀሙ `iroha app alias setup plan` እና `iroha app alias setup apply`. አትቀበሉት `Instruction.register_domain` ከመተግበሪያ ግብይት; ይህ ገንቢ ለጀኔስ / ቡትስትራፕ መሳሪያዎች ይቆያል ።
 
-የጎራ ማዋቀር ዕቅድ ከተቀበለ በኋላ, ጎራ ባለቤትነት ያላቸው ንጥረ ነገሮች ይመዝገቡ.
-እንደ Taira, ለእርስዎ የተሰጠውን የጎራ እና የመለያ ስያሜ ቦታ ይጠቀሙ።
+የጎራ ማዋቀር ዕቅድ ከተቀበለ በኋላ የጎራ ባለቤትነት ያላቸውን ነገሮች ይመዝገቡ። እንደ Taira ባሉ የተጋራ አውታረመረብ ላይ ለእርስዎ የተመደበ ጎራ እና የመለያ ስያሜ ቦታ ይጠቀሙ።
 
 ```python
 # The domain and its SNS lease already exist before this transaction.
@@ -306,13 +257,11 @@ submit(
 )
 ```
 
-`mintable` ተቀባይነት አለው `Infinitely`, `Once`, `Not`, ወይም `Limited(n)` ተቀባይነት ያላቸው እሴቶች
-በመረጃ ሞዴሉ። `scale` ያልተገደበ የቁጥር ንብረት።
+`mintable` በመረጃ ሞዴሉ ተቀባይነት ያላቸውን `Infinitely`፣ `Once`፣ `Not` ወይም `Limited(n)` እሴቶች ይቀበላል፤ ያልተገደበ የቁጥር ንብረትን በተመለከተ `scale` ይተው።
 
-### የግብይት፣ የማቃጠልና የመተላለፊያ ንብረት {#mint-burn-and-transfer-assets}
+### የግብይት፣ የማቃጠልና የማስተላለፍ ሀብቶች {#mint-burn-and-transfer-assets}
 
-እነዚህ ጥሪዎች ነባር ንብረት ይጠቀማሉ ID. በመጀመሪያ የንብረት ማብራሪያውን ያስገቡ፣ ከዚያም
-የኮንክሪት ንብረትን መገንባት ID ንብረቱ ባለቤት ለሆነው ሂሳብ።
+እነዚህ ጥሪዎች ነባር ንብረት ይጠቀማሉ ID. በመጀመሪያ የንብረት ማብራሪያውን ይመዝገቡ፣ ከዚያም ተጨባጭ ንብረቱን ይገንቡ ID የንብረቱን ባለቤት ለሆነው ሂሳብ።
 
 ```python
 # Increase the account's asset balance.
@@ -327,8 +276,7 @@ submit(Instruction.burn_asset_numeric(ROSE_ASSET, "10.00"))
 
 ### የማስተላለፍ ባለቤትነት {#transfer-ownership}
 
-የባለቤትነት ማስተላለፍ የጎራውን ማን እንደሚቆጣጠር ፣ የአክሲዮን ማብራሪያ ወይም NFT.
-የአሁኑን ባለቤት እንደ ግብይት ባለስልጣን ይጠቀሙ።
+የባለቤትነት ማስተላለፍ ለውጥ ማን ጎራውን ይቆጣጠራል, ንብረቶች ትርጉም, ወይም NFT.
 
 ```python
 # The first argument is the current owner; the last is the new owner.
@@ -339,8 +287,7 @@ submit(Instruction.transfer_nft(alice, BADGE_NFT, bob))
 
 ### ሜታዳታዎችን ማዘጋጀት እና ማስወገድ {#set-and-remove-metadata}
 
-የሜታዳታ እሴቶች JSON- ሲጠቀሙ `TransactionDraft`, የ
-ባለሥልጣን `TransactionConfig` ነባሪ የዒላማ ሂሳብ ይሆናል.
+የሜታዳታ እሴቶች JSON-የተከታታይ መሆን አለበት. እርስዎ `TransactionDraft` ሲጠቀሙ, በ `TransactionConfig` ውስጥ ያለው ባለስልጣን ነባሪ ዒላማ መለያ ይሆናል.
 
 ```python
 # Values are encoded as JSON metadata under the target account.
@@ -367,12 +314,9 @@ draft.set_account_key_value("nickname", "Queen Alice")
 draft.remove_account_key_value("nickname")
 ```
 
-### በእውነተኛ ዓለም ውስጥ ያሉ ንብረቶች {#real-world-assets}
+### በእውነተኛ ዓለም ውስጥ ያሉ ሀብቶች {#real-world-assets}
 
-RWA ረዳቶች JSON-የአክሲዮን-ተኮር ሜታዳታዎችን ለማስተላለፍ የሚችሉ ጥቅማጥቅሞች፣
-የመጡበት ሁኔታ እና የተቆጣጣሪው ፖሊሲ። `register_rwa` ተቀባይነት የለውም `id` ወይም
-`owner`: የሂደት ጊዜ ያመነጫል `RwaId`, እና የግብይት ባለስልጣን
-የመጀመሪያው ባለቤት ይሆናል።
+RWA ረዳቶች ለንብረት-ተኮር ሜታዳታ ፣ የመነሻ እና የተቆጣጣሪ ፖሊሲዎች JSON - ተከታታይ ሊሆኑ የሚችሉ ጥቅማጥቅሞችን ይጠቀማሉ። `register_rwa` አንድ `id` ወይም `owner` አይቀበልም: የሂደቱ ጊዜ `RwaId` ያመነጫል, እናም የግብይት ባለስልጣን የመጀመሪያ ባለቤት ይሆናል.
 
 ```python
 draft = TransactionDraft(
@@ -405,8 +349,7 @@ draft.register_rwa(
 )
 ```
 
-የምዝገባ ግብይቱ ከተቀበለ በኋላ, መጠቀም `FindRwas`, `/v1/rwas`, አንድ RWA
-ክስተት, ወይም ተመራማሪ መንገድ የተፈጠረውን ለመፈለግ ተዘጋጅቷል ID:
+የምዝገባ ግብይቱ ከተሰማራ በኋላ የተፈጠረውን `FindRwas`, `/v1/rwas`, RWA ክስተት, ወይም የተፈጠረው ID ለመፈለግ የተቀመጠውን የአሰሳ መንገድ ይጠቀሙ:
 
 ```python
 page = client.list_rwas_typed(limit=20, offset=0)
@@ -415,7 +358,7 @@ for lot in page.items:
     print(lot.id)
 ```
 
-በቀጣዮቹ ሥራዎች የተፈጠሩትን `hash$domain` ID:
+በቀጣዮቹ ሥራዎች የተፈጠረውን `hash$domain` ID ይጠቀማሉ-
 
 ```python
 registered_rwa_id = (
@@ -480,13 +423,11 @@ draft.force_transfer_rwa(
 )
 ```
 
-ሙሉ ዝውውሮች ሊለወጡ ይችላሉ `owned_by` በወቅቱ በተያዘው ጭነት ላይ።
-ውህደቶች የተፈጠሩ የልጆች ብዛት ይፈጥራሉ።
+የተሟላ ማስተላለፍ `owned_by` አሁን ባለው ጭነት ላይ ሊለወጥ ይችላል። በከፊል ዝውውሮች እና ውህደቶች የተፈጠሩ የልጆች ጭነቶች ይፈጠራሉ.
 
-### ተነሳሽነት {#triggers}
+### ማነቃቂያዎች {#triggers}
 
-አሂድ ሌላ መመሪያ ከሆነ አስነሳው ምዝገባ ረዳቶች ይጠቀሙ
-ቅደም ተከተል
+ተጨባጭ ሌላ መመሪያ ቅደም ተከተል በሚሆንበት ጊዜ አስነሳው ምዝገባ ረዳቶች ይጠቀሙ:
 
 ```python
 # The trigger executable is just another instruction payload.
@@ -521,7 +462,7 @@ submit(Instruction.burn_trigger_repetitions("hourly_reward", 1))
 submit(Instruction.unregister_trigger("hourly_reward"))
 ```
 
-Torii በተጨማሪም ያጋልጣል REST የመነቃቂያ ማስቀመጫ መርጃዎች:
+Torii በተጨማሪም REST ረዳቶችን ለፈታኝ ቆጠራ ያጋልጣል:
 
 ```python
 # Inventory helpers are reads; they do not unregister or execute triggers.
@@ -532,13 +473,11 @@ for trigger in registered.items:
 details = client.get_trigger_typed("precommit_reward")
 ```
 
-የመነቃቂያ ዝርዝር ጥሪዎች የሚነበቡት ወይም የመነቃቂ መዝገቦችን ብቻ ነው.
-አፈፃፀም፣ ተደጋጋሚ ለውጦች እና አለመመዝገብ የሚለዋወጡ ተግባራት ናቸው።
+አስነሳሽነት ዝርዝር ጥሪዎች ብቻ ማንበብ ወይም አስነሳሽ መዝገቦችን ለመመርመር. ምዝገባ, አፈፃፀም, ተደጋጋሚ ለውጦች, እና አለመመዝገብ የሚለዋወጥ ተግባራት ናቸው.
 
 ### የመልሶ ማቋቋም እና የማስተካከያ መመሪያ {#repo-and-settlement-instructions}
 
-የሪፖ እና የሁለትዮሽ መቋቋም ረዳቶች ለዘርፉ የተወሰኑ መመሪያዎችን ይጨምራሉ
-የእጅ ሥራ የሌላቸው ተለዋዋጮች Norito ጠቃሚ ጭነቶች
+የሪፖ እና የሁለትዮሽ መቋቋም ረዳቶች Norito የእጅ ሥራ ጭነት ሳይኖር የጎራ-ተኮር የትምህርት ዓይነቶችን ይጨምራሉ:
 
 ```python
 from iroha_python import (
@@ -626,14 +565,9 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### JSON የስደት ማረፊያ {#json-escape-hatch}
+### JSON ማምለጫ መውጫ {#json-escape-hatch}
 
-አንድ ጊዜ Python ረዳት ገና አይገኝም, መመገብ ቀኖናዊ መረጃ ሞዴል
-`InstructionBox` JSON ወደ `Instruction.from_json` ወይም በቀጥታ ወደ
-`TransactionBuilder.add_instruction_json`. ይህ የሚመከር መንገድ ነው
-`Grant`, `Revoke`, `SetParameter`, `Log`, `Custom`, `Upgrade`, እኩዮች/ድርሻ/NFT
-እነዚህ ረዳቶች እስከሚገኙ ድረስ ምዝገባን ለማውጣት እና ያልተነቃቁ ተለዋዋጮች
-የተጻፈ።
+አንድ ጊዜ Python ረዳት ገና አይገኝም, መመገብ ቀኖናዊ ውሂብ ሞዴል `InstructionBox` JSON ወደ `Instruction.from_json` ወይም በቀጥታ ወደ `TransactionBuilder.add_instruction_json`. ይህ ለ `Grant`, `Revoke`, `SetParameter`, `Log`, `Custom`, `Upgrade`, የእኩዮች / ሚና /NFT እነዚህ ረዳቶች እስከሚተይቡ ድረስ ምዝገባን የማያነሳሱ ተለዋዋጮች ይመዝገቡ።
 
 ```python
 from iroha_python import Instruction, TransactionBuilder
@@ -658,8 +592,7 @@ envelope = builder.sign(alice_pair.private_key)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-ለተፈጠሩ ወይም ግልጽ ያልሆኑ መመሪያዎች፣ ወደኋላ በመሄድ JSON ከማከማቸት በፊት
-ማያዣዎች:
+የተፈጠሩ ወይም ግልጽ ያልሆኑ መመሪያዎችን ከማከማቸት በፊት JSON በኩል ወደኋላ እና ወደኋላ መጓዝ
 
 ```python
 # Round trips are useful for validating fixtures generated by another tool.
@@ -670,9 +603,7 @@ print(same_instruction.as_dict())
 
 ## የግብይት የሥራ ፍሰቶች {#transaction-workflows}
 
-አጠቃቀም `TransactionDraft` በርካታ መመሪያዎችን የሚገነቡ መተግበሪያዎች
-አንድ ረቂቅ እንደ ግብይት ደረጃ ቅንብሮች እንዲቆዩ ያስችልዎታል `ttl_ms`,
-`nonce`, እና በአንድ ቦታ ላይ ሜታዳታ, ከዚያም አንድ ጊዜ ይፈርሙ:
+ከመፈረምዎ በፊት በርካታ መመሪያዎችን ለሚገነቡ መተግበሪያዎች `TransactionDraft` ይጠቀሙ። አንድ ረቂቅ እንደ `ttl_ms` ፣ `nonce` እና ሜታዳታ ያሉ የግብይት ደረጃ ቅንብሮችን በአንድ ቦታ እንዲቆዩ ያስችልዎታል ፣ ከዚያ አንድ ጊዜ ይፈርሙ:
 
 ```python
 config = TransactionConfig(
@@ -704,7 +635,7 @@ status = client.wait_for_transaction_status(envelope.hash_hex(), timeout=30)
 print(receipt, status)
 ```
 
-ለግምገማ ፣ ኦዲት ወይም የኪስ ቦርሳ ማስተላለፍ የሚሆን የፍቺ መግለጫ መላክ:
+ለግምገማ ፣ ኦዲት ወይም የኪስ ቦርሳ ማስተላለፍ የሚሆን የመወሰኛ ማኒፌስት መላክ:
 
 ```python
 import json
@@ -720,7 +651,7 @@ Path("transaction_manifest.json").write_text(
 )
 ```
 
-የታለመበት ጎዳና ሲጠይቅ ከመፈረምዎ በፊት የመንገድ ግላዊነት ማረጋገጫ ይጨምሩ
+የታለመበት ጎዳና ሲጠይቅ ከመፈረምዎ በፊት የመንገድ ግላዊነት ማረጋገጫ ይጨምሩ:
 
 ```python
 # Attach the proof before signing so it is covered by the transaction hash.
@@ -738,9 +669,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 
 ## ጥያቄዎች {#queries}
 
-የተጻፉ የጥያቄ ረዳቶች ጥሬ ሳይሆን የመረጃ ክፍሎችን ይመልሳሉ JSON መዝገበ ቃላት።
-በጣም ቀላል መንገድ ነው ለመጀመር ምክንያቱም SDK አቃፊዎች ገጽታ እና የተለመደ
-ለእርስዎ የመመዝገብ መስኮች:
+የተጻፈ የጥያቄ ረዳቶች ጥሬ JSON መዝገበ ቃላት ይልቅ የውሂብ ክፍሎችን ይመልሳሉ. የ SDK ገጽን እና የተለመዱ የመዝገብ መስኮችን ስለሚመረምር ለመጀመር በጣም ቀላሉ መንገድ ነው:
 
 ```python
 # Typed pages expose `.items` plus pagination metadata such as `.total`.
@@ -753,8 +682,7 @@ definitions = client.query_asset_definitions_typed(limit=10)
 print(domains.total, definitions.total)
 ```
 
-አንድ ጊዜ አጠቃላይ ጥያቄ ረዳቶችን ይጠቀሙ Torii የመጨረሻ ነጥብ ገና የተጻፈ አይደለም
-ማሸጊያ
+አንድ Torii መጨረሻ ነጥብ ገና የታተመ ማሸጊያ ከሌለው የጄኔሪክ ጥያቄ ረዳቶችን ይጠቀሙ:
 
 ```python
 # Drop to raw JSON when you need an endpoint before a typed helper exists.
@@ -762,10 +690,7 @@ payload = client.request_json("GET", "/v1/parameters", expected_status=(200,))
 metrics = client.get_metrics(as_text=True)
 ```
 
-የሂሳብ ክምችት ረዳቶች በ SDK ነው
-መደበኛ አጠቃቀም I105 ሂሳብ IDs ወይም በሰንሰለት ላይ ያሉ ስያሜዎች; አንድ ብሎክ ከሆነ
-አሰሳ ወይም ጥሬ መጨረሻ ነጥብ አንድ ID ይህ SDK ይቃወማል, ወደ መፍትሔ
-የካኖኒክ ዘገባ ID ለእነዚህ ረዳቶች ከመጥራታችሁ በፊት
+የሂሳብ ክምችት ረዳቶች በ SDK መደበኛነት ተቀባይነት ያለው የመለያ መታወቂያ ይጠይቃሉ። የካኖኒካል I105 ሂሳብ IDs ወይም በመስመር ላይ ቅጽል ስሞች ይጠቀሙ; አንድ የብሎክ ፍለጋ ወይም ጥሬ መጨረሻ ነጥብ ID የሚመልሰው ከሆነ SDK ውድቅ ያደርገዋል, እነዚህን ረዳቶች ከመጥራትዎ በፊት ወደ ቀኖናዊ መለያ ID ያስተካክሉት:
 
 ```python
 # These helpers expect a canonical account ID or an alias the SDK can normalize.
@@ -778,11 +703,7 @@ print(len(assets.items), len(transactions.items), len(permissions.items))
 
 ## ክስተቶች {#events}
 
-የዥረት ረዳቶች ዲኮድ JSON በነባሪነት የሚጠቀሙባቸው ጭነቶች። `with_metadata=True`
-አንተ የሚያስፈልግህ SSE ክስተት ስም, መታወቂያ, ዳግም ሙከራ ፍንጭ, እና ጥሬ payload.
-ጋር `EventCursor` የቅርብ ጊዜ ክስተት መታወቂያ ለመቀጠል.
-ክስተቶች, ስለዚህ ተዛማጅ ክስተት ዥረት ነው የት አንድ አገናኝ ላይ ያሂዱ
-ተንቀሳቃሽ እና ንቁ.
+የዥረት ረዳቶች JSON ጥቅማጥቅሞችን በነባሪነት ይገልጻሉ። የ SSE ክስተት ስም ፣ መታወቂያ ፣ እንደገና ለመሞከር ፍንጭ እና ጥሬ ጭነት በሚፈልጉበት ጊዜ `with_metadata=True` ን ያስገቡ። የቅርብ ጊዜውን ክስተት መታወቂያ ለማቆየት ከ `EventCursor` ጋር ዥረቶችን ያጣምሩ ። እነዚህ ምሳሌዎች ለቀጥታ ክስተቶች ይጠብቃሉ, ስለዚህ ተዛማጅ የዝግጅት ዥረት የሚቻልበት እና ንቁ በሆነበት አገናኝ ላይ ይሂዱ.
 
 ```python
 from iroha_python import DataEventFilter, EventCursor
@@ -815,9 +736,7 @@ for tx_event in client.stream_pipeline_transactions(status="Queued"):
 
 ## ቁልፎችና አድራሻዎች {#keys-and-addresses}
 
-የ SDK የተጠናቀቁትን እያንዳንዱን ፊርማ ስልተ ቀመሮች ለመመዝገብ የአካባቢያዊ የፊርማ ረዳቶችን ያሳያል
-እነዚህ ረዳቶች Taira, ነገር ግን እነሱ ይጠይቃሉ
-የአገር ውስጥ ማራዘሚያ:
+SDK ወደ ተወላጅ ማራዘሚያ የተጠናቀቁትን ለእያንዳንዱ የፊርማ ስልተ ቀመር አካባቢያዊ ፊርማ ረዳቶችን ያጋልጣል ። እነዚህ ረዳቶች Taira አይደውሉም ፣ ግን የአገር ውስጥ ማራዘምን ይፈልጋሉ-
 
 ```python
 from iroha_python import (
@@ -847,9 +766,7 @@ print(confidential.as_hex())
 print(hash_blake2b_32(b"payload").hex())
 ```
 
-አጠቃቀም `supported_crypto_algorithms()` መንኮራኩርዎ ምን እንደሚደግፍ ለማየት።
-የጄኔሪክ ረዳቶች የካኖኒካል ስልተ ቀመሮችን ይጠቀማሉ እና ለኤድ 25519 ይሰራሉ ፣
-secp256k1፣ ML-DSA, GOST, BLS, እና SM2 እነዚህ ስልተ ቀመሮች የሚከተሉት ውስጥ ሲጠናቀቁ:
+የእርስዎ ጎማ የሚደግፈው ነገር ለማየት `supported_crypto_algorithms()` ይጠቀሙ. አጠቃላይ ረዳቶች የካኖኒካል ስልተ ቀመር መለያዎችን ይጠቀማሉ እና እነዚህ ስልተ ቀመሮች በሚሰበሰቡበት ጊዜ ለ Ed25519, secp256k1, ML-DSA, GOST, BLS እና SM2 ይሰራሉ:
 
 ```python
 from iroha_python import (
@@ -907,9 +824,7 @@ for algorithm in supported_crypto_algorithms():
 
 ### የቻይና SM ምስጠራ {#chinese-sm-cryptography}
 
-የ Python SDK ለሁለቱም አጠቃላይ SM2 ረዳቶች እና SM2-የተወሰነ ምቾት
-ረዳቶች. አገናኝ ችሎታ ማስታወቂያ ይጠቀሙ SM2 መለያየት
-የዒላማው አውታረመረብ የሚጠብቀው መለያ:
+የ Python SDK ሁለቱም አጠቃላይ SM2 ረዳቶች እና SM2-ተኮር ምቾት ረዳቶች ይገልጻል. ለዒላማው አውታረ መረብ የሚጠበቀው SM2 መለየት መታወቂያ ለመምረጥ የአገናኝ አቅሙ ማስታወቂያ ይጠቀሙ:
 
 ```python
 from iroha_python import (
@@ -946,9 +861,7 @@ print(pair.public_key_sec1_hex)
 print(pair.public_key_multihash)
 ```
 
-`crypto.sm.enabled` አንጓው ተቀባይነት እንዳለው ይነግርዎታል SM-የቤተሰብ ስልተ ቀመሮች
-ተመሳሳይ ማስታወቂያ SM የሃሽ ፖሊሲ እና ማፋጠን
-ሁኔታ, ይህም የሚቻል መሆኑን ለመወሰን ጊዜ ጠቃሚ ነው SM2-የተወሰኑ ፍሰቶች
+`crypto.sm.enabled` አገናኙ አሁን ባለው ፖሊሲው ውስጥ የ SM-ቤተሰብ ስልተ ቀመሮችን ይቀበላል ወይም አይቀበለው ይነግርዎታል ። በተመሳሳይ ማስታወቂያ ውስጥ የ SM ሃሽ ፖሊሲ እና የፍጥነት ሁኔታ ይካተታል ፣ ይህም ለ SM2 የተወሰኑ ፍሰቶችን ለማስቻል በሚወስኑበት ጊዜ ጠቃሚ ነው-
 
 ```python
 capabilities = client.get_node_capabilities_typed()
@@ -963,16 +876,11 @@ else:
     print("SM crypto is not enabled by this node")
 ```
 
-የሕዝብ Taira የተጋለጡ SM በምርመራው ወቅት የማስተዋወቂያ ማስታወቂያ፣ ነገር ግን SM ፊርማ
-የፊርማ ስልተ ቀመሮቹ `ed25519`,
-`secp256k1`, እና `bls_normal`, ስለዚህ አትገዙ SM2-የተፈረሙ ግብይቶች
-የኃይል ጭነት ካልተለወጠ በስተቀር ማሰማራት።
+የህዝብ Taira በቼክ ወቅት የ SM አቅም ማስታወቂያውን አጋልጧል ፣ ነገር ግን SM ፊርማ እዚያ ተሰናክሏል ። የታወጁት ፊርማ ስልተ ቀመሮች ነበሩ `ed25519`, `secp256k1`, እና `bls_normal` ፣ ስለዚህ SM2 የተፈረሙትን ግብይቶች ለዚያ ተልዕኮ አያቀርቡም ፣ የአቅም ተጠቃሚነት ጭነት ካልተለወጠ በስተቀር ።
 
-### GOST እና የ "Post Quantum" ቁልፎች {#gost-and-post-quantum-keys}
+### GOST እና ከቁጥር በኋላ ያሉ ቁልፎች {#gost-and-post-quantum-keys}
 
-አጠቃላይ crypto ይጠቀሙ API ለ GOST R 34.10-2012 መለኪያ ስብስቦች እና ML-DSA
-(`ml-dsa`) ከኳንቶሙ በኋላ ፊርማዎች. ተመሳሳይ ቁልፍ-ፓር ዕቃ ፊርማዎችን ይይዛል,
-ማረጋገጫ እና ባለብዙ-ሃሽ ኤክስፖርት:
+የጋራ crypto ይጠቀሙ API ለ GOST R 34.10-2012 የፓራሜትር ስብስቦች እና ML-DSA (`ml-dsa`) ከኳንታል በኋላ ፊርማዎች: ተመሳሳይ ቁልፍ-ፓር ዕቃ ፊርማ, ማረጋገጫ እና ባለብዙ ሃሽ ኤክስፖርት ይይዛል:
 
 ```python
 from iroha_python import (
@@ -1036,8 +944,7 @@ print(post_quantum_address.to_i105(CHAIN_DISCRIMINANT))
 print(mldsa_keypair.prefixed_public_key_multihash)
 ```
 
-በር GOST እና በኖዱ ማስታወቂያ ላይ የተዘረዘሩ ፊርማ ስልተ ቀመሮች ላይ የ post-ኳንቲም ፍሰቶች.
-ለወደፊቱ ተኳሃኝ ስልተ ቀመሮች ስሞች የጭነት አቅም ጥቅማጥቅሞችን ይጠቀሙ:
+በር GOST እና ከኳንቶሙ በኋላ የሚደረጉ ፍሰቶች በአገናኙ ማስታወቂያ ላይ በሚታዩት ፊርማ ስልተ ቀመሮች ላይ። ለወደፊቱ ተኳሃኝ ስልተ ቀመር ስሞች ጥሬ ችሎታ ጥቅማጥቅሞችን ይጠቀሙ:
 
 ```python
 capabilities = client.request_json(
@@ -1066,16 +973,11 @@ supports_sm2 = "sm2" in allowed and bool(sm.get("enabled", False))
 print(supports_gost, supports_post_quantum, supports_sm2)
 ```
 
-አንድ አገናኝ የሚፈልጉትን ስልተ ማስታወቂያ የማያቀርብ ከሆነ, ቁልፉን ለአካባቢያዊ ብቻ ይጠቀሙ
-ከዚህ ስልተ ቀመር ጋር የተፈረሙ ግብይቶችን ወደ
-በሕዝብ ጊዜ Taira ቼክ፣ GOST እና ML-DSA እንደ SDK
-የክሪፕቶ ረዳቶች Python ቤተ-መጽሐፍት ግን በ
-ለግብይት ፊርማ የሚያገለግል አንጓ።
+አንድ አገናኝ የሚፈልጉትን ስልተ ቀመር የማያስተዋውቅ ከሆነ ቁልፉን ለአካባቢያዊ ወይም ከመስመር ውጭ ለሆኑ የስራ ፍሰቶች ብቻ ይጠቀሙ። በዚያው ስልተ ቀለም የተፈረሙ ግብይቶችን ወደዚያ አገናኝ አያቅርቡ ። የህዝብ Taira ፍተሻ ወቅት GOST እና ML-DSA በ Upstream Python ቤተ-መጽሐፍት ውስጥ እንደ SDK crypto helpers ነበሩ ነገር ግን ለግብይት ፊርማ በአገናኙ አልተስተዋወቁም.
 
-## ለደንበኞች ማዘጋጀት {#config-aware-client-creation}
+## የደንበኞችን መፍጠር {#config-aware-client-creation}
 
-አጠቃቀም `resolve_torii_client_config` አፕሊኬሽኑ የአገናኝ ቅንብሮችን ሲያነብ
-ከፋይል የተወሰደ ነገር ግን አሁንም ለአካባቢው ወይም ለሙከራ የተወሰኑ መሰናክሎችን ይፈልጋል-
+አፕሊኬሽኑ ከፋይል ውስጥ የአገናኝ ቅንብሮችን ሲያነብ ግን አሁንም ለአካባቢው ወይም ለሙከራ የተወሰኑ የበላይ ተመልካቾችን በሚፈልግበት ጊዜ `resolve_torii_client_config` ይጠቀሙ
 
 ```python
 import json
@@ -1099,8 +1001,7 @@ client = create_torii_client(
 
 ## ካጌሙሻ ዝግጁነት {#kagemusha-readiness}
 
-የ Python SDK የአሁኑን መጠየቅ ይችላሉ JSON በጄኔሪክ በኩል የዝግጅት መንገድ
-Torii የመጠየቅ ረዳት:
+የ Python SDK የአሁኑን JSON ዝግጁነት መንገድ በጄኔሪካዊው Torii ጥያቄ ረዳት በኩል መጠየቅ ይችላል-
 
 ```python
 ASSET_DEFINITION_ID = "<canonical_asset_definition_id>"
@@ -1116,15 +1017,11 @@ print(readiness["ready"])
 print(readiness["blockers"])
 ```
 
-Python የተጻፉትን Kagemusha ማሟያዎች ወይም የመልቀቂያ አርኪቭ ገንቢዎችን አያጋልጥም።
-የተጻፈውን ይጠቀሙ Swift ወይም JVM የካኖኒካል ለመገንባት ቦርሳ V4 ከዚያም
-የሚደገፉትን ካጌሙሻ በመጠቀም ያቀርባሉ እና ይመረምራሉ Torii ደንበኛ።
+Python የተጻፉትን የካጌሙሻ ማሟያዎች ወይም የመልቀቂያ አርኪቭ ገንቢዎችን አያጋልጥም ። የ Swift ወይም JVM Wallet ን በመጠቀም ቀኖኒካዊውን V4 መዝገብ ለመገንባት ይጠቀሙ ፣ ከዚያ በመደገፍ በነበረው ካጌሙሻ Torii ደንበኛ በኩል ያቅርቡ እና ይመረምራሉ ።
 
-## የደንበኝነት ምዝገባ {#subscriptions}
+## ምዝገባዎች {#subscriptions}
 
-የደንበኝነት ምዝገባ ረዳቶች ከጋራው የተወረሱትን የአገልግሎት ጥሪዎችን ይለውጣሉ Torii
-የተጠቀመበት ደንበኛ `iroha_python.ToriiClient`. አጠቃቀም IDs እና በ
-የዒላማው አውታረመረብ።
+የደንበኝነት ምዝገባ ረዳቶች ከጋራው የተወረሱትን የአገልግሎት ጥሪዎችን በመቀየር ላይ ናቸው Torii የተጠቀመበት ደንበኛ `iroha_python.ToriiClient`. አጠቃቀም IDs እንዲሁም በዒላማው አውታረመረብ ላይ የሚገኙትን ንብረቶች።
 
 ```python
 # The plan defines billing cadence, retry policy, and usage pricing.
@@ -1183,8 +1080,7 @@ client.charge_subscription_now(
 
 ## አገናኝ {#connect}
 
-መገንባት እና መመርመር አገናኝ URIs, እና የህዝብ አገናኝ ሁኔታን ያንብቡ
-Taira:
+Connect URIs ን ይገንቡ እና ይመረምሩ ፣ እና በ Taira የተጋለጠውን የህዝብ ግንኙነት ሁኔታ ያንብቡ:
 
 ```python
 from iroha_python.connect import ConnectUri, build_connect_uri, parse_connect_uri
@@ -1205,8 +1101,7 @@ assert parsed.chain_id == CHAIN_ID
 print(status.enabled, status.sessions_active)
 ```
 
-ክፈፍ ኮዴኮች, ክፍለ ቁልፍ ማመንጨት, እና ክፍለ ጊዜ መፍጠር ተወላጅ ያስፈልጋቸዋል
-ማራዘሚያ እና የተከፈተ የ "Connect" ክፍለ ጊዜ መንገድ:
+የክፈፍ ኮዴኮች ፣ የሰልፍ ቁልፍ ማመንጨት እና የሰልፍ መፍጠር የአገር ውስጥ መስፋፋት እና የተቻለ የግንኙነት ክፍለ መንገድን ይጠይቃሉ-
 
 ```python
 from iroha_python import (
@@ -1248,7 +1143,7 @@ client.send_connect_control_frame(
 )
 ```
 
-ከፀደቀ በኋላ ያሉ መልዕክቶችን በመግለጫ ክፍለ ጊዜ ይሸፍኑ
+ከፀደቀ በኋላ ያሉትን መልዕክቶች በሁኔታ የተሞላበት ክፍለ ጊዜ በማስመሰል:
 
 ```python
 from iroha_python import (
@@ -1278,7 +1173,7 @@ print(encrypted.sequence, state)
 
 ## አስተዳደር፣ የስራ ሰዓት እና የአስተዳዳሪ ገጽታዎች {#governance-runtime-and-admin-surfaces}
 
-እነዚህ የንባብ ብቻ ጥሪዎች በሕዝብ ላይ በተሳካ ሁኔታ ተመልሰዋል Taira:
+እነዚህ የንባብ ብቻ ጥሪዎች በህዝብ Taira ላይ በተሳካ ሁኔታ ተመልሰዋል-
 
 ```python
 client = create_torii_client("https://taira.sora.org")
@@ -1304,9 +1199,7 @@ print(abi, abi_hash, runtime_metrics)
 print(upgrades.total, capabilities.abi_version)
 ```
 
-የስራ ሰዓት ማሻሻያ ረዳቶች በሥራ ሰዓት ማሻሻያው ውስጥ ጥቅም ላይ የሚውለውን የመግለጫ ቅርፅ ይቀበላሉ
-API. እነዚህ የኦፕሬተር እርምጃዎች ናቸው, ስለዚህ የእርስዎን
-መለያ እና ቶክኖች የተፈቀደላቸው:
+የስራ ሰዓት ማሻሻያ ረዳቶች በሥራ ሰዓት ማሻሻያው API የተጠቀመውን የማኒፌስት ቅርፅ ይቀበላሉ ። እነዚህ የአስተናጋጅ እርምጃዎች ናቸው ፣ ስለሆነም መለያዎ እና ቶከንዎ ከተፈቀደላቸው አገናኞች ጋር ብቻ ይጠቀሙባቸው:
 
 ```python
 admin = create_torii_client(
@@ -1352,11 +1245,9 @@ for sample in time_status.samples:
 print(time_now.now_ms)
 ```
 
-## SoraFS, UAID, እና Kaigi ረዳቶች {#sorafs-uaid-and-kaigi-helpers}
+## SoraFS ፣ UAID እና Kaigi ረዳቶች {#sorafs-uaid-and-kaigi-helpers}
 
-እነዚህ ረዳቶች የሚገኙት የዒላማው አንጓ የተዛመደውን
-Nexus/SORA መጨረሻ ነጥቦች: ባዶ ዝርዝሮችን እንደ ትክክለኛ ምላሽ ይያዙ Taira ግንቦት
-የናሙና ማስረጃ መረጃ ሳይኖር መንገዱ የተቻለ ነው ወይም UAID.
+እነዚህ ረዳቶች የሚገኙት የዒላማው ዕንቁ የተዛመዱትን Nexus/SORA መጨረሻ ነጥቦችን ሲያጋልጥ ነው። ባዶ ዝርዝሮችን እንደ ትክክለኛ ምላሽ ይያዙ: የህዝብ Taira መንገድ ለናሙና ማኒፌስት ወይም UAID መረጃ ሳይኖረው ሊኖር ይችላል ።
 
 ```python
 # SoraFS status queries are reads scoped by manifest and status.
@@ -1380,9 +1271,7 @@ print(health.healthy_total, health.failovers_total)
 
 ## Norito RPC እና GPU ረዳቶች {#norito-rpc-and-gpu-helpers}
 
-አጠቃቀም `NoritoRpcClient` አስቀድማችሁ Norito ባይቶች እና አንድ ለመደወል ያስፈልገናል
-ሁለትዮሽ Torii ለምሳሌ ከዚህ በፊት ከተሰራው
-የግብይት አብነት:
+ቀድሞውኑ Norito ባይቶች ካሉዎት እና በሁለትዮሽ Torii መጨረሻ ነጥብ ላይ መደወል ሲያስፈልግዎ `NoritoRpcClient` ይጠቀሙ። ምሳሌው ከቀዳሚ የግብይት አብነት የተፈረመ ኤንቨሎፕ ይጠይቃል-
 
 ```python
 from iroha_python import NoritoRpcClient, NoritoRpcConfig
@@ -1393,8 +1282,7 @@ with NoritoRpcClient(NoritoRpcConfig(TORII_URL, timeout=5.0)) as rpc:
     print(len(response_bytes))
 ```
 
-CUDA ረዳቶች ይመለሳሉ `None` የጀርባ ማቀነባበሪያው የማይገኝበት ጊዜ, ስለዚህ መተግበሪያዎች
-ወደ ስካላር ትግበራዎች ሊመለሱ ይችላሉ-
+CUDA ረዳቶች `None` የሚመለሱት የጀርባ መጨረሻው የማይገኝ ከሆነ መተግበሪያዎቹ ወደ ስካላር ትግበራዎች ሊመለሱ ይችላሉ-
 
 ```python
 from iroha_python import bn254_add_cuda, cuda_available, poseidon2_cuda
@@ -1407,20 +1295,16 @@ if cuda_available():
 
 ## ወቅታዊ ሽፋን {#current-coverage}
 
-የ Python SDK ቀድሞውኑ ለሚከተሉት ረዳቶች ያካትታል
+Python SDK ቀድሞውኑ ለሚከተሉት ረዳቶች ያካትታል:
 
-- Torii የመላኪያ፣ የአቋም፣ የጥያቄ እና የአስተዳዳሪ ፍሰቶች
-- ለጋራ የሚሆን የታይፕ መመሪያ ገንቢዎች ISI እና የጎራ-ተኮር መስመሮች
-- የግብይት ረቂቅ፣ ማኒፌስት፣ ፊርማ እና የተፈረመ የግብይት ፖስታ
-  የስራ ፍሰቶች
+- Torii ማቅረቢያ, ሁኔታ, ጥያቄ እና አስተዳዳሪ ፍሰቶች
+- የተለመዱ ISI እና የጎራ-ተኮር ማራዘሚያዎችን የሚጠቀሙ የታይፕ መመሪያ ገንቢዎች
+- የግብይት ረቂቆች ፣ ማኒፊስቶች ፣ ፊርማዎች እና የተፈረሙ የግብይት ፖስታ የሥራ ፍሰቶች
 - የዥረት ክስተቶች ፣ ማጣሪያዎች እና ዳግም ሊቀጥሉ የሚችሉ ካርሰሮች
-- አጠቃላይ Kagemusha ዝግጁነት መዳረሻ እና Torii የደንበኝነት ምዝገባ ረዳቶች፤ የተጻፉ
-  የተሟላ እና የክፍያ ገንቢዎች አልተጋለጡም
-- የመለያ አድራሻ፣ የአልጎሪዝም ፊርማ ረዳቶች፣ ባለብዙ ሃሽ የጉዞ ጉዞዎች፣ SM2,
-  GOST, ML-DSA, BLS, እና ምስጢራዊ ቁልፍ አያያዝ
-- አገናኝ URIs, ክፍለ ጊዜዎች፣ ማዕቀፎች፣ ምስጠራ ረዳቶች እና የምዝገባ አስተዳዳሪ
-- አስተዳደር፣ የስራ ሰዓት ማሻሻያ፣ Sumeragi, ኖድ-አስተዳዳሪ፣ SoraFS, UAID, እና Kaigi
-  አንጓው እነዚህን ባህሪዎች በሚያጋልጥበት የመጨረሻ ነጥብ ጥቅሎች
+- አጠቃላይ የካጌሙሻ ዝግጁነት መዳረሻ እና Torii የደንበኝነት ምዝገባ ረዳቶች; የተፃፉ ማሟያዎች እና የመልቀቂያ ገንቢዎች አልተጋለጡም ።
+- የሂሳብ አድራሻ፣ የአልጎሪዝም ፊርማ ረዳቶች፣ ባለብዙ ሃሽ ጉዞዎች SM2, GOST, ML-DSA እና BLS እንዲሁም ምስጢራዊ ቁልፍ አያያዝ።
+- URIs ፣ ክፍለ ጊዜዎች, ማዕቀፎች, ምስጠራ ረዳቶች እና መዝገብ አስተዳዳሪን ያገናኙ።
+- Sumeragi, node-admin, SoraFS, UAID, እና Kaigi መጨረሻ ነጥብ ማሸጊያዎች ዕንቁ እነዚህን ባህሪያት የሚያጋልጥ ከሆነ
 
 ## የላይኛው መስመር ማጣቀሻዎች {#upstream-references}
 
@@ -1428,5 +1312,4 @@ if cuda_available():
 - `python/iroha_python/DESIGN.md`
 - `python/iroha_python/src/iroha_python`
 
-እነዚህ መዝገቦች ለ Python በተጣራው ውስጥ ያለው ወለል
-የስራ ቦታ ማሻሻያ።
+እነዚህ ፋይሎች የተጣራ የስራ ቦታ ማሻሻያ ውስጥ ለ Python ገጽ እውነት ምንጭ ናቸው.

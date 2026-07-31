@@ -17,17 +17,17 @@ Iroha актив - бұл шотта ұсталатын сандық балан�
 - `id`: каноникалық активтерді айқындау адресі
 - `name`: адам оқуға болатын дисплей атауы
 - `description`: ерікті түрде адам оқитын сипаттама
-- `alias`: параметрлері: `<name>#<domain>.<dataspace>` немесе `<name>#<dataspace>` формасы
+- `alias`: `<name>#<domain>.<dataspace>` немесе `<name>#<dataspace>` нысандағы ерікті аты-жөндер
 - `spec`: тепе-теңдікке арналған сандық дәлдік пен шектеулер
 - `mintable`: ментуалдық саясаты
-- `logo`: параметрлері `SoraFS` URI
+- `logo`: ерікті `SoraFS` URI
 - `metadata`: кездейсоқ кілт-бағалы метамәліметтер
 - `balance_scope_policy`: баланстардың жалпы немесе деректер кеңістігі шектеулі екендігі
 - `owned_by`: анықтаманы тіркеген немесе оған ие болған есепшот
 - `total_quantity`: шығарылған жалпы мөлшері
 - `confidential_policy`: қорғалған активтер бойынша операциялар саясаты
 
-Активтер анықтамасы IDs атау мен доменнен құрылған кезде, Iroha осы домен / атау проекциясын сақтай алады UX және сұраныстар, бірақ каноникалық мәтін формасы пайдаланған мекенжай.
+Мүлік анықтамасы IDs - каноникалық мөлдір емес мекенжайлар. Дефиниция домен мен атаудан құрылған кезде, Iroha осы домен/атау проекциясын UX және сұрау салулар үшін сақтай алады, бірақ каноникалық мәтін нысаны пайдаланған мекенжайы болып табылады.
 
 ## Активтердің балансы {#asset-balance}
 
@@ -89,7 +89,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-Барлық үш мысал да оқылады. Taira, банкротымен қаржыландырылған шотты және қорғалған ағынды пайдалану [Қосылу SORA Nexus Деректер базасы](/kk/get-started/sora-nexus-dataspaces.md).
+Барлық үш мысал да оқылады. Taira-де активтерді қаптау, жағу немесе аудару үшін краннан қаржыландырылған шотты және [де сақталған ағынды пайдалану SORA Nexus деректер қорына қосылу](/kk/get-started/sora-nexus-dataspaces.md).
 
 Төлемақы төлеу үшін Taira активтің мысалы, кранның көмекшісін [Тестнет-ті алу XOR туралы Taira](/kk/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) ретінде `taira_faucet_claim.py`, одан кейін ең алдымен кран активін талап етіп, оны транзакциялық газ активінде пайдалану:
 
@@ -101,7 +101,7 @@ python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
 printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
 ```
 
-Содан кейін қосыңыз `--metadata ./taira.tx-metadata.json` бойынша `ledger asset mint`, `ledger asset burn`, және `ledger asset transfer` командалар.
+Содан кейін `ledger asset mint`, `ledger asset burn` және `ledger asset transfer` командаларына `--metadata ./taira.tx-metadata.json` кіргізілсін.
 
 ## Нұсқаулар {#instructions}
 

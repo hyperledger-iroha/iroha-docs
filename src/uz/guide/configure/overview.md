@@ -8,26 +8,19 @@ translation_engine: nllb-200-ct2
 
 # Konfiguratsiya va boshqaruv {#configuration-and-management}
 
-Iroha konfiguratsiya ikkita ishonchli qatlamga ega:
+Iroha konfiguratsiyasi ikkita ishonchli qatlamga ega:
 
-- **mahalliy tengdosh va mijoz konfiguratsiyasi**, saqlangan TOML fayllar va o ' qish
-  jarayonni ishga tushirish
-- **zanjirdagi konfiguratsiya**, o'zgartirilgan
-  [`SetParameter`](/uz/blockchain/instructions.md#setparameter)
+- TOML fayllarida saqlangan va jarayonni ishga tushirish paytida o'qiladigan mahalliy tengdoshlar va mijoz konfiguratsiyasi
+- [`SetParameter`](/uz/blockchain/instructions.md#setparameter) orqali amalga oshirilgan operatsiyalar bilan o'zgartirilgan zanjirdagi konfiguratsiya.
 
-Nukl identifikatsiyasi, manzillari, logging, saqlash va
-Mijoz imzolash kalitlari. Kelishib olinishi kerak bo'lgan qiymatlar uchun zanjirdagi konfiguratsiyadan foydalaning
-tarmog'i orqali o'ynaydi va deterministik tarzda qayta ijro etiladi.
+Nukl identifikatsiyasi, manzillar, yozuv, saqlash va mijoz imzolash kalitlari uchun mahalliy konfiguratsiyadan foydalaning. Tarmoq tomonidan kelishilgan va deterministik tarzda qayta o'ynash kerak bo'lgan qiymatlar uchun zanjirda konfiguratsiyadan foydalanish.
 
-Ishlab chiqarish xatti-harakati ushbu konfiguratsiya qatlamlaridan kelib chiqishi kerak.
-o'zgaruvchilar mahalliy asboblarga sinov ma'lumotlarini yetkazib berish uchun qulay bo'lishi mumkin, ammo
-Ular ishlab chiqarish xususiyatlari darvozalari emas va majburiyatlarni o'zgartirmaydi
-konfiguratsiya.
+Ishlab chiqarish xatti-harakati ushbu konfiguratsiya qatlamlaridan kelib chiqishi kerak. Mahalliy asboblarga sinov ma'lumotlarini yetkazib berish uchun muhit o'zgaruvchilari qulay bo'lishi mumkin, ammo ular ishlab chiqarish xususiyatlari darvozalari emas va belgilangan konfiguratsiyani almashtirmaydilar.
 
 Asosiy konfiguratsiya kirish punktlari quyidagilardir:
 
 - [Ibtido](/uz/guide/configure/genesis.md)
 - [Mijozning konfiguratsiyasi](/uz/guide/configure/client-configuration.md)
-- [Tarmoqni ishga tushirish uchun kalitlar](/uz/guide/configure/keys-for-network-deployment.md)
-- [Yolg'iz metallda ishlaydi](/uz/guide/advanced/running-iroha-on-bare-metal.md)
+- [Tarmoqni ishga tushirish uchun kalitlar ](/uz/guide/configure/keys-for-network-deployment.md)
+- [Yolg'iz metalda ishlaydi](/uz/guide/advanced/running-iroha-on-bare-metal.md)
 - [Tengdoshlar konfiguratsiyasi ma'lumotnomasi](/uz/reference/peer-config/index.md)

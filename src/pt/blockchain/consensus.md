@@ -14,7 +14,7 @@ import { withBase } from 'vitepress'
 
 As transações entram em fila antes que Sumeragi as propor em um bloco. Validadores validam e executam independentemente a proposta, depois assinam apenas a transição de estado que podem reproduzir. Um bloco compromete-se após o quórum de validador necessário concordar com esse resultado e a carga útil correspondente estiver disponível.
 
-Todas as redes Iroha 3 utilizam os caminhos de disponibilidade dos dados e de transmissão confiáveis.
+Todas as redes Iroha 3 utilizam os caminhos de disponibilidade de dados e de difusão confiáveis. São requisitos de consenso, não características opcionais de implantação.
 
 ## Sumeragi {#sumeragi}
 
@@ -43,7 +43,7 @@ A contagem de validadores de voto `n` define o orçamento de falhas bizantinas. 
 
 Os coletores são uma otimização de fanout. Em vez de cada validador enviar todos os votos para todos os outros validadores, Sumeragi pode selecionar um ou mais coletores para uma altura. Os colectores reunem votos, publicam o progresso do quórum e reduzem a quantidade de tráfego de voto duplicado. As configurações efetivas do colector são expostas através de `GET /v1/sumeragi/collectors`; a imagem instantânea `ops sumeragi telemetry` da CLI relata o conteúdo atual do colector.
 
-Os pares de observadores podem sincronizar blocos comprometidos, mas não propõem, votam, coletam votos ou contam para o quórum do commit.
+Os colegas observadores podem sincronizar os blocos comprometidos, mas eles não propõem, votam, coletam votos ou contam para o quórum do comitê. - Não . Usar observadores quando uma implantação precisa de capacidade local de consulta, indexação, monitoramento. - a replicação de blocos regionais sem aumentar o número de validadores de voto.
 
 ### Visualizar alterações e recuperação {#view-changes-and-recovery}
 
@@ -86,7 +86,7 @@ A configuração de tempo de execução constrói três pedaços do estado da fa
 
 Quando uma transação entra na fila, o roteador de faixa resolve-a para um `RoutingDecision { lane_id, dataspace_id }`. No modo de linha única, este é sempre a faixa `0` e o espaço de dados universal. No modo Nexus, o roteador configurado aplica regras em escala de espaço de dados, roteamento de liquidação, regras de conta, regras explícitas de roteamento e, finalmente, a rota padrão. A faixa resolvida e o espaço de dados devem existir nos seus catálogos, e a faixa deve estar ligada ao espaço de dados resolvido; caso contrário, a transação é rejeitada antes de ser colocada em fila.
 
-A fila mantém esta decisão de roteamento com o hash da transação para que os estágios posteriores não tenham que inferir novamente.
+A fila mantém esta decisão de roteamento com o hash da transação para que os estágios posteriores não tenham de inferir novamente. A construção da proposta utiliza, em seguida, os metadados do carril de duas formas:
 
 - Intercede as transações por faixa, de modo que uma faixa não domine o bloco só porque as suas transações foram colocadas em fila primeiro.
 - Aplica-se limites de unidade de execução de transações por faixa (TEU). As transações que excedessem a capacidade configurada de uma faixa são adiadas e requeued, exceto que a primeira transação com sobrepeso para uma faixa pode ser admitida para evitar o livelock.

@@ -8,17 +8,15 @@ translation_engine: nllb-200-ct2
 
 # Ma'lumotnoma {#reference}
 
-Ushbu bo'limda operatorlarga qaratilgan joriy referent material
-Iroha 3 Doktoralar to'plami.
+Ushbu bo'limda Iroha 3 hujjatlari to'plami uchun joriy operatorga qaraydigan ma'lumot materialini kuzatadi.
 
-Bu yerda boshlaning:
+Bu yerdan boshlang:
 
-- [bilan ishlash Iroha ikkilamchi](/uz/reference/binaries.md)
-- [Ibtidoga oid ma'lumot](/uz/reference/genesis.md)
-- [Torii oxirgi nuqtalar](/uz/reference/torii-endpoints.md)
+- [Iroha ikkilamchilar bilan ishlash](/uz/reference/binaries.md)
+- [Ibtido ko'rsatkichi](/uz/reference/genesis.md)
+- [Torii oxirgi nuqtalari](/uz/reference/torii-endpoints.md)
 - [Torii API konsol](/uz/reference/torii-api-console.md)
 - [Norito](/uz/reference/norito.md)
-- [Qo'shilish matrisi](/uz/reference/compatibility-matrix.md)
+- [Qo'shilish matrisi ](/uz/reference/compatibility-matrix.md)
 
-Amalga oshirish manbai va kod bilan bog'liq spetsifikatsiyalar uchun
-[Iroha omborxona](https://github.com/hyperledger-iroha/iroha).
+Amalga oshirish manbai va qo'shni kodning moslamalari uchun [Iroha ma'muriyati ](https://github.com/hyperledger-iroha/iroha)-ni ko'ring.

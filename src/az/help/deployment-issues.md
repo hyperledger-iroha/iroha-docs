@@ -54,7 +54,7 @@ docker compose -f ./localnet/docker-compose.yml up
 - Yalnız konteyner şəbəkəsi daxilində işləyən P2P ünvanları reklam olunur
 - Yerli həcmin bərpa edilmədən sonra təkrar istifadəsi
 
-Yeni bir genesis sınaqdan keçirərkən, yığın yenidən başlamadan əvvəl köhnə Kura həcmləri çıxarın.
+Yeni bir genesis sınaqdan keçirərkən, yığın yenidən başlamadan əvvəl köhnə Kura həcmləri çıxarın. Köhnə blokların saxlanılması yeni bir cinslə oynamağın uğursuzluğuna səbəb olacaq.
 
 ## Kubernetlər {#kubernetes}
 

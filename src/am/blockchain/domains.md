@@ -8,42 +8,30 @@ translation_engine: nllb-200-ct2
 
 # ጎራዎች {#domains}
 
-ጎራዎች በስም ቦታዎች ውስጥ የተመዘገቡ ናቸው `World`. በወቅቱ Iroha
-3 የውሂብ ሞዴል አንድ ጎራ በዋናው የመረጃ ቦታው የተመሰረተው ነው, ስለዚህ የካኖኒካል
-መታወቂያ:
+ጎራዎች በ `World` ውስጥ የተመዘገቡ የስም ቦታዎች ናቸው. አሁን ባለው Iroha 3 የውሂብ ሞዴል አንድ ጎራ በዋናው የመረጃ ቦታው ተመድቧል, ስለዚህ የካኖኒካል መታወቂያ ነው:
 
 ```text
 domain.dataspace
 ```
 
-ለምሳሌ፣ `payments.universal` ስሞቹ `payments` በ ውስጥ ጎራ
-`universal` የመረጃ ቦታ።
+ለምሳሌ፣ `payments.universal` በ `universal` የውሂብ ቦታ ውስጥ ያለውን `payments` ጎራ ይጠቅሳል.
 
 ## መዋቅር {#structure}
 
-የተመዘገበ `Domain` የሚከተሉትን ይ containsል:
+የተመዘገበ `Domain` የሚከተሉትን ያካትታል፦
 
-- `id`: የውሂብ ቦታ ብቃት ያለው `DomainId`
-- `logo`: አማራጭ `SoraFS` URI ለጎራ አርማ
-- `metadata`: የትርፍ ጊዜ ማሳለፊያ
-- `owned_by`: ጎራውን የሚይዘው መለያ፣ በተለምዶ
-  ተመዝግቧል
+- `id`: የመረጃ ቦታ ብቃት ያለው `DomainId`
+- `logo`: ለጎራ አርማ አማራጭ የሆነ `SoraFS` URI
+- `metadata`: የትዕግሥት ቁልፍ ዋጋ ሜታዳታ
+- `owned_by`: የጎራውን ባለቤት የሆነበት መለያ፣ በተለምዶ የተመዘገበበት መለያ
 
-አንድ ጎራ ለመጨመር ጥቅም ላይ የዋለው bootstrap payload ነው `NewDomain`. ይሸከማል
-የ `id`, አማራጭ `logo`, እና የመጀመሪያ `metadata`. የስራ ሰዓት ይሞላል
-`owned_by` መደበኛ ደንበኞች ይህንን ጠቃሚ ጭነት አያቀርቡም
-በቀጥታ።
+አንድ ጎራ ለመጨመር ጥቅም ላይ የዋለው bootstrap payload ነው `NewDomain`. ይህ የ `id`, አማራጭ `logo`, እና የመጀመሪያ `metadata`. የሩጫ ጊዜ ይሞላል `owned_by` ተራ ደንበኞች ይህንን ጭነት በቀጥታ አያቀርቡም ።
 
 ## ምዝገባ {#registration}
 
-የተለመደው ጎራ መፍጠር የአስተያየት ቅጅ ፍሰት ይጠቀማል
-SNS ኪራይ, ባለቤት አቅም, ጥቅስ ጠባቂ, እና በአንድ የአቶሚክ ውስጥ ጎራ ረድፍ
-`EnsureAlias` ግብይት. `Register::Domain` ጅማሬ/ጀማሪ ቀበቶ ሆኖ ይቆያል።
-እና `ledger domain` ትዕዛዝ የለም `register` የጦር አዛዥ።
+የተለመደው ጎራ መፍጠር የአዋጅ ቅጽል ስም ማዋቀር ፍሰት ይጠቀማል. ይህ SNS ኪራይ, ባለቤት አቅም, ጥቅስ ጠባቂ, እና በአንድ የአቶሚክ ውስጥ ጎራ ረድፍ `EnsureAlias` ግብይት. `Register::Domain` የጀኔዝ / ቡትስታፕ ወለል ሆኖ ይቆያል ፣ እና `ledger domain` ትዕዛዝ የለም `register` የጦር አዛዥ።
 
-ሚስጥር የሌለበት `AliasSetupPlanRequestV1` ዓላማ SDK ወይም መጫን
-አገልግሎት, ከዚያም አላቸው CLI በቀጥታ ሁኔታ ላይ እቅድ አውጥተው ትክክለኛውን ያቅርቡ
-እቅድ:
+በ SDK ወይም በማስገባት አገልግሎት ውስጥ ምስጢራዊ ያልሆነ `AliasSetupPlanRequestV1` ዕቅድ ይፍጠሩ ፣ ከዚያ CLI ከቀጥታ ሁኔታ ጋር እቅድ ያድርጉት እና ያንን ትክክለኛ እቅድ ያቅርቡ ።
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -57,27 +45,20 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
 ```
 
-ዓላማው ይለያል `payments.universal`, ቁጥራዊ የመረጃ ቦታው፣ ካኖኒካል
-I105 ባለቤት፣ የኪራይ ግዥ ጊዜ እና የአሁኑ ፖሊሲ/የክፍያ ዋጋ ጥበቃ።
-የፕላነር መጨረሻ ነጥብ ነው `POST /v1/aliases/setup/plan`; የተመለሰው ዕቅድ
-ሰንሰለት፣ ሥልጣን፣ ግዛት እና የጊዜ ገደብ የተገደበ።
-[`Unregister`](/am/blockchain/instructions.md#un-register).
+ዓላማው `payments.universal` ፣ ቁጥራዊ የውሂብ ቦታውን ፣ ቀኖናዊውን I105 ባለቤት ፣ የኪራይ ግዥን ጊዜ እና የአሁኑ ፖሊሲ / የክፍያ ዋጋ ጠባቂን ይገልጻል ። የታቀደው መጨረሻ ነጥብ `POST /v1/aliases/setup/plan` ነው ፤ የተመለሰው እቅድ ሰንሰለት ፣ ስልጣን ፣ ግዛት እና የጊዜ ገደብ የተገደበ ነው ። የጎራ ማስወገጃ አሁንም [`Unregister`](/am/blockchain/instructions.md#un-register) ይጠቀማል.
 
-አንድ ጎራ መፍጠር ወይም ማስወገድ ተገቢውን የጎራ አስተዳደር ይጠይቃል
-ንቁ የስራ ሰዓት ማረጋገጫ ስር ፈቃድ.
-[`SetKeyValue` እና `RemoveKeyValue`](/am/blockchain/instructions.md#setkeyvalue-removekeyvalue)
-ባለሥልጣኑ ያንን ጎራ ለመቀየር ፈቃድ ሲኖረው።
+ጎራ ለመፍጠር ወይም ለማስወገድ በተግባር ባለው የሂደት ጊዜ ማረጋገጫ ስር ተገቢውን የጎራ አስተዳደር ፈቃድ ይጠይቃል። ባለሥልጣኑ ያንን ጎራ ለማሻሻል ፈቃድ ካለው የጎራ ሜታዳታ በ [`SetKeyValue` እና `RemoveKeyValue`](/am/blockchain/instructions.md#setkeyvalue-removekeyvalue) ሊዘመን ይችላል።
 
-## ሞክር Taira {#try-it-on-taira}
+## Taira ላይ ይሞክሩት {#try-it-on-taira}
 
-በአሁኑ ጊዜ በአደባባይ የሚታዩትን ጎራዎች ይዘርዝሩ Taira የሙከራ አውታረመረብ:
+በሕዝብ Taira የሙከራ ኔትወርክ ላይ በአሁኑ ጊዜ የሚታዩትን ጎራዎች ይዘርዝሩ:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
   | jq -r '.items[].id'
 ```
 
-የሕዝብ ጎዳና ካታሎግ ወደ ዳታስፔስ ስያሜዎች መልሰው ያቅርቡ:
+የሕዝብ ጎዳና ካታሎግ ወደ ዳታስፔስ ስያሜዎች ተመልሶ ካርታ:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -86,15 +67,9 @@ curl -fsS https://taira.sora.org/status \
     | @tsv'
 ```
 
-አንድ መተግበሪያ ጎራ መኖር አለመኖሩን ለመፈተሽ ሲፈልግ የመጀመሪያውን ትእዛዝ ይጠቀሙ።
-የመረጃ ቦታው በይፋ መሆኑን ማረጋገጥ ሲፈልጉ የመንገድ ካታሎግ፣
-የተገደበ ወይም ከዋናው ጎዳና በስተጀርባ ያለው።
+አንድ መተግበሪያ ጎራ መኖር አለመኖሩን ለመመርመር ሲፈልግ የመጀመሪያውን ትእዛዝ ይጠቀሙ። የመረጃ ቦታው በይፋዊ ፣ የተገደበ ወይም ከዋናው ጎዳና በስተጀርባ መቆየቱን ለማረጋገጥ በሚፈልጉበት ጊዜ የጎዳና ካታሎግ ይጠቀሙ።
 
-የጎራ ማዋቀር ክፍያ የሚከፈልበት ጽሑፍ ነው. Taira, ማስቀመጥ
-የቧንቧ ረዳት
-[ቴስትኔት ያግኙ XOR ላይ Taira](/am/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)
-እንደ `taira_faucet_claim.py`, ፊርማውን በሕዝብ ማቀነባበሪያ በኩል ለማገዝ፣
-የክፍያ ሜታ መረጃዎች:
+Taira ላይ ለመሞከር ከመሞከርዎ በፊት የቧንቧ ረዳት ከ [ ውስጥ ያስቀምጡ Testnet XOR በ Taira](/am/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) ላይ እንደ `taira_faucet_claim.py` ያግኙ ፣ በመደበኛ ቧንቧ በኩል ፊርማውን የገንዘብ ድጋፍ ያድርጉ እና ክፍያ ሜታዳታ ይጨምሩ:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
@@ -113,21 +88,15 @@ iroha --config ./taira.client.toml \
   app alias setup apply --plan-file ./taira-domain.plan.json
 ```
 
-በተደጋጋሚ የሙከራ አውታረመረብ ሩጫዎች ላይ ለየት ያለ የጎራ ስም ዓላማን ይገንቡ እና ይጠቀሙ
-Taira የአሁኑ ፖሊሲ እና የክፍያ አክሲዮን ዋጋ ጥበቃ.
-ለአካባቢያዊ አውታረ መረብ ወይም Minamoto.
+በተደጋጋሚ የሙከራ አውታረመረብ ሩጫዎች ላይ ለየት ያለ የጎራ ስም ዓላማን መገንባት እና የ Taira ወቅታዊ ፖሊሲ እና የክፍያ-አክሲዮን ዋጋ መጠበቂያ ይጠቀሙ። ለ localnet ወይም Minamoto የተዘጋጀውን ዕቅድ እንደገና አይጠቀሙ ።
 
 ## ከሌሎች አካላት ጋር ያለው ግንኙነት {#relationship-to-other-entities}
 
-ጎራዎች ዋና መቁጠሪያ ዕቃዎችን ያደራጃሉ እና የጎራ-ተኮር መረጃዎች የስም ቦታን ይሰጣሉ።
-የንብረት ትርጉሞች የጎራ ብቁ የሆኑ መታወቂያዎችን ይጠቀማሉ፣ መጠይቆችም ሊዘረዝሩ ይችላሉ
-መለያዎች ራሳቸው
-አሁን ባለው የውሂብ ሞዴል ውስጥ ጎራ የሌለው, ነገር ግን መለያዎች ጎራዎችን ሊይዙ እና ሊያከናውኑ ይችላሉ
-ትርጉማቸው በዘርፉ ውስጥ የሚገኝ ንብረት።
+ጎራዎች የቡድን መቁጠሪያ ዕቃዎችን ይሰጣሉ እና የጎራ-ስኬድ መረጃዎች ለስም ቦታ ያቀርባሉ ። የንብረት ትርጉሞች የጎራ ብቃት ያላቸው መታወቂያዎችን ይጠቀማሉ ፣ መጠይቆች ጎራዎችን ሊዘርዝሩ ወይም ወደ ጎራ የተዘረዘሩ ነገሮችን ሊያገኙ ይችላሉ ። መለያዎች እራሳቸው አሁን ባለው የመረጃ ሞዴል ውስጥ ጎራ የሌላቸው ናቸው ፣ ግን መለያዎች ጎራዎችን ሊይዙ እና ትርጓሜዎቻቸው በጎራ ስር የሚኖሩ ንብረቶችን ሊይዙ ይችላሉ ።
 
-በተጨማሪም ተመልከት:
+በተጨማሪም ተመልከት።
 
 - [ዓለም](/am/blockchain/world.md)
 - [ንብረቶች](/am/blockchain/assets.md)
-- [ሜታዳታ](/am/blockchain/metadata.md)
+- [ሜታ መረጃዎች](/am/blockchain/metadata.md)
 - [የስም አሰጣጥ ደንቦች](/am/reference/naming.md)

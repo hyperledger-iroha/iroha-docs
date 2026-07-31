@@ -29,7 +29,7 @@ Utilice `docker ps` para confirmar el nombre del contenedor. En la pila generada
 
 ## Recomienda Génesis en una red desechable {#recommit-genesis-in-a-disposable-network}
 
-Para una red desechable Docker, detenga la pila, eliminen el estado generado, regeneren o reemplazan el paquete de genesis firmado y comienzan de nuevo:
+Un compañero sólo comete la genesis cuando su almacenaje está vacío. Para una red desechable Docker, detener la pila, eliminar el estado generado, regenerar o sustituir el paquete de genesis firmado. y empezar de nuevo:
 
 ```bash
 docker compose -f ./localnet/docker-compose.yml down

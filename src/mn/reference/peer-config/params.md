@@ -12,24 +12,21 @@ outline: [ 2, 3 ]
 import ParamTable from './ParamTable.vue';
 </script>
 
-# Байгууллагын параметр {#configuration-parameters}
+# Конфигурацын параметр {#configuration-parameters}
 
-Хөдөлмөр
+[toc]
 
-## Үр дүнд хүрэх түвшин {#root}
+## Хөгжлийн түвшин {#root}
 
 ### `chain` <Badge text="required" /> {#param-chain-id}
 
-Хүрэлсүх ID Энэ нь аливаа гүйлгээний дотор байх ёстой. Урьдчилгааны халдлагыг урьдчилан сэргийлэхэд ашиглана.
+ID сүлжээ нь аливаа гүйлгээнд нэгтгэх ёстой.
 
-Хоёр дахин үйлдэл нь үйл ажиллагааг өөр нэг байгууллагад
-Энэ нь тухайн төслийнхээс илүү `chain` Энэ нь
-гарын үсэг зурсан гүйлгээний ашиг ачаалал, нэг сүлжээний төлөө гарын үсгийн гүйлгээг татгалздаг
-өөр зангилаа ашигладаг ижилхэн ID.
+Урьдчилсан гүйлгээний халдлага нь тухайн үйл явцаас өөр нэг сүлжээ рүү хүчинтэй гүйлгээг хүргэх оролдлого юм. `chain` нь гарын үсэг зурсан гүйлгэний ашигтай ачааллын нэг хэсэг тул нэг зангилаар гарын үсгийн гүйлгээ нь ID -ийг ашигладаг өрсөлдөгчид татгалзаж байна.
 
 <param-table type=string env=CHAIN />
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 chain = "00000000-0000-0000-0000-000000000000"
@@ -43,11 +40,11 @@ CHAIN="00000000-0000-0000-0000-000000000000"
 
 ### `public_key` <Badge text="required" /> {#param-public-key}
 
-Эрдэнэтгэгчдийн олон нийтийн ач холбогдол. BLS-Эрөнхий ач холбогдолтой.
+Үндсэн ойлголцлын баталгаажуулагч өрсөлдөгчид нь BLS-Нормаль түлхүүр ашиглах ёстой.
 
 <param-table type="public-key" env="PUBLIC_KEY" />
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 public_key = "ea01309060D021340617E9554CCBC2CF3CC3DB922A9BA323ABDF7C271FCC6EF69BE7A8DEBCA7D9E96C0F0089ABA22CDAADE4A2"
@@ -61,12 +58,11 @@ PUBLIC_KEY="ea01309060D021340617E9554CCBC2CF3CC3DB922A9BA323ABDF7C271FCC6EF69BE7
 
 ### `private_key` <Badge text="required" /> {#param-private-key}
 
-Хэдэн үеийнхний хувийн ачкыж нь нийцэж байх ёстой `public_key`; санал нэгдлийн баталгаажуулагч зэрэгцэнүүд
-хэрэглэх ёстой BLS-Эрөнхий ач холбогдолтой.
+Төгсчийн хувийн товчоо. Энэ нь `public_key`тай нийцэж байх ёстой; санал нэгдлийн баталгаажуулагч орнууд BLS-Нормалын товчоо ашиглах ёстой.
 
 <param-table type="private-key" env="PRIVATE_KEY" />
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 private_key = "8926201CA347641228C3B79AA43839DEDC85FA51C0E8B9B6A00F6B0D6B0423E902973F"
@@ -80,22 +76,19 @@ PRIVATE_KEY="8926201CA347641228C3B79AA43839DEDC85FA51C0E8B9B6A00F6B0D6B0423E9029
 
 ### `trusted_peers` {#param-trusted-peers}
 
-Эдгээртээ итгэж байгаа найз нөхөдний жагсаалт.
+Дашрамдсан итгэх нөхөд жагсаалт.
 
-Зөвлөлтийн баталгаажуулагчдыг ашиглах ёстой BLS-Хэрэг батлан баталгаажуулагчдын хувьд ч
-нийлүүлэх [`trusted_peers_pop`](#param-trusted-peers-pop) Дотоод орох.
+Үндсэн санал хураалтын баталгаажуулагчид BLS-Нормаль ижил төстэй түлхүүр ашиглаж байх ёстой. Арьсны баталгаажуулалтанд нийцсэн [`trusted_peers_pop`](#param-trusted-peers-pop) нэвтрүүлгийг өгөх хэрэгтэй.
 
 <param-table env="TRUSTED_PEERS">
 <template #type>
 
-Дундаж дугуйны шугам. `PUBLIC_KEY@ADDRESS` тухайн үед P2P хаяг нь мэдэгдэх;
-хараагүй `PUBLIC_KEY` мөн хүлээн зөвшөөрөгдсөн бөгөөд ижил хүйстний хаягийг олж авах боломжтой
-Хэлэлцүүлэг.
+Нөхөр зөөврийн шугам. `PUBLIC_KEY@ADDRESS` хаягийг мэддэг бол P2P нэгийг ашигла; Bare `PUBLIC_KEY` нь мөн хүлээн зөвшөөрөгдсөн бөгөөд өрсөлдөгчийн хаягийг гайхамшигнаас илрүүлэх боломжийг олгоно.
 
 </template>
 </param-table>
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 trusted_peers = [
@@ -116,17 +109,17 @@ TRUSTED_PEERS='[
 
 ### `trusted_peers_pop` {#param-trusted-peers-pop}
 
-BLS баталгаажуулагчдын итгэж байгаа өрсөлдөгчдийн эзэмшилийн гэрчилгээний бүртгэл.
+BLS баталгаажуулагчаар итгэж байгаа өрсөлдөгчдийн эзэмшлийн гэрчилгээ.
 
 <param-table env="TRUSTED_PEERS_POP">
 <template #type>
 
-Нөөцтэй эд зүйлс `public_key` болон `pop_hex` талбар
+`public_key` болон `pop_hex` гэсэн талбайтай объектүүдийн жагсаалт
 
 </template>
 </param-table>
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 trusted_peers_pop = [
@@ -149,12 +142,11 @@ TRUSTED_PEERS_POP='[
 
 ### `genesis.file` {#param-genesis-file}
 
-Genesis block-ийн гарын үсэг зурсан хэрэглээний ачааллын файлын замыг `kagami genesis sign`.
-Одоогоор үүсгэсэн хувилбар нь Norito `.nrt` Хөгжлийн баримт.
+Genesis block-ийн гарын үсэг зурсан хэрэглээний ачааллын файлын замыг `kagami genesis sign`. Жинэсэн хувилбар нь ихэвчлэн үүнийг Norito `.nrt` Документ.
 
 <param-table type="file-path" env="GENESIS" />
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [genesis]
@@ -169,11 +161,11 @@ GENESIS="./genesis.signed.nrt"
 
 ### `genesis.public_key` <Badge text="required" /> {#param-genesis-public-key}
 
-Женезис цомгийн нөөцний олон нийтийн гол.
+Женезис цомгийн нөөцний гол.
 
 <param-table type="public-key" env="GENESIS_PUBLIC_KEY" />
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [genesis]
@@ -186,15 +178,15 @@ GENESIS_PUBLIC_KEY="ed01208BA62848CF767D72E7F7F4B9D2D7BA07FEE33760F79ABE5597A515
 
 :::
 
-## Түлжээ {#network}
+## Сүлжээ {#network}
 
 ### `network.address` <Badge text="required" /> {#param-network-address}
 
-Зөвлөлдөх (sumeragi) болон блокын синхрончлалын (block) зорилгоор p2p харилцааны хаяг_Хөгжлийн чиглэлээр.
+Зөвлөлдөх (sumeragi) болон блокийн синхрончлалын (block_sync) зорилгоор p2p харилцааны хаяг.
 
 <param-table type="socket-addr" env="P2P_ADDRESS" />
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [network]
@@ -211,11 +203,11 @@ P2P_ADDRESS=0.0.0.0:1337
 
 Хэдэн үеийнхний хоорондын хаяг (баруун, бусад өрсөлдөгчдийн харж байгаагаар).
 
-Энэ нь бусад хүмүүстэй яригдах болно.
+Бусад залуучуудад гайхмаар ярих болно.
 
 <param-table type="socket-addr" env="P2P_PUBLIC_ADDRESS" />
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [network]
@@ -230,11 +222,11 @@ P2P_PUBLIC_ADDRESS=0.0.0.0:5000
 
 ### `network.block_gossip_size` {#param-network-block-gossip-size}
 
-Нэг удаагийн синхронсолын мэдээгээр илгээж болох блоктын тоо.
+Нэг удаагийн синхрончлалын мэдээгээр дамжуулж болох блоктын тоо.
 
 <param-table type=number default-value=4 />
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [network]
@@ -245,13 +237,13 @@ block_gossip_size = 256
 
 ### `network.block_gossip_period_ms` {#param-network-block-gossip-period-ms}
 
-Хамгийн сүүлд хийсэн блогын талаарх өрсөлдөгчдийн хүсэлтийн хоорондын цаг хугацаа.
+Хамгийн сүүлд хийсэн блогын өрсөлдөгчдийн хүсэлтийн хоорондын цаг хугацааны интервал.
 
-Урьдчилсан яриа нь холбооны цаг хугацааг багасгах боловч сүлжээг хэтрүүлнэ.
+Урьдчилсан яриа нь холбооны цаг хугацааг багасгах боловч сүлжээ хэтрүүлэн ачаалалтай болно.
 
 <param-table type=millis default-value=10_000 default-note="10 seconds" />
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [network]
@@ -262,13 +254,13 @@ block_gossip_period_ms = 1_000
 
 ### `network.transaction_gossip_size` {#param-network-transaction-gossip-size}
 
-Хэлэлцүүлгийн хамгийн их тооны гүйлгээ.
+Хэлэлцүүлгийн хамгийн их тооны транзакциуд.
 
-Жижиг хэмжээ нь илүү удаан хугацаагаар синхрон болгох боломжийг олгодог, гэхдээ та өндөр багцын алдагдалтай бол ашигтай.
+Жижиг хэмжээ нь илүү удаан хугацаагаар синхрон болгох боломжийг олгодог, гэхдээ зургийн алдагдал өндөр бол ашигтай.
 
 <param-table type=number default-value=500 />
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [network]
@@ -279,13 +271,13 @@ transaction_gossip_size = 256
 
 ### `network.transaction_gossip_period_ms` {#param-network-transaction-gossip-period-ms}
 
-Хэдэн үеийнхний хоорондын гүйлгээг хүлээсэн цамхагийн хугацаа.
+Хэдэн үеийнхний хоорондын гүйлгээг хүлээсэн хүйтэн ярианы үе.
 
-Урьдчилсан яриа нь холбооны цаг хугацааг багасгах боловч сүлжээг хэтрүүлнэ.
+Урьдчилсан яриа нь холбооны цаг хугацааг багасгах боловч сүлжээ хэтрүүлэн ачаалалтай болно.
 
 <param-table type=millis default-value=1_000 default-note="1 second" />
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [network]
@@ -296,11 +288,11 @@ transaction_gossip_period_ms = 5_000
 
 ### `network.idle_timeout_ms` {#param-network-idle-timeout-ms}
 
-Хөгжлийн хяналтгүй байгаа тохиолдолд хамтын ажиллагааг зогсоох хугацаа.
+Хөгжлийн хязгаарлалтын хугацаа:
 
 <param-table type=millis default-value=300_000 default-note="5 minutes" />
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [network]
@@ -313,11 +305,11 @@ idle_timeout_ms = 300_000
 
 ### `torii.address` <Badge text="required" /> {#param-torii-address}
 
-Хөдөлмөрийн хэрэгсэл Torii Хэрэглэгчийн хүсэлтийг хүлээн авах үйлчилгээг сонсох ёстой.
+Torii сервер нь сонсох ёстой, үйлчлүүлэгчид хүсэлтээ гаргадаг хаяг.
 
 <param-table type=socket-addr env=API_ADDRESS />
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [torii]
@@ -332,15 +324,14 @@ API_ADDRESS=0.0.0.0:8080
 
 ### `torii.max_content_len` {#param-torii-max-content-len}
 
-Нүүр хуудас
-[Torii төгсгөл](/mn/reference/torii-endpoints.md).
+[Torii эцсийн цэгүүд ](/mn/reference/torii-endpoints.md) хүлээн зөвшөөрөгдсөн түүхий эдийн хүсэлтийн байгууллагын хамгийн их байтын тоо.
 
-Энэ хязгаар нь урьдчилан сэргийлэх зорилгоор хэрэглэдэг. DOS Хөдөлмөр.
+Энэ хязгаар нь DOS халдлагын урьдчилан сэргийлэх зорилгоор ашиглагддаг.
 
 <param-table>
 <template #type>
 
-(Байтт)
+(Байтын тоо)
 
 </template>
 <template #default-value>
@@ -350,7 +341,7 @@ API_ADDRESS=0.0.0.0:8080
 </template>
 </param-table>
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [torii]
@@ -361,11 +352,11 @@ max_content_len = 64_000_000
 
 ### `torii.query_idle_time_ms` {#param-torii-query-idle-time-ms}
 
-Хэрэглээгүй бол дэлгүүрд үлдэх хугацаа.
+Хэрэглэгт хүрэхгүй бол дэлгүүрийн дотор үлдэх хугацаа
 
 <param-table type=millis default-value=10_000 default-note="10 seconds" />
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [torii]
@@ -380,7 +371,7 @@ query_idle_time_ms = 10_000
 
 <param-table type=number default-value=128 />
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [torii]
@@ -395,7 +386,7 @@ query_store_capacity = 128
 
 <param-table type=number default-value=128 />
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [torii]
@@ -404,31 +395,29 @@ query_store_capacity_per_user = 128
 
 :::
 
-## Хөрсний үйлдвэрлэгч {#logger}
+## Хөдөлмөрч {#logger}
 
 ### `logger.level` {#param-logger-level}
 
-_Ерөнхий сайд_ бүртгэлийн үгс (цаах) [`logger.filter`](#param-logger-filter) боловсруулсан конфигурацын хувьд).
+Бүхэл бүтэн бүртгэлийн үгс (шинэ үү [`logger.filter`](#param-logger-filter) боловсруулсан конфигурацын талаар).
 
 <param-table default-value=INFO env=LOG_LEVEL>
 <template #type>
 
 Хадгаар, боломжтой үнэ цэнэ:
 
-- `TRACE`: Бүх үйл ажиллагаа, тэр дундаа доод түвшний үйл ажиллагаа.
-- `DEBUG`: Халуун сэргээлт, оношилгоонд ашигтай.
-- `INFO`: Ерөнхий мэдээллийн мэдээ.
-- `WARN`: Харилцааны асуудал үүсэх талаар сэрэмжлүүлэг.
-- `ERROR`: Эргэлт нь хэвийн үйл ажиллагааг хамардаг боловч цаашид ажиллах боломжийг олгодог.
+- `TRACE`: Бүх үйл ажиллагаа, тэр дундаа бага түвшний үйл ажиллагаа.
+- `DEBUG`: Диагноз шалгаруулалтад ашигтай алдааны түвшний мэдээ.
+- `INFO`: Ерөнхий мэдээлэл.
+- `WARN`: Бодит асуудлуудыг илтгэх сэрэмжлэл.
+- `ERROR`: Эдийн засгийн хэвийн үйл ажиллагааг хамарсан, гэхдээ үргэлжлүүлэн ажиллуулах боломжийг олгодог алдаа.
 
-Хэрэглээний хэргийг хамгийн тохиромжтой түвшинг сонгох.
-[Хөгжлийн давхаргын урсгал](https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels) нэмэлт
-янз бүрийн бүртгэлийн түвшин ашиглах талаар дэлгэрэнгүй мэдээлэл.
+Хэрэглээний хэргийнхээ хамгийн тохиромжтой түвшинг сонгох. Бусад бүртгэлийн түвшинүүдийг хэрхэн ашиглах талаар дэлгэрэнгүй мэдээлэл авахын тулд [Stack Overflow](https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels)-д хараарай.
 
 </template>
 </param-table>
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [logger]
@@ -441,38 +430,34 @@ LOG_LEVEL=INFO
 
 :::
 
-::: tip Хөдөлмөрийн цаг хугацааг шинэчлэх
+::: tip Үйл ажиллагааны цаг хугацааг шинэчлэл
 
-Энэ параметр нь цагийн тохируулалтын шинэчлэлийг Torii операторын төгсгөл.
+Энэ параметр нь Torii үйлдвэрийн эцсийн цэгүүдээр дамжуулан гүйлгээний цаг үеийн конфигурацыг шинэчлэх боломжтой.
 
 :::
 
 ### `logger.filter` {#param-logger-filter}
 
-Өргөтгөлийн сайтар филтрүүд [`logger.level`](#param-logger-level). Тогтоолын үгслэлийг өөрчлөх боломжтой
--_зорилт_.
+[`logger.level`](#param-logger-level)-ийн нэмэлтээр сайжруулсан тэмдэглэлийн филтрүүд.
 
 <param-table type=string env=LOG_FILTER>
 <template #type>
 
-Стринг нь нэг эсвэл хэд хэдэн мөрийн дугаартай хуваагдсан захирамжаас бүрдэнэ.
-_түвшин_ Энэ нь боломжийг олгодог (г.д., _сонгодог_) болон тохиромжтой үйл явдлууд. Iroha бага тусгайлан хамгаалах түвшин (гэхдээ
-`trace` эсвэл `info`) нь илүү илүүдэлч түвшинээс илүү гүнзгий байх (гэхдээ `error` эсвэл `warn`).
+Стринг нь нэг эсвэл хэд хэдэн мөрийн дугаартай хуваагдсан захирамжаас бүрддэг. Тухайлбал, тохиромжтой хугацаа болон үйл явдлыг сонгон шалгаруулахад боломжийг олгодог. Iroha хялбар бус түвшинд тооцоолдог (гэхдээ: `trace` эсвэл `info`) нь илүү илүүдэлч түвшинээс илүү гүнзгий байх ёстой `error` эсвэл `warn`).
 
-Дээрх дүгнэлтийн синтаксис өндөр түвшинд хэд хэдэн хэсгээс бүрдэнэ:
+Дээрх дүгнэлтийн синтаксис нь өндөр түвшинд хэд хэдэн хэсгээс бүрддэг:
 
 ```
 target[span{field=value}]=level
 ```
 
-Дэлгэрэнгүй мэдээллийг үзнэ үү
-[`tracing-subscriber` баримт бичиг](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/filter/struct.EnvFilter.html).
+Дэлгэрэнгүй дэлгэрэнгүй мэдээллийг [`tracing-subscriber` баримт бичигт](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/filter/struct.EnvFilter.html) үзнэ үү.
 
 </template>
 
 </param-table>
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [logger]
@@ -485,48 +470,40 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 
 :::
 
-::: info Нүүр хуудас [`logger.level`](#param-logger-level)
+::: info [`logger.level`](#param-logger-level)-тай нийцүүлэлт
 
-`logger.filter` ажил _хамтдаа_ хамтран [`logger.level`](#param-logger-level) Нэг нь нөгөөгөөс давтахгүй.
+`logger.filter` нь [`logger.level`](#param-logger-level)тай хамтран ажилладаг бөгөөд аль нэг нь өөрөөс нь давхар бичдэггүй байна.
 
-Жишээ нь: `logger.level` . `INFO` болон `logger.filter` . `iroha_core=debug`, үр дүнд хүрсэн филтр
-тоног нь болно `info,iroha_core=debug` (гэхдээ: `info` бүх модулийн хувьд, `debug` . `iroha_core`).
+Тухайлбал, `logger.level` нь `INFO` болон `logger.filter` нь `iroha_core=debug` гэж тохируулсан бол үр дүнд гарсан филтрын багц нь `info,iroha_core=debug` (гэхдээ бүх модулийн хувьд `info` бөгөөд `iroha_core`-ийн хувьд `debug` болно).
 
 :::
 
-::: tip Хөдөлмөрийн цаг хугацааг шинэчлэх
+::: tip Үйл ажиллагааны цаг хугацааг шинэчлэл
 
-Энэ параметр нь цагийн тохируулалтын шинэчлэлийг Torii операторын төгсгөл.
+Энэ параметр нь Torii үйлдвэрийн эцсийн цэгүүдээр дамжуулан гүйлгээний цаг үеийн конфигурацыг шинэчлэх боломжтой.
 
 :::
 
 ### `logger.format` {#param-logger-format}
 
-Тогтоолын хэлбэр.
+Номын тэмдэглэлийн хэлбэр.
 
 <param-table default-value=full env=LOG_FORMAT>
 <template #type>
 
 Хадгаар, боломжтой үнэ цэнэ:
 
-- `full`: Энэ нь хүн уншигч, нэг шугам бүртгэлийн тухайн үйл явдлын
-  үйл явдлын форматтай дүрслэлээс өмнө дэлгэгдсэн өнөөгийн хугацааны контекст.
-- `compact`: Дундаж шугам урттайгаар тохируулсан загварын үндсэн форматтын өөрчилмөц.
-  хэлбэлзсэн үйл явдлын талбайд хавсралтгүй, хугацааны нэрүүд илрэхгүй; үгний түвшин нь
-  Нэг л дүр.
-- `pretty`: Хүний уншихад тохиромжтой хэтэрхий сайхан, олон шугамтай тэмдэглэлийг гаргадаг.
-  Орон нутгийн хөгжил, засваржуулалт болон команд шугамтай хэрэглээнд хэрэглэгддэг бөгөөд автоматаар шинжилгээ хийж, компакт
-  Тогтоолын хадгаламж нь уншдаг байдал болон дүрслэх уялдуулалтайгаас илүү чухал биш юм.
-- `json`: Өргөдлийн шинэ шугам JSON Энэ нь үйлдвэрлэлийн хэрэглээний системүүдэд зохион байгуулалттай
-  хэрэглэдэг JSON Эрдэм шинжилгээний болон үзэл баримтын хэрэгслээр. JSON Хүний уншлын хувьд үр дүнг сайжруулахгүй.
+- `full`: Үндсэн форматч. Энэ нь тухайн үйл явдлын хүн уншигч, нэг шугамаар бүртгэгддэг бөгөөд үйл явдлыг форматжуулсан төлөөлөхөөс өмнө өнөөгийн хугацааны хүрээг харуулдаг байна.
+- `compact`: Дээрх хэлбэлзүүлэгчний хувилбар, богино шугам урттай тохируулсан. Одоогийн өргөн хүрээний хүрээнд байгаа талбайг форматчилсан үйл явдлын талбаанд хавсралтлуулж, өргөн хүрэх нэрүүдийг үзүүлдэггүй; үгний түвшин нэг үсэгтэй товчлогдсон байна.
+- `pretty`: Хүний уншдагд зориулан сайжруулсан хэт сайхан, олон шугамтай тэмдэглэлийг гаргана. Энэ нь үндсэндээ орон нутгийн хөгжил, засваржуулахад эсвэл командын шугам дахь хэрэгслийн хувьд ашиглах зорилготой Тогтоолын автоматжуулсан шинжилгээ, компакт хадгаламж нь уншигчтай байдал болон дүрсэд илтгэлтэй байдгаас илүү чухал биш.
+- `json`: Шинэ шугамтай хязгаарлагдмал JSON номыг гаргадаг. Энэ нь зохион байгуулалттай номыг шинжилгээ, үзэх хэрэгсэлээр JSON гэж хэрэглэдэг системүүдээр үйлдвэрлэлийн хэрэглээний тулд зориулагдсан юм. JSON нөөц нь хүний уншлын хувьд сайжруулахгүй.
 
-Тодруулбал, шинжилгээний үр дүнг үзнэ үү
-[`tracing-subscriber` баримт бичиг](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/format/index.html).
+Дэлгэрэнгүй дэлгэрэнгүй мэдээллийг болон үлгэрийн үр дүнг үзвэл [`tracing-subscriber` баримт бичгийг](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/format/index.html) үзнэ үү.
 
 </template>
 </param-table>
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [logger]
@@ -541,17 +518,17 @@ LOG_FORMAT=json
 
 ## Kura {#kura}
 
-_Кура_ - Iroha (Япон хэлээр _хадгаламж_).
+Kura нь Iroha (хурбайн зориулалтаар Япон хэлээр) -ийн тасралтгүй агуулах хөдөлгүүр юм.
 
 ### `kura.blocks_in_memory` {#param-kura-blocks-in-memory}
 
-Хамгийн ихдээ N сүүлийн блок нь дурсамжинд хадгалагдана.
+Хамгийн ихдээ N сүүлийн блок нь дурсамжинд хадгалагдах болно.
 
-Эртний блокууд дурсамжнаас хаягдаж, шаардлагатай бол дискээс ачаалал болно.
+Эртний блокууд нь дурсамжаас хаягдаж, шаардлагатай бол дискээс ачаалал болно.
 
 <param-table type=number default-value=1024 env=KURA_BLOCKS_IN_MEMORY />
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [kura]
@@ -574,12 +551,12 @@ Kura нэвтрүүлгийн хэлбэр
 Хадгаар, боломжтой үнэ цэнэ:
 
 - `strict`: бүх блокнуудыг хатуу баталгаажуулах
-- `fast`: Зөвхөн үндсэн хяналт шалгаруулалтаар хурдан эхлүүлэх
+- `fast`: Зөвхөн үндсэн хяналт шалгалтын тусламжтайгаар хурдан эхлүүлж байна
 
 </template>
 </param-table>
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [kura]
@@ -594,13 +571,13 @@ KURA_INIT_MODE=fast
 
 ### `kura.store_dir` {#param-kura-store-dir}
 
-Блокууд хадгалагдаж буй [^paths] захиалгыг тодорхойлдог.
+Блокууд хадгалагдаж байгаа [^paths] захиалгыг тодорхойлдог.
 
-Дараахь мэдээллийг үзнэ үү: [`snapshot.store_dir`](#param-snapshot-store-dir).
+Мөн: [`snapshot.store_dir`](#param-snapshot-store-dir).
 
 <param-table env=KURA_STORE_DIR type=file-path default-value=./storage />
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [kura]
@@ -619,7 +596,7 @@ KURA_STORE_DIR=/path/to/storage
 
 <param-table env=KURA_DEBUG_OUTPUT_NEW_BLOCKS type=bool default-value=false />
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [kura.debug]
@@ -640,7 +617,7 @@ KURA_DEBUG_OUTPUT_NEW_BLOCKS=true
 
 <param-table type=number default-value=65_536 />
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [queue]
@@ -651,13 +628,13 @@ capacity = 1_048_576
 
 ### `queue.capacity_per_user` {#param-queue-capacity-per-user}
 
-Нэг хэрэглэгчийн дараахт хүлээх гүйлгээний тооны дээд хязгаар.
+Зөвхөн нэг хэрэглэгчийн хувьд шуурхай хүлээх гүйлгээний тооны дээд хязгаар.
 
-Энэ сонголтыг ашиглаж, утааг хэрэглэх.
+Энэ хувилбарыг ашиглаж, дулаан хийлгэх.
 
 <param-table type=number default-value=65_536 />
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [queue]
@@ -668,11 +645,11 @@ capacity_per_user = 1_048_576
 
 ### `queue.transaction_time_to_live_ms` {#param-queue-transaction-time-to-live-ms}
 
-Энэ цагаас хойш аливаа гүйлгээ нь аливаа удаагийн жагсаалтад байгаа бол цуцлагдана.
+Энэ цагаас хойш аливаа бүтээн байгуулалтыг зогсоож болно, хэрэв энэ нь хэсгээрээ байгаа бол.
 
 <param-table type=millis default-value=86_400_000 default-note="24 hours" />
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [queue]
@@ -685,13 +662,11 @@ transaction_time_to_live_ms = 43_200_000
 
 ### `sumeragi.debug.force_soft_fork` <Badge type="warning" text="debug" /> {#param-sumeragi-debug-force-soft-fork}
 
-Томоохон хөдөлгөөнд зориулсан зөвхөн алдааны шилжүүлэгч Sumeragi Хөдөлмөрийн замын хөдөлгөөн.
-хяналтын туршилтын гадна хүчингүй болгосон; үйл ажиллагаа явуулж буй үйлдвэрлэлийн сүлжээнд өөрчлөх
-эв нэгдлийн ёс зүйн талаар өрсөлдөгчдийн санал зөрчигдөхэд хүргэж болно.
+Sumeragi мундаг шулуун хөөцөлдөх замыг хэрэгжүүлэхэд зөвхөн алдааны хөдөлгөөнтэй шилжүүлэг. Энэ нь хяналтын туршилтуудаас гадуур буулгах; үйл ажиллагаа явуулж буй үйлдвэрлэлийн сүлжээнд өөрчлөх нь эв нэгдлийн хандлагын талаар өрсөлдөгчдийн санал зөрчигдсөн болно.
 
 <param-table type=bool default-value=false />
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [sumeragi.debug]
@@ -700,43 +675,35 @@ force_soft_fork = true
 
 :::
 
-## Урьдчилсан зураг {#snapshot}
+## Зураг зураг {#snapshot}
 
-Энэ модуль нь
-[Дэлхийн нөхцөл байдлын талаарх үзэл бодол](/mn/blockchain/world#world-state-view-wsv).
+Энэ модуль нь [World State View](/mn/blockchain/world#world-state-view-wsv)-ийн хүйтэн зургуудыг уншиж, бичдэг.
 
-Снэп-шоутууд нь Дэлхийн байдлын үзлэгт цувралтай хяналтын цэг хадгалах бөгөөд тэгж залуус
-бүх блок нь дахин тоглохгүйгээр эхлүүлнэ Kura. Kura тогтвортой блок хэвээр байна
-түүхийн болон үнэний эх үүсвэр нь дахин тоглох; хүйтэн зураг нь хурдацлах зам юм.
-Барилга хийхэд Iroha Урьдчилсан зангилаа болон
-Хүрэлтийг борлуулах эсвэл дахин тоглох эсэхийг шийдэхээс өмнө хадгалуулсан блок.
+Снэпсхоуд нь World State View-ийн цувралсан хяналтын цэг хадгалдаг бөгөөд энэ нь Kura -аас бүхий л блок дахин тоглуулахгүйгээр дундаж эхлэх боломжтой юм. Kura бол удаан хугацаагаар үргэлжилсэн блокийн түүх болон дахин тоглох үнэн үүсвэр хэвээр үлддэг; снэпсHOOT нь хурдацлах зам юм . Эхлэлтийн үед Iroha нь хяналтын снэп-шоогийн метабараа конфигуруулсан зангилга, хадгалан үлдсэн блоктай харьцуулахад хяналт тавих эсвэл дахин тоглох эсэхээ шийдэхээс өмнө шалгаж байна.
 
-::: tip Зураг бичгийг арилгах
+::: tip Зураг зургуудыг арилгах
 
-Хэрэв нэг зүйл нь алдаатай байна шнэп-схот систем, та эхлэх хүсч байгаа
-снэпсхойт), та [`snapshot.store_dir`](#param-snapshot-store-dir).
+Снэпсхотын систем дээр ямар нэгэн асуудал үүссэн тохиолдолд, та богино хуудастан эхлүүлэх хүсэлтэй бол [`snapshot.store_dir`](#param-snapshot-store-dir) заасан захиалгыг арилгаж болно.
 
 :::
 
 ### `snapshot.mode` {#param-snapshot-mode}
 
-Snapshot системийн үйл ажиллагааны хэв маяг.
+Snapshot системийн үйл ажиллагааны хэлбэр.
 
 <param-table default-value=read_write env=SNAPSHOT_MODE>
 <template #type>
 
 Хадгаар, боломжтой үнэ цэнэ:
 
-- `read_write`: Iroha Урьдчилсан хугацаатай хүйтэн зураг авна
-  [`snapshot.create_every_ms`](#param-snapshot-create-every-ms). Барилга хийхэд Iroha одоогийн хүйтэн зураг (эгвэл) уншдаг
-  болон блокнуудын хадгаламжтай холбоотой цаг үеийн байдлыг баталгаажуулна.
-- `readonly`: Нүүр хуудас `read_write` Гэхдээ Iroha Энэ нь ямар ч гэрэл зураг үүсгэдэггүй.
-- `disabled`: Iroha шинэ снэп-шоог бүтээхгүй, аль хэдийн бий болсон снэпсхоо эхлүүлэхэд уншдаггүй.
+- `read_write`: Iroha Урьдчилсан хугацаатай хяналтын зургуудыг бий болгох: [`snapshot.create_every_ms`](#param-snapshot-create-every-ms). Сургуулахдаа, Iroha одоогийн хяналтын зургийг уншиж, блокийн хадгаламжтай холбоотой цаг үеийн байдлыг баталгаажуулна.
+- `readonly`: `read_write`-тай ижил төстэй боловч Iroha нь ямар нэгэн хүйтэн зургийг үүсгэхгүй байна.
+- `disabled`: Iroha нь нээлт эхлэхэд шинэ хяналтын зургуудыг бий болгодоггүй, одоогийн зургийг уншдаггүй.
 
 </template>
 </param-table>
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [snapshot]
@@ -751,11 +718,11 @@ SNAPSHOT_MODE=readonly
 
 ### `snapshot.create_every_ms` {#param-snapshot-create-every-ms}
 
-Хэлтийн ихэвчлэн.
+Сэтгэгдлийн давтамж.
 
 <param-table type=millis default-value=600_000 default-note="10 minutes" />
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [snapshot]
@@ -766,13 +733,13 @@ create_every_ms = 60_000
 
 ### `snapshot.store_dir` {#param-snapshot-store-dir}
 
-Сүрэлтийг хаана хадгалах вэ?
+Зураг зургийг хаана хадгалах вэ?
 
-Дараахь мэдээллийг үзнэ үү: [`kura.store_dir`](#param-kura-store-dir)
+Түүнчлэн үзнэ үү: [`kura.store_dir`](#param-kura-store-dir)
 
 <param-table type=file-path default-value=./storage/snapshot env=SNAPSHOT_STORE_DIR />
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [snapshot]
@@ -787,21 +754,19 @@ SNAPSHOT_STORE_DIR="/path/to/storage"
 
 ## Телеметри {#telemetry}
 
-Телеметри нь хамтын диагностиг гадаад телеметрийн цуглуулгад экспортлодог.
-хоёулаа `telemetry.name` болон `telemetry.url` хэрэв нэгэн ижил хүйстэй хүн
-Telemetry ашиглахгүй бол хэсгийг орхино.
+Telemetry нь гадаад телеметрийн цуглуулгад өрсөлдөгчдийн диагностиг экспорторуулдаг. `telemetry.name` болон `telemetry.url` аль алиныг нь төсөөлөгч нь цуглуулга руу мэдээлэх ёстой үед тохируулах; телеметрийг ашиглахгүй тохиолдолд хэсгийг орхисугай.
 
-`name` болон `url` Тэдгээр нь хамарсан байх ёстой.
+`name` болон `url` нь хамарсан байх ёстой.
 
-Бүгд `telemetry` хэсэг нь сонголттой.
+Бүх `telemetry` хэсэг нь сонголттой.
 
 ### `telemetry.name` {#param-telemetry-name}
 
-Телеметрийн системд үзүүлэх түймрийн нэр.
+Тэлеметрийн дагуу үзүүлэх түймрийн нэр.
 
 <param-table type=string />
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [telemetry]
@@ -812,11 +777,11 @@ name = "iroha"
 
 ### `telemetry.url` {#param-telemetry-url}
 
-Хөдөлмөрийн WebSocket URL Телеметрийн цуглуулга.
+Телеметрийн цуглуулгачийн WebSocket URL .
 
 <param-table type=string />
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [telemetry]
@@ -827,11 +792,11 @@ url = "ws://telemetry.example.com/submit"
 
 ### `telemetry.min_retry_period_ms` {#param-telemetry-min-retry-period-ms}
 
-Цаг хугацааны хамгийн бага хугацаа нь сэргээлт хийхээс өмнө хүлээх хугацаа юм.
+Цаг хугацааны хамгийн бага хугацаа нь сэргээлтийн өмнө хүлээх хугацаа юм.
 
 <param-table type=millis default-value=1_000  default-note="1 second" />
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [telemetry]
@@ -842,11 +807,11 @@ min_retry_period_ms = 5_000
 
 ### `telemetry.max_retry_delay_exponent` {#param-telemetry-max-retry-delay-exponent}
 
-Цаашид холбогдлын хоорондын хохирлыг нэмэгдүүлэхэд ашигладаг хамгийн их үзүүлэлт 2.
+Цаашид холбогдлын хоорондын хохирлыг нэмэгдүүлэхэд ашигладаг 2-ийн дээд үзүүлэлт.
 
 <param-table type=number default-value=4 />
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [telemetry]
@@ -861,7 +826,7 @@ De-Telemetry бичих файлын замыг
 
 <param-table type=file-path />
 
-::: code-group
+::: код бүлэг
 
 ```toml [Config File]
 [dev_telemetry]

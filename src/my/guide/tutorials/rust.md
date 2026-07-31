@@ -8,21 +8,19 @@ translation_engine: nllb-200-ct2
 
 # Rust {#rust}
 
-နိုင်ငံခြားရေး Rust အကောင်အထည်ဖော်မှုသည် အဓိက လုပ်ငန်းခွင်တွင် တည်ရှိပြီး တိုက်ရိုက်ဆုံးဖြစ်နေဆဲဖြစ်သည်။
-အလုပ်လုပ်နည်း Iroha 3 ကုဒ်အခြေခံချက်။
+Rust အကောင်အထည်ဖော်မှုက အဓိက အလုပ်ခွင်မှာ တည်ရှိပြီး Iroha 3 ကုဒ်ဘေ့စ်နဲ့ အလုပ်လုပ်ဖို့ တိုက်ရိုက်ဆုံးနည်းလမ်းဖြစ်နေဆဲပါ။
 
 ## ဘာရမလဲ {#what-you-get}
 
-Upstream repository က လက်ရှိမှာ ဖော်ပြထားတာက-
+Upstream repository မှာ လက်ရှိမှာ ဖော်ပြထားတာက-
 
-- ကော်မတီ `iroha` Rust ဖောက်သည်သေတ္တာ
-- ကော်မတီ `iroha` CLI အပြည့်အဝဆုံး ရည်ညွှန်းချက် ဖောက်သည်အဖြစ်
-- မျှဝေထားတဲ့ ဒေတာပုံစံ၊ crypto နဲ့ Norito အင်းစိန်က သုံးတဲ့ သေတ္တာ SDK အလွှာ
+- `iroha` Rust ဝယ်သူသေတ္တာ
+- `iroha` CLI ကို အပြည့်အဝဆုံး ရည်ညွှန်းသော ဖောက်သည်အဖြစ်။
+- SDK အလွှာမှာ အသုံးပြုတဲ့ မျှဝေထားတဲ့ ဒေတာပုံစံ၊ crypto နှင့် Norito သေတ္တာများ
 
 ## အကြံပြုချက် {#recommended-starting-point}
 
-လက်ရှိအခြေအနေအတွက် ရည်ညွှန်းချက်နဲ့စပါ။ CLI နောက်ပြီး
-အလုပ်ခွင်တစ်ခုတည်း:
+ပရိုဂျက်ရဲ့ လက်ရှိအခြေအနေအတွက် CLI ကို ရည်ညွှန်းချက်နဲ့ အလုပ်ခွင်ကို စတင်ပါ။
 
 ```bash
 git clone https://github.com/hyperledger-iroha/iroha.git
@@ -30,15 +28,15 @@ cd iroha
 cargo build --workspace
 ```
 
-Check-in လုပ်ထားတဲ့ default client configuration ကို အသုံးပြုပြီး Reference Client ကို Run:
+Reference client ကို check-in လုပ်ထားတဲ့ default client configuration နဲ့ run လုပ်ပါ။
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
 ```
 
-## စမ်းကြည့်ပါ။ Taira စာဖတ်ခြင်းသာ {#try-taira-read-only}
+## Taira ကို စမ်းကြည့်ပါ။ ဖတ်ရုံပဲ {#try-taira-read-only}
 
-အလားတူ အလုပ်ခွင်က စစ်ဆေးမှုကနေ အများပြည်သူကို စမ်းကြည့်ပါ။ Taira ရောဂါရှာဖွေရေး အကူ:
+အလားတူ အလုပ်ခွင် စစ်ဆေးမှုကနေ အများပြည်သူ Taira ရောဂါရှာဖွေရေး အကူအညီကို စမ်းကြည့်ပါ။
 
 ```bash
 cargo run --bin iroha -- taira doctor \
@@ -46,7 +44,7 @@ cargo run --bin iroha -- taira doctor \
   --json
 ```
 
-လမ်းကြောင်းအဆင့် စစ်ဆေးမှုအတွက် အသုံးပြုပါ Torii ဒါက JSON API တိုက်ရိုက်:
+လမ်းကြောင်းအဆင့် စစ်ဆေးမှုအတွက် Torii ရဲ့ JSON API ကို တိုက်ရိုက်အသုံးပြုပါ။
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -56,32 +54,26 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=5' \
   | jq -r '.items[] | [.id, .name, .total_quantity] | @tsv'
 ```
 
-သင်ဖန်တီးပြီးနောက်မှာ `taira.client.toml`, တူညီတဲ့ binary က Signed Canary ကို run လုပ်နိုင်တယ်
-ဆန့်ကျင်တဲ့ အမိန့်များ Taira. သာမန် ယူနစ် စမ်းသပ်မှုတွေကနေ သီးခြားထားပါ။
-သူတို့အတွက် faucet ငွေကြေးထောက်ပံ့တဲ့ အကောင့်နဲ့ live testnet ရှိဖို့ လိုအပ်ပါတယ်။
+`taira.client.toml` ကိုဖန်တီးပြီးနောက်၊ တူညီတဲ့ binary က Taira အပေါ် လက်မှတ်ထိုးထားတဲ့ canary commands တွေကို run လုပ်နိုင်သည်။ ဒါတွေကို သာမန် unit test တွေကနေ သီးခြားထားပါ။ အကြောင်းက ၎င်းတို့အတွက် faucet ငွေကြေးထောက်ပံ့တဲ့ အကောင့်တစ်ခုနဲ့ live testnet ရရှိမှုလိုအပ်လို့ပါ။
 
-## အသုံးပြုခြင်း Rust ဖောက်သည်သေတ္တာ {#using-the-rust-client-crate}
+## Rust Client Crate ကို အသုံးပြုခြင်း {#using-the-rust-client-crate}
 
-Pin ကို Iroha သင့်ကွန်ရက်မှ အသုံးပြုသော Git revision:
+သင့်ကွန်ရက် အသုံးပြုတဲ့ Iroha Git revision ကို Pin လုပ်ပါ။
 
 ```toml
 [dependencies]
 iroha = { git = "https://github.com/hyperledger-iroha/iroha.git", rev = "<IROHA_COMMIT>", package = "iroha" }
 ```
 
-ဘယ်လိုလုပ်ပြီး Rust မျက်နှာပြင်များတွင် အသုံးပြုသည်
-လေ့ကျင့်ခြင်း၊ စစ်ဆေးခြင်း
+Rust မျက်နှာပြင်တွေကို လက်တွေ့မှာ အသုံးပြုပုံရဲ့ အပြည့်အစုံဆုံး နမူနာတွေ လိုအပ်ရင် စစ်ဆေးပါ-
 
 - `crates/iroha_cli`
 - `crates/iroha/README.md`
 - `crates/iroha_cli/README.md`
 
-စာရင်းအင်းမှာ စီမံခန့်ခွဲတဲ့ အလှူခံ လုပ်ငန်းခွင်များအတွက်၊
-[Native Asset Escrow](/my/blockchain/escrow.md#rust-sdk). နိုင်ငံခြားရေး Rust ဒေတာပုံစံ
-လက်ရှိတွင် စျေးကွက်အမှတ်တံဆိပ်များအတွက် အပြည့်အစုံဆုံး အမျိုးအစားကာကွယ်မှုရှိသည်
-အရင်းအမြစ်ပိတ်ခြင်း၊ အမည်မဲ့ ဂိုဏ်း၊ မေးမြန်းချက်များနှင့် ဖြစ်ရပ်များ။
+စာရင်းအင်းမှာ စီမံခန့်ခွဲတဲ့ အလှူခံ လုပ်ငန်းခွင်များအတွက် ကြည့်ပါ။ [Native Asset Escrow](/my/blockchain/escrow.md#rust-sdk). နိုင်ငံတကာ Rust ဒေတာမော်ဒယ်မှာ လက်ရှိတွင် စျေးကွက်အမှတ်တံဆိပ်၊ ယေဘုယျအရင်းအမြစ်ပိတ်၊ အမည်မဲ့အမှတ်တံ ဆိပ်၊ မေးမြန်းချက်များအတွက် အပြည့်အစုံဆုံး အမျိုးအစားကာကွယ်မှုရှိသည်။ အဖြစ်အပျက်တွေပေါ့။
 
-ဒေသခံကို ပြန်လည်ဖန်တီးနိုင်တယ် CLI အကူအညီ snapshot ကို:
+ဒေသတွင်း CLI အကူအညီ snapshot ကို ပြန်လည်ဖန်တီးနိုင်ပါတယ်:
 
 ```bash
 cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/CommandLineHelp.md
@@ -89,5 +81,5 @@ cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/Com
 
 ## မှတ်ချက်များ {#notes}
 
-- နိုင်ငံခြားရေး CLI လက်ရှိမှာ standalone crate doc တွေထက် ပိုကောင်းမွန်တဲ့ ကွပ်ကဲမှုကို ပေးပါတယ်။
-- Operator ပုံစံ စီးဆင်းမှုအတွက် CLI စာရွက်စာတမ်းဟာ နောက်ဆုံးပေါ် အရင်းအမြစ်ပါ။
+- CLI သည် လက်ရှိတွင် standalone box doc များထက် ပိုမိုကောင်းမွန်သောအကာအကွယ်ပေးသည်။
+- လုပ်ငန်းရှင်ပုံစံ စီးဆင်းမှုအတွက် CLI စာရွက်စာတမ်းဟာ လက်ရှိဆုံး အရင်းအမြစ်ပါ။

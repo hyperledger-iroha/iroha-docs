@@ -6,21 +6,17 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Musubi Kotodama Les colis {#musubi-kotodama-packages}
+# Musubi Kotodama Des colis {#musubi-kotodama-packages}
 
-Musubi est le gestionnaire de forfaits pour Kotodama Les paquets source.
-développeurs un flux de travail semblable à Cargo pour le partage composable Kotodama fonctions
-tout en conservant l'identité du colis liée à SORA et Iroha espaces de noms au lieu
-une table mondiale des prénoms de premier venu.
+Musubi est le gestionnaire de paquets pour les packages sources Kotodama. Il offre aux développeurs un flux de travail semblable à Cargo pour partager des fonctions composables Kotodama tout en gardant l'identité du package liée aux espaces de noms SORA et Iroha au lieu d'une table de nommage globale.
 
-Utilisation Musubi lorsque vous devez:
+Utilisez Musubi lorsque vous devez:
 
-- publier réutilisable Kotodama bibliothèques sources
-- définir les dépendances exactes des sources transitives en `Musubi.lock`
-- reconstituer la source de dépendance à partir d'une source vérifiée SoraFS engagements en matière d'archives
-- connecter un espace de nom du paquet aux aliases dapp dans le même
-  espace de noms
-- inspecter, publier, extraire ou alias des paquets à travers le registre en chaîne
+- publier des bibliothèques de source réutilisables Kotodama
+- en `Musubi.lock` les dépendances exactes des sources transitives
+- reconstituer la source de dépendance à partir des engagements d'archives vérifiés SoraFS
+- connecter un espace nommé des paquets aux alias de contrat dapp dans le même espace nom
+- inspecter, publier, retirer ou alias des paquets par le biais du registre en chaîne
 
 ## Nom des paquets {#package-names}
 
@@ -36,24 +32,20 @@ Utilisation des références de libération exactes:
 namespace/package@version
 ```
 
-Il n' y a pas de leader `@` avant un espace de noms. `@` le séparateur est réservé
-pour le suffixe de version.
+Il n'y a pas de préfixe `@` avant un espace namespace. Le séparateur `@` est réservé au suffixe version.
 
-Le segment de l'espace nommé correspond au suffixe utilisé par Kotodama contrat dapp
-les pseudonymes:
+Le segment de l'espace nommé correspond au suffixe utilisé par les alias Kotodama dapp contract:
 
-| Identifiant du colis                | Forme de pseudonyme du contrat associé |
+|Id du colis |Forme d' alias des contrats connexes |
 | ------------------------- | ---------------------------- |
-| `universal/math`          | `router::universal`          |
-| `dex.universal/swap-core` | `router::dex.universal`      |
+|`universal/math` |`router::universal` |
+|`dex.universal/swap-core` |`router::dex.universal` |
 
-Les espaces de nom ont `<dataspace>` ou `<domain>.<dataspace>` une forme.
-l'emballage a un lien dapp, Musubi Vérifie que chaque alias de contrat lié
-utilise le même suffixe d'espace de noms que l'emballage.
+Les espaces de noms ont le formulaire `<dataspace>` ou `<domain>.<dataspace>`. Lorsqu'un paquet a un lien dapp, Musubi vérifie que chaque alias contrat lié utilise le même suffixe d'espace de nom que le paquet.
 
 ## Manifesté {#manifest}
 
-Un paquet commence par: `Musubi.toml`:
+L'emballage commence par `Musubi.toml`:
 
 ```toml
 [package]
@@ -73,20 +65,13 @@ namespace = "dex.universal"
 contracts = ["router::dex.universal"]
 ```
 
-Les dépendances peuvent utiliser des versions exactes, les exigences de soins, le tilde
-Les exigences, les cartes sauvages telles que `1.*`, ou des listes de comparaison telles que
-`>=1.0.0,<2.0.0`.
+Les dépendances peuvent utiliser des versions exactes, des exigences en matière de soins et d'atténuation, des cartes sauvages telles que `1.*` ou des listes de comparaison telles que `>=1.0.0,<2.0.0`.
 
-`Musubi.lock` enregistre le graphique transitif sélectionné à partir de la chaîne
-chaque nœud verrouillé stocke son package canonique ref, sélectionné
-l'exigence, SoraFS dépistage du manifeste, hash de l'archive source, nombre de octets, fichier
-compte, fonctions exportées, plan d'archives de source déterministe et
-Les pseudonymes courts sont résolus avant d'entrer dans le
-Le dossier de verrouillage.
+`Musubi.lock` enregistre le graphique transitif sélectionné du registre de la chaîne. Chaque nœud verrouillé stocke son package canonique ref, l'exigence sélectionnée, SoraFS digest manifeste, hash d'archive source, nombre de octets, nombre de fichiers, fonctions exportées, plan d'archivage de source déterministe et aliases de dépendance. Les pseudonymes courts sont résolus avant d'entrer dans le fichier de verrouillage.
 
 ## Flux de travail local {#local-workflow}
 
-De l'au-dessus Iroha racine de l'espace de travail, exécution Musubi à travers la cargaison:
+À partir de la racine de l'espace de travail Iroha en amont, exécuter Musubi par Cargo:
 
 ```bash
 cargo run -p musubi -- init --namespace dex.universal --name swap-core --dapp
@@ -99,21 +84,13 @@ cargo run -p musubi -- pack \
   --source-plan-out source-plan.norito
 ```
 
-Utilisation `install --offline` écrire un fichier de verrouillage non résolu pour la version exacte
-dépendances sans demander un nœud. `install --locked` dans CI à
-rejeter un fichier de verrouillage obsolète.
+Utilisez `install --offline` pour écrire un fichier de verrouillage non résolu pour les dépendances de version exacte sans interroger un nœud. Utiliser `install --locked` dans CI pour rejeter un fichiers de verrouillages obsolètes.
 
-`build` liens des sources de dépendance cachées en réécrivant des appels tels que
-`math::add()` à l'interne déterministe Kotodama les noms des fonctions.
-les appels à des fonctions que la dépendance n'a pas exportées. Musubi bibliothèques v1
-sont uniquement fonctionnels: sources de dépendance contenant des déclarations d'État,
-des déclencheurs, des blocs de kotoba, des constantes ou d'autres éléments contractuels non fonctionnels
-sont rejetées.
+`build` relie les sources de dépendance en cache en réécrivant des appels tels que `math::add()` aux noms de fonctions internes déterministes Kotodama. Il rejette les appels à des fonctions que la dépendance n'a pas exportées. Les bibliothèques Musubi v1 sont uniquement fonctionnelles: les sources de dépendance qui contiennent des déclarations d'état, des déclencheurs, des blocs de kotoba, des constantes ou d'autres éléments contractuels non fonctionnels sont rejetées.
 
 ## Retour à la source Archives {#fetching-source-archives}
 
-Musubi peut récupérer les sources de dépendance manquantes pendant la résolution ou plus tard
-à travers les sous-commandes du cache:
+Musubi peut récupérer les sources de dépendance manquantes lors de la résolution ou plus tard par le biais des sous-commandes du cache:
 
 ```bash
 cargo run -p musubi -- install --config client.toml --fetch \
@@ -123,54 +100,38 @@ cargo run -p musubi -- cache import math --source-root ../math
 cargo run -p musubi -- cache fetch math --provider-payload math.payload
 ```
 
-Les téléchargements en direct utilisent un ou plusieurs SoraFS spécifications du fournisseur de passerelle:
+Les prises en direct de passerelle utilisent une ou plusieurs spécifications du fournisseur de passerelle SoraFS:
 
 ```bash
 cargo run -p musubi -- install --config client.toml --fetch \
   --gateway-provider 'name=hot-a,provider-id=1111111111111111111111111111111111111111111111111111111111111111,base-url=https://gw.example,stream-token=BASE64,package=math'
 ```
 
-Les fichiers de charge utile du fournisseur et les fournisseurs de passerelles sont mutuellement exclus pour un
-Si plus d'un paquet verrouillé est manquant,
-fournisseur de passerelle avec `package=<dependency-alias>`,
-`package=<namespace/package@version>`, `package=<namespace/package>`, ou
-`manifest=<64-hex SoraFS manifest digest>`.
+Les fichiers de charge utile du fournisseur et les fournisseurs de passerelles sont mutuellement exclusifs pour une opération de récupération. Si plus d'un paquet verrouillé est manquant, renseignez chaque fournisseur de passerelle par `package=<dependency-alias>`, `package=<namespace/package@version>`, `package=<namespace/package>` ou `manifest=<64-hex SoraFS manifest digest>`.
 
-La porte `base-url` et `privacy-url` les valeurs doivent être utilisées `https://` par défaut.
-Les passerelles de test locales peuvent être utilisées `http://localhost`, `http://127.0.0.1`, ou
-`http://[::1]` uniquement avec `--gateway-allow-insecure-localhost`. Retour
-Les jetons sont des informations d'identification en cours de fonctionnement et ne sont pas inscrits dans `Musubi.lock`.
+Portée `base-url` et `privacy-url` les valeurs doivent être utilisées `https://` par défaut. Les passerelles de test locales peuvent utiliser `http://localhost`, `http://127.0.0.1`, ou `http://[::1]` uniquement avec `--gateway-allow-insecure-localhost`. Les jetons de flux sont des identifiants d'exécution et ne sont pas inscrits dans `Musubi.lock`.
 
 ## Édition {#publishing}
 
-`pack` computes le déterminisme BLAKE3-256 hash de l'archive source plus le
-le nombre de octets source et le nombre de fichiers. `--car-out`, `--sorafs-manifest-out`, ou
-`--source-plan-out` est fourni, il construit aussi la déterministique SoraFS
-CAR charge utile, SoraFS manifestes, et Musubi plan d'archivage source de la même
-ensemble de fichiers source.
+`pack` compute le déterminisme BLAKE3-256 le hash de l'archive source plus le octet source et le nombre de fichiers. `--car-out`, `--sorafs-manifest-out`, ou `--source-plan-out` est fourni, il construit aussi la déterministique SoraFS CAR chargement utile, SoraFS manifestes, et Musubi plan d'archivage source du même ensemble de fichiers source.
 
-Utilisez une course sèche avant de publier:
+Utilisez une course à sec avant de publier:
 
 ```bash
 cargo run -p musubi -- publish --config client.toml --dry-run
 ```
 
-Sans `--dry-run`, `publish` écrit des objets par défaut sous
-`.musubi/dist/<namespace>/<name>/<version>/`, optionnellement télécharger le
-manifeste et charge utile à travers Torii Je suis là . SoraFS point d'extrémité du pin de stockage avec
-`--upload`, enregistre le généré SoraFS d'une valeur de l'équipement
-`PublishMusubiRelease` par le biais de la configuration Iroha Le client.
+Sans `--dry-run`, `publish` écrit des objets par défaut sous `.musubi/dist/<namespace>/<name>/<version>/`, optionnellement télécharger le manifeste et la charge utile à travers Torii C' est ... SoraFS point d'extrémité du pin de stockage avec `--upload`, enregistre les données générées SoraFS pin, et soumet `PublishMusubiRelease` par le biais de la configuration Iroha Le client.
 
-Les communiqués publiés doivent inclure:
+Les communiqués de presse publiés doivent comprendre:
 
-- une archive source canonique non vide
+- une archive de source canonique non vide
 - un plan d'archivage de source déterministe
-- au moins une exportation Kotodama fonction
-- enregistrements de dépendance qui ne sélectionnent pas les émissions tirées
-- un lien dapp, s'il y a lieu, dont les pseudonymes contractuels correspondent au paquet
-  espace de noms
+- au moins une fonction Kotodama exportée
+- enregistrements de dépendance qui ne sélectionnent pas les libérations tirées
+- un lien dapp, le cas échéant, dont les pseudonymes contractuels correspondent à l'espace de nom du paquet
 
-## Questions de registre et cycle de vie {#registry-queries-and-lifecycle}
+## Enquêtes sur le registre et cycle de vie {#registry-queries-and-lifecycle}
 
 Recherche et inspection du registre avec:
 
@@ -180,8 +141,7 @@ cargo run -p musubi -- versions dex.universal/swap-core --config client.toml
 cargo run -p musubi -- alias resolve swap --config client.toml
 ```
 
-Yanking cache une libération de la nouvelle résolution, mais garde les fichiers verrouillés existants
-reproductibles:
+Yanking cache une libération d'une nouvelle résolution, mais garde les fichiers de verrouillage existants reproductibles:
 
 ```bash
 cargo run -p musubi -- yank dex.universal/swap-core@0.1.0 \
@@ -190,31 +150,22 @@ cargo run -p musubi -- yank dex.universal/swap-core@0.1.0 \
   --dry-run
 ```
 
-Musubi évitant de faire passer le nom du monde entier `namespace/package` le
-Nom canonique du paquet. La publication dans un espace de noms doit être autorisée par
-le même modèle de propriété ou d'autorisation déléguée utilisé pour ce Kotodama
-les abréviations globales sont séparées du paquet
-propriété: `SetMusubiShortAlias` Il est nécessaire de: `CanSetMusubiShortAlias`
-l'autorisation, et le paquet cible doit déjà avoir au moins un actif
-La libération.
+Musubi évite le squatting global du nom en faisant de `namespace/package` le nom canonique du paquet. La publication dans un espace de noms doit être autorisée par le même modèle d'autorisation délégué ou de propriété utilisé pour cet espace de nom d'app Kotodama. Les pseudonymes globaux courts sélectionnés sont séparés de la propriété du paquet: `SetMusubiShortAlias` nécessite l'autorisation `CanSetMusubiShortAlias`, et le paquet cible doit déjà avoir au moins une version active.
 
-## Iroha Surfaces {#iroha-surfaces}
+## Surfaces Iroha {#iroha-surfaces}
 
-Musubi utilisation de première classe Iroha instructions et requêtes:
+Musubi utilise des instructions et des requêtes de première classe Iroha:
 
-| Surfaces                      | Le but                                            |
+|La surface|Objectif |
 | ---------------------------- | -------------------------------------------------- |
-| `PublishMusubiRelease`       | Publier une version immutable du paquet.              |
-| `YankMusubiRelease`          | Marquez une libération existante comme tirée.                |
-| `SetMusubiShortAlias`        | Lier un pseudonyme global à l'identifiant du paquet. |
-| `AssertMusubiReleaseExists`  | Exiger une version concrète de l'emballage.       |
-| `FindMusubiReleaseByRef`     | Apportez un exemplaire selon la référence de l'emballage.        |
-| `FindMusubiPackageVersions`  | Liste des versions d'un identifiant de colis.                    |
-| `FindMusubiPackageReleases`  | Liste des résumés de la publication pour un identifiant d'emballage.           |
-| `SearchMusubiPackages`       | Recherchez les résumés des paquets par espace de noms et texte.    |
-| `FindMusubiShortAliasByName` | Résolvez un pseudonyme.                     |
+|`PublishMusubiRelease` |Publier une version de l'emballage immuable. |
+|`YankMusubiRelease` |Marquez une libération existante comme tirée. |
+|`SetMusubiShortAlias` |Lier un sous-alias mondial curaté à une carte d'identité. |
+|`AssertMusubiReleaseExists` |Requérir une version concrète de l'emballage. |
+|`FindMusubiReleaseByRef` |Apportez un exemplaire par référence exacte. |
+|`FindMusubiPackageVersions` |Liste des versions d'un identifiant de colis. |
+|`FindMusubiPackageReleases` |Liste des résumés de la publication d' un identifiant de colis. |
+|`SearchMusubiPackages` |Recherchez les résumés des paquets par espace de noms et texte. |
+|`FindMusubiShortAliasByName` |Résolvez un pseudonyme court.|
 
-Torii dévoile les Musubi HTTP famille de route sous `/v1/musubi/*`.
-Face à l'agent MCP les outils sont exposés comme `iroha.musubi.*` Les pseudonymes.
-[Torii points de fin](/fr/reference/torii-endpoints.md) et
-[référence de requête](/fr/reference/queries.md) pour le plus large API Une carte.
+Torii dévoile les Musubi HTTP famille de la route sous `/v1/musubi/`. Face à l'agent MCP les outils sont exposés comme `iroha.musubi.` Les pseudonymes. [Torii points d'expiration](/fr/reference/torii-endpoints.md) et [référence de requête](/fr/reference/queries.md) pour le plus large API Une carte.

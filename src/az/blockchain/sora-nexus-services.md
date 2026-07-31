@@ -245,7 +245,7 @@ Bir canlı HTTP səthə ehtiyacı olan iş yükləri üçün Inrou-dan istifadə
 
 ### Məlum bir parça {#manifest-fragment}
 
-Aşağıda göstərilən nümunədə iki manifestin forması göstərilir.
+Aşağıdakı nümunə iki manifestin formasını göstərir. Bu bir parçadır, tam yerləşdirmə paketi deyil.
 
 ```jsonc
 // container_manifest.json

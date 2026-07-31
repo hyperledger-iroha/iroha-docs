@@ -18,7 +18,7 @@ translation_engine: nllb-200-ct2
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
 ```
 
-Сығарыу каталогында тиңдәш конфигурациялары бар, `genesis.json`, `genesis.signed.nrt`, `client.toml`, Яҡшы китаптар менән.
+Сығарылыш каталогы буйынса, `genesis.json`, `genesis.signed.nrt`, `client.toml` һәм ярҙамсы скрипттар.
 
 Тыуған урындағы төтөн һынауы өсөн, туранан-тура барлыҡҡа килгән тиҫтерҙәрҙе башларға кәрәк:
 
@@ -41,8 +41,8 @@ docker compose -f ./localnet/docker-compose.yml up
 
 Дефолт рәүештә барлыҡҡа килгән стек:
 
-- тиңдәштәре P2P порттар `1337` өсөн `1340`
-- Torii HTTP порттар `8080` өсөн `8083`
+- peer P2P порттары `1337` - `1340`
+- Torii HTTP порттары `8080` менән `8083`
 - `./localnet/client.toml` адресы буйынса клиенттың әҙер конфигурацияһы
 
 ## 2. Интернет селтәренең эшләнеүен тикшерегеҙ {#_2-verify-that-the-network-is-up}
@@ -91,4 +91,4 @@ Nexus профиле менән туған тиҫтерҙе файҙаланыу
 docker compose -f ./localnet/docker-compose.yml down
 ```
 
-Сеть эшләгәндән һуң, дауам [Эшләгеҙ Iroha 3 аша CLI](/ba/get-started/operate-iroha-via-cli.md).
+Сеть эшләй башлағас, [ менән дауам итегеҙ Iroha 3 аша CLI](/ba/get-started/operate-iroha-via-cli.md).

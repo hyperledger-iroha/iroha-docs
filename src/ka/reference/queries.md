@@ -8,124 +8,114 @@ translation_engine: nllb-200-ct2
 
 # კითხვები {#queries}
 
-Iroha კითხვები წაიკითხა ლეიჯერის მდგომარეობა, მისი მუტაციის გარეშე. მიმდინარე მონაცემთა მოდელი
-გამოყოფს ორი ფართო შეკითხვის ფორმას:
+Iroha შეკითხვები კითხულობს მთავარ გრაფის მდგომარეობას, მისი მუტაციის გარეშე. მიმდინარე მონაცემთა მოდელი გამოხატავს ორი ფართო შეკითხვის ფორმებს:
 
-- **ცალკეული კითხვები**, რომელიც უბრუნებს ერთ ობიექტს ან ერთ ღირებულებას
-- **განმეორებადი გამოკითხვები**, რომელიც ბრუნავს ნაკადს ან კოლექციას და შეიძლება გაერთიანდეს
-  საფილტრაციო, სორტირების, პროექციის და გვერდების გათვალისწინებით, სადაც გამოკითხვის ტიპი
-  მხარს უჭერს
+- ცალკეული გამოკითხვები, რომლებიც უბრუნებენ ერთ ობიექტს ან ერთ ღირებულებას
+- iterable queries, რომელიც ბრუნდება ნაკადი ან კოლექცია და შეიძლება გაერთიანდეს ფილტრირება, sorteering, პროექტირება, და pagination სადაც მოთხოვნის ტიპი მხარს უჭერს მას
 
-გამოყენება SDK ტიპირებული მშენებლები ან CLI იმის ნაცვლად, რომ შეკითხვების კონვერტების შექმნა
-ქვემოთ მოცემული სახელები არის მიმდინარე შეკითხვების ტიპები, რომლებიც გამოქვეყნებულია
-`iroha_data_model::query`.
+გამოიყენეთ SDK ტიპირებული კონსტრუქტორები ან CLI, იმის ნაცვლად, რომ შექმნათ შეკითხვის კონვერტები ხელით. ქვემოთ მოცემული სახელები არის მიმდინარე შეკითხვების ტიპები, რომლებიც გამოქვეყნებულია `iroha_data_model::query`.
 
 ## გაშვების დრო და კონფიგურაცია {#runtime-and-configuration}
 
-| კითხვები | მიზანი |
+|კითხვა |მიზანი |
 | --- | --- |
-| `FindAbiVersion` | დააბრუნეთ დამსჯელი. ABI ვერსია. |
-| `FindExecutorDataModel` | დააბრუნეთ აღმასრულებელი მონაცემების მოდელი. |
-| `FindParameters` | დაბრუნება ჯაჭვზე აღმასრულებელი კონფიგურაციის პარამეტრები. |
+|`FindAbiVersion` |დააბრუნეთ ABI ვერსია. |
+|`FindExecutorDataModel` |დააბრუნეთ აღმასრულებელი მონაცემთა მოდელი აღწერა. |
+|`FindParameters` |Return on-chain აღმასრულებელი კონფიგურაციის პარამეტრები. |
 
 ## ანგარიშები და ნებართვები {#accounts-and-permissions}
 
-| კითხვები | მიზანი |
+|კითხვა |მიზანი |
 | --- | --- |
-| `FindAccountById` | იპოვეთ ერთი ანგარიში კანონიკური ანგარიშის მიხედვით ID. |
-| `FindAccountByAlias` | ჟჲბჲპთნწ კაპიტალს, აჱ კაპიტალი. |
-| `FindAccounts` | დარეგისტრირებული ანგარიშები. |
-| `FindAccountIds` | რეგისტრირებული ანგარიში IDs. |
-| `FindAccountsWithAsset` | ჩამოთვალეთ ანგარიშები, რომელშიც მოცემული აქტივის განსაზღვრაა. |
-| `FindAliasesByAccountId` | დააკავა ბმული. |
-| `FindAccountRecoveryPolicyByAlias` | ნაპაგვ პჲლთჟკა ჱა ოპვრთნარა. |
-| `FindAccountRecoveryRequestByAlias` | ნაპაგვ ეა ჟვ ოპაგთმ ჟჲდრა ჱა ნვდჲ. |
-| `FindRoles` | როლების ჩამონათვალი. |
-| `FindRoleIds` | სია როლი IDs. |
-| `FindRolesByAccountId` | ანგარიშზე მინიჭებული როლების ჩამონათვალი. |
-| `FindPermissionsByAccountId` | ჩამოთვალეთ ანგარიშზე მინიჭებული ნებართვები. |
+|`FindAccountById` |იპოვეთ ერთი ანგარიში კანონიკური ანგარიშის მიხედვით ID. |
+|`FindAccountByAlias` |ვ ოპაგთმ ოფაჲ ჱა ვ ოჲეაპაჲ.|
+|`FindAccounts` |აღწერეთ რეგისტრირებული ანგარიშები. |
+|`FindAccountIds` |რეგისტრირებული ანგარიში IDs. |
+|`FindAccountsWithAsset` |ჩამოთვალეთ ანგარიშები, რომლებსაც აქვთ მოცემული აქტივების განსაზღვრა. |
+|`FindAliasesByAccountId` |შეაწერეთ ანალოგიური საიდუმლოები ანგარიშზე. |
+|`FindAccountRecoveryPolicyByAlias` |ნაპაგთნარა პჲლსიკა ჱა ვჟრთნა. |
+|`FindAccountRecoveryRequestByAlias` |ნაპაგთნარა თალაკა ჱა ოპვჟრთნა. |
+|`FindRoles` |როლების სია. |
+|`FindRoleIds` |სიაში როლი IDs. |
+|`FindRolesByAccountId` |ანგარიშისათვის მინიჭებული როლების ჩამონათვალი |
+|`FindPermissionsByAccountId` |ჩამოთვალეთ ანგარიშზე მინიჭებული ნებართვები. |
 
 ## დომენები და თანატოლები {#domains-and-peers}
 
-| კითხვები | მიზანი |
+|კითხვა |მიზანი |
 | --- | --- |
-| `FindDomainById` | მოძებნეთ ერთი დომენი `DomainId`. |
-| `FindDomains` | დარეგისტრირებული დომენები. |
-| `FindDomainsByAccountId` | ჩამოთვალეთ დომენები, რომლებიც ანგარიშის საკუთრებაშია. |
-| `FindDomainEndorsements` | დომენის დამტკიცების ჩანაწერები ჩამოთვალეთ. |
-| `FindDomainEndorsementPolicy` | ჲბყპნა პჲლთკა ჱა დომეინარა. |
-| `FindDomainCommittee` | ჲბჲმნა ჟლვევარა ნა დომენთ. |
-| `FindPeers` | დასახელება საიმედო თანატოლები, რომლებიც ცნობილია წიგნში. |
+|`FindDomainById` |მოძებნეთ ერთი დომენი `DomainId`. |
+|`FindDomains` |რეგისტრირებული დომენების ჩამონათვალი. |
+|`FindDomainsByAccountId` |ჩამოთვალეთ დომენები, რომლებიც ეკუთვნის ანგარიშს. |
+|`FindDomainEndorsements` |დომენის დამტკიცების ჩანაწერები. |
+|`FindDomainEndorsementPolicy` |ჲბყპნა პჲლიკა ჱა დომეინთა ოჲვრთნა. |
+|`FindDomainCommittee` |ოჲეჲბყპნა დომენთჟა. |
+|`FindPeers` |სცენარში ცნობილ სანდო თანატოლებს. |
 
-## ქონება, NFTs, და RWAs {#assets-nfts-and-rwas}
+## აქტივები, NFTs და RWAs {#assets-nfts-and-rwas}
 
-| კითხვები | მიზანი |
+|კითხვა |მიზანი |
 | --- | --- |
-| `FindAssets` | შეაწერეთ აქტივების სალანსები. |
-| `FindAssetsDefinitions` | ჩამოთვალეთ აქტივების განსაზღვრები. |
-| `FindAssetsByAccountId` | ანგარიშზე არსებული აქტივების ჩამონათვალი. |
-| `FindAssetById` | მოძებნეთ ერთი აქტივის ბალანსი `AssetId`. |
-| `FindAssetDefinitionById` | მოძებნეთ ერთი აქტივის განსაზღვრა ID. |
-| `FindNfts` | სია NFTs. |
-| `FindNftsByAccountId` | სია NFTs ანგარიშის მფლობელი. |
-| `FindRwas` | სია რეგისტრირებული რეალური სამყაროს აქტივების ნაკვეთები. |
+|`FindAssets` |დასახელება აქტივების სალანსები. |
+|`FindAssetsDefinitions` |განსაზღვრული აქტივების ჩამონათვალი. |
+|`FindAssetsByAccountId` |ანგარიშზე არსებული აქტივების ჩამონათვალი. |
+|`FindAssetById` |მოძებნეთ ერთი აქტივის ბალანსი `AssetId`. |
+|`FindAssetDefinitionById` |იპოვეთ ერთი აქტივის განსაზღვრა ID. |
+|`FindNfts` |სია NFTs. |
+|`FindNftsByAccountId` |სია NFTs, რომელიც ანგარიშის საკუთრებაშია. |
+|`FindRwas` |ნუსხა დარეგისტრირებული რეალური სამყაროს აქტივების ნაკვეთები. |
 
-## დაფარვის და დასამტკიცებელი დოკუმენტები {#escrow-and-proof-records}
+## საფინანსო და მტკიცებულების დოკუმენტები {#escrow-and-proof-records}
 
-Escrow შეკითხვები შემოწმება ჩანაწერები შექმნილია
-[ნაციონალური აქტივების საფინანსო დაფარვა ISIs](/ka/blockchain/escrow.md), მათ შორის ბაზარზე
-საფინანსო დავალებები, გენერული აქტივების ჩაკეტვა და ანონიმური ანგარიშები.
+საფინანსო ანაზღაურების გამოკითხვები შეამოწმებს [ბინადური აქტივების დაფარვის მიერ შექმნილ ჩანაწერებს ISIs](/ka/blockchain/escrow.md), მათ შორის ბაზრის დაფარვას, ზოგადი აქტივების საკეტებს და ანონიმურ დაფარვებთან დაკავშირებულ ჩანაწერს.
 
-| კითხვები | მიზანი |
+|კითხვა |მიზანი |
 | --- | --- |
-| `FindAssetEscrows` | ჟრანთმჲპვნარაჲ გპვმვ ჱა მფაწრა. |
-| `FindAssetEscrowById` | იპოვნეთ ერთი აქტივის საფინანსო ფასი ID. |
-| `FindAssetEscrowsBySeller` | ჩამოთვალეთ აქტივების დაფარვა გამყიდველის მიხედვით. |
-| `FindAssetEscrowsByBuyer` | ჩამოთვალეთ აქტივები მყიდველის მიერ დაფარული. |
-| `FindAssetEscrowsByStatus` | ჩამოთვალეთ აქტივების საფინანსო ანგარიშები სტატუსის მიხედვით. |
-| `FindAnonymousAssetEscrows` | ნაოპაგთ ანონიმური ქონების საფინანსო ანგარიშები. |
-| `FindAnonymousAssetEscrowById` | იპოვნეთ ერთი ანონიმური აქტივის საფარდებელი ID. |
-| `FindAnonymousAssetEscrowsBySeller` | ანონიმური საფარდების ჩამონათვალი გამყიდველის მიხედვით. |
-| `FindAnonymousAssetEscrowsByBuyer` | ანონიმური საფარდების ჩამონათვალი მყიდველის მიხედვით. |
-| `FindAnonymousAssetEscrowsByStatus` | ანონიმური საფარდების ჩამონათვალი სტატუსის მიხედვით. |
-| `FindProofRecordById` | მოძებნეთ ერთი მტკიცებულების ჩანაწერი ID. |
-| `FindProofRecords` | ნაოპაგთ დოკუმენტები. |
-| `FindProofRecordsByBackend` | დაწვრილებით აღწერეთ მტკიცებულების მონაცემები. |
-| `FindProofRecordsByStatus` | შეაწერეთ მტკიცებულების ჩანაწერები სტატუსის მიხედვით. |
+|`FindAssetEscrows` |დაწერთ აქტივების საფინანსო ანგარიშები. |
+|`FindAssetEscrowById` |მოძებნეთ ერთი აქტივი ID. |
+|`FindAssetEscrowsBySeller` |ჩამოთვალეთ აქტივების დაფარვა გამყიდველის მიხედვით. |
+|`FindAssetEscrowsByBuyer` |მყიდველის მიერ დაფარული აქტივების ჩამონათვალი. |
+|`FindAssetEscrowsByStatus` |ჩამოთვალეთ აქტივების აღრიცხვა სტატუსის მიხედვით. |
+|`FindAnonymousAssetEscrows` |ნაოპაგთ ანონიმური ქონების საფინანსო ანგარიშები. |
+|`FindAnonymousAssetEscrowById` |იპოვნეთ ერთი ანონიმური აქტივის საფარდებელი ID. |
+|`FindAnonymousAssetEscrowsBySeller` |დაწვრილებით ანონიმური საფარდოები გამყიდველის მიხედვით. |
+|`FindAnonymousAssetEscrowsByBuyer` |დაწერთ ანონიმურ საფარდებს მყიდველის მიხედვით. |
+|`FindAnonymousAssetEscrowsByStatus` |დასახელება ანონიმური სალაროების სტატუსის მიხედვით. |
+|`FindProofRecordById` |იპოვეთ ერთი მტკიცებულება ID. |
+|`FindProofRecords` |ნაოპაგთ დოკუმენტები. |
+|`FindProofRecordsByBackend` |ჩამოთვალეთ მტკიცებულების ჩანაწერები მტკიცებულებების უკანასკნელი |
+|`FindProofRecordsByStatus` |ჩამოთვალეთ მტკიცებულებების ჩანაწერები სტატუსის მიხედვით. |
 
-## Nexus, მონაცემების ხელმისაწვდომობა და პაკეტები {#nexus-data-availability-and-packages}
+## Nexus, მონაცემთა ხელმისაწვდომობა და პაკეტები {#nexus-data-availability-and-packages}
 
-| კითხვები | მიზანი |
+|კითხვა |მიზანი |
 | --- | --- |
-| `FindRepoAgreements` | ჩამოთვალეთ ქსელზე შენახული სათავსო შეთანხმებები. |
-| `FindTwitterBindingByHash` | გადაწყვიტეთ Twitter-ის ბინდირება ჰეშით. |
-| `FindDaPinIntentByTicket` | ნაპაგთნარა ჟაჟრაჲ ჱა ეჲბპჲჟრგჲრწნთრვ პინ. |
-| `FindDaPinIntentByManifest` | ნაპაგთნარა ნეტგაჲ ჱა მფაეთრწნთკა. |
-| `FindDaPinIntentByAlias` | ნაპაგთ ჟრაჟკა ჱა ოფა. |
-| `FindDaPinIntentByLaneEpochSequence` | ნაპაგწრა ჟრანთ, ეპოქა და რგოლა. |
-| `FindLaneRelayEnvelopeByRef` | ნაპაგთნარა ჟრანთწრაჟკა გჟთფკჲ. |
-| `FindSorafsProviderOwner` | გადაწყვიტეთ მფლობელის SoraFS მომწოდებელი. |
-| `FindDataspaceNameOwnerById` | გადაწყვიტეთ მონაცემთა სივრცის სახელების მფლობელი. |
-| `FindMusubiReleaseByRef` | იპოვეთ Musubi რეფერენციით გათავისუფლება. |
-| `FindMusubiPackageVersions` | ჩამონათვალი ვერსიები Musubi პაკეტი. |
-| `FindMusubiPackageReleases` | სიაზე გამოშვება Musubi პაკეტი. |
-| `FindMusubiShortAliasByName` | გადაწყვიტეთ a Musubi მოკლე საიდუმლოები. |
+|`FindRepoAgreements` |ჩამოთვალეთ ქსელზე შენახული რეპოზიტორების ხელშეკრულებები. |
+|`FindTwitterBindingByHash` |ტვიტერის ბინდირების გადაჭრა ჰეშით. |
+|`FindDaPinIntentByTicket` |ეძიეთ მონაცემთა ხელმისაწვდომობის პინი ბილეთის მიხედვით. |
+|`FindDaPinIntentByManifest` |იპოვნეთ pin განზრახვა მანიფესტ რეფერენცია. |
+|`FindDaPinIntentByAlias` |ნაპაგრაჟა ეა ჟვ ოპვკაგაქ.|
+|`FindDaPinIntentByLaneEpochSequence` |იპოვნეთ კვანძის განზრახვა ზოლი, ეპოქა და თანმიმდევრულობა. |
+|`FindLaneRelayEnvelopeByRef` |ნაოპაგთ ოჲჟლვევნა ოპვრთნარაჲ. |
+|`FindSorafsProviderOwner` |SoraFS მომწოდებლის მფლობელის განსაზღვრა. |
+|`FindDataspaceNameOwnerById` |აღმოფხვრა მონაცემთა სივრცის სახელების მფლობელი. |
+|`FindMusubiReleaseByRef` |იპოვეთ Musubi განთავისუფლება რეფერენციით. |
+|`FindMusubiPackageVersions` |ჩამოთვლილი ვერსიები Musubi პაკეტისათვის. |
+|`FindMusubiPackageReleases` |Musubi პაკეტის ჩამონათვალის გამოშვებები. |
+|`FindMusubiShortAliasByName` |გადაწყვიტეთ Musubi მოკლე alias. |
 
-## გაჩერებები, ხელშეკრულებები, ტრანზაქციები და ბლოკები {#triggers-contracts-transactions-and-blocks}
+## ტრიგერები, ხელშეკრულებები, ოპერაციები და ბლოკები {#triggers-contracts-transactions-and-blocks}
 
-| კითხვები | მიზანი |
+|კითხვა |მიზანი |
 | --- | --- |
-| `FindActiveTriggerIds` | აქტიური გამშვები ჩამონათვალი IDs. |
-| `FindTriggers` | რგოლა ჟრანთჟკა. |
-| `FindTriggerById` | პოვნეთ ერთი გამშვები ID. |
-| `FindContractManifestByCodeHash` | ნაპაგეთ ჟრანთფაჟჲ გპვმვ ჱა კჲდ-ჰაჟ. |
-| `FindTransactions` | დადებული ოპერაციების ჩამონათვალი. |
-| `FindBlocks` | ბჲქრთნარა. |
-| `FindBlockHeaders` | ბლოგის სათაურების ჩამოთვლა. |
+|`FindActiveTriggerIds` |ჩამოთვალეთ აქტიური გამომწვევი IDs. |
+|`FindTriggers` |სია მაშველებს. |
+|`FindTriggerById` |იპოვნეთ ერთი გამშვებიანი ID. |
+|`FindContractManifestByCodeHash` |იპოვნეთ ჭკვიანი ხელშეკრულების მანიფესტ კოდი ჰაშით. |
+|`FindTransactions` |განკუთვნილი ოპერაციების ჩამონათვალი. |
+|`FindBlocks` |ბლოკების ჩამონათვალი.|
+|`FindBlockHeaders` |ბლოგის სათაურების ჩამონათვალი.|
 
 ## ფილტრირება და გვერდების გაფორმება {#filtering-and-pagination}
 
-Iterable შეკითხვები შეიძლება გამოავლინოს predicate და სელექტორის მხარდაჭერა. გამოიყენეთ შეკითხვის სპეციფიკური
-დასახელებული ფილტრები SDK ასე რომ ფილტრის შეღება ემთხვევა გამოშვების ტიპს.
-დიდი შედეგების კომპლექტებისთვის, გამოიყენეთ შეკითხვის პარამეტრები, როგორიცაა კურსორი და ლიმიტი
-ყველა რიგის ერთდროულად მოპოვება.
+Iterable შეკითხვები შეიძლება გამოავლინოს პრედიკატისა და სელექტორის მხარდაჭერა. გამოიყენეთ შეკითხვის სპეციფიკური ტიპირებული ფილტრები SDK ისე, რომ ფილტრის შესავალი შეესაბამება შეკითხვის საგამოშვო ტიპს. დიდი შედეგების ნაკრებისთვის, გამოიყენეთ შეტყობინების პარამეტრები, როგორიცაა კურსორი და ლიმიტი ნაცვლად თითოეული რიგის ერთდროულად მოპოვების.

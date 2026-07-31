@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # NFTs {#nfts}
 
-O ' zbekiston Respublikasi Iroha NFT - bu bitta egasiga ega bo'lgan noyob kitob ob'ekti. NFTs yozuv o'z shaxsga, metadatalarga, hayot davri hodisalariga va egalik uzatish semantikasiga muhtoj bo'lganda, lekin raqamli muvozanatga muhtoj emas.
+Iroha NFT - bu bitta egasiga ega bo'lgan noyob kitob ob'ekti. NFTs dan foydalansangiz, ro'yxatga o'z shaxsiyati, metadatalar, hayot davri voqealari va mulkchilikni o'tkazish semantikasi kerak bo'lsa, lekin raqamli muvozanatga muhtoj emassiz.
 
 Raqamga oʻxshamaydi . [aktiv](/uz/blockchain/assets.md), bir NFT to'g'rilik, mintaqaviylik yoki hisob-kitob miqdori yo'q. NFT bitta ro'yxatdan o'tgan obyekt sifatida mavjud bo'lib, mulkdorlik to'g'ridan-to'g'ri ushbu obyektda kuzatilmoqda.
 
@@ -20,7 +20,7 @@ Ro'yxatga olingan `Nft` tarkibida quyidagilar mavjud:
 - `content`: NFT faylini tavsiflovchi metadatalar
 - `owned_by`: NFT hisobvarag'iga ega bo'lgan hisobvaraq
 
-O ' zbekiston Respublikasining `content` maydoni a `Metadata` Xaritani kompak saqlang: deskriptiv maydonlarni saqlash, barqaror ma'lumotlar, hashlar, URIs, yoki SoraFS katta hujjatlar, ommaviy axborot vositalari yoki yuqori churn ilovalar davlat ketidan tashqarida saqlash va faqat tekshirib ko'rish mumkin bo'lgan ma'lumotlarni NFT.
+`content` maydoni `Metadata` xaritasi hisoblanadi. Uni kompak saqlang: deskriptiv maydonlarni, barqaror ma'lumotlarni, hashlarni, URIs yoki SoraFS yo'llarini saqlash. Yirik hujjatlarni, ommaviy axborot vositalarini yoki yuqori churnli ilovalar holatini zanjirdan tashlab qo'ying va faqat tekshirish mumkin bo'lgan ma'lumotni NFT da saqlang.
 
 ## Taira bilan sinab ko'ring. {#try-it-on-taira}
 
@@ -38,7 +38,7 @@ curl -fsS https://taira.sora.org/openapi.json \
   | jq -r '.paths | keys[] | select(startswith("/v1/nfts") or startswith("/v1/explorer/nfts"))'
 ```
 
-Boʻsh joy `items` to'plam - bu ommaviy test tarmog'ida haqiqiy javob. NFTs joriy sahifada emas, NFT yo'l-yo'riqlar mavjud emas.
+Bo'sh `items` array - bu ommaviy testnetda haqiqiy javob. Bu joriy sahifadagi NFTs yo'qligini anglatadi, ammo NFT ko'rsatmalari mavjud emas.
 
 ## NFT IDs {#nft-ids}
 
@@ -51,16 +51,16 @@ name$domain.dataspace
 
 Masalan, `badge$docs.universal` ta'riflaydi `badge` NFT bilan `docs.universal` Agar ma'lumotlar maydonasi chiqarib tashlangan bo'lsa, joriy tahlilchi ushbu `universal` ma'lumotlar maydoni, shuning uchun `badge$docs` qaror qiladi: `badge$docs.universal`.
 
-Ishlab chiqarilgan nomlar NFT IDs. O ' zbekiston Respublikasining ID ko'rsatmalar, so'rovlar, ruxsatnomalar, hodisa filtrlari va dastur ma'lumotlari tomonidan ishlatiladigan ob'ekt identifikatsiyasi.
+NFT IDs uchun barqaror nomlardan foydalaning. ID - bu ko'rsatmalar, so'rovlar, ruxsatnomalar, hodisa filtrlari va dastur ma'lumotlari tomonidan ishlatiladigan ob'ekt identifikatsiyasi.
 
 ## Hayot davri {#lifecycle}
 
 NFT hayot davri operatsiyalari foydalanish Iroha Maxsus ko'rsatmalar:
 
-- [`Register`](/uz/blockchain/instructions.md#un-register) yaratadi NFT dastlabki `content`.
+- [`Register`](/uz/blockchain/instructions.md#un-register) boshlang'ich `content` bilan NFT ni yaratadi.
 - [`Unregister`](/uz/blockchain/instructions.md#un-register) NFT belgisini olib tashlaydi.
 - [`Transfer`](/uz/blockchain/instructions.md#transfer) o'zgarishlar `owned_by`.
-- [`SetKeyValue` va `RemoveKeyValue`](/uz/blockchain/instructions.md#setkeyvalue-removekeyvalue) yangilanish NFT Metadatalar.
+- [`SetKeyValue` va `RemoveKeyValue`](/uz/blockchain/instructions.md#setkeyvalue-removekeyvalue) NFT metadatalarini yangilash.
 
 ## Mahalliy hududda sinab koʻring {#try-it-locally}
 
@@ -72,7 +72,7 @@ export NFT_DOMAIN=wonderland.universal
 export NFT_ID='badge_intro$wonderland.universal'
 ```
 
-Yaratilgan lokal tarmoq allaqachon oʻrnatilgan `wonderland.universal` va uning SNS Boshqa domendan foydalanish uchun uni birinchi navbatda deklarativ `app alias setup plan` va `app alias setup apply` ish oqimi [Domenlar](/uz/blockchain/domains.md#registration).
+Yaratilgan lokalnet allaqachon `wonderland.universal` va uning SNS ijara shartnomasini o'rnatadi. Boshqa domendan foydalanish uchun uni birinchi navbatda `app alias setup plan` va `app alias setup apply` ish oqimi bilan yaratish [Domains](/uz/blockchain/domains.md#registration).
 
 NFT raqami ro'yxatdan o'tkazilsin. Ro'yxatga olish dastlabki tarkibni JSON standart kirishdan o'qiydi:
 
@@ -110,7 +110,7 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft meta remove --id "$NFT_ID" --key traits
 ```
 
-Oʻz navbatida, NFT. Foydalanish `ledger nft get` joriy egasini o'qish uchun `owned_by`, va foydalanish `ledger account list all` yo'nalishdagi hisobni topish ID.
+NFT ni ko'chirish uchun `ledger nft get` dan foydalanib, hozirgi egasini `owned_by`dan o'qish va `ledger account list all` dan foydalanib maqsadli hisob qaydnomani ID topish.
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -132,9 +132,9 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
 
 ## Savollar va voqealar {#queries-and-events}
 
-Foydalanish [`FindNfts`](/uz/reference/queries.md#assets-nfts-and-rwas) ro'yxatga olish NFTs va [`FindNftsByAccountId`](/uz/reference/queries.md#assets-nfts-and-rwas) ro'yxatga olish NFTs hisob raqamiga ega bo'lgan.
+[`FindNfts`](/uz/reference/queries.md#assets-nfts-and-rwas) dan foydalanib, hisob qaydnomasiga ega bo'lgan NFTs va [`FindNftsByAccountId`](/uz/reference/queries.md#assets-nfts-and-rwas)dan foydalanib, NFTs ni ro'yxatga oling.
 
-NFT ro'yxatdan o'tish, o'chirish, uzatish va metadatalarni yangilash NFT ma'lumotlar hodisalari. `Nft` ma'lumotlar hodisasi filterini ko'rsatkichlar daftarida o'zgarishlarga aloqador bo'lganda yoki NFT hayoti davridagi hodisalar.
+NFT ro'yxatdan o'tish, olib tashlash, uzatish va metadata yangilanishlari NFT ma'lumotlar hodisalarini chiqaradi. `Nft` ma'lumotlar hodisasi filtridan foydalanib, katta kitobga o'zgarishlar kiritishda yoki NFT hayotiy davrida sodir bo'ladigan voqealarga munosabatda bo'lgan triggerlarni qurishda foydalaning.
 
 ## Ruxsatlar {#permissions}
 
@@ -145,7 +145,7 @@ Bo'yicha ruxsat berish yuzi NFT uchun maxsus tokenlarni o'z ichiga oladi:
 - `CanTransferNft`
 - `CanModifyNftMetadata`
 
-Ruxsatlarni tekshirish faol ishga tushirish vaqtini tasdiqlovchi tomonidan amalga oshiriladi, shuning uchun tarmoq ijrochini yangilab ruxsatni moslashi mumkin. [Ruxsat belgisi](/uz/reference/permissions.md) joriy andoza tokenlar ro'yxati uchun.
+Ruxsatlarni tekshirish faol ishga tushirish vaqtini tasdiqlovchi tomonidan amalga oshiriladi, shuning uchun tarmoq ruxsatni yangilab o'zgartirishi mumkin. ijrochi. [Ruxsat belgisi](/uz/reference/permissions.md) joriy andoza tokenlar ro'yxati uchun.
 
 ## NFTs tanlang {#choosing-nfts}
 

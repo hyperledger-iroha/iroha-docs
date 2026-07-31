@@ -19,7 +19,7 @@ O livro-razão público ainda registra que uma operação confidencial ocorreu. 
 |Nota protegida |Um registro de carteira privada contendo um ativo, montante, dados do proprietário e aleatoriedade.|
 |Compromisso |Um valor público de 32 bytes que compromete-se a uma nota sem revelar seus campos. |
 |Anulador |Um valor público de 32 bytes derivado quando uma nota é gasto. Iroha rejeita anuladores repetidos para evitar o duplo gasto. |
-|Raiz de Merkle |Uma raiz recente da árvore de compromisso do activo.|
+|Raiz de Merkle |Uma raiz recente da árvore de compromisso do ativo. As provas usam-na para mostrar que as notas gastadas existem. |
 |Ficha de prova |Um `ProofAttachment` que contenha bytes de prova mais uma referência da chave de verificação ou a chave de verificación em linha. |
 |Evento confidencial .|Um evento do livro de conta, tal como `ConfidentialEvent::Shielded`, `Transferred` ou `Unshielded`. |
 
@@ -244,7 +244,7 @@ onde `public_inputs` são os compromissos, anuladores, raiz, etiqueta de ativo, 
 
 ## O que é público {#what-is-public}
 
-As transacções anônimas não tornam privadas todos os fatos observáveis.
+As transações anônimas não tornam todos os fatos observáveis privados. Os seguintes dados podem ainda ser públicos:
 
 - o hash da transação, a altura do bloco e a ordem
 - A autoridade de transação submetente, a menos que o pedido utilize um padrão privado de entrada ou relayer.

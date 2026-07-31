@@ -8,10 +8,6 @@ translation_engine: nllb-200-ct2
 
 # نظام نموذج البيانات {#data-model-schema}
 
-تم إنشاء هذه الصفحة مع `kagami advanced schema` " من المكسرين "
-[`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha)
-الإصلاح المسجل من خلال عملية تحديث الوثائق.
-يتم التحقق من هذا المخبأ بحيث تصميمات الوثائق العادية لا تتطلب
-(أ) Iroha التحقق من المصدر
+تم إنشاء هذه الصفحة مع `kagami advanced schema` من إصدار [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) المسجل في تدفق عمل تحديث الوثائق. يتم التحقق من اللقطة الفورية المقدمة في هذا المستودع بحيث لا تتطلب بناءات الوثائق العادية تسجيل مصدر Iroha.
 
 <DataModelSchema />

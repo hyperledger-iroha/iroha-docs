@@ -8,18 +8,18 @@ translation_engine: nllb-200-ct2
 
 # `irohad` CLI {#irohad-cli}
 
-`irohad` იწყება Iroha 3 პერ დეიმონი.
+`irohad` იწყებს Iroha 3 peer daemon.
 
 ```shell
 irohad --config path/to/config.toml
 ```
 
-## `--config` {#arg-config}
+## `--config`  {#arg-config}
 
-- **ტიპი:** ფაილების გზა
-- **ალიას:** `-c`
+- ტიპი: ფაილების გზა
+- ანალიზი: `-c`
 
-გზა, რომელიც მიდის [კონფიგურაცია](/ka/reference/peer-config/index.md) ფაილი.
+გზა [ კონფიგურაციის ](/ka/reference/peer-config/index.md) ფაილამდე.
 
 ```shell
 irohad --config path/to/iroha.toml
@@ -27,10 +27,9 @@ irohad --config path/to/iroha.toml
 
 ## `--genesis-manifest-json` {#arg-genesis-manifest-json}
 
-- **ტიპი:** ფაილების გზა
+- ტიპი: ფაილების გზა
 
-გენეზის მანიფესტამდე ავტორიზებული გზა JSON გამოიყენეთ ეს, როდესაც განთავსება
-ადასტურებს სტარტაპს მანიფესტის მიმართ, რომელიც შექმნილია Kagami.
+ვარიანტი გზა გენეზიის მანიფესტის JSON ფაილზე. გამოიყენეთ ეს, როდესაც განთავსება ადასტურებს სტარტაპს Kagami მიერ შექმნილი მანიფეტის წინააღმდეგ.
 
 ```shell
 irohad --config path/to/iroha.toml --genesis-manifest-json path/to/genesis.manifest.json
@@ -38,10 +37,10 @@ irohad --config path/to/iroha.toml --genesis-manifest-json path/to/genesis.manif
 
 ## `--trace-config` {#arg-trace-config}
 
-აძლევს კონფიგურაციის წაკითხვისა და პარალიზების ტრეის ლოგებს. შეიძლება სასარგებლო იყოს კონფიგურიაციის პრობლემების აღმოფხვრისთვის.
+აძლევს კონფიგურაციის წაკითხვისა და პარალიზების ტრეის ლოგებს. შეიძლება გამოსადეგი იყოს კონფიგურიაციის პრობლემების აღმოფხვრისთვის.
 
-- **ტიპი:** დროშა
-- **ENV:** `TRACE_CONFIG`
+- ტიპი: დროშა
+- ENV: `TRACE_CONFIG`
 
 ```shell
 irohad --trace-config
@@ -49,15 +48,13 @@ irohad --trace-config
 
 ## `--terminal-colors` {#arg-terminal-colors}
 
-- **ტიპი:** ბულური, ან `--terminal-colors=false` ან
-  `--terminal-colors=true`
-- **დეფოლტი:** ავტომატური აღმოჩენის ტერმინალის მხარდაჭერა
-- **ENV:** `TERMINAL_COLORS`
+- ტიპი: ბულიანი, ან `--terminal-colors=false` ან `--terminal-colors=true`
+- ავტომატური აღმოჩენის ტერმინალის მხარდაჭერა;
+- ENV: `TERMINAL_COLORS`
 
-გაძლევთ თუ არა ANSI- ფერადი გამოსავალი ან არა.
+გაძლევთ თუ არა ANSI ფერის გამონადენი;
 
-დეფოლტად, Iroha განსაზღვრავს, მხარს უჭერს თუ არა ტერმინალს ფერადი გამოსავალი
-ან არა.
+ჩვეულებრივ, Iroha განსაზღვრავს, მხარს უჭერს თუ არა ტერმინალს ფერადი გამონადენი.
 
 ფერების მკაფიოდ გამორთვა:
 
@@ -72,9 +69,9 @@ irohad
 
 ## `--language` {#arg-language}
 
-- **ტიპი:** მავთულხლართები
+- ტიპი: ძრავი
 
-ოპვრთნარაჲ ჟსთმვნაკაჟკა, კჲვრჲ ვ ნაოპაგყპნა ჱა გზავნილთა დეიმონ.
+ჲბარევთ ჟსტემაჟკთ თვლაპაკა, ნაოპაგთლ ჟვ ჱა დეიმონჲ გზავნილები.
 
 ```shell
 irohad --language en-US
@@ -82,10 +79,9 @@ irohad --language en-US
 
 ## `--sora` {#arg-sora}
 
-- **ტიპი:** დროშა
+- ტიპი: დროშა
 
-სორას გააქტიურება Nexus თვისებების პროფილი SoraFS, დასახელება SoraNet ხელის შეხება და
-მრავალმხრივი კონსენსუსის ნაკადები.
+ჩართეთ Sora Nexus თვისების პროფილი SoraFS, SoraNet ხელის შეხება და მრავალგზის კონსენსუსის ნაკადები.
 
 ```shell
 irohad --config path/to/iroha.toml --sora
@@ -93,9 +89,9 @@ irohad --config path/to/iroha.toml --sora
 
 ## `--fastpq-execution-mode` {#arg-fastpq-execution-mode}
 
-- **ტიპი:** `auto`, `cpu`, ან `gpu`
+- ტიპი: `auto`, `cpu`, ან `gpu`
 
-გამორთვა FASTPQ პროვერის შესრულების რეჟიმი.
+FASTPQ პროვერის შესრულების რეჟიმი გადალახეთ.
 
 ```shell
 irohad --fastpq-execution-mode auto
@@ -103,9 +99,9 @@ irohad --fastpq-execution-mode auto
 
 ## `--fastpq-poseidon-mode` {#arg-fastpq-poseidon-mode}
 
-- **ტიპი:** `auto`, `cpu`, ან `gpu`
+- ტიპი: `auto`, `cpu`, ან `gpu`
 
-გამორთვა FASTPQ პოსეიდონის ქაჟის რეჟიმი.
+FASTPQ პოსეიდონის მილსადენის რეჟიმის გადალახვა.
 
 ```shell
 irohad --fastpq-poseidon-mode cpu
@@ -113,9 +109,9 @@ irohad --fastpq-poseidon-mode cpu
 
 ## `--fastpq-device-class` {#arg-fastpq-device-class}
 
-- **ტიპი:** მავთულხლართები
+- ტიპი: ძრავი
 
-შეზღუდვა FASTPQ ტელემეტრიული მოწყობილობის კლასის ეტიკეტი.
+შეზღუდვა FASTPQ ტელემეტრიული მოწყობილობის კლასის ეტიკეტით.
 
 ```shell
 irohad --fastpq-device-class apple-m4
@@ -123,9 +119,9 @@ irohad --fastpq-device-class apple-m4
 
 ## `--fastpq-chip-family` {#arg-fastpq-chip-family}
 
-- **ტიპი:** მავთულხლართები
+- ტიპი: ძრავი
 
-შეზღუდვა FASTPQ ტელემეტრიული ჩიპების ოჯახის ეტიკეტი.
+შეზღუდვა FASTPQ ტელემეტრიული ჩიპების ოჯახის ეტიკეტით.
 
 ```shell
 irohad --fastpq-chip-family m4
@@ -133,9 +129,9 @@ irohad --fastpq-chip-family m4
 
 ## `--fastpq-gpu-kind` {#arg-fastpq-gpu-kind}
 
-- **ტიპი:** მავთულხლართები
+- ტიპი: ძრავი
 
-შეზღუდვა FASTPQ ტელემეტრია GPU- ჟჲბჲპთნარა.
+შეზღუდვა FASTPQ ტელემეტრიის GPU ტიპის ეტიკეტით.
 
 ```shell
 irohad --fastpq-gpu-kind integrated

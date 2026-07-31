@@ -8,10 +8,9 @@ translation_engine: nllb-200-ct2
 
 # Ibtido {#genesis}
 
-Ibtido dastlabki zanjir holatini belgilaydi. tahrirlanadigan manba JSON ko'rsatilgan;
-va Iroha 3 nishonlangan nodni iste'mol qiladi Norito Transaksiya fayli.
+Ibtido dastlabki zanjir holatini belgilaydi. tahrirlanadigan manba JSON manifestidir va Iroha 3 nod imzolangan Norito transaksiya faylini iste'mol qiladi.
 
-::: details Dastlabki genesis manifest
+::: details Andoza genesis manifesti
 
 <<< @/snippets/genesis.json
 
@@ -19,21 +18,17 @@ va Iroha 3 nishonlangan nodni iste'mol qiladi Norito Transaksiya fayli.
 
 ## Fayllar {#files}
 
-Yuqori tomondagi ma'muriyat andoza manifestni `defaults/genesis.json`.
-Kagami- ishlab chiqilgan tarmoqlar o'zlarining manifest va imzolangan tranzaksiyalarini
-Ishlab chiqarish direktoriyasi:
+`defaults/genesis.json`. Kagami tomonidan yaratilgan tarmoqlar o'zlarining manifesti va imzolangan tranzaksiyalarini chiqarish direktoriyasiga yozadi:
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
 ```
 
-Ishlab chiqarilgan `README.md` ushbu direktoriyada aniq fayllarni qayd etadi va ishga tushiriladi
-tanlangan profil uchun buyruqlar.
+Ushbu direktoriyada yaratilgan `README.md` tanlangan profil uchun aniq fayllarni va ishga tushirish buyruqlarini qayd etadi.
 
 ## Tengdoshlar soni {#peer-configuration}
 
-O'rtalar o'rtasida imzolangan genesis tranzaksiyasi `[genesis]` to ' rtinchi qismida
-`config.toml`:
+`config.toml` ning `[genesis]` bo'limida imzolangan genesis tranzaksiyasida tengdoshlar quyidagilarni ko'rsatadilar:
 
 ```toml
 [genesis]
@@ -41,8 +36,7 @@ file = "./genesis.signed.nrt"
 public_key = "ed0120..."
 ```
 
-Tarmoqdagi barcha tengdoshlar imzolangan genesis muomalasi va
-Ibtidodagi ommaviy kalit.
+Tarmoqdagi barcha tengdoshlar imzolangan genesis muomalasi va genesis jamoatchilik kalitini kelishishlari kerak.
 
 ## Ibtido kitobining imzolanishi {#signing-genesis}
 
@@ -56,13 +50,8 @@ cargo run --bin kagami -- genesis sign ./genesis.json \
   --out-file ./genesis.signed.nrt
 ```
 
-NPoS yoki Nexus profillar topologiya va BLS O'z egaligi to'g'risidagi dalillar
-hosil qilingan profil talab qiladi. Kagami `localnet`, `wizard`, va profil
-Generatsiya buyruqlari ushbu tafsilotlarni avtomatik ravishda boshqaradi.
+NPoS yoki Nexus profillari uchun topologiya va BLS hosil qilingan profil tomonidan talab etiladigan egalik hujjati kiritiladi. Kagami `localnet`, `wizard` va profil yaratish buyruqlari ushbu tafsilotlarni avtomatik ravishda boshqaradi.
 
 ## Ibtido kitobini qayta yozish {#recommitting-genesis}
 
-Bir tengdosh genesis faqat uning saqlash bo'sh bo'lganda amalga oshiradi.
-bir martalik lokalnet, tengdoshlarni to'xtatish, ularning yaratilgan davlat direktoriyasini olib tashlash,
-Yangi imzolangan genesisdan boshlang.
-tarmoq, agar har bir tasdiqlovchi bir xil migratsiyani muvofiqlashtirmasa.
+Bir tengdoshi genesisni faqat uning saqlanishi bo'sh bo'lganda amalga oshiradi. Bir martalik lokalnetda yangi genesisni sinovdan o'tkazish uchun tengdoshlarni to'xtatish, ularning yaratilgan davlat direktoriyasini olib tashlash va yangi imzolangan genesisdan boshlanish kerak. Har bir tasdiqlovchi bir xil migratsiyani muvofiqlashtirmasa, harakatlanayotgan tarmoqda genesisni almashtirmang.

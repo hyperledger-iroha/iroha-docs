@@ -155,7 +155,7 @@ iroha --config ./operator.client.toml \
   app alias setup apply --plan-file ./user-alias.plan.json
 ```
 
-Se o utilizador não pagar XOR, utilize o serviço de onboarding aprovado e consciente do patrocinador para construir e apresentar a transação de instalação.
+Se o utilizador não pagar XOR, utilize o serviço de embarque aprovado e consciente do patrocinador para construir e enviar a instalação Transacção. Não dividir a aquisição de arrendamento e os alias vinculativos em operações de aplicação independentes.
 
 Após a ligação do alias, verifique-o com o CLI:
 
@@ -183,7 +183,7 @@ Use números de telefone e endereços de e-mail como reivindicações de identif
 6. O utilizador apresenta `ClaimIdentifier` juntamente com o recibo.
 7. A cadeia armazena um hash opaco de identificação e recibo, não o valor do telefone bruto ou do email
 
-A configuração de política do lado do operador é uma tarefa SDK ou serviço.
+A configuração da política do operador é uma tarefa de SDK ou serviço. Construir e apresentar os seguintes pares de instruções para cada tipo de identificador:
 
 ```text
 RegisterRamLfeProgramPolicy(

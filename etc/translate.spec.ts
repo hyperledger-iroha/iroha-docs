@@ -10,6 +10,8 @@ import {
   NllbTranslationProvider,
   addStableHeadingAnchors,
   generateTranslations,
+  hasExactProtectedMarkerMultiset,
+  isCompleteShortStructuralLeadIn,
   markdownHeadings,
   markdownTranslationUnits,
   protectMarkdown,
@@ -20,6 +22,12 @@ import {
 } from './translate'
 
 const french = TRANSLATED_LOCALES.find((locale) => locale.key === 'fr')!
+const georgian = TRANSLATED_LOCALES.find((locale) => locale.key === 'ka')!
+const japanese = TRANSLATED_LOCALES.find((locale) => locale.key === 'ja')!
+const kazakh = TRANSLATED_LOCALES.find((locale) => locale.key === 'kk')!
+const portuguese = TRANSLATED_LOCALES.find((locale) => locale.key === 'pt')!
+const spanish = TRANSLATED_LOCALES.find((locale) => locale.key === 'es')!
+const simplifiedChinese = TRANSLATED_LOCALES.find((locale) => locale.key === 'zh-hans')!
 
 class MarkerAwareProvider implements TranslationProvider {
   async translate(text: string): Promise<string> {
@@ -132,6 +140,26 @@ describe('Markdown translation protection', () => {
     ])
   })
 
+  test('strips generated line-end whitespace without changing fenced code contents', async () => {
+    const provider: TranslationProvider = {
+      engine: 'trailing-whitespace-test',
+      protectedMarkdownMode: 'inline-identifiers',
+      languageCode: () => 'fra_Latn',
+      translate: async () => {
+        throw new Error('inline translation must use the batch method')
+      },
+      translateBatch: async (texts) => texts.map((text) => `${text} \t`),
+    }
+    const source = 'Ordinary prose.\n\n```text\nliteral payload  \t\n```\n\nFinal prose.\n'
+
+    const translated = await translateDocument(source, 'guide/whitespace.md', french, provider)
+
+    expect(translated).toContain('Ordinary prose.\n')
+    expect(translated).toContain('Final prose.\n')
+    expect(translated).toContain('```text\nliteral payload  \t\n```\n')
+    expect(translated).not.toMatch(/^(?!literal payload)[^\n]*[ \t]+$/gmu)
+  })
+
   test('sends paragraph context with protected identifiers to inline providers', async () => {
     const provider = new InlineContextProvider()
     const source =
@@ -207,6 +235,626 @@ describe('Markdown translation protection', () => {
     expect(batches.length).toBeGreaterThan(1)
     expect(translated).toContain('deterministic behavior')
     expect(translated).toContain('final verification step before launch.')
+  })
+
+  test('retains the short Generic asset locks sentence as its own retry request', async () => {
+    const source =
+      'Generic asset locks. Marketplace and anonymous escrow helpers are not first-class Python methods yet.'
+    const maskedSource =
+      'Generic asset locks. Marketplace and anonymous escrow helpers are not first-class [PH000000] methods yet.'
+    const sentenceChunks = [
+      'Generic asset locks. ',
+      'Marketplace and anonymous escrow helpers are not first-class [PH000000] methods yet.',
+    ]
+    const batches: string[][] = []
+    const provider: TranslationProvider = {
+      engine: 'short-sentence-escrow-test',
+      protectedMarkdownMode: 'inline-identifiers',
+      languageCode: () => 'spa_Latn',
+      translate: async () => {
+        throw new Error('inline translation must use the batch method')
+      },
+      translateBatch: async (texts) => {
+        batches.push([...texts])
+        return texts.map((text) => {
+          if (text === maskedSource) {
+            return 'El mercado y los ayudantes anónimos no son métodos de primera clase [PH000000] todavía.'
+          }
+          if (text === sentenceChunks[0]) return 'Bloqueos genéricos de activos. '
+          if (text === sentenceChunks[1]) {
+            return 'Los ayudantes de custodia del mercado y anónimos todavía no son métodos de primera clase [PH000000].'
+          }
+          return text
+        })
+      },
+    }
+
+    const translated = await translateDocument(`${source}\n`, 'blockchain/escrow.md', spanish, provider)
+
+    expect(batches).toContainEqual([maskedSource])
+    expect(batches).toContainEqual(sentenceChunks)
+    expect(translated).toContain('Bloqueos genéricos de activos.')
+    expect(translated).toContain('métodos de primera clase Python.')
+  })
+
+  test('keeps short sentence boundaries while carrying an abbreviation fragment forward', async () => {
+    const source =
+      'Ask Dr. Rivera to check it. Go now. Continue with the deterministic validation procedure before the network launch.'
+    const maskedSource = source
+    const sentenceChunks = [
+      'Ask Dr. Rivera to check it. ',
+      'Go now. ',
+      'Continue with the deterministic validation procedure before the network launch.',
+    ]
+    const batches: string[][] = []
+    const provider: TranslationProvider = {
+      engine: 'short-sentence-boundary-test',
+      protectedMarkdownMode: 'inline-identifiers',
+      languageCode: () => 'fra_Latn',
+      translate: async () => {
+        throw new Error('inline translation must use the batch method')
+      },
+      translateBatch: async (texts) => {
+        batches.push([...texts])
+        return texts.map((text) => (text === maskedSource ? 'Texte incomplet,' : text))
+      },
+    }
+
+    const translated = await translateDocument(`${source}\n`, 'guide/short-sentence.md', french, provider)
+
+    expect(batches).toContainEqual(sentenceChunks)
+    expect(sentenceChunks.join('')).toBe(maskedSource)
+    expect(translated).toContain('Ask Dr. Rivera to check it. Go now.')
+  })
+
+  test('applies sentence coverage to short prose cells inside table rows', async () => {
+    const sourceCell = " A recent root of the asset's commitment tree. Proofs use it to show that spent notes exist. "
+    const sentenceChunks = [
+      " A recent root of the asset's commitment tree. ",
+      'Proofs use it to show that spent notes exist. ',
+    ]
+    const batches: string[][] = []
+    const provider: TranslationProvider = {
+      engine: 'short-table-cell-coverage-test',
+      protectedMarkdownMode: 'inline-identifiers',
+      languageCode: () => 'por_Latn',
+      translate: async () => {
+        throw new Error('inline translation must use the batch method')
+      },
+      translateBatch: async (texts) => {
+        batches.push([...texts])
+        return texts.map((text) => {
+          if (text === sourceCell) return ' Uma raiz recente da árvore de compromisso do activo. '
+          if (text === sentenceChunks[0]) return ' Uma raiz recente da árvore de compromisso do ativo. '
+          if (text === sentenceChunks[1]) return 'As provas mostram que as notas gastas existem. '
+          return text
+        })
+      },
+    }
+    const source = `| Merkle root |${sourceCell}|\n`
+
+    const translated = await translateDocument(source, 'blockchain/anonymous-transactions.md', portuguese, provider)
+
+    expect(batches.flat()).toContain(sourceCell)
+    expect(batches).toContainEqual(sentenceChunks)
+    expect(translated).toContain('As provas mostram que as notas gastas existem.')
+  })
+
+  test('retries a provider truncation guard by isolating and splitting the failed prose chunk', async () => {
+    const failedChunk =
+      ' To thwart such attempts, craft a unique password devoid of personal information like birthdays, addresses, phone numbers, or social security numbers. Avoid providing attackers with easily guessable clues.'
+    const batches: string[][] = []
+    const provider: TranslationProvider = {
+      engine: 'nllb-provider-guard-test',
+      protectedMarkdownMode: 'inline-identifiers',
+      languageCode: () => 'mya_Mymr',
+      translate: async () => {
+        throw new Error('inline translation must use the batch method')
+      },
+      translateBatch: async (texts) => {
+        batches.push([...texts])
+        if (texts.includes(failedChunk)) {
+          throw new Error(
+            'NLLB translation failed: translation output is materially shorter than its source (7 target tokens for 47 source tokens)',
+          )
+        }
+        return [...texts]
+      },
+    }
+    const source =
+      'Passwords can fall victim to brute-force attacks, typically executed using powerful GPUs in conjunction with dictionaries or exhaustive iteration through all possibilities. To thwart such attempts, craft a unique password devoid of personal information like birthdays, addresses, phone numbers, or social security numbers. Avoid providing attackers with easily guessable clues.\n'
+
+    const translated = await translateDocument(source, 'guide/security/password-security.md', french, provider)
+
+    expect(batches[0]).toContain(failedChunk)
+    expect(batches.at(-1)).not.toContain(failedChunk)
+    expect(batches.at(-1)?.every((chunk) => chunk.length < failedChunk.length)).toBe(true)
+    expect(translated).toContain('social security numbers.')
+    expect(translated).toContain('Avoid providing attackers with easily guessable clues.')
+  })
+
+  test('retries a collapsed colon-terminated unit at complete clause boundaries', async () => {
+    const source = 'For a snapshot you can inspect without keeping a stream open, read recent explorer transactions:'
+    const expectedChunks = [
+      'For a snapshot you can inspect without keeping a stream open, ',
+      'read recent explorer transactions:',
+    ]
+    const batches: string[][] = []
+    const provider: TranslationProvider = {
+      engine: 'clause-collapse-test',
+      protectedMarkdownMode: 'inline-identifiers',
+      languageCode: () => 'zho_Hans',
+      translate: async () => {
+        throw new Error('inline translation must use the batch method')
+      },
+      translateBatch: async (texts) => {
+        batches.push([...texts])
+        return texts.map((text) => {
+          if (text === source) return '查看最近的探索者交易,'
+          if (text === expectedChunks[0]) return '若要在不保持事件流打开的情况下检查完整快照，'
+          if (text === expectedChunks[1]) return '请读取最近的区块浏览器交易记录：'
+          return text
+        })
+      },
+    }
+
+    const translated = await translateDocument(`${source}\n`, 'blockchain/events.md', simplifiedChinese, provider)
+
+    expect(batches[0]).toEqual([source])
+    expect(batches.at(-1)).toEqual(expectedChunks)
+    expect(batches.at(-1)?.join('')).toBe(source)
+    expect(translated).toContain('若要在不保持事件流打开的情况下检查完整快照，')
+    expect(translated).toContain('请读取最近的区块浏览器交易记录：')
+  })
+
+  test('recovers the Japanese consensus sentence at a safe so-clause boundary', async () => {
+    const source =
+      'It interleaves transactions by lane so one lane does not dominate the block just because its transactions were queued first.'
+    const collapsed = ' लेनदेनが列に並ぶので,一列がブロックを支配しない.'
+    const expectedChunks = [
+      'It interleaves transactions by lane so ',
+      'one lane does not dominate the block just because its transactions were queued first.',
+    ]
+    const recovered = [
+      'レーンごとにトランザクションを交互に配置します',
+      '最初にキューへ入ったという理由だけで一つのレーンがブロック全体を占有しないようにします。',
+    ]
+    const batches: string[][] = []
+    const provider: TranslationProvider = {
+      engine: 'japanese-consensus-so-clause-test',
+      protectedMarkdownMode: 'inline-identifiers',
+      languageCode: () => 'jpn_Jpan',
+      translate: async () => {
+        throw new Error('inline translation must use the batch method')
+      },
+      translateBatch: async (texts) => {
+        batches.push([...texts])
+        return texts.map((text) => {
+          if (text === source) return collapsed
+          const chunkIndex = expectedChunks.indexOf(text)
+          return chunkIndex >= 0 ? recovered[chunkIndex] : text
+        })
+      },
+    }
+
+    const translated = await translateDocument(`${source}\n`, 'blockchain/consensus.md', japanese, provider)
+
+    expect(batches).toContainEqual([source])
+    expect(batches).toContainEqual(expectedChunks)
+    expect(expectedChunks.join('')).toBe(source)
+    expect(translated).not.toContain('लेनदेन')
+    expect(translated).toContain(`${recovered[0]}。${recovered[1]}`)
+  })
+
+  test('recovers the exact Japanese peer-key condition at a safe if-clause boundary', async () => {
+    const source =
+      'Register and unregister peers. Generate the BLS key and PoP with `kagami` if you do not already have them:'
+    const maskedSource =
+      'Register and unregister peers. Generate the [PH000002] key and [PH000001] with [PH000000] if you do not already have them:'
+    const sentenceChunks = [
+      'Register and unregister peers. ',
+      'Generate the [PH000002] key and [PH000001] with [PH000000] if you do not already have them:',
+    ]
+    const collapsedCondition = '[PH000002]キーと[PH000001]を [PH000000]で生成する.'
+    const ifChunks = ['Generate the [PH000002] key and [PH000001] with [PH000000] ', 'if you do not already have them:']
+    const recovered = ['[PH000002]キーと[PH000001]を [PH000000] で生成する', 'すでに持っていない場合:']
+    const batches: string[][] = []
+    const provider: TranslationProvider = {
+      engine: 'japanese-instructions-if-clause-test',
+      protectedMarkdownMode: 'inline-identifiers',
+      languageCode: () => 'jpn_Jpan',
+      translate: async () => {
+        throw new Error('inline translation must use the batch method')
+      },
+      translateBatch: async (texts) => {
+        batches.push([...texts])
+        return texts.map((text) => {
+          if (text === maskedSource) return collapsedCondition
+          if (text === sentenceChunks[0]) return '同級生を登録し,非登録する'
+          if (text === sentenceChunks[1]) return collapsedCondition
+          const ifIndex = ifChunks.indexOf(text)
+          return ifIndex >= 0 ? recovered[ifIndex] : text
+        })
+      },
+    }
+
+    const translated = await translateDocument(`${source}\n`, 'blockchain/instructions.md', japanese, provider)
+
+    expect(batches).toContainEqual(sentenceChunks)
+    expect(batches).toContainEqual(ifChunks)
+    expect(ifChunks.join('')).toBe(sentenceChunks[1])
+    expect(translated).toContain('BLS')
+    expect(translated).toContain('PoP')
+    expect(translated).toContain('kagami')
+    expect(translated).toContain(recovered[1])
+  })
+
+  test('does not split an if-clause with a short side', async () => {
+    const source =
+      'Generate every deterministic validator recovery artifact and preserve required operational records before deployment if needed:'
+    const batches: string[][] = []
+    const provider: TranslationProvider = {
+      engine: 'short-if-side-test',
+      protectedMarkdownMode: 'inline-identifiers',
+      languageCode: () => 'jpn_Jpan',
+      translate: async () => {
+        throw new Error('inline translation must use the batch method')
+      },
+      translateBatch: async (texts) => {
+        batches.push([...texts])
+        return texts.map(() => '短い')
+      },
+    }
+
+    await expect(translateDocument(`${source}\n`, 'guide/short-if.md', japanese, provider)).rejects.toThrow(
+      'no smaller safe boundary',
+    )
+    expect(batches).toEqual([[source], [source]])
+  })
+
+  test('allows intact protected markers to reorder during translation', () => {
+    expect(
+      hasExactProtectedMarkerMultiset(
+        '[PH000002] key and [PH000001] with [PH000000]',
+        '[PH000000] で [PH000002] と [PH000001]',
+      ),
+    ).toBe(true)
+  })
+
+  test.each([
+    ['loss', '[PH000000] and [PH000001]', '[PH000000]'],
+    ['duplication', '[PH000000] and [PH000001]', '[PH000000] [PH000001] [PH000001]'],
+    ['substitution', '[PH000000] and [PH000001]', '[PH000000] [PH999999]'],
+  ])('rejects protected marker %s', (_case, source, translated) => {
+    expect(hasExactProtectedMarkerMultiset(source, translated)).toBe(false)
+  })
+
+  test('recovers the Kazakh FastPQ AIR marker without dropping the final fold lead-in', async () => {
+    const source =
+      'FRI commits to AIR composition evaluations. For each round `l`, the transcript samples a challenge `beta_l`. The layer is padded to a multiple of the arity by repeating the last value. Each arity-sized group folds to:'
+    const maskedSource =
+      '[PH000002] commits to [PH000003] composition evaluations. For each round [PH000000], the transcript samples a challenge [PH000001]. The layer is padded to a multiple of the arity by repeating the last value. Each arity-sized group folds to:'
+    const sentenceChunks = [
+      '[PH000002] commits to [PH000003] composition evaluations. ',
+      'For each round [PH000000], the transcript samples a challenge [PH000001]. ',
+      'The layer is padded to a multiple of the arity by repeating the last value. ',
+      'Each arity-sized group folds to:',
+    ]
+    const markerFreeFragments = ['commits to', 'composition evaluations.']
+    const batches: string[][] = []
+    const provider: TranslationProvider = {
+      engine: 'kazakh-fastpq-marker-recovery-test',
+      protectedMarkdownMode: 'inline-identifiers',
+      languageCode: () => 'kaz_Cyrl',
+      translate: async () => {
+        throw new Error('inline translation must use the batch method')
+      },
+      translateBatch: async (texts) => {
+        batches.push([...texts])
+        return texts.map((text) => {
+          if (text === maskedSource) return '[PH000002] [PH000003]. [PH000000] [PH000001].'
+          if (text === sentenceChunks[0]) return '[PH000002] құрамын бағалауға міндеттенеді. '
+          if (text === sentenceChunks[1]) {
+            return 'Әрбір [PH000000] раунды үшін транскрипт [PH000001] сынағын таңдайды. '
+          }
+          if (text === sentenceChunks[2]) {
+            return 'Қабат соңғы мәнді қайталау арқылы арлық еселікке толтырылады. '
+          }
+          if (text === sentenceChunks[3]) return 'Әр арлық өлшемді топ мынаған бүктеледі:'
+          if (text === markerFreeFragments[0]) return 'міндеттенеді'
+          if (text === markerFreeFragments[1]) return 'құрам бағалауларына.'
+          return text
+        })
+      },
+    }
+
+    const translated = await translateDocument(`${source}\n`, 'blockchain/fastpq.md', kazakh, provider)
+
+    expect(batches).toContainEqual(sentenceChunks)
+    expect(batches).toContainEqual(markerFreeFragments)
+    expect(translated).toContain('FRI міндеттенеді AIR құрам бағалауларына.')
+    expect(translated).toContain('`l` раунды үшін')
+    expect(translated).toContain('`beta_l` сынағын')
+    expect(translated).toContain('Әр арлық өлшемді топ мынаған бүктеледі:')
+  })
+
+  test('accepts the exact short FastPQ structural lead-in after sentence retry', async () => {
+    const source =
+      'Transparent numeric transfers create a structured transfer transcript when the instruction mutates balances. The transcript records:'
+    const sentenceChunks = [
+      'Transparent numeric transfers create a structured transfer transcript when the instruction mutates balances. ',
+      'The transcript records:',
+    ]
+    const recovered = [
+      '命令が残高を変更すると、透明な数値転送は構造化された転送トランスクリプトを作成します。',
+      '記録は:',
+    ]
+    const batches: string[][] = []
+    const provider: TranslationProvider = {
+      engine: 'japanese-fastpq-structural-lead-in-test',
+      protectedMarkdownMode: 'inline-identifiers',
+      languageCode: () => 'jpn_Jpan',
+      translate: async () => {
+        throw new Error('inline translation must use the batch method')
+      },
+      translateBatch: async (texts) => {
+        batches.push([...texts])
+        return texts.map((text) => {
+          if (text === source) return recovered[0]
+          const chunkIndex = sentenceChunks.indexOf(text)
+          return chunkIndex >= 0 ? recovered[chunkIndex] : text
+        })
+      },
+    }
+
+    const translated = await translateDocument(`${source}\n`, 'blockchain/fastpq.md', japanese, provider)
+
+    expect(batches).toContainEqual(sentenceChunks)
+    expect(sentenceChunks.join('')).toBe(source)
+    expect(translated).toContain(recovered.join(''))
+  })
+
+  test('recovers the exact FastPQ metadata list by splitting only its colon clause', async () => {
+    const source =
+      'and a metadata row binding the authorization policy. The `compliance` claim inserts two metadata rows: one for policy and one for target dataspaces.'
+    const maskedSource = source.replace('`compliance`', '[PH000000]')
+    const sentenceChunks = [
+      'and a metadata row binding the authorization policy. ',
+      'The [PH000000] claim inserts two metadata rows: one for policy and one for target dataspaces.',
+    ]
+    const sentenceTranslations = ['許可政策を拘束するメタデータ行.', '[PH000000]請求は2つのメタデータ行を挿入します.']
+    const clauseChunks = [
+      'The [PH000000] claim inserts two metadata rows: ',
+      'one for policy and one for target dataspaces.',
+    ]
+    const clauseTranslations = [
+      '[PH000000]請求書には,2つのメタデータ行が挿入されます. ',
+      '1つは政策と1つはターゲットデータパースです',
+    ]
+    const batches: string[][] = []
+    const provider: TranslationProvider = {
+      engine: 'japanese-fastpq-metadata-clause-test',
+      protectedMarkdownMode: 'inline-identifiers',
+      languageCode: () => 'jpn_Jpan',
+      translate: async () => {
+        throw new Error('inline translation must use the batch method')
+      },
+      translateBatch: async (texts) => {
+        batches.push([...texts])
+        return texts.map((text) => {
+          if (text === maskedSource) {
+            return sentenceTranslations[1]
+          }
+          const sentenceIndex = sentenceChunks.indexOf(text)
+          if (sentenceIndex >= 0) return sentenceTranslations[sentenceIndex]
+          const clauseIndex = clauseChunks.indexOf(text)
+          return clauseIndex >= 0 ? clauseTranslations[clauseIndex] : text
+        })
+      },
+    }
+
+    const translated = await translateDocument(`${source}\n`, 'blockchain/fastpq.md', japanese, provider)
+
+    expect(batches).toContainEqual(sentenceChunks)
+    expect(batches).toContainEqual(clauseChunks)
+    expect(clauseChunks.join('')).toBe(sentenceChunks[1])
+    expect(batches).not.toContainEqual([sentenceChunks[0]])
+    expect(translated).toContain(sentenceTranslations[0])
+    expect(translated).toContain('`compliance`請求書には')
+    expect(translated).toContain(clauseTranslations[1])
+  })
+
+  test('rejects an incomplete sentence retry when no safe clause boundary exists', async () => {
+    const sentenceChunks = [
+      'This sentence describes deterministic validation for every complete proposal. ',
+      'Another sentence preserves recovery guidance for validators.',
+    ]
+    const source = sentenceChunks.join('')
+    const batches: string[][] = []
+    const provider: TranslationProvider = {
+      engine: 'no-safe-second-stage-boundary-test',
+      protectedMarkdownMode: 'inline-identifiers',
+      languageCode: () => 'jpn_Jpan',
+      translate: async () => {
+        throw new Error('inline translation must use the batch method')
+      },
+      translateBatch: async (texts) => {
+        batches.push([...texts])
+        return texts.map((text) => {
+          if (text === source) return '短い出力'
+          if (text === sentenceChunks[0]) return 'あ'.repeat(18)
+          if (text === sentenceChunks[1]) return 'い'.repeat(16)
+          return text
+        })
+      },
+    }
+
+    await expect(translateDocument(`${source}\n`, 'guide/no-safe-boundary.md', japanese, provider)).rejects.toThrow(
+      'sentence-level retry output has incomplete sentence coverage',
+    )
+    expect(batches).toContainEqual(sentenceChunks)
+    expect(batches).toHaveLength(2)
+  })
+
+  test.each([
+    ['empty target', 'The transcript records:', ''],
+    ['too-short target', 'The transcript records:', '記録:'],
+    ['missing target colon', 'The transcript records:', '記録は'],
+    [
+      'source above the short lead-in cap',
+      'The transfer transcript records every authorization policy metadata field:',
+      '記録内容は:',
+    ],
+    ['changed protected marker', 'The [PH000000] transcript records:', '[PH000001] 記録内容は:'],
+  ])('rejects a short structural lead-in with %s', (_case, source, translated) => {
+    expect(isCompleteShortStructuralLeadIn(source, translated)).toBe(false)
+  })
+
+  test('validates each sentence retry and recovers the omitted expressions clause', async () => {
+    const source =
+      'Recall that you can combine this with queries, and as such can program the blockchain to do some amazing stuff. This is what we refer to as _smart contracts_, the defining feature of the advanced usage of blockchain technology.'
+    const normalizedSource = source.replaceAll('_', '')
+    const sentenceChunks = [
+      'Recall that you can combine this with queries, and as such can program the blockchain to do some amazing stuff. ',
+      'This is what we refer to as smart contracts, the defining feature of the advanced usage of blockchain technology.',
+    ]
+    const clauseChunks = [
+      'Recall that you can combine this with queries, ',
+      'and as such can program the blockchain to do some amazing stuff. ',
+    ]
+    const batches: string[][] = []
+    const provider: TranslationProvider = {
+      engine: 'expressions-clause-coverage-test',
+      protectedMarkdownMode: 'inline-identifiers',
+      languageCode: () => 'zho_Hans',
+      translate: async () => {
+        throw new Error('inline translation must use the batch method')
+      },
+      translateBatch: async (texts) => {
+        batches.push([...texts])
+        return texts.map((text) => {
+          if (text === normalizedSource) {
+            return '记住,你可以将这与查询结合起来,因此可以编程区块链来做一些惊人的事情.这是我们称之为智能合同的东西,'
+          }
+          if (text === sentenceChunks[0]) return '请记住,你可以将这些与查询结合起来,'
+          if (text === sentenceChunks[1]) {
+            return '这就是我们所谓的智能合同, 区块链技术的先进使用的定义特征.'
+          }
+          if (text === clauseChunks[0]) return '记住,你可以将这结合到询问.'
+          if (text === clauseChunks[1]) return '因此,可以编程区块链来做一些惊人的东西.'
+          return text
+        })
+      },
+    }
+
+    const translated = await translateDocument(`${source}\n`, 'blockchain/expressions.md', simplifiedChinese, provider)
+
+    expect(batches).toContainEqual([normalizedSource])
+    expect(batches).toContainEqual(sentenceChunks)
+    expect(batches).toContainEqual(clauseChunks)
+    expect(sentenceChunks.join('')).toBe(normalizedSource)
+    expect(clauseChunks.join('')).toBe(sentenceChunks[0])
+    expect(translated).toContain('记住,你可以将这结合到询问.')
+    expect(translated).toContain('因此,可以编程区块链来做一些惊人的东西.')
+    expect(translated).toContain('这就是我们所谓的智能合同')
+  })
+
+  test('does not let a verbose sibling translation hide an omitted retry clause', async () => {
+    const source =
+      'Recall that you can combine this with queries, and as such can program the blockchain to do some amazing stuff. This is what we refer to as smart contracts, the defining feature of the advanced usage of blockchain technology.'
+    const sentenceChunks = [
+      'Recall that you can combine this with queries, and as such can program the blockchain to do some amazing stuff. ',
+      'This is what we refer to as smart contracts, the defining feature of the advanced usage of blockchain technology.',
+    ]
+    const clauseChunks = [
+      'Recall that you can combine this with queries, ',
+      'and as such can program the blockchain to do some amazing stuff. ',
+    ]
+    const verboseSibling =
+      '这是一段刻意很长的第二句翻译,它足以让整段输出的总长度检查通过,但不应该掩盖第一句中被遗漏的长分句.'
+    const batches: string[][] = []
+    const provider: TranslationProvider = {
+      engine: 'independent-retry-coverage-test',
+      protectedMarkdownMode: 'inline-identifiers',
+      languageCode: () => 'zho_Hans',
+      translate: async () => {
+        throw new Error('inline translation must use the batch method')
+      },
+      translateBatch: async (texts) => {
+        batches.push([...texts])
+        return texts.map((text) => {
+          if (text === source) return '整个段落在这里被截断,'
+          if (text === sentenceChunks[0]) return '只保留了第一个短语,'
+          if (text === sentenceChunks[1]) return verboseSibling.repeat(2)
+          if (text === clauseChunks[0]) return '已恢复关于查询组合的第一个完整分句，'
+          if (text === clauseChunks[1]) return '已恢复对区块链进行编程的第二个完整分句。'
+          return text
+        })
+      },
+    }
+
+    const translated = await translateDocument(`${source}\n`, 'blockchain/expressions.md', simplifiedChinese, provider)
+
+    expect(batches).toContainEqual(sentenceChunks)
+    expect(batches).toContainEqual(clauseChunks)
+    expect(translated).toContain('已恢复关于查询组合的第一个完整分句')
+    expect(translated).toContain('已恢复对区块链进行编程的第二个完整分句')
+    expect(translated).toContain(verboseSibling)
+  })
+
+  test('retries a dropped sentence above the absolute floor but below the locale coverage gate', async () => {
+    const sentenceChunks = [
+      'The first sentence explains how validators inspect the complete proposal before accepting deterministic state changes. ',
+      'The second sentence preserves the independent recovery guidance needed when one payload arrives late.',
+    ]
+    const source = sentenceChunks.join('')
+    const countLetters = (content: string): number => [...content.matchAll(/\p{L}/gu)].length
+    const collapsed = `${'ა'.repeat(Math.ceil(countLetters(source) * 0.6))}.`
+    const recovered = sentenceChunks.map(
+      (sentence, index) => `${index === 0 ? 'ბ' : 'გ'}${'ა'.repeat(countLetters(sentence) - 1)}.`,
+    )
+    const batches: string[][] = []
+    const provider: TranslationProvider = {
+      engine: 'sentence-coverage-generation-test',
+      protectedMarkdownMode: 'inline-identifiers',
+      languageCode: () => 'kat_Geor',
+      translate: async () => {
+        throw new Error('inline translation must use the batch method')
+      },
+      translateBatch: async (texts) => {
+        batches.push([...texts])
+        return texts.map((text) => {
+          if (text === source) return collapsed
+          const sentenceIndex = sentenceChunks.indexOf(text)
+          return sentenceIndex >= 0 ? recovered[sentenceIndex] : text
+        })
+      },
+    }
+
+    const translated = await translateDocument(`${source}\n`, 'guide/sentence-coverage.md', georgian, provider)
+
+    expect(countLetters(collapsed) / countLetters(source)).toBeGreaterThan(0.5)
+    expect(countLetters(collapsed) / countLetters(source)).toBeLessThan(0.75)
+    expect(batches).toContainEqual(sentenceChunks)
+    expect(translated).toContain(recovered[0])
+    expect(translated).toContain(recovered[1])
+  })
+
+  test('rejects an exact absolute-floor ratio inclusively during generation', async () => {
+    const source = `${'a'.repeat(80)}.`
+    const provider: TranslationProvider = {
+      engine: 'inclusive-floor-generation-test',
+      protectedMarkdownMode: 'inline-identifiers',
+      languageCode: () => 'jpn_Jpan',
+      translate: async () => {
+        throw new Error('inline translation must use the batch method')
+      },
+      translateBatch: async (texts) => texts.map(() => `${'あ'.repeat(20)}。`),
+    }
+
+    await expect(translateDocument(`${source}\n`, 'guide/inclusive-floor.md', japanese, provider)).rejects.toThrow(
+      'output is materially short (0.25 of source letters)',
+    )
   })
 
   test('restores code, technical names, links, and Markdown delimiters', () => {

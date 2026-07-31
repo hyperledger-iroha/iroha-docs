@@ -8,10 +8,8 @@ translation_engine: nllb-200-ct2
 
 # Qo'llab-quvvatlash olish {#receive-support}
 
-Ba'zan sizda savollar paydo bo'lishi mumkin Iroha Bizning jamoamiz bilan tezda bog'lanishning uchta usuli bor: Telegram, Discord va GitHub.
+Vaqti-vaqti bilan sizda Iroha to'g'risidagi savollar bo'lishi mumkin, ularni boshqalar bilan batafsil muhokama qilishingiz mumkin. Jamiyatimiz bilan tezda bog'lanishning uchta usuli bor: Telegram, Discord va GitHub.
 
-Jamoat foydalanadi [Telegram](https://t.me/hyperledgeriroha) va
-[LF Decentralized Trust Kelishmovchiliklar](https://discord.gg/hyperledger) uchun
-aloqa. `iroha` loyiha savollari uchun kanal.
+Jamoat aloqa uchun [Telegram](https://t.me/hyperledgeriroha) va [ LF Decentralized Trust Discord](https://discord.gg/hyperledger) orqali foydalanadi. Loyiha savollari uchun `iroha` kanalidan foydalaning.
 
-Nihoyat, siz [yaratish GitHub muammosi](https://github.com/hyperledger-iroha/iroha/issues/new/choose), hujjatlarni yangilash uchun iltimos, asosiy jamoa uchun taklif yoki siz topgan xato.
+Nihoyat, siz [da GitHub muammosini yaratishingiz mumkin](https://github.com/hyperledger-iroha/iroha/issues/new/choose), bu hujjatlarni yangilash uchun talab bo'lsin, asosiy jamoa uchun taklif bo'lsin yoki topgan xato bo'lsin.

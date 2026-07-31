@@ -342,7 +342,7 @@ Utilice estas prácticas para las cuentas SORA Nexus:
 - Usar una contraseña única de alta entropía para cada bóveda o firma de producción. Almacenar las contraseñas en un administrador de contraseñas o proceso de custodia dividido, no en el mismo archivo o paquete de copia de seguridad que la clave privada cifrada.
 - Mantenga Taira y Minamoto Las llaves separadas. Taira llaves como material desechable de la red de ensayo y Minamoto las claves como autoridad de fondos de producción.
 - Copia de seguridad de la clave privada, llave pública, cuenta ID, perfil de cuenta y cualquier recuperación de cuenta o notas de custodia necesarias para restaurar el firmante. Una clave privada sin contexto de red es fácil de usar mal durante la recuperación.
-- Mantenga al menos una copia de seguridad cifrada fuera de línea y una geográficamente separada encriptada para los firmantes de producción.
+- Mantenga al menos una copia de seguridad encriptada fuera de línea y una copia de copia de seguridad cifrada geográficamente separada para firmas de producción. Prueba de recuperación con una pequeña operación de sólo lectura antes de depender de la copia de seguridad.
 - Rotar o reemplazar un firmador si la clave privada, frase de contraseña, soporte de copia de seguridad o el host de firma pueden haber sido expuestos.
 
 Para más detalles, véase [El almacenamiento de las claves criptográficas](/es/guide/security/storing-cryptographic-keys.md) y [Seguridad de contraseñas](/es/guide/security/password-security.md).

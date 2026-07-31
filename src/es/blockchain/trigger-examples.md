@@ -75,7 +75,7 @@ Registre el gatillo con:
 - el filtro de eventos
 - metadatos opcionales
 
-El registro del desencadenante en sí es una transacción normal, por lo que la cuenta de registro necesita permiso para registrar los desencadenantes.
+El registro del activador en sí es una transacción normal, por lo que la cuenta de registro necesita permiso para registrar los activadores. La cuenta técnica necesita los permisos requeridos por la ejecutable del gatillo.
 
 ## Orden de ejecución {#execution-order}
 

@@ -29,7 +29,7 @@ Use `docker ps` para confirmar o nome do recipiente. Na pilha gerada, os recipie
 
 ## Recomenda Genesis em uma rede descartável {#recommit-genesis-in-a-disposable-network}
 
-Para uma rede descartável Docker, parar a pilha, remover o estado gerado, regenerar ou substituir o pacote de gênese assinado e recomeçar:
+Um par comete a gênese somente quando o seu armazenamento está vazio. Para uma rede descartável Docker, parar a pilha, remover o estado gerado, regenerar ou substituir o pacote genético assinado. e começar de novo:
 
 ```bash
 docker compose -f ./localnet/docker-compose.yml down

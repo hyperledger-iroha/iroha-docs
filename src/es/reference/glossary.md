@@ -38,7 +38,7 @@ Aquí se pueden encontrar las definiciones de todas las entidades relacionadas c
 
 Los libros de contabilidad Blockchain son sistemas digitales de registro que utilizan la tecnología blockchain para mantener registros financieros. Estos tienen el nombre de los libros antiguos que se usaron para registros financiarios como precios, noticias e información de transacciones.
 
-Durante la Edad Media, los libros de contabilidad estaban abiertos para su visualización pública y verificación de exactitud.
+Durante la Edad Media, los libros de contabilidad estaban abiertos para su visualización pública y verificación de exactitud. Esta idea se refleja en los sistemas basados en cadenas de bloques que pueden comprobar la validez de los datos almacenados.
 
 ## Compañero {#peer}
 
@@ -58,7 +58,7 @@ Información adicional sobre los activos está disponible en [en ](/es/blockchai
 
 Estos activos pueden ser fácilmente intercambiados por otros activos del mismo tipo, ya que son intercambiables.
 
-Por ejemplo, todas las unidades de la misma moneda son iguales en valor y se pueden utilizar para comprar bienes.
+Por ejemplo, todas las unidades de la misma moneda son iguales en valor y pueden utilizarse para comprar bienes. Por lo general, los activos fungibles son idénticos en apariencia, excepto el desgaste de billetes y monedas.
 
 ### Activos no fungibles {#non-fungible-assets}
 

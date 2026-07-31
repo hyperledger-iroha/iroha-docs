@@ -8,63 +8,50 @@ translation_engine: nllb-200-ct2
 
 # Tarmoqni ishga tushirishning kalitlari {#keys-for-network-deployment}
 
-Har bir tarmoq mijozlar, tengdoshlar, genesis imzolari uchun alohida asosiy materiallarga muhtoj.
-va NPoS uchun yoki Nexus profillar, BLS tasdiqlovchi identifikatsiyalari.
+Har bir tarmoq mijozlar, tengdoshlar, genesis imzolash va NPoS yoki Nexus profillari uchun BLS tasdiqlovchi identifikatsiyalari uchun alohida kalit materiallarga muhtoj.
 
 ## Ochiqdan qayerda foydalanish mumkin {#where-keys-are-used}
 
-- Mijoz imzolash kalitlari `client.toml` koʻrsatkich `[account]`.
-- Har bir tengdoshda tengdosh identifikatsiya kalitlari saqlanadi `config.toml` sifatida `public_key` va
-  `private_key`.
-- Tengdoshlar kashfiyoti har bir tengdoshning ommaviy kalitidan foydalanadi `trusted_peers`.
-- BLS sertifikatlash vositasi `trusted_peers_pop` NPOS uchun
-  profillar.
-- Ibtido imzosi `[genesis].public_key` tengdoshlar konfigida va
-  Manifesti imzolash paytida xususiy kalitga mos keladi.
+- Mijoz imzolash kalitlari `client.toml` ostida `[account]`-da saqlanadi.
+- Har bir tenglamchi `config.toml` ning `public_key` va `private_key` sifatida tenglamchi identifikatsiya kalitlari saqlanadi.
+- Tengdoshlarni kashf etish `trusted_peers` da har bir tengdoshning ommaviy kalitidan foydalanadi.
+- BLS tasdiqlovchi NPoS profillari uchun egalik guvohnomasi `trusted_peers_pop` da saqlanadi.
+- Ibtido imzosi manifestni imzolashda `[genesis].public_key` ning o'rtacha konfiguratsiyasida va shunga mos bo'lgan xususiy kalitdan foydalanadi.
 
-Mahalliy yoki sinov joylashtirish uchun ruxsat berish Kagami ushbu fayllarning barchasini birgalikda yaratish:
+Mahalliy yoki sinov dasturlari uchun Kagami ushbu fayllarning barchasini birgalikda yaratishga ruxsat bering:
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
 ```
 
-Mavjud tarmoq yoki profil uchun yo'naltirilgan oqimdan foydalaning:
+mavjud tarmoq yoki profil uchun yo'naltirilgan oqimdan foydalaning:
 
 ```bash
 cargo run --bin kagami -- wizard --profile nexus
 ```
 
-## Har bir kalit juftligini yaratish {#generate-individual-key-pairs}
+## Har bir kalit juftligini yarating {#generate-individual-key-pairs}
 
-Foydalanish `kagami keys` mustaqil kalit material uchun:
+O'z-o'zidan foydalanish uchun `kagami keys`:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --json
 ```
 
-uchun BLS tasdiqlovchi material, mulkdorlik guvohnomasini o'z ichiga oladi:
+BLS tasdiqlovchi material uchun egalik guvohnomasi kiriting:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
 ```
 
-Foydalanish `--seed` Faqat qayta tiklanishi mumkin bo'lgan o'rnatish uskunalari uchun.
-ishga tushirish, yangi kalitlarni yaratish va xususiy kalitlarni ombordan tashqarida saqlash.
+`--seed` ni faqat qayta tiklanishi mumkin bo'lgan ishlab chiqarish uskunalari uchun ishlating. Ishlab chiqarishni ishga tushirish uchun yangi kalitlarni yaratish va xususiy kalitlarni ombordan tashqarida saqlash.
 
-## Tengdoshlar o'rtasidagi muvozanat {#peer-consistency}
+## Tengdoshlar o'rtasida hamjihatlik {#peer-consistency}
 
-Barcha tasdiqlovchilar bir xil genesis muomalasi, topologiya, ishonchli
-O'zaro ochiq kalitlar va tasdiqlash vositasi PoPs. Birgina yo'qolgan yoki mos kelmagan tengdosh kalit
-tarmoqni boshlash yoki konsensusga erishish imkonini beradi.
+Barcha validatorlar bir xil genesis transaksiyasi, topologiyasi, ishonchli o'rtacha ochiq kalitlari va validator PoPs haqida kelishib olishlari kerak. Bir xil yo'qolgan yoki mos kelmagan tengdosh kalit tarmog'ining ishga tushirilishiga yoki kelishuvga erishilishiga to'sqinlik qilishi mumkin.
 
-Bizansning xatolarga chidamli bo'lishi uchun kamida to'rtta tengdoshdan foydalaning.
-tengdoshning o'z xususiy kaliti bo'lishi kerak, lekin har bir tengdosh konfiguratsiyasiga bir xil
-Ishonchli tengdoshlar to'plami.
+Bizans xatolariga chidamli bo'lish uchun kamida to'rtta tengdoshdan foydalaning. Har bir tengdoshning o'z xususiy kaliti bo'lishi kerak, ammo har bir tengdoshi konfiguratsiyasiga bitta ishonchli tengdoshlar soni kerak.
 
 ## Mijoz hisobvaraqlari {#client-accounts}
 
-Mijoz hisob raqami `client.toml` bu borada mavjud bo'lishi kerak.
-genesis manifestida yoki keyinchalik amalga oshirilgan bitimda ro'yxatga olingan.
-genesis nomini uzoq muddatli ariza sifatida imzolash; genesis imtiyozlari
-faqat genesis raundi davomida qo'llaniladi va ishlab chiqarish mijozlari o'zlarining
-hisob-kitoblar va vazifalar.
+`client.toml`dagi mijoz hisob raqami allaqachon zanjirda mavjud bo'lishi kerak. U genesis manifestida yoki keyingi operatsiya orqali ro'yxatdan o'tishi mumkin. Genesis imzolash kimligini uzoq muddatli ariza hisobi sifatida ishlatishdan qo'rqish; genesis imtiyozlari faqat genesis raundi davomida qo'llaniladi va ishlab chiqarish mijozlari o'z hisoblarini va rollaridan foydalanishlari kerak.

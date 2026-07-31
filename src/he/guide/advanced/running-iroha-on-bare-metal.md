@@ -6,15 +6,13 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# ריצה Iroha על מתכת חיה {#running-iroha-on-bare-metal}
+# פועלים Iroha על מתכת עירומה {#running-iroha-on-bare-metal}
 
-השתמש בתהליך העבודה הזה כאשר אתה רוצה להפעיל עמיתים ישירות במארחים במקום
-דרך Docker Compose. עץ המקור הנוכחי מספק Kagami גנרטורים ש
-כותב את הגנזיס המתאימה, קונפיג'ים של עמיתים, קונפגיג' לקלינט וסריפטים התחלה/הפסקת.
+השתמש בזרם העבודה הזה כאשר אתה רוצה להפעיל עמיתים ישירות במארחים במקום דרך Docker Compose. עץ המקור הנוכחי מספק Kagami גנרטורים שכתבים תואמת בראשית, קונפיגיות עמיתים, הקונפיגית לקלינט, ו- start/stop סקרפטים.
 
 ## 1. לבנות את השניים {#_1-build-the-binaries}
 
-מעלה הזרם Iroha שטח עבודה:
+מרחב העבודה Iroha מעלה המים:
 
 ```bash
 cargo build --release -p irohad -p iroha_cli -p iroha_kagami
@@ -22,37 +20,33 @@ cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 
 זה מייצר:
 
-- `target/release/irohad` עבור הדיימון של השותפים
+- `target/release/irohad` עבור הדיימון השותף
 - `target/release/iroha` עבור CLI
-- `target/release/kagami` עבור מפתח, גנזה ודורת רשת מקומית
+- `target/release/kagami` עבור ייצור המפתחות, גנזיס ומערכת רשת מקומית
 
 ## 2. ליצור רשת מקומית {#_2-generate-a-local-network}
 
-ליצור ארבעה שווים Iroha 3 רשת מקומית
+ליצור רשת מקומית של ארבעה עמיתים Iroha 3:
 
 ```bash
 target/release/kagami localnet --build-line iroha3 --peers 4 --out-dir ./localnet
 ```
 
-תיבת ההוצא מכילה את `genesis.json`,
-`genesis.signed.nrt`, עמיתים `config.toml` תיקים, `client.toml`, סריפים עוזרים,
-ומוצא `README.md` עם פקודות מדויקות עבור החבילה.
+קובץ ההוצא מכיל את הקבצים המופעלים `genesis.json`, `genesis.signed.nrt`, קבצים משותפים `config.toml`, `client.toml`, תסריטים עוזרים, ו- `README.md` עם פקודות מדויקות עבור חבורת זו.
 
-## 3. התחילו לעמיתים {#_3-start-peers}
+## 3. התחילו לצוותים {#_3-start-peers}
 
-עבור רשת מקומית חד פעמית שנוצרה, השתמשו בסקריפט המוצא:
+עבור רשת מקומית חד פעמית שנוצרה, השתמשו בסקריפט שנוצר:
 
 ```bash
 ./localnet/start.sh
 ```
 
-אם אתה צריך לחבר כל עמית לתוך מנהל תהליך כגון systemd, השתמש
-הפקודה של השיגור נרשמה ב `./localnet/README.md` לכל עמיתי.
-של עמיתים. `config.toml`, מפתח פרטי, תיק אחסון, ומחנות נפרדות.
+אם אתה צריך לחבר את כל הדירוג לתוך מנהל תהליך כגון systemd, השתמש בפקודה ההפעלה המוקדמת ב `./localnet/README.md` עבור כל דירוג. שמרו על הדירוג של `config.toml`, מפתח פרטי, תיווך אחסון ומזרים בנפרד.
 
 ## 4. לנהל את הרשת {#_4-operate-the-network}
 
-השתמשו בהקנת הלקוח המוצא:
+השתמשו בהגדרת הלקוח המוצא:
 
 ```bash
 target/release/iroha --config ./localnet/client.toml ledger domain list all
@@ -65,18 +59,12 @@ target/release/iroha --config ./localnet/client.toml --output-format text ops su
 ./localnet/stop.sh
 ```
 
-## 5. הערות הייצור {#_5-production-notes}
+## 5. הערות ייצור {#_5-production-notes}
 
-- ליצור מפתחות פרטיות חדשות לייצור ולהחזיק אותם מחוץ
-  מחסן.
-- לגרום לכל עמיתיכם להסכים על אותו עסקה חתומה, טופולוגיה,
-  עמיתים אמינים, ומבחין PoPs.
-- קשור כתובות האוזן לאינטרסים מקומיים של המארח רק כאשר השותף צריך
-  לא ניתן להגיע ממכונות אחרות.
-- השתמשו בפרוקסי הפוך או בקיר אש Torii חשיפה בסיסית, TLS, ושיעור
-  הגבלת.
-- לטפל בשינויים בגנז או בטופולוגיה של הסכמה כמגירה מתואמת, לא
-  תיקונים קבצים חד משותפים.
+- ליצור מפתחות פרטיות חדשות לייצור ולשמור אותן מחוץ למחסון.
+- לגרום לכל עמיתיכם להסכים על אותו עסקאות בראשית חתומה, טופולוגיה, עמיתי אמון, ומבחין PoPs.
+- קשור את האוזן לראיונות מקומיים של המארח רק כאשר השותף לא צריך להיות נגיש ממכונות אחרות.
+- השתמשו ב-reverse proxy או firewall עבור חשיפה Torii, auth בסיסי, TLS, ומגבלת שיעור.
+- לטפל בשינויים בגנזה או בטופולוגיה של הסכמה כמגירה מתואמת, ולא בעריכות קבצים חד משותפות.
 
-עבור פיתוח מקומי במכולות, השתמש [שיגור Iroha 3](../../get-started/launch-iroha.md)
-Docker Compose זרימת עבודה.
+עבור פיתוח מקומי במכולות, השתמשו בתהליך העבודה [Lunch Iroha 3](../../get-started/launch-iroha.md) Docker Compose.

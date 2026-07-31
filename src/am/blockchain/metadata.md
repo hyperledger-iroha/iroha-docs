@@ -8,10 +8,9 @@ translation_engine: nllb-200-ct2
 
 # ሜታዳታ {#metadata}
 
-ሜታዳታ በሊጅር ዕቃዎች ላይ የተያያዘ የተረጋገጠ ቁልፍ-ዋጋ ካርታ ነው. ቁልፎች ናቸው
-`Name` እሴቶች እና እሴቶች ናቸው JSON (`Json`) ጥቅማጥቅም ጭነቶች.
+ሜታዳታ በሪጀር ዕቃዎች ላይ የተያያዘ የተረጋገጠ ቁልፍ-ዋጋ ካርታ ነው። ቁልፎች የ `Name` እሴቶች እና እሴቶች የ JSON (`Json`) ጥቅማጥቅሞች ናቸው።
 
-የሚከተሉት ዕቃዎች ሜታዳታ ይዘዋል:
+የሚከተሉት ዕቃዎች ሜታዳታ ሊይዙ ይችላሉ-
 
 - ጎራዎች
 - ሂሳቦች
@@ -19,21 +18,16 @@ translation_engine: nllb-200-ct2
 - የአክሲዮን ትርጉሞች
 - NFTs
 - RWAs
-- ተነሳሽነት
+- ማነቃቂያዎች
 - ግብይቶች
 
-በዋና መለያ ውስጥ ለሚገኙ ትናንሽ መግለጫ ወይም ኢንዴክሰሪንግ መስኮች ሜታዳታ ይጠቀሙ
-ግዙፍ ጥቅማጥቅሞች ከኤሌክትሮኒክ ማቀነባበሪያዎች ውጭ መቀመጥ አለባቸው WSV እና የተጠቀሰው
-የማቃጠል፣ URI, ወይም SoraFS መንገድ.
+በመዝገብ ሁኔታ ውስጥ ለሚገኙ ትናንሽ መግለጫ ወይም ኢንዴክስ መስኮች ሜታዳታ ይጠቀሙ WSV በተቃራኒው የተጠቀሰበት፣ URI, ወይም SoraFS መንገድ.
 
-ሜታዳታዎችን፣ ንብረቶችን፣ NFTs, RWAs, ወይም ከሰንሰለት ውጭ
-ማከማቻ፣ ተመልከት
-[ሜታዳታ እና መቁጠሪያ ማከማቻ አማራጮች](/am/guide/configure/metadata-and-store-assets.md).
+ሜታዳታዎችን፣ ንብረቶችን, NFTs, RWAs, ወይም ከሰንሰለት ውጭ ማከማቻ ፣ ተመልከት [ሜታዳታ እና መቁጠሪያ ማከማቻ አማራጮች](/am/guide/configure/metadata-and-store-assets.md).
 
-## ሞክር Taira {#try-it-on-taira}
+## Taira ላይ ይሞክሩት {#try-it-on-taira}
 
-ሜታዳታ በመደበኛ ሀብት ንባብ በኩል ይታያል. Taira
-በአሁኑ ጊዜ ሜታዳታ ያላቸው የንብረት ትርጓሜዎች
+ይህ ትዕዛዝ በአሁኑ ጊዜ ሜታዳታ ያላቸው Taira የንብረት ትርጓሜዎችን ያቀርባል:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=100' \
@@ -52,26 +46,20 @@ curl -fsS 'https://taira.sora.org/v1/accounts?limit=20' \
   | jq '.items[] | select((.metadata // {} | length) > 0)'
 ```
 
-ባዶ ውፅዓት እንደ ትክክለኛ ውጤት ይቆጥቡ. Taira
-ዕቃዎች ሜታዳታ አያያዙም ፣ ማለቂያ ነጥብ አልተሳካም ማለት አይደለም ።
+ባዶ ውፅዓት እንደ ትክክለኛ ውጤት ይቆጥቡ. ይህ ማለት የአሁኑ ገጽ Taira ዕቃዎች ሜታዳታ የላቸውም ማለት ነው, የመጨረሻው ነጥብ አልተሳካም ማለት አይደለም.
 
 ## ሜታዳታዎችን ማዘመን {#updating-metadata}
 
-ሜታዳታ የሚለውጠው በ Iroha ልዩ መመሪያዎች
+ሜታዳታ በ Iroha ልዩ መመሪያ ተለውጧል
 
-- [`SetKeyValue`](/am/blockchain/instructions.md#setkeyvalue-removekeyvalue)
-  ቁልፍን ያስገባል ወይም ይተካል።
-- [`RemoveKeyValue`](/am/blockchain/instructions.md#setkeyvalue-removekeyvalue)
-  ቁልፍን ያስወግዳል
+- [`SetKeyValue`](/am/blockchain/instructions.md#setkeyvalue-removekeyvalue) ቁልፍን ያስገባል ወይም ይተካል።
+- [`RemoveKeyValue`](/am/blockchain/instructions.md#setkeyvalue-removekeyvalue) አንድ ቁልፍ ያስወግዳል
 
-ግብይቱን የሚያቀርብ ባለሥልጣን የተጠየቀውን ፈቃድ ሊኖረው ይገባል
-ለነባሪ ፍቃድ ገጽ, ተመልከት
-[የመፍቀድ ምልክት](/am/reference/permissions.md).
+ግብይቱን የሚያቀርብ ባለሥልጣን በ Active Runtime Validator የሚጠየቀው ፈቃድ ሊኖረው ይገባል። ለነባሪ ፍቃድ ገጽ, [Permission Tokens](/am/reference/permissions.md) ን ይመልከቱ።
 
 ## ክስተቶች {#events}
 
-የመረጃ ክስተቶች ሜታዳታ ሲለወጡ ይለቀቃሉ
-`MetadataChanged<Id>`:
+የመረጃ ክስተቶች የሚለቀቁት ሜታዳታ ሲለወጥ ነው። የጄኔሪክ ክስተት ተጠቃሚነት `MetadataChanged<Id>`:
 
 ```mermaid
 classDiagram
@@ -93,22 +81,10 @@ MetadataChanged --> AssetDefinitionMetadataChanged
 MetadataChanged --> DomainMetadataChanged
 ```
 
-አጠቃቀም [የመረጃ ክስተት ማጣሪያዎች](/am/blockchain/filters.md#data-event-filters) ወደ
-ለድርጅቱ አይነት ወይም ነገር የሚደረጉ ሜታዳታ ክስተቶች ብቻ ይመዝገቡ ID ይህ
-ለኢንቴግሬሽን አስፈላጊ ነው.
+[የመረጃ ክስተት ማጣሪያዎችን ](/am/blockchain/filters.md#data-event-filters) በመጠቀም ለአንድ ውህደት አስፈላጊ ለሆነው የድርጅት አይነት ወይም ነገር ID ሜታዳታ ክስተቶችን ብቻ ለመመዝገብ።
 
 ## ጥያቄዎች {#queries}
 
-ሜታዳታ የተጠየቀው ነገር አካል ሆኖ ይመለሳል
-[`FindAccountById`](/am/reference/queries.md#accounts-and-permissions),
-[`FindDomainById`](/am/reference/queries.md#domains-and-peers), ወይም
-[`FindAssetDefinitionById`](/am/reference/queries.md#assets-nfts-and-rwas).
-አጠቃቀም [`FindNfts`](/am/reference/queries.md#assets-nfts-and-rwas) ወይም
-[`FindNftsByAccountId`](/am/reference/queries.md#assets-nfts-and-rwas) ለ
-NFTs, እና [`FindRwas`](/am/reference/queries.md#assets-nfts-and-rwas) ለ RWA
-ከዚያም የዕቃው ሜታዳታ መስክ ያንብቡ. NFT የጥያቄ መልሶች
-NFT `content` ካርታ እንደ መዝገብ ሜታዳታ.
+ለምሳሌ [`FindAccountById`](/am/reference/queries.md#accounts-and-permissions), [`FindDomainById`](/am/reference/queries.md#domains-and-peers)፣ ወይም [`FindAssetDefinitionById`](/am/reference/queries.md#assets-nfts-and-rwas) ይጠቀሙ. [`FindNfts`](/am/reference/queries.md#assets-nfts-and-rwas) ወይም [`FindNftsByAccountId`](/am/reference/queries.md#assets-nfts-and-rwas) ን ለ NFTs ይጠቀሙ ፣ እና [`FindRwas`](/am/reference/queries.md#assets-nfts-and-rwas) ን ለ RWA ጭነቶች ይጠቀሙ። ከዚያ የዕቃውን ሜታዳታ መስክ ያንብቡ። NFT የጥያቄ ምላሾች የ NFT `content` ካርታን እንደ መዝገብ ሜታዳታ ያሳያሉ ።
 
-የሜታዳታ ቁልፎች የመረጃ ቋት ግዛት አካል ናቸው, ስለዚህ እነርሱ የተረጋጋ ጠብቁ እና ለማስወገድ
-መተግበሪያ-ተኮር ስሪት ኮዲንግ ቁልፍ ስም ወደ ቸርስ ጊዜ JSON
-እሴት ያንን ስሪት በግልጽ ሊሸከም ይችላል።
+የሜታዳታ ቁልፎች የመጽሐፉ ሁኔታ አካል ናቸው ፣ ስለሆነም ያንን ስሪት በግልፅ ሊይዝ በሚችልበት ጊዜ JSON ዋጋ ወደ ቁልፍ ስም በመተግበሪያ-ተኮር ስሪት ኮድ ከማድረግ ይቆጠቡ ።

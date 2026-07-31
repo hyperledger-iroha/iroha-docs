@@ -6,25 +6,25 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Хөдөлмөр эрхлэгч Iroha Дүйцэтгэл {#working-with-iroha-binaries}
+# Iroha бинартай ажиллах {#working-with-iroha-binaries}
 
-Хөдөлмөрийн Iroha 3 операторгийн ажлын урсгал гурван үндсэн бинар дээр эргэлздэг:
+Iroha 3 операторын ажлын урсгал гурван үндсэн бинар дээр эргэн тойрч байна:
 
-- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad) "Дэрслэг" дэймоныг удирдах
-- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_cli) . CLI үйлдвэрийн команд
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_kagami) түлхүүр, эх үүсвэр, орон нутгийн сүлжээ болон хувилбар
+- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad) зэрэглэлийн даемон ажиллуулахын тулд
+- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_cli) нь CLI болон үйлдвэрийн захиргааны хувьд
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_kagami) нөөц, үүсэл, орон нутгийн сүлжээ, профилийн хувьд
 
-## Эх сурвалжаас бариарай {#build-from-source}
+## Барилгын эх үүсвэрээс бариарай {#build-from-source}
 
-Хөдөлмөрийн орон зайн доорх түлшээс:
+Хөдөлмөрийн талбайны түлхнээс:
 
 ```bash
 cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ```
 
-Дараа нь дугаарлалтын бинар нь `target/release/`.
+Дараа нь `target/release/` хэлбэрээр нээлттэй хувилбарыг гаргах боломжтой.
 
-Захиргааны давхаргыг шалгах:
+Захиргааны давхаргыг шалгахын тулд:
 
 ```bash
 ./target/release/irohad --help
@@ -32,9 +32,9 @@ cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ./target/release/kagami --help
 ```
 
-## Тодруулгын сангаас шууд ажиллуулж байна {#run-directly-from-the-repository}
+## Тодруулгын сангаас шууд ажиллуулна {#run-directly-from-the-repository}
 
-Хэрэв та дэлхийн хэмжээнд юу ч байршуулахыг хүсэхгүй бол `cargo run`:
+Хэрэв та дэлхийн хэмжээнд юуг ч байрлуулахыг хүсэхгүй байгаа бол `cargo run` -ийг ашигла:
 
 ```bash
 cargo run --bin irohad -- --help
@@ -44,23 +44,21 @@ cargo run --bin kagami -- --help
 
 ## Docker Зураг {#docker-image}
 
-Өндөр урсгалт ажлын байр ашигладаг `kagami localnet` болон `kagami docker` үйлдвэрлэх
-Docker Compose Хяналт шалгагдсан кодтой нийцсэн файлууд `hyperledger/iroha:dev`
-зураг нь үүсгэсэн файлуудын хамт ашиглах боломжтой.
+Өндөр урсгалын ажлын орон зай нь `kagami localnet` болон `kagami docker`-ийг ашиглаж, шалгарсан кодтой нийцсэн Docker Compose файлуудыг бий болгодог. `hyperledger/iroha:dev` зургийг эдгээр үүсгэсэн файлуудад ашиглах боломжтой.
 
-Хөдөлмөрийг ажиллуулах CLI агууламжид:
+CLI -ийг контейнерийн дотор хэрэглэх:
 
 ```bash
 docker run -t hyperledger/iroha:dev iroha --help
 ```
 
-Уурхай. Kagami агууламжид:
+Kagami нь контейнерд хэрэглэнэ:
 
 ```bash
 docker run -t hyperledger/iroha:dev kagami --help
 ```
 
-Хөгжлийн эхлүүлэхэд локаль сүлжээг үүсгэн, хамгийн түрүүнд файлыг бүрдүүлээрэй:
+Хөгжлийн эхлүүлэхэд, локалийн сүлжээг үүсгэн байгуулж, хамгийн түрүүнд файлыг бүрдүүлээрэй:
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
@@ -68,8 +66,8 @@ cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyper
 docker compose -f ./localnet/docker-compose.yml up
 ```
 
-## -Хайн дундаж валютыг ашиглах вэ? {#which-binary-should-i-use}
+## -Хайн дундаж хэлбэрийг ашиглах вэ? {#which-binary-should-i-use}
 
-- Хэрэглээ `irohad` та нар хамтын ажиллагааг эхлүүлж, ашиглаж байгаа үед
-- Хэрэглээ `iroha` томоохон бүртгэлээс асуух, гүйлгээ хийх, операторын төгсгөл хэсгийг шалгах шаардлагатай үед.
-- Хэрэглээ `kagami` Хэрэв та ачкыч, эх үүсвэрийн тэмдэгт, профилийн багц эсвэл локаль сүлжээний хөрөнгө хэрэгтэй бол.
+- Хөдөлмөрийг эхлүүлэх, ашиглах үед `irohad` хэрэглэж болно.
+- `iroha` -ийг ашиглаж, томоохон бүртгэлээс асуух, гүйлгээ хийх эсвэл операторын төгсгөл хэсгийг шалгах шаардлагатай үед хэрэглэж болно.
+- `kagami` нэгийг хэрэглэнэ, генезис манифест, профилийн багц, эсвэл локаль сүлжээний хөрөнгийг хэрэгтэй үед.

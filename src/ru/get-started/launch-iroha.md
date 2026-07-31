@@ -8,21 +8,19 @@ translation_engine: nllb-200-ct2
 
 # Запуск Iroha 3 {#launch-iroha-3}
 
-Эта страница проходит по текущему потоку локальной сети для Iroha 3 используя
-активы рабочего пространства по умолчанию из запасного хранилища.
+Эта страница проходит по текущему потоку локальной сети для Iroha 3 с использованием дефолтных активов рабочего пространства из верхнего хранилища.
 
-## 1. Создать локальную многопартную сеть {#_1-generate-a-local-multi-peer-network}
+## 1. Создать локальную многопартнеровскую сеть. {#_1-generate-a-local-multi-peer-network}
 
-Создать локальную сеть из четырех пар с текущего Kagami код:
+Создать локальную сеть в четырех парах с текущего кода Kagami:
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
 ```
 
-Выходной каталог содержит соответствующие конфигурации сверстников, `genesis.json`,
-`genesis.signed.nrt`, `client.toml`, и сценариев для помощников.
+В выходном каталоге содержится соответствующая конфигурация сверстников, `genesis.json`, `genesis.signed.nrt`, `client.toml` и скрипты помощника.
 
-Для местного теста дыма, запустите генерируемые сверстники напрямую:
+Для тестирования местного дыма, начинайте генерируемые сверстники напрямую:
 
 ```bash
 ./localnet/start.sh
@@ -41,13 +39,13 @@ cargo run --bin kagami -- docker \
 docker compose -f ./localnet/docker-compose.yml up
 ```
 
-По умолчанию генерируемый стек показывает:
+По умолчанию генерируемый стек раскрывает:
 
-- сверстник P2P порты `1337` к `1340`
-- Torii HTTP порты `8080` к `8083`
-- готовый конфигурация клиента на `./localnet/client.toml`
+- порты P2P по `1337` к `1340`
+- Порты Torii HTTP `8080` до `8083`
+- готовый конфигуратор клиента по адресу `./localnet/client.toml`
 
-## 2. Убедитесь, что сеть работает {#_2-verify-that-the-network-is-up}
+## 2. Убедитесь, что сеть работает. {#_2-verify-that-the-network-is-up}
 
 Проверьте конечный пункт состояния на первом уровне:
 
@@ -55,34 +53,33 @@ docker compose -f ./localnet/docker-compose.yml up
 curl http://127.0.0.1:8080/status
 ```
 
-По умолчанию проверки состояния здоровья также используются:
+В стандартных проверках здоровья также используются:
 
 ```bash
 curl http://127.0.0.1:8080/status/blocks
 ```
 
-Вы можете сразу же указать на CLI в конфигурации клиентов:
+Вы можете немедленно указать CLI на конфигурацию клиентской группы:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 ```
 
-## 3. Nexus Профиль {#_3-nexus-profile}
+## 3. Профиль Nexus {#_3-nexus-profile}
 
-Репозиторий также отправляет SORA Nexus- ориентированный профиль конфигурации
-`defaults/nexus/`.
+Репозиторий также отправляет конфигурационный профиль, ориентированный на SORA Nexus под `defaults/nexus/`.
 
-Чтобы управлять родным сверстником с Nexus Профиль:
+Для запуска родного сверстника с профилем Nexus:
 
 ```bash
 ./target/release/irohad --sora --config ./defaults/nexus/config.toml
 ```
 
-Использование `defaults/nexus/client.toml` для CLI доступ к этому профилю.
+Используйте `defaults/nexus/client.toml` для доступа к CLI данному профилю.
 
-## 4. Прекратите локальную сеть {#_4-stop-the-local-network}
+## 4. Остановить локальную сеть {#_4-stop-the-local-network}
 
-Для локальной сети, генерируемой на родине:
+Для локальной сети, генерируемой на местном уровне:
 
 ```bash
 ./localnet/stop.sh
@@ -94,5 +91,4 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 docker compose -f ./localnet/docker-compose.yml down
 ```
 
-После того, как сеть будет работать, продолжите с
-[Работать Iroha 3 через CLI](/ru/get-started/operate-iroha-via-cli.md).
+После запуска сети продолжайте [Операцию Iroha 3 через CLI](/ru/get-started/operate-iroha-via-cli.md).

@@ -8,124 +8,114 @@ translation_engine: nllb-200-ct2
 
 # שאלות {#queries}
 
-Iroha שאלונות קוראים את מצב ההדף מבלי לשנות אותו.
-מגלה שני צורות חיפוש רחבות:
+דרישות Iroha קוראים את מצב הספר הגדול ללא שינוי בו. מודל הנתונים הנוכחי חושף שני צורות חיפוש רחבות:
 
-- **שאלות בודדות**, שמחזרים אובייקט אחד או ערך אחד
-- **שאלות חוזרות**, אשר חוזרים על זרם או אספקה וניתן לשלב אותם
-  עם סינון, סורטציה, זריקת ופרשנות דפים שבו סוג החיפוש
-  תומך בו
+- שאילות ייחודיות, שבהן חוזרות אובייקט אחד או ערך אחד
+- שאלות חוזרות, אשר מחזרות זרם או אוסף ויכולים להיות משולבים עם פילטר, סורטינג, פרויקציה ופגינציה כאשר סוג המשאל תומך בו
 
-שימוש SDK הבניינים הטייפדים או CLI במקום לבנות קופסאות חיפוש
-שמות הבאים הם סוגים של בקשות הנוכחיים
-`iroha_data_model::query`.
+שימוש SDK הבניינים הטייפדים או CLI במקום לבנות מעטפות בקשת יד. שמות למטה הם סוגים של בקשות הנוכחיים `iroha_data_model::query`.
 
 ## זמן ההפעלה וההסדר {#runtime-and-configuration}
 
-| שאלה | מטרה |
+|שאלה |מטרה.|
 | --- | --- |
-| `FindAbiVersion` | תחזיר את המוציא להורג ABI גרסה. |
-| `FindExecutorDataModel` | תחזיר את תיאור דגם הנתונים של המוציא לפועל. |
-| `FindParameters` | תחזיר את פרמטרי ההשפעה של המפעיל על שרשרת. |
+|`FindAbiVersion` |תחזירו את הגרסה של ABI. |
+|`FindExecutorDataModel` |תחזיר את תיאור דגם הנתונים של המוציא לפועל. |
+|`FindParameters` |להחזיר את פרמטרי ההסדר של המפעיל על שרשרת. |
 
-## חשבונות ותאפשרויות {#accounts-and-permissions}
+## חשבונות ורישיון {#accounts-and-permissions}
 
-| שאלה | מטרה |
+|שאלה |מטרה.|
 | --- | --- |
-| `FindAccountById` | תמצאו חשבון אחד לפי חשבון קאנוני ID. |
-| `FindAccountByAlias` | לפתור חשבון תחת השם לחשבון. |
-| `FindAccounts` | רשימה של חשבונות רשומים. |
-| `FindAccountIds` | רשימה חשבון רשום IDs. |
-| `FindAccountsWithAsset` | רשימה של חשבונות שיש להם הגדרה נכס נתונה. |
-| `FindAliasesByAccountId` | רשימה של שם כינוי קשור לחשבון. |
-| `FindAccountRecoveryPolicyByAlias` | תמצא את מדיניות השיקום של שם פרטי. |
-| `FindAccountRecoveryRequestByAlias` | תמצא את בקשת השיקום עבור שם פרטי. |
-| `FindRoles` | רשימת תפקידים. |
-| `FindRoleIds` | תפקיד רשימה IDs. |
-| `FindRolesByAccountId` | רשימת תפקידים שניתנו לחשבון. |
-| `FindPermissionsByAccountId` | רשימה של הרשויות שניתנו לחשבון. |
+|`FindAccountById` |תמצא חשבון אחד לפי חשבון קנוני ID. |
+|`FindAccountByAlias` |לפתור חשבון בשם חשבון. |
+|`FindAccounts` |רשימה של חשבונות רשומים. |
+|`FindAccountIds` |רשימה חשבון רשום IDs. |
+|`FindAccountsWithAsset` |רשימה של חשבונות שיש להם תיאור נכס מסוים. |
+|`FindAliasesByAccountId` |רשימה של שם כינוי קשור לחשבון. |
+|`FindAccountRecoveryPolicyByAlias` |תמצא את מדיניות השיקום של שם פרטי. |
+|`FindAccountRecoveryRequestByAlias` |תמצא את בקשת השיקום עבור שם פרטי. |
+|`FindRoles` |רשימת תפקידים.|
+|`FindRoleIds` |תפקיד רשימה IDs. |
+|`FindRolesByAccountId` |רשימה של תפקידים שניתנו לחשבון. |
+|`FindPermissionsByAccountId` |רשימה של הרשויות שניתנו לחשבון. |
 
 ## דומנים ושותפים {#domains-and-peers}
 
-| שאלה | מטרה |
+|שאלה |מטרה.|
 | --- | --- |
-| `FindDomainById` | מצא תחום אחד על ידי `DomainId`. |
-| `FindDomains` | רשימה של דומיינים רשומים. |
-| `FindDomainsByAccountId` | רשימה תחומים בבעלות חשבון. |
-| `FindDomainEndorsements` | רשום רישומי אישור דומיין. |
-| `FindDomainEndorsementPolicy` | תחזיר את מדיניות אישור הדומיין. |
-| `FindDomainCommittee` | תחזיר את ועדת הדומיין. |
-| `FindPeers` | רשימה של עמינים אמינים ידועים בספר. |
+|`FindDomainById` |תמצא תחום אחד ב `DomainId`. |
+|`FindDomains` |רשימה של תחומים רשומים. |
+|`FindDomainsByAccountId` |רשימה דומנים בבעלות חשבון. |
+|`FindDomainEndorsements` |רשום רישומי אישור תחום. |
+|`FindDomainEndorsementPolicy` |תחזיר את מדיניות אישור הדומיין. |
+|`FindDomainCommittee` |תחזיר את ועדת הדומיין.|
+|`FindPeers` |רשימה של עמיתים אמינים ידועים בספר. |
 
 ## נכסים, NFTs, ו RWAs {#assets-nfts-and-rwas}
 
-| שאלה | מטרה |
+|שאלה |מטרה.|
 | --- | --- |
-| `FindAssets` | רשימה של סולדות נכסים. |
-| `FindAssetsDefinitions` | רשימה של הגדרות נכסים. |
-| `FindAssetsByAccountId` | רשימה נכסים שנחזיקו בחשבון. |
-| `FindAssetById` | תמצאו סכום נכס אחד על ידי `AssetId`. |
-| `FindAssetDefinitionById` | מצא הגדרה אחת של נכס על ידי ID. |
-| `FindNfts` | רשימה NFTs. |
-| `FindNftsByAccountId` | רשימה NFTs שייך לחשבון. |
-| `FindRwas` | רשימה רשום הרבה נכסים בעולם האמיתי. |
+|`FindAssets` |רשימה של סולציות נכסים. |
+|`FindAssetsDefinitions` |רשימה של הגדרות נכסים. |
+|`FindAssetsByAccountId` |רשימה של נכסים שנחזיקו בחשבון. |
+|`FindAssetById` |מצא סכום נכס אחד על ידי `AssetId`. |
+|`FindAssetDefinitionById` |מצא הגדרה אחת של נכס על ידי ID. |
+|`FindNfts` |רשימה NFTs. |
+|`FindNftsByAccountId` |רשימה NFTs בבעלות חשבון. |
+|`FindRwas` |רשימה רשומה של נכסים אמיתיים. |
 
 ## רישומי אבטחה וראיות {#escrow-and-proof-records}
 
-שאילת אבטחה בודקת את הרשומות שנוצרו על ידי
-[אבטחה של נכסים מקומיים ISIs](/he/blockchain/escrow.md), כולל שוק
-מאבטחים, סגרות נכסים גנריות, ושישומים מאבטחים אנונימיים.
+בקשות אבטחה בודקות את הרשומות שנוצרו על ידי [ אבטחת נכסים מקומיים ISIs](/he/blockchain/escrow.md), כולל אבטחות בשוק, סגרות נכסים גנריות ורישומים אבטחים אנונימיים.
 
-| שאלה | מטרה |
+|שאלה |מטרה.|
 | --- | --- |
-| `FindAssetEscrows` | רשום רישומי אבטחה של נכסים. |
-| `FindAssetEscrowById` | תמצאו אבטחה אחת של נכסים ID. |
-| `FindAssetEscrowsBySeller` | רשימה של אבטחות נכסים לפי מכר. |
-| `FindAssetEscrowsByBuyer` | רשימה של אבטחות נכסים על ידי הקונה. |
-| `FindAssetEscrowsByStatus` | רשימה של אבטחות נכסים לפי מצבם. |
-| `FindAnonymousAssetEscrows` | רשום רישומים אנונימיים של אבטחת נכסים. |
-| `FindAnonymousAssetEscrowById` | תמצאו מאבטח נכסים אנונימי אחד ID. |
-| `FindAnonymousAssetEscrowsBySeller` | רשימה של מאבטחים אנונימיים לפי מוכר. |
-| `FindAnonymousAssetEscrowsByBuyer` | רשימה של מאבטחים אנונימיים לפי קונה. |
-| `FindAnonymousAssetEscrowsByStatus` | רשימה של אבטחות אנונימיות לפי מצבם. |
-| `FindProofRecordById` | תמצאו רישום ראיות אחד על ידי ID. |
-| `FindProofRecords` | רשימת רשומות ראיות. |
-| `FindProofRecordsByBackend` | תאר רישומים של הוכחה עבור סיבוב ראיה. |
-| `FindProofRecordsByStatus` | רשימה רשומות הוכחה לפי מצב. |
+|`FindAssetEscrows` |רשום רישומי אבטחת נכסים. |
+|`FindAssetEscrowById` |תמצאו מאבטחת נכסים אחת עד ID. |
+|`FindAssetEscrowsBySeller` |רשימה של אבטחות נכסים לפי מוכר. |
+|`FindAssetEscrowsByBuyer` |רשימה של נכסים על ידי קונה. |
+|`FindAssetEscrowsByStatus` |רשימה של נכסים על פי מצבם. |
+|`FindAnonymousAssetEscrows` |רשום רישומי אבטחה של נכסים אנונימיים.|
+|`FindAnonymousAssetEscrowById` |תמצא מאבטח נכסים אנונימי אחד על ידי ID. |
+|`FindAnonymousAssetEscrowsBySeller` |רשימה של אבטחות אנונימיות על ידי מוכר.|
+|`FindAnonymousAssetEscrowsByBuyer` |רשימה של אבטחות אנונימיות על ידי קונה.|
+|`FindAnonymousAssetEscrowsByStatus` |רשימה של מאבטחים אנונימיים לפי מצבם. |
+|`FindProofRecordById` |מצא רישום ראיות אחד על ידי ID. |
+|`FindProofRecords` |רשום רישומי ראיות.|
+|`FindProofRecordsByBackend` |רשום רישומים של הוכחה ל-backend ראיה. |
+|`FindProofRecordsByStatus` |רשימה רשומות הוכחה לפי מצב. |
 
-## Nexus, זמינות הנתונים והחבילות {#nexus-data-availability-and-packages}
+## Nexus, זמינות הנתונים וארכיבים {#nexus-data-availability-and-packages}
 
-| שאלה | מטרה |
+|שאלה |מטרה.|
 | --- | --- |
-| `FindRepoAgreements` | רשימה של הסכמי אחסון שמוצאים על שרשרת. |
-| `FindTwitterBindingByHash` | לפתור קישור בטוויטר באמצעות האש. |
-| `FindDaPinIntentByTicket` | תמצאו כוונה של סימן זמינות נתונים לפי כרטיס. |
-| `FindDaPinIntentByManifest` | תמצא כוונה של סימן על ידי התייחסות מפורשת. |
-| `FindDaPinIntentByAlias` | תמצא כוונה של סימן תחת השם. |
-| `FindDaPinIntentByLaneEpochSequence` | תמצאו את כוונת הסינור לפי כיוון, תקופה ותור. |
-| `FindLaneRelayEnvelopeByRef` | תמצא מעטפה מאובטחת. |
-| `FindSorafsProviderOwner` | לפתור את בעל SoraFS ספקית. |
-| `FindDataspaceNameOwnerById` | לפתור בעל שם חלל נתונים. |
-| `FindMusubiReleaseByRef` | תמצאו Musubi שחרור בדף. |
-| `FindMusubiPackageVersions` | רשימת גרסאות ל Musubi חבילה. |
-| `FindMusubiPackageReleases` | רשימות שחרור עבור Musubi חבילה. |
-| `FindMusubiShortAliasByName` | לפתור Musubi פרופיל קצר. |
+|`FindRepoAgreements` |רשימה של הסכמי אחסון שמוצאים על שרשרת. |
+|`FindTwitterBindingByHash` |לפתור קישור טוויטר באמצעות האש. |
+|`FindDaPinIntentByTicket` |תמצאו כוונה של קישור זמינות נתונים לפי כרטיס.|
+|`FindDaPinIntentByManifest` |תמצאו כוונה של סימן על ידי התייחסות מפורשת. |
+|`FindDaPinIntentByAlias` |תמצאי כוונה של סימן תחת השם.|
+|`FindDaPinIntentByLaneEpochSequence` |תמצאו כוונה של סינור לפי שדה, תקופה וסדר. |
+|`FindLaneRelayEnvelopeByRef` |תמצא מעטפה מאושרת.|
+|`FindSorafsProviderOwner` |לפתור את הבעלים של ספק SoraFS. |
+|`FindDataspaceNameOwnerById` |לפתור בעל שמות חלל נתונים. |
+|`FindMusubiReleaseByRef` |תמצאו Musubi שחרור באמצעות התייחסות. |
+|`FindMusubiPackageVersions` |רשימה של גרסאות עבור חבילת Musubi. |
+|`FindMusubiPackageReleases` |פרש רשימות עבור חבילת Musubi. |
+|`FindMusubiShortAliasByName` |לפתור שם שמה קצר Musubi. |
 
 ## גורמים, חוזים, עסקאות ובלוקים {#triggers-contracts-transactions-and-blocks}
 
-| שאלה | מטרה |
+|שאלה |מטרה.|
 | --- | --- |
-| `FindActiveTriggerIds` | רשימה תפעול פעיל IDs. |
-| `FindTriggers` | רשימת גורמים. |
-| `FindTriggerById` | תמצאו את ההדק. ID. |
-| `FindContractManifestByCodeHash` | תמצאי מוניסטר חוזים חכמים באמצעות קוד האש. |
-| `FindTransactions` | רשימה של עסקאות מחויבות. |
-| `FindBlocks` | בלוקים של רשימה. |
-| `FindBlockHeaders` | רשימת כותרות בלוק. |
+|`FindActiveTriggerIds` |רשום את המפעיל הפעיל IDs. |
+|`FindTriggers` |רשימת גורמים. |
+|`FindTriggerById` |מצא תפעיל אחד ב ID. |
+|`FindContractManifestByCodeHash` |מצא מסמך חוזים חכמים על ידי קוד האש.|
+|`FindTransactions` |רשימה של עסקאות מחויבות. |
+|`FindBlocks` |בלוקים של רשימה.|
+|`FindBlockHeaders` |רשימה כותרות בלוק. |
 
 ## סינון ושידור עמודים {#filtering-and-pagination}
 
-שאילתות משוחרות יכולות לחשוף תמיכה בעובדות ובחוררים.
-פילטרים מדבקים SDK אז הכניסה של הסינון תואמת את סוג ההוצאת של החיפוש.
-עבור קבוצות תוצאות גדולות, השתמשו במקום בפרמטרים של בקשת כגון קורסר וגבול
-של להביא כל שורה בו זמנית.
+שאילתות משוחרות יכולות לחשוף תמיכה בעובדה ובבחור. השתמשו בפילטרים מדפוסים ספציפיים למשאלה מ- SDK כך שהכניסת הסידור מתאימה לסוג יצירתו של השאלת. עבור קבוצות התוצאות גדולות, השתמשו בפרמטרים של השאלות כגון כורסר והגבול במקום לקבל כל שורה בו זמנית.

@@ -218,7 +218,7 @@ Multiplicação é a operação cara. Um produto de dois textos criptográficos 
 
 BFV também é "leveled": cada operação criptografada consome algum orçamento de ruído. Esta implementação não inicializa textos cifrados para atualizar esse orçamento. Em vez disso, RAM-LFE publica um pequeno `ram_fhe_profile` e aceita apenas uma forma de programa oculta limitada. Isso mantém a avaliação dentro da profundidade suportada do conjunto de parâmetros. O perfil atual programado permite uma contagem fixa de registro, contagem fixo de faixa de memória e, no máximo, uma multiplicação ciphertext-ciphertext por passo programado.
 
-Neste projeto RAM-LFE, BFV oculta a entrada do cliente de dados do livro público e de observadores que só veem a carga útil da transação ou rota. O Torii resolver runtime ainda possui o material secreto BFV, avalia o programa oculto configurado, descifre a saída permitida e atesta o resultado.
+Neste projeto RAM-LFE, o BFV esconde as entradas do cliente a partir de dados dos registros públicos e de observadores que só veem a transacção ou carga útil da rota. Isso não significa que a cadeia execute programas criptografados arbitrários por si mesma. O Torii resolver ainda possui o material secreto BFV, avalia o programa oculto configurado, Decodifica a saída permitida e atesta o resultado. O livro-razão verifica, em seguida, a certificação contra o compromisso da política on-chain e resolve os metadados de chave pública ou de prova.
 
 O caso de uso do identificador escolhe uma representação simples a propósito. Uma string normalizada é codificada como:
 
@@ -480,7 +480,7 @@ O perfil atual RAM-FHE é:
 |`encrypted_input_mode` |`resolver_canonicalized_envelope_v1` |
 |`min_ciphertext_modulus` | \(2^{52}\) |
 
-A entrada de texto simples enviada para Torii é criptografada no mesmo envelope do BFV antes da execução.
+As entradas de texto em branco enviadas para Torii são criptografadas no mesmo envelope BFV antes da execução. A semente determinista para a criptografia do lado do servidor é:
 
 $$
 H(
@@ -697,7 +697,7 @@ flowchart LR
 
 ## Políticas de identificação {#identifier-policies}
 
-As políticas de identificador são um uso concreto do RAM-LFE.
+As políticas de identificação são um uso concreto do RAM-LFE. Eles adicionam um espaço de nome comercial e uma regra de normalização em cima de uma política genérica do programa:
 
 ```text
 RegisterRamLfeProgramPolicy(

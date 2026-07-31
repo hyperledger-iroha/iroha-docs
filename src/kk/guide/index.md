@@ -22,8 +22,8 @@ translation_engine: nllb-200-ct2
 
 ## Ұсынылған жол {#recommended-path}
 
-1. [Құрылғы Iroha 3](/kk/get-started/install-iroha.md) және [жергілікті желісін іске қосу](/kk/get-started/launch-iroha.md).
+1. [Iroha 3](/kk/get-started/install-iroha.md) және [ жергiлiктi желiн іске қосу ](/kk/get-started/launch-iroha.md).
 2. [SDK оқу құралын таңдаңыз](/kk/guide/tutorials/) және шағын транзакцияны тапсырыңыз.
 3. Тексеру [Қолданбаларды әзірлеу](/kk/guide/best-practices/application-development.md) және [Деректерді модельдеу](/kk/guide/best-practices/data-modeling.md) өтiнiш жасалмас бұрын API.
 4. Пайдалану [Желіде іске асыру](/kk/guide/best-practices/network-deployment.md), [Операциялар](/kk/guide/best-practices/operations.md), және [Қауіпсіздік және қол жеткізу](/kk/guide/best-practices/security-and-access.md) ортақ немесе өндірістік желілерді іске қосудан бұрын.
-5. Келесі [Ашық етуге дайындық](/kk/guide/best-practices/release-readiness.md) Жергілікті дамудан бастап Taira, Minamoto, немесе басқа да терезелік орналасу.
+5. Жергiлiктi дамудан Taira, Minamoto немесе басқа да тiкелей орналастыруға жылжыту кезiнде [Release Readiness](/kk/guide/best-practices/release-readiness.md)-ды орындаңыз.

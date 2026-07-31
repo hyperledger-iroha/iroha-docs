@@ -3,7 +3,7 @@ import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 import { describe, expect, test } from 'vitest'
-import type { DocsLocale } from './locales'
+import { TRANSLATED_LOCALES, type DocsLocale } from './locales'
 import { validateI18n } from './validate-i18n'
 
 const testLocale: DocsLocale = {
@@ -21,6 +21,7 @@ const testLocale: DocsLocale = {
   },
   search: { buttonText: 'Rechercher', noResultsText: 'Aucun résultat' },
 }
+const japaneseLocale = TRANSLATED_LOCALES.find((locale) => locale.key === 'ja')!
 
 async function fixture(englishContent = '# Guide\n\nCurrent English source.\n') {
   const sourceRoot = await mkdtemp(path.join(os.tmpdir(), 'iroha-docs-i18n-'))
@@ -178,6 +179,44 @@ Utilisez FHE-Assuré BLS-Clé avec Iroha 3 façons.
     expect(await validateI18n({ sourceRoot, locales: [testLocale] })).toEqual(
       expect.arrayContaining([
         expect.stringMatching(/^fr\/index\.md: prose unit 2 is materially truncated \(0\.\d{2} of source letters\)$/u),
+      ]),
+    )
+  })
+
+  test('rejects the exact locale floor and accepts the next representable fixture ratio', async () => {
+    const englishProse = 'a'.repeat(80)
+    const { sourceRoot, hash } = await fixture(`# Guide\n\n${englishProse}\n`)
+    const localeRoot = path.join(sourceRoot, 'ja', 'guide')
+    await mkdir(localeRoot, { recursive: true })
+    const localized = (letters: number) =>
+      `---\ntranslation_locale: ja\ntranslation_source: /guide/index.md\ntranslation_source_hash: ${hash}\ntranslation_status: machine-validated\n---\n# ガイド {#guide}\n\n${'あ'.repeat(letters)}\n`
+
+    await writeFile(path.join(localeRoot, 'index.md'), localized(20))
+    expect(await validateI18n({ sourceRoot, locales: [japaneseLocale] })).toContain(
+      'ja/guide/index.md: prose unit 2 is materially truncated (0.25 of source letters)',
+    )
+
+    await writeFile(path.join(localeRoot, 'index.md'), localized(21))
+    expect(await validateI18n({ sourceRoot, locales: [japaneseLocale] })).toEqual([])
+  })
+
+  test('rejects a localized prose unit that drops a source sentence', async () => {
+    const sourceRoot = await mkdtemp(path.join(os.tmpdir(), 'iroha-docs-i18n-'))
+    await mkdir(path.join(sourceRoot, 'fr'), { recursive: true })
+    const english =
+      '# Guide\n\nPublic and private modes are policy profiles rather than separate node binaries. Review executor and genesis permissions before running an open network.\n'
+    const hash = createHash('sha256').update(english).digest('hex')
+    await writeFile(path.join(sourceRoot, 'index.md'), english)
+    await writeFile(
+      path.join(sourceRoot, 'fr', 'index.md'),
+      `---\ntranslation_locale: fr\ntranslation_source: /index.md\ntranslation_source_hash: ${hash}\ntranslation_status: machine-validated\n---\n# Guide {#guide}\n\nExaminez toutes les permissions de l’exécuteur et de la genèse avant le lancement.\n`,
+    )
+
+    expect(await validateI18n({ sourceRoot, locales: [testLocale] })).toEqual(
+      expect.arrayContaining([
+        expect.stringMatching(
+          /^fr\/index\.md: prose unit 2 has incomplete sentence coverage \(expected at least 2, found 1; 0\.\d{2} of source letters\)$/u,
+        ),
       ]),
     )
   })

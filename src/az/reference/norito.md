@@ -121,7 +121,7 @@ Rust məlumat növləri ümumiyyətlə manual kod kod əvəzinə mənşəli makr
 |`#[norito(default)]` |`Default` kodlaşdırılmış pay yükünün sahəni daşımadığı zaman istifadə olunur. |
 |`#[norito(skip_serializing_if = "...")]` |Deterministik dekodlama standartlarını qoruyaraq predikatın uyğunlaşdığı zaman JSON sahələrini buraxır. |
 
-Əməllər, mümkün olduqda kodlanmış uzunluq ipucularını və dəqiq uzunluq hesablamalarını da ortaya qoyur.
+Nəticələr, mümkün olduqda kodlanmış uzunluq ipucularını və dəqiq uzunluq hesablamalarını da açıqlayır. Kodlaşdırıcılar bu ipucu istifadə edərək tamponu saxlayırlar və əlavə nüsxələrdən çəkinirlər.
 
 ## Qutu xüsusiyyətli ailələr {#crate-feature-families}
 
@@ -192,7 +192,7 @@ Axtarış xüsusi kodeklər və entropiya profilləri əsas Norito əməliyyat /
 - `.nrt`, `.norito` əşyaları saxlayın və onları istehsal edən sərbəst buraxma və ya hadisə qutusunun yanında ifşa edin.
 - Dashboard və əl yoxlama üçün JSON proqnozlarından istifadə edin, lakin imzalanmış, həş edilmiş və ya davam edən məlumatlar üçün həqiqət mənbəyi olaraq Norito saxlayın.
 - Yeni Torii final nöqtəsini əlavə edərkən, bu nöqtənin JSON, Norito və ya hər ikisini qəbul edib-etmədiyini sənədləşdirin və dəstəkləyən məzmun növlərini `/openapi` əlamətində göstərin.
-- Sürətçiləri aktivləşdirərkən, yüklənmədən əvvəl skalar çıxışı ilə bərabərlik sınaqlarını aparın.
+- Sürətçiləri aktivləşdirərkən, yükləmədən əvvəl skalar çıxışı ilə bərabərlik sınaqları aparın. Sürətləndiricinin uğursuzluqları faydalı yükün semantikasını dəyişmək əvəzinə təmiz şəkildə geri qaytarılmalıdır.
 
 ## Əlaqəli səhifələr {#related-pages}
 

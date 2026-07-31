@@ -8,35 +8,22 @@ translation_engine: nllb-200-ct2
 
 # מדריך {#guide}
 
-השתמש בחלק זה כאשר אתה בונה, מפעיל או משלב עם
-Iroha. תתחיל עם SDK הוראות עבור לקוח ראשון, ואז לעבור
-שיטות מעדיפות ומועדות המפעילים לפני הפעלת
-רשת.
+השתמש בחלק זה כאשר אתה בונה, מפעיל או משולב עם Iroha. תתחיל עם הדרגונים של SDK עבור לקוח ראשון, ואז לעבור למנהלים הטובים ביותר והמועדות של המפעיל לפני הפעלת נגד רשת משותפת.
 
 ## סעיפים {#sections}
 
-| סעיף                                                      | השתמשו בו                                                                                                                  |
+|סעיף|השתמשו בו עבור |
 | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
-| [SDK מאורכים](/he/guide/tutorials/)                           | הגדרת לקלינט ספציפית לשפה ומדגם יישומים                                                                      |
-| [שיטות טובות](/he/guide/best-practices/)                     | הנחיות המכוונות לייצור, קבוצתיות לפי פיתוח, מודליית נתונים, הפעלת, פעילות, אבטחה והכנות לשחרור |
-| [סידור וניהול](/he/guide/configure/overview.md) | קונפיגורציה מקומית של עמיתים, הגנזיה, קונפיגרציה של לקוחות, מפתחות וניהול עמיתים                                          |
-| [אבטחה](/he/guide/security/)                                 | ניהול מפתח, אבטחת מבצע, VPNs, מעקב על הונאה והיגיינה של רשיונות                                          |
-| [פעולות מתקדמות](/he/guide/advanced/metrics.md)            | מדידות, בדיקות ביצועים, מבחן כאוס, חיזוק חם ופעילות מתכת עירומה                                            |
+| [SDK הדרכים](/he/guide/tutorials/) |הגדרת הלקוח הספציפית לשפה ודוגמת יישומים |
+| [שיטות הטובות ביותר ](/he/guide/best-practices/) |הנחיות המכוונות לייצור, קבוצתיות לפי פיתוח, מודליית נתונים, הפעלת, פעילות, אבטחה והכנות לשחרור. |
+| [תיקון וניהול](/he/guide/configure/overview.md) |קונפיגורציה מקומית של עמיתים, הגנזיה, קונפיגרציה של לקוחות, מפתחות וניהול עמיתים |
+| [ביטחון](/he/guide/security/) |ניהול מפתח, אבטחת מבצעים, VPNs, מעקב על הונאה והיגיינה של רשיונות |
+| [פעולות מתקדמות](/he/guide/advanced/metrics.md) |מדידות, בדיקות ביצועים, ניסויים כאוס, חיוב חם, ופעילות מתכת עירומה |
 
-## דרך מומלצת {#recommended-path}
+## מסלול מומלץ {#recommended-path}
 
-1. [תקין Iroha 3](/he/get-started/install-iroha.md) ו
-   [לפתוח רשת מקומית](/he/get-started/launch-iroha.md).
-2. תבחר אחד. [SDK הוראות](/he/guide/tutorials/) ושלח קצת
-   העסקה.
-3. ביקורת
-   [פיתוח יישומים](/he/guide/best-practices/application-development.md)
-   ו [מודלי נתונים](/he/guide/best-practices/data-modeling.md) לפני
-   עיצוב בקשה API.
-4. שימוש [הפעלת רשת](/he/guide/best-practices/network-deployment.md),
-   [פעולות](/he/guide/best-practices/operations.md), ו
-   [אבטחה וגישה](/he/guide/best-practices/security-and-access.md)
-   לפני הפעלת רשת משותפת או ייצור.
-5. עקוב אחרי [מוכנות לשחרר](/he/guide/best-practices/release-readiness.md)
-   כאשר מקדם את התפתחות המקומית Taira, Minamoto, או אחר
-   פיקוח חי.
+1. [להתקין Iroha 3](/he/get-started/install-iroha.md) ו [להתחיל רשת מקומית ](/he/get-started/launch-iroha.md).
+2. בחרו [SDK הדרכה ](/he/guide/tutorials/) ושלחו עסקאות קטנות.
+3. ביקורת [הפיתוח של היישום ](/he/guide/best-practices/application-development.md) ו[מודליזציה של נתונים ](/he/guide/best-practices/data-modeling.md) לפני עיצוב היישום API.
+4. שימוש [הפעלת רשת](/he/guide/best-practices/network-deployment.md), [פעולות](/he/guide/best-practices/operations.md), ו [אבטחה וגישה](/he/guide/best-practices/security-and-access.md) לפני הפעלה של רשת משותפת או ייצור.
+5. לעקוב אחרי [Release Readiness](/he/guide/best-practices/release-readiness.md) בעת קידום מהפיתוח המקומי ל Taira, Minamoto, או פריסת חי אחרת.

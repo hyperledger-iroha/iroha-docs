@@ -14,7 +14,7 @@ translation_engine: nllb-200-ct2
 
 Алдымен мыналарды орнатыңыз:
 
-- [rustup](https://www.rust-lang.org/tools/install), сонда тығылған `rust-toolchain.toml` құрал-саймандар тізбектері (`1.93.1`) автоматты түрде орнатылады
+- [rustup](https://www.rust-lang.org/tools/install), сондықтан тігілген `rust-toolchain.toml` құрал-жабдықтар (`1.93.1`) автоматты түрде орнатылады
 - `git`
 - Docker және Docker Compose жергiлiктi көп қатарлы тез бастау үшін
 
@@ -52,7 +52,7 @@ cargo run --bin kagami -- --help
 Әдетте пайдаланатын үш бинарлық жүйе:
 
 - `irohad` жасөспірім дэймон үшін
-- `iroha` үшін CLI қолжетімділік Torii және оператордың соңғы нүктелері
+- `iroha` үшін CLI Torii және оператордың соңғы нүктелері
 - `kagami` кілттер, генез манифесттері және локальдік желі профилі үшін
 
 ## 5. Факультативті Localnet және Docker жолы {#_5-optional-localnet-and-docker-path}

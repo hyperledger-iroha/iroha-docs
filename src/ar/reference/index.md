@@ -8,17 +8,15 @@ translation_engine: nllb-200-ct2
 
 # الإشارة {#reference}
 
-هذا القسم يتتبع المواد المرجعية الحالية الموجهة إلى المشغل
-Iroha 3 أوراق الأدب.
+يتتبع هذا القسم المواد المرجعية الحالية الموجهة إلى المشغل لمجموعة وثائق Iroha 3.
 
 ابدأ من هنا
 
-- [العمل مع Iroha الثنائيات](/ar/reference/binaries.md)
-- [الإشارة إلى سفر التكوين](/ar/reference/genesis.md)
-- [Torii النقاط النهائية](/ar/reference/torii-endpoints.md)
-- [Torii API أجهزة التحكم](/ar/reference/torii-api-console.md)
+- [العمل مع ثنائيات Iroha](/ar/reference/binaries.md)
+- [الإشارة إلى Genesis](/ar/reference/genesis.md)
+- [نقاط نهاية Torii](/ar/reference/torii-endpoints.md)
+- [أداة Torii API ](/ar/reference/torii-api-console.md)
 - [Norito](/ar/reference/norito.md)
-- [المصفوفة التوافقية](/ar/reference/compatibility-matrix.md)
+- [المصفوفة التوافقية ](/ar/reference/compatibility-matrix.md)
 
-لمواصفات المصدر للتنفيذ والرمز المجاور، انظر
-[Iroha مخزن](https://github.com/hyperledger-iroha/iroha).
+لمواصفات مصدر التنفيذ والترميز المجاور ، انظر مخزن [Iroha ](https://github.com/hyperledger-iroha/iroha).

@@ -8,10 +8,6 @@ translation_engine: nllb-200-ct2
 
 # Ma'lumotlar modeli sxemasi {#data-model-schema}
 
-Ushbu sahifa `kagami advanced schema` Oʻtkirdan ,
-[`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha)
-Hujjatlarni yangilash ish oqimida qayd etilgan qayta koʻrib chiqish.
-ushbu ma'muriyada tekshirilgan bo'lib, odatdagi hujjatlarni yaratish uchun
-bir Iroha manbai hisobidan chiqdi.
+Ushbu sahifa `kagami advanced schema` bilan [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) hujjatlarni yangilash ish oqimida qayd etilgan o'zgarishidan yaratilgan. O'tkazilgan fotosurat ushbu omborga kiritiladi, shuning uchun normal hujjatlar qurilishi uchun Iroha manbai checkout kerak emas.
 
 <DataModelSchema />

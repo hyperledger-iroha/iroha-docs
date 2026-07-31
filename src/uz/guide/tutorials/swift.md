@@ -8,21 +8,13 @@ translation_engine: nllb-200-ct2
 
 # Swift va iOS {#swift-and-ios}
 
-O ' zbekiston Respublikasi Swift SDK yuqori tomonga ish o'rinlari tomonidan jo'natilgan `IrohaSwift` Swift
-quyidagi paket `IrohaSwift/`. Uning paket manzili uchta kutubxonani belgilaydi
-mahsulotlar`IrohaSwift`, `IrohaSwiftMobileTransports`, va
-`IrohaSwiftTransferUI` va iOS 15+ va macOS 12+ ni maqsad qilib qo'ydi Swift asbob-uskunalar 5.9.
+O ' zbekiston Respublikasining Swift SDK Yuqori oqimdagi ish o'rinlari tomonidan jo'natilgan `IrohaSwift` Swift toʻplam `IrohaSwift/`. Uning paket manifestida uchta kutubxona mahsulotlari aniqlanadi`IrohaSwift`, `IrohaSwiftMobileTransports`, va `IrohaSwiftTransferUI` va iOS 15+ va macOS 12+ ni maqsad qilib qo'ydi Swift asboblar 5.9.
 
-Paket mahalliy shaxsga bogʻliq `NoritoBridge` Ikkilamchi maqsad.
-rezolyutsiyani tasdiqlaydi `../dist/NoritoBridge.xcframework` qurilishdan oldin va
-Transaksiya yoki Connect kripto yo ' nalishlari ko ' priklar mavjud bo ' lmagan xatolarni tashlash
-mahalliy belgilar yuklanmagan.
+Paket natijali `NoritoBridge` ikkilamchi maqsadga bog'liq. Paket rezolyutsiyasi qurishdan oldin `../dist/NoritoBridge.xcframework` ni tasdiqlaydi, natijali ramzlar yuklanmaganida esa tranzaksiya yoki Connect kripto yo'llari ko'prik mavjud bo'lmagan xatolarni tashlaydi..
 
 ## Swift Paket boshqaruvchisi {#swift-package-manager}
 
-O'rnatilgan ish maydonida rivojlanayotganda, SwiftPM mahalliy
-`IrohaSwift/` to'plamlar direktoriyasi.
-`Package.swift` bo ' lmoqda `IrohaSwift`:
+O'rnatilgan ish maydonlariga qarshi rivojlanayotganda, SwiftPM mahalliy `IrohaSwift/` to'plamlar direktoriyasi. `Package.swift` bo ' lmoqda `IrohaSwift`:
 
 ```swift
 dependencies: [
@@ -38,26 +30,20 @@ targets: [
 ]
 ```
 
-Dastur yo'lini o'zgartiring.
-`examples/ios/ConnectMinimalApp` yo'l mavjud bo'lsa; bu manifest
-`../../IrohaSwift` to `examples/IrohaSwift`.
+Ilova uchun yo'lni o'zgartiring. Joriy `examples/ios/ConnectMinimalApp` yo'lini mavjud bo'lgani kabi nusxa ko'rsatmang; bu manifest `../../IrohaSwift` ni `examples/IrohaSwift` ga aylantiradi.
 
-Paketni hal qilishdan oldin, ko'prik ish joyining ildizida mavjudligiga ishonch hosil qiling:
+To'plamni hal qilishdan oldin, ko'prik ish joyining ildizida mavjudligiga ishonch hosil qiling:
 
 ```bash
 cd /path/to/iroha
 make bridge-xcframework
 ```
 
-Bu hosil qiladi `dist/NoritoBridge.xcframework`; `IrohaSwift/Package.swift`
-uni `../dist/NoritoBridge.xcframework`.
+Bu `dist/NoritoBridge.xcframework` ni hosil qiladi; `IrohaSwift/Package.swift` uni `../dist/NoritoBridge.xcframework` deb ataydi.
 
 ## CocoaPods {#cocoapods}
 
-Kod bazasida shuningdek `IrohaSwift/IrohaSwift.podspec`. U quyidagilarni tasdiqlaydi:
-`IrohaSwift` kapsula, Swift 5.9 va iOS 15. Podspec olib tashlaydi Swift O'zbekiston Respublikasi
-asosiy ombor; mahalliy ko'prik hali ham mavjud bo'lishi va u bilan bog'liq bo'lishi kerak
-Transaksiya kodlash, Ed25519 bo'lmagan imzolash va Connect kripto.
+Kod bazasida shuningdek: `IrohaSwift/IrohaSwift.podspec`. O ' zbekiston Respublikasining `IrohaSwift` kapsula, Swift 5.9 va iOS 15. Podspec olib tashlaydi Swift asosiy ma'muriyatdan olingan manbalar; natijali ko'prik hali ham mavjud bo'lishi va bitim kodlash uchun u bilan bog'lanish kerak, Ed25519 bo'lmagan imzolar va Connect kripto.
 
 ## Tez ishga tushirish {#quickstart}
 
@@ -77,10 +63,9 @@ if #available(iOS 15.0, macOS 12.0, *) {
 }
 ```
 
-## Sinang . Taira Faqat oʻqish {#try-taira-read-only}
+## Taira Faqat o'qishga harakat qiling {#try-taira-read-only}
 
-Toʻgʻri rangdan boshlang HTTP qurilma yoki simulyatorning
-jamoatchilik Taira yakuniy nuqta:
+Qurilma yoki simulyator ommaviy Taira oxirgi nuqtasiga yetishi mumkinligini tasdiqlash uchun oddiy HTTP sondasi bilan boshlang:
 
 ```swift
 import Foundation
@@ -96,14 +81,9 @@ if #available(iOS 15.0, macOS 12.0, *) {
 }
 ```
 
-Shunga oʻxshashdan foydalaning `URLSession` tekshirish uchun
-`https://taira.sora.org/v1/assets/definitions?limit=5` Oʻzingiz qurayotganingizda
-UI va xulq-atvorni qayta sinab ko'ring. `IrohaSDK` yordamchilarni faqat
-ilova imzolovchi materialni xavfsiz saqlashdan yuklaydi va hisobvaraq
-Taira.
+Shunga oʻxshash foydalanish `URLSession` tekshirish uchun `https://taira.sora.org/v1/assets/definitions?limit=5` Oʻzingiz qurayotganingizda . UI va xulq-atvorni yana sinab ko'ring. `IrohaSDK` qo'llab-quvvatlovchilarni faqat dasturiy ta'minot xavfsiz saqlashdan imzolash materialini yuklaganidan va hisobvaraq moliyalashtirilganidan so'ng yuboradi Taira.
 
-Transaksiyani tuzish va taqdim etish uchun `IrohaSDK` yordamchilar.
-nativ ko'prik bilan ta'minlangan tranzaksiya kodlovchi:
+Transaksiyani tuzish va jo'natish uchun `IrohaSDK` yordamchisidan foydalaning. Ular mahalliy ko'prik qo'llab-quvvatlangan tranzaksiya kodlovchiga murojaat qiladilar:
 
 ```swift
 let transfer = TransferRequest(
@@ -125,23 +105,15 @@ if #available(iOS 15.0, macOS 12.0, *) {
 }
 ```
 
-`TransferRequest`, `MintRequest`, `BurnRequest`, `ShieldRequest`, va
-`UnshieldRequest` kanonik hisobni tasdiqlash IDs va kanonik prefikssiz
-Base58 aktivlar ta'rifi IDs imzolashdan oldin.
+`TransferRequest`, `MintRequest`, `BurnRequest`, `ShieldRequest`, va `UnshieldRequest` kanonik hisobni tasdiqlash IDs va kanonik prefikssiz Base58 aktivlari ta'rifi IDs imzolashdan oldin.
 
-## Asosiy depozit {#native-escrow}
+## Native escrow {#native-escrow}
 
-Swift bozor va anonim depozit ko'rsatmalarini yaratadi Norito JSON
-yordamchi yuklar orqali `NativeEscrowInstructionBuilders` yoki ekvivalenti
-`IrohaSDK.build*Escrow*` yordamchilar.
-[Asosiy aktivlar eskorovi](/uz/blockchain/escrow.md#swift-and-ios) misollar uchun;
-Anonim dalillar maydonlari va nizolarni hal qilish uchun ruxsat berish belgisi.
+Swift bozor va anonim eskrov ko'rsatmalarini Norito JSON yordamchilari orqali `NativeEscrowInstructionBuilders` yoki ekvivalent `IrohaSDK.build*Escrow*` yordamchilari sifatida yaratadi. Misollar uchun [Native Asset Escrow](/uz/blockchain/escrow.md#swift-and-ios), anonim dalillar maydonlari va nizolarni hal qilish ruxsatnomasi tokenini ko'ring.
 
 ## Imzolash {#signing}
 
-`Keypair` Ed25519 qulayligi API. Boshqa algoritmlar uchun
-`IrohaSDK` bilan `defaultSigningAlgorithm` va foydalanish `generateSigningKey()` yoki
-`signingKey(fromSeed:)`:
+`Keypair` - bu Ed25519 qulayligi API. Boshqa algoritmlar uchun `IrohaSDK` ni `defaultSigningAlgorithm` bilan quring va `generateSigningKey()` yoki `signingKey(fromSeed:)` dan foydalaning:
 
 ```swift
 let pqSdk = IrohaSDK(
@@ -151,14 +123,11 @@ let pqSdk = IrohaSDK(
 let signingKey = try pqSdk.generateSigningKey()
 ```
 
-O ' zbekiston Respublikasi `SigningAlgorithm` enum hozirda Ed25519, secp256k1-ni o'z ichiga oladi, BLS odatiy
-Va kichik variantlar, ML-DSA, GOST R 34.10-2012 parametrlar to'plamlari va SM2. Asosiy
-Ed25519 qulaylik yo'li tashqarisida ko'prikni qo'llab-quvvatlash zarur.
+O ' zbekiston Respublikasining `SigningAlgorithm` enum hozirda Ed25519, secp256k1ni o'z ichiga oladi; BLS Oddiy va kichik variantlar, ML-DSA, GOST R 34.10-2012 parametrlar to'plamlari va SM2. Ed25519 qulaylik yo'li tashqarisida mahalliy ko'prikni qo'llab-quvvatlash talab etiladi.
 
 ## Ulanish {#connect}
 
-Connect mijozi Swift manba, kripto va ramka kodeklari bilan
-tomonidan qo'llab-quvvatlanadi `NoritoBridge`:
+Connect mijozi Swift manbasida, `NoritoBridge` tomonidan qo'llab-quvvatlanadigan kripto va ramka kodeklari bilan amalga oshiriladi:
 
 ```swift
 let sessionID = Data(repeating: 0, count: 32) // replace with the session bytes
@@ -177,40 +146,27 @@ let session = ConnectSession(sessionID: sessionID, client: client)
 let keyPair = try ConnectCrypto.generateKeyPair()
 ```
 
-`ConnectSession` o'chirish va yopish boshqaruv qismlari, shifrlangan zarfni o'qish;
-yo'nalish kalitlari, oqimlarni boshqarish, hodisalar oqimlari, muvozanat oqimlari va tashxis
-jurnallar.
+`ConnectSession` ochish va yopish nazoratlarini, shifrlangan zarfni o'qish, yo'nalish kalitlari, oqimlarni boshqarish, hodisalar oqimi, muvozanat oqimlari va tashxis jurnallarini boshqaradi.
 
 ## Joriy qamrov {#current-coverage}
 
-O ' zbekiston Respublikasi Swift manbai hozirda quyidagilarni o'z ichiga oladi:
+Swift manbai hozirda quyidagilarni o'z ichiga oladi:
 
-- `ToriiClient` HTTP hisoblar, aktivlar, aliaslar, qidiruv sahifalari yordamchilari;
-  RWA, shartnomalar, multisig, boshqaruv, obunalar, ma'lumotlar mavjudligi;
-  maxfiy aktivlar, nodlar/ish vaqtining holati, sog'liqni saqlash, ma'lumotlar va SSE oqimlar
-- `IrohaSDK` Transaksiyalarni tuzish va o'tkazish uchun taqdim etish/sozlash yordamchilari, mint,
-  yondirish, qalqonsiz, qo'riqlamaydigan, ZK o'tkazish, ZK aktivlarni ro'yxatdan o'tkazish, metadotlar;
-  identifikator talablari, ko'p belgisi bilan ro'yxatdan o'tish va boshqaruv yo'l-yo'riqlari
-- Transaksiyalar navbatini qo'llab-quvvatlash `PendingTransactionQueue` va
-  `FilePendingTransactionQueue`
-- hisob manzili va I105 yordamchilar orqali `AccountAddress` va `AccountId`
-- Ed25519, secp256k1, ML-DSA, BLS, GOST, va SM2 imzolash yuzalari, mahalliy
-  zarur bo'lganda ko'prikni qo'llab-quvvatlash
-- bozor va anonim uchun mahalliy eskrov ko'rsatmalar payload quruvchilar
-  garov
-- Ulanish WebSocket, ramka, kripto, seans, navbat, takrorlash va tashxis
-  yordamchilar
-- Kagemusha tayyorligi, tiklangan to'ldirish va to'lov, operatsion holat, yozuv,
-  tengdoshlar to'plami, rasvo va QR oqim modellari
-- SoraFS, ma'lumotlar mavjudligi va dalillar bilan bog'lanish yordamchilari
+- `ToriiClient` HTTP hisoblar, aktivlar, aliaslar, qidiruv sahifalari, RWA, shartnomalar, multisig, boshqaruv, obunalar, ma'lumotlar mavjudligi, maxfiy aktivlar, node/runtime holati, sog'liqni saqlash, metrikalar va SSE oqimlari yordamchilari
+- `IrohaSDK` tranzaksiya quruvchilari va transfer, mint, yoqish, shield, shieldsiz o'tkazish, ZK transfer, ZK aktivlarni ro'yxatga olish, metadatalar, identifikator talablari, multisig ro'yxatdan o'tkazish va boshqaruv yo'l-yo'riqlariga ko'maklashuvchilar
+- `PendingTransactionQueue` va `FilePendingTransactionQueue` orqali amalga oshirilayotgan operatsiyalar safida qo'llab-quvvatlash
+- `AccountAddress` va `AccountId` orqali hisob-kitob manzili va I105 yordamchilari
+- Ed25519, secp256k1, ML-DSA, BLS, GOST va SM2 imzolash yuzalari, agar kerak bo'lsa, mahalliy ko'prikni qo'llab-quvvatlash
+- bozor va anonim depozit uchun mahalliy eskrov yo'l-yo'riqlari yordamchi yukni qurishchilar
+- WebSocket, ramka, kripto, seans, navbat, takrorlash va tashxis yordamchilari bilan bog'laning
+- Kagemusha tayyorligi, tiklangan to'ldirish va to'lov, operatsion holat, yozuv, tengdoshlar to'plami, rasvot va QR oqim modeli
+- SoraFS, ma'lumotlar mavjudligi va tasdiqlovchi ilovalar yordamchilari
 
 ## API Misollar {#api-examples}
 
-Foydalanish `IrohaSwift/Sources/IrohaSwift` davlat tomonidan amalga oshirilishi va
-`IrohaSwift/Tests/IrohaSwiftTests` sinovdan o'tgan foydalanish namunalari uchun
-manbalarni qayta ko'rib chiqish.
+Umumiy amalga oshirish uchun `IrohaSwift/Sources/IrohaSwift` va bir xil manba tekshiruvidan olingan sinovdan o'tgan foydalanish misollari uchun `IrohaSwift/Tests/IrohaSwiftTests` dan foydalaning.
 
-## Ilovalar {#source-references}
+## Ma'lumotlar manbai {#source-references}
 
 - `IrohaSwift/Package.swift`
 - `IrohaSwift/IrohaSwift.podspec`

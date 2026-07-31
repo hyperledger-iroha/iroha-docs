@@ -8,14 +8,11 @@ translation_engine: nllb-200-ct2
 
 # JavaScript ו TypeScript {#javascript-and-typescript}
 
-הזרם JavaScript SDK האם זה `@iroha/iroha-js` חבילה Iroha
-עץ מקור. Node.js-הראשון SDK עבור Torii, Norito בונים, חתימים,
-עמודי דף, ראיות מראש של קישור, ותחבורה של פקודות Kagemusha.
+הזרם JavaScript SDK האם זה `@iroha/iroha-js` חבילה ב Iroha עץ מקור. Node.js-הראשון SDK עבור Torii, Norito בונה, חתימה, עמודי עמודים, תצפיות קונקט, ותחבורה של פקודות קגמושה.
 
-## לבנות ממקור {#build-from-source}
+## בנייה ממקור {#build-from-source}
 
-החבילה אינה זמינה לרשות הציבור. npm רישום.
-מאותו קישור Iroha תיקון מקור כנקודה שאתה מכוון:
+החבילה אינה זמינה כרגע מהרישום הציבורי npm. לבנות אותו מאותו תיקון מקור Iroha מחוברת כמו הערך שאתה מכוון:
 
 ```bash
 git clone https://github.com/hyperledger-iroha/iroha.git
@@ -25,11 +22,7 @@ npm run build:native
 npm run build:dist
 ```
 
-הגדרות המקומיות. `cargo build -p iroha_js_host` ומדווחים את
-סכום הבדיקות ספציפי לפלטפורמה SDK המקור בונה מקומות
-מארח מבוקש ב `native/`. המוסד `IROHA_JS_NATIVE_DIR` רק כאשר בכוונה
-אספקת מארח בנוי בנפרד, סכום המחאה-מתוכנן. ESM-רק;
-מ CommonJS, שימוש דינמי `import()`.
+הבניין המקומי עוסק `cargo build -p iroha_js_host` וירשום את סכום ההבדקה הספציפי לפלטפורמה המשמש ב- SDK סטארט-אפ. מקור הבניין מקומות שהבנו מארח ב- `native/`. להגדיר את `IROHA_JS_NATIVE_DIR` רק כאשר אתה מספק במכוון מארח מבנה בנוי בנפרד, עם סכום הבדיקות. החבילה היא ESM בלבד; מ- CommonJS, השתמש בדנמיקה `import()`.
 
 ## התחלה מהירה {#quickstart}
 
@@ -45,10 +38,9 @@ const keys = generateKeyPair();
 console.log(keys.publicKey);
 ```
 
-## נסה. Taira רק קריאה {#try-taira-read-only}
+## נסה Taira לקרוא בלבד {#try-taira-read-only}
 
-שימוש מבוסס `fetch` ב Node.js 24 לטיפול Taira לפני הוספת חתימה ו
-Norito קוד העסקה:
+להשתמש `fetch` מבוסס ב- Node.js 24 כדי לחקור Taira לפני הוספת קוד חתימה ו Norito למערכה:
 
 ```js
 const root = "https://taira.sora.org";
@@ -73,15 +65,13 @@ for (const asset of assets.items) {
 }
 ```
 
-שמור את זה כ `taira-readonly.mjs`, אז תפעיל אותו:
+שמור אותו כ- `taira-readonly.mjs`, ואז תפעיל אותו:
 
 ```bash
 node taira-readonly.mjs
 ```
 
-לעבור לחתימה SDK שיחות רק לאחר שבדקים אלה רק לקרוא עובד. ציבורי Taira
-יכול לתקופה להחזיר שורה מלאה או טעות כניסה, אז לשמור על רשת חיה
-בדיקות ברירה CI.
+לעבור לשיחות חתומות SDK רק לאחר שתבדקי קריאה בלבד האלה יעבודו. הציבורי Taira יכול להחזיר באופן זמני שורה מלאה או טעות כניסה, אז לשמור על בדיקות רשת חי בחירה ב CI.
 
 מיבואים שימושיים:
 
@@ -91,32 +81,25 @@ import { noritoEncodeInstruction } from "@iroha/iroha-js/norito";
 import { generateKeyPair } from "@iroha/iroha-js/crypto";
 ```
 
-עבור קישור התחלתית של "Connect" עם דפדפן בלבד, השתמש `@iroha/iroha-js/connect-browser`
-במקום לייבא את Node-First `ToriiClient` על פני השטח.
+עבור קישור התחלה של Connect עם הדפדפן בלבד, השתמש `@iroha/iroha-js/connect-browser` במקום לייבא את פני השטח של Node-first `ToriiClient`.
 
-## חוב משכנתא מקומי {#native-escrow}
+## משכנתא מקומי {#native-escrow}
 
-JavaScript ו TypeScript יישומים יכולים להשתמש בכספת מקומית דרך Kotodama
-מחוזים.
-`@iroha/iroha-js/kotodama-compiler`; יצרני עסקאות מאבטחה מקומית ישירות
-הם לא חשופים כרגע על ידי JavaScript SDK. תראו.
-[אסיטום נטיב](/he/blockchain/escrow.md#javascript-and-typescript-kotodama)
-לדוגמא של שיחת המארח.
+היישומים JavaScript ו TypeScript יכולים להשתמש ב-escrow מקורי באמצעות Kotodama חוזים. לערוך שיחות מארגני אסקו עם `@iroha/iroha-js/kotodama-compiler`; הבניינים של עסקאות אסקו מקומית ישירות אינם חשופים כרגע על ידי JavaScript SDK. ראו [ אבטחת נכסים מקומיים](/he/blockchain/escrow.md#javascript-and-typescript-kotodama) לדוגמא של שיחות מארח אבטחה.
 
-## כיסוי הנוכחי {#current-coverage}
+## הכיסוי הנוכחי {#current-coverage}
 
-ה- SDK מתמקד ב:
+SDK מתמקד ב:
 
 - Torii HTTP ו WebSocket עוזרים
 - Norito יצרני עסקאות והנחיות
-- Kotodama איסוף, כולל מבנים של שיחות מארח הבנקאות
+- Kotodama קומפיילציה, כולל מבניית שיחות מארחת מאבטחה
 - Ed25519 חתימה ודור מפתח
-- עוזרים לעמודי עמודים ולניסי מחדש
-- חיבור עוזרים לחיזוק הדפדפן
-- סידורי קיגמושה, תוספת, חיסכון ותנועה במצב הפעלה
-  עוזרים
+- סיועי דף וניסיון מחדש
+- קישור עוזרים לחיזוק הדפדפן
+- סיועי תחבורה של Kagemusha מוכנים, מחומקים, משוחררים ומבצעים
 
-## מקורות קדם {#upstream-references}
+## ראשי תיקון מקדימה {#upstream-references}
 
 - `javascript/iroha_js/README.md`
 - `javascript/iroha_js/package.json`

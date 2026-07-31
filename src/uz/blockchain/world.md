@@ -8,125 +8,72 @@ translation_engine: nllb-200-ct2
 
 # Dunyo {#world}
 
-`World` boshqa entitetlarni o'z ichiga olgan global entitetdir. `World`
-quyidagilardan iborat bo'ladi:
+`World` - boshqa subyektlarni o'z ichiga olgan global entitetdir. `World` quyidagilardan iborat:
 
-- Iroha [konfiguratsiya parametrlari](/uz/guide/configure/client-configuration.md)
-- ro'yxatga olingan tengdoshlar
+- Iroha [konfiguratsiya parametrlari ](/uz/guide/configure/client-configuration.md)
+- ro'yxatdan o'tgan tengdoshlar
 - ro'yxatdan o'tgan domenlar
-- ro'yxatga olingan [qo'zg'atuvchilar](/uz/blockchain/triggers.md)
-- ro'yxatga olingan
-  [vazifalar](/uz/blockchain/permissions.md#permission-groups-roles)
-- ro'yxatga olingan
-  [ruxsatnoma belgisi taʼriflari](/uz/blockchain/permissions.md#permission-tokens)
-- barcha hisobvaraqlar uchun ruxsatnoma tokenlari
+- ro'yxatdan o'tgan [triggerlar ](/uz/blockchain/triggers.md)
+- ro'yxatdan o'tgan [xillar ](/uz/blockchain/permissions.md#permission-groups-roles)
+- ro'yxatdan o'tgan [permit tokenlari tavsiflari](/uz/blockchain/permissions.md#permission-tokens)
+- barcha hisob raqamlari uchun ruxsatnoma belgisi
 - [ishga tushirish vaqtini tasdiqlovchilar zanjiri](/uz/blockchain/permissions.md#runtime-validators)
 
-Domenlar, tengdoshlar yoki rollar ro'yxatdan o'tgan yoki ro'yxatga olinmagan bo'lsa, `World`
-ro'yxatdan chiqarishning maqsadi
-[ko'rsatma](/uz/blockchain/instructions.md).
+Domenlar, tengdoshlar yoki rollar ro'yxatdan o'tkazilgan yoki ro'yxatga olinmagan bo'lsa, `World` [ yo'l-yo'riqining (ro'yxatdan tashqari) maqsadi hisoblanadi ](/uz/blockchain/instructions.md).
 
-## Jahon holatiga qarash (WSV) {#world-state-view-wsv}
+## Jahon holati ko'rinishi (WSV) {#world-state-view-wsv}
 
-World State View - hozirgi blokcheynning xotira tarkibidagi tasviri
-davlat. `World`, qo'shilgan blok hashlari, muomala indekslari,
-va hozirgi davr uchun tanlangan tengdoshlar. to'liq blok foydali yuklari xizmat ko'rsatadi
-Kura o'zgaruvchan sifatida takrorlanmasdan WSV ma'lumotlar.
+World State View - bu joriy blokcheyn holatining xotira tarkibiga kiradi. U `World`, o'zgaruvchan WSV ma'lumotlar sifatida takrorlanmasdan, hozirgi davr uchun tanlangan bag'ishlangan blok hashlari, tranzaksiya indekslari va tengdoshlarini o'z ichiga oladi. To'liq blok faydali yuklar Kura dan xizmat ko'rsatadi.
 
-O ' zbekiston Respublikasi WSV so'rovlar o'qiladigan va blok ijro etilishi mutatsiya qiladi.
-haqiqatning doimiy manbai emas.
-[Kura](#kura-storage), va WSV qayta tiklanishi mumkin Kura bloklar yoki yuklangan
-holatdagi fotosuratdan keyin yangi o'ynash orqali ushlab olinadi Kura bloklar.
+O ' zbekiston Respublikasining WSV bu so'rovlar o'qiladigan va blok ijro etiladigan holatdir. Bu haqiqatning doimiy manbai emas. O ' z vaqtida saqlanadigan tarix [Kura](#kura-storage), va WSV qayta tiklanishi mumkin Kura bloklar yoki holat sur'atdan yuklangan va so'ngra yangi o'ynash bilan ushlab Kura bloklar.
 
-### Nima uchun? WSV Izlar {#what-the-wsv-tracks}
+### WSV izlari nima {#what-the-wsv-tracks}
 
-O ' zbekiston Respublikasi WSV kengroq bo'ladi `World` amalda quyidagilarni o'z ichiga oladi:
+WSV ob'ekti `World` ob'ektidan kengroq bo'lib, amaliyotda quyidagilarni o'z ichiga oladi:
 
-- ko'rsatilgan `World`: parametrlar, tengdoshlar, domenlar, hisobotlar, aktivlar; NFTs, vazifalar,
-  ruxsatnomalar, qo'zg'atuvchilar, ijrochi ma'lumotlari va boshqa ro'yxatga olingan ma'lumotlar modeli
-  ob'ektlar
-- belgilangan blok hashlari va oxirgi belgilangan balandlik
-- so'rovlar va tushumlar uchun ishlatiladigan tranzaksiyalardan bloklarga ko'rsatkichlar
+- `World`: parametrlar, tengdoshlar, domenlar, hisobotlar, aktivlar, NFTs, rollar, ruxsatnomalar, qo'zg'atuvchilar, ijrochi ma'lumotlari va boshqa ro'yxatdan o'tgan ma'lumotlar modeli ob'ektlar
+- belgilangan blok hashlari va so'nggi belgilangan balandlik
+- so'rovlar va tushumlar uchun ishlatiladigan tranzaksiya-blok indekslari
 - konsensus asosida foydalaniladigan joriy va avvalgi commit topologiyasi
-- Ma'lumotlar mavjudligi kabi majburiyatli bloklardan olingan xotira indekslari
-  majburiyatlar, qabul kursorlari, pin niyatlari va so'rov proyeksiyasi markerlari
-- Deterministik bloklarni bajarish uchun zarur bo'lgan ishga tushirish vaqti konfiguratsiyasi fotosuratlari;
-  Kriptografiya, boshqaruv, gaz quvurlari, tarkib, hisob-kitoblar va Nexus
-  moslamalar
+- Ma'lumotlar mavjudligi majburiyatlari, qabul kursorlari, pin niyati va so'rovlar proyeksiyasi markerlari kabi o'rnatilgan bloklardan olingan xotira indekslari;
+- Deterministik bloklarni bajarish uchun zarur bo'lgan ishga tushirish vaqti konfiguratsiyasi fotosuratlari, masalan, kriptografiya, boshqaruv, quvurlar, tarkib, hisob-kitob va Nexus sozlamalari
 
-So'rovlar odatda faqat o'qish uchun beriladi `StateView` Ushbu tuzilmalar ustidan.
-koʻrinish soʻrovni bajarish uchun mos oʻchiruvchi fotosuratdir; u toʻgʻridan-toʻgʻri ruxsat bermaydi
-mutatsiya WSV.
+So'rovlar odatda ushbu tuzilmalar ustida faqat o'qish uchun `StateView` olishadi. Ko'rinish so'rovni bajarish uchun tutarli fotosuratdir; bu WSV ning to'g'ridan-to'g'ri mutatsiyasiga yo'l qo'ymaydi.
 
-### Qanday qilib WSV Oʻzgarishlar {#how-the-wsv-changes}
+### WSV ning o'zgarishi {#how-the-wsv-changes}
 
-WSV o'zgarishlar amalga oshirilishidan oldin bosqichma-bosqich amalga oshiriladi.
-bloklar ko'lami davlat qoplama, va har bir qabul qilingan tranzaksiya o'z
-Transaksiyalarga ko'ra o'rnatilgan bo'shliqdagi yo'l-yo'riqlar.
-Transaksiyalar bir xil blok kontekstida o'tkaziladi.
-blok uchun muomala ta'siri.
+WSV o'zgarishlar amalga oshirilishidan oldin bosqichma-bosqich amalga oshiriladi. Blok ijro etilishi blok miqyosidagi davlat qoplamasini yaratadi va har bir qabul qilingan tranzaksiya o'z yo'l-yo'riqlarini tranzaksiya miqyosidagi qoplamalarda qo'llaniladi. Ushbu tranzaksiyalar bitta blok kontekstida ishlaydigan ma'lumotlarni ishga tushiradi. Vaqt triggerlari blok uchun tranzaksiya ta'sirlaridan keyin baholanadi.
 
-Konsensus blokni amalga oshirganidan so'ng, tengdosh birinchi navbatda majburiyatli blokni o'z ichiga oladi
-yo'nalishi Kura. Agar ushbu navbatdagi qadam muvaffaqiyatsiz tugasa, WSV rivojlanmagan va
-konsensus bo'g'i blokning foydali yukini qayta sinab ko'radi yoki sozlaydi.
-qabul qilingan Kura navbatda, Iroha ijrodan keyingi blok effektlarini qo'llaniladi;
-O'tkazilgan indekslarni yangilash va bosqichma-bosqich WSV a bo'yicha o'zgarishlar
-Bu o'quvchilarni qisman
-blok.
+Konsensus blokni qo'llab-quvvatlagandan so'ng, tengdosh birinchi navbatda Kura da aloqador blokni orqaga suradi. Agar bu orqaga chiqish jarayoni muvaffaqiyatsiz tugasa, WSV ilgari surilmaydi va konsensus bo'g'i blokning foydali yukini qayta sinab ko'radi yoki orqaga chiqaradi. Blok Kura safida qabul qilinayotganda, Iroha ijrodan keyingi blok effektlarini qo'llaniladi, hosil bo'lgan indekslarni yangilaydi va bosqichma-bosqich WSV o'zgarishlarni holat ko'rinishi qulfining ostida amalga oshiradi. Bu o'quvchilarni qisman belgilangan blokni kuzatib borishdan saqlaydi.
 
-Konsensus-kritik qoida shundaki , tengdoshlar bir xil WSV bilan
-O'sha o'xshash aloqador bloklar. WSV ma'lumotlarni o'tkazib yuborish yo'l-yo'riqlari va
-tengdoshlar tasdiqlash yoki takrorlash paytida kelishmovchiliklarga olib keladi.
+Konsensus-kritik qoida shundaki, tengdoshlar bir xil WSV bloklardan o'xshashga erishishlari kerak. WSV ma'lumotlarni chetlab o'tish ko'rsatmalariga lokal tahrirlash to'g'ridan-to'g'ri amalga oshiriladi va tengdoshlarning tasdiqlash yoki takrorlash paytida rozi bo'lmasligi mumkin.
 
-### Boshlang va takrorlang {#startup-and-replay}
+### Dasturni boshlash va qayta ijro etish {#startup-and-replay}
 
-Boshlang'ichda Iroha boshlovchi Kura birinchi va saqlangan blok balandligini o'rganadi.
-Keyin u holat fotosuratini yuklashga harakat qiladi. Agar fotosurat mavjud bo'lmasa yoki
-tezkor fotosurat qayta tiklanishi mumkin deb rad etiladi; Iroha boshlang'ich holatni yaratadi va
-o'z vaqtida amalga oshirilgan bloklarni Kura. Agar fotosurat haqiqiy boʻlsa , lekin u orqada Kura,
-faqat yo'qolgan balandlik doirasi takrorlanadi.
+Boshlang'ichda Iroha birinchi navbatda Kura ni initialize qiladi va saqlangan blok balandligini o'rganadi. So'ngra u holat fotosuratini yuklashga harakat qiladi. Agar hech qanday fotosurat mavjud bo'lmasa yoki fotosurat tiklanishi mumkin deb rad etilgan bo'lsa, Iroha dastlabki holatni yaratadi va Kura dan belgilangan bloklarni takrorlaydi. Agar fotosurat haqiqiy bo'lsa, ammo Kura ortida bo'lsa , faqat yo'qolgan balandlik doirasi qayta o'ynatiladi.
 
-Takrorlash har bir saqlangan blokni tasdiqlaydi, ushbu blok uchun commit ro'yxatini rekonstruksiya qiladi
-balandligi, blok effektlarini WSV, va natijada
-Davlat. Bu Kura o'zgarish yo'li WSV, Oʻz navbatida ,
-butun zanjirni takrorlamaslik uchun optimallashtirish.
+Takrorlash har bir saqlangan blokni tasdiqlaydi, ushbu balandlik uchun commit ro'yxatini rekonstruksiya qiladi, blok effektlarini WSV ga qo'llaniladi va natijali holatni amalga oshiradi. Bu Kura WSV uchun tiklanish yo'li bo'lishini anglatadi, oyna rasmlar esa butun zanjirni takrorlashni oldini oladigan optimallashtirishdir.
 
 ## Kura saqlash {#kura-storage}
 
-_Kura_ bo ' lmoqda Iroha U imzolangan bloklarni saqlaydi va
-o'zgaruvchan ikkinchi nusxasini saqlamaydi WSV.
+Kura Iroha ning doimiy blok saqlashidir. U imzolangan bloklar va tiklanish metadatalarini saqlaydi. WSV ning ikkinchi o'zgaruvchan nusxasini saqlamaydi.
 
-Kura saqlash [`kura.store_dir`](/uz/reference/peer-config/params.md#param-kura-store-dir).
-Ushbu ildiz ichida blok ma'lumotlari yo'nalish yoki segmentlarga bo'linadi.
-segment uchun quyidagilar:
+Kura saqlash [`kura.store_dir`](/uz/reference/peer-config/params.md#param-kura-store-dir) nomiga ildiz otadi. Bu ildiz ichida blok ma'lumotlari yo'nalish yoki segmentlarga bo'linadi.
 
-| Yoʻl | Maqsad |
+|Yoʻl |Maqsad|
 | --- | --- |
-| `blocks/<segment>/blocks.data` | Qoʻshma Norito- ramkalashtirilgan imzolangan blok yuklari. |
-| `blocks/<segment>/blocks.index` | O'rnatilgan o'lcham `(start, length)` Xaritani blok balandligi bytelarga kiritilgan `blocks.data`. |
-| `blocks/<segment>/blocks.hashes` | Tez qidirish va ishga tushirishni tasdiqlash uchun hashlarni balandligi bo'yicha bloklang. |
-| `blocks/<segment>/blocks.count.norito` | Kuchli commit marker, qancha blok indekslari kirishlaridan foydalanish xavfsizligini qayd etadi. |
-| `blocks/<segment>/da_blocks/` | Yovuzlashtirilgan blokning foydali yuklari tashqarida saqlanadi `blocks.data` disk-budjetni qo'llab-quvvatlash eski jasadlarni issiq fayldan olib tashlaganida. |
-| `blocks/<segment>/pipeline/sidecars.norito` va `sidecars.index` | Pipeline-ni tiklash bo'yicha yo'nalishdagi avtoulovlar blokning balandligiga ko'ra. |
-| `blocks/<segment>/pipeline/roster_sidecars.norito` va `roster_sidecars.index` | Blok sinxronizatsiyasi va takrorlashda ishlatiladigan so'nggi commit-roster yon mashinalari. |
-| `merge_ledger/<segment>.log` | Qo'shma bloklar bilan to'g'rilashuv daftaridagi kirishnomalar. |
-| `commit-rosters.norito` | So'nggi bloklar uchun qo'lga kiritilgan majburiyat sertifikatlari va tasdiqlash punktlari. |
+|`blocks/<segment>/blocks.data` |Qo'shma Norito ramkalar bilan imzolangan blok fayzli yuklar. |
+|`blocks/<segment>/blocks.index` |O'rnatilgan o'lchamdagi `(start, length)` xaritadan blok balandligi bo'yicha `blocks.data` bytlarga kiritiladi. |
+|`blocks/<segment>/blocks.hashes` |Tez qidirish va ishga tushirishni tasdiqlash uchun hashlarni balandlikka qarab bloklang. |
+|`blocks/<segment>/blocks.count.norito` |Uzoq muddatli commit markeri, qancha blok indekslari kirishlaridan foydalanish xavfsizligini qayd etadi. |
+|`blocks/<segment>/da_blocks/` |Disk-budjet qo'llab-quvvatlash eski jismlarni issiq fayldan olib chiqib ketganda `blocks.data` tashqarida saqlangan blok foydali yuklar chiqariladi. |
+|`blocks/<segment>/pipeline/sidecars.norito` va `sidecars.index` |Quvurni qayta tiklash bo'yicha yo'nalishdagi avtoulovlar blokning balandligiga ko'ra. |
+|`blocks/<segment>/pipeline/roster_sidecars.norito` va `roster_sidecars.index` |Blok sinxronizatsiyasi va takrorlashda ishlatiladigan so'nggi commit-roster bo'laklari. |
+|`merge_ledger/<segment>.log` |Qo'shilgan bloklar bilan to'g'rilash bo'lgan qo'shilish daftaridagi kirishnomalar. |
+|`commit-rosters.norito` |So'nggi bloklar uchun commit sertifikatlari va validator nazorat punktlari saqlanadi. |
 
-Kura zanjir uchun xotira ichida kompakt vektorni saqlaydi: har bir balandlikda
-blok hash va, variant bo'lsa, blok tanasi.
-va eng so'nggi [`kura.blocks_in_memory`](/uz/reference/peer-config/params.md#param-kura-blocks-in-memory)
-genesis bo'lmagan bloklar o'z tanasini xotirada saqlaydi.
-xotiralaridan tushdi va qayta yuklandi Kura zarur bo'lganda fayllar.
+Kura zanjir uchun kompakt xotira vektorini saqlaydi: har bir balandlikda blok hash va, tanlov bo'yicha, blok tanasi mavjud. Genesis bloki saqlanib qoladi, eng so'nggi [ `kura.blocks_in_memory`](/uz/reference/peer-config/params.md#param-kura-blocks-in-memory) genesis bo'lmagan bloklar o'z tanalarini xotiraga saqlashadi. Keksa bloklar xotirasidan tashlanadi va kerak bo'lganda Kura fayllaridan qayta yuklanadi.
 
-Ishlab chiqarish paytida, `strict` Modda blokdan saqlangan bloklarni tasdiqlaydi
-fayllarni yuklaydi va kerak bo'lsa hash faylini qayta yozadi. `fast` saqlash rejimidan boshlanadi
-hash/indeks meta-ma'lumotlar va agar ushbu metamadani
-muvofiq emas. Kura buzilgan quyruqni aniqlaydi, u saqlashni
-oxirgi tasdiqlangan blok.
+O'rnatish jarayonida `strict` rejimi blok fayllaridan saqlangan bloklarni tasdiqlaydi va kerak bo'lganda hash faylini qayta yozadi. `fast` rejimi saqlangan hash / indeks metadatalaridan boshlanadi va agar ushbu metadata mos kelmasa, qat'iy o'rnatishga qaytadi. Agar Kura buzilgan quyruqni aniqlasa, uni so'nggi tasdiqlangan blokga qadar saqlashni o'zgartiradi.
 
-Kura yangi bloklarni orqa fon yozuvchisi orqali yozadi. Yozuvchi blokni qo'shadi
-faydali yuklamalar, hashlar va indeks yozuvlari, so'ngra chidamli hisoblash markerni oldinga
-disk-budjetni qo'llab-quvvatlashda
-faol, Kura oʻtkazib yuborishi yoki eski bloklar jasadlarini olib tashlashi mumkin
-`da_blocks/` hashlar va indeks yozuvlarini tasdiqlash uchun saqlab qolish
-va qidirish.
+Kura yangi bloklarni orqa fon yozuvchisi orqali yozadi. Yozuvchi blok fayl yuklamalari, hashlar va indeks kirishlarini qo'shadi, so'ngra konfiguratsiya qilingan fsync siyosatiga ko'ra chidamli sanish markerini ilgari suradi. Disk-budjetni qo'llash faol bo'lganda, Kura iste'mol qilingan segmentlarni tozalashi yoki eski blok organlarini `da_blocks/` ga chiqarib tashlashi mumkin, shu bilan birga hashlar va indeks yozuvlarini tasdiqlash va qidirish uchun taqdim etadi.

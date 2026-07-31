@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # Конфигурация мәсьәләләрен хәл итеү {#troubleshooting-configuration-issues}
 
-Был бүлектә проблемаларҙы хәл итеү өсөн кәңәштәр бирелә Iroha 3 конфигурацияһы. [асҡыстарын тикшерҙе](./overview.md#check-the-keys) тәү сиратта, сөнки ул иң йыш проблемалар сығанағы булып тора Iroha.
+Был бүлектә Iroha 3 конфигурацияһы өсөн проблемаларҙы хәл итеү буйынса кәңәштәр бирелә. Тәүҙә [ төймәләрен](./overview.md#check-the-keys) тикшерегеҙ, сөнки был Iroha-та иң йыш килеп сыҡҡан мәсьәләләр сығанағы.
 
 Әгәр һеҙ кисергән проблема бында һүрәтләнмәгән икән, [Telegram](https://t.me/hyperledgeriroha) аша беҙҙең менән бәйләнешкә инегеҙ.
 
@@ -20,16 +20,16 @@ translation_engine: nllb-200-ct2
 
 1. Ҡулланыу `docker ps` Хәҙерге контейнерҙарҙы тикшереү өсөн. барлыҡҡа килгән профиленә ҡарап, һеҙ йыш ҡына `hyperledger/iroha:dev` контейнерҙар. Docker Compose Профиль дүрт тиңдәше контейнерҙар, әммә һеҙҙең `docker-compose.yml` төрлө булыуы мөмкин.
 
-2. Журналдарҙы тикшереп ҡарағыҙ һәм `Failed to deserialize raw genesis block` хата. әгәр һеҙ үҙ башлаған Iroha "Даймон" режимында `docker compose up -d`, ҡулланыу `docker compose logs` командование.
+2. Журналдарҙы тикшерегеҙ һәм `Failed to deserialize raw genesis block` хатаһын эҙләгеҙ. Әгәр ҙә һеҙ Iroha дэймон режимында `docker compose up -d` менән башлағанһығыҙ икән, `docker compose logs` командаһы ҡулланығыҙ.
 
-Бындай мәсьәләне хәл итеү ысулы Iroha. Әгәр был төп демо һәм һеҙ peer мәғлүмәттәрен һаҡларға кәрәк түгел, тура килә localnet йәки Docker Compose ссылка менән Kagami:
+Бындай проблеманы хәл итеү ысулы Iroha ҡулланыуға бәйле. Әгәр был төп демо булһа һәм һеҙгә тиңдәш мәғлүмәттәрен һаҡларға кәрәкмәй икән, Kagami менән тура килгән локаль селтәрҙе йәки Docker Compose пакетын регенерациялағыҙ:
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
 ```
 
-Һуңынан иҫке контейнер торошон алып ташларға һәм регенерацияланған `genesis.signed.nrt`, тиңдәштәре `config.toml` файлдар, һәм `client.toml`.
+Һуңынан иҫке контейнер торошон алып ташларға һәм регенерацияланған `genesis.signed.nrt`, peer `config.toml` һәм `client.toml` файлдарҙан ҡабаттан башларға.
 
 Әгәр һеҙ Iroha экземпляр мәғлүмәттәрен тергеҙеү кәрәк икән, түбәндәгеләрҙе үтәгеҙ:
 
@@ -46,9 +46,9 @@ cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyper
 
 ## Шәхси һәм асыҡ асҡыстарҙың күп һанлы хэштег форматы {#multihash-format-of-private-and-public-keys}
 
-Әгәр һеҙ ҡараһағыҙ, [клиент конфигурацияһы](/ba/guide/configure/client-configuration.md), һеҙ унда асҡыстар бирелгән булыуын күрерһегеҙ [күп-хаш форматы](https://github.com/multiformats/multihash).
+Әгәр һеҙ [клиент конфигурацияһына ҡараһағыҙ](/ba/guide/configure/client-configuration.md), ундағы асҡыстарҙың [ күп һанлы хэш форматында бирелгәнен күрерһегеҙ](https://github.com/multiformats/multihash).
 
-Әгәр һеҙ бер ҡасан да күп-хаш менән эшләй алманығыҙ икән, уң яҡ биттең төп байттарҙың (бер байтҡа ике символ) алты дисәтинәле сағылышы түгел тип фаразлау тәбиғи. ASCII (йәки UTF-8), һәм шылтыратыу `from_hex` Һөйләмдәрҙең икеһендә лә `public_key` һәм `private_key` миҫалдар.
+Әгәр ҙә һеҙ быға тиклем күп-хаш менән эшләмәгәнһегеҙ икән, уң яҡта төп байттарҙың (байтҡа ике символ), ә ASCII (йәки UTF-8) тип кодланған байттарҙың алты тигеҙлектәге сағылышы түгел, тип фаразлау тәбиғи. һәм `public_key` менән `private_key` экземплярҙарында уҡ буквалға `from_hex` шылтыратыу.
 
 Шулай уҡ `PrivateKey::try_from_str` саҡырыу ғына дөрөҫ асҡыс бирә, тип фаразлау тәбиғи. Әгәр ҙә асҡыстағы биттарҙың һанын дөрөҫ тапһағыҙ, мәҫәлән, 32 байт vs 64, был хата хәбәрен ҡалдыра.
 

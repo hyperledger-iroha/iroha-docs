@@ -6,15 +6,15 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Kotlin, Android, һәм Java {#kotlin-android-and-java}
+# Kotlin, Android һәм Java {#kotlin-android-and-java}
 
-Ҡоролтай Kotlin SDK өсөн default клиент стегы JVM һәм Android Ҡулланыусылар. `kotlin/` ҡаҙнаһында Iroha репозиторий һәм платформа буйынса бүленгән, шуға күрә портатив код ала алмай Android бәйлелектәре.
+Kotlin SDK - JVM һәм Android программалары өсөн алдан билдәләнгән клиент стегы. Ул Iroha һаҡлағысында `kotlin/` аҫтында йәшәй һәм платформаға бүленгән, шуға күрә портатив код Android бәйлелектәре ала алмай.
 
 ## Модулдар {#modules}
 
 |Артефакт |Тип |Ҡулланыу |
 | --- | --- | --- |
-|`org.hyperledger.iroha.sdk:core-jvm` |JAR | Таҙа Kotlin/JVM Norito, мәғлүмәт моделе, крипто, транзакция, Torii, һәм протокол коды |
+|`org.hyperledger.iroha.sdk:core-jvm` |JAR |Таҙа Kotlin/JVM Norito, мәғлүмәт моделе, крипто, транзакция, Torii һәм протокол коды |
 |`org.hyperledger.iroha.sdk:client-android` |AAR |Android клавиатура һаҡлау, ҡоролмалар телеметрияһы һәм JNI ярҙамында клиент интеграциялары |
 |`org.hyperledger.iroha.sdk:offline-wallet-android` |AAR |Android `client-android` нигеҙендә төҙөлгән офлайн-бумаҡса транспорты һәм интеграцияһы |
 
@@ -41,7 +41,7 @@ dependencies {
 }
 ```
 
-`core-jvm` юҡ Android бәйлелектәре. Android клиент һәм клавиатура коды `client-android`, һәм ҡулланыу `offline-wallet-android` өсөн Android- бары тик офлайн-кешелек һәм JNI ағымдар.
+`core-jvm` бер ниндәй ҙә Android бәйләнештәрен үҙ эсенә алмай. Android клиент һәм клавиатура кодын `client-android` эсендә һаҡлағыҙ, һәм Android-ҡа ғына офлайн-бумаҡса һәм JNI ағымдары өсөн `offline-wallet-android` ҡулланығыҙ.
 
 ## Kotlin һәм Java буйынса яраҡлаштырыу {#kotlin-and-java-compatibility}
 
@@ -72,9 +72,9 @@ Kotlin SDK үҙ эсенә:
 - Norito кодлау һәм декодлау
 - Канон иҫәбенә һәм актив адрестары менән идара итеү
 - транзакция төҙөү, ҡул ҡуйыу һәм офлайн конверттар
-- Torii HTTP, WebSocket, һәм SSE клиенттар
+- Torii HTTP, WebSocket һәм SSE клиенттары
 - Күп ҡултамғалар, яҙылыу, SoraFS, Nexus һәм Connect моделе
 - Android клавиатура һәм ҡоролмалар телеметрияһы интеграциялары
-- Android һүндерелгән QR, Яҡында, һәм NFC транспорт
+- Android офлайн QR, Яҡын һәм NFC транспорты
 
-Ҡарағыҙ [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/main/kotlin/README.md) модульгә ҡарата APIs һәм теүәл төҙөлөштөң күрһәтмәләре.
+[Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/main/kotlin/README.md) өсөн модуль-специфик APIs һәм аныҡ төҙөү командалары ҡарағыҙ.

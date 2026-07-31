@@ -58,4 +58,4 @@ El envío de una instrucción de registro entre pares no (y no puede) iniciar un
 
 Por razones de seguridad, este proceso es unilateral. La red llega al consenso de que quiere eliminar a un compañero, pero el mismo compañero no sabe mucho sobre por qué nadie está hablando con él.
 
-En la mayoría de las circunstancias, si quieres cancelar el registro de un compañero, lo quieres hacer porque es una culpa bizantina.
+En la mayoría de las circunstancias, si quieres cancelar el registro de una pareja, debes hacerlo porque es un error bizantino. Simplemente "fantasmas" de este compañero hace la vida del actor malicioso en la red más difícil.

@@ -104,7 +104,7 @@ Taira ilə yaxşı işləyən agent tələbi qaydaları:
 - MCP serverindən zəng etməzdən əvvəl vasitələri kəşf edin; əgər server `listChanged` hesabatı verirsə, yenidən tapın.
 - Qırmızı `torii.` vasitələrdən seçilmiş `iroha.` alətləri üstün tuturlar.
 - Yalnız oxumağa başlayın: yazı təklif etməzdən əvvəl statusunu, hesabları, aktivləri, aliasları, blokları, idarəetmə vəziyyətini və əməliyyatın statusunu yoxlayın.
-- Əvvəlcədən imzalanmış əməliyyat zarfları üçün `iroha.transactions.submit_and_wait` istifadə edin ki, agent yalnız təqdim etmək əvəzinə nəticəni gözləsin.
+- Canlı test şəbəkəsinin mutasiyalarından əvvəl açıq bir insan təlimatı tələb olunur. Əvvəlcədən imzalanmış əməliyyat qovşaqları üçün `iroha.transactions.submit_and_wait` istifadə edin ki, agent yalnız təqdim etmək əvəzinə nəticəni gözləsin.
 - Agent cavabında əməliyyat həşlərini, yekun vəziyyətini və server təsdiqləmə səhvlərini qısalaşdırın.
 
 ### Agentlərlə inkişaf iş axını {#development-workflow-with-agents}
@@ -342,7 +342,7 @@ SORA Nexus hesabları üçün bu təcrübələrdən istifadə edin:
 - Hər bir xəzinə və ya istehsal imzaçısı üçün bənzərsiz yüksək entropiyalı şifrələrdən istifadə edin. Şifrələri şifreli özəl açar ilə eyni fayl və ya ehtiyat paketində deyil, şifrələnmiş şifrəli bir şifrə idarəçisi və ya bölünmüş saxlama prosesində saxlayın.
 - Taira və Minamoto açarlarını ayrı saxlayın. Taira açarları birbaşa istifadə edilə bilən test şəbəkəsi materialı kimi, Minamoto açarları isə istehsal fondlarının səlahiyyətli olduğu kimi qəbul edin.
 - Xüsusi açar, ictimai açar, hesab ID, hesab profilini və imzalayıcını bərpa etmək üçün lazım olan hər hansı bir hesabın bərpası və ya saxlama qeydlərini yedekləyin. Şəbəkə kontekstindən asılı olmayan xüsusi açar bərpa zamanı sui-istifadəsi asanlıqla mümkündür.
-- İstehsalat imzaları üçün ən azı bir şifrələnmiş offline yedekləmə və bir coğrafi cəhətdən ayrı şifreli yedekləməyə davam edin.
+- İstehsalat imzaları üçün ən azı bir şifrələnmiş offline yedekləmə və bir coğrafi cəhətdən ayrı şifreli yedekləme saxlayın. Backupdan əvvəl kiçik bir oxuma yalnız əməliyyatı ilə bərpa sınaq.
 - Gizli açar, şifrə, yedek media və ya imzalanma host aşkar edilmiş ola bilərsə, bir imzaçını fırlatın və ya dəyişdirin.
 
 Daha ətraflı məlumat üçün bax: [Storing Cryptographic Keys](/az/guide/security/storing-cryptographic-keys.md) və [Password Security](/az/guide/security/password-security.md).
@@ -448,7 +448,7 @@ iroha --config ./taira.client.toml ledger asset get \
   --account <TAIRA_I105_ACCOUNT_ID>
 ```
 
-Faucet tələbi qəbul edildi, lakin hesab və ya aktiv hələ görünmürsə, əməliyyat hələ də ictimai testnet növbənin işlənməsindədir.
+Əgər faucet tələbi qəbul edilmişsə, lakin hesab və ya aktiv hələ görünür deyilsə, əməliyyat hələ də testnet növbənin icbari işlənməsi arxasında qalır. Yazı göndərmədən əvvəl oxumağa yenidən cəhd edin.
 
 İşə hazır birbaşa API yoxlama üçün bunu `taira_faucet_claim.py` olaraq saxlayın və Taira I105 hesabını ID keçin:
 

@@ -21,9 +21,9 @@ translation_engine: nllb-200-ct2
 - қозғалтқыштар
 - операциялар
 
-Кіші сипаттамалық немесе индекстеу өрістеріне арналған метамәдени деректерді пайдаланыңыз. WSV (Құранның) айтары мынау: URI, немесе SoraFS Жол.
+Үлкен пайдалы жүктемелер WSV шегінен тыс жерде сақталуы және URI немесе SoraFS жолымен сілтеме жасалуы тиіс.
 
-Метамәліметтерді, активтерді таңдау жөніндегі нұсқаулар үшін NFTs, RWAs, немесе тізбектен тыс сақтау, қараңыз [Метамәліметтер мен бухгалтерлік есептерді сақтау](/kk/guide/configure/metadata-and-store-assets.md).
+Метадеректерді, активтерді NFTs, RWAs немесе тізбектен тыс сақтауды таңдау бойынша нұсқаулар үшін [Метадеректі және бухгалтерлік есептік жазбаларды сақтауды таңдауды қараңыз](/kk/guide/configure/metadata-and-store-assets.md).
 
 ## Taira арқылы сынап көріңіз. {#try-it-on-taira}
 
@@ -81,10 +81,10 @@ MetadataChanged --> AssetDefinitionMetadataChanged
 MetadataChanged --> DomainMetadataChanged
 ```
 
-Пайдалану [деректер оқиғалары сүзгілері](/kk/blockchain/filters.md#data-event-filters) субъектінің түрі немесе объектісі үшін тек метамәдени оқиғаларға жазылу ID Бұл интеграция үшін маңызды.
+[дерек оқиғалары сүзгілерін ](/kk/blockchain/filters.md#data-event-filters) пайдалану арқылы интеграцияға мән беретін субъекті түрі немесе объектісі ID үшін тек метамәдени оқиғаларға жазылу.
 
 ## Сұрақтар {#queries}
 
-Метамәліметтер сұралған объектінің бөлігі ретінде қайтарылады. Мысалы, [`FindAccountById`](/kk/reference/queries.md#accounts-and-permissions), [`FindDomainById`](/kk/reference/queries.md#domains-and-peers), немесе [`FindAssetDefinitionById`](/kk/reference/queries.md#assets-nfts-and-rwas). Пайдалану [`FindNfts`](/kk/reference/queries.md#assets-nfts-and-rwas) немесе [`FindNftsByAccountId`](/kk/reference/queries.md#assets-nfts-and-rwas) үшін NFTs, және [`FindRwas`](/kk/reference/queries.md#assets-nfts-and-rwas) үшін RWA Одан кейін объектінің метамәліметрі өрісін оқыңыз. NFT Сұрау салуға жауаптар NFT `content` картасы - жазудың метамәдени деректері.
+Метамәліметтер сұралған объектінің бөлігі ретінде қайтарылады. Мысалы, [`FindAccountById`](/kk/reference/queries.md#accounts-and-permissions), [`FindDomainById`](/kk/reference/queries.md#domains-and-peers), немесе [`FindAssetDefinitionById`](/kk/reference/queries.md#assets-nfts-and-rwas) қолданыңыз. [`FindNfts`](/kk/reference/queries.md#assets-nfts-and-rwas) немесе [`FindNftsByAccountId`](/kk/reference/queries.md#assets-nfts-and-rwas) NFTs, және [`FindRwas` ](/kk/reference/queries.md#assets-nfts-and-rwas) RWA партияларын пайдаланыңыз. Содан кейін нысанның метамәліметрі өрісін оқыңыз. NFT сұраныс жауаптары NFT `content` картасын жазба метамәлімелімелі ретінде көрсетеді.
 
 Метамәліметтер кілтілері бухгалтерлік жазбаның бір бөлігі болып табылады, сондықтан оларды тұрақты ұстаңыз және JSON мәні сол нұсқаны айқын алып жүрсе, қолданбаға сәйкес нұсқаны кодтаудан аулақ болу керек.

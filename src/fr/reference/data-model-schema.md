@@ -8,10 +8,6 @@ translation_engine: nllb-200-ct2
 
 # Schéma de modèle de données {#data-model-schema}
 
-Cette page est générée avec `kagami advanced schema` de ceux qui sont attachés
-[`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha)
-Révision enregistrée par le flux de travail de mise à jour de la documentation.
-est vérifié dans ce référentiel de sorte que les constructions normales de documentation ne nécessitent pas
-une Iroha la vérification de la source.
+Cette page est générée avec `kagami advanced schema` à partir de la révision enfoncée [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) enregistrée par le flux de travail de rafraîchissement de documentation. L'instantané rendu est vérifié dans ce référentiel afin que les constructions normales de documentation ne nécessitent pas une sortie de source Iroha.
 
 <DataModelSchema />

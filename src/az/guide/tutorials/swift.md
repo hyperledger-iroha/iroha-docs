@@ -83,7 +83,7 @@ if #available(iOS 15.0, macOS 12.0, *) {
 
 Eyni istifadə edin. `URLSession` yoxlama `https://taira.sora.org/v1/assets/definitions?limit=5` Sən bina qurursan UI və davranışını yenidən sınayın. `IrohaSDK` yalnız tətbiq etibarlı saxlama vasitəsilə imzalanma materialını yüklədikdən sonra və hesabın maliyyələşdirilməsindən sonra köməkçi göndərin Taira.
 
-Bir əməliyyat qurmaq və təqdim etmək üçün `IrohaSDK` köməkçilərindən istifadə edin.
+Bir əməliyyat qurmaq və təqdim etmək üçün `IrohaSDK` köməkçilərindən istifadə edin. Bunlar yerli körpü dəstəklənmiş əməliyyat koderini çağırır:
 
 ```swift
 let transfer = TransferRequest(
@@ -123,7 +123,7 @@ let pqSdk = IrohaSDK(
 let signingKey = try pqSdk.generateSigningKey()
 ```
 
-`SigningAlgorithm` enumunda hazırda Ed25519, secp256k1, BLS normal və kiçik variantlar, ML-DSA, GOST R 34.10-2012 parametrlər dəstləri və SM2 daxildir.
+`SigningAlgorithm` enumunda hazırda Ed25519, secp256k1, BLS normal və kiçik variantlar, ML-DSA daxildir. GOST R 34.10-2012-ci il parametrləri və SM2. Ed25519 rahatlıq yolu xaricində yerli körpü dəstəyi tələb olunur.
 
 ## Bağlantı {#connect}
 

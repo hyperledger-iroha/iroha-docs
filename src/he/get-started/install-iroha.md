@@ -6,28 +6,26 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# תקין Iroha 3 {#install-iroha-3}
+# להתקין Iroha 3 {#install-iroha-3}
 
-דף זה מכסה את זרימת העבודה הנוכחית של התקנת Iroha 3 שרשרת כלים
-ובלוגים בינאריים שמשתמשים בזרם העליון `hyperledger-iroha/iroha` מקום עבודה.
+דף זה מכסה את זרימת העבודה הנוכחית להתקנה של שרשרת הכלים Iroha 3 והשניות המשתמשות במרחב עבודה `hyperledger-iroha/iroha` מקדימה.
 
 ## 1. תנאים מוקדמים {#_1-prerequisites}
 
 תקין את זה קודם:
 
-- [rustup](https://www.rust-lang.org/tools/install), אז המעטה
-  `rust-toolchain.toml` שרשרת הכלים (`1.93.1`) מתקין באופן אוטומטי
+- [rustup](https://www.rust-lang.org/tools/install), כך שרשרת הכלים `rust-toolchain.toml` המחוברת (`1.93.1`) מותקנת באופן אוטומטי
 - `git`
-- בחירה, Docker ו Docker Compose עבור ההתחלה המהירה המקומית
+- באופן אופציונלי, Docker ו Docker Compose עבור ההתחלה המהירה המקומית של מספר משותפים
 
-## 2. קלון את חלל העבודה {#_2-clone-the-workspace}
+## 2. מקלון את החלל העבודה {#_2-clone-the-workspace}
 
 ```bash
 git clone https://github.com/hyperledger-iroha/iroha.git
 cd iroha
 ```
 
-## 3. לבנות את מקום העבודה {#_3-build-the-workspace}
+## 3. לבנות את מרחב העבודה {#_3-build-the-workspace}
 
 לבנות הכל:
 
@@ -41,9 +39,9 @@ cargo build --workspace
 cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ```
 
-השבדים המוצאים נכתבים ל: `target/debug/` או `target/release/`.
+השניים המוצאים נכתבים ל- `target/debug/` או `target/release/`.
 
-## 4. לבדוק את הכלים המוסמכים {#_4-verify-the-installed-tools}
+## 4. לבדוק את הכלים המקימים {#_4-verify-the-installed-tools}
 
 ```bash
 cargo run --bin irohad -- --help
@@ -51,19 +49,17 @@ cargo run --bin iroha -- --help
 cargo run --bin kagami -- --help
 ```
 
-שלושת השולשנים שתשתמשו בהם בדרך כלל הם:
+שלושת השניים שתשתמשו בהם בדרך כלל הם:
 
-- `irohad` עבור הדיימון של השותפים
-- `iroha` עבור CLI גישה Torii נקודות הסיום של המפעיל
-- `kagami` עבור מפתחות, מגניפי גנזה ופרופילים של רשת מקומית
+- `irohad` עבור הדיימון השותף
+- `iroha` עבור גישה ל- CLI ל- Torii ולנקודות הסיום של המפעיל
+- `kagami` עבור מפתחות, פרופיל גנזיס ופרופילים של רשת מקומית.
 
-## 5. רשת מקומית אופציונלית Docker דרך {#_5-optional-localnet-and-docker-path}
+## 5. רשת מקומית אופציונלית ודרך Docker {#_5-optional-localnet-and-docker-path}
 
-זרימת הרשת המקומית הנוכחית הנמכנת במקור נוצרת Kagami. זה כותב עמיתי
-קונפיגס, ארטיפקטים של הגנזה, קונפיגור לקלינט, תסריטים עוזרים
-תורגם קבוצה שמתאימה לקוד הנבדק:
+זרימת ה-localnet הנוכחית בתמיכה במקור נוצרת על ידי Kagami. היא כותבת קונפיג'ים של עמיתים, ארטיפקטים של גנזיס, קונפיגור לקלינט, תסריטים של עוזר, וקובץ Compose אופציונלי שמתאים לקוד המוצא:
 
-- `kagami localnet` עבור כתבי עמיתי מקומיים
-- `kagami docker` עבור Docker Compose נבנתה מפריט לוקלינט
+- `kagami localnet` עבור כתבי עמיתי מקומיים ילידים
+- `kagami docker` עבור Docker Compose שנוצר מפריט רשת מקומית.
 
 המשך עם [שיגור Iroha 3](/he/get-started/launch-iroha.md).

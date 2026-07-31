@@ -8,81 +8,52 @@ translation_engine: nllb-200-ct2
 
 # Anonim bitimlar {#anonymous-transactions}
 
-O ' zbekiston Respublikasining Iroha maxfiy aktivdan qurilgan
-Operatsiyalar. O'rniga davlat hisobidan hisob raqamiga o'tkaziladigan transferlar
-davlat summasi, pulka qiymati shieldli kitobga o'tadi va keyin sarflaydi
-nol bilimni isbotlaydigan shaffof notlar.
+Iroha da anonim tranzaksiyalar maxfiy aktivlar operatsiyalaridan tashkil etiladi. Ochiq miqdordagi hisobvaraqdan hisobvaraqqa o'tkaziladigan transferlarni yozishning o'rniga, pulka qiymati himoyalangan katta kitobga o'tadi va so'ngra nol bilimli dalillar bilan shaffof notlarni sarflaydi.
 
-Umumiy kitobda hali ham maxfiy operatsiya sodir bo'lganligi qayd etilgan.
-majburiyatlarni, bekor qiluvchilarni, dalillar hashlarini va hodisalarni qayd etadi, ammo u
-nota egasi, oluvchisi yoki to'liq to'lovlar uchun miqdorni yozib olish
-O ' zgarishi. Odatiy tranzaksiya zarfida hali ham taqdim etilgan
-hisob, shuning uchun "anonim" bu yerda anonim aktivlar harakatini anglatadi, avtomatik emas
-tarmoq yoki hisob darajasida anonimlik.
+Umumiy kitobda hali ham maxfiy operatsiya sodir bo'lganini qayd etadi. U majburiyatlarni, bekor qiluvchilarni, dalillar hashlarini va hodisalarni qayd qiladi, ammo notaning egasi, qabul qiluvchisi yoki shield-to-shield harakatlari uchun miqdorni qayd qilmaydi. Oddiy tranzaksiya qadoqchasi hali ham taqdim etuvchi hisobotni oshkor qilishi mumkin, shuning uchun "anonim" bu yerda anonim aktivlar harakatini anglatadi va tarmoq darajasidagi yoki hisob darajasidagi avtomatik anonimlikni anglatmaydi.
 
 ## Qurilish bloklari {#building-blocks}
 
-| Konsepsiya            | Ledgerning ifodalash usuli                                                                                              |
+|Konsepsiya |Ledgerning koʻrsatkichi |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------ |
-| Qadoqlangan not      | Asosiy aktiv, miqdor, egasining ma'lumotlari va tasodifiylikni o'z ichiga olgan xususiy hamyon.                                   |
-| Bandlik         | 32-baytlik ommaviy qiymat, uning maydonlarini oshkor qilmasdan notaga bog'liq.                                        |
-| Nullatgich          | Notani sarflash paytida olinadigan 32 baytlik ommaviy qiymat. Iroha ikki marta sarflanishni oldini olish uchun takrorlangan bekor qiluvchilarni rad etadi. |
-| Merkle ildizlari        | Asosiy aktivlarning majburiyat daraxtining yaqindagi ildizidir.                        |
-| Ishonchli qo'shimcha   | A `ProofAttachment` tasdiqlash byetlari va tekshirish kalitining ma'lumotnomasi yoki o'z ichiga oluvchi tekshiruv kaliti mavjud.                 |
-| Maxfiy tadbir | Katta hisobda sodir bo ' lgan voqealar: `ConfidentialEvent::Shielded`, `Transferred`, yoki `Unshielded`.                              |
+|Qadoqlangan notasi|Muruvni, miqdorni, egasining ma'lumotlarini va tasodifiylikni o'z ichiga olgan xususiy hamyon yozuvi.|
+|Bagʻishlanish |32 baytli umumiy qiymat, uning maydonlarini oshkor qilmasdan notaga bog'liq. |
+|Nulllashtiruvchi |Iroha ikki marta sarflanmaslikni oldini olish uchun takrorlangan bekor qiluvchilarni rad etadi. |
+|Merkle ildizlari |Asosiy aktivlarning majburiyat daraxtining yaqindagi ildizidir.|
+|Ishonchli qoʻshish |`ProofAttachment`da dalil baytlari va tasdiqlash kalitining ma'lumotnomasi yoki chiziqdagi tekshirish kalitini o'z ichiga olgan. |
+|Maxfiy voqea |`ConfidentialEvent::Shielded`, `Transferred` yoki `Unshielded` kabi katta daftardagi hodisa. |
 
 Asosiy ko'rsatmalar quyidagicha:
 
-- `RegisterZkAsset`: aktivni ZK-qudratli va bog'liq o'tkazish,
-  shield va shieldsiz tekshirish kalitlari.
+- `RegisterZkAsset`: aktivni ZK qobiliyatiga ega sifatida ro'yxatdan o'tkazadi va transfer, shield va shieldsiz tekshirish kalitlarini bog'laydi.
 - `Shield`: davlat balansini debitatsiya qiladi va himoyalangan nota majburiyatlarini qo'shib beradi.
-- `ZkTransfer`: qadoqlangan qog'ozlarni yangi qadoqlanadigan qog'ozlarga sarflaydi.
-- `Unshield`: saqlangan qog'ozlarni sarflaydi va davlat hisobidan balansni kreditlaydi.
-- `ScheduleConfidentialPolicyTransition` va
-  `CancelConfidentialPolicyTransition`: aktivning maxfiyligini o'zgartirish
-  siyosat boshqaruvi orqali amalga oshiriladi.
+- `ZkTransfer`: qo'lga kiritilgan qog'ozlarni yangi qo'lga olingan qog'ozlarga sarflaydi.
+- `Unshield`: himoyalangan qog'ozlarni sarflaydi va davlat hisobidan qoldiqni kreditlaydi.
+- `ScheduleConfidentialPolicyTransition` va `CancelConfidentialPolicyTransition`: aktivning maxfiylik siyosatini boshqaruv orqali o'zgartirish.
 
-Asset ta'rifida shuningdek
-[`AssetConfidentialPolicy`](/uz/reference/data-model-schema.md).
-To'sishlarni nazorat qiluvchi siyosat usuli:
+Asset ta'rifida shuningdek: [`AssetConfidentialPolicy`](/uz/reference/data-model-schema.md). To'sishlarni nazorat qiluvchi siyosat usuli haqiqiy:
 
-| Modus              | Ma'nosi                                                          |
+|Modus |Maʼnosi |
 | ----------------- | ---------------------------------------------------------------- |
-| `TransparentOnly` | Faqatgina odatiy davlat balanslari va o'tkazmalar qabul qilinadi.          |
-| `Convertible`     | Foydalanuvchilar qiymatni davlat balanslari va qo'riqlangan notlar o'rtasida harakatlashi mumkin. |
-| `ShieldedOnly`    | Assetlarni chiqarish va o'tkazmalar himoyalangan katta kitobda saqlanishi kerak.   |
+|`TransparentOnly` |Faqatgina oddiy davlat balanslari va o'tkazmalar qabul qilinadi. |
+|`Convertible` |Foydalanuvchilar qiymatni ommaviy balanslar va qo'riqlangan qog'ozlar o'rtasida o'tkazishi mumkin. |
+|`ShieldedOnly` |Assetlarni chiqarish va o'tkazmalar himoyalangan kitobda qolishi kerak. |
 
 ## Ulardan qanday foydalanish mumkin {#how-to-use-them}
 
-1. Validator nodlarida maxfiylikni qo'llab-quvvatlash imkonini beradi.
-   tekshiruvchining orqa tomoni, faol tekshirish kalitlari, Poseidon/Pedersen parametrlari
-   IDs, va maxfiy qoidalar versiyasi.
-   maxfiy xususiyatlarning to'g'ri yo'qlangan taomlari.
-2. Oʻz ichiga olgan maʼlumotlar va parametrlar toʻplamlarini nashr etish yoki qayd etish
-   Kiritlar va operatorlar kalitlarga murojaat qilishlari kerak
-   `VerifyingKeyId`, misol uchun `halo2/ipa:vk_transfer`.
-3. Aktivni quyidagicha qayd etish ZK- qobiliyatli `RegisterZkAsset`, yoki a bosqichida
-   siyosatdan o'tish `TransparentOnly` to `Convertible` yoki
-   `ShieldedOnly`.
-4. Davlat mablag'larini himoya qilish `Shield`. Pulka qogʻoz bilan bogʻliq .
-   va qabul qiluvchi uchun kodlangan foydali yukni taqdim etmasdan oldin
-   muomala.
-5. Xususiy ravishda o ' tkazish `ZkTransfer`. Pul pulchasi bu borada dalillar yaratadi .
-   kirish yozuvlariga egalik qiladi, kirish va chiqish qiymatlari muvozanatga ega bo'ladi va
-   har bir sarflangan notani yaqindagi majburiyat daraxtiga bog'lab qo'yilgan.
-6. Agar aktivlar siyosati ruxsat bersa, faqat qo'lga kiritiladi. `Unshield` ta'kidlaydi
-   davlat summasi va oluvchi hisobvarag'i, xususiy notalarni bekor qiluvchi mablag'ni sarflaydi;
-   va xususiy o'zgarish mahsulotlarini yaratishi mumkin.
-7. Maxfiy hodisalarni o'qish, dalillar to'g'risidagi hujjatlar, bekor qiluvchi statusni o'qib audit qilish;
-   va anonim depozitlar to ' g'risidagi yozuvlar tizilgan so ' rovlar orqali; Torii yakuniy nuqtalar.
+1. Validator nodlarda maxfiylikni qo'llab-quvvatlashni o'zlashtiring. Validatorlar tekshiruvchining orqa tomoni, faol tekshirish kalitlari, Poseidon/Pedersen parametrlari IDs va maxfiy qoidalar versiyasi bo'yicha kelishuvga erishishlari kerak.
+2. Circuitlarda ishlatiladigan tekshirish kalitlari va parametrlar to'plamlarini e'lon qilish yoki qayd etish. `VerifyingKeyId`, misol uchun `halo2/ipa:vk_transfer`.
+3. Aktivni ZK-qudratli sifatida `RegisterZkAsset` bilan ro'yxatdan o'tkazing yoki `TransparentOnly` dan `Convertible` yoki `ShieldedOnly` ga siyosat o'tishining bosqichini ko'rsating.
+4. Umumiy mablag'larni `Shield` bilan himoya qiling. Pulchka tranzaksiyani taqdim etishdan oldin oluvchi uchun nota majburiyatini va shifrlangan foydali yukni yaratadi.
+5. `ZkTransfer` bilan xususiy ravishda o'tkazib yuborish. Pulka kirish yozuvlariga egaligi, kirish va chiqish qiymatlari muvozanati va har bir sarflangan yozuv so'nggi majburiyat daraxtiga asoslanganligini isbotlaydi.
+6. `Unshield` ommaviy miqdorni va oluvchi hisobini oshkor qiladi, xususiy notalarni bekor qiluvchi mablag'ni sarflaydi va xususiy o'zgarishlarni yaratishi mumkin.
+7. Maxfiy hodisalarni, dalillar yozuvlarini, bekor qiluvchi statusini va anonim depozit yozuvlarini Torii oxirgi nuqtalari orqali o'qish orqali audit qilish.
 
 ## CLI Misollar {#cli-examples}
 
-O ' zbekiston Respublikasi ZK CLI Qo'riqchi Minorasi Jamiyati tomonidan ko'rsatilayotgan ma'lumotlar
-pulparchalar majburiyatlarni, shifrlangan foydali yuklarni va
-hosil bo'lgan ko'rsatmalarni taqdim etishdan oldin portfel/prover kutubxonasi.
+ZK CLI buyruqlari operator va sinov oqimlari uchun mo'ljallangan. Ishlab chiqarish hamyonlari natijada ko'rsatmalarni taqdim etishdan oldin majburiyatlarni, shifrlangan faydali yuklarni va sertifikatlarni hammon/prover kutubxonasi bilan hosil qilishlari kerak.
 
-Hibridni ro'yxatdan o'tkazish ZK-qudratli aktiv:
+Hybrid ZK -ga ega bo'lgan aktivni ro'yxatdan o'tkazish:
 
 ```bash
 iroha app zk register-asset \
@@ -94,7 +65,7 @@ iroha app zk register-asset \
   --vk-shield halo2/ipa:vk_shield
 ```
 
-Qadoqlangan not uchun shriftli shifrlangan fayzli yuk zarfini yaratish:
+Qadoqlangan nota uchun shriftli shifrlangan fayzli yuk zarfini yaratish:
 
 ```bash
 iroha app zk envelope \
@@ -116,7 +87,7 @@ iroha app zk shield \
   --enc-payload note-envelope.bin
 ```
 
-Dastlabki bog'liq bo'lgan shieldsiz JSON:
+Qutqaruvli qo'llanma JSON:
 
 ```bash
 cat > unshield-proof.json <<'JSON'
@@ -140,8 +111,7 @@ iroha app zk unshield \
 
 ## SDK Misol {#sdk-example}
 
-To'g'ri dalil baytlari konfiguratsiyalangan dalil orqa tomondan keladi.
-Transaksiya fayzli yuk faqat ommaviy ma'lumotlarni va dalillar ilovalarini talab qiladi:
+To'g'ri dalil bytlari konfiguratsiyalangan dalil orqa tomondan keladi. Transaksiya faydali yuk faqat ommaviy kirish va dalil ilovalariga ega:
 
 ```rust
 use iroha_data_model::{
@@ -199,57 +169,40 @@ fn unshield_instruction(
 
 ## Anonim aktivlar depozitasi {#anonymous-asset-escrow}
 
-Anonim aktivlar garovida o'sha himoyalashtirilgan transfer mashinalari ishlatiladi
-Partiyalar va depozit holati hali ham
-kredit hisobini saqlab qolish, ammo moliyalashtirish, ozod qilish, bekor qilish va hal etish to'g'risidagi
-qo'llash shieldlangan bekor qilish vositalarini va chiqish majburiyatlarini.
+Anonim aktivlar garovida saqlangan qiymat uchun bir xil himoyalangan o'tkazib berish mashinasi ishlatiladi. Tomonlar va garov holatlari hali ham garovda qayd etiladi, ammo moliyalashtirish, ozod qilish, bekor qilish va hal etish yo'nalishlarida himoya qilingan nullifierlar va ishlab chiqarish majburiyatlaridan foydalanadi.
 
-Ma'lumot uchun depozit ISI xulq-atvor va misollar, qarang
-[Asosiy aktivlar eskorovi](/uz/blockchain/escrow.md#anonymous-escrow).
+ISI eskorning xatti-harakati va misollar haqida batafsil ma'lumot olish uchun [ Native Asset Escrow](/uz/blockchain/escrow.md#anonymous-escrow) ni ko'ring.
 
-Hayot davri:
+Hayot davri quyidagicha:
 
-1. `OpenAnonymousAssetEscrow` qo'riqlangan mablag'lar bilan ta'minlanadi va bir
-   garovga olish majburiyati.
+1. `OpenAnonymousAssetEscrow` himoyalangan moliyalashtirish notlarini sarflaydi va bir depozit majburiyatini yaratadi.
 2. `AcceptAnonymousAssetEscrow` xaridorni qayd etadi.
-3. `MarkAnonymousEscrowPaymentSent` xaridorning to'lovni yuborganligi haqidagi hujjatlar
-   zanjirdan tashqarida.
-4. `ReleaseAnonymousAssetEscrow` xaridorga qarzdorlik majburiyatini sarflaydi
-   ishlab chiqarish majburiyatlari.
-5. `CancelAnonymousAssetEscrow` garov majburiyatini sotuvchisiga qaytaradi
-   to'lov belgilab qo'yilmagan bo'lsa ishlab chiqarish majburiyatlari.
-6. `OpenAnonymousEscrowDispute` va `ResolveAnonymousEscrowDispute` qo'llanma
-   dalillar hashs va resolver tomonidan nazorat qilinadigan bo'linish bilan nizoli depozitlar.
+3. `MarkAnonymousEscrowPaymentSent` xaridorning to'lovni zanjirdan tashqarida yuborganini qayd etadi.
+4. `ReleaseAnonymousAssetEscrow` garov majburiyatlarini xaridor ishlab chiqarish majburiyatlar uchun sarflaydi.
+5. `CancelAnonymousAssetEscrow` to'lov belgilab qo'yilmagan bo'lsa, depozit majburiyatini sotuvchining ishlab chiqarish majburiyatiga qaytaradi.
+6. `OpenAnonymousEscrowDispute` va `ResolveAnonymousEscrowDispute` nizoli garovlarni dalillar hashlari va hal qiluvchining nazoratida bo'lgan ajratish bilan boshqarish.
 
-Ushbu maʼlumotlar bilan bogʻliq boʻlgan anonim eskor savollaridan foydalaning .
-[Savollar](/uz/reference/queries.md#escrow-and-proof-records) depozitni tekshirish
-yozuvlar va statuslar.
+[Savollar ](/uz/reference/queries.md#escrow-and-proof-records)-da ko'rsatilgan anonim depozit so'rovlaridan foydalanib, depozit yozuvlari va statuslarini tekshiring.
 
 ## Matematika {#math}
 
-Quyidagi belgilar maxfiy aktivlar oqimini tasvirlaydi.
-faol aylanmani va parametrni ishlatish IDs aktiv siyosati va tekshiruvdan
-reyestr, shuning uchun mijozlar majburiyatlarni, bekor qiluvchilarni va dalil baytlarini ko'rib chiqishlari kerak
-pulmonaning/proverning shaffof bo'lmagan chiqindilari sifatida.
+Quyidagi notatsiya maxfiy aktiv oqimini tasvirlaydi. Amalga oshirishlar aktiv siyosati va tasdiqlovchi ro'yxatidan IDs faol aylanmasi va parametridan foydalanadi, shuning uchun mijozlar majburiyatlarni, bekor qiluvchilarni va dalil baytlarini qopchiq / provatorning shaffof chiqindilari sifatida ko'rib chiqishlari kerak.
 
-Qadoqlangan yozuv quyidagicha tasvirlanishi mumkin:
+Qadoqlangan notani quyidagicha tasvirlash mumkin:
 
 $$
 n = (\mathsf{asset}, \mathsf{amount}, \mathsf{owner}, \rho)
 $$
 
-qaerda `owner` qabul qiluvchi tomonidan ko'rilgan yoki sarflangan materialdan kelib chiqadi va
-`rho` shuni ta'kidlash kerakki, tasodifiylik.
+`owner` oluvchining ko'rish yoki sarflash materialidan kelib chiqqan bo'lsa, `rho` esa tasodifiylik deb ta'kidlanadi.
 
-Yozuv majburiyati yashirin majburiyatdir:
+Yozuv majburiyati - bu yashirin majburiyat:
 
 $$
 C = \mathsf{Commit}(\mathsf{asset}, \mathsf{amount}, \mathsf{owner}, \rho)
 $$
 
-Joriy maxfiy uzatish maydonlari uchun jamoatchilik kirish qismlari
-qo'shimcha majburiyatlarni, bekor qiluvchilarni, Merkle ildizini, aktivni va zanjirni belgilash.
-Duruvda bunday shakldagi majburiyat munosabatlari ta'minlanadi:
+Joriy maxfiy uzatish maydonlari uchun ommaviy kirishlar nota majburiyatlari, bekor qiluvchi, Merkle ildiz, aktiv belgisi va zanjir belgisini o'z ichiga oladi. Maydon bunday shakldagi majburiyat munosabatini qo'llaydi:
 
 $$
 C = H_c(\mathsf{amount}, \rho, \mathsf{owner\_tag}, \mathsf{asset\_tag})
@@ -261,63 +214,52 @@ $$
 N = H_n(\mathsf{spend\_key}, \rho, \mathsf{asset\_tag}, \mathsf{chain\_tag})
 $$
 
-`N` Bu notani oshkor qilmaydi, lekin bu not uchun barqaror
-va zanjir, shuning uchun Iroha bir xil bekor qiluvchi bilan ikkinchi xarajatni rad etish mumkin.
+`N` ommaviy. U notani oshkor qilmaydi, lekin bu nota va zanjir uchun barqaror, shuning uchun Iroha bir xil bekor qiluvchi bilan ikkinchi sarfni rad qilishi mumkin.
 
-Bog'liqlik daraxti notalar mavjudligini isbotlaydi. Agar pulparast majburiyatni sarflasa
-`C_i`, dalilda Merkle yo'nalishidagi xususiy `C_i` so ' nggi
-ommaviy ildiz:
+Bag'ishlov daraxti not mavjudligini isbotlaydi. Agar pulka `C_i` bag'ishlovni sarflasa, dalil `C_i` dan so'nggi ommaviy ildizgacha bo'lgan xususiy Merkle yo'lini o'z ichiga oladi:
 
 $$
 \mathsf{MerkleRoot}(C_i, \mathsf{path}) = R
 $$
 
-Qutqaruvdan to'siqsiz o'tkazish uchun dalil qiymatni ham tasdiqlaydi
-saqlanishi:
+Qo'riqlangan to'siqdan qo'riqlangan o'tkazuv uchun dalil qiymatni saqlab qolishni ham ta'minlaydi:
 
 $$
 \sum \mathsf{inputs} = \sum \mathsf{outputs}
 $$
 
-Qo'riqlanmagan mablag' uchun davlat summasi:
+Qo'llanma bo'lmagan sumka uchun:
 
 $$
 \sum \mathsf{inputs} = \mathsf{public\_amount} + \sum \mathsf{private\_change}
 $$
 
-Taqdim etilgan dalilni quyidagicha qisqartirish mumkin:
+Taqdim etilgan dalillarni quyidagicha qisqartirish mumkin:
 
 $$
 \mathsf{Verify}(\mathsf{vk}, \mathsf{public\_inputs}, \pi) = \mathsf{true}
 $$
 
-qaerda `public_inputs` majburiyatlar, bekor qiluvchilar, ildiz, aktiv belgisi,
-Chain tag, va har qanday ommaviy qo'riqlanmagan miqdor. Shohid notani o'z ichiga oladi
-miqdori, tasodifiylik, sarflash materiallari va Merkle yo'nalishlari.
-ko'rsatkichlar va keyinchalik mutatsiyalar bo'yicha hisob qaydnomasini ishlab chiqarish majburiyatlarini qo'shish orqali;
-kiritishlarni bekor qiluvchilarni sarflangan deb belgilash.
+`public_inputs` bo'lgan majburiyatlar, nullifikatorlar, ildiz, aktiv belgisi, zanjir belgisi va har qanday ommaviy qo'riqlanmagan summani ko'rsatadi. Shahodat not miqdorlarini, tasodifiylikni, xarajat materialini va Merkle yo'llarini o'z ichiga oladi. Validatorlar dalilni tasdiqlaydilar, so'ngra chiqish majburiyatlarini qo'shish va kirish bekor qiluvchilarni sarflangan sifatida belgilash orqali kitob holatini o'zgartiradilar.
 
-## Nima ommaviy bo'ladi {#what-is-public}
+## Hammaga ma'lum narsa {#what-is-public}
 
-Anonim bitimlar har bir kuzatilishi mumkin bo'lgan faktni maxfiylashtirmaydi.
-quyidagi ma'lumotlar hali ham ommaviy bo'lishi mumkin:
+Anonim bitimlar har bir kuzatuvli faktni maxfiylashtirmaydi. Quyidagi ma'lumotlar hali ham ommaviy bo'lishi mumkin:
 
 - Transaksiya hash, blok balandligi va buyurtma berish
-- taqdim etuvchi bitim hokimiyati, agar arizada
-  xususiy kirish punkti yoki relayer namunasi
-- ishlatilayotgan aktiv ta'rifini
-- bekor qiluvchi va chiqindi majburiyatlari
-- isbot hashlari, tasdiqlash kalitining ma'lumotlari va ixtiyoriy paket hashlari
-- davlat miqdori va oluvchi hisob raqami `Unshield`
-- anonim depozit sotuvchi, xaridor, status, vaqt belgilari va dalillar hash
+- taqdim etuvchi bitim hokimiyati, agar ariza xususiy kirish punkti yoki relayer namunasiga ega bo'lmasa;
+- qo'llanilayotgan aktiv ta'rifi
+- nullifiers va ishlab chiqarish majburiyatlari
+- tasdiqlovchi hashlar, tasdiqlash kalitlari bo'yicha ma'lumotlar va ixtiyoriy xashlar
+- `Unshield` uchun davlat summasi va oluvchi hisob raqami
+- Anonim garov sotuvchi, xaridor, holati, vaqt belgilari va dalillar hash
 
-Ushbu ommaviy metadatalar biznesni oshkor qilmasligi uchun ilovalarni loyihalashtirish
-Siz himoya qilishga harakat qilayotgan munosabat.
+Ilovalarni loyihalashtirish, shunda ushbu ommaviy metadata siz himoya qilmoqchi bo'lgan ishbilarmonlik munosabatlarini oshkor etmaydi.
 
-## Tegishli ma'lumot {#related-reference}
+## Bog'liq ma'lumot {#related-reference}
 
 - [`AssetConfidentialPolicy`](/uz/reference/data-model-schema.md)
 - [`ConfidentialEvent`](/uz/reference/data-model-schema.md)
 - [`ProofAttachment`](/uz/reference/data-model-schema.md)
 - [`SignedTransaction.attachments`](/uz/reference/data-model-schema.md)
-- [Qimmatli qog'ozlarni saqlash va tasdiqlash so'rovlari](/uz/reference/queries.md#escrow-and-proof-records)
+- [Garov va dalillar so'rovlari](/uz/reference/queries.md#escrow-and-proof-records)

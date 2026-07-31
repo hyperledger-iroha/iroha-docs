@@ -6,20 +6,10 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Expressions, conditions et logique {#expressions-conditionals-logic}
+# Les expressions, les conditions et la logique {#expressions-conditionals-logic}
 
-Tout le monde [Iroha Instructions spéciales](./instructions.md) fonctionnent sur les expressions.
-Chaque expression a une `EvaluatesTo`, qui est utilisé dans l'enseignement
-Bien que vous puissiez spécifier le nom du compte directement,
-indiquer également le compte ID par une opération mathématique ou de cordes.
-peut vérifier si un compte est enregistré sur la blockchain aussi.
+Tout le monde [Iroha Instructions spéciales](./instructions.md) L'objectif de l'expression est d'utiliser les `EvaluatesTo`, Bien que vous puissiez spécifier le nom du compte directement, vous pourriez également spécifier le compte ID Vous pouvez vérifier si un compte est enregistré sur la blockchain aussi.
 
-Utilisation d'expressions qui mettent en œuvre `EvaluatesTo<bool>`, Vous pouvez mettre en place
-L'exécution des opérations plus sophistiquées sur la chaîne.
-par exemple, vous pouvez soumettre une `Mint` instruction uniquement si un compte spécifique est
-enregistré.
+En utilisant des expressions qui mettent en œuvre `EvaluatesTo<bool>`, vous pouvez configurer une logique conditionnelle et exécuter des opérations plus sophistiquées sur chaîne. Par exemple, vous ne pouvez soumettre une instruction `Mint` que si un compte spécifique est enregistré.
 
-Rappelez-vous que vous pouvez combiner cela avec des requêtes, et en tant que tel, vous pouvez programmer le
-blockchain pour faire des choses incroyables. _le plus intelligent
-Les contrats_, la caractéristique déterminante de l'utilisation avancée de la blockchain
-La technologie.
+Rappelez-vous que vous pouvez combiner cela avec des requêtes, et en tant que tel, vous pouvez programmer la blockchain pour faire des choses incroyables. C'est ce que nous appelons des contrats intelligents, la caractéristique définitive de l'utilisation avancée de la technologie Blockchain.

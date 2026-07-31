@@ -6,60 +6,52 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Les jetons d'accès {#permission-tokens}
+# Les jetons d'autorisation {#permission-tokens}
 
-Cette page répertorie les types de jetons d'autorisation par défaut exposés par le courant
-Iroha Modèle de données d'exécuteur. Pour le guide conceptuel des rôles et autorisations,
-voir [Autorisations](/fr/blockchain/permissions.md).
+Cette page répertorie les types de jetons d'autorisation par défaut exposés par le modèle de données actuel Iroha. Pour un guide conceptuel des rôles et autorisations, voir [Permissions](/fr/blockchain/permissions.md).
 
-Les contrôles d'autorisation sont exécutés par le validateur d'exécution actif.
-les noms ci-dessous décrivent la surface de politique standard, mais un réseau peut personnaliser
-la validation du temps d'exécution par mise à niveau de l'exécuteur.
+Les vérifications d'autorisation sont exécutées par le validateur active de l'exécution.
 
-## Les jetons par défaut {#default-tokens}
+## Des jetons par défaut {#default-tokens}
 
-| Token d'autorisation | Catégorie | L'opération |
+|Symbole d' autorisation|Catégorie |Opération |
 | --- | --- | --- |
-| `CanManagePeers` | Peer | Inscrivez-vous, retirez-vous ou gérez vos pairs. |
-| `CanManageLaneRelayEmergency` | Peer | Gérer les commandes de relais d'urgence. |
-| `CanRegisterDomain` | Domaine | Enregistrer un domaine. |
-| `CanUnregisterDomain` | Domaine | Déloignez un domaine. |
-| `CanModifyDomainMetadata` | Domaine | Modifiez les métadonnées du domaine. |
-| `CanRegisterAccount` | Compte | Enregistrer un compte. |
-| `CanUnregisterAccount` | Compte | Déloculez un compte. |
-| `CanModifyAccountMetadata` | Compte | Modifiez les métadonnées du compte. |
-| `CanUnregisterAssetDefinition` | Définition des actifs | Déloyer une définition d'actif. |
-| `CanModifyAssetDefinitionMetadata` | Définition des actifs | Modifier les métadonnées de la définition d'actif. |
-| `CanMintAssetWithDefinition` | Les actifs | Les actifs de la Monnaie pour une définition spécifique. |
-| `CanBurnAssetWithDefinition` | Les actifs | Brûler des actifs pour une définition spécifique. |
-| `CanTransferAssetWithDefinition` | Les actifs | Transfert d'actifs pour une définition spécifique. |
-| `CanMintAsset` | Les actifs | Faire une balance d'actifs spécifique. |
-| `CanBurnAsset` | Les actifs | Brûler un solde d'actifs spécifique. |
-| `CanTransferAsset` | Les actifs | Transférer un solde d'actifs spécifique. |
-| `CanRegisterNft` | NFT | Enregistrer une NFT. |
-| `CanUnregisterNft` | NFT | Délocation de l'inscription NFT. |
-| `CanTransferNft` | NFT | Transférer une NFT. |
-| `CanModifyNftMetadata` | NFT | Modifier NFT les métadonnées. |
-| `CanSetParameters` | Paramètres | Définir les paramètres de configuration en chaîne. |
-| `CanManageRoles` | Les rôles | Enregistrer, retirer, accorder ou révoquer des rôles. |
-| `CanRegisterTrigger` | Le déclencheur | Enregistrez une gâchette. |
-| `CanExecuteTrigger` | Le déclencheur | Exécutez un déclencheur. |
-| `CanUnregisterTrigger` | Le déclencheur | Déregistrez la détente. |
-| `CanModifyTrigger` | Le déclencheur | Modifiez la configuration du déclencheur. |
-| `CanModifyTriggerMetadata` | Le déclencheur | Modifiez les métadonnées du déclencheur. |
-| `CanUpgradeExecutor` | L'exécuteur | Mettez à jour l'exécuteur d'exécution. |
-| `CanRegisterSmartContractCode` | Contrats intelligents | Enregistrer le code de contrat intelligent. |
-| `CanUseFeeSponsor` | Nexus | Charge Nexus les frais versés sur un compte sponsor spécifié. |
+|`CanManagePeers` |Peer |Enregistrer, désinscrire ou gérer autrement les pairs. |
+|`CanManageLaneRelayEmergency` |Peer |Gérer les commandes d'urgence du relais. |
+|`CanRegisterDomain` |Domaine |Enregistrer un domaine.|
+|`CanUnregisterDomain` |Domaine |Ne pas enregistrer un domaine. |
+|`CanModifyDomainMetadata` |Domaine |Modifiez les métadonnées du domaine. |
+|`CanRegisterAccount` |Compte |Enregistrez un compte.|
+|`CanUnregisterAccount` |Compte |Ne pas enregistrer un compte.|
+|`CanModifyAccountMetadata` |Compte |Modifiez les métadonnées du compte. |
+|`CanUnregisterAssetDefinition` |Définition des actifs |Déloyer une définition d'actif. |
+|`CanModifyAssetDefinitionMetadata` |Définition des actifs |Modifier les métadonnées de la définition des actifs. |
+|`CanMintAssetWithDefinition` |Les actifs |Actifs de la Monnaie pour une définition spécifique. |
+|`CanBurnAssetWithDefinition` |Les actifs |Brûlure d'actifs pour une définition spécifique. |
+|`CanTransferAssetWithDefinition` |Les actifs |Transfert d'actifs pour une définition spécifique. |
+|`CanMintAsset` |Les actifs |Une balance d'actifs spécifique. |
+|`CanBurnAsset` |Les actifs |Brûler un solde d'actifs spécifique. |
+|`CanTransferAsset` |Les actifs |Transférer un solde d'actifs spécifique. |
+|`CanRegisterNft` |NFT |Enregistrer un NFT. |
+|`CanUnregisterNft` |NFT |Délocation d'enregistrement de NFT. |
+|`CanTransferNft` |NFT |Transférer un NFT. |
+|`CanModifyNftMetadata` |NFT |Modifier les métadonnées de NFT. |
+|`CanSetParameters` |Paramètres |Définir les paramètres de configuration sur la chaîne. |
+|`CanManageRoles` |Les rôles |Enregistrer, annuler, accorder ou révoquer des rôles. |
+|`CanRegisterTrigger` |Le déclencheur|Enregistrez une détente. |
+|`CanExecuteTrigger` |Le déclencheur|Exécutez un déclencheur.|
+|`CanUnregisterTrigger` |Le déclencheur|Déregistrez une détente.|
+|`CanModifyTrigger` |Le déclencheur|Modifiez la configuration du déclencheur. |
+|`CanModifyTriggerMetadata` |Le déclencheur|Modifiez les métadonnées du déclencheur. |
+|`CanUpgradeExecutor` |Exécuteur |Mettez à niveau l'exécuteur d'exécution. |
+|`CanRegisterSmartContractCode` |Un contrat intelligent .|Inscrivez le code du contrat intelligent. |
+|`CanUseFeeSponsor` |Nexus |Charger des frais de Nexus à un compte sponsor spécifié. |
 
 ## Propriété {#ownership}
 
-Les jetons d'autorisation sensibles au propriétaire doivent faire référence à l'objet canonique IDs utilisés
-Par exemple, les autorisations de compte se réfèrent à
-compte sans domaine IDs, les autorisations de domaine se réfèrent à `domain.dataspace` domaine
-IDs, et les autorisations d'actif se réfèrent à la définition ou à l'actif canoniques IDs.
+Les jetons d'autorisation sensibles au propriétaire doivent faire référence à l'objet canonique IDs utilisés par le modèle de données actuel. Par exemple, les autorisations de compte se réfèrent à un compte sans domaine canonique IDs, les autorisations de domaine se réfèrent à `domain.dataspace` domaine IDs, et les autorisations d'actif se réfèrent à la définition ou à l'actif canoniques. IDs.
 
-Lorsqu'une transaction échoue avec une erreur d'autorisation, vérifiez les deux parties:
+Lorsque la transaction échoue avec une erreur d'autorisation, vérifiez les deux parties:
 
 - le compte signant la transaction est le compte canonique attendu
-- le jeton ou rôle d'autorisation a été accordé pour l'objet exact ID utilisés dans le
-  instruction
+- le jeton d'autorisation ou le rôle a été accordé pour l'objet exact ID utilisé dans l'instruction

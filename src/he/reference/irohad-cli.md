@@ -8,18 +8,18 @@ translation_engine: nllb-200-ct2
 
 # `irohad` CLI {#irohad-cli}
 
-`irohad` מתחיל Iroha 3 דיימון משותף.
+`irohad` מתחיל דיימון משותף Iroha 3.
 
 ```shell
 irohad --config path/to/config.toml
 ```
 
-## `--config` {#arg-config}
+## `--config`  {#arg-config}
 
-- **סוג:** מסלול קבצים
-- **שם שמה:** `-c`
+- סוג: מסלול קבצים
+- פרופיל: `-c`
 
-כביש ל [קונפיגציה](/he/reference/peer-config/index.md) תיק.
+נתיב לקובץ הגדרת [ ](/he/reference/peer-config/index.md).
 
 ```shell
 irohad --config path/to/iroha.toml
@@ -27,10 +27,9 @@ irohad --config path/to/iroha.toml
 
 ## `--genesis-manifest-json` {#arg-genesis-manifest-json}
 
-- **סוג:** מסלול קבצים
+- סוג: מסלול קבצים
 
-דרך אופציונלית למניפסט הגנזה JSON תיק. השתמש בזה כאשר ההפעלה
-מסדיר את ההתחלתה על-ידי מוניסט שנוצר על ידי Kagami.
+נתיב אופטיונלי לקובץ מוניסט הגנזיס JSON. השתמש בזה כאשר השימוש מאשר את ההתחלה נגד מוניסט שנוצר על ידי Kagami.
 
 ```shell
 irohad --config path/to/iroha.toml --genesis-manifest-json path/to/genesis.manifest.json
@@ -38,10 +37,10 @@ irohad --config path/to/iroha.toml --genesis-manifest-json path/to/genesis.manif
 
 ## `--trace-config` {#arg-trace-config}
 
-מאפשרת רישומי מעקב של קריאת ההסדרות ונתח. יכול להיות שימושי לתיקון בעיות בהסדרות.
+מאפשר רישומי מעקב של קריאת ההסדרות והפרשנות. עשוי להיות שימושי לתיקון בעיות בהסדרות.
 
-- **סוג:** דגל
-- **ENV:** `TRACE_CONFIG`
+- סוג: דגל
+- ENV: `TRACE_CONFIG`
 
 ```shell
 irohad --trace-config
@@ -49,17 +48,15 @@ irohad --trace-config
 
 ## `--terminal-colors` {#arg-terminal-colors}
 
-- **סוג:** או בולית `--terminal-colors=false` או
-  `--terminal-colors=true`
-- **כדוגמא:** תמיכה בטרמינל זיהוי אוטו
-- **ENV:** `TERMINAL_COLORS`
+- סוג: בולין, או `--terminal-colors=false` או `--terminal-colors=true`
+- כדוגמא: תמיכה בטרמינל לזהות אוטומטית.
+- ENV: `TERMINAL_COLORS`
 
-האם לאפשר ANSI-הוצאת צבעית או לא.
+אם אפשר להפעיל את ההוצאת בצבע ANSI או לא.
 
-לפי ההגדרה, Iroha קובע אם הטרמינל תומך בהוצאת צבע
-או שלא.
+לפי ההגדרה, Iroha קובע אם הטרמינל תומך בתוצא צבעוני או לא.
 
-לאפשר באופן מפורש את הצבעים:
+כדי להפעיל באופן מפורש צבעים:
 
 ```shell
 irohad --terminal-colors=false
@@ -72,9 +69,9 @@ irohad
 
 ## `--language` {#arg-language}
 
-- **סוג:** חוטים
+- סוג: חוטים
 
-תעלמו את שפת המערכת המשמשת עבור הודעות דיימון.
+תעלמו את שפת המערכת המשמשת עבור הודעות של דיימון.
 
 ```shell
 irohad --language en-US
@@ -82,10 +79,9 @@ irohad --language en-US
 
 ## `--sora` {#arg-sora}
 
-- **סוג:** דגל
+- סוג: דגל
 
-תפעיל את הסורה Nexus פרופיל תכונות SoraFS, ה- SoraNet מחזקת יד, ו
-זרימות הסכמה מרובות דרכים.
+להפעיל את פרופיל תכונות Sora Nexus עבור SoraFS, לחיצת ידיים של SoraNet וזרזות הסכמה רב-סלולים.
 
 ```shell
 irohad --config path/to/iroha.toml --sora
@@ -93,9 +89,9 @@ irohad --config path/to/iroha.toml --sora
 
 ## `--fastpq-execution-mode` {#arg-fastpq-execution-mode}
 
-- **סוג:** `auto`, `cpu`, או `gpu`
+- סוג: `auto`, `cpu`, או `gpu`
 
-חיקוי FASTPQ מצב ההוצאה להורג של הסבר.
+מעביר את מצב ההפעלה של FASTPQ.
 
 ```shell
 irohad --fastpq-execution-mode auto
@@ -103,9 +99,9 @@ irohad --fastpq-execution-mode auto
 
 ## `--fastpq-poseidon-mode` {#arg-fastpq-poseidon-mode}
 
-- **סוג:** `auto`, `cpu`, או `gpu`
+- סוג: `auto`, `cpu`, או `gpu`
 
-חיקוי FASTPQ מצב שרת פוזידון.
+מעביר FASTPQ מצב צינור פוסיידון.
 
 ```shell
 irohad --fastpq-poseidon-mode cpu
@@ -113,9 +109,9 @@ irohad --fastpq-poseidon-mode cpu
 
 ## `--fastpq-device-class` {#arg-fastpq-device-class}
 
-- **סוג:** חוטים
+- סוג: חוטים
 
-תעלמו את FASTPQ תווית כיתה של מכשיר טלמטריה.
+תעלמו את התווית כיתה מכשיר טלמטריה FASTPQ.
 
 ```shell
 irohad --fastpq-device-class apple-m4
@@ -123,9 +119,9 @@ irohad --fastpq-device-class apple-m4
 
 ## `--fastpq-chip-family` {#arg-fastpq-chip-family}
 
-- **סוג:** חוטים
+- סוג: חוטים
 
-תעלמו את FASTPQ תווית משפחת שבטים טלמטריה.
+תעלמו את תווית משפחת שבטים טלמטריה FASTPQ.
 
 ```shell
 irohad --fastpq-chip-family m4
@@ -133,9 +129,9 @@ irohad --fastpq-chip-family m4
 
 ## `--fastpq-gpu-kind` {#arg-fastpq-gpu-kind}
 
-- **סוג:** חוטים
+- סוג: חוטים
 
-תעלמו את FASTPQ טלמטריה GPU- סוג של תווית.
+לאבד את התווית הטלמטריה FASTPQ של סוג GPU.
 
 ```shell
 irohad --fastpq-gpu-kind integrated

@@ -6,43 +6,32 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# קטעי קוד {#code-snippets}
+# חתיכות קוד {#code-snippets}
 
-חתיכות יוצרות שומרות דוגמאות קשורות לקוד, להגדרת, ומערכות
-ה- Iroha תיקון שהייצר אותם.
+קטעים שנוצרו מחזיקים דוגמאות קשורות לקוד, להגדרת, ומערכות מההפכה Iroha שהייתה יוצרת אותם.
 
-## מרענן Iroha חפצים {#refreshing-iroha-artifacts}
+## חפצים מרעננים Iroha {#refreshing-iroha-artifacts}
 
-Irohaחתיכות נגזרות נבדקות, כך שבניית אתר רגילה לא דורשת
-גישה לרשת או מאגר אחים.
+חתיכות Iroha נגזרות נבדקות כך שפיתוחים של אתרים רגילים לא דורשים גישה לרשת או מאגר אחים.
 
 ```bash
 pnpm refresh:iroha --source /path/to/iroha
 ```
 
-המוכרים.
-[`etc/refresh-iroha.ts`](https://github.com/hyperledger-iroha/iroha-docs/blob/main/etc/refresh-iroha.ts)
-זרימת העבודה מאשרת את הבדיקת המקור הנקי `provenance/iroha.json`,
-מתחדש `/src/snippets` ו... Torii OpenAPI תמונה מיידית, עדכונים SHA-256
-חישבו את התוכן ואת ההשוואה משתנות יחד. תלות נורמלית
-ההתקנה וה VitePress מבנים צורכים את הקבצים המזוהרים בלי
-להביא ענף משתנה.
+זרימת העבודה [ `etc/refresh-iroha.ts`](https://github.com/hyperledger-iroha/iroha-docs/blob/main/etc/refresh-iroha.ts) המודפסת בדיקת מקור נקי לעומת `provenance/iroha.json`, מגדירה את `/src/snippets` ואת תמונת ההצלחה Torii OpenAPI ומעדכנת את האש SHA-256. בדוק יחד את התוכן והשינויים בהיקף. ההתקנה הרגילה של התלות והבונים VitePress צורכים את הקבצים המזוהרים מבלי להביא ענף משתנה .
 
-## כולל סניפטים {#including-snippets}
+## כולל חתיכות {#including-snippets}
 
-השתמש ב
-[VitePress סינטקס של קטעי קוד](https://vitepress.dev/guide/markdown#import-code-snippets)
-לכלול מקור מקומי או מנגן:
+השתמשו בסינטקס [VitePress של חתיכת קוד ](https://vitepress.dev/guide/markdown#import-code-snippets) כדי לכלול מקור מקומי או מובנה:
 
 ```md
 <<< @/snippets/client.template.toml
 ```
 
-אזור קוד שנקרא ניתן לכלול על ידי תוספת שם האזור שלו:
+ניתן להוסיף אזור קוד בשם על ידי תוספת שמו של אזור:
 
 ```md
 <<< @/example_code/lorem.rs#ipsum
 ```
 
-שמרו על דוגמאות כתובות ביד קטנות. מעדיפים חפצים מקורות מתחדשים לציבור
-אינטרפרייסים, דפוסים של הגדרות, סכמות שנוצרו ויוצאת הפקודה.
+שמרו על דוגמאות כתובות ביד קטנות. מעדיפים ארטיפקטים מקור מתחדשים עבור אינטרסים ציבוריים, טמבלטים של הגדרציה, סכמות שנוצרות ומוצאת פקודות.

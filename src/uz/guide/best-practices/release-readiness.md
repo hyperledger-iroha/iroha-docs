@@ -6,70 +6,47 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Boʻshashga tayyorlik {#release-readiness}
+# Boʻshash uchun tayyorlik {#release-readiness}
 
-O'zbekiston Respublikasi Iroha dastur yoki tarmoq o'zgarishi, xatti-harakatni isbotlash
-tegishli tavakkalchilikni ko'rsatishi mumkin bo'lgan eng kichik muhitda, keyin
-umumiy test tarmog'i va ishlab chiqarish darvozalari orqali bila turib.
+Iroha dasturini yoki tarmoq o'zgarishini targ'ib qilishdan oldin, tegishli tavakkalchilikni ko'rsatishi mumkin bo'lgan eng kichik muhitda xatti-harakatni isbotlang, so'ngra birgalikda sinov tarmog'i va ishlab chiqarish darvozalari orqali bila turib harakatlang.
 
-## Mahalliy tarmoq darvozalari {#localnet-gate}
+## Yerli tarmoq darvozalari {#localnet-gate}
 
-- Bir martalik mahalliy tarmoqni ishga tushirish Iroha yo'nalish va
-  eng yaqin amaliy validatorlar soni.
-- Transaksiyalarni yaratish uchun birlik sinovlarini o'tkazish, so'rovlarni tahlil qilish, rad etish
-  boshqarish va yuklashni konfiguratsiya qilish.
-- Eng kichik muvaffaqiyatli o'qish va yozish yo'llarini mashq qiling
-  SDK yoki CLI ilova keyinchalik ishlatiladigan shakl.
-- Tavsiya hashlari, holatlar, hodisalar va holatni olish
-  sinov san'atlari.
+- O'sha Iroha yo'nalish va eng yaqin amaliy validatorlar soni bilan bir martalik mahalliy tarmoqni ishga tushirish.
+- Transaction builderlari uchun birlik sinovlarini o'tkazing, so'rovlarni tahlil qilish, rad etishni boshqarish va konfiguratsiya yuklash.
+- Ilova keyinchalik ishlatadigan SDK yoki CLI shakli orqali eng kichik muvaffaqiyatli o'qish va yozish yo'llarini mashq qiling.
+- Tekshiruv artefaktlarida kutilayotgan tranzaksiya hashlari, statuslari, hodisalar va holat o'qishlarini ushlab turing.
 
-Koʻring [Uchratish Iroha 3](/uz/get-started/launch-iroha.md) va
-[SDK Darslar](/uz/guide/tutorials/).
+Koʻring [Ishga tushish Iroha 3](/uz/get-started/launch-iroha.md) va [SDK Dasturlar](/uz/guide/tutorials/).
 
-## O'zaro testnet darvozalari {#shared-testnet-gate}
+## Bajarilgan testnet darvozalari {#shared-testnet-gate}
 
-- Foydalanish Taira yoki oxirgi nuqta xulq-atvorini, to'lovlarni, hisobni ko'rsatish uchun boshqa umumiy testnet
-  moliyalashtirish, kechikish va operatsion repetitsiyalar.
-- Testnet-ni jonli saqlang Opt-in yozadi , shuning uchun odatdagi testlar
-  tarmoq mavjudligi yoki testnet mablag'larini sarflash.
-- imzochi mablag'larini, to'lov aktivlari metadatalarini, hokimiyat ruxsatlarini tekshirish va
-  har bir jonli test operatsiyasini taqdim etishdan oldin kutilayotgan holat.
-- Terminal holatini kuting, so'ngra natijali holatni
-  Faqat o'qish uchun so'rov.
+- Taira yoki boshqa qo'shma testnetdan oxirgi nuqtalarning xatti-harakatlari, to'lovlar, hisob mablag'lari, kechikish va operatsion repetitsiyalar uchun foydalanish.
+- Testnet-ni jonli saqlab qoling, shuning uchun odatdagi testlar tarmoq mavjudligiga yoki testnet mablag'larini sarflashga bog'liq emas.
+- Har bir jonli test operatsiyasini taqdim etishdan oldin imzochi mablag'larini, to'lov aktivlari metadatalarini, vakolatlarga ruxsatnomalarni va kutilayotgan holatni tekshirish.
+- Terminal holatini kuting, so'ngra natijali holatni faqat o'qish uchun so'rov bilan tasdiqlang.
 
-Koʻring
-[Oʻzlashtiring SORA 3: Taira va Minamoto](/uz/get-started/sora-nexus-dataspaces.md).
+Qarang [SORA 3-da qurilgan: Taira va Minamoto](/uz/get-started/sora-nexus-dataspaces.md).
 
-## Asosiy tarmoq yoki ishlab chiqarish darvozalari {#mainnet-or-production-gate}
+## Mainnet yoki ishlab chiqarish darvozalari {#mainnet-or-production-gate}
 
-- O'ziga xos ishlab chiqarish imzolari, moliyalashtirish, domenlar va konfiguratsiya yo'nalishlaridan foydalaning.
-  testnet kalitlari yoki faucet taxminlarini targ'ib qilmaydi.
-- Tasdiqlash SDK, CLI, tengdoshlar va tarmoqlar bilan moslashuvchanlik
-  [Qo'shish matrisi](/uz/reference/compatibility-matrix.md).
-- Tekshirish ruxsatnomalari, to'lovlarni qo'llab-quvvatlash, stavkalar chegaralari, monitoring, ehtiyot qismlar
-  Status va ozod qilish oynasidan oldin qaytish mezonlari.
-- Yuqori ta'sirli yozuvlar uchun yozma bitim yoki migratsiya rejasi talab etiladi.
+- O'ziga xos ishlab chiqarish imzolari, moliyalashtirish, domenlar va konfiguratsiya yo'llaridan foydalaning. testnet kalitlarini yoki kranni qo'llab-quvvatlamang.
+- SDK, CLI, tengdosh va tarmoq moslashuvchanligini [ Moslashuvchanlik matrisi](/uz/reference/compatibility-matrix.md) bilan tasdiqlash.
+- Tekshiruv ruxsatnomalari, to'lovlarni qo'llab-quvvatlash, stavkalar chegaralari, monitoring, ehtiyot saqlash holati va chiqarilish oynasidan oldin tiklanish mezonlari.
+- Yuqori ta'sirli qog'ozlar uchun yozma bitim yoki migratsiya rejasi talab etiladi.
 
 ## Orqaga qaytish va tiklanish {#rollback-and-recovery}
 
-- Qaysi o'zgarishlarni kodni ishga tushirish orqali qaytarib olish mumkinligini belgilash
-  zanjir bo'yicha amalga oshiriladigan va to'g'ridan-to'g'ri bekor qilinmaydigan bitim.
-- Xatcho'pdagi ma'lumotlar o'zgarishi uchun kompensatsiyaviy operatsiyalar yoki migratsiyalarni tayyorlang
-  dastlabki ishlab chiqarishdan oldin skriptlar yozish.
-- Tarmoq o'zgarishlari uchun oldingi ikkilamchi, konfiguratsiya to'plamini saqlang, imzolang
-  genesis va ishga tushirish paytida mavjud bo'lgan operatsion qo'llanma.
-- Obyektiv signallarga asoslanib ishga tushirishni bekor qilish uchun qaror chiqarishni belgilash
-  Masalan, rad etish darajasi, navbatning o'sishi, kechikish yoki tengdoshlar sog'lig'i.
+- Kodni ishga tushirish orqali qaysi o'zgarishlarni qaytarib olish mumkinligini, ular uchun zanjirdagi bitimlar kerak bo'lganini va ularni to'g'ridan-to'g'ri bekor qilolmaydiganlarini aniqlang.
+- Zaryaddagi ma'lumotlar o'zgarishi uchun birinchi ishlab chiqarish yozishdan oldin kompensatsiya tranzaksiyalari yoki migratsiya skriptlarini tayyorlang.
+- Tarmoq o'zgarishlari uchun avvalgi ikkilamchi, konfiguratsiya to'plami, imzolangan genesis va operatsion ishga tushirish daftarini chiqarishda saqlang.
+- Ruxsatni rad etish darajasi, navbat o'sishi, kechikish yoki tengdoshlar sog'lig'i kabi ob'ektiv signallarga asoslanib ishga tushirishni bekor qilish uchun qaror nuqtasini belgilash.
 
-## Yakuniy tekshiruv ro'yxati {#final-checklist}
+## So'nggi tekshiruv ro'yxati {#final-checklist}
 
-- Konfiguratsiya atrof-muhitga mos va faqat sinovlarni o'z ichiga olmaydi
-  sirlar.
-- Transaksiyalarni qayta sinab ko'rish xatti-harakati idempotent yoki aniq cheklangan.
-- Talabnoma rad etish, muddati tugagani, muddat va oxirgi nuqtani farqlashi mumkin
-  mavjudlik xatolari.
-- Monitoring o'tkazib berish, kechikish, navbat chuqurligi, rad etishlar, ko'rinishni qamrab oladi
-  o'zgarishlar va tegishli biznes tadbirlari.
-- Operatorlar kutilayotgan xato rejimlarini ko'rsatish uchun yozuv daftarlariga ega.
-- Xavfsizlik tekshiruvi kalitlarni saqlash, ruxsatnomalar, tarmoqlarga doir ta'sirni qamrab olgan va
-  avtomatlashtirish organi.
+- Konfiguratsiya atrof-muhitga mos va faqat sinov uchun sirlarni o'z ichiga olmaydi.
+- Transaksiyalarni qayta sinab ko'rish xatti-harakati idempotent yoki ochiqchasiga cheklangan.
+- Ilova rad etish, muddati o'tishi, vaqt uzilishi va oxirgi nuqtalar mavjudligi xatolarini ajratib ko'rish mumkin.
+- Monitoring o'tkazib berish, kechikish, navbat chuqurligi, rad etishlar, ko'rinishda o'zgarishlar va tegishli biznes hodisalarini qamrab oladi.
+- Operatorlar kutilayotgan xato rejimlari uchun yo'lboshxonalarga ega.
+- Xavfsizlik tekshiruvi kalitlarni saqlash, ruxsatnomalar, tarmoqlarga egalik qilish va avtomatlashtirish vakolatlarini qamrab oldi.

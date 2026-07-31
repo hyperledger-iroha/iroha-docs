@@ -18,7 +18,7 @@ translation_engine: nllb-200-ct2
    - [Rust](/ba/guide/tutorials/rust.md)
    - [Python](/ba/guide/tutorials/python.md)
    - [JavaScript / TypeScript](/ba/guide/tutorials/javascript.md)
-   - [Kotlin, Android, һәм Java](/ba/guide/tutorials/kotlin-java.md)
+   - [Kotlin, Android һәм Java](/ba/guide/tutorials/kotlin-java.md)
    - [Swift һәм iOS](/ba/guide/tutorials/swift.md)
 4. [ өлгөләге ҡушымталарҙы](/ba/guide/tutorials/sample-apps.md) тикшереп ҡарағыҙ, әгәр тулы клиент ҡушымтаһы шиғырын теләйһегеҙ икән.
 5. [Embed Kaigi](/ba/guide/tutorials/kaigi.md) ҡуллан, әгәр һеҙ үҙ ҡушымтаһына аҡса янсығы менән тәьмин ителгән аудио / видео осрашыуҙар өҫтәргә теләйһегеҙ.
@@ -26,7 +26,7 @@ translation_engine: nllb-200-ct2
 
 ## Үлсәүҙәр {#samples}
 
-Өҫкө ағымындағы эш майҙанында JavaScript рецепттар һәм Swift/iOS проект өлгөһө. Android, менән башларға Kotlin SDK модулдәр һәм уларҙың һынауҙары.
+JavaScript рецепттарын һәм Swift/iOS өлгө проекттарын үҙ эсенә ала. Android өсөн, Kotlin SDK модулдәрен һәм уларҙың һынауҙарын башларға кәрәк.
 
 - [Үрнәк ҡушымталар күҙәтеүе](/ba/guide/tutorials/sample-apps.md)
 - [Ҡатнашылған Kaigi а JavaScript ҡушымта](/ba/guide/tutorials/kaigi.md)
@@ -39,7 +39,7 @@ SDK биттәренең барыһы ла хәҙерге өҫкө йүнәле�
 - `python/iroha_python`
 - `javascript/iroha_js`
 - `kotlin`
-- `java/iroha_android` (Java оинаһы Kotlin- тәүҙә Android өҫкө йөҙ)
+- `java/iroha_android` (Java оинаһы Kotlin - беренсе Android өҫкө йөҙө)
 - `IrohaSwift`
 - `crates/musubi`
 

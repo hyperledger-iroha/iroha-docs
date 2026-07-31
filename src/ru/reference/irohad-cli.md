@@ -8,18 +8,18 @@ translation_engine: nllb-200-ct2
 
 # `irohad` CLI {#irohad-cli}
 
-`irohad` начинается Iroha 3 Пир-Деймон.
+`irohad` запускает Iroha 3 сотоварищной демона.
 
 ```shell
 irohad --config path/to/config.toml
 ```
 
-## `--config` {#arg-config}
+## `--config`  {#arg-config}
 
-- **Тип:** Путь файлов
-- **Прозвище:** `-c`
+- Тип: Путь файла
+- Прозвище: `-c`
 
-Путь к [конфигурация](/ru/reference/peer-config/index.md) Досье.
+Путь в файл конфигурации [](/ru/reference/peer-config/index.md).
 
 ```shell
 irohad --config path/to/iroha.toml
@@ -27,10 +27,9 @@ irohad --config path/to/iroha.toml
 
 ## `--genesis-manifest-json` {#arg-genesis-manifest-json}
 
-- **Тип:** Путь файлов
+- Тип: Путь файла
 
-Факультативный путь к генезисному манифесту JSON Используйте это при развертывании
-подтверждает запуск на манифест, созданный Kagami.
+Опциональный путь к файлу генезис-манифест JSON. Используйте его, когда развертывание подтверждает запуск против манифеста, созданного Kagami.
 
 ```shell
 irohad --config path/to/iroha.toml --genesis-manifest-json path/to/genesis.manifest.json
@@ -38,10 +37,10 @@ irohad --config path/to/iroha.toml --genesis-manifest-json path/to/genesis.manif
 
 ## `--trace-config` {#arg-trace-config}
 
-Возможность отслеживания журналов чтения и анализа конфигурации. Может быть полезно для решения проблем с конфигурацией.
+Возможность отслеживания журналов чтения и анализа конфигураций. Может быть полезно для решения проблем с конфигурацией.
 
-- **Тип:** флаг
-- **ENV:** `TRACE_CONFIG`
+- Тип: флаг
+- ENV: `TRACE_CONFIG`
 
 ```shell
 irohad --trace-config
@@ -49,15 +48,13 @@ irohad --trace-config
 
 ## `--terminal-colors` {#arg-terminal-colors}
 
-- **Тип:** Бульский `--terminal-colors=false` или
-  `--terminal-colors=true`
-- **По умолчанию:** поддержка терминала автоматического обнаружения
-- **ENV:** `TERMINAL_COLORS`
+- Тип: Булевой, либо `--terminal-colors=false` или `--terminal-colors=true`
+- По умолчанию: поддержка терминала для автоматического обнаружения
+- ENV: `TERMINAL_COLORS`
 
-Включить ANSI- Цветовой выпуск или нет.
+Включить или не включить выход цвета ANSI.
 
-По умолчанию, Iroha определяет, поддерживает ли терминал цветный выход
-или нет.
+По умолчанию Iroha определяет, поддерживает ли терминал цветный выход или нет.
 
 Чтобы явно отключить цвета:
 
@@ -72,9 +69,9 @@ irohad
 
 ## `--language` {#arg-language}
 
-- **Тип:** Струнные
+- Тип: струны
 
-Переоценить системный язык, используемый для сообщений демонов.
+Отменить системный язык, используемый для сообщений демона.
 
 ```shell
 irohad --language en-US
@@ -82,10 +79,9 @@ irohad --language en-US
 
 ## `--sora` {#arg-sora}
 
-- **Тип:** флаг
+- Тип: флаг
 
-Включить Сору Nexus профиль характеристик для SoraFS, в) SoraNet рукопожатие и
-многостраничные консенсусные потоки.
+Включить профиль функций Sora Nexus для SoraFS, рукопожатия и консенсусных потоков с несколькими полосами SoraNet.
 
 ```shell
 irohad --config path/to/iroha.toml --sora
@@ -93,9 +89,9 @@ irohad --config path/to/iroha.toml --sora
 
 ## `--fastpq-execution-mode` {#arg-fastpq-execution-mode}
 
-- **Тип:** `auto`, `cpu`, или `gpu`
+- Тип: `auto`, `cpu`, или `gpu`
 
-Переоценка FASTPQ режим выполнения просмотра.
+Преодоление режима исполнения провайдера FASTPQ.
 
 ```shell
 irohad --fastpq-execution-mode auto
@@ -103,9 +99,9 @@ irohad --fastpq-execution-mode auto
 
 ## `--fastpq-poseidon-mode` {#arg-fastpq-poseidon-mode}
 
-- **Тип:** `auto`, `cpu`, или `gpu`
+- Тип: `auto`, `cpu`, или `gpu`
 
-Переоценка FASTPQ Посейдонский трубопровод.
+Перевернуть режим трубопровода "Посейдон" FASTPQ.
 
 ```shell
 irohad --fastpq-poseidon-mode cpu
@@ -113,9 +109,9 @@ irohad --fastpq-poseidon-mode cpu
 
 ## `--fastpq-device-class` {#arg-fastpq-device-class}
 
-- **Тип:** Струнные
+- Тип: струны
 
-Переоценить FASTPQ этикетка класса телеметрических устройств.
+Отменить маркировку класса телеметрических устройств FASTPQ.
 
 ```shell
 irohad --fastpq-device-class apple-m4
@@ -123,9 +119,9 @@ irohad --fastpq-device-class apple-m4
 
 ## `--fastpq-chip-family` {#arg-fastpq-chip-family}
 
-- **Тип:** Струнные
+- Тип: струны
 
-Переоценить FASTPQ Телеметрическая семья чипов.
+Отменить этикетку семейства чипов телеметрии FASTPQ.
 
 ```shell
 irohad --fastpq-chip-family m4
@@ -133,9 +129,9 @@ irohad --fastpq-chip-family m4
 
 ## `--fastpq-gpu-kind` {#arg-fastpq-gpu-kind}
 
-- **Тип:** Струнные
+- Тип: струны
 
-Переоценить FASTPQ телеметрия GPU- Такой маркер.
+Отрицать этикетку типа FASTPQ телеметрии GPU.
 
 ```shell
 irohad --fastpq-gpu-kind integrated

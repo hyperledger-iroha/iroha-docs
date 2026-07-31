@@ -23,7 +23,7 @@ Seguir y adoptar las directrices de este tema es un paso necesario para lograr u
 
 - Manténgase alerta. [lo más probable](https://arxiv.org/pdf/2209.08356.pdf) La forma en la que uno puede perder sus activos en una cadena de bloques es dando sus datos sensibles.
 
-- Cifrar los dispositivos de arranque les permite proteger sus datos incluso si un atacante ha obtenido acceso al hardware.
+- Encripta tus discos. El cifrado de los dispositivos de arranque les permite proteger sus datos incluso si un atacante ha obtenido acceso al hardware. Hacerlo para sus dispositivos portátiles es el doble de importante.
 
 - Utilice un software de confianza. El software que se envía a través de construcciones binarias reproducibles, y que se construye desde la fuente, es el más confiable. Software propietario o de código abierto que no ha sido auditado es un riesgo potencial que debe ser tomado en serio.
 
@@ -35,7 +35,7 @@ Seguir y adoptar las directrices de este tema es un paso necesario para lograr u
 
 - Establecer un seguro [con huecos en el aire](https://en.wikipedia.org/wiki/Air_gap_(networking)En primer lugar, cifrar las llaves y luego almacenarlas en un dispositivo solo fuera de línea. Idealmente con escudo electromagnético instalado. [Las llaves de hardware](./storing-cryptographic-keys.md#using-a-hardware-key) se han diseñado específicamente para este fin.
 
-- Mantenga siempre el software actualizado a su última versión en todos los dispositivos, incluidos los ordenadores y teléfonos.
+- Mantenga siempre su software actualizado a su última versión en todos los dispositivos, incluidos las computadoras y teléfonos. Las actualizaciones regulares ayudan a corregir las vulnerabilidades y minimizar los riesgos potenciales asociados con el software obsoleto. incluso antes de que tales vulnerabilidades sean reveladas.
 
 - Desarrollar una rutina para actualizar periódicamente las contraseñas y las claves criptográficas.Este enfoque proactivo contribuye significativamente a mejorar la postura general de seguridad, ya que es mucho más difícil alcanzar un objetivo móvil.
 
@@ -80,7 +80,7 @@ Considere las siguientes medidas para mejorar la seguridad de su navegación:
 
 ## Plan de recuperación {#recovery-plan}
 
-En caso de emergencia, como la pérdida de una llave o una violación de seguridad, un plan de recuperación bien estructurado y preparado con anticipación es una salvavidas esencial.
+En caso de emergencia, como la pérdida de una llave o el hecho de sufrir una violación de la seguridad, Un plan de recuperación bien estructurado y preparado con anticipación es una línea vital. Crear un conjunto claro de pasos a seguir puede ayudar a mitigar el daño potencial y restablecer rápidamente la seguridad.
 
 Las organizaciones deben tener en cuenta los siguientes aspectos clave al elaborar su plan de recuperación:
 
@@ -96,6 +96,6 @@ Las organizaciones deben tener en cuenta los siguientes aspectos clave al elabor
 
 ::: advertencia
 
-Recuerde que un plan de recuperación no es sólo otro documento, sino más bien una línea de vida que ayuda a navegar por desafíos inesperados. reforzará su seguridad operativa y mejorará su preparación para responder eficazmente a cualquier incidente de seguridad.
+Recuerde que un plan de recuperación no es sólo otro documento. Más bien, es un salvavidas que nos ayuda a superar los desafíos inesperados. Al anticiparse a los escenarios potenciales y establecer una hoja de ruta clara para la acción, reforzará su seguridad operativa y mejorará su preparación para responder eficazmente a cualquier incidente de seguridad.
 
 :::

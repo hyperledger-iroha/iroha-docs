@@ -50,7 +50,7 @@ Canlı şəbəkədə genesi əvəz etmək üçün ümumi avtomatik yenidən yazm
 
 Əvvəllər multi-hash ilə işləməmisinizsə, sağ tərəfdəki açar baytlarının (bayt başına iki simvol) hexadecimal təmsil edilməsi deyil, daha çox ASCII (və ya UTF-8) kimi kodlanmış baytlar olduğunu qəbul etmək normaldır; Və `public_key` və `private_key` nümunələrində hər iki silsilə əslində `from_hex` çağırın.
 
-Bir də təbiidir ki, `PrivateKey::try_from_str` çağırmaq yalnız düzgün açar verəcəkdir.
+Bu da təbiidir ki, `PrivateKey::try_from_str` ilə zəng etmək yalnız düzgün açarı verəcəkdir. Beləliklə, açardakı bitlərin sayını səhv etsəniz, məsələn, 32 bayt vs 64, bu bir səhv mesajı yaradacaq.
 
 Təəssüflər olsun ki, səhv mesajları bu cür uğursuzluqların aradan qaldırılmasına kömək etmir.
 

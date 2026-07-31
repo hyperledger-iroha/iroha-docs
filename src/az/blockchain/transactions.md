@@ -12,7 +12,7 @@ Bir əməliyyat blockchain üzərində iş yerinə yetirmək üçün imzalanmı�
 
 Transaksiyalar vəziyyəti dəyişdirən və ya icra edilə bilən işləri həyata keçirir. Yalnız oxumaqla yoxlama imzalanan sorğuları və ya ictimai oxuma son nöqtələrindən istifadə edir və bir əməliyyat yaratmır.
 
-Məqsədli blokda qəbul edilmiş bir əməliyyat onun icrasının nəticəsi ilə, o cümlədən icra edilməsinin rədd edilməsi ilə saxlanılır.
+Ödəniş blokuna daxil edilmiş bir əməliyyat onun icrasının nəticəsi ilə, o cümlədən icra edilməsinin rədd olunması ilə saxlanılır. Bloq qəbulundan əvvəl rədd edilən müraciətlər, məsələn, etibarsız müqavilə və ya növbədə rədd edilmiş əməliyyat; blokda saxlanılmır.
 
 Məxfiliyini qoruyub saxlayan aktivlərin hərəkəti üçün [Anonymous Transactions](./anonymous-transactions.md) baxın. Anonim əməliyyatlar ictimai hesab-hesab balansında dəyişikliklər əvəzinə qorunan aktiv notları, öhdəlikləri, ləğv edən və sıfır bilik sübutlarını istifadə edir.
 
@@ -101,7 +101,7 @@ Tipik axın:
 3. Lazım olduqda alıcının qeydiyyat soyunu həll edin, hər bir peer transferini yerli olaraq qurun və yoxlayın və köçürülməni təsdiqləməkdən əvvəl şifrələnmiş qeyd vəziyyətini davam etdirin .
 4. Alıcı onlayn olduqda, qanuni fidye arxivini qurun, göndərin və sonluq üçün əməliyyat resursunu sorğulayın.
 
-Bu səbəbdən pul və operator siyasəti dəyər məhdudiyyətlərini, müddətin bitməsini, qəbul edilmiş emitentləri, davamlı yerli saxlama və uyğunlaşma pəncərələrini tətbiq etməlidir.
+Qeydiyyat rejissoru onlayn həyat dövrü boyunca qeyd vəziyyətini qaytarana qədər ziddiyyətli bir offline ötürülməni müşahidə edə bilməz. Bu səbəbdən cüzdan və operator siyasəti qiymət məhdudiyyətlərini, müddətin bitməsini, qəbul edilmiş emitentləri, davamlı yerli saxlamaları tətbiq etməlidir. və barışıq pəncərələri.
 
 Burada yeni bir əməliyyatın yaradılması nümunəsi `Grant` Bu əməliyyatda Mouse Alice-ə müəyyən edilmiş rolu verəcək.`role_id`Çəkim). [tam nümunə](./permissions.md#register-a-new-role).
 

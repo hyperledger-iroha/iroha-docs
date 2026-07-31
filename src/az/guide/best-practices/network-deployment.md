@@ -32,7 +32,7 @@ Bir Iroha şəbəkəsinə əlaqəli bir sistem kimi yanaşın. Validatorlar, ş�
 
 - Host və ya özəl şəbəkədən kənarda məruz qaldıqda Torii bir geri proxy və ya firewall arxasında qoyun.
 - TLS -i ləğv etmək və tətbiq edilmə üçün tələb olunduğu zaman əsas təsdiqləmə, dərəcə məhdudiyyəti və istək ölçüsü nəzarətlərini kənarda tətbiq etmək.
-- Ətraf mühitin tələb etdiyi yalnız son nöqtələri nəşr etmək lazımdır.
+- Yalnız ətraf mühitin ehtiyac duyduğu son nöqtələri dərc edin. Operator və telemetri marşrutları yalnız oxu üçün istifadə olunan ictimai marşrutlardan daha məhdudlaşdırılmalıdır.
 - Tərəfdaşlar birbaşa uzaqdan trafik qəbul etmədikləri zaman dinləyicinin ünvanlarını host-lokal interfeyslərə bağlayın.
 
 Bax [Torii Son nöqtələr](/az/reference/torii-endpoints.md) və [ Virtual Xüsusi Şəbəkələr ](/az/guide/security/vpn.md).

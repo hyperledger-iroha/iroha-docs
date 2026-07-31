@@ -6,29 +6,27 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Uchratish Iroha 3 {#launch-iroha-3}
+# Ishga tushirish Iroha 3 {#launch-iroha-3}
 
-Ushbu sahifa joriy mahalliy tarmoq oqimi orqali oʻtadi Iroha 3 qo ' llab
-O'z navbatida, ushbu ko'rsatkichlar to'g'risidagi ma'lumotlarni o'rnatish kerak bo'ladi.
+Ushbu sahifa Iroha 3 uchun joriy mahalliy tarmoq oqimi bo'ylab o'tadi, chunki u yuqori tomorqa ombordan andoza ish maydonlari aktivlaridan foydalanadi.
 
 ## 1. Mahalliy ko'p tengdoshlar tarmog'ini yaratish {#_1-generate-a-local-multi-peer-network}
 
-Toʻrtta tengli lokal tarmoqni joriydan hosil qilish Kagami kod:
+Joriy Kagami kodidan to'rt kishilik lokalnetni yaratish:
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
 ```
 
-Ishlab chiqarish direktoriyasida tenglashtirilgan tengdoshlar konfiguratsiyasi mavjud, `genesis.json`,
-`genesis.signed.nrt`, `client.toml`, va yordamchilarning nusxalari.
+Ishlab chiqarish direktoriyasida moslashtirilgan tengdosh konfiguratsiyalari `genesis.json`, `genesis.signed.nrt`, `client.toml` va yordamchi skriptlar mavjud.
 
-Mahalliy tutun sinovlari uchun ishlab chiqarilgan tengdoshlarni to'g'ridan-to'g'ri boshlash:
+Mahalliy tutun testini o'tkazish uchun hosil qilingan tengdoshlarni to'g'ridan-to'g'ri boshlash
 
 ```bash
 ./localnet/start.sh
 ```
 
-Konteynerlashtirilgan ishga tushirish uchun bir xil lokalnet direktoriyasidan Compose hosil qiling:
+Konteynerizatsiya qilingan ishga tushirish uchun bir xil lokalnet direktoriyasidan Compose hosil qiling:
 
 ```bash
 cargo run --bin kagami -- docker \
@@ -41,13 +39,13 @@ cargo run --bin kagami -- docker \
 docker compose -f ./localnet/docker-compose.yml up
 ```
 
-Andoza hosil qilingan toʻplam quyidagilarni aks ettiradi:
+Andoza hosil qilingan toʻplam quyidagilarni aniqlaydi:
 
-- tengdoshlar P2P portlar `1337` to `1340`
-- Torii HTTP portlar `8080` to `8083`
-- tayyor mijoz konfiguratsiyasi `./localnet/client.toml`
+- P2P portlari `1337` dan `1340` gacha
+- Torii HTTP portlari `8080` dan `8083`gacha
+- `./localnet/client.toml` nomidagi tayyor mijoz konfiguratsiyasi
 
-## 2. Tarmoqni ishga tushirishni tekshiring {#_2-verify-that-the-network-is-up}
+## 2. Tarmoqni ishga tushirishni tekshirib ko'ring {#_2-verify-that-the-network-is-up}
 
 Birinchi tenglamada holat oxirgi nuqtani tekshiring:
 
@@ -55,30 +53,29 @@ Birinchi tenglamada holat oxirgi nuqtani tekshiring:
 curl http://127.0.0.1:8080/status
 ```
 
-Dastlabki sog'liqni saqlash tekshiruvlarida quyidagilar ham ishlatiladi:
+Dastlabki tibbiy tekshiruvlarda quyidagilar ham qo'llaniladi:
 
 ```bash
 curl http://127.0.0.1:8080/status/blocks
 ```
 
-Siz darhol CLI paketli mijoz konfiguratsiyasida:
+Siz darhol CLI ni to'plangan mijoz konfiguratsiyasiga ko'rsatishingiz mumkin:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 ```
 
-## 3. Nexus Profil {#_3-nexus-profile}
+## 3. Nexus profil {#_3-nexus-profile}
 
-Repozitoriya shuningdek , SORA Nexus-ma'lumotlar ro'yxati
-`defaults/nexus/`.
+Repozitoriyada SORA Nexus-ga yo'naltirilgan konfig profilini ham `defaults/nexus/` raqamiga yuborish mumkin.
 
-O'z tengdoshlari bilan yurish Nexus profil:
+Nexus profilini o'z ichiga olgan mahalliy tenglamani ishlatish uchun:
 
 ```bash
 ./target/release/irohad --sora --config ./defaults/nexus/config.toml
 ```
 
-Foydalanish `defaults/nexus/client.toml` uchun CLI ushbu profilga kirish.
+Ushbu profilga CLI kirish uchun `defaults/nexus/client.toml` dan foydalaning.
 
 ## 4. Mahalliy tarmoqni to'xtatish {#_4-stop-the-local-network}
 
@@ -88,11 +85,10 @@ Yerli ishlab chiqarilgan lokal tarmoq uchun:
 ./localnet/stop.sh
 ```
 
-Ishlab chiqarilgan Compose to'plam uchun:
+Ishlab chiqarilgan kompozit to'plam uchun:
 
 ```bash
 docker compose -f ./localnet/docker-compose.yml down
 ```
 
-Tarmoq ishga tushgandan so'ng,
-[Operatsiya qilish Iroha 3 orqali CLI](/uz/get-started/operate-iroha-via-cli.md).
+Tarmoq ishlayotganidan so'ng, [da davom eting Iroha 3 orqali CLI](/uz/get-started/operate-iroha-via-cli.md) orqali ishlating.

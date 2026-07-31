@@ -8,46 +8,39 @@ translation_engine: nllb-200-ct2
 
 # SDK ትምህርቶች {#sdk-tutorials}
 
-እነዚህ ገጾች Iroha 3 ከዋናው ጣቢያ የተላኩ የደንበኞች የመግቢያ ነጥቦች
-የስራ ቦታ፣ የካኖኒክ ፓኬጅ ስሞችን፣ የመጫኛ መንገዶችን እና አነስተኛውን
-የመነሻ ነጥቦች።
+እነዚህ ገጾች ከዋናው የስራ ቦታ የተላኩትን Iroha 3 ደንበኛ የመግቢያ ነጥቦችን ያጠቃልላሉ ፣ በካኖኒካል ፓኬጅ ስሞች ፣ በመጫን መንገዶች እና አነስተኛ መነሻ ነጥቦችን ጨምሮ ።
 
 ## የሚመከር ትዕዛዝ {#recommended-order}
 
-1. [መጫን Iroha 3](/am/get-started/install-iroha.md)
+1. [Iroha 3](/am/get-started/install-iroha.md) መጫን
 2. [ማስጀመሪያ Iroha 3](/am/get-started/launch-iroha.md)
-3. አንዱን ምረጥ SDK:
+3. አንድ SDK ይምረጡ:
    - [Rust](/am/guide/tutorials/rust.md)
    - [Python](/am/guide/tutorials/python.md)
-   - [JavaScript / TypeScript](/am/guide/tutorials/javascript.md)
-   - [Kotlin, Android, እና ጃቫ](/am/guide/tutorials/kotlin-java.md)
+   - [JavaScript /TypeScript ](/am/guide/tutorials/javascript.md)
+   - [Kotlin፣Android እና ጃቫ ](/am/guide/tutorials/kotlin-java.md)
    - [Swift እና iOS](/am/guide/tutorials/swift.md)
-4. የ [ናሙና መተግበሪያዎች](/am/guide/tutorials/sample-apps.md) አንድ
-   የተሟላ የደንበኛ ማመልከቻ ማጣቀሻ።
-5. አጠቃቀም [የተካተቱ Kaigi](/am/guide/tutorials/kaigi.md) ማከል ከፈለጉ
-   በራስዎ መተግበሪያ ውስጥ በኪስ ቦርሳ የተደገፉ የድምጽ / ቪዲዮ ስብሰባዎች.
-6. አጠቃቀም [Musubi ጥቅሎች](/am/guide/tutorials/musubi.md) ዳግም ጥቅም ላይ የሚውል ሲያስፈልግ
-   Kotodama በሰንሰለት ላይ የተመሠረተ የምዝገባ ጥገኛነት ያላቸው ምንጭ ቤተ-መጽሐፍት።
+4. የተሟላ የደንበኛ መተግበሪያ ማጣቀሻ ሲፈልጉ [ ናሙና መተግበሪያዎችን ](/am/guide/tutorials/sample-apps.md) ይመልከቱ።
+5. በራስዎ መተግበሪያ ውስጥ በኪስ ቦርሳ የሚደገፉ የድምጽ / ቪዲዮ ስብሰባዎችን ለማከል ሲፈልጉ [Embed Kaigi](/am/guide/tutorials/kaigi.md) ይጠቀሙ.
+6. አጠቃቀም [Musubi ጥቅሎች](/am/guide/tutorials/musubi.md) ዳግም ጥቅም ላይ የሚውሉበት ጊዜ Kotodama በሰንሰለት ላይ የተመሠረተ የምዝገባ ጥገኛነት ያላቸው ምንጭ ቤተ-መጽሐፍት።
 
 ## ናሙናዎች {#samples}
 
-የቅድመ-መንገድ የሥራ ቦታ ይዟል JavaScript የምግብ አዘገጃጀት መመሪያዎች Swift/iOS ናሙና
-ፕሮጀክቶች. Android, ከ Kotlin SDK ሞጁሎችና ምርመራዎቻቸው።
+የስራ ቦታው JavaScript የምግብ አዘገጃጀት መመሪያዎች እና Swift/iOS ናሙና ፕሮጄክቶች ይዟል። ለ Android ከ Kotlin SDK ሞጁሎች እና ሙከራዎቻቸው ጋር ይጀምሩ።
 
-- [የአፕሊኬሽኖች ናሙና አጠቃላይ እይታ](/am/guide/tutorials/sample-apps.md)
-- [የተካተቱ Kaigi በ JavaScript መተግበሪያ](/am/guide/tutorials/kaigi.md)
+- [የአፕሊኬሽኖች ናሙና አጠቃላይ እይታ ](/am/guide/tutorials/sample-apps.md)
+- [Kaigi በ JavaScript መተግበሪያ ውስጥ ይካተቱ](/am/guide/tutorials/kaigi.md)
 
 ## የእውነት ምንጭ {#source-of-truth}
 
-ሁሉም SDK እዚህ ያሉት ገጾች ከአሁኑ የስራ ፍሰት አናት ላይ ካለው ቦታ የተወሰዱ ናቸው
+እዚህ ያሉት ሁሉም SDK ገጾች አሁን ካለው የስራ ፍሰት አናት ላይ ከሚገኘው ቦታ የተገኙ ናቸው-
 
 - `crates/iroha`
 - `python/iroha_python`
 - `javascript/iroha_js`
 - `kotlin`
-- `java/iroha_android` (የጃቫ መስታወት Kotlin-በመጀመሪያ Android ገጽ)
+- `java/iroha_android` (የጃቫ መስታወት የ Kotlin-መጀመሪያው Android ወለል)
 - `IrohaSwift`
 - `crates/musubi`
 
-በጥርጣሬ ጊዜ README እና በእነዚህ ማውጫዎች ውስጥ የፓኬጅ ሜታዳታ;
-እየገነባሽ ያለውን ምንጭ ማሻሻያ ይገልጻሉ።
+ጥርጣሬ ካለዎት በእነዚያ ማውጫዎች ውስጥ README እና የፓኬጅ ሜታዳታ ይመርጡ; እርስዎ እየገነቡ ያሉትን ምንጭ ማሻሻያ ያብራራሉ.

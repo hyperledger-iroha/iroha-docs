@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # Principios de seguridad {#security-principles}
 
-Las organizaciones y los usuarios individuales deben trabajar juntos para garantizar las interacciones seguras con las instalaciones Iroha.
+Las organizaciones y los usuarios individuales deben trabajar juntos para garantizar las interacciones seguras con las instalaciones Iroha. En este tema se explican los principios básicos de esta cooperación.
 
 ## Principios generales de seguridad {#general-security-principles}
 

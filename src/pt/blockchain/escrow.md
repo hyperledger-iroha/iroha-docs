@@ -20,7 +20,7 @@ Use escrow native para liquidação do mercado, coordenação de pagamentos fora
 |`AssetEscrowRecord` |Registro de garantia numérico transparente dos ativos ou bloqueio. |
 |`AnonymousAssetEscrowRecord` |Registro de garantia protegido apoiado por anuladores, compromissos e fichas de prova. |
 |Contas de custódia |Conta de protocolo determinista derivada da cadeia ID, garantia ID e definição de ativo. |
-|As evidências .|Hashes de faturas, julgamentos, mensagens, manifestos de armazenamento ou outras provas fora da cadeia.|
+|As evidências .|Hashes de faturas, julgamentos, mensagens, manifestos de armazenamento ou outras evidências fora da cadeia. A carga útil de provas em si não é armazenada no registo de garantia. |
 
 Registros transparentes contêm o vendedor, comprador opcional, definição de ativo, valor total, conta de custódia, status do ciclo de vida, tipo de comportamento, montante restante, autoridade de liberação opcional, timestamp de validade opcional, hashes de evidências, timestamps e detalhes de resolução opcionais.
 
@@ -53,7 +53,7 @@ stateDiagram-v2
 |`OpenEscrowDispute` |Vendedor ou comprador aceito |Move `Accepted` ou `PaymentSent` para `Disputed` e anexa hashes de evidências. |
 |`ResolveEscrowDispute` |Conta com `CanResolveEscrowDispute` |Move a `Disputed` para `Resolved` e divide o montante entre comprador e vendedor. |
 
-Os montantes de resolução de litígios devem ser não negativos e `buyer_amount + seller_amount` devem ser iguais ao montante do escóro.
+Os montantes de resolução de litígios devem ser não negativos e `buyer_amount + seller_amount` devem ser iguais ao montante do depósito em garantia. As pernas de valor zero são permitidas, mas toda a divisão deve dar conta do saldo bloqueado.
 
 ### Rust {#rust-example}
 
@@ -228,7 +228,7 @@ fn resolve_disputed_escrow(
 
 ## Escrow Anônimo {#anonymous-escrow}
 
-A garantia anônima usa o mesmo ciclo de vida do mercado, mas os movimentos de financiamento e fechamento dos ativos estão protegidos. Os montantes e os destinatários dentro das notas protegidas são representados por compromissos, anuladores e anexos de prova.
+A garantia anônima utiliza o mesmo ciclo de vida do mercado, mas os movimentos de financiamento e fechamento dos ativos estão protegidos. O registro público ainda armazena vendedor, comprador, status, hashes de evidências, selos de tempo e registros de movimento ligados a provas. Os montantes e os destinatários dentro das notas protegidas são representados por compromissos, anuladores e anexos de prova.
 
 |Transparente ISI |Anônimo ISI |
 | --- | --- |
@@ -328,7 +328,7 @@ fn open_and_read(
 
 ### Python Fechaduras de activos {#python-asset-locks}
 
-O Python SDK expõe os auxiliares de primeira classe para bloqueios genéricos de ativos.
+O Python SDK expõe os auxiliares de primeira classe para bloqueios genéricos de ativos. Usá-los para pagamentos de marco, retiradas por uma autoridade de liberação, cancelamento pelo iniciante e reembolsos após expiração.
 
 ```python
 client.open_asset_lock_and_wait(

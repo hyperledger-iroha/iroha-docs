@@ -8,18 +8,8 @@ translation_engine: nllb-200-ct2
 
 # Iboralar, shartlar, mantiq {#expressions-conditionals-logic}
 
-Hammasi [Iroha Maxsus ko'rsatmalar](./instructions.md) iboralar asosida ishlaydi.
-Har bir ibora `EvaluatesTo`, ta'lim olishda ishlatiladigan
-Siz hisobning nomini to'g'ridan-to'g'ri belgilashingiz mumkin bo'lsa, siz
-hisob qaydnomasini ham koʻrsatish ID matematik yoki simli operatsiya orqali.
-blokchaynda ham hisob qayd etilganligini tekshirib ko'rish mumkin.
+Barcha [Iroha Maxsus yo'l-yo'riqlar ](./instructions.md) ifodalarga ishlamoqda. Har bir ifodada ko'rsatmalarni bajarish uchun ishlatiladigan `EvaluatesTo` bo'ladi. Agar siz hisobning nomini to'g'ridan-to'g'ri belgilashingiz mumkin bo'lsa-da, siz ham ID hisobini matematik yoki simli operatsiya orqali belgilashingiz kerak. Siz ham blokchaynda hisob qayd etilganligini tekshirishingiz mumkin.
 
-Amalga oshiruvchi ifodani ishlatish `EvaluatesTo<bool>`, o'rnatishingiz mumkin
-shartli logika va zanjirda yanada murakkab operatsiyalarni bajarish.
-Misol uchun, `Mint` faqat ma'lum bir hisob qaydnomasi mavjud bo'lsa
-ro'yxatdan o'tgan.
+`EvaluatesTo<bool>` ni amalga oshiruvchi ifodalardan foydalanib, siz shartli mantiqan o'rnatishingiz va zanjirda yanada murakkab operatsiyalarni bajarishingiz mumkin. Masalan, siz `Mint` ko'rsatmasini faqat ma'lum bir hisob qayd etilgan bo'lsa yuborishingiz mumkin.
 
-Esingizda bo'lsin, siz buni so'rovlar bilan birlashtirishingiz mumkin va shu sababli dasturlashingiz mumkin
-Blockchain ajoyib narsalarni qilish uchun. Bu biz deb atalgan _aqlli
-shartnomalar_, blokchainning ilg'or foydalanilishining belgilash xususiyati
-texnologiya.
+Esingizda bo'lsin, siz buni so'rovlar bilan birlashtirishingiz mumkin va shunga ko'ra blokchainni ajoyib ishlarni bajarish uchun dasturlashingiz mumkin. Biz bularni aqlli shartnomalar deb ataymiz, bu blockchain texnologiyasidan ilg'or foydalanishning aniq xususiyati.

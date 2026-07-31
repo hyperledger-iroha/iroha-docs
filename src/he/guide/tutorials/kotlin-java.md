@@ -6,29 +6,26 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Kotlin, Android, ו- Java {#kotlin-android-and-java}
+# Kotlin, Android, וJava {#kotlin-android-and-java}
 
-ה- Kotlin SDK הוא סטק הלקוח המקובל עבור JVM ו Android בקשות.
-הוא חי תחת `kotlin/` ב- Iroha מאגר ומחולק לפי פלטפורמה כך
-קוד נייד לא מקבל Android תלות.
+Kotlin SDK הוא סטק הלקוח המקובל עבור יישומים של JVM ו Android. הוא חי תחת `kotlin/` במחסן של Iroha והוא מחולק על ידי פלטפורמה, כך שקוד נייד לא מקבל תלויות ב Android.
 
 ## מודולים {#modules}
 
-| חפץ | סוג | שימוש |
+|ארטיפקט|סוג |השתמש|
 | --- | --- | --- |
-| `org.hyperledger.iroha.sdk:core-jvm` | JAR | טהור Kotlin/JVM Norito, מודל נתונים, קריפטו, עסקאות, Torii, קוד פרוטוקול |
-| `org.hyperledger.iroha.sdk:client-android` | AAR | Android מחסן מפתחות, טלמטריה של המכשיר, JNI- אינטגרציות לקוחות מבוססות |
-| `org.hyperledger.iroha.sdk:offline-wallet-android` | AAR | Android תחבורה של ארנקים מקוונים והאינטגרציה המבוססת על `client-android` |
+|`org.hyperledger.iroha.sdk:core-jvm` |JAR |טהור Kotlin/JVM Norito, מודל נתונים, קריפטו, עסקאות, Torii וקוד פרוטוקול |
+|`org.hyperledger.iroha.sdk:client-android` |AAR |Android אחסון מפתח, טלמטריה של מכשיר ואינטגרציות לקוחות תומכות ב- JNI |
+|`org.hyperledger.iroha.sdk:offline-wallet-android` |AAR |Android הניתוחים והאינטגרציה של ארנקים מקוונים המבוססים על `client-android` |
 
-האריפקטים עדיין לא פורסמו למאוון סנטרל.
-באופן מקומי מ- pinned Iroha תיקון מקור:
+הארטפקטים עדיין לא פורסמו למאוון סנטרל. לבנות ולפרסם אותם מקומו מתוך העדכון המקור Iroha:
 
 ```bash
 cd kotlin
 ./gradlew publishToMavenLocal
 ```
 
-לאחר מכן בחר רק את הארטפקט שאתה צריך בקשה:
+אז בחר רק את הארטפקט שאתה צריך בקשתך:
 
 ```kotlin
 repositories {
@@ -44,48 +41,40 @@ dependencies {
 }
 ```
 
-`core-jvm` לא מכיל Android תלויות. Android לקוח ומחסן מפתח
-קוד ב `client-android`, ושימוש `offline-wallet-android` עבור Android-רק
-ארנק מקוון ו JNI זורמים.
+`core-jvm` לא מכיל Android תלויות. Android קוד הלקוח ומחסור המפתח `client-android`, ושימוש `offline-wallet-android` עבור Android-רק ארנק מקוון ו JNI זורמים.
 
 ## Kotlin ו- Java Compatibility {#kotlin-and-java-compatibility}
 
-הציבור API הוא Kotlin-ראשון ומספק אינטרופ ג'אווה JVM המתקשרים צריכים
-השינויים המקבילים משקפים ב- `java/`
-יישום. Android האינטגרציה צריכה להתחיל עם Kotlin
-חפצים למעלה.
+הקהל API הוא Kotlin-ראשון ומספק אינטרופ ג'אבה כאשר מתקשרים JVM זקוקים לו. שינויים מקבילים משתקפים בהתאם `java/` יישום. האינטגרציות חדשות Android צריכות להתחיל עם האריפקטים של Kotlin למעלה .
 
-כולם. Kotlin מודולים איכפת JDK 8 API תאימות בזמן הקבלה עם
-`-Xjdk-release=8`, למרות שרשרת כלי הבנייה עצמה משתמשת JDK 21. לא
-שימוש JDK 9+ APIs ב SDK קוד.
+כולם. Kotlin מודולים אימונים JDK 8 API תאימות בזמן הקבלה עם `-Xjdk-release=8`, למרות שרשרת הכלים של הבנייה עצמה משתמשת JDK 21. לא להשתמש JDK 9+ APIs ב SDK קוד.
 
-## לבנות ולנסות {#build-and-test}
+## בנייה וניסוי {#build-and-test}
 
-תפעיל את הנייד JVM בדיקות:
+להפעיל את בדיקות JVM ניידות:
 
 ```bash
 cd kotlin
 ./gradlew :core-jvm:test --console=plain
 ```
 
-לבנות את Android חפצים:
+תבנה את האריפקטים Android:
 
 ```bash
 ./gradlew :client-android:assembleRelease \
   :offline-wallet-android:assembleRelease --quiet
 ```
 
-## כיסוי הנוכחי {#current-coverage}
+## הכיסוי הנוכחי {#current-coverage}
 
 ה- Kotlin SDK כולל:
 
-- Norito קוד ודיקוד
+- Norito קוד ודיקודינג
 - ניהול חשבונות קנוניים וכתובת נכסים
-- בניית עסקאות, חתימה ומעטפות מקוונת
-- Torii HTTP, WebSocket, ו SSE לקוחות
-- חתימה מרובה, מחתום SoraFS, Nexus, ומודלים Connect
+- בניית עסקאות, חתימה ומעטפות לא מקוונות
+- לקוחות Torii HTTP, WebSocket, ו SSE
+- דוגמאות של חתימה מרובה, מחתום, SoraFS, Nexus ו- Connect
 - Android אינטגרציות טלמטריה של מחסן מפתח ומכשיר
-- Android לא מקוונת QR, בקרבת מקום, NFC תחבורה
+- Android תחבורה מקוונת QR, קרובה NFC
 
-תראו את [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/main/kotlin/README.md)
-עבור מודל ספציפי APIs והוראות הבנייה המדויקות.
+תראו את [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/main/kotlin/README.md) עבור מודל ספציפי APIs והוראות של בנייה מדויקות.

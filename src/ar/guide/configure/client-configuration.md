@@ -8,9 +8,7 @@ translation_engine: nllb-200-ct2
 
 # تكوين العميل {#client-configuration}
 
-Iroha CLI و SDK العملاء يستخدمون TOML التكوين. المخبأ يرسل
-التشغيل الراهن في `defaults/client.toml`; إنشاء الشبكات المحلية أيضا كتابة
-التطابق `client.toml` في دليل الإخراجات
+Iroha CLI و SDK العملاء يستخدمون TOML التكوين. المستودع يرسل الوضع الافتراضي الحالي إلى `defaults/client.toml`; الشبكات المحلية التي تم إنشاؤها أيضا كتابة مطابقة `client.toml` في دليل الإخراجات الخاصة بهم.
 
 ::: details نموذج تشكيل العميل
 
@@ -20,8 +18,7 @@ Iroha CLI و SDK العملاء يستخدمون TOML التكوين. المخب
 
 ## الحقول الأساسية {#core-fields}
 
-على الأقل، تشكيل العميل يحدد السلسلة Torii نقطة النهاية، و
-حساب التوقيع:
+على الأقل، تشكيل العميل يحدد السلسلة، Torii نقطة نهاية، والحساب التوقيعي:
 
 ```toml
 chain = "00000000-0000-0000-0000-000000000000"
@@ -33,28 +30,22 @@ public_key = "ed0120..."
 private_key = "802620..."
 ```
 
-- `chain` يختار السلسلة التي تنتمي إليها المعاملات المقدمة.
-- `torii_url` النقاط في الزملاء Torii HTTP API.
-- `[account].domain` يستخدمها CLI الإختصارات وتشفير اختيار العناوين
-  القوانين `AccountId` نفسها لا توجد مجال لها
-- `[account].public_key` و `[account].private_key` التوقيع على المعاملات.
+- يختار `chain` السلسلة التي تنتمي إليها المعاملات المقدمة.
+- `torii_url` نقاط في الزميل Torii HTTP API.
+- `[account].domain` يستخدمها اختصارات CLI وتشفير اختيار العناوين؛ القنوية `AccountId` نفسها بلا مجال.
+- `[account].public_key` و `[account].private_key` توقيع المعاملات.
 
-يجب أن يكون الحساب موجودًا بالفعل على السلسلة. بالنسبة للشبكة المحلية الافتراضية هذا هو
-يتم التعامل معها بواسطة دليل التكوين المجمع.
+يجب أن يكون الحساب موجودًا بالفعل على السلسلة. بالنسبة للشبكة المحلية الافتراضية يتم التعامل مع هذا من خلال بيان التكوين المجمّع.
 
 ::: info حساسية الحالة
 
-Iroha الأسماء حساسة للحالة بعد التحليل القنوني.
-`wonderland.universal`, `Wonderland.universal`, و
-`looking_glass.universal` هي أساسيات مختلفة.
+أسماء Iroha حساسة للحالة بعد التحليل القنوني. على سبيل المثال، `wonderland.universal` ، `Wonderland.universal` ، و `looking_glass.universal` هي حرفيات نطاق مختلفة.
 
 :::
 
 ## التصديق الأساسي {#basic-authentication}
 
-الاختياري `[basic_auth]` القسم يضيف: HTTP `Authorization` الرأس إلى
-طلبات العميل Iroha الأقران لا يفسرون هذه الإثباتات مباشرة؛ استخدام
-عندما Torii هو وراء وكيل عكس مثل Nginx.
+الاختياري `[basic_auth]` القسم يضيف: HTTP `Authorization` عنوان طلبات العميل. Iroha الأقران لا يفسرون هذه الإثباتات مباشرة؛ استخدموها عندما Torii وراء الوكيل العكسي مثل Nginx.
 
 ```toml
 [basic_auth]
@@ -64,7 +55,7 @@ password = "ilovetea"
 
 ## إعدادات المعاملة {#transaction-settings}
 
-سلوك المعاملات يتم تشكيلها مع `[transaction]` القسم:
+يتم تشكيل سلوك المعاملات مع قسم `[transaction]`:
 
 ```toml
 [transaction]
@@ -73,34 +64,30 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-- `time_to_live_ms` هو عمر المعاملة في ملايين الثانية.
-- `status_timeout_ms` يسيطر على مدى انتظار العميل للمعاملة
-  الوضع
-- `nonce = true` يطلب من العميل إدراج عقد غير متكرر
-  تُنتج حشيش مختلف.
+- `time_to_live_ms` هو عمر المعاملة في الميلي ثانية.
+- `status_timeout_ms` يسيطر على مدى انتظار العميل لحالة المعاملة.
+- `nonce = true` يطلب من العميل إدراج عبارة غير متكررة حتى تنتج المعاملات المختلفة.
 
 ## ربط إعدادات الصف {#connect-queue-settings}
 
-الحالي Iroha يمكن للعملاء أيضا استخدام الخيار الاختياري `[connect]` القسم المحلي
-حالة الصف:
+يمكن لعملاء Iroha الحاليين أيضا استخدام القسم الاختياري `[connect]` لحالة الصف المحلي:
 
 ```toml
 [connect]
 queue_root = "./queue"
 ```
 
-استخدم هذا عندما يحتاج سير العمل إلى تخزين طويل الأمد على جانب العميل.
+استخدم هذا عندما تحتاج سير العمل إلى تخزين طويل الأمد على جانب العميل.
 
-## إنشاء التكوينات {#generating-configurations}
+## توليد الإعدادات {#generating-configurations}
 
-للشبكات المحلية القابلة للتخلص منها، تفضل Kagami لأنه يكتب مطابقة Iroha
-3 التجمعات، الجينيزة، النصوص، و README:
+بالنسبة للشبكات المحلية القابلة للتفريغ، تفضل Kagami لأنه يكتب مطابقة Iroha 3 التكوينات، الجنيس، النصوص، و README: .
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
 ```
 
-استخدم المعلومات التي تم إنتاجها `./localnet/client.toml` مع CLI:
+استخدم `./localnet/client.toml` المولد مع CLI:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all

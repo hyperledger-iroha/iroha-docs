@@ -32,7 +32,7 @@ cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 target/release/kagami localnet --build-line iroha3 --peers 4 --out-dir ./localnet
 ```
 
-Шығу каталогының құрамында пайдаланған `genesis.json`, `genesis.signed.nrt`, теңдесі `config.toml` файлдар, `client.toml`, көмекші сценарийлер, және туылған `README.md` Бұл топтың нақты командалары бар.
+Шығыс каталогында `genesis.json`, `genesis.signed.nrt`, `config.toml` файлдар, `client.toml`, көмекші скрипттер және осы топтамаға арналған нақты командалар бар `README.md` генерацияланған каталогтар болады.
 
 ## 3. Жастармен араласуды бастаңыз {#_3-start-peers}
 
@@ -42,7 +42,7 @@ target/release/kagami localnet --build-line iroha3 --peers 4 --out-dir ./localne
 ./localnet/start.sh
 ```
 
-Егер сіз әрбір теңгерімді процес менеджеріне қосуыңыз керек болса: systemd, Құсбелгісі: `./localnet/README.md` Әр достар үшін, әр достардың `config.toml`, Жеке кілті, сақтау каталогы және порттар бөлек.
+Егер сіз әрбір теңгерімді systemd сияқты процес менеджеріне қосуыңыз керек болса, әр теңгерім үшін `./localnet/README.md` дегенде жазылған іске қосу командасын қолданыңыз. Әр теңгерімнің `config.toml` жеке кілті, сақтау каталогы және порттарын бөлек сақтаңыз.
 
 ## 4. Желіді басқару {#_4-operate-the-network}
 
@@ -67,4 +67,4 @@ target/release/iroha --config ./localnet/client.toml --output-format text ops su
 - Torii экспозициясы, негізгі auth, TLS және жылдамдықты шектеу үшін кері прокси немесе өрт қабырғасын қолданыңыз.
 - Жаратылыс немесе консенсус топологиясына өзгерістерді біріктірілген көші-қон ретінде қараңыз, тек бір қатарлы файлдарды өзгерту емес.
 
-Контейнерлік жергілікті даму үшін: [Жүгіру Iroha 3](../../get-started/launch-iroha.md) Docker Compose жұмыс барысы.
+Контейнерленген жергілікті даму үшін [Launch Iroha 3](../../get-started/launch-iroha.md) Docker Compose жұмыс барысы қолданылсын.

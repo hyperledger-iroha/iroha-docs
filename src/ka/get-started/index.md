@@ -8,49 +8,47 @@ translation_engine: nllb-200-ct2
 
 # Iroha 3 {#iroha-3}
 
-Iroha 3 არის პირველი გამოშვება Hyperledger Iroha პლატფორმა. იგი მხარს უჭერს
-თვითმასპინძლო ქსელები და მრავალდატანილი მონაცემთა სივრცე SORA Nexus განთავსების მოდელი
-ერთი დეტერმინისტური კოდის ბაზა.
+Iroha 3 არის პირველი გამოშვების Hyperledger Iroha პლატფორმა. იგი მხარს უჭერს თვითმმართველ ქსელებს და მრავალდატანილი მონაცემთა სივრცის SORA Nexus განთავსების მოდელს ერთი დეტერმინისტური კოდის ბაზიდან.
 
-მაღალ დონეზე, Iroha 3 აერთიანებს:
+მაღალი დონის Iroha 3 აერთიანებს:
 
 - დეტერმინისტური შესრულება და შენახვა
-- დასახელება Iroha ვირტუალური მანქანა (IVM) პორტაბილური ჭკვიანი ხელშეკრულებებისათვის
+- Iroha ვირტუალური მანქანა (IVM) პორტატული ჭკვიანი ხელშეკრულებებისათვის
 - Norito როგორც კანონიკური ფორმატი
-- Torii კლიენტის, ოპერატორის და აპლიკაციის მიმართულებისათვის APIs
+- Torii კლიენტისთვის, ოპერატორისა და აპლიკაციის მიმართულებისთვის APIs
 - Sumeragi კონსენსუსი სავალდებულო მონაცემების ხელმისაწვდომობისა და საიმედო მაუწყებლობის შესახებ
 - დომენების გარეშე კანონიკური ანგარიშები, რომლებიც ცალკე კავშირშია ადამიანის მიერ წაკითხული ალექსიებით
 
 ## სწრაფი დასაწყისი {#quickstart}
 
-თუ თავიდან იწყებთ, შემდეგ გვერდებზე მიდით:
+თუ თავიდან იწყებთ, შემდეგ გვერდებს მიჰყევით:
 
 1. [დამონტაჟება Iroha 3](/ka/get-started/install-iroha.md)
 2. [გაშვება Iroha 3](/ka/get-started/launch-iroha.md)
 3. [ოპერირება Iroha 3 მეშვეობით CLI](/ka/get-started/operate-iroha-via-cli.md)
-4. [შეხება SORA Nexus მონაცემთა სივრცეები](/ka/get-started/sora-nexus-dataspaces.md)
+4. [დაკავშირება SORA Nexus მონაცემთა ბაზებთან](/ka/get-started/sora-nexus-dataspaces.md)
 5. [სპონსორი კერძო მონაცემთა სივრცის გადასახადები](/ka/get-started/private-dataspace-fee-sponsor.md)
 
 ## SDKs {#sdks}
 
-მიმდინარე SDK ამ საიტზე დოკუმენტირებული შესასვლელი წერტილებია:
+ამ საიტზე დოკუმენტირებული მიმდინარე SDK შესასვლელი წერტილებია:
 
 - [Rust](/ka/guide/tutorials/rust.md)
 - [Python](/ka/guide/tutorials/python.md)
 - [JavaScript / TypeScript](/ka/guide/tutorials/javascript.md)
-- [Kotlin, Android, და Java](/ka/guide/tutorials/kotlin-java.md)
+- [Kotlin, Android და Java](/ka/guide/tutorials/kotlin-java.md)
 - [Swift და iOS](/ka/guide/tutorials/swift.md)
 
 ## ოპერატორის რეფერენციები {#operator-references}
 
 გვერდები, რომლებიც ყველაზე ხშირად გამოიყენებთ ქსელის მართვის დროს:
 
-- [მუშაობა Iroha ბინარი](/ka/reference/binaries.md)
-- [იანესის რეფერენცია](/ka/reference/genesis.md)
+- [Iroha ბინარებთან მუშაობა](/ka/reference/binaries.md)
+- [გენეზიის მითითება](/ka/reference/genesis.md)
 - [Torii საბოლოო წერტილები](/ka/reference/torii-endpoints.md)
-- [შეხება SORA Nexus მონაცემთა სივრცეები](/ka/get-started/sora-nexus-dataspaces.md)
+- [დაკავშირება SORA Nexus მონაცემთა ბაზებთან](/ka/get-started/sora-nexus-dataspaces.md)
 - [სპონსორი კერძო მონაცემთა სივრცის გადასახადები](/ka/get-started/private-dataspace-fee-sponsor.md)
-- [შეთავსების მატრიცა](/ka/reference/compatibility-matrix.md)
+- [შესაბამისობის მატრიცა](/ka/reference/compatibility-matrix.md)
 
 ## გაიგეთ მეტი {#learn-more}
 

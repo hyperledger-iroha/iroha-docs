@@ -6,26 +6,24 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# إشارة التكوين {#genesis-reference}
+# الإشارة إلى سفر التكوين {#genesis-reference}
 
-في الوقت الحالي Iroha 3 تدفق العمل، `genesis.json` ويعبر المشهد عن أول
-المعاملات والمعايير التي سيتم تطبيقها عند بدء الشبكة.
+في سير العمل الحالي Iroha 3، يصف بيان `genesis.json` أول المعاملات والمعايير التي سيتم تطبيقها عند بدء الشبكة.
 
-القطع الأثرية الموقعة التي تم توزيعها على أقرانها هي Norito-مشفّر `.nrt` الملف
-المنتجة من `kagami genesis sign`.
+القطع الأثرية الموقعة التي تم توزيعها على أقرانها هي ملف Norito مرموز `.nrt` الناتج عن `kagami genesis sign`.
 
 ## الحقول الرئيسية {#main-fields}
 
-ويمكن أن يحدد بيان الجينس:
+ويمكن أن يحدد إشارة التكوين:
 
-- `chain` لتحديد السلسلة
-- `executor` لمرحلة تطوير كود البايت إختياري
-- `ivm_dir` لـ IVM المكتبات التي تستخدمها المحفزات والترقية
-- `consensus_mode` للوضع الأولي الذي يعلن عنه المخطط
-- `transactions` لتحديثات المعلمات المتسلسلة والإرشادات والمؤثرات والتوبولوجيا
-- `crypto` للصورة الفورية الأولى من العملات المشفرة
+- `chain` للتعرف على السلسلة
+- `executor` لمرحلة تطوير بايت كود تنفيذية اختيارية
+- `ivm_dir` لمكتبات IVM المستخدمة من خلال محفزات وتحديثات
+- `consensus_mode` للطريقة الابتدائية التي يتم الإعلان عنها في المذكرة
+- `transactions` للتحديثات المرتبة للمعلمات والإرشادات والتحفيزات والتوبولوجيا
+- `crypto` لقطة العملات الرقمية الأولى
 
-داخل `transactions`, إدخالات التوبولوجيات أزواج هويات الأقران و PoPs معاً:
+داخل `transactions` ، إدخالات التوبولوجيات تتزامن مع هويات الأقران و PoPs معاً:
 
 ```json
 {
@@ -34,9 +32,9 @@ translation_engine: nllb-200-ct2
 }
 ```
 
-## إنشاء إشارة {#generate-a-manifest}
+## إنشأ إشارة {#generate-a-manifest}
 
-الاستخدام Kagami لإنشاء نموذج:
+استخدم Kagami لتوليد نموذج:
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
@@ -45,13 +43,11 @@ cargo run -p iroha_kagami -- genesis generate \
   --genesis-public-key <PUBLIC_KEY> > genesis.json
 ```
 
-للجمهور SORA Nexus مساحة البيانات `npos` هو وضع الإجماع المتوقع.
-غيرها Iroha 3 يمكن أن تستخدم عمليات النشر المسموح بها أو NPoS اعتمادا على الهدف
-الملف الشخصي
+بالنسبة لمجال البيانات العام SORA Nexus، `npos` هو وضع الإجماع المتوقع. قد تستخدم تنفيذات Iroha 3 الأخرى المسموح بها أو NPoS اعتمادًا على ملف الهدف.
 
-## وقع على الإشارة {#sign-the-manifest}
+## التوقيع على الإعلان {#sign-the-manifest}
 
-بعد تحرير وتصديق JSON, وقعها في نظام قابل للتنفيذ `.nrt` الكتلة:
+بعد تحرير وتصديق JSON، وقم بتوقيعه في كتلة `.nrt` قابلة للتنفيذ:
 
 ```bash
 cargo run -p iroha_kagami -- genesis sign genesis.json \
@@ -59,13 +55,11 @@ cargo run -p iroha_kagami -- genesis sign genesis.json \
   --out-file genesis.signed.nrt
 ```
 
-`kagami genesis sign` يقرأ المفتاح العام للشريحة من الم manifesto و استخدامات
-المفتاح الخاص والبذور والخوارزمية التي تم توفيرها لإنتاج الموقع القابل للتنفيذ
-النتيجة هي الملف الذي يجب على الأقران الإشارة إليه من إعداداتهم.
+`kagami genesis sign` يقرأ مفتاح الجينس العام من المخطط ويستخدم مفتاح خاص، البذور، والخوارزمية المقدمة لإنتاج الكتلة الموقعة القابلة للتنفيذ. النتيجة هي الملف الذي يجب أن يشير إليه الأقران من إعداداتهم.
 
-## الإعداد `irohad` {#configure-irohad}
+## إعداد `irohad` {#configure-irohad}
 
-اشير الديمون الى كتلة التكوين الموقعة:
+اشير الـ (دايمون) إلى كتلة التكوين الموقع:
 
 ```toml
 [genesis]
@@ -81,5 +75,4 @@ public_key = "<PUBLIC_KEY>"
 - `kagami localnet`
 - `cargo xtask kagami-profiles`
 
-للحصول على تفاصيل تنفيذ المولد والإرشادات، انظر
-[Kagami README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_kagami/README.md).
+للحصول على تفاصيل تنفيذ المولد والإرشادات، انظر [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_kagami/README.md).

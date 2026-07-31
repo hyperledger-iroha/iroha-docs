@@ -46,7 +46,7 @@ Para simplificar o processo, pode solicitar ao administrador da rede uma versão
 
 #### 3. Enviar a instrução {#_3-submit-the-instruction}
 
-Depois que o seu parceiro estiver em execução, você deve enviar a instrução para registrar o parceiro.
+Depois que o seu colega estiver a correr, deve apresentar a instrução para o registro. O colega irá passar pelo processo de aperto de mão e começar a conversar com a rede.
 
 ::: ponta
 
@@ -58,4 +58,4 @@ A apresentação de uma instrução de registo por pares não (e não pode) inic
 
 Por razões de segurança, este processo é unilateral. A rede chega ao consenso de que quer remover um peer, mas o próprio peer não sabe muito sobre por que ninguém está falando com ele.
 
-Na maioria das circunstâncias, se você quer desinscrever um colega, você quer fazê-lo porque é uma falha bizantina.
+Na maioria das circunstâncias, se você quiser desinscrever um colega, quer fazê-lo porque é uma falha bizantina. O simples "fantasma" deste colega torna a vida do ator malicioso da rede mais difícil.

@@ -8,11 +8,11 @@ translation_engine: nllb-200-ct2
 
 # Segurança {#security}
 
-Ao utilizar Iroha ou qualquer outro livro blockchain para essa questãoa segurança é primordial para as organizações financeiras, pois constitui a base da confiança em um setor onde os dados financeiros sensíveis e transações são rotina. Uma violação bem-sucedida da segurança cometida por uma parte maliciosa pode levar a consequências devastadoras para você.
+Ao utilizar Iroha ou qualquer outro livro blockchain para esse assuntoa segurança é primordial para as organizações financeiras, Como constitui a base da confiança num setor onde os dados financeiros sensíveis e as transacções são rotineiras. Uma violação bem sucedida da segurança realizada por uma parte maliciosa pode levar a consequências devastadoras para você. Por conseguinte , o estabelecimento de medidas preventivas de segurança é essencial para proteger a integridade e a confidencialidade dos seus dados sensíveis . dados.
 
 ### Navegação {#navigation}
 
-Nesta seção, você pode aprender sobre vários aspectos da segurança de sua rede Iroha.
+Nesta seção, poderá aprender sobre vários aspectos da segurança da sua rede Iroha. Para saber mais, escolha um dos seguintes tópicos:
 
 - [Princípios de segurança](./security-principles):
 

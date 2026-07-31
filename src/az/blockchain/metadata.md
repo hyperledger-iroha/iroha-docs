@@ -21,7 +21,7 @@ Aşağıdakı obyektlər metadata daşıya bilər:
 - başlatıcılar
 - əməliyyatlar
 
-Böyük paylı yüklər WSV-nin xaricində saxlanılmalıdır və URI və ya SoraFS yolları ilə istinad edilməlidir.
+Başlıq vəziyyətinə aid olan kiçik təsviri və ya indeksləmə sahələri üçün metadatalardan istifadə edin. Böyük paylı yüklər WSV-nin xaricində saxlanılmalı və URI və ya SoraFS yolları ilə istinad edilməlidir.
 
 Metadata, aktivlərə NFTs, RWAs və ya zəncirdən kənar saxlama seçimi ilə bağlı tövsiyələr üçün [Metadata və Ledger Storage Choices](/az/guide/configure/metadata-and-store-assets.md)-ə baxın.
 

@@ -26,7 +26,7 @@ Cada transacción debe ser firmada por una autoridad de cuenta. La clave privada
 
 ::: advertencia
 
-Todos los clientes son diferentes, pero la configuración del cliente de texto plano solo es adecuada para el desarrollo y las redes de prueba controladas.
+Todos los clientes son diferentes, pero la configuración del cliente de texto plano sólo es adecuada para el desarrollo y las redes de prueba controlada. Las integraciones de producción deben utilizar un gestor secreto, almacenamiento de llaves respaldado por hardware o otro límite de firma auditado.
 
 :::
 

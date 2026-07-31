@@ -8,8 +8,7 @@ translation_engine: nllb-200-ct2
 
 # Filterlar {#filters}
 
-O'zgarishlarni filtrlash va o'zgartirish sharoitlarini tarqatadi.
-hodisa filtrlari `EventFilterBox`, ushbu tadbirlar oilalariga mos keladi:
+Hadisalar oqimlari va qo'zg'atish shartlarini torlaydi. Hozirgi eng yuqori darajadagi hodisa filtrlari `EventFilterBox`, ushbu hodisalar oilalariga mos keladi:
 
 - `Pipeline`
 - `Data`
@@ -17,77 +16,66 @@ hodisa filtrlari `EventFilterBox`, ushbu tadbirlar oilalariga mos keladi:
 - `ExecuteTrigger`
 - `TriggerCompleted`
 
-Ish oqimlariga mos keladigan eng tor filtrdan foydalaning.
-`DataEventFilter::Any` diagnostika uchun foydali, lekin ular har bir hodisani
-qo'zg'atish yoki abonent bilan moslashish xarajatlarini to'lash.
+Ish oqimlariga mos keladigan eng tor filtrdan foydalaning. `DataEventFilter::Any` kabi keng filtrlar diagnostika qilish uchun foydali, ammo ular har bir hodisani qo'zg'atish yoki obunachi bilan bog'lanish xarajatlarini to'laydilar.
 
-## Maʼlumotlar hodisalarini filtrlash {#data-event-filters}
+## Maʼlumotlar hodisasi filtrlari {#data-event-filters}
 
-`DataEventFilter` ko'pchilik ma'lumotlarga mos keladi. Uning joriy variantlari quyidagilarni o'z ichiga oladi:
+`DataEventFilter` katta kitob ma'lumotlari hodisalariga mos keladi. Uning hozirgi variantlarida quyidagilar mavjud:
 
-| Variant | Tadbirlar oilasi |
+|Variant |Tadbirlar oilasi |
 | --- | --- |
-| `Any` | Har qanday ma'lumotlar hodisasi |
-| `Peer` | Tengdoshlar hayotiy davridagi voqealar |
-| `Domain` | Domenning hayot davri va metadata hodisalari |
-| `Account` | Hisobot hayoti davri, metadotlar, aliaslar va kimlik hodisalari |
-| `Asset` | Asset balans va metadata hodisalari |
-| `AssetDefinition` | Assetni aniqlash hayot davri, siyosat va metadata hodisalari |
-| `Nft` | NFT Hayot davri va metadata hodisalari |
-| `Rwa` | Haqiqiy dunyodagi aktivlar hayotiy davridagi voqealar |
-| `Trigger` | Trigger hayot davri va metadata hodisalari |
-| `Role` | O'yinlar hayoti davridagi hodisalar |
-| `Configuration` | Zilziladagi konfiguratsiya hodisalari |
-| `Executor` | Ish vaqti ijrochiligi hodisalari |
-| `Proof` | Dasturiy ta'minot davrida sodir bo'ladigan voqealar |
-| `Confidential` | Maxfiy aktivlar hodisalari |
-| `VerifyingKey` | Tekshirish kalitlari ro'yxatida sodir bo'lgan hodisalar |
-| `RuntimeUpgrade` | Ish vaqti yangilanishi tadbirlari |
-| `Soradns` | Resolver direktoriya boshqaruvi tadbirlari |
-| `Sorafs` | SoraFS Gateway-ga muvofiqlik hodisalari |
-| `SpaceDirectory` | Kosmik direktoriya manifest hayot davri hodisalari |
-| `Escrow` | O ' rnatilgan natijador aktivlar eskorining hayotiy davrida sodir bo ' lgan oshkora voqealar |
-| `Offline` | Oflayn to'lov tadbirlari |
-| `Oracle` | Oracle feed hodisalari |
-| `Social` | Virusli rag'batlantirish tadbirlari |
-| `Bridge` | Koʻprik tadbirlari |
-| `Governance` | Boshqaruv xususiyati yoqilgan boshqaruv tadbirlari |
+|`Any` |Har qanday ma ' lumotlar hodisasi |
+|`Peer` |Tengdoshlar hayotiy davridagi voqealar |
+|`Domain` |Domenning hayot davri va metadata hodisalari |
+|`Account` |Hisobot hayoti davri, metama'lumotlar, aliaslar va kimlik hodisalari |
+|`Asset` |Asset balansi va metadata hodisalari |
+|`AssetDefinition` |Asset ta'rifining hayotiy davri, siyosat va metadata hodisalari |
+|`Nft` |NFT hayotiy davr va metadata hodisalari |
+|`Rwa` |Haqiqiy dunyodagi aktivlar hayoti davridagi hodisalar |
+|`Trigger` |Hayot davri va metadotlar hodisalarini qoʻzgʻatish |
+|`Role` |Rollar hayotiy davridagi hodisalar |
+|`Configuration` |Zilziladagi konfiguratsiya hodisalari |
+|`Executor` |Ishga tushirish vaqtini ijro etuvchi hodisalar |
+|`Proof` |Dasturiy taʼminot davrida sodir boʻladigan voqealar |
+|`Confidential` |Maxfiy aktivlar hodisalari |
+|`VerifyingKey` |Verifikatsiya kalitlari roʻyxatida sodir boʻladigan voqealar |
+|`RuntimeUpgrade` |Ish vaqti yangilanishi tadbirlari |
+|`Soradns` |Katalog boshqaruv tadbirlarini hal etish |
+|`Sorafs` |SoraFS darvozalarga rioya qilish hodisalari |
+|`SpaceDirectory` |Kosmos direktoriyasi hayot davri hodisalarini oshkor qiladi |
+|`Escrow` |Asosiy aktivlar eskorining hayot davri hodisalarining shaffofligi |
+|`Offline` |Offline hisob-kitob tadbirlari |
+|`Oracle` |Oracle feed hodisalari |
+|`Social` |Virusli ragʻbatlantirish tadbirlari |
+|`Bridge` |Koʻprik tadbirlari |
+|`Governance` |Boshqaruv xususiyati qoʻllanilganda boshqaruv tadbirlari |
 
-Aksariyat beton filtrlari ham fakultativ ID matcher va hodisalarni belgilaydigan maska.
-Misol uchun, aktiv filtrlari bitta aktiv yoki bir turdagi aktiv hodisalariga mos keladi;
-o'chirgich filtrlari o'chirg'iga mos bo'lsa ID va qo'zg'atuvchi hodisalar to'plami.
+Aksariyat beton filtrlari ID moslashtiruvchi va hodisalar to'plami maskasiga ham ruxsat beradi. Masalan, aktiv filtrlari bitta aktiv yoki bir turdagi aktiv voqealariga mos kelishi mumkin, trigger filtrlari esa trigger ID va trigger tadbirlari to'plamiga mos kelishi kerak .
 
 ## Pipeline filtrlari {#pipeline-filters}
 
-Pipeline filtrlari blok, tranzaksiya, birlashtirish kabi jarayonlarga mos keladi;
-va guvohlar hodisalari. ularni operativ obunalar, blok-processing uchun ishlatish
-dashboardlar va tugatuvchilar, ular katta ma'lumotlar bo'yicha emas, balki quvur holatiga javob beradi
-obyektlar.
+Pipeline filtrlari blok, tranzaksiya, birlashtirish va guvoh hodisalari kabi qayta ishlash voqealariga mos keladi. Ularni operatsion ob'ektlar, blokni qayta ishlash dashboardlari va katta ma'lumotlar ob'ektlaridan ko'ra pipeline holatiga munosabatda bo'lgan qo'zg'atuvchilarga ishlating.
 
 ## Trigger filtrlari {#trigger-filters}
 
-Ishtirokchilar o ' z holatini `EventFilterBox`. Bundan tashqari , qoʻzgʻatuvchi harakat
-do'konlar:
+Triggerlar o'z holatini `EventFilterBox` sifatida saqlashadi.
 
 - ijro etilishi mumkin
 - takrorlash siyosati
-- vakolatli organ hisob raqami
-- vaqtni qo'zg'atishning qayta urinish siyosati
+- ma'muriyat hisob raqami
+- vaqtni qo'zg'atishning qayta sinovdan o'tkazish tartibi
 - Metadatalar
 
-O'chirib yuborish organi ijro etilishi kerak bo'lgan ruxsatnomalarga ega bo'lishi kerak.
-Uzoq umr ko'rsatadigan tetikterlar uchun maxsus texnik hisoblarni afzal ko'rish.
+O'chirgichga o'rnatilgan ruxsatnomalar mavjud bo'lishi kerak. Uzoq umr ko'rsatadigan tetikterlar uchun maxsus texnik hisoblarni afzal ko'rish kerak.
 
 ## Soʻrov filtrlari {#query-filters}
 
-So'rov filtrlari hodisa filtrlaridan ajralib turadi.
-Predikat va selektorni qo'llab-quvvatlash. SDK
-sozlash vositasi so'rov chiqish turiga mos keladi.
+So'rov filtrlari hodisa filtrlaridan ajralib turadi. O'zgaruvchan so'rovlar predikat va selektorni qo'llab-quvvatlashi mumkin. SDK dan so'rovga moslashtirilgan filterlardan foydalaning, shunda filtr kirish so'rov chiqariladigan turi bilan mos keladi.
 
 Shuningdek qarang:
 
-- [Tadbirlar](/uz/blockchain/events.md)
-- [Asosiy aktivlar eskorovi](/uz/blockchain/escrow.md#queries-and-events)
+- [O'zgarishlar](/uz/blockchain/events.md)
+- [Native Asset Escrow ](/uz/blockchain/escrow.md#queries-and-events)
 - [Ishtirokchilar](/uz/blockchain/triggers.md)
-- [Savollar](/uz/blockchain/queries.md)
-- [Soʻrov uchun maʼlumot](/uz/reference/queries.md)
+- [So'rovlar](/uz/blockchain/queries.md)
+- [So'rov uchun ma'lumot](/uz/reference/queries.md)

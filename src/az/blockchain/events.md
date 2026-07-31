@@ -17,7 +17,7 @@ Tədbirlər blok kateqoriyasında müəyyən hadisələr baş verdiyi zaman yay�
 
 ## Pipeline hadisələri {#pipeline-events}
 
-Pipeline hadisələri bir blok üçün əməliyyatların təqdim edilməsi, icra olunması və ya öhdəlik verilməsində yayılır. Vəziyyət `Validating` (təkrarlanan təsdiq), `Rejected` və ya `Committed` ola bilər. Əgər bir subyekt rədd edilibsə, rəddin səbəbi göstərilmişdir.
+Pipeline hadisələri bir blok üçün əməliyyatların təqdim edilməsi, icrası və ya öhdəlik verilməsi zamanı yayılır. Bir boru xəttində baş verən hadisə aşağıdakı məlumatları ehtiva edir: bir hadisənin (transaksiyanın və ya blokun) səbəbi olan subyekt növü, hash və statusunu. Vəziyyət `Validating` (təkrarlanan təsdiqlənmə), `Rejected` və ya `Committed` ola bilər. Əgər bir müəssisə rədd edilibsə, rəddin səbəbi göstərilmişdir.
 
 ### Taira üzərində sınayın. {#try-it-on-taira}
 
@@ -53,4 +53,4 @@ Zaman hadisələri dünya vəziyyəti görünüşü [ vaxt tetikleyiciləri ](./
 
 ## Trigger icra hadisələri {#trigger-execution-events}
 
-Trigger icrası hadisələri [`ExecuteTrigger`](./instructions.md#executetrigger) təlimatı icra edildikdən sonra yayılır.
+Trigger icra hadisələri [`ExecuteTrigger`](./instructions.md#executetrigger) təlimatının icrası zamanı yayılır. Trigger əməliyyatının bitməsindən sonra tetikləyici tamamlama hadisələri yayılır.

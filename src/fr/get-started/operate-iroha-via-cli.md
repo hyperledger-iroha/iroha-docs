@@ -6,90 +6,79 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Opérer Iroha 3 par le biais CLI {#operate-iroha-3-via-cli}
+# Fonctionnement Iroha 3 par le biais CLI {#operate-iroha-3-via-cli}
 
-Les `iroha` binary est le client de ligne de commande pour Iroha 3. Utilisez-le pour la requête
-l'état du registre, la soumission des transactions et l'inspection des points finaux de l'opérateur.
+Le `iroha` binaire est le client de ligne de commande pour Iroha 3. Utilisez-le pour consulter l'état du registre, soumettre des transactions et inspecter les terminaux de l'opérateur.
 
 ## 1. Les prérequis {#_1-prerequisites}
 
-Démarrer un réseau local d'abord:
+D' abord, lancez un réseau local:
 
 - [Lancement Iroha 3](./launch-iroha.md)
 
-Les exemples ci-dessous supposent la configuration du client générée à partir du localnet
-créée en [Lancement Iroha 3](./launch-iroha.md):
+Les exemples ci-dessous supposent la configuration client générée à partir du localnet créé dans [Launch Iroha 3 ](./launch-iroha.md):
 
 ```bash
 ./localnet/client.toml
 ```
 
-## 2. Fondamentaux CLI Mise en place {#_2-basic-cli-setup}
+## L'installation de base CLI {#_2-basic-cli-setup}
 
-Montrez l'aide de haut niveau:
+Montrez l'aide du plus haut niveau:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml --help
 ```
 
-Les CLI est organisé en ces groupes de commandes de haut niveau:
+Le CLI est organisé en ces groupes de commandement au plus haut niveau:
 
 - `account` pour les raccourcis axés sur le compte
-- `tx` pour les assistants au niveau des transactions
-- `ledger` pour les personnes qui lisent et écrivent
-- `ops` pour les diagnostics des opérateurs
-- `app` pour l'application API les aides
+- `tx` pour les aides au niveau des opérations
+- `ledger` pour la lecture et l'écriture du registre
+- `ops` pour le diagnostic de l'opérateur
+- `app` pour les assistants de l'application API
 - `contract` pour le déploiement des contrats et les appels
-- `tools` pour les services de diagnostic et de développement
-- `taira` pour Taira et Nexus- les flux de travail orientés
+- `tools` pour les services de diagnostic et d'équipement de développement
+- `taira` pour les flux de travail orientés vers Taira et Nexus
 
-Les `ledger` Le groupe contient également des aides à la transaction spécifiques aux domaines tels que
-`ledger transaction`.
+Le groupe `ledger` contient également des aides à la transaction spécifiques à un domaine tels que `ledger transaction`.
 
-Utilisation `--output-format text` pour la sortie de l'opérateur lisible par l'homme et `--machine`
-pour le mode d'automatisation strict.
+Utilisez `--output-format text` pour la sortie de l'opérateur lisible par l'homme et `--machine` pour le mode d'automatisation strict.
 
-## 3. Essayez le public Taira Réseau de test {#_3-try-the-public-taira-testnet}
+## 3. Essayez le testnet public Taira {#_3-try-the-public-taira-testnet}
 
-Tu peux essayer de lire seulement Taira vérifier avant d'exécuter une comparaison locale ou de créer un
-Ces commandes utilisent public Torii JSON les itinéraires et ne pas dépenser testnet
-XOR.
+Vous pouvez essayer les contrôles Taira en lecture seulement avant d'exécuter un pair local ou de créer un signataire. Ces commandes utilisent des routes publiques Torii JSON et ne dépensent pas de testnet XOR.
 
-Vérifiez Taira la santé:
+Vérifiez la santé de Taira:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 ```
 
-Liste des domaines publics dans le `universal` espace de données:
+Liste des domaines publics dans l'espace de données `universal`:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=10' \
   | jq -r '.items[].id'
 ```
 
-Lisez quelques définitions d'actifs et leur offre actuelle:
+Listez quelques définitions d'actifs et leur offre actuelle:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=10' \
   | jq -r '.items[] | [.id, .name, .mintable, .total_quantity] | @tsv'
 ```
 
-Si vous avez le courant `iroha` binaire, faire fonctionner le Taira assistant de diagnostic:
+Si vous avez le binary `iroha` actuel, utilisez l'aide au diagnostic Taira:
 
 ```bash
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-Créer `taira.client.toml` seulement quand vous êtes prêt à tester les commandes signées.
-Vous voyez ? [Connectez-vous SORA Nexus Les bases de données](/fr/get-started/sora-nexus-dataspaces.md)
-pour le config, le robinet et le flux canarien.
-Taira jusqu'à ce que le compte soit financé par l'actif des frais de robinet.
+Créez `taira.client.toml` uniquement lorsque vous êtes prêt à tester les commandes signées. Voir [Connectez-vous à SORA Nexus Dataspaces](/fr/get-started/sora-nexus-dataspaces.md) pour la configuration, le robinet et le flux canarien. N'exécutez pas de commandes d'écriture contre Taira jusqu'à ce que le compte soit financé avec l'actif des frais du robinet.
 
-Pour tout paiement de frais Taira CLI par exemple, sauver l'aide au robinet de
-[Prenez le testnet XOR sur le Taira](/fr/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)
-comme `taira_faucet_claim.py`, puis demande testnet XOR Tout d'abord:
+Pour tout paiement de frais Taira CLI Par exemple, sauvez l'aide au robinet de [Prenez le testnet XOR sur le Taira](/fr/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) en tant que `taira_faucet_claim.py`, puis la plainte de testnet XOR Tout d'abord:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
@@ -103,8 +92,7 @@ iroha --config ./taira.client.toml ledger asset get \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-Si le puzzle du robinet ou la route de réclamation revient `502`, Attends et réessaye.
-problème de disponibilité du testnet public, pas un signal pour régénérer les clés du compte.
+Si le puzzle du robinet ou la route de réclamation renvoie `502`, attendez et réessayez. Il s'agit d'un problème de disponibilité du réseau public, pas un signal pour régénérer les clés de compte.
 
 Une fois que le solde est visible, joindre les métadonnées de l'actif des frais pour écrire:
 
@@ -118,16 +106,13 @@ iroha --config ./taira.client.toml \
 
 ## 4. Les commandes de base du registre {#_4-basic-ledger-commands}
 
-Liste des domaines:
+Liste de tous les domaines:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 ```
 
-La création de domaine ordinaire utilise le planificateur d'alias déclaratif; `ledger
-domain` le commandement n' a pas `register` Préparez un commandement sans secret.
-`AliasSetupPlanRequestV1` l'intention `docs.universal` avec votre SDK ou
-le service d'intégration, puis planifier et l'appliquer:
+La création de domaine ordinaire utilise le planificateur d'alias déclaratif; la commande `ledger domain` n'a pas de sous-commande `register`. Préparez une intention `AliasSetupPlanRequestV1` sans secret pour `docs.universal` avec votre service SDK ou d'intégration, puis planifiez-la et appliquez:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml \
@@ -139,10 +124,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml \
   app alias setup apply --plan-file ./docs-domain.plan.json
 ```
 
-L'intention pin l'espace de données ID, compte du propriétaire canonique, terme de location et
-Le planificateur vérifie l'état en direct et renvoie le
-nucléaire `EnsureAlias` Ne pas copier manuellement les valeurs de garde d'un autre
-le réseau.
+L'intention pin l'espace de données ID, le compte du propriétaire canonique, la durée du bail et la garde des devis courants. Le planificateur vérifie l'état en direct et renvoie le plan atomique exact `EnsureAlias` à soumettre.
 
 Envoyez une simple transaction de ping:
 
@@ -165,19 +147,19 @@ Statut du consensus:
 cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi status
 ```
 
-Récapitulatif de latence par phase:
+Récapitulatif de la latence par phase:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi phases
 ```
 
-Disponibilité, collecteur, RBC l'arrière-plan, et VRF une photo instantanée
+Disponibilité, collectionneur, arrière-plan RBC et instantané de VRF:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi telemetry
 ```
 
-Paramètres de consensus en chaîne:
+Parametres de consensus sur la chaîne:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ops sumeragi params
@@ -185,12 +167,12 @@ cargo run --bin iroha -- --config ./localnet/client.toml ops sumeragi params
 
 ## 6. Où aller ensuite? {#_6-where-to-go-next}
 
-- [SDK Les tutoriels](/fr/guide/tutorials/)
-- [Torii points de fin](/fr/reference/torii-endpoints.md)
-- [Travailler avec Iroha à binaries](/fr/reference/binaries.md)
+- [SDK tutoriels](/fr/guide/tutorials/)
+- [points d'extrémité Torii](/fr/reference/torii-endpoints.md)
+- [Travailler avec les binaires Iroha](/fr/reference/binaries.md)
 - [CLI README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_cli/README.md)
 
-Pour régénérer une capture d'écran de l'aide Markdown complète à partir du guichet source, exécutez:
+Pour régénérer une capture d'écran complète de l'aide Markdown à partir du guichet source, exécutez:
 
 ```bash
 cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/CommandLineHelp.md

@@ -8,34 +8,31 @@ translation_engine: nllb-200-ct2
 
 # Cryptographic Key များကို ထုတ်လုပ်ခြင်း {#generating-cryptographic-keys}
 
-အသုံးပြုခြင်း `kagami keys` client, peer, and validator key material များအတွက် ထုတ်လုပ်နိုင်ရန်
-Iroha 3.
+`kagami keys` ကိုသုံးပြီး Iroha 3 အတွက် client, peer, and validator key material များကိုထုတ်လုပ်ပါ။
 
 ## အခြေခံ အသုံးပြုမှု {#basic-usage}
 
-ကနေ Iroha အရင်းအမြစ် စစ်ဆေးမှု:
+Iroha အရင်းအမြစ် စစ်ဆေးမှုမှ:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519
 ```
 
-JSON output ကို copy လုပ်ဖို့ အလွယ်ဆုံးဖြစ်ပါတယ် TOML သို့မဟုတ် အလိုအလျောက်လုပ်ခြင်း
+JSON ထုတ်ကုန်ကို TOML သို့ ကူးယူရန် (သို့) အလိုအလျောက် ပြုလုပ်ရန် သာမန်အားဖြင့် လွယ်ကူဆုံးဖြစ်သည်။
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --json
 ```
 
-အစိုးရက အများသုံး သော့နဲ့ သီးသန့် သော့ကို ရိုက်နှိပ်တယ်။
-key ကို လျှို့ဝှက်ပစ္စည်းအဖြစ်သုံးပြီး ထုတ်လုပ်မှု key တွေကို မယူပါနဲ့။
+Command က Public Key နဲ့ Exposed Private Key တို့ကို ရိုက်နှိပ်ပေးတယ်။ Private Key ကို လျှို့ဝှက်ပစ္စည်းအဖြစ် ဆက်ဆံပါ။ ထုတ်လုပ်ထားတဲ့ Production Keys တွေကို မလုပ်ပါနဲ့။
 
 ## အယ်လ်ဂိုရစ်သမ်များ {#algorithms}
 
-အများသုံး အယ်လ်ဂိုရစ်သမ်များမှာ
+ပုံမှန် အယ်လ်ဂိုရစ်သမ်များမှာ-
 
-- `ed25519` ဖောက်သည်စာရင်းများ၊ စီးမျောမှု လက္ခဏာများနှင့် အများစုအတွက် ဖွံ့ဖြိုးတိုးတက်မှု
-  ကွန်ရက်များ။
-- `secp256k1` Secp256K1 အကောင့်ရဲ့ လက္ခဏာကို လိုအပ်တဲ့အခါမှာပါ။
-- `bls_normal` Build လုပ်နိုင်တဲ့အခါ validator consensus key တွေအတွက် BLS ထောက်ပံ့မှု။
+- `ed25519` ဖောက်သည်အကောင့်များ၊ စီးမျောမှု ကိုယ်ပိုင်လက္ခဏာများနှင့် အများစုဖွံ့ဖြိုးရေးကွန်ရက်များအတွက်။
+- `secp256k1` သင် secp256k1 အကောင့်အမည်ကိုလိုအပ်တဲ့အခါမှာ။
+- `bls_normal` အတွက် validator consensus key များအတွက် build က BLS support ကို enable လုပ်ထားပါက။
 
 သင့်ရဲ့ build က ထောက်ပံ့တဲ့ အယ်လ်ဂိုရစ်သမ်တွေကို တိကျစွာ စစ်ဆေးပါ
 
@@ -43,37 +40,35 @@ key ကို လျှို့ဝှက်ပစ္စည်းအဖြစ်
 cargo run --bin kagami -- keys --help
 ```
 
-## ဆုံးဖြတ်ချက် ချမှတ်ရေး ဖွံ့ဖြိုးမှု သော့ချက်များ {#deterministic-development-keys}
+## ဆုံးဖြတ်ချက်ချမှု ဖွံ့ဖြိုးတိုးတက်ရေး သော့ချက်များ {#deterministic-development-keys}
 
-မျိုးပွားနိုင်သော တပ်ဆင်ချက်များအတွက် အစေ့ကို ပေးပါ။
+ပြန်လည်ဖန်တီးနိုင်သော ကိရိယာများအတွက် မျိုးစေ့ကို ဖြတ်သန်းပါ။
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --seed "dev-alice" --json
 ```
 
-မျိုးစေ့တွေဟာ ပုဂ္ဂလိက အဓိက ပစ္စည်းတွေပါ၊ ဒေသတွင်း ဖွံ့ဖြိုးမှုနဲ့ စမ်းသပ်မှုတွေ အတွက်သာ သုံးပါ။
+မျိုးစေ့တွေဟာ ပုဂ္ဂလိက အဓိက ပစ္စည်းတွေပါ။ ဒေသတွင်း ဖွံ့ဖြိုးတိုးတက်မှုနဲ့ စမ်းသပ်မှုတွေ အတွက်သာ သုံးပါ။
 
 ## BLS ပိုင်ဆိုင်မှု အထောက်အထားများ {#bls-proofs-of-possession}
 
-NPOS နှင့် Nexus validator profile တွေလိုအပ်တယ် BLS validator key တွေနဲ့ PoPs:
+NPoS နှင့် Nexus validator profile များအတွက် BLS validator keys နှင့် PoPs တို့ကို လိုအပ်သည်-
 
 ```bash
 cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
 ```
 
-နိုင်ငံခြားရေး JSON ပါဝင်သည် `pop_hex` ဘယ်အချိန်မှာ `--pop` ဒီတန်ဖိုးကို
-generated topology သို့မဟုတ် `trusted_peers_pop` ကိုယ်ရေးကိုယ်တာအချက်အလက်များအတွက် လိုအပ်သော စာရင်းများ
+JSON မှာ `pop_hex` ကိုပါဝင်ပါတယ်။ `--pop` ကိုအသုံးပြုတဲ့အခါ ဒီတန်ဖိုးကိုထုတ်လုပ်ထားတဲ့ topology (သို့) profile ကတောင်းဆိုတဲ့ `trusted_peers_pop` entries နဲ့အတူ အသုံးပြုပါ။
 
 ## ထုတ်ကုန်ပုံစံများ {#output-formats}
 
-terminal စစ်ဆေးမှုအတွက် default output ကိုသုံးပါ။ `--json` အလိုအလျောက်လုပ်ခြင်းအတွက်၊
-`--compact` အခြား script တစ်ခုက ရိုးရှင်းတဲ့ line oriented values တွေကို လိုအပ်တဲ့အခါမှာ
+terminal inspection အတွက် default output ကို အသုံးပြုပါ။ `--json` ကို အလိုအလျောက် စစ်ဆေးဖို့နဲ့ `--compact` ကို အခြား script တစ်ခုအတွက် ရိုးရှင်းတဲ့ line-oriented တန်ဖိုးတွေ လိုအပ်တဲ့အခါမှာ သုံးပါ။
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --compact
 ```
 
-အပြည့်အဝ ထုတ်ကုန်များအတွက် Kagami အကူအညီ
+Full generated Kagami အကူအညီအတွက်-
 
 ```bash
 cargo run -p iroha_kagami -- advanced markdown-help > crates/iroha_kagami/CommandLineHelp.md

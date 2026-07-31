@@ -55,7 +55,7 @@ cargo run -p iroha_kagami -- genesis sign genesis.json \
   --out-file genesis.signed.nrt
 ```
 
-O `kagami genesis sign` lê a chave pública genesis do manifesto e usa a chave privada fornecida, semente e algoritmo para produzir o bloco assinado implementável.
+`kagami genesis sign` lê a chave pública da Gênesis do manifesto e usa a chave privada fornecida, semente, E um algoritmo para produzir o bloco assinado implementável. O resultado é o arquivo que os pares deveriam referir-se a partir do seu config.
 
 ## Configuração `irohad` {#configure-irohad}
 

@@ -6,10 +6,9 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Filtres {#filters}
+# Les filtres {#filters}
 
-Filtre les courants d'événements étroits et conditions de déclenchement.
-le filtre de l'événement est `EventFilterBox`, qui peuvent correspondre à ces familles d'événements:
+Filtre les courants d'événements étroits et conditions de déclenchement. Le filtre d'évènements actuel au plus haut niveau est `EventFilterBox`, qui peut correspondre à ces familles d'évents:
 
 - `Pipeline`
 - `Data`
@@ -17,57 +16,49 @@ le filtre de l'événement est `EventFilterBox`, qui peuvent correspondre à ces
 - `ExecuteTrigger`
 - `TriggerCompleted`
 
-Utilisez le filtre le plus étroit qui correspond au flux de travail.
-`DataEventFilter::Any` sont utiles pour le diagnostic, mais ils font chaque événement
-payer le coût du déclencheur ou de l'abonnement correspondant.
+Utilisez le filtre le plus étroit qui corresponde au flux de travail. Les filtres larges tels que `DataEventFilter::Any` sont utiles pour le diagnostic, mais ils font payer chaque événement le coût du déclenchement ou de l'adaptation des abonnés.
 
 ## Filtres d'événements de données {#data-event-filters}
 
-`DataEventFilter` correspond aux événements de données du registre.
+`DataEventFilter` correspond à des événements de données du registre.
 
-| Variante | Famille d'événements |
+|Variante |Famille d' événements |
 | --- | --- |
-| `Any` | Tout événement de données |
-| `Peer` | Événements du cycle de vie des pairs |
-| `Domain` | Les événements du cycle de vie et des métadonnées du domaine |
-| `Account` | Cycle de vie du compte, métadonnées, alias et événements d'identité |
-| `Asset` | Les événements liés au solde des actifs et aux métadonnées |
-| `AssetDefinition` | Définition d'actifs cycle de vie, politique et événements de métadonnées |
-| `Nft` | NFT événements du cycle de vie et des métadonnées |
-| `Rwa` | Événements du cycle de vie des actifs dans le monde réel |
-| `Trigger` | Les événements de cycle de vie et de métadonnées des déclencheurs |
-| `Role` | Événements du cycle de vie des rôles |
-| `Configuration` | Événements de configuration en chaîne |
-| `Executor` | Événements d'exécution de l'exécution |
-| `Proof` | Événements du cycle de vie de la vérification des preuves |
-| `Confidential` | Événements confidentiels relatifs aux actifs |
-| `VerifyingKey` | Événements de registre des clés de vérification |
-| `RuntimeUpgrade` | Événements de mise à niveau en cours d'exécution |
-| `Soradns` | Résolver les événements de gouvernance du répertoire |
-| `Sorafs` | SoraFS événements de conformité à la passerelle |
-| `SpaceDirectory` | Répertoire spatiale manifestes des événements du cycle de vie |
-| `Escrow` | Événements du cycle de vie des ententes fiduciaires natives transparents |
-| `Offline` | Evénements de règlement hors ligne |
-| `Oracle` | Événements de flux Oracle |
-| `Social` | Evénements d'incitation virale |
-| `Bridge` | Les événements de pont |
-| `Governance` | Evénements de gouvernance lorsque la fonctionnalité de gouvernation est activée |
+|`Any` |Tout événement de données |
+|`Peer` |Les événements de cycle de vie des pairs |
+|`Domain` |Cycle de vie du domaine et événements de métadonnées |
+|`Account` |Cycle de vie des comptes, métadonnées, alias et événements d'identité |
+|`Asset` |Événements de solde des actifs et métadonnées |
+|`AssetDefinition` |Définition d'actifs cycle de vie, politique et événements de métadonnées |
+|`Nft` |NFT événements du cycle de vie et des métadonnées |
+|`Rwa` |Evénements du cycle de vie des actifs dans le monde réel |
+|`Trigger` |Événements de cycle de vie et de métadonnées déclencheurs |
+|`Role` |Les événements du cycle de vie des rôles |
+|`Configuration` |Les événements de configuration en chaîne |
+|`Executor` |Événements d' exécuteur de temps d' exécution |
+|`Proof` |Événements du cycle de vie de la vérification des preuves |
+|`Confidential` |Les événements d' actifs confidentiels |
+|`VerifyingKey` |Événements du registre de vérification des clés |
+|`RuntimeUpgrade` |Evénements de mise à niveau du temps d' exécution |
+|`Soradns` |Résoudre les événements de gouvernance du répertoire |
+|`Sorafs` |SoraFS événements de conformité à la passerelle |
+|`SpaceDirectory` |Le répertoire spatial manifeste les événements du cycle de vie |
+|`Escrow` |Événements transparents du cycle de vie d' un actif natif en garantie |
+|`Offline` |Les événements de règlement hors ligne |
+|`Oracle` |Événements de flux Oracle |
+|`Social` |Evénements d' incitation virale |
+|`Bridge` |Les événements du pont |
+|`Governance` |Événements de gouvernance lorsque la fonctionnalité de gouvernation est activée |
 
-La plupart des filtres en béton permettent également une option ID Un match et un masque d'événement.
-Par exemple, un filtre d'actif peut correspondre à un actif ou à une classe d'événements d'actifs,
-tandis qu'un filtre de déclencheur peut correspondre à un déclencheurs ID et un ensemble d'événements déclencheurs.
+La plupart des filtres en béton permettent également un matcher ID optionnel et un masque de jeu d'événements. Par exemple, un filtre d'actif peut correspondre à un actif ou à une classe d'évènements d'actifs, tandis qu'un filtre déclencheur peut correspondre au déclenchement ID et à un ensemble d'éventuels déclencheurs.
 
-## Filtres de tuyaux {#pipeline-filters}
+## Filtres de tuyauterie {#pipeline-filters}
 
-Les filtres de pipeline correspondent à des événements de traitement tels que blocage, transaction, fusion,
-Utilisez-les pour les abonnements opérationnels, le traitement par bloc
-des tableaux de bord et des déclencheurs qui réagissent à l'état du pipeline plutôt que aux données du registre
-les objets.
+Les filtres de pipeline correspondent aux événements de traitement tels que les blocs, les transactions, les fusions et les événements témoins. Utilisez-les pour les abonnements opérationnels, les tableaux de bord de traitement des blocs et les déclencheurs qui réagissent à l'état du pipeline plutôt qu'aux objets de données du registre.
 
 ## Filtres de déclenchement {#trigger-filters}
 
-Les déclencheurs stockent leur état comme un `EventFilterBox`. Une action déclenchante aussi
-les magasins:
+Les déclencheurs stockent leur état comme un `EventFilterBox`.
 
 - un exécutable
 - une politique de répétition
@@ -75,19 +66,16 @@ les magasins:
 - une politique facultative de retrait des déclencheurs temporels
 - métadonnées
 
-L'autorité de déclenchement doit disposer des autorisations requises par l'exécutable.
-Je préfère des comptes techniques dédiés pour les déclencheurs de longue durée.
+L'autorité de déclenchement doit disposer des autorisations requises par l'exécutable et préférer les comptes techniques dédiés aux déclencheurs à long terme.
 
 ## Filtres de requête {#query-filters}
 
-Les filtres de requêtes sont séparés des filtres d'événements.
-Prise en charge des prédicates et sélecteurs. SDK
-Donc l'entrée du filtre correspond au type de sortie de la requête.
+Les filtres de requêtes sont distincts des filtres d'événements. Les requêtes itérables peuvent exposer le support du prédicateur et du sélecteur. Utilisez des filtres typés spécifiques à la requête à partir du SDK afin que l'entrée du filtre correspond au type de sortie de la requête.
 
 Voir aussi:
 
 - [Les événements](/fr/blockchain/events.md)
-- [Réservation des actifs natifs](/fr/blockchain/escrow.md#queries-and-events)
-- [Les déclencheurs](/fr/blockchain/triggers.md)
-- [Les questions](/fr/blockchain/queries.md)
-- [Références à la requête](/fr/reference/queries.md)
+- [Réservation d'actifs natifs ](/fr/blockchain/escrow.md#queries-and-events)
+- [Les déclencheurs ](/fr/blockchain/triggers.md)
+- [Les questions ](/fr/blockchain/queries.md)
+- [Référence à la requête ](/fr/reference/queries.md)

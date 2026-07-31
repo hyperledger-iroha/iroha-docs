@@ -8,17 +8,15 @@ translation_engine: nllb-200-ct2
 
 # ማጣቀሻ {#reference}
 
-ይህ ክፍል የአሁኑን ኦፕሬተር-ተኮር የማጣቀሻ ቁሳቁስ ለ
-Iroha 3 የዶክተሮች ስብስብ.
+ይህ ክፍል ለ Iroha 3 ሰነድ ስብስብ የአሁኑን የኦፕሬተር-ተኮር የማጣቀሻ ቁሳቁስ ይከታተላል.
 
 እዚህ ይጀምሩ:
 
-- [ጋር መሥራት Iroha የሁለትዮሽ](/am/reference/binaries.md)
-- [የዘፍጥረት ዘገባ](/am/reference/genesis.md)
-- [Torii የመጨረሻ ነጥቦች](/am/reference/torii-endpoints.md)
-- [Torii API ኮንሶል](/am/reference/torii-api-console.md)
+- [በ Iroha ባይናሪዎች ላይ መሥራት](/am/reference/binaries.md)
+- [የዘፍጥረት ማጣቀሻ](/am/reference/genesis.md)
+- [Torii መጨረሻ ነጥቦች](/am/reference/torii-endpoints.md)
+- [Torii API ኮንሶል ](/am/reference/torii-api-console.md)
 - [Norito](/am/reference/norito.md)
-- [ተኳሃኝነት ማትሪክስ](/am/reference/compatibility-matrix.md)
+- [የተኳሃኝነት ማትሪክስ ](/am/reference/compatibility-matrix.md)
 
-ለትግበራ ምንጭ እና ከኮድ ጋር ለተያያዙ ዝርዝር መግለጫዎች,
-[Iroha ማከማቻ](https://github.com/hyperledger-iroha/iroha).
+ለአተገባበር ምንጭ እና ከኮድ ጋር ለተያያዙ ዝርዝር መግለጫዎች [Iroha መዝገብ ቤት ](https://github.com/hyperledger-iroha/iroha) ይመልከቱ።

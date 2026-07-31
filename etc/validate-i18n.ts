@@ -3,7 +3,14 @@ import { readFile, readdir } from 'node:fs/promises'
 import path from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { TRANSLATED_LOCALES, type DocsLocale } from './locales'
-import { markdownHeadings, markdownTranslationUnits, technicalIdentifiers } from './translate'
+import {
+  markdownHeadings,
+  markdownTranslationUnits,
+  sentenceCount,
+  sentenceCoverageMinimumRatio,
+  technicalIdentifiers,
+  translationMinimumRatio,
+} from './translate'
 
 export const TRANSLATION_STATUS = 'machine-validated'
 
@@ -113,14 +120,29 @@ function proseCompletenessErrors(
     ]
   }
 
-  const minimumRatio = ['ja', 'zh-hans', 'zh-hant'].includes(locale.key) ? 0.25 : 0.35
+  const minimumRatio = translationMinimumRatio(locale.key)
   const errors: string[] = []
   for (let index = 0; index < englishUnits.length; index += 1) {
     const sourceLetters = letterCount(englishUnits[index].content)
     if (sourceLetters < 80) continue
     const localizedLetters = letterCount(localizedUnits[index].content)
     const ratio = localizedLetters / sourceLetters
-    if (ratio < minimumRatio) {
+    const sourceSentences = sentenceCount(englishUnits[index].content, 'en')
+    const localizedSentences = sentenceCount(localizedUnits[index].content, locale.lang)
+    // Translators may legitimately fuse adjacent source sentences. Only flag
+    // sentence-count drift when the localized unit is also unusually short for
+    // the target language, which makes a dropped sentence substantially more
+    // likely than a punctuation or style change.
+    if (
+      sourceSentences >= 2 &&
+      localizedSentences < sourceSentences &&
+      ratio < sentenceCoverageMinimumRatio(locale.key)
+    ) {
+      errors.push(
+        `${locale.path}/${route}: prose unit ${index + 1} has incomplete sentence coverage (expected at least ${sourceSentences}, found ${localizedSentences}; ${ratio.toFixed(2)} of source letters)`,
+      )
+    }
+    if (ratio <= minimumRatio) {
       errors.push(
         `${locale.path}/${route}: prose unit ${index + 1} is materially truncated (${ratio.toFixed(2)} of source letters)`,
       )

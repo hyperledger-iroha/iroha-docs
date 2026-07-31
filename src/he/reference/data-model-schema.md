@@ -8,10 +8,6 @@ translation_engine: nllb-200-ct2
 
 # תוכנית מודל נתונים {#data-model-schema}
 
-דף זה נוצר עם `kagami advanced schema` ממתקעים
-[`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha)
-תיקון שנעצר על ידי זרימת העבודה של העדכון
-הוא בדק במלאי זה כך בניית המסמכים הרגילה לא דורשת
-דה Iroha קבלה מקורית.
+דף זה נוצר עם `kagami advanced schema` מתוך התיקון הדופק [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) רשום על ידי זרימת העבודה של העדכון במסמכים. התמונה המוצגת מבוקשת לתוך המאגר הזה כך שבילדי המסמכים הרגילים לא דורשים בדיקת מקור Iroha .
 
 <DataModelSchema />

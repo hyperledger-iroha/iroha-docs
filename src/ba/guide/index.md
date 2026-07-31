@@ -22,8 +22,8 @@ Iroha менән төҙөгәндә, эшләгәндә йәки интегра�
 
 ## Тәҡдим ителгән юл {#recommended-path}
 
-1. [Инсталляция Iroha 3](/ba/get-started/install-iroha.md) һәм [урындағы селтәрҙе асыу](/ba/get-started/launch-iroha.md).
+1. [Iroha 3](/ba/get-started/install-iroha.md) һәм [ урындағы селтәрҙе ҡуҙғатыу](/ba/get-started/launch-iroha.md).
 2. [SDK инструкцияһын һайлағыҙ](/ba/guide/tutorials/) һәм бәләкәй транзакцияны тапшырығыҙ.
-3. Тикшереү [Ҡулланыусыларҙы үҫтереү](/ba/guide/best-practices/application-development.md) һәм [Мәғлүмәт моделен төҙөү](/ba/guide/best-practices/data-modeling.md) ғаризаны әҙерләгәнгә тиклем API.
-4. Ҡулланыу [Сетьте урынлаштырыу](/ba/guide/best-practices/network-deployment.md), [Операциялар](/ba/guide/best-practices/operations.md), һәм [Хәүефһеҙлек һәм ҡулланыу мөмкинлеге](/ba/guide/best-practices/security-and-access.md) уртаҡ йәки производство селтәрен эшләткәнгә тиклем.
-5. Артабан [Азатлыҡ әҙерлеге](/ba/guide/best-practices/release-readiness.md) урындағы үҫештән алып Taira, Minamoto, йәки башҡа тере урынлаштырыу.
+3. [Ҡулланыуҙы үҫтереү](/ba/guide/best-practices/application-development.md) һәм [Дан өлгөләштереүҙе тикшереү ](/ba/guide/best-practices/data-modeling.md) ғаризаны формалаштырыуҙан алда API.
+4. [Беҙҙең уртаҡ йәки производство селтәрен эшләтер алдынан ](/ba/guide/best-practices/network-deployment.md), [Операциялар](/ba/guide/best-practices/operations.md) һәм [Хәүефһеҙлек һәм инеү](/ba/guide/best-practices/security-and-access.md) селтәрҙәрен ҡулланығыҙ.
+5. [Отпускҡа әҙерлек](/ba/guide/best-practices/release-readiness.md) урындағы үҫештән Taira, Minamoto йәки башҡа тере урынлаштырыуға күтәрелгәндә үтә.

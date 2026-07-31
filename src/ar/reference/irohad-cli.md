@@ -8,18 +8,18 @@ translation_engine: nllb-200-ct2
 
 # `irohad` CLI {#irohad-cli}
 
-`irohad` يبدأ Iroha 3 ديمون أقرانه
+`irohad` يبدأ ديمون زميل Iroha 3.
 
 ```shell
 irohad --config path/to/config.toml
 ```
 
-## `--config` {#arg-config}
+## `--config`  {#arg-config}
 
-- **النوع:** مسار الملفات
-- **اسم مستعار:** `-c`
+- نوع: مسار الملفات
+- الاسم الخارجي: `-c`
 
-الطريق إلى [التكوين](/ar/reference/peer-config/index.md) الملف.
+مسار إلى ملف تشكيل [ ](/ar/reference/peer-config/index.md).
 
 ```shell
 irohad --config path/to/iroha.toml
@@ -27,10 +27,9 @@ irohad --config path/to/iroha.toml
 
 ## `--genesis-manifest-json` {#arg-genesis-manifest-json}
 
-- **النوع:** مسار الملفات
+- نوع: مسار الملفات
 
-الطريق الاختياري إلى دليل التكوين JSON الملف. استخدم هذا عندما تنشر
-يؤكّد البدء ضد إشارة تم إنشاؤها من قبل Kagami.
+مسار اختياري لملف منشور التكوين JSON. استخدم هذا عندما يؤكد النشر بدء العمل ضد منشور تم إنشاؤه بواسطة Kagami.
 
 ```shell
 irohad --config path/to/iroha.toml --genesis-manifest-json path/to/genesis.manifest.json
@@ -38,10 +37,10 @@ irohad --config path/to/iroha.toml --genesis-manifest-json path/to/genesis.manif
 
 ## `--trace-config` {#arg-trace-config}
 
-يُمكّن من تتبع سجلات قراءة التكوين والتحليل. قد يكون مفيدًا لحل المشاكل في التكوين.
+تمكين سجلات تتبع قراءة التكوين وتحليل. قد يكون مفيدًا لحل المشاكل في التكوين.
 
-- **النوع:** العلم
-- **ENV:** `TRACE_CONFIG`
+- النوع: العلم
+- ENV: `TRACE_CONFIG`
 
 ```shell
 irohad --trace-config
@@ -49,15 +48,13 @@ irohad --trace-config
 
 ## `--terminal-colors` {#arg-terminal-colors}
 
-- **النوع:** (بوليان) `--terminal-colors=false` أو
-  `--terminal-colors=true`
-- **افتراضي:** دعم محطة الكشف الذاتي
-- **ENV:** `TERMINAL_COLORS`
+- النوع: البوليان، إما `--terminal-colors=false` أو `--terminal-colors=true`
+- افتراضية: دعم محطة الكشف الذاتي.
+- ENV: `TERMINAL_COLORS`
 
-ما إذا كان لتمكين ANSI-المخرجات الملونة أم لا
+ما إذا كان يتم تمكين خروج ملون ANSI أم لا.
 
-بطبيعة الحال، Iroha يحدد ما إذا كانت المحطة تدعم الخروج الملون
-أو لا.
+بطبيعة الحال، يحدد Iroha ما إذا كانت المحطة تدعم الخروج الملون أم لا.
 
 لتعطيل الألوان صراحة:
 
@@ -72,9 +69,9 @@ irohad
 
 ## `--language` {#arg-language}
 
-- **النوع:** السلاسل
+- النوع: الخيوط
 
-قم بإلغاء لغة النظام المستخدمة لإرسال رسائل الديمون.
+قم بإلغاء لغة النظام المستخدمة لإرسال رسائل الشيطان.
 
 ```shell
 irohad --language en-US
@@ -82,10 +79,9 @@ irohad --language en-US
 
 ## `--sora` {#arg-sora}
 
-- **النوع:** العلم
+- النوع: العلم
 
-تمكين سورا Nexus ملف الميزة SoraFS, الموقع SoraNet ضغط اليد، و
-تدفقات توافق متعددة المسارات.
+تمكين ملف ميزة Sora Nexus لـ SoraFS ، و SoraNet ضغط اليد، وتدفقات الإجماع متعددة المسارات.
 
 ```shell
 irohad --config path/to/iroha.toml --sora
@@ -93,9 +89,9 @@ irohad --config path/to/iroha.toml --sora
 
 ## `--fastpq-execution-mode` {#arg-fastpq-execution-mode}
 
-- **النوع:** `auto`, `cpu`, أو `gpu`
+- النموذج: `auto` ، `cpu`، أو `gpu`
 
-إعادة التأثير FASTPQ أسلوب تنفيذ الإشارة.
+قم بإغلاق وضع تنفيذ FASTPQ
 
 ```shell
 irohad --fastpq-execution-mode auto
@@ -103,9 +99,9 @@ irohad --fastpq-execution-mode auto
 
 ## `--fastpq-poseidon-mode` {#arg-fastpq-poseidon-mode}
 
-- **النوع:** `auto`, `cpu`, أو `gpu`
+- النموذج: `auto` ، `cpu`، أو `gpu`
 
-إعادة التأثير FASTPQ وضع خط أنابيب (بوسيدون)
+إغلاق FASTPQ وضع خطوط أنابيب بوسيدون.
 
 ```shell
 irohad --fastpq-poseidon-mode cpu
@@ -113,9 +109,9 @@ irohad --fastpq-poseidon-mode cpu
 
 ## `--fastpq-device-class` {#arg-fastpq-device-class}
 
-- **النوع:** السلاسل
+- النوع: الخيوط
 
-إعادة التأثير FASTPQ علامة طبقة الجهاز التليميتر.
+إعادة تعريف علامة FASTPQ على فئة الأجهزة التلفازية.
 
 ```shell
 irohad --fastpq-device-class apple-m4
@@ -123,9 +119,9 @@ irohad --fastpq-device-class apple-m4
 
 ## `--fastpq-chip-family` {#arg-fastpq-chip-family}
 
-- **النوع:** السلاسل
+- النوع: الخيوط
 
-إعادة التأثير FASTPQ علامة عائلة رقائق التلفاز.
+قم بإلغاء التسمية FASTPQ للأشعة العائلية للتلفاز.
 
 ```shell
 irohad --fastpq-chip-family m4
@@ -133,9 +129,9 @@ irohad --fastpq-chip-family m4
 
 ## `--fastpq-gpu-kind` {#arg-fastpq-gpu-kind}
 
-- **النوع:** السلاسل
+- النوع: الخيوط
 
-إعادة التأثير FASTPQ التيلومترية GPU-علامة نوعية.
+تكرار علامة FASTPQ التلفزيونية GPU.
 
 ```shell
 irohad --fastpq-gpu-kind integrated

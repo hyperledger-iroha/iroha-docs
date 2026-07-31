@@ -8,8 +8,7 @@ translation_engine: nllb-200-ct2
 
 # Les métadonnées {#metadata}
 
-Les métadonnées sont une carte de valeur de clé vérifiée attachée aux objets du registre.
-`Name` Les valeurs et les valeurs sont JSON (`Json`) des charges utiles.
+Les métadonnées sont une carte de la valeur des clés vérifiée attachée aux objets du registre. `Name` Les valeurs et les valeurs JSON (`Json`) des charges utiles.
 
 Les objets suivants peuvent contenir des métadonnées:
 
@@ -20,20 +19,15 @@ Les objets suivants peuvent contenir des métadonnées:
 - NFTs
 - RWAs
 - déclencheurs
-- opérations
+- des opérations
 
-Utiliser des métadonnées pour de petits champs descriptifs ou d'indexation qui appartiennent au grand livre
-Les grandes charges utiles doivent être stockées à l'extérieur du WSV et référencé par un
-la digestion, URI, ou SoraFS Le chemin.
+Utilisez des métadonnées pour de petits champs descriptifs ou d'indexation qui appartiennent à l'état du registre. Les grandes charges utiles doivent être stockées en dehors de la WSV et référencées par un digest, URI, ou SoraFS chemin.
 
-Pour les conseils sur le choix des métadonnées, des actifs, NFTs, RWAs, ou hors chaîne
-stockage, voir
-[Les options de stockage des métadonnées et du registre](/fr/guide/configure/metadata-and-store-assets.md).
+Pour les conseils sur le choix des métadonnées, des actifs, NFTs, RWAs, ou de stockage hors chaîne, voir [Les options de stockage des métadonnées et du registre](/fr/guide/configure/metadata-and-store-assets.md).
 
-## Essayez-le . Taira {#try-it-on-taira}
+## Essayez le sur Taira {#try-it-on-taira}
 
-Les métadonnées sont visibles à travers des lectures de ressources normales. Taira
-définitions d'actifs qui contiennent actuellement des métadonnées:
+Les métadonnées sont visibles à travers des lectures de ressources normales. Cette commande répertorie les définitions d'actifs Taira qui contiennent actuellement des métadonnées:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=100' \
@@ -42,7 +36,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=100' \
     | {id, name, metadata}'
 ```
 
-Utilisez le même schéma pour les domaines et les comptes:
+Utilisez le même schéma pour les domaines et comptes:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
@@ -52,26 +46,20 @@ curl -fsS 'https://taira.sora.org/v1/accounts?limit=20' \
   | jq '.items[] | select((.metadata // {} | length) > 0)'
 ```
 
-Traiter la sortie vide comme un résultat valide. Taira
-les objets ne contiennent pas de métadonnées, non que le point final ait échoué.
+Traiter la sortie vide comme un résultat valide. Cela signifie que la page actuelle des objets Taira ne contient pas de métadonnées, ce qui ne veut pas dire que le point final n'a pas fonctionné.
 
 ## Mise à jour des métadonnées {#updating-metadata}
 
 Les métadonnées sont modifiées par Iroha Instructions spéciales:
 
-- [`SetKeyValue`](/fr/blockchain/instructions.md#setkeyvalue-removekeyvalue)
-  insère ou remplace une clé
-- [`RemoveKeyValue`](/fr/blockchain/instructions.md#setkeyvalue-removekeyvalue)
-  enlève une clé
+- [`SetKeyValue`](/fr/blockchain/instructions.md#setkeyvalue-removekeyvalue) insère ou remplace une clé.
+- [`RemoveKeyValue`](/fr/blockchain/instructions.md#setkeyvalue-removekeyvalue) enlève une clé
 
-L'autorité qui soumet la transaction doit avoir l'autorisation requise.
-par le validateur d'exécution actif. Pour la surface d'autorisation par défaut, voir
-[Les jetons d'accès](/fr/reference/permissions.md).
+L'autorité qui soumet la transaction doit avoir l'autorisation requise par le validateur d'exécution actif. Pour la surface d'autorisations par défaut, voir [Permission Tokens](/fr/reference/permissions.md).
 
 ## Les événements {#events}
 
-Les événements de données sont émis lorsque les métadonnées changent.
-`MetadataChanged<Id>`:
+Les événements de données sont émis lorsque les métadonnées changent. `MetadataChanged<Id>`:
 
 ```mermaid
 classDiagram
@@ -93,22 +81,10 @@ MetadataChanged --> AssetDefinitionMetadataChanged
 MetadataChanged --> DomainMetadataChanged
 ```
 
-Utilisation [Filtres d'événements de données](/fr/blockchain/filters.md#data-event-filters) à
-s'abonner uniquement aux événements de métadonnées pour le type ou l'objet d'entité ID que
-Il s'agit d'une intégration.
+Utilisez les filtres d'événements de données [ ](/fr/blockchain/filters.md#data-event-filters) pour souscrire uniquement à des événements de métadonnées pour le type d'entité ou l'objet ID qui sont importants pour une intégration.
 
-## Les questions {#queries}
+## Questions posées {#queries}
 
-Les métadonnées sont renvoyées dans le cadre de l'objet demandé.
-[`FindAccountById`](/fr/reference/queries.md#accounts-and-permissions),
-[`FindDomainById`](/fr/reference/queries.md#domains-and-peers), ou
-[`FindAssetDefinitionById`](/fr/reference/queries.md#assets-nfts-and-rwas).
-Utilisation [`FindNfts`](/fr/reference/queries.md#assets-nfts-and-rwas) ou
-[`FindNftsByAccountId`](/fr/reference/queries.md#assets-nfts-and-rwas) pour
-NFTs, et [`FindRwas`](/fr/reference/queries.md#assets-nfts-and-rwas) pour RWA
-Ensuite, lisez le champ de métadonnées de l'objet. NFT Les réponses à la requête exposent les
-NFT `content` la carte comme métadonnées enregistrées.
+Les métadonnées sont renvoyées dans le cadre de l'objet recherché. Par exemple, utilisez [`FindAccountById`](/fr/reference/queries.md#accounts-and-permissions), [`FindDomainById`](/fr/reference/queries.md#domains-and-peers) ou [`FindAssetDefinitionById` ](/fr/reference/queries.md#assets-nfts-and-rwas). Utilisez [`FindNfts`](/fr/reference/queries.md#assets-nfts-and-rwas) ou [`FindNftsByAccountId`](/fr/reference/queries.md#assets-nfts-and-rwas) pour NFTs, et [`FindRwas`](/fr/reference/queries.md#assets-nfts-and-rwas) pour les lots RWA. Ensuite, lisez le champ de métadonnées de l'objet. Les réponses à la requête NFT exposent la carte NFT `content` comme les métadonnées enregistrées.
 
-Les clés de métadonnées font partie de l'état du registre, alors gardez-les stables et évitez
-la version spécifique à l'application de codage est transférée dans le nom de clé lorsque JSON
-la valeur peut porter cette version explicitement.
+Les clés de métadonnées font partie de l'état du registre, alors gardez-les stables et évitez d'encoder la version spécifique à l'application dans le nom de la clé lorsqu'une valeur JSON peut contenir explicitement cette version.

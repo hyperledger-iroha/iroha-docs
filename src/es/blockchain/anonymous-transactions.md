@@ -244,7 +244,7 @@ donde `public_inputs` son los compromisos, anuladores, raíz, etiqueta de activo
 
 ## Lo que es público {#what-is-public}
 
-Las transacciones anónimas no hacen que todos los hechos observables sean privados:
+Las transacciones anónimas no hacen privados todos los hechos observables. Los datos siguientes pueden seguir siendo públicos:
 
 - el hash de la transacción, la altura del bloque y el pedido
 - la autoridad de transacción facilitadora, a menos que la solicitud utilice un modelo privado de punto de entrada o de recaída

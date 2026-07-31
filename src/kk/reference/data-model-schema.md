@@ -8,6 +8,6 @@ translation_engine: nllb-200-ct2
 
 # Деректер моделі схемасы {#data-model-schema}
 
-Бұл парағы `kagami advanced schema` (Құранда айтылған) [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) Құжаттарды жаңарту жұмыс тетігімен жазылған тексеру. Өркіндірілген шұғыл кескін осы қоймаға тексеріледі, сондықтан әдеттегі құжаттама құрылымы Iroha көзін тексеру.
+Бұл бетте `kagami advanced schema` қойылған [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) қайталанудан құжат жаңарту жұмыс ағыны жазылған. Өрнектелген слайд осы қоймаға тексеріледі, сондықтан әдеттегі құжаттама құрылыстарына Iroha көзін тексеру қажет емес.
 
 <DataModelSchema />

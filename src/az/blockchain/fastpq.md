@@ -890,7 +890,7 @@ AIR kompozisiyasının açılışı `R_air_composition` altında təsdiqlənməl
 
 ## Süleymanın nələri yoxlayır {#what-the-prover-checks}
 
-İz qurmadan əvvəl FastPQ proveri seriya nizamını keçid açarı, əməliyyat rütbəsi və yerləşdirmə nizamı ilə kanonlaşdırır. Transfer sətirləri transkript metadataları tələb edir.
+İzləmə qurmadan əvvəl, FastPQ proveri seriya sifarişini keçid açarı, əməliyyat rütbəsi ilə kanonikləşdirir, və yerləşdirmə sırası. Transfer sıraları da transkripsiya metadata tələb edir. Transfer sətirləri olan, lakin transfer transkripsiyaları olmayan bir partiya etibarsızdır.
 
 Transfer transkripsiyaları üçün verilişdən sonra yoxlamalar aşağıdakıları əhatə edir:
 
@@ -901,13 +901,13 @@ Transfer transkripsiyaları üçün verilişdən sonra yoxlamalar aşağıdakıl
 - "Poseidon"un tək-delta dijesinin mövcud olduğu zaman transkriptin əvvəlki görüntüsünə uyğun olmalıdır.
 - Qeyri-Merkle sübutları versiya 1 kimi dekodlaşdırılmalıdır; yox olan yollar deterministik sintetik sübutlarla doldurulur.
 
-İzləmə transfer, mint, burn, rol verilməsi, rol ləğv edilməsi, metadata seti və icazə axtarış sətirləri üçün seçicilər sütunlarını ehtiva edir.
+İz transfer, mint, burn, rol verilməsi, rol ləğvi, metadata seti və icazə axtarış sətirləri üçün seçicilərdən ibarətdir. Rəqəmsal əməliyyat sətirləri də imzalanmış deltaları, hər aktiv üzrə deltaları və təchizat hesablamalarını da əhatə edir.
 
 ## Prover Lane {#prover-lane}
 
 `irohad` start zamanı FastPQ prover zolağını başlayır, əgər prov backend başlanğıclandırıla bilərsə. Lane sərhədlənmiş bir sıra ilə bir arxa plan vəzifəsidir. Bir blok icra şahidini istehsal etdikdən sonra commit yolu blok hash, hündürlük, görünüş və şahidini ehtiva edən prov işini təqdim edir.
 
-Lənə işləmirsə və ya növbənin dolusu varsa, iş atılır və normal blok işlənməsi davam edir. Bu o deməkdir ki, arxa plan prov lanesi bir əməliyyat qəbulu və ya razılaşma qapısı deyil.
+Əgər zolaq işləmirsə və ya növbə doludursa, iş buraxılır və normal blok işlənməsi davam edir. Bu o deməkdir ki, arxa plan profer yolu əməliyyat qəbul və ya razılaşma qapısı deyil. Bu, artıq icra olunmuş bir dövlət üzərində sübut-təsərrüfat yoludır.
 
 Şəbəkədə aşağıdakılardan ibarət bir prover qurulur:
 

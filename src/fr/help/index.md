@@ -6,12 +6,10 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Recevoir un soutien {#receive-support}
+# Reçoivent un soutien {#receive-support}
 
-De temps à autre, vous pourriez avoir des questions sur Iroha Il y a trois façons de communiquer rapidement avec notre communauté: Telegram, Discord et GitHub.
+De temps à autre, vous pourriez avoir des questions sur Iroha Il y a trois façons de communiquer rapidement avec la communauté: Télégramme, Discord et GitHub.
 
-La communauté utilise [Télégramme](https://t.me/hyperledgeriroha) et
-[LF Decentralized Trust Des désaccords](https://discord.gg/hyperledger) pour
-La communication. Utilisez `iroha` canal de questions sur le projet.
+Les utilisations de la communauté [Télégramme](https://t.me/hyperledgeriroha) et [LF Decentralized Trust Des désaccords](https://discord.gg/hyperledger) Pour la communication, utilisez `iroha` le canal des questions du projet.
 
-Enfin, vous pouvez [créer un GitHub émission](https://github.com/hyperledger-iroha/iroha/issues/new/choose), qu'il s'agisse d'une demande de mise à jour de la documentation, d'une suggestion pour l'équipe principale ou d'un bug que vous avez trouvé.
+Enfin, vous pouvez [créer un problème GitHub](https://github.com/hyperledger-iroha/iroha/issues/new/choose), qu'il s'agisse d'une demande de mise à jour de la documentation, d'une suggestion pour l'équipe centrale ou d'un bug que vous avez trouvé.

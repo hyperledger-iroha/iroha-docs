@@ -6,53 +6,47 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# ပြေးနေခြင်း Iroha Bare Metal ပေါ်မှာ {#running-iroha-on-bare-metal}
+# Iroha Bare Metal ပေါ်တွင် ပြေးဆွဲနေသည် {#running-iroha-on-bare-metal}
 
-host တွေမှာ peers ကို တိုက်ရိုက် run လုပ်ချင်တဲ့အခါ ဒီ workflow ကို သုံးပါ။
-ဖြတ်သန်း Docker Compose. လက်ရှိ အရင်းအမြစ် သစ်ပင်က Kagami ထုတ်ကုန်များ
-ကိုက်ညီသော genesis, peer config များ၊ client config များနှင့် start/stop script များကိုရေးသားပါ။
+Docker Compose မှတစ်ဆင့်မဟုတ်ဘဲ host များတွင် peers ကိုတိုက်ရိုက် run လုပ်ချင်ပါက ဤ workflow ကိုအသုံးပြုပါ။ လက်ရှိ source tree က Kagami generator များကိုပေးသည်. ၎င်းတို့သည် matching genesis, peer config, client config နှင့် start/stop script များကိုရေးသားသည်။
 
 ## (၁) ဘိုင်နရီများ တည်ဆောက်ခြင်း {#_1-build-the-binaries}
 
-မြစ်ပေါ်က Iroha လုပ်ငန်းခွင်:
+Iroha လုပ်ငန်းခွင်ထက်:
 
 ```bash
 cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ```
 
-အဲဒါက:
+ဒါကတော့:
 
-- `target/release/irohad` တူညီတဲ့ နတ်ဆိုးအတွက်
+- `target/release/irohad` တူညီသော daemon အတွက်
 - `target/release/iroha` အတွက် CLI
-- `target/release/kagami` key, genesis နဲ့ localnet မျိုးဆက်အတွက်
+- `target/release/kagami` key၊ genesis နဲ့ localnet မျိုးဆက်အတွက်
 
 ## (၂) ဒေသတွင်းကွန်ရက်တစ်ခု ဖန်တီးခြင်း {#_2-generate-a-local-network}
 
-၄- peer ကို ဖန်တီးပါ။ Iroha 3 localnet:
+၄- peer Iroha 3 localnet ကိုဖန်တီးပါ။
 
 ```bash
 target/release/kagami localnet --build-line iroha3 --peers 4 --out-dir ./localnet
 ```
 
-output directory မှာ generated `genesis.json`,
-`genesis.signed.nrt`, တူညီသူ `config.toml` ဖိုင်များ၊ `client.toml`, အကူအညီပေးရေး စာသားတွေ၊
-ပြီးတော့ ထုတ်လုပ်ထားတဲ့ `README.md` အဲဒီပုံးအတွက် တိကျတဲ့ ညွှန်ကြားချက်တွေနဲ့ပါ။
+Output directory မှာ generated `genesis.json`, `genesis.signed.nrt`, peer `config.toml` files, `client.toml`, helper scripts နဲ့ အဲဒီ bundle အတွက် တိကျတဲ့ commands တွေပါတဲ့ generated `README.md` ကို ထည့်သွင်းထားပါတယ်။
 
-## (၃) အဖော်များ စလုပ်ခြင်း {#_3-start-peers}
+## (၃) တန်းတူလူငယ်များ စတင်ခြင်း {#_3-start-peers}
 
-Generated disposable localnet အတွက် generated script ကို အသုံးပြုပါ။
+Generated disposable localnet အတွက် generated script ကိုသုံးပါ။
 
 ```bash
 ./localnet/start.sh
 ```
 
-သင့်ရဲ့ peer တစ်ခုစီကို process manager ထဲမှာ wire လုပ်ဖို့လိုတယ်ဆိုရင် systemd, အသုံးပြုခြင်း
-စေလွှတ်မှု အမိန့်ကို မှတ်တမ်းတင် `./localnet/README.md` တူညီတဲ့လူတိုင်းအတွက်ပါ။
-တူညီသူ `config.toml`, ပုဂ္ဂလိက သော့၊ သိုလှောင်စာရင်းနဲ့ ဆိပ်ကမ်းတွေကို သီးခြားခွဲထားတယ်။
+systemd လို process manager ထဲမှာ peer တစ်ခုစီကို wired လုပ်ဖို့လိုတယ်ဆိုရင်, peer တစ်ခုချင်းအတွက် `./localnet/README.md` မှာ မှတ်တမ်းတင်ထားတဲ့ launch command ကိုသုံးပါ။ peer တစ်ခုတိုင်းရဲ့ `config.toml` private key၊ storage directory နဲ့ ports တွေကို သီးခြားထားလိုက်ပါ။
 
 ## (၄) ကွန်ရက်ကို စီမံခန့်ခွဲခြင်း {#_4-operate-the-network}
 
-Generated Client Config ကို အသုံးပြုပါ
+Generated client configuration ကို အသုံးပြုပါ
 
 ```bash
 target/release/iroha --config ./localnet/client.toml ledger domain list all
@@ -65,18 +59,12 @@ Generated localnet ကို:
 ./localnet/stop.sh
 ```
 
-## 5. ထုတ်ကုန် မှတ်စုများ {#_5-production-notes}
+## (၅) ထုတ်ကုန် မှတ်စုများ {#_5-production-notes}
 
-- ထုတ်လုပ်ရေးအတွက် သွင်းချက်အသစ်တွေကို ထုတ်လုပ်ပြီး
-  သိုလှောင်ခန်း။
-- တူညီတဲ့ လက်မှတ်ရေးထိုးထားတဲ့ ဇီ၀ဖြစ်စဉ်၊ ထိပ်ပိုင်းဆိုင်ရာ ကိစ္စရပ်တွေ အားလုံးကို သဘောတူအောင်လုပ်ပါ။
-  ယုံကြည်ရတဲ့ အဖော်တွေ၊ သက်သေခံ PoPs.
-- အနားယူသူရဲ့ စကားဝှက်တွေကို host-local interfaces တွေကို peer က လုပ်သင့်တဲ့ အချိန်မှာပဲ ချိတ်ဆက်ပေးပါ။
-  အခြားစက်တွေကနေ မရောက်နိုင်ပါ။
-- Reverse proxy (သို့) firewall ကို အသုံးပြုပါ။ Torii ထိတွေ့မှု၊ အခြေခံအလောင်း TLS, ငွေကြေးနှုန်း
-  အကန့်အသတ်ပေးတယ်။
-- ဘီဘီစီ (သို့) သဘောတူညီမှု ထိပ်ပိုင်းဆိုင်ရာ အပြောင်းအလဲတွေကို ညှိနှိုင်းထားတဲ့ ရွှေ့ပြောင်းမှုအဖြစ် ဆက်ဆံပါ။
-  တစ်တူတည်းသော ဖိုင် တည်းဖြတ်မှု။
+- ထုတ်လုပ်မှုအတွက် ကိုယ်ပိုင် သော့သစ်တွေ ထုတ်ပြီး သိုလှောင်ရုံအပြင်မှာ သိမ်းပါ။
+- တူညီတဲ့ လက်မှတ်ထိုးထားတဲ့ ဇီ၀ဖြစ်စဉ် ကုန်သွယ်မှု၊ ထိပ်ပိုင်းဆိုင်ရာ၊ ယုံကြည်မှုရှိတဲ့ တူညီသူတွေနဲ့ အတည်ပြုသူ PoPs ကို တူညီအောင်လုပ်ပါ။
+- အခြားစက်များမှ peer ကို မရရှိနိုင်သည့်အခါသာ host-local interfaces များသို့ Bind listener address များကို ဆက်သွယ်ပါ။
+- Torii exposure, basic auth, TLS နဲ့ rate limiting အတွက် reverse proxy (သို့) firewall ကိုသုံးပါ။
+- မျိုးရိုးဗီဇ (သို့) သဘောတူညီမှု ထိပ်ပိုင်းဆိုင်ရာ အပြောင်းအလဲများကို တစ်ပြိုင်နက် ဖိုင် တည်းဖြတ်ခြင်းမဟုတ်ဘဲ ညှိနှိုင်းထားတဲ့ ရွှေ့ပြောင်းမှုများအဖြစ် ဆက်ဆံပါ။
 
-containerized ဒေသတွင်းဖွံ့ဖြိုးမှုအတွက် [လွှတ်တင်ခြင်း Iroha 3](../../get-started/launch-iroha.md)
-Docker Compose အလုပ်ဖြစ်စဉ်။
+Containerized ဒေသတွင်းဖွံ့ဖြိုးမှုအတွက် [Launch Iroha 3](../../get-started/launch-iroha.md) Docker Compose အလုပ်ဖြစ်စဉ်ကိုအသုံးပြုပါ။

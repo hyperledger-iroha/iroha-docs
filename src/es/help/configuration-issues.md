@@ -52,7 +52,7 @@ Si nunca has trabajado con multi-hash antes, es natural suponer que el lado dere
 
 También es natural suponer que llamar `PrivateKey::try_from_str` en el literal de cadena daría sólo la clave correcta. Así que si obtienes el número de bits en la clave incorrecto, por ejemplo 32 bytes vs 64, que se elevaría un mensaje de error.
 
-Desafortunadamente, los mensajes de error no ayudan a deshacer este tipo de fallas en particular.
+Ambas suposiciones son erróneas. Desafortunadamente, los mensajes de error no ayudan a desarmar este tipo de fallas en particular.
 
 Cómo arreglar: usar `hex_literal`. Esto también transformará una fea cadena de caracteres en una bonita tabla pequeña de números obviamente hexadecimais.
 

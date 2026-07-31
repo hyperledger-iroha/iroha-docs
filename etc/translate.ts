@@ -49,6 +49,71 @@ export const NLLB_LANGUAGE_CODES: Readonly<Record<string, string>> = {
   'zh-hant': 'zho_Hant',
 }
 
+export const TRANSLATION_MINIMUM_RATIO: Readonly<Record<string, number>> = {
+  am: 0.35,
+  ar: 0.4,
+  az: 0.5,
+  ba: 0.5,
+  dz: 0.5,
+  es: 0.5,
+  fr: 0.5,
+  he: 0.35,
+  hy: 0.5,
+  ja: 0.25,
+  ka: 0.5,
+  kk: 0.5,
+  mn: 0.5,
+  my: 0.5,
+  pt: 0.5,
+  ru: 0.5,
+  ur: 0.5,
+  uz: 0.5,
+  'zh-hans': 0.25,
+  'zh-hant': 0.25,
+}
+
+export const SENTENCE_COVERAGE_MINIMUM_RATIO: Readonly<Record<string, number>> = {
+  am: 0.49,
+  ar: 0.62,
+  az: 0.76,
+  ba: 0.75,
+  dz: 0.78,
+  es: 0.82,
+  fr: 0.83,
+  he: 0.57,
+  hy: 0.83,
+  ja: 0.42,
+  ka: 0.75,
+  kk: 0.78,
+  mn: 0.79,
+  my: 0.87,
+  pt: 0.77,
+  ru: 0.79,
+  ur: 0.67,
+  uz: 0.83,
+  'zh-hans': 0.25,
+  'zh-hant': 0.25,
+}
+
+const sentenceSegmenters = new Map<string, Intl.Segmenter>()
+
+export function translationMinimumRatio(localeKey: string): number {
+  return TRANSLATION_MINIMUM_RATIO[localeKey] ?? 0.5
+}
+
+export function sentenceCoverageMinimumRatio(localeKey: string): number {
+  return SENTENCE_COVERAGE_MINIMUM_RATIO[localeKey] ?? 0.7
+}
+
+export function sentenceCount(content: string, language: string): number {
+  let segmenter = sentenceSegmenters.get(language)
+  if (!segmenter) {
+    segmenter = new Intl.Segmenter(language, { granularity: 'sentence' })
+    sentenceSegmenters.set(language, segmenter)
+  }
+  return [...segmenter.segment(content)].filter(({ segment }) => /\p{L}/u.test(segment)).length
+}
+
 interface FrontmatterDocument {
   frontmatter: string | null
   body: string
@@ -203,6 +268,37 @@ export function addStableHeadingAnchors(source: string): string {
     if (heading.explicitAnchor) continue
     lines[heading.lineIndex] = `${lines[heading.lineIndex]} {#${heading.stableAnchor}}`
   }
+  return lines.join('\n')
+}
+
+function stripTrailingWhitespaceOutsideFences(source: string): string {
+  const lines = source.split('\n')
+  let fence: { character: string; length: number } | undefined
+
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index]
+    const fenceMarker = /^ {0,3}(`{3,}|~{3,})(.*)$/u.exec(line)
+    if (fence) {
+      if (
+        fenceMarker &&
+        fenceMarker[1][0] === fence.character &&
+        fenceMarker[1].length >= fence.length &&
+        fenceMarker[2].trim() === ''
+      ) {
+        fence = undefined
+        lines[index] = line.replace(/[ \t]+$/u, '')
+      }
+      continue
+    }
+
+    const normalized = line.replace(/[ \t]+$/u, '')
+    lines[index] = normalized
+    const openingFence = /^ {0,3}(`{3,}|~{3,})/u.exec(normalized)
+    if (openingFence) {
+      fence = { character: openingFence[1][0], length: openingFence[1].length }
+    }
+  }
+
   return lines.join('\n')
 }
 
@@ -505,8 +601,51 @@ async function translateBatch(
   targetLanguage: string,
 ): Promise<string[]> {
   if (texts.length === 0) return []
+  try {
+    return await requestTranslationBatch(provider, texts, targetLanguage)
+  } catch (error) {
+    if (!isMateriallyShortProviderError(error)) throw error
+
+    // The Python bridge rejects the whole request when any NLLB hypothesis
+    // trips its token-length guard. Bisect the batch to isolate that input,
+    // then retry only the failed prose in sentence-sized chunks. The original
+    // guard stays active for every retry and the restored unit is checked again
+    // by translationCompletenessError.
+    if (texts.length > 1) {
+      const midpoint = Math.ceil(texts.length / 2)
+      const left = await translateBatch(provider, texts.slice(0, midpoint), targetLanguage)
+      const right = await translateBatch(provider, texts.slice(midpoint), targetLanguage)
+      return [...left, ...right]
+    }
+
+    const [source] = texts
+    const retryChunks = chunksForIncompleteRetry(source)
+    if (retryChunks.length === 1 && retryChunks[0] === source) throw error
+    const translations = await translateBatch(provider, retryChunks, targetLanguage)
+    return [
+      joinTranslatedChunks(retryChunks, translations, ['jpn_Jpan', 'zho_Hans', 'zho_Hant'].includes(targetLanguage)),
+    ]
+  }
+}
+
+async function requestTranslationBatch(
+  provider: TranslationProvider,
+  texts: readonly string[],
+  targetLanguage: string,
+): Promise<string[]> {
   if (provider.translateBatch) return provider.translateBatch(texts, targetLanguage)
   return Promise.all(texts.map((text) => provider.translate(text, targetLanguage)))
+}
+
+function isMateriallyShortProviderError(error: unknown): boolean {
+  const visited = new Set<unknown>()
+  let current: unknown = error
+  while (current instanceof Error && !visited.has(current)) {
+    if (current.message.includes('translation output is materially shorter than its source')) return true
+    visited.add(current)
+    current = current.cause
+  }
+  return false
 }
 
 interface FragmentPlan {
@@ -592,6 +731,7 @@ export async function translateProtectedFragments(
 }
 
 interface MarkdownTranslationUnit {
+  completenessMinimumLetters?: number
   content: string
   translate: boolean
 }
@@ -722,6 +862,7 @@ export function markdownTranslationUnits(source: string): MarkdownTranslationUni
 }
 
 interface InlineTranslationPlan {
+  completenessMinimumLetters: number
   protectedMarkdown: ProtectedMarkdown
   firstChunk: number
   chunkCount: number
@@ -747,7 +888,7 @@ function detachBoundaryMarkers(
   let prefix = ''
   let suffix = ''
 
-  while (true) {
+  for (;;) {
     const leading = /^\s*(\[PH\d{6}\])\s*/u.exec(core)
     if (!leading) break
     const value = protectedMarkdown.valueForMarker(leading[1])
@@ -755,7 +896,7 @@ function detachBoundaryMarkers(
     prefix += leading[0]
     core = core.slice(leading[0].length)
   }
-  while (true) {
+  for (;;) {
     const trailing = /\s*(\[PH\d{6}\])\s*$/u.exec(core)
     if (!trailing) break
     const value = protectedMarkdown.valueForMarker(trailing[1])
@@ -776,15 +917,30 @@ function endsWithContinuationPunctuation(content: string): boolean {
   return /[,;،؛，；](?:["')\]}»”]*)$/u.test(content.trim())
 }
 
-function translationCompletenessError(source: string, translated: string, locale: DocsLocale): string | undefined {
+function translationCompletenessError(
+  source: string,
+  translated: string,
+  locale: DocsLocale,
+  minimumSourceLetters = 80,
+): string | undefined {
   const sourceLetters = translationLetterCount(source)
   const translatedLetters = translationLetterCount(translated)
-  const minimumRatio = ['ja', 'zh-hans', 'zh-hant'].includes(locale.key) ? 0.25 : 0.35
-  if (sourceLetters >= 80 && translatedLetters / sourceLetters < minimumRatio) {
-    return `output is materially short (${(translatedLetters / sourceLetters).toFixed(2)} of source letters)`
+  const ratio = translatedLetters / sourceLetters
+  const sourceSentences = sentenceCount(source, 'en')
+  const translatedSentences = sentenceCount(translated, locale.lang)
+  if (
+    sourceLetters >= minimumSourceLetters &&
+    sourceSentences >= 2 &&
+    translatedSentences < sourceSentences &&
+    ratio < sentenceCoverageMinimumRatio(locale.key)
+  ) {
+    return `output has incomplete sentence coverage (expected at least ${sourceSentences}, found ${translatedSentences}; ${ratio.toFixed(2)} of source letters)`
+  }
+  if (sourceLetters >= minimumSourceLetters && ratio <= translationMinimumRatio(locale.key)) {
+    return `output is materially short (${ratio.toFixed(2)} of source letters)`
   }
   if (
-    sourceLetters >= 80 &&
+    sourceLetters >= minimumSourceLetters &&
     /[.!?](?:["')\]}]*)$/u.test(source.trim()) &&
     endsWithContinuationPunctuation(translated)
   ) {
@@ -802,10 +958,183 @@ function joinTranslatedChunks(
   for (let index = 1; index < translatedChunks.length; index += 1) {
     const next = translatedChunks[index]
     const sourceHadWhitespace = /\s$/u.test(sourceChunks[index - 1]) || /^\s/u.test(sourceChunks[index])
-    if (sourceHadWhitespace && !compactBoundaries && !/\s$/u.test(joined) && !/^\s/u.test(next)) joined += ' '
+    const connectiveBoundary = /\bso\s*$/iu.test(sourceChunks[index - 1])
+    if (
+      compactBoundaries &&
+      connectiveBoundary &&
+      !/[.!?。！？,，、;；:：]\s*$/u.test(joined) &&
+      !/^\s*[.!?。！？,，、;；:：]/u.test(next)
+    ) {
+      joined += '。'
+    } else if (sourceHadWhitespace && !compactBoundaries && !/\s$/u.test(joined) && !/^\s/u.test(next)) {
+      joined += ' '
+    }
     joined += next
   }
   return joined
+}
+
+function chunksAtClauseBoundaries(content: string): string[] {
+  const clauses: string[] = []
+  let start = 0
+  for (const match of content.matchAll(/[,;:،؛，；：、](?:\s+|(?=\S)|$)/gu)) {
+    const end = match.index + match[0].length
+    clauses.push(content.slice(start, end))
+    start = end
+  }
+  if (start < content.length) clauses.push(content.slice(start))
+  if (clauses.length < 2) return [content]
+
+  const chunks: string[] = []
+  let consumed = 0
+  let pending = ''
+  for (const clause of clauses) {
+    pending += clause
+    consumed += clause.length
+    const remaining = content.slice(consumed)
+    const pendingLetters = translationLetterCount(pending.replace(/\[PH\d{6}\]/gu, ''))
+    const remainingLetters = translationLetterCount(remaining.replace(/\[PH\d{6}\]/gu, ''))
+    if (remaining && pendingLetters >= 20 && remainingLetters >= 20) {
+      chunks.push(pending)
+      pending = ''
+    }
+  }
+  if (pending) chunks.push(pending)
+  return chunks.length > 1 ? chunks : [content]
+}
+
+function chunksAtEnglishConnectiveBoundaries(content: string): string[] {
+  const chunks: string[] = []
+  let start = 0
+  for (const match of content.matchAll(/\bso\b\s+|(?<=\s)if\s+/giu)) {
+    const cut = /^if\b/iu.test(match[0]) ? match.index : match.index + match[0].length
+    const pending = content.slice(start, cut)
+    const remaining = content.slice(cut)
+    const pendingLetters = translationLetterCount(pending.replace(/\[PH\d{6}\]/gu, ''))
+    const remainingLetters = translationLetterCount(remaining.replace(/\[PH\d{6}\]/gu, ''))
+    if (pendingLetters < 20 || remainingLetters < 20) continue
+    chunks.push(pending)
+    start = cut
+  }
+  if (start > 0) chunks.push(content.slice(start))
+  return chunks.length > 1 ? chunks : [content]
+}
+
+export function isCompleteShortStructuralLeadIn(source: string, translated: string): boolean {
+  if (!hasExactProtectedMarkerMultiset(source, translated)) return false
+
+  const withoutMarkers = (content: string): string => content.replace(/\[PH\d{6}\]/gu, '')
+  const sourceWithoutMarkers = withoutMarkers(source)
+  const translatedWithoutMarkers = withoutMarkers(translated)
+  const sourceLetters = translationLetterCount(sourceWithoutMarkers)
+  const translatedLetters = translationLetterCount(translatedWithoutMarkers)
+  return (
+    sourceLetters > 0 &&
+    sourceLetters <= 32 &&
+    translatedLetters >= 3 &&
+    /:\s*$/u.test(sourceWithoutMarkers) &&
+    /[:：]\s*$/u.test(translatedWithoutMarkers)
+  )
+}
+
+function retryChunkCompletenessError(source: string, translated: string, locale: DocsLocale): string | undefined {
+  const markerError = retryChunkMarkerError(source, translated)
+  if (markerError) return markerError
+  if (isCompleteShortStructuralLeadIn(source, translated)) return undefined
+  const withoutMarkers = (content: string): string => content.replace(/\[PH\d{6}\]/gu, '')
+  return translationCompletenessError(withoutMarkers(source), withoutMarkers(translated), locale, 20)
+}
+
+export function hasExactProtectedMarkerMultiset(source: string, translated: string): boolean {
+  const sourceMarkers = source.match(/\[PH\d{6}\]/gu) ?? []
+  const translatedMarkers = translated.match(/\[PH\d{6}\]/gu) ?? []
+  const sortedSourceMarkers = [...sourceMarkers].sort()
+  const sortedTranslatedMarkers = [...translatedMarkers].sort()
+  return (
+    sortedSourceMarkers.length === sortedTranslatedMarkers.length &&
+    sortedSourceMarkers.every((marker, index) => marker === sortedTranslatedMarkers[index])
+  )
+}
+
+function retryChunkMarkerError(source: string, translated: string): string | undefined {
+  if (hasExactProtectedMarkerMultiset(source, translated)) return undefined
+  const sourceMarkers = source.match(/\[PH\d{6}\]/gu) ?? []
+  const translatedMarkers = translated.match(/\[PH\d{6}\]/gu) ?? []
+  return `output changed protected markers (expected ${sourceMarkers.join(', ') || 'none'}, found ${translatedMarkers.join(', ') || 'none'})`
+}
+
+function hasOnlyMissingProtectedMarkers(source: string, translated: string): boolean {
+  const sourceMarkers = source.match(/\[PH\d{6}\]/gu) ?? []
+  const translatedMarkers = translated.match(/\[PH\d{6}\]/gu) ?? []
+  if (translatedMarkers.length >= sourceMarkers.length) return false
+  const remaining = new Map<string, number>()
+  for (const marker of sourceMarkers) remaining.set(marker, (remaining.get(marker) ?? 0) + 1)
+  for (const marker of translatedMarkers) {
+    const count = remaining.get(marker) ?? 0
+    if (count === 0) return false
+    remaining.set(marker, count - 1)
+  }
+  return true
+}
+
+async function recoverRetryChunkMarkers(
+  source: string,
+  targetLanguage: string,
+  provider: TranslationProvider,
+): Promise<string> {
+  const markerPattern = /(\[PH\d{6}\])/gu
+  const exactMarkerPattern = /^\[PH\d{6}\]$/u
+  const pieces = source.split(markerPattern)
+  const plans: FragmentPlan[] = []
+  const units: string[] = []
+
+  for (let pieceIndex = 0; pieceIndex < pieces.length; pieceIndex += 1) {
+    const piece = pieces[pieceIndex]
+    if (!piece || exactMarkerPattern.test(piece)) continue
+
+    const whitespace = /^(\s*(?:[,.:;!?]\s*)?)([\s\S]*?)(\s*)$/u.exec(piece)
+    if (!whitespace || !whitespace[2] || !/\p{L}/u.test(whitespace[2])) continue
+    const chunks = chunkForTranslation(whitespace[2], 128)
+    plans.push({
+      pieceIndex,
+      prefix: whitespace[1],
+      suffix: whitespace[3],
+      firstUnit: units.length,
+      unitCount: chunks.length,
+    })
+    units.push(...chunks)
+  }
+
+  const translations = await translateBatch(provider, units, targetLanguage)
+  if (translations.length !== units.length || translations.some((translation) => typeof translation !== 'string')) {
+    throw new Error(`Translation provider returned ${translations.length} results for ${units.length} retry fragments`)
+  }
+
+  for (const plan of plans) {
+    const sourceChunks = units.slice(plan.firstUnit, plan.firstUnit + plan.unitCount)
+    const translatedChunks = translations.slice(plan.firstUnit, plan.firstUnit + plan.unitCount)
+    pieces[plan.pieceIndex] =
+      plan.prefix +
+      joinTranslatedChunks(
+        sourceChunks,
+        translatedChunks,
+        ['jpn_Jpan', 'zho_Hans', 'zho_Hant'].includes(targetLanguage),
+      ) +
+      plan.suffix
+  }
+  return pieces.join('')
+}
+
+const NON_TERMINAL_ENGLISH_ABBREVIATION =
+  /(?:^|[\s("'‘“])(?:mr|mrs|ms|dr|prof|sr|jr|st|mt|vs|etc|e\.g|i\.e|no|fig|eq|sec|ch|vol|inc|ltd|co|corp)\.\s*$/iu
+
+function isCompleteNaturalLanguageSentence(segment: string): boolean {
+  const withoutMarkers = segment.replace(/\[PH\d{6}\]/gu, '')
+  return (
+    /\p{L}/u.test(withoutMarkers) &&
+    /[.!?](?:["')\]}]*)\s*$/u.test(segment) &&
+    !NON_TERMINAL_ENGLISH_ABBREVIATION.test(withoutMarkers)
+  )
 }
 
 function chunksForIncompleteRetry(content: string): string[] {
@@ -813,14 +1142,96 @@ function chunksForIncompleteRetry(content: string): string[] {
   let pending = ''
   for (const { segment } of new Intl.Segmenter('en', { granularity: 'sentence' }).segment(content)) {
     pending += segment
-    if (translationLetterCount(pending) < 20) continue
-    if (!/[.!?](?:["')\]}]*)\s*$/u.test(pending)) continue
+    if (!isCompleteNaturalLanguageSentence(segment)) continue
     sentences.push(pending)
     pending = ''
   }
   if (pending) sentences.push(pending)
   if (sentences.length === 0) sentences.push(content)
-  return sentences.flatMap((sentence) => chunkForTranslation(sentence, 128))
+  const chunks = sentences.flatMap((sentence) => chunkForTranslation(sentence, 128))
+  if (chunks.length === 1 && chunks[0] === content) {
+    const punctuationChunks = chunksAtClauseBoundaries(content)
+    if (punctuationChunks.length > 1) return punctuationChunks
+    return chunksAtEnglishConnectiveBoundaries(content)
+  }
+  return chunks
+}
+
+async function translateRetryChunksWithCoverage(
+  sourceChunks: readonly string[],
+  locale: DocsLocale,
+  provider: TranslationProvider,
+  targetLanguage: string,
+): Promise<string[]> {
+  let translations: string[]
+  try {
+    translations = await requestTranslationBatch(provider, sourceChunks, targetLanguage)
+  } catch (error) {
+    if (!isMateriallyShortProviderError(error)) throw error
+    if (sourceChunks.length > 1) {
+      const midpoint = Math.ceil(sourceChunks.length / 2)
+      const left = await translateRetryChunksWithCoverage(
+        sourceChunks.slice(0, midpoint),
+        locale,
+        provider,
+        targetLanguage,
+      )
+      const right = await translateRetryChunksWithCoverage(
+        sourceChunks.slice(midpoint),
+        locale,
+        provider,
+        targetLanguage,
+      )
+      return [...left, ...right]
+    }
+
+    const [source] = sourceChunks
+    const retryChunks = chunksForIncompleteRetry(source)
+    if (retryChunks.length === 1 && retryChunks[0] === source) throw error
+    const retryTranslations = await translateRetryChunksWithCoverage(retryChunks, locale, provider, targetLanguage)
+    return [joinTranslatedChunks(retryChunks, retryTranslations, ['ja', 'zh-hans', 'zh-hant'].includes(locale.key))]
+  }
+
+  if (translations.length !== sourceChunks.length) {
+    throw new Error(
+      `Translation provider returned ${translations.length} results for ${sourceChunks.length} retry chunks`,
+    )
+  }
+
+  const covered: string[] = []
+  for (let index = 0; index < sourceChunks.length; index += 1) {
+    const source = sourceChunks[index]
+    const translated = translations[index]
+    const incomplete = retryChunkCompletenessError(source, translated, locale)
+    if (!incomplete) {
+      covered.push(translated)
+      continue
+    }
+
+    const markerError = retryChunkMarkerError(source, translated)
+    if (markerError) {
+      if (!hasOnlyMissingProtectedMarkers(source, translated)) {
+        throw new Error(`semantic retry chunk ${index + 1}: ${markerError}`)
+      }
+      const recovered = await recoverRetryChunkMarkers(source, targetLanguage, provider)
+      const recoveryError = retryChunkCompletenessError(source, recovered, locale)
+      if (recoveryError) {
+        throw new Error(`semantic retry chunk ${index + 1}: ${incomplete}; marker-fragment recovery ${recoveryError}`)
+      }
+      covered.push(recovered)
+      continue
+    }
+
+    const retryChunks = chunksForIncompleteRetry(source)
+    if (retryChunks.length === 1 && retryChunks[0] === source) {
+      throw new Error(`semantic retry chunk ${index + 1}: ${incomplete}; no smaller safe boundary`)
+    }
+    const retryTranslations = await translateRetryChunksWithCoverage(retryChunks, locale, provider, targetLanguage)
+    covered.push(
+      joinTranslatedChunks(retryChunks, retryTranslations, ['ja', 'zh-hans', 'zh-hant'].includes(locale.key)),
+    )
+  }
+  return covered
 }
 
 async function retryIncompleteInlineUnit(
@@ -832,22 +1243,27 @@ async function retryIncompleteInlineUnit(
   const { core, prefix, suffix } = detachBoundaryMarkers(protectedMarkdown.masked, protectedMarkdown)
   if (!/\p{L}/u.test(core)) return protectedMarkdown.restore(prefix + core + suffix)
   const sourceChunks = chunksForIncompleteRetry(core)
-  const translations = await translateBatch(provider, sourceChunks, providerLanguageCode(provider, locale))
-  if (translations.length !== sourceChunks.length) {
-    throw new Error(
-      `Translation provider returned ${translations.length} results for ${sourceChunks.length} retry chunks`,
-    )
+  const targetLanguage = providerLanguageCode(provider, locale)
+  const translations = await translateRetryChunksWithCoverage(sourceChunks, locale, provider, targetLanguage)
+  const compactBoundaries = ['ja', 'zh-hans', 'zh-hant'].includes(locale.key)
+  const restoreJoined = (translatedChunks: readonly string[]): string =>
+    protectedMarkdown.restore(prefix + joinTranslatedChunks(sourceChunks, translatedChunks, compactBoundaries) + suffix)
+  const candidate = restoreJoined(translations)
+
+  if (!translationCompletenessError(source, candidate, locale) || sourceChunks.length < 2) return candidate
+
+  const recoveredTranslations = [...translations]
+  let retriedClause = false
+  for (let index = 0; index < sourceChunks.length; index += 1) {
+    const clauseChunks = chunksAtClauseBoundaries(sourceChunks[index])
+    if (clauseChunks.length < 2) continue
+    const clauseTranslations = await translateRetryChunksWithCoverage(clauseChunks, locale, provider, targetLanguage)
+    recoveredTranslations[index] = joinTranslatedChunks(clauseChunks, clauseTranslations, compactBoundaries)
+    retriedClause = true
   }
-  const translated = joinTranslatedChunks(sourceChunks, translations, ['ja', 'zh-hans', 'zh-hant'].includes(locale.key))
-  try {
-    return protectedMarkdown.restore(prefix + translated + suffix)
-  } catch {
-    return translateProtectedFragments(
-      protectMarkdown(source, locale),
-      providerLanguageCode(provider, locale),
-      provider,
-    )
-  }
+  if (!retriedClause) return candidate
+
+  return restoreJoined(recoveredTranslations)
 }
 
 async function translateInlineIdentifierMarkdown(
@@ -865,7 +1281,11 @@ async function translateInlineIdentifierMarkdown(
     return unit.content
       .split(/((?<!\\)\|)/u)
       .filter(Boolean)
-      .map((content) => ({ content, translate: content !== '|' }))
+      .map((content) => ({
+        completenessMinimumLetters: content === '|' ? undefined : 20,
+        content,
+        translate: content !== '|',
+      }))
   })
 
   for (const unit of units) {
@@ -886,6 +1306,7 @@ async function translateInlineIdentifierMarkdown(
     }
     const unitChunks = chunkForTranslation(core, 300)
     plans.push({
+      completenessMinimumLetters: unit.completenessMinimumLetters ?? 80,
       protectedMarkdown,
       firstChunk: chunks.length,
       chunkCount: unitChunks.length,
@@ -933,10 +1354,15 @@ async function translateInlineIdentifierMarkdown(
         )
       }
     }
-    const incomplete = translationCompletenessError(plan.source, candidate, locale)
+    const incomplete = translationCompletenessError(plan.source, candidate, locale, plan.completenessMinimumLetters)
     if (incomplete) {
       candidate = await retryIncompleteInlineUnit(plan.source, locale, provider)
-      const retryIncomplete = translationCompletenessError(plan.source, candidate, locale)
+      const retryIncomplete = translationCompletenessError(
+        plan.source,
+        candidate,
+        locale,
+        plan.completenessMinimumLetters,
+      )
       if (retryIncomplete) {
         throw new Error(`prose unit ${planIndex}: ${incomplete}; sentence-level retry ${retryIncomplete}`)
       }
@@ -1242,7 +1668,7 @@ export async function translateDocument(
   ]
   if (localizedFrontmatter !== null) metadata.push('', localizedFrontmatter)
   const bodySeparator = translatedBody.startsWith('\n') || !translatedBody ? '' : '\n'
-  return `---\n${metadata.join('\n')}\n---\n${bodySeparator}${translatedBody}`
+  return stripTrailingWhitespaceOutsideFences(`---\n${metadata.join('\n')}\n---\n${bodySeparator}${translatedBody}`)
 }
 
 /** Synchronize stable English heading IDs into existing translated pages without retranslating prose. */

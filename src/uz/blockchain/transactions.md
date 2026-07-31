@@ -8,34 +8,19 @@ translation_engine: nllb-200-ct2
 
 # Transaksiyalar {#transactions}
 
-A **Transaksiya** blokchayndagi ishlarni bajarish uchun imzolangan iltimos.
-Ijro qilinadigan fayzli yukning tartibli ketma-ketligi
-[ko'rsatmalar](./instructions.md), shartnomaviy qo'ng'iroq, IVM bytecode yoki
-isbotlangan IVM o'ldirilgan. [Aqlli shartnomalar](./smart-contracts.md) joriy uchun
-shartnomalarni ijro etish modeli.
+Transaksiya - bu blokchaindagi ishlarni bajarish uchun imzolangan so'rov. Ishlab chiqarilishi mumkin bo'lgan foydali yuk [ ko'rsatmalarining ](./instructions.md), shartnoma qo'ng'iroqining, IVM bytecode yoki isbotlangan IVM bajarilishining tartibga solingan ketma-ketligi bo'lishi mumkin . Amaldagi shartnomalarni ijro etish modeli uchun [Smart Contracts](./smart-contracts.md)-ni ko'ring.
 
-Transaksiyalar davlatni o'zgartiruvchi yoki bajarilishi mumkin bo'lgan ishlarni amalga oshiradi.
-imzolangan so'rovlarni yoki ommaviy o'qish yakun nuqtalarini ishlatadi va tranzaksiya yaratmaydi.
+Transaksiyalar holatni o'zgartiruvchi yoki bajarilishi mumkin bo'lgan ishlarni amalga oshiradi. Faqatgina o'qish tekshiruvidan imzolangan so'rovlar yoki ommaviy o'qish oxirgi nuqtalaridan foydalanish va tranzaksiya yaratmaydi.
 
-Qarzlangan blokga qabul qilingan tranzaksiya uning bajarilishi bilan saqlanadi
-Natija, shu jumladan ijro etish rad etilishi.
-qabul qilish, masalan, haqiqiy bo'lmagan konvert yoki navbatda rad etilgan bitim;
-blokda saqlanmaydi.
+Bog'langan blokga qabul qilingan tranzaksiya uning ijro natijasi, shu jumladan ijro rad etilishi bilan saqlanadi. Blokni qabul qilishdan oldin rad etilgan talablar, masalan, haqiqiy bo'lmagan konvert yoki navbatda rad qilingan bitim; blokda saqlanmaydi.
 
-Maxfiylikni saqlaydigan aktivlar harakatlanishi uchun ko'ring
-[Anonim bitimlar](./anonymous-transactions.md). Anonim
-Transaksiyalar himoyalangan aktiv notlari, majburiyatlar, bekor qilish belgilarini ishlatadi va
-davlat hisobidan hisobga balans o'zgarishi o'rniga nol bilimli dalillar.
+Maxfiylikni saqlab turadigan aktivlar harakatlari uchun [Anonim tranzaksiyalar](./anonymous-transactions.md)-ni ko'ring. Anonim tranzaksiyalarda ommaviy hisobvaraqdan hisobvaraqqa balans o'zgarishlari o'rniga himoya qilingan aktiv notlari, majburiyatlar, bekor qilish belgilari va nol bilimli dalillar ishlatiladi.
 
-Tanlangan shaffof ijro ta'sirlari to'g'risidagi dalillar uchun ko'ring
-[FastPQ](./fastpq.md). FastPQ odatdan keyin oʻlim guvohlarini isteʼmol qiladi
-Transaksiyalarni bajarish va qo'llab-quvvatlanadigan deterministik dalillar partiyalarini yaratish
-davlat o'tishlari.
+Tanlangan shaffof ijro ta'sirlari ustidan dalillar uchun [FastPQ](./fastpq.md)-ni ko'ring. FastPQ odatdagidan so'ng ijro guvohlarini iste'mol qiladi va qo'llab-quvvatlanadigan davlat o'tishlari uchun deterministik dalillar partiyalarini quradi.
 
-## Uni sinab koʻring . Taira {#try-it-on-taira}
+## Taira bilan sinab ko'ring. {#try-it-on-taira}
 
-Tadqiqotchi yoʻnalishlaridan foydalanib , soʻnggi jamoatchilikni tekshirib koʻring Taira bloklar va bitimlar
-imzo hisob raqami bo'lmagan statuslar:
+Taira so'nggi ommaviy bloklar va tranzaksiya statuslarini imzo hisobidan tashqari tekshirish uchun Explorer yo'nalishlaridan foydalaning:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/explorer/blocks?page=1&per_page=3' \
@@ -45,8 +30,7 @@ curl -fsS 'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=5' \
   | jq '{pagination, txs: [.items[] | {hash, block, status, executable}]}'
 ```
 
-Iltimos, ilova oldindan taqdim etilgan tranzaksiyalarni kuzatish uchun `hash` bilan
-Eksplorator yo'nalishini ro'yxatdan o'tkazish va tekshirish:
+Iltimos, ro'yxatdan `hash` nusxasini ko'chirib, qidiruvchining batafsil yo'nalishini tekshirib turing:
 
 ```bash
 TX_HASH='<transaction-hash>'
@@ -55,13 +39,9 @@ curl -fsS "https://taira.sora.org/v1/explorer/transactions/$TX_HASH" \
   | jq '{hash, block, status, authority, executable}'
 ```
 
-Bu hali ham faqat o'qish uchun. Transaksiyani taqdim etish uchun imzolangan Norito
-qadoq, to'g'ri zanjir ID, to'lov metadatalari va kran mablag'i bilan ta'minlangan Taira hisob.
+Bu hali ham faqat o'qish uchun hisoblanadi. Transaksiyani taqdim etish uchun imzolangan Norito ombor, to'g'ri zanjir ID, to'lov metadatalari va kran mablag'i bilan ta'minlangan Taira hisob raqami talab qilinadi.
 
-To'lovlarni to'lovchi misollar uchun Taira, kasana yordamchisini qutqarish
-[Testnetni olish XOR to ' g'risida Taira](/uz/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)
-sifatida `taira_faucet_claim.py`, soʻngra imzolovchiga ommaviy kran orqali mablagʻ ajratish
-Birinchidan:
+Taira da to'lovlarni to'lash misollari uchun kran yordamchisini [dan saqlang Testnet XOR ni Taira](/uz/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)da `taira_faucet_claim.py` sifatida oling, so'ngra avval imzochini ommaviy kran orqali mablag' bilan ta'minlang:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
@@ -75,10 +55,9 @@ iroha --config ./taira.client.toml ledger asset get \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-Agar kran puzzli yoki talabnoma yo'nalishi qaytarib kelsa `502`, oldin kuting va yana sinab koʻring
-muomalaning o'zini debug qilish.
+Agar faucet puzzli yoki talabnoma yo'nalishi `502` ni qaytarib bersa, muomalaning o'zini debug qilishdan oldin kuting va yana sinab ko'ring.
 
-Soʻngra Taira Transaksiyani taqdim etishda to'lov aktivlari metadatalari:
+So'ngra tranzaksiya taqdim etilganda Taira to'lov aktivining metadatalarini qo'shing:
 
 ```bash
 printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
@@ -88,28 +67,22 @@ iroha --config ./taira.client.toml \
   ledger transaction ping --msg "faucet-funded taira transaction"
 ```
 
-## Offline operatsiyalar {#offline-transactions}
+## Oflayn operatsiyalar {#offline-transactions}
 
-Iroha ikki xil offline-transaksiya ish oqimi mavjud:
+Iroha ikki xil offline operatsiya ish oqimlariga ega:
 
-- **Offline imzolash** imzolash paytida oddiy imzolangan tranzaksiya yaratadi
-  qurilma uzilgan. Transaksiya onlayn
-  mijoz imzolangan zarbatni Torii, Shunday qilib, u hali ham kerak
-  to'g'ri zanjir ID, vakolat, ruxsatnomalar, to'lovlar va operatsiya muddati.
-- **Kagemusha onlayn pul** Internetda bo'lganida ham pulchani topadi, qo'llab-quvvatlaydi
-  ikki ham pulparast bo'lganda oluvchi tomonidan tashabbuskor qilib qo'yilgan pulparastdan pulparastga o'tkazish
-  offline, va qabul qiluvchi qaytarib qachon natijada yozuv holatini sotib oladi
-  Internetda.
+- Offline imzolash imzolash qurilmasi bo'shalganida normal imzolangan tranzaksiyani yaratadi. Online mijoz Torii raqamiga imzolangan zarbatni taqdim etmaguncha tranzaksiya qayta ishlanmaydi, shuning uchun unga hali ham to'g'ri zanjir ID , vakolat, ruxsatnomalar, to'lovlar va tranzaksiyaning umuri kerak.
+- Kagemusha oflayn pul mablag'i onlayn bo'lganida ham qopchiqni topadi, har ikki qopchiq oflayn bo'lsa ham qabul qiluvchining tashabbusi bilan qopchiqdan qopchiqga uzatishni qo'llab-quvvatlaydi va oluvchi onlayn qaytganda natijadagi notani sotib oladi.
 
-Torii Kagemushalarning butun hayot davri `/v1/offline/*`:
+Torii Kagemusha hayotining to'liq davrini `/v1/offline/*` ostida ko'rsatadi:
 
-| usuli va yakuniy nuqtasi | Maqsad |
+|usuli va oxirgi nuqtasi |Maqsad|
 | --- | --- |
-| `GET /v1/offline/readiness` | Kagemushalarning tayyorligini baholash `asset_definition_id` |
-| `POST /v1/offline/receiver-lineage` | Imzolangan qabul qiluvchining so'rovi uchun hujjatli faol ro'yxatdan o'tish liniyasini hal qilish |
-| `POST /v1/offline/top-up` | Imzolangan onlayn-oflayn to'ldirish operatsiyasini taqdim etish |
-| `POST /v1/offline/redeem` | Foydalanib oʻtgan toʻlov operatsiyasini taqdim etish |
-| `GET /v1/offline/operations/{operation_id}` | Toʻldirish yoki toʻlovning kanonik maqomini oʻqing |
+|`GET /v1/offline/readiness` |`asset_definition_id` uchun Kagemusha tayyorligini baholash. |
+|`POST /v1/offline/receiver-lineage` |Imzolangan qabul qiluvchining so ' rovi uchun aktiv ro ' yxatdan o ' tkazish liniyasini hal etish |
+|`POST /v1/offline/top-up` |Imzolangan onlayn-oflayn toʻldirish operatsiyasini taqdim etish |
+|`POST /v1/offline/redeem` |Foydalanib boʻlmaydigan toʻlov operatsiyasini taqdim etish |
+|`GET /v1/offline/operations/{operation_id}` |Toʻldirish yoki toʻlovning kanonik holatini oʻqing |
 
 Offline operatsiyani qurishdan oldin aktivning tayyorligini tekshirish:
 
@@ -119,33 +92,18 @@ curl -fsS --get https://taira.sora.org/v1/offline/readiness \
   | jq '{ready, blockers, artifact_set}'
 ```
 
-Tayyorlik pulchani faol koʻprik bilan bogʻlaydi ABI 21 va tasdiqlangan V4
-Artefaktlar to'plami.
-`application/x-norito` Arxivlar. topshirish va to'lovni qaytarish `202 Accepted`
-a bilan `Location` operatsiya resursini ko'rsatadigan sarlavha; o'rnatilgan
-nol bo'lmagan operatsiya ID idempotency kalitini taqdim etadi.
+Tayyorlik pulni faol koʻprik bilan bogʻlaydi . ABI 21 va tasdiqlangan V4 Artefaktlar to'plami. Asal, top-up va sotib olish talablari `application/x-norito` Arxivlar. topshirish va to'lovni qaytarish `202 Accepted` a bilan `Location` operatsiya resursini ko'rsatadigan sarlavha; o'rnatilgan nol bo'lmagan operatsion ID idempotency kalitini taqdim etadi.
 
-Oddiy oqim:
+Oddiy oqim quyidagicha:
 
-1. Tayyorlikni soʻrang va toʻxtating `ready` soxta yoki har qanday blokir qo'llanilmoqda.
-2. Yozilgan Swift yoki JVM kanonik to'ldirish arxivini yaratish uchun qoplama,
-   uni taqdim etish va kirish notasi holatini ham, ishlashini ham saqlab qolish ID to
-   operatsiya oxirgi zanjir holatiga yetadi.
-3. Zarur bo'lganda qabul qiluvchining ro'yxatdan o'tish liniyasini hal qilish, qurilishni va
-   har bir tengdoshni mahalliy ravishda tekshirish va shifrlangan yozuv holatini saqlash
-   o'tkazilishini tan olishdan oldin.
-4. Qabul qiluvchi onlayn bo'lganda, kanonik to'lov arxivini yaratish,
-   uni taqdim etadi va uning ishlashi bilan bog'liq resurslarni so'rovga kiritadi.
+1. Agar `ready` noto'g'ri bo'lsa yoki biron bir bloker qo'llanilgan bo'lsa, tayyorlikni so'rang va to'xtating.
+2. &amp; amp; Yozilgan Swift yoki JVM kanonik top-up arxivini yaratish, uni jo'natish va kirish notasi holati va ishlashni saqlab qolish uchun portfel ID operatsiya oxirgi zanjir holatiga yetguncha.
+3. Kerak bo'lganda qabul qiluvchi ro'yxatining naslini hal qilish, har bir tengdosh uzatishni mahalliy ravishda yaratish va tekshirish va o'tkazishni tan olishdan oldin shifrlangan yozuv holatini saqlab qoling.
+4. Qabul qiluvchi onlayn bo'lganda, kanonik to'lov arxivini yarating, uni taqdim eting va uning ishlash resursini so'rovga oling.
 
-Katakchi qaydnoma holatiga qadar qarama-qarshi offline oʻtkazib yuborishni kuzatolmaydi
-onlayn hayot davri davomida qaytarish.
-Shuning uchun qiymat cheklovlarini, muddati tugagani, qabul qilingan emitentlar, uzoq muddatli mahalliy
-saqlash va yarashtirish oynalari.
+Note state onlayn hayot davri orqali qaytib kelmaguncha, katta kitob o'zaro ziddiyatlarni kuzatolmaydi. Shuning uchun ham pul va operator siyosati qiymat cheklovlari, muddati o'tishi, qabul qilingan emitentlar, doimiy mahalliy saqlashni qo'llab-quvvatlashi kerak. va yarashish o'rinlari.
 
-Bu yerda yangi bitim yaratishning misolini ko'rib chiqamiz. `Grant`
-Ushbu muomalada Mouse Alice-ga aniqlangan
-roli (`role_id`"). Tekshiring
-[to'liq misol](./permissions.md#register-a-new-role).
+Bu yerda yangi bitim tuzishning misolini koʻrib chiqamiz. `Grant` Ushbu muomalada Mouse Alice-ga aniqlangan rolni (`role_id`). Tekshirish [to'liq misol](./permissions.md#register-a-new-role).
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);

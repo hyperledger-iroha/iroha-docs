@@ -8,11 +8,9 @@ translation_engine: nllb-200-ct2
 
 # הגדרת הלקוח {#client-configuration}
 
-Iroha CLI ו SDK הלקוחות משתמשים TOML האספנה שולחת את
-הפסד הנוכחי ב `defaults/client.toml`; רשתות מקומיות שנוצרו גם כותבים
-התאמה `client.toml` לקובץ ההוצא שלהם.
+לקוחות Iroha CLI ו SDK משתמשים בקונפיגירציה של TOML. האספנה שולחת את ההפסד הנוכחי ל `defaults/client.toml`; רשתות מקומיות שנוצרות כותבות גם קישור מתאים `client.toml` בתיקון ההוצאת שלהם.
 
-::: details דפוס קונפיגירציה של לקוח
+::: details תבנית תיקון הלקוח
 
 <<< @/snippets/client.template.toml
 
@@ -20,8 +18,7 @@ Iroha CLI ו SDK הלקוחות משתמשים TOML האספנה שולחת את
 
 ## שדות הליבה {#core-fields}
 
-לכל הפחות, תיקון לקלינט מזהה את שרשרת, Torii נקודת סוף, ו
-חשבון חתימה:
+לכל הפחות, קונפיגורציה של לקוח מזהה את שרשרת, נקודת סוף Torii ואת חשבון החתימה:
 
 ```toml
 chain = "00000000-0000-0000-0000-000000000000"
@@ -33,28 +30,22 @@ public_key = "ed0120..."
 private_key = "802620..."
 ```
 
-- `chain` בוחרים את שרשרת העסקים שהוגשו.
-- `torii_url` נקודות בשוויון Torii HTTP API.
-- `[account].domain` הוא משמש על ידי CLI קיצוצים וקובעת סלקטור כתובות;
-  הקנוניקה `AccountId` היא עצמה חסרת תחום.
-- `[account].public_key` ו `[account].private_key` לחתום על עסקאות.
+- `chain` בוחר את שרשרת העסקאות המוצעות אליהן.
+- `torii_url` נקודות ב-peer Torii HTTP API.
+- `[account].domain` משמשת על ידי קיצוצים CLI וקידוד בוחר כתובת; הקאנוניקלי `AccountId` עצמו הוא ללא תחום .
+- `[account].public_key` ו `[account].private_key` חותמים על עסקאות.
 
-החשבון חייב כבר להתקיים על שרשרת. עבור הרשת המקומית המקובלת זה
-הוחלט על ידי מוניפסט הגנזיס המזומן.
+החשבון חייב כבר להתקיים על שרשרת. עבור הרשת המקומית המקובלת זה מנוהל על ידי מוניסט הגנזיס הקבוצת.
 
-::: info רגישות במקרה
+::: info רגישות המקרה
 
-Iroha שמות הם רגישים למקרים לאחר ניתוח קנוני.
-`wonderland.universal`, `Wonderland.universal`, ו
-`looking_glass.universal` הם דומנים מפרדים.
+שמות Iroha הם רגישים למקרה לאחר ניתוח קנוני. לדוגמה, `wonderland.universal`, `Wonderland.universal`, ו `looking_glass.universal` הם דומנים פשוטים נפרדים.
 
 :::
 
 ## אימות בסיסי {#basic-authentication}
 
-בחופשי `[basic_auth]` הפרק מוסיף: HTTP `Authorization` כותרת ל
-בקשות של הלקוח. Iroha עמיתים אינם מתרגמים את תעודות האישור הללו ישירות; שימוש
-הם כאשר Torii הוא עומד מאחורי סגן הפוך כמו Nginx.
+החלק בחופשי `[basic_auth]` מוסיף כותרת HTTP `Authorization` לבקשות הלקוח. עמיתים Iroha אינם מתרגמים את האישורים האלה ישירות; השתמש בהם כאשר Torii עומד מאחורי פרוקסי ההפוך כגון Nginx.
 
 ```toml
 [basic_auth]
@@ -64,7 +55,7 @@ password = "ilovetea"
 
 ## הגדרות העסקאות {#transaction-settings}
 
-התנהגות העסקה היא מותאמת עם `[transaction]` סעיף:
+התנהגותו של העסקה מותאמת בקטע `[transaction]`:
 
 ```toml
 [transaction]
@@ -73,16 +64,13 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-- `time_to_live_ms` הוא חיי העסקה במילי שניות.
-- `status_timeout_ms` פיקוח כמה זמן הלקוח מחכה למסחר
-  מצב.
-- `nonce = true` מבקש מהלקוח לכלול סכום כזה של עסקאות חוזרות
-  להפיק חשישים שונים.
+- `time_to_live_ms` הוא תוחלת העסקה במילי שניות.
+- `status_timeout_ms` שולטת כמה זמן הלקוח מחכה למצב העסקה.
+- `nonce = true` מבקשת מהלקוח להוסיף סעיף כלשהו כדי שהמעשי חוזרים על עצמם יצרו חישובים שונים.
 
 ## קישור הגדרות {#connect-queue-settings}
 
-זרם Iroha הלקוחות יכולים גם להשתמש בחופשי `[connect]` פרק מקומי
-מצב השורה:
+לקוחות Iroha הנוכחיים יכולים גם להשתמש בקטע `[connect]` בחופשי למצב הזדר המקומי:
 
 ```toml
 [connect]
@@ -93,14 +81,13 @@ queue_root = "./queue"
 
 ## יצירת הגדרות {#generating-configurations}
 
-עבור רשתות מקומיות חד פעמיות, מעדיפים Kagami כי זה כותב מתאים Iroha
-3 קונפיגס, גנזיס, תסריטים, README:
+עבור רשתות מקומיות חד פעמיות, מעדיפים Kagami כי הוא כותב קונפיג'ים מתאימים Iroha 3, גנזה, תסריטים, ו README:
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
 ```
 
-השתמשו במוצר `./localnet/client.toml` עם CLI:
+השתמשו ב- `./localnet/client.toml` עם CLI:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all

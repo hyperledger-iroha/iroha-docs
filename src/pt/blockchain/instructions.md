@@ -30,7 +30,7 @@ Vamos começar com um resumo de Iroha Instruções Especiais; quais objetos cada
 
 Para cada instrução, há uma lista de objetos sobre os quais esta instrução pode ser executada. Por exemplo, as variantes de transferência cobrem objetos do livro-razão e ativos numéricos possíveis, enquanto o minting cobre ativos numéreos e desencadeia repetições.
 
-Algumas instruções exigem que um destino seja especificado. Por exemplo, se você transferir ativos, você sempre precisa especificar em que conta os está transferindo.
+Algumas instruções exigem que se especifique um destino. Por exemplo, se transferir activos, é sempre necessário especificar em que conta os está a transferir. Por outro lado, quando você está registrando algo, tudo o que você precisa é do objeto que deseja registrar.
 
 |Instrução |Objetos|Destino |
 | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------- |
@@ -290,7 +290,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ## Transferência {#transfer}
 
-As transferências movem a propriedade ou o valor entre contas. e NFTs. RWA O movimento de quantidade utiliza o `TransferRwa` e `ForceTransferRwa` instruções descritas em [Ativos do mundo real](/pt/blockchain/rwas.md).
+Transferências transferem a propriedade ou o valor entre contas. As variantes genéricas de transferência abrangem domínios, definições de ativos, ativos numéricos e NFTs. O movimento de quantidade RWA utiliza as instruções específicas `TransferRwa` e `ForceTransferRwa` descritas em [Real-World Ativos ](/pt/blockchain/rwas.md).
 
 Para este efeito, é necessário conceder uma conta à [Permissão para a transferência de activos](/pt/reference/permissions.md). Referir-se a um exemplo de como transferir activos com: [CLI](/pt/get-started/operate-iroha-via-cli.md) ou [Rust](/pt/guide/tutorials/rust.md).
 

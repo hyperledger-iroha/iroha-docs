@@ -314,7 +314,7 @@ Cuando un punto final acepta o devuelve el tipo Norito directamente, uso `applic
 
 ## Perfiles de telemetría {#telemetry-profiles}
 
-La visibilidad de los puntos finales depende de la configuración de telemetría.
+La visibilidad de los puntos finales depende de la configuración de telemetría. Los documentos de aguas arriba describen cinco niveles de perfil:
 
 |Profiles |`/status` |`/metrics` |Rutas de desarrollo |
 | --- | --- | --- | --- |

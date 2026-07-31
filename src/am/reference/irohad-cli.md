@@ -8,18 +8,18 @@ translation_engine: nllb-200-ct2
 
 # `irohad` CLI {#irohad-cli}
 
-`irohad` አንድ ይጀምራል Iroha 3 የእኩዮች ዳሚን.
+`irohad` አንድ Iroha 3 የእኩዮች ዳይሞን ይጀምራል.
 
 ```shell
 irohad --config path/to/config.toml
 ```
 
-## `--config` {#arg-config}
+## `--config`  {#arg-config}
 
-- **አይነት:** የፋይል መንገድ
-- **ስያሜ:** `-c`
+- አይነት: የፋይል መንገድ
+- ስያሜ: `-c`
 
-ወደ ጎዳና [ውቅር](/am/reference/peer-config/index.md) መዝገብ።
+ወደ [ ውቅር ፋይል ](/am/reference/peer-config/index.md) የሚወስደው መንገድ።
 
 ```shell
 irohad --config path/to/iroha.toml
@@ -27,10 +27,9 @@ irohad --config path/to/iroha.toml
 
 ## `--genesis-manifest-json` {#arg-genesis-manifest-json}
 
-- **አይነት:** የፋይል መንገድ
+- አይነት: የፋይል መንገድ
 
-ወደ ጀኔዝ መገለጫ አማራጭ መንገድ JSON ፋይል: ይህን መጠቀም
-በመተግበሪያው የተፈጠረውን ማኒፌስት በመቃወም ማስጀመር ይረጋገጣል Kagami.
+ወደ ጅምር ማኒፌስት JSON ፋይል አማራጭ መንገድ። ትግበራው በ Kagami ከተፈጠረ ማኒፌስ ጋር በመነሳት ማስጀመሪያውን ሲያረጋግጥ ይህን ይጠቀሙ ።
 
 ```shell
 irohad --config path/to/iroha.toml --genesis-manifest-json path/to/genesis.manifest.json
@@ -38,10 +37,10 @@ irohad --config path/to/iroha.toml --genesis-manifest-json path/to/genesis.manif
 
 ## `--trace-config` {#arg-trace-config}
 
-ውቅርን ማንበብ እና ማሰስ የክትትል መዝገቦችን ያስችለዋል. ለዋናነት ችግር መፍታት ጠቃሚ ሊሆን ይችላል.
+ቅንብሮች ማንበብ እና ማጣሪያ ትረካ መዝገቦችን ያስችለዋል. ለቅንብሮች ችግር መፍታት ጠቃሚ ሊሆን ይችላል.
 
-- **አይነት:** ባንዲራ
-- **ENV:** `TRACE_CONFIG`
+- አይነት: ባንዲራ
+- ENV: `TRACE_CONFIG`
 
 ```shell
 irohad --trace-config
@@ -49,15 +48,13 @@ irohad --trace-config
 
 ## `--terminal-colors` {#arg-terminal-colors}
 
-- **አይነት:** ቡሊያን፣ ወይ `--terminal-colors=false` ወይም
-  `--terminal-colors=true`
-- **ነባሪ:** በራስ-ማስተዋል ተርሚናል ድጋፍ
-- **ENV:** `TERMINAL_COLORS`
+- አይነት: ቦሌን `--terminal-colors=false` ወይም `--terminal-colors=true`
+- ነባሪ: በራስ-ማስተዋል ተርሚናል ድጋፍ
+- ENV: `TERMINAL_COLORS`
 
-እንዲቻል ማድረግ ANSI-ቀለም ያለው ውፅዓት ወይም አይደለም.
+ANSI ቀለም ያለው ውፅዓት እንዲፈቀድ ወይም እንዳይፈቅድ።
 
-በነባሪነት, Iroha ተርሚናሉ ቀለም ያለው ውፅዓት የሚደግፍ መሆኑን ይወስናል
-ወይም አይደለም.
+በነባሪነት Iroha ተርሚናሉ ቀለም ያለው ውፅዓት ይደግፋል ወይም አይደግፍም የሚለውን ይወስናል።
 
 ቀለሞችን በግልጽ ለማሰናከል:
 
@@ -72,9 +69,9 @@ irohad
 
 ## `--language` {#arg-language}
 
-- **አይነት:** ገመድ
+- ዓይነት: ገመድ
 
-ለዴይሞን መልዕክቶች ጥቅም ላይ የዋለውን የስርዓት ቋንቋ አስወግድ.
+ለዴይሞን መልዕክቶች ጥቅም ላይ የዋለውን የስርዓት ቋንቋ አስወግድ።
 
 ```shell
 irohad --language en-US
@@ -82,10 +79,9 @@ irohad --language en-US
 
 ## `--sora` {#arg-sora}
 
-- **አይነት:** ባንዲራ
+- አይነት: ባንዲራ
 
-ሶራውን አክቲቭ አድርግ Nexus ለ ባህሪ መገለጫ SoraFS, የ SoraNet የእጅ መጨናነቅ እና
-ባለብዙ መስመሮች የጋራ ስምምነት ፍሰቶች።
+ለ SoraFS የሶራ Nexus ባህሪ መገለጫ ፣ ለ SoraNet እጅ መንካት እና ለበርካታ መስመሮች የጋራ ስምምነት ፍሰቶች ያስችላል።
 
 ```shell
 irohad --config path/to/iroha.toml --sora
@@ -93,9 +89,9 @@ irohad --config path/to/iroha.toml --sora
 
 ## `--fastpq-execution-mode` {#arg-fastpq-execution-mode}
 
-- **አይነት:** `auto`, `cpu`, ወይም `gpu`
+- አይነት: `auto`, `cpu`, ወይም `gpu`
 
-አሻራ FASTPQ የአፈፃፀም ሁነታ።
+FASTPQ የፕሮግራም አፈፃፀም ሁነታውን አሻግሩ።
 
 ```shell
 irohad --fastpq-execution-mode auto
@@ -103,9 +99,9 @@ irohad --fastpq-execution-mode auto
 
 ## `--fastpq-poseidon-mode` {#arg-fastpq-poseidon-mode}
 
-- **አይነት:** `auto`, `cpu`, ወይም `gpu`
+- አይነት: `auto`, `cpu`, ወይም `gpu`
 
-አሻራ FASTPQ የፖዚዶን ቧንቧ ሁነታ።
+FASTPQ የፖሲዶን የቧንቧ መስመር ሁነታ አሻሽል.
 
 ```shell
 irohad --fastpq-poseidon-mode cpu
@@ -113,9 +109,9 @@ irohad --fastpq-poseidon-mode cpu
 
 ## `--fastpq-device-class` {#arg-fastpq-device-class}
 
-- **አይነት:** ገመድ
+- ዓይነት: ገመድ
 
-የ FASTPQ የቴሌሜትሪ መሳሪያ ክፍል መለያ።
+የ FASTPQ የቴሌሜትሪ መሳሪያ ክፍል መለያውን ይተው።
 
 ```shell
 irohad --fastpq-device-class apple-m4
@@ -123,9 +119,9 @@ irohad --fastpq-device-class apple-m4
 
 ## `--fastpq-chip-family` {#arg-fastpq-chip-family}
 
-- **አይነት:** ገመድ
+- ዓይነት: ገመድ
 
-የ FASTPQ የቴሌሜትሪ ቺፕ ቤተሰብ መለያ።
+FASTPQ የቴሌሜትሪ ቺፕ ቤተሰብ መለያውን ይተው።
 
 ```shell
 irohad --fastpq-chip-family m4
@@ -133,9 +129,9 @@ irohad --fastpq-chip-family m4
 
 ## `--fastpq-gpu-kind` {#arg-fastpq-gpu-kind}
 
-- **አይነት:** ገመድ
+- ዓይነት: ገመድ
 
-የ FASTPQ ቴሌሜትሪ GPU-እንደ አንድ ዓይነት መለያ።
+የ FASTPQ ቴሌሜትሪ GPU ዓይነት መለያን ይተው።
 
 ```shell
 irohad --fastpq-gpu-kind integrated

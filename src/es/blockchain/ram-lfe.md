@@ -205,7 +205,7 @@ $$
 v = c_0 + c_1s_k
 $$
 
-Si el texto cifrado se formó correctamente y el ruido es todavía lo suficientemente pequeño, \(v\) está cerca del texto plano escalado. La redondeación recupera el coeficiente de texto claro modulo \(t\).
+Si el texto de cifrado se formó correctamente y el ruido es todavía lo suficientemente pequeño, \(v\) está cerca del texto plano a escala. El redondeo recupera el coeficiente de texto plano modulo \(t\). La propiedad útil es que las operaciones de texto cifrado conservan esta estructura:
 
 |Operación simple |Operación de cifrado de texto |
 | --- | --- |
@@ -480,7 +480,7 @@ El perfil actual RAM-FHE es el siguiente:
 |`encrypted_input_mode` |`resolver_canonicalized_envelope_v1` |
 |`min_ciphertext_modulus` | \(2^{52}\) |
 
-La entrada de texto en blanco presentada a Torii se cifrará en el mismo sobre BFV antes de su ejecución.
+La entrada de texto en blanco presentada a Torii se cifrará en el mismo sobre BFV antes de su ejecución. La semilla determinista para ese cifrado en el lado del servidor es:
 
 $$
 H(

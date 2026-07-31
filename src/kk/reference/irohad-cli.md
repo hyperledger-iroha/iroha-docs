@@ -81,7 +81,7 @@ irohad --language en-US
 
 - Түрі: желек
 
-Сораны қосу Nexus ерекшелік профилі SoraFS, Атап айтқанда SoraNet қол алысу, және көп жолдық консенсус ағыны.
+SoraFS үшін Sora Nexus функциясының профилін, SoraNet қолын тигізуді және көп жолдық консенсус ағындарын рұқсат ету.
 
 ```shell
 irohad --config path/to/iroha.toml --sora
@@ -89,7 +89,7 @@ irohad --config path/to/iroha.toml --sora
 
 ## `--fastpq-execution-mode` {#arg-fastpq-execution-mode}
 
-- Түрі: `auto`, `cpu`, немесе `gpu`
+- Түрі: `auto`, `cpu` немесе `gpu`
 
 FASTPQ провердің орындалу режимін бұзып тастаңыз.
 
@@ -99,7 +99,7 @@ irohad --fastpq-execution-mode auto
 
 ## `--fastpq-poseidon-mode` {#arg-fastpq-poseidon-mode}
 
-- Түрі: `auto`, `cpu`, немесе `gpu`
+- Түрі: `auto`, `cpu` немесе `gpu`
 
 FASTPQ Посейдон құбыр жолы режимін бұзып тастаңыз.
 

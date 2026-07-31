@@ -6,37 +6,33 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Randonnée Iroha sur le métal nu {#running-iroha-on-bare-metal}
+# En cours d'exécution Iroha sur métal nu {#running-iroha-on-bare-metal}
 
-Utilisez ce flux de travail lorsque vous voulez exécuter des pairs directement sur les hôtes au lieu
-à travers Docker Compose. L'arbre source actuel fournit Kagami générateurs qui
-écrire la génèse correspondante, les configurations de pairs, la configuration du client et les scripts de démarrage/arrêt.
+Utilisez ce flux de travail lorsque vous voulez exécuter des pairs directement sur les hôtes au lieu de via Docker Compose. L'arbre source actuel fournit Kagami générateurs qui écrivent des génétises correspondantes, configures de pairs, configure du client et scripts de démarrage / arrêt.
 
 ## 1. Construire les binaires {#_1-build-the-binaries}
 
-De l'au-dessus Iroha espace de travail:
+Dans l'espace de travail Iroha en amont:
 
 ```bash
 cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ```
 
-Cela produit:
+Ce qui produit:
 
-- `target/release/irohad` pour le daimon de la paire
+- `target/release/irohad` pour le daimon par rapport à l'autre
 - `target/release/iroha` pour le CLI
-- `target/release/kagami` pour la génération de clés, de genèse et de réseaux locaux
+- `target/release/kagami` pour la génération de clés, d'origine et de réseaux locaux
 
-## 2. Créer un réseau local {#_2-generate-a-local-network}
+## 2. Générer un réseau local {#_2-generate-a-local-network}
 
-Générer un four-peer Iroha 3 réseau local:
+Générer un localnet Iroha 3 à quatre pairs:
 
 ```bash
 target/release/kagami localnet --build-line iroha3 --peers 4 --out-dir ./localnet
 ```
 
-Le répertoire de sortie contient le généré `genesis.json`,
-`genesis.signed.nrt`, de même `config.toml` les dossiers, `client.toml`, les scripts auxiliaires,
-et un généré `README.md` avec des commandes exactes pour ce paquet.
+Le répertoire de sortie contient les fichiers générés `genesis.json`, `genesis.signed.nrt`, peer `config.toml`, `client.toml`, scripts d'aide et un `README.md` généré avec des commandes exactes pour ce paquet.
 
 ## 3. Commencez par des pairs {#_3-start-peers}
 
@@ -46,9 +42,7 @@ Pour un localnet jetable généré, utilisez le script généré:
 ./localnet/start.sh
 ```
 
-Si vous avez besoin de brancher chaque paire dans un gestionnaire de processus tel que systemd, utiliser le
-commandement de lancement enregistré en `./localnet/README.md` Pour chaque paire.
-de l'équipe `config.toml`, clé privée, répertoire de stockage et ports séparés.
+Si vous devez brancher chaque pair dans un gestionnaire de processus tel que systemd, utilisez la commande de lancement enregistrée en `./localnet/README.md` pour chaque pair. Gardez séparément le `config.toml`, la clé privée, le répertoire de stockage et les ports de chaque pair.
 
 ## 4. Opérer le réseau {#_4-operate-the-network}
 
@@ -67,16 +61,10 @@ Arrêtez le localnet généré avec:
 
 ## 5. Notes de production {#_5-production-notes}
 
-- Générer de nouvelles clés privées pour la production et les stocker en dehors du
-  référentiel.
-- Faites en sorte que tous les pairs soient d'accord sur la même transaction de génèse signée, topologie,
-  des pairs de confiance et un validateur PoPs.
-- Lier les adresses de l'auditeur aux interfaces hôte-locales uniquement lorsque le pair devrait
-  n'est pas accessible par d'autres machines.
-- Utilisez un proxy inverse ou un pare-feu pour Torii exposition, auth de base, TLS, et taux
-  Il est limité.
-- Traiter les changements de génèse ou de topologie consensuelle comme des migrations coordonnées, non
-  les modifications de fichiers uniques.
+- Générer de nouvelles clés privées pour la production et les stocker à l'extérieur du dépôt.
+- Faites en sorte que tous les pairs soient d'accord sur la même transaction de génèse signée, la topologie, les pairs de confiance et le validateur PoPs.
+- Bind l'auditeur s'adresse aux interfaces locales de l'hôte uniquement lorsque le pair ne doit pas être accessible depuis d'autres machines.
+- Utilisez un proxy inverse ou un pare-feu pour l'exposition Torii, l'auth de base, TLS et la limitation du taux.
+- Traiter les changements apportés à la génèse ou à la topologie du consensus comme des migrations coordonnées, et non comme des modifications de fichiers uniques.
 
-Pour le développement local en conteneurs, utilisez les [Lancement Iroha 3](../../get-started/launch-iroha.md)
-Docker Compose le flux de travail.
+Pour le développement local en container, utilisez le flux de travail [Launch Iroha 3](../../get-started/launch-iroha.md) Docker Compose.

@@ -8,51 +8,49 @@ translation_engine: nllb-200-ct2
 
 # Iroha 3 {#iroha-3}
 
-Iroha 3 анх удаа гарсан Hyperledger Iroha Платформа. Энэ нь дэмждэг
-Өөрөө хөтлөх сүлжээ, олон мэдээллийн орон зай SORA Nexus ашиглалтын загвар
-нэг тодорхойлох код үндэслэл.
+Iroha 3 нь анхны нэвтрүүлгийн Hyperledger Iroha платформ юм. Энэ нь бие даасан зохион байгуулалттай сүлжээ болон олон мэдээллийн орон тооны SORA Nexus ашиглалтын загварыг нэг тодорхойлох код үндсэн дээр дэмжинэ.
 
-Дээд түвшинд, Iroha 3 нэгтгэн:
+Iroha 3 нь өндөр түвшинд:
 
 - тодорхойлолттай гүйцэтгэх, хадгалах
-- УИХ-ын гишүүн Iroha Виртуал машин (IVM) гар утасны ухаалаг гэрээний хувьд
-- Norito Каноникийн утасны хэлбэрээр
-- Torii үйлчлүүлэгч, оператор болон аппликейшнүүдэд зориулсан APIs
-- Sumeragi Мэдээллийн заавал байдаг байдал, найдвартай дамжуулалттай холбоотой санал нийлбэл
-- Доменгүй, хүн уншигчдын нэрэмжит нууц үсэгтэй хуулийн санхүүгийн бүртгэл
+- Iroha Гар утасны гэрээний виртуал машины (IVM)
+- Norito нь хуулийн төмөрний хэлбэрээр
+- Torii үйлчлүүлэгчид, оператор болон аппликейшнүүдэд зориулсан APIs
+- Sumeragi мэдээллийн хэрэгсэл, найдвартай дамжуулалттай холбоотой тохиролцоо
+- Доменгүй, бие даасан холбогдсон хүний уншдаг цогцолборуудыг агуулсан санхүүгийн бүртгэл
 
 ## Удахгүй эхлэх {#quickstart}
 
-Хэрэв та нураасаа эхлүүлж байгаа бол дараах хуудсуудыг дагаж үзээрэй:
+Хэрэв та нураасаа эхэлж байгаа бол дараах хуудсуудыг дагаж үзээрэй:
 
-1. [Нэвтрүүлэг Iroha 3](/mn/get-started/install-iroha.md)
-2. [Нэвтрүүлэг Iroha 3](/mn/get-started/launch-iroha.md)
-3. [Хөдөлмөр Iroha 3 дамжуулан CLI](/mn/get-started/operate-iroha-via-cli.md)
-4. [Сэргэлт SORA Nexus мэдээллийн орон тоо](/mn/get-started/sora-nexus-dataspaces.md)
-5. [Хувийн мэдээллийн орон тооны төлбөрөө тэтгэгч](/mn/get-started/private-dataspace-fee-sponsor.md)
+1. [Нөөц Iroha 3](/mn/get-started/install-iroha.md)
+2. [Iroha 3](/mn/get-started/launch-iroha.md)
+3. [Iroha 3 замаар үйл ажиллагаа явуулж байна CLI](/mn/get-started/operate-iroha-via-cli.md)
+4. [SORA Nexus мэдээллийн бүсэд холбогдсон](/mn/get-started/sora-nexus-dataspaces.md)
+5. [Шаардлагатай хувийн мэдээллийн орон зайн төлбөр](/mn/get-started/private-dataspace-fee-sponsor.md)
 
 ## SDKs {#sdks}
 
-Одоогийн SDK Энэ сайтад бичигдсэн орох цэгүүд нь:
+Энэ газарт бичигдсэн одоогийн SDK нэвтрэх цэгүүд нь:
 
 - [Rust](/mn/guide/tutorials/rust.md)
 - [Python](/mn/guide/tutorials/python.md)
 - [JavaScript / TypeScript](/mn/guide/tutorials/javascript.md)
-- [Kotlin, Android, болон Java](/mn/guide/tutorials/kotlin-java.md)
+- [Kotlin, Android, Java](/mn/guide/tutorials/kotlin-java.md)
 - [Swift болон iOS](/mn/guide/tutorials/swift.md)
 
 ## Үйл ажиллагаа эрхлэгчдийн сэнслэл {#operator-references}
 
-Сүлжээг ашиглахдаа хамгийн их хэрэглэдэг хуудсууд нь:
+Сүлжээ ашиглахдаа хамгийн их хэрэглэх хуудсууд нь:
 
-- [Хөдөлмөр эрхлэгч Iroha бинар](/mn/reference/binaries.md)
-- [Эхлэлд дурдсан](/mn/reference/genesis.md)
-- [Torii төгсгөл](/mn/reference/torii-endpoints.md)
-- [Сэргэлт SORA Nexus мэдээллийн орон тоо](/mn/get-started/sora-nexus-dataspaces.md)
-- [Хувийн мэдээллийн орон тооны төлбөрөө тэтгэгч](/mn/get-started/private-dataspace-fee-sponsor.md)
+- [Iroha двойны системүүдтэй ажиллах](/mn/reference/binaries.md)
+- [Эхлэл ](/mn/reference/genesis.md) нэвтрүүлэг
+- [Torii эцсийн цэгүүд](/mn/reference/torii-endpoints.md)
+- [SORA Nexus мэдээллийн бүсэд холбогдсон](/mn/get-started/sora-nexus-dataspaces.md)
+- [Шаардлагатай хувийн мэдээллийн орон зайн төлбөр](/mn/get-started/private-dataspace-fee-sponsor.md)
 - [Нөхцөл байдлын матриц](/mn/reference/compatibility-matrix.md)
 
-## Дэлгэрэнгүй мэдээрэй {#learn-more}
+## Дэлгэрэнгүй үзээрэй {#learn-more}
 
 - [Iroha эх сурвалжийн хадгаламж](https://github.com/hyperledger-iroha/iroha)
-- [Документийн эх үүсвэрт хадгаламж](https://github.com/hyperledger-iroha/iroha-docs)
+- [Документийн эх сурвалжийн хадгаламж](https://github.com/hyperledger-iroha/iroha-docs)

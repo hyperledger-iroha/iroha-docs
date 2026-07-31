@@ -36,7 +36,7 @@ features:
       dark: /explained.svg
       light: /explained-light.svg
     title: "Архитектура"
-    details: "Түсіну Torii, Sumeragi, Norito, IVM, және Nexus деректер кеңістігі моделі"
+    details: "Torii, Sumeragi, Norito, IVM және Nexus деректер кеңістігінің үлгісін түсіну"
     link: /kk/blockchain/iroha-explained
   - icon:
       dark: /reference.svg

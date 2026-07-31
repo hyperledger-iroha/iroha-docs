@@ -101,7 +101,7 @@ El flujo típico es:
 3. Resolver el linaje de registro del receptor cuando sea necesario, construir y verificar cada transmisión de pares localmente, y persistir en el estado de la nota cifrada antes de reconocer la transferencia.
 4. Cuando el destinatario esté en línea, construya el archivo canónico de redención, envíelo y encuesta su recurso operativo hasta la finalidad.
 
-El libro mayor no puede observar una transferencia fuera de línea conflictiva hasta que el estado de la nota regrese a través del ciclo de vida en línea.
+El libro mayor no puede observar una transmisión en línea conflictiva hasta que el estado de la nota regrese a través del ciclo de vida en línea. Por consiguiente, la política de cartera y de operador debe hacer cumplir límites de valor, vencimiento, emisores aceptados, almacenamiento local duradero, y ventanas de reconciliación.
 
 Este es un ejemplo de la creación de una nueva transacción con `Grant` En esta transacción, Mouse le otorga a Alice el papel especificado (`role_id`El cheque . [el ejemplo completo](./permissions.md#register-a-new-role).
 

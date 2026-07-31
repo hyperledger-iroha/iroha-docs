@@ -12,7 +12,7 @@ Uma transação é uma solicitação assinada para executar um trabalho no block
 
 As transações executam um trabalho de mudança de estado ou executável. A inspeção apenas para leitura usa consultas assinadas ou pontos finais públicos de leitura e não cria uma transação.
 
-As solicitações rejeitadas antes da admissão de blocos, como um envelope inválido ou uma transação recusada pela fila, não são armazenadas em blocos.
+Uma transacção admitida num bloco comprometido é armazenada com o resultado da sua execução, incluindo uma rejeição de execução. Solicitações rejeitadas antes da admissão em bloco, como um envelope inválido ou uma transação rejeitada pela fila; Não são armazenadas num bloco.
 
 Para o movimento de ativos que preservam a privacidade, veja [Transações Anônimas](./anonymous-transactions.md). As transações anônimas usam notas de ativos protegidas, compromissos, anuladores e provas de conhecimento zero em vez das mudanças do saldo da conta pública.
 

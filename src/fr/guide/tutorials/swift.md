@@ -8,21 +8,13 @@ translation_engine: nllb-200-ct2
 
 # Swift et iOS {#swift-and-ios}
 
-Les Swift SDK l'espace de travail en amont est le `IrohaSwift` Swift
-le paquet sous `IrohaSwift/`. Son manifeste de paquets définit trois bibliothèques
-produits`IrohaSwift`, `IrohaSwiftMobileTransports`, et
-`IrohaSwiftTransferUI`et cible iOS 15+ et macOS 12+ avec Swift outils 5.9.
+Les États membres Swift SDK l'espace de travail en amont est le `IrohaSwift` Swift l'emballage `IrohaSwift/`. Son manifeste d'emballage définit trois produits bibliothécaires`IrohaSwift`, `IrohaSwiftMobileTransports`, et `IrohaSwiftTransferUI`et cible iOS 15+ et macOS 12+ avec Swift outils 5.9.
 
-L'emballage dépend de l'origine `NoritoBridge` cible binaire.
-validation de la résolution `../dist/NoritoBridge.xcframework` avant la construction, et
-transaction ou connecter les voies de cryptographie jeter des erreurs bridge-disponibles lorsque le
-les symboles natifs ne sont pas chargés.
+Le paquet dépend de l'objectif binaire natif `NoritoBridge`. La résolution du paquet valide `../dist/NoritoBridge.xcframework` avant la construction, et les chemins de transaction ou de cryptographie Connect lancent des erreurs non disponibles lorsque les symboles natifs ne sont pas chargés.
 
-## Swift Gestionnaire de colis {#swift-package-manager}
+## Swift Gestionnaire du colis {#swift-package-manager}
 
-Lorsqu'il s'agit de développer contre un espace de travail déconnecté, le point SwiftPM à l'hôpital
-`IrohaSwift/` le répertoire des paquets.
-`Package.swift` est `IrohaSwift`:
+Lorsqu'il s'agit de développer contre un espace de travail déconnecté SwiftPM dans le local `IrohaSwift/` L'identité du paquet utilisée par `Package.swift` est `IrohaSwift`:
 
 ```swift
 dependencies: [
@@ -38,9 +30,7 @@ targets: [
 ]
 ```
 
-Ajustez le chemin pour votre application. Ne pas copier le courant
-`examples/ios/ConnectMinimalApp` chemin tel qu'il est; ce manifeste résoud
-`../../IrohaSwift` à `examples/IrohaSwift`.
+Ajustez le chemin pour votre application. Ne copiez pas le chemin `examples/ios/ConnectMinimalApp` actuel tel qu'il est; ce manifeste résoudra `../../IrohaSwift` à `examples/IrohaSwift`.
 
 Avant de résoudre le paquet, assurez-vous que le pont existe à la racine de l'espace de travail:
 
@@ -49,17 +39,13 @@ cd /path/to/iroha
 make bridge-xcframework
 ```
 
-Cela produit `dist/NoritoBridge.xcframework`; `IrohaSwift/Package.swift`
-se réfère à elle comme `../dist/NoritoBridge.xcframework`.
+Il en résulte `dist/NoritoBridge.xcframework`; `IrohaSwift/Package.swift` le renvoie à `../dist/NoritoBridge.xcframework`.
 
 ## CocoaPods {#cocoapods}
 
-La base de code contient également: `IrohaSwift/IrohaSwift.podspec`. Il déclare que
-`IrohaSwift` une capsule, Swift 5.9, et iOS 15. Le podspec tire Swift des sources de
-le référentiel principal; le pont d'origine doit toujours être présent et relié pour
-le codage des transactions, la signature non-Ed25519 et Connect crypto.
+La base de code contient également: `IrohaSwift/IrohaSwift.podspec`. Il déclare que le `IrohaSwift` une capsule, Swift 5.9 et iOS 15. Le podspec tire Swift les sources provenant du référentiel principal; le pont natif doit toujours être présent et lié pour le codage des transactions, non-édition25519 signature, et connecte crypto.
 
-## Début rapide {#quickstart}
+## Démarrage rapide {#quickstart}
 
 ```swift
 import Foundation
@@ -77,10 +63,9 @@ if #available(iOS 15.0, macOS 12.0, *) {
 }
 ```
 
-## Essayez ! Taira Lecture uniquement {#try-taira-read-only}
+## Essayez Taira En lisant seulement {#try-taira-read-only}
 
-Commencez par une plaine HTTP la sonde pour confirmer que le dispositif ou le simulateur peut atteindre
-le public Taira point final:
+Commencez par une sonde HTTP simple pour confirmer que l'appareil ou le simulateur peut atteindre l'extrémité publique Taira:
 
 ```swift
 import Foundation
@@ -96,14 +81,9 @@ if #available(iOS 15.0, macOS 12.0, *) {
 }
 ```
 
-Utilisez le même `URLSession` vérifier pour
-`https://taira.sora.org/v1/assets/definitions?limit=5` pendant que vous construisez
-UI et réessayez le comportement. `IrohaSDK` ne soumettent des aides qu'après le
-l'application charge le matériel de signature du stockage sécurisé et le compte est financé sur
-Taira.
+Utilisez la même vérification `URLSession` pour `https://taira.sora.org/v1/assets/definitions?limit=5` pendant que vous construisez UI et réessayez le comportement. Passez à `IrohaSDK` envoyez des aides seulement après que l'application a chargé du matériel de signature d'un stockage sécurisé et que le compte soit financé sur Taira.
 
-Pour créer et soumettre une transaction, utilisez le `IrohaSDK` Ils appellent les
-encodeur de transaction natif à support bridge:
+Pour créer et soumettre une transaction, utilisez l'assistant `IrohaSDK`. Ils appellent le codeur de transaction natif à support bridge:
 
 ```swift
 let transfer = TransferRequest(
@@ -125,23 +105,15 @@ if #available(iOS 15.0, macOS 12.0, *) {
 }
 ```
 
-`TransferRequest`, `MintRequest`, `BurnRequest`, `ShieldRequest`, et
-`UnshieldRequest` valider le compte canonique IDs et canonique sans préfixe
-Base58 définition d'actif IDs avant de signer.
+Le compte canonique IDs et la définition de l'actif sans préfixe canonique Base58 IDs sont validés par `TransferRequest`, `MintRequest`, `BurnRequest`, `ShieldRequest` et `UnshieldRequest` avant signature.
 
 ## Réservation de fonds propres {#native-escrow}
 
-Swift construit une place de marché et des instructions de dépôt anonyme comme Norito JSON
-chargements utiles à travers `NativeEscrowInstructionBuilders` ou équivalent
-`IrohaSDK.build*Escrow*` Les assistants.
-[Réservation des actifs natifs](/fr/blockchain/escrow.md#swift-and-ios) à titre d'exemple,
-champs de preuve anonymes, et le jeton d'autorisation pour résoudre les différends.
+Swift crée des instructions d'escrow sur le marché et anonymes en tant que chargements utiles de Norito JSON par l'intermédiaire de `NativeEscrowInstructionBuilders` ou des aides équivalentes `IrohaSDK.build*Escrow*`. Voir [Native Asset Escrow](/fr/blockchain/escrow.md#swift-and-ios) pour les exemples, les champs de preuve anonymes et le jeton d'autorisation de résolution des différends.
 
-## Signature {#signing}
+## La signature {#signing}
 
-`Keypair` est la commodité Ed25519 API. Pour d'autres algorithmes, construire un
-`IrohaSDK` avec `defaultSigningAlgorithm` et utilisation `generateSigningKey()` ou
-`signingKey(fromSeed:)`:
+`Keypair` est la commodité Ed25519 API. Pour d'autres algorithmes, construisez un `IrohaSDK` avec `defaultSigningAlgorithm` et utilisez `generateSigningKey()` ou `signingKey(fromSeed:)`:
 
 ```swift
 let pqSdk = IrohaSDK(
@@ -151,14 +123,11 @@ let pqSdk = IrohaSDK(
 let signingKey = try pqSdk.generateSigningKey()
 ```
 
-Les `SigningAlgorithm` enum comprend actuellement Ed25519, secp256k1, BLS de façon normale
-et de petites variantes, ML-DSA, GOST R 34.10-2012 ensembles de paramètres, et SM2. Native
-Le support du pont est requis en dehors de la voie d'accès à l'Ed25519.
+L'enum `SigningAlgorithm` comprend actuellement l'Ed25519, secp256k1, les variantes normales et petites BLS, les ensembles de paramètres ML-DSA, GOST R 34.10-2012, et SM2.
 
 ## Connectez {#connect}
 
-Le client Connect est mis en œuvre dans Swift source, avec des codecs cryptographiques et cadres
-soutenu par `NoritoBridge`:
+Le client Connect est mis en œuvre dans la source Swift, avec des codecs cryptographiques et de cadres pris en charge par `NoritoBridge`:
 
 ```swift
 let sessionID = Data(repeating: 0, count: 32) // replace with the session bytes
@@ -177,38 +146,25 @@ let session = ConnectSession(sessionID: sessionID, client: client)
 let keyPair = try ConnectCrypto.generateKeyPair()
 ```
 
-`ConnectSession` les poignées d'ouverture et de fermeture des commandes, les enveloppes chiffrées;
-les clés de direction, le contrôle du débit, les flux d'événements, les flux de l'équilibre et les diagnostics
-Des journaux.
+`ConnectSession` gère les commandes d'ouverture et de fermeture, les lectures chiffrées des enveloppes, les touches de direction, le contrôle du débit, les flux d'événements, les flux de balance et les journaux de diagnostic.
 
 ## Couverture actuelle {#current-coverage}
 
-Les Swift la source comprend actuellement:
+La source Swift comprend actuellement les éléments suivants:
 
-- `ToriiClient` HTTP les assistants pour les comptes, les actifs, les pseudonymes, les pages explorateurs,
-  RWA, les contrats, la multisig, la gouvernance, les abonnements, la disponibilité des données;
-  les actifs confidentiels, l'état du nœud/temps d'exécution, la santé, les mesures et SSE courants
-- `IrohaSDK` constructeurs de transactions et auteurs d'enquêtes pour le transfert, la menthe,
-  brûlure, bouclier, sans bouclier; ZK le transfert, ZK l'enregistrement des actifs, les métadonnées,
-  les demandes d'identification, l'enregistrement multisigne et les instructions de gouvernance
-- support de file d'attente des transactions par le biais `PendingTransactionQueue` et
-  `FilePendingTransactionQueue`
-- adresse de compte et I105 les aides à travers `AccountAddress` et `AccountId`
-- Le numéro de référence est le numéro d'identification. ML-DSA, BLS, GOST, et SM2 surfaces signataires, avec des caractères natifs
-  soutien de pont si nécessaire
-- les constructeurs de charge utile native escrow instruction pour le marché et anonyme
-  dépôt de garantie
-- Connectez WebSocket, cadre, crypto, session, file d'attente, répétition et diagnostic
-  les aides
-- Prêt Kagemusha, remplacement et rachat typé, état d'exploitation, note,
-  le paquet partagé, le reçu et QR modèles de flux
-- SoraFS, les aides à la disponibilité des données et à l'attachement de preuves
+- `ToriiClient` HTTP auxiliaires pour les comptes, les actifs, les pseudonymes, les pages explorateurs, RWA, les contrats, le multisig, la gouvernance, les abonnements, la disponibilité des données, les actif confidentiels, l'état du nœud/temps d'exécution, la santé, les mesures et les flux SSE
+- `IrohaSDK` constructeurs d'opérations et auxiliaires de soumission/poll pour le transfert, la menthe, la combustion, le bouclier, l'absence de bouclier; ZK le transfert, ZK l'enregistrement des actifs, les métadonnées, les réclamations d'identification, l'en enregistrement multisigne et les instructions de gouvernance;
+- soutien à la file d'attente des transactions par l'intermédiaire de `PendingTransactionQueue` et `FilePendingTransactionQueue`;
+- adresse de compte et I105 auxiliaires par l'intermédiaire de `AccountAddress` et de `AccountId`
+- Surfaces de signage Ed25519, secp256k1, ML-DSA, BLS, GOST et SM2, avec support de pont natif lorsque cela est nécessaire
+- les constructeurs de charges utiles d'instructions en fiducie natives pour le marché et les fiducieux anonymes
+- Connectez WebSocket, le cadre, la cryptographie, la session, la file d'attente, la répétition et les aides de diagnostic
+- Préparation Kagemusha, remplissage et rachat typés, état d'exploitation, note, paquet de pairs, reçu et modèles de flux QR
+- SoraFS, aides à la disponibilité des données et aux pièces jointes de preuve
 
 ## API Exemples {#api-examples}
 
-Utilisation `IrohaSwift/Sources/IrohaSwift` pour la mise en œuvre publique et
-`IrohaSwift/Tests/IrohaSwiftTests` pour les exemples d'utilisation testés de la même
-révision de la source.
+Utiliser `IrohaSwift/Sources/IrohaSwift` pour la mise en œuvre publique et `IrohaSwift/Tests/IrohaSwiftTests` pour les exemples d'utilisation testés provenant de la même révision de source.
 
 ## Références à la source {#source-references}
 

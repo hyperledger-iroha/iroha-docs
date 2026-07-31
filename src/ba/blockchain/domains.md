@@ -14,14 +14,14 @@ translation_engine: nllb-200-ct2
 domain.dataspace
 ```
 
-Мәҫәлән, `payments.universal` исемдәре `payments` домен эсендә `universal` мәғлүмәт киңлеге.
+Мәҫәлән, `payments.universal` `payments` доменды `universal` мәғлүмәт киңлеге эсендә атаған.
 
 ## Структураһы {#structure}
 
 Теркәлгән `Domain` составында:
 
 - `id`: мәғлүмәт киңлеге буйынса квалификациялы `DomainId`
-- `logo`: факультатив `SoraFS` URI домен логотибы өсөн
+- `logo`: домен логотибы өсөн факультатив `SoraFS` URI
 - `metadata`: үҙаллы төп мәғәнәле метамәғлүмәт
 - `owned_by`: домен хужаһы иҫәбенә, ғәҙәттә уны теркәгән иҫәпкә
 
@@ -29,9 +29,9 @@ domain.dataspace
 
 ## Теркәү {#registration}
 
-Ғәҙәттән тыш домендар булдырыу декларатив псевдонимы булдырыу ағымын ҡуллана. Был SNS ҡуртымға, хужаһы мөмкинлектәрен, цитата һаҡсыһы һәм домен рәтенең бер атом `EnsureAlias` транзакция. `Register::Domain` остается генезис/bootstrap өҫтө, һәм `ledger domain` командование юҡ `register` подкомандующий.
+Ғәҙәти домен булдырыу декларатив ҡушамат ҡоролошо ағымын ҡуллана. Был SNS лизинг килешеүен, хужа мөмкинлектәрен, цитата һаҡсыһын һәм домен рәтен бер атом `EnsureAlias` транзакцияһында тота. `Register::Domain` генез/bootstrap өҫкө йөҙө булып ҡала, ә `ledger domain` командаһының `register` аҫты командаһы юҡ.
 
-Серһеҙ булдырыу `AliasSetupPlanRequestV1` ниәте менән SDK йәки бортҡа инеү хеҙмәте, һуңғараҡ CLI уны тере торошҡа ҡаршы планлаштырығыҙ һәм шул уҡ планығыҙҙы тәҡдим итегеҙ:
+SDK йәки инеү сервисы менән йәшерен булмаған `AliasSetupPlanRequestV1` ниәтен булдырығыҙ, һуңынан CLI уны тере торошҡа ҡаршы планлаштырығыҙ һәм шул уҡ планын тапшырығыҙ:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -45,9 +45,9 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
 ```
 
-Маҡсат билдәләй `payments.universal`, уның һанлы мәғлүмәттәр киңлеге, каноник I105 хужаһы, ҡуртымға алыу срогы һәм ағымдағы сәйәсәт / түләү цитатаһы һаҡсыһы. `POST /v1/aliases/setup/plan`; уның кире ҡайтарылған планы селтәр, власть, дәүләт һәм срок менән бәйләнгән. домен күсереү [`Unregister`](/ba/blockchain/instructions.md#un-register).
+Ниәт `payments.universal`, уның һанлы мәғлүмәттәр киңлеге, каноник I105 хужаһы, ҡуртымға алыу срогы һәм ағымдағы сәйәсәт / түләү цитатаһын һаҡлаусы билдәләнә. Планерҙың һуңғы нөктәһе `POST /v1/aliases/setup/plan`; кире ҡайтарылған планы - сылбыр-, власть-, дәүләт һәм срок менән бәйле. Доменды алып ташлау һаман да [`Unregister`](/ba/blockchain/instructions.md#un-register) ҡулланыла.
 
-Доменды булдырыу йәки алып ташлау өсөн тейешле домен менән идара итеү рөхсәте кәрәк актив ваҡытта validator аҫтында. [`SetKeyValue` һәм `RemoveKeyValue`](/ba/blockchain/instructions.md#setkeyvalue-removekeyvalue) власть был доменды үҙгәртергә рөхсәт алған саҡта.
+Доменды булдырыу йәки алып ташлау өсөн домен менән идара итеүгә тейешле рөхсәт кәрәк. Домен метамәғлүмәттәре [`SetKeyValue` һәм `RemoveKeyValue`](/ba/blockchain/instructions.md#setkeyvalue-removekeyvalue) менән яңыртыла ала, әгәр хакимиәт был доменды үҙгәртергә рөхсәткә эйә булһа.
 
 ## Taira менән һынап ҡарағыҙ. {#try-it-on-taira}
 

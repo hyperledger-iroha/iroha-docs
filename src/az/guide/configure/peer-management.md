@@ -20,7 +20,7 @@ Bank şəraitində hər kəsin boş vaxtlarında qoşulmasına icazə vermək t�
 
 ### Tərəfdaşların qeydiyyata alınması {#registering-peers}
 
-Şəbəkəyə həmyaşıd əlavə etmək üçün əl ilə qeydiyyatdan keçməlisiniz.
+Şəbəkəyə həmyaşıd əlavə etmək üçün əl ilə qeydiyyatdan keçmək lazımdır. Gəlin bu prosesi başa çatdırmaq üçün nə addımlar atılmalı olduğunu müzakirə edək
 
 #### 1. İstifadəçiyə icazə verin. {#_1-grant-the-user-permissions}
 
@@ -46,7 +46,7 @@ Prosesi sadələşdirmək üçün şəbəkə idarəçisindən `config.toml` -nin
 
 #### 3. Təlimatı təqdim edin {#_3-submit-the-instruction}
 
-Tərəfdaşınız işlədikdən sonra, qeydiyyatda olan həmyaşıdlara verilən təlimatı təqdim etməlisiniz.
+Tərəfdaşınız işlədikdən sonra, tərəfdaş təlimatını təqdim etməlisiniz. Tərəfdaşlar əl çəkmə prosesindən keçəcəklər və şəbəkə ilə söhbət etməyə başlayacaqlar.
 
 ::: xəsarət
 
@@ -56,6 +56,6 @@ Tərəfdaş qeydiyyatı təlimatının təqdim edilməsi yeni bir tərəfdaş pr
 
 ### qeydiyyatdan keçməyən yaşıtlar {#unregistering-peers}
 
-Təhlükəsizlik səbəbindən bu proses birmənalıdır. Şəbəkə həmyaşıdları silmək istədiyini bildirir, lakin heç kim niyə onunla danışmırdığını özü bilmir.
+Bəs qeydiyyatdan keçməyən yaşıtlar? Təhlükəsizlik səbəbləri ilə bu proses birmənalıdır. Şəbəkə həmyaşıdını aradan qaldırmaq istədikləri barədə razılığa gəlir, lakin həmyaşıda heç kimin niyə danışmadığı haqqında çox şey bilmir. Ona görə.
 
-Əksər hallarda, bir həmyaşıdın qeydiyyatını ləğv etmək istəyirsinizsə, bunu etmək lazımdır, çünki bu bizanslıların günahıdır.
+Əksər hallarda, bir həmyaşıdın qeydiyyatını ləğv etmək istəyirsinizsə, bunu etmək istəyirsiniz, çünki bu Bizanslı səhvdir. Bu həmyaşıdın "axtarılması" şəbəkədəki zərərli aktyorun həyatını daha da çətinləşdirir.

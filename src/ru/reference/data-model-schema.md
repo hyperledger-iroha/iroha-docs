@@ -8,10 +8,6 @@ translation_engine: nllb-200-ct2
 
 # Схема модели данных {#data-model-schema}
 
-Эта страница создана с `kagami advanced schema` из забитых
-[`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha)
-пересмотр, зафиксированный документооборотом обновления рабочего потока.
-проверяется в этом хранилище, так что нормальная документация не требует
-в) Iroha исходная касса.
+Эта страница создана с `kagami advanced schema` от застрявших [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) пересмотр, записанный в документообороте обновления рабочего потока. Создание документации не требует Iroha исходная касса.
 
 <DataModelSchema />

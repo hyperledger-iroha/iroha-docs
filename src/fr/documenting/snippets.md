@@ -6,43 +6,32 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Snippets de code {#code-snippets}
+# Des extraits de code {#code-snippets}
 
-Les extraits générés gardent des exemples liés au code, à la configuration et aux schémas de
-le Iroha révision qui les a produites.
+Les extraits générés tiennent des exemples liés au code, à la configuration et aux schémas de la révision Iroha qui les a produits.
 
-## Un réconfort Iroha Artéfacts {#refreshing-iroha-artifacts}
+## Artéfacts de rafraîchissement Iroha {#refreshing-iroha-artifacts}
 
-Iroha- les extraits dérivés sont vérifiés afin que les constructions de sites ordinaires ne nécessitent pas
-accès au réseau ou à un référentiel frère.
+Les extraits dérivés de Iroha sont vérifiés dans les constructions de sites ordinaires qui ne nécessitent pas d'accès au réseau ou un référentiel frère.
 
 ```bash
 pnpm refresh:iroha --source /path/to/iroha
 ```
 
-Les enregistrés
-[`etc/refresh-iroha.ts`](https://github.com/hyperledger-iroha/iroha-docs/blob/main/etc/refresh-iroha.ts)
-le flux de travail vérifie la vérification des sources propres par rapport à `provenance/iroha.json`,
-régénère `/src/snippets` et le Torii OpenAPI une photo instantanée et des mises à jour SHA-256
-Les modifications du contenu et de la provenance sont révisées ensemble.
-installation et VitePress Les constructions consomment les fichiers enregistrés sans
-Il vient chercher une branche mutable.
+Les personnes enregistrées [`etc/refresh-iroha.ts`](https://github.com/hyperledger-iroha/iroha-docs/blob/main/etc/refresh-iroha.ts) le flux de travail vérifie la vérification des sources propres par rapport aux `provenance/iroha.json`, régénère `/src/snippets` et le Torii OpenAPI une capture d'écran et des mises à jour SHA-256 Haches. Révisez les changements de contenu et d'origine ensemble. VitePress Les constructions consomment les fichiers enregistrés sans obtenir une branche mutable.
 
-## Comprenant des fragments {#including-snippets}
+## Comprenant les fragments {#including-snippets}
 
-Utilisez le
-[VitePress syntaxe des extraits de code](https://vitepress.dev/guide/markdown#import-code-snippets)
-pour inclure la source générée ou locale:
+Utilisez la syntaxe [VitePress code-snippet](https://vitepress.dev/guide/markdown#import-code-snippets) pour inclure les sources générées ou locales:
 
 ```md
 <<< @/snippets/client.template.toml
 ```
 
-Une région de code nommée peut être incluse en ajoutant son nom de région:
+Une région de code nommée peut être incluse en y ajoutant le nom de la région:
 
 ```md
 <<< @/example_code/lorem.rs#ipsum
 ```
 
-Gardez les exemples écrits à la main petits.
-interfaces, modèles de configuration, schémas générés et sortie des commandes.
+Gardez les exemples écrits à la main petits. préférer des artefacts de source mis à jour pour les interfaces publiques, modèles de configuration, schémas générés et sortie de commandes.

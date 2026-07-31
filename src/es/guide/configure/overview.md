@@ -13,7 +13,7 @@ La configuración Iroha tiene dos capas autorizadas:
 - Configuración local de pares y clientes, almacenada en archivos TOML y leída al iniciar el proceso
 - Configuración en cadena, modificada por transacciones a través de [`SetParameter`](/es/blockchain/instructions.md#setparameter).
 
-Utilice la configuración local para identidad de nodo, direcciones, registro, almacenamiento y claves de firma del cliente.
+Utilice la configuración local para la identidad de nodos, direcciones, registro, almacenamiento y claves de firma del cliente. Utilice la configuración en cadena para los valores que deben ser acordados por la red y reproducidos de forma determinista.
 
 El comportamiento de producción debe provenir de estas capas de configuración. Las variables ambientales pueden ser convenientes para suministrar entradas de prueba a las herramientas locales, pero no son puertas de características de producción y no reemplazan la configuración comprometida.
 

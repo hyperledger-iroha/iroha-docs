@@ -25,7 +25,7 @@ Iroha 3 беренсе тапҡыр сығарылған Hyperledger Iroha Пл�
 
 1. [Iroha 3](/ba/get-started/install-iroha.md) ҡуйыу
 2. [Пуск Iroha 3](/ba/get-started/launch-iroha.md)
-3. [Эшләгеҙ Iroha 3 аша CLI](/ba/get-started/operate-iroha-via-cli.md)
+3. [Iroha 3 аша хәрәкәт итеү CLI ](/ba/get-started/operate-iroha-via-cli.md)
 4. [SORA Nexus мәғлүмәттәр базаһына тоташтырыу](/ba/get-started/sora-nexus-dataspaces.md)
 5. [Штрафлаусы шәхси мәғлүмәти киңлек түләүҙәре](/ba/get-started/private-dataspace-fee-sponsor.md)
 
@@ -36,7 +36,7 @@ Iroha 3 беренсе тапҡыр сығарылған Hyperledger Iroha Пл�
 - [Rust](/ba/guide/tutorials/rust.md)
 - [Python](/ba/guide/tutorials/python.md)
 - [JavaScript / TypeScript](/ba/guide/tutorials/javascript.md)
-- [Kotlin, Android, һәм Java](/ba/guide/tutorials/kotlin-java.md)
+- [Kotlin, Android һәм Java](/ba/guide/tutorials/kotlin-java.md)
 - [Swift һәм iOS](/ba/guide/tutorials/swift.md)
 
 ## Операторҙар тураһында мәғлүмәттәр {#operator-references}

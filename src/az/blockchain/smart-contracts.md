@@ -53,7 +53,7 @@ Bu sübut, üst örtüyü icra edilmiş bayt koduna bağlayır. Pipeline siyasə
 
 - Müqavilələri təyinatlı saxlayın. Müqavilə davranışı yerli divar saatına, host fayl sistemi vəziyyətinə, şəbəkə zənglərinə və ya digər peer-lokal girişlərə bağlı olmamalıdır.
 - Faydalı yükləri kompakt saxlayın. Böyük baytkod əməliyyatın ölçüsünü və blokların yayılması xərclərini artırır.
-- Sadə kitabxana dəyişiklikləri üçün yazılmış təlimatları üstün tuturlar.
+- Sadə kitabxana dəyişiklikləri üçün yazılmış təlimatları üstün tutun. Onları yoxlamaq daha asandır və icra etmək daha ucuz.
 - Müqavilənin təkmilləşdirilməsi və qeydiyyat icazələri yüksək riskli əməliyyat nəzarətləri kimi qəbul edilir.
 
 Həmçinin bax:

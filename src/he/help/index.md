@@ -8,10 +8,8 @@ translation_engine: nllb-200-ct2
 
 # לקבל תמיכה {#receive-support}
 
-מדי פעם, ייתכן שיש לך שאלות על Iroha יש שלושה דרכים כדי ליצור קשר מהיר עם הקהילה שלנו: טלגרם, Discord, GitHub.
+מפעם לפעם, ייתכן שיש לך שאלות על Iroha שרצית לדון בהפרטים עם אחרים. יש שלושה דרכים ליצור קשר במהירות עם הקהילה שלנו: טלגרם, דיסקורד, ו- GitHub.
 
-הקהילה משתמשת [טלגרם](https://t.me/hyperledgeriroha) ו
-[LF Decentralized Trust חילוקי דעות](https://discord.gg/hyperledger) עבור
-תקשורת. `iroha` ערוץ לשאלות על הפרויקט.
+הקהילה משתמשת [טלגרם](https://t.me/hyperledgeriroha) ו [ LF Decentralized Trust Discord](https://discord.gg/hyperledger) לתקשורת. השתמשו בערוץ `iroha` לשאלות פרויקטים.
 
-סוף-סוף, אתה יכול [ליצור GitHub נושא](https://github.com/hyperledger-iroha/iroha/issues/new/choose), אם זו בקשה לעדכן מסמכים, הצעה עבור צוות הליבה, או שגיאה שמצאת.
+לבסוף, אתה יכול [ ליצור בעיה GitHub ](https://github.com/hyperledger-iroha/iroha/issues/new/choose), בין אם זו בקשה לעדכן מסמכים, הצעה עבור הקבוצה המרכזית, או שגיאה שמצאת.

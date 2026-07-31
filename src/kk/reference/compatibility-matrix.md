@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # Үйлестіру матрицасы {#compatibility-matrix}
 
-Қосылмалылық матрицасы SDK ағымдағы сценарийлерді қамту Iroha 3 Документтер жиынтығы. Әдеттегідей, беттің түймеленген кескінді жүктеуі [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) Тексеру.
+Үйлесімділік матрицасы ағымдағы Iroha 3 құжаттары жиынтығына арналған SDK сценарийлердің аралас қамтуын көрсетеді. Әдеттегідей, бетте түймеленген [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) қайталанудан шығарылған топталған кескін жүктеледі.
 
 Матрица мыналардан тұрады:
 

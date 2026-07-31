@@ -14,7 +14,7 @@ translation_engine: nllb-200-ct2
 
 Тәүҙә уларҙы урынлаштырығыҙ:
 
-- [rustup](https://www.rust-lang.org/tools/install), шулай итеп тырнаҡланған `rust-toolchain.toml` ҡорамалдар сылбыры (`1.93.1`) автоматик рәүештә ҡуйыла
+- [rustup](https://www.rust-lang.org/tools/install), шуға күрә ҡуйылған `rust-toolchain.toml` ҡорамалдар сылбыры (`1.93.1`) автомат рәүештә ҡуйыла
 - `git`
 - Docker һәм Docker Compose урындағы күп яҡлы тиҙ старт өсөн.
 

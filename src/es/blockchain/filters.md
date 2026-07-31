@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # Los filtros {#filters}
 
-El filtro de eventos de nivel superior actual es `EventFilterBox`, que puede coincidir con estas familias de eventos:
+Filtra los flujos de eventos y desencadena las condiciones. El filtro actual de eventos de nivel superior es `EventFilterBox`, que puede coincidir con estas familias de eventos:
 
 - `Pipeline`
 - `Data`
@@ -54,7 +54,7 @@ La mayoría de los filtros de concreto también permiten una combinación opcion
 
 ## Filtros de tuberías {#pipeline-filters}
 
-Los filtros de pipeline coinciden con eventos de procesamiento como bloques, transacciones, fusiones y eventos de testigos.
+Los filtros de tubería coinciden con eventos de procesamiento como bloques, transacciones, fusiones y eventos de testigos. Usarlos para suscripciones operativas, paneles de procesamiento de bloques, y los desencadenantes que reaccionan al estado de la tubería en lugar de objetos de datos del libro mayor.
 
 ## Filtros de activación {#trigger-filters}
 

@@ -6,28 +6,21 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# סידור וניהול {#configuration-and-management}
+# הגדרות והניהול {#configuration-and-management}
 
-Iroha הקונפיגורציה יש שתי שכבות סמכותיות:
+הקונפיגורת Iroha יש שתי שכבות סמכותיות:
 
-- **תיקון מקומי של עמיתים ולקוחות**, מאוחסנים TOML קבצים וקריאה ב
-  התחלה של התהליך
-- **קונפיגורת שרשרת**, שינו על ידי עסקאות באמצעות
-  [`SetParameter`](/he/blockchain/instructions.md#setparameter)
+- קונפיגורציה מקומית של עמיתים ולקוחות, שמוחמרת בקבצים TOML וקראת בהתחלה של התהליך
+- תיקון שרשרת, שינה על ידי עסקאות באמצעות [`SetParameter`](/he/blockchain/instructions.md#setparameter)
 
-השתמשו בהקנה מקומית עבור זהות הערך, כתובות
-סימון מפתחות לקלינט. השתמשו בהקנה על שרשרת עבור ערכים שצריך להסכים
-על-ידי הרשת ושיחקו מחדש באופן דטרמיסטי.
+השתמשו בקונפיגירציה מקומית עבור זהות הערך, כתובות, רשום, אחסון ומפתחות חתימה של הלקוח. השתמשו בהקונפיגורציה על שרשרת עבור ערכים אשר חייבים להיות מסכימים על ידי הרשת ולשחק מחדש באופן דeterministic.
 
-התנהגות הייצור חייבת לבוא מכתבי ההסדרים האלה.
-משתנים עשויים להיות נוחים למסור דרישות בדיקות לכלי עבודה מקומיים, אך
-הם אינם שערות תכונות ייצור ואינם מחליפים את ההתחייבויות
-הגדרות.
+התנהגות הייצור חייבת לבוא מכתבי הקונפיגורציה אלה. משתנים סביבתיים עשויים להיות נוחים לספק סיכומים של בדיקות למכשירים מקומיים, אבל הם אינם שערות תכונות ייצור ולא מחליפים את הקונפיגרציה המחויבת.
 
 נקודות הכניסה העיקריות של ההסדרות הן:
 
-- [בראשית](/he/guide/configure/genesis.md)
-- [הגדרת הלקוח](/he/guide/configure/client-configuration.md)
-- [מפתחות לשימוש ברשת](/he/guide/configure/keys-for-network-deployment.md)
-- [רץ על מתכת עירומה](/he/guide/advanced/running-iroha-on-bare-metal.md)
-- [דף קונפיגורציה של עמיתים](/he/reference/peer-config/index.md)
+- [בראשית ](/he/guide/configure/genesis.md)
+- [קונפיגורת הלקוח](/he/guide/configure/client-configuration.md)
+- [מפתחות לשימוש ברשת ](/he/guide/configure/keys-for-network-deployment.md)
+- [רץ על מתכת עירומה ](/he/guide/advanced/running-iroha-on-bare-metal.md)
+- [דוגמה להגדרת עמיתים](/he/reference/peer-config/index.md)

@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # Melhores Práticas {#best-practices}
 
-Esta secção recolhe orientações orientadas para a produção de aplicações e redes Iroha.
+Esta secção recolhe orientações orientadas para a produção para aplicações e redes Iroha. É organizado pela decisão que você precisa tomar, não pelo recurso que acontece para implementá-lo.
 
 Usá-lo como uma lista de verificação antes de um ensaio compartilhado da rede de testes, um lançamento de produção ou um grande lançamento do cliente.
 

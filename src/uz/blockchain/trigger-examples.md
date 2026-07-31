@@ -8,25 +8,20 @@ translation_engine: nllb-200-ct2
 
 # Oʻzgarishlarni qoʻzgʻatish {#event-trigger-example}
 
-Ushbu misolda kanonik domensiz hisobdan foydalaniladi IDs va rejalashtirilgan aktiv
-ta'riflar Iroha 3 ma'lumotlar modeli.
+Ushbu misol Iroha 3 ma'lumotlar modelidagi kanonik domensiz hisob IDs va ko'zda tutilgan aktivlarni aniqlashdan foydalanadi.
 
-Bir tarmoq quyidagilarni oʻz ichiga oladi:
+Aytaylik , tarmoqda:
 
 - Alisaning kaliti tomonidan boshqariladigan kanonik hisob
-- Mad Hatterning kaliti bilan boshqariladigan kanonik hisob
-- aktivni belgilash `tea` koʻrsatkich `wonderland.universal`
-- har bir hisobda saqlanadigan ushbu aktivning balansini
+- Mad Hatterning kaliti bilan nazorat qilinadigan kanonik hisob
+- `wonderland.universal` bo'yicha `tea` deb taxmin qilingan aktivni belgilash
+- har bir hisobda saqlanadigan ushbu aktivning balanslari
 
-Maqsad - Alicaning choy balansini kuzatadigan triggerni qayd etish va
-Mad Hatter hisobidan ma'lumotlar bilan bog'liq voqea sodir bo'lganda o'tkazib yuboradi
-chiqarib yuborilgan.
+Maqsad Alice-ning choy balansini kuzatib boradigan triggerni ro'yxatdan o'tkazish va to'g'rilash ma'lumotlari bo'lganda Mad Hatter hisobidan transferni yuborishdir.
 
 ## 1. Hisob-kitoblar va aktivlarni tayyorlash {#_1-prepare-accounts-and-assets}
 
-Birinchi navbatda ishtirokchi hisobvaraqlarni va aktivni belgilashni qayd qiling.
-joriy Iroha, hisob IDs hisobda nazoratchilardan kelib chiqqan bo'lsa,
-domenlardan foydalanish `domain.dataspace` shakli:
+Birinchi navbatda ishtirokchi hisobvaraqlarni va aktivni belgilashni qayd qiling. joriy Iroha da IDs hisob raqami hisob boshqaruvchilari tomonidan beriladi, prognoz qilingan domenlar esa `domain.dataspace` shaklidan foydalanadi:
 
 ```text
 domain: wonderland.universal
@@ -34,23 +29,17 @@ asset definition projection: tea in wonderland.universal
 holder accounts: AccountId(controller=alice_key), AccountId(controller=mad_hatter_key)
 ```
 
-Asset ta'rif hali ham kanonik ko'rinmas manzilga ega.
-ro'yxatdan o'tganidan so'ng manzil va uni qo'zg'atish harakatida ishlating.
+Asset ta'rifida hali ham kanonik ko'rinmas manzil mavjud. Bu manzilni ro'yxatdan o'tgandan so'ng saqlash yoki so'rovlash va uni qo'zg'atish harakatida ishlating.
 
-## 2. Ishtirokchi hokimiyatini tanlang {#_2-choose-the-trigger-authority}
+## 2. Ishtirokchi hokimiyatini tanlang. {#_2-choose-the-trigger-authority}
 
-Agar iloji bo'lsa, triggerning texnik hisobini maxsus hisob raqamiga o'rnating.
-maxsus hisobda trigger uchun qaysi ruxsatnomalar kerakligi aniq
-bajarilishi va o'chirgichni operatorning shaxsiy imzosi bilan bog'lashdan qochadi
-kalit.
+Agar iloji bo'lsa, triggerning texnik hisobini maxsus hisobga o'rnating. O'ziga xos hisobda triggerni bajarish uchun qaysi ruxsatnomalar kerakligi aniqlanadi va triggerni operatorning shaxsiy imzolash kaliti bilan bog'lashni oldini oladi.
 
-Texnik hisob qaydnomasi allaqachon mavjud bo'lishi kerak va u taqdim etish uchun ruxsat olishlari kerak
-qo'zg'atuvchining bajarilishi mumkin bo'lgan ko'rsatmalari.
+Texnik hisobvaraq allaqachon mavjud bo'lishi va qo'zg'atuvchi ishga tushirish vositasida ko'rsatmalarni taqdim etish uchun ruxsat olishlari kerak.
 
-## 3. Ijro qilinadigan qismni belgilash {#_3-define-the-executable}
+## 3. Ijro qilinadigan elementni belgilash {#_3-define-the-executable}
 
-Amalga oshirilishi mumkin boʻlgan dastur oʻtkazilayotganda trigger tomonidan yuboriladigan koʻrsatmalarning ketma-ketligi
-Filter moslamalari. Ushbu misol uchun u bitta o'tishni o'z ichiga oladi:
+Amalga oshirilishi mumkin bo'lgan ish o'tkazuvchisi voqea filtrini moslashtirganida yuboradigan ko'rsatma tartibidir. Ushbu misol uchun u bitta uzatishni o'z ichiga oladi:
 
 ```text
 Transfer(
@@ -60,13 +49,11 @@ Transfer(
 )
 ```
 
-Foydalanish SDK so'nggi muomala faydali yuk uchun hozirgi bosilgan qurilishchilar.
-qattiq kodlangan eski matn IDs qo'zg'atuvchi kodda; tahlil yoki so'rov kanonik IDs
-ijro etilishini qurishdan oldin.
+SDK ning so'nggi o'rnatilgan quruvchilaridan oxirgi operatsiya fayzli yukini ishlating. Ishga tushirish kodida eski matnli IDs ni qattiq kodlashdan qoching; ijro etilishini qurishdan oldin tahlil yoki so'rov kanonik IDs dan qoching.
 
-## 4. O'zgarish filtrini belgilash {#_4-define-the-event-filter}
+## 4. O'yin filtrini aniqlang. {#_4-define-the-event-filter}
 
-O'zingiz qiziqtirgan ob'ektga hodisalarni torlaydigan ma'lumotlar bo'yicha filtrdan foydalaning:
+Ma'lumotlar hodisalari filtridan foydalanib , hodisalarni siz qiziqtirgan ob'ektga qisqartirasiz:
 
 ```text
 EventFilterBox::Data(
@@ -75,34 +62,28 @@ EventFilterBox::Data(
 )
 ```
 
-Filterlarni amaliy bo'lgancha aniq saqlang. `AcceptAll` filtr uchun foydali
-debugging, lekin u har bir moslashish hodisa qo'zg'atish xarajatini to'laydi
-baholash.
+Filterlarni amaliy bo'lganidek aniq saqlang. `AcceptAll` filtrlari xatolar uchun foydali, ammo u har bir moslashish hodisasi trigger baholash xarajatini to'laydi.
 
-## 5. Ishtirokchini yozib oling {#_5-register-the-trigger}
+## 5. Ishtirokchini ro'yxatga oling {#_5-register-the-trigger}
 
-Ishtirokchini quyidagi bilan qayd qiling:
+Ishtirokchini quyidagicha yozib oling:
 
-- o'rmonxona `TriggerId`
-- bajarilishi mumkin bo'lgan ko'rsatmalarning tartibini
+- o'simlik `TriggerId`
+- bajarilishi mumkin bo'lgan ko'rsatmalarning ketma-ketligi
 - `Repeats::Indefinitely` yoki `Repeats::Exactly(n)`
 - texnik hisob raqami
 - hodisa filtrini
-- ko'rsatkichlar
+- opsional metadatalar
 
-Trigger ro'yxatining o'zi normal bir operatsiya, shuning uchun ro'yxatga olish
-hisobda triggerlarni ro'yxatdan o'tkazish uchun ruxsat kerak.
-qo'zg'atuvchi tomonidan talab etiladigan ruxsatnomalar.
+Triggerni ro'yxatga olish o'zi normal operatsiya, shuning uchun ro'yxatdan o'tkazuvchi hisobvaraqqa triggerlarni qayd etish uchun ruxsat kerak. Texnik hisobvaraq triggerning bajarilishi uchun talab etiladigan ruxsatlarga ega.
 
-## Ijro buyruqi {#execution-order}
+## Ijro buyruqlari {#execution-order}
 
-Blokning bajarilishi:
+Bir blok bajarilganda:
 
-1. Oddiy tranzaksiya yo'l-yo'riqlari birinchi o'rinni egallaydi.
-2. Ushbu ko'rsatmalar bilan hosil bo'lgan ma'lumotlar yig'iladi.
-3. Filterlari ushbu tadbirlarga mos bo'lgan tetiklar rejalashtirilgan.
-4. Trigger tomonidan ishlab chiqariladigan ta'sirlar blokni amalga oshirish borasidagi quvurda
-   cheklanmagan rekursiv qo'zg'atuvchini amalga oshirish imkonini beradi.
+1. Oddiy operatsiya yo'l-yo'riqlari birinchi o'rinni egallaydi.
+2. Ushbu ko'rsatmalar bilan hosil bo'lgan voqealar ma'lumotlari to'planadi.
+3. Filterlari o'sha tadbirlarga mos bo'lgan triggerlar rejalashtirilgan.
+4. Trigger tomonidan ishlab chiqariladigan ta'sirlar blokni ijro etish to'g'risidagi tizimda cheksiz rekursiv triggerni amalga oshirishga yo'l qo'ymagan holda hal etiladi.
 
-Agar qoʻzgʻatgich ishlatsa `Repeats::Exactly(n)`, hisobda yangi qoʻzgʻotish
-bo'lsa, o'sha xatti-harakatni yana ko'rish kerak.
+Agar qo'zg'atuvchidan `Repeats::Exactly(n)` foydalangan bo'lsa, hisob-kitob tugaganda va xuddi shunday xulq-atvor kerak bo'lganda yangi qo'ng'iroqni ro'yxatga oling.

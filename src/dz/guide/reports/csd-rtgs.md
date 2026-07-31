@@ -8,4 +8,4 @@ translation_engine: nllb-200-ct2
 
 # CSD/RTGS མཐུད་སྦྲེལ་ཚུ་ མཁས་མཆོག་གི་བདེན་ཁུངས་  {#csd-rtgs-linkages-proof-of-concept}
 
-འ་ནི་ཡིག་ཆའི་ནང་ ང་བཅས་ CSD/RTGS འབྲེལ་མཐུད་འབད་མི་ཚུ་ PoC ལག་ལེན་འཐབ་ཐོག་ལས་ Iroha གསལ་སྟོན་འབད་ནི་ཨིན། ཨ་ནི་འདི་ Asian Development Bankདང་ Fujitsu མཉམ་འབྲེལ་ཐོག་ལས་ གྲུབ་འབྲས་ཐོན་ཡོདཔ་ཨིན། བཅའ་མར་གཏོགས་མི་གཞན་ཚུ་གིས་ R3 Corda, Hyperledger Cactus (Cacti), Hyperledger Fabricདང་ གཞན་ཡང་ ཡོངས་གྲགས་ཅན་གྱི་ blockchain སེལ་ཐབས་ལམ་ཚུ་ ལག་ལེན་འཐབ་ཡོདཔ་ཨིན། 
+འ་ནི་ཡིག་ཆའི་ནང་ ང་བཅས་ CSD/RTGS འབྲེལ་མཐུད་འབད་མི་ཚུ་ PoC ལག་ལེན་འཐབ་ཐོག་ལས་ Iroha གསལ་སྟོན་འབད་ནི་ཨིན། ཨ་ནི་འདི་ Asian Development Bankདང་ Fujitsu མཉམ་འབྲེལ་ཐོག་ལས་ གྲུབ་འབྲས་ཐོན་ཡོདཔ་ཨིན། བཅའ་མར་གཏོགས་མི་གཞན་ཚུ་གིས་ R3 Corda, Hyperledger Cactus (Cacti), Hyperledger Fabricདང་ གཞན་ཡང་ ཡོངས་གྲགས་ཅན་གྱི་ blockchain སེལ་ཐབས་ལམ་ཚུ་ ལག་ལེན་འཐབ་ཡོདཔ་ཨིན།

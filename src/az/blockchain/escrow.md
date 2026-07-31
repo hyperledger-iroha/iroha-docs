@@ -20,7 +20,7 @@ Bazarda ödəniş üçün yerli vəsiqədən istifadə edin, Aitai üslubunda z�
 |`AssetEscrowRecord` |Şəffaf rəqəmsal aktiv vəsiqəsi və ya qapanma qeydləri. |
 |`AnonymousAssetEscrowRecord` |Mühafizə olunmuş depozit qeydləri ləğv edənlər, öhdəliklər və sübut əlavələri ilə dəstəklənir. |
 |Qoruyucu hesabı |Zəngindən ID, əmanətdən ID və aktivlərin təyin edilməsindən əldə edilmiş müəyyənləşdirmə protokolunun hesabı. |
-|Əldə edilən sübutlar |Fakturalar, hökmlər, mesajlar, saxlama manifestləri və ya digər zəncirdən kənarda olan sübutların həcmləri.|
+|Əldə edilən sübutlar |Fakturalar, hökmlər, mesajlar, saxlama manifestləri və ya digər zəncirdən kənar sübutların həşəsi. Güclü sübut yükünün özü vəsiqə sənədində saxlanılmır. |
 
 Şəffaf qeydlərdə satıcı, seçimli alıcı, aktivin təyinatı, ümumi məbləği, saxlama hesabı, həyat dövrü statusu, davranış növü, qalan məbləğ, seçimli buraxılış səlahiyyəti, seçməli müddətin bitməsi vaxt möhürü, sübutlar hashləri, zaman möhürləri və seçimli həll detalları yer alır.
 
@@ -53,7 +53,7 @@ stateDiagram-v2
 |`OpenEscrowDispute` |Satıcı və ya qəbul edilmiş alıcı |`Accepted` və ya `PaymentSent` -ni `Disputed` -yə köçür və sübut hashlərini əlavə edir. |
 |`ResolveEscrowDispute` |`CanResolveEscrowDispute` hesabı|`Disputed` -dən `Resolved` -ə köçür və məbləği alıcı ilə satıcı arasında bölüşür. |
 
-Mübahisələrin həlli məbləği mənfi olmayan və `buyer_amount + seller_amount` əmanət məbləğinə bərabər olmalıdır.
+Mübahisələrin həlli məbləğləri mənfi olmayan və `buyer_amount + seller_amount` depozit məbləğinin bərabər olması lazımdır. Sıfır dəyərli ayaqlara icazə verilir, lakin bütün bölüşmə qapalı balansı hesab etməlidir.
 
 ### Rust Misal {#rust-example}
 
@@ -486,4 +486,4 @@ Status səhifələri, uyğunlaşdırma işləri və dəstək vasitələri üçü
 - Böyük fakturaları, söhbət qeydlərini, hökmləri və ya audit qruplarını bank hesabının xaricində saxlayın və onların hashlərini sübut olaraq əlavə edin.
 - Ərizələrdə sabit `EscrowId` mənşəliyi istifadə edin ki, təkrar cəhdlər eyni təklif üçün ikili əmanətləri yarada bilməz.
 - `CanResolveEscrowDispute` yalnız mübahisə prosesini idarə edən hesablara və ya rollara verilir.
-- Iroha saxlama və həyat dövrü keçidlərini qeyd edir; o, fiat və ya xarici ödəniş yollarını özbaşına yoxlamır.
+- Ərizə siyasəti kimi zəncirdən kənar ödənişlərin yoxlanılmasına baxın. Iroha saxlama və həyat dövrü keçidlərini qeyd edir; o, fiat və ya xarici ödəniş yollarını təkbaşına yoxlamır.

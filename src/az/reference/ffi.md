@@ -56,7 +56,7 @@ A Rust növü güclü birinə çevrilmişdir `repr(C)` növü keçə bilən FFI 
 
 ::: xəbərdarlıq
 
-Qeyd edək ki, əks dönüşüm səhvə yol aça bilər və qeyri-müəyyən davranışlara səbəb ola bilər.
+Qeyd edək ki, əks dönüşüm səhvə yol aça bilər və müəyyən edilməmiş davranışlara səbəb ola bilər. Ən açıq səhvlərdən qaçınmaq üçün əlimizdən gələni etsək də, proqramın düzgün olduğundan əmin olmalısınız.
 
 :::
 

@@ -6,10 +6,9 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Работать Iroha 3 через CLI {#operate-iroha-3-via-cli}
+# Управление Iroha 3 через CLI {#operate-iroha-3-via-cli}
 
-Сборник `iroha` бинарный - клиент командной строки для Iroha 3. Используйте его для запроса
-отчетность, представление транзакций и проверка конечных точек оператора.
+Бинарный `iroha` - клиент командной строки для Iroha 3. Используйте его для запроса состояния бухгалтерского учета, представления транзакций и проверки конечных точек оператора.
 
 ## 1. Предварительные условия {#_1-prerequisites}
 
@@ -17,14 +16,13 @@ translation_engine: nllb-200-ct2
 
 - [Запуск Iroha 3](./launch-iroha.md)
 
-Ниже приведенные примеры предполагают создаваемую конфигурацию клиента из локальной сети
-создано в [Запуск Iroha 3](./launch-iroha.md):
+Ниже приведенные примеры предполагают создаваемую конфигурацию клиента из локальной сети, созданной в [Launch Iroha 3](./launch-iroha.md):
 
 ```bash
 ./localnet/client.toml
 ```
 
-## 2. Основные CLI Настройка {#_2-basic-cli-setup}
+## Основная установка CLI {#_2-basic-cli-setup}
 
 Покажите помощь высшего уровня:
 
@@ -32,64 +30,55 @@ translation_engine: nllb-200-ct2
 cargo run --bin iroha -- --config ./localnet/client.toml --help
 ```
 
-Сборник CLI организуется в следующие командные группы высшего уровня:
+CLI организуется в следующие командные группы высшего уровня:
 
-- `account` для счетноориентированных скортиков
+- `account` для счетов-ориентированных коротких путей
 - `tx` для помощников на уровне транзакций
-- `ledger` для читающих и пишущих
+- `ledger` для учетной записи читает и пишет
 - `ops` для диагностики оператора
-- `app` для приложения API помощники
+- `app` для помощников приложения API
 - `contract` для использования контрактов и вызовов
-- `tools` для диагностики и разработчиков
-- `taira` для Taira и Nexus- ориентированные рабочие процессы
+- `tools` для диагностики и разработчиков коммунальных услуг
+- `taira` для рабочих потоков, ориентированных на Taira и Nexus
 
-Сборник `ledger` Группа также содержит помощников для конкретных доменов транзакций, таких как
-`ledger transaction`.
+Группа `ledger` также содержит помощников по транзакциям, специфическим для доменов, таких как `ledger transaction`.
 
-Использование `--output-format text` для человекочитаемой мощности оператора и `--machine`
-для строгого режима автоматизации.
+Используйте `--output-format text` для выхода оператора, который читается человеком, и `--machine` для строгого режима автоматизации.
 
-## 3. Попробуйте рассказать о людях Taira Тестная сеть {#_3-try-the-public-taira-testnet}
+## Попробуйте публичную Taira тестовую сеть. {#_3-try-the-public-taira-testnet}
 
-Ты можешь попробовать только читать. Taira проверки перед запуском локального сверстника или созданием
-Эти команды используют общественное Torii JSON маршруты и не тратить тестнет
-XOR.
+Вы можете попробовать проверку только для чтения Taira, прежде чем запустить локальный пир или создать подписитель. Эти команды используют общедоступные маршруты Torii JSON и не расходуют тестнет XOR.
 
-Проверка Taira здоровье:
+Проверка состояния здоровья Taira:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 ```
 
-Перечень общедоступных доменов в `universal` пространство данных:
+Перечислить публичные домены в пространстве данных `universal`:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=10' \
   | jq -r '.items[].id'
 ```
 
-Перечислить несколько определений активов и их текущее предложение:
+Перечислить некоторые определения активов и их текущее предложение:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=10' \
   | jq -r '.items[] | [.id, .name, .mintable, .total_quantity] | @tsv'
 ```
 
-Если у вас есть тока `iroha` бинарный, запустить Taira помощник диагностики:
+Если у вас есть текущий `iroha` бинарный, запустите помощник диагностики Taira:
 
 ```bash
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-Создать `taira.client.toml` только когда вы готовы испытать подписанные команды.
-Посмотрите. [Подключить к SORA Nexus Данные](/ru/get-started/sora-nexus-dataspaces.md)
-для конфигурации, крана и канарийского потока.
-Taira до тех пор, пока счет не будет финансироваться с помощью актива по оплате крана.
+Создать `taira.client.toml` только тогда, когда вы готовы протестировать подписанные команды. Смотрите [Соединитесь с SORA Nexus Dataspaces](/ru/get-started/sora-nexus-dataspaces.md) для конфигурации, крана и канарного потока. Не запускайте команды написания против Taira до тех пор, пока учетная запись не будет финансирована активами платы на кране.
 
-За любые платежи Taira CLI Например, сохранить помощник крана от
-[Получить тестнет XOR на Taira](/ru/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)
-как `taira_faucet_claim.py`, Затем претензионная тест-нетка XOR Во-первых:
+Для любого примера с оплатой Taira CLI сохранить помощник крана из [Получайте Testnet XOR на Taira](/ru/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) как `taira_faucet_claim.py`, а затем сначала претендуйте на testnet XOR:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
@@ -103,8 +92,7 @@ iroha --config ./taira.client.toml ledger asset get \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-Если трубка или маршрут претензии возвращается `502`, Подождите и попробуйте еще раз.
-проблема общей доступности тестовой сети, а не сигнал для регенерации ключей от учетной записи.
+Если головоломка крана или маршрут претензии возвращается `502`, подождите и попробуйте снова. Это проблема общедоступности тестовой сети, а не сигнал для регенерации ключей от учетной записи.
 
 После того, как баланс будет виден, прикрепите метаданные об активе сбора к записи:
 
@@ -118,16 +106,13 @@ iroha --config ./taira.client.toml \
 
 ## 4. Основные команды Ledger {#_4-basic-ledger-commands}
 
-Список всех доменов:
+Перечислить все домены:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 ```
 
-Обычное создание домена использует декларативный псевдоним планировщик; `ledger
-domain` команды нет `register` Подготовить секретно-свободный
-`AliasSetupPlanRequestV1` намерение `docs.universal` с вашим SDK или
-сервис бортового обслуживания, затем планировать и применять его:
+Обычное создание доменов использует декларирующий псевдоним планировщик; команда `ledger domain` не имеет подкоманду `register`. Подготовить секретно-свободный `AliasSetupPlanRequestV1` намерение для `docs.universal` с помощью вашего SDK или сервиса набора, затем спланировать и применить его:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml \
@@ -139,10 +124,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml \
   app alias setup apply --plan-file ./docs-domain.plan.json
 ```
 
-Цель зашиты пространство данных ID, канонический счет владельца, срок аренды и
-Планер проверяет состояние и возвращает точный
-атомная `EnsureAlias` Не копируйте вручную защитные значения от другого
-Сеть.
+Цель записывает пространство данных ID, канонический аккаунт владельца, срок аренды и текущий котирующий охранник. Планировщик проверяет состояние ожидания и возвращает точный атомный план `EnsureAlias` для представления. Не копируйте вручную значения охраны из другой сети.
 
 Отправить простую транзакцию:
 
@@ -171,13 +153,13 @@ cargo run --bin iroha -- --config ./localnet/client.toml --output-format text op
 cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi phases
 ```
 
-Доступность, коллектор, RBC задержка, и VRF мгновенный снимок:
+Доступность, коллектор, запас RBC и мгновенный снимок VRF:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi telemetry
 ```
 
-Параметры консенсуса на цепочке:
+Параметры консенсуса в цепочке:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ops sumeragi params
@@ -186,11 +168,11 @@ cargo run --bin iroha -- --config ./localnet/client.toml ops sumeragi params
 ## 6. Куда идти дальше? {#_6-where-to-go-next}
 
 - [SDK учебные пособия](/ru/guide/tutorials/)
-- [Torii конечные точки](/ru/reference/torii-endpoints.md)
-- [Работа с Iroha двойные](/ru/reference/binaries.md)
+- [конечные точки Torii](/ru/reference/torii-endpoints.md)
+- [Работа с бинарными системами Iroha](/ru/reference/binaries.md)
 - [CLI README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_cli/README.md)
 
-Чтобы восстановить полный снимок помощи Markdown из источника, запустите:
+Чтобы восстановить полный снимок помощи Markdown из исходной кассы, запустите:
 
 ```bash
 cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/CommandLineHelp.md

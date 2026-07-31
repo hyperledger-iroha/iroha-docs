@@ -53,4 +53,4 @@ Los eventos temporales se emiten cuando la vista del estado mundial está lista 
 
 ## Eventos de ejecución desencadenante {#trigger-execution-events}
 
-Los eventos de ejecución del gatillo se emiten cuando se ejecuta la instrucción [`ExecuteTrigger`](./instructions.md#executetrigger).
+Los eventos de ejecución del desencadenante se emiten cuando se ejecuta la instrucción [`ExecuteTrigger`](./instructions.md#executetrigger). Los eventos de terminación del gatillo se emitirán después de que finalice una acción del gatillo.

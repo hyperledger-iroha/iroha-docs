@@ -52,7 +52,7 @@ Se você nunca trabalhou com multi-hash antes, é natural supor que o lado direi
 
 Também é natural supor que chamar `PrivateKey::try_from_str` no literal de cadeia produziria apenas a chave correta. Então, se você tiver o número de bits na chave errado, por exemplo, 32 bytes vs 64, isso geraria uma mensagem de erro.
 
-Infelizmente, as mensagens de erro não ajudam a desviar este tipo particular de falha.
+Ambas as suposições são erradas. Infelizmente, as mensagens de erro não ajudam a resolver este tipo particular de falha.
 
 Como corrigir: usar `hex_literal`. Isto também transformará uma feio cadeia de caracteres em uma pequena tabela agradável de números obviamente hexadecimais.
 

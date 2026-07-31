@@ -27,7 +27,7 @@ Seguir e adotar as diretrizes deste tópico é um passo necessário para alcanç
 
 - Use software confiável. O software que é enviado através de construções binárias reprodutíveis, e que você constrói a partir da fonte, é o mais confiável. Software proprietário ou open source que não foi auditado é um risco potencial que deve ser levado a sério.
 
-- Nunca deixe aparelhos portáteis com dados sensíveis sem supervisão.
+- Nunca deixe os dispositivos portáteis com dados sensíveis sem vigilância. Uma fração de segundo é o suficiente para roubar o teu dispositivo.
 
 - Verificar as assinaturas nos pacotes binários. Isto não é muito diferente da criptografia de chave pública usada dentro Iroha.
 
@@ -70,7 +70,7 @@ Considere as seguintes medidas para aumentar a segurança da sua navegação:
 
 - Atualize seu navegador para a versão mais recente sempre que possível. As atualizações geralmente incluem patches de segurança críticos que resolvem vulnerabilidades.
 
-- Tenha cuidado com as extensões de navegador que você instala. Use apenas extensões conhecidas e confiáveis de fontes respeitadas.
+- Tenha cuidado com as extensões de navegador que você instala. Use apenas extensões bem conhecidas e confiáveis de fontes respeitáveis. As extensões podem comprometer os seus dados e privacidade.
 
 - Criar perfis de navegador separados para várias tarefas. Use um perfil para navegação diária e outro para atividades que envolvem alta segurança e dados sensíveis. Desta forma, as extensões instaladas no perfil para navegação diária não podem acessar os dados sensíveis do seguro.
 
@@ -80,7 +80,7 @@ Considere as seguintes medidas para aumentar a segurança da sua navegação:
 
 ## Plano de recuperação {#recovery-plan}
 
-Em caso de emergência, como a perda de uma chave ou uma violação da segurança, um plano de recuperação bem estruturado e preparado antecipadamente é uma salvação essencial.
+Em caso de emergência, como a perda de uma chave ou a ocorrência de violação da segurança, Um plano de recuperação bem estruturado e preparado com antecedência é uma salva-vidas essencial. Criar um conjunto claro de medidas a serem seguidas pode ajudar a mitigar os danos potenciais e restaurar prontamente a segurança.
 
 As organizações devem ter em conta os seguintes aspectos fundamentais ao elaborar o seu plano de recuperação:
 
@@ -90,7 +90,7 @@ As organizações devem ter em conta os seguintes aspectos fundamentais ao elabo
 
 - Se você usar chaves de hardware (por exemplo, [YubiKey](https://www.yubico.com/products/) ou [SoloKeys Solo ](https://solokeys.com/collections/all)) como medida de segurança, considere adotar uma estratégia de redundancia. Mantenha duas chaves: uma para uso diário e outra armazenada em um local seguro. Esta precaução garante o acesso, mesmo que a chave primária seja comprometida ou perdida.
 
-- Quando se relatam violações ou vazamentos de segurança, reage imediatamente substituindo ou desativando as chaves e senhas afetadas.
+- Quando se relatarem violações ou vazamentos de segurança, reage imediatamente substituindo ou desativando as chaves e senhas afectadas. Esta resposta proativa reduz ao mínimo os riscos e danos potenciais.
 
 - Revisar e atualizar periodicamente o seu plano de recuperação, garantindo que o plano permaneça relevante e eficaz à medida que a sua paisagem de segurança evolui.
 

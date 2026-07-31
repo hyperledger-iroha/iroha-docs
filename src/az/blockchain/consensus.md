@@ -43,7 +43,7 @@ Seçki təsdiqçilərinin sayı `n` Bizans səhv büdcəsini müəyyənləşdiri
 
 Kollektorlar bir fayl optimallaşdırmasıdır. Hər təsdiqləyici hər səsini digər təsdiqləyicilərə göndərmək əvəzinə Sumeragi hündürlük üçün bir və ya daha çox toplayıcı seçə bilər. Toplayıcılar səsləri toplayırlar, quorum irəliləyişini dərc edirlər və ikiqat səs trafikinin miqdarını azaldırlar. Fəaliyyətli kollektor parametrləri `GET /v1/sumeragi/collectors` vasitəsilə aşkar edilir; CLI'in `ops sumeragi telemetry` sürətli görüntüsü mövcud kollektor sayını bildirir.
 
-Müşahidəçi həmyaşıdları hədəfləndirilmiş blokları sinxronlaşdıra bilərlər, lakin onlar təklif etmirlər, səs vermirlər, səs toplamırlar və ya komitə quorumuna hesablamazlar.
+Müşahidəçi həmyaşıdları həqiqi blokları sinxronizasiya edə bilərlər, lakin komitə quorumuna təklif etmirlər, səs vermirlər, səs toplamırlar və ya saymırlar. Bir yerləşdirmə üçün yerli sorğu qabiliyyətinə, indeksləşməyə, monitorinqə ehtiyac duyulduqda müşahidəçilərdən istifadə edin. və ya səs təsdiqçilərinin sayını artırmadan regional blok replikasiyası.
 
 ### Dəyişikliklər və bərpa görüntüsünə baxın {#view-changes-and-recovery}
 

@@ -57,7 +57,7 @@ Müştəri və CLI konfiqurasiyaları Torii son nöqtəsinə, VPN vasitəsilə v
 torii_url = "http://10.20.0.11:8080"
 ```
 
-Əgər Torii VPN-dən kənarda mövcud olmalıdırsa, onu TLS -ni təsdiqləmək, tarif məhdudlaşdırmaq və qeydiyyatdan keçirməyi təmin edən bir geri proxy və ya yük balanseri arxasına qoyun.
+Əgər Torii VPN-nin xaricində mövcud olmalıdırsa, onu TLS təmin edən əks proxy və ya yük balansçusu arxasında qoyun; təsdiqləmə, dərəcə məhdudiyyəti və qeydə alınma. Xüsusi peer-to-peer portlarını və ya idarəetmə son nöqtələrini birbaşa ictimai internetə çıxarmaqdan çəkinin.
 
 ## Firewall Qaydaları {#firewall-rules}
 

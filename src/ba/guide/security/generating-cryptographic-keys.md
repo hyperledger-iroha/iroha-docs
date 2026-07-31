@@ -52,13 +52,13 @@ cargo run --bin kagami -- keys --algorithm ed25519 --seed "dev-alice" --json
 
 ## BLS Иреклелек иҫбатлау {#bls-proofs-of-possession}
 
-НПОС һәм Nexus таныҡлыҡ биреүсе профилдәр талап итә BLS раҫлау сымдары һәм PoPs:
+NPoS һәм Nexus валидатор профилдәре өсөн BLS валидаторлар асҡыстары һәм PoPs кәрәк:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
 ```
 
-Ҡоролтай JSON үҙ эсенә ала `pop_hex` ҡасан `--pop` ҡулланыла. Булдырылған топология менән был ҡиммәтте файҙаланығыҙ йәки `trusted_peers_pop` Профиль буйынса талап ителгән яҙмалар.
+JSON үҙ эсенә `pop_hex` индерә, әгәр `--pop` ҡулланылған. Был ҡиммәтте генерацияланған топология йәки `trusted_peers_pop` профиль буйынса талап ителгән яҙмалар менән ҡулланығыҙ.
 
 ## Сығарылыш форматтары {#output-formats}
 

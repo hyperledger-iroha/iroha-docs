@@ -8,11 +8,9 @@ translation_engine: nllb-200-ct2
 
 # የደንበኛው ውቅር {#client-configuration}
 
-Iroha CLI እና SDK ደንበኞች ይጠቀማሉ TOML ማቀናበሪያው
-የአሁኑ ነባሪ `defaults/client.toml`; የተፈጠሩ አካባቢያዊ አውታረ መረቦች ደግሞ አንድ ይጻፉ
-ማመሳሰል `client.toml` ወደ ውፅዓት ማውጫዎቻቸው።
+Iroha CLI እና SDK ደንበኞች የ TOML ውቅር ይጠቀማሉ. የመረጃ ቋቱ የአሁኑን ነባሪ በ `defaults/client.toml` ይላካል; የተፈጠሩ አካባቢያዊ አውታረ መረቦችም ወደ የውጤት ማውጫዎቻቸው ውስጥ የሚዛመድ `client.toml` ይጽፋሉ.
 
-::: details የደንበኛ ውቅር አብነት
+::: details የደንበኛው ውቅር አብነት
 
 <<< @/snippets/client.template.toml
 
@@ -20,8 +18,7 @@ Iroha CLI እና SDK ደንበኞች ይጠቀማሉ TOML ማቀናበሪያው
 
 ## ዋና መስኮች {#core-fields}
 
-ቢያንስ አንድ የደንበኛ ውቅር ሰንሰለት ይለያል, Torii የመጨረሻ ነጥብ እና
-የፊርማ ሂሳብ
+ቢያንስ የደንበኛው ውቅር ሰንሰለት ፣ Torii መጨረሻ ነጥብ እና ፊርማ መለያን ይገልጻል-
 
 ```toml
 chain = "00000000-0000-0000-0000-000000000000"
@@ -33,28 +30,22 @@ public_key = "ed0120..."
 private_key = "802620..."
 ```
 
-- `chain` የተላኩትን ግብይቶች የሚያካትት ሰንሰለት ይመርጣል።
-- `torii_url` እኩዮቹ ላይ ነጥቦች Torii HTTP API.
-- `[account].domain` ጥቅም ላይ ይውላል CLI አቋራጮች እና የአድራሻ-ምርጫ ኮዲንግ;
-  የካኖኒክ `AccountId` ራሷም ጎራ የሌላት ናት።
-- `[account].public_key` እና `[account].private_key` ግብይቶችን ይፈርማሉ።
+- `chain` ያቀረቡት ግብይቶች የሚገኙበትን ሰንሰለት ይመርጣል።
+- `torii_url` ነጥቦች በባልደረባው Torii HTTP API።
+- `[account].domain` በ CLI አቋራጭ መንገዶች እና በአድራሻ-ምርጫ ኮዲንግ ጥቅም ላይ ይውላል; ቀኖናዊው `AccountId` ራሱ የጎራ የሌለው ነው.
+- `[account].public_key` እና `[account].private_key` የሚፈርሙ ግብይቶች።
 
-ይህ መለያ ቀድሞውኑ በሰንሰለት ላይ መኖር አለበት. ለነባሪ አካባቢያዊ አውታረመረብ ይህ ነው
-በጅነሲስ ማኒፌስት የተያዘ።
+ሂሳቡ ቀድሞውኑ በሰንሰለት ላይ መኖር አለበት ። በነባሪው አካባቢያዊ አውታረመረብ ይህ በተቀናጀ የጄኔዝስ ማኒፌስት ይስተናገዳል ።
 
 ::: info የጉዳይ ስሜታዊነት
 
-Iroha ስሞች ከካኖኒካል ፓርሲንግ በኋላ ለጉዳዩ ስሜታዊ ናቸው
-`wonderland.universal`, `Wonderland.universal`, እና
-`looking_glass.universal` የተለያየ ጎራ የቃል ቃላት ናቸው።
+Iroha ስሞች ከካኖኒካል ፓርሲንግ በኋላ ለጉዳዩ ስሜታዊ ናቸው ለምሳሌ ፣ `wonderland.universal` ፣ `Wonderland.universal` እና `looking_glass.universal` የተለዩ የጎራ ፊደላት ናቸው።
 
 :::
 
 ## መሰረታዊ ማረጋገጫ {#basic-authentication}
 
-አማራጭ `[basic_auth]` ክፍል አንድ ይጨምራል HTTP `Authorization` ወደ ራስጌ
-የደንበኞቻችን ጥያቄ። Iroha እኩዮች እነዚህን የምስክር ወረቀቶች በቀጥታ አይተረጉሙም
-እነዚህ Torii እንደ Nginx የመሳሰሉ የኋላ ኋላ ወኪል በስተጀርባ ነው.
+አማራጭ `[basic_auth]` ክፍል አንድ ይጨምራል HTTP `Authorization` የደንበኞቹን ጥያቄዎች ራስጌ። Iroha እኩዮች እነዚህን የምስክር ወረቀቶች በቀጥታ አይተረጉሙም; ሲጠቀሙባቸው Torii እንደ Nginx ባሉ የኋላ ኋላ ወኪሎች ጀርባ ነው.
 
 ```toml
 [basic_auth]
@@ -64,7 +55,7 @@ password = "ilovetea"
 
 ## የግብይት ቅንብሮች {#transaction-settings}
 
-የግብይት ባህሪ በ `[transaction]` ክፍል:
+የግብይት ባህሪ በ `[transaction]` ክፍል ላይ የተመሠረተ ነው:
 
 ```toml
 [transaction]
@@ -73,16 +64,13 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-- `time_to_live_ms` የግብይት ዕድሜ በሚሊ ሰከንዶች ውስጥ ነው.
-- `status_timeout_ms` ደንበኛው ለግብይት ምን ያህል ጊዜ እንደሚጠብቅ ይቆጣጠራል
-  ሁኔታ።
-- `nonce = true` ደንበኛው በተደጋጋሚ የሚደረጉ ግብይቶችን ለማካተት ይጠይቃል
-  የተለያዩ ሃሽዎችን ያመርታሉ።
+- `time_to_live_ms` በሚሊሰከንዶች ውስጥ የግብይት ዕድሜ ነው.
+- `status_timeout_ms` ደንበኛው የግብይት ሁኔታን ለምን ያህል ጊዜ እንደሚጠብቅ ይቆጣጠራል።
+- `nonce = true` ደንበኛው የተደጋገሙ ግብይቶች የተለያዩ ሃሽስ እንዲፈጥሩ አንድ ያልሆነ ነገር እንዲያካትት ይጠይቃል ።
 
 ## ረድፍ ቅንብሮችን ያገናኙ {#connect-queue-settings}
 
-የአሁኑ Iroha ደንበኞች ደግሞ አማራጭ መጠቀም ይችላሉ `[connect]` አካባቢያዊ ክፍል
-ረድፍ ሁኔታ:
+የአሁኑ Iroha ደንበኞች እንዲሁ ለአካባቢያዊ ረድፍ ሁኔታ አማራጭ የሆነውን `[connect]` ክፍል መጠቀም ይችላሉ-
 
 ```toml
 [connect]
@@ -91,16 +79,15 @@ queue_root = "./queue"
 
 አንድ የስራ ፍሰት ዘላቂ የደንበኛ ጎን ረድፍ ማከማቻ ሲፈልግ ይህንን ይጠቀሙ።
 
-## ቅንብሮችን መፍጠር {#generating-configurations}
+## ውቅር ማመንጨት {#generating-configurations}
 
-ለአንድ ጊዜ የሚጠቀሙ አካባቢያዊ አውታረ መረቦች Kagami ምክንያቱም የሚዛመደው ይጽፋል Iroha
-3 መለያዎች, ዘፍጥረት, ስክሪፕቶች, እና አንድ README:
+ለአንድ ጊዜ የሚጣሉ አካባቢያዊ አውታረ መረቦች, Kagami ይመርጣል ምክንያቱም የሚዛመዱ የ Iroha 3 ቅንብሮች, ጅምር, ስክሪፕቶች እና README ስለሚጽፍ:
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
 ```
 
-የተፈጠረውን ይጠቀሙ `./localnet/client.toml` ጋር CLI:
+የተፈጠረውን `./localnet/client.toml` ከ CLI ጋር ይጠቀሙ:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all

@@ -8,16 +8,13 @@ translation_engine: nllb-200-ct2
 
 # Frais de parrainage pour un espace de données privé {#sponsor-fees-for-a-private-dataspace}
 
-Le parrainage des frais permet aux utilisateurs de soumettre des transactions dans un espace de données privé sans
-exploitation XOR. L'utilisateur signe toujours la transaction.
-les points sur un compte du commanditaire et le débit de la période d'exécution XOR équilibre
-pour les frais de réseau.
+Le parrainage des frais permet aux utilisateurs de soumettre des transactions dans l'espace de données privé sans détenir XOR. L'utilisateur signe toujours la transaction. Les métadonnées de la transaction pointent vers un compte du parrain et le temps d'exécution débite le solde du parrain XOR pour les frais de réseau.
 
-L'intégration comporte trois parties mobiles:
+L'intégration est composée de trois parties mobiles:
 
 1. le nœud autorise le parrainage des frais
-2. le compte parrain existe et a XOR
-3. chaque utilisateur a `CanUseFeeSponsor` pour ce commanditaire
+2. le compte parrain existe et dispose de XOR
+3. chaque utilisateur dispose de `CanUseFeeSponsor` pour ce commanditaire
 
 Après cela, chaque transaction utilisateur sponsorisée n'a besoin que de ces métadonnées:
 
@@ -29,16 +26,14 @@ Après cela, chaque transaction utilisateur sponsorisée n'a besoin que de ces m
 
 Cette page montre deux modèles communs:
 
-- **L'utilisateur écrit gratuitement**: le parrain paie XOR et l'utilisateur ne paie rien.
-- **Tarifs des jetons locaux**: l'utilisateur paie le sponsor dans un jeton d'application, et
-  le sponsor paie le réseau en XOR.
+- L'utilisateur gratuit écrit: le commanditaire paie XOR et l'utilisateur ne paie rien.
+- Tarifs pour les jetons locaux: l'utilisateur paie au sponsor un jeton d'application et le sponsor le réseau XOR.
 
-Utilisation Taira Un nouvel espace de données privé est un
-changement d'opérateur et de gouvernance; il n'est pas créé par la configuration du client.
+Utilisez Taira ou un réseau de test privé d'abord. Un nouvel espace de données privé est un opérateur et une modification de gouvernance; il n'est pas créé par la configuration du client.
 
 ## Les valeurs d'exemple {#example-values}
 
-Les commandes ci-dessous utilisent ces placeholders:
+Les commandes ci-dessous utilisent ces détenteurs de place:
 
 ```bash
 export DATASPACE="team"
@@ -55,14 +50,11 @@ export EMAIL_POLICY="email#team"
 export POLICY_OWNER="<IDENTIFIER_POLICY_OWNER_ACCOUNT_I105>"
 ```
 
-Utilisation canonique I105 compte IDs à moins que votre déploiement ait un compte actif
-des pseudonymes pour les mêmes comptes.
+Utilisez le compte canonique I105 IDs sauf si votre déploiement a des aliases de compte actif pour les mêmes comptes.
 
 ## 1. Préparer l'espace de données {#_1-prepare-the-dataspace}
 
-Commencez à partir du catalogue de l'espace de données privé et des travaux de routage décrits dans
-[Connectez-vous SORA Nexus Les bases de données](/fr/get-started/sora-nexus-dataspaces.md#_8-provision-a-new-dataspace).
-Un fragment tourné vers l'opérateur ressemble à ceci:
+Commencez par le catalogue de l'espace de données privé et le travail de routage décrit dans [Connectez-vous à SORA Nexus Dataspaces](/fr/get-started/sora-nexus-dataspaces.md#_8-provision-a-new-dataspace). Un fragment face à l'opérateur ressemble à ceci:
 
 ```toml
 [[nexus.lane_catalog]]
@@ -89,26 +81,21 @@ description = "Route team domains to the private dataspace"
 
 Avant de passer aux transactions utilisateur, vérifiez que:
 
-- la voie privée apparaît dans le nœud `/status` réaction
-- Les comptes utilisateurs sont admis par votre flux d'intégration privée
-- le compte du sponsor existe
-- le XOR l'actif de redevance et le compte d'élimination des redevances sont valables sur le réseau
+- La voie privée apparaît dans la réponse du nœud `/status`
+- Les comptes d'utilisateur sont admis par votre flux privé de connexion.
+- l'existence du compte sponsor
+- l'actif de redevance XOR et le compte d'échange des redevances sont valables sur le réseau;
 
 ## 2. Enregistrer les actifs dans l'espace de données {#_2-register-assets-in-the-dataspace}
 
-Enregistrer les définitions d'actifs que les utilisateurs déteniront à l'intérieur du privé
-l'espace de données avant de les brancher dans la logique de l'application.
-modèle, le tutoriel utilise `usage#billing.team`:
+Enregistrer les définitions d'actifs que les utilisateurs conserveront à l'intérieur de l'espace de données privé avant de les brancher dans la logique de l'application. Pour le modèle local-token fee, le tutoriel utilise `usage#billing.team`:
 
 ```text
 <asset-name>#<domain>.<dataspace>
 usage#billing.team
 ```
 
-D'abord, définissez le domaine et SNS Le contrat de location qui détient l'espace nommé des actifs.
-sans secret `AliasSetupPlanRequestV1` l'intention `$BILLING_DOMAIN`, y compris
-le chiffre `team` espace de données ID, propriétaire canonique, terme de location et cotation courante
-Garde:
+Tout d'abord mettre en place le domaine et SNS Créer un espace de noms d'actifs sans secrets `AliasSetupPlanRequestV1` l'intention `$BILLING_DOMAIN`, y compris le chiffre `team` espace de données ID, propriétaire canonique, terme de location et garde actuelle des devis:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -120,9 +107,7 @@ iroha --config ./operator.client.toml \
   app alias setup apply --plan-file ./billing-domain.plan.json
 ```
 
-Ensuite, enregistrer la définition de l'actif. `--id` est le niveau de réseau
-définition des actifs ID. L'alias est ce que les développeurs et les utilisateurs finaux devraient utiliser dans
-code du espace de données:
+Ensuite, enregistrer la définition d'actif. La canonique `--id` est la définition de l'actif au niveau du réseau ID.
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -133,7 +118,7 @@ iroha --config ./operator.client.toml \
   --scale 0
 ```
 
-Mente ou transfert du jeton local à un utilisateur lors de l'intégration:
+Mint ou transfert du jeton local à un utilisateur lors de l'intégration:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -152,22 +137,13 @@ iroha --config ./operator.client.toml \
   --account "$USER"
 ```
 
-Utilisez le même schéma pour les actifs d'application dans l'espace de données.
-définition de l'actif par jeton, donner à chacun un alias espace de données, et se référer à la
-alias de SDK code au lieu de définition d'actif canonique en code dur IDs.
+Utilisez le même schéma pour les actifs d'application dans l'espace de données. Enregistrez une définition d'actif par jeton, donnez à chacun un alias de espace de données et renvoyez à l'alias du code SDK au lieu de la définition canonique des actifs IDs en code dur.
 
 ## 3. Enregistrer les prénoms d'utilisateur {#_3-register-user-aliases}
 
-Les comptes sont toujours canoniques I105 compte IDs. Les noms d'utilisateur sont des comptes
-les prénoms, et les prénomés doivent être des poignées non sensibles telles que `alice@team` ou
-`alice@members.team`. N'utilisez pas de numéros de téléphone ou d'adresses électroniques comme alias.
-Ils appartiennent au flux d'identifiants privés dans la section suivante.
+Les comptes sont toujours canoniques I105 compte IDs. Les noms d'utilisateurs vis-à-vis sont des pseudonymes de compte, et les pseudonymes doivent être des poignées non sensibles telles que `alice@team` ou `alice@members.team`.
 
-L'alias configuration utilise le même planificateur déclaratif que la configuration de domaine. SDK ou
-le service d'embarquement créer un secret libre `AliasSetupPlanRequestV1` dont l'intention
-cibles d'entrée sous forme de compte `$USER`, sélectionne le rôle principal, pince le numérique
-espace de données ID, et porte la garde actuelle de l'offre de location.
-en tant que transaction atomique unique:
+L'installation d'alias utilise le même planificateur déclaratif que l'installation de domaine. Faites en sorte que le SDK ou le service d'intégration crée une intention `AliasSetupPlanRequestV1` sans secret dont les cibles d'entrée de compte-alias sont `$USER`, sélectionne le rôle principal, pinne l'espace de données numérique ID et porte la garde actuelle du devis de location. Ensuite, planifiez et appliquez-le comme une seule transaction atomique:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -179,11 +155,9 @@ iroha --config ./operator.client.toml \
   app alias setup apply --plan-file ./user-alias.plan.json
 ```
 
-Si l'utilisateur ne doit pas payer XOR, Utiliser l'embarquement approuvé par le sponsor
-service pour la construction et le dépôt de l'opération d'installation.
-acquisition et alias liant à des opérations d'application indépendantes.
+Si l'utilisateur ne doit pas payer XOR, utilisez le service d'intégration approuvé par un sponsor pour construire et soumettre la transaction de mise en place.
 
-Une fois que le pseudonyme est lié, vérifiez-le à partir du CLI:
+Une fois le pseudonyme lié, vérifiez-le à partir du CLI:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -195,30 +169,21 @@ iroha --config ./operator.client.toml \
   --dataspace "$DATASPACE"
 ```
 
-Pour la création de nouveaux comptes, préférer un service d'intégration qui construit
-`NewAccount` avec une étagère `uaid` et, le cas échéant, une `label`. Les
-simple `ledger account register --id` Le commandement n'enregistre que le canonique
-compte ID.
+Pour la création d'un nouveau compte, préférer un service de connexion qui crée `NewAccount` avec une étagère `uaid` et, si nécessaire, une première `label`. Le plus simple `ledger account register --id` Le commandement n'enregistre que le compte canonique. ID.
 
 ## 4. Enregistrer le téléphone et l'e-mail en privé auprès de FHE {#_4-register-phone-and-email-privately-with-fhe}
 
-Utilisez les numéros de téléphone et les adresses e-mail comme revendications d'identifiants privés, pas publiques
-Les prénoms. FHE- le flux de sauvegarde empêche les identifiants bruts d'utiliser des pseudonymes de compte,
-les métadonnées de transaction et l'état mondial:
+Utilisez les numéros de téléphone et les adresses e-mail comme revendications d'identifiants privés, pas des aliases publiques. Le flux soutenu par FHE garde les identifiants bruts hors des aliases de compte, des métadonnées de transaction et de l'état mondial:
 
-1. l'exploitant enregistre une
-   [RAM-LFE/FHE politique du programme](/fr/blockchain/ram-lfe.md) pour téléphone et courrier électronique
-2. l'exploitant enregistre des politiques d'identification active telles que `phone#team` et
-   `email#team`
+1. l'opérateur enregistre une politique de programme [RAM-LFE/FHE ](/fr/blockchain/ram-lfe.md) pour le téléphone et le courrier électronique;
+2. l'exploitant enregistre les politiques d'identification active telles que `phone#team` et `email#team`;
 3. le portefeuille normalise le téléphone ou l'e-mail localement
 4. le portefeuille envoie la valeur cryptée au résolveur
-5. le résolveur renvoie un `IdentifierResolutionReceipt`
-6. l'utilisateur soumet `ClaimIdentifier` avec le reçu
-7. la chaîne stocke un identifiant opaque et un hash de reçu, pas le téléphone brut ou
-   valeur de courrier électronique
+5. Le résolveur renvoie un `IdentifierResolutionReceipt`
+6. l'utilisateur soumet `ClaimIdentifier` avec le reçu;
+7. la chaîne stocke un identifiant opaque et un hachage de reçus, pas la valeur brute du téléphone ou de l'e-mail
 
-L'établissement des politiques de l'opérateur est un SDK ou une tâche de service.
-ces paires d'instructions pour chaque type d'identifiant:
+L'établissement de la politique du côté de l'opérateur est une tâche SDK ou service.
 
 ```text
 RegisterRamLfeProgramPolicy(
@@ -241,7 +206,7 @@ RegisterIdentifierPolicy(
 ActivateIdentifierPolicy(policy_id = "$PHONE_POLICY")
 ```
 
-Répétez pour l' e-mail avec:
+Répétez pour le courrier électronique avec:
 
 ```text
 program_id = "email_team"
@@ -256,8 +221,7 @@ PhoneE164: "+15551234567"
 EmailAddress: "alice@example.com"
 ```
 
-Après la création du fichier de métadonnées par le sponsor à l'étape 8, soumettez une signature utilisateur
-instruction de réclamation avec ces métadonnées:
+Après la création du fichier de métadonnées par le sponsor à l'étape 8, soumettre une instruction de demande signée par l'utilisateur avec ces métadonnées:
 
 ```text
 ClaimIdentifier(
@@ -275,9 +239,7 @@ ClaimIdentifier(
 )
 ```
 
-Le courant CLI n'expose pas les commandes typées pour ces identités
-générer des instructions sérialisées `InstructionBox` les valeurs avec SDK et
-les soumettre `ledger transaction stdin`:
+Le courant CLI n'expose pas les commandes typées pour ces instructions d'identification. Générez des valeurs sérialisées `InstructionBox` avec le SDK et soumettez-les par l'intermédiaire de `ledger transaction stdin`:
 
 ```bash
 printf '["<BASE64_CLAIM_IDENTIFIER_INSTRUCTION_BOX>"]\n' |
@@ -288,16 +250,15 @@ printf '["<BASE64_CLAIM_IDENTIFIER_INSTRUCTION_BOX>"]\n' |
 
 Gardez ces barreaux dans le service d' embarquement:
 
-- Les pseudonymes de compte sont uniquement lisibles par l'homme
-- les valeurs de téléphone et d'e-mail brutes ne sont jamais affichées dans des aliases, des métadonnées, des journaux ou
-  charges utiles des transactions
-- le compte a un `uaid` avant de réclamer des identifiants privés
-- les reçus sont liés `policy_id`, `opaque_id`, `uaid`, `account_id`, et expiration
-- Les clés de résolution et les engagements cachés du programme sont contrôlés par la gouvernance
+- Les pseudonymes de compte sont des poignées lisibles uniquement par les humains
+- les valeurs de téléphone et d'e-mail brutes ne sont jamais affichées dans des aliases, des métadonnées, des journaux ou des charges utiles pour les transactions
+- le compte a un `uaid` avant de réclamer des identifiants privés;
+- les reçus sont liés à `policy_id`, `opaque_id`, `uaid`, `account_id` et expirent
+- Les clés de résolution et les engagements des programmes cachés sont contrôlés par la gouvernance
 
 ## 5. Activer le parrainage sur le nœud {#_5-enable-sponsorship-on-the-node}
 
-Le parrainage des frais est une politique de nœud/temps d'exécution. Nexus configuration des frais:
+Le parrainage des frais est une politique de nœuds/temps d'exécution. Nexus configuration des frais:
 
 ```toml
 [nexus.fees]
@@ -311,18 +272,15 @@ sponsorship_enabled = true
 sponsor_max_fee = "0"
 ```
 
-`fee_asset_id` est l'actif des frais de réseau. SORA Nexus C' est ça . XOR. Utilisez le
-actif XOR alias ou canoniques XOR définition des actifs ID exposé par votre réseau.
+`fee_asset_id` est l'actif de la redevance réseau. SORA Nexus C' est ça. XOR. Utilisez l' active XOR des alias ou canoniques XOR définition d'actif ID exposé par votre réseau.
 
-`sponsor_max_fee = "0"` signifie qu'il n'y a pas de plafond pour le sponsor par transaction.
-la production, définissez un plafond non-zéro après avoir connu la taille normale et le profil du gaz
-de vos transactions dans votre espace de données.
+`sponsor_max_fee = "0"` signifie qu'il n'y a pas de plafond pour les sponsors par transaction. Pour la production, fixez un plafond non zéro après avoir connu la taille normale et le profil du gaz de vos transactions en espace de données.
 
 Réinitialisez ou roulez cette configuration à travers votre processus d'opérateur normal.
 
 ## 6. Créer et financer le commanditaire {#_6-create-and-fund-the-sponsor}
 
-Générer une paire de clés sponsors si nécessaire:
+Générer une paire de clés parrain si nécessaire:
 
 ```bash
 kagami keys --algorithm ed25519 --json
@@ -343,8 +301,7 @@ iroha --config ./operator.client.toml \
   ledger account register --id "$SPONSOR"
 ```
 
-Financer le commanditaire avec XOR à partir d'un trésor, d'un compte de créances ou d'un autre fonds
-compte:
+Financer le commanditaire avec XOR provenant d'un trésor, d'un compte de créances ou d'un autre compte financé:
 
 ```bash
 iroha --config ./treasury.client.toml \
@@ -355,10 +312,7 @@ iroha --config ./treasury.client.toml \
   --quantity 1000
 ```
 
-Pour Taira les répétitions, sauf l'aide au robinet de
-[Prenez le testnet XOR sur le Taira](/fr/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)
-comme `taira_faucet_claim.py`, puis financer le parrain avec le robinet public
-au lieu d'un transfert de trésorerie:
+Pour les répétitions Taira, économisez l'assistant du robinet à partir de [Obtenir le testnet XOR sur Taira](/fr/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) comme `taira_faucet_claim.py`, puis financer le sponsor avec le robinet public au lieu d'un virement du trésor:
 
 ```bash
 export SPONSOR='<SPONSOR_TAIRA_I105_ACCOUNT_ID>'
@@ -372,7 +326,7 @@ iroha --config ./sponsor.client.toml \
   --account "$SPONSOR"
 ```
 
-Vérifiez le sponsor. XOR équilibre:
+Vérifiez le solde XOR du commanditaire:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -381,13 +335,11 @@ iroha --config ./operator.client.toml \
   --account "$SPONSOR"
 ```
 
-## 7. Accorder à un utilisateur l'accès au commanditaire {#_7-grant-a-user-access-to-the-sponsor}
+## 7. Accordez à l'utilisateur un accès au commanditaire {#_7-grant-a-user-access-to-the-sponsor}
 
-Le commanditaire doit accorder à chaque utilisateur la permission de lui facturer des frais.
-ce qui empêche les utilisateurs de nommer des comptes sponsors arbitraires.
+Le commanditaire doit accorder à chaque utilisateur l'autorisation de lui facturer des frais.
 
-Exécutez ceci comme le compte sponsor, ou comme un compte opérationnel autorisé par votre
-Politique en matière de temps d'exécution
+Exécutez ceci comme le compte sponsor, ou comme un compte opérationnel autorisé par votre politique d'exécution:
 
 ```bash
 printf '{
@@ -400,9 +352,9 @@ printf '{
     ledger account permission grant --id "$USER"
 ```
 
-Pour les services d'intégration, faites de cette étape une disposition normale du compte et enregistrer:
+Pour les services d'intégration, il s'agit d'une étape normale de fourniture de compte et de l'enregistrement:
 
-- compte utilisateur
+- compte d'utilisateur
 - compte du commanditaire
 - espace de données ou application
 - billet d'approbation ou décision de gouvernance
@@ -414,7 +366,7 @@ iroha --config ./operator.client.toml \
   ledger account permission list --id "$USER"
 ```
 
-## 8. Ajouter les métadonnées du commanditaire {#_8-attach-sponsor-metadata}
+## 8. joindre les métadonnées du commanditaire {#_8-attach-sponsor-metadata}
 
 Créer un fichier de métadonnées réutilisable:
 
@@ -432,47 +384,40 @@ iroha --config ./alice.client.toml \
   ledger transaction ping --msg "sponsored private-dataspace write"
 ```
 
-Pour SDKs, joindre le même objet de métadonnées de transaction à la signature
-l'utilisateur signe la transaction avec sa clé.
-ne signe pas chaque transaction utilisateur parce que le précédent `CanUseFeeSponsor`
-La subvention est l'autorisation.
+Pour SDKs, joindre le même objet de métadonnées de transaction à la transaction signée. L'utilisateur signe la transaction avec la clé de l'utilisateur. Le sponsor ne signe pas chaque transaction utilisateur parce que la subvention précédente `CanUseFeeSponsor` est l'autorisation.
 
 ## Modèle 1: Les utilisateurs ne paient pas de frais {#pattern-1-users-pay-no-fees}
 
 Utilisez-le lorsque l'application ou l'opérateur absorbe tous les frais de réseau.
 
-Liste des développeurs:
+Liste de contrôle des développeurs:
 
-1. Gardez la charge utile normale des transactions de l'utilisateur inchangée.
+1. Garder la charge utile normale des transactions de l'utilisateur inchangée.
 2. Ajouter des métadonnées de transaction avec `fee_sponsor`.
-3. Signez comme utilisateur.
-4. S'il vous plaît soumettre par la route privée de l'espace.
+3. Signez en tant qu'utilisateur.
+4. Envoyez par l'intermédiaire de l'espace de données privé.
 
-Le compte utilisateur n'a pas besoin d'un XOR Le compte du commanditaire doit conserver
-suffisamment XOR pour couvrir le configuré Nexus les frais.
+Le compte utilisateur n'a pas besoin d'un solde XOR; le compte sponsor doit conserver suffisamment de XOR pour couvrir les frais configurés Nexus.
 
 ## Modèle 2: Les utilisateurs paient un jeton local {#pattern-2-users-pay-a-local-token}
 
-Utilisez ceci lorsque les utilisateurs ne doivent pas tenir XOR, mais l'espace de données veut toujours un
-frais d'application internes, dépenses de crédit ou jetons de quota.
+Utilisez ceci lorsque les utilisateurs ne devraient pas détenir XOR, mais que l'espace de données souhaite toujours une redevance interne pour l'application, des dépenses de crédit ou des jetons de quota.
 
-Dans ce modèle, le jeton local est un paiement d'application.
-Le parrain paie toujours la redevance de réseau en XOR.
+Dans ce modèle, le jeton local est un paiement d'application. Ce n'est pas l'actif de redevance réseau. Le sponsor paie toujours la redevance de réseau en XOR.
 
-Par exemple, utilisez un jeton local dans l'espace de données privé:
+Par exemple, utiliser un jeton local dans l'espace de données privé:
 
 ```text
 usage#billing.team
 ```
 
-Les utilisateurs de fonds `usage#billing.team` lors de l'intégration, du renouvellement des abonnements;
-ou l'allocation de quotas.
+Les utilisateurs de fonds avec `usage#billing.team` lors de l'intégration, du renouvellement des abonnements ou de l'allocation de quotas.
 
-1. transférer des jetons locaux de l'utilisateur au sponsor
-2. effectuer l'opération d'application demandée
-3. inclure `fee_sponsor` les métadonnées afin que le sponsor paie XOR
+1. Transférer des jetons locaux de l'utilisateur au sponsor
+2. effectuer l'opération de l'application demandée
+3. inclure des métadonnées `fee_sponsor` afin que le sponsor paie XOR;
 
-Un minimum CLI Le test de fumée est juste le transfert local-token parrainé par XOR:
+Un test de fumée minimal CLI n'est que le transfert local-token parrainé par XOR:
 
 ```bash
 iroha --config ./alice.client.toml \
@@ -484,40 +429,33 @@ iroha --config ./alice.client.toml \
   --quantity 1
 ```
 
-Pour une application réelle, ne soumettez pas le paiement par jeton local en tant que séparé
-Une transaction signée contenant les deux
-le paiement et l'instruction commerciale, ou exposer un point d'entrée de contrat qui
-collecte le jeton local avant d'appliquer l'opération commerciale.
+Pour une application réelle, ne soumettez pas le paiement local-token comme une transaction séparée de meilleur effort. Construisez une transaction signée contenant à la fois le paiement et l'instruction d'affaires, ou exposez un point d'entrée du contrat qui collecte le jeton local avant d'appliquer l'opération commerciale.
 
-Conservez la politique de conversion dans votre application ou contrat:
+Gardez la politique de conversion dans votre application ou contrat:
 
 - quelle opération coûte combien d'unités de jetons locales
-- comment les cartes d'afflux de jetons locaux à sponsorer XOR Remplissement
-- ce qui se passe lorsque l'équilibre de l'utilisateur est trop faible
-- ce qui se passe lorsque le sponsor XOR l'équilibre est trop bas
+- Comment les cartes d'afflux de jetons locaux pour parrainer XOR des compléments
+- ce qui se passe lorsque l'équilibre de l'utilisateur est trop bas
+- ce qui se passe lorsque le solde du sponsor XOR est trop faible;
 
-::: warning
+::: avertissement
 
-Ne pas utiliser `gas_asset_id` pour le modèle "compte de jeton local", sauf si vous voulez
-Dans la période de fonctionnement actuelle, le bénéficiaire doit également être facturé dans cet actif.
-`fee_sponsor` fait également du commanditaire le payeur des gaz de pipeline configurés
-Pour les frais d'utilisateur de jetons locaux, récupérer le jeton explicitement avec un
-une règle de transfert ou de contrat.
+Ne pas utiliser `gas_asset_id` pour le modèle de "compte local-token" sauf si vous voulez que le sponsor soit facturé dans cet actif de gaz aussi. `fee_sponsor` fait également du commanditaire le payeur des débitations d'actifs en gaz et pipeline configurées. Pour les frais d'utilisation des jetons locaux, recueillez le jeton explicitement avec une règle de transfert ou de contrat.
 
 :::
 
-## Débogage des transactions sponsorisées ratées {#debug-failed-sponsored-transactions}
+## Débug des transactions sponsorisées ratées {#debug-failed-sponsored-transactions}
 
-Les raisons courantes de rejet indiquent généralement une étape d'installation manquante:
+Les raisons courantes de rejet indiquent généralement qu'une étape d'installation manque:
 
-| Texte d'erreur | Que vérifier |
+|Le texte d' erreur |Ce qu' il faut vérifier .|
 | --- | --- |
-| `fee sponsorship is disabled` | `nexus.fees.sponsorship_enabled` est toujours `false` sur le nœud. |
-| `fee sponsor is not authorized` | L'utilisateur n'a pas `CanUseFeeSponsor` Pour ce sponsor. |
-| `fee asset ... is missing` | Le commanditaire ne détient pas le XOR actif des frais. |
-| `fee balance ... is insufficient` | Remplissez le portefeuille du commanditaire. XOR équilibre. |
-| `fee exceeds sponsor_max_fee` | Réservation `sponsor_max_fee` ou réduire la taille/le gaz de la transaction. |
-| `invalid nexus fee asset id` | Réparation `nexus.fees.fee_asset_id` ou le XOR sous le pseudonyme d'actif. |
+|`fee sponsorship is disabled` |`nexus.fees.sponsorship_enabled` est toujours `false` sur le noeud. |
+|`fee sponsor is not authorized` |L'utilisateur ne dispose pas de `CanUseFeeSponsor` pour ce sponsor. |
+|`fee asset ... is missing` |Le commanditaire ne détient pas l'actif de redevance XOR configuré. |
+|`fee balance ... is insufficient` | Remplissez le portefeuille du sponsor. XOR l'équilibre. |
+|`fee exceeds sponsor_max_fee` |Augmenter `sponsor_max_fee` ou réduire la taille/gaz de l'opération. |
+|`invalid nexus fee asset id` |Fix `nexus.fees.fee_asset_id` ou l'alias de l'actif XOR. |
 
 Lors de la débogage du modèle 2, vérifiez les deux équilibres:
 
@@ -537,15 +475,14 @@ iroha --config ./operator.client.toml \
 
 Traiter le commanditaire comme un compte de trésorerie:
 
-- conserver des clés sponsors distinctes pour le réseau de test, la mise en scène et le réseau principal
-- mise en garde devant le commanditaire XOR l'équilibre atteint le plancher d'entrée
-- définir un non-zéro `sponsor_max_fee` cap une fois le trafic caractérisé
+- conserver des clés de sponsoring séparées pour le testnet, la mise en scène et le mainnet
+- l'alerte avant que le solde du sponsor XOR atteigne le niveau d'admission;
+- définir un plafond non nul `sponsor_max_fee` une fois le trafic caractérisé;
 - écrites sponsorisées dans votre demande ou gateway
-- révocation `CanUseFeeSponsor` lorsque les utilisateurs quittent l' espace de données
-- réconcilier les hashes de transaction utilisateur, les paiements par jetons locaux et le sponsor XOR
-  débits
+- révoquer `CanUseFeeSponsor` lorsque les utilisateurs quittent l'espace de données
+- réconcilier les hachages des transactions utilisateurs, les paiements par jetons locaux et les débits du sponsor XOR
 
-Révoquer le parrainage pour un utilisateur:
+Révoquer le parrainage d'un utilisateur:
 
 ```bash
 printf '{
@@ -560,8 +497,8 @@ printf '{
 
 ## Pages connexes {#related-pages}
 
-- [Connectez-vous SORA Nexus Les bases de données](/fr/get-started/sora-nexus-dataspaces.md)
-- [Opérer Iroha 3 par le biais CLI](/fr/get-started/operate-iroha-via-cli.md)
-- [Les actifs](/fr/blockchain/assets.md)
-- [Autorisations](/fr/blockchain/permissions.md)
-- [Les jetons d'autorisation](/fr/reference/permissions.md)
+- [Connectez-vous à SORA Nexus Les espaces de données](/fr/get-started/sora-nexus-dataspaces.md)
+- [L'opération Iroha 3 est effectuée par l'intermédiaire de CLI ](/fr/get-started/operate-iroha-via-cli.md)
+- [Les actifs ](/fr/blockchain/assets.md)
+- [Autorisations ](/fr/blockchain/permissions.md)
+- [Des jetons d'autorisation ](/fr/reference/permissions.md)

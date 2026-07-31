@@ -53,4 +53,4 @@ Os eventos do tempo são emitidos quando a visão do estado mundial está pronta
 
 ## Eventos de Execução Trigger {#trigger-execution-events}
 
-Os eventos de execução do gatilho são emitidos quando a instrução [`ExecuteTrigger`](./instructions.md#executetrigger) é executada.
+Os eventos de execução de gatilho são emitidos quando a instrução [`ExecuteTrigger`](./instructions.md#executetrigger) é executada. Os eventos de conclusão do gatilho são emitidos após a conclusão da ação do gatilha.

@@ -20,4 +20,4 @@ Iroha сығанаҡ репозиторияһы SDK рецепттары һәм 
 
 ## Android {#android}
 
-Яңы өсөн Android эш, ҡулланыу Kotlin- тәүҙә `core-jvm`, `client-android`, һәм `offline-wallet-android` Модулдар [Kotlin, Android, һәм Java](/ba/guide/tutorials/kotlin-java.md). Ҡоролтай Kotlin SDK өсөн каноник башланғыс пункт булып тора Android ҡулланыусылар.
+Яңы Android эштәр өсөн Kotlin-иң беренсе `core-jvm`, `client-android` һәм `offline-wallet-android` модулдәрен ҡулланығыҙ, улар [Kotlin, Android һәм Java](/ba/guide/tutorials/kotlin-java.md). Kotlin SDK - Android ҡулланыусылар өсөн каноник башланғыс.

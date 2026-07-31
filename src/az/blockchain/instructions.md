@@ -30,7 +30,7 @@ Iroha Xüsusi Təlimatların ümumiləşdirilməsi ilə başlayaq; hər təlimat
 
 Hər bir təlimat üçün bu təlimatın icra edilə biləcəyi obyektlərin siyahısı var. Məsələn, köçürmə variantları mülkiyyətli nəşriyyat obyektlərini və rəqəmli aktivləri əhatə edir, mining isə rəqəmsal aktivləri ələ keçirir və təkrarlamaları başlatır.
 
-Bəzi təlimatlarda məqsəd müəyyənləşdirilməsini tələb edir. Məsələn, aktiv köçürsəniz, onları hansı hesabda köçürəcəyinizi hər zaman göstərməlisiniz.
+Bəzi təlimatlarda məqsədin müəyyən edilməsi tələb olunur. Məsələn, aktivləri köçürsəniz, onları hansı hesabda köçürəcəyinizi həmişə göstərməlisiniz. Digər tərəfdən, bir şeyi qeydiyyatdan keçirərkən yalnız qeydiyyatda saxlamaq istədiyiniz obyektə ehtiyacınız olur.
 
 |Təlimat |Əşyalar |Məqsəd |
 | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------- |
@@ -247,7 +247,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 Çıxma və yandırma saylı aktivlərə aid ola bilər və təkrarların məhdud sayı ilə tetiklənir. Bəzi aktivlər çırpılmaz olaraq bəyan edilə bilər, yəni qeydiyyatdan sonra yalnız bir dəfə çırpıla bilər.
 
-Mülkiyyətlərin miqdarı mənfi deyil, buna görə heç vaxt `$-1.0` bir aktivə sahib ola bilməzsiniz və ya mənfi məbləği yandırıb mint ala bilərsiniz.
+Əmlaklar müəyyən bir hesabda, adətən ilk növbədə aktivin qeydiyyata alınması üçün qeydə alınıb. Mülkiyyət miqdarları mənfi deyil, buna görə heç vaxt `$-1.0` bir aktivə sahib ola bilməzsən və ya mənfi məbləği yandırıb mint ala bilməzsən.
 
 Bir blok zincirində aktivlərin qazılması prosesindən keçmək üçün dilə aid təlimatlardan birinə baxın:
 

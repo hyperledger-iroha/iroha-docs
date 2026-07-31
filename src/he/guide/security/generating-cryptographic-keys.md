@@ -6,44 +6,41 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# יצירת מפתחות קריפטוגרפיים {#generating-cryptographic-keys}
+# ייצור מפתחות קריפטוגרפיים {#generating-cryptographic-keys}
 
-שימוש `kagami keys` כדי ליצור חומר מפתח ללקוח, עמיתי ומתוקן עבור
-Iroha 3.
+להשתמש ב- `kagami keys` כדי ליצור חומר מפתח לקלינט, עמיתי ומתוקן ל- Iroha 3.
 
 ## שימוש בסיסי {#basic-usage}
 
-מה- Iroha קבלה מקורות:
+מהמחאה המקורית של Iroha:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519
 ```
 
-JSON תוצאת היא בדרך כלל הקלה ביותר להעתיק לתוך TOML או אוטומציה:
+תוצאת JSON היא בדרך כלל הקלה ביותר להעתיק לתוך TOML או אוטומציה:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --json
 ```
 
-הפקודה מדפסת מפתח ציבורי ומפתח פרטי חשוף.
-מפתח כמידע סודי; אל תתחייב את מפתחות הייצור המוצרות.
+הפקודה מדפסת מפתח ציבורי ומפתח פרטי חשוף. התייחסו למפתח פרטי כחומר סודי; אל תתחייב את המפתחות הייצור המיוצרים.
 
 ## אלגוריתמים {#algorithms}
 
 אלגוריתמים נפוצים הם:
 
-- `ed25519` עבור חשבונות לקוחות, זהויות סטרימינג, ורוב ההתפתחות
-  רשתות.
-- `secp256k1` כאשר אתה זקוק לזהות חשבון SECP256K1.
-- `bls_normal` עבור מפתחות הסכמה של מבקיע, כאשר הבניין מאפשר BLS תמיכה.
+- `ed25519` עבור חשבונות לקוחות, זהויות שידור, ורוב רשתות פיתוח.
+- `secp256k1` כאשר אתה צריך זהות חשבון secp256k1.
+- `bls_normal` עבור מפתחות ההסכמה של המאשר כאשר הבניין מאפשר תמיכה BLS.
 
-בדוק את האלגוריתמים המדויקים הנמונים בבנייתך עם:
+בדוק את האלגוריתמים המדויקים שתומכים בבנייתך עם:
 
 ```bash
 cargo run --bin kagami -- keys --help
 ```
 
-## מפתחות פיתוח דטרמיניסטיים {#deterministic-development-keys}
+## מפתחות התפתחות דטרמיניסטית {#deterministic-development-keys}
 
 עבור ציוד שניתן להשיב, העביר את הזרע:
 
@@ -51,29 +48,27 @@ cargo run --bin kagami -- keys --help
 cargo run --bin kagami -- keys --algorithm ed25519 --seed "dev-alice" --json
 ```
 
-זרעים הם חומר מפתח פרטי.
+זרעים הם חומר מפתח פרטי, השתמש בהם רק לפיתוח מקומי ובדיקות.
 
-## BLS הוכחות רכוש {#bls-proofs-of-possession}
+## BLS הוכחות בעלות {#bls-proofs-of-possession}
 
-NPoS ו Nexus פרופילים של מבקרי אישור BLS מפתחות ההסכמה PoPs:
+פרופילים של NPoS ו- Nexus מתוארים דורשים BLS מפתחות מתוארים ו- PoPs:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
 ```
 
-ה- JSON כולל `pop_hex` כאשר `--pop` השתמשו בשווי זה עם
-טופולוגיה שנוצרה או `trusted_peers_pop` רשומות הנדרשות על ידי הפרופיל.
+JSON כולל `pop_hex` כאשר משתמשים ב- `--pop`. השתמשו בשווי זה עם הטופולוגיה המורכבת או את הכניסים של `trusted_peers_pop` הנדרשים על ידי הפרופיל.
 
-## פורמטים יצירתיים {#output-formats}
+## פורמטים מוצרים {#output-formats}
 
-השתמשו בכלי ההוצאת המקובלים לבדיקה של הטרמינל, `--json` עבור אוטומציה, ו
-`--compact` כאשר תסריט אחר זקוק לערכים פשוטים המכוונים לקווים:
+השתמשו בהוצאת כפולה עבור ביקורת הטרמינל, `--json` עבור אוטומציה, ו `--compact` כאשר תסריט אחר זקוק לערכים פשוטים המכוונים לקווים:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --compact
 ```
 
-עבור מוצרים מלאים Kagami עזרה:
+עבור סיוע מלא Kagami:
 
 ```bash
 cargo run -p iroha_kagami -- advanced markdown-help > crates/iroha_kagami/CommandLineHelp.md

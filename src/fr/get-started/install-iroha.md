@@ -6,19 +6,17 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Installation Iroha 3 {#install-iroha-3}
+# L'installation Iroha 3 {#install-iroha-3}
 
-Cette page couvre le flux de travail d'installation actuel pour les Iroha 3 chaîne d'outils
-et des binaires utilisant le courant alternatif `hyperledger-iroha/iroha` espace de travail.
+Cette page couvre le flux de travail d'installation actuel pour la chaîne d'outils Iroha 3 et les binaires utilisant l'espace de travail en amont `hyperledger-iroha/iroha`.
 
 ## 1. Les prérequis {#_1-prerequisites}
 
 Installez-les d'abord:
 
-- [rustup](https://www.rust-lang.org/tools/install), alors le collé
-  `rust-toolchain.toml` chaîne d'outils (`1.93.1`) est installé automatiquement
+- [rustup](https://www.rust-lang.org/tools/install), de sorte que la chaîne d'outils fixée `rust-toolchain.toml` (`1.93.1`) est installée automatiquement
 - `git`
-- optionnellement, Docker et Docker Compose pour le démarrage rapide multi-peer local
+- optionnellement, Docker et Docker Compose pour le démarrage rapide local multi-peer
 
 ## 2. Cloner l'espace de travail {#_2-clone-the-workspace}
 
@@ -35,13 +33,13 @@ Construisez tout:
 cargo build --workspace
 ```
 
-Pour une structure plus petite axée sur l'opérateur, compilons uniquement les principaux binaires:
+Pour une structure plus petite axée sur l'opérateur, compilez uniquement les principaux binaires:
 
 ```bash
 cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ```
 
-Les binaires résultants sont écrits à `target/debug/` ou `target/release/`.
+Les binaires résultants sont rédigés à `target/debug/` ou `target/release/`.
 
 ## 4. Vérifiez les outils installés {#_4-verify-the-installed-tools}
 
@@ -53,17 +51,15 @@ cargo run --bin kagami -- --help
 
 Les trois binaires que vous utiliserez habituellement sont:
 
-- `irohad` pour le daimon de la paire
-- `iroha` pour CLI accès à Torii et les points finaux de l'opérateur
-- `kagami` pour les clés, les manifestes de génèse et les profils localnet
+- `irohad` pour le daimon par rapport à l'autre
+- `iroha` pour CLI l'accès à Torii et les points finaux de l'opérateur
+- `kagami` pour les clés, les manifestes de génèse et les profils du localnet
 
-## 5. le réseau local facultatif et Docker Chemin {#_5-optional-localnet-and-docker-path}
+## 5. Localnet optionnel et chemin Docker {#_5-optional-localnet-and-docker-path}
 
-Le flux localnet actuel soutenu par la source est généré par Kagami. Il écrit peer
-config, artifacts de la génèse, config client, scripts d'assistance et une option
-Composer le fichier correspondant au code de sortie:
+Le flux localnet actuel soutenu par la source est généré par Kagami. Il écrit des configurations de pairs, des artefacts de génèse, des configurations du client, des scripts d'assistance et un fichier Compose optionnel qui correspond au code vérifié:
 
-- `kagami localnet` pour les scripts locaux natifs
-- `kagami docker` pour Docker Compose généré à partir d'un répertoire localnet
+- `kagami localnet` pour les scripts locaux natifs par rapport à leurs pairs
+- `kagami docker` pour le Docker Compose généré à partir d'un répertoire localnet
 
-Continuez avec [Lancement Iroha 3](/fr/get-started/launch-iroha.md).
+Continuez avec [Déploiement Iroha 3](/fr/get-started/launch-iroha.md).

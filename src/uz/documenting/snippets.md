@@ -8,31 +8,21 @@ translation_engine: nllb-200-ct2
 
 # Kod parchalari {#code-snippets}
 
-Ishlab chiqarilgan snippetlar kod, konfiguratsiya va sxemalarga bog'liq misollarni saqlaydi
-ko'rsatilgan Iroha ularni ishlab chiqargan qayta ko'rib chiqish.
+Ishlab chiqarilgan snippetlar ularni ishlab chiqaradigan Iroha o'zgarishidan kod, konfiguratsiya va sxemalarga bog'liq bo'lgan misollar saqlanadi.
 
-## Charchatadigan Iroha San'at asarlar {#refreshing-iroha-artifacts}
+## O'zgartiruvchi Iroha artefaktlar {#refreshing-iroha-artifacts}
 
-Iroha-dan kelib chiqadigan kesimlar tekshirilgan, shuning uchun oddiy sayt qurilishi talab qilinmaydi
-Tarmoqga kirish yoki qarindoshlar ma'muriyati.
+Iroha-dan kelib chiqqan snippetlar oddiy sayt qurilmalarida tarmoqga kirish yoki aka-uka ma'muriyati talab qilinmaydigan tarzda tekshirilgan.
 
 ```bash
 pnpm refresh:iroha --source /path/to/iroha
 ```
 
-Kirganlar
-[`etc/refresh-iroha.ts`](https://github.com/hyperledger-iroha/iroha-docs/blob/main/etc/refresh-iroha.ts)
-ish oqimlari toza manba checking bilan taqqoslaydi `provenance/iroha.json`,
-qayta tiklanadi `/src/snippets` va Torii OpenAPI tezkor va yangilanishlar SHA-256
-hashlar. tarkib va kelib chiqish o'zgarishlarini birgalikda ko'rib chiqing.
-o'rnatish va VitePress Builds cheklangan fayllarni iste'mol qilmasdan
-o'zgaruvchan bo'lakni olib keling.
+Ro'yxatdan o'tganlar [`etc/refresh-iroha.ts`](https://github.com/hyperledger-iroha/iroha-docs/blob/main/etc/refresh-iroha.ts) ish oqimi toza manba bilan bogʻliq hisob-kitobni tekshirish `provenance/iroha.json`, qayta tiklanadi `/src/snippets` va Torii OpenAPI tezkor fotosurat va yangilanishlar SHA-256 hashlar. tarkib va kelib chiqishi o'zgarishlarini birgalikda ko'rib chiqish. Oddiy bog'liqlik o'rnatish va VitePress Buildlar o'zgaruvchan bo'limiga ega bo'lmasdan checked-in fayllar iste'mol qiladi.
 
-## Snippets ham kiradi {#including-snippets}
+## Snippets-lar ham kiradi {#including-snippets}
 
-Foydalanish
-[VitePress kod-snippet sintaxasi](https://vitepress.dev/guide/markdown#import-code-snippets)
-ishlab chiqarilgan yoki mahalliy manbalarni o'z ichiga olish:
+[VitePress kod-snippet sintaksasi ](https://vitepress.dev/guide/markdown#import-code-snippets) dan foydalanib, generatsiya qilingan yoki mahalliy manbalarni o'z ichiga oling:
 
 ```md
 <<< @/snippets/client.template.toml
@@ -44,5 +34,4 @@ Nomlangan kod mintaqasini o'z mintaqa nomi bilan qo'shish mumkin:
 <<< @/example_code/lorem.rs#ipsum
 ```
 
-Qo'lda yozilgan misollarni kichik saqlang.
-interfeyslar, konfiguratsiya namunalari, ishlab chiqarilgan sxemalar va buyruq chiqish.
+Qo'lda yozilgan misollarni kichik saqlang. Jamoat interfeyslari, konfiguratsiya namunalari, ishlab chiqarilgan sxemalar va buyruq chiqarish uchun yangilangan manba artefaktlarini afzal ko'ring.

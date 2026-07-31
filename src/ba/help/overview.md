@@ -21,6 +21,6 @@ translation_engine: nllb-200-ct2
 
 Күпселек проблемалар бер-береһенә тап килмәгән асҡыстар арҡаһында килеп сыға.
 
-Бында тиҙ аңлатма: тиҫтерҙәрҙең асҡыстары ышаныслы тиҫтерләр массивындағы асҡыстар менән тап килмәгәс барлыҡҡа килгән хата хәбәрҙәрен айырмау мөмкин түгел, сөнки был тиҫтерҙарҙың асыҡ асҡысын асасаҡ. [`public_key`](/ba/reference/peer-config/params.md#param-public-key), [`private_key`](/ba/reference/peer-config/params.md#param-private-key), һәм [`trusted_peers`](/ba/reference/peer-config/params.md#param-trusted-peers) юғары кимәлдәге уңышһыҙлыҡтарҙы тикшергәнгә тиклемге баһалар.
+Бына тиҙ аңлатма: тиҫтерҙәрҙең асҡыстары  ышаныслы тиҫтерҙәр араһындағы асҡыстар, сөнки ул тиҫтерҙең асыҡ асҡысын асасаҡ. Шулай итеп, әгәр һеҙҙә бар Helm диаграммалары йәки Kubernetes урынлаштырыуҙар менән асҡыстар билдәләнгән тирә-яҡ мөхит үҙгәреүсәндәре аша, [`public_key`](/ba/reference/peer-config/params.md#param-public-key), [`private_key`](/ba/reference/peer-config/params.md#param-private-key), һәм [`trusted_peers`](/ba/reference/peer-config/params.md#param-trusted-peers) юғары кимәлдәге уңышһыҙлыҡтарҙы тикшергәнгә тиклемге баһалар.
 
 Шик булғанда, [ яңы асҡыс парын](/ba/guide/security/generating-cryptographic-keys.md) барлыҡҡа килтерегеҙ.

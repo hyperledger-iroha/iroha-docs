@@ -438,7 +438,7 @@ Bu parametr Torii operatorun son nöqtələri vasitəsilə işləmə vaxtının 
 
 ### `logger.filter` {#param-logger-filter}
 
-[`logger.level`](#param-logger-level) əlavə edilən təkmilləşdirilmiş log filtrləri.
+[`logger.level`](#param-logger-level) əlavə edilən təmizlənmiş log filtrləri. Hədəf üçün qeyd verbositetini özelleştirməyə imkan verir.
 
 <param-table type=string env=LOG_FILTER>
 <template #type>

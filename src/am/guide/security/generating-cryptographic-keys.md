@@ -6,74 +6,69 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# የምስጠራ ቁልፎችን መፍጠር {#generating-cryptographic-keys}
+# ምስጠራ ቁልፎችን ማመንጨት {#generating-cryptographic-keys}
 
-አጠቃቀም `kagami keys` ለደንበኛ ፣ ለባልደረባ እና ለማረጋገጫ ቁልፍ ቁሳቁሶችን ለመፍጠር
-Iroha 3.
+ለ Iroha 3 የደንበኛ ፣ የእኩዮች እና የማረጋገጫ ቁልፍ ቁሳቁስ ለማመንጨት `kagami keys` ይጠቀሙ ።
 
 ## መሠረታዊ አጠቃቀም {#basic-usage}
 
-ከ Iroha ምንጭ ክፍያ:
+ከ Iroha ምንጭ ካሻው:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519
 ```
 
-JSON ውፅዓት አብዛኛውን ጊዜ ወደ መቅዳት በጣም ቀላል ነው TOML ወይም አውቶሜሽን:
+JSON ውፅዓት አብዛኛውን ጊዜ ወደ TOML ወይም አውቶሜሽን ለመቅዳት በጣም ቀላል ነው:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --json
 ```
 
-አመራሩ የሕዝብ ቁልፍ እና የተጋለጠ የግል ቁልፍ ይደብቃል.
-ቁልፍ እንደ ምስጢራዊ ቁሳቁስ; የተፈጠሩትን የምርት ቁልፎች አያካትቱ ።
+ትዕዛዙ የሕዝብ ቁልፍ እና የተጋለጠ የግል ቁልፍ ይደብቃል። የግል ቁልፉን እንደ ምስጢራዊ ቁሳቁስ ያዙ; የተፈጠሩትን የምርት ቁልፎች አያደራጁ ።
 
 ## ስልተ ቀመሮች {#algorithms}
 
-የተለመዱ ስልተ ቀመሮች የሚከተሉት ናቸው
+የተለመዱ ስልተ ቀመሮች የሚከተሉት ናቸው:
 
-- `ed25519` ለደንበኛ መለያዎች ፣ ለዥረት ማንነቶች እና ለአብዛኛው ልማት
-  አውታረ መረቦች.
-- `secp256k1` የ SECP256K1 መለያ መታወቂያ ሲያስፈልግህ።
-- `bls_normal` የግንባታ ሲፈቅድ ለቫልዲተር ስምምነት ቁልፎች BLS ድጋፍ።
+- `ed25519` ለደንበኛ መለያዎች ፣ ለዥረት ማንነቶች እና ለአብዛኛዎቹ የልማት አውታረመረቦች።
+- `secp256k1` የ secp256k1 መለያ መታወቂያ ሲያስፈልግህ.
+- `bls_normal` በግንባታ አማካኝነት BLS ድጋፍን በሚያገኝበት ጊዜ ለቫሊደተር የጋራ ቁልፎች።
 
-በህንፃዎ የሚደገፉትን ትክክለኛ ስልተ ቀመሮችን ይመልከቱ:
+በግንባታዎ የሚደገፉትን ትክክለኛ ስልተ ቀመሮችን ይመልከቱ:
 
 ```bash
 cargo run --bin kagami -- keys --help
 ```
 
-## የመወሰን ልማት ቁልፎች {#deterministic-development-keys}
+## የዲተሪሚኒስት የልማት ቁልፎች {#deterministic-development-keys}
 
-ለተባዙ ማያያዣዎች አንድ ዘርን ያቅርቡ
+ለማዳበር የሚችሉ ማያ ገጾች አንድ ዘር ያቅርቡ:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --seed "dev-alice" --json
 ```
 
-ዘር የግል ቁልፍ ቁሳቁሶች ናቸው፤ ለአካባቢያዊ ልማትና ምርመራ ብቻ ይጠቀሙባቸው።
+ዘሮች የግል ቁልፍ ቁሳቁሶች ናቸው ለአካባቢያዊ ልማት እና ምርመራዎች ብቻ ይጠቀሙባቸው።
 
-## BLS ባለቤትነት ማስረጃ {#bls-proofs-of-possession}
+## BLS ባለቤትነት ማረጋገጫ {#bls-proofs-of-possession}
 
-NPOS እና Nexus የማረጋገጫ መገለጫዎች ያስፈልጋሉ BLS የማረጋገጫ ቁልፎች እና PoPs:
+የ NPoS እና Nexus ማረጋገጫ መገለጫዎች የ BLS የማረጋገጫ ቁልፎችን እና PoPs:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
 ```
 
-የ JSON ያካትታል `pop_hex` መቼ `--pop` ይህን እሴት በ
-የተፈጠረ ቶፖሎጂ ወይም `trusted_peers_pop` መገለጫው የሚጠይቀው መረጃ።
+የ JSON ያካትታል `pop_hex` መቼ `--pop` ጥቅም ላይ ይውላል. ያንን ዋጋ ከተፈጠረው ቶፖሎጂ ጋር ወይም `trusted_peers_pop` መገለጫው የሚጠይቅባቸው ግቤቶች።
 
 ## የውጤት ቅርጸቶች {#output-formats}
 
-ለደረጃ ምርመራ ነባሪ ውፅዓት ይጠቀሙ፣ `--json` ለኦቶሜሽን እና
-`--compact` ሌላ ስክሪፕት ቀላል መስመር-ተኮር እሴቶች ሲያስፈልግ:
+ለደረጃ ምርመራ ነባሪ ውፅዓት ይጠቀሙ ፣ `--json` ለአውቶሜሽን እና `--compact` ሌላ ስክሪፕት ቀላል መስመር-ተኮር እሴቶች በሚፈልጉበት ጊዜ:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --compact
 ```
 
-ሙሉ በሙሉ የሚመነጩ Kagami እርዳታ
+ሙሉ ለሙሉ የሚመነጭ Kagami ድጋፍ:
 
 ```bash
 cargo run -p iroha_kagami -- advanced markdown-help > crates/iroha_kagami/CommandLineHelp.md

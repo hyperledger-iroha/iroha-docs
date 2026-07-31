@@ -8,51 +8,49 @@ translation_engine: nllb-200-ct2
 
 # Iroha 3 {#iroha-3}
 
-Iroha 3 est la première version Hyperledger Iroha La plateforme prend en charge
-réseaux auto-hébergés et l'espace de données multi SORA Nexus modèle de déploiement à partir
-une base de code déterministe.
+Iroha 3 est la plateforme Hyperledger Iroha de première sortie. Elle prend en charge les réseaux auto-hébergés et le modèle de déploiement multi-espace de données SORA Nexus à partir d'une base de code déterministe.
 
-À un niveau élevé, Iroha 3 combinent:
+À un niveau élevé, Iroha 3 combine:
 
 - exécution déterministe et stockage
-- le Iroha Machine virtuelle (IVM) pour les contrats intelligents portables
-- Norito comme format de fil canonique
-- Torii pour le client, l'opérateur et les applications APIs
-- Sumeragi consensus sur la disponibilité obligatoire des données et une diffusion fiable
-- Comptes canoniques sans domaine avec des alias liés séparément par l'homme
+- la machine virtuelle Iroha (IVM) pour les contrats intelligents portables
+- Norito sous forme de fil canonique
+- Torii pour le client, l'opérateur et l'application APIs
+- Sumeragi consensus avec la disponibilité obligatoire des données et une diffusion fiable
+- Comptes canoniques sans domaine avec des pseudonymes liés séparément par l'homme
 
-## Début rapide {#quickstart}
+## Démarrage rapide {#quickstart}
 
-Si vous commencez à partir de rien, suivez les pages suivantes dans l'ordre:
+Si vous commencez de zéro, suivez les pages suivantes dans l'ordre:
 
-1. [Installation Iroha 3](/fr/get-started/install-iroha.md)
+1. [Installation de Iroha 3](/fr/get-started/install-iroha.md)
 2. [Lancement Iroha 3](/fr/get-started/launch-iroha.md)
-3. [Opérer Iroha 3 par le biais CLI](/fr/get-started/operate-iroha-via-cli.md)
-4. [Connectez-vous SORA Nexus espaces de données](/fr/get-started/sora-nexus-dataspaces.md)
+3. [L'opération Iroha 3 est effectuée par l'intermédiaire de CLI ](/fr/get-started/operate-iroha-via-cli.md)
+4. [Connectez-vous aux espaces de données SORA Nexus](/fr/get-started/sora-nexus-dataspaces.md)
 5. [Frais de parrainage des espaces de données privés](/fr/get-started/private-dataspace-fee-sponsor.md)
 
 ## SDKs {#sdks}
 
-Le courant SDK Les points d'entrée documentés sur ce site sont:
+Les points d'entrée actuels SDK documentés dans ce site sont:
 
 - [Rust](/fr/guide/tutorials/rust.md)
 - [Python](/fr/guide/tutorials/python.md)
 - [JavaScript / TypeScript](/fr/guide/tutorials/javascript.md)
-- [Kotlin, Android, et Java](/fr/guide/tutorials/kotlin-java.md)
+- [Kotlin, Android et Java](/fr/guide/tutorials/kotlin-java.md)
 - [Swift et iOS](/fr/guide/tutorials/swift.md)
 
-## Références des opérateurs {#operator-references}
+## Les références des opérateurs {#operator-references}
 
-Les pages que vous utiliserez le plus souvent lors de l'exécution d'un réseau sont:
+Les pages que vous utiliserez le plus souvent lors de l'exploitation d'un réseau sont les suivantes:
 
-- [Travailler avec Iroha à binaries](/fr/reference/binaries.md)
-- [Références de la Genèse](/fr/reference/genesis.md)
-- [Torii points de fin](/fr/reference/torii-endpoints.md)
-- [Connectez-vous SORA Nexus espaces de données](/fr/get-started/sora-nexus-dataspaces.md)
+- [Travailler avec les binaires Iroha](/fr/reference/binaries.md)
+- [Référencement de la Genèse](/fr/reference/genesis.md)
+- [points d'extrémité Torii](/fr/reference/torii-endpoints.md)
+- [Connectez-vous aux espaces de données SORA Nexus](/fr/get-started/sora-nexus-dataspaces.md)
 - [Frais de parrainage des espaces de données privés](/fr/get-started/private-dataspace-fee-sponsor.md)
-- [Matrice de compatibilité](/fr/reference/compatibility-matrix.md)
+- [Matrice de compatibilité ](/fr/reference/compatibility-matrix.md)
 
 ## En savoir plus {#learn-more}
 
 - [Iroha référentiel source](https://github.com/hyperledger-iroha/iroha)
-- [Référentiel de sources de documentation](https://github.com/hyperledger-iroha/iroha-docs)
+- [Référentiel de la source de documentation ](https://github.com/hyperledger-iroha/iroha-docs)

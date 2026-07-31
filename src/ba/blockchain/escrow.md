@@ -49,8 +49,8 @@ stateDiagram-v2
 |`AcceptAssetEscrow` |Сатып алыусы |Һатып алыусыны теркәп, `Open` менән `Accepted` күсерә. Сатыусы үҙенең депозитын ала алмай. |
 |`MarkEscrowPaymentSent` |Ҡабул ителгән һатып алыусы |`Accepted` -ға күсә `PaymentSent` һатып алыусы селтәрҙән тыш түләү ебәргәндән һуң. |
 |`ReleaseAssetEscrow` |Һатыусы |`PaymentSent` менән `Released` күсерә һәм һатып алыусыға тотош суммаһын тапшыра. |
-|`CancelAssetEscrow` |Һатыусы | Кәрәктәре `Open` йәки `Accepted` өсөн `Cancelled` һәм һатыусыға түләү билдәләнгәнгә тиклем аҡсаны ҡайтарып бирә. |
-|`OpenEscrowDispute` |Һатыусы йәки ҡабул ителгән һатып алыусы | Кәрәктәре `Accepted` йәки `PaymentSent` өсөн `Disputed` һәм иҫбатлау һешен өҫтәй. |
+|`CancelAssetEscrow` |Һатыусы |`Open` йәки `Accepted`-ны `Cancelled`-гә күсерә һәм һатыусыға түләү билдәләнмәйенсә кире ҡайтара. |
+|`OpenEscrowDispute` |Һатыусы йәки ҡабул ителгән һатып алыусы |`Accepted` йәки `PaymentSent`-ны `Disputed`-ға күсерә һәм иҫбатлау хэштегтарын ҡуша. |
 |`ResolveEscrowDispute` |`CanResolveEscrowDispute` менән иҫәп|`Disputed` менән `Resolved` күсә һәм сумманы һатып алыусы менән һатыусы араһында бүленә. |
 
 Низағдарҙы хәл итеү суммалары кире түгел, ә `buyer_amount + seller_amount` депозит суммаһы менән тиң булырға тейеш.
@@ -109,7 +109,7 @@ fn release_marketplace_escrow(
 |`CancelAssetLock` |Ҡоҙаҡты асыу |Актив бикләүҙе юҡҡа сығара һәм ҡалған сумманы асыусыға ҡайтарып бирә. |
 |`ExpireAssetLock` |Ваҡыт үткәндән һуң ниндәй ҙә булһа транзакция органы |Үткәндә `expires_at_ms` менән бикләнгән сумма юҡҡа сыға һәм ҡалған сумманы асыусыға ҡайтарыла. |
 
-`DrawdownAssetLock` яҙмаларҙы һаҡлай `Locked` әгәр ҡалған сумма нульгә етә, статусы булып китә `DrawnDown` Ә бына был эштең аҙағы килеп етте.
+`DrawdownAssetLock` `Locked` иҫәбен һаҡлай, ә күпмедер сумма тороп ҡала. Ҡалған сумма нулға еткәндә, статус `DrawnDown` булып китә һәм иҫәп ябыла.
 
 ```rust
 use iroha::{
@@ -174,7 +174,7 @@ fn drawdown_and_close_asset_locks(
 }
 ```
 
-Python Хәҙерге ваҡытта генераль клапан өсөн юғары кимәлдәге ярҙамсыларҙы асыҡлай: `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, һәм `expire_asset_lock`. Баҙар һәм аноним депозиттар өсөн Python, ҡулланыу каноник `InstructionBox` JSON аша SDK Ул - JSON escape люк, йәки тапшырыу аша SDK ул беренсе класлы ышаныслылыҡ төҙөүселәрҙе асыҡлай.
+Python әлеге ваҡытта дөйөм йоҙаҡтар өсөн юғары кимәлдәге ярҙамсыларҙы асыҡлай: `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock` һәм `expire_asset_lock`. Баҙарҙа һәм Python ҙан аноним ышанысҡа тотоноу өсөн `InstructionBox` JSON каноникаһын ҡулланып, SDK-тың JSON ҡасып сығыу шлюзы аша үтә. йәки SDK аша тапшырыу, беренсе класлы депозит төҙөүселәрҙе асыҡлау өсөн.
 
 ## Низағтар {#disputes}
 
@@ -292,7 +292,7 @@ fn open_anonymous_escrow(
 |SDK |Был өҫкө йөҙөн ҡулланығыҙ.|Күләмдәре |
 | --- | --- | --- |
 | [Rust](#rust-sdk) |`iroha::data_model::isi::escrow` |Баҙарҙа депозит, дөйөм йоҙаҡтар, анонимные депозит, һорауҙар һәм ваҡиғалар. |
-| [Python](#python-asset-locks) | `Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock`, һәм клиент `*_and_wait` ярҙамсылары |Дөйөм активтар бикләү. Баҙар һәм аноним ышаныслы ярҙамсылары әлегә беренсе класлы Python алымдар түгел. |
+| [Python](#python-asset-locks) |`Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock` һәм клиент ярҙамсылары `*_and_wait` |Дөйөм активтар бикләү. Баҙар һәм аноним ышаныслы ярҙамсылары әлегә беренсе класлы Python алымдар түгел. |
 | [JavaScript / TypeScript](#javascript-and-typescript-kotodama) |`compileKotodamaProgram` от `@iroha/iroha-js/kotodama-compiler` |Kotodama килешеүҙәр эсендә эскроу хостинг шылтыратыуҙар. |
 | [Kotlin / JVM](#kotlin-and-jvm) |`InstructionTemplate` кластары менән `org.hyperledger.iroha.sdk.core.model.instructions` |Баҙар майҙаны һәм аноним эскроу ҡулайлаштырылған инструкция шаблондары. |
 | [Swift / iOS](#swift-and-ios) |`NativeEscrowInstructionBuilders` һәм `IrohaSDK.build*Escrow*` ярҙамсылары |Баҙар һәм аноним депозит Norito JSON инструкция йөкләмәләре. |
@@ -363,7 +363,7 @@ client.expire_asset_lock_and_wait(
 
 ### JavaScript һәм TypeScript Kotodama {#javascript-and-typescript-kotodama}
 
-Ҡоролтай JavaScript SDK әлеге ваҡытта тура урындағы эскроу транзакция төҙөүселәрҙе фаш итмәй. JavaScript йәки TypeScript ҡулланыусы ҡушымталар Kotodama килешеүҙәр, скроу-хост шылтыратыуҙар менән Kotodama компилятор.
+JavaScript SDK әлеге ваҡытта туранан-тура урындағы эскроу транзакция төҙөүселәрҙе асыҡламай. Kotodama килешеүҙәрен урынлаштырыусы JavaScript йәки TypeScript ҡушымталары өсөн, Kotodama компиляторы менән экстроу хостинг саҡырыуҙарын төҙөгеҙ.
 
 Туған эскроу хостинг шылтыратыуҙарына асыҡтан-асыҡ инеү күрһәткестәре кәрәк, сөнки компилятор ISIs үтә күренмәле эскроуға тарраҡ инеү йыйылмаларын ала алмай. Экспорт ителгән инеү нөктәләрендә `escrow_*` ингредиенттарын саҡырыусы wildcard иҫкәртеүҙәре ҡулланығыҙ.
 

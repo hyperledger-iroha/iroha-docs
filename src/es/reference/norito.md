@@ -121,7 +121,7 @@ Los atributos de campo comunes son:
 |`#[norito(default)]` |Utiliza `Default` cuando una carga útil descifrada no lleva el campo. |
 |`#[norito(skip_serializing_if = "...")]` |Elimina campos de JSON cuando el predicado coincide, mientras se conservan los valores predeterminados de decodificación. |
 
-Los derivados también exponen sugerencias de longitud codificadas y cálculos de longitud exacta cuando sea posible.
+Los derivados también exponen señales de longitud codificada y cálculos de longitud exacta cuando sea posible. Los codificadores utilizan estas pistas para reservar los amortiguadores y evitar copias adicionales.
 
 ## Familias de la caja {#crate-feature-families}
 
@@ -192,7 +192,7 @@ Los códecs y perfiles de entropía específicos para la transmisión están sep
 - Mantenga `.nrt`, `.norito`, y manifieste los artefactos con el paquete de liberación o incidente que los produjo.
 - Utilice las proyecciones JSON para los paneles de control y la inspección manual, pero mantenga Norito como fuente de verdad para los datos firmados, hashed o persistentes.
 - Cuando se añada un nuevo punto final Torii de tipo, documentar si acepta JSON, Norito o ambos, y exponer los tipos de contenido soportados en `/openapi`.
-- Al habilitar los aceleradores, ejecuta pruebas de paridad con la salida escalar antes del despliegue.
+- Al activar los aceleradores, ejecute pruebas de paridad con la salida escalar antes del despliegue. Los fallos de los aceleradores deberían retroceder limpiamente en lugar de cambiar la semántica de carga útil.
 
 ## Páginas relacionadas {#related-pages}
 

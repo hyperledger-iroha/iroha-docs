@@ -8,26 +8,22 @@ translation_engine: nllb-200-ct2
 
 # Anjumanlarning nomi {#naming-conventions}
 
-Hisobvaraqlar, domenlar yoki aktivlarni nomlashda esingizda bo'lishi kerak
-quyidagi konvensiyalar Iroha:
+Hisobvaraqlar, domenlar yoki aktivlarni nomlashda siz Iroha da ishlatiladigan quyidagi konvensiyalarni yodda tutishingiz kerak:
 
-1. Bir qator alohida ajratgichlar mavjud.
-   qurilish turlari:
+1. Konstruksiyalarning muayyan turlari uchun foydalaniladigan bir qator ajratgichlar mavjud:
 
-   - `@` hisobning aliaslari va ko'rsatilgan hisob / ommaviy kalit shakllari uchun ajratilgan
-   - `#` aktivlarni belgilash aliaslari va aktivlar balansini yozish uchun ajratilgan
-   - `::` kontraktli aliaslar uchun ajratilgan
-   - `.` domen va ma'lumotlar maydonining kvalifikatsiyasi uchun ajratilgan
-   - `$` trigger-scoped matn shakllari uchun ajratilgan
-   - `%` tasdiqlovchilarga ko'ra aniqlangan matn shakllari uchun qo'yiladi
+   - `@` hisobning aliaslari va ko'rsatkichli hisob / ommaviy kalit shakllari uchun ajratilgan
+   - `#` aktivlarni belgilash aliaslari va aktivlar balansini yozish uchun mo'ljallangan
+   - `::` kontraktli aliaslar uchun mo'ljallangan
+   - `.` domenlar va ma'lumotlar maydonlari uchun ajratilgan
+   - `$` trigger-scoped matn shakllari uchun qo'yiladi
+   - `%` tasdiqlovchilarga ko'rsatilgan matn shakllari uchun qo'yiladi
 
-2. Maximum belgilar soni (shu jumladan UTF-8 belgilar) nomni qo ' shib
-   ikki omil bilan cheklanadi: `[0, u32::MAX]` va hozirgi
-   to'plamga ajratilgan joy.
+2. UTF-8 belgilarini o'z ichiga olgan harflarning maksimal soni ikkita omil bilan cheklanadi: `[0, u32::MAX]` va hozirda ajratilgan to'plam maydoni.
 
-## Uni sinab koʻring . Taira {#try-it-on-taira}
+## Taira bilan sinab ko'ring. {#try-it-on-taira}
 
-Davlat aktivining aliasini uning kanonik aktivlari ta'rifiga kiritish ID:
+Umumiy aktiv aliasini uning kanonik aktiv ta'rifiga kiritish ID:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/assets/aliases/resolve \
@@ -36,13 +32,11 @@ curl -fsS https://taira.sora.org/v1/assets/aliases/resolve \
   | jq '{alias, asset_definition_id, asset_name, status: .alias_binding.status}'
 ```
 
-Buni aktivni aniqlash ro'yxati bilan taqqoslang:
+Buni aktivni belgilash ro'yxati bilan taqqoslang:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=20' \
   | jq -r '.items[] | select(.alias != null) | [.alias, .id, .name] | @tsv'
 ```
 
-O ' zbekiston Respublikasi `#` Xarakter aktiv aliasini domen kontekstidan ajratib qo'yadi.
-agar siz qasddan aktiv aliasi yoki aktivni yozmayotgan bo'lsangiz
-ramziy ma'noda muvozanat.
+`#` belgisi aktiv aliasini domen kontekstidan ajratib qo'yadi. Agar siz qasddan aktiv aliasi yoki aktiv balansini literal yozmagan bo'lsangiz, uni oddiy nomlardan saqlang.

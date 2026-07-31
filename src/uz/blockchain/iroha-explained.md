@@ -6,114 +6,72 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Iroha Tafsir qilingan {#iroha-explained}
+# Iroha tushuntirilgan {#iroha-explained}
 
-Iroha 3 birinchi chiqarilgan Hyperledger Iroha platformasi. Xuddi bir yulduz
-o'zini-o'zi uyushtirilgan tarmoqlarni qo'llab-quvvatlaydi va SORA Nexus ma'lumotlar uchun ijro etish modeli
-bo'sh joylar va ko'p yo'nalishdagi yo'nalishlar.
+Iroha 3 - birinchi chiqarilgan Hyperledger Iroha platformasi. Xuddi shu markaz o'z-o'zini uyushtirgan tarmoqlarni va SORA Nexus ma'lumotlar maydonlari va ko'p yo'nalishdagi yo'naltirish uchun ijro etish modelini qo'llab-quvvatlaydi.
 
 ## Asosiy qurilish bloklari {#core-building-blocks}
 
-- **`irohad`** tengdoshlarni boshqaradi
-- **Torii** mijoz va operator darvozasi
-- **Sumeragi** konsensusni hal qiladi
-- **Norito** bu [kanonik ikkilamchi format](/uz/reference/norito.md)
-- **IVM** portativ aqlli kontraktlar va byte kodini ishga tushiradi
-- **Kotodama** yuqori darajadagi `.ko` shartnomalar IVM `.to` Byte kodlari
-- **Kagami** kalitlar, genesis, profillar va lokal tarmoqlarni tayyorlaydi
-- **SORA Nexus xizmat samolyotlari** qoʻshish Soracloud, Inrou, SoraNet, SoraFS, va
-  SoraDNS ilovalar xosting, maxfiylik transporti, saqlash va nomlash uchun
+- `irohad` tengdoshlarni boshqaradi
+- Torii mijoz va operator darvozasi hisoblanadi
+- Sumeragi konsensusni o'zlashtiradi
+- Norito - bu [kanonik ikkilamchi format ](/uz/reference/norito.md)
+- IVM portativ aqlli kontraktlar va byte kodini o'tkazadi
+- Kotodama yuqori darajadagi `.ko` shartnomalarni IVM `.to` bytekodga yig'adi.
+- Kagami kalitlarni, genesisni, profillarni va lokal tarmoqlarni tayyorlaydi
+- SORA Nexus xizmat samolyotlari qo'shish Soracloud, Inrou, SoraNet, SoraFS, va SoraDNS dasturlarni xosting qilish, maxfiylik transporti, saqlash va nomlash uchun
 
 ## Ijro qilish modeli {#execution-model}
 
-Dunyo holatidagi har qanday o'zgarish hali ham bitimlar orqali sodir bo'ladi.
-Transaksiyalar yo'l-yo'riqlarni o'z ichiga oladi yoki IVM bytekod va Torii asosiy yo'l
-mijozlar ularni taqdim etadi yoki ularning ta'sirini kuzatadi.
+Dunyo holatidagi har qanday o'zgarish hali ham tranzaksiyalar orqali sodir bo'ladi. Tranzaksiyalar ko'rsatmalarni yoki IVM byte kodini o'z ichiga oladi va Torii mijozlar ularni taqdim etishning asosiy usuli yoki ularning ta'sirlarini kuzatishdir.
 
-- Nexus-Shuning o'zida ko'p yo'nalishlarni belgilash mumkin.
-- ma'lumotlar maydonlari ish yuklarini alohida ta'minlaydi va bir xil kitob modelining bir qismi bo'lib qoladi
-- yoʻnalish siyosati qaysi yoʻnalishda va maʼlumotlar maydonida ish sinfini boshqarishni hal qiladi
+- Nexus ma'lumotli konfiguratsiyalar ko'p yo'nalishlarni belgilashi mumkin
+- ma'lumotlar maydonlari ish yuklarini izolyatsiya qiladi va bir xil katta kitob modelining bir qismi bo'lib qoladi
+- yoʻnalish siyosati qaysi yoʻnalishda va maʼlumotlar maydonida ish sinfini boshqarishni hal qiladi .
 
-## Ko'p ma'lumotlar maydoni me'mori {#multi-dataspace-architecture}
+## Ko'p ma'lumotlar maydoni me'moriyligi {#multi-dataspace-architecture}
 
-Ma'lumotlar maydoni - bu yo'nalish va nomlar maydonining chegarasi, alohida blokchaina emas.
-Ish vaqti hali ham bitta `World`, bir bitim modeli va bitta konsensus
-quvurlari. Nexus boʻlimni qanday ishlashini aytadigan kataloglarni qoʻshadi
-yo'llar bo'ylab va qanday qilib ushbu yo'llar xizmat ko'rsatadigan ma'lumotlar maydonlarini nomlash.
+Ma'lumotlar maydoni - bu yo'nalish va nomlar maydonining chegaralari, alohida blokchaina emas. Ish vaqti hali ham bitta `World`, bir muomala modeli va bir kelishuv quvurini o'z ichiga oladi. Nexus nodga yo'nalishlar bo'ylab qanday ajratish ishlashini va ushbu yo'nalishda xizmat qiladigan ma'lumotlar maydonlarini qanday nomlash kerakligini aytib beradigan kataloglarni qo'shadi.
 
-Ish paytida ma'lumotlar maydoni raqamli `DataSpaceId` va
-Katalog metadatalari. `DataSpaceId::UNIVERSAL` O ' z kuchini `0`; ko'rsatkich
-katalogda `universal` ma'lumotlar maydonchasi. Har bir konfiguratsiya qilingan ma'lumotni maydonchasida:
+Ish paytida ma'lumotlar maydoni raqamli `DataSpaceId` va katalog metama'lumotlar bilan tasvirlanadi. `DataSpaceId::UNIVERSAL` `0` sifatida qo'yiladi; andoza katalogda `universal` ma'lumot maydoni mavjud. Har bir konfiguratsiya qilingan ma'lumotni maydonida:
 
-- noyob raqam ID
-- o'ziga xos alias sifatida: `universal`, `governance`, yoki `zk`
-- operator yuzalari bo'yicha fakultativ tavsif
-- nol bo'lmagan `fault_tolerance` Relay qo'mitalarini o'lchash uchun ishlatiladigan qiymat
+- yagona raqamli ID
+- `universal`, `governance` yoki `zk` kabi noyob aliaslar
+- operator yuzalari bo'yicha tanlovli tavsif
+- Relay qo'mitalarini o'lchash uchun ishlatiladigan noldan tashqari qiymat `fault_tolerance`
 
-Dalolatlar - bu ma'lumotlar maydonlariga bog'liq bo'lgan ijro va saqlash yo'nalishlari.
-yo'nalish kirish a `LaneId`, ko'rsatilgan `DataSpaceId` bu bir alias sifatida xizmat qiladi,
-ko'rinishi (`public` yoki `restricted`), saqlash profili (`full_replica`,
-`commitment_only`, yoki `split_replica`), isbot tizimi va fakultativ
-Boshqaruv, hisob-kitob va rejalashtirish metadatalari.
-Ushbu katalogdan yo'nalishdagi saqlash geometriyasi, shu jumladan Kura segment nomlari
-va deterministik kalit prefikslar.
+Yo'nalishlar - bu ma'lumotlar maydonlariga bog'liq bo'lgan ijro va saqlash yo'llaridir. `LaneId`, ko'rsatkichlari `DataSpaceId` u alias, ko'rinishi (`public` yoki `restricted`), saqlash profili (`full_replica`, `commitment_only`, yoki `split_replica`), dalil sxemasi va fakultativ boshqaruv, hisob-kitob va jadvallashtirish metadatalari. Ish vaqti ushbu katalogdan bir yo'nalishdagi saqlash geometriyasini keltirib chiqaradi, shu jumladan: Kura segmentlar nomi va deterministik kalit prefikslari.
 
-Yoʻnalish yoʻli:
+Yoʻnalish yoʻli quyidagicha:
 
-1. Konfiguratsiya tasdiqlangan `DataSpaceCatalog`, `LaneCatalog`, va
-   `LaneRoutingPolicy`. Ko'p yo'llar, ko'p ma'lumotlar maydonlari yoki andoza bo'lmagan
-   yoʻnalish talab etiladi `nexus.enabled = true`.
-2. Transaksiya navbatida faol yoʻnalish routeridan
-   `RoutingDecision` yo'nalishdagi ID va ma'lumotlar maydoni ID.
-3. Yo'nalishning aniq qoidalari vakolat/hisobga yoki ko'rsatmalarga qarab moslashishi mumkin
-   Etiketa. moslash qoidasi bo'lmaganda, router ma'lumotlar maydonini
-   domen IDs, Asset-definition proyeksiyalari, ma'lumotlar maydonidan foydalanish uchun ruxsatnomalar;
-   to'lovlar bo'yicha yo'nalishlar yoki organning bog'liq hisob raqamlari.
-4. Xalos qilingan yo'nalish ikkala katalogga ham mos keladi.
-   noma'lum ma'lumotlar maydonlari va yo'nalish / ma'lumot maydonining mos kelmasligi deterministik
-   yoʻnaltirish xatosi. Agar bir operatsiya ikki xil maʼlumotlar maydonida yozsa
-   maqsadlar, u zid yo'l sifatida rad etiladi; o'zaro ma'lumotlar maydoni DVP/PVP
-   to'lov universal koordinator yo'nalishi orqali amalga oshiriladi.
-5. Sumeragi va telemetriya vazifani yoʻnalish va maʼlumotlar maydoni sifatida koʻrinishda saqlaydi
-   faoliyat, orqaga chiqish va majburiyatlarni ko'rish.
+1. Konfiguratsiya tasdiqlangan `DataSpaceCatalog`, `LaneCatalog` va `LaneRoutingPolicy` yo'nalishlarini yaratadi. Ko'p yo'nalishlar, ko'p ma'lumotlar maydonlari yoki andoza bo'lmagan yo'naltirishni talab qiladi `nexus.enabled = true`.
+2. Transaksiya navbatida faol yoʻnalish routeridan `RoutingDecision` yo'lni o'z ichiga olgan ID va ma'lumotlar maydoni ID.
+3. Yo'naltirishning aniq qoidalari vakolat/hisob yoki ko'rsatma etiketi bo'yicha moslashishi mumkin. To'g'rilashuv qoidasi bo'lmaganda, router ma'lumotlar maydonini domen IDs, aktivlar ta'rifining proyeksiyalarini, ma'lumot maydonida o'rnatilgan ruxsatnomalarni, hisob-kitob yo'nalishlarini yoki hokimiyatning bog'langan hisob maydonidan olishadi.
+4. Xalos qilingan yo'l har ikki katalogga qarshi tekshiriladi. Noma'lum yo'nalishlar, noma'lum ma'lumotlar maydonlari va yo'nalish / ma'lumot maydonlarining mos kelmasligi deterministik yo'naltirish xatosi hisoblanadi. Agar bir bitim ikki xil ma'lumotlar maydonining maqsadlariga yozsa, u ziddiyatli yo'l sifatida rad etiladi; DVP/PVP o'zaro ma'lumot maydonidagi to'lov universal koordinator yo'li orqali yo'lga tushiriladi.
+5. Sumeragi va telemetriya topshiriqni yo'nalish va ma'lumotlar maydonidagi faoliyat, orqaga chiqish va majburiyatlarni ko'rish uchun fotosuratlar sifatida saqlashadi.
 
-Shu sababli ob'ekt identifikatorlari muhimdir.
-o'zlarining ID, misol uchun `payments.universal`, Shunday qilib, domen miqyosida yozish mumkin
-hisoblar kanonik va domensiz qoladi, shuning uchun bir xil hisob
-o'zgarmasdan turli xil qo'llanma maydonlariga bog'lanishi mumkin
-`AccountId`. Asset ta'riflari domen/ma'lumotlar maydonining proyeksiyasini olib borishi mumkin,
-bu esa aktiv operatsiyalariga to'g'ri ma'lumotlar maydonining yo'nalishini meros qilib olish imkonini beradi.
+Shuning uchun ob'ekt identifikatorlari muhimdir. Domenlar ID da ma'lumotlar maydonining aliasini o'z ichiga oladi, masalan `payments.universal`, shuning uchun domen miqyosidagi yozishlarni yo'naltirish mumkin. Hisobotlar kanonik va domensiz bo'lib qolmoqda, shuning uchun bir xil hisobni `AccountId` ni o'zgartirmasdan turli dasturlar maydonlariga bog'lab qo'yish mumkin. Asset ta'riflari domen/ma'lumotlar maydoni proyeksiyasini olib borishi mumkin, bu esa aktiv operatsiyalariga to'g'ri ma'lumotlar maydonining yo'nalishini meros qilib olish imkonini beradi.
 
-Yo'q Nexus o'tkazib yuborilsa, nod bitta yo'ldan foydalanadi va `universal`
-Ma'lumotlar maydoni. SORA profil uni uch yo'nalishli bilan almashtiradi
-katalog: `core` universal ommaviy yo'nalish uchun, `governance` boshqaruv uchun
-harakatlanish va `zk` nol ma'lumotlar bilan bog'lanish va shartnoma asosida ishga tushirish uchun
-trafik.
+Nexus o'rnatilmagan holda, nod bitta yo'nalish va `universal` ma'lumotlar maydonidan foydalanadi. SORA profilini uch yo'nalishli katalog bilan almashtiradi: `core` universal jamoat yo'nalishi uchun, `governance` boshqaruv trafiklari uchun va `zk` nol bilim bilan bog'liqlik va shartnomalarni ishga tushirish trafiklari uchun.
 
 Ushbu uchta andoza ish yuklari sinflarini ajratish uchun mavjud:
 
-| Ma'lumotlar maydoni    | Yoʻl         | Nima uchun u bor                                                                                                                                       |
+|Maʼlumotlar maydoni |Lane |Nima uchun u bor ?|
 | ------------ | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `universal`  | `core`       | Dastlabki ma'lumotlar maydoni (`DataSpaceId::UNIVERSAL == 0`) odatdagi ommaviy hisob raqamlari trafikini va ortga qaytish yo'nalishini ta'minlash uchun.                                 |
-| `governance` | `governance` | Boshqaruv va parlament harakati uchun cheklangan yo'l, shuning uchun nazorat-tasha faoliyati umumiy qo'llanma yozish bilan aralashtirilmaydi.                      |
-| `zk`         | `zk`         | Zero bilimli dalillar, ilovalar va shartnomalarni ishga tushirish yo'nalishi uchun cheklangan yo'nalish, aniqlovchi yuksak ish oqimlarini odatdagi yozishdan ajratib turadi. |
+|`universal` |`core` |Oddiy ommaviy hisob raqamlari harakati va qaytish yo'nalishi uchun belgilangan andoza ma'lumotlar maydoni (`DataSpaceId::UNIVERSAL == 0`) |
+|`governance` |`governance` |Boshqaruv va parlament harakatlari uchun cheklangan yo'l, shuning uchun nazorat-tasha faoliyati umumiy qo'llanma yozish bilan aralashmaydi. |
+|`zk` |`zk` |Zero bilimli isbotlar, ilovalar va shartnomalarni ishga tushirish yo'nalishi uchun cheklangan yo'l, isbot-og'ir ish oqimlarini odatdagi yozishlardan ajratib turadi. |
 
-Faqat `universal` - bu qo'riqlangan boshlang'ich chiziq. `governance` va `zk` bo'lgan SORA
-paketli katalog va yo'nalish siyosatida kodlangan profil tanlash;
-operatorlar boshqa ma'lumotlar maydonini talab qilganda boshqa katalogni belgilashlari mumkin
-chegaralar.
+Faqat `universal` qo'riqlangan boshlang'ich liniya hisoblanadi. `governance` va `zk` SORA profil variantlari paketli katalog va yo'naltirish siyosatida kodlangan; operatorlar turli ma'lumotlar maydonining chegaralariga muhtoj bo'lganda boshqa katalogni belgilashlari mumkin.
 
-Sumeragi har doim ma'lumotlar mavjudligi va ishonchli etkazib berishdan foydalanadi.
-ko'rsatkichlarning bir qismi Iroha 3 konsensus protokolini ishga tushirish orqali o'chirib bo'lmaydi
-profil.
+Sumeragi har doim ma'lumotlar mavjudligi va ishonchli etkazib berishdan foydalanadi. Ushbu yo'llar Iroha 3 konsensus protokolining bir qismi bo'lib, ishga tushirish profillari tomonidan o'chirib qo'yilmaydi.
 
-Ish vaqti xatti-harakati konfiguratsiya fayllaridan va zanjirdagi parametrlardan kelib chiqadi.
-Tabiat o'zgaruvchilari ishlab chiqarish xususiyatlari darvozalari emas.
+Ish vaqti xatti-harakatlari konfiguratsiya fayllaridan va zanjirdagi parametrlardan kelib chiqadi. Tabiatni o'zgaruvchilar ishlab chiqarish xususiyatlari darvozalari emas.
 
 ## Keyingi oʻqing {#read-next}
 
-- [SORA Nexus xizmat ko'rsatish](/uz/blockchain/sora-nexus-services.md)
-- [Uchratish Iroha 3](/uz/get-started/launch-iroha.md)
-- [Dunyo, WSV, va Kura saqlash](/uz/blockchain/world.md)
-- [Ibtidoga oid ma'lumot](/uz/reference/genesis.md)
-- [Torii oxirgi nuqtalar](/uz/reference/torii-endpoints.md)
+- [SORA Nexus xizmatlari](/uz/blockchain/sora-nexus-services.md)
+- [Iroha 3](/uz/get-started/launch-iroha.md) ishga tushirish
+- [Jahon, WSV va Kura saqlash](/uz/blockchain/world.md)
+- [Ibtido ko'rsatkichi](/uz/reference/genesis.md)
+- [Torii oxirgi nuqtalari](/uz/reference/torii-endpoints.md)

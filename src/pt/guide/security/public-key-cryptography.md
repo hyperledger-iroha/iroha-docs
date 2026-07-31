@@ -26,11 +26,11 @@ Cada transacção deve ser assinada por uma autoridade de conta. A chave privada
 
 ::: Aviso
 
-Todos os clientes são diferentes, mas a configuração do cliente de texto simples só é adequada para desenvolvimento e testes controlados.
+Todos os clientes são diferentes, mas a configuração do cliente de texto simples é adequada apenas para desenvolvimento e testes controlados. As integrações de produção devem utilizar um gerenciador secreto, armazenamento de chaves suportado por hardware ou outro limite de assinatura auditado.
 
 :::
 
-O registo de uma nova conta implica a geração de material do controlador, como um par de chaves Ed25519, e o envio da parte pública para a rede.
+O registo de uma nova conta envolve a geração de material do controlador, como um par de chaves Ed25519. e submetendo a parte pública à rede. As transacções posteriores da conta devem ser assinadas com a chave privada correspondente ou com a política de controlador de conta configurada.
 
 Para a criptografia de chaves públicas funcionar eficazmente, evite reutilizar chaves quando precisar especificar uma nova chave. Embora não haja nada que impeça você de fazer isso, as chaves públicas são públicas, o que significa que se um atacante vê a mesma chave pública sendo usada, Saberão que as chaves privadas também são idênticas.
 

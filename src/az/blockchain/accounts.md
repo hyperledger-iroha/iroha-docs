@@ -71,7 +71,7 @@ Hesabın yaradılması və ya yenilənməsi imzalanmış bir əməliyyatdır və
 
 ## qeydiyyat və icazələr {#registration-and-permissions}
 
-Hesablar ümumi [`Register` və `Unregister`](/az/blockchain/instructions.md#un-register) təlimatları ilə qeydiyyatdan keçirilir və qeydiyyata alınmır.
+Hesablar ümumi [`Register` və `Unregister`](/az/blockchain/instructions.md#un-register) təlimatları ilə qeydiyyatdan keçirilir və qeydiyyata alınmır. Aktiv icra vaxtının təsdiqçisi hesabları kimin yarada biləcəyini və hansı icazə simvollarının və ya rolların tələb olunduğunu müəyyənləşdirir.
 
 Hesab qeydiyyatdan sonra aşağıdakıları edə bilər:
 

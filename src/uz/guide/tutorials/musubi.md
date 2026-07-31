@@ -8,19 +8,15 @@ translation_engine: nllb-200-ct2
 
 # Musubi Kotodama Paketlar {#musubi-kotodama-packages}
 
-Musubi uchun paket menejeri hisoblanadi Kotodama manba paketlari.
-ishlab chiquvchilar yukga o'xshash ish oqimini Kotodama funksiyalari
-to'plamning kimligini SORA va Iroha nom maydonlari oʻrniga
-global birinchi kelgan nomlar jadvali.
+Musubi Kotodama manba paketi uchun paket menejeri bo'lib xizmat qiladi. Bu ishlab chiquvchilarga yukga o'xshash ish oqimini taqdim etadi, u bilan birgalikda qo'shilishi mumkin bo'lgan Kotodama funksiyalarini baham ko'rish va global birinchi kelgan nomlar jadvali o'rniga SORA va Iroha nomlar maydonlariga bog'liq holda paket kimligini saqlash mumkin.
 
-Foydalanish Musubi agar kerak bo'lsa:
+Agar kerak bo'lsa, Musubi dan foydalaning:
 
-- qayta ishlatilishi mumkin Kotodama manba kutubxonalari
-- to'g'ri o'tish manbalariga bog'liq bo'lgan `Musubi.lock`
-- ta'sir manbaini tekshirishdan rekonstruksiya qilish SoraFS arxiv majburiyatlari
-- paket nomlar maydonini xuddi shu dapp kontrakt aliaslariga ulash
-  nomlar maydonlari
-- zanjirdagi reyestr orqali paketlarni tekshirish, nashr etish, olib tashlash yoki boshqa nomlarga ega bo'lish
+- qayta ishlatiladigan Kotodama manba kutubxonalarini nashr etish
+- `Musubi.lock`da aniq o'tish manbalariga bog'liq bo'lgan belgilar
+- tasdiqlangan SoraFS arxiv majburiyatlaridan bog'liqlik manbaini rekonstruksiya qilish
+- paket nomlar maydonini xuddi shu nomlar maydosidagi dapp kontrakt aliaslariga ulash
+- zanjir bo'yicha reyestr orqali paketlarni tekshirish, nashr etish, olib tashlash yoki boshqa nomlar bilan tanishish
 
 ## Toʻplam nomlari {#package-names}
 
@@ -30,30 +26,26 @@ Canonik paket identifikatorlaridan foydalanish:
 namespace/package
 ```
 
-Toʻgʻri chiqarib tashlash maʼlumotlaridan foydalanish:
+Toʻgʻri chiqarilgan maʼlumotlardan foydalanish:
 
 ```text
 namespace/package@version
 ```
 
-Yoʻlboshchi yoʻq `@` nomlar maydonidan oldin. `@` ajratgich qo ' yilgan
-versiyasi suffix uchun.
+Nomlar maydonidan oldin `@` ko'rsatkichi yo'q. `@` ajratgichisi versiya sufiksi uchun qo'yiladi.
 
-Nomlar maydonining segmentlari tomonidan ishlatiladigan sufiksga mos keladi Kotodama Dapp shartnomasi
-nomlar:
+Nomlar maydonidagi segment Kotodama dapp shartnoma aliaslari tomonidan ishlatiladigan suffixga mos keladi:
 
-| Xatchoʻp identifikatori                | O'zaro bog'liq shartnoma alias shakli |
+|Xatchoʻp id |O ' zaro bog ' liq shartnoma alias shakli |
 | ------------------------- | ---------------------------- |
-| `universal/math`          | `router::universal`          |
-| `dex.universal/swap-core` | `router::dex.universal`      |
+|`universal/math` |`router::universal` |
+|`dex.universal/swap-core` |`router::dex.universal` |
 
-Nomlar maydonlari `<dataspace>` yoki `<domain>.<dataspace>` shakli.
-paketda Dapp bog'i mavjud, Musubi har bir bog'langan shartnoma aliasini tekshiradi
-paket bilan bir xil nomlar maydonidagi so'zlarni ishlatadi.
+Ism maydonlari `<dataspace>` yoki `<domain>.<dataspace>` shakliga ega. Agar paketda dapp bog'lanishi bo'lsa, Musubi har bir bog'langan shartnoma aliasida paket bilan bir xil nom maydonining suffixidan foydalanilishini tekshiradi.
 
 ## Koʻrinadi {#manifest}
 
-Paket quyidagicha boshlanadi: `Musubi.toml`:
+To'plam `Musubi.toml` bilan boshlanadi:
 
 ```toml
 [package]
@@ -73,20 +65,13 @@ namespace = "dex.universal"
 contracts = ["router::dex.universal"]
 ```
 
-Bo'rinishlarda aniq versiyalar, ehtiyotkorlik talablari, tilde foydalanish mumkin
-talablar, yovvoyi kartalar: `1.*`, yoki qiyosiy ro'yxatlar, masalan:
-`>=1.0.0,<2.0.0`.
+Muvofiqliklarda aniq versiyalar, ehtiyotkorlik talablari, tilde talablari, `1.*` kabi wildcardlar yoki `>=1.0.0,<2.0.0` kabi taqqoslovchi ro'yxatlardan foydalanish mumkin.
 
-`Musubi.lock` tanlangan transitiv grafikni zanjirdan yozib oladi
-Registr. Har bir qulflangan nod o'z kanonik paketni saqlaydi, tanlangan
-talab, SoraFS manifest digest, manba arxivining hash, baytlar soni, fayl
-hisob, eksport qilingan funksiyalar, deterministik manba arxiv rejasi va
-qisqa aliaslar o'z ichiga kirishdan oldin hal qilinadi
-Qopish fayli.
+`Musubi.lock` tanlangan o'zgaruvchan grafikni zanjirdagi reyestrdan qayd etadi. Har bir qulflangan nod uning kanonik paket ref, tanlangan talab, SoraFS manifest digest, manba arxiv hash, byt soni, fayl soni, eksport qilingan funktsiyalar, deterministik manba arxiv rejasi va bog'liqlik aliaslarini saqlaydi. Qisqa aliaslar qulf fayliga kirishdan oldin yechiladi.
 
 ## Mahalliy ish oqimi {#local-workflow}
 
-Oʻsimlikdan Iroha ish maydonining tugmasi, ishga tushirish Musubi yuk orqali:
+Yuqori tomondan Iroha ish maydonining ildizidan, Musubi ni Cargo orqali yuriting:
 
 ```bash
 cargo run -p musubi -- init --namespace dex.universal --name swap-core --dapp
@@ -99,21 +84,13 @@ cargo run -p musubi -- pack \
   --source-plan-out source-plan.norito
 ```
 
-Foydalanish `install --offline` aniq versiya uchun hal qilinmagan qulf faylini yozish
-bog'liqliklarni noddan so'rashsiz ishlatish `install --locked` yo'nalishi CI to
-o'tkazib yuborilgan qulf faylini rad eting.
+`install --offline` dan foydalanib, to'g'ri versiya bog'liqliklari uchun hal qilinmagan qulf faylini yozing. CI da `install --locked`dan foydalanib, eskirgan qulf faylini rad etish uchun foydalaning.
 
-`build` qoʻshimcha qoʻngʻiroqlarni qayta yozish orqali saqlangan qaramlik manbalarini bogʻlaydi:
-`math::add()` deterministik ichki Kotodama funksiya nomlari.
-bog'liqlik eksport qilmagan funksiyalarga qo'ng'iroqlar. Musubi v1 kutubxonalar
-faqat funksiyalarga ega: davlat deklaratsiyalarini o'z ichiga olgan bog'liqlik manbalari;
-qo'zg'atgichlar, kotoba bloklari, konstantalar yoki boshqa funktsiya bo'lmagan kontrakt elementlari
-rad etiladi.
+`build` `math::add()` kabi qo'ng'iroqlarni deterministik ichki Kotodama funksiya nomlariga qayta yozish orqali saqlangan qaramlik manbalarini bog'laydi. Bu qaramlik eksport qilmagan funktsiyalarga qo'ngʻiroqlarni rad etadi. Musubi v1 kutubxonalari faqat funktsiyalarga ega: davlat deklaratsiyalarini, qo'zg'atuvchilarni, kotoba bloklarini, konstantalarni yoki boshqa funktsiya bo'lmagan shartnoma elementlarini o'z ichiga olgan bog'liqlik manbalari rad etiladi.
 
-## Manbalarni olib kelish {#fetching-source-archives}
+## Manbalarni olish arxivlari {#fetching-source-archives}
 
-Musubi Yechishda yoki keyinchalik yo'qolgan bog'liqlik manbalarini olib kelishi mumkin
-oldindan saqlanuvchi kichik buyruqlar orqali:
+Musubi yo'q bo'lgan bog'liqlik manbalarini o'rnatishda yoki keyinchalik kecha kichik buyruqlar orqali olib kelishi mumkin:
 
 ```bash
 cargo run -p musubi -- install --config client.toml --fetch \
@@ -123,56 +100,40 @@ cargo run -p musubi -- cache import math --source-root ../math
 cargo run -p musubi -- cache fetch math --provider-payload math.payload
 ```
 
-Toʻgʻridan-toʻgʻri kirish darvozalari bir yoki undan koʻpdan foydalanadi SoraFS Gateway provayderining moslamalari:
+To'g'ridan-to'g'ri darvozalarni olish uchun SoraFS darvoza provayderining bir yoki undan ortiq xususiyatlaridan foydalanish kerak:
 
 ```bash
 cargo run -p musubi -- install --config client.toml --fetch \
   --gateway-provider 'name=hot-a,provider-id=1111111111111111111111111111111111111111111111111111111111111111,base-url=https://gw.example,stream-token=BASE64,package=math'
 ```
 
-Provayderning fayllari va darvoza provayderlari bir-biriga nisbatan mutasaddi
-Agar birdan ko'proq qulflangan paket yo'q bo'lsa, har
-kirish portasi provayderlari `package=<dependency-alias>`,
-`package=<namespace/package@version>`, `package=<namespace/package>`, yoki
-`manifest=<64-hex SoraFS manifest digest>`.
+Ma'muriyat provayderlarining fayllar va darvoza provayderlari bitta olish operatsiyasi uchun bir-birlarini istisno qiladilar. Agar bittadan ko'proq qulflangan paket yo'q bo'lsa, har bir darvoza providerini `package=<dependency-alias>`, `package=<namespace/package@version>`, `package=<namespace/package>` yoki `manifest=<64-hex SoraFS manifest digest>` bilan qamrab oling.
 
-Eshik `base-url` va `privacy-url` qiymatlardan foydalanish kerak `https://` andoza ravishda.
-Mahalliy sinov darvozalaridan foydalanish mumkin `http://localhost`, `http://127.0.0.1`, yoki
-`http://[::1]` faqat `--gateway-allow-insecure-localhost`. Oʻsimlik
-tokenlar ish vaqti ma'lumotnomalari bo'lib , `Musubi.lock`.
+Eshik `base-url` va `privacy-url` qiymatlardan foydalanish kerak `https://` andoza. Mahalliy test darvozalari foydalanish mumkin `http://localhost`, `http://127.0.0.1`, yoki `http://[::1]` faqat `--gateway-allow-insecure-localhost`. Stream tokenlari ishga tushirish vaqti ma'lumotnomalar va yozilmaydi `Musubi.lock`.
 
 ## Nashr etish {#publishing}
 
-`pack` deterministikni hisoblaydi BLAKE3-256 manba arxiv hash qoʻshimcha
-manba byti va fayl sonlari. `--car-out`, `--sorafs-manifest-out`, yoki
-`--source-plan-out` ta'minlanadi, u ham deterministik SoraFS
-CAR foydali yuk, SoraFS ko'rsatilgan; Musubi manba arxiv rejasi
-manba fayllari to'plami.
+`pack` deterministikni hisoblaydi BLAKE3-256 manba arxivini hash qo'shib, manba byti va faylni hisoblaydi. `--car-out`, `--sorafs-manifest-out`, yoki `--source-plan-out` ta'minlanadi, u ham deterministik quradi SoraFS CAR foydali yuk, SoraFS ko'rsatilgan; va Musubi bir xil manba fayllari to'plamidan manbali arxiv rejasi.
 
-nashr etishdan oldin quruq oʻtish:
+nashr etishdan oldin quruq oʻtishni ishlatish:
 
 ```bash
 cargo run -p musubi -- publish --config client.toml --dry-run
 ```
 
-Yo'q `--dry-run`, `publish` andoza artefaktlarni
-`.musubi/dist/<namespace>/<name>/<version>/`, koʻrsatkichlarni oʻrnatish
-manifest va foydali yuk orqali Torii" SoraFS saqlash pin oxirgi nuqtasi
-`--upload`, ishlab chiqarilgan SoraFS pin va taqdim etadi
-`PublishMusubiRelease` konfiguratsiya qilingan Iroha mijoz.
+Yo'q `--dry-run`, `publish` &amp; amp; oldindan koʻrsatilgan asarlar `.musubi/dist/<namespace>/<name>/<version>/`, ko'rsatkich va foydali yukni o'z ichiga oladi Torii Bu ... SoraFS saqlash pin oxirgi nuqtasi `--upload`, hosil bo ' lgan SoraFS pin, va taqdim etadi `PublishMusubiRelease` tahrirga qarang: Iroha mijoz.
 
-O'tkazilgan nashrlarda quyidagilar bo'lishi kerak:
+Bo'lishgan nashrlarda quyidagilar bo'lishi kerak:
 
 - bo'sh bo'lmagan kanonik manba arxivlari
 - deterministik manba arxiv rejasi
-- kamida bittasi eksport qilingan Kotodama funksiya
-- Chiqindilar bo'yicha chiqarishni tanlamaydigan bog'liqlik yozuvlari
-- kontrakt nomlari paketga mos keladigan, agar mavjud bo'lsa, dapp bog'i
-  nomlar maydonlari
+- kamida bitta eksport qilingan Kotodama funksiyasi
+- Chiqarilgan chiqindilarni tanlamaydigan bog'liqlik yozuvlari
+- kontrakt nomlari paket nomi maydoniga mos keladigan, agar mavjud bo'lsa, dapp bog'i
 
-## Registr soʻrovlari va hayot davri {#registry-queries-and-lifecycle}
+## Ro'yxatdan o'tish va hayot davri {#registry-queries-and-lifecycle}
 
-Reyestrni quyidagilar yordamida qidirib toping va tekshirib koʻring:
+Reyestrni qidirib toping va tekshirib koʻring:
 
 ```bash
 cargo run -p musubi -- search swap --config client.toml
@@ -180,8 +141,7 @@ cargo run -p musubi -- versions dex.universal/swap-core --config client.toml
 cargo run -p musubi -- alias resolve swap --config client.toml
 ```
 
-Yanking yangi rezolyutsiyadan chiqarishni yashiradi, ammo mavjud qulflarni saqlaydi
-qayta tiklanishi mumkin:
+Yanking yangi rezolyutsiyadan chiqarishni yashiradi, ammo mavjud qulf fayllarini qayta tiklanishi mumkinligini saqlaydi:
 
 ```bash
 cargo run -p musubi -- yank dex.universal/swap-core@0.1.0 \
@@ -190,31 +150,22 @@ cargo run -p musubi -- yank dex.universal/swap-core@0.1.0 \
   --dry-run
 ```
 
-Musubi jahon nomini qo'zg'atishdan qochadi `namespace/package` ko'rsatilgan
-nomlar maydonida nashr etish uchun ruxsat berish kerak
-ushbu maqsad uchun ishlatiladigan o'sha mulkdorlik yoki vakolat berilgan ruxsatnoma modeli Kotodama
-Dapp nomlar maydoni. Kuratorlashtirilgan global qisqa aliaslar paketdan alohida
-mulkdorlik: `SetMusubiShortAlias` talab qiladi `CanSetMusubiShortAlias`
-ruxsatnoma, va maqsadli paketda allaqachon kamida bir faol mavjud bo'lishi kerak
-ozod qilish.
+Musubi `namespace/package` kanonik paket nomini qo'llab, global nomni o'tkazib yuborishdan qochadi. Nomlar maydonida nashr etish ushbu Kotodama dapp nomi maydonida ishlatiladigan bir xil mulkdorlik yoki vakolat berilgan ruxsatnoma modeli tomonidan tasdiqlangan bo'lishi kerak. Ko'rsatilgan global qisqa aliaslar paketga egalik qilishdan ajralib turadi: `SetMusubiShortAlias` uchun `CanSetMusubiShortAlias` ruxsatnomasi kerak va maqsadli paketda allaqachon kamida bitta faol nashr bo'lishi kerak.
 
-## Iroha Yer yuzalari {#iroha-surfaces}
+## Iroha Yuzlar {#iroha-surfaces}
 
-Musubi birinchi sinfdan foydalanadi Iroha ko'rsatmalar va savollar:
+Musubi birinchi sinfdagi Iroha ko'rsatmalar va so'rovlarni ishlatadi:
 
-| Yer yuzi                      | Maqsad                                            |
+|Yer yuzi |Maqsad|
 | ---------------------------- | -------------------------------------------------- |
-| `PublishMusubiRelease`       | O'zgaruvchan bo'lmagan paketni nashr eting.              |
-| `YankMusubiRelease`          | Mavjud bo'lgan chiqindilarni olib tashlangan deb belgilang.                |
-| `SetMusubiShortAlias`        | Qisqacha global aliasni paket identifikatori bilan bog'lang. |
-| `AssertMusubiReleaseExists`  | Muvaffaqiyatli paket versiyasi mavjud bo'lishi kerak.       |
-| `FindMusubiReleaseByRef`     | To'g'ri paket ma'lumotnomasi bo'yicha ruxsatnoma oling.        |
-| `FindMusubiPackageVersions`  | To'plam identifikatori uchun versiyalarni ro'yxatdan o'tkazing.                    |
-| `FindMusubiPackageReleases`  | To'plam identifikatori uchun chiqarilgan ma'lumotlarni ro'yxatdan o'tkazish.           |
-| `SearchMusubiPackages`       | Nomlar va matn bo'yicha paketlarni qisqacha qidirish.    |
-| `FindMusubiShortAliasByName` | Qisqacha aliasni hal qiling.                     |
+|`PublishMusubiRelease` |Oʻzgarmas paketni nashr eting. |
+|`YankMusubiRelease` |mavjud bo'lgan chiqindilarni olib tashlangan deb belgilang.|
+|`SetMusubiShortAlias` |Qisqa global aliasni paket identifikatoriga bogʻlash. |
+|`AssertMusubiReleaseExists` |Konkret paket versiyasi mavjud bo'lishi kerak. |
+|`FindMusubiReleaseByRef` |To'g'ri paket ma'lumotnomasi bo'yicha ruxsatnoma oling. |
+|`FindMusubiPackageVersions` |Toʻplam identifikatorining versiyalarini roʻyxatdan oʻtkazing. |
+|`FindMusubiPackageReleases` |Toʻplamning toʻliq roʻyxatini koʻrsatish. |
+|`SearchMusubiPackages` |Xatchoʻplarni nomlar va matn boʻyicha qidirish. |
+|`FindMusubiShortAliasByName` |Qisqa aliasni hal qiling. |
 
-Torii koʻrsatkichlarini Musubi HTTP yo'nalish oilasi `/v1/musubi/*`.
-Agentga qaraydi MCP asbob-uskunalar quyidagicha aniqlanadi: `iroha.musubi.*` nomli nomlar.
-[Torii oxirgi nuqtalar](/uz/reference/torii-endpoints.md) va
-[so'rov ma'lumotlari](/uz/reference/queries.md) kengroq API Xaritasi.
+Torii koʻrsatkichlar Musubi HTTP yo'nalish oilasi `/v1/musubi/`. Agentga qaraydi MCP asboblar quyidagicha aniqlanadi: `iroha.musubi.` nomlar. Ko'ring [Torii oxirgi nuqtalar](/uz/reference/torii-endpoints.md) va [soʻrov maʼlumotlari](/uz/reference/queries.md) kengligi uchun API Xaritasi.

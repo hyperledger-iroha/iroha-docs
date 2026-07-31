@@ -43,7 +43,7 @@ El recuento de validadores de votación `n` define el presupuesto de fallas biza
 
 Los coleccionistas son una optimización de fanout. En lugar de que cada validador envíe todos los votos a cada otro validador, Sumeragi puede seleccionar uno o más coleccionists para una altura. Las configuraciones efectivas del colector se exponen a través de `GET /v1/sumeragi/collectors`; la instantánea `ops sumeragi telemetry` del CLI informa el recuento actual de los colectores.
 
-Los pares de observadores pueden sincronizar los bloques comprometidos, pero no proponen, votan, recogen votos o cuentan hacia el quórum de comisión.
+Los pares de observadores pueden sincronizar bloques comprometidos, pero no proponen, votan, recogen votos o cuentan para el quórum del comité. ¿ Qué ? Usar observadores cuando una implementación necesita capacidad local de consulta, indexación, monitoreo, O la replicación de bloques regionales sin aumentar el número de validadores del voto.
 
 ### Vea cambios y recuperación {#view-changes-and-recovery}
 

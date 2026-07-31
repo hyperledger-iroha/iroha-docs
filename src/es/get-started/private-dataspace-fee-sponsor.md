@@ -155,7 +155,7 @@ iroha --config ./operator.client.toml \
   app alias setup apply --plan-file ./user-alias.plan.json
 ```
 
-Si el usuario no debe pagar XOR, utilice el servicio de onboarding aprobado y consciente del patrocinador para construir y presentar la transacción de configuración.
+Si el usuario no debe pagar XOR, utilice el servicio de embarque con conocimiento del patrocinador aprobado para construir y presentar la configuración transacción. No dividir la adquisición de arrendamiento y el alias vinculante en operaciones independientes de solicitud.
 
 Después de que el alias esté vinculado, compruebe desde la CLI:
 
@@ -183,7 +183,7 @@ Usar números de teléfono y direcciones de correo electrónico como reclamos de
 6. El usuario presentará `ClaimIdentifier` junto con el recibo.
 7. la cadena almacena un identificador opaco y un hash de recibo, no el valor del teléfono o correo electrónico en bruto
 
-La configuración de las políticas del operador es una tarea de SDK o servicio.
+La configuración de las políticas del operador es una tarea de SDK o servicio. Construir y presentar estos pares de instrucciones para cada tipo de identificador:
 
 ```text
 RegisterRamLfeProgramPolicy(
@@ -337,7 +337,7 @@ iroha --config ./operator.client.toml \
 
 ## 7. Dar acceso a un usuario al patrocinador {#_7-grant-a-user-access-to-the-sponsor}
 
-El patrocinador debe otorgar a cada usuario el permiso para cobrarle tarifas.
+El patrocinador debe conceder a cada usuario el permiso para cobrarle tarifas. La subvención es lo que impide a los usuarios nombrar cuentas de patrocinadores arbitrarias.
 
 ejecuta esto como la cuenta de patrocinador, o como una cuenta operativa permitida por su política de tiempo de ejecución:
 

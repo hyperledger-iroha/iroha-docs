@@ -54,7 +54,7 @@ Si un despliegue de composiciones comienza y luego se detiene, inspeccione los r
 - direcciones publicitadas P2P que solo funcionan dentro de la red de contenedores
 - reutilización del volumen local después de la regeneración genética
 
-Al probar un nuevo génesis, retire los volúmenes antiguos Kura antes de reiniciar la pila.
+Al probar una genesis fresca, retire los volúmenes antiguos Kura antes de reiniciar la pila. Mantener el antiguo almacenamiento de bloques con una nueva génesis hará que la repetición fracase.
 
 ## Los Kubernetes {#kubernetes}
 

@@ -6,6 +6,6 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# CSD/RTGS linkages အယူအဆ သက်သေခံချက်  {#csd-rtgs-linkages-proof-of-concept}
+# CSD/RTGS ချိတ်ဆက်ချက်များ အယူအဆ သက်သေခံ  {#csd-rtgs-linkages-proof-of-concept}
 
-ဒီစာရွက်စာတမ်းမှာ CSD/RTGS ဆက်နွယ်မှု PoC အကောင်အထည်ဖော်ခြင်း Iroha. ဒီပရောဂျက်ဟာ အာရှဖွံ့ဖြိုးရေးဘဏ်နဲ့ Fujitsu တို့ရဲ့ ပူးပေါင်းဆောင်ရွက်မှုနဲ့ လုပ်ခဲ့တာပါ။ R3 Corda၊ Hyperledger ကက်ကတ်စ် (Cacti), Hyperledger Fabric နဲ့ အခြားလူကြိုက်များတဲ့ blockchain ဖြေရှင်းနည်းတွေ အများကြီးပါ။ 
+ဒီစာရွက်စာတမ်းမှာ CSD/RTGS ချိတ်ဆက်မှု PoC အကောင်အထည်ဖော်မှုကို Iroha ဖြင့် သရုပ်ဖော်ပါမယ်။ ဒါဟာ အာရှဖွံ့ဖြိုးတိုးတက်ရေးဘဏ်နဲ့ Fujitsu တို့ရဲ့ ပူးပေါင်းဆောင်ရွက်မှုနဲ့ ပြုလုပ်ထားတဲ့ စီမံကိန်းတစ်ခုပါ။ အခြားပါဝင်သူများသည် R3 Corda, Hyperledger Cactus (Cacti), Hyperledger Fabric နှင့် အခြားလူကြိုက်များသော blockchain ဖြေရှင်းနည်းများစွာကဲ့သို့သော နည်းပညာများကိုအသုံးပြုခဲ့သည်။ 

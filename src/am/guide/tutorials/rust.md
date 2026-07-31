@@ -8,21 +8,19 @@ translation_engine: nllb-200-ct2
 
 # Rust {#rust}
 
-የ Rust አተገባበር በዋናው የሥራ ቦታ ውስጥ የሚኖር ሲሆን በጣም ቀጥተኛ ሆኖ ይቆያል
-ጋር ለመስራት መንገድ Iroha 3 የኮድ መሰረት።
+Rust ትግበራው በዋናው የሥራ ቦታ ውስጥ የሚገኝ ሲሆን ከ Iroha 3 ኮድ መሠረት ጋር ለመስራት በጣም ቀጥተኛ መንገድ ሆኖ ይቆያል።
 
-## ምን ያገኛሉ? {#what-you-get}
+## ምን ማግኘት ትችላለህ? {#what-you-get}
 
-የቅድመ ፍሰት መዝገብ በአሁኑ ጊዜ የሚከተሉትን ያጋልጣል:
+የቅድመ-መንገድ መዝገብ በአሁኑ ጊዜ የሚከተሉትን ያጋልጣል:
 
-- የ `iroha` Rust የደንበኛው ሳጥን
-- የ `iroha` CLI በጣም የተሟላ የማጣቀሻ ደንበኛ ሆኖ
-- የተጋራ የውሂብ ሞዴል ፣ ምስጠራ እና Norito በኤሌክትሮኒክ አገልግሎት የሚውሉ ሳጥኖች SDK ሽፋን
+- የ `iroha` Rust ደንበኛ ሳጥን
+- `iroha` CLI በጣም የተሟላ የማጣቀሻ ደንበኛ ሆኖ
+- በ SDK ንብርብሮች ጥቅም ላይ የዋሉት የተጋራ የመረጃ ሞዴል ፣ ምስጢራዊ መረጃ እና Norito ሳጥኖች
 
 ## የሚመከር የመነሻ ነጥብ {#recommended-starting-point}
 
-ለፕሮጀክቱ ወቅታዊ ሁኔታ በመጥቀስ ይጀምሩ CLI እና
-የስራ ቦታው ራሱ:
+ለፕሮጀክቱ ወቅታዊ ሁኔታ CLI እና የስራ ቦታው እራሱን በመጥቀስ ይጀምሩ:
 
 ```bash
 git clone https://github.com/hyperledger-iroha/iroha.git
@@ -30,15 +28,15 @@ cd iroha
 cargo build --workspace
 ```
 
-የተረጋገጠ ነባሪ ደንበኛ ውቅር ጋር የማጣቀሻ ደንበኛው ይሂዱ:
+የተረጋገጠ ነባሪ የደንበኛ ውቅር ጋር የማጣቀሻ ደንበኛው ይሂዱ:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
 ```
 
-## ይሞክሩ Taira የንባብ ብቻ {#try-taira-read-only}
+## Taira ንባብ ብቻ ይሞክሩ {#try-taira-read-only}
 
-በተመሳሳይ የሥራ ቦታ ካሲኖ, የሕዝብ ይሞክሩ Taira የምርመራ ረዳት:
+ከዚሁ የስራ ቦታ ቼክ አውታር የህዝብ Taira የምርመራ ረዳት ይሞክሩ:
 
 ```bash
 cargo run --bin iroha -- taira doctor \
@@ -46,7 +44,7 @@ cargo run --bin iroha -- taira doctor \
   --json
 ```
 
-የመንገድ ደረጃ ፍተሻዎች ሲደረጉ Torii ነው JSON API በቀጥታ:
+ለመንገድ ደረጃ ምርመራዎች Torii JSON API ን በቀጥታ ይጠቀሙ:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -56,32 +54,26 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=5' \
   | jq -r '.items[] | [.id, .name, .total_quantity] | @tsv'
 ```
 
-ከፈጠርክ በኋላ `taira.client.toml`, ተመሳሳይ ባይናሪ ፊርማ ካናሪ ማስኬድ ይችላሉ
-የጦርነቱ ትዕዛዝ Taira. እነዚህ መደበኛ የአሃድ ሙከራዎች የተለየ ያድርጉ ምክንያቱም
-ከፋይኔት የተደገፈ ሂሳብ እና የቀጥታ የሙከራ ኔትወርክ መኖር ያስፈልጋቸዋል።
+እርስዎ `taira.client.toml` ከፈጠሩ በኋላ, ተመሳሳይ ባነሪ በ Taira ላይ የተፈረሙ የካናሪ ትዕዛዞችን ማስኬድ ይችላል. እነዚህ በተለመደው የአሃድ ሙከራዎች ተለይተው እንዲቆዩ ያድርጉ ምክንያቱም እነሱ የቧንቧ-ተደገፈ አካውንት እና የቀጥታ የሙከራ አውታረ መረብ ተደራሽነት ያስፈልጋቸዋል.
 
-## በመጠቀም Rust የደንበኛ ሳጥን {#using-the-rust-client-crate}
+## Rust የደንበኛ ሳጥን በመጠቀም {#using-the-rust-client-crate}
 
-አጣጥፉ Iroha በአውታረ መረብዎ የተጠቀመው የጊት ማሻሻያ:
+በአውታረ መረብዎ ውስጥ ጥቅም ላይ የዋለውን Iroha Git ስሪት ይጫኑ:
 
 ```toml
 [dependencies]
 iroha = { git = "https://github.com/hyperledger-iroha/iroha.git", rev = "<IROHA_COMMIT>", package = "iroha" }
 ```
 
-እንዴት እንደሚቻል በጣም የተሟላ ምሳሌዎች ከፈለጉ Rust ወለሎች ጥቅም ላይ ይውላሉ
-ልምምድ፣ ምርመራ:
+የ Rust ወለሎች በተግባር እንዴት ጥቅም ላይ እንደሚውሉ በጣም የተሟላ ምሳሌዎች ከፈለጉ የሚከተሉትን ይፈትሹ:
 
 - `crates/iroha_cli`
 - `crates/iroha/README.md`
 - `crates/iroha_cli/README.md`
 
-በመቁጠሪያ መቆጣጠሪያ ውስጥ የሚተዳደሩ የስራ ፍሰቶች ተመልከት
-[የአገር ውስጥ ንብረት ማስከበሪያ](/am/blockchain/escrow.md#rust-sdk). የ Rust የመረጃ ሞዴል
-በአሁኑ ጊዜ ለገበያ ቦታ ኤስኮር ፣ አጠቃላይ
-የንብረት መቆለፊያዎች፣ የማይታወቁ ዋስትናዎች፣ መጠይቆች እና ክስተቶች።
+በሪጀር የሚተዳደሩ የኤስኮር ስራ ፍሰቶች ለማግኘት [የአገር ውስጥ ንብረት ኤስኮር ](/am/blockchain/escrow.md#rust-sdk) ይመልከቱ። የ Rust የውሂብ ሞዴል በአሁኑ ጊዜ ለገበያ ኤስኮው ፣ ለአጠቃላይ ሀብት መቆለፊያዎች ፣ ለማይታወቁ ኤስኮዎች ፣ ለጥያቄዎች እና ለዝግጅቶች በጣም የተሟላ ዓይነት ሽፋን አለው ።
 
-የአካባቢውን ሰው መልሶ ማቋቋም ትችላለህ CLI የሚከተሉትን ረዳት ቅጽበታዊ ገጽ እይታዎች:
+አንድ አካባቢያዊ CLI እርዳታ ቅጽበታዊ ገጽ እይታ ጋር መልሶ ማግኘት ይችላሉ:
 
 ```bash
 cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/CommandLineHelp.md
@@ -89,5 +81,5 @@ cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/Com
 
 ## ማስታወሻዎች {#notes}
 
-- የ CLI በአሁኑ ጊዜ ከራስ-የተቋቋሙ የሳጥን ሰነዶች የተሻለ ሽፋን ይሰጣል ።
-- ለኦፕሬተር አይነት ፍሰቶች, CLI ሰነዶች በጣም ወቅታዊ ምንጭ ናቸው.
+- CLI በአሁኑ ጊዜ ከራስ ወዳድ የሳጥን ሰነዶች የተሻለ ሽፋን ይሰጣል ።
+- ለኦፕሬተር አሠራር ፍሰቶች CLI ሰነድ በጣም ወቅታዊ ምንጭ ነው ።

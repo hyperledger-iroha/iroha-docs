@@ -6,29 +6,26 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Kotlin, Android, va Java {#kotlin-android-and-java}
+# Kotlin, Android va Java {#kotlin-android-and-java}
 
-O ' zbekiston Respublikasi Kotlin SDK uchun andoza mijoz toʻplami JVM va Android talabnomalar.
-U ostida yashaydi `kotlin/` bilan Iroha ombor va platformasi bo ' lib shunday
-portativ kodni olmaydi Android bog'liqlik.
+Kotlin SDK JVM va Android dasturlari uchun andoza mijoz to'plami hisoblanadi. U Iroha omborida `kotlin/` ostida yashaydi va platforma bo'yicha bo'linadi, shuning uchun portativ kod Android bog'liqliklarini egallashmaydi.
 
 ## Modullar {#modules}
 
-| San'at | Tur | Foydalanish |
+|Artefakt |Tip |Foydalanish |
 | --- | --- | --- |
-| `org.hyperledger.iroha.sdk:core-jvm` | JAR | Sof Kotlin/JVM Norito, ma'lumotlar modeli, kripto, muomala, Torii, va protokol kodi |
-| `org.hyperledger.iroha.sdk:client-android` | AAR | Android kalitlar do'koni, qurilma telemetriyasi va JNI-tashkil etilgan mijoz integratsiyalari |
-| `org.hyperledger.iroha.sdk:offline-wallet-android` | AAR | Android O'rnatilgan offline-wallet transport va integratsiya `client-android` |
+|`org.hyperledger.iroha.sdk:core-jvm` |JAR |Pure Kotlin/JVM Norito, ma'lumotlar modeli, kripto, muomala, Torii va protokol kodi |
+|`org.hyperledger.iroha.sdk:client-android` |AAR |Android kalit do'kon, qurilma telemetriyasi va JNI tomonidan qo'llab-quvvatlanadigan mijoz integratsiyalari |
+|`org.hyperledger.iroha.sdk:offline-wallet-android` |AAR |Android `client-android` asosida offline-wallet transport va integratsiyalari|
 
-Bu asarlar hali Maven Centralda nashr etilmagan.
-mahalliy ravishda o'rnatilgan Iroha manbalarni qayta ko'rib chiqish:
+Artefaktlar hali Maven Centralda e'lon qilinmagan. ularni o'rnatilgan Iroha manbai tahlilidan lokal ravishda yaratish va nashr etish:
 
 ```bash
 cd kotlin
 ./gradlew publishToMavenLocal
 ```
 
-Soʻngra ilova uchun kerak boʻlgan artefaktni tanlang:
+Keyin ilova uchun kerak boʻlgan artefaktni tanlang:
 
 ```kotlin
 repositories {
@@ -44,31 +41,24 @@ dependencies {
 }
 ```
 
-`core-jvm` tarkibida yo'q Android bog'liqliklarni saqlab qoling. Android mijoz va kalit do'kon
-kodda `client-android`, va foydalanish `offline-wallet-android` uchun Android- faqat
-offline-wallet va JNI oqib ketadi.
+`core-jvm` hech qanday Android bog'liqliklarni o'z ichiga olmaydi. Android mijozi va kalit saqlash kodini `client-android` da saqlang va Android faqat oflayn-wallet va JNI oqimlari uchun `offline-wallet-android`dan foydalaning.
 
 ## Kotlin va Java moslashuvi {#kotlin-and-java-compatibility}
 
-Jamoat API bo ' lmoqda Kotlin- birinchi va Java interop beradi JVM qo'ng'iroq qiluvchilar
-teng o'zgarishlar tegishli `java/`
-Amalga oshirish. Android integratsiyalari bilan boshlanishi kerak Kotlin
-Yuqoridagi artefaklar.
+Umumiy API birinchi bo'lib Kotlin hisoblanadi va Java interopini JVM chaqiruvchilarga kerak bo'lgan joyda taqdim etadi. Tegishli `java/` implementatsiyasida teng o'zgarishlar aks ettiriladi. Yangi Android integratsiyalari yuqoridagi Kotlin artefaktlar bilan boshlanishi kerak.
 
-Hammasi Kotlin modullar qo'llash JDK 8 API tahrirga qarang .
-`-Xjdk-release=8`, Garchi qurilmalar zanjirining oʻzi JDK 21. Yo'q
-foydalanish JDK 9+ APIs yo'nalishi SDK kod.
+Hammasi Kotlin modullar qo'llash JDK 8 API tuzilgan vaqtda moslashuvchanlik `-Xjdk-release=8`, Garchi qurilmalar zanjirining oʻzi foydalansa ham JDK 21. Foydalanmang JDK 9+ APIs yo'nalishi SDK kod.
 
-## Qurish va sinov {#build-and-test}
+## Qurish va sinovdan o'tkazish {#build-and-test}
 
-Mobil telefonni ishga tushiring JVM Sinovlar:
+O'tkazilishi mumkin bo'lgan JVM sinovlarini bajaring:
 
 ```bash
 cd kotlin
 ./gradlew :core-jvm:test --console=plain
 ```
 
-Qurilishni Android artefaktlar:
+Android asbob-uskunalarini yaratish:
 
 ```bash
 ./gradlew :client-android:assembleRelease \
@@ -77,15 +67,14 @@ Qurilishni Android artefaktlar:
 
 ## Joriy qamrov {#current-coverage}
 
-O ' zbekiston Respublikasi Kotlin SDK quyidagilarni o'z ichiga oladi:
+Kotlin SDK ga quyidagilar kiradi:
 
 - Norito kodlash va dekodlash
-- kanonik hisob va aktivlar manzilini boshqarish
+- Kanonik hisobvaraq va aktivlar manzilini boshqarish
 - Transaksiyalarni tuzish, imzolash va offline konvertlar
-- Torii HTTP, WebSocket, va SSE mijozlar
-- ko'p imzo, obuna, SoraFS, Nexus, va Connect modellari
-- Android Keystore va qurilma telemetriya integratsiyalari
-- Android offline QR, Yaqinda, va NFC tashish
+- Torii HTTP, WebSocket va SSE mijozlari
+- ko'p imzo, obunalik, SoraFS, Nexus va Connect modellari
+- Android tugmaxona va qurilma telemetriyasi integratsiyalari
+- Android offline QR, yaqin va NFC transportlari
 
-Koʻring [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/main/kotlin/README.md)
-modulga oid APIs va aniq qurilish buyruqlari.
+Modulga mos APIs va aniq qurilish buyruqlari uchun [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/main/kotlin/README.md)-ni ko'ring.

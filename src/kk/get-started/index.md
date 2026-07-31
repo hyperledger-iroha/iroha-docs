@@ -25,7 +25,7 @@ Iroha 3 - бірінші релиз Hyperledger Iroha платформасы. О
 
 1. [Iroha 3](/kk/get-started/install-iroha.md) орнату
 2. [Ұшыру Iroha 3](/kk/get-started/launch-iroha.md)
-3. [Орындау Iroha 3 арқылы CLI](/kk/get-started/operate-iroha-via-cli.md)
+3. [Iroha 3 арқылы CLI](/kk/get-started/operate-iroha-via-cli.md) пайдалану
 4. [SORA Nexus деректер қорына қосылыңыз](/kk/get-started/sora-nexus-dataspaces.md)
 5. [Жеке деректер кеңістігінің жарғысы](/kk/get-started/private-dataspace-fee-sponsor.md)
 
@@ -36,7 +36,7 @@ Iroha 3 - бірінші релиз Hyperledger Iroha платформасы. О
 - [Rust](/kk/guide/tutorials/rust.md)
 - [Python](/kk/guide/tutorials/python.md)
 - [JavaScript / TypeScript](/kk/guide/tutorials/javascript.md)
-- [Kotlin, Android, және Java](/kk/guide/tutorials/kotlin-java.md)
+- [Kotlin, Android және Java](/kk/guide/tutorials/kotlin-java.md)
 - [Swift және iOS](/kk/guide/tutorials/swift.md)
 
 ## Оператордың анықтамалары {#operator-references}

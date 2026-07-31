@@ -8,124 +8,114 @@ translation_engine: nllb-200-ct2
 
 # Вопросы {#queries}
 
-Iroha Вопросы читают состояние книги без ее мутации.
-раскрывает две широкие формы запроса:
+Iroha запросы читают состояние бухгалтерского учета, не изменяя его.
 
-- **отдельные запросы**, которые возвращают один объект или одно значение
-- **повторяемые запросы**, которые возвращают поток или сбор и могут быть объединены
-  с фильтрацией, сортировкой, проекцией и pagination, где тип запроса
-  поддерживает
+- singular queries, которые возвращают один объект или одно значение
+- повторяемые запросы, которые возвращают поток или коллекцию и могут быть объединены с фильтрацией, сортировкой, проекцией и pagination, где тип запроса поддерживает его.
 
-Использование SDK Типовые строители или CLI вместо создания запросных конвертов
-Ниже приведены названия текущих типов запросов, выявленных
-`iroha_data_model::query`.
+Используйте SDK типовые конструкторы или CLI вместо того, чтобы создавать конверты запросов вручную. Ниже приведены названия текущих типов запросов, выявленных `iroha_data_model::query`.
 
-## Время и конфигурация {#runtime-and-configuration}
+## Время работы и конфигурация {#runtime-and-configuration}
 
-| Вопрос | Цель |
+|Вопрос |Цель .|
 | --- | --- |
-| `FindAbiVersion` | Верните исполнителя . ABI Версия. |
-| `FindExecutorDataModel` | Возвращение описания модели данных исполнителя. |
-| `FindParameters` | Возвращение параметров конфигурации исполнителя на цепи. |
+|`FindAbiVersion` |Вернуть версию исполнителя ABI. |
+|`FindExecutorDataModel` |Вернуть описание модели данных исполнителя. |
+|`FindParameters` |Возвращение параметров конфигурации исполнителя на цепочке. |
 
 ## Счета и разрешения {#accounts-and-permissions}
 
-| Вопрос | Цель |
+|Вопрос |Цель .|
 | --- | --- |
-| `FindAccountById` | Найти один рассказ по каноническим записям ID. |
-| `FindAccountByAlias` | Устранить счёт под псевдонимом счета. |
-| `FindAccounts` | Перечисли зарегистрированные счета. |
-| `FindAccountIds` | Список зарегистрированного счета IDs. |
-| `FindAccountsWithAsset` | Перечислить счета, которые содержат определенное определение активов. |
-| `FindAliasesByAccountId` | Перечислить псевдоним, связанный с аккаунтом. |
-| `FindAccountRecoveryPolicyByAlias` | Найди политику восстановления под псевдонимом. |
-| `FindAccountRecoveryRequestByAlias` | Найди запрос на выздоровление под псевдонимом. |
-| `FindRoles` | Список ролей. |
-| `FindRoleIds` | Роль списка IDs. |
-| `FindRolesByAccountId` | Список ролей, предоставленных счету. |
-| `FindPermissionsByAccountId` | Перечислить разрешения, предоставленные счету. |
+|`FindAccountById` |Найти один счет по каноническому счету ID. |
+|`FindAccountByAlias` |Устранить счёт под псевдонимом. |
+|`FindAccounts` |Список зарегистрированных счетов. |
+|`FindAccountIds` |Список зарегистрированного счета IDs. |
+|`FindAccountsWithAsset` |Перечислить счета, содержащие определение активов. |
+|`FindAliasesByAccountId` |Перечисли псевдонимы, связанные с аккаунтом. |
+|`FindAccountRecoveryPolicyByAlias` |Найди политику восстановления для псевдонима. |
+|`FindAccountRecoveryRequestByAlias` |Найти запрос на восстановление под псевдонимом. |
+|`FindRoles` |Список ролей. |
+|`FindRoleIds` |Список роли IDs. |
+|`FindRolesByAccountId` |Перечислить функции, предоставленные счету.|
+|`FindPermissionsByAccountId` |Перечислить разрешения, предоставленные счету. |
 
 ## Домены и сверстники {#domains-and-peers}
 
-| Вопрос | Цель |
+|Вопрос |Цель .|
 | --- | --- |
-| `FindDomainById` | Найти один домен `DomainId`. |
-| `FindDomains` | Список зарегистрированных доменов. |
-| `FindDomainsByAccountId` | Перечислить домены, принадлежащие учетной записи. |
-| `FindDomainEndorsements` | Перечислите записи о одобрении домена. |
-| `FindDomainEndorsementPolicy` | Возвращайте политику одобрения домена. |
-| `FindDomainCommittee` | Верните комитет по домену. |
-| `FindPeers` | Перечислите в книге известных доверенных людей. |
+|`FindDomainById` |Найти один домен по `DomainId`. |
+|`FindDomains` |Список зарегистрированных доменов. |
+|`FindDomainsByAccountId` |Перечислить домены, принадлежащие учетной записи |
+|`FindDomainEndorsements` |Перечислите записи о одобрении доменов. |
+|`FindDomainEndorsementPolicy` |Возвращайте политику одобрения домена.|
+|`FindDomainCommittee` |Верните комитет по домену. |
+|`FindPeers` |Перечисли доверительных сверстников, которые известны в книге. |
 
-## активы, NFTs, и RWAs {#assets-nfts-and-rwas}
+## Активы, NFTs, и RWAs {#assets-nfts-and-rwas}
 
-| Вопрос | Цель |
+|Вопрос |Цель .|
 | --- | --- |
-| `FindAssets` | Список балансов активов. |
-| `FindAssetsDefinitions` | Список определений активов. |
-| `FindAssetsByAccountId` | Перечень активов, находящихся в распоряжении счета. |
-| `FindAssetById` | Найти один баланс активов `AssetId`. |
-| `FindAssetDefinitionById` | Найти определение одного актива ID. |
-| `FindNfts` | Список NFTs. |
-| `FindNftsByAccountId` | Список NFTs владельцем счета. |
-| `FindRwas` | Список зарегистрированных реальных активов. |
+|`FindAssets` |Список балансов активов. |
+|`FindAssetsDefinitions` |Список определений активов. |
+|`FindAssetsByAccountId` |Перечень активов, находящихся на счете. |
+|`FindAssetById` |Найти один баланс активов до `AssetId`. |
+|`FindAssetDefinitionById` |Найти одно определение активов до ID. |
+|`FindNfts` |Список NFTs. |
+|`FindNftsByAccountId` |Список NFTs принадлежащий счету. |
+|`FindRwas` |Список зарегистрированных реальных активов. |
 
-## Запись о счетах и доказательствах {#escrow-and-proof-records}
+## Сберегательные и доказательственные документы {#escrow-and-proof-records}
 
-Запросы с эскроем проверяют записи , созданные
-[конфиденциальное хранение собственных активов ISIs](/ru/blockchain/escrow.md), включая рынок
-сбережения, общие блокировки активов и анонимные записи.
+Запросы по опеке проверяют записи, созданные [native asset escrow ISIs](/ru/blockchain/escrow.md), в том числе рыночные опеки, общие блокировки активов и анонимные записи о опеки.
 
-| Вопрос | Цель |
+|Вопрос |Цель .|
 | --- | --- |
-| `FindAssetEscrows` | Запиши записи о депозитах активов. |
-| `FindAssetEscrowById` | Найдите один депозитный актив ID. |
-| `FindAssetEscrowsBySeller` | Перечислить депозиты по продавцу. |
-| `FindAssetEscrowsByBuyer` | Список активов, закрепленных по покупателю. |
-| `FindAssetEscrowsByStatus` | Перечислить депозиты по состоянию. |
-| `FindAnonymousAssetEscrows` | Перечислить анонимные записи по хранению активов. |
-| `FindAnonymousAssetEscrowById` | Найди анонимного поручителя активов ID. |
-| `FindAnonymousAssetEscrowsBySeller` | Перечислить анонимные депозиты по продавцу. |
-| `FindAnonymousAssetEscrowsByBuyer` | Перечислить анонимные депозиты по покупателю. |
-| `FindAnonymousAssetEscrowsByStatus` | Перечислить анонимные депозиты по состоянию. |
-| `FindProofRecordById` | Найти один запись доказательства ID. |
-| `FindProofRecords` | Запишите доказательства. |
-| `FindProofRecordsByBackend` | Перечислите записи доказательств для подтверждения обратного конца. |
-| `FindProofRecordsByStatus` | Перечислите данные по состоянию. |
+|`FindAssetEscrows` |Перечислите записи о депозитах активов. |
+|`FindAssetEscrowById` |Найти один депозит на активы до ID. |
+|`FindAssetEscrowsBySeller` |Перечислить депозиты активов по продавцам. |
+|`FindAssetEscrowsByBuyer` |Перечислить депозитные активы по покупателю. |
+|`FindAssetEscrowsByStatus` |Перечислить депозиты активов по состоянию. |
+|`FindAnonymousAssetEscrows` |Перечислить анонимные записи по хранению активов. |
+|`FindAnonymousAssetEscrowById` |Найдите одного анонимного поручителя активов до ID. |
+|`FindAnonymousAssetEscrowsBySeller` |Перечислить анонимные депозиты по продавцам. |
+|`FindAnonymousAssetEscrowsByBuyer` |Перечислить анонимные депозиты по покупателю. |
+|`FindAnonymousAssetEscrowsByStatus` |Перечислить анонимные депозиты по состоянию. |
+|`FindProofRecordById` |Найти один свидетельский запись на ID. |
+|`FindProofRecords` |Список доказательств. |
+|`FindProofRecordsByBackend` |Перечислить записи доказательства для подтверждения обратной версии. |
+|`FindProofRecordsByStatus` |Перечислите документы по состоянию. |
 
-## Nexus, Доступность данных и пакеты {#nexus-data-availability-and-packages}
+## Nexus, доступность данных и пакеты {#nexus-data-availability-and-packages}
 
-| Вопрос | Цель |
+|Вопрос |Цель .|
 | --- | --- |
-| `FindRepoAgreements` | Перечислить договоры хранилища, хранящиеся в цепочке. |
-| `FindTwitterBindingByHash` | Разобраться с "Твиттером" hash. |
-| `FindDaPinIntentByTicket` | Найти адрес доступности данных по билету. |
-| `FindDaPinIntentByManifest` | Найти намерение пинта по проявленной ссылке. |
-| `FindDaPinIntentByAlias` | Найди намерение пинка под псевдонимом. |
-| `FindDaPinIntentByLaneEpochSequence` | Найдите намерение штифа по полосе, эпохе и последовательности. |
-| `FindLaneRelayEnvelopeByRef` | Найди проверенный конверт. |
-| `FindSorafsProviderOwner` | Решить владельца SoraFS поставщика. |
-| `FindDataspaceNameOwnerById` | Решить владельца имен пространства данных. |
-| `FindMusubiReleaseByRef` | Найти Musubi выпуск по ссылке. |
-| `FindMusubiPackageVersions` | Перечень версий для Musubi Пакет. |
-| `FindMusubiPackageReleases` | Список выпусков для Musubi Пакет. |
-| `FindMusubiShortAliasByName` | Решить Musubi короткие псевдонимы. |
+|`FindRepoAgreements` |Перечислить депозитарные соглашения, хранящиеся в цепочке. |
+|`FindTwitterBindingByHash` |Разрешить связывание в Твиттере хэшиком. |
+|`FindDaPinIntentByTicket` |Найти адрес доступности данных по билету. |
+|`FindDaPinIntentByManifest` |Найти намерение кнопки с помощью указания. |
+|`FindDaPinIntentByAlias` |Найди намерение пинка под псевдонимом.|
+|`FindDaPinIntentByLaneEpochSequence` |Найти намерение пинка по полосе, эпохе и последовательности. |
+|`FindLaneRelayEnvelopeByRef` |Найдите проверенный конверт. |
+|`FindSorafsProviderOwner` |Решение о владельце поставщика SoraFS. |
+|`FindDataspaceNameOwnerById` |Разрешить владельца имен пространства данных. |
+|`FindMusubiReleaseByRef` |Найти Musubi по ссылке. |
+|`FindMusubiPackageVersions` |Перечислить версии для пакета Musubi. |
+|`FindMusubiPackageReleases` |Список выпусков для пакета Musubi. |
+|`FindMusubiShortAliasByName` |Разрешить короткое псевдоним Musubi. |
 
-## Попытки, контракты, транзакции и блоки {#triggers-contracts-transactions-and-blocks}
+## Триггеры, контракты, транзакции и блоки {#triggers-contracts-transactions-and-blocks}
 
-| Вопрос | Цель |
+|Вопрос |Цель .|
 | --- | --- |
-| `FindActiveTriggerIds` | Перечисли активный триггер IDs. |
-| `FindTriggers` | Список триггеров. |
-| `FindTriggerById` | Найди один спутник. ID. |
-| `FindContractManifestByCodeHash` | Найти манифест смарт-контракта с помощью хэша кода. |
-| `FindTransactions` | Перечень обязательных сделок. |
-| `FindBlocks` | Список блоков. |
-| `FindBlockHeaders` | Список заголовков блоков. |
+|`FindActiveTriggerIds` |Перечисли активный триггер IDs. |
+|`FindTriggers` |Список триггеров. |
+|`FindTriggerById` |Найдите один триггер на ID. |
+|`FindContractManifestByCodeHash` |Найти манифест смарт-контракта с помощью хэша кода.|
+|`FindTransactions` |Перечень обязательных сделок. |
+|`FindBlocks` |Список блоков.|
+|`FindBlockHeaders` |Список заголовков блоков. |
 
-## Фильтрация и страница {#filtering-and-pagination}
+## Фильтрация и страницы {#filtering-and-pagination}
 
-Итерационные запросы могут раскрыть поддержку предиката и селектора.
-фильтры из SDK так что вход фильтра совпадает с типом выхода запроса.
-Для больших наборов результатов вместо этого используйте параметры запроса, такие как курсор и ограничение
-Привлекать каждый ряд сразу.
+Итерабельные запросы могут выявить поддержку предиката и селектора. Используйте фильтры с типом, специфические для запроса, из SDK, чтобы вход фильтра соответствовал выходному типу запроса. Для больших наборов результатов используйте параметры запроса, такие как курсор и ограничение, вместо того, чтобы одновременно забирать каждый ряд.

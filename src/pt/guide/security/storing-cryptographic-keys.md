@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # Armazenamento de chaves criptográficas {#storing-cryptographic-keys}
 
-Os seus dados confidenciais só permanecem privados se adotarem práticas <abbr title="Operational Security">OPSEC</abbr> para proteger as chaves criptográficas. Tenha sempre cuidado e evite compartilhar a sua chave privada, tratando-a como se as suas chaves de apartamento fossem reservadas apenas para pessoas de confiança.
+Os seus dados confidenciais só permanecem privados se adotarem as práticas <abbr title="Operational Security">OPSEC</abbr> para proteger as chaves criptográficas. - Não . Ameaças de engenharia social, onde alguém que se faz sentir como uma figura com autoridade tenta manipular-te para lhes dares o teu. A chave criptográfica privada, são reais. Seja sempre cuidadoso e evite compartilhar a sua chave privada, tratando-a como se você tivesse as chaves do seu apartamento reservadas para pessoas de confiança Só indivíduos.
 
 Para obter mais informações sobre <abbr title="Operational Security">OPSEC</abbr> e as suas melhores práticas, ver [Segurança operacional ](./operational-security).
 

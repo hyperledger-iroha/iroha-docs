@@ -23,7 +23,7 @@ Véase [Las claves para el despliegue de la red ](/es/guide/configure/keys-for-n
 
 - Haga que cada validador utilice la misma transacción de génesis firmada, conjunto de pares confiables, topología y validador Pruebas de posesión cuando el perfil las requiera.
 - Utilizar al menos cuatro validadores para un despliegue mínimo de tolerancia a fallos bizantinos.
-- Los observadores no votan, proponen ni recogen, pero aún así consumen almacenamiento, sincronización de bloqueo y ancho de banda de red.
+- Los validadores separados de los observadores en la planificación de las capacidades. Los observadores no votan, proponen o recogen, pero todavía consumen almacenamiento, sincronización de bloqueo y ancho de banda de la red.
 - Tratar los cambios de génesis, ejecutor y topología como migraciones coordinadas en lugar de ediciones individuales.
 
 Ver [Génesis](/es/reference/genesis.md), [Gestión entre pares](/es/guide/configure/peer-management.md) y [Performance and Metrics ](/es/guide/advanced/metrics.md#node-count-and-quorum).
@@ -32,7 +32,7 @@ Ver [Génesis](/es/reference/genesis.md), [Gestión entre pares](/es/guide/confi
 
 - Coloque Torii detrás de un proxy o firewall inverso cuando esté expuesto fuera de la red host o privada.
 - Terminar TLS y aplicar controles básicos de autenticación, limitación de tasa y tamaño de solicitud en el borde cuando la implementación los requiera.
-- Las rutas del operador y de la telemetría deben ser más restringidas que las rutas públicas de lectura única.
+- Publicar sólo los puntos finales necesarios para el medio ambiente. Las rutas del operador y de la telemetría deben ser más restringidas que las rutas públicas de lectura única.
 - Enlace las direcciones del oyente a interfaces locales del host cuando los compañeros no deben aceptar el tráfico remoto directamente.
 
 Véase [Torii Puntos finales](/es/reference/torii-endpoints.md) y [Redes privadas virtuales ](/es/guide/security/vpn.md).

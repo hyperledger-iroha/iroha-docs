@@ -8,138 +8,137 @@ translation_engine: nllb-200-ct2
 
 # Kriptografik kalitlarni saqlash {#storing-cryptographic-keys}
 
-Sizning hissiy ma'lumotlaringiz faqat qabul qilsangiz maxfiy qoladi <abbr title="Operational Security">OPSEC</abbr> Kriptografik kalitlarni himoya qilish bo'yicha amaliyotlar. Ijtimoiy muhandislik tahdidlari, u erda kimdir o'zini hokimiyatga ega shaxs sifatida ko'rsatgan holda sizni shaxsiy kriptografik kalitingizni berish uchun manipulyatsiya qilishga harakat qiladi. Har doim ehtiyot bo'ling va xususiy kalitingizni baham ko'rishdan qoching.
+Sizning hissiy ma'lumotlaringiz faqat kriptografik kalitlarni himoya qilish uchun <abbr title="Operational Security">OPSEC</abbr> amaliyotlarini qabul qilsangizgina maxfiy qoladi. Ijtimoiy muhandislik tahdidlari, kimdir hokimiyatga ega bo'lgan shaxs sifatida o'zini qo'zg'atgan odam sizni ularga shaxsiy kriptografik kalitingizni berishga urinayotganda, haqiqiy. Har doim ehtiyot bo'ling va shaxsiy kalitingizni baham ko'rmang, uni o'zingizning xonangizning kalitlarini faqat ishonchli kishilar uchun ajratganingiz kabi qabul qiling.
 
-Ma'lumot olish uchun <abbr title="Operational Security">OPSEC</abbr> va eng yaxshi amaliyotlar, qarang [Operatsiya xavfsizligi](./operational-security).
+<abbr title="Operational Security">OPSEC</abbr> va uning eng yaxshi amaliyotlari to'g'risida ko'proq ma'lumot olish uchun [Operatsiyaviy xavfsizlik ](./operational-security)-ni ko'ring.
 
 ## Kriptografik kalitlarni raqamli saqlash {#storing-cryptographic-keys-digitally}
 
-Kriptografik kalitlarni raqamli ravishda himoya qilish haqida gap ketganda, asosan faqat ikkita yondashuv[SSH](https://www.ssh.com/) va [GPG](https://www.gnupg.org/) mavjud. Ushbu usullar kriptografik kalitlaringizning ruxsatsiz kirishini oldini olish uchun xavfsizlik qatlamlarini ta'minlaydi.
+Kriptografik kalitlarni raqamli himoya qilish haqida gap ketganda, asosan faqat ikkita yondashuv mavjud[SSH](https://www.ssh.com/) va [GPG](https://www.gnupg.org/). Ushbu usullar sizning kriptografik kalitlaringizga ruxsatsiz kirishning oldini olish uchun xavfsizlik qatlamlarini taqdim etadi.
 
-Koʻpchilik Iroha Arxitektura qarorlari **Xavfsiz shell** (`SSH`) protokoli, shuning uchun ushbu bo'lim asosan `SSH` yo'nalishida kriptografik kalitlarni saqlash uchun protokolni samarali amalga oshirish haqida ko'rsatmalar taqdim etadi. Iroha ekotizim.
+Ko'plab Iroha arxitektura qarorlari Secure Shell (`SSH`) protokolining prinsiplariga ta'sir ko'rsatdi, shuning uchun ushbu bo'lim asosan `SSH` yondashuvga qaratilgan. Iroha ekotizimida kriptografik kalitlaringizni saqlash uchun protokolni qanday samarali amalga oshirish kerakligi to'g'risida ko'rsatmalar berish.
 
-### Foydalanish SSH va SSH Agent {#using-ssh-and-ssh-agent}
+### SSH va SSH vositalaridan foydalanish {#using-ssh-and-ssh-agent}
 
-**Xavfsiz shell protokoli** (`SSH`) - bu virtual darvoza sifatida xizmat qiladigan kriptografik tarmoq protokoli bo'lib, ehtimol o'ta xavfsiz bo'lmagan tarmoqlar orqali masofadan tashqarida ishlaydigan mashinalarga xavfsiz kirish imkonini beradi. SSH Keyaccess ma'lumotlari. Bu tizimlar bilan masofaviy aloqa qilishning samarali usulini ta'minlaydi, bu holda jismoniy mavjudlik zarur emas. `SSH` ikkita asosiy autentifikatsiya mexanizmini taklif etadi: an'anaviy parol asosida yondashish va xavfsizroq jamoat-xususiy kalit juftligi usuli.
+Xavfsiz shell protokoli (`SSH`) - bu virtual darvoza sifatida xizmat qiladigan kriptografik tarmoq protokoli, xavfli bo'lishi mumkin bo'lgan tarmoqlar orqali masofadan tashqarida ishlaydigan mashinalarga xavfsiz kirish imkoniyatini yaratish SSH Bu tizimlar bilan masofaviy aloqa o'tkazishning samarali usulini ta'minlaydi, bu esa jismoniy aloqa talab qilinmasdan. Bu borada, `SSH` ikkita asosiy autentifikatsiya mexanizmini taklif qiladi: an'anaviy parolga asoslangan yondashuv va xavfsizroq davlat-xususiy kalit juftlik usuli.
 
-Ma'lumot olish uchun `SSH`, koʻrish [bogʻliq SSH Akademiya mavzusi](https://www.ssh.com/academy/ssh).
+`SSH` haqida ko'proq ma'lumot olish uchun [ga qarang SSH Akademiyasi mavzusi](https://www.ssh.com/academy/ssh).
 
-Login jarayonini soddalashtirish va takrorlanuvchi kirishni chetga surish uchun `SSH` kalitlar bilan **SSH Agent** (`ssh-agent`)Sizni eslaydigan yordamchi dasturi `SSH` o'tirish muddati uchun kalitlar va/yoki parol. `SSH` boshqa mashinalarga ulanish vaqtida kalitlarga osonlikcha kirish uchun darvoza.
+Login jarayonini soddalashtirish va takrorlanuvchi kirishni chetlab o'tish uchun `SSH` kalitlarini SSH Agent (`ssh-agent`) bilan birlashtirib qo'yish mumkin, bu yordamchi dastur sizning `SSH` kalitlaringizni va/yoki parolingizni sessiya davomida eslaydi. Ushbu o'rnatish `SSH` darvoza boshqa mashinalarga ulanish chog'ida kalitlarga osonlikcha kirish imkonini beradi.
 
-Bu erda ish oqimi quyidagicha bo'ladi: siz o'zingizning jamoatchilik kalitingizni masofada saqlashingiz va shaxsiy kalitingizni xavfsiz saqlang. `ssh-agent` o ' zingizga xabar berish uchun qadamlar _jamoatchilik_ O'rnatilgan tizimga kirish kalitini. Uzoq tizim [musobaqa](https://en.wikipedia.org/wiki/Challenge%E2%80%93response_authentication) faqat sizning _xususiy_ kalit to'g'ri javob berishi mumkin. `ssh-agent` ushbu qiyinchilikni o ' zlashtirish uchun _xususiy_ Agar javob tizim kutgan narsaga mos kelsa, sizga kirish huquqi beriladi.
+Bu erda ish oqimi quyidagicha bo'ladi: sizning ommaviy kalitingiz masofadagi tizimda saqlanadi va shaxsiy kalitingizni xavfsiz saqlash kerak. Uzoq tizimga kirish kerak bo'lganda, `ssh-agent` O'zingizning ommaviy kalitingizni kirish tizimiga yuborish uchun qadamlar qo'yadi. [musobaqa](https://en.wikipedia.org/wiki/Challenge%E2%80%93response_authentication) faqatgina shaxsiy kalitingiz to'g'ri javob bera oladi. `ssh-agent` bu qiyinchilikni o'zingizning xususiy kalitingizdan foydalangan holda hal qiladi va to'g'ri javobni masofani uzluksiz tizimga yuboradi. Agar javob tizim kutgan narsalarga muvofiq bo'lsa, sizga kirish huquqi beriladi.
 
-O'sha yerning go'zalligi `ssh-agent` Bu sizning shaxsiy kalitingizni seans davomida saqlaydi, shuning uchun har safar masofadan o'tgan tizimga ulanish paytida parol yoki xususiy kalit parol so'zlarini kiritishga hojat yo'q.
+`ssh-agent` ning go'zalligi shundaki, u seans davomida shaxsiy kalitingizni saqlaydi, shuning uchun har safar masofadan o'tgan tizimga ulanganingizda parol yoki xususiy kalit parol so'zlarini kiritishingiz shart emas.
 
-Ushbu hujjatning `ssh-agent`, koʻrish [bogʻliq SSH Akademiya mavzusi](https://www.ssh.com/academy/ssh/agent).
+`ssh-agent` to'g'risida ko'proq ma'lumot olish uchun [, tegishli SSH akademiyasi mavzusini](https://www.ssh.com/academy/ssh/agent) ko'ring.
 
 ::: info Izoh
 
-Bu mavzular haqida batafsil ma'lumot olish uchun `SSH` protokol va `ssh-agent` vosita, quyidagilarni ko'ring [SSH Akademiya](https://www.ssh.com/academy) mavzular:
+`SSH` protokoli va `ssh-agent` vositasi to'g'risida batafsil ma'lumot olish uchun quyidagi mavzularni ko'rib chiqing [SSH Akademiya ](https://www.ssh.com/academy):
 
-  - [Nima SSH (Xavfsiz shell)?](https://www.ssh.com/academy/ssh)
-  - [ssh-agent: qanday qilib ssh agentni, agentni yuborish va agent protokolini sozlash kerak](https://www.ssh.com/academy/ssh/agent)
+  - [Bu nima ? SSH (Xavfsiz shell)?](https://www.ssh.com/academy/ssh)
+  - [ssh-agent: Ssh-agentni, agentni yuborish va agent protokolini](https://www.ssh.com/academy/ssh/agent) qanday konfiguratsiya qilish kerak
 
 :::
 
-### Maxfiy soʻz boshqaruvchisi dasturini qoʻshish {#adding-a-password-manager-program}
+### Maxfiy soʻzlarni boshqarish dasturi qoʻshish {#adding-a-password-manager-program}
 
-Oʻzingizning uyingiz xavfsizligini oshirish tavsiya etiladi `SSH` kalitlarni parol bilan himoya qilish orqali, bu sizning hissiy ma'lumotlaringizni olishni maqsad qilgan zararli tomonlarning yo'lida qo'shimcha to'siq sifatida xizmat qiladi.
+`SSH` kalitlaringizning xavfsizligini password bilan himoya qilish tavsiya etiladi, bu sizning hissiy ma'lumotlaringizni olishni maqsad qilgan zararli tomonlar yo'lida qo'shimcha to'siq bo'ladi.
 
-Foydalanuvchilarning parollarini saqlash uchun turli xil parol menejerlaridan foydalanish mumkin `SSH` kalitlari vaqtincha. [KeePass](https://keepass.info/) so'zlarni boshqarish uchun misol sifatida ishlatiladi. [KeePassXC](https://keepassxc.org/) Linuxga asoslangan operatsion tizimlarda ishlaydigan port.
+Har xil parol boshqaruvchilari foydalanuvchi parollari va `SSH` kalitlarini vaqtincha saqlash uchun ishlatilishi mumkin. aniqlik uchun, [KeePass](https://keepass.info/) Linuxga asoslangan operatsion tizimlarda ishlaydigan [KeePassXC](https://keepassxc.org/) port sifatida ishlatiladi .
 
-O'rnatish usuli bo'yicha ko'rsatmalar uchun KeePassXC koʻrish [Konfigurarlash KeePassXC](#configuring-keepassxc) quyida keltirilgan qism.
+KeePassXC ni qanday o'rnatish kerakligi to'g'risida ko'rsatmalar uchun quyidagi [Konfiguratsiya qilish KeePassXC](#configuring-keepassxc) bo'limini ko'ring.
 
 ![KeePassXC: `Main` ekran UI](../../../img/KeePassXC.png)
 
-KeePassXC U nafaqat parollarni, balki `SSH` kalitlarni saqlash uchun ishlatilayotganda, bu parol boshqaruvchisi `ssh-agent` saqlangan kalitlar bilan, keyinchalik tezda uning xotirasidan KeePassXC deraza yopilgan.
+KeePassXC xavfsizlik, moslashuvchanlik va nazoratni kuchaytiradi. U nafaqat maxfiy so'zlarni, balki `SSH` kalitlarini ham saqlaydi. kalitlarni saqlash uchun ishlatilganda, ushbu parol boshqaruvchisi `ssh-agent` ni saqlangan kalitlar bilan ta'minlaydi; KeePassXC oynasi yopilganidan so'ng, ular o'z xotirasidan tezda olib tashlanadi.
 
-::: tip
+::: manzil
 
-Nazariy jihatdan, KeePass portlar [rasmiy veb-saytida koʻrsatilgan](https://keepass.info/download.html) asosiy saqlash maqsadlarida foydalanish mumkin.
-Quyidagilardan birini tavsiya etamiz: [KeePassX](https://www.keepassx.org/) yoki [KeePassXC](https://keepassxc.org/).
+Nazariy jihatdan, har qanday KeePass portlar [rasmiy veb-saytida koʻrsatilgan](https://keepass.info/download.html) quyidagilardan birini tavsiya etamiz: [KeePassX](https://www.keepassx.org/) yoki [KeePassXC](https://keepassxc.org/).
 
 :::
 
-#### Konfigurarlash KeePassXC {#configuring-keepassxc}
+#### KeePassXC ni sozlash {#configuring-keepassxc}
 
-Konfiguratsiyalash uchun KeePassXC, quyidagi qadamlarni bajaring:
+KeePassXC ni o'rnatish uchun quyidagi qadamlarni bajaring:
 
-1. Uchratish KeePassXC, keyin ketish **Asboblar** > **Sozlamalar**, yoki **Ishchi** Yuqoridan tugma UI panel.
+1. KeePassXC ni ishga tushiring, so'ngra asboblar > moslamalarga boring yoki yuqoridagi UI paneldan Gear tugmasini tanlang.
 
-2. O ' zbekiston Respublikasida **Ilovalar moslamalari** koʻrinadigan tabni tanlang **SSH Agent** Chap menyudan, soʻngra **Qoʻllash SSH Agent integratsiyasi** chek qutisi.
+2. Ko'rinadigan ilova o'rnatishlari tabida chap menyudan SSH Agentni tanlang va keyin SSH Agent integratsiyasini qo'llashga ruxsat berishni tanlash qutisini tanlang.
 
-   ::: info Maʼlumot uchun ekran koʻrinishini koʻrsatish
+   ::: info Maʼlumot uchun ekran rasmini koʻrsatish
 
-   ![KeePassXC `SSH Agent` Tab: qoʻllash SSH Agent](../../../img/keepassxc_ssh_agent.png)
+   ![KeePassXC `SSH Agent` tab: SSH Agentni qo'llash](../../../img/keepassxc_ssh_agent.png)
 
    :::
 
-3. Yangi yaratish KeePassXC Ma'lumotlar bazasi. [KeePassXC Foydalanuvchi qoʻllanma > Birinchi maʼlumotlar bazasini yaratish](https://keepassxc.org/docs/KeePassXC_UserGuide#_creating_your_first_database).
+3. Yangi KeePassXC ma'lumotlar bazasini yaratish. Ko'rsatmalar uchun [KeePassXC Foydalanuvchi qo'llanmalarini ko'rish > Birinchi ma'lumot bazasini yaratish ](https://keepassxc.org/docs/KeePassXC_UserGuide#_creating_your_first_database).
 
-4. Har bir kalit uchun siz saqlash istaydi KeePassXC Siz yaratgan ma'lumotlar bazasi, quyidagi qadamlarni bajaring:
+4. Siz yaratgan KeePassXC ma'lumotlar bazasida saqlashni istagan har bir kalit uchun quyidagi qadamlarni bajaring:
 
-   - Ma'lumotlar bazasiga yangi yozuv qo'shing. [KeePassXC Foydalanuvchi qoʻllanma > Birinchi maʼlumotlar bazasini yaratish](https://keepassxc.org/docs/KeePassXC_UserGuide#_creating_your_first_database).
+   - Ma'lumotlar bazasiga yangi yozuv qo'shing. Ko'rsatmalar uchun [KeePassXC Foydalanuvchi qo'llanma > Birinchi ma'lumotlar bazasini yaratish](https://keepassxc.org/docs/KeePassXC_UserGuide#_creating_your_first_database)-ni ko'ring.
 
-   - Yangi yozuv qo'shilganda, kalitni o'z ichiga olgan faylni quyidagi usul bilan bog'lang: **Avvalgi** Chap menyudan tanlang , keyin tanlang **Qoʻshish** bilan **Qo'shimchalar** bo'limda kerakli faylni tanlang **Fayllarni tanlash** ko'rinadigan deraza.
+   - Yangi yozuv qo'shilganda, kalitni o'z ichiga olgan faylni quyidagi usul bilan qo'shib qo'ying: chap menyudan Advanced tanlang, so'ngra Qo'shish bo'limida Qo'shishni tanlang, ko'rinadigan Tanlang fayllar oynasida kerakli faylni tanlang.
 
-   - Yangi yozuv qo'shilganda tanlang **SSH Agent** Chap menyudan qoʻshgan kalit faylini tanlang **Qo'shish** menyuda **Xususiy kalit** bo'lim; so'ngra quyidagi xatcho'plarni tanlang:
+   - Yangi yozuv qo'shilganda chap menyudan SSH Agentni tanlang, so'ngra Xususiy kalit bo'limida Qo'shish menyusidan qo'shgan kalit faylini tanlang; so'ngra quyidagi xatcho'plarni tanlang:
 
-      - **Ma'lumotlar bazasi ochilganda/qovurilganda agentga kalit qo'shish**
+      - Ma'lumotlar bazasi ochilgan/qopilganda agentga kalit qo'shish
 
-      - **Ma'lumotlar bazasi yopilganda/qopilganda agentdan kalitni olib tashlash**
+      - Ma'lumotlar bazasi yopilganda / qulflanganida agentdan kalitni olib tashlash.
 
-      - **Ushbu kalitdan foydalanilganda foydalanuvchi tomonidan tasdiqlashni talab qiling**
+      - Ushbu kalitdan foydalanilganda foydalanuvchi tomonidan tasdiqlashni talab qiling
 
-   - Agar kerak bo'lsa, yozuvni boshqa o'zgartirish.
+   - Agar kerak bo'lsa, ro'yxatga boshqa o'zgartirishlar kiriting.
 
-   - Tayyor bo'lganda tanlang **OK** kirishni saqlash uchun.
+   - Tayyor bo'lganda, yozuvni saqlash uchun OK tanlang.
 
-   ::: details Maʼlumotlarni koʻrsatish
+   ::: details Koʻrsatkich ekran koʻrinishlarini koʻrsatish
 
-   ![KeePassXC `Advanced` Tab: Xususiy kalit ilovalarini qoʻshish](../../../img/keepassxc_private_key.png)
+   ![KeePassXC `Advanced` tab: Xususiy kalitga ilova qo'shish](../../../img/keepassxc_private_key.png)
 
-   ![KeePassXC `SSH Agent` Tab: Xususiy kalit ilovalarini qoʻshish](../../../img/keepassxc_pk_agent.png)
+   ![KeePassXC `SSH Agent` tab: Xususiy kalitni qo'shish](../../../img/keepassxc_pk_agent.png)
 
    :::
 
 ##### Kutilgan natijalar {#expected-results}
 
-- Kriptografik va `shh` kalitlar bir KeePassXC Ma'lumotlar bazasi KeePassXC deraza ochiq.
+- Kriptografik va `shh` kalitlari KeePassXC ma'lumotlar bazasida KeePassXC oynasi ochiq bo'lganda kirish mumkin bo'lgan yozuvlar sifatida saqlashadi.
 
-- saqlangan kriptografik va `ssh` kalitlar ruxsat olish uchun zarur bo'lganda ishlatilishi mumkin.
+- O'rnatilgan kriptografiya va `ssh` kalitlari ruxsat olish uchun zarur bo'lganda foydalanish mumkin.
 
-- saqlangan kriptografik va `ssh` kalitlar o'chirilgan `ssh-agent` bir marta KeePassXC deraza yopilgan.
+- saqlangan kriptografik va `ssh` kalitlar uydan olib tashlanadi `ssh-agent` bir marta KeePassXC deraza yopilgan.
 
 ::: info Izoh
 
-O ' zbekiston Respublikasining **Ushbu kalitdan foydalanilganda foydalanuvchi tomonidan tasdiqlashni talab qiling** tanlov, `ssh-agent` kalitni taqdim etgan jarayon ustidan nazorat qilmasligi mumkin. Agar parol boshqaruvchi jarayoni zararli dastur yoki tizim xizmati tomonidan `SIGKILL` signal, kalit ehtimol `ssh-agent`, Unix tizim dasturlari intercept qila olmaydi `SIGKILL`.
+`ssh-agent` ushbu kalitdan foydalanilganda foydalanuvchilarni tasdiqlashni talab qilish variantini qo'llab-quvvatlamagan holda, unga kalit bergan jarayonni kuzatmasligi mumkin. Agar parol boshqaruvchisi jarayonida zararli dastur yoki tizim xizmati tomonidan `SIGKILL` signal orqali to'xtalsa, Unix tizim dasturlari `SIGKILL` ni ushlab bo'lmaydi, shuning uchun kalit `ssh-agent` da qolishi mumkin.
 
 :::
 
 ## Kriptografik kalitlarni saqlash {#storing-cryptographic-keys-physically}
 
-Offline xavfsizlikning eng yuqori darajasini izlayotganlar uchun kriptografik kalitlarni saqlash imkoniyati raqamli tarmoqlardan to'liq uzilganligini ta'minlaydi va shu yo'sin ruxsatsiz kirish xavfini kamaytiradi.
+Offlayn xavfsizlikning eng yuqori darajasini izlayotganlar uchun kriptografik kalitlarni saqlash imkoniyati raqamli tarmoqlardan to'liq uzilganligini ta'minlaydi va shu bilan birga ruxsatsiz kirish xavfini kamaytiradi. Jismoniy variantni tan olish turli xil xavfsizlik ehtiyojlarini qondirishga bag'ishlanganligimizni ta'kidlaydi.
 
 ### Hardver kalitidan foydalanish {#using-a-hardware-key}
 
-Bizning jamoamiz uskunalar kalitlarini eng yaxshi xavfsizlik choralaridan biri deb hisoblaydi. USB port va odatiy flash-drive o'lchamiga ega bo'lgan. faqat mashina bilan ulanish chog'ida xavfsizlik bilan bog'liq hodisalarni o'zgartiradi. Bu sizga qurilmani xavfsizlik buzilishi yuz bergan taqdirda osonlikcha uzatib qo'yish yoki kerak bo'lganda uni boshqa mashina bilan qayta ulash imkonini beradi.
+Bizning jamoamiz asbob-uskuna kalitlarini eng yaxshi xavfsizlik choralaridan biri deb hisoblaydi. Hardver kaliti USB port orqali ulashadigan va odatiy flash-drive o'lchamli kompakt qurilma. U mashinaga ulashganda faqat xavfsizlik bilan bog'liq voqealarni qayta ishlash. Bu sizga qurilmani xavfsizlikni buzish holatida osonlikcha uzatib qo'yishga imkon beradi yoki kerak bo'lganda uni boshqa mashina bilan qayta ulashga imkon beradi.
 
-Biroq, juda ko'p brendlar mavjud Hardver kalitlari har biri o'zining noyob APIs Sizning ehtiyojlaringizga mos keladigan kalitni topish uchun bozorni tadqiq qilish muhimdir.
+Biroq, har biri o'zining noyob APIs ga ega bo'lgan hardware kalitlarining ko'plab brendlari mavjudligi sababli sizning ehtiyojlaringizga eng mos keladigan kalitni topish uchun bozorni tadqiq qilish muhimdir.
 
-Hozircha, bizning jamoamiz ichki sinovlarda ishtirok etdi [YubiKey 5C](https://www.yubico.com/il/product/yubikey-5c/) juda ko'p ijobiy xususiyatlarga ega bo'lgan, shu jumladan ko'p qirrali API funktsionalligi.
+Hozirga qadar, bizning jamoamiz ichki sinovdan o'tgan [YubiKey 5C](https://www.yubico.com/il/product/yubikey-5c/) juda ko'p ijobiy xususiyatlarga ega bo'lganligi isbotlangan asbob-uskuna kalitlari, shu jumladan API funktsionalligi.
 
-Biroq, e'tiborga olish mumkin bo'lgan kamchiliklar bor. [HMAC Muammo-javob autentifikatsiyasi](https://en.wikipedia.org/wiki/Challenge%E2%80%93response_authentication) va tegishli ma'lumotni saqlash _xususiy_ Ushbu o'rnatish hujumchilar tomonidan tajriba bilan ta'minlangan ma'lumotlar to'g'risida taxmin qilish imkonini berishi mumkin. YubiKey 5C xotirasi, shu bilan birga umumiy xavfsizlikni buzadi.
+Biroq, e'tiborga olish kerak bo'lgan muqobil kamchilik bor. [HMAC qiyinchilik-javob autentifikatsiyasini ](https://en.wikipedia.org/wiki/Challenge%E2%80%93response_authentication) amalga oshirish va ushbu javob uchun tegishli xususiy kalitni saqlash zaiflikni yaratishi mumkin. Ushbu o'rnatish hujumchilarga YubiKey 5C xotirasida saqlangan ma'lumot haqida bilimdon taxmin qilish imkonini berishi mumkin, shu bilan birgalikda umumiy xavfsizlikni buzishi mumkin.
 
-Yaxshiyamki, ushbu zaiflikni o'zlashtirish uchun alternativa yondashuvdan foydalanish mumkin. YubiKey 5C. Fikrimiz YubiKey 5C KeePassXC kriptografik va `SSH` Bu usul hatto foydali deb topilishi mumkin, chunki u ko'pgina parollarning xavfsizligini oshirib boradi va zararli tomon uchun sizning apparat kalitingizga ega bo'lish zarur. KeePassXC ma'lumotlar bazasi sotuvdi.
+Yaxshiyamki, bu zaiflikni YubiKey 5Cdan foydalanishning alternativa yondashuvini qo'llash orqali kamaytirish mumkin. Fikr shundaki, siz kriptografik va `SSH` kalitlaringizni saqlaydigan KeePassXC ma'lumotlar bazasiga xavfsiz kirish uchun YubiKey 5Cdan foydalaning. Ushbu usul hatto foydali deb topilishi mumkin, chunki u ko'pgina maxfiy so'zlarning xavfsizligidan ustundir va KeePassXC ma'lumotlar bazasi sovuq bo'lgan taqdirda zararli tomon sizning qurilma kalitingizga ega bo'lishi kerakligini anglatadi.
 
-::: info
+::: ma'lumot
 
-haqida ko'proq o'qish uchun _yuqoridagi usul_, javobini ko'ring KeePassXC ishlab chiquvchilar[Janek Bevendorff](https://github.com/phoerious) Quyidagilarga StackExchange savol:
+Yuqoridagi usul haqida ko'proq ma'lumot olish uchun quyidagilardan birining javobini ko'ring: KeePassXC ishlab chiquvchilar[Janek Bevendorff](https://github.com/phoerious) Quyidagilarga StackExchange savol:
 
 [Foydalanish oqilonami ? KeePassXC bilan YubiKey?](https://security.stackexchange.com/questions/201345/is-it-reasonable-to-use-keepassxc-with-yubikey/258414#258414)
 
 :::
 
-### Mnemonik soʻzlardan foydalanish {#using-a-mnemonic-phrase}
+### Mnemonik so'zlardan foydalanish {#using-a-mnemonic-phrase}
 
-Boshqa tomondan, siz xususiy kalitni bir qator so'zlar sifatida yodlab olishingiz mumkin. _mnemonik so'z_. Ushbu usul ko'plab hamyonlarda qo'llaniladi va 25 ta aniq so'zni eslab qolishni talab qiladi. KeePassXC, mnemonik parol so'zlari ishlab chiqarishni taklif etadi.
+Boshqa tomondan, siz shaxsiy kalitni bir qator so'zlar sifatida yodga olishingiz mumkin, bu mnemonik ibora deb tanilgan. Bu usul ko'plab pulkalarda qo'llaniladi va 25 ta aniq so'zni eslab qolishni talab qiladi. Ko'pchilik parol boshqaruvchilari, shu jumladan ilgari muhokama qilinganlar KeePassXC, mnemonik hasharotlarni yaratish.

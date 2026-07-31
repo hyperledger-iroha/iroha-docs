@@ -6,25 +6,25 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# bilan ishlash Iroha Ikkilamchi {#working-with-iroha-binaries}
+# Iroha ikkilamchilar bilan ishlash {#working-with-iroha-binaries}
 
-O ' zbekiston Respublikasi Iroha 3 operator ish oqimi uchta asosiy ikkilamchi boʻyicha aylanadi:
+Iroha 3 operatorning ish oqimi uchta asosiy ikkilamchi bo'yicha aylanadi:
 
-- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad) tengdoshlar daemonini boshqarganlik uchun
-- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_cli) uchun CLI va operator buyruqlari
+- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad) tengdoshlar daemonini ishlatish uchun
+- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_cli) uchun CLI va operator qo'mondonlari
 - [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_kagami) kalitlar, genesis, lokal tarmoqlar va profillar uchun
 
 ## Manbaiga asoslanib quring {#build-from-source}
 
-Yuqoridagi ish maydonining ildizidan:
+Yuqori oqimdagi ish maydonining ildizidan:
 
 ```bash
 cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ```
 
-Bo ' shish binarlari keyinchalik `target/release/`.
+Bo'shash binarlari keyinchalik `target/release/` da mavjud bo'ladi.
 
-Qo'mondon yuzini tekshirish uchun:
+Boshqaruv yuzasini tekshirish uchun:
 
 ```bash
 ./target/release/irohad --help
@@ -34,7 +34,7 @@ Qo'mondon yuzini tekshirish uchun:
 
 ## Repozitoriyadan toʻgʻridan-toʻgʻri ishga tushirish {#run-directly-from-the-repository}
 
-Agar siz global ravishda biron bir narsani o'rnatishni istamasangiz, `cargo run`:
+Agar siz global ravishda biron bir narsani o'rnatishni istamasangiz, `cargo run` dan foydalaning:
 
 ```bash
 cargo run --bin irohad -- --help
@@ -44,23 +44,21 @@ cargo run --bin kagami -- --help
 
 ## Docker Rasm {#docker-image}
 
-Yuqoridagi ish o'rinlari foydalanish `kagami localnet` va `kagami docker` ishlab chiqarish
-Docker Compose cheklangan kodga mos keladigan fayllar. `hyperledger/iroha:dev`
-tasvir hosil qilingan fayllar bilan ishlatilishi mumkin.
+Yuqori oqimdagi ish maydonida `kagami localnet` va `kagami docker` kodga mos bo'lgan Docker Compose fayllarini hosil qilish uchun ishlatiladi. `hyperledger/iroha:dev` tasviridan ushbu hosil qilingan fayllar bilan foydalanish mumkin.
 
-Ishlab boring CLI konteynerda:
+CLI ni konteynerda ishga tushiring:
 
 ```bash
 docker run -t hyperledger/iroha:dev iroha --help
 ```
 
-Yugurish Kagami konteynerda:
+Kagami konteynerda ishlatilsin:
 
 ```bash
 docker run -t hyperledger/iroha:dev kagami --help
 ```
 
-Tengdoshlarni ishga tushirish uchun lokalnetni yarating va avval faylni yozing:
+Tengdoshlarni ishga tushirish uchun lokalnetni yaratish va birinchi navbatda faylni yozish:
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
@@ -68,8 +66,8 @@ cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyper
 docker compose -f ./localnet/docker-compose.yml up
 ```
 
-## Qaysi ikkilamchini ishlatishim kerak? {#which-binary-should-i-use}
+## Qaysi binarydan foydalanishim kerak? {#which-binary-should-i-use}
 
-- Foydalanish `irohad` tengdoshlarni ishga tushirganingizda yoki boshqarayotganingizda.
-- Foydalanish `iroha` katta kitobdan so'rov olish, tranzaksiyalarni taqdim etish yoki operator oxirgi nuqtalarini tekshirish kerak bo'lganda.
-- Foydalanish `kagami` kalitlar, genesis manifestlari, profil to'plamlari yoki lokalnet aktivlari kerak bo'lganda.
+- Tengdoshlaringiz bilan ishlashni boshlaganingizda `irohad` dan foydalaning.
+- `iroha` dan foydalanib, katta daftarni so'rovlash, tranzaksiyalarni taqdim etish yoki operator oxirgi nuqtalarini tekshirish kerak bo'lganda foydalaning.
+- `kagami` kalitlar, genesis manifestlari, profil to'plamlari yoki localnet aktivlariga muhtoj bo'lganda ishlating.

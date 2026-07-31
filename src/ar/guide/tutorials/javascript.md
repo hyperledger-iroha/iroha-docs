@@ -8,14 +8,11 @@ translation_engine: nllb-200-ct2
 
 # JavaScript و TypeScript {#javascript-and-typescript}
 
-التيار JavaScript SDK هو `@iroha/iroha-js` الحزمة في Iroha
-شجرة المصدر Node.js- أولاً SDK لـ Torii, Norito البناء، التوقيع
-التصفحات، مُشاهدة الإضافات المتصلة، ونقل القيادة الكاغيموشا.
+الحالي JavaScript SDK هو حزمة `@iroha/iroha-js` في شجرة المصدر Iroha. إنها Node.js-أول SDK لبنائه Torii ، Norito ، والتوقيع ، والصفحات ، ومشاهدات سابقة Connect ، ونقل الأوامر كاغيموشا.
 
 ## بناء من مصدر {#build-from-source}
 
-الحزمة ليست متاحة للجمهور حالياً npm السجل، قم ببناءها
-من نفس اللوحة Iroha مراجعة المصدر كالعقدة التي تستهدفها:
+الحزمة غير متوفرة حاليًا من سجل npm العام. قم ببناءها من نفس مراجعة المصدر المثبتة Iroha مثل العقدة التي تستهدفها:
 
 ```bash
 git clone https://github.com/hyperledger-iroha/iroha.git
@@ -25,11 +22,7 @@ npm run build:native
 npm run build:dist
 ```
 
-البناء الأصلي يُغلف `cargo build -p iroha_js_host` وتسجل
-مبلغ التحقق المحدد للمنصة المستخدم في SDK البداية. المصدر يبني أماكن
-المضيف المؤكد في `native/`. المجموعة `IROHA_JS_NATIVE_DIR` فقط عندما يكون عمداً
-وتزويد مستضيف مُبني بشكل منفصل، معتمد على المبالغ المحددة. ESM- فقط
-من CommonJS, استخدام ديناميكي `import()`.
+يقوم البناء الأصلي بتغطية `cargo build -p iroha_js_host` وتسجيل مبلغ التحقق المحدد للمنصة المستخدم في بدء SDK. يقوم المصدر ببناء الأماكن التي تؤكد استضافة في `native/`. يضع `IROHA_JS_NATIVE_DIR` فقط عند توفير مستضيف تم تصنيعه بشكل منفصل، ومجموع التحقق من المعلومات. الحزمة هي ESM فقط؛ من CommonJS، استخدام ديناميكي `import()`.
 
 ## بداية سريعة {#quickstart}
 
@@ -45,10 +38,9 @@ const keys = generateKeyPair();
 console.log(keys.publicKey);
 ```
 
-## حاولي Taira القراءة فقط {#try-taira-read-only}
+## جرب Taira القراءة فقط {#try-taira-read-only}
 
-استخدام متكامل `fetch` في Node.js 24 للقناة Taira قبل إضافة التوقيع
-Norito رمز المعاملة:
+استخدم `fetch` متكامل في Node.js 24 لتحقيق Taira قبل إضافة رمز التوقيع و Norito لعملية المعاملات:
 
 ```js
 const root = "https://taira.sora.org";
@@ -73,15 +65,13 @@ for (const asset of assets.items) {
 }
 ```
 
-احفظها ك `taira-readonly.mjs`, ثم تشغيله:
+حفظها على `taira-readonly.mjs` ، ثم تشغيلها:
 
 ```bash
 node taira-readonly.mjs
 ```
 
-انتقل إلى الموقع SDK الاتصالات فقط بعد أن تعمل هذه الشيكات القراءة فقط Taira
-يمكن أن يعود مؤقتاً خطوة في الصف أو البوابة المشبعة ، لذا حافظ على شبكة الإنترنت
-اختبارات الاختيار CI.
+الانتقال إلى المكالمات الموقعة SDK فقط بعد أن تعمل هذه التحققات القائمة على القراءة فقط. يمكن للجمهور Taira إرجاع خطوة مكتظة أو خطأ بوابة مؤقتًا ، لذلك حافظ على اختبارات الشبكة الحية اختيار الدخول في CI.
 
 الواردات المفيدة للطريق الفرعي:
 
@@ -91,30 +81,23 @@ import { noritoEncodeInstruction } from "@iroha/iroha-js/norito";
 import { generateKeyPair } from "@iroha/iroha-js/crypto";
 ```
 
-لتنفيذ إطار تشغيل الاتصال فقط في المتصفح ، استخدم `@iroha/iroha-js/connect-browser`
-بدلاً من استيراد العقدة الأولى `ToriiClient` سطح.
+لاستخدام `@iroha/iroha-js/connect-browser` بدلاً من استيراد سطح Node-first `ToriiClient` لـ Connect bootstrap للمصفح فقط
 
-## الاحتفاظ بالأموال {#native-escrow}
+## الخصم الأصلي {#native-escrow}
 
-JavaScript و TypeScript التطبيقات يمكن استخدام الاحتفاظ الأصلي من خلال Kotodama
-الإتفاقيات. قم بتجميع مكالمات مضيف الاحتفاظ
-`@iroha/iroha-js/kotodama-compiler`; البناء المباشر للمعاملات الاحتفاظية الأصلية
-لا يتم عرضهم حالياً من قبل JavaScript SDK. انظروا
-[الاحتفاظ بالأصول الأصلية](/ar/blockchain/escrow.md#javascript-and-typescript-kotodama)
-على سبيل المثال، مكالمة استضافة الاحتفاظ.
+يمكن أن تستخدم التطبيقات JavaScript و TypeScript الاحتفاظ الأصلي من خلال عقود Kotodama. قم بتجميع دعوات استضافة الاحتفاض مع `@iroha/iroha-js/kotodama-compiler` ؛ لا يتم عرض بناء معاملات الاحتفاذ الأصلية المباشرة حاليًا من قبل JavaScript SDK. انظر [ الاحتفاظ بالأصول الطبيعية](/ar/blockchain/escrow.md#javascript-and-typescript-kotodama) لمثال استدعاء مضيف الاحتفاض.
 
 ## التغطية الحالية {#current-coverage}
 
-(الـ) SDK يركز على:
+SDK يركز على:
 
 - Torii HTTP و WebSocket المساعدين
-- Norito صانعي المعاملات والمعلومات
-- Kotodama التجميع، بما في ذلك مدخلات استضافة المكالمات
-- إد25519 توقيع وتوليد المفاتيح
-- المساعدون في تصفح الصفحات وإعادة المحاولة
-- قم بتوصيل المساعدات لتنفيذ إزالة المتصفح
-- إعداد كاغيموشا، وتكملاتها، وإعادة التأمين، وحالة النقل
-  المساعدين
+- Norito صانعي المعاملات والتعليمات
+- Kotodama التجميع، بما في ذلك مدخلات دعوة استضافة الاحتفاظ بها
+- إد 25519 توقيع وتوليد المفاتيح
+- المساعدون في تصفية الصفحات وإعادة المحاولة
+- قم بتوصيل مساعدات تشغيل المتصفح
+- إعداد كاغيموشا ومكملاتها وإفراجها ومساعدات النقل في حالة تشغيل
 
 ## الإشارات المتقدمة {#upstream-references}
 

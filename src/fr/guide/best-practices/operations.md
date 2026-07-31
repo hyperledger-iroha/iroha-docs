@@ -8,68 +8,44 @@ translation_engine: nllb-200-ct2
 
 # Opérations {#operations}
 
-La préparation au fonctionnement signifie que le réseau peut être observé, modifié,
-sauvegardé et récupéré sans s'appuyer sur un accès improvisé au validateur
-les hôtes.
+La disponibilité opérationnelle signifie que le réseau peut être observé, modifié, sauvegardé et récupéré sans compter sur l'accès improvisé aux hôtes validateurs.
 
 ## Observabilité {#observability}
 
-- Activer intentionnellement les profils de télémétrie. `extended` lorsque `/metrics`
-  est nécessaire et `full` lors des essais qui nécessitent des détails Sumeragi
-  les itinéraires des opérateurs.
-- Tableau de bord accepté, débit rejeté, latence engagée, file d'attente
-  profondeur, saturation des files d'attente, changements de vue, messages de consensus abandonnés, et
-  la pression de stockage.
-- Conserver des instantanés de l'état, des rayures de métriques, des journaux et du déploiement
-  configuration dans le même ensemble d'incidents ou d'articles de référence.
-- Alerte de croissance soutenue des files d'attente, pics inattendus de rejet, blocage
-  les changements de hauteur, de vision et de santé des pairs.
+- Activer intentionnellement les profils de télémétrie. Utilisez `extended` lorsque `/metrics` est nécessaire et `full` pendant les essais qui nécessitent des itinéraires détaillés pour l'opérateur Sumeragi.
+- Le tableau de bord a accepté le débit, rejeté le déficit, la latence d'engagement, la profondeur de file d'attente, la saturation des files d'attention, les modifications de visualisation, les messages de consensus abandonnés et la pression de stockage.
+- Conserver des instantanés d'état, des extraits de métriques, des journaux et la configuration du déploiement dans le même ensemble d'incidents ou d'artefacts de référence.
+- Alerte sur la croissance soutenue des files d'attente, les pics de rejet inattendus, l'altitude du bloc bloqué, le changement de point de vue et les changements de santé des pairs.
 
-Vous voyez ? [Performance et métriques](/fr/guide/advanced/metrics.md).
+Voir [Performance et métriques](/fr/guide/advanced/metrics.md).
 
-## Les livres de conduite {#runbooks}
+## Livres d'exécution {#runbooks}
 
-- Écrivez des livres de course pour le redémarrage par les pairs, Torii dégradation, compromis essentiel,
-  erreurs d'autorisation, épuisement des frais de sponsor, files d'attente coincées et réseau
-  Les symptômes de la partition.
-- Inclure des vérifications exactes en lecture seule avant les opérations d'écriture, en particulier pour
-  enregistrement par les pairs, accords de permis et changements de paramètres.
-- Garder les contacts d'urgence et les règles d'escalade en dehors des dossiers de repo si
-  Ils comprennent des données opérationnelles privées.
-- Revoir les livres de course après chaque incident, répétition ou mise à niveau majeure.
+- Écrivez des feuilles de route pour le redémarrage par les pairs, la dégradation Torii, le compromis clé, les erreurs d'autorisation, l'épuisement du sponsor des frais, les files d'attente coincées et les symptômes de partition réseau.
+- Incluez des vérifications exactes en lecture seule avant les opérations d'écriture, en particulier pour l'enregistrement par les pairs, les autorisations et les changements de paramètres.
+- Gardez les contacts d'urgence et les règles d'escalade en dehors des dossiers repo s'ils incluent des données opérationnelles privées.
+- Révisez les livres de course après chaque incident, répétition ou mise à niveau majeure.
 
-Vous voyez ? [Sécurité opérationnelle](/fr/guide/security/operational-security.md).
+Voir [Sécurité opérationnelle ](/fr/guide/security/operational-security.md).
 
-## Des sauvegardes et une récupération {#backups-and-recovery}
+## Les sauvegardes et la récupération {#backups-and-recovery}
 
-- Réservation par pairs en fonction du point de récupération requis par le
-  Valider les restaurations sur des hôtes non en production.
-- Gardez la génèse signée, libérez des métadonnées, configurez les pairs et gardez les clés
-  les enregistrements récupérables même si un hôte de validation n'est pas disponible.
-- Documentation du fait qu'une procédure de récupération se rétablit à partir de la génèse, restaure
-  d'un instant, ou remplace un paire échoué par une nouvelle identité.
-- Ne jamais tester les procédures de restauration pour la première fois pendant une production
-  Un incident.
+- Backup de stockage par pair selon le point de récupération requis par le déploiement.
+- Garder la génèse signée, libérer des métadonnées, configurer les pairs et récupérer les enregistrements de garde des clés même si un hôte validateur n'est pas disponible.
+- Documenter si une procédure de récupération se reconstruit à partir de la génèse, se rétablit à partir d'un instantané ou remplace un concurrent échoué par une nouvelle identité.
+- Ne jamais tester des procédures de restauration pour la première fois lors d'un incident de production.
 
 ## Gestion des changements {#change-management}
 
-- Traiter les changements de configuration sur la chaîne comme des transactions qui nécessitent une révision,
-  les lectures de pré-vol, l'autorisation et la vérification post-changement.
-- Déployer des mises à niveau binaires par pairs avec un plan de compatibilité et un retour en arrière
-  point de décision.
-- Évitez de modifier la topologie des pairs, le calendrier du consensus et la charge de travail de l'application
-  dans la même fenêtre d'entretien, sauf si le plan de migration l'exige.
-- Enregistrer les hachages de transaction et les hauteurs de bloc pour des modifications opérationnelles.
+- Traiter les changements de configuration sur la chaîne comme des transactions qui nécessitent une révision, des lectures avant vol, une autorisation et une vérification après changement.
+- Mettre en œuvre des mises à niveau binaires par pairs avec un plan de compatibilité et un point de décision de retrait.
+- Évitez de changer la topologie des pairs, le calendrier consensuel et la charge de travail de l'application dans la même fenêtre d'entretien à moins que le plan de migration ne l'exige.
+- Enregistrer les hachages de transaction et la hauteur des blocs pour les modifications opérationnelles.
 
-Vous voyez ? [Remplacement à chaud](/fr/guide/advanced/hot-reload.md) et
-[Matrice de compatibilité](/fr/reference/compatibility-matrix.md).
+Voir [Réchargement à chaud](/fr/guide/advanced/hot-reload.md) et [ Matrice de compatibilité ](/fr/reference/compatibility-matrix.md).
 
 ## Révision des capacités {#capacity-reviews}
 
-- Re-exécuter des contrôles de charge lorsque le validateur est compté, du matériel, du placement du réseau,
-  le mélange de charge de travail ou la modification des paramètres de consensus.
-- Mesurer le réchauffement, l'état stable et la charge maximale attendue plutôt que de compter sur
-  sur un échantillon court de débit, dans le meilleur des cas.
-- Comparer le débit accepté avec le débit engagé et la profondeur des files d'attente.
-  soumission TPS dépasse les engagements TPS et les files d'attente augmentent, le réseau est passé
-  son enveloppe durable.
+- Réinitialiser les contrôles de charge lorsque le nombre de validateurs, le matériel, le placement du réseau, le mélange de charges de travail ou les paramètres de consensus changent.
+- Mesurer le réchauffement, l'état de stabilité et la charge maximale attendue au lieu de s'appuyer sur un échantillon de débit court du meilleur cas.
+- Comparer le débit accepté avec le débit engagé et la profondeur de file d'attente. Si le TPS soumis dépasse le TPS engagé et que les files d'attention augmentent, le réseau a dépassé son enveloppe durable.

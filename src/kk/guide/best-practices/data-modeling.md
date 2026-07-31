@@ -17,7 +17,7 @@ translation_engine: nllb-200-ct2
 - Iroha атаулары каноникалық талдаудан кейін жағдайға сезімтал.
 - Сынақ және өндіріс сәйкестіктерінің атаулары, домендері мен конфигурациялық файл жолдары бойынша көрікті түрде ерекшеленсін.
 
-Қараңыз [Домендер](/kk/blockchain/domains.md), [Есепшоттар](/kk/blockchain/accounts.md), және [Атау](/kk/reference/naming.md).
+[Домендер](/kk/blockchain/domains.md), [Бухгалтерлік шоттар](/kk/blockchain/accounts.md) және [Айнымдар](/kk/reference/naming.md).
 
 ## Активтер және NFTs {#assets-and-nfts}
 
@@ -35,7 +35,7 @@ translation_engine: nllb-200-ct2
 - Үлкен құжаттарды, журналды, жеке пайдаланушы деректерін немесе жоғары жүктемелі қосымшаны тікелей метадеректерге сақтамаңыз.
 - Метамәліметтер тізбектен тыс деректерге сілтегенде, мазмұн хэшігі, URI, SoraFS жолы, манифестикалық анықтама немесе компактты міндеттеме сияқты тексеруге болатын анықтама сақталады.
 
-Қараңыз [Метамәліметтер мен бухгалтерлік есептерді сақтау](/kk/guide/configure/metadata-and-store-assets.md) және [Метамәліметтер](/kk/blockchain/metadata.md).
+[Metadata және Ledger Storage Choices](/kk/guide/configure/metadata-and-store-assets.md) және [Metadata](/kk/blockchain/metadata.md) қараңыз.
 
 ## Үлгі бойынша рұқсаттар {#permissions-by-model}
 
@@ -44,7 +44,7 @@ translation_engine: nllb-200-ct2
 - Өрлеу, жаю, теңгерімдік басқару, орындаушыларды өзгерту, триггерлерді басқару және метадеректерді мутациялау рұқсаттарын жоғары әсерлі рұқсаттар ретінде қараңыз.
 - Уақытша рұқсаттар үшін айрықша қайтарып алу және айналым процедураларын қосу.
 
-Қараңыз [Рұқсаттар](/kk/blockchain/permissions.md) және [Рұқсат белгілері](/kk/reference/permissions.md).
+[Рұқсаттар](/kk/blockchain/permissions.md) және [Рұқсат белгілері ](/kk/reference/permissions.md) қараңыз.
 
 ## Сұраныс пішіні {#query-shape}
 

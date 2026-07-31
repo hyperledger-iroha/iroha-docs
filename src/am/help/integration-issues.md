@@ -8,29 +8,25 @@ translation_engine: nllb-200-ct2
 
 # የመዋሃድ ችግሮች {#troubleshooting-integration-issues}
 
-ይህ ክፍል ለችግር መፍታት ጠቃሚ ምክሮችን ይሰጣል Iroha 3 ውህደት
-የምታጋጥመው ነገር እዚህ አልተገለጸም፣
-እኛን በ [ቴሌግራም](https://t.me/hyperledgeriroha).
+ይህ ክፍል ለ Iroha 3 ውህደት የችግር መፍታት ጠቃሚ ምክሮችን ይሰጣል ። የሚያጋጥማችሁት ችግር እዚህ ያልተገለጸ ከሆነ በቴሌግራም [ ቴሌግራም](https://t.me/hyperledgeriroha) በኩል ያነጋግሩን ።
 
 ## ደንበኛው መገናኘት አይችልም {#client-cannot-connect}
 
-የደንበኛው ውቅር የእኩዮቹን ነጥቦች ያመለክታል መሆኑን ያረጋግጡ Torii አድራሻ
+የደንበኛው ውቅር ወደ ባልደረባው Torii አድራሻ የሚያመለክት መሆኑን ያረጋግጡ:
 
 ```toml
 torii_url = "http://127.0.0.1:8080/"
 ```
 
-ለ CLI ቁጥጥር፣ ተመሳሳይ ፋይል በግልጽ ያስተላልፉ:
+ለ CLI ምርመራዎች ተመሳሳይ ፋይል በግልጽ አሳልፉ:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 ```
 
-እኩያውም ቢገባ Docker ወይም Kubernetes, አስተናጋጅ ወይም አገልግሎት አድራሻ ይጠቀሙ
-ከደንበኛው ሂደት ተደራሽ ነው። `127.0.0.1` በአንድ መያዣ ውስጥ አይደለም
-አስተናጋጅ ማሽን.
+እኩዮቹ ከገቡ Docker ወይም Kubernetes፣ ከደንበኛው ሂደት ተደራሽ የሆነውን አስተናጋጅ ወይም የአገልግሎት አድራሻ ይጠቀሙ። `127.0.0.1` በአንድ መያዣ ውስጥ ያለው አስተናጋጅ ማሽን አይደለም።
 
-ለሕዝብ Taira ሙከራዎች የሚጀምሩት ያልተፈረመ የፍጻሜ ነጥብ ምርመራ በማድረግ ነው።
+ለሕዝብ ሙከራዎች Taira ፣ ያልተፈረመ የጨረታ ነጥብ ምርመራ ይጀምሩ
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -40,24 +36,18 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=5' \
   | jq -r '.items[].id'
 ```
 
-እነዚህ ትዕዛዞች ከማይሳካ `502`, TLS, DNS, ወይም የጊዜ ገደብ ስህተቶች, አውታረ መረብ ማስተካከል
-ተደራሽነት ወይም የህዝብ የሙከራ አውታረመረብ መጨረሻ ነጥብ ከመነሻው በፊት መጠበቅ
-ቁልፎች ወይም የግብይት ጥቅማጥቅሞች።
+እነዚህ ትዕዛዞች `502`, TLS, DNS ወይም የጊዜ ገደብ ስህተቶች ካልተሳካላቸው የአውታረ መረብ ተደራሽነትን ያስተካክሉ ወይም የሂሳብ ቁልፎችን ወይም የግብይት ጥቅማጥቅሞችን ከማስተካከልዎ በፊት ለህዝባዊ የሙከራ አውታረመረብ መጨረሻ ነጥብ ይጠብቁ።
 
-## ግብይቶች ውድቅ ይደረጋሉ {#transactions-are-rejected}
+## ግብይቶች ውድቅ ይደረጋሉ። {#transactions-are-rejected}
 
 አብዛኛዎቹ የግብይት ውድቀቶች የሚከሰቱት በማንነት ወይም በፈቃድ መዛባት ምክንያት ነው
 
-- በደንበኛው ውቅር ውስጥ ያለው የሂሳብ የህዝብ ቁልፍ ከግል ቁልፍ ጋር አይጣጣምም
-  ለመፈረም ጥቅም ላይ ይውላል
-- ሂሳቡ በጄኔሲስ ወይም በቀደመ ግብይት አልተመዘገበም
-- ሂሳቡ በሂደት ጊዜ የሚፈለገውን የመፈቀደለት ምልክት ወይም ሚና የለውም
-  ማረጋገጫ
-- አንድ ጎራ ID የመረጃ ቦታ ብቃቱን ያጣ ነው, ለምሳሌ
-  `domain.dataspace`
+- በደንበኛው ውቅር ውስጥ ያለው የመለያ የህዝብ ቁልፍ ለመፈረም ጥቅም ላይ የዋለው የግል ቁልፍ ጋር አይመሳሰልም።
+- ሂሳቡ በጀነሲስ ወይም በቀደመ ግብይት የተመዘገበ አይደለም
+- ሂሳቡ በስራ ሰዓት ማረጋገጫው የሚፈለገው የመፈቀደለት ምልክት ወይም ሚና የለውም ።
+- አንድ ጎራ ID እንደ `domain.dataspace` የመረጃ ቦታ ማረጋገጫ የጎደለው ነው
 
-አጠቃቀም `--output-format text` ማረም ሳለ CLI ትዕዛዞች ስህተቶች ቀላል ናቸው
-ለማንበብ:
+ስህተቶች ለማንበብ ቀላል እንዲሆን የ `--output-format text` ትዕዛዞችን ሳያስተካክሉ CLI ይጠቀሙ:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ledger transaction ping --msg "hello"
@@ -65,14 +55,14 @@ cargo run --bin iroha -- --config ./localnet/client.toml --output-format text le
 
 ## መጠይቆች ባዶ ውጤቶችን ይመልሳሉ {#queries-return-empty-results}
 
-ባዶ መጠይቅ ውጤቶች ሁልጊዜ ጥያቄው አልተሳካም ማለት አይደለም.
+ባዶ መጠይቅ ውጤቶች ሁልጊዜ ጥያቄው አልተሳካም ማለት አይደለም. ያረጋግጡ:
 
 - ዕቃውን ሊፈጥር የሚገባው ግብይት የተፈጸመ ነው
-- የተጠየቀው ጎራ፣ የንብረት ትርጉም ወይም ሂሳብ ID በካኖኒክ
-- ገጽታ ወይም ማጣሪያዎች የሚጠበቁትን ረድፍ አይጥሉም
-- ደንበኛው ከተፈለገው አውታረመረብ ጋር የተገናኘ ነው እንጂ ሌላ የአካባቢው አውታረ መረብ አይደለም።
+- የተጠየቀው ጎራ፣ የንብረት ትርጉም ወይም መለያ ID ቀኖናዊ ነው
+- ገጾች ወይም ማጣሪያዎች የሚጠበቁትን ረድፍ አያካትቱም
+- ደንበኛው ከተፈለገው አውታረመረብ ጋር የተገናኘ ነው እንጂ ሌላ አካባቢያዊ አውታረ መረብ አይደለም።
 
-ለጎራ ቁጥጥር በጣም ሰፊውን መጠይቅ ይጀምሩ
+ለጎራ ፍተሻዎች በጣም ሰፊውን ጥያቄ ይጀምሩ:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
@@ -80,13 +70,11 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 
 ## ክስተት ወይም ማገድ ዥረቶች ቀደም ብለው ያቆማሉ {#event-or-block-streams-stop-early}
 
-የብሎክ እና ክስተት ዥረት ምሳሌዎች Torii የዥረት መጨረሻ ነጥቦች.
-ፒር አሁንም እየሮጠ ነው, ከዚያም ጊዜ ጋር ሙከራ:
+የብሎክ እና ክስተት ዥረት ምሳሌዎች በ Torii ዥረት መጨረሻ ነጥቦች ላይ የተመሰረቱ ናቸው ። የእኩዮች አሁንም እየሰራ መሆኑን ያረጋግጡ ፣ ከዚያ ጊዜ ቆይታን ይሞክሩ-
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger blocks 1 --timeout 30s
 cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 ```
 
-ለ HTTP ውህደቶች, የአሁኑ ጋር የመጨረሻ ነጥብ ጎዳናዎች ማወዳደር
-[Torii የፍጻሜ ነጥብ ማጣቀሻ](/am/reference/torii-endpoints.md).
+HTTP ውህደቶች, የአሁኑ [Torii መጨረሻ ነጥብ ማጣቀሻ ጋር የእርስዎን የመጨረሻ ነጥብ ዱካዎች ለማወዳደር ](/am/reference/torii-endpoints.md).

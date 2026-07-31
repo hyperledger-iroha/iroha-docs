@@ -124,7 +124,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml \
   app alias setup apply --plan-file ./docs-domain.plan.json
 ```
 
-La intención pines el espacio de datos ID, El planificador verifica el estado en vivo y devuelve el estado atómico exacto. `EnsureAlias` No copies los valores de seguridad de otra red.
+Los pines de intención son el espacio de datos ID, la cuenta canónica del propietario, el término del arrendamiento y el guardia de cotización actual. El planificador verifica el estado en vivo y devuelve el plan atómico exacto `EnsureAlias` para presentar. No copie a mano los valores de seguridad de otra red.
 
 Envía una simple transacción de ping:
 

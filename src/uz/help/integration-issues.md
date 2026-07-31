@@ -8,29 +8,25 @@ translation_engine: nllb-200-ct2
 
 # Integratsiya muammolarini hal qilish {#troubleshooting-integration-issues}
 
-Ushbu boʻlimda muammolarni hal qilish uchun maslahatlar mavjud Iroha 3 integratsiya. Agar muammo
-siz boshdan kechirayotgan voqealar bu yerda tasvirlanmagan.
-biz bilan bog'laning [Telegram](https://t.me/hyperledgeriroha).
+Ushbu bo'limda Iroha 3 integratsiyasi uchun muammolarni hal qilish maslahatlari mavjud. Agar siz boshdan kechirayotgan muammo bu erda tasvirlanmagan bo'lsa, biz bilan [Telegram](https://t.me/hyperledgeriroha) orqali bog'lanishingiz mumkin.
 
-## Mijoz ulanish imkoniyatiga ega emas {#client-cannot-connect}
+## Mijoz aloqa oʻrnatolmaydi {#client-cannot-connect}
 
-Mijozning konfiguratsiyasi tengdoshlariga ishora qilishiga ishonch hosil qiling Torii manzili:
+Mijoz konfiguratsiyasi tengdoshlari Torii manzilini ko'rsatishini tekshirib ko'ring:
 
 ```toml
 torii_url = "http://127.0.0.1:8080/"
 ```
 
-uchun CLI tekshiruvi, aynan shu faylni aniq o'tkazish:
+CLI tekshiruvlari uchun aynan shu faylni aniq o'tkazib yuboring:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 ```
 
-Agar tengdoshlar kirsa Docker yoki Kubernetes, foydalanuvchi yoki xizmat manzilidan foydalaning
-mijoz jarayoni orqali amalga oshirilishi mumkin. `127.0.0.1` konteyner ichida
-uy egasi mashina.
+Agar tengdoshlar kirsa Docker yoki Kubernetes, foydalanuvchi yoki xizmat manzilidan foydalaning mijoz jarayoni orqali murojaat qilish mumkin. `127.0.0.1` konteyner ichida uy egasi mashina yo'q.
 
-Jamoat uchun Taira sinovlar imzolanmagan oxirgi nuqta sondasi bilan boshlanadi:
+Umumiy Taira sinovlari uchun imzolanmagan oxirgi nuqta sondasi bilan boshlang:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -40,24 +36,18 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=5' \
   | jq -r '.items[].id'
 ```
 
-Agar bu buyruqlar muvaffaqiyatsiz tugasa `502`, TLS, DNS, yoki vaqtni o'tkazish xatolari, tarmoqni tuzatish
-yo'l olish imkoniyati yoki hisobni debug qilishdan oldin testnet oxirgi nuqtasini kutish
-kalitlar yoki muomala yuklari.
+Agar ushbu buyruqlar `502`, TLS, DNS yoki vaqt ajratish xatosi bilan muvaffaqiyatsiz bo'lsa, hisob kalitlari yoki tranzaksiya faydali yuklarni debug qilishdan oldin tarmoqga kirishni to'g'rilash yoki ommaviy testnet oxirgi nuqtani kuting.
 
 ## Transaksiyalar rad etiladi {#transactions-are-rejected}
 
-Koʻpgina muomala muvaffaqiyatsizliklari kimlik yoki ruxsat etish mos kelmasligi tufayli sodir boʻladi:
+Aksariyat tranzaksiyalarning muvaffaqiyatsizliklari identifikatsiya yoki ruxsat etish mos kelmasligi tufayli sodir boʻladi:
 
-- mijoz konfiguratsiyasidagi hisobning ochiq kaliti xususiy kalitiga mos kelmaydi
-  imzolash uchun ishlatiladi
-- hisob qaydnomasi boshlang'ichda yoki avvalgi bitim bilan ro'yxatdan o'tmagan
-- hisobda ishga tushirish vaqtida talab etiladigan ruxsatnoma belgisi yoki roli yo'q
-  tasdiqlovchi
-- domen ID ma'lumotlar maydonining kvalifikatsiyasidan mahrum bo'lgan, masalan:
-  `domain.dataspace`
+- mijoz konfiguratsiyasidagi hisobning ochiq kaliti imzolash uchun ishlatilgan xususiy kalitiga mos kelmaydi.
+- hisob qaydnomasi boshlang'ichda yoki avvalgi bitim orqali ro'yxatdan o'tkazilmagan
+- hisobda ishga tushirish vaqtini tasdiqlovchi tomonidan talab qilingan ruxsat belgisi yoki roli yo'q
+- ID domeni o'z ma'lumotlar maydonida malakaga ega emas, masalan, `domain.dataspace`
 
-Foydalanish `--output-format text` debugging paytida CLI xatolar osonroq boʻlishi uchun buyruqlar
-o'qish uchun:
+Xatolarni o'qish oson bo'lishi uchun `--output-format text` buyruqlarini debug qilishda CLI dan foydalaning:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ledger transaction ping --msg "hello"
@@ -65,12 +55,12 @@ cargo run --bin iroha -- --config ./localnet/client.toml --output-format text le
 
 ## Soʻrovlar boʻsh natijalarni qaytaradi {#queries-return-empty-results}
 
-Bo'sh so'rov natijalari har doim ham so'rov muvaffaqiyatsiz tugadi degani emas. Tekshirish:
+Bo'sh so'rov natijalari har doim ham so'rov muvaffaqiyatsiz tugadi degani emas. Tekshiring:
 
 - ob'ektni yaratishi kerak bo'lgan bitim amalga oshirildi
-- so'rovlangan domen, aktivlar ta'riflanishi yoki hisob ID kanonik
-- sahifalashtirish yoki filtrlar kutilayotgan satrni istisno qilmaydi
-- mijoz maqsadli tarmoqga ulanishgan, boshqa lokal tarmoq emas
+- so'ralgan domen, aktivning tavsifi yoki hisob raqami ID kanonikdir
+- sahifalash yoki filtrlar kutilayotgan qatorni istisno qilmaydi
+- mijoz mo'ljallangan tarmoqga ulanishgan, boshqa lokal tarmoq emas
 
 Domen tekshiruvlari uchun eng keng so'rovdan boshlang:
 
@@ -78,15 +68,13 @@ Domen tekshiruvlari uchun eng keng so'rovdan boshlang:
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 ```
 
-## Oʻzgarishlar yoki bloklar oʻtishi erta toʻxtadi {#event-or-block-streams-stop-early}
+## Tadbir yoki blok oqimlari erta toʻxtadi {#event-or-block-streams-stop-early}
 
-Blok va hodisalar oqimi namunalari Torii oqim tugma nuqtalari.
-tengdoshlar hali ham ishlaydi, so'ngra vaqt ajratish bilan sinovdan o'tish:
+Blok va hodisalar oqimi namunalari Torii oqim oxirgi nuqtalariga bog'liq. Tengdosh hali ishlayotganligini tekshirib ko'ring, so'ngra vaqt ajratish bilan sinovdan o'tkazing:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger blocks 1 --timeout 30s
 cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 ```
 
-uchun HTTP integratsiyalar, oxirgi nuqta yo'nalishlarini joriy bilan taqqoslash
-[Torii yakuniy nuqta uchun ma'lumot](/uz/reference/torii-endpoints.md).
+HTTP integratsiyalari uchun oxirgi nuqta yo'nalishlarini joriy [Torii oxirgi nuqtani ko'rsatkich bilan solishtiring ](/uz/reference/torii-endpoints.md).

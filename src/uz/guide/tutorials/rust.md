@@ -8,21 +8,19 @@ translation_engine: nllb-200-ct2
 
 # Rust {#rust}
 
-O ' zbekiston Respublikasi Rust amalga oshirish asosiy ish joyida yashaydi va eng to'g'ridan-to'g'ri
-bilan ishlashning usuli Iroha 3 kodga asoslangan.
+Rust dasturini amalga oshirish asosiy ish maydonida mavjud va Iroha 3 kod bazasida ishlashning eng to'g'ridan-to'g'ri usuli bo'lib qoladi.
 
 ## Qanaqasiga erishasiz {#what-you-get}
 
-Hozirgi vaqtda yuqori darajadagi ma'muriyat quyidagilarni aniqlaydi:
+Hozirgi vaqtda yuqori darajadagi ma'muriyatda quyidagilar mavjud:
 
-- ko'rsatilgan `iroha` Rust mijoz qutisi
-- ko'rsatilgan `iroha` CLI eng to'liq ma'lumotnoma mijozi sifatida
-- umumiy ma'lumotlar modeli, kripto va Norito O'zbekiston Respublikasi SDK qatlam
+- `iroha` Rust mijoz qutisi
+- `iroha` CLI ko'rsatkich mijozi sifatida eng to'liq
+- SDK qatlamida foydalaniladigan umumiy ma'lumotlar modeli, kripto va Norito qutisi
 
 ## Tavsiya etilgan boshlang'ich nuqta {#recommended-starting-point}
 
-Loyihaning hozirgi holati uchun ma'lumotdan boshlang CLI va
-ish o'rinlari:
+Loyihaning hozirgi holati uchun CLI ko'rsatkich va ish maydonining o'zi bilan boshlash:
 
 ```bash
 git clone https://github.com/hyperledger-iroha/iroha.git
@@ -30,15 +28,15 @@ cd iroha
 cargo build --workspace
 ```
 
-Referent mijozini default mijoz konfiguratsiyasi bilan ishga tushiring:
+Referent mijozini belgilangan andoza mijoz konfiguratsiyasi bilan ishga tushiring:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
 ```
 
-## Sinang . Taira Faqat oʻqish {#try-taira-read-only}
+## Taira Faqat o'qishga harakat qiling {#try-taira-read-only}
 
-Shu ish joyidagi kassaxonadan, jamoatchilikni sinab ko'ring Taira diagnostika yordamchisi:
+O'sha ish joyidagi kassaxonadan Taira diagnostika yordamchisini sinab ko'ring:
 
 ```bash
 cargo run --bin iroha -- taira doctor \
@@ -46,7 +44,7 @@ cargo run --bin iroha -- taira doctor \
   --json
 ```
 
-Yo'nalish darajasidagi tekshirishlar uchun foydalanish Torii" JSON API bevosita:
+Yo'nalish darajasidagi tekshirishlar uchun Torii ning JSON API nomidan to'g'ridan-to'g'ri foydalaning:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -56,32 +54,26 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=5' \
   | jq -r '.items[] | [.id, .name, .total_quantity] | @tsv'
 ```
 
-Sen yaratgandan so'ng `taira.client.toml`, bir xil ikkilamchi imzolangan kanariyani ishlatishi mumkin
-qarshi buyruqlar Taira. Bularni odatdagi birlik sinovlaridan ajrating , chunki
-ular kran mablag'i bilan ta'minlangan hisobvaraq va jonli testnet mavjudligini talab qiladi.
+`taira.client.toml` yaratgandan so'ng, xuddi shu binar Taira ga qarshi imzolangan kanari buyruqlarini ishga tushira oladi. Ularni odatdagi birlik sinovlaridan ajratib qo'ying, chunki ular kran mablag'i bilan ta'minlangan hisobni va jonli test tarmog'ining mavjudligini talab qiladi.
 
-## O ' zbekiston Respublikasining Rust Mijozlar qutisi {#using-the-rust-client-crate}
+## Rust mijoz qutisini ishlatish {#using-the-rust-client-crate}
 
-O'rnatish Iroha Tarmogʻingiz tomonidan ishlatiladigan Git- reviziyasi:
+Tarmog'ingiz tomonidan ishlatiladigan Iroha Git-ning o'zgartirishini pinlash:
 
 ```toml
 [dependencies]
 iroha = { git = "https://github.com/hyperledger-iroha/iroha.git", rev = "<IROHA_COMMIT>", package = "iroha" }
 ```
 
-Agar sizga qanday qilib Rust yuzalarda ishlatiladi
-mashq qilish, tekshirish:
+Agar Rust yuzalarining amalda qanday ishlatilishi haqida eng to'liq misollar kerak bo'lsa, quyidagilarni tekshiring:
 
 - `crates/iroha_cli`
 - `crates/iroha/README.md`
 - `crates/iroha_cli/README.md`
 
-Katta hisobda boshqariladigan depozit ish oqimlari uchun ko'ring
-[Asosiy aktivlar eskorovi](/uz/blockchain/escrow.md#rust-sdk). O ' zbekiston Respublikasi Rust ma'lumotlar modeli
-hozirda bozordagi depozit uchun eng to'liq turdagi qoplamani, umumiy
-aktivlar qulflari, anonim depozitlar, so'rovlar va hodisalar.
+Katta kitobda boshqariladigan depozit ish oqimlari uchun [Native Asset Escrow](/uz/blockchain/escrow.md#rust-sdk)-ni ko'ring. Rust ma'lumotlar modeli hozirda bozordagi depozit, umumiy aktivlar qulflari, anonim depozit, so'rovlar va voqealar uchun eng to'liq yozib olingan qoplamani o'z ichiga oladi.
 
-Mahalliy odamni qayta tiklay olasiz CLI quyidagilar bilan yordam koʻrsatish:
+Siz CLI yordamida mahalliy fotosuratni yangilashingiz mumkin:
 
 ```bash
 cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/CommandLineHelp.md
@@ -89,5 +81,5 @@ cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/Com
 
 ## Izohlar {#notes}
 
-- O ' zbekiston Respublikasi CLI Hozirgi kunda o'z-o'zidan iborat qutis hujjatlaridan yaxshiroq qamrab olinadi.
-- Operator uslubidagi oqimlar uchun CLI hujjatlarning eng zamonaviy manbai hisoblanadi.
+- CLI hozirda o'z-o'zidan bo'lgan quti hujjatlariga qaraganda yaxshiroq qamrovni ta'minlaydi.
+- Operator uslubidagi oqimlar uchun CLI hujjatlari eng dolzarb manba hisoblanadi.

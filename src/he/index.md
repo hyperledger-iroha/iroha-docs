@@ -10,7 +10,7 @@ layout: home
 hero:
   name: Hyperledger Iroha 3
   text: "תיעוד"
-  tagline: "פלטפורמת blockchain דטרמינסטית עבור SORA Nexus, SDKs, וזרמי עבודה של המפעיל"
+  tagline: "פלטפורמת blockchain דטרמינסטית עבור SORA Nexus, SDKs, ותנועות עבודה של המפעיל"
   image:
     src: /icon.svg
     alt: "Hyperledger Iroha 3 הלוגו"
@@ -24,25 +24,25 @@ features:
       dark: /start.svg
       light: /start-light.svg
     title: "תתחיל"
-    details: "לבנות את חלל העבודה הנוכחי, להפעיל רשת מקומית ולהתחיל להשתמש Iroha 3 CLI"
+    details: "לבנות את חלל העבודה הנוכחי, להפעיל רשת מקומית ולהתחיל להשתמש ב Iroha 3 CLI"
     link: /he/get-started/
   - icon:
       dark: /build.svg
       light: /build-light.svg
     title: "מדריך"
-    details: "תמצא SDKs, שיטות מעדיפות, תיקון, אבטחה וזרמי עבודה של המפעיל"
+    details: "למצוא SDKs, שיטות מעדיפות, תיקון, אבטחה ותנועות עבודה של המפעיל"
     link: /he/guide/
   - icon:
       dark: /explained.svg
       light: /explained-light.svg
     title: "ארכיטקטורה"
-    details: "להבין Torii, Sumeragi, Norito, IVM, ו... Nexus מודל חלל נתונים"
+    details: "להבין Torii, Sumeragi, Norito, IVM ומודל החלל הנתונים Nexus."
     link: /he/blockchain/iroha-explained
   - icon:
       dark: /reference.svg
       light: /reference-light.svg
-    title: "תקשורת"
-    details: "פנה לשנית הנוכחית, גנזהס, Torii, דפים של דף תואמתות"
+    title: "התייחסות"
+    details: "ראו את עמודי הדו\"ח הנוכחיים, הגנזה, Torii, ושל התאמה."
     link: /he/reference/
   # - title: Cookbook # (TBA)
 
@@ -50,15 +50,10 @@ footer: true
 ---
 
 <section class="nexus-build" aria-labelledby="nexus-build-title">
-  <a class="nexus-build__panel" href="/he/get-started/sora-nexus-dataspaces">
-    <span class="nexus-build__copy">
-      <span class="nexus-build__eyebrow">SORA Nexus</span>
-      <span id="nexus-build-title" class="nexus-build__title">נמשיך. Iroha 3 / SORA Nexus</span>
-      <span class="nexus-build__details">נמשיך. SORA 3 עם Taira רשת מבחן, Minamoto דוגמאות קופיית-פוסט, אתם יכולים לנסות עכשיו.</span>
-    </span>
-    <span class="nexus-build__action">מדריך פתוח <span aria-hidden="true">-&gt;</span></span>
-  </a>
+<a class="nexus-build__panel" href="/he/get-started/sora-nexus-dataspaces">
+<span class="nexus-buildcopy"> SORA Nexus <span id="nexus-build-title" class="nexus-buildtitle">בנה על Iroha 3 / SORA Nexus</span> <span class="nexus-builddetails">בנה על SORA 3 עם Taira testnet, Minamoto mainnet, וכתיבת דבק דוגמאות אתה יכול לנסות עכשיו.</span> </span> <span class="nexus-build__action">הדרכה פתוחה <span aria-hidden="true">- &gt; </span> </span>
+</a>
 </section>
 
 <hr style="margin-top: 3rem;">
-<p style="font-weight: 200; font-size: 0.875rem;">Hyperledger Iroha הוא חלק <a href="https://www.lfdecentralizedtrust.org/projects/tag/ledger-technology" target="_blank">LF Decentralized Trust</a>. למד עוד ב <a href="https://iroha.tech/" target="_blank">iroha.tech</a>.</p>
+<p style="font-weight: 200; font-size: 0.875rem;">Hyperledger Iroha הוא חלק מ- <a href="https://www.lfdecentralizedtrust.org/projects/tag/ledger-technology" target="_blank">LF Decentralized Trust</a>. למד עוד ב- <a href="https://iroha.tech/" target="_blank">iroha.tech </a>.</p>

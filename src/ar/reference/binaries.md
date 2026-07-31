@@ -6,17 +6,17 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# العمل مع Iroha الثنائيات {#working-with-iroha-binaries}
+# العمل مع الثنائيات Iroha {#working-with-iroha-binaries}
 
-(الـ) Iroha 3 سير عمل المشغل يدور حول ثلاث ثنائيات أساسية:
+تدفق عمل عامل Iroha 3 يدور حول ثلاث ثنائيات أساسية:
 
-- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad) لإدارة ديمون أقرانه
+- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad) لإدارة ديمون زميل
 - [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_cli) لـ CLI وأوامر المشغل
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_kagami) للفتاحات والجنيس والشبكات المحلية والملفات الشخصية
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_kagami) للمفاتيح والجنيس والشبكات المحلية والملفات الشخصية.
 
-## بناء من المصدر {#build-from-source}
+## بناء من مصدر {#build-from-source}
 
-من الجذر في مساحة العمل:
+من الجذر في مساحة العمل الصعودية:
 
 ```bash
 cargo build --release -p irohad -p iroha_cli -p iroha_kagami
@@ -42,25 +42,23 @@ cargo run --bin iroha -- --help
 cargo run --bin kagami -- --help
 ```
 
-## Docker الصورة {#docker-image}
+## Docker صورة {#docker-image}
 
-يستخدم مساحة العمل في الأعلى `kagami localnet` و `kagami docker` لإنتاج
-Docker Compose الملفات التي تتطابق مع رمز التسجيل `hyperledger/iroha:dev`
-يمكن استخدام الصورة مع تلك الملفات التي تم إنشاؤها.
+يستخدم مساحة العمل المباشرة `kagami localnet` و `kagami docker` لتوليد ملفات Docker Compose تتطابق مع الرمز الذي تم التحقق منه. يمكن استخدام صورة `hyperledger/iroha:dev` مع تلك الملفات التي يتم إنشاؤها.
 
-إدارة CLI في حاوية:
+إدراج CLI في حاوية:
 
 ```bash
 docker run -t hyperledger/iroha:dev iroha --help
 ```
 
-أركض Kagami في حاوية:
+إدارة Kagami في حاوية:
 
 ```bash
 docker run -t hyperledger/iroha:dev kagami --help
 ```
 
-لبدء النظير ، قم بتوليد شبكة محلية واكتب الملف أولاً:
+لتشغيل الزملاء ، قم بتوليد شبكة محلية وتجميع الملف أولاً:
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
@@ -70,6 +68,6 @@ docker compose -f ./localnet/docker-compose.yml up
 
 ## أي ثنائي يجب أن أستخدم؟ {#which-binary-should-i-use}
 
-- الاستخدام `irohad` عندما تبدأ أو تشغل أقرانهم.
-- الاستخدام `iroha` عندما تحتاج إلى استفسار دفتر الكتب، أو تقديم المعاملات، أو تفتيش نقاط نهاية المشغل.
-- الاستخدام `kagami` عندما تحتاج إلى مفاتيح، وكتب التكوين، أو مجموعات الملفات الشخصية، أو أصول الشبكة المحلية.
+- استخدم `irohad` عند بدء أو تشغيل أقرانهم.
+- استخدم `iroha` عندما تحتاج إلى استفسار دفتر الرسوم الكبرى أو تقديم المعاملات أو فحص نقاط النهاية للمشغل.
+- استخدم `kagami` عندما تحتاج إلى مفاتيح أو إشعارات التكوين أو مجموعات الملفات الشخصية أو أصول localnet.

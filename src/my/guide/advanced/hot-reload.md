@@ -6,15 +6,13 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# အပူပြန်တင်ခြင်း Iroha a တွင် Docker ကွန်တိန်နာ {#hot-reload-iroha-in-a-docker-container}
+# Docker ကွန်တိန်နာတွင် အပူပြန်တင်ခြင်း Iroha {#hot-reload-iroha-in-a-docker-container}
 
-ဒေသတွင်း debugging အတွက်သာ hot reload ကိုသုံးပါ။ ပုံမှန်ဒေသဆိုင်ရာဖွံ့ဖြိုးမှုအတွက်
-ပုံကို ပြန်လည်တည်ဆောက်ခြင်း (သို့) ထုတ်လုပ်ထားတဲ့ ပုံကို ပြန်စတင်ခြင်း Docker Compose a မှ stack
-အသစ် Kagami အစုလိုက်ပါ
+ဒေသတွင်း debugging အတွက်သာ hot reload ကိုအသုံးပြုပါ။ ပုံမှန်ဒေသဆိုင်ရာဖွံ့ဖြိုးတိုးတက်မှုအတွက် ရုပ်ပုံကို ပြန်လည်တည်ဆောက်ခြင်း သို့မဟုတ် အသစ် Kagami ဘက်ကလစ်မှထုတ်လုပ်သော Docker Compose stack ကို restart လုပ်ရန် ပိုနှစ်သက်သည်။
 
-## တူညီသော နှစ်ထပ်ကိန်းကို အစားထိုးပါ {#replace-the-peer-binary}
+## တူညီသော နှစ်ထပ်ကို အစားထိုးပါ {#replace-the-peer-binary}
 
-Linux ကိုက်ညီသော daemon binary ကို Upstream အလုပ်ခွင်မှတည်ဆောက်ပါ
+Linux ကိုက်ညီသော Daemon Binary ကို Upstream Workspace မှတည်ဆောက်ပါ။
 
 ```bash
 cargo build --release -p irohad --target x86_64-unknown-linux-musl
@@ -27,14 +25,11 @@ docker cp target/x86_64-unknown-linux-musl/release/irohad <container>:/usr/local
 docker restart <container>
 ```
 
-အသုံးပြုခြင်း `docker ps` Container နာမည်ကို အတည်ပြုဖို့
-container တွေကို `./localnet/docker-compose.yml`.
+`docker ps` ကိုသုံးပြီး container နာမည်ကို အတည်ပြုပါ။ ထုတ်လုပ်ထားတဲ့ stack မှာ peer containers တွေကို `./localnet/docker-compose.yml` ဖြင့် သတ်မှတ်ထားတယ်။
 
-## Genesis ကို တစ်ခါသုံး ကွန်ယက်မှာ ပြန်လည်ဖြည့်သွင်းပါ {#recommit-genesis-in-a-disposable-network}
+## Genesis ကို တစ်ခါသုံးကွန်ရက်တွင် ပြန်လည်ဖြည့်စွက်ပါ {#recommit-genesis-in-a-disposable-network}
 
-တစ်ပြိုင်နက်က ဇီဝဖြစ်စဉ်ကို ပြုလုပ်တာက ၎င်းရဲ့ သိုလှောင်ခန်းဟာ အလွတ်ရှိမှသာပါ။ Docker
-ကွန်ရက်၊ stack ကိုရပ်တန့်ခြင်း၊ ထုတ်လုပ်ထားတဲ့ အခြေအနေကို ဖယ်ရှားခြင်း၊ ပြန်လည်ပြုပြင်ခြင်း သို့မဟုတ် အစားထိုးခြင်း
-လက်မှတ်ရေးထိုးထားတဲ့ Genesis Bundle နဲ့ ပြန်စလိုက်ပါ
+Peer သည် ၎င်း၏ သိုလှောင်မှုအလွတ်ရှိမှသာ genesis ကိုပြုလုပ်သည်။ တစ်ခါသုံး Docker ကွန်ယက်အတွက်, stack ကိုရပ်တန့်ပါ, ထုတ်လုပ်သောအခြေအနေကိုဖယ်ရှားပါ, လက်မှတ်ရေးထိုးထားသော genesis bundle ကိုပြန်လည်ထူထောင်ပါ (သို့မဟုတ်အစားထိုးပါ) နှင့်စတင်ပါ:
 
 ```bash
 docker compose -f ./localnet/docker-compose.yml down
@@ -43,12 +38,8 @@ cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyper
 docker compose -f ./localnet/docker-compose.yml up
 ```
 
-၎င်းရဲ့ အခြေအနေကို ထိန်းသိမ်းရန် လိုအပ်တဲ့ ကွန်ရက်တစ်ခုပေါ်က မျိုးဆက်ကို အစားမထိုးပါနဲ့။
+၎င်းရဲ့အခြေအနေကို ထိန်းသိမ်းရန် လိုအပ်တဲ့ ကွန်ရက်တစ်ခုပေါ်က မျိုးရိုးဗီဇကို အစားထိုးမလုပ်ပါ။
 
-## Custom Configuration ကို အသုံးပြုပါ {#use-custom-configuration}
+## Custom Configuration ကို အသုံးပြုပါ။ {#use-custom-configuration}
 
-လက်ရှိ peer configuration ကို TOML. ထုတ်လုပ်ထားသော မော်တော်ယာဉ်ကို ချိတ်ဆက်ခြင်း သို့မဟုတ် ကူးယူခြင်း
-`config.toml`, `genesis.signed.nrt`, Container ထဲက key file တွေနဲ့ ဆက်စပ်တဲ့ files တွေ
-Image က expected paths တွေနဲ့ peer ကို restart လုပ်လိုက်ပါ
-အတူတူ၊ မတူညီတဲ့ ဖိုင်တွေကို ရောနှောခြင်း Kagami ပြေးလွှားမှုတွေက deserialization ဖြစ်ပေါ်စေနိုင်ပါတယ်။
-သဘောတူညီမှု ကျရှုံးမှု။
+လက်ရှိ peer configuration သည် TOML ဖြစ်သည်။ ထုတ်လုပ်သော `config.toml`, `genesis.signed.nrt` နှင့် ဆက်စပ်သော key files များကို image မှမျှော်လင့်ထားသည့် container paths သို့ ချိတ်ဆက်ပြီး peer ကို restart လုပ်ပါ။ ထုတ်လုပ်သော ဖိုင်များကို အတူတကွထားပါ။ Kagami ပြေးလွှာအမျိုးမျိုးမှဖိုင်များကို ရောစပ်ခြင်းသည် deserialization သို့မဟုတ် သဘောတူညီချက် ကျရှုံးမှုများကို ဖြစ်စေနိုင်သည်။

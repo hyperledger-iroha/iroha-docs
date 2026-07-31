@@ -649,7 +649,7 @@ npm run e2e:ui
 
 La prueba de humo UI verifica que la ruta `/kaigi` renderiza. Una prueba de medios reales aún necesita dos carteras financiadas más dos ventanas o dispositivos porque los permisos de firma de transacciones, cámara, micrófono y WebRTC varían según el tiempo de ejecución.
 
-Si está realizando pruebas contra TAIRA y una ruta específica de llamada devuelve `404`, confirme primero que la billetera de anfitrión se haya presentado con éxito `CreateKaigi`.
+Si está realizando pruebas con TAIRA y una ruta específica de la llamada devuelve `404`, confirmar primero que la cartera de acogida se ha presentado con éxito `CreateKaigi`. Los puntos finales de salud del relevo pueden estar disponibles antes de que exista una llamada en particular.
 
 ## Los próximos pasos {#next-steps}
 

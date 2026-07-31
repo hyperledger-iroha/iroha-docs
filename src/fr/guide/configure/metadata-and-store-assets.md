@@ -8,60 +8,46 @@ translation_engine: nllb-200-ct2
 
 # Les options de stockage des métadonnées et du registre {#metadata-and-ledger-storage-choices}
 
-Les Iroha 3 le modèle de données n'a pas de séparation `Store` type d'actif pour arbitraire
-Utilisez les options de stockage suivantes.
+Le modèle de données Iroha 3 ne dispose pas d'un type d'actif distinct `Store` pour les données arbitraires sur la valeur de clé.
 
 ## Les métadonnées {#metadata}
 
-Utilisation [métadonnées](/fr/blockchain/metadata.md) pour les petits JSON champs qui appartiennent
-à un objet de registre:
+Utilisez les métadonnées [](/fr/blockchain/metadata.md) pour de petits champs JSON appartenant à un objet de registre:
 
-- afficher les noms et étiquettes
-- intégration IDs
+- afficher des noms et des étiquettes
+- l'intégration IDs
 - petits drapeaux politiques
-- les haches, URIs, CIDs, ou SoraFS les chemins qui pointent vers des charges utiles plus importantes
+- les haches, URIs, CIDs ou SoraFS qui pointent vers des charges utiles plus grandes;
 
-Les métadonnées font partie de l'état mondial et sont retournées avec l'objet qui possède
-Gardez les clés stables, les valeurs compactes et les autorisations explicites.
-stocker des documents, des journaux ou l'état d'application à haute fréquence directement dans
-les métadonnées.
+Les métadonnées font partie de l'état du monde et sont renvoyées avec l'objet qui les possède. Gardez les clés stables, les valeurs compactes et les autorisations explicites. Ne stockez pas directement dans les métadonnées de grands documents, journaux ou un état d'application à haut rendement.
 
-## Les actifs numériques et NFTs {#numeric-assets-and-nfts}
+## Actifs numériques et NFTs {#numeric-assets-and-nfts}
 
-Utilisation [actifs](/fr/blockchain/assets.md) et [NFTs](/fr/blockchain/nfts.md) lorsque
-l'État est rentable:
+Utiliser les actifs [](/fr/blockchain/assets.md) et [NFTs](/fr/blockchain/nfts.md) lorsque l'état est de valeur:
 
 - actifs numériques pour les soldes fungibles
-- NFTs pour les registres détenus uniquement
-- [RWAs](/fr/blockchain/rwas.md) et d'autres objets spécifiques au domaine lorsque le
-  le modèle de données active les expose
+- NFTs pour les dossiers de propriété unique
+- [RWAs](/fr/blockchain/rwas.md) et autres objets spécifiques à un domaine lorsque le modèle de données actif les expose.
 
-Les actifs et NFTs avoir leur propre IDs, événements du cycle de vie, comportement de transfert,
-Ils sont meilleurs que les métadonnées lorsqu'on possède des données.
-Il s'agit d'un problème de pénurie ou d'histoire des transferts.
+Les actifs et NFTs ont leurs propres IDs, événements de cycle de vie, comportement de transfert et contrôles d'autorisation. Ils sont meilleurs que les métadonnées lorsque la propriété, la rareté ou l'historique des transferts sont importants.
 
 ## Données hors chaîne {#off-chain-data}
 
-Utilisez un stockage hors chaîne pour les charges utiles importantes ou changeables.
-référence en chaîne, comme:
+Utilisez le stockage hors chaîne pour les charges utiles importantes ou changeables.
 
 - un hash de contenu
-- à la URI
-- à la SoraFS chemin ou référence manifeste
+- un URI
+- un chemin ou une référence manifeste SoraFS
 - un engagement compact utilisé par une preuve de demande
 
-Cela maintient le WSV Il s'agit d'une proposition de directive relative à l'application des droits de douane.
-la charge utile hors chaîne correspond à la référence sur la chaîne.
+Cela permet de maintenir le WSV petit tout en permettant aux applications de vérifier que la charge utile hors chaîne correspond à la référence sur la chaîne.
 
 ## Le choix d'un lieu {#choosing-a-location}
 
 Utilisez cette règle générale:
 
-- Si c'est un attribut compact d'un objet de registre, utilisez les métadonnées.
-- S'il est porteux de valeur ou transférable, modélisez-le comme un actif. NFT, ou
-  objet spécifique au domaine.
-- S'il est grand, de grande charge ou privé d'application, conservez-le à l'extérieur du
-  WSV et mettre une référence vérifiable sur la chaîne.
+- Si il s'agit d'un attribut compact d'un objet de registre, utilisez les métadonnées.
+- Si elle est porteuse de valeur ou transférable, modélisez-la comme un actif, NFT, ou un objet spécifique au domaine.
+- S'il s'agit d'un appareil de grande taille, à fort débit ou destiné aux applications privées, il doit être stocké en dehors du WSV et placé sur la chaîne avec une référence vérifiable.
 
-Pour les autorisations de métadonnées, voir
-[Les jetons d'accès](/fr/reference/permissions.md).
+Pour les autorisations en matière de métadonnées, voir [Permission Tokens ](/fr/reference/permissions.md).

@@ -30,7 +30,7 @@ Bax [SORA 3: Taira və Minamoto ](/az/get-started/sora-nexus-dataspaces.md) üz�
 
 ## Əsas şəbəkə və ya istehsal qapısı {#mainnet-or-production-gate}
 
-- Testnet açarlarını və faucet fərdi ehtimalları təbliğ etməyin.
+- Ayrı-ayrı istehsal imzaları, maliyyələşdirmələr, domenlər və konfiqurasiya yollarından istifadə edin. Test şəbəkə açarları və ya faucet fərziyyələrini təbliğ etməyin.
 - SDK, CLI, həmyaşıd və şəbəkə uyğunluğunun [ uyğunluq matrisinə ](/az/reference/compatibility-matrix.md) təsdiq edilməsi.
 - Tədqiqat icazələri, ödəniş sponsorluğu, qiymət məhdudiyyətləri, monitorinq, yedekləmə statusu və buraxılış pəncərəsinə qədər geri qaytarılma meyarları.
 - Yüksək təsiri olan yazılar üçün yazılı bir əməliyyat və ya miqrasiya planı tələb olunur.

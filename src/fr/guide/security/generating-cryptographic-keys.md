@@ -8,34 +8,31 @@ translation_engine: nllb-200-ct2
 
 # Génération de clés cryptographiques {#generating-cryptographic-keys}
 
-Utilisation `kagami keys` pour générer du matériel clé client, de pair et de validateur pour
-Iroha 3.
+Utilisez `kagami keys` pour générer du matériel clé client, de pair et de validateur pour Iroha 3.
 
 ## Utilisation de base {#basic-usage}
 
-Le rapport Iroha paiement à la source:
+À partir du Iroha de la source:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519
 ```
 
-JSON la sortie est généralement plus facile à copier en TOML ou l'automatisation:
+La sortie JSON est généralement la plus facile à copier en TOML ou à automatiser:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --json
 ```
 
-Le commandement imprime une clé publique et une clé privée.
-la clé comme matériau secret; ne sous-traitez pas les clés de production générées.
+Le commandement imprime une clé publique et une clé privée exposée.
 
 ## Algorithmes {#algorithms}
 
 Les algorithmes communs sont les suivants:
 
-- `ed25519` pour les comptes clients, identités de streaming et la plupart du développement
-  les réseaux.
-- `secp256k1` lorsque vous avez besoin d'une identité de compte SECP256K1.
-- `bls_normal` pour les clés de consensus du validateur lorsque la construction permet BLS Le soutien.
+- `ed25519` pour les comptes clients, les identités de diffusion et la plupart des réseaux de développement.
+- `secp256k1` lorsque vous avez besoin d'une identité de compte secp256k1.
+- `bls_normal` pour les clés de consensus du validateur lorsque la configuration permet l'assistance BLS.
 
 Vérifiez les algorithmes exacts pris en charge par votre construction avec:
 
@@ -45,35 +42,33 @@ cargo run --bin kagami -- keys --help
 
 ## Les clés du développement déterministe {#deterministic-development-keys}
 
-Pour les appareils reproductibles, passez une semence:
+Pour les appareils reproductibles, passez une graine:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --seed "dev-alice" --json
 ```
 
-Les graines sont un matériau privé, utilisez-les uniquement pour le développement et les tests locaux.
+Les graines sont de la clé privée. Utilisez-les uniquement pour le développement local et les tests.
 
 ## BLS Les preuves de possession {#bls-proofs-of-possession}
 
-NPOS et Nexus les profils de validateur sont nécessaires BLS clés de validation et PoPs:
+Les profils de validateurs NPoS et Nexus exigent les clés de validateur BLS et PoPs:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
 ```
 
-Les JSON inclut `pop_hex` lorsque `--pop` Utilisez cette valeur avec le
-la topologie générée ou `trusted_peers_pop` les entrées requises par le profil.
+Le JSON inclut le `pop_hex` lorsqu'il est utilisé le `--pop`. Utilisez cette valeur avec la topologie générée ou les entrées du profil requises par le `trusted_peers_pop`.
 
 ## Formats de sortie {#output-formats}
 
-Utiliser la sortie par défaut pour l'inspection du terminal, `--json` pour l'automatisation, et
-`--compact` lorsque d'autres scripts ont besoin de valeurs simples orientées vers des lignes:
+Utilisez la sortie par défaut pour l'inspection du terminal, `--json` pour l'automatisation et `--compact` lorsqu'un autre script a besoin de valeurs orientées vers des lignes simples:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --compact
 ```
 
-Pour les produits entièrement générés Kagami aide:
+Pour l'aide générée intégralement Kagami:
 
 ```bash
 cargo run -p iroha_kagami -- advanced markdown-help > crates/iroha_kagami/CommandLineHelp.md

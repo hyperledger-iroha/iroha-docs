@@ -14,22 +14,19 @@ import ParamTable from './ParamTable.vue';
 
 # פרמטרים של הגדרות {#configuration-parameters}
 
-[toc]
+טוקס
 
 ## רמת שורש {#root}
 
 ### `chain` <Badge text="required" /> {#param-chain-id}
 
-שרשרת ID זה חייב להיות כולל בכל עסקאות.
+שרשרת ID שחייבת להיות מובילה בכל עסקאות.
 
-מתקפה של שיחזור היא ניסיון להגיש עסקאות වලילות למשהו אחר
-רשת מאשר זו שהייתה נועדה עבורה. `chain` הוא חלק
-המטען המשפטי של העסקה חתומה, העסקה שנחתמה עבור שרשרת אחת נדחה
-על ידי עמיתים שמשתמשים בשולחן אחר ID.
+מתקפה חוזרת היא ניסיון להגיש עסקאות תקיימות לרשת שונה מאלה שנועדו אליה. מכיוון ש`chain` הוא חלק מהחוב מועיל של העסקה חתומה, עסקה חתומה עבור שרשרת אחת נדחה על ידי עמידים שמשתמשים בשורה אחרת ID .
 
 <param-table type=string env=CHAIN />
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 chain = "00000000-0000-0000-0000-000000000000"
@@ -43,11 +40,11 @@ CHAIN="00000000-0000-0000-0000-000000000000"
 
 ### `public_key` <Badge text="required" /> {#param-public-key}
 
-מפתח ציבורי של השותפים. BLS מפתחות רגילות.
+מפתח ציבורי של השותף. משותפים בדיקת הסכמה חייבים להשתמש BLS - מפתחות נורמליות.
 
 <param-table type="public-key" env="PUBLIC_KEY" />
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 public_key = "ea01309060D021340617E9554CCBC2CF3CC3DB922A9BA323ABDF7C271FCC6EF69BE7A8DEBCA7D9E96C0F0089ABA22CDAADE4A2"
@@ -61,12 +58,11 @@ PUBLIC_KEY="ea01309060D021340617E9554CCBC2CF3CC3DB922A9BA323ABDF7C271FCC6EF69BE7
 
 ### `private_key` <Badge text="required" /> {#param-private-key}
 
-המפתח הפרטי של השותף. `public_key`; עמיתים בדיקת הסכמה
-יש להשתמש BLS מפתחות רגילות.
+מפתח פרטי של השותף. הוא חייב להתאים `public_key`; משותפים בדיקת ההסכמה חייבים להשתמש BLS-מפתחות נורמליות.
 
 <param-table type="private-key" env="PRIVATE_KEY" />
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 private_key = "8926201CA347641228C3B79AA43839DEDC85FA51C0E8B9B6A00F6B0D6B0423E902973F"
@@ -80,22 +76,19 @@ PRIVATE_KEY="8926201CA347641228C3B79AA43839DEDC85FA51C0E8B9B6A00F6B0D6B0423E9029
 
 ### `trusted_peers` {#param-trusted-peers}
 
-רשימה של עמיתי אמון מוגדר מראש.
+רשימה של עמיתים אמינים מוגדרו מראש.
 
-מבקשי ההסכמה חייבים להשתמש BLS-מפתחות עמינים נורמאליים.
-לספק התאמה [`trusted_peers_pop`](#param-trusted-peers-pop) הכניסה.
+בדיקות הסכמה צריכות להשתמש BLS-נורמליות מפתחות שווים. עבור כל מבדיקת, גם לספק כתיבה מתאימה [`trusted_peers_pop`](#param-trusted-peers-pop).
 
 <param-table env="TRUSTED_PEERS">
 <template #type>
 
-סדרה של חוטים משותפים. `PUBLIC_KEY@ADDRESS` כאשר P2P כתובת ידועה;
-חשוף `PUBLIC_KEY` הוא גם מקובל ומאפשר לגלות את כתובת העמיתים
-רודפים.
+סדרה של חוטים משותפים. השתמש `PUBLIC_KEY@ADDRESS` כאשר הכתובת P2P ידועה; נטול `PUBLIC_KEY` גם מקובל ומאפשר לכתובת השותף להיות מופגנת מהשמוח.
 
 </template>
 </param-table>
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 trusted_peers = [
@@ -116,17 +109,17 @@ TRUSTED_PEERS='[
 
 ### `trusted_peers_pop` {#param-trusted-peers-pop}
 
-BLS רשומות של הוכחת רכוש עבור חבריו האמינים למבחין.
+BLS רשומות של הוכחת רכוש עבור עמיתים אמינים לבדיקן.
 
 <param-table env="TRUSTED_PEERS_POP">
 <template #type>
 
-סדרת חפצים עם `public_key` ו `pop_hex` שדות
+קו של אובייקטים עם שדות `public_key` ו `pop_hex`
 
 </template>
 </param-table>
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 trusted_peers_pop = [
@@ -149,12 +142,11 @@ TRUSTED_PEERS_POP='[
 
 ### `genesis.file` {#param-genesis-file}
 
-מסלול הקובץ ללחץ הפועל של בלוק הגנזיס חתום שנוצר על ידי `kagami genesis sign`.
-פרופילים שנוצרו בדרך כלל כותבים את זה Norito `.nrt` תיק.
+נתיב הקובץ למשאב שימושי של בלוק ההתחלה חתום שנוצר על ידי `kagami genesis sign`. פרופילים נוצרים בדרך כלל כותבים את זה כמו קובץ Norito `.nrt`.
 
 <param-table type="file-path" env="GENESIS" />
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [genesis]
@@ -169,11 +161,11 @@ GENESIS="./genesis.signed.nrt"
 
 ### `genesis.public_key` <Badge text="required" /> {#param-genesis-public-key}
 
-מפתח ציבורי של זוג המפתחות הגנזה.
+מפתח ציבורי של זוג המפתחות הגנזיס.
 
 <param-table type="public-key" env="GENESIS_PUBLIC_KEY" />
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [genesis]
@@ -190,11 +182,11 @@ GENESIS_PUBLIC_KEY="ed01208BA62848CF767D72E7F7F4B9D2D7BA07FEE33760F79ABE5597A515
 
 ### `network.address` <Badge text="required" /> {#param-network-address}
 
-כתובת לתקשורת P2P עבור הסכמה (sumeragi) וזמיון בלוק (בלוק)_סינכרון) מטרות.
+כתובת לתקשורת p2p לצורך הסכמה (sumeragi) וסינכרון בלוק (בלוק_sync).
 
 <param-table type="socket-addr" env="P2P_ADDRESS" />
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [network]
@@ -209,13 +201,13 @@ P2P_ADDRESS=0.0.0.0:1337
 
 ### `network.public_address` <Badge text="required" /> {#param-network-public-address}
 
-כתובת משותף לשותף (חוץ, כפי שנראה על ידי עמיתים אחרים).
+כתובת משותף לשותף (חוץ, כפי שנראה על ידי עמינים אחרים).
 
-ישמעו בדיחות לעמיתים קשורים כדי שיוכלו לדבריהם.
+הם יתווכחו לעמיתיהם הקשורים כדי שהם יוכלו להתווכחים על זה לעמיתים אחרים.
 
 <param-table type="socket-addr" env="P2P_PUBLIC_ADDRESS" />
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [network]
@@ -230,11 +222,11 @@ P2P_PUBLIC_ADDRESS=0.0.0.0:5000
 
 ### `network.block_gossip_size` {#param-network-block-gossip-size}
 
-כמות הבלוקים שניתן לשלוח במסר סינכרון אחד.
+כמות הבלוקים שניתן לשלוח בהודעה אחת של סינכרון.
 
 <param-table type=number default-value=4 />
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [network]
@@ -245,13 +237,13 @@ block_gossip_size = 256
 
 ### `network.block_gossip_period_ms` {#param-network-block-gossip-period-ms}
 
-הפער הזמן בין בקשות לעמיתים עבור הבלוק האחרון.
+הפער הזמן בין בקשות לעמיתים על הבלוק האחרון.
 
 בדיחות תכופות יותר מקצרות את הזמן להתקשר, אבל זה יכול להטיל עומס על הרשת.
 
 <param-table type=millis default-value=10_000 default-note="10 seconds" />
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [network]
@@ -262,13 +254,13 @@ block_gossip_period_ms = 1_000
 
 ### `network.transaction_gossip_size` {#param-network-transaction-gossip-size}
 
-מספר מקסימום של עסקאות בהודעה על רווחים.
+מספר מקסימום של עסקאות בהודעת רווחה.
 
-גודל קטן יותר מוביל לזמן ארוך יותר להתמזג, אבל שימושי אם יש לך אובדן חבילה גבוה.
+גודל קטן יותר מוביל לזמן ארוך יותר של סינכרון, אבל שימושי אם יש לך אובדן חבילות גבוה.
 
 <param-table type=number default-value=500 />
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [network]
@@ -279,13 +271,13 @@ transaction_gossip_size = 256
 
 ### `network.transaction_gossip_period_ms` {#param-network-transaction-gossip-period-ms}
 
-תקופה של רוממות מחופשת עסקה בין עמינים.
+תקופה של דברי רודפים עד עסקה בין עמיתים.
 
-בדיחות תכופות יותר מקצרות את הזמן להתקשר, אבל זה יכול להטיל עומס על הרשת.
+בדיחות תכופות יותר מקצרות את הזמן להתקשר, אבל זה יכול לפחז את הרשת.
 
 <param-table type=millis default-value=1_000 default-note="1 second" />
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [network]
@@ -296,11 +288,11 @@ transaction_gossip_period_ms = 5_000
 
 ### `network.idle_timeout_ms` {#param-network-idle-timeout-ms}
 
-משך הזמן שאחריו הקשר עם עמיתים יפסק אם עמיתים אינם פועלים.
+משך הזמן שאחריו הקשר עם השותף יפסק אם השותף אינו עובד.
 
 <param-table type=millis default-value=300_000 default-note="5 minutes" />
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [network]
@@ -313,11 +305,11 @@ idle_timeout_ms = 300_000
 
 ### `torii.address` <Badge text="required" /> {#param-torii-address}
 
-כתובת Torii השרת חייב להקשיב ולמי שהלקוח* עושה את בקשותיו.
+כתובת שהשרת Torii חייב להקשיב אליה והלקוח (ים) מבקש את זה.
 
 <param-table type=socket-addr env=API_ADDRESS />
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [torii]
@@ -332,10 +324,9 @@ API_ADDRESS=0.0.0.0:8080
 
 ### `torii.max_content_len` {#param-torii-max-content-len}
 
-מספר המקסימלי של בייטים בגוף בקשה רם שהוקבל על ידי
-[Torii נקודות סוף](/he/reference/torii-endpoints.md).
+מספר המקסימום של בייטים בגוף בקשה חומרה שאושר על ידי נקודות הסיום [Torii ](/he/reference/torii-endpoints.md).
 
-הגבול הזה משמש כדי למנוע DOS התקפות.
+הגבול הזה משמש כדי למנוע מתקפות DOS.
 
 <param-table>
 <template #type>
@@ -350,7 +341,7 @@ API_ADDRESS=0.0.0.0:8080
 </template>
 </param-table>
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [torii]
@@ -365,7 +356,7 @@ max_content_len = 64_000_000
 
 <param-table type=millis default-value=10_000 default-note="10 seconds" />
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [torii]
@@ -376,11 +367,11 @@ query_idle_time_ms = 10_000
 
 ### `torii.query_store_capacity` {#param-torii-query-store-capacity}
 
-הגבול העליון של מספר שאילות חי.
+הגבול העליון של מספר שאילתות חי.
 
 <param-table type=number default-value=128 />
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [torii]
@@ -395,7 +386,7 @@ query_store_capacity = 128
 
 <param-table type=number default-value=128 />
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [torii]
@@ -408,27 +399,25 @@ query_store_capacity_per_user = 128
 
 ### `logger.level` {#param-logger-level}
 
-_גנרל_ תרגיל אבטחה (ראה [`logger.filter`](#param-logger-filter) עבור תיקון מעודן).
+תרגיל רשום כללי (ראה [ `logger.filter`](#param-logger-filter) עבור הגדרות המתוחכמות).
 
 <param-table default-value=INFO env=LOG_LEVEL>
 <template #type>
 
-חוט, ערכים אפשריים:
+חוטים, ערכים אפשריים:
 
 - `TRACE`: כל האירועים, כולל פעולות ברמה נמוכה.
 - `DEBUG`: הודעות ברמת תיקון, שימושיות לדיאגנסטיקה.
 - `INFO`: מסרים מידע כלליים.
-- `WARN`: אזהרות שמצביעות על בעיות אפשריות.
-- `ERROR`: טעויות אשר מפריעות בתפקוד נורמלי אך מאפשרות את המשך הפעולה.
+- `WARN`: אזהרות המראות בעיות פוטנציאליות.
+- `ERROR`: טעויות המפריעות לתפקוד נורמלי אך מאפשרות את המשך הפעולה.
 
-בחר את הרמה המתאימה ביותר למקרה השימוש שלך.
-[הגלישה של סטק](https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels) עבור תוספת
-פרטים על איך להשתמש ברמות רשומות שונות.
+בחר את הרמה המתאימה ביותר למקרה השימוש שלך. ראה [Stack Overflow](https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels) עבור פרטים נוספים על איך להשתמש ברמות רישום שונות.
 
 </template>
 </param-table>
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [logger]
@@ -443,36 +432,32 @@ LOG_LEVEL=INFO
 
 ::: tip עדכון בזמן הפעלה
 
-פרמטר זה כפוף לעדכון את ההשנה של זמן הפעלה באמצעות Torii נקודות הסיום של המפעיל.
+פרמטר זה כפוף לעדכן את ההסדרת של זמן הפעלה באמצעות נקודות הסיום של המפעיל Torii.
 
 :::
 
 ### `logger.filter` {#param-logger-filter}
 
-פילטרים מעודכנים [`logger.level`](#param-logger-level). מאפשרת להגדיר את קו המילים של הרישום
-על-_מטרה_.
+פילטרים של רישום מעודכנים בנוסף ל [`logger.level`](#param-logger-level). מאפשרת להגדיר את דבריות הרישוי על כל מטרה.
 
 <param-table type=string env=LOG_FILTER>
 <template #type>
 
-רצועה, מורכבת ממנחיות אחת או יותר שנפרדות על ידי קומות. לכל הנחיה יכולה להיות תקיפות מקסימלית מתאימה
-_רמה_ מה שמאפשר (למשל, _נבחרים עבור_) טווח האירועים המתאימים. Iroha נחשבות רמות פחות בלעדיות (כמו
-`trace` או `info`) להיות יותר מילים מאשר רמות יותר בלעדיות (כגון `error` או `warn`).
+רצועה, מורכבת ממנחיות אחת או יותר נפרדות על ידי קומות. לכל הנחיה יכולה להיות רמה מקסימלית של דבריות מתאימה המאפשרת (למשל, בוחרת עבור) טווח ואירועים המתאימים. Iroha מחשיב רמות פחות בלעדיות (כגון `trace` או `info`) להיות יותר דבריות מאשר רמות יותר בלעדיויות (כגון`error` או `warn`).
 
-ברמה גבוהה, הסינטקס של הנחיות מורכב ממספר חלקים:
+ברמה גבוהה, סינטקסת ההנחיות מורכבת ממספר חלקים:
 
 ```
 target[span{field=value}]=level
 ```
 
-לפרטים נוספים, ראה
-[`tracing-subscriber` מסמכים](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/filter/struct.EnvFilter.html).
+לקבלת פרטים נוספים, ראה [`tracing-subscriber` תיעוד ](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/filter/struct.EnvFilter.html).
 
 </template>
 
 </param-table>
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [logger]
@@ -485,48 +470,40 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 
 :::
 
-::: info תאימות עם [`logger.level`](#param-logger-level)
+::: info התאמה עם [`logger.level`](#param-logger-level)
 
-`logger.filter` עבודות _יחד_ עם [`logger.level`](#param-logger-level) ואף אחד לא כותב את השני.
+`logger.filter` עובדת יחד עם [`logger.level` ](#param-logger-level) ואף אחד מהם לא כותב את השני.
 
-לדוגמה, אם `logger.level` הוא מוגדר ל `INFO` ו `logger.filter` הוא מוגדר ל `iroha_core=debug`, המסנן המוצא
-הנתון יהיה `info,iroha_core=debug` (כלומר, `info` לכל המודלים, `debug` עבור `iroha_core`).
+לדוגמה, אם `logger.level` נקבע ל `INFO` ו `logger.filter` נקבע ל`iroha_core=debug`, קבוצת הגלגלים הנוצרת תהיה `info,iroha_core=debug` (כלומר, `info` עבור כל המודולים, `debug` עבור `iroha_core`).
 
 :::
 
 ::: tip עדכון בזמן הפעלה
 
-פרמטר זה כפוף לעדכון את ההשנה של זמן הפעלה באמצעות Torii נקודות הסיום של המפעיל.
+פרמטר זה כפוף לעדכן את ההסדרת של זמן הפעלה באמצעות נקודות הסיום של המפעיל Torii.
 
 :::
 
 ### `logger.format` {#param-logger-format}
 
-פורמט היומן.
+צורת היומן.
 
 <param-table default-value=full env=LOG_FORMAT>
 <template #type>
 
-חוט, ערכים אפשריים:
+חוטים, ערכים אפשריים:
 
-- `full`: הפורמטור הנדל"ן. זה משחרר שיא אחד קו קריאה אנושית לכל אירוע שמתרחש, עם
-  קונקסט של טווח הנוכחי הוצג לפני הצגת האירוע בצורת.
-- `compact`: גרסה של פורמייטר מקובל, אופטימיזת למושכות קווים קצרות. שדות מהקשר הנוכחי של מרווח
-  הוספים לשדות של האירוע המפורמט, ושמות מרחב לא מוצגים; רמת מילוליות מצטמצמה ל
-  דמות אחת.
-- `pretty`: הוא משחרר יומן רב קו יפה מדי, אופטימיז עבור legibility אנושי.
-  משמשת לפיתוח מקומי וחיזוק, או עבור יישומים בקו פקודה, כאשר ניתוח אוטומטי ומעט
-  חישוב הירידים הוא פחות עדיפות מאשר קריאתם והמשתעה הראשית.
-- `json`: תוצרות קו חדש מוגבל JSON זה מיועד לשימוש הייצור עם מערכות שבהן
-  הם נצרכים כ JSON באמצעות כלי ניתוח וראייה. JSON התוצרת לא אופטימית לקריאה אנושית.
+- `full`: פורמייטר מקובל. זה משחרר רישומי קו אחד קריאים על ידי אדם עבור כל אירוע שקורה, עם ההקשר הנוכחי של טווח הוצג לפני ייצוג הפורמט של האירוע.
+- `compact`: וריאנט של פורמייטר מקובל, מאופטימי עבור אורך שורות קצרים. שדות מהקשר הקבוע הנוכחי מתוספים לשדות של האירוע המפורמט, ושמות הקבוע אינם מוצגים; רמת מילוליות מצטמצמה לעד אות אחד.
+- `pretty`: יוצר רישומים יפים מדי, רב קו, מותאמים לקריאה אנושית. זה מיועד בעיקר לשימוש לפיתוח מקומי וחיזוק, או עבור יישומים בקו פקודות, כאשר ניתוח אוטומטי ואחסון קומפקטי של רישומים הוא פחות עדיפות מאשר קריאתם והמשתעה החזותית.
+- `json`: מוצרים של רישומים חדשים מוגבלים JSON. זה מיועד לשימוש הייצור עם מערכות שבהן רישומים מבוססים נצרכים כ- JSON באמצעות כלי ניתוח וראייה. ההוצא של JSON אינו אופטימי עבור קריאת אנוש.
 
-פרטים נוספים ויוצאות הדגימה, ראה
-[`tracing-subscriber` מסמכים](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/format/index.html).
+לקבלת פרטים נוספים ותוצאות הדגימות, ראה [`tracing-subscriber` תיעוד ](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/format/index.html).
 
 </template>
 </param-table>
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [logger]
@@ -541,17 +518,17 @@ LOG_FORMAT=json
 
 ## Kura {#kura}
 
-_קורה_ הוא מנוע אחסון מתמשך של Iroha (יפני עבור _מחסן_).
+Kura הוא מנוע אחסון מתמשך של Iroha (יפני עבור מחסן).
 
 ### `kura.blocks_in_memory` {#param-kura-blocks-in-memory}
 
 לכל הפחות N בלוקים האחרונים ייחסנו בזיכרון.
 
-בלוקים ישנים יפולו מהזיכרון ויהפאו מהדיסק אם הם נדרשים.
+בלוקים ישנים יפולו מהזיכרון ויהצאו מהדיסק אם הם נדרשים.
 
 <param-table type=number default-value=1024 env=KURA_BLOCKS_IN_MEMORY />
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [kura]
@@ -566,20 +543,20 @@ KURA_BLOCKS_IN_MEMORY=1024
 
 ### `kura.init_mode` {#param-kura-init-mode}
 
-Kura מצב התחילות
+מצב ההתחילה Kura
 
 <param-table  default-value=strict env=KURA_INIT_MODE>
 <template #type>
 
-חוט, ערכים אפשריים:
+חוטים, ערכים אפשריים:
 
-- `strict`: אישור מקיף של כל הבלוקים
-- `fast`: התחילה מהירה עם רק בדיקות בסיסיות
+- `strict`: אישור קפדני של כל הבלוקים
+- `fast`: חיזוק מהיר עם בדיקות בסיסיות בלבד
 
 </template>
 </param-table>
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [kura]
@@ -594,13 +571,13 @@ KURA_INIT_MODE=fast
 
 ### `kura.store_dir` {#param-kura-store-dir}
 
-קובע את התיקון [^paths] שבו הבלוקים מאוחסנים.
+קובע את התיקון [^paths] בו הבלוקים מאוחסנים.
 
-ראו גם: [`snapshot.store_dir`](#param-snapshot-store-dir).
+ראה גם: [ `snapshot.store_dir`](#param-snapshot-store-dir).
 
 <param-table env=KURA_STORE_DIR type=file-path default-value=./storage />
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [kura]
@@ -615,11 +592,11 @@ KURA_STORE_DIR=/path/to/storage
 
 ### `kura.debug.output_new_blocks` <Badge type="warning" text="debug" /> {#param-kura-debug-output-new-blocks}
 
-דגל כדי לאפשר את הדפיסה של בלוקים חדשים לקונסול.
+דגל כדי לאפשר את הדפסה של בלוקים חדשים לקונסול.
 
 <param-table env=KURA_DEBUG_OUTPUT_NEW_BLOCKS type=bool default-value=false />
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [kura.debug]
@@ -632,15 +609,15 @@ KURA_DEBUG_OUTPUT_NEW_BLOCKS=true
 
 :::
 
-## בתור {#queue}
+## שורה {#queue}
 
 ### `queue.capacity` {#param-queue-capacity}
 
-הגבול העליון של מספר העסקים המתחכים בתור.
+הגבול העליון של מספר העסקאות המתמודדות בתור.
 
 <param-table type=number default-value=65_536 />
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [queue]
@@ -651,13 +628,13 @@ capacity = 1_048_576
 
 ### `queue.capacity_per_user` {#param-queue-capacity-per-user}
 
-הגבול העליון של מספר העסקים שמחכים בתור עבור משתמש אחד.
+הגבול העליון של מספר עסקאות שמחכות בתור עבור משתמש אחד.
 
 השתמש באפשרות זו כדי להפעיל דחיפה.
 
 <param-table type=number default-value=65_536 />
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [queue]
@@ -668,11 +645,11 @@ capacity_per_user = 1_048_576
 
 ### `queue.transaction_time_to_live_ms` {#param-queue-transaction-time-to-live-ms}
 
-העסקה תיפסק לאחר זמן זה אם היא עדיין בתור.
+העסקה תיבטל לאחר זמן זה אם היא עדיין בתור.
 
 <param-table type=millis default-value=86_400_000 default-note="24 hours" />
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [queue]
@@ -685,13 +662,11 @@ transaction_time_to_live_ms = 43_200_000
 
 ### `sumeragi.debug.force_soft_fork` <Badge type="warning" text="debug" /> {#param-sumeragi-debug-force-soft-fork}
 
-כביש תיקון בלבד לטיול Sumeragi מסלולים לניהול פורק רך.
-מעבדה מחוץ לבדיקות מבוקשות; שינוי אותה ברשת הייצור פועלת
-יכול לגרום לשנים לא להסכים על התנהגות הסכמה.
+כפתור תיקון בלבד לטיפול בנתיבי ניהול צנבת רכה Sumeragi. השאירו את זה מונע מחוץ לבדיקות נשלטות; שינוי אותו ברשת הייצור פועלת יכול לגרום לעמיתים לא להסכים על התנהגות הסכמה.
 
 <param-table type=bool default-value=false />
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [sumeragi.debug]
@@ -700,43 +675,35 @@ force_soft_fork = true
 
 :::
 
-## תמונה מהירה {#snapshot}
+## תמונה מיידית {#snapshot}
 
-מודול זה אחראי לקריאה ולכתבת תמונות של
-[תפיסת העולם על המצב](/he/blockchain/world#world-state-view-wsv).
+מודול זה אחראי לקריאה וכתבת תמונות של [תפיסת העולם על המצב](/he/blockchain/world#world-state-view-wsv).
 
-תמונות מיידיות מאחסנות נקודת מבט סדרתית של World State View כך שבן זוג יכול
-להפעיל מחדש מבלי לשחזר כל בלוק מ Kura. Kura נשארת בלוק מעמיד
-היסטוריה ומקור האמת לשחזור; תמונות מיידיות הן מסלול מאיץ.
-בהתחלה, Iroha בדיקת נתונים מטאטא של תמונות מיידיות נגד שרשרת המוגדרת
-בלוקים מאוחסנים לפני ההחלטה אם לטעין תמונה או לחזור לשחזור.
+תמונות מייצגות מאחסנות נקודת מבט סדרתית של World State View כך ששותף יכול להתחיל מחדש מבלי לנגן מחדש כל בלוק מ Kura. Kura נשארת ההיסטוריה של הבלוק המתמשכת ומקור האמת לשחזור; תמונות מיידית הם מסלול מאיץ. בעת ההתחלה, Iroha בודק נתונים מטאטא של תמונה מהירה נגד שרשרת המוגדרת והבלוקים המאוחסנים לפני שהוא מחליט אם לטעין תמונה מהיר או לחזור לנגן.
 
-::: tip מפשף תמונות מהירות
+::: tip לחיקוי תמונות
 
-במקרה אם משהו לא בסדר עם מערכת תמונות מיידיות, ואתה רוצה להתחיל מדף ריק (במונחים של
-תמונות מיידיות), אתה יכול להסיר את התיקון המפורט על ידי [`snapshot.store_dir`](#param-snapshot-store-dir).
+במקרה שמשהו לא בסדר עם מערכת ההצלחות, ואתה רוצה להתחיל בעמוד ריק (במונחים של תמונות), אתה יכול להסיר את התיקון המפורט על ידי [`snapshot.store_dir`](#param-snapshot-store-dir).
 
 :::
 
 ### `snapshot.mode` {#param-snapshot-mode}
 
-מצב שבו מערכת Snapshot פועלת.
+האופנה שבה פועלת מערכת Snapshot.
 
 <param-table default-value=read_write env=SNAPSHOT_MODE>
 <template #type>
 
-חוט, ערכים אפשריים:
+חוטים, ערכים אפשריים:
 
-- `read_write`: Iroha יוצר תמונות מיידיות עם תקופה מוגדרת על ידי:
-  [`snapshot.create_every_ms`](#param-snapshot-create-every-ms). בהתחלה, Iroha קורא תמונה מיידית קיימת (אם בכלל)
-  ומבחין שהוא עדכני עם אחסון הבלוקים.
-- `readonly`: דומה ל `read_write` אבל Iroha זה לא יוצר תמונות.
-- `disabled`: Iroha לא יוצר תמונות חדשות ולא קורא תמונות קיימות בהתחלה.
+- `read_write`: Iroha יוצר תמונות מיידיות עם תקופה מוגדרת על ידי [`snapshot.create_every_ms`](#param-snapshot-create-every-ms). בעת ההתחלקה, Iroha קורא תמונה מיידית קיימת (אם בכלל) ומבחינת שהיא מעודכנת עם אחסון הבלוקים.
+- `readonly`: דומה ל- `read_write` אבל Iroha לא יוצר תמונות מיידיות.
+- `disabled`: Iroha לא יוצר תמונות מיידיות או קורא תמונות קיימות בעת ההתחלה.
 
 </template>
 </param-table>
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [snapshot]
@@ -751,11 +718,11 @@ SNAPSHOT_MODE=readonly
 
 ### `snapshot.create_every_ms` {#param-snapshot-create-every-ms}
 
-תדירות של צילומים.
+תדירות תמונות.
 
 <param-table type=millis default-value=600_000 default-note="10 minutes" />
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [snapshot]
@@ -768,11 +735,11 @@ create_every_ms = 60_000
 
 תיק שבו לאחסן תמונות.
 
-ראו גם: [`kura.store_dir`](#param-kura-store-dir)
+ראה גם: [`kura.store_dir`](#param-kura-store-dir)
 
 <param-table type=file-path default-value=./storage/snapshot env=SNAPSHOT_STORE_DIR />
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [snapshot]
@@ -787,21 +754,19 @@ SNAPSHOT_STORE_DIR="/path/to/storage"
 
 ## טלמטריה {#telemetry}
 
-טלמטריה מייצרת אבחון עמיתים לקולקטור טלמטרי חיצוני.
-שניהם `telemetry.name` ו `telemetry.url` כאשר עמית צריך לדווח
-אוסף; השאירו את החלק כאשר טלמטריה לא משמשת.
+טלמטריה מייצרת אבחון עמיתים לקולקטור טלמטרי חיצוני. להגדיר את `telemetry.name` ו `telemetry.url` כאשר עמיתים צריכים להודיע לקולקטר; השאירו את החלק כאשר הטלמטריה אינה משמשת.
 
-`name` ו `url` חייבים להיות זוגות.
+`name` ו `url` חייבים להיות משותפים.
 
-כולם. `telemetry` החלק הוא אופציונלי.
+כל פרק `telemetry` הוא בחופשי.
 
 ### `telemetry.name` {#param-telemetry-name}
 
-שמו של הערך ייצג בטלמטריה.
+שמו של הערך להופיע בטלמטריה.
 
 <param-table type=string />
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [telemetry]
@@ -812,11 +777,11 @@ name = "iroha"
 
 ### `telemetry.url` {#param-telemetry-url}
 
-ה- WebSocket URL של אוסף הטלמטריה.
+WebSocket URL של קולקטור הטלמטריה.
 
 <param-table type=string />
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [telemetry]
@@ -831,7 +796,7 @@ url = "ws://telemetry.example.com/submit"
 
 <param-table type=millis default-value=1_000  default-note="1 second" />
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [telemetry]
@@ -842,11 +807,11 @@ min_retry_period_ms = 5_000
 
 ### `telemetry.max_retry_delay_exponent` {#param-telemetry-max-retry-delay-exponent}
 
-המרכיב המקסימלי של 2 שמשמש להגדיל את האיחור בין חיבורים מחדש.
+האקספוננט המקסימום של 2 שמשמש להגדיל את האיחור בין חיבורים מחדש.
 
 <param-table type=number default-value=4 />
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [telemetry]
@@ -857,11 +822,11 @@ max_retry_delay_exponent = 4
 
 ### `dev_telemetry.out_file` {#param-dev-telemetry-out-file}
 
-דרך הקובץ כדי לכתוב dev-טלמטריה
+דרך הקובץ לכתוב את טלמטריה של dev
 
 <param-table type=file-path />
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Config File]
 [dev_telemetry]

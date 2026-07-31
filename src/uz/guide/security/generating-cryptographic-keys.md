@@ -8,34 +8,31 @@ translation_engine: nllb-200-ct2
 
 # Kriptografik kalitlarni yaratish {#generating-cryptographic-keys}
 
-Foydalanish `kagami keys` mijoz, tengdosh va tasdiqlovchi kalit materiallarni yaratish uchun
-Iroha 3.
+Iroha 3 uchun mijoz, tengdosh va tasdiqlovchi kalit materiallarini yaratish uchun `kagami keys` dan foydalaning.
 
 ## Asosiy foydalanish {#basic-usage}
 
-O ' zbekiston Respublikasining Iroha manbai bo'yicha hisob-kitob:
+Iroha manbai hisobidan:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519
 ```
 
-JSON chiqish odatda nusxa olish eng oson TOML yoki avtomatlashtirish:
+JSON chiqarishni TOML yoki avtomatlashtirishga ko'pincha ko'paytirish eng oson bo'ladi:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --json
 ```
 
-Qo'mondonlik ommaviy kalit va ochiq xususiy kalitni bosib chiqaradi.
-kalit sirli material sifatida; ishlab chiqarilgan mahsulot kalitlarini o'z ichiga olmang.
+Buyruq ommaviy kalit va ochiq xususiy kalitni bosib chiqaradi. Xususiy kalitga maxfiy material kabi munosabatda bo'ling; hosil qilingan ishlab chiqarish kalitlarini o'tkazmang.
 
 ## Algoritmlar {#algorithms}
 
 Oddiy algoritmlar quyidagilardan iborat:
 
-- `ed25519` mijoz hisobvaraqlari, oqim kimligi va ko'pgina rivojlanish uchun
-  tarmoqlar.
-- `secp256k1` agar sizga SECP256K1 hisob raqami kimligi kerak bo'lsa.
-- `bls_normal` Buyraklar oʻrnatilganda BLS yordam berish.
+- `ed25519` mijoz hisobvaraqlari, oqim kimliklari va ko'pgina rivojlanish tarmoqlari uchun.
+- `secp256k1` agar sizga secp256k1 hisob raqami kimligi kerak bo'lganda.
+- BLS qo'llab-quvvatlanishini qo'lga kiritgan holda, validator konsensus kalitlari uchun `bls_normal` .
 
 Qurilishingiz tomonidan qo'llab-quvvatlanadigan aniq algoritmlarni quyidagi yordam bilan tekshiring:
 
@@ -45,35 +42,33 @@ cargo run --bin kagami -- keys --help
 
 ## Deterministik rivojlanish kalitlari {#deterministic-development-keys}
 
-Reproduktib materiallar uchun urug'ni o'tkazib yuboring:
+Ko'payishi mumkin bo'lgan qurilmalar uchun urug'ni o'tkazib yuborish:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --seed "dev-alice" --json
 ```
 
-Urug'lar xususiy material bo'lib, ularni faqat mahalliy rivojlanish va sinov uchun ishlating.
+Urug'lar xususiy material bo'lib, ularni faqat mahalliy rivojlanish va sinovlar uchun ishlating.
 
-## BLS O'z egaligi to'g'risidagi dalillar {#bls-proofs-of-possession}
+## BLS Mulkka egalik qilish hujjati {#bls-proofs-of-possession}
 
-NPOS va Nexus sertifikatlash profillari talab etiladi BLS tasdiqlovchi kalitlari va PoPs:
+NPoS va Nexus tasdiqlovchi profillar uchun BLS tasdiqlash kalitlari va PoPs:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
 ```
 
-O ' zbekiston Respublikasi JSON kiradi `pop_hex` qachon `--pop` Ushbu qiymatdan foydalanib,
-ishlab chiqarilgan topologiya yoki `trusted_peers_pop` profil talab qilgan yozuvlar.
+JSON `pop_hex` ni o'z ichiga oladi, agar `--pop` ishlatilgan bo'lsa. Ushbu qiymatdan profil talab qilgan topologiya yoki `trusted_peers_pop` yozuvlar bilan foydalaning.
 
 ## Ishlab chiqarish formatlari {#output-formats}
 
-Terminal tekshiruvi uchun andoza chiqishdan foydalaning, `--json` avtomatlashtirish uchun; va
-`--compact` boshqa skriptda oddiy chiziqlarga yo'naltirilgan qiymatlar kerak bo'lganda:
+Terminal tekshiruvi uchun andoza chiqish, avtomatlashtirish uchun `--json` va boshqa skriptda oddiy chiziqlarga yo'naltirilgan qiymatlar kerak bo'lganda `--compact` dan foydalaning:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --compact
 ```
 
-To'liq ishlab chiqarilgan Kagami yordam berish:
+To'liq hosil bo'lgan Kagami yordam uchun:
 
 ```bash
 cargo run -p iroha_kagami -- advanced markdown-help > crates/iroha_kagami/CommandLineHelp.md

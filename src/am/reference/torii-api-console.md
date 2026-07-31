@@ -11,26 +11,22 @@ pageClass: torii-api-console-page
 
 # Torii API ኮንሶል {#torii-api-console}
 
-በቀጥታ ይጠቀሙ OpenAPI ከስራ ላይ ካለው ሰነድ Torii የመመርመሪያ መስመሮችን የማጠናቀቂያ ነጥብ፣
-የሙከራ ጥያቄዎችን መላክ፣ ኮፒ ማድረግ curl ትዕዛዞች እና የደንበኛ ኮድ ማመንጨት.
+መስመሮችን ለመፈተሽ፣ የሙከራ ጥያቄዎችን ለመላክ፣ curl ትዕዛዞችን ለመቅዳት እና የደንበኛ ኮድ ለማመንጨት ከሂደቱ Torii መጨረሻ ነጥብ የቀጥታ OpenAPI ሰነዱን ይጠቀሙ።
 
 <ToriiApiConsole />
 
 ## መስፈርቶች {#requirements}
 
-- የ Torii መጨረሻ ነጥብ ማጋለጥ አለበት `/openapi.json`.
-- የአሳሽ ሙከራ ያስፈልጋል CORS ይህ ሰነድ መነሻ እንዲኖረው ለማድረግ.
-- አሳሹ በቀጥታ ወደ መጨረሻው ነጥብ መድረስ ይችላል።
-- ኮድ ማመንጨት ይጠይቃል Node.js, pnpm, እና የጃቫ ሩጫ ጊዜ OpenAPI
-  ጀነሬተር.
+- የ Torii መጨረሻ ነጥብ `/openapi.json` ን ማሳየት አለበት.
+- የአሳሽ ሙከራ ይህንን ሰነድ መነሻ ለመፍቀድ CORS ይጠይቃል ።
+- አሳሹ በቀጥታ ወደ መጨረሻው ነጥብ መድረስ ይችላል.
+- ኮድ ማመንጨት Node.js, pnpm, እና የጃቫ ሩጫ ጊዜ ይጠይቃል OpenAPI Generator.
 
-የኮንሶሉ ነባሪነት `https://taira.sora.org`. በአብዛኛው አካባቢያዊ ልማት
-ጋር ይሰራል `http://127.0.0.1:8080` ስትሮጥ Torii በማሽኑ ላይ።
+የኮንሶሉ ነባሪነት `https://taira.sora.org`. አካባቢያዊ ልማት አብዛኛውን ጊዜ `http://127.0.0.1:8080` ስትሮጥ Torii በማሽኑ ላይ።
 
-## ይሞክሩ Taira በመጀመሪያ {#try-taira-first}
+## መጀመሪያ Taira ይሞክሩ {#try-taira-first}
 
-አንድ ደንበኛ ማመንጨት በፊት, የሕዝብ OpenAPI ሰነዱ ተደራሽ ነው
-ከመሳሪያዎ:
+ደንበኛ ከመፍጠርዎ በፊት የህዝብ OpenAPI ሰነድ ከማሽኑዎ ተደራሽ መሆኑን ያረጋግጡ:
 
 ```bash
 curl -fsS https://taira.sora.org/openapi.json -o /tmp/taira-openapi.json
@@ -38,21 +34,15 @@ jq '{title: .info.title, version: .info.version, paths: (.paths | length)}' \
   /tmp/taira-openapi.json
 ```
 
-ከዚያም አጣብቂኝ `https://taira.sora.org/openapi.json` ወደ ኮንሶሉ ውስጥ እና አንድ ይሞክሩ
-የንባብ ብቻ መንገድ ለምሳሌ `GET /status`, `GET /v1/domains`, ወይም
-`GET /v1/assets/definitions`. የተፈረሙ ግብይቶች እና የግል ቁልፍ ፍሰቶችን ለማስቀመጥ
-አንድ SDK ወይም CLI የስራ ሰዓት አካባቢህን ሚስጥሮች የሚጫን ደንበኛ።
+ከዚያም በኮንሶሉ ውስጥ `https://taira.sora.org/openapi.json` ይጫኑ እና እንደ `GET /status` ፣ `GET /v1/domains` ወይም `GET /v1/assets/definitions` ያሉ ለማንበብ-ብቻ መንገድ ይሞክሩ ። የተፈረሙትን ግብይቶች እና የግል ቁልፍ ፍሰቶችን ከስራ ሰዓት አካባቢዎ ሚስጥሮችን ለሚጭነው የ SDK ወይም CLI ደንበኛ ያስቀምጡ።
 
 ## የተፈጠሩ ደንበኞች {#generated-clients}
 
-የጄኔሬተር ትዕዛዝ ተመሳሳይ ቀጥታ ይጠቀማል OpenAPI ኮንሶሉ
-ይህ ለ JSON ኦፕሬተር፣ አስፋፊ፣ መተግበሪያ እና የቴሌሜትሪ መስመሮች።
+የጄኔሬተር ትዕዛዙ በኮንሶሉ ውስጥ የሚጫነው ተመሳሳይ የቀጥታ OpenAPI ሰነድ ይጠቀማል ። ይህ ለ JSON ኦፕሬተር ፣ አሳሽ ፣ መተግበሪያ እና ለቴሌሜትሪ መስመሮች ጠቃሚ ነው።
 
-ለተፈረሙ የቁጥር መዝገብ ግብይቶች ፣ ለተፈረሙ ጥያቄዎች እና Norito-የተፈጥሯቸው ጥቅሞች፣
-ባለሥልጣኑን ይመርጣሉ Iroha SDKs. OpenAPI ደንበኞች ፊርማ አያሰባስቡም
-የሂሳብ ቁልፎችን ያቀናብሩ ወይም ኮድ ያድርጉ Norito የግብይት አካላት ለእርስዎ።
+ለተፈረሙ መቁጠሪያ ግብይቶች, ለተፈረሙ ጥያቄዎች, እና Norito- የአገሬው ተወላጅ ሸክሞች፣ ባለሥልጣናትን ይመርጣሉ። Iroha SDKs. OpenAPI ደንበኞች ፊርማዎችን አያሰባስቡም ፣ የሂሳብ ቁልፎችን አያስተዳድሩም ወይም አይኮዱም Norito የግብይት አካላት ለእርስዎ።
 
-እያንዳንዱን ጀነሬተር ለመፈተሽ OpenAPI ጄኔሬተር, ይሂዱ:
+በ OpenAPI ጀነሬተር የሚደገፉትን እያንዳንዱን ጄኔሬተር ለመመርመር የሚከተሉትን ይሂዱ:
 
 ```bash
 pnpm dlx @openapitools/openapi-generator-cli list

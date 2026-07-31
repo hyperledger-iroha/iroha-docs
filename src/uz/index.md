@@ -10,7 +10,7 @@ layout: home
 hero:
   name: Hyperledger Iroha 3
   text: "Hujjatlar"
-  tagline: "Deterministik blokchain platformasini SORA Nexus, SDKs, va operator ish oqimlari"
+  tagline: "SORA Nexus, SDKs va operator ish oqimlari uchun deterministik blokchaina platformasi"
   image:
     src: /icon.svg
     alt: "Hyperledger Iroha 3 logotip"
@@ -23,26 +23,26 @@ features:
   - icon:
       dark: /start.svg
       light: /start-light.svg
-    title: "Ishni boshlash"
+    title: "Boshlaning"
     details: "Joriy ish maydonini yaratish, mahalliy tarmoqni ishga tushirish va Iroha 3 CLI"
     link: /uz/get-started/
   - icon:
       dark: /build.svg
       light: /build-light.svg
     title: "Qo'llanma"
-    details: "Oʻrganish SDKs, eng yaxshi amaliyotlar, konfiguratsiya, xavfsizlik va operator ish oqimlari"
+    details: "SDKs, eng yaxshi amaliyotlar, konfiguratsiya, xavfsizlik va operator ish oqimlarini toping"
     link: /uz/guide/
   - icon:
       dark: /explained.svg
       light: /explained-light.svg
     title: "Arxitektura"
-    details: "tushunish Torii, Sumeragi, Norito, IVM, va Nexus ma'lumotlar maydoni modeli"
+    details: "Torii, Sumeragi, Norito, IVM va Nexus ma'lumotlar maydoni modelini tushuning"
     link: /uz/blockchain/iroha-explained
   - icon:
       dark: /reference.svg
       light: /reference-light.svg
-    title: "Ma'lumotnoma"
-    details: "Hozirgi ikkilamchi, genesis, Torii, va moslashuvchanlik ma'lumot sahifalari"
+    title: "Ma'lumotlar"
+    details: "Joriy ikkilamchi, boshlanish, Torii va moslashuvchanlik ma'lumot sahifalariga qarang."
     link: /uz/reference/
   # - title: Cookbook # (TBA)
 
@@ -50,15 +50,10 @@ footer: true
 ---
 
 <section class="nexus-build" aria-labelledby="nexus-build-title">
-  <a class="nexus-build__panel" href="/uz/get-started/sora-nexus-dataspaces">
-    <span class="nexus-build__copy">
-      <span class="nexus-build__eyebrow">SORA Nexus</span>
-      <span id="nexus-build-title" class="nexus-build__title">Oʻzlashtiring Iroha 3 / SORA Nexus</span>
-      <span class="nexus-build__details">Oʻzlashtiring SORA 3 bilan Taira sinov tarmog'i, Minamoto mainnet, va nusxa-qovutish misollari endi sinab ko'rishingiz mumkin.</span>
-    </span>
-    <span class="nexus-build__action">Ochiq qo'llanma <span aria-hidden="true">-&gt;</span></span>
-  </a>
+<a class="nexus-build__panel" href="/uz/get-started/sora-nexus-dataspaces">
+<span class="nexus-buildcopy"> SORA Nexus <span id="nexus-build-title" class="nexus-buildtitle"> Iroha 3 / SORA Nexus</span> <span class="nexus-builddetails"> SORA 3 ga Taira testnet, Minamoto mainnet va nusxa-qovutish namunalari yordamida quring. Endi sinab ko'rishingiz mumkin.</span> </span> <span class="nexus-build__action"> Ochiq qo'llanma <span aria-hidden="true">-&gt; </span> </span>
+</a>
 </section>
 
 <hr style="margin-top: 3rem;">
-<p style="font-weight: 200; font-size: 0.875rem;">Hyperledger Iroha qismidir <a href="https://www.lfdecentralizedtrust.org/projects/tag/ledger-technology" target="_blank">LF Decentralized Trust</a>. Koʻproq maʼlumot olish uchun <a href="https://iroha.tech/" target="_blank">iroha.tech</a>.</p>
+<p style="font-weight: 200; font-size: 0.875rem;">Hyperledger Iroha bir qismi hisoblanadi <a href="https://www.lfdecentralizedtrust.org/projects/tag/ledger-technology" target="_blank">LF Decentralized Trust</a>. Koʻproq maʼlumot olish <a href="https://iroha.tech/" target="_blank">iroha.tech</a>.</p>

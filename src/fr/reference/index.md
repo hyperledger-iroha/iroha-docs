@@ -8,17 +8,15 @@ translation_engine: nllb-200-ct2
 
 # Références {#reference}
 
-Cette section trace le matériel de référence actuel pour l'exploitant
-Iroha 3 Les dossiers sont prêts.
+Cette section suit le matériau de référence actuel en face de l'opérateur pour l'ensemble des documents Iroha 3.
 
 Commencez par:
 
-- [Travailler avec Iroha à binaries](/fr/reference/binaries.md)
-- [Références de la Genèse](/fr/reference/genesis.md)
-- [Torii points de fin](/fr/reference/torii-endpoints.md)
-- [Torii API console](/fr/reference/torii-api-console.md)
+- [Travailler avec les binaires Iroha](/fr/reference/binaries.md)
+- [Référencement de la Genèse](/fr/reference/genesis.md)
+- [points d'extrémité Torii](/fr/reference/torii-endpoints.md)
+- [Console Torii API ](/fr/reference/torii-api-console.md)
 - [Norito](/fr/reference/norito.md)
-- [Matrice de compatibilité](/fr/reference/compatibility-matrix.md)
+- [Matrice de compatibilité ](/fr/reference/compatibility-matrix.md)
 
-Pour les spécifications de source d'implémentation et des codes adjacents, voir le
-[Iroha référentiel](https://github.com/hyperledger-iroha/iroha).
+Pour les spécifications de la source d'implémentation et du code adjacent, voir le référentiel [Iroha ](https://github.com/hyperledger-iroha/iroha).

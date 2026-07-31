@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # Ən yaxşı təcrübələr {#best-practices}
 
-Bu bölmə Iroha tətbiqləri və şəbəkələri üçün istehsal istiqamətində göstərişlər toplayır.
+Bu bölmə Iroha tətbiqləri və şəbəkələri üçün istehsal istiqamətində göstərişlər toplayır. Bu, onu həyata keçirən xüsusiyyətə görə deyil, qəbul etməli olduğunuz qərara görə təşkil edilir.
 
 Paylaşılan testnet provalarından, istehsaldan və ya əsas müştəri buraxılışından əvvəl yoxlama siyahısı kimi istifadə edin.
 

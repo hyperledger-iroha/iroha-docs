@@ -9,28 +9,24 @@ aside: false
 pageClass: torii-api-console-page
 ---
 
-# Torii API Konsol {#torii-api-console}
+# Torii API konsol {#torii-api-console}
 
-Toʻgʻridan-toʻgʻri foydalaning OpenAPI Ishlab boruvchi hujjat Torii yo'nalishlarni tekshirish uchun yakuniy punkt,
-sinov talablarini yuborish, nusxa olish curl buyruqlar va mijoz kodini yaratadi.
+Yo'nalishlarni tekshirish, sinov so'rovlarini yuborish, curl buyruqlarini nusxalash va mijoz kodini yaratish uchun ishlatiladigan Torii oxirgi nuqtadan jonli OpenAPI hujjatidan foydalaning.
 
 <ToriiApiConsole />
 
 ## Talablar {#requirements}
 
-- O ' zbekiston Respublikasi Torii oxirgi nuqta ko'rsatishi kerak `/openapi.json`.
-- Brauzer sinovlari talab etiladi CORS bu hujjatlarning kelib chiqishiga yo'l qo'yish.
+- Torii oxirgi nuqtasi `/openapi.json` ni ko'rsatishi kerak.
+- Ushbu hujjatlarning kelib chiqishiga ruxsat berish uchun brauzer sinovlari CORS ni talab qiladi.
 - Brauzer to'g'ridan-to'g'ri oxirgi nuqtaga yetib borishi kerak.
-- Kod ishlab chiqarish talab qiladi Node.js, pnpm, va Java uchun ish vaqti OpenAPI
-  Generator.
+- Kod ishlab chiqarish uchun Node.js, pnpm va OpenAPI generator uchun Java ishga tushirish vaqti kerak.
 
-Konsolning andoza parametrlari `https://taira.sora.org`. Mahalliy rivojlanish
-bilan ishlaydi `http://127.0.0.1:8080` qochganingizda Torii mashinangizda.
+Konsol andoza `https://taira.sora.org`. Mahalliy rivojlanish odatda `http://127.0.0.1:8080` bilan ishlaydi, siz mashinangizda Torii ishga tushirganingizda.
 
-## Sinang . Taira Avvalo {#try-taira-first}
+## Avvalo Taira ni sinab ko'ring {#try-taira-first}
 
-Mijozni yaratishdan oldin, jamoatchilikning OpenAPI hujjatga erishish mumkin
-mashinangiz:
+Mijoz yaratishdan oldin, ommaviy OpenAPI hujjatini mashinangizdan olish mumkinligini tekshiring:
 
 ```bash
 curl -fsS https://taira.sora.org/openapi.json -o /tmp/taira-openapi.json
@@ -38,21 +34,15 @@ jq '{title: .info.title, version: .info.version, paths: (.paths | length)}' \
   /tmp/taira-openapi.json
 ```
 
-Keyin pastlang . `https://taira.sora.org/openapi.json` konsolga kiring va bir
-o'qish uchun mo'ljallangan yo'l, masalan: `GET /status`, `GET /v1/domains`, yoki
-`GET /v1/assets/definitions`. Imzolangan tranzaksiya va xususiy kalit oqimlarini saqlash
-bir SDK yoki CLI Sizning ish vaqti muhitingizdagi sirlarni yuklaydigan mijoz.
+Keyin `https://taira.sora.org/openapi.json` ni konsolga qo'yib, `GET /status`, `GET /v1/domains` yoki `GET /v1/assets/definitions` kabi o'qish uchun mo'ljallangan yo'lni sinab ko'ring. O'zingizning ish vaqti muhitingizdan sirlarni yuklaydigan SDK yoki CLI mijozi uchun imzolangan tranzaksiya va xususiy kalit oqimlarini saqlash.
 
-## Oʻrnatilgan mijozlar {#generated-clients}
+## Ishlab chiqarilgan mijozlar {#generated-clients}
 
-Generator buyruqida xuddi shu jonli OpenAPI konsolning
-yuklar. Bu JSON operator, kashfiyotchi, dastur va telemetriya yo'nalishlari.
+Generator buyruqida konsol yuklaydigan bir xil jonli OpenAPI hujjati ishlatiladi. Bu JSON operatori, qidiruvchisi, dastur va telemetriya yo'nalishlari uchun foydali.
 
-imzolangan katta qog'ozlar bilan bog'liq bitimlar, imzolangan so'rovlar va Norito- mahalliy yuklar,
-mansabdor shaxsni afzal koʻrish Iroha SDKs. OpenAPI mijozlar imzolar yig'maydi,
-hisob kalitlarini boshqarish yoki kodlash Norito Siz uchun tranzaksiya organlari.
+Imzolangan katta qog'ozlar tranzaksiyalari, imzolangan so'rovlar va Norito natijali faydali yuklar uchun rasmiy Iroha SDKs ni afzal ko'rish kerak. OpenAPI mijozlar siz uchun imzolarni yig'maydilar, hisob kalitlarini boshqarmaydilar yoki Norito tranzaksiyalar organlarini kodlamaydilar.
 
-Har bir generatorni tekshirish uchun OpenAPI Generatorni ishga tushiring:
+OpenAPI generator tomonidan qo'llab-quvvatlanadigan har bir generatorni tekshirish uchun quyidagilarni o'tkazing:
 
 ```bash
 pnpm dlx @openapitools/openapi-generator-cli list

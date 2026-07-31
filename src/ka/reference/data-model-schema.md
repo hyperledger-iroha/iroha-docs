@@ -8,10 +8,6 @@ translation_engine: nllb-200-ct2
 
 # მონაცემთა მოდელის სქემა {#data-model-schema}
 
-ეს გვერდი შექმნილია `kagami advanced schema` და შეკრული,
-[`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha)
-დოკუმენტაციის განახლების სამუშაო პროცესის რედაქტირება.
-არის შემოწმებული ამ რეპოზიტორში, ასე რომ ნორმალური დოკუმენტაციის builds არ საჭიროებს
-დასახელება Iroha საწყისი გადახდა.
+ეს გვერდი წარმოქმნილია `kagami advanced schema` ჩაკეტილი [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) რევიზიონიდან, რომელიც დაფიქსირებულია დოკუმენტაციის განახლების სამუშაო ნაკადით. გადმოცემული სნაპშოტი შემოწმებულია ამ საცავში, ასე რომ ნორმალური დოკუმენტირების შენობა არ საჭიროებს Iroha წყარო გადახდას.
 
 <DataModelSchema />

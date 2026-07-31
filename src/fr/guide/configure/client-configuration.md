@@ -8,9 +8,7 @@ translation_engine: nllb-200-ct2
 
 # Configuration du client {#client-configuration}
 
-Iroha CLI et SDK les clients utilisent TOML Le référentiel envoie le
-courant par défaut à `defaults/client.toml`; Les réseaux locaux générés écrivent également un
-correspondance `client.toml` dans leur répertoire de sortie.
+Iroha CLI et SDK les clients utilisent TOML configuration. Le référentiel envoie la valeur par défaut actuelle à `defaults/client.toml`; les réseaux locaux générés écrivent également un correspondant `client.toml` dans leur répertoire de sortie.
 
 ::: details Template de configuration du client
 
@@ -20,8 +18,7 @@ correspondance `client.toml` dans leur répertoire de sortie.
 
 ## Les champs de base {#core-fields}
 
-Au minimum, une configuration client identifie la chaîne. Torii point final, et
-compte de signature:
+Une configuration client identifie au minimum la chaîne, le point final Torii et le compte de signature:
 
 ```toml
 chain = "00000000-0000-0000-0000-000000000000"
@@ -35,26 +32,20 @@ private_key = "802620..."
 
 - `chain` sélectionne la chaîne à laquelle appartiennent les transactions soumises.
 - `torii_url` points par rapport aux autres Torii HTTP API.
-- `[account].domain` est utilisé par CLI les raccourcis et le codage du sélecteur d'adresse;
-  le canonique `AccountId` elle-même est sans domaine.
-- `[account].public_key` et `[account].private_key` signer les transactions.
+- `[account].domain` est utilisé par les raccourcis CLI et le codage du sélecteur d'adresses; le canonique `AccountId` lui-même n'est pas de domaine.
+- Les transactions `[account].public_key` et `[account].private_key` sont signées.
 
-Pour le réseau local par défaut, c'est
-géré par le manifeste génétique.
+Le compte doit déjà exister sur la chaîne. Pour le réseau local par défaut, il est géré par le manifeste génétique bundled.
 
 ::: info Sensitivité du cas
 
-Iroha Les noms sont sensibles aux cas après l'analyse canonique.
-`wonderland.universal`, `Wonderland.universal`, et
-`looking_glass.universal` sont des domaines littéraux distincts.
+Les noms Iroha sont sensibles aux cas après l'analyse canonique. Par exemple, `wonderland.universal`, `Wonderland.universal` et `looking_glass.universal` sont des lettres de domaine distinctes.
 
 :::
 
 ## L'authentification de base {#basic-authentication}
 
-Le choix `[basic_auth]` la section ajoute un HTTP `Authorization` en-tête
-les demandes des clients. Iroha les pairs n'interprètent pas directement ces informations;
-quand ils Torii est derrière un proxy inverse comme Nginx.
+La section optionnelle `[basic_auth]` ajoute une en-tête HTTP `Authorization` aux demandes du client. Les pairs Iroha n'interprètent pas directement ces informations d'identification; utilisez-les lorsque Torii est derrière un proxy inverse tel que Nginx.
 
 ```toml
 [basic_auth]
@@ -64,7 +55,7 @@ password = "ilovetea"
 
 ## Paramètres de transaction {#transaction-settings}
 
-Le comportement de la transaction est configuré avec le `[transaction]` section suivante:
+Le comportement de la transaction est configuré avec la section `[transaction]`:
 
 ```toml
 [transaction]
@@ -74,33 +65,29 @@ nonce = false
 ```
 
 - `time_to_live_ms` est la durée de vie de l'opération en millisecondes.
-- `status_timeout_ms` contrôle combien de temps le client attend une transaction
-  Le statut de l'entreprise.
-- `nonce = true` demande au client d'inclure une nonce si des transactions répétées
-  produisent des haches différentes.
+- `status_timeout_ms` contrôle combien de temps le client attend l'état de la transaction.
+- `nonce = true` demande au client d'inclure un nonce afin que les transactions répétées produisent des hachages différents.
 
 ## Connectez les paramètres de file d'attente {#connect-queue-settings}
 
-Courant Iroha Les clients peuvent également utiliser l'option `[connect]` section pour le local
-état de file d'attente:
+Les clients actuels Iroha peuvent également utiliser la section optionnelle `[connect]` pour l'état local de la file d'attente:
 
 ```toml
 [connect]
 queue_root = "./queue"
 ```
 
-Utilisez ceci lorsqu'un flux de travail a besoin d'un stockage durable des files d'attente côté client.
+Utilisez ceci lorsque un flux de travail a besoin d'un stockage durable des files d'attente du côté client.
 
 ## Génération de configurations {#generating-configurations}
 
-Pour les réseaux locaux jetables, préférer Kagami parce qu'il écrit correspondant Iroha
-3 configs, génèse, scripts et un README:
+Pour les réseaux locaux jetables, préférer Kagami parce qu'il écrit des configures correspondantes Iroha 3, génèse, scripts et un README:
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
 ```
 
-Utilisez le généré `./localnet/client.toml` avec le CLI:
+Utilisez le `./localnet/client.toml` généré avec le CLI:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all

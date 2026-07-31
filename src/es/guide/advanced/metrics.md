@@ -70,7 +70,7 @@ telemetry_profile = "full"
 
 ## Las bandas de rendimiento {#performance-bands}
 
-Utilice estas bandas para una ejecución observada en milisegundos de rendimiento objetivo `Y` TPS y presupuesto de latencia `L`.
+Utilizar estas bandas para una ejecución observada en milisegundos de rendimiento objetivo `Y` TPS y presupuesto de latencia `L`. Realice la carga de trabajo lo suficiente como para incluir el calentamiento, estado estable y al menos un período de máxima carga esperada.
 
 |La banda .|Condiciones |El significado .|
 | --- | --- | --- |
@@ -141,7 +141,7 @@ Las configuraciones del colector afectan la rapidez con que convergen los votos 
 - `sumeragi.collectors.redundant_send_r` controla la votación adicional después de una hora local
 - `sumeragi.collectors.parallel_topology_fanout` añade la topología fanout junto a los coleccionistas
 
-El aumento de fanout puede reducir la latencia en redes más grandes o menos confiables, pero también aumenta el tráfico.
+El aumento de la capacidad puede reducir la latencia en redes más grandes o menos fiables, pero también aumenta el tráfico. Comparar la disponibilidad agregada y la telemetría del colector con las métricas de latencia y retropresión antes de cambiar estos valores:
 
 ```bash
 iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetry
@@ -169,7 +169,7 @@ Las configuraciones de admisión y cola definen la cantidad de presión que pued
 - límites de transacción genesis tales como firmas máximas, instrucciones, bytes y bytes descompresos
 - Los límites de fila p2p y los límites de entrada por consenso
 
-Una alta capacidad de cola puede ocultar la sobrecarga durante un tiempo, pero no aumenta el rendimiento sostenible.
+La alta capacidad de cola puede ocultar la sobrecarga por un tiempo, pero no aumenta el rendimiento sostenible. Una fila estable es saludable; una fila creciente es un retraso.
 
 ### El hardware y el almacenamiento {#hardware-and-storage}
 

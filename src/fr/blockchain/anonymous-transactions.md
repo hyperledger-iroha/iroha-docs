@@ -6,83 +6,54 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Transactions anonymes {#anonymous-transactions}
+# Les opérations anonymes {#anonymous-transactions}
 
-Transactions anonymes en Iroha sont constitués d'actifs confidentiels
-Les transferts de comptes à comptes publiques
-les montants publics, un portefeuille déplace la valeur dans un registre protégé et ensuite dépense
-des notes opaques avec des preuves de connaissance zéro.
+Les transactions anonymes en Iroha sont construites à partir d'opérations d'actifs confidentiels. Au lieu d'écrire des transferts de compte à compte public avec des montants publics, un portefeuille transfère la valeur dans un registre protégé et dépense ensuite des billets opaques avec des preuves de connaissance zéro.
 
-Le registre public indique toujours qu'une opération confidentielle s'est produite.
-enregistrent des engagements, des annulateurs, des hashes de preuve et des événements, mais il ne
-enregistrer le propriétaire, le destinataire ou le montant des billets protégés
-Le chiffre d'affaires normal peut encore révéler la soumission
-compte, donc "anonyme" ici signifie mouvement anonyme d'actifs, pas automatique
-l'anonymat au niveau du réseau ou du compte.
+Le registre public enregistre toujours qu'une opération confidentielle s'est produite. Il enregistre les engagements, les annulateurs, les hachages de preuve et les événements, mais il n'enregistre pas le propriétaire de la note, le destinataire ou le montant pour le mouvement protégé vers l'autre. L'enveloppe de transaction normale peut toujours révéler le compte soumis, de sorte que "anonymat" signifie ici le mouvement anonyme des actifs et non l'anonymat automatique au niveau du réseau ou du compte.
 
-## Blocs de construction {#building-blocks}
+## Les blocs de construction {#building-blocks}
 
-| Concept            | Représentation du registre                                                                                              |
+|Le concept |La représentation du registre |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------ |
-| Note protégée      | Un enregistrement de portefeuille privé contenant un actif, le montant, les données du propriétaire et le hasard.                                   |
-| L'engagement         | Une valeur publique de 32 bytes qui s'engage sur une note sans révéler ses champs.                                        |
-| Nullificateur          | Une valeur publique de 32 bytes dérivée lorsqu'une note est dépensée. Iroha rejette les annulateurs répétés pour éviter la double dépense. |
-| Racine de mercule        | Une racine récente de l'arbre d'engagement de l'actif.                        |
-| Appareil d'étanchéité   | Une `ProofAttachment` contenant des octets de preuve plus une référence à la clé de vérification ou une clé de verification en ligne.                 |
-| Un événement confidentiel | Un événement de registre tel que `ConfidentialEvent::Shielded`, `Transferred`, ou `Unshielded`.                              |
+|Note protégée |Un enregistrement de portefeuille privé contenant un actif, le montant, les données du propriétaire et le hasard. |
+|Engagement |Une valeur publique de 32 bytes qui s'engage à une note sans révéler ses champs. |
+|Nullificateur |Une valeur publique de 32 bytes dérivée lorsqu'une note est dépensée. Iroha rejette les annulateurs répétés pour éviter la double dépense. |
+|La racine de mercule|Une racine récente de l'arbre d'engagement des actifs. Les preuves l'utilisent pour montrer que les billets dépensés existent. |
+|L' annexe à la preuve |Une `ProofAttachment` contenant des octets de preuve plus une référence à la clé de vérification ou une clé de verification en ligne. |
+|Un événement confidentiel .|Un événement de registre tel que `ConfidentialEvent::Shielded`, `Transferred`, ou `Unshielded`. |
 
-Les principales instructions sont les suivantes:
+Les instructions principales sont les suivantes:
 
-- `RegisterZkAsset`: enregistre un actif comme ZK-transfert viable et liant,
-  le bouclier et les clés de vérification non bouclées.
-- `Shield`: débite un solde public et ajoute un engagement de billet protégé.
-- `ZkTransfer`: dépense des billets protégés dans de nouveaux engagements.
-- `Unshield`: dépense des billets protégés et crédite un solde de compte public.
-- `ScheduleConfidentialPolicyTransition` et
-  `CancelConfidentialPolicyTransition`: modifier la confidentialité d'un actif
-  la politique par le biais de la gouvernance.
+- `RegisterZkAsset`: enregistre un actif comme ayant la capacité de ZK et lie les clés de vérification des transferts, du bouclier et du non-bouclier.
+- `Shield`: débite un solde public et ajoute une obligation de billet protégé.
+- `ZkTransfer`: dépense des billets protégés dans de nouveaux engagements en billets protégeants.
+- `Unshield`: dépense des billets protégés et accorde un solde de compte public.
+- `ScheduleConfidentialPolicyTransition` et `CancelConfidentialPolicyTransition`: modifier la politique de confidentialité d'un actif grâce à la gouvernance.
 
-Une définition d'actif comporte également un
-[`AssetConfidentialPolicy`](/fr/reference/data-model-schema.md).
-Les contrôles du mode de politique dans lesquels les flux sont valides:
+Une définition d'actif comporte également un [`AssetConfidentialPolicy`](/fr/reference/data-model-schema.md). Les contrôles en mode politique qui contrôlent les flux sont valides:
 
-| Mode de fonctionnement              | La signification                                                          |
+|Mode |Le sens .|
 | ----------------- | ---------------------------------------------------------------- |
-| `TransparentOnly` | Seuls les soldes et transferts publics normaux sont acceptés.          |
-| `Convertible`     | Les utilisateurs peuvent déplacer la valeur entre les soldes publics et les billets protégés. |
-| `ShieldedOnly`    | L'émission et les transferts d'actifs doivent rester dans le registre protégé.   |
+|`TransparentOnly` |Seuls les soldes et les transferts publics normaux sont acceptés. |
+|`Convertible` |Les utilisateurs peuvent déplacer la valeur entre les soldes publics et les billets protégés. |
+|`ShieldedOnly` |L'émission et les transferts d'actifs doivent rester dans le registre protégé. |
 
 ## Comment les utiliser {#how-to-use-them}
 
-1. Activer le support confidentiel sur les nœuds de validateur.
-   l'arrière-plan du vérificateur, les clés de vérification actives, paramètre Poseidon/Pedersen
-   IDs, Les nœuds rejettent les pairs ou blocs avec
-   des extraits de caractéristiques confidentielles non correspondants.
-2. Publier ou enregistrer les clés de vérification et les ensembles de paramètres utilisés par le
-   Les portefeuilles et les opérateurs doivent se référer aux clés par
-   `VerifyingKeyId`, par exemple `halo2/ipa:vk_transfer`.
-3. Enregistrer l'actif comme ZK- capable de `RegisterZkAsset`, ou étape a
-   la transition des politiques à partir de `TransparentOnly` à `Convertible` ou
-   `ShieldedOnly`.
-4. Les fonds publics sont protégés par `Shield`. Le portefeuille crée un engagement note
-   et la charge utile cryptée pour le destinataire avant qu'il ne soumette
-   une transaction.
-5. Transfert privé avec `ZkTransfer`. Le portefeuille construit une preuve qu'il
-   possède les notes d'entrée, que les valeurs d'entrée et de sortie sont en équilibre, et
-   Chaque billet dépensé est ancré dans un arbre d'engagement récent.
-6. Il ne peut être débloqué que si la politique d'actifs le permet. `Unshield` révèle le
-   le montant public et le compte du destinataire, dépense l'annulateur de billets privés,
-   et peut créer des sorties de changement privées.
-7. Audit en lisant les événements confidentiels, les dossiers de preuve, le statut d'annulateur;
-   et des enregistrements de dépôt anonymes par le biais de requêtes typées et Torii les points de fin.
+1. Activer le support confidentiel sur les nœuds de validation. Les validateurs doivent s'entendre sur l'arrière-plan du vérificateur, les touches actives de vérification, le paramètre Poseidon/Pedersen IDs, et la version des règles confidentielles.
+2. Publier ou enregistrer les clés de vérification et les ensembles de paramètres utilisés par les circuits. Les portefeuilles et les opérateurs doivent se référer aux clés par `VerifyingKeyId`, par exemple `halo2/ipa:vk_transfer`.
+3. Enregistrer l'actif en tant que ZK-capable auprès de `RegisterZkAsset`, ou effectuer une transition de politique de `TransparentOnly` à `Convertible` ou `ShieldedOnly`.
+4. Gardez les fonds publics avec `Shield`. Le portefeuille crée un engagement de billets et une charge utile cryptée pour le destinataire avant qu'il ne soumette la transaction.
+5. Transférer en privé avec `ZkTransfer`. Le portefeuille construit une preuve qu'il possède les billets d'entrée, que les valeurs de saisie et de sortie sont équilibrées et que chaque billet dépensé est ancré dans un arbre d'engagement récent.
+6. `Unshield` révèle le montant public et le compte du destinataire, dépense l'annulateur de la note privée et peut créer des sorties de change privées.
+7. Audit en lisant les événements confidentiels, les dossiers de preuve, l'état d'annulateur et les enregistrements de dépôt anonyme par le biais de requêtes typées et des points d'expiration Torii.
 
 ## CLI Exemples {#cli-examples}
 
-Les ZK CLI Les commandes sont destinées aux flux d'opérateur et de test.
-Les portefeuilles devraient générer des engagements, des charges utiles cryptées et des preuves avec un
-la bibliothèque de portefeuille/préciseur avant de soumettre les instructions qui en découlent.
+Les commandes ZK CLI sont destinées aux flux d'opérateur et de test. Les portefeuilles de production devraient générer des engagements, des charges utiles cryptées, et des preuves avec une bibliothèque de portefeuille/préciseurs avant de soumettre les instructions qui en découlent.
 
-Enregistrer un hybride ZK- actif actif:
+Enregistrez un actif hybride à capacité ZK:
 
 ```bash
 iroha app zk register-asset \
@@ -94,7 +65,7 @@ iroha app zk register-asset \
   --vk-shield halo2/ipa:vk_shield
 ```
 
-Construisez une enveloppe de charge utile chiffrée pour la note protégée:
+Construire une enveloppe de charge utile cryptée pour la note protégée:
 
 ```bash
 iroha app zk envelope \
@@ -105,7 +76,7 @@ iroha app zk envelope \
   --output note-envelope.bin
 ```
 
-Les fonds publics protégés dans le registre protégé des actifs:
+La protection des fonds publics dans le registre protégé de l'actif:
 
 ```bash
 iroha app zk shield \
@@ -116,7 +87,7 @@ iroha app zk shield \
   --enc-payload note-envelope.bin
 ```
 
-Un bouclier démonté avec une fixation à épreuve JSON:
+Un bouclier déshydraté avec une fixation à l'épreuve JSON:
 
 ```bash
 cat > unshield-proof.json <<'JSON'
@@ -140,8 +111,7 @@ iroha app zk unshield \
 
 ## SDK Exemple {#sdk-example}
 
-Les octets de preuve exacts proviennent de l'arrière-plan de la preuve configurée.
-la charge utile des transactions ne nécessite que les entrées publiques et l'annexe de preuve:
+La charge utile de la transaction ne nécessite que les entrées publiques et l'annexe de la preuve:
 
 ```rust
 use iroha_data_model::{
@@ -197,40 +167,26 @@ fn unshield_instruction(
 }
 ```
 
-## Réservation des actifs anonymes {#anonymous-asset-escrow}
+## Réserve d'actifs anonymes {#anonymous-asset-escrow}
 
-Les garanties d'actifs anonymes utilisent la même machine de transfert protégée pour:
-Les parties et l'état de l'escroquerie sont toujours enregistrés dans le
-enregistrement de garantie, mais les lignes de financement, de libération, d'annulation et de résolution
-utiliser des annulateurs protégés et des engagements de sortie.
+Les parties et l'état de la fiducie sont toujours enregistrés dans le dossier de fiducie, mais les étapes de financement, de libération, d'annulation et de résolution utilisent des annulateurs protégés et des engagements de sortie.
 
-Pour les garanties détaillées ISI comportement et exemples, voir
-[Réservation des actifs natifs](/fr/blockchain/escrow.md#anonymous-escrow).
+Pour les dépôts détaillés ISI comportement et exemples, voir [Réservation des actifs natifs](/fr/blockchain/escrow.md#anonymous-escrow).
 
-Le cycle de vie est:
+Le cycle de vie est le suivant:
 
-1. `OpenAnonymousAssetEscrow` dépense des billets de financement protégés et crée un
-   l'engagement de dépôt en caution.
-2. `AcceptAnonymousAssetEscrow` enregistrement de l'acheteur.
-3. `MarkAnonymousEscrowPaymentSent` enregistrements indiquant que l'acheteur a envoyé le paiement
-   hors chaîne.
-4. `ReleaseAnonymousAssetEscrow` dépense l'engagement de garantie à l'acheteur
-   engagements de production.
-5. `CancelAnonymousAssetEscrow` dépense l'engagement de garantie au vendeur
-   les engagements de sortie lorsque le paiement n'a pas été marqué.
-6. `OpenAnonymousEscrowDispute` et `ResolveAnonymousEscrowDispute` manette
-   Les escrocs contestés avec des hachages de preuves et une fraction contrôlée par le résolveur.
+1. `OpenAnonymousAssetEscrow` dépense des notes de financement protégées et crée un engagement de garantie.
+2. `AcceptAnonymousAssetEscrow` enregistrer l'acheteur.
+3. `MarkAnonymousEscrowPaymentSent` indique que l'acheteur a envoyé le paiement hors chaîne.
+4. `ReleaseAnonymousAssetEscrow` dépense l'engagement en caution pour les engagements de sortie de l'acheteur.
+5. `CancelAnonymousAssetEscrow` dépense l'engagement de garantie en retour aux engagements de sortie du vendeur lorsqu'il n'a pas été marqué.
+6. `OpenAnonymousEscrowDispute` et `ResolveAnonymousEscrowDispute` gèrent des garanties litigieuses avec des hachages de preuves et une fraction contrôlée par le résolveur.
 
-Utilisez les requêtes de garantie anonymes énumérées dans
-[Les questions](/fr/reference/queries.md#escrow-and-proof-records) pour inspecter les dépôts
-les dossiers et les statuts.
+Utilisez les requêtes de fiducie anonymes énumérées dans [Questions](/fr/reference/queries.md#escrow-and-proof-records) pour inspecter les dossiers et les statuts des fiducieux.
 
-## Les maths {#math}
+## Mathématiques {#math}
 
-La notation ci-dessous décrit le flux d'actifs confidentiels.
-utiliser le circuit actif et le paramètre IDs de la politique d'actif et du vérificateur
-le registre, de sorte que les clients doivent traiter des engagements, annulateurs et octets de preuve
-en tant que sorties opaques du portefeuille/préciseur.
+La notation ci-dessous décrit le flux d'actifs confidentiels. Les mises en œuvre utilisent le circuit actif et le paramètre IDs de la politique des actifs et du registre des vérificateurs, de sorte que les clients doivent traiter les engagements, les annulateurs et les octets de preuve comme des sorties opaques du portefeuille / proverbe.
 
 Une note protégée peut être décrite comme suit:
 
@@ -238,8 +194,7 @@ $$
 n = (\mathsf{asset}, \mathsf{amount}, \mathsf{owner}, \rho)
 $$
 
-où `owner` est dérivé du matériel vu ou dépensé par le destinataire et
-`rho` est la note aléatoire.
+où `owner` est dérivé du matériel d'affichage ou de dépenses du destinataire et `rho` est une note aléatoire.
 
 L'engagement de la note est un engagement caché:
 
@@ -247,33 +202,27 @@ $$
 C = \mathsf{Commit}(\mathsf{asset}, \mathsf{amount}, \mathsf{owner}, \rho)
 $$
 
-Pour les circuits de transfert confidentiels actuels, les entrées publiques comprennent:
-les engagements, les annulateurs, une racine Merkle, un label d'actif et un label de chaîne.
-Le circuit impose une relation d'engagement de cette forme:
+Pour les circuits de transfert confidentiel actuels, les entrées publiques comprennent des engagements de notes, des annulateurs, une racine Merkle, une étiquette d'actif et une chaîne. Le circuit impose un rapport d'engagement de cette forme:
 
 $$
 C = H_c(\mathsf{amount}, \rho, \mathsf{owner\_tag}, \mathsf{asset\_tag})
 $$
 
-Lorsqu'une note est dépensée, le portefeuille obtient un annulateur:
+Lorsqu'un billet est dépensé, le portefeuille obtient un annulateur:
 
 $$
 N = H_n(\mathsf{spend\_key}, \rho, \mathsf{asset\_tag}, \mathsf{chain\_tag})
 $$
 
-`N` Il ne révèle pas la note, mais il est stable pour cette note.
-et la chaîne, donc Iroha peut rejeter une deuxième dépense avec le même annulateur.
+`N` est public. Il ne révèle pas la note, mais il est stable pour cette note et la chaîne, de sorte que Iroha peut refuser une deuxième dépense avec le même annulateur.
 
-L'arbre d'engagement prouve l'existence des notes.
-`C_i`, la preuve comprend un chemin Merkle privé de `C_i` à une récente
-racine publique:
+L'arbre d'engagement prouve l'existence de la note. Si un portefeuille dépense un engagement `C_i`, la preuve comprend un chemin Merkle privé de `C_i` à une racine publique récente:
 
 $$
 \mathsf{MerkleRoot}(C_i, \mathsf{path}) = R
 $$
 
-Pour un transfert protégé contre un autre, la preuve impose également une valeur
-la conservation:
+Dans le cas d'un transfert protégé, la preuve impose également la conservation de la valeur:
 
 $$
 \sum \mathsf{inputs} = \sum \mathsf{outputs}
@@ -291,28 +240,21 @@ $$
 \mathsf{Verify}(\mathsf{vk}, \mathsf{public\_inputs}, \pi) = \mathsf{true}
 $$
 
-où `public_inputs` sont les engagements, les annulateurs, la racine, l'étiquette d'actif,
-le témoin contient la note
-les quantités, le hasard, la dépense de matériel et les chemins Merkle.
-l'état de preuve puis mutation du registre en ajoutant des engagements de sortie et
-marquer les annulateurs d'entrée comme dépensés.
+où `public_inputs` sont les engagements, les annulateurs, la racine, l'étiquette d'actif, l'etiquette de chaîne et tout montant public non protégé. Les validateurs vérifient la preuve, puis modifient l'état du registre en ajoutant des engagements de sortie et en marquant les annulateurs d'entrée comme dépensés.
 
 ## Ce qui est public {#what-is-public}
 
-Les transactions anonymes ne rendent pas chaque fait observable privé.
-les données suivantes peuvent toujours être publiques:
+Les transactions anonymes ne rendent pas tous les faits observables privés.
 
 - le hash de la transaction, la hauteur du bloc et l'ordre
-- l'autorité de transaction soumettante, sauf si la demande utilise un
-  point d'entrée privé ou modèle de relieu
+- l'autorité de transaction soumettante, sauf si la demande utilise un modèle d'entrée privée ou de relieu
 - la définition d'actif utilisée
 - annulateurs et engagements de sortie
-- les hashs de preuve, les références de clé de vérification et les hashs d'enveloppe facultatives
-- montant public et compte du bénéficiaire pour `Unshield`
+- les hashs de preuve, les références à la clé de vérification et les hashs d'enveloppe facultatives
+- montant public et compte des bénéficiaires pour `Unshield`
 - Vendeur, acheteur, statut, timestamps et hashes de preuve anonymes
 
-Applications de conception afin que ces métadonnées publiques ne révèlent pas l'entreprise
-la relation que vous essayez de protéger.
+Concevez des applications pour que ces métadonnées publiques ne révèlent pas la relation commerciale que vous essayez de protéger.
 
 ## Références connexes {#related-reference}
 
@@ -320,4 +262,4 @@ la relation que vous essayez de protéger.
 - [`ConfidentialEvent`](/fr/reference/data-model-schema.md)
 - [`ProofAttachment`](/fr/reference/data-model-schema.md)
 - [`SignedTransaction.attachments`](/fr/reference/data-model-schema.md)
-- [Enquêtes sur les dépôts et les preuves](/fr/reference/queries.md#escrow-and-proof-records)
+- [Demande de garantie et de preuve ](/fr/reference/queries.md#escrow-and-proof-records)

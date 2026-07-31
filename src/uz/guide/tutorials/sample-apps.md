@@ -8,25 +8,16 @@ translation_engine: nllb-200-ct2
 
 # Namunalar va retseptlar {#samples-and-recipes}
 
-O ' zbekiston Respublikasi Iroha manba omborida mavjud SDK retseptlar va test suitlari
-nod bilan bir xil qayta ko'rib chiqish.
+Iroha manbali ma'muriyada SDK retseptlari va test paketlari mavjud bo'lib, ular nod bilan bir xil qayta ko'rib chiqilgan.
 
-## JavaScript Receptlar {#javascript-recipes}
+## JavaScript retseptlar {#javascript-recipes}
 
-[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/main/javascript/iroha_js/recipes)
-deterministik operatsiyalar partiyasi bo'yicha aniqlab o'tilgan misollar mavjud; Nexus ilova
-o'tkazib berish, NFT va hisobni takrorlash; ISO ko'prik oqimlari va Torii oqim.
-Har bir retsept offline ishlaydi yoki jonli kerakmi hujjat Torii yakuniy nuqta.
+[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/main/javascript/iroha_js/recipes) deterministik operatsiyalar partiyasi bo'yicha aniqlangan misollar mavjud; Nexus dasturlarni o'tkazish, NFT va hisobni takrorlash; ISO ko'prik oqimlari va Torii har bir retsept offline ishlaydi yoki jonli foydalanish kerak Torii yakuniy nuqta.
 
 ## Swift va iOS {#swift-and-ios}
 
-Foydalanish `IrohaSwift/Tests/IrohaSwiftTests` joriy holatga nisbatan tasdiqlangan namunalar uchun
-Swift SDK. Koʻring [Swift va iOS](/uz/guide/tutorials/swift.md) paket va ko'prik uchun
-tuzish.
+Foydalanish `IrohaSwift/Tests/IrohaSwiftTests` to'g'riligi bilan tasdiqlangan misollar uchun Swift SDK. Koʻring [Swift va iOS](/uz/guide/tutorials/swift.md) paketlar va ko'priklarni o'rnatish uchun.
 
 ## Android {#android}
 
-Yangi uchun Android ish, foydalanish Kotlin- Birinchidan `core-jvm`, `client-android`, va
-`offline-wallet-android` quyidagi modullarda tasvirlangan
-[Kotlin, Android, va Java](/uz/guide/tutorials/kotlin-java.md). O ' zbekiston Respublikasi Kotlin SDK bo ' lmoqda
-kanonik boshlang'ich nuqta Android iste'molchilar.
+Yangi Android ish uchun Kotlin-birinchi `core-jvm`, `client-android` va `offline-wallet-android` modullaridan foydalaning [Kotlin, Android va Java](/uz/guide/tutorials/kotlin-java.md). Kotlin SDK Android iste'molchilari uchun kanonik boshlang'ich nuqta hisoblanadi.

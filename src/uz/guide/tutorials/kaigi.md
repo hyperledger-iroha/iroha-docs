@@ -6,39 +6,30 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Oʻrnatilgan Kaigi a JavaScript Ilova {#embed-kaigi-in-a-javascript-app}
+# Kaigi ni JavaScript dasturida o'rnatish {#embed-kaigi-in-a-javascript-app}
 
-Kaigi dastur pulchasiga asoslangan bir-bir audio / video uchrashuvlarni yaratishga imkon beradi
-ularning hayot davri Iroha. Brauzer hali ham media bilan shugʻullanadi
-WebRTC, oʻsha paytda Torii va Kaigi ko'rsatmalar doimiy yig'ilishni ta'minlaydi
-yozib olish, shifrlangan signallash metadatalari, xususiy ro'yxatni qo'llab-quvvatlash va foydalanish hodisalari.
+Kaigi dasturga pulmonada qo'llab-quvvatlanadigan bir-bir audio / video uchrashuvlarni yaratish imkonini beradi, ularning hayot davri Iroha orqali qayd etiladi. Brauzer hali ham WebRTC bilan ommaviy axborot vositalarini boshqaradi, Torii va Kaigi ko'rsatmalari esa uzoq muddatli uchrashuvlar yozuvini, shifrlangan signallash metadatalarini taqdim etadi. shaxsiy ro'yxatni qo'llab-quvvatlash va foydalanish tadbirlari.
 
-Ushbu qo'llanma minimal integratsiya modelini ko'rsatadi
-[Iroha Demo JavaScript](https://github.com/soramitsu/iroha-demo-javascript)
-dastur:
+Ushbu qo'llanma [Iroha Demo JavaScript](https://github.com/soramitsu/iroha-demo-javascript) dasturida ishlatiladigan minimal integratsiya namunasini ko'rsatadi:
 
-- tarjima qiluvchi yaratadi WebRTC taklif va javoblar
-- ariza ko'priklarini belgilaydi va taqdim etadi Kaigi operatsiyalar
-- kompakt taklif bog'lari faqat chaqiruvni olib boradi ID Va sirli taklif qilish .
-- uy egasi soatlari Torii shriflangan ishtirokchi javoblari uchun
+- Renderer WebRTC taklif va javoblarni yaratadi
+- talabnoma ko'prikini belgilaydi va Kaigi tranzaksiyalarini taqdim etadi
+- Kompakt taklif bog'lari faqat ID chaqiruvni olib boradi va maxfiy taklif qiladi.
+- uy egasi Torii ishtirokchilarning shifrlangan javoblarini kuzatib boradi
 
-Misollar TypeScript va elektronda ishlaydigan holda yozilmoqda,
-xavfsiz backendli brauzer yoki pulka kengaytmasi bo'lgan veb-ilova.
-ishlab chiqarishda ishonchli bo'lmagan renderer kodidan tashqaridagi xususiy kalitlar.
+Misollar TypeScript dan foydalanadi va ular Electron, xavfsiz backendli brauzerda yoki qopchiq kengaytmasi bo'lgan veb-ilovalarda ishlashi mumkinligi uchun yozilmoqda.
 
-## Oldingi shartlar {#prerequisites}
+## Oldindan talablar {#prerequisites}
 
 Sizga kerak:
 
-- a) Kaigi- qobiliyatli Torii yakuniy nuqta
-- uy egasi va mehmon uchun hisob
-- har bir hisobning imzo kalitini xavfsiz dastur ko'prisi yoki hamyon orqali olish
-- brauzer kamerasi/mikrofon ruxsatlari
-- Node.js Agar siz JavaScript demo yoki mahalliy
-  `@iroha/iroha-js` to'g'ridan-to'g'ri bog'lovchi
+- Kaigi -ga ega bo'lgan Torii oxirgi nuqtasi
+- uy egasi uchun hisob va mehmon uchun hisob
+- har bir hisobvaraqning imzo kalitini xavfsiz ilova ko'prik yoki hamyon orqali olish
+- brauzer kamerasi/mikrofon uchun ruxsatlar
+- Node.js 20+ agar siz to'g'ridan-to'g'ri JavaScript demo yoki nativ `@iroha/iroha-js` bog'lashdan foydalangan bo'lsangiz
 
-To'liq ishchi ma'lumot uchun demo-ni Iroha manbai
-Checkout:
+To'liq ishlaydigan ma'lumot uchun Iroha manbali checkoutning yonida demo nusxasini klonlash:
 
 ```bash
 mkdir iroha-wallet-workspace
@@ -56,15 +47,9 @@ npm install
 npm run dev
 ```
 
-Demo bilan foydalanish
-[`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/main/javascript/iroha_js)
-opamizdan Iroha manbai ombor. `file:` bog'liqlik bu
-Agar natijali bog'lanish o'zgarsa, uni qayta qurish
-`iroha/javascript/iroha_js`; toza paketlar ko'rsatkichida
-yuk tashish uchun zarur bo'lgan ish joylari `npm run build:native`.
+Iroha manba omboridan [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/main/javascript/iroha_js) bilan demodan foydalaning. uning `file:` bog'ligi to'g'ridan-to'g'ri checkoutni hal qiladi. Agar mahalliy bog'lanish o'zgarsa, uni `iroha/javascript/iroha_js` ostida qayta qurish; toza paket direktoriyasida `npm run build:native` uchun kerakli Cargo ish maydonlari mavjud emas.
 
-To ' g'ri uchrashuvni o ' tkazishdan oldin TAIRA, jamoatchilikni tekshirish Torii yuzaga kelishi
-demo quyidagilarga bogʻliq:
+TAIRA-da jonli uchrashuvni o'tkazishdan oldin, demo bog'liq bo'lgan ommaviy Torii yuzini tekshiring:
 
 ```bash
 TAIRA=https://taira.sora.org
@@ -73,23 +58,19 @@ curl -fsS "$TAIRA/v1/kaigi/relays"
 curl -fsS "$TAIRA/v1/kaigi/relays/health"
 ```
 
-Ushbu buyruqlar TAIRA jonli va bu Kaigi relay telemetriyasi
-mavjud. Ular taqdim etilmaydi Kaigi Transaksiyalar. `CreateKaigi` yoki
-`JoinKaigi` sinov ehtiyojlari moliyalashtirilgan TAIRA hisoblar va demo orqali imzolash
-ko'prik yoki boshqa qoplama bilan ta'minlangan ko'priki.
+Ushbu buyruqlar TAIRA jonliligini va Kaigi relay telemetriyasi mavjudligini tasdiqlaydi. Ular Kaigi tranzaksiyalarini taqdim etmaydilar. Haqiqiy `CreateKaigi` yoki `JoinKaigi` sinovlari uchun TAIRA hisobvaraqlari moliyalashtirilishi va demo ko'prikidan yoki boshqa qoplama bilan qo'llab-quvvatlanadigan ko'priktadan o'tish kerak.
 
 ## Arxitektura {#architecture}
 
-O ' zini saqlang Kaigi integratsiya uch qatlamga bo'linadi:
+Kaigi integratsiyasini uch qatlamga bo'ling:
 
-| qatlam | Mas'uliyat |
+|qatlam |Masʼuliyat |
 | --- | --- |
-| UI | hisob tanlovi, yig'ilish shakli, taklif bog'liqlarini ko'rsatish, ommaviy axborot vositalarini boshqarish |
-| WebRTC | `RTCPeerConnection`, mahalliy ommaviy axborot vositalari, taklif va javob tavsiflari |
-| Iroha koʻprik | imzolash, `CreateKaigi`, `JoinKaigi`, `EndKaigi`, signal so'rovlari |
+|UI |Hisobot tanlovi, uchrashuv shakli, taklif bog'liqligini ko'rsatish, ommaviy axborot vositalarini boshqarish |
+|WebRTC |`RTCPeerConnection`, mahalliy ommaviy axborot vositalari, taklif va javoblar tavsiflari |
+|Iroha ko'prik |imzolash, `CreateKaigi`, `JoinKaigi`, `EndKaigi` signal so'rovlarini o'tkazish |
 
-Dastur ko'prisi elektronni oldindan yuklab olish mumkin API, portfeli kengaytmasi yoki orqa tomoni
-U kichik suyani UI:
+Ilovalar ko'prisi elektron oldindan yuklanishi API, portfeli kengaytmasi yoki orqa tomoni bo'lishi mumkin. U UI kichik yuzaga chiqishi kerak:
 
 ```ts
 type KaigiMeetingPrivacy = "private" | "transparent";
@@ -197,13 +178,11 @@ type KaigiBridge = {
 };
 ```
 
-Demo dasturida ushbu ko'prik usullari
-`@iroha/iroha-js`, mahalliy imzo, shifrlangan Kaigi metadotlar va Torii qo'ng'iroqlar.
+Demo ilovasida ushbu ko'prik usullari `@iroha/iroha-js`, mahalliy imzo, shifrlangan Kaigi metadata va Torii qo'ng'iroqlar bilan amalga oshiriladi.
 
-## Yordamchilarni taklif qiling {#invite-helpers}
+## Yordamchilarni taklif eting {#invite-helpers}
 
-Foydalanish Torii- moslashtirilgan qo'ng'iroq IDs bilan `domain.dataspace:meeting` demo shakli.
-foydalanish `kaigi.universal:<call-name>` yaratilgan uchrashuvlar uchun.
+Foydalanish Torii- moslashtirilgan qo'ng'iroq IDs bilan `domain.dataspace:meeting` demo shaklida ishlatiladi `kaigi.universal:<call-name>` hosil bo'lgan uchrashuvlar uchun.
 
 ```ts
 const KAIGI_WINDOW_MS = 24 * 60 * 60 * 1000;
@@ -260,9 +239,7 @@ export function parseInviteLink(link: string): {
 
 ## WebRTC Yordamchilar {#webrtc-helpers}
 
-Uy egasi taklifni yaratadi, uni saqlash orqali `CreateKaigi`, va saqlaydi
-Oyna ochiladi, shunda u mehmonning javobini qo'llashi mumkin. Mehmon shifrlangan
-taklif qiladi, javob yaratadi va javobni yozadi `JoinKaigi`.
+Uy egasi taklifni yaratadi, uni `CreateKaigi` orqali saqlaydi va mehmonning javobini qo'llashi uchun oynani ochib qo'yadi. Mehmon shifrlangan taklifni olib keladi, javobni yaratib, javobni `JoinKaigi` bilan yuboradi.
 
 ```ts
 const rtcConfig: RTCConfiguration = {
@@ -332,7 +309,7 @@ export async function createAnswerDescription(
 }
 ```
 
-O'zingizning oqimlaringizni UI oddiy video elementlari bilan:
+UI fayllaringizni oddiy video elementlari bilan qo'shing:
 
 ```ts
 export function attachKaigiMedia(input: {
@@ -356,15 +333,15 @@ export function attachKaigiMedia(input: {
 }
 ```
 
-## Uy egasi: Yigʻilishlarga bogʻliq aloqa yaratish {#host-create-a-meeting-link}
+## Uy egasi: Yigʻilishlar bilan bogʻlaning {#host-create-a-meeting-link}
 
-Uy egasi oqimi:
+Qonaqchi oqimi:
 
 1. ochiq kamera va mikrofon
-2. yaratish Kaigi signal kalitlari juftligi
-3. yaratish WebRTC taklif
-4. taqdim etish `CreateKaigi`
-5. qoʻshish taklif bogʻlamasi
+2. Kaigi signal kalitlari juftligini yaratish
+3. WebRTC taklifini yaratish
+4. `CreateKaigi`ni taqdim etish
+5. qoʻshilgan taklif bogʻi
 
 ```ts
 type AccountContext = {
@@ -431,8 +408,7 @@ export async function hostKaigiMeeting(input: {
 }
 ```
 
-Koʻrsatish `inviteLink` sizning UI. Foydalanuvchi uni nusxalash, boshqa hamyonada ochish mumkin.
-yoki uni quyidagilar kabi dastur yo'nalishlariga aylantirish:
+`inviteLink` ni UI da ko'rsating. Foydalanuvchi uni nusxaga olish, boshqa hamyonada ochish yoki quyidagilar kabi dastur yo'nalishiga o'zgartirish mumkin:
 
 ```ts
 export function inviteRoute(inviteLink: string): string {
@@ -447,10 +423,10 @@ export function inviteRoute(inviteLink: string): string {
 
 Mehmonlar oqimi:
 
-1. taklifni tahlil qilish
-2. kodlangan qo'ng'iroq taklifini olish Torii
-3. yaratish WebRTC javob
-4. taqdim etish `JoinKaigi` javob metadatalari shifrlangan
+1. Taklifni tahlil qilish
+2. Torii dan shafrlangan qo'ng'iroq taklifini olish;
+3. WebRTC javobini yaratish
+4. `JoinKaigi` so'rov metadatalarini shifrlangan holda taqdim etish
 
 ```ts
 export async function joinKaigiMeetingFromInvite(input: {
@@ -504,15 +480,11 @@ export async function joinKaigiMeetingFromInvite(input: {
 }
 ```
 
-Agar uchrashuv shaffof bo'lsa, siz portfelni ko'rsatuvchi qatorni
-Shaxsiy uchrashuvlar uchun `walletIdentity` foydalanuvchi tomonidan oʻrnatilmagan
-aniq ravishda buni oshkor qilishni tanlaydi.
+Agar uchrashuv shaffof bo'lsa, siz qo'shilish so'roviga bog'liq portfelni ko'rsatish satrini kiritishingiz mumkin. Xususiy uchrashuvlar uchun `walletIdentity` o'rnatilmagan holda saqlang, agar foydalanuvchi aniq ravishda uni oshkor qilishni tanlamasa.
 
 ## Uy egasi: Qonaqning javobini qoʻllash {#host-apply-the-guest-answer}
 
-O'tirish o'tkazilgandan so'ng, uy egasi tomosha qilishi kerak Kaigi tadbirlar va saylov
-&amp; # 91;&amp; # 93; &amp; quot; Xostning tengdoshlariga birinchi haqiqiy javobni qoʻllash
-aloqa.
+To'g'ridan-to'g'ri uchrashuv yaratilgandan so'ng, uy egasi Kaigi tadbirlarini tomosha qilishi va shifrlangan javob signallari uchun saylov o'tkazishi kerak. Uy egasining tengdoshlar aloqasiga birinchi haqiqiy javobni qo'llash kerak.
 
 ```ts
 export async function watchForKaigiAnswer(input: {
@@ -566,12 +538,11 @@ export async function watchForKaigiAnswer(input: {
 }
 ```
 
-Qaytarib berilgan obunalarni saqlash ID Shunday qilib UI kuzatuvchini to ' xtatishi mumkin
-uy egasi to'xtab qo'yadi yoki ketadi.
+Qaytarib berilgan obuna ID ni saqlab qo'ying, shunda sizning UI uy egasi to'xtab qolganda yoki ketayotganda kuzatuvchini to'xtatadi.
 
-## Uchrashuvni yakunlang {#end-the-meeting}
+## Uchrashuvni tugating {#end-the-meeting}
 
-Uni yaratgan uyning oʻzidan qoʻngʻiroqni tugatish:
+Uni yaratgan oʻsha uy egasi hisobidan qoʻngʻiroqni tugating:
 
 ```ts
 export async function endKaigi(input: {
@@ -596,9 +567,7 @@ export async function endKaigi(input: {
 
 ## Xususiy usulda moliyalashtirish {#private-mode-funding}
 
-Xususiy Kaigi yaratish, qo'shish va yakunlash operatsiyalari himoyalangan talab qilishi mumkin XOR uchun
-Sizning dasturingiz ushbu xatoni aniqlab,
-qayta urinishdan oldin o'z-o'zini himoya qilish harakatlari.
+Xususiy Kaigi yaratish, qo'shilish va yakunlash operatsiyalari xususiy kirish nuqtasi to'lovi uchun shielded XOR talab qilishi mumkin. Sizning ilovangiz ushbu xatoni aniqlashi kerak va qayta urinishdan oldin o'z-o'zini himoya qilish amalini taklif qilishi kerak.
 
 ```ts
 type PrivateKaigiFundingBridge = KaigiBridge & {
@@ -648,56 +617,42 @@ export async function selfShieldForPrivateKaigi(input: {
 }
 ```
 
-Demoda, UI foydalanuvchini oʻzini himoya qilishga undaydi , soʻngra
-dastlabki harakatni yaratish yoki qo'shish.
+Demoda UI foydalanuvchini o'zini himoya qilishga undaydi va keyin asl yaratish yoki qo'shilish harakatini qayta sinab ko'radi.
 
-## Qo'llanma to'sish {#manual-fallback}
+## Qo'llanma qaytish {#manual-fallback}
 
-Avtomatik signalizatsiya jonli hamyon bilan bog'liq, Kaigi- qobiliyatli Torii yo'nalishlar va
-xususiy rejimda dalil ishlab chiqarish.
-cheklangan muhitlar:
+Avtomatik signalizatsiya jonli hamyon, Kaigi -ga mo'ljallangan Torii yo'nalishlariga va xususiy rejimda dalillarni ishlab chiqarishga bog'liq. O'sish va cheklangan muhitlar uchun qo'ldan-qo'l to'g'rilash:
 
-- agar `CreateKaigi` taklifni o'z ichiga olgan qo'llanma taklifnoma ko'rsatiladi
-- agar `JoinKaigi` muvaffaqiyatsiz tugasa, xom javob paketini ko'rsatish
-- uy egasi javob paketini qoʻshsin va qoʻngʻiroq qilsin `setRemoteDescription`
+- `CreateKaigi` muvaffaqiyatsiz tugasa, taklifni o'z ichiga olgan qo'llanma taklif ko'rsatilsin
+- `JoinKaigi` muvaffaqiyatsiz tugasa, xom javob paketini ko'rsating.
+- uy egasi javob paketini qo'shsin va `setRemoteDescription` ni chaqirsin.
 
-Yordamchi xatolik yoʻllari toʻgʻrilash uchun foydali WebRTC, Lekin bu
-jonli o'rnatish bilan bir xil xususiy zanjir signallash kafolatlari Kaigi oqim.
+WebRTC debug qilish uchun qo'llanma ortish foydali, ammo u jonli Kaigi oqim bilan bir xil xususiy zanjirda signallash kafolatlarini taqdim etmaydi.
 
 ## Sinovlar ro'yxati {#test-checklist}
 
-Birlik sinovlari uchun ko'prikni masxara qilib, sizning UI kutilayotganidan past
-Kaigi foydali yuklar:
+Birlik sinovlari uchun ko'prikni mashq qiling va UI vositasi kutilayotgan Kaigi foydali yuklarni o'tkazib yuborishini ta'kidlang:
 
-- uy egasi mahalliy ommaviy axborot vositalarini yaratadi va taqdim etadi `createKaigiMeeting`
-- uy egasi `iroha://kaigi/join?call=...&secret=...` taklif qilish
-- mehmon taklifni tahlil qiladi, qo'ng'iroq qiladi `getKaigiCall`, va taqdim etadi
-  `joinKaigiMeeting`
+- uy egasi mahalliy ommaviy axborot vositalarini yaratadi va `createKaigiMeeting` taqdim etadi.
+- Uy egasi `iroha://kaigi/join?call=...&secret=...` taklifini ko'rsatadi.
+- mehmon taklifni tahlil qiladi, `getKaigiCall`ga qo'ng'iroq qiladi va `joinKaigiMeeting`ni taqdim etadi.
 - javob signallari uchun o'tkazuvchi so'rovnomalar yoki soatlar va javobni qo'llaydi
-- O'zini himoya qilish uchun xususiy rejimdagi ogohlantirishlar XOR yo'qolgan
-- jonli signallar mavjud boʻlmaganida qoʻllanma qaytish paydo boʻladi
+- O'z-o'zini himoya qilish uchun xususiy rejimdagi ogohlantirishlar, agar XOR himoyalangan bo'lsa yo'q
+- jonli signalizatsiya mavjud bo ' lmasa , qo'llanma qaytish paydo bo ' ladi
 
-To'liq ma'lumotnoma sinovlari uchun demo ilovalarini ko'ring Kaigi ko'rish va oldindan yuklash
-ko'prik sinovlari:
+To'liq referensiyaviy sinov paketini ko'rish uchun demo dasturining Kaigi ko'rinishi va yuklanishdan oldin ko'prik sinovlarini ko'ring:
 
 ```bash
 npm test -- tests/kaigiView.spec.ts tests/preloadKaigiBridge.spec.ts
 npm run e2e:ui
 ```
 
-O ' zbekiston Respublikasi UI tutun tekshiruvi `/kaigi` yo'nalishlarni ko'rsatadi. Haqiqiy media testi
-hali ham ikki moliyalashtirilgan qopchiq va ikkita deraza yoki qurilma kerak , chunki
-imzolash, kamera, mikrofon va WebRTC ruxsatnomalar ishga tushirish vaqti bo'yicha farq qiladi.
+UI tutun testi `/kaigi` yo'nalishining ishlashini tasdiqlaydi. Haqiqiy media testi hali ham ikkita moliyalashtirilgan qopchiq va ikki deraza yoki qurilma kerak, chunki amallarni imzolash, kamera, mikrofon va WebRTC ruxsatnomalari ishga tushirish vaqti bilan o'zgaradi.
 
-Agar siz TAIRA va qo'ng'iroqga mos yo'nalishlarni qaytarish `404`, birinchi
-uylanuvchi hamyon muvaffaqiyatli taqdim etilganligini tasdiqlang `CreateKaigi`. Relay salomatligi
-har qanday maxsus qo'ng'iroq mavjud bo'lishidan oldin oxirgi nuqtalar mavjud bo'lishi mumkin.
+Agar siz TAIRA bilan sinov o'tkazayotgan bo'lsangiz va qo'ng'iroqga mos yo'nalish `404` qaytarilgan bo'lsa, avval uy egasi qopqoqchasining muvaffaqiyatli taqdim etilganligini tasdiqlang `CreateKaigi`.
 
 ## Keyingi qadamlar {#next-steps}
 
-- Foydalanish yozuvini qoʻshish `RecordKaigiUsage` dasturingiz ishonchli boʻlganda
-  seanslar davomiyligi hisobini yuritish.
-- Ro'yxatga olish va nazorat relaylari orqali `/v1/kaigi/relays` relaydan foydalanishda
-  ko'rsatmalar.
-- Yer yuzi `KaigiRosterSummary`, `KaigiUsageSummary`, va
-  `KaigiRelayHealthUpdated` operator dashboardidagi hodisalar.
+- Agar sizning ilovangizda seans muddati ishonchli hisoblangan bo'lsa, `RecordKaigiUsage` bilan foydalanishni qayd etishni qo'shing.
+- Relay manifestlaridan foydalangan holda `/v1/kaigi/relays` orqali relaylarni ro'yxatdan o'tkazish va kuzatish.
+- Operator ish panelida yuzasi `KaigiRosterSummary`, `KaigiUsageSummary` va `KaigiRelayHealthUpdated` hodisalari.

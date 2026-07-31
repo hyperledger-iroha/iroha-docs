@@ -54,7 +54,7 @@ A maioria dos filtros de concreto também permite um combinador opcional ID e um
 
 ## Filtros de oleodutos {#pipeline-filters}
 
-Os filtros de pipeline correspondem a eventos de processamento, como blocos, transações, fusões e eventos de testemunhas.
+Os filtros de pipeline correspondem a eventos de processamento, como blocos, transações, fusões e eventos de testemunhas. Usá-las para assinaturas operacionais, painéis de processamento de blocos, e desencadeios que reagem ao estado do pipeline em vez de objetos de dados do livro.
 
 ## Filtros de desencadeamento {#trigger-filters}
 
@@ -66,7 +66,7 @@ Os gatilhos armazenam a sua condição como um `EventFilterBox`.
 - uma política opcional de retestamento do time-trigger
 - Metadados
 
-A autoridade de desencadeamento deve ter as permissões exigidas pelo executável.
+A autoridade de desencadeamento deve ter as permissões exigidas pelo executável. Preferem contas técnicas dedicadas para gatilhos de longa duração.
 
 ## Filtros de consulta {#query-filters}
 

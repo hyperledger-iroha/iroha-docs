@@ -6,19 +6,17 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Сэтгэлэг {#reference}
+# Сэтгэмжлэл {#reference}
 
-Энэ хэсэг нь тухайн үйл ажиллагаа эрхлэгчдэд чиглэсэн
-Iroha 3 Докумын багтаамж.
+Энэ хэсэг нь Iroha 3 баримтын тоног төхөөрөмжийн тухайн үеийн оператор руу чиглэсэн сэнслэлийн материалыг дагаж байна.
 
 Эндээс эхлээд:
 
-- [Хөдөлмөр эрхлэгч Iroha бинар](/mn/reference/binaries.md)
-- [Эхлэлд дурдсан](/mn/reference/genesis.md)
-- [Torii төгсгөл](/mn/reference/torii-endpoints.md)
+- [Iroha двойны системүүдтэй ажиллах](/mn/reference/binaries.md)
+- [Эхлэл ](/mn/reference/genesis.md) нэвтрүүлэг
+- [Torii эцсийн цэгүүд](/mn/reference/torii-endpoints.md)
 - [Torii API консоль](/mn/reference/torii-api-console.md)
 - [Norito](/mn/reference/norito.md)
 - [Нөхцөл байдлын матриц](/mn/reference/compatibility-matrix.md)
 
-Үйл ажиллагааны эх үүсвэр болон кодтой холбоотой онцлогийн талаар
-[Iroha хадгаламж](https://github.com/hyperledger-iroha/iroha).
+Үйл ажиллагааны эх үүсвэр болон кодтой холбоотой онцлогийг [Iroha хадгаламж ](https://github.com/hyperledger-iroha/iroha)-д үзнэ үү.

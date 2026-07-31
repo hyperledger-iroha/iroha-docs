@@ -6,224 +6,158 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# ግሎሰሪ <!-- omit in toc --> {#glossary}
+# መዝገበ ቃላት <!-- omit in toc --> {#glossary}
 
-እዚህ ሁሉንም ፍቺዎች ማግኘት ይችላሉ Iroha- የተዛመዱ አካላት።
+እዚህ ላይ ከ Iroha ጋር የተያያዙ አካላት ሁሉ ትርጓሜዎችን ማግኘት ይችላሉ ።
 
-- [እኩዮች](#peer)
-- [ንብረቶች](#asset)
-- [የቢዛንታይን ጉድለት መቻቻል (BFT)](#byzantine-fault-tolerance-bft)
-- [Iroha አካላት](#iroha-components)
+- [ፒር](#peer)
+- [ንብረት](#asset)
+- [የቢዛንቲን ጉድለት መቻቻል (BFT) ](#byzantine-fault-tolerance-bft)
+- [Iroha ክፍሎች](#iroha-components)
   - [Sumeragi (ንጉሠ ነገሥት)](#sumeragi-emperor)
   - [Torii (ጌት)](#torii-gate)
-  - [Kura (አስከሬን)](#kura-warehouse)
-  - [Kagami(መምህር እና ምሳሌ እና/ወይም መስታወት)](#kagami-teacher-and-exemplar-and-or-looking-glass)
-  - [የሜርክል ዛፍ (ሃሽ ዛፍ)](#merkle-tree-hash-tree)
-  - [ብልህ ኮንትራት](#smart-contracts)
-  - [ተነሳሽነት](#triggers)
-  - [የቅጂ አወጣጥ](#versioning)
-  - [ሂጂሪ (የእኩዮች ስም ስርዓት)](#hijiri-peer-reputation-system)
+  - [Kura (መጋዘን ቤት) ](#kura-warehouse)
+  - [Kagami(መምህር እና አርአያ እና/ወይም መስታወት)](#kagami-teacher-and-exemplar-and-or-looking-glass)
+  - [የሜርክል ዛፍ (የሃሽ ዛፍ) ](#merkle-tree-hash-tree)
+  - [ስማርት ኮንትራቶች](#smart-contracts)
+  - [ማነቃቂያዎች](#triggers)
+  - [ስሪት ](#versioning)
+  - [ሂጂሪ (የባልደረባ ስም ስርዓት) ](#hijiri-peer-reputation-system)
 - [Iroha ሞጁሎች](#iroha-modules)
-- [Iroha ልዩ መመሪያ (ISI)](#iroha-special-instructions-isi)
+- [Iroha ልዩ መመሪያ (ISI) ](#iroha-special-instructions-isi)
   - [አጠቃቀም Iroha ልዩ መመሪያዎች](#utility-iroha-special-instructions)
-  - [ኮር Iroha ልዩ መመሪያዎች](#core-iroha-special-instructions)
-  - [የጎራ-ተኮር Iroha ልዩ መመሪያዎች](#domain-specific-iroha-special-instructions)
-  - [ብጁ Iroha ልዩ መመሪያ](#custom-iroha-special-instruction)
-- [Iroha ጥያቄ](#iroha-query)
-- [ለውጥ ይመልከቱ](#view-change)
-- [የዓለም ሁኔታ እይታ (WSV)](#world-state-view-wsv)
+  - [ዋና Iroha ልዩ መመሪያዎች](#core-iroha-special-instructions)
+  - [የጎራ-ተኮር Iroha ልዩ መመሪያዎች ](#domain-specific-iroha-special-instructions)
+  - [የጉምሩክ Iroha ልዩ መመሪያ](#custom-iroha-special-instruction)
+- [Iroha መጠይቅ](#iroha-query)
+- [እይታ ለውጥ](#view-change)
+- [የዓለም ሁኔታ እይታ (WSV) ](#world-state-view-wsv)
 - [መሪ](#leader)
 
 ## የብሎክቼይን መለያዎች {#blockchain-ledgers}
 
-የብሎክቼይን መለያዎች በብሎክቼይንን የሚጠቀሙ ዲጂታል መዝገብ-ማቆየት ስርዓቶች ናቸው
-የፋይናንስ መዝገቦችን ለማቆየት የሚያስችል ቴክኖሎጂ።
-ለገንዘብ መዝገብ እንደ ዋጋዎች ፣ ዜና እና
-የግብይት መረጃ።
+የብሎክቼይን መለያዎች የገንዘብ መዝገቦችን ለማቆየት በብሎክቼይን ቴክኖሎጂ የሚጠቀሙ ዲጂታል የመመዝገብ ስርዓቶች ናቸው ። እነዚህ እንደ ዋጋዎች ፣ ዜናዎች እና የግብይት መረጃ ያሉ ለገንዘብ መዝገቦች ጥቅም ላይ የዋሉ ጥንታዊ መጽሐፍት ስም ተሰጥተዋል ።
 
-በመካከለኛው ዘመን መፅሐፍት ለሕዝብ ክፍት ነበሩ
-ትክክለኛነት ማረጋገጫ ይህ ሀሳብ በብሎክቼይን ላይ የተመሠረተ
-የተከማቹትን መረጃዎች ትክክለኛነት ማረጋገጥ የሚችሉ ስርዓቶች።
+በመካከለኛው ዘመን, መቁጠሪያ መጽሐፍት ለሕዝብ እይታ እና ትክክለኛነት ማረጋገጫ ክፍት ነበሩ. ይህ ሀሳብ የተከማቹትን መረጃዎች ትክክለኛነት ለመፈተሽ በብሎክቼን ላይ የተመሠረቱ ስርዓቶች ውስጥ ተገልጿል.
 
-## እኩዮች {#peer}
+## የእኩዮች {#peer}
 
-አንድ እኩይ Iroha ማለት ነው Iroha ሌሎች የሂደቱ ምሳሌ Iroha ሂደቶች
-እና የደንበኛ መተግበሪያዎች መገናኘት ይችላሉ.
-አንድ ማሽን ብዙዎችን ማስተናገድ ይችላል Iroha እኩዮች።
-የእኩዮች እኩልነት ያላቸውን ሀብቶችና ችሎታዎች በተመለከተ፣
-ከዋና ልዩነት በስተቀር: እኩዮቹ ውስጥ አንዱ ብቻ ይሮጣል
-የጅነሲስ ብሎክ በ bootstrapping ደረጃ ላይ Iroha አውታረመረብ።
+በ Iroha ውስጥ አንድ እኩይ ማለት ሌሎች Iroha ሂደቶች እና የደንበኛ ትግበራዎች ሊገናኙባቸው የሚችሉበት የ Iroha ሂደት instance ማለት ነው ። አንድ ነጠላ ማሽን በርካታ Iroha እኩዮችን ማስተናገድ ይችላል ። እኩዮች ከቁሳቁሶቻቸው እና አቅማቸው አንፃር እኩል ናቸው ፣ ከአንድ አስፈላጊ ልዩነት ጋር: የ Iroha አውታረመረብ በጅምር ደረጃ ላይ የመነሻ ብሎክን የሚያስተዳድረው ከእኩዮቹ አንዱ ብቻ ነው ።
 
 ሌሎች ብሎክቼኖች እንደ ኖድ ወይም ማረጋገጫ ተመሳሳይ ፅንሰ-ሀሳብ ሊያመለክቱ ይችላሉ ።
 
-አንድ እኩያ በአስተናጋጅ ስርዓቱ ላይ ሂደት ሊሆን ይችላል.
-በተጨማሪም በ Docker ኮንቴይነር እና የኩበርኔትስ ካፕል።
+አንድ እኩያ በአስተናጋጅ ስርዓቱ ላይ ሂደት ሊሆን ይችላል. በተጨማሪም በ Docker መያዣ እና በ Kubernetes ፖድ ውስጥ ሊቀመጥ ይችላል።
 
 ## ንብረቶች {#asset}
 
-በብሎክቼይኖች አውድ ውስጥ አንድ ንብረት ዋጋ ያለው ንብረትን ይወክላል
-በብሎክቼይኑ ላይ ያለው ነገር።
+በብሎክቼይኖች አውድ ውስጥ አንድ ንብረት በብሎክኬይኑ ላይ ያለውን ጠቃሚ ነገር ይወክላል ።
 
-ተጨማሪ መረጃ ስለ ንብረቶች ይገኛል
-[እዚህ](/am/blockchain/assets.md).
+ስለ ንብረቶች ተጨማሪ መረጃ [ እዚህ ](/am/blockchain/assets.md) ይገኛል።
 
-### ተለዋዋጭ ንብረቶች {#fungible-assets}
+### ተለዋዋጭ ሀብቶች {#fungible-assets}
 
-እነዚህ ንብረቶች በቀላሉ ተመሳሳይ ዓይነት ለሌሎች ንብረቶች ሊለዋወጡ ይችላሉ ምክንያቱም
-ተለዋዋጭ ናቸው።
+እነዚህ ንብረቶች ተለዋዋጭ ስለሆኑ በቀላሉ ለተመሳሳይ ዓይነት ሌሎች ንብረቶች ሊለወጡ ይችላሉ ።
 
-ለምሳሌ ያህል፣ ሁሉም የአንድ አይነት ምንዛሬ አሃዶች እኩል ዋጋ ያላቸው እና
-በተለምዶ, fungible ንብረቶች ተመሳሳይ ናቸው
-የባንክ ኖቶችና ሳንቲሞች ከተበላሹ በስተቀር።
+ለምሳሌ ያህል፣ ሁሉም የአንድ ምንዛሬ አሃዶች እኩል ዋጋ ያላቸው ሲሆን ሸቀጦችን ለመግዛት ሊያገለግሉ ይችላሉ። በመደበኛነት ፣ የክፍያ ኖቶች እና ሳንቲሞች ከተበላሹ በስተቀር ተለዋዋጭ ንብረቶች ተመሳሳይ መልክ አላቸው።
 
-### የማይበሰብሱ ንብረቶች {#non-fungible-assets}
+### የማይበሰብስባቸው ንብረቶች {#non-fungible-assets}
 
-የማይበዙ ሀብቶች ልዩ እና ዋጋ ያላቸው ናቸው
-ባሕርያቱና ድሩትነታቸው፤ ዋጋቸው ከሌሎች ንብረቶች ጋር ሊወዳደር አይችልም።
+ተለዋዋጭ ያልሆኑ ንብረቶች በልዩ ባህሪያቸው እና በዝቅተኛነታቸው ምክንያት ልዩና ዋጋ ያላቸው ናቸው፤ እሴታቸው ከሌሎች ንብረቶች ጋር ሊወዳደር አይችልም።
 
-- የሥዕሉ ዋጋ በአርቲስት፣ በጊዜው
-  በሥዕሉ ላይ የተሳሳተ አመለካከት ያላቸው ሰዎች
+- የአንድ ሥዕል ዋጋ በአርቲስት፣ በተቀረጸበት ጊዜና በሕዝቡ ፍላጎት ላይ በመመርኮዝ ሊለያይ ይችላል።
 - በአንድ ጎዳና ላይ ሁለት ቤቶች የተለያዩ የጥገና ደረጃዎች ሊኖራቸው ይችላል።
-- የጌጣጌጥ አምራቾች በተለምዶ የተለያዩ ዲዛይኖችን ይሰጣሉ።
+- የጌጣጌጥ አምራቾች አብዛኛውን ጊዜ የተለያዩ ዲዛይኖችን ይሰጣሉ።
 
 ### ሊታከሙ የሚችሉ ንብረቶች {#mintable-assets}
 
-አንድን ንብረት ማምረት የሚቻለው ከአንድ አይነት በላይ ልቀቶች ቢኖሩ ነው።
+አንድ ንብረትን ማምረት የሚቻለው ተመሳሳይ ዓይነት ተጨማሪ ልውውጥ ቢደረግ ነው።
 
-### የማይወጣ ንብረት {#non-mintable-assets}
+### የማይወስዱ ንብረቶች {#non-mintable-assets}
 
-የአንድ ንብረት የመጀመሪያ መጠን አንድ ጊዜ ከተገለጸ እና የማይለወጥ ከሆነ,
-የማይበላሽ ተደርጎ ይቆጠራል።
+የአንድ ንብረት የመጀመሪያ መጠን አንድ ጊዜ ከተጠቀሰ እና ካልተለወጠ የማይቀንስ ይቆጠራል ።
 
-የ [የዘፍጥረት ብሎክ](/am/guide/configure/genesis.md) ይህ መረጃ ለ
-የ Iroha ውቅር።
+የ [ዘፍጥረት ብሎክ ](/am/guide/configure/genesis.md) ይህን መረጃ ለ Iroha ውቅር ያዘጋጃል.
 
 ## የቢዛንታይን ጉድለት መቻቻል (BFT) {#byzantine-fault-tolerance-bft}
 
-አንድ አውታረ መረብ ጋር በአግባቡ መስራት የሚችልበት ባህሪ
-የተወሰኑ ተንኮለኛ ተዋናዮች። Iroha ሊሠራ የሚችል ነው
-በ peer-to-peer አውታረመረብ ውስጥ እስከ 33% የሚደርሱ ተንኮለኛ ተዋናዮች አሉት።
+Iroha በ peer-to-peer አውታረመረብ ውስጥ እስከ 33% የሚደርሱ ተንኮል አድራጊ አካላት ጋር በትክክል መሥራት የሚችልበት ባህሪ።
 
-## Iroha አካላት {#iroha-components}
+## Iroha ክፍሎች {#iroha-components}
 
-Rust የያዘ ሞጁል Iroha ተግባራዊነት።
+Rust ሞጁሎች የ Iroha ተግባርን ይይዛሉ.
 
 ### Sumeragi (ንጉሠ ነገሥት) {#sumeragi-emperor}
 
-የ Iroha ለስምምነት ኃላፊነት ያለው ሞዱል።
+የ Iroha ሞጁል ለስምምነት ኃላፊነት አለበት.
 
-### Torii (ጌት) {#torii-gate}
+### Torii (በሩ) {#torii-gate}
 
-የተቀበለውን ጥያቄ የማስተዳደር ሎጂክ ጋር ሞጁል [እኩዮች](#peer). ጥቅም ላይ ይውላል
-የሚመጡትን መመሪያዎች መቀበል፣ መቀበልና ማስተላለፍ፤ እንዲሁም HTTP ጥያቄዎች, እንዲሁም
-እንደ የስራ ሰዓት ውቅር ዝማኔዎች።
+[ peer](#peer) ለገባው ጥያቄ አያያዝ አመክንዮ ያለው ሞጁል። የሚገቡ መመሪያዎችን ለመቀበል ፣ ለመቀበል እና ለመምራት እንዲሁም ለ HTTP መጠይቆች እንዲሁም ለስራ ሰዓት ውቅር ዝመናዎች ጥቅም ላይ ይውላል ።
 
-### Kura (አስከሬን) {#kura-warehouse}
+### Kura (የመጋዘን ቤት) {#kura-warehouse}
 
-የማያቋርጥ ብሎክ ማከማቻ። Kura መደብር የተፈረሙ ብሎኮች ፣ የብሎክ ሃሽስ ፣ ቁመት
-መረጃ ጠቋሚዎች፣ የማገገም ጎን መደርደሪያዎች እና በዲስክ ላይ የተቀመጡ የኮምፕሊኬሽን ሜታዳታ
-[የዓለም ሁኔታ አመለካከት](#world-state-view-wsv) ከ Kura አንድ
-የአገሪቱ ቅጽበታዊ ገጽ እይታ አይገኝም ወይም በአካባቢው ብሎክ መደብር ውስጥ ይገኛል።
-[Kura ማከማቻ](/am/blockchain/world.md#kura-storage).
+ቀጣይነት ያለው የብሎክ ማከማቻ። Kura የተፈረሙ ብሎኮችን፣ የብሎክ ሃሽዎችን፣ ከፍታ ማውጫዎችን፣ የመልሶ ማግኛ ጎን መደርደሪያዎችን እና በዲስክ ላይ የሚገኘውን የኮሚት-ሮስተር ሜታዳታ ያስቀምጣል። [ዓለም አቀፍ አመለካከት](#world-state-view-wsv) የተገነባው ከ Kura የአገሪቱ ቅጽበታዊ ገጽ እይታ በማይገኝበት ጊዜ ወይም በአከባቢው የብሎክ መደብር በስተጀርባ. ይመልከቱ [Kura ማከማቻ](/am/blockchain/world.md#kura-storage).
 
-### Kagami(መምህር እና ምሳሌ እና/ወይም መስታወት) {#kagami-teacher-and-exemplar-and-or-looking-glass}
+### Kagami(መምህር እና አርአያ እና/ወይም መስታወት) {#kagami-teacher-and-exemplar-and-or-looking-glass}
 
-በጣም የተለመዱ ውሂብ ማመንጫ. ይህ የክሪፕቶግራፊ ቁልፍ ጥንዶች መፍጠር ይችላሉ,
-የጄኔሲስ ብሎኮች፣ ሰነዶች ወዘተ.
+በተለምዶ ጥቅም ላይ የሚውለው ውሂብ ጄኔሬተር። የክሪፕቶግራፊ ቁልፍ ጥንዶች ፣ የመነሻ ብሎኮች ፣ ሰነድ ፣ ወዘተ ማመንጨት ይችላል።
 
-### የሜርክል ዛፍ (ሃሽ ዛፍ) {#merkle-tree-hash-tree}
+### የሜርክል ዛፍ (የሃሽ ዛፍ) {#merkle-tree-hash-tree}
 
-በእያንዳንዱ ብሎክ ላይ ያለውን ሁኔታ ለማረጋገጥ እና ለማረጋገጥ ጥቅም ላይ የሚውለው የመረጃ መዋቅር
-ቁመት። Iroha የአሁኑ ትግበራ በሁለትዮሽ ዛፍ ነው.
-[ውክፔዲያ](https://en.wikipedia.org/wiki/Merkle_tree) ተጨማሪ ዝርዝሮችን ለማግኘት.
+Iroha የአሁኑ ትግበራ በሁለትዮሽ ዛፍ ነው. ተጨማሪ ዝርዝሮችን ለማግኘት [ዊኪፔዲያ](https://en.wikipedia.org/wiki/Merkle_tree) ይመልከቱ.
 
-### ብልህ ኮንትራት {#smart-contracts}
+### ብልህ ኮንትራቶች {#smart-contracts}
 
-ስማርት ኮንትራቶች የተወሰኑ ስብስቦች ሲሰሩ የሚሮጡ በብሎክቼን ላይ የተመሠረቱ ፕሮግራሞች ናቸው
-የሽያጭ ማረጋገጫ Iroha ስማርት ኮንትራቶች
-[ኮር Iroha ልዩ መመሪያዎች](#core-iroha-special-instructions).
+ስማርት ኮንትራቶች በተወሰኑ ሁኔታዎች ሲሟሉ የሚሰሩ በብሎክቼን ላይ የተመሰረቱ ፕሮግራሞች ናቸው ። በ Iroha ውስጥ ብልህ ኮንትራት የሚተገበሩት [ኮር Iroha ልዩ መመሪያዎችን በመጠቀም ነው ](#core-iroha-special-instructions)።
 
-### ተነሳሽነት {#triggers}
+### ማነቃቂያዎች {#triggers}
 
-አንድ ክስተት አይነት Iroha ልዩ መመሪያ
-የማገድ ግዴታ፣ ጊዜ (አንዳንድ ማስጠንቀቂያዎች ጋር) ወዘተ
-[እዚህ](/am/blockchain/triggers.md).
+Iroha ልዩ መመሪያ በተወሰነ የብሎክ ግዴታ ፣ ሰዓት (በአንዳንድ ማስጠንቀቂያዎች) ፣ ወዘተ ላይ እንዲጠራ የሚያስችል ክስተት ዓይነት ተጨማሪ ስለ አስነሳሾች [ እዚህ ](/am/blockchain/triggers.md)።
 
-### የቅጂ አወጣጥ {#versioning}
+### ስሪት ማዘጋጀት {#versioning}
 
-እያንዳንዱ ጥያቄ በ API የያዘው ስሪት።
-የተለያዩ የሁለትዮሽ ስሪቶች ጥምረት ይፈቅዳል Iroha ደንበኛ/ባልደረባ
-የሶፍትዌር መስተጋብር, ይህም በተራው ሶፍትዌር ማሻሻያዎች
-Iroha አውታረመረብ።
+እያንዳንዱ ጥያቄ የሚገኝበት API ስሪት ጋር ምልክት ተደርጎበታል. ይህ የ Iroha የደንበኛ / የእኩዮች ሶፍትዌር የተለያዩ ሁለትዮሽ ስሪቶች ጥምረት እንዲሰራ ያስችላል, ይህም በ Iroha አውታረመረብ ውስጥ የሶፍትዌር ማሻሻያዎችን ይፈቅዳል.
 
-### ሂጂሪ (የእኩዮች ስም ስርዓት) {#hijiri-peer-reputation-system}
+### ሂጂሪ (የባልደረባ ስም ስርዓት) {#hijiri-peer-reputation-system}
 
-Iroha ይህ የግንኙነት ቅድሚያ እንዲሰጥ ያስችለዋል [እኩዮች](#peer)
-ጥሩ የመከታተያ መዝገብ ያላቸው እና ሊያስከትሉ የሚችሉ ጉዳቶችን በመቀነስ
-ተንኮለኛ [እኩዮች](#peer).
+Iroha ይህ የግንኙነት ቅድሚያ እንዲሰጥ ያስችለዋል [እኩዮች](#peer) ጥሩ ትራክ ሪኮርድ ያላቸው እና ተንኮል አዘል ጉዳት ሊያስከትል ይችላል [እኩዮች](#peer).
 
 ## Iroha ሞጁሎች {#iroha-modules}
 
-የሶስተኛ ወገን ማራዘሚያዎች Iroha ይህም ብጁ ተግባራትን ያቀርባል.
+ለ Iroha ብጁ ተግባራት የሚሰጡ የሶስተኛ ወገን ማራዘሚያዎች።
 
-## Iroha ልዩ መመሪያ (ISI) {#iroha-special-instructions-isi}
+## Iroha ልዩ መመሪያዎች (ISI) {#iroha-special-instructions-isi}
 
-የስማርት ኮንትራቶች ቤተ-መጽሐፍት Iroha. እነዚህ በ
-ወይም ግብይቶች ወይም የተመዘገቡ ክስተት አድማጮች. ISI
-[እዚህ](/am/blockchain/instructions.md).
+በ Iroha የቀረበ የማሰብ ችሎታ ያላቸው ኮንትራቶች ቤተ-መጽሐፍት። እነዚህ በግብይቶች ወይም በተመዘገቡ የዝግጅት አድማጮች በኩል ሊጠየቁ ይችላሉ ። ተጨማሪ መረጃ በ ISI [በዚህ ](/am/blockchain/instructions.md).
 
 #### አጠቃቀም Iroha ልዩ መመሪያዎች {#utility-iroha-special-instructions}
 
-ይህ ስብስብ [ኢሲ](#iroha-special-instructions-isi) ምክንያታዊ ይዘት አለው
-የመሳሰሉ መመሪያዎች `If`, I/O ጋር የተያያዙ እንደ `Notify` እና እንደ
-`Sequence`. በአብዛኛው እንደ
-[ብጁ መመሪያዎች](#custom-iroha-special-instruction).
+ይህ ስብስብ [ኢሲ](#iroha-special-instructions-isi) እንደዚህ ያሉ አመክንዮአዊ መመሪያዎችን ይ containsል `If`, I/O ጋር የተያያዙ እንደ `Notify` እና እንደ `Sequence`. እነዚህ በአብዛኛው እንደ [ብጁ መመሪያዎች](#custom-iroha-special-instruction).
 
-### ኮር Iroha ልዩ መመሪያዎች {#core-iroha-special-instructions}
+### ዋና Iroha ልዩ መመሪያዎች {#core-iroha-special-instructions}
 
-[ልዩ መመሪያዎች](#iroha-special-instructions-isi) እያንዳንዱ ጋር የቀረበ
-Iroha እነዚህም አንዳንዶቹ
-[የጎራ-ተኮር](#domain-specific-iroha-special-instructions) እንዲሁም
-[የአጠቃቀም መመሪያ](#utility-iroha-special-instructions).
+[በየ Iroha ትግበራው ላይ የሚቀርቡ ልዩ መመሪያዎች](#iroha-special-instructions-isi)። እነዚህ አንዳንድ [ የጎራ-ተኮር ](#domain-specific-iroha-special-instructions) እንዲሁም [ የመገልገያ መመሪያዎችን ](#utility-iroha-special-instructions) ያካትታሉ።
 
-### የጎራ-ተኮር Iroha ልዩ መመሪያዎች {#domain-specific-iroha-special-instructions}
+### የዘርፉ ልዩ መመሪያ Iroha {#domain-specific-iroha-special-instructions}
 
-ከዘርፉ ጋር የተያያዙ መመሪያዎች፦ ንብረቶች፣ ሂሳቦች፣
-እነዚህ መሳሪያዎች አስፈላጊ ናቸው
-ለውጦች [የዓለም ሁኔታ አመለካከት](#world-state-view-wsv) በተጠበቀና
-በአስተማማኝ መንገድ።
+ከጎራ-ተኮር እንቅስቃሴዎች ጋር የተያያዙ መመሪያዎች: ንብረቶች, መለያዎች, ጎራዎች, የእኩዮች አስተዳደር) እነዚህ [World State View](#world-state-view-wsv) ላይ ደህንነቱ በተጠበቀ እና ደህንነቱ የተጠበቀ በሆነ መንገድ ለውጦችን ለማድረግ የሚያስፈልጉ መሳሪያዎችን ይሰጣሉ ።
 
-### ብጁ Iroha ልዩ መመሪያ {#custom-iroha-special-instruction}
+### የጉምሩክ Iroha ልዩ መመሪያ {#custom-iroha-special-instruction}
 
-በ [Iroha ሞጁሎች](#iroha-modules), ደንበኞች ወይም 3 ኛ
-ፓርቲዎች. እነዚህ ብቻ በመጠቀም መገንባት ይችላሉ
-[ዋና መመሪያዎቹ](#core-iroha-special-instructions). የፎርኪንግ እና
-ማሻሻያ Iroha እንደ ልዩ መመሪያዎች የመረጃ ምንጭ ኮድ አይመከርም
-የተስማሙበት [እኩዮች](#peer) ውስጥ Iroha ማሰማራት እንደ ጉድለት ይቆጠራል፣
-ስለዚህ [እኩዮች](#peer) የተቀየረ ምሳሌን በመጠቀም መዳረሻቸው ይሰርዛል።
+በ [Iroha ሞጁሎች ](#iroha-modules) ውስጥ በደንበኞች ወይም በ 3 ኛ ወገኖች የተሰጡ መመሪያዎች። እነዚህ ሊገነቡ የሚችሉት [የዋናው መመሪያዎችን ](#core-iroha-special-instructions) በመጠቀም ብቻ ነው ። የ Iroha ምንጭ ኮድ መጫን እና ማሻሻል አይመከርም ፣ ምክንያቱም በ [ peers](#peer) በ Iroha ትግበራ ውስጥ ያልተስማሙ ልዩ መመሪያዎች እንደ ጉድለቶች ይቆጠራሉ ፣ ስለሆነም የተስተካከለ ምሳሌን የሚያንቀሳቅሱ [ peers ](#peer) መዳረሻቸው ይሰርዛል።
 
 ## Iroha ጥያቄ {#iroha-query}
 
-የዓለም ሁኔታ እይታን ሳይቀይር ለማንበብ ጥያቄ።
-ጥያቄዎች [እዚህ](/am/blockchain/queries.md).
+የዓለም ሁኔታ እይታን ያለማስተካከል ለማንበብ ጥያቄ። [እዚህ](/am/blockchain/queries.md).
 
-## ለውጥ ይመልከቱ {#view-change}
+## የአመለካከት ለውጥ {#view-change}
 
-የስምምነት ሙከራ ሲከሰት የሚካሄድ ሂደት ነው።
-አብዛኛውን ጊዜ ይህ አዲስ ምርጫን ያካትታል [መሪ](#leader).
+አንድ ስምምነት ላይ ያልተሳካ ሙከራ በሚከሰትበት ጊዜ የሚከናወን ሂደት። ይህ ብዙውን ጊዜ አዲስ [አመራር ](#leader) መምረጥ ያስከትላል ።
 
-## የዓለም ሁኔታ እይታ (WSV) {#world-state-view-wsv}
+## የአለም ሁኔታ እይታ (WSV) {#world-state-view-wsv}
 
-የአሁኑን የብሎክቼይን ሁኔታ በመታሰቢያው ውስጥ የሚገኝ መግለጫ። WSV ይዟል
-የ `World`, የተዋቀሩ የብሎክ ሃሽዎች፣ የትራንስክሽን ኢንዴክስ፣ የመግባቢያ ቶፖሎጂ፣
-በምርመራዎች ውስጥ ጥቅም ላይ የሚውሉ የተገኙ መረጃ ጠቋሚዎች
-ብሎኮች እና ከ ሊገነባ ይችላል [Kura](#kura-warehouse). ተመልከት
-[የዓለም ሁኔታ አመለካከት](/am/blockchain/world.md#world-state-view-wsv).
+WSV የ `World` ፣ የተሰማሩ ብሎክ ሃሽስ ፣ የትራንስክሽን ማውጫዎች ፣ የስምምነት ቶፖሎጂ እና በጥያቄዎች ውስጥ ጥቅም ላይ የሚውሉ የተገኙ ማውጫዎችን ይ containsል ። እሱ የሚዘመነው በተሰማሩ ብሎኮች በኩል ብቻ ነው እናም ከ [Kura ](#kura-warehouse) እንደገና ሊገነባ ይችላል ። [የዓለም ሁኔታ እይታን ](/am/blockchain/world.md#world-state-view-wsv) ይመልከቱ።
 
 ## መሪ {#leader}
 
-በኢሮሃ አውታረመረብ ውስጥ አንድ እኩይ በዘፈቀደ ይመረጣል እና ልዩ
-ቀጣዩ ብሎክ የመመስረት መብት ይህ መብት በ
-የሚያገኙት አውታረመረብ
-[የቢዛንታይን ጉድለት ማቋረጥ](#byzantine-fault-tolerance-bft) በኩል
-[የእይታ ለውጥ](#view-change).
+በኢሮሃ አውታረመረብ ውስጥ አንድ እኩይ በዘፈቀደ የተመረጠ ሲሆን ቀጣዩን ብሎክ የመመስረት ልዩ መብት ተሰጥቶታል ። ይህ መብት [በባይዛንታይን ስህተት-ተኮርነት ](#byzantine-fault-tolerance-bft) በኩል በሚያገኙ አውታረ መረቦች ውስጥ ሊሰረዝ ይችላል [view change](#view-change).

@@ -8,51 +8,49 @@ translation_engine: nllb-200-ct2
 
 # Iroha 3 {#iroha-3}
 
-Iroha 3 birinchi chiqarilgan Hyperledger Iroha platformasi. U qo'llab-quvvatlaydi
-o'z-o'zini uyushtirgan tarmoqlar va ko'p ma'lumotlar maydoni SORA Nexus o'rnatish modeli
-bitta deterministik kod bazasi.
+Iroha 3 - birinchi chiqarilgan Hyperledger Iroha platformasi. U o'z-o'zini uyushtirgan tarmoqlarni va bir deterministik kod bazasidan ko'p ma'lumotlar maydonida SORA Nexus ishga tushirish modelini qo'llab-quvvatlaydi.
 
-Yuqori darajada, Iroha 3 birlashtiradi:
+Yuqori darajada Iroha 3 quyidagilarni birlashtiradi:
 
-- deterministik ijro va saqlash
-- ko'rsatilgan Iroha Virtual mashina (IVM) portativ aqlli shartnomalar uchun
+- Deterministik ijro etish va saqlash
+- portativ aqlli shartnomalar uchun Iroha Virtual mashina (IVM)
 - Norito kanonik simlar formatida
-- Torii mijoz, operator va ilovalarga ko'ra APIs
-- Sumeragi majburiy ma'lumotlarning mavjudligi va ishonchli etkazib berish bilan kelishish
-- alohida bog'langan inson o'qishi mumkin bo'lgan aliaslar bilan domensiz kanonik hisoblar
+- Torii mijoz, operator va ilovalarga ko'ra APIs uchun
+- Sumeragi majburiy ma'lumotlarning mavjudligi va ishonchli etkazib berish bo'yicha kelishuv
+- Inson o'qishi mumkin bo'lgan alohida bog'langan aliaslar bilan domensiz kanonik hisobotlar
 
 ## Tez ishga tushirish {#quickstart}
 
-Agar siz boshdan boshlayotgan bo'lsangiz, quyidagi sahifalarga amal qiling:
+Agar siz to'g'ridan-to'g'ri boshlanmoqchi bo'lsangiz, quyidagi sahifalarga amal qiling:
 
-1. [Oʻrnatish Iroha 3](/uz/get-started/install-iroha.md)
-2. [Uchratish Iroha 3](/uz/get-started/launch-iroha.md)
-3. [Operatsiya qilish Iroha 3 orqali CLI](/uz/get-started/operate-iroha-via-cli.md)
-4. [Bogʻlanish SORA Nexus ma'lumotlar maydonlari](/uz/get-started/sora-nexus-dataspaces.md)
-5. [Xususiy ma'lumotlar maydonlari to'lovlari](/uz/get-started/private-dataspace-fee-sponsor.md)
+1. [Iroha 3](/uz/get-started/install-iroha.md) o'rnatish
+2. [Iroha 3](/uz/get-started/launch-iroha.md) ishga tushirish
+3. [Iroha 3 orqali CLI](/uz/get-started/operate-iroha-via-cli.md) orqali harakatlaning
+4. [SORA Nexus ma'lumotlar sohasi](/uz/get-started/sora-nexus-dataspaces.md) bilan bog'lanish
+5. [Sponsor xususiy ma'lumotlar maydonlari to'lovlari ](/uz/get-started/private-dataspace-fee-sponsor.md)
 
 ## SDKs {#sdks}
 
-Joriy SDK Ushbu saytda hujjatlashtirilgan kirish punktlari:
+Ushbu saytda qayd etilgan SDK joriy kirish punktlari quyidagilardir:
 
 - [Rust](/uz/guide/tutorials/rust.md)
 - [Python](/uz/guide/tutorials/python.md)
-- [JavaScript / TypeScript](/uz/guide/tutorials/javascript.md)
-- [Kotlin, Android, va Java](/uz/guide/tutorials/kotlin-java.md)
+- [JavaScript /TypeScript ](/uz/guide/tutorials/javascript.md)
+- [Kotlin, Android va Java](/uz/guide/tutorials/kotlin-java.md)
 - [Swift va iOS](/uz/guide/tutorials/swift.md)
 
-## Operatorning ma'lumotlari {#operator-references}
+## Operatorlarning ma'lumotlari {#operator-references}
 
 Tarmoqni ishga tushirishda eng koʻp ishlatiladigan sahifalar:
 
-- [bilan ishlash Iroha ikkilamchi](/uz/reference/binaries.md)
-- [Ibtidoga oid ma'lumot](/uz/reference/genesis.md)
-- [Torii oxirgi nuqtalar](/uz/reference/torii-endpoints.md)
-- [Bogʻlanish SORA Nexus ma'lumotlar maydonlari](/uz/get-started/sora-nexus-dataspaces.md)
-- [Xususiy ma'lumotlar maydonlari to'lovlari](/uz/get-started/private-dataspace-fee-sponsor.md)
-- [Qo'shilish matrisi](/uz/reference/compatibility-matrix.md)
+- [Iroha ikkilamchilar bilan ishlash](/uz/reference/binaries.md)
+- [Ibtido ko'rsatkichi](/uz/reference/genesis.md)
+- [Torii oxirgi nuqtalari](/uz/reference/torii-endpoints.md)
+- [SORA Nexus ma'lumotlar sohasi](/uz/get-started/sora-nexus-dataspaces.md) bilan bog'lanish
+- [Sponsor xususiy ma'lumotlar maydonlari to'lovlari ](/uz/get-started/private-dataspace-fee-sponsor.md)
+- [Qo'shilish matrisi ](/uz/reference/compatibility-matrix.md)
 
 ## Ko'proq bilib oling {#learn-more}
 
-- [Iroha manbai omborxona](https://github.com/hyperledger-iroha/iroha)
-- [Hujjat manbalari omborxonasi](https://github.com/hyperledger-iroha/iroha-docs)
+- [Iroha manba ma'muriyati](https://github.com/hyperledger-iroha/iroha)
+- [Hujjatlar manbalari omborxonasi](https://github.com/hyperledger-iroha/iroha-docs)

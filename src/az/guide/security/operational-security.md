@@ -14,7 +14,7 @@ Operativ Təhlükəsizlik (OPSEC) təhlükəsizlik və risk idarəetməsinə sis
 
 Iroha maliyyə kitabçısı kimi tətbiq ediləcəyi ehtimalı olduğundan, <abbr title="Operational Security">OPSEC</abbr> tədbirləri və təcrübələri ciddi şəkildə qəbul edilməlidir. Bu mövzu Iroha istifadə edən şəxslərin və təşkilatların öz əməliyyatlarının bir hissəsi olaraq nəzərə alması lazım olan strategiyaları və yanaşmalarını təsvir edir geniş təhlükəsizlik protokolu.
 
-Təhlükəsizliyinizi daha da yaxşılaşdırmaq üçün [Security](./index.md) bölməsinin qalan hissəsində və xüsusilə aşağıdakı mövzularda daha çox məlumat əldə edin:
+Bununla birlikdə, bu mövzudaki istiqamətləri izləmək və qəbul etmək tam təhlükəsizliyin əldə edilməsi istiqamətində zəruri bir addımdır. Bu, tək başına kifayət etmir. Təhlükəsizliyinizi daha da yaxşılaşdırmaq üçün [Təhlükəsizliyin ](./index.md) bölməsinin qalan hissəsində və xüsusilə aşağıdakı mövzular:
 
 - [Təhlükəsizlik prinsipləri](./security-principles.md)
 - [Şifrə təhlükəsizliyi](./password-security.md)
@@ -27,7 +27,7 @@ Təhlükəsizliyinizi daha da yaxşılaşdırmaq üçün [Security](./index.md) 
 
 - Güvənilən proqramdan istifadə edin. Yenidən istehsal edilə bilən ikili quruluşlar vasitəsilə göndərilən və mənbədən tikdiyiniz proqram ən etibarlıdır. Müvəkkillik və ya açıq mənbəli proqram təminatı yoxlanılmamış bir potensial riskdir ki, ciddi qəbul edilməlidir.
 
-- Həssas məlumatları olan portativ qurğulardan heç vaxt nəzarətsiz qalmayın.
+- Həssas məlumatlara sahib olan mobil cihazları heç vaxt nəzarətsiz buraxmayın. Cihazınızı oğurlamaq üçün bir saniyə hissəsi kifayətdir.
 
 - Binar paketlərdəki imzaları yoxlayın. Bu Iroha daxilində istifadə olunan ictimai açar kriptografiyasından çox fərqlənmir.
 
@@ -37,11 +37,11 @@ Təhlükəsizliyinizi daha da yaxşılaşdırmaq üçün [Security](./index.md) 
 
 - Hər zaman proqramınızı kompüterlər və telefonlar daxil olmaqla bütün qurğularda ən son versiyasına yeniləyin. Düzenli yeniləmələr zəiflikləri düzəltməyə və köhnə proqramlarla əlaqəli potensial risklərin minimuma endirilməsinə kömək edir, hətta belə zəifliklər açıqlanmadan əvvəl.
 
-- Bu proaktiv yanaşma ümumi təhlükəsizlik mövqeyini yaxşılaşdırmağa əhəmiyyətli dərəcədə kömək edir, çünki hərəkət edən bir hədəfə çatmaq daha çətin olur.
+- Şifrə və kriptografik açarları müntəzəm olaraq yeniləmək üçün bir rutin inkişaf etdirin. Bu proaktiv yanaşma ümumi təhlükəsizlik mövqeyini yaxşılaşdırmağa əhəmiyyətli dərəcədə töhfə verir, Çünki hərəkət edən hədəfə çatmaq daha çətindir.
 
 ## Browserlərdən istifadə etmək {#using-browsers}
 
-Iroha ilə əlaqəli bir tətbiqdə veb UI varsa, brauzeriniz ya təhlükəsizliyə kömək edə bilər, ya da potensial təhdid yarada bilər.
+Iroha ilə bağlı bir tətbiqdə UI şəbəkəsi mövcuddursa, brauzeriniz ya təhlükəsizliyə kömək edə bilər, ya da potensial bir təhlükə yarada bilər. Xüsusilə quraşdırmağı seçdiyiniz plaginlərə gəldikdə ehtiyatlı olmaq vacibdir.
 
 Araşdırma təhlükəsizliyinizi artırmaq üçün aşağıdakı tədbirləri nəzərdən keçirin:
 
@@ -60,7 +60,7 @@ Araşdırma təhlükəsizliyinizi artırmaq üçün aşağıdakı tədbirləri n
 
 - Mühüm əməliyyatlardan əvvəl və sonra çerezləri təmizləyin. Məni qeydə alın və ya məni xatırlayın xüsusiyyətini aktivləşdirmədən ehtiyatlı olun. Bəzi veb saytlarda bu xüsusiyyət standart olaraq aktivləşdirilir.
 
-- İstifadə etdiyiniz brauzerdən asılı olaraq, bir reklam blokçusu quraşdırılmış xüsusiyyət olmaya bilər.
+- Reklam blokerindən istifadə edin. Bunlar təkcə reklamları bloklamaqla yanaşı, saytın izləmə xüsusiyyətlərini də pozur. İstifadə etdiyiniz brauzerdən asılı olaraq, bir reklam blokeri daxili xüsusiyyət ola bilməz.
 
 - Eyni görünüşlü xarakterlərə diqqət yetirin (məsələn, `0`, `θ`, `O`, `О`, `ዐ` və `߀` Bu cür detallara diqqət yetirmək sizi phishing hücumundan xilas edə bilər.
 
@@ -80,7 +80,7 @@ Araşdırma təhlükəsizliyinizi artırmaq üçün aşağıdakı tədbirləri n
 
 ## İstifadə planı {#recovery-plan}
 
-Bir açarı itirmək və ya təhlükəsizlik pozuntuları ilə üzləşmək kimi fövqəladə hallarda, yaxşı qurulmuş və əvvəlcədən hazırlanmış bərpa planı vacib bir təminatdır.
+Bir açarı itirmək və ya təhlükəsizlik pozuntuları ilə üzləşmək kimi təcili hallarda, Yaxşı qurulmuş və əvvəlcədən hazırlanmış bərpa planı vacib bir həyat xəttidir. Mümkün olan zərərin aradan qaldırılmasına və təhlükəsizliyin sürətlə bərpa edilməsinə kömək etmək üçün aydın addımlar qoyulmalıdır.
 
 Təşkilatlar öz bərpa planlarını hazırlayarkən aşağıdakı əsas aspektləri nəzərə almalılar:
 

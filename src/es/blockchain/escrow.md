@@ -53,7 +53,7 @@ stateDiagram-v2
 |`OpenEscrowDispute` |Vendedor o comprador aceptado |Se mueve `Accepted` o `PaymentSent` a `Disputed` y se añaden hashes de pruebas. |
 |`ResolveEscrowDispute` |Cuenta con `CanResolveEscrowDispute` |Se traslada `Disputed` a `Resolved` y se divide la cantidad entre el comprador y el vendedor |
 
-Los importes de resolución de controversias no deben ser negativos, y `buyer_amount + seller_amount` debe ser igual al importe del depósito en garantía.
+Los importes de resolución de litigios no deben ser negativos y `buyer_amount + seller_amount` deben ser iguales al importe de la garantía. Las piernas de valor cero están permitidas, pero toda la división debe tener en cuenta el saldo bloqueado.
 
 ### Rust Ejemplo {#rust-example}
 
@@ -292,7 +292,7 @@ El apoyo a los depósitos es expuesto de manera diferente en todos los países. 
 |SDK |Utilice esta superficie .|Ámbito de aplicación|
 | --- | --- | --- |
 | [Rust](#rust-sdk) |`iroha::data_model::isi::escrow` |Escrow de mercado, cerraduras genéricas, escro anónimas, consultas y eventos. |
-| [Python](#python-asset-locks) |`Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock`, y los ayudantes del cliente `*_and_wait` |El mercado y los ayudantes anónimos no son métodos de primera clase Python todavía. |
+| [Python](#python-asset-locks) |`Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock`, y los ayudantes del cliente `*_and_wait` |Cerraduras genéricas de activos. El mercado y los ayudantes de fianza anónimos aún no son métodos Python de primera clase. |
 | [JavaScript / TypeScript](#javascript-and-typescript-kotodama) |`compileKotodamaProgram` de `@iroha/iroha-js/kotodama-compiler` |Las llamadas del anfitrión de garantía dentro de los contratos Kotodama. |
 | [Kotlin / JVM](#kotlin-and-jvm) |`InstructionTemplate` clases en `org.hyperledger.iroha.sdk.core.model.instructions` |Marketplace y plantillas de instrucciones personalizadas anónimas.|
 | [Swift / iOS](#swift-and-ios) |Los auxiliares `NativeEscrowInstructionBuilders` y `IrohaSDK.build*Escrow*` |Mercado y garantía anónima Norito JSON carga útil de instrucciones. |
@@ -328,7 +328,7 @@ fn open_and_read(
 
 ### Python Cerraduras de activos {#python-asset-locks}
 
-El Python SDK expone a los ayudantes de primera clase para bloqueos genéricos de activos.
+La Python SDK expone a los ayudantes de primera clase para bloqueos genéricos de activos. Utilizarlos para pagos de hitos, retiros por una autoridad de liberación, cancelación por el abridor y reembolsos por vencimiento.
 
 ```python
 client.open_asset_lock_and_wait(

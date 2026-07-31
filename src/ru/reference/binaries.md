@@ -6,15 +6,15 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Работа с Iroha Бинарные {#working-with-iroha-binaries}
+# Работа с бинарными инструментами Iroha {#working-with-iroha-binaries}
 
-Сборник Iroha 3 рабочий поток оператора вращается вокруг трех основных бинарных:
+Рабочий поток оператора Iroha 3 вращается вокруг трех основных бинарных элементов:
 
-- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad) за то, что я управляю демоном сверстников
-- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_cli) для CLI и команды оператора
+- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad) для запуска пир-даймона
+- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_cli) для команд CLI и операторов
 - [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_kagami) для ключей, генезиса, локальных сетей и профилей
 
-## Создайте из источника {#build-from-source}
+## Строить из источника {#build-from-source}
 
 Из корня рабочего пространства вверх потоком:
 
@@ -22,7 +22,7 @@ translation_engine: nllb-200-ct2
 cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ```
 
-Затем бинарные выпуска доступны в `target/release/`.
+Затем бинарные выпуска доступны по `target/release/`.
 
 Для осмотра командной поверхности:
 
@@ -32,9 +32,9 @@ cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ./target/release/kagami --help
 ```
 
-## Запускать прямо из хранилища {#run-directly-from-the-repository}
+## Запустить прямо из хранилища {#run-directly-from-the-repository}
 
-Если вы не хотите установить что-либо глобально, используйте `cargo run`:
+Если вы не хотите установить что-либо в глобальном масштабе, используйте `cargo run`:
 
 ```bash
 cargo run --bin irohad -- --help
@@ -44,17 +44,15 @@ cargo run --bin kagami -- --help
 
 ## Docker Изображение {#docker-image}
 
-Вверхпоток рабочего пространства использует `kagami localnet` и `kagami docker` создать
-Docker Compose файлы, соответствующие проверенному коду. `hyperledger/iroha:dev`
-изображение может быть использовано с этими файлами.
+В верхнем рабочем пространстве используется `kagami localnet` и `kagami docker` для создания файлов Docker Compose, которые соответствуют проверенному коду. Изображение `hyperledger/iroha:dev` может быть использовано с генерируемыми файлами.
 
-Поехать CLI в контейнере:
+Запустить CLI в контейнере:
 
 ```bash
 docker run -t hyperledger/iroha:dev iroha --help
 ```
 
-Беги . Kagami в контейнере:
+Запустить Kagami в контейнере:
 
 ```bash
 docker run -t hyperledger/iroha:dev kagami --help
@@ -70,6 +68,6 @@ docker compose -f ./localnet/docker-compose.yml up
 
 ## Какой бинарный вариант я должен использовать? {#which-binary-should-i-use}
 
-- Использование `irohad` когда вы начинаете или управляете партнерами.
-- Использование `iroha` когда вам нужно запросить книгу, представить транзакции или осмотреть конечные точки оператора.
-- Использование `kagami` когда вам нужны ключи, генезисные манифесты, сборки профилей или активы локальной сети.
+- Используйте `irohad` при запуске или эксплуатации сверстников.
+- Используйте `iroha` при необходимости запроса в регистр, представления транзакций или проверки конечных пунктов оператора.
+- Используйте `kagami`, когда вам нужны ключи, манифесты генезиса, сборки профилей или активы локальной сети.

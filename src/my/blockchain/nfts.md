@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # NFTs {#nfts}
 
-အန် Iroha NFT တစ်ခုတည်းသော ပိုင်ရှင်ရှိသည့် ထူးခြားသောအမှတ်တံဆိပ်ဖြစ်သည် NFTs မှတ်တမ်းတစ်ခုမှာ ကိုယ်ပိုင်လက္ခဏာ၊ metadata, lifecycle အဖြစ်အပျက်များနှင့် ပိုင်ဆိုင်မှုလွှဲပြောင်းမှု အဓိပ္ပာယ်ကို လိုအပ်ပေမဲ့ ကိန်းဂဏန်း ဟန်ချက်ညီမှုတော့ မလိုပါ။
+Iroha NFT သည် ပိုင်ရှင်တစ်ဦးတည်းရှိသော ထူးခြားသောအမှတ်တံဆိပ်အရာဖြစ်သည်။ မှတ်တမ်းတစ်ခုသည် ၎င်း၏ ကိုယ်ပိုင်လက္ခဏာ၊ မီတာဒေတာ၊ ဘဝပတ်ဝန်းကျင်ဖြစ်ရပ်များနှင့် ပိုင်ဆိုင်မှုလွှဲပြောင်းမှု အဓိပ္ပာယ်ကောက်ယူမှုလိုအပ်သော်လည်း ကိန်းဂဏန်းညီမျှခြင်းမရှိသည့်အခါ NFTs ကိုအသုံးပြုပါ။
 
 ကိန်းဂဏန်းနဲ့မတူဘဲ [အရင်းအမြစ်](/my/blockchain/assets.md), တစ် NFT တိကျမှုမရှိ၊ ထုတ်ယူနိုင်စွမ်းမရှိ၊ စာရင်းတစ်စောင်အတွက် အရေအတွက် မရှိပါ။ NFT မှတ်ပုံတင်ထားတဲ့ အရာတစ်ခုအဖြစ် တည်ရှိပြီး ပိုင်ဆိုင်မှုကို အဲဒီအရာကို တိုက်ရိုက် ခြေရာခံထားရတယ်။
 
@@ -20,7 +20,7 @@ translation_engine: nllb-200-ct2
 - `content`: NFT ကို ဖော်ပြတဲ့ metadata များ
 - `owned_by`: NFT ကို ပိုင်ဆိုင်ထားသော အကောင့်
 
-နိုင်ငံတကာ `content` ကွင်းက `Metadata` မြေပုံကို ညှိထားပါ။ သရုပ်ဖော်တဲ့ ကွင်းတွေကို သိုလှောင်ပါ၊ တည်ငြိမ်တဲ့ ရည်ညွှန်းချက်တွေ၊ hashes တွေ၊ URIs, ဒါမှမဟုတ် SoraFS ကြီးမားသောစာရွက်စာတမ်းများ၊ မီဒီယာများ (သို့မဟုတ်) မြင့်မားသော churn application များကို ချိတ်ဆက်ထားပြီး စစ်ဆေးနိုင်သည့် ရည်ညွှန်းချက်များကိုသာ NFT.
+`content` ကွင်းသည် `Metadata` မြေပုံတစ်ခုဖြစ်သည်။ အသေးစိတ်ထားပါ- သရုပ်ဖော်ရေးကွင်းများ၊ တည်ငြိမ်သော ရည်ညွှန်းချက်များ၊ ဟက်ရှ်များ၊ URIs သို့မဟုတ် SoraFS လမ်းကြောင်းများကို သိုလှောင်ပါ။ ကြီးမားသောစာရွက်စာတမ်းများ၊ မီဒီယာများ၊ (သို့) မြင့်မားသော churn application status များကို ချိတ်ဆက်ထားပြီး စစ်ဆေးနိုင်သည့် ရည်ညွှန်းချက်ကိုသာ NFT တွင် သိမ်းဆည်းပါ။
 
 ## Taira မှာ စမ်းကြည့်ပါ။ {#try-it-on-taira}
 
@@ -38,7 +38,7 @@ curl -fsS https://taira.sora.org/openapi.json \
   | jq -r '.paths | keys[] | select(startswith("/v1/nfts") or startswith("/v1/explorer/nfts"))'
 ```
 
-အလွတ်တစ်ခု `items` array ဟာ အများသုံး စမ်းသပ်ရေးကွန်ရက်မှာ သက်ဝင်တဲ့ တုံ့ပြန်မှုပါ။ NFTs လက်ရှိ စာမျက်နှာမှာ မဟုတ်ဘူး။ NFT ညွှန်ကြားချက်တွေ မရနိုင်ပါ။
+အလွတ် `items` array သည် အများသုံး testnet တွင် သက်ဝင်သော တုံ့ပြန်မှုတစ်ခုဖြစ်သည်။ ဆိုလိုသည်မှာ လက်ရှိစာမျက်နှာတွင် NFTs မရှိခြင်းမဟုတ်ဘဲ NFT ညွှန်ကြားချက်များ မရရှိခြင်းပါ။
 
 ## NFT IDs {#nft-ids}
 
@@ -49,18 +49,18 @@ name$domain
 name$domain.dataspace
 ```
 
-ဥပမာ၊ `badge$docs.universal` ကွဲပြားခြားနားချက်များ `badge` NFT အထဲမှာ `docs.universal` ဒေတာအကွာအဝေးကို ချန်ထားပါက လက်ရှိ parser က `universal` ဒေတာနေရာ၊ ဒီတော့ `badge$docs` ဆုံးဖြတ်ချက်ချသည် `badge$docs.universal`.
+ဥပမာ၊ `badge$docs.universal` သည် `badge` NFT ကို `docs.universal` ဒိုမင်ထဲတွင် ဖော်ထုတ်သည်။ အချက်အလက်နေရာကို ချန်ထားပါက လက်ရှိစစ်ဆေးသူသည် `universal` အချက်အလက်နေရာအား အသုံးပြု၍ `badge$docs` ကို `badge$docs.universal` သို့ ဖြေရှင်းပေးပါသည်။
 
-ခိုင်မာတဲ့ နာမည်တွေကို သုံးပါ။ NFT IDs. နိုင်ငံတကာ ID ညွှန်ကြားချက်များ၊ မေးမြန်းချက်များ၊ ခွင့်ပြုချက်များ၊ ဖြစ်ရပ်စစ်ဆေးခြင်းများနှင့် အသုံးချမှု ရည်ညွှန်းချက်များတွင် အသုံးပြုသော အရာဝတ္ထုအမည်ဖြစ်သည်။
+NFT IDs အတွက် တည်ငြိမ်သောနာမည်များကို အသုံးပြုပါ။ ID သည် ညွှန်ကြားချက်များ၊ မေးမြန်းမှုများ၊ ခွင့်ပြုချက်များ၊ ဖြစ်ရပ်စစ်ဆေးသူများနှင့် အသုံးချမှု ရည်ညွှန်းချက်များတွင်အသုံးပြုသည့် အရာဝတ္ထုသမိုင်းဖြစ်ပါသည်။
 
 ## သက်တမ်း စက်ဝန်း {#lifecycle}
 
 NFT သက်တမ်း စက်ဝန်း လုပ်ငန်းများ အသုံးပြုခြင်း Iroha အထူးညွှန်ကြားချက်များ:
 
-- [`Register`](/my/blockchain/instructions.md#un-register) ဖန်တီးပေးတယ် NFT အစောပိုင်း `content`.
+- [`Register`](/my/blockchain/instructions.md#un-register) က NFT ကို အစောပိုင်း `content` ဖြင့် ဖန်တီးသည်။
 - [`Unregister`](/my/blockchain/instructions.md#un-register) က NFT ကို ဖယ်ရှားတယ်။
 - [`Transfer`](/my/blockchain/instructions.md#transfer) ပြောင်းလဲချက်များ `owned_by`.
-- [`SetKeyValue` နှင့် `RemoveKeyValue`](/my/blockchain/instructions.md#setkeyvalue-removekeyvalue) update ကို NFT မီတာဒေတာ။
+- [`SetKeyValue` နှင့် `RemoveKeyValue`](/my/blockchain/instructions.md#setkeyvalue-removekeyvalue) update NFT metadata များ။
 
 ## ဒေသတွင်းမှာ စမ်းကြည့်ပါ။ {#try-it-locally}
 
@@ -72,7 +72,7 @@ export NFT_DOMAIN=wonderland.universal
 export NFT_ID='badge_intro$wonderland.universal'
 ```
 
-Generated localnet ကို Setup လုပ်ပြီးသားပါ။ `wonderland.universal` ၎င်း၏ SNS ခြားနားတဲ့ ဒိုမင်တစ်ခု သုံးချင်ရင် ပထမဦးဆုံးအနေနဲ့ ကြေညာချက်နဲ့ ဖန်တီးပါ။ `app alias setup plan` နှင့် `app alias setup apply` Workflow ကို [ဒိုမင်များ](/my/blockchain/domains.md#registration).
+ထုတ်လုပ်သော localnet သည် `wonderland.universal` နှင့် ၎င်း၏ SNS ငှားရန်စာချုပ်ကိုအတည်ပြုပြီးသားဖြစ်သည်။ မတူညီသောဒိုမင်တစ်ခုအသုံးပြုရန်၊ `app alias setup plan` နှင့် `app alias setup apply` လုပ်ငန်းခွင်များတွင်ဖော်ပြထားသည့် ကြေညာချက်များနှင့် [Domains](/my/blockchain/domains.md#registration) တွင်ဖန်တီးပါ။
 
 NFT ကို မှတ်ပုံတင်ပါ။ မှတ်ပုံတင်သည် စံဝင်မှတ်သွင်းချက်မှ အစောပိုင်းစာရင်း JSON ကိုဖတ်သည်။
 
@@ -132,9 +132,9 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
 
 ## မေးခွန်းများနှင့် ဖြစ်ရပ်များ {#queries-and-events}
 
-အသုံးပြုခြင်း [`FindNfts`](/my/reference/queries.md#assets-nfts-and-rwas) စာရင်းသွင်းရန် NFTs နှင့် [`FindNftsByAccountId`](/my/reference/queries.md#assets-nfts-and-rwas) စာရင်းသွင်းရန် NFTs အကောင့်တစ်ခုရဲ့ ပိုင်ရှင်ပါ။
+[`FindNfts`](/my/reference/queries.md#assets-nfts-and-rwas) ကိုသုံးပြီး NFTs နှင့် [`FindNftsByAccountId` ](/my/reference/queries.md#assets-nfts-and-rwas) ကိုသုံးပြီး အကောင့်ပိုင်ရှင်များအတွက် NFTs ကိုသုံးပါ။
 
-NFT မှတ်ပုံတင်ခြင်း၊ ဖျက်သိမ်းခြင်း၊ လွှဲပြောင်းခြင်းနှင့် metadata update များ ထုတ်လွှင့်ခြင်း NFT ဒေတာဖြစ်ရပ်များ။ `Nft` မှတ်စုအပြောင်းအလဲ (သို့) reacting to building triggers များကို subscribe လုပ်တဲ့အခါ data event filter ကို NFT ဘဝ စက်ဝန်း ဖြစ်ရပ်များ။
+NFT မှတ်ပုံတင်၊ ဖျက်သိမ်းခြင်း၊ လွှဲပြောင်းခြင်းနှင့် metadata update များသည် NFT ဒေတာဖြစ်ရပ်များကို ထုတ်လွှင့်သည်။ `Nft` ဒေတာဖြစ်စဉ် စစ်ဆေးမှုကို အသုံးပြု၍ စာရင်းအင်းပြောင်းလဲမှုများသို့မဟုတ် NFT ဘဝပတ်ဝန်းကျင်ဖြစ်ရပ်များအား တုံ့ပြန်သော အဆောက်အအုံ trigger များကို ၀ င်ရောက်ရှိပါ။
 
 ## ခွင့်ပြုချက်များ {#permissions}
 

@@ -8,23 +8,19 @@ translation_engine: nllb-200-ct2
 
 # Musubi Kotodama ጥቅሎች {#musubi-kotodama-packages}
 
-Musubi የፓኬጅ አስተዳዳሪ Kotodama ምንጭ ጥቅሎች.
-ተደራሽነት ለማጋራት Cargo-እንደ የስራ ፍሰት ገንቢዎች Kotodama ተግባራት
-የፓኬጅ ማንነትን በማስጠበቅ SORA እና Iroha ይልቅ ስሞች ቦታዎች
-ዓለም አቀፋዊ የመጀመርያው ስም ሰንጠረዥ።
+Musubi ለ Kotodama ምንጭ ፓኬጆች የፓኬጅ አስተዳዳሪ ነው ። ይህ ገንቢዎች የተዋሃዱ Kotodama ተግባራትን ለማጋራት ከ Cargo ጋር የሚመሳሰል የስራ ፍሰት ይሰጣቸዋል እንዲሁም የፓኬጁ ማንነት ከአለም አቀፍ የመጀመሪያ ስም ሰንጠረዥ ይልቅ ከ SORA እና Iroha የመጠሪያ ቦታዎች ጋር ተያይዞ ይቆያል ።
 
-አጠቃቀም Musubi የሚከተሉትን ማድረግ ሲያስፈልግዎት:
+የሚከተሉትን ነገሮች ለማድረግ ሲያስፈልግ Musubi ይጠቀሙ:
 
-- እንደገና ጥቅም ላይ ሊውል የሚችል ማተም Kotodama ምንጭ ቤተ-መጽሐፍት
-- ትክክለኛውን የሽግግር ምንጭ ጥገኛነት በ `Musubi.lock`
-- የተረጋገጠ ጥገኛነት ምንጭን እንደገና መገምገም SoraFS የአርኪቭ ግዴታዎች
-- በአንድ ውስጥ የፓኬጅ ስም ቦታን ወደ dapp ውል ቅጽል ስሞች ያገናኙ
-  የስም ቦታ
-- በሰንሰለት ላይ ባለው መዝገብ አማካኝነት ፓኬጆችን መመርመር፣ ማተም፣ ማውጣት ወይም ማንሳት
+- እንደገና ጥቅም ላይ ሊውሉ የሚችሉ Kotodama ምንጭ ቤተ-መጽሐፍት ያትሙ
+- በ `Musubi.lock` ውስጥ ትክክለኛ የሽግግር ምንጭ ጥገኛነቶች
+- ከተረጋገጡ SoraFS የአርኪቭ ግዴታዎች ላይ ጥገኛነት ምንጭን እንደገና መገንባት
+- የፓኬጅ ስያሜ ቦታን በተመሳሳይ የስያሜ ቦታ ውስጥ ከሚገኙት dapp ውል ስምምነቶች ጋር ያገናኙ
+- በሰንሰለት ላይ ባለው መዝገብ አማካኝነት ፓኬጆችን መመርመር ፣ ማተም ፣ ማውጣት ወይም ማንሳት።
 
 ## የፓኬጅ ስሞች {#package-names}
 
-የካኖኒካል ፓኬጅ መታወቂያዎች አጠቃቀም
+የካኖኒካል ጥቅል መታወቂያዎች አጠቃቀም
 
 ```text
 namespace/package
@@ -36,24 +32,20 @@ namespace/package
 namespace/package@version
 ```
 
-ምንም መሪ የለም `@` ከስም ቦታ በፊት `@` መለያያ ተይዟል
-ለቅጅቱ ቅደም ተከተል።
+ከስም ቦታ በፊት ምንም ቀዳሚ `@` የለም ። የ `@` መለያየት ለቅጅ ቅደም ተከተል የተጠበቀ ነው ።
 
-የስም ቦታው ክፍል ከ ጥቅም ላይ የዋለው ቅደም ተከተል ጋር ይዛመዳል Kotodama የ Dapp ውል
-ስያሜዎች
+የስም ቦታ ክፍሉ በ Kotodama dapp ውል ቅጽል ስሞች ከሚጠቀሙት ቀጣይነት ጋር ይዛመዳል-
 
-| የፓኬጅ መታወቂያ                | የተዛመዱ የውል ስምምነቶች ቅርፅ |
+|የፓኬጅ መታወቂያ |የተዛመደ የውል ቅጽል ስም ቅርጽ |
 | ------------------------- | ---------------------------- |
-| `universal/math`          | `router::universal`          |
-| `dex.universal/swap-core` | `router::dex.universal`      |
+|`universal/math` |`router::universal` |
+|`dex.universal/swap-core` |`router::dex.universal` |
 
-የስም ቦታዎች `<dataspace>` ወይም `<domain>.<dataspace>` ቅርጽ.
-ፓኬጁ የ Dapp አገናኝ አለው፣ Musubi እያንዳንዱ የተገናኘ የውል ስምምነቶች
-ከፓኬጁ ጋር ተመሳሳይ የስም ቦታ ቅደም ተከተል ይጠቀማል።
+የስም ቦታዎች ወይ `<dataspace>` ወይም `<domain>.<dataspace>` ቅጽ አላቸው. አንድ ፓኬጅ dapp አገናኝ ካለው, Musubi እያንዳንዱ የተገናኘ ውል ስያሜ እንደ ፓኬጁ ተመሳሳይ ስም ቦታ ፊደል ይጠቀማል መሆኑን ያረጋግጣል.
 
-## ግልፅ {#manifest}
+## የተገለጠ {#manifest}
 
-አንድ ፓኬጅ ይጀምራል `Musubi.toml`:
+አንድ ጥቅል በ `Musubi.toml` ይጀምራል-
 
 ```toml
 [package]
@@ -73,20 +65,13 @@ namespace = "dex.universal"
 contracts = ["router::dex.universal"]
 ```
 
-ጥገኛዎች ትክክለኛ ስሪቶችን መጠቀም ይችላሉ, የጥገና መስፈርቶች, Tilde
-መስፈርቶች፣ እንደ `1.*`, ወይም እንደነዚህ ያሉ የማወዳደር ዝርዝሮች
-`>=1.0.0,<2.0.0`.
+ጥገኛዎች ትክክለኛ ስሪቶችን ፣ የእንክብካቤ መስፈርቶችን ፣ የቲልድ መስፈርቶችን፣ እንደ `1.*` ያሉ የዱር ካርዶችን ወይም እንደ `>=1.0.0,<2.0.0` ያሉ የማነፃፀሪያ ዝርዝሮችን መጠቀም ይችላሉ ።
 
-`Musubi.lock` የተመረጠውን የሽግግር ገበታ ከሰንሰለት ላይ ይመዝግባል።
-እያንዳንዱ የተቆለፈ አገናኝ የሚመረጠው የካኖኒካል ፓኬጅ ሪፍ ይከማቻል።
-መስፈርት፣ SoraFS manifest digest፣ ምንጭ አርኪቭ ሃሽ፣ ባይት ቆጠራ፣ ፋይል
-መቁጠር፣ የወረዱት ተግባራት፣ የመረጃ ምንጭ ማከማቻ ዕቅድ፣ እና
-አጭር ስሞች ወደ
-የመቆለፊያ ፋይል.
+`Musubi.lock` የተመረጠውን ትራንስቲቭ ግራፊክ ከሰንሰለት መዝገብ ይመዝግባል። እያንዳንዱ ተቆልፏል ኖት የካኖኒካል ፓኬጅ ሪፍ ፣ የተመረጠው መስፈርት ፣ SoraFS ማኒፌስት ዳይጀስት ፣ ምንጭ ማህደር ሃሽ ፣ ባይት ቆጠራ ፣ የፋይል ብዛት ፣ የወጪ ተግባራት ፣ የመረጃ ምንጭ ማህደረ መረጃ ዕቅድ እና ጥገኛ ቅጽል ስሞችን ያስቀምጣል ። አጫጭር ቅጽል ስሞች ወደ መቆለፊያ ፋይል ከመግባታቸው በፊት ይፈታሉ።
 
-## አካባቢያዊ የስራ ፍሰት {#local-workflow}
+## የአካባቢው የስራ ፍሰት {#local-workflow}
 
-ከዋና ጅረት Iroha የስራ ቦታ ሥር፣ ሩጫ Musubi በጭነት በኩል:
+ከቅድመ-መንገድ Iroha የስራ ቦታ ሥር, በ Cargo በኩል Musubi ይሮጡ:
 
 ```bash
 cargo run -p musubi -- init --namespace dex.universal --name swap-core --dapp
@@ -99,21 +84,13 @@ cargo run -p musubi -- pack \
   --source-plan-out source-plan.norito
 ```
 
-አጠቃቀም `install --offline` ትክክለኛ ስሪት ያልተፈታ መቆለፊያ ፋይል ለመጻፍ
-አንድን አገናኝ ሳይጠይቁ ጥገኛነቶች። `install --locked` ውስጥ CI ወደ
-የቆየ መቆለፊያ መዝገብን ውድቅ አድርግ።
+`install --offline` ን በመጠቀም ትክክለኛ ስሪት ጥገኛነት ያልተፈታ መቆለፊያ ፋይል ለመጻፍ ምንም አገናኝ ሳይጠይቁ ይጠቀሙ. በ CI ውስጥ `install --locked` ን በመጠቀም የቆየ መቆለፊያ ፋይልን ውድቅ ያድርጉ።
 
-`build` እንደነዚህ ያሉ ጥሪዎችን በመቀየር ካሽ የተደረጉ ጥገኛ ምንጮችን ያገናኛል
-`math::add()` ወደ ተወስኖ ውስጣዊ Kotodama ተግባር ስሞች. ይህ ውድቅ
-ጥገኛነቱ ወደ ውጭ ላላወጣቸው ተግባራት ጥሪዎችን ያቀርባል. Musubi v1 ቤተ-መጽሐፍት
-ተግባር ብቻ ናቸው-የመንግስት መግለጫዎችን የያዙ ጥገኛ ምንጮች፣
-ተነሳሽነቶች፣ የኮቶባ ብሎኮች፣ ቋሚዎች ወይም ሌሎች ተግባር የሌላቸው የውል ዕቃዎች
-ውድቅ ተደርጓል።
+`build` እንደ `math::add()` ያሉ ጥሪዎችን ወደ ውስንነት ውስጣዊ Kotodama ተግባር ስሞች በመፃፍ የተከማቹትን ጥገኛ ምንጮችን ያገናኛል ። ጥገኛነቱ ላላወጣቸው ተግባራት ጥሪዎችን ውድቅ ያደርጋል ። Musubi v1 ቤተ-መጽሐፍት ተግባራት ብቻ ናቸው: የአገር መግለጫዎችን, አስነሳሾችን, ኮቶባ ብሎኮችን, ቋሚዎች, ወይም ሌሎች ተግባር ያልሆኑ የውል ንጥሎች ያካተቱት ጥገኛ ምንጮች ውድቅ ናቸው.
 
 ## ምንጭ ማምጣት Archives {#fetching-source-archives}
 
-Musubi መፍትሄ በሚሰጥበት ጊዜ ወይም በኋላ ላይ የጎደሉ ጥገኛ ምንጮችን ማግኘት ይችላል
-በካሽ ንዑስ ትዕዛዞች በኩል:
+Musubi በሚፈታበት ጊዜ ወይም በኋላ በካሽ ንዑስ ትዕዛዞች በኩል የጎደሉ ጥገኛ ምንጮችን ማግኘት ይችላል:
 
 ```bash
 cargo run -p musubi -- install --config client.toml --fetch \
@@ -123,31 +100,20 @@ cargo run -p musubi -- cache import math --source-root ../math
 cargo run -p musubi -- cache fetch math --provider-payload math.payload
 ```
 
-የቀጥታ መግቢያዎች አንድ ወይም ከዚያ በላይ ይጠቀማሉ SoraFS የጌትዌይ አቅራቢ ዝርዝሮች
+የቀጥታ የጌትዌይ መያዣዎች አንድ ወይም ከዚያ በላይ SoraFS የጊትዌይ አቅራቢ ዝርዝር መግለጫዎችን ይጠቀማሉ-
 
 ```bash
 cargo run -p musubi -- install --config client.toml --fetch \
   --gateway-provider 'name=hot-a,provider-id=1111111111111111111111111111111111111111111111111111111111111111,base-url=https://gw.example,stream-token=BASE64,package=math'
 ```
 
-የአገልግሎት አቅራቢ የዋጋ ጭነት ፋይሎች እና የመዳረሻ በር አቅራቢዎች እርስ በእርስ የሚገለሉ ናቸው
-ከአንድ በላይ የተቆለፈ ፓኬጅ ቢጎድለው እያንዳንዱን ስፋት ይመርምሩ
-የጌትዌይ አቅራቢ `package=<dependency-alias>`,
-`package=<namespace/package@version>`, `package=<namespace/package>`, ወይም
-`manifest=<64-hex SoraFS manifest digest>`.
+የአቅራቢዎች የፍጆታ ጭነት ፋይሎች እና የጌትዌይ አቅራቢዎች ለአንድ የመጫኛ ሥራ እርስ በእርስ የሚገለሉ ናቸው. ከአንድ በላይ የተቆለፈ ፓኬጅ ከሌለ, እያንዳንዱን መግቢያ በር አቅራቢ በ `package=<dependency-alias>`, `package=<namespace/package@version>`, `package=<namespace/package>` ወይም `manifest=<64-hex SoraFS manifest digest>` ያካትቱ.
 
-በር `base-url` እና `privacy-url` እሴቶች መጠቀም አለባቸው `https://` በነባሪነት።
-አካባቢያዊ የሙከራ መግቢያዎች መጠቀም ይችላሉ `http://localhost`, `http://127.0.0.1`, ወይም
-`http://[::1]` ብቻ `--gateway-allow-insecure-localhost`. ዥረት
-ቶከኖች የስራ ሰዓት ማረጋገጫዎች ናቸው እና ወደ ውስጥ አልተጻፉም `Musubi.lock`.
+የጌትዌይ `base-url` እና `privacy-url` እሴቶች በነባሪነት `https://` ን መጠቀም አለባቸው ። አካባቢያዊ የሙከራ ጌቶች `http://localhost` ፣ `http://127.0.0.1` ወይም `http://[::1]` ን በ `--gateway-allow-insecure-localhost` ብቻ ሊጠቀሙ ይችላሉ ። ዥረት ቶከኖች የአሂደቱ የምስክር ወረቀቶች ናቸው እናም ወደ `Musubi.lock` አይጻፉም ።
 
 ## ማተሚያ {#publishing}
 
-`pack` የዲተሪሚኒስት BLAKE3-256 ምንጭ ማህደር ሃሽ እና ተጨማሪ
-ምንጭ ባይት እና የፋይል ቁጥሮች። `--car-out`, `--sorafs-manifest-out`, ወይም
-`--source-plan-out` የተሰጠ ነው, በተጨማሪም የ Deterministic ይገነባል SoraFS
-CAR የዋጋ ጭነት፣ SoraFS ግልፅ እና Musubi ተመሳሳይ ምንጭ ማህደር ዕቅድ
-የመረጃ ምንጭ ፋይል ስብስብ።
+`pack` የ deterministic BLAKE3-256 ምንጭ ማከማቻ ሃሽ እና የመነሻ ባይት እና ፋይል ይቆጠራል. `--car-out`, `--sorafs-manifest-out` ወይም `--source-plan-out` ሲቀርቡ, በተጨማሪም deterministic SoraFS CAR ጥቅማጥቅም ጭነት ይገነባል, SoraFS manifest, እና Musubi ከዚሁ ምንጭ ፋይል ስብስብ የመረጃ ቋት ዕቅድ።
 
 ከማተምዎ በፊት ደረቅ አሂድ ይጠቀሙ:
 
@@ -155,24 +121,19 @@ CAR የዋጋ ጭነት፣ SoraFS ግልፅ እና Musubi ተመሳሳይ ምን
 cargo run -p musubi -- publish --config client.toml --dry-run
 ```
 
-ያለ `--dry-run`, `publish` በነባሪነት የተቀመጡትን ነገሮች በ
-`.musubi/dist/<namespace>/<name>/<version>/`, አማራጭ ላይ ይጫናል
-መገለጫ እና አጠቃቀም ጭነት በኩል Torii ነው SoraFS የማከማቻ ፒን መጨረሻ ነጥብ
-`--upload`, የተፈጠረውን ይመዝገብ SoraFS ፒን እና ያቀርባል
-`PublishMusubiRelease` በተዋቀረው በኩል Iroha ደንበኛ።
+ያለ `--dry-run`, `publish` በዝግጅት አቀራረብ ላይ የተመሰረቱ ንጥረ ነገሮችን ይጽፋል `.musubi/dist/<namespace>/<name>/<version>/`, በፈቃደኝነት ማኒፌስት እና አጠቃቀም ጭነት በኩል ይጫናል Torii እሱ ነው SoraFS የማከማቻ ፒን መጨረሻ ነጥብ `--upload`, የተፈጠረውን ይመዝገብ SoraFS ፒን, እና ያቀርባል `PublishMusubiRelease` የተዋቀረውን በኩል Iroha ደንበኛ።
 
-የታተሙ መግለጫዎች የሚከተሉትን ያካትታሉ
+የታተሙ መግለጫዎች የሚከተሉትን ማካተት አለባቸው፦
 
 - ባዶ ያልሆነ የካኖኒክ ምንጭ ማህደር
-- የተወሰነ የመረጃ ምንጭ ማህደር ዕቅድ
-- ቢያንስ አንድ የተላከው Kotodama ተግባር
+- የመረጃ ምንጭ ማከማቻ ዕቅድ
+- ቢያንስ አንድ የወጪ ንግድ Kotodama ተግባር
 - የተለቀቁ ልቀቶችን የማይመርጡ ጥገኛነት መዝገቦች
-- ከፓኬጁ ጋር የሚዛመዱ የውል ስያሜዎቻቸው ካሉበት ጊዜ የ dapp አገናኝ
-  የስም ቦታ
+- የፓኬጅ ስያሜ ቦታ ጋር የሚዛመዱ የውል ቅጽል ስሞቻቸው ካሉበት የ dapp አገናኝ
 
 ## የምዝገባ ጥያቄዎች እና የሕይወት ዑደት {#registry-queries-and-lifecycle}
 
-መዝገቡን በመፈለግ እና በማጣራት:
+የምዝገባውን ፍለጋ እና ምርመራ የሚከተሉትን ያድርጉ:
 
 ```bash
 cargo run -p musubi -- search swap --config client.toml
@@ -180,8 +141,7 @@ cargo run -p musubi -- versions dex.universal/swap-core --config client.toml
 cargo run -p musubi -- alias resolve swap --config client.toml
 ```
 
-ያንኪንግ ከአዲሱ ጥራት የተለቀቀውን ይደብቃል ፣ ግን ነባር መዝጊያዎችን ይይዛል
-እንደገና ሊታደስ የሚችል:
+ያንኪንግ አዲስ ጥራት ካለው ልቀት ይደብቃል ፣ ነገር ግን ነባር መቆለፊያ ፋይሎችን እንደገና ሊታደስ ይችላል:
 
 ```bash
 cargo run -p musubi -- yank dex.universal/swap-core@0.1.0 \
@@ -190,31 +150,22 @@ cargo run -p musubi -- yank dex.universal/swap-core@0.1.0 \
   --dry-run
 ```
 
-Musubi ዓለም አቀፍ ስም መንጠቆ በማድረግ ይከላከላል `namespace/package` የ
-በስም ቦታ ውስጥ ማተም በ
-ለዚያው ጥቅም ላይ የዋለው ተመሳሳይ ባለቤትነት ወይም የተሰጠ ፈቃድ ሞዴል Kotodama
-የ dapp ስሞች ቦታ: የተመረጡ ዓለም አቀፍ አጫጭር ቅጽል ስሞች ከፓኬጅ ተለይተው ይታያሉ
-ባለቤትነት: `SetMusubiShortAlias` የሚጠይቀው `CanSetMusubiShortAlias`
-ፍቃድ፣ እና የዒላማው ፓኬጅ ቢያንስ አንድ ንቁ
-ይለቀቁ።
+Musubi `namespace/package` ን ቀኖናዊ የፓኬጅ ስም በማድረግ ዓለም አቀፍ ስም መንጠቆን ያስወግዳል ። በስም ቦታ ውስጥ ማተም ለዚያ Kotodama dapp ስም ቦታ ጥቅም ላይ በሚውለው ተመሳሳይ ባለቤትነት ወይም ተልዕኮ ፈቃድ ሞዴል የተፈቀደ መሆን አለበት። የተመረጡ ዓለም አቀፍ አጫጭር ቅጽል ስሞች ከፓኬጅ ባለቤትነት ተለይተዋል: `SetMusubiShortAlias` የ `CanSetMusubiShortAlias` ፈቃድ ይጠይቃል ፣ እና የዒላማው ፓኬጅ ቢያንስ አንድ ንቁ ልቀት ሊኖረው ይገባል ።
 
-## Iroha ወለል {#iroha-surfaces}
+## Iroha ወለሎች {#iroha-surfaces}
 
-Musubi የመጀመሪያ ደረጃ አጠቃቀሞች Iroha መመሪያ እና ጥያቄ:
+Musubi የመጀመሪያ ደረጃ መመሪያዎችን እና ጥያቄዎችን ይጠቀማል Iroha:
 
-| ገጽታ                      | ዓላማ                                            |
+|ወለል |ዓላማ|
 | ---------------------------- | -------------------------------------------------- |
-| `PublishMusubiRelease`       | የማይለወጥ የፓኬጅ መልቀቅ ያትሙ።              |
-| `YankMusubiRelease`          | ነባር ፍቃድ እንደተጣራ ምልክት አድርግ።                |
-| `SetMusubiShortAlias`        | የተመረጠውን ዓለም አቀፍ አጭር ስያሜ ከፓኬጅ መታወቂያ ጋር ያገናኙ። |
-| `AssertMusubiReleaseExists`  | የኮንክሪት ጥቅል ስሪት እንዲኖር ይጠይቃል።       |
-| `FindMusubiReleaseByRef`     | ትክክለኛውን የፓኬጅ ማጣቀሻ በመጠቀም አንድ መልቀቅ ያግኙ.        |
-| `FindMusubiPackageVersions`  | ለፓኬጅ መታወቂያ ስሪቶችን ይዘርዝሩ።                    |
-| `FindMusubiPackageReleases`  | ለፓኬጅ መታወቂያ የመልቀቂያ ማጠቃለያዎችን ይዘርዝሩ።           |
-| `SearchMusubiPackages`       | የፓኬጅ ማጠቃለያዎችን በስም ቦታ እና በጽሑፍ ይፈልጉ።    |
-| `FindMusubiShortAliasByName` | አጭር ስያሜውን ተፈትሽ።                     |
+|`PublishMusubiRelease` |የማይለወጥ የፓኬጅ መልቀቅ ያትሙ። |
+|`YankMusubiRelease` |አንድ ነባር ልቀት እንደ ተጎትቶ ምልክት አድርግ.|
+|`SetMusubiShortAlias` |የተመረጠውን ዓለም አቀፍ አጭር ስያሜ ከፓኬጅ መታወቂያ ጋር ያያይዙ። |
+|`AssertMusubiReleaseExists` |የኮንክሪት ጥቅል ስሪት እንዲኖር ይጠይቃል። |
+|`FindMusubiReleaseByRef` |በትክክል የታሸገውን ማጣቀሻ በመጠቀም መልቀቅ ያግኙ። |
+|`FindMusubiPackageVersions` |ለፓኬጅ መታወቂያ ስሪቶችን ይዘርዝሩ። |
+|`FindMusubiPackageReleases` |ለፓኬጅ መታወቂያ የመልቀቂያ ማጠቃለያዎችን ይዘርዝሩ። |
+|`SearchMusubiPackages` |የፓኬጅ ማጠቃለያዎች በስም ቦታ እና ጽሑፍ ፍለጋ. |
+|`FindMusubiShortAliasByName` |የተስተካከለ አጭር ቅጽል ስም መፍታት። |
 
-Torii የሚገልጸው Musubi HTTP የመንገድ ቤተሰብ `/v1/musubi/*`.
-ወኪል ፊት ለፊት MCP መሳሪያዎች እንደ `iroha.musubi.*` ስያሜዎች.
-[Torii የመጨረሻ ነጥቦች](/am/reference/torii-endpoints.md) እና
-[የጥያቄ ማጣቀሻ](/am/reference/queries.md) ለሰፊው API ካርታ።
+Torii ያጋልጣል Musubi HTTP የመንገድ ቤተሰብ `/v1/musubi/`. ወኪል ፊት ለፊት MCP መሳሪያዎች እንደ `iroha.musubi.` ቅጽል ስሞች. [Torii የመጨረሻ ነጥቦች](/am/reference/torii-endpoints.md) እና [የጥያቄ ማጣቀሻ](/am/reference/queries.md) ለስፋት API ካርታ.

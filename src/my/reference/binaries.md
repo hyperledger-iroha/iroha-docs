@@ -6,12 +6,12 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# အလုပ်လုပ်ခြင်း Iroha ဘိုင်နရီများ {#working-with-iroha-binaries}
+# Iroha ဘိုင်နရီများနှင့် အလုပ်လုပ်ခြင်း {#working-with-iroha-binaries}
 
-နိုင်ငံခြားရေး Iroha 3 Operator Workflow ဟာ အဓိက ဘိုင်နရီ သုံးခုကို လည်ပတ်ပါတယ်။
+Iroha 3 အော်ပရေတာရဲ့ အလုပ်ခွင်ဟာ အဓိက ဘိုင်နရီ သုံးခုကို လည်ပတ်ပါတယ်။
 
-- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad) peer daemon ကို မောင်းနှင်တာအတွက်
-- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_cli) အတွက် CLI အော်ပရေတာအမိန့်များ
+- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad) ကို peer daemon ကို run လုပ်ဖို့
+- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_cli) အတွက် CLI နှင့် operator command များအတွက်
 - [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_kagami) သော့များ၊ ဇာစ်မြစ်များ၊ ဒေသတွင်းကွန်ရက်များနှင့် ပရိုဖိုင်များအတွက်
 
 ## အရင်းအမြစ်မှ တည်ဆောက်ခြင်း {#build-from-source}
@@ -22,7 +22,7 @@ Upstream workspace root ကနေ:
 cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ```
 
-အဲဒီနောက်မှာ release binaries တွေကို `target/release/`.
+`target/release/` သို့ ပြန်လည်ဖြန့်ချိမှု ဘိုင်နရီများ ရရှိနိုင်ပါသည်။
 
 အမိန့်မျက်နှာပြင်ကို စစ်ဆေးရန်:
 
@@ -34,7 +34,7 @@ cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 
 ## Repository မှ တိုက်ရိုက် Run {#run-directly-from-the-repository}
 
-တစ်ကမ္ဘာလုံးမှာ ဘာကိုမှ မတပ်ချင်ရင် `cargo run`:
+တစ်ကမ္ဘာလုံးမှာ ဘာကိုမှ မတပ်ချင်ဘူးဆိုရင် `cargo run` ကိုသုံးပါ။
 
 ```bash
 cargo run --bin irohad -- --help
@@ -42,25 +42,23 @@ cargo run --bin iroha -- --help
 cargo run --bin kagami -- --help
 ```
 
-## Docker ရုပ်ပုံ {#docker-image}
+## Docker ဓာတ်ပုံ {#docker-image}
 
-အထက်ပိုင်း လုပ်ငန်းခွင် အသုံးပြုမှု `kagami localnet` နှင့် `kagami docker` ထုတ်လုပ်ရန်
-Docker Compose စစ်ဆေးထားတဲ့ ကုဒ်နဲ့ ကိုက်ညီတဲ့ ဖိုင်တွေပေါ့။ `hyperledger/iroha:dev`
-Image တွေကို ထုတ်ပေးထားတဲ့ ဖိုင်တွေနဲ့အတူ သုံးနိုင်ပါတယ်။
+အထက်ပိုင်း လုပ်ငန်းခွင် အသုံးပြုမှု `kagami localnet` နှင့် `kagami docker` ထုတ်လုပ်ရန် Docker Compose စစ်ဆေးထားတဲ့ ကုဒ်နဲ့ ကိုက်ညီတဲ့ ဖိုင်တွေ။ `hyperledger/iroha:dev` Image တွေကို ထုတ်ပေးထားတဲ့ ဖိုင်တွေနဲ့အတူ သုံးနိုင်ပါတယ်။
 
-Run ကို CLI အိုးထဲတွင်
+CLI ကို container တစ်ခုထဲ ထည့်ပေးပါ။
 
 ```bash
 docker run -t hyperledger/iroha:dev iroha --help
 ```
 
-ပြေးပါ Kagami အိုးထဲတွင်
+Kagami ကို container တစ်ခုထဲထည့်ပါ။
 
 ```bash
 docker run -t hyperledger/iroha:dev kagami --help
 ```
 
-peer startup အတွက် localnet ကိုဖန်တီးပြီး First Compose file ကိုနှိပ်ပါ။
+peer startup အတွက် localnet ကိုဖန်တီးပြီး First Compose file ကိုလုပ်ပါ။
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
@@ -70,6 +68,6 @@ docker compose -f ./localnet/docker-compose.yml up
 
 ## ဘယ် Binary ကို သုံးရမလဲ။ {#which-binary-should-i-use}
 
-- အသုံးပြုခြင်း `irohad` သင်ဟာ အဖော်တွေကို စပြီး လုပ်ကိုင်နေစဉ် (သို့) လည်ပတ်နေချိန်မှာ
-- အသုံးပြုခြင်း `iroha` စာရင်းအင်းကို မေးမြန်းရန်၊ ငွေပေးချေမှုတင်သွင်းရန် (သို့) Operator Endpoints တွေကို စစ်ဆေးရန် လိုအပ်ပါက
-- အသုံးပြုခြင်း `kagami` သော့တွေ၊ Genesis Manifesto တွေ၊ Profile Bundles တွေ ဒါမှမဟုတ် Localnet အရင်းအမြစ်တွေ လိုအပ်တဲ့အခါမှာ
+- `irohad` ကို သုံးပြီး အဖော်တွေကို စလုပ်တဲ့အခါ (သို့) မောင်းနှင်တဲ့အခါ သုံးပါ။
+- `iroha` ကို အသုံးပြုပြီး စာရင်းအင်းစာအုပ်ကို မေးမြန်းရန်၊ ငွေပေးချေမှုတင်သွင်းရန် (သို့) Operator Endpoints တွေကို စစ်ဆေးရန် လိုအပ်ပါက။
+- `kagami` ကို သော့များ၊ ဇီ၀ဖြစ်စဉ် မှတ်တမ်းများ၊ ပရိုဖိုင် ဘန်ဒယ်များ သို့မဟုတ် localnet အရင်းအမြစ်များ လိုအပ်ပါက သုံးပါ။

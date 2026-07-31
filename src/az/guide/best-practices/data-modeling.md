@@ -12,7 +12,7 @@ Ledger məlumatları mülkiyyət, köçürmə davranışı, icazə sərhədləri
 
 ## Domenlər və Hesablar {#domains-and-accounts}
 
-- İdarəçilik və siyasət sərhədlərini təmsil etmək üçün domenlərdən istifadə edin.
+- Administrativ və siyasət sərhədlərini təmsil etmək üçün domenlərdən istifadə edin. Domen adlarını sabit saxlayın, çünki hesab və aktiv identifikatorlarında görünürlər.
 - İstifadəçilər, xidmətlər, aktivləşdiricilər, operatorlar və ödəniş sponsorları üçün ayrı hesablardan istifadə edin.
 - Konfiqurasiya və sınaqlarda kanonik hesab və domen identifikatorlarından istifadə edin. Iroha adları kanonik analizdən sonra vəziyyətə həssasdırlar.
 - Test və istehsal kimliklərini adlarda, domenlərdə və konfiqurasiya fayllarının yollarında görünür şəkildə fərqləndirmək.
@@ -39,7 +39,7 @@ Baxın. [Varlıqlar](/az/blockchain/assets.md), [NFTs](/az/blockchain/nfts.md), 
 
 ## Modeldən icazələr {#permissions-by-model}
 
-- Bir iş və ya xidmətin adını daşıyan bir rol geniş texniki qabiliyyətdən daha asan yoxlanılır.
+- Layihə rolları iş əməliyyatları ətrafında deyil, tətbiq rahatlığı ətrafında. Bir iş və ya xidmətin adını daşıyan bir rol geniş texniki bacarıqdan sonra adlandırılan bir roldan daha asan yoxlanılır.
 - İş axını təmin edən ən kiçik cisimə icazə simvollarını əhatə edin.
 - Mining, yandırma, həmyaşıd idarəetmə, icraçı dəyişiklikləri, tetikləyici idarəetmə və metadata mutasiyası üçün icazələri yüksək təsirli icazələr kimi qəbul edin.
 - Müvəqqəti icazələr üçün açıq şəkildə ləğv və rotasiya prosedurları əlavə edin.

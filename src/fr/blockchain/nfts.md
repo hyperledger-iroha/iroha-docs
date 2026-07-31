@@ -8,9 +8,9 @@ translation_engine: nllb-200-ct2
 
 # NFTs {#nfts}
 
-Une Iroha NFT est un objet de registre unique avec un seul propriétaire. NFTs lorsqu'un enregistrement a besoin de sa propre identité, de métadonnées, d'événements du cycle de vie et de la sémantique des transferts de propriété, mais n'a pas besoin d'un équilibre numérique.
+Un Iroha NFT est un objet de registre unique avec un propriétaire. Utilisez NFTs lorsqu'un enregistrement a besoin de sa propre identité, de métadonnées, d'événements du cycle de vie et de la sémantique de transfert de propriété, mais n'a pas besoin d'un équilibre numérique.
 
-À la différence d'un chiffre [actif](/fr/blockchain/assets.md), une NFT Il n'a pas de précision, de maniabilité ou de quantités par compte. NFT existe en tant qu'objet enregistré unique, et la propriété est suivie directement sur cet objet.
+Contrairement à un actif numérique [](/fr/blockchain/assets.md), un NFT n'a pas de précision, de mintabilité ou de quantités par compte. Le NFT existe comme un seul objet enregistré et la propriété est suivie directement sur cet objet.
 
 ## La structure {#structure}
 
@@ -20,7 +20,7 @@ Un `Nft` enregistré contient:
 - `content`: métadonnées qui décrivent le NFT
 - `owned_by`: le compte qui détient le NFT
 
-Les États membres `content` champ est un `Metadata` Mettez-le compact: stockez des champs descriptifs, des références stables, des hashes, URIs, ou SoraFS En effet, il n'est pas possible d'enregistrer des documents volumineux, des médias ou des applications à haute fréquence hors chaîne et de conserver uniquement une référence vérifiable sur le fichier NFT.
+Le champ `content` est une carte `Metadata`. Gardez-le compact: stockez les champs descriptifs, les références stables, les hachages, les chemins URIs ou SoraFS là-bas. Stoquez les grands documents, médias ou l'état de l'application à haute fréquence hors chaîne et gardez uniquement une référence vérifiable sur le NFT.
 
 ## Essayez le sur Taira {#try-it-on-taira}
 
@@ -38,7 +38,7 @@ curl -fsS https://taira.sora.org/openapi.json \
   | jq -r '.paths | keys[] | select(startswith("/v1/nfts") or startswith("/v1/explorer/nfts"))'
 ```
 
-Un vide `items` le tableau est une réponse valide sur un réseau public de test. NFTs dans la page actuelle, pas que NFT les instructions ne sont pas disponibles.
+Un tableau `items` vide est une réponse valide sur un réseau de test public. Cela signifie qu'il n'y a pas de NFTs dans la page en cours, pas que les instructions NFT ne soient pas disponibles.
 
 ## NFT IDs {#nft-ids}
 
@@ -51,7 +51,7 @@ name$domain.dataspace
 
 Par exemple, `badge$docs.universal` désigne les `badge` NFT dans le `docs.universal` Si l'espace de données est omis, l'analyseur actuel utilise le `universal` l'espace de données, donc `badge$docs` décide de `badge$docs.universal`.
 
-Utilisez des noms stables pour NFT IDs. Les États membres ID est l'identité de l'objet utilisée par les instructions, les requêtes, les autorisations, les filtres d'événements et les références des applications.
+Utilisez des noms stables pour NFT IDs. L'identité d'objet utilisée par les instructions, les requêtes, les autorisations, les filtres d'événements et les références d'application est le ID.
 
 ## Cycle de vie {#lifecycle}
 
@@ -60,7 +60,7 @@ NFT utilisation des opérations du cycle de vie Iroha Instructions particulière
 - [`Register`](/fr/blockchain/instructions.md#un-register) crée le NFT avec l'original `content`.
 - [`Unregister`](/fr/blockchain/instructions.md#un-register) élimine le NFT.
 - [Les modifications de `Transfer`](/fr/blockchain/instructions.md#transfer) à `owned_by`.
-- [`SetKeyValue` et `RemoveKeyValue`](/fr/blockchain/instructions.md#setkeyvalue-removekeyvalue) mise à jour NFT les métadonnées.
+- [La mise à jour des métadonnées `SetKeyValue` et `RemoveKeyValue`](/fr/blockchain/instructions.md#setkeyvalue-removekeyvalue) NFT
 
 ## Essayez de le faire localement {#try-it-locally}
 
@@ -72,7 +72,7 @@ export NFT_DOMAIN=wonderland.universal
 export NFT_ID='badge_intro$wonderland.universal'
 ```
 
-Le localnet généré est déjà configuré `wonderland.universal` et de ses SNS pour utiliser un domaine différent, créez-le d'abord avec la déclaration `app alias setup plan` et `app alias setup apply` flux de travail décrit dans [Domaines](/fr/blockchain/domains.md#registration).
+Le localnet généré définit déjà `wonderland.universal` et son bail SNS. Pour utiliser un domaine différent, créez-le d'abord avec le flux de travail déclaratif `app alias setup plan` et `app alias setup apply` décrit dans [Domains](/fr/blockchain/domains.md#registration).
 
 Enregistrer un NFT. L'enregistrement lit le contenu initial JSON à partir de l'entrée standard:
 
@@ -110,7 +110,7 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft meta remove --id "$NFT_ID" --key traits
 ```
 
-Il est facultatif de transférer le NFT. Utilisation `ledger nft get` pour lire le propriétaire actuel de `owned_by`, et l'utilisation `ledger account list all` pour trouver un compte de destination ID.
+Transfert optionnellement le NFT. Utilisez `ledger nft get` pour lire le propriétaire actuel de `owned_by`, et utilisez `ledger account list all` pour trouver un compte de destination ID.
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -132,7 +132,7 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
 
 ## Des questions et des événements {#queries-and-events}
 
-Utilisation [`FindNfts`](/fr/reference/queries.md#assets-nfts-and-rwas) à répertorier NFTs et [`FindNftsByAccountId`](/fr/reference/queries.md#assets-nfts-and-rwas) à répertorier NFTs détenu par un compte.
+Utilisez [`FindNfts`](/fr/reference/queries.md#assets-nfts-and-rwas) pour répertorier NFTs et [`FindNftsByAccountId`](/fr/reference/queries.md#assets-nfts-and-rwas) pour répertorian NFTs détenus par un compte.
 
 NFT Les mises à jour de l'enregistrement, de la suppression, du transfert et des métadonnées émettent NFT les événements de données. `Nft` Filtre d'événements de données lors de l'abonnement à des modifications du registre ou à des déclencheurs de construction qui réagissent NFT événements du cycle de vie.
 

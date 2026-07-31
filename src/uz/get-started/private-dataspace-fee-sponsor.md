@@ -6,20 +6,17 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Xususiy ma'lumotlar maydonchasi uchun sponsorlik to'lovlari {#sponsor-fees-for-a-private-dataspace}
+# Maxsus ma'lumotlar maydonchasi uchun sponsorlik to'lovlari {#sponsor-fees-for-a-private-dataspace}
 
-Toʻlovlar boʻyicha sponsorlik foydalanuvchilarga xususiy maʼlumotlar maydonidagi bitimlarni taqdim etish imkonini beradi .
-xo'jalik XOR. Foydalanuvchi hali ham amalni imzolaydi.
-Sponsorning hisob raqamiga punktlar, va ish vaqti sponsorning XOR muvozanat
-tarmoq haqi uchun.
+To'lov sponsorligi foydalanuvchilarga XOR saqlamasdan xususiy ma'lumotlar maydonidagi bitimlarni taqdim etishga imkon beradi. Foydalanuvchi amalni hali ham imzolaydi. Transaksiya metadatalari sponsor hisobvarag'iga ko'rsatilgan, ish vaqti esa tarmoq to'lovi uchun sponsorning XOR balansini debit qiladi.
 
 Integratsiya uchta harakatlanuvchi qismdan iborat:
 
 1. nod to'lovlarni sponsorlashtirishga ruxsat beradi
-2. sponsor hisob raqami mavjud va mavjud XOR
-3. har bir foydalanuvchi `CanUseFeeSponsor` ushbu sponsor uchun
+2. sponsor hisobvarag'i mavjud va XOR
+3. har bir foydalanuvchi uchun ushbu sponsor uchun `CanUseFeeSponsor`
 
-Shundan so'ng, har bir sponsorlashtirilgan foydalanuvchi operatsiyasiga faqat ushbu metadata kerak:
+Shundan so'ng, har bir qo'llab-quvvatlanadigan foydalanuvchi tranzaksiyasiga faqat ushbu metadatalar kerak:
 
 ```json
 {
@@ -27,18 +24,16 @@ Shundan so'ng, har bir sponsorlashtirilgan foydalanuvchi operatsiyasiga faqat us
 }
 ```
 
-Ushbu sahifada ikkita odatiy shakl koʻrsatilgan:
+Ushbu sahifada ikkita keng tarqalgan namuna koʻrsatilgan:
 
-- **Bepul foydalanuvchi yozadi**: sponsor to ' laydi XOR va foydalanuvchi hech narsa to'lamaydi.
-- **Mahalliy tokenlar uchun to'lovlar**: foydalanuvchi sponsorga dastur tokenini to'laydi va
-  sponsor tarmoqga XOR.
+- Bepul foydalanuvchi yozadi: homiy XOR to'laydi va foydalanuvchi hech narsa to'lamaz.
+- Mahalliy tokenlar to'lovlari: foydalanuvchi sponsorga dastur tokenida, sponsor esa tarmoq uchun XOR da pul to'laydi.
 
-Foydalanish Taira Yangi xususiy ma'lumotlar maydonchasi
-operator va boshqaruv o'zgarishi; u mijoz konfiguratsiyasiga ko'ra yaratilmaydi.
+Avval Taira yoki xususiy test tarmog'idan foydalaning. Yangi xususiy ma'lumotlar maydonasi operator va boshqaruv o'zgarishidir; u mijoz konfiguratsiyasi bilan yaratilmaydi.
 
 ## Misol qiymatlari {#example-values}
 
-Quyidagi buyruqlarda quyidagi joylarni oʻz ichiga oladi:
+Quyida keltirilgan buyruqlarda quyidagi joylarga ega boʻlganlar ishlatiladi:
 
 ```bash
 export DATASPACE="team"
@@ -55,14 +50,11 @@ export EMAIL_POLICY="email#team"
 export POLICY_OWNER="<IDENTIFIER_POLICY_OWNER_ACCOUNT_I105>"
 ```
 
-Kanonikadan foydalanish I105 hisob IDs agar sizning joylashtiruvingizda faol hisob mavjud boʻlmasa
-bir xil hisob raqamlari uchun aliaslar.
+Kanonik I105 hisobidan IDs foydalaning, agar sizning ishga tushirishingizda o'sha hisoblar uchun faol hisob aliaslari bo'lmasa.
 
-## 1. Ma'lumotlar maydonini tayyorlash {#_1-prepare-the-dataspace}
+## 1. Ma'lumotlar maydonini tayyorlang {#_1-prepare-the-dataspace}
 
-Shaxsiy ma'lumotlar maydonining katalog va yo ' nalish ishlaridan boshlang
-[Bogʻlanish SORA Nexus Ma'lumotlar maydonlari](/uz/get-started/sora-nexus-dataspaces.md#_8-provision-a-new-dataspace).
-Operatorga qaraydigan bir qism quyidagicha koʻrinadi:
+[da tasvirlangan xususiy ma'lumotlar maydonining katalogidan va yo'naltirish ishlaridan boshlang SORA Nexus Ma'lumotlar Maydonlariga ulanish ](/uz/get-started/sora-nexus-dataspaces.md#_8-provision-a-new-dataspace). Operatorga qaraydigan fragment quyidagicha ko'rinadi:
 
 ```toml
 [[nexus.lane_catalog]]
@@ -87,28 +79,23 @@ account_prefix = "team."
 description = "Route team domains to the private dataspace"
 ```
 
-Foydalanuvchi tranzaksiyalariga o'tishdan oldin:
+Foydalanuvchi tranzaksiyalariga o'tishdan oldin quyidagilarni tekshiring:
 
-- Xususiy yo'nalish nodda paydo bo ' ladi `/status` javob
-- foydalanuvchi hisobvaraqlari sizning xususiy onboarding oqimingiz orqali qabul qilinadi
-- sponsor hisob raqami mavjud
-- ko'rsatilgan XOR to'lov aktivlari va to'lovni o'chirish hisobvarag'i tarmoqda haqiqiy
+- Xususiy yo'nalish `/status` javob nodida ko'rinadi.
+- foydalanuvchi hisobvaraqlari sizning xususiy onboarding oqimi orqali qabul qilinadi
+- sponsor hisobvarag'i mavjud
+- XOR to'lov aktivlari va to'lovlar hisob raqami tarmoqda haqiqiy bo'ladi;
 
 ## 2. Ma'lumotlar maydonida aktivlarni ro'yxatga olish {#_2-register-assets-in-the-dataspace}
 
-Foydalanuvchilar tomonidan xususiy sektorda saqlanadigan aktivlar ta'rifini qayd etish
-ma'lumotlar maydonini ilovalar mantiqiga ulashdan oldin.
-o'quv qo'llanmasi `usage#billing.team`:
+Foydalanuvchilar xususiy ma'lumotlar maydonida saqlaydigan aktivlar ta'rifini dastur mantiqlariga o'tkazishdan oldin ro'yxatga oling. Mahalliy token to'lovlari namunasi uchun qo'llanma `usage#billing.team`:
 
 ```text
 <asset-name>#<domain>.<dataspace>
 usage#billing.team
 ```
 
-Avval domenni oʻrnating va SNS aktiv nomlar maydonining egalari bo'lgan ijara shartnomasi.
-sirsiz `AliasSetupPlanRequestV1` maqsad uchun `$BILLING_DOMAIN`, shu jumladan
-raqamli `team` ma'lumotlar maydoni ID, Kanonik mulkdor, ijara muddati va joriy narx
-qoʻriqchi:
+Avval aktiv nomlar maydonining egasi bo'lgan domen va SNS ijara shartnomasini o'rnating. `$BILLING_DOMAIN` uchun sirsiz `AliasSetupPlanRequestV1` niyatni yaratish, shu jumladan raqamli `team` ma'lumotlar maydonini ID, kanonik mulkdor, ijara muddati va joriy kotirovka himoyachini:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -120,9 +107,7 @@ iroha --config ./operator.client.toml \
   app alias setup apply --plan-file ./billing-domain.plan.json
 ```
 
-So'ngra aktivni belgilashni qayd et. Kanonik `--id` tarmoq darajasi
-aktivlar ta'rifi ID. Bu alias ishlab chiquvchilar va oxirgi foydalanuvchilar uchun foydalanish kerak
-ma'lumotlar maydonining kodi:
+So'ngra aktivning ta'rifini qayd eting. Kanonik `--id` tarmoq darajasidagi aktiv ta'rifidir ID. Ushbu alias ishlab chiquvchilar va oxirgi foydalanuvchilar ma'lumotlar maydonida koddan foydalanishlari kerak:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -143,7 +128,7 @@ iroha --config ./operator.client.toml \
   --quantity 100
 ```
 
-Foydalanuvchining balansini tekshirish:
+Foydalanuvchining balansini tekshiring:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -152,22 +137,13 @@ iroha --config ./operator.client.toml \
   --account "$USER"
 ```
 
-Ma'lumotlar maydonidagi dastur aktivlari uchun xuddi shu namunadan foydalaning.
-har bir token uchun aktivni belgilash, har biri ma'lumotlar maydoni alias berish va
- SDK qattiq kodlash oʻrniga kodlangan kanonik aktivni aniqlash IDs.
+Ma'lumotlar maydonida ilova aktivlari uchun xuddi shu namunadan foydalaning. Token bo'yicha bir aktiv ta'rifini qayd qiling, har biriga ma'lumotlar Maydonining aliasi berilsin va qattiq kodlangan kanonik aktiv ta'minoti IDs o'rniga SDK kodidagi aliasiga murojaat qiling.
 
 ## 3. Foydalanuvchi aliaslarini ro'yxatga olish {#_3-register-user-aliases}
 
-Hisobotlar hali ham kanonik I105 hisob IDs. Foydalanuvchi nomi hisob
-aliases va aliases kabi nohisli qo'llari bo'lishi kerak `alice@team` yoki
-`alice@members.team`. Telefon raqamlari va elektron pochta manzillaridan nomsiz foydalanish.
-Bular keyingi bo'limdagi xususiy identifikator oqimiga tegishli.
+Hisobvaraqlar hali ham kanonik I105 hisobvarag'i IDs hisoblanadi. Foydalanuvchi nomi hisobvaraq aliaslari bo'lib, aliaslar `alice@team` yoki `alice@members.team` kabi xotirjam bo'lmasligi kerak. Telefon raqamlari yoki elektron pochta manzillarini alias sifatida ishlatmang. Ular keyingi bo'limda xususiy identifikator oqimiga kiradi.
 
-Alias-ni o'rnatish domen sohasi bilan bir xil deklaratsiyaviy rejalashtiruvchidan foydalanadi. SDK yoki
-Onboarding xizmati sirsiz yaratish `AliasSetupPlanRequestV1` kimning niyati
-Hisob-kitoblar uchun kirish maqsadlari `$USER`, boshlang'ich rolni tanlaydi, raqamli
-ma'lumotlar maydoni ID, va joriy ijara narxini himoya qiladi. So'ngra uni rejalashtirish va qo'llash
-bitta atom muomalasi sifatida:
+Alias o'rnatish domen o'rnatishi bilan bir xil deklaratsiyaviy rejalashtiruvchini ishlatadi. SDK yoki onboarding xizmati `AliasSetupPlanRequestV1` niyatini yaratsin, uning hisob-alias kirish maqsadlari `$USER` bo'lib, asosiy rolni tanlaydi, raqamli ma'lumotlar maydonini ID pin qiladi va joriy ijara narxini himoya qiladi. Keyin uni bitta atom muomalasi sifatida rejalashtirish va qo'llash:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -179,11 +155,9 @@ iroha --config ./operator.client.toml \
   app alias setup apply --plan-file ./user-alias.plan.json
 ```
 
-Agar foydalanuvchi to'lamasa XOR, tashabbuskorning ma'lumotlari bilan tasdiqlangan onboardingdan foydalanish
-o'rnatish tranzaksiyasini tuzish va taqdim etish uchun xizmat ko'rsatish. ijara shartnomasini bo'linma
-O'z-o'zidan mustaqil arizalar bilan bog'liq bo'lgan xarid va alias.
+Agar foydalanuvchi XOR to'lamasligi kerak bo'lsa, o'rnatish operatsiyasini tuzish va taqdim etish uchun tasdiqlangan sponsor xabardor bo'lgan onboarding xizmatidan foydalaning. Ijara shartnomasini sotib olish va mas'uliyatli aliaslarni mustaqil arizalar orqali amalga oshirishga ajratmang.
 
-Alias bog'langanidan so'ng uni CLI:
+CLI nomini bog'laganidan so'ng, uni tekshirish:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -195,30 +169,21 @@ iroha --config ./operator.client.toml \
   --dataspace "$DATASPACE"
 ```
 
-Yangi hisobni yaratish uchun o'rnatish xizmatini afzal ko'ring
-`NewAccount` o'rtoq `uaid` va zarur bo'lsa, dastlabki `label`. O ' zbekiston Respublikasi
-oddiy `ledger account register --id` buyruq faqat kanoniklarni qayd etadi
-hisob ID.
+Yangi hisob yaratish uchun `NewAccount` ni barqaror `uaid` va, agar kerak bo'lsa, boshlang'ich `label` bilan yaratadigan onboarding xizmatini afzal ko'ring. Sodda `ledger account register --id` buyruq faqat kanonik hisobni ID qayd etadi.
 
-## 4. Telefon va elektron pochta xabarlarini shaxsiy ravishda FHE {#_4-register-phone-and-email-privately-with-fhe}
+## 4. Telefon va elektron pochta xabarlarini FHE bilan shaxsiy ravishda ro'yxatdan o'tkazing {#_4-register-phone-and-email-privately-with-fhe}
 
-Telefon raqamlari va elektron pochta manzillaridan foydalaning, bular ommaviy emas.
-nomlar. FHE-tashkilangan oqim hisobning nomi bilan bog'liq bo'lmagan xom identifikatorlarni saqlaydi,
-Transaksiya metadatalari va jahon holati:
+Telefon raqamlari va elektron pochta manzillaridan FHE tomonidan qo'llab-quvvatlanadigan oqim hisobning aliaslari, bitim metadatalari va jahon holatidan xom identifikatorlarni saqlaydi:
 
-1. operator a ro'yxatga oladi
-   [RAM-LFE/FHE dastur siyosati](/uz/blockchain/ram-lfe.md) telefon va elektron pochta uchun
-2. operator aktiv identifikator siyosatini ro'yxatdan o'tkazadi: `phone#team` va
-   `email#team`
-3. pulka telefon yoki elektron pochta xabarlarini mahalliy ravishda normallashtiradi
-4. qopchiq shifrlangan qiymatni hal qiluvchiga yuboradi
-5. oʻzgaruvchi bir `IdentifierResolutionReceipt`
-6. foydalanuvchi taqdim etadi `ClaimIdentifier` rasvo bilan
-7. zanjir ko'chmas identifikatorni va rasm hashini saqlaydi, xom telefonni yoki
-   elektron pochta xatlari qiymati
+1. operator telefon va elektron pochta uchun [RAM-LFE/FHE dastur siyosatini ](/uz/blockchain/ram-lfe.md) ro'yxatga oladi.
+2. operator `phone#team` va `email#team` kabi faol identifikator siyosatini ro'yxatga oladi.
+3. pulka telefon yoki elektron pochta xabarini mahalliy ravishda normallashtiradi
+4. qopchiq shifrlangan qiymatni hal qiluvchiga yuboradi .
+5. Yechimchi `IdentifierResolutionReceipt` ni qaytaradi
+6. foydalanuvchi risola bilan birga `ClaimIdentifier` taqdim etadi.
+7. zanjir ko'rinmas identifikatorni va rasm hashini saqlaydi, ammo xom telefon yoki elektron pochta qiymatini saqlamaydi
 
-Operator tomonidagi siyosatning tuzilishi SDK yoki xizmat topshirig'i.
-har bir identifikator turi uchun ushbu ko'rsatma juftliklari:
+Operator tomonidan qo'llaniladigan siyosat SDK yoki xizmat vazifasi hisoblanadi. Har bir identifikator turi uchun ushbu ko'rsatma juftlarini yaratish va taqdim etish:
 
 ```text
 RegisterRamLfeProgramPolicy(
@@ -256,8 +221,7 @@ PhoneE164: "+15551234567"
 EmailAddress: "alice@example.com"
 ```
 
-8 bosqichda sponsor metadata fayli yaratilgandan so'ng, foydalanuvchi tomonidan imzolangan
-ushbu metadatalar bilan talabnoma yo'l-yo'riqlari:
+Sponsorning metadata fayli 8-qadamda yaratilgandan so'ng, ushbu metadatalar bilan foydalanuvchi imzolagan talabnoma yo'l-yo'riqlarini taqdim eting:
 
 ```text
 ClaimIdentifier(
@@ -275,9 +239,7 @@ ClaimIdentifier(
 )
 ```
 
-Joriy CLI ushbu identifikatsiya uchun bosilgan buyruqlarni oshkor etmaydi
-ko'rsatmalar. `InstructionBox` qiymatlari bilan SDK va
-ularni o'tkazish `ledger transaction stdin`:
+Joriy CLI ushbu identifikatsiya yo'l-yo'riqlari uchun bosilgan buyruqlarni oshkor qilmaydi. SDK bilan seriyalangan `InstructionBox` qiymatlarini hosil qiling va ularni `ledger transaction stdin` orqali yuboring:
 
 ```bash
 printf '["<BASE64_CLAIM_IDENTIFIER_INSTRUCTION_BOX>"]\n' |
@@ -286,18 +248,17 @@ printf '["<BASE64_CLAIM_IDENTIFIER_INSTRUCTION_BOX>"]\n' |
     ledger transaction stdin
 ```
 
-Ushbu qo'riqchilarni bordering xizmatida saqlang:
+Ushbu qo'riqchilarni portlash xizmatiga joylashtiring:
 
-- Hisobvaraqning aliaslari faqat inson tomonidan o'qib bo'ladigan qo'llanmalar
-- xom telefon va elektron pochta qiymatlari hech qachon aliases, metadatalar, jurnallarda yoki
-  Transaksiya faydali yuklari
-- hisobda `uaid` xususiy identifikatorlarni talab qilishdan oldin
-- tushumlar bogʻliq `policy_id`, `opaque_id`, `uaid`, `account_id`, va muddati tugaydi
-- resolver kalitlari va yashirin dastur majburiyatlari boshqaruv tomonidan boshqariladi
+- Hisobvaraqning aliaslari faqat inson tomonidan o'qish mumkin bo'lgan uskunalardir
+- xom telefon va elektron pochta qiymatlari hech qachon aliases, metadatalar, loglar yoki operatsiya yuklarida ko'rinmaydi
+- hisobda xususiy identifikatorlarni talab qilishdan oldin `uaid` raqami mavjud
+- tushumlar `policy_id`, `opaque_id`, `uaid`, `account_id` bilan bog'lanadi va muddati tugaydi.
+- resolver kalitlari va yashirin dastur majburiyatlari boshqaruv tomonidan nazorat qilinadi .
 
-## 5. Nuklda Sponsorlikni qo'llash {#_5-enable-sponsorship-on-the-node}
+## 5. Nuklda Sponsoringni qo'llash {#_5-enable-sponsorship-on-the-node}
 
-To'lovni qo'llab-quvvatlash - bu nod/runtime siyosati. Nexus to'lovlar konfiguriyasi:
+To'lovni qo'llab-quvvatlash - bu nod / ish vaqti siyosati. Nexus to'lov konfiguratsiyasida uni qo'llash:
 
 ```toml
 [nexus.fees]
@@ -311,16 +272,13 @@ sponsorship_enabled = true
 sponsor_max_fee = "0"
 ```
 
-`fee_asset_id` tarmoq to'lovlari aktividir. SORA Nexus bu XOR. Foydalanish
-faol XOR alias yoki kanonik XOR aktivlar ta'rifi ID to'plamingiz tomonidan aniqlangan.
+`fee_asset_id` - tarmoq to'lovlari aktividir. SORA Nexus bu XOR. Aktivdan foydalanish XOR alias yoki kanonik XOR aktivlarning tavsifi ID to'plamingiz tomonidan aniqlangan.
 
-`sponsor_max_fee = "0"` Transaksiya bo'yicha sponsorning cheklangan miqdori yo'qligini anglatadi.
-ishlab chiqarish, normal o'lcham va gaz profilini bilganingizdan so'ng nol bo'lmagan cheklovni belgilash
-ma'lumotlar maydonidagi operatsiyalaringizdan.
+`sponsor_max_fee = "0"` degani, har bir tranzaksiya uchun sponsor cheklovlari mavjud emas. Mahsulot uchun ma'lumotlar maydonidagi operatsiyalarning normal hajmi va gaz profilini bilganingizdan so'ng nol bo'lmagan cheklovni o'rnating.
 
-Ushbu konfiguratsiyani o'zingizning odatdagi operator jarayoningiz orqali qayta ishga tushiring.
+Ushbu konfiguratsiyani o'zingizning odatdagi operator jarayoningiz orqali qayta ishga tushiring yoki ko'chiring.
 
-## 6. Sponsorni yaratish va unga mablag' ajratish {#_6-create-and-fund-the-sponsor}
+## 6. Sponsorni yaratish va mablag' bilan ta'minlash {#_6-create-and-fund-the-sponsor}
 
 Agar kerak bo'lsa, sponsor kalitlari juftligini yaratish:
 
@@ -336,15 +294,14 @@ iroha tools address convert \
   <SPONSOR_ED25519_PUBLIC_KEY_HEX>
 ```
 
-Sponsorlik hisobini shaxsiy onlayn o'tkazish orqali ro'yxatdan o'tkazing:
+Sponsor hisob qaydnomasini shaxsiy onlayn o'tish oqimi orqali ro'yxatdan o'tkazing:
 
 ```bash
 iroha --config ./operator.client.toml \
   ledger account register --id "$SPONSOR"
 ```
 
-Sponsorni moliyalashtirish XOR xazinadan, talabnoma hisobidan yoki boshqa moliyalashtirilgan
-hisob raqami:
+Sponsorni XOR bilan xazinadan, talabnoma hisobvarag'idan yoki boshqa moliyalashtirilgan hisobvaraqdan mablag' ajrating:
 
 ```bash
 iroha --config ./treasury.client.toml \
@@ -355,10 +312,7 @@ iroha --config ./treasury.client.toml \
   --quantity 1000
 ```
 
-uchun Taira repetitsiyalar, kasana yordamchisi qutqarish
-[Testnetni olish XOR to ' g'risida Taira](/uz/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)
-sifatida `taira_faucet_claim.py`, keyin sponsorni ommaviy kran orqali moliyalashtiradi
-xazinani o'tkazishning o'rniga:
+uchun Taira repetitsiyalar, kasana yordamchisi qutqarish [Testnetni olish XOR bilan Taira](/uz/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) koʻrsatilgan `taira_faucet_claim.py`, keyin sponsorni xazinani o'tkazishning o'rniga davlat kranidan mablag' bilan ta'minlash:
 
 ```bash
 export SPONSOR='<SPONSOR_TAIRA_I105_ACCOUNT_ID>'
@@ -372,7 +326,7 @@ iroha --config ./sponsor.client.toml \
   --account "$SPONSOR"
 ```
 
-Sponsorni tekshirib ko'ring. XOR muvozanat:
+Sponsorning XOR balansini tekshirish:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -383,11 +337,9 @@ iroha --config ./operator.client.toml \
 
 ## 7. Foydalanuvchiga Sponsorga kirish huquqini berish {#_7-grant-a-user-access-to-the-sponsor}
 
-Sponsor har bir foydalanuvchidan to'lovlarni olish uchun ruxsat berishi kerak.
-foydalanuvchilarga o'zboshimchalik bilan sponsorlik hisoblarini nomlashdan to'sqinlik qiladi.
+Sponsor har bir foydalanuvchiga haq to'lash uchun ruxsat berishlari kerak. Grant foydalanuvchilarga o'zboshimchalik bilan sponsor hisoblarini nomlashdan to'sqinlik qiladi.
 
-Buni sponsor hisob raqami sifatida yoki sizning
-Ish vaqti siyosati:
+Buni sponsor hisob qaydnomasi sifatida yoki ish vaqti siyosatingiz tomonidan ruxsat etilgan operatsion hisob qaydnomasi sifatida ishga tushiring:
 
 ```bash
 printf '{
@@ -402,10 +354,10 @@ printf '{
 
 Onboarding xizmatlari uchun buni oddiy hisob-kitobni ta'minlash bosqichini tashkil etish va yozuv:
 
-- foydalanuvchi hisob raqami
-- homiy hisob raqami
+- foydalanuvchi hisobi
+- sponsor hisobvarag'i
 - ma'lumotlar maydonlari yoki dasturlari
-- tasdiqlash varaqasi yoki boshqaruv qarori
+- tasdiqlangan chipta yoki boshqaruv qarori
 
 Foydalanuvchining grantlarini tekshirish uchun:
 
@@ -414,9 +366,9 @@ iroha --config ./operator.client.toml \
   ledger account permission list --id "$USER"
 ```
 
-## 8. Sponsorning metadatalarini qo'shing {#_8-attach-sponsor-metadata}
+## 8. Sponsorning Metadatalarini qo'shing {#_8-attach-sponsor-metadata}
 
-Koʻp marta ishlatiladigan metadata faylini yaratish:
+Qayta ishlatilishi mumkin boʻlgan metadata faylini yaratish:
 
 ```bash
 printf '{
@@ -424,7 +376,7 @@ printf '{
 }\n' "$SPONSOR" > sponsored-fee.json
 ```
 
-Ushbu metadata bilan taqdim etilgan har qanday yozish sponsordan:
+Ushbu metadatalar bilan taqdim etilgan har qanday yozish sponsordan:
 
 ```bash
 iroha --config ./alice.client.toml \
@@ -432,32 +384,26 @@ iroha --config ./alice.client.toml \
   ledger transaction ping --msg "sponsored private-dataspace write"
 ```
 
-uchun SDKs, imzolangan ma'lumotlar ob'ektiga bir xil bitim metadatalarini qo'shish
-Transaksiya. Foydalanuvchi tranzaksiyani foydalanuvchining kaliti bilan imzolaydi. Sponsor
-har bir foydalanuvchi tranzaksiyasini imzolamaydi , chunki oldingi `CanUseFeeSponsor`
-grant - bu ruxsatnoma.
+SDKs uchun imzolangan tranzaksiya ob'ektiga bir xil transaksiya metadatalarini ilova qiling. Foydalanuvchi tranzaksiyani foydalanuvchining kaliti bilan imzolaydi. Sponsor har bir foydalanuvchi tranzasyasini imzolamaydi, chunki avvalgi `CanUseFeeSponsor` grant ruxsatnoma hisoblanadi.
 
-## Birinchi nusxasi: foydalanuvchilar to'lovlarni to'lashmaydi {#pattern-1-users-pay-no-fees}
+## 1-rasm: Foydalanuvchilar to'lovlarni to'lashmaydi {#pattern-1-users-pay-no-fees}
 
-Ilova yoki operator barcha tarmoq to'lovlarini qabul qilganida ushbu usuldan foydalaning.
+Ilova yoki operator barcha tarmoq to'lovlarini qabul qilganda ushbu usuldan foydalaning.
 
 Ishlab chiquvchilar ro'yxati:
 
-1. Foydalanuvchining odatiy operatsiya yukini o'zgartirmasdan saqlang.
-2. Transaksiya metadatalarini qoʻshish `fee_sponsor`.
+1. Foydalanuvchining normal operatsiya yukini o'zgartirmasdan saqlang.
+2. `fee_sponsor` bilan tranzaksiya metadatalarini qo'shing.
 3. Foydalanuvchi sifatida imzo oling.
 4. Xususiy ma'lumotlar maydonining yo'nalishi orqali yuboring.
 
-Foydalanuvchi hisob raqami XOR balans. Sponsor hisob raqami saqlanishi kerak
-yetarli XOR konfiguratsiyani qoplash uchun Nexus to'lovlar.
+Foydalanuvchi hisobvarag'i XOR balansini talab qilmaydi. Sponsor hisobvaragi XOR konfiguratsiya qilingan Nexus to'lovlarini qoplash uchun etarli miqdorda saqlashi kerak.
 
-## 2- model: foydalanuvchilar mahalliy belgini to'laydilar {#pattern-2-users-pay-a-local-token}
+## 2-rasm: foydalanuvchilar mahalliy belgini to'lashadi {#pattern-2-users-pay-a-local-token}
 
-Foydalanuvchilar ushlab turmasligi kerak boʻlganda XOR, lekin ma'lumotlar maydoni hali ham
-ichki dastur haqi, kredit xarajatlari yoki kvota tokenlari.
+Foydalanuvchilar XOR ustida bo'lmasligi kerak bo'lganda buni ishlating, ammo ma'lumotlar maydoni hali ham ichki dastur to'lovini, kredit xarajatlarini yoki kvot tokenini xohlaydi.
 
-Ushbu modelda mahalliy token dastur to'lovidir.
-tarmoq to'lovlari aktiv. XOR.
+Ushbu modelda mahalliy token ariza to'lovidir. u tarmoq to'lovi aktiv emas. Sponsor hali ham XOR da tarmoq to'lovini to'laydi.
 
 Masalan, xususiy ma'lumotlar maydonida mahalliy tokendan foydalaning:
 
@@ -465,14 +411,13 @@ Masalan, xususiy ma'lumotlar maydonida mahalliy tokendan foydalaning:
 usage#billing.team
 ```
 
-Fond foydalanuvchilari `usage#billing.team` Onboarding paytida, obunalarni yangilash;
-Keyin foydalanuvchi tranzaksiyasini atomlashtiring:
+`usage#billing.team` bilan mablag' ajratish foydalanuvchilari onboarding, abonnementni yangilash yoki kvotani taqsimlash paytida. Keyin foydalanuvchi tranzaksiyasini atomlashtiring:
 
 1. foydalanuvchidan sponsorga mahalliy tokenlarni o'tkazish
 2. talab qilingan dasturni bajarish
-3. kiritiladi `fee_sponsor` metadata , shunda sponsor pul to'laydi XOR
+3. `fee_sponsor` metadatalarni o'z ichiga oladi, shuning uchun sponsor XOR ni to'laydi.
 
-Kamdan-kam CLI tutun sinovlari faqat mahalliy token oʻtkazish tomonidan qoʻllab-quvvatlanadi XOR:
+Kamroq CLI tutun sinovlari faqat XOR tomonidan qo'llab-quvvatlanadigan mahalliy token o'tkazishdir:
 
 ```bash
 iroha --config ./alice.client.toml \
@@ -484,42 +429,35 @@ iroha --config ./alice.client.toml \
   --quantity 1
 ```
 
-Haqiqiy dastur uchun mahalliy token to'lovini alohida sifatida taqdim etmang
-eng yaxshi urinish tranzaksiyasini yaratish.
-to'lov va biznes yo'l-yo'riqlarini berish yoki shartnoma kirish punktini oshkor qilish
-biznes operatsiyasini qo'llashdan oldin mahalliy tokenni to'playdi.
+Haqiqiy dastur uchun mahalliy token to'lovini alohida eng yaxshi sa'y-harakat tranzaksiyasi sifatida taqdim etmang. To'lov va biznes ko'rsatmalarini o'z ichiga olgan bitta imzolangan tranzaksiyani yaratish yoki biznes operatsiyasini qo'llashdan oldin mahalliy tokenni yig'adigan shartnoma kirish punktini kashf etish.
 
-Oʻzingizning ilova yoki shartnomangizda konversiya siyosatini saqlang:
+Oʻzingizning ilova yoki shartnomangizda konversiya siyosatini saqlash:
 
-- qaysi operatsiya qancha mahalliy token birliklari xarajat
-- qanday mahalliy token inflow xaritasi sponsorlash uchun XOR to'ldirish
-- foydalanuvchi muvozanati juda past bo'lganda nima sodir bo'ladi
-- sponsor bo'lganda nima yuz beradi XOR muvozanat juda past
+- qaysi operatsiya qancha mahalliy token birliklarini sarflaydi
+- XOR to'ldirishlarni qo'llab-quvvatlash uchun mahalliy tokenlar inflow xaritalari qanday
+- foydalanuvchilarning muvozanati juda past bo'lganda nima sodir bo'ladi
+- sponsorning XOR balanslari juda past bo'lganda nima sodir bo'ladi
 
-::: warning
+::: ogohlantirish
 
-Foydalanish `gas_asset_id` "Milliy token to'lovlari" namunasi uchun, agar siz xohlamasangiz
-ko'rsatkichlarni o'z ichiga oladigan gaz aktivida ham sponsordan to'lov olinadi.
-`fee_sponsor` shuningdek, konsorterni konfiguratsiya qilingan gaz quvurlari uchun to'lovchi qiladi
-mahalliy token foydalanuvchi to'lovlari uchun tokenni aniq ravishda
-o'tkazish yoki shartnoma qoidasi.
+`gas_asset_id` ni "local-token fee" modeli uchun ishlatmang, agar siz ushbu gaz aktivida ham sponsordan to'lov olinishini xohlamasangiz. Hozirgi ishga tushirish davrida `fee_sponsor` shuningdek, qo'llab-quvvatlovchini konfiguratsiya qilingan quvur-gaz aktivlari debitlari uchun to'lovchi qiladi. Mahalliy tokenlar foydalanuvchisi to'lovlari uchun tokenni o'tkazish yoki shartnoma qoidasi bilan aniq yig'ib oling.
 
 :::
 
-## Muvaffaqiyatga erishilmagan koʻrsatkichlarni tugallash {#debug-failed-sponsored-transactions}
+## Muvaffaqiyatlarning muvaffaqiyatsiz tugashini oʻzgartirish {#debug-failed-sponsored-transactions}
 
 Ko'pincha rad etish sabablari odatda bitta yo'qolgan o'rnatish bosqichini ko'rsatadi:
 
-| Xato matni | Nimalarni tekshirish kerak |
+|Xato matni |Nimalarni tekshirib koʻrish kerak|
 | --- | --- |
-| `fee sponsorship is disabled` | `nexus.fees.sponsorship_enabled` hali ham `false` to'plamda. |
-| `fee sponsor is not authorized` | Foydalanuvchi `CanUseFeeSponsor` bu sponsor uchun. |
-| `fee asset ... is missing` | Sponsor konfiguratsiya qilingan XOR haq aktivlari. |
-| `fee balance ... is insufficient` | Sponsorning to'ldirish XOR muvozanat. |
-| `fee exceeds sponsor_max_fee` | Oʻsish `sponsor_max_fee` yoki muomala hajmi/gazini kamaytirish. |
-| `invalid nexus fee asset id` | Tuzatish `nexus.fees.fee_asset_id` yoki XOR Asset aliaslari. |
+|`fee sponsorship is disabled` |`nexus.fees.sponsorship_enabled` hali ham `false` bo'g'inida. |
+|`fee sponsor is not authorized` |Foydalanuvchi uchun `CanUseFeeSponsor` ushbu ko'rsatkich mavjud emas. |
+|`fee asset ... is missing` |Sponsor XOR to'lov aktivini saqlamaydi. |
+|`fee balance ... is insufficient` |Sponsorning XOR balansini to'ldir. |
+|`fee exceeds sponsor_max_fee` |`sponsor_max_fee` ko'paytirish yoki bitimning hajmi/gazini kamaytirish. |
+|`invalid nexus fee asset id` |`nexus.fees.fee_asset_id` yoki XOR aktiv aliasini o'zgartirish. |
 
-2. O'zgarishlarni to'g'rilashda har ikki balansni tekshirib ko'ring:
+2 modelni xatoga yo'l qo'yishda ikkala balansni tekshirib ko'ring:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -537,13 +475,12 @@ iroha --config ./operator.client.toml \
 
 Sponsorni xazina hisobvarag'i sifatida ko'rib chiqish:
 
-- testnet, staging va mainnet uchun alohida sponsor kalitlarini saqlang
-- sponsor oldida ogohlantirish XOR muvozanat kirish darajasiga yetadi
-- nol boʻlmagan belgilash `sponsor_max_fee` trafik belgilab berilganidan so'ng cap
-- talabnoma yoki darvoza orqali qoʻllaniladigan roʻyxat
-- bekor qilish `CanUseFeeSponsor` foydalanuvchilar ma'lumotlar maydonidan chiqib ketganda
-- foydalanuvchilar uchun hashlarni, mahalliy token to'lovlarini va sponsorlarni uyg'otish XOR
-  debitlar
+- testnet, staging va mainnet uchun alohida sponsor kalitlarini saqlang.
+- qo'llab-quvvatlovchi XOR balansining qabul darajasiga yetib kelishidan oldin ogohlantirish
+- yo'l-yo'riq belgilab qo'yilganidan so'ng `sponsor_max_fee` cheklovini o'rnatish
+- talabnoma yoki darvoza vositasida tarif cheklovlari qoʻllab-quvvatlangan yozish
+- foydalanuvchilar ma'lumotlar maydonidan chiqqanida `CanUseFeeSponsor` ni bekor qilish;
+- foydalanuvchi tranzaksiya hashlarini, mahalliy tokenlar bilan to'lovlarni va sponsorlarning XOR debitlarini uyg'otish
 
 Foydalanuvchi uchun sponsorlikni bekor qilish:
 
@@ -560,8 +497,8 @@ printf '{
 
 ## Bogʻliq sahifalar {#related-pages}
 
-- [Bogʻlanish SORA Nexus Ma'lumotlar maydonlari](/uz/get-started/sora-nexus-dataspaces.md)
-- [Operatsiya qilish Iroha 3 orqali CLI](/uz/get-started/operate-iroha-via-cli.md)
+- [SORA Nexus ma'lumotlar maydonlari](/uz/get-started/sora-nexus-dataspaces.md) bilan bog'lanish
+- [Iroha 3 orqali CLI](/uz/get-started/operate-iroha-via-cli.md) orqali harakatlaning
 - [Aktivlar](/uz/blockchain/assets.md)
 - [Ruxsatnomalar](/uz/blockchain/permissions.md)
-- [Ruxsat to'plamlari](/uz/reference/permissions.md)
+- [Ruxsat belgisi ](/uz/reference/permissions.md)

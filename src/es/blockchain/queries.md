@@ -18,7 +18,7 @@ Las preguntas son pequeños objetos similares a instrucciones que, cuando se env
 
 Este no es necesariamente el único tipo de información disponible en la red, pero es el único tipo que está garantizado para ser accesible en todas las redes.
 
-Para cada despliegue de Iroha, podría haber otra información disponible, por ejemplo, la disponibilidad de datos telemétricos depende de los administradores de red. Es totalmente su decisión si quieren o no asignar la potencia de procesamiento para rastrear el trabajo en lugar de usarlo para hacer el trabajo real.
+Por cada despliegue de Iroha, podría haber otra información disponible. Por ejemplo, la disponibilidad de datos de telemetría depende de los administradores de red. Es totalmente su decisión si quieren o no asignar poder de procesamiento para rastrear el trabajo en lugar de usarlo para hacer. El trabajo real. Por el contrario, siempre se requieren algunas funciones, por ejemplo, tener acceso al saldo de su cuenta.
 
 Los resultados de las consultas pueden ser clasificados [](#sorting), [paginated](#pagination) y [filtered](#filters) al mismo tiempo. La filtración puede realizarse en base a una variedad de principios, desde dominios específicos (máscaras individuales IP para filtros de direcciones) hasta métodos de subfiles como `begins_with` combinados utilizando operaciones lógicas.
 

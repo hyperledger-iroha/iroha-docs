@@ -567,7 +567,7 @@ export async function endKaigi(input: {
 
 ## Financiamento do modo privado {#private-mode-funding}
 
-As operações privadas Kaigi de criação, união e terminação podem exigir proteção XOR para a taxa do ponto de entrada privado.
+As operações privadas Kaigi de criação, união e finalização podem exigir um escudo XOR para a taxa de entrada privada. O seu aplicativo deve detectar esse erro e oferecer uma ação de auto-proteção antes de voltar a tentar.
 
 ```ts
 type PrivateKaigiFundingBridge = KaigiBridge & {
@@ -621,7 +621,7 @@ Na demonstração, o UI pede ao usuário para se auto-proteger e depois retenta 
 
 ## Manual Fallback {#manual-fallback}
 
-A sinalização automática depende de uma carteira ao vivo, rotas com capacidade Kaigi - Torii e geração de prova em modo privado.
+A sinalização automática depende de uma carteira ao vivo, rotas com capacidade Kaigi - Torii e geração de prova em modo privado. Manter um retrocesso manual para desenvolvimento e ambientes restritos:
 
 - Se o `CreateKaigi` falhar, mostrar um convite manual que contenha a oferta
 - Se `JoinKaigi` falhar, indique um pacote de resposta bruto
@@ -649,7 +649,7 @@ npm run e2e:ui
 
 O teste de fumaça UI verifica que a rota `/kaigi` rende. Um teste de mídia real ainda precisa de duas carteiras financiadas mais duas janelas ou dispositivos, porque as permissões para assinar transações, câmera, microfone e WebRTC variam com o tempo de execução.
 
-Se estiver a fazer testes contra TAIRA e uma rota específica de chamada retorna `404`, confirme primeiro que a carteira hospedeira foi enviada com êxito `CreateKaigi`.
+Se estiver a fazer um teste contra TAIRA e uma rota específica para a chamada retorna `404`, primeiro confirmar que a carteira de hospedeiro foi apresentada com êxito `CreateKaigi`. Os pontos finais de saúde do relevo podem estar disponíveis antes de qualquer chamada específica existir.
 
 ## Próximos passos {#next-steps}
 

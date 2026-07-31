@@ -8,40 +8,28 @@ translation_engine: nllb-200-ct2
 
 # Python {#python}
 
-ה- Python SDK במרחב העבודה העליון הוא `iroha-python`. הראשון. Iroha 3
-מטרות השחרור Torii ו Norito על פני השטח. תקע את גרסת החבילה
-או תיקון המקור שימש באינטגרציה שלך SDK והנקודה להישאר על
-אותו תיקון בקבוצת אלקטרוני.
+Python SDK במרחב העבודה העליון הוא `iroha-python`. השחרור הראשון Iroha 3 מטרה על פני השטח הנוכחי Torii ו Norito. חישוב את הגרסה של החבילה או תיקון המקור המשמש על ידי האינטגרציה שלך כך ש SDK והנקודה יישארו על אותו תיקון פורמט כבלים.
 
-הדוגמאות הנמצאות בהמשך הן רק קריאה. Taira ב
-`https://taira.sora.org`. דוגמאות מוטציות הן תבניות עסקאות: הם
-דורשים Taira סמכות, מפתח פרטי, מטא-נתונים על גז וכל מפעיל
-סימנים הנדרשים על ידי מסלול היעד לפני שיכלו להגיש אותם.
+דוגמאות קריאה בלבד הבאות נבדקו נגד ציבורית Taira ב `https://taira.sora.org`. דוגמאיות מוטציות הן טמבלטים של עסקאות: הם דורשים סמכות אמיתית Taira, מפתח פרטי, מטא נתונים על גז וכל סימנים למפעיל הנדרשים על ידי מסלול היעד לפני שהם יכולים להגיש.
 
 השתמשו בדוגמאות בסדר זה:
 
-| שלב | רוץ נגד הציבור Taira? | מה שאתה צריך |
+|שלב |לרוץ נגד הציבור Taira? |מה אתה צריך?|
 | --- | --- | --- |
-| שיחות לקוחות קריאה בלבד | כן. | Python חבילה ועוד גישה לרשת |
-| יצרני חתימות ומוראות מקומיים | אין שיחת רשת עד `submit()` | הרחבה המקומית ואת החומר המרכזי שלך |
-| עסקי מוטציה וקריאות שירות | רק עם חשבון משומך שלך | חשבון רשויות, מפתח פרטי, שרשרת ID, נתונים מטאטא של עמלות, סולן נכסים של עמלות וטוגנים של מסלול |
-| חיבור קודקים מסגרת, קריפטו, ו GPU עוזרים | רק מקומי | הרחבה המקומית; GPU עוזרים צריכים גם CUDA-הסוג היכול לסדר האחורי |
+|שיחות לקוחות קריאה בלבד.|כן.|Python חבילה ועוד גישה לרשת |
+|יצרנים מקומיים של חתימות והוראות |אין שיחת רשת עד `submit()` |ההרחבה המקומית והחומר המרכזי שלך.|
+|העסקים המוטלים וקריאות שירות|רק עם חשבון משומך שלך.|חשבון הסוכנות, מפתח פרטי, שרשרת ID, מטא נתונים על דמי הדמיה, סולן נכסי הדמיה והצבעות של הנתיב |
+|חיבור קודקים מסגרת, קריפטו, ו GPU עוזרים |מקומי בלבד.|הרחבה המקומית; GPU עוזרים צריכים גם backend יכולת CUDA |
 
-## תקין {#install}
+## להתקין {#install}
 
-השם של הנתונים המטאטאוניים של החבילה הוא `iroha-python`. אל תחשבו על חוסר סימנים. PyPI
-ההתקנה מתאימה ל- Live Taira רשת. להתקין גלגל או מקורות בדיקת
-נבנתה מאותו תיקון ראשוני מטרות האינטגרציה שלך:
+השם של הנתונים המטאטאוניים של החבילה הוא `iroha-python`. אל תחשבו כי התקנת PyPI לא מחוברת מתאימה לרשת Taira חיה. תקין גלגל או קישור מקור שנבנה מאותו תיקון מעלה מטרות האינטגרציה שלך:
 
 ```bash
 python -m pip install /path/to/iroha_python-*.whl
 ```
 
-אם הפרויקט שלך צורב את המרחב העליון של העבודה ישירות, תקין Python
-תלות ולבניית ההרחבה המקומית לפני פעלת דוגמאות
-`Instruction`, `TransactionDraft`, חתימה, קריפטו, SoraFS עוזרים ילידים, GPU
-עוזרים, או קודקים תמונות Connect.
-`python/iroha_python/README.md`, לאחר מכן לבדוק כי המטען של היצוא המקומי:
+אם הפרויקט שלך צורב את חלל העבודה העליון באופן ישיר, תקין את התלות Python ובנה את ההרחבה המקומית לפני שתפעיל דוגמאות שמשתמשות `Instruction`, `TransactionDraft`, חתימה, קריפטו, SoraFS עוזרים מקומיים, GPU עוזרים, או קודקים של מסגרת Connect. השתמש בפקודה "הבנה" מ- `python/iroha_python/README.md` למעלה, ולאחר מכן בדוק אם המטען של הייצוא המקורי הוא:
 
 ```bash
 cd python/iroha_python
@@ -53,13 +41,11 @@ print(generate_ed25519_keypair().public_key.hex())
 PY
 ```
 
-אם `create_torii_client` יבוא אבל `Instruction` או
-`generate_ed25519_keypair` כישלונות, הטהורים Python החבילה זמינה אך
-ההרחבה המקומית לא.
+אם `create_torii_client` יבוא אך `Instruction` או `generate_ed25519_keypair` נכשלו, הקופסה הטהורה של Python זמינה אך ההרחבה המקומית אינה.
 
 ## התחלה מהירה {#quickstart}
 
-תתחיל עם ציבור, רק קריאה Taira נקודות סוף:
+התחילו עם נקודות סוף Taira ציבוריות, קריאה בלבד:
 
 ```python
 from iroha_python import (
@@ -79,14 +65,9 @@ for account in accounts.items:
 
 ## התקנה משותפת {#shared-setup}
 
-השתמשו בהקנה זו עבור תבניות המוטות. החליפו כל מחזיק מקום
-Taira סמכות, מפתח פרטי, טוקן, נכס/חשבון IDs מההתגייסות שלך
-לפני שהשתתף.
+השתמשו בהקנה זו עבור תבניות המוטות. החליפו כל מחזיקי מקומות עם סמכות Taira, מפתח פרטי, טוקן וסיכוי/חשבון IDs מההתפקיד שלכם לפני שתשלחו.
 
-`authority` הוא החשבון המחתם על העסקה. `private_key` חייב להתאים
-החשבון הזה, `CHAIN_ID` חייב להתאים לרשת היעד, ו `TX_METADATA` חייב
-לכלול את שדות המחיר הנצפים על ידי הרשת.
-אי תוקף בכוונה, כך שהם לא הוגשו במקרה.
+`authority` הוא החשבון המחתם על העסקה. `private_key` חייב להתאים את החשבון הזה, `CHAIN_ID` צריך להתאים את הרשת המטרה, ו `TX_METADATA` חייב לכלול את שדות הדמיה המתאימים לרשת. בעלי המקומות למטה הם לא חוקיים בכוונה ולכן הם לא הוגשו במקרה.
 
 ```python
 from iroha_python import (
@@ -133,19 +114,13 @@ def submit(*instructions):
     )
 ```
 
-`Instruction.*` קורות רק לבנות מטענים מועילים של הוראות. `submit()` האם זה
-נקודה שבה SDK חותם על העסקה, שולח אותה ל Torii, ומחכה
-מצב.
+`Instruction.*` קורא רק למשאבים מועילים של הוראות הבנייה. `submit()` הוא הנקודה שבה SDK חותם על העסקה, שולח אותה ל Torii וממתין לתנאי.
 
 ## דמי הסכום והגז {#fees-and-gas}
 
-כתיבת עסקאות זקוקה לתנתונים מטאטא של דמי דמי ודמי אסיטום מימון. Taira,
-נכס העלות מימון על ידי המזרקה הציבורית ואת הנתונים המטאטאניים של העסקאות חייבים
-כולל `gas_asset_id`. על Minamoto, דמי ההכנסה משולבים בפועל. XOR ואת הנכסים
-ID מגיע מההסדר של הרשת.
+כתיבת עסקאות זקוקה לתנתונים מטאטא של דמי דמי ודמי אסיטום מימון. Taira, נכס העלות מימון על ידי המזרקה הציבורית ונתונים המטאטא של העסקאות חייבים לכלול: `gas_asset_id`. על Minamoto, שכר תשלם בפועל. XOR והסכום ID מגיע מההסדר של הרשת הזאת.
 
-הנתונים המטאטאליים של דמי עמלה נחשבים לעסקה, לא להוראות בודדות.
-`submit()` עוזר מעל קישורים `TX_METADATA` לכל עסקאות שהיא יוצרת:
+הנתונים המטאטאמיים של דמי תשלום שייכים למסחר, לא להוראות בודדות. העוזר `submit()` למעלה מוסיף `TX_METADATA` לכל עסקאות שהוא מבנה:
 
 ```python
 TX_METADATA = {
@@ -170,9 +145,7 @@ envelope, status = client.build_and_submit_transaction(
 )
 ```
 
-לפני שישלחו הודעות, ודא שהחשבון של הסמכות יש מספיק כסף.
-נכס. המזרקה המדויקת ואת נכס ID הם ספציפיים לרשת; זה Taira
-צורה:
+לפני ששלחת כתבות, לוודא שהחשבון של הסמכות מחזיק מספיק נכס תשלום. המזרקה המדויקת ואת נכס ID הם ספציפיים לרשת; זה הצורה Taira:
 
 ```python
 FEE_ASSET_DEFINITION = "6TEAJqbb8oEPmLncoNiMRbLEK6tw"
@@ -190,11 +163,9 @@ if not fee_assets.items:
     raise RuntimeError("fund the authority account with the Taira fee asset first")
 ```
 
-המברח מחזיר את הקונקרט `asset_id` כדי להשתמש בבדיקת המשקל.
-`gas_asset_id` שדה הנתונים המטאטא משתמשים בהגדרה של נכס תשלום ID.
+המנקה חוזרת את הקונקרט `asset_id` לשימוש בדיקת המשקל. שדה הנתונים המטאטא `gas_asset_id` משתמש בהגדרה של נכס תשלום ID.
 
-לשמור על מטא-מידע של היישום נפרד מהמטא-מידי תשלום על ידי מיזוג המפות
-כאשר אתה מבצע עסקאות:
+שמרו על מטא נתונים של היישום נפרדים ממתא נתוני תשלום על ידי מיזוג המפות כאשר אתה בונה עסקאות:
 
 ```python
 APP_METADATA = {"source": "python-docs"}
@@ -210,13 +181,11 @@ draft = TransactionDraft(
 )
 ```
 
-אם אתה מחמיץ נתונים מטאטא של דמי, להשתמש נכס דמי לא נכון, או לחתום עם
-חשבון, רשת אמיתית צריכה לסרב את העסקה גם אם ההוראה
-מטען מועיל הוא אחרת תקף.
+אם אתה משאיר מטא-מידע על דמי תשלום, משתמש במכשיר תשלום שגוי, או חותם עם חשבון ללא מימון, רשת אמיתית צריכה לדחות את העסקה גם אם המטען המשפטי של ההוראות הוא වලודד אחרת.
 
-## Taira-תקריאות מבוקשות בקריאה בלבד {#taira-checked-read-only-calls}
+## Taira - שיחות קריאה בלבד מבוקשות {#taira-checked-read-only-calls}
 
-השיחות האלה חזרו בהצלחה נגד הציבור Taira:
+שיחות אלה חזרו בהצלחה נגד הציבור Taira:
 
 ```python
 client = create_torii_client("https://taira.sora.org")
@@ -243,52 +212,34 @@ print(time_now.now_ms, len(time_status.samples), sumeragi.leader_index)
 print(connect.enabled, connect.sessions_active)
 ```
 
-מסלולים כגון `/v1/status`, רשימת הנתונים הציבורית, Sumeragi RBC ניסוי דגימות, קשר
-תמונות של מנהל, וניהול רישום אפליקציה Connect לא היו ציבוריים
-זמין ב Taira במהלך הבדיקה. `request_json("GET", "/status")` עבור
-המטען הפועל של מצב הערך הציבורי על Taira.
+דרכים כגון `/v1/status`, רישום עמיתים ציבורי, קבלת דגימות Sumeragi RBC, תמונות של מנהל הערך, וניהול רישום אפליקציה Connect לא היו זמינים לציבור ב- Taira במהלך הבדיקה. השתמשו ב- `request_json("GET", "/status")` עבור עומס תועלת מצב הערך הציבורי ב- Taira.
 
 ## הוראות לבניינים {#instruction-builders}
 
-ה- SDK מגלים בונים טפסים למשפחות ההוראות הנפוצות ביותר
-JSON כפתור בריחה עבור סוגי שאינם מסוג ראשון Python שיטות עדיין.
-החתיכות הבאות הן תבניות עסקאות מוטותיות ולא היו
-הוצגו לציבור Taira בלי חשבון חתימה.
+SDK חושף את הבניינים הטייפדים למשפחות ההוראות הנפוצות ביותר ואת פתח הבריחה JSON עבור וריאונים שאינם עדיין שיטות מדרגה ראשונה Python. החתיכות הבאות הן תבניות עסקאות מוטנות ולא הוגשו לציבור Taira ללא חשבון חתימה.
 
-הם מעדיפים עוזרים כתיבים כשהם קיימים: הם נורמליזים Python ערכים וכישלון
-מוקדם על צורות לא חוקיות. `Instruction.from_json` רק כאשר אתה צריך
-סוגי הוראות שאין בהם Python עוזר עדיין.
+מעדיפים עוזרים מקובלים כאשר הם קיימים: הם נורמליזים את הערכים של Python ומכשירים מוקדם על צורות לא חוקיות. השתמש ב- `Instruction.from_json` רק כאשר אתה צריך גרסה של הוראות שאין לה עוזר Python עדיין.
 
-| משפחת ההוראה | Python פני השטח |
+|משפחת הוראות |שטח Python |
 | --- | --- |
-| רישום | `register_account`, `register_asset_definition_numeric`, `register_rwa`, `register_time_trigger`, `register_precommit_trigger`; `register_domain` מיועד למכשירים גנזיס/תקנה |
-| לא רשום | `unregister_trigger`; שימוש `Instruction.from_json` עבור גרסאות אחרות |
-| מנט/ברן | `mint_asset_numeric`, `burn_asset_numeric`, `mint_trigger_repetitions`, `burn_trigger_repetitions` |
-| העברה | `transfer_asset_numeric`, `transfer_domain`, `transfer_asset_definition`, `transfer_nft`, `transfer_rwa`, `force_transfer_rwa` |
-| מטאדאטה ופיקוח | `set_account_key_value`, `remove_account_key_value`, `set_rwa_controls`, `set_rwa_key_value`, `remove_rwa_key_value` |
-| RWA מחזור החיים | `merge_rwas`, `redeem_rwa`, `freeze_rwa`, `unfreeze_rwa`, `hold_rwa`, `release_rwa` |
-| ExecuteTrigger | `execute_trigger` |
-| ההרחבה של ה-repo/ההתיישבות | `repo_initiate`, `repo_unwind`, `repo_margin_call`, `settlement_dvp`, `settlement_pvp` |
-| סגרות נכסים מקומיים | `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, `expire_asset_lock`, בנוסף לקוח `*_and_wait` עוזרים |
-| גרנט/רוחב, SetParameter, רישום, קוסטום, שיפור, וריאונים פחות נפוצים של רישום/לא רישום | `Instruction.from_json` או `TransactionBuilder.add_instruction_json` עם קאנוניקה `InstructionBox` JSON |
+|רישום | `register_account`, `register_asset_definition_numeric`, `register_rwa`, `register_time_trigger`, `register_precommit_trigger`; `register_domain` מיועד למכשירים גנזיס/צליחת אקדח |
+|לא רשום.|`unregister_trigger`; שימוש `Instruction.from_json` עבור סוגיות אחרות |
+|מינט/ברן |`mint_asset_numeric`, `burn_asset_numeric`, `mint_trigger_repetitions`, `burn_trigger_repetitions` |
+|העברה | `transfer_asset_numeric`, `transfer_domain`, `transfer_asset_definition`, `transfer_nft`, `transfer_rwa`, `force_transfer_rwa` |
+|נתונים מטאטא ומנוהלים | `set_account_key_value`, `remove_account_key_value`, `set_rwa_controls`, `set_rwa_key_value`, `remove_rwa_key_value` |
+|RWA מחזור חיים | `merge_rwas`, `redeem_rwa`, `freeze_rwa`, `unfreeze_rwa`, `hold_rwa`, `release_rwa` |
+|ExecuteTrigger |`execute_trigger` |
+|הורחבות ההשפעה/התנחלויות | `repo_initiate`, `repo_unwind`, `repo_margin_call`, `settlement_dvp`, `settlement_pvp` |
+|מנעולים נכסים מקומיים |`open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, `expire_asset_lock`, ועוד עוזרים לקוח `*_and_wait` |
+|הסכום/הסירוב, SetParameter, רישום, מנהג, שיפור, ומוזוגים פחות נפוצים של רישום/לא רישום |`Instruction.from_json` או `TransactionBuilder.add_instruction_json` עם קאנוניקה `InstructionBox` JSON |
 
-עבור תשלומים תנאי בסגנון מאבטחה, ראה
-[אסיטום נטיב](/he/blockchain/escrow.md#python-asset-locks). Python
-כיום פוגעים בעוזרים מדרגה ראשונה עבור סגרות נכסים גנריות;
-עוזרים לאמונים לא מסוג ראשון. Python שיטות עדיין.
+עבור תשלומים קבועים בסגנון מאבטח, ראה [מאבטח נכסים מקומיים ](/he/blockchain/escrow.md#python-asset-locks). Python חושף כיום עוזרים מעמד ראשון למנעולים של נכסים גנטיים; השוק ועוזרי מאבטח אנונימיים אינם עדיין שיטות מעמד ראשון Python.
 
-### הגדרת דומנים, ואז רשום חשבונות ומשאבים {#set-up-domains-then-register-accounts-and-assets}
+### להגדיר דומיינים, ואז להירשם חשבונות ומשכרים {#set-up-domains-then-register-accounts-and-assets}
 
-יצירת תחום רגיל עוברת דרך מתכנן התכונות הצהריים כך שה SNS
-הסכם השכרה, יכולות הבעלים, אבטחת הציטוט, ומצב הדומיין בודקים יחד.
-ליצור סוד חופשי `AliasSetupPlanRequestV1` כוונה שלך SDK או
-שירות סיבוב, לאחר מכן להשתמש `iroha app alias setup plan` ו
-`iroha app alias setup apply`. אל תתני `Instruction.register_domain`
-מתוך עסקאות יישום; הבניין הזה נשאר עבור genesis/bootstrap
-כלי עבודה.
+יצירת תחום דומיין רגיל עוברת דרך מתכנן התכונות המפורסמת כך שהכרזת SNS, יכולות הבעלים, אבטחת הציטוט, ומצב התחום בודקים יחד. ליצור כוונה ללא סוד `AliasSetupPlanRequestV1` עם SDK או שירות האינטרנט שלך, ולאחר מכן להשתמש `iroha app alias setup plan` ו `iroha app alias setup apply`. לא להגיש `Instruction.register_domain` מטראפקציה של יישום; הבניין הזה נשאר למכשירים גנז / סטראפ.
 
-לאחר שתכנון הקמת הדומיין מתחייב, רשום אובייקטים בבעלות הדומיין.
-רשת כגון Taira, השתמשו בשטח שמות של דומיין וחשבון שועמדו לכם.
+לאחר שתוכנית הקמת הדומיין מתחייבת, רשום אובייקטים בבעלות הדומיין. ברשת משותפת כגון Taira, השתמש במרחב שמות דומיין וחשבון שועמדו לך.
 
 ```python
 # The domain and its SNS lease already exist before this transaction.
@@ -306,13 +257,11 @@ submit(
 )
 ```
 
-`mintable` מקבל `Infinitely`, `Once`, `Not`, או `Limited(n)` ערכים מקובלים
-על ידי מודל המידע. `scale` עבור נכס מספר ללא מחוייבות.
+`mintable` מקבל `Infinitely`, `Once`, `Not`, או `Limited(n)` ערכים שנאסרו על ידי מודל המידע. `scale` עבור נכס מספר בלתי מוגבל.
 
-### רכוש מנט, שרוף ושינוי {#mint-burn-and-transfer-assets}
+### רכוש מנט, שרוף והעברות {#mint-burn-and-transfer-assets}
 
-שיחות אלה משתמשות נכס קיים ID. רשום את הגדרה של נכס קודם, ואז
-בניית נכס בטון ID עבור החשבון שהיצרן של הנכס.
+שיחות אלה משתמשות נכס קיים ID. לרשום את ההגדרה של נכס קודם, ולאחר מכן לבנות את הנכסים הקונקרטיים ID עבור החשבון שבעלותו הנכסים.
 
 ```python
 # Increase the account's asset balance.
@@ -327,8 +276,7 @@ submit(Instruction.burn_asset_numeric(ROSE_ASSET, "10.00"))
 
 ### העברה בעלות {#transfer-ownership}
 
-העברת הבעלות משנה מי שולט בדומיין, הגדרה של נכס או NFT.
-השתמשו בבעלים הנוכחיים כאל סמכות העסקה.
+העברת הבעלים משנה מי שולט בדומיין, הגדרה של נכס או NFT. השתמש בבעלים הנוכחיים כחוקת העסקות.
 
 ```python
 # The first argument is the current owner; the last is the new owner.
@@ -339,8 +287,7 @@ submit(Instruction.transfer_nft(alice, BADGE_NFT, bob))
 
 ### הגדרת וחיסול נתונים מטאטא {#set-and-remove-metadata}
 
-הערכים של מטא נתונים חייבים להיות: JSON-אפשר לסדר את זה. `TransactionDraft`, ה-
-סמכות ב `TransactionConfig` הופך לחשבון המטרה המוגדר.
+הערכים של מטא-מנתונים חייבים להיות JSON - סיריאליזציה. כאשר אתה משתמש `TransactionDraft`, הרשות ב `TransactionConfig` הופכת לחשבון היעד המקובל.
 
 ```python
 # Values are encoded as JSON metadata under the target account.
@@ -356,7 +303,7 @@ submit(
 submit(Instruction.remove_account_key_value(alice, "profile"))
 ```
 
-הצעת העוזר ברמה גבוהה מתמקדת במערכת ההסכמים כדוגמא:
+הצעת העוזר ברמה גבוהה מתבצעת על סמכות המערכה כדוגמא:
 
 ```python
 draft = TransactionDraft(
@@ -369,10 +316,7 @@ draft.remove_account_key_value("nickname")
 
 ### נכסים בעולם האמיתי {#real-world-assets}
 
-RWA עוזרים משתמשים JSON-חומרי תועלת שניתן לסדר עבור מטא נתונים ספציפיים לנכסים,
-מוצא, מדיניות המפקח. `register_rwa` לא מקבלת `id` או
-`owner`: זמן ההפעלה מייצר את `RwaId`, והרשויות העסקות
-הופך להיות הבעלים הראשוני.
+RWA עוזרים משתמשים במשאבים שימושיים JSON-משתמשים בכפייה עבור מטא נתונים ספציפיים של נכסים, מקור ומדיניות מנהל. `register_rwa` לא מקבל `id` או `owner`: זמן ההופעה מייצר את `RwaId`, והרשות העסקית הופכת להיות הבעלים הראשוני.
 
 ```python
 draft = TransactionDraft(
@@ -405,8 +349,7 @@ draft.register_rwa(
 )
 ```
 
-לאחר ההתחייבות של עסקאות הרישום, שימוש `FindRwas`, `/v1/rwas`, דה RWA
-אירוע, או מסלול המחקרי המוקם כדי לגלות את ID:
+לאחר ההתחייבויות של עסקאות הרישום, השתמשו `FindRwas`, `/v1/rwas`, באירוע RWA או במסלול המחקר המוגדר כדי לגלות את ה- ID שנוצר
 
 ```python
 page = client.list_rwas_typed(limit=20, offset=0)
@@ -415,7 +358,7 @@ for lot in page.items:
     print(lot.id)
 ```
 
-פעולות שלאחר מכן משתמשות `hash$domain` ID:
+פעולות שלאחר מכן משתמשות ב- `hash$domain` ID המוצר:
 
 ```python
 registered_rwa_id = (
@@ -480,13 +423,11 @@ draft.force_transfer_rwa(
 )
 ```
 
-העברות מלאות יכולות להשתנות `owned_by` על המגרש הקיימים.
-מיזוגים יוצרים הרבה ילדים שנוצרו.
+העברות מלאות יכולות להשתנות `owned_by` על הקבוצה הקיימת. העברת חלקית והפליגה יוצרות קבוצות ילדים שנוצרו.
 
 ### תפעילים {#triggers}
 
-השתמשו בעוזרי הרישום של ההדק כאשר הנתון ניתן לבצע הוא הוראה אחרת
-רצף:
+השתמשו בעוזרי הרישום של ההצלה כאשר המפעיל הוא רצף הוראות אחר:
 
 ```python
 # The trigger executable is just another instruction payload.
@@ -521,7 +462,7 @@ submit(Instruction.burn_trigger_repetitions("hourly_reward", 1))
 submit(Instruction.unregister_trigger("hourly_reward"))
 ```
 
-Torii גם מגלה REST עוזרים למלאי המניע:
+Torii חושף גם REST עוזרים למלאי ההדק:
 
 ```python
 # Inventory helpers are reads; they do not unregister or execute triggers.
@@ -532,13 +473,11 @@ for trigger in registered.items:
 details = client.get_trigger_typed("precommit_reward")
 ```
 
-שיחות רכישת התניע רק לקרוא או לבדוק רשומות התניע.
-ביצוע, שינויים חוזרים, ולאישור הם מבצעים מוטנטים.
+שיחות מא inventory של Trigger קוראים או בודקים רק רישומים של trigger. הרישום, ביצוע, שינויים חוזרים ולאירוך הם מבצעים מוטתיים.
 
-### ההוראות להשלכת הסכום וההסדר {#repo-and-settlement-instructions}
+### הוראות לאישור וההסדר {#repo-and-settlement-instructions}
 
-עוזרים למתיישבים דו-צדדיים ומציגי ההסדרים מוסיפים הוראות ספציפיות לתחום
-תוצרות ללא עבודת יד Norito מטענים מועילים:
+רופאים ועוזרי הסדר דו-צדדיים מוסיפים סוגי הוראות ספציפיות לתחום ללא מטענים מועילים של Norito
 
 ```python
 from iroha_python import (
@@ -628,12 +567,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### JSON פתח הבריחה {#json-escape-hatch}
 
-כאשר Python העוזר עדיין לא זמין, למזון מודל נתונים קנוני
-`InstructionBox` JSON ל `Instruction.from_json` או ישירות לתוך
-`TransactionBuilder.add_instruction_json`. זהו הנתיב המומלץ
-`Grant`, `Revoke`, `SetParameter`, `Log`, `Custom`, `Upgrade`, עמיתים/פעם/NFT
-רישום, וריאונים לא מפיצים לא רשומים עד שהמשתמשים האלה
-כתוב.
+כאשר Python העוזר לא זמין עדיין, למזון מודל נתונים קנוני `InstructionBox` JSON ל- `Instruction.from_json` או ישירות לתוך `TransactionBuilder.add_instruction_json`. זו הנתיב המומלץ `Grant`, `Revoke`, `SetParameter`, `Log`, `Custom`, `Upgrade`, משותף/ תפקיד/NFT רישום, וריאונים שאינם מפעילים לא רשומים עד שהמשתמשים האלה נכתבים.
 
 ```python
 from iroha_python import Instruction, TransactionBuilder
@@ -658,8 +592,7 @@ envelope = builder.sign(alice_pair.private_key)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-עבור הוראות מובנות או לא ברורות, נסיעה חזרה דרך JSON לפני אחסון
-ציוד:
+עבור הוראות נוצרות או לא ברורות, נסיעה וחזרה דרך JSON לפני שמירה של ציוד:
 
 ```python
 # Round trips are useful for validating fixtures generated by another tool.
@@ -670,9 +603,7 @@ print(same_instruction.as_dict())
 
 ## זרמי עבודה של עסקאות {#transaction-workflows}
 
-שימוש `TransactionDraft` עבור יישומים שמבנים הוראות מרובות לפני
-חתימה. הצעת חוק מאפשרת לך לשמור על הגדרות ברמת העסקה כגון `ttl_ms`,
-`nonce`, ונתונים מטאטא במקום אחד, ואז תחתום פעם אחת:
+השתמש `TransactionDraft` עבור יישומים שבונים הוראות מרובות לפני חתימה. עיצוב מאפשר לך לשמור על הגדרות ברמת העסקה כגון `ttl_ms`, `nonce` ונתונים מטאטא במקום אחד, ואז לחתום פעם אחת:
 
 ```python
 config = TransactionConfig(
@@ -704,7 +635,7 @@ status = client.wait_for_transaction_status(envelope.hash_hex(), timeout=30)
 print(receipt, status)
 ```
 
-להוצאת מסמך דטרמיניסטי לשיקון, בדיקה או העברת הארנק:
+להוציא מוניסטר דטרמיניסטי לשיקון, בדיקה או העברת הארנק:
 
 ```python
 import json
@@ -720,7 +651,7 @@ Path("transaction_manifest.json").write_text(
 )
 ```
 
-קישור אבטחת פרטיות של מסלול לפני חתימה כאשר מסלול היעד דורש זאת:
+קישור אבטחת פרטיות של מסלול לפני חתימה כאשר מסלול המטרה דורש זאת:
 
 ```python
 # Attach the proof before signing so it is covered by the transaction hash.
@@ -738,9 +669,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 
 ## שאלות {#queries}
 
-עוזרי שאילת המבטא מסיימים כיתות נתונים במקום רוט JSON מילונים. הם
-הם הדרך הקלה ביותר להתחיל כי SDK Parses pagination ושותף
-שדות רשום עבורך:
+עוזרי השאלות המוצגים מספקים כיתות נתונים במקום מילון JSON רם. הם הדרך הקלה ביותר להתחיל, מכיוון ש- SDK נבחן את דף הדפים ושטחים רשומים נפוצים עבורך:
 
 ```python
 # Typed pages expose `.items` plus pagination metadata such as `.total`.
@@ -753,8 +682,7 @@ definitions = client.query_asset_definitions_typed(limit=10)
 print(domains.total, definitions.total)
 ```
 
-השתמשו באוזני בקשה גנריים כאשר Torii נקודת הסיום עדיין אין טופס
-כפתור:
+השתמשו בעוזרי בקשה גנטיים כאשר בנקודת הסיום Torii עדיין אין ארגז טופס:
 
 ```python
 # Drop to raw JSON when you need an endpoint before a typed helper exists.
@@ -762,10 +690,7 @@ payload = client.request_json("GET", "/v1/parameters", expected_status=(200,))
 metrics = client.get_metrics(as_text=True)
 ```
 
-עוזרים לרישום חשבונות דורשים מזהה חשבון SDK אני...
-תשתמש בקנוניקה. I105 חשבון IDs או כינויים על שרשרת; אם חסידה
-המחקור או נקודת הסיום החומרה חוזרת ID כי SDK דחפים, לפתור אותו ל
-חשבון קנוני ID לפני שתקרא לעוזרים האלה:
+עוזרים למלאי חשבונות דורשים מזהה חשבון מוכר SDK זה נורמליזה, השתמש בקנוניקה I105 חשבון IDs או שם כינוי על שרשרת; אם חוקר בלוק או נקודת סיום חלקית חוזרת על ID כי SDK סירב, לפתור את זה על חשבון קנוני ID לפני שאתה קורא לעוזרים האלה:
 
 ```python
 # These helpers expect a canonical account ID or an alias the SDK can normalize.
@@ -778,11 +703,7 @@ print(len(assets.items), len(transactions.items), len(permissions.items))
 
 ## אירועים {#events}
 
-עזרות זרימה לפענח JSON מטענים מועילים לפי ההגדרה. `with_metadata=True`
-כאשר אתה צריך את SSE שם האירוע, תעודת זהות, נתיב ניסיון מחדש, וטען נוח רם. זרמים זוגיים
-עם `EventCursor` כדי לשמור על ID האירוע האחרון. הדוגמאות האלה מחכות לחיים
-אירועים, אז להפעיל אותם נגד קשר שבו זרם האירוע המתאים הוא
-פעיל.
+עזרות זרימה לפענח JSON מטענים מועילים לפי ההגדרה. `with_metadata=True` כאשר אתה צריך את SSE שם האירוע, תעודת זהות, נתיב ניסיון מחדש, וטעינה חומרית. זוג זרמים עם `EventCursor` כדי לשמור על איד האירוע האחרון. דוגמאות אלה מחכות אירועים חיים, אז תפעילו אותם נגד קשר שבו זרם האירועים המתאים הוא פעיל ופעיל.
 
 ```python
 from iroha_python import DataEventFilter, EventCursor
@@ -815,9 +736,7 @@ for tx_event in client.stream_pipeline_transactions(status="Queued"):
 
 ## מפתחות וכתובת {#keys-and-addresses}
 
-ה- SDK חושף עוזרי חתימה מקומיים עבור כל אלגוריתם לחתום הוקמו
-הם לא קוראים Taira, אבל הם דורשים
-ההרחבה המקומית:
+SDK חושף עוזרי חתימה מקומיים עבור כל אלגוריתם לחתימה שהוקמו לתוך הרחבת המולדת. עוזרים אלה לא מתקשרים ל- Taira, אך הם דורשים את הרחבת ההולדת:
 
 ```python
 from iroha_python import (
@@ -847,9 +766,7 @@ print(confidential.as_hex())
 print(hash_blake2b_32(b"payload").hex())
 ```
 
-שימוש `supported_crypto_algorithms()` כדי לראות מה גלגל שלך תומך.
-עוזרים גנטיים משתמשים בתוויות אלגוריתם קנוני ופועלים עבור Ed25519,
-secp256k1, ML-DSA, GOST, BLS, ו SM2 כאשר האלגוריתמים הללו מתואמים ב:
+השתמש `supported_crypto_algorithms()` כדי לראות מה עולה על הגלגל שלך. העוזרים הכלליים משתמשים בתוויות אלגוריתם קנוני ופועלים עבור Ed25519, secp256k1, ML-DSA, GOST, BLS, ו SM2 כאשר האלגוריתמים אלה מתואמים ב:
 
 ```python
 from iroha_python import (
@@ -905,11 +822,9 @@ for algorithm in supported_crypto_algorithms():
     assert restored == keypair
 ```
 
-### סינים SM קריפטוגרפיה {#chinese-sm-cryptography}
+### סינית SM קריפטוגרפיה {#chinese-sm-cryptography}
 
-ה- Python SDK מגלה את שני הגנרלים SM2 עוזרים ו SM2-נוחות ספציפית
-השתמשו בפרסומת יכולת הערך כדי לבחור את SM2 ההבדל
-זיהוי צפוי ברשת היעד:
+Python SDK חושף גם עוזרים גנריים של SM2 וגם עוזרי נוחות ספציפיים ל- SM2. השתמשו בפרסומת יכולת הערך כדי לבחור את מזהה ההבדל של SM2 הנחוש על ידי הרשת המטרה:
 
 ```python
 from iroha_python import (
@@ -946,9 +861,7 @@ print(pair.public_key_sec1_hex)
 print(pair.public_key_multihash)
 ```
 
-`crypto.sm.enabled` אומר לך אם הערך מקבל SM- אלגוריתמים משפחתיים
-המודעת זו כוללת את SM מדיניות חישוב ומהיר
-מצב, אשר שימושי בעת ההחלטה אם לאפשר SM2- זרמים ספציפיים:
+`crypto.sm.enabled` אומר לך אם הערך מקבל אלגוריתמים של משפחת SM במדיניותו הנוכחית. אותה פרסומת כוללת את מדיניות ההש SM ומצב האיקסלרציה, אשר שימושי בעת החלטה אם להפעיל זרמים ספציפיים של SM2:
 
 ```python
 capabilities = client.get_node_capabilities_typed()
@@ -963,16 +876,11 @@ else:
     print("SM crypto is not enabled by this node")
 ```
 
-ציבורי Taira חשפו את SM פרסום יכולת במהלך הבדיקה, אבל SM חתימה
-האלגוריתמים של החתימה המפורסמים שלה היו `ed25519`,
-`secp256k1`, ו `bls_normal`, אז אל תתכנעו SM2-המעשים הנחתמים
-הפעלת, אלא אם כן עומס השימוש בתאפשרות משתנה.
+הציבור Taira חשף את מודעת יכולת SM במהלך הבדיקה, אבל חתימת SM הייתה חסרת שם. אלגוריתמים החתימה המפרסמים שלה היו `ed25519`, `secp256k1`, ו `bls_normal`. אז לא להגיש עסקאות חתומות על SM2 למצאת זו, אלא אם כן עומס הפועל של היכולת משתנה.
 
-### GOST מפתחות פוסט-קואנטיים {#gost-and-post-quantum-keys}
+### GOST ומפתחות לאחר הקוואנטום {#gost-and-post-quantum-keys}
 
-השתמש בקריפטו גנרית API עבור GOST R 34.10-2012 קבוצות פרמטרים ו ML-DSA
-(`ml-dsa`) חתימות פוסט קוואנטיות. אותו אובייקט זוג מפתחות מטפל בחתימה,
-אימות, ויצוא רב-הכש:
+השתמש בקריפטו גנרית. API עבור GOST R 34.10-2012 קבוצות פרמטרים ו ML-DSA (`ml-dsa`) חתימות לאחר קוואנטום. האובייקט זהה של זוג מפתחות מטפל בחתימה, בדיקת, ויצוא מולטי-האש:
 
 ```python
 from iroha_python import (
@@ -1036,8 +944,7 @@ print(post_quantum_address.to_i105(CHAIN_DISCRIMINANT))
 print(mldsa_keypair.prefixed_public_key_multihash)
 ```
 
-שער GOST והפלילים לאחר הקוונטים על אלגוריתמים לחתימה המפרסמים של הערך.
-השתמשו במשאב הפועל של היכולות החומריות עבור שמות אלגוריתם מתאימים לעתיד:
+שער GOST ופוסט-קוואנטי זלילים על אלגוריתמים לחתימה המפרסמים של הערך. השתמשו במשאב הפועל של היכולות החומריות עבור שמות אלגוריתם מתאימים קדימה:
 
 ```python
 capabilities = client.request_json(
@@ -1066,16 +973,11 @@ supports_sm2 = "sm2" in allowed and bool(sm.get("enabled", False))
 print(supports_gost, supports_post_quantum, supports_sm2)
 ```
 
-אם הערך לא מפרסם את האלגוריתם שאתה צריך, להשתמש במפתח רק עבור מקומי
-או זרמי עבודה מקוונים. אל תשלחו עסקאות חתומות עם האלגוריתם הזה
-זה קשר. במהלך הציבור Taira צ'ק, GOST ו ML-DSA היו זמינים כ SDK
-עוזרי קריפטו במעלה הזרם Python הספרייה, אך לא הועידה בהודעות
-קשר לחתימה על עסקאות.
+אם הערך לא מפרסם את האלגוריתם שאתה צריך, השתמש במפתח רק עבור זרימות עבודה מקומיות או מקומיות. אל תשלח עסקאות חתומות עם האלגוריתם הזה לערך הזה. במהלך הבדיקה הציבורית Taira, GOST ו ML-DSA היו זמינים כעוזרי קריפטו של SDK בספריה Python העליונה, אך לא הודיעו על ידי הערך לחתום עסקים .
 
-## יצירת לקוחות מודעים {#config-aware-client-creation}
+## יצירת לקוחות מודעים להגדרת {#config-aware-client-creation}
 
-שימוש `resolve_torii_client_config` כאשר היישום שלך קורא את הגדרות הערך
-מתוך תיק, אך עדיין זקוק ל-overrides ספציפיים לסביבה או למבחן:
+השתמש `resolve_torii_client_config` כאשר היישום שלך קורא את ההגדרות של הערך מתוך קובץ, אך עדיין זקוק ל-overrides הספציפיים לסביבה או למבחן:
 
 ```python
 import json
@@ -1097,10 +999,9 @@ client = create_torii_client(
 )
 ```
 
-## הכנות של קגמושה {#kagemusha-readiness}
+## קגמושה מוכנה {#kagemusha-readiness}
 
-ה- Python SDK יכול לשאול את הזרם JSON מסלול הכנות דרך המוצר הגנטי שלו
-Torii עוזר בקשה:
+Python SDK יכול לבקש את מסלול הכנות הנוכחי של JSON באמצעות העוזר הדרישה הגנטי שלו Torii:
 
 ```python
 ASSET_DEFINITION_ID = "<canonical_asset_definition_id>"
@@ -1116,15 +1017,11 @@ print(readiness["ready"])
 print(readiness["blockers"])
 ```
 
-Python לא חושף בונה ארכיונים של קגמושה עם טופס או חידוש.
-השתמשו בטייפ Swift או JVM ארנק לבניית הקאנוניקה V4 ארכיונים, אז
-להגיש ולסקר אותם באמצעות Kagemusha תומך Torii לקוח.
+Python לא חושף בונה ארכיונים של קגמושה מודפסים או משכילים. השתמשו בארנק עם טופס Swift או JVM כדי לבנות את הארכיונים הקנוניים V4, ולאחר מכן הגיש ונסקר אותם באמצעות לקוח קגמשה תומך Torii.
 
-## מחברות {#subscriptions}
+## חתימות {#subscriptions}
 
-עוזרי ההפקה משתנים שיחות שירות מורשת מהמשתמשים המשותפים. Torii
-הלקוח המשמש על ידי `iroha_python.ToriiClient`. שימוש IDs וכספים הקיימים על
-רשת שאתה מטרה.
+עוזרי התשלום הם שיחות שירות מוטות מורשת מהלקוח השיתוף Torii המשמש על ידי `iroha_python.ToriiClient`. השתמשו IDs ואת נכסים הקיימים ברשת שהמטרה.
 
 ```python
 # The plan defines billing cadence, retry policy, and usage pricing.
@@ -1183,8 +1080,7 @@ client.charge_subscription_now(
 
 ## חיבור {#connect}
 
-לבנות ולחקור קישור URIs, ולקרוא את מצב ה"Connect" הציבורי
-Taira:
+לבנות ולנתח את קונקט URIs, ולקרא את מצב הקונקט הציבורי שחשף על ידי Taira:
 
 ```python
 from iroha_python.connect import ConnectUri, build_connect_uri, parse_connect_uri
@@ -1205,8 +1101,7 @@ assert parsed.chain_id == CHAIN_ID
 print(status.enabled, status.sessions_active)
 ```
 
-קודקים של מסגרת, תוצרת מפתח הפגישה, ויצירת פגישה דורשים את האתגר
-הרחבה והדרך של הפגישה "Connect":
+קודקים של מסגרת, תוצרת מפתח הפגישה, ויצירת פגישה דורשים את ההרחבה המקומית ודרך פגישה Connect פעילה:
 
 ```python
 from iroha_python import (
@@ -1276,9 +1171,9 @@ state = session.snapshot_state().to_dict()
 print(encrypted.sequence, state)
 ```
 
-## ממשל, זמן הפעלה ושטח המנהל {#governance-runtime-and-admin-surfaces}
+## הממשל, זמן ההפעלה ומרחבי מנהלים {#governance-runtime-and-admin-surfaces}
 
-שיחות אלה רק לקרוא חזרו בהצלחה נגד הציבור Taira:
+שיחות אלה רק קריאה חזרו בהצלחה נגד הציבור Taira:
 
 ```python
 client = create_torii_client("https://taira.sora.org")
@@ -1304,9 +1199,7 @@ print(abi, abi_hash, runtime_metrics)
 print(upgrades.total, capabilities.abi_version)
 ```
 
-עוזרים לשדרוג זמן הפועלים מקבלים את הצורה של המניפסט המשמש על ידי עדכון זמן הפועל
-API. הם פעולות של המפעיל, אז השתמש בהם רק נגד קשר שבו
-חשבון וטוגנים מורשים:
+עוזרי העדכון בזמן ההופעה מקבלים את הצורה המניפסטית המשמשת על ידי העדכון זמן ההופעה API. הם פעולות של מפעל, אז השתמש בהם רק נגד קשר שבו החשבון והצבע שלך מורשים:
 
 ```python
 admin = create_torii_client(
@@ -1334,7 +1227,7 @@ admin.activate_runtime_upgrade("deadbeef" * 4)
 admin.cancel_runtime_upgrade("feedface" * 4)
 ```
 
-## מצב, הסכמה וטלמטריה ברשת {#status-consensus-and-network-telemetry}
+## מצב, הסכמה וטלמטריה של הרשת {#status-consensus-and-network-telemetry}
 
 ```python
 # `/status` is the public node snapshot endpoint on Taira.
@@ -1354,9 +1247,7 @@ print(time_now.now_ms)
 
 ## SoraFS, UAID, ו Kaigi עוזרים {#sorafs-uaid-and-kaigi-helpers}
 
-עוזרים אלה זמינים כאשר הערך המטרה חושף את
-Nexus/SORA נקודות קץ. להתייחס לרשימות ריקות כגובה תקנה: ציבורית Taira יולי
-יש את הנתיב מופעל ללא נתונים למניפסט הדגימה, או UAID.
+עוזרים אלה זמינים כאשר הערך היעד חושף את נקודות הסיום המתאימות Nexus/SORA. להתייחס לרשימות ריקות כגובה תקנה: הציבורי Taira עשוי להפעיל את הנתיב ללא נתונים למניפסט הדגימה או UAID.
 
 ```python
 # SoraFS status queries are reads scoped by manifest and status.
@@ -1380,9 +1271,7 @@ print(health.healthy_total, health.failovers_total)
 
 ## Norito RPC ו GPU עוזרים {#norito-rpc-and-gpu-helpers}
 
-שימוש `NoritoRpcClient` כאשר כבר יש לך Norito בייטים וצריכים להתקשר
-בינארי Torii דוגמה דורשת מעטפה חתומה
-תבנית עסקאות:
+השתמש `NoritoRpcClient` כאשר יש לך כבר בייטים Norito ואתה צריך להתקשר לנקודת קץ בינארית Torii. לדוגמה נדרש מעטפה חתומה מדפסת עסקאות קודמת.
 
 ```python
 from iroha_python import NoritoRpcClient, NoritoRpcConfig
@@ -1393,8 +1282,7 @@ with NoritoRpcClient(NoritoRpcConfig(TORII_URL, timeout=5.0)) as rpc:
     print(len(response_bytes))
 ```
 
-CUDA עוזרים חוזרים `None` כאשר האחורי לא זמין, כך יישומים
-ניתן לחזור למשימות סקאליות:
+CUDA עוזרים להחזיר `None` כאשר ההסגר לא זמין, כך יישומים יכולים לחזור ליישום skalar:
 
 ```python
 from iroha_python import bn254_add_cuda, cuda_available, poseidon2_cuda
@@ -1405,28 +1293,23 @@ if cuda_available():
     print(bn254_add_cuda((1, 0, 0, 0), (2, 0, 0, 0)))
 ```
 
-## כיסוי הנוכחי {#current-coverage}
+## הכיסוי הנוכחי {#current-coverage}
 
-ה- Python SDK כבר כולל עוזרים ל:
+ה- Python SDK כולל כבר עוזרים ל:
 
-- Torii זרימות של הגשת, מצב, בקשה וניהול
-- בונה הוראות טפוטים עבור משותפים ISI וארגזים ספציפיים לתחום
-- סרטים של עסקאות, מוניסטים, חתימות ומעטפת עסקה חתומה
-  זרימות עבודה
-- אירועים זרימים, פילטרים וקרסורים שניתן להמשיך
-- גישה קגמושה גנרית ו Torii עוזרים לחתום; מקובל
-  הבניינים של תוספת וחיסכון אינם חשופים
-- כתובת חשבון, עוזרים לחתימה של אלגוריתם כולו, נסיעות הלוך ושוב מרובות, SM2,
-  GOST, ML-DSA, BLS, וניהול מפתח סודי
-- חיבור URIs, פגישות, מסדרים, עוזרים לחסום ומנהל רישום
-- ממשל, שיפור זמני הפעלה, Sumeragi, מנהל הערך, SoraFS, UAID, ו Kaigi
-  כפות נקודות סוף שבהן העמוד חושף את המאפיינים הללו
+- Torii זרמי הגשת, מצב, בקשה וניהול
+- בונים של הוראות טפוטים למרחבים משותפים ISI ומרחבים ספציפיים לתחום.
+- פרקי עבודה של סופרת עסקאות, מוניסטים, חתימות וחתמין
+- אירועים סטרימינג, פילטרים וקרסורים שניתן להתחיל מחדש
+- גישה לרכישות Kagemusha ו Torii עוזרים לחתום; הבניינים של תוספת טופס ושמורה לא חשופים
+- כתובת החשבון, עוזרים לחתימה של אלגוריתם כולו, נסיעות הלוך ושוב רבות, SM2, GOST, ML-DSA, BLS, וניהול מפתח סודי.
+- חיבור URIs, פגישות, מסדרים, עוזרים לחשוף ומנהל רישום
+- שלטון, עדכון בזמן ההפעלה, Sumeragi, node-admin, SoraFS, UAID, ו Kaigi ערימות נקודת סוף בהן העמוד חושף את המאפיינים הללו
 
-## מקורות קדם {#upstream-references}
+## ראשי תיקון מקדימה {#upstream-references}
 
 - `python/iroha_python/README.md`
 - `python/iroha_python/DESIGN.md`
 - `python/iroha_python/src/iroha_python`
 
-הקבצים האלה הם מקור האמת Python פני השטח במקביל
-תיקון שטח עבודה.
+הקבצים האלה הם מקור האמת עבור פני השטח Python בפינוי החלל העבודה המופק.

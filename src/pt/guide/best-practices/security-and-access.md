@@ -30,7 +30,7 @@ Veja [Permissões](/pt/blockchain/permissions.md) e [Token de Permissão](/pt/re
 
 ## Exposição à rede {#network-exposure}
 
-- Restringir as rotas de peer-to-peer, Torii, telemetria e operador de acordo com o ambiente.
+- Limitar as rotas peer-to-peer, Torii, telemetria e operadores de acordo com o ambiente. O acesso à leitura pública não implica o acesso à escrita ou ao operador público.
 - Utilize VPNs, firewalls, proxies reversais, terminação TLS e limites de taxa quando apropriado para a implantação.
 - Mantenha as credenciais de autor básicas, os tokens proxy e os cabeçalhos encaminhados fora da configuração comprometida.
 - Teste de que os clientes não autorizados não podem chegar a rotas restritas.

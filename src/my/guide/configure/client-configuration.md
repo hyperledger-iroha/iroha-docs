@@ -6,11 +6,9 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Client Configuration ကို {#client-configuration}
+# Client Configuration ကို အသုံးပြုရန် {#client-configuration}
 
-Iroha CLI နှင့် SDK ဖောက်သည်များ အသုံးပြု TOML configuration ကို။ သိုလှောင်ရုံက
-current default ကို `defaults/client.toml`; local network တွေကိုလည်း ရေးပေးတယ်
-ကိုက်ညီမှု `client.toml` ထုတ်ကုန်စာရင်းထဲ ထည့်ပါ။
+Iroha CLI နှင့် SDK ဖောက်သည်များ အသုံးပြု TOML Configuration: repository က လက်ရှိ default ကို `defaults/client.toml`; ဒေသတွင်းကွန်ရက်များလည်းထုတ်လုပ်ထားသည် ကိုက်ညီသောရေးသား `client.toml` ၎င်းတို့ရဲ့ output directory ထဲကို ထည့်ပေးပါ။
 
 ::: details Client Configuration Template ကို
 
@@ -20,8 +18,7 @@ current default ကို `defaults/client.toml`; local network တွေကိ�
 
 ## Core Fields များ {#core-fields}
 
-အနည်းဆုံးတော့ client ဖွဲ့စည်းမှုတစ်ခုက ကွင်းဆက်ကို ဖော်ထုတ်တယ်။ Torii အဆုံးအသတ်မှတ်ချက်နဲ့
-လက်မှတ်ထိုးစာရင်း:
+အနည်းဆုံး Client Configuration မှာ Chain, Torii Endpoint နဲ့ Signing Account တွေကို သတ်မှတ်ထားပါတယ်
 
 ```toml
 chain = "00000000-0000-0000-0000-000000000000"
@@ -33,28 +30,22 @@ public_key = "ed0120..."
 private_key = "802620..."
 ```
 
-- `chain` တင်ပြထားသော ငွေကြေးလုပ်ငန်းများ ပါဝင်သည့် ချုပ်ဆက်ကို ရွေးချယ်သည်။
+- `chain` သည် တင်ပြထားသော ငွေကြေးပူးပေါင်းဆောင်ရွက်မှုများ ပါဝင်သည့် ချုပ်ဆက်ကို ရွေးချယ်သည်။
 - `torii_url` တူညီတဲ့ အမှတ်တွေ Torii HTTP API.
-- `[account].domain` အသုံးပြုသူ CLI shortcuts နဲ့ address-selector ကို encoding လုပ်ပေးခြင်း။
-  တရားဝင် `AccountId` ၎င်းဘာသာဟာ နယ်ပယ်မဲ့ပါ။
-- `[account].public_key` နှင့် `[account].private_key` ငွေပေးချေမှုကို လက်မှတ်ထိုးပါ။
+- `[account].domain` ကို CLI shortcuts နဲ့ address-selector encoding တွေက သုံးပါတယ်။ Canonical `AccountId` itself က domainless ပါ။
+- `[account].public_key` နှင့် `[account].private_key` တို့သည် လက်မှတ်ရေးထိုးထားသော ငွေပေးချေမှုများဖြစ်သည်။
 
-Account က အင္တာနက္မွာ ရွိေနရတယ္
-ဘူးတွဲထားတဲ့ မျိုးရိုးဗီဇ ပြဋ္ဌာန်းချက်နဲ့ ကိုင်တွယ်ထားပါတယ်။
+အဲဒီအကောင့်ဟာ ချိတ်ဆက်ထားပြီးသား ဖြစ်ရပါမယ်။ ဒေသခံကွန်ရက်အတွက်တော့ ဒါက ဘူးတွဲထားတဲ့ Genesis Manifesto ကနေ စီမံပေးပါတယ်။
 
 ::: info ကိစ္စအသိစိတ်
 
-Iroha နာမည်တွေဟာ Canonical Parsing ပြီးရင် Case-sensitive ဖြစ်တယ်။ ဥပမာ၊
-`wonderland.universal`, `Wonderland.universal`, နှင့်
-`looking_glass.universal` ကွဲပြားတဲ့ နယ်ပယ် စာလုံးသားတွေပါ။
+Iroha နာမည်များသည် Canonical Parsing အပြီးတွင် Case-sensitive ဖြစ်ပါသည်။ ဥပမာ, `wonderland.universal`, `Wonderland.universal` နှင့် `looking_glass.universal` တို့သည်ကွဲပြားခြားနားသော domain literal များဖြစ်သည်။
 
 :::
 
 ## အခြေခံ အထောက်အထား {#basic-authentication}
 
-ရွေးချယ်စရာ `[basic_auth]` အပိုဒ်က HTTP `Authorization` ခေါင်းစဉ်
-ဖောက်သည်တွေရဲ့ တောင်းဆိုချက်တွေပေါ့။ Iroha အထက်ပါအချက်အလက်များကို အဖော်များက တိုက်ရိုက် အဓိပ္ပါယ်ကောက်ယူခြင်းမရှိပါ။
-သူတို့ကို ဘယ်တော့ Torii Nginx လို အပြောင်းအလဲ ကိုယ်စားလှယ်ရဲ့ နောက်မှာ ရှိတယ်။
+ရွေးချယ်စရာ `[basic_auth]` အပိုဒ်မှာ HTTP `Authorization` ဖောက်သည်တောင်းဆိုချက်များအတွက် ခေါင်းစဉ်။ Iroha တူညီသူတွေဟာ ဒီလက်မှတ်တွေကို တိုက်ရိုက် အဓိပ္ပါယ်ကောက်မပေးကြဘူး။ Torii Nginx လို reverse proxy တစ်ခုရဲ့ နောက်မှာ ရှိနေပါတယ်။
 
 ```toml
 [basic_auth]
@@ -62,9 +53,9 @@ web_login = "mad_hatter"
 password = "ilovetea"
 ```
 
-## Transaction Settings များ {#transaction-settings}
+## ငွေပေးချေမှု Settings {#transaction-settings}
 
-Transaction behavior ကို `[transaction]` ကဏ္ဍ:
+Transaction behavior ကို `[transaction]` အပိုင်းနဲ့ သတ်မှတ်ထားတယ်။
 
 ```toml
 [transaction]
@@ -73,34 +64,30 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-- `time_to_live_ms` ငွေလဲလှယ်မှုသက်တမ်းကို မီလီစက္ကန့်များဖြင့် သတ်မှတ်ထားသည်။
-- `status_timeout_ms` ငွေပေးချေမှုအတွက် ဖောက်သည်က ဘယ်လောက်ကြာ စောင့်နေလဲဆိုတာ ထိန်းချုပ်တယ်။
-  အခြေအနေ။
-- `nonce = true` ဖောက်သည်ကို ထပ်တလဲလဲ ငွေကြေးချေမှုန်းမှုကို ထည့်သွင်းရန် တောင်းဆိုသည်။
-  ဟက်ရှ် အမျိုးမျိုးကို ထုတ်လုပ်ပေးတယ်။
+- `time_to_live_ms` သည် ငွေပေးချေမှုသက်တမ်းကို မီလီစက္ကန့်များတွင် သတ်မှတ်သည်။
+- `status_timeout_ms` ကောက်သည်က ငွေပေးချေမှုအခြေအနေကို ဘယ်လောက်ကြာ စောင့်နေတယ်ဆိုတာကို ထိန်းချုပ်တယ်။
+- `nonce = true` က client ကို nonce တစ်ခု ထည့်သွင်းဖို့ တောင်းဆိုတယ် ဒီတော့ အကြိမ်ကြိမ်လုပ်တဲ့ transactions တွေဟာ hash အမျိုးမျိုး ဖြစ်ပေါ်စေတယ်။
 
 ## Queue Settings ကို ချိတ်ဆက်ပါ {#connect-queue-settings}
 
-လက်ရှိ Iroha ဖောက်သည်တွေကလည်း ရွေးချယ်စရာကို သုံးနိုင်ပါတယ်။ `[connect]` ဒေသဆိုင်ရာ အပိုင်း
-queue state:
+လက်ရှိ Iroha ဖောက်သည်များသည် ဒေသတွင်းတန်းအခြေအနေအတွက် ရွေးချယ်စရာ `[connect]` အပိုင်းကိုလည်း အသုံးပြုနိုင်သည်။
 
 ```toml
 [connect]
 queue_root = "./queue"
 ```
 
-Workflow တစ်ခုအတွက် Client-side queue storage လိုတဲ့အခါ ဒါကို သုံးပါ။
+Workflow တစ်ခုအတွက် ရေရှည်တည်တံ့တဲ့ Client-side queue storage လိုတဲ့အခါ ဒါကို သုံးပါ။
 
 ## Configurations များကို ဖန်တီးခြင်း {#generating-configurations}
 
-တစ်ခါသုံး ဒေသတွင်းကွန်ရက်များအတွက် ဦးစားပေး Kagami ဘာလို့လဲဆိုတော့ စာလုံးက လိုက်ဖက်တဲ့စာလုံးလို့ ရေးနေလို့ပါ။ Iroha
-3 configs, genesis, script တွေနဲ့ README:
+တစ်ခါသုံး ဒေသတွင်းကွန်ရက်များအတွက် Kagami ကို ကြိုက်သည်မှာ Iroha 3 ကောင်ဖိုင်များ၊ ဇာစ်မြစ်များ၊ စာသားများနှင့် တူညီသော README ကို ရေးထားသည့်ကြောင့်ဖြစ်သည်။
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
 ```
 
-ထုတ်လုပ်ထားသော `./localnet/client.toml` နှင့်အတူ CLI:
+ထုတ်လုပ်ထားသော `./localnet/client.toml` ကို CLI နှင့်အတူ အသုံးပြုပါ-
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all

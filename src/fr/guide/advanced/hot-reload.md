@@ -6,35 +6,30 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Remplacement à chaud Iroha dans une Docker Container {#hot-reload-iroha-in-a-docker-container}
+# Rechargement à chaud Iroha dans un récipient Docker {#hot-reload-iroha-in-a-docker-container}
 
-Utilisez la recharge à chaud uniquement pour le débogage local.
-reconstruire l'image ou redémarrer la générée Docker Compose une pile de
-fraîche Kagami Le paquet.
+Utilisez le chargement à chaud uniquement pour le débogage local. Pour un développement local normal, préférez reconstruire l'image ou redémarrer la pile Docker Compose générée à partir d'un paquet Kagami frais.
 
-## Remplacez le binaire par pairs {#replace-the-peer-binary}
+## Remplacez le binaire des pairs {#replace-the-peer-binary}
 
-Construire un binaire de démons compatible avec Linux à partir de l'espace de travail en amont:
+Construire un binaire de daemon compatible avec Linux à partir de l'espace de travail en amont:
 
 ```bash
 cargo build --release -p irohad --target x86_64-unknown-linux-musl
 ```
 
-Copiez-le dans un conteneur en cours d'exécution, puis redémarrez ce conteneur:
+Copier dans un conteneur en cours d'exécution, puis redémarrer ce conteneur:
 
 ```bash
 docker cp target/x86_64-unknown-linux-musl/release/irohad <container>:/usr/local/bin/irohad
 docker restart <container>
 ```
 
-Utilisation `docker ps` Pour confirmer le nom du conteneur.
-les conteneurs sont définis par: `./localnet/docker-compose.yml`.
+Utilisez `docker ps` pour confirmer le nom du conteneur. Dans la pile générée, les conteneurs de pair sont définis par `./localnet/docker-compose.yml`.
 
-## Récupérez Genèse dans un réseau jetable {#recommit-genesis-in-a-disposable-network}
+## Retournez Genèse dans un réseau jetable {#recommit-genesis-in-a-disposable-network}
 
-Une génèse ne se produit que lorsque son stockage est vide. Docker
-réseau, arrêter la pile, supprimer l'état généré, régénérer ou remplacer le
-signé génèse bundle, et recommencer:
+Pour un réseau jetable Docker, arrêtez la pile, supprimez l'état généré, régénérez ou remplacez le paquet de génèse signé et recommencez:
 
 ```bash
 docker compose -f ./localnet/docker-compose.yml down
@@ -43,12 +38,8 @@ cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyper
 docker compose -f ./localnet/docker-compose.yml up
 ```
 
-Ne remplacez pas la génèse sur un réseau dont l'état doit être préservé.
+Ne remplacez pas la génésie sur un réseau dont l'état doit être préservé.
 
 ## Utilisez une configuration personnalisée {#use-custom-configuration}
 
-La configuration de pair actuelle est TOML. Mettre en place ou copier le généré
-`config.toml`, `genesis.signed.nrt`, et des fichiers clés connexes dans le conteneur
-les chemins attendus par l'image, puis redémarrer le pair. Gardez les fichiers générés
-ensemble; mélange des fichiers de différents Kagami les courants peuvent produire une déséralisation ou
-les échecs du consensus.
+La configuration de pair actuelle est TOML. Lier ou copier les fichiers clés générés `config.toml`, `genesis.signed.nrt` et connexes dans les chemins du conteneur attendus par l'image, puis redémarrer le pair. Gardez les fichiers générés ensemble; le mélange de fichiers provenant d'expériences différentes Kagami peut entraîner une déséralisation ou des échecs de consensus.

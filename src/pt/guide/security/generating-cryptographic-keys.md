@@ -24,7 +24,7 @@ A saída JSON é geralmente mais fácil de copiar para a TOML ou automatizar:
 cargo run --bin kagami -- keys --algorithm ed25519 --json
 ```
 
-O comando imprime uma chave pública e uma chave privada exposta.
+O comando imprime uma chave pública e uma chave privada. Tratar a chave privada como material secreto; não comprometer as chaves de produção geradas.
 
 ## Algoritmos {#algorithms}
 

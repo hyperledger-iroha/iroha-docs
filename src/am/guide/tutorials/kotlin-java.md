@@ -6,22 +6,19 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Kotlin, Android, እና ጃቫ {#kotlin-android-and-java}
+# Kotlin ፣ Android እና ጃቫ {#kotlin-android-and-java}
 
-የ Kotlin SDK ለ ደንበኛው ነባሪ ክምችት JVM እና Android ማመልከቻዎች።
-ይህ ስር ይኖራል `kotlin/` በ Iroha መደርደሪያ እና በመድረክ የተከፋፈለ ነው ስለዚህ
-ተንቀሳቃሽ ኮድ አያገኝም Android ጥገኛነት።
+Kotlin SDK ለ JVM እና Android መተግበሪያዎች ነባሪ የደንበኛ ክምችት ነው ። በ Iroha መዝገብ ውስጥ ከ `kotlin/` በታች የሚኖር ሲሆን በመድረክ የተከፋፈለ ስለሆነ ተንቀሳቃሽ ኮድ የ Android ጥገኛነት አያገኝም።
 
 ## ሞጁሎች {#modules}
 
-| የሥነ ጥበብ ዕቃ | አይነት | አጠቃቀም |
+|አርቲፊኬት |አይነት |አጠቃቀም|
 | --- | --- | --- |
-| `org.hyperledger.iroha.sdk:core-jvm` | JAR | ንጹሕ Kotlin/JVM Norito, የመረጃ ሞዴል፣ ምስጠራ፣ ግብይት፣ Torii, እና የፕሮቶኮል ኮድ |
-| `org.hyperledger.iroha.sdk:client-android` | AAR | Android ቁልፍ ማከማቻ ፣ የመሣሪያ ቴሌሜትሪ እና JNI-የተደገፈ የደንበኛ ውህደት |
-| `org.hyperledger.iroha.sdk:offline-wallet-android` | AAR | Android ከመስመር ውጭ የኪስ ቦርሳ ትራንስፖርት እና ውህደት `client-android` |
+|`org.hyperledger.iroha.sdk:core-jvm` |JAR |ንጹህ Kotlin/JVM Norito፣ የውሂብ ሞዴል፣ ምስጠራ፣ ግብይት፣ Torii፣ እና ፕሮቶኮል ኮድ |
+|`org.hyperledger.iroha.sdk:client-android` |AAR |Android የቁልፍ ማከማቻ ፣ የመሣሪያ ቴሌሜትሪ እና JNI የተደገፉ የደንበኛ ውህደቶች |
+|`org.hyperledger.iroha.sdk:offline-wallet-android` |AAR |Android በ `client-android` ላይ የተገነባው ከመስመር ውጭ የኪስ ቦርሳ መጓጓዣ እና ውህደት |
 
-የእነሱን ዕቃዎች ማቨን ሴንትራል ገና አልተለጠፉም።
-በአካባቢው ከታሰረ Iroha ምንጭ ማሻሻያ:
+እቃዎቹ ገና በማቨን ሴንትራል አልተለጠፉም ። ከታሸገ Iroha ምንጭ ማሻሻያ አካባቢያዊ በሆነ መንገድ ይገንቡ እና ያትሟቸው:
 
 ```bash
 cd kotlin
@@ -44,31 +41,24 @@ dependencies {
 }
 ```
 
-`core-jvm` አያካትትም Android ጥገኛነት። Android ደንበኛ እና ቁልፍ ማከማቻ
-ኮድ ውስጥ `client-android`, እና አጠቃቀም `offline-wallet-android` ለ Android- ብቻ
-ከመስመር ውጭ የኪስ ቦርሳ እና JNI ፍሰቶች።
+`core-jvm` ምንም የ Android ጥገኛነት የለውም. Android ደንበኛ እና ቁልፍ ማከማቻ ኮድ በ `client-android` ውስጥ ይያዙ, እና ለ Android ብቻ ከመስመር ውጭ ቦርሳ እና ለ JNI ዥረቶች `offline-wallet-android` ይጠቀሙ.
 
 ## Kotlin እና የጃቫ ተኳሃኝነት {#kotlin-and-java-compatibility}
 
-የሕዝብ API ነው Kotlin-በመጀመሪያ እና የጃቫ interop ያቀርባል JVM ደራሲዎች ያስፈልጋቸዋል
-ተመጣጣኝ ለውጦች በተዛማጅ `java/`
-አተገባበር Android ውህደቶች በ Kotlin
-ከላይ ያሉት ቅርሶች።
+ህዝቡ API ነው Kotlin-በመጀመሪያ እና የጃቫ interop ያቀርባል JVM ተመጣጣኝ ለውጦች የሚመለከቱት በተዛማጅ `java/` አዲሱ Android ውህደቶች በ Kotlin ከላይ ያሉት ቅርሶች።
 
-ሁሉም Kotlin ሞጁሎች ማስከበር JDK 8 API በቅጅ ጊዜ ከ
-`-Xjdk-release=8`, ምንም እንኳን የግንባታ መሳሪያ ሰንሰለት ራሱ ቢጠቀምም JDK 21. አታድርግ
-አጠቃቀም JDK 9+ APIs ውስጥ SDK ኮድ.
+ሁሉም Kotlin ሞጁሎች ማስከበር JDK 8 API በኮምፒዩተር ጊዜ ከ `-Xjdk-release=8`, ምንም እንኳን የግንባታ መሳሪያ ሰንሰለት ራሱ የሚጠቀም ቢሆንም JDK 21. አይጠቀሙ JDK 9+ APIs ውስጥ SDK ኮድ.
 
 ## መገንባትና መሞከር {#build-and-test}
 
-ተንቀሳቃሽ አሂድ JVM ሙከራዎች:
+ተንቀሳቃሽ JVM ሙከራዎችን ያካሂዱ:
 
 ```bash
 cd kotlin
 ./gradlew :core-jvm:test --console=plain
 ```
 
-ይገንቡ Android ጥንታዊ ነገሮች፦
+የ Android ዕቃዎች መገንባት
 
 ```bash
 ./gradlew :client-android:assembleRelease \
@@ -77,15 +67,14 @@ cd kotlin
 
 ## ወቅታዊ ሽፋን {#current-coverage}
 
-የ Kotlin SDK የሚከተሉትን ያካትታል:
+Kotlin SDK የሚከተሉትን ያካትታል:
 
-- Norito ኮዲንግ እና ዲኮዲንግ
-- የካኖኒክ ሂሳብ እና የንብረት አድራሻ አያያዝ
-- የግብይት ግንባታ፣ ፊርማ እና ከመስመር ውጪ ያሉ ፖስታዎች
-- Torii HTTP, WebSocket, እና SSE ደንበኞች
-- ባለብዙ ፊርማ፣ ምዝገባ፣ SoraFS, Nexus, እና Connect ሞዴሎች
-- Android የቁልፍ ማከማቻ እና የመሣሪያ ቴሌሜትሪ ውህደቶች
-- Android ከመስመር ውጭ QR, በአቅራቢያ እና NFC መጓጓዣ
+- Norito ኢንኮዲንግ እና ዲኮዲንግ
+- የካኖኒክ ሂሳብ እና የንብረቶች አድራሻ አያያዝ
+- የግብይት ግንባታ, ፊርማ እና ከመስመር ውጪ ያሉ ፖስታዎች
+- Torii HTTP፣ WebSocket እና SSE ደንበኞች
+- ባለብዙ ፊርማ ፣ የደንበኝነት ምዝገባ፣ SoraFS ፣ Nexus እና Connect ሞዴሎች
+- Android የቁልፍ ማከማቻ እና የመሣሪያ ቴሌሜትሪ ውህዶች
+- Android ከመስመር ውጭ QR ፣ በአቅራቢያ እና NFC መጓጓዣ
 
-ተመልከት [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/main/kotlin/README.md)
-ለሞጁል የተወሰነ APIs እና ትክክለኛ የግንባታ ትዕዛዞች.
+ለሞጁል-ተኮር APIs እና ትክክለኛ የግንባታ ትዕዛዞች በ [Kotlin SDK README ](https://github.com/hyperledger-iroha/iroha/blob/main/kotlin/README.md) ውስጥ ይመልከቱ።

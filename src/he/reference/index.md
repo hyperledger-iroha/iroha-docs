@@ -6,19 +6,17 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# תקשורת {#reference}
+# התייחסות {#reference}
 
-החלק הזה עוקב אחר חומר הכתבה הנוכחי של המפעיל
-Iroha 3 תיק מסמכים.
+סעיף זה עוקב אחר חומר הכתבה הנוכחי של קבוצת המסמכים Iroha 3 המסתובבים כלפי המעסיק.
 
 תתחילו כאן:
 
-- [עבודה עם Iroha בינארי](/he/reference/binaries.md)
-- [תיקון בראשית](/he/reference/genesis.md)
-- [Torii נקודות סוף](/he/reference/torii-endpoints.md)
-- [Torii API קונסול](/he/reference/torii-api-console.md)
+- [עבודה עם Iroha בינרים](/he/reference/binaries.md)
+- [דף בראשית](/he/reference/genesis.md)
+- [נקודות קצה Torii ](/he/reference/torii-endpoints.md)
+- [קונסולת Torii API ](/he/reference/torii-api-console.md)
 - [Norito](/he/reference/norito.md)
-- [מאטריקס התאמה](/he/reference/compatibility-matrix.md)
+- [מתריסת תואמות ](/he/reference/compatibility-matrix.md)
 
-למידע על מקור ההפעלה והפרטים הקשורים לקוד, ראה
-[Iroha מחסן](https://github.com/hyperledger-iroha/iroha).
+עבור ספציפיות המקור של יישום וקוד סמוך, ראה את מאגר [Iroha ](https://github.com/hyperledger-iroha/iroha).

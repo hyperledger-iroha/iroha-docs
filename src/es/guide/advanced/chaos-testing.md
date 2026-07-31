@@ -136,7 +136,7 @@ Utilice `--fault-window-start` y `--fault-window-end` para mantener un período 
 
 ## Las formas del escenario {#scenario-shapes}
 
-El catálogo Izanami upstream mapea las formas comunes de falla en la comunicación blockchain a los perfiles CLI.
+El catálogo Izanami upstream mapea las formas comunes de fallas en la comunicación blockchain a los perfiles CLI. Puedes modelarlas con las mismas banderas:
 
 |Escenario |Forma típica |
 | --------------------- | ------------------------------------------------------------------------------------------------------------------------ |

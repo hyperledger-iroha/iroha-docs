@@ -6,6 +6,6 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# CSD/RTGS bog'liqliklar Konsepsiyaning isboti  {#csd-rtgs-linkages-proof-of-concept}
+# CSD/RTGS bog'liqliklar Konsepsiyani tasdiqlash  {#csd-rtgs-linkages-proof-of-concept}
 
-Ushbu hujjatda biz CSD/RTGS aloqalar PoC amalga oshirish orqali Iroha. Bu loyiha Osiyo taraqqiyot banki va Fujitsu bilan hamkorlikda amalga oshirilgan. R3 Korda, Hyperledger Kaktus (Kaktus), Hyperledger To'qima va boshqa ko'plab mashhur blokchain echimlari. 
+Ushbu hujjatda biz quyidagilarni bayon qilamiz: CSD/RTGS bog'lanishlar PoC amalga oshirilishi Iroha. Bu loyiha Osiyo taraqqiyot banki va Fujitsu bilan hamkorlikda amalga oshirilgan. Boshqa ishtirokchilar texnologiyalardan foydalanishgan: R3 Korda, Hyperledger Kaktus (Kaktus), Hyperledger To'qima va boshqa ko'plab mashhur blokchain echimlari.

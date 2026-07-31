@@ -215,7 +215,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger role unregister --id operators
 ```
 
-IVM バイトコードをコンパイルするか,シリアライズされた指示リストを要する.この例では, `Log` の指示を CLI で構築し,トリガー登録にパイプします.
+登録と解除するトリガーはトリガー登録には IVM バイトコードをまとめたり,シリアライズされた指示リストが必要である. この例では, `Log` の指示を CLI で構築し,それをトリガー登録にパイプします.
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml -o \
@@ -231,7 +231,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger trigger unregister --id hourly_cleanup
 ```
 
-BLS キーを生成し, PoP を `kagami` で作成する.
+同級生を登録し,非登録する BLS キーと PoP を `kagami` で生成するすでに持っていない場合:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
@@ -342,7 +342,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger account role revoke --id "$BOB" --role operators
 ```
 
-許可令状は,標準入力から許可オブジェクトを読み取ります.
+許可証を譲渡し撤回する許可コマンドは標準入力から許可オブジェクトを読みます:
 
 ```bash
 printf '{"name":"CanSetParameters","payload":null}\n' |

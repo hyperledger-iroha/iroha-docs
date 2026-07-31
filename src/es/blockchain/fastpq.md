@@ -97,7 +97,7 @@ Aquí `Hash` significa el `iroha_crypto::Hash::new` de Iroha, un digesto Blake2b
 
 ### La aritmética de campo {#field-arithmetic}
 
-El código Rust representa los elementos de campo como valores canónicos `u64` en `[0,p)`.
+El código Rust representa los elementos del campo como valores canónicos de `u64` en `[0,p)`. La adición y la subtracción son:
 
 $$
 a +_F b = (a+b)\bmod p
@@ -135,7 +135,7 @@ $$
 \pmod p
 $$
 
-La implementación añade o subtrae condicionalmente `p` hasta que el resultado sea canónico.
+La implementación añade o subtrae condicionalmente `p` hasta que el resultado sea canónico. Los números enteros firmados, como los deltas de equilibrio, están incrustados por:
 
 $$
 \operatorname{field}(x)=x\bmod p,\qquad 0\leq\operatorname{field}(x)<p
@@ -1024,7 +1024,7 @@ $$
 \operatorname{le64}(\operatorname{policy\_commitment}[0..8])
 $$
 
-La solicitud `compliance` inserta dos filas de metadatos: una para la política y otra para los espacios de datos objetivo.
+y una fila de metadatos vinculativa a la política de autorización. La solicitud de `compliance` inserta dos filas de metadatos: una para las políticas y otra para los espacios de datos objetivo.
 
 Para `tx_predicate` y `value_conservation`, se utilizará un valor de efecto explícito cuando la vinculación contenga una fuente o cantidad de destino positiva. De lo contrario, el código derivará una cantidad determinista limitada:
 
@@ -1159,7 +1159,7 @@ El crudo FastPQ la prueba es Norito- codificado en un `StarkFriOpenProofV1`, y l
 
 ## Los conjuntos de parámetros {#parameter-sets}
 
-El catálogo de parámetros canónicos expone dos conjuntos de parámetros. `fastpq-lane-balanced`.
+El catálogo de parámetros canónicos expone dos conjuntos de parámetros. El carril proveedor de acogida utiliza actualmente `fastpq-lane-balanced`.
 
 |Parámetro |Propósito |El campo |Los hashes |FRI |
 | ---------------------- | -------------------------- | ------------------------------ | ------------------------------------------- | ------------------------------- |

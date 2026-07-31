@@ -8,17 +8,15 @@ translation_engine: nllb-200-ct2
 
 # რეფერენცია {#reference}
 
-ამ განყოფილებაში აღინიშნება მიმდინარე ოპერატორის მიმართულებით არსებული სათადარიგო მასალა
-Iroha 3 დოკუმენტების დაყენება.
+ამ განყოფილებაში აღინიშნება Iroha 3 დოკუმენტების კომპლექტის მიმდინარე ოპერატორის მიმართულებით რეფერენციული მასალა.
 
 დაიწყეთ აქ:
 
-- [მუშაობა Iroha ბინარი](/ka/reference/binaries.md)
-- [იანესის რეფერენცია](/ka/reference/genesis.md)
+- [Iroha ბინარებთან მუშაობა](/ka/reference/binaries.md)
+- [გენეზიის მითითება](/ka/reference/genesis.md)
 - [Torii საბოლოო წერტილები](/ka/reference/torii-endpoints.md)
 - [Torii API კონსოლი](/ka/reference/torii-api-console.md)
 - [Norito](/ka/reference/norito.md)
-- [შეთავსების მატრიცა](/ka/reference/compatibility-matrix.md)
+- [შესაბამისობის მატრიცა](/ka/reference/compatibility-matrix.md)
 
-განხორციელების წყარო და კოდთან მიმდებარე სპეციფიკაციებისთვის იხილეთ
-[Iroha საცავი](https://github.com/hyperledger-iroha/iroha).
+განხორციელების წყარო და კოდის მიმდებარე სპეციფიკაციების შესახებ იხილეთ [Iroha რეპოზიტორი ](https://github.com/hyperledger-iroha/iroha).

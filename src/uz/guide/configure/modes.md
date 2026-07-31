@@ -52,7 +52,7 @@ Andoza ruxsatnomalarni tasdiqlovchilar odatiy xususiy blokcheyn foydalanish hola
 
 ::: ma'lumot
 
-Ochiq tarmoqni ishga tushirishdan oldin siz jo'natgan ijrochi va genesis ruxsatlarini ko'rib chiqish.
+Umumiy va xususiy rejimlar alohida nodlar binarlari emas, balki siyosat profillari hisoblanadi. Ochiq tarmoqni ishga tushirishdan oldin etkazib berayotgan ijrochi va genesis ruxsatlarini ko'rib chiqing.
 
 :::
 

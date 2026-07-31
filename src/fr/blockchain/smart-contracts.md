@@ -6,81 +6,59 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Contrats intelligents {#smart-contracts}
+# Les contrats intelligents {#smart-contracts}
 
-Iroha exécuter les transactions `Executable` Les charges utiles. le modèle de données actuel
-soutient:
+Les transactions Iroha exécutent des charges utiles `Executable`. Le modèle de données actuel prend en charge:
 
-- `Executable::Instructions`: un ensemble ordonné de Iroha Instructions spéciales
-- `Executable::ContractCall`: un appel de référence parallèle à un contrat déployé
-  exemple
-- `Executable::Ivm`: Iroha VM code par défaut
-- `Executable::IvmProved`: Iroha VM code octal avec une instruction précomputée
-  engagements de superposition et d'épreuve
+- `Executable::Instructions`: un ensemble ordonné d'instructions spéciales Iroha
+- `Executable::ContractCall`: appel de référence parallèle à une instance de contrat déployée
+- `Executable::Ivm`: code en octets Iroha VM
+- `Executable::IvmProved`: code byte Iroha VM avec une superposition précomputée d'instructions et des engagements en matière de preuve
 
-Kotodama est Iroha C'est un langage de contrat intelligent de haut niveau. `.ko` fichier source
-compile à déterministe IVM code octal, conservé conventionnellement sous forme d'un `.to`
-un artefact destiné au déploiement. Kotodama cibles IVM; Ce n'est pas un stand-alone RISC-V
-ou WebAssembly cible.
+Kotodama est Iroha C'est un langage de contrat intelligent de haut niveau. `.ko` le fichier source compile à déterministique IVM code octal, conservé de manière conventionnelle en tant que `.to` un artefact destiné au déploiement. Kotodama Objectifs IVM; Il n'est pas indépendant. RISC-V ou WebAssembly La cible.
 
-La première version ne prend en charge que ABI La version 1. Le syscall et le pointeur ABI
-la politique est appliquée de manière inconditionnelle par l'admission et l'exécution du contrat;
-n'y a pas de commutateur de compatibilité en temps d'exécution.
+La première version ne prend en charge que la version ABI 1. La politique de syscall et pointer-ABI est appliquée inconditionnellement par l'admission et l'exécution du contrat; il n'y a pas de commutation de compatibilité en temps d'exécution.
 
 ## Quand utiliser des contrats intelligents {#when-to-use-smart-contracts}
 
-Utilisez des instructions normales lorsque la transaction peut être exprimée directement:
+Utilisez les instructions normales lorsque la transaction peut être exprimée directement:
 
-- objets enregistrés ou non enregistrés
+- les objets enregistrés ou non enregistrés
 - actifs de la menthe, du brûlure ou du transfert
-- mise à jour des métadonnées
+- mettre à jour les métadonnées
 - accorder ou révoquer des autorisations
 - d' exécuter un déclencheur
-- paramètres de chaîne définis
+- paramètres sur la chaîne définis
 
-Utilisez un contrat intelligent lorsque la transaction a besoin de logique packaged qui est
-difficile à exprimer en tant que séquence d'instructions statiques, ou lorsqu'une
-L'instance de contrat doit être appelée par référence.
+Utilisez un contrat intelligent lorsque la transaction a besoin d'une logique packaged qui est difficile à exprimer sous forme de séquence d'instructions statiques, ou lorsqu'une instance de contrat déployée doit être appelée par référence.
 
-## IVM Les éléments exécutables {#ivm-executables}
+## IVM Exécutables {#ivm-executables}
 
-`Executable::Ivm` porte crues IVM Les nœuds exécutent ce code en byte à l'intérieur
-les limites de temps d'exécution configurées pour la chaîne.
-déterministe; les contrats font partie de l'exécution des transactions et affectent donc
-Le consensus.
+`Executable::Ivm` contient le code octal brut IVM. Les nœuds exécutent ce code octal à l'intérieur des limites de temps d'exécution configurées pour la chaîne. Gardez un code octal petit et déterministique; les contrats font partie de l'exécution des transactions et affectent donc le consensus.
 
-`Executable::IvmProved` est destiné aux flux de transport à épreuve. il contient:
+`Executable::IvmProved` est destiné aux flux de transport à épreuve.
 
-- IVM code par défaut
+- Le code octal IVM
 - une superposition d'instruction déterministe
-- un engagement sur les événements d'exécution
+- un engagement en matière d'exécution des événements
 - un engagement en matière de politique du gaz
 
-La preuve lie la superposition au code octal exécuté.
-la politique, les validateurs peuvent vérifier l'exécution de la preuve et de répétition en tant que complément
-vérification de la sécurité.
+La preuve lie la superposition au code octal exécuté. Selon la politique du pipeline, les validateurs peuvent vérifier la preuve et reproduire l'exécution en tant que contrôle de sécurité supplémentaire.
 
-## Appels contractuels déployés {#deployed-contract-calls}
+## Les appels contractuels déployés {#deployed-contract-calls}
 
-`Executable::ContractCall` invoque une instance de contrat déployée par adresse.
-Utilisez ceci lorsque le code du contrat est enregistré séparément et que les transactions doivent être effectuées
-appeler par référence au lieu de porter le code octal à chaque fois.
+`Executable::ContractCall` invoque une instance de contrat déployée par adresse.Utilisez-la lorsque le code du contrat est enregistré séparément et que les transactions doivent l'appeler par référence au lieu de porter chaque fois le bytecode.
 
-## Conseils d'exploitation {#operational-guidance}
+## Conseils opérationnels {#operational-guidance}
 
-- Le comportement des contrats ne doit pas dépendre de la situation locale.
-  l'heure du mur, l'état du système de fichiers hôte, les appels réseau ou d'autres paramètres locaux
-  les entrées.
-- Gardez les charges utiles compactes. Un grand code octal augmente la taille et le blocage des transactions
-  le coût de propagation.
-- Les instructions typées sont préférées pour les modifications simples du registre.
-  l'audit et moins cher à exécuter.
-- Traiter la mise à niveau des contrats et les autorisations d'enregistrement comme présentant un risque élevé
-  les contrôles opérationnels.
+- Gardez les contrats déterministes. Le comportement des contrats ne doit pas dépendre de l'heure locale du mur, de l'état du système de fichiers hôte, des appels réseau ou d'autres entrées locales par les pairs.
+- Gardez les charges utiles compactes. Un grand code octal augmente la taille de la transaction et le coût de propagation des blocs.
+- Les instructions typées sont préférées pour les modifications simples du registre. Elles sont plus faciles à vérifier et moins chères à exécuter.
+- Traiter la mise à niveau du contrat et les autorisations d'enregistrement comme des contrôles opérationnels à haut risque.
 
 Voir aussi:
 
-- [Instructions](/fr/blockchain/instructions.md)
-- [Les déclencheurs](/fr/blockchain/triggers.md)
-- [Autorisations](/fr/blockchain/permissions.md)
+- [Instructions ](/fr/blockchain/instructions.md)
+- [Les déclencheurs ](/fr/blockchain/triggers.md)
+- [Autorisations ](/fr/blockchain/permissions.md)
 - [Schéma de modèle de données](/fr/reference/data-model-schema.md)

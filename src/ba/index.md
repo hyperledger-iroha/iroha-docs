@@ -36,7 +36,7 @@ features:
       dark: /explained.svg
       light: /explained-light.svg
     title: "Архитектура"
-    details: "Аңлағыҙ Torii, Sumeragi, Norito, IVM, һәм Nexus мәғлүмәттәр арауығы моделе"
+    details: "Torii, Sumeragi, Norito, IVM һәм Nexus мәғлүмәт киңлеге моделен аңлау"
     link: /ba/blockchain/iroha-explained
   - icon:
       dark: /reference.svg
@@ -51,7 +51,7 @@ footer: true
 
 <section class="nexus-build" aria-labelledby="nexus-build-title">
 <a class="nexus-build__panel" href="/ba/get-started/sora-nexus-dataspaces">
-    <span class="nexus-buildcopy"> <span class="nexus-buildeyebrow">SORA Nexus</span> <span id="nexus-build-title" class="nexus-buildtitle">Үҫеп бар Iroha 3 / SORA Nexus</span> <span class="nexus-builddetails">Үҫеп бар SORA 3 менән Taira тест селтәре, Minamoto mainnet, һәм күсермә-таҫма өлгөләре һеҙ хәҙер һынап ҡарай ала.</span> </span> <span class="nexus-build__action">Асыҡ гид <span aria-hidden="true">-&gt;</span></span>
+<span class="nexus-buildcopy"> SORA Nexus <span id="nexus-build-title" class="nexus-buildtitle">Үҙгәртергә Iroha 3 / SORA Nexus</span> <span class="nexus-builddetails">Үҙгәртеп ҡуйығыҙ SORA 3 менән Taira тест селтәре, Minamoto төп селтәре һәм күсермә-таҫма өлгөләре һеҙ хәҙер һынап ҡарай алаһығыҙ.</span> </span> <span class="nexus-build__action">Асыҡ гид <span aria-hidden="true">-&gt;</span></span>
 </a>
 </section>
 

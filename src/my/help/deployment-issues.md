@@ -6,48 +6,40 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# ပြဿနာဖြေရှင်းခြင်း {#troubleshooting-deployment-issues}
+# ဖြန့်ချိမှု ပြဿနာများ ဖြေရှင်းခြင်း {#troubleshooting-deployment-issues}
 
-ဤအပိုဒ်သည် ပြဿနာဖြေရှင်းနည်းများအတွက် အကြံပြုချက်များကိုပေးသည်။ Iroha 3 စေလွှတ်မှုတွေရှိတယ်ဆိုရင်
-သင်ခံစားနေရတာက ဒီမှာ ဖော်ပြထားတာမဟုတ်ဘူး။
-ကျွန်ုပ်တို့အား ဆက်သွယ်ရန် [Telegram ကို](https://t.me/hyperledgeriroha).
+ဤအခန်းတွင် Iroha 3 deployments များအတွက်ပြဿနာဖြေရှင်းရေး အကြံပြုချက်များကိုပေးထားပါသည်။ သင်တွေ့နေရတဲ့ ပြဿနာကို ဒီမှာဖော်ပြမထားပါက [Telegram](https://t.me/hyperledgeriroha) မှ ဆက်သွယ်ပါ။
 
-## ဖန်တီးထားတဲ့ လက်ရာတွေနဲ့ စလိုက်ပါ {#start-with-generated-artifacts}
+## ဖန်တီးထားတဲ့ လက်ရာတွေနဲ့ စတင်ပါ။ {#start-with-generated-artifacts}
 
-ဒေသတွင်းနဲ့ စမ်းသပ်မှု နေရာချထားမှုအတွက် Kagami ဒီအစား
-လက်နဲ့ရေးသားထားတဲ့ အချိတ်အဆက် ဖိုင်များ:
+ဒေသတွင်း (သို့) စမ်းသပ်မှု ဖြန့်ချိချက်များအတွက် Kagami မှထုတ်လုပ်ထားသော အနုပညာပစ္စည်းများကို လက်နဲ့ရေးသားထားသည့် တူညီတဲ့ ဖိုင်တွေအစား ဦးစားပေးပါ။
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
 ```
 
-ဖန်တီးထားတဲ့ directory မှာ peer configs, genesis material, start တွေပါဝင်ပါတယ်။
-စာသားများနှင့် README အတွက် Iroha 3 ဆောက်လုပ်ရေး လိုင်း။
+Generated directory မှာ peer configs, genesis material, start script တွေနဲ့ README build line အတွက် Iroha 3 ကို ထည့်သွင်းထားတယ်။
 
-## Peer က မစဘူး {#peer-does-not-start}
+## Peer က မစဘူး။ {#peer-does-not-start}
 
 ဒီပစ္စည်းတွေကို အရင်စစ်ကြည့်ပါ။
 
-- `irohad --config <path>` တူညီသူရဲ့ အမှတ်တွေ TOML မှတ်တမ်းတင်ပါ။
-- `public_key` နှင့် `private_key` peer config မှာ တူညီတဲ့ key ကိုပိုင်ဆိုင်တယ်
-  စုံတွဲပါ။
-- `genesis.public_key` Genesis Transaction ကို လက်မှတ်ရေးထိုးဖို့ အသုံးပြုခဲ့တဲ့ သော့နဲ့ ကိုက်ညီပါတယ်။
-- validator peer identities အသုံးပြုခြင်း BLS- ပုံမှန် သော့တွေ၊ `trusted_peers_pop`
-  ဒေသတွင်း သော့နဲ့ ယုံကြည်ရတဲ့ အဖော်တွေအတွက် ပိုင်ဆိုင်မှု သက်သေခံ စာရင်းတွေ ပါဝင်ပါတယ်။
-- ဆိပ်ကမ်းများ Torii နှင့် P2P အခြားလုပ်ငန်းစဉ်တစ်ခုနဲ့ ချည်နှောင်ထားခြင်း မရှိသေးပါ။
-- ကော်မတီ Kura store directory ကို chain တစ်ခုတည်းနဲ့ဆိုင်ပြီး copy လုပ်ထားတာမဟုတ်ဘူး။
-  မတူတဲ့ ကွန်ရက် ပရိုဖိုင်ပါ။
+- `irohad --config <path>` အချက်အလက်များကို တူညီသူ၏ TOML ဖိုင်တွင် ထည့်သွင်းထားပါသည်။
+- `public_key` နဲ့ `private_key` တို့ဟာ တူညီတဲ့ သော့စုံကို ပိုင်ဆိုင်ပါတယ်။
+- `genesis.public_key` က genesis transaction ကို လက်မှတ်ရေးထိုးဖို့ အသုံးပြုခဲ့တဲ့ သော့နဲ့ ကိုက်ညီပါတယ်။
+- validator peer identities use BLS-Normal keys, and `trusted_peers_pop` contains proof of possession entries for the local key and trusted peers (ထည့်သွင်းရန်လိုအပ်သော)
+- Torii နှင့် P2P အတွက်ဆိပ်ကမ်းများကို အခြားလုပ်ငန်းစဉ်တစ်ခုဖြင့် ချည်နှောင်ထားခြင်း မရှိပါ။
+- Kura store directory ဟာ တူညီတဲ့ ကွင်းဆက်ထဲ ပါဝင်ပြီး အခြားကွန်ရက် ပရိုဖိုင်တစ်ခုကနေ ကူးယူထားတာ မဟုတ်ဘူး။
 
-Daemon ကို read များစွာသောအခါ config tracing ကိုအသုံးပြုပါ TOML အလွှာ:
+Daemon က TOML အလွှာတစ်ခုထက်ပိုပြီးဖတ်တဲ့အခါ config tracing ကိုသုံးပါ။
 
 ```bash
 cargo run --bin irohad -- --config ./config.toml --trace-config
 ```
 
-## Docker နောက်ပြီး Composite {#docker-and-compose}
+## Docker နှင့် Composite {#docker-and-compose}
 
-Generate Current မှပေါင်းစပ်ခြင်း Kagami localnet output ကို command-line ကို
-အငြင်းပွားချက်များနှင့် ဖိုင်များကို check-out code နှင့် ကိုက်ညီသည်
+Generate Current Kagami localnet output မှပေါင်းစပ်ပါ command line arguments နှင့် config files များသည် check-out code ကိုက်ညီစေရန်:
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
@@ -57,32 +49,27 @@ docker compose -f ./localnet/docker-compose.yml up
 
 compose deployment ကိုစတင်ပြီးနောက် stalks လုပ်ရင် daemon log တွေကို စစ်ဆေးပါ
 
-- မညီမညီ `chain`
-- အခြား genesis transaction (သို့) manifest ကိုသုံးတဲ့ peer တစ်ခု
-- ကြော်ငြာ P2P container network အတွင်းမှာသာ အလုပ်လုပ်တဲ့ address တွေ
-- ဒေသတွင်းပမာဏကို ပြန်လည်သုံးစွဲခြင်း Genesis ပြန်လည်ပြုပြင်ပြီးနောက်
+- မှားယွင်းသော `chain`
+- Genesis Transaction သို့မဟုတ် Manifest တစ်ခုကို အသုံးပြုတဲ့ peer
+- ကြော်ငြာပြုလုပ်ထားသော P2P လိပ်စာများမှာ ကွန်ပျူတာ ကွန်ရက်အတွင်းတွင်သာ အလုပ်ဖြစ်ပါသည်။
+- ဒေသတွင်းပမာဏ ပြန်လည်သုံးစွဲခြင်း Genesis ပြန်လည်ပြုပြင်ပြီးနောက်
 
-အသစ်ဖြစ်စဉ်ကို စမ်းသပ်တဲ့အခါ အဟောင်းတွေကို ဖယ်ရှားပါ။ Kura ပြန်လည်စတင်ခြင်းမတိုင်မီ Volume များ
-ဘလော့ခ်ဟောင်းကို အသစ်တစ်ခုနဲ့ သိုလှောင်ထားခြင်းက ပြန်လည်ကစားမှုကို ကျရှုံးစေမှာပါ။
+ဗီဇသစ်ကို စစ်ဆေးတဲ့အခါ stack ကို ပြန်စတင်မလုပ်ခင် Kura အရွယ်အစားဟောင်းတွေကို ဖယ်ရှားပါ။ ဗီဇအသစ်နဲ့ ဘလော့ကစ်ဟောင်းတွေ သိုလှောင်ထားခြင်းက playback ကျရှုံးစေပါလိမ့်မယ်။
 
 ## Kubernetes {#kubernetes}
 
-Kubernetes အတွက် validator တစ်ခုစီကို stateful အခြေခံအဆောက်အအုံအဖြစ် සලකාကြည့်ပါ။
+Kubernetes အတွက် validator တစ်ခုစီကို stateful အခြေခံအဆောက်အအုံတစ်ခုအဖြစ် ဆက်ဆံပါ။
 
-- တူညီသူတိုင်းအတွက် တည်ငြိမ်တဲ့ ကိုယ်စားလှယ်လက္ခဏာ သော့နဲ့ တည်ငြိမ်နေတဲ့ ပမာဏကို ပေးပါ။
-- ပွင့်လင်းမြင်သာမှု P2P cluster ထဲက အခြား peers တွေ ဖြေရှင်းနိုင်မယ့် addresses များ
-- configuration နှင့် genesis ဖိုင်များကို roll-out အတွက်မပြောင်းလဲနိုင်သော config အဖြစ်တပ်ဆင်ပါ။
-- ဂင်းနစ် (သို့) ထိပ်ပိုင်းဆိုင်ရာ အပြောင်းအလဲအားလုံးကို အလိုလိုမဟုတ်ဘဲ ကြံစည်ပြီး ဖြန့်ချိပါ။
-  config-map ကို update လုပ်ပေးရန်
+- တူညီမှုရှိသူတိုင်းအတွက် တည်ငြိမ်တဲ့ ကိုယ်ပိုင်လက္ခဏာ သော့နဲ့ တည်ငြိမ်နေတဲ့ ပမာဏကို ပေးပါ။
+- P2P လိပ်စာများကို အခြားအဖော်များက အုပ်စုအတွင်းမှ ဖြေရှင်းနိုင်သော လိပ်စာများအား ဖော်ပြပါ။
+- configuration နှင့် genesis files များကို roll-out အတွက်မပြောင်းလဲနိုင်သော config အဖြစ်တပ်ဆင်ပါ။
+- ဗီဇ (သို့) ထိပ်ပိုင်းဆိုင်ရာ အပြောင်းအလဲအားလုံးကို အလိုအလျောက် ပြုပြင်ခြင်းမဟုတ်ဘဲ ရည်ရွယ်ချက်ရှိပြီး ဖြန့်ချိပေးပါ။
 
-Capsule တစ်ခုကို အကြိမ်ကြိမ် ပြန်လည်စတင်ပါက capsule ထဲက rendered config ကို
-မျှော်မှန်းချက် [`peer.template.toml`](/my/reference/peer-config/index.md#template) နှင့်
-တူညီသူက အဟောင်းကို ပြန်လည်ကစားနေလားဆိုတာ စစ်ဆေးပါ။ Kura ဒေတာ။
+Pod တစ်ခုကို အကြိမ်ကြိမ် ပြန်လည်စတင်ပါက၊ pod ထဲရှိ rendered config ကို မျှော်မှန်းထားသော [`peer.template.toml`](/my/reference/peer-config/index.md#template) နဲ့ နှိုင်းယှဉ်ပြီး peer က Kura ဒေတာဟောင်းတွေကို ပြန်လည်ကစားနေလား စစ်ဆေးပါ။
 
-## Sora profile ကို {#sora-profile}
+## Sora ၏ ပရိုဖိုင် {#sora-profile}
 
-Iroha 3 အသုံးပြုတဲ့ တပ်ဆင်မှု Nexus, SoraFS, (သို့) multi-lane စီးဆင်းမှု စတင်သင့်သည်
-Sora profile ရှိ daemon က:
+Iroha 3 deployments များမှာ Nexus၊ SoraFS သို့မဟုတ် multi-lane flows တွေကို အသုံးပြုရင် Sora profile ကို activated လုပ်ထားပြီး daemon ကို start လုပ်သင့်ပါတယ်။
 
 ```bash
 cargo run --bin irohad -- --config ./config.toml --sora

@@ -80,7 +80,7 @@ Monitorinq sübutlarını təsdiqləyici məlumatları dizaynından ayrı bir ə
 - xəbərdarlığı zənginləşdirmək üçün istifadə olunan sorğu sürətli görüntüləri
 - Qayda adı, versiyası, həddi, nəticə və rəyçi qərarı
 
-Şəbəkənin məlumat idarəetmə siyasəti bunu açıq şəkildə icazə vermirsə, həssas araşdırma qeydlərini ictimai kitabxana metadataları kimi saxlamayın.
+Şəbəkənin məlumat idarəçiliyi siyasəti açıq şəkildə göstərilmədikcə həssas araşdırma qeydlərini ictimai kitabın metadataları kimi saxlama. icazə verir. Əgər zəncirdən kənarda olan bir işi zəncirlə bağlı vəziyyətlə əlaqələndirmək istəyirsinizsə, zəncirdə olan vəziyyəti müəyyənləşdirməyə üstünlük verin, imzalanmış təsdiq, və ya şəxsi məlumatları aşkar etməyən hash öhdəliyi.
 
 ## Tədbirlərin həyata keçirilməsi siyahısı {#implementation-checklist}
 

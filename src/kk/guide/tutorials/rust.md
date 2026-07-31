@@ -44,7 +44,7 @@ cargo run --bin iroha -- taira doctor \
   --json
 ```
 
-Маршрут деңгейіндегі тексерулер үшін пайдалану Torii Ол ... JSON API тікелей:
+Маршрут деңгейіндегі тексерулер үшін Torii JSON API тізімін тікелей қолданыңыз:
 
 ```bash
 curl -fsS https://taira.sora.org/status \

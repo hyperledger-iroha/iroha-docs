@@ -18,7 +18,7 @@ Xüsusi bir açıdan ictimai açar etmək asandır, əksinə isə çətin və m�
 
 İctimai açar kriptografiyası fərdlərə yalnız müvafiq özəl açarı olan nəzərdə tutulmuş alıcı tərəfindən kəşf edilə bilən şifrələnmiş mesajlar və məlumatlar göndərməyə imkan verir. Başqa sözlə, ictimai açar bir kilid kimi fəaliyyət göstərir və özəl açar şifrələnmiş məlumatları açan xüsusi bir açar kimi xidmət edir.
 
-Bu şifrələmə prosesi yalnız həssas məlumatların məxfiliyini təmin etmir, həm də göndərənin əslliyini müəyyən edir. Bu imza göndəricinin kimliyini və ötürülən məlumatların etibarlılığını təsdiqləyən rəqəmsal razılıq mövzusu kimi xidmət edir. İctimai açarınız olan hər kəs əməliyyatı başlayan şəxsin şəxsi açarınızı istifadə etdiyini yoxlaya bilər.
+Bu şifrələmə prosesi yalnız həssas informasiyanın məxfiliyini təmin etməklə yanaşı, göndəricinin etibarlılığı. Göndəricinin şəxsi açarı ilə ictimai açarı birləşdirməklə rəqəmsal imzalanma yaradılır. Bu imza göndəricinin kimliyini və ötürülən məlumatların etibarlılığını təsdiqləyən rəqəmsal təsdiq möhürü kimi xidmət edir. İctimai açarınız olan hər kəs, əməliyyatı başlayan şəxs şəxsi açarınızı istifadə etdiyini təsdiq edə bilər.
 
 ## Müştəri tərəfindəki açarlar {#keys-on-the-client-side}
 
@@ -30,7 +30,7 @@ Bütün müştərilər fərqlidir, lakin sadə mətn müştəri konfigüratsiyas
 
 :::
 
-Yeni bir hesabın qeydiyyatı Ed25519 açar cütü kimi nəzarət materialının yaradılmasını və ictimai hissənin şəbəkəyə təqdim edilməsini tələb edir.
+Yeni hesabın qeydiyyatı Ed25519 açar cütü kimi nəzarətçi materialının yaradılmasını tələb edir, və ictimai hissəni şəbəkəyə təqdim etmək. Bu hesabdan olan sonrakı əməliyyatlar uyğun xüsusi açar və ya konfiqurasiya edilmiş hesab nəzarətçisi siyasəti ilə imzalanmalıdır.
 
 İctimai açar kriptografiyasının səmərəli işləməsi üçün yeni bir açar təyin etmək lazım olduqda yenidən istifadədən çəkinin. Bunu etməyinizə mane olan heç bir şey olmasa da, ictimai açarlar ictimaidir, yəni hücumçu eyni ictimai anahtarın istifadə edildiyini görürsə, Onlar özəl açarların da eyni olduğunu bilirlər.
 

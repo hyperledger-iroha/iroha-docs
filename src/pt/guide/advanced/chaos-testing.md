@@ -136,7 +136,7 @@ Usar `--fault-window-start` e `--fault-window-end` para manter um período de es
 
 ## Formas de cenário {#scenario-shapes}
 
-O catálogo Izanami upstream mapeia as formas comuns de falha da comunicação blockchain para perfis CLI.
+O catálogo Izanami upstream mapeia as formas comuns de falhas de comunicação blockchain para perfis CLI. Podem ser modeladas com as mesmas bandeiras:
 
 |O cenário |Forma típica .|
 | --------------------- | ------------------------------------------------------------------------------------------------------------------------ |
@@ -181,7 +181,7 @@ Tratar uma corrida como um fracasso quando:
 - Transações rejeitadas ou com prazo não são explicadas pela carga de trabalho selecionada.
 - Reinicialização por pares, limpeza do armazenamento ou recuperação de perda de pacotes requer limpeza manual
 
-Após uma falha, repete com a mesma semente e um menos tipo de falha.
+Após um fracasso, repete com a mesma semente e um tipo de falha menos. Isto mantém a carga de trabalho e o cronograma reprodutíveis, ao mesmo tempo que restringe a superfície da falha.
 
 ## Páginas relacionadas {#related-pages}
 

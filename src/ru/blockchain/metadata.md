@@ -8,8 +8,7 @@ translation_engine: nllb-200-ct2
 
 # Метаданные {#metadata}
 
-Метаданные - это проверенная карта ключевого значения, прикрепленная к объектам реестра.
-`Name` ценности и значения JSON (`Json`) полезных нагрузок.
+Метаданные - это проверенная карта значения ключа, прикрепленная к объектам книги. Ключи являются значениями `Name` и значениями являются полезные нагрузки JSON (`Json`).
 
 Следующие объекты могут содержать метаданные:
 
@@ -22,18 +21,13 @@ translation_engine: nllb-200-ct2
 - триггеры
 - транзакции
 
-Используйте метаданные для небольших описательных или индексирующих полей, которые относятся к регистру
-Большие полезные грузы должны храниться за пределами WSV и ссылается на
-пищеварение, URI, или SoraFS Путь.
+Используйте метаданные для небольших описательных или индексирующих полей, которые относятся к состоянию реестра. Большие полезные нагрузки должны храниться за пределами WSV и ссылаться на траекторию URI или SoraFS.
 
-Для руководства по выбору метаданных, активов, NFTs, RWAs, или вне цепи
-хранение, см.
-[Выбор хранилища метаданных и реестра](/ru/guide/configure/metadata-and-store-assets.md).
+Для руководства по выбору метаданных, активов NFTs, RWAs или хранения вне цепочки см. [Metadata and Ledger Storage Choices](/ru/guide/configure/metadata-and-store-assets.md).
 
-## Попробуй . Taira {#try-it-on-taira}
+## Попробуй на Taira {#try-it-on-taira}
 
-Метаданные видны через обычные чтения ресурсов. Taira
-определения активов, которые в настоящее время имеют метаданные:
+Метаданные видны через обычные чтения ресурсов. Эта команда перечисляет определения активов Taira, которые в настоящее время имеют метаданные:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=100' \
@@ -42,7 +36,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=100' \
     | {id, name, metadata}'
 ```
 
-Используйте тот же шаблон для доменов и учетных записей:
+Используйте один и тот же шаблон для доменов и учетных записей:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
@@ -52,26 +46,20 @@ curl -fsS 'https://taira.sora.org/v1/accounts?limit=20' \
   | jq '.items[] | select((.metadata // {} | length) > 0)'
 ```
 
-Считать пустой выход действительным результатом. Taira
-объекты не содержат метаданные, а не то, что конечная точка потерпела неудачу.
+Оценить пустой выход как действительный результат. Это означает, что текущая страница объектов Taira не содержит метаданные, а это не значит, что конечная точка потерпела неудачу.
 
 ## Обновление метаданных {#updating-metadata}
 
-Метаданные изменяются с Iroha Специальные инструкции:
+Метаданные изменяются посредством Iroha Специальных инструкций:
 
-- [`SetKeyValue`](/ru/blockchain/instructions.md#setkeyvalue-removekeyvalue)
-  вставляет или заменяет ключ
-- [`RemoveKeyValue`](/ru/blockchain/instructions.md#setkeyvalue-removekeyvalue)
-  удаляет ключ
+- [Вставляет или заменяет ключ `SetKeyValue`](/ru/blockchain/instructions.md#setkeyvalue-removekeyvalue)
+- [`RemoveKeyValue`](/ru/blockchain/instructions.md#setkeyvalue-removekeyvalue) удаляет ключ
 
-Власти, представляющие сделку, должны иметь разрешение
-для поверхности разрешений по умолчанию см.
-[Токены разрешения](/ru/reference/permissions.md).
+Орган, представляющий транзакцию, должен иметь разрешение, требуемое активным валидатором запуска. Для поверхности разрешений по умолчанию см. [Токены разрешения](/ru/reference/permissions.md).
 
 ## События {#events}
 
-События данных выделяются при изменении метаданных.
-`MetadataChanged<Id>`:
+Данные событий выделяются при изменениях метаданных. `MetadataChanged<Id>`:
 
 ```mermaid
 classDiagram
@@ -93,22 +81,10 @@ MetadataChanged --> AssetDefinitionMetadataChanged
 MetadataChanged --> DomainMetadataChanged
 ```
 
-Использование [фильтры событий данных](/ru/blockchain/filters.md#data-event-filters) к
-подписывается только на события метаданных для типа или объекта субъекта ID Это
-Это важно для интеграции.
+Используйте фильтры событий данных [](/ru/blockchain/filters.md#data-event-filters) для подписки только на события метаданных типа субъекта или объекта ID, которые имеют значение в интеграции.
 
 ## Вопросы {#queries}
 
-Метаданные возвращаются как часть запрошенного объекта.
-[`FindAccountById`](/ru/reference/queries.md#accounts-and-permissions),
-[`FindDomainById`](/ru/reference/queries.md#domains-and-peers), или
-[`FindAssetDefinitionById`](/ru/reference/queries.md#assets-nfts-and-rwas).
-Использование [`FindNfts`](/ru/reference/queries.md#assets-nfts-and-rwas) или
-[`FindNftsByAccountId`](/ru/reference/queries.md#assets-nfts-and-rwas) для
-NFTs, и [`FindRwas`](/ru/reference/queries.md#assets-nfts-and-rwas) для RWA
-Прочитайте поле метаданных объекта. NFT Ответы на запросы раскрывают
-NFT `content` Карта в качестве метаданных.
+Метаданные возвращаются в качестве части запрашиваемого объекта. Например, используйте [`FindAccountById`](/ru/reference/queries.md#accounts-and-permissions), [`FindDomainById`](/ru/reference/queries.md#domains-and-peers) или [`FindAssetDefinitionById` ](/ru/reference/queries.md#assets-nfts-and-rwas). Используйте [`FindNfts`](/ru/reference/queries.md#assets-nfts-and-rwas) или [`FindNftsByAccountId`](/ru/reference/queries.md#assets-nfts-and-rwas) для NFTs, и [`FindRwas`](/ru/reference/queries.md#assets-nfts-and-rwas) для лотов RWA. Затем прочитайте поле метаданных объекта. Ответы на запрос NFT показывают карту NFT `content` как записи метаданные.
 
-Ключи метаданных являются частью состояния реестра, поэтому держите их стабильными и избегайте
-Кодирование конкретной версии приложения перемещается в название ключа, когда JSON
-значение может содержать эту версию явно.
+Ключи метаданных являются частью состояния реестра, поэтому держите их стабильными и избегайте кодирования специальной версии приложения в название ключа, когда значение JSON может содержать эту версию явно.

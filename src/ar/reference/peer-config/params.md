@@ -12,24 +12,21 @@ outline: [ 2, 3 ]
 import ParamTable from './ParamTable.vue';
 </script>
 
-# معايير الإعداد {#configuration-parameters}
+# معايير التشغيل {#configuration-parameters}
 
-[توك]
+[toc]
 
 ## مستوى الجذر {#root}
 
 ### `chain` <Badge text="required" /> {#param-chain-id}
 
-السلسلة ID يجب أن يتم إدراجها في كل معاملة تستخدم لمنع هجمات التكرار
+السلسلة ID التي يجب أن يتم تضمينها في كل معاملة. تستخدم لمنع هجمات إعادة التداول.
 
-هجوم التكرار هو محاولة لتقديم معاملة صالحة إلى شخص آخر
-الشبكة أكثر مما كانت مصممة لها. `chain` هو جزء من
-الحمل المفيد للمعاملة التي تم توقيعها، يتم رفض المعاملة التي وقعت لسلسلة واحدة
-بواسطة أقرانهم الذين يستخدمون سلسلة أخرى ID.
+الهجوم المتكرر هو محاولة لإرسال معاملة صالحة إلى شبكة مختلفة عن تلك التي كانت موجهة لها. لأن `chain` هو جزء من الحمل المفيد للمعاملات الموقعة، يتم رفض المعاملة الموقعة لسلسلة واحدة من قبل النظراء الذين يستخدمون سلسلة أخرى ID.
 
 <param-table type=string env=CHAIN />
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 chain = "00000000-0000-0000-0000-000000000000"
@@ -43,11 +40,11 @@ CHAIN="00000000-0000-0000-0000-000000000000"
 
 ### `public_key` <Badge text="required" /> {#param-public-key}
 
-المفتاح العام للقران. يجب أن يستخدم مؤكد التوافق BLS-المفاتيح العادية
+المفاتيح العامة للقرابة. يجب أن تستخدم أقرابة مؤكدات الإجماع BLS - المفاتيح الطبيعية.
 
 <param-table type="public-key" env="PUBLIC_KEY" />
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 public_key = "ea01309060D021340617E9554CCBC2CF3CC3DB922A9BA323ABDF7C271FCC6EF69BE7A8DEBCA7D9E96C0F0089ABA22CDAADE4A2"
@@ -61,12 +58,11 @@ PUBLIC_KEY="ea01309060D021340617E9554CCBC2CF3CC3DB922A9BA323ABDF7C271FCC6EF69BE7
 
 ### `private_key` <Badge text="required" /> {#param-private-key}
 
-المفتاح الخاص لقرانه يجب أن يتطابق `public_key`; أقرانهم المؤكدين للاتفاق
-يجب أن تستخدم BLS-المفاتيح العادية
+المفتاح الخاص للقرابة: يجب أن يطابق `public_key`؛ يجب أن تستخدم الأقران المؤكدة بالإجماع BLS-المفاتيح الطبيعية.
 
 <param-table type="private-key" env="PRIVATE_KEY" />
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 private_key = "8926201CA347641228C3B79AA43839DEDC85FA51C0E8B9B6A00F6B0D6B0423E902973F"
@@ -80,22 +76,19 @@ PRIVATE_KEY="8926201CA347641228C3B79AA43839DEDC85FA51C0E8B9B6A00F6B0D6B0423E9029
 
 ### `trusted_peers` {#param-trusted-peers}
 
-قائمة من الأقران الموثوقين
+قائمة من أقرانهم الموثوقين
 
-يجب أن يستخدم مؤكدون الإجماع BLS-المفاتيح العادية للقرابة لكل مؤكدة
-تزويد بتطابق [`trusted_peers_pop`](#param-trusted-peers-pop) دخول.
+يجب أن يستخدم مؤكدون الإجماع مفاتيح BLS-القرابة العادية. لكل مؤكد، قم بتوفير إدخال متطابق [`trusted_peers_pop`](#param-trusted-peers-pop).
 
 <param-table env="TRUSTED_PEERS">
 <template #type>
 
-مجموعة من السلاسل المتساوية. `PUBLIC_KEY@ADDRESS` عندما P2P العنوان معروف
-عاري `PUBLIC_KEY` يُقبل أيضاً ويتم اكتشاف عنوان الأقران من
-الشائعات.
+صف من سلسلة الأقران. استخدم `PUBLIC_KEY@ADDRESS` عندما يكون عنوان P2P معروفًا ؛ يتم قبول `PUBLIC_KEY` العارض أيضًا ويسمح للعثور على عنوان الأقران من الضجة.
 
 </template>
 </param-table>
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 trusted_peers = [
@@ -116,17 +109,17 @@ TRUSTED_PEERS='[
 
 ### `trusted_peers_pop` {#param-trusted-peers-pop}
 
-BLS إدخالات دليل على امتلاك المؤكد للزملاء الموثوق بهم.
+BLS إدخالات دليل على امتلاك المؤكّد الأقارب الموثوق بهم.
 
 <param-table env="TRUSTED_PEERS_POP">
 <template #type>
 
-صف من الأشياء مع `public_key` و `pop_hex` الحقول
+صف من الأشياء مع حقل `public_key` و `pop_hex`
 
 </template>
 </param-table>
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 trusted_peers_pop = [
@@ -149,12 +142,11 @@ TRUSTED_PEERS_POP='[
 
 ### `genesis.file` {#param-genesis-file}
 
-مسار الملف إلى حمولة كتلة التكوين الموقعة التي تم إنشاؤها من `kagami genesis sign`.
-الملفات الشخصية التي تم إنشاؤها عادة ما تكتب هذا Norito `.nrt` الملف.
+مسار الملف إلى الحمل المفيد الذي تم إنشاؤه بواسطة `kagami genesis sign`. عادة ما تكتب ملفات الشخصية التي يتم إنشاؤها هذا باعتباره ملف Norito `.nrt`.
 
 <param-table type="file-path" env="GENESIS" />
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [genesis]
@@ -169,11 +161,11 @@ GENESIS="./genesis.signed.nrt"
 
 ### `genesis.public_key` <Badge text="required" /> {#param-genesis-public-key}
 
-مفتاح عام لزوج مفتاح جينيس
+مفتاح عام من زوج مفتاح جينيس
 
 <param-table type="public-key" env="GENESIS_PUBLIC_KEY" />
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [genesis]
@@ -190,11 +182,11 @@ GENESIS_PUBLIC_KEY="ed01208BA62848CF767D72E7F7F4B9D2D7BA07FEE33760F79ABE5597A515
 
 ### `network.address` <Badge text="required" /> {#param-network-address}
 
-عنوان الاتصالات p2p للتوافق (sumeragi) وتزامن الكتل (الكتل_المزامنة) الغايات.
+عنوان الاتصالات p2p لأغراض التوافق (sumeragi) وتزامن الكتلة (block_sync).
 
 <param-table type="socket-addr" env="P2P_ADDRESS" />
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [network]
@@ -209,13 +201,13 @@ P2P_ADDRESS=0.0.0.0:1337
 
 ### `network.public_address` <Badge text="required" /> {#param-network-public-address}
 
-عنوان من ذوي الصلة إلى ذوي الالصلة (خارجي، كما يراه أقرانهم الآخرون).
+العنوان بين الأقران (الخارجي، كما يرى أقرانهم الآخرون).
 
-سيتم الإشاعات إلى أقرانهم المتواصلين حتى يتمكنوا من إشاعاتها لأقاربهم الآخرين.
+سيتم الإشاعات إلى أقرانهم المرتبطين حتى يتمكنوا من إشاعاتها لأقرانهم الآخرين.
 
 <param-table type="socket-addr" env="P2P_PUBLIC_ADDRESS" />
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [network]
@@ -234,7 +226,7 @@ P2P_PUBLIC_ADDRESS=0.0.0.0:5000
 
 <param-table type=number default-value=4 />
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [network]
@@ -245,13 +237,13 @@ block_gossip_size = 256
 
 ### `network.block_gossip_period_ms` {#param-network-block-gossip-period-ms}
 
-الفاصل الزمني بين طلبات إلى الأقران على أحدث كتلة.
+الفاصل الزمني بين الطلبات من الأقران على أحدث كتلة.
 
 الإشاعات المتكررة تقلل من وقت المزامنة، ولكن يمكن أن تزيد من عبء الشبكة.
 
 <param-table type=millis default-value=10_000 default-note="10 seconds" />
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [network]
@@ -264,11 +256,11 @@ block_gossip_period_ms = 1_000
 
 أقصى عدد من المعاملات في الرسالة الشائعة.
 
-الحجم الأصغر يؤدي إلى وقت أطول للتزامن، ولكنه مفيد إذا كان لديك فقدان كبير.
+الحجم الأصغر يؤدي إلى وقت أطول للتزامن، ولكنه مفيد إذا كان لديك خسارة كبيرة من الحزم.
 
 <param-table type=number default-value=500 />
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [network]
@@ -279,13 +271,13 @@ transaction_gossip_size = 256
 
 ### `network.transaction_gossip_period_ms` {#param-network-transaction-gossip-period-ms}
 
-فترة الشائعات في انتظار المعاملة بين الأقران
+فترة الشائعات في انتظار المعاملة بين الأقران.
 
 الإشاعات المتكررة تقلل من وقت المزامنة، ولكن يمكن أن تزيد من عبء الشبكة.
 
 <param-table type=millis default-value=1_000 default-note="1 second" />
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [network]
@@ -296,11 +288,11 @@ transaction_gossip_period_ms = 5_000
 
 ### `network.idle_timeout_ms` {#param-network-idle-timeout-ms}
 
-مدة الوقت التي يتم فيها إنهاء الاتصال مع الزملاء إذا كان الزملاء غير مشغولين.
+مدة الوقت التي تنتهي فيها الاتصال مع الزملاء إذا كان الزملاء غير مشغولين.
 
 <param-table type=millis default-value=300_000 default-note="5 minutes" />
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [network]
@@ -313,11 +305,11 @@ idle_timeout_ms = 300_000
 
 ### `torii.address` <Badge text="required" /> {#param-torii-address}
 
-العنوان Torii يجب أن يستمع الخادم والذي يقوم العميل بطلباته.
+العنوان الذي يجب أن يستمع إليه الخادم Torii والذي يقوم العميل بقدمه طلباته.
 
 <param-table type=socket-addr env=API_ADDRESS />
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [torii]
@@ -332,15 +324,14 @@ API_ADDRESS=0.0.0.0:8080
 
 ### `torii.max_content_len` {#param-torii-max-content-len}
 
-الحد الأقصى من البايتات في جسم الطلب الخام المقبول من قبل
-[Torii النقاط النهائية](/ar/reference/torii-endpoints.md).
+الحد الأقصى من البايتات في جسم الطلب الخام المقبول بواسطة نقاط نهاية [Torii ](/ar/reference/torii-endpoints.md).
 
-يستخدم هذا الحد لمنع DOS الهجمات
+يستخدم هذا الحد لمنع الهجمات DOS.
 
 <param-table>
 <template #type>
 
-عدد البايتات
+عدد (بالبايت)
 
 </template>
 <template #default-value>
@@ -350,7 +341,7 @@ API_ADDRESS=0.0.0.0:8080
 </template>
 </param-table>
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [torii]
@@ -361,11 +352,11 @@ max_content_len = 64_000_000
 
 ### `torii.query_idle_time_ms` {#param-torii-query-idle-time-ms}
 
-الوقت الذي يمكن أن يبقى فيه السؤال في المتجر إذا لم يتم الوصول إليه.
+الوقت الذي يمكن أن يبقى فيه البحث في المتجر إذا لم يتم الوصول إليه.
 
 <param-table type=millis default-value=10_000 default-note="10 seconds" />
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [torii]
@@ -376,11 +367,11 @@ query_idle_time_ms = 10_000
 
 ### `torii.query_store_capacity` {#param-torii-query-store-capacity}
 
-الحد الأعلى لعدد الاستفسارات المباشرة
+الحد الأعلى لعدد الاستفسارات المباشرة.
 
 <param-table type=number default-value=128 />
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [torii]
@@ -391,11 +382,11 @@ query_store_capacity = 128
 
 ### `torii.query_store_capacity_per_user` {#param-torii-query-store-capacity-per-user}
 
-الحد الأعلى لعدد الاستفسارات المباشرة للمستخدم الواحد.
+الحد الأعلى لعدد الاستفسارات المباشرة لمستخدم واحد.
 
 <param-table type=number default-value=128 />
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [torii]
@@ -404,31 +395,29 @@ query_store_capacity_per_user = 128
 
 :::
 
-## الخشب {#logger}
+## الخشبية {#logger}
 
 ### `logger.level` {#param-logger-level}
 
-_جنرال_ إدراج الكلمات (انظر [`logger.filter`](#param-logger-filter) للتكوين المعقّد).
+الكلمات العامة في التسجيل (انظر [ `logger.filter`](#param-logger-filter) للتكوين المعقّد).
 
 <param-table default-value=INFO env=LOG_LEVEL>
 <template #type>
 
-السلاسل، القيم الممكنة:
+السلاسل، القيم المحتملة:
 
 - `TRACE`: جميع الأحداث، بما في ذلك العمليات منخفضة المستوى.
-- `DEBUG`: رسائل مستوى التحليل، مفيدة للتشخيص.
-- `INFO`: رسائل إعلامية عامة
-- `WARN`: تحذيرات تشير إلى مشاكل محتملة
+- `DEBUG`: رسائل على مستوى التحليل، مفيدة للتشخيص.
+- `INFO`: رسائل معلومات عامة.
+- `WARN`: تحذيرات تشير إلى مشكلات محتملة.
 - `ERROR`: الأخطاء التي تعيق الوظيفة الطبيعية ولكنها تسمح باستمرار العمل.
 
-اختر المستوى الذي يناسبك بشكل أفضل في حالة الاستخدام
-[التدفقات الزائدة](https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels) لـ إضافية
-تفاصيل حول كيفية استخدام مستويات السجل المختلفة.
+اختر المستوى الذي يناسب حالة الاستخدام الخاصة بك. راجع [Stack Overflow](https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels) للحصول على تفاصيل إضافية حول كيفية استخدام مستويات السجل المختلفة.
 
 </template>
 </param-table>
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [logger]
@@ -443,36 +432,32 @@ LOG_LEVEL=INFO
 
 ::: tip تحديث وقت التشغيل
 
-هذا المعلم يخضع لتحديث تشكيل وقت التشغيل من خلال Torii نقاط النهاية للمشغل
+هذه المعلمة تخضع لتحديث تشكيل وقت التشغيل من خلال نقاط نهاية عامل Torii.
 
 :::
 
 ### `logger.filter` {#param-logger-filter}
 
-مرشحات السجل المكررة بالإضافة إلى [`logger.level`](#param-logger-level). يسمح بتخصيص الكلمات المستخدمة في التسجيل
-في ..._الهدف_.
+مرشحات السجل المكررة بالإضافة إلى [`logger.level`](#param-logger-level). يسمح بتخصيص صيغة التسجيل لكل هدف.
 
 <param-table type=string env=LOG_FILTER>
 <template #type>
 
-السلسلة، تتكون من إحدى أو أكثر التوجيهات المنفصلة عن بعضها البعض.
-_مستوى_ والتي تمكن (مثل _تحديدات_) المدة والحوادث المتطابقة. Iroha يعتبر مستويات أقل حصرية (مثل
-`trace` أو `info`أن تكون أكثر حرفية من المستويات الأكثر حصرية (مثل `error` أو `warn`).
+السلسلة، تتكون من إحدى أو أكثر من المبادئ التوجيهية المنفصلة عن بعضها البعض بواسطة العنصرات. يمكن لكل إرشادة أن يكون لها مستوى أقصى للفصائل المقابلة الذي يسمح (على سبيل المثال، يختار) بالفترات والحداثات المتطابقة. تعتبر Iroha مستويات أقل حصراً (مثل `trace` أو `info`) أكثر صلابة من المستويات الأكثر حصراً [مثل `error` أو `warn`).
 
-على مستوى مرتفع، يتكون النصوصية للموجبات من عدة أجزاء:
+على مستوى مرتفع، يتكون النصوصية للاتجاهات من عدة أجزاء:
 
 ```
 target[span{field=value}]=level
 ```
 
-لمزيد من التفاصيل، انظر
-[`tracing-subscriber` الوثائق](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/filter/struct.EnvFilter.html).
+للحصول على مزيد من التفاصيل، انظر [`tracing-subscriber` وثائق](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/filter/struct.EnvFilter.html).
 
 </template>
 
 </param-table>
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [logger]
@@ -485,18 +470,17 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 
 :::
 
-::: info التوافق مع [`logger.level`](#param-logger-level)
+::: info الموافقة مع [`logger.level`](#param-logger-level)
 
-`logger.filter` الأعمال _معاً_ مع [`logger.level`](#param-logger-level) ولا يكتبون على الآخرين
+يعمل `logger.filter` مع [`logger.level`](#param-logger-level) ولا أحد يغطى الآخر.
 
-على سبيل المثال، إذا `logger.level` يتم تعيينها `INFO` و `logger.filter` يتم تعيينها `iroha_core=debug`, المرشح الناتج
-المجموعة ستكون `info,iroha_core=debug` (أي `info` لجميع الوحدات، `debug` لـ `iroha_core`).
+على سبيل المثال، إذا `logger.level` يتم تعيينها `INFO` و `logger.filter` يتم تعيينها `iroha_core=debug`, ستكون مجموعة الصفحات الناتجة `info,iroha_core=debug` (أي `info` لجميع الوحدات، `debug` لـ `iroha_core`).
 
 :::
 
 ::: tip تحديث وقت التشغيل
 
-هذا المعلم يخضع لتحديث تشكيل وقت التشغيل من خلال Torii نقاط النهاية للمشغل
+هذه المعلمة تخضع لتحديث تشكيل وقت التشغيل من خلال نقاط نهاية عامل Torii.
 
 :::
 
@@ -507,26 +491,19 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 <param-table default-value=full env=LOG_FORMAT>
 <template #type>
 
-السلاسل، القيم الممكنة:
+السلاسل، القيم المحتملة:
 
-- `full`: المنسق الافتراضي. هذا ينبعث من القراءة البشرية، سجلات خط واحد لكل حدث يحدث، مع
-  السياق الحالي الذي يتم عرضه قبل التعبير المنسق عن الحدث.
-- `compact`: إصدار متغير من المنسق الافتراضي ، المحسنة لمدى خطوط قصيرة. الحقول من سياق المدة الحالية
-  يتم إرفاقها إلى حقل الحدث المنسق ، ولا يتم عرض أسماء الفترة ؛ يتم اختصار مستوى الكلام إلى
-  شخصية واحدة
-- `pretty`: إصدار سجلات جميلة للغاية، متعددة الخطوط، محسنة للقراءة البشرية.
-  تستخدم في التطوير المحلي وإعداد التحليلات أو لتطبيقات خط الأوامر، حيث يتم تحليلها الآلي وتحقيقها بشكل مشترك.
-  تخزين السجلات أقل أهمية من القراءة والجاذبية البصرية.
-- `json`: النتائج الجديدة المحدودة JSON السجلات. هذا مصممة لاستخدام الإنتاج مع الأنظمة التي يتم فيها استخدام السجلات المهيكلة
-  يتم استهلاكها ك JSON من خلال أدوات التحليل والمشاهدة JSON المخرجات غير محسنة للقراءة البشرية.
+- `full`: المنسق الافتراضي. يقوم هذا بإصدار سجلات قابلة للقراءة من قبل الإنسان، ذات خط واحد لكل حدث يحدث، مع عرض السياق الزمني الحالي قبل التعبير عن الحدث بشكل مُصمم.
+- `compact`: خيار من المنسق الافتراضي ، المحسّن لمدى الخط القصير. يتم إرفاق الحقول من سياق الإطار الحالي إلى حقل الأحداث المصممة ، ولا يتم عرض أسماء الإطار ؛ يتم اختصار مستوى الكلمات إلى حرف واحد.
+- `pretty`: إصدار سجلات جميلة للغاية، متعددة الخطوط، محسنة للقراءة البشرية. هذا هو المقصود أساسا لاستخدامها في التطوير المحلي وإزالة الأخطاء، أو لتطبيقات خط الأوامر, حيث أن التحليل الآلي وتخزين الكمباك للمسجلات أقل أهمية من القراءة والجاذبية البصرية.
+- `json`: إنتاج سجلات جديدة محددة الخطوط JSON. هذا مصممة لاستخدام الإنتاج مع الأنظمة التي يتم استهلاك السجلات المهيكلة مثل JSON من خلال أدوات التحليل والمشاهدة. لم يتم تحسين إنتاج JSON لقراءة البشر.
 
-للحصول على مزيد من التفاصيل ومخرجات العينة، انظر
-[`tracing-subscriber` الوثائق](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/format/index.html).
+للحصول على مزيد من التفاصيل ومخرجات العينات، انظر [`tracing-subscriber` الوثيقة ](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/format/index.html).
 
 </template>
 </param-table>
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [logger]
@@ -541,17 +518,17 @@ LOG_FORMAT=json
 
 ## Kura {#kura}
 
-_كورا_ هو محرك التخزين المستمر Iroha (باليابانية _مستودع_).
+Kura هو محرك التخزين المستمر لـ Iroha (اليابانية للتخزين).
 
 ### `kura.blocks_in_memory` {#param-kura-blocks-in-memory}
 
 في أقصى حد سيتم تخزين N الكتل الأخيرة في الذاكرة.
 
-سيتم إسقاط الكتل القديمة من الذاكرة وتحملها من القرص إذا لزم الأمر.
+سيتم إسقاط الكتل القديمة من الذاكرة و تحميلها من القرص إذا لزم الأمر
 
 <param-table type=number default-value=1024 env=KURA_BLOCKS_IN_MEMORY />
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [kura]
@@ -571,15 +548,15 @@ Kura وضع البدء
 <param-table  default-value=strict env=KURA_INIT_MODE>
 <template #type>
 
-السلاسل، القيم الممكنة:
+السلاسل، القيم المحتملة:
 
-- `strict`: التحقق الصارم من جميع الكتل
-- `fast`: البدء السريع مع عمليات التحقق الأساسية فقط
+- `strict`: اعتماد صارم لجميع الكتل
+- `fast`: البداية السريعة مع عمليات التفتيش الأساسية فقط
 
 </template>
 </param-table>
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [kura]
@@ -600,7 +577,7 @@ KURA_INIT_MODE=fast
 
 <param-table env=KURA_STORE_DIR type=file-path default-value=./storage />
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [kura]
@@ -615,11 +592,11 @@ KURA_STORE_DIR=/path/to/storage
 
 ### `kura.debug.output_new_blocks` <Badge type="warning" text="debug" /> {#param-kura-debug-output-new-blocks}
 
-العلامة لتمكين طباعة كتلة جديدة على الكونسول.
+العلامة تمكن من طباعة كتلة جديدة على الكونسول.
 
 <param-table env=KURA_DEBUG_OUTPUT_NEW_BLOCKS type=bool default-value=false />
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [kura.debug]
@@ -640,7 +617,7 @@ KURA_DEBUG_OUTPUT_NEW_BLOCKS=true
 
 <param-table type=number default-value=65_536 />
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [queue]
@@ -651,13 +628,13 @@ capacity = 1_048_576
 
 ### `queue.capacity_per_user` {#param-queue-capacity-per-user}
 
-الحد العلوي لعدد المعاملات التي تنتظر في الصف لمستخدم واحد.
+الحد الأعلى لعدد المعاملات التي تنتظر في الصف لمستخدم واحد.
 
-استخدم هذه الخيارة لتطبيق الاختناق.
+استخدم هذه الخيارة لتطبيق التدفق.
 
 <param-table type=number default-value=65_536 />
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [queue]
@@ -668,11 +645,11 @@ capacity_per_user = 1_048_576
 
 ### `queue.transaction_time_to_live_ms` {#param-queue-transaction-time-to-live-ms}
 
-سيتم إلغاء المعاملة بعد هذا الوقت إذا كانت لا تزال في الصف.
+سيتم إلغاء المعاملة بعد هذا الوقت إذا كانت مازالت في الصف.
 
 <param-table type=millis default-value=86_400_000 default-note="24 hours" />
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [queue]
@@ -685,13 +662,11 @@ transaction_time_to_live_ms = 43_200_000
 
 ### `sumeragi.debug.force_soft_fork` <Badge type="warning" text="debug" /> {#param-sumeragi-debug-force-soft-fork}
 
-مفتاح التحكم فقط للتمرين Sumeragi مسارات التعامل مع الشوكة الناعمة.
-تعطيل خارج الاختبارات المراقبة؛ تغييرها على شبكة إنتاج جارية
-يمكن أن تجعل الأقران يختلفون حول سلوك التوافق.
+مفتاح إزالة الأخطاء فقط لممارسة مسارات معالجة الشوكة الناعمة Sumeragi. اترك هذا المحذوف خارج الاختبارات السيطرة؛ تغييره على شبكة إنتاج جارية يمكن أن يجعل الأقران غير متفقين حول سلوك التوافق.
 
 <param-table type=bool default-value=false />
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [sumeragi.debug]
@@ -702,41 +677,33 @@ force_soft_fork = true
 
 ## صورة سريعة {#snapshot}
 
-هذه الوحدة هي المسؤولة عن قراءة وتسجيل اللقطات
-[وجهة نظر العالم](/ar/blockchain/world#world-state-view-wsv).
+هذه الوحدة هي المسؤولة عن قراءة وصياغة اللقطات الفورية لـ [World State View](/ar/blockchain/world#world-state-view-wsv).
 
-الصور السريعة تخزين نقطة تفتيش متسلسلة لمشاهدة الدولة العالمية بحيث يمكن للزملاء
-إعادة تشغيل دون إعادة تعزيف كل كتلة من Kura. Kura يبقى الكتلة الدائمة
-التاريخ ومصدر الحقيقة للتشغيل؛ اللقطات هي مسار تسريع.
-عند البدء Iroha يتحقق من البيانات المعدنية لقطة الفورية ضد السلسلة التي تم تشكيلها
-الكتل المخزنة قبل أن تقرر ما إذا كان يجب تحميل اللقطة أو العودة إلى التشغيل.
+تخزن اللقطات الفورية نقطة تفتيش متسلسلة لمشاهدة الدولة العالمية بحيث يمكن للقرابة إعادة تشغيلها دون إعادة تشغل كل كتلة من Kura. Kura يبقى تاريخ الكتل الدائم ومصدر الحقيقة لإعادة تشغيله. عند البدء ، يقوم Iroha بتحقق من بيانات اللقطة الفورية ضد السلسلة التي تم تشكيلها والبلوكز المخزنة قبل اتخاذ قرار ما إذا كان يجب تحميل اللقطة أو العودة إلى التشغيل.
 
 ::: tip مسح اللقطات الفورية
 
-في حالة إذا كان هناك شيء خاطئ مع نظام اللقطات الفورية، وتريد أن تبدأ من صفحة فارغة (من حيث
-اللقطات الفورية) ، يمكنك إزالة السجل المحدد من قبل [`snapshot.store_dir`](#param-snapshot-store-dir).
+في حال كان هناك خطأ ما مع نظام اللقطات الفورية، وترغب في البدء من صفحة فارغة (من حيث اللقطات فوريًا) ، يمكنك إزالة المجلد المحدد عن طريق [`snapshot.store_dir`](#param-snapshot-store-dir).
 
 :::
 
 ### `snapshot.mode` {#param-snapshot-mode}
 
-الوضع الذي يعمل فيه نظام الصور السريعة.
+الوضع الذي يعمل فيه نظام Snapshot.
 
 <param-table default-value=read_write env=SNAPSHOT_MODE>
 <template #type>
 
-السلاسل، القيم الممكنة:
+السلاسل، القيم المحتملة:
 
-- `read_write`: Iroha يخلق اللقطات الفورية مع فترة محددة من:
-  [`snapshot.create_every_ms`](#param-snapshot-create-every-ms). عند البدء Iroha يقرأ صورة مفاجئة موجودة (إذا وجدت)
-  وتحقق من تحديثها مع تخزين الكتل.
-- `readonly`: مماثلة `read_write` لكن Iroha لا يخلق أي صور.
-- `disabled`: Iroha لا تخلق صور جديدة ولا تقرأ واحدة قائمة عند البدء.
+- `read_write`: يخلق Iroha لقطات سريعة مع فترة محددة في [`snapshot.create_every_ms`](#param-snapshot-create-every-ms). عند البدء ، يقرأ Iroha لقطة سريعة قائمة (إذا كانت موجودة) ويتحقق من أنها حديثة مع مخزن الكتل.
+- `readonly`: مشابهة ل `read_write` ولكن Iroha لا تخلق أي اللقطات الفورية.
+- `disabled`: Iroha لا تخلق لقطات سريعة جديدة ولا تقرأ واحدة قائمة عند بدء العمل.
 
 </template>
 </param-table>
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [snapshot]
@@ -751,11 +718,11 @@ SNAPSHOT_MODE=readonly
 
 ### `snapshot.create_every_ms` {#param-snapshot-create-every-ms}
 
-تكرار الصور الفورية
+تردد اللقطات.
 
 <param-table type=millis default-value=600_000 default-note="10 minutes" />
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [snapshot]
@@ -766,13 +733,13 @@ create_every_ms = 60_000
 
 ### `snapshot.store_dir` {#param-snapshot-store-dir}
 
-دليل حيث تخزين اللقطات
+دليل حيث تخزين اللقطات.
 
 انظر أيضاً: [`kura.store_dir`](#param-kura-store-dir)
 
 <param-table type=file-path default-value=./storage/snapshot env=SNAPSHOT_STORE_DIR />
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [snapshot]
@@ -785,23 +752,21 @@ SNAPSHOT_STORE_DIR="/path/to/storage"
 
 :::
 
-## التليومترية {#telemetry}
+## الهوائية {#telemetry}
 
-التلفزيون تصدير تشخيصات الأقران إلى جمع متري خارجي.
-كلاهما `telemetry.name` و `telemetry.url` عندما يتعين على زميل الإبلاغ
-المجموعة؛ إغفال القسم عندما لا تستخدم التلفاز.
+تقوم "التليميتريا" بتصدير تشخيص الأقران إلى مجمع التليميترية الخارجي. قم بتشغيل `telemetry.name` و `telemetry.url` عندما يتعين على النسيق أن يقدم تقريرًا إلى الجمع؛ فلتفوت القسم عندما لا تستخدم التليميتري .
 
 `name` و `url` يجب أن تكون مزدوجة.
 
-جميعهم `telemetry` القسم اختياري
+جميع القسم `telemetry` اختياري.
 
 ### `telemetry.name` {#param-telemetry-name}
 
-اسم العقد يجب أن يعرض على جهاز التلفاز.
+اسم العقدة ليتم عرضها على جهاز التلفاز.
 
 <param-table type=string />
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [telemetry]
@@ -812,11 +777,11 @@ name = "iroha"
 
 ### `telemetry.url` {#param-telemetry-url}
 
-(الـ) WebSocket URL من مجموعة التلفونيات
+WebSocket URL من جهاز جمع التلفاز.
 
 <param-table type=string />
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [telemetry]
@@ -831,7 +796,7 @@ url = "ws://telemetry.example.com/submit"
 
 <param-table type=millis default-value=1_000  default-note="1 second" />
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [telemetry]
@@ -842,11 +807,11 @@ min_retry_period_ms = 5_000
 
 ### `telemetry.max_retry_delay_exponent` {#param-telemetry-max-retry-delay-exponent}
 
-الحد الأقصى من 2 الذي يستخدم لزيادة التأخير بين إعادة الاتصال.
+الحد الأقصى من 2 الذي يستخدم لزيادة التأخير بين الاتصالات.
 
 <param-table type=number default-value=4 />
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [telemetry]
@@ -861,7 +826,7 @@ max_retry_delay_exponent = 4
 
 <param-table type=file-path />
 
-::: code-group
+::: مجموعة رموز
 
 ```toml [Config File]
 [dev_telemetry]

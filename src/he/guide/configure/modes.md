@@ -56,6 +56,6 @@ Iroha יכול להפעיל במגוון הגדרות. כמנהל של הרשת 
 
 :::
 
-ראו את הפרק: [הוראות](/he/blockchain/instructions.md#un-register) לקבלת פרטים נוספים `Register<Account>` הוראות.
+ראו את הקטע בהוראות [ ](/he/blockchain/instructions.md#un-register) לקבלת פרטים נוספים על ההוראות של `Register<Account>`.
 
 [^1]: `Register<Account>` יוצר מצב ספריה לקנוניקה, ללא דומיין `AccountId`; מסלול דומנים וכינויים ניתנים לניהול בנפרד.

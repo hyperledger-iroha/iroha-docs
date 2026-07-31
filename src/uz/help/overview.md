@@ -8,33 +8,19 @@ translation_engine: nllb-200-ct2
 
 # Muammolarni hal qilish {#troubleshooting}
 
-Ushbu bo ' lim siz bilan ishlashda muammolarga duch kelsangiz yordam berish uchun mo ' ljallangan.
-Iroha. Agar biror narsa noto'g'ri bo'lsa, iltimos [kalitlarni tekshirish](#check-the-keys)
-Agar bu yordam bermasa, muammolarni hal qilish ko'rsatmalarini tekshiring
-har bir bosqichda:
+Ushbu bo'lim Iroha bilan ishlayotganingizda muammolarga duch kelsangiz yordam berish uchun mo'ljallangan. Agar biror narsa noto'g'ri kechsa, iltimos, avval [ kalitlarini](#check-the-keys) tekshiring. Agar bu yordam bermasa, har bir bosqichning muammoni hal qilish ko'rsatmalariga qarang:
 
-- [Oʻrnatish muammolari](./installation-issues.md)
-- [Konfiguratsiya masalalari](./configuration-issues.md)
+- [O'rnatish muammolari](./installation-issues.md)
+- [Konfiguratsiya muammolari](./configuration-issues.md)
 - [Ishlab chiqarish masalalari](./deployment-issues.md)
 - [Integratsiya masalalari](./integration-issues.md)
 
-Agar siz boshdan kechirayotgan muammo bu erda tasvirlanmagan bo'lsa, biz bilan bog'laning
-[Telegram](https://t.me/hyperledgeriroha).
+Agar siz boshdan kechirayotgan muammo bu erda tasvirlanmagan bo'lsa, [Telegram ](https://t.me/hyperledgeriroha) orqali biz bilan bog'laning.
 
-## Ochiqlarni tekshiring {#check-the-keys}
+## Kalitalarni tekshiring . {#check-the-keys}
 
-Aksariyat muammolar tengsiz kalitlar natijasida yuzaga keladi.
-ushbu qoidaga rioya qilish: **Agar biror narsa noto'g'ri bo'lsa, kalitlarni tekshiring
-birinchi**.
+Aksariyat muammolar tengsiz kalitlar natijasida yuzaga keladi. Shuning uchun biz ushbu qoidaga rioya qilishni tavsiya etamiz: agar biron narsa noto'g'ri bo'lsa, avval kalitlarni tekshiring.
 
-Bu yerda tez bir tushuntirish: xatoni farqlash mumkin emas
-tengdoshlarning kalitlari arraydagi kalitlar bilan mos kelmasa paydo boʻladigan xabarlar
-ishonchli tengdoshlar, chunki bu tengdoshlarning ommaviy kalitini oshkor qiladi.
-atrof muhit orqali aniqlangan kalitlar bilan Helm diagrammalari yoki Kubernetes joylashtirishlari mavjud
-o'zgaruvchilarni, konfiguratsiya qilingan
-[`public_key`](/uz/reference/peer-config/params.md#param-public-key),
-[`private_key`](/uz/reference/peer-config/params.md#param-private-key), va
-[`trusted_peers`](/uz/reference/peer-config/params.md#param-trusted-peers)
-yuqori darajadagi xatolarni tekshirishdan oldin qiymatlar.
+Bu erda tez tushuntirish: tengdoshlarning kalitlari ishonchli tengdoshlar qatoridagi kalitlarga mos kelganda paydo bo'ladigan xato xabarlarini farqlash mumkin emas, chunki bu tengdoshlarining ommaviy kalitini oshkor etadi. Shunday qilib, agar sizda muhit o'zgaruvchilari orqali aniqlangan kalitlarga ega bo'lgan Helm grafiklari yoki Kubernetes dasturlari mavjud bo'lsa, yuqori darajadagi xatolarni tekshirishdan oldin konfiguratsiya qilingan [`public_key`](/uz/reference/peer-config/params.md#param-public-key), [`private_key`](/uz/reference/peer-config/params.md#param-private-key) va [`trusted_peers`](/uz/reference/peer-config/params.md#param-trusted-peers) qiymatlarini taqqoslang.
 
-Agar shubha bo'lsa, [yangi kalitlar juftligini yaratish](/uz/guide/security/generating-cryptographic-keys.md).
+Agar shubha bo'lsa, [ yangi kalitlar juftligini ](/uz/guide/security/generating-cryptographic-keys.md) ishlab chiqaradi.

@@ -26,7 +26,7 @@ Referensiya [icazələr haqqında xüsusi bölmə](/az/blockchain/permissions.md
 
 ## Tərəfdaşlar {#peers}
 
-İctimai bir blok zincirində, həmyaşıdların qəbul edilməsi zəncir siyasətinin bir hissəsidir.
+İctimai blok kateqoriyada həmkarların qəbul edilməsi zəncir siyasətinin bir hissəsidir. Xüsusi bir blok zinciri üçün tətbiqlər adətən konfigürasiyada və təməldə etibarlı həmyaşıdları müəyyənləşdirir.
 
 ::: məlumat
 
@@ -52,7 +52,7 @@ Varsayılan icazə təsdiqləyiciləri tipik özəl blok zinciri istifadə vəzi
 
 ::: məlumat
 
-Açıq şəbəkəni işlətmədən əvvəl göndərdiyiniz icraçı və başlanğıc icazələrini baxın.
+İctimai və özəl rejimlər ayrı-ayrı node binarları deyil, siyasət profilləridir. Açıq şəbəkə çalışdırmadan əvvəl göndərdiyiniz icraçı və başlanğıc icazələrini nəzərdən keçirin.
 
 :::
 

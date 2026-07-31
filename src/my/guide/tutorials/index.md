@@ -6,40 +6,34 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# SDK သင်ခန်းစာများ {#sdk-tutorials}
+# SDK သင်တန်းများ {#sdk-tutorials}
 
-ဒီစာမျက်နှာတွေက Iroha 3 ဝန်ထမ်းဝင်ရောက်မှုမှတ်တိုင်များ
-အလုပ်ခွင်၊ Canonical package နာမည်များ၊ တပ်ဆင်ရေးလမ်းကြောင်းများနှင့် အနည်းဆုံး
-အစအဆုံးတွေ။
+ဤစာမျက်နှာများသည် အဓိက လုပ်ငန်းခွင်မှ ပို့ဆောင်သော Iroha 3 client entry points များကို စုစည်းဖော်ပြထားသည်မှာ Canonical package names, installation paths နှင့် minimal starting points တို့ပါ ၀ င်သည်။
 
 ## အကြံပြုချက် {#recommended-order}
 
-1. [တပ်ဆင်ခြင်း Iroha 3](/my/get-started/install-iroha.md)
+1. [Iroha 3](/my/get-started/install-iroha.md) ကို တပ်ဆင်ပါ။
 2. [လွှတ်တင်ခြင်း Iroha 3](/my/get-started/launch-iroha.md)
-3. ရွေးချယ်ပါ။ SDK:
+3. SDK ကို ရွေးပါ။
    - [Rust](/my/guide/tutorials/rust.md)
    - [Python](/my/guide/tutorials/python.md)
-   - [JavaScript / TypeScript](/my/guide/tutorials/javascript.md)
-   - [Kotlin, Android, ဂါဝ](/my/guide/tutorials/kotlin-java.md)
-   - [Swift ပြီးတော့ iOS](/my/guide/tutorials/swift.md)
-4. ပြန်လည်သုံးသပ်ခြင်း [နမူနာ app များ](/my/guide/tutorials/sample-apps.md) သင်ဟာ
-   ဝယ်သူ လျှောက်လွှာ အပြည့်အစုံပါ။
-5. အသုံးပြုခြင်း [ပူးပေါင်းခြင်း Kaigi](/my/guide/tutorials/kaigi.md) ထပ်ဖြည့်ချင်ရင်
-   သင့်ရဲ့ ကိုယ်ပိုင် app မှာ ပိုက်ဆံအိတ်ကိုထောက်ပံ့ထားတဲ့ အသံ/ဗီဒီယို အစည်းအဝေးတွေပါ။
-6. အသုံးပြုခြင်း [Musubi အိတ်များ](/my/guide/tutorials/musubi.md) ပြန်သုံးလို့ရတဲ့ ပစ္စည်းတွေ လိုအပ်တဲ့အခါ
-   Kotodama ချိတ်ဆက်ထားသော အချိုးအကန့်အသတ် မှတ်ပုံတင် မှီခိုချက်များနှင့်အတူ source library များ။
+   - [JavaScript /TypeScript ](/my/guide/tutorials/javascript.md)
+   - [Kotlin၊ Android နှင့် Java](/my/guide/tutorials/kotlin-java.md)
+   - [Swift နှင့် iOS](/my/guide/tutorials/swift.md)
+4. [မူကြမ်း အက်ပ်များ](/my/guide/tutorials/sample-apps.md) ကို အပြည့်အဝ Client Application Reference တစ်ခုလိုပါက ပြန်ကြည့်ပါ။
+5. [Embed Kaigi](/my/guide/tutorials/kaigi.md) ကို မိမိ၏ပရိုဂရမ်ထဲတွင် ပိုက်ဆံအိတ်ဖြင့် ထောက်ခံသော အသံ/ဗီဒီယို အစည်းအဝေးများကို ထည့်သွင်းလိုပါက အသုံးပြုပါ။
+6. [Musubi ပက်ကတ်များ](/my/guide/tutorials/musubi.md) ကိုအသုံးပြုပါ သင် reusable Kotodama အရင်းအမြစ်စာကြည့်တိုက်များနှင့် pinned on-chain registry မှီခိုမှုများကိုလိုအပ်သောအခါ။
 
 ## နမူနာများ {#samples}
 
-Upstream အလုပ်ခွင်မှာ JavaScript ချက်ပြုတ်ချက်များ Swift/iOS နမူနာ
-စီမံကိန်းများအတွက် Android, အစက Kotlin SDK မော်ဂျူးတွေနဲ့ စမ်းသပ်မှုတွေ
+Upstream အလုပ်ခွင်မှာ JavaScript ချက်ပြုတ်ချက်တွေနဲ့ Swift/iOS နမူနာ ပရောဂျက်တွေ ပါဝင်ပါတယ်။ Android အတွက်တော့ Kotlin SDK မော်ဒူးတွေနဲ့ စမ်းသပ်မှုတွေ စပါ။
 
-- [အပ်လီကေးရှင်းများ၏ နမူနာများ](/my/guide/tutorials/sample-apps.md)
-- [ပူးပေါင်းခြင်း Kaigi a တွင် JavaScript app ကို](/my/guide/tutorials/kaigi.md)
+- [နမူနာ app များ၏ Overview](/my/guide/tutorials/sample-apps.md)
+- [ထည့်သွင်းထားသည် Kaigi a တွင် JavaScript app ကို](/my/guide/tutorials/kaigi.md)
 
-## သမ္မာတရား၏ရင်းမြစ် {#source-of-truth}
+## အမှန်တရား၏ အရင်းအမြစ် {#source-of-truth}
 
-အားလုံး SDK ဤစာမျက်နှာများသည် လက်ရှိ Upstream လုပ်ငန်းခွင်မှ ရရှိထားသည် -
+SDK စာမျက်နှာအားလုံးက လက်ရှိ Upstream အလုပ်ခွင်ကနေ ရယူထားတာပါ။
 
 - `crates/iroha`
 - `python/iroha_python`
@@ -49,5 +43,4 @@ Upstream အလုပ်ခွင်မှာ JavaScript ချက်ပြု�
 - `IrohaSwift`
 - `crates/musubi`
 
-သံသယရှိရင် README ဒီစာအုပ်တွေမှာ ပါကတ် metadata တွေပါ
-ခင်ဗျား တည်ဆောက်နေတဲ့ Source Revision ကို ဖော်ပြပါတယ်။
+သံသယရှိရင် ဒီစာအုပ်တွေမှာ README နဲ့ package metadata တွေကို ဦးစားပေးပါ။ ဒါတွေက သင်တည်ဆောက်နေတဲ့ အရင်းအမြစ် ပြင်ဆင်မှုကို ဖော်ပြတယ်။

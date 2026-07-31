@@ -6,26 +6,22 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Ishlab chiqarish va o'lchovlar {#performance-and-metrics}
+# Ishlab chiqarish va metrikalar {#performance-and-metrics}
 
-Iroha Ish yuklamasiga, validator topologiyasiga, tarmoqga bog'liq
-shartlari va konsensus sozlamalari. TPS Shuning uchun raqam faqat foydali
-agar u belgilangan konfiguratsiyaga ega bo'lgan ma'lumotnoma bilan bog'langan bo'lsa.
+Iroha Ish yukuni, validator topologiyasi, tarmoq sharoitlari va konsensus sozlamalariga bog'liq bo'ladi. TPS Shuning uchun raqam faqat o'rnatilgan konfiguratsiyaga ega bo'lgan referent ko'rsatkichlari bilan bog'liq bo'lsa, foydalidir.
 
 Qobiliyatni rejalashtirish uchun ish samaradorligini operatsion konvert sifatida ko'rib chiqish:
 
 - tarmoq so'ralgan tranzaksiya stavkalarini qabul qiladi
-- maqsadli byudjet doirasida kechikish muddatini belgilash
-- Transaksiya navbatlari cheklangan boʻlib qolmoqda
-- konsensus ko'rinishning takrorlangan o'zgarishiga yoki tiklanish yo'nalishlariga bog'liq emas
+- maqsadli byudjet doirasida kechikish vaqtini belgilash
+- Transaksiya navbatlari cheklangan bo'lib qoladi
+- konsensus ko'rinishning takrorlangan o'zgarishiga yoki tiklanish yo'llariga bog'liq emas.
 
-Ushbu sahifadagi ma'lumotlardan foydalanib, dastur yuqori, o'rta yoki past bo'lganligini aniqlang
-ma'lum nodlar soni, tarmoq kechikish darajasi va maqsad uchun ishlash holati
-TPS.
+Ushbu sahifani qo'llash ma'lum nodlar soni, tarmoq kechikish darajasi va maqsad TPS uchun ishga tushirish yuqori, o'rta yoki past ishlash holatida bo'lganligini baholash uchun ishlating. .
 
-## O'lchash kerak bo'lgan narsalar {#what-to-measure}
+## O'lchash uchun nimalar kerak {#what-to-measure}
 
-Operatorning yuzalari bilan boshlang Torii:
+Torii tomonidan aniqlangan operator yuzalari bilan boshlang:
 
 ```bash
 export TORII=http://127.0.0.1:8180
@@ -38,7 +34,7 @@ curl -s "$TORII/v1/sumeragi/params" | jq .
 curl -s "$TORII/metrics" > metrics.prom
 ```
 
-Siz ham o'qish uchun ishlatiladigan modelni jamoatchilikka qarshi sinab ko'rishingiz mumkin Taira:
+Siz faqat o'qish uslubini ommaviy Taira bilan sinab ko'rishingiz mumkin:
 
 ```bash
 TAIRA=https://taira.sora.org
@@ -54,10 +50,9 @@ curl -fsS "$TAIRA/metrics" \
   | head -n 20
 ```
 
-Umumiy Taira signallarning nomlarini o'rganish uchun metrikalar foydali. Ulardan foydalanmang
-o'zingizning ishga tushirishingiz uchun ishlab chiqarish quvvati raqamlari sifatida.
+Signallarning nomlarini o'rganish uchun ommaviy Taira metrikalari foydali. Ulardan o'zingizning ishga tushirishingiz uchun ishlab chiqarish quvvati raqamlari sifatida foydalanmang.
 
-Oʻsha bir xil konsensus fotosuratlari CLI:
+CLI orqali ham xuddi shunday konsensus fotosuratlari mavjud:
 
 ```bash
 iroha --config ./localnet/client.toml --output-format text ops sumeragi status
@@ -66,9 +61,7 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
 iroha --config ./localnet/client.toml ops sumeragi params
 ```
 
-Telemetriya ko'rinishi konfiguratsiya qilingan profilga bog'liq. `extended` qachon siz
-ehtiyoj `/metrics`, va foydalanish `full` sinov jarayonida, shuningdek batafsil
-Sumeragi operator yo'nalishlari.
+Telemetriya ko'rinishi konfiguratsiya qilingan profilga bog'liq. `/metrics` kerak bo'lganda `extended` dan foydalaning, shuningdek, batafsil operator yo'nalishlari Sumeragi zarur bo'lganida sinovlarda `full`dan foydalaning.
 
 ```toml
 telemetry_enabled = true
@@ -77,68 +70,59 @@ telemetry_profile = "full"
 
 ## Ishlab chiqarish bandlari {#performance-bands}
 
-Ushbu bandlardan maqsadli o ' lchashda kuzatilgan harakatlanish uchun foydalaning `Y` TPS va kechikish
-byudjet `L` Milisekundlar. Ish yukini issiqlikni o'z ichiga oladigan darajada davom ettiring,
-barqaror holatda va kamida bir muddat kutilayotgan maksimal yuklanish.
+Ushbu bandlardan maqsadli o'tkazib yuborishda `Y` TPS va kechikish budjeti `L` milisekundlarda kuzatilgan ish uchun foydalaning. Ish yukini issiqlikni, barqaror holatni va hech bo'lmaganda bir davrda kutilayotgan maksimal yukni o'z ichiga olishi uchun etarlicha uzoq vaqt davomida yuriting.
 
-| Band | Shartlar | Ma'nosi |
+|Band |Sharoitlar |Maʼnosi |
 | --- | --- | --- |
-| Yuqori | Qabul qilingan o'tish hajmi `Y`, p95 qo'shish latenciyasi past `0.8 * L`, navbatlar quvvatning 10% dan kam bo'lib qolmoqda va ko'rinishni o'zgartirish / tiklash hisoblagichlari tekis | Oʻrnatilgan joyda talab qilingan ish yukini oʻz ichiga oladi . |
-| Oʻrtacha | Qabul qilingan o ' tkazish hajmi `Y`, p95 qo'shish latenciyasi past `L`, navbatlar quvvatning 50% dan pastda barqaror va ko'rinish o'zgarishlari kam uchraydi | O'rnatish ishlaydi, lekin portlash tolerantligi cheklangan. |
-| past | Qabul qilingan uzatish darajasi past `Y`, p95 qo'shish kechiktiruv muddati o'tadi `L`, uchish paytida navbatlar ko'payadi yoki ko'rinish o'zgarishi / orqa bosim hisoblagichlari doimiy ravishda oshadi | Talab qilingan ish yuklari kamida bir bottleneckdan oshadi |
+|Yuqori .|Qabul qilingan o'tish hajmi `Y` yoki undan yuqori bo'lsa, p95 commit latency `0.8 * L` dan past bo'ladi, navbatlar quvvatning 10% dan kam bo'lib qoladi va ko'rinishni o'zgartirish / tiklash hisoblagichlari tekis hisoblanadi |Xizmatda talab qilingan ish yukini oʻtkazish uchun joy bor |
+|O ' rtacha |Qabul qilingan o'tkazib berish hajmi `Y` ga yaqin, p95 qo'shish kechikishi `L` dan past, navbatlar quvvatning 50% dan past bo'ladi va ko'rinishda o'zgarishlar kam uchraydi. |O'rnatish ishlaydi, lekin portlash tolerantligi cheklangan |
+|Kam |Qabul qilingan o'tish hajmi `Y` dan past, p95 commit latency `L` dan oshadi, harakat davomida navbatlar ko'payadi yoki ko'rinishni o'zgartirish / orqa bosim hisoblagichlari doimiy ravishda ko'paydi |Talab qilingan ish yuklari kamida bir bottleneckdan oshadi |
 
-Kerakli qoida navbat yo'nalishidir. TPS majburiyatdan kattaroq TPS
-va navbat o'sishda davom etadi, ishga tushirilish hatto qisqa namunalar bo'lsa ham ortiqcha
-sog'lom ko'rinish.
+Kerakli qoida navbat yo'nalishidir. Agar taqdim etilgan TPS belgilangan TPS dan kattaroq bo'lsa va navbat o'sishda davom etsa, qisqa namunalar sog'lom ko'rinsa ham, joylashtirish ortiqcha yuklangan bo'ladi.
 
-## Nukllar soni va quorum {#node-count-and-quorum}
+## Nodular soni va quorum {#node-count-and-quorum}
 
-Ko'proq tasdiqlovchilar xato tolerantligini yaxshilaydi, ammo muvofiqlashtirishni, imzolashni oshiradi.
-va tarmoqni yaratish xarajatlari. Sumeragi amalga oshirish:
+Ko'proq validatorlar xato toleransini yaxshilaydi, ammo koordinatsiya, imzo va tarmoqni yaratish xarajatlarini oshiradi. Sumeragi amalga oshirish:
 
-- tasdiqlovchilar soni `n` xato budjetini keltirib chiqaradi `f = floor((n - 1) / 3)`
-- uchun `n >= 4`, qo ' mita quorum `2f + 1`
-- uchun `n <= 3`, majburiyat uchun barcha tasdiqlovchilar talab qilinadi
-- kuzatuvchi tengdoshlar sinxron bloklarni, lekin ovoz bermaydi, taklif yoki yig'ish
+- validatorning soni `n` xato budjeti `f = floor((n - 1) / 3)` ni keltirib chiqaradi.
+- `n >= 4` uchun qo'shimcha quorum `2f + 1` hisoblanadi.
+- `n <= 3` uchun barcha validatorlar majburiyatni bajarish uchun talab qilinadi.
+- kuzatuvchi tengdoshlari sinxronizatsiya bloklari, lekin ovoz bermaydilar, taklif yoki yig'ish
 
-| To'g'rilash vositalari | Yomon budjet | Qo'shma quorum | Qobiliyat notasi |
+|Tasdiqlovchilar |Budjetda xato |Quorumni belgilash |Qobiliyat notasi |
 | --- | --- | --- | --- |
-| 1 dan 3 gacha | 0 amaliy oflayn slack | barcha validatorlar | Ishlab chiqarish va kichik sinovlar uchun foydali; yo'q bo'lgan har qanday validator majburiyatlarni to'xtatishi mumkin |
-| 4 | 1 | 3 | Bir xatoga chidamlilik uchun umumiy minimal |
-| 7 | 2 | 5 | Kuchliroq, ko'proq ovoz berish va targ'ibot harakatlari bilan |
-| 10 | 3 | 7 | Ko'paytirish xarajatlari ko'proq; tarmoq va kollektorni moslashtirish muhimroq |
+|1 dan 3 gacha |0 amaliy offline slack |barcha validatorlar |Ishlab chiqarish va kichik sinovlar uchun foydali; har qanday yo'qolgan tasdiqlovchi majburiyatlarni to'xtatishi mumkin |
+| 4 | 1 | 3 |Bir xatoga chidamlilik uchun umumiy minimal |
+| 7 | 2 | 5 |Kuchliroq, ko'proq ovoz berish va targ'ibot trafiklari bilan |
+| 10 | 3 | 7 |Koʻpaytirish xarajatlari koʻproq; tarmoq va toʻplamni moslashtirish muhimdir |
 
-"X nodlarini" baholashda ovoz berish tasdiqlovchilarni kuzatuvchilardan ajratib qo'yish.
-kuzatuvchilar odatda validatorlarni qo'shishdan kamroq xarajat qiladilar, ammo kuzatuvchilar hali ham iste'mol qilishadi
-G'iybatlarni bloklash, sinxronlashtirishni bloklash, disk va tarmoq bandwidti.
+"X nodlarini" baholashda ovoz berish validatorlarini kuzatuvchilardan ajratib qo'ying. kuzatuvchilarni qo'shish odatda validatorlar qo'shishdan kamroq xarajat qiladi, ammo kuzatuvchilar hali ham blok g'azabini, blok sinxronizatsiyasini, diskni va tarmoq mintaqa kengligini iste'mol qiladilar.
 
-## Ish ko'rsatishga ta'sir qiladigan omillar {#factors-that-influence-performance}
+## Ish ko'rsatkichlariga ta'sir qiladigan omillar {#factors-that-influence-performance}
 
 ### Ish yukining shakli {#workload-shape}
 
-Xuddi shunday TPS har bir muomalaga qarab arzon yoki qimmat bo'lishi mumkin.
-Yozuv:
+Bir xil TPS har bir muomala nimaga bog'liq bo'lishi mumkin arzon yoki qimmat.
 
-- har bir muomalaga ko'rsatmalar soni
-- imzolar soni va imzo algoritmlari
-- Transaksiya byti o'lchami va kompressiya qilingan foydali yuk miqdori
+- har bir tranzaksiya uchun ko'rsatmalar soni
+- imzolar soni va imzolar algoritmlari
+- Transaksiya byti o'lchami va kompressiya qilingan foydali yuk hajmi
 - O'qish va yozish nisbati
-- Metadotlar hajmi va aktiv operatsiyalari
-- aqlli kontrakt, qo'zg'atuvchi va IVM ijro xarajatlari
+- Metadata o'lchamlari va aktivlar faoliyati
+- Aqlli shartnoma, qo'zg'atuvchi va IVM ijro xarajatlari
 - bir xil tengdoshlarga qarshi ishlaydigan soʻrov yuklanishi
 
-Kichik transfer operatsiyalari kontraktlar va metadatalarga to'g'ri keladi
-ish yuklari.
+Kichik transfer operatsiyalari shartnomaviy yoki metadata bilan bog'liq bo'lgan ish yuklarining o'rniga emas.
 
-### Konsensus vaqti {#consensus-timing}
+### Konsensusning vaqti {#consensus-timing}
 
-Sumeragi vaqt ta'minlanishi samarali Sumeragi parametrlari:
+Sumeragi vaqtini Sumeragi amaldagi parametrlari boshqaradi:
 
 - `block_time_ms`
 - `commit_time_ms`
 - `min_finality_ms`
 - `pacing_factor_bps`
-- NPoS rejimi qo'llanilganda NPoS fazasi vaqtlari
+- NPoS rejimi qo'lga kiritilganda NPoS fazasi timeouts
 
 Ularni quyidagilar bilan tekshirish:
 
@@ -147,41 +131,33 @@ iroha --config ./localnet/client.toml ops sumeragi params
 curl -s "$TORII/v1/sumeragi/params" | jq .
 ```
 
-Vaqtni kamaytirish maqsadlari faqat tarmoq, saqlash va
-bajarilishi qatlamlari kuzatib borishi mumkin. O'zgarishlarni ko'rishdan so'ng, yo'q bo'lgan yukni olish yoki
-bosim paydo bo'ladi, vaqtni pasaytirish odatda ishlashni yomonlashtiradi.
+Vaqtni kamaytirish maqsadlari faqat tarmoq, saqlash va ijro qatlamlari kuzatib borishi mumkin bo'lganda kechiktirishni yaxshilaydi. O'zgarishlarni ko'rishdan so'ng, yo'qolgan payloadni olish yoki qarshi bosim paydo bo'lsa, vaqtni kamaytirish odatda ishlashni yomonlashtiradi.
 
-### Toʻplamchi Fanout {#collector-fanout}
+### To'plamchi Fanout {#collector-fanout}
 
-Kolektor oʻrnatishlari ovozlarning qanchalik tez yigʻilishiga taʼsir qiladi:
+Kolektor oʻrnatishlari ovozlarni qoʻllab-quvvatlashning tezligiga taʼsir qiladi:
 
-- `sumeragi.collectors.k` balandlikka ko'ra ovozlarni yig'uvchilarning soni nazorat qilinadi
-- `sumeragi.collectors.redundant_send_r` qo'shimcha ovoz berish bo'yicha nazorat
-  mahalliy vaqt ajratish
-- `sumeragi.collectors.parallel_topology_fanout` topologiyani qo'shadi
-  to'plamchilar
+- `sumeragi.collectors.k` balandlikka ko'ra ovozlarni yig'uvchilarning sonini nazorat qiladi
+- `sumeragi.collectors.redundant_send_r` mahalliy vaqtdan keyin qo'shimcha ovoz berish uchun nazorat qiladi
+- `sumeragi.collectors.parallel_topology_fanout` topologiyani to'plamlar bilan birga qo'shadi.
 
-Katta yoki kamroq ishonchli tarmoqlarda tortib olishning tezligi kamayishi mumkin.
-bu ham trafikni oshiradi.
-Ushbu qiymatlarni o'zgartirishdan oldin latensiya va qarshi bosim ma'lumotlari bilan telemetriya:
+Fanoutni ko'paytirish katta yoki kamroq ishonchli tarmoqlarda quyruq kechiktirishni kamaytirishi mumkin, ammo bu ham trafikni oshiradi. Ushbu qiymatlarni o'zgartirishdan oldin yig'ilgan mavjudlik va kollektor telemetriyasini latency va backpressure metrikalari bilan taqqoslang:
 
 ```bash
 iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetry
 ```
 
-### Tarmoq shartlari {#network-conditions}
+### Tarmoqning shartlari {#network-conditions}
 
 Konsensus natijalari quyidagilarga mos keladi:
 
-- RTT tasdiqlovchilar o'rtasida
-- g'alati va paket yo'qotish
-- blokdagi foydali yuklar uchun bandwidth va RBC qismlar
-- mintaqalar o'rtasidagi asimetrik aloqalar
-- NAT, Firewall yoki tengdoshlar aloqasini kechiktiradigan relay xatti-harakati
+- RTT validatorlar o'rtasida
+- Jitter va paket yo'qotish
+- blok yuklari va RBC bo'laklar uchun bandwidth
+- hududlar o'rtasidagi asimetrik aloqalar
+- NAT, tengdoshlar aloqasini kechiktiradigan firewall yoki relay xatti-harakati.
 
-Rejalash qoidasi sifatida, bir nechta
-Validatorning qayta-qayta safarlari, ijro va diskni qo'llab-quvvatlash vaqti. RTT bo ' lmoqda
-ko'rsatkichlar o'rnatilganda, maqsad real emas.
+Rejalash qoidasi sifatida, latensiyaning budjetini bir nechta validatorning qayta-qayta safarlarini va ijro va disk qo'shish vaqtini qamrab olish uchun etarlicha yuqori qilib qo'ying. Agar p95 tarmog'i RTT allaqachon istagan p95 qo'shilish latensiga yaqin bo'lsa, maqsad real emas.
 
 ### Tartiblar va kirish cheklovlari {#queues-and-admission-limits}
 
@@ -190,46 +166,42 @@ Kiritish va navbat sozlamalari tengdoshlari qancha portlash bosimini oʻzlashtir
 - `queue.capacity`
 - `queue.capacity_per_user`
 - `queue.transaction_time_to_live_ms`
-- maximal imzolar, yo'l-yo'riqlar, baytlar va
-  siqilgan bytlar
-- p2p navbat cheklovlari va konsensus kirish cheklovlari
+- max. imzolar, yo'l-yo'riqlar, baytlar va siqilgan baytlar kabi genesis operatsiya cheklovlari
+- p2p navbatlar cheklovlari va konsensus kirish cheklovlari
 
-Yuqori navbat quvvati bir muncha vaqt davomida ortiqcha yukni yashira oladi, ammo u ko'paymaydi
-Barqaror navbat sog'lomdir; o'sib borayotgan navbat orqaga tushadi.
+Yuqori navbat quvvati ortiqcha yukni bir muncha vaqt yashira oladi, ammo bu barqaror ishlab chiqarishni oshirmaydi. Barqaror navbat sog'lomdir; o'sib borayotgan navbat orqaga tushadi.
 
-### Dasturiy asbob-uskuna va saqlash {#hardware-and-storage}
+### Xardver va saqlash {#hardware-and-storage}
 
 Faqat rahbarni emas, har bir tasdiqlovchini o'lchash:
 
-- CPU tasdiqlash, imzolarni tekshirish va ijro etish paytida to'ylash
-- navbatlar, sur'atlar va faollardan olingan xotira bosimi RBC yig'ilishlar
-- bloklarni saqlash va fotosuratlar uchun disk yozish latensi
-- tarmoqning uzatish/olishi to'ldirilishi
-- Ish yukini ishlatishda texnik jadvalning tezlashtirish parametrlari
+- CPU tasdiqlash, imzolarni tekshirish va ijro etish paytida to'ldirilganligi
+- navbatlar, fotosuratlar va faol RBC seanslardan olingan xotira bosimi
+- bloklarni saqlash va fotosuratlar uchun disk yozish kechikishi
+- tarmoqning uzatish / qabul qilish to'ldirilishi
+- ish og'irligi tomonidan ishlatilayotganda texnik jadvalning tezlashtirish sozlamalari
 
-Eng sekin ovoz berish tasdiqlovchisi tarmoqning quyruq kechiktirilishini aniqlashi mumkin.
+Eng sekin ovoz berish tasdiqlovchisi tarmoqning quyruq uzlukini aniqlashi mumkin.
 
-## Prometeus belgilari {#prometheus-signals}
+## Prometheus belgilari {#prometheus-signals}
 
-Metrik nomlari profil va xususiyatlar to'plamidan kelib chiqib farq qilishi mumkin. `/metrics` to ' g'risida
-avval nodingizni, so'ngra mavjud seriyalar atrofida dashboardlar quring.
+Metrik nomlari profil va xususiyatlar to'plamidan kelib chiqib farq qilishi mumkin. Avval nodingizdagi `/metrics` ni tekshirib ko'ring, so'ngra mavjud seriyalar atrofida ish stolilarni quring.
 
 Oddiy signallarga quyidagilar kiradi:
 
-| Signal | Prometheusning misollari | Nima ko'rish kerak |
+|Signal |Prometheusning misollari |Nima koʻrish kerak ?|
 | --- | --- | --- |
-| Qabul qilingan uzatish | `sum(rate(txs{type="accepted"}[5m]))` | Maqsadga erishishi yoki undan oshishi kerak TPS barqaror holatda |
-| Quvilish | `sum(rate(txs{type="rejected"}[5m]))` | Sinov rejasi bilan tushuntirilishi kerak |
-| Kechiktirishni amalga oshirish | `histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` | P95/p99 ni latency byudjeti bilan taqqoslang |
-| Chegara chuqurligi | `queue_size`, `sumeragi_tx_queue_depth` | Yuqori yuklanish paytida cheklangan joyda qolish kerak |
-| Qatlamning toʻldirilishi | `sumeragi_tx_queue_saturated` | Qo'llab-quvvatlanadigan nol bo'lmagan o'rtacha yuklanish qiymati |
-| Oʻzgarishlarni koʻrish | `view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` | O'sib borayotgan qiymatlar vaqtni, topologiyani, foydali yukni yoki tarmoq muammolarini ko'rsatadi |
-| Yozib tashlangan xabarlar | `dropped_messages`, `sumeragi_consensus_message_handling_total` | Yuklanish paytida tushish odatda kechiktirish darajasini oshirib beradi |
-| RBC bosim | `sumeragi_rbc_store_pressure`, `sumeragi_rbc_backpressure_deferrals_total` | Faydalangan yukni qayta tiklash yoki saqlash uchun noldan tashqari bosim nuqtalari |
-| Qo'shma quorum | `sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` | Hisoblangan imzolar zarur quorumga tezda yetishi kerak |
+|Qabul qilingan oʻsish hajmi |`sum(rate(txs{type="accepted"}[5m]))` |O ' rnatilgan holatda TPS maqsadga erishish yoki undan oshishi kerak |
+|Quvilish |`sum(rate(txs{type="rejected"}[5m]))` |Sinov rejasi bilan tushuntirilishi kerak |
+|Kechikish vaqtini belgilash |`histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |P95/p99-ni latency byudjeti bilan taqqoslang |
+|Chegara chuqurligi |`queue_size`, `sumeragi_tx_queue_depth` |Yukning yuqori boʻlishi uchun cheklangan joyda qolish kerak .|
+|Qatlamning toʻldirilishi |`sumeragi_tx_queue_saturated` |To ' xtatilgan nol bo ' lmagan qiymatning o ' rtacha ortiqcha yuklanishi |
+|Oʻzgarishlarni koʻrish |`view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` |O'sib borayotgan qiymatlar vaqtni, topologiyani, foydali yukni yoki tarmoq muammolarini ko'rsatadi |
+|Yoʻqolgan xabarlar |`dropped_messages`, `sumeragi_consensus_message_handling_total` |Yuklanish paytida tushish odatda kechiktirilganlik darajasini oshirib yuboradi .|
+|RBC bosim |`sumeragi_rbc_store_pressure`, `sumeragi_rbc_backpressure_deferrals_total` |Faydalangan yukni qayta tiklash yoki saqlash boʻshqoyi uchun noldan ortiq bosim nuqtalari |
+|Quorumni belgilash |`sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` |Hisoblangan imzolar talab qilingan quorumga tezda yetishi kerak .|
 
-Agar metrika faqat `/v1/sumeragi/status`, toʻgʻrilash JSON koʻrsatkich
-Prometheus maydonchasining o'sha-o'sha artefaktlari.
+Agar metrika faqat `/v1/sumeragi/status` da mavjud bo'lsa, Prometheus scraping bilan bir xil o'tkazib yuborilgan artefaktlarda JSON rasmga ega bo'ling.
 
 ## Taxminiy ish oqimi {#estimation-workflow}
 
@@ -237,9 +209,9 @@ Prometheus maydonchasining o'sha-o'sha artefaktlari.
    - tasdiqlovchilar soni va kuzatuvchilar soni
    - konsensus usuli
    - maqsad TPS
-   - p95 va p99 majburiyatlarni amalga oshirish bo'yicha budjetlar
-   - Transaksiyalar aralashmasi
-   - kutilayotgan tarmoq RTT, jitter va bandwidth
+   - p95 va p99 bandlik bilan bog'liq byudjetlar
+   - operatsiyalar aralashmasi
+   - kutilayotgan tarmoq RTT, jitter va lentli kenglik
 2. Ta'sirchan konfiguratsiyani yozib oling:
 
    ```bash
@@ -249,35 +221,35 @@ Prometheus maydonchasining o'sha-o'sha artefaktlari.
      > artifacts/sumeragi-collectors.json
    ```
 
-3. Ish yukini maqsadga yoʻnaltiring TPS.
-4. Urug'ning boshida, o'rta va oxirida holat va ma'lumotlarni olish.
-5. Ishni ishlash bandlari jadvali bilan tasniflash.
-6. Agar band o'rta yoki past bo'lsa, bir vaqtning o'zida bitta omilni o'zgartiring va takrorlang.
+3. Ish yukini maqsadga TPS qo'yish.
+4. Urug'ning boshida, o'rta va oxirida holat va ma'lumotlarni yozib oling.
+5. Ish ko'rsatkichlari jadvalini qo'llash bilan harakatni sinflashtiring.
+6. Agar to'plam o'rta yoki past bo'lsa, bir vaqtning o'zida bitta omilni o'zgartiring va takrorlang.
 
-## Koʻrsatkichlar toʻgʻrisidagi hisobotvorasi {#benchmark-report-template}
+## Benchmark hisobotlar namunalari {#benchmark-report-template}
 
-Ishlab chiqarish raqamlarini faqat ularni takrorlash uchun etarli kontekst bilan nashr etish:
+Ishlab chiqarish raqamlarini faqat ularni takrorlash uchun etarlicha kontekst bilan nashr etish:
 
 - Iroha qo'shish, chiqarish va xususiyat bayroqlari
 - tasdiqlovchi va kuzatuvchining soni
-- konsensus usuli va Sumeragi parametrlar
-- to'plamchi `k`, ortiqcha jo'natish `r`, va topologiyadan tashqari
+- konsensus rejasi va Sumeragi parametrlari
+- to'plam `k`, ortiqcha jo'natish `r` va topologiyadan tashqari
 - telemetriya profili
-- asbob-uskunalar, saqlash va OS tafsilotlari
-- tarmoq RTT, Jitter, yo'qotish va lentlar kengligi taxminlari
-- Transaksiyalar aralashmasi va foydali yuk miqdori
-- taklif qilingan TPS va yurish muddati
-- qabul qilingan/tashkil etilgan TPS
-- p50/p95/p99 qo'yilgan vaqtning kechiktirilishi
+- uskunalar, saqlash va OS ma'lumotlari
+- tarmoq RTT, jitter, yo'qotish va lentlar kengligi taxminlari
+- Transaksiya aralashmasi va foydali yuk hajmi
+- taklif qilingan TPS va o'tkaziladigan muddat
+- qabul qilingan/ rad etilgan TPS
+- p50/p95/p99 qo'shma kechikish vaqti
 - navbatning chuqurligi va to'ldirilishi
-- o'zgarishlarni ko'rish, yo'qolgan xabarlar; RBC bosim va yo'q bo'lgan yukni hisobga olish
-- CPU, Xotira, disk va tarmoqdan foydalanuvchi
+- ko'rish o'zgarishlari, tushirilgan xabarlar, RBC bosim va yo'q bo'lgan yukni hisobga oluvchi vositalar
+- CPU, har bir sertifikatlovchi uchun xotira, disk va tarmoqdan foydalanish
 
-Ushbu tafsilotlarsiz, TPS raqam anekdot sifatida ko'rib chiqilishi kerak.
+Ushbu tafsilotlar mavjud bo'lmasa, TPS raqami anekdot sifatida ko'rib chiqilishi kerak.
 
 ## Bogʻliq sahifalar {#related-pages}
 
-- [Izanami bilan xaroba sinovlari](./chaos-testing.md)
-- [Torii oxirgi nuqtalar](../../reference/torii-endpoints.md)
-- [Operatsiya qilish Iroha 3 orqali CLI](../../get-started/operate-iroha-via-cli.md)
+- [Izanami bilan xaos sinovlari](./chaos-testing.md)
+- [Torii oxirgi nuqtalari](../../reference/torii-endpoints.md)
+- [Iroha 3 orqali CLI](../../get-started/operate-iroha-via-cli.md) orqali harakatlaning
 - [Tengdoshlar konfiguratsiyasi ma'lumotnomasi](../../reference/peer-config/params.md)

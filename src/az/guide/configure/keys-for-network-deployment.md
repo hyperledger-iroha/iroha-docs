@@ -48,9 +48,9 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
 
 ## Rəfiqələr arasında uyğunluq {#peer-consistency}
 
-Bütün təsdiqləyicilər eyni genesis əməliyyatı, topologiya, etibarlı peer ictimai açarları və validator PoPs haqqında razılığa gəlməlidirlər.
+Bütün təsdiqçilər eyni genesis əməliyyatı, topologiyası, etibarlı paylaşılan ictimai açarları və təsdiqçi PoPs haqqında razılığa gəlməlidirlər. Yalnız bir çatışmayan və ya uyğun olmayan həmyaşıd açarı şəbəkənin qurulmasına və ya konsensus əldə etməsinə mane ola bilər.
 
-Ən azı Bizans səhv tolerantlığı üçün ən azı dörd həmyaşıddan istifadə edin.
+Ən azı Bizansın səhv tolerantlığı üçün ən azı dörd həmyaşıddan istifadə edin. Hər bir həmyaşıdın öz xüsusi açarı olmalıdır, lakin hər bir həmyaşırı konfigurasiyasının eyni etibarlı həmyaşır dəstinə ehtiyac vardır.
 
 ## Müştərilərin hesabları {#client-accounts}
 

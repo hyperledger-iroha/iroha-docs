@@ -8,99 +8,60 @@ translation_engine: nllb-200-ct2
 
 # Konfiguratsiya muammolarini hal qilish {#troubleshooting-configuration-issues}
 
-Ushbu boʻlimda muammolarni hal qilish uchun maslahatlar mavjud Iroha 3 Konfiguratsiya.
-[kalitlarni tekshirgan](./overview.md#check-the-keys) birinchi navbatda, chunki u eng
-O'zbekiston Respublikasining Iroha.
+Ushbu boʻlimda muammolarni hal qilish uchun maslahatlar mavjud Iroha 3 Konfiguratsiya. [kalitlarni tekshirgan .](./overview.md#check-the-keys) birinchidan, bu muammolarning eng keng tarqalgan manbai bo'lganligi sababli Iroha.
 
-Agar siz boshdan kechirayotgan muammo bu erda tasvirlanmagan bo'lsa, biz bilan bog'laning
-[Telegram](https://t.me/hyperledgeriroha).
+Agar siz boshdan kechirayotgan muammo bu erda tasvirlanmagan bo'lsa, [Telegram ](https://t.me/hyperledgeriroha) orqali biz bilan bog'laning.
 
-## A-ning eski genesis Docker Compose o'rnatish {#outdated-genesis-on-a-docker-compose-setup}
+## Docker Compose sozlash usulidagi eskirgan genesis {#outdated-genesis-on-a-docker-compose-setup}
 
-Agar siz Docker Compose tahririda Iroha, siz uchrashishingiz mumkin
-tengdosh konteynerlardan birining muammosi
-`Failed to deserialize raw genesis block` Bu odatda tengdoshni anglatadi,
-imzolangan genesis transaksiyasi va hosil qilingan konfiguratsiya ishlab chiqilgan
-farq qiladi Iroha qayta ko'rib chiqish yoki profillar.
+Agar siz Docker Compose tahririda Iroha, siz tengdoshlari konteynerlaridan biri bilan muvaffaqiyatsizlikka uchrashishingiz mumkin `Failed to deserialize raw genesis block` xato. Bu odatda tengdosh, imzolangan genesis tranzaksiyasi va hosil qilingan konfiguratsiya turli xil Iroha qayta ko'rib chiqish yoki profillar.
 
 Muvaffaqiyatni quyidagi qadamlar bilan tekshirish:
 
-1. Foydalanish `docker ps` Joriy konteynerlarni tekshirish uchun.
-   yaratilgan profil, siz odatda ko'rasiz `hyperledger/iroha:dev`
-   konteynerlar. Docker Compose profilda toʻrt nafar tengdosh mavjud
-   konteynerlar, ammo siz ishlab chiqargan `docker-compose.yml` farq qilishi mumkin.
+1. Joriy konteynerlarni tekshirish uchun `docker ps` dan foydalaning. Yaratilgan profilga qarab, siz odatda `hyperledger/iroha:dev` konteynerlarini ko'rasiz. Andoza Docker Compose profilida to'rtta tengdosh konteyner mavjud, garchi sizning yaratilgan `docker-compose.yml` tarkibingiz farq qilishi mumkin.
 
-2. Yozuvlarni tekshiring va
-   `Failed to deserialize raw genesis block` xato. Agar siz boshlagan
-   Iroha daemon rejimida `docker compose up -d`, foydalanish
-   `docker compose logs` buyruq.
+2. Loglarni tekshiring va `Failed to deserialize raw genesis block` xatosi uchun qidiring. Agar siz Iroha ni daemon rejimida `docker compose up -d` bilan boshlagan bo'lsangiz, `docker compose logs` buyruqidan foydalaning.
 
-Bunday muammoni hal qilishning usuli Iroha. Agar bu
-asosiy demo va siz tengdoshlar ma'lumotlarini saqlab qolish kerak emas, o'xshash qayta tiklash
-lokal tarmoq yoki Docker Compose bilan toʻplam Kagami:
+Bunday muammoni hal qilish usuli Iroha dan foydalanishga bog'liq. Agar bu asosiy demo bo'lsa va siz tengdoshlar ma'lumotlarini saqlab qolishingiz shart emas bo'lsa, Kagami bilan mos localnet yoki Docker Compose paketini qayta tiklang:
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
 ```
 
-Keyin eski konteyner holatini olib tashlang va qayta tiklangan konteynerdan qaytadan ishga tushiring
-`genesis.signed.nrt`, tengdoshlar `config.toml` fayllar va `client.toml`.
+So'ngra eski konteyner holatini olib tashlang va qayta tiklangan `genesis.signed.nrt`, `config.toml` va `client.toml` fayllaridan qaytadan ishga tushiring.
 
-Agar siz o ' rnini tiklashingiz kerak bo ' lsa Iroha misol ma'lumotlari, quyidagilarni bajaring:
+Agar Iroha instansiyasi ma'lumotlarini tiklash kerak bo'lsa, quyidagilarni bajaring:
 
-1. Ikkinchisini ulash Iroha birinchi raqamdagi ma'lumotlarni nusxa oladigan tengdosh
-   O'z tengdoshlari.
-2. Yangi tengdosh ma'lumotlarni birinchi tengdosh bilan sinxronlashtirishini kuting.
+1. Ikkinchi Iroha tenglamasini u birinchi (maslahatli) tenglamadan olingan ma'lumotlarni nusxa ko'rsatadi.
+2. Yangi tengdosh ma'lumotlarni birinchi tengdosh bilan sinxronizatsiya qilishini kuting.
 3. Yangi tengdoshni faol qoldiring.
-4. Birinchi tengdoshlari genesis va konfiguratsiya fayllarini faqat
-   muvofiqlashtirilgan migratsiya.
+4. Birinchi tengdoshning genesis va konfiguratsiya fayllarini faqat muvofiqlashtirilgan migratsiya qismi sifatida yangilang.
 
-::: info
+::: ma'lumot
 
-Genesisni jonli o'rnatish uchun umumiy avtomatik qayta yozish yo'li mavjud emas
-Bu birlashtirilgan migratsiya sifatida qabul qiling: eski davlatni saqlab qolish,
-moslashtiriladi, va faqat validatorlarni yangi konfiguratsiyaga ko'chirish
-operatorlar migratsiya rejasi haqida kelishib olishadi.
+To'g'ridan-to'g'ri tarmoqda genesisni almashtirish uchun umumiy avtomatik qayta yozish yo'li mavjud emas. Buni muvofiqlashtirilgan migratsiya sifatida ko'rib chiqing: eski holatni saqlab qoling, moslashuvchan tengdoshlarni keltiring va validatorlarni faqat operatorlar migratsiya rejasi haqida kelishib olgach yangi konfiguratsiyaga o'tkazish kerak.
 
 :::
 
-## Xususiy va ommaviy kalitlarning ko'p hash formatlari {#multihash-format-of-private-and-public-keys}
+## Maxfiy va ommaviy kalitlarning ko'p hash formatlari {#multihash-format-of-private-and-public-keys}
 
-Agar siz
-[mijoz konfiguratsiyasi](/uz/guide/configure/client-configuration.md), siz
-ko'rsatilgan kalitlar
-[ko'p hash formatlari](https://github.com/multiformats/multihash).
+Agar siz [ mijoz konfiguratsiyasini](/uz/guide/configure/client-configuration.md) ko'rsangiz, u erda kalitlar [ ko'p hash formatida berilganligini ko'rasiz ](https://github.com/multiformats/multihash).
 
-Agar siz ilgari ko'p hash bilan ishlamagan bo'lsangiz,
-o'ng tomondagi kalit bytlarning hexadecimal ifodalari mavjud emas
-(bir byte uchun ikki ramz), balki kodlangan byte ASCII (yoki UTF-8),
-va qoʻngʻiroq qilish `from_hex` ikkalada ham simli literalda `public_key` va
-`private_key` tashabbus ko'rsatish.
+Agar siz ilgari ko'p hash bilan ishlamagan bo'lsangiz, o'ng tomon kalit bytlarning (baytga ikkita ramz) hexadecimal ifoda emasligini (yoki ASCII yoki UTF-8 sifatida kodlangan bytlar) tasavvur qilish tabiiydir; `public_key` va `private_key` nusxalari bo'yicha har ikki qatorda `from_hex` chaqirib qo'ying.
 
-Bundan tashqari, chaqirish `PrivateKey::try_from_str` to ' g'risida
-Agar siz raqamni topsangiz
-noto'g'ri kalitdagi bitlar, masalan 32 byt vs. 64, bu xato tug'diradi
-xabar.
+Bundan tashqari, `PrivateKey::try_from_str` so'rash faqat to'g'ri kalitni beradi deb taxmin qilish tabiiy. Shunday qilib, agar siz kalitdagi bitlar sonini noto'g'ridan ko'rsangiz, masalan, 32 bytes vs 64.
 
-**Bu ikki tasavvur ham noto'g'ri.** Afsuski, xato xabarlari
-bu kabi muvaffaqiyatsizliklarni bartaraf etishga yordam bermaydi.
+Ikkala tasavvur ham noto'g'ri. Afsuski, xato xabarlari bunday xatolarni bartaraf etishda yordam bermaydi.
 
-**Qanday qilib tuzatish kerak**: foydalanish `hex_literal`. Bu , shuningdek , yomon qatorga aylanadi .
-belgilar, aniq oltita o'nlik raqamlardan iborat ajoyib kichik jadvalga.
+Qanday tuzatish kerak: `hex_literal` dan foydalaning. Bu, shuningdek, chiroyli belgilar qatorini oltita o'nlik raqamlardan iborat yaxshi kichik jadvalga aylantiradi.
 
-::: warning
+::: ogohlantirish
 
-Hatto `try_from_str` amalga oshirish ma'lum bir satrning
-amal qiladi `PrivateKey` va agar yo'q bo'lsa, ogohlantiraman.
+Hatto `try_from_str` implementatsiyasi ham ma'lum bir satrning haqiqiy `PrivateKey` bo'lishini tekshirib ko'ra olmaydi va agar yo'q bo'lsa ogohlantirmaydi.
 
-U ba'zi aniq xatolarni topadi, masalan, agar satrda haqiqiy bo'lmagan
-Biroq, biz ko'plab asosiy formatlarni qo'llab-quvvatlashni maqsad qilganimiz sababli, bu juda ko'p narsa qila olmaydi.
-Bu kalitning _to'g'ri_ maxfiy kalit _berilgan
-hisob_ yoki, agar siz yo'l-yo'riq bermasangiz.
+U ba'zi aniq xatolarni topadi, masalan, agar satrda haqiqiy bo'lmagan ramz mavjud bo'lsa. Biroq, biz ko'plab kalit formatlarini qo'llab-quvvatlashni maqsad qilganimiz sababli, u boshqa ko'p narsani qila olmaydi. Agar siz ko'rsatma taqdim etmasangiz, ma'lum hisob uchun kalit to'g'ri xususiy kalitmi yoki yo'qmi bilmaydi.
 
 :::
 
-These ko'plab nozik xatolardan, masalan:
-to'g'ridan-to'g'ri simli literallardan deseriallashtirish yoki yangi
-mazmunli joylarda kalit juftligi.
+Bunday nozik xatolarga yo'l qo'ymaslik mumkin, masalan, to'g'ridan-to'g'ri simli literallardan deseriallashtirish yoki ma'noga ega bo'lgan joylarda yangi kalitlar juftligini yaratish.

@@ -30,7 +30,7 @@ Comencemos con un resumen de Iroha Instrucciones especiales; qué objetos cada i
 
 Para cada instrucción, hay una lista de objetos en los que se puede ejecutar esta instrucción. Por ejemplo, las variantes de transferencia cubren objetos del libro mayor y activos numéricos, mientras que la acuñación cubre activos numéticos y desencadena repeticiones.
 
-Algunas instrucciones requieren que se especifique un destino. Por ejemplo, si usted transfiere activos, siempre debe especificar a qué cuenta los está transfiriendo.
+Algunas instrucciones requieren que se especifique un destino. Por ejemplo, si usted transfiere activos, siempre debe especificar a qué cuenta se están transferindo. Por otro lado, cuando estás registrando algo, lo único que necesitas es el objeto que quieres registrar.
 
 |Instrucciones |Objetos |El destino |
 | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------- |
@@ -67,7 +67,7 @@ Los ejemplos de esta página suponen que está ejecutando comandos desde el espa
 cargo run --bin iroha -- --config ./defaults/client.toml <command>
 ```
 
-Si ha instalado el binario `iroha`, utilice `iroha --config ./defaults/client.toml` en su lugar.
+Si instaló el binario `iroha`, utilice `iroha --config ./defaults/client.toml` en su lugar. Reemplazar los titulares de lugar a continuación con valores de su red:
 
 ```bash
 export ALICE="<ALICE_ACCOUNT_I105>"
@@ -104,7 +104,7 @@ cargo run --bin iroha -- \
 
 ## EnsureAlias {#ensurealias}
 
-`EnsureAlias` es el camino ordinario de primera liberación para la creación de dominios y sus contratos de arrendamiento SNS. Utilice el punto final `POST /v1/aliases/setup/plan` autenticado o el flujo de trabajo correspondiente CLI:
+`EnsureAlias` es el camino ordinario para la creación de dominios y sus contratos de arrendamiento SNS. Se obliga declarativamente el espacio de datos exacto, propietario, término del arrendamiento y guardia de cotizaciones, Luego crea o repara todo el estado requerido de forma atómica. Utilice el punto final `POST /v1/aliases/setup/plan` autenticado o el flujo de trabajo correspondiente CLI:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -116,7 +116,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   app alias setup apply --plan-file ./domain.plan.json
 ```
 
-La intención y el plan son libres de secretos, pero se aplican señales de paso y se presenta una transacción ordinaria con la cuenta configurada.
+La intención y el plan son libres de secretos, pero se aplican señales de paso y se presenta una transacción ordinaria con la cuenta configurada. Un plan está ligado a su cadena, autoridad, anclaje de estado en vivo y fecha límite; nunca vuelva a utilizar uno en otra red.
 
 ## (Un) Registro {#un-register}
 
@@ -245,7 +245,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ## La menta y el bronceado {#mint-burn}
 
-La acuñación y la quema se pueden referir a activos numéricos y desencadenan con un número limitado de repeticiones.
+La acuñación y la quema pueden referirse a activos numéricos y desencadenan con un número limitado de repeticiones. Algunos activos pueden ser declarados como no acuñables, lo que significa que sólo se pueden acuñar una vez después del registro.
 
 Los activos se acuñan en una cuenta específica, generalmente la que registró el activo en primer lugar. Las cantidades de activos no son negativas, por lo que nunca puede tener `$-1.0` de un activo o quemar una cantidad negativa y obtener una moneda.
 

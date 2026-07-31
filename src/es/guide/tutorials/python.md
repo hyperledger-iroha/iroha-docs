@@ -276,7 +276,7 @@ submit(Instruction.burn_asset_numeric(ROSE_ASSET, "10.00"))
 
 ### Transferencia de propiedad {#transfer-ownership}
 
-Las transferencias de propiedad cambian quién controla el dominio, la definición del activo o NFT.
+Las transferencias de propiedad cambian quién controla el dominio, la definición del activo o NFT. Utilice al propietario actual como autoridad de la transacción.
 
 ```python
 # The first argument is the current owner; the last is the new owner.

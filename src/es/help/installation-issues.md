@@ -100,7 +100,7 @@ $ type rustc
 $ type cargo
 ```
 
-Si estos apuntan a ubicaciones distintas de la que vio al ejecutar `rustup which *`, entonces tiene un problema.
+Si estos apuntan a ubicaciones distintas de la que vio al ejecutar `rustup which *`, entonces tiene un problema. Tenga en cuenta que no es suficiente sólo
 
 ```bash
 $ alias rustc "~/.rustup/toolchains/stable-*/bin/rustc"

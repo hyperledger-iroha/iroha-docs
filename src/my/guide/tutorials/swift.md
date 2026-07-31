@@ -6,23 +6,15 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Swift ပြီးတော့ iOS {#swift-and-ios}
+# Swift နှင့် iOS {#swift-and-ios}
 
-နိုင်ငံခြားရေး Swift SDK Upstream အလုပ်ခွင်မှတင်ပို့သည် `IrohaSwift` Swift
-အောက်ပါ package ကို `IrohaSwift/`. ၎င်းရဲ့ package manifest မှာ စာကြည့်တိုက် သုံးခုကို သတ်မှတ်ထားပါတယ်။
-ထုတ်ကုန်များ`IrohaSwift`, `IrohaSwiftMobileTransports`, နှင့်
-`IrohaSwiftTransferUI`iOS 15+ နဲ့ macOS 12+ ကို ရည်ရွယ်ပြီး Swift ကိရိယာများ 5.9.
+နိုင်ငံတကာ Swift SDK Upstream အလုပ်ခွင်က ပို့ပေးတာက `IrohaSwift` Swift အောက်ပါ package ကို `IrohaSwift/`. ၎င်း၏ package manifest တွင် စာကြည့်တိုက်ထုတ်ကုန် သုံးခုကို သတ်မှတ်ထားသည်`IrohaSwift`, `IrohaSwiftMobileTransports`, နှင့် `IrohaSwiftTransferUI`နှင့် iOS 15+ နှင့် macOS 12+ ကို ရည်မှန်းထားသည် Swift ကိရိယာများ 5.9.
 
-ပါကတ်က ဒေသခံကို မူတည်ပါတယ်။ `NoritoBridge` ဘိုင်နရီ ပစ်မှတ်။
-ကြေညာချက်ကို အတည်ပြု `../dist/NoritoBridge.xcframework` ဆောက်လုပ်ရေးမတိုင်ခင်နဲ့
-transaction သို့မဟုတ် Connect crypto paths ကိုတံတားမရနိုင်သောအမှားများကိုပစ်
-ဒေသခံ သင်္ကေတတွေ မတင်ပါဘူး။
+ပဲခူးက ဒေသခံကို မူတည်တယ်။ `NoritoBridge` ဘိုင်နရီ ရည်မှန်းချက်။ ပါကတ်အဖြေကို validates `../dist/NoritoBridge.xcframework` မတည်ဆောက်ခင်၊ ငွေချေးမှု (သို့) Connect crypto paths တွေက ဒေသခံ သင်္ကေတတွေ မတင်တဲ့အခါ တံတားမရနိုင်တဲ့အမှားတွေကို ပစ်လွှတ်တယ်။
 
 ## Swift Package Manager ကို {#swift-package-manager}
 
-စစ်ဆေးထားတဲ့ အလုပ်ခွင်တစ်ခုနဲ့ ဆန့်ကျင်ပြီး ဆောက်လုပ်တဲ့အခါ Point SwiftPM ဒေသတွင်း
-`IrohaSwift/` Package directory ကို အသုံးပြုသော package identity ကို
-`Package.swift` ရှိသည် `IrohaSwift`:
+စစ်ဆေးထားတဲ့ အလုပ်ခွင်တစ်ခုနဲ့ ဆောက်လုပ်တဲ့အခါ ဒေသတွင်း `IrohaSwift/` package directory မှာ SwiftPM ကို ညွှန်ပြပါ။ `Package.swift` ကသုံးတဲ့ package ID ဟာ `IrohaSwift` ပါ။
 
 ```swift
 dependencies: [
@@ -38,26 +30,20 @@ targets: [
 ]
 ```
 
-App အတွက် Path ကိုပြင်ဆင်ပါ။ Current ကို Copy မလုပ်ပါနဲ့
-`examples/ios/ConnectMinimalApp` လမ်းကြောင်းရှိသလို ဖြစ်နေပါသည်
-`../../IrohaSwift` သို့ `examples/IrohaSwift`.
+သင့် app အတွက် Path ကိုပြင်ဆင်ပါ။ လက်ရှိ `examples/ios/ConnectMinimalApp` path ကို copy မလုပ်ပါနဲ့။ ဒီ manifest က `../../IrohaSwift` ကို `examples/IrohaSwift` သို့ ဖြေရှင်းပေးတယ်။
 
-Package ကို ဖြေရှင်းမပေးခင် bridge က workspace root မှာရှိတာကို သေချာအောင်လုပ်ပါ။
+Package ကို ဖြေရှင်းမပေးခင် တံတားဟာ workspace root မှာရှိတာကို သေချာအောင်လုပ်ပါ။
 
 ```bash
 cd /path/to/iroha
 make bridge-xcframework
 ```
 
-ဒါက `dist/NoritoBridge.xcframework`; `IrohaSwift/Package.swift`
-၎င်းကို `../dist/NoritoBridge.xcframework`.
+`dist/NoritoBridge.xcframework` ကိုထုတ်ပေးပြီး `IrohaSwift/Package.swift` ကတော့ `../dist/NoritoBridge.xcframework` လို့ခေါ်ပါတယ်။
 
 ## CocoaPods {#cocoapods}
 
-ကုဒ်ဘေ့စ်မှာလည်း ပါဝင်ပါတယ်။ `IrohaSwift/IrohaSwift.podspec`. ၎င်းက ကြေညာထားသည်
-`IrohaSwift` အိတ်၊ Swift 5.9 နဲ့ iOS 15 မှာ podspec က ဆွဲပေးတယ်။ Swift ရင်းမြစ်များ
-အဓိက သိုလှောင်ရုံမှာ၊ မူလတံတားက ရှိနေဆဲဖြစ်ပြီး ဆက်သွယ်ဖို့ လိုအပ်ပါတယ်။
-Transaction encoding, non-Ed25519 လက်မှတ်ရေးထိုးခြင်း, နှင့် Connect crypto.
+ဒီကုဒ်ဘေ့စ်မှာလည်း ပါဝင်ပါတယ်။ `IrohaSwift/IrohaSwift.podspec`. ၎င်းက ကြေညာသည် `IrohaSwift` အိတ်၊ Swift 5.9 နဲ့ iOS 15 တို့ပါ။ podspec က ဆွဲပေးတယ်။ Swift အဓိက သိုလှောင်ရုံမှ ရင်းမြစ်များ; ဒေသခံတံတားသည် တည်ရှိပြီး ငွေပေးချေမှု ကုဒ်သွင်းခြင်းအတွက် ချိတ်ဆက်ထားရဦးမည်။ Ed25519 မဟုတ်တဲ့ လက်မှတ်ရေးထိုးခြင်းနဲ့ Connect crypto ကိုပါ။
 
 ## အမြန်စတင်ခြင်း {#quickstart}
 
@@ -77,10 +63,9 @@ if #available(iOS 15.0, macOS 12.0, *) {
 }
 ```
 
-## စမ်းကြည့်ပါ။ Taira စာဖတ်ခြင်းသာ {#try-taira-read-only}
+## Taira ကို စမ်းကြည့်ပါ။ ဖတ်ရုံပဲ {#try-taira-read-only}
 
-ပကတိတစ်ခုနဲ့ စလိုက်ပါ HTTP probe က device (သို့) simulator ကိုရောက်ရှိနိုင်တာကိုအတည်ပြုဖို့
-အများပြည်သူ Taira အဆုံးသတ်မှတ်ချက်:
+ဒီကိရိယာ (သို့) Simulator က အများပြည်သူ Taira အဆုံးသတ်မှတ်တိုင်ကို ရောက်ရှိနိုင်ကြောင်း အတည်ပြုဖို့ ရိုးရှင်းတဲ့ HTTP ဆန်ဒါတစ်ခုနဲ့ စတင်ပါ။
 
 ```swift
 import Foundation
@@ -96,14 +81,9 @@ if #available(iOS 15.0, macOS 12.0, *) {
 }
 ```
 
-အလားတူပဲ သုံးပါ။ `URLSession` စစ်ဆေးပါ
-`https://taira.sora.org/v1/assets/definitions?limit=5` သင်ဟာ ဆောက်လုပ်နေတုန်း
-UI နောက်တစ်ကြိမ် ပြုမူမှုကို စမ်းကြည့်ပါ။ `IrohaSDK` အကူအညီပေးသူတွေကို
-app က လုံခြုံတဲ့ သိုလှောင်မှုကနေ လက်မှတ်ရေးထိုးသူ ပစ္စည်းတွေကို တင်ပြီး အကောင့်ကို ငွေကြေးထောက်ပံ့ပေးတယ်။
-Taira.
+အလားတူပဲ သုံးပါ။ `URLSession` စစ်ဆေးပါ `https://taira.sora.org/v1/assets/definitions?limit=5` သင်ဟာ တည်ဆောက်နေတုန်းမှာ UI အပြုအမူကို ထပ်ပြီး စမ်းကြည့်ပါ။ `IrohaSDK` အကူအညီပေးသူတွေကို လုံခြုံတဲ့ သိုလှောင်မှုကနေ လက်မှတ်ရေးထိုးစာရွက်စာတမ်းကို app က ထည့်သွင်းပြီးနောက်မှပဲ ငွေကြေးထောက်ပံ့မှုကို ပေးပို့ပါ။ Taira.
 
-ငွေလဲလှယ်မှု တည်ဆောက်ပြီး တင်ပြဖို့ `IrohaSDK` အကူအညီပေးသူတွေ၊
-Native bridge-backed transaction encoder:
+`IrohaSDK` အကူအညီများကို အသုံးပြု၍ ငွေပေးချေမှု တည်ဆောက်ရန်နှင့် တင်ပြရန်။ ၎င်းတို့သည် ပင်ကိုယ် bridge-backed transaction encoder ကိုခေါ်သည်။
 
 ```swift
 let transfer = TransferRequest(
@@ -125,23 +105,15 @@ if #available(iOS 15.0, macOS 12.0, *) {
 }
 ```
 
-`TransferRequest`, `MintRequest`, `BurnRequest`, `ShieldRequest`, နှင့်
-`UnshieldRequest` တရားဝင်စာရင်းကို အတည်ပြု IDs ကနောနိဗ္ဗာန်နဲ့ မစတင်တဲ့
-Base58 အရင်းအမြစ် သတ်မှတ်ချက် IDs လက်မှတ်မထိုးခင်
+`TransferRequest`, `MintRequest`, `BurnRequest`, `ShieldRequest`, နှင့် `UnshieldRequest` တရားဝင်စာရင်းကို validate IDs နှင့် Canonical Unprefixed Base58 အရင်းအမြစ် အဓိပ္ပါယ်ဖွင့်ဆိုချက် IDs လက်မှတ်မထိုးခင်မှာပေါ့။
 
 ## Native Escrow {#native-escrow}
 
-Swift စျေးကွက်နှင့်မည်မသိ escrow ညွှန်ကြားချက်များကိုတည်ဆောက်သည် Norito JSON
-အကူအညီပေးသော ဝန်ဆောင်မှုများ `NativeEscrowInstructionBuilders` သို့မဟုတ် ညီမျှသော
-`IrohaSDK.build*Escrow*` အကူအညီပေးသူတွေ၊
-[Native Asset Escrow](/my/blockchain/escrow.md#swift-and-ios) နမူနာများအတွက်
-အမည်မသိ သက်သေခံ ကွင်းတွေ၊ ပဋိပက္ခဖြေရှင်းခွင့် လက်မှတ်တွေပေါ့။
+Swift စျေးကွက်နှင့် အမည်မသိ escrow ညွှန်ကြားချက်များကိုတည်ဆောက်သည် Norito JSON အသုံးဝင် ဝန်ဆောင်မှုများ `NativeEscrowInstructionBuilders` (သို့) ညီမျှသော `IrohaSDK.build*Escrow*` အကူအညီပေးသူတွေ၊ ကြည့်ပါ။ [Native Asset Escrow](/my/blockchain/escrow.md#swift-and-ios) ဥပမာ၊ အမည်မဲ့ သက်သေပြမှု ကွင်းများနှင့် ပဋိပက္ခဖြေရှင်းခွင့် လက်မှတ်ကိုပါ။
 
 ## လက်မှတ်ရေးထိုးခြင်း {#signing}
 
-`Keypair` Ed25519 ရဲ့ သက်တောင့်သက်သာမှု API. အခြားအယ်လ်ဂိုရစ်သမ်များအတွက်
-`IrohaSDK` နှင့်အတူ `defaultSigningAlgorithm` အသုံးပြုခြင်း `generateSigningKey()` ဒါမှမဟုတ်
-`signingKey(fromSeed:)`:
+`Keypair` သည် Ed25519 convenience API ဖြစ်သည်။ အခြားအယ်လ်ဂိုရစ်သမ်များအတွက် `IrohaSDK` ကို `defaultSigningAlgorithm` ဖြင့်တည်ဆောက်ပြီး `generateSigningKey()` သို့မဟုတ် `signingKey(fromSeed:)` ကိုအသုံးပြုပါ။
 
 ```swift
 let pqSdk = IrohaSDK(
@@ -151,14 +123,11 @@ let pqSdk = IrohaSDK(
 let signingKey = try pqSdk.generateSigningKey()
 ```
 
-နိုင်ငံခြားရေး `SigningAlgorithm` enum တွင် Ed25519၊ secp256k1 ပါဝင်သည်။ BLS ပုံမှန်
-အသေးစားပုံစံတွေနဲ့ ML-DSA, GOST R 34.10-2012 ပါရီမီတာ အစုများနှင့် SM2. ဒေသခံ
-ED25519 လမ်းကြောင်းအပြင်မှာ တံတားထောက်ပံ့မှု လိုအပ်ပါတယ်။
+`SigningAlgorithm` enum တွင် လက်ရှိတွင် Ed25519, secp256k1, BLS ပုံမှန်နှင့် အသေးစားဗားရှင်းများ၊ ML-DSA, GOST R 34.10-2012 ပမာဏစုများနှင့် SM2 ပါဝင်သည်။ ဒေသတွင်းတံတားထောက်ပံ့မှုသည် Ed25519 သက်တောင့်သက်သာလမ်းကြောင်းအပြင်လိုအပ်သည်။
 
-## ဆက်သွယ်ခြင်း {#connect}
+## ချိတ်ဆက်ခြင်း {#connect}
 
-Connect client ကို Swift source ကို crypto နဲ့ frame codec တွေနဲ့
-ထောက်ခံချက် `NoritoBridge`:
+Connect client ကို Swift အရင်းအမြစ်မှာ အကောင်အထည်ဖော်ထားပြီး `NoritoBridge` ကထောက်ပံ့တဲ့ crypto နဲ့ frame codecs တွေနဲ့ပါ ၀ င်ပါတယ်။
 
 ```swift
 let sessionID = Data(repeating: 0, count: 32) // replace with the session bytes
@@ -177,38 +146,25 @@ let session = ConnectSession(sessionID: sessionID, client: client)
 let keyPair = try ConnectCrypto.generateKeyPair()
 ```
 
-`ConnectSession` ဖွင့်ပြီး ပိတ်တဲ့ ထိန်းချုပ်မှု လက်ကိုင်တွေ၊ ကုဒ်သွင်းထားတဲ့ စာအိတ်တွေ ဖတ်တယ်။
-လမ်းညွှန်ချက်များ၊ စီးဆင်းမှု ထိန်းချုပ်မှု၊ ဖြစ်စဉ်စီးကြောင်းများ၊ ဟန်ချက်ညီမှုစီးကြောင်းများနှင့် ရောဂါစစ်ဆေးမှုများ
-ဂျာနယ်တွေပေါ့။
+`ConnectSession` ဟာ ဖွင့်ပြီး ပိတ်တဲ့ ထိန်းချုပ်မှုတွေ၊ ကုဒ်သွင်းထားတဲ့ စာအိတ်ဖတ်တာ၊ လမ်းညွှန်ချက် ခလုတ်တွေ၊ စီးဆင်းမှု ထိန်းချုပ်မှု၊ ဖြစ်ရပ်စီးကြောင်းတွေ၊ ဟန်ချက်ညီမှုစီးကြောင်းတွေနဲ့ ရောဂါရှာဖွေရေး ဂျာနယ်တွေကို ကိုင်တွယ်ပါတယ်။
 
 ## လက်ရှိအကာအကွယ် {#current-coverage}
 
-နိုင်ငံခြားရေး Swift အရင်းအမြစ်သည် လက်ရှိတွင်:
+Swift အရင်းအမြစ်မှာ လက်ရှိတွင်:
 
-- `ToriiClient` HTTP အကောင့်များ၊ အရင်းအမြစ်များ၊ အမည်မဖော်လိုသူများ၊ စူးစမ်းရှာဖွေရေး စာမျက်နှာများအတွက် အကူအညီပေးသူများ
-  RWA, စာချုပ်များ၊ multisig များ၊ အုပ်ချုပ်ရေးစနစ်၊ လက်မှတ်ထိုးခြင်းများ၊ ဒေတာရရှိနိုင်မှု
-  လျှို့ဝှက်ပစ္စည်းများ၊ node/runtime အခြေအနေ၊ ကျန်းမာရေး၊ metrics များနှင့် SSE မြစ်များ
-- `IrohaSDK` ငွေလွှဲပြောင်းရေးအတွက် ငွေပေးချေမှု တည်ဆောက်သူများနှင့် တင်သွင်း/ရွေးကောက်ပွဲ အကူအညီပေးသူများ၊
-  မီးရှို့၊ ပိုင်းခတ်၊ ပိုင်းမပါ ZK လွှဲပြောင်းမှု ZK အရင်းအမြစ် မှတ်ပုံတင်၊ မီတာဒေတာ
-  အမည်သတ်မှတ်ချက်များ၊ multisig မှတ်ပုံတင်ခြင်းနှင့် အုပ်ချုပ်ရေး ညွှန်ကြားချက်များ
-- စောင့်ဆိုင်းနေသော ငွေပေးချေမှုတန်း ထောက်ပံ့မှု `PendingTransactionQueue` နှင့်
-  `FilePendingTransactionQueue`
-- အကောင့်လိပ်စာနှင့် I105 အကူအညီပေးသူများ `AccountAddress` နှင့် `AccountId`
-- Ed25519, secp256k1, ML-DSA, BLS, GOST, နှင့် SM2 လက်မှတ်ရေးထိုးတဲ့ မျက်နှာပြင်တွေ၊ ဒေသခံတွေနဲ့
-  လိုအပ်ပါက တံတားထောက်ပံ့မှု
-- စျေးကွက်အတွက် native escrow ညွှန်ကြားချက် အသုံးဝင်ဝန်ဆောင်မှု ဆောက်လုပ်သူများနှင့် အမည်မသိ
-  အလှူခံ
-- ဆက်သွယ်ခြင်း WebSocket, frame, crypto, session, queue, replay နဲ့ diagnostics
-  အကူအညီပေးသူများ
-- Kagemusha အသင့်ရှိမှု၊ ထိပ်သွင်းပြီး ပြန်လည်ဖြည့်ဆည်းခြင်း၊ လုပ်ငန်းအခြေအနေ၊ မှတ်ချက်
-  တူညီတဲ့ ဘက်လ်၊ လက်မှတ်နဲ့ QR စီးဆင်းမှုပုံစံများ
-- SoraFS, ဒေတာရရှိနိုင်မှုနှင့် သက်သေခံချိတ်ဆက်မှု အကူအညီများ
+- `ToriiClient` HTTP အကူအညီများ စာရင်းများ၊ အရင်းအမြစ်များ၊ အမည်မဖော်လိုသူများ၊ စူးစမ်းရှာဖွေရေးစာမျက်နှာများ၊ RWA၊ စာချုပ်များ၊ multisig များ၊ အုပ်ချုပ်မှု၊ လက်မှတ်ထိုးခြင်းများ၊ ဒေတာရရှိနိုင်မှု၊ လျှို့ဝှက်အရင်းအမြစ်၊ node/runtime အခြေအနေ၊ ကျန်းမာရေး၊ တိုင်းထွာချက်များနှင့် SSE စီးကြောင်းများအတွက်
+- `IrohaSDK` ငွေပေးချေမှု တည်ဆောက်သူများနှင့် လွှဲပြောင်းခြင်း၊ ငွေကြေးထုတ်လုပ်ခြင်း၊ မီးရှို့ခြင်း၊ ကန့်သတ်ချက်၊ ကန့်ကွက်ချက်မရှိသော လွှဲပြောင်းမှု၊ ZK အရင်းအမြစ်မှတ်ပုံတင်ခြင်း၊ ZK မီတာဒေတာများ၊ မှတ်ပုံတင်အဆိုများ၊ multisig မှတ်ပုံတင်ခြင်းနှင့် အုပ်ချုပ်ရေး ညွှန်ကြားချက်များအတွက် တင်ပြ/ရွေးကောက်ပွဲကူညီသူများ
+- `PendingTransactionQueue` နှင့် `FilePendingTransactionQueue` မှတစ်ဆင့် ငွေပေးချေမှုလိုင်းထောက်ပံ့မှုကို စောင့်ဆိုင်းနေသည်
+- `AccountAddress` နှင့် `AccountId` မှတစ်ဆင့် အကူအညီပေးသူများအတွက် ငွေစာရင်းလိပ်စာနှင့် I105
+- Ed25519, secp256k1, ML-DSA, BLS, GOST နှင့် SM2 လက်မှတ်ထိုးတဲ့ မျက်နှာပြင်များ၊ လိုအပ်ပါက ပင်ကိုယ်တံတားအထောက်အပံ့ဖြင့်
+- စျေးကွက်အတွက် native escrow instruction payload builders နှင့် အမည်မသိ escrow များ
+- WebSocket ကို ချိတ်ဆက်ပါ Frame, Crypto, Session, queue, replay နှင့် diagnostics အကူများ
+- Kagemusha အသင့်ရှိမှု၊ ထိပ်သွင်းခြင်းနှင့် ပြန်လည်ဖြည့်စွက်ခြင်း၊ လုပ်ငန်းအခြေအနေ၊ မှတ်ချက်၊ အချိတ်အဆက်၊ လက်မှတ်၊ QR စီးဆင်းမှုပုံစံများ
+- SoraFS, ဒေတာရရှိမှုနှင့် သက်သေခံချိတ်ဆက်ခြင်း အကူအညီများ
 
 ## API ဥပမာများ {#api-examples}
 
-အသုံးပြုခြင်း `IrohaSwift/Sources/IrohaSwift` အများပြည်သူအတွက် အကောင်အထည်ဖော်ဖို့နဲ့
-`IrohaSwift/Tests/IrohaSwiftTests` စမ်းသပ်သုံးစွဲမှု နမူနာများအတွက်
-အရင်းအမြစ် ပြင်ဆင်ခြင်း။
+အများပြည်သူ အကောင်အထည်ဖော်ဖို့ `IrohaSwift/Sources/IrohaSwift` ကိုသုံးပြီး တူညီတဲ့ အရင်းအမြစ် ပြင်ဆင်မှုကနေ စမ်းသပ်ထားတဲ့ အသုံးပြုမှု နမူနာတွေအတွက်လည်း `IrohaSwift/Tests/IrohaSwiftTests` ကို သုံးပါ။
 
 ## အရင်းအမြစ် ကိုးကားချက်များ {#source-references}
 

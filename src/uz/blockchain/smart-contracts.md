@@ -8,75 +8,53 @@ translation_engine: nllb-200-ct2
 
 # Aqlli shartnomalar {#smart-contracts}
 
-Iroha operatsiyalarni amalga oshirish `Executable` Faydali yuklar. Hozirgi ma'lumot modeli
-qo'llab-quvvatlaydi:
+Iroha tranzaksiyalari `Executable` foydali yuklarni amalga oshiradi. Hozirgi ma'lumot modeli quyidagilarni qo'llab-quvvatlaydi:
 
-- `Executable::Instructions`: to'g'ri tartibdagi Iroha Maxsus ko'rsatmalar
-- `Executable::ContractCall`: ishga tushirilgan shartnomaga qo'shimcha ma'lumotnoma chaqiriq
-  misollar
-- `Executable::Ivm`: Iroha VM Byte kodlari
-- `Executable::IvmProved`: Iroha VM oldindan hisoblab chiqilgan ko'rsatma bilan bytecode
-  O'rnatish va isbot majburiyatlari
+- `Executable::Instructions`: Iroha maxsus yo'l-yo'riqlarining tartiblangan to'plami.
+- `Executable::ContractCall`: ishga tushirilgan shartnoma instansiyasiga qo'shimcha ma'lumotnoma chaqirichi
+- `Executable::Ivm`: Iroha VM bytekod
+- `Executable::IvmProved`: Iroha VM bayt kodi oldindan hisoblangan ko'rsatma qoplamasi va isbot majburiyatlari bilan
 
-Kotodama bo ' lmoqda Iroha yuqori darajadagi aqlli shartnoma tili. `.ko` manba fayli
-deterministik to ' plami IVM konvensional ravishda byte kod sifatida saqlanadi `.to`
-ishga tushirish uchun artefakt. Kotodama maqsadlar IVM; U mustaqil emas . RISC-V
-yoki WebAssembly maqsad.
+Kotodama - bu Iroha ning yuqori darajadagi aqlli shartnoma tili. `.ko` manba fayli deterministik IVM bayt kodiga yig'iladi, an'anaviy ravishda ishga tushirish uchun `.to` artefakt sifatida saqlanadi. Kotodama maqsadlari IVM; u o'z-o'zi RISC-V yoki WebAssembly maqsad emas.
 
-Birinchi nashr faqat qo'llab-quvvatlaydi ABI 1. Syscall va ko'rsatkich ABI
-siyosat shartnoma qabul qilish va bajarilishi bilan shartsiz ravishda amalga oshiriladi;
-ishga tushirish vaqti moslashuvchanligi o'zgartirilmaydi.
+Birinchi nashr faqat ABI versiyasini qo'llab-quvvatlaydi 1. Syscall va pointer-ABI siyosati shartnoma qabul qilinishi va bajarilishi bilan shartsiz amalga oshiriladi; ish vaqti moslashuvchanligi o'zgarishi mavjud emas.
 
 ## Aqlli shartnomalardan qachon foydalanish kerak {#when-to-use-smart-contracts}
 
-Transaksiyani bevosita ifodalash mumkin bo'lganda odatdagi ko'rsatmalardan foydalaning:
+Transaksiyani to'g'ridan-to'g'ri ifodalash mumkin bo'lganda odatdagi ko'rsatmalardan foydalaning:
 
 - ro'yxatdan o'tkazish yoki uni bekor qilish ob'ektlari
-- Minot, yoqish yoki o'tkazish aktivlari
+- Minta, yonish yoki o'tkazish aktivlari
 - Metadatalarni yangilash
 - ruxsatnomalarni berish yoki bekor qilish
-- qoʻzgʻatish
-- zanjirdagi parametrlarni o'rnatish
+- qo'zg ' otish
+- zanjirda o'rnatilgan parametrlar
 
-Transaksiya uchun oʻrnatilgan logika kerak boʻlganda aqlli kontraktdan foydalaning
-o'rnatilganda yoki
-shartnoma ko'rib chiqilishi kerak.
+Transaksiya uchun o'rnatilgan logika kerak bo'lganda, uni statik yo'l-yo'riqlar ketma-ketligi sifatida ifodalash qiyin bo'lganida yoki ishga tushirilgan kontrakt instansiyasini ma'lumotnoma orqali chaqirish kerak bo'lsa aqlli shartnoma ishlatish.
 
-## IVM Ishlab chiqarish qobiliyatlari {#ivm-executables}
+## IVM Amalga oshiriladigan qismlar {#ivm-executables}
 
-`Executable::Ivm` xom ashyo bilan ta'minlanadi IVM Byte kod. Uzumlar bu byte kodni ichki qismida amalga oshiradi
-zanjir uchun o'rnatilgan ishga tushirish vaqti cheklovlari.
-aniqlovchi; shartnomalar tranzaksiyalarni amalga oshirishning bir qismi bo'lib, shuning uchun
-kelishuvi.
+`Executable::Ivm` xom IVM baytkodini o'z ichiga oladi. Nukllar bu baytkodni zanjir uchun moslashtirilgan ishga tushirish vaqti cheklovlari ichida bajaradi. Baytkodni kichik va deterministik saqlang; shartnomalar bitimlarni amalga oshirishning bir qismi bo'lib, shuning uchun konsensusga ta'sir qiladi.
 
-`Executable::IvmProved` o'z ichiga quyidagilarni oladi:
+`Executable::IvmProved` issiqlik o'tkazgichlari uchun mo'ljallangan.
 
-- IVM Byte kodlari
-- deterministik ko'rsatma qoplamasi
-- ijro-tashkilotlar majburiyati
+- IVM byte kodi
+- deterministik yo'l-yo'riqlarni qoplash
+- bajarishga doir tadbirlar majburiyati
 - gaz siyosati majburiyati
 
-Dasturiy ta'minot to'plamini bajarilgan byte kodga bog'laydi.
-siyosat, tasdiqlovchilar isbot va takrorlash ijro qo'shimcha sifatida tekshirish mumkin
-xavfsizlik tekshiruvi.
+Dasturi o'rnatilgan bytekod bilan qoplamani bog'laydi. Pipeline siyosatiga qarab, validatorlar dalilni tasdiqlashlari va uni qo'shimcha xavfsizlik tekshiruvi sifatida takrorlashlari mumkin.
 
-## Ishlab chiqarilgan kontrakt qo'ng'iroqlari {#deployed-contract-calls}
+## Ishlab chiqarilgan shartnoma qo'ng'iroqlari {#deployed-contract-calls}
 
-`Executable::ContractCall` manzil orqali ishga tushirilgan shartnoma ko'rinishini chaqiradi.
-Ushbu kodni kontrakt kodlari alohida qayd etilganida va bitimlar amalga oshirilayotganda ishlating
-Bayt kodini har safar olib yurishning o'rniga uni ma'lumotnoma orqali chaqiring.
+`Executable::ContractCall` jo'natilgan kontrakt ko'rinishini manzil orqali chaqiradi. Agar shartnoma kodi alohida ro'yxatdan o'tkazilgan bo'lsa va bitimlar bayt kodini har safar olib yurishning o'rniga, uni ma'lumotnoma asosida chaqirishlari kerak bo'lsa, buni ishlating.
 
-## Operatsiya yo'l-yo'riqlari {#operational-guidance}
+## Operativ yo'l-yo'riq {#operational-guidance}
 
-- Shartnomalarni deterministik saqlang.
-  devor soatlari vaqti, host fayl tizimining holati, tarmoq qo'ng'iroqlari yoki boshqa tengdosh lokal
-  kirish.
-- Fayl yuklarini kompak saqlang. Katta baytkod tranzaksiya hajmini va blokni oshiradi
-  tarqatish xarajatlari.
-- Oddiy kitob o'zgarishlari uchun yozilgan ko'rsatmalarni afzal ko'rish.
-  audit va bajarilishi arzonroq.
-- Shartnomalarni yangilash va ro'yxatdan o'tkazish huquqlarini yuqori xavf bilan ta'minlash
-  operatsion nazoratlar.
+- Shartnomalarni deterministik saqlang. Shartnoma xatti-harakati mahalliy devor soat vaqti, uy egasi fayl tizimining holati, tarmoq qo'ng'iroqlari yoki boshqa tengdosh lokal ma'lumotlarga bog'liq bo'lishi kerak emas.
+- Yordamchi yuklarni kompak saqlang. Katta byte kodlar tranzaksiya hajmini va blok tarqatish xarajatlarini oshiradi.
+- Oddiy daftar oʻzgarishlari uchun yozib qoʻyilgan koʻrsatmalarni afzal koʻrish. Ularni audit qilish osonroq va amalga oshirish arzonroq.
+- Shartnomalarni yangilash va ro'yxatga olish huquqlarini yuqori xavfli operatsion nazoratlar sifatida ko'rib chiqish.
 
 Shuningdek qarang:
 

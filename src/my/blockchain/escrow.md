@@ -8,40 +8,27 @@ translation_engine: nllb-200-ct2
 
 # Native Asset Escrow {#native-asset-escrow}
 
-Native escrow ဆိုတာ ကိန်းဂဏန်းအရင်းအမြစ်တွေအတွက် စာရင်းအင်းမှ စီမံခန့်ခွဲထားတဲ့ ထိန်းသိမ်းမှု ယန္တရားတစ်ခုပါ။
-Application ကိုပိုင်ဆိုင်တဲ့ Account တစ်ခုကို Assets ပို့တာအစား
-ဒီစာရင်းကို ကာကွယ်ဖို့ လျှောက်လွှာကုဒ်၊ အချုပ်အခြာ ISIs တန်ဖိုးကို a သို့ပြောင်း
-Deterministic protocol custody account နဲ့ escrow lifecycle ကို မှတ်တမ်းတင်ပေးပါ
-ကမ္ဘာ့နိုင်ငံတော်။
+Native escrow ဆိုသည်မှာ ကိန်းဂဏန်းဆိုင်ရာ အရင်းအမြစ်များအတွက် စာရင်းအင်းမှ စီမံခန့်ခွဲထားသော ထိန်းသိမ်းရေး ယန္တရားတစ်ခု ဖြစ်သည်။ ထိုအရင်းအမြစ်များကို application ကိုပိုင်ဆိုင်သည့် အကောင့်သို့ ပို့ပေးခြင်းနှင့် အဲဒီ အကောင့်ကို ကာကွယ်ရန် application code အားကိုးခြင်းအစား escrow ISIs တန်ဖိုးကို deterministic protocol custody account ထဲသို့ ရွှေ့ပြီး world state မှာ escrow lifecycle ကို မှတ်တမ်းတင်ပေးပါ။
 
-စျေးကွက်ချေမှုတ်ခြင်းအတွက် Native escrow ကိုသုံးပါ Aitai ပုံစံ Off-chain ငွေပေးချေမှု
-Coordination, milestone locks နဲ့ Shielded escrow workflows တွေကို လိုအပ်တဲ့
-လက်မှတ်ကြီးနဲ့ မြင်ရတဲ့ ဘဝပတ်ဝန်းကျင် အခြေအနေ။
+စျေးကွက်ပေးဆပ်မှုအတွက် native escrow ကိုသုံးပါ။ Aitai ပုံစံ Off-chain ပေးဆပ်ရေး ညှိနှိုင်းမှု၊ milestone lock တွေနဲ့ ledger မြင်နိုင်တဲ့ lifecycle အခြေအနေလိုအပ်တဲ့ shielded escrow workflows များ။
 
-## စိတ်ကူးများ {#concepts}
+## အယူအဆများ {#concepts}
 
-| အယူအဆ | သရုပ်ဖော်ချက် |
+|အယူအဆ|သရုပ်ဖော်ချက် |
 | --- | --- |
-| `EscrowId` | ဖုန်းခေါ်သူက ရွေးချယ်ထားတဲ့ ID ကို hash တစ်ခုကို ဖုံးအုပ်ထားပြီး ပွင့်လင်းမြင်သာပြီး အမည်မသိ escrow တွေကြားမှာ ထူးခြားဖို့လိုပါတယ်။ |
-| `AssetEscrowRecord` | ပွင့်လင်းမြင်သာတဲ့ ကိန်းဂဏန်းအရ အရင်းအမြစ် အလှူခံ (သို့) Lock မှတ်တမ်း။ |
-| `AnonymousAssetEscrowRecord` | အငြင်းပွားမှုတွေ၊ ကတိပေးချက်တွေနဲ့ အထောက်အထား attachments တွေနဲ့ ထောက်ခံထားတဲ့ ကာကွယ်ထားတဲ့ escrow မှတ်တမ်း။ |
-| စောင့်ရှောက်မှုစာရင်း | ချိတ်ဆက်မှုမှ ရယူသော သတ်မှတ်ချက်ဆိုင်ရာ ပရိုတိုကောလစာ ID, အလှူခံ ID, အရင်းအမြစ် သတ်မှတ်ချက် |
-| အထောက်အထား hashes | ငွေကြေးခွန်၊ တရားစီရင်ချက်များ၊ စာတိုများ၊ သိုလှောင်ရေး မှတ်တမ်းများ သို့မဟုတ် အခြားသော သံစဉ်ပြင်ပ အထောက်အထားများကို သိမ်းဆည်းထားခြင်း။ သက်သေပြမှုအပြည့်အဝသည် အတည်ပြုမှတ်တမ်းတွင် သိမ်းဆည်းခြင်းမရှိပါ။ |
+|`EscrowId` |ဖုန်းခေါ်သူက ရွေးချယ်ထားတဲ့ ID ကို hash တစ်ခုကို ဖုံးအုပ်ထားပြီး ပွင့်လင်းမြင်သာပြီး အမည်မသိ escrow တွေကြားမှာ ထူးခြားဖို့လိုပါတယ်။ |
+|`AssetEscrowRecord` |ပွင့်လင်းမြင်သာတဲ့ ကိန်းဂဏန်းအရ အရင်းအမြစ် ဂိုဏ်း (သို့) Lock မှတ်တမ်း။ |
+|`AnonymousAssetEscrowRecord` |အငြင်းပွားမှုတွေ၊ ကတိပေးချက်တွေနဲ့ အထောက်အထား attachments တွေနဲ့ထောက်ပံ့ထားတဲ့ Shielded escrow မှတ်တမ်းပါ။ |
+|စောင့်ရှောက်မှုစာရင်း |ကွင်းဆက် ID မှ ရယူထားသော Deterministic Protocol account၊ escrow ID နှင့် အရင်းအမြစ်အဓိပ္ပါယ်ဖွင့်ဆိုချက်။ |
+|အထောက်အထားဟာ ဟက်ရှ်ပါ။|ငွေကြေးဖိုင်များ၊ တရားစီရင်ချက်များ၊ သတင်းအချက်အလက်များ၊ သိုလှောင်ရေး မှတ်တမ်းများ သို့မဟုတ် အခြားအထောက်အထားများကို ချိတ်ဆက်ခြင်းမရှိပါ။ အထောက်အထားများ၏ အသုံးဝင်မှုကိုယ်၌သည် အာမခံမှတ်တမ်းတွင် သိမ်းဆည်းထားခြင်း မရှိပါ။ |
 
-ပွင့်လင်းမြင်သာတဲ့ မှတ်တမ်းတွေမှာ ရောင်းသူ၊ ရွေးချယ်စရာ ဝယ်သူ၊ အရင်းအမြစ် သတ်မှတ်ချက်၊
-စုစုပေါင်းငွေကြေး၊ ထိန်းသိမ်းမှုစာရင်း၊ သက်တမ်းပတ်ဝန်းကျင်အခြေအနေ၊ ပြုမူပုံအမျိုးအစား၊ ကျန်ရှိနေဆဲ
-အရေအတွက်၊ ရွေးချယ်ခွင့်ရခွင့်ရခွင့်၊ ရွေးချယ်စရာ သက်တမ်းကုန်ဆုံးချိန်စိပ်၊ အထောက်အထား
-hashes, timestamps နဲ့ optional resolution အသေးစိတ်တွေပေါ့။
+ပွင့်လင်းမြင်သာတဲ့ မှတ်တမ်းတွေမှာ ရောင်းသူ၊ ရွေးချယ်စရာ ဝယ်သူ၊ အရင်းအမြစ် သတ်မှတ်ချက်၊ စုစုပေါင်းပမာဏ၊ ထိန်းသိမ်းမှု အကောင့်၊ သက်တမ်း စက်ဝန်းအခြေအနေ၊ ပြုမူပုံအမျိုးအစား၊ ကျန်တဲ့ပမာဏတွေ၊ ရွေးချယ်စရာ ထုတ်ပြန်ခွင့် အာဏာ၊ ရွေးချယ်ဖွယ် ကုန်ဆုံးချိန် တံဆိပ်၊ အထောက်အထား ဟက်ရှ်များ၊ အချိန်တံဆိပ်တွေနဲ့ ရွေးချယ်စရာ ဖြေရှင်းချက် အသေးစိတ်တွေ ပါဝင်တယ်။
 
-အချုပ်အခြာငွေများသည် အပြုသဘောကိန်းဂဏန်းအရ အရင်းအမြစ်အရေအတွက်များဖြစ်ရမည်ဖြစ်ပြီး
-အရင်းအမြစ် သတ်မှတ်ချက်ရဲ့ ကိန်းဂဏန်းသတ်မှတ်ချက်ပါ။
-အထွေထွေအရင်းအမြစ်လွှဲပြောင်းမှုများသည် ထိန်းသိမ်းရေးအကောင့်ကို မဖြည့်စွက်နိုင်ပါ။
-လမ်းကြောင်းတွေဟာ ကောက်ခံမှုပါ။ ISIs အောက်မှာဖော်ပြထားတာပါ။
+Escrow ပမာဏတွေဟာ အပြုသဘော ကိန်းဂဏန်း အရင်းအမြစ်အရေအတွက်တွေ ဖြစ်ပြီး asset အဓိပ္ပါယ်ဖွင့်ဆိုချက်ရဲ့ ကိန်း ဂဏန်း သတ်မှတ်ချက်နဲ့ ကိုက်ညီဖို့လိုပါတယ်။ escrow (သို့) lock က တက်ကြွနေတုန်းမှာ ယေဘုယျအရင်းအမြစ် လွှဲပြောင်းမှုက custody account ကို မဖြုတ်နိုင်ပါဘူး။ custody exit paths တွေက အောက်မှာဖော်ပြထားတဲ့ escrow ISIs ဖြစ်ပါတယ်။
 
-## စျေးကွက် အိတ်ချေးငွေ {#marketplace-escrow}
+## စျေးကွက် Escrow {#marketplace-escrow}
 
-Marketplace escrow သည် ချိတ်ဆက်မှုအတွင်းရှိ အရင်းအမြစ်များကို ချိတ်ဆက်ခြင်းနှင့် ချိတ်ဆက်ချက်အပြင်သို့ ပြန်လည်ထုတ်ပြန်ခြင်းတို့ကို ညှိနှိုင်းပေးသည်။
-ငွေပေးချေမှု (သို့) ပို့ဆောင်ရေး အလုပ်ဖြစ်စဉ်။
+Marketplace escrow ဟာ ချိတ်ဆက်ထားတဲ့ အရင်းအမြစ်တွေကို ချိတ်ဆက်တဲ့ ချိတ်ဆက်မှုထဲက ငွေပေးချေမှု (သို့) ပို့ဆောင်ရေး လုပ်ငန်းခွင်နဲ့ ညှိနှိုင်းတယ်။
 
 ```mermaid
 stateDiagram-v2
@@ -56,24 +43,21 @@ stateDiagram-v2
     Disputed --> Resolved: ResolveEscrowDispute
 ```
 
-| ISI | ဘယ်သူက တင်ပြလဲ။ | သက်ရောက်မှု |
+|ISI |ဘယ်သူက တင်ပြတာလဲ။|သက်ရောက်မှု |
 | --- | --- | --- |
-| `OpenAssetEscrow` | ရောင်းသူ | ရောင်းသူရဲ့ ကိန်းဂဏန်းအရင်းအမြစ်ကို ပရိုတိုကောလစ် ထိန်းသိမ်းမှုမှာ ပိတ်ထားပြီး `Open` စျေးကွက်မှတ်တမ်း။ |
-| `AcceptAssetEscrow` | ဝယ်သူ | ဝယ်သူကို မှတ်တမ်းတင်ပြီး ရွေ့ရှားမှု `Open` သို့ `Accepted`. ရောင်းသူဟာ သူ့ကိုယ်ပိုင် ဂိုဏ်းကို လက်မခံနိုင်ဘူး။ |
-| `MarkEscrowPaymentSent` | လက်ခံရရှိသူ | ရွေ့ရှားမှု `Accepted` သို့ `PaymentSent` ဝယ်သူက ကွင်းဆက်အပြင်မှာ ငွေပေးချေမှုကို ပို့ပြီးနောက်ပါ။ |
-| `ReleaseAssetEscrow` | ရောင်းသူ | ရွေ့ရှားမှု `PaymentSent` သို့ `Released` ငွေအပြည့်ကို ဝယ်သူဆီ လွှဲပြောင်းပေးတယ်။ |
-| `CancelAssetEscrow` | ရောင်းသူ | ရွေ့ရှားမှု `Open` ဒါမှမဟုတ် `Accepted` သို့ `Cancelled` ငွေပေးချေမှု မှတ်သားမပြုမီမှာ ရောင်းသူကို ပြန်လည်ပေးချေပါတယ်။ |
-| `OpenEscrowDispute` | ရောင်းသူ (သို့) လက်ခံဝယ်သူ | ရွေ့ရှားမှု `Accepted` ဒါမှမဟုတ် `PaymentSent` သို့ `Disputed` ပြီးတော့ သက်သေခံ ဟက်ရှ်တွေကို ထည့်ပေးတယ်။ |
-| `ResolveEscrowDispute` | အကောင့်နှင့် `CanResolveEscrowDispute` | ရွေ့ရှားမှု `Disputed` သို့ `Resolved` ဝယ်သူနဲ့ ရောင်းသူကြားမှာ ပမာဏကို ခွဲပေးတယ်။ |
+|`OpenAssetEscrow` |ရောင်းသူ |ရောင်းသူရဲ့ ကိန်းဂဏန်းအရင်းအမြစ်ကို ပရိုတိုကောလစ် ထိန်းသိမ်းမှုမှာ ချိတ်ထားပြီး `Open` စျေးကွက်မှတ်တမ်းတစ်ခု ဖန်တီးတယ်။ |
+|`AcceptAssetEscrow` |ဝယ်သူ |ဝယ်သူကို မှတ်တမ်းတင်ပြီး `Open` ကို `Accepted` သို့ ရွှေ့ပြောင်းတယ်။ ရောင်းသူက သူ့ကိုယ်ပိုင် အာမခံကို လက်ခံလို့မရဘူး။ |
+|`MarkEscrowPaymentSent` |လက်ခံထားရသူ |`Accepted` ကို `PaymentSent` သို့ပြောင်းသည် ဝယ်ယူသူက ကွင်းဆက်ပြင်ပ ငွေပေးချေမှုပို့ပြီးနောက်။ |
+|`ReleaseAssetEscrow` |ရောင်းသူ |`PaymentSent` ကို `Released` သို့ ရွှေ့ပေးပြီး အပြည့်အဝ ကမ်းလှမ်းထားသော ပမာဏကို ဝယ်ယူသူအား လွှဲပြောင်းပေးသည်။ |
+|`CancelAssetEscrow` |ရောင်းသူ |`Open` (သို့) `Accepted` ကို `Cancelled` သို့ပြောင်းပြီး ငွေပေးချေမှု အမှတ်တံဆိပ်မပါမီ ရောင်းသူအား ပြန်လည်ပေးသွင်းသည်။ |
+|`OpenEscrowDispute` |ရောင်းသူ (သို့) လက်ခံဝယ်ယူသူ |`Accepted` (သို့) `PaymentSent` ကို `Disputed` သို့ပြောင်းပြီး သက်သေခံ hash တွေကိုထည့်သွင်းတယ်။|
+|`ResolveEscrowDispute` |`CanResolveEscrowDispute` နှင့်စာရင်း|`Disputed` ကို `Resolved` သို့ပြောင်းပြီး ဝယ်သူနဲ့ရောင်းသူကြားမှာ ပမာဏကိုခွဲတယ်။ |
 
-အငြင်းပွားမှုဖြေရှင်းရေးအတွက် ငွေကြေးပမာဏဟာ အပျက်သဘောမဟုတ်ဘဲ
-`buyer_amount + seller_amount` ဂိုဏ်းအခွန်ငွေနဲ့ညီရမယ်။ သုညတန်ဖိုး
-ခြေထောက်တွေ ခွင့်ပြုထားပေမဲ့ အပိုင်းတစ်ခုလုံးက ပိတ်ထားတဲ့ ဟန်ချက်ညီမှုကို ထည့်တွက်ဖို့လိုပါတယ်။
+အငြင်းပွားမှုဖြေရှင်းရေးအတွက် ငွေကြေးပမာဏဟာ အပျက်သဘောမဟုတ်ဘဲ `buyer_amount + seller_amount` ကတော့ ဂိုဒေါင်ငွေနဲ့ ညီမျှရမယ်။ သုညတန်ဖိုးရှိတဲ့ ခြေထောက်တွေကို ခွင့်ပြုထားပေမဲ့ ပမာဏတစ်ခုလုံးက ပိတ်ထားတဲ့ ဆန်လန်ကို ထည့်တွက်ဖို့ လိုတယ်။
 
 ### Rust ဥပမာ {#rust-example}
 
-ဒီဥပမာက ရောင်းသူနဲ့ ဝယ်သူရဲ့ အကောင့်တွေ ရှိပြီးသား ဖြစ်တယ်လို့ ယူဆတယ်။
-အဓိပ္ပါယ်ဖွင့်ဆိုချက်က ကိန်းဂဏန်းအဖြစ် မှတ်ပုံတင်ထားပြီး ရောင်းသူမှာ လုံလောက်တဲ့ ဟန်ချက်ညီမှုရှိတယ်။
+ဒီဥပမာက ရောင်းသူနဲ့ ဝယ်သူရဲ့ အကောင့်တွေ ရှိပြီးသား၊ အရင်းအမြစ် အဓိပ္ပါယ်ဖွင့်ဆိုချက်ကို ကိန်းဂဏန်းအဖြစ် မှတ်ပုံတင်ထားပြီး ရောင်းသူမှာ လုံလောက်တဲ့ ဟန်ချက်ရှိတယ်လို့ ယူဆတယ်။
 
 ```rust
 use iroha::{
@@ -114,22 +98,18 @@ fn release_marketplace_escrow(
 }
 ```
 
-## ယေဘုယျ အရင်းအမြစ် Lock များ {#generic-asset-locks}
+## ယေဘုယျအရင်းအမြစ် Lock များ {#generic-asset-locks}
 
-အရင်းအမြစ် Lock တွေမှာ custody record အမျိုးအစား တစ်ခုတည်းကို သုံးပေမဲ့ ဝယ်သူနဲ့ ရောင်းသူ မဟုတ်ဘူး။
-ကမ်းလှမ်းချက်များ။ ၎င်းတို့က ရည်ရွယ်ချက်စာရင်းအတွက် ငွေကြေးကို ပိတ်ထားပြီး ရွေးချယ်မှုအရ
-ရင်းနှီးမြှုပ်နှံမှု ထုတ်ယူရန် သီးခြားခွင့်ပြုချက်။
+Asset locks တွေမှာ custody record အမျိုးအစားတစ်ခုတည်းကိုသုံးပေမဲ့ ဝယ်သူနဲ့ရောင်းသူ ကမ်းလှမ်းမှုမဟုတ်ပါဘူး။ ဒါတွေဟာ ရည်ရွယ်ချက်စာရင်းအတွက် ငွေကြေးကိုပိတ်ထားပြီး ရွေးချယ်စရာအနေနဲ့ ငွေကြေးထုတ်ယူဖို့ သီးခြားလွှတ်ပေးတဲ့ အာဏာပိုင်တစ် ဦး ကိုလိုအပ်တယ်။
 
-| ISI | ဘယ်သူက တင်ပြလဲ။ | သက်ရောက်မှု |
+|ISI |ဘယ်သူက တင်ပြတာလဲ။|သက်ရောက်မှု |
 | --- | --- | --- |
-| `OpenAssetLock` | အရင်းအမြစ်စာရင်း | အပြုသဘောဆောင်တဲ့ ပမာဏကို Lock လုပ်ပြီး မှတ်တမ်းဝယ်သူအဖြစ် ရည်ရွယ်ချက်မှတ်တမ်းတင်ပြီး အခြေအနေကို `Locked`. |
-| `DrawdownAssetLock` | လွတ်မြောက်ခွင့်ပြုချက် (သို့) ဘယ်လွတ်မြောက်ခွင့်ပြုချက်ကိုမှ သတ်မှတ်မထားသည့် နေရာ | ကျန်တဲ့ ထိန်းသိမ်းမှုကို တစ်စိတ်တစ်ပိုင်း (သို့) အားလုံးကို ရည်မှန်းချက်ဆီ လွှဲပြောင်းပေးတယ်။ |
-| `CancelAssetLock` | Lock opener | တက်ကြွတဲ့ Lock ကို ဖျက်သိမ်းပြီး ကျန်တဲ့ ပမာဏကို Opener ကို ပြန်ပေးပါတယ်။ |
-| `ExpireAssetLock` | နောက်ဆုံးအချိန်အကြာတွင် ငွေပေးချေမှု အာဏာပိုင်များ | Lock ကို expire လုပ်ပါ `expires_at_ms` အရင်က လုပ်ခဲ့ဖူးပြီး ကျန်တဲ့ ပမာဏကို ဖွင့်သူဆီ ပြန်ပေးတယ်။ |
+|`OpenAssetLock` |အရင်းအမြစ်စာရင်း|အပြုသဘောဆောင်တဲ့ ပမာဏကို ပိတ်ထားပြီး မှတ်တမ်းဝယ်သူအဖြစ် ရည်ရွယ်ချက်မှတ်တမ်းတင်ထားပြီး အခြေအနေကို `Locked` သို့ သတ်မှတ်တယ်။ |
+|`DrawdownAssetLock` |လွတ်မြောက်ခွင့် အာဏာ (သို့) ဘယ်နေရာမှ လွတ်မြောက်ခွင့်အာဏာ မသတ်မှတ်ပါက |ကျန်ရှိနေသေးတဲ့ ထိန်းသိမ်းမှုကို တစ်စိတ်တစ်ပိုင်း (သို့) အပြည့်အဝ ရည်မှန်းချက်နေရာကို လွှဲပြောင်းတယ်။ |
+|`CancelAssetLock` |Lock opener ကို|Active lock ကို ဖျက်ပြီး ကျန်တဲ့ပမာဏကို ဖွင့်သူဆီ ပြန်ပေးပါတယ်။ |
+|`ExpireAssetLock` |နောက်ဆုံးအချိန်အပြီးမှာ ငွေပေးချေမှု အာဏာပိုင်တိုင်း |`expires_at_ms` နဲ့ ပိတ်ထားပြီးနောက် ကျန်တဲ့ပမာဏကို ဖွင့်ပေးသူဆီ ပြန်ပို့တယ်။ |
 
-`DrawdownAssetLock` မှတ်တမ်းကို သိမ်းထားတယ်။ `Locked` တစ်စိတ်တစ်ပိုင်း ကျန်နေတုန်းပါ။
-ကျန်တဲ့ ပမာဏ သုညကို ရောက်တဲ့အခါ အခြေအနေဟာ `DrawnDown` နှင့်
-မှတ်တမ်းက ပိတ်ထားတယ်။
+`DrawdownAssetLock` သည် `Locked` တွင် မှတ်တမ်းကို ထိန်းသိမ်းထားပြီး တစ်ချို့ပမာဏများ ကျန်ရှိနေသည်။ ကျန်သောပမာဏက သုညသို့ရောက်တဲ့အခါ အခြေအနေသည် `DrawnDown` ဖြစ်လာပြီး မှတ်တမ်းကို ပိတ်ထားသည်။
 
 ```rust
 use iroha::{
@@ -194,18 +174,11 @@ fn drawdown_and_close_asset_locks(
 }
 ```
 
-Python လက်ရှိတွင် အထွေထွေ Lock များအတွက် အဆင့်မြင့် အကူအညီများကို ထုတ်လွှင့်နေသည်
-`open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, နှင့်
-`expire_asset_lock`. စျေးကွက်နှင့် အမည်မသိ ဂိုဏ်းအထောက်အပံ့အတွက် Python, အသုံးပြုမှု
-တရားဝင် `InstructionBox` JSON အပြင် SDK ဒါက JSON escape hatch သို့မဟုတ် submit
-တစ်ဆင့် SDK ပထမတန်းစား ဂိုဏ်းတည်ဆောက်သူတွေကို ဖေါ်ထုတ်ပေးတယ်။
+Python လက်ရှိတွင် အထွေထွေ Lock များအတွက် အဆင့်မြင့် အကူအညီပေးသူများကို ပိတ်ထားသည် `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, နှင့် `expire_asset_lock`. စျေးကွက်နှင့် အမည်မသိ အာမခံများအတွက် Python, အသုံးပြုမှု ကန်နီကလစ် `InstructionBox` JSON တစ်လျှောက်လုံး SDK ဒါက JSON escape hatch (သို့မဟုတ်) ပြိုကျမှုတစ်ခုမှတစ်ဆင့် submit SDK ပထမတန်းစား ဂိုဏ်းတည်ဆောက်သူတွေကို ပွင့်လင်းမြင်သာစေပါတယ်။
 
 ## အငြင်းပွားမှု {#disputes}
 
-စျေးကွက်မှာ အချုပ်အခြာခံထားရသူဟာ `Accepted` ဒါမှမဟုတ် `PaymentSent`.
-မှတ်တမ်းတင်ရောင်းသူ (သို့) ဝယ်သူသာ အငြင်းပွားမှုကိုဖွင့်နိုင်သည်။
-`CanResolveEscrowDispute`, Resolver account ကို တိုက်ရိုက်ပေးချေခြင်း
-ဒါမှမဟုတ် အခန်းကဏ္ဍတစ်ခုကနေ အမွေခံရတယ်။
+`Accepted` သို့မဟုတ် `PaymentSent` မှ စျေးကွက်အမှတ်တံဆိပ်တစ်ခုက ပဋိပက္ခကိုဝင်ရောက်နိုင်သည်။ မှတ်ပုံတင်ရောင်းသူ (သို့) ဝယ်သူသာပဋိပက္ခဖွင့်နိုင်သည်။ ဖြေရှင်းရန်အတွက် `CanResolveEscrowDispute` ကိုလိုအပ်သည်၊ အဖြေရှာသူစာရင်းသို့ တိုက်ရိုက်ပေးအပ်ထားသည် သို့မဟုတ် အခန်းကဏ္ဍမှတစ်ဆင့် အမွေခံရသည်။
 
 ```rust
 use iroha::{
@@ -255,26 +228,19 @@ fn resolve_disputed_escrow(
 
 ## အမည်မသိ Escrow {#anonymous-escrow}
 
-Anonymous escrow သည် စျေးကွက်သက်တမ်းကာလတစ်ခုတည်းကိုအသုံးပြုသည်
-ပွင့်လင်းမြင်သာတဲ့ မှတ်တမ်းက အရောင်းသမားကို သိုလှောင်နေဆဲပါ။
-ဝယ်သူ၊ အခြေအနေ၊ အထောက်အထား hashes များ၊ အချိန်တံဆိပ်များနှင့် သက်သေပြမှု ချိတ်ဆက်ထားသော လှုပ်ရှားမှုများ
-မှတ်ပုံတင်များ: ပိတ်ထားသော ငွေကြေးစက္ကူအတွင်းရှိ ငွေကြေးငွေနှင့် လက်ခံသူများကို
-အမိန့်ချမှတ်ချက်တွေ၊ ဖျက်သိမ်းချက်တွေနဲ့ အထောက်အထား attachments တွေပေါ့။
+Anonymous escrow သည်စျေးကွက်သက်တမ်းကာလတစ်ခုတည်းကိုအသုံးပြုသည်၊ သို့သော်ထောက်ပံ့မှုနှင့်ပိတ်သိမ်းခြင်းအရင်းအမြစ်လှုပ်ရှားမှုများကိုကာကွယ်ထားသည်။ အများပိုင်မှတ်တမ်းတွင်ရောင်းသူ၊ဝယ်သူ၊အခြေအနေ၊ သက်သေခံ hashes များ၊အချိန်တံဆိပ်များနှင့်အတည်ပြုချက်ချိတ်ဆက်ထားသော လှုပ်ရှားမှုမှတ်တမ်းများကို သိုလှောင်နေဆဲဖြစ်သည်။ ပိတ်ထားသော ငွေစက္ကူများအတွင်းရှိ ငွေကြေးငွေနှင့် လက်ခံရရှိသူများကို ကတိပေးချက်များ၊ အငြင်းပွားမှု မှတ်တမ်းများ နှင့် အထောက်အထား ချိတ်ဆက်ချက်များဖြင့် ကိုယ်စားပြုထားသည်။
 
-| ပွင့်လင်းမြင်သာမှု ISI | အမည်မသိ ISI |
+|ပွင့်လင်းမြင်သာသော ISI |အမည်မသိ ISI |
 | --- | --- |
-| `OpenAssetEscrow` | `OpenAnonymousAssetEscrow` |
-| `AcceptAssetEscrow` | `AcceptAnonymousAssetEscrow` |
-| `MarkEscrowPaymentSent` | `MarkAnonymousEscrowPaymentSent` |
-| `ReleaseAssetEscrow` | `ReleaseAnonymousAssetEscrow` |
-| `CancelAssetEscrow` | `CancelAnonymousAssetEscrow` |
-| `OpenEscrowDispute` | `OpenAnonymousEscrowDispute` |
-| `ResolveEscrowDispute` | `ResolveAnonymousEscrowDispute` |
+|`OpenAssetEscrow` |`OpenAnonymousAssetEscrow` |
+|`AcceptAssetEscrow` |`AcceptAnonymousAssetEscrow` |
+|`MarkEscrowPaymentSent` |`MarkAnonymousEscrowPaymentSent` |
+|`ReleaseAssetEscrow` |`ReleaseAnonymousAssetEscrow` |
+|`CancelAssetEscrow` |`CancelAnonymousAssetEscrow` |
+|`OpenEscrowDispute` |`OpenAnonymousEscrowDispute` |
+|`ResolveEscrowDispute` |`ResolveAnonymousEscrowDispute` |
 
-ငွေကြေးအိတ် (သို့) စပ်ပြ ကိရိယာများသည် သက်သေခံပမာဏနှင့် အများပြည်သူဝင်ငွေများကို တည်ဆောက်ရမည်ဖြစ်သည်။
-ပွင့်လင်းခြင်းသည် အချုပ်အခြာတစ်ခုတည်းကို ဖန်တီးသည်။ လွတ်မြောက်ခြင်း၊ ဖျက်သိမ်းခြင်းနှင့် အမည်မသိ
-အငြင်းပွားမှုဖြေရှင်းရေးအတွက် ငွေကြေးထောက်ခံစာတစ်ခုတည်းကို သုံးပြီး
-ရောင်းသူ၊ ဝယ်သူ (သို့) လုပ်ဆောင်ချက်ကြောင့် လိုအပ်တဲ့ ထုတ်ကုန် ကန့်သတ်ချက်တွေကို ခွဲခြားပါ။
+Wallet သို့မဟုတ် prover tooling သည်သက်သေခံ attachment နှင့် အများပြည်သူ input များကို တည်ဆောက်ရမည်ဖြစ်သည်။ ဖွင့်ခြင်းသည် escrow commitment တစ်ခုကိုဖန်တီးသည်။ ထုတ်လွှတ်ခြင်း၊ ဖျက်သိမ်းခြင်းနှင့်မည်မသိငြင်းခုံမှုဖြေရှင်းခြင်းသည် exactly one escrow commitment ကိုသုံးပြီး လုပ်ဆောင်ချက်အရလိုအပ်သော ၀ ယ်သူ၊ရောင်းသူ (သို့မဟုတ်) ဖြန့်ဖြူးထုတ်လုပ်မှု commitments ကိုဖန်တီးရမည်။
 
 ```rust
 use iroha::{
@@ -317,34 +283,25 @@ fn open_anonymous_escrow(
 }
 ```
 
-အခြေခံကာကွယ်ထားသော ငွေကြေးပူးပေါင်းဆောင်ရွက်မှုပုံစံအတွက် ကြည့်ပါ
-[အမည်မသိ ငွေပေးချေမှု](/my/blockchain/anonymous-transactions.md).
+အခြေခံကာကွယ်ထားသော ငွေချေးမှုပုံစံအတွက် [Anonymous Transactions](/my/blockchain/anonymous-transactions.md) ကိုကြည့်ပါ။
 
 ## SDK အသုံးပြုမှု {#sdk-usage}
 
-ငွေကြေးထောက်ပံ့မှုသည် နိုင်ငံတစ်ဝှမ်းတွင် မတူညီစွာ ဖော်ပြထားသည်။ SDKs. Rust ကနောဂဗေဒ
-ရိုက်နှိပ်ထားတဲ့ ဒေတာပုံစံ။ Python လက်ရှိတွင် အရင်းအမြစ်ပိတ်ခြင်းအတွက် အထောက်အကူပြုပစ္စည်းများကို ထုတ်ဖော်ပေးနေသည်။
-JavaScript နှင့် TypeScript အသုံးပြုမှု Kotodama Host ခေါ်ဆိုမှုများကို escrow လုပ်ပါ။ Kotlin/JVM နှင့် Swift
-စျေးကွက်အတွက် အထောက်အပံ့တင်ဝန်ဆောင်မှု ဆောက်လုပ်သူတွေကို ပေးပို့ပြီး အမည်မသိ ဂိုဏ်းပေးပါ။
+ဘဏ္ဍာငွေထောက်ပံ့မှုသည် SDKs. Rust Canonical Typeed Data Model ကို သုံးပါတယ်။ Python လက်ရှိတွင် အရင်းအမြစ်ပိတ်ခြင်းအတွက် အထောက်အကူပြုပစ္စည်းများကို ထုတ်လွှင့်ပေးနေပါသည်။ JavaScript နှင့် TypeScript အသုံးပြုမှု Kotodama ဧည့်သည်ခေါ်ဆိုမှုများကို ငွေကြေးထောက်ပံ့ပေးပါ။ Kotlin/JVM နှင့် Swift စျေးကွက်အတွက် Typed Payload Builders တွေနဲ့ အမည်မသိ escrow တွေကို ထောက်ပံ့ပေးပါ။
 
-| SDK | ဒီမျက်နှာပြင်ကို သုံးပါ။ | သက်ရောက်မှု |
+|SDK |ဒီမျက်နှာပြင်ကို သုံးပါ။|ကျယ်ပြန့်မှု|
 | --- | --- | --- |
-| [Rust](#rust-sdk) | `iroha::data_model::isi::escrow` | စျေးကွက်က ကောက်ခံစာ၊ ယေဘုယျ Lock များ၊ အမည်မသိ ကောက်ခံချက်များ၊ မေးမြန်းချက်များနှင့်ဖြစ်ရပ်များ။ |
-| [Python](#python-asset-locks) | `Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock`, ဖောက်သည် `*_and_wait` အကူအညီပေးသူများ | ဘဏ္ဍာရေးပိတ်ရက်များ၊ စျေးကွက်နှင့် အမည်မသိ ငွေပေးချေမှုအကူအညီပေးသူများသည် ပထမတန်းစား မဟုတ်ပါ။ Python နည်းစနစ်တွေ ရှိသေးတယ် |
-| [JavaScript / TypeScript](#javascript-and-typescript-kotodama) | `compileKotodamaProgram` မှ `@iroha/iroha-js/kotodama-compiler` | အထဲက Escrow host ဖုန်းခေါ်ဆိုမှု Kotodama စာချုပ်များ။ |
-| [Kotlin / JVM](#kotlin-and-jvm) | `InstructionTemplate` အတန်းများ `org.hyperledger.iroha.sdk.core.model.instructions` | စျေးကွက်နဲ့ အမည်မသိ escrow custom instruction templates တွေပါ။ |
-| [Swift / iOS](#swift-and-ios) | `NativeEscrowInstructionBuilders` နှင့် `IrohaSDK.build*Escrow*` အကူအညီပေးသူများ | စျေးကွက်နှင့် အမည်မသိ ဂိုဏ်း Norito JSON ညွှန်ကြားချက် အသုံးဝင်ပစ္စည်းများ။ |
+| [Rust](#rust-sdk) |`iroha::data_model::isi::escrow` |Marketplace escrow များ၊ အထွေထွေ Lock များ၊ အမည်မသိ escrow များ, မေးမြန်းချက်များနှင့်ဖြစ်စဉ်များ။ |
+| [Python](#python-asset-locks) |`Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock` နဲ့ ဖောက်သည် `*_and_wait` အကူအညီပေးသူ |စျေးကွက်နှင့် အမည်မသိ escrow အကူအညီပေးသူများသည် ပထမတန်းစား Python နည်းစနစ်များ မဟုတ်သေးပါ။ |
+| [JavaScript /TypeScript ](#javascript-and-typescript-kotodama) |`compileKotodamaProgram` မှ `@iroha/iroha-js/kotodama-compiler` |Kotodama သဘောတူညီချက်အတွင်းက Escrow host ခေါ်ဆိုမှု။ |
+| [Kotlin /JVM ](#kotlin-and-jvm) |`InstructionTemplate` အတန်းများတွင် `org.hyperledger.iroha.sdk.core.model.instructions` |Marketplace နဲ့ အမည်မသိ escrow ညွှန်ကြားချက် ပုံစံများ။|
+| [Swift / iOS](#swift-and-ios) |`NativeEscrowInstructionBuilders` နှင့် `IrohaSDK.build*Escrow*` အကူအညီပေးသူများ |စျေးကွက်နှင့် အမည်မသိ escrow Norito JSON ညွှန်ကြားမှု အသုံးဝင်ပစ္စည်းများ။ |
 
-အောက်ပါဥပမာများသည် သင်ကြားမှု တည်ဆောက်မှုကို အာရုံစိုက်သည်။
-လက်မှတ်စီမံခန့်ခွဲမှုနှင့် ငွေကြေးဆိုင်ရာ တင်သွင်းခြင်းသည် ပုံမှန်စီးဆင်းမှုကို လိုက်နာသည်။
-တစ်ခုချင်းစီ SDK.
+အောက်ပါဥပမာများသည် ညွှန်ကြားချက် တည်ဆောက်မှုအပေါ် အာရုံစိုက်သည်။ အကောင့်ရင်းနှီးမြှုပ်နှံမှု၊ လက်မှတ်စီမံခန့်ခွဲခြင်း၊ ငွေပေးချေမှုတင်သွင်းခြင်းသည် SDK တစ်ခုချင်းအတွက် ပုံမှန်စီးဆင်းမှုကို လိုက်နာသည်။
 
 ### Rust SDK {#rust-sdk}
 
-သုံးပါ Rust SDK သင့်မှာ အပြည့်အဝ ဒေသခံကာကွယ်မှု (သို့) မေးမြန်း / ဖြစ်ရပ်ထောက်ပံ့မှု လိုအပ်တဲ့အခါပါ။
-အထက်ပါဥပမာများတွင် စျေးကွက်ထုတ်လွှင့်ခြင်း၊ ယေဘုယျပိတ်သိမ်းခြင်း၊ ပဋိပက္ခများကို ပြသထားသည်။
-ငွေကြေးရှင်းလင်းရေးနှင့် အမည်မသိ escrow တည်ဆောက်မှု
-`iroha::data_model::isi::escrow`.
+Rust SDK ကို အသုံးပြုရန် လိုအပ်ပါက အပြည့်အဝ ဒေသခံကာကွယ်မှု (သို့) မေးမြန်းချက်/ဖြစ်ရပ်ထောက်ပံ့မှုလိုအပ်သည်။ အထက်ပါဥပမာများတွင် စျေးကွက်ထုတ်လွှင့်ခြင်း၊ ယေဘုယျ Lockdown ဆွဲယူခြင်း၊ ပဋိပက္ခဖြေရှင်းခြင်းနှင့် `iroha::data_model::isi::escrow` နှင့်အတူမည်မသိ escrow တည်ဆောက်မှုတို့ကို ပြသထားပါသည်။
 
 ```rust
 use iroha::{
@@ -369,11 +326,9 @@ fn open_and_read(
 }
 ```
 
-### Python အရင်းအမြစ် Lock များ {#python-asset-locks}
+### Python အရင်းအမြစ်ပိတ်ခြင်း {#python-asset-locks}
 
-နိုင်ငံခြားရေး Python SDK ပထမတန်းစား အကူအညီပေးသူတွေကို ယေဘုယျ အရင်းအမြစ်ပိတ်ခြင်းအတွက် ဖေါ်ထုတ်တယ်။
-လတ်တလောမှာ ငွေကြေးပေးချေမှုတွေ၊ ပြန်လည်ထုတ်လွှတ်ရေး အာဏာပိုင်က ထုတ်ယူတဲ့ ငွေကြေးကောက်ခံမှု၊
-ဖွင့်ပေးသူနဲ့ ကုန်ဆုံးတဲ့ ငွေပြန်ငွေတွေ
+Python SDK ဟာ အထွေထွေ အရင်းအမြစ်ပိတ်ခြင်းအတွက် ပထမတန်းစားကူညီသူတွေကို ဖေါ်ပြပါတယ်။ ဒါတွေကို မိုင်လစ်ကျွန်းငွေပေးချေမှုတွေ၊ လွတ်မြောက်ခွင့်အာဏာပိုင်က ဆွဲယူမှု၊ ဖွင့်သူက ဖျက်သိမ်းမှုနဲ့ သက်တမ်းကုန်ဆုံးတဲ့ ပြန်လည်ဆပ်နှံမှုတွေ အတွက် အသုံးပြုတယ်။
 
 ```python
 client.open_asset_lock_and_wait(
@@ -404,18 +359,13 @@ client.expire_asset_lock_and_wait(
 )
 ```
 
-နှစ်ဖက်ပိတ်ထားမှုအတွက် ရှောင်ရှားပါ။ `release_authority`; ရည်မှန်းချက်စာရင်းကို
-ပြီးရင် တင်ပြပါ `drawdown_asset_lock`.
+နှစ်ဖက်ပိတ်ခြင်းအတွက် `release_authority` ကိုချန်ထားပါ။ နောက်ပြီး ရည်မှန်းချက်စာရင်းက `drawdown_asset_lock` ကိုပို့နိုင်သည်။
 
 ### JavaScript နှင့် TypeScript Kotodama {#javascript-and-typescript-kotodama}
 
-နိုင်ငံခြားရေး JavaScript SDK လက်ရှိတွင် တိုက်ရိုက် Native Escrow Transaction ကို ဖော်ပြခြင်း မရှိပါ။
-ဆောက်လုပ်ရေးသမားတွေအတွက် JavaScript ဒါမှမဟုတ် TypeScript အသုံးချတဲ့ အက်ပ်များ Kotodama
-စာချုပ်များ၊ ကော်ပိုရေးရှင်းနှင့်အတူ escrow host ခေါ်ဆိုချက် Kotodama compilator ကို
+JavaScript SDK သည် လက်ရှိတွင် တိုက်ရိုက်ရင်းနှီးမြှုပ်နှံမှုလုပ်ငန်းရှင်များကို ဖော်ပြခြင်းမရှိပါ။ Kotodama စာချုပ်များဖြန့်ချိသော JavaScript သို့မဟုတ် TypeScript အက်ပ်များအတွက် Kotodama ကွန်ပျူတာနှင့်အတူ escrow host ခေါ်ဆိုမှုများကို compile လုပ်ပါ။
 
-Native escrow host calls တွေမှာ explicit access အညွှန်းတွေလိုအပ်တယ် compiler က
-opaque escrow အတွက် ပိုကျဉ်းတဲ့ access set တွေကို ထုတ်ယူလို့မရဘူး။ ISIs. Wildcard အညွှန်းတွေကို သုံးပါ။
-ခေါ်ဆိုသည့် တင်ပို့ဝင်ရောက်မှုနေရာများ `escrow_*` အဆောက်အအုံတွေပေါ့။
+Native escrow host calls တွေမှာ ပွင့်လင်းမြင်သာမှု မရှိတဲ့ escrow တွေအတွက် compilator က ပိုကျဉ်းတဲ့ access set တွေကို ထုတ်ယူလို့မရတော့တာကြောင့် explicit access hints တွေ လိုအပ်ပါတယ်။ ISIs. ဖုန်းခေါ်ဆိုသည့် တင်ပို့သော ဝင်ပေါက်များတွင် wildcard ညွှန်ပြချက်များကို အသုံးပြုပါ။ `escrow_*` အဆောက်အအုံတွေပေါ့။
 
 ```js
 import { compileKotodamaProgram } from "@iroha/iroha-js/kotodama-compiler";
@@ -447,16 +397,11 @@ if (compiled.diagnostics.length > 0) {
 }
 ```
 
-အငြင်းပွားမှုအတွက် အသုံးပြုခြင်း `escrow_open_dispute(offer, evidence)` နှင့်
-`escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)`.
-အမည်မသိ escrow host ဖုန်းခေါ်ဆိုမှုကို လက်ခံ Norito ဥပမာ အသုံးဝင် ဝန်ဆောင်မှု ဘိုက်များကို တောင်းဆိုပါ
-`anonymous_escrow_open_offer(request)`.
+အငြင်းပွားမှုအတွက် `escrow_open_dispute(offer, evidence)` နှင့် `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)` ကိုအသုံးပြုပါ။ Anonymous escrow host calls accept Norito request payload bytes, ဥပမာ `anonymous_escrow_open_offer(request)`.
 
 ### Kotlin နှင့် JVM {#kotlin-and-jvm}
 
-နိုင်ငံခြားရေး Kotlin/JVM SDK မူရင်း escrow ကို custom instruction templates အဖြစ် ပုံစံထုတ်ပေးပါ။
-Template ကတော့ လိုအပ်တဲ့ field တွေကို validates လုပ်ပြီး အသုံးပြုထားတဲ့ canonical argument map ကို ဖော်ပြပါတယ်။
-ငွေပေးချေမှု တည်ဆောက်သူက
+Kotlin/JVM SDK သည် native escrow ကို custom instruction templates အဖြစ် ပုံစံထုတ်သည်။ template တစ်ခုစီသည်လိုအပ်သော field များကို validates နှင့် transaction builder မှအသုံးပြုသော canonical argument map ကိုဖေါ်ပြထားပါသည်။
 
 ```kotlin
 import org.hyperledger.iroha.sdk.core.model.escrow.NativeEscrowPermissions
@@ -486,21 +431,11 @@ println(open.arguments)
 println(NativeEscrowPermissions.CAN_RESOLVE_ESCROW_DISPUTE)
 ```
 
-အမည်မဲ့ Template များကို
-`OpenAnonymousAssetEscrowInstruction`, `AcceptAnonymousAssetEscrowInstruction`,
-`MarkAnonymousEscrowPaymentSentInstruction`,
-`ReleaseAnonymousAssetEscrowInstruction`,
-`CancelAnonymousAssetEscrowInstruction`,
-`OpenAnonymousEscrowDisputeInstruction`, နှင့်
-`ResolveAnonymousEscrowDisputeInstruction`. Android Java ဖုန်းခေါ်ဆိုသူတွေက
-ကိုက်ညီမှု `NativeEscrowInstructions.*` ဆောက်လုပ်ရေးသမားများ Android အနုပညာပစ္စည်းပါ။
+အမည်မဲ့ Template များကို `OpenAnonymousAssetEscrowInstruction`, `AcceptAnonymousAssetEscrowInstruction`, `MarkAnonymousEscrowPaymentSentInstruction`, `ReleaseAnonymousAssetEscrowInstruction`, `CancelAnonymousAssetEscrowInstruction`, `OpenAnonymousEscrowDisputeInstruction`, နှင့် `ResolveAnonymousEscrowDisputeInstruction`. Android Java ဖုန်းခေါ်ဆိုသူများက match ကိုအသုံးပြုနိုင်သည် `NativeEscrowInstructions.*` ဆောက်လုပ်ရေးမှူးများ Android အနုပညာပစ္စည်းပါ။
 
-### Swift ပြီးတော့ iOS {#swift-and-ios}
+### Swift နှင့် iOS {#swift-and-ios}
 
-နိုင်ငံခြားရေး Swift SDK သွင်းငွေ ညွှန်ကြားချက်များကို Norito JSON အသုံးဝင်ပစ္စည်းများ။
-`NativeEscrowInstructionBuilders` တိုက်ရိုက် (သို့) ညီမျှတဲ့ ဖုန်းခေါ်ဆိုပါ။
-`IrohaSDK.build*Escrow*` အကူအညီပေးသူက သင့်ရဲ့ app မှာ `IrohaSDK`
-ဥပမာ။
+Swift SDK သည် Norito JSON အသုံးဝင်ဝန်ပိုးများအဖြစ် escrow ညွှန်ကြားချက်များကို တည်ဆောက်သည်။ သင့်အက်ပ်သည် `IrohaSDK` instance ကို ပိုင်ဆိုင်ထားပါက တိုက်ရိုက် `NativeEscrowInstructionBuilders` ကိုအသုံးပြုရန် သို့မဟုတ် ညီမျှသော `IrohaSDK.build*Escrow*` အကူအညီကိုခေါ်ပါ။
 
 ```swift
 import IrohaSwift
@@ -528,38 +463,27 @@ let resolve = try NativeEscrowInstructionBuilders.resolveEscrowDispute(
 )
 ```
 
-အမည်မသိ Swift ဆောက်လုပ်သူတွေက အငြင်းပွားမှု စာရင်းတွေ၊ ထုတ်ကုန် ကတိစာရင်းတွေ၊ အထောက်အထားတွေ ယူတယ်။
-အဘိဓာန်၊ ရွေးချယ်စရာ `rootHint` တန်ဖိုးများ။ ပဋိပက္ခဖြေရှင်းခွင့်
-token ကို `NativeEscrowPermissions.canResolveEscrowDispute`.
+အမည်မသိ Swift ဆောက်လုပ်သူများသည် nullifier စာရင်းများ၊ output commitment စာရင်းများ, proof အဘိဓာန်များနှင့် optional `rootHint` တန်ဖိုးများကိုယူသည်။ ပဋိပက္ခဖြေရှင်းခွင့်လက်မှတ်ကို `NativeEscrowPermissions.canResolveEscrowDispute` အဖြစ်ရရှိနိုင်သည်။
 
 ## မေးခွန်းများနှင့် ဖြစ်ရပ်များ {#queries-and-events}
 
-အခြေအနေ စာမျက်နှာများ၊ ညှိနှိုင်းမှု အလုပ်များနှင့် ထောက်ပံ့ရေး ကိရိယာများအတွက် escrow မေးမြန်းချက်များကို အသုံးပြုပါ။
+အခြေအနေ စာမျက်နှာများ၊ ညှိနှိုင်းမှု အလုပ်များနှင့် ထောက်ပံ့ရေး ကိရိယာများအတွက် Escrow မေးမြန်းချက်များကို အသုံးပြုပါ။
 
-| မေးခွန်း | ရည်ရွယ်ချက် |
+|မေးခွန်း|ရည်ရွယ်ချက်|
 | --- | --- |
-| `FindAssetEscrowById` | ပွင့်လင်းမြင်သာတဲ့ ဂိုဏ်းစာရင်းကို ဖတ်ပါ။ `EscrowId`. |
-| `FindAssetEscrows` | ပွင့်လင်းမြင်သာတဲ့ ကော်ပိုရေးရှင်းနဲ့ Lock မှတ်တမ်းတွေကို စာရင်းပေးပါ။ |
-| `FindAssetEscrowsBySeller` | ရောင်းသူ (သို့) Lock Opener က ဖွင့်ထားတဲ့ မှတ်တမ်းတွေကို စာရင်းပေးပါ။ |
-| `FindAssetEscrowsByBuyer` | ဝယ်သူက လက်ခံတဲ့ စျေးကွက်စာရင်း (သို့) ပန်းတိုင်ကို ပစ်မှတ်ထားသော lock များ။ |
-| `FindAssetEscrowsByStatus` | စာရင်းမှတ်တမ်းများ `AssetEscrowStatus`. |
-| `FindAnonymousAssetEscrowById` | အမည်မသိ ဂိုဏ်းကို ဖတ်ပါ။ `EscrowId`. |
-| `FindAnonymousAssetEscrows*` | အမည်မသိ ဂိုဏ်းတွေကို မှတ်တမ်း၊ ရောင်းသူ၊ ဝယ်သူ သို့မဟုတ် အခြေအနေအလိုက် စာရင်းပေးပါ။ |
+|`FindAssetEscrowById` |`EscrowId` မှာ ပွင့်လင်းမြင်သာတဲ့ ဂရိုတစ်ခု (သို့) Lock တစ်ခု ဖတ်ပါ။|
+|`FindAssetEscrows` |ပွင့်လင်းမြင်သာတဲ့ ဂိုဏ်းမှတ်တမ်းနဲ့ သော့မှတ်တမ်းတွေကို စာရင်းပေးပါ။ |
+|`FindAssetEscrowsBySeller` |ရောင်းသူ (သို့) Lock Opener က ဖွင့်ထားတဲ့ မှတ်တမ်းတွေကို စာရင်းပေးပါ။ |
+|`FindAssetEscrowsByBuyer` |ဝယ်သူက လက်ခံတဲ့ စျေးကွက်စာရင်း (သို့) ပန်းတိုင်ကို ပစ်မှတ်ထားသော lock များ။ |
+|`FindAssetEscrowsByStatus` |`AssetEscrowStatus` မှ စာရင်းမှတ်တမ်းများ။ |
+|`FindAnonymousAssetEscrowById` |`EscrowId` ကနေ အမည်မသိ ဂိုဏ်းတစ်ခု ဖတ်ပါ။ |
+|`FindAnonymousAssetEscrows*` |ရောင်းသူ၊ ဝယ်သူ (သို့) အခြေအနေအားလုံးဖြင့် အမည်မသိ ဂိုဏ်းငွေစာရင်းများကို စာရင်းပေးပါ။ |
 
-`EscrowEventFilter` ပွင့်လင်းမြင်သာတဲ့ ဒေသခံ escrow နှင့် lock ကို subscribe လုပ်နိုင်သည်
-အလှူငွေဖြင့် ပြုလုပ်သော အဖြစ်များ ID, ရောင်းသူ၊ ဝယ်သူ၊ အခြေအနေနဲ့ အဖြစ်အပျက် သတ်မှတ်မှု နှာခေါင်းစည်း
-မိသားစုသည် ပါဝင်သည်။ `Opened`, `Accepted`, `PaymentSent`, `Released`,
-`Cancelled`, `Expired`, `Disputed`, နှင့် `Resolved`. အမည်မသိ ဂိုဏ်း
-မှတ်တမ်းတွေကို အမည်မဲ့ ဂိုဏ်းအထောက်အထား မေးမြန်းမှုတွေကနေ စစ်ဆေးပါတယ်။
+`EscrowEventFilter` ပွင့်လင်းမြင်သာတဲ့ Native Escrow နဲ့ Lock event တွေကို escrow ကနေ subscribe လုပ်လို့ရပါတယ်။ ID, ရောင်းသူ၊ ဝယ်သူ၊ အခြေအနေနဲ့ အဖြစ်အပျက် သတ်မှတ်မှု နှာခေါင်းစည်း။ `Opened`, `Accepted`, `PaymentSent`, `Released`, `Cancelled`, `Expired`, `Disputed`, နှင့် `Resolved`. Anonymous escrow records တွေကို anonymous escrow queries တွေကနေ စစ်ဆေးပါတယ်။
 
-## လုပ်ငန်းမှတ်စုများ {#operational-notes}
+## လုပ်ငန်း မှတ်စုများ {#operational-notes}
 
-- ကြီးမားတဲ့ ငွေကြေးခွန်တွေ၊ စကားပြောမှတ်တမ်းတွေ၊ အကဲဖြတ်ချက်တွေနဲ့ စာရင်းစစ်ဆေးမှု အစုတွေကို
-  ဂိုဏ်းမှတ်တမ်းကို သိမ်းယူပြီး သက်သေအဖြစ် သူတို့ရဲ့ hashes ကို ချိတ်ဆက်ပါ။
-- တည်ငြိမ်စွာ အသုံးပြုပါ။ `EscrowId` ရယူမှု applications များတွင် retries မဖန်တီးနိုင်သောကြောင့်
-  တူညီတဲ့ ကမ်းလှမ်းမှုအတွက် နှစ်မျိုးတည်းသော အာမခံချက်များ။
-- Grant ကို `CanResolveEscrowDispute` အကောင့်များ သို့မဟုတ် လုပ်ငန်းခွင်များအတွက်သာ
-  အငြင်းပွားမှု လုပ်ငန်းစဉ်။
-- ချိတ်ဆက်မှုအပြင် ငွေပေးချေမှု စစ်ဆေးမှုကို လျှောက်လွှာ မူဝါဒအဖြစ် သတ်မှတ်ပါ။ Iroha မှတ်တမ်းများ
-  စောင့်ရှောက်မှုနှင့် သက်တမ်းပတ်လည် ကူးပြောင်းမှုများအတွက် ငွေကြေးဆိုင်ရာ သို့မဟုတ် ပြင်ပဆိုင်ရာ စစ်ဆေးခြင်းမရှိပါ။
-  ငွေပေးချေရေးလမ်းကြောင်းတွေ တစ်ခုတည်းပါ။
+- ကြီးမားတဲ့ ငွေကြေးခွန်တွေ၊ စကားပြောမှတ်တမ်းတွေ၊ အကဲဖြတ်ချက်တွေ (သို့) စစ်ဆေးမှု ဘက်ဒရယ်တွေကို ဂိုဏ်းစာရင်းအပြင်မှာ သိမ်းထားပြီး သက်သေအဖြစ် သူတို့ရဲ့ hash တွေကို ချိတ်ဆက်ပါ။
+- အဆိုပြုချက်များတွင် တည်ငြိမ်သော `EscrowId` ရယူမှုများကို အသုံးပြု၍ ထပ်မံစမ်းသပ်ခြင်းဖြင့် တူညီသော ကမ်းလှမ်းချက်အတွက် နှစ်မျိုးစလုံး escrow များကို မဖန်တီးနိုင်ပါ။
+- `CanResolveEscrowDispute` ကို ပဋိပက္ခဖြစ်စဉ်ကို စီမံခန့်ခွဲတဲ့ အကောင့်များ (သို့) အခန်းကဏ္ဍများအတွက်သာ ထောက်ပံ့ပါ။
+- ချိတ်ဆက်မှုအပြင် ငွေပေးချေမှု စစ်ဆေးမှုကို လျှောက်လွှာ မူဝါဒအဖြစ် သတ်မှတ်ပါ။ Iroha သည် ထိန်းသိမ်းမှုနဲ့ သက်တမ်း စက်ဝန်း ကူးပြောင်းမှုတွေကို မှတ်တမ်းတင်ထားပြီး fiat သို့မဟုတ် ပြင်ပငွေပေးချေရေးလမ်းကြောင်းများကို ကိုယ်တိုင်စစ်ဆေးခြင်းမဟုတ်ပါ။

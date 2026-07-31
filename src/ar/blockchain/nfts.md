@@ -8,9 +8,9 @@ translation_engine: nllb-200-ct2
 
 # NFTs {#nfts}
 
-(إنه) Iroha NFT هو كائن دليل فريد مع صاحب واحد. استخدام NFTs عندما يحتاج سجل إلى هويته الخاصة، والبيانات المعدنية، وأحداث دورة الحياة، ونقل الملكية النطقية، ولكن لا يحتاج إلى توازن عددي.
+Iroha NFT هو كائن رئيسي فريد مع صاحب واحد. استخدم NFTs عندما يحتاج سجل إلى هوية خاصة به، البيانات المعدنية، أحداث دورة الحياة، ونقل الملكية النطاقية، ولكن لا تحتاج إلى توازن عددي .
 
-على عكس الرقمية [الأصول](/ar/blockchain/assets.md), إضافة NFT لا تمتلك دقة أو قابلية للتخزين أو كميات لكل حساب. NFT موجودة كشيء واحد مسجل، ويتم تتبع الملكية مباشرة على هذا الشئ.
+على عكس الأصول العددية [ ](/ar/blockchain/assets.md) ، لا تمتلك NFT دقة أو قابلية للتنقل أو كميات لكل حساب. يوجد NFT ككائن مسجل واحد ، ويتم تتبع الملكية مباشرة على هذا الكائن.
 
 ## الهيكل {#structure}
 
@@ -20,7 +20,7 @@ translation_engine: nllb-200-ct2
 - `content`: البيانات الأساسية التي تصف NFT
 - `owned_by`: الحساب الذي يملك NFT
 
-(الـ) `content` المجال هو `Metadata` خريطة. أبقيها صغيرة: تخزين الحقول الوصفية، المراجع المستقرة، URIs, أو SoraFS تخزين الوثائق الكبيرة، وسائل الإعلام، أو التطبيقات عالية السرعة الحالة خارج السلسلة والاحتفاظ فقط مرجع يمكن التحقق منه على NFT.
+الحقل `content` هو خريطة `Metadata`. احتفظ بها بصيغة صغيرة: تخزين الحقول الوصفية، والمراجع المستقرة، والهاشات، أو مسارات URIs، أو SoraFS هناك. تخزين الوثائق الكبيرة، وسائل الإعلام، أو حالة التطبيقات عالية المعدل خارج السلسلة وتحتفظ فقط بمراجعة قابلة للتحقق من ذلك على NFT .
 
 ## جربوا ذلك على Taira {#try-it-on-taira}
 
@@ -38,7 +38,7 @@ curl -fsS https://taira.sora.org/openapi.json \
   | jq -r '.paths | keys[] | select(startswith("/v1/nfts") or startswith("/v1/explorer/nfts"))'
 ```
 
-الفراغ `items` المجموعة هي استجابة صالحة على شبكة اختبار عامة. NFTs في الصفحة الحالية، وليس ذلك NFT التعليمات غير متوفرة
+صف فارغ `items` هو رد صالح على شبكة اختبار عامة. يعني أنه لا توجد NFTs في الصفحة الحالية، وليس أن تعليمات NFT غير متوفرة.
 
 ## NFT IDs {#nft-ids}
 
@@ -57,10 +57,10 @@ name$domain.dataspace
 
 NFT استخدام عمليات دورة الحياة Iroha تعليمات خاصة:
 
-- [`Register`](/ar/blockchain/instructions.md#un-register) يخلق NFT مع البداية `content`.
+- [يخلق `Register`](/ar/blockchain/instructions.md#un-register) NFT مع البداية `content`.
 - [يزيل `Unregister`](/ar/blockchain/instructions.md#un-register) NFT.
 - [تغييرات `Transfer`](/ar/blockchain/instructions.md#transfer) `owned_by`.
-- [`SetKeyValue` و `RemoveKeyValue`](/ar/blockchain/instructions.md#setkeyvalue-removekeyvalue) تحديث NFT البيانات الأساسية
+- [`SetKeyValue` و`RemoveKeyValue` ](/ar/blockchain/instructions.md#setkeyvalue-removekeyvalue) تحديث البيانات المعدنية NFT.
 
 ## جربها محلياً {#try-it-locally}
 
@@ -134,7 +134,7 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
 
 الاستخدام [`FindNfts`](/ar/reference/queries.md#assets-nfts-and-rwas) لإدراجها NFTs و [`FindNftsByAccountId`](/ar/reference/queries.md#assets-nfts-and-rwas) لإدراجها NFTs تملك حساباً
 
-NFT إصدار تحديثات التسجيل والحذف ونقل البيانات الأساسية NFT الأحداث البيانية. `Nft` تصفية حوادث البيانات عند الاشتراك في تغييرات دفتر التسجيل أو تشكيل محفزات تفاعل مع NFT أحداث دورة الحياة.
+تنشر تحديثات تسجيل NFT وإزالة ونقل وبيانات البيانات المعدنية أحداث بيانات NFT. استخدم مرشح حدوث البيانات `Nft` عند الاشتراك في تغييرات دفتر التسجيل أو تشكيل محفزات تتفاعل مع أحداث دورة حياة NFT.
 
 ## الإذن {#permissions}
 

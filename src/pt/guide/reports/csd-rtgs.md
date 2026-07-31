@@ -8,4 +8,4 @@ translation_engine: nllb-200-ct2
 
 # CSD/RTGS ligações Prova de conceito  {#csd-rtgs-linkages-proof-of-concept}
 
-Neste documento, descreveremos o CSD/RTGS ligações PoC Execução através Iroha. Este é um projeto realizado em colaboração com o Banco Asiático de Desenvolvimento e a Fujitsu. Outros participantes utilizaram tecnologias como: R3 Corda, Hyperledger Cactos (Cacti), Hyperledger Fabric e muitas outras soluções populares de blockchain. 
+Neste documento, descreveremos o CSD/RTGS ligações PoC Execução através Iroha. Este é um projeto realizado em colaboração com o Banco Asiático de Desenvolvimento e a Fujitsu. Outros participantes utilizaram tecnologias como: R3 Corda, Hyperledger Cactos (Cacti), Hyperledger Fabric e muitas outras soluções populares de blockchain.

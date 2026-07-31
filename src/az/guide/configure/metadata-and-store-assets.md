@@ -29,7 +29,7 @@ Metadata dünya vəziyyətinin bir hissəsidir və sahib olduğu obyektlə qayta
 - NFTs yalnız mülkiyyətdə olan qeydlər üçün
 - [RWAs](/az/blockchain/rwas.md) və aktiv məlumat modeli onları aşkar edərkən digər domenə aid obyektlər
 
-Varlıqlar və NFTs özləri IDs, həyat dövrü hadisələri, köçürmə davranışları və icazə yoxlamalarına malikdirlər.
+Varlıqlar və NFTs öz IDs, həyat dövrü hadisələri, köçürmə davranışları və icazə yoxlamalarına malikdir. Mülkiyyət, çatışmazlıq və ya köçürmə tarixi məsələlərində meta məlumatlardan daha yaxşıdırlar.
 
 ## Zəngindən kənar məlumatlar {#off-chain-data}
 

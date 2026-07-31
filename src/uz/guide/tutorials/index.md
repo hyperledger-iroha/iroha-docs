@@ -8,46 +8,39 @@ translation_engine: nllb-200-ct2
 
 # SDK Darslar {#sdk-tutorials}
 
-Ushbu sahifalarda Iroha 3 Boshdan jo'natilgan mijoz kirish punktlari
-ish maydonlari, shu jumladan kanonik paket nomlari, o'rnatish yo'llari va minimal
-boshlang'ich nuqtalar.
+Ushbu sahifalarda asosiy ish maydonidan jo'natilgan Iroha 3 mijoz kirish nuqtalari, jumladan kanonik paket nomlari, o'rnatish yo'llari va minimal boshlang'ich nuqtalar qisqartiriladi.
 
 ## Tavsiya qilingan tartib {#recommended-order}
 
-1. [Oʻrnatish Iroha 3](/uz/get-started/install-iroha.md)
-2. [Uchratish Iroha 3](/uz/get-started/launch-iroha.md)
-3. Tanlang SDK:
+1. [Iroha 3](/uz/get-started/install-iroha.md) o'rnatish
+2. [Iroha 3](/uz/get-started/launch-iroha.md) ishga tushirish
+3. SDK nomini tanlang:
    - [Rust](/uz/guide/tutorials/rust.md)
    - [Python](/uz/guide/tutorials/python.md)
-   - [JavaScript / TypeScript](/uz/guide/tutorials/javascript.md)
-   - [Kotlin, Android, va Java](/uz/guide/tutorials/kotlin-java.md)
+   - [JavaScript /TypeScript ](/uz/guide/tutorials/javascript.md)
+   - [Kotlin, Android va Java](/uz/guide/tutorials/kotlin-java.md)
    - [Swift va iOS](/uz/guide/tutorials/swift.md)
-4. O ' zbekiston Respublikasining [namunaviy ilovalar](/uz/guide/tutorials/sample-apps.md) agar siz
-   mijoz ilovalarining to'liq ma'lumotnomasi.
-5. Foydalanish [Oʻrnatilgan Kaigi](/uz/guide/tutorials/kaigi.md) qo'shishni istasangiz
-   O'zingizning dasturingizga pulbaga asoslangan audio / video uchrashuvlar.
-6. Foydalanish [Musubi paketlar](/uz/guide/tutorials/musubi.md) qayta ishlatilishi kerak bo'lganda
-   Kotodama zanjirdagi ro'yxatga bog'liq bo'lgan manba kutubxonalari.
+4. [ namunaviy ilovalarni](/uz/guide/tutorials/sample-apps.md) to'liq mijoz ilovasini ko'rib chiqish kerak bo'lganda tekshiring.
+5. Foydalanish [Oʻrnatilgan Kaigi](/uz/guide/tutorials/kaigi.md) agar siz o'zingizning dasturingizga pulka bilan ta'minlangan audio / video uchrashuvlarni qo'shmoqchi bo'lsangiz.
+6. [Musubi paketlarini ](/uz/guide/tutorials/musubi.md) siz qayta ishlatilishi mumkin bo'lgan Kotodama manba kutubxonalariga tikanli zanjirdagi reyestr bog'liqliklari kerak bo'lganda foydalaning.
 
 ## Namunalar {#samples}
 
-Yuqoridagi ish maydonida JavaScript retseptlar va Swift/iOS namunasini
-loyihalar uchun. Android, bilan boshlash Kotlin SDK modullar va ularning sinovlari.
+Yuqoridagi ish maydonida JavaScript retseptlari va Swift/iOS namunaviy loyihalar mavjud. Android uchun Kotlin SDK modullari va ularning sinovlaridan boshlaning.
 
-- [Ilovalar namunasining umumiy koʻrinishi](/uz/guide/tutorials/sample-apps.md)
-- [Oʻrnatilgan Kaigi a JavaScript ilova](/uz/guide/tutorials/kaigi.md)
+- [Namunaviy ilovalar umumiy ko'rib chiqishi](/uz/guide/tutorials/sample-apps.md)
+- [Kaigi ni JavaScript ilovasida o'rnatish](/uz/guide/tutorials/kaigi.md)
 
 ## Haqiqat manbai {#source-of-truth}
 
-Hammasi SDK Bu sahifalar joriy yuqori tomonga ishlaydigan ish maydonidan olingan:
+Bu yerda SDK sahifalarining barchasi joriy yuqori darajadagi ish maydonidan kelib chiqqan:
 
 - `crates/iroha`
 - `python/iroha_python`
 - `javascript/iroha_js`
 - `kotlin`
-- `java/iroha_android` (Java ko'rinishi Kotlin- Birinchidan Android yuza)
+- `java/iroha_android` (Java ko'rinishi Kotlin - birinchi Android yuzasining)
 - `IrohaSwift`
 - `crates/musubi`
 
-Agar shubha bo'lsa, README va ushbu ko'rsatkichlardagi to'plam metadotlar;
-ular siz qurayotgan manbalarni qayta ko'rib chiqishni tasvirlaydi.
+Agar shubha bo'lsa, ushbu direktoriyalarda README va paket metadatalarini afzal ko'ring; ular siz yaratayotgan manba o'zgartirishini tasvirlaydi.

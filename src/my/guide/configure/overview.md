@@ -6,28 +6,21 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# စီမံခန့်ခွဲမှုနှင့် ဖွဲ့စည်းခြင်း {#configuration-and-management}
+# ဖွဲ့စည်းခြင်းနှင့် စီမံခန့်ခွဲမှု {#configuration-and-management}
 
-Iroha ဖွဲ့စည်းပုံမှာ အာဏာရှိတဲ့ အလွှာနှစ်ခုရှိပါတယ်။
+Iroha ဖွဲ့စည်းပုံမှာ ခိုင်မာတဲ့ အလွှာနှစ်ခုရှိပါတယ်။
 
-- **ဒေသတွင်း peer နှင့် client ကို configuration**, သိုလှောင် TOML စာရွက်စာတမ်းများနှင့် ဖတ်ရှု
-  လုပ်ငန်းစဉ်စတင်ခြင်း
-- **ချိတ်ဆက်ထားသော configuration**, ငွေလဲလှယ်နှုန်း
-  [`SetParameter`](/my/blockchain/instructions.md#setparameter)
+- TOML ဖိုင်များတွင် သိမ်းဆည်းထားပြီး လုပ်ငန်းစဉ်စတင်ချိန်တွင် ဖတ်ရှုနိုင်သော ဒေသခံ peer နှင့် client ကို configuration
+- [ `SetParameter`](/my/blockchain/instructions.md#setparameter) မှတစ်ဆင့် ငွေပေးချေမှုဖြင့် ပြောင်းလဲသော ချိတ်ဆက်ထားသော စက်လှေပေါ်က ဖွဲ့စည်းပုံ
 
-node identity, addresses, logging, storage နှင့်
-client sign key များကို အသုံးပြုပါ။ သဘောတူညီရန်လိုအပ်သော တန်ဖိုးများအတွက် on-chain ဖွဲ့စည်းမှုကိုအသုံးပြုပါ
-ကွန်ရက်ကနေပြီး deterministically ပြန်လည်ဖြန့်ချိတယ်။
+node identity, address, logging, storage, and client signing keys တို့အတွက် ဒေသတွင်း configuration ကို အသုံးပြုပါ။ ကွန်ရက်က သဘောတူပြီး deterministically ပြန်လည်ကစားရမယ့် တန်ဖိုးတွေအတွက် on-chain configuration ကို သုံးပါ။
 
-ထုတ်လုပ်မှု အပြုအမူဟာ ဒီဖွဲ့စည်းပုံ အလွှာတွေကနေ လာဖို့လိုတယ်။ ပတ်ဝန်းကျင်
-အပြောင်းအလဲတွေဟာ ဒေသတွင်း ကိရိယာတွေကို စမ်းသပ်မှု input တွေ ပေးပို့ဖို့ အဆင်ပြေနိုင်ပေမဲ့
-၎င်းတို့ဟာ ထုတ်လုပ်ရေး လက္ခဏာ တံခါးတွေ မဟုတ်ကြသလို ကတိပေးထားတဲ့ အရာတွေကို အစားထိုးမပေးနိုင်ပါ။
-ဖွဲ့စည်းမှု။
+ထုတ်လုပ်မှုအပြုအမူဟာ ဒီဖွဲ့စည်းမှု အလွှာတွေကနေ လာဖို့လိုပါတယ်။ ဒေသတွင်း ကိရိယာများအတွက် စမ်းသပ်မှု input တွေကို ထောက်ပံ့ဖို့ ပတ်ဝန်းကျင်ဆိုင်ရာ အပြောင်းအလဲတွေဟာ သက်တောင့်သက်သာဖြစ်လောက်ပေမဲ့ ၎င်းတို့ဟာ ထုတ်လုပ်ရေး လက္ခဏာဂိတ်တွေမဟုတ်ပြီး ကတိပေးထားတဲ့ ဖွဲ့စည်းမှုကို အစားထိုးတာ မဟုတ်ပါဘူး။
 
 အဓိက configuration entry points တွေက-
 
-- [ဇင်နဝါရီ](/my/guide/configure/genesis.md)
-- [Client ဖွဲ့စည်းပုံ](/my/guide/configure/client-configuration.md)
-- [Network deployment အတွက် Key များ](/my/guide/configure/keys-for-network-deployment.md)
-- [ပိုးမွှားနဲ့ ပြေးနေတာပါ။](/my/guide/advanced/running-iroha-on-bare-metal.md)
-- [Peer ဖွဲ့စည်းမှု ရည်ညွှန်းချက်](/my/reference/peer-config/index.md)
+- [Genesis](/my/guide/configure/genesis.md)
+- [Client ဖွဲ့စည်းမှု](/my/guide/configure/client-configuration.md)
+- [ကွန်ရက် ဖြန့်ချိရေးအတွက် သော့များ ](/my/guide/configure/keys-for-network-deployment.md)
+- [bare metal ](/my/guide/advanced/running-iroha-on-bare-metal.md) နဲ့ ပြေးနေတာပါ။
+- [Peer configuration Reference ](/my/reference/peer-config/index.md)

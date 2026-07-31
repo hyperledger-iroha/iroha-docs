@@ -8,99 +8,60 @@ translation_engine: nllb-200-ct2
 
 # Troubleshooting des problèmes de configuration {#troubleshooting-configuration-issues}
 
-Cette section offre des conseils de résolution des problèmes pour Iroha 3 la configuration. Assurez-vous que vous
-[J' ai vérifié les clés.](./overview.md#check-the-keys) d'abord, car c'est le plus
-source commune de problèmes dans Iroha.
+Cette section propose des conseils de dépannage pour Iroha 3 la configuration. Assurez-vous que vous [j' ai vérifié les clés](./overview.md#check-the-keys) d'abord, puisqu'il s'agit de la source la plus courante de problèmes en Iroha.
 
-Si le problème que vous rencontrez n'est pas décrit ici, contactez-nous par
-[Télégramme](https://t.me/hyperledgeriroha).
+Si le problème que vous rencontrez n'est pas décrit ici, contactez-nous par l'intermédiaire de [Télégramme ](https://t.me/hyperledgeriroha).
 
-## Génèse dépassée sur un Docker Compose mise en place {#outdated-genesis-on-a-docker-compose-setup}
+## Génèse dépassée sur une configuration Docker Compose {#outdated-genesis-on-a-docker-compose-setup}
 
-Lorsque vous utilisez le Docker Compose version de Iroha, vous pourriez rencontrer
-l'émission d'un des conteneurs par rapport aux autres ayant échoué
-`Failed to deserialize raw genesis block` l'erreur. Cela signifie généralement le paire,
-La transaction génétique signée et la configuration générée ont été produites par
-différent Iroha révision ou profil.
+Lorsque vous utilisez la version Docker Compose de Iroha, vous pouvez rencontrer le problème d'un des conteneurs peers échouant avec l'erreur `Failed to deserialize raw genesis block`. Cela signifie généralement que la transaction peer, la génèse signée et la configuration générée ont été produites par différentes révisions ou profils Iroha.
 
-Vérifiez l' échec en suivant les étapes suivantes:
+Vérifiez l' échec avec les étapes suivantes:
 
-1. Utilisation `docker ps` - la vérification des conteneurs actuels.
-   le profil généré, vous verrez généralement `hyperledger/iroha:dev`
-   les conteneurs. Docker Compose le profil contient quatre pairs
-   contenants, même si votre généré `docker-compose.yml` peut être différent.
+1. Utilisez `docker ps` pour vérifier les conteneurs actuels. En fonction du profil généré, vous verrez généralement des conteneurs `hyperledger/iroha:dev`. Le profil par défaut Docker Compose contient quatre conteneurs de pairs, bien que votre `docker-compose.yml` généré puisse différer.
 
-2. Vérifiez les journaux et recherchez
-   `Failed to deserialize raw genesis block` l'erreur. Si vous avez commencé votre
-   Iroha en mode daemon avec `docker compose up -d`, utilisation
-   `docker compose logs` Le commandement.
+2. Vérifiez les journaux et recherchez l'erreur `Failed to deserialize raw genesis block`. Si vous avez démarré votre Iroha en mode daemon avec `docker compose up -d`, utilisez la commande `docker compose logs`.
 
-La façon de résoudre un tel problème dépend de l'utilisation de Iroha. Si c'est une
-démo de base et vous n'avez pas besoin de préserver les données des pairs, régénérer une correspondance
-réseau local ou Docker Compose groupe avec Kagami:
+La façon de résoudre un tel problème dépend de l'utilisation de Iroha. Si il s'agit d'une démonstration de base et que vous n'avez pas besoin de préserver les données des pairs, régénérez un localnet ou un paquet Docker Compose correspondant avec Kagami:
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
 ```
 
-Ensuite, supprimez l'ancien état du conteneur et redémarrez à partir du régénéré
-`genesis.signed.nrt`, de même `config.toml` les dossiers, et `client.toml`.
+Ensuite, supprimer l'ancien état du conteneur et redémarrer les fichiers régénérés `genesis.signed.nrt`, peer `config.toml`, et `client.toml`.
 
-Si vous avez besoin de restaurer le Iroha les données d'instance, faites ce qui suit:
+Si vous devez restaurer les données de l'instance Iroha, faites ce qui suit:
 
-1. Connectez la seconde Iroha paritaire qui copiera les données de la première
-   (échoué) paire.
-2. Attendez que le nouveau pair synchronise les données avec le premier pair.
-3. Laissez le nouveau paire actif.
-4. Mettre à jour les fichiers de génèse et de configuration du premier pair uniquement dans le cadre de
-   une migration coordonnée.
+1. Connectez le deuxième pair Iroha qui copiera les données du premier pair (failli).
+2. Attends que le nouveau pair synchronise les données avec le premier pair.
+3. Laissez le nouveau groupe actif.
+4. Mettre à jour les fichiers d'origine et de configuration du premier pair uniquement dans le cadre d'une migration coordonnée.
 
-::: info
+::: informations
 
-Il n'y a pas de voie de réécriture automatique générale pour remplacer la génèse sur un live
-Il faut considérer cette migration comme une migration coordonnée: préserver l'ancien état,
-les pairs compatibles, et seulement déplacer les validateurs à la nouvelle configuration après
-les opérateurs s'accordent sur le plan de migration.
+Il n'existe pas de voie de réécriture automatique générale pour remplacer la génèse sur un réseau en direct. Traitez-la comme une migration coordonnée: préserver l'ancien état, mettre en place des pairs compatibles et déplacer les validateurs vers la nouvelle configuration seulement après que les opérateurs se soient mis d'accord sur le plan de migration.
 
 :::
 
-## Format multihash des clés privées et publiques {#multihash-format-of-private-and-public-keys}
+## Le format multihash des clés privées et publiques {#multihash-format-of-private-and-public-keys}
 
-Si vous regardez le
-[configuration du client](/fr/guide/configure/client-configuration.md), Tu vas le faire.
-remarquer que les clés y sont données dans
-[format multi-hash](https://github.com/multiformats/multihash).
+Si vous regardez le [configuration du client](/fr/guide/configure/client-configuration.md), Vous remarquerez que les clés y sont données [format multi-hash](https://github.com/multiformats/multihash).
 
-Si vous n'avez jamais travaillé avec le multi-hash avant, il est naturel de supposer que
-le côté droit n'est pas une représentation hexadecimale des octets clés
-(deux symboles par octet), mais plutôt les octets codés comme ASCII (ou UTF-8),
-et appeler `from_hex` sur la chaîne littérale dans les deux `public_key` et
-`private_key` - Je ne sais pas.
+Si vous n'avez jamais travaillé avec le multi-hash auparavant, il est naturel de supposer que le côté droit n'est pas une représentation hexadecimale des octets clés (deux symboles par octet), mais plutôt les octets codés comme ASCII (ou UTF-8), et appeler `from_hex` sur la chaîne littérale à la fois dans l'instance `public_key` et `private_key`.
 
-Il est également naturel de supposer que l'appel `PrivateKey::try_from_str` sur le
-string literal ne produirait que la clé correcte.
-de bits dans la clé erronée, par exemple 32 octets contre 64, que cela soulèverait une erreur
-Le message.
+Il est également naturel de supposer que l'appel `PrivateKey::try_from_str` sur le littéral de la chaîne ne donnerait que la clé correcte. Donc, si vous obtenez le nombre de bits dans la clé mal, par exemple 32 octets contre 64, cela générerait un message d'erreur.
 
-**Ces deux hypothèses sont fausses.** Malheureusement, les messages d'erreur
-ne contribuent pas à dé-débugger ce type d'échec particulier.
+Malheureusement, les messages d'erreur ne permettent pas de résoudre ce type d'échec.
 
-**Comment réparer**: utilisation `hex_literal`. Cela va aussi tourner une chaîne de
-les caractères dans une petite table de chiffres hexadecimaux évidemment.
+Comment réparer: utilisez `hex_literal`. Cela transformera également une chaîne de caractères moche en un joli petit tableau de chiffres hexadecimaux évidemment.
 
-::: warning
+::: avertissement
 
-Même le `try_from_str` la mise en œuvre ne peut pas vérifier si une chaîne donnée est un
-valides `PrivateKey` et vous avertir si ce n'est pas le cas.
+Même l'implémentation `try_from_str` ne peut pas vérifier si une chaîne donnée est un `PrivateKey` valide et vous avertir si ce n'est pas le cas.
 
-Il détectera certaines erreurs évidentes, par exemple si la chaîne contient un
-Cependant, puisque nous visons à soutenir de nombreux formats clés, il ne peut pas faire beaucoup
-Il ne peut pas dire si la clé est _correcte_ clé privée _pour les données
-compte_ à moins que vous ne soumettez une instruction.
+Il captera certaines erreurs évidentes, par exemple si la chaîne contient un symbole invalide. Cependant, comme nous visons à prendre en charge de nombreux formats de clés, il ne peut pas faire grand-chose d'autre. Il ne peut pas dire si la clé est la bonne clé privée pour le compte donné non plus, sauf si vous soumettez une instruction.
 
 :::
 
-These Il est possible d'éviter certaines erreurs subtiles, par exemple en
-Desérialiser directement à partir de lettres en corde ou générer un nouveau
-couples de clés dans les endroits où cela a du sens.
+Ces types d'erreurs subtiles peuvent être évités, par exemple, en désérialisant directement à partir des lettres de chaîne ou en générant une nouvelle paire de clés dans les endroits où cela a du sens.

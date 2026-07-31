@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # Los desencadenantes {#triggers}
 
-Cuando un evento coincide con el filtro del activador, Iroha evalúa la acción del activador como parte de la ejecución del bloque.
+Los desencadenantes unen un filtro de eventos a una acción ejecutable. Cuando un evento coincide con el filtro del activador, Iroha evalúa la acción del activador como parte de la ejecución del bloque.
 
 ## La estructura {#structure}
 

@@ -205,7 +205,7 @@ $$
 v = c_0 + c_1s_k
 $$
 
-Əgər şifrə mətni düzgün formalaşdırılıbsa və səs hələ də kifayət qədər azdırsa, \(v\) ölçülmüş düz mətnlə yaxındır. Dövrələmə sadə mətn koeficientini modulo \(t\) geri alır.
+Əgər şifrə mətni düzgün formalaşdırılıbsa və səs hələ də kifayət qədər azdırsa, \(v\) ölçülü düz mətnlə yaxındır. Dairləmə sadə mətn koeficientini modulo \(t\) bərpa edir. Faydalı xüsusiyyət, şifrəli mətn əməliyyatlarının bu quruluşu qoruyub saxlamasıdır:
 
 |Sadə əməliyyat |Şifrəli mətn əməliyyatı |
 | --- | --- |
@@ -218,9 +218,9 @@ Multiplikasiya bahalı bir əməliyyatdır. İki komponentli şifrə mətninin m
 
 BFV həmçinin "məsərəli"dir: hər şifrələnmiş əməliyyat müəyyən bir səs-küy büdcəsini istehlak edir. Bu tətbiq bu büdcəni yeniləmək üçün şifrəli mətnləri başlatmır. Bunun əvəzinə, RAM-LFE kiçik bir `ram_fhe_profile` nəşr edir və yalnız məhdud gizli proqram formasını qəbul edir. Bu, qiymətləndirilməni parametrlər dəstinin dəstəklənmiş dərinliyində saxlayır.Hazırda proqramlaşdırılmış profil sabit qeydiyyat sayını, sabit yaddaş zolağı sayını və ən çox bir sifrə mətni-sifir mətni hər proqramlaşdırılan addım üçün qatlamağa imkan verir.
 
-Bu RAM-LFE dizaynında, BFV müştəri girişini ictimai kitabxana məlumatlarından və yalnız əməliyyatı və ya marşrut payloadunu görən müşahidəçilərdən gizlədir. Torii həllçi işləmə vaxtı hələ də BFV gizli materialına sahibdir, qurulmuş gizlənmiş proqramı qiymətləndirir, icazə verilən çıxışı şifrələyir və nəticəni təsdiq edir.
+Bu RAM-LFE dizaynında, BFV müştərinin girişini ictimai kitabın məlumatlarından və yalnız əməliyyatı görən müşahidəçilərdən gizlədir və ya marşrut paylı yük. Bu isə o demək deyil ki, zəncir özbaşına keyfiyyətli şifrələnmiş proqramları icra edir. Torii həllinin işləmə vaxtı hələ də BFV gizli materialına malikdir, qurulmuş gizli proqramı qiymətləndirir, icazə verilən çıxışı şifrələyir və nəticəni təsdiqləyir. Sonra kitabxana şəhadətnaməni silsilədə siyasət öhdəliyi ilə müqayisədə yoxlayır və ictimai açar və ya sübut meta məlumatlarını həll edir.
 
-İdentifikator istifadə halı məqsədyönlü olaraq sadə bir təmsil seçir.
+İdentifikator istifadə halı məqsədəuyğun olaraq sadə bir təmsil seçir. Normallaşdırılmış bir silsilə aşağıdakı kimi kodlanır:
 
 ```text
 [length, byte_0, byte_1, ..., byte_n, 0, 0, ...]
@@ -416,7 +416,7 @@ $$
 
 ### BFV Affine Backend {#bfv-affine-backend}
 
-`bfv-affine-sha3-256-v1` üçün icra vaxtı əvvəlcə BFV açar materialını \(s\) və \(A\) -dən çıxarır.
+`bfv-affine-sha3-256-v1` üçün icra vaxtı ilk növbədə BFV açar materialını \(s\) və \(A\)dən çıxarır. Alınan ictimai parametrlər zəncirlə bağlı öhdəlik götürülmüş ictimai parametrə tam uyğun olmalıdır.
 
 Əffin dövriyyə toxumları:
 
@@ -745,7 +745,7 @@ Tətbiqlə üzləşən marşrut ailəsi aktivləşdirildiyi zaman Torii RAM-LFE 
 |`POST /v1/identifiers/resolve` |Aktiv tələb mövcud olduqda bağlanmış hesabda normallaşdırılmış identifikator girişini həll etmək. |
 |`GET /v1/identifiers/receipts/{receipt_hash}` |Audit və dəstək vasitələri üçün hesabat hash ilə davamlı bir identifikator tələbini axtarın. |
 
-Hər zaman bu yollara qarşı qurmadan əvvəl hədəf qovşağın `/openapi` və ya `/openapi.json` sənədini yoxlayın.
+Bu yollara qarşı qurmadan əvvəl hər zaman hədəf qovunun `/openapi` və ya `/openapi.json` sənədinə baxın. Mövcudluq nod quruluşundan və şəbəkə profillərindən asılıdır.
 
 ## Qeydiyyat vaxtı {#node-runtime}
 

@@ -10,7 +10,7 @@ layout: home
 hero:
   name: Hyperledger Iroha 3
   text: "ሰነድ"
-  tagline: "ለ Deterministic blockchain መድረክ SORA Nexus, SDKs, እና የኦፕሬተር የሥራ ፍሰቶች"
+  tagline: "ለ SORA Nexus ፣ SDKs እና ለኦፕሬተር የስራ ፍሰቶች የፍተሻ blockchain መድረክ"
   image:
     src: /icon.svg
     alt: "Hyperledger Iroha 3 አርማ"
@@ -23,26 +23,26 @@ features:
   - icon:
       dark: /start.svg
       light: /start-light.svg
-    title: "ሥራህን ጀምር"
-    details: "የአሁኑን የስራ ቦታ ይገንቡ፣ አካባቢያዊ አውታረመረብ ይጀምሩ እና Iroha 3 CLI"
+    title: "ይጀምሩ"
+    details: "የአሁኑን የስራ ቦታ ይገንቡ, አካባቢያዊ አውታረመረብ ያስጀምሩ, እና Iroha 3 CLI መጠቀም ይጀምሩ"
     link: /am/get-started/
   - icon:
       dark: /build.svg
       light: /build-light.svg
     title: "መመሪያ"
-    details: "ያግኙ SDKs, ምርጥ ልምዶች፣ ውቅር፣ ደህንነት እና የአስተናጋጅ የስራ ፍሰቶች"
+    details: "SDKs፣ የተሻሉ ልምዶች, ውቅር, ደህንነት እና የአስተናጋጅ የስራ ፍሰቶች ያግኙ"
     link: /am/guide/
   - icon:
       dark: /explained.svg
       light: /explained-light.svg
     title: "ሥነ ሕንፃ"
-    details: "መረዳት Torii, Sumeragi, Norito, IVM, እና Nexus የመረጃ ቦታ ሞዴል"
+    details: "Torii, Sumeragi, Norito, IVM, እና Nexus የመረጃ ቦታ ሞዴል መረዳት"
     link: /am/blockchain/iroha-explained
   - icon:
       dark: /reference.svg
       light: /reference-light.svg
     title: "ማጣቀሻ"
-    details: "የአሁኑን የሁለትዮሽ, ዘፍጥረት, Torii, እና ተኳሃኝነት ማጣቀሻ ገጾች"
+    details: "የአሁኑን የሁለትዮሽ ፣ የመነሻ ፣ Torii እና ተኳሃኝነት ማጣቀሻ ገጾችን ያንብቡ"
     link: /am/reference/
   # - title: Cookbook # (TBA)
 
@@ -50,14 +50,9 @@ footer: true
 ---
 
 <section class="nexus-build" aria-labelledby="nexus-build-title">
-  <a class="nexus-build__panel" href="/am/get-started/sora-nexus-dataspaces">
-    <span class="nexus-build__copy">
-      <span class="nexus-build__eyebrow">SORA Nexus</span>
-      <span id="nexus-build-title" class="nexus-build__title">አቋራጭ ሁን Iroha 3 / SORA Nexus</span>
-      <span class="nexus-build__details">አቋራጭ ሁን SORA 3 ጋር Taira የሙከራ አውታረመረብ፣ Minamoto አሁን መሞከር የሚችሉት ዋነኛ እና ኮፒ-ፓስት ምሳሌዎች.</span>
-    </span>
-    <span class="nexus-build__action">ክፍት መመሪያ <span aria-hidden="true">-&gt;</span></span>
-  </a>
+<a class="nexus-build__panel" href="/am/get-started/sora-nexus-dataspaces">
+    <span class="nexus-buildcopy"> <span class="nexus-buildeyebrow">SORA Nexus</span> <span id="nexus-build-title" class="nexus-buildtitle">ይቀጥሉ Iroha 3 / SORA Nexus</span> <span class="nexus-builddetails">ይቀጥሉ SORA 3 ጋር Taira የሙከራ መረብ፣ Minamoto አሁን መሞከር የሚችሉት ዋነኛ እና ኮፒ-ፓስት ምሳሌዎች ናቸው.</span> </span> <span class="nexus-build__action">ክፍት መመሪያ <span aria-hidden="true">-&gt;</span></span>
+</a>
 </section>
 
 <hr style="margin-top: 3rem;">

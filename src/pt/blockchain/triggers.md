@@ -54,7 +54,7 @@ Os gatilhos de tempo usam um filtro de evento de tempo. Quando a visão do estad
 
 A autoridade do gatilho é a conta usada para invocar o executável. Use uma conta técnica dedicada para gatilhos de longa duração para que as permissões exigidas sejam explícitas e isoladas da conta pessoal de um operador.
 
-A autoridade precisa das permissões exigidas pelas instruções executáveis ou por uma chamada de contrato.
+A autoridade precisa das permissões exigidas pelas instruções executáveis ou pela chamada de contrato. A conta que regista o gatilho também precisa de permissão para registrar os gatilhos sob o validador ativo do tempo de execução.
 
 ## Política de Reprovação {#retry-policy}
 

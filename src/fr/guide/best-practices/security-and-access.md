@@ -8,75 +8,46 @@ translation_engine: nllb-200-ct2
 
 # Sécurité et accès {#security-and-access}
 
-Pratique de la sécurité dans le Iroha doit être basée sur une autorité étroite, contrôlée
-la détention des clés, l'exposition explicite au réseau et les changements vérifiables.
+La pratique de sécurité dans Iroha devrait être basée sur une autorité étroite, la détention contrôlée des clés, l'exposition explicite au réseau et les changements vérifiables.
 
 ## Prise en charge de la clé {#key-custody}
 
-- Générer des clés de production avec entropie de niveau de production et stocker privé
-  les clés extérieures aux dépôts, les traqueurs de données, les invites, les journaux de chat et CI
-  la sortie.
-- Utilisez un matériel clé séparé pour les clients, les pairs, la signature de génèse,
-  les validateurs, les sponsors des frais et les comptes techniques.
-- Retourner les touches selon un processus écrit et répéter la récupération avant une
-  Un incident en direct.
-- Utiliser un stockage matériel ou système d'exploitation pour des valeurs élevées
-  signer des clés lorsque le risque de déploiement le justifie.
+- Générer des clés de production avec entropie de niveau de production et stocker des clés privées à l'extérieur des dépôts, émettre des traceurs, des invites, des journaux de chat et CI sortie.
+- Utilisez un matériel clé séparé pour les clients, les pairs, la signature de la génèse, les validateurs, les sponsors des frais et les comptes techniques.
+- Retournez les touches selon un processus écrit et répétez la récupération avant un incident en direct.
+- Utiliser un stockage supporté par le matériel ou le système d'exploitation pour des clés de signature à haute valeur lorsque le risque de déploiement le justifie.
 
-Vous voyez ?
-[Génération de clés cryptographiques](/fr/guide/security/generating-cryptographic-keys.md)
-et
-[Le stockage des clés cryptographiques](/fr/guide/security/storing-cryptographic-keys.md).
+Voir [Génération de clés cryptographiques](/fr/guide/security/generating-cryptographic-keys.md) et [Rétention de clés Cryptographiques ](/fr/guide/security/storing-cryptographic-keys.md).
 
 ## Autorisations {#permissions}
 
-- Accordez le plus petit jeton d'autorisation ou rôle qui soutient le flux de travail.
-- préférer des comptes techniques dédiés aux services, déclencheurs, agents et
-  Automatisation. Évitez d'exécuter l'automatisation à longue durée de vie via un
-  compte de l'opérateur.
-- Autorisations d'examen pour la gestion par les pairs, la mutation des métadonnées, le montage,
-  la combustion, l'enregistrement de déclenchement, les changements d'exécuteur et SORA/Nexus
-  gouvernance avant le lancement de la production.
-- Révoquer les autorisations temporaires après la fenêtre d'entretien ou la migration
-  qui les nécessitait.
+- Accordez le plus petit jeton ou rôle d'autorisation qui soutient le flux de travail.
+- Préférer des comptes techniques dédiés pour les services, les déclencheurs, les agents et l'automatisation. Évitez d'exécuter une automatisation à long terme via un compte d'opérateur personnel
+- Les autorisations d'examen pour la gestion par les pairs, la mutation des métadonnées, le montage, la combustion, l'enregistrement du déclencheur, les modifications de l'exécuteur et la gouvernance SORA/Nexus avant le lancement de la production.
+- Revoquer les autorisations temporaires après la fenêtre d'entretien ou la migration qui les a exigées.
 
-Vous voyez ? [Autorisations](/fr/blockchain/permissions.md) et
-[Les jetons d'accès](/fr/reference/permissions.md).
+Voir [Permissions](/fr/blockchain/permissions.md) et [Pouches d'autorisation ](/fr/reference/permissions.md).
 
-## Exposition au réseau {#network-exposure}
+## L'exposition au réseau {#network-exposure}
 
-- Restreindre les pairs, Torii, télémétrie et les itinéraires de l'opérateur selon
-  L'accès à la lecture publique n'implique pas d'écriture ou de
-  accès de l'opérateur.
-- Utilisation VPNs, les pare-feu, les proxies inversées, TLS la résiliation et les limites de taux
-  le cas échéant pour le déploiement.
-- Gardez les identifiants d'auteur de base, les jetons proxy et les en-têtes transférés hors des
-  config engagée.
+- Restreindre les itinéraires de peer-to-peer, Torii, de télémétrie et d'opérateur en fonction de l'environnement.
+- Utilisez VPNs, des pare-feu, des proxies inversées, la terminaison de TLS et les limites de taux lorsque cela est approprié pour le déploiement.
+- Gardez les identifiants d'auteur de base, les jetons proxy et les en-têtes renvoyés hors config engagés.
 - Teste que les clients non autorisés ne peuvent pas atteindre des itinéraires restreints.
 
-Vous voyez ? [Réseaux privés virtuels](/fr/guide/security/vpn.md) et
-[Torii Les points de fin](/fr/reference/torii-endpoints.md).
+Voir [Réseaux privés virtuels](/fr/guide/security/vpn.md) et [ Torii Les points de fin ](/fr/reference/torii-endpoints.md).
 
-## Surveillance de la fraude et des abus {#fraud-and-abuse-monitoring}
+## La surveillance de la fraude et des abus {#fraud-and-abuse-monitoring}
 
-- Surveiller les événements du registre et les signaux opérationnels pour des actifs inattendus
-  les mouvements, les autorisations accordées, les changements de déclencheur, les modifications des pairs et répétées
-  les transactions rejetées.
-- Préserver des preuves avec les hashes de transaction, la hauteur du bloc, les enregistrements d'événements,
-  des journaux et des instantanés de statut.
-- Alertes de route aux responsables de la sécurité, des opérations et des propriétaires d'entreprises
-  pour les actifs ou les flux de travail concernés.
+- Surveiller les événements du registre et les signaux opérationnels pour le mouvement inattendu des actifs, l'octroi d'autorisations, les modifications de déclencheurs, les changements par rapport aux autres et les transactions rejetées répétées.
+- Préserver les preuves avec des hashes de transaction, des hauteurs de bloc, des enregistrements d'événements, des journaux et des instantanés d'état.
+- Alertes de route à la sécurité, aux opérations et aux propriétaires d'entreprises responsables des actifs ou des flux de travail touchés.
 
-Vous voyez ? [Surveillance des fraudes](/fr/guide/security/fraud-monitoring.md).
+Voir [La surveillance de la fraude ](/fr/guide/security/fraud-monitoring.md).
 
-## Garde de l'agent et de l'automatisation {#agent-and-automation-guardrails}
+## Garde de l'agent et des machines d'automatisation {#agent-and-automation-guardrails}
 
-- Démarrez l'automatisation avec des autorisations de lecture uniquement et ajoutez une autorisation d'écriture uniquement
-  une fois que le flux de travail a été examiné.
-- Exiger l'approbation humaine explicite pour les mutations du réseau en direct, sauf si le
-  L'automatisation est un service de production déployé délibérément.
-- N'exposez pas les clés privées aux instructions de l'agent.
-  les secrets des variables environnementales, des chaînes de clés, des signataires matériels ou
-  les fichiers de configuration ont été ignorés.
-- Décisions d'automatisation du journal de manière à soutenir les audits sans fuite
-  Le matériel secret.
+- Commencez l'automatisation avec des autorisations de lecture uniquement et ajoutez l'autorité d'écriture seulement après avoir examiné le flux de travail.
+- Exiger une approbation humaine explicite pour les mutations du réseau en direct, sauf si l'automatisation est un service de production déployé délibérément.
+- N'exposez pas les clés privées aux demandes d'agent. Utilisez un code local qui charge des secrets de variables environnementales, chaînes-clés, signatures matérielles ou fichiers de configuration ignorés.
+- Les décisions d'automatisation des journaux de manière à soutenir les audits sans fuite de matériel secret.

@@ -6,44 +6,42 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Нэвтрүүлэг Iroha 3 {#install-iroha-3}
+# Iroha 3 байгууламж {#install-iroha-3}
 
-Энэ хуудас нь одоогийн монтаж ажлын урсгалыг Iroha 3 хэрэгслийн сүлжээ
-болон урсгалын өмнөд хэсгийг ашиглаж буй хошуу `hyperledger-iroha/iroha` Ажлын газар.
+Энэ хуудас нь Iroha 3 төхөөрөмжийн сүлжээ болон `hyperledger-iroha/iroha` урсгалын өмнө ажиллах талбайг ашиглаж байгаа бинарын одоогийн монтажтын ажлын урсгалг хамардаг.
 
-## 1.Төрийн шаардлага {#_1-prerequisites}
+## 1.Өргөдлийн шаардлага {#_1-prerequisites}
 
-Хамгийн түрүүнд тэдгээрийг тавиарай:
+Хамгийн түрүүнд тэдгээрийг байлгаарай:
 
-- [rustup](https://www.rust-lang.org/tools/install), Тиймээс
-  `rust-toolchain.toml` хэрэгслийн сүлжээ (`1.93.1`) нь автоматжуулалтад оршино
+- [rustup](https://www.rust-lang.org/tools/install), тиймээс тавигдсан `rust-toolchain.toml` хэрэгслийн сүлжээ (`1.93.1`) нь автоматжуулалтад оршино
 - `git`
-- сонголттайгаар, Docker болон Docker Compose орон нутгийн олон түвшний хурдны шуурхай
+- Docker болон Docker Compose нь орон нутгийн олон түвшний хурдны шуурхай хөдөлгөөн
 
-## 2. Ажлын байрны клоныг хий {#_2-clone-the-workspace}
+## 2. Үйлдвэрлэлийн орон замыг клоонлах {#_2-clone-the-workspace}
 
 ```bash
 git clone https://github.com/hyperledger-iroha/iroha.git
 cd iroha
 ```
 
-## 3. Үйл ажиллагааны газар байгуулаарай {#_3-build-the-workspace}
+## 3. Ажлын байр бариарай {#_3-build-the-workspace}
 
-Бүх зүйлийг бүтээн байгуулах:
+Бүх зүйлийг бариарай:
 
 ```bash
 cargo build --workspace
 ```
 
-Тодруулбал, томоохон бинардыг:
+Операторуудад төвлөрсөн жижиг бүтээн байгуулалтын хувьд зөвхөн үндсэн бинардыг оруулах:
 
 ```bash
 cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ```
 
-Үүнээс үүдэлтэй бинар нь: `target/debug/` эсвэл `target/release/`.
+Энэ нь `target/debug/` эсвэл `target/release/` дугаарт бичигддэг байна.
 
-## 4. Нэвтрүүлсэн хэрэгслийг шалгаарай {#_4-verify-the-installed-tools}
+## 4. Тавигдсан хэрэгслийг шалгаарай. {#_4-verify-the-installed-tools}
 
 ```bash
 cargo run --bin irohad -- --help
@@ -53,17 +51,15 @@ cargo run --bin kagami -- --help
 
 Та ихэвчлэн ашигладаг гурван бинар нь:
 
-- `irohad` Эрдэнэт даймон
-- `iroha` . CLI нэвтрэх Torii үйл ажиллагаа эрхлэгчдийн төгсгөлийн
-- `kagami` түлхүүр, генезисийн тэмдэгт болон локаль сүлжээний хувилбар
+- `irohad` өрсөлдөгч даймон
+- `iroha` нь CLI-ийн Torii болон үйл ажиллагаа эрхлэгчдийн төгсгөлийн цэг дээр .
+- `kagami` нөөц, генезисийн тэмдэг болон локалийн сүлжээний хувилбар
 
-## 5. Орон нутгийн сүлжээ болон Docker Зам {#_5-optional-localnet-and-docker-path}
+## 5. Локалийн сүлжээ болон Docker замыг сонгох боломжтой {#_5-optional-localnet-and-docker-path}
 
-Одоогийн эх үүсвэрээр дэмжлэг үзүүлж буй локаль сүлжээний урсгал нь Kagami. Энэ нь ижил төстэй бичиг
-Config, Genesis артефакт, клиент конфигурац, туслах скрипт болон сонголттой
-Тавигдсан кодтой нийцсэн файлыг бичнэ:
+Одоогийн эх үүсвэрийн дэмжлэгтэй lokalnet урсгалыг Kagami бий болгодог. Энэ нь ижил төстэй конфигурац, генез артефакт, үйлчлүүлэгч конфигураци, туслах скрипт болон шалгарсан кодтой нийцсэн сонголттой Compose файл бичдэг:
 
-- `kagami localnet` орон нутгийн ижил хүйстүүний зохиолд зориулсан
-- `kagami docker` . Docker Compose Localnet захиалгаас үүссэн
+- `kagami localnet` орон нутгийн өргөн зохиолд зориулсан
+- `kagami docker` нь Docker Compose-ийн хувьд локалийн сүлжээний захиалгаас үүссэн
 
-Цаашид [Нэвтрүүлэг Iroha 3](/mn/get-started/launch-iroha.md).
+[Иргүүлэлт Iroha 3](/mn/get-started/launch-iroha.md)-ийг үргэлжлүүлээрэй.

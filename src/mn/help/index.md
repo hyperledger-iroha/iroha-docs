@@ -6,12 +6,10 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Даатгалыг хүлээн ав {#receive-support}
+# дэмжлэг үзнэ {#receive-support}
 
-Заримдаа та Iroha Та бусадтай дэлгэрэнгүй ярилцахыг хүсч байгаа. GitHub.
+Цаашид та заримдаа Iroha Та бусадтай дэлгэрэнгүйээр ярилцахыг хүсч байгаа. Telegram, Discord болон GitHub.
 
-Нийгмийн хэрэглээ [Телеграм](https://t.me/hyperledgeriroha) болон
-[LF Decentralized Trust Хөгдөлмөр](https://discord.gg/hyperledger) .
-харилцаа холбоо. `iroha` Төслийн асуултын канал.
+Нийгэм харилцааны хувьд [Telegram](https://t.me/hyperledgeriroha) болон [ LF Decentralized Trust Discord](https://discord.gg/hyperledger)-ийг ашигладаг. Төслийн асуултад `iroha` -ийн канал ашигладаг.
 
-Эцэст нь та чадна [. GitHub асуудал](https://github.com/hyperledger-iroha/iroha/issues/new/choose), бичиг баримтыг шинэчлэх хүсэлт, гол багтай холбоотой санал эсвэл та олж авсан алдаа юм уу.
+Эцсийн эцэст, та [ GitHub асуудал](https://github.com/hyperledger-iroha/iroha/issues/new/choose) үүсгэж болно. Энэ бол баримт бичгийг шинэчлэх хүсэлт, үндсэн багийн санал эсвэл таны олж авсан алдаа юм уу.

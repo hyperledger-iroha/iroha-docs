@@ -32,7 +32,7 @@ cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 target/release/kagami localnet --build-line iroha3 --peers 4 --out-dir ./localnet
 ```
 
-Сығарылыш каталогы барлыҡҡа килгән `genesis.json`, `genesis.signed.nrt`, тиңдәштәре `config.toml` файлдар, `client.toml`, ярҙамсы сценарийҙар, һәм барлыҡҡа килгән `README.md` был төркөмдөң теүәл бойороҡтары менән.
+Сығарылыш каталогында `genesis.json`, `genesis.signed.nrt`, peer `config.toml` файлдары, `client.toml`, ярҙамсы скрипттар һәм был пакет өсөн теүәл командалар менән генерированный `README.md` тупланған.
 
 ## 3. Дуҫтар менән аралаша башлағыҙ {#_3-start-peers}
 
@@ -42,7 +42,7 @@ target/release/kagami localnet --build-line iroha3 --peers 4 --out-dir ./localne
 ./localnet/start.sh
 ```
 
-Әгәр һеҙ һәр бер-береһе менән процестар менеджерҙы тапшырырға кәрәк, мәҫәлән systemd, Ҡуллана башлау командаһы теркәлгән `./localnet/README.md` Һәр бер яҡташы өсөн, һәр бер яҡташының `config.toml`, шәхси асҡыс, һаҡлау каталогы һәм порттар айырым.
+Әгәр һеҙ һәр Peer-ты systemd кеүек процестар менеджерына тоташтырырға кәрәк икән, һәр Peer өсөн `./localnet/README.md` -та теркәлгән старт командаһын ҡулланығыҙ. Һәр Peer-тың `config.toml`, шәхси асҡысын, һаҡлау каталогын һәм порттарын айырым һаҡлағыҙ.
 
 ## 4. Сеть менән идара итеү {#_4-operate-the-network}
 
@@ -67,4 +67,4 @@ target/release/iroha --config ./localnet/client.toml --output-format text ops su
 - Torii экспозиция, база авт, TLS һәм тиҙлеген сикләү өсөн кире прокси йәки янғын диуарын ҡулланығыҙ.
 - Генезис йәки консенсус топологияһына үҙгәрештәрҙе координацияланған миграциялар тип ҡарағыҙ, бер-бер файл редакцияһын түгел.
 
-Контейнерлаштырылған урындағы үҫеш өсөн, ҡулланыу [Ҡулланыу Iroha 3](../../get-started/launch-iroha.md) Docker Compose эш процесы.
+Контейнерлаштырылған урындағы үҫеш өсөн [Launch Iroha 3](../../get-started/launch-iroha.md) Docker Compose эш аҙымын ҡулланығыҙ.

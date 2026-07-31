@@ -8,44 +8,35 @@ translation_engine: nllb-200-ct2
 
 # Les meilleures pratiques {#best-practices}
 
-Cette section recueille des lignes directrices orientées vers la production pour Iroha Applications
-Il est organisé par la décision que vous devez prendre, et non par le
-fonctionnalité qui arrive à l'implémenter.
+Cette section recueille des lignes directrices orientées vers la production pour les applications et les réseaux Iroha.
 
-Utilisez-le comme liste de contrôle avant une répétition testnet partagée, une production
-ou une libération de client majeur.
+Utilisez-le comme une liste de contrôle avant une répétition partagée du testnet, un lancement de production ou une sortie majeure pour le client.
 
-## Catégories {#categories}
+## Les catégories {#categories}
 
-| Catégorie                                                | Concentrez-vous                                                                                                  |
+|Catégorie |Concentrez-vous .|
 | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| [Développement des applications](./application-development.md) | Configuration du client, soumission de transaction, répétitions, événements, requêtes et développement assisté par l'agent |
-| [Modélisation des données](./data-modeling.md)                     | Domaines, comptes, actifs NFTs, les métadonnées, les données hors chaîne et les conventions de dénomination                      |
-| [Déploiement du réseau](./network-deployment.md)           | Genèse, topologie, clés de pair, Torii exposition, réglages de consensus et séparation environnementale           |
-| [Opérations](./operations.md)                           | Observabilité, annuaires d'exécution, sauvegardes, gestion des changements, contrôle de la capacité et traitement des incidents            |
-| [Sécurité et accès](./security-and-access.md)         | Traitement secret, autorisations, comptes techniques, accès au réseau et pistes d'audit                     |
-| [La préparation à la libération](./release-readiness.md)             | réseau local, Taira, Minamoto, contrôles de compatibilité, garanties du réseau en direct et planification du retour        |
+| [Développement des applications ](./application-development.md) |Configuration du client, soumission de transaction, répétitions, événements, requêtes et développement assisté par l'agent |
+| [Modélisation des données ](./data-modeling.md) |Domaines, comptes, actifs, NFTs, métadonnées, données hors chaîne et conventions de dénomination |
+| [Déploiement du réseau ](./network-deployment.md) |Genèse, topologie, clés de pair, exposition Torii, réglages de consensus et séparation environnementale |
+| [Les opérations](./operations.md) |Observabilité, annuaires d'exécution, sauvegardes, gestion des changements, contrôle de la capacité et traitement des incidents |
+| [Sécurité et accès ](./security-and-access.md) |Traitement secret, permissions, comptes techniques, accès au réseau et pistes d'audit |
+| [Prêt à être libéré ](./release-readiness.md) |Localnet, Taira, Minamoto, vérification de la compatibilité, garanties du réseau en direct et planification du retour |
 
-## Règles de coupe croisée {#cross-cutting-rules}
+## Règles en matière de coupe croisée {#cross-cutting-rules}
 
-- Maintenir le développement local, le testnet partagé et la configuration de production
-  séparés.
-- Traitez la génèse, la topologie des pairs, la politique de l'exécuteur et le matériel clé comme
-  des artefacts de déploiement contrôlés.
-- Modèle de l'état du registre durable intentionnellement.
-  un point de dumping pour les données importantes, privées ou à fort débit.
-- Soumettre des transactions par le biais de flux de travail idempotent qui peuvent gérer
-  Le rejet, l'expiration, les nouvelles tentatives et le retard.
-- Préférer des autorisations étroites, des comptes techniques dédiés et explicites
-  les annuaires opérationnels sur un large accès à l'administrateur.
-- Prouvez d'abord le comportement sur un réseau local jetable, puis répétez sur
-  Taira ou un autre réseau de test partagé avant toute opération du réseau principal.
+- Garder le développement local, le réseau de test partagé et la configuration de production séparés.
+- Traiter la génèse, la topologie des pairs, la politique de l'exécuteur et le matériel clé comme des artefacts de déploiement contrôlés.
+- Ne pas utiliser les métadonnées comme point de dumping pour des données volumineuses, privées ou à fort rendement.
+- Soumettez des transactions à travers des flux de travail idempotent qui peuvent gérer le rejet, l'expiration, les renouvellements et l'état retardé.
+- Préférer les autorisations étroites, les comptes techniques dédiés et les annuaires d'exploitation explicites à un large accès de l'administrateur.
+- Prouver d'abord le comportement sur un réseau local jetable, puis répéter sur Taira ou sur un autre réseau de test partagé avant toute opération du réseau principal.
 
 ## Références connexes {#related-references}
 
-- [Configuration et gestion](/fr/guide/configure/overview.md)
-- [Sécurité](/fr/guide/security/)
+- [Configuration et gestion ](/fr/guide/configure/overview.md)
+- [La sécurité ](/fr/guide/security/)
 - [Performance et métriques](/fr/guide/advanced/metrics.md)
-- [Matrice de compatibilité](/fr/reference/compatibility-matrix.md)
-- [Torii Les points de fin](/fr/reference/torii-endpoints.md)
-- [Les jetons d'accès](/fr/reference/permissions.md)
+- [Matrice de compatibilité ](/fr/reference/compatibility-matrix.md)
+- [Torii Points d'arrêt](/fr/reference/torii-endpoints.md)
+- [Des jetons d'autorisation ](/fr/reference/permissions.md)

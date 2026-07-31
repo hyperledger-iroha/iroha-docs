@@ -114,7 +114,7 @@ account_rabbit --> asset_rose : may receive balance
 
 ## Əlifbalar {#aliases}
 
-API, CLI, cüzdan və kəşfçi sərhədlərində faydalıdırlar, lakin kanonik IDs ciddi kitab sahələrində saxlanan sabit identifikatorlardır.
+Əksi adlar kanonik kitabxana identifikatorlarının üstündə təbəqələnmiş insan üzü olan adlardır. Onlar API, CLI, cüzdan və kəşfçi sərhədlərində faydalıdırlar. Lakin kanonik IDs sabit identifikatorlar olaraq qalır və ciddi kitabxana sahələrində saxlanılır.
 
 |Hədəf |Kanonik hədəf |Alias əslən |Dəstəklənmə modeli |
 | -------------- | --------------------------------------------------- | ------------------------------------------------------ | ----------------------------------------------------------------------------- |

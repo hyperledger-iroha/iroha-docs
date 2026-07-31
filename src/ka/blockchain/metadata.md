@@ -8,8 +8,7 @@ translation_engine: nllb-200-ct2
 
 # მეტა მონაცემები {#metadata}
 
-Metadata არის შეამოწმებული გასაღები ღირებულება რუკა მიერთებული ლეჯერი ობიექტების. გასაღები არიან
-`Name` ღირებულებები და ფასეულობები JSON (`Json`) სასარგებლო ტვირთები.
+Metadata არის გადამოწმებული საკვანძო ღირებულების რუკა, რომელიც მიმაგრებულია წიგნის ობიექტებთან. საკვანჭეები არის `Name` მნიშვნელობები და მნიშვნელობები არიან JSON (`Json`) სასარგებლო ტვირთები .
 
 შემდეგ ობიექტებს შეუძლიათ მიიტანონ მეტა მონაცემები:
 
@@ -19,21 +18,16 @@ Metadata არის შეამოწმებული გასაღებ
 - აქტივების განმარტებები
 - NFTs
 - RWAs
-- გამამოძრავებელი
+- გამომწვევი
 - ოპერაციები
 
-გამოიყენეთ მეტა მონაცემები მცირე აღწერილობის ან ინდექსირების ველებისთვის, რომლებიც მოხვდებიან მთავარ წიგნში
-დიდი სასარგებლო ტვირთების შენახვა უნდა მოხდეს WSV და მითითებულია a
-საჭმლის მონელება, URI, ან SoraFS გზას.
+გამოიყენეთ მეტა მონაცემები მცირე აღწერილობის ან ინდექსირების ველებისთვის, რომლებიც მოეკუთვნებიან მთავრობის მდგომარეობაში. დიდი სასარგებლო ტვირთები უნდა იყოს შენახული WSV-ის გარეთ და მითითებული დიგესტით, URI ან SoraFS გზაზე.
 
-მითითებების მისაღებად მეტა მონაცემების, აქტივების, NFTs, RWAs, ან ჯაჭვის გარეთ
-შენახვა, იხილეთ
-[მეტა მონაცემები და ლეჯერის შენახვის არჩევანი](/ka/guide/configure/metadata-and-store-assets.md).
+მითითებისთვის, თუ როგორ უნდა აირჩიოთ მეტა მონაცემები, აქტივები NFTs, RWAs ან სათავსო ქსელის გარეთ, იხილეთ [ მეტა მონაცემებისა და ლიდერის შენახვის არჩევანი](/ka/guide/configure/metadata-and-store-assets.md).
 
-## სცადე. Taira {#try-it-on-taira}
+## სცადეთ Taira {#try-it-on-taira}
 
-Metadata ჩანს ნორმალური რესურსის წაკითხვა. ეს ბრძანება ჩამონათვალებს Taira
-აქტივების განმარტებები, რომლებსაც ამჟამად აქვთ მეტა მონაცემები:
+Metadata ჩანს ნორმალური რესურსის წაკითხვის მეშვეობით. ეს ბრძანება ჩამოთვლის Taira აქტივების განმარტებები, რომლებსაც ამჟამად აქვთ მეტა მონაცემები:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=100' \
@@ -42,7 +36,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=100' \
     | {id, name, metadata}'
 ```
 
-გამოიყენეთ იგივე ნიმუში დომენებისა და ანგარიშებისთვის:
+გამოიყენეთ იგივე ნიმუში დომენებისა და ანგარიშებისათვის:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
@@ -52,26 +46,20 @@ curl -fsS 'https://taira.sora.org/v1/accounts?limit=20' \
   | jq '.items[] | select((.metadata // {} | length) > 0)'
 ```
 
-ცარიელი გამოშვების შეფასება, როგორც მოქმედი შედეგის. ეს ნიშნავს მიმდინარე გვერდის Taira
-ობიექტები არ შეიცავს მეტა მონაცემებს, არა ის, რომ საბოლოო წერტილი ჩავარდა.
+ცარიელი გამოშვების შეფასება როგორც ვალიდური შედეგი. ეს ნიშნავს, რომ Taira ობიექტების მიმდინარე გვერდზე არ არის მეტა მონაცემები, არა ის, რომ საბოლოო წერტილი წარუმატებელია.
 
-## მეტა მონაცემების განახლება {#updating-metadata}
+## Metadata- ს განახლება {#updating-metadata}
 
-მეტა მონაცემები შეიცვლება Iroha სპეციალური ინსტრუქციები:
+მეტა მონაცემები შეიცვლება Iroha სპეციალური ინსტრუქციით:
 
-- [`SetKeyValue`](/ka/blockchain/instructions.md#setkeyvalue-removekeyvalue)
-  ჩადება ან შეცვლა გასაღები
-- [`RemoveKeyValue`](/ka/blockchain/instructions.md#setkeyvalue-removekeyvalue)
-  ამოიღებს გასაღებას
+- [`SetKeyValue`](/ka/blockchain/instructions.md#setkeyvalue-removekeyvalue) ჩასვამს ან შეცვლის გასაღებს
+- [`RemoveKeyValue`](/ka/blockchain/instructions.md#setkeyvalue-removekeyvalue) ამოიღებს გასაღებელს
 
-ტრანზაქციის წარდგენის ორგანოს უნდა ჰქონდეს მოთხოვნილი ნებართვა
-აქტიური runtime validator- ის მიერ. გათვალისწინებული ნებართვის ზედაპირისათვის იხილეთ
-[ნებართვის ტოქნები](/ka/reference/permissions.md).
+ტრანზაქციის წარდგენის ორგანოს უნდა ჰქონდეს აქტიური runtime validator-ის მიერ მოთხოვნილი ნებართვა. გათვალისწინებული ნებართვის ზედაპირისთვის იხილეთ [ Permission Tokens](/ka/reference/permissions.md).
 
 ## მოვლენები {#events}
 
-მონაცემთა მოვლენები გამონაბეჭდილია, როდესაც მეტატალღები იცვლება. ზოგადი მოვლენის სასარგებლო ტვირთი არის
-`MetadataChanged<Id>`:
+მონაცემთა მოვლენების გამონაბეჭდილება ხდება, როდესაც მეტა მონაცემები იცვლება. ზოგადი მოვლენის სასარგებლო ტვირთი არის `MetadataChanged<Id>`:
 
 ```mermaid
 classDiagram
@@ -93,22 +81,10 @@ MetadataChanged --> AssetDefinitionMetadataChanged
 MetadataChanged --> DomainMetadataChanged
 ```
 
-გამოყენება [მონაცემთა მოვლენების ფილტრები](/ka/blockchain/filters.md#data-event-filters) დაწვრილებით
-გაფორმება მხოლოდ ერთეულობის ტიპის ან ობიექტის მეტა მონაცემთა მოვლენებზე ID რომ
-ინტეგრაციის საკითხები.
+გამოიყენეთ [ მონაცემთა მოვლენების ფილტრები ](/ka/blockchain/filters.md#data-event-filters) მხოლოდ ინტეგრაციისათვის მნიშვნელოვანი სუბიექტის ტიპის ან ობიექტის ID მეტაანალიზებული მოვლენების გამოწერისთვის.
 
 ## კითხვები {#queries}
 
-Metadata ბრუნდება როგორც ნაწილი შეკითხული ობიექტის. მაგალითად, გამოყენება
-[`FindAccountById`](/ka/reference/queries.md#accounts-and-permissions),
-[`FindDomainById`](/ka/reference/queries.md#domains-and-peers), ან
-[`FindAssetDefinitionById`](/ka/reference/queries.md#assets-nfts-and-rwas).
-გამოყენება [`FindNfts`](/ka/reference/queries.md#assets-nfts-and-rwas) ან
-[`FindNftsByAccountId`](/ka/reference/queries.md#assets-nfts-and-rwas) სამედიცინო
-NFTs, და [`FindRwas`](/ka/reference/queries.md#assets-nfts-and-rwas) სამედიცინო RWA
-შემდეგ წაიკითხეთ ობიექტის მეტა მონაცემთა ველი. NFT შეკითხვის პასუხები გამოყოფს
-NFT `content` რუკა როგორც ჩანაწერის მეტა მონაცემები.
+მეტა მონაცემები დაბრუნებულია როგორც გამოკითხული ობიექტის ნაწილი. მაგალითად, გამოიყენეთ [`FindAccountById`](/ka/reference/queries.md#accounts-and-permissions), [`FindDomainById`](/ka/reference/queries.md#domains-and-peers) ან [`FindAssetDefinitionById`](/ka/reference/queries.md#assets-nfts-and-rwas). გამოიყენეთ [`FindNfts`](/ka/reference/queries.md#assets-nfts-and-rwas) ან [`FindNftsByAccountId`](/ka/reference/queries.md#assets-nfts-and-rwas) NFTs, და [`FindRwas`](/ka/reference/queries.md#assets-nfts-and-rwas) RWA ლოტებისთვის. შემდეგ წაიკითხეთ ობიექტის მეტა მონაცემთა ველი. NFT შეკითხვის პასუხები გამოყოფს NFT `content` რუკას როგორც ჩანაწერის მეტაანალიზებას.
 
-მეტა მონაცემთა საკვანძოები არის ნაწილი ლიდერის მდგომარეობა, ასე რომ შეინარჩუნოთ ისინი სტაბილური და თავიდან აიცილეთ
-კოდირების აპლიკაციის სპეციფიკური ვერსია churn საკვანძო სახელში, როდესაც JSON
-ამ ვერსია შეიძლება იყოს მკაფიოდ.
+Metadata საკვანძოები არიან ნაწილი ლიდერის მდგომარეობა, ასე რომ შეინარჩუნოს ისინი სტაბილური და თავიდან ავიცილოთ კოდირება პროგრამის სპეციფიკური ვერსია churn საკვანჭო სახელწოდებაში, როდესაც JSON ღირებულება შეიძლება შეიცავდეს ეს ვერსია მკაფიოდ.

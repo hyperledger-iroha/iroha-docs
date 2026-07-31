@@ -6,26 +6,24 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Эхлэлд бичсэн {#genesis-reference}
+# Женезийн өгүүлэл {#genesis-reference}
 
-Одоогийн байдлаар Iroha 3 ажлын урсгал, `genesis.json` manifest нь анхны
-сүлжээг эхлүүлэх үед хэрэглэх гүйлгээ, параметр.
+Одоогийн Iroha 3 ажлын урсгалд `genesis.json` манфист нь сүлжээг эхлүүлэх үед хэрэглэх анхны гүйлгээ, параметрүүдийг тодорхойлж байна.
 
-Хэдэн үеийнхэнд тараасан гарын үсэг зурсан артефакт нь Norito- кодлогдсон `.nrt` файл
-үйлдвэрлэсэн `kagami genesis sign`.
+Norito-ийн кодтой `.nrt` файл нь `kagami genesis sign` үйлдвэрлэсэн гарын үсэг зурсан артефакт юм.
 
 ## Үндсэн талбар {#main-fields}
 
-Женезисийн манифест нь:
+Женезисийн манифест тодорхойлох боломжтой:
 
-- `chain` зангилын тодруулагч
-- `executor` сонголттой гүйцэтгэгч шинэчлэл байткодын замыг
-- `ivm_dir` . IVM түлхүүр болон шинэчлэлүүдээр ашиглагддаг номын сан
-- `consensus_mode` гарын тэмдэгтээр зарласан эхлүүлэх хэлбэр
-- `transactions` Параметр шинэчлэл, заавар, триггер болон топологийн дараалал
+- `chain` сүлжээний тодруулгын хувьд
+- `executor` сонголттой гүйцэтгэгч шинэчлэлийн байткод замыг
+- `ivm_dir` нь IVM номын сангийн үйл ажиллагааг эхлүүлэх болон шинэчлэл хийхэд ашигладаг
+- `consensus_mode` анхан шатны хэв маягт зарласан
+- `transactions` нь параметр шинэчлэл, заавар, хөдөлгөөн үүсгэгчид болон топологийн дараалалтай
 - `crypto` эхлүүлэх крипто урсгалын хувьд
 
-Дотооддоо `transactions`, Топологийн бүртгэлүүд, PoPs хамтдаа:
+`transactions` дотроо топологийн бүртгэлүүд нь өрсөлдөгчийн ID болон PoPs-ийн хамтдаа:
 
 ```json
 {
@@ -36,7 +34,7 @@ translation_engine: nllb-200-ct2
 
 ## Үргэлж гаргах {#generate-a-manifest}
 
-Хэрэглээ Kagami загварыг үүсгэхэд:
+Kagami -ийг ашиглан загварыг бүтээх:
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
@@ -45,13 +43,11 @@ cargo run -p iroha_kagami -- genesis generate \
   --genesis-public-key <PUBLIC_KEY> > genesis.json
 ```
 
-Олон нийтэд зориулсан SORA Nexus өгөгдлийн орон зай, `npos` бол хүлээсэн санал нэгдлийн хэв маяг юм.
-Бусад Iroha 3 Хөдөлмөрийн хэрэгслийг ашиглах боломжтой
-Профиль.
+Олон нийтийн SORA Nexus өгөгдлийн орон зайд, `npos` бол хүлээгдсэн тохиролцооны хэв маяг юм. бусад Iroha 3 нэвтрүүлэгүүд нь зорилтын профилийн дагуу зөвшөөрөлтэй эсвэл NPoS-ийг ашиглаж болно.
 
-## "Монифест"-д гарын үсэг зурна {#sign-the-manifest}
+## Бүртгэлд гарын үсэг зурна {#sign-the-manifest}
 
-УИХ-ын гишүүн Б. JSON, нэвтрүүлэх боломжтой `.nrt` Блок:
+JSON-ийг зохицуулж, баталгаажуулсан дараа ашиглах боломжтой `.nrt` блок руу гарын үсэг зур:
 
 ```bash
 cargo run -p iroha_kagami -- genesis sign genesis.json \
@@ -59,13 +55,11 @@ cargo run -p iroha_kagami -- genesis sign genesis.json \
   --out-file genesis.signed.nrt
 ```
 
-`kagami genesis sign` нэвтрүүлэгт нийтлэг ач холбогдол бүхий гениз уншдаг
-нэвтрүүлэг хийх боломжтой гарын үсэг зурсан хувийн ач холбогдол, үр тариалан, алгоритм
-Үр дүн нь өрсөлдөгчдийн конфигураасаа дурдсан файл юм.
+`kagami genesis sign` нь генезисийн олон нийтийн түлхүүрг манифестээс уншдаг бөгөөд нэвтрүүлэх боломжтой гарын үсэг зурсан блок үйлдвэрлэхэд зориулсан хувийн түлх, үр тариа, алгоритмыг ашиглаж байна.
 
-## Тодруул `irohad` {#configure-irohad}
+## `irohad` тохируулалт {#configure-irohad}
 
-Дэммонг гарын үсэг зурсан Женезисийн блок руу чиглүүлэх:
+Даемонг гарын үсэг зурсан Женезисийн блок руу чиглүүлж:
 
 ```toml
 [genesis]
@@ -73,7 +67,7 @@ file = "genesis.signed.nrt"
 public_key = "<PUBLIC_KEY>"
 ```
 
-## Холбогдсон хэрэгсэл {#related-tools}
+## Үүнтэй холбоотой хэрэгсэл {#related-tools}
 
 - `kagami genesis validate`
 - `kagami genesis normalize`
@@ -81,5 +75,4 @@ public_key = "<PUBLIC_KEY>"
 - `kagami localnet`
 - `cargo xtask kagami-profiles`
 
-Generator-ын хэрэгжилт болон командын дэлгэрэнгүй мэдээллийг
-[Kagami README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_kagami/README.md).
+Женерарын хэрэгжилт, командлалтын дэлгэрэнгүй мэдээллийг [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_kagami/README.md) хаягаар үзнэ үү.

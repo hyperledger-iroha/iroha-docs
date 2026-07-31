@@ -8,10 +8,6 @@ translation_engine: nllb-200-ct2
 
 # ဒေတာပုံစံ အစီအစဉ် {#data-model-schema}
 
-ဤစာမျက်နှာသည် `kagami advanced schema` ပိတ်ထားတဲ့အပိုင်းကနေ
-[`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha)
-စာရွက်စာတမ်းများအား ပြန်လည်သုံးသပ်ခြင်း
-ဤသိုလှောင်ရုံတွင် စစ်ဆေးထားသည် ပုံမှန်စာရွက်စာတမ်း builds များအတွက်လိုအပ်ခြင်းမရှိ
-တစ် Iroha အရင်းအမြစ် စစ်ဆေးမှု။
+ဤစာမျက်နှာသည် `kagami advanced schema` နှင့်အတူထုတ်လုပ်ထားသည်။ စာရွက်စာတမ်းပြုပြင်မှု လုပ်ငန်းစဉ်တွင် မှတ်တမ်းတင်ထားသော [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) ပြုပြင်ချက်မှတစ်ဆင့်ဖြစ်သည်။ ပြဌာန်းထားသော snapshot ကိုဤ repositori တွင်စစ်ဆေးခြင်းဖြစ်သည်၊ ထို့ကြောင့် ပုံမှန်စာရွက်စာတမ်းတည်ဆောက်မှုများသည် Iroha အရင်းအမြစ် စစ်ဆေးမှုကို မလိုပါ။
 
 <DataModelSchema />

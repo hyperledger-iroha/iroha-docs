@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # NFTs {#nfts}
 
-სააგენტო Iroha NFT არის უნიკალური ლიდერის ობიექტი ერთი მფლობელის. გამოიყენეთ NFTs როდესაც ჩანაწერს სჭირდება საკუთარი იდენტობა, მეტა მონაცემები, სიცოცხლის ციკლის მოვლენები და საკუთრების გადაცემის სემანტიკა, მაგრამ არ საჭიროებს რიცხვობრივ ბალანსს.
+Iroha NFT არის უნიკალური წიგნის ობიექტი, რომელსაც აქვს ერთი მფლობელი. გამოიყენეთ NFTs როდესაც ჩანაწერი სჭირდება საკუთარი იდენტობა, მეტა მონაცემები, ცხოვრების ციკლის მოვლენები და საკუთრების გადაცემის სემანტიკა, მაგრამ არ საჭიროებს რიცხვობრივ ბალანსს.
 
 განსხვავებით რიცხვებისაგან. [აქტივი](/ka/blockchain/assets.md), დასახელება NFT არ აქვს სიზუსტე, მძლავრობა ან რაოდენობა ერთ ანგარიშზე. NFT არსებობს, როგორც ერთი რეგისტრირებული ობიექტი და საკუთრებაში შედის პირდაპირ ამ ობიექტზე.
 
@@ -20,7 +20,7 @@ translation_engine: nllb-200-ct2
 - `content`: მეტაანახები, რომლებიც აღწერენ NFT
 - `owned_by`: ანგარიში, რომელიც ფლობს NFT
 
-სააგენტო `content` ველი არის a `Metadata` რუკა. შეინახეთ იგი კომპაქტური: შენახვა აღწერადი ველები, სტაბილური რეფერენციები, hashes, URIs, ან SoraFS შეინახეთ დიდი დოკუმენტები, მედია ან მაღალი მოცულობის აპლიკაციების სახელმწიფო off-chain და ინახება მხოლოდ შემოწმებადი მინიშნება NFT.
+`content` ველი არის `Metadata` რუკა. შეინახეთ იგი კომპაქტურად: შეინახეთ აღწერილ ველები, სტაბილური რეფერენციები, ჰაშები, URIs ან SoraFS გზები იქ. შეინახე დიდი დოკუმენტები, მედია ან მაღალი მოცულობის აპლიკაციის სახელმწიფო off-chain და შეინახე მხოლოდ შემოწმებადი რეფერენცია NFT.
 
 ## სცადეთ Taira {#try-it-on-taira}
 
@@ -38,7 +38,7 @@ curl -fsS https://taira.sora.org/openapi.json \
   | jq -r '.paths | keys[] | select(startswith("/v1/nfts") or startswith("/v1/explorer/nfts"))'
 ```
 
-ცარიელი. `items` მაჟორიტარი არის საჯარო ტესტის ქსელში მოქმედი პასუხი. ეს ნიშნავს, რომ არ არსებობს NFTs ამჟამინდელ გვერდზე, არა რომ NFT მითითებები არ არის ხელმისაწვდომი.
+ცარიელი `items` მასაჟი არის ვალიდური პასუხი საჯარო ტესტნეტზე. ეს ნიშნავს, რომ არ არსებობს NFTs მიმდინარე გვერდზე, არა ის, რომ NFT ინსტრუქციები არ არის ხელმისაწვდომი .
 
 ## NFT IDs {#nft-ids}
 
@@ -49,15 +49,15 @@ name$domain
 name$domain.dataspace
 ```
 
-მაგალითად, `badge$docs.universal` იდენტიფიცირებს `badge` NFT დაწვრილებით `docs.universal` დომენი. თუ მონაცემთა სივრცე გამორიცხულია, ამჟამინდელი პარსერი იყენებს `universal` მონაცემთა სივრცე, ასე რომ `badge$docs` განსაზღვრავს `badge$docs.universal`.
+მაგალითად, `badge$docs.universal` იდენტიფიცირებს `badge` NFT დომენში `docs.universal`. თუ მონაცემთა სივრცე გამორიცხულია, მიმდინარე პარსერი იყენებს `universal` მონაცემთა სიფართოს, ასე რომ `badge$docs` გადაწყდება `badge$docs.universal`.
 
-გამოიყენეთ სტაბილური სახელები NFT IDs. სააგენტო ID არის საგნის იდენტობა, რომელიც გამოიყენება ინსტრუქციებით, გამოკითხვებით, ნებართვებით, მოვლენების ფილტრებით და აპლიკაციის რეფერენციებით.
+გამოიყენეთ სტაბილური სახელები NFT IDs. ID არის ობიექტის იდენტობა, რომელსაც იყენებენ ინსტრუქციები, გამოკითხვები, ნებართვები, მოვლენების ფილტრები და აპლიკაციის რეფერენციები.
 
 ## სიცოცხლის ციკლი {#lifecycle}
 
 NFT სიცოცხლის ციკლის ოპერაციების გამოყენება Iroha სპეციალური ინსტრუქციები:
 
-- [`Register`](/ka/blockchain/instructions.md#un-register) ქმნის NFT საწყისი `content`.
+- [`Register`](/ka/blockchain/instructions.md#un-register) ქმნის NFT ინიციალურით `content`.
 - [`Unregister`](/ka/blockchain/instructions.md#un-register) ამოიღებს NFT.
 - [`Transfer`](/ka/blockchain/instructions.md#transfer) ცვლილებები `owned_by`.
 - [`SetKeyValue` და `RemoveKeyValue`](/ka/blockchain/instructions.md#setkeyvalue-removekeyvalue) განახლება NFT მეტა მონაცემები.
@@ -72,7 +72,7 @@ export NFT_DOMAIN=wonderland.universal
 export NFT_ID='badge_intro$wonderland.universal'
 ```
 
-გენერირებული ადგილობრივი ქსელი უკვე შედგება `wonderland.universal` და მისი SNS გაქირავება. სხვა დომენის გამოყენებისათვის, ჯერ შეიქმნას იგი დეკლარატული `app alias setup plan` და `app alias setup apply` სამუშაო მიმდინარეობა, რომელიც აღწერილია [დომენები](/ka/blockchain/domains.md#registration).
+გენერირებული ლოკალურმა ქსელმა უკვე დააყენა `wonderland.universal` და მისი SNS იჯარითი ხელშეკრულება. სხვა დომენის გამოყენების მიზნით, შეიქმნას იგი ჯერ დეკლარაციური `app alias setup plan` და `app alias setup apply` სამუშაო ნაკადი, რომელიც აღწერილია [დომენებში](/ka/blockchain/domains.md#registration).
 
 დარეგისტრირება NFT. რეგისტრაციაში იკითხება სტანდარტული შესასვლელიდან საწყისი შინაარსი JSON:
 
@@ -110,7 +110,7 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft meta remove --id "$NFT_ID" --key traits
 ```
 
-ვარიანტით გადაიტანეთ NFT. გამოყენება `ledger nft get` ამჟამინდელი მფლობელის წაკითხვა `owned_by`, და გამოყენება `ledger account list all` დანიშნულების ანგარიშის მოძიება ID.
+NFT ვარიანტულად გადაიტანეთ. გამოიყენეთ `ledger nft get` იმისთვის, რომ წაიკითხოთ მიმდინარე მფლობელი `owned_by`-დან და გამოიყენეთ `ledger account list all` მიზნობრივი ანგარიშის მოსაძებნად ID.
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -132,9 +132,9 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
 
 ## კითხვები და მოვლენები {#queries-and-events}
 
-გამოყენება [`FindNfts`](/ka/reference/queries.md#assets-nfts-and-rwas) ჩამოთვლილი NFTs და [`FindNftsByAccountId`](/ka/reference/queries.md#assets-nfts-and-rwas) ჩამოთვლილი NFTs ანგარიშის მფლობელი.
+გამოიყენეთ [`FindNfts`](/ka/reference/queries.md#assets-nfts-and-rwas), რომ ჩამოთვალოთ NFTs და [`FindNftsByAccountId`](/ka/reference/queries.md#assets-nfts-and-rwas) ანგარიშის საკუთრებაში არსებული NFTs.
 
-NFT რეგისტრაციის, წაშლის, გადაცემის და მეტა მონაცემების განახლებების გამოშვება NFT მონაცემთა მოვლენები. გამოიყენეთ `Nft` მონაცემთა მოვლენების ფილტრი, როდესაც რეგისტრაციაში ცვლილებები ან შენობა-ნაგებობები, რომლებიც რეაგირებენ NFT სიცოცხლის ციკლის მოვლენები.
+NFT რეგისტრაციის, წაშლის, გადაცემის და მეტა მონაცემების განახლებები გამოიყოფენ NFT მონაცემთა მოვლენებს. გამოიყენეთ `Nft` მონაცემთა მოვლენის ფილტრი, როდესაც გამოითვალისწინებთ ბუღალტრში ცვლილებებს ან აშენებთ გამომწვევ ფაქტორებს, რომლებიც რეაგირებენ NFT ცხოვრების ციკლის მოვლენებზე.
 
 ## ნებართვები {#permissions}
 

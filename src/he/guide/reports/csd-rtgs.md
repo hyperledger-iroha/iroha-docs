@@ -8,4 +8,4 @@ translation_engine: nllb-200-ct2
 
 # CSD/RTGS קישורים הוכחה של מושג  {#csd-rtgs-linkages-proof-of-concept}
 
-במסמך זה נאר את CSD/RTGS קישורים PoC ביצוע באמצעות Iroha. זהו פרויקט שנעשה בשיתוף פעולה עם הבנק האסיאטי לפיתוח ועם Fujitsu. R3 קורדה, Hyperledger קקטוס (קקטוס), Hyperledger בגדים ופתרונות blockchain פופולריים רבים אחרים. 
+במסמך זה נאר את CSD/RTGS קישורים PoC ביצוע באמצעות Iroha. זהו פרויקט שנעשה בשיתוף פעולה עם הבנק האסיאטי לפיתוח, ו-Fujitsu. משתתפים אחרים השתמשו בטכנולוגיות כגון: R3 קורדה, Hyperledger קקטוס (קקטוס), Hyperledger שטח ופתרונות blockchain פופולריים רבים אחרים. 

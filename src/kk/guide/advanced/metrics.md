@@ -196,7 +196,7 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
 |Ұқыптылық жүктеу |`histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |P95/p99-ды ұзақылық бюджетімен салыстыру |
 |Кезектің тереңдігі |`queue_size`, `sumeragi_tx_queue_depth` |Жүк жүктемесі кезінде шектелу керек .|
 |Кезектің толысуы |`sumeragi_tx_queue_saturated` |Тұрақты нөлдік емес мәндер орташа жүктемеден тыс |
-|Өзгерістерді қарау | `view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` |Көтерілетін мәндер уақытты, топологияны, пайдалы жүктемені немесе желілік қиындықты көрсетеді |
+|Өзгерістерді қарау |`view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` |Көтерілетін мәндер уақытты, топологияны, пайдалы жүктемені немесе желілік қиындықты көрсетеді |
 |Құтылған хаттар |`dropped_messages`, `sumeragi_consensus_message_handling_total` |Жүктіліктің төмендеуі , әдетте , ұзындықтың көтерілуіне себепші болады .|
 |RBC қысымы |`sumeragi_rbc_store_pressure`, `sumeragi_rbc_backpressure_deferrals_total` |Пайдалы жүктi қалпына келтiру немесе сақтау бөбекшелерiне нөлге жатпайтын қысым нүктелері |
 |Кворумды қабылдау |`sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` |Есептелген қолтаңбалар тез арада қажетті кворумға жетуі тиіс .|
@@ -251,5 +251,5 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
 
 - [Izanami-мен Хаос сынақтары](./chaos-testing.md)
 - [Torii аяқтық нүктелері](../../reference/torii-endpoints.md)
-- [Орындау Iroha 3 арқылы CLI](../../get-started/operate-iroha-via-cli.md)
+- [Iroha 3 арқылы CLI](../../get-started/operate-iroha-via-cli.md) пайдалану
 - [Бауырлас конфигурациясының сілтемесі](../../reference/peer-config/params.md)

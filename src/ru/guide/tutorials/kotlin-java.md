@@ -6,22 +6,19 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Kotlin, Android, и Java {#kotlin-android-and-java}
+# Kotlin, Android и Java {#kotlin-android-and-java}
 
-Сборник Kotlin SDK является стандартным клавиатуром клиента для JVM и Android заявления.
-Он живет под `kotlin/` в Iroha хранилище и разделено по платформе так
-портативный код не приобретает Android зависимости.
+Kotlin SDK является по умолчанию клиентским стеком для приложений JVM и Android. Он находится под `kotlin/` в хранилище Iroha и разделен на платформы, поэтому портативный код не приобретает зависимости от Android.
 
 ## Модули {#modules}
 
-| Артефакт | Тип | Использование |
+|Артефакт |Тип |Использовать |
 | --- | --- | --- |
-| `org.hyperledger.iroha.sdk:core-jvm` | JAR | Чистая Kotlin/JVM Norito, модель данных, крипто, транзакция, Torii, и код протокола |
-| `org.hyperledger.iroha.sdk:client-android` | AAR | Android клавиатура, телеметрия устройства и JNI- поддерживаемая интеграция клиентов |
-| `org.hyperledger.iroha.sdk:offline-wallet-android` | AAR | Android Транспорт и интеграция оффлайн-кошелька, основанные на `client-android` |
+|`org.hyperledger.iroha.sdk:core-jvm` |JAR |Чистая Kotlin/JVM Norito, модель данных, крипто, транзакция, Torii и код протокола |
+|`org.hyperledger.iroha.sdk:client-android` |AAR |Ключевое хранилище Android, телеметрия устройств и интеграции с клиентами, поддерживаемые JNI |
+|`org.hyperledger.iroha.sdk:offline-wallet-android` |AAR |Android Транспорт и интеграция оффлайн-кошелька на основе `client-android` |
 
-Артефакты еще не опубликованы в Maven Central.
-локально от застрявшего Iroha пересмотр источника:
+Артефакты еще не опубликованы в Maven Central. Создайте и опубликуйте их на местном уровне из закрепленного Iroha пересмотра источника:
 
 ```bash
 cd kotlin
@@ -44,31 +41,24 @@ dependencies {
 }
 ```
 
-`core-jvm` не содержит Android Зависимости. Android клиент и клавиатура
-код в `client-android`, и использование `offline-wallet-android` для Android- Только
-офлайн-кошелек и JNI Поток.
+`core-jvm` не содержит зависимости от Android. Сохраняйте код клиента и клавиатуры Android в `client-android`, а также используйте `offline-wallet-android` для потоков оффлайн-кошелька и JNI только для Android.
 
 ## Kotlin и Java совместимость {#kotlin-and-java-compatibility}
 
-Общественность API является Kotlin-первое и обеспечивает Java-интерплей, где JVM нуждаются в звонках
-Соответствующие изменения отражены в соответствующих `java/`
-Реализация. Android Интеграции должны начинаться с Kotlin
-Артефакты наверху.
+Общественность API - это Kotlin- в первую очередь и предоставляет Java интероп, где JVM Соответствующие изменения отображаются в соответствующих `java/` Реализация. Android интеграции должны начинаться с Kotlin Артефакты наверху.
 
-Все Kotlin Модули применения JDK 8 API совместимость во время составления с
-`-Xjdk-release=8`, Хотя строительная цепочка инструментов сама использует JDK 21. Не
-использование JDK 9+ APIs в SDK Код.
+Все . Kotlin модули применения JDK 8 API совместимость на момент составления с `-Xjdk-release=8`, даже несмотря на то, что строительная цепочка инструментов сама использует JDK 21. Не используйте JDK 9+ APIs в SDK Код.
 
 ## Строить и испытать {#build-and-test}
 
-Запустить портативный JVM испытания:
+Используйте переносные испытания JVM:
 
 ```bash
 cd kotlin
 ./gradlew :core-jvm:test --console=plain
 ```
 
-Создать Android артефакты:
+Сооружение артефактов Android:
 
 ```bash
 ./gradlew :client-android:assembleRelease \
@@ -77,15 +67,14 @@ cd kotlin
 
 ## Нынешнее охватывание {#current-coverage}
 
-Сборник Kotlin SDK включает в себя:
+В Kotlin SDK входят:
 
 - Norito кодирование и декодирование
-- канонический учет и обработка адресов активов
+- обработка канонических счетов и адресов активов
 - создание транзакций, подписание и офлайн-конверты
-- Torii HTTP, WebSocket, и SSE клиенты
-- многоподпись, подписка, SoraFS, Nexus, и модели Connect
-- Android интеграции клавиатуры и телеметрии устройств
-- Android оффлайн QR, Вблизи, и NFC перевозки
+- Клиенты Torii HTTP, WebSocket и SSE
+- мультиподпись, подписка, SoraFS, Nexus и модели Connect
+- Android Интеграция клавиатуры и устройства телеметрии
+- Транспорт Android вне интернета QR, близлежащий и NFC
 
-Смотрите [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/main/kotlin/README.md)
-для модулей APIs и точные команды по строительству.
+См. [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/main/kotlin/README.md) для специальных модулей APIs и точных команд по созданию.

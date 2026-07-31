@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # Təhlükəsizlik prinsipləri {#security-principles}
 
-Təşkilatlar və fərdi istifadəçilər Iroha qurğuları ilə təhlükəsiz qarşılıqlı əlaqələrin təmin edilməsi üçün birgə çalışmalıdırlar.
+Təşkilatlar və fərdi istifadəçilər Iroha qurğuları ilə təhlükəsiz qarşılıqlı əlaqələrin təmin edilməsi üçün birlikdə işləməlidirlər. Bu mövzuda bu əməkdaşlığın əsas prinsipləri izah olunur.
 
 ## Ümumi təhlükəsizlik prinsipləri {#general-security-principles}
 

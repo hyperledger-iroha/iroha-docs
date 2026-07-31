@@ -6,23 +6,23 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Travailler avec Iroha Binerie {#working-with-iroha-binaries}
+# Travailler avec les binaires Iroha {#working-with-iroha-binaries}
 
-Les Iroha 3 le flux de travail de l'opérateur tourne autour de trois binaires primaires:
+Le flux de travail de l'opérateur Iroha 3 tourne autour de trois bases binaires principales:
 
-- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad) pour avoir dirigé un daemon de peer
-- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_cli) pour CLI et commandes de l'opérateur
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_kagami) pour les clés, la génèse, les réseaux locaux et les profils
+- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad) pour l'exécution d'un daemon partagé
+- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_cli) pour le CLI et les commandes de l'opérateur
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_kagami) pour les clés, l'origine, les réseaux locaux et les profils
 
 ## Construisez à partir de la source {#build-from-source}
 
-De la racine de l'espace de travail en amont:
+À partir de la racine d'espace de travail en amont:
 
 ```bash
 cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ```
 
-Les binaires de libération sont alors disponibles en `target/release/`.
+Les options binaires de libération sont ensuite disponibles en `target/release/`.
 
 Pour inspecter la surface de commande:
 
@@ -32,9 +32,9 @@ Pour inspecter la surface de commande:
 ./target/release/kagami --help
 ```
 
-## Exécuter directement depuis le référentiel {#run-directly-from-the-repository}
+## Exécuté directement depuis le référentiel {#run-directly-from-the-repository}
 
-Si vous ne voulez pas installer quelque chose dans le monde entier, utilisez `cargo run`:
+Si vous ne souhaitez pas installer quoi que ce soit à l'échelle mondiale, utilisez `cargo run`:
 
 ```bash
 cargo run --bin irohad -- --help
@@ -42,19 +42,17 @@ cargo run --bin iroha -- --help
 cargo run --bin kagami -- --help
 ```
 
-## Docker Image {#docker-image}
+## Docker L'image {#docker-image}
 
-L'espace de travail en amont utilise `kagami localnet` et `kagami docker` à générer
-Docker Compose Les fichiers correspondant au code de sortie. `hyperledger/iroha:dev`
-l'image peut être utilisée avec ces fichiers générés.
+L'espace de travail en amont utilise `kagami localnet` et `kagami docker` à générer Docker Compose Les fichiers correspondant au code de sortie. `hyperledger/iroha:dev` l'image peut être utilisée avec ces fichiers générés.
 
-Réglez le CLI dans un conteneur:
+Remplissez le CLI dans un conteneur:
 
 ```bash
 docker run -t hyperledger/iroha:dev iroha --help
 ```
 
-Courir Kagami dans un conteneur:
+Exécuter Kagami dans un conteneur:
 
 ```bash
 docker run -t hyperledger/iroha:dev kagami --help
@@ -70,6 +68,6 @@ docker compose -f ./localnet/docker-compose.yml up
 
 ## Quelle option binaire dois- je utiliser ? {#which-binary-should-i-use}
 
-- Utilisation `irohad` lorsque vous commencez ou exploitez des pairs.
-- Utilisation `iroha` lorsque vous avez besoin de consulter le registre, de soumettre des transactions ou d'inspecter les points finaux de l'opérateur.
-- Utilisation `kagami` lorsque vous avez besoin de clés, de manifestes génétiques, de paquets de profils ou d'actifs localnet.
+- Utilisez `irohad` lorsque vous démarrez ou exploitez des pairs.
+- Utilisez `iroha` lorsque vous avez besoin de consulter le registre, de soumettre des transactions ou d'inspecter les points finaux de l'opérateur.
+- Utilisez `kagami` lorsque vous avez besoin de clés, de manifestes de génèse, de paquets de profils ou d'actifs localnet.

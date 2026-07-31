@@ -6,18 +6,15 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# הגדרות Iroha {#configuring-iroha}
+# הגדרת Iroha {#configuring-iroha}
 
-ההשפעה מקומית של השותפים מוגדרת TOML זה שונה ממסדרת קישור.
-ההסדר השתנה [`SetParameter`](/he/blockchain/instructions.md#setparameter)
-הוראות. התנהגות הייצור חייבת להיות מוצגת בקובץ הגדרות
-או פרמטר על שרשרת; משתנים סביבתיים אינם שערות תכונות.
+הקונפיגורציה המקומית של השותפים מוגדרת בקבצים TOML. זה שונה מהקונפיגוריית שרשרת שנשנה באמצעות הוראות [`SetParameter`](/he/blockchain/instructions.md#setparameter). התנהגות הייצור חייבת להיות מוצגת בקובץ קונפיגורציות או בפרמטר ברשת; משתנים סביבתיים אינם שערים תכונות .
 
-שימוש [`--config`](../irohad-cli#arg-config) CLI טענה לציין את הנתיב לקובץ ההסדרות.
+השתמשו ב[ `--config`](../irohad-cli#arg-config) CLI כדי לציין את הנתיב לקובץ ההסדרות .
 
 ## תבנית {#template}
 
-תיאור מפורט של כל פרמטר, נא לציין: [פרמטרים](./params.md) תקשורת.
+עבור תיאור מפורט של כל פרמטר, אנא ראה את התייחסות [פרמטרים ](./params.md).
 
 ::: details `peer.template.toml`
 
@@ -25,12 +22,11 @@ translation_engine: nllb-200-ct2
 
 :::
 
-## יצירת קבצים קונפיגורציות {#composing-configuration-files}
+## מאפיין קבצים קונפיגורציות {#composing-configuration-files}
 
-TOML קבצים קונפיגירציה יש תוספת `extends` שדה, המכוון לשאר TOML זה יכול להיות מסלול אחד או
-מסלולים מרובים:
+בקבצים הקונפיגורציות TOML יש שדה נוסף `extends`, המכוון לקבצים אחרים TOML. זה יכול להיות מסלול אחד או מרובים:
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [Single]
 extends = "single-path.toml"
@@ -42,10 +38,9 @@ extends = ["file1.toml", "file2.toml"]
 
 :::
 
-Iroha הוא יקרא בקירורסיבי את כל הקבצים המוגדרים ב `extends` "ואנו מכינים אותם בשורות, שם האחרים מתכתבים".
-דוגמא, אם קריאה `config.toml`:
+Iroha יקרא בקירורסיבי את כל הקבצים המתוארים ב- `extends` ויסדר אותם בשכבות, בהן האחרונים כותבים את הקודמים ברמה של פרמטרים. למשל, אם קריאה `config.toml`:
 
-::: code-group
+::: קבוצת קוד
 
 ```toml [config.toml]
 extends = ["a.toml", "b.toml"]
@@ -66,9 +61,8 @@ max_content_len = 2048
 
 :::
 
-The ההסדרות המוצאתה תהיה `chain` מ `a.toml`, `max_content_len` מ `b.toml`, ו `torii.address` מ
-`config.toml` (תכילות) `b.toml`).
+הקונפיגורציה הנוצרת תהיה `chain` מ- `a.toml`, `max_content_len` מ- `b.toml`, ו `torii.address` מ- `config.toml` (תכבות `b.toml`).
 
 ## פתרון בעיות {#troubleshooting}
 
-תעשייה [`--trace-config`](../irohad-cli#arg-trace-config) CLI דגל כדי לראות עקבות של איך הקונפיגורציה נקראת וניתנת.
+העבר את דגל [`--trace-config`](../irohad-cli#arg-trace-config) CLI כדי לראות עקבות של האופן שבו הקונפיגורציה נקראת ונתקשת.

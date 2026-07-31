@@ -6,39 +6,30 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# የተካተቱ Kaigi በ JavaScript መተግበሪያ {#embed-kaigi-in-a-javascript-app}
+# የተቀላቀለ Kaigi በ JavaScript መተግበሪያ {#embed-kaigi-in-a-javascript-app}
 
-Kaigi አንድ መተግበሪያ በኪስ ቦርሳ የተደገፈ አንድ-ወደ-አንድ የድምጽ / ቪዲዮ ስብሰባዎችን እንዲፈጥር ያስችለዋል
-የህይወት ዑደቱ በ Iroha. አሳሹ አሁንም ሚዲያዎችን በ
-WebRTC, በወቅቱ Torii እና Kaigi መመሪያዎች ዘላቂ ስብሰባ ያቀርባሉ
-መዝገብ፣ የተመሰጠረ የምልክት ሜታዳታ፣ የግል ዝርዝር ድጋፍ እና የአጠቃቀም ክስተቶች።
+Kaigi አንድ መተግበሪያ በኪስ ቦርሳ የተደገፉ የኦዲዮ / ቪዲዮ ስብሰባዎችን እንዲፈጥር ያስችለዋል ፣ የእነሱ የሕይወት ዑደት በ Iroha በኩል ይመዘገባል። አሳሹ አሁንም ሚዲያውን በ WebRTC ያስተናግዳል ፣ Torii እና Kaigi መመሪያዎችም ዘላቂ የመሰብሰቢያ መዝገብን ይሰጣሉ ፣ የተመሰጠረ የምልክት ሜታዳታ ፣ የግል ዝርዝር ድጋፍ እና አጠቃቀም ክስተቶች.
 
-ይህ አጋዥ መተግበሪያ በ
-[Iroha ማሳያ JavaScript](https://github.com/soramitsu/iroha-demo-javascript)
-መተግበሪያ:
+ይህ መመሪያ በ [Iroha ዴሞ JavaScript](https://github.com/soramitsu/iroha-demo-javascript) መተግበሪያ ጥቅም ላይ የዋለውን አነስተኛ ውህደት ንድፍ ያሳያል:
 
-- ማቅረቢያው ይፈጥራል WebRTC ቅናሾች እና መልሶች
-- የማመልከቻ ድልድይ ምልክቶች እና ያቀርባል Kaigi ግብይቶች
-- የታመሙ የጥሪ አገናኞች ጥሪውን ብቻ ይሸከማሉ ID እና በስውር ይጋብዙ
-- አስተናጋጅ ሰዓቶች Torii ለተሳታፊዎች የተሰየሙ መልሶች
+- አስተላላፊው WebRTC አቅርቦቶችን እና መልሶችን ይፈጥራል ።
+- አንድ ማመልከቻ ድልድይ ይለያል እና Kaigi ግብይቶች ያቀርባል
+- የታመሙ የግብዣ አገናኞች ጥሪውን ID ብቻ ይሸከማሉ እና የግብዣ ምስጢራዊ ነው
+- አስተናጋጅ Torii ለተሳታፊዎች የተደበዘዙ መልሶች የሚከታተል
 
-ምሳሌዎቹ TypeScript እና በኤሌክትሮን ውስጥ ሊሰሩ እንዲችሉ የተጻፉ ናቸው
-ደህንነቱ የተጠበቀ የጀርባ አድራሻ ያለው አሳሽ ወይም የኪስ ቦርሳ ማራዘሚያ ያለው የድር መተግበሪያ።
-በማምረት ላይ ካሉ የማይታመኑ የሬንደር ኮዶች ውጭ ያሉ የግል ቁልፎች።
+ምሳሌዎቹ TypeScript ን ይጠቀማሉ እናም በኤሌክትሮን ፣ ደህንነቱ የተጠበቀ የጀርባ አወጣጥ ካለው አሳሽ ወይም Wallet ማራዘሚያ ካለው የድር መተግበሪያ ውስጥ ሊሠሩ እንዲችሉ ተጽፈዋል ።
 
 ## ቅድመ ሁኔታዎች {#prerequisites}
 
-የሚያስፈልግህ:
+አንተ ያስፈልግሃል:
 
-- ሀ Kaigi- አቅም ያለው Torii የመጨረሻ ነጥብ
-- ለአስተናጋጁና ለጉብኝቱ መለያ
-- ደህንነቱ በተጠበቀ የመተግበሪያ ድልድይ ወይም Wallet በኩል ለእያንዳንዱ መለያ ፊርማ ቁልፍ መዳረሻ
+- አንድ Kaigi-አቅም ያለው Torii መጨረሻ ነጥብ
+- የአስተናጋጁ እና የእንግዳው መለያ
+- ደህንነቱ የተጠበቀ የመተግበሪያ ድልድይ ወይም የኪስ ቦርሳ በኩል ወደ እያንዳንዱ መለያ ፊርማ ቁልፍ መዳረሻ
 - የአሳሽ ካሜራ/ማይክሮፎን ፍቃዶች
-- Node.js 20+ የሚጠቀሙ ከሆነ JavaScript ዲሞ ወይም ተወላጅ
-  `@iroha/iroha-js` በቀጥታ የሚጣበቅ
+- Node.js 20+ የሚጠቀሙ ከሆነ JavaScript ዲሞ ወይም ተወላጅ `@iroha/iroha-js` በቀጥታ የሚጣበቅ
 
-ሙሉ የሥራ ማጣቀሻ ለማግኘት, አንድ አጠገብ ማሳያ ክሎን Iroha ምንጭ
-የገቢ ማስከበሪያ:
+ለሙሉ የሥራ ማጣቀሻ ከ Iroha ምንጭ ቼክ አጠገብ ያለውን ማሳያ ቅጅ:
 
 ```bash
 mkdir iroha-wallet-workspace
@@ -56,15 +47,9 @@ npm install
 npm run dev
 ```
 
-ማሳያውን ይጠቀሙ
-[`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/main/javascript/iroha_js)
-ከወንድም Iroha የመረጃ ምንጭ መዝገብ። `file:` ጥገኛነት ያፈራል
-በቀጥታ ካሳ. የአገር ውስጥ አገናኝ ከተቀየረ,
-`iroha/javascript/iroha_js`; ንጹህ የታሸገ ማውጫ የ
-የጭነት የሥራ ቦታ `npm run build:native`.
+የ ማሳያውን ይጠቀሙ [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/main/javascript/iroha_js) ከወንድም Iroha ምንጭ ማከማቻ. `file:` ተወላጅ ተያያዥነት በቀጥታ ያ ቼክአውት ይፈታል. `iroha/javascript/iroha_js`; ንጹህ የፓኬጅ ማውጫ በ Cargo የሚፈለገውን የሥራ ቦታ አይይዝም `npm run build:native`.
 
-በቀጥታ ስብሰባ ከማካሄድ በፊት TAIRA, የሕዝብን ፍለጋ Torii የ
-ማሳያ የሚወሰነው:
+በ TAIRA ላይ የቀጥታ ስብሰባ ከማካሄድዎ በፊት ማሳያው የሚመረኮዝበትን የህዝብ ገጽ Torii ይፈትሹ:
 
 ```bash
 TAIRA=https://taira.sora.org
@@ -73,23 +58,19 @@ curl -fsS "$TAIRA/v1/kaigi/relays"
 curl -fsS "$TAIRA/v1/kaigi/relays/health"
 ```
 
-እነዚህ ትዕዛዞች TAIRA በሕይወት ነው እና ይህ Kaigi ተለጣፊ ቴሌሜትሪ
-የሚቀርቡት Kaigi ግብይቶች `CreateKaigi` ወይም
-`JoinKaigi` የሙከራ ፍላጎቶች የገንዘብ ድጋፍ TAIRA ሂሳቦች እና ማሳያ በኩል ፊርማ
-ድልድይ ወይም ሌላ የኪስ ቦርሳ የተደገፈ ድልድይ።
+እነዚህ ትዕዛዞች እንደሚያረጋግጡ TAIRA በሕይወት ነው እና ይህ Kaigi ተለጣፊ ቴሌሜትሪ ይገኛል. Kaigi ግብይቶች. `CreateKaigi` ወይም `JoinKaigi` የሙከራ ፍላጎቶች የገንዘብ ድጋፍ TAIRA ሂሳቦች እና በዴሞው ድልድይ ወይም ሌላ የኪስ ቦርሳ የተደገፈ ድልድይ በኩል ፊርማ ማድረግ.
 
 ## ሥነ ሕንፃ {#architecture}
 
-ይያዙ Kaigi ውህደት በሦስት ደረጃዎች የተከፋፈለ:
+የ Kaigi ውህደት በሦስት ንብርብሮች ይከፈላል:
 
-| ሽፋን | ኃላፊነት |
+|ሽፋን |ኃላፊነት |
 | --- | --- |
-| UI | የመለያ ምርጫ፣ የስብሰባ ቅጽ፣ የጥሪ አገናኝ ማሳያ፣ የመገናኛ ብዙሃን መቆጣጠሪያዎች |
-| WebRTC | `RTCPeerConnection`, የአካባቢው ሚዲያዎች፣ የዕድሜ ልክ አቅርቦቶችና መልሶች |
-| Iroha ድልድይ | ፊርማ ማድረግ፣ `CreateKaigi`, `JoinKaigi`, `EndKaigi`, የምልክት ምርጫ |
+|UI |የመለያ ምርጫ፣ የስብሰባ ቅጽ፣ የጥሪ አገናኝ ማሳያ፣ የመገናኛ ብዙሃን መቆጣጠር |
+|WebRTC |`RTCPeerConnection`፣ አካባቢያዊ ሚዲያዎች፣ አቅርቦትና መልስ መግለጫዎች |
+|Iroha ድልድይ|ፊርማ፣ `CreateKaigi`, `JoinKaigi`, `EndKaigi`፣ የምልክት ምርጫ |
 
-የመተግበሪያው ድልድይ የኤሌክትሮን ቅድመ ጭነት ሊሆን ይችላል API, የኪስ ቦርሳ ማራዘሚያ ወይም የጀርባ ጫፍ
-የመጨረሻው ነጥብ. UI:
+የመተግበሪያው ድልድይ የኤሌክትሮን ቅድመ ጭነት API ፣ የኪስ ቦርሳ ማራዘሚያ ወይም የጀርባ መጨረሻ ነጥብ ሊሆን ይችላል። አነስተኛ ወለል ለ UI ሊያጋልጥ ይገባል-
 
 ```ts
 type KaigiMeetingPrivacy = "private" | "transparent";
@@ -197,13 +178,11 @@ type KaigiBridge = {
 };
 ```
 
-ማሳያ መተግበሪያ ውስጥ, እነዚህ ድልድይ ዘዴዎች ጋር ተተግብረዋል
-`@iroha/iroha-js`, አካባቢያዊ ፊርማ፣ የተመሰጠረ Kaigi ሜታዳታ እና Torii ጥሪዎች።
+በማሳያ መተግበሪያ ውስጥ እነዚህ ድልድይ ዘዴዎች በ `@iroha/iroha-js`, አካባቢያዊ ፊርማ, የተመሰጠረ Kaigi ሜታዳታ, እና Torii ጥሪዎች ይተገበራሉ.
 
 ## ረዳቶችን ይጋብዙ {#invite-helpers}
 
-አጠቃቀም Torii- ተኳሃኝ ጥሪ IDs በ `domain.dataspace:meeting` ቅጽ.
-አጠቃቀም `kaigi.universal:<call-name>` ለተፈጠሩ ስብሰባዎች።
+Torii-ተኳሃኝ ጥሪ IDs በ `domain.dataspace:meeting` ቅጽ ይጠቀሙ። ማሳያው ለተፈጠሩ ስብሰባዎች `kaigi.universal:<call-name>` ይጠቀማል.
 
 ```ts
 const KAIGI_WINDOW_MS = 24 * 60 * 60 * 1000;
@@ -260,9 +239,7 @@ export function parseInviteLink(link: string): {
 
 ## WebRTC ረዳቶች {#webrtc-helpers}
 
-አስተናጋጁ ቅናሽ ይፈጥራል፣ ያከማችዋል `CreateKaigi`, እና የ
-እንግዳውን መልስ ተግባራዊ ማድረግ እንዲችል መስኮቱ ይከፈታል።
-ቅናሽ, አንድ መልስ ይፈጥራል, እና መልሱን ጋር ልጥፎች `JoinKaigi`.
+አስተናጋጁ አንድ ቅናሽ ይፈጥራል ፣ በ `CreateKaigi` በኩል ያከማቻል ፣ እና የእንግዳውን መልስ ተግባራዊ ለማድረግ መስኮቱን ክፍት ይይዛል። እንግዱ የተመሰጠረውን ቅናሽ ይወስዳል ፣ መልስ ይፈጥራል እና መልሱን በ `JoinKaigi` ይለጥፋል ።
 
 ```ts
 const rtcConfig: RTCConfiguration = {
@@ -332,7 +309,7 @@ export async function createAnswerDescription(
 }
 ```
 
-ዥረቶቹን ወደ እርስዎ ያያይዙ UI የተለመዱ የቪዲዮ አካላት:
+ዥረቶችን በ UI መደበኛ የቪዲዮ አካላት ጋር ያያይዙ:
 
 ```ts
 export function attachKaigiMedia(input: {
@@ -356,14 +333,14 @@ export function attachKaigiMedia(input: {
 }
 ```
 
-## አስተናጋጅ፦ የመሰብሰቢያ አገናኝ ይፍጠሩ {#host-create-a-meeting-link}
+## አስተናጋጅ፦ የስብሰባ አገናኝ ይፍጠሩ {#host-create-a-meeting-link}
 
 አስተናጋጅ ፍሰት:
 
 1. ክፍት ካሜራ እና ማይክሮፎን
-2. አንድ መፍጠር Kaigi የምልክት ቁልፍ ጥንድ
-3. አንድ መፍጠር WebRTC ቅናሽ
-4. ማቅረብ `CreateKaigi`
+2. አንድ Kaigi ምልክት ቁልፍ ጥንድ ይፍጠሩ
+3. የ WebRTC ቅናሽ ያድርጉ
+4. `CreateKaigi` ማቅረብ
 5. የታመቀ የግብዣ አገናኝ ያጋሩ
 
 ```ts
@@ -431,8 +408,7 @@ export async function hostKaigiMeeting(input: {
 }
 ```
 
-ማሳያ `inviteLink` በእርስዎ ውስጥ UI. ተጠቃሚው መገልበጥ ይችላል, ሌላ የኪስ ቦርሳ ውስጥ መክፈት,
-ወይም እንደ የሚከተለው የመተግበሪያ መንገድ ይቀይሩ:
+`inviteLink` በእርስዎ UI ውስጥ ማሳየት. ተጠቃሚው መገልበጥ ይችላል, ሌላ ቦርሳ ውስጥ መክፈት, ወይም የመሳሰሉ መተግበሪያ መንገድ መለወጥ:
 
 ```ts
 export function inviteRoute(inviteLink: string): string {
@@ -445,12 +421,12 @@ export function inviteRoute(inviteLink: string): string {
 
 ## እንግዳ፦ በስብሰባው ላይ ተገኝ {#guest-join-a-meeting}
 
-የእንግዶች ፍሰት:
+የእንግዳው ፍሰት:
 
-1. ግብዣውን አጠናቅቁ
-2. የኮድ የተደረገውን ጥሪ አቅርቦት ከ Torii
-3. አንድ መፍጠር WebRTC መልስ
-4. ማቅረብ `JoinKaigi` የተመሰጠረ የምላሽ ሜታዳታ ጋር
+1. ግብዣውን ይመረምሩ
+2. ከ Torii የተመሰጠረ የጥሪ አቅርቦትን ያግኙ።
+3. የ WebRTC መልስ ይፍጠሩ
+4. `JoinKaigi` ከተመሰጠረ መልስ ሜታዳታ ጋር ያቅርቡ
 
 ```ts
 export async function joinKaigiMeetingFromInvite(input: {
@@ -504,15 +480,11 @@ export async function joinKaigiMeetingFromInvite(input: {
 }
 ```
 
-ስብሰባው ግልፅ ከሆነ, በቦርሳ ማሳያ ገመድ ውስጥ ማካተት ይችላሉ
-ለግል ስብሰባዎች፣ `walletIdentity` ተጠቃሚው ካልሆነ በስተቀር
-በግልጽ ለመግለጽ ይመርጣል.
+ስብሰባው ግልፅ ከሆነ በመቀላቀል ጥያቄ ውስጥ የኪስ ቦርሳ ማሳያ ገመድ ማካተት ይችላሉ። ተጠቃሚው በግል ለመግለጽ ካልመረጠ በስተቀር ለግል ስብሰባዎች `walletIdentity` ን ያግኙ።
 
-## አስተናጋጅ፦ የእንግዳውን መልስ ተግባራዊ አድርግ {#host-apply-the-guest-answer}
+## አስተናጋጅ፦ እንግዳው የሚሰጠውን መልስ ተግባራዊ አድርግ {#host-apply-the-guest-answer}
 
-የቀጥታ ስብሰባ ከተፈጠረ በኋላ አስተናጋጁ ማየት ይኖርበታል Kaigi ክስተቶች እና የምርመራ
-የመጀመሪያውን ትክክለኛ መልስ በአስተናጋጁ እኩዮች ላይ ይተግብሩ
-ግንኙነት.
+ቀጥታ ስብሰባ ከተፈጠረ በኋላ አስተናጋጁ Kaigi ክስተቶችን መመልከት እና የተመሰጠረ የምላሽ ምልክቶች ምርጫ ማድረግ አለበት ። የመጀመሪያውን ትክክለኛ መልስ ለአስተናጋጁ የእኩዮች ግንኙነት ያድርጉ።
 
 ```ts
 export async function watchForKaigiAnswer(input: {
@@ -566,8 +538,7 @@ export async function watchForKaigiAnswer(input: {
 }
 ```
 
-የተመለሰውን ምዝገባ ያስቀምጡ ID ስለዚህ የእርስዎ UI መቆጣጠሪያውን ማቆም ይችላሉ
-አስተናጋጁ ተዘግቶ ወይም ሄዶ ይጓዛል።
+የተመለሰውን የደንበኝነት ምዝገባ ID ያስቀምጡ ስለዚህ አስተናጋጁ ሲዘግይ ወይም ሲሄድ UI ተቆጣጣሪውን ሊያቆም ይችላል ።
 
 ## ስብሰባው ያበቃል {#end-the-meeting}
 
@@ -594,11 +565,9 @@ export async function endKaigi(input: {
 }
 ```
 
-## የግል አሰራር የገንዘብ ድጋፍ {#private-mode-funding}
+## የግል የገንዘብ ድጋፍ {#private-mode-funding}
 
-የግል Kaigi መፍጠር, መቀላቀል, እና መጨረሻ ሥራዎች የተከላከሉ ያስፈልጋቸዋል ይችላል XOR ለ
-የእርስዎ መተግበሪያ ያንን ስህተት መያዝ አለበት እና አንድ
-እንደገና ከመሞከርዎ በፊት ራስን የመከላከል እርምጃ።
+የግል Kaigi መፍጠር ፣ መቀላቀል እና ማጠናቀቅ ሥራዎች ለግል የመግቢያ ነጥብ ክፍያ መከላከያ XOR ሊያስፈልጋቸው ይችላል ። መተግበሪያዎ ያንን ስህተት መያዝ አለበት እና እንደገና ከመሞከርዎ በፊት የራስ-መከላከያ እርምጃ መስጠት አለበት።
 
 ```ts
 type PrivateKaigiFundingBridge = KaigiBridge & {
@@ -648,56 +617,42 @@ export async function selfShieldForPrivateKaigi(input: {
 }
 ```
 
-ማሳያ ውስጥ, UI ተጠቃሚው ራሱን እንዲከላከል ያደርገዋል ከዚያም እንደገና ይሞክራል
-የመጀመሪያውን ድርጊት መፍጠር ወይም መቀላቀል።
+ማሳያ ውስጥ, UI ተጠቃሚው ራሱን ለመከላከል ይጠይቃል ከዚያም የመጀመሪያውን መፍጠር ወይም መቀላቀል እርምጃ እንደገና ይሞክራል.
 
 ## የእጅ መውደቅ {#manual-fallback}
 
-አውቶማቲክ ምልክት በቀጥታ ቦርሳ ላይ የተመሠረተ ነው, Kaigi- አቅም ያለው Torii መስመሮች እና
-የግል ሁነታ ውስጥ ማስረጃ ማመንጨት.
-የተገደቡ አካባቢዎች
+አውቶማቲክ ምልክት በቀጥታ የኪስ ቦርሳ, Kaigi-ነክ Torii መስመሮች, እና የግል ሁነታ ውስጥ ማስረጃ ማመንጨት ላይ የተመሠረተ ነው. ለልማት እና ለተገደቡ አካባቢዎች በእጅ ወደ ኋላ ይያዙ:
 
-- ከሆነ `CreateKaigi` ካልተሳካ፣ ግብዣውን የሚይዝ የእጅ ጥሪ አሳይ
-- ከሆነ `JoinKaigi` አልተሳካም, ጥሬ መልስ ፓኬጅ ማሳየት
-- አስተናጋጁ የምላሹን ፓኬጅ እንዲለጠፍ እና ለመደወል ይፍቀዱ `setRemoteDescription`
+- `CreateKaigi` ካልተሳካለት፣ አቅርቦቱን የያዘውን የእጅ ግብዣ አሳይ።
+- `JoinKaigi` ካልተሳካ አንድ ጥሬ መልስ ፓኬጅ ያሳዩ
+- አስተናጋጁ የምላሽ ጥቅሉን እንዲለጠፍ እና `setRemoteDescription` ን ይደውሉ ።
 
-በእጅ ወደ ኋላ መመለስ ለ debugging ጠቃሚ ነው WebRTC, ነገር ግን
-የቀጥታ ስርጭት ጋር ተመሳሳይ የግል ሰንሰለት ላይ የምልክት ዋስትናዎች Kaigi ፍሰት.
+በእጅ ወደ ኋላ መመለስ WebRTC ለማስተካከል ጠቃሚ ነው ፣ ግን እንደ የቀጥታ Kaigi ፍሰት ተመሳሳይ የግል ሰንሰለት ላይ የምልክት ዋስትና አይሰጥም ።
 
-## የሙከራ የቼክ ዝርዝር {#test-checklist}
+## የሙከራ ፍተሻ ዝርዝር {#test-checklist}
 
-ለአንድነት ምርመራዎች ድልድዩን አስመስለው UI ከሚጠበቀው በላይ
-Kaigi ጠቃሚ ጭነቶች:
+ለአንድነት ሙከራዎች ፣ ድልድዩን ይንቁ እና የእርስዎ UI የሚጠበቁትን Kaigi ጠቃሚ ጭነቶች የሚያልፍ መሆኑን ያረጋግጡ:
 
-- አስተናጋጅ አካባቢያዊ ሚዲያዎችን ይፈጥራል እና ያቀርባል `createKaigiMeeting`
-- አስተናጋጅ `iroha://kaigi/join?call=...&secret=...` ግብዣ
-- እንግዳው ግብዣውን ይመረምራል፣ ጥሪዎችን ያቀርባል `getKaigiCall`, እና ያቀርባል
-  `joinKaigiMeeting`
-- የድምፅ ማመልከቻዎችን ለማስተናገድ ወይም መልስ ምልክቶችን ለመከታተል ሰዓቶች እና መልሱን ይተግብራል
-- የግል ሁነታ በራስ-መከላከያ የሚደረግላቸው ማሳሰቢያዎች XOR ጠፍቷል
+- አስተናጋጅ አካባቢያዊ ሚዲያዎችን ይፈጥራል እና `createKaigiMeeting` ያቀርባል
+- አስተናጋጅ `iroha://kaigi/join?call=...&secret=...` ግብዣ ያሳያል
+- እንግዳው ግብዣውን ይመረምራል፣ ወደ `getKaigiCall` ይደውላል እንዲሁም `joinKaigiMeeting` ያቀርባል
+- ለምላሽ ምልክቶች አስተናጋጅ የሕዝብ አስተያየት መስጫዎች ወይም ሰዓቶች እና መልሱን ይተግብራል
+- XOR በተከላከለበት ጊዜ ራስን ለመከላከል የግል ሁነታ ማሳሰቢያዎች ይጠፋሉ
 - የቀጥታ ምልክት በማይገኝበት ጊዜ በእጅ ወደኋላ መመለስ ይታያል።
 
-ሙሉውን የመረጃ አሰጣጥ የሙከራ ስብስብ ለማግኘት የማሳያ መተግበሪያውን ይመልከቱ Kaigi እይታ እና ቅድመ ጭነት
-ድልድይ ሙከራዎች:
+የተሟላ የማጣቀሻ የሙከራ ስብስብ ለማግኘት የዴሞ መተግበሪያው Kaigi እይታ እና ቅድመ ጭነት ድልድይ ሙከራዎችን ይመልከቱ:
 
 ```bash
 npm test -- tests/kaigiView.spec.ts tests/preloadKaigiBridge.spec.ts
 npm run e2e:ui
 ```
 
-የ UI የጭስ ሙከራው `/kaigi` እውነተኛ የመገናኛ ብዙሃን ሙከራ
-አሁንም ሁለት የገንዘብ ገንዘቦች እና ሁለት መስኮቶች ወይም መሣሪያዎች ያስፈልገዋል ምክንያቱም ግብይት
-ፊርማ፣ ካሜራ፣ ማይክሮፎን እና WebRTC ፍቃዶች በስራ ሰዓት ይለያያሉ።
+የ UI ጭስ ሙከራው `/kaigi` መንገድ እንደሚሰራ ያረጋግጣል ። እውነተኛ ሚዲያ ሙከራ አሁንም ሁለት የገንዘብ ቦርሳዎች እና ሁለት መስኮቶች ወይም መሣሪያዎች ያስፈልገዋል ምክንያቱም የግብይት ፊርማ ፣ ካሜራ ፣ ማይክሮፎን እና WebRTC ፍቃዶች በሂደት ጊዜ ስለሚለያዩ።
 
-እናንተ ሙከራ ከሆኑ TAIRA እና ለጥሪው የተወሰነ የመንገድ ተመላሽ `404`, በመጀመሪያ
-አስተናጋጅ ቦርሳው በተሳካ ሁኔታ እንደቀረበ ያረጋግጡ `CreateKaigi`. የሬሌ ጤና
-ማንኛውም የተወሰነ ጥሪ ከመደረጉ በፊት የመጨረሻ ነጥቦች ሊገኙ ይችላሉ።
+በ TAIRA ላይ ምርመራ እያደረጉ ከሆነ እና ለጥሪው የተወሰነ መንገድ `404` የሚመለስ ከሆነ ፣ በመጀመሪያ አስተናጋጅ ቦርሳ በተሳካ ሁኔታ `CreateKaigi` እንደተላከ ያረጋግጡ ። ማንኛውም የተወሰነ ጥሪ ከመከሰቱ በፊት የስርጭት ጤና መጨረሻ ነጥቦች ሊገኙ ይችላሉ።
 
 ## ቀጣይ እርምጃዎች {#next-steps}
 
-- የአጠቃቀም መዝገብን በ `RecordKaigiUsage` የእርስዎ መተግበሪያ አስተማማኝ ጊዜ
-  የክፍለ ጊዜ ቆይታ ሂሳብ።
-- በመመዝገብ እና በመከታተል ላይ የሚገኙት ሪሌዎች `/v1/kaigi/relays` ሪሌን ሲጠቀሙ
-  መገለጫዎች።
-- ገጽታ `KaigiRosterSummary`, `KaigiUsageSummary`, እና
-  `KaigiRelayHealthUpdated` በኦፕሬተር ዳሽቦርድዎ ውስጥ ያሉ ክስተቶች።
+- በመተግበሪያዎ ውስጥ አስተማማኝ የክፍለ ጊዜ ቆይታ ሂሳብ ሲኖር `RecordKaigiUsage` ጋር የአጠቃቀም ቀረፃን ያክል።
+- በ `/v1/kaigi/relays` በኩል ሪሌዎችን በመመዝገብ እና በመከታተል የሪሌ ማሳያዎችን በሚጠቀሙበት ጊዜ።
+- በኦፕሬተር ዳሽቦርድዎ ውስጥ ያሉ የላይኛው `KaigiRosterSummary`, `KaigiUsageSummary` እና `KaigiRelayHealthUpdated` ክስተቶች።

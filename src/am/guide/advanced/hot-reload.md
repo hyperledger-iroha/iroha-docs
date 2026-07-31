@@ -6,35 +6,30 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# ሞቃት ዳግም ጭነት Iroha በ Docker መያዣ {#hot-reload-iroha-in-a-docker-container}
+# ትኩስ ዳግም መጫን Iroha በ Docker ኮንቴይነር {#hot-reload-iroha-in-a-docker-container}
 
-ለአካባቢያዊ debugging ብቻ ሙቅ ዳግም መጫን ይጠቀሙ.
-ምስሉን እንደገና መገንባት ወይም የተፈጠረውን ዳግም ማስጀመር Docker Compose ከ አንድ
-ትኩስ Kagami አሽከርካሪ።
+ለአካባቢያዊ debugging ብቻ ሙቅ ዳግም መጫን ይጠቀሙ. ለተለመደው አካባቢያዊ ልማት ምስሉን እንደገና መገንባት ወይም የተፈጠረውን Docker Compose ክምችት ከአዲስ Kagami ጥቅል ዳግም ማስጀመር ይመርጣሉ።
 
-## የእኩዮች ባነሪን ይተካሉ {#replace-the-peer-binary}
+## የባልደረባ ባነሪን ይተካሉ {#replace-the-peer-binary}
 
-ከሊነክስ ጋር ተኳሃኝ የሆነ ዳይሞን ባናሪ ከስራ ቦታው ይገንቡ:
+ከሊኑክስ ጋር ተኳሃኝ የሆነ ዳይሞን ባናሪ ከስራ ቦታው ይገንቡ:
 
 ```bash
 cargo build --release -p irohad --target x86_64-unknown-linux-musl
 ```
 
-በሂደት ላይ ወደሚገኝ የእኩዮች ኮንቴይነር ቅጂ ያድርጉት፣ ከዚያም ያንን ኮንቴነር ዳግም ይጀምሩ:
+በሂደት ላይ ባለው የእኩዮች ኮንቴይነር ውስጥ ቅጂ ያድርጉት, ከዚያም ያንን ኮንቴነር እንደገና ይጀምሩ:
 
 ```bash
 docker cp target/x86_64-unknown-linux-musl/release/irohad <container>:/usr/local/bin/irohad
 docker restart <container>
 ```
 
-አጠቃቀም `docker ps` የተፈጠረውን ክምችት ውስጥ አቻው
-መያዣዎች በ `./localnet/docker-compose.yml`.
+የመያዣውን ስም ለማረጋገጥ `docker ps` ይጠቀሙ። በተፈጠረው ክምችት ውስጥ የእኩዮቹ መያዣዎች በ `./localnet/docker-compose.yml` ተለይተዋል ።
 
-## ጄኔሲን በአንድ ጊዜ የሚጣሉ አውታረመረብ ውስጥ እንደገና ያስገቡ {#recommit-genesis-in-a-disposable-network}
+## የዘፍጥረት ዘገባን በአንድ ጊዜ ሊጣሉ በሚችሉ አውታረመረቦች ውስጥ እንደገና ያስገቡ {#recommit-genesis-in-a-disposable-network}
 
-አንድ እኩያ የጄኔሲስን ሥራ የሚፈጽምበት ቦታ ባዶ በሚሆንበት ጊዜ ብቻ ነው። Docker
-አውታረ መረብ, አቃፊውን ያቁሙ, የተፈጠረውን ሁኔታ ያስወግዱ, መልሶ ማቋቋም ወይም መተካት
-የተፈረመ የጄኔሲስ ጥቅል, እና እንደገና ይጀምሩ:
+አንድ እኩያ ማከማቻው ባዶ በሚሆንበት ጊዜ ብቻ ጀኔሲስን ይፈጽማል ። ለአንድ ጊዜ የሚጣፍጥ Docker አውታረመረብ ፣ ክምችቱን ያቁሙ ፣ የተፈጠረውን ሁኔታ ያስወግዱ ፣ የተፈረመውን የጀኔሲስ ጥቅል መልሰዋል ወይም ይተካሉ ፣ እና እንደገና ይጀምሩ:
 
 ```bash
 docker compose -f ./localnet/docker-compose.yml down
@@ -43,12 +38,8 @@ cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyper
 docker compose -f ./localnet/docker-compose.yml up
 ```
 
-ሁኔታውን መጠበቅ ያለበት አውታረመረብ ላይ መፈጠራትን አትተካ።
+ሁኔታውን መጠበቅ ያለበት አውታረመረብ ላይ መፈጠራትን አይተካው ።
 
 ## ብጁ አወቃቀር ይጠቀሙ {#use-custom-configuration}
 
-የአሁኑ የእኩዮች ውቅር ነው TOML. የተፈጠረውን ማሰሪያ አገናኝ ወይም ቅጂ
-`config.toml`, `genesis.signed.nrt`, እና ተዛማጅ ቁልፍ ፋይሎች ወደ መያዣው ውስጥ
-ምስሉ የሚጠብቀው መንገድ, ከዚያም እኩዮች ዳግም ማስጀመር. የተፈጠሩ ፋይሎችን ጠብቅ
-በአንድ ላይ፤ ከተለያዩ ፋይሎች መቀላቀል Kagami ሩጫዎች deserialization ሊያመጣ ይችላል ወይም
-የስምምነት ውድቀቶች።
+የአሁኑ የእኩዮች ውቅር TOML ነው ። የተፈጠሩትን `config.toml` ፣ `genesis.signed.nrt` እና ተዛማጅ ቁልፍ ፋይሎችን ወደ ምስሉ የሚጠበቁ የኮንቴይነር ዱካዎች ያያይዙ ወይም ቅጂ ያድርጉ ፣ ከዚያ እኩያውን እንደገና ይጀምሩ። የተፈጠሩትን ፋይሎች አንድ ላይ ያቆዩ; ከተለያዩ Kagami ሩጫዎች የሚመጡ ፋይሎችን ማደባለቅ የዴሴሪያላይዜሽን ወይም የስምምነት ውድቀቶችን ሊያመጣ ይችላል ።

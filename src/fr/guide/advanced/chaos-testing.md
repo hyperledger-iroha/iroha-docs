@@ -8,21 +8,13 @@ translation_engine: nllb-200-ct2
 
 # Des tests de chaos avec Izanami {#chaos-testing-with-izanami}
 
-Izanami est l'orchestrateur de chaosnet dans le courant d'eau. Iroha l'espace de travail.
-démarre un local jetable Iroha cluster, soumet une charge de travail configurable,
-et injecte des défauts dans des pairs sélectionnés afin que les opérateurs puissent vérifier si le
-Le réseau continue de progresser en cas d'échec contrôlé.
+Izanami est l'orchestrateur de chaosnet dans l'espace de travail Iroha en amont. Il démarre un cluster local jetable Iroha, soumet une charge de travail configurable et injecte des défauts dans des pairs sélectionnés afin que les opérateurs puissent vérifier si le réseau continue à progresser en cas de panne contrôlée.
 
-Utiliser Izanami pour les contrôles de résilience pré-production, la reproduction en régression,
-Ne le pointez pas vers un réseau de production: l'outil est
-conçu pour posséder les pairs qu'il démarre, y compris le redémarrage par paires, le stockage
-les serviettes, la perte artificielle des paquets et le local CPU ou la pression du disque.
+Utilisez Izanami pour les contrôles de résilience pré-production, la reproduction en régression et l'ajustement du consensus. Ne le pointez pas vers un réseau de production: l'outil est conçu pour posséder les pairs qu'il démarre, y compris les redémarrages par pairs, les serviettes de stockage, la perte artificielle de paquets et la pression locale CPU ou disque.
 
-## Préalabilités {#prerequisites}
+## Conditions préalables {#prerequisites}
 
-Exécutez Izanami à partir du
-[Iroha référentiel source](https://github.com/hyperledger-iroha/iroha),
-pas dans ce référentiel de documentation:
+Exécuter Izanami depuis le référentiel source [Iroha ](https://github.com/hyperledger-iroha/iroha), et non de ce référential de documentation:
 
 ```bash
 git clone https://github.com/hyperledger-iroha/iroha.git
@@ -30,9 +22,7 @@ cd iroha
 cargo build -p izanami
 ```
 
-Le binaire doit être explicitement autorisé à créer et manipuler des réseaux
-Les pairs. `--allow-net` pour chaque non-TUI fonctionner ou activer `allow_net` dans
-le TUI.
+Le binaire doit être explicitement autorisé à créer et manipuler des pairs en réseau. Passer `--allow-net` pour chaque exécution non-TUI, ou activer `allow_net` dans le TUI.
 
 ```bash
 cargo run -p izanami -- --allow-net --peers 4 --faulty 1 --duration 120s
@@ -44,12 +34,11 @@ Pour une configuration d'exécution interactive:
 cargo run -p izanami -- --tui --allow-net
 ```
 
-Izanami persiste . TUI et CLI les paramètres dans le répertoire de configuration des utilisateurs, donc
-examiner les paramètres affichés avant de réutiliser un profil précédent.
+Izanami persiste les paramètres TUI et CLI dans le répertoire de configuration de l'utilisateur, alors consultez les paramèters affichés avant de réutiliser un profil précédent.
 
-## Exécution de la ligne de base {#baseline-run}
+## Exécution de base {#baseline-run}
 
-Commencez par une base reproductible avant d'ajouter des défauts graves:
+Commencez par une ligne de base reproductible avant d'ajouter des défauts graves:
 
 ```bash
 cargo run -p izanami -- \
@@ -67,22 +56,18 @@ cargo run -p izanami -- \
   --seed 42
 ```
 
-Cette opération ne réussit que si le cluster atteint l'objectif de bloc demandé,
-continue de progresser dans le délai et reste sous la limite facultative p95
-le seuil d'intervalle de blocage.
+Cette opération ne réussit que si le cluster atteint l'objectif de bloc demandé, continue à progresser dans le délai et reste en dessous du seuil d'intervalle de bloc optionnel p95.
 
-Enregistre le commandement, Semence. Iroha commet, compte des pairs, nombre de pairs défectueux,
-profil de la charge de travail, cible TPS, et le seuil de latence avec les journaux.
-Ces valeurs, un autre opérateur ne peut pas reproduire le même schéma de défaillance.
+Enregistrez la commande, le seed, Iroha commit, le nombre de pairs, le compte de pairs défectueux, le profil de charge de travail, la cible TPS et le seuil de latence avec les journaux. Sans ces valeurs, un autre opérateur ne peut pas reproduire le même modèle d'échec.
 
 ## Profils de charge de travail {#workload-profiles}
 
 Izanami a deux profils de charge de travail:
 
-| Le profil  | Utilisez-le pour                                         | Notes                                  |
+|Le profil |Utilisez-le pour |Notes |
 | -------- | -------------------------------------------------- | -------------------------------------- |
-| `stable` | Longues courses de trempage et contrôles reproductibles des performances | Les recettes favorables à l'exécution          |
-| `chaos`  | Couverture des voies d'échec                              | Inclut des recettes intentionnellement invalides |
+|`stable` |Longues séries d' immersion et vérifications de performances reproductibles |Favori des recettes sûres à l' exécution |
+|`chaos` |Couverture des voies d'échec |Inclut des recettes intentionnellement invalides |
 
 Utilisez d' abord le profil stable:
 
@@ -90,14 +75,13 @@ Utilisez d' abord le profil stable:
 cargo run -p izanami -- --allow-net --workload-profile stable --seed 42
 ```
 
-Passez au profil du chaos lorsque la ligne de base est déjà comprise:
+Passez au profil de chaos lorsque la ligne de base est déjà comprise:
 
 ```bash
 cargo run -p izanami -- --allow-net --workload-profile chaos --seed 42
 ```
 
-Les recettes de déploiement des contrats sont désactivées en cours stables sauf explicitement
-permis:
+Les recettes de déploiement des contrats sont désactivées en séries stables, sauf autorisation explicite:
 
 ```bash
 cargo run -p izanami -- \
@@ -106,25 +90,22 @@ cargo run -p izanami -- \
   --allow-contract-deploy-in-stable
 ```
 
-Utilisation `--nexus` lorsque la course doit utiliser le système intégré SORA Nexus les défauts de
-l'espace de travail en amont.
+Utiliser `--nexus` lorsque l'exécution doit utiliser les paramètres par défaut intégrés SORA Nexus de l'espace de travail en amont.
 
-## Contrôle des défauts {#fault-controls}
+## Contrôles de défaut {#fault-controls}
 
-Quand ? `--faulty` est supérieur à zéro, au moins un scénario de défaut doit être
-Fault toggles par défaut à activé, et les drapeaux booléens peuvent être
-handicapés avec `=false`.
+Quand ? `--faulty` s'il est supérieur à zéro, au moins un scénario de défaut doit être activé. Fault toggles par défaut en activé, et les drapeaux booléens peuvent être désactivés avec `=false`.
 
-| La faute                    | CLI drapeau                                   | Ce qu'il exerce                          |
+|Faute |CLI drapeau |Ce qu' elle exerce |
 | ------------------------ | ------------------------------------------ | ------------------------------------------ |
-| Crash et redémarrage        | `--fault-enable-crash-restart`             | Perte et récupération par processus de peer             |
-| Éliminer le stockage et redémarrer | `--fault-enable-wipe-storage`              | Récupération de l'état local disparu          |
-| Spam de transaction non valide | `--fault-enable-spam-invalid-transactions` | Les voies d'admission et de rejet              |
-| La latence du réseau          | `--fault-enable-network-latency`           | Des rumeurs et des messages de consensus retardés |
-| Partition réseau        | `--fault-enable-network-partition`         | Isolement temporaire par des pairs de confiance           |
-| P2P perte de paquets          | `--fault-enable-network-packet-loss`       | Traffic de la structure d'application diminué          |
-| CPU le stress               | `--fault-enable-cpu-stress`                | La pression de validation et de planification locale   |
-| Satisfaction du disque          | `--fault-enable-disk-saturation`           | Pression de stockage locale                     |
+|Crash et redémarrage .|`--fault-enable-crash-restart` |Perte et récupération de processus par les pairs |
+|Effacer le stockage et redémarrer |`--fault-enable-wipe-storage` |Récupération de l' état local disparu |
+|Spam de transaction non valide |`--fault-enable-spam-invalid-transactions` |Route d'admission et de rejet |
+|La latence du réseau |`--fault-enable-network-latency` |Des rumeurs lentes et des messages de consensus retardés .|
+|Partition réseau |`--fault-enable-network-partition` |L' isolement temporaire entre pairs de confiance |
+|P2P perte de paquet |`--fault-enable-network-packet-loss` |Traffic de l' application-frame diminué |
+|CPU stress |`--fault-enable-cpu-stress` |Prise en charge de la validation locale et de la planification |
+|La saturation du disque |`--fault-enable-disk-saturation` |Pressure de stockage locale |
 
 Pour une course à perte de paquets uniquement:
 
@@ -151,38 +132,32 @@ cargo run -p izanami -- \
   --seed 42
 ```
 
-Utilisation `--fault-window-start` et `--fault-window-end` pour maintenir un contrôle
-période d'état stable avant et après l'échec injecté.
-plus facile de distinguer le bruit de démarrage de l'effet du défaut.
+Utilisez `--fault-window-start` et `--fault-window-end` pour maintenir une période d'état stable contrôlée avant et après la défaillance injectée. Cela facilite la distinction entre le bruit de démarrage et l'effet du défaut.
 
 ## Les formes du scénario {#scenario-shapes}
 
-Le catalogue Izanami en amont présente les défaillances courantes de la communication blockchain
-forme à CLI Vous pouvez les modéliser avec les mêmes drapeaux:
+Le catalogue Izanami en amont trace les formes communes d'échec de communication de la blockchain vers CLI profils.
 
-| Scénario              | Forme typique                                                                                                            |
+|Scénario |La forme typique |
 | --------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| Charge ciblée         | `--faulty 0`, haut `--tps`, un soumissionnaire, haut `--max-inflight`                                                         |
-| Échec transitoire     | Activer l'accident/réinitialisation uniquement à l'intérieur d'une fenêtre de défaillance limitée                                                                  |
-| Perte de paquets           | N'activer que la perte de paquets, généralement avec le taux de perte par défaut de 75%                                                          |
-| Arrêt et récupération | Utiliser une grande population de pairs défectueux avec crash/restart                                                                    |
-| Isolement des dirigeants      | Utilisez exactement un paire défectueux avec seulement des défauts de partition réseau ou de perte de paquets; Izanami suit Sumeragi télémétrie de leader |
+|Charge ciblée |`--faulty 0`, haut de gamme `--tps`, un soumissionnaire, élevé `--max-inflight` |
+|Une défaillance transitoire |Activer l'arrêt / redémarrage uniquement à l'intérieur d'une fenêtre de défaillance délimitée |
+|La perte de paquets|Activer uniquement la perte de paquets, habituellement avec le taux de perte par défaut de 75% |
+|Arrêt et récupération |Utiliser une grande population de pairs défectueux avec crash / redémarrage |
+|Isolement des dirigeants |Utilisez exactement un pair défectueux avec uniquement des défauts de partition réseau ou de perte de paquets; Izanami suit la télémétrie leader Sumeragi.|
 
-Gardez une variable fixe à la fois. Si vous changez le nombre de pairs,
-profil, fenêtre de défaillance et TPS En même temps, le résultat est difficile à
-l'interprète.
+Gardez une variable fixe à la fois. Si vous changez le nombre de pairs, le profil de charge de travail, la fenêtre d'erreur et TPS en même temps, le résultat est difficile à interpréter.
 
-## À quoi regarder ? {#what-to-watch}
+## À quoi faire attention ? {#what-to-watch}
 
 Pendant la course, surveillez les mêmes signaux utilisés pour la validation des performances:
 
-- progression de la hauteur des blocs à travers tous les pairs en course
-- transactions soumises, acceptées, rejetées et épuisées
-- profondeur de file d'attente, saturation des files d'attention et contre-pression du point final
-- voir les changements, les voies de récupération, les blocs manquants et le quorum manquant
-  certificats
-- RBC retard, séances en attente et trafic de consensus diminué ou retardé
-- CPU, mémoire, disque et saturation du réseau sur l'hôte exécutant les pairs
+- progression de la hauteur du bloc à travers chaque paire en cours d'exécution
+- les transactions soumises, acceptées, rejetées et épuisées
+- profondeur de file d'attente, saturation de file et pression inversée du point final
+- voir les modifications, les voies de récupération, les blocs manquants et les certificats de quorum manquants.
+- RBC décalage, sessions en attente et trafic de consensus diminué ou retardé
+- CPU, mémoire, disque et saturation du réseau sur l'hôte exécutant les pairs.
 
 Pour l'analyse de la latence de validation, activer les journaux de débogage main-loop:
 
@@ -191,34 +166,25 @@ RUST_LOG=iroha_core::sumeragi::main_loop=debug \
   cargo run -p izanami -- --allow-net --seed 42
 ```
 
-Chaque bloc doit émettre `block validation timings` avec `stateless_ms`,
-`execution_ms`, et `total_ms`. Comparer ces timings avec le bloc p95
-intervalles, compteurs de changement de vue et pression en file d'attente avant le changement
-les délais de consensus.
+Chaque bloc doit émettre `block validation timings` avec `stateless_ms`, `execution_ms` et `total_ms`. Comparer ces délais avec les intervalles de blocs p95, les compteurs de changement de vue et la pression de file d'attente avant de changer les timers de consensus.
 
-## Interprétation des résultats {#interpreting-results}
+## Les résultats de l'interprétation {#interpreting-results}
 
-Traiter une course comme saine lorsque tous les pairs sélectionnés continuent à commettre des blocages,
-l'arriéré ne croît pas sans limite et les défauts cessent de provoquer une nouvelle récupération
-activité après la fin de la fenêtre configurée.
+Traiter une course comme saine lorsque tous les pairs sélectionnés continuent à commettre des blocs, le backlog ne croît pas sans limite et que les défauts cessent de provoquer une nouvelle activité de récupération après la fin de la fenêtre configurée.
 
 Traiter une course comme un échec lorsque:
 
-- blocs de progression plus longs que `--progress-timeout`
+- les stands de progression des blocs plus longs que `--progress-timeout`
 - les hauteurs des pairs divergent et ne se reconvergent pas
-- dépasse la latence p95 `--latency-p95-threshold`
-- Les files d'attente augmentent pour le reste de la course après la fermeture d'une fenêtre de faille
-- Les transactions rejetées ou reportées ne sont pas expliquées par les options sélectionnées
-  charge de travail
-- Le redémarrage par paire, l'effacement du stockage ou la récupération de perte de paquets nécessitent un démarrage manuel.
-  le nettoyage
+- une latence de p95 supérieure à `--latency-p95-threshold`
+- Les files d'attente augmentent pour le reste de la course après la fermeture d'une fenêtre de défaillance
+- Les opérations rejetées ou reportées ne sont pas expliquées par la charge de travail sélectionnée.
+- le redémarrage par pairs, l'effacement du stockage ou la récupération des paquets perdus nécessitent un nettoyage manuel.
 
-Après un échec, redémarrer avec le même grain et un type de défaut en moins.
-Il permet de reproduire la charge de travail et le timing tout en réduisant les défaillances.
-à la surface.
+Après une défaillance, redémarrer avec le même grain et un type de faille en moins. Cela permet de reproduire la charge de travail et le timing tout en restreignant la surface de défaillance.
 
 ## Pages connexes {#related-pages}
 
 - [Performance et métriques](./metrics.md)
-- [Randonnée Iroha sur le métal nu](./running-iroha-on-bare-metal.md)
-- [Torii points de fin](../../reference/torii-endpoints.md)
+- [En fonctionnement Iroha sur le métal nu](./running-iroha-on-bare-metal.md)
+- [points d'extrémité Torii](../../reference/torii-endpoints.md)

@@ -18,18 +18,18 @@ translation_engine: nllb-200-ct2
    - [Rust](/kk/guide/tutorials/rust.md)
    - [Python](/kk/guide/tutorials/python.md)
    - [JavaScript / TypeScript](/kk/guide/tutorials/javascript.md)
-   - [Kotlin, Android, және Java](/kk/guide/tutorials/kotlin-java.md)
+   - [Kotlin, Android және Java](/kk/guide/tutorials/kotlin-java.md)
    - [Swift және iOS](/kk/guide/tutorials/swift.md)
 4. Клиенттік қосымшаның толық анықтамасын сұрағанда [ үлгілік қолданбаларды](/kk/guide/tutorials/sample-apps.md) қараңыз.
 5. [Embed Kaigi](/kk/guide/tutorials/kaigi.md)-ді өзіңіздің қолданбаңызға қолма-қол ақшамен қамтамасыз етілген аудио / бейне кездесулерді қосу үшін қолданыңыз.
-6. Пайдалану [Musubi таңбалар](/kk/guide/tutorials/musubi.md) қайтадан пайдаланылуы қажет болған кезде Kotodama тізбектегі тіркелімге тәуелділіктері бар бастапқы кітапханалар.
+6. [Musubi пакеттерін ](/kk/guide/tutorials/musubi.md), егер сізге тізбектегі реестрге тәуелділігі бар қайтадан пайдаланылатын Kotodama бастапқы кітапханалар қажет болса.
 
 ## Үлгілер {#samples}
 
-Жоғары ағымындағы жұмыс кеңістігінде JavaScript рецепттер және Swift/iOS үлгі жобалары. Android, бастау Kotlin SDK модульдер мен олардың сынақтары.
+Ағымдағы жұмыс кеңістігінде JavaScript рецепттері және Swift/iOS үлгі жобалары бар. Android үшін Kotlin SDK модульдері мен олардың сынақтарынан бастаңыз.
 
 - [Қолданбалардың үлгілерінің шолу](/kk/guide/tutorials/sample-apps.md)
-- [Қосылған Kaigi а) JavaScript қолданба](/kk/guide/tutorials/kaigi.md)
+- [Kaigi-ді JavaScript қосымшасына ](/kk/guide/tutorials/kaigi.md) енгізу
 
 ## Шындықтың қайнар көзі {#source-of-truth}
 
@@ -39,7 +39,7 @@ translation_engine: nllb-200-ct2
 - `python/iroha_python`
 - `javascript/iroha_js`
 - `kotlin`
-- `java/iroha_android` (Java зеркалы Kotlin- Біріншісі Android беті)
+- `java/iroha_android` (JavA айнасы Kotlin - бірінші Android бетінің)
 - `IrohaSwift`
 - `crates/musubi`
 

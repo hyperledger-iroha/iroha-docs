@@ -276,7 +276,7 @@ submit(Instruction.burn_asset_numeric(ROSE_ASSET, "10.00"))
 
 ### Transferência de propriedade {#transfer-ownership}
 
-Transferências de propriedade mudança que controla o domínio, definição do ativo, ou NFT.
+Transferências de propriedade mudança de quem controla o domínio, definição do ativo ou NFT. Usar o proprietário atual como autoridade de transacção.
 
 ```python
 # The first argument is the current owner; the last is the new owner.
@@ -423,7 +423,7 @@ draft.force_transfer_rwa(
 )
 ```
 
-As transferências completas podem alterar a `owned_by` no lote existente.
+As transferências completas podem ser alteradas em `owned_by` no lote existente As transferências e fusões parciais criam lotes de filhos gerados.
 
 ### Trigas {#triggers}
 
@@ -473,7 +473,7 @@ for trigger in registered.items:
 details = client.get_trigger_typed("precommit_reward")
 ```
 
-As chamadas de inventário do gatilho somente leem ou inspecionam os registros do gatilha.
+As chamadas de inventário do gatilho são apenas leituras ou inspecção dos registos do gatilha. Registro, execução, mudanças de repetição e não registo são operações mutantes.
 
 ### Instruções de depósito e liquidação {#repo-and-settlement-instructions}
 

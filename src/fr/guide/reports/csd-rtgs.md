@@ -6,6 +6,6 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# CSD/RTGS liens Proof of concept  {#csd-rtgs-linkages-proof-of-concept}
+# CSD/RTGS liaisons Proof of concept  {#csd-rtgs-linkages-proof-of-concept}
 
-Dans ce document, nous décrirons les CSD/RTGS des liens PoC l'exécution par Iroha. Il s'agit d'un projet réalisé en collaboration avec la Banque asiatique de développement et Fujitsu. R3 Je vous en prie, Corda. Hyperledger Le cactus (Cacti), Hyperledger Fabric et beaucoup d'autres solutions populaires de blockchain. 
+Dans ce document, nous décrirons les CSD/RTGS connexions PoC l'exécution par Iroha. Il s'agit d'un projet réalisé en collaboration avec la Banque asiatique de développement et Fujitsu. Les autres participants ont utilisé des technologies telles que: R3 Je vous en prie. Hyperledger Le cactus (Cacti), Hyperledger Fabric et beaucoup d'autres solutions populaires de blockchain. 

@@ -20,4 +20,4 @@ Iroha бастапқы қоймасында SDK рецепттері мен сы
 
 ## Android {#android}
 
-Жаңасы үшін Android жұмыс істеу, пайдалану Kotlin- Біріншісі `core-jvm`, `client-android`, және `offline-wallet-android` көрсетілген модульдер [Kotlin, Android, және Java](/kk/guide/tutorials/kotlin-java.md). Қауымдастық Kotlin SDK қаноникалық бастапқы нүктесі болып табылады Android тұтынушылар.
+Жаңа Android жұмыс үшін Kotlin-алғашқы `core-jvm`, `client-android` және `offline-wallet-android` модульдерін [Kotlin, Android және Java](/kk/guide/tutorials/kotlin-java.md) тармақтарында сипаттаңыз. Kotlin SDK - Android тұтынушылардың каноникалық бастапқы нүктесі.

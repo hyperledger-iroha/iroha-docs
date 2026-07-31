@@ -8,19 +8,17 @@ translation_engine: nllb-200-ct2
 
 # التثبيت Iroha 3 {#install-iroha-3}
 
-هذه الصفحة تغطي سير العمل الحالي للتثبيت Iroha 3 سلسلة الأدوات
-و الثنائيات التي تستخدم التيار الصاعد `hyperledger-iroha/iroha` مساحة العمل
+تغطي هذه الصفحة تدفق العمل الحالي للتثبيت لسلسلة الأدوات Iroha 3 والمجموعات الثنائية التي تستخدم مساحة عمل `hyperledger-iroha/iroha` المتجهة نحو الأعلى.
 
-## 1 - الشروط المسبقة {#_1-prerequisites}
+## 1 . الشروط المسبقة {#_1-prerequisites}
 
 قم بتثبيت هذه أولاً:
 
-- [rustup](https://www.rust-lang.org/tools/install), لذا المثبت
-  `rust-toolchain.toml` سلسلة الأدوات (`1.93.1`يتم تركيبها تلقائيًا
+- [rustup](https://www.rust-lang.org/tools/install)، بحيث يتم تثبيت سلسلة الأدوات `rust-toolchain.toml` المثبتة (`1.93.1`) تلقائياً
 - `git`
-- إختيارياً Docker و Docker Compose للشروع السريع المحلي متعدد الأقران
+- اختياريًا، Docker و Docker Compose لبدء سريع متعدد الأقران المحلي.
 
-## 2- قم بتكرار مساحة العمل {#_2-clone-the-workspace}
+## إستنساخ مساحة العمل {#_2-clone-the-workspace}
 
 ```bash
 git clone https://github.com/hyperledger-iroha/iroha.git
@@ -35,15 +33,15 @@ cd iroha
 cargo build --workspace
 ```
 
-بالنسبة لبناء صغير تركز على المشغل، قم بتجميع الثنائيات الرئيسية فقط:
+بالنسبة لبناء أصغر تركز على المشغل ، قم بتجميع الثنائيات الرئيسية فقط:
 
 ```bash
 cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ```
 
-يتم كتابة الثنائيات الناتجة إلى `target/debug/` أو `target/release/`.
+ويتم كتابة الثنائيات الناتجة على `target/debug/` أو `target/release/`.
 
-## 4. التحقق من الأدوات المثبتة {#_4-verify-the-installed-tools}
+## التحقق من الأدوات المثبتة {#_4-verify-the-installed-tools}
 
 ```bash
 cargo run --bin irohad -- --help
@@ -53,17 +51,15 @@ cargo run --bin kagami -- --help
 
 الثلاثة ثنائيات التي تستخدمها عادة هي:
 
-- `irohad` لـ " ديمون "
-- `iroha` لـ CLI الوصول إلى Torii ومواقع نهاية المشغل
-- `kagami` للمفاتيح، ومخططات التكوين، وملفات المحلية
+- `irohad` لـ (دايمون) الأقران
+- `iroha` للوصول إلى CLI و Torii ومواقع نهاية المشغل
+- `kagami` للمفاتيح، ومخططات التكوين، وملفات المواقع المحلية
 
-## 5 - الاختيار المحلي Docker الطريق {#_5-optional-localnet-and-docker-path}
+## 5 - الاختياري Localnet و Docker Path {#_5-optional-localnet-and-docker-path}
 
-يتم إنشاء تدفق الشبكة المحلية الحالية المدعومة من المصدر Kagami. يكتب "أقارب"
-إعدادات، أدوات التكوين، إعداد العميل، نصوص المساعد، و اختياري
-إعداد الملف الذي يطابق الرمز المسجل:
+يتم إنشاء تدفق localnet الحالي المدعوم من المصدر بواسطة Kagami. يكتب إعدادات الأقران ، وأشياء التكوين الجينيزي ، وإعدادات العميل ، ونصوص المساعد ، وملف Compose الاختياري الذي يطابق الرمز المحقق:
 
-- `kagami localnet` للنصوص المحلية الأصلية
-- `kagami docker` لـ Docker Compose تم إنشاؤه من دليل localnet
+- `kagami localnet` للمخطوطات المحلية الأصلية
+- `kagami docker` لـ Docker Compose تم إنشاؤه من دليل محلي للشبكة
 
 استمر في [إطلاق Iroha 3](/ar/get-started/launch-iroha.md).

@@ -13,7 +13,7 @@ Iroha konfiqurasiyasının iki təsdiqləyici qatı vardır:
 - TOML fayllarında saxlanılan və prosesin başlanğıcında oxunan yerli həmyaşıd və müştəri konfigurasiyası.
 - [ `SetParameter`](/az/blockchain/instructions.md#setparameter) vasitəsilə əməliyyatlar nəticəsində dəyişdirilən zəncirlə bağlı konfigurassiya
 
-Şəbəkənin razılığı və təyinatlı şəkildə oynadılması lazım olan dəyərlər üçün zəncirlə bağlı konfigüratsiyadan istifadə edin.
+Kütlə kimliyi, ünvanları, qeydə alınması, saxlanılması və müştəri imzalanma açarları üçün yerli quruluşdan istifadə edin. Şəbəkə tərəfindən razılaşdırılmalı və təyin edilməli olan dəyərlər üçün zəncir üzərində quruluşdan istifadə edin.
 
 İstehsalat davranışı bu konfigürasiya təbəqələrindən gəlməlidir. Ətraf mühit dəyişiklikləri yerli alətlərə test girişlərini təmin etmək üçün əlverişli ola bilər, lakin onlar istehsal xüsusiyyət qapıları deyil və öhdəlikdən gələn konfigürasiyanı əvəz etmirlər.
 

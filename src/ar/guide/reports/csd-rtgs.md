@@ -6,6 +6,6 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# CSD/RTGS الروابط دليل على المفهوم  {#csd-rtgs-linkages-proof-of-concept}
+# CSD/RTGS صلات دليل على المفهوم  {#csd-rtgs-linkages-proof-of-concept}
 
-في هذه الوثيقة سنصف CSD/RTGS الروابط PoC التنفيذ عبر Iroha. هذا المشروع الذي تم القيام به بالتعاون مع البنك الآسيوي للتنمية، وFujitsu. R3 (كوردا) Hyperledger كاكتوس (كاكتي) Hyperledger النسيج والعديد من حلول بلوكتشين الشعبية الأخرى. 
+في هذه الوثيقة سنصف CSD/RTGS الصلات PoC التنفيذ عن طريق Iroha. هذا مشروع الذي تمه بالتعاون مع البنك الآسيوي للتنمية، وFujitsu. المشاركون الآخرون استخدموا تقنيات مثل: R3 (كوردا) Hyperledger كاكتوس (كاكتي) Hyperledger النسيج والعديد من حلول بلوكتشين الشعبية الأخرى. 

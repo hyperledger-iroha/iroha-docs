@@ -21,9 +21,9 @@ translation_engine: nllb-200-ct2
 - триггерҙар
 - операциялар
 
-ҙур файҙалы йөкләмәләр тыштан һаҡланырға тейеш. WSV һәм ул (Ҡөръән) менән ант итәм. URI, йәки SoraFS Юл.
+WSV тыштан ҙур файҙалы йөкләмәләр һаҡланырға тейеш һәм уларҙы URI йәки SoraFS юлдары менән һылтандырырға тейеш.
 
-Метамәғлүмәттәрҙе, активтарҙы һайлау буйынса күрһәтмәләр өсөн. NFTs, RWAs, йәки ситтә һаҡланыу, ҡара: [Метамәғлүмәттәрҙе һәм иҫәп яҙмаларын һаҡлау мөмкинлектәрен](/ba/guide/configure/metadata-and-store-assets.md).
+Метамәғлүмәттәрҙе, активтарҙы NFTs, RWAs йәки сылбырҙан тыш һаҡлауҙы һайлау буйынса күрһәтмәләр өсөн [Метамәғлилдәр һәм иҫәп яҙмаларын һаҡлау һайлауҙар](/ba/guide/configure/metadata-and-store-assets.md) ҡарағыҙ.
 
 ## Taira менән һынап ҡарағыҙ. {#try-it-on-taira}
 
@@ -55,7 +55,7 @@ Iroha махсус инструкциялар менән алмаштырыла:
 - [`SetKeyValue`](/ba/blockchain/instructions.md#setkeyvalue-removekeyvalue) клавишаны ҡуйып йәки алмаштыра.
 - [`RemoveKeyValue`](/ba/blockchain/instructions.md#setkeyvalue-removekeyvalue) асҡыс алып ташлай.
 
-Транзакцияны тапшырыусы орган актив үтәү ваҡытын раҫлаусы талап ителгән рөхсәт эйә булырға тейеш. [Рөхсәт биреү билдәләре](/ba/reference/permissions.md).
+Транзакцияны тапшырыусы орган актив үтәү ваҡытын раҫлаусы рөхсәткә эйә булырға тейеш. По умолчанию permission surface өсөн ҡара: [Рөхсәт биреү билдәләре](/ba/reference/permissions.md).
 
 ## Ваҡиғалар {#events}
 
@@ -85,6 +85,6 @@ MetadataChanged --> DomainMetadataChanged
 
 ## Һорауҙар {#queries}
 
-Метамәғлүмәттәр һоралған объект өлөшө булараҡ кире ҡайтарыла. Мәҫәлән, ҡулланыу [`FindAccountById`](/ba/reference/queries.md#accounts-and-permissions), [`FindDomainById`](/ba/reference/queries.md#domains-and-peers), йәки [`FindAssetDefinitionById`](/ba/reference/queries.md#assets-nfts-and-rwas). Ҡулланыу [`FindNfts`](/ba/reference/queries.md#assets-nfts-and-rwas) йәки [`FindNftsByAccountId`](/ba/reference/queries.md#assets-nfts-and-rwas) өсөн NFTs, һәм [`FindRwas`](/ba/reference/queries.md#assets-nfts-and-rwas) өсөн RWA Һуңынан объекттың метамәғлүмәттәрен уҡығыҙ. NFT Һорауҙарға яуаптар белдерә NFT `content` картаһы - яҙма метамәғлүмәттәре.
+Метамәғлүмәттәр һоралған объекттың бер өлөшө булараҡ кире ҡайтарыла. Мәҫәлән, [`FindAccountById`](/ba/reference/queries.md#accounts-and-permissions), [`FindDomainById`](/ba/reference/queries.md#domains-and-peers) йәки [`FindAssetDefinitionById`](/ba/reference/queries.md#assets-nfts-and-rwas) ҡулланығыҙ. [`FindNfts`](/ba/reference/queries.md#assets-nfts-and-rwas) йәки [`FindNftsByAccountId`](/ba/reference/queries.md#assets-nfts-and-rwas) NFTs, һәм [`FindRwas`](/ba/reference/queries.md#assets-nfts-and-rwas) RWA партиялары өсөн ҡулланығыҙ. Һуңынан объекттың метамәғлүмәт яланына уҡығыҙ. NFT һорауҙарға яуаптар NFT `content` картаһын яҙма метамәғлүмдәр булараҡ аса.
 
 Метамәғлүмәт асҡыстары иҫәп-хисап хәленең бер өлөшө булып тора, шуға күрә уларҙы тотороҡло һаҡлағыҙ һәм JSON ҡиммәте был версияны асыҡтан-асыҡ алып бара алһа, ҡушымтаға ярашлы версияны кодлауҙан ситтә тороғоҙ.

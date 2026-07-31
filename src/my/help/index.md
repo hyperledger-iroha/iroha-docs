@@ -6,12 +6,10 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# ထောက်ပံ့မှုရရှိပါ {#receive-support}
+# ထောက်ပံ့မှု ရယူပါ။ {#receive-support}
 
-တစ်ခါတစ်ရံမှာ မေးခွန်းတွေရှိလောက်တယ် Iroha ကျွန်တော်တို့အသိုင်းအဝိုင်းနဲ့ အမြန်ဆက်သွယ်ဖို့ နည်းလမ်း သုံးခုရှိပါတယ်။ Telegram, Discord နဲ့ GitHub.
+တစ်ခါတစ်လေမှာ Iroha အကြောင်း မေးခွန်းတွေရှိပြီး အခြားသူတွေနဲ့ အသေးစိတ် ဆွေးနွေးချင်ပါတယ်။ ကျွန်တော်တို့အသိုင်းအဝိုင်းနဲ့ အမြန်ဆက်သွယ်ဖို့ နည်းလမ်း သုံးခုရှိပါတယ်။ Telegram, Discord နဲ့ GitHub.
 
-အသိုင်းအဝိုင်းက အသုံးပြုတဲ့ [Telegram ကို](https://t.me/hyperledgeriroha) နှင့်
-[LF Decentralized Trust ငြင်းခုံမှု](https://discord.gg/hyperledger) အတွက်
-ဆက်သွယ်ရေးကို အသုံးပြုပါ။ `iroha` စီမံကိန်း မေးခွန်းများအတွက် လမ်းကြောင်း။
+လူမှုအသိုင်းအဝိုင်းသည် ဆက်သွယ်ရေးအတွက် [Telegram](https://t.me/hyperledgeriroha) နှင့် [ LF Decentralized Trust Discord](https://discord.gg/hyperledger) ကိုအသုံးပြုသည်။ စီမံကိန်းမေးခွန်းများအတွက် `iroha` လမ်းကြောင်းကို အသုံးပြုပါ။
 
-နောက်ဆုံးတော့ သင်လုပ်နိုင်ပါပြီ။ [create a ကို GitHub ထုတ်ပြန်ချက်](https://github.com/hyperledger-iroha/iroha/issues/new/choose), စာရွက်စာတမ်းကို မွမ်းမံဖို့ တောင်းဆိုမှုဖြစ်ဖြစ်၊ အဓိကအဖွဲ့အတွက် အကြံပြုချက် ဖြစ်ဖြစ်၊ ဒါမှမဟုတ် သင်တွေ့တဲ့ အမှားဖြစ်ဖြစ်ပါ။
+နောက်ဆုံးအနေနဲ့ [ create a GitHub issue](https://github.com/hyperledger-iroha/iroha/issues/new/choose) ဆိုပါစို့၊ စာရွက်စာတမ်းကို မွမ်းမံရန် တောင်းဆိုမှုဖြစ်ဖြစ်၊ အဓိကအဖွဲ့အတွက် အကြံပြုချက် ဖြစ်ဖြစ်၊ ဒါမှမဟုတ် တွေ့ရှိထားသော bug တစ်ခုဖြစ်ဖြစ်ပါ။

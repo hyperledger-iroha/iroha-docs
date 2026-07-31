@@ -6,34 +6,28 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Мэдээлэл {#metadata}
+# Мэдээлэл мэдээлэл {#metadata}
 
-Metadata нь томоохон бүртгэлийн объектуудад холбогдсон шалгагдсан түлхний үнэ цэнэтэй газрын зураг юм.
-`Name` үнэ цэнэ JSON (`Json`) хэрэглэгдэх ачаа.
+Metadata нь томоохон бүртгэлийн объектуудад холбогдсон хяналтын түлхний үнэ цэнэтэй газрын зураг юм. Хяналт нь `Name` хэмжээнүүд бөгөөд үнэ цэнэ нь JSON (`Json`) ашиг ачааллууд юм.
 
-Дараах объектүүд метадэтгэлийг авч болно:
+Дараах объектүүд метадэтгэлийг тээвэрлэж болно:
 
 - доменүүд
-- нягтлан бодох бүртгэл
+- санхүүжилт
 - хөрөнгө
 - хөрөнгийн тодорхойлолт
 - NFTs
 - RWAs
-- гадаргуулагч
+- түлхүүжүүлэг
 - гүйлгээ
 
-Тодруулгад багтаж буй тодорхойлох болон индексирүүлэх талбайдын бага хэмжээний метабараа ашиглах
-Их нөөцтэй ачааллыг WSV а
-хоолой, URI, эсвэл SoraFS Замыг.
+Тодруулбал, WSV дээс гадна агуулагдах бөгөөд URI эсвэл SoraFS замаар дурддаг байх ёстой.
 
-Metadata, хөрөнгө сонгох талаар зөвлөгөө авах NFTs, RWAs, эсвэл зангилаагүй
-хадгаламж, үзнэ үү
-[Metadata болон Ledger хадгалах сонголтууд](/mn/guide/configure/metadata-and-store-assets.md).
+Metadata, хөрөнгийн сонгон шалгаруулалтын талаар зөвлөгөө авах, NFTs, RWAs, эсвэл зах зээлийн гадна хадгалах, үзнэ үү [Metadata болон Ledger хадгалах сонголтууд](/mn/guide/configure/metadata-and-store-assets.md).
 
-## Та үүнийг туршиж үзээрэй. Taira {#try-it-on-taira}
+## Taira дээр туршиж үзээрэй. {#try-it-on-taira}
 
-Metadata нь хэвийн эх үүсвэрийн уншлын дамжуулан харагдаж байна. Энэ команд жагсаалт Taira
-Одоогийн байдлаар метадэтгэгтэй хөрөнгийн тодорхойлолтууд:
+Metadata нь хэвийн нөөцийн уншлын дамжуулан харагдана. Энэ команд нь Taira хөрөнгөний тодорхойлолт, одоогийн байдлаар метадататай байна:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=100' \
@@ -42,7 +36,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=100' \
     | {id, name, metadata}'
 ```
 
-Домен болон данс бүртгэлд ижил загварыг ашигла:
+Домен, дансны хувьд ижил загварыг ашиглах:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
@@ -52,26 +46,20 @@ curl -fsS 'https://taira.sora.org/v1/accounts?limit=20' \
   | jq '.items[] | select((.metadata // {} | length) > 0)'
 ```
 
-Энэ нь өнөөгийн хуудсыг Taira
-объектууд нь метадэтгэлийг авч чадахгүй, төгсгөлийн цэг алдаатай гэж үгүйсгэхгүй.
+Энэ нь Taira объектын одоогийн хуудсанд метадэт мэдээлэл байхгүй гэсэн үг биш, төгсгөлийн цэг алдаатай гэсэн үг биш юм.
 
 ## Metadataг шинэчлэх {#updating-metadata}
 
-Metadata нь Iroha Тодруулбал:
+Metadata нь Iroha тусгай зааварчилгаагаар өөрчлөгдөж байна:
 
-- [`SetKeyValue`](/mn/blockchain/instructions.md#setkeyvalue-removekeyvalue)
-  түлхэгийг оруулдаг эсвэл солидог
-- [`RemoveKeyValue`](/mn/blockchain/instructions.md#setkeyvalue-removekeyvalue)
-  нөөц гаргадаг
+- [`SetKeyValue`](/mn/blockchain/instructions.md#setkeyvalue-removekeyvalue) товчлогыг оруулж, солиод байна
+- [`RemoveKeyValue`](/mn/blockchain/instructions.md#setkeyvalue-removekeyvalue) нь мөрийг устгана.
 
-Худалдааныг өргөн мэдүүлсэн байгууллагаас зөвшөөрөл авах шаардлагатай
-үйл ажиллагаа явуулах цаг хугацааны баталгаажуулагчаар.
-[Тусгай зөвшөөрлийн токенүүд](/mn/reference/permissions.md).
+Транзакцийг өргөн мэдүүлсэн эрх баригч нь идэвхтэй гүйлгээний цаг хугацааны баталгаажуулагчаар шаарддаг зөвшөөрөлтэй байх ёстой. Дашрамд дурдах зөвшөөрлийн талбайн талаар [Хэрэглэх токенүүд](/mn/reference/permissions.md)-ийг үзнэ үү.
 
-## Үргэлж {#events}
+## Үргэлт {#events}
 
-Мэдээллийн үйл явдлыг метадэтгэлийн өөрчлөлтийн үед дамжуулдаг.
-`MetadataChanged<Id>`:
+Мэдээллийн үйл явц нь метадэтгэлийн өөрчлөлтийн үед дамжуулагдана. `MetadataChanged<Id>`:
 
 ```mermaid
 classDiagram
@@ -93,22 +81,10 @@ MetadataChanged --> AssetDefinitionMetadataChanged
 MetadataChanged --> DomainMetadataChanged
 ```
 
-Хэрэглээ [Мэдээллийн үйл явдлын филтр](/mn/blockchain/filters.md#data-event-filters) .
-зөвхөн нэгжийн төрөл эсвэл объектын метадангийн үйл явдлыг бүртгэнэ ID Энэ
-Интеграцид хамаатай.
+[ мэдээллийн үйл явдлын филтрүүд ](/mn/blockchain/filters.md#data-event-filters)-ийг ашиглан зөвхөн нэгжлэлтэд чухал ач холбогдол бүхий этгээдийн төрөл эсвэл объект ID-ийн мета өгөгдөлний үйл явдлыг бүртгэж болно.
 
 ## Судалгаа {#queries}
 
-Мэдээлэл өгөгдлийг хүсэлт гаргасан объектын нэг хэсэг болгон буцааж өгдөг. Жишээ нь,
-[`FindAccountById`](/mn/reference/queries.md#accounts-and-permissions),
-[`FindDomainById`](/mn/reference/queries.md#domains-and-peers), эсвэл
-[`FindAssetDefinitionById`](/mn/reference/queries.md#assets-nfts-and-rwas).
-Хэрэглээ [`FindNfts`](/mn/reference/queries.md#assets-nfts-and-rwas) эсвэл
-[`FindNftsByAccountId`](/mn/reference/queries.md#assets-nfts-and-rwas) .
-NFTs, болон [`FindRwas`](/mn/reference/queries.md#assets-nfts-and-rwas) . RWA
-Дараа нь объектын метадэтгэлийг уншина уу. NFT асуултын хариу нь
-NFT `content` Захиргааны метадэтгэрийн зураг.
+Мэдээлэл өгөгдлийг асуусан объектын нэг хэсэг болгон буцааж өгдөг. Жишээлбэл, [`FindAccountById`](/mn/reference/queries.md#accounts-and-permissions), [`FindDomainById`](/mn/reference/queries.md#domains-and-peers), эсвэл [`FindAssetDefinitionById`](/mn/reference/queries.md#assets-nfts-and-rwas) ашиглана. [`FindNfts`](/mn/reference/queries.md#assets-nfts-and-rwas) эсвэл [`FindNftsByAccountId`](/mn/reference/queries.md#assets-nfts-and-rwas)-ийг NFTs болон [`FindRwas`](/mn/reference/queries.md#assets-nfts-and-rwas)-г RWA хэсгүүдээр ашигла. Дараа нь объектын метад мэдээллийн талбайг уншина уу. NFT асуултын хариулт нь NFT `content` газрын зургийг бүртгэлийн метад мэдээллээр илрүүлнэ.
 
-Metadata түлхүүр нь томоохон бүртгэлийн байдалд ордог тул тэднийг тогтвортой байлгаж,
-Хэрэглэлийн тухайн хувилбарыг кодлох нь ач холбогдолтой нэр рүү шилжүүлнэ JSON
-үнэ цэнэ нь тухайн хувилбарыг тодорхой илэрхийлж болно.
+Metadata түлхүүр нь томоохон бүртгэлийн байдлын нэг хэсэг тул тэдгээрийг тогтвортой байлгаж, JSON үнэ цэнэ нь тухайн хувилбарыг тодорхой илэрхийлж чаддаг бол хэрэгслийн тусгай хувилбарын кодлогыг нэрийн нэрт оруулж болохгүй.

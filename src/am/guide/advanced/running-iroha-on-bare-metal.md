@@ -6,51 +6,45 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# እየሮጠ Iroha በባዶ ብረት ላይ {#running-iroha-on-bare-metal}
+# በባዶ ብረት Iroha ላይ እየሮጠ {#running-iroha-on-bare-metal}
 
-ይህን የስራ ፍሰት ይጠቀሙ እናንተ አስተናጋጆች ላይ በቀጥታ እኩዮች ለማሄድ ከፈለጉ ይልቅ
-በኩል Docker Compose. የአሁኑ ምንጭ ዛፍ ይሰጣል Kagami ማመንጫዎች
-የሚዛመዱትን ጀነሲስ፣ የእኩዮች ውቅር፣ የደንበኞችን ውቅር እና የመጀመር/የማቆም ስክሪፕቶችን ይፃፉ።
+በ Docker Compose በኩል ሳይሆን በቀጥታ በአስተናጋጆች ላይ እኩዮችን ማሄድ በሚፈልጉበት ጊዜ ይህንን የስራ ፍሰት ይጠቀሙ። የአሁኑ ምንጭ ዛፍ ተዛማጅ ጅምር ፣ የእኩዮች ውቅር ፣ የደንበኛ ውቅር እና የመጀመር / የማቆም ስክሪፕቶችን የሚጽፉ Kagami ጀነሬተሮችን ይሰጣል ።
 
-## 1. ባይናሪዎችን መገንባት {#_1-build-the-binaries}
+## 1. የሁለትዮሽ ስልቶችን መገንባት {#_1-build-the-binaries}
 
-ከዋና ጅረት Iroha የሥራ ቦታ:
+ከፕሮግራሙ Iroha የሥራ ቦታ:
 
 ```bash
 cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ```
 
-ይህም የሚከተሉትን ያስገኛል፦
+ይህም የሚከተሉትን ያመጣል፦
 
-- `target/release/irohad` ለባልደረባ ዳሚን
+- `target/release/irohad` ለባልደረባ ዳይሞን
 - `target/release/iroha` ለ CLI
 - `target/release/kagami` ለቁልፍ፣ ለጄኔሲስ እና ለአካባቢያዊ አውታረ መረብ ማመንጫ
 
 ## 2. አካባቢያዊ አውታረ መረብ መፍጠር {#_2-generate-a-local-network}
 
-አንድ አራት-አቻ ማመንጨት Iroha 3 localnet:
+የአራት እኩዮች Iroha 3 አካባቢያዊ አውታረ መረብ መፍጠር:
 
 ```bash
 target/release/kagami localnet --build-line iroha3 --peers 4 --out-dir ./localnet
 ```
 
-የውጤት ማውጫ የተፈጠሩትን ይዟል `genesis.json`,
-`genesis.signed.nrt`, እኩዮች `config.toml` መዝገቦች፣ `client.toml`, ረዳት ስክሪፕቶች፣
-እና የተፈጠረ `README.md` ለዚያ ጥቅል ትክክለኛ ትዕዛዞች ጋር.
+የውጤት ማውጫ የተፈጠረውን ይዟል `genesis.json`, `genesis.signed.nrt`, የእኩዮች `config.toml` መዝገቦች፣ `client.toml`, ረዳት ስክሪፕቶች፣ እና የተፈጠረ `README.md` ለዚያ ክምችት ትክክለኛ ትዕዛዞችን ጋር።
 
-## 3. እኩዮች መጀመራቸው {#_3-start-peers}
+## 3. እኩዮችን ይጀምሩ {#_3-start-peers}
 
-ለተፈጠረው የአንድ ጊዜ ነጠላ አካባቢያዊኔት የተፈጠረውን ስክሪፕት ይጠቀሙ:
+ለተፈጠረው የአንድ ጊዜ ነጠላ አካባቢያዊኔት የተፈጠረውን ስክሪፕት ይጠቀሙ፡-
 
 ```bash
 ./localnet/start.sh
 ```
 
-እያንዳንዱን እኩዮች እንደ አንድ ሂደት አስተዳዳሪ ውስጥ ለማስተላለፍ ከፈለጉ systemd, አጠቃቀም
-በ ውስጥ ተመዝግቧል `./localnet/README.md` ለእያንዳንዱ እኩዮች።
-የባልደረባ `config.toml`, የግል ቁልፍ፣ የማከማቻ ማውጫ እና ወደቦች ተለይተው።
+እያንዳንዱን እኩያ እንደ systemd ባሉ የሂደት አስተዳዳሪ ውስጥ ማሰራት ከፈለጉ ለእያንዳንዱ እኩያ በ `./localnet/README.md` ላይ የተመዘገበውን የመነሻ ትዕዛዝ ይጠቀሙ። የእያንዳንዱን እኩዮች `config.toml` ፣ የግል ቁልፍ ፣ የማከማቻ ማውጫ እና ወደቦች ለየብቻ ያቆዩ ።
 
-## 4. አውታረ መረቡን ማስተዳደር {#_4-operate-the-network}
+## 4. አውታረ መረቡን ማስተዳደር። {#_4-operate-the-network}
 
 የተፈጠረውን የደንበኛ ውቅር ይጠቀሙ:
 
@@ -67,16 +61,10 @@ target/release/iroha --config ./localnet/client.toml --output-format text ops su
 
 ## 5. የምርት ማስታወሻዎች {#_5-production-notes}
 
-- አዲስ የግል ቁልፎችን ለማምረት እና ከቤት ውጭ ማከማቸት
-  ማከማቻ።
-- ሁሉም እኩዮች ተመሳሳይ ፊርማ የተደረገበት የጀኔስ ግብይት፣ ቶፖሎጂ
-  የታመኑ እኩዮች፣ እና ማረጋገጫ ሰጪ PoPs.
-- የአድማጩ አድራሻዎችን ከአስተናጋጅ-አካባቢያዊ በይነገጾች ጋር ብቻ ያገናኙ
-  ከሌሎች ማሽኖች ሊደረስባቸው አይችሉም ።
-- ለ Torii ተፅዕኖ፣ መሰረታዊ ውጤት፣ TLS, እና ተመን
-  ውስንነት።
-- የመነሻ ወይም የስምምነት ቶፖሎጂ ለውጦችን የተቀናጀ ፍልሰቶች አድርገው ይመለከቱ ፣ አይደለም
-  ነጠላ የፋይል አርትዖቶች።
+- ለምርቱ አዲስ የግል ቁልፎችን ያመነጩ እና ከማከማቻው ውጭ ያስቀምጧቸው ።
+- ሁሉም እኩዮች ተመሳሳይ የተፈረመ የጄኔሲስ ግብይት ፣ ቶፖሎጂ ፣ የታመኑ እኩያዎች እና ማረጋገጫ PoPs ላይ ይስማሙ ።
+- አቻው ከሌሎች ማሽኖች ሊደረስበት በማይችልበት ጊዜ ብቻ አስተናጋጅ-አካባቢያዊ በይነገጾች ላይ አድማጩን ያገናኙ።
+- ለ Torii ተጋላጭነት, መሰረታዊ auth, TLS እና የፍጥነት ገደብ የኋላ ወኪል ወይም የእሳት ግድግዳ ይጠቀሙ.
+- በጄኔሲስ ወይም በስምምነት ቶፖሎጂ ላይ የተደረጉ ለውጦችን እንደ የተቀናጀ ፍልሰቶች እንጂ ነጠላ-አቻ የፋይል አርትዖቶች አይይዙ።
 
-ለኮንቴይነር አካባቢያዊ ልማት [ማስጀመሪያ Iroha 3](../../get-started/launch-iroha.md)
-Docker Compose የስራ ፍሰት.
+ለኮንቴይነር አካባቢያዊ ልማት የ [ጀምር Iroha 3](../../get-started/launch-iroha.md) Docker Compose የስራ ፍሰት ይጠቀሙ.

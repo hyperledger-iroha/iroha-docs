@@ -30,7 +30,7 @@ Bax [Əməliyyat təhlükəsizliyi ](/az/guide/security/operational-security.md)
 
 ## Backup və bərpa {#backups-and-recovery}
 
-- Yükləmə üçün tələb olunan bərpa nöqtəsinə görə həmyaşıd saxlama ehtiyatını yedekləyin.
+- Təkmilləşdirmə üçün tələb olunan bərpa nöqtəsinə uyğun olaraq həmyaşıd saxlama ehtiyatı. İstehsal olmayan hostlarda bərpaları təsdiqləyin.
 - İmzalanmış mənşəyi saxlayın, metadatalar buraxın, həmyaşıd konfiqurasiyası və bir təsdiqləyici ev sahibi mövcud olmasa da açar saxlama qeydləri bərpa oluna bilər.
 - Bir bərpa prosedurunun təməldən yenidən qurulduğunu, sürətli görüntülərdən bərpa edildiyini və ya uğursuz bir həmyaşıdın yerini yeni bir şəxsiyyətlə əvəz etdiyini sənədləşdirin.
 - İstehsal hadisəsi zamanı heç vaxt ilk dəfə bərpa prosedurlarını sınaqdan keçirməyin.

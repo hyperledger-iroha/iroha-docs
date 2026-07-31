@@ -50,7 +50,7 @@ curl -fsS "$TAIRA/metrics" \
   | head -n 20
 ```
 
-As métricas públicas Taira são úteis para o aprendizado dos nomes de sinais.
+As métricas públicas Taira são úteis para aprender os nomes dos sinais. Não os utilize como números de capacidade de produção para a sua própria implantação.
 
 Os mesmos snapshots de consenso estão disponíveis através do CLI:
 
@@ -70,7 +70,7 @@ telemetry_profile = "full"
 
 ## Banda de desempenho {#performance-bands}
 
-Use essas faixas para uma execução observada em milissegundos de transmissão-alvo `Y` TPS e orçamento de latência `L`.
+Utilize estas bandas para uma execução observada em milissegundos de transmissão-alvo `Y` TPS e orçamento de latência `L`. Execute a carga de trabalho durante tempo suficiente para incluir aquecimento, estado estável e pelo menos um período de expectativa de pico de carga.
 
 |Banda .|Condições |Que significa ?|
 | --- | --- | --- |
@@ -141,7 +141,7 @@ As configurações do colector afetam a rapidez com que os votos de compromissos
 - `sumeragi.collectors.redundant_send_r` controla a votação adicional após um tempo limite local
 - `sumeragi.collectors.parallel_topology_fanout` adiciona a topologia fanout ao lado dos colectores
 
-O aumento do fanout pode reduzir a latência da cauda em redes maiores ou menos confiáveis, mas também aumenta o tráfego.
+O aumento da disponibilidade pode reduzir a latência de cauda em redes maiores ou menos confiáveis, mas também aumenta o tráfego. Comparar a disponibilidade agregada e telemetria do colector com as métricas de latência e contrapressão antes de alterar estes valores:
 
 ```bash
 iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetry
@@ -169,7 +169,7 @@ As configurações de admissão e fila definem a quantidade de pressão da explo
 - limites de transações genesis, tais como assinaturas máximas, instruções, bytes e bytes descomprimidos
 - Limites de fila p2p e limites de entrada por consenso
 
-A alta capacidade de fila pode esconder a sobrecarga por um tempo, mas não aumenta o rendimento sustentável.
+A alta capacidade de fila pode ocultar a sobrecarga por um tempo, mas não aumenta o rendimento sustentável. Uma fila estável é saudável; uma fila crescente é um atraso.
 
 ### Hardware e armazenamento {#hardware-and-storage}
 

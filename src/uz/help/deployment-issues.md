@@ -6,48 +6,40 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Ishlab chiqarish muammolarini hal qilish {#troubleshooting-deployment-issues}
+# Oʻrnatish muammolarini hal qilish {#troubleshooting-deployment-issues}
 
-Ushbu boʻlimda muammolarni hal qilish uchun maslahatlar mavjud Iroha 3 ishga tushirish. Agar muammoni
-siz boshdan kechirayotgan voqealar bu yerda tasvirlanmagan.
-biz bilan bog'laning [Telegram](https://t.me/hyperledgeriroha).
+Ushbu bo'limda Iroha 3 ishga tushirishlar uchun muammolarni hal qilish maslahatlari mavjud. Agar siz duch kelayotgan muammo bu erda tasvirlanmagan bo'lsa, biz bilan [Telegram](https://t.me/hyperledgeriroha) orqali bog'lanishingiz mumkin.
 
-## Yaratilgan asarlar bilan boshlash {#start-with-generated-artifacts}
+## Yaratilgan asarlar bilan boshlang . {#start-with-generated-artifacts}
 
-Mahalliy va sinov dasturlari uchun Kagami oʻrniga
-qo'lda yozilgan tengdosh fayllaridan:
+Mahalliy va sinov dasturlari uchun Kagami tomonidan yaratilgan artefaktlar qo'lda yozilgan tengdoshlari fayllaridan ko'ra afzalroq:
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
 ```
 
-Ishlab chiqarilgan direktoriyada tengdoshlari, genesis materiallari, boshlang
-skriptlar va a README uchun Iroha 3 qurilish liniyasi.
+Yaratilgan direktoriyada tengdoshlari, genesis materiallari, boshlang'ich skriptlar va README qurilish liniyasi uchun Iroha 3 mavjud.
 
-## Tengdoshlar boshlanmaydi {#peer-does-not-start}
+## Tengdoshlar boshlang'ich emas {#peer-does-not-start}
 
-Avval ushbu moddalarni tekshirib koʻring:
+Avvalambor , ushbu narsalarni tekshirib koʻring:
 
-- `irohad --config <path>` tengdoshning o'zidagi nuqtalar TOML fayl.
-- `public_key` va `private_key` tengdoshlar konfigida bir xil kalitga tegishli
-  Bir juftlik.
-- `genesis.public_key` genesis transaksiyasini imzolash uchun ishlatilgan kalitga mos keladi.
-- identifikatsiyalash vositasi BLS-Normal kalitlar va `trusted_peers_pop`
-  mahalliy kalit va ishonchli tengdoshlar uchun egalik guvohnomasini o'z ichiga oladi.
-- portlar uchun Torii va P2P boshqa jarayon bilan bog'liq emas.
-- ko'rsatilgan Kura do'kon direktoriyasi bir xil zanjirga tegishli bo'lib,
-  turli tarmoq profillari.
+- `irohad --config <path>` ko'rsatkichlar tengdoshning o'zi TOML faylida.
+- `public_key` va `private_key` tengdoshlari konfiguratsiyasida bir xil kalit juftligidan iborat.
+- `genesis.public_key` genesis tranzaksiyasini imzolash uchun ishlatilgan kalitga mos keladi.
+- validator tengi identifikatsiyalari BLS-Normal kalitlardan foydalanadi, va `trusted_peers_pop` mahalliy kalit va ishonchli tengi uchun egalik to'g'risidagi hujjatni o'z ichiga oladi.
+- Torii va P2P uchun portlar allaqachon boshqa jarayon bilan bog'liq emas.
+- Kura do'kon direktoriyasi bir xil zanjirga tegishli bo'lib, boshqa tarmoq profilidan nusxa olingan emas.
 
-Daemon birdan koʻproq oʻqiganida konfiguratsiya izlashidan foydalaning TOML qatlam:
+Daemon birdan ko'proq TOML qatlamni o'qiganida konfiguratsiya izlashidan foydalaning:
 
 ```bash
 cargo run --bin irohad -- --config ./config.toml --trace-config
 ```
 
-## Docker va kompozitsiya {#docker-and-compose}
+## Docker va tarkib {#docker-and-compose}
 
-Joriy tarkibdan yaratish Kagami lokalnet natijasi, shuning uchun buyruq liniyasi
-argumentlar va konfiguratsiya fayllari cheklangan kod bilan mos keladi:
+Generate Hozirgi Kagami lokalnet chiqishidan qo'shish, shunda buyruq satridagi argumentlar va konfiguratsiya fayllari checked-out kodga mos keladi:
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
@@ -55,37 +47,32 @@ cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyper
 docker compose -f ./localnet/docker-compose.yml up
 ```
 
-Agar kompozitni ishga tushirish boshlansa va keyin to'xtasa, daemon loglarini tekshirib ko'ring:
+Agar kompozitni ishga tushirish boshlansa va keyin to'xtasa, daemonlar jurnallarini tekshirib ko'ring:
 
 - mos kelmagan `chain`
-- bir tengdosh boshqa genesis muomalasi yoki manifestdan foydalangan holda
-- reklama qilingan P2P konteynerlar tarmog'ida ishlaydigan manzillar
-- genesis qayta tiklanganidan keyin mahalliy hajmni qayta ishlatish
+- bitta tengdoshi boshqacha genesis transaksiyasi yoki manifestidan foydalangan holda
+- reklama qilingan P2P manzillari faqat konteynerlar tarmog'ida ishlaydi
+- genesis qayta tiklanganidan so'ng mahalliy hajmni qayta ishlatish
 
-Yangi genesisni sinab ko'rganingizda eski genesisni olib tashlang. Kura qayta ishga tushirishdan oldin hajmlar
-Eski bloklarni yangi genesis bilan saqlash o'yinni muvaffaqiyatsiz qoldiradi.
+Yangi genesisni sinovdan o'tkazganingizda, to'plamni qayta boshlashdan oldin eski Kura hajmlarni olib tashlang. Eski bloklarni yangi genesis bilan saqlash o'yinni muvaffaqiyatsiz qoldiradi.
 
 ## Kubernetes {#kubernetes}
 
-Kubernetes uchun har bir tasdiqlovchiga davlatli infratuzilma sifatida qarash:
+Kubernetes uchun har bir validatorni davlatli infratuzilma sifatida qabul qiling:
 
 - har bir tengdoshga barqaror identifikatsiya kalitini va barqaror doimiy hajmni berish
-- oshkor qilish P2P klaster ichida boshqa tengdoshlar hal qilishi mumkin bo'lgan manzillar
-- ko'chirish uchun o'zgarmas konfiguratsiya sifatida konfig va genesis fayllarini mount
-- barcha genesis yoki topologiya o'zgarishlarini avtomatik ravishda emas, balki bila turib amalga oshirish
-  konfiguratsiya xaritasi yangilanishi
+- P2P boshqa tengdoshlar klaster ichidan hal qilishlari mumkin bo'lgan manzillarni ochish
+- konfiguratsiya va genesis fayllarini ishga tushirish uchun oʻzgarmas konfiguratsiya sifatida mount qilish
+- barcha genesis yoki topologiya o'zgarishlarini avtomatik ravishda konfiguratsiya xaritasi yangilanishi sifatida emas, balki bila turib joriy etish
 
-Agar pod takror-takror qayta ishga tushirilgan bo'lsa, poddagi ko'rsatilgan konfiguratsiyani
-kutilmoqda [`peer.template.toml`](/uz/reference/peer-config/index.md#template) va
-tengdoshi eski o'yinlarni takrorlayotgani yoki yo'qligini tekshirish Kura ma'lumotlar.
+Agar pod takror-takror qayta ishga tushirilsa, poddagi o'rnatilgan konfiguratsiyani kutilayotgan [`peer.template.toml`](/uz/reference/peer-config/index.md#template) bilan taqqoslang va tengdoshi eski Kura ma'lumotlarni takrorlayapti yoki yo'qmi tekshirib ko'ring.
 
 ## Sora profili {#sora-profile}
 
-Iroha 3 foydalanadigan joylashtirish Nexus, SoraFS, yoki ko'p yo'nalishdagi oqimlar boshlanishi kerak
-Sora profilini o'z ichiga olgan demon:
+Nexus, SoraFS yoki ko'p yo'nalishdagi oqimlardan foydalanuvchi Iroha 3 ishga tushirishlar Sora profilini qo'llab-quvvatlagan holda daemonni boshlash kerak:
 
 ```bash
 cargo run --bin irohad -- --config ./config.toml --sora
 ```
 
-Xuddi shu tarmoqdagi tasdiqlovchilardan muntazam ravishda bir xil profildan foydalaning.
+Bir xil tarmoqdagi tasdiqlovchilarda bir xil profildan muntazam foydalanish.

@@ -8,21 +8,13 @@ translation_engine: nllb-200-ct2
 
 # Swift ו-iOS {#swift-and-ios}
 
-ה- Swift SDK הנשלח על ידי החלל העבודה העליון הוא `IrohaSwift` Swift
-חבילה תחת `IrohaSwift/`. מסמך החבילה שלו מגדיר שלוש ספרות
-מוצרים`IrohaSwift`, `IrohaSwiftMobileTransports`, ו
-`IrohaSwiftTransferUI`ולכו למטרות iOS 15+ ו-macOS 12+ עם Swift כלים 5.9.
+ה- Swift SDK שנשלח על ידי חלל העבודה העליון הוא החבילה `IrohaSwift` Swift תחת `IrohaSwift/`. מוניפסט החבילה שלו מגדיר שלושה מוצרי ספריה `IrohaSwift`, `IrohaSwiftMobileTransports`, ו `IrohaSwiftTransferUI`, ומטרת ל- iOS 15+ ו- macOS 12+ עם כלים של Swift 5.9.
 
-החבילה תלויה במקור `NoritoBridge` מטרה דונית.
-אישור החלטה `../dist/NoritoBridge.xcframework` לפני בנייה, ו
-העסקה או קישור כריפטו דרכים לזרוק גשר לא זמינים טעויות כאשר
-סמלים מקומיים לא טעון.
+החבילה תלויה במטרה השתינית המקומית `NoritoBridge`. החלטת החבילה מאשרת `../dist/NoritoBridge.xcframework` לפני בניית, וטיולים של טרנזקציה או קונקט קריפטו זורקים טעויות שאינן זמינות כשסמלים מקומיים אינם מותאמים.
 
-## Swift מנהל החבילה {#swift-package-manager}
+## Swift מנהל חבילה {#swift-package-manager}
 
-כאשר מתפתחים נגד חלל עבודה מסודר, נקודה SwiftPM בבית הספר המקומי
-`IrohaSwift/` תיק המשלוח. זהות המשלוח המשמשת על ידי
-`Package.swift` הוא `IrohaSwift`:
+כאשר מתפתחים נגד חלל עבודה שנבדק, ציינו SwiftPM בתיאוריה המקומית של החבילה `IrohaSwift/`. זהות החבילה המשמשת על ידי `Package.swift` היא `IrohaSwift`:
 
 ```swift
 dependencies: [
@@ -38,26 +30,20 @@ targets: [
 ]
 ```
 
-תעדור את הנתיב עבור האפליקציה שלך. אל תיקפו את הזרם
-`examples/ios/ConnectMinimalApp` דרך כפי שהיא; כי מופע פותר
-`../../IrohaSwift` ל `examples/IrohaSwift`.
+תקן את הנתיב עבור האפליקציה שלך. אל תישכף את הנתיba הנוכחית `examples/ios/ConnectMinimalApp` כפי שהיא; המוניסטר הזה פותר `../../IrohaSwift` ל `examples/IrohaSwift`.
 
-לפני פתרון החבילה, לוודא שהגשר קיים בשורש חלל העבודה:
+לפני פתרון החבילה, ודא שהגשר קיים בשורש חלל העבודה:
 
 ```bash
 cd /path/to/iroha
 make bridge-xcframework
 ```
 
-זה מייצר `dist/NoritoBridge.xcframework`; `IrohaSwift/Package.swift`
-מתייחסת לזה כ `../dist/NoritoBridge.xcframework`.
+זה מייצר `dist/NoritoBridge.xcframework`; `IrohaSwift/Package.swift` מתייחס אליו כ `../dist/NoritoBridge.xcframework`.
 
 ## CocoaPods {#cocoapods}
 
-בסיס הקוד כולל גם `IrohaSwift/IrohaSwift.podspec`. הוא מכריז על
-`IrohaSwift` קופסה, Swift 5.9, ו-iOS 15. Swift מקורות
-האספנה הראשית; הגשר המקומי עדיין חייב להיות נוכח וקשור ל
-קודי עסקה, חתימה שאינה ED25519, וConnect crypto.
+בסיס הקוד כולל גם `IrohaSwift/IrohaSwift.podspec`. הוא מכריז על `IrohaSwift` קופסה, Swift 5.9, ו-iOS 15. הפודספיק מושך Swift מקורות מהמוסד הראשי; הגשר המקומי עדיין חייב להיות נוכח וקשור לקוד העסקאות, חתימה לא-Ed25519, וConnect crypto.
 
 ## התחלה מהירה {#quickstart}
 
@@ -77,10 +63,9 @@ if #available(iOS 15.0, macOS 12.0, *) {
 }
 ```
 
-## נסה. Taira רק קריאה {#try-taira-read-only}
+## נסה Taira לקרוא בלבד {#try-taira-read-only}
 
-תתחילו עם רמה. HTTP סופדה כדי לאשר את המכשיר או סימולטור יכול להגיע
-ציבורי Taira נקודת סוף:
+התחל עם סונדה פשוטה HTTP כדי לאשר כי המכשיר או הסימולטור יכולים להגיע לנקודה הסופית Taira הציבורית:
 
 ```swift
 import Foundation
@@ -96,14 +81,9 @@ if #available(iOS 15.0, macOS 12.0, *) {
 }
 ```
 
-השתמשו באותה `URLSession` בדקה
-`https://taira.sora.org/v1/assets/definitions?limit=5` בזמן שאתה בונה
-UI ולנסות שוב את ההתנהגות. `IrohaSDK` להגיש עוזרים רק לאחר
-האפליקציה מצלמת חומרי החותמים מאחסון בטוח והחשבון ממומן
-Taira.
+השתמש באותו צ'ק `URLSession` עבור `https://taira.sora.org/v1/assets/definitions?limit=5` בזמן שאתה בונה UI ולנסות מחדש את התנהגותך. לעבור ל `IrohaSDK` לשלוח עוזרים רק לאחר שהתطبيق משאיר חומר חתימה מאחסון בטוח והחשבונך מיומן על Taira.
 
-כדי לבנות ולגיש עסקאות, השתמשו `IrohaSDK` עוזרים. אלה קוראים
-קודר עסקה מקורי, בעלת תמיכה בברג:
+כדי לבנות ולשלוח עסקאות, השתמשו בעוזרי `IrohaSDK`. הם קוראים לקודר העסקות המקומי בעלת תמיכה בשר:
 
 ```swift
 let transfer = TransferRequest(
@@ -125,23 +105,15 @@ if #available(iOS 15.0, macOS 12.0, *) {
 }
 ```
 
-`TransferRequest`, `MintRequest`, `BurnRequest`, `ShieldRequest`, ו
-`UnshieldRequest` אישור חשבון קנוני IDs ובלתי מקובל קנוני
-הגדרה של נכס Base58 IDs לפני החתימה.
+`TransferRequest`, `MintRequest`, `BurnRequest`, `ShieldRequest` ו `UnshieldRequest` מסכימים את החשבון הקנוני IDs והגדרת נכס Base58 הלא מקובלת קנונית IDs לפני חתימה.
 
-## חוב משכנתא מקומי {#native-escrow}
+## משכנתא מקומי {#native-escrow}
 
-Swift בונה את השוק והנחיות הבנקאות אנונימיות Norito JSON
-מטענים שימושיים דרך `NativeEscrowInstructionBuilders` או שווה ערך
-`IrohaSDK.build*Escrow*` עוזרים.
-[אסיטום נטיב](/he/blockchain/escrow.md#swift-and-ios) לדוגמאות,
-שדות הוכחה אנונימיים, ואת סימן רשות פתרון מחלוקת.
+Swift בונה הוראות שוק ושל אבטחה אנונימית כצריכים מועילים של Norito JSON באמצעות `NativeEscrowInstructionBuilders` או עוזרים הוותיקים `IrohaSDK.build*Escrow*`. ראה [ אבטחת נכסים מקומיים ](/he/blockchain/escrow.md#swift-and-ios) לדוגמאות, שדות הוכחה אנונימיים, ואת סימן רשות פתרון מחלוקת.
 
 ## חתימה {#signing}
 
-`Keypair` האם הנוחות של Ed25519 API. עבור אלגוריתמים אחרים, לבנות
-`IrohaSDK` עם `defaultSigningAlgorithm` ושימוש `generateSigningKey()` או
-`signingKey(fromSeed:)`:
+`Keypair` הוא הנוחות של Ed25519 API. עבור אלגוריתמים אחרים, תבנה `IrohaSDK` עם `defaultSigningAlgorithm` ותשתמש ב `generateSigningKey()` או `signingKey(fromSeed:)`:
 
 ```swift
 let pqSdk = IrohaSDK(
@@ -151,14 +123,11 @@ let pqSdk = IrohaSDK(
 let signingKey = try pqSdk.generateSigningKey()
 ```
 
-ה- `SigningAlgorithm` enum כולל כיום Ed25519, secp256k1, BLS נורמלי
-וצרכים קטנים, ML-DSA, GOST R 34.10-2012 קבוצות פרמטרים, ו SM2. ילידי
-תמיכה בגשר נדרשת מחוץ למסלול הנוחות Ed25519.
+ה- `SigningAlgorithm` enum כולל כיום את Ed25519, secp256k1, BLS גרסאות נורמליות וקטנות, ML-DSA, GOST R 34.10-2012 קבוצות פרמטרים, ו SM2. תמיכה גשר מקומית נדרשת מחוץ למסלול הנוחות של Ed25519.
 
 ## חיבור {#connect}
 
-הלקוח Connect מיועד ב Swift מקור, עם קודקים קריפטו וקרם
-תמיכה `NoritoBridge`:
+לקלינט Connect מתבצע במקור Swift, עם קודקים קריפטו ומסגרת תומכים ב- `NoritoBridge`:
 
 ```swift
 let sessionID = Data(repeating: 0, count: 32) // replace with the session bytes
@@ -177,40 +146,27 @@ let session = ConnectSession(sessionID: sessionID, client: client)
 let keyPair = try ConnectCrypto.generateKeyPair()
 ```
 
-`ConnectSession` מחזיקים פותחים וסגורים, קוויטציה של מעטפה מוצפנת,
-מפתחות כיוון, בקרת זרימה, זרמי אירועים, זרמי איזון ודיאגנסטיקה
-עיתונים.
+`ConnectSession` מטפל בפיקוחים פתוחים וסגורים, קריאת קספת מוצפנת, מפתחות כיוון, בקרת זרימה, זרמי אירועים, זרמים של איזון, וכתבי דיאגנוסטיקה.
 
-## כיסוי הנוכחי {#current-coverage}
+## הכיסוי הנוכחי {#current-coverage}
 
-ה- Swift המקור כולל כיום:
+מקור Swift כולל כיום:
 
-- `ToriiClient` HTTP עוזרים לחשבונות, נכסים, כינויים, דפים של חוקרים,
-  RWA, חוזים, מרובות סיג', ממשל, חתימות, זמינות נתונים,
-  נכסים סודיים, מצב הערך/זמן ההפעלה, בריאות, מדידות, ו SSE זרימים
-- `IrohaSDK` בונים עסקאות ועוזרים להגיש/הצבעה עבור העברה, מנטה,
-  כווית, מגן, ללא מגן, ZK העברה, ZK רישום נכסים, מטא-נתונים,
-  דרישות לזהות, רישום רב סיג ומנחיות לניהול
-- תמיכה בשורה של עסקאות מחופשת `PendingTransactionQueue` ו
-  `FilePendingTransactionQueue`
-- כתובת החשבון I105 עוזרים דרך `AccountAddress` ו `AccountId`
-- Ed25519, secp256k1, ML-DSA, BLS, GOST, ו SM2 שטחי חתימה, עם ילידים
-  תמיכה בגשר, אם זה נחוץ
-- נתיב הוראות סקרו בונה משאית עבור שוק ומוגוון
-  סכום כספי
-- חיבור WebSocket, קישור, קריפטו, ישיבה, בתור, שידור ושוב ודיאגנסטיקה
-  עוזרים
-- הכנות של Kagemusha, תוספת וחיסוי טייפ, מצב הפעולה, הערה,
-  חבילה משותפת, קבלה ו QR דוגמאות זרם
-- SoraFS, אמצעי סיוע לקיבלת נתונים, וחיבור ראיות
+- `ToriiClient` HTTP עוזרים לחשבונות, נכסים, שם כינוי, דפים של חוקר, RWA, חוזים, מלטסיג, ממשל, מחברות, זמינות נתונים, נכסים סודיים, מצב הערך/זמן הפעלה, בריאות, מדידות, וזרמים SSE
+- `IrohaSDK` בונים עסקאות ועוזרים להגיש/הצבעה עבור העברה, מנטה, שריפה, כיסוי, ללא כיסוי. ZK העברה, ZK רישום נכסים, מטא-מנתונים, דרישות מזהה, רישום רב סיג, הוראות לניהול.
+- תמיכה בשורה של עסקאות בהמתנה דרך `PendingTransactionQueue` ו `FilePendingTransactionQueue`
+- כתובת חשבון ועוזרי I105 באמצעות `AccountAddress` ו `AccountId`
+- גבי חתימה Ed25519, secp256k1, ML-DSA, BLS, GOST ו SM2, עם תמיכה בישר מקומית, כאשר זה נחוץ.
+- הוראות אבטחה מקומית לבניית מטען מועיל לשוק ואבטחה אנונימית
+- חיבור WebSocket, מסגרת, קריפטו, ישיבה, בתור, חזרה, ועוזרי דיאגנסטיקה
+- הכנות של Kagemusha, תוספת וחיסוי טייפ, מצב הפעולה, פתק, חבילת עמיתים, קבלה ומודלים של זרם QR
+- SoraFS, סיועי זמינות הנתונים וחיבורת ראיות
 
-## API דוגמאות {#api-examples}
+## API דוגמא {#api-examples}
 
-שימוש `IrohaSwift/Sources/IrohaSwift` לממשלת הציבור ו
-`IrohaSwift/Tests/IrohaSwiftTests` לדוגמאות השימוש שנבדקו מאותו
-תיקון מקור.
+השתמש `IrohaSwift/Sources/IrohaSwift` ליישום ציבורי ו `IrohaSwift/Tests/IrohaSwiftTests` לדוגמאות השימוש שנבדקו מאותו תיקון מקורות.
 
-## ראיות מקור {#source-references}
+## מקורות ראיות {#source-references}
 
 - `IrohaSwift/Package.swift`
 - `IrohaSwift/IrohaSwift.podspec`

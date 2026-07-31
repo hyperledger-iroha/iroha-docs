@@ -8,24 +8,22 @@ translation_engine: nllb-200-ct2
 
 # Ibtido haqidagi hikoya {#genesis-reference}
 
-Hozirgi vaqtda Iroha 3 ish oqimi, a `genesis.json` manifest birinchi
-Tarmoqni ishga tushirish paytida qo'llaniladigan operatsiyalar va parametrlar.
+Joriy Iroha 3 ish oqimida `genesis.json` manifestda tarmoq ishga tushganda qo'llaniladigan birinchi operatsiyalar va parametrlar tasvirlangan.
 
-Tengdoshlarga tarqatilgan imzolangan artefakt Norito-kodlangan `.nrt` fayl
-ishlab chiqarilgan `kagami genesis sign`.
+Tengdoshlarga tarqatilgan imzolangan artefakt Norito kodlangan `.nrt` fayli bo'lib, `kagami genesis sign` tomonidan ishlab chiqarilgan.
 
 ## Asosiy maydonlar {#main-fields}
 
-Genesis manifesti quyidagilarni belgilashi mumkin:
+Genesis manifestini quyidagilar belgilab qo'yish mumkin:
 
 - `chain` zanjir identifikatori uchun
-- `executor` koʻrsatkichni oʻzgartirish uchun
-- `ivm_dir` uchun IVM triggerlar va yangilanishlar tomonidan ishlatiladigan kutubxonalar
-- `consensus_mode` manifestida e'lon qilingan boshlang'ich rejim uchun
-- `transactions` tartiblangan parametrlarni yangilash, ko'rsatmalar, triggerlar va topologiya uchun
+- `executor` ixtiyoriy ijrochi yangilash bytecode yo'li uchun
+- `ivm_dir` uchun IVM kutubxonalari triggerlar va yangilanishlar tomonidan ishlatiladi
+- `consensus_mode` manifestda e'lon qilingan dastlabki rejim uchun
+- `transactions` tartibdagi parametrlarni yangilash, ko'rsatmalar, triggerlar va topologiya uchun;
 - `crypto` dastlabki kripto fotosurat uchun
 
-Ichkarida `transactions`, topologiya yozuvlari juftlik tenglama identifikatorlari va PoPs birgalikda:
+`transactions` ichida topologiya yozuvlari tengli identifikatorlar va PoPs bilan birgalikda:
 
 ```json
 {
@@ -36,7 +34,7 @@ Ichkarida `transactions`, topologiya yozuvlari juftlik tenglama identifikatorlar
 
 ## Manifest yarating {#generate-a-manifest}
 
-Foydalanish Kagami Moddiyani yaratish uchun:
+Shablonni yaratish uchun Kagami dan foydalaning:
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
@@ -45,13 +43,11 @@ cargo run -p iroha_kagami -- genesis generate \
   --genesis-public-key <PUBLIC_KEY> > genesis.json
 ```
 
-Jamoat uchun SORA Nexus ma'lumotlar maydoni, `npos` bu kutilayotgan konsensus rejasi.
-Boshqalar Iroha 3 joylashtirishlar maqsadga qarab ruxsat berilgan yoki NPoSdan foydalanishlari mumkin
-profil.
+Umumiy SORA Nexus ma'lumotlar maydonida, `npos` kutilayotgan konsensus rejasi hisoblanadi. Boshqa Iroha 3 ishga tushirishlarda maqsadli profilga qarab ruxsat berilgan yoki NPoS foydalanish mumkin.
 
-## Manifestoga imzo qo'ying {#sign-the-manifest}
+## Manifestni imzolash {#sign-the-manifest}
 
-tahrirlash va tasdiqlashdan keyin JSON, uni ishga tushirish mumkin bo ' lgan `.nrt` blok:
+JSON ni tahrirlash va tasdiqlashdan so'ng, uni ishga tushirib bo'ladigan `.nrt` blokga imzolang:
 
 ```bash
 cargo run -p iroha_kagami -- genesis sign genesis.json \
@@ -59,13 +55,11 @@ cargo run -p iroha_kagami -- genesis sign genesis.json \
   --out-file genesis.signed.nrt
 ```
 
-`kagami genesis sign` manifestdan genesis ommaviy kalitini o'qiydi va foydalanadi
-ishga tushirilishi mumkin bo'lgan imzolangan kalit, urug' va algoritmi taqdim etilgan
-Natijada tengdoshlar o'z konfigidan murojaat qilishlari kerak bo'lgan fayl paydo bo'ladi.
+`kagami genesis sign` manifestdan genesis ommaviy kalitini o'qiydi va qo'llanilishi mumkin bo'lgan imzolangan blokni yaratish uchun taqdim etilgan xususiy kalit, urug' va algoritmdan foydalanadi. Natijada tengdoshlar o'z konfigidan murojaat qilishi kerak bo'lgan fayl paydo bo'ladi.
 
-## Konfiguratsiya `irohad` {#configure-irohad}
+## `irohad` sozlash {#configure-irohad}
 
-Demonni imzolangan genesis blokini koʻrsating:
+Demonni imzolangan genesis blokini koʻrsat:
 
 ```toml
 [genesis]
@@ -81,5 +75,4 @@ public_key = "<PUBLIC_KEY>"
 - `kagami localnet`
 - `cargo xtask kagami-profiles`
 
-Generatorni amalga oshirish va buyruq tafsilotlari uchun
-[Kagami README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_kagami/README.md).
+Generatorni amalga oshirish va buyruq tafsilotlari uchun [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_kagami/README.md)-ga qarang.

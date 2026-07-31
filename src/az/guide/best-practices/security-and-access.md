@@ -22,7 +22,7 @@ Bax [Kriptografik açarların yaradılması](/az/guide/security/generating-crypt
 ## İzinlər {#permissions}
 
 - İş axınına dəstək verən ən kiçik icazə simvolu və ya rolu verin.
-- Xidmətlər, triggerlər, agentlər və avtomatlaşdırma üçün xüsusi texniki hesabları üstün tutun.
+- Xidmətlər, triggerlər, agentlər və avtomatlaşdırma üçün xüsusi texniki hesabları üstün tuturlar. Şəxsi operator hesabı vasitəsilə uzun ömürlü avtomatlaşdırma işindən çəkinin.
 - Tərəfdaş idarəetməsinə, metadata mutasiyasına, mintəməyə, yandırmaya, tetikləyici qeydiyyatına, icraçı dəyişikliyinə və SORA/Nexus idarəetməyə icazələri istehsalın başlanmasından əvvəl nəzərdən keçirin.
 - Müvəqqəti icazələri saxlama pəncərəsindən sonra və ya onları tələb edən köçürülmədən sonra ləğv edin.
 
@@ -30,7 +30,7 @@ Bax [İzinlər](/az/blockchain/permissions.md) və [İzin simvolları ](/az/refe
 
 ## Şəbəkə məruz qalması {#network-exposure}
 
-- Ətraf mühitə uyğun olaraq peer-to-peer, Torii, telemetriya və operator marşrutlarını məhdudlaşdırın.
+- Ətraf mühitə uyğun olaraq peer-to-peer, Torii, telemetriya və operator marşrutlarını məhdudlaşdırın. İctimaiyyət oxumaq imkanı ictimaiyyəti yazmaq və ya operatorun girişini nəzərdə tutmur.
 - VPNs, yanğın divarları, geri proxylər, TLS ləğvləri və tətbiq üçün lazımi hallarda dərəcə limitlərindən istifadə edin.
 - Əsas müəllif təsnifatlarını, proxy tokenlərini və ötürülmüş başlıqları etibarlı konfiqurasiyalardan kənar tutun.
 - Rəsmi olmayan müştərilərin məhdud marşrutlara çatmadığını yoxlayın.

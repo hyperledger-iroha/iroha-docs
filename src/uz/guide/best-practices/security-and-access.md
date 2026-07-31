@@ -8,75 +8,46 @@ translation_engine: nllb-200-ct2
 
 # Xavfsizlik va kirish {#security-and-access}
 
-xavfsizlik amaliyotlari Iroha cheklangan hokimiyatga asoslanishi kerak, nazorat qilinadi
-kalitlarni saqlab qolish, aniq tarmoqlarga ega bo'lish va auditorlik qilish mumkin bo'lgan o'zgarishlar.
+Iroha dagi xavfsizlik amaliyotlari cheklangan vakolatga, nazorat qilinadigan kalitlar saqlanishiga, ochiq tarmoqlarga taalluqli bo'lishiga va audit qilinishi mumkin bo'lgan o'zgarishlarga asoslanishi kerak.
 
 ## Muvaffaqiyatli nazorat {#key-custody}
 
-- Ishlab chiqarish darajasi entropiyasi bilan ishlab chiqarish kalitlarini yaratish va xususiy saqlash
-  Repozitoriyadan tashqaridagi kalitlar, izlovchilar, iltimosnomalar, chat loglari va CI
-  chiqindi.
-- Mijozlar, tengdoshlar uchun alohida kalit materialdan foydalanish, genesis imzolash,
-  tasdiqlovchilar, to'lov sponsorlari va texnik hisobotlar.
-- Shartlarni yozma jarayonga ko'ra aylantirib, o'zlashtirishni mashq qiling
-  jonli hodisa.
-- Yuqori qiymatli saqlash uchun asbob-uskunalar bilan ta'minlangan yoki operatsion tizim tomonidan ta'minlanadigan saqlashdan foydalanish
-  joylashtirish xavfi asoslanganida kalitlarni imzolash.
+- Ishlab chiqarish darajasidagi entropiyaga ega bo'lgan ishlab chiqarish kalitlarini hosil qilish va shaxsiy kalitlarni omborlar tashqarisida saqlash, izlovchi, iltimosnomalar, suhbat loglari va CI mahsulotlarini chiqarish.
+- Mijozlar, tengdoshlar, genesis imzolash, tasdiqlovchilar, to'lov sponsorlari va texnik hisobotlar uchun alohida kalit materiallardan foydalaning.
+- Tugmalarni yozma jarayonga ko'ra aylantiring va jonli hodisalardan oldin tiklanish mashg'ulotlarini o'tkazing.
+- Agar ishga tushirish xavfi asoslangan bo'lsa, yuqori qiymatli imzolash kalitlari uchun asbob-uskunalar bilan ta'minlangan yoki operatsion tizim tomonidan ta'minlanadigan saqlashdan foydalaning.
 
-Koʻring
-[Kriptografik kalitlarni yaratish](/uz/guide/security/generating-cryptographic-keys.md)
-va
-[Kriptografik kalitlarni saqlash](/uz/guide/security/storing-cryptographic-keys.md).
+[Generating Cryptographic Keys](/uz/guide/security/generating-cryptographic-keys.md) va [Storing Cryptographic keys](/uz/guide/security/storing-cryptographic-keys.md)-ni ko'ring.
 
-## Ruxsatnomalar {#permissions}
+## Ruxsatlar {#permissions}
 
-- Ish oqimini qo'llab-quvvatlaydigan eng kichik ruxsat belgisini yoki rolni berish.
-- Xizmatlar, qo'zg'atuvchilar, agentlar uchun maxsus texnik hisobvaraqlarni afzal ko'rish
-  avtomatiklashtirish. Uzoq muddatli avtomatlashtirishni shaxsiy
-  operator hisob raqami.
-- Tengdoshlarni boshqarish uchun ruxsatnomalarni qayta ko'rib chiqish, metadata mutatsiyasi, mining,
-  yoqish, ishga tushirish ro'yxatidan o'tish, ijrochi o'zgarishlari va SORA/Nexus
-  ishlab chiqarishni boshlashdan oldin boshqaruv.
-- Ta'mirlash oynasidan yoki ko'chirishdan keyin vaqtincha ruxsatnomalarni bekor qilish
-  bu ularni talab qildi.
+- Ish oqimini qo'llab-quvvatlaydigan eng kichik ruxsat belgisini yoki rolni bering.
+- Xizmatlar, triggerlar, agentlar va avtomatlashtirish uchun maxsus texnik hisoblarni afzal ko'rish. Shaxsiy operator hisobidan uzoq muddatli avtomatlashtirishdan qoching.
+- Ishlab chiqarish ishga tushirilishidan oldin tengdoshlarni boshqarish, metadata mutatsiyasi, qalinlashtirish, yoqish, qo'zg'atuvchi ro'yxatdan o'tkazish, ijrochi o'zgarishlari va SORA/Nexus boshqaruv uchun ruxsatnomalarni ko'rib chiqish.
+- Ta'mirlash oynasidan keyin yoki ularni talab qilgan ko'chirishdan so'ng vaqtincha ruxsatlarni bekor qiling.
 
-Koʻring [Ruxsatnomalar](/uz/blockchain/permissions.md) va
-[Ruxsat toʻgʻriligi](/uz/reference/permissions.md).
+Qarang [Izohlar](/uz/blockchain/permissions.md) va [Izoh tokenlari](/uz/reference/permissions.md).
 
 ## Tarmoqdagi ta'sir {#network-exposure}
 
-- Tengdoshlar bilan tengdoshlarni cheklash, Torii, telemetriya va operator yo'nalishlari
-  Umumiy o'qishga kirish ommaviy yozishni yoki
-  operatorga kirish.
-- Foydalanish VPNs, yong'in devorlari, qaytarib yuboriladigan vositalar, TLS tugatish va stavkalar cheklovlari
-  joylashtirish uchun zarur bo'lgan hollarda.
-- Asosiy mualliflik ma'lumotlarini, proxy tokenlari va etkazib berilgan sarlavhalarni
-  kafolatlangan konfig.
+- Torii, telemetriya va operator yo'nalishlarini atrof-muhitga qarab cheklash. Umumiy o'qishga kirish umuman yozish yoki operatorga kirishni anglatmaydi.
+- VPNs, yong'in devorlari, qaytarib yuboriladigan vositalar, TLS to'xtatish va joylashtirish uchun zarur bo'lganda stavka cheklovlaridan foydalanish.
+- Asosiy mualliflik ma'lumotlarini, proxy tokenlari va etkazib berilgan sarlavhalarni o'rnatilmagan konfiguratsiyalardan saqlash.
 - Ruxsatsiz mijozlar cheklangan yo'nalishlarga yetib borolmasligini tekshirish.
 
-Koʻring [Virtual xususiy tarmoqlar](/uz/guide/security/vpn.md) va
-[Torii Keyingi nuqtalar](/uz/reference/torii-endpoints.md).
+Qarang [Virtual xususiy tarmoqlar](/uz/guide/security/vpn.md) va [ Torii Oxirgi nuqtalari ](/uz/reference/torii-endpoints.md).
 
-## Aldatish va suiiste'mollarni nazorat qilish {#fraud-and-abuse-monitoring}
+## Kamchiliklar va suiiste'mollarni nazorat qilish {#fraud-and-abuse-monitoring}
 
-- O'ylanmagan aktivlar uchun hisobda bo'lgan hodisalarni va operatsion signallarni kuzatish
-  harakat, ruxsat berish, o'zgarishlarni qo'zg'atish, tengdoshlarning o'zgarishi va takrorlanuvchi
-  rad etilgan operatsiyalar.
-- Transaksiya hashlari, blok balandliklari, hodisalar to'plami bilan dalillarni saqlash.
-  ro'yxatlar va holat fotosuratlari.
-- Xavfsizlik, faoliyat va ishbilarmonlarga yo'nalishdagi ogohlantirishlar
-  ta'sirlangan aktivlar yoki ish oqimlari uchun.
+- O'ylanmagan aktivlar harakatlanishi, ruxsat berish, o'zgarishlarni qo'zg'atish, tengdoshlarning o'zgarishi va takror-takror rad etilgan operatsiyalarni kuzatish uchun katta kitob hodisalari va operatsion signallarni kuzatib boring.
+- Transaksiya hashlari, blok balandliklari, hodisalar yozuvi, log va holat fotosuratlari bilan dalillarni saqlash.
+- Ta'sirlangan aktivlar yoki ish oqimlari uchun javobgar bo'lgan xavfsizlik, operatsiya va biznes egalariga yo'nalishdagi ogohlantirishlar.
 
-Koʻring [Aldatishlarni nazorat qilish](/uz/guide/security/fraud-monitoring.md).
+[Xaroba monitoringini ](/uz/guide/security/fraud-monitoring.md) ko'rish.
 
 ## Agent va avtomatlashtirish qo'riqchi rails {#agent-and-automation-guardrails}
 
-- Tek oʻqish uchun ruxsatnomalar bilan avtomatlashtirishni boshlash va faqat yozish huquqini qoʻshish
-  ish oqimini qayta ko'rib chiqilgandan so'ng.
-- jonli tarmoq mutatsiyalari uchun aniq inson tomonidan tasdiqlangan bo'lishi kerak,
-  avtomatlashtirish - bu maqsadli ravishda ishga tushirilgan ishlab chiqarish xizmati.
-- Xususiy kalitlarni agentlarga ko'rsatmang.
-  muhit o'zgaruvchilari, kalitlar zanjirlari, apparat imzochilaridan yoki
-  konfiguratsiya fayllarini e'tiborsiz qoldirgan.
-- Dasturlarni avtomatlashtirish qarorlari tekshiruvlar bo'lmasdan amalga oshirilishini qo'llab-quvvatlaydigan tarzda
-  maxfiy material.
+- Faqat o'qish uchun ruxsatnomalar bilan avtomatlashtirishni boshlash va faqat ish oqimini ko'rib chiqilgandan so'ng yozish huquqini qo'shing.
+- To'g'ridan-to'g'ri tarmoq mutatsiyalari uchun aniq insonning roziligini talab qilish, agar avtomatlashtirish niyat bilan ishga tushirilgan ishlab chiqarish xizmati bo'lmasa.
+- Xususiy kalitlarni agent iltimoslariga oshkor qilmang. Mahalliy koddan foydalanib, atrof muhit o'zgaruvchilari, kalitlar zanjirlari, uskuna imzolari yoki e'tiborsiz qoldirilgan konfiguratsiya fayllaridan sirlarni yuklab oling.
+- Yozuvlarni avtomatlashtirish qarorlari sirli materialni chiqarib tashlamasdan auditlarni qo'llab-quvvatlaydigan tarzda.

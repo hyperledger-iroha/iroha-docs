@@ -6,15 +6,15 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Kotlin, Android, және Java {#kotlin-android-and-java}
+# Kotlin, Android және Java {#kotlin-android-and-java}
 
-Қауымдастық Kotlin SDK үшін әдеттегі клиент тізбегі JVM және Android Қолданбалар. `kotlin/` және Iroha репозиторий және платформа бойынша бөлінеді, сондықтан тасымалданатын кодтар Android тәуелділіктер.
+Kotlin SDK JVM және Android қолданбалары үшін әдеттегі клиенттік топтамасы болып табылады. Ол Iroha қоймасында `kotlin/` астында тұрады және платформа бойынша бөлінеді, сондықтан портативті код Android тәуелділіктерін иеленбейді.
 
 ## Модульдер {#modules}
 
 |Артефакт|Түрі |Пайдалану |
 | --- | --- | --- |
-|`org.hyperledger.iroha.sdk:core-jvm` |JAR | Таза Kotlin/JVM Norito, деректер моделі, крипто, транзакция, Torii, және протокол коды |
+|`org.hyperledger.iroha.sdk:core-jvm` |JAR |Таза Kotlin/JVM Norito, дерек үлгісі, крипто, транзакция, Torii және хаттама коды |
 |`org.hyperledger.iroha.sdk:client-android` |AAR |Android кілт-шоу, құрылғылар телеметриясы және JNI қолданатын клиент интеграциялары |
 |`org.hyperledger.iroha.sdk:offline-wallet-android` |AAR |Android `client-android` негізінде желіден тыс қапшықты тасымалдау және интеграциялау |
 
@@ -41,7 +41,7 @@ dependencies {
 }
 ```
 
-`core-jvm` құрамында жоқ Android тәуелділіктері. Android клиенттің және кілт-шоу кодтары `client-android`, және пайдалану `offline-wallet-android` үшін Android- тек офлайн-бухгалтерлік есепшот және JNI ағынды.
+`core-jvm` құрамында Android тәуелділіктері жоқ. Android клиенті мен кілт-шоу кодын `client-android`-да сақтаңыз және Android - тек офлайн-кешелек пен JNI ағындары үшін `offline-wallet-android` қолданыңыз.
 
 ## Kotlin және Java үйлестіруі {#kotlin-and-java-compatibility}
 
@@ -72,9 +72,9 @@ Kotlin SDK мыналарды қамтиды:
 - Norito кодтау және кодтамалау
 - Қасиетті шоттар мен активтердің адрестерін басқару
 - транзакцияны құру, қол қою және офлайн конверттер
-- Torii HTTP, WebSocket, және SSE клиенттер
+- Torii HTTP, WebSocket және SSE клиенттері
 - көп қолтаңба, жазылу, SoraFS, Nexus және Connect үлгілері
 - Android кілт қоймасы мен құрылғының телеметриялық интеграциялары
-- Android желіден тыс QR, Жақын жерде және NFC тасымалдау
+- Android офлайн QR, жақын маңдағы және NFC тасымалдау
 
-Қараңыз [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/main/kotlin/README.md) модульге арналған APIs және нақты құрылыс командалары.
+[Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/main/kotlin/README.md) дегенді қараңыз, модульге тән APIs және нақты құрылыс командалары үшін.

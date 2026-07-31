@@ -8,25 +8,18 @@ translation_engine: nllb-200-ct2
 
 # Matrice de compatibilité {#compatibility-matrix}
 
-La matrice de compatibilité indique des SDK couverture des scénarios pour le courant
-Iroha 3 Par défaut, la page charge l'instantané généré
-de ceux qui sont attachés [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha)
-révision.
+La matrice de compatibilité affiche la couverture des scénarios transversaux SDK pour l'ensemble actuel de documents Iroha 3. Par défaut, la page charge le snapshot regroupé généré à partir de la révision [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) coincée.
 
 La matrice est composée de:
 
-- **Des histoires** dans la première colonne
-- **SDKs** sur les colonnes restantes
-- **Symbole de statut** pour les données couvertes, ratées et manquantes
+- Les histoires de la première colonne
+- SDKs dans les colonnes restantes
+- Symboles d'état pour les données couvertes, manquantes ou non
 
-Seuls les résultats vérifiés par le flux de travail de rafraîchissement sont déclarés comme couverts ou
-Les scénarios sans preuve de la révision fichée sont affichés comme
-les données manquantes au lieu d'hériter des résultats provenant d'une autre révision de la source.
+Seuls les résultats vérifiés par le flux de travail de mise à jour sont signalés comme couverts ou échoués. Les scénarios sans preuve de la révision fixée sont affichés comme des données manquantes plutôt que d'hériter des résultats d'une autre révision source.
 
 <CompatibilityMatrixTable />
 
-::: info
-Ensemble `VITE_COMPAT_MATRIX_URL` uniquement pour remplacer l'instantané avec un
-la page est chargée
-`src/public/compat-matrix.json`.
+::: informations
+Définir `VITE_COMPAT_MATRIX_URL` uniquement pour remplacer l'instantané bundled avec un backend en direct compatible. Sans cette variable, la page se charge `src/public/compat-matrix.json`.
 :::

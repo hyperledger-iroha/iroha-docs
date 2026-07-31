@@ -8,14 +8,11 @@ translation_engine: nllb-200-ct2
 
 # JavaScript နှင့် TypeScript {#javascript-and-typescript}
 
-လက်ရှိ JavaScript SDK အဲဒါက `@iroha/iroha-js` အိတ်ထဲတွင် Iroha
-အရင်းအမြစ် သစ်ပင်ပါ။ Node.js- ပထမ SDK အတွက် Torii, Norito ဆောက်လုပ်ရေးသမားတွေ၊ လက်မှတ်ထိုးသူတွေ၊
-Pagination, Connect Previews နဲ့ Kagemusha command transport တွေကို ကြည့်ပါ။
+လက်ရှိ JavaScript SDK အဲဒါက `@iroha/iroha-js` အိတ်ထဲတွင် Iroha အရင်းအမြစ် သစ်ပင်ပါ။ Node.js- ပထမ SDK အတွက် Torii, Norito ဆောက်လုပ်သူတွေ၊ လက်မှတ်ရေးထိုးခြင်း၊ စာမျက်နှာပြုစုခြင်း၊ ချိတ်ဆက်မှု ကြိုတင်ကြည့်ရှုချက်များနှင့် Kagemusha command transport များ။
 
-## အရင်းအမြစ်မှ ဆောက်လုပ်ခြင်း {#build-from-source}
+## အရင်းအမြစ်မှ တည်ဆောက်ခြင်း {#build-from-source}
 
-ပိတ်ရက်ကို အများပြည်သူအတွက် လက်ရှိမှာ မရရှိနိုင်ပါ။ npm မှတ်ပုံတင်ကို တည်ဆောက်ပါ။
-တူညီတဲ့ ပိုက်ခုံကနေ Iroha source revision ကို သင်ရည်မှန်းထားတဲ့ node အဖြစ်:
+အဆိုပါ package ကို အများပြည်သူ npm မှတ်ပုံတင်မှမရရှိပါ။ သင်ရည်ရွယ်သည့် node နှင့်အတူတူ pinned Iroha အရင်းအမြစ်ပြုပြင်မှုမှ တည်ဆောက်ပါ။
 
 ```bash
 git clone https://github.com/hyperledger-iroha/iroha.git
@@ -25,11 +22,7 @@ npm run build:native
 npm run build:dist
 ```
 
-ဒေသခံ ဆောက်လုပ်ရေး ပုံးများ `cargo build -p iroha_js_host` ပြီးတော့ မှတ်တမ်းတင်ထားတယ်
-Platform-specific checksum ကို အသုံးပြုခြင်း SDK source က နေရာတွေကို တည်ဆောက်တယ်။
-verified host ကို `native/`. Set `IROHA_JS_NATIVE_DIR` ရည်ရွယ်ချက်ရှိရင်သာ
-သီးခြားတည်ဆောက်ပြီး checksum စစ်ဆေးထားတဲ့ host ကိုပေးပို့တယ်။ ESM- တစ်ခုတည်းပါ။
-မှ CommonJS, အသုံးပြုမှု ဒိုင်နမစ် `import()`.
+Native build သည် `cargo build -p iroha_js_host` ကိုဖုံးအုပ်ပြီး SDK startup တွင်အသုံးပြုသော platformer-specific checksum ကိုမှတ်တမ်းတင်သည်။ အရင်းအမြစ် build နေရာများသည် `native/` တွင်စစ်ဆေးထားသော host ကိုသာသတ်မှတ်သည်။ သီးခြားတည်ဆောက်ထားသော checksum စစ်ဆေးထားတဲ့ host ကိုရည်ရွယ်ချက်ရှိစွာဖြည့်သွင်းတဲ့အခါမှသာ `IROHA_JS_NATIVE_DIR` ကိုသတ်မှတ်ပါ။ Package က ESM - သာ ဖြစ်ပြီး CommonJS မှ dynamic `import()` ကို အသုံးပြုပါ။
 
 ## အမြန်စတင်ခြင်း {#quickstart}
 
@@ -45,10 +38,9 @@ const keys = generateKeyPair();
 console.log(keys.publicKey);
 ```
 
-## စမ်းကြည့်ပါ။ Taira စာဖတ်ခြင်းသာ {#try-taira-read-only}
+## Taira ကို စမ်းကြည့်ပါ။ ဖတ်ရုံပဲ {#try-taira-read-only}
 
-အသုံးပြုမှု တည်ဆောက်ထားသည် `fetch` အထဲမှာ Node.js 24 ကို probe ကို Taira လက်မှတ်ထိုးခြင်း မတင်ခင်နဲ့
-Norito ငွေပေးချေမှု ကုဒ်:
+Node.js 24 မှာ ထည့်သွင်းထားတဲ့ `fetch` ကို အသုံးပြုပြီး လက်မှတ်ထိုးခြင်းနှင့် Norito ငွေပေးချေမှု ကုဒ်ကို မထည့်မီ Taira ကို စစ်ဆေးပါ။
 
 ```js
 const root = "https://taira.sora.org";
@@ -73,17 +65,15 @@ for (const asset of assets.items) {
 }
 ```
 
-ဒါကို Save လုပ်ပါ။ `taira-readonly.mjs`, ဒါဆို Run လုပ်ပါ။
+`taira-readonly.mjs` အဖြစ် သိမ်းထားပြီးရင် Run လုပ်ပါ။
 
 ```bash
 node taira-readonly.mjs
 ```
 
-လက်မှတ်ထိုးရန် ရွှေ့ပါ။ SDK စာဖတ်လို့သာရတဲ့ စစ်ဆေးမှုတွေ အလုပ်ဖြစ်ပြီးနောက်ပဲ ဖုန်းဆက်တာပါ။ Taira
-Saturated queue (သို့) gateway error ကို ယာယီပြန်ပို့နိုင်တယ်ဆိုတော့ live network ကိုဆက်သွယ်ထားပါ
-စစ်ဆေးမှုများ opt-in CI.
+လက်မှတ်ထိုးထားသော SDK ဖုန်းခေါ်ဆိုမှုများကို ဤဖတ်ခြင်းသာ စစ်ဆေးချက်များ အလုပ်ဖြစ်ပြီးနောက်မှသာ ရွှေ့ပါ။ အများပြည်သူ Taira သည် satiated queue သို့မဟုတ် gateway error ကို ယာယီပြန်ပို့နိုင်သည်၊ ထို့ကြောင့် တိုက်ရိုက်ကွန်ရက် စမ်းသပ်မှုများ opt-in ကို CI တွင်ထိန်းသိမ်းပါ။
 
-အသုံးဝင်တဲ့ အပိုလမ်းကြောင်း တင်သွင်းမှု
+အသုံးဝင်တဲ့ အပိုလမ်းကြောင်းတင်သွင်းမှု
 
 ```js
 import { ToriiClient } from "@iroha/iroha-js/torii";
@@ -91,32 +81,25 @@ import { noritoEncodeInstruction } from "@iroha/iroha-js/norito";
 import { generateKeyPair } from "@iroha/iroha-js/crypto";
 ```
 
-Browser တစ်ခုတည်းသော Connect bootstrap အတွက် အသုံးပြုပါ `@iroha/iroha-js/connect-browser`
-Node-first ကို တင်သွင်းမယ့်အစား `ToriiClient` မျက်နှာပြင်။
+Browser တစ်ခုတည်းသော Connect bootstrap အတွက် Node-first `ToriiClient` မျက်နှာပြင်ကို တင်သွင်းခြင်းအစား `@iroha/iroha-js/connect-browser` ကိုအသုံးပြုပါ။
 
 ## Native Escrow {#native-escrow}
 
-JavaScript နှင့် TypeScript လျှောက်လွှာများသည် native escrow ကိုအသုံးပြုနိုင်သည်။ Kotodama
-စာချုပ်များ။
-`@iroha/iroha-js/kotodama-compiler`; Direct native escrow transaction builders များ
-လက်ရှိတွင် JavaScript SDK. ကြည့်ပါ။
-[Native Asset Escrow](/my/blockchain/escrow.md#javascript-and-typescript-kotodama)
-အငှားလက်ခံခေါ်ဆိုမှု ဥပမာအတွက်ပါ။
+JavaScript နှင့် TypeScript Applications များသည် native escrow ကိုအသုံးပြုနိုင်သည်။ Kotodama လက်မှတ်ထိုးထားတဲ့ စာချုပ်တွေကို စုစည်းပါ။ `@iroha/iroha-js/kotodama-compiler`; Direct native escrow transaction builders တွေကို လက်ရှိမှာ JavaScript SDK. ကြည့်ပါ။ [Native Asset Escrow](/my/blockchain/escrow.md#javascript-and-typescript-kotodama) Escrow host-call နမူနာအတွက်ပါ။
 
 ## လက်ရှိအကာအကွယ် {#current-coverage}
 
-နိုင်ငံခြားရေး SDK အောက်ပါအချက်များကို အဓိကထားပြောဆိုနေသည်-
+SDK သည် အောက်ပါအချက်များအပေါ် အာရုံစိုက်သည်-
 
 - Torii HTTP နှင့် WebSocket အကူအညီပေးသူများ
-- Norito ကုန်သွယ်မှုနှင့် ညွှန်ကြားချက် ဆောက်လုပ်သူများ
-- Kotodama ကောက်ယူမှုအပါအဝင် escrow host-call builds
+- Norito ငွေပေးချေခြင်းနှင့် ညွှန်ကြားချက် တည်ဆောက်သူများ
+- Kotodama compilation၊ escrow host-call builds အပါအဝင်
 - Ed25519 လက်မှတ်ရေးထိုးခြင်းနှင့် သော့မျိုးဆက်
-- စာမျက်နှာပြုပြင်ခြင်းနှင့် ပြန်လည်စမ်းသပ်မှုကူညီသူများ
+- စာမျက်နှာပြုပြင်ခြင်းနှင့် ပြန်လည်စမ်းသပ်မှု အကူအညီများ
 - Browser bootstrap အကူများကို ချိတ်ဆက်ပါ
-- Kagemusha အသင့်ရှိမှု၊ ထပ်မံဖြည့်စွက်ခြင်း၊ ပြန်လည်ပေးသွင်းခြင်းနှင့် လုပ်ငန်းအခြေအနေဆိုင်ရာ ပို့ဆောင်မှု
-  အကူအညီပေးသူများ
+- Kagemusha အသင့်ရှိမှု၊ ထပ်မံဖြည့်စွက်ခြင်း၊ ပြန်လည်ပေးသွင်းခြင်းနှင့် လုပ်ငန်းဆောင်ရွက်မှုအခြေအနေဆိုင်ရာ သယ်ယူပို့ဆောင်ရေးကူညီသူများ
 
-## မြင့်တက်သော ရည်ညွှန်းချက်များ {#upstream-references}
+## အထက်ပိုင်းဆိုင်ရာ ရည်ညွှန်းချက်များ {#upstream-references}
 
 - `javascript/iroha_js/README.md`
 - `javascript/iroha_js/package.json`

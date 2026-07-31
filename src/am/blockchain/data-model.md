@@ -8,20 +8,14 @@ translation_engine: nllb-200-ct2
 
 # የመረጃ ሞዴል {#data-model}
 
-Iroha በመንግስት ውስጥ የሚገኙት የመረጃ ቋቶች `World`. የመጀመሪያ ልቀት ያለው የውሂብ ሞዴሉ ይጠቀማል
-የሚከተሉትን የካኖኒክ ማንነቶች እና አካላት:
+Iroha በ `World` ውስጥ ዋና መለያ ሁኔታን ያከማቻል። የመጀመሪያ ጊዜ የመረጃ ሞዴሉ የሚከተሉትን የካኖኒክ ማንነቶች እና አካላት ይጠቀማል:
 
-- ጎራዎች ለምሳሌ የመረጃ ቦታ ብቃት ያላቸው ናቸው `payments.universal`
-- ሂሳቦች ካኖኒክ እና ጎራ የሌላቸው ናቸው ID ከ
-  የሂሳብ ተቆጣጣሪ
-- የንብረት ትርጓሜዎች የጎራ / ስም ትንበያ ሊጠብቁ ይችላሉ ፣ ግን የእነሱ መደበኛ
-  የጽሑፍ አድራሻ ግልጽ ያልሆነ Base58 መታወቂያ ነው
-- ንብረቶች ለተወሰነ የንብረት ማብራሪያ በሂሳብ የተያዙ ቀሪዎች ናቸው
-- NFTs ጎራ ብቁ የሆኑ ብቸኛ ባለቤትነት ያላቸው መዝገቦች ናቸው IDs እና ሜታዳታ
-  ይዘት
-- RWAs የሚመነጩት-ID ከአሁኑ ጋር ከሰንሰለት ውጭ ያሉ ንብረቶችን የሚወክሉ እቃዎች
-  ባለቤት፣ ብዛት፣ መነሻ፣ ሜታዳታ፣ መያዣዎች፣ ማቀዝቀዣዎች እና የሕይወት ዑደት
-  ቁጥጥር
+- ጎራዎች የመረጃ ቦታ ብቁ ናቸው, ለምሳሌ `payments.universal`
+- ሂሳቦች ካኖኒክ እና ጎራ የሌላቸው ናቸው; ሂሳቡ ID ከሂሳብ አስተዳዳሪ የተገኘ ነው
+- የንብረት ትርጓሜዎች የጎራ / ስም ትንበያ መያዝ ይችላሉ ፣ ግን የእነሱ ቀኖናዊ ጽሑፍ አድራሻ ግልጽ ያልሆነ Base58 መታወቂያ ነው።
+- ንብረቶች ለተወሰነ የንብረት ማብራሪያ በሂሳብ የተያዙ ሚዛኖች ናቸው
+- NFTs ጎራ ብቃት ያለው IDs እና ሜታዳታ ይዘት ያላቸው ብቸኛ ባለቤትነት ያላቸው መዝገቦች ናቸው
+- RWAs የሚመነጩ- ID ንብረቶችን ከአሁኑ ባለቤት ፣ ብዛት ፣ አመጣጥ ፣ ሜታዳታ ፣ መያዣዎች ፣ ማቀዝቀዣዎች እና የህይወት ዑደት ቁጥሮች ጋር ከሰንሰለት ውጭ ያሉ ንብረቶችን የሚያመለክቱ ሎት ናቸው
 
 ```mermaid
 classDiagram
@@ -91,13 +85,7 @@ Rwa --> Account : owned_by
 
 ## ምሳሌ {#example}
 
-በአንድ Iroha 3 አውታረ መረብ፣ `wonderland.universal` በ ውስጥ አንድ ጎራ ነው
-`universal` በዚህ ምሳሌ ውስጥ ካኖኒካል መለያዎች ቁጥጥር ናቸው
-በቁልፍዎቻቸው ወይም ፖሊሲዎቻቸው እና እንደ ጎራ የሌለው ኮድ I105 ሂሳብ IDs. ሊነበብ የሚችል
-መለያዎች `alice@wonderland.universal` ለነዚህ ተያያዥነት ያላቸው የተለያዩ ስሞች ናቸው
-IDs. አንድ የታቀደ ንብረት ትርጉም አሁንም ቢሆን ከጎራ እና
-ስም እንደ `rose` ውስጥ `wonderland.universal`, የካኖኒክ ንብረት
-በሽቦው ላይ ጥቅም ላይ የዋለው የመግለጫ አድራሻ የተፈጠረው Base58 አድራሻ ነው።
+በ Iroha 3 አውታረመረብ ውስጥ, `wonderland.universal` በ `universal` የውሂብ ቦታ ውስጥ አንድ ጎራ ነው. በዚህ ምሳሌ ውስጥ ያሉት የካኖኒካል መለያዎች በእነሱ ቁልፎች ወይም ፖሊሲዎች ቁጥጥር ይደረግባቸዋል እና እንደ ጎራ የሌለው I105 መለያ IDs ተዘግተዋል. እንደ `alice@wonderland.universal` ያሉ ሊነበቡ የሚችሉ መለያዎች ለእነዚያ IDs የተገናኙ የተለያዩ ቅጽል ስሞች ናቸው. በፕሮጀክቱ ላይ የተጠቀሰው የንብረት መወሰኛ አድራሻ የሚመነጨው Base58 አድራሻ ሲሆን `wonderland.universal` ውስጥ እንደ `rose` ያሉ የጎራ እና ስም አሁንም ሊገነባ ይችላል.
 
 ```mermaid
 classDiagram
@@ -124,53 +112,34 @@ account_alice --> asset_rose : holds balance
 account_rabbit --> asset_rose : may receive balance
 ```
 
-## የአባል ስሞች {#aliases}
+## ስያሜዎች {#aliases}
 
-ቅጽል ስሞች በካኖኒካል መለያዎች ላይ የተሸፈኑ ለሰው ፊት ለፊት የሚጣሉ ስሞች ናቸው።
-እነሱ ጠቃሚ ናቸው API, CLI, የኪስ ቦርሳ, እና ተመራማሪዎች ድንበሮች, ነገር ግን ቀኖናዊ
-IDs በጥብቅ መቁጠሪያ መስኮች ውስጥ የተከማቹ ቋሚ መታወቂያዎች ሆነው ይቆያሉ።
+ቅጽል ስሞች በ API, CLI, በኪስ ቦርሳ እና በአሰሳ ወሰን ላይ ጠቃሚ ናቸው, ነገር ግን ቀኖናዊ IDs በጥብቅ መቁጠሪያ መስኮች ውስጥ የተከማቹ የተረጋጋ መታወቂያዎች ሆነው ይቆያሉ.
 
-| ግብ         | ቀኖናዊ ግብ                                    | ፊደላት                                          | የድጋፍ ሞዴል                                                                 |
+| ግብ|ቀኖኒካዊ ግብ|^ ቃል በቃል ^|የጀርባ ሞዴል |
 | -------------- | --------------------------------------------------- | ------------------------------------------------------ | ----------------------------------------------------------------------------- |
-| የተጠቃሚ መለያ   | ጎራ የሌለው `AccountId` እንደ አንድ ኮድ I105 አድራሻ   | `name@domain.dataspace` ወይም `name@dataspace`            | `AccountAlias`; ዋና ስያሜው `Account.label`, ተጨማሪ ቅጽል ስሞች ተያያዥነት አላቸው  |
-| የንብረት ትርጉም | ቀኖናዊ `AssetDefinitionId` Base58 አድራሻ     | `name#domain.dataspace` ወይም `name#dataspace`            | `AssetDefinitionAlias` በንብረት መገለጫ የተገደበ                           |
-| ውል       | የካኖኒክ Bech32m `ContractAddress`                 | `name::domain.dataspace` ወይም `name::dataspace`          | `ContractAlias` ከተሰማራ የውል አድራሻ ጋር የተያያዘ                          |
-| የጎራ ስም    | `DomainId` ውስጥ `domain.dataspace` ቅጽ               | `domain.dataspace`                                    | SNS `domain` የስም ቦታ መዝገብ                                                 |
-| የመረጃ ቋት ስም | ቁጥር `DataSpaceId` ከዋናው Nexus ካታሎግ | የመረጃ ቦታ ቅጽል ስሞች ለምሳሌ `universal`, `paynet`, ወይም `zk` | SNS `dataspace` የስም ቦታ መዝገብ እና ንቁ የውሂብ ቦታ ካታሎግ            |
+|የተጠቃሚ መለያ |የጎራ የሌለው `AccountId` እንደ I105 አድራሻ የተቀየሰ |`name@domain.dataspace` ወይም `name@dataspace` |`AccountAlias`፤ ዋና ስያሜው `Account.label` ሲሆን ተጨማሪ ስያሜዎችም አስገዳጅ ናቸው |
+|የንብረት ትርጉም |`AssetDefinitionId` Base58 አድራሻ |`name#domain.dataspace` ወይም `name#dataspace` |`AssetDefinitionAlias` ለንብረቱ ትርጉም የተገደበ ነው |
+|ውል |ቀኖናዊ Bech32m `ContractAddress` |`name::domain.dataspace` ወይም `name::dataspace` |`ContractAlias` ከተሰማራ የውል አድራሻ ጋር የተያያዘ ነው |
+|የጎራ ስም |`DomainId` በ `domain.dataspace` ቅጽ |`domain.dataspace` |SNS `domain` የስም ቦታ መዝገብ |
+|የመረጃ ቋት ስም |በ Nexus ንቁ ካታሎግ ውስጥ ቁጥር ያለው `DataSpaceId` |እንደ `universal` ፣ `paynet` ወይም `zk` ያሉ የመረጃ ቦታ ቅጽል ስሞች።|SNS `dataspace` የስም ቦታ መዝገብ እና ንቁ የመረጃ ቦታ ካታሎግ |
 
-የሂሳብ ስያሜዎች የተጠቃሚዎችን የሚመለከቱ የመለያ ስሞች ናቸው
-ዳግም መለያ መስጠት ምክንያቱም ስያሜው ወደ አክቲቭ ሂሳብ የሚያመለክት ስለሆነ ID በዓለም-መንግስት በኩል
-መረጃ ጠቋሚዎች እና የሂሳብ መዝገቦች። `SetPrimaryAccountAlias` ለ
-የሂሳብ ዋና መለያ፣ `SetAccountAliasBinding` ተጨማሪ የመጀመሪያ ደረጃ ያልሆነ
-ቅጽል ስሞች፣ እና `FindAccountByAlias` ወይም `FindAliasesByAccountId` ለአንባቢዎች።
-የሂሳብ ስያሜዎች በተለምዶ ንቁ SNS የተገኘ የሂሳብ ስምምነት ኪራይ
-ጋር `AcquireAccountAliasLease` እና በ `RenewAccountAliasLease`.
+የሂሳብ ስያሜዎች ለተጠቃሚው የተጋለጡ የመለያ ስሞች ናቸው ። ስያሜዎቹ ወደ ንቁ መለያ የሚያመለክቱ በመሆናቸው የመለያ መልሶ ማቋቋም ይቀጥላሉ። ID በመላው ዓለም የስቴት ኢንዴክሶች እና በሂሳብ ሪኬይ መዝገቦች በኩል። `SetPrimaryAccountAlias` ለሂሳቡ ዋና መለያ፣ `SetAccountAliasBinding` ተጨማሪ ዋና ያልሆኑ ቅጽል ስሞች፣ እና `FindAccountByAlias` ወይም `FindAliasesByAccountId` የሂሳብ ስያሜዎች በተለምዶ ንቁ SNS የሂሳብ ስምምነቶች ኪራይ ከ `AcquireAccountAliasLease` እና የታደሰ `RenewAccountAliasLease`.
 
-የንብረት ስያሜዎች የአክሲዮን ትርፍ መግለጫዎች እንጂ የግለሰብ ሂሳብ ቀሪዎች አይደሉም።
-ስያሜዎች እና የውል ስያሜዎችን ከማንበብ የሚችል ስም ወደ አንድ ቀጥተኛ ትስስር ናቸው
-የንብረት ስሞች በ `SetAssetDefinitionAlias`;
-የስም ስም ክፍሉ ከንብረቱ ትርጉም ማሳያ ስም ጋር ይዛመዳል ወይም
-የውል ቅጽል ስሞች በ `SetContractAlias`;
-የስም ዳታስፔስ በውል አድራሻው ውስጥ የተመሰጠረውን የውሂብ ቦታ ማዛመድ አለበት.
-ሁለቱም ማያዣዎች ሊሸከሙ ይችላሉ `lease_expiry_ms`; ማብቂያ ካለፈ በኋላ መፍታት ያቆማሉ
-የጸጋ መስኮቱ ሲያልፍ እና ከዓለም-ሀገር ማውጫዎች ሲሰረዝ።
+የንብረት ስያሜዎች የአክሲዮን ትርፍ መግለጫዎች እንጂ የግለሰብ ሂሳብ ቀሪዎች አይደሉም ። የንብረት ስም እና የውል ስያሜ ከማንበብ የሚችል ስም ወደ ነባር የካኖኒካል ዒላማ ቀጥተኛ ግዴታዎች ናቸው ። የንብረት ስም ቅጽል ስሞች በ `SetAssetDefinitionAlias` ይዘጋጃሉ; የቅጽል ስም ስም ክፍል ከንብረት ትርጉም ማሳያ ስም ወይም ከተነደፈው የግንዛቤ ስም ጋር የሚመሳሰል መሆን አለበት. የውል ስም ቅጽል ስም በ `SetContractAlias` ይዘጋጃል; የቅጽ ስም የውሂብ ቦታው በውል አድራሻ ውስጥ የተመዘገበውን የውሂብ ክልል ማዛመድ አለበት. ሁለቱም ትስስሮች `lease_expiry_ms` ሊይዙ ይችላሉ; ከተጠናቀቁ በኋላ የችሮታ መስኮቱ ሲያበቃ መፍታት ያቆማሉ እና ከዓለም-አገር ማውጫዎች ይጣላሉ ።
 
-ጎራዎች ለየት ያለ ቦታ የላቸውም `DomainAlias` አንድ ጎራ መታወቂያ ነው
-ቀድሞውኑ እንደ የመረጃ ቦታ ብቁ የሆነ ስም `payments.universal`. SNS ትራኮች
-የዶሜን ስሞች በኪራይ ባለቤትነት `domain` የስም ቦታ እና የውሂብ ቦታ
-በ `dataspace` የስም ቦታ። `universal` የውሂብ መዳረሻ ስያሜዎች
-መወሰን አለበት ።
+ጎራዎች የተለዩ የላቸውም `DomainAlias` አንድ የጎራ መታወቂያ ቀድሞውኑ እንደ የመረጃ ቦታ ብቃት ያለው ስም ነው `payments.universal`. SNS ትራኮች በ ውስጥ የጎራ ስሞች የሊዝ ባለቤትነት `domain` የስም ቦታ እና የውሂብ ቦታ ስያሜዎች ውስጥ `dataspace` የስም ቦታ። `universal` የውሂብ ቦታ ስያሜዎች ተለይተው መቆየት አለባቸው።
 
 ## ተዛማጅ ሰነዶች {#related-docs}
 
-| ርዕሰ ጉዳይ                                  | የት መሄድ አለብኝ                                 |
+|ርዕስ |የት መሄድ |
 | -------------------------------------- | ------------------------------------------- |
-| ጎራዎች                                | [ጎራዎች](/am/blockchain/domains.md)           |
-| ሂሳቦች                               | [ሂሳቦች](/am/blockchain/accounts.md)         |
-| ንብረቶች                                 | [ንብረቶች](/am/blockchain/assets.md)             |
-| NFTs                                   | [NFTs](/am/blockchain/nfts.md)                 |
-| በእውነተኛ ዓለም ውስጥ ያሉ ንብረቶች                      | [በእውነተኛ ዓለም ውስጥ ያሉ ንብረቶች](/am/blockchain/rwas.md)    |
-| ሜታዳታ                               | [ሜታዳታ](/am/blockchain/metadata.md)         |
-| የምዝገባና የማስተላለፍ መመሪያ | [መመሪያ](/am/blockchain/instructions.md) |
-| የአፈፃፀም ጊዜ ፍቃዶች                    | [ፍቃዶች](/am/blockchain/permissions.md)   |
-| የስም አሰጣጥ ደንቦች                           | [የስም አሰጣጥ ደንቦች](/am/reference/naming.md)        |
+|ጎራዎች | [ጎራዎች](/am/blockchain/domains.md) |
+|መለያዎች | [መለያዎች](/am/blockchain/accounts.md) |
+|ንብረቶች | [ንብረት](/am/blockchain/assets.md) |
+|NFTs | [NFTs](/am/blockchain/nfts.md) |
+|የእውነተኛ ዓለም ንብረቶች | [የእውነተኛ ዓለም ሀብቶች](/am/blockchain/rwas.md) |
+|ሜታዳታ | [ሜታ መረጃዎች](/am/blockchain/metadata.md) |
+|የምዝገባ እና የማስተላለፍ መመሪያ | [መመሪያዎች](/am/blockchain/instructions.md) |
+|የመሮጫ ጊዜ ፍቃዶች | [ፈቃድ](/am/blockchain/permissions.md) |
+|የስም አሰጣጥ ደንቦች| [የመሰየም ደንቦች](/am/reference/naming.md) |

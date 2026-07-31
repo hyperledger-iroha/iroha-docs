@@ -36,7 +36,7 @@ Trigger şərtləri abunə ilə eyni hadisə filtr modeli istifadə edir. Ən y�
 - icra hadisələrini başlatmaq
 - başlanğıc hadisələrini başlatmaq
 
-Geniş filtrlər diaqnostikada faydalıdır, lakin blok icrası zamanı işləri artırır.
+İş axınına uyğun olan ən dar filtrə üstünlük verin. Geniş filtrlər diaqnostikada faydalıdır, lakin blok icrası zamanı işləri artırırlar.
 
 Mövcud filtr ailələri üçün [Filterlər](/az/blockchain/filters.md) baxın.
 
@@ -52,9 +52,9 @@ Zaman tetikleyiciləri zaman hadisəsi filtrindən istifadə edirlər. Dünya v�
 
 ## Səlahiyyət və icazələr {#authority-and-permissions}
 
-Uzun ömürlü tetikləmələr üçün xüsusi bir texniki hesabdan istifadə edin, belə ki tələb olunan icazələr açıq və operatorun şəxsi hesabından təcrid olunmalıdır.
+Trigger səlahiyyəti, icra edilə bilənləri çağırmaq üçün istifadə edilmiş hesabdır. Uzun ömürlü tetikləmələr üçün xüsusi texniki hesabdan istifadə edin ki , tələb olunan icazələr açıq şəkildə və bir operatorun şəxsi hesabı.
 
-İcra edilə bilən təlimat və ya müqavilə çağırışı ilə tələb olunan icazələrə ehtiyacı olan orqan.
+Orqanın icra edilə bilən təlimat və ya müqavilə çağırışı üçün tələb olunan icazələrə ehtiyacı var. Trigger-i qeydiyyatdan keçirən hesabın aktiv icra vaxtının təsdiqçisi altında triggerləri qeydiyyata alması üçün icazəsi də lazımdır.
 
 ## Yenidən sınaq siyasəti {#retry-policy}
 

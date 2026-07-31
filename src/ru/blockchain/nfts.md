@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # NFTs {#nfts}
 
-Сборник Iroha NFT является уникальным объектом учетной записи с одним владельцем. NFTs когда запись нуждается в собственной идентичности, метаданных, событиях жизненного цикла и семантике передачи права собственности, но не требует цифрового баланса.
+Iroha NFT - это уникальный объект бухгалтерского учета с одним владельцем. Используйте NFTs, когда запись нуждается в собственной идентичности, метаданных, событиях жизненного цикла и семантике передачи владения, но не требует цифрового баланса.
 
 В отличие от цифр [активы](/ru/blockchain/assets.md), в) NFT не имеет точности, возможности изготовления или количеств на счет. NFT существует как один зарегистрированный объект, и собственность отслеживается непосредственно на этом объекте.
 
@@ -20,7 +20,7 @@ translation_engine: nllb-200-ct2
 - `content`: метаданные, описывающие NFT
 - `owned_by`: счет, на который принадлежит NFT
 
-В настоящее время `content` поле является `Metadata` Карта. Держите ее компактной: хранить описательные поля, стабильные ссылки, хэши, URIs, или SoraFS Сохранить большие документы, средства массовой информации или высокопроизводительные приложения из-за цепочки и хранить только проверяемую ссылку на NFT.
+Поле `content` представляет собой карту `Metadata`. Сохраняйте ее компактной: храните там описательные поля, стабильные ссылки, хэши, пути URIs или SoraFS. Храните большие документы, средства массовой информации или высокопропускные приложения вне цепочки и храните только проверяемые ссылки на NFT.
 
 ## Попробуй на Taira {#try-it-on-taira}
 
@@ -38,7 +38,7 @@ curl -fsS https://taira.sora.org/openapi.json \
   | jq -r '.paths | keys[] | select(startswith("/v1/nfts") or startswith("/v1/explorer/nfts"))'
 ```
 
-Пустое . `items` массив - это действительный ответ на публичной тестовой сети. NFTs на текущей странице, не что NFT инструкции недоступны.
+Пустой массив `items` является действительным ответом на публичной тестовой сети. Это означает, что на текущей странице нет NFTs, а не то, что инструкции по NFT недоступны.
 
 ## NFT IDs {#nft-ids}
 
@@ -49,7 +49,7 @@ name$domain
 name$domain.dataspace
 ```
 
-Например, `badge$docs.universal` определяет `badge` NFT в `docs.universal` Если пространство данных выпущено, текущий анализатор использует: `universal` пространство данных, так что `badge$docs` решает: `badge$docs.universal`.
+Например, `badge$docs.universal` идентифицирует `badge` NFT в домене `docs.universal`. Если пространство данных выпущено, текущий анализатор использует пространство данных `universal`, поэтому `badge$docs` решается на `badge$docs.universal`.
 
 Используйте стабильные имена для NFT IDs. В настоящее время ID является идентификацией объекта, используемой инструкциями, запросами, разрешениями, фильтрами событий и ссылками на приложение.
 
@@ -57,10 +57,10 @@ name$domain.dataspace
 
 NFT эксплуатация жизненного цикла использование Iroha Специальные инструкции:
 
-- [`Register`](/ru/blockchain/instructions.md#un-register) создает NFT с первоначальным `content`.
+- [`Register`](/ru/blockchain/instructions.md#un-register) создает NFT с начальным `content`.
 - [`Unregister`](/ru/blockchain/instructions.md#un-register) удаляет NFT.
 - [`Transfer`](/ru/blockchain/instructions.md#transfer) изменения в `owned_by`.
-- [`SetKeyValue` и `RemoveKeyValue`](/ru/blockchain/instructions.md#setkeyvalue-removekeyvalue) обновление NFT метаданные.
+- [`SetKeyValue` и `RemoveKeyValue`](/ru/blockchain/instructions.md#setkeyvalue-removekeyvalue) обновление метаданных NFT.
 
 ## Попробуйте на местном уровне {#try-it-locally}
 
@@ -72,7 +72,7 @@ export NFT_DOMAIN=wonderland.universal
 export NFT_ID='badge_intro$wonderland.universal'
 ```
 
-Уже создана локальная сеть `wonderland.universal` и его SNS Для использования другого домена, сначала создать его с помощью декларативной `app alias setup plan` и `app alias setup apply` рабочий процесс, описанный в [Домены](/ru/blockchain/domains.md#registration).
+Выработанная локальная сеть уже устанавливает `wonderland.universal` и ее SNS арендный договор. Для использования другого домена сначала создавайте его с помощью декларативного `app alias setup plan` и `app alias setup apply` потока работы, описанного в [Доменах](/ru/blockchain/domains.md#registration).
 
 Зарегистрировать NFT.Зарегистрация читает начальное содержание JSON из стандартного ввода:
 
@@ -110,7 +110,7 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft meta remove --id "$NFT_ID" --key traits
 ```
 
-Факультативное перечисление NFT. Использование `ledger nft get` для чтения текущего владельца из `owned_by`, и использование `ledger account list all` найти учетную запись назначения ID.
+Необходимо перенести NFT. Используйте `ledger nft get` для прочтения текущего владельца из `owned_by`, а используйте `ledger account list all` для поиска учетной записи назначения ID.
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -132,9 +132,9 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
 
 ## Вопросы и события {#queries-and-events}
 
-Использование [`FindNfts`](/ru/reference/queries.md#assets-nfts-and-rwas) перечислить NFTs и [`FindNftsByAccountId`](/ru/reference/queries.md#assets-nfts-and-rwas) перечислить NFTs в собственности счета.
+Используйте [`FindNfts`](/ru/reference/queries.md#assets-nfts-and-rwas), чтобы перечислить NFTs и [`FindNftsByAccountId`](/ru/reference/queries.md#assets-nfts-and-rwas) для перечисления NFTs в собственности счета.
 
-NFT Регистрация, удаление, передача и обновление метаданных NFT Данные событий. `Nft` фильтр событий данных при подписке изменений в регистре или создании триггеров, которые реагируют на: NFT события жизненного цикла.
+Регистрация, удаление, передача и обновление метаданных NFT излучают события данных NFT. Используйте фильтр событий данных `Nft` при подписке на изменения в регистре или создании триггеров, которые реагируют на события жизненного цикла NFT.
 
 ## Разрешения {#permissions}
 
@@ -145,7 +145,7 @@ NFT Регистрация, удаление, передача и обновле
 - `CanTransferNft`
 - `CanModifyNftMetadata`
 
-Проверка разрешений осуществляется активным валидатором времени выполнения, поэтому сеть может настроить авторизацию путем обновления исполнителя. [Токены разрешения](/ru/reference/permissions.md) для текущего списка дефолтных токенов.
+Проверка разрешений осуществляется активным валидатором времени выполнения, поэтому сеть может настроить авторизацию путем обновления Исполнитель. [Токены разрешения](/ru/reference/permissions.md) для текущего списка дефолтных токенов.
 
 ## Выбор NFTs {#choosing-nfts}
 

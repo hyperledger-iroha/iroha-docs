@@ -18,7 +18,7 @@ translation_engine: nllb-200-ct2
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
 ```
 
-Шығыс каталогы сәйкес келетін теңгерімдік конфигурацияларды қамтиды. `genesis.json`, `genesis.signed.nrt`, `client.toml`, және көмекші сценарийлер.
+Шығу каталогында сәйкес келетін теңгерімдік конфигурациялар, `genesis.json`, `genesis.signed.nrt`, `client.toml` және көмекші скрипттер бар.
 
 Жергiлiктi түтiк сынағы үшiн өндiрiлген теңгершiлердi тiкелей бастаңыз:
 
@@ -41,8 +41,8 @@ docker compose -f ./localnet/docker-compose.yml up
 
 Әдетті пайдаланған ұяшықта:
 
-- теңдесі P2P порттар `1337` үшін `1340`
-- Torii HTTP порттар `8080` үшін `8083`
+- P2P порты `1337` - `1340`
+- Torii HTTP порттары `8080` - `8083`
 - дайын клиент конфигурациясы `./localnet/client.toml`
 
 ## 2. Желідің жұмыс істеп жатқанын тексеріңіз {#_2-verify-that-the-network-is-up}
@@ -91,4 +91,4 @@ Nexus профилі бар түпкiлiктi теңгершiн жүргiзу ү
 docker compose -f ./localnet/docker-compose.yml down
 ```
 
-Желі жұмыс істегеннен кейін жалғастырыңыз: [Орындау Iroha 3 арқылы CLI](/kk/get-started/operate-iroha-via-cli.md).
+Желі жұмыс істегеннен кейін [мен жалғастырыңыз Iroha 3 арқылы CLI](/kk/get-started/operate-iroha-via-cli.md) арқылы әрекет ету.

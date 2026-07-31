@@ -8,14 +8,11 @@ translation_engine: nllb-200-ct2
 
 # JavaScript болон TypeScript {#javascript-and-typescript}
 
-Одоогийн JavaScript SDK Энэ бол `@iroha/iroha-js` багц Iroha
-Эх үүсэл мод. Node.js- Нэгдүгээрт SDK . Torii, Norito барилгын ажилчид, гарын үсэг зурагч
-Pagination, Connect Previews, Kagemusha командны тээвэр.
+Одоогийн JavaScript SDK нь Iroha эх үүсвэрийн мод дахь `@iroha/iroha-js` багц юм. Энэ бол Node.js-р SDK нь Torii, Norito бүтээн байгуулагчид, гарын үсэг зурах, хуудаслах, Connect урьдчилсан үзлэг, Kagemusha командын тээвэрлэлийн .
 
 ## Эх сурвалжаас бариарай {#build-from-source}
 
-Тус багцыг одоогоор олон нийтэд хүргэж чадахгүй байна npm Тэмцээ хий.
-мөн адил хуурсан Iroha эх сурвалжийн шинэчлэл, та зорилтот цэг:
+Энэ багцыг одоогоор npm нийтийн бүртгэлээс ашиглаж чадахгүй. Та зорилт тавьсан түймэртэй ижил Iroha эх үүсвэрийн шинэчилсэн найруулгаас бариарай:
 
 ```bash
 git clone https://github.com/hyperledger-iroha/iroha.git
@@ -25,11 +22,7 @@ npm run build:native
 npm run build:dist
 ```
 
-Нүүдэлчдийн барилга нь `cargo build -p iroha_js_host` .
-Платформад зориулсан хяналтын хэмжээ SDK эх үүсвэр нь
-баталгаажуулсан халамжлагч `native/`. Нөхөнтөгч `IROHA_JS_NATIVE_DIR` Зөвхөн санаатайгаар
-Тус багц нь тусдаа баригдсан, хяналтын хэмжээгээр баталгаажуулсан хостийг нийлүүлнэ. ESM- зөвхөн;
-цаашид CommonJS, ашиглах динамик `import()`.
+Нүүдэлчдийн бүтээн байгуулалтын хувцас `cargo build -p iroha_js_host` болон платформын хувьд ашигласан хяналтын хэмжээг бүртгэж, SDK эх үүсвэр нь хостийг баталгаажуулсан байршлыг `native/`. Тоглолт `IROHA_JS_NATIVE_DIR` Зөвхөн бие даасан баригдсан, хяналтын дүнгээр баталгаажуулсан хостын зориулалттай нийлүүлэлт хийх тохиолдолд л байна. ESM- зөвхөн; CommonJS, хэрэглээний динамик `import()`.
 
 ## Удахгүй эхлэх {#quickstart}
 
@@ -45,10 +38,9 @@ const keys = generateKeyPair();
 console.log(keys.publicKey);
 ```
 
-## Та үүнийг туршиж үзээрэй. Taira Зөвхөн уншигч {#try-taira-read-only}
+## Taira уншигчдаа л үзээрэй {#try-taira-read-only}
 
-Барилсан хэрэглээ `fetch` .д Node.js 24 хайгуулын Taira гарын үсэг нэмэхээс өмнө,
-Norito гүйлгээний код:
+Node.js 24-ийн дотор `fetch` багтаан ашиглаж, гарын үсэг зурах болон Norito гүйлгээний код нэмэхээс өмнө Taira-ийг шалгах:
 
 ```js
 const root = "https://taira.sora.org";
@@ -73,17 +65,15 @@ for (const asset of assets.items) {
 }
 ```
 
-Энэ нь `taira-readonly.mjs`, Дараа нь үүнийг ажиллуул:
+`taira-readonly.mjs` гэж хадгалж, дараа нь ажиллуул:
 
 ```bash
 node taira-readonly.mjs
 ```
 
-Дахиалсан руу шилжүүлнэ SDK Зөвхөн уншигч шалгалтын дараа л дууддаг. Taira
-түр зуурын дараагийн эсвэл галт тэрэгний алдааг түргэн ирүүлж болно, тиймээс шууд сүлжээг хадгалах
-шалгалт CI.
+SDK дуудлагад гарын үсэг зурсны дараа л энэ уншилт цорын ганц шалгалтын ажиллана. Олон нийтийн Taira нь түр хугацаагаар дүүрэн шуурхай эсвэл хаалганы алдааг буцааж болно, тиймээс амьд сүлжээний туршилтыг сонгох CI-д байлгана.
 
-Ашигтай дэд замын импорт:
+Ашигтай дэд замны импортууд:
 
 ```js
 import { ToriiClient } from "@iroha/iroha-js/torii";
@@ -91,32 +81,25 @@ import { noritoEncodeInstruction } from "@iroha/iroha-js/norito";
 import { generateKeyPair } from "@iroha/iroha-js/crypto";
 ```
 
-Зөвхөн хөтөчээр ашиглах Connect bootstrap-ийг ашигла `@iroha/iroha-js/connect-browser`
-Нот-н анхны импортлох оронд `ToriiClient` гадаргуу.
+Зөвхөн браузер ашиглах Connect bootstrap-ийн хувьд Node-first `ToriiClient` давхаргыг импортлох оронд `@iroha/iroha-js/connect-browser` -ийг ашиглаарай.
 
-## Тухайн хяналтын төлбөр {#native-escrow}
+## Үндэсний хадгаламж {#native-escrow}
 
-JavaScript болон TypeScript нэвтрүүлэгүүд нь гаралтай хадгаламж ашиглах боломжтой Kotodama
-гэрээний тухай.
-`@iroha/iroha-js/kotodama-compiler`; шууд эх оронч хадгаламжийн гүйлгээний бүтээн байгуулагчид
-. JavaScript SDK. Та үзээрэй.
-[Үндэсний хөрөнгийн хяналт](/mn/blockchain/escrow.md#javascript-and-typescript-kotodama)
-Хөдөлмөрийн хэрэгслийн төлөөлөгч:
+JavaScript болон TypeScript нэвтрүүлэгүүд нь гаралтай хадгаламж ашиглах боломжтой Kotodama гэрээ. Хөтөлбөрийн хөтөчийн дуудлага `@iroha/iroha-js/kotodama-compiler`; шууд эх оронч хадгаламжийн гүйлгээний бүтээн байгуулагчдыг одоогийн байдлаар JavaScript SDK. Та үзээрэй. [Тухайн хөрөнгийн хяналт тавих](/mn/blockchain/escrow.md#javascript-and-typescript-kotodama) Хөдөлмөрийн хөтөчийн дуудлагын жишээ.
 
-## Одоогийн хамрааллалт {#current-coverage}
+## Одоогоор хамааралтай {#current-coverage}
 
-Хөдөлмөрийн SDK дараахь чиглэлд төвлөрдөг:
+SDK нь дараахь чиглэлээр ажилладаг:
 
 - Torii HTTP болон WebSocket туслах
-- Norito бүтээн байгуулалтын болон заалын гүйцэтгэгч
-- Kotodama бүрэлдэхүүнтэй, эсхүлдэлээс хамаарагч дуудлагатай
-- Ed25519 гарын үсэг зурах, цулгын үйлдвэрлэл
-- Pagination болон дахин туршилтын туслах
-- Бrowser bootstrap туслалцааг холбох
-- Кагемушагийн бэлэн байдал, нөхөн сэргээлт, төлбөр тооцоо, үйл ажиллагааны нөхцөл байдлын хүрээнд тээвэрлэлт
-  туслах
+- Norito бүтээн байгуулалтын болон сургалтын бүтээн байгуулагч
+- Kotodama хуримтлагыг эс тооцвол, хадгаламжийн хөтөч дуудлага
+- Ed25519 гарын үсэг зурах, цөмөгний үе
+- Pagination болон дахин туршиж үзэх туслах
+- Бrowser bootstrap туслагчдыг холбох
+- Кагемушагийн бэлэн байдал, нөхөн сэргээлт, төлбөр тооцоо, үйл ажиллагааны байдлын санхүүжилт
 
-## Өмнөд чиглэлийн сэнслэл {#upstream-references}
+## Урьдчилсан нэвтрүүлэг {#upstream-references}
 
 - `javascript/iroha_js/README.md`
 - `javascript/iroha_js/package.json`

@@ -39,7 +39,7 @@ A conta técnica deve já existir e ter permissão para apresentar as instruçõ
 
 ## 3. Definir o executável {#_3-define-the-executable}
 
-O executável é a sequência de instruções que o gatilho envia quando o filtro de evento coincide.
+O executável é a sequência de instruções que o gatilho envia quando o filtro do evento coincide. Para este exemplo, contém uma transferência:
 
 ```text
 Transfer(

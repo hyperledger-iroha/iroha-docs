@@ -8,82 +8,66 @@ translation_engine: nllb-200-ct2
 
 # Iroha ልዩ መመሪያዎች {#iroha-special-instructions}
 
-ስለ [እንዴት Iroha ይሠራል](/am/blockchain/iroha-explained), እኛ
-እንዲህ ብሏል Iroha ልዩ መመሪያዎች ዓለምን ለመቀየር ብቸኛው መንገድ ናቸው
-ስለዚህ ምን ዓይነት ልዩ መመሪያ አለን?
-በዚህ ጥናት ውስጥ የቋንቋ-ተኮር መመሪያዎች, ቀደም ሲል ሁለት አይተዋል
-መመሪያ: `Register<Account>` እና `Mint<Numeric>`.
+በነበረበት ወቅት [እንዴት Iroha ይሠራል](/am/blockchain/iroha-explained), እንዲህ ነው ያልነው Iroha ልዩ መመሪያዎች የዓለም ሁኔታን ለመቀየር ብቸኛው መንገድ ናቸው ። ምን ዓይነት ልዩ መመሪያ አለን? በዚህ ጥናት ውስጥ ያሉትን የቋንቋ-ተኮር መመሪያዎች ካነበቡ ቀደም ሲል ሁለት መመሪያዎችን አይተህ ነበር፦ `Register<Account>` እና `Mint<Numeric>`.
 
-እዚህ ላይ ሙሉ ዝርዝር ነው Iroha ልዩ መመሪያዎች
+የ Iroha ልዩ መመሪያዎች ሙሉ ዝርዝር ይኸውልዎት
 
-| መመሪያ                                               | መግለጫዎች                                     |
+|መመሪያ |መግለጫዎች |
 | --------------------------------------------------------- | ------------------------------------------------ |
-| [መመዝገብ/መመዝገብ አለመተው](#un-register)                       | አንድ ስጥ ID በብሎክቼይን ላይ ወደ አዲስ አካል.    |
-| [የወይን ጠጅ/የተቃጠለ](#mint-burn)                                   | የቁጥር ንብረቶች ወይም የመድገም ተነሳሽነት። |
-| [SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) | የብሎክቼይን ቁሳቁስ ሜታዳታዎችን ያዘምኑ።               |
-| [SetParameter](#setparameter)                             | ሰንሰለት-አጠቃላይ መለኪያ ያዘጋጁ.                      |
-| [የገንዘብ ድጋፍ/የማስወገድ መብት](#grant-revoke)                             | ፍቃዶችን እና ሚናዎችን መስጠት ወይም ማስወገድ።            |
-| [ማስተላለፍ](#transfer)                                     | የባለቤትነት ወይም የአክሲዮን ዋጋ ማስተላለፍ።               |
-| [የአገር ውስጥ ዋስትና እና የንብረት መቆለፊያ](#native-escrow-and-asset-locks) | የቁጥር ንብረቶችን በፕሮቶኮል ጥበቃ ውስጥ ይዝጉ።     |
-| [ExecuteTrigger](#executetrigger)                         | ማስነሻዎችን አሂድ.                                |
-| [መዝገብ / ብጁ / ማሻሻል](#other-instructions)                 | የስራ ሰዓት ባህሪን መዝገብ፣ ማራዘም ወይም ማሻሻል።        |
+| [መመዝገብ/ማስወገድ ](#un-register) |አንድ ID መስጠት blockchain ላይ አዲስ አካል. |
+| [ሚንት/በርን](#mint-burn)|የቁጥር ንብረቶች ወይም የመድገም ተነሳሽነት። |
+| [SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) |የ blockchain ዕቃዎች ሜታዳታ አዘምን. |
+| [SetParameter](#setparameter) |አንድ ሰንሰለት-አጠቃላይ መለኪያ ያዘጋጁ.|
+| [Grant/Revoke](#grant-revoke) |ፈቃድ መስጠት ወይም ማስወገድ። |
+| [ማስተላለፍ](#transfer) |የባለቤትነት ወይም የንብረት ዋጋ ማስተላለፍ። |
+| [የአገር ውስጥ የዋጋ ማስከበሪያ እና ንብረት መቆለፊያዎች ](#native-escrow-and-asset-locks) |የቁጥር ንብረቶችን በፕሮቶኮል ጥበቃ ውስጥ ይዝጉ።|
+| [ExecuteTrigger](#executetrigger) |ተነሳሽነቶችን አሂድ። |
+| [መዝገብ / ብጁ / ማሻሻል ](#other-instructions) |መዝገብ, ማራዘም, ወይም የስራ ሰዓት ባህሪ ለማሻሻል. |
 
-እስቲ ከጠቅለል ያለ ማጠቃለያ እንጀምር Iroha ልዩ መመሪያዎች፤ ለእያንዳንዱ ዓላማ
-የትኛውን መመሪያ መጠየቅ ይቻላል እና ለእያንዳንዱ መመሪያ ምን ዓይነት መመሪያዎች ይገኛሉ
-ዕቃ።
+Iroha ልዩ መመሪያዎች ማጠቃለያ እንጀምር; የትኞቹ ዕቃዎች እያንዳንዱ መመሪያ ሊጠራ ይችላል እና የትኞቹ መመሪያዎች ለእያንዳንዱ ነገር ይገኛሉ.
 
 ## ማጠቃለያ {#summary}
 
-ለእያንዳንዱ መመሪያ, ይህ መመሪያ ላይ ንጥሎች ዝርዝር አለ
-ለምሳሌ ያህል, ማስተላለፍ ተለዋዋጮች ባለቤትነት መቁጠሪያ ዕቃዎች ይሸፍናሉ
-የቁጥር ንብረቶችን እና ቁጥራዊ ንብረቶችን ይሸፍናል
-ድግግሞሽ።
+ለእያንዳንዱ መመሪያ ይህ መመሪያ ሊሠራባቸው የሚችሉ ዕቃዎች ዝርዝር አለ። ለምሳሌ ፣ የዝውውር ተለዋዋጮች ባለቤትነት ያላቸውን መቁጠሪያ ዕቃዎችን እና ቁጥራዊ ንብረቶችን ይሸፍናሉ ፣ ሲባል ግንባታ ደግሞ የቁጥር ንብረቶችን የሚሸፍን እና ድግግሞሽ የሚያነሳሳ ነው።
 
-አንዳንድ መመሪያዎች መድረሻን መግለጽ ይጠይቃሉ። ለምሳሌ ፣
-ንብረቶችን ሲያስተላልፉ ምንጊዜም የትኛው ሂሳብ ላይ እንደሆኑ መግለጽ ያስፈልግዎታል
-በሌላ በኩል ደግሞ አንድ ነገር ሲመዘገቡ
-የሚያስፈልግህ ነገር ብቻ ነው ለመመዝገብ የምትፈልገው።
+አንዳንድ መመሪያዎች መዳረሻን መግለጽ ይጠይቃሉ። ለምሳሌ ያህል፣ ንብረቶችን ከምትተላለፍ ምንጊዜም የትኛው መለያ ላይ እንደሚተላለፉ መግለጽ አለብህ። በሌላ በኩል ደግሞ አንድ ነገር ሲመዘገብ የምትፈልገውን ነገር ብቻ ነው የሚያስፈልገው።
 
-| መመሪያ                                               | ነገሮች                                                                                                 | መድረሻ          |
+|መመሪያ |ዕቃዎች|መድረሻ |
 | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------- |
-| [EnsureAlias](#ensurealias)                               | የተለመደ ጎራ፣ የውሂብ ቦታ-አልባ ስያሜ እና የመለያ-አልባ ስም ማዋቀር                                                 |                      |
-| [መመዝገብ/መመዝገብ አለመተው](#un-register)                       | ሂሳቦች፣ የንብረት ትርጉሞች፣ NFTs, ሚናዎች፣ አስነሳሾች፣ እኩዮች፤ የጎራ ማስወገጃ                                |                      |
-| [የወይን ጠጅ/የተቃጠለ](#mint-burn)                                   | የቁጥር ንብረቶች፣ የመነሻ ድግግሞሽ                                                                     | ሂሳቦች ወይም ማስነሻዎች |
-| [SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) | የነገሮች [ሜታዳታ](./metadata.md): ጎራዎች፣ ሂሳቦች፣ የንብረት ትርጉሞች፣ NFTs, RWAs, ተነሳሽነት |                      |
-| [SetParameter](#setparameter)                             | ሰንሰለት መለኪያዎች                                                                                        |                      |
-| [የገንዘብ ድጋፍ/የማስወገድ መብት](#grant-revoke)                             | [ሚናዎች፣ የመፈቀደላቸው ምልክቶች](/am/blockchain/permissions.md)                                                  | ሂሳብ ወይም ሚና    |
-| [ማስተላለፍ](#transfer)                                     | ጎራዎች፣ የንብረት ትርጉሞች፣ ቁጥራዊ ንብረቶች፣ NFTs                                                        | ሂሳቦች             |
-| [የአገር ውስጥ ዋስትና እና የንብረት መቆለፊያ](#native-escrow-and-asset-locks) | የቁጥር አክሲዮኖች ዋስትናዎች፣ የአክሲዮን መቆለፊያዎች፣ የማይታወቁ ዋስትና ግዴታዎች                                    | ገዢዎች፣ መዳረሻዎች ወይም አለመግባባቶች |
-| [ExecuteTrigger](#executetrigger)                         | ተነሳሽነት                                                                                                |                      |
-| [መዝገብ / ብጁ / ማሻሻል](#other-instructions)                 | መዝገቦች፣ ለተፈፃሚው የተወሰኑ ጥቅማጥቅሞች፣ ለተፈጻሚው ማሻሻያዎች                                                     |                      |
+| [EnsureAlias](#ensurealias) |የተለመደ ጎራ፣ የውሂብ ቦታ-አልባ ስያሜ እና የመለያ-አልባ ስም ማዋቀር |                      |
+| [መመዝገብ/ማስወገድ ](#un-register) |ሂሳቦች፣ የንብረት ትርጉሞች፣ NFTs፣ ሚናዎች፣ መንስኤዎች፣ እኩዮች፣ የጎራ ማስወገጃ |                      |
+| [ሚንት/በርን](#mint-burn)|የቁጥር ንብረቶች፣ የመነሻ ድግግሞሽ |ሂሳቦች ወይም መንስኤዎች |
+| [SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) |[ሜታዳታ ](./metadata.md) ያላቸው ዕቃዎች: ጎራዎች, ሂሳቦች, የንብረት ትርጉሞች, NFTs, RWAs, መንስኤዎች |                      |
+| [SetParameter](#setparameter) |ሰንሰለት መለኪያዎች |                      |
+| [Grant/Revoke](#grant-revoke) | [ሚናዎች, ፍቃድ መለያዎች](/am/blockchain/permissions.md) |ሂሳቦች ወይም ሚናዎች |
+| [ማስተላለፍ](#transfer) |ጎራዎች፣ የንብረት ትርጉሞች፣ ቁጥራዊ ንብረቶች፣ NFTs |መለያዎች |
+| [የአገር ውስጥ የዋጋ ማስከበሪያ እና ንብረት መቆለፊያዎች ](#native-escrow-and-asset-locks) |ቁጥራዊ የዋጋ ማስያዣዎች፣ የዋጋ መቆለፊያዎች፣ የማይታወቁ የዋጋ ማረጋገጫ ግዴታዎች |ገዢዎች፣ መዳረሻዎች ወይም አለመግባባት |
+| [ExecuteTrigger](#executetrigger) |ማነቃቂያዎች|                      |
+| [መዝገብ / ብጁ / ማሻሻል ](#other-instructions) |መዝገቦች፣ ለተፈፃሚው የተወሰኑ ጥቅማጥቅሞች፣ ለፈጻሚው ማሻሻያዎች |                      |
 
-ሌላም መንገድ አለ ISI, ከሪጀር አቃፊው አንፃር
-ይዳስሳሉ:
+በተጨማሪም ISI የሚመለከቱበት ሌላ መንገድ አለ ፣ በሚነካው መለያ ዕቃ አንፃር:
 
-| ግብ           | መመሪያ                                                                                                 |
+| ግብ|መመሪያ |
 | ---------------- | ------------------------------------------------------------------------------------------------------------ |
-| ሂሳብ          | የመመዝገብ/የማስወገድ ሂሳቦች፣ ተቀባይነት ያላቸው ንብረቶች፣ የዘመነ የሂሳብ ሜታዳታ፣ የማስተላለፍ/የማሰረዝ ፈቃዶች እና ሚናዎች    |
-| ጎራ           | የጎራ ማዋቀር፣ ጎራዎችን አለመመዝገብ፣ የጎራ ባለቤትነትን ማስተላለፍ፣ የጎራ ሜታዳታዎችን ማዘመን                    |
-| የንብረት ትርጉም | የምዝገባ/መዘገብ ማቆም ትርጓሜዎች፣ የማስተላለፍ ባለቤትነት፣ የዘመነ ሜታዳታ                                         |
-| ንብረቶች            | የቁጥር ብዛት/የቃጠሎ ቁጥር፣ የዝውውር ቁጥር                                                        |
-| ኤስኮር           | የተላኩትን ክፍያዎች መክፈት፣ መቀበል፣ ምልክት ማድረግ፣ መለቀቅ፣ መሰረዝ፣ አለመግባባት መፍታት፣ ማውጣት ወይም ማብቂያ |
-| NFT              | መመዝገብ/መመዝገብ አለመተው NFTs, የመተላለፍ ባለቤትነት፣ የማዘመን ሜታዳታ                                                |
-| RWA              | ጭነቶች መመዝገብ፣ የመተላለፍ ብዛት፣ ማቆየት/መልቀቅ፣ ማቀዝቀዣ/ማቀዝቀዛ፣ መለዋወጥ፣ ማዋሃድ፣ ሜታዳታዎችን ማዘመን እና ቁጥጥር |
-| ማነቃቂያ          | መዝገብ/መመዝገብ ማስወገድ፣ የወር አበባ/የማቃጠል አስነሳሽነት ድግግሞሾች፣ አስነሳሽነትን ለማስፈጸም፣ የዘመነ አስነሳሽ ሜታዳታ                 |
-| ዓለም            | መዝገብ/መመዝገብን ማስወገድ የእኩዮች እና ሚናዎች፣ መለኪያዎችን ማዘጋጀት፣ አስፈፃሚውን ማሻሻል                                    |
+|መለያ |የመመዝገብ/የማስወገድ ሂሳቦች፣ ተቀባይነት ያላቸው ንብረቶች፣ የማዘመን ሂሳብ ሜታዳታ፣ ፈቃድ መስጠት/መሰረዝ እና ሚና |
+|ጎራ |የጎራ ማዋቀር፣ ጎራዎችን አለመመዝገብ፣ የጎራ ባለቤትነት ማስተላለፍ፣ የጎራ ሜታዳታዎችን ማዘመን |
+|የንብረት ትርጉም |የምዝገባ/መዘገብ የማያቋርጡ ትርጓሜዎች፣ የባለቤትነት ማስተላለፍ፣ ሜታዳታ ማዘመን |
+|ንብረቶች|የወይን ጠጅ/የማቃጠል ቁጥራዊ ብዛት፣ የዝውውር ቁጥር |
+|የሽያጭ ገንዘብ|የተላከውን ክፍያ ይክፈቱ፣ ይቀበሉ፣ ምልክት ያድርጉ፣ መለቀቅ፣ መሰረዝ፣ አለመግባባት መፍታት፣ ማውጣት ወይም የአገር ውስጥ የጥበቃ መዝገቦችን ማጠናቀቅ |
+|NFT |መመዝገብ/መመዝገብ ማስወገድ NFTs, የባለቤትነት ማስተላለፍ, የዘመነ ሜታዳታ |
+|RWA |ዕቃዎችን መመዝገብ፣ የመተላለፍ ብዛት፣ ማቆየት/መለቀቅ፣ ማቀዝቀዝ/ማቀዝቀዣ ማስወገድ፣ መለዋወጥ፣ ማዋሃድ፣ ሜታዳታዎችን ማዘመን እና መቆጣጠሪያዎች |
+|ማነቃቂያ |መመዝገብ/መመዝገብ ማስወገድ፣ የወር አበባ/የማቃጠል አስነሳሽነት ድግግሞሽ፣ አስነሳሽነትን ለማስፈፀም፣ የዘመነ አስነሳሽ ሜታዳታ |
+|ዓለም |መመዝገብ/መመዝገብን ማስወገድ የእኩዮች እና ሚናዎች፣ መለኪያዎችን ማዘጋጀት፣ አስፈፃሚውን ማሻሻል |
 
 ## CLI ምሳሌዎች {#cli-examples}
 
-በዚህ ገጽ ላይ ያሉ ምሳሌዎች ከላይ ካለው ትዕዛዝ እየሮጡ ነው ብለው ያስባሉ
-Iroha በቦታው ላይ ካለው የስራ ቦታ ጋር በተያያዘ ነባሪ የአካባቢያዊ ደንበኛ ውቅር:
+በዚህ ገጽ ውስጥ ያሉ ምሳሌዎች እርስዎ ከቅድመ-መንገድ Iroha የስራ ቦታ ትዕዛዞችን ነባሪው አካባቢያዊ ደንበኛ ውቅር ላይ እያከናወኑ ነው ብለው ያስባሉ:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml <command>
 ```
 
-የ `iroha` የሁለትዮሽ, አጠቃቀም
-`iroha --config ./defaults/client.toml` በምትኩ ቦታውን የሚይዙትን ተተክ
-ከዚህ በታች ከኔትወርክዎ ጋር እሴቶች:
+የ `iroha` ባይናሪ ከተጫነ በምትኩ `iroha --config ./defaults/client.toml` ይጠቀሙ. ከታች ያሉትን ቦታ መያዣዎች ከአውታረ መረብዎ እሴቶች ጋር ይተካሉ:
 
 ```bash
 export ALICE="<ALICE_ACCOUNT_I105>"
@@ -93,10 +77,7 @@ export PEER_KEY="<BLS_PUBLIC_KEY_MULTIHASH>"
 export PEER_POP="<PROOF_OF_POSSESSION_HEX>"
 ```
 
-የሕዝብን ዒላማ ሲያደርጉ Taira የሙከራ አውታረ መረብ, አንድ ይጠቀሙ Taira የደንበኛው ውቅር።
-ክፍያ የሚከፈልባቸው ምሳሌዎችን ከማሄድዎ በፊት የቧንቧ ረዳት ከ
-[ቴስትኔት ያግኙ XOR ላይ Taira](/am/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)
-እንደ `taira_faucet_claim.py`, ከዚያም የይገባኛል ጥያቄ የሙከራ ኔት XOR ከቧንቧው:
+የህዝብን ዒላማ ሲያደርጉ Taira የሙከራ አውታረመረብ, አንድ መጠቀም Taira ክፍያ የሚከፈልባቸው ምሳሌዎችን ከማሄድዎ በፊት የቧንቧ ረዳት ከ [Testnet ን ያግኙ XOR ላይ Taira](/am/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) እንደ `taira_faucet_claim.py`, ከዚያም የይገባኛል ጥያቄ የሙከራ ኔት XOR ከቧንቧው
 
 ```bash
 export TAIRA_ACCOUNT_ID="<TAIRA_I105_ACCOUNT_ID>"
@@ -110,8 +91,7 @@ iroha --config ./taira.client.toml ledger asset get \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-በቧንቧው የተደገፈ ሀብት ከተገለጠ በኋላ አስፈላጊውን የጋዝ ንብረት ያያይዙ
-ግብይቶችን ለመጻፍ የሚረዱ ሜታዳታዎች
+በቧንቧው የተደገፈው ንብረት ከተገለጠ በኋላ ግብይቶችን ለመፃፍ የሚያስፈልጉትን የጋዝ ሀብት ሜታዳታዎች ያያይዙ:
 
 ```bash
 printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
@@ -124,11 +104,7 @@ cargo run --bin iroha -- \
 
 ## EnsureAlias {#ensurealias}
 
-`EnsureAlias` ጎራዎችን ለመፍጠር የተለመደው የመጀመሪያ-ልቀት መንገድ ነው
-የእነሱ SNS ውሂብ ቦታ, ባለቤት, ኪራይ
-ቃል, እና ጥቅስ ጠባቂ, ከዚያም ይፈጥራል ወይም የሚፈለገው ሁሉ ሁኔታ atomically ይጠገን.
-የተረጋገጠውን ይጠቀሙ `POST /v1/aliases/setup/plan` የመጨረሻ ነጥብ ወይም ማመሳሰል
-CLI የስራ ፍሰት
+`EnsureAlias` ጎራዎችን እና SNS ኪራይ ለመፍጠር የተለመደ የመጀመሪያ-ልቀት መንገድ ነው ። ትክክለኛውን የመረጃ ቦታ ፣ ባለቤት ፣ የኪራይ ጊዜ እና የጥቅስ ጥበቃን በግልጽ ይያዛል ፣ ከዚያ ሁሉንም አስፈላጊ ሁኔታ በአቶሚካዊ መንገድ ይፈጥራል ወይም ያጠፋል ። የተረጋገጠውን `POST /v1/aliases/setup/plan` መጨረሻ ነጥብ ወይም ተመጣጣኝ የሆነውን CLI የስራ ፍሰት ይጠቀሙ:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -140,75 +116,46 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   app alias setup apply --plan-file ./domain.plan.json
 ```
 
-ዓላማ እና ዕቅድ ምስጢራዊ ናቸው, ነገር ግን እርምጃ ምልክቶች ተግባራዊ እና አንድ
-አንድ ዕቅድ ከታቀደው ሂሳብ ጋር የተያያዘ ነው
-ሰንሰለት, ሥልጣን, የቀጥታ ሁኔታ አናከር, እና ጊዜ ገደብ; እርስ በርሳቸው እንደገና ጥቅም ላይ ፈጽሞ
-አውታረመረብ።
+ዓላማው እና ዕቅዱ ምስጢራዊ ያልሆኑ ናቸው ፣ ግን የደረጃ ምልክቶችን ይተግብሩ እና ከተዋቀረው መለያ ጋር መደበኛ ግብይት ያቀርባል ። አንድ ዕቅድ ሰንሰለት ፣ ስልጣን ፣ የቀጥታ ሁኔታ አናከር እና ጊዜ ገደብ ጋር የተገናኘ ነው ፣ በሌላ አውታረመረብ ላይ በጭራሽ እንደገና አይጠቀሙ።
 
 ## (Un)መመዝገብ {#un-register}
 
-መመዝገብ እና አለመመዝገብ ID ወደ ሀ
-በብሎክቼይኑ ላይ አዲስ አካል።
+መመዝገብ እና አለመመዝገብ በብሎክቼይን ላይ ለሚገኝ አዲስ አካል ID ለመስጠት የሚያገለግሉ መመሪያዎች ናቸው ።
 
-የተመዘገቡት ሁሉም ነገሮች ሁለቱም ናቸው `Registrable` እና `Identifiable`,
-ነገር ግን ሁሉም ነገር አይደለም `Identifiable` ነው `Registrable`. አብዛኛዎቹ ነገሮች
-በቀጥታ ተመዝግቧል, ነገር ግን በአንዳንድ ሁኔታዎች ውስጥ blockchain ውስጥ ያለው ውክልና
-ለደህንነት እና አፈፃፀም ምክንያቶች
-ለእንደዚህ አይነት የውሂብ መዋቅሮች ገንቢዎች (ለምሳሌ `NewAccount`), እና እኩዮች
-ምዝገባው ለባለቤትነት ማረጋገጫ የተሰጠ መመሪያ አለው።
-ሊመዘገብ የሚችል ነገር ሁሉ ያልተመዘገበ ሊሆን ይችላል፣ ግን ይህ አይደለም
-ከባድና ፈጣን ሕግ ነው።
+ሊመዘገቡ የሚችሉ ነገሮች ሁሉ `Registrable` እና `Identifiable` ናቸው፣ ነገር ግን `Identifiable` የሆኑት ነገሮች ሁሉ `Registrable` አይደሉም። አብዛኛዎቹ ነገሮች በቀጥታ ይመዘገባሉ፣ ነገር ግን በአንዳንድ ሁኔታዎች በብሎክቼይን ውስጥ ያለው ውክልና በጣም ብዙ መረጃዎች አሉት ። ለደህንነት እና አፈፃፀም ምክንያቶች ለእንደዚህ ዓይነት የውሂብ መዋቅሮች (ለምሳሌ `NewAccount`) ገንቢዎችን እንጠቀማለን ፣ እና የእኩዮች ምዝገባ የተወሰነ የባለቤትነት ማረጋገጫ መመሪያ አለው ። እንደ ደንብ ፣ ሊመዘገቡ የሚችሉ ነገሮች ሁሉ እንዲሁ ያልተመዘገቡ ሊሆኑ ይችላሉ ፣ ግን ያ ከባድ እና ፈጣን ደንብ አይደለም።
 
-ሂሳቦችን፣ የንብረት ትርጉሞችን መመዝገብ ትችላለህ፤ NFTs, እኩዮች፣ ሚናዎች እና
-ማስነሻዎች። የጎራ ማዋቀር አጠቃቀሞች `EnsureAlias`; ጥሬው `Register::Domain` የዋጋ ጭነት
-ለጀኔዝ/ቡት ስትራፕ የተወሰነ ነው።
-`RegisterPeerWithPop`, የጋራ ቁልፉን ባለቤትነት ማረጋገጫ ያካተተ ነው።
-[ስምምነቶች](/am/reference/naming.md) ስለ ገደቦች ለማወቅ
-የድርጅት ስሞችን ይጫኑ.
+መለያዎችን ፣ የንብረት ትርጓሜዎችን ፣ NFTs ፣ እኩዮችን ፣ ሚናዎችን እና ማነቃቂያዎችን መመዝገብ ይችላሉ ። የጎራ ቅንብር `EnsureAlias` ን ይጠቀማል ፤ ጥሬው `Register::Domain` ጥቅማጥቅም ለጄኔሲስ / ቡትስትራፕ የተጠበቀ ነው ። የእኩዮች ምዝገባ ለባልደረባ ቁልፍ ባለቤትነት ማረጋገጫ የሚሸከም `RegisterPeerWithPop` ን ይጠቀማል። በድርጅት ስሞች ላይ ስለተጣሉ ገደቦች ለማወቅ የእኛን [ ስም ማውጣት ኮንቬንሽኖችን](/am/reference/naming.md) ይመልከቱ ።
 
-RWA ብዙዎች የተሰጡ አማካኝነት ይፈጠራል `RegisterRwa` መመሪያ.
-የአሁኑ ኮድ `UnregisterRwa` መመሪያ፤ አጠቃቀም
-`RedeemRwa` የተወከለው መጠን ወደ ጡረታ እንዲገባ።
+RWA ክፍሎች የተሰየመውን `RegisterRwa` መመሪያ በመጠቀም ይፈጠራሉ። የአሁኑ ኮድ የ `UnregisterRwa` መመሪያ አይገልጽም; የሚወክለውን ብዛት ለማውጣት `RedeemRwa` ይጠቀሙ።
 
-::: info
+::: መረጃ
 
-ያስታውሱ
-[የጅነሲስ ማገጃ](/am/guide/configure/genesis.md) ውስጥ `genesis.json`
-(በተለይም የመፈቀዱን ምዝገባ ያካትታሉ ወይም አያካትቱም
-የሂሳብ ምዝገባ ሂደት በጣም የተለየ ሊሆን ይችላል.
-ጠቅላይ ሚኒስትር፣ በዚህ መልኩ ማጠቃለል እንችላለን፡
+በ [ ጀነሲስ ብሎክዎን ](/am/guide/configure/genesis.md) በ `genesis.json` ውስጥ ለማዘጋጀት በሚወስኑበት መንገድ ላይ በመመርኮዝ (በተለይም የመፈቃደሪያ ቶከኖችን ምዝገባን ያካትታሉ ወይም አያካትቱም) ፣ ሂሳቡን ለማስመዝገብ ሂደት በጣም የተለየ ሊሆን እንደሚችል ልብ ይበሉ ። በአጠቃላይ ፣ በዚህ መንገድ ማጠቃለል እንችላለን-
 
-- አንድ ውስጥ _የሕዝብ_ በብሎክቼይን፣ ማንኛውም ሰው መለያ መመዝገብ ይችላል።
-- አንድ ውስጥ _የግል_ blockchain, ለመመዝገብ ልዩ ሂደት ሊኖር ይችላል
-  ሂሳቦች _የተለመደ_ የግል blockchain, ማለትም ያለ blockchain
-  ማንኛውም ልዩ ሂሳቦችን ለመመዝገብ ሂደቶች, አንድ መለያ ያስፈልጋቸዋል
-  ሌላ ሂሳብ መመዝገብ።
+- በአደባባይ ባሉ blockchain ውስጥ ማንኛውም ሰው መለያ መመዝገብ የሚችል መሆን አለበት።
+- አንድ የግል blockchain ውስጥ, መለያዎች ለመመዝገብ ልዩ ሂደት ሊኖር ይችላል. አንድ የተለመደ የግል Blockchain ውስጥ, ማለትም መለያዎችን ለመመዝገብ ምንም ልዩ ሂደቶች ያለ አንድ blockchain ውስጥ, ሌላ መለያ ለመመዝገብ አንድ መለያ ያስፈልግዎታል.
 
-እነዚህን ልዩነቶች በዝርዝር እንወያይበታለን
-[የግል እና የህዝብ ብሎክ ሰንሰለቶችን ያወዳድሩ](/am/guide/configure/modes.md).
+[ የግል እና የህዝብ ብሎክ ሰንሰለቶች ](/am/guide/configure/modes.md) ሲወዳደሩ እነዚህን ልዩነቶች በዝርዝር እንወያያለን ።
 
 :::
 
-::: info
+::: መረጃ
 
-በአሁኑ ጊዜ የእኩዮችን ምዝገባ ያልነበሩትን እኩዮችን ለመጨመር ብቸኛው መንገድ ነው
-በኔትወርኩ ላይ የተቀመጠው የመጀመሪያው የታመነ የባልደረባ አካል።
+አንድ እኩዮችን መመዝገብ በአሁኑ ጊዜ ወደ አውታረመረብው የተቀመጠው የመጀመሪያው የታመነ የእኩዮት አካል ያልነበሩትን እኩዮች ለማከል ብቸኛው መንገድ ነው ።
 
 :::
 
-Refer በቋንቋው ላይ የተመሠረተ መመሪያ ካለው አንዱ ጋር
-በብሎክቼን ውስጥ ያሉ ነገሮችን የመመዝገብ ሂደት
+በብሎክቼን ውስጥ ያሉትን ነገሮች በመመዝገብ ሂደት ውስጥ ለመራመድ ከቋንቋ-ተኮር መመሪያዎች አንዱን ይመልከቱ:
 
-| ቋንቋ              | መመሪያ                                                                                                   |
+|ቋንቋ |መመሪያ |
 | --------------------- | ------------------------------------------------------------------------------------------------------- |
-| CLI                   | ይጠቀሙ [Iroha CLI](/am/get-started/operate-iroha-via-cli.md) ጎራዎችን ለማቋቋም እና ሂሳቦችን እና ንብረቶችን ለመመዝገብ። |
-| Rust                  | ይጠቀሙ [Rust አጋዥ](/am/guide/tutorials/rust.md).                                                      |
-| Kotlin/ጃቫ           | ይጠቀሙ [Kotlin/ጃቫ ትምህርት](/am/guide/tutorials/kotlin-java.md).                                        |
-| Python                | ይጠቀሙ [Python አጋዥ](/am/guide/tutorials/python.md).                                                  |
-| JavaScript/TypeScript | ይጠቀሙ [JavaScript/TypeScript አጋዥ](/am/guide/tutorials/javascript.md).                               |
+|CLI |ጎራዎችን ለማዘጋጀት እና ሂሳቦችን እና ንብረቶችን ለመመዝገብ [Iroha CLI](/am/get-started/operate-iroha-via-cli.md) ን ይጠቀሙ። |
+|Rust |የ [Rust መመሪያ ይጠቀሙ](/am/guide/tutorials/rust.md). |
+|Kotlin/ጃቫ |የ [Kotlin/ጃቫ ትምህርት ይጠቀሙ](/am/guide/tutorials/kotlin-java.md). |
+|Python |የ [Python መመሪያ ይጠቀሙ](/am/guide/tutorials/python.md). |
+|JavaScript/TypeScript |የ [JavaScript/TypeScript መመሪያ ይጠቀሙ ](/am/guide/tutorials/javascript.md). |
 
-መደበኛ ጎራ ማዋቀር እቅድ እና ተግባራዊ, ከዚያም የጎራ አይደለም ጊዜ ከ ምዝገባ
-ረዘም ያለ ጊዜ ያስፈልጋል
+መደበኛ ጎራ ማዋቀር እቅድ እና ተግባራዊ, ከዚያም ከአሁን በኋላ አስፈላጊ አይደለም ጊዜ ጎራ ለማስመዝገብ:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -233,7 +180,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger account unregister --id "$BOB"
 ```
 
-መዝገብ እና ማስቀረት የንብረት ትርጓሜዎች
+የመመዝገብ እና የማስወገድ የንብረት ትርጓሜዎች
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -247,8 +194,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger asset definition unregister --id "$ASSET_DEF"
 ```
 
-መመዝገብ እና ማስወገድ NFTs. NFT ምዝገባው ይዘቱን ያነባል JSON ከ
-መደበኛ ግብዓት:
+መመዝገብ እና መዝገብ ማስወገድ NFTs ። NFT ምዝገባ ይዘቱን JSON ከ መደበኛ ግብዓት ያነባል-
 
 ```bash
 printf '{"kind":"badge","level":"intro"}\n' |
@@ -269,9 +215,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger role unregister --id operators
 ```
 
-ማስነሻዎችን መመዝገብ እና ማስወገድ።
-የተጠናቀቁ IVM ይህ ምሳሌ ይገነባል
-ሀ `Log` መመሪያ CLI እና ወደ አስነሳሽነት ምዝገባ ያነጣጥላል:
+መዝገብ እና ማስወገድ አስነሳሾች. አስነሳሽነት ምዝገባ ወይ የተጠናከረ IVM ባይት ኮድ ወይም ተከታታይ መመሪያ ዝርዝር ያስፈልገዋል. ይህ ምሳሌ የ `Log` ትዕዛዝ ከ CLI ጋር ይገነባል እና ወደ አስነሳሽነቱ ምዝገባ ያመራዋል:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml -o \
@@ -287,8 +231,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger trigger unregister --id hourly_cleanup
 ```
 
-ተመዝግበው እና ተመዝግቡ ያልሆኑ እኩዮች. BLS ቁልፍ እና PoP ጋር `kagami`
-እስካሁን ካላገኙት:
+BLS ቁልፉን እና PoP ቁልፉን ከ `kagami` ጋር ይፍጠሩ ፣ እርስዎ ቀድሞውኑ ከሌላቸው:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
@@ -300,18 +243,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger peer unregister --key "$PEER_KEY"
 ```
 
-## የወይን ጠጅ/የተቃጠለ {#mint-burn}
+## ሜንት/በርን {#mint-burn}
 
-ማጨስ እና ማቃጠል የተገደበ ቁጥር ያላቸው ንብረቶችን ሊያመለክት ይችላል
-የተወሰኑ ንብረቶች እንደ የማይነጣጠሉ ሊገለጹ ይችላሉ ፣ ማለትም
-ከተመዘገቡ በኋላ አንድ ጊዜ ብቻ ሊታተሙ እንደሚችሉ።
+ማጨስ እና ማቃጠል የቁጥር ንብረቶችን ሊያመለክት ይችላል እንዲሁም የተወሰኑ ድግግሞሾችን ያካሂዳል ። አንዳንድ ንብረቶች እንደ የማይጨሱ ሊገለጹ ይችላሉ ፣ ይህም ማለት ከተመዘገቡ በኋላ አንድ ጊዜ ብቻ ማጨስ ይችላሉ።
 
-ንብረቶች በተወሰነ ሂሳብ ላይ ይለቀቃሉ፣ አብዛኛውን ጊዜ የተመዘገቡት
-የንብረት ብዛት አሉታዊ አይደለም, ስለዚህ ይችላሉ
-በጭራሽ `$-1.0` ወይም አሉታዊ መጠን ያቃጥሉ እና አንድ የወር አበባ ያገኛሉ.
+የንብረት ብዛቶች አሉታዊ አይደሉም ፣ ስለሆነም `$-1.0` ንብረትን በጭራሽ መውሰድ ወይም አሉታዊ መጠን ማቃጠል አይችሉም እና ገንዘብ ማግኘት ይችላሉ ።
 
-በቋንቋው ላይ የተመሠረቱ መመሪያዎችን አንዱን ያንብቡ
-በብሎክቼን ውስጥ ንብረቶችን የማጣራት ሂደት
+በብሎክቼን ውስጥ ንብረቶችን የማስወጣት ሂደቱን ለማስተላለፍ የቋንቋ-ተኮር መመሪያዎችን አንዱን ይመልከቱ ።
 
 - [CLI](/am/get-started/operate-iroha-via-cli.md)
 - [Rust](/am/guide/tutorials/rust.md)
@@ -319,7 +257,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 - [Python](/am/guide/tutorials/python.md)
 - [JavaScript/TypeScript](/am/guide/tutorials/javascript.md)
 
-እዚህ ላይ የሚቃጠሉ ንብረቶች ምሳሌዎች ናቸው:
+የሚቃጠሉ ንብረቶች የሚከተሉት ናቸው፦
 
 - [CLI](/am/get-started/operate-iroha-via-cli.md)
 - [Rust](/am/guide/tutorials/rust.md)
@@ -340,7 +278,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --quantity 10
 ```
 
-የሜይንት እና የእሳት ቃጠሎ ማስነሻ ተደጋጋሚነት
+የሜይንት እና የእሳት ማቃጠያ ተደጋጋሚነት:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -352,16 +290,9 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ## ማስተላለፍ {#transfer}
 
-ዝውውሮች ባለቤትነትን ወይም እሴት ከሂሳብ ወደ ሂሳብ ያዛውራሉ።
-ተለዋዋጮች ጎራዎችን፣ የንብረት ትርጉሞችን፣ ቁጥራዊ ንብረቶችን ያካትታሉ፤ እንዲሁም NFTs. RWA
-ብዛት እንቅስቃሴ የተወሰነ ይጠቀማል `TransferRwa` እና `ForceTransferRwa`
-በ ውስጥ የተገለጹት መመሪያዎች [በእውነተኛ ዓለም ውስጥ ያሉ ንብረቶች](/am/blockchain/rwas.md).
+ዝውውሮች በሂሳብ መካከል ባለቤትነት ወይም እሴት ይንቀሳቀሳሉ ። የጄኔሪክ ዝውውር ተለዋዋጮች ጎራዎችን ፣ የንብረት ትርጓሜዎችን ፣ ቁጥራዊ ንብረቶችን እና NFTs ያካትታሉ። RWA ብዛት እንቅስቃሴ በ `TransferRwa` እና `ForceTransferRwa` ውስጥ የተገለጹትን ልዩ መመሪያዎች ይጠቀማል [Real-World Assets](/am/blockchain/rwas.md).
 
-ይህን ለማድረግ ሂሳቡን መስጠት ያስፈልጋል
-[ንብረቶችን ለማስተላለፍ ፈቃድ](/am/reference/permissions.md). ወደ አንድ
-የንብረት ማስተላለፍ እንዴት እንደሚቻል ምሳሌ
-[CLI](/am/get-started/operate-iroha-via-cli.md) ወይም
-[Rust](/am/guide/tutorials/rust.md).
+ይህን ለማድረግ ሂሳቡን መስጠት ያስፈልጋል [ንብረቶችን ለማስተላለፍ ፈቃድ](/am/reference/permissions.md). ንብረቶችን እንዴት ማስተላለፍ እንደሚቻል ምሳሌን ይመልከቱ [CLI](/am/get-started/operate-iroha-via-cli.md) ወይም [Rust](/am/guide/tutorials/rust.md).
 
 የቁጥር ንብረቶችን ማስተላለፍ
 
@@ -374,7 +305,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --quantity 25
 ```
 
-የዝውውር ጎራ፣ የአክሲዮን ትርጉም እና NFT ባለቤትነት:
+የትራንስፍር ጎራ፣ የንብረት ትርጉም እና NFT ባለቤትነት:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -389,34 +320,17 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ## የአገር ውስጥ የዋስትና እና ንብረት መቆለፊያዎች {#native-escrow-and-asset-locks}
 
-በዋና መለያ የሚተዳደር ፕሮቶኮል ውስጥ የቁጥር ንብረቶችን መቆለፍ
-ለገበያ ቅጥ የማስተካከል፣ የጄኔሪክ ንብረት
-መቆለፊያዎች፣ እና ስም አልባ የተጠበቁ የኤስኮር ፍሰቶች።
+የአገር ውስጥ የኤስኮር መመሪያዎች በሪፖርተር-አስተዳደሩ ፕሮቶኮል ጥበቃ ውስጥ ቁጥራዊ ንብረቶችን ያቆማሉ ። ለገበያ ቅጥ ቀረጻ ፣ ለአጠቃላይ የንብረት መቆለፊያዎች እና ለማይታወቁ የተጠበቁ ኤስኮር ፍሰቶች ጥቅም ላይ ይውላሉ ።
 
-የገበያ ቦታ ኤስኮር አጠቃቀሞች `OpenAssetEscrow`, `AcceptAssetEscrow`,
-`MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`,
-`OpenEscrowDispute`, እና `ResolveEscrowDispute`. አጠቃላይ የንብረት መቆለፊያዎች አጠቃቀም
-`OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, እና
-`ExpireAssetLock`. የማይታወቁ ኤስሮዎች የገበያውን የህይወት ዑደት ያንፀባርቃሉ
-`OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`,
-`MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`,
-`CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, እና
-`ResolveAnonymousEscrowDispute`.
+የገበያ ቦታ የኤስኮር አጠቃቀም `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, እና `ResolveEscrowDispute`. አጠቃላይ የንብረት መቆለፊያዎች አጠቃቀም `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, እና `ExpireAssetLock`. የማይታወቁ ኤስሮዎች የገበያውን የህይወት ዑደት የሚያንፀባርቁ ናቸው `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, እና `ResolveAnonymousEscrowDispute`.
 
-እነዚህ ISIs በአሁኑ ጊዜ የመጀመሪያ ደረጃ ያላቸው አይደሉም CLI ትዕዛዞች. SDK
-ገንቢዎች ወይም ተከታታይ መመሪያ ጥቅማጥቅሞች, እና ተመልከት
-[የአገር ውስጥ ንብረት ማስከበሪያ](/am/blockchain/escrow.md) ለህይወት ዑደት ዝርዝሮች፣
-ፍቃዶች፣ ጥያቄዎች፣ ክስተቶች እና Rust ምሳሌዎች።
+እነዚህ ISIs በአሁኑ ጊዜ የመጀመሪያ ደረጃ ያላቸው አይደሉም CLI ትዕዛዞች. SDK ገንቢዎች ወይም ተከታታይ መመሪያ ጥቅማጥቅሞች, እና ተመልከት [የአገር ውስጥ ንብረት ማስከበሪያ](/am/blockchain/escrow.md) ለህይወት ዑደት ዝርዝሮች፣ ፍቃዶች፣ ጥያቄዎች፣ ክስተቶች እና Rust ምሳሌዎች።
 
 ## የገንዘብ ድጋፍ/የማስወገድ መብት {#grant-revoke}
 
-ለሂሳብ የሚውሉ መመሪያዎችን መስጠት እና መሰረዝ
-[ፍቃዶች እና ሚናዎች](permissions.md).
+ለሂሳብ [ ፈቃዶች እና ሚናዎች ](permissions.md) የገንዘብ ድጋፍ እና የማስረዝ መመሪያ ጥቅም ላይ ይውላል ።
 
-`Grant` ለተጠቃሚው አንድን ፈቃድ በቋሚነት ለመስጠት ጥቅም ላይ ይውላል ፣ ወይም
-የተሰጡት ሚናዎች እና ፍቃዶች
-በኤሌክትሮኒክ `Revoke` እነዚህ መመሪያዎች
-በጥንቃቄ ይጠቀሙ።
+`Grant` ለተጠቃሚ አንድ ነጠላ ፈቃድ ወይም የተወሰኑ ፍቃዶችን ("አንድ ሚና") በቋሚነት ለመስጠት ጥቅም ላይ ይውላል ። የተሰጡ ሚናዎች እና ፈቃዶች ሊወገዱ የሚችሉት በ `Revoke` መመሪያ ብቻ ነው። እንደዚሁም እነዚህ መመሪያዎች በጥንቃቄ መጠቀም አለባቸው።
 
 በሂሳብ ላይ ሚና መስጠት እና መሰረዝ:
 
@@ -428,8 +342,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger account role revoke --id "$BOB" --role operators
 ```
 
-የመፈቃድ ትዕዛዞች አንድ ፈቃድ ያነባሉ
-መደበኛ ግብዓት ላይ ያለው ነገር:
+የመፈቃድ ትዕዛዞች አንድ የተፈቀደ ነገር ከተለመደው ግብዓት ያነባሉ:
 
 ```bash
 printf '{"name":"CanSetParameters","payload":null}\n' |
@@ -441,7 +354,7 @@ printf '{"name":"CanSetParameters","payload":null}\n' |
   ledger account permission revoke --id "$BOB"
 ```
 
-ለተግባር ፈቃድ መስጠት እና መሰረዝ
+በአንድ ሚና ላይ ፈቃድ መስጠት እና መሰረዝ:
 
 ```bash
 printf '{"name":"CanRegisterDomain","payload":null}\n' |
@@ -455,11 +368,9 @@ printf '{"name":"CanRegisterDomain","payload":null}\n' |
 
 ## `SetKeyValue`/`RemoveKeyValue` {#setkeyvalue-removekeyvalue}
 
-እነዚህ መመሪያዎች ይዘምናል ነገር [ሜታዳታ](/am/blockchain/metadata.md). አጠቃቀም
-`SetKeyValue` የሜታዳታ ማስገቢያን ለማስገባት ወይም ለመተካት እና `RemoveKeyValue` ወደ
-አንዱን አስወግድ።
+እነዚህ መመሪያዎች [ ሜታዳታ](/am/blockchain/metadata.md) ነገርን ያዘምኑ። አንድ የሜታዳታ ማስገቢያ ለማስገባት ወይም ለመተካት `SetKeyValue` ን ይጠቀሙ እና አንዱን ለመሰረዝ `RemoveKeyValue` ።
 
-ሜታዳታ `set` ትዕዛዞች ማንበብ JSON ከተለመደው ግብዓት ዋጋ:
+ሜታዳታ `set` ትዕዛዞች መደበኛ ግብዓት ከ JSON ዋጋ ያነባሉ:
 
 ```bash
 printf '"production"\n' |
@@ -470,8 +381,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger domain meta remove --id docs.universal --key environment
 ```
 
-ተመሳሳይ ንድፍ ለሂሳብ፣ ለንብረት ትርጉሞች፣ NFTs, RWAs,
-እና መንስኤዎች:
+ተመሳሳይ ንድፍ ለሂሳብ, ለንብረት ትርጉሞች, NFTs, RWAs እና ለተፈታተኞቹ ይገኛል:
 
 ```bash
 printf '{"display_name":"Alice"}\n' |
@@ -493,11 +403,9 @@ printf '{"owner":"ops"}\n' |
 
 ## `SetParameter` {#setparameter}
 
-`SetParameter` በሥራ ላይ የሚውሉ መረጃዎች የተጋለጡትን ሰንሰለት-አጠቃላይ መለኪያዎችን ይለውጣሉ
-ሞዴል እና አስፈፃሚ.
+`SetParameter` በሥራ ላይ የዋለው የውሂብ ሞዴል እና አስፈፃሚው የተጋለጡ ሰንሰለት-አጠቃላይ መለኪያዎችን ይለውጣል.
 
-አንድን መለኪያ በማለፍ ልኬት ያዘጋጁ JSON መስፈርት ላይ ያለው ነገር
-ግብዓት:
+ነጠላ መለኪያ JSON ዕቃን በመተላለፍ መደበኛ ግብዓት ላይ አንድ መለኪያ ያዘጋጁ:
 
 ```bash
 printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
@@ -507,13 +415,9 @@ printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
 
 ## `ExecuteTrigger` {#executetrigger}
 
-ይህ መመሪያ ለማከናወን ጥቅም ላይ ይውላል [ተነሳሽነት](./triggers.md).
+ይህ መመሪያ [ ማነቃቂያዎችን ](./triggers.md) ለማስፈጸም ጥቅም ላይ ይውላል.
 
-የ CLI ማስነሻዎችን መመዝገብ እና ማስነሻ አፈፃፀም ክስተቶችን ለመመዝገብ ይችላሉ
-በቀጥታ. `execute trigger` ትእዛዝ, ስለዚህ ወደ
-መመሪያ ማቅረብ `ExecuteTrigger` መመሪያ, አንድ ተከታታይ ማመንጨት
-`InstructionBox` አንድ ጋር SDK ወይም አስፈጻሚ መሣሪያ እና የተገኘው ማለፍ JSON
-አሰላለፍ `ledger transaction stdin`:
+CLI አስነሳሾችን መመዝገብ እና አስነሳሽነት አፈፃፀም ክስተቶች በቀጥታ መመዝገብ ይችላሉ. ይህ የ `execute trigger` ትዕዛዝ አይሰጥም, ስለዚህ አንድ መመሪያ ለማቅረብ `ExecuteTrigger` መመሪያ, በ SDK ወይም በተፈፃሚ መሳሪያ ተከታታይ የሆነ `InstructionBox` ያመነጩ እና የተገኘው JSON ቅደም ተከተል በ `ledger transaction stdin` በኩል ያስተላልፉ
 
 ```bash
 printf '["<BASE64_EXECUTE_TRIGGER_INSTRUCTION_BOX>"]\n' |
@@ -526,23 +430,20 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ## ሌሎች መመሪያዎች {#other-instructions}
 
-Iroha በተጨማሪም ለስራ ሰዓት እና ለተፈፃሚው ዝቅተኛ ደረጃ መመሪያዎችን ያጋልጣል
-ውህደት
+Iroha በተጨማሪም ለስራ ሰዓት እና ለተፈፃሚው ውህደት ዝቅተኛ ደረጃ መመሪያዎችን ያጋልጣል:
 
-- `Log`: በሥራ ላይ በሚውልበት ጊዜ የመዝገብ ምዝገባን ያወጣሉ
-- `CustomInstruction`: ለሥራ አስፈፃሚው የተወሰነ መሸከም JSON ጠቃሚ ጭነቶች
-- `Upgrade`: አስፈፃሚ ማሻሻያ ያግበር
+- `Log`: በሚፈፀምበት ጊዜ መዝገብ ማስገቢያ ያወጣሉ
+- `CustomInstruction`: ለሥራ አስፈፃሚው የተለዩ JSON ጥቅማጥቅሞች ይሸከሙ
+- `Upgrade`: የአስፈፃሚ ማሻሻያ ንቁ ማድረግ
 
-አንድ ማቅረብ `Log` ከፒንግ ረዳት ጋር መመሪያ:
+`Log` መመሪያ ከፒንግ ረዳት ጋር ያቅርቡ:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger transaction ping --log-level INFO --msg "hello from docs"
 ```
 
-ተከታታይ ሆኖ ብጁ አስፈፃሚ መመሪያ ማስገባት `InstructionBox`. የ
-ጠቃሚ ጭነት ቅርጽ አስፈጻሚ-ተኮር ነው, ስለዚህ መመሪያውን በ ማመንጨት
-ማመሳሰል SDK ወይም አስፈፃሚ መሳሪያ:
+አንድ ብጁ አስፈጻሚ መመሪያ እንደ ተከታታይ `InstructionBox` ያቅርቡ. የ ጥቅል ጭነት ቅርጸት አስፈፃሚ-ተኮር ነው, ስለዚህ መመሪያን የሚዛመዱ ጋር ማመንጨት SDK ወይም አስፈጻም መሣሪያ:
 
 ```bash
 printf '["<BASE64_CUSTOM_INSTRUCTION_BOX>"]\n' |
@@ -550,7 +451,7 @@ printf '["<BASE64_CUSTOM_INSTRUCTION_BOX>"]\n' |
   ledger transaction stdin
 ```
 
-አስፈፃሚውን ከቀናበረ IVM የባይቶ ኮድ ፋይል:
+አስፈፃሚውን ከተጠናቀቀው IVM የባይት ኮድ ፋይል አሻሽል
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \

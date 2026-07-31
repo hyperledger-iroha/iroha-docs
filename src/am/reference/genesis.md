@@ -8,24 +8,22 @@ translation_engine: nllb-200-ct2
 
 # የዘፍጥረት ዘገባ {#genesis-reference}
 
-በወቅቱ Iroha 3 የስራ ፍሰት `genesis.json` መገለጫው የመጀመሪያውን ይገልጻል
-አውታረመረብ ሲጀመር የሚተገበሩ ግብይቶችና መለኪያዎች።
+አሁን ባለው Iroha 3 የስራ ፍሰት ውስጥ `genesis.json` ማኒፌስት አውታረ መረቡ ሲጀምር የሚተገበሩትን የመጀመሪያዎቹ ግብይቶች እና መለኪያዎች ይገልጻል።
 
-ለባልደረቦቹ የተሰራጨው ፊርማ የተሰየመ ጥንታዊ ዕቃ Norito-የተከፈተ `.nrt` መዝገብ
-በ `kagami genesis sign`.
+ለባልደረቦቹ የተሰራጨው የተፈረመ ጥንቅር Norito-የተመሰጠረ `.nrt` ፋይል ነው በ `kagami genesis sign` የተፈጠረ።
 
 ## ዋና መስኮች {#main-fields}
 
-የጄኔሲስ ማኒፌስት የሚከተሉትን ሊገልጽ ይችላል-
+የጄኔሲስ መገለጫ የሚከተሉትን ሊገልጽ ይችላል፦
 
-- `chain` ለሰንሰለት መታወቂያ
+- ለሰንሰለት መታወቂያ `chain`
 - `executor` ለ አማራጭ አስፈፃሚ ማሻሻያ ባይትኮድ መንገድ
-- `ivm_dir` ለ IVM በማስነሳት እና በማዘመን የሚጠቀሙባቸው ቤተ-መጻሕፍት
-- `consensus_mode` በማኒፌስት የታወጀውን የመጀመሪያ ሁኔታ
-- `transactions` ለተዘረዘሩ ፓራሜትር ዝመናዎች፣ መመሪያዎች፣ አስነሳሾች እና ቶፖሎጂ
-- `crypto` ለቀዳሚ የክሪፕቶ ፎቶግራፍ
+- `ivm_dir` ለ IVM ቤተ-መጽሐፍት ተነሳሽነት እና ማሻሻያዎች ጥቅም ላይ የሚውሉ
+- `consensus_mode` በጋዜጣው ውስጥ ለታወጀው የመጀመሪያ ሁኔታ
+- `transactions` ለተዘረዘሩት መለኪያዎች ዝማኔዎች፣ መመሪያዎች፣ አስነሳሾች እና ቶፖሎጂ።
+- `crypto` ለቀዳሚ የ ‹crypto› ቅጽበታዊ ምስል
 
-በውስጡ `transactions`, የቶፖሎጂ ግቤቶች እኩዮች መታወቂያዎች እና PoPs በጋራ:
+በ `transactions` ውስጥ ፣ የቶፖሎጂ አቃፊዎች የእኩዮች መታወቂያዎችን እና PoPs አንድ ላይ ያገናኙ:
 
 ```json
 {
@@ -34,9 +32,9 @@ translation_engine: nllb-200-ct2
 }
 ```
 
-## አንድ ማሳያ ያዘጋጁ {#generate-a-manifest}
+## ማኒፌስት አዘጋጅ {#generate-a-manifest}
 
-አጠቃቀም Kagami አብነት ለመፍጠር:
+ሞዴል ለመፍጠር Kagami ይጠቀሙ:
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
@@ -45,13 +43,11 @@ cargo run -p iroha_kagami -- genesis generate \
   --genesis-public-key <PUBLIC_KEY> > genesis.json
 ```
 
-ለሕዝብ SORA Nexus የመረጃ ቦታ፣ `npos` የሚጠበቀው የጋራ ስምምነት ሁነታ ነው።
-ሌሎች Iroha 3 ተልዕኮዎች በዒላማው ላይ በመመርኮዝ የተፈቀደውን ወይም NPoS መጠቀም ይችላሉ
-መገለጫ።
+ለህዝብ SORA Nexus የውሂብ ቦታ, `npos` የሚጠበቀው የጋራ ስምምነት ሁነታ ነው. ሌሎች Iroha 3 ልውውጦች እንደ ግቡ መገለጫ ፈቃድ ወይም NPoS መጠቀም ይችላሉ.
 
 ## የምስክር ወረቀቱን ይፈርሙ {#sign-the-manifest}
 
-አርትዖት እና ማረጋገጫ በኋላ JSON, ወደሚተገበርበት `.nrt` ማገጃ:
+JSON ን ካስተረዱ እና ከተረጋገጡ በኋላ ወደ ሊተገበር የሚችል `.nrt` ብሎክ ያስገቡት:
 
 ```bash
 cargo run -p iroha_kagami -- genesis sign genesis.json \
@@ -59,13 +55,11 @@ cargo run -p iroha_kagami -- genesis sign genesis.json \
   --out-file genesis.signed.nrt
 ```
 
-`kagami genesis sign` የጄኔሲስ የሕዝብ ቁልፍ ከፕሮጀክቱ እና አጠቃቀሞች
-የተሰጠው የግል ቁልፍ፣ ዘር እና ስልተ ቀመር ተሰማርቶ የሚሰራውን ፊርማ ለማምረት
-ውጤቱ እኩዮች ከቅንጅታቸው ሊያመለክቷቸው የሚገባው ፋይል ነው።
+`kagami genesis sign` ከጋዜጣው የህዝብ ቁልፍን ያነባል እና የተሰጠውን የግል ቁልፍ ፣ ዘር እና ስልተ ቀመር በመጠቀም ሊተገበር የሚችል የተፈረመ ብሎክን ይፈጥራል ። ውጤቱ እኩዮቻቸው ከመዋቅርዎ ሊያመለክቷቸው የሚገባ ፋይል ነው ።
 
-## አወቃቀር `irohad` {#configure-irohad}
+## ቅርጸት `irohad` {#configure-irohad}
 
-ዲያሞኑን በፊርማ የተጻፈውን የጅነሲስ ብሎክ ላይ አኑሩ:
+ዲያሞኑን በፈረመበት የጅነሲስ ብሎክ ላይ አኑሩ:
 
 ```toml
 [genesis]
@@ -81,5 +75,4 @@ public_key = "<PUBLIC_KEY>"
 - `kagami localnet`
 - `cargo xtask kagami-profiles`
 
-ለጀነሬተር ትግበራ እና ትዕዛዝ ዝርዝሮች, ተመልከት
-[Kagami README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_kagami/README.md).
+ለጀነሬተር ትግበራ እና ትዕዛዝ ዝርዝሮች [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_kagami/README.md) የሚለውን ይመልከቱ።

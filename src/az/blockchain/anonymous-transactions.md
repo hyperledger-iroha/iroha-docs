@@ -18,7 +18,7 @@ Iroha ilə anonim əməliyyatlar məxfi aktiv əməliyyatlarından qurulur. Cüm
 | ------------------ | ------------------------------------------------------------------------------------------------------------------ |
 |Mühafizə olunmuş qeyd|Bir aktiv, məbləğ, sahibinin məlumatları və təsadüfilik olan şəxsi cüzdan qeydləri. |
 |Məsuliyyət |32 baytlıq ictimai qiymət, onun sahələrini açıqlamadan bir qeydə sadiqdir. |
-|Qeyri-hüquqlu |Iroha ikili xərclərin qarşısını almaq üçün təkrarlanan ləğv edənləri rədd edir. |
+|Qeyri-hüquqlu |Qeyd xərcləndikdə əldə edilən 32 bayt ictimai dəyər. Iroha ikiqat xərclərin qarşısını almaq üçün təkrarlanan ləğv edənləri rədd edir. |
 |Merkle kökü |Bu, aktivin öhdəlik ağacının yeni bir köküdür və sübutlar onu xərclənmiş notların mövcud olduğunu göstərmək üçün istifadə edir.|
 |Dayanıq əlavəsi |`ProofAttachment` əhatə edən sübut baytları və bir yoxlama açarı istinadı və ya inline yoxlama açar. |
 |Gizli hadisə |`ConfidentialEvent::Shielded`, `Transferred` və ya `Unshielded` kimi böyük kitabda baş verən hadisə. |
@@ -31,7 +31,7 @@ Iroha ilə anonim əməliyyatlar məxfi aktiv əməliyyatlarından qurulur. Cüm
 - `Unshield`: qoruyucu banknote xərcləyir və dövlət hesabının balansını kreditləşdirir.
 - `ScheduleConfidentialPolicyTransition` və `CancelConfidentialPolicyTransition`: bir aktivin məxfilik siyasətini idarəetmə yolu ilə dəyişdirmək.
 
-Bir aktiv tərifində həmçinin [`AssetConfidentialPolicy`](/az/reference/data-model-schema.md) adı da vardır.
+Bir aktiv tərifində həmçinin [`AssetConfidentialPolicy`](/az/reference/data-model-schema.md) adı var. Axınları nəzarət edən siyasət rejimi etibarlıdır:
 
 |Modu |Məna|
 | ----------------- | ---------------------------------------------------------------- |
@@ -46,7 +46,7 @@ Bir aktiv tərifində həmçinin [`AssetConfidentialPolicy`](/az/reference/data-
 3. Əməliyyat vasitəsi ZK-ə görə `RegisterZkAsset` ilə qeydiyyatdan keçin və ya `TransparentOnly`-dən `Convertible` və ya `ShieldedOnly`-ə siyasət keçidinin həyata keçirilməsi.
 4. Dövlət vəsaitini `Shield` ilə qoruyun. Cüzdan, əməliyyatı təqdim etməzdən əvvəl alıcı üçün bir qeyd öhdəliyi və şifrəli pay yükü yaradır.
 5. `ZkTransfer` ilə şəxsi köçürülməsi. Cüzdan giriş qeydlərinə sahib olduğunu, giriş və çıxış dəyərlərinin balanslandığını və hər xərclənmiş notun son bir öhdəlik ağacına bağlandığını göstərir.
-6. `Unshield` ictimai məbləği və alıcı hesabını açıqlayır, özəl not ləğvçisini xərcləyir və özəl dəyişiklik çıxışı yarada bilər.
+6. Yalnız aktiv siyasəti buna icazə verdiyi təqdirdə şilddən çıxarın. `Unshield` ictimai məbləği və alıcının hesabını açıqlayır, şəxsi notların ləğvçisini xərcləyir, və özəl dəyişiklik çıxışı yarada bilər.
 7. Gizli hadisələri, sübut sənədlərini, ləğvçi statusunu və naməlum əmanət sənədlərini Torii son nöqtələrindən istifadə edərək oxumaqla audit.
 
 ## CLI nümunələr {#cli-examples}
@@ -111,7 +111,7 @@ iroha app zk unshield \
 
 ## SDK Misal {#sdk-example}
 
-Əməliyyat paylı yükü yalnız ictimai girişlərə və sübut əlavəinə ehtiyac duyur:
+Düzü sübut baytları konfigurasiya edilmiş sübut arxa enddən gəlir. Əməliyyat pay yükü yalnız ictimai girişlərə və sübut əlavələrinə ehtiyac duyur:
 
 ```rust
 use iroha_data_model::{
@@ -202,7 +202,7 @@ $$
 C = \mathsf{Commit}(\mathsf{asset}, \mathsf{amount}, \mathsf{owner}, \rho)
 $$
 
-Hal-hazırda məxfi ötürmə dairələri üçün ictimai girişlər qeyd öhdəlikləri, ləğv edənlər, Merkle kökü, aktiv etiket və bir zəncir etiketidir.
+Hal-hazırda məxfi ötürülmə dairələri üçün ictimai girişlər qeyd öhdəlikləri, ləğv edənlər, Merkle kökləri, Bir aktiv etiket və bir zəncir etiketi. Dairə bu şəklində bir öhdəlik münasibətini tətbiq edir:
 
 $$
 C = H_c(\mathsf{amount}, \rho, \mathsf{owner\_tag}, \mathsf{asset\_tag})
@@ -244,7 +244,7 @@ burada `public_inputs` öhdəliklər, ləğv edənlər, kök, aktiv etiketləri,
 
 ## İctimaiyyətə nələr aiddir? {#what-is-public}
 
-Anonim əməliyyatlar hər müşahidə olunan faktı gizliləşdirmir.
+Anonim əməliyyatlar hər müşahidə olunan faktı gizliləşdirmir. Aşağıdakı məlumatlar hələ də açıq ola bilər:
 
 - əməliyyat hash, blok hündürlüyü və sifariş
 - təqdim edən əməliyyat orqanı, əgər müraciət xüsusi giriş nöqtəsi və ya relay modelindən istifadə etməyibsə;

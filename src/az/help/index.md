@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # Dəstəyi alın {#receive-support}
 
-Bəzən suallarınız ola bilər: Iroha Cəmiyyətimizlə əlaqə qurmağın üç yolu var: Telegram, Discord və GitHub.
+Zaman-zaman başqaları ilə ətraflı müzakirə etmək istədiyiniz Iroha barədə suallarınız ola bilər. Cəmiyyətimizlə əlaqə qurmağın üç yolu var: Telegram, Discord və GitHub.
 
 İctimaiyyət ünsiyyət üçün [Telegram](https://t.me/hyperledgeriroha) və [ LF Decentralized Trust Discord](https://discord.gg/hyperledger) istifadə edir. Layihə sualları üçün `iroha` kanalından istifadə edin.
 

@@ -8,25 +8,18 @@ translation_engine: nllb-200-ct2
 
 # Qo'shish matrisi {#compatibility-matrix}
 
-Qo'shish mosligi matriksida SDK joriy davr uchun xulosani qoplash
-Iroha 3 Dokumentlar toʻplami. Andoza ravishda sahifa hosil qilingan toʻplamdagi fotosuratni yuklaydi
-Oʻtkirdan , [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha)
-qayta ko'rib chiqish.
+Qo'shilish matrisi joriy Iroha 3 hujjatlari to'plami uchun keskin SDK stsenariy qoplamasini ko'rsatadi. Andoza bo'yicha sahifa [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) o'zgarishidan hosil bo'lgan butlangan fotosuratni yuklaydi.
 
 Matrix quyidagilardan iborat:
 
-- **Qizig'i** birinchi ustunida
-- **SDKs** qolgan ustunlarda
-- **Status belgilari** qoplangan, xato va yo'qolgan ma'lumotlar uchun
+- Birinchi ustundagi hikoyalar
+- SDKs qolgan ustunlarda
+- Yopiq, xato va yo'qolgan ma'lumotlar uchun status belgilari
 
-Faqat yangilik ish oqimida tasdiqlangan natijalar to'g'risida ma'lum qilinadi yoki
-O'rnatilgan qayta ko'rib chiqish uchun dalillar bo'lmagan vaziyatlar quyidagicha ko'rsatilgan:
-boshqa manbalarni qayta ko'rib chiqish natijalarini meros qilib olishdan ko'ra, yo'qolgan ma'lumotlar.
+Faqat yangilanish ish oqimida tasdiqlangan natijalar qoplangan yoki muvaffaqiyatsizlikka uchragan deb xabar qilinadi. Quyida o'rnatilgan qayta ko'rib chiqish uchun dalillar bo'lmagan va boshqa manbalarni qayta ko'rish natijasini meros qilib olishning o'rniga yo'qolgan ma'lumotlar sifatida namoyish etiladi.
 
 <CompatibilityMatrixTable />
 
-::: info
-Oʻrnatilgan `VITE_COMPAT_MATRIX_URL` faqat toʻplamlangan fotosuratni
-Bu o'zgaruvchansiz sahifa yuklanadi
-`src/public/compat-matrix.json`.
+::: ma'lumot
+`VITE_COMPAT_MATRIX_URL` ni faqat mos keladigan jonli orqa tomonni o'rnatish uchun qo'yish. Ushbu o'zgaruvchi bo'lmasa, sahifa `src/public/compat-matrix.json` yuklanadi.
 :::

@@ -8,20 +8,14 @@ translation_engine: nllb-200-ct2
 
 # Ma'lumotlar modeli {#data-model}
 
-Iroha davlatda do'konlar katta `World`. Uning birinchi nashrdagi ma'lumotlar modeli foydalanadi
-quyidagi kanonik identifikatsiyalar va entitetlar:
+Iroha `World`da katta yozuvlarni saqlaydi. Uning birinchi nashrdagi ma'lumotlar modeli quyidagi kanonik identifikatsiyalar va entitetlardan foydalanadi:
 
-- domenlar ma'lumotlar maydonida malakali bo'ladi, masalan `payments.universal`
-- hisoblar kanonik va domensiz; hisob ID (b) o'z navbatida
-  hisob boshqaruvchisi
-- aktivlarning ta'riflari domen/nom proyeksiyasini saqlab qolishi mumkin, ammo ularning kanonik
-  matnli manzil shaffof bo'lmagan Base58 identifikatori hisoblanadi
-- aktivlar - muayyan aktivni aniqlash uchun hisobvaraqlarda saqlangan saldolar
-- NFTs domenlarga ega bo'lgan yagona hisoblar IDs va metadatalar
-  mazmuni
-- RWAs ishlab chiqariladi-ID to'lovlar bilan silsildan tashqaridagi aktivlarni ifodalaydigan lotlar
-  egasi, miqdori, kelib chiqishi, metadatalar, saqlanishi, muzlatilishi va hayot davri
-  nazoratlar
+- domenlar ma'lumotlar maydonidan iborat bo'ladi, masalan `payments.universal`
+- hisoblar kanonik va domensiz bo'ladi; hisob ID hisobdan olingan
+- Asset ta'riflari domen / nom proyeksiyasini saqlab qolishi mumkin, ammo ularning kanonik matn manzili shaffof Base58 identifikatori hisoblanadi
+- aktivlar - muayyan aktivni belgilash bo'yicha hisobvaraqlarda saqlangan balanslar
+- NFTs domen uchun malakali IDs va metadata tarkibiga ega bo'lgan yagona mulkdagi yozuvlardir.
+- RWAs ishlab chiqarilgan- ID lotlar mavjud mulkdor, miqdor, kelib chiqishi, metadotlar, saqlash, muzlatish va hayot davri nazoratlari bilan zanjirdan tashqari aktivlarni ifodalaydi.
 
 ```mermaid
 classDiagram
@@ -91,13 +85,7 @@ Rwa --> Account : owned_by
 
 ## Misol {#example}
 
-Bir martalik Iroha 3 tarmoq, `wonderland.universal` o'z ichiga domain hisoblanadi
-`universal` ma'lumotlar maydoni. Ushbu misoldagi kanonik hisoblar nazorat qilinadi
-oʻz kalitlari yoki siyosatlari bilan kodlangan va domensiz I105 hisob IDs. O'qiladigan
-maktublar: `alice@wonderland.universal` bularga bog'liq bo'lgan alohida aliaslar
-IDs. Loyihalashtirilgan aktivni aniqlash hali ham domen va
-nomi: `rose` yo'nalishi `wonderland.universal`, kanonik aktiv bo'lsa
-simda ishlatiladigan ma'lumotlar manzili hosil qilingan Base58 manzili hisoblanadi.
+Bir martalik Iroha 3 tarmoq, `wonderland.universal` o'z ichiga domain hisoblanadi `universal` Ushbu misoldagi kanonik hisoblar o'z kalitlari yoki siyosatlari bilan boshqariladi va domensiz sifatida kodlanadi I105 hisob IDs. O'qiladigan etiketlar: `alice@wonderland.universal` quyidagilarga bog'liq bo'lgan alohida aliaslar IDs. Proyekt qilingan aktivni belgilash hali ham domen va nomdan, masalan: `rose` yo'nalishida `wonderland.universal`, qadoqlashda qo'llaniladigan kanonik aktivni aniqlash manzili hosil qilingan Base58 manzili bo'lsa.
 
 ```mermaid
 classDiagram
@@ -124,53 +112,34 @@ account_alice --> asset_rose : holds balance
 account_rabbit --> asset_rose : may receive balance
 ```
 
-## Nomlar {#aliases}
+## O'zgacha nomlar {#aliases}
 
-Aliaslar kanonik kitob identifikatorlari ustiga qatlamli inson yuziga o'xshash ismlardir.
-Ular API, CLI, pul va kashfiyotchi chegaralari, lekin kanonik
-IDs qat'iy daftar maydonlarida saqlangan barqaror identifikatorlar bo'lib qoladi.
+Aliaslar kanonik kitob identifikatorlari ustiga qatlamli inson yuzidagi nomlardir. Ular API, CLI, hamyon va qidiruvchi chegaralarida foydali bo'ladi; lekin kanonik IDs qat'iy daftar maydonlarida saqlangan barqaror identifikatorlar bo'lib qoladi.
 
-| Nihoyat         | Kanonik maqsad                                    | Alias majoziycha                                          | Qo'llab-quvvatlash modeli                                                                 |
+|Nihoyat |Canonik maqsad |Ogoh boʻling .|Taraqqiyot modeli |
 | -------------- | --------------------------------------------------- | ------------------------------------------------------ | ----------------------------------------------------------------------------- |
-| Foydalanuvchi hisobi   | domensiz `AccountId` kodlangan I105 manzili   | `name@domain.dataspace` yoki `name@dataspace`            | `AccountAlias`; asosiy alias `Account.label`, qo'shimcha aliaslar bog'liq  |
-| Assetning tavsiflanishi | kanonik `AssetDefinitionId` Base58 manzili     | `name#domain.dataspace` yoki `name#dataspace`            | `AssetDefinitionAlias` aktivni belgilash bilan bog'liq                           |
-| Shartnoma       | kanonik Bech32m `ContractAddress`                 | `name::domain.dataspace` yoki `name::dataspace`          | `ContractAlias` ishga tushirilgan shartnoma manzili bilan bog'liq                          |
-| Domen nomi    | `DomainId` yo'nalishi `domain.dataspace` shakli               | `domain.dataspace`                                    | SNS `domain` nomlar maydonining ro'yxati                                                 |
-| Ma'lumotlar maydonining nomi | raqamli `DataSpaceId` faol Nexus katalog | ma'lumotlar maydonining aliaslari: `universal`, `paynet`, yoki `zk` | SNS `dataspace` nomlar maydonining rekordlari va faol ma'lumotlar maydonining kataloglari            |
+|Foydalanuvchi hisobi |I105 manzili sifatida kodlangan domensiz `AccountId` |`name@domain.dataspace` yoki `name@dataspace` |`AccountAlias`; asosiy alias - `Account.label`, qo'shimcha aliaslar bog'liqdir |
+|Assetning aniqlanishi |kanonik `AssetDefinitionId` Base58 manzili |`name#domain.dataspace` yoki `name#dataspace` |`AssetDefinitionAlias` aktivni aniqlash bilan bog'liq |
+|Shartnoma|kanonik Bech32m `ContractAddress` |`name::domain.dataspace` yoki `name::dataspace` |`ContractAlias` ishga tushirilgan shartnoma manzili bilan bog'liq |
+|Domen nomi |`DomainId` shaklida `domain.dataspace` |`domain.dataspace` |SNS `domain` nomlar maydonida yozuv |
+|Maʼlumotlar maydoni nomi |faol Nexus katalogidan raqamli `DataSpaceId` |`universal`, `paynet` yoki `zk` kabi ma'lumotlar maydonining aliasi |SNS `dataspace` nomlar maydonining rekordlari va faol ma'lumotlar maydonining kataloglari |
 
-Hisobvaraqning aliaslari foydalanuvchiga bog'liq hisob nomlaridir. Ular hisobdan omon qoladi
-qayta tiklash , chunki alias aktiv hisob raqamiga ishora qiladi ID jahon davlatlari orqali
-Indekslar va hisob raqamlari. `SetPrimaryAccountAlias` uchun
-hisobning asosiy etiketi, `SetAccountAliasBinding` qo'shimcha non-primary uchun
-aliaslar va `FindAccountByAlias` yoki `FindAliasesByAccountId` o'qish uchun.
-Hisobvaraqning aliasi odatda faol SNS sotib olingan hisob-kitob ijara
-bilan `AcquireAccountAliasLease` va yangilangan `RenewAccountAliasLease`.
+Hisobvaraq aliaslari foydalanuvchiga bog'liq hisob nomlaridir. Ular hisobni qayta tiklashdan omon qoladi, chunki alias aktiv hisobda ID dunyo davlatlari indekslari va hisobni qayta olish yozuvlari orqali ko'rsatkich beradi. Hisobvaraqning asosiy etiketi uchun `SetPrimaryAccountAlias`, qo'shimcha birinchi bo'lmagan aliaslar uchun `SetAccountAliasBinding` va o'qish uchun `FindAccountByAlias` yoki `FindAliasesByAccountId` dan foydalaning. Hisobvaraqlar uchun odatda `AcquireAccountAliasLease` bilan sotib olingan va `RenewAccountAliasLease` bilan yangilangan faol SNS hisob aliasi ijaraga olish kerak.
 
-Asset aliases nomli aktivlarning tavsiflari, alohida hisob raqamlarining saldi emas.
-Aliaslar va shartnoma aliaslari o'qiladigan nomdan to'g'ridan-to'g'ri bog'liq
-mavjud kanonik maqsad. Asset aliases `SetAssetDefinitionAlias`;
-alias nomi segment aktiv ta'rifini ko'rsatuvchi nom bilan moslashishi kerak yoki
-kontraktning aliaslari quyidagicha belgilanadi: `SetContractAlias`;
-alias ma'lumotlar maydoni shartnoma manzilidagi kodlangan ma'lumot maydoniga mos kelishi kerak.
-Ikkala bog'lanish ham olib borishi mumkin `lease_expiry_ms`; muddati tugaganidan so'ng ular yechishni to'xtatadi
-Rahmat oynasi o'tib ketganda va dunyo davlatlari indekslaridan olib tashlanganida.
+Asset aliases - har bir hisobda qoldiqlar emas, balki aktivlarning nomi bilan ta'riflangan. Asset aliases va kontrakt aliases - bu o'qiladigan nomdan mavjud kanonik maqsadga to'g'ridan-to'g'ri bog'lanishdir. Asset aliases: `SetAssetDefinitionAlias`; alias nomi segment aktivni ta'rif namoyi ko'rsatiladigan nom yoki prognoz qilingan ta'rif nomi bilan moslashishi kerak. `SetContractAlias`; Alias ma'lumotlar maydoni shartnoma manzilida kodlangan ma'lumot maydoniga mos kelishi kerak. Ikkala bog'lanish ham `lease_expiry_ms`; muddati tugaganidan so'ng, ular o'zgarishni to'xtatadilar va dunyo davlatlari indekslaridan olib tashlanadilar.
 
-Domenlar alohida bo'lmagan `DomainAlias` Ob'ekt. Domen identifikatori
-allaqachon ma'lumotlar maydonida malakali nom, masalan: `payments.universal`. SNS izlar
-hududdagi domen nomlari uchun ijaraga olish huquqi `domain` nomlar maydonida va ma'lumotlar maydonida
-nomlari `dataspace` Nomlar maydonida. `universal` ma'lumotlar maydonining aliaslari
-belgilab qo'yilishi kerak.
+Domenlar alohida `DomainAlias` ob'ektiga ega emas. domen identifikatori allaqachon `payments.universal` kabi ma'lumotlar maydonida malakali nomdir. SNS `domain` nomlar maydonidagi domen nomlari va `dataspace` nomlar maydonidagi ma'lumot maydonining aliaslari uchun ijara egasini kuzatadi. Qo'riqlangan `universal` ma'lumotlar maydonining aliasi aniqlanishi kerak.
 
-## Tegishli hujjatlar {#related-docs}
+## Aloqaviy hujjatlar {#related-docs}
 
-| Mavzu                                  | Qayerga borishim kerak                                 |
+|Mavzu |Qayerga borish kerak ?|
 | -------------------------------------- | ------------------------------------------- |
-| Domenlar                                | [Domenlar](/uz/blockchain/domains.md)           |
-| Hisobvaraqlar                               | [Hisobvaraqlar](/uz/blockchain/accounts.md)         |
-| Aktivlar                                 | [Aktivlar](/uz/blockchain/assets.md)             |
-| NFTs                                   | [NFTs](/uz/blockchain/nfts.md)                 |
-| Haqiqiy dunyodagi aktivlar                      | [Haqiqiy dunyodagi aktivlar](/uz/blockchain/rwas.md)    |
-| Metadatalar                               | [Metadatalar](/uz/blockchain/metadata.md)         |
-| Ro'yxatdan o'tish va o'tkazish yo'l-yo'riqlari | [Ko'rsatmalar](/uz/blockchain/instructions.md) |
-| Ishga tushirish uchun ruxsatnomalar                    | [Ruxsatnomalar](/uz/blockchain/permissions.md)   |
-| Nomlash qoidalari                           | [Nomlash qoidalari](/uz/reference/naming.md)        |
+|Domenlar | [Domenlar](/uz/blockchain/domains.md) |
+|Hisobotlar | [Hisobotlar](/uz/blockchain/accounts.md) |
+|Aktivlar | [Aktivlar](/uz/blockchain/assets.md) |
+|NFTs | [NFTs](/uz/blockchain/nfts.md) |
+|Haqiqiy aktivlar | [Real dunyo aktivlari](/uz/blockchain/rwas.md) |
+|Metadotlar | [Metadatalar](/uz/blockchain/metadata.md) |
+|Ro ' yxatga olish va o ' tkazish yo ' riqnomalari | [Ko'rsatmalar](/uz/blockchain/instructions.md) |
+|Ishga tushirish uchun ruxsatlar | [Ruxsatlar](/uz/blockchain/permissions.md) |
+|Nomlashtirish qoidalari | [Nomlash qoidalari](/uz/reference/naming.md) |

@@ -10,7 +10,7 @@ layout: home
 hero:
   name: Hyperledger Iroha 3
   text: "Documentation"
-  tagline: "Plateforme de blockchain déterministe pour SORA Nexus, SDKs, et les flux de travail des opérateurs"
+  tagline: "Plateforme blockchain déterministe pour les flux de travail SORA Nexus, SDKs et des opérateurs"
   image:
     src: /icon.svg
     alt: "Hyperledger Iroha 3 logo"
@@ -30,19 +30,19 @@ features:
       dark: /build.svg
       light: /build-light.svg
     title: "Le guide"
-    details: "Trouver SDKs, les meilleures pratiques, la configuration, la sécurité et les flux de travail des opérateurs"
+    details: "Trouver SDKs, les meilleures pratiques, la configuration, la sécurité et les flux de travail de l'exploitant"
     link: /fr/guide/
   - icon:
       dark: /explained.svg
       light: /explained-light.svg
-    title: "Architecture"
-    details: "Comprendre Torii, Sumeragi, Norito, IVM, et le Nexus modèle de l'espace des données"
+    title: "L'architecture"
+    details: "Comprendre Torii, Sumeragi, Norito, IVM et le modèle de l'espace de données Nexus"
     link: /fr/blockchain/iroha-explained
   - icon:
       dark: /reference.svg
       light: /reference-light.svg
     title: "Références"
-    details: "Consultez la version binaire actuelle, génèse, Torii, et pages de référence sur la compatibilité"
+    details: "Consultez les pages de référence binaires actuelles, génèse, Torii et compatibilité."
     link: /fr/reference/
   # - title: Cookbook # (TBA)
 
@@ -50,14 +50,9 @@ footer: true
 ---
 
 <section class="nexus-build" aria-labelledby="nexus-build-title">
-  <a class="nexus-build__panel" href="/fr/get-started/sora-nexus-dataspaces">
-    <span class="nexus-build__copy">
-      <span class="nexus-build__eyebrow">SORA Nexus</span>
-      <span id="nexus-build-title" class="nexus-build__title">On s'en remet Iroha 3 / SORA Nexus</span>
-      <span class="nexus-build__details">On s'en remet SORA 3 avec Taira réseau de test, Minamoto vous pouvez essayer maintenant.</span>
-    </span>
-    <span class="nexus-build__action">Guide ouvert <span aria-hidden="true">-&gt;</span></span>
-  </a>
+<a class="nexus-build__panel" href="/fr/get-started/sora-nexus-dataspaces">
+<span class="nexus-buildcopy"> SORA Nexus <span id="nexus-build-title" class="nexus-buildtitle">Construire sur Iroha 3 / SORA Nexus</span> <span class="nexus-builddetails">Construisez SORA 3 avec Taira testnet, Minamoto mainnet et des exemples de copie-peste que vous pouvez essayer maintenant.</span> </span> <span class="nexus-build__action">ouvrir le guide <span aria-hidden="true">- &gt; </span> </span>
+</a>
 </section>
 
 <hr style="margin-top: 3rem;">

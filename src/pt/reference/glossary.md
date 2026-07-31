@@ -38,7 +38,7 @@ Aqui encontram-se definições de todas as entidades relacionadas com Iroha.
 
 Os registros blockchain são sistemas digitais de manutenção de registros que usam a tecnologia blockchain para manter registros financeiros. Estes são nomeados após livros antigos que foram utilizados para registros financeiros, como preços, notícias e informações sobre transações.
 
-Durante a Idade Média, os livros de contabilidade estavam abertos para visualização pública e verificação de precisão.
+Durante a Idade Média, os livros de contabilidade estavam abertos para visualização pública e verificação da precisão. Esta ideia é refletida nos sistemas baseados em blockchain que podem verificar a validade dos dados armazenados.
 
 ## Companheiros {#peer}
 
@@ -58,7 +58,7 @@ Informações adicionais sobre ativos estão disponíveis [ aqui ](/pt/blockchai
 
 Estes ativos podem ser facilmente trocados por outros ativos do mesmo tipo, uma vez que são intercambiáveis.
 
-Por exemplo, todas as unidades da mesma moeda são iguais em valor e podem ser usadas para comprar bens.
+Por exemplo, todas as unidades da mesma moeda são iguais em seu valor e podem ser usadas para comprar bens. Normalmente, os ativos fungíveis são idênticos em aparência, exceto o desgaste de notas e moedas.
 
 ### Ativos não fúngicos {#non-fungible-assets}
 

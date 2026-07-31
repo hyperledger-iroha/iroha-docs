@@ -135,7 +135,7 @@ $$
 \pmod p
 $$
 
-A implementação adiciona ou subtrai condicionalmente `p` até o resultado ser canônico.
+A implementação adiciona ou subtrai condicionalmente `p` até que o resultado seja canônico. Os números inteiros assinados, tais como os deltas do balanço, são incorporados por:
 
 $$
 \operatorname{field}(x)=x\bmod p,\qquad 0\leq\operatorname{field}(x)<p
@@ -468,7 +468,7 @@ N_{\ell+1} =
 )
 $$
 
-O rastreamento registra o bit `b_l`, irmão `s_l`, nó de entrada `x_l` e nó de saída `x_{l+1}` em todos os níveis.
+O rastreamento registra o bit `b_l`, irmão `s_l`, nó de entrada `x_l` e nodo de saída `x_{l+1}` em todos os níveis. Com a convenção do ramo do código:
 
 $$
 (\operatorname{left}_\ell,\operatorname{right}_\ell)=
@@ -533,7 +533,7 @@ onde `D_c` é `fastpq:v1:trace_commitment`.
 
 ### Composição AIR {#air-composition}
 
-O valor da composição V1 AIR é uma combinação linear de resíduos locais em filas.
+O valor de composição V1 AIR é uma combinação linear de resíduos locais em filas. A transcrição mostra dois desafios:
 
 $$
 \alpha_0,\alpha_1 \in F

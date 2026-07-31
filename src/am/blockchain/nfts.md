@@ -8,9 +8,9 @@ translation_engine: nllb-200-ct2
 
 # NFTs {#nfts}
 
-አንድ Iroha NFT አንድ ባለቤት ያለው ልዩ መቁጠሪያ ነገር ነው. NFTs አንድ መዝገብ የራሱ ማንነት፣ ሜታዳታ፣ የሕይወት ዑደት ክስተቶች እና የባለቤትነት ዝውውር ትርጉም ሲያስፈልግ፣ ነገር ግን የቁጥር ሚዛን አያስፈልገውም።
+Iroha NFT አንድ ባለቤት ያለው ልዩ መቁጠሪያ ዕቃ ነው። መዝገብ የራሱ ማንነት ፣ ሜታዳታ ፣ የሕይወት ዑደት ክስተቶች እና የባለቤትነት ማስተላለፍ ትርጓሜዎች ሲያስፈልጋቸው ግን የቁጥር ሚዛን የማይፈልጉበት ጊዜ NFTs ይጠቀሙ።
 
-ከቁጥር በተለየ መልኩ [ንብረቱ](/am/blockchain/assets.md), አንድ NFT በሂሳብ መጠን ትክክለኛነት ፣ የማጣራት ችሎታ ወይም ብዛት የለውም ። NFT እንደ አንድ የተመዘገበ ዕቃ ሆኖ የሚኖር ሲሆን ባለቤትነት በቀጥታ በዚያ ዕቃ ላይ ይከታተላል።
+ከቁጥር [ ሀብት ](/am/blockchain/assets.md) በተቃራኒው NFT ትክክለኛነት ፣ የማጣራት ችሎታ ወይም በሂሳብ ብዛት የለውም ። NFT እንደ አንድ የተመዘገበ ንጥረ ነገር ይኖራል ፣ እና ባለቤትነት በቀጥታ በዚያ ንጥረ ነገር ላይ ተከትሏል ።
 
 ## መዋቅር {#structure}
 
@@ -20,7 +20,7 @@ translation_engine: nllb-200-ct2
 - `content`: የ NFT ን የሚገልጽ ሜታዳታ
 - `owned_by`: የ NFT ባለቤት የሆነበት ሂሳብ
 
-የ `content` መስክ አንድ ነው `Metadata` ካርታ. የታመቀ ያድርጉት: ማከማቻ መግለጫ መስኮች, የተረጋጋ ማጣቀሻዎች, ሃሽስ, URIs, ወይም SoraFS ትላልቅ ሰነዶችን, ሚዲያዎችን ወይም ከፍተኛ ፍጥነት ያላቸው መተግበሪያዎችን ከሰንሰለት ውጪ ያከማቹ እና በመረጃ ቋቱ ላይ ብቻ ሊረጋገጥ የሚችል ማጣቀሻ ይያዙ NFT.
+የ `content` መስክ አንድ `Metadata` ካርታ ነው. የታመቀ ያድርጉት: የመግለጫ መስኮችን, የተረጋጋ ማጣቀሻዎችን, ሃሽስ, URIs ወይም SoraFS መንገዶችን እዚያ ያስቀምጡ. ትላልቅ ሰነዶችን, ሚዲያዎችን, ወይም ከፍተኛ-ጥንካሬ አፕሊኬሽን ሁኔታን ከሰንሰለት ውጭ ያስቀምጡ እና በ NFT ላይ ብቻ የሚረጋገጥ ማጣቀቂያ ይያዙ.
 
 ## Taira ላይ ይሞክሩት {#try-it-on-taira}
 
@@ -38,7 +38,7 @@ curl -fsS https://taira.sora.org/openapi.json \
   | jq -r '.paths | keys[] | select(startswith("/v1/nfts") or startswith("/v1/explorer/nfts"))'
 ```
 
-አንድ ባዶ `items` array በሕዝብ የተሞከረ አውታረመረብ ላይ ትክክለኛ ምላሽ ነው. NFTs በወቅቱ ገጽ ላይ, ይህ አይደለም NFT መመሪያዎች አይገኙም።
+ባዶ የሆነ `items` ቅደም ተከተል በአደባባይ የሙከራ አውታረመረብ ላይ ትክክለኛ ምላሽ ነው ። ይህ ማለት አሁን ባለው ገጽ ውስጥ ምንም NFTs የለም ማለት አይደለም ፣ የ NFT መመሪያዎች አይገኙም ።
 
 ## NFT IDs {#nft-ids}
 
@@ -51,16 +51,16 @@ name$domain.dataspace
 
 ለምሳሌ፣ `badge$docs.universal` የሚያመለክተው `badge` NFT በ `docs.universal` የውሂብ ቦታው ካልተወገደ፣ የአሁኑ አሳሽ የ `universal` የውሂብ ቦታ, ስለዚህ `badge$docs` የሚወስነው `badge$docs.universal`.
 
-ቋሚ ስሞችን ይጠቀሙ NFT IDs. የ ID መመሪያዎችን ፣ መጠይቆችን ፣ ፍቃዶችን ፣ የክስተቶችን ማጣሪያዎችን እና የመተግበሪያ ማጣቀሻዎችን የሚጠቀሙበት የነገሮች ማንነት ነው ።
+ለ NFT IDs የተረጋጋ ስሞችን ይጠቀሙ። ID መመሪያዎችን ፣ መጠይቆችን ፣ ፍቃዶችን ፣ ክስተት ማጣሪያዎችን እና የመተግበሪያ ማጣቀሻዎችን የሚያገለግል የንጥረ ነገር ማንነት ነው.
 
 ## የሕይወት ዑደት {#lifecycle}
 
 NFT የህይወት ዑደት ስራዎች አጠቃቀም Iroha ልዩ መመሪያዎች:
 
-- [`Register`](/am/blockchain/instructions.md#un-register) የሚፈጥረው NFT የመጀመሪያውን `content`.
+- [`Register`](/am/blockchain/instructions.md#un-register) የመጀመሪያውን `content` ጋር NFT ይፈጥራል.
 - [`Unregister`](/am/blockchain/instructions.md#un-register) የ NFT ን ያስወግዳል.
 - [`Transfer`](/am/blockchain/instructions.md#transfer) ለውጦች `owned_by`.
-- [`SetKeyValue` እና `RemoveKeyValue`](/am/blockchain/instructions.md#setkeyvalue-removekeyvalue) ማዘመን NFT ሜታዳታ።
+- [`SetKeyValue` እና `RemoveKeyValue`](/am/blockchain/instructions.md#setkeyvalue-removekeyvalue) የዘመነ NFT ሜታዳታ።
 
 ## በአካባቢህ ሞክር {#try-it-locally}
 
@@ -132,9 +132,9 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
 
 ## ጥያቄዎችና ክስተቶች {#queries-and-events}
 
-አጠቃቀም [`FindNfts`](/am/reference/queries.md#assets-nfts-and-rwas) ለመዘርዘር NFTs እና [`FindNftsByAccountId`](/am/reference/queries.md#assets-nfts-and-rwas) ለመዘርዘር NFTs በሂሳብ ባለቤትነት።
+[`FindNfts`](/am/reference/queries.md#assets-nfts-and-rwas) በመጠቀም NFTs እና [`FindNftsByAccountId`](/am/reference/queries.md#assets-nfts-and-rwas) ለመጠቀም መለያ ባለቤት የሆኑትን NFTs ለመዘርዘር.
 
-NFT የመመዝገብ፣ የመሰረዝ፣ የማስተላለፍ እና የሜታዳታ ዝማኔዎች ያወጣሉ። NFT የውሂብ ክስተቶች `Nft` የመረጃ ክስተት ማጣሪያ ለሪጀር ለውጦች ሲመዘገቡ ወይም ምላሽ ለሚሰጡ የግንባታ አስነሳሾች ሲሆኑ NFT የህይወት ዑደት ክስተቶች።
+NFT ምዝገባ, መሰረዝ, ዝውውር እና ሜታዳታ ዝማኔዎች NFT የውሂብ ክስተቶችን ያወጣሉ. ለፕሮግራም መለያ ለውጦች ሲመዘገቡ ወይም ለ NFT የሕይወት ዑደት ክስተቶች ምላሽ የሚሰጡ የግንባታ ማነቃቂያዎችን በሚጠቀሙበት ጊዜ የ `Nft` የመረጃ ክስተት ማጣሪያ ይጠቀሙ.
 
 ## ፍቃዶች {#permissions}
 

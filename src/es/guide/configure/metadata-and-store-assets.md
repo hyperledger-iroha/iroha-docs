@@ -33,7 +33,7 @@ Los activos y NFTs tienen sus propios IDs, eventos del ciclo de vida, comportami
 
 ## Datos fuera de la cadena {#off-chain-data}
 
-Usar almacenamiento fuera de la cadena para cargas útiles grandes o mutables.
+Usar almacenamiento fuera de la cadena para cargas útiles grandes o mutables. Almacenar únicamente una referencia estable en la cadena, como:
 
 - un hash de contenido
 - a URI

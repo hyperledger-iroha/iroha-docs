@@ -8,14 +8,11 @@ translation_engine: nllb-200-ct2
 
 # JavaScript და TypeScript {#javascript-and-typescript}
 
-მიმდინარე JavaScript SDK ეს არის `@iroha/iroha-js` შეფუთვა Iroha
-წყარო ხე. ეს არის Node.js- პირველი. SDK სამედიცინო Torii, Norito მშენებლები, ხელმოწერა,
-პაგინაცია, კონექტის წინათვალი და კაგემუშას ბრძანების ტრანსპორტი.
+ამჟამინდელი JavaScript SDK არის `@iroha/iroha-js` პაკეტი Iroha წყარო ხეში. ეს არის Node.js-პირველი SDK for Torii, Norito builders, signing, pagination, Connect previews, and Kagemusha command transport.
 
 ## შენება წყაროდან {#build-from-source}
 
-პაკეტი ამჟამად საჯარო არ არის ხელმისაწვდომი npm კაპიტარი. ააშენეთ იგი
-ერთი და იმავე ჩაკეტილიდან Iroha წყაროს რევიზიონი, როგორც თქვენი მიზნობრივი კვანძი:
+პაკეტი ამჟამად არ არის ხელმისაწვდომი საჯარო npm რეესტრიდან. შეიქმნას იგი იმავე pinned Iroha წყაროს რევიზიიდან, როგორც კვანძი თქვენ მიზნად:
 
 ```bash
 git clone https://github.com/hyperledger-iroha/iroha.git
@@ -25,11 +22,7 @@ npm run build:native
 npm run build:dist
 ```
 
-ადგილობრივი ნაგებობები `cargo build -p iroha_js_host` და აღწერს
-პლატფორმაზე სპეციფიკური შემოწმების თანხა, რომელიც გამოიყენება SDK საწყისი. წყარო ქმნის ადგილებს, რომლებიც
-შემოწმებული მასპინძელი `native/`. კომპლექტი `IROHA_JS_NATIVE_DIR` მხოლოდ მაშინ, როდესაც მიზანმიმართულად
-ცალკე აშენებული, გადარიცხვით შემოწმებული მასპინძლის მიწოდება. ESM-მხოლოდ;
-საგანგებო CommonJS, გამოყენების დინამიკა `import()`.
+ადგილობრივი ნაგებობები. `cargo build -p iroha_js_host` და აღნიშნავს პლატფორმის სპეციფიკური შემოწმების თანხას, რომელიც გამოყენებულია SDK დაწყება. წყარო ქმნის ადგილებს, რომლებიც შემოწმდა მასპინძელი `native/`. კომპლექტი `IROHA_JS_NATIVE_DIR` მხოლოდ განზრახ მიწოდებისას ცალკე აშენებული, შეფასებით შემოწმებული მასპინძელი. ESM- მხოლოდ; CommonJS, გამოყენების დინამიკა `import()`.
 
 ## სწრაფი დასაწყისი {#quickstart}
 
@@ -45,10 +38,9 @@ const keys = generateKeyPair();
 console.log(keys.publicKey);
 ```
 
-## სცადე. Taira მხოლოდ წაკითხვა {#try-taira-read-only}
+## შეეცადეთ Taira მხოლოდ წაკითხვა {#try-taira-read-only}
 
-გამოყენება ჩაშენებული `fetch` დაწვრილებით Node.js 24 სონდში Taira სანამ ხელმოწერა შეემატება და
-Norito ტრანზაქციის კოდი:
+გამოიყენეთ ჩაშენებული `fetch` Node.js 24-ში, რათა შეამოწმოთ Taira ხელმოწერისა და Norito ტრანზაქციის კოდის დამატებამდე:
 
 ```js
 const root = "https://taira.sora.org";
@@ -73,17 +65,15 @@ for (const asset of assets.items) {
 }
 ```
 
-შეინახეთ როგორც `taira-readonly.mjs`, შემდეგ გაუშვი:
+შეინახეთ იგი `taira-readonly.mjs`, შემდეგ გაუშვით:
 
 ```bash
 node taira-readonly.mjs
 ```
 
-გადასვლა ხელმოწერილი SDK ზარები მხოლოდ მას შემდეგ, რაც ეს მხოლოდ წაკითხვის შემოწმებები მუშაობს. Taira
-შეუძლია დროებით დაბრუნდეს შეჯერებული რიგის ან საღობე შეცდომა, ასე რომ, შეინარჩუნოს ცოცხალი ქსელი
-ტესტები opt-in CI.
+გადადით SDK ხელმოწერილ ზარებზე მხოლოდ მას შემდეგ, რაც ეს წაკითხვა-მხოლოდ შემოწმებები მუშაობს. საჯარო Taira შეიძლება დროებით დაბრუნდეს შეჯერებული რიგის ან კარიბჭე შეცდომა, ასე რომ შეინახეთ ცოცხალი ქსელის ტესტები opt-in in CI.
 
-სასარგებლო ქვემავალი იმპორტი:
+სასარგებლო ქვემავალიანი იმპორტი:
 
 ```js
 import { ToriiClient } from "@iroha/iroha-js/torii";
@@ -91,30 +81,23 @@ import { noritoEncodeInstruction } from "@iroha/iroha-js/norito";
 import { generateKeyPair } from "@iroha/iroha-js/crypto";
 ```
 
-მხოლოდ ბრაუზერისთვის Connect bootstrap, გამოიყენეთ `@iroha/iroha-js/connect-browser`
-ნაცვლად იმპორტის Node-პირველი `ToriiClient` ზედაპირი.
+მხოლოდ ბრაუზერისთვის Connect bootstrap- ისთვის, გამოიყენეთ `@iroha/iroha-js/connect-browser` ნაცვლად Node-first `ToriiClient` ზედაპირის იმპორტის.
 
-## ნაციონალური საფინანსო დავალიანება {#native-escrow}
+## ადგილობრივი საფინანსო ანაზღაურება {#native-escrow}
 
-JavaScript და TypeScript აპლიკაციები შეიძლება გამოიყენოს native escrow Kotodama
-კონტრაქტები. შეადგინეთ escrow მასპინძელი ზარები
-`@iroha/iroha-js/kotodama-compiler`; პირდაპირი ადგილობრივი საფინანსო ტრანზაქციების შემქმნელები
-ამჟამად არ არის გამოფენილი JavaScript SDK. იხილეთ
-[ნაციონალური აქტივების გადახდა](/ka/blockchain/escrow.md#javascript-and-typescript-kotodama)
-საფლავის მასპინძელი ზარის მაგალითისთვის.
+JavaScript და TypeScript აპლიკაციებს შეუძლიათ გამოიყენონ ადგილობრივი საფინანსო ანგარიშსწორება ხელშეკრულებების მეშვეობით Kotodama. შეადგინეთ საფინანსოს მასპინძელი მოწოდებები `@iroha/iroha-js/kotodama-compiler`; პირდაპირი ადგილობრივი საბანკო ანგარიშის გარიგების შემქმნელები ამჟამად არ არიან განთავსებული JavaScript SDK. იხილეთ [Native Asset Escrow](/ka/blockchain/escrow.md#javascript-and-typescript-kotodama) ესკროვის მასპინძლის მოწოდების მაგალითისთვის.
 
-## მიმდინარე დაფარვა {#current-coverage}
+## ამჟამინდელი მოცულობა {#current-coverage}
 
-სააგენტო SDK ყურადღება გამახვილებულია:
+SDK ორიენტირებულია:
 
 - Torii HTTP და WebSocket დამხმარეები
 - Norito ტრანზაქციების და ინსტრუქციის შემქმნელები
-- Kotodama კომპილიტაცია, მათ შორის საფინანსო მასპინძელი ზარის ჩაშენებები
+- Kotodama კომპილაცია, მათ შორის საფარდობო მასპინძელი მოწოდების ნაგებობები
 - Ed25519 ხელმოწერა და საკვანძო თაობა
-- გვერდების დარეგისტრირება და განახლება
-- ბრაუზერის bootstrap დამხმარეებს დააკავშიროთ
-- კაგემუშას მზაობა, დამატება, გადახდა და ექსპლუატაციის სტატუსის ტრანსპორტი
-  დამხმარეები
+- პაჟინაციის და განმეორებითი გამოცდის დამხმარეები
+- ბრაუზერის bootstrap დამხმარეების დაკავშირება
+- კაგემუშას მზაობა, დამატება, გადახდა და ექსპლუატაციის სტატუსის ტრანსპორტის დამხმარეები
 
 ## წინსავალი რეფერენციები {#upstream-references}
 

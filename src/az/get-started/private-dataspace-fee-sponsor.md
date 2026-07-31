@@ -337,7 +337,7 @@ iroha --config ./operator.client.toml \
 
 ## 7. İstifadəçiyə Sponsoru tapmaq imkanı verin. {#_7-grant-a-user-access-to-the-sponsor}
 
-Sponsor hər bir istifadəçiyə ödəniş tələb etməsinə icazə verməlidir.
+Sponsor hər istifadəçiyə ödəniş tələb etmək üçün icazə verməlidir. Xüsusi sponsor hesablarının adlandırılmasının qarşısını verən yardımdır.
 
 Bunu sponsor hesabı kimi və ya iş vaxtı siyasətinə görə icazə verilən əməliyyat hesabı olaraq icra edin:
 

@@ -18,7 +18,7 @@ Suallar kiçik bir təlimat kimi obyektlərdir ki, Iroha həmyaşıllısına gö
 
 Bu, mütləq şəbəkədə mövcud olan yeganə informasiya növü deyil, lakin bütün şəbəkələrdə əlçatan olacağı təmin edilən yeganə məlumat növüdür.
 
-Iroha tətbiqi üçün digər məlumatlar da ola bilər. məsələn, telemetriya məlumatlarının mövcudluğu şəbəkə idarəçilərinə aiddir. Əksinə, bəzi funksiyalar həmişə tələb olunur, məsələn hesabınızın balansına giriş etmək.
+Iroha hər bir yerləşdirilməsi üçün digər məlumatlar da ola bilər. Məsələn, telemetri məlumatların mövcudluğu şəbəkə idarəçilərindən asılıdır. İşin yerinə yetirilməsi üçün istifadə etmək əvəzinə işləmə gücünü ayırmaq və ya verməmək onların qərarıdır. əsl iş. Əksinə, bəzi funksiyalar həmişə tələb olunur, məsələn hesabınızın balansına giriş əldə etmək.
 
 Sualların nəticələri [sifariş edilmiş](#sorting), [səhifələri](#pagination) və [filtrlənmiş](#filters) Metadata açarları üzrə leksikografik olaraq sıralama aparılır. Filtrləmə müxtəlif prinsiplər əsasında həyata keçirilə bilər. IP adres filtr maskaları) kimi sub-satır üsullarına `begins_with` məntiqi əməliyyatlardan istifadə edərək birləşdirilmişdir.
 

@@ -6,7 +6,7 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Эшләгеҙ Iroha 3 аша CLI {#operate-iroha-3-via-cli}
+# Iroha 3 аша хәрәкәт итеү CLI {#operate-iroha-3-via-cli}
 
 `iroha` бинар - Iroha 3 өсөн команда һыҙығы клиенты. Уны иҫәп-хисап ҡаҙнаһының торошон һорарға, транзакциялар тапшырырға һәм операторҙың һуңғы нөктәләрен тикшереүгә ҡулланығыҙ.
 
@@ -78,7 +78,7 @@ iroha taira doctor --public-root https://taira.sora.org --json
 
 Төҙөү `taira.client.toml` тик ҡул ҡуйылған бойороҡтарҙы һынарға әҙер булғанда ғына. [Ҡатнашыу SORA Nexus Мәғлүмәт базалары](/ba/get-started/sora-nexus-dataspaces.md) конфигурация, кран һәм канарий ағымы өсөн. Taira Аҡсаны банкоматҡа түләү иҫәбенә түләгәнгә тиклем.
 
-Һәр түләү өсөн Taira CLI Миҫал өсөн, кран ярҙамсыһын һаҡларға [Testnet-ты алығыҙ XOR тураһында Taira](/ba/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) тип `taira_faucet_claim.py`, һуңынан тест селтәрен талап итә XOR Беренсенән:
+Һәр түләүле Taira CLI миҫал өсөн, кран ярҙамсыһын һаҡлағыҙ [Testnet XOR алыу Taira](/ba/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) буйынса `taira_faucet_claim.py`, һуңынан тәүҙә testnet XOR талап итегеҙ:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'

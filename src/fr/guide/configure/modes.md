@@ -36,7 +36,7 @@ Pour plus de détails, consultez [ gestion par les pairs ](peer-management.md).
 
 ## Comptes d'enregistrement {#registering-accounts}
 
-En fonction de la façon dont vous décidez d'établir votre [le bloc de la génèse (`genesis.json`)](genesis.md), Le processus d'enregistrement d'un compte peut se dérouler de deux manières.
+Selon la façon dont vous décidez de configurer votre bloc génétique [ (`genesis.json`) ](genesis.md), le processus d'enregistrement d'un compte peut se dérouler de deux façons. Pour comprendre pourquoi, parlons d'abord des permissions.
 
 L'exécuteur sélectionné définit quelles vérifications d'autorisation s'appliquent. Vous pouvez accorder les jetons de permission par défaut [ ](/fr/blockchain/permissions.md) dans la génèse pour façonner un réseau privé, géré par l'administrateur ou un réseau plus ouvert. Une fois que ces autorisations sont activées, le processus d'enregistrement des comptes est différent.
 

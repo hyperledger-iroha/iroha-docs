@@ -8,18 +8,18 @@ translation_engine: nllb-200-ct2
 
 # `irohad` CLI {#irohad-cli}
 
-`irohad` စနေ Iroha 3 Peer Daemon ပါ။
+`irohad` ကတော့ Iroha 3 peer daemon ကို စပါတယ်။
 
 ```shell
 irohad --config path/to/config.toml
 ```
 
-## `--config` {#arg-config}
+## `--config`  {#arg-config}
 
-- **အမျိုးအစား:** ဖိုင်လမ်းကြောင်း
-- **Alias:** `-c`
+- အမျိုးအစား: ဖိုင်လမ်းကြောင်း
+- အမည်အမည်: `-c`
 
-လမ်းကြောင်း [ဖွဲ့စည်းပုံ](/my/reference/peer-config/index.md) မှတ်တမ်းတင်ပါ။
+[configuration ](/my/reference/peer-config/index.md) file ကိုသွားတဲ့လမ်းကြောင်း။
 
 ```shell
 irohad --config path/to/iroha.toml
@@ -27,10 +27,9 @@ irohad --config path/to/iroha.toml
 
 ## `--genesis-manifest-json` {#arg-genesis-manifest-json}
 
-- **အမျိုးအစား:** ဖိုင်လမ်းကြောင်း
+- အမျိုးအစား: ဖိုင်လမ်းကြောင်း
 
-ဘီဘီစီထုတ်ပြန်ချက်အတွက် ရွေးချယ်စရာလမ်းကြောင်း JSON file ကို အသုံးပြုပါ။
-Start ကို generated manifest နဲ့အတူ validates Kagami.
+Genesis manifest JSON ဖိုင်သို့ ရွေးချယ်စရာလမ်းကြောင်း။ deployment သည် Kagami မှထုတ်လုပ်သော manifest နှင့် startup ကိုအတည်ပြုသည့်အခါဤကိုအသုံးပြုပါ။
 
 ```shell
 irohad --config path/to/iroha.toml --genesis-manifest-json path/to/genesis.manifest.json
@@ -38,10 +37,10 @@ irohad --config path/to/iroha.toml --genesis-manifest-json path/to/genesis.manif
 
 ## `--trace-config` {#arg-trace-config}
 
-Configuration ကိုဖတ်ခြင်းနှင့် parsing ၏ trace log များကို enable လုပ်ပေးသည်။ Configuration ပြဿနာဖြေရှင်းရေးအတွက် အသုံးဝင်နိုင်ပါသည်။
+ဖွဲ့စည်းမှု စာဖတ်ခြင်းနှင့် ဆန်းစစ်ခြင်း၏ ခြေရာခံမှတ်တမ်းများကို ဖွင့်ပေးသည်။ ဖွဲ့စည်းချက် ပြဿနာဖြေရှင်းရေးအတွက် အသုံးဝင်နိုင်ပါသည်။
 
-- **အမျိုးအစား:** အလံ
-- **ENV:** `TRACE_CONFIG`
+- အမျိုးအစား: အလံ
+- ENV: `TRACE_CONFIG`
 
 ```shell
 irohad --trace-config
@@ -49,17 +48,15 @@ irohad --trace-config
 
 ## `--terminal-colors` {#arg-terminal-colors}
 
-- **အမျိုးအစား:** ဘူးလစ် `--terminal-colors=false` ဒါမှမဟုတ်
-  `--terminal-colors=true`
-- **အလိုအလျောက်:** အလိုအလျောက် ရှာဖွေရေး terminal support
-- **ENV:** `TERMINAL_COLORS`
+- အမျိုးအစား: `--terminal-colors=false` သို့မဟုတ် `--terminal-colors=true` ဘူးလိန်း
+- Default: အလိုအလျောက်ရှာဖွေရေး terminal support
+- ENV: `TERMINAL_COLORS`
 
-(သို့) မပြုလုပ်ပါ ANSI- အရောင်ထွက်မှု ရှိ၊ မရှိပါ။
+ANSI အရောင်ထုတ်လုပ်မှုကို လုပ်နိုင်မလား၊ မလုပ်နိုင်ဘူးလား။
 
-အလိုအလျောက် Iroha terminal က အရောင်ထွက်ကို ထောက်ခံလားဆိုတာ သတ်မှတ်တယ်။
-ဒါမှမဟုတ် မဟုတ်ဘူး။
+default အနေနဲ့ Iroha ဟာ terminal က အရောင်ထွက်ကို ထောက်ပံ့ပေးတာလား၊ မထောက်ပံ့ဘူးလားဆိုတာ သတ်မှတ်ပါတယ်။
 
-အရောင်တွေကို ရှင်းလင်းစွာ ပိတ်ပစ်ရန်
+အရောင်တွေကို တိတိကျကျ ပိတ်ပစ်ရန်
 
 ```shell
 irohad --terminal-colors=false
@@ -72,9 +69,9 @@ irohad
 
 ## `--language` {#arg-language}
 
-- **အမျိုးအစား:** ကြိုးများ
+- အမျိုးအစား: ကြိုး
 
-Daemon စာတိုများအတွက် အသုံးပြုသော စနစ်ဘာသာစကားကို override လုပ်ပါ။
+Daemon စာတိုများအတွက် အသုံးပြုသော စနစ် ဘာသာစကားကို override လုပ်ပါ။
 
 ```shell
 irohad --language en-US
@@ -82,10 +79,9 @@ irohad --language en-US
 
 ## `--sora` {#arg-sora}
 
-- **အမျိုးအစား:** အလံ
+- အမျိုးအစား: အလံ
 
-Sora ကို Activate လုပ်ပါ Nexus လက္ခဏာများအတွက် profile SoraFS, ကော်မတီ SoraNet လက်ဆွဲခြင်း၊
-လိုင်းစုံ သဘောတူညီချက် စီးဆင်းမှု။
+SoraFS အတွက် Sora Nexus feature profile၊ SoraNet handshake နဲ့ multi-lane consensus flows တွေကို enable လုပ်ပါ။
 
 ```shell
 irohad --config path/to/iroha.toml --sora
@@ -93,9 +89,9 @@ irohad --config path/to/iroha.toml --sora
 
 ## `--fastpq-execution-mode` {#arg-fastpq-execution-mode}
 
-- **အမျိုးအစား:** `auto`, `cpu`, ဒါမှမဟုတ် `gpu`
+- အမျိုးအစား: `auto`, `cpu`, (သို့) `gpu`
 
-Override FASTPQ Prover လုပ်ဆောင်မှု mode ကို။
+FASTPQ prover execution mode ကို override လုပ်ပါ။
 
 ```shell
 irohad --fastpq-execution-mode auto
@@ -103,9 +99,9 @@ irohad --fastpq-execution-mode auto
 
 ## `--fastpq-poseidon-mode` {#arg-fastpq-poseidon-mode}
 
-- **အမျိုးအစား:** `auto`, `cpu`, ဒါမှမဟုတ် `gpu`
+- အမျိုးအစား: `auto`, `cpu`, (သို့) `gpu`
 
-Override FASTPQ Poseidon pipeline mode ကို သုံးပါ။
+FASTPQ Poseidon pipeline mode ကို override လုပ်ပါ။
 
 ```shell
 irohad --fastpq-poseidon-mode cpu
@@ -113,9 +109,9 @@ irohad --fastpq-poseidon-mode cpu
 
 ## `--fastpq-device-class` {#arg-fastpq-device-class}
 
-- **အမျိုးအစား:** ကြိုးများ
+- အမျိုးအစား: ကြိုး
 
-အပိုဒ်ကို လွှဲပြောင်းပါ FASTPQ တယ်လီမီတာ ကိရိယာတန်းအစား တံဆိပ်။
+FASTPQ telemetry device class label ကို override လုပ်ပါ။
 
 ```shell
 irohad --fastpq-device-class apple-m4
@@ -123,9 +119,9 @@ irohad --fastpq-device-class apple-m4
 
 ## `--fastpq-chip-family` {#arg-fastpq-chip-family}
 
-- **အမျိုးအစား:** ကြိုးများ
+- အမျိုးအစား: ကြိုး
 
-အပိုဒ်ကို လွှဲပြောင်းပါ FASTPQ တယ်လီမီထရီ ချစ်ပ်မိသားစု တံဆိပ်။
+FASTPQ telemetry chip-family label ကို override လုပ်ပါ။
 
 ```shell
 irohad --fastpq-chip-family m4
@@ -133,9 +129,9 @@ irohad --fastpq-chip-family m4
 
 ## `--fastpq-gpu-kind` {#arg-fastpq-gpu-kind}
 
-- **အမျိုးအစား:** ကြိုးများ
+- အမျိုးအစား: ကြိုး
 
-အပိုဒ်ကို လွှဲပြောင်းပါ FASTPQ တယ်လီမီတာ GPU- ဒီလို တံဆိပ်မျိုးပေါ့။
+FASTPQ telemetry GPU အမျိုးအစား တံဆိပ်ကို override လုပ်ပါ။
 
 ```shell
 irohad --fastpq-gpu-kind integrated

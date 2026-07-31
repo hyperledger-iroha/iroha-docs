@@ -8,74 +8,61 @@ translation_engine: nllb-200-ct2
 
 # الأصول {#assets}
 
-(إنجليزية) Iroha الأصول هي رصيد رقمي يحتفظ به الحساب.
-نقاط التوازن إلى `AssetDefinition`, والعريف يصف كيف
-يمكن تسمية هذا الأصول، والعملة، وعرضها، وتقسيمها.
+أصل Iroha هو رصيد عددي يحتفظ به حساب. يشير كل رصيد ملموس إلى `AssetDefinition` ، ويتصف التعريف كيف يمكن تسمية هذا الأصول، وتصنيفها، وعرضها، وقسمها.
 
 ## تعريف الأصول {#asset-definition}
 
-(إنجليزية) `AssetDefinition` يحتوي على:
+يحتوي `AssetDefinition` على:
 
-- `id`: عنوان تعريف الأصول القنوني
-- `name`: اسم عرض يمكن قراءته من قبل الإنسان
-- `description`: وصف اختياري يمكن قراءته من قبل الإنسان
-- `alias`: الاسماء الخيارية في `<name>#<domain>.<dataspace>` أو
-  `<name>#<dataspace>` الشكل
-- `spec`: الدقة الرقمية والقيود على الموازين
-- `mintable`: سياسة التخفيف
+- `id`: عنوان تعريف الأصول القنونية
+- `name`: اسم عرض يمكن القراءة من قبل الإنسان
+- `description`: وصف افتراضي يمكن قراءته من قبل الإنسان
+- `alias`: مستعار اختياري في نموذج `<name>#<domain>.<dataspace>` أو `<name>#<dataspace>`
+- `spec`: الدقة الرقمية والقيود المتعلقة بالموازنة
+- `mintable`: سياسة الامتناع
 - `logo`: اختياري `SoraFS` URI
-- `metadata`: البيانات الأساسية القيمة المفتاحية
-- `balance_scope_policy`: ما إذا كانت الرصيدات عالمية أو
-  مقيد في مساحة البيانات
-- `owned_by`: الحساب الذي سجل أو يملك التعريف
-- `total_quantity`: الكمية الإجمالية الصادرة
+- `metadata`: بيانات أساسية تعسفية.
+- `balance_scope_policy`: ما إذا كانت الرصيدات عالمية أم محدودة بمجال البيانات.
+- `owned_by`: الحساب الذي سجل أو يملك التعريف.
+- `total_quantity`: إجمالي الكمية المصدرة
 - `confidential_policy`: سياسة عمليات الأصول المحمية
 
-تعريف الأصول IDs هي عناوين غير واضحة القنونية. عندما تعريف
-بنيت من نطاق واسم، Iroha يمكن أن تحتفظ بهذا النطاق/اسم
-التنبؤ UX و استفسارات، ولكن النموذج النص القنوني هو
-العنوان
+تعريف الأصول IDs هي عناوين غير شفافة قائمة. عندما يتم بناء تعريف من نطاق واسم ، يمكن ل Iroha حفظ هذا النطاق / توقيع الاسم ل UX والاستفسارات ، ولكن شكل النص القائم هو العنوان المولود.
 
 ## ميزان الأصول {#asset-balance}
 
-(إنجليزية) `Asset` يحتوي على:
+يحتوي `Asset` على:
 
-- `id`: (أ) `AssetId`, التي تجمع بين تعريف الأصول، حساب الحامل،
-  ومدى التوازن الاختياري
-- `value`: (أ) `Numeric` التوازن
+- `id`: مؤشر `AssetId`، يجمع بين تعريف الأصول وحساب حاملها ونطاق الميزانية الاختيارية
+- `value`: رصيد في `Numeric`
 
-الحساب القائم على الاحتفاظ به كانونيكي وبدون نطاق.
-المشاريع تحت نطاق مؤهل لمجال البيانات، على سبيل المثال
-`payments.universal`.
+الحساب المحتفظ به كانونيكي ودون نطاق. يمكن أن يتم عرض تعريف الأصول تحت نطاق مؤهل لمجال البيانات، على سبيل المثال `payments.universal`.
 
 ## إمكانية التخزين {#mintability}
 
-تعريفات الأصول تدعم هذه أنماط الوصول:
+تعريفات الأصول تدعم هذه أنظمة الوصول إلى الخدمة:
 
-| الوضع         | المعنى                                                           |
+|الوضع|المعنى|
 | ------------ | ----------------------------------------------------------------- |
-| `Infinitely` | إمدادات مرنة، ويمكن أن يتم تصنيع الأصول وتحرقها مراراً وتكراراً    |
-| `Once`       | رمز إمدادات ثابتة، يمكن صياغته مرة واحدة ثم حرقها        |
-| `Not`        | علامة إمدادات ثابتة يمكن حرقها ولكن لا يتم صياغتها مرة أخرى.       |
-| `Limited(n)` | يُسمح بالتصوير لعدد محدود من العمليات الإضافية. |
+|`Infinitely` |إمدادات مرنة، ويمكن تصنيع الأصول وحرقها مراراً وتكراراً. |
+|`Once` |إشارة الإمدادات الثابتة، يمكن صياغتها مرة واحدة ثم حرقها|
+|`Not` |علامة إمدادات ثابتة يمكن حرقها ولكن لا يتم صياغتها مرة أخرى.|
+|`Limited(n)` |يُسمح بالتصوير في عدد محدود من العمليات الإضافية. |
 
-الاستخدام `Infinitely` للأصول العادية المطوية و `Once` أو `Limited(n)` لـ
-أصول التوريد الثابت أو المحدود. لا تستخدم `Not` في البداية
-السياسة ما لم يتم تحديد إمدادات الأصول بالفعل.
+استخدم `Infinitely` للأصول المرنة العادية و `Once` أو `Limited(n)` لأصول التوريد الثابت أو المحدود. لا تستخدم `Not` كسياسة أولية إلا إذا تم تأسيس إمدادات الأصول بالفعل.
 
 ## نطاق التوازن {#balance-scope}
 
-(الـ) `balance_scope_policy` يسيطر على كيفية وضع الميزانات:
+يسيطر `balance_scope_policy` على كيفية وضع الميزانات:
 
 - `Global`: علبة رصيد واحدة لكل حساب وتعريف الأصول
 - `DataspaceRestricted`: يتم تقسيم الرصيدات حسب سياق مساحة البيانات
 
-تُعد الرصيدات المحدودة بمجال البيانات مفيدة عندما يكون نفس تعريف الأصول
-تستخدم عبر العديد Nexus يجب أن تبقى الميزانات معزولة.
+تُعد الرصيدات المحدودة لمجال البيانات مفيدة عندما يتم استخدام نفس تعريف الأصول عبر مكاتب بيانات متعددة Nexus ولكن يجب أن تبقى الرصادات معزولة.
 
-## جربها Taira {#try-it-on-taira}
+## جربوا ذلك على Taira {#try-it-on-taira}
 
-هذه المكالمات القراءة فقط تظهر تعريفات الأصول الحقيقية على الجمهور Taira شبكة اختبار:
+تظهر هذه المكالمات التي يتم قراءتها فقط تعريفات أصول حقيقية على شبكة اختبار Taira العامة:
 
 ```bash
 TAIRA_ROOT=https://taira.sora.org
@@ -84,7 +71,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=10" \
   | jq -r '.items[] | [.id, .name, .mintable, .total_quantity] | @tsv'
 ```
 
-العثور على التيار Taira XOR تعريف أصول الرسوم:
+العثور على تعريف أصول الرسوم الحالية Taira XOR
 
 ```bash
 curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
@@ -93,7 +80,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, total_quantity, mintable, confidential_policy: .confidential_policy.mode}'
 ```
 
-ابحث عن تعريفات تحمل البيانات المعدنية:
+ابحث عن التعريفات التي تحمل البيانات المعدنية:
 
 ```bash
 curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
@@ -102,14 +89,9 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-جميع الأمثلة الثلاثة هي القراءة. Taira, استخدام a
-الحساب المتمول من النوافذ والدفق المحافظ في
-[التواصل SORA Nexus البيانات](/ar/get-started/sora-nexus-dataspaces.md).
+جميع الأمثلة الثلاثة هي القراءة. لقطع، حرق أو نقل الأصول على Taira, استخدام حساب تمويله من النوافذ والدفق المحافظ في [التواصل مع SORA Nexus مساحات البيانات](/ar/get-started/sora-nexus-dataspaces.md).
 
-مقابل دفع الرسوم Taira نموذج الأصول، إنقاذ مساعدة المياه من
-[احصل على Testnet XOR على Taira](/ar/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)
-كما `taira_faucet_claim.py`, ثم استدعاء أصل الصنبور أولا واستخدامه
-أصول الغاز المعاملة:
+لمثال الأصول المدفوعة الرسوم Taira، حفظ مساعدة الصنبور من [حصل على Testnet XOR على Taira](/ar/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) ك `taira_faucet_claim.py` ، ثم المطالبة بأصول الصنبور أولاً واستخدامه كأصول غاز المعاملة:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
@@ -119,24 +101,22 @@ python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
 printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
 ```
 
-ثم تشمل `--metadata ./taira.tx-metadata.json` على `ledger asset mint`,
-`ledger asset burn`, و `ledger asset transfer` أوامر.
+ثم قم بإدراج `--metadata ./taira.tx-metadata.json` في الأوامر `ledger asset mint`، `ledger asset burn`، و `ledger asset transfer`.
 
 ## التعليمات {#instructions}
 
-يمكن تسجيل الأصول، وقطعها، وحرقها، ونقلها Iroha
-تعليمات خاصة:
+يمكن تسجيل الأصول وتصنيعها وحرقها ونقلها باستخدام Iroha التعليمات الخاصة:
 
-- [`Register` و `Unregister`](/ar/blockchain/instructions.md#un-register)
-- [`Mint` و `Burn`](/ar/blockchain/instructions.md#mint-burn)
+- [`Register` و`Unregister` ](/ar/blockchain/instructions.md#un-register)
+- [`Mint` و`Burn` ](/ar/blockchain/instructions.md#mint-burn)
 - [`Transfer`](/ar/blockchain/instructions.md#transfer)
-- [`SetKeyValue` و `RemoveKeyValue`](/ar/blockchain/instructions.md#setkeyvalue-removekeyvalue)
+- [`SetKeyValue` و`RemoveKeyValue` ](/ar/blockchain/instructions.md#setkeyvalue-removekeyvalue)
 
 انظر أيضاً:
 
-- [CLI الدليل](/ar/get-started/operate-iroha-via-cli.md)
-- [Rust التعليمات](/ar/guide/tutorials/rust.md)
-- [Python التعليمات](/ar/guide/tutorials/python.md)
-- [JavaScript/TypeScript التعليمات](/ar/guide/tutorials/javascript.md)
+- [دليل CLI](/ar/get-started/operate-iroha-via-cli.md)
+- [Rust التعليمية](/ar/guide/tutorials/rust.md)
+- [Python التعليمية](/ar/guide/tutorials/python.md)
+- [JavaScript/TypeScript دراسة التعليمية ](/ar/guide/tutorials/javascript.md)
 - [نموذج البيانات](/ar/blockchain/data-model.md)
 - [NFTs](/ar/blockchain/nfts.md)

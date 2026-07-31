@@ -8,16 +8,13 @@ translation_engine: nllb-200-ct2
 
 # Configuration Iroha {#configuring-iroha}
 
-La configuration de pair locale est définie en TOML C'est différent de la chaîne
-la configuration a changé à travers [`SetParameter`](/fr/blockchain/instructions.md#setparameter)
-Le comportement de production doit être représenté dans un fichier de configuration
-ou un paramètre en chaîne; les variables d'environnement ne sont pas des portes de fonctionnement.
+La configuration locale des pairs est définie dans les fichiers TOML. Cela diffère de la configuration en chaîne modifiée par l'intermédiaire des instructions [`SetParameter`](/fr/blockchain/instructions.md#setparameter). Le comportement de production doit être représenté dans un fichier de configuration ou un paramètre en chaîne; les variables d'environnement ne sont pas des portes de fonctionnalité.
 
-Utilisation [`--config`](../irohad-cli#arg-config) CLI argument pour spécifier le chemin vers le fichier de configuration.
+Utilisez l'argument [`--config`](../irohad-cli#arg-config) CLI pour spécifier le chemin vers le fichier de configuration.
 
 ## Template {#template}
 
-Pour une description détaillée de chaque paramètre, veuillez consulter le [Paramètres](./params.md) de référence.
+Pour une description détaillée de chaque paramètre, veuillez vous référer à la référence [Paramètres](./params.md).
 
 ::: details `peer.template.toml`
 
@@ -25,12 +22,11 @@ Pour une description détaillée de chaque paramètre, veuillez consulter le [Pa
 
 :::
 
-## Composition des fichiers de configuration {#composing-configuration-files}
+## Composer des fichiers de configuration {#composing-configuration-files}
 
-TOML les fichiers de configuration ont un `extends` champ, pointant vers d'autres TOML Il peut s'agir d'un seul chemin ou
-plusieurs voies:
+Les fichiers de configuration TOML ont un champ `extends` supplémentaire, pointant vers d'autres fichiers TOML (s). Il peut s'agir d'un seul chemin ou de plusieurs chemins:
 
-::: code-group
+::: groupe de codes
 
 ```toml [Single]
 extends = "single-path.toml"
@@ -42,10 +38,9 @@ extends = ["file1.toml", "file2.toml"]
 
 :::
 
-Iroha lire de manière récurrente tous les fichiers spécifiés dans `extends` et les rangons en couches, où ceux-ci recouvrent
-les données précédentes au niveau d'un paramètre. `config.toml`:
+Iroha lit récursivement tous les fichiers spécifiés dans `extends` et les compose en couches, où ces dernières surécrivent les précédentes au niveau d'un paramètre. Par exemple, si la lecture de `config.toml`:
 
-::: code-group
+::: groupe de codes
 
 ```toml [config.toml]
 extends = ["a.toml", "b.toml"]
@@ -66,9 +61,8 @@ max_content_len = 2048
 
 :::
 
-The la configuration résultante sera `chain` à partir `a.toml`, `max_content_len` à partir `b.toml`, et `torii.address` à partir
-`config.toml` (surcrits) `b.toml`).
+La configuration qui en résulte sera: `chain` à partir `a.toml`, `max_content_len` à partir `b.toml`, et `torii.address` à partir `config.toml` (sur écriture) `b.toml`).
 
 ## Résolution des problèmes {#troubleshooting}
 
-Passage [`--trace-config`](../irohad-cli#arg-trace-config) CLI flag pour voir une trace de la façon dont la configuration est lue et analysée.
+Passez le drapeau [`--trace-config`](../irohad-cli#arg-trace-config) CLI pour voir une trace de la façon dont la configuration est lue et analysée.

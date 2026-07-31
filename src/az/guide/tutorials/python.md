@@ -276,7 +276,7 @@ submit(Instruction.burn_asset_numeric(ROSE_ASSET, "10.00"))
 
 ### Transfer mülkiyyəti {#transfer-ownership}
 
-Mülkiyyət transferləri, domenə nəzarət edən dəyişikliklər, aktiv tərifləri və ya NFT.
+Mülkiyyət köçürmələri domeni kim idarə edir, aktivin tərifi və ya NFT. Müqavilənin icra hakimiyyəti olaraq mövcud sahibini istifadə edin.
 
 ```python
 # The first argument is the current owner; the last is the new owner.
@@ -880,7 +880,7 @@ else:
 
 ### GOST və Post-Quantum açarları {#gost-and-post-quantum-keys}
 
-GOST R 34.10-2012 parametr dəstləri və ML-DSA (`ml-dsa`) kvantdan sonrakı imzalar üçün ümumi kripto API istifadə edin.
+GOST R 34.10-2012-ci parametrlər dəstləri və ML-DSA (`ml-dsa`) post-kvant imzaları üçün ümumi kripto API istifadə edin. Eyni açar cütlüyü obyekti imzalanma, təsdiqləmə və çox hash ixracı ilə məşğul olur:
 
 ```python
 from iroha_python import (
@@ -944,7 +944,7 @@ print(post_quantum_address.to_i105(CHAIN_DISCRIMINANT))
 print(mldsa_keypair.prefixed_public_key_multihash)
 ```
 
-Qapı GOST və post-quantum axınları qovşağın reklamlaşdırılmış imzalama alqoritmlərində istifadə edin.
+Qapı GOST və qrupun reklamlaşdırılmış imzalama alqoritmlərində kvantdan sonrakı axınlar. Gələcək uyğunluqlu alqoritm adları üçün xam qabiliyyət pay yükünü istifadə edin:
 
 ```python
 capabilities = client.request_json(
@@ -1271,7 +1271,7 @@ print(health.healthy_total, health.failovers_total)
 
 ## Norito RPC və GPU Yardımçıları {#norito-rpc-and-gpu-helpers}
 
-Norito baytlarınız varsa və ikitərəfli Torii son nöqtəsini çağırmaq lazım olduqda `NoritoRpcClient` istifadə edin.
+Artıq Norito baytlarınız varsa və ikitərəfli Torii son nöqtəsinə zəng etməlisinizsə, `NoritoRpcClient` istifadə edin. Məsələn, əvvəlki əməliyyat şablonundan imzalanmış bir zarf tələb olunur:
 
 ```python
 from iroha_python import NoritoRpcClient, NoritoRpcConfig

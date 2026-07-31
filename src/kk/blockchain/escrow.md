@@ -49,8 +49,8 @@ stateDiagram-v2
 |`AcceptAssetEscrow` |Сатып алушы |Сатушы сатып алушыны тіркеп, `Open` -ға `Accepted` көшіреді.|
 |`MarkEscrowPaymentSent` |Қабылданған сатып алушы |`Accepted` сатып алушы тізбектен тыс төлемді жібергеннен кейін `PaymentSent`-ға ауыстырылады. |
 |`ReleaseAssetEscrow` |Сатушы |`PaymentSent` -ны `Released`-ға көшіріп, сатып алушыға толық кепілдендірілген сома аударылады. |
-|`CancelAssetEscrow` |Сатушы | Қозғалыстар `Open` немесе `Accepted` үшін `Cancelled` және төлем белгіленгенге дейін сатушыға қайтарылады. |
-|`OpenEscrowDispute` |Сатушы немесе қабылданған сатып алушы | Қозғалыстар `Accepted` немесе `PaymentSent` үшін `Disputed` және дәлелдемелерді қосады. |
+|`CancelAssetEscrow` |Сатушы |`Open` немесе `Accepted`-ны `Cancelled`-ге көшіріп, төлем белгіленгеннен бұрын сатушыға қайтарылады. |
+|`OpenEscrowDispute` |Сатушы немесе қабылданған сатып алушы |`Accepted` немесе `PaymentSent`-ны `Disputed`-ге көшіріп, дәлелдемелерді шешелермен қосады. |
 |`ResolveEscrowDispute` |`CanResolveEscrowDispute` бойынша шот| Қозғалыстар `Disputed` үшін `Resolved` және сатып алушы мен сатушы арасында бөлінеді. |
 
 Таулы мәселелерді шешу сомалары теріс болмауы тиіс, ал `buyer_amount + seller_amount` кепілдік сомасына тең болуы керек. нөлдік мәнді аяқтарға рұқсат етіледі, бірақ барлық бөлініс бекітілген балансты есепке алуы қажет.
@@ -109,7 +109,7 @@ fn release_marketplace_escrow(
 |`CancelAssetLock` |Қапшықты ашу |Белгілі құлыпты жою және қалған соманы ашушыға қайтару. |
 |`ExpireAssetLock` |Мерзімінен кейін кез келген транзакциялық орган |Өткенде `expires_at_ms` белгісі бар кілті аяқталады және қалған соманы ашушыға қайтарады. |
 
-`DrawdownAssetLock` жазуды сақтайды `Locked` Қалған сома нөлге жеткенде, мәртебесі `DrawnDown` Жазбалар жабылып қалды.
+`DrawdownAssetLock` тіркемені `Locked`-да сақтайды, ал белгілі бір сома сақталады. Қалған сома нөлге жеткенде, жағдай `DrawnDown` болып табылады және тіркеме жабылады.
 
 ```rust
 use iroha::{
@@ -178,7 +178,7 @@ Python Қазіргі уақытта жалпы қақпақтардың жоғ�
 
 ## Таластар {#disputes}
 
-Базардағы кепілгерлік дауға кіре алады `Accepted` немесе `PaymentSent`. Тек тіркелген сатушы немесе сатып алушы дауды ашуға болады. `CanResolveEscrowDispute`, немесе резюллер шотына тікелей берілген немесе рөл арқылы мұра болып табылған.
+Базардағы кепілдік `Accepted` немесе `PaymentSent` арқылы дауға кіре алады. Тек тіркелген сатушы немесе сатып алушы ғана дауды аша алады. Шешімдеу үшін `CanResolveEscrowDispute` қажет, ол тікелей шешім беруші шотына беріледі немесе рөл арқылы мұраланады.
 
 ```rust
 use iroha::{
@@ -287,12 +287,12 @@ fn open_anonymous_escrow(
 
 ## SDK пайдалану {#sdk-usage}
 
-Эскорлық қолдау әр ел бойынша әртүрлі түрде анықталады SDKs. Rust каноникалық типті дерек үлгісі бар. Python Қазіргі уақытта активтерді бұғаттаудың жалпы көмекшілерін жария етеді. JavaScript және TypeScript пайдалану Kotodama Веб-сайтиге хабарласушылар шақырады. Kotlin/JVM және Swift нарыққа арналған типті пайдалы жүк жасаушыларды және анонимді кепілдік берушілерді ұсыну.
+SDKs. Rust каноникалық типті дерек үлгісі бар. Python қазіргі уақытта жалпы активтерді бұғаттау көмекшілерін көрсетеді. JavaScript және TypeScript пайдалану Kotodama депозиттік хост шақырулары. Kotlin/JVM және Swift нарыққа арналған типті пайдалы жүк жасаушыларды және анонимді кепілгерлерді қамтамасыз етеді.
 
 |SDK |Осы бетті пайдаланыңыз .|Ауқымы |
 | --- | --- | --- |
 | [Rust](#rust-sdk) |`iroha::data_model::isi::escrow` |Базардағы депозит, жалпы құлыптар, анонимді депозит, сұраулар және оқиғалар. |
-| [Python](#python-asset-locks) | `Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock`, және клиент `*_and_wait` көмекшілері |Жалпы активтердің құлыптары. Базар және анонимді кепілгерлік көмекшілері әлі күнге дейін бірінші деңгейдегі Python әдістер емес. |
+| [Python](#python-asset-locks) |`Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock` және клиенттің `*_and_wait` көмекшілері |Жалпы активтердің құлыптары. Базар және анонимді кепілгерлік көмекшілері әлі күнге дейін бірінші деңгейдегі Python әдістер емес. |
 | [JavaScript / TypeScript](#javascript-and-typescript-kotodama) |`compileKotodamaProgram` -ден `@iroha/iroha-js/kotodama-compiler`|Kotodama келісім-шарттардағы эскроу хостинг шақырады. |
 | [Kotlin / JVM](#kotlin-and-jvm) |`InstructionTemplate` сыныптары `org.hyperledger.iroha.sdk.core.model.instructions` |Базар және анонимді кепілдік берудің арнайы нұсқаулық үлгілері. |
 | [Swift / iOS](#swift-and-ios) |`NativeEscrowInstructionBuilders` және `IrohaSDK.build*Escrow*` көмекшілері |Базар және анонимді кепілдік беру Norito JSON нұсқаулықтардың пайдалы жүктемелер. |
@@ -301,7 +301,7 @@ fn open_anonymous_escrow(
 
 ### Rust SDK {#rust-sdk}
 
-Пайдаланыңыз Rust SDK жоғарыда келтірілген мысалдар нарықта шығарылу, жалпы жабылма алу, дауларды шешу және анонимді кепілдік салуды көрсетеді. `iroha::data_model::isi::escrow`.
+Rust SDK толық жергілікті қамтуды немесе сұрау / оқиғаларды қолдауды қажет еткен кезде қолданыңыз. Жоғарыда келтірілген мысалдарда нарықта шығарылу, жалпы жабылма алу, дауларды шешу және `iroha::data_model::isi::escrow`мен анонимді кепілдік жасау көрсетіледі.
 
 ```rust
 use iroha::{
@@ -363,7 +363,7 @@ client.expire_asset_lock_and_wait(
 
 ### JavaScript және TypeScript Kotodama {#javascript-and-typescript-kotodama}
 
-Қауымдастық JavaScript SDK қазіргі уақытта тікелей жергiлiктi кепілгерлік транзакция жасаушыларды ашпайды. JavaScript немесе TypeScript қолданатын қолданбалар Kotodama келісім-шарттар, жинақтау ескроу хост шақырулар Kotodama компилятор.
+JavaScript SDK қазіргі уақытта тікелей жергiлiктi эскорлық транзакция жасаушыларды ашпайды. Kotodama келісімшарттарын орналастыратын JavaScript немесе TypeScript қолданбалар үшін Kotodama компиляторымен эскорлік хост шақыруларын жинақтаңыз.
 
 Туғандық эскорлық хост шақырылымдарына айқын қол жеткізу параметрлері қажет, өйткені компилятор ашық емес эскор ISIs үшін таррақ қол жеткізу жиынтығын ала алмайды. Экспортқа шығарылған кіру нүктелерінде `escrow_*` құрамаларын шақыратын Wildcard параметрлерін қолданыңыз.
 
@@ -435,7 +435,7 @@ println(NativeEscrowPermissions.CAN_RESOLVE_ESCROW_DISPUTE)
 
 ### Swift және iOS {#swift-and-ios}
 
-Қауымдастық Swift SDK депозиттік нұсқауларды құрастырады Norito JSON Пайдалы жүктер. `NativeEscrowInstructionBuilders` тікелей немесе оған теңестірілген `IrohaSDK.build*Escrow*` қолданбаңыз бар болса көмекші `IrohaSDK` үлгісі.
+Swift SDK депозиттік нұсқауларды Norito JSON пайдалы жүктемелер ретінде жасайды. Тікелей `NativeEscrowInstructionBuilders` қолданыңыз немесе қолданбаңызда қазірдің өзінде `IrohaSDK` үлгісі бар болса, еквивалентті `IrohaSDK.build*Escrow*` көмекшісіне хабарлаңыз.
 
 ```swift
 import IrohaSwift
@@ -463,7 +463,7 @@ let resolve = try NativeEscrowInstructionBuilders.resolveEscrowDispute(
 )
 ```
 
-Аноним Swift құрылысшылар жоюшы тізімдерді, шығыс міндеттемелері тізімдерін, дәлелді сөздікті және ерікті `rootHint` Таласты шешу рұқсаты белгісі: `NativeEscrowPermissions.canResolveEscrowDispute`.
+Анонимді Swift жасаушылар жойылушы тізімдерді, шығыс міндеттемелер тізімін, дәлелді сөздікті және таңдаулы `rootHint` мәндерін алады. Тәртіп белгісі `NativeEscrowPermissions.canResolveEscrowDispute` ретінде қол жетімді.
 
 ## Сұрақтар мен оқиғалар {#queries-and-events}
 

@@ -6,18 +6,15 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# ማዋቀር Iroha {#configuring-iroha}
+# Iroha ን ማዋቀር {#configuring-iroha}
 
-አካባቢያዊ የእኩዮች ውቅር ተዘጋጅቷል TOML ፋይሎች. ይህ ሰንሰለት ላይ ከ የተለየ ነው
-ውቅር በ [`SetParameter`](/am/blockchain/instructions.md#setparameter)
-መመሪያዎች. የምርት ባህሪው በቅንብሮች ፋይል ውስጥ መገለጽ አለበት
-ወይም በሰንሰለት ላይ ያለው መለኪያ; የአካባቢ ተለዋዋጮች የፊት በር አይደሉም.
+የአካባቢያዊ የእኩዮች ውቅር በ TOML ፋይሎች ውስጥ ተዘጋጅቷል ። ይህ በ [ `SetParameter`](/am/blockchain/instructions.md#setparameter) መመሪያዎች ከተቀየረው በሰንሰለት ላይ ካለው ውቅር የተለየ ነው። የምርት ባህሪው በቅንጅት ፋይል ወይም በ ሰንሰለት ላይ ባለው መለኪያ መወከል አለበት ፣ የአከባቢ ተለዋዋጮች የባህር በር አይደሉም ።
 
 አጠቃቀም [`--config`](../irohad-cli#arg-config) CLI ወደ ውቅር ፋይል የሚወስደውን መንገድ ለመግለጽ አመክንዮ።
 
 ## አብነት {#template}
 
-ለእያንዳንዱ መለኪያ ዝርዝር መግለጫ ለማግኘት እባክዎን [መለኪያዎች](./params.md) ማጣቀሻ።
+የእያንዳንዱን መለኪያ ዝርዝር መግለጫ ለማግኘት [Parameters](./params.md) ን ይመልከቱ።
 
 ::: details `peer.template.toml`
 
@@ -27,10 +24,9 @@ translation_engine: nllb-200-ct2
 
 ## የመዋቅር ፋይሎችን ማዘጋጀት {#composing-configuration-files}
 
-TOML የኮንፊግሬሽን ፋይሎች ተጨማሪ `extends` ወደ ሌላ ቦታ የሚያመለክቱ መስኮች TOML ይህ አንድ መንገድ ወይም
-በርካታ መንገዶች:
+የ TOML ውቅር ፋይሎች ወደ ሌሎች TOML ፋይሎች የሚጠቁሙ ተጨማሪ `extends` መስክ አላቸው ። አንድ ነጠላ መንገድ ወይም በርካታ መንገዶች ሊሆኑ ይችላሉ-
 
-::: code-group
+::: የኮድ ቡድን
 
 ```toml [Single]
 extends = "single-path.toml"
@@ -42,10 +38,9 @@ extends = ["file1.toml", "file2.toml"]
 
 :::
 
-Iroha በ ውስጥ የተጠቀሱትን ሁሉንም ፋይሎች በተደጋጋሚ ያነባል `extends` በደረጃዎችም አደረግን ፡ ፡ በመጨረሻዎቹም (በመጽሐፉ) ላይ ይጋጫሉ ፡ ፡
-ለምሳሌ ያህል, ማንበብ ከሆነ `config.toml`:
+Iroha በ `extends` ውስጥ የተጠቀሱትን ሁሉንም ፋይሎች በቀጣይነት ያነባል እና ወደ ንብርብሮች ይደራጃል ፣ ይህም የመጨረሻዎቹ የቀድሞዎቹን በፓራሜትር ደረጃ ይደባለቃሉ ። ለምሳሌ ፣ የ `config.toml` ንባብ ከሆነ
 
-::: code-group
+::: የኮድ ቡድን
 
 ```toml [config.toml]
 extends = ["a.toml", "b.toml"]
@@ -66,9 +61,8 @@ max_content_len = 2048
 
 :::
 
-The የሚመጣው ውቅር `chain` ከ `a.toml`, `max_content_len` ከ `b.toml`, እና `torii.address` ከ
-`config.toml` (በላይ ተጽፏል `b.toml`).
+የተገኘው ውቅር ይሆናል `chain` ከ `a.toml`, `max_content_len` ከ `b.toml`, እና `torii.address` ከ `config.toml` (በላይ የተጻፈ) `b.toml`).
 
-## ችግር መፍታት {#troubleshooting}
+## ችግሮችን መፍታት {#troubleshooting}
 
-ማለፍ [`--trace-config`](../irohad-cli#arg-trace-config) CLI ኮንፊግሬሽኑ እንዴት እንደሚነበብ እና እንደሚመረመር ለመመልከት ባንዲራ።
+ኮንፊግሬሽኑ እንዴት እንደሚነበብ እና እንደሚመረመር አንድ ፍለጋ ለማየት [`--trace-config`](../irohad-cli#arg-trace-config) CLI ባንዲራውን ያለፍ ።

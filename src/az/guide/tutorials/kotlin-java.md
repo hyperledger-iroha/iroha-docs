@@ -45,7 +45,7 @@ dependencies {
 
 ## Kotlin və Java uyğunluğu {#kotlin-and-java-compatibility}
 
-İctimaiyyət API olan Kotlin- ilk növbədə və Java interop təmin edir JVM Eyni dəyişikliklər müvafiq `java/` İnkişaf. Android integrasiyaları Kotlin Yuxarıdakı əşyalar.
+İctimaiyyət API ilk növbədə Kotlin-dir və JVM zəng edənlərin ehtiyac duyduğu yerdə Java interopunu təmin edir. Müvafiq `java/` həyata keçirilməsində müvafiq dəyişikliklər əks olunur. Yeni Android inteqrasiyaları yuxarıda göstərilən Kotlin əşyalarla başlamaq lazımdır.
 
 Hamısı Kotlin modulları tətbiq etmək JDK 8 API tərtib zamanı uyğunluğu `-Xjdk-release=8`, baxmayaraq ki, qurma vasitə zəncirinin özü istifadə edir JDK 21. istifadə etməyin JDK 9+ APIs ilə SDK kod.
 

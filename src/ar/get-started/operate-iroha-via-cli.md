@@ -8,23 +8,21 @@ translation_engine: nllb-200-ct2
 
 # التشغيل Iroha 3 عبر CLI {#operate-iroha-3-via-cli}
 
-(الـ) `iroha` ثنائي هو عميل خط الأوامر ل Iroha 3. استخدمها للإستفسار
-بيانات الكتيب العام، تقديم المعاملات، وتفتيش نقاط نهاية المشغل.
+ثنائي `iroha` هو عميل خط الأوامر ل Iroha 3. استخدمه لاستعراض حالة دفتر التسجيل، وإرسال المعاملات، ومراقبة نقاط نهاية المشغل.
 
-## 1 - الشروط المسبقة {#_1-prerequisites}
+## 1 . الشروط المسبقة {#_1-prerequisites}
 
-أبدأ بشبكة محلية أولاً:
+أطلق شبكة محلية أولاً:
 
-- [إطلاق Iroha 3](./launch-iroha.md)
+- [الإطلاق Iroha 3](./launch-iroha.md)
 
-المثال أدناه يفترض تشكيل العميل الذي تم إنشاؤه من الشبكة المحلية
-التي تم إنشاؤها في [إطلاق Iroha 3](./launch-iroha.md):
+تفترض الأمثلة أدناه تشكيل العميل الذي تم إنشاؤه من الشبكة المحلية التي تم إنشائه في [إطلاق Iroha 3](./launch-iroha.md):
 
 ```bash
 ./localnet/client.toml
 ```
 
-## 2 . الأساسية CLI الإعداد {#_2-basic-cli-setup}
+## الإعداد الأساسي CLI {#_2-basic-cli-setup}
 
 أظهروا المساعدة من المستوى الأعلى:
 
@@ -32,64 +30,55 @@ translation_engine: nllb-200-ct2
 cargo run --bin iroha -- --config ./localnet/client.toml --help
 ```
 
-(الـ) CLI يتم تنظيمها في مجموعات القيادة العليا:
+يتم تنظيم CLI إلى مجموعات القيادة العليا:
 
 - `account` للوجهات المختصرة الموجهة نحو الحساب
 - `tx` للمساعدين على مستوى المعاملات
-- `ledger` للقراءة والكتابة
-- `ops` للتشخيص للمشغل
-- `app` للتطبيق API المساعدين
-- `contract` لتنفيذ العقود والدعوات
-- `tools` للمرافق التشخيصية والمطورة
-- `taira` لـ Taira و Nexus-تدفقات العمل المستهدفة
+- `ledger` للقراءة والكتابة على الكتيب
+- `ops` لتشخيص المشغلين
+- `app` للمساعدين في التطبيق API
+- `contract` لتنفيذ العقود والمكالمات
+- `tools` للمشروعات التشخيصية والمطورة
+- `taira` لعمليات العمل الموجهة إلى Taira و Nexus
 
-(الـ) `ledger` يحتوي المجموعة أيضا على مساعدي المعاملات الخاصة بالمنطقة مثل
-`ledger transaction`.
+يحتوي المجموعة `ledger` أيضا على مساعدي المعاملات الخاصة بالمنطقة مثل `ledger transaction`.
 
-الاستخدام `--output-format text` لإنتاج المستخدم القراءة من قبل الإنسان و `--machine`
-لنظام التلقائية الصارم.
+استخدام `--output-format text` لإنتاج المشغل القراءة من قبل الإنسان و `--machine` لنظام الأتمتة الصارم.
 
-## 3 - حاولي أن تظهر للجمهور Taira شبكة اختبار {#_3-try-the-public-taira-testnet}
+## جرب شبكة الاختبار العامة Taira {#_3-try-the-public-taira-testnet}
 
-يمكنك تجربة القراءة فقط Taira التحقق قبل تشغيل نظير محلي أو إنشاء
-هذه الأوامر تستخدم العامة Torii JSON الطرق ولا تنفق شبكة اختبار
-XOR.
+يمكنك تجربة التحققات Taira القراءة فقط قبل تشغيل نظير محلي أو إنشاء مؤشر. تستخدم هذه الأوامر طرق عامة Torii JSON ولا تنفق شبكة اختبار XOR.
 
-تحقق Taira الصحة:
+التحقق من صحة Taira:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 ```
 
-إدراج المناطق العامة في `universal` مساحة البيانات:
+إدراج النطاقات العامة في مساحة البيانات `universal`:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=10' \
   | jq -r '.items[].id'
 ```
 
-قم بإدراج بعض تعريفات الأصول وعرضها الحالي:
+إدراج بعض تعريفات الأصول وعرضها الحالي:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=10' \
   | jq -r '.items[] | [.id, .name, .mintable, .total_quantity] | @tsv'
 ```
 
-إذا كان لديك التيار `iroha` ثنائي، تشغيل Taira مساعد التشخيص:
+إذا كان لديك `iroha` الثنائي الحالي، تشغيل مساعدة التشخيص Taira:
 
 ```bash
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-الإبداع `taira.client.toml` فقط عندما تكون مستعدًا لاختبار الأوامر الموقعة
-انظروا [التواصل SORA Nexus البيانات](/ar/get-started/sora-nexus-dataspaces.md)
-لا تتمكنوا من كتابة أوامر ضد
-Taira حتى يتم تمويل الحساب من خلال أصول رسوم المياه.
+قم بإنشاء `taira.client.toml` فقط عندما تكون مستعدًا لاختبار الأوامر الموقعة. انظر [ربط إلى SORA Nexus مخزونات البيانات](/ar/get-started/sora-nexus-dataspaces.md) للحصول على التشغيل والفخار والتدفق القناري. لا تشغيل أوامر الكتابة ضد Taira حتى يتم تمويل الحساب من خلال أصل رسوم الصمام.
 
-مقابل أي رسوم Taira CLI على سبيل المثال، إنقاذ مساعدة الصنبور من
-[احصل على Testnet XOR على Taira](/ar/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)
-كما `taira_faucet_claim.py`, ثم تستحق الشبكة XOR أولاً:
+بالنسبة لأي مثال مدفوع الرسوم Taira CLI، قم بحفظ مساعدة الصنبورة من [حصل على شبكة اختبارية XOR على Taira](/ar/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) باسم `taira_faucet_claim.py` ، ثم اطلب أولاً شبكة اختباراتية XOR:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
@@ -103,8 +92,7 @@ iroha --config ./taira.client.toml ledger asset get \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-إذا عادت لغز المياه أو مسار المطالبة `502`, انتظروا و حاولوا مرة أخرى
-مشكلة توافر شبكة اختبار عامة، وليس إشارة لتجديد مفاتيح الحساب.
+إذا عادت لغز النوافذ أو مسار المطالبة `502` ، انتظر وتحاول مرة أخرى. هذه مشكلة توافر شبكة اختبار عامة، وليس إشارة لتجديد مفاتيح الحساب.
 
 بعد أن يكون الرصيد مرئيًا ، ضمنت بيانات الأصول الرسومية إلى كتابة:
 
@@ -116,18 +104,15 @@ iroha --config ./taira.client.toml \
   ledger transaction ping --msg "hello from faucet-funded taira"
 ```
 
-## 4 . الأوامر الأساسية {#_4-basic-ledger-commands}
+## 4 . الأوامر الأساسية لـ Ledger {#_4-basic-ledger-commands}
 
-قم بإدراج جميع الأسماء:
+إدراج جميع النطاقات:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 ```
 
-إنشاء النطاقات العادية يستخدم مخطط الاسم الإعلاني؛ `ledger
-domain` القيادة لا `register` -أعدّوا سرية سريّة
-`AliasSetupPlanRequestV1` نية `docs.universal` مع زوجك SDK أو
-خدمة الإدخال، ثم تخطيط وتطبيقها:
+إنشاء النطاقات العادية يستخدم مخطط مستعار إعلاني؛ لا توجد في `ledger domain` الأوامر الفرعية `register`. قم بإعداد نية خالية من السرية `AliasSetupPlanRequestV1` ل `docs.universal` مع خدمة SDK أو الإدخال ، ثم خطط وتطبيقها:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml \
@@ -139,10 +124,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml \
   app alias setup apply --plan-file ./docs-domain.plan.json
 ```
 
-الـ (Intent pins) يُمْكِنُ أَنْ يُسْتَقْبِلَ مساحة البيانات ID, حساب المالك القنوني، مدة الإيجار،
-المخطط يؤكد الحالة الفعلية ويرجع الدقة
-الذرة `EnsureAlias` خطة لتقديم. لا نسخ يدويا القيم الحراسية من شخص آخر
-الشبكة
+الرغبة تعقب مساحة بيانات ID, المخطط يُحقق من الحالة الحية ويرجع الدقة النووية بالضبط `EnsureAlias` لا تنسخ من أي شبكة أخرى قيم الحراسة
 
 أرسل صفقة بنغ بسيطة:
 
@@ -150,7 +132,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml \
 cargo run --bin iroha -- --config ./localnet/client.toml ledger transaction ping --msg "hello from iroha"
 ```
 
-اقرأ الحلقة الأخيرة أو الاشتراك في أحداث الحظر:
+قراءة حلقة حديثة أو الاشتراك في أحداث الحظر:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger blocks 1 --timeout 30s
@@ -165,13 +147,13 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi status
 ```
 
-صورة سريعة للتخفيف لكل مرحلة:
+لقطة تأخير لكل مرحلة:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi phases
 ```
 
-التوافر، الجمع، RBC التخلف، و VRF صورة سريعة:
+المتاحة، الجمع، RBC مخزون الخلفي، والتصوير الفوري VRF:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi telemetry
@@ -185,12 +167,12 @@ cargo run --bin iroha -- --config ./localnet/client.toml ops sumeragi params
 
 ## 6. إلى أين نذهب بعد ذلك؟ {#_6-where-to-go-next}
 
-- [SDK التعليمات](/ar/guide/tutorials/)
-- [Torii النقاط النهائية](/ar/reference/torii-endpoints.md)
-- [العمل مع Iroha الثنائيات](/ar/reference/binaries.md)
+- [SDK تعليمات](/ar/guide/tutorials/)
+- [نقاط نهاية Torii](/ar/reference/torii-endpoints.md)
+- [العمل مع ثنائيات Iroha](/ar/reference/binaries.md)
 - [CLI README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_cli/README.md)
 
-لإعادة إصدار صورة لمساعدة Markdown كاملة من التحقق المصدر، قم بتشغيل:
+لإعادة إصدار صورة لمساعدة Markdown الكاملة من التسجيل المصدر، قم بتشغيل:
 
 ```bash
 cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/CommandLineHelp.md

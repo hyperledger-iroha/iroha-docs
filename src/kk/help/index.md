@@ -10,6 +10,6 @@ translation_engine: nllb-200-ct2
 
 Кез-келген уақытта сіз Iroha туралы сұрақтарыңыз бар болуы мүмкін, оларды басқалармен егжей-тегжейлі талқылауды қалайсыз. Біздің қоғамдастықпен тез арада байланысудың үш жолы бар: Telegram, Discord және GitHub.
 
-Қоғамдастық пайдаланады [Телеграмма](https://t.me/hyperledgeriroha) және [LF Decentralized Trust Қақтығыстар](https://discord.gg/hyperledger) байланыс үшін. `iroha` Жобаға қатысты сұрақтар бойынша арна.
+Қоғамдастық қарым-қатынас үшін [Telegram](https://t.me/hyperledgeriroha) және [ LF Decentralized Trust Discord](https://discord.gg/hyperledger) пайдаланады. Жоба сұрақтары үшін `iroha` арнасын қолданыңыз.
 
-Ақыры, сіз [құру GitHub мәселесі](https://github.com/hyperledger-iroha/iroha/issues/new/choose), Құжаттарды жаңарту сұранысы, негізгі командаға ұсыныс немесе сіз тапқан қате.
+Ақыр соңында, сіз [ GitHub мәселесін ](https://github.com/hyperledger-iroha/iroha/issues/new/choose) жасай аласыз, бұл құжаттаманы жаңарту сұранысы болсын, негізгі командаға ұсыныс болсын немесе тапқан қатеңіз болсын.

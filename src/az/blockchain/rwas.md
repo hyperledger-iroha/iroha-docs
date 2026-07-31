@@ -120,7 +120,7 @@ curl -fsS https://taira.sora.org/openapi.json \
   | jq -r '.paths | keys[] | select(startswith("/v1/rwas") or startswith("/v1/explorer/rwas"))'
 ```
 
-Hələ heç bir ictimai lot qeydiyyatdan keçmədikdə boş `items` çıxışı gözlənilir.
+Hələ ictimai partiyalar qeydiyyatdan keçirilmədikdə boş `items` çıxışı gözlənilir. Qeydiyyat, köçürmə, saxlama, dondurma və ödəniş imzalanmış əməliyyatlardır.
 
 ## Bunu sınayın. {#try-it}
 

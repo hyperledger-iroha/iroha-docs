@@ -8,82 +8,66 @@ translation_engine: nllb-200-ct2
 
 # Iroha הוראות מיוחדות {#iroha-special-instructions}
 
-כשדיברנו על [איך? Iroha עובדת](/he/blockchain/iroha-explained), אנחנו
-אמר שזה Iroha הוראות מיוחדות הן הדרך היחידה לשנות את העולם.
-אז, איזה סוג של הוראות מיוחדות יש לנו?
-מדריכים ספציפיים לשפה בהוראה זו, כבר ראיתם כמה
-הוראות: `Register<Account>` ו `Mint<Numeric>`.
+כשדיברנו על [איך? Iroha פועלת](/he/blockchain/iroha-explained), אמרנו את זה Iroha הוראות מיוחדות הן הדרך היחידה לשנות את מדינת העולם. איזה סוג של הוראות מיוחדות יש לנו? אם קראתם את המדריכים ספציפיים לשפה אתה כבר ראית כמה הוראות: `Register<Account>` ו `Mint<Numeric>`.
 
-הנה רשימה מלאה של Iroha הוראות מיוחדות:
+הנה רשימה מלאה של הוראות מיוחדות Iroha:
 
-| הוראות                                               | תיאור                                     |
+|הוראות |תיאור |
 | --------------------------------------------------------- | ------------------------------------------------ |
-| [רשום/לא רשום](#un-register)                       | תגידי ID לאחידה חדשה ב-blockchain.    |
-| [מנט/ברן](#mint-burn)                                   | נכסים מספרים של מנט/שרוף או חוזרים מפעילים. |
-| [SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) | עדכון נתונים מטאטא של אובייקטים בבלוקצ'ין.               |
-| [SetParameter](#setparameter)                             | להגדיר פרמטר לכל שרשרת.                      |
-| [סיוע / ביטול](#grant-revoke)                             | לתת או להסיר רשיונות ותפקידים.            |
-| [העברה](#transfer)                                     | העברה בעלות או ערך נכס.               |
-| [סגרות אבטחה וביטוי נכסים](#native-escrow-and-asset-locks) | סגור נכסים מספרים בפיקוח של פרוטוקול.     |
-| [ExecuteTrigger](#executetrigger)                         | תפעיל את ההצלה.                                |
-| [רישום/הגדרות/התקדמות](#other-instructions)                 | רשום, להרחיב או לשפר את התנהגותו בזמן ההפעלה.        |
+| [רשום/לא רשום ](#un-register) |תן ID לישות חדשה ב-blockchain. |
+| [מנט/ברן ](#mint-burn) |נכסים מספריים מנט/שרוף או מפעילים חוזרים. |
+| [SetKeyValue/RemoveKeyValue ](#setkeyvalue-removekeyvalue) |עדכון נתונים מטאטא של אובייקטים בלשנה. |
+| [SetParameter](#setparameter) |להגדיר פרמטר רחב שרשרת. |
+| [סיוע / ביטול ](#grant-revoke) |לתת או להסיר רשיונות ותפקידים. |
+| [העברת ](#transfer) |העברה בעלות או ערך נכס. |
+| [אבטחה מקומית ומנעול נכסים ](#native-escrow-and-asset-locks) |סגור נכסים מספרים בפיקוח פרוטוקול. |
+| [ExecuteTrigger](#executetrigger) |תפעיל את התניעים.|
+| [רישום / מנהל / שיפור ](#other-instructions) |רשום, להרחיב או לשפר את ההתנהגות של זמן ההפעלה. |
 
-בואו נתחיל עם סיכום של Iroha הוראות מיוחדות; אילו מטרות כל אחת
-הוראות ניתן לבקש ואיזה הוראות זמינות לכל אחד
-אובייקט.
+בואו נתחיל עם סיכום של Iroha הוראות מיוחדות; אילו אובייקטים כל הוראה יכולה להתקשר אליהם ומה הוראות זמינות עבור כל אובייקט.
 
 ## סיכום {#summary}
 
-עבור כל הוראה, יש רשימה של אובייקטים בהם ההוראה
-ניתן להפעיל על. לדוגמה, וריאציות העברה מכסות אובייקטים של ספריה
-וכספי המספרים, בעוד שחיסול מכסה נכסים מספריים ומניע
-חוזרים.
+עבור כל הוראה, יש רשימה של אובייקטים שבהם ניתן להפעיל את ההוראה הזו. לדוגמה, גרסאות העברה מכסות אובייקטות ספרים גדולים וערכויות מספריות, בעוד מיטינג מכסה נכסים מספריים ומניע חוזרים.
 
-בהוראות מסוימות נדרש תיאור יעד.
-אתה מעביר נכסים, אתה תמיד צריך לציין לאיזה חשבון אתה
-מצד שני, כשאתה רשם משהו
-כל מה שאתה צריך הוא את האובייקט שרוצה לרשום.
+בהוראות מסוימות נדרש תיאור יעד. לדוגמה, אם אתה מעביר נכסים, עליך תמיד לציין לאיזה חשבון אתה מעביר אותם. מצד שני, כאשר אתה רשם משהו, כל מה שאתה צריך הוא האובייקט שאתה רוצה להירשם.
 
-| הוראות                                               | חפצים                                                                                                 | יעד          |
+|הוראות |אובייקטים |יעד |
 | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------- |
-| [EnsureAlias](#ensurealias)                               | דומיין רגיל, יישומים של חלל נתונים ושינויים של חשבונות                                                 |                      |
-| [רשום/לא רשום](#un-register)                       | חשבונות, הגדרות נכסים, NFTs, תפקידים, מפעילים, שווים; הסרת תחום                                |                      |
-| [מנט/ברן](#mint-burn)                                   | נכסים מספריים, חוזרים מפעילים                                                                     | חשבונות או גורמים |
-| [SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) | חפצים שיש להם [נתונים מטא](./metadata.md): תחומים, חשבונות, הגדרות נכסים, NFTs, RWAs, תפעילים |                      |
-| [SetParameter](#setparameter)                             | פרמטרים של שרשרת                                                                                        |                      |
-| [סיוע / ביטול](#grant-revoke)                             | [תפקידים, סימני אישור](/he/blockchain/permissions.md)                                                  | חשבונות או תפקידים    |
-| [העברה](#transfer)                                     | תחומים, הגדרות נכסים, נכסים מספריים, NFTs                                                        | חשבונות             |
-| [סגרות אבטחה וביטוי נכסים](#native-escrow-and-asset-locks) | סכומים של נכסים מספרים, נעולות נכסים, מחויבות בסכום אנונימית                                    | קונים, יעדים או מחלוקות |
-| [ExecuteTrigger](#executetrigger)                         | תפעילים                                                                                                |                      |
-| [רישום/הגדרות/התקדמות](#other-instructions)                 | רישומים, עומסים מועילים ספציפיים למבצעים, עדכונים למבצעי                                                     |                      |
+| [EnsureAlias](#ensurealias) |דומיין רגיל, נקודת כינוי של חלל נתונים, ונקודת כינוי חשבון |                      |
+| [רשום/לא רשום ](#un-register) |חשבונות, הגדרות נכסים, NFTs, תפקידים, גורמים להפעיל, שווים; הסרת תחום |                      |
+| [מנט/ברן ](#mint-burn) |נכסים מספריים, פעולות חוזרות.|חשבונות או גורמים .|
+| [SetKeyValue/RemoveKeyValue ](#setkeyvalue-removekeyvalue) |אובייקטים שיש להם [מטא נתונים](./metadata.md): תחומים, חשבונות, הגדרות נכסים, NFTs, RWAs, גורמים |                      |
+| [SetParameter](#setparameter) |פרמטרים של שרשרת |                      |
+| [סיוע / ביטול ](#grant-revoke) | [תפקידים, סימני אישור ](/he/blockchain/permissions.md) |חשבונות או תפקידים |
+| [העברת ](#transfer) |תחומים, הגדרות נכסים, נכסי מספרים, NFTs |חשבונות |
+| [אבטחה מקומית ומנעול נכסים ](#native-escrow-and-asset-locks) |מאבטחות נכסים מספריות, סגרות נכסים, מחויבות מאבטחות אנוניות |קונים, יעדים, או מחלוקות|
+| [ExecuteTrigger](#executetrigger) |תפעילים.|                      |
+| [רישום / מנהל / שיפור ](#other-instructions) |רישומים, מטענים מועילים ספציפיים למבצעים, עדכונים למבצע. |                      |
 
-יש גם דרך אחרת להסתכל ISI, במונחים של אובייקט ההדף
-הם נוגעים:
+יש גם דרך אחרת להסתכל על ISI, במונחים של אובייקט הספר הגדול שהם נוגעים בו:
 
-| מטרה           | הוראות                                                                                                 |
+|מטרה.|הוראות |
 | ---------------- | ------------------------------------------------------------------------------------------------------------ |
-| חשבון          | רישום/הפסקת הרישום של חשבונות, נכסים מקבלים, מתנתונים מעודכנים של חשבון, היתרות ושינויים בתפקידים    |
-| תחום           | לוודא הקמת תחום, ביטול רישום תחומים, העברת הבעלות על תחום, עדכון מטא נתונים של תחום                    |
-| הגדרה של נכסים | הגדרות של רישום/לא רישום, השתלטות על העברה, מעדכנת מטא נתונים                                         |
-| נכסים            | כמות מספרית של מנט/שריפה, כמות מספרת העברה                                                        |
-| סכום שכר           | לפתוח, לקבל, לסמן את התשלום שנשלח, לשחרר, לבטל, להתווכח, לפתור, להוריד או להסתיים רישומי שימור מקורי |
-| NFT              | רשום/לא רשום NFTs, העברת הבעלות, מעדכן מטא נתונים                                                |
-| RWA              | רשום הרבה, כמות העברה, אחסון/שחרור, קפוא/הקפוא, חיסול, מיזוג, מעדכנת נתונים מטאטא ופיקוח |
-| מפיץ          | רשום/לא רשום, חוזרים על תפעול מנט/שרוף, תפעול תפעול, מעודכנת נתונים מטאטא                 |
-| העולם            | רישום/הפסקת רישום עמיתים ותפקידים, הגדרת פרמטרים, העדכון של המפעיל                                    |
+|חשבון |רשום / לא רשום חשבונות, לקבלת נכסים, מעודכנת נתונים מטאטא של חשבון, היתר/ביטול רשימות תפקידים |
+|תחום |להבטיח הגדרת תחום, לא להירשם תחומים, להעביר את הבעלות על תחום, לעדכן מטא נתונים של תחום.|
+|הגדרה של נכסים |הגדרות של רישום/לא רישום, העברת הבעלות, מעדכנת נתונים מטא |
+|נכסים |כמות מספרית של מנט/שרוף, כמות מספרת העברה |
+|אבטחה |לפתוח, לקבל, לסמן את התשלום שנשלח, לשחרר, לבטל, להתווכח, לפתור, להוריד או להסתיים רישומי שימור מקורי.|
+|NFT |רשום/לא רשום NFTs, העברה של הבעלות, מעודדת מטא נתונים |
+|RWA |רשום הרבה, כמות העברה, אחסון/שחרור, קפוא/הקפוא, חיסול, מיזוג, מעדכנת נתונים מטאטא ותשלומים |
+|תפעיל |רשום/לא רשום, חוזרים על תפעול מנט/שרוף, תפעול תפעול, מעדכן מטא-מנתונים של תפעול |
+|העולם |רישום/הפסקת רישום עמיתים ותפקידים, הגדרת פרמטרים, העדכון של המפעיל |
 
-## CLI דוגמאות {#cli-examples}
+## CLI דוגמא {#cli-examples}
 
-הדוגמאות בדף זה מניחים שאתה פועל פקודות מהזרם העליון
-Iroha חלל עבודה מול הגדרת הלקוח המקומי המקובלת:
+הדוגמאות בעמוד זה מניחה שאתה פועל פקודות מהחלל העבודה Iroha מעלה נגד ההסדרת המקומית המקובלת של הלקוח:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml <command>
 ```
 
-אם אתה מתקין את `iroha` בינרי, שימוש
-`iroha --config ./defaults/client.toml` תחליף את בעלי המקומות
-למטה עם ערכי רשתך:
+אם אינסטלתם את `iroha` בינארי, השתמשו במקום `iroha --config ./defaults/client.toml`. תחליפו את בעלי המקומות למטה עם ערכים מהרשת שלכם:
 
 ```bash
 export ALICE="<ALICE_ACCOUNT_I105>"
@@ -93,10 +77,7 @@ export PEER_KEY="<BLS_PUBLIC_KEY_MULTIHASH>"
 export PEER_POP="<PROOF_OF_POSSESSION_HEX>"
 ```
 
-כאשר מכוונים לציבור Taira רשת מבחן, השתמש Taira הגדרת הלקוח.
-לפני שתפעיל דוגמאות משלמות, שמור את עוזר המנקה
-[קבל Testnet XOR על Taira](/he/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)
-כמו `taira_faucet_claim.py`, אז תביעה טסטנט XOR מהפלט:
+כאשר מכוונים לציבור Taira רשת מבחן, להשתמש ב Taira קונפיגירציה של הלקוח. לפני הפעלת דוגמאות בתשלום, שמור את עוזר המזרקה [קבל Testnet XOR על Taira](/he/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) כמו `taira_faucet_claim.py`, לאחר מכן תביעה טסטנט XOR מהפצצה:
 
 ```bash
 export TAIRA_ACCOUNT_ID="<TAIRA_I105_ACCOUNT_ID>"
@@ -110,8 +91,7 @@ iroha --config ./taira.client.toml ledger asset get \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-לאחר שהסכום המיועד למנקה נראה, תוסף את הסכום הגז הנדרש
-נתונים מטאטאליים כדי לכתוב עסקאות:
+לאחר שהסכום המיועד למנקה נראה, תלוף את הנתונים המתאימים של נכסי הגז הנדרשים כדי לכתוב עסקאות:
 
 ```bash
 printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
@@ -124,11 +104,7 @@ cargo run --bin iroha -- \
 
 ## EnsureAlias {#ensurealias}
 
-`EnsureAlias` הוא הנתיב הרגיל של שחרור ראשוני ליצירת תחומים
-הנתונים SNS הוא מחייב באופן הצהיר את מרחב הנתונים המדויק, בעל,
-אז יוצר או תיקון את כל המצב הנדרש אטומטית.
-השתמשו באותנטיקה `POST /v1/aliases/setup/plan` נקודת הסיום או התאמה
-CLI זרימת עבודה:
+`EnsureAlias` הוא הנתיב הרגיל של שחרור ראשוני ליצירת דומיינים SNS זה מחייב באופן הצהיר את מרחב הנתונים המדויק, הבעלים, תקופת השכירות, וביטחון הציטוט, ואז יוצר או תיקון את כל המצב הנדרש באופן אטומי. `POST /v1/aliases/setup/plan` נקודת סוף או התאמה CLI זרימת עבודה:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -140,75 +116,46 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   app alias setup apply --plan-file ./domain.plan.json
 ```
 
-כוונה ותוכנית הם ללא סודות, אבל ליישם סימנים של צעדים ומגיש
-עסקה רגילה עם החשבון המוגדר.
-שרשרת, סמכות, מעגל של מדינה חי, ומקבילות; לעולם לא להשתמש אחד על השני
-רשת.
+כוונה ותוכנית הם ללא סודות, אבל תחיל סימנים של צעדים ומגיש עסקאות רגילות עם החשבון המוגדר. תוכנית קשורה לשרשרת שלה, סמכות, מעגל מצב חי, ומוחלף; אף פעם לא להשתמש שוב ברשת אחרת.
 
 ## (לא) רשום {#un-register}
 
-רישום או לא רישום הם ההוראות המשמשות ID ל-
-יחידה חדשה ב-blockchain.
+רישום או לא רישום הם ההוראות המשמשות להעניק ID ליחידה חדשה ב-blockchain.
 
-כל מה שניתן להירשם הוא שניהם `Registrable` ו `Identifiable`,
-אבל לא כל מה ש `Identifiable` הוא `Registrable`. רוב הדברים הם
-רשום ישירות, אבל במקרים מסוימים ייצוג ב blockchain
-יש הרבה יותר נתונים. מסיבות אבטחה וביצועים, אנו משתמשים
-בונים של מבנים נתונים כאלה (למשל: `NewAccount`), ו- peer
-הרישום יש הוראה מיוחדת להוכיח כי הוא בעל.
-כל דבר שניתן להירשם יכול להיות גם לא רשום, אבל זה לא
-חוק קשה ומהיר.
+כל מה שניתן להירשם הוא גם `Registrable` וגם `Identifiable`, אבל לא כל מה שהוא `Identifiable` הוא `Registrable`. רוב הדברים נרשמים ישירות, אך במקרים מסוימים ייצוג ב-blockchain כולל נתונים רבים יותר. מסיבות אבטחה וביצועים, אנו משתמשים בבניינים עבור מבנים נתונים כאלה (למשל `NewAccount`), והרשמה של עמיתים יש הוראה מיוחדת להוכיח בעלות. ככלל, כל דבר שניתן לרשום יכול גם להיות לא רשום, אבל זו אינה חוק קשה ומהירה.
 
-אתה יכול לרשום חשבונות, הגדרות נכסים, NFTs, עמיתים, תפקידים ו
-תפעילים. השימוש בהקמת תחום `EnsureAlias`; החומרי `Register::Domain` מטען מועיל
-הוא מוגבל ל-genesis/bootstrap.
-`RegisterPeerWithPop`, יש בו הוכחה של רכוש למפתח הדמיון.
-[שמות של ישיבות](/he/reference/naming.md) כדי ללמוד על המגבלות
-לשים שם של יחידות.
+אתה יכול לרשום חשבונות, הגדרות נכסים, NFTs, עמיתים, תפקידים ומפעילים. שימוש בהקמת תחום `EnsureAlias`; החומרה `Register::Domain` מטען מועיל מיועד ל-genesis/bootstrap. השימוש ברישום עמיתים `RegisterPeerWithPop`, אשר יש בה הוכחה של רכוש עבור המפתח הדמיוני. [שמות של ישיבות](/he/reference/naming.md) כדי ללמוד על הגבלות שהוקמו על שמות יחידות.
 
-RWA הרבה יוצרים באמצעות הקדמון `RegisterRwa` ההוראה.
-הקוד הנוכחי לא חושף `UnregisterRwa` הוראות; שימוש
-`RedeemRwa` כדי לפרוש את הכמות המוצגת.
+סוגי RWA נוצרו באמצעות ההוראה המיוחדת `RegisterRwa`. הקוד הנוכחי אינו חושף הוראה `UnregisterRwa`; השתמש ב `RedeemRwa` כדי לפרוש את הכמות המוצגת.
 
-::: info
+::: מידע
 
-שימו לב כי תלוי איך אתה מחליט להגדיר את
-[בלוק הגנזה](/he/guide/configure/genesis.md) ב `genesis.json`
-(במיוחד, בין אם אתה כולל או לא רישום הרשות
-התהליך של רישום חשבון יכול להיות שונה מאוד.
-גנרל, אנחנו יכולים לסכם את זה ככה:
+ציין כי תלוי איך אתה מחליט להגדיר את [בלוק הגנזה](/he/guide/configure/genesis.md) ב `genesis.json` (במיוחד, בין אם אתה כולל או לא רישום של סימני אישור), תהליך הרישום של חשבון יכול להיות שונה מאוד. באופן כללי, ניתן לסכם את זה כך:
 
-- ב- _ציבורי_ ב-blockchain, כל אחד צריך להיות מסוגל לרשום חשבון.
-- ב- _פרטי_ ב-blockchain, יכול להיות תהליך ייחודי להירשם
-  חשבונות. _טיפוסי_ blockchain פרטי, כלומר blockchain ללא
-  כל תהליכים ייחודיים לרשום חשבונות, אתה צריך חשבון
-  רשום חשבון אחר.
+- ב-blockchain ציבורי, כל אחד צריך להיות מסוגל להירשם חשבון.
+- בבלוקצ'יין פרטי, יכול להיות תהליך ייחודי לרשום חשבונות. בבלוקץ'ין פרטי טיפוסי, כלומר בלוקצ'ין ללא כל תהליכים ייחודיים לרשום חשבונים, אתה צריך חשבון כדי לרשום חשבון אחר.
 
-אנחנו מדברים על ההבדלים האלה בפרטים כאשר
-[השוואה של בלוקשיינים פרטיים וציבוריים](/he/guide/configure/modes.md).
+אנחנו מתארים את ההבדלים האלה בפרטים כאשר אנו משווים [ blockchain פרטי וציבורי ](/he/guide/configure/modes.md).
 
 :::
 
-::: info
+::: מידע
 
-רישום עמית הוא כרגע הדרך היחידה להוסיף עמיתים שלא היו
-חלק מהחבר האמיני המקורי שהוקם לרשת.
+רישום שוויון הוא כיום הדרך היחידה להוסיף שווינים שלא היו חלק מהשוויון האמיני המקורי שהוקם לרשת.
 
 :::
 
-Refer לאחד מדריכי השפה ספציפיים להוביל אותך
-תהליך הרישום של אובייקטים ב-blockchain:
+קראו לאחד מדריכים ספציפיים לשפה כדי להוביל אתכם דרך תהליך הרישום של אובייקטים ב-blockchain:
 
-| שפה              | מדריך                                                                                                   |
+|שפה |מדריך |
 | --------------------- | ------------------------------------------------------------------------------------------------------- |
-| CLI                   | השתמש ב [Iroha CLI](/he/get-started/operate-iroha-via-cli.md) להקים תחומים ולרשום חשבונות ומשאבים. |
-| Rust                  | השתמש ב [Rust הוראות](/he/guide/tutorials/rust.md).                                                      |
-| Kotlinג'אווה           | השתמש ב [Kotlin/טוריאלי ג'אווה](/he/guide/tutorials/kotlin-java.md).                                        |
-| Python                | השתמש ב [Python הוראות](/he/guide/tutorials/python.md).                                                  |
-| JavaScript/TypeScript | השתמש ב [JavaScript/TypeScript הוראות](/he/guide/tutorials/javascript.md).                               |
+|CLI |השתמש [Iroha CLI](/he/get-started/operate-iroha-via-cli.md) להגדיר דומיינים ולרשום חשבונות ומשאבים. |
+|Rust |השתמשו בתרגיל [Rust ](/he/guide/tutorials/rust.md). |
+|Kotlin/Java |השתמש ב- [Kotlin/Java tutorial](/he/guide/tutorials/kotlin-java.md). |
+|Python |השתמשו בתרגיל [Python ](/he/guide/tutorials/python.md). |
+|JavaScript/TypeScript |השתמשו בהוראה [JavaScript/TypeScript ](/he/guide/tutorials/javascript.md).|
 
-תכנן ותתחיל את הגדרת הדומיין הרגילה, ואז לא רשום את הדומיין כאשר הוא אינו
-נדרש זמן רב יותר:
+תכנן ותחיל את הגדרת הדומיין הרגילה, ולאחר מכן לא רשום את הדומיין כאשר הוא כבר לא נחוץ:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -223,7 +170,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger domain unregister --id docs.universal
 ```
 
-חשבונות רשומים ובלתי רשומים:
+חשבונות רשומים או לא רשומים:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -233,7 +180,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger account unregister --id "$BOB"
 ```
 
-הגדרות נכסים להירשם ולא להירשם:
+הגדרות נכסים רשומות ולא רשומות:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -247,8 +194,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger asset definition unregister --id "$ASSET_DEF"
 ```
 
-רישום וחיסום NFTs. NFT רישום קורא את התוכן שלו JSON מ
-כניסה סטנדרטית:
+רישום ולא רשום NFTs. רישום NFT קורא את התוכן שלו JSON מתוך הכניסה סטנדרטית:
 
 ```bash
 printf '{"kind":"badge","level":"intro"}\n' |
@@ -259,7 +205,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger nft unregister --id 'badge$docs.universal'
 ```
 
-תפקידי רישום וחיסום:
+תפקידים להירשם וללא לרשום:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -269,9 +215,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger role unregister --id operators
 ```
 
-רישום ומסיר רישום תפעילים.
-הוספת IVM בייטקוד או רשימה של הוראות סדרתית. דוגמה זו בונה
-א `Log` הוראות עם CLI ומניע את זה לרשימת ההדק:
+רישום וחיסול תפעילים. הרישום של התפעיל זקוק לקוד בייט IVM או לרשימת הוראות מסורתית. דוגמה זו מבננת הוראה `Log` עם CLI ומניעה אותה לתוך הרישום של תפעיל:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml -o \
@@ -287,8 +231,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger trigger unregister --id hourly_cleanup
 ```
 
-להירשם וללא להירשם עמיתים BLS מפתח ו PoP עם `kagami`
-אם אין לך אותם כבר:
+רשום או לא רשום עמיתים. ליצור את המפתח BLS ו PoP עם `kagami` אם עדיין אין לך אותם:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
@@ -300,31 +243,26 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger peer unregister --key "$PEER_KEY"
 ```
 
-## מנט/ברן {#mint-burn}
+## מינט/ברן {#mint-burn}
 
-ממתק ושרוף יכולים להתייחס לאספקי מספרים ומפעילים עם מוגבל
-מספר חוזרים. נכסים מסוימים יכולים להיות מכריזים כבלתי נזורים, כלומר
-כי הם יכולים להידפוק רק פעם אחת לאחר הרישום.
+חיתוך ושרוף יכולים להצביע על נכסים מספריים ומפעילים עם מספר מוגבל של חוזרים. נכסים מסוימים עשויים להיות מכריזים כלא-חיתופים, כלומר הם יכולים להיות חיתוכים רק פעם אחת לאחר הרישום.
 
-נכסים מופעלים על חשבון מסוים, בדרך כלל זה שהרשם
-סכומים של נכסים הם לא שליליים, כך שאתה יכול
-אף פעם לא `$-1.0` של נכס או לשרוף סכום שלילי ולקבל מנטה.
+נכסים מופעלים על חשבון מסוים, בדרך כלל זה שהרשם את הנכס מלכתחילה. כמויות הנכסים הן לא שליליות, כך שאתה אף פעם לא יכול להיות `$-1.0` של נכס או לשרוף סכום שלילי ולקבל מנטה.
 
-פנה לאחד מדריכים ספציפיים לשפה כדי להוביל אותך
-תהליך גיוס נכסים ב-blockchain:
+קראו לאחד מדריכים ספציפיים לשפה כדי להוביל אתכם דרך תהליך גילוי נכסים ב-blockchain:
 
 - [CLI](/he/get-started/operate-iroha-via-cli.md)
 - [Rust](/he/guide/tutorials/rust.md)
-- [Kotlinג'אווה](/he/guide/tutorials/kotlin-java.md)
+- [Kotlin/Java](/he/guide/tutorials/kotlin-java.md)
 - [Python](/he/guide/tutorials/python.md)
 - [JavaScript/TypeScript](/he/guide/tutorials/javascript.md)
 
-הנה דוגמאות של נכסים שרופים:
+הנה דוגמאות של נכסים שרפים:
 
 - [CLI](/he/get-started/operate-iroha-via-cli.md)
 - [Rust](/he/guide/tutorials/rust.md)
 
-נכסים מספרים של מטבעות ומשרפים:
+נכסים מספריים של מנט וברון:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -352,16 +290,9 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ## העברה {#transfer}
 
-העברות מעבירות בעלות או ערך בין חשבונות.
-וריאנטים מכילים תחומים, הגדרות נכסים, נכסים מספריים, NFTs. RWA
-תנועת כמות משתמשת `TransferRwa` ו `ForceTransferRwa`
-הוראות המתוארות ב: [נכסים בעולם האמיתי](/he/blockchain/rwas.md).
+העברות מעבירות את הבעלות או הערך בין חשבונות. גרסאות העברה גנריות מכילות דומנים, הגדרות נכסים, נכסים מספריים ו NFTs. תנועת הכמות RWA משתמשת בהוראות המخصصות `TransferRwa` ו`ForceTransferRwa` המתוארות ב [ נכסי העולם האמיתי ](/he/blockchain/rwas.md).
 
-כדי לעשות זאת, יש לתת חשבון
-[רשות להעביר נכסים](/he/reference/permissions.md). קראו
-דוגמה על איך להעביר נכסים עם
-[CLI](/he/get-started/operate-iroha-via-cli.md) או
-[Rust](/he/guide/tutorials/rust.md).
+כדי לעשות זאת, יש לתת חשבון [רשות להעביר נכסים](/he/reference/permissions.md). ראו דוגמה על איך להעביר נכסים עם [CLI](/he/get-started/operate-iroha-via-cli.md) או [Rust](/he/guide/tutorials/rust.md).
 
 העברת נכסים מספרים:
 
@@ -374,7 +305,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --quantity 25
 ```
 
-תחום העברה, הגדרה של נכס, NFT בעלות:
+תחום העברה, הגדרה של נכס וחיינות NFT:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -389,36 +320,19 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ## אבטחה מקומית ונעלי נכסים {#native-escrow-and-asset-locks}
 
-הוראות אבטחה מקומית לחגור נכסים מספריים בפרוטוקול המנהל בספר
-הם משמשים לפתרון בסגנון שוק, נכס גנרי
-מנעולים, וזרמי אבטחה מוגן אנונימיים.
+הוראות אבטחת מקומית מנעילות נכסים מספריים בפיקוח פרוטוקול מנהל בספר. הם משמשים לפיצוי סגנון שוק, מנעולים נכסים גנטיים, וזרמי אבטחה מוגן אנונימיים.
 
-השימוש בשכנות הבטיחות `OpenAssetEscrow`, `AcceptAssetEscrow`,
-`MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`,
-`OpenEscrowDispute`, ו `ResolveEscrowDispute`. שימוש במנעולים נכסים גנטיים
-`OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, ו
-`ExpireAssetLock`. הסוכנות הבטוחית אנונימית משקפת את מחזור החיים של השוק
-`OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`,
-`MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`,
-`CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, ו
-`ResolveAnonymousEscrowDispute`.
+השימוש בשכנות הבנקאות `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, ו `ResolveEscrowDispute`. שימוש במנעולים נכסים כלליים `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, ו `ExpireAssetLock`. הבטחון אנונימי משקף את מחזור החיים של השוק עם `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, ו `ResolveAnonymousEscrowDispute`.
 
-אלה ISIs אין להם כרגע מדרגה ראשונה CLI פקודות. SDK
-בונים או מטענים שימושיים של הוראות סדרתיות, וראו
-[אסיטום נטיב](/he/blockchain/escrow.md) לפרטים על מחזור החיים,
-הזכויות, שאלות, אירועים ו Rust דוגמאות.
+אלה ISIs אין כיום פקודות של מדרגה ראשונה CLI. השתמשו בפיתוחים דפוס SDK או עומסים מועילים של הוראות סדרתיות, וראו [ נטיף נכס Escrow ](/he/blockchain/escrow.md) עבור פרטים מחזור החיים, אישורות, שאילויות, אירועים ו Rust דוגמאות .
 
 ## סיוע / ביטול {#grant-revoke}
 
-הוראות הסכום והביטול משמשות לחישוב
-[רשיונות ותפקידים](permissions.md).
+ההוראות על היתר והביטול משמשות עבור רשיונות חשבון [ ותפקידים ](permissions.md).
 
-`Grant` הוא משמש כדי להעניק באופן קבוע למשתמש או רשות אחת, או
-קבוצה של רשיונות ("רול").
-הוצא באמצעות `Revoke` ההוראות הללו צריכות להיות
-יש להשתמש בזהירות.
+`Grant` משמשת כדי להעניק באופן קבוע למשתמש אישור אחד או קבוצה של רשיונות (רשימה). תפקידים ורשיונות שניתנו יכולים להימחק רק באמצעות ההוראה `Revoke`.
 
-להעניק ולבטל תפקיד בחשבון:
+להעניק או לבטל תפקיד בחשבון:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -428,8 +342,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger account role revoke --id "$BOB" --role operators
 ```
 
-תורם וביטול סימני אישור. פקודות אישור קוראים אישור
-אובייקט מהכניסה סטנדרטית:
+סימני אישור וביטול. פקודות אישור קוראים אובייקט אישור מהכניסה סטנדרטית:
 
 ```bash
 printf '{"name":"CanSetParameters","payload":null}\n' |
@@ -441,7 +354,7 @@ printf '{"name":"CanSetParameters","payload":null}\n' |
   ledger account permission revoke --id "$BOB"
 ```
 
-להעניק ולבטל רשיונות על תפקיד:
+להעניק או לבטל רשיונות על תפקיד:
 
 ```bash
 printf '{"name":"CanRegisterDomain","payload":null}\n' |
@@ -455,11 +368,9 @@ printf '{"name":"CanRegisterDomain","payload":null}\n' |
 
 ## `SetKeyValue`/`RemoveKeyValue` {#setkeyvalue-removekeyvalue}
 
-ההוראות האלה מעודכנים אובייקט [נתונים מטא](/he/blockchain/metadata.md). שימוש
-`SetKeyValue` להוסיף או להחליף כתיבת מטא נתונים, `RemoveKeyValue` ל
-למחוק אחד.
+הוראות אלה מעודכנות אובייקט [מטא נתונים](/he/blockchain/metadata.md). השתמשו ב- `SetKeyValue` כדי להוסיף או להחליף כניסה של מטא נתונים ו- `RemoveKeyValue` למחוק אחת.
 
-נתונים מטאטא `set` פקודות לקרוא את JSON ערך מהכניסה סטנדרטית:
+פקודות מטאדאטה `set` קוראים את הערך JSON מהכניסות סטנדרטיות:
 
 ```bash
 printf '"production"\n' |
@@ -470,8 +381,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger domain meta remove --id docs.universal --key environment
 ```
 
-אותו דפוס זמין לחשבונות, הגדרות נכסים, NFTs, RWAs,
-ומניעים:
+דפוס זהה זמין עבור חשבונות, הגדרות נכסים, NFTs, RWAs, ומניעים:
 
 ```bash
 printf '{"display_name":"Alice"}\n' |
@@ -493,11 +403,9 @@ printf '{"owner":"ops"}\n' |
 
 ## `SetParameter` {#setparameter}
 
-`SetParameter` שינויים בפרמטרים בכל שרשרת שנחשפו על ידי הנתונים הפעילים
-מודל ומבצע.
+`SetParameter` משנה פרמטרים בכל שרשרת המחשבים על ידי מודל הנתונים הפעיל והפעיל.
 
-להגדיר פרמטר על ידי העברת פרמטר אחד JSON אובייקט על סטנדרט
-הכניסות:
+להגדיר פרמטר על ידי העברת אובייקט פרמטר אחד JSON בהכנסת סטנדרטית:
 
 ```bash
 printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
@@ -507,13 +415,9 @@ printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
 
 ## `ExecuteTrigger` {#executetrigger}
 
-ההוראה הזו משמשת כדי לבצע [תפעילים](./triggers.md).
+ההוראה הזו משמשת להפעיל [ניצולים ](./triggers.md).
 
-ה- CLI יכול לרשום תפעילים ולהתממן לאירועים של ביצוע תפעיל
-ישירות. `execute trigger` פקודה, כך
-להגיש מדריך `ExecuteTrigger` הוראות, ליצור סדרה
-`InstructionBox` עם SDK או כלים מבצעים ומעבירים את JSON
-מסלול דרך `ledger transaction stdin`:
+ה- CLI יכול לרשום תפעילים ולהתגייס לאירועים של ביצוע תפעיל ישירות. הוא אינו מספק פקודה `execute trigger` מודבקת, כך כדי להגיש הוראה ידנית `ExecuteTrigger`. ליצור סדרה `InstructionBox` עם כלי SDK או מכשיר מבצע, ולמלא את מערך JSON המוצא דרך `ledger transaction stdin`:
 
 ```bash
 printf '["<BASE64_EXECUTE_TRIGGER_INSTRUCTION_BOX>"]\n' |
@@ -526,23 +430,20 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ## הוראות אחרות {#other-instructions}
 
-Iroha גם חושף הוראות רמה נמוכה יותר עבור זמן הפעלה והפעיל
-שילוב:
+Iroha חושף גם הוראות רמה נמוכה יותר עבור אינטגרציה של זמן הפעלה ושל מבצען:
 
-- `Log`: להוציא רישום ליומן במהלך ביצוע
-- `CustomInstruction`: להעביר ספציפי למבצע JSON מטענים מועילים
-- `Upgrade`: להפעיל עדכון של מבצע
+- `Log`: להוציא רישום ליומן במהלך ביצועו
+- `CustomInstruction`: לשאת מטענים מועילים ספציפיים למבצע JSON
+- `Upgrade`: להפעיל מעדכן של מבצע
 
-להגיש `Log` הוראות עם עוזר פינג:
+להגיש הוראה `Log` עם עוזר הפינג:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger transaction ping --log-level INFO --msg "hello from docs"
 ```
 
-להגיש הוראה למפעיל אישית כסיריאלי `InstructionBox`. ה-
-צורת המטען הפועל היא ספציפית למבצע, אז ליצור את ההוראה עם
-התאמה SDK או כלים של מבצע:
+הגיש הוראה אישית למפעיל כתיבת סדרתית `InstructionBox`. צורה של המטען מועיל היא ספציפית למפעיל, אז ליצור את ההוראה עם התאמה SDK או כלי המפעיל:
 
 ```bash
 printf '["<BASE64_CUSTOM_INSTRUCTION_BOX>"]\n' |
@@ -550,7 +451,7 @@ printf '["<BASE64_CUSTOM_INSTRUCTION_BOX>"]\n' |
   ledger transaction stdin
 ```
 
-העדכון של המפעיל מ- IVM תיק קוד בייט:
+העדכון של המפעיל מתוך קבוצה של קוד בייט IVM מסומנת:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \

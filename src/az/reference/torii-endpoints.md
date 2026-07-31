@@ -314,7 +314,7 @@ Bir son nöqtə qəbul edərkən və ya yazılanları qaytararkən Norito birba�
 
 ## Telemetriya Profilləri {#telemetry-profiles}
 
-Son nöqtələrin görünüşü telemetri parametrlərindən asılıdır.
+Son nöqtələrin görünüşü telemetriya parametrlərindən asılıdır. Upstream sənədləri beş profil səviyyələrini təsvir edir:
 
 |Profil |`/status` |`/metrics` |İnkişafçıların marşrutları |
 | --- | --- | --- | --- |
