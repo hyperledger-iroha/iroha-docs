@@ -468,7 +468,7 @@ N_{\ell+1} =
 )
 $$
 
-O rastreamento registra o bit `b_l`, irmão `s_l`, nó de entrada `x_l` e nodo de saída `x_{l+1}` em todos os níveis. Com a convenção do ramo do código:
+O rastreamento registra o pedaço `b_l`, irmãos `s_l`, nó de entrada `x_l`, e nó de saída `x_{l+1}` Em todos os níveis. Com a convenção do ramo do código:
 
 $$
 (\operatorname{left}_\ell,\operatorname{right}_\ell)=

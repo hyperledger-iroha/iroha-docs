@@ -438,7 +438,7 @@ LOG_LEVEL=INFO
 
 ### `logger.filter` {#param-logger-filter}
 
-[`logger.level`](#param-logger-level)-ийн нэмэлтээр сайжруулсан тэмдэглэлийн филтрүүд.
+[ `logger.level`](#param-logger-level)-ийн нэмэлт, боловсруулсан номын сангийн филтрүүд. Зорилгоор бүртгэх үгний түвшинг өөрчлөх боломжийг олгодог.
 
 <param-table type=string env=LOG_FILTER>
 <template #type>

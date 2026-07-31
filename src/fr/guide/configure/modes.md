@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 Iroha peut être exécuté dans une variété de configurations. En tant qu'administrateur de votre propre réseau, vous décidez quel exécuteur et la politique d'autorisation déterminent si une transaction est acceptée.
 
-Les profils communs sont les réseaux privés autorisés et les réseaux publics plus ouverts.
+Les profils communs sont les réseaux privés autorisés et les réseaux publics plus ouverts. Les deux sont configurés par l'état de génèse et la politique d'exécuteur, pas par des binaires de nœuds séparés.
 
 Ci-dessous, nous présentons les principales différences entre ces deux cas d'utilisation.
 
@@ -52,7 +52,7 @@ Les validateurs d'autorisation par défaut couvrent le cas d'utilisation typique
 
 ::: informations
 
-Les modes public et privé sont des profils de politique plutôt que des binaires de nœuds distincts.
+Les modes publics et privés sont des profils de politique plutôt que des nœuds binaires séparés. Examinez les autorisations d'exécution et de génèse que vous envoyez avant d'exécuter un réseau ouvert.
 
 :::
 

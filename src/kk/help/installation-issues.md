@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /help/installation-issues.md
-translation_source_hash: 2f548e96f8a72ea83a8b39fabf7f3713ad7b8df0eac627ed2138cbd9d3f7ea36
+translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -100,14 +100,14 @@ $ type rustc
 $ type cargo
 ```
 
-Егер сіз `rustup which *` орындаған кезде көргеннен басқа жерлерді көрсеңіз, онда проблемаңыз бар.
+Егер бұл `rustup which *` орындалған кезде көргеніңізден басқа жерлерге сілтеме берсе, онда проблемаңыз бар. Мынадай аты-жөндерді қосу жеткілікті емес екенін ескеріңіз:
 
 ```bash
 $ alias rustc "~/.rustup/toolchains/stable-*/bin/rustc"
 $ alias cargo "~/.rustup/toolchains/stable-*/bin/cargo"
 ```
 
-Себебі ішкі логика бұзылуы мүмкін. Қалай десеңіз, қапшықтың аты-жөндеріңізді қайта орнату керек.
+Ішкі логика әрдайым бұзылуы мүмкін, қашан да сіз қоқыс атауларыңызды қалай дайындасаңыз да.
 
 Ең қарапайым әдіс - қолданбаған нұсқаларды алып тастау.
 

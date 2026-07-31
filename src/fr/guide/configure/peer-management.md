@@ -20,7 +20,7 @@ Dans un contexte bancaire, permettre à tout le monde de se joindre à leur temp
 
 ### Enregistrement des pairs {#registering-peers}
 
-Pour ajouter un peer au réseau, il faut l'enregistrer manuellement.
+Pour ajouter un peer au réseau, il doit être enregistré manuellement. Discutons des étapes à prendre pour compléter ce processus.
 
 #### 1. Accordez aux utilisateurs des autorisations {#_1-grant-the-user-permissions}
 
@@ -46,7 +46,7 @@ Pour simplifier le processus, vous pouvez demander à l'administrateur du résea
 
 #### 3. soumettre l'instruction {#_3-submit-the-instruction}
 
-Une fois que votre paire est en cours d'exécution, vous devriez soumettre l'instruction de registre des pairs.
+Une fois que votre coéquipier a commencé à courir, vous devez soumettre l'instruction par rapport au registre. Le coéquipier passera par le processus de poignée de main et commencera à discuter avec le réseau.
 
 ::: astuce
 
@@ -58,4 +58,4 @@ La soumission d'une instruction d'enregistrement par les pairs ne permet pas (et
 
 Pour des raisons de sécurité, ce processus est unilatéral. Le réseau arrive à un consensus qu'il veut supprimer un paire, mais le paire lui-même ne sait pas grand-chose sur la raison pour laquelle personne ne parle à lui.
 
-Dans la plupart des cas, si vous voulez annuler l'enregistrement d'un coéquipier, c'est parce qu'il s'agit d'une faute byzantine.
+Dans la plupart des cas, si vous voulez annuler l'enregistrement d'un coéquipier, vous devez le faire parce que c'est une faute byzantine. Le simple fait de " fantasmer " ce paire rend la vie du malveillant acteur sur le réseau plus difficile.

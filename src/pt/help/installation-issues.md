@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /help/installation-issues.md
-translation_source_hash: 2f548e96f8a72ea83a8b39fabf7f3713ad7b8df0eac627ed2138cbd9d3f7ea36
+translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -100,14 +100,14 @@ $ type rustc
 $ type cargo
 ```
 
-Se estes apontam para outros locais que não o que você viu ao executar `rustup which *`, então você tem um problema.
+Se estes apontam para outros locais que não o que você viu ao executar `rustup which *`, então tem um problema. Observe que adicionar pseudónimos como estes não é suficiente:
 
 ```bash
 $ alias rustc "~/.rustup/toolchains/stable-*/bin/rustc"
 $ alias cargo "~/.rustup/toolchains/stable-*/bin/cargo"
 ```
 
-porque há uma lógica interna que pode romper, independentemente de como reorganizar os seus alias shell.
+A lógica interna ainda pode quebrar, independentemente da forma como arranjas os teus pseudónimos.
 
 A solução mais simples seria remover as versões que não usam.
 

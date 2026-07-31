@@ -112,16 +112,16 @@ $ type cargo
 ```
 
 If these point to locations other than the one you saw when running
-`rustup which *`, then you have a problem. Note that it’s not enough to
-just
+`rustup which *`, then you have a problem. Note that adding aliases like these
+is not enough:
 
 ```bash
 $ alias rustc "~/.rustup/toolchains/stable-*/bin/rustc"
 $ alias cargo "~/.rustup/toolchains/stable-*/bin/cargo"
 ```
 
-because there is an internal logic that could break, regardless of how you
-re-arrange your shell aliases.
+Internal logic can still break regardless of how you arrange your shell
+aliases.
 
 The simplest solution would be to remove the versions that you don’t use.
 

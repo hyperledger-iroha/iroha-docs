@@ -45,7 +45,7 @@ Las definiciones de activos soportan estos modos de mintabilidad:
 |El modo |El significado .|
 | ------------ | ----------------------------------------------------------------- |
 |`Infinitely` |El activo puede ser acuñado y quemado en repetidas ocasiones.|
-|`Once` |Se puede acuñar una vez y luego quemar.|
+|`Once` |Token de suministro fijo. Se puede acuñar una vez y luego quemar.|
 |`Not` |Token de suministro fijo que se puede quemar, pero no volver a acuñar.|
 |`Limited(n)` |La acuñación se permite para un número limitado de operaciones adicionales. |
 

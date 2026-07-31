@@ -88,7 +88,7 @@ description = "Route team domains to the private dataspace"
 
 ## 2. データの領域における資産を登録する {#_2-register-assets-in-the-dataspace}
 
-ローカルトークン料金のパターンについては,教程は `usage#billing.team` を使用します.
+ユーザが個人データ領域内に保持する資産定義をアプリケーション論理に転送する前に登録します. ローカルトークン料金パターンについては,教程は `usage#billing.team` を使用します.
 
 ```text
 <asset-name>#<domain>.<dataspace>
@@ -173,7 +173,7 @@ iroha --config ./operator.client.toml \
 
 ## 4. FHE で電話・メールを個人的に登録する {#_4-register-phone-and-email-privately-with-fhe}
 
-FHE がサポートするフローは,アカウントのイラスト,トランザクションメタデータ,世界状態から原始識別子を保持します.
+電話番号とメールアドレスを 公共の偽名ではなく 個人識別子として使用する.FHE サポートされたフローは,アカウントの偽名,トランザクションメタデータ,および世界状態から原始識別子を保持します:
 
 1. 事業者は電話および電子メールのために [RAM-LFE/FHE プログラムポリシー](/ja/blockchain/ram-lfe.md)を登録します.
 2. 事業者は, `phone#team` と `email#team` のようなアクティブ識別子ポリシーを登録する.

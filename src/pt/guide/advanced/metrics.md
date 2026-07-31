@@ -70,7 +70,7 @@ telemetry_profile = "full"
 
 ## Banda de desempenho {#performance-bands}
 
-Utilize estas bandas para uma execução observada em milissegundos de transmissão-alvo `Y` TPS e orçamento de latência `L`. Execute a carga de trabalho durante tempo suficiente para incluir aquecimento, estado estável e pelo menos um período de expectativa de pico de carga.
+Usar estas bandas para uma corrida observada na capacidade de transmissão alvo `Y` TPS e orçamento de atraso `L` milissegundos. Execute a carga de trabalho durante tempo suficiente para incluir aquecimento, estado estável e pelo menos um período de expectativa de pico de carga.
 
 |Banda .|Condições |Que significa ?|
 | --- | --- | --- |

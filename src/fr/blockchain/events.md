@@ -53,4 +53,4 @@ Les événements temporels sont émis lorsque la vue de l'état mondial est prê
 
 ## Événements d'exécution déclencheurs {#trigger-execution-events}
 
-Les événements d'exécution de déclencheur sont émis lorsque l'instruction [`ExecuteTrigger`](./instructions.md#executetrigger) est exécutée.
+Les événements d'exécution du déclencheur sont émis lorsque l'instruction [ `ExecuteTrigger`](./instructions.md#executetrigger) est exécutée. Les événements de termination du déclencheur sont émis après la fin d'une action de déclenchement.

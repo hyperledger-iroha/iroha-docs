@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/escrow.md
-translation_source_hash: a324c3a299c0184246f4f6d7bd672ec4351574920577bafc4592d5ffdeaf34ff
+translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e217bc6ac9
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -20,7 +20,7 @@ Bozorda to'lash uchun mahalliy depozitdan foydalaning, Aitai uslubidagi zaryadda
 |`AssetEscrowRecord` |Transparent raqamli aktivlar garov yoki qulf yozuvlari. |
 |`AnonymousAssetEscrowRecord` |Nulllashtiruvchilar, majburiyatlar va dalillar bilan ta'minlangan himoya qilingan depozit qaydnomasi. |
 |Himoya hisobi |Deterministik protokol hisobvarag'i ID, depozit ID va aktivni aniqlashdan kelib chiqdi. |
-|Koʻrinib turibdiki , |Hisobvaraqlar, hukmlar, xabarlar, saqlash manifestlari yoki boshqa zanjirdan tashqaridagi dalillar hash. Dalil yukining o'zi depozitda saqlanmaydi. |
+|Koʻrinib turibdiki , |Dalil hashlari fakturalar, hukmlar, xabarlar, saqlash manifestlari yoki zanjirdan tashqari boshqa dalillarni aniqlashi mumkin. Dalil yukining o'zi depozitda saqlanmaydi. |
 
 Transparent yozuvlarda sotuvchi, ixtiyoriy xaridor, aktivlar ta'rifi, umumiy miqdor, saqlov hisob raqami, hayot davomiyligi holati, xulq-atvor turi, qoldiq miqdori, ixtiyoriy chiqarilish vakolatlari, ixtiyorli muddati tugagan vaqt belgilari, dalillar hashlari, vaqt belgilari va ixtiyoriy yechim ma'lumotlari mavjud.
 

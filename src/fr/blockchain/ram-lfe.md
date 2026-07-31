@@ -95,7 +95,7 @@ RAM-LFE utilise des haches séparées par domaine. Les formules ci-dessous nomme
 
 ### L'engagement politique {#policy-commitment}
 
-L'engagement politique lie les paramètres publics et le secret de résolution cachée à un backend.
+L'engagement politique lie les paramètres publics et le secret de résolution cachée à un backend. Tout d'abord, le secret est commis séparément:
 
 $$
 C_s = H(D_{\mathrm{secret}} \parallel s)
@@ -480,7 +480,7 @@ Le profil actuel RAM-FHE est le suivant:
 |`encrypted_input_mode` |`resolver_canonicalized_envelope_v1` |
 |`min_ciphertext_modulus` | \(2^{52}\) |
 
-L'entrée de texte clair présentée à Torii est cryptée dans la même enveloppe BFV avant l'exécution.
+L'entrée de texte clair présentée à Torii est cryptée dans la même enveloppe BFV avant l'exécution. La semence déterministe de ce chiffrement du côté serveur est:
 
 $$
 H(

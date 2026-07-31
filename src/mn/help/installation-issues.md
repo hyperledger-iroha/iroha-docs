@@ -1,7 +1,7 @@
 ---
 translation_locale: mn
 translation_source: /help/installation-issues.md
-translation_source_hash: 2f548e96f8a72ea83a8b39fabf7f3713ad7b8df0eac627ed2138cbd9d3f7ea36
+translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -100,14 +100,14 @@ $ type rustc
 $ type cargo
 ```
 
-Хэрэв эдгээр нь `rustup which *` гүйлгээ хийхдээ харагдсангаас өөр байршил руу чиглэсэн бол танд асуудал байна.
+Хэрэв эдгээр нь `rustup which *` гүйлгээ хийхдээ харагдсангаас өөр байршил руу чиглэсэн бол танд асуудал байна. Иймэрхүү нууц нэрүүдийг нэмэх нь хангалтгүй гэдгийг анхаарна уу:
 
 ```bash
 $ alias rustc "~/.rustup/toolchains/stable-*/bin/rustc"
 $ alias cargo "~/.rustup/toolchains/stable-*/bin/cargo"
 ```
 
-Учир нь шэлийн нууцыг хэрхэн өөрчлөхөөс үл хамааран зөрчиж болно гэсэн дотоод логик байдаг.
+Үндэсний логик нь ямар ч хэлбэрээр эвдэрч болно.
 
 Хамгийн энгийн шийдэл бол ашиглаагүй хувилбаруудыг устгах явдал юм.
 

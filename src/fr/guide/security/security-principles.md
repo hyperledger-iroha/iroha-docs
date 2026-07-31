@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # Principes de sécurité {#security-principles}
 
-Les organisations et les utilisateurs individuels doivent collaborer pour assurer une interaction sécurisée avec les installations Iroha.
+Les organisations et les utilisateurs individuels doivent travailler ensemble pour assurer une interaction sécurisée avec les installations Iroha. Ce sujet explique les principes fondamentaux de cette coopération.
 
 ## Principes généraux de sécurité {#general-security-principles}
 
@@ -44,7 +44,7 @@ Les organisations et les utilisateurs individuels doivent collaborer pour assure
 
     - Apprenez à connaître les techniques courantes de phishing pour reconnaître et éviter les e-mails, liens et demandes de renseignements personnels suspects.
 
-    - Créer un client de messagerie pour signer et vérifier les signatures de tous les courriels reçus.
+    - Configurer un client de messagerie pour signer et vérifier les signatures de tous les courriels reçus. Bien qu'il soit possible de se faire passer pour l'adresse de l'expéditeur et même de faire semblant d'être une banque, il n'est pas possible de falsifier une signature.
 
 3. Protection des renseignements personnels:
 
@@ -58,7 +58,7 @@ Les organisations et les utilisateurs individuels doivent collaborer pour assure
 
 1. Définir des politiques et procédures de sécurité claires:
 
-    - Développer des politiques et protocoles de sécurité bien définis pour tous les employés qui traitent de données sensibles.
+    - Développer des politiques et des protocoles de sécurité bien définis pour tous les employés qui traitent de données sensibles. Formation approfondie des employés à respecter ces lignes directrices, réduisant ainsi le risque d'actions négligentes.
 
     - Veiller à ce que les politiques de sécurité soient accessibles à tous les employés et qu'elles soient régulièrement examinées et mises à jour pour tenir compte des changements dans le paysage de la sécurité.
 
@@ -66,13 +66,13 @@ Les organisations et les utilisateurs individuels doivent collaborer pour assure
 
 2. Cultiver la prise de conscience des employés:
 
-    - Éduquer les employés sur les mesures de sécurité des données et des opérations.
+    - Éduquer les employés sur les mesures de sécurité des données et des opérations. Une prise de conscience accrue et une formation complète sont essentielles pour renforcer la sécurité organisationnelle.
 
     - Encouragez les employés à signaler rapidement toute activité suspecte ou toute préoccupation en matière de sécurité.
 
 3. Protéger les infrastructures physiques:
 
-    - Restriction de l'accès physique aux serveurs et à l'infrastructure.
+    - Restreindre l'accès physique aux serveurs et à l'infrastructure Mettre en place des contrôles d'accès qui autorisent uniquement le personnel autorisé à pénétrer dans les zones restreintes.
 
     - Veiller à ce que les mesures de contrôle d'accès soient régulièrement réexaminées et mises à jour afin de s'aligner sur les besoins en matière de sécurité en évolution.
 

@@ -60,14 +60,14 @@ Les flux de travail communs RWA comprennent:
 |Opération |Le comportement mis en œuvre |
 | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
 |`RegisterRwa` |Créer un lot généré par ID dans un domaine; l'autorité de transaction devient `owned_by`. |
-|`TransferRwa` |Un transfert complet peut changer `owned_by`; un transfert partiel crée un lot d'enfants généré. |
+|`TransferRwa` |Transférer la quantité à un autre compte. Un transfert complet peut changer `owned_by`; un transfert partiel crée un lot d'enfants généré. |
 |`HoldRwa` |Quantité de réserve: Il faut un contrôleur configuré et `hold_enabled`. |
 |`ReleaseRwa` |Supprimer la quantité retenue. Il faut un contrôleur configuré et `hold_enabled`. |
 |`FreezeRwa` |Bloquer les opérations du propriétaire ordinaire. Il faut un contrôleur configuré et `freeze_enabled`. |
 |`UnfreezeRwa` |Réactiver les opérations du propriétaire ordinaire. Requiert un contrôleur configuré et `freeze_enabled`. |
 |`RedeemRwa` |Il est nécessaire de retirer la quantité, le propriétaire ou un contrôleur et `redeem_enabled`. |
 |`MergeRwas` |Combiner les quantités provenant des lots parents avec le même domaine et spécification en un lot enfant généré. |
-|`ForceTransferRwa` | Mettez la quantité à travers un flux de contrôleur. `force_transfer_enabled`.                    |
+|`ForceTransferRwa` |Déplacez la quantité à travers un flux de contrôle. Il faut un contrôleur configuré et `force_transfer_enabled`. |
 |`SetRwaControls` |Remplacez la politique de contrôle du lot, demande le propriétaire ou un contrôleur.|
 |`SetKeyValue<Rwa>` / `RemoveKeyValue<Rwa>` |Mettre à jour les métadonnées du lot. Requiert le propriétaire ou un contrôleur; les lots gelés nécessitent un contrôleur. |
 
@@ -120,7 +120,7 @@ curl -fsS https://taira.sora.org/openapi.json \
   | jq -r '.paths | keys[] | select(startswith("/v1/rwas") or startswith("/v1/explorer/rwas"))'
 ```
 
-Une sortie vide `items` est attendue lorsqu'aucun lot public n'a encore été enregistré.
+Une sortie vide `items` est attendue lorsqu'aucun lot public n'est encore enregistré. Les transactions d'enregistrement, de transfert, de détention, de congélation et de rachat sont signées.
 
 ## Essayez ! {#try-it}
 
@@ -394,7 +394,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### Retraite du crédit carbone {#carbon-credit-retirement}
 
-Utilisez le remboursement pour retirer les crédits après leur réclamation.
+Utilisez le rachat pour retirer les crédits après leur réclamation. Les métadonnées indiquent le certificat ou la preuve de registre hors chaîne:
 
 ```python
 carbon_lot_id = (

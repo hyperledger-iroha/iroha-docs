@@ -18,7 +18,7 @@ Les requêtes sont de petits objets comme des instructions qui, lorsqu'ils sont 
 
 Ce n'est pas nécessairement le seul type d'information disponible sur le réseau, mais c'est le seul type de renseignements qui est garanti pour être accessible sur tous les réseaux.
 
-Pour chaque déploiement de Iroha, il pourrait y avoir d'autres informations disponibles. C'est entièrement à eux de décider s'ils veulent ou non allouer la puissance de traitement pour suivre le travail au lieu de l'utiliser pour effectuer le travail réel.
+Pour chaque déploiement de Iroha, il peut y avoir d'autres informations disponibles Par exemple, la disponibilité des données de télémétrie dépend des administrateurs du réseau. C'est entièrement à eux de décider s'ils veulent ou non allouer une puissance de traitement pour suivre le travail au lieu de l'utiliser pour le faire le travail réel. En revanche, certaines fonctions sont toujours requises, par exemple l'accès au solde de votre compte.
 
 Les résultats des requêtes peuvent être triés [](#sorting), [paginés](#pagination) et [filtrés](#filters) par les pairs à la fois. Le tri est effectué lexicographiquement sur les touches de métadonnées. Le filtrage peut être effectué sur une variété de principes, allant des domaines spécifiques (masques individuels de filtre d'adresse IP) aux méthodes de sous-chaîne telles que `begins_with` combinées à l'aide d'opérations logiques.
 

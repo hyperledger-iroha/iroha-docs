@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /help/installation-issues.md
-translation_source_hash: 2f548e96f8a72ea83a8b39fabf7f3713ad7b8df0eac627ed2138cbd9d3f7ea36
+translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -100,14 +100,14 @@ $ type rustc
 $ type cargo
 ```
 
-Əgər bunlar `rustup which *` işləyərkən gördüyünüzdən başqa yerlərə göstərirsə, onda bir probleminiz var.
+Əgər bunlar `rustup which *` işləyərkən gördüyünüz yerdən başqa yerlərə göstərirsə, onda probleminiz var. Qeyd edək ki, bu kimi adları əlavə etmək kifayət deyil:
 
 ```bash
 $ alias rustc "~/.rustup/toolchains/stable-*/bin/rustc"
 $ alias cargo "~/.rustup/toolchains/stable-*/bin/cargo"
 ```
 
-Çünki şell adlarını necə yenidən düzəltdiyindən asılı olmayaraq, pozula biləcək daxili bir məntiq var.
+Daxili məntiqi hələ də pozula bilər, qarışıq adlarını necə düzəltdiyindən asılı olmayaraq.
 
 Ən sadə həll, istifadə etmədiyiniz versiyaları çıxarmaqdır.
 

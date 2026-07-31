@@ -56,7 +56,7 @@ L'hôte utilise `fastpq-lane-balanced` comme paramètre canonique pour ces lots.
 
 ## Modèle mathématique {#mathematical-model}
 
-Cette section décrit l'arithmétique mise en œuvre par le testeur et vérificateur Rust actuel.
+Cette section décrit l'arithmétique mise en œuvre par le testeur et vérificateur Rust actuel. Toutes les opérations de terrain ci-dessous sont sur le champ principal Goldilocks:
 
 $$
 F = \mathbb{F}_p,\qquad p = 2^{64} - 2^{32} + 1
@@ -135,7 +135,7 @@ $$
 \pmod p
 $$
 
-L'implémentation ajoute ou soustrait conditionnellement `p` jusqu'à ce que le résultat soit canonique.
+La mise en œuvre ajoute ou soustrait conditionnellement `p` jusqu'à ce que le résultat soit canonique. Les nombres entiers signés, tels que les deltas d'équilibre, sont intégrés par:
 
 $$
 \operatorname{field}(x)=x\bmod p,\qquad 0\leq\operatorname{field}(x)<p
@@ -533,7 +533,7 @@ où `D_c` est `fastpq:v1:trace_commitment`.
 
 ### AIR Composition {#air-composition}
 
-La valeur de composition V1 AIR est une combinaison linéaire de résidus locaux à la rangée.
+La valeur de composition V1 AIR est une combinaison linéaire de résidus locaux en rangée. Les échantillons de transcriptions présentent deux défis:
 
 $$
 \alpha_0,\alpha_1 \in F

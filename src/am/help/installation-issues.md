@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /help/installation-issues.md
-translation_source_hash: 2f548e96f8a72ea83a8b39fabf7f3713ad7b8df0eac627ed2138cbd9d3f7ea36
+translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -100,14 +100,14 @@ $ type rustc
 $ type cargo
 ```
 
-እነዚህ `rustup which *` እየሮጠ ሳለ ያየውን ሌላ ቦታ የሚያመለክቱ ከሆነ, ከዚያም አንድ ችግር አለህ.
+እነዚህ `rustup which *` በሚሄድበት ጊዜ ያየኸው ሌላ ቦታን የሚያመለክቱ ከሆነ, ችግር አለህ. እንደነዚህ ያሉ ቅጽል ስሞችን ማከል በቂ እንዳልሆነ ልብ በሉ:
 
 ```bash
 $ alias rustc "~/.rustup/toolchains/stable-*/bin/rustc"
 $ alias cargo "~/.rustup/toolchains/stable-*/bin/cargo"
 ```
 
-ምክንያቱም የሻል ስያሜዎችዎን እንዴት እንደሚቀይሩ ምንም ይሁን ምን ሊሰበር የሚችል ውስጣዊ ሎጂክ አለ ።
+ውስጣዊ አመክንዮ አሁንም ቢሆን የሻል ስሞችዎን እንዴት እንዳደራጁ ምንም ይሁን ምን ሊሰበር ይችላል.
 
 በጣም ቀላልው መፍትሔ እርስዎ የማይጠቀሙባቸውን ስሪቶች ማስወገድ ነው።
 

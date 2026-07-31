@@ -123,7 +123,7 @@ let pqSdk = IrohaSDK(
 let signingKey = try pqSdk.generateSigningKey()
 ```
 
-L'enum `SigningAlgorithm` comprend actuellement l'Ed25519, secp256k1, les variantes normales et petites BLS, les ensembles de paramètres ML-DSA, GOST R 34.10-2012, et SM2.
+Les États membres `SigningAlgorithm` enum comprend actuellement l'édition 25519, secp256k1, BLS les variantes normales et petites, ML-DSA, GOST R 34.10-2012 ensembles de paramètres, et SM2. Le support du pont natif est requis en dehors de la voie de commodité Ed25519.
 
 ## Connectez {#connect}
 

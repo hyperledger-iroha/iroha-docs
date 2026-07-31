@@ -8,4 +8,4 @@ translation_engine: nllb-200-ct2
 
 # CSD/RTGS холболт Концептын баталгаа  {#csd-rtgs-linkages-proof-of-concept}
 
-Энэ баримт бичигт CSD/RTGS холболт PoC-ийн хэрэгжилтийг Iroha дамжуулан тайлбарлах болно. Энэ нь Азийн хөгжлийн банк, Fujitsu-тай хамтран хийсэн төсөл юм. Бусад оролцогчид R3 Corda, Hyperledger Cactus (Cacti), Hyperledger Fabric болон бусад олон алдартай блокчейн шийдлийг ашигласан. 
+Энэ баримт бичигт CSD/RTGS холболт PoC-ийн хэрэгжилтийг Iroha дамжуулан тайлбарлах болно. Энэ нь Азийн хөгжлийн банк, Fujitsu-тай хамтран хийсэн төсөл юм. Бусад оролцогчид R3 Corda, Hyperledger Cactus (Cacti), Hyperledger Fabric болон бусад олон алдартай блокчейн шийдлийг ашигласан.

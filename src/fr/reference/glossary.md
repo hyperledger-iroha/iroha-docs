@@ -36,9 +36,9 @@ Vous trouverez ici les définitions de toutes les entités Iroha liées.
 
 ## Les comptes de la blockchain {#blockchain-ledgers}
 
-Les livres de blockchain sont des systèmes numériques d'enregistrement qui utilisent la technologie blockchain pour enregistrer les documents financiers.
+Les livres principaux de la blockchain sont des systèmes numériques qui utilisent la technologie blockchain pour enregistrer les documents financiers. Ils sont nommés d'après des livres à l'ancienne qui ont été utilisés pour les dossiers financiers tels que les prix, les nouvelles, et des informations sur les transactions.
 
-À l'époque médiévale, les livres de livre étaient ouverts à la vue du public et à la vérification de l'exactitude.
+À l'époque médiévale, les livres étaient ouverts au public pour la consultation et la vérification de l'exactitude. Cette idée se reflète dans les systèmes basés sur une blockchain qui peuvent vérifier la validité des données stockées.
 
 ## Les pairs {#peer}
 
@@ -58,7 +58,7 @@ Des informations supplémentaires sur les actifs sont disponibles ici [](/fr/blo
 
 Ces actifs peuvent être facilement échangés contre d'autres actifs du même type, car ils sont interchangeables.
 
-Par exemple, toutes les unités d'une même monnaie sont égales en valeur et peuvent être utilisées pour acheter des biens.
+À titre d'exemple, toutes les unités de la même monnaie sont égales en valeur et peuvent être utilisées pour acheter des biens. En règle générale, les actifs fungibles ont une apparence identique, à l'exception de l'usure des billets et pièces.
 
 ### Actifs non volatils {#non-fungible-assets}
 

@@ -71,7 +71,7 @@ PY
 
 ## Теркәлеше һәм рөхсәттәре {#registration-and-permissions}
 
-Аккаунттар [`Register` һәм `Unregister`](/ba/blockchain/instructions.md#un-register) инструкциялары менән теркәлгән һәм теркәлмәгән.
+Хисаптар теркәлгән һәм теркәлмәгән дөйөм [`Register` һәм `Unregister`](/ba/blockchain/instructions.md#un-register) күрһәтмәләре. Актив үтәү ваҡытын раҫлаусы иҫәп яҙмаларын кем булдыра ала, һәм ниндәй рөхсәт билдәләре йәки ролдәр талап ителә икәнен хәл итә.
 
 Теркәлгәндән һуң иҫәб:
 

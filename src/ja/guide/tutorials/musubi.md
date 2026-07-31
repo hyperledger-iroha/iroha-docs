@@ -36,7 +36,7 @@ namespace/package@version
 
 名前空間セグメントは, Kotodama dapp契約のニックネームで使用されるサフィックスに一致する:
 
-|パッケージID |関連契約形|
+|パッケージID |関連契約の名前形|
 | ------------------------- | ---------------------------- |
 |`universal/math`|`router::universal`|
 |`dex.universal/swap-core`|`router::dex.universal`|

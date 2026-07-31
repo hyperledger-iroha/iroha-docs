@@ -30,7 +30,7 @@ Commençons par un résumé de Iroha Instructions spéciales; quels objets chaqu
 
 Pour chaque instruction, il y a une liste d'objets sur lesquels cette instruction peut être exécutée. Par exemple, les variantes de transfert couvrent des objets du registre propriétaire et des actifs numériques, tandis que le montage couvre les actifs numérique et déclenche les répétitions.
 
-Certaines instructions exigent qu'une destination soit spécifiée. Par exemple, si vous transférez des actifs, vous devez toujours préciser à quel compte vous les transferez.
+Certaines instructions exigent que l'on spécifie une destination. Par exemple, si vous transférez des actifs, il est toujours nécessaire de préciser à quel compte vous les transférez. D'un autre côté, lorsque vous enregistrez quelque chose, tout ce dont vous avez besoin est l'objet que vous voulez enregistrer.
 
 |Instruction |Objets |Destination |
 | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------- |

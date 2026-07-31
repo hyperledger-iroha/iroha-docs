@@ -39,7 +39,7 @@ Voir [Metadata et choix de stockage du registre](/fr/guide/configure/metadata-an
 
 ## Autorisations par modèle {#permissions-by-model}
 
-- Un rôle nommé d'après un emploi ou un service est plus facile à vérifier qu'un rôle désigné d'après une large capacité technique.
+- Les rôles de conception sont axés sur les opérations commerciales, pas sur la commodité de mise en œuvre. Un rôle nommé d'après un emploi ou un service est plus facile à vérifier qu'un rôle nommé par une large capacité technique.
 - Exploiter les jetons d'autorisation au plus petit objet qui satisfait le flux de travail.
 - Traitez les autorisations pour le montage, la combustion, la gestion par les pairs, les modifications de l'exécuteur, la gestion des déclencheurs et la mutation de métadonnées comme des autorisations à fort impact.
 - Ajouter des procédures explicites de révocation et de rotation pour les autorisations temporaires.

@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /help/installation-issues.md
-translation_source_hash: 2f548e96f8a72ea83a8b39fabf7f3713ad7b8df0eac627ed2138cbd9d3f7ea36
+translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -100,14 +100,14 @@ $ type rustc
 $ type cargo
 ```
 
-Әгәр был һеҙ күрһәткән урындарҙан башҡа урынға йүнәлтһә `rustup which *`, тимәк, һеҙҙең проблема бар.
+Әгәр был күрһәтелгән урындар һеҙ эшләгәндә күргәнегеҙҙән башҡа урынға йүнәлтә икән `rustup which *`, һеҙҙә проблема бар. Иҫегеҙгә төшөрәбеҙ , бындай ҡушаматтар өҫтәү генә етмәй:
 
 ```bash
 $ alias rustc "~/.rustup/toolchains/stable-*/bin/rustc"
 $ alias cargo "~/.rustup/toolchains/stable-*/bin/cargo"
 ```
 
-сөнки эске логика боҙолорға мөмкин, нисек кенә үҙгәртеп ҡуймағыҙ ҙа.
+Эске логика һаман да боҙолорға мөмкин, шулай уҡ һеҙ нисек кенә ҡушаматтарығыҙҙы урынлаштырмаһын.
 
 Иң ябай ысул - ҡулланылмаған версияларҙы алып ташлау.
 

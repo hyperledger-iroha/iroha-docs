@@ -35,7 +35,7 @@ Le même pipeline Sumeragi est utilisé à la fois dans les déploiements autori
 
 Les validateurs signent uniquement les données qu'ils peuvent reproduire localement. Avant de voter, un validateur vérifie que la proposition appartient à la chaîne, à la hauteur et à la vue attendues; que les signatures et les limites des transactions sont valables; que le routage de voie et la validation de l'exécuteur sont déterministiques; Si le résultat local est différent, le validateur rejette la proposition au lieu de voter pour elle.
 
-Les votes sont des petits messages de consensus signés. Ils se réfèrent au bloc proposé, à la hauteur, à la vue et à l'identité du validateur. Le certificat est la preuve durable qu'un nombre suffisant de validateurs ont observé le même résultat pour le même bloc.
+Les votes sont des petits messages de consensus signés. Ils font référence au bloc proposé, à la hauteur, à la vue et à l'identité du validateur. Les collectionneurs regroupent ces votes en un certificat de quorum ou un certificat d'engagement Le certificat est la preuve durable qu'un nombre suffisant de validateurs ont observé le même résultat pour le même bloc.
 
 ### Quorum, collecteurs et observateurs {#quorum-collectors-and-observers}
 

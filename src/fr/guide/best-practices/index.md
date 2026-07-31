@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # Les meilleures pratiques {#best-practices}
 
-Cette section recueille des lignes directrices orientées vers la production pour les applications et les réseaux Iroha.
+La présente section recueille des lignes directrices orientées vers la production pour les applications et réseaux Iroha. Elle est organisée par la décision que vous devez prendre, pas par la caractéristique qui arrive à la mettre en œuvre.
 
 Utilisez-le comme une liste de contrôle avant une répétition partagée du testnet, un lancement de production ou une sortie majeure pour le client.
 

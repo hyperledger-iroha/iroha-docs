@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/escrow.md
-translation_source_hash: a324c3a299c0184246f4f6d7bd672ec4351574920577bafc4592d5ffdeaf34ff
+translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e217bc6ac9
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -20,7 +20,7 @@ Native escrow は,数値資産の保管メカニズムです. アプリケーシ
 |`AssetEscrowRecord`|透明な数値資産保管またはロック記録. |
 |`AnonymousAssetEscrowRecord`|破棄者,コミットメント,証明書による保証記録が保護されています.|
 |保管口座|チェーン ID,エスクロー ID,および資産定義から派生した決定的プロトコル口座. |
-|証拠はハッシュだ|請求書,判定,メッセージ,保管マニフェスト,または他の連鎖外証拠のハッシュ.証拠用荷物はエスクロー記録に保存されません. |
+|証拠はハッシュだ|証拠ハッシュは,請求書,判定,メッセージ,保管マニフェスト,または他のチェーン外の証拠を特定することができます.証拠用荷物はエスクロー記録に保存されません. |
 
 透明な記録には売り手,オプション購入者,資産定義,総額,保管口座,ライフサイクルの状態,行動種類,残る金額,オプションのリリース権限,オプションの有効期限スタンプ,証拠ハッシュ,タイムスタンプ,およびオプションの解決詳細が含まれています.
 
@@ -486,4 +486,4 @@ let resolve = try NativeEscrowInstructionBuilders.resolveEscrowDispute(
 - 大きな請求書,チャットログ,判断,または監査バンドをエスクロー記録の外に保管し,証拠としてハッシュを添付します.
 - アプリケーションでは安定した `EscrowId` 派生を使用するので,リトープで同じオファーのデュピート・エスクローを作成することはできません.
 - `CanResolveEscrowDispute`は,紛争手続きを運営する口座や役割のみに与えられる.
-- Iroha は保管とライフサイクルの移行を記録し,フィアットまたは外部決済線路を単独で検証しない.
+- 申請方針としてオフチェーン決済検証を扱う. Iroha は保管とライフサイクルの移行を記録し,フィアットまたは外部決済ラインを単独で検証しません.

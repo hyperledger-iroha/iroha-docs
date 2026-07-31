@@ -18,7 +18,7 @@ Il est facile de faire une clé publique à partir d'une clé privée, mais le c
 
 La cryptographie de la clé publique permet aux individus d'envoyer des messages et des données chiffrés qui ne peuvent être déchiffrés que par le destinataire prévu possédant sa clé privée correspondante. En d'autres termes, la clé publique fonctionne comme un verrou, et la clé privée sert de clé unique réelle qui déverrouille les données cryptées.
 
-Ce processus de cryptage garantit non seulement la vie privée et la confidentialité des informations sensibles, mais établit également l'authenticité de l'expéditeur. Cette signature sert de timbre d'approbation numérique, permettant de vérifier l'identité de l'expéditeur et la validité des données transférées.
+Ce processus de cryptage garantit non seulement l'intimité et la confidentialité des renseignements sensibles, mais établit aussi les authenticité de l'expéditeur. En combinant la clé privée de l'expéditeur et la clé publique, une signature numérique est créée. Cette signature sert de timbre d'approbation numérique, vérifiant l'identité de l'expéditeur et la validité des données transférées. Quiconque possède votre clé publique peut vérifier que la personne qui a initié la transaction a utilisé votre clé privée.
 
 ## Les clés du côté du client {#keys-on-the-client-side}
 
@@ -26,11 +26,11 @@ Chaque transaction doit être signée par une autorité de compte. La clé priv�
 
 ::: avertissement
 
-Tous les clients sont différents, mais la configuration du client en texte brut ne convient qu'au développement et aux réseaux de test contrôlés.
+Tous les clients sont différents, mais la configuration du client en texte brut ne convient qu'au développement et aux réseaux de test contrôlés. Les intégrations de production doivent utiliser un gestionnaire secret, un stockage de clés supporté par le matériel ou une autre limite de signature vérifiée.
 
 :::
 
-L'enregistrement d'un nouveau compte implique la génération de matériel du contrôleur, tel qu'une paire de clés Ed25519, et la soumission de la partie publique au réseau.
+L'enregistrement d'un nouveau compte implique la génération de matériel du contrôleur, tel qu'une paire de clés Ed25519. et de soumettre la partie publique au réseau. Les opérations ultérieures effectuées à partir de ce compte doivent être signées par la clé privée correspondante ou par la politique du contrôleur de compte configuré.
 
 Pour que la cryptographie des clés publiques fonctionne efficacement, évitez de réutiliser les clés lorsque vous devez spécifier une nouvelle clé. Bien qu'il n'y ait rien qui vous empêche de le faire, les clefs publiques sont publiques, ce qui signifie que si un attaquant voit la même clé publique utilisée, Ils savent que les clés privées sont identiques.
 

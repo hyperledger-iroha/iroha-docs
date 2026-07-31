@@ -104,7 +104,7 @@ cargo run --bin iroha -- \
 
 ## EnsureAlias {#ensurealias}
 
-`EnsureAlias` es el camino ordinario para la creación de dominios y sus contratos de arrendamiento SNS. Se obliga declarativamente el espacio de datos exacto, propietario, término del arrendamiento y guardia de cotizaciones, Luego crea o repara todo el estado requerido de forma atómica. Utilice el punto final `POST /v1/aliases/setup/plan` autenticado o el flujo de trabajo correspondiente CLI:
+`EnsureAlias` es el camino ordinario para la creación de dominios y sus contratos de arrendamiento SNS. Se obliga declarativamente el espacio de datos exacto, propietario, término del arrendamiento y guardia de cotizaciones, Luego crea o repara todo el estado requerido de forma atómica. Utilizar la autenticación `POST /v1/aliases/setup/plan` punto final o la coincidencia CLI flujo de trabajo:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \

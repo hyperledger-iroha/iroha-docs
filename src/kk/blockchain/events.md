@@ -53,4 +53,4 @@ curl -fsS -N https://taira.sora.org/v1/events/sse
 
 ## Триггерлік орындау оқиғалары {#trigger-execution-events}
 
-Триггерді орындау оқиғалары [`ExecuteTrigger`](./instructions.md#executetrigger) нұсқаулығын орындаған кезде шығарылады.
+[`ExecuteTrigger`](./instructions.md#executetrigger) нұсқау орындалған кезде триггерді орындау оқиғалары шығарылады. Қозғалтқыш аяқталу оқиғалары қозғалтқыш әрекет аяқталғаннан кейін шығарылады.

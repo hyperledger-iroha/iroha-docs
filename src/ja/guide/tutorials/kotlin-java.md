@@ -45,7 +45,7 @@ dependencies {
 
 ## Kotlin とJavaの互換性 {#kotlin-and-java-compatibility}
 
-公衆 API は Kotlin- はじめに,Javaのインターオップを提供します. JVM 対応する変更は `java/` 実施 Android 統合は Kotlin 上にある遺跡です
+公衆 API は Kotlin- はじめにJavaのインターオップを提供します JVM 連絡先は必要だ 同等の変更は,対応する `java/` の実施で反映されます. Android の新しい統合は,上記の Kotlin アーテファクトから開始されるべきである.
 
 全員 Kotlin モジュールは執行する JDK 8 API 作成時に互換性 `-Xjdk-release=8`, 組み立てツールチェーン自体は使用する JDK 21. 使用しないでください JDK 9+ APIs 中 SDK コードだ
 

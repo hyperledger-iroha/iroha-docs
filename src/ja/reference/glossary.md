@@ -80,7 +80,7 @@ Iroha のペアとは,他の Iroha プロセスおよびクライアントアプ
 
 ## BFT バイザントの故障耐容性 {#byzantine-fault-tolerance-bft}
 
-Iroha は,ペア・トゥ・ペアネットワーク内の最大33%の悪意のあるアクターと機能する能力を有する.
+特定の数の悪意のあるアクターを含むネットワークで適切に機能する能力の特性. Iroha は,ピアツーピアネットワークで最大33%の悪意のあるアクターと機能する能力がある.
 
 ## Iroha 部品 {#iroha-components}
 
@@ -140,7 +140,7 @@ Iroha を備えたスマートコントラクトのライブラリ.これらの�
 
 ### Iroha ドメイン特別の特別指示 {#domain-specific-iroha-special-instructions}
 
-[World State View](#world-state-view-wsv)に安全かつ安全な方法で変更を行うために必要なツールを提供する.
+域特有の活動に関する指示:資産,アカウント,ドメイン,ピアマネジメント) [World State View](#world-state-view-wsv)に安全かつ安全な方法で変更を行うために必要なツールを提供します.
 
 ### カスタム Iroha 特殊指示 {#custom-iroha-special-instruction}
 

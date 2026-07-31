@@ -70,7 +70,7 @@ telemetry_profile = "full"
 
 ## Las bandas de rendimiento {#performance-bands}
 
-Utilizar estas bandas para una ejecución observada en milisegundos de rendimiento objetivo `Y` TPS y presupuesto de latencia `L`. Realice la carga de trabajo lo suficiente como para incluir el calentamiento, estado estable y al menos un período de máxima carga esperada.
+Utilizar estas bandas para una carrera observada en el rendimiento de destino `Y` TPS y el presupuesto de latencia `L` en milisegundos. Realice la carga de trabajo lo suficiente como para incluir el calentamiento, estado estable y al menos un período de máxima carga esperada.
 
 |La banda .|Condiciones |El significado .|
 | --- | --- | --- |

@@ -97,7 +97,7 @@ Aquí `Hash` significa el `iroha_crypto::Hash::new` de Iroha, un digesto Blake2b
 
 ### La aritmética de campo {#field-arithmetic}
 
-El código Rust representa los elementos del campo como valores canónicos de `u64` en `[0,p)`. La adición y la subtracción son:
+El Consejo Rust el código representa los elementos de campo como canónicos `u64` los valores en `[0,p)`. La adición y la subtracción son:
 
 $$
 a +_F b = (a+b)\bmod p

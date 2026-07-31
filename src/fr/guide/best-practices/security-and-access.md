@@ -30,7 +30,7 @@ Voir [Permissions](/fr/blockchain/permissions.md) et [Pouches d'autorisation ](/
 
 ## L'exposition au réseau {#network-exposure}
 
-- Restreindre les itinéraires de peer-to-peer, Torii, de télémétrie et d'opérateur en fonction de l'environnement.
+- Restriction des itinéraires de peer-to-peer, Torii, de télémétrie et d'opérateur en fonction de l'environnement L'accès à la lecture publique n'implique pas l'accès public à l'écriture ou à l'opérateur.
 - Utilisez VPNs, des pare-feu, des proxies inversées, la terminaison de TLS et les limites de taux lorsque cela est approprié pour le déploiement.
 - Gardez les identifiants d'auteur de base, les jetons proxy et les en-têtes renvoyés hors config engagés.
 - Teste que les clients non autorisés ne peuvent pas atteindre des itinéraires restreints.

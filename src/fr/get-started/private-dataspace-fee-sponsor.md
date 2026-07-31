@@ -107,7 +107,7 @@ iroha --config ./operator.client.toml \
   app alias setup apply --plan-file ./billing-domain.plan.json
 ```
 
-Ensuite, enregistrer la définition d'actif. La canonique `--id` est la définition de l'actif au niveau du réseau ID.
+Enregistrer la définition de l'actif. Le `--id` canonique est la définition d'actif au niveau du réseau ID. Le pseudonyme est ce que les développeurs et les utilisateurs finaux devraient utiliser dans le code de l'espace de données:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -141,7 +141,7 @@ Utilisez le même schéma pour les actifs d'application dans l'espace de donnée
 
 ## 3. Enregistrer les prénoms d'utilisateur {#_3-register-user-aliases}
 
-Les comptes sont toujours canoniques I105 compte IDs. Les noms d'utilisateurs vis-à-vis sont des pseudonymes de compte, et les pseudonymes doivent être des poignées non sensibles telles que `alice@team` ou `alice@members.team`.
+Les comptes sont toujours canoniques. I105 compte IDs. Les noms d'utilisateur sont des pseudonymes de compte, et les pseudonymes doivent être des poignées non sensibles telles que `alice@team` ou `alice@members.team`. N' utilisez pas les numéros de téléphone ou les adresses e-mail comme alias. Ils appartiennent au flux d'identifiants privés dans la section suivante.
 
 L'installation d'alias utilise le même planificateur déclaratif que l'installation de domaine. Faites en sorte que le SDK ou le service d'intégration crée une intention `AliasSetupPlanRequestV1` sans secret dont les cibles d'entrée de compte-alias sont `$USER`, sélectionne le rôle principal, pinne l'espace de données numérique ID et porte la garde actuelle du devis de location. Ensuite, planifiez et appliquez-le comme une seule transaction atomique:
 
@@ -155,7 +155,7 @@ iroha --config ./operator.client.toml \
   app alias setup apply --plan-file ./user-alias.plan.json
 ```
 
-Si l'utilisateur ne doit pas payer XOR, utilisez le service d'intégration approuvé par un sponsor pour construire et soumettre la transaction de mise en place.
+Si l'utilisateur ne doit pas payer XOR, utilisez le service d' embarquement approuvé par un sponsor pour construire et soumettre la configuration transaction. Ne divisez pas l'acquisition de bail et les alias liants en transactions d'application indépendantes.
 
 Une fois le pseudonyme lié, vérifiez-le à partir du CLI:
 
@@ -183,7 +183,7 @@ Utilisez les numéros de téléphone et les adresses e-mail comme revendications
 6. l'utilisateur soumet `ClaimIdentifier` avec le reçu;
 7. la chaîne stocke un identifiant opaque et un hachage de reçus, pas la valeur brute du téléphone ou de l'e-mail
 
-L'établissement de la politique du côté de l'opérateur est une tâche SDK ou service.
+L'établissement des politiques du côté de l'opérateur est une tâche SDK ou un service. Construire et soumettre ces paires d'instructions pour chaque type d'identificateur:
 
 ```text
 RegisterRamLfeProgramPolicy(
@@ -337,7 +337,7 @@ iroha --config ./operator.client.toml \
 
 ## 7. Accordez à l'utilisateur un accès au commanditaire {#_7-grant-a-user-access-to-the-sponsor}
 
-Le commanditaire doit accorder à chaque utilisateur l'autorisation de lui facturer des frais.
+Le parrain doit accorder à chaque utilisateur la permission de lui facturer des frais. La subvention est ce qui empêche les utilisateurs de nommer des comptes sponsors arbitraires.
 
 Exécutez ceci comme le compte sponsor, ou comme un compte opérationnel autorisé par votre politique d'exécution:
 

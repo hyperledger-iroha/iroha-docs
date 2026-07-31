@@ -78,11 +78,11 @@ Les règles de refus par défaut sont plus faciles à vérifier que les règles 
 - Choisissez une mise en œuvre VPN vérifiée et maintenue activement, telle que WireGuard, IPsec ou un réseau privé géré approuvé par l'organisation.
 - Utilisez des identifiants VPN uniques pour chaque hôte et opérateur. Ne partagez pas les clés VPN entre les validateurs.
 - Gardez les identifiants VPN distincts des clés privées Iroha et du matériel de signature de la génèse.
-- Surveiller VPN la latence, la perte de paquets, les reconnections et les changements de route.
+- Surveillez VPN la latence, la perte de paquets, les reconnections et les changements de route. Le consensus est sensible à l'instabilité du réseau soutenue.
 - Testez l'efficacité MTU. La fragmentation des paquets peut ressembler à des défaillances intermittentes ou Torii.
 - Document dans lequel les intervalles VPN sont autorisés à atteindre des points de repère par rapport aux autres, Torii, des mesures, SSH et des points d'extrémité de sauvegarde.
 - Retourner les identifiants VPN lorsqu'un hébergeur, un compte d'opérateur ou une organisation quitte le réseau.
-- Évitez une seule passerelle VPN comme unique route entre les validateurs.
+- Évitez une seule passerelle VPN en tant que seule voie entre les validateurs. Planifier des passerelles redondantes ou des routes de site à site pour les réseaux de production.
 - Incluez des défaillances VPN dans les exercices de réponse aux incidents afin que les opérateurs sachent quand distinguer une partition réseau d'une défaillance du processus Iroha.
 
 ## Pages connexes {#related-pages}

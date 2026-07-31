@@ -52,7 +52,7 @@ Si vous n'avez jamais travaillé avec le multi-hash auparavant, il est naturel d
 
 Il est également naturel de supposer que l'appel `PrivateKey::try_from_str` sur le littéral de la chaîne ne donnerait que la clé correcte. Donc, si vous obtenez le nombre de bits dans la clé mal, par exemple 32 octets contre 64, cela générerait un message d'erreur.
 
-Malheureusement, les messages d'erreur ne permettent pas de résoudre ce type d'échec.
+Les deux hypothèses sont fausses. Malheureusement, les messages d'erreur n'aident pas à débogager ce type particulier de défaillance.
 
 Comment réparer: utilisez `hex_literal`. Cela transformera également une chaîne de caractères moche en un joli petit tableau de chiffres hexadecimaux évidemment.
 

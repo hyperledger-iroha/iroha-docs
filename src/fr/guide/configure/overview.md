@@ -13,7 +13,7 @@ La configuration Iroha est constituée de deux couches d'autorité:
 - Configuration locale par les pairs et les clients, stockée dans des fichiers TOML et lue lors du démarrage du processus
 - configuration en chaîne, modifiée par des transactions effectuées à travers [`SetParameter`](/fr/blockchain/instructions.md#setparameter)
 
-Utilisez la configuration locale pour l'identité du nœud, les adresses, le dépôt de données, le stockage et les clés de signature du client.
+Utilisez la configuration locale pour l'identité du nœud, les adresses, le dépôt de jour, le stockage et les clés de signature du client. Utilisez la configuration sur chaîne pour les valeurs qui doivent être convenues par le réseau et reproduites de manière déterministe.
 
 Le comportement de production doit provenir de ces couches de configuration. Les variables environnementales peuvent être pratiques pour fournir des entrées d'essai à l'outillage local, mais elles ne sont pas des portes de fonctionnalités de production et ne remplacent pas la configuration engagée.
 

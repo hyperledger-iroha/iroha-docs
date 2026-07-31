@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /help/installation-issues.md
-translation_source_hash: 2f548e96f8a72ea83a8b39fabf7f3713ad7b8df0eac627ed2138cbd9d3f7ea36
+translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -100,14 +100,14 @@ $ type rustc
 $ type cargo
 ```
 
-གལ་སྲིད་འདི་ཚུ་གིས་ `rustup which *` བཀྲམ་སྤེལ་འབད་བའི་སྐབས་ ཁྱོད་ཀྱིས་མཐོང་མི་ས་ཁོངས་གཞན་ཚུ་ལུ་བཏོན་པ་ཅིན་ ཁྱོད་ལུ་དཀའ་ངལ་ཅིག་ཡོདཔ་ཨིན།
+`rustup which *` བཀྲམ་སྤེལ་འབད་བའི་སྐབས་ ཁྱོད་ཀྱིས་མཐོང་མི་ ས་གནས་གཞན་ཚུ་ལུ་བཏོན་པ་ཅིན་ ཁྱོད་ལུ་དཀའ་ངལ་ཅིག་ཡོདཔ་ཨིན། འདི་བཟུམ་མའི་ མིང་མིང་བཙུགས་ནི་དེ་ ལེ་ཤ་མིན་འདུག་ཟེར་གཟིགས།
 
 ```bash
 $ alias rustc "~/.rustup/toolchains/stable-*/bin/rustc"
 $ alias cargo "~/.rustup/toolchains/stable-*/bin/cargo"
 ```
 
-ག་ཅི་སྨོ་ཟེར་བ་ཅིན་ ཁྱོད་ཀྱི་ ནང་འཁོད་གི་ མནོ་བསམ་འདི་ བརླག་གཏང་ཚུགས་དོ་ཡོདཔ་ཁྱོད་ཀྱི་ shell aliases འདི་ག་དེ་སྦེ་བསྒྱུར་བཅོས་འབད་རུང་།
+ནང་འཁོད་གི་ མནོ་བསམ་འདི་ མ་གཞི་ ཁྱོད་ཀྱིས་ shell aliases འདི་ག་དེ་སྦེ་སྒྲིག་རུང་ བསྒྱུར་བཅོས་འབད་ཚུགས།
 
 ཐབས་ལམ་འཇམ་ཏོང་ཏོ་འདི་ ཁྱོད་ཀྱིས་ལག་ལེན་འཐབ་མ་བཏུབ་པའི་ འདྲ་བཤུས་ཚུ་བཏོན་གཏང་ནི་ཨིན།
 

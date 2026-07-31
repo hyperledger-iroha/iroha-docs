@@ -54,7 +54,7 @@ Si un déploiement compose démarre et s'arrête, vérifiez les journaux de dém
 - les adresses annoncées P2P qui ne fonctionnent que dans le réseau de conteneurs
 - réutilisation du volume local après la régénération de la génèse
 
-Lors du test d'une nouvelle génèse, retirez les anciens volumes Kura avant de redémarrer la pile.
+Lors du test d'une nouvelle génèse, retirez les anciens Kura volumes avant de redémarrer la pile. Garder un ancien bloc de stockage avec une nouvelle génèse fera que la répétition échoue.
 
 ## Les Kubernètes {#kubernetes}
 

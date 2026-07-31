@@ -33,7 +33,7 @@ La définition d'actif a toujours une adresse opaque canonique. stocker ou deman
 
 ## 2. Choisir l'autorité de déclenchement {#_2-choose-the-trigger-authority}
 
-Un compte dédié indique clairement quelles autorisations sont requises pour l'exécution du déclencheur et évite d'accoupler le déclencher à la clé de signature personnelle d'un opérateur.
+Définir le compte technique du déclencheur sur un compte dédié lorsque cela est possible. Un compte dédié indique clairement quelles autorisations sont requises pour l' exécution du déclencheur et évite d' accrocher le déclencheurs à un la clé de signature personnelle de l'opérateur.
 
 Le compte technique doit déjà exister et avoir l'autorisation de soumettre les instructions dans le déclencheur exécutable.
 

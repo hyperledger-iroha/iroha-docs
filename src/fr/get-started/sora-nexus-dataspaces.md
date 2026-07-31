@@ -104,7 +104,7 @@ Règles d'intervention de l'agent qui fonctionnent bien avec Taira:
 - Découvrez les outils du serveur MCP avant de les appeler; découvrez à nouveau si le serveur rapporte `listChanged`.
 - Les outils `iroha.` sélectionnés sont préférables aux outils bruts `torii.`.
 - Commencez à lire uniquement: inspectez le statut, les comptes, les actifs, les aliases, les blocs, l'état de gouvernance et le statut des transactions avant de proposer des écritures.
-- Pour les enveloppes de transaction pré-signées, utilisez `iroha.transactions.submit_and_wait` afin que l'agent attend le résultat au lieu de simplement le soumettre.
+- Requérir une instruction humaine explicite avant les mutations du réseau test vivant. Pour les enveloppes de transaction pré-signées, utilisez `iroha.transactions.submit_and_wait` afin que l'agent attend le résultat au lieu de ne pas simplement soumettre.
 - Résumez les hashes de transaction, l'état final et les erreurs de validation du serveur dans la réponse de l'agent.
 
 ### Flux de travail en développement avec les agents {#development-workflow-with-agents}
@@ -339,10 +339,10 @@ Le compte ID et la clé publique peuvent être partagés. La clé privée corres
 Utilisez ces pratiques pour les comptes SORA Nexus:
 
 - Conservez les clés privées dans un gestionnaire de mots de passe crypté, un keystore supporté par le matériel ou un service de signature dédié. N'engagez pas les clés au contrôle des sources ni ne laissez les clés de production dans l'historique du shell, les journaux, le chat, les billets ou les sauvegardes non cryptées.
-- Utilisez une phrase de mot de passe unique à haute entropie pour chaque caisse ou signataire de production.
+- Utilisez un mot de passe unique à haute entropie pour chaque caisse ou signataire de production. stocker des mots de passe dans un gestionnaire de mots de passe ou un processus de conservation partagé, n'est pas dans le même fichier ou ensemble de sauvegarde que la clé privée cryptée.
 - Je le garde. Taira et Minamoto Les clés séparées. Taira les clés en tant que matériau d'essai jetable et Minamoto les clés en tant qu'autorité des fonds de production.
 - Faites une sauvegarde de la clé privée, de la clé publique, du compte ID, du profil du compte et de toutes les notes de récupération ou de conservation du compte nécessaires pour restaurer le signataire.
-- Garder au moins une sauvegarde hors ligne cryptée et une sauvegarme cryptée géographiquement séparée pour les signataires de production.
+- Garder au moins une sauvegarde hors ligne cryptée et une sauvegarme géographiquement séparée pour les signataires de production. Testez la récupération avec une petite opération en lecture seule avant de dépendre de la sauvegarde.
 - Rotation ou remplacement d'un signataire si la clé privée, le mot de passe, les supports de sauvegarde ou l'hôte de signature ont pu être exposés.
 
 Pour plus de détails, voir [Le stockage des clés cryptographiques](/fr/guide/security/storing-cryptographic-keys.md) et [La sécurité par mot de passe](/fr/guide/security/password-security.md).

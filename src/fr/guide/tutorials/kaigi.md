@@ -621,7 +621,7 @@ Dans la démonstration, le UI demande à l'utilisateur de s'auto-détecter puis 
 
 ## Retour en arrière manuel {#manual-fallback}
 
-La signalisation automatique dépend d'un portefeuille en direct, des routes Kaigi-capables Torii et de la génération de preuves en mode privé.
+La signalisation automatique dépend d'un portefeuille en direct, des routes Kaigi-capables Torii et de la génération de preuves en mode privé. Garder une rétroaction manuelle pour les environnements de développement et restreints:
 
 - si `CreateKaigi` échoue, affichez une invitation manuelle contenant l'offre
 - si `JoinKaigi` échoue, afficher un paquet de réponse brut
@@ -649,7 +649,7 @@ npm run e2e:ui
 
 Le test de fumée UI vérifie que la route `/kaigi` rend. Un vrai test multimédia nécessite toujours deux portefeuilles financés plus deux fenêtres ou appareils car les autorisations de signature de transaction, caméra, microphone et WebRTC varient en fonction du temps d'exécution.
 
-Si vous testez contre TAIRA et qu'une route spécifique à l'appel renvoie `404`, confirmez d'abord que le portefeuille hôte a été soumis avec succès `CreateKaigi`.
+Si vous testez contre TAIRA et qu'une route spécifique à l'appel renvoie `404`, confirmer d'abord que le portefeuille hôte a été soumis avec succès `CreateKaigi`. Les points finaux de santé des relais peuvent être disponibles avant qu'un appel particulier n'existe.
 
 ## Les prochaines étapes {#next-steps}
 

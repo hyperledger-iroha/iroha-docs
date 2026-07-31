@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # Яҡлау алығыҙ {#receive-support}
 
-Ваҡыт-ваҡыт һеҙҙә һорауҙар булыуы мөмкин: Iroha Беҙҙең йәмғиәт менән тиҙ арала бәйләнешкә инеү өсөн өс ысул бар: Telegram, Discord һәм GitHub.
+Ваҡыт-ваҡыт һеҙҙә Iroha тураһында башҡалар менән ентекләп һөйләшергә теләгән һорауҙар булырға мөмкин. Беҙҙең йәмғиәт менән тиҙ арала бәйләнешкә сығыу өсөн өс ысул бар: Telegram, Discord һәм GitHub.
 
 Берләшмә аралашыу өсөн [Telegram](https://t.me/hyperledgeriroha) һәм [LF Decentralized Trust Discord](https://discord.gg/hyperledger) ҡуллана. Проект һорауҙары өсөн `iroha` каналын ҡулланығыҙ.
 

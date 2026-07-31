@@ -8,81 +8,52 @@ translation_engine: nllb-200-ct2
 
 # 匿名交易 {#anonymous-transactions}
 
-无名交易 Iroha 由机密资产构建
-转账,而不是写入公共账户的账户转移
-一个钱包将价值转移到一个屏蔽的账本,然后花费
-无透明的笔记,具有零知识证明.
+在 Iroha 中的匿名交易由机密资产运营构成.而不是将公开账户到账户转账,钱包将价值转移到一个屏蔽的大册子中,然后用零知识证明的不透明的笔记.
 
-公共账本仍然记录了一个机密的操作发生.
-记录承诺,取消符号,证据哈希和事件,但它没有
-记录纸币的所有者,收件人或额度为屏蔽到屏蔽
-常规交易包裹可能仍然显示提交
-账户,所以"匿名"在这里意味着匿名资产流动,而不是自动
-网络级或账户级的匿名性.
+公开账本仍然记录了秘密的操作发生. 它记录了承诺,取消者,证据哈希和事件,但它不记录了笔记所有者,收件人或额外的屏蔽到屏蔽的流动.通常的交易包裹可能仍然显示提交帐户,因此"匿名"在这里意味着匿名资产流动,而不是自动网络级或账户级匿名性.
 
 ## 建筑物 {#building-blocks}
 
-| 概念            | 账本表现                                                                                              |
+|概念|账本表现|
 | ------------------ | ------------------------------------------------------------------------------------------------------------------ |
-| 屏蔽的笔记      | 一个私人钱包记录,包含资产,金额,所有者数据和随机性.                                   |
-| 承诺         | 一个32字节的公共值,它承诺对一个注释而不会透露其领域.                                        |
-| 废除器          | 一个在笔记被花费时获得的32字节公值. Iroha 拒绝反复废除,以防止双重支出. |
-| 梅克尔根        | 资产承诺树的近期根源.证据使用它来证明消费纸币存在.                        |
-| 证明附件   | 一个 `ProofAttachment` 含有证明字节加上验证密钥参考或直线验证密码.                 |
-| 秘密事件 | 一个账本事件,如 `ConfidentialEvent::Shielded`, `Transferred`, 或 `Unshielded`.                              |
+|屏蔽的笔记|一个私人钱包记录包含资产,金额,所有者数据和随机性. |
+|承诺|一个32字节的公值,它会承诺一个笔记,而不会透露其字段. |
+|取消者|一个32字节公开值,当一个笔记被花费时得到. Iroha 拒绝反复废除,以防止双重支出. |
+|梅克尔根|资产的承诺树的一个近期根源.证据使用它来证明消费纸币存在.|
+|证据附件|包含证明字节加上验证密钥引用或直线验证密码的 `ProofAttachment`. |
+|秘密事件|一个账本事件,例如 `ConfidentialEvent::Shielded`, `Transferred`或 `Unshielded`. |
 
 主要指令是:
 
-- `RegisterZkAsset`: 注册资产为 ZK- 具有能力和绑定性转移,
-  屏蔽和无屏蔽的验证钥匙.
-- `Shield`: 抵押公开余额,并附加封存笔记承诺.
-- `ZkTransfer`: 投资者将其资金支付给其他公司.
-- `Unshield`: 支付保密纸币和公开账户余额.
-- `ScheduleConfidentialPolicyTransition` 并且
-  `CancelConfidentialPolicyTransition`: 改变资产的机密性
-  政策通过治理.
+- `RegisterZkAsset`:将资产注册为具有 ZK 能力,并绑定转移,屏蔽和非屏蔽验证密钥.
+- `Shield`:抵押公开余额,并附加封闭纸币承诺.
+- `ZkTransfer`:将屏蔽的纸币用于新的屏蔽的账单承诺.
+- `Unshield`:支付屏蔽的纸币,并将公开账户余额抵免.
+- `ScheduleConfidentialPolicyTransition`和`CancelConfidentialPolicyTransition`:通过管理改变资产的保密政策.
 
-资产定义也包含
-[`AssetConfidentialPolicy`](/zh-hans/reference/data-model-schema.md).
-流动的政策模式控制有效:
+资产定义还包含[`AssetConfidentialPolicy`](/zh-hans/reference/data-model-schema.md).流动的政策模式控制是有效的:
 
-| 模式              | 含义                                                          |
+|模式|这意味着|
 | ----------------- | ---------------------------------------------------------------- |
-| `TransparentOnly` | 只有正常的公共余额和转账才被接受.          |
-| `Convertible`     | 用户可以在公共平衡和屏蔽的纸币之间移动价值. |
-| `ShieldedOnly`    | 资产发行和转移必须保持在保护账本中.   |
+|`TransparentOnly`|只有正常的公共余额和转账才被接受.|
+|`Convertible`|用户可以在公共余额和屏蔽纸币之间移动价值. |
+|`ShieldedOnly`|资产发行和转移必须保持在保护账本中.|
 
 ## 如何使用它们 {#how-to-use-them}
 
-1. 在验证器节点上启用保密支持.验证器必须同意
-   验证器后端,活性验证键,Poseidon/Pedersen参数
-   IDs, 节点拒绝同行或区块
-   错误的机密特征消化.
-2. 发布或注册验证密钥和参数组
-   钱包和运营商应通过
-   `VerifyingKeyId`, 例如: `halo2/ipa:vk_transfer`.
-3. 登记资产为 ZK- 有能力 `RegisterZkAsset`, 或阶段a
-   政策转型 `TransparentOnly` 在 `Convertible` 或
-   `ShieldedOnly`.
-4. 保护公共资金 `Shield`. 钱包创造了一个笔记承诺
-   在收件人提交文件之前,
-   交易.
-5. 个人转移与 `ZkTransfer`. 钱包建立了一个证据
-   拥有输入笔记,输出和输入值平衡,
-   每张花费的纸币都扎根于最近的一棵承诺树上.
-6. 只有资产政策允许时才能解除保护. `Unshield` 揭示了
-   公共资金和收件人账户,花费私人纸币无效证,
-   而可以创造私人变化输出.
-7. 通过阅读机密事件,证据记录,无效状态进行审计;
-   通过输入查询和 Torii 终点.
+1. 启用验证器节点的保密支持.验证器必须同意验证器后端,活跃验证键,Poseidon/Pedersen参数 IDs,和机密规则版本.节点拒绝与不匹配的机密功能消化等同类或区块.
+2. 发布或注册电路所使用的验证密钥和参数组.钱包和运营商应以 `VerifyingKeyId`为例 `halo2/ipa:vk_transfer`引用密钥.
+3. 登记资产为 ZK- 有能力 `RegisterZkAsset`, 或将政策转型从 `TransparentOnly` 在 `Convertible` 或 `ShieldedOnly`.
+4. 通过 `Shield`来保护公共资金,钱包在提交交易之前为收件人创建了笔记承诺和加密有效负载.
+5. 个人转移与 `ZkTransfer`. 钱包建立了一个证明,它拥有输入笔记,而每张花费的纸币都扎根于一个近期承诺树上.
+6. 仅在资产政策允许的情况下解除保险. `Unshield`显示公开的金额和收件人账户,使用私人笔记无效化器,并且可以创建私人变换输出.
+7. 通过通过输入查询和 Torii 终点阅读机密事件,证据记录,无效者状态以及匿名保证人记录进行审计.
 
 ## CLI 举例 {#cli-examples}
 
-其他 ZK CLI 操作员和测试流程的命令.
-钱包应该产生承诺,加密有效载荷和证据
-在提交结果指令之前,提取钱包/提示器库.
+ZK CLI 命令是用于运营商和测试流程的.生产钱包在提交结果说明之前应生成承诺,加密有效载荷和证据,使用一个钱包/检验器库.
 
-登记混合物 ZK- 资产:
+注册混合资产 ZK 资产:
 
 ```bash
 iroha app zk register-asset \
@@ -94,7 +65,7 @@ iroha app zk register-asset \
   --vk-shield halo2/ipa:vk_shield
 ```
 
-构建一个版本的加密有效载荷包,
+构建一个版本的加密有效载荷封面,为保护笔记:
 
 ```bash
 iroha app zk envelope \
@@ -105,7 +76,7 @@ iroha app zk envelope \
   --output note-envelope.bin
 ```
 
-保护公共资金进入资产的保护账本:
+保护公共资金存入资产的保护账本:
 
 ```bash
 iroha app zk shield \
@@ -116,7 +87,7 @@ iroha app zk shield \
   --enc-payload note-envelope.bin
 ```
 
-具有防护装置的脱 JSON:
+具有防装置 JSON 的脱屏:
 
 ```bash
 cat > unshield-proof.json <<'JSON'
@@ -138,10 +109,9 @@ iroha app zk unshield \
   --proof-json unshield-proof.json
 ```
 
-## SDK 举个例子 {#sdk-example}
+## SDK 举例 {#sdk-example}
 
-确切的证据字节来自配置的证据后端.
-交易有效载荷只需要公开输入和证明附件:
+正确的证明字节来自配置的证据后端. 交易有效负载只需要公开输入和证据附件:
 
 ```rust
 use iroha_data_model::{
@@ -197,40 +167,26 @@ fn unshield_instruction(
 }
 ```
 
-## 匿名资产保证 {#anonymous-asset-escrow}
+## 匿名资产保证金 {#anonymous-asset-escrow}
 
-匿名资产保证使用相同的保护转移机器
-担保额和担保情况仍在
-监管记录,但资金,释放,取消和解决的步骤
-使用屏蔽的废除器和输出承诺.
+匿名资产托管使用相同的保护转移机器来保证值.当事人和托管状态仍然记录在托管记录中,但融资,释放,取消和解决腿部使用保护废除和输出承诺.
 
-详细的保证 ISI 行为和示例,见
-[产业资产抵押](/zh-hans/blockchain/escrow.md#anonymous-escrow).
+详细的保证券 ISI 行为和示例,请参见 [本国资产保证券](/zh-hans/blockchain/escrow.md#anonymous-escrow).
 
 生命周期是:
 
-1. `OpenAnonymousAssetEscrow` 投资金,并创建一个
-   担保承诺.
-2. `AcceptAnonymousAssetEscrow` 记录买家的情况.
-3. `MarkAnonymousEscrowPaymentSent` 买方发送付款的记录
-   没有链接.
-4. `ReleaseAnonymousAssetEscrow` 对买方的保证金承诺
-   产量承诺.
-5. `CancelAnonymousAssetEscrow` 将保证金交给卖方
-   没有标记付款时的输出承诺.
-6. `OpenAnonymousEscrowDispute` 并且 `ResolveAnonymousEscrowDispute` 处理器
-   证据和解决方案控制的分离.
+1. `OpenAnonymousAssetEscrow`支付保密资金券,并创建一个保证金承诺.
+2. `AcceptAnonymousAssetEscrow`记录了买家.
+3. `MarkAnonymousEscrowPaymentSent`记录买方在链外发送付款的情况.
+4. `ReleaseAnonymousAssetEscrow`将保证金承诺用于买方的产出承诺.
+5. `CancelAnonymousAssetEscrow`在没有标记付款时,将保证承诺返回出售商的输出承诺.
+6. `OpenAnonymousEscrowDispute`和 `ResolveAnonymousEscrowDispute`处理有争议的保证金,包括证据哈希以及由解决者控制的分离.
 
-使用在
-[问题](/zh-hans/reference/queries.md#escrow-and-proof-records) 检查保证金
-记录和状态.
+在 [查询](/zh-hans/reference/queries.md#escrow-and-proof-records)中列出的匿名托管查询,以检查托管记录和状态.
 
 ## 数学 {#math}
 
-下面的标记描述了机密资产流动.
-使用主动电路和参数 IDs 从资产政策和验证人
-因此,客户应该处理承诺,取消和证明字节
-作为钱包/口袋的不透明输出.
+下面的注释描述了机密资产流动.实现使用资产政策和验证人登记器中的活跃电路和参数 IDs,因此客户应将承诺,取消符号和证明字节视为钱包/证明的不透明输出.
 
 一个屏蔽的笔记可以描述为:
 
@@ -238,8 +194,7 @@ $$
 n = (\mathsf{asset}, \mathsf{amount}, \mathsf{owner}, \rho)
 $$
 
-在哪里 `owner` 由收件人查看或使用的材料中得出,
-`rho` 是注意随机性.
+在 `owner` 来自收件人查看或花费的材料中,并且 `rho`是注释随机性.
 
 笔记承诺是隐藏的承诺:
 
@@ -247,33 +202,27 @@ $$
 C = \mathsf{Commit}(\mathsf{asset}, \mathsf{amount}, \mathsf{owner}, \rho)
 $$
 
-对于当前的机密传输电路,公共输入包括
-一个 Merkle 根,一个资产标签和一个链条标签.
-电路强制执行这种形式的承诺关系:
+对于当前的机密传输电路,公开输入包括笔记承诺,取消器,Merkle根,资产标签和链接标签.该电路强制执行这样的承诺关系:
 
 $$
 C = H_c(\mathsf{amount}, \rho, \mathsf{owner\_tag}, \mathsf{asset\_tag})
 $$
 
-当钱包被花费时,钱包得到了无效符号:
+当一个笔记被花费时,钱包得到了取消符:
 
 $$
 N = H_n(\mathsf{spend\_key}, \rho, \mathsf{asset\_tag}, \mathsf{chain\_tag})
 $$
 
-`N` 它不透露笔记,但它对该笔记是稳定的
-和链,所以 Iroha 通过相同的废除器,可以拒绝第二次支出.
+`N`是公开的.它不披露笔记,但对于该笔记和链条来说它是稳定的,因此 Iroha 可以拒绝使用相同的废除符的第二次支出.
 
-承诺树证明了笔记存在.
-`C_i`, 证据包括一个私人Merkle路径 `C_i` 在最近的一次
-公共根:
+承诺树证明了笔记的存在.如果一个钱包花费承诺 `C_i`,证据包括从 `C_i` 到最近公开根的私人Merkle路径:
 
 $$
 \mathsf{MerkleRoot}(C_i, \mathsf{path}) = R
 $$
 
-对于屏蔽到屏蔽转移,证据也强制值
-保护:
+对于屏蔽到屏蔽的转移,证明还强制保护价值:
 
 $$
 \sum \mathsf{inputs} = \sum \mathsf{outputs}
@@ -291,28 +240,21 @@ $$
 \mathsf{Verify}(\mathsf{vk}, \mathsf{public\_inputs}, \pi) = \mathsf{true}
 $$
 
-在哪里 `public_inputs` 是承诺,取消者,根,资产标签,
-证人包含了这份信件.
-验证器检测到
-通过添加输出承诺,证明然后突变本账户状态;
-标记输入无效符号为消耗.
+在 `public_inputs` 中包括承诺,废除者,根,资产标签,链标签以及任何公开未保证金额.证人包含笔记金额,随机性,支出材料和Merkle路径.验证器通过添加输出承诺和标记输入废除符来验证证明,然后突变本书状态.
 
 ## 公共的内容 {#what-is-public}
 
-匿名交易并不能使所有可观察的事实都私密.
-下列数据仍可公开:
+匿名交易不会使所有可观察的事实都变得私密.以下数据仍然可以公开:
 
 - 交易哈希,区块高度和订单
-- 提交交易权威机构,除非申请使用
-  专用入口点或继承层模式
+- 提交交易权威机构,除非申请使用私人输入点或重叠模式
 - 使用的资产定义
-- 无效和输出承诺
+- 废除器和输出承诺
 - 证据哈希,验证密钥引用和可选包裹哈希
-- 公共资金和收件人账户 `Unshield`
+- `Unshield`的公开资金和收益人账户
 - 匿名的保证人卖家,买方,状态,时间印和证据哈希
 
-设计应用程序,以便这些公共的元数据不显示业务
-你试图保护的关系.
+设计应用程序,以便这些公开的元数据不透露你试图保护的商业关系.
 
 ## 相关参考 {#related-reference}
 

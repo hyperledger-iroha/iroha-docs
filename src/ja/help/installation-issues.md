@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /help/installation-issues.md
-translation_source_hash: 2f548e96f8a72ea83a8b39fabf7f3713ad7b8df0eac627ed2138cbd9d3f7ea36
+translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -32,7 +32,7 @@ cargo metadata --no-deps
 
 ## トラブルシューティング Rust ツールチェーン {#troubleshooting-rust-toolchain}
 
-時々,計画通りには行かない. `rust` しかし,アップグレードされていない.同様の問題は Python: XKCD その例はこうです
+時々,計画通りには行かないシステムに `rust` があったがアップグレードしていない場合 特に似たような問題は Python: XKCD これはよく知られている例です
 
 <div class="flex justify-center">
 
@@ -56,7 +56,7 @@ $ rustc --version
 $ rustc 1.93.1 (...)
 ```
 
-より低いバージョンがあれば,次のコマンドを実行して更新できます.
+もっと高いバージョンなら大丈夫です低いバージョンがあるなら更新するには次のコマンドを実行できます.
 
 ```bash
 $ rustup toolchain update stable
@@ -100,14 +100,14 @@ $ type rustc
 $ type cargo
 ```
 
-`rustup which *` を実行したときに見た場所以外の場所を指す場合は,問題があります.
+`rustup which *` を実行する際に見た場所以外の場所を指している場合は,問題があります.このようなニックネームを追加することは十分ではありません:
 
 ```bash
 $ alias rustc "~/.rustup/toolchains/stable-*/bin/rustc"
 $ alias cargo "~/.rustup/toolchains/stable-*/bin/cargo"
 ```
 
-シェル・アライズをどうやって再編するかに関係なく 内部の論理が壊れるからです
+内部の論理は 解消されることもあります シェル・アライズの仕方に関係なく
 
 最も簡単な解決策は,使用していないバージョンを削除することです
 

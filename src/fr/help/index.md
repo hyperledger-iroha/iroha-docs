@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # Reçoivent un soutien {#receive-support}
 
-De temps à autre, vous pourriez avoir des questions sur Iroha Il y a trois façons de communiquer rapidement avec la communauté: Télégramme, Discord et GitHub.
+De temps à autre, vous pourriez avoir des questions sur Iroha que vous aimeriez discuter en détail avec d'autres personnes. Il y a trois façons de contacter rapidement notre communauté: Telegram, Discord et GitHub.
 
 Les utilisations de la communauté [Télégramme](https://t.me/hyperledgeriroha) et [LF Decentralized Trust Des désaccords](https://discord.gg/hyperledger) Pour la communication, utilisez `iroha` le canal des questions du projet.
 

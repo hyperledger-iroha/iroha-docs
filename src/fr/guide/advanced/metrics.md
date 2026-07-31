@@ -50,7 +50,7 @@ curl -fsS "$TAIRA/metrics" \
   | head -n 20
 ```
 
-Les mesures publiques Taira sont utiles pour apprendre les noms des signaux.
+Les mesures publiques Taira sont utiles pour apprendre les noms des signaux. Ne les utilisez pas comme numéros de capacité de production pour votre propre déploiement.
 
 Les mêmes instantanés de consensus sont disponibles via le CLI:
 
@@ -141,7 +141,7 @@ Les paramètres du collecteur influent sur la rapidité avec laquelle les votes 
 - `sumeragi.collectors.redundant_send_r` contrôle le vote additionnel après un délai local
 - `sumeragi.collectors.parallel_topology_fanout` ajoute une topologie à côté des collectionneurs
 
-L'augmentation du fanout peut réduire la latence de la queue dans les réseaux plus grands ou moins fiables, mais elle augmente également le trafic.
+L'augmentation de la diffusion peut réduire la latence des filets dans les réseaux plus grands ou moins fiables, mais elle augmente également le trafic. Comparer la disponibilité globale et la télémétrie collectrice avec les mesures de latence et de contre-pression avant de changer ces valeurs:
 
 ```bash
 iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetry

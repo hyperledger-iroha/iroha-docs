@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/escrow.md
-translation_source_hash: a324c3a299c0184246f4f6d7bd672ec4351574920577bafc4592d5ffdeaf34ff
+translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e217bc6ac9
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -20,7 +20,7 @@ Use escrow native para liquidação do mercado, coordenação de pagamentos fora
 |`AssetEscrowRecord` |Registro de garantia numérico transparente dos ativos ou bloqueio. |
 |`AnonymousAssetEscrowRecord` |Registro de garantia protegido apoiado por anuladores, compromissos e fichas de prova. |
 |Contas de custódia |Conta de protocolo determinista derivada da cadeia ID, garantia ID e definição de ativo. |
-|As evidências .|Hashes de faturas, julgamentos, mensagens, manifestos de armazenamento ou outras evidências fora da cadeia. A carga útil de provas em si não é armazenada no registo de garantia. |
+|As evidências .|Os hashes de evidências podem identificar faturas, julgamentos, mensagens, manifestos de armazenamento ou outras provas fora da cadeia.|
 
 Registros transparentes contêm o vendedor, comprador opcional, definição de ativo, valor total, conta de custódia, status do ciclo de vida, tipo de comportamento, montante restante, autoridade de liberação opcional, timestamp de validade opcional, hashes de evidências, timestamps e detalhes de resolução opcionais.
 
@@ -475,7 +475,7 @@ Usar consultas de escrow para páginas de status, trabalhos de reconciliação e
 |`FindAssetEscrows` |Lista de registos transparentes de garantia e bloqueio. |
 |`FindAssetEscrowsBySeller` |Lista de registos abertos por um vendedor ou abrindo trancas. |
 |`FindAssetEscrowsByBuyer` |Listar as fichas de mercado aceitas por um comprador ou fechar com destino a um destino. |
-|`FindAssetEscrowsByStatus` |Lista dos registos até `AssetEscrowStatus`. |
+|`FindAssetEscrowsByStatus` |Lista de registos até `AssetEscrowStatus`. |
 |`FindAnonymousAssetEscrowById` |Leia uma garantia anônima por `EscrowId`. |
 |`FindAnonymousAssetEscrows*` |Listar as fichas anônimas por todos os registos, vendedor, comprador ou status. |
 

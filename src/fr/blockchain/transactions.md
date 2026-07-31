@@ -101,7 +101,7 @@ Le débit typique est:
 3. Résolvez la lignée d'enregistrement du récepteur lorsque cela est nécessaire, construisez et vérifiez chaque transfert par pairs localement, et persistez l'état de la note cryptée avant de reconnaître le transfert.
 4. Lorsque le destinataire est en ligne, construisez l'archive canonique de rédemption, soumettez-la et enquêtez sur sa ressource opérationnelle pour finalité.
 
-Le registre ne peut pas observer un transfert hors ligne contradictoire jusqu'à ce que l'état de la note retourne au cours du cycle de vie en ligne.
+Le registre ne peut pas observer un transfert hors ligne contradictoire jusqu'à ce que l'état de la note revienne à travers le cycle de vie en ligne. La politique du portefeuille et de l'opérateur devrait donc faire respecter les limites de valeur, l'expiration, les émetteurs acceptés, le stockage local durable; et des fenêtres de réconciliation.
 
 Voici un exemple de création d'une nouvelle transaction avec le `Grant` Dans cette transaction, la souris accorde à Alice le rôle spécifié (`role_id`Vérifiez [l'exemple complet](./permissions.md#register-a-new-role).
 

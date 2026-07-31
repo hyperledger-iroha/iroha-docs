@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /blockchain/escrow.md
-translation_source_hash: a324c3a299c0184246f4f6d7bd672ec4351574920577bafc4592d5ffdeaf34ff
+translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e217bc6ac9
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -20,7 +20,7 @@ Utilice el escrow nativo para la liquidación del mercado, la coordinación de p
 |`AssetEscrowRecord` |Registro de garantía o bloqueo numérico transparente de activos. |
 |`AnonymousAssetEscrowRecord` |El registro de garantía protegido respaldado por anuladores, compromisos y adjuntos de prueba. |
 |Cuenta de custodia |Cuenta de protocolo determinístico derivada de la cadena ID, garantía ID, y definición de activo. |
-|La evidencia se hacha .|Hachas de facturas, juicios, mensajes, manifiestos de almacenamiento u otras pruebas fuera de la cadena. La carga útil de evidencia en sí no se almacena en el registro de garantía. |
+|La evidencia se hacha .|Los hashes de pruebas pueden identificar facturas, juicios, mensajes, manifiestos de almacenamiento u otras evidencias fuera de la cadena.|
 
 Los registros transparentes contienen al vendedor, comprador opcional, definición de activo, monto total, cuenta de custodia, estado del ciclo de vida, tipo de comportamiento, cantidad restante, autoridad de liberación opcional, sello de tiempo de vencimiento opcional, hashes de evidencia, sellas de tiempo y detalles de resolución opcionales.
 

@@ -56,9 +56,9 @@ Replay valide chaque bloc stocké, reconstruit la liste de commit pour cette hau
 
 ## Kura Le stockage {#kura-storage}
 
-Kura est Iroha Il stocke des blocs signés et des métadonnées de récupération. WSV.
+Kura est le stockage de bloc persistant de Iroha. Il stocke des blocs signés et des métadonnées de récupération. Il ne stocke pas une deuxième copie mutable de la WSV.
 
-Le stockage de Kura est enraciné à [`kura.store_dir`](/fr/reference/peer-config/params.md#param-kura-store-dir).
+Kura le stockage est enraciné à [`kura.store_dir`](/fr/reference/peer-config/params.md#param-kura-store-dir). Dans cette racine, les données de bloc sont divisées par voie ou segment. Les fichiers principaux d'un segment sont:
 
 |Le chemin .|Objectif |
 | --- | --- |

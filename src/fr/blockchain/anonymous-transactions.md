@@ -46,7 +46,7 @@ Une définition d'actif comporte également un [`AssetConfidentialPolicy`](/fr/r
 3. Enregistrer l'actif en tant que ZK-capable auprès de `RegisterZkAsset`, ou effectuer une transition de politique de `TransparentOnly` à `Convertible` ou `ShieldedOnly`.
 4. Gardez les fonds publics avec `Shield`. Le portefeuille crée un engagement de billets et une charge utile cryptée pour le destinataire avant qu'il ne soumette la transaction.
 5. Transférer en privé avec `ZkTransfer`. Le portefeuille construit une preuve qu'il possède les billets d'entrée, que les valeurs de saisie et de sortie sont équilibrées et que chaque billet dépensé est ancré dans un arbre d'engagement récent.
-6. `Unshield` révèle le montant public et le compte du destinataire, dépense l'annulateur de la note privée et peut créer des sorties de change privées.
+6. Ne retirez le bouclier que lorsque la politique d'actifs le permet `Unshield` révèle le montant public et le compte du destinataire, dépense l'annulateur de la note privée, et peut créer des sorties de changement privées.
 7. Audit en lisant les événements confidentiels, les dossiers de preuve, l'état d'annulateur et les enregistrements de dépôt anonyme par le biais de requêtes typées et des points d'expiration Torii.
 
 ## CLI Exemples {#cli-examples}
@@ -111,7 +111,7 @@ iroha app zk unshield \
 
 ## SDK Exemple {#sdk-example}
 
-La charge utile de la transaction ne nécessite que les entrées publiques et l'annexe de la preuve:
+Les octets de preuve exacts proviennent de l'arrière-plan de preuve configuré. La charge utile de la transaction ne nécessite que les entrées publiques et l'annexe de preuve:
 
 ```rust
 use iroha_data_model::{
@@ -244,7 +244,7 @@ où `public_inputs` sont les engagements, les annulateurs, la racine, l'étiquet
 
 ## Ce qui est public {#what-is-public}
 
-Les transactions anonymes ne rendent pas tous les faits observables privés.
+Les transactions anonymes ne rendent pas tous les faits observables privés. Les données suivantes peuvent toujours être publiques:
 
 - le hash de la transaction, la hauteur du bloc et l'ordre
 - l'autorité de transaction soumettante, sauf si la demande utilise un modèle d'entrée privée ou de relieu

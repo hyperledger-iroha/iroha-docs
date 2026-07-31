@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 Cette page répertorie les types de jetons d'autorisation par défaut exposés par le modèle de données actuel Iroha. Pour un guide conceptuel des rôles et autorisations, voir [Permissions](/fr/blockchain/permissions.md).
 
-Les vérifications d'autorisation sont exécutées par le validateur active de l'exécution.
+Les contrôles d'autorisation sont effectués par le validateur actif de l'exécution. Les noms des types de jetons ci-dessous décrivent la surface de politique standard, mais un réseau peut personnaliser la validation du temps d'exécution en mettant à jour le l'exécuteur.
 
 ## Des jetons par défaut {#default-tokens}
 

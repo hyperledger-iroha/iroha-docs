@@ -290,7 +290,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ## Transferência {#transfer}
 
-Transferências transferem a propriedade ou o valor entre contas. As variantes genéricas de transferência abrangem domínios, definições de ativos, ativos numéricos e NFTs. O movimento de quantidade RWA utiliza as instruções específicas `TransferRwa` e `ForceTransferRwa` descritas em [Real-World Ativos ](/pt/blockchain/rwas.md).
+Transferências transferem a propriedade ou o valor entre contas. As variantes genéricas de transferência abrangem domínios, definições de ativos, ativos numéricos e NFTs. RWA O movimento de quantidade utiliza o `TransferRwa` e `ForceTransferRwa` instruções descritas em [O mundo real Ativos ](/pt/blockchain/rwas.md).
 
 Para este efeito, é necessário conceder uma conta à [Permissão para a transferência de activos](/pt/reference/permissions.md). Referir-se a um exemplo de como transferir activos com: [CLI](/pt/get-started/operate-iroha-via-cli.md) ou [Rust](/pt/guide/tutorials/rust.md).
 

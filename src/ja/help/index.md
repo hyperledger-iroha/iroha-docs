@@ -12,4 +12,4 @@ translation_engine: nllb-200-ct2
 
 コミュニティは通信のために [テレグラム](https://t.me/hyperledgeriroha)および [LF Decentralized Trust ディスコード](https://discord.gg/hyperledger)を使用します.プロジェクト質問では `iroha`チャンネルを使用してください.
 
-やっとできる [作成する GitHub 発行](https://github.com/hyperledger-iroha/iroha/issues/new/choose), ドキュメンテーションの更新を要請するか 核心チームへの提案か 発見したバグか
+やっとできる [作成する GitHub 発行](https://github.com/hyperledger-iroha/iroha/issues/new/choose), 文書の更新を要請するかどうか,核心チームへの提案か 発見したバグか

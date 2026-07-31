@@ -37,7 +37,7 @@ irohad --config path/to/iroha.toml --genesis-manifest-json path/to/genesis.manif
 
 ## `--trace-config` {#arg-trace-config}
 
-Конфигурацияларды оқу мен талдау журналдарын бақылауға мүмкіндік береді.
+Конфигурацияны оқу мен талдау журналдарын бақылауға мүмкіндік береді. Конфигурацияны шешу үшін пайдалы болуы мүмкін.
 
 - Түрі: желек
 - ENV: `TRACE_CONFIG`

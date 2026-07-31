@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /help/installation-issues.md
-translation_source_hash: 2f548e96f8a72ea83a8b39fabf7f3713ad7b8df0eac627ed2138cbd9d3f7ea36
+translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -100,14 +100,14 @@ $ type rustc
 $ type cargo
 ```
 
-თუ ეს მიუთითებს სხვა ადგილებზე, ვიდრე ის, რომელიც თქვენ ნახეთ, როდესაც გაშვება `rustup which *`, მაშინ თქვენ გაქვთ პრობლემა.
+თუ ეს მიუთითებს სხვა ადგილებზე, ვიდრე ის, რომელიც თქვენ ნახეთ `rustup which *`, მაშინ თქვენ გაქვთ პრობლემა. გაითვალისწინეთ, რომ ამგვარი საიდუმლოების დამატება არ არის საკმარისი:
 
 ```bash
 $ alias rustc "~/.rustup/toolchains/stable-*/bin/rustc"
 $ alias cargo "~/.rustup/toolchains/stable-*/bin/cargo"
 ```
 
-რადგან არსებობს შიდა ლოგიკა, რომელიც შეიძლება გატეხილი იყოს. მიუხედავად იმისა, თუ როგორ გადააწყობთ თქვენს საიდუმლო ფარდებს.
+შიდა ლოგიკა მაინც შეიძლება გატეხილი იყოს მიუხედავად იმისა, თუ როგორ მოაგვარებთ თქვენს საიდუმლოებებს.
 
 ყველაზე მარტივი გამოსავალი იქნება, რომ ამოიღოთ ვერსია, რომელსაც არ იყენებთ.
 

@@ -11,6 +11,8 @@ import {
   addStableHeadingAnchors,
   generateTranslations,
   hasExactProtectedMarkerMultiset,
+  isCompleteCompactCjkSentence,
+  isCompleteCompactCjkTableLabel,
   isCompleteShortStructuralLeadIn,
   markdownHeadings,
   markdownTranslationUnits,
@@ -512,6 +514,108 @@ describe('Markdown translation protection', () => {
     expect(batches).toEqual([[source], [source]])
   })
 
+  test('recovers the exact Japanese production-capacity omission at a safe for-clause boundary', async () => {
+    const source =
+      'Public `irohad` metrics are useful for learning the signal names. Do not use them as production capacity numbers for your own deployment.'
+    const maskedSource =
+      'Public [PH000000] metrics are useful for learning the signal names. Do not use them as production capacity numbers for your own deployment.'
+    const sentenceChunks = [
+      'Public [PH000000] metrics are useful for learning the signal names. ',
+      'Do not use them as production capacity numbers for your own deployment.',
+    ]
+    const forChunks = ['Do not use them as production capacity numbers ', 'for your own deployment.']
+    const sentenceTranslations = [
+      '公共の [PH000000] メトリックは信号名を学ぶのに役立ちます. ',
+      '生産能力番号として使わないで',
+    ]
+    const recovered = ['生産能力番号として使わないでください', '自分の部署のために']
+    const batches: string[][] = []
+    const provider: TranslationProvider = {
+      engine: 'japanese-metrics-for-clause-test',
+      protectedMarkdownMode: 'inline-identifiers',
+      languageCode: () => 'jpn_Jpan',
+      translate: async () => {
+        throw new Error('inline translation must use the batch method')
+      },
+      translateBatch: async (texts) => {
+        batches.push([...texts])
+        return texts.map((text) => {
+          if (text === maskedSource) return '公共の [PH000000] メトリックは信号名を知るために有用です.'
+          const sentenceIndex = sentenceChunks.indexOf(text)
+          if (sentenceIndex >= 0) return sentenceTranslations[sentenceIndex]
+          const forIndex = forChunks.indexOf(text)
+          return forIndex >= 0 ? recovered[forIndex] : text
+        })
+      },
+    }
+
+    const translated = await translateDocument(`${source}\n`, 'guide/advanced/metrics.md', japanese, provider)
+
+    expect(batches).toContainEqual(sentenceChunks)
+    expect(batches).toContainEqual(forChunks)
+    expect(forChunks.join('')).toBe(sentenceChunks[1])
+    expect(translated).toContain('`irohad`')
+    expect(translated).toContain(recovered[1])
+  })
+
+  test('does not split a for-clause with a short side', async () => {
+    const source =
+      'Do not use deterministic benchmark results or public reference metrics as production capacity numbers for deployment.'
+    const batches: string[][] = []
+    const provider: TranslationProvider = {
+      engine: 'short-for-side-test',
+      protectedMarkdownMode: 'inline-identifiers',
+      languageCode: () => 'jpn_Jpan',
+      translate: async () => {
+        throw new Error('inline translation must use the batch method')
+      },
+      translateBatch: async (texts) => {
+        batches.push([...texts])
+        return texts.map(() => '短い')
+      },
+    }
+
+    await expect(translateDocument(`${source}\n`, 'guide/short-for.md', japanese, provider)).rejects.toThrow(
+      'no smaller safe boundary',
+    )
+    expect(batches).toEqual([[source], [source]])
+  })
+
+  test('rejects marker substitution in a for-clause recovery', async () => {
+    const source =
+      'Public metrics help operators learn signal names. Do not use `irohad` benchmark results as production capacity numbers for your own deployment.'
+    const maskedSource = protectMarkdown(source, japanese, 'identifier').masked
+    const sentenceChunks = Array.from(
+      new Intl.Segmenter('en', { granularity: 'sentence' }).segment(maskedSource),
+      ({ segment }) => segment,
+    )
+    const failingSentence = sentenceChunks[1]
+    const forIndex = failingSentence.indexOf('for ')
+    const forChunks = [failingSentence.slice(0, forIndex), failingSentence.slice(forIndex)]
+    const marker = failingSentence.match(/\[PH\d{6}\]/u)?.[0]
+    expect(marker).toBeDefined()
+    const collapsed = `${marker} 短い.`
+    const provider: TranslationProvider = {
+      engine: 'for-clause-marker-integrity-test',
+      protectedMarkdownMode: 'inline-identifiers',
+      languageCode: () => 'jpn_Jpan',
+      translate: async () => {
+        throw new Error('inline translation must use the batch method')
+      },
+      translateBatch: async (texts) =>
+        texts.map((text) => {
+          if (text === maskedSource || text === failingSentence) return collapsed
+          if (text === forChunks[0]) return text.replace(marker!, '[PH999999]')
+          return text
+        }),
+    }
+
+    await expect(translateDocument(`${source}\n`, 'guide/advanced/metrics.md', japanese, provider)).rejects.toThrow(
+      'output changed protected markers',
+    )
+    expect(forChunks.join('')).toBe(failingSentence)
+  })
+
   test('allows intact protected markers to reorder during translation', () => {
     expect(
       hasExactProtectedMarkerMultiset(
@@ -694,6 +798,129 @@ describe('Markdown translation protection', () => {
     )
     expect(batches).toContainEqual(sentenceChunks)
     expect(batches).toHaveLength(2)
+  })
+
+  test('accepts the exact compact Japanese data-model label only as a Markdown table cell', async () => {
+    const source = ' Registration and transfer instructions '
+    const recovered = '登録と転送の指示'
+    const batches: string[][] = []
+    const provider: TranslationProvider = {
+      engine: 'japanese-compact-table-label-test',
+      protectedMarkdownMode: 'inline-identifiers',
+      languageCode: () => 'jpn_Jpan',
+      translate: async () => {
+        throw new Error('inline translation must use the batch method')
+      },
+      translateBatch: async (texts) => {
+        batches.push([...texts])
+        return texts.map((text) => (text === source ? (batches.length === 1 ? '登録指示' : recovered) : text))
+      },
+    }
+
+    const translated = await translateDocument(`|${source}|\n`, 'blockchain/data-model.md', japanese, provider)
+
+    expect(batches).toEqual([[source], [source]])
+    expect(translated).toContain(`|${recovered}|`)
+  })
+
+  test('accepts the exact four-letter Japanese production-equivalent table label', async () => {
+    const source = ' Production equivalent '
+    const translated = await translateDocument(`|${source}|\n`, 'get-started/sora-nexus-dataspaces.md', japanese, {
+      engine: 'japanese-four-letter-table-label-test',
+      protectedMarkdownMode: 'inline-identifiers',
+      languageCode: () => 'jpn_Jpan',
+      translate: async () => {
+        throw new Error('inline translation must use the batch method')
+      },
+      translateBatch: async (texts) => texts.map((text) => (text === source ? '生産等価' : text)),
+    })
+
+    expect(translated).toContain('|生産等価|')
+  })
+
+  test('accepts a complete compact Simplified Chinese table label', async () => {
+    const source = ' Ledger representation '
+    const translated = await translateDocument(
+      `|${source}|\n`,
+      'blockchain/anonymous-transactions.md',
+      simplifiedChinese,
+      {
+        engine: 'simplified-chinese-compact-table-label-test',
+        protectedMarkdownMode: 'inline-identifiers',
+        languageCode: () => 'zho_Hans',
+        translate: async () => {
+          throw new Error('inline translation must use the batch method')
+        },
+        translateBatch: async (texts) => texts.map((text) => (text === source ? '账本表现' : text)),
+      },
+    )
+
+    expect(translated).toContain('|账本表现|')
+  })
+
+  test('accepts a complete longer Simplified Chinese table label', async () => {
+    const source = ' Release authority, or destination when no release authority is set '
+    const translated = '没有设置的释放权限或目的地'
+
+    expect(isCompleteCompactCjkTableLabel(source, translated, simplifiedChinese, { markdownTableCell: true })).toBe(
+      true,
+    )
+    expect(
+      isCompleteCompactCjkTableLabel(source, '释放权限或目的地', simplifiedChinese, {
+        markdownTableCell: true,
+      }),
+    ).toBe(false)
+  })
+
+  test('accepts a complete compact Simplified Chinese sentence', () => {
+    const source = 'Treat off-chain payment verification as application policy.'
+    const translated = '视支付链外验证为应用政策.'
+
+    expect(isCompleteCompactCjkSentence(source, translated, simplifiedChinese)).toBe(true)
+    expect(isCompleteCompactCjkSentence(source, '视支付验证为政策.', simplifiedChinese)).toBe(false)
+    expect(isCompleteCompactCjkSentence(source, '视支付链外验证为应用政策,', simplifiedChinese)).toBe(false)
+    expect(
+      isCompleteCompactCjkSentence(
+        'Treat off-chain payment verification as application policy for every deployed escrow integration.',
+        translated,
+        simplifiedChinese,
+      ),
+    ).toBe(false)
+    expect(
+      isCompleteCompactCjkSentence(
+        'Treat [PH000000] payment verification as application policy.',
+        '视支付链外验证为应用政策.',
+        simplifiedChinese,
+      ),
+    ).toBe(false)
+  })
+
+  test.each([
+    ['prose context', ' Registration and transfer instructions ', '登録と転送の指示', { markdownTableCell: false }],
+    [
+      'source above 80 letters',
+      ' Registration, deregistration, transfer, authorization, custody, and settlement instruction descriptions ',
+      '登録と登録解除と転送の指示の説明',
+      { markdownTableCell: true },
+    ],
+    ['target below four letters', ' Production equivalent ', '生産等', { markdownTableCell: true }],
+    ['more than two source words', ' Production use equivalent ', '生産等価', { markdownTableCell: true }],
+    ['two-word source above 24 letters', ' Production interoperability ', '生産等価', { markdownTableCell: true }],
+    [
+      'continuation punctuation',
+      ' Registration and transfer instructions ',
+      '登録と転送の指示、',
+      { markdownTableCell: true },
+    ],
+    [
+      'marker loss',
+      ' [PH000000] Registration and transfer instructions ',
+      '登録と転送の指示',
+      { markdownTableCell: true },
+    ],
+    ['identifier loss', ' Iroha registration and transfer guide ', '登録と転送のガイド', { markdownTableCell: true }],
+  ])('rejects a compact CJK table label with %s', (_case, source, translated, context) => {
+    expect(isCompleteCompactCjkTableLabel(source, translated, japanese, context)).toBe(false)
   })
 
   test.each([

@@ -123,7 +123,7 @@ let pqSdk = IrohaSDK(
 let signingKey = try pqSdk.generateSigningKey()
 ```
 
-`SigningAlgorithm` тізіміне қазіргі уақытта Ed25519, secp256k1, BLS қалыпты және шағын нұсқалар, ML-DSA, GOST R 34.10-2012 параметрлер жиынтығы және SM2 кіреді.
+Қауымдастық `SigningAlgorithm` enum қазіргі уақытта Ed25519, secp256k1-ті қамтиды, BLS қалыпты және шағын нұсқалар, ML-DSA, GOST R 34.10-2012 параметрлер жиынтығы, және SM2. Эд25519 ыңғайлы жолынан тыс жерде жергілікті көпірлік қолдау қажет.
 
 ## Қосылу {#connect}
 

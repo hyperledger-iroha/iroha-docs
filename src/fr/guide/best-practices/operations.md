@@ -30,7 +30,7 @@ Voir [Sécurité opérationnelle ](/fr/guide/security/operational-security.md).
 
 ## Les sauvegardes et la récupération {#backups-and-recovery}
 
-- Backup de stockage par pair selon le point de récupération requis par le déploiement.
+- Réservez le stockage par pairs en fonction du point de récupération requis pour le déploiement. Valider les restaurations sur les hôtes non en production.
 - Garder la génèse signée, libérer des métadonnées, configurer les pairs et récupérer les enregistrements de garde des clés même si un hôte validateur n'est pas disponible.
 - Documenter si une procédure de récupération se reconstruit à partir de la génèse, se rétablit à partir d'un instantané ou remplace un concurrent échoué par une nouvelle identité.
 - Ne jamais tester des procédures de restauration pour la première fois lors d'un incident de production.

@@ -35,7 +35,7 @@ private_key = "802620..."
 - `[account].domain` は CLI ショートカットとアドレスセレクターコードで使用され,カノニカル `AccountId` はドメインレスです.
 - `[account].public_key`と `[account].private_key`の署名取引.
 
-既定ローカルネットワークでは,バンドルジェネスマニストで処理される.
+口座は既に存在しているはずデフォルトローカルネットワークでは,この処理はbundled genesis manifestによって行われます.
 
 ::: info ケース敏感性
 

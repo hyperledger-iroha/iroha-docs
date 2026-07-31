@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /help/installation-issues.md
-translation_source_hash: 2f548e96f8a72ea83a8b39fabf7f3713ad7b8df0eac627ed2138cbd9d3f7ea36
+translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -100,14 +100,14 @@ $ type rustc
 $ type cargo
 ```
 
-אם אלה מצביעים על מקומות אחרים מאשר זה שראית בעת הפעלת `rustup which *`, אז יש לך בעיה.
+אם אלה מצביעים על מקומות אחרים מאשר זה שראיתם בעת הפעלת `rustup which *`, אז יש לך בעיה. שימו לב כי הוספת הכינויים כמו אלה אינה מספיקה:
 
 ```bash
 $ alias rustc "~/.rustup/toolchains/stable-*/bin/rustc"
 $ alias cargo "~/.rustup/toolchains/stable-*/bin/cargo"
 ```
 
-כי יש לוגיקה פנימית שיכולה לשבור, לא משנה איך אתה מסדר מחדש את הכינוי שלך.
+ההיגיון הפנימי עדיין יכול לשבור, לא משנה איך אתה מסדר את הכינוי שלך.
 
 הפתרון הפשוט ביותר הוא להסיר את הגרסאות שאינך משתמש בהן.
 

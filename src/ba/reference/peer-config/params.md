@@ -438,7 +438,7 @@ LOG_LEVEL=INFO
 
 ### `logger.filter` {#param-logger-filter}
 
-[`logger.level`](#param-logger-level) өҫтәмә төҙөкләндерелгән журналды фильтрлау.
+[`logger.level`](#param-logger-level) өҫтәмә эшкәртелгән журнал фильтрҙары. Бер маҡсат буйынса теркәлгән һүҙбәйләнеште көйләү мөмкинлеге бирә.
 
 <param-table type=string env=LOG_FILTER>
 <template #type>

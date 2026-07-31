@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /blockchain/escrow.md
-translation_source_hash: a324c3a299c0184246f4f6d7bd672ec4351574920577bafc4592d5ffdeaf34ff
+translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e217bc6ac9
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -20,7 +20,7 @@ Utilisez l'escrow natif pour le règlement sur le marché, la coordination des p
 |`AssetEscrowRecord` |Un enregistrement numérique transparent de la fiducie d'actifs ou du verrouillage. |
 |`AnonymousAssetEscrowRecord` |Des antécédents de garantie protégés, soutenus par des annulateurs, des engagements et des pièces jointes.|
 |Compte de garde |Compte de protocole déterministique dérivé de la chaîne ID, de l'escrow ID et de la définition des actifs. |
-|Les preuves sont hachées .|Des paquets de factures, des jugements, des messages, des manifestes de stockage ou d'autres preuves hors chaîne. La charge utile de la preuve elle-même n'est pas stockée dans le dossier fiduciaire. |
+|Les preuves sont hachées .|Les hashes de preuves peuvent identifier les factures, les jugements, les messages, les manifestes de stockage ou d'autres preuves hors chaîne. La charge utile des preuves elle-même n'est pas stockée dans le dossier de garantie. |
 
 Les dossiers transparents portent le vendeur, l'acheteur facultatif, la définition des actifs, le montant total, le compte de détention, l'état du cycle de vie, le type de comportement, le montant restant, l'autorité de libération facultative, le timestamp d'expiration facultatif, les hachages de preuves, les timestamps et les détails de résolution facultatif.
 
@@ -53,7 +53,7 @@ stateDiagram-v2
 |`OpenEscrowDispute` |Vendeur ou acheteur accepté |Mette `Accepted` ou `PaymentSent` dans `Disputed` et ajoute des haches de preuve. |
 |`ResolveEscrowDispute` |Compte auprès de `CanResolveEscrowDispute` |Transporte `Disputed` à `Resolved` et partage le montant entre l'acheteur et le vendeur. |
 
-Les montants de résolution des différends doivent être non négatifs et `buyer_amount + seller_amount` doivent égaler le montant de la cautionnement.
+Les montants de règlement des différends doivent être non négatifs et `buyer_amount + seller_amount` doivent être égaux au montant de la garantie. Les jambes à valeur zéro sont autorisées, mais l'ensemble de la fraction doit tenir compte du solde verrouillé.
 
 ### Rust Exemple {#rust-example}
 
@@ -240,7 +240,7 @@ L'escroquerie anonyme utilise le même cycle de vie du marché, mais le financem
 |`OpenEscrowDispute` |`OpenAnonymousEscrowDispute` |
 |`ResolveEscrowDispute` |`ResolveAnonymousEscrowDispute` |
 
-L'outillage de portefeuille ou de prover doit construire l'attachement à la preuve et les entrées publiques. L'ouverture crée un engagement d'escroquerie.
+Le portefeuille ou l'outil de vérification doit constituer la pièce jointe à la preuve et les entrées publiques. L'ouverture crée un engagement de garantie. La libération, l'annulation et la résolution anonyme des différends doivent dépenser exactement un engagement de dépôt et créer l'acheteur, le vendeur, ou les engagements de sortie partagés requis par l'action.
 
 ```rust
 use iroha::{
@@ -328,7 +328,7 @@ fn open_and_read(
 
 ### Python Fermetures d'actifs {#python-asset-locks}
 
-Le Python SDK expose les aides de première classe à des verrouillages d'actifs génériques.
+Le Python SDK expose les aides de première classe à des blocs d'actifs génériques. Utilisez-les pour les paiements d'une étape importante, les retraits par une autorité de libération, l'annulation par l'ouvreur et les remboursements à expiration.
 
 ```python
 client.open_asset_lock_and_wait(

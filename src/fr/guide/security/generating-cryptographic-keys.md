@@ -24,7 +24,7 @@ La sortie JSON est généralement la plus facile à copier en TOML ou à automat
 cargo run --bin kagami -- keys --algorithm ed25519 --json
 ```
 
-Le commandement imprime une clé publique et une clé privée exposée.
+Le commandement imprime une clé publique et une clé privée. Traiter la clé privée comme un matériau secret; ne pas engager les clés de production générées.
 
 ## Algorithmes {#algorithms}
 

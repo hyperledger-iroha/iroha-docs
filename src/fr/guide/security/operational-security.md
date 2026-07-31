@@ -23,19 +23,19 @@ Toutefois, le suivi et l'adoption des lignes directrices en la matière constitu
 
 - Restez vigilants. La façon la plus probable [ ](https://arxiv.org/pdf/2209.08356.pdf) par laquelle on peut perdre ses actifs dans une blockchain est de donner leurs données sensibles.
 
-- Encrypter vos disques. Le chiffrement des dispositifs de démarrage leur permet de protéger vos données même si un attaquant a obtenu l'accès au matériel.
+- Encrivez vos disques. Le chiffrement des dispositifs de démarrage leur permet de protéger vos données même si un attaquant a obtenu l'accès au matériel. Le faire pour vos appareils portables est deux fois plus important.
 
-- Utilisez un logiciel fiable. Le logiciel qui est livré via des builds binaires reproductibles, et que vous construisez à partir de la source, est le plus digne de confiance.
+- Utilisez un logiciel de confiance. Le logiciel qui est livré via des constructions binaires reproducibles, et que vous construisez à partir de la source, est le plus fiable. Un logiciel propriétaire ou open source qui n'a pas été audité est un risque potentiel qui doit être pris au sérieux.
 
 - Ne laissez jamais les appareils portables avec des données sensibles sans surveillance. Une fraction de seconde suffit à voler votre appareil.
 
 - Vérifiez les signatures sur les paquets binaires. Cela ne diffère pas beaucoup de la cryptographie à clé publique utilisée dans Iroha.
 
-- Pour éviter l'accès non autorisé, sécurisez toujours votre ordinateur portable ou informatique lorsque vous le laissez sans surveillance.
+- Pour éviter un accès non autorisé, sécurisez toujours votre ordinateur portable ou informatique lorsqu'il est laissé sans surveillance. Utilisez des mots de passe forts, verrouillez l'écran et suivez les meilleures pratiques pour sécuriser vos appareils.
 
 - Établissez un système de sécurité [à vide d'air](https://en.wikipedia.org/wiki/Air_gap_(networking)Tout d'abord, chiffrez les clés, puis stockez-les dans un appareil hors ligne seulement. Dans l'idéal, avec un bouclier électromagnétique installé. [Les clés matérielles](./storing-cryptographic-keys.md#using-a-hardware-key) sont conçus spécifiquement à cette fin.
 
-- Gardez toujours votre logiciel à jour avec sa dernière version sur tous les appareils, y compris les ordinateurs et les téléphones.
+- Gardez toujours votre logiciel à jour avec sa dernière version sur tous les appareils, y compris les ordinateurs et les téléphones. Les mises à jour régulières permettent de corriger les vulnérabilités et de minimiser les risques potentiels associés au logiciel obsolète, avant même que de telles vulnérabilités ne soient révélées.
 
 - Développer une routine pour mettre à jour périodiquement les mots de passe et les clés cryptographiques. Cette approche proactive contribue significativement à améliorer la posture de sécurité globale, car il est beaucoup plus difficile de toucher une cible en mouvement.
 
@@ -58,7 +58,7 @@ Considérez les mesures suivantes pour améliorer la sécurité de votre navigat
 
 - Utilisez le mécanisme de confinement intégré du navigateur pour les plugins afin de restreindre les droits d'accès que les plugins installés ont.
 
-- Nettoyez les cookies avant et après des opérations importantes. Veillez à ne pas activer la fonctionnalité Mettez-moi connecté ou souvenez-vous de moi.
+- Nettoyer les cookies avant et après des opérations importantes. Veillez à ne pas activer les fonctionnalités Mettez-moi connecté ou Souvenez-vous de moi. Gardez à l'esprit que certains sites Web ont cette fonctionnalité activée par défaut.
 
 - Utilisez un bloqueur d'annonces. Ceux-ci bloquent non seulement les annonces, mais désactivent également les fonctionnalités de suivi du site. Selon le navigateur que vous utilisez, un bloqueur de publicités peut ne pas être une fonctionnalité intégrée.
 
@@ -68,7 +68,7 @@ Considérez les mesures suivantes pour améliorer la sécurité de votre navigat
 
 - Évitez d'utiliser des services de messagerie basés sur le Web. Par exemple, Discord (construit avec le célèbre framework `electron`) est sensible à beaucoup des mêmes attaques qu'une fenêtre Google Chromium avec la version web de discord ouverte.
 
-- Les mises à jour incluent souvent des correctifs de sécurité critiques qui résolvent les vulnérabilités.
+- Mettez votre navigateur à jour vers la dernière version chaque fois que cela est possible. Les mises à jour incluent souvent des correctifs de sécurité critiques qui résolvent les vulnérabilités.
 
 - Soyez prudent quant aux extensions de navigateur que vous installez. Utilisez uniquement des extensions bien connues et fiables provenant de sources réputées. Les extensions pirates peuvent compromettre vos données et votre vie privée.
 
@@ -80,7 +80,7 @@ Considérez les mesures suivantes pour améliorer la sécurité de votre navigat
 
 ## Plan de rétablissement {#recovery-plan}
 
-En cas d'urgence, comme la perte d'une clé ou une violation de la sécurité, un plan de récupération bien structuré et préparé à l'avance est un sauvetage essentiel.
+En cas d'urgence, par exemple en cas de perte d'une clé ou en cas de violation de sécurité, Un plan de récupération bien structuré et préparé à l'avance est une ligne de sauvetage essentielle. La mise en place d'un ensemble clair de mesures à suivre peut aider à atténuer les dommages potentiels et à rétablir rapidement la sécurité.
 
 Les organisations devraient prendre en compte les aspects clés suivants lors de l'élaboration de leur plan de relance:
 

@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /help/installation-issues.md
-translation_source_hash: 2f548e96f8a72ea83a8b39fabf7f3713ad7b8df0eac627ed2138cbd9d3f7ea36
+translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -100,14 +100,14 @@ $ type rustc
 $ type cargo
 ```
 
-Si ces points pointent vers d'autres endroits que celui que vous avez vu lors de l'exécution `rustup which *`, alors vous avez un problème.
+Si ceux-ci pointent vers d'autres endroits que celui que vous avez vu lors de l'exécution `rustup which *`, alors vous avez un problème.
 
 ```bash
 $ alias rustc "~/.rustup/toolchains/stable-*/bin/rustc"
 $ alias cargo "~/.rustup/toolchains/stable-*/bin/cargo"
 ```
 
-Parce qu'il y a une logique interne qui pourrait être cassée, peu importe comment vous réorganisez vos aliases de shell.
+La logique interne peut toujours être cassée, peu importe comment vous organisez vos aliases de shell.
 
 La solution la plus simple serait de supprimer les versions que vous n'utilisez pas.
 
@@ -143,7 +143,7 @@ Cette erreur signifie que pip est dépassé, vous devez donc le mettre à jour. 
 
 Si cela ne fonctionne pas, vous pouvez essayer de mettre à jour `pip` pour votre annuaire d'utilisateurs.
 
-`python -m pip install --upgrade pip` Il est nécessaire d'effectuer une vérification.
+`python -m pip install --upgrade pip`
 
 Assurez-vous que `pip` est installé dans votre répertoire d'accueil. Pour ce faire, exécutez `whereis pip` et vérifiez si `/home/username/.local/bin/pip` figure parmi les chemins. Si non, mettez à jour la variable `PATH` de votre coquille.
 

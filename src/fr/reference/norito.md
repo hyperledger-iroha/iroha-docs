@@ -56,7 +56,7 @@ Norito les options de mise en page sont stockées dans le byte d'en-tête final.
 |`COMPACT_SEQ_LEN` |`0x10` |Réservé .|Rejeté dans v1; les en-têtes de longueur de séquence du niveau supérieur sont à largeur fixe `u64`. |
 |`FIELD_BITSET` |`0x20` |Soutenue par des exigences | Ajout d'un ensemble de bits pour les textes emballés afin que seuls les champs qui nécessitent des tailles explicites aient des préfixes de taille. `PACKED_STRUCT` et `COMPACT_LEN`. |
 
-Les drapeaux sont explicites. Les décodeurs ne déduisent pas la mise en page à partir de la forme de la charge utile, de la version mineure ou des heuristiques.
+Les drapeaux sont explicites. Les décodeurs ne déduisent pas la mise en page à partir de la forme de la charge utile, de la version mineure ou des heuristes. Les combinaisons inconnues ou invalides sont rejetées de sorte que tous les pairs interprètent une charge utile de la même manière.
 
 ## Règles de codage {#encoding-rules}
 
@@ -75,7 +75,7 @@ Ces règles sont importantes pour les signatures et les hashes. Deux SDKs qui co
 
 ## Hashes de schéma {#schema-hashes}
 
-Les charges utiles de type Norito contiennent un hash schéma de 16 octets dans l'en-tête. Le hash par défaut est dérivé du nom de type entièrement qualifié.
+Les charges utiles typées Norito contiennent un hash de schéma de 16 octets dans l'en-tête. Le hash par défaut est dérivé du nom de type entièrement qualifié. Les constructions qui permettent le hachage du schéma structural dérivent le hash du schéma canonique à la place.
 
 Les décodeurs de type rejettent les désaccords du schéma. Cela protège les clients contre le décoding accidentel d'un cadre valide Norito en tant que type incorrect et est le mode d'échec habituel lorsqu'un bundle de fixation SDK dérive du modèle de données de nœud.
 
@@ -121,7 +121,7 @@ Les attributs de champs communs sont:
 |`#[norito(default)]` |Utilise `Default` lorsqu'une charge utile décodée ne porte pas le champ. |
 |`#[norito(skip_serializing_if = "...")]` |Élimine les champs de JSON lorsque le prédicat correspond, tout en préservant des défauts de décoding déterministique. |
 
-Les dérivés exposent également des indices de longueur cryptée et des calculs de longueur exacte lorsque c'est possible.
+Les dérivés exposent également des indices de longueur codées et des calculs de longueur exacte lorsque cela est possible. Les codeurs utilisent ces conseils pour réserver des tampons et éviter les copies supplémentaires.
 
 ## Familles à carreaux {#crate-feature-families}
 

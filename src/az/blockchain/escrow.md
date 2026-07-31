@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /blockchain/escrow.md
-translation_source_hash: a324c3a299c0184246f4f6d7bd672ec4351574920577bafc4592d5ffdeaf34ff
+translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e217bc6ac9
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -20,7 +20,7 @@ Bazarda ödəniş üçün yerli vəsiqədən istifadə edin, Aitai üslubunda z�
 |`AssetEscrowRecord` |Şəffaf rəqəmsal aktiv vəsiqəsi və ya qapanma qeydləri. |
 |`AnonymousAssetEscrowRecord` |Mühafizə olunmuş depozit qeydləri ləğv edənlər, öhdəliklər və sübut əlavələri ilə dəstəklənir. |
 |Qoruyucu hesabı |Zəngindən ID, əmanətdən ID və aktivlərin təyin edilməsindən əldə edilmiş müəyyənləşdirmə protokolunun hesabı. |
-|Əldə edilən sübutlar |Fakturalar, hökmlər, mesajlar, saxlama manifestləri və ya digər zəncirdən kənar sübutların həşəsi. Güclü sübut yükünün özü vəsiqə sənədində saxlanılmır. |
+|Əldə edilən sübutlar |İddia hashləri fakturaları, qərarları, mesajları, saxlama manifestlərini və ya digər zəncirdən kənarda olan sübutları müəyyən edə bilər.|
 
 Şəffaf qeydlərdə satıcı, seçimli alıcı, aktivin təyinatı, ümumi məbləği, saxlama hesabı, həyat dövrü statusu, davranış növü, qalan məbləğ, seçimli buraxılış səlahiyyəti, seçməli müddətin bitməsi vaxt möhürü, sübutlar hashləri, zaman möhürləri və seçimli həll detalları yer alır.
 
@@ -475,7 +475,7 @@ Status səhifələri, uyğunlaşdırma işləri və dəstək vasitələri üçü
 |`FindAssetEscrows` |Şəffaf depozit və qapı qeydlərini siyahıya alın. |
 |`FindAssetEscrowsBySeller` |Satıcı və ya qapı açıcısı tərəfindən açılan qeydləri siyahıya alın. |
 |`FindAssetEscrowsByBuyer` |Bir alıcının qəbul etdiyi və ya məqsədəuyğun bir yerə hədəfləyən bazar əmanətlərini siyahıya alın. |
-|`FindAssetEscrowsByStatus` |`AssetEscrowStatus` ilə bağlı qeydlər siyahısı. |
+|`FindAssetEscrowsByStatus` |`AssetEscrowStatus` ilə bağlı qeydlərin siyahısı. |
 |`FindAnonymousAssetEscrowById` |`EscrowId` tərəfindən bir anonim vəsiqəni oxuyun. |
 |`FindAnonymousAssetEscrows*` |Bütün qeydlər, satıcı, alıcı və ya status üzrə anonim əmanətlərin siyahısı. |
 

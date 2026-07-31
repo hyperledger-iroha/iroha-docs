@@ -66,7 +66,7 @@ Seule `universal` est la ligne de base réservée. `governance` et `zk` sont des
 
 Sumeragi utilise toujours la disponibilité des données et une diffusion fiable. Ces chemins font partie du protocole de consensus Iroha 3 et ne peuvent pas être désactivés par un profil de déploiement.
 
-Le comportement en cours d'exécution est basé sur les fichiers de configuration et les paramètres de la chaîne.
+Le comportement en temps d'exécution est basé sur les fichiers de configuration et les paramètres de la chaîne. Les variables environnementales ne sont pas des portes de caractéristiques de production.
 
 ## Lire la suite {#read-next}
 

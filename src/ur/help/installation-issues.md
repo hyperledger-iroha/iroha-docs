@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /help/installation-issues.md
-translation_source_hash: 2f548e96f8a72ea83a8b39fabf7f3713ad7b8df0eac627ed2138cbd9d3f7ea36
+translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -100,14 +100,14 @@ $ type rustc
 $ type cargo
 ```
 
-اگر یہ آپ کو `rustup which *` چلانے کے دوران دیکھا گیا سے مختلف مقامات کی طرف اشارہ کرتے ہیں، تو آپ کو ایک مسئلہ ہے. نوٹ کریں کہ یہ صرف
+اگر یہ `rustup which *` چلانے کے دوران آپ نے دیکھا اس سے مختلف مقامات کی طرف اشارہ کرتے ہیں، تو آپ کو ایک مسئلہ ہے. نوٹ کریں کہ ان طرح کے مستعار شامل کرنا کافی نہیں ہے۔
 
 ```bash
 $ alias rustc "~/.rustup/toolchains/stable-*/bin/rustc"
 $ alias cargo "~/.rustup/toolchains/stable-*/bin/cargo"
 ```
 
-کیونکہ ایک اندرونی منطق ہے جو ٹوٹ سکتی ہے، اس سے قطع نظر کہ آپ اپنے Shell aliases کو کس طرح دوبارہ ترتیب دیتے ہیں.
+اندرونی منطق اب بھی ٹوٹ سکتا ہے اس سے قطع نظر کہ آپ اپنے شیل عرفات کو کس طرح ترتیب دیتے ہیں.
 
 سب سے آسان حل یہ ہوگا کہ آپ ان ورژنوں کو ہٹا دیں جو آپ استعمال نہیں کرتے ہیں۔
 

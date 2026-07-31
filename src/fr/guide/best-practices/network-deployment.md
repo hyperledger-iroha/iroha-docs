@@ -40,7 +40,7 @@ Voir [Torii Endpoints](/fr/reference/torii-endpoints.md) et [ Réseaux privés v
 ## Consensus et capacité {#consensus-and-capacity}
 
 - Mesurer le déploiement avant d'ajuster les timers de consensus. Des délais plus faibles ne peuvent réduire la latence que pendant que les couches réseau, stockage et exécution sont en phase.
-- Attention à la direction des files d'attente, pas seulement de courtes échantillons de débit.
+- Regardez la direction de la file d'attente, pas seulement les échantillons courts de débit. Une file d'attente croissante pendant la charge constante signifie que le réseau est surchargé.
 - Enregistrer les paramètres Sumeragi effectifs, le profil de télémétrie, le nombre de validateurs, le réseau RTT, la forme de la charge de travail et les détails matériels pour chaque référence.
 - Augmentez la résistance du collecteur uniquement après avoir comparé les signaux de latence, de trafic et de contrainte.
 

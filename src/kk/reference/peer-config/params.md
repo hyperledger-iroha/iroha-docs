@@ -438,7 +438,7 @@ LOG_LEVEL=INFO
 
 ### `logger.filter` {#param-logger-filter}
 
-[`logger.level`](#param-logger-level) қосымшалары үшін тазартылған журналды сүзгілер.
+[ `logger.level`](#param-logger-level) қосымшасы бойынша тазартылған журналды сүзгілер. Арнайы мақсат бойынша жазу сөзділігін баптауға мүмкіндік береді.
 
 <param-table type=string env=LOG_FILTER>
 <template #type>

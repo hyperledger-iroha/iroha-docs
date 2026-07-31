@@ -270,7 +270,7 @@ Pour l'essai du Kaigi UI:
 3. Sélectionnez Créer un lien de réunion. Un portefeuille en direct soumet `CreateKaigi`; l'application affiche ensuite une invitation `iroha://kaigi/join?call=...&secret=...` et un itinéraire de retour `#/kaigi?...`.
 4. Gardez la fenêtre d'accueil ouverte et partagez l'invitation avec l'invite.
 5. Dans la fenêtre invité, ouvrez l'invitation ou collez-la dans réunion rejoindre, activez les médias locaux et sélectionnez réunion rejoindre. Un portefeuille en direct récupère l'offre d'hôte cryptée de Torii et envoie `JoinKaigi` avec des métadonnées de réponse cryptées.
-6. L'hôte doit appliquer automatiquement la première réponse en diffusant ou en sondant les signaux d'appels Kaigi.
+6. L'hôte doit appliquer automatiquement la première réponse en diffusant ou en sondant les signaux d'appel Kaigi. Les deux fenêtres doivent afficher des supports connectés et des détails de connexion actualisés.
 7. Terminer la session à partir de l'hôte ou utiliser la commande CLI `iroha kaigi end` pour le même appel ID.
 
 Propriété Kaigi besoins protégés XOR Si le démonstrateur rapporte que l'entrée privée Kaigi besoins protégés XOR, Utilisez l'interrupteur de protection automatique intégré à l'application et réessayez l'action Créer ou Joindre. Si la génération de preuves, le financement privé ou la signalisation en direct ne sont pas disponibles, la démonstration peut revenir à un flux transparent / manuel. Dans ce cas, ouvrez la signalisation avancée, copiez l'offre brute ou le paquet de réponse, et collez-le dans l'autre fenêtre.
@@ -314,7 +314,7 @@ Lorsqu'un point d'extrémité accepte ou retourne typé Norito directement, util
 
 ## Profiles de télémétrie {#telemetry-profiles}
 
-La visibilité des points d'extrémité dépend de la télémétrie.
+La visibilité du point final dépend des paramètres de télémétrie. Les documents en amont décrivent cinq niveaux de profil:
 
 |Le profil |`/status` |`/metrics` |Routes de développement |
 | --- | --- | --- | --- |

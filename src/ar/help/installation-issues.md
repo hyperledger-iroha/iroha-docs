@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /help/installation-issues.md
-translation_source_hash: 2f548e96f8a72ea83a8b39fabf7f3713ad7b8df0eac627ed2138cbd9d3f7ea36
+translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -100,14 +100,14 @@ $ type rustc
 $ type cargo
 ```
 
-إذا كانت هذه تشير إلى مواقع أخرى غير تلك التي رأيتها عند تشغيل `rustup which *` ، ثم لديك مشكلة. لاحظ أنه ليس كافيا فقط
+إذا كانت هذه تشير إلى مواقع أخرى غير تلك التي رأيتها عند تشغيل `rustup which *` ، فأنت لديك مشكلة. لاحظ أن إضافة أسماء مستعار مثل هذه لا تكفي:
 
 ```bash
 $ alias rustc "~/.rustup/toolchains/stable-*/bin/rustc"
 $ alias cargo "~/.rustup/toolchains/stable-*/bin/cargo"
 ```
 
-لأن هناك منطق داخلي يمكن أن يكسر، بغض النظر عن كيفية إعادة ترتيب أسماك القبو الخاص بك.
+المنطق الداخلي لا يزال يمكن أن يتحطم بغض النظر عن كيفية ترتيب أسماك القبو الخاص بك.
 
 أسهل حل هو إزالة الإصدارات التي لا تستخدمها.
 

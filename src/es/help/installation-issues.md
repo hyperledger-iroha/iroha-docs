@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /help/installation-issues.md
-translation_source_hash: 2f548e96f8a72ea83a8b39fabf7f3713ad7b8df0eac627ed2138cbd9d3f7ea36
+translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -100,14 +100,14 @@ $ type rustc
 $ type cargo
 ```
 
-Si estos apuntan a ubicaciones distintas de la que vio al ejecutar `rustup which *`, entonces tiene un problema. Tenga en cuenta que no es suficiente sólo
+Si estos apuntan a ubicaciones distintas de la que vio al ejecutar `rustup which *`, entonces tiene un problema. Tenga en cuenta que añadir alias como estos no es suficiente:
 
 ```bash
 $ alias rustc "~/.rustup/toolchains/stable-*/bin/rustc"
 $ alias cargo "~/.rustup/toolchains/stable-*/bin/cargo"
 ```
 
-porque hay una lógica interna que podría romperse, sin importar cómo reordenes tus alias de shell.
+La lógica interna todavía puede romperse independientemente de cómo organices tus alias con cáscara.
 
 La solución más simple sería eliminar las versiones que no se utilizan.
 

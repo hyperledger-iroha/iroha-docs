@@ -36,7 +36,7 @@ Les conditions de déclenchement utilisent le même modèle d'événements-filtr
 - déclenche des événements d'exécution
 - déclenche des événements de finalisation
 
-Les filtres larges sont utiles pour le diagnostic, mais ils augmentent le travail lors de l'exécution du bloc.
+Préférer le filtre le plus étroit qui correspond au flux de travail. Les filtres larges sont utiles pour le diagnostic, mais ils augmentent le travail lors de l'exécution du bloc.
 
 Voir [Filtres ](/fr/blockchain/filters.md) pour les familles de filtres actuelles.
 

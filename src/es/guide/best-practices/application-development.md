@@ -13,7 +13,7 @@ Las aplicaciones Iroha deben hacer explícito el comportamiento de las transacci
 ## Configuración del cliente {#client-setup}
 
 - Almacenar la configuración del cliente fuera del código fuente de la aplicación. Cargar la cadena ID, Torii URL, la cuenta de firma y las configuraciones de transacciones desde la configuración específica del entorno.
-- Mantenga los archivos `client.toml` separados para las redes localnet, Taira y Minamoto y privadas. Una firma de la red de prueba copiada nunca debe convertirse en una firma de la principal red.
+- Mantenga `client.toml` archivos separados para localnet, Taira, Minamoto, y las redes privadas. Una firma de la red de prueba copiada nunca debe convertirse en una firma de la principal red.
 - Establecer las vidas de transacción y los tiempos de estado deliberadamente. Una vida muy corta puede expirar bajo nerviosismo normal de la red, mientras que una muy larga puede hacer que las presentaciones duplicadas sean más difíciles de razonar sobre.
 - Utilizar `nonce = true` sólo cuando las transacciones repetidas deben tener hashes distintos. Para operaciones empresariales idempotentes, almacenar y reutilizar una solicitud de aplicación ID para que se puedan rastrear los retos.
 

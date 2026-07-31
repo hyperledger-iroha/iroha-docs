@@ -29,7 +29,7 @@ Utilisez `docker ps` pour confirmer le nom du conteneur. Dans la pile générée
 
 ## Retournez Genèse dans un réseau jetable {#recommit-genesis-in-a-disposable-network}
 
-Pour un réseau jetable Docker, arrêtez la pile, supprimez l'état généré, régénérez ou remplacez le paquet de génèse signé et recommencez:
+Un homologue ne commet la génèse que lorsque son stockage est vide. Pour un réseau jetable Docker, arrêtez la pile, retirez l'état généré, régénérez ou remplacez le paquet de génèse signé. et recommencer à nouveau:
 
 ```bash
 docker compose -f ./localnet/docker-compose.yml down

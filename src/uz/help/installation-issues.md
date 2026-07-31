@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /help/installation-issues.md
-translation_source_hash: 2f548e96f8a72ea83a8b39fabf7f3713ad7b8df0eac627ed2138cbd9d3f7ea36
+translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -100,14 +100,14 @@ $ type rustc
 $ type cargo
 ```
 
-Agar bular `rustup which *` ishga tushirganingizda ko'rgan joylardan boshqa joylarga ishora qilinsa, unda sizda muammo bor.
+Agar bular `rustup which *` ishga tushirganingizda ko'rgan joylardan boshqa joylarga ishora qilsa, unda sizda muammo bor. Shuni yodda tutingki, bunday aliaslarni qo'shish yetarli emas:
 
 ```bash
 $ alias rustc "~/.rustup/toolchains/stable-*/bin/rustc"
 $ alias cargo "~/.rustup/toolchains/stable-*/bin/cargo"
 ```
 
-chunki shell aliaslaringizni qanday qayta tuzishingizdan qat'iy nazar, buzilgan bo'lishi mumkin bo'lgan ichki mantiqaning mavjudligi.
+Ichki mantiqa hali ham shell aliaslarini qanday tuzatishingizdan qat'iy nazar buzilishi mumkin.
 
 Eng sodda yechim - foydalanmagan versiyalarni olib tashlashdir.
 

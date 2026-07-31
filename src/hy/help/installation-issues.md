@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /help/installation-issues.md
-translation_source_hash: 2f548e96f8a72ea83a8b39fabf7f3713ad7b8df0eac627ed2138cbd9d3f7ea36
+translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -100,14 +100,14 @@ $ type rustc
 $ type cargo
 ```
 
-Եթե դրանք ցույց են տալիս այլ վայրեր, քան այն, որը դուք տեսել եք Running `rustup which *`, ապա դուք ունեք խնդիր: Հիշեք, որ դա բավարար չէ պարզապես
+Եթե դրանք մատնանշում են այլ վայրեր, քան այն, որը դուք տեսել եք Running `rustup which *`, ապա դուք ունեք խնդիր: Նշեք, որ ավելացնել այսպիսի կեղծանունները բավարար չէ.
 
 ```bash
 $ alias rustc "~/.rustup/toolchains/stable-*/bin/rustc"
 $ alias cargo "~/.rustup/toolchains/stable-*/bin/cargo"
 ```
 
-քանի որ կա ներքին տրամաբանություն, որը կարող է խախտվել, անկախ նրանից, թե ինչպես եք վերանորոգում ձեր shell aliases- ը:
+Ներքին տրամաբանությունը դեռ կարող է կոտրվել անկախ նրանից, թե ինչպես եք կազմակերպում ձեր shell aliases- ը:
 
 Ամենապարզ լուծումը այն տարբերակները հեռացնելն է, որոնք դուք չեք օգտագործում:
 

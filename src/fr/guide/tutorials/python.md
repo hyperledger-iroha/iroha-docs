@@ -423,7 +423,7 @@ draft.force_transfer_rwa(
 )
 ```
 
-Les transferts complets peuvent être modifiés `owned_by` sur le lot existant.
+Les transferts complets peuvent modifier `owned_by` sur le lot existant. Les transferts et les fusions partiels créent des lots d'enfants générés.
 
 ### Les déclencheurs {#triggers}
 
@@ -473,7 +473,7 @@ for trigger in registered.items:
 details = client.get_trigger_typed("precommit_reward")
 ```
 
-L'enregistrement, l'exécution, les modifications répétitives et le non-enregistrement sont des opérations mutantes.
+Les appels d'inventaire des déclencheurs ne sont effectués qu'après lecture ou inspection des enregistrements de déclenchement. L'enregistrement, l'exécution, la répétition des modifications et le non-enregistrement sont des opérations mutantes.
 
 ### Instructions en matière de rétablissement et de règlement {#repo-and-settlement-instructions}
 
@@ -1271,7 +1271,7 @@ print(health.healthy_total, health.failovers_total)
 
 ## Norito RPC et GPU Les aides {#norito-rpc-and-gpu-helpers}
 
-Utilisez `NoritoRpcClient` lorsque vous possédez déjà des octets Norito et que vous devez appeler un point d'extrémité binaire Torii.
+Utilisation `NoritoRpcClient` quand vous avez déjà Norito octets et besoin d'appeler un binaire Torii point de fin. L'exemple nécessite une enveloppe signée à partir d'un modèle de transaction précédent:
 
 ```python
 from iroha_python import NoritoRpcClient, NoritoRpcConfig

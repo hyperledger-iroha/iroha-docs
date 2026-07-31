@@ -68,7 +68,7 @@ Os fluxos de trabalho comuns RWA incluem:
 |`RedeemRwa` |Requer que o proprietário ou um controlador e `redeem_enabled` .|
 |`MergeRwas` |Combinar quantidades de lotes parentais com o mesmo domínio e especificação em um lote infantil gerado. |
 |`ForceTransferRwa` |Movimento de quantidade através de um fluxo de controlador. Requer um controlador configurado e `force_transfer_enabled`. |
-|`SetRwaControls` |Requer o proprietário ou um controlador. |
+|`SetRwaControls` |Substituir a política de controlo do lote. Requer o proprietário ou um controlador. |
 |`SetKeyValue<Rwa>` / `RemoveKeyValue<Rwa>` |Actualizar os metadados do lote. Requer o proprietário ou um controlador; lotes congelados exigem um controlador. |
 
 Não há instrução `UnregisterRwa` no código atual. Retirar um lote fora da cadeia com `RedeemRwa` quando a quantidade representada for entregue, consumida, liquidada ou removida de qualquer outra forma da circulação.

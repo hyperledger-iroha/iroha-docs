@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /help/installation-issues.md
-translation_source_hash: 2f548e96f8a72ea83a8b39fabf7f3713ad7b8df0eac627ed2138cbd9d3f7ea36
+translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -73,7 +73,7 @@ $ rustup which rustc
 $ rustup which cargo
 ```
 
-`~/.rustup/toolchains/stable-*/bin/` တွင် toolchains များ၏အသုံးပြုသူတပ်ဆင်မှုများဖြစ်ပါသည်။
+Toolchains တွေရဲ့ User Installations တွေက `~/.rustup/toolchains/stable-*/bin/` မှာ ဖြစ်တတ်ပါတယ်။ ဒါဆိုရင် သင် ပြေးနိုင်သင့်ပါတယ်။
 
 ```bash
 $ rustup toolchain update stable
@@ -100,14 +100,14 @@ $ type rustc
 $ type cargo
 ```
 
-`rustup which *` ကို run လုပ်နေစဉ်မှာ မြင်ခဲ့တဲ့ နေရာတွေထက် အခြားနေရာတွေကို ညွှန်ပြရင် ပြဿနာတစ်ခု ရှိပါသေးတယ်။
+`rustup which *` ကို Run လုပ်နေစဉ် တွေ့ခဲ့တဲ့ နေရာတွေထက် အခြားနေရာတွေကို ညွှန်ပြရင် ပြဿနာတစ်ခု ရှိပါသေးတယ်။ ဒီလို အမည်မတပ်တာ မလုံလောက်တာကို သတိပြုပါ။
 
 ```bash
 $ alias rustc "~/.rustup/toolchains/stable-*/bin/rustc"
 $ alias cargo "~/.rustup/toolchains/stable-*/bin/cargo"
 ```
 
-ဘာလို့လဲဆိုတော့ သင့်ရဲ့ shell aliases တွေကို ဘယ်လိုပဲ ပြန်လည်စီစဉ်ထားဖြစ် ပျက်စီးနိုင်မယ့် အတွင်းပိုင်း logic တစ်ခုရှိလို့ပါ။
+သင့်ရဲ့ shell aliases တွေကို ဘယ်လိုစီစဉ်ထားဖြစ် အတွင်းပိုင်း ဆင်ခြင်တုံတရားက ကျိုးဖောက်နိုင်တုန်းပါ။
 
 ရိုးစင်းဆုံး ဖြေရှင်းနည်းက သင်မသုံးတဲ့ ဗားရှင်းတွေကို ဖယ်ရှားဖို့ပါ။
 

@@ -33,7 +33,7 @@ Pour les mécanismes de transaction, voir [Transactions ](/fr/blockchain/transac
 
 - Utilisez des requêtes pour les flux d'état et d'événements actuels pour les notifications de changement. Évitez de remplacer le traitement des événements par des requêtes larges répétées.
 - Paginez des requêtes récurrentes larges telles que les listes de comptes, d'actifs et de blocs.
-- Les filtres larges sont utiles pour le diagnostic, mais peuvent ajouter des exécutions inutiles et un traitement côté client.
+- Préférez des filtres étroits pour les abonnements et les déclencheurs. Les filtres larges sont utiles pour le diagnostic, mais peuvent ajouter une exécution inutile et un traitement côté client.
 - Gardez les contrôles de fumée à lecture seule séparés des tests de transaction signés afin que la disponibilité du point d'extrémité soit plus facile à diagnostiquer.
 
 Voir [Questions](/fr/blockchain/queries.md), [Événements](/fr/blockchain/events.md) et [Filtres ](/fr/blockchain/filters.md).

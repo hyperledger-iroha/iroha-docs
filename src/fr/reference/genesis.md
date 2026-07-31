@@ -55,7 +55,7 @@ cargo run -p iroha_kagami -- genesis sign genesis.json \
   --out-file genesis.signed.nrt
 ```
 
-`kagami genesis sign` lit la clé publique génèse du manifeste et utilise la clé privée fournie, le grain et l'algorithme pour produire le bloc signé déployable.
+`kagami genesis sign` lit la clé publique de génèse du manifeste et utilise la clé privée fournie, semence, et un algorithme pour produire le bloc signé déployable. Le résultat est le fichier que les pairs devraient faire référence à partir de leur configuration.
 
 ## La configuration `irohad` {#configure-irohad}
 
