@@ -1,0 +1,94 @@
+---
+translation_locale: hy
+translation_source: /get-started/launch-iroha.md
+translation_source_hash: 9341b2404624dec2230bc294c3d60dc124ac9574a0a5803b9bba744f4c5e7f50
+translation_status: machine-validated
+translation_engine: nllb-200-ct2
+---
+
+# Լանչում Iroha 3 {#launch-iroha-3}
+
+Այս էջը անցնում է Iroha 3 համար տեղական ցանցի ընթացիկ հոսքի միջոցով ՝ օգտագործելով վերածնային պահեստից ստացված աշխատանքային տարածության նախնական ակտիվները:
+
+## 1. Ստեղծեք տեղական բազմազան ցանց {#_1-generate-a-local-multi-peer-network}
+
+Ներկայումս Kagami կոդից ստեղծեք չորս զուգընկեր localnet:
+
+```bash
+cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+```
+
+Արտադրման ցուցակը պարունակում է համընկնում զուգահեռ կոնֆիգներ, `genesis.json`, `genesis.signed.nrt`, `client.toml` եւ օգնական սցենարները:
+
+Տեղական ծխի փորձարկման համար, անմիջապես սկսեք արտադրված զուգընկերները.
+
+```bash
+./localnet/start.sh
+```
+
+Containerized run- ի համար ստեղծեք Compose- ը նույն localnet թղթապանակից.
+
+```bash
+cargo run --bin kagami -- docker \
+  --peers 4 \
+  --config-dir ./localnet \
+  --image hyperledger/iroha:dev \
+  --out-file ./localnet/docker-compose.yml \
+  --force
+
+docker compose -f ./localnet/docker-compose.yml up
+```
+
+Նախնական ձեւով ստեղծված փաթեթը բացահայտում է.
+
+- զուգընկերային P2P նավահանգիստներ `1337` մինչեւ `1340`
+- Torii HTTP նավահանգիստները `8080` մինչեւ `8083`
+- `./localnet/client.toml` հասցեով պատրաստված հաճախորդի կարգավորումը:
+
+## 2. Ստուգեք, թե արդյոք ցանցն աշխատում է {#_2-verify-that-the-network-is-up}
+
+Ստուգեք վիճակի վերջնական կետը առաջին զուգընկերության վրա.
+
+```bash
+curl http://127.0.0.1:8080/status
+```
+
+Սովորական առողջության ստուգումները նույնպես օգտագործում են.
+
+```bash
+curl http://127.0.0.1:8080/status/blocks
+```
+
+Դուք կարող եք անմիջապես ուղղել CLI փաթեթավորված հաճախորդի կարգավորման:
+
+```bash
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+```
+
+## 3. Nexus Պրոֆիլ {#_3-nexus-profile}
+
+SORA Nexus ուղղված կոնֆիգերի պրոֆիլը նաեւ ուղարկվում է `defaults/nexus/` թղթադրամում:
+
+Nexus պրոֆիլով բնիկ զուգընկերություն գործարկելու համար'
+
+```bash
+./target/release/irohad --sora --config ./defaults/nexus/config.toml
+```
+
+Օգտագործեք `defaults/nexus/client.toml` տվյալ պրոֆիլին հասնելու համար CLI:
+
+## 4. Դադարեցրեք տեղական ցանցը {#_4-stop-the-local-network}
+
+Տեղական ստեղծված տեղական ցանցի համար.
+
+```bash
+./localnet/stop.sh
+```
+
+Ստեղծված Compose փայտի համար՝
+
+```bash
+docker compose -f ./localnet/docker-compose.yml down
+```
+
+Այն բանից հետո, երբ ցանցը գործարկվում է, շարունակեք [Գործել Iroha 3 միջոցով CLI](/hy/get-started/operate-iroha-via-cli.md):

@@ -43,9 +43,9 @@ offline-wallet and JNI flows.
 ## Kotlin and Java Compatibility
 
 The public API is Kotlin-first and provides Java interop where JVM callers need
-it. During the SDK transition, equivalent changes are mirrored in the
-corresponding `java/` implementation, but new Android integrations should start
-with the Kotlin artifacts above.
+it. Equivalent changes are mirrored in the corresponding `java/`
+implementation. New Android integrations should start with the Kotlin
+artifacts above.
 
 All Kotlin modules enforce JDK 8 API compatibility at compile time with
 `-Xjdk-release=8`, even though the build toolchain itself uses JDK 21. Do not

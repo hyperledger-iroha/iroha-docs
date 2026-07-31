@@ -82,6 +82,4 @@ cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/Com
 ## Notes
 
 - The CLI currently provides better coverage than the standalone crate docs.
-- The entire workspace targets Rust `std`. WASM and `no_std` builds are not
-  supported.
 - For operator-style flows, the CLI documentation is the most current source.

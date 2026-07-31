@@ -84,12 +84,12 @@ Rwa --> Account : owned_by
 ## Example
 
 In an Iroha 3 network, `wonderland.universal` is a domain inside the
-`universal` dataspace. `alice` and `rabbit` are not encoded as
-`alice@wonderland`; they are canonical accounts controlled by their keys or
-policies. A projected asset definition can still be constructed from a
-domain and name such as `rose` in `wonderland.universal`, while the
-canonical asset definition address used on the wire is the generated Base58
-address.
+`universal` dataspace. The canonical accounts in this example are controlled
+by their keys or policies and encoded as domainless I105 account IDs. Readable
+labels such as `alice@wonderland.universal` are separate aliases bound to those
+IDs. A projected asset definition can still be constructed from a domain and
+name such as `rose` in `wonderland.universal`, while the canonical asset
+definition address used on the wire is the generated Base58 address.
 
 ```mermaid
 classDiagram

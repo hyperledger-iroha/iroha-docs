@@ -3,6 +3,7 @@ import { readFile, readdir } from 'node:fs/promises'
 import path from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { TRANSLATED_LOCALES, type DocsLocale } from './locales'
+import { markdownHeadings, markdownTranslationUnits, technicalIdentifiers } from './translate'
 
 export const TRANSLATION_STATUS = 'machine-validated'
 
@@ -56,7 +57,7 @@ function parseFrontmatter(content: string): { metadata: TranslationMetadata; bod
 }
 
 function contentWithoutTranslationMetadata(content: string): string {
-  const normalized = content.replace(/\r\n/gu, '\n')
+  const normalized = content.replace(/\r\n/gu, '\n').replace(/\s+\{#[A-Za-z_][\w:.-]*\}(?=\s*$)/gmu, '')
   const match = /^---\n([\s\S]*?)\n---(?:\n|$)/u.exec(normalized)
   if (!match) return normalized.trim()
 
@@ -68,10 +69,76 @@ function contentWithoutTranslationMetadata(content: string): string {
   return [`---`, ...retainedFrontmatter, `---`, body].join('\n').trim()
 }
 
+function runawayRepeatedText(content: string): string | undefined {
+  const prose = content
+    .replace(/^ {0,3}(`{3,}|~{3,})[^\n]*\n[\s\S]*?^ {0,3}\1[^\n]*(?:\n|$)/gmu, ' ')
+    .replace(/^.*\|.*$/gmu, ' ')
+    .replace(/\]\((?:\\.|[^)\n])+\)/gu, ']')
+    .replace(/`+[\s\S]*?`+/gu, ' ')
+    .replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1>/giu, ' ')
+    .replace(/<[^>\n]+>/gu, ' ')
+    .replace(/\bhttps?:\/\/[^\s<>)\]]+/giu, ' ')
+  const tokens = [...prose.matchAll(/[\p{L}\p{M}]+/gu)].map((match) => match[0].toLocaleLowerCase())
+
+  for (let start = 0; start < tokens.length; start += 1) {
+    for (let width = 1; width <= 8 && start + width <= tokens.length; width += 1) {
+      const requiredRepeats = width === 1 ? 8 : 4
+      let repeats = 1
+      while (repeats < requiredRepeats && start + width * (repeats + 1) <= tokens.length) {
+        const offset = start + width * repeats
+        if (!tokens.slice(start, start + width).every((token, index) => token === tokens[offset + index])) break
+        repeats += 1
+      }
+      if (repeats === requiredRepeats) return tokens.slice(start, start + width).join(' ')
+    }
+  }
+  return undefined
+}
+
+function letterCount(content: string): number {
+  return [...content.matchAll(/[\p{L}\p{M}]/gu)].length
+}
+
+function proseCompletenessErrors(
+  englishBody: string,
+  localizedBody: string,
+  locale: DocsLocale,
+  route: string,
+): string[] {
+  const englishUnits = markdownTranslationUnits(englishBody).filter((unit) => unit.translate)
+  const localizedUnits = markdownTranslationUnits(localizedBody).filter((unit) => unit.translate)
+  if (englishUnits.length !== localizedUnits.length) {
+    return [
+      `${locale.path}/${route}: prose unit inventory drift (expected ${englishUnits.length}, found ${localizedUnits.length})`,
+    ]
+  }
+
+  const minimumRatio = ['ja', 'zh-hans', 'zh-hant'].includes(locale.key) ? 0.25 : 0.35
+  const errors: string[] = []
+  for (let index = 0; index < englishUnits.length; index += 1) {
+    const sourceLetters = letterCount(englishUnits[index].content)
+    if (sourceLetters < 80) continue
+    const localizedLetters = letterCount(localizedUnits[index].content)
+    const ratio = localizedLetters / sourceLetters
+    if (ratio < minimumRatio) {
+      errors.push(
+        `${locale.path}/${route}: prose unit ${index + 1} is materially truncated (${ratio.toFixed(2)} of source letters)`,
+      )
+    }
+    if (
+      /[.!?](?:["')\]}]*)$/u.test(englishUnits[index].content.trim()) &&
+      /[,;،؛，；](?:["')\]}»”]*)$/u.test(localizedUnits[index].content.trim())
+    ) {
+      errors.push(`${locale.path}/${route}: prose unit ${index + 1} ends with continuation punctuation`)
+    }
+  }
+  return errors
+}
+
 export async function validateI18n(options: I18nValidationOptions = {}): Promise<string[]> {
   const sourceRoot = options.sourceRoot ?? path.resolve(process.cwd(), 'src')
   const locales = options.locales ?? TRANSLATED_LOCALES
-  const localePaths = new Set(locales.map((locale) => locale.path))
+  const localePaths = new Set(TRANSLATED_LOCALES.map((locale) => locale.path))
   const inventory = (await markdownFiles(sourceRoot)).filter((file) => {
     const firstSegment = file.split('/')[0]
     return firstSegment !== 'snippets' && !localePaths.has(firstSegment)
@@ -97,7 +164,10 @@ export async function validateI18n(options: I18nValidationOptions = {}): Promise
     for (const route of localizedInventory.filter((file) => inventorySet.has(file))) {
       const englishContent = english.get(route)!
       const localizedContent = await readFile(path.join(localeRoot, route), 'utf8')
-      const { metadata } = parseFrontmatter(localizedContent)
+      const { metadata, body: localizedBody } = parseFrontmatter(localizedContent)
+      const englishBody = parseFrontmatter(englishContent).body
+      const englishHeadings = markdownHeadings(englishBody)
+      const localizedHeadings = markdownHeadings(localizedBody)
       const expectedSource = `/${route}`
       const expectedHash = sha256(englishContent)
 
@@ -113,9 +183,36 @@ export async function validateI18n(options: I18nValidationOptions = {}): Promise
       if (metadata.translation_status !== TRANSLATION_STATUS) {
         errors.push(`${locale.path}/${route}: translation_status must be ${TRANSLATION_STATUS}`)
       }
+      if (localizedHeadings.length !== englishHeadings.length) {
+        errors.push(
+          `${locale.path}/${route}: heading inventory drift (expected ${englishHeadings.length}, found ${localizedHeadings.length})`,
+        )
+      } else {
+        for (let index = 0; index < englishHeadings.length; index += 1) {
+          const expectedAnchor = englishHeadings[index].stableAnchor
+          const actualAnchor = localizedHeadings[index].explicitAnchor
+          if (actualAnchor !== expectedAnchor) {
+            errors.push(`${locale.path}/${route}: heading ${index + 1} must preserve anchor ${expectedAnchor}`)
+          }
+        }
+      }
       if (contentWithoutTranslationMetadata(localizedContent) === contentWithoutTranslationMetadata(englishContent)) {
         errors.push(`${locale.path}/${route}: translated content is an English fallback`)
       }
+      const localizedIdentifiers = technicalIdentifiers(localizedContent)
+      for (const [identifier, expectedCount] of technicalIdentifiers(englishContent)) {
+        const actualCount = localizedIdentifiers.get(identifier) ?? 0
+        if (actualCount < expectedCount) {
+          errors.push(
+            `${locale.path}/${route}: technical identifier count drift for ${identifier} (expected ${expectedCount}, found ${actualCount})`,
+          )
+        }
+      }
+      const repeated = runawayRepeatedText(localizedContent)
+      if (repeated) {
+        errors.push(`${locale.path}/${route}: runaway repeated translation text: ${repeated}`)
+      }
+      errors.push(...proseCompletenessErrors(englishBody, localizedBody, locale, route))
     }
   }
 

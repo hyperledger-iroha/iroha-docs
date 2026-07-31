@@ -39,13 +39,12 @@ export async function validateProvenance(repositoryRoot: string): Promise<string
     }
     targets.add(artifact.target)
 
-    if (artifact.status !== 'current' && artifact.status !== 'pending-source-commit') {
+    if (artifact.status !== 'current' && artifact.status !== 'pending-public-source-commit') {
       errors.push(`${artifact.id}: unsupported provenance status`)
     }
-    if (artifact.status === 'pending-source-commit') {
-      if (artifact.kind !== 'command') errors.push(`${artifact.id}: only generated commands may be pending`)
-      if (manifest.source.refresh_state !== 'awaiting-source-relocation-commit') {
-        errors.push(`${artifact.id}: pending output requires an explicit source refresh_state`)
+    if (artifact.status === 'pending-public-source-commit') {
+      if (manifest.source.refresh_state !== 'awaiting-public-source-commit') {
+        errors.push(`${artifact.id}: unpublished source output requires an explicit source refresh_state`)
       }
     }
 
@@ -82,6 +81,15 @@ export async function validateProvenance(repositoryRoot: string): Promise<string
         `${artifact.id}: cannot read ${artifact.target}: ${error instanceof Error ? error.message : String(error)}`,
       )
     }
+  }
+
+  if (manifest.source.refresh_state === 'awaiting-public-source-commit') {
+    const current = manifest.artifacts.filter((artifact) => artifact.status === 'current')
+    if (current.length > 0) {
+      errors.push(`${PROVENANCE_PATH}: awaiting-public-source-commit requires every artifact to remain pending`)
+    }
+  } else if (manifest.source.refresh_state !== undefined) {
+    errors.push(`${PROVENANCE_PATH}: unsupported source refresh_state`)
   }
 
   return errors

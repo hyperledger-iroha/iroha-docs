@@ -2,9 +2,9 @@
   "name": "Iroha 3 Documentation",
   "short_name": "Iroha Docs",
   "description": "Official documentation for Hyperledger Iroha 3",
-  "id": "/",
-  "start_url": "/",
-  "scope": "/",
+  "id": ".",
+  "start_url": ".",
+  "scope": ".",
   "display": "standalone",
   "icons": [
     { "src": "icon-192.png", "type": "image/png", "sizes": "192x192" },

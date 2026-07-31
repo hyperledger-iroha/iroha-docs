@@ -6,4 +6,4 @@ revision recorded by the documentation refresh workflow. The rendered snapshot
 is checked into this repository so normal documentation builds do not require
 an Iroha source checkout.
 
-<!--@include: @/snippets/data-model-schema.md-->
+<DataModelSchema />

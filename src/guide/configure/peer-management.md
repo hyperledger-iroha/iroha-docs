@@ -22,9 +22,8 @@ the steps that should be taken in order to complete this process.
 
 #### 1. Grant the user permissions
 
-The user that registers the peer must have the appropriate
-`PermissionToken`. This could be granted as part of a `role`, or as part of
-a one-time allowance.
+The account that registers the peer must have the appropriate `Permission`.
+This can be granted through a `Role` or as a direct permission grant.
 
 How to decide if you need to grant a role? Granting roles makes sense if a
 user is to serve as an administrator of sorts, where it's their
@@ -47,12 +46,10 @@ We discuss permissions and roles with more detail in a
 
 After a new peer was granted permissions, it must be set up.
 
-It's a good idea to request information about the peers' configuration in
-the network. Torii exposes node parameter and capability endpoints for this.
-Thus far querying is done manually. Until the
-[bootstrapping procedure](https://github.com/hyperledger-iroha/iroha/issues/1184 '#1184')
-is implemented, you'll have to manually check that the timeouts and batch
-sizes match.
+Request the current peer configuration before admitting a node. Torii exposes
+node parameter and capability endpoints for this purpose. Peer bootstrap does
+not negotiate these values automatically: operators must verify that timeouts,
+batch sizes, and other consensus-relevant settings match the network.
 
 To simplify the process, you can ask the network administrator for a
 redacted version of `config.toml`, which excludes privileged information,

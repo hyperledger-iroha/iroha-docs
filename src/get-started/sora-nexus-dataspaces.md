@@ -24,7 +24,7 @@ activity. Both networks charge fees in XOR:
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
 | Start reading network state | Query `/status` without keys                                 | Query `/status` without keys                       |
 | Pick a dataspace            | Use public `universal` unless your app needs a governed lane | Use the same dataspace only after mainnet approval |
-| Get fee asset               | Use the public Taira faucet                                  | Obtain real XOR, then claim it into Minamoto       |
+| Get fee asset               | Use the public Taira faucet                                  | Receive XOR from a funded Minamoto account or approved treasury flow |
 | Test writes                 | Use faucet-funded test XOR                                   | Do not use test tooling; writes spend real XOR     |
 | Promote                     | Keep retry logic, monitoring, and signer handling            | Use separate keys, funding, and release controls   |
 
@@ -44,10 +44,13 @@ A client does not create a new public dataspace just by changing
 `client.toml`. Client setup does two things:
 
 1. points the client at the right Torii endpoint
-2. selects an account domain that belongs to an existing dataspace
+2. selects domain and dataspace routing context for its canonical account
 
-For most applications, start with the public `universal` dataspace. Account
-domains use `domain.dataspace` form, for example:
+`AccountId` is always canonical and domainless. The `[account].domain` value in
+`client.toml` supplies routing and alias context; it does not become part of
+the account identity. For most applications, start with the public
+`universal` dataspace. Domain context uses `domain.dataspace` form, for
+example:
 
 ```text
 wonderland.universal
@@ -296,14 +299,14 @@ kagami keys --algorithm ed25519 --json
 Create `taira.client.toml`:
 
 ```toml
-chain = "809574f5-fee7-5e69-bfcf-52451e42d50f"
+chain = "fc56984b-2be7-431d-840e-21514d1883f0"
 torii_url = "https://taira.sora.org/"
 
 [account]
 domain = "wonderland.universal"
+profile = "taira"
 public_key = "<ED25519_PUBLIC_KEY_HEX>"
 private_key = "<ED25519_PRIVATE_KEY_HEX>"
-chain_discriminant = 369
 
 [transaction]
 time_to_live_ms = 100000
@@ -311,9 +314,9 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-The CLI can infer the Taira `chain_discriminant` from the `chain` value or
-from `taira.sora.org`, but keeping it explicit makes the client configuration
-self-contained.
+The top-level `chain` is the exact Taira transaction chain ID. The
+`[account].profile = "taira"` setting independently selects the Taira I105
+chain discriminant. The chain ID does not select the account profile.
 
 Run a read-only check:
 
@@ -385,24 +388,24 @@ kagami keys --algorithm ed25519 --json
 Convert the public key into a Taira account ID:
 
 ```bash
-iroha tools address convert --network-prefix 369 <ED25519_PUBLIC_KEY_HEX>
+iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 ```
 
 Convert a Minamoto public key with the mainnet prefix:
 
 ```bash
-iroha tools address convert --network-prefix 753 <ED25519_PUBLIC_KEY_HEX>
+iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
 Use the resulting account ID wherever a Nexus API or CLI command asks for a
 canonical account ID, for example the Taira faucet `account_id`, balance
 queries, strict account fields, or alias bindings. Keep the matching
-private key in your client config, and keep `chain_discriminant` aligned
-with the same prefix: `369` for Taira and `753` for Minamoto.
+private key in your client config, and select the same public network with
+`[account].profile = "taira"` or `[account].profile = "minamoto"`.
 
 Generating the ID does not by itself create a funded on-chain account. On
 Taira, the faucet can create and fund the account for testnet writes. On
-Minamoto, use the approved mainnet onboarding, claim, or treasury flow.
+Minamoto, use an approved mainnet onboarding or treasury flow.
 
 ### Key Storage and Backup
 
@@ -420,10 +423,9 @@ Use these practices for SORA Nexus accounts:
   the same file or backup bundle as the encrypted private key.
 - Keep Taira and Minamoto keys separate. Treat Taira keys as disposable
   testnet material and Minamoto keys as production funds authority.
-- Back up the private key, public key, account ID, network prefix,
-  `chain_discriminant`, and any account recovery or custody notes needed to
-  restore the signer. A private key without the network context is easy to
-  misuse during recovery.
+- Back up the private key, public key, account ID, account profile, and any
+  account recovery or custody notes needed to restore the signer. A private
+  key without the network context is easy to misuse during recovery.
 - Keep at least one encrypted offline backup and one geographically
   separate encrypted backup for production signers. Test recovery with a
   small read-only operation before depending on the backup.
@@ -448,7 +450,7 @@ Use the public faucet directly. The flow is:
 Convert a public key into the Taira I105 account ID expected by the faucet:
 
 ```bash
-iroha tools address convert --network-prefix 369 <ED25519_PUBLIC_KEY_HEX>
+iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 ```
 
 Fetch the puzzle:
@@ -625,9 +627,9 @@ torii_url = "https://minamoto.sora.org/"
 
 [account]
 domain = "wonderland.universal"
+profile = "minamoto"
 public_key = "<ED25519_PUBLIC_KEY_HEX>"
 private_key = "<ED25519_PRIVATE_KEY_HEX>"
-chain_discriminant = 753
 
 [transaction]
 time_to_live_ms = 100000
@@ -635,14 +637,15 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-The explicit `chain_discriminant = 753` is important for Minamoto configs
-until your CLI or SDK version maps `minamoto.sora.org` automatically.
+The top-level `chain` is the current Nexus mainnet chain ID.
+`[account].profile = "minamoto"` selects the Minamoto I105 chain
+discriminant; the endpoint hostname and chain ID do not select it implicitly.
 
 Convert a Minamoto public key into its canonical I105 account ID with the
 mainnet prefix:
 
 ```bash
-iroha tools address convert --network-prefix 753 <ED25519_PUBLIC_KEY_HEX>
+iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
 Run only read-side checks until the account is provisioned and funded
@@ -654,48 +657,20 @@ iroha --config ./minamoto.client.toml --output-format text ops sumeragi status
 
 Do not run the Taira faucet or write-canary helper against Minamoto.
 
-## 6. Get Real XOR on Minamoto
+## 6. Fund a Minamoto Account with XOR
 
-Minamoto fees are paid with real XOR. Before submitting write transactions,
-fund the configured Minamoto account with XOR through an approved mainnet
-path.
+Minamoto fees are paid with production XOR, and Minamoto has no public
+faucet. Fund the configured account through an approved mainnet onboarding
+or treasury transfer, or receive XOR from an existing funded Minamoto
+account.
 
-First obtain XOR on SORA 2, then move it into Minamoto. Common mainnet
-paths are:
+Verify the canonical account ID and funding with read-only checks before
+submitting a write. Treat Minamoto XOR as production funds: rehearse the
+same operation on Taira first, keep separate production keys, and do not
+assume a mainnet transaction can be reset.
 
-- receive XOR from an existing funded SORA 2 account
-- use [SORA Wallet](https://sora.org/wallet) to hold, receive, and swap
-  supported SORA assets
-- use [Polkaswap](https://sora.org/polkaswap) to swap supported assets into
-  XOR on the SORA network
-
-The SORA wiki describes XOR as the SORA network utility token used for
-transaction fees, and the Polkaswap swap guide explains the normal
-source-asset to destination-asset swap flow. Check route, slippage, and
-fees before signing. This documentation does not recommend a specific
-exchange, bridge, or trade size.
-
-After you have XOR on SORA 2, use the burn-backed Minamoto launch path
-documented in the
-[SORA Nexus Minamoto Mainnet Launch](https://sora-xor.medium.com/sora-nexus-minamoto-mainnet-launch-5ef2819a5deb)
-post:
-
-1. Burn XOR on SORA 2 using the published burn interface:
-   `https://bafybeicmlt7f757a64kw2tzmtnmlgpahs7dlmu3nmjssjbbywre6x3nvr4.ipfs.dweb.link/#/burn`
-2. Use only burns from SORA 2 block `25,867,650` onward for the Minamoto
-   claim flow.
-3. Claim the burned XOR on Minamoto through the SORAFS claim application:
-   `https://minamoto.sora.org/claim`
-4. Send a small read-side or balance check first, then use the funded
-   account for fee-paying writes.
-
-You can also receive real Minamoto XOR from an existing funded Minamoto
-account or an approved operational treasury. Treat Minamoto XOR like
-production funds: test on Taira first, keep separate keys, and do not
-assume transactions can be reset.
-
-Do not treat the Taira faucet as a real-XOR source. Testnet XOR cannot pay
-Minamoto fees and cannot be upgraded into mainnet XOR.
+Taira XOR cannot pay Minamoto fees. Testnet balances and faucet claims do
+not transfer to Minamoto.
 
 ## 7. Work Inside an Existing Dataspace
 
@@ -707,16 +682,32 @@ use:
 apps.universal
 ```
 
-After your account has the required permissions, register the domain:
+After your account has the required permissions, create a secret-free
+`AliasSetupPlanRequestV1` intent for the domain and use the declarative planner:
 
 ```bash
-iroha --config ./taira.client.toml ledger domain register --id apps.universal
+iroha --config ./taira.client.toml \
+  app alias setup plan \
+  --intent-file ./taira-apps-domain.intent.json \
+  --plan-file ./taira-apps-domain.plan.json
+
+iroha --config ./taira.client.toml \
+  --metadata ./taira.tx-metadata.json \
+  app alias setup apply --plan-file ./taira-apps-domain.plan.json
 ```
 
-Use the Minamoto config only when the same write is approved for mainnet:
+For Minamoto, generate and approve a separate mainnet intent and plan. Plans
+are bound to their chain, authority, live-state anchor, and deadline, so a
+Taira plan cannot be promoted or replayed:
 
 ```bash
-iroha --config ./minamoto.client.toml ledger domain register --id apps.universal
+iroha --config ./minamoto.client.toml \
+  app alias setup plan \
+  --intent-file ./minamoto-apps-domain.intent.json \
+  --plan-file ./minamoto-apps-domain.plan.json
+
+iroha --config ./minamoto.client.toml \
+  app alias setup apply --plan-file ./minamoto-apps-domain.plan.json
 ```
 
 Account aliases use the same dataspace suffix:
@@ -750,8 +741,9 @@ iroha --config ./operator.client.toml app nexus lane-report --summary
 
 Do not promote a new alias unless the lane ID, dataspace ID, validator set,
 fault tolerance, manifest, routing rules, and operational owner have been
-reviewed together. A normal user account can register domains inside an
-existing dataspace; it cannot safely add a new public dataspace.
+reviewed together. A normal user account with the required permissions can
+acquire a domain and its SNS lease inside an existing dataspace through the
+alias planner; it cannot safely add a new public dataspace.
 
 For a private or organizational dataspace, prepare a catalog change with:
 
@@ -815,9 +807,3 @@ smoke tests, monitoring, and governance evidence are complete.
 - [Sponsor fees for a private dataspace](/get-started/private-dataspace-fee-sponsor.md)
 - [Torii endpoints](/reference/torii-endpoints.md)
 - [Genesis reference](/reference/genesis.md)
-- [SORA Taira Testnet](https://medium.com/sora-xor/sora-taira-testnet-be8cfc924b58)
-- [SORA Nexus Minamoto Mainnet Launch](https://sora-xor.medium.com/sora-nexus-minamoto-mainnet-launch-5ef2819a5deb)
-- [SORA Wallet](https://sora.org/wallet)
-- [Polkaswap](https://sora.org/polkaswap)
-- [SORA XOR token](https://wiki.sora.org/xor.html)
-- [Swap on the SORA Network](https://wiki.sora.org/swap)

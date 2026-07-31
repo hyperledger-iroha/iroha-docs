@@ -77,17 +77,14 @@ generated client configuration from the
 
 ```bash
 export IROHA_CONFIG=./localnet/client.toml
-export NFT_DOMAIN=nft_demo.universal
-export NFT_ID='badge_intro$nft_demo.universal'
+export NFT_DOMAIN=wonderland.universal
+export NFT_ID='badge_intro$wonderland.universal'
 ```
 
-Register a domain for the example. If it already exists, skip this command
-or choose a different `NFT_DOMAIN`.
-
-```bash
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
-  ledger domain register --id "$NFT_DOMAIN"
-```
+The generated localnet already sets up `wonderland.universal` and its SNS
+lease. To use a different domain, create it first with the declarative
+`app alias setup plan` and `app alias setup apply` workflow described in
+[Domains](/blockchain/domains.md#registration).
 
 Register an NFT. Registration reads the initial content JSON from standard
 input:

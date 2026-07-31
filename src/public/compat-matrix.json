@@ -2,10 +2,9 @@
   "source": {
     "repo": "hyperledger-iroha/iroha",
     "repo_url": "https://github.com/hyperledger-iroha/iroha",
-    "revision": "477335e8207fa9a88eebfaed835ff170718c54f1",
-    "revision_url": "https://github.com/hyperledger-iroha/iroha/commit/477335e8207fa9a88eebfaed835ff170718c54f1",
-    "generated_at": "2026-07-30",
-    "verification": "not-run"
+    "revision": "bc7114ed1c7f265a156d2100ff09e851cc95702c",
+    "generated_at": "2026-07-31",
+    "verification": "pending-public-source-commit"
   },
   "included_sdks": [
     {
@@ -42,7 +41,6 @@
     {
       "name": "Canonical Torii request signing",
       "results": [
-        { "status": "no-data" },
         { "status": "no-data" },
         { "status": "no-data" },
         { "status": "no-data" },
@@ -87,7 +85,6 @@
     {
       "name": "Offline wallet and payment flows",
       "results": [
-        { "status": "no-data" },
         { "status": "no-data" },
         { "status": "no-data" },
         { "status": "no-data" },

@@ -54,9 +54,8 @@ The same consensus snapshots are available through the CLI:
 ```bash
 iroha --config ./localnet/client.toml --output-format text ops sumeragi status
 iroha --config ./localnet/client.toml --output-format text ops sumeragi phases
-iroha --config ./localnet/client.toml --output-format text ops sumeragi rbc status
+iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetry
 iroha --config ./localnet/client.toml ops sumeragi params
-iroha --config ./localnet/client.toml ops sumeragi collectors
 ```
 
 Telemetry visibility depends on the configured profile. Use `extended` when you
@@ -155,11 +154,11 @@ Collector settings affect how quickly commit votes converge:
   collectors
 
 Increasing fanout can reduce tail latency in larger or less reliable networks,
-but it also increases traffic. Compare the collector plan with latency and
-backpressure metrics before changing these values:
+but it also increases traffic. Compare aggregate availability and collector
+telemetry with latency and backpressure metrics before changing these values:
 
 ```bash
-iroha --config ./localnet/client.toml ops sumeragi collectors
+iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetry
 ```
 
 ### Network Conditions

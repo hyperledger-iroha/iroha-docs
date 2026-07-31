@@ -6,9 +6,13 @@ The executable payload can be an ordered sequence of
 proved IVM execution. See [Smart Contracts](./smart-contracts.md) for the current
 contract execution model.
 
-All interactions in the blockchain are done via transactions.
+Transactions perform state-changing or executable work. Read-only inspection
+uses signed queries or public read endpoints and does not create a transaction.
 
-All transactions, including rejected transactions, are stored in blocks.
+A transaction admitted into a committed block is stored with its execution
+result, including an execution rejection. Requests rejected before block
+admission, such as an invalid envelope or a transaction refused by the queue,
+are not stored in a block.
 
 For privacy-preserving asset movement, see
 [Anonymous Transactions](./anonymous-transactions.md). Anonymous
@@ -84,56 +88,51 @@ Iroha has two offline transaction workflows:
   device is disconnected. The transaction is not processed until an online
   client submits the signed envelope to Torii, so it still needs the
   correct chain ID, authority, permissions, fees, and transaction lifetime.
-- **Offline V2 notes** support offline value transfer through ledger-backed
-  bearer notes. Online transactions reserve value into escrow, later audit
-  or redeem offline payment tokens, and enforce replay protection when the
-  token reaches the ledger.
+- **Kagemusha offline cash** tops up a wallet while it is online, supports
+  receiver-initiated wallet-to-wallet handoffs while both wallets are
+  offline, and redeems the resulting note state when the recipient returns
+  online.
 
-Offline V2 is the maintained offline payment surface. Torii exposes
-`GET /v1/offline/v2/readiness` for feature discovery. Allowance, reserve,
-revocation, transfer-history, and cash HTTP routes are not published. Offline
-V2 note issuance, audit, and redemption are submitted as normal transaction
-instructions:
+Torii exposes the complete Kagemusha lifecycle under `/v1/offline/*`:
 
-Check the public Taira readiness flags:
+| Method and endpoint | Purpose |
+| --- | --- |
+| `GET /v1/offline/readiness` | Evaluate Kagemusha readiness for one `asset_definition_id` |
+| `POST /v1/offline/receiver-lineage` | Resolve proof-bearing active registration lineage for a signed receiver request |
+| `POST /v1/offline/top-up` | Submit a signed online-to-offline top-up operation |
+| `POST /v1/offline/redeem` | Submit a signed offline redemption operation |
+| `GET /v1/offline/operations/{operation_id}` | Read the canonical status of a top-up or redemption |
+
+Check readiness for the asset before constructing an offline operation:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/offline/v2/readiness \
-  | jq '{offline_note_v2, offline_one_use_keys, offline_recursive_note_proof, offline_sync_optional}'
+curl -fsS --get https://taira.sora.org/v1/offline/readiness \
+  --data-urlencode 'asset_definition_id=<canonical_asset_definition_id>' \
+  | jq '{ready, blockers, artifact_set}'
 ```
 
-| Instruction           | Purpose                                                                                                             |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| `IssueOfflineNoteV2`  | Reserve an online asset amount into offline escrow and record a note commitment bound to a one-use key certificate. |
-| `AuditOfflineNoteV2`  | Optionally record an offline payment token, its consumed nullifiers, output commitments, and recursive proof.       |
-| `RedeemOfflineNoteV2` | Verify the final offline note proof, consume replay keys and nullifiers, and credit the recipient from escrow.      |
+Readiness binds the wallet to the active bridge ABI 21 and authenticated V4
+artifact set. The lineage, top-up, and redemption requests use typed
+`application/x-norito` archives. Top-up and redemption return `202 Accepted`
+with a `Location` header pointing to the operation resource; the embedded
+nonzero operation ID supplies the idempotency key.
 
 The typical flow is:
 
-1. Check Offline V2 readiness on the target Torii endpoint.
-2. Enable offline support for the asset and configure or derive its offline
-   escrow account.
-3. Register an active Offline V2 recursive verifier key and grant
-   `CanManageOfflineEscrow` to the account that issues notes.
-4. Submit `IssueOfflineNoteV2`. The ledger debits the note owner's asset,
-   credits escrow, records replay keys, and emits
-   `OfflineNoteEvent::NoteIssued`.
-5. Exchange the offline payment token outside the ledger. Wallets carry the
-   one-use key certificate, nullifiers, output commitments, and recursive
-   proof through their chosen transport, such as QR or a local hand-off.
-6. Submit `AuditOfflineNoteV2` when operators or wallets want an online
-   audit record before final redemption. Audit is optional for offline
-   finality.
-7. Submit `RedeemOfflineNoteV2` when the recipient comes online. Validators
-   check the verifier key, proof binding, issued claim, amount, recipient,
-   and nullifier uniqueness before crediting the recipient.
+1. Query readiness and stop if `ready` is false or any blocker applies.
+2. Use a typed Swift or JVM wallet to build the canonical top-up archive,
+   submit it, and retain both the input note state and operation ID until
+   the operation reaches a final chain state.
+3. Resolve receiver registration lineage when required, construct and
+   verify each peer handoff locally, and persist the encrypted note state
+   before acknowledging the transfer.
+4. When the recipient is online, build the canonical redemption archive,
+   submit it, and poll its operation resource to finality.
 
-Replay protection is enforced when audit or redemption reaches the ledger.
-Validators reject duplicate note issues, duplicate issued key certificates,
-duplicate nullifiers, already redeemed issued claims, and conflicting audit
-tokens. Until a token is audited or redeemed, the ledger cannot observe an
-offline conflict, so wallet and operator policies should limit value,
-expiry, accepted issuers, and reconciliation windows.
+The ledger cannot observe a conflicting offline handoff until note state
+returns through the online lifecycle. Wallet and operator policy should
+therefore enforce value limits, expiry, accepted issuers, durable local
+storage, and reconciliation windows.
 
 Here is an example of creating a new transaction with the `Grant`
 instruction. In this transaction, Mouse is granting Alice the specified

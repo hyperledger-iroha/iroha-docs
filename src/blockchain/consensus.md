@@ -64,7 +64,8 @@ Collectors are a fanout optimization. Instead of every validator sending every
 vote to every other validator, Sumeragi can select one or more collectors for a
 height. The collectors assemble votes, publish quorum progress, and reduce the
 amount of duplicate vote traffic. The effective collector settings are exposed
-through `ops sumeragi collectors` and `/v1/sumeragi/collectors`.
+through `GET /v1/sumeragi/collectors`; the CLI's
+`ops sumeragi telemetry` snapshot reports the current collector count.
 
 Observer peers can synchronize committed blocks, but they do not propose,
 vote, collect votes, or count toward the commit quorum. Use observers when a
@@ -199,13 +200,11 @@ then commit.
 Operationally, RBC is useful for diagnosing missing-payload and
 data-availability bottlenecks:
 
-- `iroha --output-format text ops sumeragi rbc status` shows aggregate RBC
-  session and throughput counters.
-- `iroha --output-format text ops sumeragi rbc sessions` lists active
-  sessions, including chunk progress, readiness, delivery state, and
-  lane/dataspace backlog.
-- `GET /v1/sumeragi/rbc` and `GET /v1/sumeragi/rbc/sessions` expose the
-  same data over Torii; see
+- `iroha --output-format text ops sumeragi telemetry` shows aggregate
+  availability votes, the current collector count, and pending RBC sessions.
+- `GET /v1/sumeragi/rbc` and `GET /v1/sumeragi/rbc/sessions` expose detailed
+  aggregate and active-session data over Torii, including chunk progress,
+  readiness, delivery state, and lane or dataspace backlog; see
   [Torii endpoints](/reference/torii-endpoints.md).
 - Prometheus signals such as `sumeragi_rbc_store_pressure`,
   `sumeragi_rbc_backpressure_deferrals_total`, and per-lane or

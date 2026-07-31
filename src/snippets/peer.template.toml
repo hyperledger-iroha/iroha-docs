@@ -1,4 +1,4 @@
-## For the full reference, see the configuration docs under docs/source/references
+## For the full reference, see the configuration docs under specs/references
 
 ## You can use another TOML file to extend from.
 ## For a single file extension:

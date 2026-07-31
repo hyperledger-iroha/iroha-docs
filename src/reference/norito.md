@@ -164,7 +164,7 @@ helpers and accelerators are available:
 | `packed-seq` | Packed collection layouts using offset tables. |
 | `packed-struct` | Packed derive-generated struct layouts. |
 | `compact-len` | Varint per-value length prefixes. |
-| `columnar` | Experimental Norito Column Blocks for scan-heavy paths. |
+| `columnar` | Norito Column Blocks, adaptive AoS/NCB row codecs, and borrowed views for scan-heavy paths; included in the default `node-codec` feature set. |
 | `strict-safe` | Converts decode panics in fallible paths into structured errors. |
 | `simd-accel` | CPU acceleration where available, with deterministic fallback. |
 | `json` | Native JSON parser, writer, DOM, typed derives, and fast paths. |
@@ -191,8 +191,8 @@ Content-Type: application/x-norito
 Accept: application/x-norito
 ```
 
-For clients that can fall back to JSON during rollout, prefer an explicit
-Accept list:
+When an endpoint supports both representations, clients can send an explicit
+preference list:
 
 ```http
 Accept: application/x-norito, application/json
@@ -202,7 +202,7 @@ Decode failures are surfaced as typed Torii errors and counted by telemetry.
 Common reasons include invalid magic, unsupported version, unsupported feature
 flag, checksum mismatch, malformed UTF-8, invalid enum tag, and schema mismatch.
 
-Norito RPC rollout is usually staged behind transport configuration. Operator
+Norito RPC transport is selected through transport configuration. Operator
 dashboards should track request latency, failures, active connections,
 response bytes, and `torii_norito_decode_failures_total` separately from JSON
 traffic.

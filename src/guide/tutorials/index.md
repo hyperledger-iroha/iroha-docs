@@ -37,7 +37,7 @@ All SDK pages here are derived from the current upstream workspace:
 - `python/iroha_python`
 - `javascript/iroha_js`
 - `kotlin`
-- `java/iroha_android` (mirrored during the Kotlin transition)
+- `java/iroha_android` (Java mirror of the Kotlin-first Android surface)
 - `IrohaSwift`
 - `crates/musubi`
 

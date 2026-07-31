@@ -26,8 +26,7 @@ the instruction mutates balances. The transcript records:
 - a Poseidon digest for single-delta transcripts
 
 Batch transfers use one transcript with multiple deltas. In that case the
-single-delta Poseidon digest is omitted until per-delta digests are
-available.
+single-delta Poseidon digest is absent.
 
 At block finalization, Iroha groups these transcripts by entrypoint hash.
 The execution witness then carries both the original transcript bundles and
@@ -361,8 +360,8 @@ E(\text{from})\|E(\text{to})\|E(\text{asset})\|E(a)\|\text{batch\_hash}
 )
 $$
 
-For multi-delta transfer transcripts, the current code requires this
-top-level digest to be absent until per-delta digest plumbing is available.
+For multi-delta transfer transcripts, the current format requires this
+top-level digest to be absent.
 
 The host authority digest for transfer transcripts is:
 

@@ -116,12 +116,25 @@ List all domains:
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 ```
 
-Register a domain. Current Iroha IDs are dataspace-qualified, so use a domain
-such as `docs.universal` rather than a bare `docs` literal:
+Ordinary domain creation uses the declarative alias planner; the `ledger
+domain` command has no `register` subcommand. Prepare a secret-free
+`AliasSetupPlanRequestV1` intent for `docs.universal` with your SDK or
+onboarding service, then plan and apply it:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain register --id docs.universal
+cargo run --bin iroha -- --config ./localnet/client.toml \
+  app alias setup plan \
+  --intent-file ./docs-domain.intent.json \
+  --plan-file ./docs-domain.plan.json
+
+cargo run --bin iroha -- --config ./localnet/client.toml \
+  app alias setup apply --plan-file ./docs-domain.plan.json
 ```
+
+The intent pins the dataspace ID, canonical owner account, lease term, and
+current quote guard. The planner verifies live state and returns the exact
+atomic `EnsureAlias` plan to submit. Do not hand-copy guard values from another
+network.
 
 Send a simple ping transaction:
 
@@ -150,17 +163,15 @@ Per-phase latency snapshot:
 cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi phases
 ```
 
-RBC throughput and active sessions:
+Availability, collector, RBC backlog, and VRF snapshot:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi rbc status
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi rbc sessions
+cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi telemetry
 ```
 
-Collector plan and on-chain consensus parameters:
+On-chain consensus parameters:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ops sumeragi collectors
 cargo run --bin iroha -- --config ./localnet/client.toml ops sumeragi params
 ```
 

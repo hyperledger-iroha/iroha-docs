@@ -38,7 +38,8 @@ all you need is the object that you want to register.
 
 | Instruction                                               | Objects                                                                                                 | Destination          |
 | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------- |
-| [Register/Unregister](#un-register)                       | domains, accounts, asset definitions, NFTs, roles, triggers, peers                                      |                      |
+| [EnsureAlias](#ensurealias)                               | ordinary domain, dataspace-alias, and account-alias setup                                                 |                      |
+| [Register/Unregister](#un-register)                       | accounts, asset definitions, NFTs, roles, triggers, peers; domain removal                                |                      |
 | [Mint/Burn](#mint-burn)                                   | numeric assets, trigger repetitions                                                                     | accounts or triggers |
 | [SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) | objects that have [metadata](./metadata.md): domains, accounts, asset definitions, NFTs, RWAs, triggers |                      |
 | [SetParameter](#setparameter)                             | chain parameters                                                                                        |                      |
@@ -54,7 +55,7 @@ they touch:
 | Target           | Instructions                                                                                                 |
 | ---------------- | ------------------------------------------------------------------------------------------------------------ |
 | Account          | register/unregister accounts, receive assets, update account metadata, grant/revoke permissions and roles    |
-| Domain           | register/unregister domains, transfer domain ownership, update domain metadata                               |
+| Domain           | ensure domain setup, unregister domains, transfer domain ownership, update domain metadata                    |
 | Asset definition | register/unregister definitions, transfer ownership, update metadata                                         |
 | Asset            | mint/burn numeric quantity, transfer numeric quantity                                                        |
 | Escrow           | open, accept, mark payment sent, release, cancel, dispute, resolve, draw down, or expire native custody records |
@@ -113,6 +114,29 @@ cargo run --bin iroha -- \
   <command>
 ```
 
+## EnsureAlias
+
+`EnsureAlias` is the ordinary first-release path for creating domains and
+their SNS leases. It declaratively binds the exact dataspace, owner, lease
+term, and quote guard, then creates or repairs all required state atomically.
+Use the authenticated `POST /v1/aliases/setup/plan` endpoint or the matching
+CLI workflow:
+
+```bash
+cargo run --bin iroha -- --config ./defaults/client.toml \
+  app alias setup plan \
+  --intent-file ./domain.intent.json \
+  --plan-file ./domain.plan.json
+
+cargo run --bin iroha -- --config ./defaults/client.toml \
+  app alias setup apply --plan-file ./domain.plan.json
+```
+
+The intent and plan are secret-free, but the apply step signs and submits an
+ordinary transaction with the configured account. A plan is bound to its
+chain, authority, live-state anchor, and deadline; never reuse one on another
+network.
+
 ## (Un)Register
 
 Registering and unregistering are the instructions used to give an ID to a
@@ -127,9 +151,10 @@ registration has a dedicated proof-of-possession instruction. As a rule,
 everything that can be registered can also be unregistered, but that is not
 a hard and fast rule.
 
-You can register domains, accounts, asset definitions, NFTs, peers, roles,
-and triggers. Peer registration uses `RegisterPeerWithPop`, which carries a
-proof of possession for the peer key. Check our
+You can register accounts, asset definitions, NFTs, peers, roles, and
+triggers. Domain setup uses `EnsureAlias`; the raw `Register::Domain` payload
+is reserved for genesis/bootstrap. Peer registration uses
+`RegisterPeerWithPop`, which carries a proof of possession for the peer key. Check our
 [naming conventions](/reference/naming.md) to learn about the restrictions
 put on entity names.
 
@@ -168,17 +193,23 @@ process of registering objects in a blockchain:
 
 | Language              | Guide                                                                                                   |
 | --------------------- | ------------------------------------------------------------------------------------------------------- |
-| CLI                   | Use the [Iroha CLI](/get-started/operate-iroha-via-cli.md) to register domains, accounts, and assets. |
+| CLI                   | Use the [Iroha CLI](/get-started/operate-iroha-via-cli.md) to set up domains and register accounts and assets. |
 | Rust                  | Use the [Rust tutorial](/guide/tutorials/rust.md).                                                      |
 | Kotlin/Java           | Use the [Kotlin/Java tutorial](/guide/tutorials/kotlin-java.md).                                        |
 | Python                | Use the [Python tutorial](/guide/tutorials/python.md).                                                  |
 | JavaScript/TypeScript | Use the [JavaScript/TypeScript tutorial](/guide/tutorials/javascript.md).                               |
 
-Register and unregister domains:
+Plan and apply ordinary domain setup, then unregister the domain when it is no
+longer needed:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger domain register --id docs.universal
+  app alias setup plan \
+  --intent-file ./docs-domain.intent.json \
+  --plan-file ./docs-domain.plan.json
+
+cargo run --bin iroha -- --config ./defaults/client.toml \
+  app alias setup apply --plan-file ./docs-domain.plan.json
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger domain unregister --id docs.universal

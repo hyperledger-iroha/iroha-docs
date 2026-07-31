@@ -27,8 +27,10 @@ pnpm build
 pnpm serve
 ```
 
-The site is built at the domain root. `src/public/CNAME` records the production
-domain for GitHub Pages.
+Vercel publishes `main` at the domain root for `docs.iroha.tech`. The GitHub
+Actions workflow also builds with `/iroha-docs/` as its public path and
+publishes the `gh-pages` backup. Domain ownership and routing are managed in
+the hosting and DNS control planes, so do not add a checked-in `CNAME` file.
 
 ## Validation
 
@@ -49,15 +51,15 @@ translations. Each translated page records its source route, source SHA-256,
 locale, and honest `machine-validated` status in frontmatter.
 
 For a release-wide regeneration, use the local NLLB-200 provider. Create its
-isolated Python 3.9 environment and convert the model once:
+isolated Python 3.9 environment and download the int8 CTranslate2 conversion:
 
 ```bash
 python3.9 -m venv .venv-translate
 .venv-translate/bin/pip install -r etc/requirements-translate.txt
-.venv-translate/bin/ct2-transformers-converter \
-  --model facebook/nllb-200-distilled-600M \
-  --output_dir .cache/nllb-200-distilled-600M-ct2 \
-  --quantization int8
+.venv-translate/bin/hf download \
+  osa911/nllb-200-distilled-600M-ct2-int8 \
+  --revision 46858753dbaf8eb5e21bb6f0037c3b90851e090a \
+  --local-dir .cache/nllb-200-distilled-600M-ct2
 ```
 
 Then regenerate every maintained locale from the final English sources and
@@ -80,8 +82,10 @@ The separately downloaded
 [`facebook/nllb-200-distilled-600M`](https://huggingface.co/facebook/nllb-200-distilled-600M)
 checkpoint is published by Meta under
 [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/), which does not
-permit commercial use. It is not redistributed by this repository; review its
-model card and license before downloading or using it.
+permit commercial use. The local setup uses the
+[`osa911` int8 CTranslate2 conversion](https://huggingface.co/osa911/nllb-200-distilled-600M-ct2-int8)
+of that checkpoint. Neither model is redistributed by this repository; review
+their model cards and license before downloading or using them.
 
 ## Refresh Generated Iroha References
 
@@ -97,6 +101,13 @@ The source checkout must contain the commit pinned in
 commit in a clean checkout. Copy-only artifacts are read from the pinned Git
 tree. The refresh updates checked-in artifacts and their SHA-256 values; review
 all resulting diffs.
+
+The pinned commit must also be fetchable from the public Iroha repository. If a
+local source commit has not been published yet, every artifact remains
+`pending-public-source-commit` and the manifest records
+`awaiting-public-source-commit`. This is an explicit incomplete state, not a
+successful public refresh. After the commit is published, rerun the refresh
+from a clean checkout to mark the artifacts `current`.
 
 ## Optional Site Configuration
 

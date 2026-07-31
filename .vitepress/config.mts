@@ -506,10 +506,14 @@ const THEME_LOCALES = Object.fromEntries(
   ]),
 )
 
+const PUBLIC_BASE = process.env.PUBLIC_PATH ?? '/'
+const publicAsset = (name: string): string => `${PUBLIC_BASE}${name}`
+
 export default defineConfig({
-  base: '/',
+  base: PUBLIC_BASE,
   srcDir: 'src',
   srcExclude: ['snippets/*.md'],
+  buildConcurrency: 4,
   cleanUrls: false,
   locales: SITE_LOCALES,
   title: 'Hyperledger Iroha 3 Docs',
@@ -535,10 +539,10 @@ export default defineConfig({
 
   head: [
     // Based on: https://evilmartians.com/chronicles/how-to-favicon-in-2021-six-files-that-fit-most-needs
-    ['link', { rel: 'icon', href: '/favicon.ico', sizes: 'any' }],
-    ['link', { rel: 'icon', href: '/icon.svg', sizes: 'image/svg+xml' }],
-    ['link', { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' }],
-    ['link', { rel: 'manifest', href: '/manifest.webmanifest' }],
+    ['link', { rel: 'icon', href: publicAsset('favicon.ico'), sizes: 'any' }],
+    ['link', { rel: 'icon', href: publicAsset('icon.svg'), sizes: 'image/svg+xml' }],
+    ['link', { rel: 'apple-touch-icon', href: publicAsset('apple-touch-icon.png') }],
+    ['link', { rel: 'manifest', href: publicAsset('manifest.webmanifest') }],
     // Google Analytics integration
     ['script', { src: 'https://www.googletagmanager.com/gtag/js?id=G-D6ETK9TN47' }],
     [
@@ -601,6 +605,11 @@ export default defineConfig({
       provider: 'local',
       options: {
         locales: SEARCH_LOCALES,
+        miniSearch: {
+          options: {
+            fields: ['title', 'titles'],
+          },
+        },
       },
     },
   },

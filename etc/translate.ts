@@ -1,9 +1,11 @@
 import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process'
 import { createHash } from 'node:crypto'
-import { mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises'
+import { copyFile, mkdir, mkdtemp, readFile, readdir, rename, rm, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { createInterface, type Interface as ReadlineInterface } from 'node:readline'
 import { fileURLToPath, pathToFileURL } from 'node:url'
+import { slugify } from '@mdit-vue/shared'
+import MarkdownIt from 'markdown-it'
 import { TRANSLATED_LOCALES, type DocsLocale } from './locales'
 
 const TRANSLATE_ENDPOINT = 'https://translate.googleapis.com/translate_a/single'
@@ -12,6 +14,12 @@ const NLLB_TRANSLATION_ENGINE = 'nllb-200-ct2'
 const TRANSLATION_STATUS = 'machine-validated'
 const MAX_REQUEST_CHARACTERS = 3_500
 const MAX_ATTEMPTS = 6
+
+const TECHNICAL_TERM_PATTERN =
+  /\b(?:CTranslate2|Docker Compose|Hyperledger Iroha|Iroha 3|LF Decentralized Trust|NLLB-200|Node\.js|SORA Nexus|Android|Docker|Hyperledger|Iroha|Kagami|Kaigi|KeePassXC|Kotodama|Kotlin|Kura|Minamoto|Musubi|Nexus|Norito|pnpm|Python|Rust|rustup|SoraDNS|SoraFS|SoraNet|Soracloud|Sumeragi|Swift|Taira|Torii|VitePress|cargo|curl|git|jq|npm|rustc|systemd|yarn)\b/gu
+const CAMEL_CASE_IDENTIFIER_PATTERN = /\b[A-Z][a-z]+(?:[A-Z][A-Za-z0-9]*)+\b/gu
+const UPPERCASE_IDENTIFIER_PATTERN = /\b[A-Z][A-Z0-9]+(?:[-/][A-Z0-9]+(?=$|[^\p{L}\p{N}_]))*(?:s)?\b/gu
+const DOMAIN_NAME_PATTERN = /\b(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z]{2,}\b/giu
 
 const GOOGLE_LANGUAGE_CODES: Readonly<Record<string, string>> = {
   'zh-hans': 'zh-CN',
@@ -48,12 +56,15 @@ interface FrontmatterDocument {
 
 interface ProtectedMarkdown {
   masked: string
+  valueForMarker(marker: string): string | undefined
   restore(translated: string): string
 }
 
+type ProtectedMarkerStyle = 'html' | 'identifier'
+
 export interface TranslationProvider {
   readonly engine?: string
-  readonly protectedMarkdownMode?: 'inline' | 'fragments'
+  readonly protectedMarkdownMode?: 'inline' | 'inline-identifiers' | 'fragments'
   languageCode?(locale: DocsLocale): string
   translate(text: string, targetLanguage: string): Promise<string>
   translateBatch?(texts: readonly string[], targetLanguage: string): Promise<string[]>
@@ -63,8 +74,15 @@ export interface TranslationProvider {
 interface GenerateOptions {
   sourceRoot?: string
   locales?: readonly DocsLocale[]
+  routes?: readonly string[]
   concurrency?: number
   provider?: TranslationProvider
+}
+
+interface SynchronizeHeadingAnchorOptions {
+  sourceRoot?: string
+  locales?: readonly DocsLocale[]
+  routes?: readonly string[]
 }
 
 interface NllbProviderOptions {
@@ -87,6 +105,28 @@ function sha256(content: string): string {
   return createHash('sha256').update(content).digest('hex')
 }
 
+/** Return exact technical tokens whose spelling translations must preserve. */
+export function technicalIdentifiers(source: string): Map<string, number> {
+  const counts = new Map<string, number>()
+  for (const pattern of [
+    TECHNICAL_TERM_PATTERN,
+    CAMEL_CASE_IDENTIFIER_PATTERN,
+    UPPERCASE_IDENTIFIER_PATTERN,
+    DOMAIN_NAME_PATTERN,
+  ]) {
+    for (const match of source.matchAll(pattern)) {
+      counts.set(match[0], (counts.get(match[0]) ?? 0) + 1)
+    }
+  }
+  const irohaVersionMatches = source.match(/\bIroha 3\b/gu) ?? []
+  if (irohaVersionMatches.length > 0) {
+    counts.set('Iroha', (counts.get('Iroha') ?? 0) + irohaVersionMatches.length)
+  }
+  const nexusMatches = source.match(/\bNexus\b/gu) ?? []
+  if (nexusMatches.length > 0) counts.set('Nexus', nexusMatches.length)
+  return counts
+}
+
 function splitFrontmatter(content: string): FrontmatterDocument {
   const match = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/u.exec(content)
   if (!match) return { frontmatter: null, body: content }
@@ -94,6 +134,90 @@ function splitFrontmatter(content: string): FrontmatterDocument {
     frontmatter: match[1],
     body: content.slice(match[0].length),
   }
+}
+
+interface MarkdownHeading {
+  explicitAnchor?: string
+  lineIndex: number
+  stableAnchor: string
+}
+
+const HEADING_MARKDOWN = new MarkdownIt({ html: true })
+const EXPLICIT_HEADING_ANCHOR = /\s+\{#([A-Za-z_][\w:.-]*)\}\s*$/u
+
+function headingText(markdown: string): string {
+  const inline = HEADING_MARKDOWN.parseInline(markdown, {})[0]
+  return (inline?.children ?? [])
+    .filter((token) => token.type === 'text' || token.type === 'code_inline')
+    .map((token) => token.content)
+    .join('')
+}
+
+/** Return stable VitePress heading IDs derived from the English source. */
+export function markdownHeadings(source: string): MarkdownHeading[] {
+  const headings: MarkdownHeading[] = []
+  const usedAnchors = new Set<string>()
+  const lines = source.split(/\r?\n/u)
+  let fence: { character: string; length: number } | undefined
+
+  for (let lineIndex = 0; lineIndex < lines.length; lineIndex += 1) {
+    const line = lines[lineIndex]
+    const fenceMarker = /^ {0,3}(`{3,}|~{3,})(.*)$/u.exec(line)
+    if (fence) {
+      if (
+        fenceMarker &&
+        fenceMarker[1][0] === fence.character &&
+        fenceMarker[1].length >= fence.length &&
+        fenceMarker[2].trim() === ''
+      ) {
+        fence = undefined
+      }
+      continue
+    }
+    if (fenceMarker) {
+      fence = { character: fenceMarker[1][0], length: fenceMarker[1].length }
+      continue
+    }
+
+    const heading = /^( {0,3}#{1,6})[ \t]+(.+?)(?:[ \t]+#+)?[ \t]*$/u.exec(line)
+    if (!heading) continue
+    const explicitAnchor = EXPLICIT_HEADING_ANCHOR.exec(heading[2])?.[1]
+    const baseAnchor = explicitAnchor ?? slugify(headingText(heading[2].replace(EXPLICIT_HEADING_ANCHOR, '')))
+    let stableAnchor = baseAnchor
+    let duplicateIndex = 1
+    while (usedAnchors.has(stableAnchor)) {
+      stableAnchor = `${baseAnchor}-${duplicateIndex}`
+      duplicateIndex += 1
+    }
+    usedAnchors.add(stableAnchor)
+    headings.push({ explicitAnchor, lineIndex, stableAnchor })
+  }
+
+  return headings
+}
+
+/** Add stable English-derived IDs to every Markdown heading in a document body. */
+export function addStableHeadingAnchors(source: string): string {
+  const lines = source.split(/\r?\n/u)
+  for (const heading of markdownHeadings(source)) {
+    if (heading.explicitAnchor) continue
+    lines[heading.lineIndex] = `${lines[heading.lineIndex]} {#${heading.stableAnchor}}`
+  }
+  return lines.join('\n')
+}
+
+function applyStableHeadingAnchors(source: string, stableAnchors: readonly string[]): string {
+  const lines = source.split(/\r?\n/u)
+  const localizedHeadings = markdownHeadings(source)
+  if (localizedHeadings.length !== stableAnchors.length) {
+    throw new Error(`heading inventory drift (expected ${stableAnchors.length}, found ${localizedHeadings.length})`)
+  }
+  for (let index = 0; index < localizedHeadings.length; index += 1) {
+    const heading = localizedHeadings[index]
+    const withoutAnchor = lines[heading.lineIndex].replace(EXPLICIT_HEADING_ANCHOR, '')
+    lines[heading.lineIndex] = `${withoutAnchor} {#${stableAnchors[index]}}`
+  }
+  return lines.join('\n')
 }
 
 async function markdownFiles(directory: string, relative = ''): Promise<string[]> {
@@ -109,12 +233,98 @@ async function markdownFiles(directory: string, relative = ''): Promise<string[]
   return files.flat().sort()
 }
 
+async function englishRoutes(sourceRoot: string): Promise<string[]> {
+  const localePaths = new Set(TRANSLATED_LOCALES.map((locale) => locale.path))
+  return (await markdownFiles(sourceRoot)).filter((route) => {
+    const first = route.split('/')[0]
+    return first !== 'snippets' && !localePaths.has(first)
+  })
+}
+
+async function routeDependencies(
+  sourceRoot: string,
+  sources: ReadonlyMap<string, string>,
+): Promise<Map<string, Buffer>> {
+  const dependencies = new Map<string, Buffer>()
+  const pending = [...sources.entries()]
+  const modulePattern = /\b(?:from\s+|import\s*)['"](\.{1,2}\/[^'"]+)['"]/gu
+
+  while (pending.length > 0) {
+    const [relativeSource, content] = pending.pop()!
+    const sourceDirectory = path.posix.dirname(relativeSource)
+    for (const match of content.matchAll(modulePattern)) {
+      const dependency = path.posix.normalize(path.posix.join(sourceDirectory, match[1]))
+      if (dependency === '..' || dependency.startsWith('../') || path.posix.isAbsolute(dependency)) {
+        throw new Error(`${relativeSource}: relative import escapes the documentation source root: ${match[1]}`)
+      }
+      if (dependencies.has(dependency)) continue
+      const bytes = await readFile(path.join(sourceRoot, dependency))
+      dependencies.set(dependency, bytes)
+      if (/\.(?:[cm]?[jt]s|vue)$/iu.test(dependency)) {
+        pending.push([dependency, bytes.toString('utf8')])
+      }
+    }
+  }
+
+  return dependencies
+}
+
+async function assertEnglishSnapshot(
+  sourceRoot: string,
+  availableRoutes: readonly string[],
+  sources: ReadonlyMap<string, string>,
+  dependencies: ReadonlyMap<string, Buffer>,
+): Promise<void> {
+  const currentRoutes = await englishRoutes(sourceRoot)
+  if (
+    currentRoutes.length !== availableRoutes.length ||
+    currentRoutes.some((route, index) => route !== availableRoutes[index])
+  ) {
+    throw new Error('English route inventory changed during translation; discard this run and restart')
+  }
+  for (const [route, content] of sources) {
+    if ((await readFile(path.join(sourceRoot, route), 'utf8')) !== content) {
+      throw new Error(`English source changed during translation: ${route}; discard this run and restart`)
+    }
+  }
+  for (const [dependency, content] of dependencies) {
+    if (!(await readFile(path.join(sourceRoot, dependency))).equals(content)) {
+      throw new Error(
+        `English source dependency changed during translation: ${dependency}; discard this run and restart`,
+      )
+    }
+  }
+}
+
+async function replaceDirectoryAtomically(current: string, replacement: string, backup: string): Promise<void> {
+  let movedCurrent = false
+  try {
+    await rename(current, backup)
+    movedCurrent = true
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error
+  }
+
+  try {
+    await rename(replacement, current)
+  } catch (error) {
+    if (movedCurrent) await rename(backup, current)
+    throw error
+  }
+  if (movedCurrent) await rm(backup, { recursive: true, force: true })
+}
+
 function localizeRoute(route: string, locale: DocsLocale): string {
+  const routePath = route.split(/[?#]/u, 1)[0]
+  const extension = path.posix.extname(routePath).toLowerCase()
+  if (/^\.{1,2}\//u.test(route) && extension && extension !== '.md') {
+    return `../${route}`
+  }
   if (
     !route.startsWith('/') ||
     route.startsWith('//') ||
     route.startsWith(`/${locale.path}/`) ||
-    /\.[a-z0-9]{2,8}(?:[?#].*)?$/iu.test(route)
+    (extension && extension !== '.md')
   ) {
     return route
   }
@@ -137,17 +347,20 @@ function localizeHtmlTag(tag: string, locale: DocsLocale): string {
 
 /**
  * Replace code, identifiers, URLs, and Markdown delimiters with translation-safe
- * symbolic numeric markers. The bracketed markers remain stable for every
- * published locale, including languages that transliterate unknown Latin
- * tokens.
+ * symbolic markers. HTML markers use `translate=no`; identifier markers give
+ * local models a tokenizer-safe placeholder while retaining paragraph context.
  */
-export function protectMarkdown(source: string, locale: DocsLocale): ProtectedMarkdown {
-  const values = new Map<string, string>()
+export function protectMarkdown(
+  source: string,
+  locale: DocsLocale,
+  markerStyle: ProtectedMarkerStyle = 'html',
+): ProtectedMarkdown {
+  const internalValues = new Map<string, string>()
   let sequence = 0
   const protect = (value: string): string => {
     const token = `⟦${sequence}⟧`
     sequence += 1
-    values.set(token, value)
+    internalValues.set(token, value)
     return token
   }
 
@@ -155,6 +368,7 @@ export function protectMarkdown(source: string, locale: DocsLocale): ProtectedMa
     protect(block),
   )
   masked = masked.replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1>/giu, (block) => protect(block))
+  masked = masked.replace(/(`+)([\s\S]*?)\1/gu, (code) => protect(code))
   masked = masked.replace(/\$\$[\s\S]*?\$\$/gu, (formula) => protect(formula))
   masked = masked.replace(/\\\[[\s\S]*?\\\]/gu, (formula) => protect(formula))
   masked = masked.replace(/\\\([^)\n]*\\\)/gu, (formula) => protect(formula))
@@ -162,8 +376,7 @@ export function protectMarkdown(source: string, locale: DocsLocale): ProtectedMa
   masked = masked.replace(/^ {0,3}(?:<{3}|={3})\s+.*$/gmu, (line) => protect(line))
   masked = masked.replace(/^ {0,3}(?:[-*_]\s*){3,}$/gmu, (line) => protect(line))
   masked = masked.replace(/^(\s*\|?(?:\s*:?-{3,}:?\s*\|)+\s*:?-{3,}:?\s*\|?\s*)$/gmu, (line) => protect(line))
-  masked = masked.replace(/^(\s*\[[^\]\n]+\]:\s+\S+.*)$/gmu, (line) => protect(line))
-  masked = masked.replace(/(`+)([\s\S]*?)\1/gu, (code) => protect(code))
+  masked = masked.replace(/^(\s*\[(?!\^)[^\]\n]+\]:\s+\S+.*)$/gmu, (line) => protect(line))
   masked = masked.replace(
     /(!?\[)([^\]\n]+)(\]\((?:\\.|[^)\n])+\))/gu,
     (_match, opening: string, label: string, suffix: string) =>
@@ -175,56 +388,104 @@ export function protectMarkdown(source: string, locale: DocsLocale): ProtectedMa
   )
   masked = masked.replace(/<[^>\n]+>/gu, (tag) => protect(localizeHtmlTag(tag, locale)))
   masked = masked.replace(/\bhttps?:\/\/[^\s<>)\]]+/giu, (url) => protect(url))
-  masked = masked.replace(/\{#[A-Za-z][\w:.-]*\}/gu, (anchor) => protect(anchor))
+  masked = masked.replace(DOMAIN_NAME_PATTERN, (domain) => protect(domain))
+  masked = masked.replace(/\{#[A-Za-z_][\w:.-]*\}/gu, (anchor) => protect(anchor))
   masked = masked.replace(/&(?:#\d+|#x[0-9a-f]+|[a-z][a-z0-9]+);/giu, (entity) => protect(entity))
-  masked = masked.replace(
-    /\b(?:AccountId|DA\/RBC|Hyperledger|Iroha|IVM|Kotodama|Norito|SORA|Sumeragi|Torii)\b/gu,
-    (term) => protect(term),
-  )
+  masked = masked.replace(TECHNICAL_TERM_PATTERN, (term) => protect(term))
+  masked = masked.replace(CAMEL_CASE_IDENTIFIER_PATTERN, (term) => protect(term))
+  masked = masked.replace(UPPERCASE_IDENTIFIER_PATTERN, (term) => protect(term))
   masked = masked.replace(/[*_~]{1,3}/gu, (delimiter) => protect(delimiter))
   masked = masked.replace(/\|/gu, (delimiter) => protect(delimiter))
-  masked = masked.replace(/^(\s*(?:#{1,6}|>|[-+*]|\d+[.)]|:::\s*[A-Za-z-]*)\s+)/gmu, (prefix) => protect(prefix))
+  masked = masked.replace(/^(\s*(?:#{1,6}|>|[-+*]|\d+[.)]|:::\s*[A-Za-z-]*|\[\^[^\]\n]+\]:)\s+)/gmu, (prefix) =>
+    protect(prefix),
+  )
   masked = masked.replace(/\n/gu, (newline) => protect(newline))
 
-  for (const token of values.keys()) {
-    masked = masked.replaceAll(token, `<span class="notranslate">${token}</span>`)
+  const values = new Map<string, string>()
+  let markerSequence = 0
+  for (const [internalToken, value] of internalValues) {
+    const token = `[PH${markerSequence.toString().padStart(6, '0')}]`
+    markerSequence += 1
+    values.set(token, value)
+    const rendered = markerStyle === 'html' ? `<span class="notranslate">${token}</span>` : token
+    masked = masked.replaceAll(internalToken, rendered)
   }
 
   return {
     masked,
+    valueForMarker(marker: string): string | undefined {
+      const token = /\[PH\d{6}\]/u.exec(marker)?.[0]
+      return token ? values.get(token) : undefined
+    },
     restore(translated: string): string {
-      let restored = translated
+      let restored = translated.replace(/\[\s*PH\s*([0-9][0-9\s,._-]*)\s*\]/giu, (candidate, encodedIndex: string) => {
+        const digits = encodedIndex.replace(/\D/gu, '')
+        if (!digits) return candidate
+        const index = Number.parseInt(digits, 10)
+        if (!Number.isSafeInteger(index)) return candidate
+        const canonical = `[PH${index.toString().padStart(6, '0')}]`
+        return values.has(canonical) ? canonical : candidate
+      })
       for (const [token, value] of values) {
-        const wrapped = new RegExp(`<span\\b[^>]*>\\s*${token}\\s*</span>`, 'gu')
+        const escapedToken = token.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&')
+        const wrapped = new RegExp(`<span\\b[^>]*>\\s*${escapedToken}\\s*</span>`, 'gu')
         restored = restored.replace(wrapped, token)
         const occurrences = restored.split(token).length - 1
         if (occurrences !== 1) {
-          throw new Error(`Translation changed protected marker ${token} (${occurrences} occurrences)`)
+          const carriers = [...values.entries()]
+            .filter(([otherToken, value]) => otherToken !== token && value.includes(token))
+            .map(([otherToken]) => otherToken)
+          const carrierDetail = carriers.length ? `; nested in ${carriers.join(', ')}` : ''
+          throw new Error(`Translation changed protected marker ${token} (${occurrences} occurrences${carrierDetail})`)
         }
-        restored = restored.replace(token, value)
+        const markerIndex = restored.indexOf(token)
+        const previous = markerIndex > 0 ? restored[markerIndex - 1] : ''
+        const next = restored[markerIndex + token.length] ?? ''
+        let replacement = value
+        if (/[\p{L}\p{N}]$/u.test(previous) && /^[\p{L}\p{N}]/u.test(replacement)) {
+          replacement = ` ${replacement}`
+        }
+        if (/[\p{L}\p{N}]$/u.test(replacement) && /^[\p{L}\p{N}]/u.test(next)) {
+          replacement = `${replacement} `
+        }
+        restored = restored.replace(token, () => replacement)
       }
       return restored
     },
   }
 }
 
-export function chunkForTranslation(content: string): string[] {
+export function chunkForTranslation(content: string, maximumCharacters = MAX_REQUEST_CHARACTERS): string[] {
+  if (!Number.isInteger(maximumCharacters) || maximumCharacters < 128) {
+    throw new Error('Translation chunk size must be an integer of at least 128 characters')
+  }
   const chunks: string[] = []
   let remaining = content
-  while (remaining.length > MAX_REQUEST_CHARACTERS) {
-    let cut = MAX_REQUEST_CHARACTERS
+  while (remaining.length > maximumCharacters) {
+    let cut = maximumCharacters
     const candidates = [
       remaining.lastIndexOf('\n\n', cut),
       remaining.lastIndexOf('\n', cut),
       remaining.lastIndexOf('. ', cut),
+      remaining.lastIndexOf('; ', cut),
+      remaining.lastIndexOf(': ', cut),
+      remaining.lastIndexOf(', ', cut),
       remaining.lastIndexOf(' ', cut),
     ]
-    const boundary = candidates.find((candidate) => candidate >= MAX_REQUEST_CHARACTERS / 2)
+    const boundary = candidates.find((candidate) => candidate >= maximumCharacters / 2)
     if (boundary !== undefined) cut = boundary + (remaining.startsWith('\n\n', boundary) ? 2 : 1)
 
     const openSpan = remaining.lastIndexOf('<span', cut)
     const closeSpan = remaining.lastIndexOf('</span>', cut)
     if (openSpan > closeSpan) cut = openSpan
+    for (const match of remaining.matchAll(/\[PH\d{6}\]/gu)) {
+      const start = match.index
+      if (start >= cut) break
+      if (start + match[0].length > cut) {
+        cut = start
+        break
+      }
+    }
     if (cut <= 0) throw new Error('Unable to split translation input safely')
 
     chunks.push(remaining.slice(0, cut))
@@ -268,8 +529,8 @@ export async function translateProtectedFragments(
   targetLanguage: string,
   provider: TranslationProvider,
 ): Promise<string> {
-  const markerPattern = /(<span class="notranslate">⟦\d+⟧<\/span>)/gu
-  const exactMarkerPattern = /^<span class="notranslate">⟦\d+⟧<\/span>$/u
+  const markerPattern = /(<span class="notranslate">\[PH\d{6}\]<\/span>)/gu
+  const exactMarkerPattern = /^<span class="notranslate">\[PH\d{6}\]<\/span>$/u
   const pieces = protectedMarkdown.masked.split(markerPattern)
   const plans: FragmentPlan[] = []
   const units: string[] = []
@@ -278,9 +539,10 @@ export async function translateProtectedFragments(
     const piece = pieces[pieceIndex]
     if (!piece || exactMarkerPattern.test(piece)) continue
 
-    const whitespace = /^(\s*)([\s\S]*?)(\s*)$/u.exec(piece)
+    const whitespace = /^(\s*(?:[,.:;!?]\s*)?)([\s\S]*?)(\s*)$/u.exec(piece)
     if (!whitespace || !whitespace[2]) continue
-    const chunks = chunkForTranslation(whitespace[2])
+    if (!/\p{L}/u.test(whitespace[2])) continue
+    const chunks = chunkForTranslation(whitespace[2], 128)
     plans.push({
       pieceIndex,
       prefix: whitespace[1],
@@ -297,10 +559,391 @@ export async function translateProtectedFragments(
   }
 
   for (const plan of plans) {
-    pieces[plan.pieceIndex] =
-      plan.prefix + translations.slice(plan.firstUnit, plan.firstUnit + plan.unitCount).join('') + plan.suffix
+    const sourceChunks = units.slice(plan.firstUnit, plan.firstUnit + plan.unitCount)
+    const translatedChunks = translations.slice(plan.firstUnit, plan.firstUnit + plan.unitCount)
+    let translated = joinTranslatedChunks(
+      sourceChunks,
+      translatedChunks,
+      ['jpn_Jpan', 'zho_Hans', 'zho_Hant'].includes(targetLanguage),
+    )
+    const previousMarker = pieces[plan.pieceIndex - 1]
+    const nextMarker = pieces[plan.pieceIndex + 1]
+    const previousValue =
+      previousMarker && exactMarkerPattern.test(previousMarker)
+        ? protectedMarkdown.valueForMarker(previousMarker)
+        : undefined
+    const nextValue =
+      nextMarker && exactMarkerPattern.test(nextMarker) ? protectedMarkdown.valueForMarker(nextMarker) : undefined
+
+    // Fragment-only translation deliberately hides protected markers from the
+    // model. Some languages then drop an English possessive, parenthesis, or
+    // hyphen at that boundary. Keep restored identifiers as separate words
+    // even when the translated fragment no longer supplies the punctuation.
+    if (previousValue && /[\p{L}\p{N}]$/u.test(previousValue) && /^[\p{L}\p{N}]/u.test(translated) && !plan.prefix) {
+      translated = ` ${translated}`
+    }
+    if (nextValue && /[\p{L}\p{N}]$/u.test(translated) && /^[\p{L}\p{N}]/u.test(nextValue) && !plan.suffix) {
+      translated = `${translated} `
+    }
+
+    pieces[plan.pieceIndex] = plan.prefix + translated + plan.suffix
   }
   return protectedMarkdown.restore(pieces.join(''))
+}
+
+interface MarkdownTranslationUnit {
+  content: string
+  translate: boolean
+}
+
+type MarkdownLineKind = 'blockquote' | 'directive' | 'footnote' | 'heading' | 'html' | 'list' | 'plain' | 'table'
+
+function markdownLineKind(line: string): MarkdownLineKind {
+  if (/^ {0,3}#{1,6}[ \t]+/u.test(line)) return 'heading'
+  if (/^ {0,3}(?:[-+*]|\d+[.)])[ \t]+/u.test(line)) return 'list'
+  if (/^ {0,3}\[\^[^\]\n]+\]:[ \t]+/u.test(line)) return 'footnote'
+  if (/^ {0,3}>[ \t]?/u.test(line)) return 'blockquote'
+  if (/^ {0,3}\|/u.test(line)) return 'table'
+  if (/^ {0,3}:::/u.test(line)) return 'directive'
+  if (/^ {0,3}<[A-Za-z!/]/u.test(line)) return 'html'
+  return 'plain'
+}
+
+function logicalProseUnits(lines: readonly string[]): string[] {
+  const units: string[] = []
+  let current = ''
+  let currentKind: MarkdownLineKind | undefined
+
+  const flush = () => {
+    if (current) units.push(current)
+    current = ''
+    currentKind = undefined
+  }
+
+  for (const line of lines) {
+    const kind = markdownLineKind(line)
+    if (!current) {
+      current = line
+      currentKind = kind
+      continue
+    }
+
+    if (kind === 'plain' && currentKind === 'plain') {
+      current += ` ${line.trim()}`
+      continue
+    }
+    if (
+      kind === 'plain' &&
+      (currentKind === 'list' || currentKind === 'blockquote' || currentKind === 'footnote') &&
+      /^\s+/u.test(line)
+    ) {
+      current += ` ${line.trim()}`
+      continue
+    }
+    if (kind === 'blockquote' && currentKind === 'blockquote') {
+      current += ` ${line.replace(/^ {0,3}>[ \t]?/u, '').trim()}`
+      continue
+    }
+
+    flush()
+    current = line
+    currentKind = kind
+  }
+  flush()
+  return units
+}
+
+/**
+ * Split Markdown into complete prose units while preserving literal blocks.
+ *
+ * Soft-wrapped paragraph and list continuation lines are joined before
+ * translation so a local model sees complete sentences instead of isolated
+ * line fragments.
+ */
+export function markdownTranslationUnits(source: string): MarkdownTranslationUnit[] {
+  const units: MarkdownTranslationUnit[] = []
+  const lines = source.split('\n')
+  let prose: string[] = []
+
+  const pushProse = (hasFollowingNewline: boolean) => {
+    const logical = logicalProseUnits(prose)
+    for (const [index, content] of logical.entries()) {
+      units.push({ content, translate: true })
+      if (index + 1 < logical.length || hasFollowingNewline) units.push({ content: '\n', translate: false })
+    }
+    prose = []
+  }
+
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index]
+    const hasFollowingNewline = index + 1 < lines.length
+
+    const fence = /^ {0,3}(`{3,}|~{3,})/u.exec(line)
+    const script = /^ {0,3}<(script|style)\b/iu.exec(line)
+    const displayMath = /^ {0,3}(?:\$\$|\\\[)\s*$/u.test(line)
+    if (fence || script || displayMath) {
+      pushProse(false)
+      const literal: string[] = [line]
+      if (fence) {
+        for (index += 1; index < lines.length; index += 1) {
+          literal.push(lines[index])
+          if (new RegExp(`^ {0,3}${fence[1][0]}{${fence[1].length},}\\s*$`, 'u').test(lines[index])) break
+        }
+      } else if (script) {
+        const close = new RegExp(`</${script[1]}>`, 'iu')
+        if (!close.test(line)) {
+          for (index += 1; index < lines.length; index += 1) {
+            literal.push(lines[index])
+            if (close.test(lines[index])) break
+          }
+        }
+      } else if (!(line.trim() === '$$' && line.indexOf('$$') !== line.lastIndexOf('$$'))) {
+        const close = displayMath && line.trim() === '$$' ? /^\s*\$\$\s*$/u : /^\s*\\\]\s*$/u
+        for (index += 1; index < lines.length; index += 1) {
+          literal.push(lines[index])
+          if (close.test(lines[index])) break
+        }
+      }
+      units.push({ content: literal.join('\n'), translate: false })
+      if (index + 1 < lines.length) units.push({ content: '\n', translate: false })
+      continue
+    }
+
+    if (line === '') {
+      pushProse(true)
+      if (hasFollowingNewline) units.push({ content: '\n', translate: false })
+      continue
+    }
+    prose.push(line)
+    if (!hasFollowingNewline) pushProse(false)
+  }
+
+  return units
+}
+
+interface InlineTranslationPlan {
+  protectedMarkdown: ProtectedMarkdown
+  firstChunk: number
+  chunkCount: number
+  prefix: string
+  source: string
+  suffix: string
+}
+
+function removeTranslatableEmphasis(source: string): string {
+  return source
+    .replace(/(\*\*|__|~~)(?=\S)([\s\S]*?\S)\1/gu, '$2')
+    .replace(/(?<![\p{L}\p{N}])([*_])(?=\S)([\s\S]*?\S)\1(?![\p{L}\p{N}])/gu, '$2')
+}
+
+function detachBoundaryMarkers(
+  masked: string,
+  protectedMarkdown: ProtectedMarkdown,
+): { core: string; prefix: string; suffix: string } {
+  const marker = /\[PH\d{6}\]/u
+  const structuralPrefix = /^\s*(?:#{1,6}|>|[-+*]|\d+[.)]|:::\s*[A-Za-z-]*|\[\^[^\]\n]+\]:)\s+$/u
+  const structuralSuffix = /^\{#[A-Za-z_][\w:.-]*\}$/u
+  let core = masked
+  let prefix = ''
+  let suffix = ''
+
+  while (true) {
+    const leading = /^\s*(\[PH\d{6}\])\s*/u.exec(core)
+    if (!leading) break
+    const value = protectedMarkdown.valueForMarker(leading[1])
+    if (value === undefined || (/[\p{L}\p{N}]/u.test(value) && !structuralPrefix.test(value))) break
+    prefix += leading[0]
+    core = core.slice(leading[0].length)
+  }
+  while (true) {
+    const trailing = /\s*(\[PH\d{6}\])\s*$/u.exec(core)
+    if (!trailing) break
+    const value = protectedMarkdown.valueForMarker(trailing[1])
+    if (value === undefined || (/[\p{L}\p{N}]/u.test(value) && !structuralSuffix.test(value))) break
+    suffix = trailing[0] + suffix
+    core = core.slice(0, trailing.index)
+  }
+
+  if (!marker.test(core)) return { core, prefix, suffix }
+  return { core, prefix, suffix }
+}
+
+function translationLetterCount(content: string): number {
+  return [...content.matchAll(/[\p{L}\p{M}]/gu)].length
+}
+
+function endsWithContinuationPunctuation(content: string): boolean {
+  return /[,;،؛，；](?:["')\]}»”]*)$/u.test(content.trim())
+}
+
+function translationCompletenessError(source: string, translated: string, locale: DocsLocale): string | undefined {
+  const sourceLetters = translationLetterCount(source)
+  const translatedLetters = translationLetterCount(translated)
+  const minimumRatio = ['ja', 'zh-hans', 'zh-hant'].includes(locale.key) ? 0.25 : 0.35
+  if (sourceLetters >= 80 && translatedLetters / sourceLetters < minimumRatio) {
+    return `output is materially short (${(translatedLetters / sourceLetters).toFixed(2)} of source letters)`
+  }
+  if (
+    sourceLetters >= 80 &&
+    /[.!?](?:["')\]}]*)$/u.test(source.trim()) &&
+    endsWithContinuationPunctuation(translated)
+  ) {
+    return 'output ends with continuation punctuation'
+  }
+  return undefined
+}
+
+function joinTranslatedChunks(
+  sourceChunks: readonly string[],
+  translatedChunks: readonly string[],
+  compactBoundaries: boolean,
+): string {
+  let joined = translatedChunks[0] ?? ''
+  for (let index = 1; index < translatedChunks.length; index += 1) {
+    const next = translatedChunks[index]
+    const sourceHadWhitespace = /\s$/u.test(sourceChunks[index - 1]) || /^\s/u.test(sourceChunks[index])
+    if (sourceHadWhitespace && !compactBoundaries && !/\s$/u.test(joined) && !/^\s/u.test(next)) joined += ' '
+    joined += next
+  }
+  return joined
+}
+
+function chunksForIncompleteRetry(content: string): string[] {
+  const sentences: string[] = []
+  let pending = ''
+  for (const { segment } of new Intl.Segmenter('en', { granularity: 'sentence' }).segment(content)) {
+    pending += segment
+    if (translationLetterCount(pending) < 20) continue
+    if (!/[.!?](?:["')\]}]*)\s*$/u.test(pending)) continue
+    sentences.push(pending)
+    pending = ''
+  }
+  if (pending) sentences.push(pending)
+  if (sentences.length === 0) sentences.push(content)
+  return sentences.flatMap((sentence) => chunkForTranslation(sentence, 128))
+}
+
+async function retryIncompleteInlineUnit(
+  source: string,
+  locale: DocsLocale,
+  provider: TranslationProvider,
+): Promise<string> {
+  const protectedMarkdown = protectMarkdown(source, locale, 'identifier')
+  const { core, prefix, suffix } = detachBoundaryMarkers(protectedMarkdown.masked, protectedMarkdown)
+  if (!/\p{L}/u.test(core)) return protectedMarkdown.restore(prefix + core + suffix)
+  const sourceChunks = chunksForIncompleteRetry(core)
+  const translations = await translateBatch(provider, sourceChunks, providerLanguageCode(provider, locale))
+  if (translations.length !== sourceChunks.length) {
+    throw new Error(
+      `Translation provider returned ${translations.length} results for ${sourceChunks.length} retry chunks`,
+    )
+  }
+  const translated = joinTranslatedChunks(sourceChunks, translations, ['ja', 'zh-hans', 'zh-hant'].includes(locale.key))
+  try {
+    return protectedMarkdown.restore(prefix + translated + suffix)
+  } catch {
+    return translateProtectedFragments(
+      protectMarkdown(source, locale),
+      providerLanguageCode(provider, locale),
+      provider,
+    )
+  }
+}
+
+async function translateInlineIdentifierMarkdown(
+  source: string,
+  locale: DocsLocale,
+  provider: TranslationProvider,
+): Promise<string> {
+  const output: string[] = []
+  const plans: InlineTranslationPlan[] = []
+  const chunks: string[] = []
+
+  const baseUnits = markdownTranslationUnits(source)
+  const units = baseUnits.flatMap((unit): MarkdownTranslationUnit[] => {
+    if (!unit.translate || markdownLineKind(unit.content) !== 'table') return [unit]
+    return unit.content
+      .split(/((?<!\\)\|)/u)
+      .filter(Boolean)
+      .map((content) => ({ content, translate: content !== '|' }))
+  })
+
+  for (const unit of units) {
+    if (!unit.translate || !/\p{L}/u.test(unit.content)) {
+      output.push(unit.content)
+      continue
+    }
+
+    // NLLB is substantially more reliable when it translates complete prose
+    // without paired placeholder tokens around emphasis spans. Localized prose
+    // therefore normalizes emphasis to plain text while preserving code,
+    // identifiers, links, and every structural Markdown token.
+    const protectedMarkdown = protectMarkdown(removeTranslatableEmphasis(unit.content), locale, 'identifier')
+    const { core, prefix, suffix } = detachBoundaryMarkers(protectedMarkdown.masked, protectedMarkdown)
+    if (!/\p{L}/u.test(core)) {
+      output.push(protectedMarkdown.restore(prefix + core + suffix))
+      continue
+    }
+    const unitChunks = chunkForTranslation(core, 300)
+    plans.push({
+      protectedMarkdown,
+      firstChunk: chunks.length,
+      chunkCount: unitChunks.length,
+      prefix,
+      source: removeTranslatableEmphasis(unit.content),
+      suffix,
+    })
+    chunks.push(...unitChunks)
+    output.push('')
+  }
+
+  const translations = await translateBatch(provider, chunks, providerLanguageCode(provider, locale))
+  if (translations.length !== chunks.length) {
+    throw new Error(`Translation provider returned ${translations.length} results for ${chunks.length} prose chunks`)
+  }
+
+  let planIndex = 0
+  for (let outputIndex = 0; outputIndex < output.length; outputIndex += 1) {
+    if (output[outputIndex] !== '') continue
+    const plan = plans[planIndex]
+    planIndex += 1
+    const sourceChunks = chunks.slice(plan.firstChunk, plan.firstChunk + plan.chunkCount)
+    const translatedChunks = translations.slice(plan.firstChunk, plan.firstChunk + plan.chunkCount)
+    const translated = joinTranslatedChunks(
+      sourceChunks,
+      translatedChunks,
+      ['ja', 'zh-hans', 'zh-hant'].includes(locale.key),
+    )
+    let candidate: string
+    try {
+      candidate = plan.protectedMarkdown.restore(plan.prefix + translated + plan.suffix)
+    } catch (error) {
+      try {
+        candidate = await translateProtectedFragments(
+          protectMarkdown(plan.source, locale),
+          providerLanguageCode(provider, locale),
+          provider,
+        )
+      } catch (fallbackError) {
+        throw new Error(
+          `prose unit ${planIndex}: ${error instanceof Error ? error.message : String(error)}; fragment fallback failed: ${
+            fallbackError instanceof Error ? fallbackError.message : String(fallbackError)
+          }`,
+          { cause: fallbackError },
+        )
+      }
+    }
+    const incomplete = translationCompletenessError(plan.source, candidate, locale)
+    if (incomplete) {
+      candidate = await retryIncompleteInlineUnit(plan.source, locale, provider)
+      const retryIncomplete = translationCompletenessError(plan.source, candidate, locale)
+      if (retryIncomplete) {
+        throw new Error(`prose unit ${planIndex}: ${incomplete}; sentence-level retry ${retryIncomplete}`)
+      }
+    }
+    output[outputIndex] = candidate
+  }
+  return output.join('')
 }
 
 function decodeTranslatedHtml(content: string): string {
@@ -361,7 +1004,7 @@ export class GoogleTranslationProvider implements TranslationProvider {
 
 export class NllbTranslationProvider implements TranslationProvider {
   readonly engine = NLLB_TRANSLATION_ENGINE
-  readonly protectedMarkdownMode = 'fragments' as const
+  readonly protectedMarkdownMode = 'inline-identifiers' as const
 
   private readonly python: string
   private readonly model: string
@@ -514,7 +1157,10 @@ export class NllbTranslationProvider implements TranslationProvider {
 
 async function translateMarkdown(source: string, locale: DocsLocale, provider: TranslationProvider): Promise<string> {
   if (!source.trim()) return source
-  const protectedMarkdown = protectMarkdown(source, locale)
+  if (provider.protectedMarkdownMode === 'inline-identifiers') {
+    return translateInlineIdentifierMarkdown(source, locale, provider)
+  }
+  const protectedMarkdown = protectMarkdown(source, locale, 'html')
   const targetLanguage = providerLanguageCode(provider, locale)
   if (provider.protectedMarkdownMode === 'fragments') {
     return translateProtectedFragments(protectedMarkdown, targetLanguage, provider)
@@ -586,7 +1232,7 @@ export async function translateDocument(
       : route === 'index.md'
         ? await translateHomeFrontmatter(frontmatter, locale, provider)
         : frontmatter
-  const translatedBody = await translateMarkdown(body, locale, provider)
+  const translatedBody = await translateMarkdown(addStableHeadingAnchors(body), locale, provider)
   const metadata = [
     `translation_locale: ${locale.key}`,
     `translation_source: /${route}`,
@@ -597,6 +1243,47 @@ export async function translateDocument(
   if (localizedFrontmatter !== null) metadata.push('', localizedFrontmatter)
   const bodySeparator = translatedBody.startsWith('\n') || !translatedBody ? '' : '\n'
   return `---\n${metadata.join('\n')}\n---\n${bodySeparator}${translatedBody}`
+}
+
+/** Synchronize stable English heading IDs into existing translated pages without retranslating prose. */
+export async function synchronizeTranslationHeadingAnchors(
+  options: SynchronizeHeadingAnchorOptions = {},
+): Promise<void> {
+  const sourceRoot = options.sourceRoot ?? path.resolve(process.cwd(), 'src')
+  const locales = options.locales ?? TRANSLATED_LOCALES
+  const availableRoutes = await englishRoutes(sourceRoot)
+  const availableRouteSet = new Set(availableRoutes)
+  const routes = options.routes
+    ? [...new Set(options.routes.map((route) => route.replace(/^\/+/u, '')))]
+    : availableRoutes
+  const unknownRoutes = routes.filter((route) => !availableRouteSet.has(route))
+  if (unknownRoutes.length > 0) {
+    throw new Error(`Unknown English route(s): ${unknownRoutes.join(', ')}`)
+  }
+
+  const anchorsByRoute = new Map<string, string[]>()
+  await Promise.all(
+    routes.map(async (route) => {
+      const english = await readFile(path.join(sourceRoot, route), 'utf8')
+      anchorsByRoute.set(
+        route,
+        markdownHeadings(splitFrontmatter(english).body).map((heading) => heading.stableAnchor),
+      )
+    }),
+  )
+
+  const updates: Array<{ content: string; target: string }> = []
+  for (const locale of locales) {
+    for (const route of routes) {
+      const target = path.join(sourceRoot, locale.path, route)
+      const content = await readFile(target, 'utf8')
+      const document = splitFrontmatter(content)
+      const anchoredBody = applyStableHeadingAnchors(document.body, anchorsByRoute.get(route)!)
+      const prefixLength = content.length - document.body.length
+      updates.push({ target, content: content.slice(0, prefixLength) + anchoredBody })
+    }
+  }
+  await Promise.all(updates.map(({ target, content }) => writeFile(target, content)))
 }
 
 async function parallelMap<T>(
@@ -624,55 +1311,93 @@ export async function generateTranslations(options: GenerateOptions = {}): Promi
     throw new Error('Translation concurrency must be an integer from 1 through 16')
   }
 
-  const localePaths = new Set(TRANSLATED_LOCALES.map((locale) => locale.path))
-  const routes = (await markdownFiles(sourceRoot)).filter((route) => {
-    const first = route.split('/')[0]
-    return first !== 'snippets' && !localePaths.has(first)
-  })
+  const availableRoutes = await englishRoutes(sourceRoot)
+  const availableRouteSet = new Set(availableRoutes)
+  const routes = options.routes
+    ? [...new Set(options.routes.map((route) => route.replace(/^\/+/u, '')))]
+    : availableRoutes
+  const unknownRoutes = routes.filter((route) => !availableRouteSet.has(route))
+  if (unknownRoutes.length > 0) {
+    throw new Error(`Unknown English route(s): ${unknownRoutes.join(', ')}`)
+  }
   const sources = new Map<string, string>()
   await Promise.all(
     routes.map(async (route) => {
       sources.set(route, await readFile(path.join(sourceRoot, route), 'utf8'))
     }),
   )
+  const dependencies = await routeDependencies(sourceRoot, sources)
 
-  for (const locale of locales) {
-    const localeRoot = path.join(sourceRoot, locale.path)
-    await rm(localeRoot, { recursive: true, force: true })
-    console.log(`Translating ${routes.length} pages to ${locale.label} (${locale.key})…`)
-    await parallelMap(routes, concurrency, async (route, index) => {
-      const target = path.join(localeRoot, route)
-      let translated
-      try {
-        translated = await translateDocument(sources.get(route)!, route, locale, provider)
-      } catch (error) {
-        throw new Error(`${locale.key}/${route}: ${error instanceof Error ? error.message : String(error)}`, {
-          cause: error,
-        })
+  const stagingRoot = await mkdtemp(path.join(path.dirname(sourceRoot), `.iroha-docs-translation-${process.pid}-`))
+  try {
+    for (const locale of locales) {
+      const localeRoot = path.join(sourceRoot, locale.path)
+      const stagedLocaleRoot = path.join(stagingRoot, locale.path)
+      const backupLocaleRoot = path.join(stagingRoot, `${locale.path}-previous`)
+      const scope = options.routes ? 'selected pages' : 'pages'
+      console.log(`Translating ${routes.length} ${scope} to ${locale.label} (${locale.key})…`)
+      await parallelMap(routes, concurrency, async (route, index) => {
+        const target = path.join(stagedLocaleRoot, route)
+        let translated
+        try {
+          translated = await translateDocument(sources.get(route)!, route, locale, provider)
+        } catch (error) {
+          throw new Error(`${locale.key}/${route}: ${error instanceof Error ? error.message : String(error)}`, {
+            cause: error,
+          })
+        }
+        await mkdir(path.dirname(target), { recursive: true })
+        await writeFile(target, translated)
+        if ((index + 1) % 10 === 0 || index + 1 === routes.length) {
+          console.log(`[${locale.key}] ${index + 1}/${routes.length}`)
+        }
+      })
+      for (const dependency of dependencies.keys()) {
+        const target = path.join(stagedLocaleRoot, dependency)
+        await mkdir(path.dirname(target), { recursive: true })
+        await copyFile(path.join(sourceRoot, dependency), target)
       }
-      await mkdir(path.dirname(target), { recursive: true })
-      await writeFile(target, translated)
-      if ((index + 1) % 10 === 0 || index + 1 === routes.length) {
-        console.log(`[${locale.key}] ${index + 1}/${routes.length}`)
+      await assertEnglishSnapshot(sourceRoot, availableRoutes, sources, dependencies)
+
+      if (options.routes) {
+        for (const route of routes) {
+          const target = path.join(localeRoot, route)
+          await mkdir(path.dirname(target), { recursive: true })
+          await rename(path.join(stagedLocaleRoot, route), target)
+        }
+        for (const dependency of dependencies.keys()) {
+          const target = path.join(localeRoot, dependency)
+          await mkdir(path.dirname(target), { recursive: true })
+          await rename(path.join(stagedLocaleRoot, dependency), target)
+        }
+      } else {
+        await replaceDirectoryAtomically(localeRoot, stagedLocaleRoot, backupLocaleRoot)
       }
-    })
+    }
+    await assertEnglishSnapshot(sourceRoot, availableRoutes, sources, dependencies)
+  } finally {
+    await rm(stagingRoot, { recursive: true, force: true })
   }
 }
 
 interface TranslationCliOptions {
   locales: readonly DocsLocale[]
+  routes?: readonly string[]
   concurrency: number
   providerName: 'google' | 'nllb'
   python?: string
   model?: string
+  synchronizeAnchors: boolean
 }
 
 function parseCli(argv: string[]): TranslationCliOptions {
   let selectedKeys: string[] = []
+  let routes: string[] | undefined
   let concurrency = 4
   let providerName: 'google' | 'nllb' = 'google'
   let python: string | undefined
   let model: string | undefined
+  let synchronizeAnchors = false
   for (const argument of argv) {
     if (argument.startsWith('--locale=')) {
       selectedKeys = argument
@@ -680,6 +1405,15 @@ function parseCli(argv: string[]): TranslationCliOptions {
         .split(',')
         .map((key) => key.trim())
         .filter(Boolean)
+    } else if (argument.startsWith('--route=')) {
+      routes = [
+        ...(routes ?? []),
+        ...argument
+          .slice('--route='.length)
+          .split(',')
+          .map((route) => route.trim())
+          .filter(Boolean),
+      ]
     } else if (argument.startsWith('--concurrency=')) {
       concurrency = Number(argument.slice('--concurrency='.length))
     } else if (argument.startsWith('--provider=')) {
@@ -694,6 +1428,8 @@ function parseCli(argv: string[]): TranslationCliOptions {
     } else if (argument.startsWith('--model=')) {
       model = argument.slice('--model='.length)
       if (!model) throw new Error('--model requires a CTranslate2 model path')
+    } else if (argument === '--sync-anchors') {
+      synchronizeAnchors = true
     } else {
       throw new Error(`Unknown translation option: ${argument}`)
     }
@@ -705,22 +1441,28 @@ function parseCli(argv: string[]): TranslationCliOptions {
         return locale
       })
     : TRANSLATED_LOCALES
-  if (providerName === 'nllb' && !model) {
+  if (!synchronizeAnchors && providerName === 'nllb' && !model) {
     throw new Error('--provider=nllb requires --model=<CTranslate2 model path>')
   }
-  if (providerName === 'google' && (python || model)) {
+  if (!synchronizeAnchors && providerName === 'google' && (python || model)) {
     throw new Error('--python and --model are only valid with --provider=nllb')
   }
-  return { locales, concurrency, providerName, python, model }
+  return { locales, routes, concurrency, providerName, python, model, synchronizeAnchors }
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  const { locales, concurrency, providerName, python, model } = parseCli(process.argv.slice(2))
-  const provider: TranslationProvider =
-    providerName === 'nllb' ? new NllbTranslationProvider({ python, model: model! }) : new GoogleTranslationProvider()
+  const { locales, routes, concurrency, providerName, python, model, synchronizeAnchors } = parseCli(
+    process.argv.slice(2),
+  )
   ;(async () => {
+    if (synchronizeAnchors) {
+      await synchronizeTranslationHeadingAnchors({ locales, routes })
+      return
+    }
+    const provider: TranslationProvider =
+      providerName === 'nllb' ? new NllbTranslationProvider({ python, model: model! }) : new GoogleTranslationProvider()
     try {
-      await generateTranslations({ locales, concurrency, provider })
+      await generateTranslations({ locales, routes, concurrency, provider })
     } finally {
       await provider.close?.()
     }

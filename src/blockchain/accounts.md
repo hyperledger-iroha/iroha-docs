@@ -2,8 +2,9 @@
 
 An account is an authority that can sign transactions and own ledger state.
 In the current Iroha 3 data model, `AccountId` is canonical and domainless:
-it is derived from the account controller rather than from an `account@domain`
-string.
+it is derived from the account controller and encoded canonically as I105.
+Human-readable domain and dataspace context belongs to separate account-alias
+bindings.
 
 ## Structure
 
@@ -106,8 +107,8 @@ If a transaction is rejected unexpectedly, check that:
 - the client public key matches the private key used for signing
 - the account was registered in genesis or by a committed transaction
 - the authority has the permissions required by the instruction
-- scripts are not using old `account@domain` literals where a canonical
-  account address is required
+- strict account fields use the canonical I105 account ID, while readable
+  names are resolved through an active account-alias binding
 
 See also:
 

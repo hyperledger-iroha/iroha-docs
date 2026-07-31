@@ -44,9 +44,10 @@ jobs:
       - name: Build VitePress
         run: |
           pnpm build
-          pnpm cli validate-links .vitepress/dist
+          pnpm cli validate-links .vitepress/dist --public-path /iroha-docs/
         env:
           FORCE_COLOR: 2
+          PUBLIC_PATH: /iroha-docs/
 
       - uses: actions/configure-pages@v5
 

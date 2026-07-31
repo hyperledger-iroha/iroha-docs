@@ -85,6 +85,5 @@ Refer to the section on
 details about `Register<Account>` instructions.
 
 [^1]:
-    Current account IDs are canonical and derive from the account
-    controller. The docs still use "register an account" when describing
-    the `Register<Account>` instruction.
+    `Register<Account>` creates ledger state for a canonical, domainless
+    `AccountId`; domain routing and aliases are managed separately.

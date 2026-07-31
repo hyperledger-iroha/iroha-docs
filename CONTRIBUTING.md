@@ -40,10 +40,10 @@ provider once:
 ```bash
 python3.9 -m venv .venv-translate
 .venv-translate/bin/pip install -r etc/requirements-translate.txt
-.venv-translate/bin/ct2-transformers-converter \
-  --model facebook/nllb-200-distilled-600M \
-  --output_dir .cache/nllb-200-distilled-600M-ct2 \
-  --quantization int8
+.venv-translate/bin/hf download \
+  osa911/nllb-200-distilled-600M-ct2-int8 \
+  --revision 46858753dbaf8eb5e21bb6f0037c3b90851e090a \
+  --local-dir .cache/nllb-200-distilled-600M-ct2
 ```
 
 Regenerate and validate all maintained locale trees with:
@@ -64,8 +64,10 @@ The local model is Meta's
 [`facebook/nllb-200-distilled-600M`](https://huggingface.co/facebook/nllb-200-distilled-600M),
 licensed separately under
 [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/). That license
-does not permit commercial use. The model is not redistributed here; review
-its model card and license before use.
+does not permit commercial use. The setup downloads the
+[`osa911` int8 CTranslate2 conversion](https://huggingface.co/osa911/nllb-200-distilled-600M-ct2-int8);
+neither model is redistributed here. Review both model cards and the license
+before use.
 
 ## Generated References
 
@@ -78,7 +80,10 @@ pnpm validate:provenance
 ```
 
 The command writes checked-in snippets and public OpenAPI data, then updates
-their SHA-256 provenance. It never selects or fetches a branch.
+their SHA-256 provenance. It never selects or fetches a branch. Do not mark
+artifacts current until the pinned commit is fetchable from the public Iroha
+repository; unpublished local commits use the explicit
+`awaiting-public-source-commit` manifest state.
 
 ## Quality Checks
 

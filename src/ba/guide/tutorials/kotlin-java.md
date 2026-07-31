@@ -1,0 +1,80 @@
+---
+translation_locale: ba
+translation_source: /guide/tutorials/kotlin-java.md
+translation_source_hash: 91dfd38597028531ec579eeb97dcd5acbfcdf6d27ba51991ca96a2d40077aaef
+translation_status: machine-validated
+translation_engine: nllb-200-ct2
+---
+
+# Kotlin, Android, һәм Java {#kotlin-android-and-java}
+
+Ҡоролтай Kotlin SDK өсөн default клиент стегы JVM һәм Android Ҡулланыусылар. `kotlin/` ҡаҙнаһында Iroha репозиторий һәм платформа буйынса бүленгән, шуға күрә портатив код ала алмай Android бәйлелектәре.
+
+## Модулдар {#modules}
+
+|Артефакт |Тип |Ҡулланыу |
+| --- | --- | --- |
+|`org.hyperledger.iroha.sdk:core-jvm` |JAR | Таҙа Kotlin/JVM Norito, мәғлүмәт моделе, крипто, транзакция, Torii, һәм протокол коды |
+|`org.hyperledger.iroha.sdk:client-android` |AAR |Android клавиатура һаҡлау, ҡоролмалар телеметрияһы һәм JNI ярҙамында клиент интеграциялары |
+|`org.hyperledger.iroha.sdk:offline-wallet-android` |AAR |Android `client-android` нигеҙендә төҙөлгән офлайн-бумаҡса транспорты һәм интеграцияһы |
+
+Артефакттар әлегә Maven Central-ҡа баҫтырылмаған. уларҙы урындарҙа ҡуйылған Iroha сығанаҡ үҙгәртеп ҡороуҙан төҙөп баҫтырығыҙ:
+
+```bash
+cd kotlin
+./gradlew publishToMavenLocal
+```
+
+Унан һуң ҡулланма өсөн кәрәкле артефактты ғына һайлағыҙ:
+
+```kotlin
+repositories {
+    mavenLocal()
+}
+
+dependencies {
+    implementation("org.hyperledger.iroha.sdk:core-jvm:0.1.0")
+    // Android client features:
+    // implementation("org.hyperledger.iroha.sdk:client-android:0.1.0")
+    // Android offline-wallet features:
+    // implementation("org.hyperledger.iroha.sdk:offline-wallet-android:0.1.0")
+}
+```
+
+`core-jvm` юҡ Android бәйлелектәре. Android клиент һәм клавиатура коды `client-android`, һәм ҡулланыу `offline-wallet-android` өсөн Android- бары тик офлайн-кешелек һәм JNI ағымдар.
+
+## Kotlin һәм Java буйынса яраҡлаштырыу {#kotlin-and-java-compatibility}
+
+Йәмәғәтселек API булып тора Kotlin- беренсе һәм Java интероп бирә, унда JVM саҡырыусыларға кәрәк. тигеҙ үҙгәрештәр тейешле `java/` ғәмәлгә ашырыу. Android интеграциялар менән башланырға тейеш Kotlin Юғарылағы артефакттар.
+
+Бөтәһе лә Kotlin модулдәр үтәү JDK 8 API компиляция ваҡытында совместимость `-Xjdk-release=8`, төҙөлөш ҡорамалдар селтәренең үҙендә ҡуллана JDK 21. ҡулланырға ярамай JDK 9+ APIs үҙ эсенә SDK код.
+
+## Төҙөү һәм һынау {#build-and-test}
+
+JVM һынауҙарын үтәү:
+
+```bash
+cd kotlin
+./gradlew :core-jvm:test --console=plain
+```
+
+Android артефакттарҙы төҙөү:
+
+```bash
+./gradlew :client-android:assembleRelease \
+  :offline-wallet-android:assembleRelease --quiet
+```
+
+## Хәҙерге яҡтыртыу {#current-coverage}
+
+Kotlin SDK үҙ эсенә:
+
+- Norito кодлау һәм декодлау
+- Канон иҫәбенә һәм актив адрестары менән идара итеү
+- транзакция төҙөү, ҡул ҡуйыу һәм офлайн конверттар
+- Torii HTTP, WebSocket, һәм SSE клиенттар
+- Күп ҡултамғалар, яҙылыу, SoraFS, Nexus һәм Connect моделе
+- Android клавиатура һәм ҡоролмалар телеметрияһы интеграциялары
+- Android һүндерелгән QR, Яҡында, һәм NFC транспорт
+
+Ҡарағыҙ [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/main/kotlin/README.md) модульгә ҡарата APIs һәм теүәл төҙөлөштөң күрһәтмәләре.

@@ -8,11 +8,16 @@ import traceback
 from typing import Any, Dict, List
 
 import ctranslate2
+from opencc import OpenCC
 from transformers import AutoTokenizer
 
 
 SOURCE_LANGUAGE = "eng_Latn"
 OFFICIAL_TOKENIZER = "facebook/nllb-200-distilled-600M"
+OFFICIAL_TOKENIZER_REVISION = "f8d333a098d19b4fd9a8b18f94170487ad3f821d"
+MIN_DECODING_LENGTH = 32
+MAX_DECODING_LENGTH = 1024
+TARGET_TOKEN_EXPANSION = 4
 TARGET_LANGUAGES = {
     "spa_Latn",
     "por_Latn",
@@ -76,7 +81,12 @@ class NllbTranslator:
 
     def __init__(self, model: str, tokenizer_name: str, device: str, compute_type: str) -> None:
         self.translator = ctranslate2.Translator(model, device=device, compute_type=compute_type)
-        self.tokenizer = AutoTokenizer.from_pretrained(tokenizer_name, src_lang=SOURCE_LANGUAGE)
+        self.tokenizer = AutoTokenizer.from_pretrained(
+            tokenizer_name,
+            revision=OFFICIAL_TOKENIZER_REVISION,
+            src_lang=SOURCE_LANGUAGE,
+        )
+        self.traditional_chinese = OpenCC("s2t")
 
     def translate(self, texts: List[str], target_language: str) -> List[str]:
         """Translate a batch in input order."""
@@ -86,29 +96,47 @@ class NllbTranslator:
             self.tokenizer.convert_ids_to_tokens(self.tokenizer.encode(text))
             for text in texts
         ]
-        target_prefix = [[target_language] for _ in texts]
+        longest_source = max(len(tokens) for tokens in source_tokens)
+        decoding_length = min(
+            MAX_DECODING_LENGTH,
+            max(MIN_DECODING_LENGTH, longest_source * TARGET_TOKEN_EXPANSION + 16),
+        )
+        model_target_language = "zho_Hans" if target_language == "zho_Hant" else target_language
+        target_prefix = [[model_target_language] for _ in texts]
         results = self.translator.translate_batch(
             source_tokens,
             target_prefix=target_prefix,
             batch_type="tokens",
             max_batch_size=2048,
-            beam_size=2,
+            beam_size=4,
+            coverage_penalty=0.1,
             max_input_length=1024,
-            max_decoding_length=1024,
+            max_decoding_length=decoding_length,
+            no_repeat_ngram_size=4,
+            repetition_penalty=1.1,
         )
         translations = []
-        for result in results:
+        for source, result in zip(source_tokens, results):
             target_tokens = result.hypotheses[0]
-            if target_tokens and target_tokens[0] == target_language:
+            if target_tokens and target_tokens[0] == model_target_language:
                 target_tokens = target_tokens[1:]
-            token_ids = self.tokenizer.convert_tokens_to_ids(target_tokens)
-            translations.append(
-                self.tokenizer.decode(
-                    token_ids,
-                    skip_special_tokens=True,
-                    clean_up_tokenization_spaces=False,
+            if len(source) >= 20 and len(target_tokens) < len(source) * 0.25:
+                raise RuntimeError(
+                    "translation output is materially shorter than its source "
+                    "({0} target tokens for {1} source tokens)".format(
+                        len(target_tokens),
+                        len(source),
+                    )
                 )
+            token_ids = self.tokenizer.convert_tokens_to_ids(target_tokens)
+            translation = self.tokenizer.decode(
+                token_ids,
+                skip_special_tokens=True,
+                clean_up_tokenization_spaces=False,
             )
+            if target_language == "zho_Hant":
+                translation = self.traditional_chinese.convert(translation)
+            translations.append(translation)
         return translations
 
 
