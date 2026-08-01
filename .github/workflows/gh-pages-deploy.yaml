@@ -12,7 +12,7 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -45,6 +45,7 @@ jobs:
         run: |
           pnpm build
           pnpm cli validate-links .vitepress/dist --public-path /iroha-docs/
+          pnpm cli validate-locales .vitepress/dist --public-path /iroha-docs/
         env:
           FORCE_COLOR: 2
           PUBLIC_PATH: /iroha-docs/
@@ -65,3 +66,53 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
+
+  verify-production:
+    runs-on: ubuntu-latest
+    needs: deploy
+    timeout-minutes: 6
+    steps:
+      - name: Check for a superseding deployment
+        id: current
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          current_sha="$(
+            curl --fail --silent --show-error \
+              --header "Authorization: Bearer $GH_TOKEN" \
+              --header "X-GitHub-Api-Version: 2022-11-28" \
+              "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/commits/main" |
+              jq --raw-output .sha
+          )"
+          if [[ "$current_sha" != "$GITHUB_SHA" ]]; then
+            echo "Commit $GITHUB_SHA was superseded by $current_sha; skipping canonical verification."
+            echo "superseded=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Verify canonical deployment
+        if: steps.current.outputs.superseded != 'true'
+        env:
+          EXPECTED_REVISION: ${{ github.sha }}
+          SITE_URL: https://docs.iroha.tech
+        run: |
+          deadline=$((SECONDS + 300))
+          attempt=0
+          while ((SECONDS < deadline)); do
+            attempt=$((attempt + 1))
+            html="$(curl --connect-timeout 3 --max-time 5 --fail --silent --show-error "$SITE_URL/" || true)"
+            if [[ "$html" == *"iroha-docs-revision"* ]] && \
+               [[ "$html" == *"$EXPECTED_REVISION"* ]] && \
+               [[ "$html" == *"VPNavBarTranslations"* ]] && \
+               curl --connect-timeout 3 --max-time 5 --fail --silent --show-error --output /dev/null "$SITE_URL/es/"; then
+              echo "Canonical deployment is current and exposes translated navigation."
+              exit 0
+            fi
+            echo "Attempt $attempt: waiting for canonical deployment $EXPECTED_REVISION"
+            if ((SECONDS + 10 >= deadline)); then
+              break
+            fi
+            sleep 10
+          done
+
+          echo "::error::Canonical site did not publish $EXPECTED_REVISION with translated navigation."
+          exit 1
