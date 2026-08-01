@@ -5,18 +5,11 @@ import DefaultTheme from 'vitepress/theme'
 const { Layout } = DefaultTheme
 
 const ShareFeedback = defineAsyncComponent(() => import('./ShareFeedback.vue'))
-const MachineTranslationNotice = defineAsyncComponent(() => import('./MachineTranslationNotice.vue'))
 const FEEDBACK_URL: string | undefined = import.meta.env.VITE_FEEDBACK_URL
 </script>
 
 <template>
   <Layout>
-    <template #home-hero-before>
-      <MachineTranslationNotice />
-    </template>
-    <template #doc-before>
-      <MachineTranslationNotice />
-    </template>
     <template
       v-if="FEEDBACK_URL"
       #sidebar-nav-before
