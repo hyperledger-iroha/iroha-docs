@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /guide/configure/peer-management.md
-translation_source_hash: 4e48c937ca973319cd060876b123ff405d27d9d8bc11818e608d821295412c77
+translation_source_hash: f085fa1587595414f95705bbe2cd285752b0fe12cffb9ef29a33399f9a1f3f86
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -26,9 +26,9 @@ Bank şəraitində hər kəsin boş vaxtlarında qoşulmasına icazə vermək t�
 
 Tərəfdaşları qeydiyyatdan keçirən hesabda müvafiq `Permission` olmalıdır və bu, `Role` vasitəsilə və ya birbaşa icazə verilməsi şəklində verilir.
 
-Bir rol verməyə ehtiyacınız olub olmadığını necə qərar verməlisiniz? Bir istifadəçinin bir növ administrator kimi xidmət etməsi üçün rolların verilməsi mənalıdır, burada şəbəkədəki həmyaşıdları uzunmüddətli saxlamaq onların məsuliyyətidir. Birdəfəlik icazə verilməsi, həmyaşıdları qeydiyyatdan keçirən tərəf ümumiyyətlə həmyaşıdaların qeydiyyatından məsuliyyət daşımırsa, faydalıdır, lakin şəbəkə idarəçisinin yeni bir həmyaşıdı qurmaq üçün vaxt sərf etməsinə (və ya istəməsinə) ehtiyac yoxdur.
+Bir hesabın vaxt keçdikcə həmyaşıdları idarə edəcəyi zaman rol ver. Digər tərəfdən həmyaşıdları idarə etməyən hesab tərəfindən bir dəfə qeydiyyatdan keçmək üçün birbaşa icazə verildiyi istifadə edin.
 
-::: məlumat
+::: info
 
 Standart icraçı `CanManagePeers` icazə nişanını qeydiyyatdan keçmək və qeydiyyata alınmamaq üçün istifadə edir.
 
@@ -40,7 +40,7 @@ Standart icraçı `CanManagePeers` icazə nişanını qeydiyyatdan keçmək və 
 
 Yeni bir həmyaşıdın icazəsi verildikdən sonra, qurulmalıdır.
 
-Torii bu məqsədlə node parametrini və qabiliyyət son nöqtələrini açıqlayır. Peer bootstrap bu dəyərləri avtomatik olaraq danışa bilməz: operatorlar vaxtların, partiya ölçülərinin və konsensusla əlaqəli digər parametrlərin şəbəkəyə uyğun olduğunu yoxlamalıdırlar.
+Torii bu məqsədlə node parametrini və imkan son nöqtələrini aşkar edir. Peer bootstrap bu dəyərləri avtomatik olaraq danışıqlar aparmır: operatorlar vaxtların, partiya ölçülərinin və konsensusla əlaqəli digər parametrlərin şəbəkə ilə uyğun olduğunu yoxlamalıdırlar.
 
 Prosesi sadələşdirmək üçün şəbəkə idarəçisindən `config.toml` -nin redaksiyalı versiyasını xahiş edə bilərsiniz ki, bu da peer private key kimi xüsusi məlumatları istisna edir.
 
@@ -48,7 +48,7 @@ Prosesi sadələşdirmək üçün şəbəkə idarəçisindən `config.toml` -nin
 
 Tərəfdaşınız işlədikdən sonra, tərəfdaş təlimatını təqdim etməlisiniz. Tərəfdaşlar əl çəkmə prosesindən keçəcəklər və şəbəkə ilə söhbət etməyə başlayacaqlar.
 
-::: xəsarət
+::: tip
 
 Tərəfdaş qeydiyyatı təlimatının təqdim edilməsi yeni bir tərəfdaş prosesi təşkil etmir (və edə bilməz).
 
@@ -56,6 +56,6 @@ Tərəfdaş qeydiyyatı təlimatının təqdim edilməsi yeni bir tərəfdaş pr
 
 ### qeydiyyatdan keçməyən yaşıtlar {#unregistering-peers}
 
-Bəs qeydiyyatdan keçməyən yaşıtlar? Təhlükəsizlik səbəbləri ilə bu proses birmənalıdır. Şəbəkə həmyaşıdını aradan qaldırmaq istədikləri barədə razılığa gəlir, lakin həmyaşıda heç kimin niyə danışmadığı haqqında çox şey bilmir. Ona görə.
+Bəs qeydiyyatdan keçməyən yaşıtlar? Təhlükəsizlik səbəbləri ilə bu proses birmənalıdır. Şəbəkə həmyaşıdını çıxarmaq istədiyi barədə razılığa gəlir, amma Tərəfdaşın özü niyə heç kim onunla danışmadığını çox bilmir.
 
 Əksər hallarda, bir həmyaşıdın qeydiyyatını ləğv etmək istəyirsinizsə, bunu etmək istəyirsiniz, çünki bu Bizanslı səhvdir. Bu həmyaşıdın "axtarılması" şəbəkədəki zərərli aktyorun həyatını daha da çətinləşdirir.

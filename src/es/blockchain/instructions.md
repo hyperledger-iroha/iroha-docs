@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /blockchain/instructions.md
-translation_source_hash: 3251078b2b2268ff78563c02a0f935c63dc0569f0b6d38071150cbb4b89394d6
+translation_source_hash: adc3eff9758dd73e9114e78eaa18ddf6271db3bc4042611e1ed6ed1aac226246
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -128,7 +128,7 @@ Usted puede registrar cuentas, definiciones de activos, NFTs, los pares, roles y
 
 Los lotes RWA se crean a través de la instrucción `RegisterRwa` dedicada. El código actual no expone una instrucción `UnregisterRwa`; utilice `RedeemRwa` para retirar la cantidad representada.
 
-::: Información
+::: info
 
 Tenga en cuenta que dependiendo de cómo decida configurar su bloque genético [](/es/guide/configure/genesis.md) en `genesis.json` (específicamente, si incluye o no el registro de tokens de permiso), el proceso para registrar una cuenta puede ser muy diferente.
 
@@ -139,13 +139,13 @@ En este sentido, la Comisión ha adoptado una propuesta de directiva relativa a 
 
 :::
 
-::: Información
+::: info
 
 El registro de un igual es actualmente la única manera de agregar pares que no formaban parte del primer grupo de confianza establecido en la red.
 
 :::
 
-Consulte una de las guías específicas del idioma para que lo guien a través del proceso de registro de objetos en un blockchain:
+Utilice una guía específica del idioma para registrar objetos blockchain:
 
 |El lenguaje |Guía |
 | --------------------- | ------------------------------------------------------------------------------------------------------- |
@@ -249,7 +249,7 @@ La acuñación y la quema pueden referirse a activos numéricos y desencadenan c
 
 Los activos se acuñan en una cuenta específica, generalmente la que registró el activo en primer lugar. Las cantidades de activos no son negativas, por lo que nunca puede tener `$-1.0` de un activo o quemar una cantidad negativa y obtener una moneda.
 
-Consulte una de las guías específicas del idioma para guiarle a través del proceso de extracción de activos en un blockchain:
+Utilizar una guía específica del idioma para acuñar activos de blockchain:
 
 - [CLI](/es/get-started/operate-iroha-via-cli.md)
 - [Rust](/es/guide/tutorials/rust.md)
@@ -332,7 +332,7 @@ Las instrucciones de concesión y revocación se utilizan para los permisos y fu
 
 `Grant` Se utiliza para otorgar permanentemente a un usuario un solo permiso o un grupo de permisos (un "rollo"). Las funciones y permisos otorgados sólo pueden ser eliminados a través de la `Revoke` Como tal, estas instrucciones deben ser utilizadas con cuidado.
 
-Concesión y revocación de un papel en una cuenta:
+Conceder y revocar un papel en una cuenta:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \

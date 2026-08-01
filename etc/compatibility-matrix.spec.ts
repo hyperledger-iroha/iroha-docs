@@ -28,14 +28,16 @@ async function readJson<T>(relativePath: string): Promise<T> {
 }
 
 describe('bundled SDK compatibility matrix', () => {
-  test('names the exact Iroha provenance revision without publishing an unavailable link', async () => {
+  test('names and links the exact public Iroha candidate without claiming signed provenance', async () => {
     const provenance = await readJson<Provenance>('provenance/iroha.json')
     const matrix = await readJson<CompatibilityMatrix>('src/public/compat-matrix.json')
 
     expect(matrix.source.revision).toBe(provenance.source.commit)
-    if (provenance.source.refresh_state === 'awaiting-public-source-commit') {
-      expect(matrix.source.verification).toBe('pending-public-source-commit')
-      expect(matrix.source.revision_url).toBeUndefined()
+    if (provenance.source.refresh_state === 'awaiting-signed-source-commit') {
+      expect(matrix.source.verification).toBe('pending-signed-source-commit')
+      expect(matrix.source.revision_url).toBe(
+        `https://github.com/hyperledger-iroha/iroha/commit/${provenance.source.commit}`,
+      )
     } else {
       expect(matrix.source.verification).toBe('not-run')
       expect(matrix.source.revision_url).toBe(

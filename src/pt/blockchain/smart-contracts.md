@@ -1,9 +1,9 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: ed622cdb1d6a47635d0753c98f80aaa903b916133f43bc9fdab268512d0ace69
+translation_source_hash: 7c35c609442df65328fa619b6673be76f801cfc2abc28afd853d7fe61e439e9c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Contratos inteligentes {#smart-contracts}
@@ -15,9 +15,9 @@ As transacções Iroha executam cargas úteis de `Executable`.
 - `Executable::Ivm`: código de byte Iroha VM
 - `Executable::IvmProved`: código de byte Iroha VM com uma sobreposição de instruções pré-computada e compromissos de prova.
 
-Kotodama é Iroha É uma linguagem de alto nível para contratos inteligentes. `.ko` arquivo de origem compila para determinista IVM código de byte, conservado convencionalmente como um `.to` Artifacto para implantação. Kotodama Objectivos IVM; Não é um sistema independente. RISC-V ou WebAssembly O alvo.
+Kotodama é a linguagem de contratos inteligentes de alto nível da Iroha. Um arquivo-fonte `.ko` é compilado em bytecode IVM determinístico, convencionalmente armazenado como um artefato `.to` para implantação. Kotodama tem como único alvo a IVM. Não tem como alvo RISC-V nem WebAssembly.
 
-A primeira versão suporta apenas a versão ABI 1. A política de syscall e pointer-ABI é aplicada incondicionalmente pela admissão e execução do contrato; não há computação para o tempo de execução.
+A primeira versão oferece suporte apenas à versão 1 da ABI. A política de syscall e pointer-ABI é aplicada incondicionalmente na admissão e execução de contratos; não existe um seletor de compatibilidade em tempo de execução.
 
 ## Quando usar contratos inteligentes {#when-to-use-smart-contracts}
 

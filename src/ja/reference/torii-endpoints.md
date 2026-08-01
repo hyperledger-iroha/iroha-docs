@@ -1,9 +1,9 @@
 ---
 translation_locale: ja
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: 6ee65d409642c79bea0f2c4ff0d8cd59b0ec0a29e115225045786d0816e8a6a7
+translation_source_hash: 9bec41b1b419e252fdcff8328e7950a294bdad3ac40112a5a7f2ce451d19e9cb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Torii エンドポイント {#torii-endpoints}
@@ -113,27 +113,27 @@ Torii がアプリ面の機能セットで構築された場合,探検器のた�
 
 |経路ファミリー|目的|
 | --- | --- |
-|`/v1/accounts/`, `/v1/domains/`, `/v1/assets/*` |JSON 読書,查询助手,オンボード助手,ポートフォリオまたは保持者のビュー |
-|`/v1/nfts/`, `/v1/rwas/`, `/v1/confidential/*` |NFT,実世界の資産,そして機密的な資産の見方|
-|`/v1/aliases/`, `/v1/assets/aliases/`,`/v1/sns/`, `/v1/identifiers/` |名前,ニックネーム,識別子解析度|
+|`/v1/accounts/*`, `/v1/domains/*`, `/v1/assets/*` |JSON 読書,查询助手,オンボード助手,ポートフォリオまたは保持者のビュー |
+|`/v1/nfts/*`, `/v1/rwas/*`, `/v1/confidential/*` |NFT,実世界の資産,そして機密的な資産の見方|
+|`/v1/aliases/*`, `/v1/assets/aliases/*`,`/v1/sns/*`, `/v1/identifiers/*` |名前,ニックネーム,識別子解析度|
 |`/v1/explorer/*`|エクスプローラー向けアカウント,資産,ブロック,トランザクション,指示,メトリック,ストリームビュー |
-|`/v1/transactions/`, `/v1/pipeline/`, `/v1/iso20022/*` |取引履歴,パイプラインの復旧または状態,および ISO 20022助手|
+|`/v1/transactions/*`, `/v1/pipeline/*`, `/v1/iso20022/*` |取引履歴,パイプラインの復旧または状態,および ISO 20022助手|
 |`/v1/contracts/*`|契約コード,デプロイ,バンドル,コール,ビュー,イベント,アクティビティ,ロールアップ,ステートルート |
-|`/v1/multisig/`, `/v1/controls/` |マルチシグの提案,承認,および転送制御支援者 |
-|`/v1/bridge/`, `/v1/ledger/`, `/v1/proofs/*` |確定性,ステート証明,ブロック証明,証拠保存,および証拠查詢経路|
+|`/v1/multisig/*`, `/v1/controls/*` |マルチシグの提案,承認,および転送制御支援者 |
+|`/v1/bridge/*`, `/v1/ledger/*`, `/v1/proofs/*` |確定性,ステート証明,ブロック証明,証拠保存,および証拠查詢経路|
 |`/v1/da/*`|データの利用量,マニフェスト,証明方針,コミットメント,ピン意図|
 |`/v1/zk/*`|ZK ルーツ,証明検証, IVM 証明,投票計測,確認鍵,証拠記録,添付書 |
-|`/v1/gov/`, `/v1/ministry/` |統治提案,投票票,理事会国家,保護された名前の空間,議題提案,制定と最終化|
-|`/v1/nexus/`, `/v1/sccp/` |Nexus レーン,データスペース,そしてクロスチェーンの防護支援者|
+|`/v1/gov/*`, `/v1/ministry/*` |統治提案,投票票,理事会国家,保護された名前の空間,議題提案,制定と最終化|
+|`/v1/nexus/*`, `/v1/sccp/*` |Nexus レーン,データスペース,そしてクロスチェーンの防護支援者|
 |`/v1/musubi/*`|Musubi パッケージレジスタの読み書きと指示作成者 |
 |`/v1/subscriptions/*`|サブスクリプションプラン,サブスクリプションライフサイクルの利用と補助料の請求 |
-|`/v1/sorafs/`, `/sorafs/`, `/.well-known/sorafs/*` |SoraFS プロバイダー発見,能力証明,ピニング,収納取出し,公共コンテンツ配信 |
-|`/v1/soracloud/`, `/v1/soradns/`,`/soradns/`, `/api/` |SoraCloud サービスライフサイクル,プライベートコンピューティング/モデルフロー,公開発見,ホストされたアプリルーティング|
-|`/v1/connect/`, `/v1/vpn/` | Iroha 接続セッション WebSocket 輸送 VPN セッション,プロフィール,領収 |
-|`/v1/app-api/`, `/v1/api/`, `/v1/content/*` |App API 結合とバンドル/CID サポートされたコンテンツルーティング|
+|`/v1/sorafs/*`, `/sorafs/*`, `/.well-known/sorafs/*` |SoraFS プロバイダー発見,能力証明,ピニング,収納取出し,公共コンテンツ配信 |
+|`/v1/soracloud/*`, `/v1/soradns/*`,`/soradns/*`, `/api/*` |SoraCloud サービスライフサイクル,プライベートコンピューティング/モデルフロー,公開発見,ホストされたアプリルーティング|
+|`/v1/connect/*`, `/v1/vpn/*` | Iroha 接続セッション WebSocket 輸送 VPN セッション,プロフィール,領収 |
+|`/v1/app-api/*`, `/v1/api/*`, `/v1/content/*` |App API 結合とバンドル/CID サポートされたコンテンツルーティング|
 |`/v1/operator/*`, `/v1/mcp` |オペレーターの認証とネイティブ MCP JSON-RPC ブリッジ|
-|`/v1/offline/`, `/v1/repo/`,`/v1/space-directory/`, `/v1/ram-lfe/` |オフラインの準備,リポジトリ契約,データスペースマニフェスト,および [RAM-LFE 支援者](/ja/blockchain/ram-lfe.md#torii-routes) |
-|`/v1/kaigi/`, `/v1/webhooks/`,`/v1/notify/`, `/v1/telemetry/` |協働,Webhook,プッシュ通知,およびライブテレメトリ統合|
+|`/v1/offline/*`, `/v1/repo/*`,`/v1/space-directory/*`, `/v1/ram-lfe/*` |オフラインの準備,リポジトリ契約,データスペースマニフェスト,および [RAM-LFE 支援者](/ja/blockchain/ram-lfe.md#torii-routes) |
+|`/v1/kaigi/*`, `/v1/webhooks/*`,`/v1/notify/*`, `/v1/telemetry/*` |協働,Webhook,プッシュ通知,およびライブテレメトリ統合|
 
 ## ISO 20022橋 {#iso-20022-bridge}
 
@@ -162,9 +162,9 @@ Torii は,APP向きの API とブリッジ実行時間が有効である場合, 
 
 `pacs.008` 提出はメッセージを提供しなければならない ID, 銀行間決済金額,通貨,決済日期,債務者と債権者 IBANs, 債務者と債権者 BICs. 参照データが設定された場合,ブリッジはまた BIC, IBAN, そして ISO 製造された取引がパイプラインに入る前に 4217つの通貨交差点があります.
 
-`pacs.009`の提出には,ビジネスメッセージ ID,メッセージ定義 ID,作成時間,銀行間決済金額,通貨,決済日期,指示および指示された代理人 BICs,および債務者と債権者 IBANs が記載されなければならない.メッセージには `Purp`が含まれている場合,ブリッジは現在証券目的のための資金のみを受け入れます: `Purp=SECU`.
+`pacs.009`の提出には,ビジネスメッセージ ID,メッセージ定義 ID,作成時間,銀行間決済金額,通貨,決済日期が含まれます.指示する代理人 BICs,債務者および債権者 IBANs.メッセージに `Purp`が含まれている場合,橋は現在証券目的の資金のみを受け入れます: `Purp=SECU`.
 
-労働組合 `pacs.008` そして `pacs.009` 提出のエンドポイントは受け入れます XML ISO ブリッジ試験で使用された封筒または平面フィールド形式.オプション `SplmtryData` フィールドは標的を固定することができます Iroha 本書,ソースとターゲット口座 IDs またはアドレス,および資産定義 ID. 答えは `202 Accepted` と `message_id`, `transaction_hash`, `status`, `pacs002_code`, 解決された本帳/口座/資産の文脈.
+`pacs.008`および `pacs.009`の送信エンドポイントは, XML ISO 封筒または橋試験で使用されるフラットフィールドフォーマットを受け入れます.オプションの `SplmtryData` フィールドは,ターゲット Iroha 本簿に固定することができます.ソース・ターゲットアカウント IDs またはアドレス,および資産定義 ID.回答は `202 Accepted` で `message_id`, `transaction_hash`, `status`, `pacs002_code` と解決された本簿/口座/資産文脈である.
 
 ### パーサーとマッピングのサポート {#additional-parser-and-mapping-support}
 
@@ -220,7 +220,7 @@ iroha kaigi record-usage \
 iroha kaigi end --domain streaming --call-name daily
 ```
 
-`--room-policy public` を視聴者チケットなしでリレーが露出できる部屋,または `--room-policy authenticated` の出口で視聴者の認証が必要とする場合で使用する.ネットワークに Kaigi リストと使用確認キーが設定された後のみ, `--privacy-mode zk-roster-v1` を使用する.決定的検証中に結合,葉やプライベート利用記録が失敗する.
+`--room-policy public` を視聴者チケットなしでリレーが暴露できる部屋,または `--room-policy authenticated` の出口で視聴者の認証が必要とする場合で使用します. 放送後のみ `--privacy-mode zk-roster-v1` を使用してください.ネットワークには Kaigi のリストと使用確認キーが設定されている.そうでない場合,決定的な検証中に接続,葉やプライベート利用記録が失敗する.
 
 ### JavaScript デモでテスト {#testing-with-the-javascript-demo}
 
@@ -314,15 +314,15 @@ Accept: application/json
 
 ## テレメトリプロフィール {#telemetry-profiles}
 
-エンドポイントの可視性は,テレメトリ設定に依存する.上流文書では,5つのプロフィールレベルを記述します:
+エンドポイントの可視性は、ノードの `telemetry.profile` 設定によって決まります。現在の構成では、5 段階のプロファイルレベルが公開されます:
 
 |プロフィール |`/status`|`/metrics`|開発者経路|
 | --- | --- | --- | --- |
-|`disabled`|いいえ|いいえ|いいえ|
-|`operator`|ええ|いいえ|いいえ|
-|`extended`|ええ|ええ|いいえ|
-|`developer`|ええ|いいえ|ええ|
-|`full`|ええ|ええ|ええ|
+|`disabled`|いいえ |いいえ |いいえ |
+|`operator`|はい |いいえ |いいえ |
+|`extended`|はい |はい |いいえ |
+|`developer`|はい |いいえ |はい |
+|`full`|はい |はい |はい |
 
 ## CLI ショートカット {#cli-shortcuts}
 

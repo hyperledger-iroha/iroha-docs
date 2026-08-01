@@ -18,7 +18,7 @@ La principale norme utilisée aujourd'hui est l'interface binaire d'application 
 
 Vous pouvez, bien sûr, le faire à votre guise. La boîte `iroha_ffi` génère simplement le code que vous auriez besoin de générer de toute façon. Chaque appel de fonction au-delà de la limite FFI est `unsafe` avec le potentiel de causer un comportement indéfini. La méthode par laquelle nous avons réussi à le résoudre, tourne autour de l'utilisation de robustes types `repr(C)`.
 
-::: informations
+::: info
 
 La vérification de nullité et la validité ne peuvent être appliquées à l'échelle mondiale, de sorte que les pointeurs bruts (comme toujours) ne sont utilisés que dans des cas exceptionnels. Étant donné que nous fournissons des enveloppes autour de presque toutes les instances d'un objet dans le modèle de données Iroha, vous ne devriez pas avoir à utiliser des pointeurs bruts du tout.
 
@@ -54,7 +54,7 @@ La boîte `iroha_ffi` est utilisée pour générer des fonctions qui peuvent êt
 
 Une Rust le type est converti en un robuste `repr(C)` type qui peut traverser le FFI la frontière avec `FfiType::into_ffi`. C'est aussi le contraire: FFI `ReprC` le type est converti en un `Rust` type via `FfiType::try_from_ffi`.
 
-::: avertissement
+::: warning
 
 Notez que la conversion opposée est faillible et peut entraîner un comportement indéfini. Bien que nous puissions faire de notre mieux pour éviter les erreurs les plus évidentes, vous devez veiller à l'exactitude du programme sur votre part.
 

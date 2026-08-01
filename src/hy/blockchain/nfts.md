@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /blockchain/nfts.md
-translation_source_hash: 335eacd30c5964659baeeae8ac937805f1d4d786dd42a36e5164bbe75ef7e360
+translation_source_hash: 6dd2d21a29f352a14cb17046c66cfa541ef501b733b95bb6874d2d3f86ec0504
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -123,7 +123,7 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
-Մաքրեք, երբ ավարտել եք: Եթե դուք փոխանցեցիք NFT, գործարկեք այս հրամանը ներկայիս սեփականատիրոջ հաշիվի կարգավորմամբ կամ փոխանցեք NFT-ը առաջինը.
+Հեռացրեք NFT օրինակը անցնելուց հետո: Եթե այն փոխանցել եք, կամ վերափոխեք այն կամ ներկայիս սեփականատիրոջ հաշիվի կարգավորմամբ ուղարկեք չկանխատեսելու հրամանը.
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \

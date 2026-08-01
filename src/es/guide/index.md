@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /guide/index.md
-translation_source_hash: 588a55d0a967f890fac26bf47c34c360a4542b0d45b1edc1e37cd4833c60f349
+translation_source_hash: 5ea24369e85692bd9069e446d1e50612efade2d83e4ddf73a4980582a2064a0e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,7 +15,7 @@ Utilice esta sección cuando esté construyendo, operando o integrándose con Ir
 |Sección |Utilizarlo para|
 | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
 | [SDK Tutoriales](/es/guide/tutorials/) |Configuración del cliente específico para el idioma y muestras de aplicaciones |
-| [Las mejores prácticas](/es/guide/best-practices/) |Orientación orientada a la producción agrupada por desarrollo, modelado de datos, despliegue, operaciones, seguridad y disponibilidad para el lanzamiento |
+| [Las mejores prácticas](/es/guide/best-practices/) |Orientación de producción para el desarrollo, la implementación, las operaciones, la seguridad y los lanzamientos |
 | [Configuración y gestión ](/es/guide/configure/overview.md) |Configuración local de pares, génesis, configuración del cliente, claves y gestión de pares |
 | [Seguridad](/es/guide/security/) |Manejo de las claves, seguridad operativa, VPNs, vigilancia del fraude y higiene de los permisos |
 | [Operaciones avanzadas](/es/guide/advanced/metrics.md) |Métricas, controles de rendimiento, pruebas de caos, recarga en caliente y operación con metal desnudo |

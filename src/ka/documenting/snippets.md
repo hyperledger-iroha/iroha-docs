@@ -18,7 +18,7 @@ Iroha-დან გამომდინარე ნაწყვეტები
 pnpm refresh:iroha --source /path/to/iroha
 ```
 
-დარეგისტრირებული. [`etc/refresh-iroha.ts`](https://github.com/hyperledger-iroha/iroha-docs/blob/main/etc/refresh-iroha.ts) სამუშაო მიმდინარეობა ადასტურებს სუფთა წყაროზე გადახდის შეფასებას `provenance/iroha.json`, რეგენერაცია `/src/snippets` და Torii OpenAPI გადაღება და განახლებები SHA-256 hashes. შეამოწმეთ შინაარსი და წარმოშობის ცვლილებები ერთად. ჩვეულებრივი დამოკიდებულების ინსტალაცია და VitePress აწარმოებს ჩანახული ფაილების მოხმარებას მუტირებადი ფილიალის შეყვანის გარეშე.
+შემოწმებული [`etc/refresh-iroha.ts`](https://github.com/hyperledger-iroha/iroha-docs/blob/main/etc/refresh-iroha.ts) სამუშაო ნაკადი ადასტურებს სუფთა წყაროდან გადახდის შეფასებას `provenance/iroha.json`-თან, რეგენერირებს `/src/snippets` და Torii OpenAPI სურათს. და განახლებები SHA-256 ჰეშები. შეამოწმეთ შინაარსი და წარმოშობის ცვლილებები ერთად. ჩვეულებრივი დამოკიდებულების ინსტალაცია და VitePress ბილდები მოიხმარენ შემოწმებულ ფაილებს გარდამტეხი ფილიალის მოპოვების გარეშე.
 
 ## ჩათვლით სნაპეტები {#including-snippets}
 

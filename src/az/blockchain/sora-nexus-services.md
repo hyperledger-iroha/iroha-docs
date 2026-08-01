@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /blockchain/sora-nexus-services.md
-translation_source_hash: eb09de975095000bee47403332baade8f07e445c605366c8a4867839797f768a
+translation_source_hash: 4608e4e651519144d206b4370e2c334f469460cf9542324b06924a838cb26cb5
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -17,7 +17,7 @@ Mövcudluq qovşaq quruluşundan və şəbəkə profilindən asılıdır. İstif
 |Komponent |Rolu |Əsas səthlər |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
 |Soracloud |Tətbiqlərin tətbiqi, ev sahibliyi edilən xidmətlər, özəl model/iş vaxtı vəziyyəti və xidmət həyat dövrü nəzarəti. |`/v1/soracloud/`, `/api/`, `iroha app soracloud ...` |
-|İçəridə.|Soracloud canlı HTTP təyyarəyə ehtiyacı olan xidmət tənzimləmələri üçün ev sahibliyi edilən HTTP iş vaxtı. |Soracloud icra vaxtının quruluşu, host imkanları reklamları, replika icra zamanı vəziyyətində |
+|İçəridə.|Soracloud canlı HTTP təyyarəyə ehtiyacı olan xidmət tənzimləmələri üçün ev sahibliyi edilmiş HTTP iş vaxtı. |Soracloud icra vaxtının quruluşu, host imkanları reklamları, replika icra zamanı vəziyyətində |
 |SoraNet |Dairələr üçün məxfilik və nəqliyyat örtüyü, relay trafiki, VPN, Connect seansları və axın marşrutu. |`/v1/connect/`, `/v1/vpn/`, SoraNet marşrut metadataları |
 |Məlumatların mövcudluğu (DA) |Nexus zolaqlar, SoraFS manifestləri və sübut axınları ilə istinad edilən pay yükləri üçün mövcudluq sübutları, öhdəlik və niyyət qatı. |`/v1/da/`, `FindDaPinIntent`, `[sumeragi.da]` |
 |SoraFS |Manifestlər, CAR paylı yüklər, sabitləşdirilmiş məzmun, qapı alınması və bərpa olunma sübutları axınları üçün məzmunu ünvanlanmış saxlama materialı. |`/v1/sorafs/`, `/sorafs/`, `FindSorafsProviderOwner` |
@@ -87,16 +87,16 @@ SoraNet SoraFS və ya Soracloud qarşısında otura bilər:
 
 ## Aitai {#aitai}
 
-Aitai SORA tətbiq koridorudur bazar üslubunda müqavilələrin aparılması üçün bir alıcı və satıcının zəncirdən kənarda ödənişləri əlaqələndirdiyi, Iroha isə zəncirdəki aktivlərin saxlanılmasını idarə edir. Yeni rəqəmli aktivlərin saxlama axınları üçün müqaviləyə məxsus bir əmanət hesabı əvəzinə yerli əmanət vəsiqəsi ailəsi istifadə edilməlidir.
+Aitai SORA tətbiqi koridoru bazar üslubunda ödənişlər üçün bir alıcı və satıcının zəncirdən kənarda ödənişi əlaqələndirdiyi, lakin Iroha isə Yeni rəqəmli aktivlərin saxlama axınları üçün müqaviləyə məxsus bir əmanət hesabı əvəzinə yerli escrow instruction ailəsi istifadə edilməlidir.
 
-Native escrow kitabda saxlayır. Satıcı `OpenAssetEscrow` ilə təklif açır, alıcı `AcceptAssetEscrow` və `MarkEscrowPaymentSent` ilə zəncirdən kənar ödənişi qəbul edir və qeyd edir, satıcı isə ödəniş işarələnməmişdən əvvəl `ReleaseAssetEscrow` ilə buraxır və ya ləğv edir. Satıcı və alıcının fikir ayrılığı varsa, hər iki tərəf mübahisə aça bilər və `CanResolveEscrowDispute` ilə həlli edən şəxs qapalı məbləği bölə bilir.
+Native escrow kitabda saxlayır. Satıcı `OpenAssetEscrow` ilə təklif açır, alıcı `AcceptAssetEscrow` və `MarkEscrowPaymentSent` ilə zəncirdən kənarda ödənişi qəbul edir və qeyd edir; Satıcı `ReleaseAssetEscrow` ilə buraxır və ya ödəniş işarələnmədən əvvəl ləğv edir. Alıcı və satıcı razılaşmasa, hər iki tərəf mübahisə aça bilər və `CanResolveEscrowDispute` ilə həlli edən qapalı məbləği paylaya bilər.
 
 Bütün həyat dövrü, ümumi aktivlər bağlamaları, anonim depozitlər, sorğular, hadisələr və Rust nümunələri üçün [Native Asset Escrow](/az/blockchain/escrow.md)-yə baxın.
 
 |Aitai səthləri|Bunu istifadə edin.|
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
 |`OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow` |XOR nominal hesablama axınları da daxil olmaqla, şəffaf sayısal aktiv təklifləri. |
-|`OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow` |Mühafizə olunmuş təkliflər, maliyyələşdirmə və bağlanma hərəkətləri sübut əlavələri ilə həyata keçirilir. |
+|`OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow` |Mühafizə olunmuş təkliflər maliyyələşdirmə və bağlanma hərəkətləri üçün sübut əlavələrindən istifadə edir. |
 |`OpenEscrowDispute`, `ResolveEscrowDispute`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |Mübahisələrin açılması və məhkəmə üslubunda həll edilməsi. |
 |`FindAssetEscrowById`, `FindAssetEscrowsBySeller`, `FindAssetEscrowsByBuyer`, `FindAssetEscrowsByStatus` |App status səhifələri, uyğunlaşdırma işləri və dəstək vasitələri. |
 |`EscrowEventFilter` |Yaşayış şəffaf escrow abunələri escrow id, satıcı, alıcı, status və ya hadisə növü ilə. |
@@ -154,7 +154,7 @@ Soracloud iki həyata keçirmə təyyarəsini istifadə edir:
 |`DeterministicService` |`Ivm` |Müəllif, xəzinə vəziyyəti, sertifikatlı oxumalar, sifariş verilən poçt qutusu işçiləri, idarəetməyə həssas mutasiyalar |
 |`HttpService` |`Inrou` |Canlı HTTP APIs, toplayıcı ağır iş, saxlama ilə dəstəklənmiş xidmətlər, SSE, brauzerlə dəstəkləyən axınlar |
 
-Nəzarət təyyarəsi səlahiyyətlidir. Deploy, upgrade, rollback, config, secret, model və status əmrləri Torii vasitəsilə təqdim olunur və bağlı dünya vəziyyətini oxuyur; onlar ayrı bir CLI - yerli güzgüdən asılı deyillər. İctimai marşrutlaşdırma ən uzun prefiks əsaslanır, buna görə bir qeydiyyatdan keçmiş ev sahibi trafikini ev sahibliyi edilən HTTP marşrutlar və müəyyənləşdirilmiş API marşrutları arasında bölə bilər.
+Nəzarət təyyarəsi səlahiyyətlidir. Deploy, upgrade, rollback, config, secret, model və status əmrləri Torii vasitəsilə göndərilir və öhdəsindən gəlmiş dünya vəziyyətini oxuyur; onlar ayrı bir CLI - yerli güzgüdən asılı deyil. İctimai marşrut ən uzun prefiks əsaslanır, buna görə bir qeydiyyata alınmış ev sahibi trafikini ev sahibliyi edilən HTTP marşrutları və müəyyənləşdirilmiş API marşrutlar arasında bölə bilər.
 
 ### Fərqli bir tətbiqi düzəldin {#scaffold-a-split-app}
 
@@ -387,7 +387,7 @@ DA Kura və SoraFS əvəz edilmir:
 - SoraFS məzmun ünvanlı baytları, CAR payloadları və manifestləri saxlayır və xidmət edir.
 - DA öhdəlikləri, sübut siyasətlərini, sübut açılışlarını və bu baytların planlaşdırılmasına, audit edilməsinə və kitabın vəziyyətinə bağlanmasına imkan verən pin niyyətlərini qeyd edir.
 
-DA tətbiqi və ya Nexus zolağı istifadə edərək, verilən məlumatların silsilədən kənarda əldə edilə biləcəyinə dair kitabda görünən vəd lazımdır. Ümumi nümunələr arasında hesablama axınları üçün zolaq pay yükü öhdəlikləri, nəşr olunmuş məzmun üçün SoraFS pin niyyətləri var; Sonrakı yoxlama üçün saxlanılması lazım olan sübut qutusları və ictimai vəziyyətində tam yük deyil, həzm olunması lazım olan tətbiq əşyaları.
+DA tətbiqi və ya Nexus zolağı istifadə etmək üçün əsas kitabda görünən vəd lazımdır ki, zəncirdən kənar məlumatlar geri alına bilər. Ümumi nümunələr arasında ödəniş axınları üçün zolaq pay yükü öhdəlikləri, nəşr edilmiş məzmun üçün SoraFS pin niyyətləri var; Sonrakı yoxlama üçün saxlanılması lazım olan sübut qutusları və ictimai vəziyyətində tam yük deyil, həzm olunması lazım olan tətbiq əşyaları.
 
 ### Həyat dövrü {#lifecycle}
 
@@ -404,20 +404,20 @@ DA ilə dəstəklənən ümumi nəşriyyat axını:
 2. Norito manifestində və ya marşrut xüsusi öhdəlik qeydində paylı yükün təsvir edilməsi.
 3. `/v1/da/*` vasitəsilə və ya şəbəkənin imzalanmış əməliyyat yolu vasitəsilə bu marşrut ailəsi aktivləşdirildiyi zaman manifest, pin niyyətini və ya öhdəliyi göndərin.
 4. Müddətçilərin və ya mövcudluq təminatçılarının aktiv sübut siyasəti ilə tələb olunan sübutları toplamalarına icazə verin.
-5. Bir əlifba, ödəniş sübutu və ya faydalı yükdən asılı olan qapı yolu təbliğ etməzdən əvvəl nəticəli pin niyyətindən və ya öhdəliyindən soruşun.
+5. Bir əlifba, ödəniş sübutu və ya faydalı yükdən asılı olan qapı yolu təbliğ etməzdən əvvəl nəticədəki pin niyyətini və ya öhdəliyini soruşun.
 
 ### Alqoritmik Model {#algorithmic-model}
 
 DA bir faydalı yükü imzalanmış, yenidən oynatma ilə qorunan, blok-indeksiyalı bir öhdəliyə çevirir. Əhəmiyyətli alqoritmlər müəyyənləşdirilir ki, təsdiqçilər və qapılar eyni baytlardan eyni həcmləri yenidən hesablaya bilərlər.
 
-1. Göndərilən paylı yükü kanonikalaşdırın. Torii `(lane_id, epoch, sequence)`, paylı yük baytları, sıxılma metadataları, hissə ölçüsü, silmə profili, saxlama siyasəti və göndərici imzası ilə qəbul edilən bir istehsalı qəbul edir . Nod tələb edildikdə gzip, deflate və ya Zstandard paylı yüklərini dekompressiya edir və sonra kanonik bayt uzunluğunun `total_size`-ə bərabər olduğunu yoxlayır.
-2. Nexus yol kataloqunda mövcud olmalıdır. `chunk_size` iki, ən azı iki bayt və konfigüratsiya edilmiş maksimumdan böyük olmayan sıfırsız bir güc olmalıdır. Silmə profili məlumat şkafları və ən azı 2 parity şkaflarını daxil etməlidir. Lənət kataloqunda sübut sxemi `merkle_sha256` və ya `kzg_bls12_381` seçilir.
+1. Torii göndərilən paylı yükü kanonikləşdirir. `(lane_id, epoch, sequence)`, paylı yük baytları, sıxılma metadataları, hissə ölçüsü, silmə profili ilə qəbul edilən istehlak tələblərini qəbul edir, Gzip, deflate və ya Zstandard pay yüklərini tələb edildikdən sonra düyünin kanonik bayt uzunluğunun `total_size` bərabər olduğunu yoxlayır.
+2. Yolu və hissə parametrlərini təsdiqləyin. Yolu Nexus yol kataloqunda olmalıdır. `chunk_size` iki, ən azı iki bayt olan sıfır olmayan bir güc olmalıdır; və qurulmuş maksimumdan böyük olmur. Təmizləmə profili məlumat parçacıqlarını və ən azı iki paritə parçacığı daxil etməlidir. Yol kataloqunda sübut sxemi seçilir, ya `merkle_sha256` ya da `kzg_bls12_381`.
 3. Şəbəkə siyasətini tətbiq edin. Blob sinifi üçün qurulmuş replikasiya və saxlama əsas xəttini qovur. İctimai metadata düz mətn olaraq qalmalıdır; yalnız idarəetmə meta məlumatları manifestə yazılmadan əvvəl nodun qurulmuş idarəetmə metadata açarı ilə şifrələnir.
 4. Kanonik pay yükü sabit ölçülü bir profil ilə parçalanır. `chunk_size`. Torii Faydalı yük həzmini, bərpa qabiliyyətinin sübut edilməsi ağacının kökünü və hər hissə üzrə öhdəlikləri hesablayır. BLAKE3 Baytları üzərində öhdəliklər.
-5. Təmizləmə öhdəliklərini əlavə edin. Çünklər `data_shards` zolaqlarına qruplaşdırılır. Son zolaqda olmayan hüceyrələr paritənin hesablanması üçün sıfır doldurulur. RS(16) paritə sətir / qlobal paritə parçacıqlarını yaradır; seçim yolu ilə `row_parity_stripes` matris boyunca sütun üslubunda zolaq paritəsini əlavə edin. Paritə parçacığı öhdəlikləri BLAKE3 kiçik ədəd `u16` simvollarının həndəsidir.
+5. Təmizləmə öhdəliklərini əlavə edin. Çünklər `data_shards` zolaqlarına qruplaşdırılır. Son zolaqda olmayan hüceyrələr paritənin hesablanması üçün sıfır doldurulur. RS(16) paritə yaratır Satır / qlobal parity shards; seçim `row_parity_stripes` matris boyunca sütun üslubunda zolaq parity əlavə edin. Parity shard öhdəlikləri BLAKE3 kiçik ədədli `u16` simvollarının həzmləridir.
 6. Manifesti qurun. `DaManifestV1` yol, dövr, qrup sinifi, kodek, payload digest, parça kök, parça ölçüsü, silinmə profili, saxlama siyasəti, kirayə qiyməti, parça öhdəlikləri, seçim IPA öhdəliyi, metadata və buraxılış vaxtı qeyd olunur. Saxlama biletinin müəyyənləşdirilməsidir: düyün əvvəlcə boş bir biletlə manifest şablonunu hash edir, sonra bu barmaq izi son `storage_ticket` olaraq geri yazır.
 7. Yeniləmə münaqişələrini rədd edin. Yeniləmə açarı `(lane_id, epoch, sequence, manifest_fingerprint)`. Eyni barmaq izi olan bir nüsxə idempotentdir. Yaşlı bir ardıcıllıq və ya fərqli barmaq izi ilə eyni ardıcıllık rədd olunur.
-8. İmzalanmış əşyaları buraxın. Torii bir PDP öhdəliyini hesablayır, bir `DaIngestReceipt` imzalayır, `DaCommitmentRecord` tikir və manifest üçün spool əşyalarını yazır, PDP öhdəliyi, öhdəlik qeydləri, öhdənilmə planı, pin niyyəti, qəbulu sənədi və qəbulu gündəliyinə. Qiymət kursoru `(lane_id, epoch)` üçün monoton şəkildə irəliləyir.
+8. İmzalanmış əşyaları buraxın. Torii PDP öhdəliyini hesablayır, `DaIngestReceipt` imzalayır, bir `DaCommitmentRecord` tikir və manifest üçün qabıq əşyalarını yazır; PDP öhdəliyi, öhdəlik qeydləri, öhdənim cədvəli, pin niyyəti, qəbulu sənədi və qəbulu günlüğü. Qəbulu kursorunu hər `(lane_id, epoch)` üçün monoton şəkildə inkişaf etdirir.
 
 Əməkdaşlıq qeydləri blokların daşıdığı bir şeydir.
 
@@ -438,7 +438,7 @@ Bir blok DA qeydlərini yerləşdirmədən əvvəl, blok birləşmə yolu paketi
 - Merkle zolaqları KZG öhdəliklərini rədd edir; KZG zolaqlar isə sıfır olmayan KZG öhdəliyinə ehtiyac duyurlar.
 - Pin niyyətləri linka, manifest hash, saxlama biletləri, sahib hesabı və alias toqquşma qaydaları ilə kanonikalaşdırılır, sıralanır və filtrlənir.
 
-Blok başlığı DA sübut siyasətləri, öhdəliklər və pin niyyətləri üçün hashları saxlayır. üzvlük sübutları üçün öhdəliyin qovluğu həmçinin bir Merkle kökünü aşkar edir ki, yarpaqları kanonik Norito kodlanmış `DaCommitmentRecord` dəyərlərinin həşləridir. Valideyn qovşaqları sol və sağ uşaqların birləşdirilməsini hash edir; nadir bir yarpaq dəyişməz olaraq növbəti təbəqəyə keçirilir.
+Bloq başlığı DA sübut siyasətləri, öhdəliklər və pin niyyətləri üçün hash saxlayır. üzvlük sübutları üçün öhdəliyin qovluğu da yarpaqları olan Merkle kökünü aşkar edir canonik Norito-kodlanmış `DaCommitmentRecord` dəyərlərinin hashidir. Ana düyünləri sol və sağ uşaqların konkatenasiyasını hash edir; nadir bir yarpaq dəyişmədən növbəti təbəqəyə keçirilir.
 
 ### Əldə edilən sübutların yoxlanması {#proof-verification}
 
@@ -481,9 +481,9 @@ istifadə edin. [sorğu istinadı](/az/reference/queries.md#nexus-data-availabil
 
 ## SoraFS {#sorafs}
 
-SoraFS mərkəzləşdirilmiş məzmun ünvanlı saxlama materialıdır. O, baytları müəyyənləşdirici parçalara, CAR arxivlərə və Norito mənşələrinə bağlayan məzmun köklərini, parçalanma profillərini, pin siyasətlərini və idarəetmə attestasiyalarını toplayır. Saxlama təminatçıları məzmunu təqdim etməzdən əvvəl kapasite və məzmunun mövcudluğunu reklam edirlər, qapı vasitələri isə manifestləri və hissələrin öhdəliklərini yoxlayırlar.
+SoraFS mərkəzləşdirilmiş məzmunu ünvanlanan saxlama materialıdır. O, baytları müəyyənləşdirici parçalara, CAR arxivlərə və Norito məzmunu kökləri bağlayan manifestlərə qovurulur. Qazanma təminatçıları məzmunu təqdim etməzdən əvvəl manifestləri və hissə öhdəliklərini təsdiqləyirlər.
 
-Tipik SoraFS İstifadələr arasında statik tətbiq aktivləri, sənədləşmə quruculuğu, zona paketləri, model və ya əşya istinadları daxildir. və idarəetmə sübut qrupları. Iroha Məlumat modellərinin məruz qalması SoraFS giriş tədbirləri və [`FindSorafsProviderOwner`](/az/reference/queries.md#nexus-data-availability-and-packages) Təchizatçının mülkiyyətini həll etmək üçün müraciət.
+Tipik SoraFS İstifadələr arasında statik tətbiq aktivləri, sənədləşdirmə binaları, zona daxildir İdarəetmə və idarəetmə sübutları qrupları. Iroha Məlumat modellərinin məruz qalması SoraFS giriş tədbirləri və [`FindSorafsProviderOwner`](/az/reference/queries.md#nexus-data-availability-and-packages) Təchizatçının mülkiyyətini həll etmək üçün müraciət.
 
 ### Yükləyin, bildirin, imzalayın və təqdim edin {#pack-manifest-sign-and-submit}
 
@@ -565,7 +565,7 @@ sorafs_cli por trigger \
 
 ## SoraDNS {#soradns}
 
-SoraDNS SORA xidmətləri və məzmunları üçün müəyyənləşdirilmiş adlandırma təbəqəsidir. Adları normallaşdırır, Iroha-də həllçi dizaynlarının yeniləmələrini bağlayır və imzalanmış zona və ya həllçi paketlərini SoraFS vasitəsilə paylayır. Çözümçülər və qapı keçidləri kəşf metadatalarına güvənmədən əvvəl həllçi attestasiyası sənədlərini yoxlayırlar.
+SoraDNS üçün müəyyənləşdirilmiş adlandırma qatıdır SORA Xidmətlər və məzmun. Adları normallaşdırır, dizaynların yeniləmələrini həll edir Iroha, və imzalanmış zona və ya həllçi paketləri vasitəsilə paylayır SoraFS. Çözümçülər və girişlər kəşfiyyat metadatalarına güvənmədən əvvəl həllçi attestasiyası sənədlərini yoxlayır.
 
 Brauzerə daxil olmaq üçün SoraDNS qeydiyyatdan keçmiş bir FQDN -dən qapı hostlarını çıxarır. Kayd olunmuş boşluq hostı kanonik tətbiq mənşəli olaraq qalır, yerləşdirilmiş qapı profilləri isə bu mənşəli üçün brauzer və Torii geri dönüş yollarını ortaya qoyur.
 
@@ -638,7 +638,7 @@ FHE ilə bağlı Nexus xidmətləri üçün mövcud olan səthlər aşağıdakı
 - `iroha_crypto::fhe_bfv` skalar şifrəli mətnin qiymətləndirilməsi üçün deterministik BFV dəstəyini tətbiq edir. Tanımlayıcı qətnaməsi `BfvIdentifierPublicParameters` və `BfvIdentifierCiphertext` istifadə edir, burada 0 slot giriş bayt uzunluğunu saxlayır və sonrakı slotlar hər biri bir şifrələnmiş bayt saxlayır.
 - Soracloud dövlət və iş sxemləri modeli FHE idarəetmə ilə idarə olunan parametrlər dəstləri, icra siyasəti, şifrəli mətn öhdəlikləri, sorğu zarfları və açıqlama tələbləri ilə şifrə mətni iş yükləri.
 
-BFV identifikator yolu məxfiliyini qorumaq üçün istifadə olunur. Bir müştəri Torii həllinə şifrələnmiş bir identifikator göndərə bilər. Çözücü onu aktiv identifikator siyasəti ilə qiymətləndirir, bir `OpaqueAccountId` çıxarır və bir rəsmi buraxır. `ClaimIdentifier` sonra bu qəbulu hədəf hesabına əlavə edilmiş UAID hesabına bağlayır.
+BFV identifikator yolu məxfiliyini qorumaq üçün istifadə olunur. Bir müştəri Torii həllinə şifrəli bir identifikator göndərə bilər. Çözücü qiymətləndirir O, aktiv identifikator siyasətinə uyğun olaraq `OpaqueAccountId` nömrəsini əldə edir və bir rüsum buraxır. `ClaimIdentifier` sonra həmin rüsumunu hədəf hesabına əlavə edilmiş UAID ilə bağlayır.
 
 İndiki UAID Bu axın ətrafında kimlik və bacarıqlar bağlanır. `UniversalAccountId` hash ilə təsdiqlənir və kimi göstərir `uaid:<hash>`. Parserlər hər ikisini qəbul edirlər. `uaid:<hash>` və ya 64 hex sərt həzmini. `Account` və `NewAccount` istisna olmaqla, `uaid` və `opaque_ids` Runtime qeydiyyatı bir-bir tətbiq edir UAID- hesabla indeks, ikiqat və ya toqquşma qeyri-şəffaf identifikatorları rədd edir, UAID. Hər dəfə UAID Hesab bağlama dəyişiklikləri, Runtime yenidən qurur Space Directory məlumat sahəsi bağlamalar bu UAID.
 
@@ -656,7 +656,7 @@ Soracloud FHE dövlət üçün tətbiq olunan sxemlər:
 |`CiphertextQuerySpecV1` |Xidmət, bağlama, açar prefiksi, nəticə məhdudiyyəti, metadata səviyyəsi və seçim yolu ilə daxil edilmə sübutuna görə yalnız şifrəli mətn istintaqları göstərir.|
 |`DecryptionRequestV1` |Şifrələmə səlahiyyətləri siyasəti çərçivəsində bir şifrəli mətn öhdəliyi üçün açıqlama tələb edir. |
 
-`FheJobSpecV1::validate_for_execution` iş, icra siyasəti və parametr dəstinin qəbuldan əvvəl razılaşdığını yoxlayır. Həmçinin əməliyyat xüsusi qaydaları tətbiq edir: əlavə etmək və qatlamaq üçün ən azı iki giriş lazımdır, fırlatmaq və başlanğıclandırmaq üçün dəqiq bir giriş lazımdır və tələb olunmuş dərinlik, dönüş sayı, başlanğıclaşdırma sayısı, giriş sayı, Sifariş verilişinin nəticələri düz mətn sətirlərini qaytarmamalıdır.
+`FheJobSpecV1::validate_for_execution` iş, icra siyasəti və parametrlər dəstinin qəbuldan əvvəl razılaşdığını yoxlayır. Həmçinin əməliyyat xüsusi qaydaları tətbiq edir: əlavə və qatlama üçün ən azı iki giriş lazımdır, rotate və bootstrap dəqiq bir girişə ehtiyac duyurlar və tələb olunan dərinlik, rotasiya sayı, bootstrap sayı, giriş sayı, payload bytes və deterministik çıxış ölçüsü siyasət sərhədləri daxilində olmalıdır.
 
 UAID şifrə mətni deyil və FHE siyasəti özü də deyil. Hesabı tapmaq üçün istifadə olunan sabit hesab qabiliyyətinin təkançısı, qeyri-aşkar identifikator iddiaları və bir xidməti və ya məlumat məkanının axını icazə verən Yer Dizini bağlamalarıdır. FHE sxemləri, parametrlər dəstləri, icra siyasətləri, şifrəli mətn öhdəlikləri və şifrələmə səlahiyyətlərinin siyasəti vasitəsilə şifrələnmiş paylı yüklərin qəbulunu və icrasını ayrı-ayrı idarə edir.
 
@@ -683,7 +683,7 @@ Mümkün olan Torii səthlər aşağıdakılardır:
 - Ad hoc node-lokal yollara güvənmək əvəzinə Inrou kök və paylaşılan kirayə həcmlərini manifestlarda saxlayın.
 - Məzmun əlifbasını təşviq etmədən əvvəl SoraFS sübut təsdiqindən istifadə edin.
 - Monitor SoraNet əllə sıxışmaq uğursuzluqları, DA quorum və ya mövcudluq müddətləri, SoraFS Gateway rəddləri, SoraDNS RAD təzəlik və Soracloud Sağlamlıq xidmətləri.
-- İctimai Taira və ya Minamoto istifadəsi üçün [ ilə başlayın SORA Nexus verilənlər bazasına bağlan](/az/get-started/sora-nexus-dataspaces.md).
+- İctimai Taira və ya Minamoto istifadəsi üçün [ ilə başlayın SORA Nexus verilənlər bazasına bağlanın](/az/get-started/sora-nexus-dataspaces.md).
 
 Həmçinin bax:
 

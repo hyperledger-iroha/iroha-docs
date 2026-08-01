@@ -23,7 +23,7 @@ VPN istifadə edin:
 
 Hər bir tətbiq üçün VPN tələb olunmur. İctimai şəbəkələr ictimai bir qapı, yük balanseri və ya geri proxy vasitəsilə Torii niyyətli şəkildə ifşa edə bilərlər. O halda belə olsa da, mümkün olduqda təsdiqçi peer-to-peer trafikini və idarəetmə son nöqtələrini məhdud şəbəkədə saxlayın.
 
-::: xəsarət
+::: tip
 
 Bir brauzer VPN yalnız bu brauzerdən trafik qoruyur. Bu proseslər eyni özəl şəbəkə vasitəsilə yönləndirilmədiyi təqdirdə, `irohad`, CLI, SDK, SSH, ölçülər və ya ehtiyat trafikinin qorunmamasıdır.
 

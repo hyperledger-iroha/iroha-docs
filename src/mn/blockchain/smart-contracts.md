@@ -1,9 +1,9 @@
 ---
 translation_locale: mn
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: ed622cdb1d6a47635d0753c98f80aaa903b916133f43bc9fdab268512d0ace69
+translation_source_hash: 7c35c609442df65328fa619b6673be76f801cfc2abc28afd853d7fe61e439e9c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Ухамсартай гэрээ {#smart-contracts}
@@ -15,9 +15,9 @@ Iroha гүйлгээ нь `Executable` ашиг ачааллыг гүйцэтг�
 - `Executable::Ivm`: Iroha VM байт код
 - `Executable::IvmProved`: Iroha VM байт код нь урьдчилан тооцоолсон заавар суулгасан болон батлах үүрэг гүйцэтгэгчтэй
 
-Kotodama Энэ нь Iroha Энэ нь өндөр түвшний ухаалаг гэрээний хэл юм. `.ko` эх үүсвэрийн файл нь тодорхойлох IVM Байткод, уламжлалт байдлаар `.to` Нэвтрүүлэг хийх артефакт. Kotodama зорилт IVM; Энэ бол бие даасан биш RISC-V эсвэл WebAssembly Зорилго.
+Kotodama нь Iroha-гийн дээд түвшний ухаалаг гэрээний хэл юм. `.ko` эх файл нь детерминист IVM байткод руу хөрвүүлэгдэж, байршуулалтад зориулан `.to` артефакт хэлбэрээр хадгалагддаг. Kotodama зөвхөн IVM-д зориулагдсан. Энэ нь RISC-V эсвэл WebAssembly-д зориулагдаагүй.
 
-Эхний дугаар нь зөвхөн ABI хувилбарыг дэмждэг 1. syscall болон pointer-ABI бодлогыг гэрээг хүлээн зөвшөөрөх, гүйцэтгэхээр нөхцөлгүйгээр хэрэгжүүлдэг; гүйлгээний цаг хугацааны нийцүүлэл өөрчлөлт байхгүй.
+Эхний хувилбар зөвхөн ABI хувилбар 1-ийг дэмжинэ. syscall болон pointer-ABI бодлогыг гэрээг хүлээн авах, гүйцэтгэх үед ямар ч нөхцөлгүйгээр мөрддөг; ажиллах үеийн нийцтэй байдлыг солих тохиргоо байхгүй.
 
 ## Сайн гэрээг хэзээ ашиглах вэ? {#when-to-use-smart-contracts}
 

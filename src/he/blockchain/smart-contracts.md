@@ -1,9 +1,9 @@
 ---
 translation_locale: he
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: ed622cdb1d6a47635d0753c98f80aaa903b916133f43bc9fdab268512d0ace69
+translation_source_hash: 7c35c609442df65328fa619b6673be76f801cfc2abc28afd853d7fe61e439e9c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # חוזים חכמים {#smart-contracts}
@@ -15,9 +15,9 @@ translation_engine: nllb-200-ct2
 - `Executable::Ivm`: קוד בייט Iroha VM
 - `Executable::IvmProved`: קוד בייט Iroha VM עם כמות של הוראות מראש ומתחייבויות הוכחה.
 
-Kotodama הוא Iroha זו שפת חוזים חכמים ברמה גבוהה. `.ko` הקובץ המקור מסדר ל- Deterministic IVM קוד בייט, שמוחסן באופן מסורתי כ `.to` ארטיפקט לשימוש. Kotodama מטרות IVM; זה לא עצמאי. RISC-V או WebAssembly מטרה.
+Kotodama היא שפת החוזים החכמים ברמה גבוהה של Iroha. קובץ מקור `.ko` מהודר לקוד בתים דטרמיניסטי של IVM, הנשמר בדרך כלל כארטיפקט `.to` לפריסה. Kotodama מיועדת ל-IVM בלבד. היא אינה מיועדת ל-RISC-V או ל-WebAssembly.
 
-השחרור הראשון תומך רק בגרסה ABI 1. מדיניות syscall ו-pointer-ABI מופעלת ללא תנאים על ידי קבלת החוזה והביצוע; אין טוגל תאימות בזמן הפעלה.
+המהדורה הראשונה תומכת בגרסה 1 של ABI בלבד. מדיניות syscall ו-pointer-ABI נאכפת ללא תנאי בעת קבלת החוזה וביצועו; אין מתג תאימות בזמן ריצה.
 
 ## מתי להשתמש בחוזים חכמים {#when-to-use-smart-contracts}
 

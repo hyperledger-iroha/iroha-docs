@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/instructions.md
-translation_source_hash: 3251078b2b2268ff78563c02a0f935c63dc0569f0b6d38071150cbb4b89394d6
+translation_source_hash: adc3eff9758dd73e9114e78eaa18ddf6271db3bc4042611e1ed6ed1aac226246
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -128,7 +128,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 RWA 配分は,専用の `RegisterRwa` 指示で作成されます.現在のコードでは `UnregisterRwa` の指示を明らかにしていません.表示された量を取り出すために, `RedeemRwa` を使用します.
 
-::: 情報
+::: info
 
 [ゲネスブロック](/ja/guide/configure/genesis.md)を `genesis.json` に設定する方法を決定すると (特に,許可トークンの登録を含むか否かは別として),アカウントの登録プロセスは非常に異なることを注意してください.一般的には次のようにまとめることができます:
 
@@ -139,13 +139,13 @@ RWA 配分は,専用の `RegisterRwa` 指示で作成されます.現在のコ�
 
 :::
 
-::: 情報
+::: info
 
 同級者を登録することは,ネットワークに設定された信頼性のある同級者の一部ではなかった同級者を追加する唯一の方法です.
 
 :::
 
-ブロックチェーンのオブジェクトを登録するプロセスを案内するために,言語特有のガイドの1つを参照してください.
+ブロックチェーンのオブジェクトを登録するには,言語の特定ガイドを使用します.
 
 |言語|ガイド|
 | --------------------- | ------------------------------------------------------------------------------------------------------- |
@@ -249,7 +249,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 資産は,最初に資産を登録した口座に刻まれます.資産量は負ではないので,決して資産の `$-1.0` を持てたり,負額を燃やしたりしてコインを得ることはできません.
 
-ブロックチェーンの資産を採掘する過程を案内するために 言語専用のガイドの一覧を参照してください
+モントブロックチェーンの資産を特定する言語ガイドを使用します
 
 - [CLI](/ja/get-started/operate-iroha-via-cli.md)
 - [Rust](/ja/guide/tutorials/rust.md)

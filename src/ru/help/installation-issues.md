@@ -1,7 +1,7 @@
 ---
 translation_locale: ru
 translation_source: /help/installation-issues.md
-translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
+translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c054c85a2a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -89,7 +89,7 @@ $ rustup toolchain update stable
 $ rustup default stable
 ```
 
-Это может произойти, если вы установили `nightly` версии, или установить конкретный Rust Версия, но я забыл отремонтировать.
+Установка версии `nightly` или установка конкретной версии Rust без последующего ее отключения может вызвать эту проблему.
 
 ### Проверьте, есть ли другие версии Rust {#check-if-there-are-other-rust-versions}
 
@@ -123,13 +123,13 @@ $ rustup toolchain list
 $ rustup remove <toolchain>
 ```
 
-После этого убедитесь, что
+После удаления цепочек инструментов эта команда должна сообщить об ошибке с командой "не найдены":
 
 ```bash
 $ cargo --help
 ```
 
-Результатом является ошибка команды не найденная, т.е. у вас нет установленной активной цепочки инструментов Rust.
+Эта ошибка подтверждает, что не установлена активная Rust цепочка инструментов.
 
 ```bash
 $ rustup toolchain install stable

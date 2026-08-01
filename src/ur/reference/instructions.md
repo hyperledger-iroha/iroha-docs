@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /reference/instructions.md
-translation_source_hash: 8dc894a05141040826067dc483319f213b007648f32354bb36f899259db9c5ac
+translation_source_hash: e300187da832a8f82258a36b7c4aaebf505adc09c771de5b0c7ab8fb0052d3db
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -19,8 +19,8 @@ translation_engine: nllb-200-ct2
 | [`TransferBox`](/ur/blockchain/instructions.md#transfer) |`Domain` ، `AssetDefinition`، عددی طور پر `Asset`، `Nft`|
 | [`SetKeyValueBox`](/ur/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` میٹا ڈیٹا |
 | [`RemoveKeyValueBox`](/ur/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` میٹا ڈیٹا |
-| [`GrantBox`](/ur/blockchain/instructions.md#grant-revoke) |اکاؤنٹنگ کا اجازت نامہ، اکاؤنٹ میں کردار، کردار میں اجازت نامہ |
-| [`RevokeBox`](/ur/blockchain/instructions.md#grant-revoke) |اکاؤنٹ سے اجازت، اکاؤنٹ سے کردار، کردار سے اجازت |
+| [`GrantBox`](/ur/blockchain/instructions.md#grant-revoke) | `Permission` (`Grant<Permission, Account>`), `Role` (`Grant<RoleId, Account>`), `RolePermission` (`Grant<Permission, Role>`) |
+| [`RevokeBox`](/ur/blockchain/instructions.md#grant-revoke) | `Permission` (`Revoke<Permission, Account>`), `Role` (`Revoke<RoleId, Account>`), `RolePermission` (`Revoke<Permission, Role>`) |
 | [`SetParameter`](/ur/blockchain/instructions.md#setparameter) |سلسلہ پیرامیٹر اپ ڈیٹ |
 | [`ExecuteTrigger`](/ur/blockchain/instructions.md#executetrigger) |عملدرآمد کو متحرک کریں |
 | [`Upgrade`](/ur/blockchain/instructions.md#other-instructions) |عملدرآمد اپ گریڈ |

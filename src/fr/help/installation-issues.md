@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /help/installation-issues.md
-translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
+translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c054c85a2a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -83,13 +83,13 @@ et ça devrait résoudre vos problèmes.
 
 ### Vérifiez la version par défaut Rust {#check-the-default-rust-version}
 
-Une autre option est d'avoir la chaîne d'outils `stable` mise à jour, mais elle n'est pas définie par défaut.
+Une autre option est que vous avez la chaîne d'outils `stable` mise à jour, mais elle n'est pas définie par défaut.
 
 ```bash
 $ rustup default stable
 ```
 
-Cela peut se produire si vous avez installé une version `nightly`, ou configuré une version spécifique Rust, mais que vous avez oublié de la désactiver.
+L'installation d'une version `nightly` ou la mise en place d'une autre version Rust spécifique sans qu'elle ne soit désactivée plus tard peut causer ce problème.
 
 ### Vérifiez s'il existe d'autres versions Rust {#check-if-there-are-other-rust-versions}
 
@@ -123,13 +123,13 @@ Et puis, pour chaque `<toolchain>` (sans les parenthèses d'angle bien sûr):
 $ rustup remove <toolchain>
 ```
 
-Après ça, assurez-vous que
+Après avoir supprimé les chaînes d'outils, cette commande doit signaler une erreur de commande non trouvée:
 
 ```bash
 $ cargo --help
 ```
 
-Cela entraîne une erreur de commande non trouvée, c'est-à-dire que vous n'avez pas installé la chaîne d'outils active Rust.
+Cette erreur confirme qu'aucune chaîne d'outils active Rust n'est encore installée.
 
 ```bash
 $ rustup toolchain install stable

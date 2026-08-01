@@ -3,13 +3,13 @@
   "source": {
     "repository": "https://github.com/hyperledger-iroha/iroha.git",
     "commit": "bc7114ed1c7f265a156d2100ff09e851cc95702c",
-    "refresh_state": "awaiting-public-source-commit"
+    "refresh_state": "awaiting-signed-source-commit"
   },
   "artifacts": [
     {
       "id": "client-config",
       "kind": "copy",
-      "status": "pending-public-source-commit",
+      "status": "pending-signed-source-commit",
       "source": "defaults/client.toml",
       "source_sha256": "504e32542706c1cc72eef7c2cc422f301dd6e895d96424545f1bcbdd3aa50f28",
       "target": "src/snippets/client.template.toml",
@@ -18,7 +18,7 @@
     {
       "id": "peer-config",
       "kind": "copy",
-      "status": "pending-public-source-commit",
+      "status": "pending-signed-source-commit",
       "source": "specs/references/peer.template.toml",
       "source_sha256": "2191f806faf0d6d3e3c6cbf52ce91891ddf424ae491383b661d3c248b643f451",
       "target": "src/snippets/peer.template.toml",
@@ -27,7 +27,7 @@
     {
       "id": "genesis",
       "kind": "copy",
-      "status": "pending-public-source-commit",
+      "status": "pending-signed-source-commit",
       "source": "defaults/genesis.json",
       "source_sha256": "c44e3c55deb7bb5f4e92233e0b9dea7450873849e20bca9533bd1f034180835a",
       "target": "src/snippets/genesis.json",
@@ -36,7 +36,7 @@
     {
       "id": "torii-openapi",
       "kind": "copy",
-      "status": "pending-public-source-commit",
+      "status": "pending-signed-source-commit",
       "source": "artifacts/openapi/torii.json",
       "source_sha256": "508eff700c800619d48ea0a372937b82bf4a1f488c0deff5f6339ec78e3c97ad",
       "target": "src/public/openapi/torii.json",
@@ -45,7 +45,7 @@
     {
       "id": "data-model-schema",
       "kind": "command",
-      "status": "pending-public-source-commit",
+      "status": "pending-signed-source-commit",
       "command": [
         "cargo",
         "run",
@@ -66,7 +66,7 @@
     {
       "id": "iroha-cli",
       "kind": "command",
-      "status": "pending-public-source-commit",
+      "status": "pending-signed-source-commit",
       "command": [
         "cargo",
         "run",
@@ -87,7 +87,7 @@
     {
       "id": "kagami-cli",
       "kind": "command",
-      "status": "pending-public-source-commit",
+      "status": "pending-signed-source-commit",
       "command": [
         "cargo",
         "run",
@@ -108,7 +108,7 @@
     {
       "id": "irohad-help",
       "kind": "command",
-      "status": "pending-public-source-commit",
+      "status": "pending-signed-source-commit",
       "command": ["cargo", "run", "--locked", "--quiet", "-p", "irohad", "--bin", "irohad", "--", "--help"],
       "inputs": ["crates/irohad"],
       "target": "src/snippets/irohad-help.md",

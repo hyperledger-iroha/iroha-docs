@@ -1,99 +1,85 @@
 # Security Principles
 
-Organisations and individual users need to work together to ensure secure interactions with Iroha installations. This topic explains the basic principles behind this cooperation.
+An Iroha ledger verifies signed instructions and applies permissions. It does
+not secure private keys, hosts, applications, operator workstations, or
+governance procedures. The deployment must protect those systems.
 
-## General Security Principles
+Use these principles when designing and operating an Iroha network.
 
-1. Use a [Virtual Private Network](./vpn.md) (VPN):
+## Treat Authority as a Security Boundary
 
-    - Whenever accessing sensitive data or resources, especially over public networks, use a <abbr title="Virtual Private Network">VPN</abbr> to establish a secure connection that safeguards your information.
+- A person or process that controls a private key can act with the authority
+  assigned to that key.
+- Give each environment and operational role a separate authority.
+- Keep production keys and recovery keys separate from routine development and
+  test credentials.
+- Record who owns each authority, where its signer is held, and how it can be
+  replaced or revoked.
 
-2. Use a firewall for network protection:
+See [Public-Key Cryptography](./public-key-cryptography.md) and
+[Storing Cryptographic Keys](./storing-cryptographic-keys.md).
 
-    - Strengthen home and/or office networks by setting up a firewall that helps to counter unauthorized access and protect the connected devices from viruses and malware.
+## Apply Least Privilege
 
-3. Secure physical and digital information:
+- Grant only the Iroha permissions, host access, and network access required
+  for a role.
+- Separate routine transaction signing from governance, deployment, and
+  recovery authority.
+- Require independent approval for changes that can affect validator
+  membership, privileged permissions, or high-value assets.
+- Review access after role changes and remove access that is no longer needed.
 
-    - Safeguard physical documents containing sensitive information in a secure location, and ensure digital documents are encrypted and stored in password-protected folders.
+## Use Layers of Protection
 
-4. Keep Regular Data Backups:
+- Protect signers, applications, operating systems, networks, and physical
+  access. Do not rely on one control.
+- Expose only the Torii, peer, monitoring, and application routes required by
+  the deployment.
+- Use authenticated and encrypted channels for administrative access and
+  sensitive data.
+- Keep systems patched and disable services that the deployment does not use.
+- Keep secrets out of source control, command lines, logs, tickets, chat, and
+  public documentation.
 
-    - Always have copies of your important information saved somewhere safe. This way, if you lose your data or something goes wrong, you can quickly get everything back on track. Keep these backups in a different secure place from where you usually keep your data.
+## Make Deployments Reviewable
 
-## Security Principles for Individual Users
+- Keep non-secret configuration and deployment automation in version control.
+- Review changes to binaries, configuration, genesis material, validator
+  membership, permissions, and public routes.
+- Verify release artifacts before deployment. Record the approved versions and
+  hashes.
+- Test the exact binary and configuration combination that will run in
+  production.
+- Preserve the deterministic behavior of the network. Hardware acceleration
+  must not change peer-visible results.
 
-1. Adopt robust authentication rules:
+## Monitor and Preserve Evidence
 
-    - Utilise strong and unique passwords for all accounts.
+- Monitor peer health, consensus progress, permission changes, privileged
+  instructions, authentication failures, and unexpected configuration changes.
+- Send important alerts to a system that does not depend on the affected host.
+- Preserve relevant logs, ledger references, configuration snapshots, and
+  transaction hashes with reliable timestamps.
+- Treat missing monitoring data as an operational problem that requires
+  investigation.
 
-    - Never reuse passwords.
+## Prepare Recovery Before Launch
 
-    - Set up <abbr title="Two-Factor Authentication">2FA</abbr> whenever possible. <abbr title="Two-Factor Authentication">2FA</abbr> improves the overall security by not only requiring a password, but also an additional factor such as an <abbr title="One-Time Password">OTP</abbr>, fingerprint, or a third-party app-based authentication (e.g., Google Authenticator).
+- Define who can declare an incident and who can approve recovery actions.
+- Test backup, restore, key replacement, permission revocation, and peer
+  recovery procedures.
+- Keep trusted release artifacts, configuration, genesis records, and
+  inventories available during an incident.
+- Restore reads and monitoring first. Resume writes only after the recovered
+  network and dependent applications pass their checks.
+- Review every incident and update controls, automation, and exercises.
 
-    - Avoid using SMS authentication as the second factor. There is no guarantee that malicious software is not monitoring all of your SMS messages. For example, Android applications cannot be limited to only accessing the messages intended specifically for them.
+::: warning
 
-2. Exercise caution in digital communication:
-    - Set up an email client to sign and verify signatures of all the received emails.  While it is possible to impersonate the sender's address and even pose as a bank, it is not possible to fake a signature.
-    - Disable both HTML messages and loading of external resources from unknown or unverified addresses.
+Ledger actions may be irreversible. Use pre-reviewed procedures and the
+required approvals before submitting a recovery or governance transaction.
 
-    - Learn about common phishing techniques to recognise and avoid suspicious emails, links, and requests for personal information.
+:::
 
-    - Set up an email client to sign and verify signatures of all the received emails.  While it is possible to impersonate the sender's address and even pose as a bank, it is not possible to fake a signature.
-
-3. Safeguard personal information:
-
-    - When communicating with unfamiliar individuals, especially on the phone or online, be careful about sharing private information.
-
-    - Consider independently researching the individuals or organizations you are communicating with to confirm the legitimacy of their identity.
-
-    - Be mindful of the personal information you share on social media platforms, as malicious parties can exploit this information.
-
-## Security Principles for Organisations
-
-1. Establish clear security policies and procedures:
-
-    - Develop well-defined security policies and protocols for all employees dealing with sensitive data. Thoroughly train employees to adhere to these guidelines, mitigating the risk of negligent actions.
-
-    - Ensure that security policies are accessible to all employees and are regularly reviewed and updated to reflect changing security landscapes.
-
-    - Provide the security policies with examples and scenarios to make them more relatable and actionable for employees.
-
-2. Cultivate employee awareness:
-
-    - Educate employees about data and operational security measures. Heightened awareness and comprehensive training are pivotal in fortifying organizational security.
-
-    - Encourage employees to report any suspicious activities or security concerns promptly.
-
-3. Protect physical infrastructure:
-
-    - Restrict physical entry to servers and infrastructure. Set up access controls that only allow authorised personnel to enter restricted areas.
-
-    - Ensure that access control measures are regularly reviewed and updated to align with evolving security needs.
-
-    - Consider implementing biometric access controls for sensitive areas to enhance physical security.
-
-4. Deploy security monitoring:
-
-    - Enforce a comprehensive security monitoring system that scrutinizes activities and identifies potential security breaches.
-
-    - Implement automated alerts to promptly notify security personnel of any unusual or unauthorized activities.
-
-    - Consider using machine learning algorithms to enhance the system's ability to detect anomalies and potential threats.
-
-    - Employ staff or designate personnel to oversee database security, identify, track and address software vulnerabilities, and conduct regular checks on critical machines for the presence of unauthorized software not included in the approved list.
-
-5. Conduct recurring security audits:
-
-    - Perform routine security audits to evaluate vulnerabilities and confirm that established security measures align with the commonly-accepted standards and regulations.
-
-    - Consider hiring external security experts for periodic assessments to gain an impartial evaluation of your organization's security condition.
-
-6. Implement an access control system:
-
-    - Set up a role-based access control system to ensure that employees only have access to the resources and information necessary for their roles.
-
-7. Embrace Continuous Improvement:
-
-    - Recognize that security is a continuous process. Maintain ongoing assessment of security measures and proactively enhance them to address emerging threats and challenges.
-
-    - Consider establishing a feedback loop that encourages employees to contribute security improvement suggestions, fostering the culture of continuous enhancement.
+Continue with [Operational Security](./operational-security.md) and
+[Release Readiness](../best-practices/release-readiness.md).

@@ -1,9 +1,9 @@
 ---
 translation_locale: fr
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: 6ee65d409642c79bea0f2c4ff0d8cd59b0ec0a29e115225045786d0816e8a6a7
+translation_source_hash: 9bec41b1b419e252fdcff8328e7950a294bdad3ac40112a5a7f2ce451d19e9cb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Torii Points de référence {#torii-endpoints}
@@ -32,7 +32,7 @@ Pour des détails sur le format, la négociation du contenu, les drapeaux de mis
 |`GET /status` |JSON |Résumé du statut des opérateurs de haut niveau |
 |`GET /metrics` |Prométhée |L' endpoint de grattage Prometheus |
 |`GET /schema` |JSON |Une capture instantanée du schéma de modèle de données desservie par le nœud |
-|`GET /openapi` ou `GET /openapi.json` |JSON |document OpenAPI pour les routes actives Torii HTTP |
+|`GET /openapi` ou `GET /openapi.json` |JSON |document OpenAPI pour les lignes actives Torii HTTP |
 |`GET /v1/parameters` |JSON |Récapitulatif des paramètres du nœud |
 |`GET /v1/node/capabilities` |JSON |Capacité des nœuds et métadonnées du modèle de données |
 |`GET /v1/api/versions` |JSON |Les versions Torii API prises en charge |
@@ -40,7 +40,7 @@ Pour des détails sur le format, la négociation du contenu, les drapeaux de mis
 |`GET /v1/time/now` |JSON |Résumé de l' horloge du nœud|
 |`GET /v1/time/status` |JSON |Statut de synchronisation du temps |
 
-`/openapi` La surface exacte dépend des fonctionnalités de la construction et de la configuration du temps d'exécution. les clients générés devraient donc préférer le live OpenAPI document sur une liste de itinéraires copiée à la main. [Torii API console](/fr/reference/torii-api-console.md) pour charger ce document en direct, test JSON Route, copie curl les requêtes, et générer le code client à partir du schéma actuel.
+`/openapi` est la liste d'endpoints autorisés pour un nœud en cours de fonctionnement. construire des fonctionnalités et la configuration de l'exécution, donc les clients générés devraient préférer le live OpenAPI document sur une liste de itinéraires copiée à la main. [Torii API console](/fr/reference/torii-api-console.md) pour charger ce document en direct, test JSON Route, copie curl les requêtes, et générer le code client à partir du schéma actuel.
 
 ## Essayez les itinéraires en direct Taira {#try-live-taira-routes}
 
@@ -113,27 +113,27 @@ Lorsque Torii est construit avec le jeu de fonctionnalités face à l'applicatio
 
 |La famille des routes |Le but |
 | --- | --- |
-|`/v1/accounts/`, `/v1/domains/`, `/v1/assets/*` |JSON les lecteurs, les aides à la requête, les aides d'intégration et les vues du portefeuille ou du titulaire |
-|`/v1/nfts/`, `/v1/rwas/`, `/v1/confidential/*` |NFT, actifs du monde réel et vues confidentielles d'actifs |
-|`/v1/aliases/`, `/v1/assets/aliases/`, `/v1/sns/`, `/v1/identifiers/` |Nom, prénom et résolution de l'identifiant |
+|`/v1/accounts/*`, `/v1/domains/*`, `/v1/assets/*` |JSON les lecteurs, les aides à la requête, les aides d'intégration et les vues du portefeuille ou du titulaire |
+|`/v1/nfts/*`, `/v1/rwas/*`, `/v1/confidential/*` |NFT, actifs du monde réel et vues confidentielles d'actifs |
+|`/v1/aliases/*`, `/v1/assets/aliases/*`, `/v1/sns/*`, `/v1/identifiers/*` |Nom, prénom et résolution de l'identifiant |
 |`/v1/explorer/*` |Compte, actif, bloc, transaction, instruction, métriques et flux orientés vers l'explorateur |
-|`/v1/transactions/`, `/v1/pipeline/`, `/v1/iso20022/*` |L'historique des transactions, le rétablissement ou l'état du pipeline et les aides ISO 20022 |
+|`/v1/transactions/*`, `/v1/pipeline/*`, `/v1/iso20022/*` |L'historique des transactions, le rétablissement ou l'état du pipeline et les aides ISO 20022 |
 |`/v1/contracts/*` |Code de contrat, déploiement, paquet, appel, affichage, événement, activité, mise en œuvre et routes d'état |
-|`/v1/multisig/`, `/v1/controls/` |Propositions, approbations et aides à la gestion des transferts |
-|`/v1/bridge/`, `/v1/ledger/`, `/v1/proofs/*` |Finalité, preuve d'état, preuve de blocage, retenue des preuves et routes de requête des preuves |
+| `/v1/multisig/*`, `/v1/controls/*` |Propositions, approbations et aides à la gestion des transferts |
+|`/v1/bridge/*`, `/v1/ledger/*`, `/v1/proofs/*` |Finalité, preuve d'état, preuve de blocage, retenue des preuves et routes de requête des preuves |
 |`/v1/da/*` |Intégration de la disponibilité des données, manifestes, politiques de preuve, engagements et intentions précises |
 |`/v1/zk/*` |ZK racines, vérification des preuves, vérification de IVM, dénombrement des voix, clés de vérification, dossiers et pièces jointes |
-| `/v1/gov/`, `/v1/ministry/` |Propositions de gouvernance, bulletins de vote, état des conseils, espaces protégés, propositions d'ordre du jour, promulgation et finalisation |
-| `/v1/nexus/`, `/v1/sccp/` |Nexus la voie, l'espace de données, et les aides à l'épreuve croisée chaîne |
+| `/v1/gov/*`, `/v1/ministry/*` |Propositions de gouvernance, bulletins de vote, état des conseils, espaces protégés, propositions d'ordre du jour, promulgation et finalisation |
+| `/v1/nexus/*`, `/v1/sccp/*` |Nexus la voie, l'espace de données, et les aides à l'épreuve croisée chaîne |
 |`/v1/musubi/*` |Musubi lecteurs de registre des paquets et constructeurs d'instructions |
 |`/v1/subscriptions/*` |Les plans d'abonnement, le cycle de vie des abonnements, l'utilisation et les aides à la charge |
-|`/v1/sorafs/`, `/sorafs/`, `/.well-known/sorafs/*` |SoraFS Découverte du fournisseur, preuve de capacité, pinning, récupération de stockage et service public de contenu |
-|`/v1/soracloud/`, `/v1/soradns/`, `/soradns/`, `/api/` |SoraCloud cycle de vie des services, flux informatiques / modèles privés, découverte publique et routage d'applications hébergées |
-| `/v1/connect/`, `/v1/vpn/` |Iroha Connecter les séances, WebSocket le transport, VPN les sessions, les profils et les reçus |
-|`/v1/app-api/`, `/v1/api/`, `/v1/content/*` |App API liaisons et bundle/routage de contenu soutenu par CID |
+|`/v1/sorafs/*`, `/sorafs/*`, `/.well-known/sorafs/*` |SoraFS Découverte du fournisseur, preuve de capacité, pinning, récupération de stockage et service public de contenu |
+|`/v1/soracloud/*`, `/v1/soradns/*`, `/soradns/*`, `/api/*` |SoraCloud cycle de vie des services, flux informatiques / modèles privés, découverte publique et routage d'applications hébergées |
+| `/v1/connect/*`, `/v1/vpn/*` |Iroha Connecter les séances, WebSocket le transport, VPN les sessions, les profils et les reçus |
+|`/v1/app-api/*`, `/v1/api/*`, `/v1/content/*` |App API liaisons et bundle/routage de contenu soutenu par CID |
 | `/v1/operator/*`, `/v1/mcp` |L'authentification de l'opérateur et le pont natif MCP JSON-RPC|
-|`/v1/offline/`, `/v1/repo/`, `/v1/space-directory/`, `/v1/ram-lfe/` |Préparation en ligne, accords de référentiel, manifestes d'espace de données et aides [RAM-LFE ](/fr/blockchain/ram-lfe.md#torii-routes)  |
-|`/v1/kaigi/`, `/v1/webhooks/`, `/v1/notify/`, `/v1/telemetry/` |Collaboration, connexion web, notifications push et intégration en direct de télémétrie |
+|`/v1/offline/*`, `/v1/repo/*`, `/v1/space-directory/*`, `/v1/ram-lfe/*` |Préparation en ligne, accords de référentiel, manifestes d'espace de données et aides [RAM-LFE ](/fr/blockchain/ram-lfe.md#torii-routes)  |
+|`/v1/kaigi/*`, `/v1/webhooks/*`, `/v1/notify/*`, `/v1/telemetry/*` |Collaboration, connexion web, notifications push et intégration en direct de télémétrie |
 
 ## ISO pont 20022 {#iso-20022-bridge}
 
@@ -162,9 +162,9 @@ Torii dévoile les ISO 20022 pont sous `/v1/iso20022/*` lorsque l'application es
 
 Les déclarations `pacs.008` doivent contenir le message ID, le montant du règlement interbancaire, la devise, la date de règlement, le débiteur et le créancier IBANs, et le débiteurs et le créant BICs. Lorsque les données de référence sont configurées, le pont vérifie également les intersections de devises BIC, IBAN et ISO 4217 avant que la transaction générée n'entre dans l'oléoduc.
 
-Les déclarations `pacs.009` doivent contenir le message d'affaires ID, la définition du message ID, l'heure de création, le montant du règlement interbancaire, la devise, la date du règlement, l'agent chargé et l'agent mandaté BICs, ainsi que le débiteur et le créancier IBANs. Si le message comprend `Purp`, le pont n'accepte actuellement que des fonds destinés aux valeurs mobilières: `Purp=SECU`.
+Les déclarations `pacs.009` doivent contenir le message d'affaires ID, la définition du message ID, l'heure de création, le montant du règlement interbancaire, la devise, la date du règlement; l'agent chargé BICs, le débiteur et le créancier IBANs. Si le message comprend `Purp`, le pont n'accepte actuellement que des fonds destinés aux valeurs mobilières: `Purp=SECU`.
 
-Les États membres `pacs.008` et `pacs.009` acceptent les points finaux de soumission XML ISO les enveloppes ou le format de champ plat utilisé lors des essais sur pont. `SplmtryData` les champs peuvent pincer la cible Iroha compte principal, source et cible IDs ou adresses, et définition des actifs ID. La réponse est: `202 Accepted` avec `message_id`, `transaction_hash`, `status`, `pacs002_code`, et le contexte du registre/compte/actif résolu.
+Les points finaux de soumission `pacs.008` et `pacs.009` acceptent les enveloppes XML ISO ou le format de champ plat utilisé dans les essais de pont. Les champs optionnels `SplmtryData` peuvent saisir le registre cible Iroha compte source et cible IDs ou adresses, ainsi que la définition d'actif ID. La réponse est `202 Accepted` avec `message_id`, `transaction_hash`, `status`, `pacs002_code` et le contexte de registre/compte/actif résolu.
 
 ### Appui supplémentaire aux analyses et cartographies {#additional-parser-and-mapping-support}
 
@@ -220,7 +220,7 @@ iroha kaigi record-usage \
 iroha kaigi end --domain streaming --call-name daily
 ```
 
-Utiliser `--room-policy public` pour les salles que les relais peuvent exposer sans billets d'affichage, ou `--room-policy authenticated` lorsque les sorties doivent nécessiter une authentification de l'afficher. Utilisez `--privacy-mode zk-roster-v1` seulement après que le réseau ait configuré la liste et les clés de vérification des utilisations de Kaigi; Dans le cas contraire, les joints, les feuilles et les enregistrements d'utilisation privés échouent lors de la vérification déterministe.
+Utilisation `--room-policy public` pour les salles qui peuvent être exposées par des relais sans billets d'audience, ou `--room-policy authenticated` Lorsque les sorties doivent nécessiter une authentification du spectateur. `--privacy-mode zk-roster-v1` seulement après que le réseau ait Kaigi les clés de vérification du répertoire et de l'utilisation configurées; autrement, joints, feuilles, et les enregistrements d'utilisation privés échouent lors de la vérification déterministique.
 
 ### Test avec le démonstrateur JavaScript {#testing-with-the-javascript-demo}
 
@@ -260,7 +260,7 @@ Pour un test contrôlé, appuyez la démonstration sur un point d'extrémité Ka
    ```
 
 Ces vérifications prouvent que la télémétrie de relais Torii et Kaigi est accessible. Elles ne créent pas une réunion; `CreateKaigi` et `JoinKaigi` ont encore besoin de portefeuilles financés et de soumission signée de transactions.
-4. Ouvrez la démo, allez à Paramètres, définissez le Torii URL, et laissez l'application charger la chaîne ID et le préfixe réseau depuis le point final.
+4. Ouvrez la démo, allez à Paramètres, définissez Torii URL, et laissez l'application charger la chaîne ID et le préfixe réseau depuis le point final.
 5. Créer ou restaurer deux portefeuilles locaux dans la démo. Utilisez des fenêtres d'applications, des profils ou des machines séparés afin que l'hôte et l'invité aient un état de portefeuille séparé.
 
 Pour l'essai du Kaigi UI:
@@ -283,7 +283,7 @@ npm run e2e:ui
 npm run verify
 ```
 
-La couverture des suites Vitest concentrée Kaigi la création de liens de réunion, le chargement d'invitations compactes, les appels privés à créer / rejoindre / terminer des ponts, l'auto-protection automatique, les retards manuels; et répondent aux sondages. UI l'essai de fumée comprend le `/kaigi` Les médias en direct entre deux portefeuilles nécessitent toujours un test manuel à deux fenêtres car le navigateur Les autorisations de caméra/microphone et les flux multimédias partagés sont spécifiques à l'environnement.
+La couverture des suites Vitest concentrée Kaigi Création de liens de réunion, chargement d'invitations compactes, création/joint/finition privée des appels de ponts, des rappels d'auto-défense, des retombées manuelles et des sondages. UI l'essai de fumée comprend le `/kaigi` Les médias en direct entre deux portefeuilles nécessitent toujours un test manuel à deux fenêtres car le navigateur Les autorisations de caméra/microphone et les flux multimédias partagés sont spécifiques à l'environnement.
 
 Pour le code d'intégration de l'échantillon, voir [Embedded Kaigi dans une application JavaScript ](/fr/guide/tutorials/kaigi.md).
 
@@ -294,7 +294,7 @@ Les points d'extrémité de l'état et des métriques sont les premières choses
 - `/status` expose les champs de partage, de blocage, de file d'attente et de consensus de premier niveau
 - `/metrics` expose les compteurs Prometheus, les gauges et les histogrammes
 
-Sur les nœuds activés Nexus, la sortie d'état comprend également des sections relatives à la voie et à l'espace de données. Lorsque `nexus.enabled = false`, ces sections sont omises.
+Sur les nœuds activés Nexus, la sortie d'état comprend également des sections relatives à la voie et aux espaces de données. Lorsque `nexus.enabled = false`, ces sections sont omises.
 
 ## JSON par rapport à Norito {#json-vs-norito}
 
@@ -314,15 +314,15 @@ Lorsqu'un point d'extrémité accepte ou retourne typé Norito directement, util
 
 ## Profiles de télémétrie {#telemetry-profiles}
 
-La visibilité du point final dépend des paramètres de télémétrie. Les documents en amont décrivent cinq niveaux de profil:
+La visibilité des points de terminaison dépend du paramètre `telemetry.profile` du nœud. La configuration actuelle expose cinq niveaux de profil :
 
 |Le profil |`/status` |`/metrics` |Routes de développement |
 | --- | --- | --- | --- |
-|`disabled` |- Je ne sais pas .|- Je ne sais pas .|- Je ne sais pas .|
-|`operator` |Oui , oui .|- Je ne sais pas .|- Je ne sais pas .|
-|`extended` |Oui , oui .|Oui , oui .|- Je ne sais pas .|
-|`developer` |Oui , oui .|- Je ne sais pas .|Oui , oui .|
-|`full` |Oui , oui .|Oui , oui .|Oui , oui .|
+|`disabled` |non |non |non |
+|`operator` |oui |non |non |
+|`extended` |oui |oui |non |
+|`developer` |oui |non |oui |
+|`full` |oui |oui |oui |
 
 ## CLI Des raccourcis {#cli-shortcuts}
 

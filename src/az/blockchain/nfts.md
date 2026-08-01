@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /blockchain/nfts.md
-translation_source_hash: 335eacd30c5964659baeeae8ac937805f1d4d786dd42a36e5164bbe75ef7e360
+translation_source_hash: 6dd2d21a29f352a14cb17046c66cfa541ef501b733b95bb6874d2d3f86ec0504
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -123,7 +123,7 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
-İşinizi bitirdikdən sonra təmizləyin. NFT, Bu komandanı cari sahibinin hesabının konfigürasiyası ilə icra edin və ya NFT Əvvəlcə geri qayıdın.
+NFT nümunəsini keçiddən sonra çıxarın. Onu köçürdüyünüz təqdirdə, ya yenidən köçürün və ya mövcud sahibinin hesabı konfigüratsiyası ilə qeydiyyatdan çıxmaq əmri göndərin.
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -145,7 +145,7 @@ Standart icazə səthində NFT xüsusi nömrələri var:
 - `CanTransferNft`
 - `CanModifyNftMetadata`
 
-İzin yoxlamaları aktiv icra müddəti təsdiqləyicisi tərəfindən həyata keçirilir, buna görə bir şəbəkə icazələri yeniləyərək özelleştire bilər Görürsənmi? [İzin simvolları](/az/reference/permissions.md) hazırkı standart simvol siyahısı üçün.
+İzin yoxlamaları aktiv icra vaxtı təsdiqləyici tərəfindən həyata keçirilir. şəbəkə icraçını yüksəltməklə icazəni özelleştire bilər. [İzin simvolları](/az/reference/permissions.md) hazırkı standart simvol siyahısı üçün.
 
 ## NFTs seçimi {#choosing-nfts}
 

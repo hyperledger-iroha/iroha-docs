@@ -8,26 +8,22 @@ translation_engine: nllb-200-ct2
 
 # 命名會議 {#naming-conventions}
 
-當您將帳戶,域名或資產命名時,
-在此之前使用的下列公约 Iroha:
+當您爲賬戶,域名或資產命名時,請記住 Iroha 中使用的以下規範:
 
-1. 還有許多保留的分隔器,
-   建築物類型:
+1. 對於特定類型的建築物使用的一些保留分離器:
 
-   - `@` 專用於帳戶名稱和專門帳戶/公钥表格
-   - `#` 專用於資產定義稱和資產平衡字面
-   - `::` 專用於合同名稱
-   - `.` 專為域名和數據空間資格
-   - `$` 專用於開啟式文字表格
-   - `%` 專屬於驗證碼的文本表格
+   - `@` 專用於賬戶姓氏和目標帳戶/公鑰表格
+   - `#` 專用於資產定義別名和資產餘額字面
+   - `::` 專用於合同別名
+   - `.` 專用於域名和數據空間的資格
+   - `$` 專用於觸發器掃描的文本形式
+   - `%` 專用於驗證器範圍的文本表格
 
-2. 最多的字符數量 (包括 UTF-8 字符) 一個名稱可以
-   這兩項因素是限制性的: `[0, u32::MAX]` 目前的情況
-   配置的堆積空間.
+2. 一個名稱的最大字符數量 (包括 UTF-8 字符) 由兩個因素限制:`[0, u32::MAX]`和目前分配的堆空間.
 
-## 試著使用 Taira {#try-it-on-taira}
+## 在 Taira 試看. {#try-it-on-taira}
 
-解決公共資產的代名稱在其法規資產定義中 ID:
+解決公共資產別名在其規範性資產定義中 ID:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/assets/aliases/resolve \
@@ -36,13 +32,11 @@ curl -fsS https://taira.sora.org/v1/assets/aliases/resolve \
   | jq '{alias, asset_definition_id, asset_name, status: .alias_binding.status}'
 ```
 
-請與資產定義清單比較:
+與資產定義列表進行比較:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=20' \
   | jq -r '.items[] | select(.alias != null) | [.alias, .id, .name] | @tsv'
 ```
 
-其他國家 `#` 字符將一個資產名稱從域範圍中分離.
-除非您故意寫出資產姓名或資產
-這樣的平衡是字面上的.
+`#`字符將資產代號與域名文本分開. 除非你故意寫一個資產代碼或資產平衡字母,否則不要使用簡單的名稱.

@@ -26,7 +26,7 @@ Chain ID ကို transaction တစ်ခုချင်းစီမှာ ထ
 
 <param-table type=string env=CHAIN />
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 chain = "00000000-0000-0000-0000-000000000000"
@@ -44,7 +44,7 @@ CHAIN="00000000-0000-0000-0000-000000000000"
 
 <param-table type="public-key" env="PUBLIC_KEY" />
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 public_key = "ea01309060D021340617E9554CCBC2CF3CC3DB922A9BA323ABDF7C271FCC6EF69BE7A8DEBCA7D9E96C0F0089ABA22CDAADE4A2"
@@ -62,7 +62,7 @@ Peer private key: `public_key` နှင့် ကိုက်ညီရမည်
 
 <param-table type="private-key" env="PRIVATE_KEY" />
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 private_key = "8926201CA347641228C3B79AA43839DEDC85FA51C0E8B9B6A00F6B0D6B0423E902973F"
@@ -88,7 +88,7 @@ P2P လိပ်စာသိရှိပါက `PUBLIC_KEY@ADDRESS` ကိုအ
 </template>
 </param-table>
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 trusted_peers = [
@@ -119,7 +119,7 @@ BLS validator ကိုယုံကြည်တဲ့ အဖော်မျာ�
 </template>
 </param-table>
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 trusted_peers_pop = [
@@ -146,7 +146,7 @@ TRUSTED_PEERS_POP='[
 
 <param-table type="file-path" env="GENESIS" />
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [genesis]
@@ -165,7 +165,7 @@ Genesis Key ရဲ့ အများသုံး သော့ပါ။
 
 <param-table type="public-key" env="GENESIS_PUBLIC_KEY" />
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [genesis]
@@ -186,7 +186,7 @@ GENESIS_PUBLIC_KEY="ed01208BA62848CF767D72E7F7F4B9D2D7BA07FEE33760F79ABE5597A515
 
 <param-table type="socket-addr" env="P2P_ADDRESS" />
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -207,7 +207,7 @@ Peer-to-peer address (အခြား peers တွေမြင်သလို �
 
 <param-table type="socket-addr" env="P2P_PUBLIC_ADDRESS" />
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -226,7 +226,7 @@ Synchronization message တစ်ခုတည်းမှာ ပို့နိ�
 
 <param-table type=number default-value=4 />
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -243,7 +243,7 @@ block_gossip_size = 256
 
 <param-table type=millis default-value=10_000 default-note="10 seconds" />
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -260,7 +260,7 @@ Gossip batch စာတိုမှာ အတိုင်းအတာ အမျ�
 
 <param-table type=number default-value=500 />
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -277,7 +277,7 @@ transaction_gossip_size = 256
 
 <param-table type=millis default-value=1_000 default-note="1 second" />
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -292,7 +292,7 @@ peer နဲ့ ဆက်နွယ်မှု ရပ်တန့်သွား�
 
 <param-table type=millis default-value=300_000 default-note="5 minutes" />
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -309,7 +309,7 @@ Torii ဆာဗာက နားထောင်ဖို့လိုပြီး 
 
 <param-table type=socket-addr env=API_ADDRESS />
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [torii]
@@ -341,7 +341,7 @@ DOS တိုက်ခိုက်မှုတွေကို တားဆီး
 </template>
 </param-table>
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [torii]
@@ -356,7 +356,7 @@ max_content_len = 64_000_000
 
 <param-table type=millis default-value=10_000 default-note="10 seconds" />
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [torii]
@@ -371,7 +371,7 @@ query_idle_time_ms = 10_000
 
 <param-table type=number default-value=128 />
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [torii]
@@ -386,7 +386,7 @@ query_store_capacity = 128
 
 <param-table type=number default-value=128 />
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [torii]
@@ -417,7 +417,7 @@ General logging verbosity [ `logger.filter`](#param-logger-filter) ကို က
 </template>
 </param-table>
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [logger]
@@ -438,7 +438,7 @@ LOG_LEVEL=INFO
 
 ### `logger.filter` {#param-logger-filter}
 
-[`logger.level`](#param-logger-level) နှင့်အတိုးအလျှော့ log filter များကို ပြုပြင်နိုင်သည်။
+[`logger.level`](#param-logger-level) အပြင် ပြင်ဆင်ထားသော log filter များ။ ရည်မှန်းချက်တစ်ခုစီအတွက် logging verbosity ကို customization လုပ်ခွင့်ပေးတယ်။
 
 <param-table type=string env=LOG_FILTER>
 <template #type>
@@ -457,7 +457,7 @@ target[span{field=value}]=level
 
 </param-table>
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [logger]
@@ -503,7 +503,7 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 </template>
 </param-table>
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [logger]
@@ -528,7 +528,7 @@ Kura သည် Iroha (သိုလှောင်ရုံအတွက် ဂျ
 
 <param-table type=number default-value=1024 env=KURA_BLOCKS_IN_MEMORY />
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [kura]
@@ -556,7 +556,7 @@ Kura အစပျိုးမှုပုံစံ
 </template>
 </param-table>
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [kura]
@@ -577,7 +577,7 @@ blocks တွေကို သိုလှောင်ထားတဲ့ director
 
 <param-table env=KURA_STORE_DIR type=file-path default-value=./storage />
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [kura]
@@ -596,7 +596,7 @@ Console အတွက် ဘလော့အသစ်တွေကို ပုံ�
 
 <param-table env=KURA_DEBUG_OUTPUT_NEW_BLOCKS type=bool default-value=false />
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [kura.debug]
@@ -617,7 +617,7 @@ KURA_DEBUG_OUTPUT_NEW_BLOCKS=true
 
 <param-table type=number default-value=65_536 />
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [queue]
@@ -634,7 +634,7 @@ capacity = 1_048_576
 
 <param-table type=number default-value=65_536 />
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [queue]
@@ -649,7 +649,7 @@ capacity_per_user = 1_048_576
 
 <param-table type=millis default-value=86_400_000 default-note="24 hours" />
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [queue]
@@ -666,7 +666,7 @@ Sumeragi soft-fork ကိုင်တွယ်ခြင်းလမ်းကြ�
 
 <param-table type=bool default-value=false />
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [sumeragi.debug]
@@ -703,7 +703,7 @@ Snapshot စနစ် လုပ်ဆောင်မှုပုံစံ။
 </template>
 </param-table>
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [snapshot]
@@ -722,7 +722,7 @@ snapshots များရဲ့ ကြိမ်နှုန်း။
 
 <param-table type=millis default-value=600_000 default-note="10 minutes" />
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [snapshot]
@@ -739,7 +739,7 @@ snapshots တွေကို ဘယ်မှာ သိမ်းထားရမ�
 
 <param-table type=file-path default-value=./storage/snapshot env=SNAPSHOT_STORE_DIR />
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [snapshot]
@@ -766,7 +766,7 @@ SNAPSHOT_STORE_DIR="/path/to/storage"
 
 <param-table type=string />
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [telemetry]
@@ -781,7 +781,7 @@ WebSocket URL ကီလိုမီထရီစုဆောင်းစက်။
 
 <param-table type=string />
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [telemetry]
@@ -796,7 +796,7 @@ url = "ws://telemetry.example.com/submit"
 
 <param-table type=millis default-value=1_000  default-note="1 second" />
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [telemetry]
@@ -811,7 +811,7 @@ min_retry_period_ms = 5_000
 
 <param-table type=number default-value=4 />
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [telemetry]
@@ -826,7 +826,7 @@ dev-telemetry ကိုရေးဖို့ filepath ကို
 
 <param-table type=file-path />
 
-::: code-group ကို
+::: code-group
 
 ```toml [Config File]
 [dev_telemetry]

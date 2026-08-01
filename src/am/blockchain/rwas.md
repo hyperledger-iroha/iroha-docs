@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /blockchain/rwas.md
-translation_source_hash: 80593515d6919a6b6cb282ddcd4903ce000b56b264f350a42a6ed792f9cbef73
+translation_source_hash: cbdc6d766fb90bea7e68dc67f2c705bb1638340feeb2fca9f2dd43a727ac03e7
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -60,12 +60,12 @@ RWAs ን መጠቀም መቁጠሪያው ከሰንሰለት ውጭ የሆነ የ
 |እንቅስቃሴ |የተተገበረ ባህሪ |
 | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
 |`RegisterRwa` |በአንድ ጎራ ውስጥ የተፈጠረ- ID ጭነት ይፍጠሩ; የግብይት ባለሥልጣን `owned_by` ይሆናል.|
-|`TransferRwa` |አንድ ሙሉ ዝውውር `owned_by` ሊለውጥ ይችላል; በከፊል ዝውውር የተፈጠረው የልጆች ጭነት ይፈጥራል. |
+|`TransferRwa` | መጠን ወደ ሌላ መለያ ይዛወሩ. ሙሉ ዝውውር ሊለወጥ ይችላል `owned_by`. በከፊል ዝውውር የተፈጠረ የተለየ የልጆች ጭነት ይፈጥራል ID. |
 |`HoldRwa` |የመጠባበቂያ መጠን: የተዋቀረ መቆጣጠሪያ እና `hold_enabled` ያስፈልጋል.|
 |`ReleaseRwa` |የተያዘውን መጠን ማስወገድ። የተዋቀረ መቆጣጠሪያ እና `hold_enabled` ይጠይቃል። |
 |`FreezeRwa` |መደበኛ ባለቤት ስራዎችን ያግድ. የተዋቀረ መቆጣጠሪያ እና `freeze_enabled` ይጠይቃል. |
 |`UnfreezeRwa` |መደበኛ ባለቤት ተግባራትን እንደገና ማግበር። የተዋቀረ መቆጣጠሪያ እና `freeze_enabled` ይጠይቃል ። |
-|`RedeemRwa` |የኪራይ ሰብሳቢውን ወይም ተቆጣጣሪን እና `redeem_enabled` ይጠይቃል.|
+|`RedeemRwa` |በቋሚነት መጠኑን ከሽያጭ ማስወገድ። ባለቤቱ ወይም አስተዳዳሪው `redeem_enabled` እውነት ከሆነ ማቅረብ ይችላል ። |
 |`MergeRwas` |ተመሳሳይ ጎራ ያላቸው የወላጅ እቃዎች እና ስፔክቶችን በአንድ የተፈጠረ የልጆች እቃ ውስጥ ያዋህዱ ።|
 |`ForceTransferRwa` |መጠን በመቆጣጠሪያ ፍሰት በኩል ይንቀሳቀሱ. የተዋቀረ መቆጣጠሪያ እና `force_transfer_enabled` ይጠይቃል. |
 |`SetRwaControls` |የፓርት ቁጥጥር ፖሊሲውን ይተካል። ባለቤት ወይም ተቆጣጣሪን ይጠይቃል ።|
@@ -96,11 +96,11 @@ RWAs ን መጠቀም መቁጠሪያው ከሰንሰለት ውጭ የሆነ የ
 }
 ```
 
-የተቆጣጣሪ መለያዎች እና ሚናዎች የሚመለከታቸው የቦሊያን ባንዲራ ያስችላቸውን የተቆጣጣሪ ተግባራት ብቻ እንዲፈጽሙ ይፈቀድላቸዋል. የአሁኑ የቁጥጥር ጭነት የመፍቀድ ዝርዝር ማስተላለፊያ ፖሊሲ አይደለም እንዲሁም የተሰቀሉ `transfers` ደንቦችን አይይዝም።
+የተቆጣጣሪ መለያዎች እና ሚናዎች የሚመለከታቸው የቦሊያን ባንዲራዎች በሚያስችሏቸው ተግባራት ብቻ ሊፈጽሙ ይችላሉ ። የአሁኑ የቁጥጥር ጭነት የተቆጣጣሪ ማንነቶችን እና የአሠራር ባንዲራዎችን ይ containsል ። የማስተላለፍ ፍቃድ ዝርዝሮች እና የተሰቀሉ `transfers` ደንቦች ከዚህ ጥቅማጥቅሞች ውጭ ናቸው።
 
 ## ጥያቄዎች, ክስተቶች እና APIs {#queries-events-and-apis}
 
-አጠቃቀም [`FindRwas`](/am/reference/queries.md#assets-nfts-and-rwas) ተመዝግቧል RWA የቀጥታ ዝማኔዎች የሚያስፈልጋቸው መተግበሪያዎች [`Rwa` የመረጃ ክስተቶች](/am/blockchain/filters.md#data-event-filters) የተፈጠሩ፣ ባለቤትነት የተለወጡ፣ የተከፋፈሉ፣ የተዋሃዱ፣ የተመለሱ፣ የቀዘቀዙ፣ ያልተቀዘቀዙ ፣ የተያዙ፣ የተለቀቁ፣ በኃይል የተላለፉ፣ ቁጥጥር የተለወጠባቸው፤ እና ሜታዳታ ክስተቶች.
+አጠቃቀም [`FindRwas`](/am/reference/queries.md#assets-nfts-and-rwas) ተመዝግቧል RWA የቀጥታ ዝማኔዎች የሚያስፈልጋቸው መተግበሪያዎች [`Rwa` የመረጃ ክስተቶች](/am/blockchain/filters.md#data-event-filters) የተፈጠሩ፣ ባለቤትነት የተለወጡ፣ የተከፋፈሉ፣ የተዋሃዱ፣ የተመለሱ፣ የቀዘቀዙ፣ ያልተቀዘቁ፣ የተካሄደው፣ የተለቀቀው፣ የኃይል ማስተላለፍ፣ የመቆጣጠሪያ ለውጥ እና ሜታዳታ ክስተቶች።
 
 Torii እንደ `/v1/rwas` እና `/v1/rwas/query` ያሉ ሰንሰለት-የመንግስት መንገዶችን እንዲሁም እንደ `/v1/explorer/rwas` እና `/v1/explorer/rwas/{rwa_id}` ያሉ የአሰሳ መንገዶችን ያጋልጣል ፣ ይህ የመንገድ ቤተሰብ ሲፈታ ። የተፈጠሩ ደንበኞች በአንድ ኖድ ከተጋለጠው ትክክለኛ የምላሽ ቅርፅ ይልቅ የቀጥታውን [`/openapi`](/am/reference/torii-endpoints.md#common-endpoints) ሰነድ ይመርጣሉ።
 
@@ -228,7 +228,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-ከሰንሰለት ውጭ ሂደቱ ሲጠናቀቅ መያዣውን ይለቁ:
+ከሰንሰለት ውጭ ያለው ሂደት ከተሳካ በኋላ `ReleaseRwa` ያቅርቡ:
 
 ```python
 draft = TransactionDraft(
@@ -273,7 +273,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### የክፍያ ወይም የጡረታ መጠን {#redeem-or-retire-quantity}
 
-የተወከለው ከሰንሰለት ውጭ ያለው ንብረት ሲሰጥ ፣ ሲበጅ ፣ ሲተረጎም ወይም በሌላ መንገድ ከዝውውር ሲወገድ የመክፈያ መጠን ። የፓርት `redeem_enabled` መሆን አለበት ፣ እና ፊርማው ባለቤት ወይም ተቆጣጣሪ መሆን አለበት።
+`RedeemRwa` የተወከለው ከሰንሰለት ውጭ ንብረት ከተሰጠ ፣ ከተበላሸ ፣ ወደ ጡረታ ከተወሰደ ወይም በሌላ መንገድ ከሽያጭ ከተወገደ በኋላ ያቅርቡ። ይህ የቀረበውን ብዛት በቋሚነት ከመደርደሪያው ይቀነሳል ። መደርደሩ `redeem_enabled` ሊኖረው ይገባል ፊርማው ባለቤት ወይም ተቆጣጣሪ መሆን አለበት ።
 
 ```python
 draft = TransactionDraft(
@@ -287,7 +287,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### ማክበር በሚያረጋግጥበት ጊዜ መቋረጥ {#freeze-during-compliance-review}
 
-ከሰንሰለት ውጭ ግምገማ መደበኛ የባለቤትነት ሥራዎችን ማገድ በሚያስፈልገው ጊዜ ብዙ መቁረጥ። ፊርማው ተቆጣጣሪ መሆን አለበት እና የጅምላው `freeze_enabled` መሆን አለበት።
+`FreezeRwa` ከሰንሰለት ውጭ የሚደረግ ግምገማ መደበኛ ባለቤት ሥራዎችን ማገድ ሲያስፈልገው ማስገባት አለበት። ፊርማው ተቆጣጣሪ መሆን አለበት ። የጅምላው `freeze_enabled` ሊኖረው ይገባል.
 
 ```python
 draft = TransactionDraft(
@@ -308,7 +308,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-ግምገማው ሲያልፍ ያስወግዱት:
+ግምገማው ካለቀ በኋላ `UnfreezeRwa` ያቅርቡ:
 
 ```python
 draft = TransactionDraft(
@@ -380,7 +380,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-ከሰንሰለት ውጭ ክፍያ በኋላ የተገለጸውን መጠን መልሶ ማግኘት:
+ከሰንሰለት ውጭ ክፍያ በኋላ የተገለጸውን መጠን ማስመለስ:
 
 ```python
 draft = TransactionDraft(
@@ -394,7 +394,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### የካርቦን ብድር ጡረታ {#carbon-credit-retirement}
 
-ከተጠየቁ በኋላ ክሬዲት ለመውጣት የክፍያ ክፍያ ይጠቀሙ። ሜታዳታዎቹ ወደ ውጭ ሰንሰለት የምስክር ወረቀት ወይም የምዝገባ ማስረጃ የሚያመለክቱ ናቸው
+የሚጠየቁትን የካርቦን ክሬዲት ከሽያጭ ለማስወገድ `RedeemRwa` ያቅርቡ። ከሰንሰለት ውጭ ያለውን የምስክር ወረቀት ወይም የምዝገባ ማስረጃ በሜታዳታ ውስጥ ያስቀምጡ:
 
 ```python
 carbon_lot_id = (

@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /guide/configure/peer-management.md
-translation_source_hash: 4e48c937ca973319cd060876b123ff405d27d9d8bc11818e608d821295412c77
+translation_source_hash: f085fa1587595414f95705bbe2cd285752b0fe12cffb9ef29a33399f9a1f3f86
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -26,9 +26,9 @@ Pour ajouter un peer au réseau, il doit être enregistré manuellement. Discuto
 
 Le compte qui enregistre le coéquipier doit disposer du `Permission` approprié, qui peut être accordé par l'intermédiaire d'un `Role` ou sous forme de permis direct.
 
-Comment décider si vous devez accorder un rôle? L'octroi de rôles a du sens si l'utilisateur doit servir comme administrateur, où il est de sa responsabilité de maintenir les pairs dans le réseau à long terme. Une autorisation unique est utile lorsque la partie qui enregistre le paire n'est pas responsable de l'enregistrement des pairs en général, mais que l'administrateur du réseau n'a pas besoin (ou ne veut pas) passer du temps à mettre en place un nouveau pair.
+Donner un rôle lorsqu'un compte gère les pairs au fil du temps. Utilisez une autorisation directe pour une inscription unique par un compte qui ne gère pas autrement les pairs.
 
-::: informations
+::: info
 
 L'exécuteur par défaut utilise le jeton d'autorisation `CanManagePeers` pour enregistrer et ne pas enregistrer des pairs.
 
@@ -40,7 +40,7 @@ Nous discutons plus en détail des autorisations et des rôles dans un chapitre 
 
 Une fois qu'un nouveau coéquipier a obtenu des autorisations, il doit être mis en place.
 
-Demandez la configuration de pair actuelle avant d'admettre un nœud. Torii expose le paramètre du nœud et les points d'extrémité de capacité à cet effet. Les exploitants doivent vérifier que les délais, les tailles de lot et d'autres paramètres pertinents pour le consensus correspondent au réseau.
+Demandez la configuration de pair actuelle avant d'admettre un nœud. Torii expose le paramètre du nœud et les points d'extrémité de capacité à cet effet. ne négocie pas ces valeurs automatiquement: les opérateurs doivent vérifier que les délais, les tailles de lot et d'autres paramètres pertinents pour le consensus correspondent au réseau.
 
 Pour simplifier le processus, vous pouvez demander à l'administrateur du réseau une version modifiée de `config.toml`, qui exclut les renseignements privilégiés, tels que les clés privées des pairs.
 
@@ -48,7 +48,7 @@ Pour simplifier le processus, vous pouvez demander à l'administrateur du résea
 
 Une fois que votre coéquipier a commencé à courir, vous devez soumettre l'instruction par rapport au registre. Le coéquipier passera par le processus de poignée de main et commencera à discuter avec le réseau.
 
-::: astuce
+::: tip
 
 La soumission d'une instruction d'enregistrement par les pairs ne permet pas (et ne peut pas) d'installer un nouveau processus par les paires.
 

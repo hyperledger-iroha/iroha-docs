@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /help/installation-issues.md
-translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
+translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c054c85a2a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -89,7 +89,7 @@ $ rustup toolchain update stable
 $ rustup default stable
 ```
 
-Սա կարող է տեղի ունենալ, եթե տեղադրել եք `nightly` տարբերակը կամ սահմանել որոշակի Rust տարբերակ, բայց մոռացել եք այն բացել:
+`nightly` տարբերակը տեղադրելը կամ կոնկրետ Rust տարբերակը սահմանելը, առանց այն հետագայում չկարգավորելու, կարող է առաջացնել այս խնդիրը:
 
 ### Ստուգեք, թե արդյոք կան այլ Rust տարբերակներ: {#check-if-there-are-other-rust-versions}
 
@@ -123,13 +123,13 @@ $ rustup toolchain list
 $ rustup remove <toolchain>
 ```
 
-Այնուհետեւ համոզվեք, որ
+Օգտագործման գործիքների շղթաները հեռացնելուց հետո այս հրամանը պետք է հաղորդի հրամանի չգտնված սխալ:
 
 ```bash
 $ cargo --help
 ```
 
-առաջացնում է հրաման-ոչ-հայտնված սխալ, այսինքն, որ դուք չունեք ակտիվ Rust գործիքների շղթա տեղադրված: Այնուհետեւ գործարկել:
+Այդ սխալը հաստատում է, որ ոչ մի ակտիվ Rust գործիքների շղթան մնացել է տեղադրված: Այնուհետեւ գործարկել:
 
 ```bash
 $ rustup toolchain install stable

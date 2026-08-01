@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /blockchain/queries.md
-translation_source_hash: 0a32b75b78d5bcde0d2b84b58d440b18e545559dfd9772dd6508ad41e972bf6e
+translation_source_hash: 234c831c97bb93996e6cf51505921ff509e233408cf2faf6a9b23641e5642040
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,35 +12,19 @@ import WarningFatQuery from './WarningFatQuery.vue'
 
 # 问题 {#queries}
 
-虽然大部分关于区块链状态的信息
-通过使用事件订阅器和过器来
-缩小事件的范围到那些有兴趣的人,有时你需要
-走进一个更直接的方法. _查询_.
+事件订阅者和过器可以跟踪区块链状态的变化如果您需要直接查看当前状态,请使用查询.
 
-查询是类似指示的小物体, Iroha
-朋友们,请用当前世界状况的细节来回答.
+查询是像指令一样的小物体.发送一个给 Iroha 同龄人来了解他目前的世界状况.
 
-这并不一定是唯一可用的信息.
-网络,但它是唯一的信息 _保证_ 在
-在所有网络上都可访问.
+网络可能会曝光其他信息.可查询的世界国家信息是每个 Iroha 网络上唯一可获得的保证.
 
-每次部署 Iroha, 可能还有其他可用的信息.
-例如,遥测数据的可用性取决于网络
-管理者完全要决定他们是否愿意
-分配处理功率来追踪工作,而不是使用它来完成
-实际工作. 相反,某些功能总是需要,例如
-获得您的账户余额.
+对于每次部署 Iroha,可能还有其他可用的信息.例如,远程测量数据的可用性取决于网络管理员.它们是否愿意分配处理能力来跟踪工作,而不是使用它来完成实际的工作. 相反,某些功能总是需要,例如访问账户余额.
 
-查询结果可能是 [排序](#sorting), [页面化](#pagination)
-并且 [过](#filters) 一次的同行.排序完成
-选可以在各种类型的
-从领域特定 (个性化) IP 面膜选地址)
-字符串子方法,如 `begins_with` 通过逻辑操作结合.
+查询结果可以同时进行 [排序](#sorting), [页面化](#pagination)和 [过](#filters)等级.排序是用词汇图进行的.过可以根据各种原则进行,从特定域 (个别的 IP 地址过器面具) 到使用逻辑操作结合的`begins_with`等子字符串方法.
 
-## 试着. Taira {#try-it-on-taira}
+## 在 Taira 试看. {#try-it-on-taira}
 
-Taira 仅阅读的查询辅助器 JSON 为了共同的资源.
-在电缆配线之前练习页面化和响应处理 SDK:
+Taira 将只读取查询辅助器暴露在 JSON 上,用于共同资源. 在连接 SDK 之前使用它们来练习页面化和响应处理:
 
 ```bash
 TAIRA_ROOT=https://taira.sora.org
@@ -55,14 +39,11 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=3" \
   | jq '{total, assets: [.items[] | {id, name, total_quantity}]}'
 ```
 
-对于应用程序诊断,请将这些烟雾检查与签署的交易分开.
-检测.只读取查询失败通常指向终端点的可用性,
-在指向签名器设置之前,网络可访问性或路线兼容性.
+对于应用程序诊断,请将这些烟雾检查与签署的交易测试分开.只阅读查询失败通常指向终端点可用性,网络可访问性或路线兼容性,然后指向签约器设置.
 
 ## 创建查询 {#create-a-query}
 
-使用从中输入查询构建器 SDK 或 CLI. 例如,目前的数据
-模型曝光 `FindAccounts` 对上市账户:
+使用从 SDK 或 CLI 的输入查询构建器. 例如,当前的数据模型对列表账户显示`FindAccounts`:
 
 ```rust
 let query = FindAccounts;
@@ -75,18 +56,13 @@ let alice_id = load_canonical_account_id_from_client_config()?;
 let query = FindAssetsByAccountId::new(alice_id);
 ```
 
-## 页面化 {#pagination}
+## 浏览页面 {#pagination}
 
-对于单独查询和小可重复查询,你可以使用 `client.request`
-在一个时间内,我们可以提交查询并获得结果.
+对于单独查询和小型可重复查询,您可以使用 `client.request` 来提交查询并获得一次性结果.
 
-然而,广泛的可重复查询如 `FindAccounts`, `FindAssets`, 或
-`FindBlocks` 使用页面化来减少负载
-对于同行和客户.
+然而, `FindAccounts`, `FindAssets`或 `FindBlocks`等广泛可重复的查询可以返回大型结果集. 使用页面化来减少同行和客户端负载.
 
-建立一个 `Pagination`, 你需要打电话
-`client.request_with_pagination(query, pagination)`, 在哪里 `pagination`
-结构如下:
+为了构建 `Pagination`,您需要拨打 `client.request_with_pagination(query, pagination)`,其中`pagination`的构建方式如下:
 
 ```rust
 let starting_result: u32 = _;
@@ -96,29 +72,18 @@ let pagination = Pagination::new(Some(starting_result), Some(limit));
 
 ## 过器 {#filters}
 
-当你创建查询时,你可以使用过器只返回结果
-与指定过器相匹配.
+在创建查询时,您可以使用过器只返回符合指定过器的结果.
 
-过器是查询特定的.例如,帐户查询可以通过
-账户身份或元数据,而资产查询可以通过资产缩小
-定义,持有者账户或域名投影. SDK 输入了查询
-在可能的情况下,构建器,以便过器类型匹配查询输出类型.
+例如,账户查询可以通过帐户身份或元数据缩小,而资产查询则可根据资产缩小 在可能的情况下,使用 SDK 的输入查询构造器,以便过器类型匹配查询输出类型.
 
 ## 排序 {#sorting}
 
-Iroha 可以分类物品 [大数据](/zh-hans/blockchain/metadata.md)
-在建筑过程中提供一个分类的关键时,
-一个典型的使用情况是, `registered-on`
-输入元数据,当进行分类时,允许您查看帐户
-登记历史.
+Iroha 可以用[元数据](/zh-hans/blockchain/metadata.md)语法来排序项目,如果您提供查询构建过程中进行排序的关键.一个典型的使用情况是帐户有`registered-on`元数据输入,当排序时,允许您查看账户注册历史.
 
-排序仅适用于有
-[大数据](/zh-hans/blockchain/metadata.md), 随着 metadata密钥的使用
-排序查询结果.
+排序仅适用于具有 [元数据](/zh-hans/blockchain/metadata.md)的实体,因为用于对查询结果进行分类的元数据键.
 
-您可以将排序与页面化和过器结合起来.
-这种功能是可选的,大多数页面化查询都不需要它.
+您可以将排序与页面化和过器结合起来. 请注意,排序是可选的功能,大多数页面化查询都不需要它.
 
 ## 参考 {#reference}
 
-检查 [现有查询列表](/zh-hans/reference/queries.md) 为了详细了解它们.
+查看 [现有查询列表](/zh-hans/reference/queries.md),以获取有关查询的详细信息.

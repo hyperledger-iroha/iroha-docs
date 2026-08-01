@@ -20,6 +20,6 @@ translation_engine: nllb-200-ct2
 
 <CompatibilityMatrixTable />
 
-::: معلومات
+::: info
 `VITE_COMPAT_MATRIX_URL` کو صرف ہم آہنگ لائیو بیک اینڈ کے ساتھ بنڈل شدہ اسنیپ شاٹ کو ختم کرنے کے لئے ترتیب دیں۔ اس متغیر کے بغیر ، صفحہ لوڈ ہوتا ہے `src/public/compat-matrix.json`.
 :::

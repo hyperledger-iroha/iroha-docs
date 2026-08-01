@@ -26,7 +26,7 @@ Takrorlash hujumlari - bu haqiqiy operatsiyani o'ziga mo'ljallanganidan boshqach
 
 <param-table type=string env=CHAIN />
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 chain = "00000000-0000-0000-0000-000000000000"
@@ -44,7 +44,7 @@ O'z tengdoshlari uchun ochiq kalit. Konsensni tasdiqlovchi tengdoshlar BLS-Norma
 
 <param-table type="public-key" env="PUBLIC_KEY" />
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 public_key = "ea01309060D021340617E9554CCBC2CF3CC3DB922A9BA323ABDF7C271FCC6EF69BE7A8DEBCA7D9E96C0F0089ABA22CDAADE4A2"
@@ -62,7 +62,7 @@ Tengdoshning xususiy kaliti. U `public_key` bilan mos bo'lishi kerak; konsensusn
 
 <param-table type="private-key" env="PRIVATE_KEY" />
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 private_key = "8926201CA347641228C3B79AA43839DEDC85FA51C0E8B9B6A00F6B0D6B0423E902973F"
@@ -88,7 +88,7 @@ Tengdoshlar qatoridan. P2P manzili ma'lum bo'lganda `PUBLIC_KEY@ADDRESS` dan foy
 </template>
 </param-table>
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 trusted_peers = [
@@ -119,7 +119,7 @@ BLS validatorning ishonchli tengdoshlari uchun egalik to'g'risidagi dalillar kir
 </template>
 </param-table>
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 trusted_peers_pop = [
@@ -146,7 +146,7 @@ TRUSTED_PEERS_POP='[
 
 <param-table type="file-path" env="GENESIS" />
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [genesis]
@@ -165,7 +165,7 @@ Genesis kalitining umumiy kaliti.
 
 <param-table type="public-key" env="GENESIS_PUBLIC_KEY" />
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [genesis]
@@ -186,7 +186,7 @@ Konsensus (sumeragi) va blok sinxronizatsiyasi (blok_sinx) uchun p2p aloqa manzi
 
 <param-table type="socket-addr" env="P2P_ADDRESS" />
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -207,7 +207,7 @@ Boshqa tengdoshlarga gapirishlari uchun o'zaro bog'liq tengdoshlariga g'iybat qi
 
 <param-table type="socket-addr" env="P2P_PUBLIC_ADDRESS" />
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -226,7 +226,7 @@ Bir xil sinxronlashtirish xabarida jo'natilishi mumkin bo'lgan bloklar soni.
 
 <param-table type=number default-value=4 />
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -243,7 +243,7 @@ Ko'proq tez-tez g'iybat qilish sinxronlashtirish vaqtini qisqartiradi, ammo tarm
 
 <param-table type=millis default-value=10_000 default-note="10 seconds" />
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -260,7 +260,7 @@ Kichikroq o'lcham sinxronlashtirish uchun ko'proq vaqtga olib keladi, ammo agar 
 
 <param-table type=number default-value=500 />
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -277,7 +277,7 @@ Ko'proq tez-tez g'iybat qilish sinxronlashtirish vaqtini qisqartiradi, ammo tarm
 
 <param-table type=millis default-value=1_000 default-note="1 second" />
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -292,7 +292,7 @@ Agar tengdosh ishlamasa, tengdosh bilan bog'lanish tugatilgan vaqt davomiyligi.
 
 <param-table type=millis default-value=300_000 default-note="5 minutes" />
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -309,7 +309,7 @@ Torii serverining tinglashi kerak bo'lgan va mijozlar o'z talablarini amalga osh
 
 <param-table type=socket-addr env=API_ADDRESS />
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [torii]
@@ -341,7 +341,7 @@ Ushbu limit DOS hujumlarini oldini olish uchun ishlatiladi.
 </template>
 </param-table>
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [torii]
@@ -356,7 +356,7 @@ Agar xaridorga murojaat qilinmasa, so'rovlar do'konda qolishi mumkin bo'lgan vaq
 
 <param-table type=millis default-value=10_000 default-note="10 seconds" />
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [torii]
@@ -371,7 +371,7 @@ To'g'ridan-to'g'ri so'rovlar soni yuqori chegarasi
 
 <param-table type=number default-value=128 />
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [torii]
@@ -386,7 +386,7 @@ Bir foydalanuvchi uchun jonli so'rovlar sonining yuqori chegarasi.
 
 <param-table type=number default-value=128 />
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [torii]
@@ -417,7 +417,7 @@ Foydalanish holatingizga eng mos bo'lgan darajani tanlang. [Stack Overflow](http
 </template>
 </param-table>
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [logger]
@@ -457,7 +457,7 @@ Ko'proq ma'lumot olish uchun [ `tracing-subscriber` hujjatlarini](https://docs.r
 
 </param-table>
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [logger]
@@ -503,7 +503,7 @@ Ko'proq ma'lumot va namuna mahsulotlari uchun [`tracing-subscriber` hujjatlarini
 </template>
 </param-table>
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [logger]
@@ -528,7 +528,7 @@ Agar kerak bo'lsa, eski bloklar xotirasidan tushirib, diskdan yuklanadi.
 
 <param-table type=number default-value=1024 env=KURA_BLOCKS_IN_MEMORY />
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [kura]
@@ -556,7 +556,7 @@ Urug'lar, mumkin bo'lgan qiymat:
 </template>
 </param-table>
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [kura]
@@ -577,7 +577,7 @@ Shuningdek, ko'ring: [`snapshot.store_dir`](#param-snapshot-store-dir).
 
 <param-table env=KURA_STORE_DIR type=file-path default-value=./storage />
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [kura]
@@ -596,7 +596,7 @@ Konsol uchun yangi bloklarni bosib chiqarish imkonini beruvchi bayroq.
 
 <param-table env=KURA_DEBUG_OUTPUT_NEW_BLOCKS type=bool default-value=false />
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [kura.debug]
@@ -617,7 +617,7 @@ navbatda turgan bitimlar soni yuqori chegarasi.
 
 <param-table type=number default-value=65_536 />
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [queue]
@@ -634,7 +634,7 @@ Ushbu variantdan foydalanib, to'xtatish usulini qo'llash.
 
 <param-table type=number default-value=65_536 />
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [queue]
@@ -649,7 +649,7 @@ Ushbu vaqtdan keyin agar u hali ham navbatda bo'lsa, bitim bekor qilinadi.
 
 <param-table type=millis default-value=86_400_000 default-note="24 hours" />
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [queue]
@@ -666,7 +666,7 @@ Sumeragi yumshoq furqonlarni boshqarish yo'nalishlarini amalga oshirish uchun fa
 
 <param-table type=bool default-value=false />
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [sumeragi.debug]
@@ -703,7 +703,7 @@ Urug'lar, mumkin bo'lgan qiymat:
 </template>
 </param-table>
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [snapshot]
@@ -722,7 +722,7 @@ O'yinlarning tez-tezligi.
 
 <param-table type=millis default-value=600_000 default-note="10 minutes" />
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [snapshot]
@@ -739,7 +739,7 @@ Shuningdek, qarang: [`kura.store_dir`](#param-kura-store-dir)
 
 <param-table type=file-path default-value=./storage/snapshot env=SNAPSHOT_STORE_DIR />
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [snapshot]
@@ -766,7 +766,7 @@ Telemetriyada nodning nomi ko'rsatilishi kerak.
 
 <param-table type=string />
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [telemetry]
@@ -781,7 +781,7 @@ Telemetriya yig'uvchining WebSocket URL raqami.
 
 <param-table type=string />
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [telemetry]
@@ -796,7 +796,7 @@ Tekir bog'lanishdan oldin kutishning eng kam muddati.
 
 <param-table type=millis default-value=1_000  default-note="1 second" />
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [telemetry]
@@ -811,7 +811,7 @@ Qaytadan bog'lanishlar o'rtasidagi kechikishlarni ko'paytirish uchun ishlatiladi
 
 <param-table type=number default-value=4 />
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [telemetry]
@@ -826,7 +826,7 @@ Dev-telemetriyani yozish uchun fayl yo'li
 
 <param-table type=file-path />
 
-::: kod guruhi
+::: code-group
 
 ```toml [Config File]
 [dev_telemetry]

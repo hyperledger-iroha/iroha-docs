@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /blockchain/queries.md
-translation_source_hash: 0a32b75b78d5bcde0d2b84b58d440b18e545559dfd9772dd6508ad41e972bf6e
+translation_source_hash: 234c831c97bb93996e6cf51505921ff509e233408cf2faf6a9b23641e5642040
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,13 +12,13 @@ import WarningFatQuery from './WarningFatQuery.vue'
 
 # Suallar {#queries}
 
-Blockchain-in vəziyyəti haqqında çox məlumat əldə edilə bilsə də, daha əvvəl göstərdiyimiz kimi, tədbir abunəçisi və bir filtrdən istifadə edərək tədbirlərin sahəsini maraqlı olanlara məhdudlaşdırmaq üçün bəzən daha birbaşa yanaşmanıza ehtiyacınız olur. Sual daxil edin.
+Tədbir abunəçiləri və filtrlər blockchain vəziyyətindəki dəyişiklikləri izləyə bilər. Cari vəziyyətin birbaşa görünüşünə ehtiyac duyduğunuz zaman sorğu istifadə edin.
 
-Suallar kiçik bir təlimat kimi obyektlərdir ki, Iroha həmyaşıllısına göndərildikdə, hazırkı dünya vəziyyətinə dair baxışdan ətraflı məlumatlarla cavab verməyə səbəb olur.
+Suallar kiçik təlimat kimi obyektlərdir. Iroha Müasir dünya vəziyyətindən ətraflı məlumat almaq üçün.
 
-Bu, mütləq şəbəkədə mövcud olan yeganə informasiya növü deyil, lakin bütün şəbəkələrdə əlçatan olacağı təmin edilən yeganə məlumat növüdür.
+Bir şəbəkə digər məlumatları aşkar edə bilər. İstənilən dünya dövlətləri haqqında məlumat hər bir Iroha şəbəkədə mövcud olması təmin edilən yeganə növdür.
 
-Iroha hər bir yerləşdirilməsi üçün digər məlumatlar da ola bilər. Məsələn, telemetri məlumatların mövcudluğu şəbəkə idarəçilərindən asılıdır. İşin yerinə yetirilməsi üçün istifadə etmək əvəzinə işləmə gücünü ayırmaq və ya verməmək onların qərarıdır. əsl iş. Əksinə, bəzi funksiyalar həmişə tələb olunur, məsələn hesabınızın balansına giriş əldə etmək.
+Iroha hər bir yerləşdirilməsi üçün digər məlumatlar da ola bilər. Məsələn, telemetri məlumatların mövcudluğu şəbəkə idarəçilərindən asılıdır. İstəyirlərsə, verməsinlərsə, bu onların qərarıdır. İşin yerinə yetirilməsi üçün istifadə etmək əvəzinə işi izləmək üçün emal gücü. Əksinə, bəzi funksiyalar həmişə tələb olunur, məsələn hesabınızın balansına giriş əldə etmək.
 
 Sualların nəticələri [sifariş edilmiş](#sorting), [səhifələri](#pagination) və [filtrlənmiş](#filters) Metadata açarları üzrə leksikografik olaraq sıralama aparılır. Filtrləmə müxtəlif prinsiplər əsasında həyata keçirilə bilər. IP adres filtr maskaları) kimi sub-satır üsullarına `begins_with` məntiqi əməliyyatlardan istifadə edərək birləşdirilmişdir.
 
@@ -74,7 +74,7 @@ let pagination = Pagination::new(Some(starting_result), Some(limit));
 
 Bir sorğu yaratarkən, yalnız müəyyən edilmiş filtrə uyğun olan nəticələri qaytarmaq üçün bir filterdən istifadə edə bilərsiniz.
 
-Filterlər sorğu-specifikdir. Məsələn, hesab sorğuları hesab kimliyi və ya metadata ilə daraldıla bilər, aktiv sorğuları isə aktiv təyinatı, sahibinin hesabı və ya domen proqnozu ilə daralına bilər. Mümkün olduqda SDK'nin tapılan sorğu qurucularından istifadə edin ki, filtr tipi sorğunun çıxışı tipinə uyğun olsun.
+Filterlər sorğu-specifikdir. Məsələn, hesab sorğuları hesab kimliyi və ya metadata ilə daraldıla bilər, asset sorğuları isə aktivə görə daralına bilər SDK'ın tapılmış sorğu qurucularından istifadə edin ki, filtr növü sorğunun çıxışı tipinə uyğun olsun.
 
 ## Sortlaşdırma {#sorting}
 

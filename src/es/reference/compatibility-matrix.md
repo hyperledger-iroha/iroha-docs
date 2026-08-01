@@ -20,6 +20,6 @@ Solo los resultados verificados por el flujo de trabajo de actualización se inf
 
 <CompatibilityMatrixTable />
 
-::: Información
+::: info
 Configurar `VITE_COMPAT_MATRIX_URL` sólo para anotar la instantánea agrupada con un backend en vivo compatible. Sin esa variable, la página se carga `src/public/compat-matrix.json`.
 :::

@@ -1,32 +1,28 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/sora-nexus-services.md
-translation_source_hash: eb09de975095000bee47403332baade8f07e445c605366c8a4867839797f768a
+translation_source_hash: 4608e4e651519144d206b4370e2c334f469460cf9542324b06924a838cb26cb5
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# SORA Nexus 提供服務 {#sora-nexus-services}
+# SORA Nexus 服務 {#sora-nexus-services}
 
-SORA Nexus 加入應用程式面向的服務飛機 Iroha 3. 這些服務
-沒有分別的帳簿, Iroha 世界國家, Norito
-管理紀錄, Torii 這樣的家庭.
+SORA Nexus 在 Iroha 3 周圍添加了應用程序面向的服務飛機.這些服務不是單獨的賬本.它們由 Iroha 世界狀態,Norito 公開表,治理記錄和 Torii 路線家族固定.
 
-可用性取決於節點建構和網絡配置. 使用
-[`/openapi`](/zh-hant/reference/torii-endpoints.md#app-and-sora-route-families) 在
-目標結線作為啟用路徑的權威列表.
+可用性取決於節點構建和網絡配置文件. 在目標節點上使用 [`/openapi`](/zh-hant/reference/torii-endpoints.md#app-and-sora-route-families)作爲啓用路線的權威列表.
 
 ## 組件地圖 {#component-map}
 
-| 組件              | 角色                                                                                                                                        | 主要表面                                                                            |
+|組件|角色|主要表面|
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| Soracloud              | 應用程式部署,托管服務,私人模型/運行時間狀態以及服務生命周期控制.                                        | `/v1/soracloud/*`, `/api/*`, `iroha app soracloud ...`                                   |
-| 在內地                  | Soracloud 接待者 HTTP 需要直播的服務修改時間 HTTP 飛機.                                                            | Soracloud 執行時間設定,主機功能廣告,複製運行時間狀態                 |
-| SoraNet                | 環路的隱私與交通覆蓋, VPN, 聯繫會議,以及流通路線.                                     | `/v1/connect/*`, `/v1/vpn/*`, SoraNet 路線的數據                                     |
-| 數據可用性 (DA) | 提供可用性證據,承諾和針對被參考的有效負荷的定意層 Nexus 路線, SoraFS 證據的流動. | `/v1/da/*`, `FindDaPinIntent*`, `[sumeragi.da]`                                          |
-| SoraFS                 | 顯示表的存儲布料, CAR 這項指令將會影響其他國家的發展,           | `/v1/sorafs/*`, `/sorafs/*`, `FindSorafsProviderOwner`                                   |
-| SoraDNS                | 決定性命名和解決方案認證層 SORA 提供服務及內容.                                                   | `/v1/soradns/*`, `/soradns/*`, 解決目錄事件                                 |
-| 艾塔伊                  | 應用程式級的法定和資產清算走廊,                                     | `OpenAssetEscrow`, `FindAssetEscrow*`, `EscrowEventFilter`, Kotodama `escrow_*` 建築物 |
+|Soracloud|應用部署,託管服務,私人模型/運行時間狀態以及服務生命週期控制. |`/v1/soracloud/`, `/api/`,`iroha app soracloud ...` |
+|在裏面|Soracloud 爲需要直播 HTTP 飛機的服務修改運行時間託管 HTTP. |Soracloud 運行時間配置,主機功能廣告,複製運行時間狀態.|
+|SoraNet|電路,繼電流, VPN,連接會議和流媒體線路的隱私和運輸覆蓋. |`/v1/connect/`,`/v1/vpn/`, SoraNet 的路線元數據 |
+|數據可用性 (DA) |在 Nexus 車道, SoraFS 表格和證明流程中引用的有效載荷的可用性證據,承諾和準意圖層. |`/v1/da/`, `FindDaPinIntent`,`[sumeragi.da]` |
+|SoraFS|文件表, CAR 有效載荷,固定內容,網關檢索和可回收性證明流的內容定位存儲布料. |`/v1/sorafs/`, `/sorafs/`,`FindSorafsProviderOwner` |
+|SoraDNS|對於 SORA 託管的服務和內容,確定性命名和解決器認證層. |`/v1/soradns/`, `/soradns/`,解決方程式事件|
+|艾塔伊|應用程序級的法定和資產結算走廊,由本地託管記錄支持,而不是單獨的賬本.|`OpenAssetEscrow`, `FindAssetEscrow*`,`EscrowEventFilter`, Kotodama `escrow_*`的建築物|
 
 ```mermaid
 flowchart LR
@@ -49,89 +45,68 @@ flowchart LR
     escrow --> ledger
 ```
 
-## 常見的流量 {#common-flows}
+## 常見流量 {#common-flows}
 
-### 托管的 Split 應用程式 {#hosted-split-application}
+### 託管的分類應用程序 {#hosted-split-application}
 
-這項應用程式將所有零件放在一起:
+一個典型的混合平面應用程序使用了所有零件:
 
-1. 靜止前端的資產被包裝並固定 SoraFS.
-2. 舉例來說, `<app>.sora`, 已註冊於
-   SoraDNS.
-3. Soracloud 航線 `/api/v1/search` 或是 `/api/v1/stream` 在一間內路 HTTP
-   提供服務.
-4. Soracloud 航線 `/api/auth` 及其他 `/api/v1/user` 決定性化 IVM
-   管理人員.
-5. 需要隱私權的客戶可以獲得相同內容或 API 路線
-   通過一個 SoraNet 這裡是一個路線.
+1. 靜態前端資產被包裝並通過 SoraFS 綁定.
+2. 公共主機,例如 `<app>.sora`,通過 SoraDNS 進行註冊.
+3. Soracloud 路線 `/api/v1/search`或`/api/v1/stream`到一個 Inrou HTTP 服務.
+4. Soracloud 路線 `/api/auth`和 `/api/v1/user`向確定性處理器 IVM.
+5. 需要隱私的客戶可以通過 SoraNet 電路達到相同內容或 API 路線.
 
-| 路徑              | 支援機         | 為什麼?                                               |
+|路徑|後備飛機|爲什麼?|
 | ----------------- | --------------------- | ------------------------------------------------- |
-| `/`               | SoraFS 靜態含量 | 可複製的內容根和門口預存     |
-| `/assets/*`       | SoraFS 靜態含量 | 內容相關的資產和顯示證據      |
-| `/api/auth*`      | Soracloud IVM         | 沒有任何問題,       |
-| `/api/v1/user*`   | Soracloud IVM         | 對治理敏感的狀態突變              |
-| `/api/v1/search*` | Soracloud 在內地       | 活下去 HTTP 服務,預存器, SSE, 或是收藏國家 |
+| `/`               |SoraFS 靜態含量|可複製內容的根和網關緩存|
+|`/assets/*`|SoraFS 靜態含量|內容地址的資產和明確證據|
+|`/api/auth*`|Soracloud IVM |複製安全的作者和錢包挑戰狀態 |
+|`/api/v1/user*`|Soracloud IVM |對於治理敏感的狀態突變|
+|`/api/v1/search*`|Soracloud 在線|現場 HTTP 服務,緩存, SSE,或收藏狀態|
 
 ### 內容出版 {#content-publication}
 
-SoraFS 出版物在名稱指向之前,會產生持久的文藝品:
+SoraFS 出版物在名稱指向它們之前,生產了持久的文物:
 
 1. 建立一個有效載荷或目錄.
-2. 包裝在一個 CAR 這裡有許多資料庫,
-3. 建立一個 Norito 顯示了針對政策和治理的資料.
-4. 請向 Torii.
-5. 記錄一個 DA 目標的目的或可用性承诺
-   需要明顯的證據.
-6. 請將表記結到 SoraDNS 姓名或 Soracloud 沒有任何變化.
+2. 包裝在一個 CAR 檔案和零件計劃.
+3. 建立一個 Norito 表格,包含針政策和治理數據.
+4. 提交說明書給 Torii.
+5. 如果目標配置文件需要明確的證據,則記錄 DA 筆意圖或可用性承諾.
+6. 綁定表與 SoraDNS 名稱或 Soracloud 靜態前端路線.
 
-### 提供私人接送或播放方式 {#private-fetch-or-streaming-route}
+### 乘坐私人車或播放路線 {#private-fetch-or-streaming-route}
 
-SoraNet 能坐在前面 SoraFS 或是 Soracloud:
+SoraNet 可以坐在 SoraFS 或 Soracloud 前面:
 
-1. 客戶解決了名稱或公告.
-2. 警方目錄或路線公明選取入口與出口連接.
-3. 交通被填補, SoraNet 這裡是一個路線.
-4. 排出接線達到 SoraFS 這裡的門 Torii 流量,或 Soracloud
-   這裡是一個路線.
+1. 客戶端解決了名稱或表格.
+2. 一個警衛目錄或路線公開選擇入口和出口繼電器.
+3. 交通被填充並通過 SoraNet 電路發送.
+4. 輸出繼電器到達 SoraFS 門口, Torii 流或 Soracloud 路線.
 
 ## 艾塔伊 {#aitai}
 
-艾塔伊是 SORA 應用程序走廊,
-買家和賣家協調一項連鎖外付款, Iroha 控制了
-該使用本土的保證指令家族
-而不是合同所有的保證帳戶,
-沒有任何問題.
+Aitai是市場式結算的 SORA 應用程序走廊,買方和賣方在鏈外協調支付,而 Iroha 則控制了 在鏈上存儲資產.它應使用本地託管指令家族,而不是合同所有的託管賬戶用於新數值資產託管流動.
 
-在本地保證人帳簿中保存保管權.
-`OpenAssetEscrow`, 購買者接受並標記非連鎖付款,
-`AcceptAssetEscrow` 及其他 `MarkEscrowPaymentSent`, 賣家還會釋放
-在 `ReleaseAssetEscrow` 或在付款標記之前取消.
-任何一方可以開啟爭議,
-`CanResolveEscrowDispute` 這項方案可以將封鎖的金額分開.
+在本地保證人賬戶中保留保管權.賣方開設了 `OpenAssetEscrow`, 買方接受並標記鏈外支付: `AcceptAssetEscrow` 和 `MarkEscrowPaymentSent`, 賣家將與 `ReleaseAssetEscrow` 如果買方和賣方不同意,雙方可以開啓爭端,並通過 `CanResolveEscrowDispute` 可以把鎖定的金額劃分.
 
-提供全生命周期的通用資產鎖定,匿名保證,
-事件,以及 Rust 參考這些例子
-[預借本地資產](/zh-hant/blockchain/escrow.md).
+對於整個生命週期,通用資產鎖定,匿名保證金,查詢,事件和 Rust 的例子,請見 [原始資產保證金](/zh-hant/blockchain/escrow.md).
 
-| 艾塔伊表面                                                                                                                                                 | 請使用它                                                                                |
+|艾塔伊表面|用它來|
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`                                                    | 透明數字資產提供,包括 XOR- 定位的決算流量.             |
-| `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`       | 預約的價格, |
-| `OpenEscrowDispute`, `ResolveEscrowDispute`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute`                                                    | 解決爭議,以法庭的方式.                                                 |
-| `FindAssetEscrowById`, `FindAssetEscrowsBySeller`, `FindAssetEscrowsByBuyer`, `FindAssetEscrowsByStatus`                                                      | 應用程式狀況頁面,協調工作和支援工具.                               |
-| `EscrowEventFilter`                                                                                                                                           | 按保證身份,賣家,買方,狀態或事件類型的透明保證訂閱. |
-| Kotodama `escrow_open_offer`, `escrow_accept`, `escrow_mark_payment_sent`, `escrow_release`, `escrow_cancel`, `escrow_open_dispute`, `escrow_resolve_dispute` | Kotodama 請問有哪些 V1 沒有任何相關信息.                                 |
+| `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`                                                    |透明數值資產報價,包括以 XOR 爲單位的結算流動. |
+| `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`       |保護的報價使用證明附件對於資金和關閉活動.|
+|`OpenEscrowDispute`, `ResolveEscrowDispute`,`OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |糾紛和法庭方式的解決.|
+|`FindAssetEscrowById`, `FindAssetEscrowsBySeller`,`FindAssetEscrowsByBuyer`, `FindAssetEscrowsByStatus` |應用程序狀態頁面,調整工作和支持工具.|
+|`EscrowEventFilter`|按保證人身份,賣家,買家,狀態或事件類型的透明保證人訂閱.|
+| Kotodama `escrow_open_offer`, `escrow_accept`, `escrow_mark_payment_sent`, `escrow_release`, `escrow_cancel`, `escrow_open_dispute`, `escrow_resolve_dispute` |Kotodama 合同通話由 V1 保證金系統支持. |
 
-供公眾使用 Taira 或是 Minamoto 使用,處理連鎖以外的支付轨道和
-任何支持或法庭工作流程, Iroha 記錄了
-保護狀態,生命周期事件,證據和最終資產流動;
-它不單獨驗證法定決済.
+對於公開使用的 Taira 或 Minamoto,請將離鏈支付軌道和任何支持或法院工作流程視爲應用程序政策. Iroha 記錄保管狀態,生命週期事件,證據哈希以及最終資產移動;它不會自行驗證法定結算.
 
-## 檢查目標結 {#check-a-target-node}
+## 檢查目標節點 {#check-a-target-node}
 
-在使用本頁面的例子之前, 確認路線家族是否存在
-在您的目標結節上:
+在使用本頁面的示例之前,請確認您正在準的節點中存在路線家族:
 
 ```bash
 export TORII_URL=https://taira.sora.org
@@ -142,14 +117,11 @@ curl -fsS "$TORII_URL/openapi.json" \
 curl -fsS "$TORII_URL/status" | jq .
 ```
 
-如果 `/openapi.json` 請試下, `/openapi`. 確實是如此
-路線可用性取決於建構功能和網絡配置.
+如果 `/openapi.json` 沒有被個人資料所暴露,請嘗試 `/openapi`.準確的路線可用性取決於構建功能和網絡配置.
 
-### Taira 僅供閱讀的煙草檢查 {#taira-read-only-smoke-checks}
+### Taira 僅閱讀煙霧檢查 {#taira-read-only-smoke-checks}
 
-公眾 Taira 終點對閱讀側檢查有用,但不要使用它
-如果您沒有授權帳戶,
-我們有意改變生活狀態.
+公開 Taira 終端點對於閱讀側檢查是有用的,但除非您正在運營一個授權帳戶並且打算更改現實狀態,否則不要使用它用於突變例子.
 
 ```bash
 export TORII_URL=https://taira.sora.org
@@ -169,35 +141,24 @@ curl -fsS -H 'Accept: application/json' "$TORII_URL/v1/soracloud/status" \
   | jq '.control_plane | {service_count, services: [.services[] | {service_name, current_version}]}'
 ```
 
-Taira 可能會暴露出非部署特定的控制平面路線,
-列在 OpenAPI 導航地圖. `/openapi` 作为第一產品
-API 請先確認任何部署特定路線,
-證明它是實際的.
+Taira 可能會暴露出未列在 OpenAPI 路徑地圖中的部署特定控制平面路線.將 `/openapi`視爲首要生成的 API 合同,然後直接確認任何部署特定路線,然後記錄它作爲現場.
 
 ## Soracloud {#soracloud}
 
-Soracloud 這是 SORA 應用控制平面. 它追蹤部署
-包,服務修改,路由,發布狀態,權威配置
-密碼化服務秘密,模型登記紀錄,私人
-預算時間及運行時收費.
+Soracloud 是 SORA 應用控制平面.它跟蹤部署捆綁,服務修訂,路由,推出狀態,權威配置輸入,加密服務機密,模型註冊表記錄,私人推斷會議和運行時間收據 .
 
-Soracloud 使用兩個執行機:
+Soracloud 使用兩個執行飛機:
 
-| 執行機        | 運行時間 | 請使用它                                                                                   |
+|執行飛機|運行時間|用它來|
 | ---------------------- | ------- | -------------------------------------------------------------------------------------------- |
-| `DeterministicService` | `Ivm`   | 授權使用,保狀態,認證閱讀,訂單的郵箱處理者,對治理敏感突變 |
-| `HttpService`          | `Inrou` | 活下去 HTTP APIs, 收藏者繁重工作,存儲支持的服務, SSE, 透過浏览器支援的流量     |
+|`DeterministicService`|`Ivm`|作者,庫存狀態,認證閱讀,訂單郵箱處理器,對治理敏感的突變 |
+|`HttpService`|`Inrou`|現場 HTTP APIs,收藏器繁重工作,緩存支持的服務, SSE,瀏覽器輔助流動.|
 
-控制機是權威的.
-秘密,模型和狀態命令通過 Torii 閱讀已承諾
-他們不依賴獨立的國家, CLI- 地方鏡子,公眾
-路由是以最長的前為基礎, 因此一個注冊的主機可以分開流量
-接待者之間 HTTP 路線與決定性 API 這裡有許多路線.
+控制平面是權威的.部署,升級,反彈,配置,祕密,模型和狀態命令通過 Torii 提交併閱讀承諾世界狀態;它們不依賴單獨的 CLI 本地鏡子.公共路由基於最長的前,因此一個註冊主機可以在託管的 HTTP 路線和確定性的 API 路線之間分開流量.
 
-### 建立一個分開的應用程式 {#scaffold-a-split-app}
+### 架一個分開的應用程序 {#scaffold-a-split-app}
 
-該分別應用程式模板創造了靜態前端加上一個主機直播 API
-還有一個決定性.API 服務:
+分類應用程序模板創建了靜態前端加上一個託管的直播 API 和一個確定性庫/API 服務:
 
 ```bash
 iroha app soracloud app init \
@@ -214,11 +175,9 @@ iroha app soracloud app doctor \
   --manifest ./apps/solswap-indexer/app_manifest.json
 ```
 
-`local-plan` 打印路線分區,兒童服務公告,工作空間
-預期的前端出版模式. `doctor`
-在您涉及之前, 核准本地釋放合同 Torii.
+`local-plan` 打印路線分區,兒童服務表格,工作空間腳本路徑以及預期的前端發佈模式. `doctor` 在你參與之前,驗證本地釋放合同 Torii.
 
-### 部署和檢查應用程式狀態 {#deploy-and-inspect-app-state}
+### 部署和檢查應用程序狀態 {#deploy-and-inspect-app-state}
 
 ```bash
 export SORACLOUD_TORII_URL=https://<soracloud-enabled-torii>
@@ -232,7 +191,7 @@ iroha app soracloud app status \
   --torii-url "$SORACLOUD_TORII_URL"
 ```
 
-使用已部署的服務:
+對於已部署的服務,使用服務範圍指令:
 
 ```bash
 iroha app soracloud status \
@@ -245,11 +204,9 @@ iroha app soracloud rollback \
   --torii-url "$SORACLOUD_TORII_URL"
 ```
 
-### 隱私及秘密資料 {#config-and-secret-material}
+### 隱私和祕密材料 {#config-and-secret-material}
 
-Soracloud 配置和秘密輸入是授權部署的一部分
-在需要配置或重建時, 部署,升級和反彈無法關閉
-沒有或與活性表達相矛盾的秘密結合.
+Soracloud 配置和祕密輸入是權威部署狀態的一部分.當需要的配置或祕密綁定缺失或與活躍表格不一致時,部署,升級和反彈無法關閉.
 
 ```bash
 iroha app soracloud config-set \
@@ -265,40 +222,30 @@ iroha app soracloud secret-set \
   --torii-url "$SORACLOUD_TORII_URL"
 ```
 
-請使用 CLI 提供您的個人資料所需的精確認證標籤:
+使用 CLI 幫助查詢您的個人資料所需的準確憑證標誌:
 
 ```bash
 iroha app soracloud config-set --help
 iroha app soracloud secret-set --help
 ```
 
-## 在內地 {#inrou}
+## 在線 {#inrou}
 
-內魯是主持人. HTTP 使用的時間 Soracloud. 其他國家 Iroha 接觸到
-嵌入式 Soracloud 已被允許的運行時間項目 Soracloud 州成本地
-實現計畫,開始分配的托管服務複製作為回路
-該報告將回歸於官方的
-這樣的模型.
+伊內羅是主機 HTTP 使用的運行時間 Soracloud. 一個 Iroha 嵌入式的節點 Soracloud 運行時間項目被錄取 Soracloud 在本地實現計劃中,將分配的託管服務副本作爲循環服務啓動,報告複製運行時間狀態回到權威模型中.
 
-使用 Inrou 在需要直播的工作負載中 HTTP 表面,例如:
-收藏量重 APIs, SSE 流量,預存支持的處理器,或
-提供由浏览器支援的服務.
+使用Inrou用於需要現場 HTTP 表面的工作負載,例如收藏量重的 APIs,SSE 流程,緩存支持的處理器或瀏覽器輔助服務.
 
 ### 運行時間要求 {#runtime-requirements}
 
-- 容器明顯運行時間必須是 `Inrou`.
-- 必須是: `HttpService`.
-- `HttpService + Inrou` 需要一個. `PersistentRootLeaseVolume`
-  裝在 `/`.
-- 複製的Inrou服務也需要共享服務或保密租賃
-  存儲時保持可變的共享狀態.
-- 而不是在網路上使用的產品.
-  只有作為代理人.
+- 集裝箱表運行時間必須爲 `Inrou`.
+- 服務表執行平面必須是 `HttpService`.
+- `HttpService + Inrou`需要一個確切的 `PersistentRootLeaseVolume`安裝在`/`.
+- 複製的Inrou服務還需要共享服務或保密租存儲,如果它們保持可變的共享狀態.
+- 產品託管節點應該宣傳真正的Inrou容量,而不是僅僅作爲代理.
 
-### 顯示的碎片 {#manifest-fragment}
+### 顯而易見的部分 {#manifest-fragment}
 
-這兩種表達式的形狀,
-沒有完整的部署包.
+下面的例子顯示了兩個表現體的形狀. 它是一個碎片,而不是一個完整的部署捆綁.
 
 ```jsonc
 // container_manifest.json
@@ -372,8 +319,7 @@ iroha app soracloud secret-set --help
 }
 ```
 
-在運行時間,每個安裝的租量都透過環境暴露
-來自卷名字的變量:
+在運行時,每個安裝的租量都通過從數量名稱所衍生的環境變量來暴露:
 
 ```text
 SORACLOUD_LEASE_VOLUME_ROOT_DISK_DIR
@@ -384,20 +330,13 @@ SORACLOUD_LEASE_VOLUME_INDEX_STATE_MOUNT_PATH
 
 ## SoraNet {#soranet}
 
-SoraNet 提供以接觸為基礎的
-沒有直接連接到目標門口的交通路線
-或服務. 交通設計使用入口,中部和出口連接角色,
-QUIC 交通,以噪音為基礎的混合式握手,能力談判,
-接觸目錄的數據,以及固定尺寸的式細胞.
+SoraNet 是隱私和運輸覆蓋層.它爲交通提供了基於繼電的路線,該路線不應直接連接到目標門口或服務.運輸設計採用入口,中部和出口繼電器角色, QUIC 運輸,基於噪音的混合握手,能力談判,繼電器目錄元數據以及固定尺寸接式細胞.
 
-在 Nexus 部署, SoraNet 能運送內容,門口流量,
-VPN 或連接會議, Norito 導覽表入口可以使用
-標籤將該支傳輸 `norito-stream`, 這讓客戶更喜歡路線
-适用于 Torii RPC 或是流量流量.
+在 Nexus 部署中,SoraNet 可以攜帶內容獲取,網關流量, VPN 或連接會議和 Norito 流媒體路線.目錄入口可標記支持 `norito-stream`的繼電器,這使客戶能夠更好地選擇適合 Torii RPC 或流媒體流量的路線.
 
-### 流動配置 {#streaming-configuration}
+### 流媒體配置 {#streaming-configuration}
 
-其他國家 Nexus 顯示功能 SoraNet 提供流通路線的供應:
+Nexus 的配置使 SoraNet 爲流媒體路線提供:
 
 ```toml
 [streaming]
@@ -414,14 +353,11 @@ provision_window_segments = 4
 provision_queue_capacity = 256
 ```
 
-使用 `access_kind = "read-only"` 沒有要求的內容路線
-檢視者認證. `authenticated` 當出口連接必須執行時
-預訂票或觀眾身份, Torii 或是提供主機服務.
+使用 `access_kind = "read-only"`在不需要觀衆身份驗證的內容路線上.使用 `authenticated`當退出繼電器必須在連接到 Torii 或託管服務之前強制執行票或觀衆身份時.
 
-### SoraNet- 知道的 SoraFS 請帶來 {#soranet-aware-sorafs-fetch}
+### SoraNet-意識到 SoraFS 帶來 {#soranet-aware-sorafs-fetch}
 
-其他國家 SoraFS 收取 CLI 能發出本地代理表格和卷 SoraNet
-導覽器擴展的路徑元數據或 SDK 适配器:
+SoraFS 獲取 CLI 可以發射一個本地代理表格,併爲瀏覽器擴展或 SDK 適配器輸出 SoraNet 路線元數據:
 
 ```bash
 sorafs_cli fetch \
@@ -439,214 +375,117 @@ sorafs_cli fetch \
   --retry-budget=4
 ```
 
-總結紀錄提供者報告,
-並使用的有效路線設定.
+總結記錄提供商報告,零件收據,本地代理元數據以及用於採集的有效路線設置.
 
 ## 數據可用性 (DA) {#data-availability-da}
 
-DA 也是對太大的有效載荷的可用性證據層.
-或是太多服務特色,
-這項報告將會記錄決定性承諾和回收义务,
-核准者,門口和客戶可以同意哪些字节被應許,
-該政策是什麼,以及有何證據.
+DA 是太大,太敏感於隱私或太特定於服務的有效載荷的可用性證據層,無法直接放置在世界狀態.它記錄了確定性承諾和檢索義務,以便驗證者,網關和客戶可以同意哪些字節被承諾,哪些政策適用,以及哪些證據已經觀察到.
 
-DA 沒有取代 Kura 或是 SoraFS:
+DA 不取代 Kura 或 SoraFS:
 
-- Kura 存儲已完成的區塊流和共識恢復數據.
-- SoraFS 存儲和服務內容地址的字節, CAR 使用載荷,以及
-  顯示.
-- DA 記錄承諾,證據政策,證據開啟和筆記意圖
-  讓這些字節可安排,監控和連結到帳號
-  國家.
+- Kura 存儲了最終的區塊流和共識恢復數據.
+- SoraFS 存儲並提供內容地址字節,CAR 實用載荷和公開文件.
+- DA 記錄承諾,證據政策,證據開放,並將這些字節安排,審計和鏈接到賬本狀態的標記.
 
-使用 DA 在申請或 Nexus Lane需要一個可見的帳號承諾
-這項計畫的目標是:
-對決流程的有效負荷承諾, SoraFS 發表的筆記意圖
-內容,必須保留以后核實的證據捆綁;
-應用器件的公共狀態應該是消化而不是
-完全有效載荷.
+使用 DA 當應用程序或 Nexus 車道需要在賬本中可見的承諾,即鏈外數據仍然可回收.常見例子包括對結算流程的車道實用負載承諾,發佈內容的 SoraFS 筆意圖;必須保存以後進行驗證的證據捆綁,以及公共狀態應該是消化品而不是全部有效載荷的應用文物.
 
-### 生命周期 {#lifecycle}
+### 生命週期 {#lifecycle}
 
-| 階段      | 記錄的內容                                                                                                                                      |
+|階段|記錄的內容|
 | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 意圖     | 標籤,顯示參考資料,名稱,行徑/時代/序列參考資料或保留政策或複製目標                                          |
-| 承諾 | 取資料,將表格,行徑用量,證據捆綁或內容根連接到可見的帳號記錄.                                    |
-| 證據   | 提供者認證或其他目標網所接受的專利特定證據.                         |
-| 詢問問題      | 檢查了這些問題. `FindDaPinIntentByTicket`, `FindDaPinIntentByManifest`, `FindDaPinIntentByAlias`, 或是 `FindDaPinIntentByLaneEpochSequence`. |
+|意圖|一張門票,明確引用,號,車道/時代/序列參考,保留政策或複製目標. |
+|承諾|消化材料將表格,車道有效載荷,證據捆綁或內容根連接到本書可見的記錄.|
+|證據|可用性投票,證據開放,供應商認證或其他被目標網絡接受的個人資料特定證據. |
+|問題|通過 `FindDaPinIntentByTicket`,`FindDaPinIntentByManifest`, `FindDaPinIntentByAlias`或 `FindDaPinIntentByLaneEpochSequence`進行印意圖查詢.|
 
-典型的情況 DA-支持的出版流量是:
+一個典型的 DA 支持的出版流量是:
 
-1. 建成或接收在外的使用負荷 WSV, 例如: SoraFS CAR
-   文件或 Nexus 這裡的車道是用車路.
-2. 按 Hash,並描述用荷物 Norito 顯示或路線特定
-   承諾紀錄.
-3. 提交明示書,印意圖或承諾 `/v1/da/*` 什麼時候
-   該路線家族已啟用,或透過網路的簽名
-   交易之路.
-4. 讓驗證者或可用性提供者收集所需的證據
-   通過積極證明政策.
-5. 在推廣一個假名之前,
-   還是取決於使用負荷的入口路線.
+1. 在 WSV 之外構建或接收有效載荷,例如一個 SoraFS CAR 文件或 Nexus 車道有效載荷.
+2. 在 Norito 宣言或路線特定的承諾記錄中描述有效載荷.
+3. 在啓用該路線家族時,通過 `/v1/da/*` 或網絡簽署的交易途徑提交明示表,印意圖或承諾.
+4. 讓驗證者或可用性提供者收集根據活躍證明政策所要求的證據.
+5. 在推廣一個姓名,結算證明或關口路線之前,請詢問所產生的針意圖或承諾.
 
 ### 算法模型 {#algorithmic-model}
 
-DA 轉換一個有效負荷成簽署的,反彈保護的,區塊索引的承諾.
-這種數據是非常重要的.
-在同一字節中重新計算相同的字段.
+DA 將一個有效載荷轉化爲簽署的,反彈保護的,區塊索引承諾.重要算法是確定性的,所以驗證器和網關可以從相同字節中重新計算相同的消化.
 
-1. **我們必須要將這些訊息傳達到其他國家.** Torii 接受使用要求,
-   `(lane_id, epoch, sequence)`, 使用量字节,壓縮元數據,部分
-   顯示了使用者簽名,
-   在要求時將 gzip,deflate或Zstandard的有效負荷解壓縮,
-   檢查可行字節長度是否等於 `total_size`.
-2. **檢查行徑和部分參數.** 這條車道必須在 Nexus
-   這裡的路線目錄. `chunk_size` 必須是不為零的功率,至少有2
-   字節,並不超過設定的最大值.
-   包含數據片段和至少兩張平率片段.
-   證明方案, `merkle_sha256` 或是 `kzg_bls12_381`.
-3. **應用網路政策.** 這種方式可以使用.
-   點類的儲存基線. 公眾元數據必須保持直文;
-   只有管理的元數據是用節点配置的管理加密
-   在它被寫入表格之前,
-4. **這樣做,** 卡的使用量是固定尺寸的
-   由於 `chunk_size`. Torii 計算使用負荷的消化,
-   證明可回收性樹根,以及每塊的承諾.
-   運行 BLAKE3 在他們對字節的承諾上.
-5. **加入取消承諾.** 子被組成條紋
-   `data_shards`. 在最後一條線上, 缺失的細胞為平衡而填滿零
-   計算方式 RS(16) 均性創造了排列/全球均性分片;
-   `row_parity_stripes` 在矩陣上加列式條紋平率.
-   該項目的目標是: BLAKE3 小的消化物 `u16` 這種標誌,
-6. **建立該表格.** `DaManifestV1` 記錄行徑,時代,點類別,
-   代克,使用負荷消化,零件根,零件尺寸,擦除配置文件,保留
-   租金政策,租金價格,部分承諾,任選 IPA 承諾,元數據
-   存儲票是決定性的:結號首先將一個
-   顯示模板,然後將指紋寫回為
-   總決賽 `storage_ticket`.
-7. **拒絕重播衝突.** 這裡的重播鍵是
-   `(lane_id, epoch, sequence, manifest_fingerprint)`. 兩本與
-   這種指紋是無效的.
-   不同的指紋被拒絕.
-8. **發出簽名的文物.** Torii 計算一個 PDP 承諾,簽署一項
-   `DaIngestReceipt`, 建立一個 `DaCommitmentRecord`, 他寫著一些子藝術品.
-   對於明顯的, PDP 承諾,承諾紀錄,承諾時間表;
-   接收標記,收件檔案和收件日志.
-   單一地按每個 `(lane_id, epoch)`.
+1. Torii 接受一個用量請求,包括 `(lane_id, epoch, sequence)`,用量字節,壓縮元數據,零件大小,刪除配置文件,節點在要求時將gzip,delate或Zstandard的有效載荷解壓縮,然後驗證標準字節長度等於 `total_size`.
+2. 驗證車道和零件參數.該車道必須存在於 Nexus 車道目錄中. `chunk_size`必須具有兩個,至少兩個字節的非零功率.不大於配置的最大值.刪除資料必須包括數據片段和至少兩個平率片段.車道目錄選擇證明方案,無論是 `merkle_sha256`還是 `kzg_bls12_381`.
+3. 應用網絡政策.節點強制對類的配置複製和保留基線.公共元數據必須保持純文本;只使用統治方式的元數據在被寫入表格之前,由節點的配置統治性元數據密鑰加密.
+4. 常規的有效載荷是通過固體尺寸的配置文件進行的 `chunk_size`. Torii 計算有效載荷消化,可檢索性證明樹根和每塊的承諾. 數據分量 BLAKE3 對於其字節的承諾.
+5. 添加刪除承諾.切片被組分爲 `data_shards` 的條紋.最後條紋中缺失的細胞是零填充的,用於平衡計算. RS(16) 平衡創造排/全球平衡分片;可選的 `row_parity_stripes`在矩陣中添加列式條紋平衡. 平衡分片承諾是 BLAKE3 少數符號的消化`u16`.
+6. 建立表格. `DaManifestV1`記錄了車道,時代,斑點類別,編碼器,有效載荷消化,零件根,零件大小,刪除配置文件,保留政策,租金報價,零件承諾,可選的 IPA 承諾,元數據和發佈時間.存儲門票是確定性的:節點首先將一個表格模板與空格門票哈希,然後把指紋寫回爲最後的 `storage_ticket`.
+7. 拒絕重播衝突.重播鍵是 `(lane_id, epoch, sequence, manifest_fingerprint)`.具有相同指紋的複製件是無效的.已過時的序列或具有不同的指紋的同一序列被拒絕.
+8. 發行簽署的文物. Torii 計算 PDP 承諾,簽署`DaIngestReceipt`,構建`DaCommitmentRecord`,併爲公開文件編寫卷文物;PDP 承諾,承諾記錄,承諾時間表,筆意圖,收件文件和收件日誌.收件緩衝器每次`(lane_id, epoch)`均地推進.
 
-這項紀錄是 blocks 的承載.
+一個記錄綁定了:
 
 - 路線,時代和序列
-- 呼叫點滴 ID 及法典明顯的哈希
-- 路線防範方案
-- 碎片根
-- 選擇性 KZG 承諾 KZG 路線
+- ID 的調用器和法典表格哈希
+- 車道防護方案
+- 子根
+- 對 KZG 車道的可選 KZG 承諾
 - PDP/證據消化
-- 儲存類別和儲存票
-- Torii DA 确认的簽名
+- 存儲類和存儲門票
+- Torii DA 確認簽名
 
-在一個積木嵌入之前 DA 列表,區塊組裝路徑驗證捆綁:
+在區塊嵌入 DA 記錄之前,區塊組裝路徑驗證了捆綁:
 
-- `(lane_id, epoch, sequence)` 在包裹內必須獨特.
-- 顯示的哈希必須在束內是非零且獨特的.
-- 承諾證明方案必須符合設定的行徑政策.
-- 默克爾路線拒絕 KZG 承諾; KZG 路線需要非零 KZG
-  我們的承諾.
-- 按行徑,顯示哈希,
-  存儲票,所有者帳戶和密碼衝突規則.
+- `(lane_id, epoch, sequence)`必須在捆綁中是唯一的.
+- 顯而易見的哈希必須在捆綁中是非零和獨特的.
+- 承諾證明方案必須符合配置的車道政策.
+- 梅克爾路線拒絕 KZG 承諾; KZG 路線需要非零的 KZG 承諾.
+- 按行徑,表格哈希,存儲票,所有者賬戶和碰規則進行加нони化,分類和過.
 
-區塊標籤儲存 hash DA 證明政策,承諾和針
-預約包內也顯示了 Merkle 的相關貼子:
-根,其葉是法典的合 Norito- 已加密
-`DaCommitmentRecord` 關鍵字是左邊和右邊的連鎖.
-沒有變化的葉子被提升到下一層.
+區塊標題存儲 DA 證明政策,承諾和筆意圖的哈希.對於會員身份證明,承諾捆綁還暴露出一個 Merkle根,其葉子 Norito 編碼的常規值 `DaCommitmentRecord` 的哈希.父母節點對左和右孩子的連接進行了哈希;一個奇偶葉是不變地推向下一層的.
 
 ### 證據驗證 {#proof-verification}
 
-`/v1/da/commitments/prove` 在一個區塊中,
-證明包含承諾,積木高度,包內索引,包
-檢查檢查:
+`/v1/da/commitments/prove`可以爲區塊中的一個承諾提供證明.該證據包含承諾,區塊高度,捆綁中索引,捆綁哈希,捆綁長度,默克爾根和兄弟路徑.驗證檢查:
 
-1. 這項證據包的哈希與區塊標題相匹配 DA 這種方式,
-2. 檢測區塊的高度與參考區塊標題相匹配.
-3. 這項指數是限量,
-   該指數.
-4. 這項承諾,
-5. 透過從承諾葉子上折兄弟之路,
-   根源.
-6. 復元的根與束根等.
+1. 證據捆綁哈希匹配區塊標題的 DA 承諾哈希.
+2. 證明區塊高度與引用的區塊標題相匹配.
+3. 指數是限額的,承諾等於該指數中的包入.
+4. 車道防護政策接受了承諾.
+5. 從承諾葉子摺疊的兄弟路徑重建了提供的根.
+6. 複製的根與捆綁根等.
 
-這證明了特定的可用性承諾在特定的
-沒有任何證據證明每個複製都在線.
-檢查可回收性, SoraFS 提供商收取, PDP/PoTR
-檢查或特定的可用性證據.
+這證明,一個特定的區塊有效載荷中包含了具體的可用性承諾;這並不證明每個複製品都目前在線.通過 SoraFS 供應商檢查, PDP/PoTR 檢查或特定配置文件的可用性證據來單獨檢查現場獲取性.
 
-### 協調的互動 {#consensus-interaction}
+### 協商一致的互動 {#consensus-interaction}
 
-DA 附加在 Sumeragi 透過可靠的廣播 (RBC),但它不是
-這項協議是第二次完成的. RBC 傳播和回收提案的有效負荷:
-提議人宣布會議 `(height, view, payload_hash)`, 同級人
-交換零件,以及 `READY`/`DELIVER` 訊號追蹤是否有足夠的驗證機
-檢測到相同的有效負荷.
+DA 通過可靠的廣播 (RBC) 連接到 Sumeragi,但它不是第二個最終協議. RBC 傳播和恢復提案有效載荷:提議者宣佈爲 `(height, view, payload_hash)`,同行交換部分和 `READY`/`DELIVER`信號進行會議,追蹤是否有足夠的驗證者觀察到相同的有效負載.
 
-在 Iroha 3, 一位同行將待定的積木用量視為可用的,當:
+在 Iroha 3 中,一個同行將懸而未決的區塊有效載荷視爲可用的,當:
 
-- 預期的有效負荷哈希,或
-- RBC 已找到與區塊哈希,高度,視野和值相匹配的有效負荷
-  這樣做是很好的.
+- 當地懸而未決區塊對預期有效載荷的哈希字節進行值,或
+- RBC 已經恢復了一個符合區塊哈希,高度,視圖和有效載荷哈希的實用負載.
 
-如果沒有任何條件, `missing_local_data`, 繼續努力
-通過的有效載荷 RBC 或阻擋同步, DA 進入的門
-在目前的實施中, DA 這些訊號是
-決定性通知:從承諾證書中仍在完成一塊,
-適合的本地有效載荷,而不是從別途的 DA 沒有任何證據.
+如果任何條件都不符合,同行記錄 `missing_local_data`,通過 RBC 或區塊同步繼續試圖恢復有效載荷,並報告狀態和遠程測量中 DA 門口.在目前的實施中,這些 DA 信號是最終性的建議:一個區塊仍然從承諾證書加上相匹配的本地有效載荷來完成,而不是從單獨的 DA 定製證書.
 
-DA 這項計畫的目標是: DA 數量時間限期取出
-在設定的區塊中和提交時間,
-`sumeragi.advanced.da.quorum_timeout_multiplier`. 提供時間是:
-`max(quorum_timeout, availability_timeout_floor_ms) * availability_timeout_multiplier`.
-在可用性截止日期到期之前,
-避免提前重新安排;
-改變視覺的路徑可以進行.
+DA 時間擴大恢復窗口.有效的 DA 定製時限從配置的區塊中提取,然後乘以 `sumeragi.advanced.da.quorum_timeout_multiplier`.可用性時限爲 `max(quorum_timeout, availability_timeout_floor_ms) * availability_timeout_multiplier`.在可用性截止日期到期之前,節點有利於有效載荷恢復並避免過早重新安排;在截止日後,正常恢復和視圖更改路徑可以繼續進行.
 
-### 運營商註冊 {#operator-notes}
+### 運營商筆記 {#operator-notes}
 
-Iroha 3 共識的概率包括 RBC- 支持有效載荷的傳播,表
-警衛, DA 檢測和復元的遠隔測量.
-模板曝光 `[sumeragi.da]` 預約和證據開啟的限制
-區塊,加上 `[sumeragi.advanced.da]` 暫停時間的乘法,
-保持這些設定在一個驗證器中一致
-網頁配置文件.
+Iroha 3 共識配置文件包括 RBC 支持的有效載荷傳播,表格保護,DA 捆綁驗證和恢復遠程測量.同行模板暴露`[sumeragi.da]`限制 對於每個區塊的承諾和證據開放,再加上 `[sumeragi.advanced.da]` 定製和可用性行爲時間延誤乘法.保持這些設置在一個網絡配置文件中的驗證器中一致.
 
-開始從節點的位置. OpenAPI 文件:
+對於路線發現,從節點的 OpenAPI 文檔開始:
 
 ```bash
 curl -fsS "$TORII_URL/openapi.json" \
   | jq '.paths | keys[] | select(startswith("/v1/da/"))'
 ```
 
-請使用
-[查詢參考](/zh-hant/reference/queries.md#nexus-data-availability-and-packages)
-在目前的情況下 DA 查詢名稱,
-[同級配置模板](/zh-hant/reference/peer-config/) 在當地地區
-`[sumeragi.da]` 這種子是因為你打造的.
+對於當前的 DA 查詢名稱,使用[查詢參考](/zh-hant/reference/queries.md#nexus-data-availability-and-packages),以及您的構建暴露的本地 `[sumeragi.da]`按的](/zh-hant/reference/peer-config/)同行配置模板[.
 
 ## SoraFS {#sorafs}
 
-SoraFS 這種裝置是由數位數量為數,
-字节分成決定性部分, CAR 檔案,以及 Norito 顯示了
-聯繫內容根源,分斷配置文件,引政策和治理
-存儲提供商宣傳容量和內容
-提供可用性,而入口通道在此之前檢查表格和部分承諾
-提供內容.
+SoraFS 是分散的內容地址存儲布料. 它將字節包裝成決定性塊, CAR 檔案,和 Norito 表達了綁定內容根,分類配置文件,針政策和治理證書. 存儲服務提供商廣告容量和內容可用性,而在提供內容之前,門戶驗證表格和部分承諾.
 
-典型的 SoraFS 使用包括靜態應用資產,文獻
-建立,區域捆綁,模型或文物參考以及治理證明
-這裡有許多人. Iroha 數據模型的曝光 SoraFS 關鍵事件和一
-[`FindSorafsProviderOwner`](/zh-hant/reference/queries.md#nexus-data-availability-and-packages)
-詢問提供商所有權解決方案.
+典型的 SoraFS 用途包括靜態應用資產,文檔構建,區域捆綁,模型或文物引用和治理證據捆綁. Iroha 數據模型暴露了 SoraFS 門戶事件和供應商所有權解決方案的[`FindSorafsProviderOwner`](/zh-hant/reference/queries.md#nexus-data-availability-and-packages)查詢.
 
-### 包裝,表達,簽名,並提交 {#pack-manifest-sign-and-submit}
+### 包裝,表達,簽署和提交 {#pack-manifest-sign-and-submit}
 
 ```bash
 cargo run -p sorafs_car --features cli --bin sorafs_cli -- \
@@ -684,11 +523,9 @@ cargo run -p sorafs_car --features cli --bin sorafs_cli -- \
   --response-out artifacts/site.manifest.submit.body
 ```
 
-如果 `/v1/sorafs/pin/register` 在目標結線上沒有路由, CLI 可使用
-還是要回去簽名的 `/transaction` 預覽 請問有什麼問題,
-管道狀況.
+如果 `/v1/sorafs/pin/register` 沒有在目標節點上路由,則 CLI 可以回到已簽署的 `/transaction` 提交中,並等待終端管道狀態.
 
-### 檢查並將它帶來 {#verify-and-fetch}
+### 檢查和帶來 {#verify-and-fetch}
 
 ```bash
 cargo run -p sorafs_car --features cli --bin sorafs_cli -- \
@@ -706,9 +543,9 @@ sorafs_cli fetch \
   --json-out artifacts/site.fetch.json
 ```
 
-### 檢查可回收性的證據 {#proof-of-retrievability-checks}
+### 檢查可回收性證明 {#proof-of-retrievability-checks}
 
-運營商可以檢查及啟動存儲供應商的證據檢查:
+運營商可以對存儲提供商進行檢查並啓動驗證:
 
 ```bash
 sorafs_cli por status \
@@ -728,33 +565,22 @@ sorafs_cli por trigger \
 
 ## SoraDNS {#soradns}
 
-SoraDNS 是為 SORA 提供服務與內容.
-標準化名稱,結解決目錄更新 Iroha, 及其他
-透過簽名區域或解析器捆綁 SoraFS. 解決器和
-在信任發現之前, gateways 檢查解決者認證文件
-沒有任何相關資料.
+SoraDNS 是 SORA 服務和內容的確定性命名層.它將名稱正常化,在 Iroha 中關聯解決方案目錄更新,和通過 SoraFS 分發簽署的區域或解決器捆綁.
 
-透過網路覽器, SoraDNS 取出已註冊的入口主機 FQDN.
-註冊的虛空主機仍然是法典應用程序來源,
-部署的門口配置文件將顯示浏览器和 Torii 這項目的回歸路線
-國家的起源
+對於瀏覽器訪問, SoraDNS 從註冊的 FQDN 中導出網關主機. 註冊的虛無性主機仍然是常規應用程序來源,而部署的網關配置文件則暴露了該來源的瀏覽器和 Torii 倒退路線.
 
 ### 主持人表格 {#host-forms}
 
-| 填表 | 舉例 | 目的 |
+|表格|示例|目的|
 | --- | --- | --- |
-| 虛空的起源 | `https://<fqdn>/<path>` | 網路使用者 URL 記錄在表格和發布紀要中 |
-| Taira 浏览器入口 | `https://<fqdn>.mon.taira.sora.net/<path>` | 公開浏览器入口,使用活跃的密碼 |
-| Torii 倒退路線 | `https://taira.sora.org/soradns/<fqdn>/<path>` | Torii 檢測和回落路線, |
-| 傳統的哈希通道 | `<base32(blake3(name))>.gw.sora.id` | 決定性門口的身份和 GAR 核查 |
+|虛榮的起源|`https://<fqdn>/<path>`|URL 記錄在表格和公告中|
+|Taira 瀏覽器網關|`https://<fqdn>.mon.taira.sora.net/<path>`|公共瀏覽器網關爲活躍的名|
+|Torii 倒車路徑|`https://taira.sora.org/soradns/<fqdn>/<path>`|Torii  active alias 的調試和迴歸路線|
+|佳能式哈希網關|`<base32(blake3(name))>.gw.sora.id`|確定性門口身份和 GAR 驗證 |
 
-其他國家 `/soradns/<alias>/...` 沒有人喜歡倒. URL.
-工具,應用程式顯示和前端配置應該更喜歡虛空
-如果一個名稱不活跃在 Taira, 浏览器入口或
-倒退路線可以返回 `404` 或是失敗 TLS 在應用程序路由之前
-開始了.
+`/soradns/<alias>/...` 倒退不是首選的公衆 URL.工具,應用程序表格和前端配置應該更喜歡虛無主機本身.如果在 Taira 上不活躍的姓氏,瀏覽器網關或倒退路徑可以在應用程序路由啓動之前返回`404`或失敗 TLS.
 
-### 導向入口主機 {#derive-gateway-hosts}
+### 導入網關主機 {#derive-gateway-hosts}
 
 ```ts
 import {
@@ -779,10 +605,9 @@ const patterns = [
 console.log(hostPatternsCoverDerivedHosts(patterns, derived))
 ```
 
-GAR 該用品應覆蓋法典的哈希主機,法典的野生卡片,
-並選出一位漂亮的主持人.
+GAR 有效載荷應該覆蓋正規的哈希主機,正規的野生卡片和選擇的漂亮的主機.
 
-### 拿出一個分辨器目錄快照 {#fetch-a-resolver-directory-snapshot}
+### 獲取一個分辨器目錄快照 {#fetch-a-resolver-directory-snapshot}
 
 ```bash
 curl -i "$TORII_URL/v1/soradns/directory/latest"
@@ -796,87 +621,46 @@ soradns_resolver rad verify \
   --rad ./state/soradns-directory/rad/resolver-a.norito
 ```
 
-關鍵字應拒絕具有解決器認證文件的解析器
-缺失,已過期,未簽名或沒有在 Merkle 最新目錄中固定
-在一個尚未發布的解決程式目錄上,
-`/v1/soradns/directory/latest` 可以回來 `404` 雖然路線是
-已啟動.
+網關應拒絕那些在最新的Merkle root目錄中缺失,過期,未簽名或未安裝的解決方案證明文件. 在尚未發佈任何解決方案目錄的網絡上, `/v1/soradns/directory/latest`可以返回 `404` 即使路線已啓用.
 
-### 公眾 DNS 代表團 {#public-dns-delegation}
+### 公共 DNS 代表團 {#public-dns-delegation}
 
-SoraDNS 主機衍生程式並不取代普通網路 DNS 代表團.
-如果公眾 DNS 這個名字應該指向一個 SoraDNS 門口:
+SoraDNS 主機衍生程序不取代常規互聯網 DNS 委託程序.如果一個公共的 DNS 名稱應該指向 SoraDNS 門戶口:
 
-- 該網站上, CNAME 給我們挑選的漂亮的主人
-- 標籤名稱,使用 ALIAS/ANAME 或 A/AAAA 任何投放的入口
-  IPs
-- 請將法式哈希主機置於 SoraDNS 關鍵字域名 GAR
-  檢查
+- 爲子域,將 CNAME 發佈到所選擇的漂亮主機
+- 對於頂點名稱,在任何cast IPs 門口使用 ALIAS/ANAME 或A/AAAA 記錄.
+- 在 SoraDNS 網關域下保存可行的哈希主機,以便進行 GAR 檢查.
 
-## FHE 及其他 UAID {#fhe-and-uaid}
+## FHE 和 UAID {#fhe-and-uaid}
 
-FHE-可供使用的相關表面 Nexus 服務包括:
+在 Nexus 服務中可用的與 FHE 有關的表面包括:
 
-- `iroha_crypto::fhe_bfv` 實現決定性 BFV 支持可
-  密碼文本評估.
-  `BfvIdentifierPublicParameters` 及其他 `BfvIdentifierCiphertext`, 在哪裡的插槽
-  0 儲存輸入字節長度,後期插槽儲存一個加密字節
-  沒有任何問題.
-- Soracloud 國家和就業方案模型 FHE 密碼文本工作負載
-  管理參數組,執行策略,加密文字
-  提供其他資訊,
+- `iroha_crypto::fhe_bfv` 實現確定性 BFV 支持 skalar ciphertext評價.識別器分辨率使用 `BfvIdentifierPublicParameters` 和 `BfvIdentifierCiphertext`, 在此,插槽0存儲輸入字節長度,後來的插槽存儲每一個加密字節.
+- Soracloud 狀態和職位方案模型 FHE 密碼文本工作負載與管理管理參數組,執行政策,密碼文檔承諾,查詢封以及披露請求.
 
-其他國家 BFV 客戶的個人隱私保護.
-能向該公司提交加密識別碼 Torii 解決方案.
-在"活跃識別者政策"下,
-`OpaqueAccountId`, 並發出收據. `ClaimIdentifier` 接著結束了這個
-收到的票 UAID 附加到目標帳戶.
+BFV 識別器路徑用於保護隱私的註冊. 客戶端可以提交加密識別器到 Torii 解決方案中.根據活躍識別器政策,獲得一個 `OpaqueAccountId`,併發出一個收據. `ClaimIdentifier`然後將該收據綁定到目標賬戶附帶的 UAID.
 
-其他國家 UAID 在這個流動中,
-數據模型, `UniversalAccountId` 顯示為:
-`uaid:<hash>`. 解析者接受了兩種情況 `uaid:<hash>` 或是原始的64hex
-消化. `Account` 及其他 `NewAccount` 包含選擇性 `uaid` 及其他 `opaque_ids`
-執行時間登記實施一對一 UAID- 帳戶指數,
-拒絕複製或碰撞的不透明識別子,並拒絕不透明
-沒有識別碼 UAID. 每當一個 UAID 帳戶的變化,
-執行時間重建空間目錄數據區域結合 UAID.
+其他 UAID 而在數據模型中, `UniversalAccountId` 是哈希支持的,顯示爲 `uaid:<hash>`. 解析者接受了兩種 `uaid:<hash>` 或是原始的64 Hex消化. `Account` 和 `NewAccount` 包含可選 `uaid` 和 `opaque_ids` 運行時間登記執行一個對一個的 UAID-對賬戶指數,拒絕複製或碰撞的不透明標識符,並且拒絕沒有 UAID. 每當一個 UAID 運行時間重建空間目錄數據庫的綁定. UAID.
 
-空間目錄顯示將功能連接到一個 UAID. 其他國家
-`AssetPermissionManifest` 這些名字 UAID, 數據空間,啟動和
-選擇性到期期期,並按數據空間排序允許/拒絕輸入,
-該方案,方法,資產,以及 AMX 評估是拒絕贏得的:
-否則最新的匹配允許
-申請人是否有任何額度限制.
-取消這些明示令是受到保護的 `CanPublishSpaceDirectoryManifest`.
+空間目錄表達了將功能添加到 UAID.一個 `AssetPermissionManifest` 命名 UAID,數據空間,激活和可選的過期時代,並按數據空間,程序,方法,資產和 AMX 角色進行排序允許/拒絕輸入.評價是拒絕勝利:第一個匹配拒絕拒絕請求,否則最新匹配允許候選人與任何數額限制進行檢查.發佈,過期和撤銷這些表格由 `CanPublishSpaceDirectoryManifest`保護.
 
-於 Soracloud FHE 該國家的實施方案是:
+對於 Soracloud FHE 狀態,實施的計劃是:
 
-| 方案                                    | 該組織控制的是什麼?                                                                                                            |
+|方案|它控制了什麼?|
 | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| `SoraStateBindingV1` 在 `FheCiphertext` | 表示狀態鍵前下的值是 FHE 密碼文本.                                                          |
-| `FheParamSetV1`                           | 稱為方案,後端,模組連鎖,多項式度,插槽數量,安全目標,生命周期和參數消化.  |
-| `FheExecutionPolicyV1`                    | 限制密碼文本大小,簡體文字大小,輸入/輸出數量,乘法深度,旋轉,開啟帶和圓形模式. |
-| `FheGovernanceBundleV1`                   | 配合一個參數與一項執行政策,                                               |
-| `FheJobSpecV1`                            | 描述決定性 `Add`, `Multiply`, `RotateLeft`, 或是 `Bootstrap` 在加密文字狀態鍵和承諾方面工作.    |
-| `CiphertextQuerySpecV1`                   | 查詢只需加密文本,按服務,绑定,關鍵前音符,結果限制,元數據水平和可選的包含證明.  |
-| `DecryptionRequestV1`                     | 在解密權利政策下, 要求披露一個加密文本承诺.                                      |
+|`SoraStateBindingV1`與 `FheCiphertext`|聲明狀態密鑰前置值爲 FHE 密碼文本. |
+|`FheParamSetV1`|名稱:方案,後端,模塊鏈,多項級別,插槽數量,安全目標,生命週期和參數消化.|
+|`FheExecutionPolicyV1`|限制密碼文本大小,純文本的大小,輸入/輸出數量,乘法深度,旋轉,啓動帶和圓形模式. |
+|`FheGovernanceBundleV1`|一個參數設置與一個執行政策進行錄取驗證. |
+|`FheJobSpecV1`|描述對密碼文本狀態密鑰和承諾的確定性 `Add`, `Multiply`, `RotateLeft`或 `Bootstrap`工作. |
+|`CiphertextQuerySpecV1`|查詢僅按服務,綁定,關鍵前置,結果限量,元數據水平和可選的包含證明.|
+|`DecryptionRequestV1`|要求在解密權限政策下披露一個加密文本承諾. |
 
-`FheJobSpecV1::validate_for_execution` 檢查工作,執行
-這項政策,並在接受之前同意設定的參數.
-操作特定規則:加和乘以至少需要兩種輸入,旋轉
-需要一個輸入,深度要求,旋轉數量,
-開始線數量,輸入數量,有效載荷字節和決定性輸出尺寸
-必須保持在政策範圍內.
-單字排行.
+`FheJobSpecV1::validate_for_execution` 檢查工作,執行政策和參數設置在錄取前是否一致.它還強制執行特定操作規則:添加和乘法需要至少兩個輸入,旋轉和啓動帶需要一個輸入,要求的深度,旋轉數量,啓動帶數量,輸入數量,有效載荷字節和確定性輸出尺寸必須保持在政策界限內.密碼文字查詢結果不得返回直文行.
 
-UAID 是不是加密文字, FHE 這項政策本身.
-使用於查找帳戶的帳號能力,不透明識別碼
-要求,以及許可服務或數據空間的空間目錄結合
-這樣的流量. FHE 系統管理加密有效載荷的接入和執行
-透過參數組,執行策略,加密文字
-該項目的目標是:
+UAID 不是加密文本,也不是 FHE 政策本身.它是用於查找帳戶,不透明的標識符索賠和空間目錄綁定的穩定賬戶功能,允許服務或數據空間流程.FHE 方案通過參數集合,執行政策,密碼文本承諾和解密權威政策分別管理加密有效載荷的輸入和執行.
 
-有關性 Torii 表面包括:
+相關的 Torii 表面包括:
 
 - `/v1/identifier-policies`
 - `/v1/identifiers/resolve`
@@ -889,34 +673,20 @@ UAID 是不是加密文字, FHE 這項政策本身.
 - `/v1/soracloud/model/run-private/finalize`
 - `/v1/soracloud/model/decrypt-output`
 
-公共數據的界限在方案中明顯: UAID 聯繫,
-不透明的識別碼記錄,顯示生命周期,國家鍵消化,
-密碼文字大小,密碼文字承諾,政策名稱,參數組
-版本,工作操作,輸出狀態關鍵和披露要求
-顯示資料可能是可見的.
-輸入和輸出,以及 FHE 這些秘密密碼在公開查詢之外.
-其他國家.
+公開元數據界限在方案中明確:UAID 綁定,不透明的標識符記錄,表達生命週期,狀態密鑰消化,加密文本大小,加密文字承諾,政策名稱,參數設置版本,工作操作,輸出狀態密鑰,識別字體,解密狀態,模型輸入和輸出以及 FHE 祕密鑰匙都在這些公開查詢記錄之外.
 
-## 運營檢查名單 {#operational-checklist}
+## 運營檢查列表 {#operational-checklist}
 
-- 確認有能力的服務家庭 `/openapi` 在目標上 Torii
-  沒有任何問題.
-- 治療 Soracloud 部署表, SoraFS 顯示表, SoraDNS 解決器
-  註冊帳號, SoraNet 傳輸目錄記錄, DA 針的意圖或
-  提供可用性承諾,
-- 使用相同的方法 SORA Nexus 在一個證實器中,
-  網路的使用.
-- 請將 Inrou 的根和共享租量放在表格中,而不是依靠
-  在特定的節點-本地路徑上.
-- 使用 SoraFS 在宣傳內容名稱之前進行驗證.
-- 監控器 SoraNet 握手失效, DA 數量或可用性時間,
-  SoraFS 拒絕入口, SoraDNS RAD 鮮度,以及 Soracloud 推出
-  醫療問題
-- 供公眾使用 Taira 或是 Minamoto 使用,從
-  [接觸到 SORA Nexus 數據空間](/zh-hant/get-started/sora-nexus-dataspaces.md).
+- 確認有 `/openapi`在目標 Torii 節點上的啓用服務家庭.
+- 處理 Soracloud 部署表格, SoraFS 表格,SoraDNS 解決器目錄記錄, SoraNet 繼電目錄記錄和 DA 筆意圖或可用性承諾作爲對治理敏感的文具.
+- 在一個網絡中的驗證器中,使用相同的 SORA Nexus 配置文件.
+- 保持Inrou根和共享租數量在表格中,而不是依賴於臨時節點本地路徑.
+- 在推廣內容別名之前使用 SoraFS 證據驗證.
+- 監視器 SoraNet 握手失敗, DA 定製或可用性時間, SoraFS 網關拒絕, SoraDNS RAD 新鮮性,以及 Soracloud 部署健康.
+- 對於公開 Taira 或 Minamoto 的使用,首先使用[連接到 SORA Nexus 數據庫](/zh-hant/get-started/sora-nexus-dataspaces.md).
 
-查看以下內容:
+此外,請參見:
 
-- [Torii 終點點](/zh-hant/reference/torii-endpoints.md)
-- [資料事件過濾器](/zh-hant/blockchain/filters.md#data-event-filters)
-- [查詢參考資料](/zh-hant/reference/queries.md#nexus-data-availability-and-packages)
+- [Torii 終端點](/zh-hant/reference/torii-endpoints.md)
+- [數據事件過器](/zh-hant/blockchain/filters.md#data-event-filters)
+- [查詢參考](/zh-hant/reference/queries.md#nexus-data-availability-and-packages)

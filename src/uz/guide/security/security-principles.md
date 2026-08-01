@@ -1,105 +1,68 @@
 ---
 translation_locale: uz
 translation_source: /guide/security/security-principles.md
-translation_source_hash: ca78f72b2e319a67a5fa5c74126de108cd552cdc758e3a2b981f7a7930a3b61e
+translation_source_hash: 20139011c663a0bca6f9e486ef81f698370c34f8f02319317805b0d1dfb049c7
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Xavfsizlik prinsiplari {#security-principles}
 
-Tashkilotlar va alohida foydalanuvchilar Iroha qurilmalari bilan xavfsiz aloqalarni ta'minlash uchun birgalikda ishlashlari kerak. Ushbu mavzu ushbu hamkorlikning asosiy prinsiplarini tushuntiradi.
+Iroha reyestri imzolangan ko'rsatmalarni tekshiradi va ruxsatlarni qo'llaydi. U xususiy kalitlar, xostlar, ilovalar, operator ish stansiyalari yoki boshqaruv tartib-taomillarini himoya qilmaydi. Joylashtirish ushbu tizimlarni himoya qilishi kerak.
 
-## Umumiy xavfsizlik tamoyillari {#general-security-principles}
+Iroha tarmog'ini loyihalash va ishlatishda ushbu prinsiplarni qo'llang.
 
-1. [Virtual xususiy tarmoqdan ](./vpn.md) (VPN) foydalaning:
+## Vakolatni xavfsizlik chegarasi sifatida ko'ring {#treat-authority-as-a-security-boundary}
 
-    - Xavfsiz ma'lumotlar yoki resurslarga, ayniqsa ommaviy tarmoqlar orqali kirish uchun <abbr title="Virtual Private Network">VPN</abbr>-dan foydalanib, ma'lumotingizni himoya qiladigan xavfsiz aloqa o'rnating.
+- Xususiy kalitni nazorat qiluvchi shaxs yoki jarayon ushbu kalitga berilgan vakolat bilan ishlashi mumkin.
+- Har bir muhit va operatsion rolga alohida vakolat bering.
+- Ishlab chiqarish va tiklash kalitlarini odatdagi ishlab chiqish va sinov hisob ma'lumotlaridan ajratib turing.
+- Har bir vakolat kimga tegishli ekanini, uning imzolovchisi qayerda saqlanishini va uni qanday almashtirish yoki bekor qilish mumkinligini yozib oling.
 
-2. Tarmoqni himoya qilish uchun firewalldan foydalaning:
+[Ochiq kalit kriptografiyasini](./public-key-cryptography.md) va [Storing Cryptographic Keys-ni ](./storing-cryptographic-keys.md) ko'ring.
 
-    - Uy va/yoki ofis tarmoqlarini qo'llab-quvvatlash uchun ruxsatsiz kirishlarga qarshi kurashish va u bilan bog'liq qurilmalarni viruslar va zararli dasturlardan himoya qilishda yordam beradigan firewall o'rnating.
+## Eng kam imtiyozlardan foydalaning {#apply-least-privilege}
 
-3. Jismoniy va raqamli ma'lumotlarni himoya qilish:
+- Rol uchun zarur bo'lgan Iroha ruxsatlari, xostga kirish va tarmoqqa kirish huquqlarinigina bering.
+- Odatiy tranzaksiyalarni imzolashni boshqaruv, joylashtirish va tiklash vakolatlaridan ajrating.
+- Validatorlar a'zoligi, imtiyozli ruxsatlar yoki yuqori qiymatli aktivlarga ta'sir qilishi mumkin bo'lgan o'zgarishlar uchun mustaqil tasdiq talab qiling.
+- Rol o'zgarganidan keyin kirish huquqini qayta ko'rib chiqing va endi kerak bo'lmagan kirishni olib tashlang.
 
-    - Xavfsiz ma'lumotlarni o'z ichiga olgan jismoniy hujjatlarni xavfsiz joyda himoya qilish va raqamli hujjatlar shifrlanganligini va parol bilan himoyalangan jildlarga saqlanishini ta'minlash.
+## Himoya qatlamlaridan foydalaning {#use-layers-of-protection}
 
-4. Maʼlumotlarni muntazam saqlash:
+- Imzolovchilarni, ilovalarni, operatsion tizimlarni, tarmoqlarni va jismoniy kirishni himoya qiling. Bitta nazorat vositasiga tayanmang.
+- Joylashtirish uchun zarur bo'lgan Torii, tengdosh, monitoring va ilova yo'nalishlarinigina oching.
+- Ma'muriy kirish va maxfiy ma'lumotlar uchun autentifikatsiya qilingan va shifrlangan kanallardan foydalaning.
+- Tizimlarni xavfsizlik yamoqlari bilan yangilangan holda saqlang va joylashtirish foydalanmaydigan xizmatlarni o'chiring.
+- Sirlarni manba nazoratidan, buyruq liniyalaridan, loglardan, chiptalardan, chat va ommaviy hujjatlardan chetda saqlang.
 
-    - Har doim muhim ma'lumotlaringizning nusxalarini xavfsiz joyda saqlang. Shunday qilib, agar siz ma'lumotni yo'qotsangiz yoki biror narsa noto'g'ri bo'lsa, tezda hamma narsani qayta tiklashingiz mumkin. Ushbu zaxiralarni odatda ma'lumotingizni saqlagan joyingizdan boshqacha xavfsiz joyda saqlashingiz kerak.
+## Joylashtirishlarni ko'rib chiqiladigan qiling {#make-deployments-reviewable}
 
-## Har bir foydalanuvchi uchun xavfsizlik prinsiplari {#security-principles-for-individual-users}
+- Maxfiy bo'lmagan konfiguratsiya va joylashtirish avtomatizatsiyasini versiya nazoratida saqlang.
+- Binarlar, konfiguratsiya, genezis materiallari, validatorlar a'zoligi, ruxsatlar va ommaviy yo'nalishlardagi o'zgarishlarni ko'rib chiqing.
+- Joylashtirishdan oldin reliz artefaktlarini tekshiring. Tasdiqlangan versiyalar va xeshlarni yozib oling.
+- Ishlab chiqarishda ishlaydigan binar va konfiguratsiyaning aynan o'sha kombinatsiyasini sinab ko'ring.
+- Tarmoqning deterministik xatti-harakatini saqlang. Hardver tezlashtirish tengdoshlarga ko'rinadigan natijalarni o'zgartirmasligi kerak.
 
-1. Qattiq autentifikatsiya qoidalariga amal qiling:
+## Dalillarni kuzatish va saqlab qolish {#monitor-and-preserve-evidence}
 
-    - Barcha hisoblar uchun kuchli va noyob maxfiy so'zlardan foydalanish.
+- Tengdoshlarning holatini, konsensus jarayonini, ruxsat o'zgarishlarini, imtiyozli ko'rsatmalarni, autentifikatsiya xatolarini va kutilmagan konfiguratsiya o'zgarishlarini kuzating.
+- Muhim ogohlantirishlarni ta'sirlangan xostga bog'liq bo'lmagan tizimga yuboring.
+- Tegishli jurnallarni, reyestr havolalarini, konfiguratsiya oniy nusxalarini va tranzaksiya xeshlarini ishonchli vaqt belgilari bilan saqlang.
+- Yo'qolgan monitoring ma'lumotlarini tekshiruvni talab qiladigan operatsion muammo sifatida ko'rib chiqing.
 
-    - Hech qachon parollarni qayta ishlatmang.
+## Ishga tushirishdan oldin tiklanishga tayyorlaning {#prepare-recovery-before-launch}
 
-    - <abbr title="Two-Factor Authentication">2FA</abbr>-ni iloji boricha o'rnating. <abbr title="Two-Factor Authentication">2FA</abbr> umumiy xavfsizlikni nafaqat parol talab qilib, balki <abbr title="One-Time Password">OTP</abbr>, barmoq izlari yoki uchinchi tomon ilovalariga asoslangan autentifikatsiya (masalan, Google Authenticator) kabi qo'shimcha omillarni ham yaxshilaydi.
+- Hodisani kim e'lon qilishi va tiklash choralarini kim tasdiqlashi mumkinligini aniqlang.
+- Zaxiralash, qayta tiklash, kalitni almashtirish, ruxsatni bekor qilish va tengdoshni tiklash tartib-taomillarini sinang.
+- Ishonchli reliz artefaktlari, konfiguratsiya, genezis yozuvlari va inventarlarni hodisa paytida foydalanish uchun tayyor saqlang.
+- Avval o'qish va monitoringni tiklang. Tiklangan tarmoq va unga bog'liq ilovalar tekshiruvlaridan o'tgandan keyingina yozishlarni davom ettiring.
+- Har bir hodisani ko'rib chiqing va nazorat, avtomatlashtirish va mashg'ulotlarni yangilang.
 
-    - SMS autentifikatsiyasini ikkinchi omil sifatida ishlatishdan qoching. Zararli dasturiy ta'minot barcha SMS xabarlaringizni kuzatib bormayotganiga hech qanday kafolat yo'q. Masalan, Android dasturlari faqat ular uchun mo'ljallangan xabarlarga kirish bilan cheklanishi mumkin emas.
+::: warning
 
-2. Raqamli aloqalarda ehtiyot bo'ling: - Barcha olingan elektron pochta xabarlarining imzolarini imzolash va tasdiqlash uchun elektron pochta mijozini o'rnating. Agar siz jo'natganning manzilini o'zgartirib, hatto bank sifatida suratga olishingiz mumkin bo'lsa - da, imzo soxtalashtirish mumkin emas. - HTML xabarlarini ham, tashqi resurslarni ham noma'lum yoki tasdiqlanmagan manzillardan yuklashni o'chirib qo'ying.
+Reyestr amallari qaytarib bo'lmas bo'lishi mumkin. Tiklash yoki boshqaruv tranzaksiyasini yuborishdan oldin oldindan ko'rib chiqilgan tartib-taomillarga amal qiling va talab etilgan tasdiqlarni oling.
 
-    - Shak-shubhasiz elektron pochta xabarlarini, havolalarni va shaxsiy ma'lumotlarni so'rashni aniqlash va ulardan qochish uchun keng tarqalgan phishing usullari haqida bilib oling.
+:::
 
-    - Barcha olingan elektron pochta xabarlarining imzolarini imzolash va tasdiqlash uchun elektron pochta mijozini o'rnating. Jo'natuvchining manzilini aks ettirish mumkin bo'lsa-da, hatto bank sifatida suratga olish ham mumkin, ammo imzonani soxtalashtirish mumkin emas.
-
-3. Shaxsiy ma'lumotlarni himoya qilish:
-
-    - O'zingiz bilmagan odamlar bilan, ayniqsa telefon yoki Internet orqali muloqot qilayotganingizda, shaxsiy ma'lumotlarni bo'lishishdan ehtiyot bo'ling.
-
-    - O'zingiz bilan muloqot qilayotgan shaxslar yoki tashkilotlarni mustaqil ravishda tekshirishni o'ylab ko'ring, ularning kimligini tasdiqlash uchun.
-
-    - Ijtimoiy tarmoqlarda o'zingizning shaxsiy ma'lumotlaringizga e'tiborli bo'ling, chunki zararli tomonlar ushbu ma'lumotlardan foydalanishi mumkin.
-
-## Tashkilotlar uchun xavfsizlik tamoyillari {#security-principles-for-organisations}
-
-1. To'g'ri xavfsizlik siyosati va tartib-taomillarini belgilash:
-
-    - Xavfsiz ma'lumotlar bilan shug'ullanadigan barcha xodimlar uchun aniq xavfsizlik siyosati va protokollarini ishlab chiqish; ushbu yo'l-yo'riqlarga amal qilish uchun xodimlarni puxta o'qitish, beparvolik xavfini kamaytirish.
-
-    - Barcha xodimlar uchun xavfsizlik siyosati ochiqligini va o'zgaruvchi xavfsizlik manzaralarini aks ettirish uchun muntazam ravishda qayta ko'rib chiqilishi va yangilanishini ta'minlash.
-
-    - Xavfsizlik siyosatlarini ishchilar uchun ko'proq tanish va amaliyotga noloyiq qilish uchun misollar va voqealari bilan ta'minlang.
-
-2. Xodimlarning e'tiborini oshirish:
-
-    - Xodimlarga ma'lumotlar va operatsion xavfsizlik chora-tadbirlari to'g'risida ta'lim berish. Tashkilot xavfsizligini mustahkamlashda ko'proq xabardorlik va keng o'qitish muhimdir.
-
-    - Xodimlarni har qanday shubhali faoliyat yoki xavfsizlik tashvishlari haqida darhol xabar berishga rag'batlantiring.
-
-3. Jismoniy infratuzilmani himoya qilish:
-
-    - Serverlar va infratuzilmalarga jismoniy kirishni cheklash. Faqatgina vakolatli xodimlarga cheklangan hududlarga kirishga ruxsat beruvchi kirish nazoratlarini o'rnatish.
-
-    - O'zgarayotgan xavfsizlik ehtiyojlariga moslashish uchun kirish nazorat choralari muntazam ravishda qayta ko'rib chiqilishi va yangilanishini ta'minlash.
-
-    - Jismoniy xavfsizlikni oshirish uchun sog'lom hududlar uchun biometrik kirish nazoratlarini joriy etish haqida o'ylamang.
-
-4. Xavfsizlik nazoratini amalga oshirish:
-
-    - Harakatlarni sinchkovlik bilan tekshiradigan va xavfsizlikni buzish mumkin bo'lgan holatlarni aniqlaydigan keng qamrovli xavfsizlik monitoringi tizimini joriy etish.
-
-    - Xavfsizlik xodimlarini har qanday noyob yoki ruxsatsiz faoliyat to'g'risida tezda xabardor qilish uchun avtomatik ogohlantirishlarni amalga oshirish.
-
-    - Tizimning anomaliyalar va mumkin bo'lgan tahdidlarni aniqlash qobiliyatini oshirish uchun mashina o'rganish algoritmlaridan foydalanishni o'ylab ko'ring.
-
-    - Ma'lumotlar bazasi xavfsizligini nazorat qilish, dasturiy ta'minot zaifliklarini aniqlash, kuzatish va bartaraf etish hamda tasdiqlangan ro'yxatga kiritilmagan ruxsatsiz dasturlar mavjudligi uchun kritik mashinalarda muntazam tekshiruvlar o'tkazish uchun xodimlarni ishga tushirish yoki tayinlash.
-
-5. Takrorlanadigan xavfsizlik auditlarini o'tkazish:
-
-    - Xavfsizlik holatlarini baholash va belgilangan xavfsizlik chora-tadbirlarining umumiy qabul qilingan standartlar va qoidalarga muvofiqligini tasdiqlash uchun muntazam ravishda xavfsizlik auditlarini o'tkazish.
-
-    - Tashkilotingizning xavfsizlik holatiga yuzxotirchiliksiz baho berish uchun tashqi xavfsizlik mutaxassislarini vaqti-vaqti bilan baholash uchun ishga yollashni o'ylang.
-
-6. Kirishlarni nazorat qilish tizimini joriy etish:
-
-    - Xodimlarning faqat o'z vazifalari uchun zarur bo'lgan resurslar va ma'lumotlarga ega bo'lishlarini ta'minlash uchun rolga asoslangan kirish nazorat tizimini yaratish.
-
-7. Doimiy yaxshilanishni qabul qiling:
-
-    - Xavfsizlikning uzluksiz jarayon ekanligini tan olish.Xavfsizlik choralarini doimiy ravishda baholash va yangi paydo bo'layotgan tahdidlar va qiyinchiliklarni bartaraf etish uchun ularni faol kuchaytirish.
-
-    - Xodimlarni xavfsizlikni yaxshilash bo'yicha takliflar kiritishga undaydigan, doimiy takomillashtirish madaniyatini kuchaytiradigan takroraning tuzish haqida o'ylab ko'ring.
+[Operatsiyaviy xavfsizlik](./operational-security.md) va [Relizga tayyorlik](../best-practices/release-readiness.md) bilan davom eting.

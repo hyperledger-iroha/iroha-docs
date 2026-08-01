@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /help/installation-issues.md
-translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
+translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c054c85a2a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -89,7 +89,7 @@ $ rustup toolchain update stable
 $ rustup default stable
 ```
 
-Әгәр һеҙ `nightly` версияһын ҡуйһағыҙ йәки Rust версияһын билдәләһәгеҙ, ләкин уны ҡуҙғатырға онотһағыҙ, был була ала.
+`nightly` версияһын урынлаштырыу йәки Rust версияһын һуңғараҡ ҡуймайынса ҡуйыу был проблемаға килтерә ала.
 
 ### Башҡа Rust версиялары бармы-юҡмы икәнен тикшерегеҙ {#check-if-there-are-other-rust-versions}
 
@@ -123,13 +123,13 @@ $ rustup toolchain list
 $ rustup remove <toolchain>
 ```
 
-Шунан һуң, был
+Инструменттар сылбырҙарын алып ташлағандан һуң, был ҡушымта команда табылмаған хатаны хәбәр итергә тейеш:
 
 ```bash
 $ cargo --help
 ```
 
-һөҙөмтәһендә команда табылмаған хата, йәғни һеҙҙә актив Rust инструменттар сылбырһы ҡуйылмаған. Һуңынан:
+Был хата актив Rust инструменттар сылбырһы ҡуйылмаған тип раҫлай.
 
 ```bash
 $ rustup toolchain install stable

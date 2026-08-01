@@ -8,9 +8,7 @@ translation_engine: nllb-200-ct2
 
 # 客戶端配置 {#client-configuration}
 
-Iroha CLI 及其他 SDK 客戶使用 TOML 存儲庫將
-在目前的默认 `defaults/client.toml`; 建立的本地網絡也寫出
-匹配 `client.toml` 在他們的輸出目錄中.
+Iroha CLI 和 SDK 客戶使用 TOML 存儲庫將當前的默認設置發送到 `defaults/client.toml`; 創建的本地網絡也會寫出匹配 `client.toml` 在它們的輸出目錄中.
 
 ::: details 客戶端配置模板
 
@@ -20,8 +18,7 @@ Iroha CLI 及其他 SDK 客戶使用 TOML 存儲庫將
 
 ## 核心領域 {#core-fields}
 
-最少,一個客戶端配置會識別連鎖, Torii 目的地,以及
-簽名帳戶:
+至少,客戶端配置識別鏈, Torii 終點和簽字帳戶:
 
 ```toml
 chain = "00000000-0000-0000-0000-000000000000"
@@ -33,28 +30,22 @@ public_key = "ed0120..."
 private_key = "802620..."
 ```
 
-- `chain` 選擇所提交交易的連鎖.
-- `torii_url` 在等級的點數 Torii HTTP API.
-- `[account].domain` 是由 CLI 快捷方式和地址選擇器編碼;
-  經典 `AccountId` 沒有域名.
-- `[account].public_key` 及其他 `[account].private_key` 簽署交易.
+- `chain`選擇所提交交易屬於的鏈.
+- `torii_url`點在同行 Torii HTTP API.
+- `[account].domain`是由 CLI 快捷方式和地址選擇器編碼所使用的;正規 `AccountId`本身是無域名.
+- `[account].public_key`和`[account].private_key`簽署交易.
 
-這個帳號必須在連鎖上已經存在.
-這項計畫由聯合創世記錄處理.
+帳戶必須已經在鏈上存在.對於默認的本地網絡,這是由捆綁的基因表處理的.
 
-::: info 病情敏感性
+::: info 案例敏感性
 
-Iroha 經典解析後,這些名字對案例敏感.
-`wonderland.universal`, `Wonderland.universal`, 及其他
-`looking_glass.universal` 這兩種字母是不同的領域.
+Iroha 在法典解析後,這些名字對案例敏感. `wonderland.universal`, `Wonderland.universal`, 和 `looking_glass.universal` 它們是不同的字體.
 
 :::
 
-## 基本認證 {#basic-authentication}
+## 基本身份驗證 {#basic-authentication}
 
-選擇性 `[basic_auth]` 這部分增加了: HTTP `Authorization` 標題為
-客戶的要求. Iroha 沒有同行直接解讀這些憑證;
-他們在什麼時候 Torii 這位部落客也表示,
+可選的 `[basic_auth]` 部分將 HTTP `Authorization` 標題添加到客戶端請求中. Iroha 同齡人不直接解釋這些憑證;在 Torii 在像Nginx這樣的反向代理後使用時,使用它們.
 
 ```toml
 [basic_auth]
@@ -62,9 +53,9 @@ web_login = "mad_hatter"
 password = "ilovetea"
 ```
 
-## 交易設定 {#transaction-settings}
+## 交易設置 {#transaction-settings}
 
-交易行為是配置的 `[transaction]` 部分:
+交易行爲設置爲 `[transaction]`部分:
 
 ```toml
 [transaction]
@@ -73,34 +64,30 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-- `time_to_live_ms` 在毫秒內的交易壽命
-- `status_timeout_ms` 控制客戶等待交易的時間
-  國家的地位.
-- `nonce = true` 要求客戶包含一項不經常的交易
-  產生不同的哈希.
+- `time_to_live_ms`是數毫秒的交易壽命.
+- `status_timeout_ms` 控制客戶等待交易狀態的時間.
+- `nonce = true` 要求客戶包含一個非如此重複的交易產生不同的哈希.
 
-## 連接排列設定 {#connect-queue-settings}
+## 連接排列設置 {#connect-queue-settings}
 
-目前 Iroha 客戶也可以使用可選的 `[connect]` 地方區
-排隊狀態:
+目前的 Iroha 客戶端也可以使用可選的 `[connect]` 部分進行本地隊列狀態:
 
 ```toml
 [connect]
 queue_root = "./queue"
 ```
 
-使用此時,工作流需要持久的客戶端排列存儲.
+如果工作流需要持久的客戶端排隊存儲時,請使用此方法.
 
-## 如何生成配置 {#generating-configurations}
+## 創建配置 {#generating-configurations}
 
-選擇一次性本地網路, Kagami 因為它寫出匹配 Iroha
-3 組圖,創世記,文字, README:
+對於一次性本地網絡,更喜歡 Kagami 因爲它寫出匹配的 Iroha 3 配置,基因,腳本和 README:
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
 ```
 
-使用生成的 `./localnet/client.toml` 在這個情況下 CLI:
+使用生成的 `./localnet/client.toml`與 CLI:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all

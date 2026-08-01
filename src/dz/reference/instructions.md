@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /reference/instructions.md
-translation_source_hash: 8dc894a05141040826067dc483319f213b007648f32354bb36f899259db9c5ac
+translation_source_hash: e300187da832a8f82258a36b7c4aaebf505adc09c771de5b0c7ab8fb0052d3db
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -19,8 +19,8 @@ translation_engine: nllb-200-ct2
 | [`TransferBox`](/dz/blockchain/instructions.md#transfer) |`Domain`, `AssetDefinition`, གྱངས་ཁ་ཐོ་བཀོད་ `Asset`, `Nft`|
 | [`SetKeyValueBox`](/dz/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` metadata |
 | [`RemoveKeyValueBox`](/dz/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` metadata |
-| [`GrantBox`](/dz/blockchain/instructions.md#grant-revoke) |རྩིས་སྤྲོད་འབད་ནིའི་ གོ་སྐབས་, འགན་འཁྲི་སྦེ་ རྩིས་སྤྲོད་འབད་ནི་, འགན་ཁུར་གི་དོན་ལུ་ གོ་སྐབས་ |
-| [`RevokeBox`](/dz/blockchain/instructions.md#grant-revoke) |རྩིས་ཁྲ་ནང་ལས་ ངོས་ལེན་, རྩིས་ཁྲའི་ནང་ལས་ འགན་འཁྲི་, འགན་འཁྲིའི་ལས་ ངོས་ལེན་ |
+| [`GrantBox`](/dz/blockchain/instructions.md#grant-revoke) | `Permission` (`Grant<Permission, Account>`), `Role` (`Grant<RoleId, Account>`), `RolePermission` (`Grant<Permission, Role>`) |
+| [`RevokeBox`](/dz/blockchain/instructions.md#grant-revoke) | `Permission` (`Revoke<Permission, Account>`), `Role` (`Revoke<RoleId, Account>`), `RolePermission` (`Revoke<Permission, Role>`) |
 | [`SetParameter`](/dz/blockchain/instructions.md#setparameter) |ལྕགས་ཀྱུའི་བརྡ་དོན་ཚུ་ ད་ལྟོའི་བར་ན་ཡང་ |
 | [`ExecuteTrigger`](/dz/blockchain/instructions.md#executetrigger) |འགོ་བཙུགས་ཐངས་ |
 | [`Upgrade`](/dz/blockchain/instructions.md#other-instructions) |ལག་ལེན་པ་ཡར་དྲག་གཏང་ནི་ |

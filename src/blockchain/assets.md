@@ -49,7 +49,7 @@ Asset definitions support these mintability modes:
 | `Infinitely` | Elastic supply. The asset can be minted and burned repeatedly.    |
 | `Once`       | Fixed-supply token. It can be minted once and then burned.        |
 | `Not`        | Fixed-supply token that can be burned but not minted again.       |
-| `Limited(n)` | Minting is allowed for a limited number of additional operations. |
+| `Limited(n)` | The policy allows new asset units to be issued in a limited number of additional operations. |
 
 Use `Infinitely` for normal elastic assets and `Once` or `Limited(n)` for
 fixed-supply or bounded-supply assets. Do not use `Not` as an initial

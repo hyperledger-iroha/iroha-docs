@@ -70,7 +70,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 
 ## События или блокирующие потоки останавливаются раньше {#event-or-block-streams-stop-early}
 
-Примеры потока блоков и событий опираются на конечные точки потокового потока Torii.
+Примеры потоков блоков и событий опираются на конечные точки потока Torii. Убедитесь, что пир все еще работает, а затем проверьте с отсрочкой:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger blocks 1 --timeout 30s

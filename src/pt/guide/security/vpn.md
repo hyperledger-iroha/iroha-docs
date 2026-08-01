@@ -23,7 +23,7 @@ Use um VPN quando:
 
 Uma VPN não é necessária para cada implantação. As redes públicas podem expor intencionalmente a Torii através de um gateway público, balanceador de carga ou proxy inverso. Mesmo nesse caso, mantenha o tráfego peer-to-peer e os endpoints de administração do validador em uma rede restrita sempre que possível.
 
-::: ponta
+::: tip
 
 Um navegador VPN só protege o tráfego desse navegador. Não protege `irohad`, CLI, SDK, SSH, métricas ou tráfego de backup a menos que esses processos sejam encaminhados através da mesma rede privada.
 

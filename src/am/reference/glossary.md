@@ -80,7 +80,7 @@ translation_engine: nllb-200-ct2
 
 ## የቢዛንታይን ጉድለት መቻቻል (BFT) {#byzantine-fault-tolerance-bft}
 
-Iroha በ peer-to-peer አውታረመረብ ውስጥ እስከ 33% የሚደርሱ ተንኮል አድራጊ አካላት ጋር በትክክል መሥራት የሚችልበት ባህሪ።
+የተወሰነ መቶኛ ተንኮል አድራጊዎችን በሚይዝ አውታረመረብ ላይ በትክክል መሥራት መቻል ባህሪ። Iroha በ peer-to-peer አውታረመረብ ውስጥ እስከ 33% ድረስ ተንኮል አድራጊ አካላት ጋር ለመስራት ችሎታ አለው።
 
 ## Iroha ክፍሎች {#iroha-components}
 

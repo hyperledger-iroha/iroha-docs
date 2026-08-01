@@ -397,8 +397,8 @@ When an endpoint accepts or returns typed Norito directly, use
 
 ## Telemetry Profiles
 
-Endpoint visibility depends on telemetry settings. The upstream docs describe
-five profile levels:
+Endpoint visibility depends on the node's `telemetry.profile` setting. The
+current configuration exposes five profile levels:
 
 | Profile | `/status` | `/metrics` | Developer routes |
 | --- | --- | --- | --- |

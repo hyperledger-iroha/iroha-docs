@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /blockchain/rwas.md
-translation_source_hash: 80593515d6919a6b6cb282ddcd4903ce000b56b264f350a42a6ed792f9cbef73
+translation_source_hash: cbdc6d766fb90bea7e68dc67f2c705bb1638340feeb2fca9f2dd43a727ac03e7
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,7 +12,7 @@ translation_engine: nllb-200-ct2
 
 RWAs הם שונים משארית נכסים מספרית:
 
-- נכס מספרי הוא סולן פוגביב שנחזק על ידי חשבון
+- נכס מספרי הוא סכום נדל"ן מוחזק על ידי חשבון.
 - NFT הוא רשום ייחודי על שרשרת עם בעל אחד
 - RWA הוא הרבה שיכול להכיל מטא נתונים עסקיים, כמות, מחזיקה, קפואות, מצב פיצוי, מקור, ומדיניות המפקד
 
@@ -60,12 +60,12 @@ RWAs הם שונים משארית נכסים מספרית:
 |מבצע |התנהגות מתבצעת |
 | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
 |`RegisterRwa` |ליצור הרבה של ID שנוצר בדומיין; סמכות העסקה הופכת ל- `owned_by`. |
-|`TransferRwa` |להעביר כמות לחשבון אחר. העברת מלאה יכולה לשנות `owned_by`; העברה חלקית יוצרת הרבה ילדים שנוצרו. |
+|`TransferRwa` |להעביר כמות לחשבון אחר. העברה מלאה יכולה לשנות `owned_by`. העברת חלקית יוצרת חטיבת ילדים נפרדת עם ID שנוצר. |
 |`HoldRwa` |כמות אחסון: דורש שליטה מוגדרת ו `hold_enabled`. |
 |`ReleaseRwa` |להסיר כמות מוחזקת. דורש שליטה מוגדרת ו `hold_enabled`. |
 |`FreezeRwa` |לחסום פעולות הבעלים הרגילים. דורש שליטה מותאמת ו `freeze_enabled`. |
 |`UnfreezeRwa` |להפעיל מחדש את פעולות הבעלים הרגילות. דורש שליטה מוגדרת ו `freeze_enabled`. |
-|`RedeemRwa` |סכום פרישה. דורש את הבעלים או מפקח ו `redeem_enabled`. |
+|`RedeemRwa` |להוריד באופן קבוע את הסכום מהציור. הבעלים או מנהל יכול להגיש אותו כאשר `redeem_enabled` הוא נכון. |
 |`MergeRwas` |שילוב כמויות ממגרש הורים עם אותו תחום ופרטים לתוך המגרש של ילדים. |
 |`ForceTransferRwa` |להעביר כמות דרך זרימת שליטה. דורש שליט מוגדר ו `force_transfer_enabled`. |
 |`SetRwaControls` |תחליף את מדיניות הבקרה של המגרש, דורשת בעלה או מנהל.|
@@ -96,11 +96,11 @@ RWAs הם שונים משארית נכסים מספרית:
 }
 ```
 
-חשבונות ומפקידים של שליטנים מורשים לבצע רק את פעולות השליטה המאפשרות על ידי הדגל הבולאני המתאים. עומס הפיקוח הנוכחי אינו מדיניות העברת רשימת הרשות ואינו מכיל חוקים `transfers` מונחים.
+חשבונות ומפקידים של שליטנים יכולים לבצע רק את המבצעים המאפשרים על ידי הדגלים הבולניים המתאימים. עומס הפיקוח הנוכחי מכיל זהויות של השליטה ודגלי מבצע. רשימות הזכות להעברה ומשפט `transfers` מונחים מחוץ לטובת זו.
 
 ## שאלות, אירועים ו- APIs {#queries-events-and-apis}
 
-שימוש [`FindRwas`](/he/reference/queries.md#assets-nfts-and-rwas) לרשימה רשומה RWA הרבה. יישומים שצריכים עדכונים חי יכולים להצטרף [`Rwa` אירועי נתונים](/he/blockchain/filters.md#data-event-filters) עבור יצירת, שינוי הבעלים, פיצוץ, מיזוג, חידוש, קפוא, פסק הקפוא, אחסון, שחרור, העברת בכוח, שינוי בקרנות, אירועים של מטא נתונים.
+שימוש [`FindRwas`](/he/reference/queries.md#assets-nfts-and-rwas) לרשימה רשומה RWA הרבה. יישומים שצריכים עדכונים חי יכולים להצטרף [`Rwa` אירועי נתונים](/he/blockchain/filters.md#data-event-filters) עבור יצירת, שינוי הבעלים, פיצוץ, מיזוג, חידוש, קפוא, לא קפוא; אירועים שנערכו, שוחררו, הועברו בכוח, השתנו בקרונות ונתונים מטאטא.
 
 Torii חושף דרכים של מצב שרשרת כגון `/v1/rwas` ו `/v1/rwas/query`, בנוסף לדרכים של חוקרים כמו `/v1/explorer/rwas` ו `/v1/explorer/rwas/{rwa_id}` כאשר משפחת המסלול הזו מופעלת. לקוחות שנוצרים צריכים להעדיף את המסמך חי [ `/openapi` ](/he/reference/torii-endpoints.md#common-endpoints) עבור הצורה המדויקת של התגובה המחשבת על ידי קשר.
 
@@ -228,7 +228,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-לשחרר את החזקת כאשר התהליך מחוץ לרצועה יושלם:
+הגשת `ReleaseRwa` לאחר שהתהליך מחוץ למשרשרת יצליח:
 
 ```python
 draft = TransactionDraft(
@@ -273,7 +273,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### כמות הגאולה או הפנסיה {#redeem-or-retire-quantity}
 
-כמות הגאולה כאשר נכס מחוץ למשרשרת המייצג נמסר, נצרך, נסוג, או מוציאו ממופע באופן אחר. `redeem_enabled`, והחתום חייב להיות הבעלים או המפקח.
+הגשת `RedeemRwa` לאחר שהאוצר המייצג מחוץ למשרשרת נשלח, נצרך, נסוג או מוציא ממסלול אחר. זה מוריד באופן קבוע את הכמות הנשלחת מהגרף. הגרף חייב להיות `redeem_enabled`.
 
 ```python
 draft = TransactionDraft(
@@ -287,7 +287,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### להקפיא במהלך ביקורת התכנות {#freeze-during-compliance-review}
 
-להקפיא הרבה כאשר ביקורת מחוץ לשרשרת חייבת לחסום פעולות בעלות רגילות. המחתם חייב להיות שליח והצורה צריכה להיות `freeze_enabled`.
+להגיש `FreezeRwa` כאשר ביקורת מחוץ למשרשרת צריכה לחסום את פעולות הבעלים הרגילות. המחתם חייב להיות מנהל; הקבוצה חייבת להיות `freeze_enabled`.
 
 ```python
 draft = TransactionDraft(
@@ -308,7 +308,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-פותח אותו כאשר הביקורת עוברת:
+להגיש `UnfreezeRwa` לאחר שההסכם עבר:
 
 ```python
 draft = TransactionDraft(
@@ -380,7 +380,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-לפתור את הסכום המוצג לאחר הסדר מחוץ למשרשרת:
+לפתור את הסכום המוצג לאחר הסדר מחוץ לשערה:
 
 ```python
 draft = TransactionDraft(
@@ -394,7 +394,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### משכנתא פחמן {#carbon-credit-retirement}
 
-השתמשו בכופר כדי לפרוש קרדיטים לאחר שהם נקראים.
+להגיש `RedeemRwa` כדי להסיר את האשראי על פחמן הנדרש מהזרקה. לשמור את תעודת הרשת או הוכחת רישום בנתונים מטא:
 
 ```python
 carbon_lot_id = (

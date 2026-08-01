@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /blockchain/assets.md
-translation_source_hash: 58c9f7657f5714dc4bbb884933a1c947687fcf6c83e471007e6c7885f1dab214
+translation_source_hash: c80e6025007653b355d373394465d04adefc1221c8f34d9008f1c9cbabd3dc40
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -47,7 +47,7 @@ Mülkiyyət tərifləri bu mintabilitə rejimlərini dəstəkləyir:
 |`Infinitely` |Elastik təchizat. Varlıq dəfələrlə silinə və yandırıla bilər. |
 |`Once` |Qeydiyyatlı təchizat əlamətidir, bir dəfə çəkilə və sonra yandırıla bilər.|
 |`Not` |Yandırıla bilən, lakin yenidən silinməyən sabit təchizat simvolu. |
-|`Limited(n)` |Əlavə əməliyyatlar üçün məhdud sayda maddə istehsalına icazə verilir. |
+|`Limited(n)` |Siyasət, məhdud sayda əlavə əməliyyatlarda yeni aktiv birləşmələrinin buraxılmasına imkan verir. |
 
 Normal elastik aktivlər üçün `Infinitely` və sabit tədarük və ya məhdud tədarük aktivləri üçün `Once` və ya `Limited(n)` istifadə edin. Əməl tədarükü artıq təsdiqlənmədiyi təqdirdə `Not` ilkin siyasət kimi istifadə etməyin
 
@@ -55,7 +55,7 @@ Normal elastik aktivlər üçün `Infinitely` və sabit tədarük və ya məhdud
 
 `balance_scope_policy` balansların necə saxlanıldığını idarə edir:
 
-- `Global`: hesabda və aktiv təyinatına görə bir qalxan
+- `Global`: hesab və aktiv təyinatına görə bir balans qabı
 - `DataspaceRestricted`: balanslar məlumat məkanının kontekstinə görə bölünür
 
 Məlumat sahəsi ilə məhdudlaşdırılmış balanslar, eyni aktiv tərifi bir neçə Nexus məlumat bazasında istifadə edildikdə faydalıdır, lakin balanslar ayrı qalmalıdır.

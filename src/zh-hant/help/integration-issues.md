@@ -8,29 +8,25 @@ translation_engine: nllb-200-ct2
 
 # 解決整合問題 {#troubleshooting-integration-issues}
 
-這部分提供解決問題的建議. Iroha 3 如果問題是:
-你所經歷的情況並沒有被描述,
-透過網路聯絡我們 [電子郵件](https://t.me/hyperledgeriroha).
+這個節目提供瞭解決問題的建議 Iroha 3 如果您所遇到的問題不詳細介紹,請通過 [電報](https://t.me/hyperledgeriroha).
 
 ## 客戶端無法連接 {#client-cannot-connect}
 
-檢查客戶配置指向同行的 Torii 年 月 日
+檢查客戶端配置是否指向同行的 Torii 地址:
 
 ```toml
 torii_url = "http://127.0.0.1:8080/"
 ```
 
-於 CLI 檢查,明顯通過相同檔案:
+對於 CLI 檢查,明確傳遞相同的文件:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 ```
 
-如果同行走進, Docker 或使用主機或服務地址,
-在客戶過程中可達到. `127.0.0.1` 在容器內沒有
-接待機的機體.
+如果同行走進 Docker 或Kubernetes,使用客戶端進程可訪問的主機或服務地址. `127.0.0.1` 在容器內,不是主機.
 
-供公眾使用 Taira 檢測,從未簽名的終點探測器開始:
+對於公共測試 Taira,開始使用未簽名的終點探測器:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -40,53 +36,45 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=5' \
   | jq -r '.items[].id'
 ```
 
-如果這些命令失敗, `502`, TLS, DNS, 或時間內錯誤,
-在預測帳戶之前,必須等待公開的測試網端點
-關鍵或交易用量.
+如果這些命令失敗於 `502`, TLS,DNS 或截止時間錯誤,請修復網絡可訪問性或等待公共測試網端點才能調整帳戶密鑰或交易有效負載.
 
 ## 交易被拒絕 {#transactions-are-rejected}
 
-大部分交易失败是由身份或授權不一致造成的:
+大多數交易失敗是由身份或授權不匹配造成的:
 
-- 客戶配置中的帳戶公钥不符合私密鍵
-  使用於簽名
-- 帳戶沒有註冊於創世記或之前的交易
-- 這個帳戶缺乏執行時間所需的許可令牌或角色
-  核准器
-- 域名 ID 沒有其數據空間資格,
-  `domain.dataspace`
+- 客戶端配置中的帳戶公鑰不匹配簽名所使用的私鑰
+- 賬戶沒有在創始或之前的交易中註冊
+- 賬戶缺乏運行時間驗證器所要求的許可令牌或角色
+- 一個域名 ID 缺乏其數據空間資格,例如 `domain.dataspace`
 
-使用 `--output-format text` 在檢查情況下 CLI 命令讓錯誤更容易
-閱讀:
+使用 `--output-format text` 在調試 CLI 命令時,以便更容易讀取錯誤:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ledger transaction ping --msg "hello"
 ```
 
-## 查詢返回空白結果 {#queries-return-empty-results}
+## 查詢返回空結果 {#queries-return-empty-results}
 
-沒有查詢結果,並不代表查詢失敗.
+查詢結果並不總是意味着查詢失敗.
 
-- 該產品的交易已發生
-- 查詢域名,資產定義或帳戶 ID 是法典的
-- 頁面化或過濾器不排除預期的行列
-- 客戶端與預期的網路連接,而不是其他本地網絡
+- 應創建對象的交易已發生
+- 被查詢的域名,資產定義或賬戶 ID 是法定.
+- 頁面化或過器不排除預期行
+- 客戶端連接到預期網絡,而不是另一個本地網
 
-請從最廣泛的查詢開始:
+對於域名檢查,請從最廣泛的查詢開始:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 ```
 
-## 事件或阻礙流程早已停止 {#event-or-block-streams-stop-early}
+## 事件或區塊流早點停止 {#event-or-block-streams-stop-early}
 
-區塊和事件流的例子依賴 Torii 檢查使用者數量
-這樣的測試仍在進行,
+區塊和事件流的示例依賴於 Torii 流媒體終端點. 檢查同行仍然運行,然後使用時間限測試:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger blocks 1 --timeout 30s
 cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 ```
 
-於 HTTP 整合,與電流相比.
-[Torii 終點參考](/zh-hant/reference/torii-endpoints.md).
+對於 HTTP 集成,將端點路徑與當前的 [Torii 端點引用](/zh-hant/reference/torii-endpoints.md)進行比較.

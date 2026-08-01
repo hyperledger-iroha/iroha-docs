@@ -38,7 +38,7 @@ Iroha instansiyası məlumatlarını bərpa etmək lazımdırsa, aşağıdakıla
 3. Yeni qohumunu aktiv buraxın.
 4. Yalnız koordinasiyalı miqrasiyanın bir hissəsi olaraq ilk həmyaşıdın mənşəyi və konfigurasiya fayllarını yeniləyin.
 
-::: məlumat
+::: info
 
 Canlı şəbəkədə genesi əvəz etmək üçün ümumi avtomatik yenidən yazma yolu yoxdur. Bunu koordinasiya edilmiş bir köçürmə kimi qəbul edin: köhnə vəziyyəti qoruyun, uyğun həmyaşıdları gətirin və təsdiqləyiciləri yalnız operatorlar köçürmə planı barədə razılığa gəldikdən sonra yeni konfigurasiyaya keçirin.
 
@@ -56,7 +56,7 @@ Təəssüflər olsun ki, səhv mesajları bu cür uğursuzluqların aradan qald�
 
 Bunu necə düzəltmək olar: `hex_literal` istifadə edin. Bu da çirkin bir simvol silsiləni açıq-aşkar hexadecimal saylardan ibarət gözəl kiçik bir cədvələ çevirəcəkdir.
 
-::: xəbərdarlıq
+::: warning
 
 Hətta `try_from_str` tətbiqi verilən bir silsiləyin etibarlı `PrivateKey` olub olmadığını yoxlaya bilməz və əgər yoxdursa sizi xəbərdar edə bilməz.
 

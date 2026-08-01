@@ -1,37 +1,35 @@
 ---
 translation_locale: az
 translation_source: /guide/security/public-key-cryptography.md
-translation_source_hash: fd8bca2c8909c6dfead2e2f7f4f4711ab80339a98b7e227c02aa3ff965380718
+translation_source_hash: 3d317c00e75525d70f6cb9ef7f8eeec6911e2f124af8052cd2fc719b264d43f9
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # İctimai açar kriptografiyası {#public-key-cryptography}
 
-İctimai açar kriptografiyası təhlükəsiz onlayn əməliyyatlar, şifrələnmiş e-poçt rabitəsi və s. kimi fəaliyyətlərə imkan verən etibarlı ünsiyyət və məlumatların qorunması üçün vasitələr təmin edir.
+İctimai açar kriptografiyası əlaqəli ictimai və özəl açarı istifadə edir. İctimai anahtar paylaşıla bilər. Özəl açar hakimiyyətin nəzarəti altında qalmalıdır. Təhlükəsizlik dəstəklənmiş bir alqoritmdən istifadədən, təhlükəsiz təsadüfiliklə açarların yaradılmasından və özəl əsasın qorunmasından asılıdır.
 
-İctimai açar kriptografiyası onlayn şəbəkələr vasitəsilə məlumatların ötürülməsi üçün yüksək təhlükəsiz bir üsul yaratmaq üçün bir cüt kriptografik açar istifadə edir.
+## Rəqəmsal imzalar {#digital-signatures}
 
-Xüsusi bir açıdan ictimai açar etmək asandır, əksinə isə çətin və mümkün deyil. Bu işləri təhlükəsiz saxlayır. İctimai açarı risk etmədən sərbəst bölüşə bilərsiniz, bu da etibarlı qalır.
+İmzaçı özəl açar ilə rəqəmsal imzanı yaradır, təsdiqçi isə müvafiq ictimai açarı ilə imzaları yoxlayır.
 
-## Şifrələmə və imzalar {#encryption-and-signatures}
+Müvafiq bir imza imzalanmış baytların dəyişdirilmədiyini və özəl açarın sahibi tərəfindən təsdiqləndiyini göstərir. İnsanı özlüyündə tanımır. Kimlik ictimai açar və ya hesab nəzarətçisinin necə qeydiyyatdan keçildiyinə və idarə edildiyinə bağlıdır.
 
-İctimai açar kriptografiyası fərdlərə yalnız müvafiq özəl açarı olan nəzərdə tutulmuş alıcı tərəfindən kəşf edilə bilən şifrələnmiş mesajlar və məlumatlar göndərməyə imkan verir. Başqa sözlə, ictimai açar bir kilid kimi fəaliyyət göstərir və özəl açar şifrələnmiş məlumatları açan xüsusi bir açar kimi xidmət edir.
+İmzalar etibarlılıq və icazə sübutunu təmin edir, imzalanan məzmunu şifrələmirlər.
 
-Bu şifrələmə prosesi yalnız həssas informasiyanın məxfiliyini təmin etməklə yanaşı, göndəricinin etibarlılığı. Göndəricinin şəxsi açarı ilə ictimai açarı birləşdirməklə rəqəmsal imzalanma yaradılır. Bu imza göndəricinin kimliyini və ötürülən məlumatların etibarlılığını təsdiqləyən rəqəmsal təsdiq möhürü kimi xidmət edir. İctimai açarınız olan hər kəs, əməliyyatı başlayan şəxs şəxsi açarınızı istifadə etdiyini təsdiq edə bilər.
+## İctimai açarın şifrələməsi {#public-key-encryption}
+
+Bəzi ictimai açar sxemləri məlumatları alıcının ictimai açarı ilə şifrələyir. Alıcı həmin məlumatların şifrəsini müvafiq özəl açarla açır. Şifrələmə və imzalar ayrı əməliyyatlardır və fərqli açarlardan və ya alqoritmlərdən istifadə edə bilər.
+
+Iroha əməliyyatının imzalanması ictimai reyestr məlumatlarını məxfi etmir. Faydalı yükün məzmunu gizli qalmalıdırsa, yerləşdirmənin təsdiqlənmiş məxfilik mexanizmindən istifadə edin.
 
 ## Müştəri tərəfindəki açarlar {#keys-on-the-client-side}
 
-Hər bir əməliyyat hesabı orqanı tərəfindən imzalanmalıdır. bu orqan üçün xüsusi açar və ya nəzarət materialları gizli saxlanılmalıdır, belə ki müştəri proqramı təhlükəsiz saxlama və imzalanma üçün məsuliyyət daşıyır.
+Hər bir əməliyyat konfigurassiya edilmiş hesab nəzarətçisi siyasətini təmin etməlidir. Sadə bir hesab bir imza açarından istifadə edə bilər. idarə olunan bir hesab daha mürəkkəb nəzarətçi siyasətindən istifadə edə bilər
 
-::: xəbərdarlıq
+Müştəri proqramı özəl açarları və digər nəzarətçi materiallarını qorumalıdır. Açıq mətnli müştəri konfiqurasiyası yalnız yerli inkişaf və nəzarət olunan sınaqlar üçün uyğundur. İstehsal inteqrasiyaları məxfi məlumat menecerindən, aparatla dəstəklənən açar saxlamasından, təcrid edilmiş imzalama xidmətindən və ya başqa audit edilmiş imzalama sərhədindən istifadə etməlidir.
 
-Bütün müştərilər fərqlidir, lakin sadə mətn müştəri konfigüratsiyası yalnız inkişaf və idarə olunan test şəbəkələri üçün uygundur. İstehsalat inteqrasiyalarında gizli bir menecer, aparat tərəfindən dəstəklənmiş açar saxlama və ya digər audit edilmiş imzalanma sərhədi istifadə edilməlidir.
+Ayrı mühitlər və məqsədlər üçün ayrı açarlardan istifadə edin. Bir açarı yenidən istifadə edərək bu istifadələri birləşdirir və məruz qalmanın təsirini artırır.
 
-:::
-
-Yeni hesabın qeydiyyatı Ed25519 açar cütü kimi nəzarətçi materialının yaradılmasını tələb edir, və ictimai hissəni şəbəkəyə təqdim etmək. Bu hesabdan olan sonrakı əməliyyatlar uyğun xüsusi açar və ya konfiqurasiya edilmiş hesab nəzarətçisi siyasəti ilə imzalanmalıdır.
-
-İctimai açar kriptografiyasının səmərəli işləməsi üçün yeni bir açar təyin etmək lazım olduqda yenidən istifadədən çəkinin. Bunu etməyinizə mane olan heç bir şey olmasa da, ictimai açarlar ictimaidir, yəni hücumçu eyni ictimai anahtarın istifadə edildiyini görürsə, Onlar özəl açarların da eyni olduğunu bilirlər.
-
-Xüsusi açarlar şifrələrdən bir az fərqli prinsiplərdə işləsə də, onları mümkün qədər təsadüfi etmək üçün məsləhət tətbiq olunur.
+Bax [Kriptografik açarların yaradılması](./generating-cryptographic-keys.md), [Storing Cryptographic Keys](./storing-cryptographic-keys.md) və [Operational Security](./operational-security.md).

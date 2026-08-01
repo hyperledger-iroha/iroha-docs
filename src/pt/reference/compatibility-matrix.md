@@ -20,6 +20,6 @@ Apenas os resultados verificados pelo fluxo de trabalho de atualização são re
 
 <CompatibilityMatrixTable />
 
-::: Informações
+::: info
 Definir `VITE_COMPAT_MATRIX_URL` apenas para substituir o snapshot em conjunto com um backend ao vivo compatível. Sem essa variável, a página carrega `src/public/compat-matrix.json`.
 :::

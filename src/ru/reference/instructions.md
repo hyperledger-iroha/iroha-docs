@@ -1,7 +1,7 @@
 ---
 translation_locale: ru
 translation_source: /reference/instructions.md
-translation_source_hash: 8dc894a05141040826067dc483319f213b007648f32354bb36f899259db9c5ac
+translation_source_hash: e300187da832a8f82258a36b7c4aaebf505adc09c771de5b0c7ab8fb0052d3db
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -19,8 +19,8 @@ translation_engine: nllb-200-ct2
 | [`TransferBox`](/ru/blockchain/instructions.md#transfer) |`Domain`, `AssetDefinition`, цифры `Asset`, `Nft` |
 | [`SetKeyValueBox`](/ru/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` метаданные |
 | [`RemoveKeyValueBox`](/ru/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` метаданные |
-| [`GrantBox`](/ru/blockchain/instructions.md#grant-revoke) |разрешение на учет, роль на учет.|
-| [`RevokeBox`](/ru/blockchain/instructions.md#grant-revoke) |разрешение на учетную запись, роль на счет, разрешение на роль |
+| [`GrantBox`](/ru/blockchain/instructions.md#grant-revoke) |`Permission` (`Grant<Permission, Account>`), `Role` (`Grant<RoleId, Account>`), `RolePermission` (`Grant<Permission, Role>`) |
+| [`RevokeBox`](/ru/blockchain/instructions.md#grant-revoke) |`Permission` (`Revoke<Permission, Account>`), `Role` (`Revoke<RoleId, Account>`), `RolePermission` (`Revoke<Permission, Role>`) |
 | [`SetParameter`](/ru/blockchain/instructions.md#setparameter) |обновление параметров цепочки |
 | [`ExecuteTrigger`](/ru/blockchain/instructions.md#executetrigger) |запустить исполнение |
 | [`Upgrade`](/ru/blockchain/instructions.md#other-instructions) |обновление исполнителя |

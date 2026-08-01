@@ -276,7 +276,7 @@ submit(Instruction.burn_asset_numeric(ROSE_ASSET, "10.00"))
 
 ### የማስተላለፍ ባለቤትነት {#transfer-ownership}
 
-የባለቤትነት ማስተላለፍ ለውጥ ማን ጎራውን ይቆጣጠራል, ንብረቶች ትርጉም, ወይም NFT.
+የባለቤትነት ዝውውሮች የዞን ቁጥጥር ማን ይለውጣል ፣ የአክሲዮን ትርጉም ወይም NFT። የአሁኑን ባለቤት እንደ ግብይት ባለስልጣን ይጠቀሙ።
 
 ```python
 # The first argument is the current owner; the last is the new owner.

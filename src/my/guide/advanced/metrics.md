@@ -61,7 +61,7 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
 iroha --config ./localnet/client.toml ops sumeragi params
 ```
 
-`/metrics` လိုတဲ့အခါ `extended` ကိုသုံးပြီး အသေးစိတ် Sumeragi operator routes တွေလိုတဲ့အခါ စမ်းသပ်မှု run တွေမှာ `full` ကိုသုံးလိုက်ပါ။
+Telemetry မြင်ကွင်းသည် သတ်မှတ်ထားသော ပရိုဖိုင်အပေါ် မူတည်သည်။ အသုံးပြုခြင်း `extended` လိုအပ်တဲ့အခါမှာ `/metrics`, အသုံးပြုခြင်း `full` အသေးစိတ်အချက်အလက်တွေလည်း လိုအပ်တဲ့အခါ စမ်းသပ်မှုတွေမှာ Sumeragi လုပ်ငန်းရှင် လမ်းကြောင်းတွေပေါ့။
 
 ```toml
 telemetry_enabled = true

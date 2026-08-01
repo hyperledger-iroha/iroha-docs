@@ -1,145 +1,87 @@
 ---
 translation_locale: zh-hant
 translation_source: /guide/security/storing-cryptographic-keys.md
-translation_source_hash: a420551345570c4f6b6c0288bc78041665b199727b177eb0aee1f6495850fae6
+translation_source_hash: 168ee24e84f9225e81365658018717155476ae1508fefba5e0234e0bf6feefbd
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
-# 儲存密碼關鍵 {#storing-cryptographic-keys}
+# 儲存密碼金鑰 {#storing-cryptographic-keys}
 
-您的敏感數據只會保持隱私, <abbr title="Operational Security">OPSEC</abbr> 如何保護密碼關鍵?社會工程的威脅,即有人扮演權力的人試圖操縱你將你的私密密碼關键交給他們是真的.
+私鑰可以授權其授權主體所允許的每項操作。切勿分享私鑰；種子材料、復原祕密、Bearer 權杖及匯出的金鑰檔案，都必須以同等謹慎的方式保護。
 
-更多關於 <abbr title="Operational Security">OPSEC</abbr> 以及其最佳做法, [運營安全](./operational-security).
+請在生產環境上線前選定保管設計。該設計必須符合風險價值、帳戶控制者政策及部署的復原流程。
 
-## 數位儲存密碼關鍵 {#storing-cryptographic-keys-digitally}
+## 定義保管邊界 {#define-the-custody-boundary}
 
-在數位化密碼關鍵保護方面,[SSH](https://www.ssh.com/) 及其他 [GPG](https://www.gnupg.org/)可用. 這些方法提供了安全層,
+- 維護每個授權主體、公開金鑰、演算法、環境、用途、保管人、儲存位置、備份及取代程序的清冊。
+- 開發、測試、生產、日常交易、治理、部署及復原應分別使用不同金鑰。
+- 人員與程序只能存取其角色所需的金鑰。
+- 風險模型要求時，高價值或治理簽署必須取得獨立核准。
+- 記錄簽署器可使用的網路及授權主體；簽署服務必須拒絕超出該範圍的請求。
 
-許多人 Iroha 建築的決定受了建築設計的原則影響. **安全的貝** (`SSH`這部分主要集中在 `SSH` 如何有效實現您在密碼鍵存儲的協議, Iroha 這就是生態系統.
+## 選擇適當的儲存方式 {#choose-an-appropriate-storage-method}
 
-### 使用 SSH 及其他 SSH 這是一場非常棒的活動. {#using-ssh-and-ssh-agent}
+在本機開發、受控測試或安全的保管交付中，可將金鑰匯出至權限受限的檔案。在支援的 Unix 平台，請使用 `kagami` 產生新的金鑰目錄：
 
-**安全的貝協議** (`SSH`) 是一個加密網絡協議, 它作為虛擬門口, SSH 提供一個高效的方法, `SSH` 提供兩個主要的認證機制:傳統的基于密碼的方式和更安全的公私關對方法.
+```bash
+cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
+```
 
-更多關於 `SSH`, 查看 [相關的情況 SSH 學院主題](https://www.ssh.com/academy/ssh).
+父目錄必須存在。目標目錄必須是新目錄，或已由目前使用者擁有、模式為 `0700`、不含符號連結且內容為空。Kagami 會以模式 `0600` 寫入 `public.key` 與 `private.key`；`--pop` 也會寫入 `pop.hex`。若 Kagami 無法強制執行僅限擁有者的檔案系統規則，此命令會失敗。
 
-透過網路登入系統, `SSH` 關鍵 **SSH 這是一場非常棒的活動.** (`ssh-agent`記得你的助理程序 `SSH` 這樣的設定可以讓您使用 `SSH` 在它連接到其他機器時,
+私鑰檔是未加密的匯出物。不得將它放入原始碼控制、共用資料夾、日誌、工單、聊天或建置成品。請將生產金鑰匯入經核准的保管邊界，再依部署程序移除匯出物。切勿在生產環境重複使用開發金鑰。
 
-您的公钥存放在遠端系統上, `ssh-agent` 您的行動 _公眾_ 遠端系統會發送回一個 [這個挑戰](https://en.wikipedia.org/wiki/Challenge%E2%80%93response_authentication) 這只是你的 _專屬_ 您的關鍵可以正確地回應. `ssh-agent` 如何應對這個挑戰, _專屬_ 如果答案符合系統的預期,
+生產環境應優先採用經稽核的保管邊界，例如：
 
-這裡的美麗 `ssh-agent` 這樣你不需要每次連接遠端系統時輸入密碼或私钥密碼.
+- 硬體安全模組或硬體支援的金鑰儲存區
+- 作業系統或行動裝置金鑰儲存區
+- 隔離的簽署服務
+- 僅向已授權工作負載釋出金鑰的祕密管理器
 
-更多關於 `ssh-agent`, 查看 [相關的情況 SSH 學院主題](https://www.ssh.com/academy/ssh/agent).
+所選整合支援不可匯出屬性時，應讓金鑰材料保持不可匯出。確認保管系統支援 Iroha 授權主體所需的演算法及簽署操作。
 
-::: info 預覽
+靜態加密只能保護已儲存的副本。未經授權的程序或操作員一旦取得解密後的位元組，靜態加密便無法再保護金鑰。請強化主機、限制執行階段存取，並監控簽署活動。
 
-這項計畫的概要, `SSH` 該協議和 `ssh-agent` 工具,請參閱以下內容: [SSH 學院](https://www.ssh.com/academy) 這些議題:
+## 保護簽名工作流程 {#protect-signing-workflows}
 
-  - [這是什麼? SSH 沒有任何樓盤符合您的搜尋](https://www.ssh.com/academy/ssh)
-  - [如何配置ssh-agent,代理转发, &代理协议](https://www.ssh.com/academy/ssh/agent)
+- 使用具名的操作員身分、強式驗證，以及經稽核的簽署系統存取方式。
+- 不得在命令列引數、Shell 歷程、環境傾印、程序清單、當機報告或應用程式日誌中放置原始金鑰。
+- 僅為必要操作解鎖簽署器，使用後立即關閉工作階段或讓其到期。
+- 核准前顯示授權主體、網路、指令、資產及費用。
+- 特權或高價值交易必須明確確認。
+- 若自訂用戶端整合可委派簽署，應避免讓原始私鑰進入瀏覽器頁面及一般用途應用程式程序。
 
-:::
+純文字用戶端組態僅適合本機開發與受控測試。生產整合應透過經核准的保管邊界取得簽章。標準 Iroha CLI 會從用戶端組態讀取私鑰，且未提供通用外部簽署器介面卡。自訂用戶端可建立交易承載雜湊，並附加由外部簽署器產生的簽章。
 
-### 添加密碼管理程序 {#adding-a-password-manager-program}
+## 備份與復原金鑰 {#back-up-and-recover-keys}
 
-推薦增加您的安全性 `SSH` 密碼保護他們使用密碼, 這樣是惡意行為者獲得您的敏感信息的途徑中的額外障礙.
+- 只備份復原政策要求備份的金鑰。
+- 加密備份，並將備份與使用中的簽署器分開存放。
+- 對備份套用與使用中金鑰相同的存取及核准控制。
+- 需要職責分離時，復原憑證應由獨立保管方持有。
+- 測試還原程序時，不得暴露生產金鑰材料。
+- 記錄並審查每次備份建立、存取、還原及銷毀作業。
 
-使用者密碼存儲並使用各種密碼管理器. `SSH` 只是為了明確性, [KeePass](https://keepass.info/) 這種方法可以使用, [KeePassXC](https://keepassxc.org/) 在 Linux 操作系統上運行的端口.
+不要假設不相關錢包的助記詞格式可以代表 Iroha 私鑰。只能使用所選保管系統支援且經過測試的復原格式。
 
-如何設定的指示 KeePassXC 查看 [設定方式 KeePassXC](#configuring-keepassxc) 在下面的部分.
+## 取代已暴露或退役的金鑰 {#replace-exposed-or-retired-keys}
 
-![KeePassXC: `Main` 顯示器 UI](../../../img/KeePassXC.png)
+請在事件發生前備妥取代程序。程序必須指出：
 
-KeePassXC 提供更高的安全性,靈活性和控制. `SSH` 密碼管理器提供了 `ssh-agent` 存储的密钥, KeePassXC 窗戶已關閉.
+1. 誰可以宣告金鑰已暴露或退役
+2. 如何隔離受影響的簽署器
+3. 如何產生新金鑰並置入經核准的保管環境
+4. 對帳戶而言，經授權的控制者取代或社交復原如何建立替代且規範、不含網域的 `AccountId`，並遷移連結狀態
+5. 對節點或對等節點而言，如何協調經授權的鏈上共識金鑰輪替或停用，包括 BLS PoP、啟用與重疊政策、本機金鑰組態、`trusted_peers_pop` 及部署拓撲
+6. 相依組態、應用程式及操作員如何採用新的 `AccountId`、公開金鑰或對等節點身分
+7. 如何移除舊金鑰的權限，以及封存或銷毀其副本
+8. 事後如何驗證網路與相依應用程式
 
-::: tip
+::: warning
 
-理論上, KeePass 港口 [在官方網站上列出](https://keepass.info/download.html) 可用于主要的儲存目的.
-我們推薦以下任何一項: [KeePassX](https://www.keepassx.org/) 或是 [KeePassXC](https://keepassxc.org/).
-
-:::
-
-#### 設定方式 KeePassXC {#configuring-keepassxc}
-
-設定使用 KeePassXC, 執行以下步骤:
-
-1. 發射 KeePassXC, 然後去 **工具** > **設定**, 或選擇 **裝置** 按從上方開始 UI 這裡有許多人.
-
-2. 在這個國家 **應用程式設定** 顯示的,選擇 **SSH 這是一場非常棒的活動.** 在左邊的菜單中, **啟動 SSH 代理集成** 這裡是個票.
-
-   ::: info 顯示參考截圖
-
-   ![KeePassXC `SSH Agent` 標籤: 啟動 SSH 這是一場非常棒的活動.](../../../img/keepassxc_ssh_agent.png)
-
-   :::
-
-3. 建立一個新的 KeePassXC 數據庫. 查看指令 [KeePassXC 使用者指南 > 創建您的第一個資料庫](https://keepassxc.org/docs/KeePassXC_UserGuide#_creating_your_first_database).
-
-4. 任何您想存儲在網路上的關鍵, KeePassXC 執行下列步骤:
-
-   - 在資料庫中添加新輸入. [KeePassXC 使用者指南 > 創建您的第一個資料庫](https://keepassxc.org/docs/KeePassXC_UserGuide#_creating_your_first_database).
-
-   - 在添加新的輸入時, 通過以下方式附加包含鍵的檔案: **進步** 在左邊菜單中, **加入** 在這個國家 **附屬件** 在下列部分中選擇所需文件 **選擇檔案** 窗口會出現.
-
-   - 在添加新的輸入時,選擇 **SSH 這是一場非常棒的活動.** 在左邊菜單中, **附屬性** 在這里, **隱私關鍵** 選取下列檢查框:
-
-      - **在開啟/解鎖資料庫時, 添加代理鍵**
-
-      - **在數據庫關閉/鎖定時,**
-
-      - **在使用這個鍵時需要使用者確認**
-
-   - 如果有必要, 請更改此文.
-
-   - 當準備好時, **OK** 這樣可以保存入口.
-
-   ::: details 顯示參考截圖
-
-   ![KeePassXC `Advanced` 標籤:添加私钥附件](../../../img/keepassxc_private_key.png)
-
-   ![KeePassXC `SSH Agent` 標籤:添加私钥附件](../../../img/keepassxc_pk_agent.png)
-
-   :::
-
-##### 預期的結果 {#expected-results}
-
-- 密碼化和 `shh` 密钥是存储在 KeePassXC 該資料庫可在 KeePassXC 窗口是開放的.
-
-- 存儲的加密和 `ssh` 在授權要求時,可使用鍵.
-
-- 存儲的加密和 `ssh` 關鍵將被移除 `ssh-agent` 這次的 KeePassXC 窗戶已關閉.
-
-::: info 預覽
-
-沒有允許 **在使用這個鍵時需要使用者確認** 這項方案, `ssh-agent` 如果密碼管理者程序被惡意軟體或系統服務通過一個 `SIGKILL` 密钥可能會留在 `ssh-agent`, 因為Unix系統程式無法截取 `SIGKILL`.
+加密或更換密碼都無法讓已遭複製的私鑰重新變得安全。若懷疑金鑰已暴露，請立即停止使用，並遵循經核准的取代或撤銷程序。
 
 :::
 
-## 物理存儲密碼關鍵 {#storing-cryptographic-keys-physically}
-
-對於那些尋求最高水平的無線安全者來說, 儲存加密密钥的選擇實質地確保密钥與數位網絡保持完全斷線,从而減少未經授權進入的風險.
-
-### 使用硬件鍵 {#using-a-hardware-key}
-
-我們的團隊認為硬體鍵是最好的安全措施之一. USB 這樣可以在安全漏洞情況下輕鬆斷線裝置,或者只需重新連接到不同的機器.
-
-但因為有許多品牌的硬件鍵, APIs 要尋找最適合您需求的關鍵,
-
-我們的團隊在內部測試了 [YubiKey 5C 的情況](https://www.yubico.com/il/product/yubikey-5c/) 顯示了許多積極的功能, API 功能性.
-
-但我們必須考慮其中的缺點. [HMAC 挑戰-回應認證](https://en.wikipedia.org/wiki/Challenge%E2%80%93response_authentication) 並儲存相應的資料. _專屬_ 這樣的設定可能會讓攻擊者無意中對存儲在網路上的信息做出有知識的猜測. YubiKey 這樣會危及整體安全性.
-
-這種情況可以被減輕, YubiKey 5C. 目的是使用 YubiKey 5C 提供安全的接入 KeePassXC 存儲您的加密資料庫和 `SSH` 這種方法甚至可以被認為有益, 因為它超越了大部分密碼的安全性, KeePassXC 數據庫泄露.
-
-::: info
-
-了解更多關於 _上述方法_, 請見其中一個回答 KeePassXC 發展者[詹克·貝文多夫](https://github.com/phoerious)下列部分 StackExchange 詢問:
-
-[是否合理使用 KeePassXC 在 YubiKey?](https://security.stackexchange.com/questions/201345/is-it-reasonable-to-use-keepassxc-with-yubikey/258414#258414)
-
-:::
-
-### 如何使用語? {#using-a-mnemonic-phrase}
-
-您可以記得一個私密鍵, _內蒙式詞語_. 這種方法在許多錢包中使用, 需要記住25個特定詞. KeePassXC, 提供mnemonic密碼生成.
+另請參閱[產生密碼金鑰](./generating-cryptographic-keys.md)、[營運安全](./operational-security.md)及[安全原則](./security-principles.md)。

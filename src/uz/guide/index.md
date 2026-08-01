@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /guide/index.md
-translation_source_hash: 588a55d0a967f890fac26bf47c34c360a4542b0d45b1edc1e37cd4833c60f349
+translation_source_hash: 5ea24369e85692bd9069e446d1e50612efade2d83e4ddf73a4980582a2064a0e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,7 +15,7 @@ Iroha bilan qurish, ishlash yoki integratsiyalashda ushbu bo'limdan foydalaning.
 |Bo ' lim |Undan foydalaning .|
 | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
 | [SDK Darslar](/uz/guide/tutorials/) |Tilga mos boʻlgan mijozlarni oʻrnatish va namunaviy dasturlar |
-| [Eng yaxshi amaliyotlar](/uz/guide/best-practices/) |Ishlab chiqarishga yo'naltirilgan ko'rsatmalar rivojlanish, ma'lumotlar modellashtirish, ishga tushirish, operatsiyalar, xavfsizlik va chiqarishga tayyorlik ko'rsatish bo'yicha guruhlanadi |
+| [Eng yaxshi amaliyotlar](/uz/guide/best-practices/) |Ishlab chiqarish, ishga tushirish, operatsiyalar, xavfsizlik va chiqarishga oid yo'l-yo'riqlar |
 | [Konfiguratsiya va boshqarish](/uz/guide/configure/overview.md) |Mahalliy tengdoshlar konfiguratsiyasi, genesis, mijozlarning konfiguratsiyasi, kalitlari va tengdoshlarni boshqarish |
 | [Xavfsizlik](/uz/guide/security/)|Asbob-uskunalarni boshqarish, operatsion xavfsizlik, VPNs, firibgarlik monitoringi va ruxsatnomalar gigieniyasi |
 | [Avvalgi operatsiyalar](/uz/guide/advanced/metrics.md) |Metriklar, ishlash tekshiruvlari, xaroba sinovlari, issiq qayta yuklash va to'shab-to'shab ishlash |

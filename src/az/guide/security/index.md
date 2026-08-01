@@ -1,14 +1,14 @@
 ---
 translation_locale: az
 translation_source: /guide/security/index.md
-translation_source_hash: 0aaeadd98f9d16f8459553b58b2b73c47b792bbb5bff0cbe848f9cf4ababe9be
+translation_source_hash: ec7fc2f950b007f52d837473ad7021565923e537df1d18b86055fb483cda375c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Təhlükəsizlik {#security}
 
-Bu məsələ üçün Iroha və ya digər bir blockchain kitabçası istifadə edərkən təhlükəsizlik maliyyə təşkilatları üçün vacibdir, çünki həssas maliyyə məlumatlarının və əməliyyatlarının rutin olduğu bir sənayedə etibarın əsasını təşkil edir. Bir zərərli tərəf tərəfindən uğurla həyata keçirilən təhlükəsizlik pozuntuları sizin üçün dağıdıcı nəticələrə səbəb ola bilər.
+Həssas məlumatları və dəyərləri idarə edən hər hansı bir sistem kimi Iroha tətbiqini təmin edin. İmza açarlarını, şəbəkə girişini, düyün əməliyyatlarını, monitorinqi və hadisə cavabını qoruyun. Bir kitabxana bu nəzarətlərə ehtiyacını aradan qaldırmır.
 
 ### Naviqasiya {#navigation}
 
@@ -16,7 +16,7 @@ Bu bölmədə Iroha şəbəkənizin təhlükəsizliyinin müxtəlif aspektləri 
 
 - [Təhlükəsizlik prinsipləri](./security-principles):
 
-Məlumatlarını qorumaq və pozulma və/və ya sızma şansını azaltmaq üçün fərdlər və təşkilatların qəbul edə biləcəkləri əsas təhlükəsizlik prinsipləri.
+Məlumatların qorunması və pozulma riskini azaltmaq üçün əsas prinsiplər.
 
 - [Virtual Özəl Şəbəkələr](./vpn.md):
 
@@ -24,24 +24,24 @@ VPN-dən peer-to-peer, Torii və operatorun özəl və ya konsorsium tətbiqetm�
 
 - [Əməliyyat təhlükəsizliyi](./operational-security.md):
 
-Şəbəkənizin gündəlik fəaliyyətinin təhlükəsizliyi üçün ən yaxşı təcrübələr, o cümlədən giriş nəzarəti, monitorinq, hadisə cavabları, brauzerlərin istifadəsi və sair.
+Giriş, monitorinq, hadisələrə cavab vermək və operatorun iş stansiyaları üçün gündəlik nəzarət.
 
 - [Xəyanətlərin nəzarəti](./fraud-monitoring.md):
 
-Şübhəli fəaliyyətin aşkarlanması və reaksiya sübutlarının qorunması üçün kitab hadisələrindən, sorğulardan, icazələrdən və əməliyyat siqnallarından necə istifadə etmək olar.
+Şübhəli fəaliyyətin aşkarlanması və reaksiya sübutlarının qorunması üçün kitab hadisələrindən, suallardan, icazələrdən və əməliyyat siqnallarından necə istifadə etmək olar.
 
 - [Şifrə təhlükəsizliyi](./password-security.md):
 
-Şifrə entropiyasına dərin dalmaq, güclü şifrələr yaratmaq və şifrə zəifliklərindən qaçınmaq.
+Şifrə entropiyası, güclü şifrə qurulması və ümumi uğursuzluq rejimləri.
 
 - [İctimai açar Kriptografiyası](./public-key-cryptography.md):
 
-İctimai açar kriptografiyasına, şifrələməyə, imzalara və blockchain daxilində təhlükəsiz ünsiyyətin qurulmasında onların rolu ilə tanışlıq.
+İctimai açarlı şifrələmə, imzalanma və təsdiqlənmiş ünsiyyət.
 
   - [Kriptografik açarlar yaratmaq](./generating-cryptographic-keys.md):
 
-Kriptografik açarların necə yaradılması və `kagami` istifadə edilməsi barədə təlimatlar (Həmçinin Iroha ilə birlikdə göndərilən dəstək vasitəsi).
+`kagami` ilə dəstəklənən kriptografik açarlar istehsal edin.
 
   - [Kriptografik açarların saxlanması](./storing-cryptographic-keys.md):
 
-Kriptografik açarlarınızı bir sıra fərqli üsullarla qorumaq üçün ən yaxşı təcrübələr, eyni zamanda birləşdirilə bilər.
+Kriptografik açarları yerləşdirilməyə uyğun qatlı idarəetmələrdən istifadə edərək saxlayın.

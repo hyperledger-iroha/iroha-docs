@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/sora-nexus-services.md
-translation_source_hash: eb09de975095000bee47403332baade8f07e445c605366c8a4867839797f768a
+translation_source_hash: 4608e4e651519144d206b4370e2c334f469460cf9542324b06924a838cb26cb5
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -49,7 +49,7 @@ flowchart LR
 
 ### Xost qilingan Split dasturlari {#hosted-split-application}
 
-Oddiy qarama-qarshi dastur barcha qismlarni birlashtiradi:
+Oddiy qarama-qarshi dastur barcha qismlarni birgalikda ishlatadi:
 
 1. Statik frontend aktivlari SoraFS orqali to'planadi va yopiladi.
 2. Umumiy uy egasi, masalan `<app>.sora`, SoraDNS orqali ro'yxatdan o'tadi.
@@ -87,16 +87,16 @@ SoraNet SoraFS yoki Soracloud oldida o'tirishi mumkin:
 
 ## Aitai {#aitai}
 
-Aitai SORA dasturining bozor uslubidagi kelishuv uchun koridori bo'lib, u erda xaridor va sotuvchi zanjirdan tashqari to'lovni muvofiqlashtiradi, Iroha esa zanjirdagi aktivlarni saqlashni nazorat qiladi. U yangi raqamli aktivlarni saqlab turish oqimlari uchun shartnomaga egalik qiladigan depozit hisobidan o'rniga mahalliy depozit usulidan foydalanishi kerak.
+Aitai bu SORA xaridor va sotuvchi bozor uslubidagi kelishuvlar uchun dastur koridori bo'yicha to'lovlarni koordinatsiyadan tashqari o'tkazishda Iroha Zaryaddagi aktivlar saqlanishini nazorat qiladi. yangi raqamli aktivlarni saqlab qolish oqimlari uchun shartnomaga egalik qiladigan depozit hisob raqami o'rniga oilaviy hisob.
 
-Sotuvchi `OpenAssetEscrow` bilan taklif ochadi, xaridor `AcceptAssetEscrow` va `MarkEscrowPaymentSent` bilan to'lovni qabul qiladi va belgilaydi, sotuvchi esa to'lov belgilab qo'yilishidan oldin `ReleaseAssetEscrow` bilan ozod qiladi yoki bekor qiladi. Agar xaridor va sotuvchi rozi bo'lmasa, har bir taraf nizoni ochishi mumkin va `CanResolveEscrowDispute` bilan hal qiluvchisi to'xtatilgan miqdorni bo'linishi mumkin.
+Native escrow katta kitobda saqlaydi. Sotuvchi `OpenAssetEscrow` bilan taklifni ochadi, xaridor `AcceptAssetEscrow` va `MarkEscrowPaymentSent` bilan to'lovni qabul qiladi va belgilaydi; va sotuvchi `ReleaseAssetEscrow` bilan chiqaradi yoki to'lov belgilangandan oldin bekor qiladi. Agar xaridor va sotuvchining roziligi yo'q bo'lsa, ikkala tomon nizo ochishi mumkin va `CanResolveEscrowDispute` bilan hal qiluvchi qulflangan miqdorni bo'lishishi mumkin.
 
 To'liq hayot davri, umumiy aktivlar qulflari, anonim depozit, so'rovlar, hodisalar va Rust misollar uchun [Native Asset Escrow](/uz/blockchain/escrow.md) ko'ring.
 
 |Aitai yuzi |Undan foydalaning .|
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
 |`OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow` |Ochiq raqamli aktivlar takliflari, shu jumladan XOR nominal hisob-kitob oqimlari. |
-|`OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow` |Moliyalashtirish va yakunlash harakatlari tasdiqlovchi ilovalar orqali amalga oshiriladigan himoyalangan takliflar. |
+|`OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow` |Shielded takliflari moliyalashtirish va harakatlarni yopish uchun dalillar ilovalaridan foydalanadi. |
 |`OpenEscrowDispute`, `ResolveEscrowDispute`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |nizolarni hal qilish va sud uslubida hal etish. |
 |`FindAssetEscrowById`, `FindAssetEscrowsBySeller`, `FindAssetEscrowsByBuyer`, `FindAssetEscrowsByStatus` |Ilovalar holati sahifalari, uyg'unlashtirish vazifalari va qo'llab-quvvatlash vositalari. |
 |`EscrowEventFilter` |Sotuvchi, sotuvchi, xaridor, holat yoki tadbir turi bo'yicha ochiq-oydin escrow obunalari. |
@@ -141,7 +141,7 @@ curl -fsS -H 'Accept: application/json' "$TORII_URL/v1/soracloud/status" \
   | jq '.control_plane | {service_count, services: [.services[] | {service_name, current_version}]}'
 ```
 
-Taira joylashtirishga doir maxsus boshqaruv samolyotlari yo'nalishlarini ko'rsatishi mumkin bo'lib, ular OpenAPI Yo'l xaritasi. `/openapi` ishlab chiqarilgan asosiy API shartnoma tuzish, so'ngra uni jonli ravishda hujjatlashtirishdan oldin joylashtirishga doir har qanday yo'lni bevosita tasdiqlash.
+Taira joylashtirishga doir maxsus boshqaruv samolyotlari yo'nalishlarini ko'rsatishi mumkin bo'lib, ular OpenAPI Yo'l xaritasi. `/openapi` ni asosiy hosil bo'lgan API shartnomasi sifatida ko'rib chiqish, keyin joylashtirishga doir har qanday yo'nalishni to'g'ridan-to'g'ri tasdiqlang, uni jonli ravishda hujjatlashtirishdan oldin.
 
 ## Soracloud {#soracloud}
 
@@ -151,7 +151,7 @@ Soracloud ikki ta'sir samolyotlaridan foydalanadi:
 
 |Oʻlim samolyotlari |Ish vaqti |Undan foydalaning .|
 | ---------------------- | ------- | -------------------------------------------------------------------------------------------- |
-|`DeterministicService` |`Ivm` |Muallif, ombor holati, sertifikatlangan o'qishlar, buyurtma qilingan pochta qutisi xodimi, boshqaruvga qodir mutatsiyalar. |
+|`DeterministicService` |`Ivm` |Muallif, ombor holati, sertifikatlangan o'qishlar, buyurtma qilingan pochta qutisi xodimi, boshqaruvga qodir mutatsiyalar |
 |`HttpService` |`Inrou` |To'g'ridan-to'g'ri HTTP APIs, to'plamda ko'p ishlash, oldindan saqlanadigan xizmatlar, SSE, brauzer yordamida oqimlar |
 
 Boshqaruv rejasi vakolatli. Ishlab chiqarish, yangilash, orqaga qaytish, konfiguratsiya qilish, maxfiylik, model va holat buyruqlari Torii orqali taqdim etiladi va o'qib beriladi; ular alohida CLI mahalliy ko'rinishga tayanmaydilar. Ommaviy yo'nalish eng uzoq prefiksga asoslangan, shuning uchun bitta ro'yxatdan o'tgan uy egasi trafikni uylashtirilgan HTTP yo'nalishlari va deterministik API yo'nalishlar orasida bo'lishishi mumkin.
@@ -410,14 +410,14 @@ DA tomonidan qo'llab-quvvatlanadigan odatiy nashr oqimi quyidagicha:
 
 DA fayzli yukni imzolangan, takrorlash bilan himoyalangan, blok-indekslangan majburiyatga aylantiradi. Muhim algoritmlar deterministik, shuning uchun tasdiqlovchilar va darvozalar bir xil baytlardan bir xil o'lchovlarni qayta hisoblashlari mumkin.
 
-1. Taqdim etilgan fayzli yukni kanonlashtirish. Torii `(lane_id, epoch, sequence)`, fayzli yuk bytlari, siqish metadatalari, qism hajmi, o'chirish profili, saqlash siyosati va taqdimotchining imzosi bilan iste'mol so'rovini qabul qiladi. Uzum so'ralganda gzip, deflate yoki Zstandard faydali yuklarni siqadi va keyin kanonik bayt uzunligi `total_size` ga tengligini tasdiqlaydi.
-2. Yo'l va qism parametrlarini tasdiqlang. Yo'l Nexus yo'l katalogida mavjud bo'lishi kerak. `chunk_size` ikki, kamida ikki bytdan ortiq bo'lmagan kuchga ega bo'lishi va konfiguratsiya qilingan maksimaldan katta bo'lmasligi kerak. O'chirish profilida ma'lumotlar shardlari va kamida ikkita parity shardlar bo'lishi shart. Yo'nalish katalogida `merkle_sha256` yoki `kzg_bls12_381` ko'rsatkichni tanlash kerak.
+1. Jo'natilgan fayzli yukni kanonlashtirish. Torii `(lane_id, epoch, sequence)`, fayzli yuk bytlari, siqish metadatalari, qism hajmi, o'chirish profili bilan iste'mol talabini qabul qiladi, saqlash siyosati va jo'natuvchi imzosi. nod gzip, deflate yoki Zstandard faydali yuklarni talab qilinganda dekompressiya qiladi, so'ngra kanonik bayt uzunligi `total_size` ga tengligini tasdiqlaydi.
+2. yo'nalish va qism parametrlarini tasdiqlang. Yo'nalish Nexus yo'nalishi katalogida mavjud bo'lishi kerak. `chunk_size` ikki, kamida ikki bytning nol bo'lmagan quvvatli bo'lishi lozim, va konfiguratsiyalangan maksimaldan katta bo'lmasligi kerak. O'chirish profilida ma'lumotlar shartlari va kamida ikkita parity shartlar mavjud bo'lishi kerak. Yo'nalish katalogida `merkle_sha256` yoki `kzg_bls12_381` sifatida isbot sxemasi tanlanadi.
 3. Tarmoq siyosatini qo'llash. Nod blob sinf uchun konfiguratsiyalangan nusxalashtirish va saqlab qolish asosini amalga oshiradi. Ommaviy metadotlar oddiy matn bo'lishi kerak; faqat boshqaruvga mo'ljallangan metadotlar manifestga yozilishdan oldin nodning konfiguratsiya qilingan boshqaruv metadata kalitlari bilan shafrlanadi.
 4. Chunk va commit. Kanonik faydali yuk `chunk_size` dan kelib chiqadigan qat'iy o'lchamli profil bilan chunk qilinadi. Torii faydali yukni o'zlashtirishni, qayta tiklash mumkinligini isbotlovchi daraxt ildizini va qism bo'yicha majburiyatlarni hisoblaydi. Ma'lumotlar to'plamlari o'z baytlarida BLAKE3 majburiyatlarini olib boradi.
-5. O'chirish majburiyatlarini qo'shing. Chunklar `data_shards` bo'laklariga to'planadi. Oxirgi bo'lakdagi yo'qolgan hujayralar paritetani hisoblash uchun nolga to'ldirilgan. RS(16) paritet satr / global paritet qismlarini yaratadi; ixtiyoriy `row_parity_stripes` ustun uslubidagi bo'lak paritetini matrisda qo'shish. Paritet shard majburiyatlari BLAKE3 kichik-endian `u16` ramzlarining o'tkazilishidir.
+5. O'chirish majburiyatlarini qo'shing. Chiqindilar `data_shards` chiziqlariga guruhlanadi. Oxirgi chiziqdagi yo'qolgan hujayralar paritetani hisoblash uchun nolga to'ldirilgan. RS(16) paritet yaratadi Satr / global parity shards; tanlov `row_parity_stripes` matriks bo'ylab ustun uslubidagi chiziq pariti qo'shish. Parity shard majburiyatlari BLAKE3 kichik xilma-xil `u16` ramzlarining o'chirishidir.
 6. Manifesti yaratish. `DaManifestV1` yo'nalishni, davrni, blob sinfini, kodekni, foydali yukni o'chirishni, chunk root, chunk hajmini, o'chirib tashlash profilini, saqlab qolish siyosatini, ijara narxini, chunk majburiyatlarini, ixtiyoriy IPA majburiyatini, metadatalarni va nashr vaqtini qayd qiladi. saqlash chiptasi deterministik: nod birinchi navbatda bo'sh chipta bilan manifest namunasini hash qiladi, so'ngra uni oxirgi `storage_ticket` sifatida qayta yozadi.
 7. Takrorlash nizolarini rad eting. Takrorlash tugmasi `(lane_id, epoch, sequence, manifest_fingerprint)`. Bir xil barmoq izlari bo'lgan nusxasi idempotentdir. Oldin ketma-ket yoki boshqa barmoq izlariga ega bo'lgan bir xil ketma-kete rad etiladi.
-8. Imzolangan asbob-uskunalarni yuboring. Torii a hisoblaydi PDP majburiyat, a imzolari `DaIngestReceipt`, o'rnatadi `DaCommitmentRecord`, Va ochiq-oydin narsalarga oʻrinli narsalarni yozib qoʻyadi. PDP majburiyat, majburiyatlar ro'yxati, majburiyatlar jadvali, pin niyati, qabul fayli va qabullar to'plami. Hisobot kursori har bir kishi uchun monoton tarzda oldinga oʻtadi . `(lane_id, epoch)`.
+8. imzolangan artefaktlarni chiqarish. Torii PDP majburiyatini hisoblaydi, `DaIngestReceipt` ni imzolaydi, `DaCommitmentRecord` ni quradi va manifest uchun rul artefaktlarini yozadi; PDP majburiyati, majburiyatlar ro'yxati, majburiyatlar jadvali, pin niyati, rasm fayli va rasm rejasi. Rasm kursorida `(lane_id, epoch)` bo'yicha bir xil o'zgarishlar yuz beradi.
 
 Bandlik to'g'risidagi yozuvlar bloklarda mavjud.
 
@@ -438,7 +438,7 @@ Blok DA rekordlarini o'rnatishdan oldin, blok yig'ilish yo'li to'plamni tasdiqla
 - Merkle yo'nalishlari KZG majburiyatlarini rad etadi; KZG yo'nalishlar nol bo'lmagan KZG majburiyatini talab qiladi.
 - Pinning niyatlari yo'nalishi, manifest hash, saqlash varaqasi, egasining hisobi va alias to'qnashuv qoidalari bo'yicha kanonikalashtirilgan, sinflashtiriladi va filtrlanadi.
 
-Blok sarlavhasi DA isbot siyosati, majburiyatlari va pin niyatlari uchun hashlarni saqlaydi. A'zolik isbotlari uchun majburiyatlar to'plamida Merkle ildizining barglari kanonik Norito kodlangan `DaCommitmentRecord` qiymatlarining hashlari mavjud. Ota-ona nodlari chap va o'ng bolalarning bog'lanishlarini hash qiladi; bir xil barg o'zgartirilmasdan keyingi qatlamga ko'tarilgan.
+Blok sarlavhasi DA isbot siyosati, majburiyatlar va pin niyatlari uchun hashlarni saqlaydi. A'zolik isbotlari uchun majburiyat to'plami Merkle ildizini ham namoyish etadi. Norito kodlangan kanonik `DaCommitmentRecord` qiymatlarning hashlari hisoblanadi. Ota-ona nodlar chap va o'ng bolalarning konketsiyalarini hash qiladi; bir necha barg o'zgarmasdan keyingi qatlamga ko'tariladi.
 
 ### Dalolatni tekshirish {#proof-verification}
 
@@ -462,7 +462,7 @@ Iroha 3 da tengdosh blokning ko'tarilgan foydali yukini quyidagi hollarda mavjud
 - mahalliy to'liq bloklar hashni kutilayotgan fayzli yuk hashini o'z ichiga oladi; yoki
 - RBC blok hash, balandlik, ko'rinish va foydali yuk hashga mos bo'lgan fayzli yukni topdi.
 
-Agar hech bir shartda amal qilmasa, tengdoshlari `missing_local_data`, RBC yoki blok sinxronizatsiyasi orqali foydali yukni tiklashga harakat qiladi va DA darvozasini status va telemetriya bo'yicha xabar beradi. Joriy amalga oshirishda ushbu DA signallari yakuniyligi uchun maslahat hisoblanadi: blok hali ham qat'iylik sertifikatiga qo'shilib, tegishli mahalliy faydali yukdan yakunlanadi, alohida DA quorum sertifikatidan emas.
+Agar hech bir shartda amal qilmasa, tengdoshlari `missing_local_data`, RBC yoki blok sinxronizatsiyasi orqali foydali yukni tiklashga harakat qiladi va DA darvozasini status va telemetriya bo'yicha xabar beradi. Joriy amalga oshirishda ushbu DA signallari yakuniyligi uchun maslahat hisoblanadi: blok hali ham qat'iylik sertifikatiga qo'shilib, tegishli mahalliy faydali yukdan yakunlanadi va alohida DA quorum sertifikatidan emas.
 
 DA vaqtini tiklash oynalarini kengaytiradi. Ta'sirchan DA quorum timeout konfiguratsiya qilingan blok va qo'shish vaqtlaridan kelib chiqadi, so'ngra `sumeragi.advanced.da.quorum_timeout_multiplier` bilan ko'paytiriladi. Bo'lish vaqti `max(quorum_timeout, availability_timeout_floor_ms) * availability_timeout_multiplier`. Bo'shliq muddati tugagandan oldin nod foydali yukni tiklashni afzal ko'radi va muddatidan oldin qayta rejalashtirishdan qochadi; u tugagach, odatiy tiklash va ko'rinishni o'zgartirish yo'llari davom etishi mumkin.
 
@@ -477,11 +477,11 @@ curl -fsS "$TORII_URL/openapi.json" \
   | jq '.paths | keys[] | select(startswith("/v1/da/"))'
 ```
 
-Joriy DA so'rov nomlari uchun [ so'rov ko'rsatkichini](/uz/reference/queries.md#nexus-data-availability-and-packages) va o'zingizning qurishingiz tomonidan aniqlangan mahalliy `[sumeragi.da]` tugmalar uchun [ tenglashtirilgan konfiguratsiya namunasini](/uz/reference/peer-config/) qo'llang.
+Foydalanish [soʻrov maʼlumotlari](/uz/reference/queries.md#nexus-data-availability-and-packages) joriy uchun DA so'rov nomlari va [Tengdoshlar konfiguratsiyasi namunalari](/uz/reference/peer-config/) mahalliy `[sumeragi.da]` tuxumlar sizning qurilmangiz tomonidan aniqlangan.
 
 ## SoraFS {#sorafs}
 
-SoraFS - bu markazsiz tarkibga yo'naltirilgan saqlash matoidir. Bu baytlarni deterministik qismlarga, CAR arxivlariga va Norito tarkib ildizlarini bog'laydigan manifestlarga bo'linadi, qismlash profillari, pin siyosati va boshqaruv attestatsiyalari. saqlash provayderlari quvvat va tarkibning mavjudligini e'lon qilishadi, darvozalar esa tarkibni taqdim etishdan oldin manifestlar va bo'lak-bo'lak majburiyatlarni tekshiradilar.
+SoraFS - bu markazlashtirilmagan tarkibga yo'naltirilgan saqlash matoidir. Bu baytlarni deterministik qismlarga, CAR arxivlariga va Norito tarkib ildizlarini bog'laydigan manifestlarga to'ldiradi; profillar, pin siyosatlari va boshqaruv attestatsiyalari. saqlash provayderlari tarkibni taqdim etishdan oldin quvvat va mavjudlikni e'lon qilishadi, darvozalar esa tarkibni xizmat ko'rsatishdan oldin manifestlar va qatlam majburiyatlarni tekshirishadi.
 
 SoraFS odatiy qo'llanmalar statik dastur aktivlari, hujjat qurilmalari, zonalar to'plamlari, model yoki artefakt ma'lumotlari va boshqaruv dalillari to'plamalarini o'z ichiga oladi. Iroha ma'lumotlar modeli SoraFS darvoza hodisalarini va provayder mulkchilikni hal qilish uchun [`FindSorafsProviderOwner`](/uz/reference/queries.md#nexus-data-availability-and-packages) so'rovini ochadi.
 
@@ -565,7 +565,7 @@ sorafs_cli por trigger \
 
 ## SoraDNS {#soradns}
 
-SoraDNS - bu SORA xizmatlari va tarkibining deterministik nomlash qatlamidir. U ismlarni normallashtiradi, Iroha-da resolver direktoriyalarini yangilaydi va imzolangan zona yoki resolver to'plamlarini SoraFS orqali taqsimlaydi. Resolverlar va darvozalar kashfiyot metadatalariga ishonishdan oldin resolver attestatsiyasi hujjatlarini tekshiradi.
+SoraDNS - SORA xizmatlari va tarkibi uchun deterministik nomlash qatlamidir. Bu ismlarni normallashtiradi, Iroha da resolver direktoriyasini yangilaydi, va SoraFS orqali imzolangan zona yoki resolver to'plamlarini tarqatadi. Resolverlar va darvozalar kashfiyot metadatalariga ishonishdan oldin resolver attestatsiyasi hujjatlarini tekshiradilar.
 
 Browserga kirish uchun SoraDNS portfeli xostlarni ro'yxatdan o'tkazadi FQDN. Ro'yxatga olingan behudalik xosti kanonik ilova kelib chiqishi bo'lib qoladi, ishga tushirilgan portfeli profillar esa ushbu kelib chiqish uchun brauzer va Torii qaytish yo'nalishlarini ko'rsatadi.
 
@@ -578,7 +578,7 @@ Browserga kirish uchun SoraDNS portfeli xostlarni ro'yxatdan o'tkazadi FQDN. Ro'
 |Torii qaytish yo'li |`https://taira.sora.org/soradns/<fqdn>/<path>` |Torii aktiv alias uchun debug va fallback yo'nalishi |
 |Canonical hash gateway |`<base32(blake3(name))>.gw.sora.id` |Deterministik darvoza identifikatsiyasi va GAR tekshiruvi |
 
-`/soradns/<alias>/...` fallback - bu afzal bo'lgan ommaviy URL emas. Qurilmalar, dastur manifestlari va frontend konfiguratsiyasi vanity hostingning o'ziga afzalroq bo'lishi kerak. Agar Taira-da alias faol bo'lmasa, brauzer darvoza yoki qaytish yo'li dasturni yo'naltirish boshlanishidan oldin `404` yoki TLS muvaffaqiyatsiz tugashi mumkin.
+`/soradns/<alias>/...` fallback - bu afzal bo'lgan ommaviy URL emas. Asbob-uskunalar, dastur manifestlari va frontend konfiguratsiyasi vanity hostingning o'ziga afzalroq bo'lishi kerak. Agar Taira-da alias faol bo'lmasa, brauzer darvoza yoki qaytish yo'li dasturni yo'naltirish boshlanishidan oldin `404` yoki TLS muvaffaqiyatsiz tugashi mumkin.
 
 ### Oʻrinli darvoza hostlari {#derive-gateway-hosts}
 
@@ -638,7 +638,7 @@ FHE bilan bog'liq Nexus xizmatlari uchun mavjud bo'lgan yuzalar quyidagilarni o'
 - `iroha_crypto::fhe_bfv` skalar shifr matnini baholash uchun deterministik BFV qo'llab-quvvatlashni amalga oshiradi. Identifikator rezolyutsiyasida `BfvIdentifierPublicParameters` va `BfvIdentifierCiphertext` ishlatiladi, unda 0 slot kirish byt uzunligini saqlaydi va keyinchalik slotlar har biri bir kodlangan bytni saqlashadi.
 - Soracloud davlat va ish sxemalari modeli FHE boshqaruv boshqaradigan parametrlar to'plamlari, ijro siyosati, kodli matn majburiyatlari, so'rov konvertlari va oshkor qilish talablari bilan shifrlangan matn ish yuklamalari.
 
-BFV identifikator yo'li maxfiylikni saqlaydigan ro'yxatdan o'tish uchun ishlatiladi. Mijoz Torii resolverga shifrlangan identifikatorni taqdim etishi mumkin. Resolver uni faol identifikator siyosati bo'yicha baholaydi, `OpaqueAccountId` ni oladi va kvitant beradi. `ClaimIdentifier` keyinchalik ushbu rasvotni maqsadli hisobvaraqqa ilova qilingan UAID raqamiga bog'laydi.
+BFV identifikator yo'li maxfiylikni saqlaydigan ro'yxatdan o'tish uchun ishlatiladi. Mijoz Torii resolverga shifrlangan identifikatorni taqdim etishi mumkin. u faol identifikator siyosati bo'yicha `OpaqueAccountId` raqamiga ega bo'lib, rasvot beradi. `ClaimIdentifier` so'ng ushbu rasvotni maqsadli hisobvaraqqa ilova qilingan UAID raqamiga bog'laydi.
 
 O ' zbekiston Respublikasining UAID bu oqim atrofida kimlik va qobiliyatning qutiladi. `UniversalAccountId` hash bilan ta'minlangan va quyidagicha ko'rsatiladi: `uaid:<hash>`. Parserlar buni ham qabul qiladi . `uaid:<hash>` yoki 64 hexning xom o'simligi. `Account` va `NewAccount` ixtiyoriy boʻlishi `uaid` va `opaque_ids` yo'nalishlari. Ish vaqti ro'yxatga olish bir-bir UAID- hisob-kitob ko'rsatkichi, ikkilamchi yoki to'qnashgan shaffof identifikatorlarni rad etadi va shaffof UAID. Har safar a UAID hisob bog'lash o'zgarishlar, ishga tushirish vaqt Space direktoriya ma'lumotlar bazasi bog'lash uchun qayta tiklaydi UAID.
 
@@ -656,7 +656,7 @@ Soracloud FHE holati bo'yicha amalga oshirilgan sxemalar:
 |`CiphertextQuerySpecV1` |So'rovlar faqat kodli matn bo'yicha xizmat, bog'lash, kalit prefiksi, natija chegarasi, metadata darajasi va ixtiyoriy kiritilishga ishonch hosil qiling. |
 |`DecryptionRequestV1` |Chifrlash huquqi siyosati bo'yicha bitta kodlangan matn majburiyati uchun e'lon qilinishini talab qiladi. |
 
-`FheJobSpecV1::validate_for_execution` ishga tushirishdan oldin ish, ijro siyosati va parametrlar to'plami kelishilganligini tekshiradi. Shuningdek, u operatsion maxsus qoidalarni qo'llab-quvvatlaydi: qo'shish va ko'paytirish uchun kamida ikki kirish kerak, aylantirish va bootstrap uchun aniq bir kirish kerak, va talab qilingan chuqurlik, aylanish soni, bootstrap soni, kirish soni, Chipta matn so'rovlari natijalari oddiy matn qatorlarini qaytarishi mumkin emas.
+`FheJobSpecV1::validate_for_execution` ishga qabul qilishdan oldin ish, ijro siyosati va parametrlar to'plamining kelishilganligini tekshiradi. Shuningdek, u operatsion-mahsus qoidalarni qo'llaydi: qo'shish va ko'paytirish uchun kamida ikkita kirish kerak, aylanish va bootstrap to'g'ri bitta kirish kerak, va talab qilingan chuqurlik, aylanish soni, bootstrap soni, kirish soni, foydali yuklangan bytlar va deterministik chiqish hajmi siyosat chegaralari doirasida qolishi kerak.
 
 UAID kod matni emas va FHE siyosati o'zi emas. Bu xizmat yoki ma'lumotlar maydonining oqimini ruxsat beruvchi hisobni topish, shaffof identifikator talablari va Space Directory bog'lash uchun ishlatiladigan barqaror hisob qobiliyati ankeridir. FHE sxemalari kodlangan fayzli yukni qabul qilish va bajarishni parametrlar to'plamlari, ijro etish siyosati, chifrlangan matn majburiyatlari va chifrlash vakolatlari siyosatlari orqali alohida tartibga soladi.
 

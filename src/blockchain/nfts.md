@@ -138,9 +138,9 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
-Clean up when you are done. If you transferred the NFT, run this command
-with the current owner's account configuration or transfer the NFT back
-first.
+Remove the example NFT after the walkthrough. If you transferred it, either
+transfer it back or submit the unregister command with the current owner's
+account configuration.
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \

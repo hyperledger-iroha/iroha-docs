@@ -20,6 +20,6 @@ translation_engine: nllb-200-ct2
 
 <CompatibilityMatrixTable />
 
-::: տեղեկատվություն
+::: info
 Սահմանեք `VITE_COMPAT_MATRIX_URL` միայն համատեղելի կենդանի ֆունկցիոնով զուգահեռելու համար: Առանց այդ փոփոխականի, էջը բեռնվում է `src/public/compat-matrix.json`.
 :::

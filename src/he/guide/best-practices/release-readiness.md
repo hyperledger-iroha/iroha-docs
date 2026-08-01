@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /guide/best-practices/release-readiness.md
-translation_source_hash: 1f316d6a823b23e821d80fe8773df7469358b0e01057f9b76b113cafe4818f20
+translation_source_hash: 984957526424a4e0ec9f29a6da1bb64699245bb135e8157bbe684bc3d87de4cc
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -31,7 +31,7 @@ translation_engine: nllb-200-ct2
 ## רשת הראשית או שער הייצור {#mainnet-or-production-gate}
 
 - השתמשו בחתימות ייצור נפרדות, מימון, דומנים ומסלולים להגדיר. אל תמכילו במפתחות רשתות מבחן או בהנחה של מקלטים.
-- אישר את תאימות SDK, CLI, עמיתים וברשת עם מסגרת התאמה [](/he/reference/compatibility-matrix.md).
+- אישר את הסצנות הנדרשות בין SDK ל- [ מתריסת התאימות ](/he/reference/compatibility-matrix.md). לחץ ולבדוק בנפרד את ה- CLI המדויק, בינרי הדוגמאות, ההשפנה והשידור לרשת המשמשים על ידי הפעלת.
 - רשיונות ביקורת, תמיכה בתשלום, גבולות שיעור, מעקב, מצב备份 וקריטריונים לאחזור לפני חלון השחרור.
 - נדרש תוכנית עסקה כתובה או מיגרציה עבור רשומות בעלות השפעה גבוהה.
 

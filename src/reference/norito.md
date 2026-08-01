@@ -35,7 +35,7 @@ header before transport.
 | --- | ---: | --- |
 | Magic | 4 bytes | ASCII `NRT0`, used to reject non-Norito data early. |
 | Major | 1 byte | Format major version. Current payloads use `0`. |
-| Minor | 1 byte | Fixed v1 decode hint. Current payloads use `0x00`; layout choices live in flags. |
+| Minor | 1 byte | Decode hint for v1. The current value is `0x00`. Flags describe the layout. |
 | Schema hash | 16 bytes | Type identity used by typed decoders to reject unexpected payloads. |
 | Compression | 1 byte | `0 = None`, `1 = Zstd`. Unknown values are rejected. |
 | Payload length | 8 bytes | Uncompressed payload length as little-endian `u64`. |
@@ -72,8 +72,9 @@ Norito uses deterministic layouts for the common data shapes that appear in
 the Iroha data model:
 
 - Strings are `[len][utf8-bytes]`; `len` follows `COMPACT_LEN` when enabled.
-- Per-value lengths use compact varints when `COMPACT_LEN` is set, otherwise
-  fixed 8-byte little-endian `u64`.
+- When `COMPACT_LEN` is set, a per-value length uses a compact varint.
+- When `COMPACT_LEN` is absent, a per-value length is an 8-byte little-endian
+  `u64`.
 - Sequence length headers are fixed 8-byte little-endian `u64` in v1.
 - `Vec<u8>` is encoded as `[len_u64][raw-bytes]` instead of one length per byte.
 - Packed sequences use `(len + 1)` monotonic `u64` offsets followed by the
@@ -106,7 +107,7 @@ payload:
 
 | Feature | Purpose |
 | --- | --- |
-| `to_bytes` | Encode an uncompressed header-framed payload. |
+| `to_bytes` | Encode a header followed by an uncompressed payload. |
 | `to_compressed_bytes` | Encode with Zstd and record the compression tag in the header. |
 | `to_bytes_auto` | Apply deterministic heuristics to decide whether compression is worthwhile. |
 | CRC64 acceleration | Uses portable CRC64-XZ everywhere, with CLMUL on x86_64 or PMULL on aarch64 when available. |
@@ -145,7 +146,7 @@ Common field attributes are:
 | Attribute | Effect |
 | --- | --- |
 | `#[norito(rename = "other")]` | Uses a stable serialized name for schema and JSON compatibility. |
-| `#[norito(skip)]` | Omits the field and fills it from `Default` while decoding. |
+| `#[norito(skip)]` | The encoder omits the field. The decoder supplies its `Default` value. |
 | `#[norito(default)]` | Uses `Default` when a decoded payload does not carry the field. |
 | `#[norito(skip_serializing_if = "...")]` | Omits fields from JSON when the predicate matches, while preserving deterministic decoding defaults. |
 
@@ -232,15 +233,15 @@ Norito so routing, billing, replay, and audit evidence stay reproducible.
 - Prefer SDK builders and generated bindings over hand-crafted Norito bytes.
 - Treat schema mismatch as a version or fixture problem, not as a transient
   network failure.
-- Keep `.nrt`, `.norito`, and manifest artifacts with the release or incident
+- Archive `.nrt`, `.norito`, and manifest artifacts in the release or incident
   bundle that produced them.
-- Use JSON projections for dashboards and manual inspection, but keep Norito as
-  the source of truth for signed, hashed, or persisted data.
+- Use Norito as the source of truth for signed, hashed, or persisted data. Use
+  JSON projections for dashboards and manual inspection.
 - When adding a new typed Torii endpoint, document whether it accepts JSON,
   Norito, or both, and expose the supported content types in `/openapi`.
-- When enabling accelerators, run parity tests against scalar output before
-  rollout. Accelerator failures should fall back cleanly rather than changing
-  payload semantics.
+- Before enabling an accelerator, run parity tests against scalar output. If
+  an accelerator fails, use the deterministic scalar fallback. Payload
+  semantics must remain unchanged.
 
 ## Related Pages
 

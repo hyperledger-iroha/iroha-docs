@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /reference/instructions.md
-translation_source_hash: 8dc894a05141040826067dc483319f213b007648f32354bb36f899259db9c5ac
+translation_source_hash: e300187da832a8f82258a36b7c4aaebf505adc09c771de5b0c7ab8fb0052d3db
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -19,8 +19,8 @@ translation_engine: nllb-200-ct2
 | [`TransferBox`](/am/blockchain/instructions.md#transfer)|`Domain`, `AssetDefinition`, ቁጥራዊ `Asset`, `Nft` |
 | [`SetKeyValueBox`](/am/blockchain/instructions.md#setkeyvalue-removekeyvalue)| `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` ሜታዳታ |
 | [`RemoveKeyValueBox`](/am/blockchain/instructions.md#setkeyvalue-removekeyvalue)| `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` ሜታዳታ |
-| [`GrantBox`](/am/blockchain/instructions.md#grant-revoke)|የሂሳብ መለያ ፈቃድ፣ የሒሳብ ሚና፣ የድርሻ ፈቃድ |
-| [`RevokeBox`](/am/blockchain/instructions.md#grant-revoke)|ከሂሳብ ፈቃድ፣ ከሂሳብ ድርሻ፣ ከድርሻ ፈቃድ |
+| [`GrantBox`](/am/blockchain/instructions.md#grant-revoke)| `Permission` (`Grant<Permission, Account>`), `Role` (`Grant<RoleId, Account>`), `RolePermission` (`Grant<Permission, Role>`) |
+| [`RevokeBox`](/am/blockchain/instructions.md#grant-revoke)| `Permission` (`Revoke<Permission, Account>`), `Role` (`Revoke<RoleId, Account>`), `RolePermission` (`Revoke<Permission, Role>`) |
 | [`SetParameter`](/am/blockchain/instructions.md#setparameter)|ሰንሰለት መለኪያዎች ዝመና |
 | [`ExecuteTrigger`](/am/blockchain/instructions.md#executetrigger)|ማስነሳት አፈጻጸም |
 | [`Upgrade`](/am/blockchain/instructions.md#other-instructions)|አስፈጻሚ ማሻሻያ |

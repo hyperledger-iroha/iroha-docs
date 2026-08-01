@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /reference/norito.md
-translation_source_hash: ff258251887109f6cb28241235caea8e1b6a69df10df60cb7b2e7c2507004b4e
+translation_source_hash: 4297b0ff795a5cdb6556424e89de7191522271519aa36720ed45a695ad402211
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -34,10 +34,10 @@ Hər simli və ya diskdəki payload Norito kodlanmış payload bytləri ilə bir
 | --- | ---: | --- |
 |Sihir.|4 bayt |ASCII `NRT0`, Norito olmayan məlumatları əvvəlcədən rədd etmək üçün istifadə olunur. |
 |Mayor .|1 bayt |Əsas versiyanı formatlayın. Hal-hazırda payloadlar `0` istifadə edir. |
-|Kiçik |1 bayt |Fixed v1 decode ipucu. Current payloads use `0x00`; layout seçimləri bayraqlarda yaşayır. |
+|Kiçik |1 bayt |V1 üçün dekodlama ipucu. mövcud dəyər `0x00`. Bayraqlar dizaynı təsvir edir. |
 |Şema hashı |16 bayt |Təxmin edilməmiş paylı yükləri rədd etmək üçün tiplənmiş dekoderlər tərəfindən istifadə olunan növ kimliyi |
 |Çıxış |1 bayt |`0 = None`, `1 = Zstd`.Məlum olmayan dəyərlər rədd edilir. |
-|Faydalı yükün uzunluğu |8 bayt |Qeyri-qəsd edilmiş paylı yük uzunluğu `u64` kimi.|
+|Layihə yükü uzunluğu |8 bayt |Qeyri-qəsd edilmiş paylı yük uzunluğu `u64` kimi.|
 |CRC64 |8 bayt |CRC64-XZ sıxılmamış paylı yükün yoxlama suması. |
 |Bayraqlar |1 bayt |Kompakt uzunluqlar, paketlənmiş ardıcıllıqlar və paketlənmiş struktlar üçün dizayn bayraqları. |
 
@@ -63,7 +63,8 @@ Bayraqlar açıqdır. Dekoderlər payload şəklindən, kiçik versiyadan və ya
 Norito Iroha məlumat modellərində göstərilən ümumi məlumat formaları üçün deterministik düzənliklərdən istifadə edir:
 
 - Əlaqələr `[len][utf8-bytes]`; `len` aktivləşdirildiyi zaman `COMPACT_LEN` ilə davam edir.
-- Qiymətə görə uzunluqlarda `COMPACT_LEN` təyin olunduğu zaman kompakt varinclər istifadə olunur, əks halda sabit olan 8-bayt kiçik endian `u64`.
+- `COMPACT_LEN` müəyyən edildikdə, hər dəyər üçün uzunluq kompakt bir varintdən istifadə olunur.
+- `COMPACT_LEN` yoxdursa, hər dəyər üçün uzunluq 8 baytlıq kiçik bir ədəd `u64` olur.
 - Sequence uzunluğu başlıqları v1-də sabit 8-bayt kiçik endian `u64` var.
 - `Vec<u8>` bir bayt üçün bir uzunluq əvəzinə `[len_u64][raw-bytes]` kimi kodifikasiya olunur.
 - Yüklənmiş ardıcıllıqlarda `(len + 1)` monoton `u64` offsetlərdən istifadə edilir, bunlardan sonra konkatenləşdirilmiş element pay yükləri.
@@ -85,7 +86,7 @@ Norito məntiqi pay yükünü dəyişdirmədən açıq və uyğunlaşdırıcı s
 
 |Xüsusiyyət |Məqsəd|
 | --- | --- |
-|`to_bytes` |Kompressiyalı olmayan bir başlıq çərçivəsindəki pay yükü kodlaşdırın.|
+|`to_bytes` |Bir başlığı kodlaşdırın, sonra bir sıxılmamış pay yükü. |
 |`to_compressed_bytes` |Zstd ilə kodlaşdırın və başlığındakı sıxılma etiketini qeyd edin. |
 |`to_bytes_auto` |Kompressiyanın dəyərli olub olmadığını müəyyən etmək üçün deterministik heuristika tətbiq edin. |
 |CRC64 sürətləndirmə | Qeydiyyatdan istifadə CRC64-XZ Hər yerdə, CLMUL x86-də_64 və ya PMULL Aarch64-də mövcud olduqda. |
@@ -112,12 +113,12 @@ Iroha kod üstünlük verməlidir. `norito::json` tiplənmə üçün köməkçil
 
 Rust məlumat növləri ümumiyyətlə manual kod kod əvəzinə mənşəli makrolardan istifadə edir. Norito ikili kodeklər, sxemlər və JSON köməkçilər.
 
-Ümumi sahə xüsusiyyətləri aşağıdakılardır:
+Ümumi sahə xüsusiyyətləri:
 
 |Attribut |Nəticə |
 | --- | --- |
 |`#[norito(rename = "other")]` |Şema və JSON uyğunluğu üçün sabit seriyalı bir ad istifadə edir. |
-|`#[norito(skip)]` |`Default` sahəsini boşaltır və kodlama zamanı onu doldurur. |
+|`#[norito(skip)]` |Kodlaşdırıcı sahəni buraxır. Dekoder onun `Default` dəyərini təmin edir. |
 |`#[norito(default)]` |`Default` kodlaşdırılmış pay yükünün sahəni daşımadığı zaman istifadə olunur. |
 |`#[norito(skip_serializing_if = "...")]` |Deterministik dekodlama standartlarını qoruyaraq predikatın uyğunlaşdığı zaman JSON sahələrini buraxır. |
 
@@ -137,7 +138,7 @@ Iroha və ya SDK bağlamalarını mənbədən qurarkən, Norito xüsusiyyətlər
 |`columnar` |Norito Sütun blokları, adaptiv AoS/NCB satır kodekləri və skan ağır yollar üçün alınmış görünüşlər; standart `node-codec` xüsusiyyət dəstində daxil edilmişdir. |
 |`strict-safe` |Səhv yolları panikləri strukturlaşdırılmış səhvlərə çevirir. |
 |`simd-accel` |CPU təxirə salınması, əgər mövcuddursa, müəyyənləşdirilmiş geri çəkilmə ilə. |
-|`json` |Yerli JSON parser, yazıçı, DOM, tiplənmiş mənşəli və sürətli yollar. |
+|`json` |Yerli JSON parser, yazıçı, DOM, tiplənmiş mənşəllər və sürətli yollar. |
 |`json-std-io` |JSON yığın üzərində qatlanmış oxucu və yazıçı köməkçiləri. |
 |`metal-stage1`, `cuda-stage1` |Fərqli GPU JSON struktur indeksinə aid arxa planlar. |
 |`metal-stage2` |JSON struktur bantı üçün metal metadata təsnifatı. |
@@ -170,7 +171,7 @@ Norito RPC nəqliyyatı nəqliyyat konfigüratsiyası vasitəsilə seçilir. Ope
 
 ## Norito Streaming {#norito-streaming}
 
-Norito Streaming eyni deterministik yanaşmanı mediaya və real vaxtda nəqliyyat səthlərinə genişləndirir.
+Norito Streaming eyni deterministik yanaşmanı mediaya və real vaxt nəqliyyat səthlərinə genişləndirir.
 
 |Streaming xüsusiyyəti |Məqsəd|
 | --- | --- |
@@ -189,14 +190,14 @@ Axtarış xüsusi kodeklər və entropiya profilləri əsas Norito əməliyyat /
 
 - SDK qurucusu və istehsal olunan bağlamaları əl işlənmiş Norito baytlardan üstün tuturlar.
 - Şema uyğunsuzluğuna keçidli bir şəbəkə çatışmazlığı deyil, bir versiya və ya qurğu problemi kimi baxın.
-- `.nrt`, `.norito` əşyaları saxlayın və onları istehsal edən sərbəst buraxma və ya hadisə qutusunun yanında ifşa edin.
-- Dashboard və əl yoxlama üçün JSON proqnozlarından istifadə edin, lakin imzalanmış, həş edilmiş və ya davam edən məlumatlar üçün həqiqət mənbəyi olaraq Norito saxlayın.
+- Arxiv `.nrt`, `.norito` və onları istehsal edən buraxılış və ya hadisələr paketindəki manifest əşyaları.
+- İstifadə Norito İmzalanmış, həş edilmiş və ya davamlı məlumatlar üçün həqiqət mənbəyi kimi. JSON Dashboardlar üçün proqnozlar və əl yoxlamaları.
 - Yeni Torii final nöqtəsini əlavə edərkən, bu nöqtənin JSON, Norito və ya hər ikisini qəbul edib-etmədiyini sənədləşdirin və dəstəkləyən məzmun növlərini `/openapi` əlamətində göstərin.
-- Sürətçiləri aktivləşdirərkən, yükləmədən əvvəl skalar çıxışı ilə bərabərlik sınaqları aparın. Sürətləndiricinin uğursuzluqları faydalı yükün semantikasını dəyişmək əvəzinə təmiz şəkildə geri qaytarılmalıdır.
+- Sürətləndiricini işlətmədən əvvəl, skalar çıxışı ilə bərabərlik sınaqları aparın. Əgər sürətləndiricisi uğursuz olarsa, deterministik skalar geri dönüşü istifadə edin. Faydalı yük semantikası dəyişməməlidir.
 
 ## Əlaqəli səhifələr {#related-pages}
 
-- [Torii son nöqtələri](/az/reference/torii-endpoints.md)
+- [Torii bitki nöqtələri](/az/reference/torii-endpoints.md)
 - [Genesis istinadı](/az/reference/genesis.md)
 - [Məlumat modelləri sxemi](/az/reference/data-model-schema.md)
 - [JavaScript / TypeScript SDK ](/az/guide/tutorials/javascript.md)

@@ -1,105 +1,68 @@
 ---
 translation_locale: az
 translation_source: /guide/security/security-principles.md
-translation_source_hash: ca78f72b2e319a67a5fa5c74126de108cd552cdc758e3a2b981f7a7930a3b61e
+translation_source_hash: 20139011c663a0bca6f9e486ef81f698370c34f8f02319317805b0d1dfb049c7
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Təhlükəsizlik prinsipləri {#security-principles}
 
-Təşkilatlar və fərdi istifadəçilər Iroha qurğuları ilə təhlükəsiz qarşılıqlı əlaqələrin təmin edilməsi üçün birlikdə işləməlidirlər. Bu mövzuda bu əməkdaşlığın əsas prinsipləri izah olunur.
+Iroha reyestri imzalanmış təlimatları yoxlayır və icazələri tətbiq edir. O, şəxsi açarları, hostları, tətbiqləri, operator iş stansiyalarını və ya idarəetmə prosedurlarını qorumur. Bu sistemlərin qorunmasını yerləşdirmə təmin etməlidir.
 
-## Ümumi təhlükəsizlik prinsipləri {#general-security-principles}
+Iroha şəbəkəsini layihələndirərkən və istismar edərkən bu prinsiplərdən istifadə edin.
 
-1. [Virtual Private Network](./vpn.md) (VPN) istifadə edin:
+## Səlahiyyəti təhlükəsizlik sərhədi kimi qəbul edin {#treat-authority-as-a-security-boundary}
 
-    - Həssas məlumatlara və ya mənbələrə, xüsusən də ictimai şəbəkələr vasitəsilə daxil olduqda <abbr title="Virtual Private Network">VPN</abbr> ünvanından istifadə edərək məlumatlarınızı qoruyub saxlayan təhlükəsiz bir əlaqə qura bilərsiniz.
+- Şəxsi açarı idarə edən şəxs və ya proses həmin açara verilmiş səlahiyyətlə hərəkət edə bilər.
+- Hər bir mühitə və əməliyyat roluna ayrıca səlahiyyət verin.
+- İstehsal və bərpa açarlarını gündəlik inkişaf və sınaq etimadnamələrindən ayrı saxlayın.
+- Hər bir səlahiyyətin kimə məxsus olduğunu, onun imzalayıcısının harada saxlandığını və necə əvəz və ya ləğv edilə biləcəyini qeyd edin.
 
-2. Şəbəkənin qorunması üçün bir firewall istifadə edin:
+Baxın: [Açıq açarlı kriptoqrafiya](./public-key-cryptography.md) və [Kriptoqrafik açarların saxlanması](./storing-cryptographic-keys.md).
 
-    - Ev və/və ya ofis şəbəkələrini gücləndirmək üçün icazəsiz girişlərə qarşı mübarizə aparmağa və bağlı cihazları viruslardan və zərərli proqramlardan qorumağa kömək edən bir firewall quraşdırın.
+## Ən az imtiyazdan istifadə edin {#apply-least-privilege}
 
-3. Fiziki və rəqəmsal məlumatların təhlükəsizliyi:
+- Yalnız rol üçün lazım olan Iroha icazələrini, host girişini və şəbəkə girişini verin.
+- Gündəlik tranzaksiyaların imzalanmasını idarəetmə, yerləşdirmə və bərpa səlahiyyətlərindən ayırın.
+- Validator üzvlüyünə, imtiyazlı icazələrə və ya yüksək dəyərli aktivlərə təsir edə biləcək dəyişikliklər üçün müstəqil təsdiq tələb edin.
+- Rol dəyişikliklərindən sonra girişləri nəzərdən keçirin və artıq lazım olmayan girişləri ləğv edin.
 
-    - Həssas məlumatları ehtiva edən fiziki sənədləri təhlükəsiz bir yerdə qoruyun və rəqəmsal sənədlərin şifrələndirilməsini və şifrə ilə mühafizə olunmuş qovluqlarda saxlanılmasını təmin edin.
+## Qoruyucu qatlardan istifadə edin {#use-layers-of-protection}
 
-4. Daimi məlumat yedekləmələri saxlayın:
+- İmzalayıcıları, tətbiqləri, əməliyyat sistemlərini, şəbəkələri və fiziki girişi qoruyun. Yalnız bir qoruma vasitəsinə arxalanmayın.
+- Yalnız yerləşdirmənin tələb etdiyi Torii, peer qovşağı, monitorinq və tətbiq marşrutlarını açın.
+- İnzibati giriş və həssas məlumatlar üçün autentifikasiya edilmiş və şifrələnmiş kanallardan istifadə edin.
+- Sistemlərə təhlükəsizlik yeniləmələrini vaxtında tətbiq edin və yerləşdirmənin istifadə etmədiyi xidmətləri söndürün.
+- Sirləri mənbə kodu idarəetmə sistemindən, əmr sətirlərindən, jurnallardan, biletlərdən, söhbətlərdən və ictimai sənədlərdən kənarda saxlayın.
 
-    - Həmişə vacib məlumatlarınızın nüsxələrini təhlükəsiz bir yerdə saxlayın. Bu yolla, məlumatlarınızı itirirsinizsə və ya bir şey səhv olarsa, hər şeyi tezliklə geri qaytara bilərsiniz. Bu yedekləmələri ümumiyyətlə məlumatlarınızı saxladığınız yerdən fərqli bir təhlükəsiz yerə saxlayın.
+## Yerləşdirmələri nəzərdən keçirilə bilən edin {#make-deployments-reviewable}
 
-## Tərəflər üçün təhlükəsizlik prinsipləri {#security-principles-for-individual-users}
+- Gizli olmayan konfiqurasiyanı və yerləşdirmə avtomatlaşdırmasını versiya nəzarətində saxlayın.
+- Binar fayllarda, konfiqurasiyada, genezis materialında, validator üzvlüyündə, icazələrdə və ictimai marşrutlarda edilən dəyişiklikləri nəzərdən keçirin.
+- Yerləşdirmədən əvvəl buraxılış artefaktlarını yoxlayın. Təsdiqlənmiş versiyaları və heşləri qeyd edin.
+- İstehsalda işləyəcək binar fayl və konfiqurasiyanın dəqiq kombinasiyasını sınaqdan keçirin.
+- Şəbəkənin deterministik davranışını qoruyun. Aparat sürətləndirilməsi peer qovşaqlarına görünən nəticələri dəyişdirməməlidir.
 
-1. Güclü təsdiqləmə qaydalarını qəbul edin:
+## Monitorinq aparın və sübutları qoruyun {#monitor-and-preserve-evidence}
 
-    - Bütün hesablar üçün güclü və unikal şifrələrdən istifadə edin.
+- Peer qovşaqlarının vəziyyətini, konsensusun gedişini, icazə dəyişikliklərini, imtiyazlı təlimatları, autentifikasiya uğursuzluqlarını və gözlənilməz konfiqurasiya dəyişikliklərini izləyin.
+- Vacib xəbərdarlıqları təsirlənmiş hostdan asılı olmayan sistemə göndərin.
+- Müvafiq jurnalları, reyestr istinadlarını, konfiqurasiya vəziyyətinin surətlərini və tranzaksiya heşlərini etibarlı vaxt damğaları ilə qoruyun.
+- Çatışmayan monitorinq məlumatlarını araşdırma tələb edən əməliyyat problemi kimi qəbul edin.
 
-    - Heç vaxt şifrələri yenidən istifadə etməyin.
+## İşə salmadan əvvəl bərpaya hazırlaşın {#prepare-recovery-before-launch}
 
-    - Mümkün olduqda <abbr title="Two-Factor Authentication">2FA</abbr> quraşdırın. <abbr title="Two-Factor Authentication">2FA</abbr> təkcə şifrəni tələb etməklə deyil, həm də bir əlavə amil kimi <abbr title="One-Time Password">OTP</abbr>, barmaq izi və ya üçüncü tərəf tətbiqinə əsaslanan təsdiqlənmə (məsələn, Google Authenticator) ilə ümumi təhlükəsizliyi yaxşılaşdırır.
+- Kimlərin insident elan edə biləcəyini və kimlərin bərpa tədbirlərini təsdiq edə biləcəyini müəyyənləşdirin.
+- Yedəkləmə, bərpa, açarın dəyişdirilməsi, icazənin ləğvi və peer qovşağının bərpası prosedurlarını sınaqdan keçirin.
+- İnsident zamanı etibarlı buraxılış artefaktlarını, konfiqurasiyanı, genezis qeydlərini və inventarları əlçatan saxlayın.
+- Əvvəlcə oxuma əməliyyatlarını və monitorinqi bərpa edin. Yazma əməliyyatlarını yalnız bərpa edilmiş şəbəkə və asılı tətbiqlər yoxlamalardan keçdikdən sonra yenidən başladın.
+- Hər insidenti nəzərdən keçirin və nəzarət vasitələrini, avtomatlaşdırmanı və təlimləri yeniləyin.
 
-    - SMS təsdiqini ikinci amil kimi istifadə etməyin. Zərərli proqramların bütün SMS mesajlarınızı izləmədiyi üçün heç bir zəmanət yoxdur. Məsələn, Android tətbiqləri yalnız onlar üçün nəzərdə tutulmuş mesajlara daxil olmaqla məhdudlaşdırıla bilməzlər.
+::: warning
 
-2. Rəqəmsal ünsiyyətdə ehtiyatlı olun: - Qəbul olunan bütün e-poçtların imzalarını imzalayan və təsdiqləyən bir elektron poçt müştəri qurun. Göndəricinin adresini təxmin etmək və hətta bank kimi davranmaq mümkündürsə də, imza saxlamaq mümkün deyil. - Həm HTML mesajlarını, həm də xarici resursların bilinməyən və ya yoxlanılmamış ünvanlardan yüklənməsini söndürün.
+Reyestr əməliyyatları geri qaytarılmaz ola bilər. Bərpa və ya idarəetmə tranzaksiyası göndərməzdən əvvəl əvvəlcədən nəzərdən keçirilmiş prosedurlardan istifadə edin və tələb olunan təsdiqləri alın.
 
-    - Şübhəli e-poçtları, bağlantıları və şəxsi məlumat tələblərini tanımaq və qarşısını almaq üçün ən çox istifadə olunan phishing texnikalarını öyrənin.
+:::
 
-    - Alınan bütün e-poçtların imzalarını imzalamaq və təsdiqləmək üçün bir e-poçta müştəri qurun. Göndəricinin ünvanını gizlətmək və hətta bank kimi davranmaq mümkündürsə də, imzanı saxlamaq mümkün deyil.
-
-3. Şəxsi məlumatların qorunması:
-
-    - Tanımadığımız insanlarla, xüsusilə də telefon və ya internet vasitəsilə ünsiyyət qurarkən şəxsi məlumatları paylaşmamaqdan ehtiyatlı olun.
-
-    - Məlumat verdiyiniz şəxsləri və ya təşkilatları müstəqil olaraq araşdıraraq onların kimliklərinin etibarlı olduğunu təsdiqləyin.
-
-    - Sosial şəbəkələrdə paylaşdığınız şəxsi məlumatlardan xəbərdar olun, çünki zərərli tərəflər bu məlumatdan istifadə edə bilərlər.
-
-## Təşkilatlar üçün təhlükəsizlik prinsipləri {#security-principles-for-organisations}
-
-1. Aydın təhlükəsizlik siyasətlərini və prosedurlarını müəyyənləşdirmək:
-
-    - Həssas məlumatlarla məşğul olan bütün işçilər üçün dəqiq müəyyən edilmiş təhlükəsizlik siyasətləri və protokolları inkişaf etdirmək. İşçilərin bu qaydalara riayət etmələrini diqqətlə öyrətməklə səhlənkarlıq riskini azaltmaq.
-
-    - Təhlükəsizlik siyasətinin bütün işçilər üçün əlçatan olmasını təmin etmək və dəyişən təhlükəsizlik mənzərələrini əks etdirmək üçün mütəmadi olaraq nəzərdən keçirilməsi və yenilənməsi.
-
-    - Təhlükəsizlik siyasətlərini işçilər üçün daha münasib və tətbiq oluna biləcək nümunələr və ssenarilərlə təmin edin.
-
-2. İşçilərin məlumatlılığını artırmaq:
-
-    - Təşkilatın təhlükəsizliyinin möhkəmləndirilməsində işçilərin məlumat və əməliyyat təhlükəsizliyi tədbirləri haqqında məlumatlandırılması vacibdir.
-
-    - İşçilərin hər hansı bir şübhəli fəaliyyət və ya təhlükəsizlik narahatlığı barədə dərhal məlumat vermələrini təşviq edin.
-
-3. Fiziki infrastrukturun qorunması:
-
-    - Serverlərə və infrastrukturlara fiziki girişin məhdudlaşdırılması. Yalnız icazəli şəxslərin məhdudiyyətli ərazilərə girməsinə icazə verən giriş nəzarətləri qurmaq.
-
-    - Təhlükəsizlik ehtiyaclarının inkişafına uyğun olaraq giriş nəzarət tədbirlərinin mütəmadi şəkildə nəzərdən keçirilməsini və yenilənməsini təmin etmək.
-
-    - Fiziki təhlükəsizliyi artırmaq üçün həssas ərazilərə biometrik giriş nəzarətlərinin tətbiq edilməsini nəzərdən keçirin.
-
-4. Təhlükəsizlik nəzarətinin həyata keçirilməsi:
-
-    - Tədbirlərin araşdırılması və potensial təhlükəsizlik pozuntularının aşkarlanması üçün hərtərəfli bir təhlükəsizlik nəzarəti sistemi tətbiq etmək.
-
-    - Hər hansı qeyri-adi və ya icazəsiz fəaliyyət barədə təhlükəsizlik işçilərini dərhal məlumatlandırmaq üçün avtomatlaşdırılmış xəbərdarlıqlar tətbiq etmək.
-
-    - Sistemin anomaliyaları və potensial təhlükələri aşkar etmək qabiliyyətini artırmaq üçün maşın öyrənmə alqoritmlərindən istifadə etməyi düşünün.
-
-    - Verilənlər bazasının təhlükəsizliyini nəzarət etmək, proqram zəifliklərini müəyyənləşdirmək, izləmək və həll etmək və təsdiqlənmiş siyahıya daxil edilməyən icazəsiz proqramların mövcudluğu üçün kritik maşınlarda müntəzəm yoxlamalar aparmaq üçün əməkdaşları və ya təyin edilmiş şəxsləri işlətmək.
-
-5. Dəfələrlə təhlükəsizlik auditləri aparmaq:
-
-    - Güclülüklərin qiymətləndirilməsi və müəyyən edilmiş təhlükəsizlik tədbirlərinin ümumi qəbul olunan standartlara və qaydalara uyğun olub-olmadığını təsdiq etmək üçün müntəzəm təhlükəsizlik auditləri aparmaq.
-
-    - Təşkilatınızın təhlükəsizlik vəziyyətinin taraz qiymətləndirilməsi üçün müntəzəm olaraq təhlükəsizlik mütəxəssislərinin işinə götürülməsini düşünün.
-
-6. Giriş nəzarət sistemini tətbiq etmək:
-
-    - İşçilərin yalnız öz rolları üçün zəruri olan resurslara və informasiyaya sahib olmasını təmin etmək üçün rolu əsaslı bir giriş nəzarəti sistemi yaradılsın.
-
-7. Daim inkişaf etməyi qəbul edin:
-
-    - Təhlükəsizliyin davamlı bir proses olduğunu qəbul edin. Təhlükəsizlik tədbirlərinin davamlı qiymətləndirilməsini qoruyun və yaranan təhdidlər və çətinliklərə qarşı mübarizə üçün onları proaktiv şəkildə gücləndirin.
-
-    - İşçilərin təhlükəsizliyin yaxşılaşdırılması üçün təkliflər verməklərini təşviq edən, davamlı inkişaf mədəniyyətini təşviq etmək üçün geri bildirmə döngəsinin yaradılmasını düşünün.
+[Əməliyyat təhlükəsizliyi](./operational-security.md) və [Buraxılışa hazırlıq](../best-practices/release-readiness.md) ilə davam edin.

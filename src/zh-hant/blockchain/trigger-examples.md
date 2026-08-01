@@ -6,27 +6,22 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# 事件引發器示例 {#event-trigger-example}
+# 事件觸發器示例 {#event-trigger-example}
 
-這個例子使用法規無域名帳戶 IDs 預期的資產
-在本文中的定義 Iroha 3 數據模型.
+這個例子使用了可信無域名帳戶 IDs 預計的資產定義 Iroha 3 數據模型.
 
 假設一個網絡有:
 
-- 這是一份經典的帳號,由Alice的鍵控制.
-- 這是一份經典的帳號,由瘋帽子師的鍵控制.
-- 預算為 `tea` 在下 `wonderland.universal`
-- 每個帳戶所持有的該資產的餘額
+- 一個由愛麗絲的鑰匙控制的法典帳戶
+- 一個由瘋狂帽子師的鑰匙控制的法典帳戶
+- 預測爲 `tea` 的資產定義在 `wonderland.universal`
+- 每個賬戶所持有的該資產的餘額
 
-目的是檢查阿里斯的茶葉平衡,
-在相匹配數據事件發生時,
-發射出來的.
+目標是註冊一個觸發器,觀察愛麗絲的茶葉平衡,在發出相匹配數據事件時,從瘋狂帽子帳戶轉移.
 
-## 1. 準備帳戶和資產 {#_1-prepare-accounts-and-assets}
+## 1. 準備賬戶和資產 {#_1-prepare-accounts-and-assets}
 
-首先要記錄參與帳戶和資產定義.
-現在的 Iroha, 帳號 IDs 來自帳戶管理員,
-域名使用 `domain.dataspace` 形式:
+首先註冊參與賬戶和資產定義.在當前 Iroha 中,帳戶 IDs 來自賬戶控制者,而預測域名使用`domain.dataspace`表格:
 
 ```text
 domain: wonderland.universal
@@ -34,23 +29,17 @@ asset definition projection: tea in wonderland.universal
 holder accounts: AccountId(controller=alice_key), AccountId(controller=mad_hatter_key)
 ```
 
-存儲或查詢這些資料,
-在註冊後使用地址,並在啟動行動中使用它.
+資產定義仍然具有不可的不透明地址.在註冊後存儲或查詢該地址,並在觸發動作中使用.
 
-## 2.選擇引發器權限 {#_2-choose-the-trigger-authority}
+## 2. 選擇觸發器權限 {#_2-choose-the-trigger-authority}
 
-如果可能,將開啟器的技術帳號設定在專用帳戶上.
-專用帳戶明顯需要哪些許可證來啟動
-執行並避免將開關連接到運營商個人簽名
-這就是我的關鍵.
+如果可能的話,將觸發器的技術帳戶設置爲專用賬戶. 專用帳戶明確了執行觸發器所需的權限,並避免將觸發機連接到運營商個人簽字密鑰.
 
-必須已有技術帳號,
-在開啟器中執行指示.
+技術賬戶必須已經存在,並且必須有權在觸發器執行中提交說明.
 
-## 3. 定義可執行的方法 {#_3-define-the-executable}
+## 3. 定義可執行的 {#_3-define-the-executable}
 
-執行式是開啟器在事件發生時提交的指示序列
-這樣的例子,它包含一個轉移:
+當事件過器匹配時,觸發器提交的命令序列是可執行的.在這個例子中,它包含一個傳輸:
 
 ```text
 Transfer(
@@ -60,13 +49,11 @@ Transfer(
 )
 ```
 
-請使用 SDK 預算是目前為期的交易用品.
-硬編碼的舊文本 IDs 在開啟代碼中;解析或查詢法典 IDs
-在建立執行機之前.
+使用 SDK 避免硬編碼的舊文本, IDs 在觸發碼中;解析或查詢標準 IDs 在構建執行器之前.
 
-## 4. 定義事件過濾器 {#_4-define-the-event-filter}
+## 4. 定義事件過器 {#_4-define-the-event-filter}
 
-使用資料事件過濾器,將事件縮小到您關心的對象:
+使用數據事件過器,將事件縮小到你關心的對象:
 
 ```text
 EventFilterBox::Data(
@@ -75,34 +62,28 @@ EventFilterBox::Data(
 )
 ```
 
-保持光器的精確性和實用性. `AcceptAll` 濾鏡是有用的
-但它使每個相匹配的事件都付出了引擎成本.
-評估.
+一個 `AcceptAll` 過器是用於調試,但它使每一個匹配事件都支付了觸發評估的成本.
 
-## 5. 註冊開關器 {#_5-register-the-trigger}
+## 5. 登記觸發器 {#_5-register-the-trigger}
 
-註冊開關:
+用以下方式註冊觸發器:
 
-- 一个子 `TriggerId`
-- 可執行的指示序列
-- `Repeats::Indefinitely` 或是 `Repeats::Exactly(n)`
-- 技术账户
-- 事件過濾器
-- 選擇性傳統數據
+- 一個穩定的 `TriggerId`
+- 可執行的指令序列
+- `Repeats::Indefinitely`或`Repeats::Exactly(n)`
+- 技術賬戶
+- 事件過器
+- 任意的元數據
 
-這項交易本身就是正常的交易,
-該帳戶需要註冊引發器的許可.
-引發器可執行所需的權限.
+觸發器登記本身是一個正常的交易,因此註冊帳戶需要許可才能登記觸發器.技術賬戶需要觸發器執行所需的權限.
 
 ## 執行命令 {#execution-order}
 
 當一個區塊執行時:
 
-1. 經常交易指令首先執行.
-2. 收集這些指示所產生的事件數據.
-3. 這項活動的濾鏡與這些事件相匹配.
-4. 在區塊執行管線中處理引發器產生的效應,
-   允許無限的復習性引擎執行.
+1. 通常的交易指令首先運行.
+2. 根據這些指令生成的數據事件被收集.
+3. 發射器的過器和這些事件相匹配.
+4. 在區塊執行管道中處理觸發器產生的效應,而不允許無限的遞歸觸發器執行.
 
-如果開關使用 `Repeats::Exactly(n)`, 在數量時, 註冊新的開關
-這樣的行為也需要再次進行.
+如果觸發器使用 `Repeats::Exactly(n)`,當數量耗盡,並且需要再次執行相同的行爲時,請註冊新的觸發器.

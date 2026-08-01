@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest'
 import {
   ALL_LOCALES,
   alternateLocaleHead,
+  documentHead,
   englishRelativePath,
   localeForRelativePath,
   publishedUrl,
@@ -48,5 +49,9 @@ describe('locale routes', () => {
     expect(alternates).toHaveLength(22)
     expect(alternates.some((entry) => entry[1].hreflang === 'x-default')).toBe(true)
     expect(canonical?.[1].href).toBe('https://docs.iroha.tech/ar/reference/')
+  })
+
+  test('marks the generated 404 page noindex without nonexistent locale alternates', () => {
+    expect(documentHead('404.md')).toEqual([['meta', { name: 'robots', content: 'noindex, nofollow' }]])
   })
 })

@@ -6,43 +6,32 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# 編碼片段 {#code-snippets}
+# 代碼片段 {#code-snippets}
 
-生成的截圖將示例連結到代碼,配置和方案
-這項政策 Iroha 該組織的經驗.
+生成的切片將從產生它們的 Iroha 修改中與代碼,配置和方案相關的示例保持.
 
-## 這樣可以讓人感到清爽. Iroha 藝術品 {#refreshing-iroha-artifacts}
+## 清新 Iroha 藝術品 {#refreshing-iroha-artifacts}
 
-Iroha- 導致的截圖會被檢查,因此一般網站建立不需要
-直接更新這些資料:
+Iroha 衍生的切片在普通網站構建中檢查,不需要網絡訪問或兄弟存儲庫. 明確更新:
 
 ```bash
 pnpm refresh:iroha --source /path/to/iroha
 ```
 
-已登記的人
-[`etc/refresh-iroha.ts`](https://github.com/hyperledger-iroha/iroha-docs/blob/main/etc/refresh-iroha.ts)
-工作流量檢查清潔源的清算 `provenance/iroha.json`,
-還原 `/src/snippets` 這種情況 Torii OpenAPI 快速拍攝及更新 SHA-256
-查看內容和原來變化.
-裝置和使用 VitePress 建立的檔案使用了沒有登錄的檔案
-帶來一個可變的枝子.
+已註冊的 [`etc/refresh-iroha.ts`](https://github.com/hyperledger-iroha/iroha-docs/blob/main/etc/refresh-iroha.ts)工作流驗證了清潔源支付與 `provenance/iroha.json`相比,再生`/src/snippets`和 Torii OpenAPI 快照,和更新 SHA-256 哈希.一起查看內容和來源變化.正常的依賴安裝和 VitePress 構建使用已註冊的文件,而不會帶來可變的分支.
 
-## 包含零部件 {#including-snippets}
+## 包含零碎片 {#including-snippets}
 
-請使用
-[VitePress 代碼截圖構文](https://vitepress.dev/guide/markdown#import-code-snippets)
-包含生成或本地源:
+使用[VitePress 代碼片段語法](https://vitepress.dev/guide/markdown#import-code-snippets),以包含生成或本地源:
 
 ```md
 <<< @/snippets/client.template.toml
 ```
 
-該區域名稱可以透過添加其地區名稱加入:
+一個命名代碼區域可以通過添加該地區名稱加入:
 
 ```md
 <<< @/example_code/lorem.rs#ipsum
 ```
 
-保持手寫的例子小.
-接口,配置模板,生成的方案和命令输出.
+保持手寫的例子小.更喜歡爲公共界面,配置模板,生成的方案和命令輸出更新的源文物.

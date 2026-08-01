@@ -26,7 +26,7 @@ Local peer configuration ကို TOML ဖိုင်များတွင်�
 
 TOML ဖိုင်များတွင် `extends` ကွင်းတစ်ခုရှိပြီး အခြား TOML ဖိုင်များကို ညွှန်ပြသည်) တစ်ခုတည်းသောလမ်းကြောင်း သို့မဟုတ် လမ်းကြောင်းများစွာဖြစ်နိုင်တယ်။
 
-::: code-group ကို
+::: code-group
 
 ```toml [Single]
 extends = "single-path.toml"
@@ -40,7 +40,7 @@ extends = ["file1.toml", "file2.toml"]
 
 Iroha သည် `extends` တွင် သတ်မှတ်ထားသော ဖိုင်အားလုံးကို ပြန်လည်ဖတ်ရှုပြီး အလွှာများအဖြစ်ဖွဲ့စည်းလိမ့်မည်။ နောက်ပိုင်းက ပမာဏအဆင့်တွင် ယခင်ဖိုင်များကို ထပ်မံရေးသားပါလိမ့်မည်။ ဥပမာ၊ `config.toml` ကိုဖတ်လျှင်:
 
-::: code-group ကို
+::: code-group
 
 ```toml [config.toml]
 extends = ["a.toml", "b.toml"]

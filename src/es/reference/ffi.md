@@ -18,7 +18,7 @@ El estándar principal utilizado hoy en día es la interfaz binaria de aplicacio
 
 Por supuesto, puedes hacer esto a tu manera. La caja `iroha_ffi` simplemente genera el código que necesitarías generar de todos modos. Escribir la placa necesaria requiere un poco de diligencia y disciplina. Cada llamada de función sobre el límite FFI es `unsafe` con el potencial de causar un comportamiento no definido. El método por el que hemos logrado resolverlo, gira en torno al uso de robustos tipos `repr(C)`.
 
-::: Información
+::: info
 
 El control de nulo y la validez no pueden ser aplicados a nivel mundial, por lo que los indicadores en bruto (como siempre) solo se utilizan en casos excepcionales. Dado que proporcionamos envolturas alrededor de casi todas las instancias de un objeto en el modelo de datos Iroha, no debería tener que usar punteros crudos en absoluto.
 
@@ -54,7 +54,7 @@ La caja `iroha_ffi` se utiliza para generar funciones que se pueden llamar a tra
 
 En el caso A Rust el tipo se convierte en un robusto `repr(C)` tipo que puede cruzar el FFI el límite con `FfiType::into_ffi`. Esto va al revés también: FFI `ReprC` el tipo se convierte en un `Rust` tipo a través de `FfiType::try_from_ffi`.
 
-::: advertencia
+::: warning
 
 Tenga en cuenta que la conversión opuesta es fallible y puede causar un comportamiento indefinido. Aunque podemos hacer todo lo posible para evitar los errores más obvios, usted debe asegurarse de la corrección del programa en su parte.
 

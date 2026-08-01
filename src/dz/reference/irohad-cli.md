@@ -14,7 +14,7 @@ translation_engine: nllb-200-ct2
 irohad --config path/to/config.toml
 ```
 
-## `--config`  {#arg-config}
+## `--config` {#arg-config}
 
 - ཐབས་ཅིག་: ཡིག་སྣོད་ལམ་
 - མཆོག: `-c`

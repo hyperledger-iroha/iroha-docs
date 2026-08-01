@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /blockchain/nfts.md
-translation_source_hash: 335eacd30c5964659baeeae8ac937805f1d4d786dd42a36e5164bbe75ef7e360
+translation_source_hash: 6dd2d21a29f352a14cb17046c66cfa541ef501b733b95bb6874d2d3f86ec0504
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -123,7 +123,7 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
-Егер сіз NFT көшірген болсаңыз, осы команданы ағымдағы меншік иесінің есептік жазбасының конфигурациясымен орындаңыз немесе NFT қайта көшіріңіз.
+NFT мысалын басып өткеннен кейін алып тастаңыз. Егер сіз оны көшірсеңіз, оны қайта көшіріңіз немесе ағымдағы иесінің тіркелгісінің конфигурациясымен тіркеуден шығу командасын тапсырыңыз.
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -145,7 +145,7 @@ NFT тіркелу, өшіру, беру және метамәліметтерд
 - `CanTransferNft`
 - `CanModifyNftMetadata`
 
-Рұқсаттарды тексеруді белсенді орындау уақытын растаушы жүзеге асырады, сондықтан желі рұқсаттарды жаңарту арқылы баптай алады орындаушы. [Рұқсат белгілері](/kk/reference/permissions.md) ағымдағы әдеттегі белгілер тізімі үшін.
+Рұқсаттарды тексеруді белсенді орындау уақытын растаушы жүзеге асырады, сондықтан желі орындаушысын жаңарту арқылы рұқсаттарды баптай алады. [Рұқсат белгілері](/kk/reference/permissions.md) ағымдағы әдеттегі белгілер тізімі үшін.
 
 ## NFTs таңдау {#choosing-nfts}
 

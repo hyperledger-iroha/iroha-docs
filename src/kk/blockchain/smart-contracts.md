@@ -1,9 +1,9 @@
 ---
 translation_locale: kk
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: ed622cdb1d6a47635d0753c98f80aaa903b916133f43bc9fdab268512d0ace69
+translation_source_hash: 7c35c609442df65328fa619b6673be76f801cfc2abc28afd853d7fe61e439e9c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Аккуратты келісімшарттар {#smart-contracts}
@@ -15,9 +15,9 @@ Iroha транзакциялары `Executable` пайдалы жүктемел�
 - `Executable::Ivm`: Iroha VM байт коды
 - `Executable::IvmProved`: алдын ала есептелген нұсқаулық үстіңгі қабатты және дәлелдеу міндеттемелері бар Iroha VM байт коды
 
-Kotodama болып табылады Iroha Бұл жоғары деңгейдегі ақылды келісім-шарт тілі. `.ko` бастапқы файл жинақталады детерминистік IVM Байткод, әдетте сақтау `.to` іске қосуға арналған артефакт. Kotodama мақсаттар IVM; ол өздігінен емес RISC-V немесе WebAssembly Мақсат.
+Kotodama — Iroha-ның жоғары деңгейлі смарт-келісімшарт тілі. `.ko` бастапқы файлы детерминирленген IVM байт-кодына компиляцияланады және орналастыру үшін әдетте `.to` артефакті ретінде сақталады. Kotodama тек IVM-ге бағытталған. Ол RISC-V немесе WebAssembly-ге бағытталмаған.
 
-Бірінші релиз тек ABI нұсқасын қолдайды 1. Syscall және pointer-ABI саясаты шартты түрде келісімшарт қабылдау мен орындау арқылы жүзеге асырылады; орындалу уақыты үйлесімділігі ауысу жоқ.
+Алғашқы шығарылым тек ABI 1-нұсқасын қолдайды. syscall және pointer-ABI саясаты келісімшартты қабылдау мен орындау кезінде сөзсіз қолданылады; орындау уақытындағы үйлесімділік ауыстырғышы жоқ.
 
 ## Ақылды келісімшарттарды қай кезде қолдану керек? {#when-to-use-smart-contracts}
 

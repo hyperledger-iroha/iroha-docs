@@ -4,17 +4,14 @@ import WarningFatQuery from './WarningFatQuery.vue'
 
 # Queries
 
-Although much of the information about the state of the blockchain can be
-obtained, as we've shown before, using an event subscriber and a filter to
-narrow the scope of the events to those of interest, sometimes you need to
-take a more direct approach. Enter _queries_.
+Event subscribers and filters can follow changes in blockchain state. Use a
+query when you need a direct view of the current state.
 
-Queries are small instruction-like objects that, when sent to an Iroha
-peer, prompt a response with details from the current world state view.
+Queries are small instruction-like objects. Send one to an Iroha peer to
+receive details from its current world state view.
 
-This is not necessarily the only kind of information that is available on
-the network, but it's the only kind of information that is _guaranteed_ to
-be accessible on all networks.
+A network may expose other information. Queryable world-state information is
+the only kind guaranteed to be available on every Iroha network.
 
 For each deployment of Iroha, there might be other available information.
 For example, the availability of telemetry data is up to the network

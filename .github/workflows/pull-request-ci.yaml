@@ -48,3 +48,14 @@ jobs:
         run: pnpm cli validate-links .vitepress/dist
         env:
           FORCE_COLOR: 2
+
+      - name: Build GitHub Pages backup
+        run: pnpm build
+        env:
+          FORCE_COLOR: 2
+          PUBLIC_PATH: /iroha-docs/
+
+      - name: Validate GitHub Pages backup links
+        run: pnpm cli validate-links .vitepress/dist --public-path /iroha-docs/
+        env:
+          FORCE_COLOR: 2

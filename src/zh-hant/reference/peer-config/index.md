@@ -6,18 +6,15 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# 設定方式 Iroha {#configuring-iroha}
+# 配置 Iroha {#configuring-iroha}
 
-在本地同行配置設定中 TOML 這與連鎖檔案不同.
-設定改變了 [`SetParameter`](/zh-hant/blockchain/instructions.md#setparameter)
-必須在配置文件中表示產品行為
-或是連鎖上參數;環境變量沒有功能門.
+當地同行配置設置在 TOML 文件中.這與通過[`SetParameter`](/zh-hant/blockchain/instructions.md#setparameter)指令改變的鏈上配置不同.生產行爲必須在一個配置文件或鏈上參數中表示;環境變量不是特徵門
 
-使用 [`--config`](../irohad-cli#arg-config) CLI 指定設定檔案的路徑.
+使用[`--config`](../irohad-cli#arg-config) CLI 參數來指定配置文件的路徑.
 
 ## 模板 {#template}
 
-各參數的詳細描述,請參考 [參數](./params.md) 參考資料
+對於每個參數的詳細描述,請參見 [參數](./params.md)參考文獻.
 
 ::: details `peer.template.toml`
 
@@ -25,10 +22,9 @@ translation_engine: nllb-200-ct2
 
 :::
 
-## 編輯配置文件 {#composing-configuration-files}
+## 編寫配置文件 {#composing-configuration-files}
 
-TOML 設定檔案有附加版本 `extends` 指向其他地區 TOML 這可能是單一路線或
-多個路徑:
+TOML 配置文件具有一個額外的 `extends` 字段,指向其他 TOML 文件. 它可能是單個路徑或多個路徑:
 
 ::: code-group
 
@@ -42,8 +38,7 @@ extends = ["file1.toml", "file2.toml"]
 
 :::
 
-Iroha 能反復閱讀所有指定的文件 `extends` 然後將它們排列成一層,後者將其覆蓋.
-數據顯示在參數水平上. `config.toml`:
+Iroha 將反覆閱讀`extends`中指定的所有文件,並將它們組建成層次,後者在參數級別上重寫之前的文件.例如,如果閱讀`config.toml`:
 
 ::: code-group
 
@@ -66,9 +61,8 @@ max_content_len = 2048
 
 :::
 
-The 這樣的配置將會 `chain` 來自 `a.toml`, `max_content_len` 來自 `b.toml`, 及其他 `torii.address` 來自
-`config.toml` (重寫) `b.toml`).
+結果的配置將是 `chain` 來自 `a.toml`, `max_content_len` 來自 `b.toml`, 和 `torii.address` 來自 `config.toml` (重寫) `b.toml`).
 
 ## 解決問題 {#troubleshooting}
 
-通過時間 [`--trace-config`](../irohad-cli#arg-trace-config) CLI 檢查配置如何閱讀和解析的標籤.
+通過[`--trace-config`](../irohad-cli#arg-trace-config) CLI 旗,查看配置如何閱讀和解析的痕跡.

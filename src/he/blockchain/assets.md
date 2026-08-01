@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /blockchain/assets.md
-translation_source_hash: 58c9f7657f5714dc4bbb884933a1c947687fcf6c83e471007e6c7885f1dab214
+translation_source_hash: c80e6025007653b355d373394465d04adefc1221c8f34d9008f1c9cbabd3dc40
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -47,7 +47,7 @@ translation_engine: nllb-200-ct2
 |`Infinitely` |אספקת גמישה, הנכס יכול להידפד ולשרוף שוב ושוב.|
 |`Once` |סימן אספקה קבועה, ניתן להכין אותו פעם אחת ולאחר מכן לשרוף אותו.|
 |`Not` |סימן של אספקה קבועה שאפשר לשרוף אבל לא לחתוך שוב.|
-|`Limited(n)` |חיתוך מותר עבור מספר מוגבל של פעולות נוספות. |
+|`Limited(n)` |המדיניות מאפשרת להוציא את יחידות נכסים חדשים במספר מוגבל של פעולות נוספות. |
 
 השתמש `Infinitely` עבור נכסים רגילים גמישים ו `Once` או `Limited(n)` עבור נכסים עם אספקת קבועה או אספקת מוגבלת. אל השתמשו `Not` כמדיניות ראשונית אלא אם אספקת הנכסים כבר נקבעה.
 

@@ -20,6 +20,6 @@ translation_engine: nllb-200-ct2
 
 <CompatibilityMatrixTable />
 
-::: 情報
+::: info
 `VITE_COMPAT_MATRIX_URL` を設定して,並べられたスナップショットを互換性のあるライブバックエンドで覆うだけ.この変数なしでは,ページがロードされる `src/public/compat-matrix.json`.
 :::

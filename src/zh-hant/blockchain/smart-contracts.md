@@ -1,86 +1,64 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: ed622cdb1d6a47635d0753c98f80aaa903b916133f43bc9fdab268512d0ace69
+translation_source_hash: 7c35c609442df65328fa619b6673be76f801cfc2abc28afd853d7fe61e439e9c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
-# 智能合同 {#smart-contracts}
+# 智慧合約 {#smart-contracts}
 
-Iroha 執行交易 `Executable` 目前的數據模型
-支持:
+Iroha 交易會執行 `Executable` 酬載。目前的資料模型支援：
 
-- `Executable::Instructions`: 排列的集合 Iroha 特別指示
-- `Executable::ContractCall`: 對部署的合同進行附加參考呼叫
-  舉例
-- `Executable::Ivm`: Iroha VM 字體代碼
-- `Executable::IvmProved`: Iroha VM 有預算指示的字體代碼
-  覆蓋和證明的承諾
+- `Executable::Instructions`：一組依序執行的 Iroha 特殊指令
+- `Executable::ContractCall`：以參照方式呼叫已部署的合約執行個體
+- `Executable::Ivm`：Iroha VM 位元組碼
+- `Executable::IvmProved`：包含預先計算之指令覆蓋層與證明承諾的 Iroha VM 位元組碼
 
-Kotodama 是的 Iroha 這是一種高層級的智能合同語言. `.ko` 源文件
-數據的數值 IVM 常見的存儲方式是 `.to`
-該產品的裝置. Kotodama 目標 IVM; 它並不是獨立的 RISC-V
-或是 WebAssembly 目標是我們的目標
+Kotodama 是 Iroha 的高階智慧合約語言。`.ko` 原始檔會編譯成確定性的 IVM 位元組碼，並依慣例儲存為 `.to` 成品以供部署。Kotodama 只以 IVM 為目標，絕不以 RISC-V 或 WebAssembly 為目標。
 
-首次發行只支持 ABI 該系統和指標的使用方式 ABI
-這項政策是通過承諾和執行無條件實施的;
-沒有執行時間兼容性切換.
+首次發行版僅支援 ABI 第 1 版。合約准入與執行會無條件強制套用系統呼叫及指標 ABI 政策；不存在執行階段相容性切換開關。
 
-## 如何使用智能合同 {#when-to-use-smart-contracts}
+## 何時使用智慧合約 {#when-to-use-smart-contracts}
 
-使用正常指令,當交易可以直接表達時:
+若交易可直接表達，請使用一般指令：
 
-- 註冊或不注冊的物件
-- 金,燃燒或轉移資產
-- 更新元數據
-- 授予或撤銷許可證
-- 執行開關
-- 在連鎖上設定的參數
+- 註冊或取消註冊物件
+- 鑄造、銷毀或轉移資產
+- 更新中繼資料
+- 授予或撤銷權限
+- 執行觸發器
+- 設定鏈上參數
 
-使用智能合同, 當交易需要包裝的逻辑
-或在部署的情況下
-請通過參考召喚合同案例.
+若交易需要封裝成難以用靜態指令序列表示的邏輯，或需要以參照方式呼叫已部署的合約執行個體，請使用智慧合約。
 
-## IVM 執行工具 {#ivm-executables}
+## IVM 可執行酬載 {#ivm-executables}
 
-`Executable::Ivm` 帶著原料 IVM 這種字體代碼在內部執行
-鎖定的運行時間限制.
-決定性;合同是交易執行的一部分,因此影響
-沒有人會同意.
+`Executable::Ivm` 攜帶原始 IVM 位元組碼。節點會在鏈上設定的執行階段限制內執行該位元組碼。位元組碼應保持精簡且具確定性；合約屬於交易執行的一部分，因此會影響共識。
 
-`Executable::IvmProved` 該裝置是為證實運輸流程而設的.
+`Executable::IvmProved` 用於攜帶證明的流程。它包含：
 
-- IVM 字體代碼
-- 決定性指令覆蓋
-- 執行事件的承諾
-- 氣體政策的承諾
+- IVM 位元組碼
+- 確定性的指令覆蓋層
+- 執行事件承諾
+- Gas 政策承諾
 
-證明將覆蓋結合到執行的字體代碼.
-證明和重播執行作為額外的證據
-檢查安全性.
+該證明會將覆蓋層與實際執行的位元組碼繫結。依照管線政策，驗證者可以驗證證明並重播執行，作為額外的安全檢查。
 
-## 部署的合同通話 {#deployed-contract-calls}
+## 呼叫已部署的合約 {#deployed-contract-calls}
 
-`Executable::ContractCall` 透過地址使用已部署的合同例.
-請使用此符號,
-而不是每次使用字體代碼.
+`Executable::ContractCall` 會依位址呼叫已部署的合約執行個體。當合約程式碼已另行註冊，且交易應以參照方式呼叫而非每次都攜帶位元組碼時，請使用此形式。
 
-## 經營指南 {#operational-guidance}
+## 維運指南 {#operational-guidance}
 
-- 請保持合同的決定性.
-  壁表時間,主機檔案系統狀態,網絡通話或其他同行本地
-  輸入方式.
-- 大字符碼增加交易尺寸和區塊
-  傳播成本.
-- 選擇簡單的帳號變更.
-  審核和實施更便宜.
-- 請將合同升級和註冊許可處理為高風險
-  操作控制.
+- 合約必須保持確定性。合約行為不得依賴本機時鐘時間、主機檔案系統狀態、網路呼叫或其他僅限單一對等節點的輸入。
+- 酬載應保持精簡。大型位元組碼會增加交易大小與區塊傳播成本。
+- 簡單的帳本變更應優先使用具型別的指令；它們較容易稽核，執行成本也較低。
+- 將合約升級與註冊權限視為高風險的維運控制項。
 
-查看以下內容:
+另請參閱：
 
-- [指示](/zh-hant/blockchain/instructions.md)
-- [引發器](/zh-hant/blockchain/triggers.md)
-- [許可證](/zh-hant/blockchain/permissions.md)
-- [數據模型方案](/zh-hant/reference/data-model-schema.md)
+- [指令](/zh-hant/blockchain/instructions.md)
+- [觸發器](/zh-hant/blockchain/triggers.md)
+- [權限](/zh-hant/blockchain/permissions.md)
+- [資料模型結構描述](/zh-hant/reference/data-model-schema.md)

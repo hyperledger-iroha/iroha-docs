@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /blockchain/queries.md
-translation_source_hash: 0a32b75b78d5bcde0d2b84b58d440b18e545559dfd9772dd6508ad41e972bf6e
+translation_source_hash: 234c831c97bb93996e6cf51505921ff509e233408cf2faf6a9b23641e5642040
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,13 +12,13 @@ import WarningFatQuery from './WarningFatQuery.vue'
 
 # Las consultas {#queries}
 
-Aunque gran parte de la información sobre el estado de la cadena de bloques se puede obtener, como hemos mostrado antes, usando un suscriptor de eventos y un filtro para reducir el alcance de los eventos a aquellos de interés, a veces es necesario adoptar un enfoque más directo. Ingrese consultas.
+Los suscriptores de eventos y filtros pueden seguir los cambios en el estado de la cadena de bloques. Utilice una consulta cuando necesite una vista directa del estado actual.
 
-Las preguntas son pequeños objetos similares a instrucciones que, cuando se envían a un compañero Iroha, provocan una respuesta con detalles de la visión actual del estado del mundo.
+Las consultas son pequeños objetos similares a instrucciones. Envía uno a un Iroha para recibir detalles de su visión actual del estado del mundo.
 
-Este no es necesariamente el único tipo de información disponible en la red, pero es el único tipo que está garantizado para ser accesible en todas las redes.
+Una red puede exponer otra información. La información querible sobre los estados mundiales es el único tipo garantizado de estar disponible en cada red Iroha.
 
-Por cada despliegue de Iroha, podría haber otra información disponible. Por ejemplo, la disponibilidad de datos de telemetría depende de los administradores de red. Es totalmente su decisión si quieren o no asignar poder de procesamiento para rastrear el trabajo en lugar de usarlo para hacer. El trabajo real. Por el contrario, siempre se requieren algunas funciones, por ejemplo, tener acceso al saldo de su cuenta.
+Por cada despliegue de Iroha, podría haber otra información disponible. Por ejemplo, la disponibilidad de datos de telemetría depende de los administradores de red. Es totalmente su decisión si quieren asignar o no. poder de procesamiento para rastrear el trabajo en lugar de utilizarlo para realizar el trabajo real. Por el contrario, siempre se requieren algunas funciones, por ejemplo, tener acceso al saldo de su cuenta.
 
 Los resultados de las consultas pueden ser clasificados [](#sorting), [paginated](#pagination) y [filtered](#filters) al mismo tiempo. La filtración puede realizarse en base a una variedad de principios, desde dominios específicos (máscaras individuales IP para filtros de direcciones) hasta métodos de subfiles como `begins_with` combinados utilizando operaciones lógicas.
 
@@ -74,7 +74,7 @@ let pagination = Pagination::new(Some(starting_result), Some(limit));
 
 Cuando crea una consulta, puede utilizar un filtro para devolver sólo los resultados que coinciden con el filtro especificado.
 
-Los filtros son específicos para las consultas. Por ejemplo, las consultas de cuentas se pueden restringir por identidad de cuenta o metadatos, mientras que las consultas sobre activos se pueden reducir por definición de activo, cuenta del titular o proyección de dominio. Utilice los constructores de consultas tipografadas del SDK siempre que sea posible para que el tipo de filtro coincida con el tipo de salida de la consulta.
+Los filtros son específicos para las consultas. Por ejemplo, las consultas de cuentas se pueden restringir por identidad de cuenta o metadatos, mientras que las consultas sobre activos se pueden reducir por activo uso de los constructores de consultas tipografadas SDK cuando sea posible para que el tipo de filtro coincida con el tipo de salida de la consulta.
 
 ## Clasificación {#sorting}
 

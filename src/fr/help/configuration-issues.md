@@ -38,7 +38,7 @@ Si vous devez restaurer les données de l'instance Iroha, faites ce qui suit:
 3. Laissez le nouveau groupe actif.
 4. Mettre à jour les fichiers d'origine et de configuration du premier pair uniquement dans le cadre d'une migration coordonnée.
 
-::: informations
+::: info
 
 Il n'existe pas de voie de réécriture automatique générale pour remplacer la génèse sur un réseau en direct. Traitez-la comme une migration coordonnée: préserver l'ancien état, mettre en place des pairs compatibles et déplacer les validateurs vers la nouvelle configuration seulement après que les opérateurs se soient mis d'accord sur le plan de migration.
 
@@ -56,7 +56,7 @@ Les deux hypothèses sont fausses. Malheureusement, les messages d'erreur n'aide
 
 Comment réparer: utilisez `hex_literal`. Cela transformera également une chaîne de caractères moche en un joli petit tableau de chiffres hexadecimaux évidemment.
 
-::: avertissement
+::: warning
 
 Même l'implémentation `try_from_str` ne peut pas vérifier si une chaîne donnée est un `PrivateKey` valide et vous avertir si ce n'est pas le cas.
 

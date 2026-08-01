@@ -6,25 +6,25 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# 工作與 Iroha 雙數字 {#working-with-iroha-binaries}
+# 與 Iroha 二進制貨幣合作 {#working-with-iroha-binaries}
 
-其他國家 Iroha 3 操作員工作流程以三個主要二元為主:
+Iroha 3 操作員的工作流程圍繞三個主要二進制:
 
-- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad) 經營同行妖怪
-- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_cli) 關於 CLI 操作員的命令
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_kagami) 關鍵,基因,局域網和配置文件
+- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad)用於運行一個同類妖怪
+- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_cli)用於 CLI 和操作員指令
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_kagami)用於密鑰,基因,局域網和個人資料
 
 ## 建立從源頭 {#build-from-source}
 
-來自上流工作空間根:
+從上游工作空間的根源:
 
 ```bash
 cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ```
 
-發放二元數據則可在 `target/release/`.
+在 `target/release/` 中,釋放二進制品可使用.
 
-檢查指令表面:
+爲了檢查指揮面:
 
 ```bash
 ./target/release/irohad --help
@@ -32,9 +32,9 @@ cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ./target/release/kagami --help
 ```
 
-## 直接從資料庫中執行 {#run-directly-from-the-repository}
+## 直接從存儲庫中運行 {#run-directly-from-the-repository}
 
-如果您不想在全球安裝任何東西, `cargo run`:
+如果您不想在全球範圍內安裝任何東西,請使用 `cargo run`:
 
 ```bash
 cargo run --bin irohad -- --help
@@ -44,23 +44,21 @@ cargo run --bin kagami -- --help
 
 ## Docker 圖像 {#docker-image}
 
-上游工作空間使用 `kagami localnet` 及其他 `kagami docker` 產生
-Docker Compose 文件與已查出的代碼相匹配. `hyperledger/iroha:dev`
-圖像可以與生成的檔案一起使用.
+上游工作空間使用 `kagami localnet` 和 `kagami docker` 產生 Docker Compose 文件與檢查出來的代碼相匹配. `hyperledger/iroha:dev` 圖像可以與生成的文件一起使用.
 
-運行 CLI 在容器中:
+運行 CLI 在一個容器中:
 
 ```bash
 docker run -t hyperledger/iroha:dev iroha --help
 ```
 
-跑起來 Kagami 在容器中:
+在容器中運行 Kagami:
 
 ```bash
 docker run -t hyperledger/iroha:dev kagami --help
 ```
 
-建立一個本地網,
+爲同行啓動,先生成一個本地網,然後編寫文件:
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
@@ -68,8 +66,8 @@ cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyper
 docker compose -f ./localnet/docker-compose.yml up
 ```
 
-## 該使用哪一種二元? {#which-binary-should-i-use}
+## 我應該使用哪個二元貨幣? {#which-binary-should-i-use}
 
-- 使用 `irohad` 在您開始或經營同行時.
-- 使用 `iroha` 在您需要查詢本簿,提交交易或檢查操作員端點時.
-- 使用 `kagami` 在您需要關鍵,創世記錄, 配置文件捆綁或本地網路資產時.
+- 使用 `irohad` 當您開始或運行同齡人時.
+- 在需要查詢本書,提交交易或檢查運營商終端點時使用 `iroha`.
+- 使用 `kagami`當您需要密鑰,基因表格,個人資料捆綁或本地網資產時.

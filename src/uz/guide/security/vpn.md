@@ -23,7 +23,7 @@ Quyidagi hollarda VPN dan foydalaning:
 
 VPN har bir ishga tushirish uchun talab qilinmaydi. Ommaviy tarmoqlar Torii ni ommaviy darvoza, yukni muvozanatlash vositasi yoki qaytarib yuboruvchi vosita orqali qasddan ochib berishlari mumkin. Hatto shunday holatda ham, iloji boricha cheklangan tarmoqlarda validatorning o'rta-o'rta trafik va boshqaruv oxirgi nuqtalarini saqlang.
 
-::: manzil
+::: tip
 
 Bir brauzer VPN faqat ushbu brauzerdan trafikni himoya qiladi. U `irohad`, CLI, SDK, SSH, o'lchovlarni yoki ehtiyot saqlash trafikini himoya qilmaydi, agar bu jarayonlar bir xil xususiy tarmoq orqali yo'naltirilmagan bo'lsa.
 

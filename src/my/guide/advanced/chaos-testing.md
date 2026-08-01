@@ -22,7 +22,7 @@ cd iroha
 cargo build -p izanami
 ```
 
-TUI မဟုတ်သော run တစ်ခုစီအတွက် `--allow-net` ကို Pass လုပ်ရန် သို့မဟုတ် TUI တွင် `allow_net` ကို Activate လုပ်ရန် အတည်ပြုရမည်။
+ဘိုင်နရီဟာ ကွန်ယက်တူညီသူတွေကို ဖန်တီးပြီး ထိန်းချုပ်ဖို့ တိတိကျကျ ခွင့်ပြုဖို့လိုပါတယ်။ ခွင့်ပြုချက် `--allow-net` တစ်နိုင်ငံလုံးအတွက်TUI run သို့မဟုတ် enable လုပ်ပါ။ `allow_net` အထဲမှာ TUI.
 
 ```bash
 cargo run -p izanami -- --allow-net --peers 4 --faulty 1 --duration 120s

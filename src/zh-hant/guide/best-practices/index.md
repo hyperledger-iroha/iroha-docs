@@ -8,44 +8,35 @@ translation_engine: nllb-200-ct2
 
 # 最好的做法 {#best-practices}
 
-這部分收集了以生產為中心的指南, Iroha 申請方式
-該組織是由你需要做出的決定而不是由
-該項目的執行功能.
+這一節收集 Iroha 應用程序和網絡的生產指導. 它是由您需要做出的決定組織的,而不是運行它的功能.
 
-在分享測試網的練習之前,
-或是一個主要的客戶釋放.
+在分享測試網絡排練,生產啓動或主要客戶發佈之前使用它作爲一個檢查列表.
 
 ## 類別 {#categories}
 
-| 類別                                                | 集中注意力                                                                                                  |
+|類別|專注|
 | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| [應用程式的發展](./application-development.md) | 客戶配置,交易提交,再試驗,事件,查詢以及代理協助的開發 |
-| [數據建模](./data-modeling.md)                     | 域名,帳戶,資產, NFTs, 超級數據,連鎖之外的數據和命名協議                      |
-| [網路部署](./network-deployment.md)           | 創世記,拓學,同行鍵, Torii 暴露,共識設定和環境分離           |
-| [活動](./operations.md)                           | 可觀察性,執行簿,備份,變更管理,能力檢查和事件處理            |
-| [安全與使用權](./security-and-access.md)         | 秘密處理,許可證,技術帳戶,網路接入和監控方式                     |
-| [準備釋放](./release-readiness.md)             | 地方網路, Taira, Minamoto, 互換性檢查,實際網絡保障和反彈計劃        |
+| [應用程序開發](./application-development.md)|客戶配置,交易提交,重新嘗試,事件,查詢和代理輔助開發|
+| [數據模型](./data-modeling.md) |域名,賬戶,資產, NFTs,元數據,鏈外的數據和命名協議|
+| [網絡部署](./network-deployment.md) |基因,拓學,同行密鑰, Torii 暴露,共識設置和環境分離 |
+| [運營](./operations.md)|可觀察性,運行簿,備份,變化管理,能力檢查和事件處理|
+| [安全與訪問](./security-and-access.md) |祕密處理,許可證,技術賬戶,網絡訪問和審計路徑|
+| [釋放準備性](./release-readiness.md)|地方網, Taira, Minamoto,兼容性檢查,現場網絡保障措施和反彈計劃|
 
 ## 交叉切割規則 {#cross-cutting-rules}
 
-- 保持本地開發,共享測試網和生產配置
-  沒有任何相關資訊.
-- 如何對待創世論,同行拓學,執行者政策和關鍵資料
-  控制部署的文物.
-- 請不要使用傳統數據作為
-  對於大型,私人或高度數據的廢棄物.
-- 透過無法處理的工作流程提交交易
-  拒絕,過期,重新嘗試和延遲狀態.
-- 喜歡狭窄的許可,專用的技術帳戶和明顯
-  在廣泛的管理員接觸上,
-- 首先要在一次性本地網路上證明行為,
-  Taira 或在任何主網運作之前,其他共享測試網絡.
+- 保持本地開發,共享測試網絡和生產配置的分離.
+- 處理起源,同行拓學,執行程序政策和關鍵材料作爲控制部署文物.
+- 模型的持久賬本狀態是故意的.不要使用元數據作爲大型,私人或高率數據的傾倒場地.
+- 通過無效的工作流程提交交易,可處理拒絕,過期,重新嘗試和延遲狀態.
+- 偏好狹窄的權限,專用的技術賬戶和明確的操作運行簿,而不是寬泛的管理員訪問.
+- 首先在一次性本地網絡上證明行爲,然後在任何主要網絡操作之前在 Taira 或其他共享測試網上練習.
 
-## 有關參考資料 {#related-references}
+## 相關引用 {#related-references}
 
 - [配置和管理](/zh-hant/guide/configure/overview.md)
 - [安全性](/zh-hant/guide/security/)
-- [性能與指標](/zh-hant/guide/advanced/metrics.md)
-- [互換性矩陣](/zh-hant/reference/compatibility-matrix.md)
-- [Torii 目的地](/zh-hant/reference/torii-endpoints.md)
-- [許可令牌](/zh-hant/reference/permissions.md)
+- [性能和指標](/zh-hant/guide/advanced/metrics.md)
+- [兼容性矩陣](/zh-hant/reference/compatibility-matrix.md)
+- [Torii 終點](/zh-hant/reference/torii-endpoints.md)
+- [許可證代幣](/zh-hant/reference/permissions.md)

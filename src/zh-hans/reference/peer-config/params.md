@@ -14,18 +14,15 @@ import ParamTable from './ParamTable.vue';
 
 # 配置参数 {#configuration-parameters}
 
-其他类型
+标签:
 
 ## 根级别 {#root}
 
 ### `chain` <Badge text="required" /> {#param-chain-id}
 
-链 ID 为了防止反弹攻击.
+链 ID 必须在每个交易中包含. 用于防止重复攻击.
 
-复制攻击是试图将有效的交易提交给不同的
-网络比它所预期的网络. `chain` 是其中的一部分
-签署的交易实用负载,一个链签署的事务被拒绝
-由使用其他链的同龄人 ID.
+复制攻击是试图将有效的交易提交给与其预期的不同网络.由于 `chain` 是签署的交易实用负载的一部分,使用另一个链 ID 的同行拒绝了一项为一连锁签署的事务.
 
 <param-table type=string env=CHAIN />
 
@@ -43,7 +40,7 @@ CHAIN="00000000-0000-0000-0000-000000000000"
 
 ### `public_key` <Badge text="required" /> {#param-public-key}
 
-协同验证器必须使用 BLS- 通常的钥匙.
+共识验证器的同行必须使用 BLS-Normal键.
 
 <param-table type="public-key" env="PUBLIC_KEY" />
 
@@ -61,8 +58,7 @@ PUBLIC_KEY="ea01309060D021340617E9554CCBC2CF3CC3DB922A9BA323ABDF7C271FCC6EF69BE7
 
 ### `private_key` <Badge text="required" /> {#param-private-key}
 
-一个同行的私钥. `public_key`; 共识验证者同行
-必须使用 BLS- 通常的钥匙.
+同级密钥:它必须匹配 `public_key`;共识验证器同级必须使用 BLS-正常密钥.
 
 <param-table type="private-key" env="PRIVATE_KEY" />
 
@@ -82,15 +78,12 @@ PRIVATE_KEY="8926201CA347641228C3B79AA43839DEDC85FA51C0E8B9B6A00F6B0D6B0423E9029
 
 预先定义的可信同行列表.
 
-必须使用共识验证器 BLS 对于每一个验证器,
-提供匹配 [`trusted_peers_pop`](#param-trusted-peers-pop) 进入.
+共识验证器必须使用 BLS-Normal peer keys.对于每个验证器,还提供匹配的 [`trusted_peers_pop`](#param-trusted-peers-pop)输入.
 
 <param-table env="TRUSTED_PEERS">
 <template #type>
 
-其他类型的字符串. `PUBLIC_KEY@ADDRESS` 在 P2P 已知地址;
-裸体 `PUBLIC_KEY` 也被接受,并允许发现同行地址
-八.
+在 P2P 地址已知时使用`PUBLIC_KEY@ADDRESS`;裸体 `PUBLIC_KEY`也被接受,并且允许从言中发现同行地址.
 
 </template>
 </param-table>
@@ -116,12 +109,12 @@ TRUSTED_PEERS='[
 
 ### `trusted_peers_pop` {#param-trusted-peers-pop}
 
-BLS 验证者可信任的同龄人所有权证明条目.
+BLS 验证者可信任的同行所有权证明条目.
 
 <param-table env="TRUSTED_PEERS_POP">
 <template #type>
 
-具有的物体数组 `public_key` 并且 `pop_hex` 字段
+具有 `public_key`和 `pop_hex`字段的对象阵列
 
 </template>
 </param-table>
@@ -149,8 +142,7 @@ TRUSTED_PEERS_POP='[
 
 ### `genesis.file` {#param-genesis-file}
 
-文件路径到签署的基因区块有效载荷 `kagami genesis sign`.
-生成的个人资料通常将此写为 Norito `.nrt` 文件.
+文件路径到由 `kagami genesis sign`生成的签署基因区块有效载荷.生成的个人资料通常将此写成 Norito `.nrt`文件.
 
 <param-table type="file-path" env="GENESIS" />
 
@@ -169,7 +161,7 @@ GENESIS="./genesis.signed.nrt"
 
 ### `genesis.public_key` <Badge text="required" /> {#param-genesis-public-key}
 
-基因钥匙的公钥.
+基因关键对的公钥.
 
 <param-table type="public-key" env="GENESIS_PUBLIC_KEY" />
 
@@ -190,7 +182,7 @@ GENESIS_PUBLIC_KEY="ed01208BA62848CF767D72E7F7F4B9D2D7BA07FEE33760F79ABE5597A515
 
 ### `network.address` <Badge text="required" /> {#param-network-address}
 
-对共识 (sumeragi) 和区块同步的 p2p通信地址 (区块)_为了实现同步的目的.
+为共识 (sumeragi) 和区块同步 (区块_sync) 的目的的p2p通信地址.
 
 <param-table type="socket-addr" env="P2P_ADDRESS" />
 
@@ -211,7 +203,7 @@ P2P_ADDRESS=0.0.0.0:1337
 
 同等地址 (外部,其他同龄人看到的).
 
-他们会向同龄人传说言,以便他们可以把它传给其他同龄人.
+他们会向相关的同龄人传说八,以便他们可以向其他同龄人传播.
 
 <param-table type="socket-addr" env="P2P_PUBLIC_ADDRESS" />
 
@@ -230,7 +222,7 @@ P2P_PUBLIC_ADDRESS=0.0.0.0:5000
 
 ### `network.block_gossip_size` {#param-network-block-gossip-size}
 
-在一个同步消息中可以发送的块数量.
+单个同步消息中可以发送的块量.
 
 <param-table type=number default-value=4 />
 
@@ -247,7 +239,7 @@ block_gossip_size = 256
 
 最新区块的同行请求之间的时间间隔.
 
-更频繁的言会缩短同步时间,
+频繁的八缩短了同步时间,但可以加载网络.
 
 <param-table type=millis default-value=10_000 default-note="10 seconds" />
 
@@ -262,9 +254,9 @@ block_gossip_period_ms = 1_000
 
 ### `network.transaction_gossip_size` {#param-network-transaction-gossip-size}
 
-传言的最大交易数量.
+一个言批次消息中最大交易数.
 
-较小的尺寸会导致更长的时间同步,但如果您有大量的输入.
+较小的尺寸会导致更长的时间同步,但如果您有很高的数据包损失,则有用.
 
 <param-table type=number default-value=500 />
 
@@ -279,9 +271,9 @@ transaction_gossip_size = 256
 
 ### `network.transaction_gossip_period_ms` {#param-network-transaction-gossip-period-ms}
 
-在同龄人之间进行交易之前言的时间.
+在同龄人之间进行交易等待言的时间.
 
-更频繁的言会缩短同步时间,
+频繁的八缩短了同步时间,但可以加载网络.
 
 <param-table type=millis default-value=1_000 default-note="1 second" />
 
@@ -296,7 +288,7 @@ transaction_gossip_period_ms = 5_000
 
 ### `network.idle_timeout_ms` {#param-network-idle-timeout-ms}
 
-如果同行置,终止与同行联系的时间.
+如果同行无事,则终止与同行的联系的时间.
 
 <param-table type=millis default-value=300_000 default-note="5 minutes" />
 
@@ -313,7 +305,7 @@ idle_timeout_ms = 300_000
 
 ### `torii.address` <Badge text="required" /> {#param-torii-address}
 
-收到的地址 Torii 服务器必须倾听客户的请求.
+Torii 服务器必须听取的地址,客户端应向该服务器提出请求.
 
 <param-table type=socket-addr env=API_ADDRESS />
 
@@ -332,8 +324,7 @@ API_ADDRESS=0.0.0.0:8080
 
 ### `torii.max_content_len` {#param-torii-max-content-len}
 
-在原始请求体中接受的最大字节数量
-[Torii 终点](/zh-hans/reference/torii-endpoints.md).
+在 [Torii 终端点](/zh-hans/reference/torii-endpoints.md)所接受的原始请求体中最大字节数.
 
 这一限制用于防止 DOS 攻击.
 
@@ -408,22 +399,20 @@ query_store_capacity_per_user = 128
 
 ### `logger.level` {#param-logger-level}
 
-_总_ 记载动词性 (见 [`logger.filter`](#param-logger-filter) 对于精细的配置).
+一般的记录动词性 (参见 [`logger.filter`](#param-logger-filter)进行精炼的配置).
 
 <param-table default-value=INFO env=LOG_LEVEL>
 <template #type>
 
-字符串,可能的值:
+字符串,可能值:
 
-- `TRACE`: 包括低级行动在内的所有事件.
-- `DEBUG`: 对于诊断来说有用的调试级别消息.
-- `INFO`: 一般信息信息.
-- `WARN`: 警告表明可能出现问题.
-- `ERROR`: 干扰正常功能但允许继续运行的错误.
+- `TRACE`:所有事件,包括低级操作.
+- `DEBUG`:调试级别的消息,可用于诊断.
+- `INFO`:一般信息信息.
+- `WARN`:警告表明可能出现问题.
+- `ERROR`:破坏正常功能但允许继续运行的错误.
 
-选择适合您使用情况的水平.
-[堆积溢出](https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels) 额外
-详细说明如何使用不同日志水平.
+选择适合您使用情况的级别.查看[Stack Overflow](https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels),了解如何使用不同日志水平的更多细节.
 
 </template>
 </param-table>
@@ -443,30 +432,26 @@ LOG_LEVEL=INFO
 
 ::: tip 运行时间更新
 
-这个参数可通过运行时间配置更新 Torii 运营商终端点.
+该参数通过 Torii 操作员终端点进行运行时间配置更新.
 
 :::
 
 ### `logger.filter` {#param-logger-filter}
 
-除了精炼的日志过器 [`logger.level`](#param-logger-level). 允许定制记录动词性
-每个_目标_.
+除了 [`logger.level`](#param-logger-level)之外,还可以进行精细的日志过器.
 
 <param-table type=string env=LOG_FILTER>
 <template #type>
 
-字符串,由一个或多个指令分开的逗号.每个指令都可能具有相应的最大词语性
-_的水平_ 允许 (例如, _选择_) 及相应的事件. Iroha 考虑了较少的独占水平 (如
-`trace` 或 `info`) 更多的词语比更独占的水平 (如 `error` 或 `warn`).
+字符串由一个或多个以逗号分开的指令组成. 每条指令都可能具有相应的最大语文性水平,允许 (例如选择) 相匹配的跨度和事件;Iroha 认为较少的独占水平 (如`trace`或`info`) 是比更为独占的水平 (如 `error`或 `warn`) 更有口头性.
 
-在高层次上,指令的语法由几个部分组成:
+在高层面上,指令的语法由几个部分组成:
 
 ```
 target[span{field=value}]=level
 ```
 
-更多详情请参见
-[`tracing-subscriber` 文件](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/filter/struct.EnvFilter.html).
+详见 [`tracing-subscriber`文档](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/filter/struct.EnvFilter.html).
 
 </template>
 
@@ -485,18 +470,17 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 
 :::
 
-::: info 与 [`logger.level`](#param-logger-level)
+::: info 与 [`logger.level`](#param-logger-level)的兼容性
 
-`logger.filter` 工作 _一起_ 在 [`logger.level`](#param-logger-level) 没有一个能覆盖另一个.
+`logger.filter`与 [`logger.level`](#param-logger-level)一起工作,没有一个覆盖另一个.
 
-例如,如果 `logger.level` 设置为 `INFO` 并且 `logger.filter` 设置为 `iroha_core=debug`, 产生的过器
-设置将是 `info,iroha_core=debug` (也就是说 `info` 对于所有模块, `debug` 对于 `iroha_core`).
+例如,如果 `logger.level` 设置为 `INFO` 和 `logger.filter` 设置为 `iroha_core=debug`, 产生的过器组将是: `info,iroha_core=debug` (也就是说 `info` 对于所有模块, `debug` 对于 `iroha_core`).
 
 :::
 
 ::: tip 运行时间更新
 
-这个参数可通过运行时间配置更新 Torii 运营商终端点.
+该参数通过 Torii 操作员终端点进行运行时间配置更新.
 
 :::
 
@@ -507,21 +491,14 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 <param-table default-value=full env=LOG_FORMAT>
 <template #type>
 
-字符串,可能的值:
+字符串,可能值:
 
-- `full`: 默认格式化器. 这将为每次事件发出可读的单行日志,
-  在格式化演示事件之前显示的当前跨度背景.
-- `compact`: 默认格式器的变体,优化为短线长度.
-  在格式化事件的字段中附加,且不显示跨度名称;动词性水平缩写为
-  一个角色.
-- `pretty`: 它们是为了使人体可读性而优化的.
-  用于本地开发和调试,或用于命令行应用程序,在自动分析和紧的情况下
-  存储日志的优先级不如可读性和视觉吸引力.
-- `json`: 输出新线限量 JSON 用于生产系统,结构化日志
-  作为 JSON 通过分析和查看工具. JSON 产量不优化为人类可读性.
+- `full`:默认格式化器. 它为每次事件发出可读的单行日志,在格式化的演示之前显示当前跨度文本.
+- `compact`:为短线长度优化的默认格式器的一种变体.当前跨度文本中的字段添加到格式事件的字段中,并且没有显示跨度名称;语法性水平缩写成单个字符.
+- `pretty`: 发射过度漂亮的多行日志,优化为人类可读性.调试,或用于命令行应用程序,自动分析和日志的紧存储比可读性和视觉吸引力少于优先考虑.
+- `json`:输出新线界限的 JSON 日志. 这用于生产系统中使用结构化日志作为 JSON 通过分析和查看工具消耗. JSON 输出并非为人类可读性优化的.
 
-更多详细信息和样本输出,见
-[`tracing-subscriber` 文件](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/format/index.html).
+更多详细信息和样本输出,请见 [`tracing-subscriber`文档](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/format/index.html).
 
 </template>
 </param-table>
@@ -541,13 +518,13 @@ LOG_FORMAT=json
 
 ## Kura {#kura}
 
-_库拉_ 是存储机的持久发动机 Iroha (日本语为 _仓库_).
+Kura 是 Iroha (用于仓库的日本语) 的持久存储引擎.
 
 ### `kura.blocks_in_memory` {#param-kura-blocks-in-memory}
 
 最多将存储在内存中的最后N块.
 
-如果需要,将旧块从内存中丢弃并从磁盘上载.
+如果需要,旧区块将从内存中丢弃并从磁盘上载.
 
 <param-table type=number default-value=1024 env=KURA_BLOCKS_IN_MEMORY />
 
@@ -571,10 +548,10 @@ Kura 启动方式
 <param-table  default-value=strict env=KURA_INIT_MODE>
 <template #type>
 
-字符串,可能的值:
+字符串,可能值:
 
-- `strict`: 所有块的严格验证
-- `fast`: 快速启动,只有基本检查
+- `strict`:所有块的严格验证
+- `fast`:快速启动,仅进行基本检查
 
 </template>
 </param-table>
@@ -594,9 +571,9 @@ KURA_INIT_MODE=fast
 
 ### `kura.store_dir` {#param-kura-store-dir}
 
-指定区块存储的目录[^paths].
+指定区块存储处的目录[^paths].
 
-查看以下内容: [`snapshot.store_dir`](#param-snapshot-store-dir).
+也见: [`snapshot.store_dir`](#param-snapshot-store-dir).
 
 <param-table env=KURA_STORE_DIR type=file-path default-value=./storage />
 
@@ -615,7 +592,7 @@ KURA_STORE_DIR=/path/to/storage
 
 ### `kura.debug.output_new_blocks` <Badge type="warning" text="debug" /> {#param-kura-debug-output-new-blocks}
 
-标签,使其能够打印新的区块.
+标签,使其能够打印新的块.
 
 <param-table env=KURA_DEBUG_OUTPUT_NEW_BLOCKS type=bool default-value=false />
 
@@ -636,7 +613,7 @@ KURA_DEBUG_OUTPUT_NEW_BLOCKS=true
 
 ### `queue.capacity` {#param-queue-capacity}
 
-在排队等待的交易数量的上限.
+在排列中等待的交易数量的上限.
 
 <param-table type=number default-value=65_536 />
 
@@ -651,9 +628,9 @@ capacity = 1_048_576
 
 ### `queue.capacity_per_user` {#param-queue-capacity-per-user}
 
-单个用户排队的交易数量的上限.
+一个用户在排列中等待的交易数量的上限
 
-使用此选项来施加气.
+使用这个选项来施加气.
 
 <param-table type=number default-value=65_536 />
 
@@ -668,7 +645,7 @@ capacity_per_user = 1_048_576
 
 ### `queue.transaction_time_to_live_ms` {#param-queue-transaction-time-to-live-ms}
 
-如果交易仍在排队中,此次交易将被取消.
+在此之后,如果交易仍在排队中,交易将被取消.
 
 <param-table type=millis default-value=86_400_000 default-note="24 hours" />
 
@@ -685,9 +662,7 @@ transaction_time_to_live_ms = 43_200_000
 
 ### `sumeragi.debug.force_soft_fork` <Badge type="warning" text="debug" /> {#param-sumeragi-debug-force-soft-fork}
 
-仅用于运动的调试开关 Sumeragi 放下这些.
-在控制测试之外被禁用;在运行的生产网络上更改
-可能会导致同龄人对共识行为产生分歧.
+仅用于炼的调试开关 Sumeragi 软叉处理路径.将其禁用在控制测试之外;在运行的生产网络上更改可能会导致同龄人对共识行为产生分歧.
 
 <param-table type=bool default-value=false />
 
@@ -702,19 +677,13 @@ force_soft_fork = true
 
 ## 快照 {#snapshot}
 
-这一模块负责阅读和写下
-[世界状况的看法](/zh-hans/blockchain/world#world-state-view-wsv).
+该模块负责阅读和编写[世界状态视图](/zh-hans/blockchain/world#world-state-view-wsv)的快照.
 
-快照存储了世界状态视图的序列化检查点,
-没有重新播放每一个区块 Kura. Kura 仍然是耐用的块
-历史和重播的真相来源;快照是加速路径.
-在启动时, Iroha 检查即时截图的元数据与配置链和
-在决定是否将快照加载或重播之前存储的区块.
+快照存储世界状态视图的序列化检查点,以便一个同行可以重新启动而不需要重播从 Kura 的每个区块. Kura 仍然是持续的区块历史和重播的真相来源;快照是一个加速路径.在启动时, Iroha 检查了设置链和存储的区块之间的快照元数据,然后决定是否要加载快照或重新播放.
 
-::: tip 清除快照
+::: tip 删除快照
 
-如果快照系统有问题,你想从空白页开始 (
-快照),你可以删除指定的目录 [`snapshot.store_dir`](#param-snapshot-store-dir).
+如果快照系统有什么问题,并且您想从空白页面开始 (即快照),则可以删除 [`snapshot.store_dir`](#param-snapshot-store-dir)所指定的目录.
 
 :::
 
@@ -725,13 +694,11 @@ force_soft_fork = true
 <param-table default-value=read_write env=SNAPSHOT_MODE>
 <template #type>
 
-字符串,可能的值:
+字符串,可能值:
 
-- `read_write`: Iroha 创建一个时间的快照
-  [`snapshot.create_every_ms`](#param-snapshot-create-every-ms). 在启动时, Iroha 读取现有快照 (如果有的话)
-  并验证它与区块存储的最新情况.
-- `readonly`: 类似于 `read_write` 但 Iroha 没有创建任何快照.
-- `disabled`: Iroha 在启动时不会创建新的快照,也不会阅读现有的快照.
+- `read_write`:Iroha 创建了由 [`snapshot.create_every_ms`](#param-snapshot-create-every-ms)指定的时段的快照.在启动时, Iroha 阅读一个现有快照 (如果有的话) 并验证它是否与区块存储更新.
+- `readonly`:类似于 `read_write`但 Iroha 没有创建任何快照.
+- `disabled`: Iroha 既不会创建新的快照,也不会在启动时读取现有的快照.
 
 </template>
 </param-table>
@@ -751,7 +718,7 @@ SNAPSHOT_MODE=readonly
 
 ### `snapshot.create_every_ms` {#param-snapshot-create-every-ms}
 
-快照频率.
+快照的频率.
 
 <param-table type=millis default-value=600_000 default-note="10 minutes" />
 
@@ -768,7 +735,7 @@ create_every_ms = 60_000
 
 在哪里存储快照.
 
-查看以下内容: [`kura.store_dir`](#param-kura-store-dir)
+另见: [`kura.store_dir`](#param-kura-store-dir)
 
 <param-table type=file-path default-value=./storage/snapshot env=SNAPSHOT_STORE_DIR />
 
@@ -785,13 +752,11 @@ SNAPSHOT_STORE_DIR="/path/to/storage"
 
 :::
 
-## 远程测量 {#telemetry}
+## 电测仪 {#telemetry}
 
-远程测量将同行诊断输出到外部远程测量的收集器.
-两者 `telemetry.name` 并且 `telemetry.url` 当一个同龄人应该向一个
-如果不使用远程测量,则省略该部分.
+远程测量将同行诊断输出到外部远程测量的收集器.当同行报告给收藏器时,设置 `telemetry.name` 和 `telemetry.url`;如果不使用远程测试,则省略该节目.
 
-`name` 并且 `url` 必须配对.
+`name`和 `url`必须配对.
 
 所有的 `telemetry` 部分是可选的.
 
@@ -812,7 +777,7 @@ name = "iroha"
 
 ### `telemetry.url` {#param-telemetry-url}
 
-其他 WebSocket URL 远程测量仪器.
+远程测量器的 WebSocket URL.
 
 <param-table type=string />
 

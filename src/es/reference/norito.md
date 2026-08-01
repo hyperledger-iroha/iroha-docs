@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /reference/norito.md
-translation_source_hash: ff258251887109f6cb28241235caea8e1b6a69df10df60cb7b2e7c2507004b4e
+translation_source_hash: 4297b0ff795a5cdb6556424e89de7191522271519aa36720ed45a695ad402211
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -34,7 +34,7 @@ Cada carga útil en cable o en disco Norito está enmarcada por un encabezado se
 | --- | ---: | --- |
 |La magia .|4 bytes |ASCII `NRT0`, utilizado para rechazar anticipadamente los datos no relacionados con Norito. |
 |Mayor .|1 byte |Formatar la versión principal. las cargas útiles actuales utilizan `0`. |
-|Menores .|1 byte |Indicación de decodificación fija v1. Las cargas útiles actuales utilizan `0x00`; las opciones de diseño están en banderas. |
+|Menores .|1 byte |Decodificación de la pista para V1. El valor actual es `0x00`. Las banderas describen el diseño.|
 |El esquema hash |16 bytes |Identidad de tipo utilizada por los decodificadores de tipografía para rechazar cargas útiles inesperadas |
 |Compresión |1 byte |`0 = None`, `1 = Zstd`. Los valores desconocidos se rechazan. |
 |longitud de la carga útil |8 bytes |longitud de carga útil no comprimida como pequeña endianas `u64`. |
@@ -63,7 +63,8 @@ Las banderas son explícitas. Los decodificadores no deducen el diseño de la fo
 Norito utiliza diseños determinísticos para las formas de datos comunes que aparecen en el modelo de datos Iroha:
 
 - Las cuerdas son `[len][utf8-bytes]`; `len` sigue a `COMPACT_LEN` cuando esté activada.
-- Las longitudes por valor utilizan variantes compactas cuando se establece `COMPACT_LEN`, de lo contrario, fija el pequeño endio de 8 bytes `u64`.
+- Cuando se establece `COMPACT_LEN`, una longitud por valor utiliza un varínte compacto.
+- En caso de ausencia de `COMPACT_LEN`, una longitud por valor es un pequeño endio de 8 bytes `u64`.
 - Los encabezados de longitud de secuencia se fijan en un pequeño endio `u64` de 8 bytes en v1.
 - `Vec<u8>` está codificado como `[len_u64][raw-bytes]` en vez de una longitud por byte.
 - Las secuencias envasadas utilizan compensaciones monótonas `(len + 1)` `u64` seguidas de las cargas útiles del elemento concatenado.
@@ -85,7 +86,7 @@ Norito admite compresión explícita y adaptativa sin cambiar la carga útil ló
 
 |Características |Propósito |
 | --- | --- |
-|`to_bytes` |Encode una carga útil no comprimida en el encabezado. |
+|`to_bytes` |Encode un encabezado seguido de una carga útil no comprimida. |
 |`to_compressed_bytes` |Encode con Zstd y graba la etiqueta de compresión en el encabezado. |
 |`to_bytes_auto` |Aplicar heurísticas deterministas para decidir si la compresión vale la pena. |
 |Aceleración CRC64 |Utiliza portable CRC64-XZ en todas partes, con CLMUL en x86_64 o PMULL en aarch64, cuando esté disponible. |
@@ -117,9 +118,9 @@ Los atributos de campo comunes son:
 |El atributo |El efecto |
 | --- | --- |
 |`#[norito(rename = "other")]` |Utiliza un nombre serializado estable para el esquema y la compatibilidad JSON. |
-|`#[norito(skip)]` |Omite el campo y lo llena de `Default` mientras se decodifica. |
+|`#[norito(skip)]` |El codificador omite el campo. El decodificador proporciona su valor `Default`. |
 |`#[norito(default)]` |Utiliza `Default` cuando una carga útil descifrada no lleva el campo. |
-|`#[norito(skip_serializing_if = "...")]` |Elimina campos de JSON cuando el predicado coincide, mientras se conservan los valores predeterminados de decodificación. |
+|`#[norito(skip_serializing_if = "...")]` |Elimina campos de JSON cuando el predicado coincide, mientras se conservan los valores predeterminados para la decodificación. |
 
 Los derivados también exponen señales de longitud codificada y cálculos de longitud exacta cuando sea posible. Los codificadores utilizan estas pistas para reservar los amortiguadores y evitar copias adicionales.
 
@@ -166,11 +167,11 @@ Accept: application/x-norito, application/json
 
 Las fallas de decodificación aparecen como errores de tipografía Torii y se cuentan por telemetría. Las razones comunes incluyen magia inválida, versión no soportada, bandera de características no soportadas, falta de coincidencia en la cantidad de checksum, error de formato UTF-8, etiqueta enum invalida y falta de coincisión en el esquema.
 
-Norito RPC el transporte se selecciona a través de la configuración del transporte. los paneles de control del operador deben realizar un seguimiento de la latencia de las solicitudes, fallos conexiones activas, bytes de respuesta y `torii_norito_decode_failures_total` separadamente de JSON El tráfico.
+Norito RPC El transporte se selecciona a través de la configuración del transporte. debe realizar un seguimiento de la latencia de las solicitudes, fallos, conexiones activas, bytes de respuesta y `torii_norito_decode_failures_total` separadamente de JSON El tráfico.
 
 ## Norito Transmisiones en directo {#norito-streaming}
 
-Norito La transmisión extiende el mismo enfoque determinista a los medios y las superficies de transporte en tiempo real.
+Norito El streaming amplía el mismo enfoque determinista a los medios y las superficies de transporte en tiempo real.
 
 |Función de transmisión |Propósito |
 | --- | --- |
@@ -179,7 +180,7 @@ Norito La transmisión extiende el mismo enfoque determinista a los medios y las
 |Compromisos por piezas |Deje que los espectadores y relés verifiquen las piezas de carga útil contra el manifiesto antes de servir o decodificar. |
 |Cuadrados de control |Llevar anuncios manifiestos, retroalimentación, actualizaciones clave y negociación de capacidad. |
 |HPKE actualizaciones clave |Gira los secretos de transporte utilizando la suite negociada y contadores crecientes monotonicamente. |
-|Negociación de la capacidad |Intercepta bits de características compatibles, límites de datagramas, cadencia de retroalimentación y requisitos de privacidad. |
+|Negociación de la capacidad |Intersecta bits de características compatibles, límites de datagramas, cadencia de retroalimentación y requisitos de privacidad. |
 |FEC y retroalimentación |Utiliza informes deterministas de receptores y decisiones de paridad para las vías en tiempo real de pérdida. |
 |Vectores de conformidad |Los dispositivos interlinguísticos demuestran que SDKs decodifican los mismos manifestos, segmentos y flujos de entropía. |
 
@@ -189,10 +190,10 @@ Los códecs y perfiles de entropía específicos para la transmisión están sep
 
 - Se prefieren los constructores SDK y los enlaces generados a los bytes Norito hechos a mano.
 - Trate la falta de coincidencia del esquema como un problema de versión o fijación, no como una falla transitoria de red.
-- Mantenga `.nrt`, `.norito`, y manifieste los artefactos con el paquete de liberación o incidente que los produjo.
-- Utilice las proyecciones JSON para los paneles de control y la inspección manual, pero mantenga Norito como fuente de verdad para los datos firmados, hashed o persistentes.
+- Archivo `.nrt`, `.norito`, y artefactos manifestos en el paquete de liberación o incidente que los produjo.
+- Utilización Norito como la fuente de verdad para los datos firmados, hashed o persistentes. JSON proyecciones para tablas de control y inspección manual.
 - Cuando se añada un nuevo punto final Torii de tipo, documentar si acepta JSON, Norito o ambos, y exponer los tipos de contenido soportados en `/openapi`.
-- Al activar los aceleradores, ejecute pruebas de paridad con la salida escalar antes del despliegue. Los fallos de los aceleradores deberían retroceder limpiamente en lugar de cambiar la semántica de carga útil.
+- Antes de activar un acelerador, ejecuta pruebas de paridad contra la salida escalar. Si un aceleradora falla, utiliza el fallback escalar determinista. La semántica de carga útil debe permanecer sin cambios.
 
 ## Páginas relacionadas {#related-pages}
 

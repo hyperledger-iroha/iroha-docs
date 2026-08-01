@@ -1,14 +1,14 @@
 ---
 translation_locale: ja
 translation_source: /guide/best-practices/release-readiness.md
-translation_source_hash: 1f316d6a823b23e821d80fe8773df7469358b0e01057f9b76b113cafe4818f20
+translation_source_hash: 984957526424a4e0ec9f29a6da1bb64699245bb135e8157bbe684bc3d87de4cc
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # 解放する準備 {#release-readiness}
 
-Iroha アプリケーションまたはネットワーク変更を推進する前に,関連するリスクを暴露できる最小の環境で動作を証明し,その後,共有テストネットと生産ゲートを意図的に移動します.
+Iroha アプリケーションまたはネットワーク変更を推進する前に,関連するリスクを暴露できる最小限の環境で動作を証明し,その後,共有テストネットと生産ゲートを意図的に移動します.
 
 ## ローカルネットゲート {#localnet-gate}
 
@@ -31,7 +31,7 @@ Iroha アプリケーションまたはネットワーク変更を推進する�
 ## メインネットまたは生産ゲート {#mainnet-or-production-gate}
 
 - 生産サイン,資金提供,ドメイン,コンフィギュレーション経路を別々に使用する.テストネットキーや faucet 仮定を宣伝しないでください.
-- 確認する SDK, CLI, パイア,およびネットワーク互換性 [互換性マトリックス](/ja/reference/compatibility-matrix.md).
+- [互換性マトリックス](/ja/reference/compatibility-matrix.md) で必要なクロス-SDK シナリオを確認します. 部署によって使用された正確な CLI,ピアバイナリー,構成,およびネットワークリリースを別々にピンしてテストしてください.
 - レビュー許可,料金のスポンサーシップ,料金制限,モニタリング,バックアップ状態,リリースウィンドウ前のロールバック基準.
 - 高い影響のある書き込みのために書面の取引または移行計画を要求する.
 

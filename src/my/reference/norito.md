@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /reference/norito.md
-translation_source_hash: ff258251887109f6cb28241235caea8e1b6a69df10df60cb7b2e7c2507004b4e
+translation_source_hash: 4297b0ff795a5cdb6556424e89de7191522271519aa36720ed45a695ad402211
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -34,7 +34,7 @@ Norito သည် စမတ်စာချုပ်ဘာသာစကားမဟ
 | --- | ---: | --- |
 |မှော်ဆန်ခြင်း|4 byte |ASCII `NRT0` ကို Norito မဟုတ်တဲ့ အချက်အလက်တွေကို အစောပိုင်းမှာ ပယ်ချဖို့ သုံးပါတယ်။ |
 |ဗိုလ်မှူး|1 byte |အဓိကဗားရှင်းကို Format လုပ်ပါ။ လက်ရှိ အသုံးအဆောင်များမှာ `0` ကို အသုံးပြုပါတယ်။ |
-|အသေးစား |1 byte |Fixed v1 decode hint. လက်ရှိ အသုံးဝင်ဝန်ဆောင်မှုများမှာ `0x00` ကို အသုံးပြုကြသည်။ စီမံကိန်းရွေးချယ်မှုများသည် အလံများတွင် သက်ရောက်သည်။ |
+|အသေးစား |1 byte |v1 အတွက် decode ညွှန်ပြချက်။ လက်ရှိတန်ဖိုးက `0x00` ။ အလံများ layout ကိုဖော်ပြသည်။ |
 |Schema hash |၁၆ ဘိုက်များ|မမျှော်လင့်တဲ့ အသုံးဝင်မှုများကို ပယ်ချရန် Typed Decoders များက အသုံးပြုသော Type Identity ကို။ |
 |compression ကို|1 byte |`0 = None`, `1 = Zstd`. မသိတဲ့ တန်ဖိုးတွေကို ပယ်ချလိုက်ပါတယ်။ |
 |အသုံးဝင် ဝန်ဆောင်မှု အလျား|8 byte | သေးငယ်တဲ့ အန်ဒီယန်းအဖြစ် ဖိအားမရတဲ့ အသုံးဝင် ဝန်ဆောင်မှုအလျား `u64`. |
@@ -63,7 +63,8 @@ Flag တွေက ရှင်းလင်းပါတယ်။ decoders တွ�
 Norito သည် Iroha ဒေတာပုံစံတွင် ဖော်ပြထားသော ပုံမှန်ဒေတာပုံစံများအတွက် deterministic layouts များကို အသုံးပြုသည်-
 
 - ကြိုးများမှာ `[len][utf8-bytes]` ဖြစ်ပြီး `len` သည် ဖွင့်ထားပါက `COMPACT_LEN` ကို နောက်ဆက်တွဲဖြစ်ပါသည်။
-- Per-value lengths တွေမှာ `COMPACT_LEN` ကို သတ်မှတ်ထားတဲ့အခါ ကွန်ကက် varints တွေကို သုံးပြီး အခြားနည်းနဲ့ fixed 8-byte little-endian `u64` ကို အသုံးပြုပါတယ်။
+- `COMPACT_LEN` ကို သတ်မှတ်တဲ့အခါ တန်ဖိုးတစ်ခုချင်းအလျားက ကန့်သတ်ထားတဲ့ varint ကိုသုံးတယ်။
+- `COMPACT_LEN` မရှိပါက တန်ဖိုးတစ်ခုချင်းအလျားသည် 8-byte little-endian `u64` ဖြစ်ပါသည်။
 - Sequence length headers တွေကို v1 မှာ fixed 8-byte little-endian `u64` လို့ သတ်မှတ်ထားပါတယ်။
 - `Vec<u8>` ကို ဘိုက်တစ်ဘက် တစ်လျားအစား `[len_u64][raw-bytes]` အဖြစ် ကုဒ်သွင်းထားသည်။
 - Packaged sequences use `(len + 1)` monotonic `u64` offsets followed by the concatenated element payloads (ပိတ်ဆက်ထားသော အစိတ်အပိုင်းများ၏ အသုံးဝင်ဝန်ဆောင်မှုများ)
@@ -85,7 +86,7 @@ Norito သည် logical payload ကိုပြောင်းလဲခြင�
 
 |ကဏ္ဍ |ရည်ရွယ်ချက်|
 | --- | --- |
-|`to_bytes` |ခေါင်းစဉ်ဖောင်ဒေးရှင်းနဲ့ မညှစ်ထားတဲ့ အသုံးဝင်ဝန်ပိုးကို ကုဒ်သွင်းပါ။|
+|`to_bytes` |ခေါင်းစဉ်ကို ကုဒ်ပေးပြီး နောက်မှာ ဖိမထားတဲ့ အသုံးဝင် ဝန်ဆောင်မှုပါ။ |
 |`to_compressed_bytes` |Zstd နဲ့ encode လုပ်ပြီး header ထဲမှာ compression tag ကို မှတ်တမ်းတင်ပါ။ |
 |`to_bytes_auto` |compression က တန်ဖိုးရှိလားဆိုတာကို ဆုံးဖြတ်ဖို့ deterministic heuristics ကို သုံးပါ။ |
 |CRC64 အရှိန်မြှင့်ခြင်း |နေရာတိုင်းမှာ portable CRC64-XZ ကိုသုံးပြီး CLMUL ကို x86_64 သို့မဟုတ် PMULL ကို aarch64 တွင်ရရှိနိုင်ပါက။ |
@@ -117,7 +118,7 @@ Common field attributes တွေက အောက်ပါအတိုင်း�
 |Attribute ကို|သက်ရောက်မှု|
 | --- | --- |
 |`#[norito(rename = "other")]` |Schema နှင့် JSON ကိုက်ညီမှုအတွက် တည်ငြိမ်သော serialized နာမည်ကိုအသုံးပြုသည်။ |
-|`#[norito(skip)]` |`Default` ကွင်းကို ချန်ထားပြီး decoding လုပ်နေစဉ်မှာ ဖြည့်ပေးတယ်။ |
+|`#[norito(skip)]` |ကုဒ်ရေးသူက ကွင်းကို ချန်ထားတယ်။ decoder က `Default` တန်ဖိုးကို ပေးပို့တယ်။ |
 |`#[norito(default)]` |`Default` ကို အသုံးပြုသည် - decoded payload သည် field ကို မဆောင်ပါက။ |
 |`#[norito(skip_serializing_if = "...")]` |JSON ကွင်းတွေကို predicate ကိုက်ညီတဲ့အခါ ချန်ထားပြီး deterministic decoding default တွေကို ထိန်းသိမ်းတယ်။ |
 
@@ -166,7 +167,7 @@ Accept: application/x-norito, application/json
 
 Torii စာလုံးရိုက်ခြင်းအမှားများနှင့် တယ်လီမီထရီဖြင့် ရေတွက်ခြင်းအားဖြင့် decode ကျရှုံးမှုများကိုပေါ်လာစေသည်။ အများဆုံးအကြောင်းပြချက်များမှာ မတည်ငြိမ်သော မှော်ပညာ၊ မထောက်ပံ့သောဗားရှင်း၊ မထောက်ခံသော feature flag, checksum မညီမျှမှု၊ မှားယွင်းသောဖေါ်မြူတာ UTF-8၊ မတည်ငြင်းသော enum tag နှင့် schema မညီမျှခြင်းတို့ဖြစ်သည်။
 
-Norito RPC သယ်ယူပို့ဆောင်ရေးကို သယ်ယူ ပို့ဆောင်ရေး ဖွဲ့စည်းမှုမှတဆင့် ရွေးချယ်ထားသည်။ Operator Dashboards များသည် request latency, failures, Active Connections တွေ၊ Response bytes တွေနဲ့ `torii_norito_decode_failures_total` ကွဲပြားစွာ JSON ယာဉ်ကြော။
+Norito RPC သယ်ယူပို့ဆောင်ရေးကို သယ်ယူ ပို့ဆောင်ရေး ညွှန်ကြားချက်စနစ်ဖြင့် ရွေးချယ်ပါတယ်။ Operator Dashboards request latency, failures, active connections, response bytes တွေကို ခြေရာခံထားသင့်ပြီး `torii_norito_decode_failures_total` ကွဲပြားစွာ JSON ယာဉ်ကြော။
 
 ## Norito စီးဆင်းမှု {#norito-streaming}
 
@@ -189,10 +190,10 @@ Streaming-specific codecs နဲ့ entropy profile တွေဟာ core Norito 
 
 - SDK ဆောက်လုပ်ရေးကိရိယာများနှင့် ထုတ်လုပ်သော ချည်နှောင်မှုများကို လက်နဲ့ထုတ်လုပ်သည့် Norito ဘိုက်များထက် ပိုနှစ်သက်သည်။
 - Schema ကွဲပြားမှုကို အပြောင်းအလဲရှိတဲ့ ကွန်ရက် ပျက်ကွက်မှုအဖြစ်မဟုတ်ဘဲ ဗားရှင်း (သို့) ကိရိယာ ပြဿနာတစ်ခုအဖြစ် ကုသပါ။
-- `.nrt`, `.norito` ကို သိမ်းထားပြီး ဒါတွေကို ထုတ်ပေးခဲ့တဲ့ လွတ်မြောက်မှု (သို့) ဖြစ်ပျက်မှု အစုနဲ့အတူ ရှေးဟောင်းပစ္စည်းတွေကို ပြသပါ။
-- Dashboard များအတွက် JSON ခန့်မှန်းချက်များနှင့် လက်ကိုင်စစ်ဆေးမှုများကိုအသုံးပြုပါ ဒါပေမဲ့ လက်မှတ်ထိုးထားသော၊ hashed သို့မဟုတ် persistent data များအတွက် အမှန်တရားအရင်းအမြစ်အဖြစ် Norito ကို ထိန်းသိမ်းပါ။
+- Archive `.nrt`, `.norito` နဲ့ ဒါတွေကို ထုတ်ပေးခဲ့တဲ့ release (သို့) incident bundle ထဲက manifest artefacts တွေပါ။
+- Norito ကို လက်မှတ်ထိုးထားသော၊ hashed သို့မဟုတ် persistent data များအတွက် အမှန်တရားအရင်းအမြစ်အဖြစ် အသုံးပြုပါ။ dashboard များနှင့်လက်စွဲစစ်ဆေးမှုများအတွက် JSON ခန့်မှန်းချက်များကိုအသုံးပြုပါ။
 - Torii အပြီးသတ်မှတ်ချက် အသစ်တစ်ခု ထပ်ထည့်တဲ့အခါ JSON၊ Norito သို့မဟုတ် နှစ်ခုစလုံးကို လက်ခံတာ မှတ်တမ်းတင်ပြီး `/openapi` မှာထောက်ပံ့တဲ့ အကြောင်းအရာအမျိုးအစားတွေကို ဖော်ပြပါ။
-- အရှိန်မြှင့်ကိရိယာတွေကို မဖွင့်ခင် scalar output ကို နှိုင်းယှဉ်ပြီး parity စမ်းသပ်မှုတွေ လုပ်ပါ။ အရှိန်လျှော့စက် ကျရှုံးမှုတွေဟာ အသုံးဝင် ဝန်ဆောင်မှု အဓိပ္ပာယ်ကို ပြောင်းလဲတာထက် ရှင်းလင်းစွာ ပြန်ကျသင့်ပါတယ်။
+- accelerator ကို activate မလုပ်ခင် scalar output နဲ့ parity test တွေကို run လုပ်ပါ။ accelerator ကျရှုံးရင် deterministic scalar fallback ကို အသုံးပြုလိုက်ပါ။ payload semantics ကတော့ ပြောင်းမသွားရပါဘူး။
 
 ## ဆက်စပ် စာမျက်နှာများ {#related-pages}
 

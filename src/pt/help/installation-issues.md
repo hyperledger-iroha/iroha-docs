@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /help/installation-issues.md
-translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
+translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c054c85a2a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -89,7 +89,7 @@ Outra opção é que você tem a corrente de ferramentas `stable` atualizada, ma
 $ rustup default stable
 ```
 
-Isto pode acontecer se você instalou uma versão `nightly`, ou definir uma versão específica Rust, mas esqueceu-se de desinstala-la.
+Instalar uma versão `nightly` ou configurar uma versão específica de Rust sem a desinstalar posteriormente pode causar esse problema.
 
 ### Verificar se existem outras versões Rust {#check-if-there-are-other-rust-versions}
 
@@ -123,13 +123,13 @@ E, em seguida, para cada `<toolchain>` (sem as parênteses de ângulo claro):
 $ rustup remove <toolchain>
 ```
 
-Depois disso, certifique-se de que
+Após a remoção das cadeias de ferramentas, este comando deve relatar um erro de comando não encontrado:
 
 ```bash
 $ cargo --help
 ```
 
-resulta em um erro de comando não encontrado, ou seja, que você não tem nenhuma cadeia de ferramentas Rust ativa instalada.
+Esse erro confirma que nenhuma cadeia de ferramentas Rust ativa permanece instalada.
 
 ```bash
 $ rustup toolchain install stable

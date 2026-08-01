@@ -27,7 +27,7 @@ translation_engine: nllb-200-ct2
 
 ## Taira ላይ ይሞክሩት {#try-it-on-taira}
 
-ይህ ትዕዛዝ በአሁኑ ጊዜ ሜታዳታ ያላቸው Taira የንብረት ትርጓሜዎችን ያቀርባል:
+ሜታዳታ በተለመደው የመረጃ ምንጭ ንባብ በኩል ይታያል ። ይህ ትዕዛዝ በአሁኑ ጊዜ ሜታዳታ ያላቸው Taira ንብረቶች ትርጓሜዎችን ያቀርባል:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=100' \

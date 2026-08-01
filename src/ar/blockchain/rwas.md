@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /blockchain/rwas.md
-translation_source_hash: 80593515d6919a6b6cb282ddcd4903ce000b56b264f350a42a6ed792f9cbef73
+translation_source_hash: cbdc6d766fb90bea7e68dc67f2c705bb1638340feeb2fca9f2dd43a727ac03e7
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,7 +12,7 @@ translation_engine: nllb-200-ct2
 
 RWAs تختلف عن رصيدات الأصول الرقمية:
 
-- الأصول الرقمية هي رصيد قابلة للتداول تحتفظ به الحساب.
+- الأصول الرقمية هي رصيد قابلة للتداول تحتفظ به حساب
 - NFT هو سجل فريد في السلسلة مع صاحب واحد.
 - RWA هو الكثير الذي يمكن أن يحمل البيانات الأساسية التجارية، والكمية، والاحتفاظ بها، وتجميدها، وحالة الاسترداد، والمصدر، وسياسة المعالج.
 
@@ -22,7 +22,7 @@ RWAs تختلف عن رصيدات الأصول الرقمية:
 
 RWA يحتوي على:
 
-- `id`: المعرف القنوني الذي تم إنشاؤه RWA، يعرض على شكل `<hash>$<domain>`
+- `id`: المعرف القنوني RWA الذي تم إنشاؤه، يعرض على شكل `<hash>$<domain>`
 - `owned_by`: الحساب الذي يمتلك اللقطة حالياً
 - `quantity`: الكمية المتبقية التي تمثلها اللقطة
 - `spec`: تحديد الكمية، مثل المقياس العشري.
@@ -60,12 +60,12 @@ RWA يحتوي على:
 |العملية|السلوك التنفيذي |
 | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
 |`RegisterRwa` |إنشاء قطعة من ID في نطاق؛ تصبح سلطة المعاملة `owned_by`. |
-|`TransferRwa` |نقل الكمية إلى حساب آخر. التحويل الكامل يمكن أن يغير `owned_by` ؛ تحويل جزئي يخلق حزمة الأطفال المولودة. |
+|`TransferRwa` |نقل الكمية إلى حساب آخر. يمكن أن يتغير التحويل الكامل `owned_by`. إن تحويل جزئي يخلق قطعة طفل منفصلة مع تم توليد ID. |
 |`HoldRwa` |الكمية الاحتياطية. يتطلب جهاز تحكم تم تشكيله و `hold_enabled`. |
 |`ReleaseRwa` |إزالة الكمية التي تم احتجازها. يتطلب جهاز تحكم تكوين و `hold_enabled`. |
 |`FreezeRwa` |حظر عمليات المالك العادي. يتطلب جهاز تحكم تم تكوينها و `freeze_enabled`. |
 |`UnfreezeRwa` |إعادة تمكين عمليات المالك العادي. يتطلب جهاز تحكم تكوين و `freeze_enabled`. |
-|`RedeemRwa` |تطلب مالك أو مراقب و `redeem_enabled`. |
+|`RedeemRwa` |خفض الكمية بشكل دائم من الدورة التدريبية. يمكن للمالك أو لمراقب تقديمها عندما يكون `redeem_enabled` صحيحاً. |
 |`MergeRwas` |الجمع بين الكميات من الحصص الأولي مع نفس النطاق والتحديد في حزمة الطفل المولود. |
 |`ForceTransferRwa` |تحريك الكمية من خلال تدفق جهاز التحكم. يتطلب جهاز التحكم المثبت و `force_transfer_enabled`. |
 |`SetRwaControls` |استبدل سياسة التحكم في الحصيلة، تتطلب مالك أو مراقب|
@@ -96,7 +96,7 @@ RWA يحتوي على:
 }
 ```
 
-تسمح لحسابات ومهمات المراقب بإجراء عمليات المراقبة فقط التي تمكنها العلامة البولية المقابلة. لا تعتبر حمولة التحكم الحالية سياسة نقل القائمة المسموح بها ولا تحتوي على قواعد `transfers` مستقرة.
+يمكن لحسابات ومزايا المراقب القيام بالعمليات التي تمكنها العلامات البولية المقابلة. تحميل التحكم الحالي يحتوي على هويات المراقب وعلامات التشغيل. خارج هذه الحملة الفائدة قائمة السماح بتحويل وقواعد `transfers` المتداخلة.
 
 ## الأسئلة والأحداث و APIs {#queries-events-and-apis}
 
@@ -228,7 +228,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-إطلاق الاحتفاظ عندما تنتهي عملية خارج السلسلة:
+إرسال `ReleaseRwa` بعد نجاح عملية خارج السلسلة:
 
 ```python
 draft = TransactionDraft(
@@ -273,7 +273,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### كمية الفدية أو التقاعد {#redeem-or-retire-quantity}
 
-كمية استرداد عندما يتم تسليم الأصول الممثلة خارج السلسلة أو تستهلكها أو تقاعدها أو إزالتها من الدورة التداول بطريقة أخرى. يجب أن يكون العنصر `redeem_enabled` ، ويجب أن يكون الموقّع صاحبها أو مراقبها.
+تقديم `RedeemRwa` بعد تسليم الأصول الممثلة خارج السلسلة ، أو استهلاكها ، أو التقاعد ، أو إزالتها من الدورة التداولية بطريقة أخرى. هذا ينقص بشكل دائم الكمية المقدمة من الحصة. يجب أن يكون الحصة `redeem_enabled`. يجب أن يكون الموقّع صاحبها أو مراقبها.
 
 ```python
 draft = TransactionDraft(
@@ -287,7 +287,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### تجميد أثناء مراجعة الامتثال {#freeze-during-compliance-review}
 
-تجميد الكثير عندما يتعين على مراجعة خارج السلسلة حظر عمليات المالك العادي. يجب أن يكون الموقّع مراقبًا ويجب أن يكون لدى اللعبة `freeze_enabled`.
+إرسال `FreezeRwa` عندما يتوجب على مراجعة خارج السلسلة حظر عمليات المالك العادي. يجب أن يكون الموقّع مراقباً. يجب أن تكون اللقطة تحتوي على `freeze_enabled`.
 
 ```python
 draft = TransactionDraft(
@@ -308,7 +308,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-إخلع الجليد عندما يمر المراجعة:
+تقديم `UnfreezeRwa` بعد مرور المراجعة:
 
 ```python
 draft = TransactionDraft(
@@ -394,7 +394,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### تقاعد الائتمان الكربوني {#carbon-credit-retirement}
 
-استخدم الفدية لتقديم الائتمانات بعد أن يتم مطالبتها. البيانات المعدنية تشير إلى الشهادة خارج السلسلة أو دليل السجل:
+تقديم `RedeemRwa` لإزالة الائتمانات الكربونية المزعومة من الدورة التدريبية. تخزن شهادة خارج السلسلة أو دليل السجل في البيانات الأساسية:
 
 ```python
 carbon_lot_id = (
@@ -457,5 +457,5 @@ client.submit_transaction_envelope_and_wait(envelope)
 - [الأصول](/ar/blockchain/assets.md)
 - [البيانات الأساسية](/ar/blockchain/metadata.md)
 - [Iroha تعليمات خاصة](/ar/blockchain/instructions.md)
-- [الأسئلة](/ar/reference/queries.md#assets-nfts-and-rwas)
+- [الأسئلة ](/ar/reference/queries.md#assets-nfts-and-rwas)
 - [نقاط نهاية Torii](/ar/reference/torii-endpoints.md#app-and-sora-route-families)

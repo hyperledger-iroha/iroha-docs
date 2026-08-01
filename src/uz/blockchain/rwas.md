@@ -1,9 +1,9 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/rwas.md
-translation_source_hash: 80593515d6919a6b6cb282ddcd4903ce000b56b264f350a42a6ed792f9cbef73
+translation_source_hash: cbdc6d766fb90bea7e68dc67f2c705bb1638340feeb2fca9f2dd43a727ac03e7
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Chindan ham mavjud bo'lgan aktivlar {#real-world-assets}
@@ -12,7 +12,7 @@ Haqiqiy dunyo aktivlari (RWAs) zanjirdan tashqari aktivlar modeli bo'lib, ularni
 
 RWAs raqamli aktivlar saldi bilan farq qiladi:
 
-- raqamli aktiv - hisobda saqlanayotgan shov-shuv bilan bog'liq
+- raqamli aktiv - hisobda saqlanayotgan tangible balans;
 - NFT - bitta egasiga ega bo'lgan yagona zanjirdagi yozuv
 - RWA - bu biznes metadatalarini, miqdorni, saqlovlarni, muzlatishni, to'lov holatini, kelib chiqishini va nazoratchi siyosatini olib borishi mumkin bo'lgan partiyadir
 
@@ -60,18 +60,18 @@ RWA umumiy ish oqimlari quyidagilarni o'z ichiga oladi:
 |Operatsiya |Amalga oshirilgan xatti-harakatlar |
 | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
 |`RegisterRwa` |ID lotini domenida yarating; bitim hokimiyati `owned_by`ga aylanadi. |
-|`TransferRwa` |Ko'plikni boshqa hisobvaraqqa o'tkazing. To'liq o'tkazish `owned_by` ni o'zgartirishi mumkin; qisman o'tkazish hosil bo'lgan bola lotini yaratadi. |
+|`TransferRwa` |Ko'plikni boshqa hisob raqamiga o'tkazing. To'liq o'tkazish `owned_by` o'zgartirishi mumkin. qisman o'tkazilish ID hosil bo'lgan alohida bola lotini yaratadi. |
 |`HoldRwa` |ehtiyot miqdori. Konfiguratsiya qilingan nazoratchi va `hold_enabled` kerak. |
 |`ReleaseRwa` |Qo'llanilgan miqdorni olib tashlash. Konfiguratsiya qilingan boshqaruvchini va `hold_enabled` talab qiladi. |
 |`FreezeRwa` |Oddiy egasining operatsiyalarini bloklash. Konfiguratsiyalangan boshqaruvchini va `freeze_enabled` talab qiladi. |
 |`UnfreezeRwa` |Oddiy egasi operatsiyalarini qayta qo'llash. Konfiguratsiyalangan boshqaruvchini va `freeze_enabled` talab qiladi. |
-|`RedeemRwa` |Ko'paytirish miqdori. Egasini yoki boshqaruvchini va `redeem_enabled` talab qiladi. |
+|`RedeemRwa` |Muvaffaqiyatdan doimiy ravishda miqdorni tortib olish. Egasi yoki nazoratchi `redeem_enabled` to'g'ri bo'lganda uni taqdim qilishi mumkin. |
 |`MergeRwas` |Bir xil domenga ega bo'lgan ota-ona partiyalarining miqdorlarini birlashtirib, hosil qilingan bola partiyasiga aylantiring. |
 |`ForceTransferRwa` |Ko'plikni nazoratchi oqimi orqali ko'chirish. Konfiguratsiya qilingan nazoratchini va `force_transfer_enabled` talab qiladi. |
 |`SetRwaControls` |Partiya nazoratini o'zgartirish uchun mulkdor yoki nazoratchi kerak.|
 |`SetKeyValue<Rwa>` / `RemoveKeyValue<Rwa>` |Lot metadatalarini yangilash. Egasini yoki nazoratchini talab qiladi; muzlatilgan lotlarga nazoratchi kerak. |
 
-Joriy kodda `UnregisterRwa` yo'l-yo'riq yo'q. Belgilangan miqdor yetkazib berilgan, iste'mol qilingan, hisoblangan yoki boshqa tarzda aylanishdan olib tashlanganda, zanjirdan tashqari lotni `RedeemRwa` bilan olib tashlang.
+Joriy kodda `UnregisterRwa` ko'rsatmasi yo'q. Belgilangan miqdor yetkazib berilgan, iste'mol qilingan, hisobdan chiqarilgan yoki boshqa tarzda muomaladan olib tashlanganda, zanjirdagi lotni `RedeemRwa` bilan doimiy ravishda muomaladan chiqaring.
 
 ## Metadotlar va nazoratlar {#metadata-and-controls}
 
@@ -96,11 +96,11 @@ Amalga oshirilgan `RwaControlPolicy` ga quyidagi maydonlar kiradi:
 }
 ```
 
-Boshqaruvchi hisobvaraqlari va rollari faqat tegishli boolean bayroq tomonidan qo'llanilgan boshqaruvchi operatsiyalarini amalga oshirishga ruxsat etiladi. Joriy nazorat yuklamasi ruxsatnoma ro'yxatini o'tkazish siyosati emas va uyushtirilgan `transfers` qoidalarga ega emas.
+Boshqaruvchining hisoblari va rollari faqat tegishli boolean bayroqlar tomonidan qo'llanilgan operatsiyalarni amalga oshirishi mumkin. Hozirgi boshqaruv yuklamasida nazoratchi kimligi va operatsion bayroqlar mavjud. O'tkazish ruxsatnomalari ro'yxatlari va uyushtirilgan `transfers` qoidalari ushbu foydali yuklamadan tashqarida joylashgan.
 
 ## Savollar, hodisalar va APIs {#queries-events-and-apis}
 
-Foydalanish [`FindRwas`](/uz/reference/queries.md#assets-nfts-and-rwas) ro'yxatga olingan RWA To'g'ridan-to'g'ri yangilanishlar kerak bo'lgan dasturlar [`Rwa` ma'lumotlar hodisalari](/uz/blockchain/filters.md#data-event-filters) yaratilgan, mulkdorini o'zgartirgan, bo'linadigan, birlashtirilgan, sotib olingan, muzlatilgan, muzlanmagan, saqlangan, ozod qilingan, kuch bilan o'tkazilgan, nazorat o'zgartirilishi uchun; va metadata hodisalari.
+Foydalanish [`FindRwas`](/uz/reference/queries.md#assets-nfts-and-rwas) ro'yxatga olingan RWA To'g'ridan-to'g'ri yangilanishlar kerak bo'lgan dasturlar [`Rwa` ma'lumotlar hodisalari](/uz/blockchain/filters.md#data-event-filters) yaratilgan, mulkdorini o'zgartirgan, bo'linadigan, birlashtirilgan, sotib olingan, muzlatilgan, muzlatmagan, O'tkazilgan, chiqarilgan, kuch bilan o'tkaziladigan, nazoratni o'zgartirgan va metadata hodisalari.
 
 Torii zaryad holati yo'nalishlarini aniqlaydi: `/v1/rwas` va `/v1/rwas/query`, qo'shimcha tadqiqotchi yo'nalishlari: `/v1/explorer/rwas` va `/v1/explorer/rwas/{rwa_id}` yaratilgan mijozlar jonli o'rnatish [`/openapi`](/uz/reference/torii-endpoints.md#common-endpoints) bir nod tomonidan aniq javob shakli uchun hujjat.
 
@@ -228,7 +228,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Zilziladan tashqaridagi jarayon tugagandan so'ng ushlab turishni to'ldiring:
+Zilziladan tashqari jarayon muvaffaqiyatli bo'lganidan so'ng `ReleaseRwa` taqdim etiladi:
 
 ```python
 draft = TransactionDraft(
@@ -273,7 +273,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### To'lov yoki pensiya miqdori {#redeem-or-retire-quantity}
 
-Tartib qilingan zanjirdan tashqari aktiv yetkazib berilgan, iste'mol qilingan, pensiyaga olingan bo'lganda to'lov miqdori; yoki boshqa yo'l bilan aylanmasidan chiqarilgan. `redeem_enabled`, imzochi mulkdor yoki nazoratchi bo'lishi kerak.
+Joʻnatish `RedeemRwa` ta'minlangan zanjirdan tashqaridagi aktiv yetkazib berilganidan, iste'mol qilinganidan, pensiyaga olinganidan yoki boshqa tarzda aylanishdan chiqarilganidan keyin. Bu partiyadan taqdim etilgan miqdorni doimiy ravishda chiqarib tashlaydi. `redeem_enabled`. Imzolovchi mulkdor yoki nazoratchi bo'lishi kerak.
 
 ```python
 draft = TransactionDraft(
@@ -287,7 +287,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### Qoʻllanishni tekshirish paytida toʻxtatish {#freeze-during-compliance-review}
 
-Zaryaddan tashqarida ko'rib chiqish odatdagi mulkdorlar operatsiyalarini blokirovka qilishi kerak bo'lganda juda ko'p muzlatish. imzolovchi nazoratchi bo'lishi kerak va lot `freeze_enabled` bo'lishi shart.
+`FreezeRwa` ro'yxati tashqaridagi ko'rib chiqish odatdagi mulkdorlarning operatsiyalarini blokirovka qilishi kerak bo'lganda taqdim etilsin. imzo qo'ygan shaxs nazoratchi bo'lishi kerak. Lot `freeze_enabled` bo'lishi shart.
 
 ```python
 draft = TransactionDraft(
@@ -308,7 +308,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Tekshiruv o'tgach uni muzlating:
+Tekshirish o'tganidan so'ng `UnfreezeRwa`ni taqdim etish:
 
 ```python
 draft = TransactionDraft(
@@ -380,7 +380,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Xatchoʻpdan tashqarida hisob-kitob qilinganidan keyin ifoda etilgan miqdorni sotib olish:
+Xatchoʻpdan tashqarida hisob-kitob qilinganidan soʻng aks ettirilgan miqdorni sotib olish:
 
 ```python
 draft = TransactionDraft(
@@ -394,7 +394,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### Karbon kreditlari pensiyasi {#carbon-credit-retirement}
 
-Kreditlar talab qilib olingandan so'ng kreditlarni olish uchun to'lovdan foydalaning. Metadatalar zanjirdan tashqaridagi sertifikat yoki ro'yxatdan o'tgan hujjatni ko'rsatadi:
+E'lon qilingan karbonat kreditlarini aylanmadan olib tashlash uchun `RedeemRwa`ni taqdim eting. Xizmatdan tashqari sertifikat yoki ro'yxatdan o'tgan hujjatni metadatalarda saqlash:
 
 ```python
 carbon_lot_id = (

@@ -38,7 +38,7 @@ Se for necessário restaurar os dados da instância Iroha, faça o seguinte:
 3. Deixe o novo colega ativo.
 4. Atualizar os arquivos de gênese e configuração do primeiro peer apenas como parte de uma migração coordenada.
 
-::: Informações
+::: info
 
 Não existe um caminho de reescritura automática geral para substituir a gênese em uma rede ao vivo. Trate-o como uma migração coordenada: preservar o antigo estado, criar pares compatíveis e apenas mover os validadores para a nova configuração depois que os operadores concordarem no plano de migração.
 
@@ -56,7 +56,7 @@ Ambas as suposições são erradas. Infelizmente, as mensagens de erro não ajud
 
 Como corrigir: usar `hex_literal`. Isto também transformará uma feio cadeia de caracteres em uma pequena tabela agradável de números obviamente hexadecimais.
 
-::: Aviso
+::: warning
 
 Mesmo a implementação `try_from_str` não pode verificar se uma determinada cadeia é um `PrivateKey` válido e avisar você se não for.
 

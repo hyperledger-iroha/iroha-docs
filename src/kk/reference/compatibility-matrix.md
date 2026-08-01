@@ -20,6 +20,6 @@ translation_engine: nllb-200-ct2
 
 <CompatibilityMatrixTable />
 
-::: ақпарат
+::: info
 `VITE_COMPAT_MATRIX_URL` дегенді үйлесімді тіршілік тетігімен жиынтықталған кескінді өшіру үшін ғана орнату. Бұл ауытқушы болмаса, бетте `src/public/compat-matrix.json` жүктеледі
 :::

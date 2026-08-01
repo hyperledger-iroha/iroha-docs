@@ -38,7 +38,7 @@ Si desea restaurar los datos de la instancia Iroha, haga lo siguiente:
 3. Deje activo al nuevo compañero.
 4. Actualizar los archivos de génesis y configuración del primer par solo como parte de una migración coordinada.
 
-::: Información
+::: info
 
 No existe un camino de reescritura automática general para reemplazar la génesis en una red en vivo. Trata esto como una migración coordinada: preserva el estado antiguo, trae pares compatibles y solo mueva a los validadores a la nueva configuración después de que los operadores acuerden el plan de migración.
 
@@ -56,7 +56,7 @@ Ambas suposiciones son erróneas. Desafortunadamente, los mensajes de error no a
 
 Cómo arreglar: usar `hex_literal`. Esto también transformará una fea cadena de caracteres en una bonita tabla pequeña de números obviamente hexadecimais.
 
-::: advertencia
+::: warning
 
 Incluso la implementación de `try_from_str` no puede verificar si una cadena dada es válida `PrivateKey` y advertirle si no lo es.
 

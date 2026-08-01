@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: ed622cdb1d6a47635d0753c98f80aaa903b916133f43bc9fdab268512d0ace69
+translation_source_hash: 7c35c609442df65328fa619b6673be76f801cfc2abc28afd853d7fe61e439e9c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # རིག་རྩལ་ཅན་གྱི་ཞལ་འཆེས་ཚུ་ {#smart-contracts}
@@ -15,9 +15,9 @@ Iroha གྱི་ཞལ་འདེབས་གིས་ `Executable` ཁེ་
 - `Executable::Ivm`: Iroha VM བའི་ཊི་ཀོཌ་
 - `Executable::IvmProved`:Iroha VM byte code འདི་ precomputed instruction overlay དང་ proof commitments ཚུ་དང་གཅིག་ཁར་ཡོདཔ་ཨིན།
 
-Kotodama འདི་ཨིན། Iroha མཐོ་རིམ་གནས་ཚད་ཀྱི་ མཁས་མཆོག་གི་ཡིག་ཆ་འདི་ཨིན། A `.ko` གཞི་རྟེན་ཡིག་སྣོད་འདི་ deterministic ལུ་སྤེལ་འབདཝ་ཨིན། IVM bytecode རྒྱུན་སྲོལ་ལྟར་དུ་ གནས་སྡུད་སྦེ་བཞག་ཡོདཔ་ཨིན། `.to` ལག་ཆས་ཚུ་ལག་ལེན་འཐབ་ནིའི་དོན་ལུ་ཨིན། Kotodama དམིགས་གཏད་ IVM; འདི་རང་རྐྱངམ་གཅིག་མེན་ RISC-V ཡང་ན་ WebAssembly དམིགས་གཏད་ཨིན།
+Kotodama འདི་ Iroha གི་གནས་རིམ་མཐོ་བའི་རིག་ལྡན་གན་རྒྱའི་སྐད་ཡིག་ཨིན། `.ko` འབྱུང་ཁུངས་ཡིག་སྣོད་འདི་ deterministic IVM bytecode ལུ་ compile འབད་དེ་ deployment གི་དོན་ལུ་ `.to` artifact སྦེ་སྲོལ་ལྟར་བཞགཔ་ཨིན། Kotodama གིས་ IVM རྐྱངམ་ཅིག་དམིགས་གཏད་འབདཝ་ཨིན། RISC-V ཡང་ན་ WebAssembly ལུ་དམིགས་གཏད་མི་འབད།
 
-ཨང་དང་པ་གི་གློག་བརྙན་འདི་ ABI ཝིན་ཌི་༡ ལུ་རྐྱངམ་ཅིག་ རྒྱབ་སྐྱོར་འབད་ཡོདཔ་ཨིན། syscall དང་ pointer-ABI སྲིད་བྱུས་དེ་འཆམ་ཡིག་དང་ལག་ལེན་གྱི་ཐོག་ལས་ དོན་དམ་མེད་པར་ བཏོན་དོ་ཡོདཔ་ལས་ དུས་རྒྱུན་མཐུན་ལྡནམ་སྦེ་མེད་ཟེར་ཨིན་པས།
+ཐོན་རིམ་དང་པ་གིས་ ABI version 1 རྐྱངམ་ཅིག་ལུ་རྒྱབ་སྐྱོར་འབདཝ་ཨིན། syscall དང་ pointer-ABI སྲིད་བྱུས་འདི་ contract admission དང་ execution གི་སྐབས་ལུ་ཆ་རྐྱེན་མེད་པར་བསྟར་སྤྱོད་འབདཝ་ཨིན། runtime compatibility toggle མེད།
 
 ## རིག་རྩལ་ཅན་གྱི་ཞལ་འཆེས་ཚུ་ ལག་ལེན་འཐབ་དགོ་པའི་དུས་ཚོད་ {#when-to-use-smart-contracts}
 

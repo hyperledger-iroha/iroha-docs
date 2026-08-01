@@ -8,51 +8,49 @@ translation_engine: nllb-200-ct2
 
 # Iroha 3 {#iroha-3}
 
-Iroha 3 是首次發行的 Hyperledger Iroha 支持這個平台.
-自主托管的網絡和多元數據空間 SORA Nexus 部署模式
-必須提供一個決定性代碼基礎.
+Iroha 3 是首次發佈的 Hyperledger Iroha 支持自主託管的網絡和多數據空間 SORA Nexus 基於一個確定性代碼基礎的部署模型.
 
-在一個高水平的情況下, Iroha 3 結合:
+在高水平上, Iroha 3 結合:
 
-- 決定性執行和儲存
-- 這項政策 Iroha 虛擬機 (IVM) 適用於隨身智能合同
-- Norito 根據法典的線形
-- Torii 對客戶,運營商和應用程式的使用者 APIs
-- Sumeragi 對必須的數據可用性和可靠的廣播的共識
-- 沒有域名的聖經帳戶,有別途結合的人能閱讀的姓氏
+- 確定性執行和存儲
+- Iroha 移動智能合同虛擬機 (IVM)
+- Norito 作爲法典電線格式
+- Torii 用於客戶端,運營商和應用程序面向 APIs
+- Sumeragi 與強制性的數據可用性和可靠的廣播達成一致
+- 沒有域名的可信賬戶,具有單獨綁定的人類可讀的號
 
 ## 快速開始 {#quickstart}
 
-如果您從零開始,
+如果您從零開始,請按順序關注以下頁面:
 
-1. [裝置 Iroha 3](/zh-hant/get-started/install-iroha.md)
+1. [安裝 Iroha 3](/zh-hant/get-started/install-iroha.md)
 2. [發射 Iroha 3](/zh-hant/get-started/launch-iroha.md)
-3. [運行 Iroha 3 透過 CLI](/zh-hant/get-started/operate-iroha-via-cli.md)
-4. [接觸到 SORA Nexus 數據空間](/zh-hant/get-started/sora-nexus-dataspaces.md)
-5. [提供私人數據空間費用](/zh-hant/get-started/private-dataspace-fee-sponsor.md)
+3. [通過 CLI](/zh-hant/get-started/operate-iroha-via-cli.md)運行 Iroha 3
+4. [連接到 SORA Nexus 數據庫](/zh-hant/get-started/sora-nexus-dataspaces.md)
+5. [贊助商私人數據空間費用](/zh-hant/get-started/private-dataspace-fee-sponsor.md)
 
 ## SDKs {#sdks}
 
-目前的 SDK 在本網站上記錄的入口點是:
+目前在本站記錄的 SDK 入口點是:
 
 - [Rust](/zh-hant/guide/tutorials/rust.md)
 - [Python](/zh-hant/guide/tutorials/python.md)
 - [JavaScript / TypeScript](/zh-hant/guide/tutorials/javascript.md)
-- [Kotlin, Android, 和Java](/zh-hant/guide/tutorials/kotlin-java.md)
+- [Kotlin,Android 和Java](/zh-hant/guide/tutorials/kotlin-java.md)
 - [Swift 和iOS](/zh-hant/guide/tutorials/swift.md)
 
 ## 運營商參考 {#operator-references}
 
-在運行網路時,您最常使用的頁面是:
+在運行網絡時,您最經常使用的頁面是:
 
-- [工作與 Iroha 二进制](/zh-hant/reference/binaries.md)
-- [創世記的參考](/zh-hant/reference/genesis.md)
-- [Torii 目的地](/zh-hant/reference/torii-endpoints.md)
-- [接觸到 SORA Nexus 數據空間](/zh-hant/get-started/sora-nexus-dataspaces.md)
-- [提供私人數據空間費用](/zh-hant/get-started/private-dataspace-fee-sponsor.md)
-- [兼容性矩阵](/zh-hant/reference/compatibility-matrix.md)
+- [與 Iroha 二進制](/zh-hant/reference/binaries.md) 合作
+- [創世記引用](/zh-hant/reference/genesis.md)
+- [Torii 終端點](/zh-hant/reference/torii-endpoints.md)
+- [連接到 SORA Nexus 數據庫](/zh-hant/get-started/sora-nexus-dataspaces.md)
+- [贊助商私人數據空間費用](/zh-hant/get-started/private-dataspace-fee-sponsor.md)
+- [兼容性矩陣](/zh-hant/reference/compatibility-matrix.md)
 
-## 學習更多 {#learn-more}
+## 瞭解更多 {#learn-more}
 
 - [Iroha 源存儲庫](https://github.com/hyperledger-iroha/iroha)
-- [資料來源存儲庫](https://github.com/hyperledger-iroha/iroha-docs)
+- [文件來源存儲庫](https://github.com/hyperledger-iroha/iroha-docs)

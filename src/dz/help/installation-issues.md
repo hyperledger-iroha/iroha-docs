@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /help/installation-issues.md
-translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
+translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c054c85a2a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -89,7 +89,7 @@ $ rustup toolchain update stable
 $ rustup default stable
 ```
 
-ཁྱོད་ཀྱིས་ `nightly` འདྲ་བཤུས་ཅིག་བཙུགས་ཏེ་ཡོད་ ཡང་ན་ Rust འདྲ་བཤུད་ཅིག་ གཞི་སྒྲིག་འབད་ཡོད་རུང་ འདི་བཏོན་མ་བཏུབ་པ་ཅིན་ འདི་འབྱུང་ཚུགས།
+`nightly` འདྲ་བཤུས་ཅིག་བཙུགས་ནི་ ཡང་ན་ Rust འདྲ་བཤུས། འདི་མ་བཞག་པར་ གཞི་སྒྲིག་འབད་ནི་འདི་གིས་ དཀའ་ངལ་འདི་འབྱུང་ཚུགས།
 
 ### Rust འདྲ་བཤུས་གཞན་ཚུ་ཡོད་མེད་ བརྟག་དཔྱད་འབད་ {#check-if-there-are-other-rust-versions}
 
@@ -123,13 +123,13 @@ $ rustup toolchain list
 $ rustup remove <toolchain>
 ```
 
-དེ་གི་ཤུལ་ལས་ འདི་ལུ་བརྟག་དཔྱད་འབད་
+སེལ་འཐུ་འབད་ཚར་བའི་ཤུལ་ལས་ འ་ནི་བཀའ་རྒྱ་འདི་གིས་ བཀའ་རྒྱ་མ་ཐོབ་པའི་འཛོལ་བ་ཅིག་ སྙན་ཞུ་འབད་དགོཔ་ཨིན།
 
 ```bash
 $ cargo --help
 ```
 
-བཀའ་རྒྱ་མ་ཐོབ་པའི་འཛོལ་བ་ཐོན་ཡོདཔ་ཨིན། འདི་འབདཝ་ལས་ ཁྱོད་ཀྱིས་ Rust ཤུགས་ཅན་གྱི་ལག་ཆས་ལྡེ་མིག་ installedམེདཔ་ཨིན། དེ་ལས་ run:
+འ་ནི་འཛོལ་བ་འདི་གིས་ Rust ཤུགས་ཅན་གྱི་ལག་ཆས་ཐིག་ཁྲམ་ཚུ་ གཞི་བཙུགས་འབད་མེད་ཟེར་བདེན་ཁུངས་བཀལཝ་ཨིན།
 
 ```bash
 $ rustup toolchain install stable

@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /blockchain/nfts.md
-translation_source_hash: 335eacd30c5964659baeeae8ac937805f1d4d786dd42a36e5164bbe75ef7e360
+translation_source_hash: 6dd2d21a29f352a14cb17046c66cfa541ef501b733b95bb6874d2d3f86ec0504
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # NFTs {#nfts}
@@ -72,7 +72,7 @@ export NFT_DOMAIN=wonderland.universal
 export NFT_ID='badge_intro$wonderland.universal'
 ```
 
-བཟོ་སྐྲུན་འབད་ཡོད་པའི་ ས་གནས་ཀྱི་དྲ་རྒྱ་འདི་ ཧེ་མ་ལས་ གཞི་སྒྲིག་འབདཝ་ཨིན། `wonderland.universal` དེ་ལས་ SNS ས་ཁོངས་གཞན་ཅིག་ལག་ལེན་འཐབ་ནིའི་དོན་ལུ་ དང་པ་རང་གསལ་སྒྲགས་དང་གཅིག་ཁར་བཟོ་དགོ། `app alias setup plan` དང་ `app alias setup apply` སྒྲིག་འཇུག་བྱས་ཚད། ཐེངས་ 10 ལས་ཉུང་བ། ཐོན་རིམ་ 5.7.1 ནང་དུ་ཚོད་ལྟ་བྱས་ཟིན། ལོ 1 སྔོན་ལ་གསར་བཅོས་བྱས། [ས་ཁོངས་ཚུ་](/dz/blockchain/domains.md#registration).
+བཟོ་སྐྲུན་འབད་ཡོད་པའི་ localnet འདི་གིས་ `wonderland.universal` དང་ དེའི་ SNS lease ཧེ་མ་ལས་གཞི་སྒྲིག་འབདཝ་ཨིན། domain གཞན་ཅིག་ལག་ལེན་འཐབ་པ་ཅིན་ [ས་ཁོངས་ཚུ་](/dz/blockchain/domains.md#registration) ནང་གསལ་བཤད་འབད་མི་ declarative `app alias setup plan` དང་ `app alias setup apply` ལཱ་རྒྱུན་ཐོག་ལས་ ཧེ་མ་ར་བཟོ་དགོ།
 
 ཐོ་བཀོད་འབད་ཐངས་འདི་ NFT ཨིན་ཨིན། ཐོ་བཀོད་ཀྱི་ནང་འཁོད་ནང་ལུ་ འགོ་ཐོག་གི་དོན་གནད་ JSON འདི་ ཨེབ་གཏང་ཐངས་ལས་ལྷག་སྟེ་འདུག
 
@@ -123,7 +123,7 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
-ཁྱོད་ཀྱིས་འབད་ཚར་བའི་ཤུལ་ལས་ བཏོན་གཏང་། ཁྱོད་ཀྱིས་ NFT སྤོ་བཤུད་འབད་བ་ཅིན་ ད་ལྟོའི་ཇོ་བདག་གི་རྩིས་ཁྲ་བཟོ་ཐངས་དང་གཅིག་ཁར་ བཀའ་འདི་ལག་ལེན་འཐབ་ ཡང་ན་ NFT སླར་ལོག་སྤོ་བཤུད་འབད།
+དཔེ་འདི་ NFT བཏུབ་ཚར་བའི་ཤུལ་ལས་བཏོན་གཏང་། ཁྱོད་ཀྱིས་དེ་བསྐྱར་སྦེ་སྤོ་བཤུད་འབད་བ་ཅིན་ ཡང་ན་ ད་ལྟོའི་ཇོ་བདག་གི་རྩིས་ཁྲ་བཟོ་ཐངས་དང་གཅིག་ཁར་ ཐོ་བཀོད་མ་རྐྱབས་པའི་བཀའ་ཡིག་འདི་བཙུགས་དགོ།
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \

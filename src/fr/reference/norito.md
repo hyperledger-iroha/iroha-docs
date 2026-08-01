@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /reference/norito.md
-translation_source_hash: ff258251887109f6cb28241235caea8e1b6a69df10df60cb7b2e7c2507004b4e
+translation_source_hash: 4297b0ff795a5cdb6556424e89de7191522271519aa36720ed45a695ad402211
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -34,7 +34,7 @@ Chaque charge utile sur fil ou disque Norito est encadré par une en-tête suivi
 | --- | ---: | --- |
 |La magie .|4 octets |ASCII `NRT0`, utilisé pour rejeter prématurément les données non provenant de Norito. |
 |Le major .|1 octet |Le format de la version principale. Les charges utiles actuelles utilisent `0`. |
-|Je suis mineure .|1 octet |Indice de décodage fixe v1. Les charges utiles actuelles utilisent `0x00`; les options de mise en page se trouvent dans des drapeaux. |
+|Je suis mineure .|1 octet |La valeur actuelle est `0x00`. Des drapeaux décrivent la disposition. |
 |Le schéma hash |16 octets |L'identité de type utilisée par les décodeurs typés pour rejeter des charges utiles inattendues |
 |Compression |1 octet |`0 = None`, `1 = Zstd`. Les valeurs inconnues sont rejetées. |
 |Longueur de la charge utile |8 octets |La longueur de la charge utile non comprimée comme petit enjean `u64`. |
@@ -63,7 +63,8 @@ Les drapeaux sont explicites. Les décodeurs ne déduisent pas la mise en page �
 Norito utilise des dispositions déterministiques pour les formes de données communes figurant dans le modèle de données Iroha:
 
 - Les chaînes sont `[len][utf8-bytes]`; `len` suit `COMPACT_LEN` lorsqu'elle est activée.
-- Les longueurs par valeur utilisent des varins compacts lorsque `COMPACT_LEN` est réglé, autrement fixé 8-bytes petit en-endian `u64`.
+- Lorsque `COMPACT_LEN` est réglé, une longueur par valeur utilise un vernis compact.
+- Lorsque `COMPACT_LEN` n'est pas disponible, une longueur par valeur est un petit indice de 8 bytes `u64`.
 - Les en-têtes de longueur de séquence sont fixes à 8 bytes avec un petit indice `u64` dans v1.
 - `Vec<u8>` est codé comme `[len_u64][raw-bytes]` au lieu d'une longueur par octet.
 - Les séquences emballées utilisent des compensations monotoniques `(len + 1)` `u64` suivies par les charges utiles d'éléments concatenés.
@@ -85,7 +86,7 @@ Norito prend en charge la compression explicite et adaptative sans modifier la c
 
 |Caractéristique |Objectif |
 | --- | --- |
-|`to_bytes` |Encodez une charge utile non compressée en casque. |
+|`to_bytes` |Encodez une en-tête suivie d'une charge utile non compressée. |
 |`to_compressed_bytes` |Encoder avec Zstd et enregistrer la balise de compression dans l'en-tête. |
 |`to_bytes_auto` |Appliquez des heuristiques déterministes pour décider si la compression en vaut la peine. |
 |CRC64 accélération |Utilise CRC64-XZ portable partout, avec CLMUL sur x86_64 ou PMULL sur aarch64, lorsqu'il est disponible. |
@@ -117,7 +118,7 @@ Les attributs de champs communs sont:
 |Attribut |L' effet |
 | --- | --- |
 |`#[norito(rename = "other")]` |Utilise un nom sérialisé stable pour la compatibilité du schéma et de JSON. |
-|`#[norito(skip)]` |Élimine le champ et le remplit à partir de `Default` en décodant. |
+|`#[norito(skip)]` |Le codeur omet le champ. Le décodeur fournit sa valeur `Default`. |
 |`#[norito(default)]` |Utilise `Default` lorsqu'une charge utile décodée ne porte pas le champ. |
 |`#[norito(skip_serializing_if = "...")]` |Élimine les champs de JSON lorsque le prédicat correspond, tout en préservant des défauts de décoding déterministique. |
 
@@ -137,7 +138,7 @@ Lorsque des liaisons Iroha ou SDK sont construites à partir de la source, les c
 |`columnar` |Norito Blocs de colonne, codecs de rangées adaptatifs AoS/NCB et vues empruntées pour les chemins lourds à scanner; inclus dans l'ensemble par défaut de fonctionnalités `node-codec`. |
 |`strict-safe` |Convertit les paniques décodées dans des voies faillibles en erreurs structurées. |
 |`simd-accel` |CPU accélération, le cas échéant, avec déclin déterministe. |
-|`json` |Parser natif JSON, écrivain, DOM, dérivés typés et voies rapides. |
+|`json` |Parser natif JSON, rédacteur, DOM, dérivées typées et voies rapides. |
 |`json-std-io` |Des assistants de lecteur et d'écrivain placés sur la pile JSON |
 | `metal-stage1`, `cuda-stage1` |Les retombées de l'indice structurel GPU JSON sont facultatives |
 |`metal-stage2` |Classification optionnelle des métadonnées métalliques pour le ruban de structure JSON. |
@@ -166,7 +167,7 @@ Accept: application/x-norito, application/json
 
 Les défaillances de décode sont affichées comme des erreurs de typage Torii et comptées par télémétrie. Les raisons courantes comprennent la magie invalide, la version non prise en charge, le drapeau de fonctionnalité non pris en charge, l'incohérence du checksum, un malformé UTF-8, une balise enum invalide et une incompatibilité du schéma.
 
-Norito RPC le transport est sélectionné par la configuration du transport. Les tableaux de bord des opérateurs doivent suivre la latence des demandes, les pannes, connexions actives, octets de réponse et `torii_norito_decode_failures_total` séparément de JSON La circulation.
+Norito RPC Le transport est sélectionné par la configuration du transport. doit suivre la latence des requêtes, les défaillances, les connexions actives, les octets de réponse et `torii_norito_decode_failures_total` séparément de JSON La circulation.
 
 ## Norito Diffusion en continu {#norito-streaming}
 
@@ -189,10 +190,10 @@ Les codecs et les profils d'entropie spécifiques à la diffusion en continu son
 
 - préférer les constructeurs SDK et les liaisons générées à des octets Norito fabriqués à la main.
 - Traiter l'incohérence du schéma comme un problème de version ou de fixation, et non pas comme une défaillance transitoire du réseau.
-- Gardez `.nrt`, `.norito`, et manifestez les objets avec le paquet de libération ou d'incident qui les a produits.
-- Utilisez les projections JSON pour les tableaux de bord et l'inspection manuelle, mais conservez Norito comme source de vérité pour les données signées, hachées ou persistantes.
+- L'archive `.nrt`, `.norito`, et les artefacts manifestes dans le paquet de libération ou d'incident qui les a produits.
+- Utilisation Norito en tant que source de vérité pour les données signées, hachées ou persistantes. JSON projections pour les tableaux de bord et l'inspection manuelle.
 - Lors de l'ajout d'un nouveau point final Torii typé, documenter si celui-ci accepte JSON, Norito ou les deux, et exposer les types de contenu pris en charge dans `/openapi`.
-- Lorsque vous activez les accélérateurs, effectuez des tests de parité contre la sortie scalaire avant le déploiement. Les défaillances de l'accélérateur doivent reculer nettement plutôt que de changer la sémantique de la charge utile.
+- Avant d'activer un accélérateur, exécutez des tests de parité contre la sortie scalaire. Si un accélèreur échoue, utilisez le déclin scalaire déterministe.
 
 ## Pages connexes {#related-pages}
 

@@ -1,9 +1,9 @@
 ---
 translation_locale: fr
 translation_source: /guide/configure/modes.md
-translation_source_hash: 141e640a596b419627c21dd4b22690f6ef97efe6ad2fc21ea5f806d0e262227f
+translation_source_hash: 3f6c2d84c7b6d325d76fb1b1a3ec0efb75381521f7fc69e7924a96532679bc61
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Chaînes de blocs publiques et privées {#public-and-private-blockchains}
@@ -16,11 +16,11 @@ Ci-dessous, nous présentons les principales différences entre ces deux cas d'u
 
 ## Autorisations {#permissions}
 
-Dans une blockchain publique, la plupart des comptes ont le même ensemble d'autorisations. Dans une blockchain privée, la majorité des comptes sont supposés ne pas être en mesure de faire quoi que ce soit en dehors de l'autorité qui leur a été accordée à moins qu'une autorisation spécifique ne soit explicitement accordée.
+Dans une blockchain publique, la plupart des comptes ont le même ensemble de permissions. Dans une blockchain privée, chaque compte ne reçoit que ses autorisations explicites.
 
-::: informations
+::: info
 
-Pour plus de détails, consultez la section [ dédiée aux autorisations ](/fr/blockchain/permissions.md).
+Pour plus de détails, consultez la section consacrée à [ sur les autorisations ](/fr/blockchain/permissions.md).
 
 :::
 
@@ -28,7 +28,7 @@ Pour plus de détails, consultez la section [ dédiée aux autorisations ](/fr/b
 
 Dans une blockchain publique, l'admission de pairs fait partie de la politique de chaîne. Pour une blockchain privée, les déploiements fixent généralement le groupe de confiance dans la configuration et la génèse.
 
-::: informations
+::: info
 
 Pour plus de détails, consultez [ gestion par les pairs ](peer-management.md).
 
@@ -40,19 +40,19 @@ Selon la façon dont vous décidez de configurer votre bloc génétique [ (`gene
 
 L'exécuteur sélectionné définit quelles vérifications d'autorisation s'appliquent. Vous pouvez accorder les jetons de permission par défaut [ ](/fr/blockchain/permissions.md) dans la génèse pour façonner un réseau privé, géré par l'administrateur ou un réseau plus ouvert. Une fois que ces autorisations sont activées, le processus d'enregistrement des comptes est différent.
 
-En ce qui concerne l'enregistrement de comptes, la blockchain publique et privée présentent les différences suivantes:
+Les politiques d'enregistrement publiques et privées diffèrent généralement:
 
-- Donc, en théorie, tout ce dont vous avez besoin est d'un client approprié, un moyen de générer une clé privée pour un algorithme pris en charge et une politique d'autorisation qui accepte l'inscription.
+- Une politique d'enregistrement public accepte les enregistrements de compte de tout utilisateur admissible [^1]. L'utilisateur a besoin d'un client approprié, d'une clé privée pour un algorithme pris en charge et d'une demande d'inscription acceptée par la politique.
 
-- Dans une blockchain privée, vous pouvez avoir n'importe quel processus pour créer un compte: il peut s'agir que les instructions d'enregistrement doivent être soumises par un compte spécifique ou par un contrat intelligent qui demande d'autres détails. Il se peut que dans une blockchain privée, l'enregistrement de nouveaux comptes ne soit possible qu'à des dates spécifiques ou limité par un jeton non mintable (finit).
+- Une politique d'enregistrement privé peut autoriser un compte ou un contrat intelligent à soumettre des enregistrements. Une politique personnalisée peut limiter l'enregistrement à une fenêtre de temps. Il peut également exiger que le soumissionnaire dépense un jeton dont l'offre est fixe car aucune autorité n'a l'autorisation de faire plus.
 
-- Dans une blockchain privée typique, c'est-à-dire une blockchain sans aucun processus unique pour enregistrer des comptes, vous avez besoin d'un compte pour enregistrer un autre compte.
+- Avec le modèle par défaut du réseau privé, un compte existant soumet l'enregistrement de chaque nouveau compte.
 
 Les validateurs d'autorisation par défaut couvrent le cas d'utilisation typique de blockchain privée.
 
-::: informations
+::: info
 
-Les modes publics et privés sont des profils de politique plutôt que des nœuds binaires séparés. Examinez les autorisations d'exécution et de génèse que vous envoyez avant d'exécuter un réseau ouvert.
+Les modes publics et privés sont des choix d'exécution et de politique génétique. Les deux utilisent le même nœud binaire. Examinez les autorisations d'exécution et de génèse sélectionnées avant d'exécuter un réseau ouvert.
 
 :::
 

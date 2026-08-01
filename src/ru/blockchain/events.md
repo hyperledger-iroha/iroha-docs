@@ -53,4 +53,4 @@ curl -fsS -N https://taira.sora.org/v1/events/sse
 
 ## События, вызывающие исполнение {#trigger-execution-events}
 
-События выполнения триггера выделяются, когда исполняется инструкция [`ExecuteTrigger`](./instructions.md#executetrigger).
+События выполнения триггера выпускаются при исполнении инструкции [`ExecuteTrigger`](./instructions.md#executetrigger). События завершения триггера выделяются после завершения действия триггеры.

@@ -407,6 +407,13 @@ export function alternateLocaleHead(relativePath: string): HeadConfig[] {
   return links
 }
 
+export function documentHead(relativePath: string): HeadConfig[] {
+  if (relativePath === '404.md') {
+    return [['meta', { name: 'robots', content: 'noindex, nofollow' }]]
+  }
+  return alternateLocaleHead(relativePath)
+}
+
 export const SITE_LOCALES = Object.fromEntries(
   ALL_LOCALES.map((locale) => [
     locale.key,

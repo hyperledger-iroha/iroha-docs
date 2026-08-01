@@ -1,9 +1,9 @@
 ---
 translation_locale: ru
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: ed622cdb1d6a47635d0753c98f80aaa903b916133f43bc9fdab268512d0ace69
+translation_source_hash: 7c35c609442df65328fa619b6673be76f801cfc2abc28afd853d7fe61e439e9c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Умные контракты {#smart-contracts}
@@ -15,9 +15,9 @@ translation_engine: nllb-200-ct2
 - `Executable::Ivm`: байт-код Iroha VM
 - `Executable::IvmProved`: байт-код Iroha VM с предварительно вычисленным перекрытием инструкций и обязательствами по доказательству
 
-Kotodama - это Iroha Это высокоуровневый язык смарт-контракта. `.ko` исходный файл компилирует на детерминистический IVM Байткод, обычно хранящийся в виде `.to` артефакт для развертывания. Kotodama Цели IVM; Он не является самостоятельным RISC-V или WebAssembly Цель.
+Kotodama — это высокоуровневый язык смарт-контрактов Iroha. Исходный файл `.ko` компилируется в детерминированный байт-код IVM, который по соглашению сохраняется как артефакт `.to` для развертывания. Kotodama предназначен только для IVM. Он не предназначен для RISC-V или WebAssembly.
 
-Первый выпуск поддерживает только ABI версию 1. Политика syscall и pointer-ABI применяется безоговорочно путем принятия и исполнения контракта; отсутствует переключение совместимости с запуском времени.
+Первый выпуск поддерживает только версию ABI 1. Политика syscall и pointer-ABI безусловно применяется при допуске и исполнении контракта; переключателя совместимости во время выполнения нет.
 
 ## Когда использовать умные контракты {#when-to-use-smart-contracts}
 

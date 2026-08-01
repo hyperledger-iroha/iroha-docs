@@ -3,8 +3,9 @@
     "repo": "hyperledger-iroha/iroha",
     "repo_url": "https://github.com/hyperledger-iroha/iroha",
     "revision": "bc7114ed1c7f265a156d2100ff09e851cc95702c",
+    "revision_url": "https://github.com/hyperledger-iroha/iroha/commit/bc7114ed1c7f265a156d2100ff09e851cc95702c",
     "generated_at": "2026-07-31",
-    "verification": "pending-public-source-commit"
+    "verification": "pending-signed-source-commit"
   },
   "included_sdks": [
     {

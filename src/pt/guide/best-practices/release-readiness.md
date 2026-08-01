@@ -1,9 +1,9 @@
 ---
 translation_locale: pt
 translation_source: /guide/best-practices/release-readiness.md
-translation_source_hash: 1f316d6a823b23e821d80fe8773df7469358b0e01057f9b76b113cafe4818f20
+translation_source_hash: 984957526424a4e0ec9f29a6da1bb64699245bb135e8157bbe684bc3d87de4cc
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Preparação para a Libertação {#release-readiness}
@@ -30,8 +30,8 @@ Veja [Construir sobre SORA 3: Taira e Minamoto ](/pt/get-started/sora-nexus-data
 
 ## A rede principal ou porta de produção {#mainnet-or-production-gate}
 
-- Usar assinantes de produção separados, financiamento, domínios e caminhos de configuração.
-- Confirmar a compatibilidade SDK, CLI, peer e network com a Matriz de Compatibilidade [ ](/pt/reference/compatibility-matrix.md).
+- Use signatários de produção, financiamento, domínios e caminhos de configuração separados. Não promova chaves da testnet nem pressupostos de faucet para produção.
+- Confirmar o requisito cruzado.SDK Scenários com o [Matriz de compatibilidade](/pt/reference/compatibility-matrix.md). Separadamente pin e testar o exato CLI, binário de pares, configuração e liberação da rede utilizada pela implantação.
 - Permissões de revisão, patrocínio de taxas, limites de tarifas, monitoramento, status de backup e critérios de retrocesso antes da janela de lançamento.
 - Exigir um plano de transacção ou migração por escrito para escritos de alto impacto.
 

@@ -1,40 +1,38 @@
 ---
 translation_locale: zh-hans
 translation_source: /reference/instructions.md
-translation_source_hash: 8dc894a05141040826067dc483319f213b007648f32354bb36f899259db9c5ac
+translation_source_hash: e300187da832a8f82258a36b7c4aaebf505adc09c771de5b0c7ab8fb0052d3db
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
-# Iroha 特别指示 {#iroha-special-instructions}
+# Iroha 特殊指令 {#iroha-special-instructions}
 
-目前的数据模型揭示了这些内置指令家庭:
+当前数据模型公开以下内置指令族：
 
-| 指示 | 变体 |
+| 指令 | 变体 |
 | --- | --- |
 | [`RegisterBox`](/zh-hans/blockchain/instructions.md#un-register) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Role`, `Trigger`, `RegisterPeerWithPop` |
 | [`UnregisterBox`](/zh-hans/blockchain/instructions.md#un-register) | `Peer`, `Domain`, `Account`, `AssetDefinition`, `Nft`, `Role`, `Trigger` |
-| [`MintBox`](/zh-hans/blockchain/instructions.md#mint-burn) | 数字 `Asset`, 触发重复 |
-| [`BurnBox`](/zh-hans/blockchain/instructions.md#mint-burn) | 数字 `Asset`, 触发重复 |
-| [`TransferBox`](/zh-hans/blockchain/instructions.md#transfer) | `Domain`, `AssetDefinition`, 数字 `Asset`, `Nft` |
-| [`SetKeyValueBox`](/zh-hans/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` 大数据 |
-| [`RemoveKeyValueBox`](/zh-hans/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` 大数据 |
-| [`GrantBox`](/zh-hans/blockchain/instructions.md#grant-revoke) | 审计许可,审计职能,审核权 |
-| [`RevokeBox`](/zh-hans/blockchain/instructions.md#grant-revoke) | 账户的许可,账户中的角色,职位的许可 |
-| [`SetParameter`](/zh-hans/blockchain/instructions.md#setparameter) | 链参数更新 |
-| [`ExecuteTrigger`](/zh-hans/blockchain/instructions.md#executetrigger) | 触发执行 |
-| [`Upgrade`](/zh-hans/blockchain/instructions.md#other-instructions) | 执行器升级 |
-| [`Log`](/zh-hans/blockchain/instructions.md#other-instructions) | 执行程序日志输入 |
-| [`CustomInstruction`](/zh-hans/blockchain/instructions.md#other-instructions) | 执行者特定 JSON 有效载荷 |
-| [国产资产保证金](/zh-hans/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
-| [一般资产锁](/zh-hans/blockchain/escrow.md#generic-asset-locks) | `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, `ExpireAssetLock` |
-| [匿名资产保证](/zh-hans/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
+| [`MintBox`](/zh-hans/blockchain/instructions.md#mint-burn) | 数值型 `Asset`、触发器重复次数 |
+| [`BurnBox`](/zh-hans/blockchain/instructions.md#mint-burn) | 数值型 `Asset`、触发器重复次数 |
+| [`TransferBox`](/zh-hans/blockchain/instructions.md#transfer) | `Domain`、`AssetDefinition`、数值型 `Asset`、`Nft` |
+| [`SetKeyValueBox`](/zh-hans/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`、`Account`、`AssetDefinition`、`Nft`、`Trigger` 元数据 |
+| [`RemoveKeyValueBox`](/zh-hans/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`、`Account`、`AssetDefinition`、`Nft`、`Trigger` 元数据 |
+| [`GrantBox`](/zh-hans/blockchain/instructions.md#grant-revoke) | `Permission` (`Grant<Permission, Account>`), `Role` (`Grant<RoleId, Account>`), `RolePermission` (`Grant<Permission, Role>`) |
+| [`RevokeBox`](/zh-hans/blockchain/instructions.md#grant-revoke) | `Permission` (`Revoke<Permission, Account>`), `Role` (`Revoke<RoleId, Account>`), `RolePermission` (`Revoke<Permission, Role>`) |
+| [`SetParameter`](/zh-hans/blockchain/instructions.md#setparameter) | 更新链上参数 |
+| [`ExecuteTrigger`](/zh-hans/blockchain/instructions.md#executetrigger) | 执行触发器 |
+| [`Upgrade`](/zh-hans/blockchain/instructions.md#other-instructions) | 升级执行器 |
+| [`Log`](/zh-hans/blockchain/instructions.md#other-instructions) | 执行器日志条目 |
+| [`CustomInstruction`](/zh-hans/blockchain/instructions.md#other-instructions) | 执行器专用的 JSON 载荷 |
+| [原生资产托管](/zh-hans/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
+| [通用资产锁定](/zh-hans/blockchain/escrow.md#generic-asset-locks) | `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, `ExpireAssetLock` |
+| [匿名资产托管](/zh-hans/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
 
-额外 Iroha 3 模块可能会记录特定域的指令类型
-通过指令注册表.
-目前的源树,见 [数据模型方案](./data-model-schema.md).
+其他 Iroha 3 模块可以通过指令注册表注册特定领域的指令类型。有关从当前源代码树生成的模式级列表，请参阅[数据模型模式](./data-model-schema.md)。
 
-::: details 图:家庭的基本指导
+::: details 图：核心指令族
 
 ```mermaid
 classDiagram

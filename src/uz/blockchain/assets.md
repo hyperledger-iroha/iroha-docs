@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/assets.md
-translation_source_hash: 58c9f7657f5714dc4bbb884933a1c947687fcf6c83e471007e6c7885f1dab214
+translation_source_hash: c80e6025007653b355d373394465d04adefc1221c8f34d9008f1c9cbabd3dc40
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -47,7 +47,7 @@ Asset ta'riflari ushbu mintaqaviylik rejimlarini qo'llab-quvvatlaydi:
 |`Infinitely` |Elastik ta'minot. Moddiyotni qayta tiklab, yonish mumkin. |
 |`Once` |To'g'ri ta'minot belgisi. Uni bir marta maydalab, keyin yondirish mumkin. |
 |`Not` |O'tkazib yuborilishi mumkin bo'lgan, ammo qayta tiklanmaydigan doimiy ta'minot belgisi. |
-|`Limited(n)` |Qo'shimcha operatsiyalar soni cheklangan bo'lishi uchun maydalik qilish mumkin. |
+|`Limited(n)` |Siyosat cheklangan sonli qoʻshimcha operatsiyalarda yangi aktiv birliklari chiqarilishiga imkon beradi. |
 
 Foydalanish `Infinitely` normal elastik aktivlar uchun; va `Once` yoki `Limited(n)` to'liq ta'minlangan yoki cheklangan ta'minlanadigan aktivlar uchun `Not` dastlabki siyosat sifatida, agar aktivlar ta'minoti allaqachon aniqlanmagan bo'lsa.
 

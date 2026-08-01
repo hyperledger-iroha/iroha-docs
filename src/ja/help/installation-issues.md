@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /help/installation-issues.md
-translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
+translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c054c85a2a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -89,7 +89,7 @@ $ rustup toolchain update stable
 $ rustup default stable
 ```
 
-`nightly` バージョンをインストールしたり,特定の Rust バージョンが設定されても,それをアンセットするのを忘れてしまった場合,このことが起こり得る.
+`nightly` バージョンをインストールするか,後にアンセッティングせずに特定の Rust バージョンの設定は,この問題を引き起こします.
 
 ### Rust の他のバージョンがあるかどうかを確認する {#check-if-there-are-other-rust-versions}
 
@@ -123,13 +123,13 @@ $ rustup toolchain list
 $ rustup remove <toolchain>
 ```
 
-その後,確認してください
+ツールチェーンを取り除いた後,このコマンドはコマンドが見つからないエラーを報告します:
 
 ```bash
 $ cargo --help
 ```
 
-Rust ツールチェーンがインストールされていないというコマンドが見つからないエラーが発生します.
+Rust ツールチェーンがまだインストールされていないことを確認します.
 
 ```bash
 $ rustup toolchain install stable

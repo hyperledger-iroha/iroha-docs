@@ -26,7 +26,7 @@ translation_engine: nllb-200-ct2
 
 የ TOML ውቅር ፋይሎች ወደ ሌሎች TOML ፋይሎች የሚጠቁሙ ተጨማሪ `extends` መስክ አላቸው ። አንድ ነጠላ መንገድ ወይም በርካታ መንገዶች ሊሆኑ ይችላሉ-
 
-::: የኮድ ቡድን
+::: code-group
 
 ```toml [Single]
 extends = "single-path.toml"
@@ -40,7 +40,7 @@ extends = ["file1.toml", "file2.toml"]
 
 Iroha በ `extends` ውስጥ የተጠቀሱትን ሁሉንም ፋይሎች በቀጣይነት ያነባል እና ወደ ንብርብሮች ይደራጃል ፣ ይህም የመጨረሻዎቹ የቀድሞዎቹን በፓራሜትር ደረጃ ይደባለቃሉ ። ለምሳሌ ፣ የ `config.toml` ንባብ ከሆነ
 
-::: የኮድ ቡድን
+::: code-group
 
 ```toml [config.toml]
 extends = ["a.toml", "b.toml"]

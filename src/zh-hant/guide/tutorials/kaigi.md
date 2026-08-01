@@ -6,39 +6,30 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# 嵌入式 Kaigi 在一個 JavaScript 應用程式 {#embed-kaigi-in-a-javascript-app}
+# 在 JavaScript 應用中嵌入 Kaigi {#embed-kaigi-in-a-javascript-app}
 
-Kaigi 讓應用程式建立一個人對一的音頻/視訊會議,
-生命周期在 Iroha. 您的浏览器仍處理媒體
-WebRTC, 在此之前 Torii 這種情況 Kaigi 指示提供持久的會議
-記錄,加密的訊息元數據,私人名單支持和使用事件.
+Kaigi 允許應用程序創建一個人對一個的音頻/視頻會議,其生命週期通過 Iroha. 瀏覽器仍然處理媒體 WebRTC, 在 Torii 和 Kaigi 指示提供持久的會議記錄,加密信號傳輸元數據,私人名單支持和使用事件.
 
-這本教程顯示了
-[Iroha 演示活動 JavaScript](https://github.com/soramitsu/iroha-demo-javascript)
-應用程式:
+本教程顯示了 [Iroha Demo JavaScript](https://github.com/soramitsu/iroha-demo-javascript)應用程序所使用的最小集成模式:
 
-- 呈現者創造 WebRTC 提供和答案
-- 申請橋標示及提交 Kaigi 交易
-- 簡約的邀請連結只包含呼叫 ID 邀請他們做秘密活動.
-- 主持人觀察 Torii 在加密參與者答案中
+- 轉載者創建 WebRTC 的報價和答案
+- 申請橋標籤和提交 Kaigi 交易
+- 簡單的邀請鏈接只包含調用 ID 和祕密的邀請.
+- 主機觀察 Torii 進行加密參與者的答案
 
-這種例子使用 TypeScript 能在電子中運行,
-或是有錢包延伸的網路應用程式.
-在產品中使用不值得信賴的傳染碼之外的私密鍵.
+這些示例使用 TypeScript 並被編寫以使它們可以運行在Electron,一個安全後端的瀏覽器或一個帶錢包擴展的網頁應用程序中.
 
-## 必須的條件 {#prerequisites}
+## 預先條件 {#prerequisites}
 
 你需要:
 
-- 其他 Kaigi- 有能力的 Torii 終點點
-- 寄宿主和客人的帳號
-- 透過安全的應用程式橋或錢包,
-- 浏览器攝像機/麥克風權限
-- Node.js 如果您使用 JavaScript 試用或原生
-  `@iroha/iroha-js` 直接結束
+- 一個具有 Kaigi 能力的 Torii 終端點
+- 寄宿人的賬戶和客人的帳戶
+- 通過安全應用程序橋樑或錢包獲取每個帳戶的簽名密鑰
+- 瀏覽器攝像頭/麥克風權限
+- Node.js 20+ 如果您直接使用 JavaScript 示範或本地`@iroha/iroha-js`綁定
 
-請將示範在一個 Iroha 來源
-預購時間:
+爲了獲得完整的工作參考,在 Iroha 來源檢查旁邊克隆示範:
 
 ```bash
 mkdir iroha-wallet-workspace
@@ -56,15 +47,9 @@ npm install
 npm run dev
 ```
 
-請使用示範
-[`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/main/javascript/iroha_js)
-來自兄弟姐妹 Iroha 該資料庫的源頭是 `file:` 依賴性解決了這些問題
-如果原始結合變化,
-`iroha/javascript/iroha_js`; 沒有清潔包裝目錄
-需要使用的貨物工作空間 `npm run build:native`.
+使用演示 [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/main/javascript/iroha_js) 從兄弟姐妹 Iroha 它的源存儲庫. `file:` 如果本土的綁定變化,重建它根據 `iroha/javascript/iroha_js`; 清潔包裝目錄不包含需要的貨物工作空間 `npm run build:native`.
 
-在開展現場會議之前, TAIRA, 檢查公眾 Torii 表面上,
-演示取決於:
+在在 TAIRA 上進行現場會議之前,請檢查演示程序依賴於的公共 Torii 表面:
 
 ```bash
 TAIRA=https://taira.sora.org
@@ -73,23 +58,19 @@ curl -fsS "$TAIRA/v1/kaigi/relays"
 curl -fsS "$TAIRA/v1/kaigi/relays/health"
 ```
 
-這些命令證明了 TAIRA 還是活著, Kaigi 接線電測是
-他們不提交 Kaigi 沒有任何可能的交易. `CreateKaigi` 或是
-`JoinKaigi` 提供資金的測試需求 TAIRA 透過演示的帳戶和簽名
-或是其他支錢包的橋梁.
+這些命令驗證 TAIRA 是現場的,並且 Kaigi 繼電遠程測量可用.它們不提交 Kaigi 交易.一個真正的`CreateKaigi`或`JoinKaigi`測試需要資助 TAIRA 賬戶和通過演示橋或其他錢包支的橋簽名.
 
 ## 建築 {#architecture}
 
-請留下 Kaigi 集成分為三層:
+保持 Kaigi 集成分爲三個層:
 
-| 層次 | 負責 |
+|層|責任|
 | --- | --- |
-| UI | 選擇帳戶,會議表格,邀請連結顯示,媒體控制 |
-| WebRTC | `RTCPeerConnection`, 地方媒體,優惠及答案描述 |
-| Iroha 橋 | 簽名, `CreateKaigi`, `JoinKaigi`, `EndKaigi`, 訊號調查 |
+|UI|邀請鏈接顯示,媒體控制方式|
+|WebRTC|`RTCPeerConnection`,當地媒體,報價和答案描述 |
+|Iroha 橋|簽名, `CreateKaigi`, `JoinKaigi`, `EndKaigi`,信號投票 |
 
-應用程式橋梁可以是電子預載 API, 財布延伸或後端
-該標籤應顯示一個小的表面 UI:
+應用程序橋樑可以是電子預裝 API,錢包擴展或後端終點. 它應該暴露在一個小的表面上 UI:
 
 ```ts
 type KaigiMeetingPrivacy = "private" | "transparent";
@@ -197,13 +178,11 @@ type KaigiBridge = {
 };
 ```
 
-在演示應用程式中,
-`@iroha/iroha-js`, 在當地簽名,加密 Kaigi 數據,以及 Torii 這樣的電話.
+在演示應用中,這些橋樑方法是通過 `@iroha/iroha-js`,本地簽名,加密 Kaigi 元數據和 Torii 通話實現的.
 
 ## 邀請助手 {#invite-helpers}
 
-使用 Torii- 兼容的呼叫 IDs 在這個國家 `domain.dataspace:meeting` 這樣的演示
-使用方式 `kaigi.universal:<call-name>` 關於會議.
+使用 Torii- 兼容的電話 IDs 在 `domain.dataspace:meeting` 在演示中使用 `kaigi.universal:<call-name>` 對於產生會議.
 
 ```ts
 const KAIGI_WINDOW_MS = 24 * 60 * 60 * 1000;
@@ -258,11 +237,9 @@ export function parseInviteLink(link: string): {
 }
 ```
 
-## WebRTC 幫助者 {#webrtc-helpers}
+## WebRTC 助手 {#webrtc-helpers}
 
-接待者創造了一份優惠, `CreateKaigi`, 並保持了
-客人將加密的訊息收回,
-提供,創造一個答案, `JoinKaigi`.
+主持人創建了一個報價,通過 `CreateKaigi`存儲它,並保持窗口開放,以便它可以應用客人的答案. 客人獲取加密的報價,創建一個答案,併發出答案的帖子與 `JoinKaigi`.
 
 ```ts
 const rtcConfig: RTCConfiguration = {
@@ -332,7 +309,7 @@ export async function createAnswerDescription(
 }
 ```
 
-請將流線連接到您的 UI 有一般的視頻元素:
+通過普通的視頻元素將流連接到您的 UI:
 
 ```ts
 export function attachKaigiMedia(input: {
@@ -356,15 +333,15 @@ export function attachKaigiMedia(input: {
 }
 ```
 
-## 主持人:建立會議連結 {#host-create-a-meeting-link}
+## 主持人: 創建一個會議鏈接 {#host-create-a-meeting-link}
 
-接待者流量:
+宿主流量:
 
-1. 打開相機和麥克風
-2. 建立一個 Kaigi 訊號鍵對
-3. 建立一個 WebRTC 提供
+1. 開放式攝像機和麥克風
+2. 創建一個 Kaigi 信號鍵對
+3. 創建一個 WebRTC 的報價
 4. 提交 `CreateKaigi`
-5. 分享一個簡約的邀請連結
+5. 分享一個緊的邀請鏈接
 
 ```ts
 type AccountContext = {
@@ -431,8 +408,7 @@ export async function hostKaigiMeeting(input: {
 }
 ```
 
-顯示 `inviteLink` 在您的 UI. 該網站的使用者可以複製,
-或將它轉換為應用程式路線,例如:
+在您的 UI 中顯示`inviteLink`.用戶可以複製它,在另一個錢包中打開它,或者將其轉換爲應用程序路線,如:
 
 ```ts
 export function inviteRoute(inviteLink: string): string {
@@ -443,14 +419,14 @@ export function inviteRoute(inviteLink: string): string {
 }
 ```
 
-## 邀請者:參加會議 {#guest-join-a-meeting}
+## 嘉賓:參加一次會議 {#guest-join-a-meeting}
 
-這裡的客人流量:
+客人的流量:
 
-1. 解析邀請
-2. 請收取加密呼叫的優惠 Torii
-3. 建立一個 WebRTC 答案
-4. 提交 `JoinKaigi` 有加密的答案元數據
+1. 分析邀請
+2. 從 Torii 獲取加密通話報價.
+3. 創建一個 WebRTC 答案
+4. 提交 `JoinKaigi` 與加密答案元數據
 
 ```ts
 export async function joinKaigiMeetingFromInvite(input: {
@@ -504,15 +480,11 @@ export async function joinKaigiMeetingFromInvite(input: {
 }
 ```
 
-如果會議是透明的,
-在私人會議中, `walletIdentity` 除非使用者
-沒有人能明顯地透露.
+如果會議是透明的,您可以在加入請求中包括一個錢包顯示字符串. `walletIdentity` 除非使用者明確選擇披露.
 
-## 接待者:使用嘉賓的答案 {#host-apply-the-guest-answer}
+## 主持人:用客人的答案 {#host-apply-the-guest-answer}
 
-接待者應該觀看 Kaigi 活動和民調
-應用第一個有效的答案給主機的同行
-聯繫.
+在創建現場會議後,主機應該觀看 Kaigi 事件並查詢加密答案信號.將第一個有效的答案應用於主機的同行連接.
 
 ```ts
 export async function watchForKaigiAnswer(input: {
@@ -566,12 +538,11 @@ export async function watchForKaigiAnswer(input: {
 }
 ```
 
-儲存返回的訂閱 ID 所以你的 UI 能阻止觀察員,
-接待者會關上電視機或離開.
+存儲返回訂閱 ID 以便您的 UI 可以在主機關上或導航離開時停止觀看器.
 
-## 結束會議 {#end-the-meeting}
+## 會議結束 {#end-the-meeting}
 
-結束從創建它的主機帳戶的呼叫:
+結束來自創建它的主機帳戶的呼叫:
 
 ```ts
 export async function endKaigi(input: {
@@ -594,11 +565,9 @@ export async function endKaigi(input: {
 }
 ```
 
-## 民間方式的資金提供 {#private-mode-funding}
+## 私人模式的資金 {#private-mode-funding}
 
-獨立 Kaigi 建立,加入和完成操作可能需要保護 XOR 關於
-你的應用程式應該抓住這個錯誤,
-在重新嘗試之前,
+專用 Kaigi 創建,加入和終結操作可能需要屏蔽的 XOR 用於私人入口點費用.您的應用程序應該發現這個錯誤,並在重新嘗試之前提供自我屏蔽行動.
 
 ```ts
 type PrivateKaigiFundingBridge = KaigiBridge & {
@@ -648,56 +617,42 @@ export async function selfShieldForPrivateKaigi(input: {
 }
 ```
 
-在演示中, UI 請使用者自閉屏幕,
-創建或加入原始行動.
+在演示中, UI 提示用戶自我屏蔽,然後重新嘗試創建或加入原始操作.
 
-## 預覽 預覽 {#manual-fallback}
+## 手動迴歸 {#manual-fallback}
 
-自動訊息取決於現實錢包, Kaigi- 有能力的 Torii 航線,以及
-在私人模式下生成證據.
-限制環境:
+自動信號取決於現場錢包, Kaigi - 能力的 Torii 路線,以及私人模式中的證明生成.
 
-- 如果 `CreateKaigi` 如果未能,請顯示包含該活動的手動邀請.
-- 如果 `JoinKaigi` 如果失敗,顯示原始答案包
-- 讓主機貼上答案包, `setRemoteDescription`
+- 如果 `CreateKaigi` 失敗,請顯示包含該報價的手動邀請.
+- 如果 `JoinKaigi` 失敗,請顯示原始答案包
+- 讓主機粘貼答案包,然後撥打 `setRemoteDescription`
 
-手動倒退是用于預防問題 WebRTC, 但它並不提供
-同樣的私人連鎖訊息保證, Kaigi 這樣的流量.
+手動反彈對調試 WebRTC 有用,但它不提供與直播 Kaigi 流程相同的私人鏈上信號保證.
 
-## 檢查名單 {#test-checklist}
+## 測試檢查列表 {#test-checklist}
 
-檢測的單位, 笑橋口, UI 超過預期的數量
-Kaigi 使用負荷:
+在單元測試中,請模仿橋樑並確認您的 UI 超越預期的 Kaigi 有用負載:
 
-- 主持人建立本地媒體, `createKaigiMeeting`
-- 接待者顯示 `iroha://kaigi/join?call=...&secret=...` 邀請他們
-- 客人分析邀請,電話 `getKaigiCall`, 並提交
-  `joinKaigiMeeting`
-- 接待民調或回覆訊號的鐘,並應用答案
-- 在隱私模式時, 自動屏蔽提示 XOR 沒有
-- 當無法提供直播訊息時,
+- 主機創建本地媒體,並提交 `createKaigiMeeting`
+- 接待者顯示`iroha://kaigi/join?call=...&secret=...`邀請
+- 客人分析邀請,打電話 `getKaigiCall`,並提交 `joinKaigiMeeting`
+- 舉辦民意調查或對答案信號的鐘表,並應用答案
+- 缺失屏蔽時自閉保護的私人模式提示 XOR
+- 當沒有現場信號時,出現手動倒車
 
-請查看示範應用程式的全文參考測試套件 Kaigi 顯示和預載
-橋測試:
+對於一個完整的參考測試套件,請參見示範應用程序的 Kaigi 視圖和預裝橋樑測試:
 
 ```bash
 npm test -- tests/kaigiView.spec.ts tests/preloadKaigiBridge.spec.ts
 npm run e2e:ui
 ```
 
-其他國家 UI 煙霧測試證明了 `/kaigi` 實際的媒體測試
-還需要兩張資金的錢包加上兩個窗口或裝置,
-簽名,攝影機,麥克風,以及 WebRTC 許可會因運行時間而變化.
+UI 煙霧測試驗證了`/kaigi`路線的效果.真正的媒體測試仍然需要兩個資助錢包加上兩個窗戶或設備,因爲交易簽名,攝像頭,麥克風和 WebRTC 權限因運行時間而不同.
 
-如果您正在測試 TAIRA 及通話特定路線返回 `404`, 首先
-確認主機錢包已成功提交 `CreateKaigi`. 接力健康
-在任何特定的呼叫之前,
+如果您正在對 TAIRA 進行測試,並且呼叫特定的路線返回 `404`,首先確認主機錢包成功提交 `CreateKaigi`.在任何特定呼叫之前,繼電器健康終端點可獲得.
 
-## 接下來的步 {#next-steps}
+## 下一步 {#next-steps}
 
-- 添加使用记录 `RecordKaigiUsage` 當您的應用程式可靠時
-  會計會議時間
-- 通過的記錄和監控接力 `/v1/kaigi/relays` 在使用接力時
-  顯示.
-- 表面 `KaigiRosterSummary`, `KaigiUsageSummary`, 及其他
-  `KaigiRelayHealthUpdated` 在您的操作員儀表板上的事件.
+- 如果您的應用程序有可靠的會計會議時間,請使用 `RecordKaigiUsage` 添加用戶記錄.
+- 通過 `/v1/kaigi/relays`記錄和監測繼電器,使用繼電器表格.
+- 在操作員儀表板中的表面 `KaigiRosterSummary`, `KaigiUsageSummary`和 `KaigiRelayHealthUpdated`事件.

@@ -438,7 +438,7 @@ Gardez la politique de conversion dans votre application ou contrat:
 - ce qui se passe lorsque l'équilibre de l'utilisateur est trop bas
 - ce qui se passe lorsque le solde du sponsor XOR est trop faible;
 
-::: avertissement
+::: warning
 
 Ne pas utiliser `gas_asset_id` pour le modèle de "compte local-token" sauf si vous voulez que le sponsor soit facturé dans cet actif de gaz aussi. `fee_sponsor` fait également du commanditaire le payeur des débitations d'actifs en gaz et pipeline configurées. Pour les frais d'utilisation des jetons locaux, recueillez le jeton explicitement avec une règle de transfert ou de contrat.
 

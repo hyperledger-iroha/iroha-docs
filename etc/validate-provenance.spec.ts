@@ -47,38 +47,38 @@ describe('artifact provenance validation', () => {
     expect(await validateProvenance(root)).toContain('fixture: target hash mismatch for src/snippets/fixture.txt')
   })
 
-  test('accepts an explicitly unpublished source commit without claiming current artifacts', async () => {
+  test('accepts a public candidate while a signed source commit is still pending', async () => {
     const root = await fixture()
     const manifestPath = path.join(root, 'provenance', 'iroha.json')
     const manifest = JSON.parse(await readFile(manifestPath, 'utf8'))
-    manifest.source.refresh_state = 'awaiting-public-source-commit'
-    manifest.artifacts[0].status = 'pending-public-source-commit'
+    manifest.source.refresh_state = 'awaiting-signed-source-commit'
+    manifest.artifacts[0].status = 'pending-signed-source-commit'
     await writeFile(manifestPath, JSON.stringify(manifest))
 
     expect(await validateProvenance(root)).toEqual([])
   })
 
-  test('rejects current artifacts while the source commit is unpublished', async () => {
+  test('rejects current artifacts while a signed source commit is pending', async () => {
     const root = await fixture()
     const manifestPath = path.join(root, 'provenance', 'iroha.json')
     const manifest = JSON.parse(await readFile(manifestPath, 'utf8'))
-    manifest.source.refresh_state = 'awaiting-public-source-commit'
+    manifest.source.refresh_state = 'awaiting-signed-source-commit'
     await writeFile(manifestPath, JSON.stringify(manifest))
 
     expect(await validateProvenance(root)).toContain(
-      'provenance/iroha.json: awaiting-public-source-commit requires every artifact to remain pending',
+      'provenance/iroha.json: awaiting-signed-source-commit requires every artifact to remain pending',
     )
   })
 
-  test('rejects unpublished-source artifacts without the matching source state', async () => {
+  test('rejects signed-source-pending artifacts without the matching source state', async () => {
     const root = await fixture()
     const manifestPath = path.join(root, 'provenance', 'iroha.json')
     const manifest = JSON.parse(await readFile(manifestPath, 'utf8'))
-    manifest.artifacts[0].status = 'pending-public-source-commit'
+    manifest.artifacts[0].status = 'pending-signed-source-commit'
     await writeFile(manifestPath, JSON.stringify(manifest))
 
     expect(await validateProvenance(root)).toContain(
-      'fixture: unpublished source output requires an explicit source refresh_state',
+      'fixture: output awaiting a signed source commit requires an explicit source refresh_state',
     )
   })
 })

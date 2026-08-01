@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /blockchain/assets.md
-translation_source_hash: 58c9f7657f5714dc4bbb884933a1c947687fcf6c83e471007e6c7885f1dab214
+translation_source_hash: c80e6025007653b355d373394465d04adefc1221c8f34d9008f1c9cbabd3dc40
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -47,7 +47,7 @@ Asset Definitions တွေက mintability mode တွေကို ထောက�
 |`Infinitely` |အရင်းအမြစ်ကို အကြိမ်ကြိမ် ထုတ်ပြီး မီးရှို့နိုင်ပါတယ်။|
 |`Once` |Fixed Supply Token ကို တစ်ကြိမ်လုပ်ပြီး လောင်ကျွမ်းနိုင်ပါတယ်။|
 |`Not` |မီးရှို့လို့ ရပေမဲ့ ပြန်မထုတ်နိုင်တဲ့ တည်ငြိမ်တဲ့ ထောက်ပံ့မှု အမှတ်တံဆိပ်ပါ။|
-|`Limited(n)` |ကန့်သတ်ထားတဲ့ နောက်ထပ် လုပ်ငန်းတွေ အတွက် Minting ကို ခွင့်ပြုပါတယ်။ |
+|`Limited(n)` |မူဝါဒက အရင်းအမြစ်အစိတ်အပိုင်းသစ်တွေကို ထပ်မံလုပ်ဆောင်မှု အနည်းဆုံးမှာ ထုတ်ဝေခွင့်ပြုပါတယ်။ |
 
 ပုံမှန် elastic assets အတွက် `Infinitely` နှင့် fixed supply သို့မဟုတ် bounded supply assets များအတွက် `Once` (သို့မဟုတ်) `Limited(n)` ကို အသုံးပြုပါ။ asset supply က တည်ငြိမ်နေမှသာ `Not` ကို မူလမူဝါဒအဖြစ် မသုံးပါနဲ့။
 

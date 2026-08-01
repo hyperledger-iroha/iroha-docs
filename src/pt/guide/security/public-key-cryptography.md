@@ -1,37 +1,35 @@
 ---
 translation_locale: pt
 translation_source: /guide/security/public-key-cryptography.md
-translation_source_hash: fd8bca2c8909c6dfead2e2f7f4f4711ab80339a98b7e227c02aa3ff965380718
+translation_source_hash: 3d317c00e75525d70f6cb9ef7f8eeec6911e2f124af8052cd2fc719b264d43f9
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Criptografia de chaves públicas {#public-key-cryptography}
 
-A criptografia de chaves públicas fornece os meios para uma comunicação segura e a proteção dos dados, permitindo atividades como transações on-line seguras, comunicações por e-mail encriptadas, etc.
+A criptografia de chaves públicas usa uma chave pública relacionada e a chave privada. A chave pública pode ser compartilhada. A chave privada deve permanecer sob o controle da autoridade. A segurança depende do uso de um algoritmo suportado, gerando chaves com aleatoriedade segura e protegendo a chave privada
 
-A criptografia de chaves públicas emprega um par de chaves criptográficas - uma chave pública e uma chave privada - para criar um método altamente seguro de transmissão de informações através de redes on-line.
+## As assinaturas digitais {#digital-signatures}
 
-É fácil fazer uma chave pública a partir de uma chave privada, mas o oposto é bastante difícil, se não impossível. Isso mantém as coisas seguras. Você pode compartilhar livremente sua chave pública sem arriscar a sua chave privada, que permanece segura.
+Um assinante cria uma assinatura digital com uma chave privada e um verificador verifica a assinatura com a chave pública correspondente.
 
-## Encriptação e assinaturas {#encryption-and-signatures}
+Uma assinatura válida mostra que os bytes assinados não foram alterados e que o titular da chave privada os aprovou. Não identifica uma pessoa por si só. A identidade depende de como a chave pública ou o controlador da conta foi registrada e regida.
 
-A criptografia de chaves públicas permite que os indivíduos enviem mensagens e dados encriptados que só podem ser decifrados pelo destinatário pretendido possuindo sua chave privada correspondente. Em outras palavras, a chave pública funciona como um bloqueio e a chave privada serve como uma chave única que desbloqueia os dados criptografados.
+As assinaturas fornecem evidência de integridade e autorização, não criptografam o conteúdo assinado.
 
-Este processo de criptografia não só garante a privacidade e a confidencialidade das informações sensíveis, mas também estabelece a autenticidade do remetente. Esta assinatura serve como um selo digital de aprovação, verificando a identidade do remetente e a validade dos dados transferidos. Qualquer pessoa com a sua chave pública pode verificar que a pessoa que iniciou a transacção usou a sua chave privada.
+## Encriptação de Chave Pública {#public-key-encryption}
+
+Alguns esquemas de chaves públicas criptografam dados para a chave pública de um destinatário. O destinatário decripta esses dados com a chave privada correspondente. Criptografia e assinaturas são operações separadas e podem usar diferentes chaves ou algoritmos.
+
+A assinatura da transacção Iroha não torna os dados do livro-razão público confidenciais. Usar o mecanismo de confidencialidade aprovado da implantação quando o conteúdo da carga útil deve permanecer privado.
 
 ## Chaves do lado do cliente {#keys-on-the-client-side}
 
-Cada transacção deve ser assinada por uma autoridade de conta. A chave privada ou o material do controlador para essa autoridade devem permanecer secretos, portanto, o software cliente é responsável pelo armazenamento e assinatura seguros.
+Cada transacção deve satisfazer a política configurada do controlador de conta. Uma conta simples pode usar uma chave de assinatura. Uma conta regida pode utilizar uma política de controlador mais complexa.
 
-::: Aviso
+O software do cliente deve proteger as chaves privadas e outros materiais do controlador. A configuração do cliente em texto simples é adequada apenas para desenvolvimento local e testes controlados. As integrações de produção devem utilizar um gestor de segredos, armazenamento de chaves suportado por hardware, um serviço de assinatura isolado ou outro limite de assinatura auditado.
 
-Todos os clientes são diferentes, mas a configuração do cliente de texto simples é adequada apenas para desenvolvimento e testes controlados. As integrações de produção devem utilizar um gerenciador secreto, armazenamento de chaves suportado por hardware ou outro limite de assinatura auditado.
+Usar chaves separadas para ambientes e finalidades separados. A reutilização de uma chave liga esses usos e aumenta o impacto da exposição.
 
-:::
-
-O registo de uma nova conta envolve a geração de material do controlador, como um par de chaves Ed25519. e submetendo a parte pública à rede. As transacções posteriores da conta devem ser assinadas com a chave privada correspondente ou com a política de controlador de conta configurada.
-
-Para a criptografia de chaves públicas funcionar eficazmente, evite reutilizar chaves quando precisar especificar uma nova chave. Embora não haja nada que impeça você de fazer isso, as chaves públicas são públicas, o que significa que se um atacante vê a mesma chave pública sendo usada, Saberão que as chaves privadas também são idênticas.
-
-Embora as chaves privadas funcionem de acordo com princípios ligeiramente diferentes das senhas, aplica-se o conselho de torná-las tão aleatórias quanto possível, nunca armazená-las sem criptografia e nunca compartilhá-las com ninguém em qualquer circunstância.
+Veja . [Geração de chaves criptográficas](./generating-cryptographic-keys.md), [Armazenamento de chaves criptográficas](./storing-cryptographic-keys.md), e [Segurança operacional](./operational-security.md).

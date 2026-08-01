@@ -1,86 +1,64 @@
 ---
 translation_locale: zh-hans
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: ed622cdb1d6a47635d0753c98f80aaa903b916133f43bc9fdab268512d0ace69
+translation_source_hash: 7c35c609442df65328fa619b6673be76f801cfc2abc28afd853d7fe61e439e9c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
-# 智能合同 {#smart-contracts}
+# 智能合约 {#smart-contracts}
 
-Iroha 执行交易 `Executable` 目前的数据模型
-支持:
+Iroha 交易执行 `Executable` 载荷。当前数据模型支持：
 
-- `Executable::Instructions`: 一个顺序的集合 Iroha 特别指示
-- `Executable::ContractCall`: 对部署的合同的附属参考调用
-  实例
-- `Executable::Ivm`: Iroha VM 字节码
-- `Executable::IvmProved`: Iroha VM 有预先计算的指令的字节码
-  覆盖和证明承诺
+- `Executable::Instructions`：一组有序的 Iroha 特殊指令
+- `Executable::ContractCall`：按引用调用已部署的合约实例
+- `Executable::Ivm`：Iroha VM 字节码
+- `Executable::IvmProved`：带有预计算指令叠加层和证明承诺的 Iroha VM 字节码
 
-Kotodama 是 Iroha 一个高层智能合同语言. `.ko` 源文件
-编译到确定性 IVM 常规存储为 `.to`
-用于部署的文物. Kotodama 目标 IVM; 它不是一个独立的 RISC-V
-或 WebAssembly 目标.
+Kotodama 是 Iroha 的高级智能合约语言。`.ko` 源文件会编译为确定性的 IVM 字节码，部署时通常保存为 `.to` 制品。Kotodama 只以 IVM 为目标；它不以 RISC-V 或 WebAssembly 为目标。
 
-第一个版本只支持 ABI 系统调用和指针 ABI
-通过接受和执行合同无条件地执行该政策;
-没有运行时间兼容性转换.
+首个版本仅支持 ABI 版本 1。合约准入和执行会无条件强制实施系统调用与指针 ABI 策略；不存在运行时兼容性开关。
 
-## 什么时候使用智能合同 {#when-to-use-smart-contracts}
+## 何时使用智能合约 {#when-to-use-smart-contracts}
 
-使用正常指令,当交易可以直接表达时:
+当交易可以直接表达时，请使用普通指令：
 
-- 登记或撤销的物体
-- 货币,燃烧或转移资产
+- 注册或注销对象
+- 铸造、销毁或转移资产
 - 更新元数据
-- 授予或撤销许可
+- 授予或撤销权限
 - 执行触发器
-- 在链上设置的参数
+- 设置链上参数
 
-使用智能合同,当交易需要包装逻辑时
-难以用静态指令序列表达,或者在部署
-应通过参考调用合同案例.
+当交易需要封装的逻辑、难以表达为静态指令序列，或者需要按引用调用已部署的合约实例时，请使用智能合约。
 
-## IVM 执行式 {#ivm-executables}
+## IVM 可执行载荷 {#ivm-executables}
 
-`Executable::Ivm` 携带原料 IVM 节点将该节码执行在内
-设置链的运行时间限制.
-确定性;合同是交易执行的一部分,因此影响
-总共识.
+`Executable::Ivm` 携带原始 IVM 字节码。节点会在为链配置的运行时限制内执行这些字节码。请保持字节码精简且确定；合约属于交易执行的一部分，因此会影响共识。
 
-`Executable::IvmProved` 适用于防流,载有:
+`Executable::IvmProved` 用于携带证明的流程。它包含：
 
 - IVM 字节码
-- 确定性指令覆盖
+- 确定性的指令叠加层
 - 执行事件承诺
-- 气体政策承诺
+- gas 策略承诺
 
-证据将覆盖链绑定到执行的字节码.
-验证者可以验证证明和重播执行作为额外的
-安全检查.
+该证明将叠加层绑定到实际执行的字节码。根据流水线策略，验证者可以验证证明并重放执行，将其作为额外的安全检查。
 
-## 部署的合同调用 {#deployed-contract-calls}
+## 已部署合约调用 {#deployed-contract-calls}
 
-`Executable::ContractCall` 通过地址调用部署的合同实例.
-使用此时,合同代码是单独注册的,
-在每次运载字节代码的同时,
+`Executable::ContractCall` 按地址调用已部署的合约实例。当合约代码已单独注册，且交易应按引用调用它而不是每次都携带字节码时，请使用此载荷。
 
 ## 运营指导 {#operational-guidance}
 
-- 合同行为不应依赖于本地
-  壁表时间,主机文件系统状态,网络调用或其他同行本地
-  输入.
-- 保持有效载荷紧.大字节代码增加交易规模和区块
-  传播成本.
-- 对于简单的账本更改,更喜欢输入指令.
-  审计和执行更便宜.
-- 对合同升级和注册许可证视为高风险
-  操作控制.
+- 保持合约的确定性。合约行为不得依赖本地挂钟时间、主机文件系统状态、网络调用或其他仅存在于本地节点的输入。
+- 保持载荷精简。大型字节码会增加交易大小和区块传播成本。
+- 对于简单的账本更改，优先使用类型化指令。它们更易审计，执行成本也更低。
+- 将合约升级与注册权限视为高风险的运维控制项。
 
-查看以下内容:
+此外,请参见:
 
-- [指示](/zh-hans/blockchain/instructions.md)
+- [指令](/zh-hans/blockchain/instructions.md)
 - [触发器](/zh-hans/blockchain/triggers.md)
-- [许可证](/zh-hans/blockchain/permissions.md)
-- [数据模型方案](/zh-hans/reference/data-model-schema.md)
+- [权限](/zh-hans/blockchain/permissions.md)
+- [数据模型架构](/zh-hans/reference/data-model-schema.md)

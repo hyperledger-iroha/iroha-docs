@@ -1,7 +1,7 @@
 ---
 translation_locale: ru
 translation_source: /blockchain/nfts.md
-translation_source_hash: 335eacd30c5964659baeeae8ac937805f1d4d786dd42a36e5164bbe75ef7e360
+translation_source_hash: 6dd2d21a29f352a14cb17046c66cfa541ef501b733b95bb6874d2d3f86ec0504
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -123,7 +123,7 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
-Если вы перенесли NFT, запустите это команду с конфигурацией аккаунта текущего владельца или перенесем NFT обратно.
+Убрать пример NFT после прохождения. Если вы его перенесли, либо передайте обратно, либо представьте команду не регистрируйте с конфигурацией аккаунта текущего владельца.
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -145,7 +145,7 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
 - `CanTransferNft`
 - `CanModifyNftMetadata`
 
-Проверка разрешений осуществляется активным валидатором времени выполнения, поэтому сеть может настроить авторизацию путем обновления Исполнитель. [Токены разрешения](/ru/reference/permissions.md) для текущего списка дефолтных токенов.
+Проверка разрешений выполняется активным проверщиком запуска, поэтому сеть может настраивать авторизацию путем обновления исполнителя. [Токены разрешения](/ru/reference/permissions.md) для текущего списка дефолтных токенов.
 
 ## Выбор NFTs {#choosing-nfts}
 

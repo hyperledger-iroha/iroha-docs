@@ -1,137 +1,121 @@
 # Storing Cryptographic Keys
 
-Your sensitive data only remains private if you adopt <abbr title="Operational Security">OPSEC</abbr> practices to protect the cryptographic keys. Social engineering threats, where someone posing as a figure with authority tries to manipulate you into giving them your private cryptographic key, are real. Always be cautious and avoid sharing your private key, treating it as you would your apartment keys—reserved for trusted individuals only.
+A private key can authorize every action permitted to its authority. Never
+share a private key. Protect seed material, recovery secrets, bearer tokens,
+and exported key files with the same care.
 
-For more information on <abbr title="Operational Security">OPSEC</abbr> and its best practices, see [Operational Security](./operational-security).
+Choose the custody design before production launch. The design must match the
+value at risk, the account-controller policy, and the deployment's recovery
+process.
 
-## Storing Cryptographic Keys Digitally
+## Define the Custody Boundary
 
-When it comes to protecting cryptographic keys digitally, mainly only two approaches—[SSH](https://www.ssh.com/) and [GPG](https://www.gnupg.org/)—are available. These methods provide layers of security to prevent unauthorized access to your cryptographic keys.
+- Keep an inventory of each authority, public key, algorithm, environment,
+  purpose, custodian, storage location, backup, and replacement procedure.
+- Use separate keys for development, test, production, routine transactions,
+  governance, deployment, and recovery.
+- Give people and processes access only to the keys required by their role.
+- Require independent approval for high-value or governance signing when the
+  risk model requires it.
+- Record which network and authority a signer may use. A signing service must
+  reject requests outside that scope.
 
-Many Iroha architectural decisions have been influenced by the principles of the **Secure Shell** (`SSH`) protocol, which is why this section primarily focuses on the `SSH` approach, offering instructions on how to effectively implement the protocol for storing your cryptographic keys within the Iroha ecosystem.
+## Choose an Appropriate Storage Method
 
-### Using SSH and SSH Agent
+For local development, controlled tests, or a secure custody handoff, a key can
+be exported to a permission-restricted file. On a supported Unix platform,
+generate a new key directory with `kagami`:
 
-**Secure Shell Protocol** (`SSH`) is a cryptographic network protocol that serves as a virtual gateway, enabling secure access to remote machines via potentially not-so-secure networks by using SSH keys—access credentials. It provides an efficient way to remotely interact with systems without the necessity of physical presence. In this context, `SSH` offers two primary authentication mechanisms: the conventional password-based approach and the more secure public-private key pair method.
+```bash
+cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
+```
 
-For more information on `SSH`, see [the related SSH Academy topic](https://www.ssh.com/academy/ssh).
+The parent directory must exist. The target must be new or already owned by the
+current user, mode `0700`, free of symbolic links, and empty. Kagami writes
+`public.key` and `private.key` with mode `0600`; `--pop` also writes `pop.hex`.
+The command fails on platforms where Kagami cannot enforce the owner-only
+filesystem rules.
 
-To streamline the login process and bypass the need for repetitive input, it is possible to pair the `SSH` keys with the **SSH Agent** (`ssh-agent`)—the assistant program that remembers your `SSH` keys and/or password for the duration of a session. This setup permits the `SSH` gateway to effortlessly access the keys whenever it connects to other machines.
+The private-key file is an unencrypted export. Keep it out of source control,
+shared folders, logs, tickets, chat, and build artifacts. Import a production
+key into its approved custody boundary, then remove the export according to the
+deployment's procedure. Do not reuse a development key in production.
 
-The workflow here is as follows: you have your public key stored on a remote system and keep your private key secure. Whenever you want to access a remote system, the `ssh-agent` steps in to communicate your _public_ key to the accessed system. The remote system then sends back a [challenge](https://en.wikipedia.org/wiki/Challenge%E2%80%93response_authentication) that only your _private_ key can properly respond to. Your `ssh-agent` handles this challenge by using your _private_ key and sends the correct response back to the remote system. If the response matches what the system expected, you're granted access.
+For production, prefer an audited custody boundary such as:
 
-The beauty of the `ssh-agent` is that it holds onto your private key during your session, so there is no need to keep entering your password or private key passphrase every time you connect to a remote system.
+- a hardware security module or hardware-backed keystore
+- an operating-system or mobile keystore
+- an isolated signing service
+- a secret manager that releases a key only to an authorized workload
 
-For more information on the `ssh-agent`, see [the related SSH Academy topic](https://www.ssh.com/academy/ssh/agent).
+Keep key material non-exportable when the selected integration supports that
+property. Confirm that the custody system supports the algorithm and signing
+operation required by the Iroha authority.
 
-::: info Note
+Encryption at rest protects a stored copy. It does not protect a key after an
+unauthorized process or operator obtains the decrypted bytes. Harden the host,
+restrict runtime access, and monitor signing activity.
 
-For a detailed overview of the `SSH` protocol and the `ssh-agent` tool, see the following [SSH Academy](https://www.ssh.com/academy) topics:
+## Protect Signing Workflows
 
-  - [What is SSH (Secure Shell)?](https://www.ssh.com/academy/ssh)
-  - [ssh-agent: How to configure ssh-agent, agent forwarding, & agent protocol](https://www.ssh.com/academy/ssh/agent)
+- Use named operator identities, strong authentication, and audited access to
+  signing systems.
+- Keep raw keys out of command-line arguments, shell history, environment
+  dumps, process listings, crash reports, and application logs.
+- Unlock a signer only for the required operation. Close or expire the session
+  after use.
+- Show the authority, network, instructions, assets, and fees before approval.
+- Require explicit confirmation for privileged or high-value transactions.
+- Keep raw private keys outside browser pages and general-purpose application
+  processes when a custom client integration can delegate signing.
 
-:::
+Plain-text client configuration is suitable only for local development and
+controlled tests. A production integration should obtain signatures through
+its approved custody boundary. The stock Iroha CLI reads a private key from
+client configuration and does not provide a generic external-signer adapter.
+Custom clients can construct the transaction payload hash and attach a
+signature produced by an external signer.
 
-### Adding a Password Manager Program
+## Back Up and Recover Keys
 
-It is recommended to enhance the security of your `SSH` keys by protecting them with a password, which acts as an additional obstacle in the way of malicious parties aiming to obtain your sensitive information.
+- Back up only keys whose recovery policy requires a backup.
+- Encrypt backups and keep them separate from the live signer.
+- Apply the same access and approval controls to a backup as to the live key.
+- Keep recovery credentials under independent custody when separation of
+  duties is required.
+- Test restoration without exposing production key material.
+- Record and review every backup creation, access, restore, and destruction.
 
-A variety of password managers can be used to store user passwords and `SSH` keys temporarily. For the sake of clarity, [KeePass](https://keepass.info/) is used as an example password manager, specifically, the [KeePassXC](https://keepassxc.org/) port running on Linux-based operating systems.
+Do not assume that an unrelated wallet mnemonic format can represent an Iroha
+private key. Use only a recovery format supported and tested by the selected
+custody system.
 
-For instructions on how to set up KeePassXC see the [Configuring KeePassXC](#configuring-keepassxc) section below.
+## Replace Exposed or Retired Keys
 
-![KeePassXC: `Main` screen UI](../../img/KeePassXC.png)
+Prepare replacement before an incident. The procedure must identify:
 
-KeePassXC offers enhanced security, flexibility, and control. It not only stores passwords but also the `SSH` keys. When used for key storage, this password manager provides the `ssh-agent` with the stored keys, which are then promptly removed from its memory once the KeePassXC window is closed.
+1. who can declare a key exposed or retired
+2. how the affected signer is isolated
+3. how a new key is generated and placed in approved custody
+4. for an account, how authorized controller replacement or social recovery
+   creates the replacement canonical `AccountId` and migrates linked state
+5. for a node or peer, how an authorized on-chain consensus-key rotation or
+   disablement is coordinated with the BLS PoP, activation and overlap policy,
+   local key configuration, `trusted_peers_pop`, and deployment topology
+6. how dependent configurations, applications, and operators adopt the new
+   `AccountId`, public key, or peer identity
+7. how the old key's authority is removed and its copies are archived or
+   destroyed
+8. how the network and dependent applications are verified afterward
 
-::: tip
+::: warning
 
-Theoretically, any of the KeePass ports [listed on the official website](https://keepass.info/download.html) can be utilized for key storage purposes.
-We recommend any of the following: [KeePassX](https://www.keepassx.org/) or [KeePassXC](https://keepassxc.org/).
-
-:::
-
-#### Configuring KeePassXC
-
-To configure KeePassXC, perform the following steps:
-
-1. Launch KeePassXC, then go to **Tools** > **Settings**, or select the **Gear** button from the top UI panel.
-
-2. In the **Application Settings** tab that appears, select **SSH Agent** from the left menu, and then select the **Enable SSH Agent integration** checkbox.
-
-   ::: info Show reference screenshot
-
-   ![KeePassXC `SSH Agent` tab: Enabling SSH Agent](../../img/keepassxc_ssh_agent.png)
-
-   :::
-
-3. Create a new KeePassXC Database. For instructions, see [KeePassXC User Guide > Creating Your First Database](https://keepassxc.org/docs/KeePassXC_UserGuide#_creating_your_first_database).
-
-4. For every key that you would like to store in the KeePassXC Database you created, perform the following steps:
-
-   - Add a new entry in the database. For instructions, see [KeePassXC User Guide > Creating Your First Database](https://keepassxc.org/docs/KeePassXC_UserGuide#_creating_your_first_database).
-
-   - When adding a new entry, attach the file containing the key by doing the following: select **Advanced** from the left menu, then select **Add** in the **Attachments** section, choose the required file in the **Select files** window that appears.
-
-   - When adding a new entry, select **SSH Agent** from the left menu, then select the key file you added from the **Attachment** menu in the **Private key** section; then select the following checkboxes:
-
-      - **Add key to agent when database is opened/unlocked**
-
-      - **Remove key from agent when database is closed/locked**
-
-      - **Require user confirmation when this key is used**
-
-   - If necessary, make other changes to the entry.
-
-   - When ready, select **OK** to save the entry.
-
-   ::: details Show reference screenshots
-
-   ![KeePassXC `Advanced` tab: Adding a private key attachment](../../img/keepassxc_private_key.png)
-
-   ![KeePassXC `SSH Agent` tab: Adding a private key attachment](../../img/keepassxc_pk_agent.png)
-
-   :::
-
-##### Expected Results
-
-- Cryptographic and `shh` keys are stored as entries in a KeePassXC Database that can be accessed while the KeePassXC window is open.
-
-- Stored cryptographic and `ssh` keys can be used whenever they are required for authorization.
-
-- Stored cryptographic and `ssh` keys are removed from the `ssh-agent` once the KeePassXC window is closed.
-
-::: info Note
-
-Without enabling the **Require user confirmation when this key is used** option, the `ssh-agent` may not monitor the process that provided it with a key. In the event that the password manager process is terminated by malware or a system service through a `SIGKILL` signal, the key is likely to remain in the `ssh-agent`, as Unix system programs cannot intercept `SIGKILL`.
-
-:::
-
-## Storing Cryptographic Keys Physically
-
-For those who seek the highest level of offline security, the option of storing cryptographic keys physically ensures that the keys remain completely disconnected from digital networks, thus minimizing the risk of unauthorized access. Acknowledging the physical option underscores our commitment to catering to diverse security needs.
-
-### Using a Hardware Key
-
-Our team considers hardware keys to be one of the best safety measures. A hardware key—a compact device that connects via a USB port and has the size of a typical flash drive—only processes security-related events when it is connected to a machine. This allows you to easily disconnect the device in case of a security breach, or simply reconnect it to a different machine whenever it is required.
-
-However, since there are many brands of hardware keys—each with their unique APIs—it is important to research the market to find the key that best suits your needs.
-
-So far, our team has internally tested the [YubiKey 5C](https://www.yubico.com/il/product/yubikey-5c/) hardware key which proved to have many positive features, including versatile API functionality.
-
-However, there's a potential drawback to consider. Implementing the [HMAC challenge-response authentication](https://en.wikipedia.org/wiki/Challenge%E2%80%93response_authentication) and storing a corresponding _private_ key for this response could create a vulnerability. This setup might inadvertently enable attackers to make educated guesses about the information stored within the YubiKey 5C's memory, thereby compromising the overall security.
-
-Luckily, this vulnerability can be mitigated by adopting an alternative approach to utilizing the YubiKey 5C. The idea is to use YubiKey 5C to securely access a KeePassXC database storing your cryptographic and `SSH` keys. This method can even be considered beneficial, since it surpasses the security of most passwords and makes it necessary for the malicious party to be in possession of your hardware key in case the KeePassXC database is leaked.
-
-::: info
-
-To read more about _the method above_, see the answer by one of the KeePassXC developers—[Janek Bevendorff](https://github.com/phoerious)—to the following StackExchange question:
-
-[Is it reasonable to use KeePassXC with YubiKey?](https://security.stackexchange.com/questions/201345/is-it-reasonable-to-use-keepassxc-with-yubikey/258414#258414)
+Encryption or a new password cannot make a copied private key safe again.
+When exposure is suspected, stop using the key and follow the approved
+replacement or revocation procedure.
 
 :::
 
-### Using a Mnemonic Phrase
-
-Alternatively, you can memorize a private key as a series of words, known as a _mnemonic phrase_. This method, used in many wallets, requires remembering around 25 specific words. Most password managers, including the previously discussed KeePassXC, offer mnemonic passphrase generation.
+See [Generating Cryptographic Keys](./generating-cryptographic-keys.md),
+[Operational Security](./operational-security.md), and
+[Security Principles](./security-principles.md).

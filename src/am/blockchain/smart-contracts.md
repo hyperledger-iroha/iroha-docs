@@ -1,9 +1,9 @@
 ---
 translation_locale: am
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: ed622cdb1d6a47635d0753c98f80aaa903b916133f43bc9fdab268512d0ace69
+translation_source_hash: 7c35c609442df65328fa619b6673be76f801cfc2abc28afd853d7fe61e439e9c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # ብልህ ኮንትራት {#smart-contracts}
@@ -15,9 +15,9 @@ Iroha ግብይቶች የ `Executable` ጥቅማጥቅሞች ይተገበራሉ�
 - `Executable::Ivm`: Iroha VM የባይት ኮድ
 - `Executable::IvmProved`: Iroha VM የባይት ኮድ ከቅድመ ማስላት መመሪያ ሽፋን እና የማረጋገጫ ግዴታዎች ጋር
 
-Kotodama ነው Iroha የከፍተኛ ደረጃ ስማርት ኮንትራት ቋንቋ ነው። `.ko` ምንጭ ፋይል ወደ የተወሰነ ያጠናቅቃል IVM ባይት ኮድ፣ በተለምዶ እንደ አንድ `.to` ለመተግበር የታሰበ ጥንታዊ ዕቃ። Kotodama ግቦች IVM; እሱ ብቻውን አይደለም RISC-V ወይም WebAssembly ዒላማ።
+Kotodama የIroha ከፍተኛ ደረጃ የስማርት ኮንትራት ቋንቋ ነው። የ`.ko` ምንጭ ፋይል ወደ ዲተርሚኒስቲክ IVM ባይትኮድ ይጠናቀራል፣ ለማሰማራትም በተለምዶ እንደ `.to` አርቲፋክት ይቀመጣል። Kotodama ዒላማ የሚያደርገው IVM ብቻ ነው። ወደ RISC-V ወይም WebAssembly አያነጣጥርም።
 
-የመጀመሪያው ስሪት ABI ስሪት ብቻ ይደግፋል 1. የ syscall እና ጠቋሚ-ABI ፖሊሲው በውል ተቀባይነት እና አፈፃፀም በኩል ያለ ቅድመ ሁኔታ ይተገበራል። ምንም የአሂድ ጊዜ ተኳሃኝነት መቀየሪያ የለም።
+የመጀመሪያው ልቀት ABI ስሪት 1ን ብቻ ይደግፋል። የsyscall እና pointer-ABI ፖሊሲ ውል በሚቀበልበትና በሚፈጸምበት ጊዜ ያለምንም ቅድመ ሁኔታ ይተገበራል፤ የአሂድ ጊዜ ተኳኋኝነት መቀየሪያ የለም።
 
 ## ስማርት ኮንትራቶችን መጠቀም የሚቻልበት ጊዜ {#when-to-use-smart-contracts}
 

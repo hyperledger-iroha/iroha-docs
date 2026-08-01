@@ -81,9 +81,11 @@ pnpm validate:provenance
 
 The command writes checked-in snippets and public OpenAPI data, then updates
 their SHA-256 provenance. It never selects or fetches a branch. Do not mark
-artifacts current until the pinned commit is fetchable from the public Iroha
-repository; unpublished local commits use the explicit
-`awaiting-public-source-commit` manifest state.
+artifacts current until a compliant signed commit representing the final source
+truth is publicly available and the references have been refreshed from it.
+The currently pinned candidate is public and its copy-artifact hashes match,
+but it is unsigned, so the manifest uses the explicit
+`awaiting-signed-source-commit` state.
 
 ## Quality Checks
 

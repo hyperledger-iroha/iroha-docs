@@ -1,9 +1,9 @@
 ---
 translation_locale: ba
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: ed622cdb1d6a47635d0753c98f80aaa903b916133f43bc9fdab268512d0ace69
+translation_source_hash: 7c35c609442df65328fa619b6673be76f801cfc2abc28afd853d7fe61e439e9c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Аҡыллы килешеүҙәр {#smart-contracts}
@@ -15,9 +15,9 @@ Iroha операциялар үтәү `Executable` файҙалы йөкләмә
 - `Executable::Ivm`: Iroha VM байткоды
 - `Executable::IvmProved`: Iroha VM байт коды, алдан иҫәпләнгән инструкция менән ҡаплау һәм иҫбатлау йөкләмәләре
 
-Kotodama булып тора Iroha юғары кимәлдәге аҡыллы килешеү теле. `.ko` сығанаҡ файл туплай өсөн детерминистик IVM байткод, конвенциональ рәүештә һаҡлана `.to` ҡулланыу өсөн артефакт. Kotodama маҡсаттар IVM; ул үҙенән-үҙе тора алмай . RISC-V йәки WebAssembly маҡсат.
+Kotodama — Iroha-ның юғары кимәлле смарт-контракт теле. `.ko` сығанаҡ файлы детерминистик IVM байт-кодына компиляциялана һәм урынлаштырыу өсөн ғәҙәттә `.to` артефакты итеп һаҡлана. Kotodama тик IVM өсөн тәғәйенләнгән. Ул RISC-V йәки WebAssembly өсөн тәғәйенләнмәгән.
 
-Беренсе версия тик ABI версияһын ғына хуплай. Syscall һәм pointer-ABI сәйәсәте килешеүҙе ҡабул итеү һәм үтәү менән шартһыҙ тормошҡа ашырыла; ғәмәлгә ашырыу ваҡыты буйынса яраҡлашыу үҙгәреше юҡ.
+Беренсе сығарылыш тик ABI-ҙың 1-се версияһын хуплай. syscall һәм pointer-ABI сәйәсәте килешеүҙе ҡабул итеү һәм үтәү ваҡытында шартһыҙ ҡулланыла; эшләү ваҡытында ярашлылыҡты күсергес юҡ.
 
 ## Аҡыллы килешеүҙәрҙе ҡасан ҡулланырға? {#when-to-use-smart-contracts}
 

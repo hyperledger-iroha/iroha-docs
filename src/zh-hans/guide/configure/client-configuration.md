@@ -8,9 +8,7 @@ translation_engine: nllb-200-ct2
 
 # 客户端配置 {#client-configuration}
 
-Iroha CLI 并且 SDK 客户使用 TOML 存储库将运送
-现在的默认 `defaults/client.toml`; 生成的本地网络也写一个
-匹配 `client.toml` 在它们的输出目录中.
+Iroha CLI 和 SDK 客户使用 TOML 存储库将当前的默认设置发送到 `defaults/client.toml`; 创建的本地网络也会写出匹配 `client.toml` 在它们的输出目录中.
 
 ::: details 客户端配置模板
 
@@ -20,8 +18,7 @@ Iroha CLI 并且 SDK 客户使用 TOML 存储库将运送
 
 ## 核心领域 {#core-fields}
 
-最少,一个客户端配置识别了链接, Torii 终点,以及
-签字账户:
+至少,客户端配置识别链, Torii 终点和签字帐户:
 
 ```toml
 chain = "00000000-0000-0000-0000-000000000000"
@@ -33,28 +30,22 @@ public_key = "ed0120..."
 private_key = "802620..."
 ```
 
-- `chain` 选择所提交交易属于的链.
-- `torii_url` 在等级的点 Torii HTTP API.
-- `[account].domain` 是由 CLI 快捷方式和地址选择器编码;
-  圣经 `AccountId` 它本身是无域的.
-- `[account].public_key` 并且 `[account].private_key` 签署交易.
+- `chain`选择所提交交易属于的链.
+- `torii_url`点在同行 Torii HTTP API.
+- `[account].domain`是由 CLI 快捷方式和地址选择器编码所使用的;正规 `AccountId`本身是无域名.
+- `[account].public_key`和`[account].private_key`签署交易.
 
-对于默认的本地网络,这是
-通过集成的基因表来处理.
+帐户必须已经在链上存在.对于默认的本地网络,这是由捆绑的基因表处理的.
 
 ::: info 案例敏感性
 
-Iroha 根据法典分析,这些名字对案例敏感.
-`wonderland.universal`, `Wonderland.universal`, 并且
-`looking_glass.universal` 它们是不同的域字面.
+Iroha 在法典解析后,这些名字对案例敏感. `wonderland.universal`, `Wonderland.universal`, 和 `looking_glass.universal` 它们是不同的字体.
 
 :::
 
 ## 基本身份验证 {#basic-authentication}
 
-选择性 `[basic_auth]` 部分添加一个 HTTP `Authorization` 标题到
-客户的要求. Iroha 同龄人不直接解释这些凭证;使用
-什么时候? Torii 像Nginx这样的反向代理.
+可选的 `[basic_auth]` 部分将 HTTP `Authorization` 标题添加到客户端请求中. Iroha 同龄人不直接解释这些凭证;在 Torii 在像Nginx这样的反向代理后使用时,使用它们.
 
 ```toml
 [basic_auth]
@@ -64,7 +55,7 @@ password = "ilovetea"
 
 ## 交易设置 {#transaction-settings}
 
-交易行为配置为 `[transaction]` 部分:
+交易行为设置为 `[transaction]`部分:
 
 ```toml
 [transaction]
@@ -73,34 +64,30 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-- `time_to_live_ms` 交易寿命在毫秒.
-- `status_timeout_ms` 控制客户等待交易的时间
-  情况.
-- `nonce = true` 要求客户包括一个非如此重复的交易
-  产生不同的哈希.
+- `time_to_live_ms`是数毫秒的交易寿命.
+- `status_timeout_ms` 控制客户等待交易状态的时间.
+- `nonce = true` 要求客户包含一个非如此重复的交易产生不同的哈希.
 
 ## 连接排列设置 {#connect-queue-settings}
 
-电流 Iroha 客户也可以使用可选的 `[connect]` 地方部门
-排队状态:
+目前的 Iroha 客户端也可以使用可选的 `[connect]` 部分进行本地队列状态:
 
 ```toml
 [connect]
 queue_root = "./queue"
 ```
 
-如果工作流需要持久的客户端排队存储时使用此方法.
+如果工作流需要持久的客户端排队存储时,请使用此方法.
 
-## 生成配置 {#generating-configurations}
+## 创建配置 {#generating-configurations}
 
-对于一次性本地网络,最好 Kagami 因为它写出匹配 Iroha
-3 组合,创始,脚本和一个 README:
+对于一次性本地网络,更喜欢 Kagami 因为它写出匹配的 Iroha 3 配置,基因,脚本和 README:
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
 ```
 
-使用生成的 `./localnet/client.toml` 在 CLI:
+使用生成的 `./localnet/client.toml`与 CLI:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all

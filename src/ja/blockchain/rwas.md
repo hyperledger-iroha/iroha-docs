@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/rwas.md
-translation_source_hash: 80593515d6919a6b6cb282ddcd4903ce000b56b264f350a42a6ed792f9cbef73
+translation_source_hash: cbdc6d766fb90bea7e68dc67f2c705bb1638340feeb2fca9f2dd43a727ac03e7
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,7 +12,7 @@ translation_engine: nllb-200-ct2
 
 RWAs は,数値資産の余剰とは異なる.
 
-- 数値資産は,口座で保有する浮動余分である
+- 数値資産は,口座に保有されている浮動余分である
 - NFT は,単一の所有者による連鎖上の記録である.
 - RWA は,ビジネスメタデータ,数量,保有物,凍結,償還状態,出産,およびコントローラポリシーを搭載できるパットである.
 
@@ -33,7 +33,7 @@ RWA ラットは以下のものを含む.
 - `controls`:コントローラ口座,コントローラの役割,および有効なコントローラ操作
 - `is_frozen`と `held_quantity`:実行時間によって執行されるライフサイクル状態
 
-チェーン上の用荷をコンパクトにしておく WSV の外に大きな法律文書,検査報告,監査バンドルを保管し,その後 URI を消化します.SoraFS パス,または RWA メタデータにおける明示的な参照.
+チェーン上の用荷をコンパクトにしておく WSV の外に大きな法律文書,検査報告および監査パックを保管する それから,それを消化して URI, SoraFS 経路,または明示的な参照 RWA メタデータ
 
 ## 識別子 {#identifiers}
 
@@ -60,12 +60,12 @@ RWA ID のテキスト形式は,次のとおりです.
 |作戦|実行された行動|
 | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
 |`RegisterRwa`|ドメインで生成された ID パットを作成し,取引権限は `owned_by` になります. |
-|`TransferRwa`|額を別のアカウントに移動する.完全な転送は `owned_by` を変更できます.部分的な移転により生成された子配分が作成されます.|
+|`TransferRwa`|額を別のアカウントに移す.完全な転送は `owned_by` を変更することができます.部分的な転送では,生成された ID の子供ラウンドが作成されます. |
 |`HoldRwa`|備蓄量.設定されたコントローラーと `hold_enabled`が必要です. |
 |`ReleaseRwa`|設定されたコントローラーと `hold_enabled` を必要とする.|
 |`FreezeRwa`|設定されたコントローラーと `freeze_enabled` を必要とする. |
 |`UnfreezeRwa`|設定されたコントローラーと `freeze_enabled` を必要とする.|
-|`RedeemRwa`|持ち主またはコントローラと `redeem_enabled` を要求する.|
+|`RedeemRwa`|`redeem_enabled`が真実である場合,所有者または管理者がそれを提出することができる. |
 |`MergeRwas`|同じドメインとスペックを持つ親 Lotの量を組み合わせ,生成した子供 Lotにします. |
 |`ForceTransferRwa`|制御器の流れを介して量移動する.設定された制御器と `force_transfer_enabled` を要求します. |
 |`SetRwaControls`|パートコントロールのポリシーを交換する オーナーやコントローラが必要です|
@@ -96,11 +96,11 @@ RWA ID のテキスト形式は,次のとおりです.
 }
 ```
 
-コントローラーアカウントと役割は,対応するボウリアンフラグで有効化されたコントローラ操作のみを実行することが許される.現在の制御パイルロードは許可リスト転送ポリシーではないし,嵌まった `transfers` 規則を含まない.
+コントローラーアカウントと役割は,対応するブールフラッグによって有効化された操作のみを実行できます.現在のコントロールパイルロードにはコントローラーアイデンティティとオペレーションフラグが含まれています.転送許可リストおよび嵌まった `transfers`ルールはこのパイルロードの外です.
 
 ## APIs に関する質問,イベント {#queries-events-and-apis}
 
-使用 [`FindRwas`](/ja/reference/queries.md#assets-nfts-and-rwas) 登録されたリストへ RWA ライブアップデートが必要なアプリケーションは, [`Rwa` データイベント](/ja/blockchain/filters.md#data-event-filters) 作成,所有者変更,分割,合併,引き換え,凍結,解凍,保持,解放,強制移転,制御変更そしてメタデータイベント.
+使用 [`FindRwas`](/ja/reference/queries.md#assets-nfts-and-rwas) 登録されたリストへ RWA ライブアップデートが必要なアプリケーションは, [`Rwa` データイベント](/ja/blockchain/filters.md#data-event-filters) 作成,所有者変更,分割,合併,代償,凍結,解凍,開催,リリース,強制移転,制御変更,およびメタデータ事件.
 
 Torii は,そのルートファミリーが有効である場合, `/v1/rwas` と `/v1/rwas/query` のようなチェーン状態の経路をさらし, `/v1/explorer/rwas` と`/v1/explorer/rwas/{rwa_id}` などの探査者経路をさらにさらす.生成されたクライアントはノードによって暴露される正確な応答形よりも,ライブ [`/openapi`](/ja/reference/torii-endpoints.md#common-endpoints) 文書を好むべきである.
 
@@ -228,7 +228,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-チェーン外プロセスが完了すると,握手を放す.
+チェーン外プロセスが成功した後, `ReleaseRwa` を提出する.
 
 ```python
 draft = TransactionDraft(
@@ -273,7 +273,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### 償還または退職金量 {#redeem-or-retire-quantity}
 
-代償額は,代表されたチェーン外資産が交付,消費,退役または他の方法で流通から取り除かれた場合である.  lote は `redeem_enabled` でなければならないし,署名者は所有者またはコントローラである必要があります.
+`RedeemRwa` を提出する.代表されたチェーン外資産が交付,消費,退役,または他の方法で流通から取り除かれた後.これは永久に入荷した量をlottから引く.lottには `redeem_enabled` がなければならない.署名者は所有者またはコントローラである必要があります.
 
 ```python
 draft = TransactionDraft(
@@ -287,7 +287,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### 遵守審査中に凍結する {#freeze-during-compliance-review}
 
-鎖外審査で通常の所有者の操作をブロックしなければならない場合,多くを凍結します.署名者はコントローラーであり,lottは `freeze_enabled` を持つ必要があります.
+`FreezeRwa`を提出すると,チェーン外のレビューが通常の所有者の業務を阻止しなければならない.署名者はコントローラーである必要があります. 配合品には `freeze_enabled`がある必要があります.
 
 ```python
 draft = TransactionDraft(
@@ -308,7 +308,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-審査が終わると解凍します
+`UnfreezeRwa` を,審査が通過した後で提出する.
 
 ```python
 draft = TransactionDraft(
@@ -380,7 +380,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-チェーン外の決済後に表示された金額を償う:
+チェーン外決済後に表示された金額を償う:
 
 ```python
 draft = TransactionDraft(
@@ -394,7 +394,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### 炭素クレジット 退職金 {#carbon-credit-retirement}
 
-クレジットが請求された後 退職金を使う. メタデータは,無鎖証明書またはレジストリ証明書を指す.
+`RedeemRwa` を提出し,請求された炭素クレジットを循環から削除する. チェーン外証明書またはレジストリ証明書をメタデータに保存します:
 
 ```python
 carbon_lot_id = (

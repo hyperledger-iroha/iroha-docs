@@ -1,36 +1,36 @@
 ---
 translation_locale: az
 translation_source: /guide/configure/modes.md
-translation_source_hash: 141e640a596b419627c21dd4b22690f6ef97efe6ad2fc21ea5f806d0e262227f
+translation_source_hash: 3f6c2d84c7b6d325d76fb1b1a3ec0efb75381521f7fc69e7924a96532679bc61
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
-# Dövlət və özəl blok zincirləri {#public-and-private-blockchains}
+# İctimai və özəl blokçeynlər {#public-and-private-blockchains}
 
 Iroha müxtəlif qurğularda işləyə bilər. Öz şəbəkənizin administratorı olaraq hansı icraçı və icazə siyasəti bir əməliyyatın qəbul edilməsini müəyyənləşdirir.
 
-Ümumi profillər özəl icazəli şəbəkələr və daha açıq ictimai şəbəkədir. İkisi də ayrı-ayrı nodu ikitərəfliləri vasitəsilə deyil, təməl dövləti və icraçı siyasəti ilə qurulmuşdur.
+Ümumi profillər özəl icazəli şəbəkələr və daha açıq ictimai şəbəkələrdir. Hər ikisi ayrı-ayrı qovşaq binarları ilə deyil, genezis vəziyyəti və icraçı siyasəti ilə konfiqurasiya edilir.
 
 Aşağıda bu iki istifadə hallarında əsas fərqləri göstəririk.
 
 ## İzinlər {#permissions}
 
-İctimai bir blok zincirində əksər hesabların eyni icazələr var. Xüsusi bir blok zincirsində, əksər hesablar müvafiq icazə verilmədiyi təqdirdə onlara verilən səlahiyyətdən kənarda heç nə edə bilməyəcəklərini güman edirlər.
+İctimai blokçeyndə hesabların əksəriyyəti eyni icazələr dəstinə malikdir. Özəl blokçeyndə hər hesab yalnız ona açıq şəkildə verilmiş icazələri alır.
 
-::: məlumat
+::: info
 
 Referensiya [icazələr haqqında xüsusi bölmə](/az/blockchain/permissions.md) Daha ətraflı məlumat üçün.
 
 :::
 
-## Tərəfdaşlar {#peers}
+## Həmyaşıdlar {#peers}
 
-İctimai blok kateqoriyada həmkarların qəbul edilməsi zəncir siyasətinin bir hissəsidir. Xüsusi bir blok zinciri üçün tətbiqlər adətən konfigürasiyada və təməldə etibarlı həmyaşıdları müəyyənləşdirir.
+İctimai blokçeyndə həmyaşıdların qəbulu zəncir siyasətinin bir hissəsidir. Özəl blokçeyn üçün yerləşdirmələr adətən etibarlı həmyaşıdlar dəstini konfiqurasiyada və genezisdə sabitləyir.
 
-::: məlumat
+::: info
 
-Daha ətraflı məlumat üçün [ peer management](peer-management.md)-ə müraciət edin.
+Daha ətraflı məlumat üçün [həmyaşıdların idarə edilməsinə](peer-management.md) baxın.
 
 :::
 
@@ -40,22 +40,22 @@ Daha ətraflı məlumat üçün [ peer management](peer-management.md)-ə mürac
 
 Seçilmiş icraçı hansı icazə yoxlamaları tətbiq olunduğunu təyin edir. Özəl, administrator tərəfindən idarə olunan şəbəkə və ya daha açıq bir şəbəkəni formalaşdırmaq üçün əvvəlcədən verilən [ icazə nömrələrini ](/az/blockchain/permissions.md) əldə edə bilərsiniz. Bu icazələr aktiv olduqda, hesabların qeydiyyatı prosesi fərqli olur.
 
-Hesabların qeydiyyatına gəldikdə, ictimai və özəl blok zinciri aşağıdakı fərqlərə malikdir:
+İctimai və özəl qeydiyyat siyasətləri ümumiyyətlə fərqlənir:
 
-- Bir ictimai blok zincirində hər kəs bir hesabı qeydiyyatdan keçirə bilməlidir. Beləliklə, nəzəriyyədə sizə lazım olan yalnız uyğun bir müştəri, dəstəklənmiş bir alqoritm üçün özəl açar və qeydiyyatı qəbul edən icazə siyasəti yaratmaqdır.
+- İctimai qeydiyyat siyasəti hər hansı uyğun istifadəçidən hesab qeydiyyatlarını qəbul edir[^1]. İstifadəçiyə uyğun bir müştəri, dəstəklənmiş bir alqoritm üçün xüsusi açar və siyasət tərəfindən qəbul edilən qeydiyyat tələbləri lazımdır.
 
-- Xüsusi bir blok zincirində hesabın yaradılması üçün hər hansı bir proses ola bilər: qeydiyyat təlimatının müəyyən bir hesab vasitəsilə və ya digər ətraflı məlumatları tələb edən ağıllı müqavilə ilə təqdim edilməsi ola bilər. Ola bilər ki, özəl bir blok zincirində yeni hesabların qeydiyyatı yalnız müəyyən tarixlərdə mümkündür və ya qeyri-məhdud (müəyyən) token ilə məhdudlaşdırılır.
+- Özəl qeydiyyat siyasəti bir hesabın və ya bir ağıllı müqavilənin qeydiyyat təqdim etməsinə icazə verə bilər. Xüsusi siyasət qeydiyyatı müəyyən vaxt pəncərəsi ilə məhdudlaşdıra bilər. O, həmçinin təqdim edəndən təchizatı sabit olan bir token xərcləməyi tələb edə bilər, çünki heç bir səlahiyyətli tərəfin əlavə token buraxmaq icazəsi yoxdur.
 
-- Tipik bir özəl blok zincirində, yəni hesabları qeydiyyatdan keçirmək üçün heç bir unikal prosessiz blok zincirdə başqa bir hesabı qeyd etmək üçün bir hesab lazımdır.
+- Özəl şəbəkə modelində mövcud hesab hər yeni hesab üçün qeydiyyat təqdim edir.
 
 Varsayılan icazə təsdiqləyiciləri tipik özəl blok zinciri istifadə vəziyyətini əhatə edir.
 
-::: məlumat
+::: info
 
-İctimai və özəl rejimlər ayrı-ayrı node binarları deyil, siyasət profilləridir. Açıq şəbəkə çalışdırmadan əvvəl göndərdiyiniz icraçı və başlanğıc icazələrini nəzərdən keçirin.
+İctimai və özəl rejimlər icraçı və genezis siyasəti seçimləridir. Hər ikisi eyni qovşaq binarından istifadə edir. Açıq şəbəkəni işə salmazdan əvvəl seçilmiş icraçını və genezis icazələrini nəzərdən keçirin.
 
 :::
 
 `Register<Account>` təlimatları haqqında daha ətraflı məlumat üçün [ təlimatlarının ](/az/blockchain/instructions.md#un-register) bölməsinə baxın.
 
-[^1]: `Register<Account>` kanonik, domensiz `AccountId` üçün nəşriyyat dövlətini yaradır; domen yönləndirmələri və aliaslar ayrı-ayrı idarə olunur.
+[^1]: `Register<Account>` kanonik, domensiz `AccountId` üçün reyestr vəziyyəti yaradır; domen marşrutlaşdırması və ləqəblər ayrıca idarə olunur.

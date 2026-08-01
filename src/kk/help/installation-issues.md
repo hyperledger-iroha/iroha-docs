@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /help/installation-issues.md
-translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
+translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c054c85a2a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -89,7 +89,7 @@ $ rustup toolchain update stable
 $ rustup default stable
 ```
 
-Егер сіз `nightly` нұсқасын орнатып, немесе нақты Rust нұсқасын орнатсаңыз, бірақ оны ажыратуды ұмытсаңыз, бұл мүмкін.
+`nightly` нұсқасын орнату немесе Rust нұсқасын кейіннен қалпына келтірместен орнату осы мәселеге әкелуі мүмкін.
 
 ### Басқа Rust нұсқалары бар-жоғын тексеріңіз {#check-if-there-are-other-rust-versions}
 
@@ -123,13 +123,13 @@ $ rustup toolchain list
 $ rustup remove <toolchain>
 ```
 
-Содан кейін, оның
+Құралдар тізбектерін алып тастағаннан кейін, бұл команда табылмаған команда қатесі туралы хабарлауға тиіс:
 
 ```bash
 $ cargo --help
 ```
 
-команда табылмаған қате пайда болады, яғни сізде белсенді Rust құралдар тізбегі орнатылған жоқ. Содан кейін:
+Бұл қате белсенді Rust құралдар тізбекінің орнатылғанын растайды. Содан кейін:
 
 ```bash
 $ rustup toolchain install stable

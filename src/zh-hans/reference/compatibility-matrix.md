@@ -8,25 +8,18 @@ translation_engine: nllb-200-ct2
 
 # 兼容性矩阵 {#compatibility-matrix}
 
-兼容性矩阵显示了 SDK 目前的情况覆盖
-Iroha 3 文件设置.默认情况下,页面会加载生成的捆绑快照
-从被住的 [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha)
-修订
+兼容性矩阵显示了当前 Iroha 3 文档集的跨 SDK 场景覆盖.默认情况下,该页面将从注入的 [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha)修订中生成的捆绑快照加载.
 
-矩阵由:
+矩阵由以下组成:
 
-- **故事** 在第一个列中
-- **SDKs** 在剩余的列中
-- **状态符号** 已覆盖的,失败的和缺失的数据
+- 首列的故事
+- SDKs 在剩余列中
+- 覆盖,失败和缺失数据的状态符号
 
-只有通过更新工作流程验证的结果被报道为覆盖或
-没有证据的场景显示为
-缺失数据,而不是继承另一项来源修改的结果.
+只有通过更新工作流进行验证的结果被报道为覆盖或失败.没有证据的场景显示为缺失数据,而不是继承来自另一个源修改结果.
 
 <CompatibilityMatrixTable />
 
 ::: info
-设置 `VITE_COMPAT_MATRIX_URL` 只是用一个
-没有那个变量,页面会加载
-`src/public/compat-matrix.json`.
+设置 `VITE_COMPAT_MATRIX_URL` 仅用于覆盖捆绑的快照,使用兼容的现场后端.如果没有该变量,页面将加载`src/public/compat-matrix.json`.
 :::

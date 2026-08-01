@@ -438,7 +438,7 @@ Mantenga la política de conversión en su aplicación o contrato:
 - lo que ocurre cuando el equilibrio del usuario es demasiado bajo
 - lo que sucede cuando el saldo del patrocinador XOR es demasiado bajo
 
-::: advertencia
+::: warning
 
 No se utilice `gas_asset_id` para el patrón de "compensación local-token" a menos que quieras que el patrocinador sea cobrado en ese activo de gas también. `fee_sponsor` también hace que el patrocinador sea el pagador de los débitos de activos en gasoductos configurados. Para las tarifas de usuario de tokens locales, cobrar el token explícitamente con una regla de transferencia o contrato.
 

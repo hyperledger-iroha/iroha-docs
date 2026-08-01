@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /blockchain/assets.md
-translation_source_hash: 58c9f7657f5714dc4bbb884933a1c947687fcf6c83e471007e6c7885f1dab214
+translation_source_hash: c80e6025007653b355d373394465d04adefc1221c8f34d9008f1c9cbabd3dc40
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -47,7 +47,7 @@ Las definiciones de activos soportan estos modos de mintabilidad:
 |`Infinitely` |El activo puede ser acuñado y quemado en repetidas ocasiones.|
 |`Once` |Token de suministro fijo. Se puede acuñar una vez y luego quemar.|
 |`Not` |Token de suministro fijo que se puede quemar, pero no volver a acuñar.|
-|`Limited(n)` |La acuñación se permite para un número limitado de operaciones adicionales. |
+|`Limited(n)` |La política permite la emisión de nuevas unidades de activos en un número limitado de operaciones adicionales. |
 
 Utilizar `Infinitely` para activos elásticos normales y `Once` o `Limited(n)` para activos de suministro fijo o limitado. No utilice `Not` como política inicial a menos que la oferta de activos ya esté establecida.
 

@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /blockchain/instructions.md
-translation_source_hash: 3251078b2b2268ff78563c02a0f935c63dc0569f0b6d38071150cbb4b89394d6
+translation_source_hash: adc3eff9758dd73e9114e78eaa18ddf6271db3bc4042611e1ed6ed1aac226246
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -36,7 +36,7 @@ Certaines instructions exigent que l'on spécifie une destination. Par exemple, 
 | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------- |
 | [EnsureAlias](#ensurealias) |Déménagement de domaine ordinaire, alias espace de données et alias compte |                      |
 | [Enregistrement/annulation du registre ](#un-register) |comptes, définitions d'actifs, NFTs, rôles, déclencheurs, pairs; suppression de domaine |                      |
-| [La menthe/le feu ](#mint-burn) |Les actifs numériques, les répétitions déclencheuses |les comptes ou déclencheurs |
+| [La menthe/le feu ](#mint-burn) |Les actifs numériques, les répétitions déclencheuses |compte ou déclencheurs |
 | [SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) |les objets qui ont [méta-données](./metadata.md): domaines, comptes, définitions d'actifs, NFTs, RWAs, déclencheurs |                      |
 | [SetParameter](#setparameter) |les paramètres de la chaîne |                      |
 | [Grâce ou révocation ](#grant-revoke) | [Rôle, jetons d'autorisation ](/fr/blockchain/permissions.md) |comptes ou rôles |
@@ -128,7 +128,7 @@ Vous pouvez enregistrer des comptes, des définitions d'actifs, NFTs, les pairs,
 
 Les lots RWA sont créés par l'intermédiaire de l'instruction `RegisterRwa` dédiée. Le code actuel n'expose pas une instruction `UnregisterRwa`; utilisez `RedeemRwa` pour retirer la quantité représentée.
 
-::: informations
+::: info
 
 Veuillez noter que selon la façon dont vous décidez de mettre en place votre [bloc de la génèse](/fr/guide/configure/genesis.md) dans `genesis.json` (en particulier, que vous incluiez ou non l'enregistrement des jetons d'autorisation), Le processus d'enregistrement d'un compte peut être très différent.
 
@@ -139,13 +139,13 @@ Nous discutons de ces différences en détail lorsque nous comparons [ les chaî
 
 :::
 
-::: informations
+::: info
 
 L'enregistrement d'un paire est actuellement la seule façon d'ajouter des paires qui ne faisaient pas partie du paire de confiance initial mis sur le réseau.
 
 :::
 
-Consultez l'un des guides spécifiques à la langue pour vous guider dans le processus d'enregistrement d'objets sur une blockchain:
+Utilisez un guide spécifique à la langue pour enregistrer des objets de blockchain:
 
 |La langue |Guide |
 | --------------------- | ------------------------------------------------------------------------------------------------------- |
@@ -170,7 +170,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger domain unregister --id docs.universal
 ```
 
-Comptes d'enregistrement et de désenregistrement:
+Comptes d'enregistrement et de non-enregistrement
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -249,7 +249,7 @@ La mouture et la combustion peuvent désigner des actifs numériques et des déc
 
 Les actifs sont comptés sur un compte spécifique, généralement celui qui a enregistré l'actif en premier lieu. Les quantités d'actifs ne sont pas négatives, donc vous ne pouvez jamais avoir `$-1.0` d'un actif ou brûler un montant négatif et obtenir une menthe.
 
-Consultez l'un des guides spécifiques à la langue pour vous guider dans le processus d'extraction d'actifs dans une blockchain:
+Utilisez un guide spécifique à la langue pour acquérir des actifs de blockchain:
 
 - [CLI](/fr/get-started/operate-iroha-via-cli.md)
 - [Rust](/fr/guide/tutorials/rust.md)

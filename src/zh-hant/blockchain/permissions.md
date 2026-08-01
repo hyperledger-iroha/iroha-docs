@@ -8,32 +8,19 @@ translation_engine: nllb-200-ct2
 
 # 許可證 {#permissions}
 
-帳戶需要許可令牌進行區塊上的各種行動,
-打造或燃燒財產.
+對於區塊鏈上的各種操作,例如錢或燒燬資產,賬戶需要許可令牌.
 
-公共區塊與私人區塊之間的差異
-在公共區塊中,
-在私人區塊中,
-假設他們無法在授予他們權限之外做任何事情
-除非明顯授予相關許可.
+公共區塊鏈和私人區塊鏈在用戶獲得的許可方面存在差異.在公共區塊鏈中,大多數賬戶都有相同的權限.在私人區塊鏈中,大多數賬戶被認爲不能做任何事情.在授予他們權限之外,除非明確授予相關許可.
 
-該帳戶有權使用,
-相應的情況 `Permission`. 許可可直接或透過
-[`Role`](#permission-groups-roles), 該項目的使用方式是:
-授權使用 `Grant` 授權及角色
-沒有時間過, `Revoke` 提供指令.
+持有某事許可證意味着賬戶具有相應的 `Permission`.許可證可以直接或通過 [`Role`](#permission-groups-roles),允許使用 `Grant` 指令授予權限.許可證和角色不會過期,請用 `Revoke` 指令刪除它們.
 
-## 許可令牌 {#permission-tokens}
+## 許可證代碼 {#permission-tokens}
 
-授權令牌是由主動執行器定義的輸入對象.
-代幣是全球性的,例如 `CanManagePeers`, 其他項目為:
-特定的帳號對象,例如帳戶,資產,資產定義,域名,
-NFT, 或是引擎.
+許可令牌是由主動執行者定義的類型對象.有些令牌是全球性的,例如 `CanManagePeers`,而其他則是針對特定賬本對象,如帳戶,資產,資產定義,域名, NFT,角色或觸發器等.
 
-以下是使用各種許可令牌的參數:
+以下是用於各種權限令牌的參數的一些例子:
 
-- 授權修改特定帳戶的元數據
-  帶著一個 `account` 這個字段:
+- 允許修改特定賬戶的元數據的代幣具有 `account` 字段:
 
   ```json
   {
@@ -41,8 +28,7 @@ NFT, 或是引擎.
   }
   ```
 
-- 授權轉移特定資產的代幣
-  這項定義包含 `asset_definition` 這個字段:
+- 一個爲特定資產定義授權轉移資產的代幣具有 `asset_definition` 字段:
 
   ```json
   {
@@ -50,32 +36,27 @@ NFT, 或是引擎.
   }
   ```
 
-- 這樣的全球代幣, `CanManagePeers` 沒有字段:
+- 像 `CanManagePeers`這樣的全球代幣沒有領域:
 
   ```json
   {}
   ```
 
-### 預設的許可令牌 {#pre-configured-permission-tokens}
+### 預先配置的權限令牌 {#pre-configured-permission-tokens}
 
-您可以找到預先配置的許可令牌列表, [參考](/zh-hant/reference/permissions) 這篇章.
+在 [Reference](/zh-hant/reference/permissions)章中可以找到預先配置的權限代幣列表.
 
-## 許可組 (角色) {#permission-groups-roles}
+## 許可類別 (角色) {#permission-groups-roles}
 
-一套許可稱為 **角色**. 這樣的許可令牌也一樣,
-能使用以下方式授予角色: `Grant` 該指令被撤回,
-`Revoke` 提供指令.
+一組權限被稱爲角色.類似於權限代幣,可以使用 `Grant` 指令授予角色,並使用 `Revoke` 指令撤銷角色.
 
-在授予帳戶角色之前,該角色首先應註冊.
+在賦予賬戶角色之前,該角色應首先被註冊.
 
-當多個帳戶獲得相同的許可時,
-註冊角色一次,授予該角色的權限,
-取消個人帳戶的角色.
+當多個賬戶獲得相同的權限集時,角色是有用的. 一次註冊該角色,授予該角色的權限,然後授予或撤銷單個帳戶的角色.
 
-### 註冊新角色 {#register-a-new-role}
+### 登記一個新角色 {#register-a-new-role}
 
-我們要註冊新的角色,
-接觸到 [數據](/zh-hant/blockchain/metadata.md) 在Mouse的帳號中:
+讓我們註冊一個新的角色, 當授予時,將允許另一個帳戶訪問 [元數據](/zh-hant/blockchain/metadata.md) 在鼠標的賬戶:
 
 ```rust
 let role_id = RoleId::from_str("ACCESS_TO_MOUSE_METADATA")?;
@@ -86,9 +67,9 @@ let role = iroha_data_model::role::Role::new(role_id.clone(), mouse_id.clone())
 let register_role = Register::role(role);
 ```
 
-### 提供一個角色 {#grant-a-role}
+### 給一個角色 {#grant-a-role}
 
-子可以給阿里斯:
+在這個角色被註冊後,鼠標可以授予阿麗絲:
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
@@ -99,43 +80,35 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 
 ## 許可證驗證器 {#permission-validators}
 
-只有使用所需許可令牌的帳戶才有權限
-預設執行器檢查權限
-在指令,查詢和表達式執行過程中.
+允許存在,因此只有需要的權限符號的帳戶才能執行受保護的操作.默認執行器在命令,查詢和表達式執行過程中檢查權限.
 
-預設驗證器表面由帳號區域組成:
+默認驗證器表面按賬本區分組合:
 
-- 同級管理
-- 域名和帳戶
-- 資產, NFTs, 還有保證金,
-- 引發器
+- 同行管理
+- 域名和賬戶
+- 資產, NFTs,以及保證金
+- 觸發器
 - 角色和權限
-- 執行員/運行時間,證據,橋,以及 SORA/Nexus 模組
+- 執行器/運行時間,證據,橋樑和 SORA/Nexus 模塊
 
-根據資料來源支持,
-[授權令牌參考](/zh-hant/reference/permissions.md).
+準確的代幣列表在 [Permission Tokens引用](/zh-hant/reference/permissions.md)中得到源支持.
 
 ### 運行時間驗證器 {#runtime-validators}
 
-預設的執行器會執行許可檢查.
-執行者提供內建的許可驗證碼和代號定義,
-透過升級它使用的執行器,
+允許檢查由主動執行器執行.默認執行器提供內置的權限驗證器和代幣定義,網絡可以通過升級使用的執行器來改變政策.
 
-證實者返回一個 **認證判決**. 核准器可以允許
-如果該操作是未完成的,
-選出的法官將這些判決結合到
-決定指示,查詢或表達是否可以進行.
+驗證者返回驗證判決.驗證人可以允許操作,理由地拒絕它,或者如果該操作不在驗證者的範圍之外,跳過它.所選的法官將這些裁決結合在一起來決定指示,查詢或表達是否可以繼續進行.
 
-## 支持的詢問 {#supported-queries}
+## 支持的查詢 {#supported-queries}
 
-請查詢授權代碼和角色.
+可以查詢許可證和角色.
 
-詢問關於角色的問題:
+角色的查詢:
 
 - [`FindRoles`](/zh-hant/reference/queries.md#accounts-and-permissions)
 - [`FindRoleIds`](/zh-hant/reference/queries.md#accounts-and-permissions)
 - [`FindRolesByAccountId`](/zh-hant/reference/queries.md#accounts-and-permissions)
 
-詢問授權代碼:
+權限令牌的查詢:
 
 - [`FindPermissionsByAccountId`](/zh-hant/reference/queries.md#accounts-and-permissions)

@@ -25,12 +25,9 @@ the steps that should be taken in order to complete this process.
 The account that registers the peer must have the appropriate `Permission`.
 This can be granted through a `Role` or as a direct permission grant.
 
-How to decide if you need to grant a role? Granting roles makes sense if a
-user is to serve as an administrator of sorts, where it's their
-responsibility to maintain the peers in the network long-term. A one-time
-permission grant is useful when the party registering the peer isn't
-responsible for registering peers in general, but the network administrator
-doesn't need to (or want to) spend time setting up a new peer.
+Grant a role when an account will manage peers over time. Use a direct
+permission grant for a one-time registration by an account that does not
+otherwise manage peers.
 
 ::: info
 

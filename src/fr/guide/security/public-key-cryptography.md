@@ -1,37 +1,35 @@
 ---
 translation_locale: fr
 translation_source: /guide/security/public-key-cryptography.md
-translation_source_hash: fd8bca2c8909c6dfead2e2f7f4f4711ab80339a98b7e227c02aa3ff965380718
+translation_source_hash: 3d317c00e75525d70f6cb9ef7f8eeec6911e2f124af8052cd2fc719b264d43f9
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # La cryptographie de la clé publique {#public-key-cryptography}
 
-La cryptographie des clés publiques fournit les moyens de communication sécurisée et de protection des données, en permettant des activités telles que la sécurité des transactions en ligne, les communications par courrier électronique chiffrées, etc.
+La cryptographie des clés publiques utilise une clé publique et une clé privée connexes. La clé publique peut être partagée. La clé privée doit rester sous le contrôle de l'autorité. La sécurité dépend de l'utilisation d'un algorithme pris en charge, la génération de clés avec un hasard sécurisé, et la protection de la clé privée.
 
-La cryptographie à clé publique utilise une paire de clés cryptographiques - une clé publique et une clé privée - pour créer une méthode hautement sécurisée de transmission d'informations sur les réseaux en ligne.
+## Signatures numériques {#digital-signatures}
 
-Il est facile de faire une clé publique à partir d'une clé privée, mais le contraire est plutôt difficile, sinon impossible. Cela garde les choses en sécurité. Vous pouvez partager librement votre clé publique sans risquer votre clé privée qui reste sécurisée.
+Un signataire crée une signature numérique avec une clé privée. Un vérificateur vérifie la signature avec la clé publique correspondante.
 
-## Le chiffrement et les signatures {#encryption-and-signatures}
+Une signature valide indique que les octets signés n'ont pas été modifiés et que le détenteur de la clé privée les a approuvés. Elle n'identifie pas une personne par elle-même. L'identité dépend de la manière dont la clé publique ou le contrôleur du compte a été enregistré et réglementé.
 
-La cryptographie de la clé publique permet aux individus d'envoyer des messages et des données chiffrés qui ne peuvent être déchiffrés que par le destinataire prévu possédant sa clé privée correspondante. En d'autres termes, la clé publique fonctionne comme un verrou, et la clé privée sert de clé unique réelle qui déverrouille les données cryptées.
+Les signatures fournissent des preuves d'intégrité et d'autorisation, elles ne cryptent pas le contenu signé.
 
-Ce processus de cryptage garantit non seulement l'intimité et la confidentialité des renseignements sensibles, mais établit aussi les authenticité de l'expéditeur. En combinant la clé privée de l'expéditeur et la clé publique, une signature numérique est créée. Cette signature sert de timbre d'approbation numérique, vérifiant l'identité de l'expéditeur et la validité des données transférées. Quiconque possède votre clé publique peut vérifier que la personne qui a initié la transaction a utilisé votre clé privée.
+## Le chiffrement de la clé publique {#public-key-encryption}
+
+Certains mécanismes à clé publique chiffrent des données pour la clé publique d'un destinataire. Le destinataire déchiffre ces données avec la clé privée correspondante. Le chiffrement et les signatures sont des opérations distinctes et peuvent utiliser différentes clés ou différents algorithmes.
+
+La signature d'une transaction Iroha ne rend pas les données du registre public confidentielles. Utilisez le mécanisme de confidentialité approuvé du déploiement lorsque le contenu de la charge utile doit rester privé.
 
 ## Les clés du côté du client {#keys-on-the-client-side}
 
-Chaque transaction doit être signée par une autorité de compte. La clé privée ou le matériel du contrôleur pour cette autorité doivent rester secrets, de sorte que le logiciel client est responsable du stockage et de la signature sécurisés.
+Chaque transaction doit satisfaire à la politique configurée du contrôleur de compte. Un compte simple peut utiliser une clé de signature. Un compte réglementé peut utiliser une politique de contrôle plus complexe.
 
-::: avertissement
+Le logiciel client doit protéger les clés privées et le matériel du contrôleur. La configuration client en texte clair convient uniquement au développement local et aux tests contrôlés. Les intégrations de production doivent utiliser un gestionnaire de secrets, un stockage de clés supporté par le matériel, un service de signature isolé ou une autre limite de signature vérifiée.
 
-Tous les clients sont différents, mais la configuration du client en texte brut ne convient qu'au développement et aux réseaux de test contrôlés. Les intégrations de production doivent utiliser un gestionnaire secret, un stockage de clés supporté par le matériel ou une autre limite de signature vérifiée.
+Utilisez des clés séparées pour des environnements et des objectifs distincts. La réutilisation d'une clé relie ces utilisations et augmente l'impact de l'exposition.
 
-:::
-
-L'enregistrement d'un nouveau compte implique la génération de matériel du contrôleur, tel qu'une paire de clés Ed25519. et de soumettre la partie publique au réseau. Les opérations ultérieures effectuées à partir de ce compte doivent être signées par la clé privée correspondante ou par la politique du contrôleur de compte configuré.
-
-Pour que la cryptographie des clés publiques fonctionne efficacement, évitez de réutiliser les clés lorsque vous devez spécifier une nouvelle clé. Bien qu'il n'y ait rien qui vous empêche de le faire, les clefs publiques sont publiques, ce qui signifie que si un attaquant voit la même clé publique utilisée, Ils savent que les clés privées sont identiques.
-
-Même si les clés privées fonctionnent selon des principes légèrement différents de ceux des mots de passe, il est conseillé de les rendre aussi aléatoires que possible, de ne jamais les stocker non cryptés et de ne jamais en partager avec qui que ce soit.
+Voir [Génération de clés cryptographiques](./generating-cryptographic-keys.md), [Rétention de clés Cryptographiques ](./storing-cryptographic-keys.md) et [Sécurité opérationnelle](./operational-security.md).

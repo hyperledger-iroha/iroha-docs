@@ -20,6 +20,6 @@ Seuls les résultats vérifiés par le flux de travail de mise à jour sont sign
 
 <CompatibilityMatrixTable />
 
-::: informations
+::: info
 Définir `VITE_COMPAT_MATRIX_URL` uniquement pour remplacer l'instantané bundled avec un backend en direct compatible. Sans cette variable, la page se charge `src/public/compat-matrix.json`.
 :::

@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # Получить поддержку {#receive-support}
 
-Время от времени у вас могут возникать вопросы о Iroha Есть три способа быстро связаться с нашим сообществом: Telegram, Discord и GitHub.
+Время от времени у вас могут возникнуть вопросы о Iroha, которые вы хотели бы подробно обсудить с другими людьми. Есть три способа быстро связаться с нашим сообществом: Telegram, Discord и GitHub.
 
 Общество использует [Телеграмм](https://t.me/hyperledgeriroha) и [LF Decentralized Trust Разногласия](https://discord.gg/hyperledger) Для общения. `iroha` канал для задания вопросов по проектам.
 

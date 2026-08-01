@@ -1,9 +1,9 @@
 ---
 translation_locale: uz
 translation_source: /reference/norito.md
-translation_source_hash: ff258251887109f6cb28241235caea8e1b6a69df10df60cb7b2e7c2507004b4e
+translation_source_hash: 4297b0ff795a5cdb6556424e89de7191522271519aa36720ed45a695ad402211
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Norito {#norito}
@@ -34,7 +34,7 @@ Har bir simli yoki diskdagi Norito fayzli yukni sarlavha, undan so'ng kodlangan 
 | --- | ---: | --- |
 |Sihr .|4 byt |ASCII `NRT0`, Norito bo'lmagan ma'lumotlarni oldindan rad etish uchun ishlatiladi. |
 |Majordor |1 byte |Katta versiyani formatlash. Joriy payloadlar `0`dan foydalanadi. |
-|Kam yoshli |1 byte |Joriy yuklarda `0x00` ishlatiladi; layout tanlovlari bayroqlarda mavjud. |
+|Kam yoshli |1 byte |v1 uchun dekodlash ko'rsatmasi. Joriy qiymat `0x00`; joylashuvni bayroqlar tavsiflaydi. |
 |Shema hash |16 bayt |O'ylanmagan yuklarni rad etish uchun typlangan dekoderlar tomonidan ishlatiladigan tur identifikatsiyasi. |
 |Kompressiya |1 byte |`0 = None`, `1 = Zstd` Noma'lum qiymatlar rad etiladi. |
 |Faydali yukning uzunligi |8 byte |Kichik-endyan `u64` sifatida siqilmagan foydali yuk uzunligi. |
@@ -63,7 +63,8 @@ Bayroqlar aniqdir. Dekoderlar joylashishni foydali yukning shaklidan, kichik ver
 Norito Iroha ma'lumotlar modelida ko'rsatilgan umumiy ma'lumot shakllari uchun deterministik layoutlardan foydalanadi:
 
 - Xatcho'plar `[len][utf8-bytes]`; `len` qo'llanilgan bo'lsa, `COMPACT_LEN` dan keyin ketadi.
-- `COMPACT_LEN` o'rnatilgan bo'lsa, har bir qiymat uzunliklari kompakt varintlardan foydalanadi, aks holda 8 baytli kichik endan `u64` o'rnatilmaydi.
+- `COMPACT_LEN` o'rnatilgan bo'lsa, har bir qiymat uzunligi ixcham varintdan foydalanadi.
+- `COMPACT_LEN` mavjud bo'lmasa, har bir qiymat uzunligi 8 baytli little-endian `u64` bo'ladi.
 - Joriy uzunlik sarlavhalari v1-da 8 baytli kichik endian `u64` o'rnatilgan.
 - `Vec<u8>` bir bayt uchun bitta uzunlik o'rniga `[len_u64][raw-bytes]` sifatida kodlanadi.
 - Paketlangan ketma-ketlarda `(len + 1)` monoton `u64` offsetlardan foydalanib, u bilan birga qatlamli elementning foydali yuklari ham uchraydi.
@@ -85,7 +86,7 @@ Norito mantiqiy foydali yukni o'zgartirmasdan aniq va adaptiv siqishni qo'llab-q
 
 |Xususiyat |Maqsad|
 | --- | --- |
-|`to_bytes` |Qo'shilmagan sarlavhalarni kodlash.|
+|`to_bytes` |Sarlavhani, undan keyin siqilmagan payloadni kodlaydi.|
 |`to_compressed_bytes` |Zstd bilan kodlash va boshliqda siqish tagini yozib olish. |
 |`to_bytes_auto` |Kompressiya arziydigan yoki yo'qligini aniqlash uchun deterministik heuristikani qo'llash. |
 |CRC64 tezlashtirish |Har joyda portativ CRC64-XZ dan foydalanadi, mavjud bo'lganda x86_64 yoki aarch64 da PMULL CLMUL. |
@@ -117,7 +118,7 @@ Jismoniy maydon atributlari quyidagilardir:
 |Atribut |Taʼsir|
 | --- | --- |
 |`#[norito(rename = "other")]` |Shema va JSON moslashuvchanligi uchun barqaror seriyalangan nomdan foydalanadi. |
-|`#[norito(skip)]` |Kodlash paytida `Default` maydonini chiqarib, uni to'ldiradi. |
+|`#[norito(skip)]` |Encoder maydonni tashlab ketadi. Decoder uning `Default` qiymatini beradi. |
 |`#[norito(default)]` |`Default` kodlangan fayzli yukda maydon yo'q bo'lganda ishlatiladi. |
 |`#[norito(skip_serializing_if = "...")]` |Predikat to'g'ri kelganda JSON maydonlarini chiqarib tashlaydi, ayni paytda deterministik dekodlash andozalarini saqlab qoladi. |
 
@@ -189,10 +190,10 @@ Streamingga oid kodeklar va entropiya profillari asosiy Norito transaksiya/so'ro
 
 - SDK qurilmalari va hosil bo'lgan bog'lanishlarni qo'lda tayyorlangan Norito bytlarga qaraganda afzal ko'rish.
 - Shema mos kelmasligini o'tkinchi tarmoq muvaffaqiyatsizligi sifatida emas, balki versiya yoki qurilma muammosi sifatida ko'rib chiqish.
-- `.nrt`, `.norito` artefaktlarni saqlab turing va ularni ishlab chiqargan chiqindilar yoki hodisalar to'plamini ko'rsating.
-- Dashboardlar va qo'lda tekshirish uchun JSON proyektsiyalaridan foydalaning, ammo imzolangan, hashlangan yoki saqlanmagan ma'lumotlar uchun Norito ni haqiqat manbai sifatida saqlang.
+- `.nrt`, `.norito` va manifest artefaktlarini ularni yaratgan reliz yoki hodisa to'plamida arxivlang.
+- Imzolangan, hashlangan yoki doimiy saqlangan ma'lumot uchun Norito formatini haqiqat manbai sifatida saqlang. Dashboardlar va qo'lda tekshirish uchun JSON proyeksiyalaridan foydalaning.
 - Yangi Torii oxirgi nuqtani qo'shganingizda, u JSON, Norito yoki ikkalasi ham qabul qilinishini hujjatlashtiring va `/openapi` da qo'llab-quvvatlanadigan tarkib turlarini ko'rsating.
-- Tezlatgichlarni ishga tushirishda scalar chiqarilishiga nisbatan parity sinovlarini o'tkazing. tezlatgichlarning xatolari foydali yuk semantikasini o'zgartirishning o'rniga toza ravishda ortadi.
+- Tezlatgichni yoqishdan oldin scalar natijaga nisbatan parity sinovlarini o'tkazing. Tezlatgich ishlamay qolsa, deterministik scalar fallbackdan foydalaning. Payload semantikasi o'zgarmasligi kerak.
 
 ## Bogʻliq sahifalar {#related-pages}
 

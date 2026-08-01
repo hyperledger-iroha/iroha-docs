@@ -6,18 +6,26 @@ import { globby } from 'globby'
 import { describe, expect, test } from 'vitest'
 import { TRANSLATED_LOCALES } from './locales'
 import {
+  GoogleTranslationProvider,
   NLLB_LANGUAGE_CODES,
   NllbTranslationProvider,
   addStableHeadingAnchors,
+  chunkForTranslation,
+  curatedExactTranslation,
   generateTranslations,
   hasExactProtectedMarkerMultiset,
+  isCompleteCompactCjkRetryClause,
+  isCompleteCompactCjkRetryListTail,
   isCompleteCompactCjkSentence,
+  isCompleteCompactCjkRetryPhrase,
   isCompleteCompactCjkTableLabel,
+  isCompleteCompactCjkTableSentence,
   isCompleteShortStructuralLeadIn,
   markdownHeadings,
   markdownTranslationUnits,
   protectMarkdown,
   synchronizeTranslationHeadingAnchors,
+  synchronizeTranslationMarkdownStructure,
   technicalIdentifiers,
   translateDocument,
   type TranslationProvider,
@@ -30,6 +38,7 @@ const kazakh = TRANSLATED_LOCALES.find((locale) => locale.key === 'kk')!
 const portuguese = TRANSLATED_LOCALES.find((locale) => locale.key === 'pt')!
 const spanish = TRANSLATED_LOCALES.find((locale) => locale.key === 'es')!
 const simplifiedChinese = TRANSLATED_LOCALES.find((locale) => locale.key === 'zh-hans')!
+const traditionalChinese = TRANSLATED_LOCALES.find((locale) => locale.key === 'zh-hant')!
 
 class MarkerAwareProvider implements TranslationProvider {
   async translate(text: string): Promise<string> {
@@ -108,6 +117,58 @@ class InlineContextProvider implements TranslationProvider {
 }
 
 describe('Markdown translation protection', () => {
+  test('uses reviewed exact Norito status terminology for Chinese locales', () => {
+    expect(curatedExactTranslation(' Account report, statement, and notification validation ', simplifiedChinese)).toBe(
+      ' 账户报告、对账单和通知的验证 ',
+    )
+    expect(curatedExactTranslation('Account report, statement, and notification validation', traditionalChinese)).toBe(
+      '帳戶報告、對帳單與通知的驗證',
+    )
+    expect(curatedExactTranslation(' Supported with requirements ', simplifiedChinese)).toBe(' 有条件支持 ')
+    expect(curatedExactTranslation('Supported with requirements', traditionalChinese)).toBe('有條件支援')
+    expect(
+      curatedExactTranslation(
+        ' Apply deterministic heuristics to decide whether compression is worthwhile. ',
+        simplifiedChinese,
+      ),
+    ).toBe(' 采用确定性启发式方法判断是否值得压缩。 ')
+    expect(
+      curatedExactTranslation(
+        'Apply deterministic heuristics to decide whether compression is worthwhile.',
+        traditionalChinese,
+      ),
+    ).toBe('採用確定性啟發式方法判斷是否值得壓縮。')
+    expect(
+      curatedExactTranslation(
+        ' Carry manifest announcements, feedback, key updates, and capability negotiation. ',
+        simplifiedChinese,
+      ),
+    ).toBe(' 承载清单通告、反馈消息、密钥更新和能力协商。 ')
+    expect(
+      curatedExactTranslation(
+        'Carry manifest announcements, feedback, key updates, and capability negotiation.',
+        traditionalChinese,
+      ),
+    ).toBe('承載清單通告、回饋訊息、金鑰更新與能力協商。')
+    expect(curatedExactTranslation(' Return on-chain executor configuration parameters. ', simplifiedChinese)).toBe(
+      ' 返回链上执行器的配置参数。 ',
+    )
+    expect(curatedExactTranslation('Return on-chain executor configuration parameters.', traditionalChinese)).toBe(
+      '返回鏈上執行器的設定參數。',
+    )
+    expect(curatedExactTranslation(' Return the domain endorsement policy. ', simplifiedChinese)).toBe(
+      ' 返回链上域的背书政策。 ',
+    )
+    expect(curatedExactTranslation('Return the domain endorsement policy.', traditionalChinese)).toBe(
+      '返回鏈上網域的背書政策。',
+    )
+    expect(curatedExactTranslation(' List committed transactions. ', simplifiedChinese)).toBe(
+      ' 列出已提交的链上交易。 ',
+    )
+    expect(curatedExactTranslation('List committed transactions.', traditionalChinese)).toBe('列出已提交的鏈上交易。')
+    expect(curatedExactTranslation('Supported', simplifiedChinese)).toBeUndefined()
+  })
+
   test('counts Nexus identifiers consistently across soft wrapping', () => {
     expect(technicalIdentifiers('SORA\nNexus, SORA Nexus, and Nexus.').get('Nexus')).toBe(3)
   })
@@ -140,6 +201,40 @@ describe('Markdown translation protection', () => {
       'A transaction begins on one physical line and finishes after a soft wrap.',
       'A new paragraph remains separate.',
     ])
+  })
+
+  test('protects container keywords and footnote markers from translation', async () => {
+    const batches: string[][] = []
+    const provider: TranslationProvider = {
+      engine: 'markdown-structure-test',
+      protectedMarkdownMode: 'inline-identifiers',
+      languageCode: () => 'fra_Latn',
+      translate: async () => {
+        throw new Error('inline translation must use the batch method')
+      },
+      translateBatch: async (texts) => {
+        batches.push([...texts])
+        return texts.map((text) => text.replaceAll('Note', 'Remarque').replaceAll('Read', 'Lisez'))
+      },
+    }
+    const source = '::: info Note\n\nRead this[^1].\n\n:::\n\n[^1]: Footnote text.\n'
+
+    const translated = await translateDocument(source, 'guide/structure.md', french, provider)
+
+    expect(translated).toContain('::: info Remarque')
+    expect(translated).toContain('Lisez this[^1].')
+    expect(translated).toContain('[^1]: Footnote text.')
+    expect(batches.flat().join('\n')).not.toMatch(/:::|\[\^1\]/u)
+  })
+
+  test('balances retry chunks instead of leaving an undersized sentence tail', () => {
+    const source =
+      'In a private blockchain, most accounts are assumed not to be able to do anything outside the authority granted to them unless explicitly granted the relevant permission.'
+    const chunks = chunkForTranslation(source, 128)
+
+    expect(chunks).toHaveLength(2)
+    expect(chunks.join('')).toBe(source)
+    expect(chunks.every((chunk) => chunk.length >= 64 && chunk.length <= 128)).toBe(true)
   })
 
   test('strips generated line-end whitespace without changing fenced code contents', async () => {
@@ -407,6 +502,77 @@ describe('Markdown translation protection', () => {
     expect(batches.at(-1)?.join('')).toBe(source)
     expect(translated).toContain('若要在不保持事件流打开的情况下检查完整快照，')
     expect(translated).toContain('请读取最近的区块浏览器交易记录：')
+  })
+
+  test('recovers a short but meaningful comma-delimited aside', async () => {
+    const source =
+      "Although much of the information about the state of the blockchain can be obtained, as we've shown before,"
+    const expectedChunks = [
+      'Although much of the information about the state of the blockchain can be obtained, ',
+      "as we've shown before,",
+    ]
+    const batches: string[][] = []
+    const provider: TranslationProvider = {
+      engine: 'short-aside-recovery-test',
+      protectedMarkdownMode: 'inline-identifiers',
+      languageCode: () => 'zho_Hans',
+      translate: async () => {
+        throw new Error('inline translation must use the batch method')
+      },
+      translateBatch: async (texts) => {
+        batches.push([...texts])
+        return texts.map((text) => {
+          if (text === source) return '虽然我们可以获得大部分关于区块链状态的信息,'
+          if (text === expectedChunks[0]) return '虽然我们可以获得大部分关于区块链的信息,'
+          if (text === expectedChunks[1]) return '正如我们之前所示的,'
+          return text
+        })
+      },
+    }
+
+    const translated = await translateDocument(`${source}\n`, 'blockchain/queries.md', simplifiedChinese, provider)
+
+    expect(batches).toContainEqual(expectedChunks)
+    expect(expectedChunks.join('')).toBe(source)
+    expect(translated).toContain('虽然我们可以获得大部分关于区块链的信息,正如我们之前所示的,')
+  })
+
+  test('recovers a dropped response predicate at a safe from-clause boundary', async () => {
+    const source =
+      'Queries are small instruction-like objects that, when sent to an Iroha peer, prompt a response with details from the current world state view.'
+    const maskedSource = source.replace('Iroha', '[PH000000]')
+    const balancedChunks = [
+      'Queries are small instruction-like objects that, when sent to an [PH000000] peer,',
+      ' prompt a response with details from the current world state view.',
+    ]
+    const fromChunks = [' prompt a response with details ', 'from the current world state view.']
+    const batches: string[][] = []
+    const provider: TranslationProvider = {
+      engine: 'from-clause-recovery-test',
+      protectedMarkdownMode: 'inline-identifiers',
+      languageCode: () => 'zho_Hans',
+      translate: async () => {
+        throw new Error('inline translation must use the batch method')
+      },
+      translateBatch: async (texts) => {
+        batches.push([...texts])
+        return texts.map((text) => {
+          if (text === maskedSource) return '[PH000000] 查询是类似指令的小物体.'
+          if (text === balancedChunks[0]) return '查询是类似指令的小物体,当发送给 [PH000000]同行时,'
+          if (text === balancedChunks[1]) return '根据当前世界状况的细节,'
+          if (text === fromChunks[0]) return '提示一个详细的答案'
+          if (text === fromChunks[1]) return '从当前的世界状况观看.'
+          return text
+        })
+      },
+    }
+
+    const translated = await translateDocument(`${source}\n`, 'blockchain/queries.md', simplifiedChinese, provider)
+
+    expect(batches).toContainEqual(balancedChunks)
+    expect(batches).toContainEqual(fromChunks)
+    expect(fromChunks.join('')).toBe(balancedChunks[1])
+    expect(translated).toContain('提示一个详细的答案从当前的世界状况观看.')
   })
 
   test('recovers the Japanese consensus sentence at a safe so-clause boundary', async () => {
@@ -872,6 +1038,45 @@ describe('Markdown translation protection', () => {
     ).toBe(false)
   })
 
+  test('accepts a complete five-letter Simplified Chinese table label', () => {
+    expect(
+      isCompleteCompactCjkTableLabel(' transfer numeric quantity ', '转移数量量', simplifiedChinese, {
+        markdownTableCell: true,
+      }),
+    ).toBe(true)
+    expect(
+      isCompleteCompactCjkTableLabel(' transfer numeric quantity ', '转移数量', simplifiedChinese, {
+        markdownTableCell: true,
+      }),
+    ).toBe(false)
+  })
+
+  test('accepts a complete compact two-clause Simplified Chinese table label', () => {
+    const source = ' mint/burn numeric quantity, transfer numeric quantity '
+    const context = { markdownTableCell: true }
+
+    expect(isCompleteCompactCjkTableLabel(source, '硬币/烧伤数量,转移数量', simplifiedChinese, context)).toBe(true)
+    expect(isCompleteCompactCjkTableLabel(source, '硬币/烧伤数量', simplifiedChinese, context)).toBe(false)
+    expect(isCompleteCompactCjkTableLabel(source, '硬币/烧伤数量,转移', simplifiedChinese, context)).toBe(false)
+  })
+
+  test('accepts a complete long Simplified Chinese table sentence', () => {
+    const source =
+      ' The outer hidden-function abstraction: program policies, commitments, execution receipts, and receipt verification mode. '
+    const translated = '外部隐藏函数抽象:程序政策,承诺,执行收据和收据验证模式.'
+    const context = { markdownTableCell: true }
+
+    expect(isCompleteCompactCjkTableSentence(source, translated, simplifiedChinese, context)).toBe(true)
+    expect(
+      isCompleteCompactCjkTableSentence(source, '外部隐藏函数抽象和收据验证模式.', simplifiedChinese, context),
+    ).toBe(false)
+    expect(
+      isCompleteCompactCjkTableSentence(source, translated, simplifiedChinese, {
+        markdownTableCell: false,
+      }),
+    ).toBe(false)
+  })
+
   test('accepts a complete compact Simplified Chinese sentence', () => {
     const source = 'Treat off-chain payment verification as application policy.'
     const translated = '视支付链外验证为应用政策.'
@@ -890,6 +1095,192 @@ describe('Markdown translation protection', () => {
       isCompleteCompactCjkSentence(
         'Treat [PH000000] payment verification as application policy.',
         '视支付链外验证为应用政策.',
+        simplifiedChinese,
+      ),
+    ).toBe(false)
+  })
+
+  test('accepts a complete longer compact Simplified Chinese sentence', () => {
+    const source = 'outside the authority granted to them unless explicitly granted the relevant permission.'
+
+    expect(isCompleteCompactCjkSentence(source, '在授予他们权限之外,除非明确授予相关许可.', simplifiedChinese)).toBe(
+      true,
+    )
+    expect(isCompleteCompactCjkSentence(source, '除非明确授予相关许可.', simplifiedChinese)).toBe(false)
+  })
+
+  test('accepts a complete ideographically compressed sentence without accepting a dropped sentence', () => {
+    const source = 'Length and unpredictability matter more than decorative substitutions.'
+    const translated = '长度和不可预测性比装饰品更重要.'
+
+    expect(isCompleteCompactCjkSentence(source, translated, simplifiedChinese)).toBe(true)
+    expect(isCompleteCompactCjkSentence(source, '长度和不可预测性.', simplifiedChinese)).toBe(false)
+    expect(
+      isCompleteCompactCjkSentence(
+        `${source} Adding one symbol to a predictable word does not make the result safe.`,
+        translated,
+        simplifiedChinese,
+      ),
+    ).toBe(false)
+  })
+
+  test('accepts a complete ten-letter deterministic-network sentence', () => {
+    const source = 'Preserve the deterministic behavior of the network.'
+
+    expect(isCompleteCompactCjkSentence(source, '保持网络的决定性行为.', simplifiedChinese)).toBe(true)
+    expect(isCompleteCompactCjkSentence(source, '保持网络行为.', simplifiedChinese)).toBe(false)
+    expect(
+      isCompleteCompactCjkSentence(
+        `${source} Hardware acceleration must not change peer-visible results.`,
+        '维护网络的确定性行为.硬件加速不应改变可见结果.',
+        simplifiedChinese,
+      ),
+    ).toBe(false)
+  })
+
+  test('accepts a compact CJK retry after every sentence chunk passes', async () => {
+    const first = 'Preserve the deterministic behavior of the network.'
+    const second = 'Hardware acceleration must not change peer-visible results.'
+    const source = `${first} ${second}`
+    const translated = await translateDocument(
+      `${source}\n`,
+      'guide/security/security-principles.md',
+      simplifiedChinese,
+      {
+        engine: 'complete-cjk-sentence-retry-test',
+        protectedMarkdownMode: 'inline-identifiers',
+        languageCode: () => 'zho_Hans',
+        translate: async () => {
+          throw new Error('inline translation must use the batch method')
+        },
+        translateBatch: async (texts) =>
+          texts.map((text) => {
+            const normalized = text.trim()
+            if (normalized === first) return '保持网络的决定性行为.'
+            if (normalized === second) return '硬件加速不能改变可见的结果.'
+            if (normalized === source) return '维护网络的确定性行为.硬件加速不应改变可见结果.'
+            return text
+          }),
+      },
+    )
+
+    expect(translated).toContain('保持网络的决定性行为.硬件加速不能改变可见的结果.')
+  })
+
+  test('accepts a compact CJK retry after every evidence-list clause passes', async () => {
+    const source =
+      'Preserve relevant logs, ledger references, configuration snapshots, and transaction hashes with reliable timestamps.'
+    const translated = await translateDocument(
+      `${source}\n`,
+      'guide/security/security-principles.md',
+      simplifiedChinese,
+      {
+        engine: 'complete-cjk-clause-retry-test',
+        protectedMarkdownMode: 'inline-identifiers',
+        languageCode: () => 'zho_Hans',
+        translate: async () => {
+          throw new Error('inline translation must use the batch method')
+        },
+        translateBatch: async (texts) =>
+          texts.map((text) => {
+            switch (text.trim()) {
+              case source:
+                return '保存相关日志,账本参考,配置快照和可靠的时刻标记.'
+              case 'Preserve relevant logs,':
+                return '保存相关日志,'
+              case 'ledger references,':
+                return '账本引用,'
+              case 'configuration snapshots,':
+                return '配置快照,'
+              case 'and transaction hashes with reliable timestamps.':
+                return '和可靠的时间标签的交易哈希.'
+              default:
+                return text
+            }
+          }),
+      },
+    )
+
+    expect(translated).toContain('保存相关日志,账本引用,配置快照,和可靠的时间标签的交易哈希.')
+  })
+
+  test('recovers adjacent short CJK inventory clauses separately', async () => {
+    const source =
+      'Keep trusted release artifacts, configuration, genesis records, and inventories available during an incident.'
+    const translated = await translateDocument(
+      `${source}\n`,
+      'guide/security/security-principles.md',
+      simplifiedChinese,
+      {
+        engine: 'short-cjk-clause-retry-test',
+        protectedMarkdownMode: 'inline-identifiers',
+        languageCode: () => 'zho_Hans',
+        translate: async () => {
+          throw new Error('inline translation must use the batch method')
+        },
+        translateBatch: async (texts) =>
+          texts.map((text) => {
+            switch (text.trim()) {
+              case source:
+                return '在事件期间,保持可信的发布工件,配置,创世记录和库存.'
+              case 'Keep trusted release artifacts,':
+                return '保持可信的发布工件,'
+              case 'configuration, genesis records,':
+                return '创世记录,'
+              case 'configuration,':
+                return '配置,'
+              case 'genesis records,':
+                return '创世记录,'
+              case 'and inventories available during an incident.':
+                return '并在事件期间保持库存可用.'
+              default:
+                return text
+            }
+          }),
+      },
+    )
+
+    expect(translated).toContain('保持可信的发布工件,配置,创世记录,并在事件期间保持库存可用.')
+  })
+
+  test('accepts a complete eleven-letter Simplified Chinese sentence', () => {
+    const source = 'Registering a policy on-chain is not enough by itself.'
+
+    expect(isCompleteCompactCjkSentence(source, '在链上注册保险本身不够.', simplifiedChinese)).toBe(true)
+    expect(isCompleteCompactCjkSentence(source, '链上注册本身不够.', simplifiedChinese)).toBe(false)
+  })
+
+  test('accepts a complete compact coordinated Simplified Chinese sentence', () => {
+    const source = 'deployment, and recovery authorities.'
+
+    expect(isCompleteCompactCjkSentence(source, '部署和恢复当局.', simplifiedChinese)).toBe(true)
+    expect(isCompleteCompactCjkSentence(source, '恢复当局.', simplifiedChinese)).toBe(false)
+    expect(isCompleteCompactCjkSentence(source, '部署和恢复.', simplifiedChinese)).toBe(false)
+  })
+
+  test('accepts a complete compact Simplified Chinese retry phrase', () => {
+    expect(isCompleteCompactCjkRetryPhrase('and decompressed bytes', '和解压字节', simplifiedChinese)).toBe(true)
+    expect(isCompleteCompactCjkRetryPhrase('and decompressed bytes', '解压字节', simplifiedChinese)).toBe(false)
+    expect(isCompleteCompactCjkRetryPhrase('and decompressed bytes,', '和解压字节,', simplifiedChinese)).toBe(false)
+  })
+
+  test('accepts a complete compact Simplified Chinese retry clause', () => {
+    expect(isCompleteCompactCjkRetryClause('configuration snapshots, ', '配置快照,', simplifiedChinese)).toBe(true)
+    expect(isCompleteCompactCjkRetryClause('configuration snapshots, ', '配置,', simplifiedChinese)).toBe(false)
+    expect(isCompleteCompactCjkRetryClause('configuration, ', '配置,', simplifiedChinese)).toBe(true)
+    expect(isCompleteCompactCjkRetryClause('configuration, ', '配,', simplifiedChinese)).toBe(false)
+    expect(isCompleteCompactCjkRetryClause('configuration snapshots.', '配置快照.', simplifiedChinese)).toBe(false)
+  })
+
+  test('accepts a complete compact Simplified Chinese retry list tail', () => {
+    const source = 'and inventories available during an incident.'
+
+    expect(isCompleteCompactCjkRetryListTail(source, '在事件中可用的库存.', simplifiedChinese)).toBe(true)
+    expect(isCompleteCompactCjkRetryListTail(source, '事件库存.', simplifiedChinese)).toBe(false)
+    expect(
+      isCompleteCompactCjkRetryListTail(
+        'inventories available during an incident.',
+        '在事件中可用的库存.',
         simplifiedChinese,
       ),
     ).toBe(false)
@@ -935,6 +1326,13 @@ describe('Markdown translation protection', () => {
     ['changed protected marker', 'The [PH000000] transcript records:', '[PH000001] 記録内容は:'],
   ])('rejects a short structural lead-in with %s', (_case, source, translated) => {
     expect(isCompleteShortStructuralLeadIn(source, translated)).toBe(false)
+  })
+
+  test('accepts a complete longer compact structural lead-in', () => {
+    expect(
+      isCompleteShortStructuralLeadIn('First, the secret is committed separately:', '首先,秘密是单独承诺的:'),
+    ).toBe(true)
+    expect(isCompleteShortStructuralLeadIn('First, the secret is committed separately:', '秘密:')).toBe(false)
   })
 
   test('validates each sentence retry and recovers the omitted expressions clause', async () => {
@@ -1080,7 +1478,7 @@ describe('Markdown translation protection', () => {
     }
 
     await expect(translateDocument(`${source}\n`, 'guide/inclusive-floor.md', japanese, provider)).rejects.toThrow(
-      'output is materially short (0.25 of source letters)',
+      `prose unit 1 (${JSON.stringify(source)}): output is materially short (0.25 of source letters); sentence-level retry output is materially short (0.25 of source letters)`,
     )
   })
 
@@ -1140,6 +1538,14 @@ describe('Markdown translation protection', () => {
       'For example, `badge$docs.universal` identifies `badge` in `docs.universal`, so `badge$docs` resolves to `badge$docs.universal`.\n'
     const protectedMarkdown = protectMarkdown(source, french, 'identifier')
 
+    expect(protectedMarkdown.restore(protectedMarkdown.masked)).toBe(source)
+  })
+
+  test('protects inline LaTeX that contains ordinary nested parentheses', () => {
+    const source = 'Store \\(R_{\\mathrm{dst}} \\leftarrow \\operatorname{Enc}(a)\\) in the destination register.\n'
+    const protectedMarkdown = protectMarkdown(source, french, 'identifier')
+
+    expect(protectedMarkdown.masked).not.toContain('\\operatorname')
     expect(protectedMarkdown.restore(protectedMarkdown.masked)).toBe(source)
   })
 
@@ -1260,6 +1666,34 @@ echo "$HOME"
 })
 
 describe('translated documents', () => {
+  test('keeps protected markers out of Google Translate requests', () => {
+    expect(new GoogleTranslationProvider().protectedMarkdownMode).toBe('fragments')
+  })
+
+  test('bounds concurrent Google Translate fragment requests', async () => {
+    class CountingGoogleProvider extends GoogleTranslationProvider {
+      active = 0
+      maximumActive = 0
+
+      override async translate(text: string): Promise<string> {
+        this.active += 1
+        this.maximumActive = Math.max(this.maximumActive, this.active)
+        await new Promise((resolve) => setTimeout(resolve, 5))
+        this.active -= 1
+        return text
+      }
+    }
+
+    const provider = new CountingGoogleProvider()
+    await expect(provider.translateBatch(['one', 'two', 'three', 'four'], 'mn')).resolves.toEqual([
+      'one',
+      'two',
+      'three',
+      'four',
+    ])
+    expect(provider.maximumActive).toBe(1)
+  })
+
   test('records source provenance and preserves non-home frontmatter', async () => {
     const english = '---\naside: false\n---\n# Guide\n\nInstall Iroha.\n'
     const translated = await translateDocument(english, 'guide/index.md', french, new MarkerAwareProvider())
@@ -1371,6 +1805,33 @@ features:
       expect(synchronized).toContain('# Installer Iroha {#install-iroha}')
       expect(synchronized).toContain('## Exemple {#example}')
       expect(synchronized).toContain('Prose existante.')
+    } finally {
+      await rm(temporaryRoot, { recursive: true, force: true })
+    }
+  })
+
+  test('synchronizes container keywords while preserving localized titles and prose', async () => {
+    const temporaryRoot = await mkdtemp(path.join(tmpdir(), 'iroha-docs-container-directives-'))
+    await mkdir(path.join(temporaryRoot, 'guide'), { recursive: true })
+    await mkdir(path.join(temporaryRoot, 'fr', 'guide'), { recursive: true })
+    await writeFile(
+      path.join(temporaryRoot, 'guide', 'index.md'),
+      '# Guide\n\n::: warning\n\nKeep secrets safe.\n\n:::\n\n::: info Note\n\nCurrent source.\n\n:::\n',
+    )
+    await writeFile(
+      path.join(temporaryRoot, 'fr', 'guide', 'index.md'),
+      '---\ntranslation_locale: fr\n---\n# Guide {#guide}\n\n::: avertissement\n\nGardez les secrets.\n\n:::\n\n::: information Remarque\n\nSource actuelle.\n\n:::\n',
+    )
+
+    try {
+      await synchronizeTranslationMarkdownStructure({
+        sourceRoot: temporaryRoot,
+        locales: [french],
+        routes: ['guide/index.md'],
+      })
+      const synchronized = await readFile(path.join(temporaryRoot, 'fr', 'guide', 'index.md'), 'utf8')
+      expect(synchronized).toContain('::: warning\n\nGardez les secrets.')
+      expect(synchronized).toContain('::: info Remarque\n\nSource actuelle.')
     } finally {
       await rm(temporaryRoot, { recursive: true, force: true })
     }

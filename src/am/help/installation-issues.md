@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /help/installation-issues.md
-translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
+translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c054c85a2a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -89,7 +89,7 @@ $ rustup toolchain update stable
 $ rustup default stable
 ```
 
-`nightly` ስሪት ከተጫነ ወይም የተወሰነ Rust ስሪት ካስቀመጡ ይህ ሊከሰት ይችላል, ነገር ግን እሱን ማስወገድ ረስተዋል.
+`nightly` ስሪት መጫን ወይም በኋላ ላይ ሳትሰርዝ የተወሰነ Rust ስሪት ማዘጋጀት ይህንን ችግር ሊያስከትል ይችላል ።
 
 ### ሌሎች Rust ስሪቶች መኖራቸውን ያረጋግጡ {#check-if-there-are-other-rust-versions}
 
@@ -123,13 +123,13 @@ $ rustup toolchain list
 $ rustup remove <toolchain>
 ```
 
-ከዚያ በኋላ, ያረጋግጡ
+የመሳሪያ ሰንሰለቶችን ካስወገዱ በኋላ ይህ ትዕዛዝ አልተገኘም የሚል ስህተት ሪፖርት ማድረግ አለበት-
 
 ```bash
 $ cargo --help
 ```
 
-አንድ ትዕዛዝ አልተገኘም ስህተት ያስከትላል, ማለትም ምንም ንቁ Rust መሳሪያ ሰንሰለት ተጭኗል አይደለም. ከዚያም:
+ይህ ስህተት ምንም ንቁ Rust መሣሪያ ሰንሰለት አልተጫነም መሆኑን ያረጋግጣል. ከዚያም ይሂዱ:
 
 ```bash
 $ rustup toolchain install stable

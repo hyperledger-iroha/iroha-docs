@@ -468,7 +468,7 @@ N_{\ell+1} =
 )
 $$
 
-trace သည် အဆင့်တိုင်းတွင် bit `b_l`, ညီမ `s_l`, input node `x_l` နှင့် output node `x_{l+1}` တို့ကို မှတ်တမ်းတင်ထားသည်။
+ခြေရာခံချက်က အပိုင်းကို မှတ်တမ်းတင်တယ်။ `b_l`, ညီအစ်မ `s_l`, input node များ `x_l`, output node ကို `x_{l+1}` အဆင့်တိုင်းမှာပါ။ ကုဒ်ရဲ့ ကဏ္ဍဆိုင်ရာ ညီလာခံနဲ့:
 
 $$
 (\operatorname{left}_\ell,\operatorname{right}_\ell)=

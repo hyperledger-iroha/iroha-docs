@@ -70,7 +70,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 
 ## הזרמים של אירועים או מחסומים עוצרים מוקדם. {#event-or-block-streams-stop-early}
 
-דוגמאות של זרם בלוק ואירועים מבוססות על נקודות קץ לזרום Torii.
+דוגמאות של זרם בלוקים ואירועים מבוססות על נקודות קץ של זרם Torii. בדוק אם הדוגמא עדיין פועלת, ולאחר מכן לבדוק עם זמן:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger blocks 1 --timeout 30s

@@ -14,7 +14,7 @@ translation_engine: nllb-200-ct2
 irohad --config path/to/config.toml
 ```
 
-## `--config`  {#arg-config}
+## `--config` {#arg-config}
 
 - Tipo: Camino de archivos
 - Alias: `-c`

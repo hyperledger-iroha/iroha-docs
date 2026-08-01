@@ -6,51 +6,45 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# 跑步 Iroha 在純金屬上 {#running-iroha-on-bare-metal}
+# 在 Bare Metal 上運行 Iroha {#running-iroha-on-bare-metal}
 
-請使用此工作流程,
-通過 Docker Compose. 目前的來源樹提供 Kagami 發電機
-寫出匹配的基因,同行配置,客戶端配置和開啟/停止脚本.
+當您想通過 Docker Compose 而不是在主機上直接運行同行時使用此工作流程.當前的源樹提供 Kagami 生成器,用於編寫匹配基因組,同行配置,客戶端配置和啓動/停止腳本.
 
-## 1. 建立二元數字 {#_1-build-the-binaries}
+## 1. 構建二進制 {#_1-build-the-binaries}
 
-來自上流的 Iroha 工作空間:
+從上游 Iroha 工作空間:
 
 ```bash
 cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ```
 
-這會產生:
+這產生了:
 
-- `target/release/irohad` 為了同行妖怪
-- `target/release/iroha` 關於 CLI
-- `target/release/kagami` 關鍵,基因和本地網路生成
+- `target/release/irohad` 對同齡妖怪
+- `target/release/iroha`用於 CLI
+- `target/release/kagami`用於關鍵,基因和局域網生成
 
-## 2. 建立一個本地網絡 {#_2-generate-a-local-network}
+## 2. 創建本地網絡 {#_2-generate-a-local-network}
 
-產生四個同行 Iroha 3 地方網路:
+創建一個四對的 Iroha 3 本地網絡:
 
 ```bash
 target/release/kagami localnet --build-line iroha3 --peers 4 --out-dir ./localnet
 ```
 
-输出目錄包含生成的 `genesis.json`,
-`genesis.signed.nrt`, 同級人 `config.toml` 文件, `client.toml`, 助手筆記,
-並產生了 `README.md` 這項小組的指令是正確的.
+輸出目錄包含生成的 `genesis.json`, `genesis.signed.nrt`,同行`config.toml`文件, `client.toml`,輔助腳本以及生成的 `README.md`,其中包含該捆綁的確切命令.
 
-## 3. 開始同行 {#_3-start-peers}
+## 3. 開始同齡 {#_3-start-peers}
 
-在生成一次性本地網中,使用生成的脚本:
+對於生成一次性本地網絡,使用生成的腳本:
 
 ```bash
 ./localnet/start.sh
 ```
 
-如果您需要將每個同行連接到一個流程管理器中, systemd, 使用
-發射指令在 `./localnet/README.md` 每個同行都能獲得,
-其他國家 `config.toml`, 密钥,存儲目錄和端口分別.
+如果您需要將每個同行連接到像 systemd 這樣的進程管理器中,請使用爲每一個同行記錄在 `./localnet/README.md` 的啓動命令. 保持每個同行的 `config.toml`,私鑰,存儲目錄和端口分開.
 
-## 4. 運用網路 {#_4-operate-the-network}
+## 4. 運營網絡 {#_4-operate-the-network}
 
 使用生成的客戶端配置:
 
@@ -59,24 +53,18 @@ target/release/iroha --config ./localnet/client.toml ledger domain list all
 target/release/iroha --config ./localnet/client.toml --output-format text ops sumeragi status
 ```
 
-停止生成的本地網路使用:
+停止生成的本地網絡:
 
 ```bash
 ./localnet/stop.sh
 ```
 
-## 5. 產品記錄 {#_5-production-notes}
+## 5. 產品說明 {#_5-production-notes}
 
-- 製造新鮮的私钥,
-  這裡有數據庫.
-- 請各位同意相同的簽名基因交易,
-  值得信賴的同行,以及認證者 PoPs.
-- 只有在同行應使用的情況下,
-  其他機器無法使用.
-- 使用反向代理或防火牆 Torii 經營性, TLS, 及利率
-  限制他們.
-- 處理基因或共識拓的變化為協調的遷移,
-  單位檔案編輯.
+- 創建生產的新私鑰,並將其存儲在倉庫外.
+- 讓每個同齡人都同意相同的簽名基因交易,拓,可信任的同齡人和驗證器 PoPs.
+- 只有在其他機器不能從同行到達時,將收聽器綁定到主機本地接口.
+- 使用反向代理或防火牆來對 Torii 曝光,基礎 auth, TLS 和速度限制.
+- 將基因或共識拓學的變化視爲協調遷移,而不是單雙文件編輯.
 
-在集裝置的本地發展中, [發射 Iroha 3](../../get-started/launch-iroha.md)
-Docker Compose 工作流程.
+對於集裝本地開發,請使用 [啓動 Iroha 3](../../get-started/launch-iroha.md) Docker Compose 工作流.

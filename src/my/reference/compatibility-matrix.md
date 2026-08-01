@@ -20,6 +20,6 @@ Refresh workflow ကနေ စစ်ဆေးထားတဲ့ ရလဒ်တ�
 
 <CompatibilityMatrixTable />
 
-::: သတင်းအချက်အလက်
+::: info
 `VITE_COMPAT_MATRIX_URL` ကို ချိတ်ဆက်ထားတဲ့ snapshot ကို လိုက်ဖက်တဲ့ live backend နဲ့ override လုပ်ဖို့သာ သတ်မှတ်ပါ။ အဲဒီ variable ကင်းမဲ့ရင် စာမျက်နှာဟာ `src/public/compat-matrix.json` ကို load လုပ်ပါတယ်။
 :::

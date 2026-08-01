@@ -1,9 +1,9 @@
 ---
 translation_locale: ru
 translation_source: /guide/best-practices/release-readiness.md
-translation_source_hash: 1f316d6a823b23e821d80fe8773df7469358b0e01057f9b76b113cafe4818f20
+translation_source_hash: 984957526424a4e0ec9f29a6da1bb64699245bb135e8157bbe684bc3d87de4cc
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Готовность освободить {#release-readiness}
@@ -30,8 +30,8 @@ translation_engine: nllb-200-ct2
 
 ## Главная сеть или порта производства {#mainnet-or-production-gate}
 
-- Используйте отдельные производственные сигналы, финансирование, домены и маршруты конфигурации.
-- Подтвердить совместимость SDK, CLI, peer и network с матрицей совместимости [ ](/ru/reference/compatibility-matrix.md).
+- Используйте отдельные производственные ключи подписантов, финансирование, домены и пути конфигурации. Не переносите в производство ключи тестовой сети или предположения о наличии faucet.
+- Подтвердить необходимое перекрестное...SDK сценарии, связанные с [Матрица совместимости](/ru/reference/compatibility-matrix.md). Отдельно запечатать и проверить точную CLI, бинарный параметр, конфигурация и выпуск сети, используемые в развертывании.
 - Разрешения на пересмотр, спонсорские сборы, пределы тарифов, мониторинг, статус резервного копирования и критерии возвращения до выпуска.
 - Требуется письменная транзакция или миграционный план для писем с большим воздействием.
 

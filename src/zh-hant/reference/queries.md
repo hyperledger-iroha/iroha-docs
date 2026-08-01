@@ -3,129 +3,119 @@ translation_locale: zh-hant
 translation_source: /reference/queries.md
 translation_source_hash: 22e8a75acd72d066e3516ba46a0afe075d2d02790154458aec00a5d8bb861838
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
-# 詢問問題 {#queries}
+# 查詢 {#queries}
 
-Iroha 目前的數據模型
-顯示了兩個廣泛的查詢形式:
+Iroha 查詢可讀取分類帳狀態而不加以變更。目前的資料模型公開兩種主要查詢形式：
 
-- **單位查詢**, 返回一個對象或一個值
-- **可反復查詢**, 還回來流量或收藏量,
-  在查詢類型的濾網,分類,投影和頁面化
-  支持它
+- **單一查詢**：傳回一個物件或單一值
+- **可迭代查詢**：傳回資料流或集合；若查詢型別支援，還可搭配篩選、排序、投影及分頁
 
-使用 SDK 打字的建築師或 CLI 而不是建立查詢封筒,
-下面的名稱是目前被曝光的查詢類型
-`iroha_data_model::query`.
+請使用 SDK 的強型別建構器或 CLI，不要手動組裝查詢封套。下列名稱是 `iroha_data_model::query` 目前公開的查詢型別。
 
-## 運行時間和配置 {#runtime-and-configuration}
+## 執行階段與組態 {#runtime-and-configuration}
 
-| 詢問問題 | 目的 |
+| 查詢 | 用途 |
 | --- | --- |
-| `FindAbiVersion` | 請將執行人返回 ABI 這種版本. |
-| `FindExecutorDataModel` | 返回執行者數據模型描述. |
-| `FindParameters` | 返回連鎖執行器配置參數. |
+| `FindAbiVersion` | 傳回執行器 ABI 版本。 |
+| `FindExecutorDataModel` | 傳回執行器的資料模型描述。 |
+| `FindParameters` | 傳回鏈上執行器組態參數。 |
 
-## 帳戶及許可證 {#accounts-and-permissions}
+## 帳戶與權限 {#accounts-and-permissions}
 
-| 詢問問題 | 目的 |
+| 查詢 | 用途 |
 | --- | --- |
-| `FindAccountById` | 尋找每個聖經記錄的一個帳號 ID. |
-| `FindAccountByAlias` | 解決一個帳戶的密碼. |
-| `FindAccounts` | 列出已註冊的帳戶. |
-| `FindAccountIds` | 列表已註冊的帳戶 IDs. |
-| `FindAccountsWithAsset` | 列出包含特定資產定義的帳戶. |
-| `FindAliasesByAccountId` | 列出與帳戶相關的密碼. |
-| `FindAccountRecoveryPolicyByAlias` | 找一個假名的恢復政策. |
-| `FindAccountRecoveryRequestByAlias` | 找一個名稱的回收要求. |
-| `FindRoles` | 列出自己的角色. |
-| `FindRoleIds` | 列表的角色 IDs. |
-| `FindRolesByAccountId` | 列出一個帳戶所承諾的角色. |
-| `FindPermissionsByAccountId` | 列出一個帳戶的授權. |
+| `FindAccountById` | 依規範帳戶 ID（不含網域）尋找單一帳戶。 |
+| `FindAccountByAlias` | 將帳戶別名解析為帳戶。 |
+| `FindAccounts` | 列出已註冊帳戶。 |
+| `FindAccountIds` | 列出已註冊帳戶 IDs。 |
+| `FindAccountsWithAsset` | 列出持有指定資產定義之資產的帳戶。 |
+| `FindAliasesByAccountId` | 列出綁定至帳戶的別名。 |
+| `FindAccountRecoveryPolicyByAlias` | 尋找某別名的復原政策。 |
+| `FindAccountRecoveryRequestByAlias` | 尋找某別名的復原請求。 |
+| `FindRoles` | 列出角色。 |
+| `FindRoleIds` | 列出角色 IDs。 |
+| `FindRolesByAccountId` | 列出授予某帳戶的角色。 |
+| `FindPermissionsByAccountId` | 列出授予某帳戶的權限。 |
 
-## 域名和同行 {#domains-and-peers}
+## 網域與對等節點 {#domains-and-peers}
 
-| 詢問問題 | 目的 |
+| 查詢 | 用途 |
 | --- | --- |
-| `FindDomainById` | 找一個域名 `DomainId`. |
-| `FindDomains` | 列出已註冊的域名. |
-| `FindDomainsByAccountId` | 列出一個帳戶擁有的域名. |
-| `FindDomainEndorsements` | 列出域名授權紀錄. |
-| `FindDomainEndorsementPolicy` | 返回域名授權政策. |
-| `FindDomainCommittee` | 返回這個領域的委員會. |
-| `FindPeers` | 列出在帳簿中所知可信的同行. |
+| `FindDomainById` | 依 `DomainId` 尋找單一網域。 |
+| `FindDomains` | 列出已註冊網域。 |
+| `FindDomainsByAccountId` | 列出某帳戶擁有的網域。 |
+| `FindDomainEndorsements` | 列出網域背書記錄。 |
+| `FindDomainEndorsementPolicy` | 傳回網域背書政策。 |
+| `FindDomainCommittee` | 傳回網域委員會。 |
+| `FindPeers` | 列出分類帳已知的可信任對等節點。 |
 
-## 資產, NFTs, 及其他 RWAs {#assets-nfts-and-rwas}
+## 資產、NFTs 與 RWAs {#assets-nfts-and-rwas}
 
-| 詢問問題 | 目的 |
+| 查詢 | 用途 |
 | --- | --- |
-| `FindAssets` | 列出資產餘額. |
-| `FindAssetsDefinitions` | 列出資產定義. |
-| `FindAssetsByAccountId` | 列出一個帳戶持有的資產. |
-| `FindAssetById` | 找到一個資產平衡 `AssetId`. |
-| `FindAssetDefinitionById` | 找一個資產定義 ID. |
-| `FindNfts` | 列表 NFTs. |
-| `FindNftsByAccountId` | 列表 NFTs 擁有一個帳戶. |
-| `FindRwas` | 列出了現實物資的數量. |
+| `FindAssets` | 列出資產餘額。 |
+| `FindAssetsDefinitions` | 列出資產定義。 |
+| `FindAssetsByAccountId` | 列出某帳戶持有的資產。 |
+| `FindAssetById` | 依 `AssetId` 尋找單一資產餘額。 |
+| `FindAssetDefinitionById` | 依 ID 尋找單一資產定義。 |
+| `FindNfts` | 列出 NFTs。 |
+| `FindNftsByAccountId` | 列出某帳戶擁有的 NFTs。 |
+| `FindRwas` | 列出已註冊的實體資產批次。 |
 
-## 預約和證書 {#escrow-and-proof-records}
+## 託管與證明記錄 {#escrow-and-proof-records}
 
-查看由:
-[當地資產保證 ISIs](/zh-hant/blockchain/escrow.md), 包括市場
-預約,通用資產鎖定和匿名預約紀錄.
+託管查詢會檢查[原生資產託管 ISIs](/zh-hant/blockchain/escrow.md)所建立的記錄，包括市集託管、通用資產鎖定及匿名託管記錄。
 
-| 詢問問題 | 目的 |
+| 查詢 | 用途 |
 | --- | --- |
-| `FindAssetEscrows` | 列出資產保證紀錄. |
-| `FindAssetEscrowById` | 找一個資產保證人 ID. |
-| `FindAssetEscrowsBySeller` | 按賣家列出資產保證. |
-| `FindAssetEscrowsByBuyer` | 按購買者所承擔的資產. |
-| `FindAssetEscrowsByStatus` | 按狀態列出資產保證. |
-| `FindAnonymousAssetEscrows` | 列出匿名的資產保證記錄. |
-| `FindAnonymousAssetEscrowById` | 找一個匿名的資產保證人 ID. |
-| `FindAnonymousAssetEscrowsBySeller` | 按賣家列出匿名的保證券. |
-| `FindAnonymousAssetEscrowsByBuyer` | 按購買者列出匿名保證人. |
-| `FindAnonymousAssetEscrowsByStatus` | 按狀態列出匿名保證人. |
-| `FindProofRecordById` | 找一個證據紀錄 ID. |
-| `FindProofRecords` | 列出證據檔案. |
-| `FindProofRecordsByBackend` | 列出證據檔案, |
-| `FindProofRecordsByStatus` | 按狀態列出證據紀錄. |
+| `FindAssetEscrows` | 列出資產託管記錄。 |
+| `FindAssetEscrowById` | 依 ID 尋找單一資產託管。 |
+| `FindAssetEscrowsBySeller` | 依賣方列出資產託管。 |
+| `FindAssetEscrowsByBuyer` | 依買方列出資產託管。 |
+| `FindAssetEscrowsByStatus` | 依狀態列出資產託管。 |
+| `FindAnonymousAssetEscrows` | 列出匿名資產託管記錄。 |
+| `FindAnonymousAssetEscrowById` | 依 ID 尋找單一匿名資產託管。 |
+| `FindAnonymousAssetEscrowsBySeller` | 依賣方列出匿名託管。 |
+| `FindAnonymousAssetEscrowsByBuyer` | 依買方列出匿名託管。 |
+| `FindAnonymousAssetEscrowsByStatus` | 依狀態列出匿名託管。 |
+| `FindProofRecordById` | 依 ID 尋找單一證明記錄。 |
+| `FindProofRecords` | 列出證明記錄。 |
+| `FindProofRecordsByBackend` | 列出某證明後端的證明記錄。 |
+| `FindProofRecordsByStatus` | 依狀態列出證明記錄。 |
 
-## Nexus, 數據可用性及包裝 {#nexus-data-availability-and-packages}
+## Nexus、資料可用性與套件 {#nexus-data-availability-and-packages}
 
-| 詢問問題 | 目的 |
+| 查詢 | 用途 |
 | --- | --- |
-| `FindRepoAgreements` | 在連鎖上存儲的資料庫協議列表. |
-| `FindTwitterBindingByHash` | 透過哈希來解決Twitter的連結. |
-| `FindDaPinIntentByTicket` | 請按票查找資料可用性筆記本的意圖. |
-| `FindDaPinIntentByManifest` | 透過顯示參考, |
-| `FindDaPinIntentByAlias` | 找一個名稱的針點. |
-| `FindDaPinIntentByLaneEpochSequence` | 按行徑,年代和序列找到針的目的. |
-| `FindLaneRelayEnvelopeByRef` | 找一個證實的車道連接封筒. |
-| `FindSorafsProviderOwner` | 解決一個所有者的問題 SoraFS 提供商. |
-| `FindDataspaceNameOwnerById` | 解決一個資料空間名稱所有者. |
-| `FindMusubiReleaseByRef` | 找一個 Musubi 通過參考發放. |
-| `FindMusubiPackageVersions` | 列出一個版本 Musubi 包裝. |
-| `FindMusubiPackageReleases` | 列表發表的 Musubi 包裝. |
-| `FindMusubiShortAliasByName` | 解決一個問題 Musubi 簡稱的姓氏. |
+| `FindRepoAgreements` | 列出儲存在鏈上的儲存庫協議。 |
+| `FindTwitterBindingByHash` | 依雜湊解析 Twitter 綁定。 |
+| `FindDaPinIntentByTicket` | 依票證尋找資料可用性釘選意圖。 |
+| `FindDaPinIntentByManifest` | 依資訊清單參照尋找釘選意圖。 |
+| `FindDaPinIntentByAlias` | 依別名尋找釘選意圖。 |
+| `FindDaPinIntentByLaneEpochSequence` | 依通道、時期及序號尋找釘選意圖。 |
+| `FindLaneRelayEnvelopeByRef` | 尋找已驗證的通道轉送封套。 |
+| `FindSorafsProviderOwner` | 解析 SoraFS 提供者的擁有者。 |
+| `FindDataspaceNameOwnerById` | 解析資料空間名稱的擁有者。 |
+| `FindMusubiReleaseByRef` | 依參照尋找 Musubi 發行版本。 |
+| `FindMusubiPackageVersions` | 列出 Musubi 套件的版本。 |
+| `FindMusubiPackageReleases` | 列出 Musubi 套件的發行版本。 |
+| `FindMusubiShortAliasByName` | 解析 Musubi 短別名。 |
 
-## 引發因素,合同,交易及阻擋 {#triggers-contracts-transactions-and-blocks}
+## 觸發器、合約、交易與區塊 {#triggers-contracts-transactions-and-blocks}
 
-| 詢問問題 | 目的 |
+| 查詢 | 用途 |
 | --- | --- |
-| `FindActiveTriggerIds` | 列出活動開關 IDs. |
-| `FindTriggers` | 列出這些引發因素. |
-| `FindTriggerById` | 找到一個子 ID. |
-| `FindContractManifestByCodeHash` | 請用密碼哈希找到智能合同宣言. |
-| `FindTransactions` | 預約交易列表. |
-| `FindBlocks` | 列表的區塊. |
-| `FindBlockHeaders` | 列出區塊標題. |
+| `FindActiveTriggerIds` | 列出作用中的觸發器 IDs。 |
+| `FindTriggers` | 列出觸發器。 |
+| `FindTriggerById` | 依 ID 尋找單一觸發器。 |
+| `FindContractManifestByCodeHash` | 依程式碼雜湊尋找智慧合約資訊清單。 |
+| `FindTransactions` | 列出已完成共識提交的交易。 |
+| `FindBlocks` | 列出區塊。 |
+| `FindBlockHeaders` | 列出區塊標頭。 |
 
-## 濾網及頁面編輯 {#filtering-and-pagination}
+## 篩選與分頁 {#filtering-and-pagination}
 
-使用查詢特定的訊息.
-來自於 SDK 因此,濾網輸入與查詢輸出類型相匹配.
-在大型結果集合中,使用查詢參數如導向和限制
-這就是我們每一行都拿出來的方法.
+可迭代查詢可提供述詞與選取器支援。請使用 SDK 中各查詢專用的強型別篩選器，確保篩選輸入符合查詢輸出型別。結果集很大時，請使用游標與上限等查詢參數，不要一次擷取所有資料列。

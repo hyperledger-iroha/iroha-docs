@@ -1,101 +1,98 @@
 ---
 translation_locale: pt
 translation_source: /guide/security/operational-security.md
-translation_source_hash: 01397a0e53a3f62df21e33b1473babd910cc733713ef69e43b3bbb501b48e7a5
+translation_source_hash: 042673aca63962b4b3f91e59c29bc5030ada7d63f082991899951301cb1f6887
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Segurança operacional {#operational-security}
 
-A Segurança Operacional (OPSEC) é uma abordagem sistemática da segurança e do gerenciamento de riscos, que consiste essencialmente em um conjunto de estratégias e conselhos adotados para casos específicos de utilização com o objetivo de prevenir o acesso não autorizado e a fuga de dados.
+A segurança operacional protege as pessoas, os anfitriões, credenciais e procedimentos em torno de uma implantação Iroha. Os registos de contabilidade aceitaram mudanças do estado. Os operadores devem assegurar separadamente as suas estações de trabalho, as chaves de assinatura e o processo de resposta a incidentes.
 
-<abbr title="Operational Security">OPSEC</abbr> é a prática padrão da maioria das empresas para garantir a disponibilidade e estabilidade dos seus ativos. Isso inclui considerar fatores como segurança física (por exemplo, certificar-se de que as notas post-it não contêm dados confidenciais), Protocolos de comunicação seguros (por exemplo, não enviar dados sensíveis por meio de SMS não criptografado), análise de ameaças (por exemplo: determinar potenciais partes maliciosas, aprender sobre os mais recentes métodos de ataque), formação do pessoal (p. ex., sem que os funcionários sigam as medidas <abbr title="Operational Security">OPSEC</abbr>); Precocemente ou mais tarde, provam ser ineficazes), e reduzem os riscos (por exemplo, criptografando os seus discos rígidos e dispositivos USB.
+Use os controles abaixo como uma linha de base para a implantação. Ajuste-os ao valor em risco e aos requisitos da sua organização.
 
-Desde Iroha é susceptível de ser utilizado como um livro-razão financeiro, <abbr title="Operational Security">OPSEC</abbr> Este tópico descreve as estratégias e abordagens que os indivíduos e as organizações que utilizam Iroha No âmbito das suas operações, devem considerar-se como parte do seu amplo protocolo de segurança.
+## Estabelecer uma linha de base operacional {#establish-an-operational-baseline}
 
-Seguir e adotar as diretrizes deste tópico é um passo necessário para alcançar a segurança total, no entanto, não é suficiente por si só. Para melhorar ainda mais a sua segurança, saiba mais ao longo do resto da seção [Segurança](./index.md) e especificamente os seguintes temas:
+- Manter um inventário dos anfitriões de validadores, identidades de pares, autoridades de conta, dispositivos de assinatura, endpoints públicos e pessoas responsáveis.
+- Use credenciais separadas para desenvolvimento, teste e produção. atribuir cada assinante, token portador e chave privada a um ambiente.
+- Mantenha a configuração e a automação da implementação no controle de versão revisavel. Injecte segredos em tempo de execução de uma loja secreta aprovada ou dispositivo de assinatura.
+- Registre os hashes ou assinaturas esperados de artefatos de lançamento. Verifique-os antes da implantação. Limite quem pode substituir binários, material de geração, configuração ou definições de serviço.
+- Aplicar menos privilégios para contas do sistema operacional, permissões Iroha e administração de rede. Concede a cada papel apenas a autoridade que o seu trabalho precisa.
+- Teste os procedimentos de backup, restauração, substituição de chaves e recuperação de pares antes do lançamento em produção.
 
-- [Princípios de segurança](./security-principles.md)
-- [Segurança de senha](./password-security.md)
+Revisão [Princípios de segurança](./security-principles.md) e [Preparação para a liberação](../best-practices/release-readiness.md) ao definir a linha de base.
 
-## Medidas recomendadas OPSEC {#recommended-opsec-measures}
+## Proteja as chaves e os assinantes {#protect-keys-and-signers}
 
-- Mantenham-se vigilantes. [mais provável](https://arxiv.org/pdf/2209.08356.pdf) A maneira de perder os seus ativos numa cadeia de blocos é divulgando os seus detalhes sensíveis.
+- Mantenha chaves privadas, material de semente, tokens do portador, cabeçalhos de autorização e segredos de recuperação fora do controle da fonte, rastreadores de emissões, transcrições de bate-papo, capturas de tela e documentação pública.
+- Usar assinaturas de hardware ou isoladas para autoridades de alto valor. Mantenha a matéria-prima da chave fora dos navegadores e dos processos de aplicação de finalidade geral quando um cliente pode delegar assinaturas.
+- Usar autoridades separadas para transações de rotina, governança, implantação e recuperação.
+- Criptografar o armazenamento secreto e os seus backups. Aplicar os mesmos controles de acesso a um backup de chave privada como para a chave ao vivo.
+- Manter um procedimento de substituição ou revogação testado. Substituir uma chave quando a política exigir ou quando suspeitar de exposição.
+- Exigir uma revisão independente para alterações na adesão ao validador, funções privilegiadas ou ativos de alto valor.
 
-- Criptografar os seus discos. Criptografar dispositivos de inicialização permite que eles protejam seus dados mesmo que um invasor tenha acessado o hardware.
+Veja . [Geração de chaves criptográficas](./generating-cryptographic-keys.md) e [Armazenamento de chaves criptográficas](./storing-cryptographic-keys.md) para orientações específicas de chaves.
 
-- Use software confiável. O software que é enviado através de construções binárias reprodutíveis, e que você constrói a partir da fonte, é o mais confiável. Software proprietário ou open source que não foi auditado é um risco potencial que deve ser levado a sério.
+## Harden Nodes e Acesso do Operador {#harden-nodes-and-operator-access}
 
-- Nunca deixe os dispositivos portáteis com dados sensíveis sem vigilância. Uma fração de segundo é o suficiente para roubar o teu dispositivo.
+- Execute nós e ferramentas do operador em sistemas atualmente suportados pelo fornecedor. Desligue serviços desnecessários.
+- Dar acesso administrativo aos operadores designados somente através de canais auditados e criptografados.
+- Colocar interfaces não públicas em uma rede privada ou [VPN](./vpn.md).
+- Expor apenas as rotas Torii, de monitoramento e de aplicação necessárias para a implantação.
+- Proteger todas as entradas do público com limites de tarifas e segurança dos transportes adequados ao ambiente.
+- Proteja arquivos de configuração e credenciais de serviço com permissões restritivas de arquivo. Mantenha segredos fora das linhas de comando, listagens de processos e histórico de shell.
+- Funções de validador, cliente, monitoramento e backup separadas quando o modelo de risco requer um controlo independente.
+- Sincronizar o tempo de fontes confiáveis. Preservar registos suficientes do sistema, serviço e rede para investigação.
 
-- Verificar as assinaturas nos pacotes binários. Isto não é muito diferente da criptografia de chave pública usada dentro Iroha.
+## Fluxos de trabalho de navegador e administrador seguros {#secure-browser-and-admin-workflows}
 
-- Para evitar acesso não autorizado, sempre proteja seu computador eletrônico ou pessoal quando deixá-lo sem vigilância. Use senhas fortes, bloqueie a tela e siga as melhores práticas para proteger seus dispositivos.
+Para um operador que utiliza uma interface web:
 
-- Estabelecer um seguro [com abertura de ar](https://en.wikipedia.org/wiki/Air_gap_(networking)Primeiro, encripta as chaves e depois armazená-las num dispositivo apenas offline. Idealmente, com proteção eletromagnética instalada. [Chaves de hardware](./storing-cryptographic-keys.md#using-a-hardware-key) são especificamente concebidos para este fim.
+- Use um navegador totalmente atualizado com suporte de fornecedor em uma estação de trabalho gerenciada.
+- Use um perfil ou dispositivo de operador dedicado com apenas extensões necessárias.
+- Verificar a origem e o certificado antes de aprovar um pedido.
+- Tratar domínios semelhantes, redirecionamentos inesperados e pedidos de matéria-prima chave como incidentes.
+- Bloquear os sites e extensões não relacionados da sessão do operador ativo.
+- Usar sessões de curta duração. Requer reautenticação para ações privilegiadas.
+- Mostre os detalhes da transação ao signatário. O operador deve conseguir verificar a autoridade, a rede, as instruções, os ativos e as taxas antes da aprovação.
 
-- Mantenha sempre o seu software atualizado para a sua versão mais recente em todos os dispositivos, incluindo computadores e telefones. Atualizações regulares ajudam a corrigir vulnerabilidades e minimizar riscos potenciais associados ao software desatualizado, mesmo antes que tais vulnerabilidades sejam divulgadas.
+O isolamento do navegador reduz a exposição. Os operadores ainda devem rever as transações e usar assinaturas seguras.
 
-- Desenvolver uma rotina para a atualização periódica de senhas e chaves criptográficas.Esta abordagem proativa contribui significativamente para melhorar a postura geral de segurança, já que é muito mais difícil atingir um alvo em movimento.
+## Monitoração e resposta {#monitor-and-respond}
 
-## Usando os navegadores {#using-browsers}
+Monitorar estes sinais:
 
-Se um aplicativo conectado a Iroha possui uma web UI, o seu navegador pode ajudar na segurança ou representar uma ameaça potencial. É essencial ter cuidado, especialmente quando se trata dos plugins que você escolhe instalar.
+- Mudanças no número de validadores e membros dos pares
+- falhas de autorização repetidas ou instruções privilegiadas incomuns
+- mudanças inesperadas de software, configuração ou rota
+- falhas de assinatura, consulta e transação fora da linha de base normal
+- Esgotamento de recursos, paralisação do consenso ou perda de colegas esperados
+- mudanças de activos, permissões e contas que correspondam às regras de fraude
 
-Considere as seguintes medidas para aumentar a segurança da sua navegação:
-
-- Evite usar navegadores que são conhecidos por terem maus modelos de segurança e por vazarem os dados dos seus usuários. Você pode procurar violações de privacidade e problemas de segurança para qualquer navegador. Por exemplo, [ este artigo sobre privacidade do navegador ](https://www.unixsheikh.com/articles/choose-your-browser-carefully.html) discute uma variedade de navegadores e o quão seguros eles são. Observe que os navegadores proprietários (como o Chrome, Safari, Opera, Vivaldi, Edge e outros) são geralmente muito mais difíceis de auditar devido ao seu código estar escondido do público, o que significa que você não pode ter certeza de quão seguros eles são.
-
-- Dar preferência a navegadores com um histórico sólido de valorização e proteção da privacidade e segurança dos seus usuários:
-  - [Librewolf](https://librewolf.net/), [Icecat](https://www.gnu.org/software/gnuzilla/), [Firedragon](https://github.com/dr460nf1r3/firedragon-browser), etc.  Forcas bem estabelecidas do Mozilla Firefox com recursos de segurança adicionais.
-  - [O cromo não identificado ](https://github.com/ungoogled-software/ungoogled-chromium)  é uma versão de código aberto altamente auditada do Google Chrome, que é aprimorada com medidas de segurança adicionais e remove todos os serviços web relacionados ao Google.
-  - [Corajoso .](https://brave.com/)  uma versão de código aberto altamente auditada de [Google Chromium](https://www.chromium.org/Home/) que é reforçada por medidas de segurança adicionais; possui um sistema integrado <abbr title="Virtual Private Network">VPN</abbr> e a funcionalidade de bloqueio de anúncios.
-  - [Falkon](https://www.falkon.org/)  um navegador web de código aberto baseado em Qt (construído em `QtWebEngine`, uma embalagem para [Google Chromium](https://www.chromium.org/Home/)) com histórico conhecido de ser seguro; tem uma série de extensões disponíveis para download de sua página de loja [ KDE ](https://store.falkon.org/browse/).
-  - [Qutebrowser](https://qutebrowser.org/)  um navegador web baseado em Qt de código aberto (construído em `QtWebEngine`, uma embalagem para [Google Chromium](https://www.chromium.org/Home/)) com histórico conhecido de ser seguro; tem uma abordagem única focada no teclado com minimalista GUI Considerado um navegador de escolha para muitos especialistas em segurança.
-
-- Evitar ativar `JavaScript` a menos que seja necessário.
-
-- Use o mecanismo de confinamento embutido do navegador para plugins para restringir os direitos de acesso que os plugins instalados têm.
-
-- Limpe os cookies antes e depois de operações importantes. Tenha cuidado para não ativar o recurso Keep Me Signed In ou Remember me. Tenha em mente que alguns sites têm este recurso habilitado por padrão.
-
-- Use um bloqueador de anúncios. Estes não só bloqueiam anúncios, mas também desativam as funcionalidades de rastreamento do site. Dependendo do navegador que você usa, um bloqueador pode não ser um recurso incorporado.
-
-- Tenha em conta os caracteres semelhantes (por exemplo, `0`, `θ`, `O`, `О`, `ዐ` e `߀` Atenção a detalhes como este pode salvá-lo de um ataque de phishing.
-
-- Evite os clientes de e-mail web UI em favor dos clientes desktop. Antes de usá-lo, configure o seu cliente de e-mails desktop para assinar e verificar as assinaturas das chaves GPG.
-
-- Evite usar serviços de mensagens baseados na Web. Por exemplo, o Discord (construído com a infame estrutura `electron`) é suscetível a muitos dos mesmos ataques que uma janela do Google Chromium com a versão web do Discord aberta.
-
-- Atualize seu navegador para a versão mais recente sempre que possível. As atualizações geralmente incluem patches de segurança críticos que resolvem vulnerabilidades.
-
-- Tenha cuidado com as extensões de navegador que você instala. Use apenas extensões bem conhecidas e confiáveis de fontes respeitáveis. As extensões podem comprometer os seus dados e privacidade.
-
-- Criar perfis de navegador separados para várias tarefas. Use um perfil para navegação diária e outro para atividades que envolvem alta segurança e dados sensíveis. Desta forma, as extensões instaladas no perfil para navegação diária não podem acessar os dados sensíveis do seguro.
-
-- Use uma versão portátil do seu navegador copiada em uma unidade flash USB. Este método garante que, mesmo que um bug de segurança conceda a um dos plugins instalados com acesso aos dados entre os perfis, o seu perfil relacionado à segurança permanece em um dispositivo separado e removível.
-
-- Limpar periodicamente o cache do seu navegador e os cookies para remover dados potencialmente sensíveis que podem ser armazenados acidentalmente no seu dispositivo.
+Enviar alertas para um canal independente do hospedeiro afetado. Preservar registros relevantes, instantâneos de configuração, eventos do livro maior e hashes de transações com timestamps. Veja [Monitorização de fraudes](./fraud-monitoring.md) e [Performance and Metrics ](../advanced/metrics.md).
 
 ## Plano de recuperação {#recovery-plan}
 
-Em caso de emergência, como a perda de uma chave ou a ocorrência de violação da segurança, Um plano de recuperação bem estruturado e preparado com antecedência é uma salva-vidas essencial. Criar um conjunto claro de medidas a serem seguidas pode ajudar a mitigar os danos potenciais e restaurar prontamente a segurança.
+Preparar o plano de recuperação antes do lançamento da produção.
 
-As organizações devem ter em conta os seguintes aspectos fundamentais ao elaborar o seu plano de recuperação:
+- Quem pode declarar e coordenar um incidente
+- Como entrar em contato com os validadores, operadores de infraestrutura, proprietários de aplicações e utilizadores afetados
+- que as autoridades podem revogar permissões, substituir chaves ou alterar a associação de pares
+- onde são armazenados binários de confiança, configuração, registros genéticos, backups e inventários de chaves.
+- como validar a rede e as aplicações dependentes após a recuperação
 
-- Descrever procedimentos passo a passo a serem seguidos em caso de perda de chaves ou outros incidentes de segurança e garantir que estes passos sejam facilmente acessíveis e compreensíveis aos utilizadores e/ou empregados.
+Quando ocorre um incidente:
 
-- Estabelecer um canal de comunicação que possa ser utilizado para notificar prontamente violações à segurança e potenciais ameaças, tais como chaves criptográficas e senhas vazadas ou perdidas.
+1. Isole o host, a credencial, a rota ou a autoridade afetados. Preserve as provas.
+2. Preserva registos e referências do livro, grava todas as ações de recuperação.
+3. Revocar ou substituir as credenciais e autorizações expostas através do processo de governação aprovado.
+4. Restaurar software e configuração a partir de artefatos verificados.
+5. Confirme a associação de pares, a integridade do consenso, as rotas públicas, a monitorização e as leituras da aplicação. Retome as operações de escrita apenas depois de estas verificações passarem.
+6. Documentar a causa raiz. Atualizar os controles, automação e exercícios.
 
-- Se você usar chaves de hardware (por exemplo, [YubiKey](https://www.yubico.com/products/) ou [SoloKeys Solo ](https://solokeys.com/collections/all)) como medida de segurança, considere adotar uma estratégia de redundancia. Mantenha duas chaves: uma para uso diário e outra armazenada em um local seguro. Esta precaução garante o acesso, mesmo que a chave primária seja comprometida ou perdida.
+::: warning
 
-- Quando se relatarem violações ou vazamentos de segurança, reage imediatamente substituindo ou desativando as chaves e senhas afectadas. Esta resposta proativa reduz ao mínimo os riscos e danos potenciais.
-
-- Revisar e atualizar periodicamente o seu plano de recuperação, garantindo que o plano permaneça relevante e eficaz à medida que a sua paisagem de segurança evolui.
-
-::: Aviso
-
-Lembre-se de que um plano de recuperação não é apenas outro documento, mas sim uma linha de salvação que ajuda a navegar por desafios inesperados. reforça a sua segurança operacional e aumenta a sua preparação para responder eficazmente a qualquer incidente de segurança.
+Seguir procedimentos previamente revisados para ações de contabilidade irreversíveis e exigir as aprovações adequadas à autoridade e aos activos afectados.
 
 :::

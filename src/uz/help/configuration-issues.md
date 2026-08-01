@@ -38,7 +38,7 @@ Agar Iroha instansiyasi ma'lumotlarini tiklash kerak bo'lsa, quyidagilarni bajar
 3. Yangi tengdoshni faol qoldiring.
 4. Birinchi tengdoshning genesis va konfiguratsiya fayllarini faqat muvofiqlashtirilgan migratsiya qismi sifatida yangilang.
 
-::: ma'lumot
+::: info
 
 To'g'ridan-to'g'ri tarmoqda genesisni almashtirish uchun umumiy avtomatik qayta yozish yo'li mavjud emas. Buni muvofiqlashtirilgan migratsiya sifatida ko'rib chiqing: eski holatni saqlab qoling, moslashuvchan tengdoshlarni keltiring va validatorlarni faqat operatorlar migratsiya rejasi haqida kelishib olgach yangi konfiguratsiyaga o'tkazish kerak.
 
@@ -56,7 +56,7 @@ Ikkala tasavvur ham noto'g'ri. Afsuski, xato xabarlari bunday xatolarni bartaraf
 
 Qanday tuzatish kerak: `hex_literal` dan foydalaning. Bu, shuningdek, chiroyli belgilar qatorini oltita o'nlik raqamlardan iborat yaxshi kichik jadvalga aylantiradi.
 
-::: ogohlantirish
+::: warning
 
 Hatto `try_from_str` implementatsiyasi ham ma'lum bir satrning haqiqiy `PrivateKey` bo'lishini tekshirib ko'ra olmaydi va agar yo'q bo'lsa ogohlantirmaydi.
 

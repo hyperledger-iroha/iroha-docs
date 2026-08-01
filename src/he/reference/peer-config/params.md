@@ -26,7 +26,7 @@ import ParamTable from './ParamTable.vue';
 
 <param-table type=string env=CHAIN />
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 chain = "00000000-0000-0000-0000-000000000000"
@@ -44,7 +44,7 @@ CHAIN="00000000-0000-0000-0000-000000000000"
 
 <param-table type="public-key" env="PUBLIC_KEY" />
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 public_key = "ea01309060D021340617E9554CCBC2CF3CC3DB922A9BA323ABDF7C271FCC6EF69BE7A8DEBCA7D9E96C0F0089ABA22CDAADE4A2"
@@ -62,7 +62,7 @@ PUBLIC_KEY="ea01309060D021340617E9554CCBC2CF3CC3DB922A9BA323ABDF7C271FCC6EF69BE7
 
 <param-table type="private-key" env="PRIVATE_KEY" />
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 private_key = "8926201CA347641228C3B79AA43839DEDC85FA51C0E8B9B6A00F6B0D6B0423E902973F"
@@ -88,7 +88,7 @@ PRIVATE_KEY="8926201CA347641228C3B79AA43839DEDC85FA51C0E8B9B6A00F6B0D6B0423E9029
 </template>
 </param-table>
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 trusted_peers = [
@@ -119,7 +119,7 @@ BLS רשומות של הוכחת רכוש עבור עמיתים אמינים ל�
 </template>
 </param-table>
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 trusted_peers_pop = [
@@ -146,7 +146,7 @@ TRUSTED_PEERS_POP='[
 
 <param-table type="file-path" env="GENESIS" />
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [genesis]
@@ -165,7 +165,7 @@ GENESIS="./genesis.signed.nrt"
 
 <param-table type="public-key" env="GENESIS_PUBLIC_KEY" />
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [genesis]
@@ -186,7 +186,7 @@ GENESIS_PUBLIC_KEY="ed01208BA62848CF767D72E7F7F4B9D2D7BA07FEE33760F79ABE5597A515
 
 <param-table type="socket-addr" env="P2P_ADDRESS" />
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -207,7 +207,7 @@ P2P_ADDRESS=0.0.0.0:1337
 
 <param-table type="socket-addr" env="P2P_PUBLIC_ADDRESS" />
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -226,7 +226,7 @@ P2P_PUBLIC_ADDRESS=0.0.0.0:5000
 
 <param-table type=number default-value=4 />
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -243,7 +243,7 @@ block_gossip_size = 256
 
 <param-table type=millis default-value=10_000 default-note="10 seconds" />
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -260,7 +260,7 @@ block_gossip_period_ms = 1_000
 
 <param-table type=number default-value=500 />
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -277,7 +277,7 @@ transaction_gossip_size = 256
 
 <param-table type=millis default-value=1_000 default-note="1 second" />
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -292,7 +292,7 @@ transaction_gossip_period_ms = 5_000
 
 <param-table type=millis default-value=300_000 default-note="5 minutes" />
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -309,7 +309,7 @@ idle_timeout_ms = 300_000
 
 <param-table type=socket-addr env=API_ADDRESS />
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [torii]
@@ -341,7 +341,7 @@ API_ADDRESS=0.0.0.0:8080
 </template>
 </param-table>
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [torii]
@@ -356,7 +356,7 @@ max_content_len = 64_000_000
 
 <param-table type=millis default-value=10_000 default-note="10 seconds" />
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [torii]
@@ -371,7 +371,7 @@ query_idle_time_ms = 10_000
 
 <param-table type=number default-value=128 />
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [torii]
@@ -386,7 +386,7 @@ query_store_capacity = 128
 
 <param-table type=number default-value=128 />
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [torii]
@@ -417,7 +417,7 @@ query_store_capacity_per_user = 128
 </template>
 </param-table>
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [logger]
@@ -457,7 +457,7 @@ target[span{field=value}]=level
 
 </param-table>
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [logger]
@@ -503,7 +503,7 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 </template>
 </param-table>
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [logger]
@@ -528,7 +528,7 @@ Kura הוא מנוע אחסון מתמשך של Iroha (יפני עבור מחס�
 
 <param-table type=number default-value=1024 env=KURA_BLOCKS_IN_MEMORY />
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [kura]
@@ -556,7 +556,7 @@ KURA_BLOCKS_IN_MEMORY=1024
 </template>
 </param-table>
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [kura]
@@ -577,7 +577,7 @@ KURA_INIT_MODE=fast
 
 <param-table env=KURA_STORE_DIR type=file-path default-value=./storage />
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [kura]
@@ -596,7 +596,7 @@ KURA_STORE_DIR=/path/to/storage
 
 <param-table env=KURA_DEBUG_OUTPUT_NEW_BLOCKS type=bool default-value=false />
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [kura.debug]
@@ -617,7 +617,7 @@ KURA_DEBUG_OUTPUT_NEW_BLOCKS=true
 
 <param-table type=number default-value=65_536 />
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [queue]
@@ -634,7 +634,7 @@ capacity = 1_048_576
 
 <param-table type=number default-value=65_536 />
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [queue]
@@ -649,7 +649,7 @@ capacity_per_user = 1_048_576
 
 <param-table type=millis default-value=86_400_000 default-note="24 hours" />
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [queue]
@@ -666,7 +666,7 @@ transaction_time_to_live_ms = 43_200_000
 
 <param-table type=bool default-value=false />
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [sumeragi.debug]
@@ -703,7 +703,7 @@ force_soft_fork = true
 </template>
 </param-table>
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [snapshot]
@@ -722,7 +722,7 @@ SNAPSHOT_MODE=readonly
 
 <param-table type=millis default-value=600_000 default-note="10 minutes" />
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [snapshot]
@@ -739,7 +739,7 @@ create_every_ms = 60_000
 
 <param-table type=file-path default-value=./storage/snapshot env=SNAPSHOT_STORE_DIR />
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [snapshot]
@@ -766,7 +766,7 @@ SNAPSHOT_STORE_DIR="/path/to/storage"
 
 <param-table type=string />
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [telemetry]
@@ -781,7 +781,7 @@ WebSocket URL של קולקטור הטלמטריה.
 
 <param-table type=string />
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [telemetry]
@@ -796,7 +796,7 @@ url = "ws://telemetry.example.com/submit"
 
 <param-table type=millis default-value=1_000  default-note="1 second" />
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [telemetry]
@@ -811,7 +811,7 @@ min_retry_period_ms = 5_000
 
 <param-table type=number default-value=4 />
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [telemetry]
@@ -826,7 +826,7 @@ max_retry_delay_exponent = 4
 
 <param-table type=file-path />
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Config File]
 [dev_telemetry]

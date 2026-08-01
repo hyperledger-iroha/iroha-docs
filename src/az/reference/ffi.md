@@ -18,7 +18,7 @@ Bu gün istifadə olunan əsas standart C tətbiqi ikitərəfli interfeysidir. B
 
 Təbii ki, bunu öz yolunuzla edə bilərsiniz. `iroha_ffi` qutusu hər halda istehsal etməli olduğunuz kod yaratır. Lazım olan qaynağı yazmaq kifayət qədər səylər və intizam tələb edir. FFI sərhədindən keçən hər bir funksiya çağırışı qeyri-müəyyən davranışlara səbəb ola biləcək `unsafe`dir. Onu həll etməyi bacardığımız üsul güclü `repr(C)` növlərindən istifadə etmək ətrafında fırlanır.
 
-::: məlumat
+::: info
 
 Null yoxlaması və etibarlılığı qlobal səviyyədə tətbiq edilə bilməz, buna görə də xam göstərici (hər zaman olduğu kimi) yalnız istisna hallarda istifadə olunur. Iroha məlumat modelindəki obyektin demək olar ki, hər bir nümunəsinin ətrafında qovluqlar təqdim etdiyimizi nəzərə alaraq, ümumiyyətlə xam göstəricilərdən istifadə etmək lazım deyil.
 
@@ -54,7 +54,7 @@ FFI vasitəsilə zəng edilə bilən funksiyaları yaratmaq üçün `iroha_ffi` 
 
 A Rust növü güclü birinə çevrilmişdir `repr(C)` növü keçə bilən FFI ilə sərhəd `FfiType::into_ffi`. Bu da əksinə gedir: FFI `ReprC` növü bir `Rust` vasitəsi ilə `FfiType::try_from_ffi`.
 
-::: xəbərdarlıq
+::: warning
 
 Qeyd edək ki, əks dönüşüm səhvə yol aça bilər və müəyyən edilməmiş davranışlara səbəb ola bilər. Ən açıq səhvlərdən qaçınmaq üçün əlimizdən gələni etsək də, proqramın düzgün olduğundan əmin olmalısınız.
 

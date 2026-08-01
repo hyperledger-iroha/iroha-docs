@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /help/installation-issues.md
-translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
+translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c054c85a2a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -89,7 +89,7 @@ $ rustup toolchain update stable
 $ rustup default stable
 ```
 
-`nightly` ဗားရှင်းကို တပ်ဆင်ထားပြီး (သို့) တိကျတဲ့ Rust ဗားရှင်းတစ်ခုကို သတ်မှတ်ထားပေမဲ့ မသတ်မှတ်တာ မေ့သွားရင် ဖြစ်နိုင်ပါတယ်။
+`nightly` ဗားရှင်းတစ်ခု တပ်ဆင်ခြင်း (သို့) Rust ဗားရှင်းတစ်ခုကို နောက်ပိုင်း မဖွင့်ဘဲ သတ်မှတ်ထားခြင်းသည် ဒီပြဿနာကို ဖြစ်စေနိုင်ပါတယ်။
 
 ### အခြား Rust ဗားရှင်းတွေရှိမရှိကို စစ်ဆေးပါ။ {#check-if-there-are-other-rust-versions}
 
@@ -123,13 +123,13 @@ $ rustup toolchain list
 $ rustup remove <toolchain>
 ```
 
-အဲဒီနောက်မှာ သေချာအောင်လုပ်ပါ။
+toolchains တွေကို ဖယ်ရှားပြီးနောက်မှာ ဒီအမိန့်က command-not-found error ကို ဖော်ပြသင့်ပါတယ်-
 
 ```bash
 $ cargo --help
 ```
 
-command-not-found error ဖြစ်စေတယ်၊ ဆိုလိုတာက active Rust toolchain ကို မတပ်ထားတာပါ။ ပြီးရင် run:
+အဲဒီအမှားက active Rust toolchain တစ်ခုမှ မတပ်ထားသေးတာကို အတည်ပြုပေးပါတယ်။
 
 ```bash
 $ rustup toolchain install stable

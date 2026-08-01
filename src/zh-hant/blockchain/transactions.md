@@ -8,34 +8,19 @@ translation_engine: nllb-200-ct2
 
 # 交易 {#transactions}
 
-其他國家 **交易** 這是一個簽名的要求,
-可執行的有效負荷可能是
-[指示](./instructions.md), 請負電話, IVM 字體代碼,或
-證明了 IVM 執行死刑. [智能合同](./smart-contracts.md) 在目前的情況下
-合同執行模式.
+交易是一個簽署的請求來執行在區塊鏈上的工作.可執行的有效載荷可以是有序的序列 [指令](./instructions.md), 一個合同調用, IVM 字節代碼,或一個被證明的 IVM 執行死刑. [智能合同](./smart-contracts.md) 對於當前的合同執行模式.
 
-交易進行變化狀態或可執行的工作.
-使用簽名查詢或公開閱讀端點,並不創建交易.
+交易執行狀態變化或可執行的工作.僅閱讀檢查使用簽署的查詢或公開閱讀終端點,並不會創建交易.
 
-預約區塊中被允許的交易,
-在封鎖之前拒絕的申請
-接入,例如無效的封筒或被排隊拒絕的交易;
-沒有被儲存在一個街區.
+已提交的區塊中被錄取的交易與其執行結果,包括執行拒絕存儲.在區塊錄取之前被拒絕的請求,如無效包裹或排隊拒絕的交易,不會存儲在區塊中.
 
-對於保護隱私權的資產移動,請見
-[匿名交易](./anonymous-transactions.md). 沒有名稱
-交易使用保護的資產票,承諾,廢除符號,
-沒有知識證明,而不是公眾帳戶對帳戶平衡變化.
+關於保護隱私的資產流動,請參見 [匿名交易](./anonymous-transactions.md).匿名交易使用屏蔽的資產紙幣,承諾,取消符號和零知識證明,而不是公開賬戶到賬戶餘額變化.
 
-檢查已選定的透明執行效果的證據,
-[FastPQ](./fastpq.md). FastPQ 在正常情況下,
-執行交易,並建立支持的確定性證據批量
-國家的轉型.
+對於選擇透明執行效果的證據,請參見 [FastPQ](./fastpq.md). FastPQ 在正常交易執行後消耗了執行見證人,併爲支持狀態過渡構建了確定性證明批量.
 
-## 試著使用 Taira {#try-it-on-taira}
+## 在 Taira 試看. {#try-it-on-taira}
 
-使用探險者路線檢查最近的公眾 Taira 區塊和交易
-沒有簽名帳戶的狀況:
+使用探索者路線檢查最近的公開 Taira 區塊和交易狀態,而不需要簽署賬戶:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/explorer/blocks?page=1&per_page=3' \
@@ -45,8 +30,7 @@ curl -fsS 'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=5' \
   | jq '{pagination, txs: [.items[] | {hash, block, status, executable}]}'
 ```
 
-若要追蹤您的應用程式之前提交的交易, `hash` 來自:
-列出並檢查探險人員的詳細路線:
+爲了跟蹤您的應用程序之前提交的交易, 從列表中複製`hash`並檢查探索者的詳細路線:
 
 ```bash
 TX_HASH='<transaction-hash>'
@@ -55,13 +39,9 @@ curl -fsS "https://taira.sora.org/v1/explorer/transactions/$TX_HASH" \
   | jq '{hash, block, status, authority, executable}'
 ```
 
-還是只能閱讀. Norito
-封筒,正确的鎖 ID, 收費金屬數據, Taira 預算時間
+提交交易需要簽署的 Norito 包裹,正確的鏈接 ID,費用元數據和一個頭資助的 Taira 賬戶.
 
-請問有哪些例子可以使用 Taira, 拯救水龙头助手
-[獲得測試網 XOR 在 Taira](/zh-hant/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)
-這樣的 `taira_faucet_claim.py`, 然後透過公共水, 提供資金給簽約者.
-首先:
+對於支付費用的例子 Taira, 拯救水龍頭助手 [獲取測試網 XOR 在 Taira](/zh-hant/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) 作爲 `taira_faucet_claim.py`, 然後通過公共水龍頭來資助簽署者:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
@@ -75,10 +55,9 @@ iroha --config ./taira.client.toml ledger asset get \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-如果水龙头拼圖或索取路徑返回 `502`, 等待再試一次
-檢查交易本身的情況.
+如果水龍頭拼圖或索賠路徑返回 `502`,在調試交易之前,等待並再次嘗試.
 
-接著將 Taira 在提交交易時,收費資產元數據:
+然後,在提交交易時附加 Taira 費用資產的元數據:
 
 ```bash
 printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
@@ -88,30 +67,24 @@ iroha --config ./taira.client.toml \
   ledger transaction ping --msg "faucet-funded taira transaction"
 ```
 
-## 在線交易 {#offline-transactions}
+## 離線交易 {#offline-transactions}
 
 Iroha 有兩種離線交易工作流程:
 
-- **在線簽名** 在簽名期間, 建立正常簽署的交易
-  交易不會處理,
-  客戶將簽名封面提交給 Torii, 所以它仍然需要
-  正確的連鎖 ID, 這項交易的使用時間,
-- **卡格莫沙無線現金** 在網路上使用時,
-  收件人啟動的錢包到錢包交付,而兩個錢包都是
-  在無線,並在收件人返回時換取所產生的留言狀態
-  在網路上.
+- 在線簽字創建一個正常的簽名交易,而簽名設備被斷開.在網上客戶端向 Torii 提交簽名包裹之前,該交易不會進行處理,因此它仍然需要正確的鏈接 ID,權威,許可證,費用和交易壽命.
+- 在網上時,Kagemusha在線現金充滿錢包,支持接收者啓動的錢包到錢包交付,同時兩者都當收件人返回網上時,收取結果的筆記狀態.
 
-Torii 顯示Kagemusha的全生命周期 `/v1/offline/*`:
+Torii 將整個Kagemusha生命週期暴露在`/v1/offline/*`下:
 
-| 方法和終點 | 目的 |
+|方法和終點|目的|
 | --- | --- |
-| `GET /v1/offline/readiness` | 評估 Kagemusha 的準備 `asset_definition_id` |
-| `POST /v1/offline/receiver-lineage` | 解決已簽署的收件人申請的證據顯示的積極登記系統 |
-| `POST /v1/offline/top-up` | 提交簽署的線上到離線補充操作 |
-| `POST /v1/offline/redeem` | 提交已簽署的無線收購操作 |
-| `GET /v1/offline/operations/{operation_id}` | 閱讀補充或償還的法典狀態 |
+|`GET /v1/offline/readiness`|評估 Kagemusha 的準備性 `asset_definition_id` |
+|`POST /v1/offline/receiver-lineage`|解決簽署的收件人請求的有效登記譜系|
+|`POST /v1/offline/top-up`|提交已簽署的在線到離線補充操作|
+|`POST /v1/offline/redeem`|提交一個簽署的離線贖回操作|
+|`GET /v1/offline/operations/{operation_id}`|閱讀補充或贖回的法規狀態|
 
-在開啟無線運營之前,檢查該資產的準備狀況:
+在構建離線運營之前,檢查資產的準備性:
 
 ```bash
 curl -fsS --get https://taira.sora.org/v1/offline/readiness \
@@ -119,33 +92,18 @@ curl -fsS --get https://taira.sora.org/v1/offline/readiness \
   | jq '{ready, blockers, artifact_set}'
 ```
 
-準備將錢包連接到活跃的橋 ABI 21 且已得到認證 V4
-系統,補充和償還要求使用輸入
-`application/x-norito` 檔案. 補充和償還 `202 Accepted`
-有一個 `Location` 標題指向操作資源;嵌入式
-沒有零的操作 ID 提供無權關鍵.
+準備將錢包連接到活躍的橋樑. ABI 21 證實 V4 後代,補充和贖回請求使用輸入 `application/x-norito` 存檔,補充和贖回 `202 Accepted` 有一個 `Location` 標題指向操作資源;嵌入式非零操作 ID 提供了無權的鑰匙.
 
-流量通常是:
+典型的流量是:
 
-1. 請查詢準備狀態, `ready` 是假的或任何阻擋措施都適用.
-2. 使用打字 Swift 或是 JVM 為了建立法典補充檔案的錢包,
-   提交,並保留輸入記錄狀態和運作 ID 在此之前,
-   運行達到最後的連鎖狀態.
-3. 在需要時解決接收器登記系統,
-   檢查每個同行交付本地,並保留加密的註冊狀態
-   在承認轉移之前.
-4. 當接收者上線時,
-   提供,並調查其運營資源.
+1. 如果 `ready` 是假的或任何阻塞器適用,請查詢準備性和停止.
+2. 使用打字的 Swift 或 JVM 錢包構建常規補充檔案,提交它,並保留輸入筆記狀態和操作 ID,直到操作達到最終鏈狀態.
+3. 在需要時解決接收者註冊後代,本地構建和驗證每個同行傳遞,並在確認轉移之前保持加密的筆記狀態.
+4. 當接收者在網上時,建立了法典贖回檔案,提交,並對其運營資源進行調查.
 
-在註冊狀態之前, 帳戶無法觀察矛盾的離線交付
-在網路生命周期中返回.
-因此實行價值限制,過期期期,被接受的發行者,持久本地
-存儲和調停窗口.
+在網上生命週期中,筆記本無法觀察到相互矛盾的離線轉移.因此,錢包和運營商政策應強制執行價值限制,過期期限,接受發行人,可持續的本地存儲和和解窗口.
 
-這裡是建立新交易的例子, `Grant`
-在此交易中, 鼠標授予阿里斯所指定的權利.
-角色 (`role_id`檢查
-[完整的例子](./permissions.md#register-a-new-role).
+以下是使用 `Grant` 指令創建新交易的一個例子. 在此交易中,鼠標正在賦予愛麗絲指定的角色 (`role_id`).查看 [完整例](./permissions.md#register-a-new-role).
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);

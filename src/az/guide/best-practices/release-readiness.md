@@ -1,14 +1,14 @@
 ---
 translation_locale: az
 translation_source: /guide/best-practices/release-readiness.md
-translation_source_hash: 1f316d6a823b23e821d80fe8773df7469358b0e01057f9b76b113cafe4818f20
+translation_source_hash: 984957526424a4e0ec9f29a6da1bb64699245bb135e8157bbe684bc3d87de4cc
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # İstifadə üçün hazırlıq {#release-readiness}
 
-Iroha tətbiqini və ya şəbəkə dəyişikliyini təşviq etməzdən əvvəl, müvafiq riskləri ortaya qoya biləcək ən kiçik bir mühitdə davranışı sübut edin və sonra ümumi test şəbəkəsi və istehsal qapıları vasitəsilə məqsədəuyğun şəkildə hərəkət edin.
+Bir Iroha tətbiqini və ya şəbəkə dəyişikliyini təşviq etməzdən əvvəl, müvafiq riski ortaya qoya biləcək ən kiçik bir mühitdə davranışı sübut edin və sonra ümumi test şəbəkəsi və istehsal qapıları vasitəsilə məqsədəuyğun şəkildə hərəkət edin.
 
 ## Yerli ağ qapısı {#localnet-gate}
 
@@ -31,7 +31,7 @@ Bax [SORA 3: Taira və Minamoto ](/az/get-started/sora-nexus-dataspaces.md) üz�
 ## Əsas şəbəkə və ya istehsal qapısı {#mainnet-or-production-gate}
 
 - Ayrı-ayrı istehsal imzaları, maliyyələşdirmələr, domenlər və konfiqurasiya yollarından istifadə edin. Test şəbəkə açarları və ya faucet fərziyyələrini təbliğ etməyin.
-- SDK, CLI, həmyaşıd və şəbəkə uyğunluğunun [ uyğunluq matrisinə ](/az/reference/compatibility-matrix.md) təsdiq edilməsi.
+- [ Uyğunluq Matrisi ](/az/reference/compatibility-matrix.md) ilə tələb olunan çapraz SDK ssenarilərini təsdiqləyin. Yükləmədə istifadə edilən dəqiq CLI, həmyaşıllı ikitərəfli, konfigürasiya və şəbəkə buraxılışını ayrı-ayrı təqib edin və yoxlayın.
 - Tədqiqat icazələri, ödəniş sponsorluğu, qiymət məhdudiyyətləri, monitorinq, yedekləmə statusu və buraxılış pəncərəsinə qədər geri qaytarılma meyarları.
 - Yüksək təsiri olan yazılar üçün yazılı bir əməliyyat və ya miqrasiya planı tələb olunur.
 

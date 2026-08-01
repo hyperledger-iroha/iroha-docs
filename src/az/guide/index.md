@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /guide/index.md
-translation_source_hash: 588a55d0a967f890fac26bf47c34c360a4542b0d45b1edc1e37cd4833c60f349
+translation_source_hash: 5ea24369e85692bd9069e446d1e50612efade2d83e4ddf73a4980582a2064a0e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,7 +15,7 @@ Iroha ilə qurarkən, işləyərkən və ya inteqrasiya edərkən bu bölmədən
 |Bölmə |Bunu istifadə edin.|
 | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
 | [SDK Təlimatlar](/az/guide/tutorials/) |Dillər üzrə xüsusi müştəri quruluşu və nümunə tətbiqləri |
-| [Ən yaxşı təcrübələr](/az/guide/best-practices/) |İnkişaf, məlumat modelləşdirmə, tətbiq, əməliyyatlar, təhlükəsizlik və buraxılış hazırlığı üzrə qruplaşdırılmış istehsal istiqamətində təlimat |
+| [Ən yaxşı təcrübələr](/az/guide/best-practices/) |İnkişaf, tətbiq, əməliyyatlar, təhlükəsizlik və buraxılış üçün istehsal istiqamətləri |
 | [Konfiqurasiya və idarəetmə](/az/guide/configure/overview.md) |Yerli həmyaşıd konfigurasiyası, mənşəyi, müştəri konfigurasiyası, açarları və həmyaşıda idarəetməsi |
 | [Təhlükəsizlik](/az/guide/security/) |Əlavələri idarə etmək, əməliyyat təhlükəsizliyi, VPNs, saxtakarlıq monitorinqi və icazələrin gigiyenası |
 | [Mövcud əməliyyatlar](/az/guide/advanced/metrics.md) |Metriklər, performans yoxlamaları, haos testləri, isti yükləmə və çılpaq metal işlənməsi |

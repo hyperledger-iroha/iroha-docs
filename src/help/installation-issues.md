@@ -98,8 +98,8 @@ is not set as the default. Run:
 $ rustup default stable
 ```
 
-This can happen if you installed a `nightly` version, or set a specific
-Rust version, but forgot to un-set it.
+Installing a `nightly` version or setting a specific Rust version without
+later unsetting it can cause this problem.
 
 ### Check if there are other Rust versions
 
@@ -142,14 +142,14 @@ And then, for every `<toolchain>` (without the angle brackets of course):
 $ rustup remove <toolchain>
 ```
 
-After that, make sure that
+After removing the toolchains, this command should report a command-not-found
+error:
 
 ```bash
 $ cargo --help
 ```
 
-results in a command-not-found error, i.e. that you have no active Rust
-toolchain installed. Then, run:
+That error confirms that no active Rust toolchain remains installed. Then run:
 
 ```bash
 $ rustup toolchain install stable

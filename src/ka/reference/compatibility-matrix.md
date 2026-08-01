@@ -20,6 +20,6 @@ translation_engine: nllb-200-ct2
 
 <CompatibilityMatrixTable />
 
-::: ინფორმაცია
+::: info
 დააყენეთ `VITE_COMPAT_MATRIX_URL` მხოლოდ იმისთვის, რომ შეფუთული სნაპჩოტი კომპეტენციური ცოცხალი ბეიკ-ენდით დააბრუნოს. ამ ცვლადი გარეშე გვერდი იტვირთება `src/public/compat-matrix.json` .
 :::

@@ -1,9 +1,9 @@
 ---
 translation_locale: uz
 translation_source: /index.md
-translation_source_hash: 491d30ca47ce82af5220641c9b508a015af61bccc6f3b6b0c86acd100b0a3e81
+translation_source_hash: 505e8224a59534717045c34b1bf796760d06f9d6808a2a1fd9773aa2f6a00c2d
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 
 layout: home
 
@@ -50,9 +50,14 @@ footer: true
 ---
 
 <section class="nexus-build" aria-labelledby="nexus-build-title">
-<a class="nexus-build__panel" href="/uz/get-started/sora-nexus-dataspaces">
-<span class="nexus-buildcopy"> SORA Nexus <span id="nexus-build-title" class="nexus-buildtitle"> Iroha 3 / SORA Nexus</span> <span class="nexus-builddetails"> SORA 3 ga Taira testnet, Minamoto mainnet va nusxa-qovutish namunalari yordamida quring. Endi sinab ko'rishingiz mumkin.</span> </span> <span class="nexus-build__action"> Ochiq qo'llanma <span aria-hidden="true">-&gt; </span> </span>
-</a>
+  <a class="nexus-build__panel" href="./get-started/sora-nexus-dataspaces.html">
+    <span class="nexus-build__copy">
+      <span class="nexus-build__eyebrow">SORA Nexus</span>
+      <span id="nexus-build-title" class="nexus-build__title">Iroha 3 / SORA Nexus ustida yarating</span>
+      <span class="nexus-build__details">Taira testneti, Minamoto mainneti va hozir sinab ko'rishingiz mumkin bo'lgan nusxalab ishlatiladigan misollar bilan SORA 3 ustida yarating.</span>
+    </span>
+    <span class="nexus-build__action">Qo'llanmani ochish <span aria-hidden="true">-&gt;</span></span>
+  </a>
 </section>
 
 <hr style="margin-top: 3rem;">

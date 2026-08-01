@@ -1,14 +1,14 @@
 ---
 translation_locale: he
 translation_source: /blockchain/nfts.md
-translation_source_hash: 335eacd30c5964659baeeae8ac937805f1d4d786dd42a36e5164bbe75ef7e360
+translation_source_hash: 6dd2d21a29f352a14cb17046c66cfa541ef501b733b95bb6874d2d3f86ec0504
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # NFTs {#nfts}
 
-א Iroha NFT הוא אובייקט ספרים ייחודי עם בעל אחד. NFTs כאשר רשום זקוק לזהות משלו, מטא-מנתונים, אירועים במחזור החיים וסימנטיקה של העברת הבעלות. אבל לא צריך איזון מספרי.
+א Iroha NFT הוא אובייקט ספרים ייחודי עם בעל אחד. NFTs כאשר תיק זקוק לזהות משלו, נתונים מטאטא, אירועים במחזור החיים, וסימנטיקה של העברת הבעלות, אבל לא צריך איזון מספרי.
 
 שלא כמו מספר. [נכס](/he/blockchain/assets.md), ע"י NFT אין לו מדויק, יכולת להכנת או כמויות לכל חשבון. NFT קיימת כאובייקט רשום אחד, והיכולת להיות בעלת היא מעקב ישירות על האובייקט.
 
@@ -123,7 +123,7 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
-לנקות כשתסיים. אם העברת את NFT, תפעיל פקודה זו עם הגדרת החשבון של הבעלים הנוכחי או תחזרי את NFT קודם כל.
+להסיר את הדוגמה NFT לאחר המעבר. אם העברת אותה, או להעביר אותה חזרה או לשלוח את הפקודה לא להירשם עם הגדרת החשבון של הבעלים הנוכחי.
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \

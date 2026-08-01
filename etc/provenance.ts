@@ -7,7 +7,7 @@ export const IROHA_REPOSITORY = 'https://github.com/hyperledger-iroha/iroha.git'
 
 interface ArtifactBase {
   id: string
-  status: 'current' | 'pending-public-source-commit'
+  status: 'current' | 'pending-signed-source-commit'
   target: string
   sha256: string
 }
@@ -31,7 +31,7 @@ export interface IrohaProvenance {
   source: {
     repository: string
     commit: string
-    refresh_state?: 'awaiting-public-source-commit'
+    refresh_state?: 'awaiting-signed-source-commit'
   }
   artifacts: ProvenanceArtifact[]
 }

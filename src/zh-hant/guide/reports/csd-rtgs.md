@@ -1,11 +1,11 @@
 ---
 translation_locale: zh-hant
 translation_source: /guide/reports/csd-rtgs.md
-translation_source_hash: ed5b283ab7b382ff9a062ec943a4d873bd6fde6a3359612fcfec02fd0a7ba6fc
+translation_source_hash: 6083edbd1905a033dc4e67052671a405f6774f995e7f2c2ca1b968e19ce41292
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# CSD/RTGS 聯繫概念證明  {#csd-rtgs-linkages-proof-of-concept}
+# CSD/RTGS 鏈接 概念證明 {#csd-rtgs-linkages-proof-of-concept}
 
-這份文件將描述 CSD/RTGS 聯繫 PoC 通過執行 Iroha. 這項計畫是亞洲發展銀行與富士圖合作的. R3 這樣的情況, Hyperledger 子 (子), Hyperledger 布料和其他許多受歡迎的區塊解決方案. 
+在本文中,我們將描述 CSD/RTGS 通過 Iroha 執行 PoC 鏈接.其他參與者使用 R3 Corda, Hyperledger Cactus (Cacti), Hyperledger Fabric等許多受歡迎的區塊鏈解決方案.

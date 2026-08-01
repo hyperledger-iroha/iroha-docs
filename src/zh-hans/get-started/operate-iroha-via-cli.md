@@ -6,10 +6,9 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# 运行 Iroha 3 通过 CLI {#operate-iroha-3-via-cli}
+# 通过 CLI 运行 Iroha 3 {#operate-iroha-3-via-cli}
 
-其他 `iroha` 二进制是命令行客户端 Iroha 3. 使用它查询
-报告账本,提交交易和检查运营商终点.
+`iroha`二进制是 Iroha 3 的命令行客户端. 使用它查询账本状态,提交交易和检查操作员终点.
 
 ## 1.先决条件 {#_1-prerequisites}
 
@@ -17,52 +16,47 @@ translation_engine: nllb-200-ct2
 
 - [发射 Iroha 3](./launch-iroha.md)
 
-下面的例子假设来自本地网络的客户端配置
-创建于 [发射 Iroha 3](./launch-iroha.md):
+在 [启动 Iroha 3](./launch-iroha.md)中创建的本地网络中生成的客户端配置:
 
 ```bash
 ./localnet/client.toml
 ```
 
-## 2.基本 CLI 设置 {#_2-basic-cli-setup}
+## 2. 基本的 CLI 设置 {#_2-basic-cli-setup}
 
-让我们看到最好的帮助:
+展示最高水平的帮助:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml --help
 ```
 
-其他 CLI 组织成以下最高级别的指挥组:
+CLI 分为以下最高级别指挥组:
 
-- `account` 针对会计指导的快捷方式
-- `tx` 对于交易层次的助理
-- `ledger` 在账本上读写
+- `account` 针对账户指导的快捷方式
+- `tx` 对于交易级助理
+- `ledger`用于账本阅读和写作
 - `ops` 用于操作员诊断
-- `app` 应用程序 API 助手
-- `contract` 合同部署和调用
-- `tools` 用于诊断和开发人员公用事项
-- `taira` 对于 Taira 并且 Nexus- 工作流程
+- `app`用于应用程序的 API 助手
+- `contract` 关于合同部署和调用
+- `tools`用于诊断和开发者公用事业
+- `taira` 对于 Taira 和 Nexus- 工作流程
 
-其他 `ledger` 集团还包含特定领域的交易助手,如
-`ledger transaction`.
+`ledger`集团还包含特定领域的交易助理,如`ledger transaction`.
 
-使用 `--output-format text` 用于人类可读的操作员输出, `--machine`
-严格自动化模式.
+使用 `--output-format text`用于人可读操作员输出和 `--machine`用于严格的自动化模式.
 
-## 3. 试着向公众讲 Taira 测试网 {#_3-try-the-public-taira-testnet}
+## 3. 尝试公共测试网 Taira {#_3-try-the-public-taira-testnet}
 
-你可以试看. Taira 在运行本地同行或创建一个
-这些命令使用公开 Torii JSON 航线和不花费测试网
-XOR.
+在运行本地同行或创建签名器之前,您可以尝试仅阅读的 Taira 检查.这些命令使用公共的 Torii JSON 路线,并且不使用测试网 XOR.
 
-检查 Taira 卫生:
+检查 Taira 的健康情况:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 ```
 
-列出公共域名 `universal` 数据空间:
+列出 `universal` 数据空间中的公共域名:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=10' \
@@ -76,20 +70,15 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=10' \
   | jq -r '.items[] | [.id, .name, .mintable, .total_quantity] | @tsv'
 ```
 
-如果你有电流 `iroha` 运行 Taira 诊断助理:
+如果您有当前的 `iroha`二进制,请运行 Taira 诊断辅助器:
 
 ```bash
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-创建 `taira.client.toml` 只有当你准备测试签署的命令时.
-看看 [连接到 SORA Nexus 数据库](/zh-hans/get-started/sora-nexus-dataspaces.md)
-对于机组,水龙头和鱼流.不要写命令
-Taira 在该账户由水龙头费资产融资之前.
+仅在准备测试签署命令时创建 `taira.client.toml`.查看[连接到 SORA Nexus 数据库](/zh-hans/get-started/sora-nexus-dataspaces.md)为配置,龙头和加拿大流量.直到账户通过龙头费资产融资之前,不要对 Taira 进行写字命令.
 
-任何收费 Taira CLI 例如,拯救水龙头助手
-[获取测试网 XOR 在 Taira](/zh-hans/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)
-作为 `taira_faucet_claim.py`, 然后索赔测试网 XOR 首先:
+对于任何付费 Taira CLI 例如,拯救水龙头辅助器 [获取测试网 XOR 在 Taira](/zh-hans/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) 作为 `taira_faucet_claim.py`, 然后索赔测试网 XOR 首先:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
@@ -103,8 +92,7 @@ iroha --config ./taira.client.toml ledger asset get \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-如果水龙头拼图或索赔路径返回 `502`, 等待再试一次.
-公共测试网可用性问题,而不是一个重建账户密钥的信号.
+如果水龙头拼图或索赔路线返回 `502`,请等待,再试一次.这是一个公共测试网可用性问题,而不是一个重建账户密钥的信号
 
 在余额可见后,附加费用资产的元数据以写:
 
@@ -116,7 +104,7 @@ iroha --config ./taira.client.toml \
   ledger transaction ping --msg "hello from faucet-funded taira"
 ```
 
-## 4. 基本账本命令 {#_4-basic-ledger-commands}
+## 4. 基本账本指令 {#_4-basic-ledger-commands}
 
 列出所有域名:
 
@@ -124,10 +112,7 @@ iroha --config ./taira.client.toml \
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 ```
 
-通常域名创建使用声明别名规划器; `ledger
-domain` 命令没有 `register` 准备一个无秘密的机器人.
-`AliasSetupPlanRequestV1` 目的 `docs.universal` 在你的 SDK 或
-登机服务,然后规划并应用:
+常规域名创建使用声明别名计划器; `ledger domain` 命令没有 `register` 准备一个无秘密的机器. `AliasSetupPlanRequestV1` 目的 `docs.universal` 和你的 SDK 或安装服务,然后规划并应用:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml \
@@ -139,10 +124,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml \
   app alias setup apply --plan-file ./docs-domain.plan.json
 ```
 
-意图入数据空间 ID, 常规所有者账户,租期限和
-规划器检查现场状态,并返回精确的
-原子能 `EnsureAlias` 不要从另一个人手头复制保护值.
-网络.
+意图键是数据空间 ID,常规所有者帐户,租期限和当前报价保护.计划器验证现实状态并返回提交的精确原子`EnsureAlias`计划.不要手动复制其他网络的保护值.
 
 发送一个简单的ping交易:
 
@@ -159,38 +141,38 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 
 ## 5. 操作员指挥 {#_5-operator-commands}
 
-共识状况:
+意见共识状态:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi status
 ```
 
-每个阶段延迟快照:
+一阶段延迟快照:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi phases
 ```
 
-收藏器, RBC 后载量,以及 VRF 快照:
+可用性,收藏器, RBC 后期记录和 VRF 快照:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi telemetry
 ```
 
-连锁共识参数:
+链上共识参数:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ops sumeragi params
 ```
 
-## 6. 接下来要去哪里? {#_6-where-to-go-next}
+## 6. 接下来要去哪里 {#_6-where-to-go-next}
 
 - [SDK 教程](/zh-hans/guide/tutorials/)
-- [Torii 终点](/zh-hans/reference/torii-endpoints.md)
-- [合作 Iroha 二进制](/zh-hans/reference/binaries.md)
+- [Torii 终端点](/zh-hans/reference/torii-endpoints.md)
+- [与 Iroha 二进制](/zh-hans/reference/binaries.md) 合作
 - [CLI README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_cli/README.md)
 
-要从源检查中重新创建一个完整的Markdown帮助快照,运行:
+为了从源检查中恢复一个完整的Markdown帮助快照,运行:
 
 ```bash
 cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/CommandLineHelp.md

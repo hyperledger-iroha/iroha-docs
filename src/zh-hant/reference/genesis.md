@@ -8,24 +8,22 @@ translation_engine: nllb-200-ct2
 
 # 創世記的引用 {#genesis-reference}
 
-在目前的情況下 Iroha 3 工作流程, `genesis.json` 顯示表述了第一
-網路啟動時應用的交易和參數.
+在當前的 Iroha 3 工作流中,一個 `genesis.json`說明描述了網絡啓動時將應用的第一筆交易和參數.
 
-已簽署的文物, 分享給同行是 Norito- 已加密 `.nrt` 文件
-由 `kagami genesis sign`.
+分發給同行的簽名文物是 Norito 編碼的`.nrt`文件,由 `kagami genesis sign`製作.
 
 ## 主要領域 {#main-fields}
 
-基因表可以定義:
+一個基因表可以定義:
 
-- `chain` 對於連鎖識別子
-- `executor` 選擇性執行器升級字段碼路徑
-- `ivm_dir` 關於 IVM 啟動和升級使用的圖書館
+- `chain`用於鏈標識符
+- `executor` 對於可選執行器升級字節碼路徑
+- `ivm_dir`用於觸發器和升級所使用的 IVM 庫
 - `consensus_mode` 在公告中宣傳的初始模式
-- `transactions` 順序的參數更新,指令,啟動器和拓
-- `crypto` 關於最初的加密快照
+- `transactions` 對有序的參數更新,說明,觸發器和拓
+- `crypto` 對於最初的加密快照
 
-在內部 `transactions`, 標籤是對同類ID, PoPs 共同使用:
+在 `transactions` 裏,拓類目錄將同等標識和 PoPs 結合在一起:
 
 ```json
 {
@@ -34,9 +32,9 @@ translation_engine: nllb-200-ct2
 }
 ```
 
-## 發明一個宣言 {#generate-a-manifest}
+## 創造一個表現 {#generate-a-manifest}
 
-使用 Kagami 建立一個模板:
+使用 Kagami 來生成一個模板:
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
@@ -45,13 +43,11 @@ cargo run -p iroha_kagami -- genesis generate \
   --genesis-public-key <PUBLIC_KEY> > genesis.json
 ```
 
-公開使用 SORA Nexus 數據空間, `npos` 是預期的共識模式.
-其他 Iroha 3 部署可能使用授權或NPoS,
-這樣的情況
+對於公共 SORA Nexus 數據空間,`npos`是預期共識模式.其他 Iroha 3 部署可能根據目標配置文件使用授權或NPoS.
 
 ## 簽署公告 {#sign-the-manifest}
 
-在編輯和驗證後, JSON, 請將它寫成可部署的文件 `.nrt` 區塊:
+在編輯和驗證 JSON 後,將其簽署到可部署的 `.nrt` 區塊中:
 
 ```bash
 cargo run -p iroha_kagami -- genesis sign genesis.json \
@@ -59,13 +55,11 @@ cargo run -p iroha_kagami -- genesis sign genesis.json \
   --out-file genesis.signed.nrt
 ```
 
-`kagami genesis sign` 閱讀出創世記公钥,
-提供的私密鍵,種子和算法以生成可部署的簽名
-該檔案是同行在設定中引用的檔案.
+`kagami genesis sign`從表格中讀取創始公鑰,並使用提供的私鑰,種子和算法來生成可部署的簽名區塊.結果是同行應該從他們的配置引用的文件.
 
-## 設定方式 `irohad` {#configure-irohad}
+## 配置 `irohad` {#configure-irohad}
 
-請指向已簽署的基因區塊:
+指向了簽署的基因塊:
 
 ```toml
 [genesis]
@@ -73,7 +67,7 @@ file = "genesis.signed.nrt"
 public_key = "<PUBLIC_KEY>"
 ```
 
-## 有關工具 {#related-tools}
+## 相關工具 {#related-tools}
 
 - `kagami genesis validate`
 - `kagami genesis normalize`
@@ -81,5 +75,4 @@ public_key = "<PUBLIC_KEY>"
 - `kagami localnet`
 - `cargo xtask kagami-profiles`
 
-請查看電源發電器的執行及命令詳情.
-[Kagami README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_kagami/README.md).
+對於發電機的實現和命令詳情,請參閱 [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_kagami/README.md).

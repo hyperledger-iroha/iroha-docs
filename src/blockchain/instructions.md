@@ -188,8 +188,7 @@ part of the original trusted peer set to the network.
 
 :::
 
-Refer to one of the language-specific guides to walk you through the
-process of registering objects in a blockchain:
+Use a language-specific guide to register blockchain objects:
 
 | Language              | Guide                                                                                                   |
 | --------------------- | ------------------------------------------------------------------------------------------------------- |
@@ -302,8 +301,7 @@ Assets are minted to a specific account, usually the one that registered
 the asset in the first place. Asset quantities are non-negative, so you can
 never have `$-1.0` of an asset or burn a negative amount and get a mint.
 
-Refer to one of the language-specific guides to walk you through the
-process of minting assets in a blockchain:
+Use a language-specific guide to mint blockchain assets:
 
 - [CLI](/get-started/operate-iroha-via-cli.md)
 - [Rust](/guide/tutorials/rust.md)

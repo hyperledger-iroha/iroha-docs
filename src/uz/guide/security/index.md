@@ -1,14 +1,14 @@
 ---
 translation_locale: uz
 translation_source: /guide/security/index.md
-translation_source_hash: 0aaeadd98f9d16f8459553b58b2b73c47b792bbb5bff0cbe848f9cf4ababe9be
+translation_source_hash: ec7fc2f950b007f52d837473ad7021565923e537df1d18b86055fb483cda375c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Xavfsizlik {#security}
 
-Iroha yoki boshqa bir blokchain katta kitobdan foydalanishda xavfsizlik moliyaviy tashkilotlar uchun eng muhim ahamiyatga ega, chunki bu o'ta hissiy moliyaviy ma'lumotlar va operatsiyalar odatiy holdagi sanoatda ishonchning asosini tashkil etadi. Yomon taraf tomonidan muvaffaqiyatli xavfsizlik buzilishi siz uchun dahshatli oqibatlarga olib kelishi mumkin. Shuning uchun sizning hissiy ma'lumotlaringizning yaxlitligi va maxfiyligini himoya qilish uchun oldini olish choralarini ko'rish juda muhimdir.
+Xavfsiz ma'lumotlar va qiymatlarni boshqaradigan har qanday tizim kabi Iroha ishga tushirishni xavfsizlashtiring. Imzolash kalitlarini, tarmoqga kirish huquqini, nod operatsiyalarini, monitoring va hodisalarga javob berishni himoya qiling.
 
 ### Navigatsiya {#navigation}
 
@@ -16,7 +16,7 @@ Ushbu bo'limda siz Iroha tarmog'ingizni himoya qilishning turli jihatlari haqida
 
 - [Xavfsizlik tamoyillari](./security-principles):
 
-Ma'lumotlarni himoya qilish va buzilganlik va/yoki bo'shashish ehtimolini kamaytirish uchun shaxslar va tashkilotlar qabul qilishi mumkin bo'lgan asosiy xavfsizlik prinsiplari.
+Ma'lumotlarni himoya qilish va buzilish xavfini kamaytirish uchun asosiy prinsiplar.
 
 - [Virtual xususiy tarmoqlar](./vpn.md):
 
@@ -24,7 +24,7 @@ VPN-ni xususiy yoki konsorsium ishga tushirishlarida tengdoshlardan tengdoshlarg
 
 - [Operatsiyaviy xavfsizlik](./operational-security.md):
 
-Tarmoqingizning kundalik ishini xavfsizlashtirish uchun eng yaxshi amaliyotlar, shu jumladan kirish nazoratlari, monitoring, hodisalarga javob berish, brauzerlardan foydalanish va boshqalar.
+Kirish, kuzatish, hodisalarga javob berish va operator ishchi stansiyalari uchun kundalik nazoratlar.
 
 - [Xatolarni nazorat qilish](./fraud-monitoring.md):
 
@@ -32,16 +32,16 @@ Shubhasiz faoliyatni aniqlash va javob dalillarini saqlab qolish uchun daftar vo
 
 - [Maxfiy so'z xavfsizligi](./password-security.md):
 
-Maxfiy so'z entropiyasiga chuqur o'tish, kuchli maxfiy so'zlar yaratish va maxfiy soʻz zaifliklaridan qochish.
+Maxfiy so'z entropiyasi, kuchli maxfiy so'zlar qurilishi va keng tarqalgan muvaffaqiyatsizlik usullari.
 
 - [Umumiy kalit kriptografiyasi](./public-key-cryptography.md):
 
-Ommaviy kalit kriptografiyasi, shifrlash, imzolar va blokchayn ichida xavfsiz aloqa o'rnatishda ularning roli haqida ma'lumot berish.
+Umumiy kalitli shifrlash, imzolar va tasdiqlangan aloqa.
 
   - [Kriptografik kalitlarni yaratish](./generating-cryptographic-keys.md):
 
-    Kriptografik kalitlarni qanday yaratish va ulardan foydalanish to'g'risidagi ko'rsatmalar `kagami` (tushuntirish vositasi Iroha).
+`kagami` bilan qo'llab-quvvatlanadigan kriptografik kalitlarni yaratish.
 
   - [Kriptografik kalitlarni saqlash](./storing-cryptographic-keys.md):
 
-Kriptografik kalitlaringizni bir qator turli yondashuvlar bilan himoya qilish uchun eng yaxshi amaliyotlar, ular ham birlashtirilishi mumkin.
+Kriptografik kalitlarni ishga tushirish uchun mos qatlamli nazoratlardan foydalangan holda saqlash.

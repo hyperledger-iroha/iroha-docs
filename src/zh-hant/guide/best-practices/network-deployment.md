@@ -6,77 +6,50 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# 網路部署 {#network-deployment}
+# 網絡部署 {#network-deployment}
 
-治療一個 Iroha 核實者必須同意
-基因,拓,可信的同行以及共識相關的配置
-在網路開始並繼續完成區塊之前.
+將 Iroha 網絡視爲一個協調系統. 在網絡啓動之前,驗證者必須同意基因學,拓學,可信賴的同行和共識相關的配置繼續完成區塊.
 
-## 區域分隔 {#environment-separation}
+## 環境分離 {#environment-separation}
 
-- 為地方開發提供獨立配置組,
-  這項計畫的目標是:
-- 沒有任何可處理環境的新鍵.
-  地方網路或 Taira 在生产中使用的重要材料.
-- 保持同行配置,客戶配置,簽名基因,脚本和部署
-  這項計畫的目標是:
-- 存儲私密鍵在資料庫及部署模板之外.
+- 爲本地開發,共享測試網絡,階段化和生產提供單獨的配置捆綁.
+- 在生產中不要再使用 localnet 或 Taira 關鍵材料.
+- 保持同行配置,客戶端配置,簽署的起源,腳本和部署筆記作爲一個版本的發佈文物.
+- 在存儲庫和部署模板之外保存私鑰.
 
-請看
-[網路部署的關鍵](/zh-hant/guide/configure/keys-for-network-deployment.md).
+見 [網絡部署關鍵](/zh-hant/guide/configure/keys-for-network-deployment.md).
 
-## 創世記與拓論 {#genesis-and-topology}
+## 創世紀和拓學 {#genesis-and-topology}
 
-- 讓每個驗證者都使用相同的簽名創始交易,
-  專屬性證據
-  需要他們.
-- 使用至少四個驗證器,
-  部署.
-- 觀察員不需要使用其他工具,
-  他們仍然使用存儲,區塊同步,
-  並提供網路頻寬.
-- 處理基因,執行器和拓變化作為協調的遷移
-  而不是獨立的編輯.
+- 讓每個驗證者都使用相同的簽署基因交易,可靠的同行集,拓,在個人資料要求時,驗證者擁有權證明.
+- 用至少四個驗證器來實現最小的拜占庭錯誤耐受性部署.
+- 在能力規劃中,與觀察者分別進行驗證. 觀察者不會投票,提出或收集信息,但它們仍然消耗存儲,區塊同步和網絡帶寬.
+- 把基因,執行器和拓變化視爲協調的遷移而不是單同行編輯.
 
-請看 [創世記](/zh-hant/reference/genesis.md),
-[同級管理](/zh-hant/guide/configure/peer-management.md), 及其他
-[性能與指標](/zh-hant/guide/advanced/metrics.md#node-count-and-quorum).
+參見 [Genesis](/zh-hant/reference/genesis.md), [同行管理](/zh-hant/guide/configure/peer-management.md)和 [績效和指標](/zh-hant/guide/advanced/metrics.md#node-count-and-quorum).
 
-## Torii 以及網路接入 {#torii-and-network-access}
+## Torii 和網絡訪問 {#torii-and-network-access}
 
-- 放下 Torii 在外面露出時,
-  主機或私人網路.
-- 結束 TLS 並適用基本認證,限制利率,
-  在部署需要時,
-- 只有環境需要的端點才被公布.
-  遠程測量路線應比公共僅閱讀路線更嚴格.
-- 聯繫聽者地址與主機本地接口,
-  直接接受遠端交通.
+- 當它暴露在主機或私人網絡之外時,將 Torii 置於反向代理或防火牆後面.
+- 在部署需要時,終止 TLS,並在邊緣應用基本身份驗證,速度限制和要求尺寸控制.
+- 只有環境所需的終端點纔可公佈.運營商和遠程測量路線應比公共僅閱讀路線更爲有限.
+- 當同行不應直接接受遠程流量時,將聽者地址綁定到主機本地接口.
 
-請看 [Torii 目的地](/zh-hant/reference/torii-endpoints.md) 及其他
-[虛擬私人網絡](/zh-hant/guide/security/vpn.md).
+查看 [Torii 終點](/zh-hant/reference/torii-endpoints.md)和 [虛擬私人網絡](/zh-hant/guide/security/vpn.md).
 
-## 協調和能力 {#consensus-and-capacity}
+## 統一和能力 {#consensus-and-capacity}
 
-- 在調節共識時間之前, 測量部署.
-  只有在網路,儲存和執行層保持追蹤時才會減少延遲.
-- 觀看排隊方向,而不是短暫的吞吐量樣本.
-  在穩定的負載中增長,意味著網路過重.
-- 記錄有效性 Sumeragi 參數,遠隔計程表格,驗證碼的數量,
-  網路 RTT, 每個基准指數的工作負載形狀和硬體細節.
-- 只有在比较延迟,流量和
-  這樣的訊息,
+- 在調整共識計時器之前,測量部署. 較低的時間限制只能在網絡,存儲和執行層保持跟蹤時減少延遲.
+- 觀察隊列方向,而不僅僅是短暫的吞吐量樣本.隨着穩定的負載而增長的排隊意味着網絡過載.
+- 記錄每一個基準指標的有效 Sumeragi 參數,遠程測量配置文件,驗證器計數,網絡 RTT,工作負載形狀和硬件詳細信息.
+- 僅在比較延遲,流量和反壓信號後增加收藏器的容量.
 
-請看 [性能與指標](/zh-hant/guide/advanced/metrics.md).
+查看 [績效和指標](/zh-hant/guide/advanced/metrics.md).
 
-## 純金屬及工藝管理 {#bare-metal-and-process-management}
+## 純金屬和工藝管理 {#bare-metal-and-process-management}
 
-- 保持每個同行的 `config.toml`, 隱私關鍵,儲存目錄和端口
-  沒有任何相關資訊.
-- 使用過程管理器,例如: systemd 顯示重新啟動,記錄,
-  資源政策.
-- 產生的儲存 README 開始命令從 Kagami 局部網路捆綁
-  在將測試拓學翻譯為管理的主機時.
+- 保持每個同行 `config.toml`,私鑰,存儲目錄和端口的分別.
+- 使用 systemd 等進程管理器,明確重新啓動,記錄和資源政策.
+- 保存生成的 README 和從 Kagami localnet捆綁中啓動命令,當將測試拓進行轉換到管理的主機時.
 
-請看
-[跑步 Iroha 在純金屬上](/zh-hant/guide/advanced/running-iroha-on-bare-metal.md).
+查看 [在 Bare Metal](/zh-hant/guide/advanced/running-iroha-on-bare-metal.md)上運行 Iroha.

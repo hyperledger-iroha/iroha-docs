@@ -1,9 +1,9 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: ed622cdb1d6a47635d0753c98f80aaa903b916133f43bc9fdab268512d0ace69
+translation_source_hash: 7c35c609442df65328fa619b6673be76f801cfc2abc28afd853d7fe61e439e9c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # 賢明な契約 {#smart-contracts}
@@ -15,9 +15,9 @@ Iroha 取引は, `Executable` の役に立たない負荷を実行する.現在�
 - `Executable::Ivm`: Iroha VM バイトコード
 - `Executable::IvmProved`: Iroha VM バイトコードで,事前に計算された指示の重複と証明義務がある
 
-Kotodama は,高レベルのスマート契約言語である Iroha. A `.ko` ソースファイルは,デターミネスティック IVM バイトコードにコンパイルされ,従来部署のための `.to` アテファクトとして保存されます. Kotodama ターゲット IVM;これは独立した RISC-V または WebAssembly ターゲットではありません.
+Kotodama は Iroha の高水準スマートコントラクト言語です。`.ko` ソースファイルは決定論的な IVM バイトコードにコンパイルされ、通常はデプロイ用の `.to` アーティファクトとして保存されます。Kotodama の対象は IVM のみです。RISC-V や WebAssembly は対象ではありません。
 
-最初のリリースでは ABI バージョン1のみがサポートされています. syscallとpointer-ABI のポリシーは,契約受付および実行によって無条件に強制されます.実行時間の互換性切り替えはありません.
+最初のリリースでサポートされるのは ABI バージョン 1 のみです。syscall と pointer-ABI のポリシーはコントラクトの受け入れ時および実行時に無条件で適用され、実行時互換性を切り替える設定はありません。
 
 ## 賢明 な 契約 を いつ 使う か {#when-to-use-smart-contracts}
 

@@ -26,6 +26,39 @@ const GOOGLE_LANGUAGE_CODES: Readonly<Record<string, string>> = {
   'zh-hant': 'zh-TW',
 }
 
+const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string, string>>>> = {
+  'zh-hans': {
+    'Account report, statement, and notification validation': '账户报告、对账单和通知的验证',
+    'Apply deterministic heuristics to decide whether compression is worthwhile.':
+      '采用确定性启发式方法判断是否值得压缩。',
+    'Carry manifest announcements, feedback, key updates, and capability negotiation.':
+      '承载清单通告、反馈消息、密钥更新和能力协商。',
+    'List committed transactions.': '列出已提交的链上交易。',
+    'Return the domain endorsement policy.': '返回链上域的背书政策。',
+    'Return on-chain executor configuration parameters.': '返回链上执行器的配置参数。',
+    'Supported with requirements': '有条件支持',
+  },
+  'zh-hant': {
+    'Account report, statement, and notification validation': '帳戶報告、對帳單與通知的驗證',
+    'Apply deterministic heuristics to decide whether compression is worthwhile.':
+      '採用確定性啟發式方法判斷是否值得壓縮。',
+    'Carry manifest announcements, feedback, key updates, and capability negotiation.':
+      '承載清單通告、回饋訊息、金鑰更新與能力協商。',
+    'List committed transactions.': '列出已提交的鏈上交易。',
+    'Return the domain endorsement policy.': '返回鏈上網域的背書政策。',
+    'Return on-chain executor configuration parameters.': '返回鏈上執行器的設定參數。',
+    'Supported with requirements': '有條件支援',
+  },
+}
+
+/** Return a reviewed exact translation while preserving surrounding whitespace. */
+export function curatedExactTranslation(source: string, locale: DocsLocale): string | undefined {
+  const boundary = /^(\s*)([\s\S]*?)(\s*)$/u.exec(source)
+  if (!boundary) return undefined
+  const translated = CURATED_EXACT_TRANSLATIONS[locale.key]?.[boundary[2]]
+  return translated === undefined ? undefined : `${boundary[1]}${translated}${boundary[3]}`
+}
+
 export const NLLB_LANGUAGE_CODES: Readonly<Record<string, string>> = {
   es: 'spa_Latn',
   pt: 'por_Latn',
@@ -150,6 +183,8 @@ interface SynchronizeHeadingAnchorOptions {
   routes?: readonly string[]
 }
 
+type SynchronizeMarkdownStructureOptions = SynchronizeHeadingAnchorOptions
+
 interface NllbProviderOptions {
   python?: string
   model: string
@@ -207,6 +242,13 @@ interface MarkdownHeading {
   stableAnchor: string
 }
 
+export interface MarkdownContainerDirective {
+  indentation: string
+  keyword?: string
+  lineIndex: number
+  title?: string
+}
+
 const HEADING_MARKDOWN = new MarkdownIt({ html: true })
 const EXPLICIT_HEADING_ANCHOR = /\s+\{#([A-Za-z_][\w:.-]*)\}\s*$/u
 
@@ -261,6 +303,44 @@ export function markdownHeadings(source: string): MarkdownHeading[] {
   return headings
 }
 
+/** Return VitePress container directives outside fenced code blocks. */
+export function markdownContainerDirectives(source: string): MarkdownContainerDirective[] {
+  const directives: MarkdownContainerDirective[] = []
+  const lines = source.split(/\r?\n/u)
+  let fence: { character: string; length: number } | undefined
+
+  for (let lineIndex = 0; lineIndex < lines.length; lineIndex += 1) {
+    const line = lines[lineIndex]
+    const fenceMarker = /^ {0,3}(`{3,}|~{3,})(.*)$/u.exec(line)
+    if (fence) {
+      if (
+        fenceMarker &&
+        fenceMarker[1][0] === fence.character &&
+        fenceMarker[1].length >= fence.length &&
+        fenceMarker[2].trim() === ''
+      ) {
+        fence = undefined
+      }
+      continue
+    }
+    if (fenceMarker) {
+      fence = { character: fenceMarker[1][0], length: fenceMarker[1].length }
+      continue
+    }
+
+    const directive = /^( {0,3}):::[ \t]*(?:(\S+)(?:[ \t]+(.*?))?)?[ \t]*$/u.exec(line)
+    if (!directive) continue
+    directives.push({
+      indentation: directive[1],
+      keyword: directive[2],
+      lineIndex,
+      title: directive[3],
+    })
+  }
+
+  return directives
+}
+
 /** Add stable English-derived IDs to every Markdown heading in a document body. */
 export function addStableHeadingAnchors(source: string): string {
   const lines = source.split(/\r?\n/u)
@@ -312,6 +392,36 @@ function applyStableHeadingAnchors(source: string, stableAnchors: readonly strin
     const heading = localizedHeadings[index]
     const withoutAnchor = lines[heading.lineIndex].replace(EXPLICIT_HEADING_ANCHOR, '')
     lines[heading.lineIndex] = `${withoutAnchor} {#${stableAnchors[index]}}`
+  }
+  return lines.join('\n')
+}
+
+function applyStableContainerDirectives(
+  source: string,
+  expectedDirectives: readonly MarkdownContainerDirective[],
+): string {
+  const lines = source.split(/\r?\n/u)
+  const localizedDirectives = markdownContainerDirectives(source)
+  if (localizedDirectives.length !== expectedDirectives.length) {
+    throw new Error(
+      `container directive inventory drift (expected ${expectedDirectives.length}, found ${localizedDirectives.length})`,
+    )
+  }
+
+  for (let index = 0; index < expectedDirectives.length; index += 1) {
+    const expected = expectedDirectives[index]
+    const localized = localizedDirectives[index]
+    if (!expected.keyword) {
+      lines[localized.lineIndex] = `${localized.indentation}:::`
+      continue
+    }
+
+    let localizedTitle: string | undefined
+    if (expected.title) {
+      localizedTitle = localized.keyword === expected.keyword ? localized.title : (localized.title ?? localized.keyword)
+    }
+    lines[localized.lineIndex] =
+      `${localized.indentation}::: ${expected.keyword}${localizedTitle ? ` ${localizedTitle}` : ''}`
   }
   return lines.join('\n')
 }
@@ -464,15 +574,19 @@ export function protectMarkdown(
     protect(block),
   )
   masked = masked.replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1>/giu, (block) => protect(block))
+  masked = masked.replace(/^( {0,3}:::[ \t]*(?:[A-Za-z][A-Za-z0-9-]*(?=[ \t]|$))?(?:[ \t]+|$))/gmu, (directive) =>
+    protect(directive),
+  )
   masked = masked.replace(/(`+)([\s\S]*?)\1/gu, (code) => protect(code))
   masked = masked.replace(/\$\$[\s\S]*?\$\$/gu, (formula) => protect(formula))
   masked = masked.replace(/\\\[[\s\S]*?\\\]/gu, (formula) => protect(formula))
-  masked = masked.replace(/\\\([^)\n]*\\\)/gu, (formula) => protect(formula))
+  masked = masked.replace(/\\\((?:(?!\\\))[^\n])*\\\)/gu, (formula) => protect(formula))
   masked = masked.replace(/(?<!\\)\$(?!\s)(?:\\.|[^$\n])+(?<!\s)\$/gu, (formula) => protect(formula))
   masked = masked.replace(/^ {0,3}(?:<{3}|={3})\s+.*$/gmu, (line) => protect(line))
   masked = masked.replace(/^ {0,3}(?:[-*_]\s*){3,}$/gmu, (line) => protect(line))
   masked = masked.replace(/^(\s*\|?(?:\s*:?-{3,}:?\s*\|)+\s*:?-{3,}:?\s*\|?\s*)$/gmu, (line) => protect(line))
   masked = masked.replace(/^(\s*\[(?!\^)[^\]\n]+\]:\s+\S+.*)$/gmu, (line) => protect(line))
+  masked = masked.replace(/\[\^[^\]\n]+\]/gu, (footnote) => protect(footnote))
   masked = masked.replace(
     /(!?\[)([^\]\n]+)(\]\((?:\\.|[^)\n])+\))/gu,
     (_match, opening: string, label: string, suffix: string) =>
@@ -558,18 +672,30 @@ export function chunkForTranslation(content: string, maximumCharacters = MAX_REQ
   const chunks: string[] = []
   let remaining = content
   while (remaining.length > maximumCharacters) {
+    const minimumBalancedCharacters = Math.ceil(maximumCharacters / 2)
+    const boundaryAtOrBefore = (limit: number): number | undefined => {
+      const candidates = [
+        remaining.lastIndexOf('\n\n', limit),
+        remaining.lastIndexOf('\n', limit),
+        remaining.lastIndexOf('. ', limit),
+        remaining.lastIndexOf('; ', limit),
+        remaining.lastIndexOf(': ', limit),
+        remaining.lastIndexOf(', ', limit),
+        remaining.lastIndexOf(' ', limit),
+      ]
+      const boundary = candidates.find((candidate) => candidate >= minimumBalancedCharacters)
+      return boundary === undefined ? undefined : boundary + (remaining.startsWith('\n\n', boundary) ? 2 : 1)
+    }
+
     let cut = maximumCharacters
-    const candidates = [
-      remaining.lastIndexOf('\n\n', cut),
-      remaining.lastIndexOf('\n', cut),
-      remaining.lastIndexOf('. ', cut),
-      remaining.lastIndexOf('; ', cut),
-      remaining.lastIndexOf(': ', cut),
-      remaining.lastIndexOf(', ', cut),
-      remaining.lastIndexOf(' ', cut),
-    ]
-    const boundary = candidates.find((candidate) => candidate >= maximumCharacters / 2)
-    if (boundary !== undefined) cut = boundary + (remaining.startsWith('\n\n', boundary) ? 2 : 1)
+    const preferredBoundary = boundaryAtOrBefore(cut)
+    if (preferredBoundary !== undefined) cut = preferredBoundary
+    if (remaining.length - cut < minimumBalancedCharacters) {
+      const balancedBoundary = boundaryAtOrBefore(Math.ceil(remaining.length / 2))
+      if (balancedBoundary !== undefined && remaining.length - balancedBoundary >= minimumBalancedCharacters) {
+        cut = balancedBoundary
+      }
+    }
 
     const openSpan = remaining.lastIndexOf('<span', cut)
     const closeSpan = remaining.lastIndexOf('</span>', cut)
@@ -619,8 +745,19 @@ async function translateBatch(
     }
 
     const [source] = texts
-    const retryChunks = chunksForIncompleteRetry(source)
-    if (retryChunks.length === 1 && retryChunks[0] === source) throw error
+    const retryChunks = chunksForIncompleteRetry(
+      source,
+      ['jpn_Jpan', 'zho_Hans', 'zho_Hant'].includes(targetLanguage) ? 8 : 15,
+    )
+    if (retryChunks.length === 1 && retryChunks[0] === source) {
+      const sourceContext = JSON.stringify(source.length > 180 ? `${source.slice(0, 177)}...` : source)
+      throw new Error(
+        `translation provider rejected an indivisible source chunk (${sourceContext}): ${
+          error instanceof Error ? error.message : String(error)
+        }`,
+        { cause: error },
+      )
+    }
     const translations = await translateBatch(provider, retryChunks, targetLanguage)
     return [
       joinTranslatedChunks(retryChunks, translations, ['jpn_Jpan', 'zho_Hans', 'zho_Hant'].includes(targetLanguage)),
@@ -980,7 +1117,7 @@ function joinTranslatedChunks(
   return joined
 }
 
-function chunksAtClauseBoundaries(content: string): string[] {
+function chunksAtClauseBoundaries(content: string, minimumClauseLetters = 15): string[] {
   const clauses: string[] = []
   let start = 0
   for (const match of content.matchAll(/[,;:،؛，；：、](?:\s+|(?=\S)|$)/gu)) {
@@ -1000,7 +1137,7 @@ function chunksAtClauseBoundaries(content: string): string[] {
     const remaining = content.slice(consumed)
     const pendingLetters = translationLetterCount(pending.replace(/\[PH\d{6}\]/gu, ''))
     const remainingLetters = translationLetterCount(remaining.replace(/\[PH\d{6}\]/gu, ''))
-    if (remaining && pendingLetters >= 20 && remainingLetters >= 20) {
+    if (remaining && pendingLetters >= minimumClauseLetters && remainingLetters >= minimumClauseLetters) {
       chunks.push(pending)
       pending = ''
     }
@@ -1012,8 +1149,8 @@ function chunksAtClauseBoundaries(content: string): string[] {
 function chunksAtEnglishConnectiveBoundaries(content: string): string[] {
   const chunks: string[] = []
   let start = 0
-  for (const match of content.matchAll(/\bso\b\s+|(?<=\s)(?:if|for)\s+/giu)) {
-    const cut = /^(?:if|for)\b/iu.test(match[0]) ? match.index : match.index + match[0].length
+  for (const match of content.matchAll(/\bso\b\s+|(?<=\s)(?:if|for|from)\s+/giu)) {
+    const cut = /^(?:if|for|from)\b/iu.test(match[0]) ? match.index : match.index + match[0].length
     const pending = content.slice(start, cut)
     const remaining = content.slice(cut)
     const pendingLetters = translationLetterCount(pending.replace(/\[PH\d{6}\]/gu, ''))
@@ -1034,10 +1171,13 @@ export function isCompleteShortStructuralLeadIn(source: string, translated: stri
   const translatedWithoutMarkers = withoutMarkers(translated)
   const sourceLetters = translationLetterCount(sourceWithoutMarkers)
   const translatedLetters = translationLetterCount(translatedWithoutMarkers)
+  const hasEnoughTargetLetters =
+    (sourceLetters <= 32 && translatedLetters >= 3) ||
+    (sourceLetters > 32 && sourceLetters <= 48 && translatedLetters >= 7)
   return (
     sourceLetters > 0 &&
-    sourceLetters <= 32 &&
-    translatedLetters >= 3 &&
+    sourceLetters <= 48 &&
+    hasEnoughTargetLetters &&
     /:\s*$/u.test(sourceWithoutMarkers) &&
     /[:：]\s*$/u.test(translatedWithoutMarkers)
   )
@@ -1069,11 +1209,28 @@ export function isCompleteCompactCjkTableLabel(
   const sourceLetters = translationLetterCount(sourceWithoutMarkers)
   const translatedLetters = translationLetterCount(translatedWithoutMarkers)
   const sourceWords = sourceWithoutMarkers.match(/\p{L}+/gu) ?? []
+  const sourceClauses = sourceWithoutMarkers
+    .split(/[,;:،؛，；：、]/u)
+    .map((clause) => translationLetterCount(clause))
+    .filter((letters) => letters > 0)
+  const translatedClauses = translatedWithoutMarkers
+    .split(/[,;:،؛，；：、]/u)
+    .map((clause) => translationLetterCount(clause))
+    .filter((letters) => letters > 0)
+  const hasCompleteCompactClausePair =
+    sourceLetters <= 55 &&
+    translatedLetters >= 10 &&
+    sourceClauses.length === 2 &&
+    translatedClauses.length === 2 &&
+    sourceClauses.every((letters) => letters >= 20) &&
+    translatedClauses.every((letters) => letters >= 4)
   const hasEnoughTargetLetters =
     (sourceLetters <= 40 &&
       (translatedLetters >= 6 ||
         (sourceLetters >= 20 && sourceLetters <= 24 && sourceWords.length === 2 && translatedLetters >= 4))) ||
-    (sourceLetters > 40 && sourceLetters <= 80 && translatedLetters >= 12)
+    (sourceLetters >= 20 && sourceLetters <= 30 && translatedLetters >= 5) ||
+    (sourceLetters > 40 && sourceLetters <= 80 && translatedLetters >= 12) ||
+    hasCompleteCompactClausePair
   return (
     sourceLetters >= 20 &&
     sourceLetters <= 80 &&
@@ -1082,6 +1239,42 @@ export function isCompleteCompactCjkTableLabel(
     !endsWithContinuationPunctuation(translatedWithoutMarkers) &&
     !/、(?:["')\]}»”]*)\s*$/u.test(translatedWithoutMarkers) &&
     hasExactTechnicalIdentifierSet(sourceWithoutMarkers, translatedWithoutMarkers)
+  )
+}
+
+export function isCompleteCompactCjkTableSentence(
+  source: string,
+  translated: string,
+  locale: DocsLocale,
+  context: TranslationCompletenessContext,
+): boolean {
+  if (!['ja', 'zh-hans', 'zh-hant'].includes(locale.key) || !context.markdownTableCell) return false
+  if (!hasExactProtectedMarkerMultiset(source, translated)) return false
+
+  const withoutMarkers = (content: string): string => content.replace(/\[PH\d{6}\]/gu, '')
+  const sourceWithoutMarkers = withoutMarkers(source)
+  const translatedWithoutMarkers = withoutMarkers(translated)
+  const sourceLetters = translationLetterCount(sourceWithoutMarkers)
+  const translatedLetters = translationLetterCount(translatedWithoutMarkers)
+  return (
+    sourceLetters >= 81 &&
+    sourceLetters <= 120 &&
+    translatedLetters >= 20 &&
+    /[.!?](?:["')\]}]*)\s*$/u.test(sourceWithoutMarkers) &&
+    /[.!?。！？](?:["')\]}»”]*)\s*$/u.test(translatedWithoutMarkers) &&
+    hasExactTechnicalIdentifierSet(sourceWithoutMarkers, translatedWithoutMarkers)
+  )
+}
+
+function isCompleteCompactCjkTableUnit(
+  source: string,
+  translated: string,
+  locale: DocsLocale,
+  context: TranslationCompletenessContext,
+): boolean {
+  return (
+    isCompleteCompactCjkTableLabel(source, translated, locale, context) ||
+    isCompleteCompactCjkTableSentence(source, translated, locale, context)
   )
 }
 
@@ -1094,10 +1287,80 @@ export function isCompleteCompactCjkSentence(source: string, translated: string,
   const translatedWithoutMarkers = withoutMarkers(translated)
   const sourceLetters = translationLetterCount(sourceWithoutMarkers)
   const translatedLetters = translationLetterCount(translatedWithoutMarkers)
+  const hasCompactCoordinatedPair =
+    sourceLetters <= 40 &&
+    translatedLetters >= 7 &&
+    /(?:,\s*)?\band\b/iu.test(sourceWithoutMarkers) &&
+    /(?:および|並びに|[和与與及、,，])/u.test(translatedWithoutMarkers)
+  const hasEnoughTargetLetters =
+    (sourceLetters <= 40 && translatedLetters >= 11) ||
+    (sourceLetters > 40 && sourceLetters <= 50 && translatedLetters >= Math.max(10, Math.ceil(sourceLetters * 0.22))) ||
+    (sourceLetters > 50 && sourceLetters <= 60 && translatedLetters >= 12) ||
+    (sourceLetters > 60 && sourceLetters <= 90 && translatedLetters >= Math.max(15, Math.ceil(sourceLetters * 0.22))) ||
+    hasCompactCoordinatedPair
   return (
     sourceLetters >= 20 &&
+    sourceLetters <= 90 &&
+    hasEnoughTargetLetters &&
+    /[.!?](?:["')\]}]*)\s*$/u.test(sourceWithoutMarkers) &&
+    /[.!?。！？](?:["')\]}»”]*)\s*$/u.test(translatedWithoutMarkers) &&
+    hasExactTechnicalIdentifierSet(sourceWithoutMarkers, translatedWithoutMarkers)
+  )
+}
+
+export function isCompleteCompactCjkRetryPhrase(source: string, translated: string, locale: DocsLocale): boolean {
+  if (!['ja', 'zh-hans', 'zh-hant'].includes(locale.key)) return false
+  if (!hasExactProtectedMarkerMultiset(source, translated)) return false
+
+  const withoutMarkers = (content: string): string => content.replace(/\[PH\d{6}\]/gu, '')
+  const sourceWithoutMarkers = withoutMarkers(source)
+  const translatedWithoutMarkers = withoutMarkers(translated)
+  const sourceLetters = translationLetterCount(sourceWithoutMarkers)
+  const translatedLetters = translationLetterCount(translatedWithoutMarkers)
+  return (
+    sourceLetters >= 20 &&
+    sourceLetters <= 30 &&
+    translatedLetters >= 5 &&
+    !/[.!?,;:]/u.test(sourceWithoutMarkers) &&
+    !endsWithContinuationPunctuation(translatedWithoutMarkers) &&
+    !/、(?:["')\]}»”]*)\s*$/u.test(translatedWithoutMarkers) &&
+    hasExactTechnicalIdentifierSet(sourceWithoutMarkers, translatedWithoutMarkers)
+  )
+}
+
+export function isCompleteCompactCjkRetryClause(source: string, translated: string, locale: DocsLocale): boolean {
+  if (!['ja', 'zh-hans', 'zh-hant'].includes(locale.key)) return false
+  if (!hasExactProtectedMarkerMultiset(source, translated)) return false
+
+  const withoutMarkers = (content: string): string => content.replace(/\[PH\d{6}\]/gu, '')
+  const sourceWithoutMarkers = withoutMarkers(source)
+  const translatedWithoutMarkers = withoutMarkers(translated)
+  const sourceLetters = translationLetterCount(sourceWithoutMarkers)
+  const translatedLetters = translationLetterCount(translatedWithoutMarkers)
+  return (
+    sourceLetters >= 8 &&
+    sourceLetters <= 80 &&
+    translatedLetters >= Math.max(2, Math.ceil(sourceLetters * 0.15)) &&
+    /[,;:](?:["')\]}]*)\s*$/u.test(sourceWithoutMarkers) &&
+    /[,，、;；:：](?:["')\]}»”]*)\s*$/u.test(translatedWithoutMarkers) &&
+    hasExactTechnicalIdentifierSet(sourceWithoutMarkers, translatedWithoutMarkers)
+  )
+}
+
+export function isCompleteCompactCjkRetryListTail(source: string, translated: string, locale: DocsLocale): boolean {
+  if (!['ja', 'zh-hans', 'zh-hant'].includes(locale.key)) return false
+  if (!hasExactProtectedMarkerMultiset(source, translated)) return false
+
+  const withoutMarkers = (content: string): string => content.replace(/\[PH\d{6}\]/gu, '')
+  const sourceWithoutMarkers = withoutMarkers(source)
+  const translatedWithoutMarkers = withoutMarkers(translated)
+  const sourceLetters = translationLetterCount(sourceWithoutMarkers)
+  const translatedLetters = translationLetterCount(translatedWithoutMarkers)
+  return (
+    sourceLetters >= 25 &&
     sourceLetters <= 60 &&
-    translatedLetters >= 12 &&
+    translatedLetters >= Math.max(8, Math.ceil(sourceLetters * 0.2)) &&
+    /^\s*and\b/iu.test(sourceWithoutMarkers) &&
     /[.!?](?:["')\]}]*)\s*$/u.test(sourceWithoutMarkers) &&
     /[.!?。！？](?:["')\]}»”]*)\s*$/u.test(translatedWithoutMarkers) &&
     hasExactTechnicalIdentifierSet(sourceWithoutMarkers, translatedWithoutMarkers)
@@ -1112,11 +1375,23 @@ function retryChunkCompletenessError(
 ): string | undefined {
   const markerError = retryChunkMarkerError(source, translated)
   if (markerError) return markerError
-  if (isCompleteCompactCjkTableLabel(source, translated, locale, context)) return undefined
+  if (isCompleteCompactCjkTableUnit(source, translated, locale, context)) return undefined
   if (isCompleteCompactCjkSentence(source, translated, locale)) return undefined
+  if (isCompleteCompactCjkRetryPhrase(source, translated, locale)) return undefined
+  if (isCompleteCompactCjkRetryClause(source, translated, locale)) return undefined
+  if (isCompleteCompactCjkRetryListTail(source, translated, locale)) return undefined
+  const sourceWithoutMarkers = source.replace(/\[PH\d{6}\]/gu, '')
+  if (
+    ['ja', 'zh-hans', 'zh-hant'].includes(locale.key) &&
+    translationLetterCount(sourceWithoutMarkers) >= 8 &&
+    translationLetterCount(sourceWithoutMarkers) < 20 &&
+    /[,;:](?:["')\]}]*)\s*$/u.test(sourceWithoutMarkers)
+  ) {
+    return 'output has incomplete compact clause coverage'
+  }
   if (isCompleteShortStructuralLeadIn(source, translated)) return undefined
-  const withoutMarkers = (content: string): string => content.replace(/\[PH\d{6}\]/gu, '')
-  return translationCompletenessError(withoutMarkers(source), withoutMarkers(translated), locale, 20)
+  const translatedWithoutMarkers = translated.replace(/\[PH\d{6}\]/gu, '')
+  return translationCompletenessError(sourceWithoutMarkers, translatedWithoutMarkers, locale, 20)
 }
 
 export function hasExactProtectedMarkerMultiset(source: string, translated: string): boolean {
@@ -1211,7 +1486,7 @@ function isCompleteNaturalLanguageSentence(segment: string): boolean {
   )
 }
 
-function chunksForIncompleteRetry(content: string): string[] {
+function chunksForIncompleteRetry(content: string, minimumClauseLetters = 15): string[] {
   const sentences: string[] = []
   let pending = ''
   for (const { segment } of new Intl.Segmenter('en', { granularity: 'sentence' }).segment(content)) {
@@ -1224,7 +1499,7 @@ function chunksForIncompleteRetry(content: string): string[] {
   if (sentences.length === 0) sentences.push(content)
   const chunks = sentences.flatMap((sentence) => chunkForTranslation(sentence, 128))
   if (chunks.length === 1 && chunks[0] === content) {
-    const punctuationChunks = chunksAtClauseBoundaries(content)
+    const punctuationChunks = chunksAtClauseBoundaries(content, minimumClauseLetters)
     if (punctuationChunks.length > 1) return punctuationChunks
     return chunksAtEnglishConnectiveBoundaries(content)
   }
@@ -1238,6 +1513,7 @@ async function translateRetryChunksWithCoverage(
   targetLanguage: string,
   context: TranslationCompletenessContext,
 ): Promise<string[]> {
+  const minimumClauseLetters = ['ja', 'zh-hans', 'zh-hant'].includes(locale.key) ? 8 : 15
   let translations: string[]
   try {
     translations = await requestTranslationBatch(provider, sourceChunks, targetLanguage)
@@ -1263,8 +1539,16 @@ async function translateRetryChunksWithCoverage(
     }
 
     const [source] = sourceChunks
-    const retryChunks = chunksForIncompleteRetry(source)
-    if (retryChunks.length === 1 && retryChunks[0] === source) throw error
+    const retryChunks = chunksForIncompleteRetry(source, minimumClauseLetters)
+    if (retryChunks.length === 1 && retryChunks[0] === source) {
+      const sourceContext = JSON.stringify(source.length > 180 ? `${source.slice(0, 177)}...` : source)
+      throw new Error(
+        `translation provider rejected an indivisible retry chunk (${sourceContext}): ${
+          error instanceof Error ? error.message : String(error)
+        }`,
+        { cause: error },
+      )
+    }
     const retryTranslations = await translateRetryChunksWithCoverage(
       retryChunks,
       locale,
@@ -1305,7 +1589,7 @@ async function translateRetryChunksWithCoverage(
       continue
     }
 
-    const retryChunks = chunksForIncompleteRetry(source)
+    const retryChunks = chunksForIncompleteRetry(source, minimumClauseLetters)
     if (retryChunks.length === 1 && retryChunks[0] === source) {
       throw new Error(`semantic retry chunk ${index + 1}: ${incomplete}; no smaller safe boundary`)
     }
@@ -1323,15 +1607,25 @@ async function translateRetryChunksWithCoverage(
   return covered
 }
 
+interface RetriedInlineUnit {
+  content: string
+  validatedByCjkRetryChunks: boolean
+}
+
 async function retryIncompleteInlineUnit(
   source: string,
   locale: DocsLocale,
   provider: TranslationProvider,
   context: TranslationCompletenessContext,
-): Promise<string> {
+): Promise<RetriedInlineUnit> {
   const protectedMarkdown = protectMarkdown(source, locale, 'identifier')
   const { core, prefix, suffix } = detachBoundaryMarkers(protectedMarkdown.masked, protectedMarkdown)
-  if (!/\p{L}/u.test(core)) return protectedMarkdown.restore(prefix + core + suffix)
+  if (!/\p{L}/u.test(core)) {
+    return {
+      content: protectedMarkdown.restore(prefix + core + suffix),
+      validatedByCjkRetryChunks: false,
+    }
+  }
   const sourceChunks = chunksForIncompleteRetry(core)
   const targetLanguage = providerLanguageCode(provider, locale)
   const translations = await translateRetryChunksWithCoverage(sourceChunks, locale, provider, targetLanguage, context)
@@ -1339,13 +1633,25 @@ async function retryIncompleteInlineUnit(
   const restoreJoined = (translatedChunks: readonly string[]): string =>
     protectedMarkdown.restore(prefix + joinTranslatedChunks(sourceChunks, translatedChunks, compactBoundaries) + suffix)
   const candidate = restoreJoined(translations)
+  const validatedByCjkRetryChunks =
+    compactBoundaries &&
+    sourceChunks.length >= 2 &&
+    sourceChunks.every((chunk, index) => {
+      if (/[.!?](?:["')\]}]*)\s*$/u.test(chunk)) {
+        return /[.!?。！？](?:["')\]}»”]*)\s*$/u.test(translations[index])
+      }
+      if (/[,;:](?:["')\]}]*)\s*$/u.test(chunk)) {
+        return /[,，、;；:：](?:["')\]}»”]*)\s*$/u.test(translations[index])
+      }
+      return false
+    })
 
   if (
-    isCompleteCompactCjkTableLabel(source, candidate, locale, context) ||
+    isCompleteCompactCjkTableUnit(source, candidate, locale, context) ||
     !translationCompletenessError(source, candidate, locale) ||
     sourceChunks.length < 2
   ) {
-    return candidate
+    return { content: candidate, validatedByCjkRetryChunks }
   }
 
   const recoveredTranslations = [...translations]
@@ -1363,9 +1669,9 @@ async function retryIncompleteInlineUnit(
     recoveredTranslations[index] = joinTranslatedChunks(clauseChunks, clauseTranslations, compactBoundaries)
     retriedClause = true
   }
-  if (!retriedClause) return candidate
+  if (!retriedClause) return { content: candidate, validatedByCjkRetryChunks }
 
-  return restoreJoined(recoveredTranslations)
+  return { content: restoreJoined(recoveredTranslations), validatedByCjkRetryChunks }
 }
 
 async function translateInlineIdentifierMarkdown(
@@ -1458,16 +1764,33 @@ async function translateInlineIdentifierMarkdown(
         )
       }
     }
-    const incomplete = isCompleteCompactCjkTableLabel(plan.source, candidate, locale, plan.completenessContext)
+    candidate = curatedExactTranslation(plan.source, locale) ?? candidate
+    const incomplete = isCompleteCompactCjkTableUnit(plan.source, candidate, locale, plan.completenessContext)
       ? undefined
       : translationCompletenessError(plan.source, candidate, locale, plan.completenessMinimumLetters)
     if (incomplete) {
-      candidate = await retryIncompleteInlineUnit(plan.source, locale, provider, plan.completenessContext)
-      const retryIncomplete = isCompleteCompactCjkTableLabel(plan.source, candidate, locale, plan.completenessContext)
+      let validatedByCjkRetryChunks = false
+      try {
+        const retried = await retryIncompleteInlineUnit(plan.source, locale, provider, plan.completenessContext)
+        candidate = retried.content
+        validatedByCjkRetryChunks = retried.validatedByCjkRetryChunks
+      } catch (error) {
+        const sourceContext = JSON.stringify(plan.source.length > 180 ? `${plan.source.slice(0, 177)}...` : plan.source)
+        throw new Error(
+          `prose unit ${planIndex} (${sourceContext}): ${error instanceof Error ? error.message : String(error)}`,
+          { cause: error },
+        )
+      }
+      const retryIncomplete = validatedByCjkRetryChunks
         ? undefined
-        : translationCompletenessError(plan.source, candidate, locale, plan.completenessMinimumLetters)
+        : isCompleteCompactCjkTableUnit(plan.source, candidate, locale, plan.completenessContext)
+          ? undefined
+          : translationCompletenessError(plan.source, candidate, locale, plan.completenessMinimumLetters)
       if (retryIncomplete) {
-        throw new Error(`prose unit ${planIndex}: ${incomplete}; sentence-level retry ${retryIncomplete}`)
+        const sourceContext = JSON.stringify(plan.source.length > 180 ? `${plan.source.slice(0, 177)}...` : plan.source)
+        throw new Error(
+          `prose unit ${planIndex} (${sourceContext}): ${incomplete}; sentence-level retry ${retryIncomplete}`,
+        )
       }
     }
     output[outputIndex] = candidate
@@ -1494,7 +1817,7 @@ function delay(milliseconds: number): Promise<void> {
 
 export class GoogleTranslationProvider implements TranslationProvider {
   readonly engine = GOOGLE_TRANSLATION_ENGINE
-  readonly protectedMarkdownMode = 'inline' as const
+  readonly protectedMarkdownMode = 'fragments' as const
 
   languageCode(locale: DocsLocale): string {
     return GOOGLE_LANGUAGE_CODES[locale.key] ?? locale.key
@@ -1528,6 +1851,14 @@ export class GoogleTranslationProvider implements TranslationProvider {
       }
     }
     throw new Error(`Translation failed after ${MAX_ATTEMPTS} attempts`, { cause: lastError })
+  }
+
+  async translateBatch(texts: readonly string[], targetLanguage: string): Promise<string[]> {
+    const translations = new Array<string>(texts.length)
+    await parallelMap(texts, 1, async (text, index) => {
+      translations[index] = await this.translate(text, targetLanguage)
+    })
+    return translations
   }
 }
 
@@ -1815,6 +2146,46 @@ export async function synchronizeTranslationHeadingAnchors(
   await Promise.all(updates.map(({ target, content }) => writeFile(target, content)))
 }
 
+/** Synchronize English heading IDs and container keywords without retranslating prose. */
+export async function synchronizeTranslationMarkdownStructure(
+  options: SynchronizeMarkdownStructureOptions = {},
+): Promise<void> {
+  await synchronizeTranslationHeadingAnchors(options)
+
+  const sourceRoot = options.sourceRoot ?? path.resolve(process.cwd(), 'src')
+  const locales = options.locales ?? TRANSLATED_LOCALES
+  const availableRoutes = await englishRoutes(sourceRoot)
+  const availableRouteSet = new Set(availableRoutes)
+  const routes = options.routes
+    ? [...new Set(options.routes.map((route) => route.replace(/^\/+/u, '')))]
+    : availableRoutes
+  const unknownRoutes = routes.filter((route) => !availableRouteSet.has(route))
+  if (unknownRoutes.length > 0) {
+    throw new Error(`Unknown English route(s): ${unknownRoutes.join(', ')}`)
+  }
+
+  const directivesByRoute = new Map<string, MarkdownContainerDirective[]>()
+  await Promise.all(
+    routes.map(async (route) => {
+      const english = await readFile(path.join(sourceRoot, route), 'utf8')
+      directivesByRoute.set(route, markdownContainerDirectives(splitFrontmatter(english).body))
+    }),
+  )
+
+  const updates: Array<{ content: string; target: string }> = []
+  for (const locale of locales) {
+    for (const route of routes) {
+      const target = path.join(sourceRoot, locale.path, route)
+      const content = await readFile(target, 'utf8')
+      const document = splitFrontmatter(content)
+      const synchronizedBody = applyStableContainerDirectives(document.body, directivesByRoute.get(route)!)
+      const prefixLength = content.length - document.body.length
+      updates.push({ target, content: content.slice(0, prefixLength) + synchronizedBody })
+    }
+  }
+  await Promise.all(updates.map(({ target, content }) => writeFile(target, content)))
+}
+
 async function parallelMap<T>(
   values: readonly T[],
   concurrency: number,
@@ -1917,6 +2288,7 @@ interface TranslationCliOptions {
   python?: string
   model?: string
   synchronizeAnchors: boolean
+  synchronizeStructure: boolean
 }
 
 function parseCli(argv: string[]): TranslationCliOptions {
@@ -1927,6 +2299,7 @@ function parseCli(argv: string[]): TranslationCliOptions {
   let python: string | undefined
   let model: string | undefined
   let synchronizeAnchors = false
+  let synchronizeStructure = false
   for (const argument of argv) {
     if (argument.startsWith('--locale=')) {
       selectedKeys = argument
@@ -1959,6 +2332,8 @@ function parseCli(argv: string[]): TranslationCliOptions {
       if (!model) throw new Error('--model requires a CTranslate2 model path')
     } else if (argument === '--sync-anchors') {
       synchronizeAnchors = true
+    } else if (argument === '--sync-structure') {
+      synchronizeStructure = true
     } else {
       throw new Error(`Unknown translation option: ${argument}`)
     }
@@ -1970,22 +2345,37 @@ function parseCli(argv: string[]): TranslationCliOptions {
         return locale
       })
     : TRANSLATED_LOCALES
-  if (!synchronizeAnchors && providerName === 'nllb' && !model) {
+  if (synchronizeAnchors && synchronizeStructure) {
+    throw new Error('--sync-anchors and --sync-structure are mutually exclusive')
+  }
+  if (!synchronizeAnchors && !synchronizeStructure && providerName === 'nllb' && !model) {
     throw new Error('--provider=nllb requires --model=<CTranslate2 model path>')
   }
-  if (!synchronizeAnchors && providerName === 'google' && (python || model)) {
+  if (!synchronizeAnchors && !synchronizeStructure && providerName === 'google' && (python || model)) {
     throw new Error('--python and --model are only valid with --provider=nllb')
   }
-  return { locales, routes, concurrency, providerName, python, model, synchronizeAnchors }
+  return {
+    locales,
+    routes,
+    concurrency,
+    providerName,
+    python,
+    model,
+    synchronizeAnchors,
+    synchronizeStructure,
+  }
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  const { locales, routes, concurrency, providerName, python, model, synchronizeAnchors } = parseCli(
-    process.argv.slice(2),
-  )
+  const { locales, routes, concurrency, providerName, python, model, synchronizeAnchors, synchronizeStructure } =
+    parseCli(process.argv.slice(2))
   ;(async () => {
     if (synchronizeAnchors) {
       await synchronizeTranslationHeadingAnchors({ locales, routes })
+      return
+    }
+    if (synchronizeStructure) {
+      await synchronizeTranslationMarkdownStructure({ locales, routes })
       return
     }
     const provider: TranslationProvider =

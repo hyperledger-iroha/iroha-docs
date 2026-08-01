@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /help/installation-issues.md
-translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
+translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c054c85a2a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -83,13 +83,13 @@ Bu da sizin problemlərinizi həll etməlidir.
 
 ### Standart Rust versiyasını yoxlayın. {#check-the-default-rust-version}
 
-Başqa bir seçim, yenilənmiş `stable` vasitə zəncirinin olmasıdır, lakin standart olaraq təyin olunmur.
+Başqa bir seçim, yenilənmiş `stable` vasitə zəncirinin olmasıdır, lakin standart olaraq təyin edilmir.
 
 ```bash
 $ rustup default stable
 ```
 
-Bu, `nightly` versiyasını quraşdırsanız və ya müəyyən Rust versiyasını təyin etsəniz, amma onu un-set etməyi unutduğunuz təqdirdə baş verə bilər.
+`nightly` versiyasını quraşdırmaq və ya Rust versiyasının müəyyənləşdirilməsini ləğv etməklə bu problemə səbəb ola bilər.
 
 ### Digər Rust versiyalarının olub olmadığını yoxlayın. {#check-if-there-are-other-rust-versions}
 
@@ -123,13 +123,13 @@ Və sonra, hər `<toolchain>` üçün (təbii ki açı bracketləri olmadan):
 $ rustup remove <toolchain>
 ```
 
-Bundan sonra əmin olun ki,
+Əşya zəncirlərini çıxardıqdan sonra bu komandanın tapılmamış əmr səhvini bildirməsi lazımdır:
 
 ```bash
 $ cargo --help
 ```
 
-bir əmr tapılmamış səhvə səbəb olur, yəni aktiv Rust vasitə zəncirinin quraşdırılmadığı. Sonra:
+Bu səhv aktiv Rust vasitə zəncirinin hələ quraşdırılmadığını təsdiqləyir.
 
 ```bash
 $ rustup toolchain install stable

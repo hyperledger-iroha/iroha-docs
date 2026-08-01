@@ -1,9 +1,9 @@
 ---
 translation_locale: ka
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: ed622cdb1d6a47635d0753c98f80aaa903b916133f43bc9fdab268512d0ace69
+translation_source_hash: 7c35c609442df65328fa619b6673be76f801cfc2abc28afd853d7fe61e439e9c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # ჭკვიანი ხელშეკრულებები {#smart-contracts}
@@ -15,9 +15,9 @@ Iroha ტრანზაქციები ახორციელებს `Ex
 - `Executable::Ivm`: ბაიტების კოდი Iroha VM
 - `Executable::IvmProved`:Iroha VM ბაიტ-კოდი წინასწარ გამოანგარიშებული ინსტრუქციის საფარით და მტკიცებულების ვალდებულებებით
 
-Kotodama არის Iroha ეს არის მაღალი დონის ჭკვიანი ხელშეკრულების ენა. `.ko` წყარო ფაილი კომპილებს დეტერმინისტური IVM ბაიტო კოდი, რომელიც კონვენციულად ინახება როგორც `.to` არტეფაქტი განთავსებისთვის. Kotodama მიზნები IVM; ეს არ არის დამოუკიდებელი RISC-V ან WebAssembly მიზანი.
+Kotodama არის Iroha-ს მაღალი დონის სმარტ-კონტრაქტების ენა. `.ko` საწყისი ფაილი კომპილირდება დეტერმინისტულ IVM ბაიტკოდში, რომელიც განთავსებისთვის ჩვეულებრივ ინახება `.to` არტეფაქტის სახით. Kotodama განკუთვნილია მხოლოდ IVM-ისთვის. ის არ არის განკუთვნილი RISC-V-ისთვის ან WebAssembly-ისთვის.
 
-პირველი გამოშვება მხარს უჭერს მხოლოდ ABI ვერსიას 1. syscall და pointer-ABI პოლიტიკა განხორციელდება უპირობოდ ხელშეკრულების მიღებისა და შესრულებით; არ არსებობს runtime თავსებადობა გადართვა.
+პირველი გამოშვება მხარს უჭერს მხოლოდ ABI-ის 1-ელ ვერსიას. syscall-ისა და pointer-ABI-ის პოლიტიკა უპირობოდ სრულდება კონტრაქტის დაშვებისა და შესრულებისას; გაშვების დროის თავსებადობის გადამრთველი არ არსებობს.
 
 ## როდის უნდა გამოიყენოთ ჭკვიანი ხელშეკრულებები {#when-to-use-smart-contracts}
 

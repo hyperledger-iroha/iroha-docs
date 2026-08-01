@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /help/installation-issues.md
-translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
+translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c054c85a2a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -89,7 +89,7 @@ $ rustup toolchain update stable
 $ rustup default stable
 ```
 
-هذا يمكن أن يحدث إذا قمت بتثبيت نسخة `nightly` ، أو تعيين نسخة محددة Rust، ولكن نسيت إلغائها.
+تثبيت نسخة `nightly` أو إعداد نسخة محددة Rust دون إلغائها في وقت لاحق يمكن أن يسبب هذه المشكلة.
 
 ### تحقق من وجود إصدارات أخرى Rust {#check-if-there-are-other-rust-versions}
 
@@ -123,13 +123,13 @@ $ rustup toolchain list
 $ rustup remove <toolchain>
 ```
 
-بعد ذلك، تأكد من أن
+بعد إزالة سلاسل الأدوات ، يجب على هذه القيادة الإبلاغ عن خطأ لا يجد:
 
 ```bash
 $ cargo --help
 ```
 
-يؤدي إلى خطأ لا يتم العثور عليه، أي أنه ليس لديك سلسلة أدوات Rust نشطة مثبتة. ثم قم بتشغيل:
+هذه الخطأ تؤكد عدم وجود سلسلة أدوات Rust النشطة متثبتة. ثم تشغيل:
 
 ```bash
 $ rustup toolchain install stable

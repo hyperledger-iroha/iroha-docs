@@ -8,46 +8,38 @@ translation_engine: nllb-200-ct2
 
 # 解决部署问题 {#troubleshooting-deployment-issues}
 
-本节提供了解决问题建议 Iroha 3 如果问题发生,
-你正在经历的情况并未被描述在这里,
-通过 [电报](https://t.me/hyperledgeriroha).
+本节为 Iroha 3 部署提供了故障解决技巧.如果您遇到的问题没有描述在这里,请通过 [电报](https://t.me/hyperledgeriroha)联系我们
 
-## 开始使用生成的文物 {#start-with-generated-artifacts}
+## 从生成的文物开始. {#start-with-generated-artifacts}
 
-对于本地和测试部署,最好采用由 Kagami 而不是
-在手写的同行档案中:
+对于本地和测试部署,优先使用 Kagami 生成的文物而不是手写的同行文件:
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
 ```
 
-生成的目录包含同行配置,创始材料,开始
-编写的脚本, README 对于 Iroha 3 建设线.
+生成的目录包含同行配置,基因材料,启动脚本以及 README 为 Iroha 3 构建线.
 
 ## 同龄人不开始 {#peer-does-not-start}
 
 首先要检查这些物品:
 
-- `irohad --config <path>` 在同龄人自己的积分 TOML 文件.
-- `public_key` 并且 `private_key` 在同行配置中属于同一键
-  一对.
-- `genesis.public_key` 与签署创世交易的密钥相匹配.
-- 验证器同行身份使用 BLS- 通常的钥匙, `trusted_peers_pop`
-  包含本地密钥和值得信赖的同龄人的所有权证明条目.
-- 的港口 Torii 并且 P2P 没有其他过程的约束.
-- 在 Kura 商店目录属于同一个链,并不是从
-  不同的网络配置文件.
+- `irohad --config <path>`在同行自己的档案 TOML 中的点.
+- 在同等配置中, `public_key` 和 `private_key`属于同一键对.
+- `genesis.public_key`与签署基因交易所使用的密钥相匹配.
+- 验证器同行身份使用 BLS-正常密钥,并且`trusted_peers_pop`包含本地密钥和可信任同行的拥有证明条目.
+- Torii 和 P2P 的港口已经没有其他工艺的约束.
+- Kura 存储目录属于同一个链,并不是从不同的网络配置文件复制.
 
-使用配置追踪,当妖怪阅读多个 TOML 层:
+如果 daemon 阅读超过一个 TOML 层时,请使用配置追踪:
 
 ```bash
 cargo run --bin irohad -- --config ./config.toml --trace-config
 ```
 
-## Docker 和编译 {#docker-and-compose}
+## Docker 和复合 {#docker-and-compose}
 
-生成从当前构成 Kagami 局域网输出,所以命令行
-参数和配置文件与已退出的代码一致:
+生成 从当前的 Kagami localnet输出中编写,以便命令行参数和配置文件与已检查出来的代码匹配:
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
@@ -55,37 +47,32 @@ cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyper
 docker compose -f ./localnet/docker-compose.yml up
 ```
 
-如果构建部署启动,然后停滞,检查 daemon日志:
+如果构建部署开始,然后停下来,请检查 daemon日志:
 
-- 不匹配 `chain`
+- 没有匹配 `chain`
 - 一个使用不同的基因交易或表现的同行
-- 广告 P2P 只有在集装箱网络内工作的地址
+- 广告的 P2P 地址,仅在集装箱网络内工作
 - 在再生产后的本地体积重复使用
 
-在测试新产物时,删除旧产物 Kura 在重新启动前的量
-保持旧块的存储器和一个新的基因将使重播失败.
+在测试新基因时,在重新启动堆之前删除旧的 Kura 卷.将旧块存储到新的基因中会导致重播失败.
 
-## 科伯尼特斯 {#kubernetes}
+## 科伯尼特 {#kubernetes}
 
 对于Kubernetes来说,将每个验证器视为具有状态的基础设施:
 
 - 给每个同龄人一个稳定的身份密钥和稳定的持久量
-- 暴露 P2P 其他同行可以从集群内部解决的地址
-- 将配置和创始文件作为部署不可变的配置
-- 任何基因或拓变化都是故意的,而不是自动的
-  配置地图更新
+- 暴露其他同行可以从集群内部解决的 P2P 地址
+- 装备配置和生成文件作为部署不可变的配置
+- 推出所有基因或拓变化是故意的,而不是作为自动配置地图更新
 
-如果一个子重启一次又一次,则将该子中的转载配置与
-预期 [`peer.template.toml`](/zh-hans/reference/peer-config/index.md#template) 并且
-检查同龄人是否重播旧 Kura 数据.
+如果一个模块重启一次,请将模块中的转载配置与预期的 [`peer.template.toml`](/zh-hans/reference/peer-config/index.md#template)进行比较,并检查同行是否正在播放旧的 Kura 数据.
 
 ## 索拉的个人资料 {#sora-profile}
 
-Iroha 3 使用的部署 Nexus, SoraFS, 或多道流动应开始
-具有 Sora 配置的恶魔:
+Iroha 3 使用 Nexus, SoraFS 或多道流的部署应启动索拉配置文件的妖怪:
 
 ```bash
 cargo run --bin irohad -- --config ./config.toml --sora
 ```
 
-在同一网络中的验证器中使用相同的配置文件.
+在同一网络中的验证器中,使用相同的配置文件.

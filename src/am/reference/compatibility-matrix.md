@@ -20,6 +20,6 @@ translation_engine: nllb-200-ct2
 
 <CompatibilityMatrixTable />
 
-::: መረጃ
+::: info
 `VITE_COMPAT_MATRIX_URL` ብቻ ተኳሃኝ የቀጥታ ዳግመኛ ጋር የተቀናጀ ቅጽበታዊ ገጽ እይታ ለማስተካከል ያዘጋጁ. ይህ ተለዋዋጭ ያለ, ገጽ ይጫናል `src/public/compat-matrix.json`.
 :::

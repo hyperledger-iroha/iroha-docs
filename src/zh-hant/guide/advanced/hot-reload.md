@@ -8,33 +8,28 @@ translation_engine: nllb-200-ct2
 
 # 熱的重載 Iroha 在一個 Docker 集裝箱 {#hot-reload-iroha-in-a-docker-container}
 
-請使用溫度重裝,只能進行本地調查.
-再建圖像或重新啟動生成的圖像 Docker Compose 來自一個
-新鮮 Kagami 這樣的東西,
+對於正常的本地開發,更好重建圖像或從新增的 Kagami 捆綁中重新啓動生成的 Docker Compose 堆
 
-## 取代同行二元 {#replace-the-peer-binary}
+## 取代同行二進制 {#replace-the-peer-binary}
 
-在上游工作空間中建立一個與 Linux 兼容的 daemon 雙數字:
+從上游工作空間構建一個與Linux兼容的 daemon二進制:
 
 ```bash
 cargo build --release -p irohad --target x86_64-unknown-linux-musl
 ```
 
-複製到正在運行的同行容器,
+複製到運行的同行容器中,然後重新啓動該容器:
 
 ```bash
 docker cp target/x86_64-unknown-linux-musl/release/irohad <container>:/usr/local/bin/irohad
 docker restart <container>
 ```
 
-使用 `docker ps` 在生成的堆中,
-容器的定義是: `./localnet/docker-compose.yml`.
+使用 `docker ps`來確認容器名稱.在生成的堆中,同等容器由 `./localnet/docker-compose.yml`定義.
 
-## 在一次性網路上重新啟動創世記 {#recommit-genesis-in-a-disposable-network}
+## 在一次性網絡中重複創世紀 {#recommit-genesis-in-a-disposable-network}
 
-只有在庫空時才開始生產. Docker
-網路,停止堆,移除生成的狀態,再生或更換
-開始重新進行:
+在一個一次性 Docker 網絡中,停止堆,刪除生成狀態,再生或更換籤署的創新捆綁,然後重新啓動:
 
 ```bash
 docker compose -f ./localnet/docker-compose.yml down
@@ -43,12 +38,8 @@ cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyper
 docker compose -f ./localnet/docker-compose.yml up
 ```
 
-必須保持其狀態.
+不要在一個必須保存狀態的網絡上取代基因.
 
-## 使用定制配置 {#use-custom-configuration}
+## 使用定製配置 {#use-custom-configuration}
 
-目前的同行配置是 TOML. 綁定或複製生成的
-`config.toml`, `genesis.signed.nrt`, 並將相關的關鍵檔案放入容器
-保持生成的檔案.
-混合不同檔案 Kagami 這種運行可能會產生脫氧化或
-沒有共識.
+目前的同行配置是 TOML.將生成的 `config.toml`, `genesis.signed.nrt` 和相關關鍵文件綁定或複製到預期的容器路徑中.將生成的文件放在一起;從不同的 Kagami 運行中混合文件可能會導致消產或共識失敗.

@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /blockchain/instructions.md
-translation_source_hash: 3251078b2b2268ff78563c02a0f935c63dc0569f0b6d38071150cbb4b89394d6
+translation_source_hash: adc3eff9758dd73e9114e78eaa18ddf6271db3bc4042611e1ed6ed1aac226246
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -128,24 +128,24 @@ Hesablar, aktiv tərifləri, NFTs, həmyaşıllılar, rollar və tetiklər qeydi
 
 RWA partiyaları xüsusi `RegisterRwa` təlimatı vasitəsilə yaradılır. mövcud kod `UnregisterRwa` təlimatını açıqlamır; təsvir olunan miqdarı geri çəkmək üçün `RedeemRwa` istifadə edin.
 
-::: məlumat
+::: info
 
 Qeyd edək ki, [genesis blokunuzu](/az/guide/configure/genesis.md) `genesis.json`da necə qurmağı qərar verdiyindən asılı olaraq (müəyyən olaraq icazə simvollarının qeydiyyatı daxil olub-olmamasından asılı olaraq), hesabın qeydiyyata alınması prosesi çox fərqli ola bilər. Ümumiyyətlə, onu belə bir şəkildə qısaca izah edə bilərik:
 
-- İctimai blok zincirdə hər kəs hesab yaza bilər.
+- İctimai blok kateqoriyada hər kəs hesabı qeyd edə bilər.
 - Şəxsi blok kateqoriyada hesabların qeydiyyatı üçün unikal bir proses ola bilər. Tipik xüsusi blok kateqoriyada, yəni hesabların qeydiyyata alınması üçün heç bir unikal proses olmayan blok kateqoriyalarında başqa bir hesabı qeyd etmək üçün bir hesab lazımdır.
 
 Biz [ özəl və ictimai blok zincirləri ](/az/guide/configure/modes.md) müqayisə edərkən bu fərqlər haqqında ətraflı danışırıq.
 
 :::
 
-::: məlumat
+::: info
 
 Bir həmyaşıdın qeydiyyatı, hazırda şəbəkəyə orijinal etibarlı həmyaşıddan olmayan həmyaşıdı əlavə etmək üçün yeganə yoldur.
 
 :::
 
-Bir blok zincirində obyektlərin qeydiyyatı prosesindən keçmək üçün dilə aid təlimatlardan birinə baxın:
+Blockchain obyektlərini qeyd etmək üçün dilə aid bir təlimatdan istifadə edin:
 
 |Dil |Təlimat |
 | --------------------- | ------------------------------------------------------------------------------------------------------- |
@@ -249,7 +249,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 Əmlaklar müəyyən bir hesabda, adətən ilk növbədə aktivin qeydiyyata alınması üçün qeydə alınıb. Mülkiyyət miqdarları mənfi deyil, buna görə heç vaxt `$-1.0` bir aktivə sahib ola bilməzsən və ya mənfi məbləği yandırıb mint ala bilməzsən.
 
-Bir blok zincirində aktivlərin qazılması prosesindən keçmək üçün dilə aid təlimatlardan birinə baxın:
+Mint blockchain aktivləri üçün dilə aid bir təlimatdan istifadə edin:
 
 - [CLI](/az/get-started/operate-iroha-via-cli.md)
 - [Rust](/az/guide/tutorials/rust.md)

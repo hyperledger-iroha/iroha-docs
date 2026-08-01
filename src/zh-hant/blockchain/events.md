@@ -8,25 +8,18 @@ translation_engine: nllb-200-ct2
 
 # 事件 {#events}
 
-某些事件發生在區塊內,
-建立新的帳戶或封鎖.
-事件的情況:
+在區塊鏈中發生某些事情時發出事件,例如創建新的帳戶或提交一個區塊. 有不同的類型的事件:
 
 - 管道事件
 - 數據事件
 - 時間事件
-- 引發執行事件
+- 觸發執行事件
 
 ## 管道事件 {#pipeline-events}
 
-在交易提交,執行或
-道事件包含以下資訊:
-造成事件 (交易或封鎖) 的實體類型,其哈希
-這種狀態可能是 `Validating` (正在進行核實),
-`Rejected`, 或是 `Committed`. 如果被拒絕,
-否則提供拒絕.
+一個管道事件包含以下信息:導致事件 (交易或區塊) 的實體類型,其哈希和狀態.狀態可以是 `Validating` (正在進行驗證), `Rejected`,或 `Committed`.如果實體被拒絕,則提供拒絕的理由.
 
-### 試著使用 Taira {#try-it-on-taira}
+### 在 Taira 試看. {#try-it-on-taira}
 
 檢查公共管道事件流是否安裝:
 
@@ -35,39 +28,29 @@ curl -fsSI https://taira.sora.org/v1/events/sse \
   | sed -n '1,12p'
 ```
 
-您可以在不開的情況下查看即時拍照,
-探索者交易:
+爲了一張即時鏡頭,你可以檢查而不讓流量開放.閱讀最近的探索者交易:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=5' \
   | jq '{pagination, txs: [.items[] | {hash, block, status, executable}]}'
 ```
 
-打開這個 SSE 需要現場活動時,
+當您需要現場活動時,在終端打開 SSE 路線:
 
 ```bash
 curl -fsS -N https://taira.sora.org/v1/events/sse
 ```
 
-如果在開啟的時間內沒有提交任何交易,
-雖然路線很健康,
+如果通道開放時沒有提交任何交易,命令可以保持安靜,即使路線是健康的.
 
 ## 數據事件 {#data-events}
 
-數據事件會發出,
-該項目的使用方式: NFTs, 引發器,
-角色,連鎖配置,執行狀態,證據,機密資產,
-橋,或 SORA/Nexus 這些事件在
-[數據事件過濾器](./filters.md#data-event-filters).
+數據事件在與賬本數據相關的變化發生時發行,如同類,域名,帳戶,資產,資產定義, NFTs,觸發因素,角色等,鏈上配置,執行狀態,證據,機密資產,橋樑或 SORA/Nexus 特定對象.這些類型的事件用於[數據事件過器](./filters.md#data-event-filters).
 
-## 時間上的事件 {#time-events}
+## 時間事件 {#time-events}
 
-當世界觀準備好處理時,
-[時間導致器](./triggers.md#time-triggers).
+當世界狀態視圖準備好處理 [時間觸發器](./triggers.md#time-triggers)時,時間事件會發射.
 
-## 導致執行事件 {#trigger-execution-events}
+## 引發執行事件 {#trigger-execution-events}
 
-引發執行事件會發出,
-[`ExecuteTrigger`](./instructions.md#executetrigger) 指示是
-導致完成事件在導致行動後發出
-終於完成了.
+當執行 [`ExecuteTrigger`](./instructions.md#executetrigger)指令時發出觸發器執行事件.觸發器完成事件在觸發器操作結束後發出.

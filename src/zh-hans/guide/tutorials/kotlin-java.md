@@ -6,29 +6,26 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Kotlin, Android, 和Java {#kotlin-android-and-java}
+# Kotlin,Android 和Java {#kotlin-android-and-java}
 
-其他 Kotlin SDK 是默认客户端堆 JVM 并且 Android 申请.
-它生活在 `kotlin/` 在 Iroha 存储库和平台分为
-可移植代码不获得 Android 它们的依赖性.
+Kotlin SDK 是 JVM 和 Android 应用程序的默认客户端堆.它在 Iroha 存储库中存在于 `kotlin/` 下,并按平台分开,因此便携代码不会获得 Android 依赖性.
 
 ## 模块 {#modules}
 
-| 艺术品 | 类型 | 使用 |
+|艺术品|类型|使用|
 | --- | --- | --- |
-| `org.hyperledger.iroha.sdk:core-jvm` | JAR | 纯净 Kotlin/JVM Norito, 数据模型,加密,交易, Torii, 和协议代码 |
-| `org.hyperledger.iroha.sdk:client-android` | AAR | Android 密钥存储,设备遥测,以及 JNI- 支持客户端集成 |
-| `org.hyperledger.iroha.sdk:offline-wallet-android` | AAR | Android 在线钱包运输和集成 `client-android` |
+|`org.hyperledger.iroha.sdk:core-jvm`|JAR|纯 Kotlin/JVM Norito,数据模型,加密货币,交易, Torii 和协议代码 |
+|`org.hyperledger.iroha.sdk:client-android`|AAR|Android 关键存储,设备远程测量和 JNI 支持的客户端集成|
+|`org.hyperledger.iroha.sdk:offline-wallet-android`|AAR|Android 基于`client-android`的离线钱包运输和集成|
 
-这些文物还没有出现在Maven中央.
-在本地上,从的 Iroha 来源修改:
+这些文物还没有在Maven Central上发布. 从注入的 Iroha 来源修改中构建并本地发布:
 
 ```bash
 cd kotlin
 ./gradlew publishToMavenLocal
 ```
 
-然后只选择您的应用程序需要的文物:
+然后选择您的应用程序需要的文物:
 
 ```kotlin
 repositories {
@@ -44,48 +41,40 @@ dependencies {
 }
 ```
 
-`core-jvm` 含有没有 Android 保持依赖性 Android 客户端和关键存储
-代码 `client-android`, 和使用 `offline-wallet-android` 对于 Android- 只有
-无线钱包和 JNI 流动.
+`core-jvm`不包含 Android 的依赖性.在 `client-android`中保存 Android 客户端和密钥存储代码,并且仅使用`offline-wallet-android`用于 Android 的离线钱包和 JNI 流.
 
 ## Kotlin 和Java兼容性 {#kotlin-and-java-compatibility}
 
-公众 API 是 Kotlin- 首先提供Java中接, JVM 呼叫者需要
-同等变化反映在相应的 `java/`
-实施. 新 Android 整合应从 Kotlin
-在上面的文物.
+公共 API 是 Kotlin 的首个,在 JVM 调用者需要时提供Java间接.相等变化反映在相应的 `java/`实现中.新的 Android 集成应该从上述 Kotlin 文物开始.
 
-所有的 Kotlin 模块执行 JDK 8 API 在编译时与
-`-Xjdk-release=8`, 尽管构建工具链本身使用 JDK 21. 不要
-使用 JDK 9+ APIs 在 SDK 它们的代码.
+所有的 Kotlin 模块执行 JDK 8 API 编译时与 `-Xjdk-release=8`, 尽管构建工具链本身使用 JDK 21. 不要使用 JDK 9+ APIs 在 SDK 这个代码.
 
 ## 建立和测试 {#build-and-test}
 
-运行手机 JVM 测试:
+运行便携式 JVM 测试:
 
 ```bash
 cd kotlin
 ./gradlew :core-jvm:test --console=plain
 ```
 
-建立一个 Android 艺术品:
+建造 Android 的文物:
 
 ```bash
 ./gradlew :client-android:assembleRelease \
   :offline-wallet-android:assembleRelease --quiet
 ```
 
-## 目前的覆盖范围 {#current-coverage}
+## 目前覆盖范围 {#current-coverage}
 
-其他 Kotlin SDK 包括:
+在 Kotlin SDK 中包括:
 
 - Norito 编码和解码
-- 常规账户和资产地址处理
-- 交易构建,签署和离线封装
-- Torii HTTP, WebSocket, 并且 SSE 客户
-- 多签名,订阅 SoraFS, Nexus, 和连接模型
-- Android 密钥存储和设备远程测量集成
-- Android 离线 QR, 在附近, NFC 运输
+- 规范账户和资产地址处理
+- 交易构建,签署和离线包裹
+- Torii HTTP,WebSocket 和 SSE 的客户
+- 多签名,订阅, SoraFS, Nexus 和连接型号
+- Android 键存储和设备远程测量集成
+- Android 离线运输 QR,附近运输和 NFC
 
-看看 [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/main/kotlin/README.md)
-对于特定模块 APIs 和准确的构建命令.
+查看[Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/main/kotlin/README.md)对模块特定的 APIs 和精确的构建命令.

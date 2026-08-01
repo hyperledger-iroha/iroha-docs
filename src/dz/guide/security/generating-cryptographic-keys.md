@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: 61f25e27550682f54e713c2512b25809bde21d53ea43cd1a5d5bfe13283af297
+translation_source_hash: ccbb076ef3e2ba45d074ad3394ac354d0c2233cdd4286c5fa7a77f0d1c413988
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # ཨེབ་ལྡེ་མིག་ཚུ་ བཟོ་སྐྲུན་འབདཝ་ཨིན། {#generating-cryptographic-keys}
@@ -12,7 +12,7 @@ translation_engine: nllb-200-ct2
 
 ## གཞི་རྟེན་ལག་ལེན་ {#basic-usage}
 
-Iroha ལས་ཁུངས་ཀྱི་དངུལ་ཁང་ནང་ལས་:
+Iroha གི་ source checkout ནང་ལས་:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519
@@ -24,17 +24,27 @@ JSON ཕྱིར་བཏོན་འདི་ TOML ཡང་ན་ རང་�
 cargo run --bin kagami -- keys --algorithm ed25519 --json
 ```
 
-བཀའ་རྒྱ་འདི་གིས་ མི་མང་གི་ལྡེ་མིག་ཅིག་དང་ སྒེར་གྱི་ལྡེ་མིག་གཅིག་ གསལ་བཀོད་འབདཝ་ཨིན། སྒེར་གྱི་སྒོ་ཕྱེ་འདི་གསང་བའི་ཡིག་ཆ་ཅིག་སྦེ་ལག་ལེན་འཐབ་དགོ། བཟོ་སྐྲུན་ལྡེ་མིག་ཚུ་ བསྡུ་མ་ཚུགས།
+བཀའ་རྒྱ་འདི་གིས་ public key དང་ གསང་སྲུང་མེད་པའི་ private key གཉིས་ཀྱི་གྲུབ་འབྲས་བཏོནམ་ཨིན། private key འདི་ secret material སྦེ་བཞག་དགོ། བཟོ་སྐྲུན་གྱི་ production key ཚུ་ repository ནང་ commit འབད་ནི་མི་འོང་།
+
+རྒྱབ་སྐྱོར་ཡོད་པའི་ Unix platform གུ་ secure local export ཡང་ན་ custody handoff འབདཝ་ད་ private key འདི་གྲུབ་འབྲས་ནང་མ་བཏོན་པར་ key pair གསརཔ་འདི་ owner-only གི་ directory སྟོངམ་ནང་བྲིས་:
+
+```bash
+cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
+```
+
+Parent directory འདི་ཧེ་མ་ལས་ཡོད་དགོ། Target directory འདི་གསརཔ་ ཡང་ན་ current user གྱི་བདག་དབང་ནང་ཡོད་མི་ mode `0700`, symbolic link མེད་མི་དང་ སྟོངམ་ཨིན་དགོ། `kagami` གིས་ `public.key` དང་ `private.key` འདི་ mode `0600` ནང་བྲིས་ཏེ་ private key འདི་གྲུབ་འབྲས་ནང་མི་བཏོན། `--pop` ཡོད་པ་ཅིན་ `pop.hex` ཡང་འབྲི་འོང་།
+
+Kagami གིས་ owner-only filesystem rules ཚུ་ངེས་པར་ལག་ལེན་འཐབ་མ་ཚུགས་པའི་ platform གུ་ `--out-dir` འདི་ fail closed འབད་དེ་འཛོལ་བ་སྟོན་འོང་། private-key file འདི་ unencrypted export ཨིན་པ་ལས་ hardware signer ཡང་ན་ non-exportable production signer མེན། འདི་ approved custody boundary ནང་ནང་འདྲེན་འབད་ཞིནམ་ལས་ deployment procedure དང་འཁྲིལ་ཏེ་ export file འདི་བཏོན་གཏང་།
 
 ## ཨལ་ག་རི་ཏམ་ཚུ་ {#algorithms}
 
 སྤྱིར་བཏང་གི་ ཨལ་ག་རི་ཏིམ་ཚུ་འདི་ཨིན།
 
-- `ed25519` བཟོ་མི་རྩིས་དང་ རྒྱང་བསྒྲགས་ངོ་རྟགས་ཚུ་ དེ་ལས་ གོང་འཕེལ་གྱི་དྲ་ལམ་མང་ཤོས་ཀྱི་དོན་ལུ་།
-- `secp256k1` ཁྱོད་ཀྱིས་ secp256k1རྩིས་ཁྲ་གི་ངོ་རྟགས་དགོ་པའི་སྐབས་
-- `bls_normal` ཚོད་ལྟ་འབད་ནིའི་མཐུན་རྐྱེན་གྱི་ལྡེ་མིག་ཚུ་གི་དོན་ལུ་ སྒྲིག་གཞི་འདི་གིས་ BLS རྒྱབ་སྐྱོར་འབད་ཚུགསཔ་བཟོཝ་ཨིན།
+- Client account དང་ streaming identity གི་དོན་ལུ་ `ed25519`།
+- Client account ལུ་ secp256k1 identity དགོཔ་ད་ `secp256k1`།
+- Build གིས་ BLS support འབད་མི་ད་ node ཡང་ན་ peer consensus identity རེ་རེའི་དོན་ལུ་ `bls_normal`།
 
-ཁྱོད་ཀྱིས་ བཟོ་སྐྲུན་འབད་མི་འདི་གིས་ རྒྱབ་སྐྱོར་འབད་མི་ ཨང་གྲངས་ཚུ་ བརྟག་ཞིབ་འབད་:
+ཁྱོད་ཀྱི་ build གིས་རྒྱབ་སྐྱོར་འབད་མི་ algorithm ངེས་ཏིག་ཚུ་འདི་གིས་བརྟག་དཔྱད་འབད་:
 
 ```bash
 cargo run --bin kagami -- keys --help
@@ -42,27 +52,29 @@ cargo run --bin kagami -- keys --help
 
 ## དངོས་གྲུབ་ཅན་གྱི་གོང་འཕེལ་གྱི་ལྡེ་མིག་ཚུ་ {#deterministic-development-keys}
 
-སླར་ལོག་འབད་ཚུགས་པའི་ སྒྲིང་སྒྲི་ཚུ་གི་དོན་ལུ་ སོན་འདི་ བཏབ་དགོ།
+Reproducible fixture གི་དོན་ལུ་ 32-byte seed འདི་ hexadecimal character 64 སྦེ་བཀོད་དེ་བྱིན། Optional `0x` prefix འདི་བཏུབ་ཨིན།
 
 ```bash
-cargo run --bin kagami -- keys --algorithm ed25519 --seed "dev-alice" --json
+cargo run --bin kagami -- keys --algorithm ed25519 \
+  --seed-hex 1111111111111111111111111111111111111111111111111111111111111111 \
+  --json
 ```
 
-སོན་འདི་ སྒེར་གྱི་ལྡེ་མིག་གི་ ཅ་ཆས་ཚུ་ཨིན། ས་གནས་ཀྱི་གོང་འཕེལ་དང་བརྟག་དཔྱད་ཚུ་གི་དོན་ལུ་རྐྱངམ་གཅིག་ ལག་ལེན་འཐབ་དགོ།
+Seed འདི་ private-key material ཨིན། Deterministic seed འདི་ local development དང་ test གི་དོན་ལུ་རྐྱངམ་ཅིག་ལག་ལེན་འཐབ། Production key འདི་ operating-system randomness ལས་བཟོ་ནིའི་དོན་ལུ་ `--seed-hex` མ་བྱིན།
 
-## BLS ལག་ལེན་གྱི་རྟགས་མཚན་ {#bls-proofs-of-possession}
+## BLS ངོས་ལེན་གྱི་ལྡེ་མིག་དང་ བདག་དབང་གི་ཁུངས་ཚུ་ {#bls-consensus-keys-and-proofs-of-possession}
 
-NPoSདང་ Nexus ཝེ་ལི་ཌ་ཊར་གི་གནས་གོང་ཚུ་ནང་ལུ་ BLS ཝེ་ལད་ར་ལྡེ་མིག་ཚུ་དང་ PoPs འདི་:
+Iroha 3 node དང་ peer consensus identities གིས་ BLS-normal keys ལག་ལེན་འཐབ་ཨིན། BLS-normal key དང་ possessive proof (PoP) བཟོ་ནི་འདི་:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
 ```
 
-JSON གིས་ `pop_hex` ཚུ་རྩིས་སྟོནམ་ཨིན། ཁྱོད་ཀྱིས་ `--pop` ལག་ལེན་འཐབ་པའི་སྐབས་ འདི་གི་གོང་ཚད་འདི་ ཐོན་སྐྱེད་འབད་ཡོད་པའི་ ཐོ་པོ་ሎጂདང་ ཡང་ན་ `trusted_peers_pop` ནང་དོན་ཚུ་དང་གཅིག་ཁར་ལག་ལེན་རྐྱབས་འོང་།
+`--pop` འདི་ `bls_normal` དང་གཅིག་ཁར་རྐྱངམ་ཅིག་ཆ་གནས་ཡོད། JSON output ནང་ `pop_hex` ཡོད། Signed genesis གིས་ voting validator རེ་རེའི་དོན་ལུ་ matching PoP དགོ། Peer configuration ནང་ non-empty `trusted_peers_pop` map གིས་ validator subset གདམ་ཁ་རྐྱབ་ཨིན། དེ་ནང་མེད་པའི་ trusted peer ཚུ་ observer ཨིན། Map སྟོངམ་ཨིན་པ་ཅིན་ BLS-normal trusted peer ཆ་མཉམ་ bootstrap candidate set ནང་འཛུལ་འོང་། Voting PoPs ཚུ་ signed genesis གིས་རང་བྱིན་འོང་།
 
 ## ཐོན་སྐྱེད་བཟོ་རྣམ་ཚུ་ {#output-formats}
 
-ཐིམ་ཕུག་བརྟག་དཔྱད་གི་དོན་ལུ་ default output ལག་ལེན་འཐབ་། `--json` རང་ལུགས་བཟོ་ནིའི་དོན་ལུ་དང་ `--compact` འདི་ script གཞན་ཅིག་གིས་ line oriented values དགོཔ་ཨིན་པ་ཅིན་:
+Terminal inspection གི་དོན་ལུ་ default output, automation གི་དོན་ལུ་ `--json`, script གཞན་ལུ་ line-oriented values དགོ་པ་ཅིན་ `--compact` ལག་ལེན་འཐབ་:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --compact

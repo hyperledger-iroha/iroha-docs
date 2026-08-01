@@ -6,39 +6,30 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# 嵌入式 Kaigi 在一个 JavaScript 应用程序 {#embed-kaigi-in-a-javascript-app}
+# 在 JavaScript 应用中嵌入 Kaigi {#embed-kaigi-in-a-javascript-app}
 
-Kaigi 允许应用程序创建一个对一个的音频/视频会议,支持钱包
-它们的生命周期通过 Iroha. 浏览器仍然处理媒体
-WebRTC, 在 Torii 在 Kaigi 指示提供持久会议
-记录,加密信号传输元数据,私人名单支持和使用事件.
+Kaigi 允许应用程序创建一个人对一个的音频/视频会议,其生命周期通过 Iroha. 浏览器仍然处理媒体 WebRTC, 在 Torii 和 Kaigi 指示提供持久的会议记录,加密信号传输元数据,私人名单支持和使用事件.
 
-这本教程显示了
-[Iroha 演示 JavaScript](https://github.com/soramitsu/iroha-demo-javascript)
-应用程序:
+本教程显示了 [Iroha Demo JavaScript](https://github.com/soramitsu/iroha-demo-javascript)应用程序所使用的最小集成模式:
 
-- 转载器创造 WebRTC 报价和答案
+- 转载者创建 WebRTC 的报价和答案
 - 申请桥标签和提交 Kaigi 交易
-- 简单的邀请链接只载有呼叫 ID 秘密地邀请他们.
-- 主持人看着 Torii 对于加密参与者的答案
+- 简单的邀请链接只包含调用 ID 和秘密的邀请.
+- 主机观察 Torii 进行加密参与者的答案
 
-这些例子使用 TypeScript 它们可以运行在电子中,
-一个安全后端的浏览器,或者一个拥有钱包扩展的网页应用程序.
-在生产中,不值得信赖的染码之外的私钥.
+这些示例使用 TypeScript 并被编写以使它们可以运行在Electron,一个安全后端的浏览器或一个带钱包扩展的网页应用程序中.
 
 ## 预先条件 {#prerequisites}
 
 你需要:
 
-- 一个 Kaigi- 有能力 Torii 终点
-- 东方的账户和客人的账户
-- 通过安全应用程序桥梁或钱包访问每个帐户的签名密钥
+- 一个具有 Kaigi 能力的 Torii 终端点
+- 寄宿人的账户和客人的帐户
+- 通过安全应用程序桥梁或钱包获取每个帐户的签名密钥
 - 浏览器摄像头/麦克风权限
-- Node.js 如果您正在使用 JavaScript 演示或原生
-  `@iroha/iroha-js` 直接绑定
+- Node.js 20+ 如果您直接使用 JavaScript 示范或本地`@iroha/iroha-js`绑定
 
-为了获得完整的工作参考, Iroha 来源
-现金:
+为了获得完整的工作参考,在 Iroha 来源检查旁边克隆示范:
 
 ```bash
 mkdir iroha-wallet-workspace
@@ -56,15 +47,9 @@ npm install
 npm run dev
 ```
 
-使用示范
-[`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/main/javascript/iroha_js)
-从兄弟姐妹 Iroha 它的源存储库. `file:` 依赖性解决了
-如果本地绑定变化,
-`iroha/javascript/iroha_js`; 清洁包装目录不包含
-需要的货物工作空间 `npm run build:native`.
+使用演示 [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/main/javascript/iroha_js) 从兄弟姐妹 Iroha 它的源存储库. `file:` 如果本土的绑定变化,重建它根据 `iroha/javascript/iroha_js`; 清洁包装目录不包含需要的货物工作空间 `npm run build:native`.
 
-之前,在 TAIRA, 检查公众 Torii 表面
-演示取决于:
+在在 TAIRA 上进行现场会议之前,请检查演示程序依赖于的公共 Torii 表面:
 
 ```bash
 TAIRA=https://taira.sora.org
@@ -73,23 +58,19 @@ curl -fsS "$TAIRA/v1/kaigi/relays"
 curl -fsS "$TAIRA/v1/kaigi/relays/health"
 ```
 
-这些命令证实 TAIRA 是活着的. Kaigi 继电器遥测是
-它们没有提交 Kaigi 一个真正的交易 `CreateKaigi` 或
-`JoinKaigi` 资助的测试需求 TAIRA 通过演示的账户和签名
-桥或其他支钱包的桥.
+这些命令验证 TAIRA 是现场的,并且 Kaigi 继电远程测量可用.它们不提交 Kaigi 交易.一个真正的`CreateKaigi`或`JoinKaigi`测试需要资助 TAIRA 账户和通过演示桥或其他钱包支的桥签名.
 
 ## 建筑 {#architecture}
 
-保持 Kaigi 集成分为三层:
+保持 Kaigi 集成分为三个层:
 
-| 层 | 责任 |
+|层|责任|
 | --- | --- |
-| UI | 选项,会议表格,邀请链接显示,媒体控制 |
-| WebRTC | `RTCPeerConnection`, 地方媒体,报价及答案描述 |
-| Iroha 桥梁 | 签字, `CreateKaigi`, `JoinKaigi`, `EndKaigi`, 信号投票 |
+|UI|邀请链接显示,媒体控制方式|
+|WebRTC|`RTCPeerConnection`,当地媒体,报价和答案描述 |
+|Iroha 桥|签名, `CreateKaigi`, `JoinKaigi`, `EndKaigi`,信号投票 |
 
-应用程序桥梁可以是电子预装 API, 一个钱包扩展器,或一个后端
-它应该暴露一个小的表面 UI:
+应用程序桥梁可以是电子预装 API,钱包扩展或后端终点. 它应该暴露在一个小的表面上 UI:
 
 ```ts
 type KaigiMeetingPrivacy = "private" | "transparent";
@@ -197,13 +178,11 @@ type KaigiBridge = {
 };
 ```
 
-在演示应用中,这些桥梁方法是通过
-`@iroha/iroha-js`, 地方签名,加密 Kaigi 转载数据 Torii 电话.
+在演示应用中,这些桥梁方法是通过 `@iroha/iroha-js`,本地签名,加密 Kaigi 元数据和 Torii 通话实现的.
 
 ## 邀请助手 {#invite-helpers}
 
-使用 Torii- 兼容的电话 IDs 在 `domain.dataspace:meeting` 演示
-使用 `kaigi.universal:<call-name>` 对于生成的会议.
+使用 Torii- 兼容的电话 IDs 在 `domain.dataspace:meeting` 在演示中使用 `kaigi.universal:<call-name>` 对于产生会议.
 
 ```ts
 const KAIGI_WINDOW_MS = 24 * 60 * 60 * 1000;
@@ -260,9 +239,7 @@ export function parseInviteLink(link: string): {
 
 ## WebRTC 助手 {#webrtc-helpers}
 
-主持人创建了一个报价, `CreateKaigi`, 并且保持了
-客人将加密的信息传递给客人.
-提供,创建一个答案, `JoinKaigi`.
+主持人创建了一个报价,通过 `CreateKaigi`存储它,并保持窗口开放,以便它可以应用客人的答案. 客人获取加密的报价,创建一个答案,并发出答案的帖子与 `JoinKaigi`.
 
 ```ts
 const rtcConfig: RTCConfiguration = {
@@ -332,7 +309,7 @@ export async function createAnswerDescription(
 }
 ```
 
-连接流到你的 UI 有普通视频元素:
+通过普通的视频元素将流连接到您的 UI:
 
 ```ts
 export function attachKaigiMedia(input: {
@@ -356,13 +333,13 @@ export function attachKaigiMedia(input: {
 }
 ```
 
-## 主持人:创建一个会议链接 {#host-create-a-meeting-link}
+## 主持人: 创建一个会议链接 {#host-create-a-meeting-link}
 
-主机流量:
+宿主流量:
 
-1. 开放式相机和麦克风
+1. 开放式摄像机和麦克风
 2. 创建一个 Kaigi 信号键对
-3. 创建一个 WebRTC 报价
+3. 创建一个 WebRTC 的报价
 4. 提交 `CreateKaigi`
 5. 分享一个紧的邀请链接
 
@@ -431,8 +408,7 @@ export async function hostKaigiMeeting(input: {
 }
 ```
 
-表演 `inviteLink` 在你的 UI. 用户可以复制,在另一个钱包中打开.
-或将其转换为应用程序路线,如:
+在您的 UI 中显示`inviteLink`.用户可以复制它,在另一个钱包中打开它,或者将其转换为应用程序路线,如:
 
 ```ts
 export function inviteRoute(inviteLink: string): string {
@@ -445,12 +421,12 @@ export function inviteRoute(inviteLink: string): string {
 
 ## 嘉宾:参加一次会议 {#guest-join-a-meeting}
 
-客人流量:
+客人的流量:
 
 1. 分析邀请
-2. 获取加密通话的报价 Torii
+2. 从 Torii 获取加密通话报价.
 3. 创建一个 WebRTC 答案
-4. 提交 `JoinKaigi` 有加密答案元数据
+4. 提交 `JoinKaigi` 与加密答案元数据
 
 ```ts
 export async function joinKaigiMeetingFromInvite(input: {
@@ -504,15 +480,11 @@ export async function joinKaigiMeetingFromInvite(input: {
 }
 ```
 
-如果会议是透明的,您可以在
-对于私人会议,请保持 `walletIdentity` 除非用户设置
-他选择明确地透露.
+如果会议是透明的,您可以在加入请求中包括一个钱包显示字符串. `walletIdentity` 除非使用者明确选择披露.
 
-## 主持人:用客人的回答 {#host-apply-the-guest-answer}
+## 主持人:用客人的答案 {#host-apply-the-guest-answer}
 
-在创建现场会议后,主持人应该观看 Kaigi 活动和民意调查
-应用第一个有效的答案到主机的同行
-连接.
+在创建现场会议后,主机应该观看 Kaigi 事件并查询加密答案信号.将第一个有效的答案应用于主机的同行连接.
 
 ```ts
 export async function watchForKaigiAnswer(input: {
@@ -566,12 +538,11 @@ export async function watchForKaigiAnswer(input: {
 }
 ```
 
-存储返回订阅 ID 所以你的 UI 监视者可以在
-宿主挂了电话,或者离开了.
+存储返回订阅 ID 以便您的 UI 可以在主机关上或导航离开时停止观看器.
 
 ## 会议结束 {#end-the-meeting}
 
-结束来自创建该帐户的呼叫:
+结束来自创建它的主机帐户的呼叫:
 
 ```ts
 export async function endKaigi(input: {
@@ -594,11 +565,9 @@ export async function endKaigi(input: {
 }
 ```
 
-## 私人方式融资 {#private-mode-funding}
+## 私人模式的资金 {#private-mode-funding}
 
-个人 Kaigi 创建,合并和终结操作可能需要屏蔽 XOR 对于
-你的应用程序应该发现这个错误,
-在重新尝试之前,自卫行动.
+专用 Kaigi 创建,加入和终结操作可能需要屏蔽的 XOR 用于私人入口点费用.您的应用程序应该发现这个错误,并在重新尝试之前提供自我屏蔽行动.
 
 ```ts
 type PrivateKaigiFundingBridge = KaigiBridge & {
@@ -648,56 +617,42 @@ export async function selfShieldForPrivateKaigi(input: {
 }
 ```
 
-在演示中, UI 要求用户自卫,然后再尝试
-创建或加入行动.
+在演示中, UI 提示用户自我屏蔽,然后重新尝试创建或加入原始操作.
 
 ## 手动回归 {#manual-fallback}
 
-自动信号依赖于现场钱包, Kaigi- 有能力 Torii 航线和
-在私人模式下生成证据.
-限制环境:
+自动信号取决于现场钱包, Kaigi - 能力的 Torii 路线,以及私人模式中的证明生成.
 
-- 如果 `CreateKaigi` 如果不成功,请显示包含该报价的手动邀请
-- 如果 `JoinKaigi` 失败,显示原始答案包
-- 让主机粘贴答案包,然后打电话 `setRemoteDescription`
+- 如果 `CreateKaigi` 失败,请显示包含该报价的手动邀请.
+- 如果 `JoinKaigi` 失败,请显示原始答案包
+- 让主机粘贴答案包,然后拨打 `setRemoteDescription`
 
-手动倒退是用于调试 WebRTC, 但它并未提供
-与直播网络相同的私人连锁信号保证 Kaigi 流量.
+手动反弹对调试 WebRTC 有用,但它不提供与直播 Kaigi 流程相同的私人链上信号保证.
 
 ## 测试检查列表 {#test-checklist}
 
-对于单元测试,请嘲笑桥梁,并确认您的 UI 超过预期
-Kaigi 有效载荷:
+在单元测试中,请模仿桥梁并确认您的 UI 超越预期的 Kaigi 有用负载:
 
-- 主持人创建本地媒体并提交 `createKaigiMeeting`
-- 主机显示一个 `iroha://kaigi/join?call=...&secret=...` 邀请
-- 客人分析邀请,电话 `getKaigiCall`, 提交
-  `joinKaigiMeeting`
-- 接待民意调查或答案信号的钟表,并应用答案
-- 隐私模式提示,在屏蔽时进行自我屏蔽 XOR 失踪
-- 当没有现场信号时出现手动倒车
+- 主机创建本地媒体,并提交 `createKaigiMeeting`
+- 接待者显示`iroha://kaigi/join?call=...&secret=...`邀请
+- 客人分析邀请,打电话 `getKaigiCall`,并提交 `joinKaigiMeeting`
+- 举办民意调查或对答案信号的钟表,并应用答案
+- 缺失屏蔽时自闭保护的私人模式提示 XOR
+- 当没有现场信号时,出现手动倒车
 
-对于一个完整的参考测试套件,请参阅演示应用程序 Kaigi 视图和预装
-桥梁测试:
+对于一个完整的参考测试套件,请参见示范应用程序的 Kaigi 视图和预装桥梁测试:
 
 ```bash
 npm test -- tests/kaigiView.spec.ts tests/preloadKaigiBridge.spec.ts
 npm run e2e:ui
 ```
 
-其他 UI 烟雾测试证明 `/kaigi` 一个真正的媒体测试
-还需要两个资金的钱包加上两个窗户或设备,因为交易
-签字,摄像头,麦克风和 WebRTC 根据运行时间的权限不同.
+UI 烟雾测试验证了`/kaigi`路线的效果.真正的媒体测试仍然需要两个资助钱包加上两个窗户或设备,因为交易签名,摄像头,麦克风和 WebRTC 权限因运行时间而不同.
 
-如果您正在测试 TAIRA 和通话特定路线返回 `404`, 首先
-确认主机钱包成功提交 `CreateKaigi`. 继电器健康
-在任何特定的呼叫发生之前,终端点可供使用.
+如果您正在对 TAIRA 进行测试,并且呼叫特定的路线返回 `404`,首先确认主机钱包成功提交 `CreateKaigi`.在任何特定呼叫之前,继电器健康终端点可获得.
 
 ## 下一步 {#next-steps}
 
-- 添加使用记录 `RecordKaigiUsage` 当您的应用程序可靠时
-  会议时间会计.
-- 通过登记和监控继电器 `/v1/kaigi/relays` 在使用继电器时
-  它们的表现.
-- 表面 `KaigiRosterSummary`, `KaigiUsageSummary`, 并且
-  `KaigiRelayHealthUpdated` 在操作员仪表板中的事件.
+- 如果您的应用程序有可靠的会计会议时间,请使用 `RecordKaigiUsage` 添加用户记录.
+- 通过 `/v1/kaigi/relays`记录和监测继电器,使用继电器表格.
+- 在操作员仪表板中的表面 `KaigiRosterSummary`, `KaigiUsageSummary`和 `KaigiRelayHealthUpdated`事件.

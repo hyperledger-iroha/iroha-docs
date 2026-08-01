@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/instructions.md
-translation_source_hash: 3251078b2b2268ff78563c02a0f935c63dc0569f0b6d38071150cbb4b89394d6
+translation_source_hash: adc3eff9758dd73e9114e78eaa18ddf6271db3bc4042611e1ed6ed1aac226246
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -19,7 +19,7 @@ Esta é a lista completa das instruções especiais Iroha:
 | [SetKeyValue/RemoveKeyValue ](#setkeyvalue-removekeyvalue) |Atualize os metadados de objetos da blockchain. |
 | [SetParameter](#setparameter)|Defina um parâmetro de largura da cadeia. |
 | [Subsídio/Revocação ](#grant-revoke) |Dar ou remover permissões e papéis. |
-| [Transferência](#transfer) |Transferência de propriedade ou valor do ativo. |
+| [Transferência](#transfer) |Transferência de propriedade ou valor do activo. |
 | [Localizações de garantia e activos nativos ](#native-escrow-and-asset-locks) |Bloquear ativos numéricos na custódia do protocolo. |
 | [ExecuteTrigger](#executetrigger)|Execução de gatilhos. |
 | [Log/Custom/Upgrade](#other-instructions) |Registrar, estender ou atualizar o comportamento do tempo de execução. |
@@ -43,7 +43,7 @@ Algumas instruções exigem que se especifique um destino. Por exemplo, se trans
 | [Transferência](#transfer) |Domínios, definições de activos, ativos numéricos, NFTs |contas |
 | [Localizações de garantia e activos nativos ](#native-escrow-and-asset-locks) |Ativos numéricos em garantia, bloqueio de activos, compromissos anônimos em garantia |compradores, destinos ou divisões de litígios |
 | [ExecuteTrigger](#executetrigger)|gatilhos .|                      |
-| [Log/Custom/Upgrade](#other-instructions) |registos, cargas úteis específicas para executores, atualizações do executor |                      |
+| [Log/Custom/Upgrade](#other-instructions) |registos, cargas úteis específicas para executores, atualizações de executores |                      |
 
 Há também uma outra maneira de ver ISI, em termos do objeto do livro-razão que eles tocam:
 
@@ -128,7 +128,7 @@ Você pode registrar contas, definições de ativos, NFTs, pares, funções e ga
 
 Os lotes RWA são criados através da instrução específica `RegisterRwa`. O código atual não expõe uma instrução `UnregisterRwa`; use `RedeemRwa` para retirar a quantidade representada.
 
-::: Informações
+::: info
 
 Observe que, dependendo da forma como você decidir configurar o seu [Bloco de Gênesis](/pt/guide/configure/genesis.md) em `genesis.json` (especificamente, se incluir ou não o registo de tokens de permissão), O processo de registo de uma conta pode ser muito diferente. Em geral, podemos resumir isto assim:
 
@@ -139,13 +139,13 @@ Discutiremos estas diferenças em grande detalhe quando [Comparar cadeias de blo
 
 :::
 
-::: Informações
+::: info
 
 O registo de um peer é atualmente a única maneira de adicionar pares que não faziam parte do original peer confiável definido para a rede.
 
 :::
 
-Referir-se a um dos guias específicos da língua para acompanhá-lo no processo de registro de objetos em uma blockchain:
+Use um guia específico de língua para registrar objetos blockchain:
 
 |Linguagem |Guia |
 | --------------------- | ------------------------------------------------------------------------------------------------------- |
@@ -170,7 +170,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger domain unregister --id docs.universal
 ```
 
-Contas registadas e não registradas:
+Contas de registo e não registadas:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -249,7 +249,7 @@ A moagem e a queima podem referir-se a activos numéricos e desencadeios com um 
 
 Os ativos são montados em uma conta específica, geralmente aquela que registrou o ativo em primeiro lugar. As quantidades de ativos não são negativas, então você nunca pode ter um `$-1.0` de um ativo ou queimar uma quantidade negativa e obter uma moeda.
 
-Referir-se a um dos guias específicos da linguagem para acompanhá-lo através do processo de mineração de ativos em uma blockchain:
+Use um guia específico de língua para minar os ativos da blockchain:
 
 - [CLI](/pt/get-started/operate-iroha-via-cli.md)
 - [Rust](/pt/guide/tutorials/rust.md)

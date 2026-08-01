@@ -20,6 +20,6 @@ translation_engine: nllb-200-ct2
 
 <CompatibilityMatrixTable />
 
-::: བརྡ་དོན་ཚུ་
+::: info
 `VITE_COMPAT_MATRIX_URL` གཞི་སྒྲིག་རྐྱང་སྦེ་ བསྡུ་སྒྲིག་འབད་ཡོད་པའི་གློག་བརྙན་འདི་ གྲ་སྒྲིག་འབད་ཚུགས་པའི་ backend དང་གཅིག་ཁར་སེལ་འཐུ་འབད་ནི་ཨིན། འདི་མེད་པ་ཅིན་ གློག་ལེབ་དེ་ `src/public/compat-matrix.json` ལེན་འོང་།
 :::

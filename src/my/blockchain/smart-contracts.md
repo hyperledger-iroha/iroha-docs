@@ -1,9 +1,9 @@
 ---
 translation_locale: my
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: ed622cdb1d6a47635d0753c98f80aaa903b916133f43bc9fdab268512d0ace69
+translation_source_hash: 7c35c609442df65328fa619b6673be76f801cfc2abc28afd853d7fe61e439e9c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # ပညာရှိ စာချုပ်များ {#smart-contracts}
@@ -15,9 +15,9 @@ Iroha ငွေပေးချေမှုတွေမှာ `Executable` အသ
 - `Executable::Ivm`: Iroha VM bytecode
 - `Executable::IvmProved`: ကြိုတင် တွက်ချက်ထားသော ညွှန်ကြားမှု အပေါ်လွှာနှင့် သက်သေခံတာဝန်များရှိသည့် Iroha VM ဘိုက်ကုဒ်
 
-Kotodama ရှိသည် Iroha ဒါက အဆင့်မြင့် စမတ်ကုထုံး ဘာသာစကားပါ။ `.ko` source file ကို deterministic သို့ compiles IVM conventionally stored as a byte code ကို `.to` တပ်ဆင်ဖို့ လက်ရာပစ္စည်းပါ။ Kotodama ရည်မှန်းချက်များ IVM; ဒါက တစ်ကိုယ်တည်း မဖြစ်ဘူး။ RISC-V ဒါမှမဟုတ် WebAssembly ရည်မှန်းချက်ပါ။
+Kotodama သည် Iroha ၏ အဆင့်မြင့် စမတ်ကန်ထရိုက် ဘာသာစကားဖြစ်သည်။ `.ko` အရင်းအမြစ်ဖိုင်ကို တိကျသတ်မှတ်ထားသော IVM ဘိုက်ကုဒ်အဖြစ် စုစည်းပြီး တပ်ဆင်ရန်အတွက် `.to` အာတီဖက်အဖြစ် ထုံးစံအတိုင်း သိမ်းဆည်းသည်။ Kotodama သည် IVM ကိုသာ ပစ်မှတ်ထားသည်။ RISC-V သို့မဟုတ် WebAssembly ကို ပစ်မှတ်မထားပါ။
 
-ပထမထုတ်ပြန်ချက်သည် ABI ဗားရှင်းကိုသာထောက်ပံ့သည်။ 1 syscall နှင့် pointer-ABI မူဝါဒကိုစာချုပ်လက်ခံခြင်းနှင့်အကောင်အထည်ဖော်ခြင်းဖြင့်စည်းမျဉ်းမဲ့တင်းကျပ်စေသည်။ Runtime ကိုက်ညီမှု toggle မရှိပါ။
+ပထမဆုံး release တွင် ABI version 1 ကိုသာ support လုပ်သည်။ syscall နှင့် pointer-ABI policy ကို contract admission နှင့် execution က အခြေအနေမဲ့ အတည်ပြုအသုံးချသည်။ runtime compatibility toggle မရှိပါ။
 
 ## ပညာရှိ စာချုပ်များကို ဘယ်အချိန် အသုံးပြုရမလဲ။ {#when-to-use-smart-contracts}
 

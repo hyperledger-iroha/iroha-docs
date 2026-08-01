@@ -1,47 +1,47 @@
 ---
 translation_locale: zh-hans
 translation_source: /guide/security/index.md
-translation_source_hash: 0aaeadd98f9d16f8459553b58b2b73c47b792bbb5bff0cbe848f9cf4ababe9be
+translation_source_hash: ec7fc2f950b007f52d837473ad7021565923e537df1d18b86055fb483cda375c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # 安全 {#security}
 
-在使用时 Iroha 或任何其他区块链账本,对于金融组织来说,安全是至关重要的,因为它构成了敏感财务数据和交易常规行业的信任基础.恶意行为成功违反安全行为可能会对您带来毁灭性的后果.因此,建立预防性安全措施是保护您敏感数据的完整性和机密性至关重要的.
+确保一个 Iroha 的部署,就像处理敏感数据和价值的任何系统一样.保护签名密钥,网络访问,节点操作,监测和事件响应. 一份账本并不能消除这些控制的必要性.
 
 ### 航行 {#navigation}
 
-在本节中,您可以了解如何确保您的安全性. Iroha 为了了解更多,请选择以下话题之一:
+在本节,您可以了解保护 Iroha 网络的各个方面. 为了了解更多,请选择以下话题之一:
 
 - [安全原则](./security-principles):
 
-  个人和组织可以采用的核心安全原则来保护其数据并降低泄露或泄漏的可能性.
+保护数据和降低违规风险的核心原则.
 
 - [虚拟私人网络](./vpn.md):
 
-  如何使用 VPN 限制同行关系, Torii, 在私人或联盟部署中,运营商的访问.
+如何使用 VPN 来限制同行到同行, Torii,以及运营商在私人或联盟部署中的访问.
 
 - [运营安全](./operational-security.md):
 
-  确保网络日常运营的最佳实践,包括访问控制,监控,事件响应,浏览器使用等.
+访问,监控,应对事件和操作员工作站的日常控制.
 
 - [欺诈监测](./fraud-monitoring.md):
 
-  如何使用账本事件,查询,权限和操作信号来检测可疑活动并保存响应证据.
+如何使用账本事件,查询,权限和运营信号来检测可疑活动并保存响应证据.
 
 - [密码安全](./password-security.md):
 
-  一个深入的密码透,创造强大的密码并避免密码漏洞.
+密码缩,强密码构建和常见失败模式.
 
 - [公钥密码](./public-key-cryptography.md):
 
-  介绍公共密钥加密,加密,签名及其在区块链内建立安全通信中的作用.
+公共密钥加密,签名和认证通信.
 
   - [生成加密钥](./generating-cryptographic-keys.md):
 
-    如何生成和使用加密密钥的说明 `kagami` (一款配套工具, Iroha).
+通过 `kagami`生成支持的加密钥.
 
-  - [存储加密钥](./storing-cryptographic-keys.md):
+  - [存储密码密钥](./storing-cryptographic-keys.md):
 
-    通过多种不同的方法来保护您的加密密钥的最佳实践.
+存储加密密钥,使用适合部署的层级控制.

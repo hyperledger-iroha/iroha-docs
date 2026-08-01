@@ -20,6 +20,6 @@ translation_engine: nllb-200-ct2
 
 <CompatibilityMatrixTable />
 
-::: מידע
+::: info
 להגדיר `VITE_COMPAT_MATRIX_URL` רק כדי לשבור את תמונת ההצלחה המובולקת עם אחורה חיה מתאימה. ללא משתנה זה, הדף ממלא `src/public/compat-matrix.json`.
 :::

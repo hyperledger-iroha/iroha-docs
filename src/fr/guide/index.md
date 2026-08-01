@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /guide/index.md
-translation_source_hash: 588a55d0a967f890fac26bf47c34c360a4542b0d45b1edc1e37cd4833c60f349
+translation_source_hash: 5ea24369e85692bd9069e446d1e50612efade2d83e4ddf73a4980582a2064a0e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,7 +15,7 @@ Utilisez cette section lorsque vous construisez, exploitez ou intégrez Iroha. C
 |Section |Utilisez-le pour |
 | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
 | [SDK Des tutoriels](/fr/guide/tutorials/) |Configuration du client spécifique à la langue et échantillon d'applications |
-| [Les meilleures pratiques](/fr/guide/best-practices/) |L'orientation axée sur la production regroupée par le développement, la modélisation des données, le déploiement, les opérations, la sécurité et la préparation au lancement |
+| [Les meilleures pratiques](/fr/guide/best-practices/) |L'orientation de la production pour le développement, le déploiement, les opérations, la sécurité et les sorties |
 | [Configuration et gestion ](/fr/guide/configure/overview.md) |Configuration locale par les pairs, génèse, configuration du client, clés et gestion par les paires |
 | [La sécurité ](/fr/guide/security/) |Gestion des clés, sécurité opérationnelle, VPNs, surveillance de la fraude et hygiène des autorisations |
 | [Les opérations avancées](/fr/guide/advanced/metrics.md) |Mesures, vérifications de performances, tests de chaos, rechargement à chaud et fonctionnement en métal nu|

@@ -26,7 +26,7 @@ translation_engine: nllb-200-ct2
 
 يحتوي ملفات التكوين TOML على حقل إضافي `extends` ، يشير إلى ملفات أخرى TOML. يمكن أن تكون مسارًا واحدًا أو العديد من المسارات:
 
-::: مجموعة رموز
+::: code-group
 
 ```toml [Single]
 extends = "single-path.toml"
@@ -40,7 +40,7 @@ extends = ["file1.toml", "file2.toml"]
 
 Iroha سوف تقرأ بشكل متكرر جميع الملفات المحددة في `extends` وتقوم بتجميعها إلى طبقات، حيث تقوم هذه الأخيرة بإعادة كتابة الملفات السابقة على مستوى المعايير. على سبيل المثال، إذا كانت القراءة في `config.toml`:
 
-::: مجموعة رموز
+::: code-group
 
 ```toml [config.toml]
 extends = ["a.toml", "b.toml"]

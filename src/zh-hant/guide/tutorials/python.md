@@ -8,40 +8,28 @@ translation_engine: nllb-200-ct2
 
 # Python {#python}
 
-其他國家 Python SDK 在上游工作空間中是 `iroha-python`. 首先, Iroha 3
-發放目標目前的 Torii 及其他 Norito 封裝版本的插件
-或是您的集成所使用的源改版, SDK 結節保持在
-這樣的電郵形式修改.
+其他 Python SDK 在上游工作空間中是 `iroha-python`. 第一個. Iroha 3 釋放目標 Torii 和 Norito 嵌入您的集成所使用的包裝版本或源修改,以便 SDK 和節點保持在相同的電線格式修改.
 
-以下只能閱讀的例子與公眾比較 Taira 在
-`https://taira.sora.org`. 交易模板是突變的例子:
-需要真正的 Taira 權威,私密鍵,氣體元數據以及任何運營商
-目標路線需要的令牌,
+下面的僅可閱讀示例與公衆 Taira 在 `https://taira.sora.org` 進行了檢查. 轉換示例是交易模板:它們需要一個真正的 Taira 權威,私鑰,氣體元數據和任何目標路線要求的運營商代幣才能提交.
 
-使用以下順序的例子:
+使用如下順序的例子:
 
-| 階段 | 面對公眾的情況 Taira? | 你需要的 |
+|階段| 與公衆競爭 Taira? |你需要什麼?|
 | --- | --- | --- |
-| 只有閱讀客戶通話 | 沒有任何問題. | Python 包裝加上網路接入 |
-| 局部簽名和指令制造商 | 沒有網路通話, `submit()` | 您的基本材料和原生擴展 |
-| 轉換交易和服務呼叫 | 只有您自己的資金. | 管理局帳戶,私密鍵,連鎖 ID, 收費元數據,收費資產餘額和路線代幣 |
-| 聯繫框架代克,加密碼和 GPU 助手 | 只有本地 | 在本地延伸; GPU 助手也需要一個 CUDA- 有能力的後端 |
+|只有讀取的客戶通話|是的.|Python 包加上網絡接入 |
+|地方簽名和指令建設者|在 `submit()`之前,沒有網絡通話.|你的原始擴展和關鍵材料|
+|移動交易和服務調用|只有你自己的資金賬戶|權威機構賬戶,私鑰,鏈 ID,費用元數據,費用資產餘額和路線代幣 |
+|連接框架編碼器,加密和 GPU 助手|只有本地|GPU 助手也需要一個能夠使用 CUDA 的後端|
 
-## 裝置 {#install}
+## 安裝 {#install}
 
-包裝元數據名稱是 `iroha-python`. 請不要假設沒有支的 PyPI
-安裝與直播相匹配 Taira 裝置一個車輪或源支票,
-您的集成目標是:
+包裝元數據名稱是 `iroha-python`.不要假設一個未插入的 PyPI 安裝與現場 Taira 網絡相匹配.安裝從相同的上游修改構建的輪或源檢查,您的集成目標:
 
 ```bash
 python -m pip install /path/to/iroha_python-*.whl
 ```
 
-如果您的項目直接使用上游工作空間, Python
-在執行使用例之前建立本地擴展
-`Instruction`, `TransactionDraft`, 簽名,加密, SoraFS 來自原住民的援助者, GPU
-使用 build 這個命令從上流
-`python/iroha_python/README.md`, 檢查本土出口負荷是否:
+如果您的項目直接消耗上游工作空間, Python 在運行使用例之前,建立本地擴展 `Instruction`, `TransactionDraft`, 簽名,加密, SoraFS 原住民的援助者, GPU 使用從上游構建命令. `python/iroha_python/README.md`, 然後檢查本土出口負載:
 
 ```bash
 cd python/iroha_python
@@ -53,13 +41,11 @@ print(generate_ed25519_keypair().public_key.hex())
 PY
 ```
 
-如果 `create_torii_client` 但沒有進口 `Instruction` 或是
-`generate_ed25519_keypair` 沒有錯, Python 這項方案可供使用,
-沒有原住民延伸.
+如果`create_torii_client`進口但 `Instruction`或 `generate_ed25519_keypair`未成功,則純的 Python 包裝可用,但本地擴展不存在.
 
 ## 快速開始 {#quickstart}
 
-開始使用公共,只能閱讀 Taira 目的地:
+開始使用公開,僅可閱讀的 Taira 終端點:
 
 ```python
 from iroha_python import (
@@ -77,16 +63,11 @@ for account in accounts.items:
     print(account.id)
 ```
 
-## 分享的設定 {#shared-setup}
+## 分享的設置 {#shared-setup}
 
-使用這個設定進行突變模板.
-Taira 權威,私钥,令牌和資產/帳戶 IDs 您的部署
-在提交之前.
+在提交之前,請使用此設置用於突變模板. 取代您的部署中的每個位置持有者以 Taira 權威,私鑰,令牌和資產/賬戶 IDs.
 
-`authority` 是簽署交易的帳戶. `private_key` 必須符合
-這個帳號, `CHAIN_ID` 必須與目標網絡相匹配, `TX_METADATA` 必須
-網頁所預期的收費欄位.
-沒有故意無效,因此他們不是偶然提出的.
+`authority`是簽署交易的賬戶. `private_key`必須與該帳戶匹配, `CHAIN_ID`必須與目標網絡匹配,並且`TX_METADATA`必須包含網絡預期的費用字段.下面的位置持有者故意無效,因此它們不是偶然提交.
 
 ```python
 from iroha_python import (
@@ -133,19 +114,13 @@ def submit(*instructions):
     )
 ```
 
-`Instruction.*` 只有建立指令的有效負荷. `submit()` 這是
-在哪裡? SDK 簽署交易, Torii, 在等待一個
-國家的地位.
+`Instruction.*`只調用構建指令的有效載荷. `submit()`是 SDK 簽署交易,發送到 Torii 並等待狀態的地點.
 
-## 收費和天然氣 {#fees-and-gas}
+## 費用和天然氣 {#fees-and-gas}
 
-寫交易需要收費元數據和資金的收費資產餘額. Taira,
-收費資產由公共管道提供資金,交易元數據必須
-包含 `gas_asset_id`. 在此, Minamoto, 收費是以實現金支付的 XOR 以及該資產
-ID 該系統的配置是如何建立的.
+在 Taira 中,費用資產由公共水龍頭提供資金,交易轉賬數據必須包含 `gas_asset_id`.在 Minamoto 上,費用以真實 XOR 支付,而資產 ID 來自該網絡配置.
 
-收費的數據是該交易所屬的, 而不是單個指示.
-`submit()` 接上的助手 `TX_METADATA` 在每個交易中:
+費用元數據屬於交易,而不是單個說明.上面的 `submit()`輔助員將 `TX_METADATA` 附加到它構建的每個交易中:
 
 ```python
 TX_METADATA = {
@@ -170,9 +145,7 @@ envelope, status = client.build_and_submit_transaction(
 )
 ```
 
-在發送信件之前, 確保該權威帳戶擁有足夠的費用
-該產品的精確水和產品. ID 網路特異性; Taira
-形狀:
+在發送信件之前,請確保權威賬戶擁有足夠的費用資產. 精確的龍頭和資產 ID 是網絡特定的;這是 Taira 形狀:
 
 ```python
 FEE_ASSET_DEFINITION = "6TEAJqbb8oEPmLncoNiMRbLEK6tw"
@@ -190,11 +163,9 @@ if not fee_assets.items:
     raise RuntimeError("fund the authority account with the Taira fee asset first")
 ```
 
-把混凝土回來了. `asset_id` 還是使用在平衡檢查中.
-`gas_asset_id` 基數字段使用收費資產定義 ID.
+龍頭返回用於餘額檢查的混凝土 `asset_id`.`gas_asset_id`元數據領域使用費用資產定義 ID.
 
-透過將地圖集結合, 將應用程式元數據與收費元數據分開
-在建立交易時:
+在構建交易時,將應用程序元數據與費用元數據分開,併合並地圖:
 
 ```python
 APP_METADATA = {"source": "python-docs"}
@@ -210,13 +181,11 @@ draft = TransactionDraft(
 )
 ```
 
-如果您忽略了收費元數據, 使用錯誤的收費資產,
-實際網路應拒絕交易,
-其他有效的負荷.
+如果您省略了費用元數據,使用錯誤的費用資產,或與未經融資的帳戶簽署,一個真正的網絡應該拒絕交易,即使指令有效載荷是否有效的.
 
-## Taira- 只有閱讀通話 {#taira-checked-read-only-calls}
+## Taira - 檢查的僅閱讀通話 {#taira-checked-read-only-calls}
 
-這些呼籲成功反對公眾 Taira:
+這些呼叫成功地回覆了公衆 Taira:
 
 ```python
 client = create_torii_client("https://taira.sora.org")
@@ -243,52 +212,34 @@ print(time_now.now_ms, len(time_status.samples), sumeragi.leader_index)
 print(connect.enabled, connect.sessions_active)
 ```
 
-路線如: `/v1/status`, 公眾同行清單, Sumeragi RBC 採樣,結
-管理者快照和Connect應用程式登錄管理並沒有公開
-提供在 Taira 在檢查過程中使用 `request_json("GET", "/status")` 關於
-公共結束狀態的有效負荷 Taira.
+航線如 `/v1/status`, 公共的同行庫存, Sumeragi RBC 採樣,節點管理器快照和Connect應用程序註冊表管理都不公開 Taira 在檢查期間使用 `request_json("GET", "/status")` 對於公共節點狀態有效載荷 Taira.
 
-## 施工指令 {#instruction-builders}
+## 施工指導 {#instruction-builders}
 
-其他國家 SDK 顯示了最常見的教學家庭的類型,
-JSON 不是第一級的變體的逃跑口 Python 還沒有使用任何方法.
-以下部分是變異的交易模板,
-提交給公眾 Taira 沒有簽名帳戶.
+SDK 對最常見的指令家庭的打字構建器和尚未成爲一流 Python 方法的變體的 JSON 逃跑口暴露.下面的摘錄是突變的交易模板,並且沒有在簽署帳戶的情況下提交給公衆 Taira.
 
-在現實情況下, 喜歡打字助手:他們正常化 Python 數值與失敗
-沒有使用的形狀. `Instruction.from_json` 只有當你需要
-沒有指令變體 Python 沒有任何幫助.
+當它們存在時,更喜歡打字輔助器:它們將 Python 值正常化並在不有效的形狀上早期失敗.只使用 `Instruction.from_json`當您需要一個尚未有 Python 輔助器的指示變體時.
 
-| 教學家庭 | Python 表面 |
+|教學家庭|Python 表面|
 | --- | --- |
-| 註冊 | `register_account`, `register_asset_definition_numeric`, `register_rwa`, `register_time_trigger`, `register_precommit_trigger`; `register_domain` 專用於創始/開啟帶工具 |
-| 沒有註冊 | `unregister_trigger`; 使用 `Instruction.from_json` 其他變體 |
-| 薄荷/燃燒 | `mint_asset_numeric`, `burn_asset_numeric`, `mint_trigger_repetitions`, `burn_trigger_repetitions` |
-| 轉移 | `transfer_asset_numeric`, `transfer_domain`, `transfer_asset_definition`, `transfer_nft`, `transfer_rwa`, `force_transfer_rwa` |
-| 數據與控制 | `set_account_key_value`, `remove_account_key_value`, `set_rwa_controls`, `set_rwa_key_value`, `remove_rwa_key_value` |
-| RWA 生命周期 | `merge_rwas`, `redeem_rwa`, `freeze_rwa`, `unfreeze_rwa`, `hold_rwa`, `release_rwa` |
-| ExecuteTrigger | `execute_trigger` |
-| 還原/定居的延伸 | `repo_initiate`, `repo_unwind`, `repo_margin_call`, `settlement_dvp`, `settlement_pvp` |
-| 國產資的鎖定 | `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, `expire_asset_lock`, 再加上客戶 `*_and_wait` 助手 |
-| 授予/撤回, SetParameter, 記錄,定制,升級以及不太常見的注冊/非註冊變體 | `Instruction.from_json` 或是 `TransactionBuilder.add_instruction_json` 沒有法典 `InstructionBox` JSON |
+|登記| `register_account`, `register_asset_definition_numeric`, `register_rwa`, `register_time_trigger`, `register_precommit_trigger`; `register_domain` 專用於創始/啓動鏈工具 |
+|取消登記|`unregister_trigger`;使用`Instruction.from_json`用於其他變體 |
+|子/燃燒|`mint_asset_numeric`, `burn_asset_numeric`,`mint_trigger_repetitions`, `burn_trigger_repetitions` |
+|轉移| `transfer_asset_numeric`, `transfer_domain`, `transfer_asset_definition`, `transfer_nft`, `transfer_rwa`, `force_transfer_rwa` |
+|大數據和控制 | `set_account_key_value`, `remove_account_key_value`, `set_rwa_controls`, `set_rwa_key_value`, `remove_rwa_key_value` |
+|RWA 生命週期 | `merge_rwas`, `redeem_rwa`, `freeze_rwa`, `unfreeze_rwa`, `hold_rwa`, `release_rwa` |
+|ExecuteTrigger|`execute_trigger`|
+|補充/定居延長| `repo_initiate`, `repo_unwind`, `repo_margin_call`, `settlement_dvp`, `settlement_pvp` |
+|創業資產鎖定|`open_asset_lock`, `drawdown_asset_lock`,`cancel_asset_lock`, `expire_asset_lock`,加上客戶 `*_and_wait`的助手 |
+|補貼/撤銷, SetParameter,日誌,定製,升級以及不常見的註冊/非註冊變體 |`Instruction.from_json`或`TransactionBuilder.add_instruction_json`具有法典名稱的 `InstructionBox` JSON |
 
-對於保證方式的條件付款,
-[預借本地資產](/zh-hant/blockchain/escrow.md#python-asset-locks). Python
-目前對通用資產鎖定的第一級輔助者,
-匿名的保證助理不是一流的 Python 還沒有使用任何方法.
+對於保證金類條件付款,見 [產業資產保證](/zh-hant/blockchain/escrow.md#python-asset-locks). Python 目前對通用資產鎖定的一流助手曝光;市場和匿名保證人助手不是一流 Python 方法還沒有.
 
-### 建立域名,然後註冊帳戶和資產 {#set-up-domains-then-register-accounts-and-assets}
+### 設置域名,然後註冊帳戶和資產 {#set-up-domains-then-register-accounts-and-assets}
 
-這種情況下, SNS
-租賃,所有者能力,報價保護和域狀態都被檢查在一起.
-建立一個沒有秘密的網站. `AliasSetupPlanRequestV1` 您的目的 SDK 或是
-接著使用 `iroha app alias setup plan` 及其他
-`iroha app alias setup apply`. 沒有提交 `Instruction.register_domain`
-在應用程序交易中,該建立者仍然為genesis/bootstrap
-提供工具.
+通常的域名創建通過聲明別名規劃器進行,因此 SNS 租合同,所有者功能,報價保護和域名狀態都被檢查在一起.通過您的 SDK 或安裝服務創建一個無祕密的`AliasSetupPlanRequestV1`意圖,然後使用`iroha app alias setup plan`和`iroha app alias setup apply`.不要從應用程序交易中提交`Instruction.register_domain`;該構建器仍然用於生成/啓動工具.
 
-在域名設定計劃承諾後,
-網路,例如: Taira, 使用為您分配的域名和帳戶命名空間.
+在域設置計劃提交後,註冊域所有物體.在像 Taira 這樣的共享網絡上,使用分配給你的域名和帳戶命名空間.
 
 ```python
 # The domain and its SNS lease already exist before this transaction.
@@ -306,13 +257,11 @@ submit(
 )
 ```
 
-`mintable` 接受 `Infinitely`, `Once`, `Not`, 或是 `Limited(n)` 接受的價值
-通過數據模型. `scale` 沒有限制的數值資產.
+`mintable` 接受 `Infinitely`, `Once`, `Not`, 或 `Limited(n)` 已被數據模型接受的值. `scale` 對於無限制數值資產.
 
-### 金,燃燒和轉移資產 {#mint-burn-and-transfer-assets}
+### 貨幣,燃燒和轉讓資產 {#mint-burn-and-transfer-assets}
 
-這些呼叫使用現有的資產 ID. 首先註冊資產定義,
-建造混凝土資產 ID 對於擁有該資產的帳戶.
+這些呼叫使用現有資產 ID. 首先註冊資產定義,然後構建具體的資產 ID 對於擁有資產的賬戶.
 
 ```python
 # Increase the account's asset balance.
@@ -327,8 +276,7 @@ submit(Instruction.burn_asset_numeric(ROSE_ASSET, "10.00"))
 
 ### 轉移所有權 {#transfer-ownership}
 
-所有權轉移, 變更誰控制域名,資產定義或 NFT.
-請使用目前的所有者作為交易權威.
+轉移所有權變化誰控制域名,資產定義,或 NFT.使用當前的所有者作爲交易權威.
 
 ```python
 # The first argument is the current owner; the last is the new owner.
@@ -337,10 +285,9 @@ submit(Instruction.transfer_asset_definition(alice, ROSE_DEFINITION, bob))
 submit(Instruction.transfer_nft(alice, BADGE_NFT, bob))
 ```
 
-### 設定和移除元數據 {#set-and-remove-metadata}
+### 設置和刪除元數據 {#set-and-remove-metadata}
 
-數據值必須是: JSON- 可連續化. `TransactionDraft`, 這項政策
-國家的權力 `TransactionConfig` 成為預設目標帳戶.
+基數據值必須是: JSON- 可連續化. `TransactionDraft`, 在 `TransactionConfig` 成爲默認目標賬戶.
 
 ```python
 # Values are encoded as JSON metadata under the target account.
@@ -356,7 +303,7 @@ submit(
 submit(Instruction.remove_account_key_value(alice, "profile"))
 ```
 
-高級助理草案預期為交易機構:
+高級助理草案默認的目標是交易權威:
 
 ```python
 draft = TransactionDraft(
@@ -367,12 +314,9 @@ draft.set_account_key_value("nickname", "Queen Alice")
 draft.remove_account_key_value("nickname")
 ```
 
-### 實際財產 {#real-world-assets}
+### 現實資產 {#real-world-assets}
 
-RWA 助手使用 JSON-可連續化資產特定元數據的有效負載,
-該組織的經理和管理者. `register_rwa` 沒有接受 `id` 或是
-`owner`: 運行時間產生了 `RwaId`, 和交易權威
-成為最初的所有者.
+RWA 助手使用 JSON-可連續化有效載荷來爲特定資產的元數據,來源和控制者政策. `register_rwa`不接受`id`或`owner`:運行時間產生`RwaId`,交易權威成爲初始所有者.
 
 ```python
 draft = TransactionDraft(
@@ -405,8 +349,7 @@ draft.register_rwa(
 )
 ```
 
-在註冊交易結束後, `FindRwas`, `/v1/rwas`, 其他國家 RWA
-或是探險家的路徑, ID:
+在註冊交易承諾後,使用 `FindRwas`, `/v1/rwas`,RWA 事件或設置的探索者路線來發現生成的 ID:
 
 ```python
 page = client.list_rwas_typed(limit=20, offset=0)
@@ -415,7 +358,7 @@ for lot in page.items:
     print(lot.id)
 ```
 
-接下來的操作使用生成的 `hash$domain` ID:
+隨後的操作使用生成的 `hash$domain` ID:
 
 ```python
 registered_rwa_id = (
@@ -480,13 +423,11 @@ draft.force_transfer_rwa(
 )
 ```
 
-全額轉讓可能會改變 `owned_by` 在現有物種上.
-合并會產生許多孩子.
+在現有分數上,全部轉讓可以改變 `owned_by`.部分轉移和合並會產生子女分數.
 
-### 引發器 {#triggers}
+### 觸發器 {#triggers}
 
-使用啟動登錄助手, 如果可執行是另一個指令
-序列:
+使用觸發註冊輔助器,當可執行的是另一個指令序列:
 
 ```python
 # The trigger executable is just another instruction payload.
@@ -521,7 +462,7 @@ submit(Instruction.burn_trigger_repetitions("hourly_reward", 1))
 submit(Instruction.unregister_trigger("hourly_reward"))
 ```
 
-Torii 也會顯示 REST 引發器庫存的輔助器:
+Torii 還暴露 REST 的助手用於觸發器庫存:
 
 ```python
 # Inventory helpers are reads; they do not unregister or execute triggers.
@@ -532,13 +473,11 @@ for trigger in registered.items:
 details = client.get_trigger_typed("precommit_reward")
 ```
 
-只有閱讀或檢查引發記錄.
-執行,重複的變更和不註冊是突變操作.
+引發庫存調用只能讀取或檢查引發記錄. 註冊,執行,重複變更和不註冊是突變操作.
 
-### 預購和清算指令 {#repo-and-settlement-instructions}
+### 申報和結算說明 {#repo-and-settlement-instructions}
 
-補充專區指令
-沒有手工加工的變體 Norito 使用負荷:
+代理商和雙邊結算助手將無需手工製造的 Norito 有效載荷添加特定領域的指令變體:
 
 ```python
 from iroha_python import (
@@ -626,14 +565,9 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### JSON 逃離的 {#json-escape-hatch}
+### JSON 逃跑口 {#json-escape-hatch}
 
-在一個情況下 Python 沒有補救器,提供法典數據模型
-`InstructionBox` JSON 在 `Instruction.from_json` 或直接進入
-`TransactionBuilder.add_instruction_json`. 這是推薦的路徑.
-`Grant`, `Revoke`, `SetParameter`, `Log`, `Custom`, `Upgrade`, 同級人/角色 NFT
-在這些助手的情況下,
-這種方式,
+當一個 Python 目前還沒有提供輔助器,供應標準數據模型 `InstructionBox` JSON 在 `Instruction.from_json` 或直接進入 `TransactionBuilder.add_instruction_json`. 這就是推的路徑 `Grant`, `Revoke`, `SetParameter`, `Log`, `Custom`, `Upgrade`, 同類/角色 NFT 在這些輔助器被鍵入之前,非觸發式未登記的變體.
 
 ```python
 from iroha_python import Instruction, TransactionBuilder
@@ -658,8 +592,7 @@ envelope = builder.sign(alice_pair.private_key)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-透過傳輸系統進行回路通行 JSON 在儲存之前
-裝置:
+對於生成或不透明的指示,在存儲燈具之前通過 JSON 進行往返:
 
 ```python
 # Round trips are useful for validating fixtures generated by another tool.
@@ -670,9 +603,7 @@ print(same_instruction.as_dict())
 
 ## 交易工作流程 {#transaction-workflows}
 
-使用 `TransactionDraft` 適用於使用多個指令的應用程式,
-簽名. 草案可以讓你保持交易水平的設定, `ttl_ms`,
-`nonce`, 在一個地方,然後簽字一次:
+使用 `TransactionDraft`用於在簽署之前構建多個指令的應用程序. 草稿允許您將交易級設置,如`ttl_ms`, `nonce`和元數據放在一個地方,然後單次簽署:
 
 ```python
 config = TransactionConfig(
@@ -704,7 +635,7 @@ status = client.wait_for_transaction_status(envelope.hash_hex(), timeout=30)
 print(receipt, status)
 ```
 
-輸出檢查,審核或財布交付的決定性表格:
+出口檢查,審計或錢包轉移的確定性表格:
 
 ```python
 import json
@@ -720,7 +651,7 @@ Path("transaction_manifest.json").write_text(
 )
 ```
 
-在標籤行程要求時,在簽署前附上一個行徑隱私證明:
+當目標車道要求時,在簽署前附上一個路徑隱私證明:
 
 ```python
 # Attach the proof before signing so it is covered by the transaction hash.
@@ -736,11 +667,9 @@ draft.add_lane_privacy_merkle_proof(
 envelope = draft.sign_with_keypair(alice_pair)
 ```
 
-## 詢問問題 {#queries}
+## 問題 {#queries}
 
-輸入查詢助手將數據班返回,而不是原始 JSON 他們的字典.
-該組織的計畫是最簡單的方式, SDK 解析頁面和常見
-您的記錄欄位:
+輸入查詢輔助器返回數據類,而不是原始的 JSON 字典.它們是最簡單的方式來開始,因爲 SDK 解析頁面化和常見記錄領域:
 
 ```python
 # Typed pages expose `.items` plus pagination metadata such as `.total`.
@@ -753,8 +682,7 @@ definitions = client.query_asset_definitions_typed(limit=10)
 print(domains.total, definitions.total)
 ```
 
-請使用一般要求輔助器, Torii 終點尚未有打字
-包裝:
+在 Torii 終端點尚未有打字包裝時,使用通用請求輔助器:
 
 ```python
 # Drop to raw JSON when you need an endpoint before a typed helper exists.
@@ -762,10 +690,7 @@ payload = client.request_json("GET", "/v1/parameters", expected_status=(200,))
 metrics = client.get_metrics(as_text=True)
 ```
 
-帳戶庫存助手需要由銀行接受的帳戶識別碼 SDK 沒有任何問題
-使用法規. I105 帳號 IDs 或是連鎖名稱;如果有封鎖
-探索者或原始終點返回 ID 這種情況 SDK 拒絕,將它解決成一個
-經典紀錄 ID 在呼召這些助手之前:
+賬戶庫存輔助者需要一個由 SDK 是正常化器,使用法典. I105 賬戶 IDs 如果一個區塊探測器或原始終點返回一個 ID 這就是 SDK 拒絕,將其歸結爲法典賬號 ID 在召喚這些援助者之前,
 
 ```python
 # These helpers expect a canonical account ID or an alias the SDK can normalize.
@@ -778,11 +703,7 @@ print(len(assets.items), len(transactions.items), len(permissions.items))
 
 ## 事件 {#events}
 
-播放助手解碼 JSON 預設的使用負荷. `with_metadata=True`
-當你需要 SSE 活動名稱,身份證,重試提示和原始有效載荷.
-在 `EventCursor` 這些例子等待直播
-執行與相關事件流相對的節點,
-已啟動和活跃.
+流媒體輔助器默認地解碼 JSON 有效載荷. 當您需要 SSE 事件名稱,ID,重試提示和原始有效載荷時,請通過`with_metadata=True` .`EventCursor`將最新事件ID保持.這些例子等待現場事件,所以運行它們與相應的事件流啓用和激活的節點.
 
 ```python
 from iroha_python import DataEventFilter, EventCursor
@@ -813,11 +734,9 @@ for tx_event in client.stream_pipeline_transactions(status="Queued"):
     break
 ```
 
-## 關鍵和地址 {#keys-and-addresses}
+## 鑰匙和地址 {#keys-and-addresses}
 
-其他國家 SDK 顯示每個編輯的簽名算法中本地簽名助手
-這些助手並不呼籲 Taira, 但他們需要
-在本地延伸:
+SDK 暴露在本地擴展中編譯的每個簽名算法的本地簽字輔助器.這些輔助器不調用 Taira,但它們確實需要本地擴充:
 
 ```python
 from iroha_python import (
@@ -847,9 +766,7 @@ print(confidential.as_hex())
 print(hash_blake2b_32(b"payload").hex())
 ```
 
-使用 `supported_crypto_algorithms()` 看到你的車輪支持什麼.
-經典輔助者使用法定算法標籤,並為Ed25519工作,
-沒有任何問題, ML-DSA, GOST, BLS, 及其他 SM2 當這些算法被編成到:
+使用 `supported_crypto_algorithms()` 查看您的輪子支持什麼.通用輔助器使用法定算法的標籤,並在這些算法編譯時工作 Ed25519, secp256k1, ML-DSA,GOST, BLS 和 SM2:
 
 ```python
 from iroha_python import (
@@ -905,11 +822,9 @@ for algorithm in supported_crypto_algorithms():
     assert restored == keypair
 ```
 
-### 中國語 SM 密碼化 {#chinese-sm-cryptography}
+### 中文 SM 加密 {#chinese-sm-cryptography}
 
-其他國家 Python SDK 顯示了兩種通用 SM2 助手和 SM2- 特殊的便利性
-請使用節點能力廣告來選擇 SM2 區分
-目標網所預期的識別符:
+Python SDK 將通用 SM2 輔助器和特定 SM2 的便利輔助器都曝光.使用節點能力廣告來選擇目標網絡預期的 SM2 區分標識符:
 
 ```python
 from iroha_python import (
@@ -946,9 +861,7 @@ print(pair.public_key_sec1_hex)
 print(pair.public_key_multihash)
 ```
 
-`crypto.sm.enabled` 告訴您結是否接受 SM- 家庭算法在
-這項廣告也包括: SM 哈希政策和加速
-該網站是否能提供其他資訊, SM2- 特定的流量:
+`crypto.sm.enabled`告訴您節點是否在當前的政策中接受 SM 家族算法.同樣的廣告包括 SM 哈希政策和加速狀態,這對於決定是否啓用 SM2 特定流程時有用:
 
 ```python
 capabilities = client.get_node_capabilities_typed()
@@ -963,16 +876,11 @@ else:
     print("SM crypto is not enabled by this node")
 ```
 
-公眾 Taira 顯示了 SM 在檢查過程中, SM 簽名
-該公司的廣告簽名算法 `ed25519`,
-`secp256k1`, 及其他 `bls_normal`, 所以不要屈服. SM2- 簽署的交易
-除非能力有效載荷改變,
+在檢查期間,公衆 Taira 曝光了 SM 功能廣告,但在那裏被禁用 SM 簽名.其廣告的簽名算法是`ed25519`,`secp256k1`和`bls_normal`,因此,除非能力有效載荷發生變化,否則不要向 SM2 簽署的交易提交該部署.
 
-### GOST 及數量後關鍵 {#gost-and-post-quantum-keys}
+### GOST 和數量後關鍵 {#gost-and-post-quantum-keys}
 
-使用一般的加密碼 API 關於 GOST R 34.10-2012 的參數組和 ML-DSA
-(`ml-dsa`) 數量後簽名.同一對鍵對象處理簽名,
-核實和多頭出口:
+在 GOST R 34.10-2012 參數組和 ML-DSA (`ml-dsa`) 後量子簽名中,使用通用加密字符號 API.同一個鍵對對處理簽名,驗證和多哈希出口:
 
 ```python
 from iroha_python import (
@@ -1036,8 +944,7 @@ print(post_quantum_address.to_i105(CHAIN_DISCRIMINANT))
 print(mldsa_keypair.prefixed_public_key_multihash)
 ```
 
-門口 GOST 在這個節點的廣告簽名算法上,
-使用原始能力的有效載荷,以前方兼容算法命名:
+在節點的廣告簽名算法上,Gate GOST 和後量子流量.使用原始功能有效載荷來預先兼容算法的名稱:
 
 ```python
 capabilities = client.request_json(
@@ -1066,16 +973,11 @@ supports_sm2 = "sm2" in allowed and bool(sm.get("enabled", False))
 print(supports_gost, supports_post_quantum, supports_sm2)
 ```
 
-如果一個節點不廣告您需要的算法,
-請不要將使用該算法簽名的交易提交給
-在公眾活動中, Taira 這樣做, GOST 及其他 ML-DSA 提供於 SDK
-在上流的加密助手 Python 沒有被廣告
-交易簽名的節點.
+如果一個節點不廣告您所需的算法,請僅用於本地或離線工作流程.不要向該節點提交與該算法的簽名交易.在公共 Taira 檢查期間, GOST 和 ML-DSA 在上游 Python 圖書館中作爲 SDK 加密助手可用,但並沒有被節點用於簽署交易的廣告.
 
-## 設定知性客戶創建 {#config-aware-client-creation}
+## 設置知情客戶端創建 {#config-aware-client-creation}
 
-使用 `resolve_torii_client_config` 當您的應用程式閱讀節點設定時
-從檔案中,但仍需要環境或測試特定的重覆功能:
+使用 `resolve_torii_client_config` 當您的應用程序從文件中讀取節點設置,但仍然需要環境或測試特定的過關:
 
 ```python
 import json
@@ -1097,10 +999,9 @@ client = create_torii_client(
 )
 ```
 
-## 卡蓋穆沙準備 {#kagemusha-readiness}
+## 卡蓋穆沙的準備 {#kagemusha-readiness}
 
-其他國家 Python SDK 可以查詢目前的情況 JSON 通過其通用品的準備路線
-Torii 要求助理:
+其他 Python SDK 能查詢電流 JSON 準備路線通過其通用 Torii 要求助理:
 
 ```python
 ASSET_DEFINITION_ID = "<canonical_asset_definition_id>"
@@ -1116,15 +1017,11 @@ print(readiness["ready"])
 print(readiness["blockers"])
 ```
 
-Python 沒有顯示加盖木沙補充或收購檔案組件.
-使用打字 Swift 或是 JVM 建立聖經的錢包 V4 這樣的檔案,
-透過支持的 Kagemusha, Torii 這位客戶.
+Python 沒有曝光打字的 Kagemusha補充或贖回檔案構建器. Swift 或 JVM 爲了構建神聖的錢包 V4 然後通過支持的 Kagemusha 提交併進行調查. Torii 客戶.
 
-## 預訂時間 {#subscriptions}
+## 訂閱 {#subscriptions}
 
-註冊助手是從共享的服務通話中傳承的突變 Torii
-經客戶使用的 `iroha_python.ToriiClient`. 使用 IDs 及現存的資產,
-該網站是您的目標.
+訂閱助手是從共享的服務中繼承的調用. Torii 客戶端 `iroha_python.ToriiClient`. 使用 IDs 在您的網絡上存在的資產.
 
 ```python
 # The plan defines billing cadence, retry policy, and usage pricing.
@@ -1181,10 +1078,9 @@ client.charge_subscription_now(
 )
 ```
 
-## 聯繫 {#connect}
+## 連接 {#connect}
 
-建立和解析聯繫 URIs, 並閱讀公眾聯繫狀態
-Taira:
+建立和分析連接 URIs,並閱讀由 Taira 暴露的公共連接狀態:
 
 ```python
 from iroha_python.connect import ConnectUri, build_connect_uri, parse_connect_uri
@@ -1205,8 +1101,7 @@ assert parsed.chain_id == CHAIN_ID
 print(status.enabled, status.sessions_active)
 ```
 
-需要使用本土的程式碼.
-延伸和啟用的 Connect會議路線:
+框架代碼,會話鍵衍生和會話創建需要本地擴展和啓用Connect會話路線:
 
 ```python
 from iroha_python import (
@@ -1248,7 +1143,7 @@ client.send_connect_control_frame(
 )
 ```
 
-通過後的訊息加密,
+通過狀態會議加密後的消息:
 
 ```python
 from iroha_python import (
@@ -1276,9 +1171,9 @@ state = session.snapshot_state().to_dict()
 print(encrypted.sequence, state)
 ```
 
-## 管理,運行時間和管理面 {#governance-runtime-and-admin-surfaces}
+## 管理,運行時間和管理面積 {#governance-runtime-and-admin-surfaces}
 
-這些只能閱讀的通話成功反對公眾. Taira:
+這些只可讀的電話成功回覆了公衆 Taira:
 
 ```python
 client = create_torii_client("https://taira.sora.org")
@@ -1304,9 +1199,7 @@ print(abi, abi_hash, runtime_metrics)
 print(upgrades.total, capabilities.abi_version)
 ```
 
-執行時間升級助手接受了執行時間升级使用的顯示形狀
-API. 只有對於您的節點使用,
-帳戶和令牌授權:
+運行時間升級輔助器接受運行時升級 API 所使用的表格形狀.它們是操作員操作,因此只應對帳戶和代幣授權的節點進行使用:
 
 ```python
 admin = create_torii_client(
@@ -1352,11 +1245,9 @@ for sample in time_status.samples:
 print(time_now.now_ms)
 ```
 
-## SoraFS, UAID, 及其他 Kaigi 幫助者 {#sorafs-uaid-and-kaigi-helpers}
+## SoraFS,UAID 和 Kaigi 的輔助人員 {#sorafs-uaid-and-kaigi-helpers}
 
-這些輔助器在目標節點暴露相應的
-Nexus/SORA 處理空白列表作為有效的答案:公開 Taira 年 月 日
-沒有採樣表的數據的路線已啟用, UAID.
+當目標節點暴露相應的 Nexus/SORA 終端點時,這些輔助器可用.將空清單視爲有效的響應:公衆 Taira 可能會在沒有樣本表或 UAID 的數據的情況下啓用路線.
 
 ```python
 # SoraFS status queries are reads scoped by manifest and status.
@@ -1378,11 +1269,9 @@ health = client.get_kaigi_relays_health_typed()
 print(health.healthy_total, health.failovers_total)
 ```
 
-## Norito RPC 及其他 GPU 幫助者 {#norito-rpc-and-gpu-helpers}
+## Norito RPC 和 GPU 助手 {#norito-rpc-and-gpu-helpers}
 
-使用 `NoritoRpcClient` 當你已經有 Norito 需要打電話,
-二元式 Torii 這樣的例子需要從以前的封筒簽名,
-交易模板:
+使用 `NoritoRpcClient` 當你已經有了 Norito 字節和需要調用二進制 Torii 結尾點:該示例需要從前一個交易模板中籤署的包裹:
 
 ```python
 from iroha_python import NoritoRpcClient, NoritoRpcConfig
@@ -1393,8 +1282,7 @@ with NoritoRpcClient(NoritoRpcConfig(TORII_URL, timeout=5.0)) as rpc:
     print(len(response_bytes))
 ```
 
-CUDA 幫助者回來 `None` 沒有後端,因此應用程式
-還可以回到規模實施:
+CUDA 輔助器在後端不提供時返回`None`,因此應用程序可以回到規模實現:
 
 ```python
 from iroha_python import bn254_add_cuda, cuda_available, poseidon2_cuda
@@ -1405,28 +1293,23 @@ if cuda_available():
     print(bn254_add_cuda((1, 0, 0, 0), (2, 0, 0, 0)))
 ```
 
-## 目前的覆蓋 {#current-coverage}
+## 目前覆蓋範圍 {#current-coverage}
 
-其他國家 Python SDK 已包括以下類型的助手:
+Python SDK 已經包括以下類型的助手:
 
-- Torii 提交,狀態,查詢和管理流程
-- 用於一般的編碼器 ISI 及特定域名的擴展
-- 交易草案,明示書,簽名和簽名的交易包裹
-  工作流程
-- 流動事件,過濾器和可重啟的導覽器
-- 提供一般的 Kagemusha 准备性及 Torii 註冊助手;打字
-  補充和償還的建造者不暴露
-- 這項計畫的目標是: SM2,
-  GOST, ML-DSA, BLS, 及密钥使用方式
-- 聯繫 URIs, 編碼系統的使用方式,
-- 管理,運行時間升級, Sumeragi, 沒有任何問題, SoraFS, UAID, 及其他 Kaigi
-  結束點的包裹,其中結暴露這些特征
+- Torii 提交,狀態,查詢和管理流
+- 爲常見 ISI 和特定域的擴展類型指令構建器
+- 交易草案,宣言,簽署和簽署的交易包裹工作流程
+- 流媒體事件,過器和可重新啓動的線索
+- 一般Kagemusha準備訪問和 Torii 訂閱輔助員;打字補充和贖回構建者不暴露
+- 賬戶地址,全算法簽字輔助器,多個哈希回來旅行, SM2, GOST, ML-DSA, BLS 以及機密鑰處理
+- 連接 URIs,會議,框架,加密輔助器和註冊表管理員
+- 管理,運行時間升級, Sumeragi,節點-admin, SoraFS,UAID 和 Kaigi 的終端點包裝,其中節點暴露了這些特性
 
-## 上游參考資料 {#upstream-references}
+## 上游引用 {#upstream-references}
 
 - `python/iroha_python/README.md`
 - `python/iroha_python/DESIGN.md`
 - `python/iroha_python/src/iroha_python`
 
-這些檔案是對 Python 在上的表面
-工作空間的修改.
+這些文件是嵌入式工作空間修改中 Python 表面的真相來源.

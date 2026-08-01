@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /guide/index.md
-translation_source_hash: 588a55d0a967f890fac26bf47c34c360a4542b0d45b1edc1e37cd4833c60f349
+translation_source_hash: 5ea24369e85692bd9069e446d1e50612efade2d83e4ddf73a4980582a2064a0e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,12 +10,12 @@ translation_engine: nllb-200-ct2
 
 Use esta seção quando estiver a construir, operar ou integrar com Iroha. Comece com os tutoriais SDK para um primeiro cliente, em seguida, passe às melhores práticas e referências do operador antes de implementar contra uma rede compartilhada.
 
-## Secções {#sections}
+## Seções {#sections}
 
 |Secção |Usá-lo para |
 | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
 | [SDK Tutoriais](/pt/guide/tutorials/) |Configuração de um cliente específico para a língua e amostras de aplicações |
-| [Melhores Práticas](/pt/guide/best-practices/) |Orientações orientadas para a produção, agrupadas por desenvolvimento, modelagem de dados, implantação, operações, segurança e prontidão à liberação |
+| [Melhores Práticas](/pt/guide/best-practices/) |Orientações de produção para desenvolvimento, implantação, operações, segurança e libertações |
 | [Configuração e Gestão](/pt/guide/configure/overview.md) |Configuração local de pares, gênese, configuração do cliente, chaves e gestão de pares |
 | [Segurança ](/pt/guide/security/) |Manutenção de chaves, segurança operacional, VPNs, controlo da fraude e higiene das autorizações |
 | [Operações avançadas ](/pt/guide/advanced/metrics.md) |Métricas, verificações de desempenho, testes de caos, recarga a quente e operação em metal desnudo |

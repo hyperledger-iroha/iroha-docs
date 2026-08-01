@@ -26,7 +26,7 @@ Pour une description détaillée de chaque paramètre, veuillez vous référer �
 
 Les fichiers de configuration TOML ont un champ `extends` supplémentaire, pointant vers d'autres fichiers TOML (s). Il peut s'agir d'un seul chemin ou de plusieurs chemins:
 
-::: groupe de codes
+::: code-group
 
 ```toml [Single]
 extends = "single-path.toml"
@@ -40,7 +40,7 @@ extends = ["file1.toml", "file2.toml"]
 
 Iroha lit récursivement tous les fichiers spécifiés dans `extends` et les compose en couches, où ces dernières surécrivent les précédentes au niveau d'un paramètre. Par exemple, si la lecture de `config.toml`:
 
-::: groupe de codes
+::: code-group
 
 ```toml [config.toml]
 extends = ["a.toml", "b.toml"]

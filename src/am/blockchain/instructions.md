@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /blockchain/instructions.md
-translation_source_hash: 3251078b2b2268ff78563c02a0f935c63dc0569f0b6d38071150cbb4b89394d6
+translation_source_hash: adc3eff9758dd73e9114e78eaa18ddf6271db3bc4042611e1ed6ed1aac226246
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -128,7 +128,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 RWA ክፍሎች የተሰየመውን `RegisterRwa` መመሪያ በመጠቀም ይፈጠራሉ። የአሁኑ ኮድ የ `UnregisterRwa` መመሪያ አይገልጽም; የሚወክለውን ብዛት ለማውጣት `RedeemRwa` ይጠቀሙ።
 
-::: መረጃ
+::: info
 
 በ [ ጀነሲስ ብሎክዎን ](/am/guide/configure/genesis.md) በ `genesis.json` ውስጥ ለማዘጋጀት በሚወስኑበት መንገድ ላይ በመመርኮዝ (በተለይም የመፈቃደሪያ ቶከኖችን ምዝገባን ያካትታሉ ወይም አያካትቱም) ፣ ሂሳቡን ለማስመዝገብ ሂደት በጣም የተለየ ሊሆን እንደሚችል ልብ ይበሉ ። በአጠቃላይ ፣ በዚህ መንገድ ማጠቃለል እንችላለን-
 
@@ -139,13 +139,13 @@ RWA ክፍሎች የተሰየመውን `RegisterRwa` መመሪያ በመጠቀ�
 
 :::
 
-::: መረጃ
+::: info
 
 አንድ እኩዮችን መመዝገብ በአሁኑ ጊዜ ወደ አውታረመረብው የተቀመጠው የመጀመሪያው የታመነ የእኩዮት አካል ያልነበሩትን እኩዮች ለማከል ብቸኛው መንገድ ነው ።
 
 :::
 
-በብሎክቼን ውስጥ ያሉትን ነገሮች በመመዝገብ ሂደት ውስጥ ለመራመድ ከቋንቋ-ተኮር መመሪያዎች አንዱን ይመልከቱ:
+የብሎክቼይን ዕቃዎችን ለመመዝገብ ለቋንቋ የተወሰነ መመሪያ ይጠቀሙ:
 
 |ቋንቋ |መመሪያ |
 | --------------------- | ------------------------------------------------------------------------------------------------------- |
@@ -247,9 +247,9 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ማጨስ እና ማቃጠል የቁጥር ንብረቶችን ሊያመለክት ይችላል እንዲሁም የተወሰኑ ድግግሞሾችን ያካሂዳል ። አንዳንድ ንብረቶች እንደ የማይጨሱ ሊገለጹ ይችላሉ ፣ ይህም ማለት ከተመዘገቡ በኋላ አንድ ጊዜ ብቻ ማጨስ ይችላሉ።
 
-የንብረት ብዛቶች አሉታዊ አይደሉም ፣ ስለሆነም `$-1.0` ንብረትን በጭራሽ መውሰድ ወይም አሉታዊ መጠን ማቃጠል አይችሉም እና ገንዘብ ማግኘት ይችላሉ ።
+ንብረቶች በተወሰነ ሂሳብ ላይ ይለቀቃሉ ፣ ብዙውን ጊዜ መጀመሪያ ላይ ንብረቱን ያስመዘገቡበት። የንብረት መጠኖች አሉታዊ አይደሉም, ስለዚህ አንድን ንብረት `$-1.0` በጭራሽ ማግኘት አይችሉም ወይም አሉታዊውን መጠን ማቃጠል እና የወርቅ ምንጣፍ ማግኘት ይችላሉ.
 
-በብሎክቼን ውስጥ ንብረቶችን የማስወጣት ሂደቱን ለማስተላለፍ የቋንቋ-ተኮር መመሪያዎችን አንዱን ይመልከቱ ።
+ለ Mint Blockchain ንብረቶች የቋንቋ-ተለይ መመሪያ ይጠቀሙ:
 
 - [CLI](/am/get-started/operate-iroha-via-cli.md)
 - [Rust](/am/guide/tutorials/rust.md)
@@ -305,7 +305,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --quantity 25
 ```
 
-የትራንስፍር ጎራ፣ የንብረት ትርጉም እና NFT ባለቤትነት:
+የዝውውር ጎራ ፣ የአክሲዮን ትርጉም እና NFT ባለቤትነት:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -342,7 +342,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger account role revoke --id "$BOB" --role operators
 ```
 
-የመፈቃድ ትዕዛዞች አንድ የተፈቀደ ነገር ከተለመደው ግብዓት ያነባሉ:
+የፈቃድ ማስረጃዎችን መስጠት እና መሰረዝ። የፍቃድ ትዕዛዞች አንድ ፍቃድ ዕቃ ከ መደበኛ ግብዓት ያነባሉ-
 
 ```bash
 printf '{"name":"CanSetParameters","payload":null}\n' |

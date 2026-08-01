@@ -1,47 +1,34 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/escrow.md
-translation_source_hash: a324c3a299c0184246f4f6d7bd672ec4351574920577bafc4592d5ffdeaf34ff
+translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e217bc6ac9
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# 預借本地資產 {#native-asset-escrow}
+# 產業資產保證 {#native-asset-escrow}
 
-內存保證是數值資產的管理帳號保管機制.
-而不是將資產寄送到申請所屬的帳戶,
-保護該帳戶的應用程式碼,保證 ISIs 將價值移動到
-確定性協議保管帳戶和記錄保證期生周期
-世界國家.
+本地保證是對數值資產進行賬本管理的保管機制.而不是將資產發送到應用程序擁有的帳戶,並依賴應用程序代碼來保護該帳戶,託管 ISIs 將價值轉移到確定性協議保管賬戶中,並記錄託管的生命週期在世界狀態.
 
-使用本土的保證金為市場決済, 艾泰式外鎖支付
-需要的協調,里程碑式鎖定和保護保證工作流程
-顯示生命周期狀態.
+使用本地保證金用於市場結算,Aitai式的鏈外支付協調,里程碑鎖和需要賬本可見生命週期狀態的保護保證金工作流.
 
 ## 概念 {#concepts}
 
-| 概念 | 描述 |
+|概念|描述|
 | --- | --- |
-| `EscrowId` | 必須在透明和匿名的保證券中獨特. |
-| `AssetEscrowRecord` | 透明數字資產保證或鎖定紀錄. |
-| `AnonymousAssetEscrowRecord` | 保護保證紀錄, |
-| 預留帳戶 | 由連鎖衍生出來的決定性協議帳號 ID, 預約金 ID, 以及資產的定義. |
-| 證據的哈希 | 存儲資料或其他非連鎖證據. 證據本身並不存储在保證紀錄中. |
+|`EscrowId`|被調用者選擇的標識符包裹一個哈希. 在透明和匿名的保證券中,它必須是獨特的. |
+|`AssetEscrowRecord`|透明的數值資產保證或鎖定記錄.|
+|`AnonymousAssetEscrowRecord`|通過無效證書,承諾和證明附件支持的保證記錄.|
+|託管賬戶|來自鏈 ID,保證券 ID 和資產定義的確定性協議賬戶. |
+|證據的.|證據哈希可以識別賬單,判決,消息,存儲表或其他離鏈的證據.證據的有效載荷本身沒有存儲在保險記錄中. |
 
-透明的紀錄包含賣家,選擇性買方,資產定義,
-總額,保帳戶,生命周期狀態,行為類型,剩餘
-數量,可選擇的釋放權限,可選擇到期時間印章,證據
-這種方法可以使用,
+透明記錄包含賣方,選購者,資產定義,總額,保管賬戶,生命週期狀況,行爲類型,剩餘金額,選擇性釋放權限,可選的過期時間印,證據哈希,時間印和可選的解決細節.
 
-負債額度必須是正數值的資產量,
-預約或鎖定活動中,
-一般的資產轉移不能耗費保帳戶;保退出
-這些路徑是保證金 ISIs 在下面描述.
+擔保金額必須是正數資產量,並且必須符合資產定義的數值規範.當擔保金或鎖存活時,通用資產轉讓不能耗盡保管賬戶;以下描述的擔保金 ISIs 是擔保金的退出路徑.
 
-## 市場預約 {#marketplace-escrow}
+## 市場保證金 {#marketplace-escrow}
 
-市場托管協調連鎖的資產釋放與連鎖以外的資產
-付款或交付工作流程.
+市場託管協調鏈上資產釋放與鏈外支付或交貨工作流程.
 
 ```mermaid
 stateDiagram-v2
@@ -56,24 +43,21 @@ stateDiagram-v2
     Disputed --> Resolved: ResolveEscrowDispute
 ```
 
-| ISI | 請問是誰提出的? | 影響 |
+|ISI|誰提出了?|影響|
 | --- | --- | --- |
-| `OpenAssetEscrow` | 賣家 | 鎖定出售商數字資產, `Open` 市場紀錄. |
-| `AcceptAssetEscrow` | 購買者 | 記錄買家的行動, `Open` 必須 `Accepted`. 賣家不能接受自己的保證. |
-| `MarkEscrowPaymentSent` | 接受的買方 | 移動 `Accepted` 必須 `PaymentSent` 在購買者發送外鎖付款後. |
-| `ReleaseAssetEscrow` | 賣家 | 移動 `PaymentSent` 必須 `Released` 並將全額保證金轉移給買方. |
-| `CancelAssetEscrow` | 賣家 | 移動 `Open` 或是 `Accepted` 必須 `Cancelled` 在付款標記之前, |
-| `OpenEscrowDispute` | 賣家或被接受的買方 | 移動 `Accepted` 或是 `PaymentSent` 必須 `Disputed` 並添加證據. |
-| `ResolveEscrowDispute` | 帳號與 `CanResolveEscrowDispute` | 移動 `Disputed` 必須 `Resolved` 並將金額分為買方和賣方. |
+|`OpenAssetEscrow`|賣家|鎖定賣方數值資產在協議保管中,並創建一個 `Open`市場記錄. |
+|`AcceptAssetEscrow`|買家|記錄買方並將 `Open`轉移到 `Accepted`.賣方不能接受自己的保證金. |
+|`MarkEscrowPaymentSent`|接受的買家|在買方發送鏈外支付後,轉移`Accepted`到 `PaymentSent`. |
+|`ReleaseAssetEscrow`|賣家|轉移`PaymentSent`到 `Released`並將全部保證金轉移給買方. |
+|`CancelAssetEscrow`|賣家|轉移 `Open`或 `Accepted`到 `Cancelled`並在支付標記之前退款給賣方. |
+|`OpenEscrowDispute`|賣家或被接受的買家|移動 `Accepted`或 `PaymentSent`到 `Disputed`,並添加證據. |
+|`ResolveEscrowDispute`|在 `CanResolveEscrowDispute` 中的賬戶|轉移`Disputed`到 `Resolved`,並將金額分爲買方和賣方. |
 
-解決爭議的金額必須是無負的,
-`buyer_amount + seller_amount` 必須等於保證金.
-腿可以,但整個分區必須考慮鎖定平衡.
+爭端解決金額必須是非負面的,並且 `buyer_amount + seller_amount`必須等於保證金金額.零價值的腿被允許,但整個分開必須佔鎖定餘額.
 
 ### Rust 舉例 {#rust-example}
 
-這樣的例子假設賣家和買家帳戶已經存在,
-數字的定義已註冊,
+這種例子假設賣方和買方的賬戶已經存在,資產定義被註冊爲數值,並且賣方有足夠的餘額.
 
 ```rust
 use iroha::{
@@ -114,22 +98,18 @@ fn release_marketplace_escrow(
 }
 ```
 
-## 常用資產鎖匙 {#generic-asset-locks}
+## 一般資產鎖 {#generic-asset-locks}
 
-資產鎖使用相同的保管紀錄類型,但他們不是買賣者
-他們會鎖定目的地帳戶的資金,
-獨立發放權限提取資金.
+資產鎖使用相同的保管記錄類型,但它們不是買家-賣家的報價.它們鎖定了目的地賬戶的資金,並需要另一個發放權限部門提取資金.
 
-| ISI | 請問是誰提出的? | 影響 |
+|ISI|誰提出了?|影響|
 | --- | --- | --- |
-| `OpenAssetLock` | 來源帳戶 | 鎖定一個正數值,記錄目的地作為紀錄購買者, `Locked`. |
-| `DrawdownAssetLock` | 沒有設置的釋放權限或目的地 | 還是將部分或全部剩餘的監禁物轉移到目的地. |
-| `CancelAssetLock` | 鎖匙打開機 | 取消一個活跃的鎖匙, |
-| `ExpireAssetLock` | 在截止日期後的任何交易權威 | 結束後, `expires_at_ms` 在過去,並將剩餘的金額還給開機者. |
+|`OpenAssetLock`|來源賬戶|鎖定正額,記錄目的地作爲記錄買家,並設置狀態爲 `Locked`. |
+|`DrawdownAssetLock`|沒有設置的釋放權限,或目的地|轉移部分或全部剩餘的監護到目的地.|
+|`CancelAssetLock`|鎖打開器|取消一個活躍的鎖,並退還剩餘的金額給打開器. |
+|`ExpireAssetLock`|經過最後期限後的任何交易權威機構|在過去使用 `expires_at_ms` 的鎖期到期,並將剩餘的金額退還給打開器. |
 
-`DrawdownAssetLock` 保持記錄 `Locked` 還有一些數量.
-當剩余數量達到零時, `DrawnDown` 及其他
-這份紀錄已結束.
+`DrawdownAssetLock`在 `Locked`中保持記錄,而部分數額仍然存在.當剩餘數量達到零時,狀態將成爲`DrawnDown`,並且記錄會關閉.
 
 ```rust
 use iroha::{
@@ -194,18 +174,11 @@ fn drawdown_and_close_asset_locks(
 }
 ```
 
-Python 目前對一般鎖的高級輔助器暴露:
-`open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, 及其他
-`expire_asset_lock`. 市場及匿名的保證金 Python, 使用
-公教法典 `InstructionBox` JSON 透過 SDK 沒有任何問題 JSON 逃離門口或降伏
-透過一個 SDK 這樣的行為將揭露一流的保證金建設者.
+Python 目前暴露了一般鎖的高級輔助器: `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, 和 `expire_asset_lock`. 對於市場和匿名的保證金 Python, 使用法典 `InstructionBox` JSON 通過 SDK 現在, JSON 逃離門,或通過一個 SDK 這揭示了一流的保證金製造商.
 
 ## 爭議 {#disputes}
 
-市場保證人可以從 `Accepted` 或是 `PaymentSent`.
-只有註冊的賣家或買主才能開啟爭議.
-`CanResolveEscrowDispute`, 或直接向解決戶帳戶提供
-或是因為角色而繼承.
+一個市場託管可以從 `Accepted`或 `PaymentSent`進入爭端.只有註冊的賣家或買家才能打開爭端.解決需要 `CanResolveEscrowDispute`,無論是直接向解決者賬戶授予,還是通過角色繼承.
 
 ```rust
 use iroha::{
@@ -255,26 +228,19 @@ fn resolve_disputed_escrow(
 
 ## 匿名的保證金 {#anonymous-escrow}
 
-匿名保證使用相同的市場生命周期,
-公開紀錄仍存儲賣家,
-購買者,狀態,證據的哈希,時間印章和證據相關的移動
-在保護票的內面,數量和收件人表示為
-沒有任何證據,
+匿名保證券使用相同的市場生命週期,但資金和關閉資產的流動都受到保護.公開記錄仍然存儲賣方,買家,狀態,證據哈希,時刻印章和與證據鏈接的移動記錄.屏蔽筆記中的數額和收件人以承諾,廢除符和證據附件表示.
 
-| 透明性 ISI | 沒有名稱 ISI |
+|透明 ISI |匿名 ISI|
 | --- | --- |
-| `OpenAssetEscrow` | `OpenAnonymousAssetEscrow` |
-| `AcceptAssetEscrow` | `AcceptAnonymousAssetEscrow` |
-| `MarkEscrowPaymentSent` | `MarkAnonymousEscrowPaymentSent` |
-| `ReleaseAssetEscrow` | `ReleaseAnonymousAssetEscrow` |
-| `CancelAssetEscrow` | `CancelAnonymousAssetEscrow` |
-| `OpenEscrowDispute` | `OpenAnonymousEscrowDispute` |
-| `ResolveEscrowDispute` | `ResolveAnonymousEscrowDispute` |
+|`OpenAssetEscrow`|`OpenAnonymousAssetEscrow`|
+|`AcceptAssetEscrow`|`AcceptAnonymousAssetEscrow`|
+|`MarkEscrowPaymentSent`|`MarkAnonymousEscrowPaymentSent`|
+|`ReleaseAssetEscrow`|`ReleaseAnonymousAssetEscrow`|
+|`CancelAssetEscrow`|`CancelAnonymousAssetEscrow`|
+|`OpenEscrowDispute`|`OpenAnonymousEscrowDispute`|
+|`ResolveEscrowDispute`|`ResolveAnonymousEscrowDispute`|
 
-財布或檢查工具必須建立證據附件和公共輸入.
-解釋,取消和匿名的權利
-解決爭議必須支付一個保證承諾,
-該行動所需的買方,賣方或分出口承諾.
+錢包或證明工具必須構建證據附件和公共輸入.開放創造了一個保險承諾.釋放,取消和匿名糾紛解決必須花費一個保險承諾並創建該行動所需的買方,賣方或分產承諾.
 
 ```rust
 use iroha::{
@@ -317,34 +283,25 @@ fn open_anonymous_escrow(
 }
 ```
 
-對於底部的保護交易模式,請見
-[匿名交易](/zh-hant/blockchain/anonymous-transactions.md).
+對於底層的屏蔽交易模式,見 [匿名交易](/zh-hant/blockchain/anonymous-transactions.md).
 
-## SDK 使用方式 {#sdk-usage}
+## SDK 使用 {#sdk-usage}
 
-預約支持在各國不同程度上呈現 SDKs. Rust 沒有法典
-輸入資料模型. Python 目前暴露於一般的資產鎖定助手.
-JavaScript 及其他 TypeScript 使用 Kotodama 預備主機的電話. Kotlin/JVM 及其他 Swift
-為市場提供打印式有效載荷施工人員和匿名保證人.
+在 SDKs 中,保證金支持的曝光方式不同. Rust 具有標準類型的數據模型. Python 目前暴露了通用資產鎖定輔助器.JavaScript 和 TypeScript 使用 Kotodama 託管主機電話. Kotlin/JVM 和 Swift 爲市場和匿名託管提供類型的有效載荷構建者.
 
-| SDK | 請使用這個表面. | 範圍 |
+|SDK|使用這個表面.|範圍|
 | --- | --- | --- |
-| [Rust](#rust-sdk) | `iroha::data_model::isi::escrow` | 沒有任何相關的資訊, |
-| [Python](#python-asset-locks) | `Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock`, 和客戶 `*_and_wait` 助手 | 市場和匿名保證人員並不是一流的 Python 還沒有使用方法. |
-| [JavaScript / TypeScript](#javascript-and-typescript-kotodama) | `compileKotodamaProgram` 來自 `@iroha/iroha-js/kotodama-compiler` | 預約主機在內打電話 Kotodama 請問他們是誰? |
-| [Kotlin / JVM](#kotlin-and-jvm) | `InstructionTemplate` 在 `org.hyperledger.iroha.sdk.core.model.instructions` | 沒有任何相關資訊, |
-| [Swift / iOS](#swift-and-ios) | `NativeEscrowInstructionBuilders` 及其他 `IrohaSDK.build*Escrow*` 助手 | 市場及匿名保證 Norito JSON 指示用載體. |
+| [Rust](#rust-sdk) |`iroha::data_model::isi::escrow`|商場託管,通用鎖,匿名託管,查詢和活動.|
+| [Python](#python-asset-locks) |`Instruction.open_asset_lock`,`TransactionDraft.open_asset_lock`,和客戶 `*_and_wait`的助手 |市場和匿名保證人還不是一流的 Python 方法. |
+| [JavaScript / TypeScript](#javascript-and-typescript-kotodama) |`compileKotodamaProgram`從 `@iroha/iroha-js/kotodama-compiler` |在 Kotodama 合同中收購主機的電話. |
+| [Kotlin / JVM](#kotlin-and-jvm) |在 `org.hyperledger.iroha.sdk.core.model.instructions` 中的`InstructionTemplate`類|市場和匿名的託管定製說明模板. |
+| [Swift /iOS](#swift-and-ios) |`NativeEscrowInstructionBuilders`和`IrohaSDK.build*Escrow*`的助手 |市場和匿名保證人 Norito JSON 指令有效載荷. |
 
-在下面的例子中,重點是指令建設.
-簽名管理和交易提交遵循正常流量,
-每個國家 SDK.
+下面的例子側重於指令構建. 賬戶融資,簽名管理和交易提交遵循每個 SDK 的正常流量.
 
 ### Rust SDK {#rust-sdk}
 
-請使用 Rust SDK 如果您需要全域覆蓋或查詢/事件支持.
-上面的例子顯示了市場開放,通用封鎖,爭議
-沒有任何可能的解決方案,
-`iroha::data_model::isi::escrow`.
+當您需要完整的本地覆蓋或查詢/事件支持時使用 Rust SDK. 上面的例子顯示了市場發佈,通用鎖定拉,爭端解決和匿名保證構建與 `iroha::data_model::isi::escrow`.
 
 ```rust
 use iroha::{
@@ -371,9 +328,7 @@ fn open_and_read(
 
 ### Python 資產鎖定 {#python-asset-locks}
 
-其他國家 Python SDK 這樣就能讓第一級的輔助員發現一般的資產鎖.
-該組織的經營者:
-該項目的開幕及期限滿付.
+Python SDK 將一流的輔助者暴露在通用資產鎖中. 使用它們進行里程碑式支付,釋放權威機構的提款,開戶方取消和過期退款.
 
 ```python
 client.open_asset_lock_and_wait(
@@ -404,18 +359,13 @@ client.expire_asset_lock_and_wait(
 )
 ```
 
-沒有任何問題, `release_authority`; 目的地帳戶可以
-然後提交 `drawdown_asset_lock`.
+對於雙方鎖,遺漏 `release_authority`;目的地賬戶可以提交 `drawdown_asset_lock`.
 
-### JavaScript 及其他 TypeScript Kotodama {#javascript-and-typescript-kotodama}
+### JavaScript 和 TypeScript Kotodama {#javascript-and-typescript-kotodama}
 
-其他國家 JavaScript SDK 目前沒有直接的本地保證交易
-沒有任何樓主, JavaScript 或是 TypeScript 部署的應用程式 Kotodama
-聯絡我們, Kotodama 這裡的圖片,
+其他 JavaScript SDK 目前沒有曝光直接的本地託管交易構建者. JavaScript 或 TypeScript 部署的應用 Kotodama 合同,編譯託管主機電話 Kotodama 編譯器.
 
-必須明顯的接入提示, 因為編輯器
-不能為不透明的保證所取得更窄的接入集合 ISIs. 請使用牌提示
-呼叫的出口入口點 `escrow_*` 這裡有許多建築物.
+原生託管主機調用需要明確的訪問提示,因爲編譯器無法爲不透明託管 ISIs 獲得更窄的訪問集合.在出口入口點上使用呼叫`escrow_*`內置的野生卡指引.
 
 ```js
 import { compileKotodamaProgram } from "@iroha/iroha-js/kotodama-compiler";
@@ -447,16 +397,11 @@ if (compiled.diagnostics.length > 0) {
 }
 ```
 
-在爭議中,使用 `escrow_open_dispute(offer, evidence)` 及其他
-`escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)`.
-匿名托管主持人接收電話 Norito 要求有效載荷字节,例如
-`anonymous_escrow_open_offer(request)`.
+在爭端中,使用 `escrow_open_dispute(offer, evidence)` 和 `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)`.匿名託管主機調用接受 Norito 請求有效載荷字節,例如 `anonymous_escrow_open_offer(request)`.
 
-### Kotlin 及其他 JVM {#kotlin-and-jvm}
+### Kotlin 和 JVM {#kotlin-and-jvm}
 
-其他國家 Kotlin/JVM SDK 每個國家都在使用本土的保證券.
-模板核准所需的字段,并揭示使用的法典論點地圖
-經由交易承辦人進行.
+Kotlin/JVM SDK 模型本地託管作爲自定義指令模板.每個模板驗證了所需的字段,並揭示了交易構造商使用的定律參數地圖.
 
 ```kotlin
 import org.hyperledger.iroha.sdk.core.model.escrow.NativeEscrowPermissions
@@ -486,21 +431,11 @@ println(open.arguments)
 println(NativeEscrowPermissions.CAN_RESOLVE_ESCROW_DISPUTE)
 ```
 
-匿名模板可提供:
-`OpenAnonymousAssetEscrowInstruction`, `AcceptAnonymousAssetEscrowInstruction`,
-`MarkAnonymousEscrowPaymentSentInstruction`,
-`ReleaseAnonymousAssetEscrowInstruction`,
-`CancelAnonymousAssetEscrowInstruction`,
-`OpenAnonymousEscrowDisputeInstruction`, 及其他
-`ResolveAnonymousEscrowDisputeInstruction`. Android 這種方式可以使用:
-匹配 `NativeEscrowInstructions.*` 來自美國的建築師 Android 這是一件藝術品.
+匿名模板可提供: `OpenAnonymousAssetEscrowInstruction`, `AcceptAnonymousAssetEscrowInstruction`, `MarkAnonymousEscrowPaymentSentInstruction`, `ReleaseAnonymousAssetEscrowInstruction`, `CancelAnonymousAssetEscrowInstruction`, `OpenAnonymousEscrowDisputeInstruction`, 和 `ResolveAnonymousEscrowDisputeInstruction`. Android Java調用者可以使用匹配 `NativeEscrowInstructions.*` 建築師從 Android 藝術品.
 
 ### Swift 和iOS {#swift-and-ios}
 
-其他國家 Swift SDK 建立了保證指令, Norito JSON 請使用
-`NativeEscrowInstructionBuilders` 直接或呼叫同等
-`IrohaSDK.build*Escrow*` 如果您的應用程式已經有 `IrohaSDK`
-這種情況.
+Swift SDK 將保證說明構建爲 Norito JSON 的有效載荷. 直接使用 `NativeEscrowInstructionBuilders`,或者在您的應用程序已經擁有一個 `IrohaSDK`實例時,撥打對等式的 `IrohaSDK.build*Escrow*`輔助器.
 
 ```swift
 import IrohaSwift
@@ -528,38 +463,27 @@ let resolve = try NativeEscrowInstructionBuilders.resolveEscrowDispute(
 )
 ```
 
-沒有名稱 Swift 建立者將取消者列表,輸出承諾列表,證明
-字典和可選 `rootHint` 爭議解決權限
-這個代碼可用為 `NativeEscrowPermissions.canResolveEscrowDispute`.
+匿名的 Swift 構建者採用無效列表,輸出承諾列表,證明詞典和可選的 `rootHint`值.爭端解決權限代幣是`NativeEscrowPermissions.canResolveEscrowDispute`.
 
-## 詢問及事件 {#queries-and-events}
+## 問題和事件 {#queries-and-events}
 
-使用預約查詢狀況頁面,和解工作和支持工具:
+使用保證查詢狀態頁面,調整工作和支持工具:
 
-| 詢問問題 | 目的 |
+|問題|目的|
 | --- | --- |
-| `FindAssetEscrowById` | 讀一張透明的保證書或鎖上 `EscrowId`. |
-| `FindAssetEscrows` | 列出透明的保證和鎖定紀錄. |
-| `FindAssetEscrowsBySeller` | 列出賣家或鎖匙打開者打開的紀錄. |
-| `FindAssetEscrowsByBuyer` | 列出買方接受的市場保證券或針對目的地鎖定. |
-| `FindAssetEscrowsByStatus` | 列出這些紀錄 `AssetEscrowStatus`. |
-| `FindAnonymousAssetEscrowById` | 讀一篇匿名的保證書 `EscrowId`. |
-| `FindAnonymousAssetEscrows*` | 按所有紀錄,賣家,買者或狀態列出匿名保證人. |
+|`FindAssetEscrowById`|按 `EscrowId`閱讀一個透明的保證金或鎖定.|
+|`FindAssetEscrows`|列出透明的託管和鎖定記錄.|
+|`FindAssetEscrowsBySeller`|列出賣家或鎖開戶打開的記錄. |
+|`FindAssetEscrowsByBuyer`|列出買方接受的市場保證券或針對目的地鎖定. |
+|`FindAssetEscrowsByStatus`|在 `AssetEscrowStatus`之前列出記錄. |
+|`FindAnonymousAssetEscrowById`|通過 `EscrowId`閱讀一個匿名的保證金.|
+|`FindAnonymousAssetEscrows*`|按所有記錄,賣家,買家或身份列出匿名保證金.|
 
-`EscrowEventFilter` 可訂閱透明的本地保證和鎖定
-預約的事件 ID, 該活動的目的是:
-家庭包括 `Opened`, `Accepted`, `PaymentSent`, `Released`,
-`Cancelled`, `Expired`, `Disputed`, 及其他 `Resolved`. 匿名保證人
-透過匿名的保證人查詢進行檢查.
+`EscrowEventFilter` 可以訂閱透明的本地託管和按託管鎖定活動 ID, 銷售者,買家,狀態和事件設置面具. `Opened`, `Accepted`, `PaymentSent`, `Released`, `Cancelled`, `Expired`, `Disputed`, 和 `Resolved`. 通過匿名的託管查詢來檢查匿名託管記錄.
 
-## 經營記錄 {#operational-notes}
+## 運營說明 {#operational-notes}
 
-- 存儲大型發票,聊天日志,評估或監控包在網路外
-  他們將他們的密碼添加成證據.
-- 使用穩定 `EscrowId` 在應用程式中導出,因此重複試驗無法創造
-  兩種相同的優惠.
-- 提供獎金 `CanResolveEscrowDispute` 只有經營該公司的帳戶或角色
-  爭議程序.
-- 應對非連鎖支付驗證作為申請政策. Iroha 記錄
-  監管和生命周期的轉變;它沒有證實法定或外部
-  沒有任何相關資訊.
+- 存儲大型賬單,聊天日誌,判斷或審計包在保證金記錄之外,並將它們的哈希作爲證據.
+- 在申請中使用穩定的 `EscrowId`衍生值,以便重新嘗試不能爲相同的報價創建重複保證金.
+- 授予 `CanResolveEscrowDispute`僅爲經營爭端程序的賬戶或角色.
+- 視支付鏈外驗證爲應用政策. Iroha 記錄保管和生命週期過渡;它不單獨驗證法定或外部支付軌道.

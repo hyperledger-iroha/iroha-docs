@@ -438,7 +438,7 @@ Oʻzingizning ilova yoki shartnomangizda konversiya siyosatini saqlash:
 - foydalanuvchilarning muvozanati juda past bo'lganda nima sodir bo'ladi
 - sponsorning XOR balanslari juda past bo'lganda nima sodir bo'ladi
 
-::: ogohlantirish
+::: warning
 
 `gas_asset_id` ni "local-token fee" modeli uchun ishlatmang, agar siz ushbu gaz aktivida ham sponsordan to'lov olinishini xohlamasangiz. Hozirgi ishga tushirish davrida `fee_sponsor` shuningdek, qo'llab-quvvatlovchini konfiguratsiya qilingan quvur-gaz aktivlari debitlari uchun to'lovchi qiladi. Mahalliy tokenlar foydalanuvchisi to'lovlari uchun tokenni o'tkazish yoki shartnoma qoidasi bilan aniq yig'ib oling.
 

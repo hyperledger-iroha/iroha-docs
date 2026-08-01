@@ -45,7 +45,7 @@ curl -fsS -N https://taira.sora.org/v1/events/sse
 
 ## 数据事件 {#data-events}
 
-当与本书数据相关的变化如同类,域名,账户,资产等发生时,数据事件发行.资产定义, NFTs, 触发器,角色,链上配置,执行状态,证据,机密资产,桥梁或 SORA/Nexus 这些类型的事件用于: [数据事件过器](./filters.md#data-event-filters).
+数据事件在与账本数据相关的变化发生时发行,如同类,域名,帐户,资产,资产定义, NFTs,触发因素,角色等,链上配置,执行状态,证据,机密资产,桥梁或 SORA/Nexus 特定对象.这些类型的事件用于[数据事件过器](./filters.md#data-event-filters).
 
 ## 时间事件 {#time-events}
 

@@ -191,7 +191,7 @@ RAM-LFE အတွက်တော့ BFV ကို encrypted input mechanism အ�
 4. Resolver Runtime က အဲဒီ ကုဒ်စာသားတွေကို သုံးပြီး ပုန်းနေတဲ့ အစီအစဉ်ကို အကဲဖြတ်တယ်။
 5. Runtime က ပုန်းကွယ်နေတဲ့ အစီအစဉ် ထုတ်ကုန်ကိုသာ ဖေါ်ထုတ်ပေးပြီး လက်မှတ်ထိုးတာ (သို့) လက်ခံလက်မှတ်ကို သက်သေပြတယ်။
 
-BFV အမွတ္ (၁၀) ကို ေအာက္ပါအတိုင္းေဖာ္ျပထားပါတယ္. computations ထက် floating-point model မှီခိုခြင်း။ Iroha current ကို BFV အသုံးပြုမှု, သွယ်ဝှက် slot တစ်ခုစီကို scalar တန်ဖိုး module ကိုဆောင်ထားသည် \(t\), Cyphertext itself lives modulo a much larger integer နဲ႔ \(q\). အကြားက ကွာဟချက် \(q\) နှင့် \(t\) encryption နဲ့ homomorphic operations တွေက ဖန်တီးတဲ့ ဆူညံသံအတွက် decryption room ပေးတယ်။
+BFV ဟာ တိကျတဲ့ အလုံးစုံ သင်္ချာပါ၊ နီးစပ်တဲ့ သင်္ချာမဟုတ်ဘူး။ ဒါကြောင့် ၎င်းဟာ floating-point model inference ထက် identifier byte နဲ့ အသေးစား modular computations တွေအတွက် ပိုတော်ပါတယ်။ အတွင်းမှာ Iroha current ကို BFV အသုံးပြုမှု, သွယ်ဝှက် slot တစ်ခုစီကို scalar တန်ဖိုး modulo ကိုဆောင်ထားပါတယ် \(t\), သာမန်အားဖြင့် ဘိုင်တာ (သို့) ဘိုင်တာအလျားကွင်းပါ။ ပိုးမွှားစာသားကိုယ်တိုင်က အများကြီး ပိုကြီးတဲ့ integer \(q\) ကို modulo လုပ်နေတာပါ။ အကြားက ကွာဟချက် \(q\) နှင့် \(t\) encryption နှင့် homomorphic operation များအတွက်အသံကို decryption နေရာပေးသည် မိတ်ဆက်ပေးပါ။
 
 BFV ကုဒ်စာသားမှာ polynomial အစိတ်အပိုင်း နှစ်ခုရှိပါတယ်။
 

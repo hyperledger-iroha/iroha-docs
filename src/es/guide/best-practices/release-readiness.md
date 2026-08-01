@@ -1,14 +1,14 @@
 ---
 translation_locale: es
 translation_source: /guide/best-practices/release-readiness.md
-translation_source_hash: 1f316d6a823b23e821d80fe8773df7469358b0e01057f9b76b113cafe4818f20
+translation_source_hash: 984957526424a4e0ec9f29a6da1bb64699245bb135e8157bbe684bc3d87de4cc
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Preparación para la liberación {#release-readiness}
 
-Antes de promover una aplicación Iroha o un cambio en la red, compruebe el comportamiento en el entorno más pequeño que pueda exponer el riesgo relevante y luego se mueva deliberadamente a través de las redes de prueba compartidas y las puertas de producción.
+Antes de promover una aplicación Iroha o un cambio en la red, compruebe el comportamiento en el entorno más pequeño que pueda exponer el riesgo relevante, y luego se mueva deliberadamente a través de las redes de prueba compartidas y las puertas de producción.
 
 ## Puerta de red local {#localnet-gate}
 
@@ -31,7 +31,7 @@ Véase [Construir en SORA 3: Taira y Minamoto ](/es/get-started/sora-nexus-datas
 ## Puerta principal o puerta de producción {#mainnet-or-production-gate}
 
 - Utilice firmas de producción separadas, fondos, dominios y caminos de configuración. No promueva las claves de la red de prueba o los supuestos del grifo.
-- Confirmar la compatibilidad entre SDK, CLI y las redes con la matriz de compatibilidad [ ](/es/reference/compatibility-matrix.md).
+- Confirmar el cruce requerido SDK los escenarios con el [Matriz de compatibilidad](/es/reference/compatibility-matrix.md). Separadamente pin y comprobar el exacto CLI, binario de pares, configuración y liberación de red utilizados por el despliegue.
 - Los permisos de revisión, el patrocinio por honorarios, los límites de tarifas, la supervisión, el estado de copia de seguridad y los criterios de retroceso antes de la ventana de lanzamiento.
 - Requerir una transacción por escrito o un plan de migración para los escritos de alto impacto.
 

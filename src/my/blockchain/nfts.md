@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /blockchain/nfts.md
-translation_source_hash: 335eacd30c5964659baeeae8ac937805f1d4d786dd42a36e5164bbe75ef7e360
+translation_source_hash: 6dd2d21a29f352a14cb17046c66cfa541ef501b733b95bb6874d2d3f86ec0504
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -123,7 +123,7 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
-NFT ကို လွှဲပြောင်းခဲ့ရင် လက်ရှိပိုင်ရှင်ရဲ့ အကောင့်ကွန်ဖိုင်ရှင်းနဲ့ ဒီပ command ကို run လုပ်လိုက်ပါ။ (သို့) NFT ကို ပြန်လွှဲပြောင်းပါ။
+NFT နမူနာကို walkthrough လုပ်ပြီးနောက် ဖယ်ရှားပါ။ သင်က လွှဲပြောင်းခဲ့ရင် ပြန်လွှဲပြောင်းပေးပါ (သို့) လက်ရှိပိုင်ရှင်ရဲ့ အကောင့် ညွှန်ကြားချက်နဲ့ မှတ်ပုံတင်ခြင်းမပြုရန် အမိန့်ကိုပို့ပါ။
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -158,7 +158,7 @@ Default permission surface မှာ NFT သီးသန့် tokens တွေ 
 
 fungible balance များအတွက် numeric asset ကိုသုံးပြီး data တွေဟာ ရှိနေတဲ့ ledger object တစ်ခုရဲ့ compact attribute တစ်ခုသာဖြစ်တဲ့အခါ plain [ metadata ](/my/blockchain/metadata.md) ကို သုံးပါ။
 
-အောက်ပါအတိုင်းလည်း ကြည့်ပါ။
+နောက်တစ်ချက်ကြည့်ပါ-
 
 - [အရင်းအမြစ်များ](/my/blockchain/assets.md)
 - [metadata](/my/blockchain/metadata.md)

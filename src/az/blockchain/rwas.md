@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /blockchain/rwas.md
-translation_source_hash: 80593515d6919a6b6cb282ddcd4903ce000b56b264f350a42a6ed792f9cbef73
+translation_source_hash: cbdc6d766fb90bea7e68dc67f2c705bb1638340feeb2fca9f2dd43a727ac03e7
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,7 +12,7 @@ translation_engine: nllb-200-ct2
 
 RWAs sayısal aktiv qalıqlarından fərqlənir:
 
-- rəqəmsal aktiv hesabda saxlanılan fungib balansdır.
+- rəqəmsal aktiv hesabda saxlanılan fungib balansdır
 - NFT bir sahibi olan unikal bir zəncirlə bağlı qeyddir.
 - RWA - biznes metadataları, miqdarı, saxlamaları, dondurmalarını, geri qaytarılma vəziyyətini, mənşəyini və nəzarətçi siyasətini daşıya bilən bir lotdur.
 
@@ -60,12 +60,12 @@ Tələblər öz iş identifikatorunu `primary_reference` və ya `metadata` ədə
 |Əməliyyat |tətbiq edilmiş davranış |
 | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
 |`RegisterRwa` |Bir domenində ID topluğunu yaratmaq; əməliyyat orqanı `owned_by` olur. |
-|`TransferRwa` | Qeydiyyatı başqa hesabına köçürün. Tam transfer dəyişə bilər. `owned_by`; qismən köçürülməsi yaranmış uşaq topluğunu yaradır. |
+|`TransferRwa` |Əmlakı başqa hesabına köçürmək. Tam ötürmə `owned_by` dəyişə bilər. qismən ötürmə yaradılmış bir ID ilə ayrı uşaq partiyası yaradır. |
 |`HoldRwa` |Qeydiyyat miqdarı. Konfiqurasiyalı bir idarəetmə və `hold_enabled` tələb edir. |
 |`ReleaseRwa` |Qalan miqdarı çıxarın. Konfiqurasiyalı bir idarəetmə və `hold_enabled` tələb edir. |
 |`FreezeRwa` |Normal sahibinin əməliyyatlarını bloklayın. Konfiqurasiya edilmiş bir idarəetmə və `freeze_enabled` tələb edir. |
 |`UnfreezeRwa` |Adətən sahibinin əməliyyatlarını yenidən aktivləşdirmək. Konfiqurasiya edilmiş bir idarəetmə və `freeze_enabled` tələb edir.|
-|`RedeemRwa` | İndirim miqdarı. sahibini və ya nəzarətçisini tələb edir `redeem_enabled`.                                                  |
+|`RedeemRwa` |Daimi olaraq dövriyyədən miqdarı çıxarın. sahib və ya nəzarətçi `redeem_enabled` doğru olduqda onu təqdim edə bilər. |
 |`MergeRwas` |Eyni domenə malik valideyn lotlarından olan miqdarları birləşdirin və xüsusiyyətləri yaranmış uşaq lotuna çevirin. |
 |`ForceTransferRwa` |Nəzarətçi axını vasitəsilə miqdarı köçürmək. Konfiqurasiya edilmiş nəzarətçi və `force_transfer_enabled` tələb edir. |
 |`SetRwaControls` |Satış nəzarəti siyasətini əvəz edin. sahibinin və ya nəzarətçinin tələb olunur.|
@@ -96,11 +96,11 @@ Tətbiqlərin partiyanı müəyyənləşdirməsinə və təsdiqləməsinə köm�
 }
 ```
 
-Nəzarətçi hesabları və rolları yalnız müvafiq boolean bayrağı ilə təmin edilmiş nəzarətçi əməliyyatlarını yerinə yetirməyə icazə verilir. Hal-hazırda nəzarət pay yükü icazə siyahısı ötürmə siyasəti deyil və yerləşdirilmiş daxildir `transfers` Qaydalar.
+Nəzarətçilərin hesabları və rolları yalnız müvafiq Boolean bayraqları ilə təmin olunan əməliyyatları həyata keçirə bilər. Hal-hazırda idarəetmə yükü nəzarətçi kimliklərini və əməliyyat bayraqlarını ehtiva edir. Transfer icazə siyahıları və yerləşdirilmiş `transfers` qaydaları bu faydalı yükdən kənarda yerləşirlər.
 
 ## Soruşmalar, hadisələr və APIs {#queries-events-and-apis}
 
-İstifadə [`FindRwas`](/az/reference/queries.md#assets-nfts-and-rwas) qeydiyyatdan keçmiş siyahıya RWA canlı yeniləmələrə ehtiyacı olan tətbiqlər paylaşa bilər [`Rwa` məlumat hadisələri](/az/blockchain/filters.md#data-event-filters) yaradılmış, sahibini dəyişdirilmiş, bölünmüş, birləşmiş, satın alınmış, dondurulmuş, dondurunmamış, saxlanılan, azad edilmiş, zorla köçürülmüş, nəzarətlərin dəyişdirilməsi üçün; və metadata hadisələri.
+İstifadə [`FindRwas`](/az/reference/queries.md#assets-nfts-and-rwas) qeydiyyatdan keçmiş siyahıya RWA canlı yeniləmələrə ehtiyacı olan tətbiqlər paylaşa bilər [`Rwa` məlumat hadisələri](/az/blockchain/filters.md#data-event-filters) yaradılmış, sahibini dəyişdirilmiş, parçalanmış, birləşmiş, satın alınmış, dondurulmuş, dondurulamamış, saxlanılan, buraxılmış, güc köçürülmüş, nəzarət dəyişdirilmiş və metadata hadisələri.
 
 Torii `/v1/rwas` və `/v1/rwas/query` kimi zəncir-dövlət yollarını, habelə bu marşrut ailəsinin aktivləşdirildiyi zaman `/v1/explorer/rwas` və `/v1/explorer/rwas/{rwa_id}` kimi kəşfçi yollarını aşkar edir. Yaradılan müştərilər bir düyün tərəfindən aşkar edilmiş dəqiq cavab forması üçün canlı [`/openapi`](/az/reference/torii-endpoints.md#common-endpoints) sənədinə üstünlük verməlidirlər.
 
@@ -228,7 +228,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Zəncirdən kənar proses tamamlandıqdan sonra saxlama buraxılır:
+Zəncirdən kənar proses uğurla baş tutduqdan sonra `ReleaseRwa` təqdim edin:
 
 ```python
 draft = TransactionDraft(
@@ -273,7 +273,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### Qazan və ya təqaüdə alınma miqdarı {#redeem-or-retire-quantity}
 
-Təmsil olunan zəncirdən kənar aktivin çatdırıldığı, istehlak edildiyi, təxirə salındığı zaman ödəniş miqdarı; Birləşmiş Ştatlar tərəfindən verilən və ya digər şəkildə dövriyyədən çıxarılmış `redeem_enabled`, İmzaçı sahibinin və ya nəzarətçinin olması lazımdır.
+Göndərmək `RedeemRwa` təmsil olunan zəncirdən kənar aktiv çatdırıldıqdan, istehlak edildikdən, geri çəkildikdən və ya başqa bir şəkildə dövriyyədən çıxarıldıqdan sonra. Bu, təqdim edilmiş miqdarı partiyadan daimi olaraq çıxarır. `redeem_enabled`. İmzaçı sahibi və ya nəzarətçi olmalıdır.
 
 ```python
 draft = TransactionDraft(
@@ -287,7 +287,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### Müvafiqliyi araşdırarkən dondurma {#freeze-during-compliance-review}
 
-Bir zəncirdən kənar bir araşdırmanın sıradan sahibkar əməliyyatlarını bloklaması lazım olduqda çox dondurmaq. İmzaçı nəzarətçi olmalıdır və partiyanın `freeze_enabled` olması lazımdır.
+`FreezeRwa` silsilədən kənar bir araşdırmanın sıradan sahibkar əməliyyatlarını maneə törətməsi lazım olduqda təqdim olun. İmzaçı nəzarətçi olmalıdır. Lotda `freeze_enabled` olmalıdır.
 
 ```python
 draft = TransactionDraft(
@@ -308,7 +308,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Qeydiyyatdan keçdikdən sonra onu dondurun:
+Tədqiqatdan keçdikdən sonra `UnfreezeRwa` təqdim edin:
 
 ```python
 draft = TransactionDraft(
@@ -380,7 +380,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Təmsil olunan məbləği zəncirdən kənar hesablamalardan sonra geri qaytarmaq:
+Təmsil olunan məbləği zəncirdən kənar hesablamalardan sonra ödəmək:
 
 ```python
 draft = TransactionDraft(
@@ -394,7 +394,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### Karbon kredit pensiya {#carbon-credit-retirement}
 
-İddia ediləndən sonra kreditləri geri çəkmək üçün ödənişdən istifadə edin. Metadatalar silsilədən kənarda olan sertifikat və ya qeydiyyat sübutuna işarədir:
+Təsdiqlənmiş karbon kreditlərini dövriyyədən çıxarmaq üçün `RedeemRwa` təqdim edin. Zəncirdən kənarda olan sertifikatı və ya qeydiyyat sübutunu metadata saxlayın:
 
 ```python
 carbon_lot_id = (

@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # 语法,条件,逻辑 {#expressions-conditionals-logic}
 
-所有 [Iroha 特殊指令](./instructions.md)都运行于表达式.每个表达式都有一个 `EvaluatesTo`,用于执行指令.虽然你可以直接指定帐户名称,但也可以通过一些数学或字符串操作来指定账户 ID.你也可以检查一个账户是否注册在区块链上.
+所有 [Iroha 特殊指令](./instructions.md)都运行于表达式.每个表达式都有一个 `EvaluatesTo`,用于执行指令.虽然您可以直接指定帐户名称,但也可以通过某种数学或字符串操作来指定账户 ID.
 
 使用实现 `EvaluatesTo<bool>`的表达式,您可以设置条件逻辑并在链上执行更复杂的操作.例如,只需注册特定帐户才能提交一个 `Mint` 指令.
 

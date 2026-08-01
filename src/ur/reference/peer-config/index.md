@@ -26,7 +26,7 @@ translation_engine: nllb-200-ct2
 
 TOML ترتیب فائلوں میں ایک اضافی `extends` فیلڈ ہوتا ہے، جو دوسرے TOML فائلوں کی طرف اشارہ کرتا ہے۔ یہ ایک ہی راستہ یا متعدد راستے ہوسکتے ہیں:
 
-::: کوڈ گروپ
+::: code-group
 
 ```toml [Single]
 extends = "single-path.toml"
@@ -40,7 +40,7 @@ extends = ["file1.toml", "file2.toml"]
 
 Iroha `extends` میں مخصوص تمام فائلوں کو دوبارہ پڑھتا ہے اور انہیں پرتوں میں مرتب کرتا ہے، جہاں پچھلے پیرامیٹر کی سطح پر سابقہ کو اوور رائٹ کرتے ہیں. مثال کے طور پر، اگر پڑھنے `config.toml`:
 
-::: کوڈ گروپ
+::: code-group
 
 ```toml [config.toml]
 extends = ["a.toml", "b.toml"]

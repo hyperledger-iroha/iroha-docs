@@ -6,12 +6,11 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# 创世纪 {#genesis}
+# 创世记 {#genesis}
 
-编辑的来源是 JSON 显明,
-一个 Iroha 3 节点消耗一个签名 Norito 交易文件.
+创世纪定义了初始链状态.可编辑的源是 JSON 表格,一个 Iroha 3 节点消耗了一个签署的 Norito 交易文件.
 
-::: details 默认生成表
+::: details 默认基因表
 
 <<< @/snippets/genesis.json
 
@@ -19,21 +18,17 @@ translation_engine: nllb-200-ct2
 
 ## 文件 {#files}
 
-上游存储器将默认的表格发送到 `defaults/genesis.json`.
-Kagami-生成的网络将自己的明示和签名交易写入
-输出目录:
+在 `defaults/genesis.json` 上游存储库中,输出目录中写入 Kagami 生成的网络自己的表格和签署交易:
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
 ```
 
-产生的 `README.md` 在那个目录中记录了精确的文件和启动
-选定的配置文件的命令.
+在该目录中生成的 `README.md`记录了选定的个人资料的精确文件和启动命令.
 
 ## 同龄人配置 {#peer-configuration}
 
-经过签署的创始交易 `[genesis]` 部分
-`config.toml`:
+在 `config.toml` 的 `[genesis]` 节中,同行指出签署的创始交易:
 
 ```toml
 [genesis]
@@ -41,12 +36,11 @@ file = "./genesis.signed.nrt"
 public_key = "ed0120..."
 ```
 
-网络中的所有同行必须同意签署的创始交易和
-基因公钥.
+网络中的所有同行必须同意签署的基因交易和基因公钥.
 
 ## 创世纪的签名 {#signing-genesis}
 
-如果您手动编辑明示,在启动同行之前验证并签署:
+如果您手动编辑表格,在启动同行之前验证并签字:
 
 ```bash
 cargo run --bin kagami -- genesis validate ./genesis.json
@@ -56,13 +50,8 @@ cargo run --bin kagami -- genesis sign ./genesis.json \
   --out-file ./genesis.signed.nrt
 ```
 
-对于NPoS或 Nexus 个人资料,包括拓学和 BLS 持有证据
-由生成的配置文件所要求. Kagami `localnet`, `wizard`, 和个人资料
-生成命令自动处理这些细节.
+对于NPOS或 Nexus 个人资料,包括拓学和 BLS 根据生成的配置文件所要求的拥有证明. Kagami `localnet`, `wizard`, 配置文件生成命令将自动处理这些细节.
 
 ## 重复创世记 {#recommitting-genesis}
 
-一个同行只会在储存空时进行生成.
-一个可丢弃的本地网络,停止同行,删除它们生成的状态目录,
-开始从新的签名基因. 不要在运行上取代基因
-网络,除非每个验证器都协调相同的迁移.
+一个同行只会在存储空时进行生成.在一次性本地网中测试一个新的生成,停止同行,删除其生成的状态目录,并从新签署的生成开始.除非每个验证器协调相同的迁移,否则不要在运行的网络上替换基因.

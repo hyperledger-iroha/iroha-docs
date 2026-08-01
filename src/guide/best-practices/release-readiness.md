@@ -36,8 +36,10 @@ See
 
 - Use separate production signers, funding, domains, and config paths. Do
   not promote testnet keys or faucet assumptions.
-- Confirm SDK, CLI, peer, and network compatibility with the
-  [Compatibility Matrix](/reference/compatibility-matrix.md).
+- Confirm required cross-SDK scenarios with the
+  [Compatibility Matrix](/reference/compatibility-matrix.md). Separately pin
+  and test the exact CLI, peer binary, configuration, and network release used
+  by the deployment.
 - Review permissions, fee sponsorship, rate limits, monitoring, backup
   status, and rollback criteria before the release window.
 - Require a written transaction or migration plan for high-impact writes.

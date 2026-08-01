@@ -1,28 +1,25 @@
 ---
 translation_locale: zh-hant
 translation_source: /help/installation-issues.md
-translation_source_hash: 2f548e96f8a72ea83a8b39fabf7f3713ad7b8df0eac627ed2138cbd9d3f7ea36
+translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c054c85a2a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # 解決安裝問題 {#troubleshooting-installation-issues}
 
-這部分提供解決問題的建議. Iroha 3 如果該設備
-您所遇到的問題並沒有在這裡描述,
-透過網路聯絡我們 [電子郵件](https://t.me/hyperledgeriroha).
+本節提供 Iroha 3 安裝的故障解決技巧. 如果您遇到的問題沒有在這裏描述,請通過 [電報](https://t.me/hyperledgeriroha)聯繫我們.
 
 ## 快速檢查 {#quick-checks}
 
-裝置故障的原因主要是:
+最多的安裝故障來自四個地方之一:
 
-- 其他 Rust 工具链比上游工作空間固定的版本更老
-- `cargo` 或是 `rustc` 在其他設備上, `rustup`
-- 缺少系統建構工具,例如C編輯器, `pkg-config`, 或是 CMake
-- 在改變源頭後,已舊產生的截圖或本地建構文物
-  修改
+- 一個 Rust 工具鏈比上游工作空間固定的版本更老
+- `cargo`或`rustc`分離到一個不同於 `rustup`的裝置
+- 缺失的系統構建工具,如C編譯器, `pkg-config`,或CMake
+- 經過變更源改後生成過時的摘錄或本地構建文物
 
-來自: Iroha 開始於:
+從 Iroha 來源清算中,開始:
 
 ```bash
 rustup show
@@ -31,65 +28,52 @@ rustc --version
 cargo metadata --no-deps
 ```
 
-如果 `cargo metadata` 在運行前,修復本地工具連鎖
-`pnpm refresh:iroha --source /path/to/iroha`, 因為更新可以呼籲
-Kagami 生成目前的數據模型方案.
+如果 `cargo metadata` 失敗,在運行 `pnpm refresh:iroha --source /path/to/iroha`之前修複本地工具鏈,因爲更新可以調用 Kagami 來生成當前的數據模型方案.
 
-## 解決問題 Rust 工具鎖 {#troubleshooting-rust-toolchain}
+## 解決問題 Rust 工具鏈 {#troubleshooting-rust-toolchain}
 
-有時事情會不如你預定的. `rust` 在您的
-但並沒有升級.
-Python: XKCD 這樣可能會是什麼樣的例子:
+有時,事情不會按計劃進行.特別是如果你有 `rust` 在你的系統上一段時間前,但沒有升級.類似的問題可以發生在 Python: XKCD 有一個著名的例子,它可能看起來像:
 
 <div class="flex justify-center">
 
-![Python 環境問題解決漫畫](/img/install-troubles.png)
+![Python 環境故障解決漫畫](/img/install-troubles.png)
 
 </div>
 
-### 檢查 Rust 的版本 {#check-rust-version}
+### 檢查 Rust 版本 {#check-rust-version}
 
-確保您的健康和我們的健康,
-有正確的版本 `cargo` 配合了正确的版本 `rustc`.
-目前的上游工作空間表示 `rust-version = "1.92"` 著這些
-在工具链中 `rust-toolchain.toml`. 顯示這些版本,
+爲了維護您和我們的智力,請確保您擁有正確的版本 `cargo`與正確的版 `rustc`.目前上游的工作空間聲明 `rust-version = "1.92"`並將工具鏈道插入`rust-toolchain.toml`.
 
 ```bash
 $ cargo -V
 $ cargo 1.93.1 (...)
 ```
 
-接著,
+然後,
 
 ```bash
 $ rustc --version
 $ rustc 1.93.1 (...)
 ```
 
-如果您有更高版本,就很好.
-可以執行下列命令更新它:
+如果你有更高的版本,你沒事.如果你有較低的版本,你可以運行下列命令更新它:
 
 ```bash
 $ rustup toolchain update stable
 ```
 
-### 檢查安裝位置 {#check-installation-location}
+### 檢查安裝地點 {#check-installation-location}
 
-如果您獲得更低版本數字 **及其他** 你更新了工具連鎖,
-沒有效果... 只是說這是一個常見的問題,
-共同的解決方案.
+如果你得到較低的版本號碼,並且更新了工具鏈並沒有工作... 讓我們說這是一個常見的問題,但它沒有共同解決方案.
 
-首先,你必須確定你想要使用的版本是
-裝置:
+首先,您應該確定您想要使用的版本安裝在哪裏:
 
 ```bash
 $ rustup which rustc
 $ rustup which cargo
 ```
 
-工具連鎖的使用者安裝是 _通常_ 在
-`~/.rustup/toolchains/stable-*/bin/`. 如果是這樣,
-能夠跑步
+工具鏈的用戶安裝通常在 `~/.rustup/toolchains/stable-*/bin/`.如果是這樣,你應該能夠運行
 
 ```bash
 $ rustup toolchain update stable
@@ -97,87 +81,73 @@ $ rustup toolchain update stable
 
 這應該解決你的問題.
 
-### 檢查預設情況 Rust 的版本 {#check-the-default-rust-version}
+### 檢查默認版本 Rust {#check-the-default-rust-version}
 
-其他選擇是, `stable` 這種工具連鎖,
-沒有設定為預設.
+另一個選項是,你有更新的 `stable`工具鏈,但它不是默認設置.運行:
 
 ```bash
 $ rustup default stable
 ```
 
-如果您安裝了 `nightly` 或設定特定的版本
-Rust 但卻忘了開啟它.
+如果安裝 `nightly` 版本或設置特定的 Rust 版本,然後不調整,則可能會導致此問題.
 
-### 檢查是否有其他 Rust 的版本 {#check-if-there-are-other-rust-versions}
+### 檢查是否有其他版本 Rust {#check-if-there-are-other-rust-versions}
 
-繼續解決問題的子洞, 我們可能會有貝
-姓名:
+繼續解決問題子洞,我們可能會有子的姓氏:
 
 ```bash
 $ type rustc
 $ type cargo
 ```
 
-如果這些指向其他地方,
-`rustup which *`, 請注意,
-只是一個
+如果這些指向您在運行 `rustup which *`時看到的位置以外的地方,那麼您就有問題了.請注意,添加類似於此類別的號不夠:
 
 ```bash
 $ alias rustc "~/.rustup/toolchains/stable-*/bin/rustc"
 $ alias cargo "~/.rustup/toolchains/stable-*/bin/cargo"
 ```
 
-因為我們有內在的逻辑,
-請重新編排您的外名.
+不管你如何安排你的外名,內部邏輯仍然可以破裂.
 
-您不使用的版本是最簡單的解決方案.
+最簡單的解決方案是刪除你不使用的版本.
 
-這更容易. _沒有人說_ 超過 _完成_, 但因為它需要追蹤所有
-其他版本 rustup 通常只能提供其他功能,
-系統包裝管理器版本和安裝在
-當您執行命令時, 在主文件中的標準位置
-請參考您的 (Linux)
-該區域的分佈手冊 (`apt remove rust`) 對於後者來說,
+然而,這比做起來更容易,因爲它需要跟蹤所有版本的 rustup 通常,只有兩個:系統包管理器版本和安裝的版本在您的家庭文件中的標準位置中,當您運行命令時對於前者,請參閱您的 (Linux) 分佈指南.`apt remove rust`) 對於後者,運行:
 
 ```bash
 $ rustup toolchain list
 ```
 
-接著,每次 `<toolchain>` 沒有角括號,
+然後,每一個 `<toolchain>` (當然沒有角括號):
 
 ```bash
 $ rustup remove <toolchain>
 ```
 
-在此之後,
+在移除工具鏈後,該命令應該報告一個未找到的命令錯誤:
 
 ```bash
 $ cargo --help
 ```
 
-導致命令未找到錯誤,即您沒有任何活跃的 Rust
-請執行:
+該錯誤確認沒有安裝活躍的 Rust 工具鏈.然後運行:
 
 ```bash
 $ rustup toolchain install stable
 ```
 
-## 解決問題 Python 工具链 {#troubleshooting-python-toolchain}
+## 解決故障的工具鏈 Python {#troubleshooting-python-toolchain}
 
-在安裝後, Python 在使用管道的車輪包裝中 [Python 客戶端設定](/zh-hant/guide/tutorials/python.md), 您可能會遇到如下錯誤:
-沒有任何問題_魚類*.這台不是支持的車輪".
+當您在 [Python 客戶端設置](/zh-hant/guide/tutorials/python.md)期間安裝使用 pip 的 Python 輪包時,可能會遇到這樣的錯誤: "iroha_python-*.whl 不是這個平臺上的支持式輪".
 
-這項錯誤意味著 pip已過期,
-首先,我們建議檢查您的 OS 進行更新和系統升級.
+此錯誤意味着 pip 已經過時,因此您需要更新它.首先,建議檢查您的 OS 是否有更新並進行系統升級.
 
-如果這不起作用, 你可以嘗試更新 `pip` 在您的使用者目錄中.
+如果這不起作用,你可以嘗試更新用戶目錄的 `pip`.
 
 `python -m pip install --upgrade pip`
 
-請確保 `pip` 請將它安裝在您的家庭目錄中. `whereis pip` 並檢查是否 `/home/username/.local/bin/pip` 如果沒有,請更新你的貝. `PATH` 這種變量
+確保在您的家庭目錄中安裝了 `pip`.要做到這一點,運行`whereis pip`並檢查是否有 `/home/username/.local/bin/pip` 在路徑中.如果沒有,請更新 shell 的 `PATH`變量.
 
-如果問題持續, [聯絡我們](/zh-hant/help/) 並報告出口.
+如果問題持續下去,請聯繫我們 [ ](/zh-hant/help/)並報告輸出.
 
 ```
 python --version

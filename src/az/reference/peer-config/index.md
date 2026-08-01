@@ -26,7 +26,7 @@ Hər bir parametr haqqında ətraflı məlumat üçün [Parameterlər ](./params
 
 TOML konfiqurasiya faylları digər TOML fayllarını göstərən əlavə `extends` sahəsinə malikdirlər. Bu bir yol və ya çox yol ola bilər:
 
-::: kod qrupu
+::: code-group
 
 ```toml [Single]
 extends = "single-path.toml"
@@ -40,7 +40,7 @@ extends = ["file1.toml", "file2.toml"]
 
 Iroha `extends` -də göstərilən bütün sənədləri təkrar oxuyacaq və onları qatlara tərtib edəcək, burada sonrakılar əvvəlkiləri parametr səviyyəsində üstələyəcək. Məsələn, əgər `config.toml` -də oxunan:
 
-::: kod qrupu
+::: code-group
 
 ```toml [config.toml]
 extends = ["a.toml", "b.toml"]

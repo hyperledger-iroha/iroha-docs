@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /guide/configure/peer-management.md
-translation_source_hash: 4e48c937ca973319cd060876b123ff405d27d9d8bc11818e608d821295412c77
+translation_source_hash: f085fa1587595414f95705bbe2cd285752b0fe12cffb9ef29a33399f9a1f3f86
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -26,11 +26,11 @@ Tarmoqga tengdosh qo'shish uchun u qo'lda ro'yxatdan o'tkazilishi kerak. Keling,
 
 Tengdoshlarni ro'yxatdan o'tkazadigan hisobda tegishli `Permission` bo'lishi kerak. Bu `Role` orqali yoki to'g'ridan-to'g'ri ruxsat berish sifatida beriladi.
 
-Qanday qilib ro'l berish kerakligini hal qilish mumkin? Agar foydalanuvchi tarmoqdagi tengdoshlarni uzoq muddat davomida saqlab qolish mas'uliyatiga ega bo'lgan administrator sifatida xizmat qilmoqchi bo'lsa, rollar berish ma'noli. Bir martalik ruxsat berish, agar tengdoshni ro'yxatdan o'tkazgan tomon umuman tengdoshlarni ro'yxatga olish uchun mas'ul bo'lmasa, foydali bo'ladi, ammo tarmoq ma'muriyati yangi tengdosh tuzishga vaqt sarflamasligi (yoki xohlamasligi) kerak.
+Bir vaqtning o'zida tengdoshlarni boshqaradigan hisobda rol qo'shing. Tengdoshlarni boshqacha tarzda boshqarmaydigan hisobda bir martalik ro'yxatdan o'tish uchun to'g'ridan-to'g'ri ruxsat berishdan foydalaning.
 
-::: ma'lumot
+::: info
 
-Dastlabki ijrochi `CanManagePeers` ruxsatnoma tokenidan ro'yxatdan o'tish va ro'yxatga olmaydigan tengdoshlar uchun foydalanadi.
+Dastlabki ijrochi `CanManagePeers` ruxsatnoma belgisini ro'yxatdan o'tish va ro'yxatga olmagan tengdoshlar uchun ishlatadi.
 
 :::
 
@@ -40,7 +40,7 @@ Dastlabki ijrochi `CanManagePeers` ruxsatnoma tokenidan ro'yxatdan o'tish va ro'
 
 Yangi tengdoshga ruxsatnoma berilganidan so'ng, u o'rnatilishi kerak.
 
-Bogʻni qabul qilishdan oldin joriy tenglamchi konfiguratsiyasini soʻrang. Torii bu maqsad uchun nod parametrlari va qo'llanma oxirgi nuqtalarini ochadi. Peer bootstrap ushbu qiymatlarni avtomatik ravishda muzokara qilmaydi: operatorlar vaqtni, partiya o'lchamlarini va va boshqa konsens bilan bog'liq sozlamalar tarmoqga mos keladi.
+Torii bu maqsadda nod parametrlari va qobiliyat oxirgi nuqtalarini ochib beradi. ushbu qiymatlarni avtomatik ravishda muzokara qilmaydi: operatorlar timeouts, partiya o'lchamlari va boshqa konsensusga bog'liq sozlamalarning tarmoq bilan mosligini tekshirishlari kerak.
 
 Bu jarayonni soddalashtirish uchun siz tarmoq boshqaruvchisidan `config.toml` ning tahrirlangan versiyasini so'rashingiz mumkin, bu esa tengdoshlari xususiy kalitlari kabi imtiyozli ma'lumotlarni istisno qiladi.
 
@@ -48,7 +48,7 @@ Bu jarayonni soddalashtirish uchun siz tarmoq boshqaruvchisidan `config.toml` ni
 
 O'zingizning tengdoshingiz ish boshlaganidan so'ng, ro'yxatga o'tish uchun tengdoshlar ko'rsatmalarini taqdim etishingiz kerak. Tengdoshlar qo'l urish jarayonidan o'tadilar va tarmoq bilan suhbatlashishni boshlaydi.
 
-::: manzil
+::: tip
 
 Tengdoshlarni ro'yxatdan o'tkazish bo'yicha yo'l-yo'riqni taqdim etish yangi tengdoshlar jarayonini boshlashni anglatmaydi (va amalga oshirolmaydi).
 

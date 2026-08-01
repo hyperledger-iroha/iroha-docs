@@ -1,9 +1,9 @@
 ---
 translation_locale: uz
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: 6ee65d409642c79bea0f2c4ff0d8cd59b0ec0a29e115225045786d0816e8a6a7
+translation_source_hash: 9bec41b1b419e252fdcff8328e7950a294bdad3ac40112a5a7f2ce451d19e9cb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Torii Oxirgi nuqtalar {#torii-endpoints}
@@ -32,10 +32,10 @@ Format tafsilotlari, tarkib muzokaralari, layout bayroqlari, sxema hashlari va N
 |`GET /status` |JSON |Operatorlar uchun yuqori darajadagi holat xossalari |
 |`GET /metrics` |Prometheus |Prometheus scraping oxirgi nuqtasi |
 |`GET /schema` |JSON |Maʼlumotlar modeli sxemasining nod tomonidan xizmat koʻrsatiladigan fotosuratlari |
-|`GET /openapi` yoki `GET /openapi.json` |JSON |Aktiv Torii HTTP yo'nalishlari uchun OpenAPI hujjat |
+|`GET /openapi` yoki `GET /openapi.json` |JSON |Aktiv Torii HTTP yo'nalishlari uchun OpenAPI hujjati |
 |`GET /v1/parameters` |JSON |Nukl parametrlari fotosuratlari |
 |`GET /v1/node/capabilities` |JSON |Nukllar qobiliyati va ma'lumotlar modeli metadatalari |
-|`GET /v1/api/versions` |JSON |Qo'llab-quvvatlanadigan Torii API versiyalari |
+|`GET /v1/api/versions` |JSON |Qo'llab-quvvatlanadigan Torii API versiyasi |
 |`GET /v1/events/sse` |SSE |Koʻp yillik mijozlar uchun tadbirlar oqimi |
 |`GET /v1/time/now` |JSON |Nodular devor soatini koʻrish |
 |`GET /v1/time/status` |JSON |Vaqt sinxronlashtirish holati |
@@ -75,7 +75,7 @@ Agar ommaviy testnet yo'nalishi `502` ni qaytarsa, vaqt o'tib ketsa yoki to'yilg
 
 ## Qoʻshma fikrlar va ish vaqti yakuniy nuqtalari {#consensus-and-runtime-endpoints}
 
-|Keyingi nuqta |Format |Niyat .|
+|Keyingi nuqta |Format |Maqsad|
 | --- | --- | --- |
 |`GET /v1/sumeragi/commit-certificates` |JSON |So ' nggi majburiyat sertifikatlari qisqartmalari |
 |`GET /v1/sumeragi/validator-sets` |JSON |Toʻgʻrilash vositasi tarixini koʻrsatish |
@@ -113,27 +113,27 @@ Torii dasturga mos xususiyatlar to'plami bilan qurilganda, u qidiruvchilar uchun
 
 |Yoʻnalish oilasi |Maqsad|
 | --- | --- |
-|`/v1/accounts/`, `/v1/domains/`, `/v1/assets/*` |JSON o'qishlar, so'rov yordamchilari, onboarding yordamchilari va portfel yoki egalar ko'rinishi |
-|`/v1/nfts/`, `/v1/rwas/`, `/v1/confidential/*` |NFT, real dunyo aktivlari va maxfiy aktivlar ko'rinishi |
-|`/v1/aliases/`, `/v1/assets/aliases/`, `/v1/sns/`, `/v1/identifiers/` |Ism, alias va identifikator rezolyutsiyasi |
+|`/v1/accounts/*`, `/v1/domains/*`, `/v1/assets/*` |JSON o'qishlar, so'rov yordamchilari, onboarding yordamchilari va portfel yoki egalar ko'rinishi |
+|`/v1/nfts/*`, `/v1/rwas/*`, `/v1/confidential/*` |NFT, real dunyo aktivlari va maxfiy aktivlar ko'rinishi |
+|`/v1/aliases/*`, `/v1/assets/aliases/*`, `/v1/sns/*`, `/v1/identifiers/*` |Ism, alias va identifikator rezolyutsiyasi |
 |`/v1/explorer/*` |Explorerga yoʻnaltirilgan hisobvaraq, aktiv, blok, tranzaksiya, koʻrsatma, metrika va oqim koʻrinishlari |
-|`/v1/transactions/`, `/v1/pipeline/`, `/v1/iso20022/*` |Transaksiya tarixi, quvurni tiklash yoki holati va ISO 20022 yordamchilar |
+|`/v1/transactions/*`, `/v1/pipeline/*`, `/v1/iso20022/*` |Transaksiya tarixi, quvurni tiklash yoki holati va ISO 20022 yordamchilar |
 |`/v1/contracts/*` |Shartnoma kodi, ishga tushirish, paketlash, qo'ng'iroq qilish, ko'rish, voqea, faoliyat, ro'yxatga olish va davlat yo'nalishlari |
-|`/v1/multisig/`, `/v1/controls/` |Multisig takliflari, ma'qullash va o'tkazib yuborishni nazorat qilishda yordamchilar |
-|`/v1/bridge/`, `/v1/ledger/`, `/v1/proofs/*` |So'nggi muddat, holatni tasdiqlash, blokni tasdiqlash, dalillarni saqlash va dalillar so'rovini olish yo'nalishlari |
+|`/v1/multisig/*`, `/v1/controls/*` |Multisig takliflari, ma'qullash va o'tkazib yuborishni nazorat qilishda yordamchilar |
+|`/v1/bridge/*`, `/v1/ledger/*`, `/v1/proofs/*` |So'nggi muddat, holatni tasdiqlash, blokni tasdiqlash, dalillarni saqlash va dalillar so'rovini olish yo'nalishlari |
 |`/v1/da/*` |Ma'lumotlar mavjudligi qabul qilinishi, manifestlar, dalil siyosati, majburiyatlar va aniq maqsadlar |
 |`/v1/zk/*` |ZK ildizlar, dalillarni tekshirish, IVM dalillarini tasdiqlash, ovozlarni hisobga olish, tekshiruv kalitlari, dalillarni qayd etish va qo'shimchalar  |
-|`/v1/gov/`, `/v1/ministry/` |Boshqaruv takliflari, ovoz berish notasi, kengashning davlati, himoyalangan nomlar maydonlari, kun tartibidagi takliflar, qonun qabul qilinishi va yakunlanishi |
-|`/v1/nexus/`, `/v1/sccp/` |Nexus yo'nalish, ma'lumotlar maydoni va to'liq zanjirli sinov yordamchilari |
+|`/v1/gov/*`, `/v1/ministry/*` |Boshqaruv takliflari, ovoz berish notasi, kengashning davlati, himoyalangan nomlar maydonlari, kun tartibidagi takliflar, qonun qabul qilinishi va yakunlanishi |
+|`/v1/nexus/*`, `/v1/sccp/*` |Nexus yo'nalish, ma'lumotlar maydoni va to'liq zanjirli sinov yordamchilari |
 |`/v1/musubi/*` |Musubi paketlar reyestrini oʻqish va koʻrsatmalarni yaratish |
 |`/v1/subscriptions/*` |Obunalik rejalari, obunalik hayot davri, foydalanish va yordamchilarni to'lash |
-|`/v1/sorafs/`, `/sorafs/`, `/.well-known/sorafs/*` |SoraFS provayderni kashf etish, quvvatni tasdiqlash, pinning qilish, saqlash va ommaviy tarkibni xizmat ko'rsatish |
-|`/v1/soracloud/`, `/v1/soradns/`, `/soradns/`, `/api/` |SoraCloud xizmat hayoti davri, xususiy hisoblash/model oqimlari, ommaviy kashfiyot va uyushtirilgan ilovalarni yo'naltirish |
-|`/v1/connect/`, `/v1/vpn/` |Iroha Qo'shish seanslari, WebSocket transport, VPN uchrashuvlar, profillar va rasmga ega bo'lish |
-|`/v1/app-api/`, `/v1/api/`, `/v1/content/*` |App API bog'lanish va paket/CID tomonidan qo'llab-quvvatlanadigan tarkib yo'nalishi |
+|`/v1/sorafs/*`, `/sorafs/*`, `/.well-known/sorafs/*` |SoraFS provayderni kashf etish, quvvatni tasdiqlash, pinning qilish, saqlash va ommaviy tarkibni xizmat ko'rsatish |
+|`/v1/soracloud/*`, `/v1/soradns/*`, `/soradns/*`, `/api/*` |SoraCloud xizmat hayoti davri, xususiy hisoblash/model oqimlari, ommaviy kashfiyot va uyushtirilgan ilovalarni yo'naltirish |
+|`/v1/connect/*`, `/v1/vpn/*` |Iroha Qo'shish seanslari, WebSocket transport, VPN uchrashuvlar, profillar va rasmga ega bo'lish |
+|`/v1/app-api/*`, `/v1/api/*`, `/v1/content/*` |App API bog'lanish va paket/CID tomonidan qo'llab-quvvatlanadigan tarkib yo'nalishi |
 |`/v1/operator/*`, `/v1/mcp` |Operatorning tasdiqlanishi va mahalliy MCP JSON-RPC ko'priklari |
-|`/v1/offline/`, `/v1/repo/`, `/v1/space-directory/`, `/v1/ram-lfe/` |Offline tayyorlik, ombor shartnomalari, ma'lumotlar maydonining manifestlari va [RAM-LFE yordamchilar ](/uz/blockchain/ram-lfe.md#torii-routes)  |
-|`/v1/kaigi/`, `/v1/webhooks/`, `/v1/notify/`, `/v1/telemetry/` |Hamkorlik, veb-qo'shish, push xabardorlik va jonli telemetri integratsiyalari |
+|`/v1/offline/*`, `/v1/repo/*`, `/v1/space-directory/*`, `/v1/ram-lfe/*` |Offline tayyorlik, ombor shartnomalari, ma'lumotlar maydonining manifestlari va [RAM-LFE yordamchilar ](/uz/blockchain/ram-lfe.md#torii-routes)  |
+|`/v1/kaigi/*`, `/v1/webhooks/*`, `/v1/notify/*`, `/v1/telemetry/*` |Hamkorlik, veb-qo'shish, push xabardorlik va jonli telemetri integratsiyalari |
 
 ## ISO 20022 ko'prik {#iso-20022-bridge}
 
@@ -162,13 +162,13 @@ Torii ISO 20022 ko'prini `/v1/iso20022/*` ostida qo'llaydi, agar dasturga qarayd
 
 `pacs.008` taqdimotlarida xabar ID, banklararo hisob-kitob miqdori, valyuta, hisob-kitob sanasi, qarzdor va kreditor IBANs hamda qarzdor bilan kreditor BICs bo'lishi kerak. Referent ma'lumotlar sozlanganda, ko'prik ishlab chiqarilgan tranzaksiya quvurga kirishdan oldin BIC, IBAN va ISO 4217 valyutalar o'tish joylarini tekshiradi.
 
-`pacs.009` taqdimotlarida biznes xabarini ID, xabarning ta'rifini ID, yaratilish vaqti, banklararo hisob-kitob miqdori, valyuta, hisob-kitob sanasi, topshiriq beruvchi va topshiriq berilgan vakil BICs hamda qarzdor va kreditor IBANs ko'rsatilishi kerak. Agar xabar `Purp`ni o'z ichiga olgan bo'lsa, ko'prik hozirda faqat qimmatli qog'ozlar uchun moliyalashtirishni qabul qiladi: `Purp=SECU`.
+`pacs.009` taqdimotlarida biznes xabarini ID, xabarning ta'rifini ID, yaratish vaqti, banklararo hisob-kitob miqdori, valyuta, hisob-kitob sanasi ko'rsatilishi kerak. topshiriq beruvchi va topshiriq beruvchi vakil BICs, qarzdor va kreditor IBANs. Agar xabarda `Purp` mavjud bo'lsa, ko'prik hozirda faqat qimmatli qog'ozlar uchun moliyalashtirishni qabul qiladi: `Purp=SECU`.
 
-`pacs.008` va `pacs.009` taqdim etish oxirgi nuqtalari XML ISO omborlarini yoki ko'prik sinovlarida qo'llaniladigan tekis maydon formatini qabul qiladi. Optativ `SplmtryData` maydonlar maqsadli Iroha katta kitobi, manba va maqsadli hisob raqami IDs yoki manzillarni hamda aktivni aniqlash ID ni belgilashi mumkin. Javob `202 Accepted` bo'lib, `message_id`, `transaction_hash`, `status`, `pacs002_code` va hal qilingan katta qog'oz/hisob-kitob/mashg'ulot konteksti bilan berilgan.
+O ' zbekiston Respublikasining `pacs.008` va `pacs.009` ko'rsatkichlar qabul qilinadi XML ISO ko'prik sinovlarida qo'llaniladigan konvertlar yoki tekis maydon shakli. `SplmtryData` maydonlar maqsadni belgilashlari mumkin Iroha katta hisob raqami, manba va maqsadli hisob raqamlari IDs yoki manzillar va aktivlarni aniqlash ID. Javob: `202 Accepted` bilan `message_id`, `transaction_hash`, `status`, `pacs002_code`, va hal qilingan katta ma'lumotlar/hisob-kitob/mashnat kontekstini ko'rsatish.
 
 ### Qo'shimcha Parser va xaritalash qo'llab-quvvatlash {#additional-parser-and-mapping-support}
 
-O ' zbekiston Respublikasining IVM ISO yordamchi shunga o'xshab, zarflarni tasdiqlash, qarorlar xaritalash uchun quyidagi xabar oilalarini tasdiqlaydi va amalga oshiradi: Ular mustaqil ravishda mavjud emas. Torii yo'nalishlar.
+O ' zbekiston Respublikasining IVM ISO yordamchi , shuningdek , quyidagi xabarlarni tasdiqlaydi va materiallashtiradi . tasdiqlash, hisob-kitoblarni xaritalash yoki oqimdan keyingi kelishuvlarga ega emaslar. Torii yo'nalishlar.
 
 |Xabarlar oilasi |Joriy qoʻllab-quvvatlash |
 | --- | --- |
@@ -220,7 +220,7 @@ iroha kaigi record-usage \
 iroha kaigi end --domain streaming --call-name daily
 ```
 
-`--room-policy public` relaylar tomoshabin biletlarisiz ko'rsatishi mumkin bo'lgan xonalarda yoki `--room-policy authenticated` chiqishlarida tomoshabinni tasdiqlash kerak bo'lgan joylarda ishlatilsin. `--privacy-mode zk-roster-v1` tarmog'ida Kaigi ro'yxati va foydalanishni tekshirish kalitlari moslashtirilganidan so'nggina ishlatilsin; aks holda deterministik tekshirish paytida qo'shiqlar, sahifalar va xususiy foydalanish yozuvlari muvaffaqiyatsiz tugadi.
+Foydalanish `--room-policy public` relaylar tomoshabinlar uchun chiptalarsiz ko'rsatilishi mumkin bo'lgan xonalar uchun yoki `--room-policy authenticated` Chiqishlar tomoshabinni tasdiqlashi kerak bo'lganda. `--privacy-mode zk-roster-v1` faqat tarmoqning Kaigi ro'yxat va foydalanishni tekshirish kalitlari konfiguratsiya qilingan; boshqacha tarzda qo'shiqlar, varaqlar; va shaxsiy foydalanish yozuvlari deterministik tekshiruvda muvaffaqiyatsiz tugadi.
 
 ### JavaScript demo bilan sinov o'tkazish {#testing-with-the-javascript-demo}
 
@@ -314,15 +314,15 @@ Oxirgi nuqta Norito tilida to'g'ridan-to'g'ri qabul qilganda yoki qaytarib berga
 
 ## Telemetriya profillari {#telemetry-profiles}
 
-Oxirgi nuqta ko'rinishi telemetriya sozlamalariga bog'liq. Yuqoridagi hujjatlarda beshta profil darajasi tasvirlangan:
+Yakuniy nuqtalarning ko‘rinishi tugunning `telemetry.profile` sozlamasiga bog‘liq. Joriy konfiguratsiya beshta profil darajasini taqdim etadi:
 
 |Profil |`/status` |`/metrics` |Ishlab chiquvchilar yoʻllari |
 | --- | --- | --- | --- |
 |`disabled` |yoʻq |yoʻq |yoʻq |
-|`operator` |Ha , shunday .|yoʻq |yoʻq |
-|`extended` |Ha , shunday .|Ha , shunday .|yoʻq |
-|`developer` |Ha , shunday .|yoʻq |Ha , shunday .|
-|`full` |Ha , shunday .|Ha , shunday .|Ha , shunday .|
+|`operator` |ha |yoʻq |yoʻq |
+|`extended` |ha |ha |yoʻq |
+|`developer` |ha |yoʻq |ha |
+|`full` |ha |ha |ha |
 
 ## CLI Qisqa yo'nalishlar {#cli-shortcuts}
 

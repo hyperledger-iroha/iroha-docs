@@ -8,16 +8,13 @@ translation_engine: nllb-200-ct2
 
 # 配置 Iroha {#configuring-iroha}
 
-设置本地同行配置 TOML 这与连锁文件不同.
-通过 [`SetParameter`](/zh-hans/blockchain/instructions.md#setparameter)
-输出行为必须在配置文件中表示
-或是链上参数;环境变量不包含门.
+当地同行配置设置在 TOML 文件中.这与通过[`SetParameter`](/zh-hans/blockchain/instructions.md#setparameter)指令改变的链上配置不同.生产行为必须在一个配置文件或链上参数中表示;环境变量不是特征门
 
-使用 [`--config`](../irohad-cli#arg-config) CLI 为指定配置文件的路径.
+使用[`--config`](../irohad-cli#arg-config) CLI 参数来指定配置文件的路径.
 
 ## 模板 {#template}
 
-详细描述每个参数,请参见 [参数](./params.md) 的参考.
+对于每个参数的详细描述,请参见 [参数](./params.md)参考文献.
 
 ::: details `peer.template.toml`
 
@@ -27,8 +24,7 @@ translation_engine: nllb-200-ct2
 
 ## 编写配置文件 {#composing-configuration-files}
 
-TOML 配置文件有额外的 `extends` 指向其他领域 TOML 它可能是单一的路径或
-多个路径:
+TOML 配置文件具有一个额外的 `extends` 字段,指向其他 TOML 文件. 它可能是单个路径或多个路径:
 
 ::: code-group
 
@@ -42,8 +38,7 @@ extends = ["file1.toml", "file2.toml"]
 
 :::
 
-Iroha 将反复阅读在 `extends` 然后把它们分成一层,后者将在其中重写.
-参数级别上的前列. 例如,如果读 `config.toml`:
+Iroha 将反复阅读`extends`中指定的所有文件,并将它们组建成层次,后者在参数级别上重写之前的文件.例如,如果阅读`config.toml`:
 
 ::: code-group
 
@@ -66,9 +61,8 @@ max_content_len = 2048
 
 :::
 
-The 结果的配置将是 `chain` 在 `a.toml`, `max_content_len` 在 `b.toml`, 并且 `torii.address` 在
-`config.toml` (重写) `b.toml`).
+结果的配置将是 `chain` 来自 `a.toml`, `max_content_len` 来自 `b.toml`, 和 `torii.address` 来自 `config.toml` (重写) `b.toml`).
 
 ## 解决问题 {#troubleshooting}
 
-通过 [`--trace-config`](../irohad-cli#arg-trace-config) CLI 标志以查看配置如何读取和解析的痕迹.
+通过[`--trace-config`](../irohad-cli#arg-trace-config) CLI 旗,查看配置如何阅读和解析的痕迹.

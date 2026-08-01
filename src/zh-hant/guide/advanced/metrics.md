@@ -6,26 +6,22 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# 性能與指標 {#performance-and-metrics}
+# 績效和指標 {#performance-and-metrics}
 
-Iroha 性能取決於工作負載,驗證器拓,網絡
-沒有任何可能的情況, TPS 因此, 數字只能有用
-當它與固定配置的基准行程結合時.
+Iroha 的性能取決於工作負載,驗證器拓學,網絡條件和共識設置.因此,單一的 TPS 號碼只有當它與固定配置的基準運行綁定時纔有用.
 
-對於容量規劃,將性能當作運營範圍:
+對於產能規劃,將業績視爲運營範圍:
 
-- 網路接受所要求的交易率
-- 在目標預算內承諾延遲保持
-- 交易排隊保持限制
-- 共識不依賴重複的視覺變化或恢復路徑
+- 網絡接受所要求的交易率
+- 承諾在目標預算內保持延遲
+- 交易隊列保持限制
+- 共識不依賴於重複的視圖變化或恢復路徑
 
-使用這個頁面來估算部署是否在高,中等或低
-數量節點的性能狀態,網路延遲值和目標
-TPS.
+使用本頁來估計部署是否處於一個特定節點數量,網絡延遲門和目標 TPS 中高,中低或低性能狀態.
 
-## 衡量什麼? {#what-to-measure}
+## 衡量什麼 {#what-to-measure}
 
-開始由操作者表面暴露 Torii:
+從 Torii 暴露的操作者表面開始:
 
 ```bash
 export TORII=http://127.0.0.1:8180
@@ -38,7 +34,7 @@ curl -s "$TORII/v1/sumeragi/params" | jq .
 curl -s "$TORII/metrics" > metrics.prom
 ```
 
-您可以試用相同的單純閱讀模式, Taira:
+您可以嘗試相同的僅閱讀模式與公衆 Taira:
 
 ```bash
 TAIRA=https://taira.sora.org
@@ -54,10 +50,9 @@ curl -fsS "$TAIRA/metrics" \
   | head -n 20
 ```
 
-公眾 Taira 數據是學習訊號名稱的好處.
-提供您自己的產能數據.
+公共的 Taira 指標對於學習信號名稱是有用的.不要用它們作爲自己的部署生產能力數字.
 
-透過網路提供相同的共識快照. CLI:
+通過 CLI 可獲得相同的共識快照:
 
 ```bash
 iroha --config ./localnet/client.toml --output-format text ops sumeragi status
@@ -66,181 +61,158 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
 iroha --config ./localnet/client.toml ops sumeragi params
 ```
 
-視覺化取決於設定的配置文件. `extended` 當你
-需要 `/metrics`, 及使用 `full` 在測試過程中,
-Sumeragi 運營者路線.
+遠程測量可見性取決於配置的個人資料.當需要 `/metrics`時使用`extended`,並且在測試運行期間使用`full`,當您還需要詳細的 Sumeragi 操作員路線時.
 
 ```toml
 telemetry_enabled = true
 telemetry_profile = "full"
 ```
 
-## 表演帶 {#performance-bands}
+## 性能帶 {#performance-bands}
 
-在目標吞吐量下使用這些頻段進行觀察 `Y` TPS 及延遲時間
-預算 `L` 執行工作量足夠長,
-穩定狀態,至少有一段期的預期峰值負荷.
+使用這些頻段進行在目標吞吐量 `Y` TPS 和延遲預算 `L`毫秒的觀察運行.運行工作負載足以包括加熱,穩定狀態和至少一個期預期峯值負載.
 
-| 樂團 | 條件 | 含義 |
+|樂隊|條件|這意味着|
 | --- | --- | --- |
-| 很高 | 接受的吞吐量在或以上 `Y`, p95 提交延迟低於此 `0.8 * L`, 排隊仍低於 10% 的容量,視覺變化/恢復計器是平坦的 | 該部署有適當的工作空間 |
-| 平均值 | 接受的吞吐量接近 `Y`, p95 提交延迟低於此 `L`, 排隊穩定於容量的50%以下,視頻變化很少 | 部署有效, 但爆炸耐受性有限. |
-| 低價 | 接受的吞吐量低於以下 `Y`, p95 提交延迟超過 `L`, 在運行過程中排隊增長,或視覺變化/逆壓計數持續上升 | 要求的工作量至少超過一個瓶頸 |
+|很高.|接受的吞吐量達到或超過 `Y`,p95提交延遲低於 `0.8 * L`,排隊保持在容量的10%以下,視頻變換/恢復計數是平的|部署對要求的工作量有空間|
+|平均值|接受的吞吐量接近 `Y`,p95提交延遲低於 `L`,排隊穩定在容量的50%以下,視頻變化很少.|部署有效,但爆炸耐受性有限.|
+|低調|接受的吞吐量低於 `Y`,p95提交延遲超過 `L`,運行期間排隊增長或視頻變化/反壓計數不斷上升.|要求的工作量至少超過一個瓶.|
 
-如果提交, TPS 超過預約 TPS
-且排隊持續增長,
-這樣看起來很健康.
+關鍵規則是排隊方向. 如果提交的 TPS 比承諾的 TPS 大,並且排隊持續增長,即使短樣本看起來很健康,部署也會過載.
 
-## 結號數量和排序率 {#node-count-and-quorum}
+## 節點計數和定數 {#node-count-and-quorum}
 
-更多的驗證機提高錯誤耐受性,
-在目前的情況下, Sumeragi 實施:
+更多的驗證器提高了故障耐受性,但增加了協調,簽名和網絡輸出成本. Sumeragi 實施:
 
-- 認證人數量 `n` 導致故障預算 `f = floor((n - 1) / 3)`
-- 關於 `n >= 4`, 委托人數是 `2f + 1`
-- 關於 `n <= 3`, 所有驗證者都需要承諾
-- 觀察者同行同步區塊,但不會投票,提議或收集
+- 驗證器計數 `n` 來自錯誤預算 `f = floor((n - 1) / 3)`
+- 對於 `n >= 4`來說,提交權限爲 `2f + 1`
+- 對於 `n <= 3`,所有驗證器都需要提交.
+- 觀察員同行同步區塊,但不投票,提議或收集
 
-| 認證器 | 錯誤預算 | 請提交定制 | 容量公告 |
+|驗證器|錯誤預算|提交定決數|產能說明|
 | --- | --- | --- | --- |
-| 1 至 3 | 沒有實際的無線放鬆 | 所有驗證劑 | 適用於開發和小型測試;任何缺失的驗證器都可能會阻礙提交 |
-| 4 | 1 | 3 | 單次錯誤容忍的共同最低限度 |
-| 7 | 2 | 5 | 更具彈性,有更多的投票和傳播流量 |
-| 10 | 3 | 7 | 高度的協調成本; 網絡和收藏器調整更重要 |
+|1 至 3 |實際的離線放鬆|所有驗證者|適用於開發和小型測試;任何缺失的驗證器都可能會阻提交.|
+| 4 | 1 | 3 |單個故障寬容的常見最低值|
+| 7 | 2 | 5 |更具彈性,更多的投票和傳播流量|
+| 10 | 3 | 7 |更高的協調成本;網絡和收藏器調整更重要 |
 
-在評估"X結節"時, 隔離投票驗證者與觀察者.
-觀察員通常成本低於增加驗證劑,
-阻擋八,阻礙同步,
+在評估"X節點"時,將投票驗證器與觀察員分開.添加觀察員通常成本低於添加驗證器,但觀察員仍然消耗區塊八,區塊同步,磁盤和網絡帶寬.
 
-## 影響表達的因素 {#factors-that-influence-performance}
+## 影響表現的因素 {#factors-that-influence-performance}
 
-### 工作負荷的形狀 {#workload-shape}
+### 工作負載形狀 {#workload-shape}
 
-這也是一樣的. TPS 交易可能是便宜或昂貴的,
-紀錄:
+同樣的 TPS 可以是廉價或昂貴的,取決於每筆交易所做的.記錄:
 
-- 每次交易的指示數量
-- 簽名數和簽名算法
-- 交易字节大小和解壓縮的有效負荷大小
-- 閱讀/寫作比例
-- 數據大小和資產運營
-- 智能合約,觸發器和 IVM 執行成本
-- 查詢負荷與相同的同行進行
+- 每次交易的指令數
+- 簽名數量和簽名算法
+- 交易字節大小和解壓縮的有效載荷大小
+- 閱讀/寫成比例
+- 金額數據大小和資產運營
+- 智能合同,觸發器和執行成本 IVM
+- 查詢負載與相同的同行運行
 
-小額轉移交易並不是合同繁重或數據繁重的代理
-工作負荷.
+小額轉讓交易不是合同繁重或超級數據繁重的工作負載的替代品.
 
-### 協調時間 {#consensus-timing}
+### 共識時間 {#consensus-timing}
 
-Sumeragi 該時間由有效的 Sumeragi 參數:
+Sumeragi 的時間由有效的 Sumeragi 參數控制:
 
 - `block_time_ms`
 - `commit_time_ms`
 - `min_finality_ms`
 - `pacing_factor_bps`
-- 在啟動的 NPoS 模式時,
+- 在啓用NPoS模式時,NPOS階段時間切斷
 
-檢查他們使用:
+檢查它們:
 
 ```bash
 iroha --config ./localnet/client.toml ops sumeragi params
 curl -s "$TORII/v1/sumeragi/params" | jq .
 ```
 
-只有在網路,儲存和
-執行層可以跟上. 一旦查看變更,
-顯示下降時間通常會使性能惡化.
+較低的時機目標只能在網絡,存儲和執行層能夠跟上時才能提高延遲.一旦查看變化,出現缺失有效載荷或壓力後,降低時間通常會使性能惡化.
 
 ### 收藏家Fanout {#collector-fanout}
 
-收藏者設定會影響提交票的快速融合:
+收藏者設置影響承諾投票的快速融合:
 
-- `sumeragi.collectors.k` 控制每位收藏人收集多少票,
-- `sumeragi.collectors.redundant_send_r` 控制了投票後的額外投票.
-  地方時間
-- `sumeragi.collectors.parallel_topology_fanout` 加入前列表,
-  收藏者
+- `sumeragi.collectors.k` 控制了每位選民的投票數量
+- `sumeragi.collectors.redundant_send_r`在當地時間停止投票後控制額外的投票
+- `sumeragi.collectors.parallel_topology_fanout` 添加了Topology fanout與收藏器一起
 
-在較大的或更不可靠的網絡中,
-比較總可用性和收藏量,
-在改變這些值之前,使用延遲和反壓力指數的遠隔測量:
+在更大或不那麼可靠的網絡中,增加Fanout可以減少尾聲延遲,但也會增加流量.在改變這些值之前,比較總可用性和收藏器遠程測量與延遲和反壓力指標:
 
 ```bash
 iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetry
 ```
 
-### 網路條件 {#network-conditions}
+### 網絡條件 {#network-conditions}
 
-協調表達對以下因素很敏感:
+共識表現是對:
 
-- RTT 在驗證人之間
-- 緊張感與包裝損失
-- 區塊使用負荷的頻寬, RBC 碎片
-- 區域之間的不對称關係
-- NAT, 防火牆或連接行為會延遲同行聯繫
+- RTT 在驗證器之間
+- 緊張感和包裝損失
+- 區塊實用載荷和 RBC 零部件的帶寬
+- 區域之間不對稱的聯繫
+- NAT,阻礙同行連接的防火牆,或繼電行爲
 
-預算延遲時間是足夠高的,
-如果 p95 網絡 RTT 是的
-目標是不切實的.
+作爲規劃規則,設定延遲預算足夠高以覆蓋幾個驗證器迴路再加上執行和磁盤提交時間.如果p95網絡 RTT 已經接近所需的p95提交延遲,目標是不現實的.
 
-### 排隊及入場限制 {#queues-and-admission-limits}
+### 排隊和入學限制 {#queues-and-admission-limits}
 
-接入和排列設定定義了一個同行可以吸收多少爆炸壓力:
+接入和排隊設置定義了一個同行可以吸收多少爆壓:
 
 - `queue.capacity`
 - `queue.capacity_per_user`
 - `queue.transaction_time_to_live_ms`
-- 基因交易限制,例如最大的簽名,指示,字节和
-  解壓式字节
-- p2p排隊限制和共識入場限制
+- 基因交易限制,例如最多簽名,命令,字節,和解壓字節
+- 排隊限量和共識入境限制
 
-排隊的容量很高, 可以暫時隱藏過載,
-穩定排隊是健康的;
+高排隊容量可以隱藏過載量一段時間,但它不會增加可持續的吞吐量.穩定排隊是健康的;不斷增長的排隊是滯後的.
 
-### 硬件和儲存 {#hardware-and-storage}
+### 硬件和存儲 {#hardware-and-storage}
 
-測量每位認證者, 不僅是領袖:
+測量每一個驗證者,不僅僅是領導者:
 
-- CPU 在驗證,簽名驗證和執行過程中飽和性
-- 來自排列,快照和活動的記憶壓 RBC 活動
-- 顯示器存儲時間及快照
-- 網路傳送/接收飽和性
-- 在工作負荷使用時,可選的硬件加速設定
+- CPU 驗證,簽名驗證和執行過程中的度
+- 排隊,快照和活躍 RBC 會議的內存壓力
+- 區塊存儲和快照的磁盤編寫延遲
+- 網絡傳輸/接收度
+- 在工作負載中使用時可選的硬件加速設置
 
-這樣的數據可以顯示網路的延遲速度.
+最慢的投票驗證器可以決定網絡的尾聲延遲.
 
-## 普羅梅泰斯的訊號 {#prometheus-signals}
+## 承諾的信號 {#prometheus-signals}
 
-數據名稱可能因建立配置文件和功能組而不同. `/metrics` 在
-首先建立您的結,然後在可用的系列上建立仪表板.
+根據構建配置文件和功能集,計量名稱可能會有所不同.首先檢查 `/metrics` 在節點上,然後在可用的系列周圍構建儀表板.
 
-常見的訊號包括:
+常見信號包括:
 
-| 訊號 | 普羅梅泰斯的例子 | 觀看什麼? |
+|信號|普羅梅蒂烏斯的例子|什麼要看|
 | --- | --- | --- |
-| 接受的吞吐量 | `sum(rate(txs{type="accepted"}[5m]))` | 必須滿足或超過目標 TPS 在穩定狀態 |
-| 拒絕 | `sum(rate(txs{type="rejected"}[5m]))` | 檢測計劃應該可以解釋 |
-| 預約延遲時間 | `histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` | 比較p95/p99與延遲預算 |
-| 排隊深度 | `queue_size`, `sumeragi_tx_queue_depth` | 在重量充電時必須保持限制 |
-| 排列的飽和度 | `sumeragi_tx_queue_saturated` | 維持非零值的平均過載 |
-| 查看變更 | `view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` | 增加的數值顯示時間,拓物流,有效載荷或網路故障 |
-| 已被丟掉的訊息 | `dropped_messages`, `sumeragi_consensus_message_handling_total` | 負載量下降通常會導致延遲升 |
-| RBC 壓力 | `sumeragi_rbc_store_pressure`, `sumeragi_rbc_backpressure_deferrals_total` | 沒有零的壓力點,以回收或儲存有效負荷的瓶頸 |
-| 請提交定制 | `sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` | 數字的簽名必須迅速達到所需的共識. |
+|已接受的吞吐量|`sum(rate(txs{type="accepted"}[5m]))`|在穩定狀態下應達到或超過目標 TPS |
+|拒絕|`sum(rate(txs{type="rejected"}[5m]))`|應通過測試計劃解釋|
+|承諾延遲|`histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))`|比較p95/p99與延遲預算|
+|排隊深度|`queue_size`, `sumeragi_tx_queue_depth` |應在高負載期間保持限制.|
+|排列度|`sumeragi_tx_queue_saturated`|持續的非零值平均過載量|
+|查看變更|`view_changes`, `sumeragi_view_change_suggest_total`,`sumeragi_view_change_install_total` |增加的值表明時間,拓物質,有效載荷或網絡問題|
+|丟棄的消息|`dropped_messages`, `sumeragi_consensus_message_handling_total` |在負載期間的下降通常解釋了延遲峯值|
+|RBC 壓力|`sumeragi_rbc_store_pressure`, `sumeragi_rbc_backpressure_deferrals_total` |非零壓力點對有效載荷回收或存儲瓶|
+|提交定決數|`sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` |已計數的簽名應該迅速達到所需的共數.|
 
-當一個數值只存在於 `/v1/sumeragi/status`, 捕捉這些 JSON 快速截圖
-像普羅梅蒂奧斯的破碎物一樣.
+如果僅在 `/v1/sumeragi/status` 中存在一個指標,則將 JSON 的快照捕捉到與Prometheus痕相同的運行文物中.
 
 ## 估計工作流程 {#estimation-workflow}
 
 1. 定義情況:
-   - 核准者和觀察者數量
-   - 協調方式
+   - 驗證器和觀察員的數量
+   - 共識模式
    - 目標 TPS
-   - 預算 p95 和 p99 承諾延遲
-   - 交易混合物
-   - 預期的網路 RTT, 排放速度和頻率
-2. 記錄有效配置:
+   - 承諾延遲預算 p95 和 p99
+   - 交易組合
+   - 預期網絡 RTT, jitter,帶寬
+2. 記錄有效的配置:
 
    ```bash
    iroha --config ./localnet/client.toml --output-format json ops sumeragi params \
@@ -249,35 +221,35 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
      > artifacts/sumeragi-collectors.json
    ```
 
-3. 在目標上執行工作負荷 TPS.
-4. 在開始,中期和終點的情況及指標.
-5. 按性能帶表分類跑步.
-6. 如果頻率是中低,
+3. 運行工作負載到目標 TPS.
+4. 在運行開始,中期和結束時捕獲狀態和指標.
+5. 按性能帶表進行分類.
+6. 如果頻段是中等或低,一次換一個因素,然後重複.
 
-## 基准報告模板 {#benchmark-report-template}
+## 基準報告模板 {#benchmark-report-template}
 
-僅提供足夠的文脈,才能複製性能數字:
+僅用足夠的文本來複製表現數字發佈:
 
-- Iroha 提交,釋放和功能旗
-- 驗證人和觀察者數量
-- 協調方式和 Sumeragi 參數
-- 收藏人 `k`, 冗長的發送 `r`, 及地表分析
-- 遠隔測量圖表
-- 硬件,儲存和 OS 細節
-- 網路 RTT, 關鍵字:
-- 交易混合和有效負荷尺寸
-- 提供 TPS 及運行時間
+- Iroha 承諾,釋放和特徵旗
+- 驗證器和觀察員的數量
+- 共識模式和 Sumeragi 參數
+- 收藏器 `k`,冗餘發射器 `r`,和拓表
+- 遠程測量資料
+- 硬件,存儲和 OS 詳細信息
+- 網絡 RTT, jitter,損失和帶寬假設
+- 交易組合和實用負載大小
+- 提供 TPS 和運行時間
 - 接受/拒絕 TPS
-- p50/p95/p99 提交延迟
-- 排隊深度和飽和性
-- 查看變更,丟掉的訊息, RBC 壓力和缺失有效載荷計器
-- CPU, 每個驗證器的記憶體,磁盤和網路使用量
+- p50/p95/p99 提交延遲
+- 排隊深度和度
+- 查看變化,丟棄消息,壓力 RBC 和缺失有效載荷計數器
+- CPU,每個驗證器的內存,磁盤和網絡使用量
 
-沒有這些細節, TPS 該數字應被視為有史無前例.
+如果沒有這些細節, TPS 號碼應該被視爲事.
 
-## 有關頁面 {#related-pages}
+## 相關頁面 {#related-pages}
 
-- [混亂與 Izanami 的試驗](./chaos-testing.md)
-- [Torii 目的地](../../reference/torii-endpoints.md)
-- [運行 Iroha 3 透過 CLI](../../get-started/operate-iroha-via-cli.md)
-- [同級配置參考](../../reference/peer-config/params.md)
+- [混沌測試與 Izanami](./chaos-testing.md)
+- [Torii 終端點](../../reference/torii-endpoints.md)
+- [通過 CLI](../../get-started/operate-iroha-via-cli.md)運行 Iroha 3
+- [同行配置參考](../../reference/peer-config/params.md)

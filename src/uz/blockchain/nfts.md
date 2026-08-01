@@ -1,9 +1,9 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/nfts.md
-translation_source_hash: 335eacd30c5964659baeeae8ac937805f1d4d786dd42a36e5164bbe75ef7e360
+translation_source_hash: 6dd2d21a29f352a14cb17046c66cfa541ef501b733b95bb6874d2d3f86ec0504
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # NFTs {#nfts}
@@ -38,7 +38,7 @@ curl -fsS https://taira.sora.org/openapi.json \
   | jq -r '.paths | keys[] | select(startswith("/v1/nfts") or startswith("/v1/explorer/nfts"))'
 ```
 
-Bo'sh `items` array - bu ommaviy testnetda haqiqiy javob. Bu joriy sahifadagi NFTs yo'qligini anglatadi, ammo NFT ko'rsatmalari mavjud emas.
+Bo'sh `items` massivi ommaviy testnet uchun haqiqiy javobdir. Bu joriy sahifada NFTs yo'qligini anglatadi, NFT ko'rsatmalari mavjud emasligini emas.
 
 ## NFT IDs {#nft-ids}
 
@@ -123,7 +123,7 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
-Agar siz NFT ni o'tkazgan bo'lsangiz, ushbu buyruqni joriy egasining hisobini sozlash yoki avval NFT ni qaytadan o'tkazish orqali bajaring.
+NFT namunasini o'chirishdan keyin olib tashlang. Agar siz uni o'tkazgan bo'lsangiz, uni qaytarib yuboring yoki hozirgi egasining hisob raqami konfiguratsiyasi bilan ro'yxatdan chiqarmaslik buyruqini taqdim eting.
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -145,7 +145,7 @@ Bo'yicha ruxsat berish yuzi NFT uchun maxsus tokenlarni o'z ichiga oladi:
 - `CanTransferNft`
 - `CanModifyNftMetadata`
 
-Ruxsatlarni tekshirish faol ishga tushirish vaqtini tasdiqlovchi tomonidan amalga oshiriladi, shuning uchun tarmoq ruxsatni yangilab o'zgartirishi mumkin. ijrochi. [Ruxsat belgisi](/uz/reference/permissions.md) joriy andoza tokenlar ro'yxati uchun.
+Ruxsatlarni tekshirish faol ishga tushirish vaqtini tasdiqlovchi tomonidan amalga oshiriladi, shuning uchun tarmoq ijrochisini yangilab ruxsatnomalarni moslash mumkin. [Ruxsat belgisi](/uz/reference/permissions.md) joriy andoza tokenlar ro'yxati uchun.
 
 ## NFTs tanlang {#choosing-nfts}
 

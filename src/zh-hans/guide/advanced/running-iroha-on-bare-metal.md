@@ -6,11 +6,9 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# 运行 Iroha 在纯金属上 {#running-iroha-on-bare-metal}
+# 在 Bare Metal 上运行 Iroha {#running-iroha-on-bare-metal}
 
-使用这个工作流程,当你想直接运行同行在主机而不是
-通过 Docker Compose. 目前的源树提供 Kagami 发电机
-编写匹配的创始,同行配置,客户端配置和启动/停止脚本.
+当您想通过 Docker Compose 而不是在主机上直接运行同行时使用此工作流程.当前的源树提供 Kagami 生成器,用于编写匹配基因组,同行配置,客户端配置和启动/停止脚本.
 
 ## 1. 构建二进制 {#_1-build-the-binaries}
 
@@ -22,21 +20,19 @@ cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 
 这产生了:
 
-- `target/release/irohad` 对于同龄妖魔
-- `target/release/iroha` 对于 CLI
-- `target/release/kagami` 为关键,发源和本地网络生成
+- `target/release/irohad` 对同龄妖怪
+- `target/release/iroha`用于 CLI
+- `target/release/kagami`用于关键,基因和局域网生成
 
-## 2. 创建一个本地网络 {#_2-generate-a-local-network}
+## 2. 创建本地网络 {#_2-generate-a-local-network}
 
-产生一个四对的 Iroha 3 地方网:
+创建一个四对的 Iroha 3 本地网络:
 
 ```bash
 target/release/kagami localnet --build-line iroha3 --peers 4 --out-dir ./localnet
 ```
 
-输出目录包含生成的 `genesis.json`,
-`genesis.signed.nrt`, 同龄人 `config.toml` 文件, `client.toml`, 助手脚本,
-和一个产生的 `README.md` 有准确的指令.
+输出目录包含生成的 `genesis.json`, `genesis.signed.nrt`,同行`config.toml`文件, `client.toml`,辅助脚本以及生成的 `README.md`,其中包含该捆绑的确切命令.
 
 ## 3. 开始同龄 {#_3-start-peers}
 
@@ -46,9 +42,7 @@ target/release/kagami localnet --build-line iroha3 --peers 4 --out-dir ./localne
 ./localnet/start.sh
 ```
 
-如果您需要将每个同行连接到一个过程经理,如 systemd, 使用
-发射命令记录在 `./localnet/README.md` 每个同龄人.
-一个同龄人 `config.toml`, 密钥,存储目录和端口分开.
+如果您需要将每个同行连接到像 systemd 这样的进程管理器中,请使用为每一个同行记录在 `./localnet/README.md` 的启动命令. 保持每个同行的 `config.toml`,私钥,存储目录和端口分开.
 
 ## 4. 运营网络 {#_4-operate-the-network}
 
@@ -67,16 +61,10 @@ target/release/iroha --config ./localnet/client.toml --output-format text ops su
 
 ## 5. 产品说明 {#_5-production-notes}
 
-- 产生新鲜的生产私钥,并将它们存储在
-  存储库.
-- 让每个同行都同意相同的签署基因交易,
-  值得信赖的同龄人,以及验证者 PoPs.
-- 只有当同行应该将听者地址绑定到主机本地接口时
-  其他机器无法使用.
-- 使用反向代理或防火墙 Torii 暴露,基本质量 TLS, 和利率
-  限制性.
-- 处理基因或共识拓学的变化为协调的迁移,而不是
-  单同类文件编辑.
+- 创建生产的新私钥,并将其存储在仓库外.
+- 让每个同龄人都同意相同的签名基因交易,拓,可信任的同龄人和验证器 PoPs.
+- 只有在其他机器不能从同行到达时,将收听器绑定到主机本地接口.
+- 使用反向代理或防火墙来对 Torii 曝光,基础 auth, TLS 和速度限制.
+- 将基因或共识拓学的变化视为协调迁移,而不是单双文件编辑.
 
-对于集装机的本地开发,使用 [发射 Iroha 3](../../get-started/launch-iroha.md)
-Docker Compose 工作流程.
+对于集装本地开发,请使用 [启动 Iroha 3](../../get-started/launch-iroha.md) Docker Compose 工作流.

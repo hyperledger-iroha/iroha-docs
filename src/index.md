@@ -54,7 +54,7 @@ footer: true
 ---
 
 <section class="nexus-build" aria-labelledby="nexus-build-title">
-  <a class="nexus-build__panel" href="/get-started/sora-nexus-dataspaces">
+  <a class="nexus-build__panel" href="./get-started/sora-nexus-dataspaces.html">
     <span class="nexus-build__copy">
       <span class="nexus-build__eyebrow">SORA Nexus</span>
       <span id="nexus-build-title" class="nexus-build__title">Build on Iroha 3 / SORA Nexus</span>

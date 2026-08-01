@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /blockchain/rwas.md
-translation_source_hash: 80593515d6919a6b6cb282ddcd4903ce000b56b264f350a42a6ed792f9cbef73
+translation_source_hash: cbdc6d766fb90bea7e68dc67f2c705bb1638340feeb2fca9f2dd43a727ac03e7
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,7 +12,7 @@ Les actifs du monde réel (RWAs) sont des actifs hors chaîne dont la propriét�
 
 RWAs sont différentes des soldes d'actifs numériques:
 
-- un actif numérique est un solde fungible détenu par un compte;
+- un actif numérique est un solde fungible détenu par un compte
 - un NFT est un enregistrement unique en chaîne avec un seul propriétaire
 - un RWA est un lot qui peut contenir des métadonnées d'affaires, quantité, détention, gel, état de rachat, provenance et politique du contrôleur
 
@@ -60,12 +60,12 @@ Les flux de travail communs RWA comprennent:
 |Opération |Le comportement mis en œuvre |
 | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
 |`RegisterRwa` |Créer un lot généré par ID dans un domaine; l'autorité de transaction devient `owned_by`. |
-|`TransferRwa` |Transférer la quantité à un autre compte. Un transfert complet peut changer `owned_by`; un transfert partiel crée un lot d'enfants généré. |
+|`TransferRwa` |Transférer la quantité vers un autre compte. Un transfert complet peut changer `owned_by`. Un transfert partiel crée un lot enfant séparé avec un ID généré. |
 |`HoldRwa` |Quantité de réserve: Il faut un contrôleur configuré et `hold_enabled`. |
 |`ReleaseRwa` |Supprimer la quantité retenue. Il faut un contrôleur configuré et `hold_enabled`. |
 |`FreezeRwa` |Bloquer les opérations du propriétaire ordinaire. Il faut un contrôleur configuré et `freeze_enabled`. |
-|`UnfreezeRwa` |Réactiver les opérations du propriétaire ordinaire. Requiert un contrôleur configuré et `freeze_enabled`. |
-|`RedeemRwa` |Il est nécessaire de retirer la quantité, le propriétaire ou un contrôleur et `redeem_enabled`. |
+|`UnfreezeRwa` |Réactiver les opérations de propriétaire ordinaire. Il faut un contrôleur configuré et `freeze_enabled`. |
+|`RedeemRwa` |Soustraire définitivement une quantité de la circulation. Le propriétaire ou un contrôleur peut le soumettre lorsque `redeem_enabled` est vrai. |
 |`MergeRwas` |Combiner les quantités provenant des lots parents avec le même domaine et spécification en un lot enfant généré. |
 |`ForceTransferRwa` |Déplacez la quantité à travers un flux de contrôle. Il faut un contrôleur configuré et `force_transfer_enabled`. |
 |`SetRwaControls` |Remplacez la politique de contrôle du lot, demande le propriétaire ou un contrôleur.|
@@ -78,7 +78,7 @@ Il n'y a pas d'instruction `UnregisterRwa` dans le code actuel. Retirer un lot h
 Utiliser des métadonnées pour des faits compacts qui aident les applications à identifier et à vérifier le lot:
 
 - référence de catégorie d'actif, émetteur, dépositaire ou registre
-- identifiants d'entrepôt, de voûte, ISIN, de facture ou de certificat
+- identifiants d'entrepôt, de voûte, ISIN, de facture ou de certificat;
 - hashes de contenu pour les attestations et documents juridiques
 - SoraFS chemins ou références manifestes pour les paquets d'éléments de preuve plus grands
 - les étiquettes de maturité, de compétence ou de conformité utilisées par les services hors chaîne
@@ -96,11 +96,11 @@ Le `RwaControlPolicy` mis en œuvre comporte les champs suivants:
 }
 ```
 
-Les comptes et les rôles du contrôleur sont autorisés à effectuer uniquement les opérations du contrôleur activées par le drapeau booléen correspondant. La charge utile de contrôle actuelle n'est pas une politique de transfert des listes d'autorisation et ne contient pas de règles nichées `transfers`.
+Les comptes et rôles du contrôleur ne peuvent effectuer que les opérations activées par les drapeaux booléens correspondants. La charge utile de contrôle actuelle contient des identités du contrôleur et des drapeaux d'exploitation. `transfers` Les règles sont en dehors de cette charge utile.
 
 ## Les questions, les événements et APIs {#queries-events-and-apis}
 
-Utilisation [`FindRwas`](/fr/reference/queries.md#assets-nfts-and-rwas) à la liste inscrite RWA Les applications qui ont besoin de mises à jour en direct peuvent s'abonner à [`Rwa` événements de données](/fr/blockchain/filters.md#data-event-filters) à créer, changer de propriétaire, diviser, fusionner, racheter, congeler, décongeler, conserver, libérer, transférer par la force, modifier les contrôles; et des événements de métadonnées.
+Utilisation [`FindRwas`](/fr/reference/queries.md#assets-nfts-and-rwas) à la liste inscrite RWA Les applications qui ont besoin de mises à jour en direct peuvent s'abonner à [`Rwa` événements de données](/fr/blockchain/filters.md#data-event-filters) pour les produits créés, changés de propriétaire, divisés, fusionnés, rachetés, congelés, non congelés, événements tenus, libérés, transférés par la force, contrôles modifiés et métadonnées.
 
 Torii expose les routes d'état de chaîne telles que `/v1/rwas` et `/v1/rwas/query`, ainsi que les routes exploratrices telles que `/v1/explorer/rwas` et `/v1/explorer/rwas/{rwa_id}` lorsque cette famille de routes est activée. Les clients générés devraient préférer le document en direct [`/openapi`](/fr/reference/torii-endpoints.md#common-endpoints) pour la forme exacte de réponse exposée par un nœud.
 
@@ -228,7 +228,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Libérer la tenue lorsque le processus hors chaîne est terminé:
+S'il est possible de soumettre `ReleaseRwa` après la réussite du processus hors chaîne:
 
 ```python
 draft = TransactionDraft(
@@ -273,7 +273,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### Quantité de rachat ou de retraite {#redeem-or-retire-quantity}
 
-Quantité de rachat lorsque l'actif hors chaîne représenté a été livré, consommé, retiré ou supprimé de la circulation. Le lot doit contenir `redeem_enabled`, et le signataire doit être le propriétaire ou un contrôleur.
+Envoyer `RedeemRwa` après que l'actif hors chaîne représenté a été livré, consommé, retiré ou supprimé de toute autre manière de la circulation. Cela soustrait définitivement la quantité présentée du lot. Le lot doit avoir `redeem_enabled`.
 
 ```python
 draft = TransactionDraft(
@@ -287,7 +287,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### Le congé pendant l'examen de la conformité {#freeze-during-compliance-review}
 
-Il y a beaucoup de congélation quand une revue hors chaîne doit bloquer les opérations des propriétaires ordinaires. Le signataire doit être un contrôleur et le lot doit avoir `freeze_enabled`.
+Envoyer `FreezeRwa` Lorsqu'une revue hors chaîne doit bloquer les opérations ordinaires du propriétaire, le signataire doit être un contrôleur. `freeze_enabled`.
 
 ```python
 draft = TransactionDraft(
@@ -308,7 +308,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Défrichez-le lorsque l'examen est passé:
+S'il y a lieu de soumettre `UnfreezeRwa` après le passage du réexamen:
 
 ```python
 draft = TransactionDraft(
@@ -325,7 +325,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### Réservations de facture {#invoice-receivable}
+### Les factures à recevoir {#invoice-receivable}
 
 représenter une facture en tant que RWA lot en conservant le numéro de facture dans `primary_reference` Après l'enregistrement, utilisez les ID pour le transfert et le rachat.
 
@@ -380,7 +380,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Rédemption du montant représenté après règlement hors chaîne:
+Remboursement du montant représenté après règlement hors chaîne:
 
 ```python
 draft = TransactionDraft(
@@ -394,7 +394,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### Retraite du crédit carbone {#carbon-credit-retirement}
 
-Utilisez le rachat pour retirer les crédits après leur réclamation. Les métadonnées indiquent le certificat ou la preuve de registre hors chaîne:
+Soumettre `RedeemRwa` pour retirer des crédits de carbone revendiqués de la circulation. Conserver le certificat hors chaîne ou la preuve de registre dans les métadonnées:
 
 ```python
 carbon_lot_id = (

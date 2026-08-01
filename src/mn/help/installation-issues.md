@@ -1,7 +1,7 @@
 ---
 translation_locale: mn
 translation_source: /help/installation-issues.md
-translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
+translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c054c85a2a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -83,13 +83,13 @@ $ rustup toolchain update stable
 
 ### Rust үндсэн хувилбарыг шалгаарай {#check-the-default-rust-version}
 
-Өөр нэг сонголт нь шинэчилсэн `stable` хэрэгслийн сүлжээтэй, гэхдээ энэ нь урьдчилан сэргийлэгдсэн хэлбэрээр тохируулдаггүй байна.
+Өөр нэг сонголт нь шинэчилсэн `stable` хэрэгслийн сүлжээтэй, гэхдээ энэ нь урьдчилан сэргийлэгдсэн хэлбэрээр тохируулдаггүй юм.
 
 ```bash
 $ rustup default stable
 ```
 
-Хэрэв та `nightly` хувилбарыг байгуулж, эсвэл тодорхой Rust хувилбаруудыг байгуулсан боловч үүнийг буулгахыг мартсан бол энэ нь тохиолдож болно.
+`nightly` хувилбарыг суулгавал эсвэл Rust-ийн тодорхой хувилбаруудыг дараа нь буулгахгүйгээр байгуулж байгаа бол энэ асуудлыг үүсгэж болно.
 
 ### Rust-ийн бусад хувилбар байгаа эсэхийг шалгаарай {#check-if-there-are-other-rust-versions}
 
@@ -123,13 +123,13 @@ $ rustup toolchain list
 $ rustup remove <toolchain>
 ```
 
-Үүний дараа,
+Тус команд нь хэрэгслийн сүлжээг устгасны дараа "No-found error" команд мэдээлэх ёстой:
 
 ```bash
 $ cargo --help
 ```
 
-Rust тоног төхөөрөмжийн жижиг зангилаагүй байна гэсэн команд нь илэрдэггүй алдаатай. Дараа нь:
+Энэ алдаа нь ямар ч идэвхтэй Rust хэрэгслийн сүлжээг байрлуулсангүй гэдгийг баталгаажуулдаг. Дараа нь:
 
 ```bash
 $ rustup toolchain install stable

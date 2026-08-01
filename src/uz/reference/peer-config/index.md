@@ -26,7 +26,7 @@ Har bir parametrning batafsil tavsifi uchun [Parameterlar](./params.md) ko'rsatk
 
 TOML konfiguratsiya fayllarida `extends` qo'shimcha maydoni mavjud bo'lib, boshqa TOML fayllariga ishora qiladi. Bu bitta yo'l yoki ko'p yo'l bo'lishi mumkin:
 
-::: kod guruhi
+::: code-group
 
 ```toml [Single]
 extends = "single-path.toml"
@@ -40,7 +40,7 @@ extends = ["file1.toml", "file2.toml"]
 
 Iroha `extends` da ko'rsatilgan barcha fayllarni takror o'qib, ularni qatlamlarga ajratadi va oxirgi qatlamlar oldingilarini parametr darajasida qayta yozadi. Masalan, agar `config.toml` o'qigan bo'lsa:
 
-::: kod guruhi
+::: code-group
 
 ```toml [config.toml]
 extends = ["a.toml", "b.toml"]

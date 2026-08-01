@@ -26,7 +26,7 @@ Yeniləmə hücumu, etibarlı bir əməliyyatı nəzərdə tutulduğu şəbəkə
 
 <param-table type=string env=CHAIN />
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 chain = "00000000-0000-0000-0000-000000000000"
@@ -44,7 +44,7 @@ Konsensus təsdiqçisi həmkarları BLS-Normal açarlarından istifadə etməlid
 
 <param-table type="public-key" env="PUBLIC_KEY" />
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 public_key = "ea01309060D021340617E9554CCBC2CF3CC3DB922A9BA323ABDF7C271FCC6EF69BE7A8DEBCA7D9E96C0F0089ABA22CDAADE4A2"
@@ -62,7 +62,7 @@ Tərəfdaşın şəxsi açarı. `public_key` ilə uyğun olmalıdır; konsensus 
 
 <param-table type="private-key" env="PRIVATE_KEY" />
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 private_key = "8926201CA347641228C3B79AA43839DEDC85FA51C0E8B9B6A00F6B0D6B0423E902973F"
@@ -88,7 +88,7 @@ P2P ünvanı məlum olduqda `PUBLIC_KEY@ADDRESS` istifadə edin; çılpaq `PUBLI
 </template>
 </param-table>
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 trusted_peers = [
@@ -119,7 +119,7 @@ BLS təsdiqçi etibarlı həmyaşıdları üçün mülkiyyət sübutunun daxil e
 </template>
 </param-table>
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 trusted_peers_pop = [
@@ -146,7 +146,7 @@ TRUSTED_PEERS_POP='[
 
 <param-table type="file-path" env="GENESIS" />
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [genesis]
@@ -165,7 +165,7 @@ Genesis açar cütünün ictimai açarı.
 
 <param-table type="public-key" env="GENESIS_PUBLIC_KEY" />
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [genesis]
@@ -186,7 +186,7 @@ Konsensus (sumeragi) və blok sinxronizasiyası (block_sync) üçün p2p ünvan�
 
 <param-table type="socket-addr" env="P2P_ADDRESS" />
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -207,7 +207,7 @@ Peer-to-peer ünvanı (xarici, digər həmyaşıdların gördüyü kimi).
 
 <param-table type="socket-addr" env="P2P_PUBLIC_ADDRESS" />
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -226,7 +226,7 @@ Bir sinxronlaşdırma mesajında göndərilə bilən blokların miqdarı.
 
 <param-table type=number default-value=4 />
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -243,7 +243,7 @@ Daha tez-tez dedikodu etmək sinxronlaşdırma müddətini qısalaşdırır, lak
 
 <param-table type=millis default-value=10_000 default-note="10 seconds" />
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -260,7 +260,7 @@ Kiçik ölçüsü sinxronizasiya üçün daha uzun müddət aparır, lakin yüks
 
 <param-table type=number default-value=500 />
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -277,7 +277,7 @@ Daha tez-tez dedikodu etmək sinxronlaşdırma müddətini qısalaşdırır, lak
 
 <param-table type=millis default-value=1_000 default-note="1 second" />
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -292,7 +292,7 @@ Tərəfdaşın fəaliyyətsiz olduğu təqdirdə həmyaşıdla əlaqənin kəsil
 
 <param-table type=millis default-value=300_000 default-note="5 minutes" />
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -309,7 +309,7 @@ Torii serverinin dinləməli olduğu və müştərilərin müraciət etdikləri 
 
 <param-table type=socket-addr env=API_ADDRESS />
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [torii]
@@ -341,7 +341,7 @@ Sayı (baytlar)
 </template>
 </param-table>
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [torii]
@@ -356,7 +356,7 @@ Bir sorğunun əldə edilmədiyi təqdirdə mağazada qala biləcəyi müddət.
 
 <param-table type=millis default-value=10_000 default-note="10 seconds" />
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [torii]
@@ -371,7 +371,7 @@ Canlı sorğuların sayının yuxarı həddi.
 
 <param-table type=number default-value=128 />
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [torii]
@@ -386,7 +386,7 @@ Yalnız bir istifadəçi üçün canlı sorğuların sayının yuxarı həddi.
 
 <param-table type=number default-value=128 />
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [torii]
@@ -417,7 +417,7 @@ String, mümkün dəyərlər:
 </template>
 </param-table>
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [logger]
@@ -457,7 +457,7 @@ Daha ətraflı məlumat üçün [`tracing-subscriber` sənədliyinə baxın ](ht
 
 </param-table>
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [logger]
@@ -503,7 +503,7 @@ Daha ətraflı məlumat və nümunə çıxışı üçün [`tracing-subscriber` s
 </template>
 </param-table>
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [logger]
@@ -528,7 +528,7 @@ Köhnə bloklar yaddaşdan düşəcək və lazım olduqda diskdən yüklənəcə
 
 <param-table type=number default-value=1024 env=KURA_BLOCKS_IN_MEMORY />
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [kura]
@@ -556,7 +556,7 @@ String, mümkün dəyərlər:
 </template>
 </param-table>
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [kura]
@@ -571,13 +571,13 @@ KURA_INIT_MODE=fast
 
 ### `kura.store_dir` {#param-kura-store-dir}
 
-Bloqların saxlandığı dizaynı təyin edir.
+Bloqların saxlandığı dizaynı[^paths] təyin edir.
 
 Həmçinin baxın: [`snapshot.store_dir`](#param-snapshot-store-dir).
 
 <param-table env=KURA_STORE_DIR type=file-path default-value=./storage />
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [kura]
@@ -596,7 +596,7 @@ Console üçün yeni blokların çap edilməsini təmin etmək üçün bayraq.
 
 <param-table env=KURA_DEBUG_OUTPUT_NEW_BLOCKS type=bool default-value=false />
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [kura.debug]
@@ -617,7 +617,7 @@ Sifarişdə gözləyən əməliyyatların sayının yuxarı həddi.
 
 <param-table type=number default-value=65_536 />
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [queue]
@@ -634,7 +634,7 @@ Bu variantdan istifadə edərək dondurma tətbiq edin.
 
 <param-table type=number default-value=65_536 />
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [queue]
@@ -649,7 +649,7 @@ Bu müddətdən sonra əməliyyat hələ də növbədədirsə ləğv ediləcəkd
 
 <param-table type=millis default-value=86_400_000 default-note="24 hours" />
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [queue]
@@ -666,7 +666,7 @@ Sumeragi yumşaq çatal idarəetmə yollarını həyata keçirmək üçün yaln�
 
 <param-table type=bool default-value=false />
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [sumeragi.debug]
@@ -703,7 +703,7 @@ String, mümkün dəyərlər:
 </template>
 </param-table>
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [snapshot]
@@ -722,7 +722,7 @@ Fotoşəkillər tezliyi.
 
 <param-table type=millis default-value=600_000 default-note="10 minutes" />
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [snapshot]
@@ -739,7 +739,7 @@ Bax: [`kura.store_dir`](#param-kura-store-dir)
 
 <param-table type=file-path default-value=./storage/snapshot env=SNAPSHOT_STORE_DIR />
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [snapshot]
@@ -766,7 +766,7 @@ Telemetriyada göstərilməlidir ki, nodun adı.
 
 <param-table type=string />
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [telemetry]
@@ -781,7 +781,7 @@ Telemetrik kollektorun WebSocket URL
 
 <param-table type=string />
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [telemetry]
@@ -796,7 +796,7 @@ Yenidən bağlanmadan əvvəl gözləmək üçün minimum vaxt.
 
 <param-table type=millis default-value=1_000  default-note="1 second" />
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [telemetry]
@@ -811,7 +811,7 @@ Yenidən əlaqələr arasındakı gecikmələrin artırılması üçün istifad�
 
 <param-table type=number default-value=4 />
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [telemetry]
@@ -826,7 +826,7 @@ Developer telemetry yazmaq üçün fayl yolu
 
 <param-table type=file-path />
 
-::: kod qrupu
+::: code-group
 
 ```toml [Config File]
 [dev_telemetry]

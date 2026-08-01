@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /help/installation-issues.md
-translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
+translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c054c85a2a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -40,7 +40,7 @@ cargo metadata --no-deps
 
 </div>
 
-### چیک کریں Rust ورژن {#check-rust-version}
+### Rust ورژن چیک کریں {#check-rust-version}
 
 آپ کی صحت اور ہماری ذہنیت دونوں کو برقرار رکھنے کے مفاد میں ، اس بات کا یقین کریں کہ آپ کے پاس `cargo` کا صحیح ورژن ہے جو `rustc` کے صحیح ورژن کے ساتھ جوڑا ہوا ہے۔ موجودہ اپ اسٹریم ورک اسپیس `rust-version = "1.92"` کا اعلان کرتا ہے اور ٹولچین چینل کو `rust-toolchain.toml` میں پن کرتا ہے۔ ورژن دکھانے کے لئے ،
 
@@ -89,7 +89,7 @@ $ rustup toolchain update stable
 $ rustup default stable
 ```
 
-یہ ہو سکتا ہے اگر آپ نے `nightly` ورژن انسٹال کیا ہے، یا ایک مخصوص Rust ورژن مقرر کیا ہے، لیکن اسے غیر ترتیب دینا بھول گئے ہیں.
+`nightly` ورژن انسٹال کرنا یا بعد میں اسے غیر ترتیب دینے کے بغیر ایک مخصوص Rust ورژن ترتیب دینا اس مسئلے کا سبب بن سکتا ہے۔
 
 ### چیک کریں کہ کیا Rust کے دیگر ورژن موجود ہیں {#check-if-there-are-other-rust-versions}
 
@@ -123,13 +123,13 @@ $ rustup toolchain list
 $ rustup remove <toolchain>
 ```
 
-اس کے بعد، اس بات کو یقینی بنائیں کہ
+ٹول چینز کو ہٹانے کے بعد، اس کمانڈ کو ایک کمانڈ نہیں ملنے کی خرابی کی اطلاع دینی چاہئے:
 
 ```bash
 $ cargo --help
 ```
 
-ایک کمانڈ نہیں ملا غلطی کا نتیجہ ہے، یعنی آپ کے پاس کوئی فعال Rust ٹولچین انسٹال نہیں ہے. پھر، چلانے:
+یہ غلطی اس بات کی تصدیق کرتی ہے کہ کوئی فعال Rust ٹولچین انسٹال نہیں ہے. پھر چلائیں:
 
 ```bash
 $ rustup toolchain install stable

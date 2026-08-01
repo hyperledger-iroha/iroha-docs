@@ -1,144 +1,87 @@
 ---
 translation_locale: fr
 translation_source: /guide/security/storing-cryptographic-keys.md
-translation_source_hash: a420551345570c4f6b6c0288bc78041665b199727b177eb0aee1f6495850fae6
+translation_source_hash: 168ee24e84f9225e81365658018717155476ae1508fefba5e0234e0bf6feefbd
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Le stockage des clés cryptographiques {#storing-cryptographic-keys}
 
-Vos données sensibles restent privées uniquement si vous adoptez des pratiques <abbr title="Operational Security">OPSEC</abbr> pour protéger les clés cryptographiques. Les menaces d'ingénierie sociale, où quelqu'un qui se présente comme une figure avec autorité tente de vous manipuler pour leur donner votre clé cryptographique privée, sont réelles. Soyez toujours prudent et évitez de partager votre clé privée, en la traitant comme si vous réserviez vos clés d'appartement à des personnes de confiance seulement.
+Une clé privée peut autoriser toutes les actions permises à l'autorité correspondante. Ne partagez jamais une clé privée. Protégez avec le même soin le matériel de génération, les secrets de récupération, les jetons au porteur et les fichiers de clés exportés.
 
-Pour plus d'informations sur <abbr title="Operational Security">OPSEC</abbr> et ses meilleures pratiques, voir [Sécurité opérationnelle ](./operational-security).
+Choisissez le modèle de conservation avant la mise en production. Il doit être adapté à la valeur exposée, à la politique du contrôleur du compte et au processus de récupération du déploiement.
 
-## Le stockage numérique des clés cryptographiques {#storing-cryptographic-keys-digitally}
+## Définir les limites de la garde {#define-the-custody-boundary}
 
-Lorsqu'il s'agit de protéger les clés cryptographiques numériquement, principalement seulement deux approches[SSH](https://www.ssh.com/) et [GPG](https://www.gnupg.org/) sont disponibles. Ces méthodes fournissent des couches de sécurité pour empêcher l'accès non autorisé à vos clés cryptomonnaies.
+- Tenez un inventaire de chaque autorité, clé publique, algorithme, environnement, finalité, dépositaire, emplacement de stockage, sauvegarde et procédure de remplacement.
+- Utilisez des clés séparées pour le développement, les essais, la production, les transactions de routine, la gouvernance, le déploiement et la récupération.
+- Ne donnez aux personnes et aux processus accès qu'aux clés nécessaires à leur rôle.
+- Exigez une approbation indépendante pour les signatures de grande valeur ou de gouvernance lorsque le modèle de risque l'impose.
+- Consignez le réseau et l'autorité que chaque signataire peut utiliser. Un service de signature doit rejeter les demandes qui sortent de ce périmètre.
 
-De nombreuses décisions d'architecture Iroha ont été influencées par les principes du protocole Secure Shell (`SSH`, ce qui explique pourquoi cette section se concentre principalement sur l'approche `SSH`, offrant des instructions sur la manière d'implémenter efficacement le protocole de stockage de vos clés cryptographiques dans l'écosystème Iroha.
+## Choisissez une méthode de stockage appropriée {#choose-an-appropriate-storage-method}
 
-### Utilisation de l'agent SSH et SSH {#using-ssh-and-ssh-agent}
+Pour le développement local, les tests contrôlés ou un transfert sécurisé vers le dispositif de conservation, une clé peut être exportée dans un fichier aux permissions restreintes. Sur une plateforme Unix prise en charge, générez un nouveau répertoire de clés avec `kagami` :
 
-Secure Shell Protocol (`SSH`) est un protocole de réseau cryptographique qui sert de passerelle virtuelle, permettant un accès sécurisé à des machines distantes via des réseaux potentiellement moins sûrs en utilisant les clés SSH accessions. Il fournit un moyen efficace d'interagir à distance avec les systèmes sans avoir besoin d'une présence physique. Dans ce contexte, `SSH` offre deux mécanismes principaux d'authentification: l'approche traditionnelle basée sur le mot de passe et la méthode plus sécurisée des paires de clés public-privée.
+```bash
+cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
+```
 
-Pour plus d'informations sur `SSH`, voir [le sujet connexe de l'Académie SSH](https://www.ssh.com/academy/ssh).
+Le répertoire parent doit exister. Le répertoire cible doit être nouveau ou appartenir déjà à l'utilisateur actuel, avoir le mode `0700`, ne contenir aucun lien symbolique et être vide. Kagami écrit `public.key` et `private.key` avec le mode `0600` ; `--pop` écrit également `pop.hex`. La commande échoue sur les plateformes où Kagami ne peut pas appliquer les règles du système de fichiers qui limitent l'accès au propriétaire.
 
-Pour rationaliser le processus de connexion et contourner la nécessité d'une entrée répétitive, il est possible d'accoupler les touches `SSH` avec l'Agent SSH (`ssh-agent`)le programme d'assistant qui se souvient de vos touches et/ou mot de passe `SSH` pendant toute une session. Cette configuration permet à la passerelle `SSH` d'accéder sans effort aux clés chaque fois qu'elle se connecte à d'autres machines.
+Le fichier de clé privée est une exportation non chiffrée. Ne le placez pas dans le contrôle de version, les dossiers partagés, les journaux, les tickets, les conversations ni les artefacts de compilation. Importez une clé de production dans son dispositif de conservation approuvé, puis supprimez l'exportation conformément à la procédure de déploiement. Ne réutilisez pas une clé de développement en production.
 
-Le flux de travail ici est le suivant: vous avez votre clé publique stockée sur un système distant et gardez votre clé privée sécurisée. Chaque fois que vous voulez accéder à un système distant, le `ssh-agent` Le système distant renvoie ensuite un message d'accès à la clé. [défi](https://en.wikipedia.org/wiki/Challenge%E2%80%93response_authentication) que seule votre clé privée peut réagir correctement. `ssh-agent` s'occupe de ce défi en utilisant votre clé privée et envoie la réponse correcte au système à distance. Si la réponse correspond à ce que le système s'attendait, vous avez accès.
+Pour la production, privilégiez un dispositif de conservation audité, tel que :
 
-La beauté du `ssh-agent` est qu'il conserve votre clé privée pendant votre session, il n'est donc pas nécessaire de continuer à entrer votre mot de passe ou la phrase de clé privée chaque fois que vous vous connectez à un système distant.
+- un module matériel de sécurité ou un magasin de clés protégé par le matériel
+- un magasin de clés du système d'exploitation ou d'un appareil mobile
+- un service de signature isolé
+- un gestionnaire de secrets qui ne délivre une clé qu'à une charge de travail autorisée
 
-Pour plus d'informations sur le sujet `ssh-agent`, voir [le sujet connexe de l'Académie SSH](https://www.ssh.com/academy/ssh/agent).
+Conservez le matériel de clé sous une forme non exportable lorsque l'intégration choisie le permet. Vérifiez que le système de conservation prend en charge l'algorithme et l'opération de signature requis par l'autorité Iroha.
 
-::: info Remarque
+Le chiffrement au repos protège une copie stockée. Il ne protège plus la clé après qu'un processus ou un opérateur non autorisé a obtenu les octets déchiffrés. Renforcez la sécurité de l'hôte, limitez les accès à l'exécution et surveillez l'activité de signature.
 
-Pour une vue d'ensemble détaillée des `SSH` le protocole et les `ssh-agent` outil, voir ce qui suit: [SSH Académie](https://www.ssh.com/academy) les sujets suivants:
+## Protéger les flux de signature {#protect-signing-workflows}
 
-  - [Qu'est-ce qui est SSH (Secure Shell) ?](https://www.ssh.com/academy/ssh)
-  - [ssh-agent: Comment configurer l'agent ssh, le transfert d'agents et le protocole de l'agent](https://www.ssh.com/academy/ssh/agent)
+- Utilisez des identités d'opérateur nominatives, une authentification forte et un accès audité aux systèmes de signature.
+- Gardez les clés brutes hors des arguments de ligne de commande, de l'historique du shell, des vidages d'environnement, des listes de processus, des rapports de plantage et des journaux d'application.
+- Déverrouillez un signataire uniquement pour l'opération requise. Fermez la session ou laissez-la expirer après utilisation.
+- Affichez l'autorité, le réseau, les instructions, les actifs et les frais avant l'approbation.
+- Exigez une confirmation explicite pour les transactions privilégiées ou de grande valeur.
+- Gardez les clés privées brutes en dehors des pages du navigateur et des processus d'application à usage général lorsque l'intégration client personnalisée peut déléguer la signature.
 
-:::
+La configuration du client en texte brut ne convient qu'au développement local et aux tests contrôlés. Une intégration de production doit obtenir les signatures par l'intermédiaire de son dispositif de conservation approuvé. La CLI Iroha standard lit une clé privée dans la configuration du client et ne fournit pas d'adaptateur générique pour signataire externe. Les clients personnalisés peuvent construire le hachage de la charge utile de la transaction et y joindre une signature produite par un signataire externe.
 
-### Ajout d' un programme de gestion des mots de passe {#adding-a-password-manager-program}
+## Sauvegarder et récupérer les clés {#back-up-and-recover-keys}
 
-Il est recommandé d'améliorer la sécurité de vos clés `SSH` en les protégeant par un mot de passe, ce qui constitue un obstacle supplémentaire aux parties malveillantes qui cherchent à obtenir vos informations sensibles.
+- Ne sauvegardez que les clés dont la politique de récupération exige une sauvegarde.
+- Chiffrez les sauvegardes et conservez-les séparément du signataire actif.
+- Appliquez aux sauvegardes les mêmes contrôles d'accès et d'approbation qu'à la clé active.
+- Conservez les identifiants de récupération sous une garde indépendante lorsqu'une séparation des fonctions est requise.
+- Testez la restauration sans exposer le matériel des clés de production.
+- Consignez et examinez chaque création, accès, restauration et destruction de sauvegarde.
 
-Une variété de gestionnaires de mots de passe peut être utilisée pour stocker les mots de passe des utilisateurs et `SSH` Les clés sont temporaires, pour l'évidence. [KeePass](https://keepass.info/) est utilisé comme exemple de gestionnaire de mots de passe, en particulier, le [KeePassXC](https://keepassxc.org/) port exécuté sur les systèmes d'exploitation Linux.
+Ne supposez pas que le format mnémonique d'un portefeuille sans rapport puisse représenter une clé privée Iroha. Utilisez uniquement un format de récupération pris en charge et testé par le système de conservation choisi.
 
-Pour les instructions sur la configuration de KeePassXC, voir la section [Configurer KeePassXC](#configuring-keepassxc) ci-dessous.
+## Remplacez les clés exposées ou retirées {#replace-exposed-or-retired-keys}
 
-![KeePassXC: écran `Main` UI](../../../img/KeePassXC.png)
+Préparez le remplacement avant qu'un incident ne survienne. La procédure doit préciser :
 
-KeePassXC offre une sécurité, une flexibilité et un contrôle améliorés. Il stocke non seulement les mots de passe mais aussi les clés `SSH`. Lorsqu'il est utilisé pour le stockage des clés, ce gestionnaire de mots de passe fournit aux `ssh-agent` les clés stockées, qui sont ensuite promptement supprimés de sa mémoire une fois la fenêtre KeePassXC fermée.
+1. qui peut déclarer une clé exposée ou retirée
+2. comment le signataire concerné est isolé
+3. comment une nouvelle clé est générée et placée sous une garde approuvée
+4. pour un compte, comment le remplacement autorisé du contrôleur ou la récupération sociale crée l'`AccountId` canonique de remplacement et migre l'état associé
+5. pour un nœud ou un pair, comment la rotation ou la désactivation autorisée sur la chaîne de la clé de consensus est coordonnée avec la BLS PoP, la politique d'activation et de chevauchement, la configuration de la clé locale, `trusted_peers_pop` et la topologie du déploiement
+6. comment les configurations, applications et opérateurs dépendants adoptent le nouvel `AccountId`, la clé publique ou l'identité du pair
+7. comment l'autorité de l'ancienne clé est supprimée et comment ses copies sont archivées ou détruites
+8. comment le réseau et les applications dépendantes sont ensuite vérifiés
 
-::: astuce
+::: warning
 
-En théorie, l'un des KeePass les ports [figurant sur le site officiel](https://keepass.info/download.html) Il est recommandé d'utiliser l'un des éléments suivants: [KeePassX](https://www.keepassx.org/) ou [KeePassXC](https://keepassxc.org/).
-
-:::
-
-#### Configuration KeePassXC {#configuring-keepassxc}
-
-Pour configurer KeePassXC, procédez aux étapes suivantes:
-
-1. Lancer KeePassXC, puis aller dans Tools > Paramètres, ou sélectionner le bouton Gear du panneau supérieur UI.
-
-2. Dans l'onglet Paramètres d'application qui apparaît, sélectionnez SSH Agent dans le menu gauche, puis sélectionner la case de codage Activer SSH Integration de l'agent.
-
-   ::: info Afficher une capture d'écran de référence
-
-   ![L'affichage KeePassXC `SSH Agent`: Activation de l'agent SSH ](../../../img/keepassxc_ssh_agent.png)
-
-   :::
-
-3. Créer une nouvelle base de données KeePassXC. Pour les instructions, voir le guide utilisateur [KeePassXC > Créer votre première base de données](https://keepassxc.org/docs/KeePassXC_UserGuide#_creating_your_first_database).
-
-4. Pour chaque clé que vous souhaitez stocker dans la base de données KeePassXC que vous avez créée, procédez aux étapes suivantes:
-
-   - Ajoutez une nouvelle entrée dans la base de données. Pour les instructions, voir [KeePassXC Guide d'utilisateur > Créer votre première base de données ](https://keepassxc.org/docs/KeePassXC_UserGuide#_creating_your_first_database).
-
-   - Lors de l'ajout d'une nouvelle entrée, joindre le fichier contenant la clé en faisant ce qui suit: sélectionnez Avancé dans le menu à gauche, puis sélectionner Ajouter dans la section Joints, choisissez le fichiers requis dans la fenêtre Sélectionner les fichiers qui apparaît.
-
-   - Lors de l'ajout d'une nouvelle entrée, sélectionnez SSH Agent dans le menu gauche, puis le fichier clé que vous avez ajouté dans le menu Ajout dans la section clé privée; puis sélectionner les cases de codage suivantes:
-
-      - Ajouter une clé à l'agent lorsque la base de données est ouverte/déverrouillée.
-
-      - Retirer la clé de l'agent lorsque la base de données est fermée/verrouillée
-
-      - Exiger une confirmation de l'utilisateur lorsque cette clé est utilisée
-
-   - Si nécessaire, apporter d'autres modifications à l'entrée.
-
-   - Lorsqu'il est prêt, sélectionnez OK pour enregistrer l'entrée.
-
-   ::: details Afficher des captures d'écran de référence
-
-   ![L'onglet KeePassXC `Advanced`: Ajout d'une pièce jointe à la clé privée ](../../../img/keepassxc_private_key.png)
-
-   ![L'onglet KeePassXC `SSH Agent`: Ajout d'une pièce jointe à la clé privée ](../../../img/keepassxc_pk_agent.png)
-
-   :::
-
-##### Les résultats attendus {#expected-results}
-
-- Les clés cryptographiques et `shh` sont stockées en tant qu'entrées dans une base de données KeePassXC à laquelle on peut accéder pendant que la fenêtre KeePassXC est ouverte.
-
-- Les clés cryptographiques stockées et `ssh` peuvent être utilisées chaque fois qu'elles sont requises pour l'autorisation.
-
-- cryptographique stockée et `ssh` Les clés sont retirées de la `ssh-agent` une fois le KeePassXC La fenêtre est fermée.
-
-::: info Remarque
-
-Sans avoir activé l'option Require confirmation utilisateur lorsque cette clé est utilisée, le `ssh-agent` ne peut pas surveiller le processus qui lui a fourni une clé. Dans le cas où le processus de gestion des mots de passe est arrêté par un logiciel malveillant ou un service système via un signal `SIGKILL`, la clé restera probablement dans le `ssh-agent`, puisque les programmes système Unix ne peuvent pas intercepter `SIGKILL`.
+Le cryptage ou un nouveau mot de passe ne peuvent pas rendre une clé privée copiée sûre à nouveau. Lorsque l'exposition est soupçonnée, cesser d'utiliser la clé et suivre la procédure de remplacement ou de révocation approuvée.
 
 :::
 
-## Le stockage physique des clés cryptographiques {#storing-cryptographic-keys-physically}
-
-Pour ceux qui recherchent le plus haut niveau de sécurité hors ligne, l'option de stocker des clés cryptographiques garantit physiquement que les clés restent complètement déconnectées des réseaux numériques, minimisant ainsi le risque d'accès non autorisé. Le fait de reconnaître l'option physique souligne notre engagement à répondre aux divers besoins en matière de sécurité.
-
-### À l'aide d'une clé matérielle {#using-a-hardware-key}
-
-Notre équipe considère les clés matérielles comme l'une des meilleures mesures de sécurité. Une clé matérielle est un appareil compact qui se connecte via un port USB et a la taille d'un lecteur flash typique. Cela vous permet de déconnecter facilement l'appareil en cas de violation de la sécurité, ou simplement de le reconnecter à une autre machine chaque fois que cela est nécessaire.
-
-Cependant, comme il existe de nombreuses marques de clés matérielles dont chacune possède son APIs unique, il est important d'effectuer des recherches sur le marché pour trouver la clé qui convient le mieux à vos besoins.
-
-Jusqu'à présent, notre équipe a testé en interne la clé de matériel [YubiKey 5C](https://www.yubico.com/il/product/yubikey-5c/) qui s'est avérée avoir beaucoup de fonctionnalités positives, y compris la fonctionnalité polyvalente API.
-
-Cependant, il y a un inconvénient potentiel à considérer. La mise en œuvre de l'authentification [HMAC challenge-response](https://en.wikipedia.org/wiki/Challenge%E2%80%93response_authentication) et le stockage d'une clé privée correspondante pour cette réponse pourrait créer une vulnérabilité. Cette configuration pourrait, par inadvertance, permettre aux attaquants de faire des suppositions éclairées sur les informations stockées dans la mémoire du YubiKey 5C, compromettant ainsi la sécurité globale.
-
-Heureusement, cette vulnérabilité peut être atténuée en adoptant une approche alternative à l'utilisation de la clé YubiKey 5C. L'idée est d'utiliser YubiKey 5C pour accéder en toute sécurité à une base de données KeePassXC qui stocke vos clés cryptographiques et `SSH`. Cette méthode peut même être considérée comme bénéfique, car elle dépasse la sécurité de la plupart des mots de passe et rend nécessaire que la partie malveillante soit en possession de votre clé matérielle au cas où la base de données KeePassXC serait fuite.
-
-::: informations
-
-Pour en savoir plus sur la méthode ci-dessus, voir la réponse de l'un des développeurs KeePassXC[Janek Bevendorff](https://github.com/phoerious)à la question suivante StackExchange:
-
-[Est-il raisonnable d'utiliser KeePassXC avec YubiKey?](https://security.stackexchange.com/questions/201345/is-it-reasonable-to-use-keepassxc-with-yubikey/258414#258414)
-
-:::
-
-### L'utilisation d'une phrase mnemonique {#using-a-mnemonic-phrase}
-
-Alternativement, vous pouvez mémoriser une clé privée sous la forme d'une série de mots, connue sous le nom de phrase mnemonique. Cette méthode, utilisée dans de nombreux portefeuilles, nécessite de se souvenir d'environ 25 mots spécifiques. La plupart des gestionnaires de mots de passe, y compris les précédemment discutés KeePassXC, offrent une génération de mots de passe mnemoniques.
+Voir [Generation de clés cryptographiques](./generating-cryptographic-keys.md), [ Sécurité opérationnelle](./operational-security.md) et [Principes de sécurité](./security-principles.md).

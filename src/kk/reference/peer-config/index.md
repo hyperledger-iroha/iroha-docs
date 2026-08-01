@@ -26,7 +26,7 @@ translation_engine: nllb-200-ct2
 
 TOML конфигурация файлдарында басқа TOML файлдарға сілтеме беретін қосымша `extends` өрісі болады. Бұл бір жол немесе бірнеше жол болуы мүмкін:
 
-::: код тобы
+::: code-group
 
 ```toml [Single]
 extends = "single-path.toml"
@@ -40,7 +40,7 @@ extends = ["file1.toml", "file2.toml"]
 
 Iroha рекурсивті түрде `extends` -да көрсетілген барлық файлдарды оқиды және оларды қабаттарға бөледі, онда соңғылары параметр деңгейінде алдыңғыларын қайталап жазады. Мысалы, егер `config.toml` -де оқу:
 
-::: код тобы
+::: code-group
 
 ```toml [config.toml]
 extends = ["a.toml", "b.toml"]

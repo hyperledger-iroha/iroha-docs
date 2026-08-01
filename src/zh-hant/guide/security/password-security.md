@@ -1,87 +1,45 @@
 ---
 translation_locale: zh-hant
 translation_source: /guide/security/password-security.md
-translation_source_hash: 39d03f2fa20a21745056353be8f132310fcf9cde051a4fb6528f6257ddc3158a
+translation_source_hash: 093be5b91700b9a6f85b45dc873c8c29d90397d5c9e3c842a77bfb03e97b37da
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
-# 密碼安全 {#password-security}
+# 密碼安全性 {#password-security}
 
-在區塊安全領域, 保護密碼至關重要.
+密碼可保護維運主控台、機密資訊儲存庫、備份與本機金鑰檔案。密碼只是其中一項控制措施；它必須搭配安全的金鑰保管、存取控制，以及在可用時採用多因素驗證。
 
-## 密碼的強度 {#password-strength}
+## 使用個別產生的唯一密碼 {#use-unique-generated-passwords}
 
-您可能曾遇到如何提出建议. _很強_ 密碼. 這些可能包括最低密碼長度,特殊字符的添加等建議.
+- 每個帳戶與每個環境都應產生不同的密碼。
+- 使用密碼管理器產生並儲存長且隨機的密碼。
+- 只有在詞彙是從足夠大的清單中隨機選取時，才使用多詞密碼片語。
+- 姓名、日期、地址、引文、鍵盤排列模式與重複使用的片段均不得出現在密碼中。
+- 若服務支援，請使用由服務產生的權杖或密碼學金鑰，取代人員輸入的密碼。
 
-如何定義一個 _堅強的密碼_? 密碼是一個具有 _高度_.
+長度與不可預測性比裝飾性的字元替換更重要。在可預測的單字中加入一個符號，並不會讓結果變得安全。
 
-我們可能會跟隨密碼的 **內能式**:
+## 保護使用密碼的帳戶 {#protect-password-based-accounts}
 
-::: tip 內能式
+- 在可用時啟用抗網路釣魚的多因素驗證。
+- 對重複發生的身分驗證失敗套用速率限制、鎖定政策與警示。
+- 只能透過已驗證且加密的通道傳送密碼。
+- 密碼與復原碼不得出現在日誌、命令列、原始碼存放庫、設定檔、問題單或聊天中。
+- 伺服器端密碼驗證資料應使用加鹽且記憶體密集的密碼雜湊函式，參數則應符合部署需求。
 
-$L$ 密碼長度;密碼中的符號數量.\
-$S$ 字符集;唯一可能的符號池的大小.\
-$S^L$  可能的組合數量.
+## 儲存、復原與替換 {#storage-recovery-and-replacement}
 
-$$Entropy=log_2(S^L)$$
-
-數字是密碼中的 entropy bit 的數量.
-
-已知 Entropy值, 使用以下公式可取出使用此 Entropy 的密碼的破壞強制所需的試驗量:
-
-$$S^L=2^Entropy$$
-
-金融組織建議保持密碼的密碼在範圍內, `64` 必須 `127` 數位 (`128` 但請記住, <abbr title="Graphics Processing Unit">GPU</abbr>密碼破解所需的時間隨著時間而下降.
-
-:::
-
-Following 我們要比较下列兩個例子:
-
-  1. 只有使用現代英文字母的小字母 (26 字符) 的16個字符密碼,$43*10^21$) 可能的組合.
-
-    $$Entropy=log_2(26^{16})=log_2(43,608,742,899,428,874,059,776)=75.20703...$$
-
-  2. 包含大字母和特殊符號的16個字符密碼,$52*10^30$), 顯著提高了透力.
-
-    $$Entropy=log_2(96^{16})=log_2(52,040,292,466,647,269,602,037,015,248,896)=105.35940... $$
-
-即使是將字符集從26個符號擴大到96個, $1.1933*10^9$ 這樣的情況,
-
-增加密碼的長度也會使可能的組合數量更加增長,
-
-我們建議使用密碼管理程式 [KeePassXC](https://keepassxc.org/) (詳情請查看) _[添加密碼管理程序](./storing-cryptographic-keys.md#adding-a-password-manager-program)_ 及其他 _[設定方式 KeePassXC](./storing-cryptographic-keys.md#configuring-keepassxc)_生成和安全存儲您的密碼.
-
-::: tip
-
-某些網站限制了密碼的最大可能值, 也就是說,
-
-請記住這些網站使用時,
-
-:::
-
-## 密碼的脆弱性 {#password-vulnerabilities}
-
-密碼可能會受到暴力攻擊, GPUs 沒有任何個人信息,如生日,地址,電話號碼或社會保障號碼. 避免向攻擊者提供易猜測的線索.
-
-如何破解現代密碼?
-
-這樣的策略 [凱文·米特尼克](https://en.wikipedia.org/wiki/Kevin_Mitnick)沒有任何問題 [集群設置](https://twitter.com/kevinmitnick/status/1649421434899275778?s=20) 住房 24 NVIDIA® GeForce RTX 其他國家, NVIDIA® GeForce RTX 2080年代,他們都在跑步 [哈斯托波利斯](https://github.com/hashtopolis) 他使用軟體破解密碼,
-
-我們將它比較到一個單位. RTX 4090,可處理到 300 <abbr title="Hashes per second">其他國家</abbr> 使用 [`NTLM`](https://www.tarlogic.com/cybersecurity-glossary/ntlm-hash) 和 200 年 <abbr title="Hashes per second">其他國家</abbr> 使用 [`bcrypt`](https://en.wikipedia.org/wiki/Bcrypt), 在此概述 [這個推文](https://twitter.com/Chick3nman512/status/1580712040179826688).
-
-我們現在要看下列預測破裂時間:
-
-  1. 這裡有 $31,540,000$ 假設最糟糕的情況是: `NTLM`, 在 $300*10^9$ <abbr title="Hashes per second">其他國家</abbr>, 這樣就需要一張 RTX 約 4090 公里 $4,608.83$ 打破16個字符的密碼,
-
-  2. 如果而不是 `NTLM` 我們使用 `bcrypt`, 因此降低代速度到 $200*10^3$ <abbr title="Hashes per second">其他國家</abbr>, 還是擴展到96的字符, 包括大文字和特殊符號, $8,249,887,835,549,662,270.456$ 超越宇宙的年齡.
-
-只是選擇更高的エントロピー增加了破解密碼所需的時間. GPUs, 但這個方法與 [XKCD 方法](https://xkcd.com/538/).
-
-很重要的是要注意,一個廣泛的字符集並不是總是需要达到高度. [XKCD 漫畫](https://xkcd.com/936/) 這一點很好用.
+- 使用經稽核的密碼管理器，並備有已加密且經過測試的備份。
+- 復原碼應與其用來復原的裝置分開儲存。受到妥善保護的離線紙本可能適合存放復原資料。
+- 限制對密碼管理器匯出檔與備份媒體的存取。
+- 疑似遭暴露、發生未經授權的重複使用，或政策事件要求替換時，應替換密碼。
+- 在正式環境啟用前測試帳戶復原程序。
 
 ::: warning
 
-避免在任何地方寫下你的密碼. 安全存放您的密碼恢復短語. 如果短語太長,你可以記錄它,以確保你能讀出並打字後來.
+用來解鎖私鑰的密碼，無法讓已暴露的私鑰副本恢復安全。若懷疑私鑰遭到暴露，請遵循部署的金鑰替換或撤銷程序。
 
 :::
+
+請參閱[維運安全](./operational-security.md)與[儲存密碼學金鑰](./storing-cryptographic-keys.md)。

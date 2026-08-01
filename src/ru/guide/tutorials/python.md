@@ -473,7 +473,7 @@ for trigger in registered.items:
 details = client.get_trigger_typed("precommit_reward")
 ```
 
-Регистрация, выполнение, повторение изменений и нерегистрация - это мутирующие операции.
+Инвентаризационные вызовы триггера читаются или проверяются только на записи триггеров. Регистрация, исполнение, повторение изменений и нерегистрация - это мутирующие операции.
 
 ### Инструкции по перевозке и расчету {#repo-and-settlement-instructions}
 
@@ -1271,7 +1271,7 @@ print(health.healthy_total, health.failovers_total)
 
 ## Norito RPC и GPU Помощники {#norito-rpc-and-gpu-helpers}
 
-Используйте `NoritoRpcClient`, когда у вас уже есть байты Norito и вам нужно вызвать конечную точку Torii в бинарной форме.
+Использование `NoritoRpcClient` когда у вас уже есть Norito байты и необходимо вызвать двоичный Torii конечная точка. Пример требует подписанного конверта из предшествующего шаблона сделки:
 
 ```python
 from iroha_python import NoritoRpcClient, NoritoRpcConfig

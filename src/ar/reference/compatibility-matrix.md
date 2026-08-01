@@ -20,6 +20,6 @@ translation_engine: nllb-200-ct2
 
 <CompatibilityMatrixTable />
 
-::: المعلومات
+::: info
 حدد `VITE_COMPAT_MATRIX_URL` فقط لتجاوز اللقطة الفورية المجمعة مع الخلفية الحية المتوافقة. بدون هذه المتغيرة، تحميل الصفحة `src/public/compat-matrix.json`.
 :::

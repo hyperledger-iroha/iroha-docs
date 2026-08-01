@@ -13,9 +13,8 @@ Below we outline the major differences in these two use cases.
 ## Permissions
 
 In a _public_ blockchain, most accounts have the same set of permissions.
-In a _private_ blockchain, most accounts are assumed not to be able to do
-anything outside the authority granted to them unless explicitly granted
-the relevant permission.
+In a _private_ blockchain, each account receives only its explicit
+permissions.
 
 ::: info
 
@@ -50,32 +49,27 @@ shape a private, administrator-managed network or a more open network.
 Once those permissions are active, the process of registering accounts is
 different.
 
-When it comes to registering accounts, public and private blockchain have
-the following differences:
+Public and private registration policies usually differ:
 
-- In a _public_ blockchain, anyone should be able to register an
-  account[^1]. So, in theory, all that you need is a suitable client, a way
-  to generate a private key for a supported algorithm, and permission
-  policy that accepts the registration.
+- A _public_ registration policy accepts account registrations from any
+  eligible user[^1]. The user needs a suitable client, a private key for a
+  supported algorithm, and a registration request accepted by policy.
 
-- In a _private_ blockchain, you can have _any_ process for setting up an
-  account: it could be that the registering instruction has to be submitted
-  by a specific account, or by a smart contract that asks for other
-  details. It could be that in a private blockchain registering new
-  accounts is only possible on specific dates, or limited by a non-mintable
-  (finite) token.
+- A _private_ registration policy can authorize one account or one smart
+  contract to submit registrations. A custom policy can limit registration to
+  a time window. It can also require the submitter to spend a token whose
+  supply is fixed because no authority has permission to mint more.
 
-- In a _typical_ private blockchain, i.e. a blockchain without any unique
-  processes for registering accounts, you need an account to register
-  another account.
+- With the default private-network pattern, an existing account submits the
+  registration for each new account.
 
 The default permission validators cover the typical private blockchain
 use case.
 
 ::: info
 
-Public and private modes are policy profiles rather than separate node
-binaries. Review the executor and genesis permissions you ship before
+Public and private modes are executor and genesis policy choices. Both use the
+same node binary. Review the selected executor and genesis permissions before
 running an open network.
 
 :::

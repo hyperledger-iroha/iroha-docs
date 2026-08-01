@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /reference/instructions.md
-translation_source_hash: 8dc894a05141040826067dc483319f213b007648f32354bb36f899259db9c5ac
+translation_source_hash: e300187da832a8f82258a36b7c4aaebf505adc09c771de5b0c7ab8fb0052d3db
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -19,8 +19,8 @@ Mövcud məlumat modeli bu daxili təlim ailələrini aşkar edir:
 | [`TransferBox`](/az/blockchain/instructions.md#transfer) |`Domain`, `AssetDefinition`, nömrəli `Asset`, `Nft` |
 | [`SetKeyValueBox`](/az/blockchain/instructions.md#setkeyvalue-removekeyvalue) |`Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` metadataları |
 | [`RemoveKeyValueBox`](/az/blockchain/instructions.md#setkeyvalue-removekeyvalue) |`Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` metadataları |
-| [`GrantBox`](/az/blockchain/instructions.md#grant-revoke) |mühasibatlığa icazə, məsuliyyətə görə rolu, rolu yerinə yetirməyə icazə|
-| [`RevokeBox`](/az/blockchain/instructions.md#grant-revoke) |Hesabdan icazə, hesabdan rolu, roldan icazə |
+| [`GrantBox`](/az/blockchain/instructions.md#grant-revoke) | `Permission` (`Grant<Permission, Account>`), `Role` (`Grant<RoleId, Account>`), `RolePermission` (`Grant<Permission, Role>`) |
+| [`RevokeBox`](/az/blockchain/instructions.md#grant-revoke) | `Permission` (`Revoke<Permission, Account>`), `Role` (`Revoke<RoleId, Account>`), `RolePermission` (`Revoke<Permission, Role>`) |
 | [`SetParameter`](/az/blockchain/instructions.md#setparameter) |zəncir parametrlərinin yenilənməsi |
 | [`ExecuteTrigger`](/az/blockchain/instructions.md#executetrigger) |başlatma |
 | [`Upgrade`](/az/blockchain/instructions.md#other-instructions) |icraçı yüksəldilməsi |

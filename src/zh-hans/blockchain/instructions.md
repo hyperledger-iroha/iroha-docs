@@ -1,89 +1,73 @@
 ---
 translation_locale: zh-hans
 translation_source: /blockchain/instructions.md
-translation_source_hash: 3251078b2b2268ff78563c02a0f935c63dc0569f0b6d38071150cbb4b89394d6
+translation_source_hash: adc3eff9758dd73e9114e78eaa18ddf6271db3bc4042611e1ed6ed1aac226246
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Iroha 特别指示 {#iroha-special-instructions}
+# Iroha 特殊指令 {#iroha-special-instructions}
 
-当我们谈到 [如何 Iroha 运营](/zh-hans/blockchain/iroha-explained), 我们
-他说 Iroha 特殊指令是改变世界的唯一方法
-如果您已经阅读了这篇文章,那么我们有哪些特殊指示?
-在本教程中,你已经看过几个
-指令: `Register<Account>` 并且 `Mint<Numeric>`.
+当我们谈到 [如何 Iroha 运营](/zh-hans/blockchain/iroha-explained), 我们说 Iroha 特殊指示是改变世界状态的唯一方法.我们有什么特殊指令呢?在本教程中,你已经看到了几条指令: `Register<Account>` 和 `Mint<Numeric>`.
 
-这里是全部的列表. Iroha 特别指示:
+以下是 Iroha 特殊指示的完整列表:
 
-| 指示                                               | 描述                                     |
+|指示|描述|
 | --------------------------------------------------------- | ------------------------------------------------ |
-| [注册/撤销注册](#un-register)                       | 给一个 ID 在区块链上的新实体    |
-| [薄荷/燃烧](#mint-burn)                                   | 硬币/烧数字资产或触发重复. |
-| [SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) | 更新区块链对象元数据.               |
-| [SetParameter](#setparameter)                             | 设置链接宽度参数.                      |
-| [补贴/撤销](#grant-revoke)                             | 给予或删除权限和角色.            |
-| [转移](#transfer)                                     | 转移所有权或资产价值.               |
-| [产业保证金和资产锁定](#native-escrow-and-asset-locks) | 锁定数字资产在协议监护.     |
-| [ExecuteTrigger](#executetrigger)                         | 执行触发器.                                |
-| [登录/定制/升级](#other-instructions)                 | 记录,延长或升级运行时间行为.        |
+| [登记/退出登记](#un-register) |给一个 ID 在区块链上的新实体. |
+| [硬币/燃烧](#mint-burn)|硬币/燃烧数字资产或触发重复. |
+| [SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) |更新区块链对象的元数据.|
+| [SetParameter](#setparameter) |设置链接宽度参数.|
+| [资助/撤销](#grant-revoke) |给予或删除权限和角色.|
+| [转移](#transfer)|转移所有权或资产价值.|
+| [本地保证金和资产锁定](#native-escrow-and-asset-locks) |锁定数字资产在协议监护.|
+| [ExecuteTrigger](#executetrigger) |执行触发器.|
+| [记录/定制/升级](#other-instructions) |记录,延长或升级运行时间行为.|
 
-让我们从一个总结开始 Iroha 特殊指令;每项目的目标
-可以要求指令,以及每一个人有哪些指令
-标题.
+让我们从 Iroha 特殊指令的总结开始;每个指令可以调用哪些对象,以及每一个对象可用的指令.
 
 ## 总结 {#summary}
 
-对于每个指令,有一个对象列表,
-例如,转移变量覆盖可拥有账本对象
-计数资产和数字资产,而计分包括数字资产和触发器
-复制.
+对于每一个指令,有一个可以运行该指令的对象列表.例如,转移变量涵盖可拥有账本对象和数值资产,而缩则涵盖数值资金和触发重复.
 
-一些指令要求指定目的地.
-你转移资产,你总是需要指定你的账户
-另一方面,当你注册某件事时,
-你需要的只是你想要注册的物体.
+一些指令要求指定目的地.例如,如果你转移资产,你总是需要指定你将资产转移到哪个账户上.另一方面,当你注册某件事情时,你只需要注册的对象.
 
-| 指示                                               | 物体                                                                                                 | 目的地          |
+|指示|物体|目的地|
 | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------- |
-| [EnsureAlias](#ensurealias)                               | 通常域名,数据空间-alias和帐户-alias设置                                                 |                      |
-| [注册/撤销注册](#un-register)                       | 账户,资产定义 NFTs, 角色,触发器,同行;域删除                                |                      |
-| [薄荷/燃烧](#mint-burn)                                   | 数字资产,触发重复                                                                     | 账户或触发器 |
-| [SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) | 具有 [数据](./metadata.md): 域名,账户,资产定义 NFTs, RWAs, 触发器 |                      |
-| [SetParameter](#setparameter)                             | 连锁参数                                                                                        |                      |
-| [补贴/撤销](#grant-revoke)                             | [角色,许可证](/zh-hans/blockchain/permissions.md)                                                  | 账户或角色    |
-| [转移](#transfer)                                     | 域名,资产定义,数值资产 NFTs                                                        | 账户             |
-| [产业保证金和资产锁定](#native-escrow-and-asset-locks) | 数字资产保证,资产锁定,匿名保证承诺                                    | 购买者,目的地或争端分歧 |
-| [ExecuteTrigger](#executetrigger)                         | 触发器                                                                                                |                      |
-| [登录/定制/升级](#other-instructions)                 | 记录,执行器特定的有效载荷,执行器升级                                                     |                      |
+| [EnsureAlias](#ensurealias) |常规域名,数据空间号和帐户号设置|                      |
+| [登记/退出登记](#un-register) |账户,资产定义, NFTs,角色,触发因素,同行;域名移除 |                      |
+| [硬币/燃烧](#mint-burn)|数字资产,触发重复|账户或触发器|
+| [SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) |具有 [元数据](./metadata.md)的对象:域名,账户,资产定义, NFTs, RWAs,触发器|                      |
+| [SetParameter](#setparameter) |连锁参数|                      |
+| [资助/撤销](#grant-revoke) | [角色,许可证代码](/zh-hans/blockchain/permissions.md) |账户或角色|
+| [转移](#transfer)|域名,资产定义,数值资产, NFTs|账户|
+| [本地保证金和资产锁定](#native-escrow-and-asset-locks) |数字资产保证券,资产锁定,匿名的保证券承诺 |购物者,目的地或争端分歧|
+| [ExecuteTrigger](#executetrigger) |触发器|                      |
+| [记录/定制/升级](#other-instructions) |记录,执行者特定的有效载荷,执行器升级 |                      |
 
-还有另一种看法. ISI, 在账本对象方面
-它们触摸:
+还有另一种方法来看 ISI,从他们触及的账本对象方面:
 
-| 目标           | 指示                                                                                                 |
+|目标|指示|
 | ---------------- | ------------------------------------------------------------------------------------------------------------ |
-| 账户          | 注册/撤销账户,收到资产,更新帐户元数据,授予/撤销许可和角色    |
-| 域名           | 确保域名设置,取消域名注册,转移域名所有权,更新域名元数据                    |
-| 资产定义 | 注册/退出注册的定义,转让所有权,更新元数据                                         |
-| 资产            | /燃烧数量,转移数量                                                        |
-| 存款           | 开放,接受,标记发送的支付,释放,取消,纠纷,解决,撤销或过期原生托管记录 |
-| NFT              | 注册/退出注册 NFTs, 转移所有权,更新元数据                                                |
-| RWA              | 注册批量,转移数量,保留/释放,结/解凍,收购,合并,更新元数据和控制 |
-| 触发器          | 登记/取消登记,硬币/燃烧触发器重复,执行触发器,更新触发器元数据                 |
-| 世界            | 注册/退出注册同行和角色,设置参数,升级执行器                                    |
+|账户|登记/撤销账户,收到资产,更新账户元数据,授予/撤销许可和角色 |
+|域名|确保域名设置,取消域名注册,转移域名所有权,更新域名元数据.|
+|资产定义|登记/退出登记的定义,转移所有权,更新元数据|
+|资产|硬币/烧伤数量,转移数量 |
+|抵押金|开放,接受,标记发送的支付,释放,取消,纠纷,解决,撤销或过期原生保管记录.|
+|NFT|登记/撤销登记 NFTs,转让所有权,更新元数据 |
+|RWA|登记批量,转移数量,保留/释放,结/解凍,收购,合并,更新元数据和控制|
+|触发器|注册/取消注册,硬币/燃烧触发重复,执行触发器,更新触发器元数据 |
+|世界|注册/取消注册同行和角色,设置参数,升级执行者 |
 
 ## CLI 举例 {#cli-examples}
 
-本页面中的例子假设您正在从上游运行命令
-Iroha 与默认本地客户端配置的工作空间:
+本页面的例子假设您正在从上游 Iroha 工作空间运行命令,而不是默认本地客户端配置:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml <command>
 ```
 
-如果您安装了 `iroha` 二进制,使用
-`iroha --config ./defaults/client.toml` 换取位者.
-以下是您的网络值:
+如果您安装了`iroha`二进制,请使用 `iroha --config ./defaults/client.toml` 相反.
 
 ```bash
 export ALICE="<ALICE_ACCOUNT_I105>"
@@ -93,10 +77,7 @@ export PEER_KEY="<BLS_PUBLIC_KEY_MULTIHASH>"
 export PEER_POP="<PROOF_OF_POSSESSION_HEX>"
 ```
 
-当针对公众时 Taira 测试网,使用一个 Taira 客户端配置.
-在运行付费的例子之前,保存水龙头辅助器
-[获取测试网 XOR 在 Taira](/zh-hans/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)
-作为 `taira_faucet_claim.py`, 然后索赔测试网 XOR 从水龙头:
+当针对公众时 Taira 测试网,使用一个 Taira 在运行支付费用的例子之前,保存水龙头助手从 [获取测试网 XOR 在 Taira](/zh-hans/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) 作为 `taira_faucet_claim.py`, 然后索赔测试网 XOR 在水龙头上:
 
 ```bash
 export TAIRA_ACCOUNT_ID="<TAIRA_I105_ACCOUNT_ID>"
@@ -110,8 +91,7 @@ iroha --config ./taira.client.toml ledger asset get \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-在水源资产可见之后,将所需的气体资产附加
-记录交易的元数据:
+在头资产可见之后,添加所需的气体资产元数据来记录交易:
 
 ```bash
 printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
@@ -124,11 +104,7 @@ cargo run --bin iroha -- \
 
 ## EnsureAlias {#ensurealias}
 
-`EnsureAlias` 是创建域名的普通首次发布路径,
-他们的 SNS 它声明地绑定数据空间,所有者,租
-然后在原子上创建或修复所有所需的状态.
-使用身份验证 `POST /v1/aliases/setup/plan` 终点或匹配
-CLI 工作流程:
+`EnsureAlias`是创建域名和其 SNS 租的普通首次发布路径.它声明地绑定了确切的数据空间,所有者,租 使用验证的 `POST /v1/aliases/setup/plan` 终端点或匹配的 CLI 工作流程:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -140,75 +116,46 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   app alias setup apply --plan-file ./domain.plan.json
 ```
 
-意图和计划是无秘密的,但应用步骤标签
-一个计划与其配置账户的普通交易.
-连锁,权威,现实状态和截止日期;永远不要重复使用
-网络.
+意图和计划是无秘密的,但应用步骤标志并提交一个普通的交易与配置帐户. 一个计划被绑定到其链,权威,现实状态和截止日期;永远不要再在另一个网络上使用它.
 
-## (非) 登记 {#un-register}
+## (无) 登记 {#un-register}
 
-登记和退出登记是指令 ID 在 a
-在区块链上的新实体.
+注册和退出注册是向在区块链上新实体发送 ID 的指令.
 
-任何可以注册的东西都是 `Registrable` 并且 `Identifiable`,
-但不是所有的东西 `Identifiable` 是 `Registrable`. 大多数东西都是
-直接注册,但在某些情况下
-由于安全性和性能原因,
-为此类数据结构的构建者 (例如: `NewAccount`),和同行
-登记有专门的拥有证明说明.
-任何可以注册的东西也可以被不注册,但这不是
-一个严格而快速的规则.
+所有可以注册的东西都是`Registrable`和`Identifiable`,但不是所有是 `Identifiable`的东西都是 `Registrable`.大多数东西都直接注册,由于安全性和性能原因,我们使用构建器用于此类数据结构 (例如 `NewAccount`),同行注册有一个专门的证明所有权说明.
 
-你可以注册账户,资产定义, NFTs, 同龄人,角色和
-域名设置使用 `EnsureAlias`; 原料 `Register::Domain` 有效载荷
-专用于基因/bootstrap. 同行注册用途
-`RegisterPeerWithPop`, 检查我们的密钥.
-[命名会议](/zh-hans/reference/naming.md) 了解这些限制
-在实体名字上.
+你可以注册账户,资产定义, NFTs, 域名设置使用: `EnsureAlias`; 原料 `Register::Domain` 用于创始/启动带.同行注册使用 `RegisterPeerWithPop`, 检查我们的密钥. [命名会议](/zh-hans/reference/naming.md) 了解对实体名称的限制.
 
-RWA 通过专门的 `RegisterRwa` 其他国家,
-目前的代码不暴露 `UnregisterRwa` 教训;使用
-`RedeemRwa` 退休代表数量.
+RWA 批量是通过专门的 `RegisterRwa`指令创建的.当前代码不显示`UnregisterRwa`指令;使用 `RedeemRwa`退休表示数量.
 
 ::: info
 
-请注意,取决于您如何设置
-[基因区块](/zh-hans/guide/configure/genesis.md) 在 `genesis.json`
-(具体来说,您是否包括注册许可
-登记账户的过程可能非常不同.
-总理,我们可以这样概括:
+请注意,根据您如何设置 [基因区块](/zh-hans/guide/configure/genesis.md)在 `genesis.json`中 (具体来说,是否包括注册许可证代币),注册帐户的过程可能非常不同.
 
-- 在一个 _公众_ 区块链,任何人都可以注册账户.
-- 在一个 _个人_ 区块链可以有一个独特的注册过程
-  在一个 _典型的_ 个人区块链,即没有区块链
-  任何单独的账户注册流程,你需要一个帐户
-  登记另一个账户.
+- 在公共区块链中,任何人都应该能够注册帐户.
+- 在私人区块链中,可以有一个单独的账户注册过程.在典型的私人区塊中,即没有任何单独的帐户注册进程的区块链里,你需要一个帐户才能注册另一个账户.
 
-我们将这些区别详细讨论,
-[比较私人和公共区块链](/zh-hans/guide/configure/modes.md).
+我们讨论这些差异的细节, [比较私人和公共区块链](/zh-hans/guide/configure/modes.md).
 
 :::
 
 ::: info
 
-目前,注册同行是添加没有同行的唯一方式
-在网络上设置的原始可靠同行的一部分.
+目前,注册同行是唯一的方式来添加在网络中非原始可靠同行的同行.
 
 :::
 
-Refer 通过语言指导方针,
-在区块链中注册对象的过程:
+使用特定语言的指南注册区块链对象:
 
-| 语言              | 指南                                                                                                   |
+|语言|指南|
 | --------------------- | ------------------------------------------------------------------------------------------------------- |
-| CLI                   | 使用 [Iroha CLI](/zh-hans/get-started/operate-iroha-via-cli.md) 建立域名和注册账户和资产. |
-| Rust                  | 使用 [Rust 教程](/zh-hans/guide/tutorials/rust.md).                                                      |
-| Kotlin/Java           | 使用 [Kotlin/Java教程](/zh-hans/guide/tutorials/kotlin-java.md).                                        |
-| Python                | 使用 [Python 教程](/zh-hans/guide/tutorials/python.md).                                                  |
-| JavaScript/TypeScript | 使用 [JavaScript/TypeScript 教程](/zh-hans/guide/tutorials/javascript.md).                               |
+|CLI|使用 [Iroha CLI](/zh-hans/get-started/operate-iroha-via-cli.md)设置域名和注册账户和资产. |
+|Rust|使用[Rust 教程](/zh-hans/guide/tutorials/rust.md). |
+|Kotlin/Java |使用[Kotlin/Java教程](/zh-hans/guide/tutorials/kotlin-java.md). |
+|Python|使用[Python 教程](/zh-hans/guide/tutorials/python.md). |
+|JavaScript/TypeScript |使用[JavaScript/TypeScript 教程 ](/zh-hans/guide/tutorials/javascript.md). |
 
-规划和应用普通域设置,然后在没有域的情况下取消注册
-需要更长时间:
+规划和应用普通域设置,然后在不再需要时取消域名注册:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -223,7 +170,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger domain unregister --id docs.universal
 ```
 
-注册和退出注册账户:
+登记和注销账户:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -233,7 +180,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger account unregister --id "$BOB"
 ```
 
-注册和退出注册的资产定义:
+注册和退出注册资产定义:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -247,8 +194,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger asset definition unregister --id "$ASSET_DEF"
 ```
 
-登记和退出登记 NFTs. NFT 注册读取其内容 JSON 在
-标准输入:
+登记和注销 NFTs. NFT 登记从标准输入中读取其内容 JSON:
 
 ```bash
 printf '{"kind":"badge","level":"intro"}\n' |
@@ -259,7 +205,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger nft unregister --id 'badge$docs.universal'
 ```
 
-注册和退出注册的角色:
+登记和退出登记的角色:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -269,9 +215,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger role unregister --id operators
 ```
 
-注册和退出注册的触发器.
-编译 IVM 字节代码或串行指令列表.
-一个 `Log` 通过 CLI 然后将其输入到触发器注册中:
+注册和取消注册的触发器.触发器注册需要编译 IVM 字节码或串行指令列表.本示例使用 CLI 构建一个 `Log` 指令,并将其输入到触发器登记中:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml -o \
@@ -287,8 +231,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger trigger unregister --id hourly_cleanup
 ```
 
-注册和退出注册同龄人. BLS 关键和 PoP 在 `kagami`
-如果您还没有:
+注册和退出注册的同行. 如果您尚未拥有 BLS 密钥,则将 PoP 和 `kagami` 发明:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
@@ -302,16 +245,11 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ## 薄荷/燃烧 {#mint-burn}
 
-造和燃烧可以指数值资产和触发器
-一些资产可以被申报为不可使用,即
-在注册后,只能一次造.
+造和燃烧可以指数值资产,并且具有有限的重复数量.某些资产可被宣布为不可造,这意味着它们在注册后只能一次造.
 
-资产被注入一个特定的账户,通常是注册的帐户
-资产数量是非负的,所以你可以
-没有. `$-1.0` 现在,我们需要一个资产或消耗负值的资金.
+资产注册到一个特定的账户,通常是该帐户首次注册资产的.资产数量是非负的,所以你永远不能拥有 `$-1.0`的资产或烧毁负数量并获得钱.
 
-参考一个特定语言的指南,
-在区块链中挖掘资产的过程:
+使用一个特定语言的指南来造区块链资产:
 
 - [CLI](/zh-hans/get-started/operate-iroha-via-cli.md)
 - [Rust](/zh-hans/guide/tutorials/rust.md)
@@ -324,7 +262,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 - [CLI](/zh-hans/get-started/operate-iroha-via-cli.md)
 - [Rust](/zh-hans/guide/tutorials/rust.md)
 
-货币和燃烧数值资产:
+硬币和燃烧数值资产:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -340,7 +278,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --quantity 10
 ```
 
-薄荷和燃烧触发器重复:
+薄荷和烧伤触发器重复:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -352,16 +290,9 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ## 转移 {#transfer}
 
-转账将所有权或价值转移到账户之间.
-变体涵盖域名,资产定义,数值资产, NFTs. RWA
-量流动使用专用 `TransferRwa` 并且 `ForceTransferRwa`
-在 [现实世界资产](/zh-hans/blockchain/rwas.md).
+转移将所有权或价值在账户之间移动.通用转让变体涵盖域名,资产定义,数值资产和 NFTs. RWA 数量流动使用`TransferRwa`和 `ForceTransferRwa`指令所描述的 [Real-World Assets](/zh-hans/blockchain/rwas.md).
 
-为了做到这一点,必须提供
-[资产转让许可](/zh-hans/reference/permissions.md). 参考一个
-如何转移资产的例子
-[CLI](/zh-hans/get-started/operate-iroha-via-cli.md) 或
-[Rust](/zh-hans/guide/tutorials/rust.md).
+为了做到这一点,必须提供 [资产转移的许可](/zh-hans/reference/permissions.md). 举例说明如何转移资产 [CLI](/zh-hans/get-started/operate-iroha-via-cli.md) 或 [Rust](/zh-hans/guide/tutorials/rust.md).
 
 转移数值资产:
 
@@ -374,7 +305,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --quantity 25
 ```
 
-转移域,资产定义和 NFT 所有权:
+转让域名,资产定义和 NFT 所有权:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -389,36 +320,19 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ## 产业保险和资产锁 {#native-escrow-and-asset-locks}
 
-在本书管理协议中锁定数值资产的原始保证指令
-它们用于市场式结算,一般资产
-密封锁和匿名的保证金流动.
+本地保证指令将数字资产锁定在账本管理的协议保管中.它们用于市场式结算,通用资产锁和匿名屏蔽的保证流动.
 
-市场托管使用 `OpenAssetEscrow`, `AcceptAssetEscrow`,
-`MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`,
-`OpenEscrowDispute`, 并且 `ResolveEscrowDispute`. 一般资产锁的使用
-`OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, 并且
-`ExpireAssetLock`. 匿名保证券反映了市场的生命周期
-`OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`,
-`MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`,
-`CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, 并且
-`ResolveAnonymousEscrowDispute`.
+市场保证金使用 `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, 和 `ResolveEscrowDispute`. 一般资产锁的使用 `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, 和 `ExpireAssetLock`. 匿名保证人反映了市场的生命周期 `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, 和 `ResolveAnonymousEscrowDispute`.
 
-这些 ISIs 目前没有一等级 CLI 使用输入 SDK
-构建器或序列化指令有效载荷,见
-[产业资产抵押](/zh-hans/blockchain/escrow.md) 对于生命周期细节,
-权限,查询,事件和 Rust 其他例子.
+这些 ISIs 目前没有一流的 CLI 命令.使用类型 SDK 构建器或序列化指令有效载荷,并参见 [原生资产抵押](/zh-hans/blockchain/escrow.md)为生命周期详细信息,权限,查询,事件和 Rust 示例.
 
-## 补贴/撤销 {#grant-revoke}
+## 资助/撤销 {#grant-revoke}
 
-授予和撤销指令用于账户
-[权限和角色](permissions.md).
+授权和撤销指示用于账户 [许可证和角色](permissions.md).
 
-`Grant` 用于永久授予用户单一许可,或
-授予的角色和权限只能
-通过 `Revoke` 因此,这些指令应
-用小心.
+`Grant`用于永久授予用户单个许可证或一组权限 ("角色").仅通过`Revoke`指令才能删除所授予的角色和权限.因此,这些指令应谨慎使用.
 
-在一个账户上授予和撤销角色:
+授予和撤销一个账户的角色:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -428,8 +342,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger account role revoke --id "$BOB" --role operators
 ```
 
-授予和撤销许可证.
-从标准输入中的对象:
+授予和撤销权限代币.允许命令从标准输入中读取一个权限对象:
 
 ```bash
 printf '{"name":"CanSetParameters","payload":null}\n' |
@@ -441,7 +354,7 @@ printf '{"name":"CanSetParameters","payload":null}\n' |
   ledger account permission revoke --id "$BOB"
 ```
 
-授予和撤销角色的权限:
+授予或撤销角色的权限:
 
 ```bash
 printf '{"name":"CanRegisterDomain","payload":null}\n' |
@@ -455,11 +368,9 @@ printf '{"name":"CanRegisterDomain","payload":null}\n' |
 
 ## `SetKeyValue`/`RemoveKeyValue` {#setkeyvalue-removekeyvalue}
 
-这些指令更新对象 [数据](/zh-hans/blockchain/metadata.md). 使用
-`SetKeyValue` 插入或更换一个元数据输入, `RemoveKeyValue` 在
-删除一个.
+这些指令更新对象 [元数据](/zh-hans/blockchain/metadata.md).使用 `SetKeyValue`来插入或取代一个元数据输入,并用 `RemoveKeyValue`删除一个.
 
-数据表 `set` 命令阅读 JSON 标准输入值:
+在 `set` 命令中,从标准输入中读取 JSON 的值:
 
 ```bash
 printf '"production"\n' |
@@ -470,8 +381,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger domain meta remove --id docs.universal --key environment
 ```
 
-同样的模式可用于账户,资产定义, NFTs, RWAs,
-和触发器:
+同样的模式可用于账户,资产定义, NFTs, RWAs,以及触发因素:
 
 ```bash
 printf '{"display_name":"Alice"}\n' |
@@ -493,11 +403,9 @@ printf '{"owner":"ops"}\n' |
 
 ## `SetParameter` {#setparameter}
 
-`SetParameter` 动态数据所暴露的连锁范围参数变化
-模型和执行者.
+`SetParameter`改变了主动数据模型和执行者所暴露的整个链参数.
 
-通过单个参数设置参数 JSON 标准上的对象
-输入:
+在标准输入时通过单个参数 JSON 对象设置参数:
 
 ```bash
 printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
@@ -507,13 +415,9 @@ printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
 
 ## `ExecuteTrigger` {#executetrigger}
 
-这个命令用于执行 [触发器](./triggers.md).
+该指令用于执行 [触发](./triggers.md).
 
-其他 CLI 可以注册触发器和订阅触发执行事件
-直接. 它没有提供一个打字的 `execute trigger` 命令,所以
-提交手册 `ExecuteTrigger` 命令,生成一个串行
-`InstructionBox` 有一个 SDK 或执行工具,并通过结果 JSON
-通过阵列 `ledger transaction stdin`:
+CLI 可以直接记录触发器,并订阅触发执行事件.它不提供输入`execute trigger`命令,因此要提交一个 手动 `ExecuteTrigger` 指令,用 SDK 或执行工具生成串行式 `InstructionBox`,并通过 `ledger transaction stdin` 传输结果的 JSON 阵列:
 
 ```bash
 printf '["<BASE64_EXECUTE_TRIGGER_INSTRUCTION_BOX>"]\n' |
@@ -526,23 +430,20 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ## 其他指令 {#other-instructions}
 
-Iroha 也暴露了运行时间和执行器的低级指示
-集成:
+Iroha 还揭示了运行时间和执行器集成的较低级别指示:
 
-- `Log`: 在执行过程中发出日志输入
-- `CustomInstruction`: 执行者特定的运输 JSON 实用载荷
-- `Upgrade`: 激活执行器升级
+- `Log`:在执行过程中发出日志输入
+- `CustomInstruction`:运输执行者特定的 JSON 有效载荷
+- `Upgrade`:激活执行器升级
 
-提交一个 `Log` 通过 ping 辅助器进行指导:
+提交一个 `Log` 指令与助手:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger transaction ping --log-level INFO --msg "hello from docs"
 ```
 
-提交一个定制执行器指令作为串行 `InstructionBox`. 其他
-执行器特定,所以使用该命令生成指令.
-匹配 SDK 或执行器工具:
+提交一个定制执行器指令作为串行式 `InstructionBox`.有效载荷形状是执行器特定的,所以使用匹配的 SDK 或执行器工具生成该指令:
 
 ```bash
 printf '["<BASE64_CUSTOM_INSTRUCTION_BOX>"]\n' |
@@ -550,7 +451,7 @@ printf '["<BASE64_CUSTOM_INSTRUCTION_BOX>"]\n' |
   ledger transaction stdin
 ```
 
-升级执行器从一个编译 IVM 字节码文件:
+升级执行器从编译的 IVM 字节码文件中:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \

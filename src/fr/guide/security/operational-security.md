@@ -1,101 +1,98 @@
 ---
 translation_locale: fr
 translation_source: /guide/security/operational-security.md
-translation_source_hash: 01397a0e53a3f62df21e33b1473babd910cc733713ef69e43b3bbb501b48e7a5
+translation_source_hash: 042673aca63962b4b3f91e59c29bc5030ada7d63f082991899951301cb1f6887
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Sécurité opérationnelle {#operational-security}
 
-La sécurité opérationnelle (OPSEC) est une approche systématique de la sécurité et de la gestion des risques, qui constitue essentiellement un ensemble de stratégies et de conseils adoptés pour des cas d'utilisation spécifiques dans le but de prévenir l'accès non autorisé et les fuites de données.
+La sécurité opérationnelle protège les personnes, les hôtes, les informations d'identification et les procédures autour d'un déploiement Iroha. Les enregistrements du registre acceptent les changements d'état.
 
-<abbr title="Operational Security">OPSEC</abbr> est la pratique standard de la plupart des entreprises pour garantir la disponibilité et la stabilité de leurs actifs. Cela inclut prendre en compte des facteurs tels que la sécurité physique (par exemple, s'assurer que les billets post-it non surveillés ne contiennent pas de données sensibles), les protocoles de communication sécurisés (par exemple, le non-envoi de données sensibles par voie non cryptée SMS), l'analyse des menaces (p. ex., la détermination de parties malveillantes potentielles, l'apprentissage des méthodes d'attaque les plus récentes), la formation du personnel (par ex., sans que les employés suivent les mesures <abbr title="Operational Security">OPSEC</abbr>; Ils s'avéreront, tôt ou tard, inefficaces) et réduiront les risques (par exemple en cryptant vos disques durs et vos appareils USB.
+Utilisez les commandes ci-dessous comme base de déploiement. Ajustez-les à la valeur à risque et aux exigences de votre organisation.
 
-Étant donné que Iroha est susceptible d'être déployé comme un registre financier, <abbr title="Operational Security">OPSEC</abbr> mesures et pratiques doivent être prises au sérieux. Ce sujet décrit les stratégies et approches que les individus et les organisations utilisant Iroha dans leurs opérations devraient considérer comme faisant partie de leur un protocole de sécurité étendu.
+## Établissement d'une ligne de base opérationnelle {#establish-an-operational-baseline}
 
-Toutefois, le suivi et l'adoption des lignes directrices en la matière constituent une étape nécessaire vers la réalisation d'une sécurité totale. Pour améliorer encore votre sécurité, apprenez-en davantage au cours du reste de l'étude. [Sécurité](./index.md) section et en particulier les sujets suivants:
+- Maintenir un inventaire des hôtes validateurs, identités de pairs, autorités de compte, dispositifs de signature, terminaux publics et personnes responsables.
+- Utilisez des identifiants distincts pour le développement, les tests et la production. Assignez à chaque signataire, au porteur de jeton et à la clé privée d'un même environnement.
+- Gardez l'automatisation de la configuration et du déploiement dans le contrôle des versions révisibles. Injectez les secrets en temps d'exécution à partir d'un magasin secret ou d'un dispositif de signature agréé.
+- Enregistrer les hashes ou signatures attendues des objets de sortie. Vérifiez-les avant le déploiement. Limitez qui peut remplacer les binaires, le matériel génétique, la configuration ou les définitions de service.
+- Appliquer le moins de privilèges aux comptes du système d'exploitation, aux autorisations Iroha et à l'administration du réseau.
+- Testez les procédures de sauvegarde, de restauration, de remplacement des clés et de récupération des pairs avant le lancement en production.
 
-- [Principaux de sécurité](./security-principles.md)
-- [Sécurité par mot de passe ](./password-security.md)
+Révision [Principes de sécurité](./security-principles.md) et [Préparation à la libération](../best-practices/release-readiness.md) lors de la définition du point de départ.
 
-## Les mesures recommandées OPSEC {#recommended-opsec-measures}
+## Protégez les clés et les signatures {#protect-keys-and-signers}
 
-- Restez vigilants. La façon la plus probable [ ](https://arxiv.org/pdf/2209.08356.pdf) par laquelle on peut perdre ses actifs dans une blockchain est de donner leurs données sensibles.
+- Gardez les clés privées, le matériel de semence, les jetons du porteur, les en-têtes d'autorisation et les secrets de récupération hors du contrôle de la source, émettez des traceurs, des transcriptions de chat, des captures d'écran et des documents publics.
+- Utilisez des signatures matérielles ou isolées pour les autorités de haute valeur. Gardez la matière première clé en dehors des navigateurs et des processus d'application à usage général lorsque le client peut déléguer une signature.
+- Utiliser des autorités distinctes pour les transactions de routine, la gouvernance, le déploiement et la récupération.
+- Encrivez le stockage secret et ses sauvegardes. Appliquez les mêmes commandes d'accès à une sauvegarde de clé privée que la clé en direct.
+- Maintenir une procédure de remplacement ou de révocation testée. Remplacer une clé lorsque la politique l'exige ou lorsqu'une exposition est suspectée.
+- Exiger un examen indépendant des modifications apportées à l'adhésion au validateur, aux rôles privilégiés ou aux actifs de grande valeur.
 
-- Encrivez vos disques. Le chiffrement des dispositifs de démarrage leur permet de protéger vos données même si un attaquant a obtenu l'accès au matériel. Le faire pour vos appareils portables est deux fois plus important.
+Voir [Génération de clés cryptographiques](./generating-cryptographic-keys.md) et [Rétention de clés Cryptographiques ](./storing-cryptographic-keys.md) pour les lignes directrices spécifiques à la clé.
 
-- Utilisez un logiciel de confiance. Le logiciel qui est livré via des constructions binaires reproducibles, et que vous construisez à partir de la source, est le plus fiable. Un logiciel propriétaire ou open source qui n'a pas été audité est un risque potentiel qui doit être pris au sérieux.
+## Les nœuds de durcissement et l'accès des opérateurs {#harden-nodes-and-operator-access}
 
-- Ne laissez jamais les appareils portables avec des données sensibles sans surveillance. Une fraction de seconde suffit à voler votre appareil.
+- Exécutez les nœuds et les outils de l'opérateur sur les systèmes actuellement supportés par le fournisseur. Désactivez les services inutiles.
+- Accorder aux opérateurs nommés un accès administratif uniquement par le biais de canaux vérifiés et cryptés.
+- Mettez des interfaces non publiques sur un réseau privé ou [VPN](./vpn.md).
+- Exposer uniquement les routes Torii, la surveillance et l'application requises par le déploiement.
+- Protéger toutes les entrées publiques avec des limites de tarifs et une sécurité des transports adaptés à l'environnement.
+- Protégez les fichiers de configuration et les informations d'identification avec des autorisations restreintes. Gardez les secrets hors des lignes de commande, des listes de processus et de l'historique du shell.
+- Départ des fonctions de validateur, client, surveillance et sauvegarde lorsque le modèle de risque nécessite un contrôle indépendant.
+- Synchronisez le temps à partir de sources fiables, conservez suffisamment de journaux système, service et réseau pour enquêter.
 
-- Vérifiez les signatures sur les paquets binaires. Cela ne diffère pas beaucoup de la cryptographie à clé publique utilisée dans Iroha.
+## Des flux de travail sécurisés dans le navigateur et les administrateurs {#secure-browser-and-admin-workflows}
 
-- Pour éviter un accès non autorisé, sécurisez toujours votre ordinateur portable ou informatique lorsqu'il est laissé sans surveillance. Utilisez des mots de passe forts, verrouillez l'écran et suivez les meilleures pratiques pour sécuriser vos appareils.
+Pour un opérateur qui utilise une interface Web:
 
-- Établissez un système de sécurité [à vide d'air](https://en.wikipedia.org/wiki/Air_gap_(networking)Tout d'abord, chiffrez les clés, puis stockez-les dans un appareil hors ligne seulement. Dans l'idéal, avec un bouclier électromagnétique installé. [Les clés matérielles](./storing-cryptographic-keys.md#using-a-hardware-key) sont conçus spécifiquement à cette fin.
+- Utilisez un navigateur entièrement mis à jour, actuellement pris en charge par le fournisseur sur une station de travail gérée.
+- Utilisez un profil d'opérateur ou un dispositif dédié avec uniquement les extensions requises.
+- Veuillez vérifier l'origine et le certificat avant d'approuver une demande.
+- Traiter les domaines similaires, les redirections inattendues et les demandes de matières premières clés comme des incidents.
+- Bloquer les sites non liés et les extensions de la session active de l'opérateur.
+- Utilisez des sessions de courte durée, demandez une ré-authentification pour des actions privilégiées.
+- Afficher les détails de la transaction au signataire. L'opérateur doit être en mesure de vérifier l'autorité, le réseau, les instructions, les actifs et les frais avant l'approbation.
 
-- Gardez toujours votre logiciel à jour avec sa dernière version sur tous les appareils, y compris les ordinateurs et les téléphones. Les mises à jour régulières permettent de corriger les vulnérabilités et de minimiser les risques potentiels associés au logiciel obsolète, avant même que de telles vulnérabilités ne soient révélées.
+L'isolement du navigateur réduit l'exposition. Les opérateurs doivent toujours examiner les transactions et utiliser une signature sécurisée.
 
-- Développer une routine pour mettre à jour périodiquement les mots de passe et les clés cryptographiques. Cette approche proactive contribue significativement à améliorer la posture de sécurité globale, car il est beaucoup plus difficile de toucher une cible en mouvement.
+## Surveiller et répondre {#monitor-and-respond}
 
-## En utilisant les navigateurs {#using-browsers}
+Suivez ces signaux:
 
-Si une application connectée à Iroha dispose d'un web UI, votre navigateur peut soit aider la sécurité ou représenter une menace potentielle. Il est essentiel de faire preuve de prudence, surtout en ce qui concerne les plugins que vous choisissez d'installer.
+- changements de validateur et d'adhésion par les pairs
+- échecs répétés de l'autorisation ou instructions privilégiées inhabituelles
+- changements inattendus de logiciel, de configuration ou d'itinéraire
+- défaillances de signature, de requête et de transaction en dehors de la ligne de base normale
+- l'épuisement des ressources, le consensus bloqué ou la perte de pairs attendus
+- changements d'actif, de permis et de compte correspondant aux règles en matière de fraude
 
-Considérez les mesures suivantes pour améliorer la sécurité de votre navigation:
-
-- Évitez d'utiliser des navigateurs qui sont connus pour avoir de mauvais modèles de sécurité et pour fuir les données de leurs utilisateurs. Vous pouvez rechercher des violations de la vie privée et des problèmes de sécurité pour n'importe quel navigateur. Par exemple, [ cet article sur la confidentialité du navigateur ](https://www.unixsheikh.com/articles/choose-your-browser-carefully.html) discute d'une variété de navigateurs et de leur sécurité. Notez que les navigateurs propriétaires (tels que Chrome, Safari, Opera, Vivaldi, Edge et autres) sont généralement extrêmement difficiles à vérifier en raison de leur code caché au public, ce qui signifie que vous ne pouvez pas être sûr de sa sécurité.
-
-- Préférer les navigateurs ayant une solide expérience de valorisation et de protection de la vie privée et de la sécurité de leurs utilisateurs:
-  - [Librewolf](https://librewolf.net/), [Icecat](https://www.gnu.org/software/gnuzilla/), [Firedragon](https://github.com/dr460nf1r3/firedragon-browser), etc.  fourches bien établies de Mozilla Firefox avec des fonctionnalités de sécurité ajoutées .
-  - [Unoogled chromium ](https://github.com/ungoogled-software/ungoogled-chromium)  une version open source hautement vérifiée de Google Chrome qui est améliorée avec des mesures de sécurité supplémentaires et a tous les services Web liés à Google supprimés.
-  - [Courageux !](https://brave.com/)  une version open-source très vérifiée de [Le chrome de Google](https://www.chromium.org/Home/) qui est renforcée par des mesures de sécurité supplémentaires; possède un système intégré <abbr title="Virtual Private Network">VPN</abbr> et la fonctionnalité de blocage des annonces.
-  - [Falkon](https://www.falkon.org/)  un navigateur Web basé sur Qt open-source (construit sur `QtWebEngine`, une enveloppe pour [Google Chromium](https://www.chromium.org/Home/)) avec un historique connu d'être sécurisé; dispose d'un certain nombre d'extensions disponibles à télécharger depuis sa page de magasin [KDE ](https://store.falkon.org/browse/).
-  - [Qutebrowser](https://qutebrowser.org/)  un navigateur Web basé sur Qt open-source (construit sur `QtWebEngine`, une enveloppe pour [Google Chromium](https://www.chromium.org/Home/)) avec une expérience connue d'être sécurisé; dispose d'une approche unique axée sur le clavier avec un minimaliste GUI; considéré comme un navigateur de choix pour beaucoup de spécialistes de la sécurité.
-
-- Évitez d'activer `JavaScript` à moins que cela ne soit nécessaire.
-
-- Utilisez le mécanisme de confinement intégré du navigateur pour les plugins afin de restreindre les droits d'accès que les plugins installés ont.
-
-- Nettoyer les cookies avant et après des opérations importantes. Veillez à ne pas activer les fonctionnalités Mettez-moi connecté ou Souvenez-vous de moi. Gardez à l'esprit que certains sites Web ont cette fonctionnalité activée par défaut.
-
-- Utilisez un bloqueur d'annonces. Ceux-ci bloquent non seulement les annonces, mais désactivent également les fonctionnalités de suivi du site. Selon le navigateur que vous utilisez, un bloqueur de publicités peut ne pas être une fonctionnalité intégrée.
-
-- Prenez garde à des personnages similaires (par exemple: `0`, `θ`, `O`, `О`, `ዐ` à la fois `߀` Prendre soin de détails comme celui-ci peut vous sauver d'une attaque de phishing.
-
-- Évitez les clients de messagerie web UI en faveur des clients de bureau. Avant de l'utiliser, configurez votre client de messengerie de bureau pour signer et vérifier les signatures de clé GPG.
-
-- Évitez d'utiliser des services de messagerie basés sur le Web. Par exemple, Discord (construit avec le célèbre framework `electron`) est sensible à beaucoup des mêmes attaques qu'une fenêtre Google Chromium avec la version web de discord ouverte.
-
-- Mettez votre navigateur à jour vers la dernière version chaque fois que cela est possible. Les mises à jour incluent souvent des correctifs de sécurité critiques qui résolvent les vulnérabilités.
-
-- Soyez prudent quant aux extensions de navigateur que vous installez. Utilisez uniquement des extensions bien connues et fiables provenant de sources réputées. Les extensions pirates peuvent compromettre vos données et votre vie privée.
-
-- Créer des profils de navigateur distincts pour diverses tâches. Utilisez un profil pour la navigation quotidienne et un autre pour les activités impliquant une sécurité élevée et des données sensibles. De cette façon, les extensions installées sur le profil pour la Navigation quotidien ne peuvent pas accéder aux données sensibles à partir de celui sécurisé.
-
-- Utilisez une version portable de votre navigateur copiée sur un lecteur flash USB. Cette méthode garantit que, même si un bug de sécurité accorde à l'un des plugins installés l'accès aux données entre les profils, votre profil lié à la sécurité reste sur un appareil séparé et amovible.
-
-- Effacer périodiquement le cache et les cookies de votre navigateur pour supprimer les données potentiellement sensibles qui pourraient être stockées accidentellement sur votre appareil.
+Envoyer des alertes à un canal indépendant de l'hôte affecté. Préserver les journaux pertinents, les instantanés de configuration, les événements du registre et les hachages de transaction avec des timestamps. Voir [Fraud Monitoring](./fraud-monitoring.md) et [Performance and Metrics](../advanced/metrics.md).
 
 ## Plan de rétablissement {#recovery-plan}
 
-En cas d'urgence, par exemple en cas de perte d'une clé ou en cas de violation de sécurité, Un plan de récupération bien structuré et préparé à l'avance est une ligne de sauvetage essentielle. La mise en place d'un ensemble clair de mesures à suivre peut aider à atténuer les dommages potentiels et à rétablir rapidement la sécurité.
+Préparer le plan de récupération avant l'introduction de la production.
 
-Les organisations devraient prendre en compte les aspects clés suivants lors de l'élaboration de leur plan de relance:
+- qui peut déclarer et coordonner un incident
+- comment contacter les validateurs, les exploitants d'infrastructure, les propriétaires d'applications et les utilisateurs concernés
+- quelles autorités peuvent révoquer les autorisations, remplacer les clés ou modifier l'adhésion des pairs
+- où sont stockés des binaires fiables, la configuration, les enregistrements de génèse, les sauvegardes et les stocks clés
+- comment valider le réseau et les applications dépendantes après la récupération
 
-- Décrire les procédures étape par étape à suivre en cas de perte de clé ou d'autres incidents de sécurité. Veiller à ce que ces mesures soient facilement accessibles et compréhensibles aux utilisateurs et/ou aux employés.
+En cas d'incident:
 
-- Établissez un canal de communication qui peut être utilisé pour signaler rapidement des violations de la sécurité et des menaces potentielles, telles que des clés cryptographiques et des mots de passe perdus ou fuyants.
+1. Isolez l'hôte, l'identifiant, la route ou l'autorité affectés. Préservez les preuves.
+2. Gardez les journaux et les références du registre, enregistrez toutes les actions de récupération.
+3. Révoquer ou remplacer les identifiants et autorisations exposés par le biais du processus de gouvernance approuvé.
+4. Restaurer les logiciels et la configuration à partir d'objets vérifiés.
+5. Confirmez l'appartenance des pairs, l'état du consensus, les routes publiques, la surveillance et les lectures des applications. Ne reprenez les écritures qu'après la réussite de ces vérifications.
+6. Documenter la cause profonde, mettre à jour les contrôles, l'automatisation et les exercices.
 
-- Si vous utilisez des clés matérielles (par exemple, [YubiKey](https://www.yubico.com/products/) ou [ SoloKeys Solo](https://solokeys.com/collections/all)) comme mesure de sécurité, envisagez d'adopter une stratégie de redondance. Gardez deux clés: l'une pour un usage quotidien et l'autre stockée dans un emplacement sécurisé. Cette mesure de précaution assure l'accès même si la clé principale est compromise ou perdue.
+::: warning
 
-- Lorsque des violations de sécurité ou des fuites sont signalées, réagissez rapidement en remplaçant ou en désactivant les clés et mots de passe affectés.
-
-- Réviser et mettre à jour périodiquement votre plan de récupération, ce qui garantit que le plan reste pertinent et efficace au fur et à mesure de l'évolution de votre paysage de sécurité.
-
-::: avertissement
-
-Rappelez-vous qu'un plan de rétablissement n'est pas seulement un autre document, c'est plutôt une ligne de sauvetage qui aide à surmonter les défis inattendus. vous fortifiez votre sécurité opérationnelle et améliorez votre préparation à réagir efficacement à tout incident de sécurité.
+Suivre des procédures d'examen préalable pour les actions de registre irréversibles. Exiger les approbations appropriées à l'autorité et aux actifs concernés.
 
 :::

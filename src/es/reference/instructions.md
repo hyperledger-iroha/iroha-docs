@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /reference/instructions.md
-translation_source_hash: 8dc894a05141040826067dc483319f213b007648f32354bb36f899259db9c5ac
+translation_source_hash: e300187da832a8f82258a36b7c4aaebf505adc09c771de5b0c7ab8fb0052d3db
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -19,8 +19,8 @@ El modelo de datos actual expone estas familias de instrucciones integradas:
 | [`TransferBox`](/es/blockchain/instructions.md#transfer) |`Domain`, `AssetDefinition`, numérico `Asset`, `Nft` |
 | [`SetKeyValueBox`](/es/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` Metadatos |
 | [`RemoveKeyValueBox`](/es/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` Metadatos |
-| [`GrantBox`](/es/blockchain/instructions.md#grant-revoke) |Permiso de contabilidad, papel a la cuenta, permiso para el papel |
-| [`RevokeBox`](/es/blockchain/instructions.md#grant-revoke) |Permiso de cuenta, papel de cuenta, permiso de rol |
+| [`GrantBox`](/es/blockchain/instructions.md#grant-revoke) | `Permission` (`Grant<Permission, Account>`), `Role` (`Grant<RoleId, Account>`), `RolePermission` (`Grant<Permission, Role>`) |
+| [`RevokeBox`](/es/blockchain/instructions.md#grant-revoke) | `Permission` (`Revoke<Permission, Account>`), `Role` (`Revoke<RoleId, Account>`), `RolePermission` (`Revoke<Permission, Role>`) |
 | [`SetParameter`](/es/blockchain/instructions.md#setparameter) |actualización del parámetro de la cadena |
 | [`ExecuteTrigger`](/es/blockchain/instructions.md#executetrigger) |desencadenar la ejecución |
 | [`Upgrade`](/es/blockchain/instructions.md#other-instructions) |actualización del ejecutor |

@@ -6,23 +6,15 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# 混沌测试与 Izanami {#chaos-testing-with-izanami}
+# 混沌测试与Izanami {#chaos-testing-with-izanami}
 
-伊扎纳米是上游的混沌网管家 Iroha 工作空间.
-开始一个一次性地方 Iroha 集群,提交可配置的工作负载,
-并且将缺陷注入选定的同行中,以便操作员可以检查
-网络在控制失败下继续取得进展.
+Izanami是上游 Iroha 工作空间中的混沌网管.它启动一次性本地 Iroha 集群,提交可配置的工作负载,并将故障注入选定的同行中,以便运营商可以检查网络是否在受控故障下继续取得进展.
 
-使用 Izanami 进行产前弹性检查,回归复制,
-不把它指向一个生产网络:工具是
-设计用于拥有它启动的同行,包括同行重新启动,存储
-毛巾,人工包装损失和本地 CPU 或磁盘压力.
+使用 Izanami 进行产前弹性检查,回归复制和共识调整.不要指向生产网络:该工具旨在拥有它启动的同行,包括同行重新启动,存储 wipes,人工包损失以及本地 CPU 或磁盘压力.
 
 ## 预先条件 {#prerequisites}
 
-运行 Izanami 从
-[Iroha 源存储库](https://github.com/hyperledger-iroha/iroha),
-不属于本文档库:
+运行 Izanami 从 [Iroha 源存储库](https://github.com/hyperledger-iroha/iroha),而不是从本文档存储库:
 
 ```bash
 git clone https://github.com/hyperledger-iroha/iroha.git
@@ -30,9 +22,7 @@ cd iroha
 cargo build -p izanami
 ```
 
-必须明确允许二进制器创建和操纵网络
-同龄人. `--allow-net` 对于每一个非-TUI 运行或启动 `allow_net` 在
-在 TUI.
+必须明确允许二进制器创建和操纵网络同行.通过 `--allow-net` 每次非 TUI 运行,或启用 `allow_net` 在 TUI 中.
 
 ```bash
 cargo run -p izanami -- --allow-net --peers 4 --faulty 1 --duration 120s
@@ -44,12 +34,11 @@ cargo run -p izanami -- --allow-net --peers 4 --faulty 1 --duration 120s
 cargo run -p izanami -- --tui --allow-net
 ```
 
-伊扎纳米坚持 TUI 并且 CLI 在用户配置目录下设置,因此
-在重新使用以前的配置文件之前,检查显示的设置.
+在用户配置目录中, Izanami 仍然存在 TUI 和 CLI 设置,因此在重新使用之前的个人资料之前,请检查显示的设置.
 
 ## 基线运行 {#baseline-run}
 
-在添加严重的故障之前,开始使用一个可复制的基线:
+在添加严重故障之前,开始使用一个可复制的基线:
 
 ```bash
 cargo run -p izanami -- \
@@ -67,22 +56,18 @@ cargo run -p izanami -- \
   --seed 42
 ```
 
-如果集群达到所要求的区块目标,则该运行只能成功.
-在截止时间内继续取得进展,并且保持在可选 p95
-区块间隔门.
+这个运行只能成功,如果集群达到所要求的区块目标,在截止时间内继续取得进展,并且保持在可选的p95区块间隔门以下.
 
-记下命令,种子. Iroha 承诺,同行数量,缺陷同行数值,
-工作负载配置,目标 TPS, 随着日志的延迟,
-其他运营商不能重复相同的故障模式.
+记录命令,种子, Iroha 提交,同行数量,故障同行数值,工作负载配置文件,目标 TPS 和延迟门.如果没有这些值,另一个操作员无法重复相同的失败模式.
 
 ## 工作负载配置文件 {#workload-profiles}
 
  Izanami 有两个工作负载配置文件:
 
-| 个人资料  | 用它来                                         | 备忘录                                  |
+|个人资料|用它来|备忘录|
 | -------- | -------------------------------------------------- | -------------------------------------- |
-| `stable` | 长时间水运行和可复制的性能检查 | 支持安全执行的食谱          |
-| `chaos`  | 失败路径覆盖                              | 包括故意无效的食谱 |
+|`stable`|长时间的浸泡运行和可复制性性能检查|喜欢安全的食谱|
+|`chaos`|失败路径覆盖率|包含故意无效的食谱|
 
 首先使用稳定配置文件:
 
@@ -90,14 +75,13 @@ cargo run -p izanami -- \
 cargo run -p izanami -- --allow-net --workload-profile stable --seed 42
 ```
 
-当基本线已经理解时,切换到混沌的配置文件:
+如果已经理解了基线,就转向混乱的配置文件:
 
 ```bash
 cargo run -p izanami -- --allow-net --workload-profile chaos --seed 42
 ```
 
-除非明确的情况下,在稳定运行中禁用合同部署配方
-允许:
+在稳定运行中禁用合同部署配方,除非明确允许:
 
 ```bash
 cargo run -p izanami -- \
@@ -106,27 +90,24 @@ cargo run -p izanami -- \
   --allow-contract-deploy-in-stable
 ```
 
-使用 `--nexus` 运行时应使用嵌入式 SORA Nexus 违规的
-在上游工作空间.
+使用 `--nexus` 运行时应使用从上游工作空间内嵌的默认 SORA Nexus
 
 ## 错误控制 {#fault-controls}
 
-当 `--faulty` 超过零,至少有一个故障情况必须是
-错误将默认切换为启用,而布鲁尔旗可以是
-有残疾人 `=false`.
+当 `--faulty` 超过零时,必须启用至少一个故障场景.故障将默认切换为启动,并且可以使用 `=false` 禁用布鲁尔旗.
 
-| 错误                    | CLI 旗                                   | 它所做的事情                          |
+|错误|CLI 旗|它所做的一切|
 | ------------------------ | ------------------------------------------ | ------------------------------------------ |
-| 崩和重启        | `--fault-enable-crash-restart`             | 同行过程损失和恢复             |
-| 清除存储和重新启动 | `--fault-enable-wipe-storage`              | 失踪的当地状态恢复          |
-| 无效的交易垃圾邮件 | `--fault-enable-spam-invalid-transactions` | 录取和拒绝途径              |
-| 网络延迟          | `--fault-enable-network-latency`           | 缓慢的八和延迟的共识信息 |
-| 网络分区        | `--fault-enable-network-partition`         | 暂时的可信同行隔离           |
-| P2P 包装损失          | `--fault-enable-network-packet-loss`       | 应用框架流量下降          |
-| CPU 压力               | `--fault-enable-cpu-stress`                | 局部验证和规划压力   |
-| 磁盘度          | `--fault-enable-disk-saturation`           | 局部存储压力                     |
+|崩和重新启动|`--fault-enable-crash-restart`|同行流程损失和恢复|
+|擦除存储和重新启动|`--fault-enable-wipe-storage`|在失踪的地方状态中恢复|
+|无效的交易垃圾邮件|`--fault-enable-spam-invalid-transactions`|录取和拒绝的路径|
+|网络延迟|`--fault-enable-network-latency`|缓慢的八和延迟的共识信息|
+|网络分区|`--fault-enable-network-partition`|暂时的可信同行隔离|
+|P2P 包装损失|`--fault-enable-network-packet-loss`|应用程序框架流量下降|
+|CPU 压力|`--fault-enable-cpu-stress`|局部验证和规划压力|
+|磁盘度|`--fault-enable-disk-saturation`|局部存储压力|
 
-对于只输包运行:
+对于只输入包的运行:
 
 ```bash
 cargo run -p izanami -- \
@@ -151,74 +132,59 @@ cargo run -p izanami -- \
   --seed 42
 ```
 
-使用 `--fault-window-start` 并且 `--fault-window-end` 为了控制
-在注射故障之前和之后的稳定状态时期.
-更容易区分启动噪音和故障的影响.
+使用 `--fault-window-start` 和 `--fault-window-end` 保持注射故障之前和之后的控制稳定状态时期. 这使得更容易区分启动噪音与故障的影响.
 
-## 场景形状 {#scenario-shapes}
+## 场景的形状 {#scenario-shapes}
 
-上游的Izanami目录绘制了常见的区块链通信失败
-的形状 CLI 你可以用相同的标志来模拟它们:
+上游的Izanami目录将常见的区块链通信失败形状映射到 CLI 配置文件.你可以用相同的旗来建模它们:
 
-| 场景              | 典型的形状                                                                                                            |
+|场景|典型的形状|
 | --------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| 目标负载         | `--faulty 0`, 高度 `--tps`, 一个提交人,高 `--max-inflight`                                                         |
-| 暂时故障     | 只有在有限的故障窗口内才能启动崩/重启                                                                  |
-| 包装损失           | 仅允许输入包,通常是默认的75%的丢失率                                                          |
-| 停止和恢复 | 使用大量的故障同行群体与崩/重启                                                                    |
-| 领导人隔离      | 使用一个错误的同行,只有网络分区或数据包丢失故障; Izanami 遵循 Sumeragi 领先的遥测 |
+|目标载荷|`--faulty 0`,高`--tps`,一个提交人,高 `--max-inflight` |
+|暂时故障|只有在有限的故障窗口内启动机/重启|
+|包装损失|仅允许输出数据包,通常是默认的75%的丢失率.|
+|停止和恢复|使用大量的故障同行群体与崩/重新启动|
+|领导人隔离|使用完全一个错误的同行,只有网络分区或数据包丢失故障; Izanami 遵循 Sumeragi 领先的远程测量|
 
-如果改变同行数量,工作负载
-配置文件,故障窗口和 TPS 在同一时间,结果很难
-解释.
+如果您同时改变同行数量,工作负载配置文件,故障窗口和 TPS,结果就很难解释.
 
-## 需要注意的东西 {#what-to-watch}
+## 需要注意的是什么? {#what-to-watch}
 
-在运行过程中,注意用于性能验证的相同信号:
+在运行期间,注意用于性能验证的同样的信号:
 
-- 在每一个跑步同行中,
-- 提交,接受,拒绝和截止日期的交易
+- 在每一个跑步同行的块高度进展
+- 提交,接受,拒绝和截止期的交易
 - 排队深度,排队和终点反压力
-- 查看变化,恢复路径,缺失区块和缺失共数
-  证书
-- RBC 延迟或减缓共识流量
-- CPU, 存储器,磁盘和网络度在主机上运行同行
+- 查看变化,恢复路径,缺失的区块和缺失的定制证书
+- RBC 滞后,待定会议和降低或延迟共识流量
+- CPU,存储器,磁盘和网络度在运行同行的主机上
 
-为了验证延迟分析,启用主循环调试日志:
+为了验证延迟分析,请启用主循环调试日志:
 
 ```bash
 RUST_LOG=iroha_core::sumeragi::main_loop=debug \
   cargo run -p izanami -- --allow-net --seed 42
 ```
 
-每个块都应该发射 `block validation timings` 在 `stateless_ms`,
-`execution_ms`, 并且 `total_ms`. 与p95区块相比.
-在变换前间隔,视图变换计数器和排列压力
-达成共识的时间表.
+每个区块应发射 `block validation timings` 与 `stateless_ms`, `execution_ms` 和 `total_ms`.在改变共识计时器之前,将这些时间与 p95 区块间隔,视图变换计数器和队列压力进行比较.
 
 ## 解释结果 {#interpreting-results}
 
-当所有选择的同龄人继续执行阻碍时,
-后载量不会增长,故障就不再导致新的恢复
-在配置窗口结束后的活动.
+当所有选择的同行继续提交区块时,对运行进行健康处理,后载不增长而无限,并且设置窗口结束后故障停止导致新的恢复活动.
 
-如果:
+处理运行为失败时:
 
-- 区块进步停留时间超过 `--progress-timeout`
-- 同等高度不同,不重聚
-- p95延迟超过 `--latency-p95-threshold`
-- 缺陷窗口关闭后,排队在剩余的运行中增长
-- 被拒绝或过期的交易没有被选中的解释
-  工作负载
-- 需要手动重新启动,存储清除或数据包丢失恢复
-  清洁
+- 长于 `--progress-timeout`的区块进步摊位
+- 同等高度的差异,不重聚
+- 延迟 p95超过 `--latency-p95-threshold`
+- 一个故障窗口关闭后,排队在剩余的运行中增长.
+- 拒绝或截止期的交易不因选定的工作负载而解释
+- 需要手动清理.
 
-在失败后,再用相同的种子和一个更少的故障类型.
-保持工作负载和时间可复制,同时缩小故障
-表面.
+在失败后,再使用相同的种子和一个较少的故障类型. 这使得工作负载和时间可重复,同时缩小故障表面.
 
 ## 相关页面 {#related-pages}
 
-- [绩效和指标](./metrics.md)
-- [运行 Iroha 在纯金属上](./running-iroha-on-bare-metal.md)
-- [Torii 终点](../../reference/torii-endpoints.md)
+- [性能和指标](./metrics.md)
+- [运行 Iroha 在 Bare Metal](./running-iroha-on-bare-metal.md) 上
+- [Torii 终端点](../../reference/torii-endpoints.md)

@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /reference/instructions.md
-translation_source_hash: 8dc894a05141040826067dc483319f213b007648f32354bb36f899259db9c5ac
+translation_source_hash: e300187da832a8f82258a36b7c4aaebf505adc09c771de5b0c7ab8fb0052d3db
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -19,8 +19,8 @@ translation_engine: nllb-200-ct2
 | [`TransferBox`](/ja/blockchain/instructions.md#transfer) |`Domain`, `AssetDefinition`,数値 `Asset`, `Nft` |
 | [`SetKeyValueBox`](/ja/blockchain/instructions.md#setkeyvalue-removekeyvalue) |`Domain`,`Account`, `AssetDefinition`, `Nft`, `Trigger` メタデータ |
 | [`RemoveKeyValueBox`](/ja/blockchain/instructions.md#setkeyvalue-removekeyvalue) |`Domain`,`Account`, `AssetDefinition`, `Nft`, `Trigger` メタデータ |
-| [`GrantBox`](/ja/blockchain/instructions.md#grant-revoke) |アカウントの許可, アカウントの役割, ロールの許可|
-| [`RevokeBox`](/ja/blockchain/instructions.md#grant-revoke) |アカウントから許可,アカウントから役割,役割から許可 |
+| [`GrantBox`](/ja/blockchain/instructions.md#grant-revoke) | `Permission` (`Grant<Permission, Account>`), `Role` (`Grant<RoleId, Account>`), `RolePermission` (`Grant<Permission, Role>`) |
+| [`RevokeBox`](/ja/blockchain/instructions.md#grant-revoke) | `Permission` (`Revoke<Permission, Account>`), `Role` (`Revoke<RoleId, Account>`), `RolePermission` (`Revoke<Permission, Role>`) |
 | [`SetParameter`](/ja/blockchain/instructions.md#setparameter) |チェーンパラメータの更新|
 | [`ExecuteTrigger`](/ja/blockchain/instructions.md#executetrigger) |実行を誘発する|
 | [`Upgrade`](/ja/blockchain/instructions.md#other-instructions) |実行器のアップグレード|

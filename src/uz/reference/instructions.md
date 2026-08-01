@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /reference/instructions.md
-translation_source_hash: 8dc894a05141040826067dc483319f213b007648f32354bb36f899259db9c5ac
+translation_source_hash: e300187da832a8f82258a36b7c4aaebf505adc09c771de5b0c7ab8fb0052d3db
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 Joriy ma'lumotlar modeli ushbu o'rnatilgan ta'lim oilalarini aniqlaydi:
 
-|Koʻrsatmalar |Variantlari |
+|Koʻrsatmalar |Variantlar |
 | --- | --- |
 | [`RegisterBox`](/uz/blockchain/instructions.md#un-register) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Role`, `Trigger`, `RegisterPeerWithPop` |
 | [`UnregisterBox`](/uz/blockchain/instructions.md#un-register) | `Peer`, `Domain`, `Account`, `AssetDefinition`, `Nft`, `Role`, `Trigger` |
@@ -19,8 +19,8 @@ Joriy ma'lumotlar modeli ushbu o'rnatilgan ta'lim oilalarini aniqlaydi:
 | [`TransferBox`](/uz/blockchain/instructions.md#transfer) |`Domain`, `AssetDefinition`, raqamli `Asset`, `Nft` |
 | [`SetKeyValueBox`](/uz/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` Metadatalar |
 | [`RemoveKeyValueBox`](/uz/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` Metadatalar |
-| [`GrantBox`](/uz/blockchain/instructions.md#grant-revoke) |hisobini yuritish uchun ruxsat, ro'yxatga olish uchun ruxsat, rolni bajarish uchun ruxsat |
-| [`RevokeBox`](/uz/blockchain/instructions.md#grant-revoke) |hisobdan ruxsat, hisobdan ro'l, roldan ruxsat |
+| [`GrantBox`](/uz/blockchain/instructions.md#grant-revoke) |`Permission` (`Grant<Permission, Account>`), `Role` (`Grant<RoleId, Account>`), `RolePermission` (`Grant<Permission, Role>`) |
+| [`RevokeBox`](/uz/blockchain/instructions.md#grant-revoke) |`Permission` (`Revoke<Permission, Account>`), `Role` (`Revoke<RoleId, Account>`), `RolePermission` (`Revoke<Permission, Role>`) |
 | [`SetParameter`](/uz/blockchain/instructions.md#setparameter) |zanjir parametrlarini yangilash |
 | [`ExecuteTrigger`](/uz/blockchain/instructions.md#executetrigger) |qoʻzgʻatish bajarilishi |
 | [`Upgrade`](/uz/blockchain/instructions.md#other-instructions) |ijrochi yangilanishi |

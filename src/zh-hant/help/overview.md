@@ -8,33 +8,19 @@ translation_engine: nllb-200-ct2
 
 # 解決問題 {#troubleshooting}
 
-這部分是為了幫助您在工作時遇到問題
-Iroha. 如果有什麼問題, [檢查關鍵](#check-the-keys)
-如果沒有幫助,
-每個階段:
+如果您在工作中遇到問題, Iroha. 如果有什麼不對,請 [查看鑰匙](#check-the-keys) 如果這沒有幫助,請查看每個階段的故障解決說明:
 
-- [設置問題](./installation-issues.md)
+- [安裝問題](./installation-issues.md)
 - [配置問題](./configuration-issues.md)
 - [部署問題](./deployment-issues.md)
-- [整合問題](./integration-issues.md)
+- [集成問題](./integration-issues.md)
 
-如果您所遇到的問題沒有在此描述,
-[電子郵件](https://t.me/hyperledgeriroha).
+如果您所遇到的問題未被描述在這裏,請通過 [電報](https://t.me/hyperledgeriroha)聯繫我們.
 
-## 檢查鍵 {#check-the-keys}
+## 查看鑰匙 {#check-the-keys}
 
-我們建議您使用這些密碼,
-要遵守這個規則: **如果有什麼問題, 檢查鍵
-首先**.
+大多數問題是由於無法匹配的密鑰而產生的. 這就是爲什麼我們建議遵循這個規則:如果有問題,首先檢查鍵.
 
-這就是一個快速的說明:
-隨著同行關鍵不匹配對列中的關鍵而出現的訊息
-因為它會揭露同行的公開關鍵.
-具有透過環境定義的關鍵的 Helm圖表或 Kubernetes部署
-比較配置的變量
-[`public_key`](/zh-hant/reference/peer-config/params.md#param-public-key),
-[`private_key`](/zh-hant/reference/peer-config/params.md#param-private-key), 及其他
-[`trusted_peers`](/zh-hant/reference/peer-config/params.md#param-trusted-peers)
-在調查更高級故障之前,
+這裏有一個簡單的解釋:當同行密鑰不與可信任同行數組中的密鑰相匹配時,無法區分出現的錯誤信息.因此,如果您有通過環境變量定義的密鑰的Helm圖表或Kubernetes部署,在調查更高層次故障之前,請比較配置的 [`public_key`](/zh-hant/reference/peer-config/params.md#param-public-key),[`private_key`](/zh-hant/reference/peer-config/params.md#param-private-key)和 [`trusted_peers`](/zh-hant/reference/peer-config/params.md#param-trusted-peers)等值.
 
-如果有疑慮, [生成新的關鍵](/zh-hant/guide/security/generating-cryptographic-keys.md).
+如果有疑問, [生成一個新的鑰匙對](/zh-hant/guide/security/generating-cryptographic-keys.md).

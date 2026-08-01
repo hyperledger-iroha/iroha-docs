@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/queries.md
-translation_source_hash: 0a32b75b78d5bcde0d2b84b58d440b18e545559dfd9772dd6508ad41e972bf6e
+translation_source_hash: 234c831c97bb93996e6cf51505921ff509e233408cf2faf6a9b23641e5642040
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,11 +12,11 @@ import WarningFatQuery from './WarningFatQuery.vue'
 
 # Questões {#queries}
 
-Embora a maior parte das informações sobre o estado do blockchain possam ser obtidas, como mostramos anteriormente, usando um assinante de eventos e um filtro para restringir o escopo dos eventos aos interessados, às vezes é necessário tomar uma abordagem mais direta.
+Os assinantes de eventos e os filtros podem acompanhar as mudanças no estado da blockchain. Use uma consulta quando precisar de uma visão direta do estado atual.
 
-As perguntas são pequenos objetos semelhantes a instruções que, quando enviados para um colega Iroha, levam uma resposta com detalhes da visão atual do estado mundial.
+As consultas são pequenos objetos semelhantes a instruções. Envie um para um Iroha colega para receber detalhes da sua visão atual do estado do mundo.
 
-Este não é necessariamente o único tipo de informação disponível na rede, mas é o único que está garantido para ser acessível em todas as redes.
+Uma rede pode expor outras informações. Informações queráveis sobre estados mundiais são o único tipo garantido de estar disponível em todas as redes Iroha.
 
 Para cada implantação de Iroha, podem existir outras informações disponíveis, por exemplo, a disponibilidade dos dados telemétricos depende dos administradores da rede. É inteiramente a decisão deles se querem ou não alocar poder de processamento para rastrear o trabalho em vez de usá-lo para fazer o trabalho real.
 
@@ -62,7 +62,7 @@ Para consultas singulares e pequenas consultas iteráveis, você pode usar `clie
 
 No entanto, consultas iteráveis amplas como `FindAccounts`, `FindAssets` ou `FindBlocks` podem retornar grandes conjuntos de resultados. Use pagination para reduzir a carga no peer e cliente.
 
-Para construir um `Pagination`, é necessário ligar para `client.request_with_pagination(query, pagination)`, onde o `pagination` está construído da seguinte forma:
+Para construir um `Pagination`, é necessário ligar para `client.request_with_pagination(query, pagination)`, onde o `pagination` é construído do seguinte modo:
 
 ```rust
 let starting_result: u32 = _;
@@ -74,7 +74,7 @@ let pagination = Pagination::new(Some(starting_result), Some(limit));
 
 Ao criar uma consulta, você pode usar um filtro para retornar apenas os resultados que correspondem ao filtro especificado.
 
-Os filtros são específicos da consulta. Por exemplo, as consultas de contas podem ser reduzidas por identidade ou metadados da conta, enquanto que as consultas sobre ativos podem ser reduzidos pela definição de ativo, conta do titular ou projeção de domínio. Use os construtores de consultas digitais do SDK, sempre que possível, para que o tipo de filtro coincida com o tipo de saída da consulta.
+Os filtros são específicos da consulta. Por exemplo, as consultas de contas podem ser reduzidas por identidade de conta ou metadados, enquanto que as consultas dos ativos podem ser reduzidos por ativo definição, conta do titular ou projeção de domínio. Use os construtores de consultas digitais do SDK quando possível para que o tipo de filtro coincida com o tipo de saída da consulta.
 
 ## Classificação {#sorting}
 

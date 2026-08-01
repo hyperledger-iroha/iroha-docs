@@ -8,10 +8,6 @@ translation_engine: nllb-200-ct2
 
 # 數據模型方案 {#data-model-schema}
 
-這個頁面由: `kagami advanced schema` 從被住的中
-[`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha)
-文件更新工作流程所記錄的修改.
-這樣正常的文檔建構不需要
-其他國家 Iroha 預算時間:
+這個頁面是用 `kagami advanced schema` 來生成的,由文檔更新工作流記錄的粘貼[ `hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha)修改. 染的快照被檢查到這個存儲庫中,因此正常的文檔構建不需要一個 Iroha 源支付.
 
 <DataModelSchema />

@@ -1,265 +1,210 @@
 ---
 translation_locale: zh-hans
 translation_source: /reference/norito.md
-translation_source_hash: ff258251887109f6cb28241235caea8e1b6a69df10df60cb7b2e7c2507004b4e
+translation_source_hash: 4297b0ff795a5cdb6556424e89de7191522271519aa36720ed45a695ad402211
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Norito {#norito}
 
-Norito 是 Iroha 它是使用的字节格式.
-当同龄人, SDKs, CLI 工具, Torii, Kura, 而生成的文物必须同意
-在同样的有效载荷上.
+Norito 是 Iroha 的规范序列化层。当对等节点、SDKs、CLI 工具、Torii、Kura 和生成的工件必须对完全相同的载荷达成一致时，使用的就是这种字节格式。
 
-使用 Norito 如果数据是共识,签署,哈希,持久性的部分,
-或交叉-SDK 互操作性,使用 JSON 如果一个终点明确提供
-用于操作员,仪表板或快速调试.
+当数据涉及共识、签名、哈希、持久化或跨 SDK 互操作性时，请使用 Norito。只有在端点明确为运维人员、仪表板或快速调试提供人类可读投影时，才使用 JSON。
 
-## 在哪里 Norito 出现 {#where-norito-appears}
+## Norito 的使用位置 {#where-norito-appears}
 
-| 表面 | 如何? Norito 使用 |
+| 接口 | Norito 的用途 |
 | --- | --- |
-| 交易和查询 | 通过提交的签署交易和查询有效载荷 Torii 编码为 Norito. |
-| 创世记 | `kagami genesis sign` 产出签名的 `.nrt` 在启动时阻止同行加载. |
-| Torii 类型的答案 | 支持输入二进制响应使用的终点 `Accept: application/x-norito`. |
-| SDKs | Rust, Python, JavaScript, Kotlin/Java, Swift, 并且 Android 客户使用 Norito 构建器或绑定器,而不是手动组装的字节. |
-| Kura 存储 | 区块有效载荷,恢复侧车,列表和承诺标记存储为 Norito- 设置数据. |
-| 宣言 | Nexus, 数据可用性, SoraFS, 流媒体和应用程序面向的表格使用 Norito 必须签署或哈希明示表时. |
-| 流媒体 | Norito 流媒体使用 Norito 显示器,段头,控制框架和符合性灯具. |
+| 交易和查询 | 通过 Torii 提交的已签名交易和查询载荷编码为 Norito。 |
+| 创世区块 | `kagami genesis sign` 生成已签名的 `.nrt` 区块，供对等节点在启动时加载。 |
+| Torii 类型化响应 | 支持类型化二进制响应的端点使用 `Accept: application/x-norito`。 |
+| SDKs | Rust、Python、JavaScript、Kotlin/Java、Swift 和 Android 客户端使用 Norito 构建器或绑定，而不是手动组装字节。 |
+| Kura 存储 | 区块载荷、恢复辅助文件、名册和提交标记以 Norito 帧数据的形式存储。 |
+| 清单 | Nexus、数据可用性、SoraFS、流媒体和面向应用的清单在需要签名或哈希时使用 Norito。 |
+| 流媒体 | Norito Streaming 使用 Norito 清单、分段头、控制帧和一致性测试夹具。 |
 
-Norito 这不是一个智能合同语言.
-包含交易,合同通话,表达和打字的代码 API
-运输量.
+Norito 不是智能合约语言。它是承载交易、合约调用、清单和类型化 API 载荷的确定性信封与编解码器。
 
-## 有效载荷模型 {#payload-model}
+## 载荷模型 {#payload-model}
 
-每个电线或磁盘 Norito 使用负载由一个标题,然后是
-无标题或裸体的有效载荷为内部使用保留
-哈希,基准和辅助器 APIs 立即将结果包装成一个
-在运输前标题.
+每个在线传输或磁盘存储的 Norito 载荷都由一个头部成帧，后跟编码后的载荷字节。无头部的裸载荷仅保留用于内部哈希、基准测试，以及会在传输前立即为结果添加头部的辅助 APIs。
 
-| 标题字段 | 尺寸 | 目的 |
+| 头部字段 | 大小 | 用途 |
 | --- | ---: | --- |
-| 魔术 | 4 字节 | ASCII `NRT0`, 用于拒绝 Norito 早期的数据. |
-| 校长 | 1 字节 | 主要版本格式.当前的有效载荷使用 `0`. |
-| 年轻人 | 1 字节 | 固定的v1解码提示.当前的有效载荷使用 `0x00`; 布局选项在旗中活跃. |
-| 方案哈希 | 16 字节 | 类型识别器用于拒绝意想不到的有效载荷. |
-| 压缩 | 1 字节 | `0 = None`, `1 = Zstd`. 不知价值被拒绝. |
-| 有效载荷长度 | 8 字节 | 不压缩的有效载荷长度为小 `u64`. |
-| CRC64 | 8 字节 | CRC64-XZ 未压缩的有效载荷的检查总量. |
-| 旗 | 1 字节 | 包装序列和包装结构的布局标志 |
+| Magic | 4 字节 | ASCII `NRT0`，用于尽早拒绝非 Norito 数据。 |
+| Major | 1 字节 | 格式主版本；当前载荷使用 `0`。 |
+| Minor | 1 字节 | v1 的解码提示；当前值为 `0x00`。布局由 Flags 描述。 |
+| Schema hash | 16 字节 | 类型标识，供类型化解码器拒绝意外的载荷类型。 |
+| Compression | 1 字节 | `0 = None`、`1 = Zstd`；未知值会被拒绝。 |
+| Payload length | 8 字节 | 未压缩载荷的长度，以小端序 `u64` 表示。 |
+| CRC64 | 8 字节 | 未压缩载荷的 CRC64-XZ 校验和。 |
+| Flags | 1 字节 | 紧凑长度、打包序列和打包结构的布局标志。 |
 
-解码器验证了魔法,版本,支持旗
-在重建之前,面具,有效载荷长度,检查数量和方案哈希
-输入值.
+头部共 40 字节。解码器在重建类型化值之前，会验证 Magic、版本、受支持的标志掩码、载荷长度、校验和及模式哈希。
 
-## 布局旗 {#layout-flags}
+## 布局标志 {#layout-flags}
 
-Norito 在最后的标题字节中存储布局选项.默认的v1辅助器
-发射 `COMPACT_LEN` (`0x02`) 对于紧的每值长度前置.
-在调用者编码时,固定宽度长度前置仍然可读
-`flags = 0x00`.
+Norito 将布局选项存储在头部的最后一个字节中。默认 v1 辅助函数发出 `COMPACT_LEN`（`0x02`），为每个值使用紧凑长度前缀。调用方以 `flags = 0x00` 编码时，显式固定宽度长度前缀仍然可读。
 
-| 旗 | 子 | 状态 | 影响 |
+| 标志 | 十六进制 | 状态 | 效果 |
 | --- | ---: | --- | --- |
-| `PACKED_SEQ` | `0x01` | 支持 | 编码变量大小的集合,包含偏移表加上连接数据区块. |
-| `COMPACT_LEN` | `0x02` | 默认 | 用于每值长度前置符的常规未签名色. |
-| `PACKED_STRUCT` | `0x04` | 支持 | 编码衍生生成的 structs作为包装的 поле用载荷. |
-| `VARINT_OFFSETS` | `0x08` | 预留 | 在v1中拒绝;包装序列偏移是固定宽度 `u64`. |
-| `COMPACT_SEQ_LEN` | `0x10` | 预留 | 在v1中被拒绝;最高级别的序列长度标题是固定宽度 `u64`. |
-| `FIELD_BITSET` | `0x20` | 要求支持 | 添加一个对包装结构的位集,因此只需要明确尺寸的字段才能带有尺寸前置. `PACKED_STRUCT` 并且 `COMPACT_LEN`. |
+| `PACKED_SEQ` | `0x01` | 支持 | 使用偏移表和连续数据块对大小可变的集合进行编码。 |
+| `COMPACT_LEN` | `0x02` | 默认 | 每个值的长度前缀使用规范无符号 varint。 |
+| `PACKED_STRUCT` | `0x04` | 支持 | 将 derive 生成的结构编码为打包字段载荷。 |
+| `VARINT_OFFSETS` | `0x08` | 保留 | v1 中会被拒绝；打包序列偏移量是固定宽度 `u64`。 |
+| `COMPACT_SEQ_LEN` | `0x10` | 保留 | v1 中会被拒绝；顶层序列长度头为固定宽度 `u64`。 |
+| `FIELD_BITSET` | `0x20` | 有条件支持 | 为打包结构添加位集，使只有需要显式大小的字段才携带大小前缀。要求同时设置 `PACKED_STRUCT` 和 `COMPACT_LEN`。 |
 
-解码器不会从有效载荷的形状中推断布局,
-不知名或无效的组合被拒绝
-所有同龄人都以相同的方式解释有效载荷.
+这些标志是显式的。解码器不会根据载荷形状、次版本或启发式方法推断布局。未知或无效的组合会被拒绝，从而确保所有对等节点以相同方式解释载荷。
 
 ## 编码规则 {#encoding-rules}
 
-Norito 使用在
-在 Iroha 数据模型:
+Norito 对 Iroha 数据模型中的常见数据形状使用确定性布局：
 
-- 字符串是 `[len][utf8-bytes]`; `len` 下面是 `COMPACT_LEN` 如果能.
-- 每个值的长度使用紧的涂料,当 `COMPACT_LEN` 是设置的,否则
-  固定的8字节小单元 `u64`.
-- 序列长度标题是固定的8字节小 `u64` 在v1中.
-- `Vec<u8>` 编码为 `[len_u64][raw-bytes]` 而不是每字节一个长度.
-- 包装序列使用 `(len + 1)` 单调 `u64` 抵消后的
-  连锁元素的有效载荷.
-- 地图编码输入数量与固定 `u64` 并且使用确定性关键顺序.
-  `HashMap` 在编码之前,输入按键进行排序; `BTreeMap` 使用其
-  它们是自然的.
-- `BigInt` 使用小二的补充字节 `u32` 字节长度
-  和一个512位的帽子.
-- `Numeric` 编码为 `(mantissa, scale)`, 鱼储存的
-  整数值和尺度存储了部分数字的数量.
+- 字符串格式为 `[len][utf8-bytes]`；启用 `COMPACT_LEN` 时，`len` 遵循该标志。
+- 设置 `COMPACT_LEN` 时，每个值的长度使用紧凑 varint。
+- 未设置 `COMPACT_LEN` 时，每个值的长度是 8 字节小端序 `u64`。
+- v1 的序列长度头是固定 8 字节小端序 `u64`。
+- `Vec<u8>` 编码为 `[len_u64][raw-bytes]`，而不是为每个字节各写一个长度。
+- 打包序列使用 `(len + 1)` 个单调递增的 `u64` 偏移量，后跟拼接的元素载荷。
+- 映射以固定 `u64` 编码条目数，并使用确定性的键顺序。`HashMap` 条目在编码前按键排序；`BTreeMap` 使用其自然顺序。
+- `BigInt` 使用小端序二进制补码字节，以 `u32` 表示字节长度，上限为 512 位。
+- `Numeric` 编码为 `(mantissa, scale)`；mantissa 存储整数值，scale 存储小数位数。
 
-这些规则对于签名和哈希斯都很重要. SDKs 它们的构建是相同的.
-逻辑交易必须产生相同的定律字节.
+这些规则对签名和哈希至关重要。两个 SDKs 构建相同逻辑交易时，必须生成相同的规范字节。
 
-## 方案 Hashes {#schema-hashes}
+## 模式哈希 {#schema-hashes}
 
-类型 Norito 在标题中包含16字节的图案哈希.
-哈希来自完全合格的类型名称.
-结构性图案哈希取出了该图案的哈希.
+类型化 Norito 载荷的头部包含 16 字节模式哈希。默认哈希由完全限定类型名称派生；启用结构化模式哈希的构建则改为从规范模式派生哈希。
 
-类型的解码器拒绝了方案不匹配. 这可以保护客户端免受意外
-解码一个有效的 Norito 框架是错误的类型,这是通常故障模式
-当一个 SDK 固定束从节点数据模型中转移.
+类型化解码器会拒绝模式不匹配。这可防止客户端意外地将有效 Norito 帧解码为错误类型；当 SDK 测试夹具包与节点数据模型不同步时，通常会以这种方式失败。
 
 ## 压缩和加速 {#compression-and-acceleration}
 
-Norito 支持明确和适应性压缩,而不会改变逻辑
-使用载荷:
+Norito 支持显式压缩和自适应压缩，而不会改变逻辑载荷：
 
-| 功能 | 目的 |
+| 功能 | 用途 |
 | --- | --- |
-| `to_bytes` | 编码一个未压缩的标题框载荷. |
-| `to_compressed_bytes` | 通过Zstd编码并记录压缩标签在标题中. |
-| `to_bytes_auto` | 用确定性论来决定压缩是否值得. |
-| CRC64 加速 | 可移动使用 CRC64-XZ 在任何地方, CLMUL 在 x86 上_64或 PMULL 在可用时,在 aarch64 上. |
-| GPU CRC64 和压缩 | 可选金属或 CUDA 助手可以加速大型有效载荷,然后倒回 CPU 路径. |
+| `to_bytes` | 编码头部，后跟未压缩载荷。 |
+| `to_compressed_bytes` | 使用 Zstd 编码，并在头部记录压缩标签。 |
+| `to_bytes_auto` | 使用确定性启发法判断压缩是否值得。 |
+| CRC64 加速 | 所有平台均使用可移植的 CRC64-XZ；可用时，x86_64 使用 CLMUL，aarch64 使用 PMULL。 |
+| GPU CRC64 与压缩 | 可选的 Metal 或 CUDA 辅助函数可以加速大型载荷，并在需要时回退到 CPU 路径。 |
 
-硬件加速永远不会改变解码的内容. CRC 并且 JSON
-加速器必须与可移植输出位对位相匹配.
-区别在 CPU 并且 GPU 编码器,但解码的有效载荷和 Norito 标题
-测试数据的质量
+硬件加速绝不会改变解码后的内容。CRC 和 JSON 加速器必须与可移植实现的输出逐位匹配。CPU 与 GPU 编码器生成的 Zstd 帧字节可能不同，但解码后的载荷和 Norito 头部元数据仍然保持验证所需的确定性。
 
 ## JSON 支持 {#json-support}
 
-Norito 包括一个本地人 JSON 需要的终端点和工具堆 JSON
-没有离开 Norito 类型系统.
+Norito 包含原生 JSON 栈，使需要 JSON 的端点和工具无需离开 Norito 类型系统。
 
-| JSON 功能 | 使用案例 |
+| JSON 功能 | 用例 |
 | --- | --- |
-| `norito::json::{to_json, from_json}` | 确定性类型 JSON 编码/解码. |
-| 美女和作家的助手 | CLI 输出,灯具和流量 `std::io` 集成. |
-| DOM 价值 | 通过程序操作 Norito 现在 JSON 价值模型. |
-| 快速打字 JSON | 基于结构带的热型解码/编码 DTO 路径. |
-| 零拷贝读器 | 在可能的情况下,从输入中借取字符串的标记扫描. |
-| 阶段1加速器 | 选择性 AVX2, NEON, 金属或 CUDA 结构上索引与尺度倒退. |
+| `norito::json::{to_json, from_json}` | 确定性的类型化 JSON 编码与解码。 |
+| 美化输出和 writer 辅助函数 | CLI 输出、测试夹具和流式 `std::io` 集成。 |
+| DOM 值 | 通过 Norito 的 JSON 值模型进行编程操作。 |
+| 快速类型化 JSON | 基于结构磁带，为高频 DTO 路径进行解码和编码。 |
+| 零拷贝读取器 | 扫描 token，并在可行时直接借用输入中的字符串。 |
+| Stage-1 加速器 | 可选的 AVX2、NEON、Metal 或 CUDA 结构索引，并提供标量回退。 |
 
-Iroha 代码应该更好 `norito::json` 用于打字的辅助器 API 增加有效载荷
-简单的 `serde_json` 对生产路径的风险与方案不同,
-预期的现场处理行为 SDKs 并且 Torii 提取剂.
+Iroha 代码处理类型化 API 载荷时，应优先使用 `norito::json` 辅助函数。在生产路径中直接添加 `serde_json`，可能偏离 SDKs 和 Torii extractor 预期的模式及字段处理行为。
 
-## 衍生支持 {#derive-support}
+## Derive 支持 {#derive-support}
 
-Rust 数据类型通常使用衍生宏,而不是手动代码.
-衍生层可以产生 Norito 双代码,方案和 JSON 帮助的人.
+Rust 数据类型通常使用 derive 宏，而不是手写编解码代码。derive 层可以生成 Norito 二进制编解码器、模式和 JSON 辅助函数。
 
-一般的字段属性是:
+常用字段属性如下：
 
-| 属性 | 影响 |
+| 属性 | 效果 |
 | --- | --- |
-| `#[norito(rename = "other")]` | 使用稳定的序列化名称来编写方案和 JSON 兼容性. |
-| `#[norito(skip)]` | 排放了场地,填满了 `Default` 在解码过程中. |
-| `#[norito(default)]` | 使用 `Default` 如果一个解码的有效载荷不携带该领域. |
-| `#[norito(skip_serializing_if = "...")]` | 删除从 JSON 在预言匹配时,同时保持确定性解码默认. |
+| `#[norito(rename = "other")]` | 使用稳定的序列化名称，以保持模式和 JSON 兼容性。 |
+| `#[norito(skip)]` | 编码器省略该字段；解码器提供其 `Default` 值。 |
+| `#[norito(default)]` | 解码后的载荷不含该字段时，使用 `Default`。 |
+| `#[norito(skip_serializing_if = "...")]` | 谓词匹配时从 JSON 中省略字段，同时保留确定性的解码默认值。 |
 
-衍生品也暴露了编码长度的提示和精确长度计算,
-编码器使用这些提示来保留缓冲,避免额外的复印.
+在可行时，derive 实现还会公开编码长度提示和精确长度计算。编码器使用这些提示预留缓冲区并避免额外拷贝。
 
-## 盒子特征家庭 {#crate-feature-families}
+## Crate 功能族 {#crate-feature-families}
 
-在建造时 Iroha 或 SDK 来源的结合, Norito 选择哪些功能
-可提供辅助器和加速器:
+从源代码构建 Iroha 或 SDK 绑定时，Norito 功能决定可用的辅助函数和加速器：
 
-| 功能家族 | 它所能做到的 |
+| 功能族 | 启用内容 |
 | --- | --- |
-| `derive` | 对二进制程序,方案和程序宏进行重新出口 JSON 它们的来源 |
-| `compression` | 支持标题框的有效载荷. |
-| `packed-seq` | 使用偏移表的集合布局. |
-| `packed-struct` | 包装的衍生式结构布局. |
-| `compact-len` | 每个值长度的Varint前置. |
-| `columnar` | Norito 专块,适应性 AoS/NCB 列代码和扫描重路径的借用视图;包含在默认中 `node-codec` 功能集. |
-| `strict-safe` | 转换错误路径中的恐慌解码成结构性错误. |
-| `simd-accel` | CPU 如果可用,加快速度,随着决定性倒退. |
-| `json` | 原住民 JSON 分析师,作家, DOM, 它们是有字体的,快速的. |
-| `json-std-io` | 读者和作家辅助员 JSON 一堆东西. |
-| `metal-stage1`, `cuda-stage1` | 选择性 GPU JSON 结构指数后台. |
-| `metal-stage2` | 选项金属元数据分类 JSON 结构磁带. |
-| `metal-crc64`, `cuda-crc64` | 选择性 GPU CRC64 对于大型用品的辅助员. |
-| `gpu-compression` | 可选金属或 CUDA 对于大型有效载荷,Zstd加速. |
-| `stage1-validate` | 测试验证 JSON 结构指数与尺度输出. |
+| `derive` | 重新导出用于二进制、模式和 JSON derive 的过程宏。 |
+| `compression` | 为带头部帧的载荷提供 Zstd 支持。 |
+| `packed-seq` | 使用偏移表的打包集合布局。 |
+| `packed-struct` | 打包由 derive 生成的结构布局。 |
+| `compact-len` | 每个值使用 varint 长度前缀。 |
+| `columnar` | Norito Column Blocks、自适应 AoS/NCB 行编解码器，以及扫描密集路径使用的借用视图；包含在默认 `node-codec` 功能集中。 |
+| `strict-safe` | 将可失败路径中的解码 panic 转换为结构化错误。 |
+| `simd-accel` | 在可用处使用 CPU 加速，并提供确定性回退。 |
+| `json` | 原生 JSON parser、writer、DOM、类型化 derive 和快速路径。 |
+| `json-std-io` | 构建在 JSON 栈之上的 reader 和 writer 辅助函数。 |
+| `metal-stage1`, `cuda-stage1` | 选用的 GPU JSON 结构索引后端。 |
+| `metal-stage2` | 可选的 Metal 元数据分类，用于 JSON 结构磁带。 |
+| `metal-crc64`, `cuda-crc64` | 大型载荷可选用的 GPU CRC64 辅助函数。 |
+| `gpu-compression` | 大型载荷可选用的 Metal 或 CUDA Zstd 加速。 |
+| `stage1-validate` | 调试验证，将加速后的 JSON 结构索引与标量输出进行比较。 |
 
-功能可用性可能不同 SDKs 电线是什么意思?
-格式仍然由标题和方案控制,而不是本地构建旗.
+不同 SDKs 和发布配置可用的功能可能不同。传输格式仍由头部和模式规定，而不是由本地构建标志决定。
 
-## Torii 并且 Norito RPC {#torii-and-norito-rpc}
+## Torii 和 Norito RPC {#torii-and-norito-rpc}
 
-Torii 曝光 JSON 对于许多运营商路线,但使用类型二进制路线
-Norito. 输入电流的媒体类型 Norito HTTP 身体是
-`application/x-norito`.
+Torii 的许多运维路由提供 JSON，但类型化二进制路由使用 Norito。当前类型化 Norito HTTP 正文的媒体类型是 `application/x-norito`。
 
-使用这些标题,当终点接受或返回输入时 Norito:
+当端点接受或返回类型化 Norito 时，请使用以下头部：
 
 ```http
 Content-Type: application/x-norito
 Accept: application/x-norito
 ```
 
-当一个终端支持两种表示时,客户可以发送明确的
-偏好列表:
+当端点同时支持两种表示形式时，客户端可以发送显式偏好列表：
 
 ```http
 Accept: application/x-norito, application/json
 ```
 
-解码故障按输入显示 Torii 错误并通过远程测量计算.
-常见原因包括无效的魔术,不支持版本,不支持功能
-标志,检查数量不匹配,错形 UTF-8, 不有效的 enum 标签,以及方案不匹配.
+解码失败会显示为类型化 Torii 错误，并由遥测进行计数。常见原因包括 Magic 无效、版本不受支持、功能标志不受支持、校验和不匹配、UTF-8 格式错误、枚举标签无效和模式不匹配。
 
-Norito RPC 运输通过运输配置进行选择.
-仪表板应追踪请求延迟,故障,活跃连接,
-响应字节,以及 `torii_norito_decode_failures_total` 独立于 JSON
-交通.
+Norito RPC 传输由传输配置选择。运维仪表板应跟踪请求延迟、失败、活动连接、响应字节和 `torii_norito_decode_failures_total`，并与 JSON 流量分开统计。
 
-## Norito 流媒体 {#norito-streaming}
+## Norito Streaming {#norito-streaming}
 
-Norito 流媒体将相同的确定性方法扩展到媒体和实时
-运输表面. 其主要部分是:
+Norito Streaming 将同样的确定性方法扩展到媒体和实时传输接口。其关键组成如下：
 
-| 流媒体功能 | 目的 |
+| 流媒体功能 | 用途 |
 | --- | --- |
-| 宣言 | 声明细分承诺,隐私路径,功能,编码器配置文件,加密套件和内容关键元数据. |
-| 部分标题 | 绑定段数,持续时间,零件数量,时机,进化模式,音频总结和Merkle根. |
-| 部分承诺 | 让观众和继电器在服务或解码之前, |
-| 控制框架 | 携带明确的公告,反,关键更新和能力谈判. |
-| HPKE 关键更新 | 通过谈判套件和单调增长计数器来旋转运输秘密. |
-| 能力谈判 | 交叉支持的功能位,数据图数限制,反序列和隐私要求. |
-| FEC 和反 | 使用确定性收件报告和对等决策用于损失实时路径. |
-| 符合性向量 | 跨语言设备证明 SDKs 解码相同的表达,段落和体流. |
+| 清单 | 声明分段承诺、隐私路由、能力、编解码器配置文件、加密套件和内容密钥元数据。 |
+| 分段头 | 绑定分段编号、持续时间、chunk 数量、时序、熵模式、音频摘要和 Merkle 根。 |
+| Chunk 承诺 | 使观看者和中继在提供或解码数据前，能够对照清单验证载荷 chunk。 |
+| 控制帧 | 用于承载清单公告、接收方反馈信息、传输密钥更新信息以及端点之间的能力协商。 |
+| HPKE 密钥更新 | 使用协商后的套件和单调递增计数器轮换传输秘密。 |
+| 能力协商 | 对受支持的功能位、数据报限制、反馈频率和隐私要求取交集。 |
+| FEC 与反馈 | 对有损实时路径使用确定性的接收方报告和奇偶校验决策。 |
+| 一致性向量 | 跨语言测试夹具证明各 SDKs 会解码出相同的清单、分段和熵数据流。 |
 
-流量特定的编码和透配置文件与核心分开
-Norito 交易/查询格式,但它们的表格和控制数据仍然使用
-Norito 因此,路由,发票,重播和审计证据仍然可复制.
+流媒体专用编解码器和熵配置文件与核心 Norito 交易／查询格式相互独立，但其清单和控制数据仍使用 Norito，因此路由、计费、重放和审计证据保持可重现。
 
-## 运营指导 {#operational-guidance}
+## 运维指南 {#operational-guidance}
 
-- 我更喜欢 SDK 建筑物和产生的结合物,而不是手工制品 Norito 字节.
-- 处理方案不匹配作为版本或固定问题,而不是暂时的
-  网络故障.
-- 保持 `.nrt`, `.norito`, 和随着释放或事件的现象
-  它们的产物.
-- 使用 JSON 预测仪表板和手动检查,但保持 Norito 作为
-  签署,哈希或持久数据的真相来源.
-- 在添加一个新的打字时 Torii 终点,文件是否接受 JSON,
-  Norito, 或两者,并将支持的内容类型暴露在 `/openapi`.
-- 在启动加速器时,在之前进行与尺度输出相等性测试
-  加速器故障应该清洁地回落,而不是改变
-  它们的含义.
+- 优先使用 SDK 构建器和生成的绑定，而不是手工制作 Norito 字节。
+- 将模式不匹配视为版本或测试夹具问题，而不是暂时性网络故障。
+- 将 `.nrt`、`.norito` 和清单工件归档到生成它们的发布包或事件包中。
+- 对于已签名、已哈希或持久化的数据，以 Norito 为事实来源；JSON 投影仅用于仪表板和手动检查。
+- 添加新的类型化 Torii 端点时，记录它接受 JSON、Norito 还是两者，并在 `/openapi` 中公开受支持的内容类型。
+- 启用加速器前，请针对标量输出运行一致性测试。如果加速器失败，请使用确定性的标量回退；载荷语义必须保持不变。
 
 ## 相关页面 {#related-pages}
 
-- [Torii 终点](/zh-hans/reference/torii-endpoints.md)
-- [创世记的参考](/zh-hans/reference/genesis.md)
-- [数据模型方案](/zh-hans/reference/data-model-schema.md)
-- [JavaScript / TypeScript SDK](/zh-hans/guide/tutorials/javascript.md)
+- [Torii 端点](/zh-hans/reference/torii-endpoints.md)
+- [创世区块参考](/zh-hans/reference/genesis.md)
+- [数据模型模式](/zh-hans/reference/data-model-schema.md)
+- [JavaScript/TypeScript SDK](/zh-hans/guide/tutorials/javascript.md)
 - [Python SDK](/zh-hans/guide/tutorials/python.md)
-- [Swift 和iOS SDK](/zh-hans/guide/tutorials/swift.md)
+- [Swift 与 iOS SDK](/zh-hans/guide/tutorials/swift.md)
 
-## 上游引用 {#upstream-references}
+## 上游参考 {#upstream-references}
 
-- [Norito 格式规范](https://github.com/hyperledger-iroha/iroha/blob/main/norito.md)
-- [Norito 箱子 README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/norito/README.md)
+- [Norito 格式规格](https://github.com/hyperledger-iroha/iroha/blob/main/norito.md)
+- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/norito/README.md)

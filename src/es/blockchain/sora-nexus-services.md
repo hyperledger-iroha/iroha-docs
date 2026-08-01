@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /blockchain/sora-nexus-services.md
-translation_source_hash: eb09de975095000bee47403332baade8f07e445c605366c8a4867839797f768a
+translation_source_hash: 4608e4e651519144d206b4370e2c334f469460cf9542324b06924a838cb26cb5
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -49,7 +49,7 @@ flowchart LR
 
 ### Aplicación compartida alojada {#hosted-split-application}
 
-Una aplicación típica de planos mixtos usa todas las piezas juntas:
+Una aplicación típica de plano mixto utiliza todas las piezas juntas:
 
 1. Los activos estáticos de frontend se empaquetan y fijan a través de SoraFS.
 2. El anfitrión público, por ejemplo `<app>.sora`, está registrado a través de SoraDNS.
@@ -73,7 +73,7 @@ La publicación SoraFS produce artefactos duraderos antes de que una denominaci�
 2. Envuelve en un CAR archivo y pieza del plan.
 3. Construir un manifiesto Norito con datos de política y gobernanza del pin.
 4. Enviar el manifiesto a Torii.
-5. Registrar una intención de pin DA o un compromiso de disponibilidad cuando el perfil objetivo requiera pruebas explícitas.
+5. Registrar una intención o compromiso de disponibilidad del pin DA cuando el perfil objetivo requiera pruebas explícitas.
 6. Enlazar el manifiesto con un nombre SoraDNS o una ruta estática frontal de Soracloud.
 
 ### Tráfico privado o ruta de transmisión {#private-fetch-or-streaming-route}
@@ -87,7 +87,7 @@ SoraNet puede sentarse delante de SoraFS o Soracloud:
 
 ## Aitai {#aitai}
 
-Aitai es el corredor de aplicaciones SORA para la liquidación al estilo del mercado donde un comprador y un vendedor coordinan un pago fuera de la cadena mientras que Iroha controla la custodia de activos en cadena. Debería utilizar la familia nativa de instrucciones de garantía en lugar de una cuenta de garantía contratada para nuevos flujos de custodia numérica de activos.
+Aitai es el corredor de aplicaciones SORA para la liquidación al estilo del mercado donde un comprador y un vendedor coordinan un pago fuera de la cadena mientras que Iroha controla la transacción. la custodia de activos en cadena. Debería utilizar la familia nativa de instrucciones de escrow en lugar de una cuenta de escrow propiedad de un contrato para los nuevos flujos de custodia numérica de activos.
 
 El banco nativo mantiene la custodia en el libro mayor. `OpenAssetEscrow`, El comprador acepta y marca el pago fuera de la cadena con: `AcceptAssetEscrow` y `MarkEscrowPaymentSent`, y el vendedor libera con `ReleaseAssetEscrow` Si el comprador y el vendedor no están de acuerdo, cualquiera de las partes puede abrir una disputa y resolverla con un `CanResolveEscrowDispute` puede dividir la cantidad bloqueada.
 
@@ -96,7 +96,7 @@ Para el ciclo de vida completo, bloqueos genéricos de activos, garantía anóni
 |Superficie de Aitai |Utilizarlo para|
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
 | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`                                                    |Oferta de activos numéricos transparentes, incluidos los flujos de liquidación denominados en XOR. |
-| `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`       |Ofertas protegidas en las que los movimientos de financiación y cierre se lleven a cabo mediante adjuntos de prueba. |
+| `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`       |Ofertas protegidas utilizan adjuntos de prueba para la financiación y el cierre de movimientos. |
 |`OpenEscrowDispute`, `ResolveEscrowDispute`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |Introducción de litigios y resolución judicial. |
 |`FindAssetEscrowById`, `FindAssetEscrowsBySeller`, `FindAssetEscrowsByBuyer`, `FindAssetEscrowsByStatus` |Páginas de estado de la aplicación, trabajos de conciliación y herramientas de soporte. |
 |`EscrowEventFilter` |Las suscripciones transparentes a escrow en vivo por identificación de escrow, vendedor, comprador, estado o tipo de evento. |
@@ -152,9 +152,9 @@ Soracloud utiliza dos aviones de ejecución:
 |Avión de ejecución |Tiempo de ejecución |Utilizarlo para|
 | ---------------------- | ------- | -------------------------------------------------------------------------------------------- |
 |`DeterministicService` |`Ivm` |Autor, estado de la bóveda, lecturas certificadas, manipuladores de buzones ordenados, mutaciones sensibles a la gobernanza |
-|`HttpService` |`Inrou` |En vivo HTTP APIs, trabajo pesado con el colector, servicios respaldados por caché, SSE, flujos asistidos por navegador |
+|`HttpService` |`Inrou` |En vivo HTTP APIs, trabajo pesado para colectores, servicios respaldados por caché, SSE, flujos con ayuda del navegador |
 
-Los comandos de despliegue, actualización, retroceso, configuración, secreto, modelo y estado se envían a través de Torii y leen el estado del mundo comprometido; no dependen de un espejo local separado CLI. El enrutamiento público se basa en el prefijo más largo, por lo que un anfitrión registrado puede dividir el tráfico entre las rutas HTTP alojadas y las rutas deterministas API.
+Los comandos de despliegue, actualización, retroceso, configuración, secreto, modelo y estado se envían a través de Torii y leen el estado del mundo comprometido; no dependen de un espejo local separado CLI. El enrutamiento público se basa en el prefijo más largo, por lo que un anfitrión registrado puede dividir el tráfico entre las rutas de HTTP alojadas y las rutas deterministas API.
 
 ### Estafón de una aplicación dividida {#scaffold-a-split-app}
 
@@ -239,7 +239,7 @@ Utilizar Inrou para las cargas de trabajo que requieren una superficie en vivo H
 
 - El tiempo de funcionamiento del manifiesto del contenedor deberá ser `Inrou`.
 - El plano de ejecución del manifiesto de servicio debe ser `HttpService`.
-- `HttpService + Inrou` requiere exactamente un `PersistentRootLeaseVolume` montado en `/`.
+- El `HttpService + Inrou` requiere exactamente un `PersistentRootLeaseVolume` montado en `/`.
 - Los servicios Inrou replicados también necesitan un servicio compartido o almacenamiento confidencial de arrendamientos cuando mantienen el estado compartido mutable.
 - Los nodos de alojamiento de producción deben anunciar la capacidad real de Inrou en lugar de funcionar solo como un proxy.
 
@@ -385,9 +385,9 @@ DA no sustituye a Kura ni a SoraFS:
 
 - Kura almacena el flujo de bloques finalizado y los datos de recuperación por consenso.
 - SoraFS almacena y sirve bytes con dirección de contenido, cargas útiles CAR, y manifestos.
-- DA registra compromisos, políticas de prueba, aberturas de prueba y intenciones de pin que permiten programar, auditar y vincular esos bytes al estado del libro mayor.
+- DA registra compromisos, políticas de prueba, aberturas de prueba y intenciones pin que permiten programar, auditar y vincular esos bytes al estado del libro mayor.
 
-Utilice DA cuando una aplicación o un carril Nexus necesite una promesa visible en el libro mayor de que los datos fuera de la cadena siguen siendo recuperables. Los ejemplos comunes incluyen compromisos de carga útil del carril para los flujos de liquidación, intenciones de pin SoraFS para el contenido publicado, los paquetes de pruebas que deben conservarse para una posterior verificación, y los artefactos de aplicación cuyo estado público debe ser un digesto en lugar de la carga útil completa.
+Usar DA cuando una aplicación o un carril Nexus necesite una promesa visible en el libro mayor de que los datos fuera de la cadena siguen siendo recuperables. Los ejemplos comunes incluyen compromisos de carga útil del carril para flujos de liquidación, intenciones de pin SoraFS para el contenido publicado, los paquetes de pruebas que deben conservarse para una posterior verificación, y los artefactos de aplicación cuyo estado público debe ser un digesto en lugar de la carga útil completa.
 
 ### Ciclo de vida {#lifecycle}
 
@@ -410,14 +410,14 @@ El flujo de publicación típico respaldado por DA es:
 
 DA convierte una carga útil en un compromiso firmado, protegido por reproducción e indexado por bloques. Los algoritmos importantes son deterministas para que los validadores y las pasarelas puedan volver a calcular los mismos digestos de los mismos bytes.
 
-1. Canonizar la carga útil presentada. Torii acepta una solicitud de ingesta con `(lane_id, epoch, sequence)`, bytes de carga útil, metadatos de compresión, tamaño de pieza, perfil de borrado, política de retención y firma del remitente. El nodo descomprime las cargas útiles de gzip, deflate o Zstandard cuando se solicita, luego verifica que la longitud canónica del byte es igual a `total_size`.
-2. Valida los parámetros de carril y trozo. El carril debe existir en el catálogo de carril Nexus. `chunk_size` debe tener una potencia no cero de dos, al menos dos bytes, y no mayor que el máximo configurado. El catálogo de carriles selecciona el esquema de prueba, ya sea `merkle_sha256` o `kzg_bls12_381`.
+1. Canonizar la carga útil presentada. Torii acepta una solicitud de ingesta con `(lane_id, epoch, sequence)`, bytes de carga útil, metadatos de compresión, tamaño de pieza, perfil de borrado, la política de retención y la firma del remitente. El nodo descomprime las cargas útiles gzip, deflate o Zstandard cuando se solicita, luego verifica que la longitud canónica de byte es igual a `total_size`.
+2. Valida los parámetros de carril y piezas. El carril debe existir en el catálogo de carril Nexus. `chunk_size` debe tener una potencia no cero de dos, al menos dos bytes, y no mayor que el máximo configurado. El perfil de borrado debe incluir fragmentos de datos y al menos dos fragmentos de paridad. En el catálogo de carriles se selecciona el esquema de prueba, ya sea `merkle_sha256` o `kzg_bls12_381`.
 3. Aplicar la política de red. El nodo impone la línea de base de replicación y retención configurada para la clase blob. Los metadatos públicos deben permanecer en texto plano; los metadatos solo de gobierno se cifran con la clave de metadatos de gobernanza configurada del nodo antes de que se escriba en el manifiesto.
 4. Chunk and commit. La carga útil canónica se divide con un perfil de tamaño fijo derivado de `chunk_size`. Torii calcula la digestión de la carga útil, la raíz del árbol de prueba de recuperación y los compromisos por trozo. Los fragmentos de datos llevan compromisos BLAKE3 sobre sus bytes.
-5. Añadir compromisos de borrado. Los trozos se agrupan en tiras de `data_shards`. Las células que faltan en la tira final están llenas con cero para el cálculo de la paridad. RS(16) La paridad crea fragmentos de paridad fila/global; opcional `row_parity_stripes` añadir la paridad de las tiras estilo columna a través de la matriz. Los compromisos de fragmentos de paridad son los dijes BLAKE3 de símbolos pequeños enedianos `u16`.
+5. Añadir compromisos de borrado. Los trozos se agrupan en bandas de `data_shards`. Las células faltantes en la franja final están llenas de cero para el cálculo de la paridad. RS(16) la paridad crea fragmentos de paridad en filas/global; opcional `row_parity_stripes` añadir la paridad de las tiras de estilo columna en toda la matriz. BLAKE3 digestivos de los pequeños andinos `u16` Los símbolos.
 6. Construye el manifiesto. `DaManifestV1` registra el carril, la época, la clase de manchas, el codec, la digestión de carga útil, la raíz del trozo, el tamaño del trozo , el perfil de borrado, la política de retención, la cotización de alquiler, los compromisos por trozo, compromiso opcional IPA, metadatos y el tiempo de emisión. El boleto de almacenamiento es determinista: el nodo primero hashes una plantilla del manifiesto con un boleto vacío, luego escribe esa huella digital como la última `storage_ticket`.
 7. Rechazar conflictos de reproducción. La clave de repetición es `(lane_id, epoch, sequence, manifest_fingerprint)`. Un duplicado con la misma huella digital es idempotente. Una secuencia obsoleta o la misma secuencia con una huella digital diferente es rechazada.
-8. Emitan artefactos firmados. Torii computación a PDP el compromiso, firmas a `DaIngestReceipt`, construye una `DaCommitmentRecord`, y escribe artefactos para los manifiestos, PDP el compromiso, el registro del compromiso, el calendario de compromisos, la intención del pin, el archivo de recibo y el registro del recibo. El cursor del recibo avanza monótono por `(lane_id, epoch)`.
+8. Emitir artefactos firmados. Torii calcula un compromiso de PDP, firma un `DaIngestReceipt`, construye un `DaCommitmentRecord` y escribe artefactos enrollados para el manifiesto; PDP compromiso, registro de compromiso, calendario de compromiso, intención del pin, archivo de recibo y registro de recibo. El cursor de recibo avanza monótono por `(lane_id, epoch)`.
 
 Los registros de compromiso son lo que llevan los bloques.
 
@@ -425,7 +425,7 @@ Los registros de compromiso son lo que llevan los bloques.
 - la mancha de llamada ID y el hash del manifiesto canónico.
 - esquema de prueba de carril
 - raíz de trozo
-- Compromiso opcional KZG para los carriles KZG
+- Compromiso opcional KZG para carriles KZG
 - PDP/digestación de pruebas
 - Clase de retención y billete de almacenamiento
 - Torii Firma de reconocimiento DA
@@ -438,7 +438,7 @@ Antes de que un bloque incorpore los registros DA, la ruta de ensamblaje del blo
 - Las rutas de Merkle rechazan los compromisos KZG; las rutas KZG requieren un compromiso no cero KZG.
 - Las intenciones de pin se canonizan, clasifican y filtran por carril, hash manifestado, boleto de almacenamiento, cuenta del propietario y reglas de colisión de alias.
 
-El encabezado de bloques almacena hashes para DA Las políticas, los compromisos y las intenciones de fijación de datos. El paquete de compromiso también expone una raíz Merkle cuyas hojas son hashes de canónico Norito- codificado `DaCommitmentRecord` Los nodos padres hash la concatenación de los niños izquierdo y derecho; una hoja extraña se promueve sin cambios a la siguiente capa.
+El encabezado del bloque almacena hashes para las políticas de prueba DA, compromisos y intenciones de pin. Para comprobantes de membresía, el paquete de compromiso también expone una raíz Merkle cuyas hojas son hashes de valores canónicos Norito codificados en `DaCommitmentRecord`. Los nodos padres hash la concatenación de los hijos izquierdo y derecho; se promueve una hoja impar sin cambios a la siguiente capa.
 
 ### Verificación de la prueba {#proof-verification}
 
@@ -451,7 +451,7 @@ El encabezado de bloques almacena hashes para DA Las políticas, los compromisos
 5. Doblar el camino de hermanos desde la hoja del compromiso reconstruye la raíz suministrada.
 6. La raíz reconstruida es igual a la raíz del paquete.
 
-Esto demuestra que se incluyó un compromiso específico de disponibilidad en una carga útil específica de bloques; no prueba que todas las réplicas estén actualmente en línea. La capacidad de recuperación en vivo se comprueba por separado a través de las recogidas del proveedor SoraFS, las verificaciones PDP/PoTR o la evidencia de disponibilidad específica del perfil.
+Esto demuestra que se incluyó un compromiso específico de disponibilidad en una carga útil específica de bloques; no prueba que todas las copias estén actualmente en línea. La capacidad de recuperación en vivo se comprueba por separado a través de las recogidas del proveedor SoraFS, las verificaciones PDP/PoTR o la evidencia de disponibilidad específica del perfil.
 
 ### Interacción con el consenso {#consensus-interaction}
 
@@ -468,7 +468,7 @@ El cronograma DA amplía las ventanas de recuperación. El cronograma efectivo d
 
 ### Notas del operador {#operator-notes}
 
-Iroha 3 Los perfiles de consenso incluyen: RBC-diseminación de cargas útiles respaldada, guardianes manifestos, DA la validación de paquetes y telemetría de recuperación. La plantilla de pares expone `[sumeragi.da]` límites para los compromisos y las aberturas de pruebas por bloque, más `[sumeragi.advanced.da]` Mantenga estas configuraciones consistentes entre los validadores de una red el perfil.
+Los perfiles de consenso Iroha 3 incluyen la difusión de cargas útiles respaldada por RBC, los controles manifestos, la validación del paquete DA y la telemetría de recuperación. La plantilla de pares expone límites `[sumeragi.da]` para los compromisos y las aberturas de prueba por bloque, más multiplicadores de tiempo `[sumeragi.advanced.da]` para el comportamiento de quorum y disponibilidad. Mantenga estas configuraciones consistentes entre validadores en un perfil de red.
 
 Para el descubrimiento de la ruta, comience con el documento OpenAPI del nodo:
 
@@ -481,7 +481,7 @@ Utilizar el [referencia de la consulta](/es/reference/queries.md#nexus-data-avai
 
 ## SoraFS {#sorafs}
 
-SoraFS es el tejido de almacenamiento descentralizado dirigido al contenido. empaca los bytes en trozos deterministas, CAR archivos, y Norito se manifiesta que vinculan raíces de contenido, perfiles de fragmentos, políticas de pin y certificaciones de gobernanza. Los proveedores de almacenamiento anuncian la capacidad y la disponibilidad del contenido, mientras que las pasarelas verifican los manifiestos y los compromisos en fragmentos antes. servicio de contenido.
+SoraFS es el tejido de almacenamiento descentralizado dirigido al contenido. empaca los bytes en trozos deterministas, archivos CAR y manifiestos Norito que unen las raíces del contenido, Los proveedores de almacenamiento anuncian la capacidad y la disponibilidad del contenido, mientras que los gateways verifican los manifestos y los compromisos de fragmentos antes de ofrecer el contenido.
 
 Los usos típicos de SoraFS incluyen activos estáticos de aplicaciones, edificaciones de documentación, paquetes de zonas, referencias a modelos o artefactos y paquetes de pruebas de gobernanza. El modelo de datos Iroha expone los eventos de la puerta de enlace SoraFS y una consulta [ `FindSorafsProviderOwner`](/es/reference/queries.md#nexus-data-availability-and-packages) para resolución de propiedad del proveedor.
 
@@ -565,7 +565,7 @@ sorafs_cli por trigger \
 
 ## SoraDNS {#soradns}
 
-SoraDNS es la capa de denominación determinista para los servicios y el contenido de SORA. Normaliza los nombres, ancla las actualizaciones del directorio de resolver en Iroha y distribuye los paquetes firmados de zona o resolver a través de SoraFS. Resolvers y gateways verifican los documentos de certificación del resolver antes de confiar en los metadatos de descubrimiento.
+SoraDNS es la capa de denominación determinista para los servicios y el contenido de SORA. Normaliza los nombres, ancla las actualizaciones del directorio de resolver en Iroha, y distribuye paquetes de zona o resolución firmados a través de SoraFS. Los resolvedores y gateways verifican los documentos de certificación del resolver antes de confiar en los metadatos de descubrimiento.
 
 Para el acceso al navegador, SoraDNS deriva los hosts de pasarela de un FQDN registrado. El host de vanidad registrado sigue siendo el origen canónico de la aplicación, mientras que los perfiles de gateway desplegados exponen las rutas de retroceso del navegador y Torii para ese origen.
 
@@ -573,12 +573,12 @@ Para el acceso al navegador, SoraDNS deriva los hosts de pasarela de un FQDN reg
 
 |Formulario |Ejemplo |Propósito |
 | --- | --- | --- |
-|Origen de la vanidad |`https://<fqdn>/<path>` |Aplicación canónica URL registrada en los manifiestos y las notas de publicación |
+|Origen de la vanidad |`https://<fqdn>/<path>` |Aplicación canónica URL registrada en los manifiestos y notas de publicación |
 | Taira puerta de acceso del navegador |`https://<fqdn>.mon.taira.sora.net/<path>` |Puerta de acceso del navegador público para un alias activo |
 |Torii Camino de retroceso |`https://taira.sora.org/soradns/<fqdn>/<path>` |Torii debug y ruta de retroceso para un alias activo |
 |Puerta de hash canónica |`<base32(blake3(name))>.gw.sora.id` |Identidad determinística de la puerta de entrada y verificación GAR |
 
-El fallback `/soradns/<alias>/...` no es el público preferido URL. La configuración de herramientas, los manifestos de aplicaciones y la configuración del frontend deberían preferir al propio host vanity. Si un alias no está activo en Taira, el gateway del navegador o la ruta de retroceso puede regresar a `404` o fallar TLS antes de que se inicie el enrutamiento de la aplicación.
+El fallback `/soradns/<alias>/...` no es el público preferido URL. La configuración de herramientas, los manifestos de aplicaciones y la configuración del frontend deben preferir al propio host vanity. Si un alias no está activo en Taira, el gateway del navegador o la ruta de retroceso puede regresar a `404` o fallar TLS antes de que se inicie el enrutamiento de la aplicación.
 
 ### Anfitriones de la puerta de entrada derivada {#derive-gateway-hosts}
 
@@ -629,7 +629,7 @@ La derivación del host SoraDNS no sustituye la delegación regular de Internet 
 
 - para los subdominios, publique un CNAME al host bonito seleccionado
 - para los nombres de ápice, utilice los registros ALIAS/ANAME o A/AAAA en el gateway anycast IPs.
-- Mantenga el host hash canónico en el dominio de entrada SoraDNS para los controles GAR.
+- Mantenga el host hash canónico bajo el dominio de entrada SoraDNS para los controles GAR
 
 ## FHE y UAID {#fhe-and-uaid}
 
@@ -638,7 +638,7 @@ Las superficies relacionadas con FHE disponibles para los servicios de Nexus inc
 - `iroha_crypto::fhe_bfv` implementa el soporte determinístico de BFV para la evaluación del texto cifrado escalar. La resolución del identificador utiliza `BfvIdentifierPublicParameters` y `BfvIdentifierCiphertext`, donde la ranura 0 almacena la longitud de byte de entrada y las ranuras posteriores almacenan un byte cifrado cada una.
 - Soracloud estado y esquemas de trabajo modelo FHE cargas de trabajo de texto cifrado con conjuntos de parámetros administrados por gobernanza, políticas de ejecución, compromisos de texto cifre, sobres de consultas y solicitudes de divulgación.
 
-El camino del identificador BFV se utiliza para la inscripción que preserva la privacidad. Un cliente puede enviar un identificador cifrado al resolver Torii. El resolver lo evalúa bajo la política de identificador activo, deriva un `OpaqueAccountId`, y emite un recibo. El `ClaimIdentifier` luego vincula ese recibo con el UAID adjunto a la cuenta objetivo.
+El camino del identificador BFV se utiliza para la inscripción que preserva la privacidad. Un cliente puede enviar un identificador cifrado al resolvador Torii. en el marco de la política de identificación activa, obtendrá un `OpaqueAccountId`, y emitirá un recibo `ClaimIdentifier`. Luego vincula ese recibo al UAID adjunto a la cuenta de destino.
 
 El Consejo UAID Es el anclaje de identidad y capacidad alrededor de ese flujo. En el modelo de datos, `UniversalAccountId` está respaldado por hash y se muestra como `uaid:<hash>`. Los analizadores aceptan cualquiera de los dos . `uaid:<hash>` o la digestión cruda de 64 hex. `Account` y `NewAccount` incluye opcional `uaid` y `opaque_ids` El registro en el tiempo de ejecución impone un uno a uno UAID- índice de contabilidad, rechaza los identificadores opacos duplicados o en colisión y rechaza los identificables opacos sin un UAID. Cada vez que UAID los cambios en la vinculación de cuentas, el tiempo de ejecución reconstruye las obligaciones del espacio directorio de datos UAID.
 
@@ -656,7 +656,7 @@ Para el estado de Soracloud FHE, los regímenes implementados son:
 |`CiphertextQuerySpecV1` |Las consultas sólo contienen texto cifrado por servicio, vinculación, prefijo de clave, límite de resultados, nivel de metadatos y prueba de inclusión opcional. |
 |`DecryptionRequestV1` |Solicita la divulgación de un compromiso con el texto cifrado en virtud de una política de autoridad de descifrado. |
 
-`FheJobSpecV1::validate_for_execution` comprueba que el trabajo, la política de ejecución y el conjunto de parámetros coinciden antes de la admisión. También impone reglas específicas de operación: agregar y multiplicar necesitan al menos dos entradas, girar y arrancar precisan exactamente una entrada, y la profundidad requerida, el recuento de rotación, el recueno de arranques, el número de entradas, Los resultados de las consultas de texto cifrado no deben devolver filas de texto en blanco.
+`FheJobSpecV1::validate_for_execution` comprueba que el trabajo, la política de ejecución y el conjunto de parámetros coinciden antes de la admisión. También impone reglas específicas de operación: sumar y multiplicar necesitan al menos dos entradas; rotate y bootstrap necesitan exactamente una entrada, y la profundidad solicitada, el recuento de rotación, el recueno de bootstrap, el número de entradas, los bytes de carga útil y el tamaño de salida determinista deben permanecer dentro de los límites de las políticas.
 
 UAID no es el texto cifrado y no la política de FHE en sí misma. Es el anclaje de capacidad estable de cuenta utilizado para encontrar la cuenta, las reclamaciones de identificador opaco y los vínculos del Directorio Espacial que autorizan un servicio o flujo del espacio de datos. Los esquemas FHE rigen la admisión y ejecución de cargas útiles cifradas por separado a través de conjuntos de parámetros, políticas de ejecución, compromisos en el texto cifrado y políticas de autoridad de descifrado.
 

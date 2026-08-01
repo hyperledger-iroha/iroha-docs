@@ -20,6 +20,6 @@ Faqat yangilanish ish oqimida tasdiqlangan natijalar qoplangan yoki muvaffaqiyat
 
 <CompatibilityMatrixTable />
 
-::: ma'lumot
+::: info
 `VITE_COMPAT_MATRIX_URL` ni faqat mos keladigan jonli orqa tomonni o'rnatish uchun qo'yish. Ushbu o'zgaruvchi bo'lmasa, sahifa `src/public/compat-matrix.json` yuklanadi.
 :::

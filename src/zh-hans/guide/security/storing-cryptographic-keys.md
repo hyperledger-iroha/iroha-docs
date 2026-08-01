@@ -1,145 +1,87 @@
 ---
 translation_locale: zh-hans
 translation_source: /guide/security/storing-cryptographic-keys.md
-translation_source_hash: a420551345570c4f6b6c0288bc78041665b199727b177eb0aee1f6495850fae6
+translation_source_hash: 168ee24e84f9225e81365658018717155476ae1508fefba5e0234e0bf6feefbd
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
-# 存储加密钥 {#storing-cryptographic-keys}
+# 存储加密密钥 {#storing-cryptographic-keys}
 
-您的敏感数据只会保持私密, <abbr title="Operational Security">OPSEC</abbr> 社交工程的威胁,即有人假装自己是一个有权威的人试图操纵你给他们你的私密加密钥,是真实的.
+私钥可以授权执行其对应权限主体获准的任何操作。绝不能共享私钥。种子材料、恢复秘密、Bearer 令牌和导出的密钥文件都必须受到同等级别的保护。
 
-更多信息 <abbr title="Operational Security">OPSEC</abbr> 和其最佳实践,见 [运营安全](./operational-security).
+在投入生产前确定保管方案。该方案必须与风险价值、账户控制器策略及部署的恢复流程相匹配。
 
-## 数字化存储密码钥 {#storing-cryptographic-keys-digitally}
+## 定义保管边界 {#define-the-custody-boundary}
 
-在数字化保护密码密钥方面,主要只有两个方法[SSH](https://www.ssh.com/) 并且 [GPG](https://www.gnupg.org/)可用. 这些方法提供了安全层,以防止未经授权访问您的加密密钥.
+- 维护清单，记录每个权限主体、公钥、算法、环境、用途、保管方、存储位置、备份及替换流程。
+- 为开发、测试、生产、日常交易、治理、部署和恢复分别使用不同的密钥。
+- 人员和进程只能访问其角色所需的密钥。
+- 风险模型要求时，高价值或治理签名必须经过独立批准。
+- 记录签名器允许用于哪个网络和权限主体。签名服务必须拒绝超出该范围的请求。
 
-许多人 Iroha 建筑决策受到建筑设计的原则的影响. **安全** (`SSH`) 协议,因此本节主要关注 `SSH` 如何有效地实现您在密码密钥中存储的协议 Iroha 生物系统.
+## 选择合适的存储方式 {#choose-an-appropriate-storage-method}
 
-### 使用 SSH 并且 SSH 代理人 {#using-ssh-and-ssh-agent}
+对于本地开发、受控测试或安全的保管交接，可以将密钥导出到权限受限的文件。在受支持的 Unix 平台上，使用 `kagami` 生成新的密钥目录：
 
-**安全协议** (`SSH`) 是一个作为虚拟门户的加密网络协议,通过使用 SSH 提供一个高效的方法远程与系统互动,而无需物理存在. `SSH` 提供两个主要的身份验证机制:传统基于密码的方法和更安全的公私钥对方法.
+```bash
+cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
+```
 
-更多信息 `SSH`, 查看 [相关的 SSH 学院主题](https://www.ssh.com/academy/ssh).
+父目录必须存在。目标目录必须是新目录，或已经由当前用户所有；其模式必须为 `0700`，不得包含符号链接，并且必须为空。Kagami 以 `0600` 模式写入 `public.key` 和 `private.key`；`--pop` 还会写入 `pop.hex`。如果 Kagami 无法强制执行这些仅所有者文件系统规则，该命令会在相应平台上失败。
 
-为了简化登录过程,并绕过重复输入的需要, `SSH` 关键 **SSH 代理人** (`ssh-agent`) 记住你的助理程序 `SSH` 按此设置,可以使用 `SSH` 门户可以随时连接到其他机器,轻松地访问钥匙.
+私钥文件是未加密的导出文件。不得将其放入源代码管理、共享文件夹、日志、工单、聊天或构建制品。应将生产密钥导入获批的保管边界，然后按照部署流程删除导出文件。不得在生产环境中重复使用开发密钥。
 
-您的公钥存储在远程系统上,并保证您的私钥安全. `ssh-agent` 为您的信息提供 _公众_ 接入系统的密钥. [挑战](https://en.wikipedia.org/wiki/Challenge%E2%80%93response_authentication) 只有你 _个人_ 你的钥匙可以正确响应. `ssh-agent` 通过使用您的 _个人_ 如果响应与系统预期的相匹配,你会获得访问权限.
+对于生产环境，优先使用经过审计的保管边界，例如：
 
-它们的美丽 `ssh-agent` 在您的会议期间,它会保留您的私钥,所以每次连接到远程系统时不需要继续输入密码或私钥密码.
+- 硬件安全模块或硬件支持的密钥存储
+- 操作系统或移动设备密钥库
+- 隔离的签名服务
+- 只向已授权工作负载释放密钥的秘密管理器
 
-为了解更多关于 `ssh-agent`, 查看 [相关的 SSH 学院主题](https://www.ssh.com/academy/ssh/agent).
+所选集成支持时，应让密钥材料保持不可导出。确认保管系统支持 Iroha 权限主体所需的算法和签名操作。
 
-::: info 备注
+静态加密可以保护存储中的副本，但在未授权进程或人员取得解密后的字节后便无法继续保护密钥。应加固主机、限制运行时访问并监控签名活动。
 
-详细概述 `SSH` 协议和 `ssh-agent` 工具,请参见以下内容 [SSH 学院](https://www.ssh.com/academy) 主题:
+## 保护签名工作流程 {#protect-signing-workflows}
 
-  - [什么是 SSH (安全?)](https://www.ssh.com/academy/ssh)
-  - [如何配置ssh-agent,代理转发和代理协议](https://www.ssh.com/academy/ssh/agent)
+- 使用具名运营人员身份、强认证和经过审计的签名系统访问。
+- 原始密钥不得出现在命令行参数、shell 历史记录、环境转储、进程列表、崩溃报告或应用日志中。
+- 只在执行所需操作时解锁签名器，使用后关闭会话或让会话过期。
+- 批准前显示权限主体、网络、指令、资产和费用。
+- 对特权交易或高价值交易要求显式确认。
+- 自定义客户端集成能够委托签名时，应让原始私钥远离浏览器页面和通用应用进程。
 
-:::
+明文客户端配置只适用于本地开发和受控测试。生产集成应通过其获批的保管边界取得签名。原版 Iroha CLI 从客户端配置中读取私钥，且不提供通用的外部签名器适配器。自定义客户端可以构造交易有效载荷哈希，并附加由外部签名器生成的签名。
 
-### 添加密码管理程序 {#adding-a-password-manager-program}
+## 备份和恢复密钥 {#back-up-and-recover-keys}
 
-建议提高您的安全性. `SSH` 通过密码保护钥匙,从而使恶意行为者获取您的敏感信息成为额外的障碍.
+- 只备份恢复策略明确要求备份的密钥。
+- 加密备份，并使其与在线签名器分开存放。
+- 对备份应用与在线密钥相同的访问和批准控制。
+- 需要职责分离时，由独立保管方持有恢复凭据。
+- 在不暴露生产密钥材料的情况下测试还原。
+- 记录并审查每次备份创建、访问、还原和销毁。
 
-用户密码存储可以使用各种密码管理器 `SSH` 为了澄清, [KeePass](https://keepass.info/) 作为一个密码管理器的例子, [KeePassXC](https://keepassxc.org/) 在Linux操作系统上运行的端口.
+不要假设其他钱包的助记词格式能够表示 Iroha 私钥。只使用所选保管系统支持且经过测试的恢复格式。
 
-如何设置的指示 KeePassXC 查看 [配置 KeePassXC](#configuring-keepassxc) 下面的部分.
+## 替换已暴露或停用的密钥 {#replace-exposed-or-retired-keys}
 
-![KeePassXC: `Main` 屏幕 UI](../../../img/KeePassXC.png)
+在事件发生前准备好替换方案。流程必须明确：
 
-KeePassXC 它不仅存储密码,而且还提供了更好的安全性,灵活性和控制. `SSH` 密钥.当用于键存储时,这个密码管理器提供 `ssh-agent` 存储的密钥,然后在 KeePassXC 窗户关闭.
+1. 谁可以宣布密钥已暴露或停用
+2. 如何隔离受影响的签名者
+3. 如何生成新密钥并将其置于获批的保管边界
+4. 对于账户，如何通过获授权的控制器替换或社会恢复创建替代的、规范且不含域名的 `AccountId`，并迁移关联状态
+5. 对于节点或对等节点，如何协调获授权的链上共识密钥轮换或停用与 BLS PoP、激活和重叠策略、本地密钥配置、`trusted_peers_pop` 及部署拓扑
+6. 依赖配置、应用和运营人员如何采用新的 `AccountId`、公钥或对等节点身份
+7. 如何移除旧密钥的权限，并将其副本归档或销毁
+8. 之后如何验证网络和依赖应用
 
-::: tip
+::: warning
 
-理论上,任何一个 KeePass 港口 [在官方网站上列出的](https://keepass.info/download.html) 可用于关键的存储目的.
-我们建议: [KeePassX](https://www.keepassx.org/) 或 [KeePassXC](https://keepassxc.org/).
-
-:::
-
-#### 配置 KeePassXC {#configuring-keepassxc}
-
-配置 KeePassXC, 执行以下步骤:
-
-1. 发射 KeePassXC, 然后去 **工具** > **设置**, 或选择 **装备** 按从顶部 UI 面板.
-
-2. 在 **应用程序设置** 显示的页面,选择 **SSH 代理人** 在左边菜单中,然后选择 **启用 SSH 代理集成** 检查盒.
-
-   ::: info 显示参考截图
-
-   ![KeePassXC `SSH Agent` 标签: 启用 SSH 代理人](../../../img/keepassxc_ssh_agent.png)
-
-   :::
-
-3. 创建一个新的 KeePassXC 数据库. 查看指令 [KeePassXC 使用者指南 > 创建您的第一个数据库](https://keepassxc.org/docs/KeePassXC_UserGuide#_creating_your_first_database).
-
-4. 每个你想存储的钥匙 KeePassXC 创建的数据库,执行以下步骤:
-
-   - 在数据库中添加一个新条目. [KeePassXC 使用者指南 > 创建您的第一个数据库](https://keepassxc.org/docs/KeePassXC_UserGuide#_creating_your_first_database).
-
-   - 在添加新条目时,通过以下操作将包含键的文件附上: **高级** 在左边菜单中,然后选择 **加入** 在 **附件** 在下列部分中,选择所需的文件 **选择文件** 窗口出现.
-
-   - 在添加一个新条目时,选择 **SSH 代理人** 在左侧菜单中,然后从 **附带** 在 **私钥** 部分;然后选择以下的选项框:
-
-      - **在数据库开放/解锁时添加键到代理**
-
-      - **当数据库关闭/锁定时,将密钥从代理中删除**
-
-      - **在使用此键时需要用户确认**
-
-   - 如果需要,请对该条目进行其他更改.
-
-   - 当准备好时,选择 **OK** 为了保存入口.
-
-   ::: details 显示参考截图
-
-   ![KeePassXC `Advanced` 标签:添加私钥附件](../../../img/keepassxc_private_key.png)
-
-   ![KeePassXC `SSH Agent` 标签:添加私钥附件](../../../img/keepassxc_pk_agent.png)
-
-   :::
-
-##### 预期结果 {#expected-results}
-
-- 密码化和 `shh` 密钥存储为一个 KeePassXC 数据库可以访问 KeePassXC 窗户开放.
-
-- 存储的加密和 `ssh` 在授权要求时,可使用钥匙.
-
-- 存储的加密和 `ssh` 关键将从 `ssh-agent` 一旦 KeePassXC 窗户关闭.
-
-::: info 备注
-
-没有使 **在使用此键时需要用户确认** 选择, `ssh-agent` 如果密码管理程序被恶意软件或系统服务通过一个 `SIGKILL` 密钥可能会留在 `ssh-agent`, 由于Unix系统程序无法拦截 `SIGKILL`.
+加密或更换密码都无法让已经复制的私钥重新变得安全。怀疑密钥暴露时，应停止使用该密钥，并遵循获批的替换或撤销流程。
 
 :::
 
-## 物理存储加密钥 {#storing-cryptographic-keys-physically}
-
-对于那些寻求最高水平的离线安全者来说,存储加密密钥的选择可以确保密钥完全与数字网络连接不开,从而降低未经授权访问的风险.
-
-### 使用硬件钥匙 {#using-a-hardware-key}
-
-我们的团队认为硬件钥匙是最好的安全措施之一. USB 机器在安全漏洞的情况下可以轻松断开设备,或者只需重新连接到其他机器.
-
-然而,由于有很多品牌的硬件钥匙, APIs 重要的是要对市场进行研究,以找到最适合您需求的关键.
-
-迄今为止,我们的团队已经内部测试了 [YubiKey 5C](https://www.yubico.com/il/product/yubikey-5c/) 硬件钥匙,其中包括多功能 API 功能性.
-
-然而,需要考虑一个潜在的缺点. [HMAC 挑战响应认证](https://en.wikipedia.org/wiki/Challenge%E2%80%93response_authentication) 和存储相应的 _个人_ 这种设置可能会使攻击者不知情地对存储在网络中的信息做出有知识的猜测. YubiKey 5C的内存,从而危及了整体安全性.
-
-幸运的是,通过采用一种替代方法来缓解这种脆弱性 YubiKey 5C. 目的是使用 YubiKey 5C安全访问一个 KeePassXC 存储您的加密数据库和 `SSH` 这种方法甚至可以被认为是有益的,因为它超越了大多数密码的安全性, KeePassXC 数据库泄露.
-
-::: info
-
-阅读更多关于 _上述方法_, 查看其中一个答案 KeePassXC 开发人员[詹克·贝文多夫](https://github.com/phoerious)以下内容 StackExchange 问题:
-
-[是否合理使用 KeePassXC 在 YubiKey?](https://security.stackexchange.com/questions/201345/is-it-reasonable-to-use-keepassxc-with-yubikey/258414#258414)
-
-:::
-
-### 用一个音词 {#using-a-mnemonic-phrase}
-
-也可以记住一个私钥作为一系列的单词, _语_. 这种方法在许多钱包中使用,需要记住约25个特定词. KeePassXC, 提供了mnemonic密码生成.
+请参阅[生成加密密钥](./generating-cryptographic-keys.md)、[运营安全](./operational-security.md)和[安全原则](./security-principles.md)。

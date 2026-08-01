@@ -1,14 +1,14 @@
 ---
 translation_locale: fr
 translation_source: /guide/security/index.md
-translation_source_hash: 0aaeadd98f9d16f8459553b58b2b73c47b792bbb5bff0cbe848f9cf4ababe9be
+translation_source_hash: ec7fc2f950b007f52d837473ad7021565923e537df1d18b86055fb483cda375c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Sécurité {#security}
 
-Lorsque vous utilisez Iroha ou tout autre registre de blockchain pour cette questionla sécurité est primordiale pour les organisations financières, car elle constitue le fondement de la confiance dans un secteur où les données et les transactions financières sensibles sont des activités courantes. Une violation réussie de la sécurité perpétrée par une partie malveillante peut entraîner des conséquences dévastatrices pour vous.
+Sécurisez un déploiement Iroha comme vous le feriez pour tout système qui gère des données sensibles et de la valeur. Protégez les clés de signature, l'accès au réseau, les opérations de nœuds, la surveillance et la réponse aux incidents. Un registre ne supprime pas le besoin de ces contrôles.
 
 ### La navigation {#navigation}
 
@@ -16,7 +16,7 @@ Dans cette section, vous trouverez des renseignements sur les différents aspect
 
 - [Principaux de sécurité](./security-principles):
 
-Les principes de sécurité fondamentaux que les individus et les organisations peuvent adopter pour protéger leurs données et réduire les risques d'une violation et/ou de fuite.
+Principaux principes de base pour la protection des données et la réduction du risque de violation.
 
 - [Les réseaux privés virtuels ](./vpn.md):
 
@@ -24,7 +24,7 @@ Comment utiliser un VPN pour restreindre l'accès entre pairs, Torii et les opé
 
 - [Sécurité opérationnelle](./operational-security.md):
 
-Les meilleures pratiques pour assurer la sécurité des opérations quotidiennes de votre réseau, y compris les contrôles d'accès, la surveillance, les réponses aux incidents, l'utilisation des navigateurs, etc.
+Contrôles quotidiennes pour l'accès, le suivi, la réponse aux incidents et les postes de travail des opérateurs.
 
 - [Surveillance des fraudes ](./fraud-monitoring.md):
 
@@ -32,16 +32,16 @@ Comment utiliser les événements du registre, les requêtes, les autorisations 
 
 - [Sécurité des mots de passe](./password-security.md):
 
-Une plongée profonde dans l'entropie des mots de passe, la création de mots de passe forts et l'évitement des vulnérabilités du mot de passe.
+Entropie de mot de passe, construction de mots de passe forts et modes d'échec communs.
 
 - [La cryptographie de la clé publique ](./public-key-cryptography.md):
 
-Une introduction à la cryptographie des clés publiques, au chiffrement, aux signatures et à leur rôle dans l'établissement d'une communication sécurisée au sein de la blockchain.
+Le chiffrement à clé publique, les signatures et la communication authentifiée.
 
   - [Génération de clés cryptographiques](./generating-cryptographic-keys.md):
 
-Instructions sur la façon de générer des clés cryptographiques et d'utiliser `kagami` (outil de support expédié à côté de Iroha).
+Générer des clés cryptographiques prises en charge avec `kagami`.
 
   - [Réglage des clés cryptographiques](./storing-cryptographic-keys.md):
 
-Les meilleures pratiques pour sécuriser vos clés cryptographiques avec un certain nombre d'approches différentes qui peuvent également être combinées.
+Conserver les clés cryptographiques à l'aide de commandes en couches appropriées au déploiement.

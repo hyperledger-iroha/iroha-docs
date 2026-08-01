@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /blockchain/queries.md
-translation_source_hash: 0a32b75b78d5bcde0d2b84b58d440b18e545559dfd9772dd6508ad41e972bf6e
+translation_source_hash: 234c831c97bb93996e6cf51505921ff509e233408cf2faf6a9b23641e5642040
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,13 +12,13 @@ import WarningFatQuery from './WarningFatQuery.vue'
 
 # Questions posées {#queries}
 
-Bien que la plupart des informations sur l'état de la blockchain puissent être obtenues, comme nous l'avons montré précédemment, en utilisant un abonné d'événement et un filtre pour restreindre la portée des événements à ceux qui vous intéressent, parfois vous devez prendre une approche plus directe. Entrez des requêtes.
+Les abonnés à l'événement et les filtres peuvent suivre les changements dans l'état de la blockchain. Utilisez une requête lorsque vous avez besoin d'une vue directe de l'État actuel.
 
-Les requêtes sont de petits objets comme des instructions qui, lorsqu'ils sont envoyés à un Iroha paire, provoquent une réponse avec des détails de la vision actuelle de l'état du monde.
+Les requêtes sont de petits objets qui ressemblent à des instructions. Envoyez-en un à un Iroha pour recevoir les détails de sa vision actuelle de l'état du monde.
 
-Ce n'est pas nécessairement le seul type d'information disponible sur le réseau, mais c'est le seul type de renseignements qui est garanti pour être accessible sur tous les réseaux.
+Un réseau peut exposer d'autres informations. L'information des États du monde recherchable est le seul type garanti d'être disponible sur chaque Iroha réseau.
 
-Pour chaque déploiement de Iroha, il peut y avoir d'autres informations disponibles Par exemple, la disponibilité des données de télémétrie dépend des administrateurs du réseau. C'est entièrement à eux de décider s'ils veulent ou non allouer une puissance de traitement pour suivre le travail au lieu de l'utiliser pour le faire le travail réel. En revanche, certaines fonctions sont toujours requises, par exemple l'accès au solde de votre compte.
+Pour chaque déploiement de Iroha, il peut y avoir d'autres informations disponibles Par exemple, la disponibilité des données de télémétrie dépend des administrateurs du réseau. C'est entièrement à eux de décider s'ils veulent ou non les allouer. La puissance de traitement permet de suivre le travail au lieu de l'utiliser pour effectuer le travail réel. En revanche, certaines fonctions sont toujours requises, par exemple l'accès au solde de votre compte.
 
 Les résultats des requêtes peuvent être triés [](#sorting), [paginés](#pagination) et [filtrés](#filters) par les pairs à la fois. Le tri est effectué lexicographiquement sur les touches de métadonnées. Le filtrage peut être effectué sur une variété de principes, allant des domaines spécifiques (masques individuels de filtre d'adresse IP) aux méthodes de sous-chaîne telles que `begins_with` combinées à l'aide d'opérations logiques.
 
@@ -74,7 +74,7 @@ let pagination = Pagination::new(Some(starting_result), Some(limit));
 
 Lorsque vous créez une requête, vous pouvez utiliser un filtre pour retourner uniquement les résultats qui correspondent au filtre spécifié.
 
-Les filtres sont spécifiques aux requêtes. Par exemple, les requêtes de compte peuvent être réduites par l'identité du compte ou les métadonnées, tandis que les requêtes d'actifs peuvent être réduits par la définition d'actif, le compte du titulaire ou la projection de domaine. Utilisez les constructeurs de requêtes typés du SDK lorsque cela est possible afin que le type de filtre correspond au type de sortie de la requête.
+Les filtres sont spécifiques à la requête. Par exemple, les requêtes de compte peuvent être réduites par l'identité du compte ou des métadonnées, tandis que les requêtes d'actifs peuvent être réduits par actif définition, compte de titulaire ou projection de domaine. Utilisez les constructeurs de requêtes typées du SDK dans la mesure du possible afin que le type de filtre correspond au type de sortie de la requête.
 
 ## Réglage {#sorting}
 

@@ -1,9 +1,9 @@
 ---
 translation_locale: mn
 translation_source: /index.md
-translation_source_hash: 491d30ca47ce82af5220641c9b508a015af61bccc6f3b6b0c86acd100b0a3e81
+translation_source_hash: 505e8224a59534717045c34b1bf796760d06f9d6808a2a1fd9773aa2f6a00c2d
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 
 layout: home
 
@@ -50,9 +50,14 @@ footer: true
 ---
 
 <section class="nexus-build" aria-labelledby="nexus-build-title">
-<a class="nexus-build__panel" href="/mn/get-started/sora-nexus-dataspaces">
-    <span class="nexus-buildcopy"> <span class="nexus-buildeyebrow">SORA Nexus</span> <span id="nexus-build-title" class="nexus-buildtitle">Үргэлжүүлээрэй Iroha 3 / SORA Nexus</span> <span class="nexus-builddetails">Үргэлжүүлээрэй SORA 3 Taira туршилтын сүлжээ, Minamoto Mainnet, Copy-Paste жишээг одоо туршиж үзээрэй.</span> </span> <span class="nexus-build__action">Нээлттэй хөтөч <span aria-hidden="true">-&gt;</span></span>
-</a>
+  <a class="nexus-build__panel" href="./get-started/sora-nexus-dataspaces.html">
+    <span class="nexus-build__copy">
+      <span class="nexus-build__eyebrow">SORA Nexus</span>
+      <span id="nexus-build-title" class="nexus-build__title">Iroha 3 / SORA Nexus дээр бүтээгээрэй</span>
+      <span class="nexus-build__details">SORA 3 дээр Taira тестнет, Minamoto майннет болон шууд туршиж болох хуулж ашиглах жишээнүүдээр бүтээгээрэй.</span>
+    </span>
+    <span class="nexus-build__action">Гарын авлагыг нээх <span aria-hidden="true">-&gt;</span></span>
+  </a>
 </section>
 
 <hr style="margin-top: 3rem;">

@@ -20,6 +20,6 @@ translation_engine: nllb-200-ct2
 
 <CompatibilityMatrixTable />
 
-::: мәғлүмәт
+::: info
 `VITE_COMPAT_MATRIX_URL` көйләүҙе ҡулайлаштырылған тере бэкэнд менән тупланмалы хикәйәне юҡҡа сығарыу өсөн генә билдәләгеҙ. был үҙгәреүсәнһеҙ бит йөкләнә `src/public/compat-matrix.json`.
 :::

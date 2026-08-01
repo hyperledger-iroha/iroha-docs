@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/nfts.md
-translation_source_hash: 335eacd30c5964659baeeae8ac937805f1d4d786dd42a36e5164bbe75ef7e360
+translation_source_hash: 6dd2d21a29f352a14cb17046c66cfa541ef501b733b95bb6874d2d3f86ec0504
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -123,7 +123,7 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
-Limpar quando terminar. Se você transferiu o NFT, executar este comando com a configuração da conta do proprietário atual ou transferir de volta o NFT primeiro.
+Remova o exemplo NFT após a passagem. Se você o transferir, transfira-o de volta ou envie o comando de não registrar com a configuração da conta do proprietário atual.
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \

@@ -18,7 +18,7 @@ Bugungi kunda ishlatiladigan asosiy standart C dasturlari ikkilamchi interfeysid
 
 Albatta, siz buni o'zingizning yo'lingiz bilan qila olasiz. `iroha_ffi` qutisi faqatgina siz yaratishingiz kerak bo'lgan kodni ishlab chiqaradi. Kerakli boilerplate yozish juda ko'p g'ayrat va intizom talab qiladi. FFI chegara bo'ylab har bir funktsiya qo'ng'iroqlari `unsafe` bo'lib, aniqlanmagan xatti-harakatlarga olib kelishi mumkin. Biz uni hal qilishga muvaffaq bo'lgan usul kuchli `repr(C)` turlarini ishlatish bilan aylanadi.
 
-::: ma'lumot
+::: info
 
 Faqatgina istisnolar ko'rsatkichlardir. Null tekshiruvi va haqiqiyligi global miqyosda qo'llanilmaydi, shuning uchun xom ko'rsatkichi (har doimgidek) faqat istisno hollarda ishlatiladi. Iroha ma'lumotlar modelidagi ob'ektning deyarli har bir holatini o'rab olgan holda, siz hech qachon xom ko'rsatkichlardan foydalanishingiz shart emas.
 
@@ -54,7 +54,7 @@ pub extern fn DaysSinceEquinox__update_value(handle: *mut DaysSinceEquinox, a: *
 
 A Rust turi mustahkamga aylantiriladi `repr(C)` o'tish mumkin bo'lgan turi FFI bilan chegarasi `FfiType::into_ffi`. Bu esa oʻzgacha yoʻldan boradi: FFI `ReprC` turi o'zgartirilgan `Rust` yo'nalishi `FfiType::try_from_ffi`.
 
-::: ogohlantirish
+::: warning
 
 Shuni yodda tutingki, aksincha o'zgarish noto'g'ri va aniqlanmagan xatti-harakatlarga sabab bo'lishi mumkin. Biz eng ko'p xatolarni oldini olish uchun qo'limizdan kelganini qilishimiz mumkin bo'lsa-da, siz dasturning to'g'ridan-to'g'risida ishonch hosil qilishingiz kerak.
 

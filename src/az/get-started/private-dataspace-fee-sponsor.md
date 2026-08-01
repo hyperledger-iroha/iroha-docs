@@ -438,7 +438,7 @@ Tətbiqinizdə və ya müqavilənizdə dönüşüm siyasəti saxlayın:
 - istifadəçi balansı çox aşağı olduqda nə olur?
 - sponsor XOR balansının çox aşağı olduğu zaman nə olur?
 
-::: xəbərdarlıq
+::: warning
 
 İstifadə etməyin `gas_asset_id` Bu qaz aktivində sponsorun da ödəniş edilməsini istəmirsinizsə, "lokal token haqqı" modelinə görə. `fee_sponsor` Həmçinin sponsor qaz boru kəmərindəki aktivlərin məbləği üçün ödəyicisi hesab olunur. Yerli token istifadəçi ödənişləri üçün, transfer və ya müqavilə qaydaları ilə token açıq şəkildə toplayın.
 

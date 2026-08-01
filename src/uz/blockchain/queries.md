@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/queries.md
-translation_source_hash: 0a32b75b78d5bcde0d2b84b58d440b18e545559dfd9772dd6508ad41e972bf6e
+translation_source_hash: 234c831c97bb93996e6cf51505921ff509e233408cf2faf6a9b23641e5642040
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,13 +12,13 @@ import WarningFatQuery from './WarningFatQuery.vue'
 
 # Savollar {#queries}
 
-Garchi blokchainning holati to'g'risida ko'p ma'lumotlarni, biz ilgari ko'rsatganimizdek, voqealar bo'yicha abonent va filtr yordamida qiziqarli hodisalarga cheklash mumkin bo'lsa-da, ba'zan siz yanada bevosita yondashishingiz kerak. So'rovlarni kiriting.
+Tadbirlar abonentlari va filtrlari blokcheyn holatidagi o'zgarishlarni kuzatishlari mumkin. Joriy holatni to'g'ridan-to'g'ri ko'rish kerak bo'lganda so'rovdan foydalaning.
 
-So'rovlar Iroha tengdoshlariga yuborilganda, hozirgi dunyo holatining tafsilotlari bilan javobni keltirib chiqaradigan kichik ko'rsatmalarga o'xshash ob'ektlardir.
+So'rovlar kichik ko'rsatmalarga o'xshash ob'ektlardir. Iroha hozirgi dunyoga bo'lgan nuqtai nazaridan tafsilotlarni olish uchun tengdoshlar.
 
-Bu to'g'ridan-to'g'ri tarmoqda mavjud bo'lgan yagona ma'lumot emas, lekin barcha tarmoqlarda mavjud bo'lishi kafolatlangan yagona ma'lumotlar.
+Tarmoq boshqa ma'lumotlarni oshkor qilishi mumkin. Qidirilishi mumkin bo'lgan dunyo davlatlari ma'lumotlar har bir Iroha tarmog'ida mavjud bo'lishi kafolatlangan yagona tur hisoblanadi.
 
-Iroha ning har bir ishga tushirilishi uchun boshqa ma'lumotlar mavjud bo'lishi mumkin. Masalan, telemetriya ma'lumotlarining mavjudligi tarmoq boshqaruvchilariga bog'liq. Ishni bajarish uchun uni ishlatishning o'rniga ishlash quvvatini taqsimlash yoki yo'qligi butunlay ularning qaroridir. haqiqiy ish. Boshqa tomondan, ba'zi funktsiyalar har doim kerak bo'ladi, masalan, hisob raqamingizga kirish huquqi.
+Iroha ning har bir ishga tushirilishi uchun boshqa ma'lumotlar mavjud bo'lishi mumkin. Masalan, telemetriya ma'lumotlarining mavjudligi tarmoq boshqaruvchilariga bog'liq. Ular taqsimlashni xohlashadimi yoki yo'qmi, bu ularning qarori. Ishni amalga oshirish uchun uni ishlatishning o'rniga ishni kuzatish uchun qayta ishlash quvvati. Boshqa tomondan, ba'zi funktsiyalar har doim kerak bo'ladi, masalan, hisob raqamingizga kirish huquqi.
 
 So'rovlarning natijalari bir vaqtning o'zida [](#sorting), [paginated](#pagination) va [filtered](#filters) peer-side bilan tartibga solinadi. Sorting metadata kalitlarida lexikografik ravishda amalga oshiriladi. Filtrlash turli xil tamoyillarga ko'ra amalga oshirilishi mumkin, domenga mos (shaxsiy IP manzil filtrlari maskasi) dan `begins_with` kabi sub-satrning usullariga qadar mantiqiy operatsiyalarni qo'shish.
 
@@ -60,7 +60,7 @@ let query = FindAssetsByAccountId::new(alice_id);
 
 Bitta so'rov va kichik takrorlanadigan so'rovlar uchun siz `client.request` dan foydalanib, so'rovni yuborishingiz va natijani bir marta olishingiz mumkin.
 
-Biroq, `FindAccounts`, `FindAssets` yoki `FindBlocks` kabi keng takrorlanadigan so'rovlar katta natija setlarini qaytarishi mumkin. Tengdoshlar va mijozlarga yukni kamaytirish uchun sahifalashdan foydalanish.
+Biroq, keng takrorlanishi mumkin bo'lgan savollar: `FindAccounts`, `FindAssets`, yoki `FindBlocks` katta natija setlarini qaytarishi mumkin. Tengdoshlar va mijozlarga yukni kamaytirish uchun sahifalashdan foydalanish.
 
 `Pagination`ni yaratish uchun siz `client.request_with_pagination(query, pagination)` raqamiga qo'ng'iroq qilishingiz kerak, u yerda `pagination` quyidagicha qurilgan:
 
@@ -74,7 +74,7 @@ let pagination = Pagination::new(Some(starting_result), Some(limit));
 
 So'rovni yaratganingizda filtrdan faqat belgilangan filterga mos bo'lgan natijalarni qaytarish uchun foydalanishingiz mumkin.
 
-Filterlar so'rovga mos. Misol uchun, hisob so'rovlari hisobning identifikatsiyasi yoki metama'lumotlar orqali tortilishi mumkin, aktiv so'rovlarini esa aktiv ta'riflanishi, egasi hisobi yoki domen proyeksiyasi orqali tortilishlari mumkin. Iloji bo'lsa, SDK ning yozib olingan so'rov qurilmalaridan foydalaning, shunda filtr turi so'rov chiqariladigan turi bilan mos keladi.
+Filterlar so'rovlarga mos. Misol uchun, hisob so'rovlari hisobning identifikatsiyasi yoki metadatiga qarab tortilishi mumkin, aktiv so'rovlarini esa aktivga ko'ra tortilishi kerak SDK ning yozilgan so'rov quriluvchilaridan iloji bo'lganda foydalaning, shunda filtr turi so'rovni chiqarish turi bilan mos keladi.
 
 ## Sortlash {#sorting}
 

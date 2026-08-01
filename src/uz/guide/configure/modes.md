@@ -1,9 +1,9 @@
 ---
 translation_locale: uz
 translation_source: /guide/configure/modes.md
-translation_source_hash: 141e640a596b419627c21dd4b22690f6ef97efe6ad2fc21ea5f806d0e262227f
+translation_source_hash: 3f6c2d84c7b6d325d76fb1b1a3ec0efb75381521f7fc69e7924a96532679bc61
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Davlat va xususiy blokchainlar {#public-and-private-blockchains}
@@ -16,9 +16,9 @@ Quyida ushbu ikkita foydalanish holatlarining asosiy farqlarini ko'rsatamiz.
 
 ## Ruxsatlar {#permissions}
 
-Umumiy blokchainda aksariyat hisobvaraqlar bir xil ruxsatlarga ega bo'ladi. Xususiy blokchainda esa, agar tegishli ruxsat berilmagan bo'lsa, ularga berilgan vakolatdan tashqarida ko'pgina hisobvaraqlar hech narsa qila olmaydi deb hisoblanadi.
+Ommaviy blokchainda aksariyat hisobvaraqlar bir xil ruxsatlarga ega bo'ladi. Xususiy blokchainda har bir hisobvaraq faqat o'z aniq ruxsatlariga ega.
 
-::: ma'lumot
+::: info
 
 Ko'proq ma'lumot olish uchun [ ruxsatnomalar to'g'risidagi ](/uz/blockchain/permissions.md) bo'limga murojaat qiling.
 
@@ -28,7 +28,7 @@ Ko'proq ma'lumot olish uchun [ ruxsatnomalar to'g'risidagi ](/uz/blockchain/perm
 
 Umumiy blokcheynda tengdoshlarni qabul qilish zanjir siyosatining bir qismi hisoblanadi. Xususiy blokcheyn uchun ishga tushirishlar odatda konfiguratsiya va kelib chiqishi bo'yicha ishonchli tengdoshni belgilaydi.
 
-::: ma'lumot
+::: info
 
 Ko'proq ma'lumot olish uchun [ tengdoshlar boshqaruvini](peer-management.md) ko'rib chiqing.
 
@@ -40,19 +40,19 @@ Qanday qilib o'rnatishga qaror qilishingizga qarab [genesis blok (`genesis.json`
 
 Tanlangan ijrochi qaysi ruxsatnomalarni tekshirishni belgilaydi. Siz xususiy, boshqaruvchisi tomonidan boshqariladigan tarmoqni yoki ko'proq ochiq tarmoqni shakllantirish uchun andoza [ ruxsatnoma tokenlarini ](/uz/blockchain/permissions.md) ajratib berishingiz mumkin. Ushbu ruxsatnomalar faol bo'lganidan so'ng, hisoblarni ro'yxatdan o'tkazish jarayoni boshqacha.
 
-Hisobvaraqlarni ro'yxatdan o'tkazish bo'yicha davlat va xususiy blokchainning quyidagi farqlari mavjud:
+Davlat va xususiy ro'yxatdan o'tish siyosati odatda farq qiladi:
 
-- Umumiy blokcheynda har kim hisob qaydnomasini ro'yxatdan o'tkaza oladi[^1]. Shunday qilib, nazariy jihatdan sizga kerak bo'lgan yagona narsa - bu mos mijoz, qo'llab-quvvatlanadigan algoritm uchun xususiy kalitni ishlab chiqarish usuli va ro'yxatga olishni qabul qiladigan ruxsat berish siyosati.
+- Umumiy ro'yxatdan o'tish siyosati har qanday qobiliyatli foydalanuvchidan hisob qaydnomasini qabul qiladi [^1]. Foydalanuvchiga mos mijoz, qo'llab-quvvatlanadigan algoritm uchun xususiy kalit va siyosat tomonidan qabul qilingan ro'yxatga olish so'rovi kerak.
 
-- Xususiy blokchainda hisob qaydnomasini tuzish uchun har qanday jarayon mavjud bo'lishi mumkin: ro'yxatga olish yo'l-yo'riqlari ma'lum bir hisob orqali yoki boshqa tafsilotlarni so'ragan aqlli shartnoma tomonidan taqdim etilishi mumkin. Xususiy blokcheynda yangi hisoblarni ro'yxatdan o'tkazish faqat ma'lum sanalarda mumkin bo'lishi yoki o'zgartirilmaydigan token bilan cheklanganligi mumkin.
+- Xususiy ro'yxatdan o'tish siyosati bir hisob raqamiga yoki bitta aqlli shartnomaga ro'yxatga olishlarni taqdim etishga ruxsat berishi mumkin. G'ayratli siyosat ro'yxatni vaqt darvozasiga cheklashi mumkin. Shuningdek, u jo'natgan kishidan ta'minlangan tokeni sarflashni talab qilishi mumkin, chunki hech qanday hokimiyatda ko'proq mint qilish uchun ruxsat yo'q.
 
-- Oddiy xususiy blokcheynda, ya'ni hisoblarni ro'yxatdan o'tkazish uchun hech qanday noyob jarayonlar bo'lmagan blokcheynida boshqa hisob qayd etish uchun sizga hisob kerak.
+- Shaxsiy tarmoqlarning andoza namunasi bo'yicha mavjud hisobvaraq har bir yangi hisobvaraq uchun ro'yxatdan o'tadi.
 
 Andoza ruxsatnomalarni tasdiqlovchilar odatiy xususiy blokcheyn foydalanish holatini qamrab oladi.
 
-::: ma'lumot
+::: info
 
-Umumiy va xususiy rejimlar alohida nodlar binarlari emas, balki siyosat profillari hisoblanadi. Ochiq tarmoqni ishga tushirishdan oldin etkazib berayotgan ijrochi va genesis ruxsatlarini ko'rib chiqing.
+Umumiy va xususiy rejimlar ijrochi va genesis siyosati tanlovidir. Ikkalasi ham bir xil nod ikkilamchini ishlatadi. Ochiq tarmoqni ishga tushirishdan oldin tanlangan ijrochi va geniz huquqlarini ko'rib chiqing.
 
 :::
 

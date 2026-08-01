@@ -1,9 +1,9 @@
 ---
 translation_locale: es
 translation_source: /guide/configure/modes.md
-translation_source_hash: 141e640a596b419627c21dd4b22690f6ef97efe6ad2fc21ea5f806d0e262227f
+translation_source_hash: 3f6c2d84c7b6d325d76fb1b1a3ec0efb75381521f7fc69e7924a96532679bc61
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Las cadenas de bloques públicas y privadas {#public-and-private-blockchains}
@@ -16,9 +16,9 @@ A continuación presentamos las principales diferencias en estos dos casos de us
 
 ## Las autorizaciones {#permissions}
 
-En una cadena de bloques pública, la mayoría de las cuentas tienen el mismo conjunto de permisos. En una cadena privada, se supone que la mayoría de los cuentas no pueden hacer nada fuera de la autoridad otorgada a ellos a menos que se les conceda explícitamente el permiso pertinente.
+En un blockchain público, la mayoría de las cuentas tienen el mismo conjunto de permisos. En una cadena de bloques privada, cada cuenta solo recibe sus permisos explícitos.
 
-::: Información
+::: info
 
 Consulte la sección [ dedicada a los permisos ](/es/blockchain/permissions.md) para más detalles.
 
@@ -28,7 +28,7 @@ Consulte la sección [ dedicada a los permisos ](/es/blockchain/permissions.md) 
 
 En una cadena de bloques pública, la admisión de pares es parte de la política de cadena. Para una cadena privada, las implementaciones suelen fijar el conjunto de pares de confianza en configuración y génesis.
 
-::: Información
+::: info
 
 Para más detalles, consulte el [ Gestión de pares ](peer-management.md).
 
@@ -40,19 +40,19 @@ Dependiendo de cómo decida configurar su bloque genético [ (`genesis.json`) ](
 
 El ejecutor seleccionado define qué controles de permisos se aplican. Puede otorgar los tokens de permiso predeterminados [ ](/es/blockchain/permissions.md) en génesis para dar forma a una red privada, administrada por el administrador o una red más abierta. Una vez que esos permisos están activos, el proceso de registro de cuentas es diferente.
 
-Cuando se trata de registrar cuentas, la cadena de bloques pública y privada tienen las siguientes diferencias:
+Las políticas de registro público y privado generalmente difieren:
 
-- En una cadena de bloques pública, cualquiera debería ser capaz de registrar una cuenta[^1]. Así que, en teoría, todo lo que necesitas es un cliente adecuado, una forma de generar una clave privada para un algoritmo soportado y una política de permisos que acepte el registro.
+- Una política de registro público acepta los registros de cuentas de cualquier usuario elegible[^1]. El usuario necesita un cliente adecuado, una clave privada para un algoritmo soportado y una solicitud de registro aceptada por la política.
 
-- En una cadena de bloques privada, puedes tener cualquier proceso para crear una cuenta: podría ser que la instrucción de registro tenga que ser presentada por una cuenta específica, o por un contrato inteligente que pide otros detalles. Podría ser que en una cadena de bloques privada el registro de nuevas cuentas sólo sea posible en fechas específicas, o limitado por un token no contable (finito).
+- Una política de registro privado puede autorizar a una cuenta o un contrato inteligente para presentar registros. Una política personalizada puede limitar el registro a una ventana de tiempo. También puede requerir que el remitente gaste un token cuyo suministro está fijo porque ninguna autoridad tiene permiso para acuñar más.
 
-- En una cadena de bloques privada típica, es decir, sin procesos únicos para el registro de cuentas, se necesita una cuenta para registrar otra.
+- Con el patrón de red privada por defecto, una cuenta existente presenta el registro para cada nueva cuenta.
 
 Los validadores de permisos predeterminados cubren el caso típico de uso privado de blockchain.
 
-::: Información
+::: info
 
-Los modos público y privado son perfiles de políticas en lugar de binarios de nodos separados. Revise los permisos de ejecución y génesis que envíe antes de ejecutar una red abierta.
+Los modos público y privado son ejecutor y genesis políticas opciones. Ambos utilizan el mismo nodo binario. revisar los ejecutores seleccionados y genesis permisos antes de ejecutar una red abierta.
 
 :::
 

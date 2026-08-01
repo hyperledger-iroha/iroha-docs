@@ -20,6 +20,6 @@ Yeniləmə iş axını ilə təsdiqlənən yalnız nəticələr əhatə olunmuş
 
 <CompatibilityMatrixTable />
 
-::: məlumat
+::: info
 `VITE_COMPAT_MATRIX_URL` yalnız uyğun canlı backend ilə birləşdirilmiş sürət görüntüsünü əvəz etmək üçün təyin edin. Bu dəyişən olmadan səhifə yüklənir `src/public/compat-matrix.json`.
 :::

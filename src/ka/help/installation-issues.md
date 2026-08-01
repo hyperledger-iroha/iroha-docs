@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /help/installation-issues.md
-translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
+translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c054c85a2a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -89,7 +89,7 @@ $ rustup toolchain update stable
 $ rustup default stable
 ```
 
-ეს შეიძლება მოხდეს, თუ თქვენ დააინსტალირეთ `nightly` ვერსია ან დაყენეთ კონკრეტული Rust ვერსია, მაგრამ დაგავიწყდათ მისი გათიშვა.
+`nightly` ვერსიის დამონტაჟება ან კონკრეტული Rust ვერსიის დაყენება, შემდეგ მისი გათიშვის გარეშე, შეიძლება გამოიწვიოს ეს პრობლემა.
 
 ### შეამოწმეთ, არსებობს თუ არა სხვა Rust ვერსიები. {#check-if-there-are-other-rust-versions}
 
@@ -123,13 +123,13 @@ $ rustup toolchain list
 $ rustup remove <toolchain>
 ```
 
-ამის შემდეგ, დარწმუნდით, რომ
+ინსტრუმენტების ჯაჭვების ამოღების შემდეგ, ამ ბრძანებას უნდა გამოუცხადოს ბრძანება არ იპოვეს შეცდომა:
 
 ```bash
 $ cargo --help
 ```
 
-გამოიწვევს ბრძანების არარსებობის შეცდომას, ანუ თქვენ არ გაქვთ აქტიური Rust ინსტრუმენტების ჯაჭვი დამონტაჟებული. შემდეგ, გაუშვით:
+ეს შეცდომა ადასტურებს, რომ აქტიური Rust ინსტრუმენტების ჯაჭვი არ არის დამონტაჟებული. შემდეგ ამოქმედეთ:
 
 ```bash
 $ rustup toolchain install stable

@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /blockchain/assets.md
-translation_source_hash: 58c9f7657f5714dc4bbb884933a1c947687fcf6c83e471007e6c7885f1dab214
+translation_source_hash: c80e6025007653b355d373394465d04adefc1221c8f34d9008f1c9cbabd3dc40
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -47,7 +47,7 @@ Iroha ንብረት በሂሳብ የተያዘ የቁጥር ሚዛን ነው ። �
 |`Infinitely` |ተለዋዋጭ አቅርቦት: ንብረቱ በተደጋጋሚ ሊፈጠር እና ሊቃጠል ይችላል.|
 |`Once` |ቋሚ አቅርቦት ምልክት፣ አንድ ጊዜ ሊፈጠርና ከዚያም ሊቃጠል ይችላል።|
 |`Not` |የሚቃጠለው ነገር ግን ዳግመኛ የማይሰረዝ ቋሚ አቅርቦት ምልክት።|
-|`Limited(n)` |ለጥቂት ተጨማሪ ሥራዎች የሚፈቀድ ነው ። |
+|`Limited(n)` |ፖሊሲው የተገደበ ቁጥር ባላቸው ተጨማሪ ግብይቶች ውስጥ አዳዲስ የንብረት ክፍሎች እንዲለቀቁ ያስችላል። |
 
 አጠቃቀም `Infinitely` ለተለመደው ተለዋዋጭ ሀብቶች እና `Once` ወይም `Limited(n)` ለቋሚ አቅርቦት ወይም ለተገደበ አቅርቦት ንብረቶች። `Not` የንብረት አቅርቦት ቀድሞውኑ ካልተቋቋመ በስተቀር እንደ መጀመሪያ ፖሊሲ።
 

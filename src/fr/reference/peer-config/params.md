@@ -26,7 +26,7 @@ Une attaque de répétition est une tentative de soumettre une transaction valid
 
 <param-table type=string env=CHAIN />
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 chain = "00000000-0000-0000-0000-000000000000"
@@ -44,7 +44,7 @@ La clé publique du coéquipier. Les coéquipiers validateurs de consensus doive
 
 <param-table type="public-key" env="PUBLIC_KEY" />
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 public_key = "ea01309060D021340617E9554CCBC2CF3CC3DB922A9BA323ABDF7C271FCC6EF69BE7A8DEBCA7D9E96C0F0089ABA22CDAADE4A2"
@@ -62,7 +62,7 @@ La clé privée du pair doit correspondre à `public_key`; les pairs validateurs
 
 <param-table type="private-key" env="PRIVATE_KEY" />
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 private_key = "8926201CA347641228C3B79AA43839DEDC85FA51C0E8B9B6A00F6B0D6B0423E902973F"
@@ -88,7 +88,7 @@ Array of peer strings. Utilisez `PUBLIC_KEY@ADDRESS` lorsque l'adresse P2P est c
 </template>
 </param-table>
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 trusted_peers = [
@@ -119,7 +119,7 @@ Array d'objets avec les champs `public_key` et `pop_hex`
 </template>
 </param-table>
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 trusted_peers_pop = [
@@ -146,7 +146,7 @@ Chemin de fichier vers la charge utile du bloc génèse signé générée par `k
 
 <param-table type="file-path" env="GENESIS" />
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [genesis]
@@ -165,7 +165,7 @@ La clé publique de la paire de clés génèse.
 
 <param-table type="public-key" env="GENESIS_PUBLIC_KEY" />
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [genesis]
@@ -186,7 +186,7 @@ Adresse pour la communication p2p à des fins de consensus (sumeragi) et de sync
 
 <param-table type="socket-addr" env="P2P_ADDRESS" />
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -207,7 +207,7 @@ Il sera bavardé à des pairs liés afin qu'ils puissent le bavarder à d'autres
 
 <param-table type="socket-addr" env="P2P_PUBLIC_ADDRESS" />
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -226,7 +226,7 @@ Le nombre de blocs qui peuvent être envoyés dans un seul message de synchronis
 
 <param-table type=number default-value=4 />
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -243,7 +243,7 @@ Le bavardage plus fréquent réduit le temps de synchronisation, mais peut surch
 
 <param-table type=millis default-value=10_000 default-note="10 seconds" />
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -260,7 +260,7 @@ Une taille plus petite entraîne un temps de synchronisation plus long, mais uti
 
 <param-table type=number default-value=500 />
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -277,7 +277,7 @@ Le bavardage plus fréquent réduit le temps de synchronisation, mais peut surch
 
 <param-table type=millis default-value=1_000 default-note="1 second" />
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -292,7 +292,7 @@ Durée de temps après laquelle la connexion avec les pairs est interrompue si l
 
 <param-table type=millis default-value=300_000 default-note="5 minutes" />
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [network]
@@ -309,7 +309,7 @@ Adresse à laquelle le serveur Torii doit écouter et auquel le client (s) fait 
 
 <param-table type=socket-addr env=API_ADDRESS />
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [torii]
@@ -341,7 +341,7 @@ Nombre (en octets)
 </template>
 </param-table>
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [torii]
@@ -356,7 +356,7 @@ Le temps pendant lequel une requête peut rester dans le magasin si elle n'est p
 
 <param-table type=millis default-value=10_000 default-note="10 seconds" />
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [torii]
@@ -371,7 +371,7 @@ La limite supérieure du nombre de requêtes en direct.
 
 <param-table type=number default-value=128 />
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [torii]
@@ -386,7 +386,7 @@ La limite supérieure du nombre de requêtes en direct pour un seul utilisateur.
 
 <param-table type=number default-value=128 />
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [torii]
@@ -417,7 +417,7 @@ Choisissez le niveau qui convient le mieux à votre cas d'utilisation. Consultez
 </template>
 </param-table>
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [logger]
@@ -457,7 +457,7 @@ Pour plus de détails, voir la documentation [`tracing-subscriber`](https://docs
 
 </param-table>
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [logger]
@@ -503,7 +503,7 @@ Pour plus de détails et des résultats d'échantillonnage, voir la documentatio
 </template>
 </param-table>
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [logger]
@@ -528,7 +528,7 @@ Les anciens blocs seront supprimés de la mémoire et chargés du disque si néc
 
 <param-table type=number default-value=1024 env=KURA_BLOCKS_IN_MEMORY />
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [kura]
@@ -556,7 +556,7 @@ Chaîne, valeurs possibles:
 </template>
 </param-table>
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [kura]
@@ -571,13 +571,13 @@ KURA_INIT_MODE=fast
 
 ### `kura.store_dir` {#param-kura-store-dir}
 
-Désigne le répertoire où les blocs sont stockés.
+Désigne le répertoire[^paths] où les blocs sont stockés.
 
 Voir aussi: [`snapshot.store_dir`](#param-snapshot-store-dir).
 
 <param-table env=KURA_STORE_DIR type=file-path default-value=./storage />
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [kura]
@@ -596,7 +596,7 @@ Drapeau pour permettre l'impression de nouveaux blocs à la console.
 
 <param-table env=KURA_DEBUG_OUTPUT_NEW_BLOCKS type=bool default-value=false />
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [kura.debug]
@@ -617,7 +617,7 @@ La limite supérieure du nombre de transactions en attente dans la file d'attent
 
 <param-table type=number default-value=65_536 />
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [queue]
@@ -634,7 +634,7 @@ Utilisez cette option pour appliquer une throttling.
 
 <param-table type=number default-value=65_536 />
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [queue]
@@ -649,7 +649,7 @@ La transaction sera abandonnée après cette période si elle est toujours en fi
 
 <param-table type=millis default-value=86_400_000 default-note="24 hours" />
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [queue]
@@ -666,7 +666,7 @@ Le commutateur de débogage uniquement pour l'exercice des chemins de manipulati
 
 <param-table type=bool default-value=false />
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [sumeragi.debug]
@@ -703,7 +703,7 @@ Chaîne, valeurs possibles:
 </template>
 </param-table>
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [snapshot]
@@ -722,7 +722,7 @@ La fréquence des prises de vue.
 
 <param-table type=millis default-value=600_000 default-note="10 minutes" />
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [snapshot]
@@ -739,7 +739,7 @@ Voir aussi: [`kura.store_dir`](#param-kura-store-dir)
 
 <param-table type=file-path default-value=./storage/snapshot env=SNAPSHOT_STORE_DIR />
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [snapshot]
@@ -766,7 +766,7 @@ Le nom du nœud sera affiché sur la télémétrie.
 
 <param-table type=string />
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [telemetry]
@@ -781,7 +781,7 @@ Le WebSocket URL du collecteur de télémétrie.
 
 <param-table type=string />
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [telemetry]
@@ -796,7 +796,7 @@ La période minimale d'attente avant la reconnexion.
 
 <param-table type=millis default-value=1_000  default-note="1 second" />
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [telemetry]
@@ -811,7 +811,7 @@ L'exponente maximale de 2 qui est utilisée pour augmenter le délai entre les r
 
 <param-table type=number default-value=4 />
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [telemetry]
@@ -826,7 +826,7 @@ Le chemin du fichier pour écrire la télémétrie à
 
 <param-table type=file-path />
 
-::: groupe de codes
+::: code-group
 
 ```toml [Config File]
 [dev_telemetry]

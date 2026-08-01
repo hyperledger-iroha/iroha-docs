@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /blockchain/assets.md
-translation_source_hash: 58c9f7657f5714dc4bbb884933a1c947687fcf6c83e471007e6c7885f1dab214
+translation_source_hash: c80e6025007653b355d373394465d04adefc1221c8f34d9008f1c9cbabd3dc40
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -47,7 +47,7 @@ Les définitions d'actifs prennent en charge ces modes de mintabilité:
 |`Infinitely` |L'actif peut être fabriqué et brûlé à plusieurs reprises. |
 |`Once` |Le jeton d'approvisionnement fixe peut être coulé une fois et brûlé.|
 |`Not` |Une marque d'approvisionnement fixe qui peut être brûlée mais pas coulée de nouveau.|
-|`Limited(n)` |La mouture est autorisée pour un nombre limité d'opérations supplémentaires. |
+|`Limited(n)` |La politique permet l'émission de nouvelles unités d'actifs dans le cadre d'un nombre limité d'opérations supplémentaires |
 
 Utilisation `Infinitely` pour les actifs élastiques normaux et `Once` ou `Limited(n)` pour les actifs à approvisionnement fixe ou limité. Ne pas utiliser `Not` en tant que politique initiale, sauf si l'offre d'actifs est déjà établie.
 

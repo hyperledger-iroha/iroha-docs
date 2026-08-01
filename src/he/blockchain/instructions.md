@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /blockchain/instructions.md
-translation_source_hash: 3251078b2b2268ff78563c02a0f935c63dc0569f0b6d38071150cbb4b89394d6
+translation_source_hash: adc3eff9758dd73e9114e78eaa18ddf6271db3bc4042611e1ed6ed1aac226246
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -39,7 +39,7 @@ translation_engine: nllb-200-ct2
 | [מנט/ברן ](#mint-burn) |נכסים מספריים, פעולות חוזרות.|חשבונות או גורמים .|
 | [SetKeyValue/RemoveKeyValue ](#setkeyvalue-removekeyvalue) |אובייקטים שיש להם [מטא נתונים](./metadata.md): תחומים, חשבונות, הגדרות נכסים, NFTs, RWAs, גורמים |                      |
 | [SetParameter](#setparameter) |פרמטרים של שרשרת |                      |
-| [סיוע / ביטול ](#grant-revoke) | [תפקידים, סימני אישור ](/he/blockchain/permissions.md) |חשבונות או תפקידים |
+| [סיוע / ביטול ](#grant-revoke) | [תפקידים, סימני רשיון ](/he/blockchain/permissions.md) |חשבונות או תפקידים |
 | [העברת ](#transfer) |תחומים, הגדרות נכסים, נכסי מספרים, NFTs |חשבונות |
 | [אבטחה מקומית ומנעול נכסים ](#native-escrow-and-asset-locks) |מאבטחות נכסים מספריות, סגרות נכסים, מחויבות מאבטחות אנוניות |קונים, יעדים, או מחלוקות|
 | [ExecuteTrigger](#executetrigger) |תפעילים.|                      |
@@ -128,7 +128,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 סוגי RWA נוצרו באמצעות ההוראה המיוחדת `RegisterRwa`. הקוד הנוכחי אינו חושף הוראה `UnregisterRwa`; השתמש ב `RedeemRwa` כדי לפרוש את הכמות המוצגת.
 
-::: מידע
+::: info
 
 ציין כי תלוי איך אתה מחליט להגדיר את [בלוק הגנזה](/he/guide/configure/genesis.md) ב `genesis.json` (במיוחד, בין אם אתה כולל או לא רישום של סימני אישור), תהליך הרישום של חשבון יכול להיות שונה מאוד. באופן כללי, ניתן לסכם את זה כך:
 
@@ -139,13 +139,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 :::
 
-::: מידע
+::: info
 
 רישום שוויון הוא כיום הדרך היחידה להוסיף שווינים שלא היו חלק מהשוויון האמיני המקורי שהוקם לרשת.
 
 :::
 
-קראו לאחד מדריכים ספציפיים לשפה כדי להוביל אתכם דרך תהליך הרישום של אובייקטים ב-blockchain:
+השתמשו בהנחיות ספציפיות לשפה כדי לרשום אובייקטים ב-blockchain:
 
 |שפה |מדריך |
 | --------------------- | ------------------------------------------------------------------------------------------------------- |
@@ -249,7 +249,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 נכסים מופעלים על חשבון מסוים, בדרך כלל זה שהרשם את הנכס מלכתחילה. כמויות הנכסים הן לא שליליות, כך שאתה אף פעם לא יכול להיות `$-1.0` של נכס או לשרוף סכום שלילי ולקבל מנטה.
 
-קראו לאחד מדריכים ספציפיים לשפה כדי להוביל אתכם דרך תהליך גילוי נכסים ב-blockchain:
+השתמשו בהנחיות ספציפיות לשפה עבור נכסי ה-mint blockchain:
 
 - [CLI](/he/get-started/operate-iroha-via-cli.md)
 - [Rust](/he/guide/tutorials/rust.md)
@@ -328,7 +328,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ## סיוע / ביטול {#grant-revoke}
 
-ההוראות על היתר והביטול משמשות עבור רשיונות חשבון [ ותפקידים ](permissions.md).
+ההוראות על היתר והביטול משמשות עבור רשיונות חשבון [ ותפקידים](permissions.md).
 
 `Grant` משמשת כדי להעניק באופן קבוע למשתמש אישור אחד או קבוצה של רשיונות (רשימה). תפקידים ורשיונות שניתנו יכולים להימחק רק באמצעות ההוראה `Revoke`.
 
@@ -430,7 +430,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ## הוראות אחרות {#other-instructions}
 
-Iroha חושף גם הוראות רמה נמוכה יותר עבור אינטגרציה של זמן הפעלה ושל מבצען:
+Iroha חושף גם הוראות רמה נמוכה יותר עבור אינטגרציה של זמן הפעלה ושל מבצעים:
 
 - `Log`: להוציא רישום ליומן במהלך ביצועו
 - `CustomInstruction`: לשאת מטענים מועילים ספציפיים למבצע JSON

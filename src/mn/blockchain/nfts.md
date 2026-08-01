@@ -1,9 +1,9 @@
 ---
 translation_locale: mn
 translation_source: /blockchain/nfts.md
-translation_source_hash: 335eacd30c5964659baeeae8ac937805f1d4d786dd42a36e5164bbe75ef7e360
+translation_source_hash: 6dd2d21a29f352a14cb17046c66cfa541ef501b733b95bb6874d2d3f86ec0504
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # NFTs {#nfts}
@@ -38,7 +38,9 @@ curl -fsS https://taira.sora.org/openapi.json \
   | jq -r '.paths | keys[] | select(startswith("/v1/nfts") or startswith("/v1/explorer/nfts"))'
 ```
 
-Халуун `items` массив нь олон нийтийн туршилтын сүлжээнд хүчинтэй хариу юм. Энэ нь өнөөгийн хуудсанд NFTs байхгүй гэсэн үг биш бөгөөд NFT зааварчилгааг ашиглах боломжгүй гэсэн үг биш юм.
+Хоосон `items` массив нь нийтийн тестнетийн хүчинтэй хариу юм. Энэ нь
+одоогийн хуудсанд NFTs байхгүй гэсэн үг; NFT заавруудыг ашиглах боломжгүй
+гэсэн үг биш.
 
 ## NFT IDs {#nft-ids}
 
@@ -123,7 +125,9 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
-Та дууссандаа цэвэрлэх. NFT, Энэ команд нь одоогийн эзэн бүртгэлийн конфигурацыг ашиглаж, эсвэл NFT Хамгийн түрүүнд эргэж ирнэ.
+Зааврыг туршиж дууссаны дараа жишээ NFT-г устгана уу. Хэрэв та үүнийг
+шилжүүлсэн бол буцааж шилжүүлэх эсвэл одоогийн эзэмшигчийн дансны
+тохиргоог ашиглан бүртгэлээс хасах командыг илгээнэ үү.
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -145,7 +149,9 @@ NFT бүртгэл, арилгах, шилжүүлэх, метадэтгэрий
 - `CanTransferNft`
 - `CanModifyNftMetadata`
 
-Тусгай зөвшөөрлийн шалгалтыг идэвхтэй гүйлгээний цаг хугацааны баталгаажуулагчаар хэрэгжүүлж байгаа тул сүлжээ нь Хөдөлмөрийн гүйцэтгэгч. [Тусгай зөвшөөрлийн тэмдэгүүд](/mn/reference/permissions.md) одоогийн гарын үсэг тэмдэгтийн жагсаалтад.
+Зөвшөөрлийн шалгалтыг идэвхтэй runtime баталгаажуулагч хэрэгжүүлдэг тул
+сүлжээ executor-оо шинэчлэх замаар зөвшөөрлийн бодлогоо өөрчилж болно.
+Одоогийн үндсэн токенуудын жагсаалтыг [Зөвшөөрлийн токенууд](/mn/reference/permissions.md)-аас үзнэ үү.
 
 ## NFTs-ийг сонгох {#choosing-nfts}
 

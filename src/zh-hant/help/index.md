@@ -8,10 +8,8 @@ translation_engine: nllb-200-ct2
 
 # 獲得支持 {#receive-support}
 
-你可能會有問題, Iroha 您希望與其他人詳細地討論. GitHub.
+有時,你可能會有關於 Iroha 你想和其他人詳細討論這些問題.快速與我們的社區聯繫的方法:電訊,Discord, GitHub.
 
-社群使用 [電子郵件](https://t.me/hyperledgeriroha) 及其他
-[LF Decentralized Trust 沒有爭議](https://discord.gg/hyperledger) 關於
-請使用 `iroha` 提供計畫問題的通道.
+社區使用 [電報](https://t.me/hyperledgeriroha) 和 [LF Decentralized Trust 爭議](https://discord.gg/hyperledger) 對於通訊. `iroha` 項目問題道.
 
-終於可以 [建立一個 GitHub 這個問題](https://github.com/hyperledger-iroha/iroha/issues/new/choose), 或是您發現的錯誤.
+最後,您可以 [創建一個 GitHub 問題](https://github.com/hyperledger-iroha/iroha/issues/new/choose),要求更新文件,對核心團隊的建議或您發現的錯誤.

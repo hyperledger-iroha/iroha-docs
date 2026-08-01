@@ -1,6 +1,9 @@
 # Security
 
-When utilizing Iroha—or any other blockchain ledger for that matter—security is paramount for financial organizations, as it forms the foundation of trust in an industry where sensitive financial data and transactions are routine. A successful security breach performed by a malicious party can lead to devastating consequences for you. Therefore establishing preemptive security measures is essential to protect the integrity and confidentiality of your sensitive data.
+Secure an Iroha deployment as you would any system that handles sensitive
+data and value. Protect signing keys, network access, node operations,
+monitoring, and incident response. A ledger does not remove the need for
+these controls.
 
 ### Navigation
 
@@ -8,7 +11,7 @@ In this section you can learn about various aspects of securing your Iroha netwo
 
 - [Security Principles](./security-principles):
 
-  The core security principles that individuals and organizations can adopt to protect their data and decrease the chance of a breach and/or leak.
+  Core principles for protecting data and reducing breach risk.
 
 - [Virtual Private Networks](./vpn.md):
 
@@ -16,7 +19,8 @@ In this section you can learn about various aspects of securing your Iroha netwo
 
 - [Operational Security](./operational-security.md):
 
-  Best practices for securing the day-to-day operations of your network, including access controls, monitoring, incident responses, the use of browsers, etc.
+  Day-to-day controls for access, monitoring, incident response, and operator
+  workstations.
 
 - [Fraud Monitoring](./fraud-monitoring.md):
 
@@ -24,16 +28,17 @@ In this section you can learn about various aspects of securing your Iroha netwo
 
 - [Password Security](./password-security.md):
 
-  A deep-dive into password entropy, creating strong passwords and avoiding password vulnerabilities.
+  Password entropy, strong-password construction, and common failure modes.
 
 - [Public Key Cryptography](./public-key-cryptography.md):
 
-  An introduction into public key cryptography, encryption, signatures, and their role in establishing secure communication within the blockchain.
+  Public-key encryption, signatures, and authenticated communication.
 
   - [Generating Cryptographic Keys](./generating-cryptographic-keys.md):
 
-    Instructions on how to generate cryptographic keys and use `kagami` (a supporting tool shipped alongside Iroha).
+    Generate supported cryptographic keys with `kagami`.
 
   - [Storing Cryptographic Keys](./storing-cryptographic-keys.md):
 
-    Best practices for securing your cryptographic keys with a number of different approaches that can also be combined.
+    Store cryptographic keys using layered controls appropriate to the
+    deployment.

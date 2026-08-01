@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /blockchain/assets.md
-translation_source_hash: 58c9f7657f5714dc4bbb884933a1c947687fcf6c83e471007e6c7885f1dab214
+translation_source_hash: c80e6025007653b355d373394465d04adefc1221c8f34d9008f1c9cbabd3dc40
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -47,7 +47,7 @@ translation_engine: nllb-200-ct2
 |`Infinitely` |إمدادات مرنة، ويمكن تصنيع الأصول وحرقها مراراً وتكراراً. |
 |`Once` |إشارة الإمدادات الثابتة، يمكن صياغتها مرة واحدة ثم حرقها|
 |`Not` |علامة إمدادات ثابتة يمكن حرقها ولكن لا يتم صياغتها مرة أخرى.|
-|`Limited(n)` |يُسمح بالتصوير في عدد محدود من العمليات الإضافية. |
+|`Limited(n)` |وتسمح هذه السياسة بإصدار وحدات أصول جديدة في عدد محدود من العمليات الإضافية. |
 
 استخدم `Infinitely` للأصول المرنة العادية و `Once` أو `Limited(n)` لأصول التوريد الثابت أو المحدود. لا تستخدم `Not` كسياسة أولية إلا إذا تم تأسيس إمدادات الأصول بالفعل.
 

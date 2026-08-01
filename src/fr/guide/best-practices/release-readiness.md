@@ -1,14 +1,14 @@
 ---
 translation_locale: fr
 translation_source: /guide/best-practices/release-readiness.md
-translation_source_hash: 1f316d6a823b23e821d80fe8773df7469358b0e01057f9b76b113cafe4818f20
+translation_source_hash: 984957526424a4e0ec9f29a6da1bb64699245bb135e8157bbe684bc3d87de4cc
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # La libération est prête {#release-readiness}
 
-Avant de promouvoir une application ou un changement de réseau Iroha, prouver le comportement dans le moindre environnement susceptible d'exposer le risque pertinent, puis passer délibérément à travers les réseaux de test partagés et les portes de production.
+Avant de promouvoir une application Iroha ou un changement de réseau, prouver le comportement dans le plus petit environnement susceptible d'exposer le risque pertinent, puis passer délibérément par les réseaux de test et les portes de production partagés.
 
 ## Porte de réseau local {#localnet-gate}
 
@@ -30,8 +30,8 @@ Voir [Construire sur SORA 3: Taira et Minamoto ](/fr/get-started/sora-nexus-data
 
 ## Réseau principal ou porte de production {#mainnet-or-production-gate}
 
-- Utilisez des signatures de production séparées, du financement, des domaines et des chemins de configuration.
-- Confirmer SDK, CLI, de l'entreprise, et la compatibilité du réseau avec les [Matrice de compatibilité](/fr/reference/compatibility-matrix.md).
+- Utilisez des signataires, des financements, des domaines et des chemins de configuration distincts pour la production. N'utilisez pas en production les clés du réseau de test ni les hypothèses liées au faucet.
+- Confirmer les scénarios croisés requis SDK avec la matrice de compatibilité [](/fr/reference/compatibility-matrix.md). Pin séparément et tester l'exact CLI, le binaire par pair, la configuration et la libération du réseau utilisés par le déploiement.
 - Autorisations d'examen, parrainage des frais, limites de tarifs, surveillance, statut de sauvegarde et critères de retour avant la fenêtre de sortie.
 - Exiger une transaction écrite ou un plan de migration pour les états à fort impact.
 

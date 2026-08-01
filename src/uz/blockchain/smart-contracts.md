@@ -1,9 +1,9 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: ed622cdb1d6a47635d0753c98f80aaa903b916133f43bc9fdab268512d0ace69
+translation_source_hash: 7c35c609442df65328fa619b6673be76f801cfc2abc28afd853d7fe61e439e9c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Aqlli shartnomalar {#smart-contracts}
@@ -15,9 +15,9 @@ Iroha tranzaksiyalari `Executable` foydali yuklarni amalga oshiradi. Hozirgi ma'
 - `Executable::Ivm`: Iroha VM bytekod
 - `Executable::IvmProved`: Iroha VM bayt kodi oldindan hisoblangan ko'rsatma qoplamasi va isbot majburiyatlari bilan
 
-Kotodama - bu Iroha ning yuqori darajadagi aqlli shartnoma tili. `.ko` manba fayli deterministik IVM bayt kodiga yig'iladi, an'anaviy ravishda ishga tushirish uchun `.to` artefakt sifatida saqlanadi. Kotodama maqsadlari IVM; u o'z-o'zi RISC-V yoki WebAssembly maqsad emas.
+Kotodama — Iroha'ning yuqori darajali aqlli shartnomalar tili. `.ko` manba fayli deterministik IVM bayt-kodiga kompilyatsiya qilinadi va joylashtirish uchun odatda `.to` artefakti sifatida saqlanadi. Kotodama faqat IVM-ni nishonga oladi. U RISC-V yoki WebAssembly-ni nishonga olmaydi.
 
-Birinchi nashr faqat ABI versiyasini qo'llab-quvvatlaydi 1. Syscall va pointer-ABI siyosati shartnoma qabul qilinishi va bajarilishi bilan shartsiz amalga oshiriladi; ish vaqti moslashuvchanligi o'zgarishi mavjud emas.
+Birinchi reliz faqat ABI 1-versiyasini qo‘llab-quvvatlaydi. syscall va pointer-ABI siyosati shartnomani qabul qilish va bajarish vaqtida hech qanday shartsiz qo‘llanadi; ish vaqti mosligi tugmasi mavjud emas.
 
 ## Aqlli shartnomalardan qachon foydalanish kerak {#when-to-use-smart-contracts}
 

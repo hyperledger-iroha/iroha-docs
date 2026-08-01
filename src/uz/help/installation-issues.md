@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /help/installation-issues.md
-translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
+translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c054c85a2a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -89,7 +89,7 @@ Boshqa variant shundaki, sizda `stable` asboblar zanjiri mavjud, ammo u andoza s
 $ rustup default stable
 ```
 
-Agar siz `nightly` versiyasini o'rnatgan bo'lsangiz yoki muayyan Rust versiyasini sozlagan bo'lsangiz, lekin uni o'chirib qo'yishni unutib qo'ygan bo'lsangiz bu sodir bo'ladi.
+`nightly` versiyasini o'rnatish yoki keyinchalik uni bekor qilmasdan aniq Rust versiyasini sozlash ushbu muammoga sabab bo'lishi mumkin.
 
 ### Boshqa Rust versiyalari mavjudligini tekshirish {#check-if-there-are-other-rust-versions}
 
@@ -123,13 +123,13 @@ Va keyin, har bir `<toolchain>` uchun (bo'sh burchaklarsiz, albatta):
 $ rustup remove <toolchain>
 ```
 
-Bundan so'ng, ishonch hosil qiling
+Asboblar zanjirlarini olib tashlaganidan so'ng, bu buyruq topilmagan buyruq xatosi haqida xabar berishi kerak:
 
 ```bash
 $ cargo --help
 ```
 
-Buyruq topilmagan xatoga olib keladi, ya'ni sizda faol Rust asbob-uskunalar zanjirini o'rnatish yo'q. So'ng:
+Ushbu xato Rust aktiv asboblar zanjirini o'rnatilmaganligini tasdiqlaydi. Keyin:
 
 ```bash
 $ rustup toolchain install stable

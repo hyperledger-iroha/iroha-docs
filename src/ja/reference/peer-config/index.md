@@ -26,7 +26,7 @@ TOML ファイルでローカルピア構成が設定されている.これは,[
 
 TOML コンフィギュレーションファイルには,他の TOML ファイルを指す追加的な `extends` フィールドがあります.これは単行パスまたは複数のパスである可能性があります.
 
-::: コードグループ
+::: code-group
 
 ```toml [Single]
 extends = "single-path.toml"
@@ -40,7 +40,7 @@ extends = ["file1.toml", "file2.toml"]
 
 Iroha は, `extends` で指定されたすべてのファイルをリクシブ的に読み取り,レイヤーに分類し,後者はパラメータレベルで前のファイルを重書きします.例えば, `config.toml` を読み上げると:
 
-::: コードグループ
+::: code-group
 
 ```toml [config.toml]
 extends = ["a.toml", "b.toml"]

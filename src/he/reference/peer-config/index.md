@@ -26,7 +26,7 @@ translation_engine: nllb-200-ct2
 
 בקבצים הקונפיגורציות TOML יש שדה נוסף `extends`, המכוון לקבצים אחרים TOML. זה יכול להיות מסלול אחד או מרובים:
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [Single]
 extends = "single-path.toml"
@@ -40,7 +40,7 @@ extends = ["file1.toml", "file2.toml"]
 
 Iroha יקרא בקירורסיבי את כל הקבצים המתוארים ב- `extends` ויסדר אותם בשכבות, בהן האחרונים כותבים את הקודמים ברמה של פרמטרים. למשל, אם קריאה `config.toml`:
 
-::: קבוצת קוד
+::: code-group
 
 ```toml [config.toml]
 extends = ["a.toml", "b.toml"]

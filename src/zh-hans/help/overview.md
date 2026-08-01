@@ -8,33 +8,19 @@ translation_engine: nllb-200-ct2
 
 # 解决问题 {#troubleshooting}
 
-本节是为了帮助您在工作时遇到问题
-Iroha. 如果有问题,请 [检查钥匙](#check-the-keys)
-如果这没有帮助,请查看解决问题说明
-每个阶段:
+如果您在工作中遇到问题, Iroha. 如果有什么不对,请 [查看钥匙](#check-the-keys) 如果这没有帮助,请查看每个阶段的故障解决说明:
 
 - [安装问题](./installation-issues.md)
 - [配置问题](./configuration-issues.md)
 - [部署问题](./deployment-issues.md)
-- [整合问题](./integration-issues.md)
+- [集成问题](./integration-issues.md)
 
-如果您所遇到的问题没有在这里描述,请通过
-[电报](https://t.me/hyperledgeriroha).
+如果您所遇到的问题未被描述在这里,请通过 [电报](https://t.me/hyperledgeriroha)联系我们.
 
-## 检查钥匙 {#check-the-keys}
+## 查看钥匙 {#check-the-keys}
 
-由于无与伦比的密钥,大多数问题都会出现.
-遵守这一规则: **如果有问题,请检查钥匙.
-首先**.
+大多数问题是由于无法匹配的密钥而产生的. 这就是为什么我们建议遵循这个规则:如果有问题,首先检查键.
 
-这是一个简单的解释:无法区分错误
-当同行密钥不匹配对阵列中的密钥时出现的信息
-因为它会揭露同龄人的公钥.
-具有通过环境定义的密钥的头盔图表或Kubernetes部署
-变量,比较配置的
-[`public_key`](/zh-hans/reference/peer-config/params.md#param-public-key),
-[`private_key`](/zh-hans/reference/peer-config/params.md#param-private-key), 并且
-[`trusted_peers`](/zh-hans/reference/peer-config/params.md#param-trusted-peers)
-在调查更高层次故障之前的值.
+这里有一个简单的解释:当同行密钥不与可信任同行数组中的密钥相匹配时,无法区分出现的错误信息.因此,如果您有通过环境变量定义的密钥的Helm图表或Kubernetes部署,在调查更高层次故障之前,请比较配置的 [`public_key`](/zh-hans/reference/peer-config/params.md#param-public-key),[`private_key`](/zh-hans/reference/peer-config/params.md#param-private-key)和 [`trusted_peers`](/zh-hans/reference/peer-config/params.md#param-trusted-peers)等值.
 
-如果有疑问, [生成一个新的钥匙](/zh-hans/guide/security/generating-cryptographic-keys.md).
+如果有疑问, [生成一个新的钥匙对](/zh-hans/guide/security/generating-cryptographic-keys.md).

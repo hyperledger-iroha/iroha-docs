@@ -6,20 +6,10 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# 表現,條件,道理 {#expressions-conditionals-logic}
+# 語法,條件,邏輯 {#expressions-conditionals-logic}
 
-所有的 [Iroha 特別指示](./instructions.md) 在表達式上操作.
-每個表達式都有一個 `EvaluatesTo`, 在教學中使用的
-雖然您可以直接指定帳戶名稱,
-也指定帳號 ID 透過某種數學或弦運算.
-也可以查看是否在區塊上註冊帳戶.
+所有 [Iroha 特殊指令](./instructions.md)都運行於表達式.每個表達式都有一個 `EvaluatesTo`,用於執行指令.雖然您可以直接指定帳戶名稱,但也可以通過某種數學或字符串操作來指定賬戶 ID.
 
-使用實現的表達式 `EvaluatesTo<bool>`, 您可以設定
-在連鎖上執行更複雜的操作.
-例如,您可以提交 `Mint` 只有在特定的帳戶中
-已註冊.
+使用實現 `EvaluatesTo<bool>`的表達式,您可以設置條件邏輯並在鏈上執行更復雜的操作.例如,只需註冊特定帳戶才能提交一個 `Mint` 指令.
 
-請記住,你可以將此與查詢結合在一起,
-這就是我們所謂的"區塊". _聰明的人
-合同_, 區塊的先進使用的定義特點
-沒有任何相關技術.
+記住,你可以將這結合到詢問.因此,可以編程區塊鏈來做一些驚人的東西.這就是我們所謂的智能合同, 區塊鏈技術的先進使用的定義特徵.

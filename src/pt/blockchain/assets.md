@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/assets.md
-translation_source_hash: 58c9f7657f5714dc4bbb884933a1c947687fcf6c83e471007e6c7885f1dab214
+translation_source_hash: c80e6025007653b355d373394465d04adefc1221c8f34d9008f1c9cbabd3dc40
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -47,7 +47,7 @@ As definições de ativos suportam estes modos de mintabilidade:
 |`Infinitely` |O activo pode ser montado e queimado repetidamente. |
 |`Once` |Um símbolo de oferta fixa, pode ser cunhado uma vez e depois queimado.|
 |`Not` |Token de fornecimento fixo que pode ser queimado mas não coitado novamente. |
-|`Limited(n)` |A cunhada é permitida para um número limitado de operações adicionais. |
+|`Limited(n)` |A política permite a emissão de novas unidades de activos num número limitado de operações adicionais. |
 
 Utilize `Infinitely` para ativos elásticos normais e `Once` ou `Limited(n)` para activos de oferta fixa ou limitada. Não utilize `Not` como política inicial, a menos que o fornecimento de activos já seja estabelecido.
 

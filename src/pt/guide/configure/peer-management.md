@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /guide/configure/peer-management.md
-translation_source_hash: 4e48c937ca973319cd060876b123ff405d27d9d8bc11818e608d821295412c77
+translation_source_hash: f085fa1587595414f95705bbe2cd285752b0fe12cffb9ef29a33399f9a1f3f86
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -26,9 +26,9 @@ Para adicionar um peer à rede, deve ser registrado manualmente. Vamos discutir 
 
 A conta que registra o peer deve ter a correspondente `Permission`, que pode ser concedida através de uma `Role` ou como autorização direta.
 
-Como decidir se é preciso conceder um papel? A concessão de papéis faz sentido se um usuário deve servir como um tipo de administrador, onde é sua responsabilidade manter os colegas na rede a longo prazo. Uma concessão de permissão única é útil quando a parte que registra o peer não é responsável pelo registro dos pares em geral, mas o administrador da rede não precisa (ou quer) gastar tempo na criação de um novo peer.
+Concede um papel quando uma conta gerenciar pares ao longo do tempo. Use uma autorização direta para um registro único por uma conta que não gerencia pares de outra forma.
 
-::: Informações
+::: info
 
 O executor padrão utiliza o token de permissão `CanManagePeers` para registrar e não registrar pares.
 
@@ -40,7 +40,7 @@ Discutiremos as permissões e os papéis com mais detalhes em um capítulo separ
 
 Depois de um novo colega ter recebido as permissões, deve ser criado.
 
-Requer a configuração de peer atual antes de admitir um nó. Torii expõe o parâmetro do nó e os pontos finais da capacidade para este fim. Os operadores devem verificar que os timeouts, os tamanhos dos lotes e outras configurações pertinentes para o consenso correspondem à rede.
+Requer a configuração de pares atual antes de admitir um nó. Torii expõe o parâmetro do nó e os pontos finais da capacidade para esse fim. Peer bootstrap Não negocia estes valores automaticamente: os operadores devem verificar que as temporadas, os tamanhos dos lotes e outras configurações de consenso correspondem à rede.
 
 Para simplificar o processo, pode solicitar ao administrador da rede uma versão editada do `config.toml`, que exclui informações privilegiadas, como chaves privadas de pares.
 
@@ -48,7 +48,7 @@ Para simplificar o processo, pode solicitar ao administrador da rede uma versão
 
 Depois que o seu colega estiver a correr, deve apresentar a instrução para o registro. O colega irá passar pelo processo de aperto de mão e começar a conversar com a rede.
 
-::: ponta
+::: tip
 
 A apresentação de uma instrução de registo por pares não (e não pode) iniciar um novo processo por pares.
 

@@ -8,29 +8,25 @@ translation_engine: nllb-200-ct2
 
 # 解决整合问题 {#troubleshooting-integration-issues}
 
-本节提供了解决问题建议 Iroha 3 如果问题是
-你正在经历的情况并未被描述在这里,
-通过 [电报](https://t.me/hyperledgeriroha).
+这个节目提供了解决问题的建议 Iroha 3 如果您所遇到的问题不详细介绍,请通过 [电报](https://t.me/hyperledgeriroha).
 
 ## 客户端无法连接 {#client-cannot-connect}
 
-检查客户端配置指向同行的 Torii 地址:
+检查客户端配置是否指向同行的 Torii 地址:
 
 ```toml
 torii_url = "http://127.0.0.1:8080/"
 ```
 
-对于 CLI 检查,将相同的文件明确传递:
+对于 CLI 检查,明确传递相同的文件:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 ```
 
-如果同行走进 Docker 或Kubernetes,使用主机或服务地址
-通过客户程序可访问. `127.0.0.1` 在容器内没有
-接待机器.
+如果同行走进 Docker 或Kubernetes,使用客户端进程可访问的主机或服务地址. `127.0.0.1` 在容器内,不是主机.
 
-公共服务 Taira 试验,开始于未签名的终点探测器:
+对于公共测试 Taira,开始使用未签名的终点探测器:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -40,24 +36,18 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=5' \
   | jq -r '.items[].id'
 ```
 
-如果这些命令失败 `502`, TLS, DNS, 或时间过期错误,修复网络
-在调试账户之前,可访问性或等待公共测试网端点
-密钥或交易有效载荷.
+如果这些命令失败于 `502`, TLS,DNS 或截止时间错误,请修复网络可访问性或等待公共测试网端点才能调整帐户密钥或交易有效负载.
 
 ## 交易被拒绝 {#transactions-are-rejected}
 
 大多数交易失败是由身份或授权不匹配造成的:
 
-- 客户端配置中的帐户公钥不匹配私钥
-  用于签字
+- 客户端配置中的帐户公钥不匹配签名所使用的私钥
 - 账户没有在创始或之前的交易中注册
-- 账户缺乏运行时间所需的许可令牌或角色
-  验证器
-- 域名 ID 缺少数据空间资格,如
-  `domain.dataspace`
+- 账户缺乏运行时间验证器所要求的许可令牌或角色
+- 一个域名 ID 缺乏其数据空间资格,例如 `domain.dataspace`
 
-使用 `--output-format text` 在调试过程中 CLI 命令使错误更容易
-阅读:
+使用 `--output-format text` 在调试 CLI 命令时,以便更容易读取错误:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ledger transaction ping --msg "hello"
@@ -65,14 +55,14 @@ cargo run --bin iroha -- --config ./localnet/client.toml --output-format text le
 
 ## 查询返回空结果 {#queries-return-empty-results}
 
-空查询结果并不总是意味着查询失败.
+查询结果并不总是意味着查询失败.
 
 - 应创建对象的交易已发生
-- 查询域名,资产定义或账户 ID 是法典的
+- 被查询的域名,资产定义或账户 ID 是法定.
 - 页面化或过器不排除预期行
-- 客户端连接到预期网络,而不是其他本地网络
+- 客户端连接到预期网络,而不是另一个本地网
 
-对于域名检查,从最广泛的查询开始:
+对于域名检查,请从最广泛的查询开始:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
@@ -80,13 +70,11 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 
 ## 事件或区块流早点停止 {#event-or-block-streams-stop-early}
 
-区块和事件流的例子依赖于 Torii 查看
-测试时间:
+区块和事件流的示例依赖于 Torii 流媒体终端点. 检查同行仍然运行,然后使用时间限测试:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger blocks 1 --timeout 30s
 cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 ```
 
-对于 HTTP 结合,比较您的终点路径与电流
-[Torii 终点参考](/zh-hans/reference/torii-endpoints.md).
+对于 HTTP 集成,将端点路径与当前的 [Torii 端点引用](/zh-hans/reference/torii-endpoints.md)进行比较.

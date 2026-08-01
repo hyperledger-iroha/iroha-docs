@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /guide/index.md
-translation_source_hash: 588a55d0a967f890fac26bf47c34c360a4542b0d45b1edc1e37cd4833c60f349
+translation_source_hash: 5ea24369e85692bd9069e446d1e50612efade2d83e4ddf73a4980582a2064a0e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,7 +15,7 @@ Iroha を構築,運用または統合する際はこのセクションを使用�
 |セクション|使うよ|
 | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
 | [SDK チュートリアル](/ja/guide/tutorials/) |言語特有のクライアント設定とサンプルアプリケーション|
-| [最良の実践](/ja/guide/best-practices/) |開発,データモデリング,部署,運用,セキュリティ,リリース準備によってグループ化された生産指針|
+| [最良の実践](/ja/guide/best-practices/) |開発,部署,運用,セキュリティ,リリースに関する生産ガイドライン|
 | [構成と管理](/ja/guide/configure/overview.md) |ローカルピア・コンフィギュレーション,生成,クライアントのコンフィギューレーション,キー,ピア・マネジメント|
 | [安全性](/ja/guide/security/) |VPNs,詐欺監視,許可衛生 |
 | [高度な操作](/ja/guide/advanced/metrics.md)|メトリックス 性能チェック 混沌テスト 熱再充電 裸金属操作 |

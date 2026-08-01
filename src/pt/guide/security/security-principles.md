@@ -1,105 +1,68 @@
 ---
 translation_locale: pt
 translation_source: /guide/security/security-principles.md
-translation_source_hash: ca78f72b2e319a67a5fa5c74126de108cd552cdc758e3a2b981f7a7930a3b61e
+translation_source_hash: 20139011c663a0bca6f9e486ef81f698370c34f8f02319317805b0d1dfb049c7
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Princípios de segurança {#security-principles}
 
-As organizações e os utilizadores individuais têm de trabalhar em conjunto para garantir interações seguras com as instalações Iroha. Este tópico explica os princípios básicos da cooperação.
+Um livro-razão Iroha verifica instruções assinadas e aplica permissões. Não protege chaves privadas, hosts, aplicativos, estações de trabalho do operador ou procedimentos de governança. A implantação deve proteger esses sistemas.
 
-## Princípios gerais de segurança {#general-security-principles}
+Usar estes princípios na concepção e operação de uma rede Iroha.
 
-1. Utilize uma rede privada virtual [ ](./vpn.md) (VPN):
+## Trate a autoridade como um limite de segurança {#treat-authority-as-a-security-boundary}
 
-    - Sempre que acessar dados ou recursos sensíveis, especialmente através de redes públicas, utilize uma <abbr title="Virtual Private Network">VPN</abbr> para estabelecer uma conexão segura que proteja as suas informações.
+- Uma pessoa ou um processo que controla uma chave privada pode agir com a autoridade atribuída a essa chave.
+- Dar a cada ambiente e a cada função operacional uma autoridade separada.
+- Manter as chaves de produção e de recuperação separadas das credenciais de desenvolvimento de rotina e de ensaio.
+- Registre quem é o titular de cada autoridade, onde seu signatário é mantido e como essa autoridade pode ser substituída ou revogada.
 
-2. Use um firewall para a proteção da rede:
+Consulte [Criptografia de chave pública](./public-key-cryptography.md) e [Armazenamento de chaves criptográficas](./storing-cryptographic-keys.md).
 
-    - Fortalecer as redes domésticas e/ou de escritório criando um firewall que ajuda a combater o acesso não autorizado e proteger os dispositivos conectados contra vírus e malware.
+## Aplique o mínimo de privilégio {#apply-least-privilege}
 
-3. Informações físicas e digitais seguras:
+- Conceder apenas as permissões Iroha, o acesso ao host e o acesso à rede necessários para um papel.
+- Separe a assinatura de transações rotineiras das autoridades de governança, implantação e recuperação.
+- Exija aprovação independente para alterações que possam afetar a composição dos validadores, permissões privilegiadas ou ativos de alto valor.
+- Revisar o acesso após mudanças de função e remover o acesso que não é mais necessário.
 
-    - Proteger documentos físicos que contenham informações confidenciais num local seguro e garantir que os documentos digitais sejam criptografados e armazenados em pastas protegidas por senha.
+## Usar camadas de proteção {#use-layers-of-protection}
 
-4. Manter um backup regular de dados:
+- Proteja os signatários, os aplicativos, os sistemas operacionais, as redes e o acesso físico. Não dependa de um único controle.
+- Expor apenas as rotas Torii, peer, monitoramento e aplicação necessárias para a implantação.
+- Use canais autenticados e criptografados para acesso administrativo e dados confidenciais.
+- Mantenha os sistemas parcheados e desative os serviços que a implantação não utiliza.
+- Mantenha os segredos fora do controle de código-fonte, das linhas de comando, dos registros, dos tíquetes, do chat e da documentação pública.
 
-    - Tenha sempre cópias de suas informações importantes armazenadas em um lugar seguro. Dessa forma, se você perder seus dados ou algo der errado, você pode rapidamente recuperar tudo no caminho certo. Mantenha esses backups em um lugar diferente e seguro do que normalmente mantém os seus dados.
+## Faça com que as implementações sejam revistas {#make-deployments-reviewable}
 
-## Princípios de segurança para usuários individuais {#security-principles-for-individual-users}
+- Mantenha a configuração não secreta e a automação da implantação no controle de versão.
+- Revise alterações em binários, configuração, material de gênese, composição dos validadores, permissões e rotas públicas.
+- Verifique os artefatos de liberação antes da implantação. Registre as versões aprovadas e hashes.
+- Teste a combinação binária e de configuração exata que será executada na produção.
+- Preservar o comportamento determinista da rede. A aceleração do hardware não deve alterar os resultados visíveis aos pares.
 
-1. Adotar regras robustas de autenticação:
+## Supervisão e preservação de provas {#monitor-and-preserve-evidence}
 
-    - Use senhas fortes e únicas para todas as contas.
+- Monitorar a saúde dos pares, o progresso do consenso, mudanças de permissões, instruções privilegiadas, falhas de autenticação e alterações inesperadas de configuração.
+- Enviar alertas importantes a um sistema que não dependa do hospedeiro afetado.
+- Preserve registros relevantes, referências do livro-razão, instantâneos de configuração e hashes de transações com carimbos de tempo confiáveis.
+- Tratar os dados de monitoramento faltantes como um problema operacional que exige investigação.
 
-    - Nunca reutilize senhas.
+## Prepare a recuperação antes do lançamento {#prepare-recovery-before-launch}
 
-    - Configure o <abbr title="Two-Factor Authentication">2FA</abbr> sempre que possível. O <abbr title="Two-Factor Authentication">2FA</abbr> melhora a segurança geral, não só exigindo uma senha, mas também um fator adicional como um <abbr title="One-Time Password">OTP </abbr>, impressão digital ou uma autenticação baseada em aplicativos de terceiros (por exemplo, Google Authenticator).
+- Definir quem pode declarar um incidente e quem pode aprovar ações de recuperação.
+- Teste backup, restauração, substituição de chaves, revogação de permissões e procedimentos de recuperação por pares.
+- Mantenha artefatos de libertação confiáveis, configuração, registros de gênese e inventários disponíveis durante um incidente.
+- Restaure primeiro as leituras e o monitoramento. Retome as escritas somente depois que a rede recuperada e os aplicativos dependentes passarem por suas verificações.
+- Revise cada incidente e atualize os controles, a automação e os exercícios.
 
-    - Evite usar a autenticação SMS como segundo fator. Não há garantia de que o software malicioso não esteja monitorando todas as suas mensagens SMS. Por exemplo, os aplicativos Android não podem limitar-se apenas ao acesso às mensagens especificamente destinadas para eles.
+::: warning
 
-2. Exerça precaução na comunicação digital: - Configure um cliente de e-mail para assinar e verificar as assinaturas de todos os emails recebidos. - Desativar ambas as mensagens HTML e o carregamento de recursos externos a partir de endereços desconhecidos ou não verificados.
+As acções do livro-razão podem ser irreversíveis. Utilize procedimentos previamente revisados e as aprovações necessárias antes de apresentar uma transacção de recuperação ou governança.
 
-    - Aprenda sobre técnicas de phishing comuns para reconhecer e evitar emails suspeitos, links e solicitações de informações pessoais.
+:::
 
-    - Configure um cliente de e-mail para assinar e verificar as assinaturas de todos os e-mails recebidos. Embora seja possível simular o endereço do remetente e até mesmo fingir ser um banco, não é possível falsificar uma assinatura.
-
-3. Proteção das informações pessoais:
-
-    - Quando se comunica com pessoas desconhecidas, especialmente por telefone ou on-line, tenha cuidado em não compartilhar informações privadas.
-
-    - Considere pesquisar independentemente os indivíduos ou organizações com quem você está se comunicando para confirmar a legitimidade de sua identidade.
-
-    - Tenha cuidado com as informações pessoais que compartilha nas redes sociais, pois partes maliciosas podem explorar essas informações.
-
-## Princípios de segurança para as organizações {#security-principles-for-organisations}
-
-1. Estabelecer políticas e procedimentos de segurança claros:
-
-    - Desenvolver políticas e protocolos de segurança bem definidos para todos os funcionários que lidam com dados confidenciais. Treinar minuciosamente os funcionários a respeitar estas diretrizes, mitigando o risco de ações negligentes.
-
-    - Assegurar que as políticas de segurança sejam acessíveis a todos os funcionários e que sejam revisadas e atualizadas regularmente para refletir as mudanças no panorama da segurança.
-
-    - Fornecer às políticas de segurança exemplos e cenários para torná-las mais compreensíveis e práticas para os funcionários.
-
-2. Cultivar a conscientização dos empregados:
-
-    - Educar os funcionários sobre dados e medidas de segurança operacional.A conscientização aumentada e uma formação abrangente são fundamentais para reforçar a segurança organizacional.
-
-    - Incentive os funcionários a relatarem imediatamente quaisquer atividades suspeitas ou preocupações com a segurança.
-
-3. Proteger a infraestrutura física:
-
-    - Restringir o acesso físico aos servidores e infraestruturas. Configurar controles de acesso que permitam apenas a entrada de pessoal autorizado em áreas restritas.
-
-    - Assegurar que as medidas de controlo de acesso sejam revisadas e atualizadas regularmente para se adaptarem às necessidades em constante evolução da segurança.
-
-    - Considere implementar controles de acesso biométricos para áreas sensíveis, a fim de aumentar a segurança física.
-
-4. Implementar o controlo da segurança:
-
-    - Implementar um sistema abrangente de monitorização da segurança que examine as atividades e identifique possíveis violações à segurança.
-
-    - Implementar alertas automatizadas para notificar imediatamente o pessoal de segurança sobre quaisquer atividades incomuns ou não autorizadas.
-
-    - Considere o uso de algoritmos de aprendizagem automática para melhorar a capacidade do sistema de detectar anomalias e potenciais ameaças.
-
-    - Empregar pessoal ou designar pessoal para supervisionar a segurança da base de dados, identificar, rastrear e resolver vulnerabilidades do software e realizar verificações regulares em máquinas críticas para verificar a presença de software não autorizado não incluído na lista aprovada.
-
-5. Realizar auditorias de segurança recorrentes:
-
-    - Realizar auditorias de segurança rotineiras para avaliar as vulnerabilidades e confirmar que as medidas de segurança estabelecidas estão alinhadas com as normas e regulamentos comuns.
-
-    - Considere contratar especialistas externos em segurança para avaliações periódicas, a fim de obter uma avaliação imparcial da condição de segurança da organização.
-
-6. Implementar um sistema de controlo de acesso:
-
-    - Estabelecer um sistema de controlo de acesso baseado em funções para garantir que os trabalhadores tenham apenas acesso aos recursos e informações necessários às suas funções.
-
-7. Abraçem a melhoria contínua:
-
-    - Reconhecer que a segurança é um processo contínuo. Manter uma avaliação contínua das medidas de segurança e reforçá-las proativamente para abordar as ameaças e desafios emergentes.
-
-    - Considere estabelecer um ciclo de feedback que encoraje os funcionários a contribuir com sugestões de melhoria da segurança, promovendo a cultura do melhoramento contínuo.
+Continuar com [Segurança operacional](./operational-security.md) e [Readiness de libertação](../best-practices/release-readiness.md).

@@ -1,9 +1,9 @@
 ---
 translation_locale: az
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: ed622cdb1d6a47635d0753c98f80aaa903b916133f43bc9fdab268512d0ace69
+translation_source_hash: 7c35c609442df65328fa619b6673be76f801cfc2abc28afd853d7fe61e439e9c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Ağıllı müqavilələr {#smart-contracts}
@@ -15,9 +15,9 @@ Iroha əməliyyatları `Executable` faydalı yükləri həyata keçirir.
 - `Executable::Ivm`: Iroha VM byte kodu
 - `Executable::IvmProved`: əvvəlcədən hesablanmış təlimat örtüyü və sübut öhdəlikləri olan Iroha VM byt kodu
 
-Kotodama olan Iroha Bu yüksək səviyyəli ağıllı müqavilə dilidir. `.ko` mənbə faylları deterministik tərtib edir IVM bytecode, ənənəvi olaraq `.to` yerləşdirilməsi üçün artefakt. Kotodama hədəflər IVM; O, tək qalmır. RISC-V və ya WebAssembly Məqsəd.
+Kotodama Iroha-nın yüksək səviyyəli ağıllı müqavilə dilidir. `.ko` mənbə faylı deterministik IVM bayt-koduna kompilyasiya olunur və yerləşdirmə üçün adətən `.to` artefaktı kimi saxlanılır. Kotodama yalnız IVM-i hədəfləyir. O, RISC-V-ni və ya WebAssembly-ni hədəfləmir.
 
-İlk buraxılış yalnız ABI versiyasını dəstəkləyir 1. Syscall və pointer-ABI siyasəti müqavilənin qəbul edilməsi və icrası ilə şərtsiz şəkildə tətbiq olunur; işləmə vaxtı uyğunluğu dəyişdirilmir.
+İlk buraxılış yalnız ABI versiya 1-i dəstəkləyir. syscall və pointer-ABI siyasəti müqavilənin qəbulu və icrası zamanı şərtsiz tətbiq olunur; işləmə vaxtı uyğunluğu üçün keçid yoxdur.
 
 ## Ağıllı müqavilələrdən nə vaxt istifadə etmək olar? {#when-to-use-smart-contracts}
 

@@ -26,7 +26,7 @@ translation_engine: nllb-200-ct2
 
 TOML კონფიგურაციის ფაილებს აქვთ დამატებითი `extends` ველი, რომელიც მიუთითებს სხვა TOML ფაილებზე (((). ეს შეიძლება იყოს ერთი გზა ან მრავალ გზა:
 
-::: კოდის ჯგუფი
+::: code-group
 
 ```toml [Single]
 extends = "single-path.toml"
@@ -40,7 +40,7 @@ extends = ["file1.toml", "file2.toml"]
 
 Iroha რეკურსიულად წაიკითხავს ყველა ფაილს, რომელიც მითითებულია `extends` და შეადგენს მას ფენებად, სადაც ეს უკანასკნელი გადაწერს წინა ფენებს პარამეტრის დონეზე. მაგალითად, თუ წაიკითხება `config.toml`:
 
-::: კოდის ჯგუფი
+::: code-group
 
 ```toml [config.toml]
 extends = ["a.toml", "b.toml"]

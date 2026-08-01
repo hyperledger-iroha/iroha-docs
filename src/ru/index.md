@@ -1,7 +1,7 @@
 ---
 translation_locale: ru
 translation_source: /index.md
-translation_source_hash: 491d30ca47ce82af5220641c9b508a015af61bccc6f3b6b0c86acd100b0a3e81
+translation_source_hash: 505e8224a59534717045c34b1bf796760d06f9d6808a2a1fd9773aa2f6a00c2d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 
@@ -50,7 +50,7 @@ footer: true
 ---
 
 <section class="nexus-build" aria-labelledby="nexus-build-title">
-<a class="nexus-build__panel" href="/ru/get-started/sora-nexus-dataspaces">
+<a class="nexus-build__panel" href="./get-started/sora-nexus-dataspaces.html">
 <span class="nexus-buildcopy"> SORA Nexus <span id="nexus-build-title" class="nexus-buildtitle">Постройте на Iroha 3 / SORA Nexus</span> <span class="nexus-builddetails">Постройте в SORA 3 с помощью тестовой сети Taira, основной сети Minamoto и копирующих примеров, которые вы можете попробовать сейчас. </span> </span> <span class="nexus-build__action"> Открой руководство <span aria-hidden="true">- &gt; </span> </span>
 </a>
 </section>

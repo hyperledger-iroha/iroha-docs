@@ -1,14 +1,14 @@
 ---
 translation_locale: am
 translation_source: /guide/best-practices/release-readiness.md
-translation_source_hash: 1f316d6a823b23e821d80fe8773df7469358b0e01057f9b76b113cafe4818f20
+translation_source_hash: 984957526424a4e0ec9f29a6da1bb64699245bb135e8157bbe684bc3d87de4cc
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # ለመልቀቅ ዝግጁ መሆን {#release-readiness}
 
-Iroha መተግበሪያ ወይም የአውታረ መረብ ለውጥ ከማስተዋወቅዎ በፊት ተገቢውን አደጋ ሊያጋልጥ በሚችል አነስተኛ አካባቢ ውስጥ ያለውን ባህሪ ያረጋግጡ ፣ ከዚያ በጋራ የሙከራ አውታረመረብ እና በምርት በር በኩል ሆን ብለው ይንቀሳቀሱ።
+የ Iroha መተግበሪያ ወይም የአውታረ መረብ ለውጥ ከማስተዋወቅዎ በፊት ተገቢውን አደጋ ሊያጋልጥ በሚችል አነስተኛ አካባቢ ውስጥ ያለውን ባህሪ ያረጋግጡ ፣ ከዚያ በጋራ የሙከራ አውታረመረብ እና በምርት በሮች በኩል ሆን ብለው ይንቀሳቀሱ።
 
 ## የአካባቢው አውታረ መረብ በር {#localnet-gate}
 
@@ -31,7 +31,7 @@ Iroha መተግበሪያ ወይም የአውታረ መረብ ለውጥ ከማስ
 ## ዋናው ኔትወርክ ወይም የምርት በር {#mainnet-or-production-gate}
 
 - የተለዩ የምርት ፊርማዎችን ፣ የገንዘብ ድጋፍ ፣ ጎራዎችን እና የመዋቅር መንገዶችን ይጠቀሙ። የሙከራ አውታረመረብ ቁልፎችን ወይም የቧንቧ ግምቶችን አያስተዋውቁ።
-- ማረጋገጫ SDK, CLI, የአቻ እና አውታረ መረብ ተኳሃኝነት [ተኳሃኝነት ማትሪክስ](/am/reference/compatibility-matrix.md).
+- የ [ ተኳሃኝነት ማትሪክስ ](/am/reference/compatibility-matrix.md) ጋር የተፈለገውን መስቀል-SDK ሁኔታዎችን ያረጋግጡ እና በተናጠል ይጫኑ እና በስርጭቱ ጥቅም ላይ የሚውለውን ትክክለኛውን CLI ፣ የአቻ ሁለትዮሽ ፣ ውቅር እና የአውታረ መረብ ልቀት ይሞክሩ።
 - ግምገማ ፍቃዶች, ክፍያ ስፖንሰርነት, የዋጋ ገደቦች, ክትትል, የመጠባበቂያ ሁኔታ, እና መልሶ ማቋረጥ መስፈርቶች ከመለቀቁ መስኮት በፊት.
 - ከፍተኛ ተፅዕኖ ላላቸው ጽሁፎች የጽሑፍ ግብይት ወይም የስደት ዕቅድ ይጠይቁ።
 

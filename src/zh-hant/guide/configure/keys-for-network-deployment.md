@@ -6,65 +6,52 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# 網路部署的關鍵 {#keys-for-network-deployment}
+# 網絡部署的關鍵 {#keys-for-network-deployment}
 
-每個網絡都需要不同的關鍵資料,
-在 NPOS 或 Nexus 專案, BLS 證明人身份.
+每個網絡都需要針對客戶,同行,創始簽名和NPoS或 Nexus 個人資料, BLS 驗證者身份.
 
-## 關鍵在哪裡使用 {#where-keys-are-used}
+## 用鑰匙的地方 {#where-keys-are-used}
 
-- 客戶簽名密碼存儲在 `client.toml` 在下 `[account]`.
-- 每個同行存储的同行身份密钥 `config.toml` 這樣的 `public_key` 及其他
-  `private_key`.
-- 該網站使用每個同行的公開關鍵, `trusted_peers`.
-- BLS 證據存儲在 `trusted_peers_pop` 對於 NPOS
-  其他國家.
-- 創世記簽名使用 `[genesis].public_key` 在同行聯盟和
-  在簽署明細書時與私钥相匹配.
+- 客戶簽名密鑰存儲在 `client.toml`下 `[account]`.
+- 每個同行身份密鑰 `config.toml` 存儲爲 `public_key`和 `private_key`.
+- 在 `trusted_peers` 中,同行發現使用每個同行的公鑰.
+- BLS 驗證器 NPoS配置文件的所有權證明存儲在 `trusted_peers_pop` 中.
+- 在簽署表時,Genesis簽字使用`[genesis].public_key`在同行配置中和相匹配的私鑰.
 
-在本地或測試部署中, Kagami 將所有這些檔案共生成:
+在本地或測試部署中,讓 Kagami 將所有這些文件生成在一起:
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
 ```
 
-在現有網路或配置文件中,使用導向流程:
+對於現有網絡或配置文件,使用導向流程:
 
 ```bash
 cargo run --bin kagami -- wizard --profile nexus
 ```
 
-## 建立個別的關鍵對 {#generate-individual-key-pairs}
+## 創建單個關鍵對 {#generate-individual-key-pairs}
 
-使用 `kagami keys` 在獨立的關鍵材料上:
+使用 `kagami keys`用於單獨的鑰匙材料:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --json
 ```
 
-於 BLS 核准材料,包括所有權證明:
+對於 BLS 驗證器材料,包括所有權證明:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
 ```
 
-使用 `--seed` 僅適用於可複製的開發設備.
-部署,生成新的關鍵和儲存私密關鍵在資料庫之外.
+使用 `--seed` 僅用於可複製的開發裝置.用於生產部署,生成新鑰匙並將私鑰存儲在庫外.
 
-## 協調性 {#peer-consistency}
+## 同齡人一致 {#peer-consistency}
 
-所有驗證者必須同意相同的基因交易,
-公眾密钥和验证器 PoPs. 單個缺失或不匹配的同行鍵可
-阻止網路開啟或達到共識.
+所有驗證者都必須同意相同的創始交易,拓學,可信賴的同行公鑰和驗證器 PoPs.一個缺失或不匹配的同行關鍵可以阻止網絡啓動或達成共識.
 
-請使用至少四個同行.
-每個同行設定都需要相同的密碼.
-值得信賴的同行.
+爲了達到最低的拜占庭錯誤耐受性,使用至少四個同齡人.每個同行必須有自己的私鑰,但每一個同行配置都需要相同的可靠的同行.
 
-## 客戶帳號 {#client-accounts}
+## 客戶賬戶 {#client-accounts}
 
-客戶的帳號在 `client.toml` 這種情況可能會發生.
-請避免使用本文或其他文件.
-基因簽名身份作為長期應用帳號;基因特權
-只有在產生過程中使用,
-該組織的帳戶和角色.
+在 `client.toml` 中的客戶帳戶必須已經存在在鏈上.它可以通過基因表或以後的交易進行註冊.避免使用基因簽字 作爲長期應用帳戶的身份;基因特權僅適用於基因週期,生產客戶應該使用自己的賬戶和角色.

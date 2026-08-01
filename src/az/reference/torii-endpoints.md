@@ -1,9 +1,9 @@
 ---
 translation_locale: az
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: 6ee65d409642c79bea0f2c4ff0d8cd59b0ec0a29e115225045786d0816e8a6a7
+translation_source_hash: 9bec41b1b419e252fdcff8328e7950a294bdad3ac40112a5a7f2ce451d19e9cb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Torii Son nöqtələr {#torii-endpoints}
@@ -26,7 +26,7 @@ Format ətraflı məlumatları, məzmun danışıqları, düzənlik bayraqları,
 |`POST /query` |Norito |İmzalanmış sorğu göndərin |
 |`GET /events` |WebSocket |Tədbir axınlarına abunə olun |
 |`GET /block/stream` |WebSocket |Əlaqə bağlanmış bloklar axın |
-|`GET /peers` |JSON |Torii tərəfindən məruzə olunan rəfiqə siyahısı |
+|`GET /peers` |JSON |Torii tərəfindən məruzə edilən rəfiqə siyahısı |
 |`GET /health` |JSON |Yüngül ömrü son nöqtəsi |
 |`GET /api_version` |JSON |API standart versiyası |
 |`GET /status` |JSON |Operatorlar üçün yüksək səviyyəli status ümumiləşdirilməsi |
@@ -40,7 +40,7 @@ Format ətraflı məlumatları, məzmun danışıqları, düzənlik bayraqları,
 |`GET /v1/time/now` |JSON |Nodu divar saatı snapshot |
 |`GET /v1/time/status` |JSON |Vaxt sinxronizasiyasının vəziyyəti |
 
-`/openapi` Running node üçün etibarlı son nöqtə siyahısıdır. dəqiq səth quruluş xüsusiyyətlərinə və icra vaxtının konfigurasyona bağlıdır, Belə ki, yaradılmış müştərilər canlı OpenAPI İstifadəçidən istifadə edin. [Torii API konsol](/az/reference/torii-api-console.md) Bu canlı sənədi yükləmək üçün test JSON marşrutlar, nüsxə curl tələblər, və mövcud sxemdən müştəri kodu yaratmaq.
+`/openapi` İdarə olunan bir düyün üçün etibarlı son nöqtələr siyahısıdır. qurma xüsusiyyətləri və icra vaxt konfigüratsiyası, belə ki, yaradılmış müştərilər canlı OpenAPI İstifadəçidən istifadə edin. [Torii API konsol](/az/reference/torii-api-console.md) Bu canlı sənədi yükləmək üçün test JSON marşrutlar, nüsxə curl tələblər, və mövcud sxemdən müştəri kodu yaratmaq.
 
 ## Canlı Taira Yolları sınayın. {#try-live-taira-routes}
 
@@ -113,27 +113,27 @@ Torii tətbiqetmə ilə üzləşən xüsusiyyətlər toplusu ilə qurulduqda, k�
 
 |Yol ailəsi |Məqsəd|
 | --- | --- |
-|`/v1/accounts/`, `/v1/domains/`, `/v1/assets/*` |JSON oxumaq, sorğu köməkçisi, onboarding köməkçisi və portfel və ya sahibinin görünüşləri |
-|`/v1/nfts/`, `/v1/rwas/`, `/v1/confidential/*` |NFT, real dünya aktivləri və məxfi aktivlər baxışları |
-|`/v1/aliases/`, `/v1/assets/aliases/`, `/v1/sns/`, `/v1/identifiers/` |Ad, alias və identifikator qətnaməsi |
+|`/v1/accounts/*`, `/v1/domains/*`, `/v1/assets/*` |JSON oxumaq, sorğu köməkçisi, onboarding köməkçisi və portfel və ya sahibinin görünüşləri |
+|`/v1/nfts/*`, `/v1/rwas/*`, `/v1/confidential/*` |NFT, real dünya aktivləri və məxfi aktivlər baxışları |
+|`/v1/aliases/*`, `/v1/assets/aliases/*`, `/v1/sns/*`, `/v1/identifiers/*` |Ad, alias və identifikator qətnaməsi |
 |`/v1/explorer/*` |Explorer-ə yönəlmiş hesab, aktiv, blok, əməliyyat, təlimat, metrik və axın görünüşləri |
-|`/v1/transactions/`, `/v1/pipeline/`, `/v1/iso20022/*` |Əməliyyat tarixçəsi, boru kəmərinin bərpası və ya vəziyyəti və ISO 20022 köməkçisi |
+|`/v1/transactions/*`, `/v1/pipeline/*`, `/v1/iso20022/*` |Əməliyyat tarixçəsi, boru kəmərinin bərpası və ya vəziyyəti və ISO 20022 köməkçisi |
 |`/v1/contracts/*` |Müqavilə kodu, yerləşdirmə, paket, zəng, görünüş, hadisə, fəaliyyət, rollup və dövlət yolları |
-|`/v1/multisig/`, `/v1/controls/` |Multisig təklifləri, təsdiqləri və köçürmə nəzarətində köməkçiləri |
-|`/v1/bridge/`, `/v1/ledger/`, `/v1/proofs/*` |Nəticə, dövlət sübutu, blok sübutü, sübut saxlama və sübut sorğusunun yolları |
+|`/v1/multisig/*`, `/v1/controls/*` |Multisig təklifləri, təsdiqləri və köçürmə nəzarətində köməkçiləri |
+|`/v1/bridge/*`, `/v1/ledger/*`, `/v1/proofs/*` |Nəticə, dövlət sübutu, blok sübutü, sübut saxlama və sübut sorğusunun yolları |
 |`/v1/da/*` |Məlumatların mövcudluğu, manifestlər, sübut siyasətləri, öhdəliklər və niyyətlər |
 |`/v1/zk/*` |ZK kökləri, sübut yoxlamaları, IVM sübutları, səslərin sayılması, sübut açarları, sübut qeydləri və əlavələr |
-|`/v1/gov/`, `/v1/ministry/` |İdarəetmə təklifləri, səsvermələr, şura dövləti, qorunan ad sahələri, gündəlik təklifləri, qanunvericilik və yekunlaşdırma. |
-|`/v1/nexus/`, `/v1/sccp/` |Nexus yol, məlumat sahəsi və çarşı silsilə sübut köməkçiləri |
+|`/v1/gov/*`, `/v1/ministry/*` |İdarəetmə təklifləri, səsvermələr, şura dövləti, qorunan ad sahələri, gündəlik təklifləri, qanunvericilik və yekunlaşdırma. |
+|`/v1/nexus/*`, `/v1/sccp/*` |Nexus yol, məlumat sahəsi və çarşı silsilə sübut köməkçiləri |
 |`/v1/musubi/*` |Musubi paketlər qeydiyyatı oxucuları və təlimat qurucuları |
 |`/v1/subscriptions/*` |Abunə planları, abunə həyat dövrü, istifadə və ödəmə köməkçiləri |
-|`/v1/sorafs/`, `/sorafs/`, `/.well-known/sorafs/*` |SoraFS təchizatçı kəşfi, məhdudluq sübutları, pinning, saxlama və ictimai məzmun xidmətləri |
-|`/v1/soracloud/`, `/v1/soradns/`, `/soradns/`, `/api/` |SoraCloud xidmət həyat dövrü, özəl hesablama/model axınları, ictimai kəşfiyyat və ev sahibliyi edilən tətbiqlərin yönləndirməsi |
-|`/v1/connect/`, `/v1/vpn/` |Iroha Qoşulma seansları, WebSocket nəqliyyatı, VPN seansları, profilləri və rəsmlər |
-|`/v1/app-api/`, `/v1/api/`, `/v1/content/*` |App API bağlamaları və paket / CID dəstəklənən məzmun yönləndirmələri |
+|`/v1/sorafs/*`, `/sorafs/*`, `/.well-known/sorafs/*` |SoraFS təchizatçı kəşfi, məhdudluq sübutları, pinning, saxlama və ictimai məzmun xidmətləri |
+|`/v1/soracloud/*`, `/v1/soradns/*`, `/soradns/*`, `/api/*` |SoraCloud xidmət həyat dövrü, özəl hesablama/model axınları, ictimai kəşfiyyat və ev sahibliyi edilən tətbiqlərin yönləndirməsi |
+|`/v1/connect/*`, `/v1/vpn/*` |Iroha Qoşulma seansları, WebSocket nəqliyyatı, VPN seansları, profilləri və rəsmlər |
+|`/v1/app-api/*`, `/v1/api/*`, `/v1/content/*` |App API bağlamaları və paket / CID dəstəklənən məzmun yönləndirmələri |
 |`/v1/operator/*`, `/v1/mcp` |Operatorun təsdiqlənməsi və yerli MCP JSON-RPC körpüsü |
-|`/v1/offline/`, `/v1/repo/`, `/v1/space-directory/`, `/v1/ram-lfe/` |Offline hazırlıq, saxlama müqavilələri, məlumat sahəsi manifestləri və [RAM-LFE köməkçiləri ](/az/blockchain/ram-lfe.md#torii-routes) |
-|`/v1/kaigi/`, `/v1/webhooks/`, `/v1/notify/`, `/v1/telemetry/` |Əməkdaşlıq, webhook, push bildirişləri və canlı telemetri inteqrasiyaları |
+|`/v1/offline/*`, `/v1/repo/*`, `/v1/space-directory/*`, `/v1/ram-lfe/*` |Offline hazırlıq, saxlama müqavilələri, məlumat sahəsi manifestləri və [RAM-LFE köməkçiləri ](/az/blockchain/ram-lfe.md#torii-routes) |
+|`/v1/kaigi/*`, `/v1/webhooks/*`, `/v1/notify/*`, `/v1/telemetry/*` |Əməkdaşlıq, webhook, push bildirişləri və canlı telemetri inteqrasiyaları |
 
 ## ISO 20022 Köprü {#iso-20022-bridge}
 
@@ -162,19 +162,19 @@ Torii tətbiqə baxan API və körpünün işləmə vaxtı aktivləşdirildiyi z
 
 `pacs.008` təqdimatlarında ID, banklararası hesablaşma məbləği, valyuta, hesablama tarixi, borclu və kreditor IBANs və borcu və borclu şəxs BICs mesajı olmalıdır. Referensiya məlumatları qurulduqda, körpü əməliyyatın boru kəmərinə girməsindən əvvəl BIC, IBAN və ISO 4217 valyuta keçidlərini də yoxlayır.
 
-`pacs.009` təqdimatlarında biznes mesajı ID, mesajın tərifi ID, yaradılış vaxtı, banklararası hesablama məbləği, valyuta, hesablama tarixi, tapşırıq verən və tapşırılmış agent BICs, borclu şəxs və kreditor IBANs göstərilməlidir. Əgər mesajda `Purp` varsa, körpü hal-hazırda yalnız qiymətli kağızlar üçün maliyyələşdirmə qəbul edir: `Purp=SECU`.
+`pacs.009` təqdimatlarında biznes mesajı ID, mesajın tərifi ID, yaradılış vaxtı, banklararası hesablama məbləği, valyuta, hesablama tarixi göstərilməlidir. təlimat verən və təlimat alan agent BICs, borclu şəxs və kreditor IBANs. Əgər mesajda `Purp` yer alırsa, körpü hazırda yalnız qiymətli kağızlar üçün maliyyələşdirilməni qəbul edir: `Purp=SECU`.
 
-`pacs.008` və `pacs.009` təqdimat son nöqtələri XML ISO zarflarını və ya körpü testlərində istifadə olunan düz sahə formatını qəbul edir. `SplmtryData` seçmə sahələri hədəf Iroha kitabçısını, mənbə və hədəf hesabı IDs və ya ünvanları və aktiv təyinatı ID müəyyən edə bilərlər. Cavab `202 Accepted`, `message_id`, `transaction_hash`, `status`, `pacs002_code` və həll olunmuş nəşr / hesab / aktiv kontekstindədir.
+İndiki `pacs.008` və `pacs.009` təqdimat son nöqtələri qəbul edilir XML ISO qovşaqlar və ya körpü sınaqlarında istifadə olunan düz sahə formatı. `SplmtryData` sahələr hədəf saxlaya bilər Iroha başlıq, mənbə və hədəf hesabı IDs və ya ünvanlar və aktivlərin müəyyənləşdirilməsi ID. Cavab: `202 Accepted` ilə `message_id`, `transaction_hash`, `status`, `pacs002_code`, və həll edilmiş başlıq / hesab / aktiv kontekstində.
 
 ### Əlavə Parser və xəritələşmə dəstəyi {#additional-parser-and-mapping-support}
 
-İndiki IVM ISO həlpçi həmçinin pult təsdiqlənməsi, məzmun xəritəsi üçün aşağıdakı mesaj ailələrini təsdiqləyir və materiallaşdırır: və ya aşağı axın birləşdirmə. Torii marşrutlar.
+İndiki IVM ISO köməkçi, həmçinin aşağıdakı mesaj ailələrini təsdiqləyir və materiallaşdırır. təsdiqləmə, hesablama xəritələşdirilməsi və ya aşağı axınındakı uyğunlaşdırma. Torii marşrutlar.
 
-|Mesaj ailəsi |Hal-hazırda göstərilən dəstək |
+|Mesaj ailəsi |Hal-hazırda dəstək |
 | --- | --- |
 |`head.001` |`BizMsgIdr`, `MsgDefIdr` sahələri, yaradılış vaxtı və seçmə yolu ilə göndərən / qəbul edən BIC sahələri daxil olmaqla ISO pultları üçün iş arzusunun başlıqlarının təsdiqlənməsi |
 |`pacs.007`, `pacs.028`, `pacs.029` |Ödənişlərin geri qaytarılması, status tələbləri və araşdırmanın həlli / status analizi |
-|`pain.001`, `pain.002` |Müştəri ödənişinin başlanğıcı və ödəniş statusu hesabatının təsdiq edilməsi |
+|`pain.001`, `pain.002` |Müştəri ödənişinin başlanması və ödəniş statusu hesabatının təsdiq edilməsi |
 |`camt.052`, `camt.053`, `camt.054` |Hesab hesabatı, bəyanat və bildirişlərin təsdiqlənməsi |
 
 ## Kaigi Sessiyalar {#kaigi-sessions}
@@ -184,7 +184,7 @@ Kaigi ödənişli, real vaxt audio / video otaqları təmin edir SORA Nexus. Bir
 Əsas səhifəyə yönəlmiş həyat dövrü:
 
 - `CreateKaigi`: bir domen altında zəng yaratmaq və onun siyasəti, cədvəlini, metadatalarını və seçim relay manifestini saxlamaq.
-- `JoinKaigi` və `LeaveKaigi`: Şəxsi rejimdə iştirakçılar öhdəliklərdən, ləğv edənlərdən istifadə edirlər, iştirakçı hesabını məruzə etmək əvəzinə siyahı sübutları IDs Birbaşa.
+- `JoinKaigi` və `LeaveKaigi`: Şəxsi rejimdə iştirakçılar öhdəliklərdən istifadə edirlər, iştirakçı hesabını açıqlamaq əvəzinə ləğv edənlər və qeydiyyat sənədləri IDs Birbaşa.
 - `RecordKaigiUsage`: ölçülmüş müddəti və qaz ümumiliklərini əlavə edin.
 - `EndKaigi`: iclası bağlayın və son vaxt möhürünü qeyd edin.
 
@@ -220,7 +220,7 @@ iroha kaigi record-usage \
 iroha kaigi end --domain streaming --call-name daily
 ```
 
-İzləyicilərin biletləri olmadan relayların ifşa edə biləcəyi otaqlarda `--room-policy public` və ya çıxışları izləyicinin təsdiqlənməsini tələb edən vaxt `--room-policy authenticated` istifadə edin. Şəbəkədə Kaigi siyahısı və istifadəni yoxlama açarları konfiqurasiya edildikdən sonra yalnız `--privacy-mode zk-roster-v1` istifadə edin; Əks halda birləşmələr, yarpaqlar və fərdi istifadə qeydləri deterministik yoxlama zamanı uğursuz olur.
+İstifadə `--room-policy public` İzləyici biletləri olmadan relaylar açıq ola biləcək otaqlar üçün və ya `--room-policy authenticated` Çıxışlar izləyicinin təsdiqlənməsini tələb etməlidir. `--privacy-mode zk-roster-v1` yalnız şəbəkənin Kaigi Rost və istifadəni yoxlayan açarları qurulmuşdur; əks halda birləşmələr, yarpaqlar, və fərdi istifadə qeydləri deterministik yoxlama zamanı uğursuz olur.
 
 ### JavaScript demo ilə sınaq {#testing-with-the-javascript-demo}
 
@@ -260,7 +260,7 @@ Nəzarət edilmiş bir sınaq üçün demo Kaigi -ə malik olan Torii son nöqt�
    ```
 
 Bu yoxlamalar Torii və Kaigi relay telemetriyasının əldə edilə biləcəyini sübut edir. Onlar bir görüş yaratmır; `CreateKaigi` və `JoinKaigi` hələ də maliyyələşdirilmiş cüzdanlara və imzalanan əməliyyatların təqdim olunmasına ehtiyac duyurlar.
-4. Demosunu açın, Ayarlara gedin, Torii URL təyin edin və tətbiqə zəncir ID və şəbəkə prefiksini son nöqtəsindən yükləməsinə icazə verin.
+4. Demosunu açın, Ayarlara gedin, Torii URL təyin edin və tətbiq endpoint-dən zəncirini ID və şəbəkə prefiksini yükləsin.
 5. Demo-da iki yerli cüzdan yaratın və ya bərpa edin. Ev sahibinin və qonağın ayrı cüzdan vəziyyətinə malik olması üçün ayrı tətbiq pəncərələrindən, profillərindən və ya maşınlardan istifadə edin.
 
 Kaigi UI testi üçün:
@@ -314,15 +314,15 @@ Bir son nöqtə qəbul edərkən və ya yazılanları qaytararkən Norito birba�
 
 ## Telemetriya Profilləri {#telemetry-profiles}
 
-Son nöqtələrin görünüşü telemetriya parametrlərindən asılıdır. Upstream sənədləri beş profil səviyyələrini təsvir edir:
+Son nöqtələrin görünməsi qovşağın `telemetry.profile` parametrindən asılıdır. Cari konfiqurasiya beş profil səviyyəsini təqdim edir:
 
 |Profil |`/status` |`/metrics` |İnkişafçıların marşrutları |
 | --- | --- | --- | --- |
-|`disabled` |Yox.|Yox.|Yox.|
-|`operator` |Bəli.|Yox.|Yox.|
-|`extended` |Bəli.|Bəli.|Yox.|
-|`developer` |Bəli.|Yox.|Bəli.|
-|`full` |Bəli.|Bəli.|Bəli.|
+|`disabled` |xeyr |xeyr |xeyr |
+|`operator` |bəli |xeyr |xeyr |
+|`extended` |bəli |bəli |xeyr |
+|`developer` |bəli |xeyr |bəli |
+|`full` |bəli |bəli |bəli |
 
 ## CLI Qısa yollar {#cli-shortcuts}
 

@@ -1,7 +1,7 @@
 ---
 translation_locale: mn
 translation_source: /reference/instructions.md
-translation_source_hash: 8dc894a05141040826067dc483319f213b007648f32354bb36f899259db9c5ac
+translation_source_hash: e300187da832a8f82258a36b7c4aaebf505adc09c771de5b0c7ab8fb0052d3db
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -19,8 +19,8 @@ translation_engine: nllb-200-ct2
 | [`TransferBox`](/mn/blockchain/instructions.md#transfer) |`Domain`, `AssetDefinition`, тооны `Asset`, `Nft` |
 | [`SetKeyValueBox`](/mn/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` металл мэдээлэл |
 | [`RemoveKeyValueBox`](/mn/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` металл мэдээлэл |
-| [`GrantBox`](/mn/blockchain/instructions.md#grant-revoke) |зохицуулах зөвшөөрөл, зохицуулах үүрэг, зохицуулалтын эрх|
-| [`RevokeBox`](/mn/blockchain/instructions.md#grant-revoke) |Санхүүжилтийн зөвшөөрөл, санхүүжилтийн үүрэг, үүргийн зөвшөөрөл |
+| [`GrantBox`](/mn/blockchain/instructions.md#grant-revoke) |`Permission` (`Grant<Permission, Account>`), `Role` (`Grant<RoleId, Account>`), `RolePermission` (`Grant<Permission, Role>`) |
+| [`RevokeBox`](/mn/blockchain/instructions.md#grant-revoke) |`Permission` (`Revoke<Permission, Account>`), `Role` (`Revoke<RoleId, Account>`), `RolePermission` (`Revoke<Permission, Role>`) |
 | [`SetParameter`](/mn/blockchain/instructions.md#setparameter) |сүлжээний параметр шинэчлэл |
 | [`ExecuteTrigger`](/mn/blockchain/instructions.md#executetrigger) |гүйцэтгэх үйл ажиллагааг эхлүүлэх|
 | [`Upgrade`](/mn/blockchain/instructions.md#other-instructions) |гүйцэтгэгчийн шинэчлэл |

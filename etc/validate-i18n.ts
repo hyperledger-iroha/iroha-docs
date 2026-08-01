@@ -4,6 +4,7 @@ import path from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { TRANSLATED_LOCALES, type DocsLocale } from './locales'
 import {
+  markdownContainerDirectives,
   markdownHeadings,
   markdownTranslationUnits,
   sentenceCount,
@@ -106,6 +107,14 @@ function letterCount(content: string): number {
   return [...content.matchAll(/[\p{L}\p{M}]/gu)].length
 }
 
+function footnoteMarkerCounts(content: string): Map<string, number> {
+  const counts = new Map<string, number>()
+  for (const match of content.matchAll(/\[\^[^\]\n]+\]/gu)) {
+    counts.set(match[0], (counts.get(match[0]) ?? 0) + 1)
+  }
+  return counts
+}
+
 function proseCompletenessErrors(
   englishBody: string,
   localizedBody: string,
@@ -190,6 +199,8 @@ export async function validateI18n(options: I18nValidationOptions = {}): Promise
       const englishBody = parseFrontmatter(englishContent).body
       const englishHeadings = markdownHeadings(englishBody)
       const localizedHeadings = markdownHeadings(localizedBody)
+      const englishDirectives = markdownContainerDirectives(englishBody)
+      const localizedDirectives = markdownContainerDirectives(localizedBody)
       const expectedSource = `/${route}`
       const expectedHash = sha256(englishContent)
 
@@ -216,6 +227,36 @@ export async function validateI18n(options: I18nValidationOptions = {}): Promise
           if (actualAnchor !== expectedAnchor) {
             errors.push(`${locale.path}/${route}: heading ${index + 1} must preserve anchor ${expectedAnchor}`)
           }
+        }
+      }
+      if (localizedDirectives.length !== englishDirectives.length) {
+        errors.push(
+          `${locale.path}/${route}: container directive inventory drift (expected ${englishDirectives.length}, found ${localizedDirectives.length})`,
+        )
+      } else {
+        for (let index = 0; index < englishDirectives.length; index += 1) {
+          const expectedKeyword = englishDirectives[index].keyword
+          const actualKeyword = localizedDirectives[index].keyword
+          if (actualKeyword !== expectedKeyword) {
+            errors.push(
+              `${locale.path}/${route}: container directive ${index + 1} must preserve keyword ${expectedKeyword ?? '(closing)'}`,
+            )
+          }
+        }
+      }
+      const englishFootnotes = footnoteMarkerCounts(englishBody)
+      const localizedFootnotes = footnoteMarkerCounts(localizedBody)
+      for (const [marker, expectedCount] of englishFootnotes) {
+        const actualCount = localizedFootnotes.get(marker) ?? 0
+        if (actualCount !== expectedCount) {
+          errors.push(
+            `${locale.path}/${route}: footnote marker count drift for ${marker} (expected ${expectedCount}, found ${actualCount})`,
+          )
+        }
+      }
+      for (const marker of localizedFootnotes.keys()) {
+        if (!englishFootnotes.has(marker)) {
+          errors.push(`${locale.path}/${route}: unexpected footnote marker ${marker}`)
         }
       }
       if (contentWithoutTranslationMetadata(localizedContent) === contentWithoutTranslationMetadata(englishContent)) {

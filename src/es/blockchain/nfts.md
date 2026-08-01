@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /blockchain/nfts.md
-translation_source_hash: 335eacd30c5964659baeeae8ac937805f1d4d786dd42a36e5164bbe75ef7e360
+translation_source_hash: 6dd2d21a29f352a14cb17046c66cfa541ef501b733b95bb6874d2d3f86ec0504
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -123,7 +123,7 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
-Si ha transferido el NFT, ejecute este comando con la configuración de cuenta del propietario actual o devuelva primero el NFT.
+Elimine el ejemplo NFT después de la transición. Si lo transfirió, transferirlo de nuevo o enviar el comando de no registrarse con la configuración de cuenta del propietario actual.
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -145,7 +145,7 @@ La superficie de autorización predeterminada incluye fichas específicas para N
 - `CanTransferNft`
 - `CanModifyNftMetadata`
 
-Las verificaciones de permisos son ejecutadas por el validador activo de tiempo de ejecución, por lo que una red puede personalizar la autorización mediante la actualización del  El ejecutor. [Tokens de autorización](/es/reference/permissions.md) para la lista actual de tokens predeterminados.
+Las verificaciones de permisos son ejecutadas por el validador activo del tiempo de ejecución, por lo que una la red puede personalizar la autorización mediante la actualización del ejecutor. [Tokens de autorización](/es/reference/permissions.md) para la lista actual de tokens predeterminados.
 
 ## La elección de NFTs {#choosing-nfts}
 

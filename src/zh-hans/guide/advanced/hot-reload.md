@@ -6,11 +6,9 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# 热重载 Iroha 在一个 Docker 集装箱 {#hot-reload-iroha-in-a-docker-container}
+# 热的重载 Iroha 在一个 Docker 集装箱 {#hot-reload-iroha-in-a-docker-container}
 
-对于正常的本地开发,最好选择:
-重建图像或重新启动生成的图像 Docker Compose 一个
-新鲜 Kagami 包裹.
+对于正常的本地开发,更好重建图像或从新增的 Kagami 捆绑中重新启动生成的 Docker Compose 堆
 
 ## 取代同行二进制 {#replace-the-peer-binary}
 
@@ -20,21 +18,18 @@ translation_engine: nllb-200-ct2
 cargo build --release -p irohad --target x86_64-unknown-linux-musl
 ```
 
-复制到运行的同行容器,然后重新启动该容器:
+复制到运行的同行容器中,然后重新启动该容器:
 
 ```bash
 docker cp target/x86_64-unknown-linux-musl/release/irohad <container>:/usr/local/bin/irohad
 docker restart <container>
 ```
 
-使用 `docker ps` 在生成的堆中,
-容器的定义是: `./localnet/docker-compose.yml`.
+使用 `docker ps`来确认容器名称.在生成的堆中,同等容器由 `./localnet/docker-compose.yml`定义.
 
 ## 在一次性网络中重复创世纪 {#recommit-genesis-in-a-disposable-network}
 
-一个同龄人只有在储存空时才开始产生. Docker
-网络,停止堆,删除生成状态,再生或取代
-签署的基因组,然后重新开始:
+在一个一次性 Docker 网络中,停止堆,删除生成状态,再生或更换签署的创新捆绑,然后重新启动:
 
 ```bash
 docker compose -f ./localnet/docker-compose.yml down
@@ -43,12 +38,8 @@ cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyper
 docker compose -f ./localnet/docker-compose.yml up
 ```
 
-不要替代一个必须保存状态的网络上的起源.
+不要在一个必须保存状态的网络上取代基因.
 
 ## 使用定制配置 {#use-custom-configuration}
 
-目前的同行配置是 TOML. 绑定安装或复制生成的
-`config.toml`, `genesis.signed.nrt`, 和相关的关键文件进入容器
-然后重新启动同行.保存生成的文件
-一起;混合不同文件 Kagami 运行可能产生消毒化或
-没有共识.
+目前的同行配置是 TOML.将生成的 `config.toml`, `genesis.signed.nrt` 和相关关键文件绑定或复制到预期的容器路径中.将生成的文件放在一起;从不同的 Kagami 运行中混合文件可能会导致消产或共识失败.

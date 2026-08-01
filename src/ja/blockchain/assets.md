@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/assets.md
-translation_source_hash: 58c9f7657f5714dc4bbb884933a1c947687fcf6c83e471007e6c7885f1dab214
+translation_source_hash: c80e6025007653b355d373394465d04adefc1221c8f34d9008f1c9cbabd3dc40
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -47,7 +47,7 @@ Iroha 資産は,口座が保有する数値余分である.すべての具体的
 |`Infinitely`|エラスティックな供給. 資産は何度も鋳造され燃焼することができます.|
 |`Once`|固定供給符号は 1回鋳造して燃やすことができます|
 |`Not`|燃やされても 再現されない固定供給証券です|
-|`Limited(n)`|硬貨製造は,限られた数の追加作業に許可されています. |
+|`Limited(n)`|政策は,限られた数の追加取引で新しい資産単位を発行することを許可します. |
 
 通常の弾性資産に対して `Infinitely` を使用し,固定供給または限られた供給資産については `Once` または `Limited(n)` を使用する.既に資産供給が確立されていない限り,初期ポリシーとして `Not` を使用しないでください.
 

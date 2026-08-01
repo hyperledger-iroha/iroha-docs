@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/instructions.md
-translation_source_hash: 3251078b2b2268ff78563c02a0f935c63dc0569f0b6d38071150cbb4b89394d6
+translation_source_hash: adc3eff9758dd73e9114e78eaa18ddf6271db3bc4042611e1ed6ed1aac226246
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -35,11 +35,11 @@ Ba'zi yo'l-yo'riqlarga ko'ra, maqsadni belgilash kerak bo'ladi. Misol uchun, aga
 |Koʻrsatmalar |Ob'ektlar |Yoʻnalish|
 | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------- |
 | [EnsureAlias](#ensurealias) |Oddiy domen, ma'lumotlar maydonining aliaslari va hisobning aliaslarini yaratish |                      |
-| [Ro'yxatdan o'tish/ro'yxatdan chiqarish ](#un-register) |hisoblar, aktivlarning ta'riflari, NFTs, rollar, triggerlar, tengdoshlar; domenlarni olib tashlash |                      |
+| [Ro'yxatdan o'tish/ro'yxatdan chiqarish ](#un-register) |hisob raqamlari, aktivlar ta'riflari, NFTs, rollar, qo'zg'atuvchilar, tengdoshlar; domenlarni olib tashlash |                      |
 | [Mint/Burn](#mint-burn) |raqamli aktivlar, takrorlashlarni qo'zg'atish |hisoblar yoki qoʻzgʻatuvchilar |
 | [SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) |[metadatalarga ega bo'lgan ob'ektlar](./metadata.md): domenlar, hisobotlar, aktivlarning ta'riflari, NFTs, RWAs, triggerlar |                      |
 | [SetParameter](#setparameter) |zanjir parametrlari |                      |
-| [Grant/Revoke](#grant-revoke) | [vazifalar, ruxsatnoma tokenlari](/uz/blockchain/permissions.md) |hisoblar yoki vazifalar |
+| [Grant/Revoke](#grant-revoke) | [vazifalar, ruxsatnoma tokenlari ](/uz/blockchain/permissions.md) |hisoblar yoki vazifalar |
 | [Transfer](#transfer) |domenlar, aktivlarning tavsiflari, raqamli aktivlar, NFTs |hisob raqamlari |
 | [Native escrow va aktivlar qulflari ](#native-escrow-and-asset-locks) |raqamli aktivlar garovlari, aktivlar qulflari , anonim garov majburiyatlari |xaridorlar, yo'nalishlar yoki nizo bo'linishi |
 | [ExecuteTrigger](#executetrigger) |qoʻzgʻatuvchilar |                      |
@@ -128,7 +128,7 @@ Siz hisoblar, aktivlarning ta'riflari, NFTs, tengdoshlar, rollar va qo'zg'atuvch
 
 RWA lotlari maxsus `RegisterRwa` ko'rsatma orqali yaratilgan. Joriy kodda `UnregisterRwa` ko'rsatmasi aniqlanmagan; tasvirlangan miqdorni to'xtatish uchun `RedeemRwa`dan foydalaning.
 
-::: ma'lumot
+::: info
 
 Shuni e'tiborga olingki, [genesis blokingizni](/uz/guide/configure/genesis.md) `genesis.json` da qanday o'rnatishga qaror qilishingizga qarab (mahsus ravishda, siz ruxsatnoma tokenlarini ro'yxatdan o'tkazishni kiritasizmi yoki yo'qmi), hisobni ro'yxatga olish jarayoni juda farq qilishi mumkin. Umuman olganda, biz buni quyidagicha qisqartirishimiz mumkin:
 
@@ -139,13 +139,13 @@ Shuni e'tiborga olingki, [genesis blokingizni](/uz/guide/configure/genesis.md) `
 
 :::
 
-::: ma'lumot
+::: info
 
 Hozirda tengdoshni ro'yxatdan o'tkazish tarmoqga dastlabki ishonchli tengdoshning bir qismi bo'lmagan tengdoshlarni qo'shishning yagona usuli.
 
 :::
 
-Obyektlarni blokchaynda ro'yxatdan o'tkazish jarayonini ko'rsatish uchun tilga oid qo'llanmalardan birini ko'rib chiqing:
+Blockchain obyektlarini ro'yxatdan o'tkazish uchun tilga oid qo'llanmalardan foydalaning:
 
 |Til |Qoʻllanma |
 | --------------------- | ------------------------------------------------------------------------------------------------------- |
@@ -249,7 +249,7 @@ Minting va yoqish raqamli aktivlarga ishora qilishi mumkin va cheklangan sonli t
 
 Assetlar muayyan hisobvaraqqa, odatda aktivni ro'yxatdan o'tkazgan hisobvaraqqa qo'yilgan. Asset miqdorlari salbiy emas, shuning uchun siz hech qachon `$-1.0` aktivga ega bo'la olmaysiz yoki salbiy miqdorni yoqib, mint olishingiz mumkin emas.
 
-Tilga oid yo'l-yo'riqchilardan birini ko'rib chiqaylik, bu sizga blokchaynda aktivlarni qazish jarayonini o'tkazadi:
+Mint blockchain aktivlaridan foydalanish uchun tilga oid qo'llanma:
 
 - [CLI](/uz/get-started/operate-iroha-via-cli.md)
 - [Rust](/uz/guide/tutorials/rust.md)

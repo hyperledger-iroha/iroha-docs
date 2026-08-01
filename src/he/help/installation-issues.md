@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /help/installation-issues.md
-translation_source_hash: 5dc09ae199ec2ec268dba53af9ebf43927a5e0254c5bb2e0fb908e0624b66661
+translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c054c85a2a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -83,13 +83,13 @@ $ rustup toolchain update stable
 
 ### בדוק את הגרסה המקובלת של Rust {#check-the-default-rust-version}
 
-אפשרות נוספת היא שיש לך את שרשרת הכלים `stable` מעודכנת, אבל היא לא מוגדרת כדוגמנית.
+אפשרות נוספת היא שיש לך את שרשרת הכלים `stable` מעודכנת, אבל היא לא מוגדרת כמתוכננת.
 
 ```bash
 $ rustup default stable
 ```
 
-זה יכול לקרות אם אתה מותקן גרסה של `nightly`, או להגדיר גרסה ספציפית של Rust, אבל שכחת לנתק אותו.
+ההתקנה של גרסה `nightly` או הגדרת גרסה ספציפית Rust מבלי להפריע בהמשך עלולה לגרום לבעיה זו.
 
 ### בדוק אם יש גרסאות אחרות Rust {#check-if-there-are-other-rust-versions}
 
@@ -123,13 +123,13 @@ $ rustup toolchain list
 $ rustup remove <toolchain>
 ```
 
-לאחר מכן, לוודא כי
+לאחר הסרת שרשראות הכלים, פקודה זו צריכה לדווח על שגיאה של פקודה לא נמצאת:
 
 ```bash
 $ cargo --help
 ```
 
-תוצאה של שגיאה של פקודה לא נמצאת, כלומר שאין לך שרשרת כלים פעילה Rust מותאמת.
+שגיאה זו מאשרת שאין שרשרת כלים פעילה Rust נותרה מותקנת.
 
 ```bash
 $ rustup toolchain install stable

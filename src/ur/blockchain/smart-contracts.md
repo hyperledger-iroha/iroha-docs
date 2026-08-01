@@ -1,9 +1,9 @@
 ---
 translation_locale: ur
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: ed622cdb1d6a47635d0753c98f80aaa903b916133f43bc9fdab268512d0ace69
+translation_source_hash: 7c35c609442df65328fa619b6673be76f801cfc2abc28afd853d7fe61e439e9c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # ہوشیار معاہدے {#smart-contracts}
@@ -15,9 +15,9 @@ Iroha ٹرانزیکشنز `Executable` مفید بوجھ انجام دیتے ہ
 - `Executable::Ivm`: Iroha VM بائٹ کوڈ
 - `Executable::IvmProved`: Iroha VM بائٹ کوڈ جس میں پہلے سے کمپیوٹرائزڈ ہدایات کی اوورلیپ اور ثبوت کے وعدے ہیں۔
 
-Kotodama ہے Iroha اعلی سطح کے ذہین معاہدے کی زبان ہے. `.ko` ماخذ فائل deterministic کو مرتب کرتا ہے IVM بائٹکوڈ، روایتی طور پر ایک کے طور پر ذخیرہ `.to` تعیناتی کے لئے آرٹیفیکٹ۔ Kotodama اہداف IVM; یہ خود مختار نہیں ہے RISC-V یا WebAssembly ہدف.
+Kotodama، Iroha کی اعلیٰ سطحی اسمارٹ کنٹریکٹ زبان ہے۔ `.ko` سورس فائل ڈیٹرمنسٹک IVM بائٹ کوڈ میں کمپائل ہوتی ہے، جسے عموماً تعیناتی کے لیے `.to` آرٹیفیکٹ کے طور پر محفوظ کیا جاتا ہے۔ Kotodama صرف IVM کو ہدف بناتی ہے۔ یہ RISC-V یا WebAssembly کو ہدف نہیں بناتی۔
 
-پہلی رہائی صرف ABI ورژن 1 کی حمایت کرتی ہے۔ سی ایس کال اور پوائنٹر-ABI پالیسی کو معاہدے کے اعتراف اور عمل درآمد کے ذریعہ غیر مشروط طور پر نافذ کیا جاتا ہے۔ رن ٹائم مطابقت کا کوئی ٹوگل نہیں ہے۔
+پہلی ریلیز صرف ABI ورژن 1 کی معاونت کرتی ہے۔ syscall اور pointer-ABI پالیسی کو معاہدے کے داخلے اور عمل درآمد کے دوران غیر مشروط طور پر نافذ کیا جاتا ہے؛ رن ٹائم مطابقت کا کوئی ٹوگل موجود نہیں ہے۔
 
 ## ہوشیار معاہدوں کا استعمال کب کرنا ہے {#when-to-use-smart-contracts}
 

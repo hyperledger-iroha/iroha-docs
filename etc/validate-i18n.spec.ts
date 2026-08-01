@@ -79,6 +79,20 @@ describe('i18n validation', () => {
     )
   })
 
+  test('rejects translated container keywords and missing footnote references', async () => {
+    const english =
+      '# Guide\n\n::: warning\n\nRead the policy[^1].\n\n:::\n\n[^1]: The policy uses a canonical account.\n'
+    const { sourceRoot, hash } = await fixture(english)
+    await writeFile(
+      path.join(sourceRoot, 'fr', 'guide', 'index.md'),
+      `---\ntranslation_locale: fr\ntranslation_source: /guide/index.md\ntranslation_source_hash: ${hash}\ntranslation_status: machine-validated\n---\n# Guide {#guide}\n\n::: avertissement\n\nLisez la politique[1].\n\n:::\n\n[^1]: La politique utilise un compte canonique.\n`,
+    )
+
+    const errors = await validateI18n({ sourceRoot, locales: [testLocale] })
+    expect(errors).toContain('fr/guide/index.md: container directive 1 must preserve keyword warning')
+    expect(errors).toContain('fr/guide/index.md: footnote marker count drift for [^1] (expected 2, found 1)')
+  })
+
   test('rejects missing and extra locale routes', async () => {
     const { sourceRoot } = await fixture()
     await writeFile(path.join(sourceRoot, 'fr', 'extra.md'), '# Supplément\n')

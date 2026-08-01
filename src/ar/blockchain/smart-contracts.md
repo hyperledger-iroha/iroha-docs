@@ -1,9 +1,9 @@
 ---
 translation_locale: ar
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: ed622cdb1d6a47635d0753c98f80aaa903b916133f43bc9fdab268512d0ace69
+translation_source_hash: 7c35c609442df65328fa619b6673be76f801cfc2abc28afd853d7fe61e439e9c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # عقود ذكية {#smart-contracts}
@@ -15,9 +15,9 @@ translation_engine: nllb-200-ct2
 - `Executable::Ivm`: Iroha VM رمز البايت
 - `Executable::IvmProved`: Iroha VM رمز البايت مع تغطية تعليمات محاسبة مسبقة والتزامات الدليل.
 
-Kotodama هو Iroha لغة العقود الذكية عالية المستوى. `.ko` ملف المصدر تجميعات إلى تحديد IVM كود بايت، يتم تخزينها بشكل تقليدي كـ `.to` القطع الأثرية لتنفيذها Kotodama الأهداف IVM; إنه ليس بمفرده RISC-V أو WebAssembly الهدف.
+Kotodama هي لغة العقود الذكية عالية المستوى في Iroha. يُترجم ملف المصدر `.ko` إلى شيفرة IVM بايت حتمية، وتُخزَّن عادةً كقطعة `.to` للنشر. تستهدف Kotodama منصة IVM فقط. ولا تستهدف RISC-V أو WebAssembly.
 
-الإصدار الأول يدعم فقط ABI النسخة 1. يتم فرض سياسة syscall و pointer-ABI دون قيد أو شرط من خلال قبول العقود وتنفيذها. لا توجد تغييرات مطابقة الوقت التشغيلي.
+يدعم الإصدار الأول الإصدار 1 من ABI فقط. تُفرض سياسة syscall وpointer-ABI دون قيد أو شرط عند قبول العقود وتنفيذها؛ ولا يوجد مفتاح تبديل للتوافق في وقت التشغيل.
 
 ## متى تستخدم العقود الذكية؟ {#when-to-use-smart-contracts}
 

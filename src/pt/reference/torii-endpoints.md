@@ -1,9 +1,9 @@
 ---
 translation_locale: pt
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: 6ee65d409642c79bea0f2c4ff0d8cd59b0ec0a29e115225045786d0816e8a6a7
+translation_source_hash: 9bec41b1b419e252fdcff8328e7950a294bdad3ac40112a5a7f2ce451d19e9cb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Torii Pontos finais {#torii-endpoints}
@@ -40,7 +40,7 @@ Para detalhes de formato, negociação de conteúdo, bandeiras de layout, hashes
 |`GET /v1/time/now` |JSON |Snapshot do nó de relógio de parede |
 |`GET /v1/time/status` |JSON |Situação de sincronização do tempo |
 
-`/openapi` É a lista de endpoint autorizada para um nó em execução. A superfície exata depende das características da construção e da configuração do tempo de execução, Assim, os clientes gerados devem preferir o OpenAPI O documento sobre uma lista de rotas copiada à mão [Torii API consola](/pt/reference/torii-api-console.md) para carregar o documento ao vivo, teste JSON rotas, cópia curl solicitações, e gerar código do cliente a partir do esquema atual.
+`/openapi` é a lista de endpoint autorizada para um nó em execução. A superfície exata depende da criar recursos e configuração de tempo de execução, por isso os clientes gerados devem preferir o OpenAPI O documento sobre uma lista de rotas copiada à mão [Torii API consola](/pt/reference/torii-api-console.md) para carregar o documento ao vivo, teste JSON rotas, cópia curl solicitações, e gerar código do cliente a partir do esquema atual.
 
 ## Experimente as rotas ao vivo Taira {#try-live-taira-routes}
 
@@ -75,7 +75,7 @@ Se uma rota de testnet pública retornar `502`, temporizar ou relatar uma fila s
 
 ## Consenso e pontos finais do tempo de execução {#consensus-and-runtime-endpoints}
 
-|Ponto final .|Formatar |Propósito |
+|Ponto final .|Formatar |Propósito .|
 | --- | --- | --- |
 |`GET /v1/sumeragi/commit-certificates` |JSON |Resumos recentes dos certificados de compromisso |
 |`GET /v1/sumeragi/validator-sets` |JSON |Histórico de configuração do validador |
@@ -101,7 +101,7 @@ Se uma rota de testnet pública retornar `502`, temporizar ou relatar uma fila s
 |`GET /v1/sumeragi/commit_qc/{hash}` |Norito ou JSON |Cometer QC registro para um hash de bloco |
 |`GET /v1/runtime/abi/active` |JSON |Descrição do tempo de execução ativo ABI |
 |`GET /v1/runtime/abi/hash` |JSON |Atividade de execução ABI hash |
-|`GET /v1/runtime/metrics` |JSON |Impressão de métricas do tempo de execução |
+|`GET /v1/runtime/metrics` |JSON |Impressão de métricas de tempo de execução |
 |`GET /v1/runtime/upgrades` |JSON |Lista de atualização do tempo de execução |
 |`POST /v1/runtime/upgrades/propose` |JSON |Proponha uma atualização do tempo de execução .|
 |`POST /v1/runtime/upgrades/activate/{id}` |JSON |Ativar uma proposta de atualização do tempo de execução |
@@ -111,29 +111,29 @@ Se uma rota de testnet pública retornar `502`, temporizar ou relatar uma fila s
 
 Quando Torii é construído com o conjunto de recursos voltados para aplicativos, ele expõe famílias adicionais JSON para exploradores, serviços SORA, fluxos de pontes, provas e armazenamento.
 
-|Família da rota |Propósito .|
+|Família da rota |Propósito |
 | --- | --- |
-|`/v1/accounts/`, `/v1/domains/`, `/v1/assets/*` |JSON leituras, auxiliares de consulta, auxiliares para embarque e visualizações do portfólio ou dos titulares |
-|`/v1/nfts/`, `/v1/rwas/`, `/v1/confidential/*` |NFT, ativos do mundo real e visões confidenciais de activos |
-|`/v1/aliases/`, `/v1/assets/aliases/`, `/v1/sns/`, `/v1/identifiers/` |Nome, alias e resolução do identificador |
+|`/v1/accounts/*`, `/v1/domains/*`, `/v1/assets/*` |JSON leituras, auxiliares de consulta, auxiliares para embarque e visualizações do portfólio ou dos titulares |
+|`/v1/nfts/*`, `/v1/rwas/*`, `/v1/confidential/*` |NFT, ativos do mundo real e visões confidenciais de activos |
+|`/v1/aliases/*`, `/v1/assets/aliases/*`, `/v1/sns/*`, `/v1/identifiers/*` |Nome, alias e resolução do identificador |
 |`/v1/explorer/*` |Contas, ativos, blocos, transações, instruções, métricas e visualizações de fluxo orientadas para exploradores |
-|`/v1/transactions/`, `/v1/pipeline/`, `/v1/iso20022/*` |Histórico de transacções, recuperação ou estado do gasoduto e ISO 20022 auxiliares |
+|`/v1/transactions/*`, `/v1/pipeline/*`, `/v1/iso20022/*` |Histórico de transacções, recuperação ou estado do gasoduto e ISO 20022 auxiliares |
 |`/v1/contracts/*` |Código de contrato, implantação, pacote, chamada, visualização, evento, atividade, roll-up e rotas de estado |
-|`/v1/multisig/`, `/v1/controls/` |Propostas, aprovações e auxiliares de controlo das transferências multisig |
-|`/v1/bridge/`, `/v1/ledger/`, `/v1/proofs/*` |Finalidade, prova de estado, prova de bloco, retenção de provas e rotas de consulta de provas |
+|`/v1/multisig/*`, `/v1/controls/*` |Propostas, aprovações e auxiliares de controlo das transferências multisig |
+|`/v1/bridge/*`, `/v1/ledger/*`, `/v1/proofs/*` |Finalidade, prova de estado, prova de bloco, retenção de provas e rotas de consulta de provas |
 |`/v1/da/*` |Avaliabilidade de dados ingestão, manifestos, políticas de prova, compromissos e intenções pin |
 |`/v1/zk/*` |ZK raízes, verificação de provas, comprovação de IVM, contagem de votos, chaves de verificação, registos de provas e anexos |
-|`/v1/gov/`, `/v1/ministry/` |Propostas de governança, folhetos de votação, estado do conselho, espaços de nome protegidos, propostas de ordem do dia, promulgação e finalização.|
-|`/v1/nexus/`, `/v1/sccp/` |Nexus faixa, espaço de dados, e auxiliares de prova cruzada.|
+|`/v1/gov/*`, `/v1/ministry/*` |Propostas de governança, folhetos de votação, estado do conselho, espaços de nome protegidos, propostas de ordem do dia, promulgação e finalização.|
+|`/v1/nexus/*`, `/v1/sccp/*` |Nexus faixa, espaço de dados, e auxiliares de prova cruzada.|
 |`/v1/musubi/*` |Musubi leituras do registo de pacotes e construção de instruções |
 |`/v1/subscriptions/*` |Planejamento de assinatura, ciclo de vida da assinatura, utilização e cobrança de assistentes |
-|`/v1/sorafs/`, `/sorafs/`, `/.well-known/sorafs/*` |SoraFS descoberta do fornecedor, comprovação de capacidade, fixação, recolha de armazenamento e serviço público de conteúdo |
-|`/v1/soracloud/`, `/v1/soradns/`, `/soradns/`, `/api/` |SoraCloud ciclo de vida do serviço, fluxos de computação privada/modelo, descoberta pública e roteamento de aplicativos hospedados |
-|`/v1/connect/`, `/v1/vpn/` | Iroha Conectar sessões, WebSocket Transportes, VPN sessões, perfis e recibos |
-|`/v1/app-api/`, `/v1/api/`, `/v1/content/*` |Aplicações API ligações e pacotes / roteamento de conteúdo apoiado em CID |
+|`/v1/sorafs/*`, `/sorafs/*`, `/.well-known/sorafs/*` |SoraFS descoberta do fornecedor, comprovação de capacidade, fixação, recolha de armazenamento e serviço público de conteúdo |
+|`/v1/soracloud/*`, `/v1/soradns/*`, `/soradns/*`, `/api/*` |SoraCloud ciclo de vida do serviço, fluxos de computação privada/modelo, descoberta pública e roteamento de aplicativos hospedados |
+|`/v1/connect/*`, `/v1/vpn/*` | Iroha Conectar sessões, WebSocket Transportes, VPN sessões, perfis e recibos |
+|`/v1/app-api/*`, `/v1/api/*`, `/v1/content/*` |Aplicações API ligações e pacotes / roteamento de conteúdo apoiado em CID |
 |`/v1/operator/*`, `/v1/mcp` |A autenticação do operador e a ponte nativa MCP JSON-RPC |
-|`/v1/offline/`, `/v1/repo/`, `/v1/space-directory/`, `/v1/ram-lfe/` |Preparação offline, acordos de repositório, manifestos do espaço de dados e assistentes [RAM-LFE ](/pt/blockchain/ram-lfe.md#torii-routes) |
-|`/v1/kaigi/`, `/v1/webhooks/`, `/v1/notify/`, `/v1/telemetry/` |Colaboração, webhook, notificação push e integrações de telemetria ao vivo |
+|`/v1/offline/*`, `/v1/repo/*`, `/v1/space-directory/*`, `/v1/ram-lfe/*` |Preparação offline, acordos de repositório, manifestos do espaço de dados e assistentes [RAM-LFE ](/pt/blockchain/ram-lfe.md#torii-routes) |
+|`/v1/kaigi/*`, `/v1/webhooks/*`, `/v1/notify/*`, `/v1/telemetry/*` |Colaboração, webhook, notificação push e integrações de telemetria ao vivo |
 
 ## Ponte ISO 20022 {#iso-20022-bridge}
 
@@ -141,7 +141,7 @@ Torii expõe a ponte ISO 20022 sob `/v1/iso20022/*` quando estiver ativada a apl
 
 ### Torii ISO 20022 Pontos finais {#torii-iso-20022-endpoints}
 
-|Método e ponto final |Propósito .|
+|Método e ponto final |Propósito |
 | --- | --- |
 |`POST /v1/iso20022/pacs008` |Submeter uma transferência de crédito do cliente FI para FI e construir a transferência de activos correspondente Iroha |
 |`POST /v1/iso20022/pacs009` |Submeter uma transferência de crédito FI para FI utilizada para PvP ou financiamento em dinheiro relacionado a títulos |
@@ -162,13 +162,13 @@ Torii expõe a ponte ISO 20022 sob `/v1/iso20022/*` quando estiver ativada a apl
 
 `pacs.008` As submissões devem fornecer a mensagem ID, montante da liquidação interbancária, moeda, data de liquidação, devedor e credor IBANs, e o devedor e credor BICs. Quando os dados de referência são configurados, a ponte verifica também o BIC, IBAN, e ISO 4217 travessas de moeda antes da transacção gerada entrar no gasoduto.
 
-As declarações `pacs.009` devem incluir a mensagem de negócios ID, a definição da mensagem ID, o tempo de criação, o montante da liquidação interbancária, a moeda, a data de liquidação, o agente instruidor e autorizado BICs, e o devedor e credor IBANs. Se a mensagem incluir `Purp`, a ponte aceita atualmente apenas financiamento para efeitos de valores mobiliários: `Purp=SECU`.
+As declarações `pacs.009` devem incluir a mensagem de negócios ID, a definição da mensagem ID, o tempo de criação, o montante do liquidação interbancária, a moeda, a data de liquidação. Agente de instrução e agente de instrução BICs, e devedor e credor IBANs. Se a mensagem incluir `Purp`, a ponte aceita atualmente apenas financiamento destinado a valores mobiliários: `Purp=SECU`.
 
-Os pontos finais de submissão `pacs.008` e `pacs.009` aceitam os envelopes XML ISO ou o formato de campo plano utilizado nos testes de ponte. Os campos opcionais `SplmtryData` podem identificar o livro-razão Iroha alvo, a fonte e a conta alvo IDs ou endereços, bem como a definição do activo ID. A resposta é `202 Accepted` com `message_id`, `transaction_hash`, `status`, `pacs002_code` e o contexto do livro-razão/conto/ativo resolvido.
+Os pontos finais de apresentação `pacs.008` e `pacs.009` aceitam os envelopes XML ISO ou o formato de campo plano utilizado nos testes de ponte. Os campos opcionais `SplmtryData` podem inserir o livro-razão Iroha, Conta de origem e meta IDs ou endereços, e definição de ativo ID. A resposta é `202 Accepted` com `message_id`, `transaction_hash`, `status`, `pacs002_code`, e o contexto do livro/conto/ativo resolvido.
 
 ### Suporte adicional de parceria e mapeamento {#additional-parser-and-mapping-support}
 
-A Comissão IVM ISO o assistente também valida e materializa as seguintes famílias de mensagens para a validação do envelope, mapeamento de liquidações, Não existem soluções que possam ser independentes Torii rotas.
+A Comissão IVM ISO A assistente também valida e materializa as seguintes famílias de mensagens para envelope a validação, o mapeamento de liquidações ou a reconciliação para baixo. Torii rotas.
 
 |Família de mensagens |Apoio atual |
 | --- | --- |
@@ -260,7 +260,7 @@ Para um ensaio controlado, aponte a demonstração para um ponto final Kaigi cap
    ```
 
 Estas verificações comprovam que a telemetria de relevo Torii e Kaigi são acessíveis. Não criam uma reunião; `CreateKaigi` e `JoinKaigi` ainda precisam de carteiras financiadas e apresentação assinada de transacções.
-4. Abra a demonstração, vá para Configurações, configure o Torii URL e deixe o aplicativo carregar a cadeia ID e o prefixo de rede do ponto final.
+4. Abra a demonstração, vá para Configurações, configure o Torii URL e deixe que o aplicativo carregue a cadeia ID e prefixo de rede do ponto final.
 5. Criar ou restaurar duas carteiras locais na demonstração. Use janelas de aplicativos separadas, perfis ou máquinas para que o anfitrião e o convidado tenham estado de carteira separado.
 
 Para testar o Kaigi UI:
@@ -314,15 +314,15 @@ Quando um ponto final aceita ou retorna digitado Norito diretamente, utilizaçã
 
 ## Perfis de telemetria {#telemetry-profiles}
 
-A visibilidade dos pontos terminais depende das configurações de telemetria.
+A visibilidade dos endpoints depende da configuração `telemetry.profile` do nó. A configuração atual expõe cinco níveis de perfil:
 
-|Perfil .|`/status` |`/metrics` |Roteiras de desenvolvimento |
+|Perfil .|`/status` |`/metrics` |Rutas de desenvolvimento |
 | --- | --- | --- | --- |
-|`disabled` |- Não .|- Não .|- Não .|
-|`operator` |Sim , sim .|- Não .|- Não .|
-|`extended` |Sim , sim .|Sim , sim .|- Não .|
-|`developer` |Sim , sim .|- Não .|Sim , sim .|
-|`full` |Sim , sim .|Sim , sim .|Sim , sim .|
+|`disabled` |não |não |não |
+|`operator` |sim |não |não |
+|`extended` |sim |sim |não |
+|`developer` |sim |não |sim |
+|`full` |sim |sim |sim |
 
 ## CLI Curta-metragens {#cli-shortcuts}
 

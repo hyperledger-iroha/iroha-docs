@@ -28,9 +28,12 @@ pnpm serve
 ```
 
 Vercel publishes `main` at the domain root for `docs.iroha.tech`. The GitHub
-Actions workflow also builds with `/iroha-docs/` as its public path and
-publishes the `gh-pages` backup. Domain ownership and routing are managed in
-the hosting and DNS control planes, so do not add a checked-in `CNAME` file.
+Actions workflow also builds with `/iroha-docs/` as its public path and deploys
+the backup through GitHub's official Pages actions. The repository Pages source
+must therefore be set to **GitHub Actions**; this workflow does not publish a
+`gh-pages` branch. Domain ownership and routing are managed in the hosting and
+DNS control planes, so do not add a checked-in `CNAME` file. The checked-in
+`vercel.json` runs the complete validation suite before every Vercel build.
 
 ## Validation
 
@@ -102,12 +105,14 @@ commit in a clean checkout. Copy-only artifacts are read from the pinned Git
 tree. The refresh updates checked-in artifacts and their SHA-256 values; review
 all resulting diffs.
 
-The pinned commit must also be fetchable from the public Iroha repository. If a
-local source commit has not been published yet, every artifact remains
-`pending-public-source-commit` and the manifest records
-`awaiting-public-source-commit`. This is an explicit incomplete state, not a
-successful public refresh. After the commit is published, rerun the refresh
-from a clean checkout to mark the artifacts `current`.
+The pinned candidate commit is publicly fetchable, and its copy-artifact paths
+and hashes match the public Git tree. The candidate is unsigned, however, and a
+compliant signed public source commit for the final documentation relocation
+and current implementation truth is still required. Until that commit is
+available and the references are refreshed from it, every artifact remains
+`pending-signed-source-commit` and the manifest records
+`awaiting-signed-source-commit`. This is an explicit incomplete state; public
+reachability and matching copy hashes do not make the artifacts `current`.
 
 ## Optional Site Configuration
 

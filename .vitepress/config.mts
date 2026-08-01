@@ -8,7 +8,7 @@ import ViteUnoCSS from 'unocss/vite'
 import { mermaid } from './md-mermaid'
 import { katex } from '@mdit/plugin-katex'
 import {
-  alternateLocaleHead,
+  documentHead,
   prefixRoute,
   ROOT_LOCALE,
   SEARCH_LOCALES,
@@ -523,7 +523,7 @@ export default defineConfig({
   sitemap: {
     hostname: 'https://docs.iroha.tech',
   },
-  transformHead: ({ pageData }) => alternateLocaleHead(pageData.relativePath),
+  transformHead: ({ pageData }) => documentHead(pageData.relativePath),
   vite: {
     plugins: [ViteUnoCSS('../uno.config.ts'), ViteSvgLoader()],
     envDir: resolve(__dirname, '../'),

@@ -23,7 +23,7 @@ Utilisez un VPN lorsque:
 
 Un VPN n'est pas nécessaire pour chaque déploiement. Les réseaux publics peuvent intentionnellement exposer Torii via une passerelle publique, un équilibreur de charge ou un proxy inverse. Même dans ce cas, gardez les points d'arrêt du trafic et de l'administration des validateurs peer-to-peer sur un réseau restreint autant que possible.
 
-::: astuce
+::: tip
 
 Un navigateur VPN ne protège que le trafic de ce navigateur. Il ne protège pas `irohad`, CLI, SDK, SSH, les métriques ou le trafic de sauvegarde à moins que ces processus ne soient routés par le même réseau privé.
 

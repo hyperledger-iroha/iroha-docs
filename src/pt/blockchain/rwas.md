@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/rwas.md
-translation_source_hash: 80593515d6919a6b6cb282ddcd4903ce000b56b264f350a42a6ed792f9cbef73
+translation_source_hash: cbdc6d766fb90bea7e68dc67f2c705bb1638340feeb2fca9f2dd43a727ac03e7
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,7 +12,7 @@ Ativos do mundo real (RWAs) modelo de ativos fora da cadeia cuja propriedade ou 
 
 Os RWAs são diferentes dos saldos numéricos de activos:
 
-- Um activo numérico é um saldo fungível detido por uma conta.
+- Um ativo numérico é um saldo fungível detido por uma conta
 - Um NFT é um registro único na cadeia com um só proprietário.
 - Um RWA é um lote que pode conter metadados comerciais, quantidade, reservas, congelamento, estado de resgate, proveniência e política do controlador.
 
@@ -60,12 +60,12 @@ Os fluxos de trabalho comuns RWA incluem:
 |Operação |Comportamento implementado |
 | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
 |`RegisterRwa` |Crie um lote gerado- ID em um domínio; a autoridade de transação torna-se `owned_by`. |
-|`TransferRwa` |Transferir a quantidade para outra conta. Uma transferência completa pode alterar `owned_by`; uma transferência parcial cria um lote de filhos gerado. |
+|`TransferRwa` |Mover a quantidade para outra conta. Uma transferência completa pode alterar `owned_by`. Uma transferência parcial cria um lote de filhos separado com uma gerada ID. |
 |`HoldRwa` |Quantidade de reserva: requer um controlador configurado e `hold_enabled`. |
 |`ReleaseRwa` |Remover a quantidade mantida. Requer um controlador configurado e `hold_enabled`. |
 |`FreezeRwa` |Bloquear operações do proprietário comum. Requer um controlador configurado e `freeze_enabled`. |
 |`UnfreezeRwa` |Reactiva as operações de proprietário comum. Requer um controlador configurado e `freeze_enabled`. |
-|`RedeemRwa` |Requer que o proprietário ou um controlador e `redeem_enabled` .|
+|`RedeemRwa` |Subtrair permanentemente a quantidade da circulação. O proprietário ou um controlador pode submetê-la quando `redeem_enabled` for verdadeira. |
 |`MergeRwas` |Combinar quantidades de lotes parentais com o mesmo domínio e especificação em um lote infantil gerado. |
 |`ForceTransferRwa` |Movimento de quantidade através de um fluxo de controlador. Requer um controlador configurado e `force_transfer_enabled`. |
 |`SetRwaControls` |Substituir a política de controlo do lote. Requer o proprietário ou um controlador. |
@@ -96,11 +96,11 @@ O `RwaControlPolicy` implementado possui os seguintes campos:
 }
 ```
 
-As contas e funções do controlador são permitidas para executar apenas as operações do controlador habilitadas pela bandeira booleana correspondente. A carga útil de controle atual não é uma política de transferência da lista de permisos e não contém regras `transfers` aninhadas.
+As contas e funções do controlador só podem executar as operações habilitadas pelas respectivas bandeiras booleanas. A carga útil de controle atual contém identidades do controlador e bandeiras de operação. `transfers` As regras estão fora desta carga útil.
 
 ## Perguntas, Eventos e APIs {#queries-events-and-apis}
 
-Utilização [`FindRwas`](/pt/reference/queries.md#assets-nfts-and-rwas) para a lista registada RWA As aplicações que necessitam de actualizações ao vivo podem subscrever-se a [`Rwa` Eventos de dados](/pt/blockchain/filters.md#data-event-filters) para criação, mudança de proprietário, divisão, fusão, resgate, congelamento, descongelamento, detenção, libertação, transferência forçada, alterações de controlo, e eventos de metadados.
+Utilização [`FindRwas`](/pt/reference/queries.md#assets-nfts-and-rwas) para a lista registada RWA As aplicações que necessitam de actualizações ao vivo podem subscrever-se a [`Rwa` Eventos de dados](/pt/blockchain/filters.md#data-event-filters) para a criação, mudança de proprietário, divisão, fusão, resgate, congelação, descongelação, Eventos realizados, liberados, transferidos por força, alterados de controlo e metadatos.
 
 Torii expõe rotas de estado de cadeia como `/v1/rwas` e `/v1/rwas/query`, além de rotas exploradoras como `/v1/explorer/rwas` e `/v1/explorer/rwas/{rwa_id}` quando essa família de rotas está habilitada. Os clientes gerados devem preferir o documento ao vivo [`/openapi`](/pt/reference/torii-endpoints.md#common-endpoints) para a forma exata da resposta exposta por um nó.
 
@@ -228,7 +228,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Soltar a retenção quando o processo fora da cadeia estiver concluído:
+Enviar `ReleaseRwa` após o êxito do processo fora da cadeia:
 
 ```python
 draft = TransactionDraft(
@@ -242,7 +242,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### Adicionar Metadados de Controle e Auditoria {#add-controls-and-audit-metadata}
 
-Os controles e os metadados são separados. Usar controles para a política do controlador e metadados para fatos que as aplicações ou auditores precisam exibir:
+Os controles e os metadados são separados. Use controles para a política do controlador, e metadados para fatos que as aplicações ou auditores precisam exibir:
 
 ```python
 draft = TransactionDraft(
@@ -273,7 +273,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### Quantidade de resgate ou aposentadoria {#redeem-or-retire-quantity}
 
-Quantidade de resgate quando o ativo fora da cadeia representado foi entregue, consumido, retirado; O lote deve ter: `redeem_enabled`, e o signatário deve ser o proprietário ou um controlador.
+Submeter `RedeemRwa` depois que o ativo fora da cadeia representado for entregue, consumido, retirado ou removido de outra forma da circulação. Isto subtrai permanentemente a quantidade enviada do lote. O lote deve ter `redeem_enabled`.
 
 ```python
 draft = TransactionDraft(
@@ -287,7 +287,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### Congelamento durante a revisão da conformidade {#freeze-during-compliance-review}
 
-Congelar muito quando uma revisão fora da cadeia deve bloquear as operações normais do proprietário. O assinante deve ser um controlador e o lote deve ter: `freeze_enabled`.
+Submeter `FreezeRwa` quando uma revisão fora da cadeia deve bloquear as operações ordinárias do proprietário. O assinante deve ser um controlador. O lote deve ter `freeze_enabled`.
 
 ```python
 draft = TransactionDraft(
@@ -308,7 +308,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Descongelar quando passar a revisão:
+Submeter `UnfreezeRwa` após a aprovação da revisão:
 
 ```python
 draft = TransactionDraft(
@@ -380,7 +380,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Resgatar o montante representado após liquidação fora da cadeia:
+Redenção do montante representado após liquidação fora da cadeia:
 
 ```python
 draft = TransactionDraft(
@@ -394,7 +394,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### Pensionamento de Crédito a Carbono {#carbon-credit-retirement}
 
-Usar o resgate para retirar créditos depois de serem reclamados. Os metadados apontam para o certificado fora da cadeia ou a prova do registro:
+Enviar `RedeemRwa` para remover os créditos de carbono reivindicados da circulação. Armazenar o certificado ou a prova de registo fora da cadeia em metadados:
 
 ```python
 carbon_lot_id = (

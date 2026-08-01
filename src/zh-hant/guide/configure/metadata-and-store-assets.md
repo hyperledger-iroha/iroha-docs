@@ -6,62 +6,48 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# 數據儲存及數字簿存储的選擇 {#metadata-and-ledger-storage-choices}
+# 超級數據和賬本存儲選擇 {#metadata-and-ledger-storage-choices}
 
-其他國家 Iroha 3 數據模型沒有獨立的 `Store` 對任意的資產類型
-使用以下存儲選項.
+Iroha 3 數據模型對於任意的關鍵值數據沒有單獨的 `Store`資產類型. 使用以下存儲選項:
 
-## 數據表 {#metadata}
+## 超級數據 {#metadata}
 
-使用 [數據](/zh-hant/blockchain/metadata.md) 對於小 JSON 屬於的字段
-在帳號對象上:
+使用 [大數據](/zh-hant/blockchain/metadata.md)用於屬於本書對象的小 JSON 字段:
 
 - 顯示名稱和標籤
 - 集成 IDs
 - 小政策旗
-- 哈希斯, URIs, CIDs, 或是 SoraFS 指向更大的有效載荷的路徑
+- URIs,CIDs 或 SoraFS 指向更大的有效載荷的路徑
 
-數據是世界狀態的一部分,
-保持密钥穩定,數值簡約,權限明顯.
-直接存儲大型文件,日志或高率的應用程序狀態
-沒有任何相關資料.
+傳輸數據是世界狀態的一部分,並與擁有它的對象一起返回.保持密鑰穩定,值緊,權限明確.不要直接在傳輸數據中存儲大型文件,日誌或高檔次應用狀態.
 
-## 數值資產和 NFTs {#numeric-assets-and-nfts}
+## 數字資產和 NFTs {#numeric-assets-and-nfts}
 
-使用 [資產](/zh-hant/blockchain/assets.md) 及其他 [NFTs](/zh-hant/blockchain/nfts.md) 什麼時候
-該國家具有價值:
+使用 [資產](/zh-hant/blockchain/assets.md)和 [NFTs](/zh-hant/blockchain/nfts.md)當狀態具有價值時:
 
-- 數值資產,可存的餘額
-- NFTs 獨家所有權的紀錄
-- [RWAs](/zh-hant/blockchain/rwas.md) 其他特定領域的對象,
-  活跃的數據模型揭示了他們
+- 函數式餘額的數字資產
+- NFTs 對於獨有的記錄
+- [RWAs](/zh-hant/blockchain/rwas.md)和其他特定域的對象,當活躍數據模型暴露它們
 
-資產和 NFTs 擁有自己的 IDs, 生命周期事件,轉移行為,
-他們比所有權的元數據更好,
-或是傳輸歷史.
+資產和 NFTs 有自己的 IDs,生命週期事件,轉讓行爲和許可證檢查.當所有權,稀缺或轉移歷史問題時,它們比元數據更好.
 
-## 沒有連鎖數據 {#off-chain-data}
+## 鏈外數據 {#off-chain-data}
 
-使用無鎖儲存的大型或可變化的有效負荷.
-在連鎖上參考,例如:
+對於大型或可變的有效載荷,使用鏈外存儲.僅在鏈上存儲穩定的參考,例如:
 
-- 一種內容哈希
-- 其他 URI
-- 其他 SoraFS 路徑或顯示參考
-- 使用申請證明的簡約承諾
+- 一個內容哈希
+- 一 URI
+- 一條 SoraFS 路徑或表格參考
+- 通過申請證明所使用的緊密承諾
 
-這讓我們保持 WSV 還可以證明申請是否有
-在鎖外的有效負荷符合連鎖上的參考量.
+這使得 WSV 保持小,同時還允許應用程序驗證連鎖外的有效載荷是否符合連鎖上參考.
 
-## 選擇一個地方 {#choosing-a-location}
+## 選擇一個地點 {#choosing-a-location}
 
-請使用以下細節:
+使用這個基本規則:
 
-- 如果它是帳簿對象的簡約屬性,
-- 如果它具有價值或可轉移性, NFT, 或是
-  該區域特定的對象.
-- 如果它是大型,高率或私人應用,
-  WSV 並將可驗證的參考資料放上連鎖.
+- 如果它是一個大型物體的緊屬性,請使用元數據.
+- 如果它具有價值或可轉移,則將其模型爲資產, NFT,或特定域的對象.
+- 如果它是大型的,高率的或私有應用程序,則將其存儲在 WSV 外,並在鏈上放一個可驗證的參考.
 
-請查看其他資料,
-[許可令牌](/zh-hant/reference/permissions.md).
+對於轉型數據權限,請參見 [權限令牌](/zh-hant/reference/permissions.md).

@@ -6,20 +6,17 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# 提供個人資料空間的贊助費用 {#sponsor-fees-for-a-private-dataspace}
+# 提供私人數據空間的贊助費 {#sponsor-fees-for-a-private-dataspace}
 
-免費提供資料空間交易,
-農場 XOR. 使用者仍會簽署交易.
-在贊助商帳戶上, XOR 平衡
-在網路費用上.
+費用贊助允許用戶在沒有持有 XOR 的情況下提交私人數據空間交易.用戶仍然簽署了交易.交易的元數據指向贊助商賬戶,運行時間爲網絡費用借款贊助商的餘額 XOR.
 
-整合有三個移動部分:
+集成有三個移動部分:
 
-1. 結點允許使用費用的贊助
-2. 贊助者帳戶存在,並有 XOR
-3. 每個使用者都有 `CanUseFeeSponsor` 對於這個贊助商
+1. 節點允許費用贊助
+2. 贊助商賬戶存在,並擁有 XOR
+3. 每個用戶對該贊助商擁有 `CanUseFeeSponsor`
 
-接著,每個受贊助的使用者交易只需要這個元數據:
+在此之後,每一個贊助的用戶交易只需要這個元數據:
 
 ```json
 {
@@ -27,18 +24,16 @@ translation_engine: nllb-200-ct2
 }
 ```
 
-這頁面顯示了兩個常見的模式:
+這個頁面顯示了兩個常見的模式:
 
-- **免費使用者寫**: 贊助者支付 XOR 而使用者並沒有付出任何費用.
-- **在本地代碼上收費**: 使用者以應用程式代碼支付贊助商,
-  贊助商在 XOR.
+- 免費用戶寫道:贊助商支付 XOR 而用戶沒有支付.
+- 地方代幣費用:用戶以應用代幣支付贊助商,贊助商則以 XOR 支付網絡.
 
-使用 Taira 或是一個私人測試網絡.
-操作員和管理變化;它並不是由客戶端配置建立.
+首先使用 Taira 或私有測試網絡. 新的私人數據空間是運營商和治理變化;它不是由客戶端配置創建的.
 
-## 範例價值 {#example-values}
+## 示例值 {#example-values}
 
-下面的命令使用這些位置持有者:
+下面的命令使用這些位置持有符:
 
 ```bash
 export DATASPACE="team"
@@ -55,14 +50,11 @@ export EMAIL_POLICY="email#team"
 export POLICY_OWNER="<IDENTIFIER_POLICY_OWNER_ACCOUNT_I105>"
 ```
 
-使用法典 I105 年 月 日 IDs 除非您的部署有活跃帳戶
-對同一個帳戶而言,
+使用常規 I105 帳戶 IDs,除非您的部署對相同賬戶有活躍賬戶號.
 
-## 1. 準備資料空間 {#_1-prepare-the-dataspace}
+## 1. 準備數據空間 {#_1-prepare-the-dataspace}
 
-開始從個人數據空間目錄和路由工作,
-[接觸到 SORA Nexus 數據區域](/zh-hant/get-started/sora-nexus-dataspaces.md#_8-provision-a-new-dataspace).
-面向操作員的片段看起來像這樣:
+從 [中描述的私人數據空間目錄和路由工作開始連接到 SORA Nexus 數據域](/zh-hant/get-started/sora-nexus-dataspaces.md#_8-provision-a-new-dataspace).一個面向操作員的碎片看起來像這樣:
 
 ```toml
 [[nexus.lane_catalog]]
@@ -87,28 +79,23 @@ account_prefix = "team."
 description = "Route team domains to the private dataspace"
 ```
 
-在轉移到使用者交易之前,
+在轉移到用戶交易之前,請檢查:
 
-- 隱私路線在結中顯示 `/status` 如何應對
-- 使用者帳戶由您的私人登入流程接收
-- 贊助商帳戶存在
-- 這項政策 XOR 在網路上有效的收費資產和收費清洗帳戶
+- 在 `/status` 節點響應中顯示私人車道
+- 用戶帳戶由您的私人登錄流程接入
+- 贊助商賬戶存在
+- XOR 費用資產和費用清算賬戶在網絡上有效
 
 ## 2. 在數據空間中註冊資產 {#_2-register-assets-in-the-dataspace}
 
-註冊使用者將在私人中持有的資產定義
-在你將這些數據傳輸到應用程式逻辑中之前,
-學習模式,教程使用 `usage#billing.team`:
+在將其傳輸到應用邏輯中之前,註冊用戶將在私人數據空間內保留的資產定義.對於本地代幣費用模式,教程使用`usage#billing.team`:
 
 ```text
 <asset-name>#<domain>.<dataspace>
 usage#billing.team
 ```
 
-首先設定域名, SNS 建立一間租公司,
-沒有秘密 `AliasSetupPlanRequestV1` 目的是 `$BILLING_DOMAIN`, 包括
-數字化 `team` 數據空間 ID, 經典所有者,租賃期限及現行價格
-警衛:
+首先設置擁有資產名稱空間的域名和 SNS 租協議.爲 `$BILLING_DOMAIN`創建一個無祕密的 `AliasSetupPlanRequestV1`意圖,包括數值 `team`數據空間 ID,法定所有者,租期限和當前報價保護:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -120,9 +107,7 @@ iroha --config ./operator.client.toml \
   app alias setup apply --plan-file ./billing-domain.plan.json
 ```
 
-註冊資產定義. `--id` 是網路水平
-資產的定義 ID. 這種名稱是開發者和最終使用者應該使用的.
-數據空間代碼:
+然後註冊資產定義. 規範性 `--id` 是網絡級資產定義 ID.開發人員和最終用戶應該在數據空間代碼中使用的稱:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -133,7 +118,7 @@ iroha --config ./operator.client.toml \
   --scale 0
 ```
 
-在登入過程中將本地代碼轉移至使用者:
+在登錄過程中將本地代幣發貨或轉移給用戶:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -143,7 +128,7 @@ iroha --config ./operator.client.toml \
   --quantity 100
 ```
 
-檢查使用者的平衡:
+檢查用戶的平衡:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -152,22 +137,13 @@ iroha --config ./operator.client.toml \
   --account "$USER"
 ```
 
-使用相同的模式在數據空間中的應用程式資產.
-每個代號都提供一個數據空間名稱,
-其他名稱 SDK 代碼而不是硬編碼的法規性資產定義 IDs.
+使用數據空間中的應用資產的模式相同. 每個代幣註冊一個資產定義,給每個代碼一個數據空間別名,並引用 SDK 代碼的代號而不是硬編碼的正規資產定義 IDs.
 
-## 3. 註冊使用者姓名 {#_3-register-user-aliases}
+## 3. 登記用戶姓名 {#_3-register-user-aliases}
 
-數據仍然是法典的 I105 年 月 日 IDs. 使用者名稱是帳號
-這種字母應該是非敏感的手柄, `alice@team` 或是
-`alice@members.team`. 不要使用電話號碼或電子郵件地址為假名.
-該項目的位置在下一部分的私人識別碼流程中.
+賬戶仍然是常規的 I105 帳戶 IDs.面向用戶的名稱是賬戶號,而號應是不敏感的手柄,如`alice@team`或`alice@members.team`.不要用電話號碼或電子郵件地址作爲號.這些都屬於下一節的私人識別器流中.
 
-設定使用相同的宣言規劃器與域名設定. SDK 或是
-建立一個無秘密的登入服務. `AliasSetupPlanRequestV1` 他們的意圖
-預算名稱入口目標 `$USER`, 選取主要角色, 入數字
-數據空間 ID, 預算及使用時間,
-作为一個原子交易:
+姓名設置使用與域名設置相同的聲明規劃器.讓 SDK 或登錄服務創建一個無祕密的 `AliasSetupPlanRequestV1`意圖,其帳戶代號輸入 目標 `$USER`,選擇主要角色,鍵入數值數據空間 ID,並執行當前租報價保護.然後規劃並將其作爲一個原子交易:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -179,11 +155,9 @@ iroha --config ./operator.client.toml \
   app alias setup apply --plan-file ./user-alias.plan.json
 ```
 
-如果使用者不需要付款 XOR, 使用已批准的承諾者意識上登機
-提供建設和提交設置交易的服務.
-收購與其他名稱,
+如果用戶不應該支付 XOR,請使用批准的贊助商知情登錄服務來構建和提交設置交易.不要將租收購和密號綁定分爲獨立申請交易.
 
-請檢查這個名稱. CLI:
+在密名被綁定後,請從 CLI 檢查:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -195,30 +169,21 @@ iroha --config ./operator.client.toml \
   --dataspace "$DATASPACE"
 ```
 
-請選擇建立新的帳戶,
-`NewAccount` 有一個子 `uaid` 如果需要, `label`. 其他國家
-簡單 `ledger account register --id` 命令只會記錄法典
-年 月 日 ID.
+對於創建新賬戶,最好使用穩定 `uaid`和必要時初始 `label`構建 `NewAccount` 的安裝服務.簡單的 `ledger account register --id`命令只會記錄正規帳戶 ID.
 
-## 4. 透過電話和電子郵件私下登記 FHE {#_4-register-phone-and-email-privately-with-fhe}
+## 4. 通過 FHE 私下登記電話和電子郵件. {#_4-register-phone-and-email-privately-with-fhe}
 
-使用電話號碼和電子郵件地址作為私人身份證索引,而不是公開
-其他國家的名稱. FHE- 支持流量將原始識別子排除在帳戶名稱之外,
-交易元數據和世界狀況:
+使用電話號碼和電子郵件地址作爲私人識別器索賠,而不是公開姓氏.支持 FHE 的流量將原始識別器排除在賬戶姓氏,交易元數據和世界狀態之外:
 
-1. 運營商會註冊一項
-   [RAM-LFE/FHE 計畫政策](/zh-hant/blockchain/ram-lfe.md) 在電話和電子郵件上
-2. 運營商會註冊活動識別方式, `phone#team` 及其他
-   `email#team`
-3. 這個錢包將電話或電子郵件正常化
+1. 運營商註冊[RAM-LFE/FHE 電話和電子郵件項目政策](/zh-hant/blockchain/ram-lfe.md)
+2. 運營商註冊活躍標識策略,如 `phone#team`和 `email#team`
+3. 錢包將電話或電子郵件正常化.
 4. 錢包將加密值發送到解決器
 5. 解析器返回一個 `IdentifierResolutionReceipt`
-6. 使用者提交 `ClaimIdentifier` 附收件
-7. 連鎖存儲不透明的識別碼和收件哈希,而不是原始電話或
-   電子郵件值
+6. 使用者將 `ClaimIdentifier` 附收據提交
+7. 鏈存儲一個不透明的標識符和收件哈希,而不是原始電話或電子郵件值.
 
-這項政策是: SDK 或是服務任務.
-這些指令對每種識別子:
+運營商方策略設置是 SDK 或服務任務.爲每個標識符類型構建並提交這些指令對:
 
 ```text
 RegisterRamLfeProgramPolicy(
@@ -241,7 +206,7 @@ RegisterIdentifierPolicy(
 ActivateIdentifierPolicy(policy_id = "$PHONE_POLICY")
 ```
 
-請重複使用:
+複製爲電子郵件:
 
 ```text
 program_id = "email_team"
@@ -256,8 +221,7 @@ PhoneE164: "+15551234567"
 EmailAddress: "alice@example.com"
 ```
 
-在第8步建立贊助者元數據檔案後,提交使用者簽名的文件
-使用此元數據的索赔指示:
+在第8步創建贊助商元數據文件後,提交使用者簽署的索賠指示,並附上該元數據:
 
 ```text
 ClaimIdentifier(
@@ -275,9 +239,7 @@ ClaimIdentifier(
 )
 ```
 
-目前的 CLI 不會顯示這些身份的輸入命令
-產生連續化 `InstructionBox` 數值與 SDK 及其他
-提交他們 `ledger transaction stdin`:
+電流 CLI 不顯示這些身份指令的輸入命令.使用 SDK 生成序列化`InstructionBox`值,並通過 `ledger transaction stdin`提交它們:
 
 ```bash
 printf '["<BASE64_CLAIM_IDENTIFIER_INSTRUCTION_BOX>"]\n' |
@@ -286,18 +248,17 @@ printf '["<BASE64_CLAIM_IDENTIFIER_INSTRUCTION_BOX>"]\n' |
     ledger transaction stdin
 ```
 
-請將這些護欄放在上機服務中:
+在安裝服務中保留這些防護:
 
-- 帳戶名稱只能被人閱讀
-- 在密碼,元數據,日志或
-  交易使用負荷
-- 這個帳戶有 `uaid` 在它要求私人識別碼之前
-- 收取證券的結束 `policy_id`, `opaque_id`, `uaid`, `account_id`, 及過期
-- 解決鍵和隱藏程式承諾由治理控制.
+- 賬戶名字只能被人讀取的手柄
+- 原始電話和電子郵件值永遠不會出現在號,元數據,日誌或交易有效載荷中.
+- 在申請私人標識符之前,該賬戶有`uaid`
+- 收據結合 `policy_id`, `opaque_id`, `uaid`, `account_id`,並過期
+- 解決方案密鑰和隱藏程序承諾由治理控制
 
-## 5. 啟動 Node 的贊助 {#_5-enable-sponsorship-on-the-node}
+## 5. 啓用節點上的贊助 {#_5-enable-sponsorship-on-the-node}
 
-這項政策是"節點/運行時間"的. Nexus 收費設定:
+費用贊助是節點/運行時間政策. 在 Nexus 費用配置中啓用:
 
 ```toml
 [nexus.fees]
@@ -311,24 +272,21 @@ sponsorship_enabled = true
 sponsor_max_fee = "0"
 ```
 
-`fee_asset_id` 是網路費資產. SORA Nexus 這就是 XOR. 請使用
-活動 XOR 其他名稱或法典 XOR 資產的定義 ID 您的網站將此曝光.
+`fee_asset_id`是網絡費用資產.對於 SORA Nexus,這是 XOR.使用您的網絡所曝光的活躍 XOR 號或常規 XOR 資產定義 ID
 
-`sponsor_max_fee = "0"` 沒有每項交易的贊助者限值.
-在你知道正常尺寸和氣體配置后,
-您的數據區域交易.
+`sponsor_max_fee = "0"`意味着沒有每筆交易的贊助商上限. 在您知道數據空間交易的正常規模和氣體配置後,設置非零限量.
 
-請重新啟動或通過正常操作程序進行這個設定.
+在正常操作程序中重新啓動或滾動這個配置.
 
-## 6. 建立和資助贊助者 {#_6-create-and-fund-the-sponsor}
+## 6. 創建和資助贊助者 {#_6-create-and-fund-the-sponsor}
 
-如果需要, 生成一個贊助者關鍵對:
+如果需要,生成一個贊助商關鍵對:
 
 ```bash
 kagami keys --algorithm ed25519 --json
 ```
 
-轉換公钥為您的網路帳戶格式:
+將公鑰轉換爲網絡帳戶格式:
 
 ```bash
 iroha tools address convert \
@@ -336,15 +294,14 @@ iroha tools address convert \
   <SPONSOR_ED25519_PUBLIC_KEY_HEX>
 ```
 
-在您的私人登入流程中註冊贊助者帳戶:
+通過您的私人登錄流程註冊贊助商賬戶:
 
 ```bash
 iroha --config ./operator.client.toml \
   ledger account register --id "$SPONSOR"
 ```
 
-提供資金給贊助商 XOR 收取的金屬,債券或其他資金
-帳號:
+通過 XOR 從財政部,索賠賬戶或其他資助帳戶爲贊助商提供資金:
 
 ```bash
 iroha --config ./treasury.client.toml \
@@ -355,10 +312,7 @@ iroha --config ./treasury.client.toml \
   --quantity 1000
 ```
 
-於 Taira 沒有人能試過,
-[獲得測試網 XOR 在 Taira](/zh-hant/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)
-這樣的 `taira_faucet_claim.py`, 然後用公共水來資助贊助者
-而不是財務金轉移:
+對於 Taira 試煉,除了水龍頭助手 [獲取測試網 XOR 在 Taira](/zh-hant/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) 作爲 `taira_faucet_claim.py`, 然後通過公共水龍頭來資助贊助商,而不是財政轉賬:
 
 ```bash
 export SPONSOR='<SPONSOR_TAIRA_I105_ACCOUNT_ID>'
@@ -372,7 +326,7 @@ iroha --config ./sponsor.client.toml \
   --account "$SPONSOR"
 ```
 
-請查看贊助商的網站 XOR 均衡:
+查看贊助商的 XOR 餘額:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -381,13 +335,11 @@ iroha --config ./operator.client.toml \
   --account "$SPONSOR"
 ```
 
-## 7. 允許使用者與贊助商聯繫 {#_7-grant-a-user-access-to-the-sponsor}
+## 7. 讓用戶訪問贊助商 {#_7-grant-a-user-access-to-the-sponsor}
 
-這項授予每位使用者免費收取費用的許可.
-阻止使用者命名任意的贊助商帳戶.
+贊助商必須允許每個用戶向其收取費用.補貼是阻止用戶命名任意贊助商賬戶的原因.
 
-或是您的經營帳戶所允許.
-運行時間政策:
+運行這個作爲贊助商賬戶,或者作爲一個經營帳戶允許的運行時間政策:
 
 ```bash
 printf '{
@@ -400,23 +352,23 @@ printf '{
     ledger account permission grant --id "$USER"
 ```
 
-請將此轉換為正常的帳戶供應步,
+對於登錄服務,將此作爲一個正常的賬戶提供步驟,並記錄:
 
-- 使用者帳號
-- 贊助商帳戶
-- 數據空間或應用程式
+- 用戶帳戶
+- 贊助商賬戶
+- 數據空間或應用
 - 批准票或治理決定
 
-檢查使用者的補助金:
+檢查用戶的資助:
 
 ```bash
 iroha --config ./operator.client.toml \
   ledger account permission list --id "$USER"
 ```
 
-## 8. 附加贊助商的數據 {#_8-attach-sponsor-metadata}
+## 8. 附加贊助商的元數據 {#_8-attach-sponsor-metadata}
 
-建立可重複使用的元數據檔案:
+創建可重複使用的元數據文件:
 
 ```bash
 printf '{
@@ -424,7 +376,7 @@ printf '{
 }\n' "$SPONSOR" > sponsored-fee.json
 ```
 
-任何使用此元數據提交的筆記本都會向贊助商收取費用:
+用此元數據提交的任何筆記本將向贊助商收取:
 
 ```bash
 iroha --config ./alice.client.toml \
@@ -432,47 +384,40 @@ iroha --config ./alice.client.toml \
   ledger transaction ping --msg "sponsored private-dataspace write"
 ```
 
-於 SDKs, 附上同一個交易元數據對象,
-交易.使用者用使用者的密钥簽署交易.
-不會簽署所有使用者交易, `CanUseFeeSponsor`
-授予是授權的.
+對於 SDKs,將相同的交易元數據對象添加到簽署的交易中.用戶用用戶密鑰簽署交易.贊助商不會簽署每個用戶交易,因爲之前的`CanUseFeeSponsor`授予是授權.
 
-## 模式1:使用者免費付款 {#pattern-1-users-pay-no-fees}
+## 第一個模式:用戶免費付款 {#pattern-1-users-pay-no-fees}
 
-使用此項,當應用程式或運營者收取所有網路費用時.
+在應用程序或運營商收取所有網絡費時使用此方法.
 
-發達者檢查名單:
+開發者檢查列表:
 
-1. 保持使用者的正常交易用量不變.
-2. 添加交易元數據 `fee_sponsor`.
-3. 請以使用者身份簽名.
-4. 透過私人數據空間路線提交.
+1. 保持用戶的正常交易有效載荷不變.
+2. 添加 `fee_sponsor` 的交易元數據.
+3. 作爲用戶簽署.
+4. 通過私人數據空間路線提交.
 
-使用者帳戶不需要 XOR 贊助者帳戶必須保持
-足夠的 XOR 為了覆蓋配置的 Nexus 收取費用.
+用戶帳戶不需要 XOR 的餘額.贊助商賬戶必須保持足夠的 XOR 來支付配置的 Nexus 費用.
 
-## 圖案 2:使用者付出本地代幣 {#pattern-2-users-pay-a-local-token}
+## 模式2:用戶支付本地代幣 {#pattern-2-users-pay-a-local-token}
 
-請使用此時, XOR, 但數據空間仍然需要一個
-內部應用程式費用,信用支出或配额代幣.
+如果用戶不應該持有 XOR,但數據空間仍然需要內部應用程序費用,信用支出或配額代幣時使用這個.
 
-在這個模式下,本地代幣是應用程式支付.
-支持者仍在支付網路費用 XOR.
+在這種模式下,本地代幣是應用程序支付.它不是網絡費資產.贊助商仍然支付網絡費用在 XOR.
 
-例如, 在私人數據空間中使用本地代碼:
+例如,在私人數據空間中使用本地代幣:
 
 ```text
 usage#billing.team
 ```
 
-基金使用者: `usage#billing.team` 在登入時,訂閱更新,
-或配额分配. 然後將使用者交易進行原子化:
+在登錄,訂閱更新或配額分配期間,資助用戶使用 `usage#billing.team`.然後將用戶交易變爲原子:
 
-1. 從使用者轉移本地代幣給贊助商
+1. 將本地代幣從用戶轉移到贊助商
 2. 執行所要求的應用程序操作
-3. 包含 `fee_sponsor` 這樣贊助者會付出 XOR
+3. 包含`fee_sponsor`元數據,因此贊助商支付 XOR
 
-沒有任何問題. CLI 煙霧測試只是由本地代碼傳輸主辦的 XOR:
+一個最小的 CLI 煙霧測試僅僅是由 XOR 贊助的本地代幣轉移:
 
 ```bash
 iroha --config ./alice.client.toml \
@@ -484,42 +429,35 @@ iroha --config ./alice.client.toml \
   --quantity 1
 ```
 
-請不要將本地代碼支付為個別的帳號.
-建立一個簽署的交易,
-還是將合同入口點曝光,
-在執行商業操作之前收集本地代幣.
+對於真正的應用程序,不要將本地代幣支付作爲一個單獨的最佳努力交易.構建包含支付和業務指令的簽名交易,或者在運行業務之前暴露收取本地代碼的合同入口點.
 
-在您的應用程式或合同中保存轉換政策:
+在您的應用程序或合同中保存轉換政策:
 
-- 該操作費用是多少個本地代幣單位
-- 如何支持本地代币流入地圖 XOR 補充
-- 如果使用者平衡太低,
-- 什麼會發生在贊助者 XOR 這樣的平衡太低了.
+- 哪個操作成本多少個本地代幣單位
+- 如何支持本地代幣輸入地圖 XOR 補充
+- 如果用戶平衡太低,會發生什麼?
+- 當贊助商 XOR 餘額太低時會發生什麼?
 
 ::: warning
 
-不要使用 `gas_asset_id` 在"本地代碼收費"模式下,
-在目前的運行時間內,
-`fee_sponsor` 也使贊助商成為配置管道氣體的付款人
-在本地代幣使用者費用上,
-轉讓或合同規則.
+不要使用 `gas_asset_id` 除非您希望贊助商在該氣體資產中也收取費用. 在當前的運行時間, `fee_sponsor` 也使贊助商爲配置管道氣體資產借款的付款人.對於本地代幣用戶費用,通過轉讓或合同規則,明確收集代幣.
 
 :::
 
 ## 檢查未成功的贊助交易 {#debug-failed-sponsored-transactions}
 
-常見的拒絕理由通常指向一個缺失設定步骤:
+常見的拒絕理由通常指向一個缺失的設置步驟:
 
-| 錯誤文本 | 檢查哪些問題 |
+|錯誤文本|檢查什麼?|
 | --- | --- |
-| `fee sponsorship is disabled` | `nexus.fees.sponsorship_enabled` 還是這樣 `false` 在結節上. |
-| `fee sponsor is not authorized` | 沒有使用者 `CanUseFeeSponsor` 這位贊助者. |
-| `fee asset ... is missing` | 沒有任何預算. XOR 收費資產. |
-| `fee balance ... is insufficient` | 補充贊助者的服務 XOR 這樣的平衡 |
-| `fee exceeds sponsor_max_fee` | 提高 `sponsor_max_fee` 或減少交易規模/氣體. |
-| `invalid nexus fee asset id` | 解決問題 `nexus.fees.fee_asset_id` 或是 XOR 這是一種不錯的行為. |
+|`fee sponsorship is disabled`| `nexus.fees.sponsorship_enabled` 現在還在 `false` 在節點上. |
+|`fee sponsor is not authorized`|用戶沒有 `CanUseFeeSponsor`用於此贊助商. |
+|`fee asset ... is missing`|贊助商沒有配置的 XOR 費用資產. |
+|`fee balance ... is insufficient`| 補充贊助商的 XOR 保持平衡. |
+|`fee exceeds sponsor_max_fee`|增加 `sponsor_max_fee`或減少交易規模/氣體. |
+|`invalid nexus fee asset id`|固定 `nexus.fees.fee_asset_id`或 XOR 資產別名.|
 
-檢查兩個平衡:
+在調試模式2時,檢查兩個平衡:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -533,19 +471,18 @@ iroha --config ./operator.client.toml \
   --account "$USER"
 ```
 
-## 如何運用贊助者 {#operate-the-sponsor}
+## 運營贊助商 {#operate-the-sponsor}
 
-請將贊助商當作財務金帳戶:
+處理贊助商作爲一個財政賬戶:
 
-- 保持檢測網,舞台和主網的獨立贊助者鍵
-- 在贊助商之前, XOR 預算時間:
-- 设置非零 `sponsor_max_fee` 一旦交通特征化,
-- 在您的應用程式或門口中,
-- 撤銷 `CanUseFeeSponsor` 當使用者離開數據空間時
-- 協調使用者交易哈希,本地代碼付款和贊助者 XOR
-  負債
+- 保持測試網,階段化和主網的分別贊助鑰匙
+- 提醒贊助商 XOR 餘額到達入學樓層
+- 一旦交通特徵化,設置非零限 `sponsor_max_fee`
+- 在您的應用程序或網關中贊助的筆記
+- 當用戶離開數據空間時,取消 `CanUseFeeSponsor`
+- 調整用戶交易哈希,本地代幣支付和贊助人 XOR 抵押金
 
-取消使用者的贊助:
+取消用戶的贊助權:
 
 ```bash
 printf '{
@@ -558,10 +495,10 @@ printf '{
     ledger account permission revoke --id "$USER"
 ```
 
-## 有關頁面 {#related-pages}
+## 相關頁面 {#related-pages}
 
-- [接觸到 SORA Nexus 數據區域](/zh-hant/get-started/sora-nexus-dataspaces.md)
-- [運行 Iroha 3 透過 CLI](/zh-hant/get-started/operate-iroha-via-cli.md)
+- [連接到 SORA Nexus 數據庫](/zh-hant/get-started/sora-nexus-dataspaces.md)
+- [通過 CLI](/zh-hant/get-started/operate-iroha-via-cli.md)運行 Iroha 3
 - [資產](/zh-hant/blockchain/assets.md)
 - [許可證](/zh-hant/blockchain/permissions.md)
-- [許可令牌](/zh-hant/reference/permissions.md)
+- [許可證代幣](/zh-hant/reference/permissions.md)
