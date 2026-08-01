@@ -13,11 +13,11 @@ wipes, artificial packet loss, and local CPU or disk pressure.
 ## Prerequisites
 
 Run Izanami from the
-[`i23-features` branch of the Iroha repository](https://github.com/hyperledger-iroha/iroha/tree/i23-features),
+[Iroha source repository](https://github.com/hyperledger-iroha/iroha),
 not from this documentation repository:
 
 ```bash
-git clone --branch i23-features https://github.com/hyperledger-iroha/iroha.git
+git clone https://github.com/hyperledger-iroha/iroha.git
 cd iroha
 cargo build -p izanami
 ```

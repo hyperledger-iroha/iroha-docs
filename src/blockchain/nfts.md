@@ -73,21 +73,18 @@ NFT lifecycle operations use Iroha Special Instructions:
 
 These examples assume you have launched a local network and have the
 generated client configuration from the
-[CLI guide](/get-started/operate-iroha-2-via-cli.md):
+[CLI guide](/get-started/operate-iroha-via-cli.md):
 
 ```bash
 export IROHA_CONFIG=./localnet/client.toml
-export NFT_DOMAIN=nft_demo.universal
-export NFT_ID='badge_intro$nft_demo.universal'
+export NFT_DOMAIN=wonderland.universal
+export NFT_ID='badge_intro$wonderland.universal'
 ```
 
-Register a domain for the example. If it already exists, skip this command
-or choose a different `NFT_DOMAIN`.
-
-```bash
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
-  ledger domain register --id "$NFT_DOMAIN"
-```
+The generated localnet already sets up `wonderland.universal` and its SNS
+lease. To use a different domain, create it first with the declarative
+`app alias setup plan` and `app alias setup apply` workflow described in
+[Domains](/blockchain/domains.md#registration).
 
 Register an NFT. Registration reads the initial content JSON from standard
 input:
@@ -141,9 +138,9 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
-Clean up when you are done. If you transferred the NFT, run this command
-with the current owner's account configuration or transfer the NFT back
-first.
+Remove the example NFT after the walkthrough. If you transferred it, either
+transfer it back or submit the unregister command with the current owner's
+account configuration.
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \

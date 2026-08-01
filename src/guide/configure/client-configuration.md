@@ -85,8 +85,8 @@ Use this when a workflow needs durable client-side queue storage.
 
 ## Generating Configurations
 
-For disposable local networks, prefer Kagami because it writes configs, genesis,
-scripts, and a README that match the selected Iroha 2 or Iroha 3 profile:
+For disposable local networks, prefer Kagami because it writes matching Iroha
+3 configs, genesis, scripts, and a README:
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet

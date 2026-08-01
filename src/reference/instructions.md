@@ -11,8 +11,8 @@ The current data model exposes these built-in instruction families:
 | [`TransferBox`](/blockchain/instructions.md#transfer) | `Domain`, `AssetDefinition`, numeric `Asset`, `Nft` |
 | [`SetKeyValueBox`](/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` metadata |
 | [`RemoveKeyValueBox`](/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` metadata |
-| [`GrantBox`](/blockchain/instructions.md#grant-revoke) | permission to account, role to account, permission to role |
-| [`RevokeBox`](/blockchain/instructions.md#grant-revoke) | permission from account, role from account, permission from role |
+| [`GrantBox`](/blockchain/instructions.md#grant-revoke) | `Permission` (`Grant<Permission, Account>`), `Role` (`Grant<RoleId, Account>`), `RolePermission` (`Grant<Permission, Role>`) |
+| [`RevokeBox`](/blockchain/instructions.md#grant-revoke) | `Permission` (`Revoke<Permission, Account>`), `Role` (`Revoke<RoleId, Account>`), `RolePermission` (`Revoke<Permission, Role>`) |
 | [`SetParameter`](/blockchain/instructions.md#setparameter) | chain parameter update |
 | [`ExecuteTrigger`](/blockchain/instructions.md#executetrigger) | trigger execution |
 | [`Upgrade`](/blockchain/instructions.md#other-instructions) | executor upgrade |

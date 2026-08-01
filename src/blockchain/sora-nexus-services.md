@@ -109,11 +109,11 @@ events, and Rust examples, see
 | Aitai surface                                                                                                                                                 | Use it for                                                                                |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
 | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`                                                    | Transparent numeric asset offers, including XOR-denominated settlement flows.             |
-| `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`       | Shielded offers where the funding and closing movements are carried by proof attachments. |
+| `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`       | Shielded offers use proof attachments for funding and closing movements.                   |
 | `OpenEscrowDispute`, `ResolveEscrowDispute`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute`                                                    | Dispute entry and court-style resolution.                                                 |
 | `FindAssetEscrowById`, `FindAssetEscrowsBySeller`, `FindAssetEscrowsByBuyer`, `FindAssetEscrowsByStatus`                                                      | App status pages, reconciliation jobs, and support tooling.                               |
 | `EscrowEventFilter`                                                                                                                                           | Live transparent escrow subscriptions by escrow id, seller, buyer, status, or event kind. |
-| Kotodama `escrow_open_offer`, `escrow_accept`, `escrow_mark_payment_sent`, `escrow_release`, `escrow_cancel`, `escrow_open_dispute`, `escrow_resolve_dispute` | Contract wrapper calls that still need IVM/Kotodama compatibility.                        |
+| Kotodama `escrow_open_offer`, `escrow_accept`, `escrow_mark_payment_sent`, `escrow_release`, `escrow_cancel`, `escrow_open_dispute`, `escrow_resolve_dispute` | Kotodama contract calls backed by the V1 escrow syscalls.                                 |
 
 For public Taira or Minamoto usage, treat the off-chain payment rail and
 any support or court workflow as application policy. Iroha records the
@@ -161,10 +161,10 @@ curl -fsS -H 'Accept: application/json' "$TORII_URL/v1/soracloud/status" \
   | jq '.control_plane | {service_count, services: [.services[] | {service_name, current_version}]}'
 ```
 
-Taira may expose compatibility or control-plane routes that are not listed
-in the OpenAPI path map. Treat `/openapi` as the primary generated API
-contract, then confirm any compatibility route directly before documenting
-it as live.
+Taira may expose deployment-specific control-plane routes that are not
+listed in the OpenAPI path map. Treat `/openapi` as the primary generated
+API contract, then confirm any deployment-specific route directly before
+documenting it as live.
 
 ## Soracloud
 
@@ -581,8 +581,7 @@ the proposer announces a session for `(height, view, payload_hash)`, peers
 exchange chunks, and `READY`/`DELIVER` signals track whether enough validators
 observed the same payload.
 
-With DA enabled, a peer considers the pending block payload available when
-either:
+In Iroha 3, a peer considers the pending block payload available when either:
 
 - the local pending block bytes hash to the expected payload hash, or
 - RBC has recovered a payload matching the block hash, height, view, and
@@ -604,8 +603,8 @@ view-change paths can proceed.
 
 ### Operator Notes
 
-Consensus profiles that enable DA add RBC-backed payload dissemination,
-manifest guards, DA bundle validation, and recovery telemetry. The peer
+Iroha 3 consensus profiles include RBC-backed payload dissemination, manifest
+guards, DA bundle validation, and recovery telemetry. The peer
 template exposes `[sumeragi.da]` limits for commitments and proof openings per
 block, plus `[sumeragi.advanced.da]` timeout multipliers for quorum and
 availability behavior. Keep these settings consistent across validators in one
@@ -729,17 +728,17 @@ metadata.
 
 For browser access, SoraDNS derives gateway hosts from a registered FQDN.
 The registered vanity host remains the canonical application origin, while
-gateway profiles can expose compatibility hosts for clients that cannot
-resolve SoraDNS names directly yet.
+deployed gateway profiles expose browser and Torii fallback routes for that
+origin.
 
 ### Host Forms
 
-| Form                   | Example                                        | Purpose                                                                                     |
-| ---------------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| Vanity origin          | `https://<fqdn>/<path>`                        | Canonical app URL recorded in manifests and release notes                                   |
-| Taira browser gateway  | `https://<fqdn>.mon.taira.sora.net/<path>`     | Public browser access when the alias is active and native SoraDNS resolution is unavailable |
-| Torii fallback path    | `https://taira.sora.org/soradns/<fqdn>/<path>` | Transitional compatibility gateway when the alias is active                                 |
-| Canonical hash gateway | `<base32(blake3(name))>.gw.sora.id`            | Deterministic gateway identity and GAR verification                                         |
+| Form | Example | Purpose |
+| --- | --- | --- |
+| Vanity origin | `https://<fqdn>/<path>` | Canonical app URL recorded in manifests and release notes |
+| Taira browser gateway | `https://<fqdn>.mon.taira.sora.net/<path>` | Public browser gateway for an active alias |
+| Torii fallback path | `https://taira.sora.org/soradns/<fqdn>/<path>` | Torii debug and fallback route for an active alias |
+| Canonical hash gateway | `<base32(blake3(name))>.gw.sora.id` | Deterministic gateway identity and GAR verification |
 
 The `/soradns/<alias>/...` fallback is not the preferred public URL.
 Tooling, app manifests, and frontend configuration should prefer the vanity
@@ -808,7 +807,7 @@ If a public DNS name should point at a SoraDNS gateway:
 
 ## FHE and UAID
 
-Iroha exposes two FHE-related surfaces for Nexus services:
+FHE-related surfaces available to Nexus services include:
 
 - `iroha_crypto::fhe_bfv` implements deterministic BFV support for scalar
   ciphertext evaluation. Identifier resolution uses

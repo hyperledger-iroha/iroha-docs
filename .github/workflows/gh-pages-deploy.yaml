@@ -1,68 +1,67 @@
-name: Deploy at GitHub Pages
+name: Deploy documentation
 
 on:
   push:
     branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v3
+      - uses: pnpm/action-setup@v4
         with:
-          node-version: 18
+          version: 9.12.1
+          run_install: false
 
-      # --- Install with caching
-      # https://github.com/pnpm/action-setup#use-cache-to-reduce-installation-time
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        run: |
-          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
-
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
+      - uses: actions/setup-node@v4
         with:
-          path: |
-            ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
-            /home/runner/.cache/Cypress
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+          node-version: 24
+          cache: pnpm
 
       - name: Install packages
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
-      - name: Check formatting
-        run: pnpm format:check
-
-      - name: Run linter
-        run: pnpm lint
-
-      - name: Run tests
-        run: pnpm test
+      - name: Validate source
+        run: |
+          pnpm format:check
+          pnpm lint
+          pnpm typecheck
+          pnpm test
+          pnpm validate
 
       - name: Build VitePress
         run: |
           pnpm build
-          pnpm cli validate-links .vitepress/dist --public-path $PUBLIC_PATH
+          pnpm cli validate-links .vitepress/dist --public-path /iroha-docs/
         env:
-          PUBLIC_PATH: /iroha-2-docs/
-          # chalk has a color detection bug
           FORCE_COLOR: 2
+          PUBLIC_PATH: /iroha-docs/
 
-      - name: Push static content into master:gh-pages
-        working-directory: .vitepress/dist
-        run: |
-          git config --global user.email "${GITHUB_ACTOR}@https://users.noreply.github.com/"
-          git config --global user.name "${GITHUB_ACTOR}"
-          git init
-          git add --all
-          git commit -m "Auto update pages on $(date +'%Y-%m-%d %H:%M:%S')"
-          git push -f -q https://git:${{ secrets.github_token }}@github.com/${{ github.repository }} master:gh-pages
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .vitepress/dist
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

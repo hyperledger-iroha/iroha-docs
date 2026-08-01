@@ -1,7 +1,7 @@
 # Troubleshooting Installation Issues
 
-This section offers troubleshooting tips for issues with Iroha 2 and Iroha 3
-installation. If the issue you are experiencing is not described here,
+This section offers troubleshooting tips for Iroha 3 installation. If the
+issue you are experiencing is not described here,
 contact us via [Telegram](https://t.me/hyperledgeriroha).
 
 ## Quick checks
@@ -11,8 +11,8 @@ Most installation failures come from one of four places:
 - a Rust toolchain older than the version pinned by the upstream workspace
 - `cargo` or `rustc` resolving to a different installation than `rustup`
 - missing system build tools such as a C compiler, `pkg-config`, or CMake
-- stale generated snippets or local build artifacts after switching between
-  Iroha branches
+- stale generated snippets or local build artifacts after changing source
+  revisions
 
 From the Iroha source checkout, start with:
 
@@ -23,9 +23,9 @@ rustc --version
 cargo metadata --no-deps
 ```
 
-If `cargo metadata` fails, fix the local toolchain before running docs
-commands such as `pnpm get-snippets`, because the docs may invoke Kagami to
-generate the current data-model schema.
+If `cargo metadata` fails, fix the local toolchain before running
+`pnpm refresh:iroha --source /path/to/iroha`, because the refresh can invoke
+Kagami to generate the current data-model schema.
 
 ## Troubleshooting Rust Toolchain
 
@@ -98,8 +98,8 @@ is not set as the default. Run:
 $ rustup default stable
 ```
 
-This can happen if you installed a `nightly` version, or set a specific
-Rust version, but forgot to un-set it.
+Installing a `nightly` version or setting a specific Rust version without
+later unsetting it can cause this problem.
 
 ### Check if there are other Rust versions
 
@@ -112,16 +112,16 @@ $ type cargo
 ```
 
 If these point to locations other than the one you saw when running
-`rustup which *`, then you have a problem. Note that it’s not enough to
-just
+`rustup which *`, then you have a problem. Note that adding aliases like these
+is not enough:
 
 ```bash
 $ alias rustc "~/.rustup/toolchains/stable-*/bin/rustc"
 $ alias cargo "~/.rustup/toolchains/stable-*/bin/cargo"
 ```
 
-because there is an internal logic that could break, regardless of how you
-re-arrange your shell aliases.
+Internal logic can still break regardless of how you arrange your shell
+aliases.
 
 The simplest solution would be to remove the versions that you don’t use.
 
@@ -142,14 +142,14 @@ And then, for every `<toolchain>` (without the angle brackets of course):
 $ rustup remove <toolchain>
 ```
 
-After that, make sure that
+After removing the toolchains, this command should report a command-not-found
+error:
 
 ```bash
 $ cargo --help
 ```
 
-results in a command-not-found error, i.e. that you have no active Rust
-toolchain installed. Then, run:
+That error confirms that no active Rust toolchain remains installed. Then run:
 
 ```bash
 $ rustup toolchain install stable

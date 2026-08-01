@@ -1,7 +1,7 @@
 # Troubleshooting Deployment Issues
 
-This section offers troubleshooting tips for issues with Iroha 2 and Iroha 3
-deployment. If the issue you are experiencing is not described here,
+This section offers troubleshooting tips for Iroha 3 deployments. If the issue
+you are experiencing is not described here,
 contact us via [Telegram](https://t.me/hyperledgeriroha).
 
 ## Start with generated artifacts
@@ -14,8 +14,7 @@ cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./loc
 ```
 
 The generated directory contains peer configs, genesis material, start
-scripts, and a README for the selected build line. Use `--build-line iroha2`
-only when the deployment intentionally targets the Iroha 2 profile.
+scripts, and a README for the Iroha 3 build line.
 
 ## Peer does not start
 
@@ -79,12 +78,6 @@ the daemon with the Sora profile enabled:
 
 ```bash
 cargo run --bin irohad -- --config ./config.toml --sora
-```
-
-or:
-
-```bash
-IROHA_SORA_PROFILE=true cargo run --bin irohad -- --config ./config.toml
 ```
 
 Use the same profile consistently across validators in the same network.

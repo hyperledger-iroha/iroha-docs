@@ -73,7 +73,5 @@ public_key = "<PUBLIC_KEY>"
 - `kagami localnet`
 - `cargo xtask kagami-profiles`
 
-For the full upstream details, see:
-
-- [docs/genesis.md](https://github.com/hyperledger-iroha/iroha/blob/i23-features/docs/genesis.md)
-- [crates/iroha_kagami/README.md](https://github.com/hyperledger-iroha/iroha/blob/i23-features/crates/iroha_kagami/README.md)
+For the generator implementation and command details, see the
+[Kagami README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_kagami/README.md).

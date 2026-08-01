@@ -10,15 +10,15 @@ network.
 | Section                                                      | Use it for                                                                                                                  |
 | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
 | [SDK Tutorials](/guide/tutorials/)                           | Language-specific client setup and sample applications                                                                      |
-| [Best Practices](/guide/best-practices/)                     | Production-oriented guidance grouped by development, data modeling, deployment, operations, security, and release readiness |
+| [Best Practices](/guide/best-practices/)                     | Production guidance for development, deployment, operations, security, and releases                                          |
 | [Configuration and Management](/guide/configure/overview.md) | Local peer configuration, genesis, client configuration, keys, and peer management                                          |
 | [Security](/guide/security/)                                 | Key handling, operational security, VPNs, fraud monitoring, and permission hygiene                                          |
 | [Advanced Operations](/guide/advanced/metrics.md)            | Metrics, performance checks, chaos testing, hot reload, and bare-metal operation                                            |
 
 ## Recommended Path
 
-1. [Install Iroha 3](/get-started/install-iroha-2.md) and
-   [launch a local network](/get-started/launch-iroha-2.md).
+1. [Install Iroha 3](/get-started/install-iroha.md) and
+   [launch a local network](/get-started/launch-iroha.md).
 2. Pick an [SDK tutorial](/guide/tutorials/) and submit a small
    transaction.
 3. Review

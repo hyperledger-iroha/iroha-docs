@@ -18,7 +18,7 @@ ledger-visible lifecycle state.
 | `AssetEscrowRecord` | Transparent numeric asset escrow or lock record. |
 | `AnonymousAssetEscrowRecord` | Shielded escrow record backed by nullifiers, commitments, and proof attachments. |
 | Custody account | Deterministic protocol account derived from chain ID, escrow ID, and asset definition. |
-| Evidence hashes | Hashes of invoices, judgements, messages, storage manifests, or other off-chain evidence. The evidence payload itself is not stored in the escrow record. |
+| Evidence hashes | Evidence hashes can identify invoices, judgments, messages, storage manifests, or other off-chain evidence. The evidence payload itself is not stored in the escrow record. |
 
 Transparent records carry the seller, optional buyer, asset definition,
 total amount, custody account, lifecycle status, behavior kind, remaining

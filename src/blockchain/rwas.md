@@ -67,12 +67,12 @@ Common RWA workflows include:
 | Operation                                  | Implemented behavior                                                                                                       |
 | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
 | `RegisterRwa`                              | Create a generated-ID lot in a domain; the transaction authority becomes `owned_by`.                                       |
-| `TransferRwa`                              | Move quantity to another account. A full transfer can change `owned_by`; a partial transfer creates a generated child lot. |
+| `TransferRwa`                              | Move quantity to another account. A full transfer can change `owned_by`. A partial transfer creates a separate child lot with a generated ID. |
 | `HoldRwa`                                  | Reserve quantity. Requires a configured controller and `hold_enabled`.                                                     |
 | `ReleaseRwa`                               | Remove held quantity. Requires a configured controller and `hold_enabled`.                                                 |
 | `FreezeRwa`                                | Block ordinary owner operations. Requires a configured controller and `freeze_enabled`.                                    |
 | `UnfreezeRwa`                              | Re-enable ordinary owner operations. Requires a configured controller and `freeze_enabled`.                                |
-| `RedeemRwa`                                | Retire quantity. Requires the owner or a controller and `redeem_enabled`.                                                  |
+| `RedeemRwa`                                | Permanently subtract quantity from circulation. The owner or a controller may submit it when `redeem_enabled` is true.     |
 | `MergeRwas`                                | Combine quantities from parent lots with the same domain and spec into a generated child lot.                              |
 | `ForceTransferRwa`                         | Move quantity through a controller flow. Requires a configured controller and `force_transfer_enabled`.                    |
 | `SetRwaControls`                           | Replace the lot control policy. Requires the owner or a controller.                                                        |
@@ -106,10 +106,10 @@ The implemented `RwaControlPolicy` has these fields:
 }
 ```
 
-Controller accounts and roles are allowed to perform only the controller
-operations enabled by the corresponding boolean flag. The current control
-payload is not an allow-list transfer policy and does not contain nested
-`transfers` rules.
+Controller accounts and roles can perform only the operations enabled by the
+corresponding boolean flags. The current control payload contains controller
+identities and operation flags. Transfer allow-lists and nested `transfers`
+rules are outside this payload.
 
 ## Queries, Events, and APIs
 
@@ -263,7 +263,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Release the hold when the off-chain process is complete:
+Submit `ReleaseRwa` after the off-chain process succeeds:
 
 ```python
 draft = TransactionDraft(
@@ -309,9 +309,10 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### Redeem or Retire Quantity
 
-Redeem quantity when the represented off-chain asset has been delivered,
-consumed, retired, or otherwise removed from circulation. The lot must have
-`redeem_enabled`, and the signer must be the owner or a controller.
+Submit `RedeemRwa` after the represented off-chain asset is delivered,
+consumed, retired, or otherwise removed from circulation. This permanently
+subtracts the submitted quantity from the lot. The lot must have
+`redeem_enabled`. The signer must be the owner or a controller.
 
 ```python
 draft = TransactionDraft(
@@ -325,8 +326,9 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### Freeze During Compliance Review
 
-Freeze a lot when an off-chain review must block ordinary owner operations.
-The signer must be a controller and the lot must have `freeze_enabled`.
+Submit `FreezeRwa` when an off-chain review must block ordinary owner
+operations. The signer must be a controller. The lot must have
+`freeze_enabled`.
 
 ```python
 draft = TransactionDraft(
@@ -347,7 +349,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Unfreeze it when the review passes:
+Submit `UnfreezeRwa` after the review passes:
 
 ```python
 draft = TransactionDraft(
@@ -435,8 +437,8 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### Carbon Credit Retirement
 
-Use redemption to retire credits after they are claimed. The metadata
-points to the off-chain certificate or registry proof:
+Submit `RedeemRwa` to remove claimed carbon credits from circulation. Store
+the off-chain certificate or registry proof in metadata:
 
 ```python
 carbon_lot_id = (

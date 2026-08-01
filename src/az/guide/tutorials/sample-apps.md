@@ -1,0 +1,23 @@
+---
+translation_locale: az
+translation_source: /guide/tutorials/sample-apps.md
+translation_source_hash: af3e0b8698f877c035ccd3bb71926cea14d1029fc2eb73e23756d57357935f0e
+translation_status: machine-validated
+translation_engine: nllb-200-ct2
+---
+
+# Nümunə və reseptlər {#samples-and-recipes}
+
+Iroha mənbə anbarında SDK reseptləri və test dəstləri var ki, onlar düyünlə eyni tənzimlənməni izləyirlər.
+
+## JavaScript Reçetlər {#javascript-recipes}
+
+[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/main/javascript/iroha_js/recipes) Deterministik əməliyyat qruplaşması üçün diqqət mərkəzində olan nümunələri ehtiva edir. Nexus tətbiqlərin köçürülməsi, NFT və hesabların təkrarlanması, ISO körpü axınları və Torii Hər resept offline işləyir və ya canlı bir video tələb edir Torii son nöqtə.
+
+## Swift və iOS {#swift-and-ios}
+
+İstifadə `IrohaSwift/Tests/IrohaSwiftTests` gediş-gəlişi ilə təsdiqlənmiş nümunələr üçün Swift SDK. Baxın. [Swift və iOS](/az/guide/tutorials/swift.md) paket və körpü quraşdırılması üçün.
+
+## Android {#android}
+
+Yeni Android işləri üçün Kotlin-birincisi `core-jvm`, `client-android` və `offline-wallet-android` modullarından istifadə edin [Kotlin, Android və Java](/az/guide/tutorials/kotlin-java.md). Kotlin SDK Android istehlakçıları üçün kanonik başlanğıc nöqtəsidir.

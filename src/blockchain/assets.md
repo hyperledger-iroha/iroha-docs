@@ -49,7 +49,7 @@ Asset definitions support these mintability modes:
 | `Infinitely` | Elastic supply. The asset can be minted and burned repeatedly.    |
 | `Once`       | Fixed-supply token. It can be minted once and then burned.        |
 | `Not`        | Fixed-supply token that can be burned but not minted again.       |
-| `Limited(n)` | Minting is allowed for a limited number of additional operations. |
+| `Limited(n)` | The policy allows new asset units to be issued in a limited number of additional operations. |
 
 Use `Infinitely` for normal elastic assets and `Once` or `Limited(n)` for
 fixed-supply or bounded-supply assets. Do not use `Not` as an initial
@@ -126,7 +126,7 @@ Special Instructions:
 
 See also:
 
-- [CLI guide](/get-started/operate-iroha-2-via-cli.md)
+- [CLI guide](/get-started/operate-iroha-via-cli.md)
 - [Rust tutorial](/guide/tutorials/rust.md)
 - [Python tutorial](/guide/tutorials/python.md)
 - [JavaScript/TypeScript tutorial](/guide/tutorials/javascript.md)

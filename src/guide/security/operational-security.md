@@ -1,95 +1,137 @@
 # Operational Security
 
-Operational Security (OPSEC) is a systematic approach to security and risk management, which is essentially a collection of strategies and advice adopted for specific use-cases with the aim of preventing unauthorized access and data leakage.
+Operational security protects the people, hosts, credentials, and procedures
+around an Iroha deployment. The ledger records accepted state changes.
+Operators must separately secure their workstations, signing keys, and
+incident-response process.
 
-<abbr title="Operational Security">OPSEC</abbr> is the standard practice for most companies to guarantee the availability and stability of their assets. This includes considering such factors as physical security (e.g., making sure that unattended post-it notes do not contain sensitive data), secure communication protocols (e.g., not sending sensitive data over unencrypted SMS), threat analysis (e.g., determining potential malicious parties, learning about the latest attack methods), personnel training (e.g., without employees following <abbr title="Operational Security">OPSEC</abbr> measures, they _will_, sooner or later, prove to be ineffective), and risk mitigation (e.g., encrypting your hard drives and USB devices).
+Use the controls below as a deployment baseline. Adjust them to the value at
+risk and the requirements of your organization.
 
-Since Iroha is likely to be deployed as a financial ledger, <abbr title="Operational Security">OPSEC</abbr> measures and practices must be taken seriously. This topic describes strategies and approaches that individuals and organizations using Iroha in their operations should consider as part of their extensive security protocol.
+## Establish an Operational Baseline
 
-Following and adopting the guidelines in this topic is a necessary step towards achieving total security, however, it is not sufficient on its own. To further improve your security, learn more throughout the rest of the [Security](./index.md) section and specifically the following topics:
+- Maintain an inventory of validator hosts, peer identities, account
+  authorities, signing devices, public endpoints, and responsible people.
+- Use separate credentials for development, test, and production. Assign each
+  signer, bearer token, and private key to one environment.
+- Keep configuration and deployment automation in reviewable version control.
+  Inject secrets at runtime from an approved secret store or signing device.
+- Record the expected hashes or signatures of release artifacts. Verify them
+  before deployment. Limit who can replace binaries, genesis material,
+  configuration, or service definitions.
+- Apply least privilege to operating-system accounts, Iroha permissions, and
+  network administration. Grant each role only the authority its work needs.
+- Test backup, restore, key-replacement, and peer-recovery procedures before
+  production launch.
 
-- [Security Principles](./security-principles.md)
-- [Password Security](./password-security.md)
+Review [Security Principles](./security-principles.md) and
+[Release Readiness](../best-practices/release-readiness.md) when defining the
+baseline.
 
-## Recommended OPSEC Measures
+## Protect Keys and Signers
 
-- Stay vigilant. The [most likely](https://arxiv.org/pdf/2209.08356.pdf) way in which one can lose their assets in a blockchain is by giving away their sensitive details.
+- Keep private keys, seed material, bearer tokens, authorization headers, and
+  recovery secrets out of source control, issue trackers, chat transcripts,
+  screenshots, and public documentation.
+- Use hardware-backed or isolated signing for high-value authorities. Keep raw
+  key material outside browsers and general-purpose application processes when
+  a client can delegate signing.
+- Use separate authorities for routine transactions, governance, deployment,
+  and recovery.
+- Encrypt secret storage and its backups. Apply the same access controls to a
+  private-key backup as to the live key.
+- Maintain a tested replacement or revocation procedure. Replace a key when
+  policy requires it or when exposure is suspected.
+- Require independent review for changes to validator membership, privileged
+  roles, or high-value assets.
 
-- Encrypt your disks. Encrypting boot devices allows them to protect your data even if an attacker have gained access to the hardware. Doing it for your portable devices is twice as important.
+See [Generating Cryptographic Keys](./generating-cryptographic-keys.md) and
+[Storing Cryptographic Keys](./storing-cryptographic-keys.md) for key-specific
+guidance.
 
-- Use trusted software. Software that ships via reproducible binary builds, and that you build from source, is the most trustworthy. Proprietary or open-source software that hasn't been audited is a potential risk that must be taken seriously.
+## Harden Nodes and Operator Access
 
-- Never leave portable devices with sensitive data unattended. A split second is enough to steal your device.
+- Run nodes and operator tools on currently vendor-supported, patched systems.
+  Disable unnecessary services.
+- Give named operators administrative access only through audited, encrypted
+  channels.
+- Put non-public interfaces on a private network or
+  [VPN](./vpn.md).
+- Expose only the Torii, monitoring, and application routes required by the
+  deployment.
+- Protect every public ingress with rate limits and transport security
+  appropriate to the environment.
+- Protect configuration files and service credentials with restrictive file
+  permissions. Keep secrets out of command lines, process listings, and shell
+  history.
+- Separate validator, client, monitoring, and backup duties when the risk model
+  requires independent control.
+- Synchronize time from trusted sources. Preserve enough system, service, and
+  network logs for investigation.
 
-- Verify the signatures on binary packages. This is not too different from the public key cryptography used inside Iroha.
+## Secure Browser and Admin Workflows
 
-- To prevent unauthorized access, always secure your laptop or personal computer when leaving it unattended. Use strong passwords, lock the screen, and follow best practices for securing your devices.
+For an operator who uses a web interface:
 
-- Establish a secure [air-gapped](https://en.wikipedia.org/wiki/Air_gap_(networking)) location for your keys. First, encrypt the keys, then store them in an _offline-only_ device, ideally with electromagnetic shielding installed. [Hardware keys](./storing-cryptographic-keys.md#using-a-hardware-key) are specifically designed this purpose.
+- Use a currently vendor-supported, fully updated browser on a managed
+  workstation.
+- Use a dedicated operator profile or device with only required extensions.
+- Verify the origin and certificate before approving a request.
+- Treat lookalike domains, unexpected redirects, and requests for raw key
+  material as incidents.
+- Block unrelated sites and extensions from the active operator session.
+- Use short-lived sessions. Require re-authentication for privileged actions.
+- Show transaction details to the signer. The operator must be able to verify
+  the authority, network, instructions, assets, and fees before approval.
 
-- Always keep your software updated to their latest version across all devices, including computers and phones. Regular updates help patch vulnerabilities and minimise potential risks associated with outdated software, even before such vulnerabilities are disclosed.
+Browser isolation reduces exposure. Operators must still review transactions
+and use secure signing.
 
-- Develop a routine for periodically updating passwords and cryptographic keys. This proactive approach significantly contributes to enhancing overall security posture, since it is much harder to hit a moving target.
+## Monitor and Respond
 
-## Using Browsers
+Monitor these signals:
 
-If an application connected to Iroha features a web UI, your browser can either aid the security or pose a potential threat. It is essential to exercise caution, especially when it comes to the plugins you choose to install.
+- validator and peer membership changes
+- repeated authorization failures or unusual privileged instructions
+- unexpected software, configuration, or route changes
+- signing, query, and transaction failures outside the normal baseline
+- resource exhaustion, stalled consensus, or loss of expected peers
+- asset, permission, and account changes that match fraud rules
 
-Consider the following measures to enhance your browsing security:
-
-- Avoid using browsers that are known for having bad security models and for leaking their users' data.
-  
-  You can look up privacy violations and security issues for any browser. For example, [this article on browser privacy](https://www.unixsheikh.com/articles/choose-your-browser-carefully.html) discusses a variety of browsers and how secure they are. Note that proprietary browsers (such as Chrome, Safari, Opera, Vivaldi, Edge, and others) are generally tremendously harder to audit due to their code being hidden from public, which means that you cannot be sure how secure they are.
-
-- Give preference to browsers with solid history of valuing and protecting their users' privacy and security:
-  - [Librewolf](https://librewolf.net/), [Icecat](https://www.gnu.org/software/gnuzilla/), [Firedragon](https://github.com/dr460nf1r3/firedragon-browser), etc. — well established forks of Mozilla Firefox with added security features.
-  - [Ungoogled chromium](https://github.com/ungoogled-software/ungoogled-chromium) — a highly audited open-source version of Google Chrome that is enhanced with additional security measures and has all of the Google-related web services removed.
-  - [Brave](https://brave.com/) — a highly audited open-source version of [Google Chromium](https://www.chromium.org/Home/) that is enhanced with additional security measures; has a built-in <abbr title="Virtual Private Network">VPN</abbr> and ad blocker functionality.
-  - [Falkon](https://www.falkon.org/) — an open-source Qt-based web browser (built on `QtWebEngine`, a wrapper for [Google Chromium](https://www.chromium.org/Home/)) with known track record of being secure; has a number of extensions available for download from its [KDE store page](https://store.falkon.org/browse/).
-  - [Qutebrowser](https://qutebrowser.org/) — an open-source Qt-based web browser (built on `QtWebEngine`, a wrapper for [Google Chromium](https://www.chromium.org/Home/)) with known track record of being secure; has a unique keyboard-focused approach with minimalist GUI; considered to be a browser of choice for many security specialists.
-
-- Avoid enabling `JavaScript` unless necessary.
-
-- Use the browser's built-in confinement mechanism for plugins to restrict the access rights that the installed plugins have.
-
-- Clear cookies before and after important operations. Be mindful not to enable the **Keep Me Signed In** or **Remember me** feature. Keep in mind that some websites have this feature enabled by default.
-
-- Use an ad blocker. These not only block ads but also disable site tracking features. Depending on the browser you use, an ad blocker may not be a built-in feature.
-
-- Be mindful of lookalike characters (e.g., `0`, `θ`, `O`, `О`, `ዐ` and `߀` are six different characters). Paying attention to details like this may save you from a phishing attack.
-
-- Avoid web UI email clients in favour of desktop clients. Before using it, set up your desktop email client to sign and verify GPG key signatures.
-
-- Avoid using web-based messaging services. For instance, Discord (built with the infamous `electron` framework) is susceptible to many of the same attacks as would a Google Chromium window with the web version of Discord open.
-
-- Update your browser to the latest version whenever possible. Updates often include critical security patches that address vulnerabilities.
-
-- Be cautious of what browser extensions you install. Only use well-known and trusted extensions from reputable sources. Rogue extensions can compromise your data and privacy.
-
-- Create separate browser profiles for various tasks. Use one profile for everyday browsing and another for activities involving high security and sensitive data. This way, extensions installed on the profile for everyday browsing cannot access the sensitive data from the secure one.
-
-- Use a portable version of your browser copied to a USB flash drive. This method ensures that even if a security bug grants one of the installed plugins with access to data between the profiles, your security-related profile remains on a separate and removable device.
-
-- Periodically clear your browser's cache and cookies to remove potentially sensitive data that may accidentally be stored on your device.
+Send alerts to a channel independent of the affected host. Preserve relevant
+logs, configuration snapshots, ledger events, and transaction hashes with
+timestamps. See [Fraud Monitoring](./fraud-monitoring.md) and
+[Performance and Metrics](../advanced/metrics.md).
 
 ## Recovery Plan
 
-In the event of an emergency, such as losing a key or facing a security breach, a well-structured and prepared in advance recovery plan is an essential lifeline. Creating a clear set of steps to follow can help mitigate potential damage and promptly reinstate security.
+Prepare the recovery plan before production launch. The recovery plan must
+identify:
 
-Organizations should consider the following key aspects when developing their recovery plan:
+- who can declare and coordinate an incident
+- how to contact validators, infrastructure operators, application owners,
+  and affected users
+- which authorities can revoke permissions, replace keys, or change peer
+  membership
+- where trusted binaries, configuration, genesis records, backups, and key
+  inventories are stored
+- how to validate the network and dependent applications after recovery
 
-- Outline step-by-step procedures to be followed in case of key loss or other security incidents. Ensure that these steps are easily accessible and understandable by the users and/or employees.
+When an incident occurs:
 
-- Establish a communication channel that may be used to promptly report security breaches and potential threats, such as leaked or lost cryptographic keys and password.
-
-- If you utilize hardware keys (e.g., [YubiKey](https://www.yubico.com/products/) or [SoloKeys Solo](https://solokeys.com/collections/all)) as a security measure, consider adopting redundancy strategy. Keep two keys: one for daily use and another stored in a secure location. This precaution ensures access even if the primary key is compromised or lost.
-
-- When security breaches or leaks are reported, react promptly by replacing or disabling affected keys and passwords. This proactive response minimizes the potential risks and damage.
-
-- Periodically review and update your recovery plan. This ensures that the plan remains relevant and effective as your security landscape evolves.
+1. Isolate the affected host, credential, route, or authority. Preserve
+   evidence.
+2. Preserve logs and ledger references. Record every recovery action.
+3. Revoke or replace exposed credentials and permissions through the approved
+   governance process.
+4. Restore software and configuration from verified artifacts.
+5. Confirm peer membership, consensus health, public routes, monitoring, and
+   application reads. Resume writes only after these checks pass.
+6. Document the root cause. Update controls, automation, and exercises.
 
 ::: warning
 
-Remember that a recovery plan is not just another document. Rather, it's a lifeline that helps navigate unexpected challenges. By anticipating potential scenarios and establishing a clear roadmap for action, you fortify your operational security and enhance your readiness to respond effectively to any security incident.
+Follow pre-reviewed procedures for irreversible ledger actions. Require the
+approvals appropriate to the affected authority and assets.
 
 :::

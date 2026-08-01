@@ -1,5 +1,6 @@
 .vitepress/dist
 .vitepress/cache
 .vercel
+/src/public/openapi
 /src/snippets
 /src/example_code

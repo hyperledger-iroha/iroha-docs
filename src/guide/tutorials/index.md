@@ -1,19 +1,18 @@
 # SDK Tutorials
 
-These pages summarize the current Iroha 3 client entry points shipped from the
-main workspace. The SDK surface is evolving quickly, so this section focuses on
-the canonical package names, installation paths, and minimal starting points
-from the upstream repository.
+These pages summarize the Iroha 3 client entry points shipped from the main
+workspace, including canonical package names, installation paths, and minimal
+starting points.
 
 ## Recommended Order
 
-1. [Install Iroha 3](/get-started/install-iroha-2.md)
-2. [Launch Iroha 3](/get-started/launch-iroha-2.md)
+1. [Install Iroha 3](/get-started/install-iroha.md)
+2. [Launch Iroha 3](/get-started/launch-iroha.md)
 3. Pick an SDK:
    - [Rust](/guide/tutorials/rust.md)
    - [Python](/guide/tutorials/python.md)
    - [JavaScript / TypeScript](/guide/tutorials/javascript.md)
-   - [Android, Kotlin, and Java](/guide/tutorials/kotlin-java.md)
+   - [Kotlin, Android, and Java](/guide/tutorials/kotlin-java.md)
    - [Swift and iOS](/guide/tutorials/swift.md)
 4. Review the [sample apps](/guide/tutorials/sample-apps.md) when you want a
    complete client application reference.
@@ -22,14 +21,10 @@ from the upstream repository.
 6. Use [Musubi packages](/guide/tutorials/musubi.md) when you need reusable
    Kotodama source libraries with pinned on-chain registry dependencies.
 
-## Sample Apps
+## Samples
 
-We maintain sample applications for JavaScript desktop, Android, and iOS client
-flows. The JavaScript demo is the most complete external reference. Swift/iOS
-examples exist in the upstream workspace under `examples/ios/`, but their
-checked-in project manifests are currently out of sync with the package API and
-dependency layout. The external mobile point demos are useful mostly for layout
-and historical context.
+The upstream workspace contains JavaScript recipes and Swift/iOS sample
+projects. For Android, start with the Kotlin SDK modules and their tests.
 
 - [Sample apps overview](/guide/tutorials/sample-apps.md)
 - [Embed Kaigi in a JavaScript app](/guide/tutorials/kaigi.md)
@@ -41,9 +36,10 @@ All SDK pages here are derived from the current upstream workspace:
 - `crates/iroha`
 - `python/iroha_python`
 - `javascript/iroha_js`
-- `java/iroha_android`
+- `kotlin`
+- `java/iroha_android` (Java mirror of the Kotlin-first Android surface)
 - `IrohaSwift`
 - `crates/musubi`
 
-When in doubt, prefer the README and package metadata in those directories over
-older Iroha 2-era examples.
+When in doubt, prefer the README and package metadata in those directories;
+they describe the source revision you are building.

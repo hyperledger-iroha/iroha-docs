@@ -97,11 +97,19 @@ pattern, the tutorial uses `usage#billing.team`:
 usage#billing.team
 ```
 
-First register the domain that owns the asset namespace:
+First set up the domain and SNS lease that own the asset namespace. Create a
+secret-free `AliasSetupPlanRequestV1` intent for `$BILLING_DOMAIN`, including
+the numeric `team` dataspace ID, canonical owner, lease term, and current quote
+guard:
 
 ```bash
 iroha --config ./operator.client.toml \
-  ledger domain register --id "$BILLING_DOMAIN"
+  app alias setup plan \
+  --intent-file ./billing-domain.intent.json \
+  --plan-file ./billing-domain.plan.json
+
+iroha --config ./operator.client.toml \
+  app alias setup apply --plan-file ./billing-domain.plan.json
 ```
 
 Then register the asset definition. The canonical `--id` is the network-level
@@ -147,29 +155,25 @@ aliases, and aliases should be non-sensitive handles such as `alice@team` or
 `alice@members.team`. Do not use phone numbers or email addresses as aliases.
 Those belong in the private identifier flow in the next section.
 
-Alias registration is an instruction flow:
+Alias setup uses the same declarative planner as domain setup. Have the SDK or
+onboarding service create a secret-free `AliasSetupPlanRequestV1` intent whose
+account-alias entry targets `$USER`, selects the primary role, pins the numeric
+dataspace ID, and carries the current lease quote guard. Then plan and apply it
+as one atomic transaction:
 
-```text
-AcquireAccountAliasLease(
-  alias = "$USER_ALIAS",
-  owner = "$USER",
-  payer = "$USER",
-  term_years = 1,
-  pricing_class_hint = null
-)
+```bash
+iroha --config ./operator.client.toml \
+  app alias setup plan \
+  --intent-file ./user-alias.intent.json \
+  --plan-file ./user-alias.plan.json
 
-SetPrimaryAccountAlias(
-  account = "$USER",
-  alias = "$USER_ALIAS",
-  lease_expiry_ms = null
-)
+iroha --config ./operator.client.toml \
+  app alias setup apply --plan-file ./user-alias.plan.json
 ```
 
-The current CLI exposes alias lookup helpers, but not a typed helper for
-creating leases and bindings. Generate the `AcquireAccountAliasLease` and
-`SetPrimaryAccountAlias` instructions with your SDK or onboarding service and
-submit them as one transaction. If the user should not pay XOR, submit the
-transaction with the same `fee_sponsor` metadata used later in this tutorial.
+If the user should not pay XOR, use the approved sponsor-aware onboarding
+service to construct and submit the setup transaction. Do not split lease
+acquisition and alias binding into independent application transactions.
 
 After the alias is bound, verify it from the CLI:
 
@@ -549,7 +553,7 @@ printf '{
 ## Related Pages
 
 - [Connect to SORA Nexus Dataspaces](/get-started/sora-nexus-dataspaces.md)
-- [Operate Iroha 3 via CLI](/get-started/operate-iroha-2-via-cli.md)
+- [Operate Iroha 3 via CLI](/get-started/operate-iroha-via-cli.md)
 - [Assets](/blockchain/assets.md)
 - [Permissions](/blockchain/permissions.md)
 - [Permission Tokens](/reference/permissions.md)

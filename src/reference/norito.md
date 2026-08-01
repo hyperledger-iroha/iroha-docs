@@ -35,7 +35,7 @@ header before transport.
 | --- | ---: | --- |
 | Magic | 4 bytes | ASCII `NRT0`, used to reject non-Norito data early. |
 | Major | 1 byte | Format major version. Current payloads use `0`. |
-| Minor | 1 byte | Fixed v1 decode hint. Current payloads use `0x00`; layout choices live in flags. |
+| Minor | 1 byte | Decode hint for v1. The current value is `0x00`. Flags describe the layout. |
 | Schema hash | 16 bytes | Type identity used by typed decoders to reject unexpected payloads. |
 | Compression | 1 byte | `0 = None`, `1 = Zstd`. Unknown values are rejected. |
 | Payload length | 8 bytes | Uncompressed payload length as little-endian `u64`. |
@@ -49,9 +49,9 @@ typed value.
 ## Layout Flags
 
 Norito stores layout choices in the final header byte. The default v1 helpers
-emit `COMPACT_LEN` (`0x02`) for compact per-value length prefixes. Legacy
-fixed-width length prefixes remain readable when callers explicitly encode
-with `flags = 0x00`.
+emit `COMPACT_LEN` (`0x02`) for compact per-value length prefixes. Explicit
+fixed-width length prefixes remain readable when callers encode with
+`flags = 0x00`.
 
 | Flag | Hex | Status | Effect |
 | --- | ---: | --- | --- |
@@ -72,8 +72,9 @@ Norito uses deterministic layouts for the common data shapes that appear in
 the Iroha data model:
 
 - Strings are `[len][utf8-bytes]`; `len` follows `COMPACT_LEN` when enabled.
-- Per-value lengths use compact varints when `COMPACT_LEN` is set, otherwise
-  fixed 8-byte little-endian `u64`.
+- When `COMPACT_LEN` is set, a per-value length uses a compact varint.
+- When `COMPACT_LEN` is absent, a per-value length is an 8-byte little-endian
+  `u64`.
 - Sequence length headers are fixed 8-byte little-endian `u64` in v1.
 - `Vec<u8>` is encoded as `[len_u64][raw-bytes]` instead of one length per byte.
 - Packed sequences use `(len + 1)` monotonic `u64` offsets followed by the
@@ -106,7 +107,7 @@ payload:
 
 | Feature | Purpose |
 | --- | --- |
-| `to_bytes` | Encode an uncompressed header-framed payload. |
+| `to_bytes` | Encode a header followed by an uncompressed payload. |
 | `to_compressed_bytes` | Encode with Zstd and record the compression tag in the header. |
 | `to_bytes_auto` | Apply deterministic heuristics to decide whether compression is worthwhile. |
 | CRC64 acceleration | Uses portable CRC64-XZ everywhere, with CLMUL on x86_64 or PMULL on aarch64 when available. |
@@ -145,7 +146,7 @@ Common field attributes are:
 | Attribute | Effect |
 | --- | --- |
 | `#[norito(rename = "other")]` | Uses a stable serialized name for schema and JSON compatibility. |
-| `#[norito(skip)]` | Omits the field and fills it from `Default` while decoding. |
+| `#[norito(skip)]` | The encoder omits the field. The decoder supplies its `Default` value. |
 | `#[norito(default)]` | Uses `Default` when a decoded payload does not carry the field. |
 | `#[norito(skip_serializing_if = "...")]` | Omits fields from JSON when the predicate matches, while preserving deterministic decoding defaults. |
 
@@ -164,7 +165,7 @@ helpers and accelerators are available:
 | `packed-seq` | Packed collection layouts using offset tables. |
 | `packed-struct` | Packed derive-generated struct layouts. |
 | `compact-len` | Varint per-value length prefixes. |
-| `columnar` | Experimental Norito Column Blocks for scan-heavy paths. |
+| `columnar` | Norito Column Blocks, adaptive AoS/NCB row codecs, and borrowed views for scan-heavy paths; included in the default `node-codec` feature set. |
 | `strict-safe` | Converts decode panics in fallible paths into structured errors. |
 | `simd-accel` | CPU acceleration where available, with deterministic fallback. |
 | `json` | Native JSON parser, writer, DOM, typed derives, and fast paths. |
@@ -191,8 +192,8 @@ Content-Type: application/x-norito
 Accept: application/x-norito
 ```
 
-For clients that can fall back to JSON during rollout, prefer an explicit
-Accept list:
+When an endpoint supports both representations, clients can send an explicit
+preference list:
 
 ```http
 Accept: application/x-norito, application/json
@@ -202,7 +203,7 @@ Decode failures are surfaced as typed Torii errors and counted by telemetry.
 Common reasons include invalid magic, unsupported version, unsupported feature
 flag, checksum mismatch, malformed UTF-8, invalid enum tag, and schema mismatch.
 
-Norito RPC rollout is usually staged behind transport configuration. Operator
+Norito RPC transport is selected through transport configuration. Operator
 dashboards should track request latency, failures, active connections,
 response bytes, and `torii_norito_decode_failures_total` separately from JSON
 traffic.
@@ -232,15 +233,15 @@ Norito so routing, billing, replay, and audit evidence stay reproducible.
 - Prefer SDK builders and generated bindings over hand-crafted Norito bytes.
 - Treat schema mismatch as a version or fixture problem, not as a transient
   network failure.
-- Keep `.nrt`, `.norito`, and manifest artifacts with the release or incident
+- Archive `.nrt`, `.norito`, and manifest artifacts in the release or incident
   bundle that produced them.
-- Use JSON projections for dashboards and manual inspection, but keep Norito as
-  the source of truth for signed, hashed, or persisted data.
+- Use Norito as the source of truth for signed, hashed, or persisted data. Use
+  JSON projections for dashboards and manual inspection.
 - When adding a new typed Torii endpoint, document whether it accepts JSON,
   Norito, or both, and expose the supported content types in `/openapi`.
-- When enabling accelerators, run parity tests against scalar output before
-  rollout. Accelerator failures should fall back cleanly rather than changing
-  payload semantics.
+- Before enabling an accelerator, run parity tests against scalar output. If
+  an accelerator fails, use the deterministic scalar fallback. Payload
+  semantics must remain unchanged.
 
 ## Related Pages
 
@@ -253,6 +254,5 @@ Norito so routing, billing, replay, and audit evidence stay reproducible.
 
 ## Upstream References
 
-- [Norito format specification](https://github.com/hyperledger-iroha/iroha/blob/i23-features/norito.md)
-- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/i23-features/crates/norito/README.md)
-- [Norito streaming design notes](https://github.com/hyperledger-iroha/iroha/blob/i23-features/docs/source/norito_streaming.md)
+- [Norito format specification](https://github.com/hyperledger-iroha/iroha/blob/main/norito.md)
+- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/norito/README.md)

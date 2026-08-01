@@ -21,23 +21,42 @@ A registered `Domain` contains:
 - `owned_by`: the account that owns the domain, normally the account that
   registered it
 
-The transaction payload used to create a domain is `NewDomain`. It carries
+The bootstrap payload used to materialize a domain is `NewDomain`. It carries
 the `id`, optional `logo`, and initial `metadata`. The runtime fills
-`owned_by` from the authority that registers the domain.
+`owned_by` from the authority. Ordinary clients do not submit this payload
+directly.
 
 ## Registration
 
-Domains are registered and unregistered with the generic
-[`Register` and `Unregister`](/blockchain/instructions.md#un-register)
-instructions. With the CLI:
+Ordinary domain creation uses the declarative alias setup flow. This keeps the
+SNS lease, owner capabilities, quote guard, and domain row in one atomic
+`EnsureAlias` transaction. `Register::Domain` remains a genesis/bootstrap
+surface, and the `ledger domain` command has no `register` subcommand.
+
+Create a secret-free `AliasSetupPlanRequestV1` intent with an SDK or onboarding
+service, then have the CLI plan it against live state and submit that exact
+plan:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml ledger domain register --id payments.universal
+cargo run --bin iroha -- --config ./defaults/client.toml \
+  app alias setup plan \
+  --intent-file ./payments-domain.intent.json \
+  --plan-file ./payments-domain.plan.json
+
+cargo run --bin iroha -- --config ./defaults/client.toml \
+  app alias setup apply --plan-file ./payments-domain.plan.json
+
 cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
 ```
 
-Registering a domain requires the appropriate domain-management permission
-under the active runtime validator. Domain metadata can be updated with
+The intent identifies `payments.universal`, its numeric dataspace, canonical
+I105 owner, lease acquisition term, and current policy/payment quote guard.
+The planner endpoint is `POST /v1/aliases/setup/plan`; its returned plan is
+chain-, authority-, state-, and deadline-bound. Domain removal still uses
+[`Unregister`](/blockchain/instructions.md#un-register).
+
+Creating or removing a domain requires the appropriate domain-management
+permission under the active runtime validator. Domain metadata can be updated with
 [`SetKeyValue` and `RemoveKeyValue`](/blockchain/instructions.md#setkeyvalue-removekeyvalue)
 when the authority has permission to modify that domain.
 
@@ -63,7 +82,7 @@ Use the first command when an app needs to check whether a domain exists. Use
 the lane catalog when you need to confirm whether a dataspace is public,
 restricted, or lagging behind the core lane.
 
-Domain registration is a fee-paying write. Before trying it on Taira, save the
+Domain setup is a fee-paying write. Before trying it on Taira, save the
 faucet helper from
 [Get Testnet XOR on Taira](/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)
 as `taira_faucet_claim.py`, fund the signer through the public faucet, and
@@ -77,11 +96,18 @@ python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
 printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
 
 iroha --config ./taira.client.toml \
+  app alias setup plan \
+  --intent-file ./taira-domain.intent.json \
+  --plan-file ./taira-domain.plan.json
+
+iroha --config ./taira.client.toml \
   --metadata ./taira.tx-metadata.json \
-  ledger domain register --id docs-example.universal
+  app alias setup apply --plan-file ./taira-domain.plan.json
 ```
 
-Use a unique domain name for repeated testnet runs.
+Build the intent for a unique domain name on repeated testnet runs, and use
+Taira's current policy and fee-asset quote guard. Do not reuse a plan produced
+for localnet or Minamoto.
 
 ## Relationship to other entities
 

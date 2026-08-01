@@ -1,7 +1,6 @@
 # Troubleshooting Configuration Issues
 
-This section offers troubleshooting tips for issues with Iroha 2 and Iroha 3
-configuration. Make sure you
+This section offers troubleshooting tips for Iroha 3 configuration. Make sure you
 [checked the keys](./overview.md#check-the-keys) first, as it is the most
 common source of issues in Iroha.
 

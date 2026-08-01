@@ -33,19 +33,27 @@ For a complete working reference, clone the demo beside an Iroha source
 checkout:
 
 ```bash
+mkdir iroha-wallet-workspace
+cd iroha-wallet-workspace
+git clone https://github.com/hyperledger-iroha/iroha.git
 git clone https://github.com/soramitsu/iroha-demo-javascript.git
-cd iroha-demo-javascript
+
+cd iroha/javascript/iroha_js
+npm install
+npm run build:native
+npm run build:dist
+
+cd ../../../iroha-demo-javascript
 npm install
 npm run dev
 ```
 
 Use the demo with
-[`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/i23-features/javascript/iroha_js)
-from the Iroha `i23-features` branch. If the native binding changes, rebuild it:
-
-```bash
-(cd node_modules/@iroha/iroha-js && npm run build:native)
-```
+[`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/main/javascript/iroha_js)
+from the sibling Iroha source repository. Its `file:` dependency resolves that
+checkout directly. If the native binding changes, rebuild it under
+`iroha/javascript/iroha_js`; a clean package directory does not contain the
+Cargo workspace needed by `npm run build:native`.
 
 Before running a live meeting on TAIRA, check the public Torii surface that the
 demo depends on:
@@ -641,7 +649,7 @@ Automatic signaling depends on a live wallet, Kaigi-capable Torii routes, and
 proof generation in private mode. Keep a manual fallback for development and
 restricted environments:
 
-- if `CreateKaigi` fails, show a legacy invite containing the offer
+- if `CreateKaigi` fails, show a manual invite containing the offer
 - if `JoinKaigi` fails, show a raw answer packet
 - let the host paste the answer packet and call `setRemoteDescription`
 

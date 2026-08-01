@@ -7,33 +7,46 @@ import ViteSvgLoader from 'vite-svg-loader'
 import ViteUnoCSS from 'unocss/vite'
 import { mermaid } from './md-mermaid'
 import { katex } from '@mdit/plugin-katex'
+import {
+  documentHead,
+  prefixRoute,
+  ROOT_LOCALE,
+  SEARCH_LOCALES,
+  SITE_LOCALES,
+  TRANSLATED_LOCALES,
+  type DocsLocale,
+  type NavigationLabels,
+} from '../etc/locales'
 
-function nav(): DefaultTheme.NavItem[] {
+function nav(
+  labels: NavigationLabels = ROOT_LOCALE.navigation,
+  locale: DocsLocale = ROOT_LOCALE,
+): DefaultTheme.NavItem[] {
   return [
     {
-      text: 'Get Started',
-      link: '/get-started/',
-      activeMatch: '/get-started/',
+      text: labels.getStarted,
+      link: prefixRoute('/get-started/', locale),
+      activeMatch: prefixRoute('/get-started/', locale),
     },
     {
-      text: 'Guide',
-      link: '/guide/',
-      activeMatch: '/guide/',
+      text: labels.guides,
+      link: prefixRoute('/guide/', locale),
+      activeMatch: prefixRoute('/guide/', locale),
     },
     {
-      text: 'Architecture',
-      link: '/blockchain/iroha-explained',
-      activeMatch: '/blockchain/',
+      text: labels.architecture,
+      link: prefixRoute('/blockchain/iroha-explained', locale),
+      activeMatch: prefixRoute('/blockchain/', locale),
     },
     {
-      text: 'Reference',
-      link: '/reference/',
-      activeMatch: '^/reference/',
+      text: labels.reference,
+      link: prefixRoute('/reference/', locale),
+      activeMatch: `^${prefixRoute('/reference/', locale)}`,
     },
     {
-      text: 'Help',
-      link: '/help/',
-      activeMatch: '/help/',
+      text: labels.help,
+      link: prefixRoute('/help/', locale),
+      activeMatch: prefixRoute('/help/', locale),
     },
   ]
 }
@@ -46,15 +59,15 @@ function sidebarStart(): DefaultTheme.SidebarItem[] {
       items: [
         {
           text: 'Install Iroha 3',
-          link: '/get-started/install-iroha-2',
+          link: '/get-started/install-iroha',
         },
         {
           text: 'Launch Iroha 3',
-          link: '/get-started/launch-iroha-2',
+          link: '/get-started/launch-iroha',
         },
         {
           text: 'Operate Iroha 3 via CLI',
-          link: '/get-started/operate-iroha-2-via-cli',
+          link: '/get-started/operate-iroha-via-cli',
         },
         {
           text: 'Connect to SORA Nexus Dataspaces',
@@ -63,10 +76,6 @@ function sidebarStart(): DefaultTheme.SidebarItem[] {
         {
           text: 'Sponsor Private Dataspace Fees',
           link: '/get-started/private-dataspace-fee-sponsor',
-        },
-        {
-          text: 'Iroha 3 vs. Iroha 2',
-          link: '/get-started/iroha-2',
         },
       ],
     },
@@ -371,7 +380,7 @@ function sidebarChain(): DefaultTheme.SidebarItem[] {
         },
         {
           text: 'Smart Contracts',
-          link: '/blockchain/wasm',
+          link: '/blockchain/smart-contracts',
         },
         {
           text: 'Consensus',
@@ -458,16 +467,63 @@ function sidebarHelp(): DefaultTheme.SidebarItem[] {
   ]
 }
 
-const BASE = process.env.PUBLIC_PATH ?? '/'
+function localizeSidebarItems(items: DefaultTheme.SidebarItem[], locale: DocsLocale): DefaultTheme.SidebarItem[] {
+  return items.map((item) => ({
+    ...item,
+    link: item.link ? prefixRoute(item.link, locale) : undefined,
+    items: item.items ? localizeSidebarItems(item.items, locale) : undefined,
+  }))
+}
+
+function sidebars(locale: DocsLocale = ROOT_LOCALE): DefaultTheme.Sidebar {
+  const entries: [string, DefaultTheme.SidebarItem[]][] = [
+    ['/get-started/', sidebarStart()],
+    ['/guide/', sidebarGuide()],
+    ['/blockchain/', sidebarChain()],
+    ['/reference/', sidebarReference()],
+    ['/help/', sidebarHelp()],
+  ]
+
+  return Object.fromEntries(
+    entries.map(([route, items]) => [
+      prefixRoute(route, locale),
+      locale === ROOT_LOCALE ? items : localizeSidebarItems(items, locale),
+    ]),
+  )
+}
+
+const THEME_LOCALES = Object.fromEntries(
+  TRANSLATED_LOCALES.map((locale) => [
+    locale.key,
+    {
+      nav: nav(locale.navigation, locale),
+      sidebar: sidebars(locale),
+      editLink: {
+        pattern: 'https://github.com/hyperledger-iroha/iroha-docs/edit/main/src/:path',
+        text: 'Edit this page on GitHub',
+      },
+    },
+  ]),
+)
+
+const PUBLIC_BASE = process.env.PUBLIC_PATH ?? '/'
+const publicAsset = (name: string): string => `${PUBLIC_BASE}${name}`
 
 export default defineConfig({
-  base: BASE,
+  base: PUBLIC_BASE,
   srcDir: 'src',
   srcExclude: ['snippets/*.md'],
+  buildConcurrency: 4,
+  cleanUrls: false,
+  locales: SITE_LOCALES,
   title: 'Hyperledger Iroha 3 Docs',
   description:
     'Documentation for Hyperledger Iroha 3 covering quickstart flows, SDK entry points, Torii, genesis, and operator tooling.',
-  lang: 'en-US',
+  lang: 'en',
+  sitemap: {
+    hostname: 'https://docs.iroha.tech',
+  },
+  transformHead: ({ pageData }) => documentHead(pageData.relativePath),
   vite: {
     plugins: [ViteUnoCSS('../uno.config.ts'), ViteSvgLoader()],
     envDir: resolve(__dirname, '../'),
@@ -483,10 +539,10 @@ export default defineConfig({
 
   head: [
     // Based on: https://evilmartians.com/chronicles/how-to-favicon-in-2021-six-files-that-fit-most-needs
-    ['link', { rel: 'icon', href: BASE + 'favicon.ico', sizes: 'any' }],
-    ['link', { rel: 'icon', href: BASE + 'icon.svg', sizes: 'image/svg+xml' }],
-    ['link', { rel: 'apple-touch-icon', href: BASE + 'apple-touch-icon.png' }],
-    ['link', { rel: 'manifest', href: BASE + 'manifest.webmanifest' }],
+    ['link', { rel: 'icon', href: publicAsset('favicon.ico'), sizes: 'any' }],
+    ['link', { rel: 'icon', href: publicAsset('icon.svg'), sizes: 'image/svg+xml' }],
+    ['link', { rel: 'apple-touch-icon', href: publicAsset('apple-touch-icon.png') }],
+    ['link', { rel: 'manifest', href: publicAsset('manifest.webmanifest') }],
     // Google Analytics integration
     ['script', { src: 'https://www.googletagmanager.com/gtag/js?id=G-D6ETK9TN47' }],
     [
@@ -520,7 +576,7 @@ export default defineConfig({
     siteTitle: 'Iroha 3',
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/hyperledger-iroha/iroha-2-docs' },
+      { icon: 'github', link: 'https://github.com/hyperledger-iroha/iroha-docs' },
       {
         icon: {
           /**
@@ -528,12 +584,12 @@ export default defineConfig({
            */
           svg: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M12 21q-1.625 0-3.013-.8T6.8 18H4.975q-.425 0-.7-.288T4 17q0-.425.288-.713T5 16h1.1q-.075-.5-.088-1T6 14H4.975q-.425 0-.7-.288T4 13q0-.425.288-.713T5 12h1q0-.5.013-1t.087-1H4.975q-.425 0-.7-.288T4 9q0-.425.288-.713T5 8h1.8q.35-.575.788-1.075T8.6 6.05l-.925-.95q-.275-.3-.263-.713T7.7 3.7q.275-.275.7-.275t.7.275l1.45 1.45q.7-.225 1.425-.225t1.425.225l1.5-1.475q.3-.275.713-.262t.687.287q.275.275.275.7t-.275.7l-.95.95q.575.375 1.038.863T17.2 8h1.825q.425 0 .7.288T20 9q0 .425-.288.713T19 10h-1.1q.075.5.088 1T18 12h1.025q.425 0 .7.288T20 13q0 .425-.288.713T19 14h-1q0 .5-.013 1t-.087 1h1.125q.425 0 .7.288T20 17q0 .425-.288.713T19 18h-1.8q-.8 1.4-2.188 2.2T12 21Zm0-2q1.65 0 2.825-1.175T16 15v-4q0-1.65-1.175-2.825T12 7q-1.65 0-2.825 1.175T8 11v4q0 1.65 1.175 2.825T12 19Zm-1-3h2.025q.425 0 .7-.288T14 15q0-.425-.288-.713T13 14h-2.025q-.425 0-.7.288T10 15q0 .425.288.713T11 16Zm0-4h2.025q.425 0 .7-.288T14 11q0-.425-.288-.713T13 10h-2.025q-.425 0-.7.288T10 11q0 .425.288.713T11 12Zm1 1Z"/></svg>`,
         },
-        link: 'https://github.com/hyperledger-iroha/iroha-2-docs/issues/new',
+        link: 'https://github.com/hyperledger-iroha/iroha-docs/issues/new',
       },
     ],
 
     editLink: {
-      pattern: 'https://github.com/hyperledger-iroha/iroha-2-docs/edit/main/src/:path',
+      pattern: 'https://github.com/hyperledger-iroha/iroha-docs/edit/main/src/:path',
       text: 'Edit this page on GitHub',
     },
 
@@ -542,17 +598,19 @@ export default defineConfig({
     },
 
     nav: nav(),
-
-    sidebar: {
-      '/get-started/': sidebarStart(),
-      '/guide/': sidebarGuide(),
-      '/blockchain/': sidebarChain(),
-      '/reference/': sidebarReference(),
-      '/help/': sidebarHelp(),
-    },
+    sidebar: sidebars(),
+    locales: THEME_LOCALES,
 
     search: {
       provider: 'local',
+      options: {
+        locales: SEARCH_LOCALES,
+        miniSearch: {
+          options: {
+            fields: ['title', 'titles'],
+          },
+        },
+      },
     },
   },
 })

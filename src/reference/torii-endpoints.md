@@ -1,10 +1,9 @@
 # Torii Endpoints
 
-Torii is the HTTP, SSE, and WebSocket gateway for current Iroha deployments.
-In the Iroha 3 track it serves both ledger-facing APIs and a broad set of
-operator endpoints.
+Torii is the HTTP, SSE, and WebSocket gateway for Iroha 3. It serves both
+ledger-facing APIs and operator endpoints.
 
-The important protocol change from older docs is simple:
+The current protocol rules are:
 
 - the canonical binary format is **Norito**
 - many endpoints also support JSON when you send `Accept: application/json`
@@ -148,13 +147,26 @@ not a general-purpose ISO 20022 clearing gateway, but a supported subset for
 turning selected payment messages into signed Iroha transfers and for tracking
 their ledger status.
 
-### Torii Ingestion Endpoints
+### Torii ISO 20022 Endpoints
 
-| ISO 20022 message | Endpoint | Purpose |
-| --- | --- | --- |
-| `pacs.008.001.08` (`pacs.008`) | `POST /v1/iso20022/pacs008` | Submit an FI-to-FI customer credit transfer and build the matching Iroha asset transfer |
-| `pacs.009.001.10` (`pacs.009`) | `POST /v1/iso20022/pacs009` | Submit an FI-to-FI credit transfer used for PvP or securities-related cash funding |
-| `pacs.002`-style status | `GET /v1/iso20022/status/{msg_id}` | Read the bridge state for a submitted message, including the derived `pacs002_code`, transaction hash, rejection detail, and resolved ledger context |
+| Method and endpoint | Purpose |
+| --- | --- |
+| `POST /v1/iso20022/pacs008` | Submit an FI-to-FI customer credit transfer and build the matching Iroha asset transfer |
+| `POST /v1/iso20022/pacs009` | Submit an FI-to-FI credit transfer used for PvP or securities-related cash funding |
+| `POST /v1/iso20022/pacs002` | Submit a payment status report |
+| `POST /v1/iso20022/pacs004` | Submit a payment return |
+| `POST /v1/iso20022/camt056` | Submit a payment cancellation request |
+| `POST /v1/iso20022/sese023` | Submit a securities settlement instruction |
+| `POST /v1/iso20022/sese024` | Submit a securities settlement status message |
+| `POST /v1/iso20022/sese025` | Submit a securities settlement confirmation |
+| `POST /v1/iso20022/colr012` | Submit a collateral substitution message |
+| `GET /v1/iso20022/messages/{msg_id}` | Read the canonical bridge record for one message |
+| `GET /v1/iso20022/audit/messages` | Read the tamper-evident message audit manifest |
+| `GET /v1/iso20022/messages/{msg_id}/pacs002` | Render the current payment status as `pacs.002` XML |
+| `GET /v1/iso20022/messages/{msg_id}/pacs004` | Render the current payment return as `pacs.004` XML |
+| `GET /v1/iso20022/messages/{msg_id}/camt029` | Render the current cancellation resolution as `camt.029` XML |
+| `GET /v1/iso20022/messages/{msg_id}/sese024` | Render the current settlement status as `sese.024` XML |
+| `GET /v1/iso20022/messages/{msg_id}/sese025` | Render the current settlement confirmation as `sese.025` XML |
 
 `pacs.008` submissions must provide the message ID, interbank settlement
 amount, currency, settlement date, debtor and creditor IBANs, and debtor and
@@ -168,33 +180,25 @@ instructing and instructed agent BICs, and debtor and creditor IBANs. If the
 message includes `Purp`, the bridge currently accepts securities-purpose funding
 only: `Purp=SECU`.
 
-Both ingestion endpoints accept XML ISO envelopes or the flat field format used
-by the bridge tests. Optional `SplmtryData` fields can pin the target Iroha
-ledger, source and target account IDs or addresses, and asset definition ID.
-The response is `202 Accepted` with `message_id`, `transaction_hash`, `status`,
-`pacs002_code`, and the resolved ledger/account/asset context.
+The `pacs.008` and `pacs.009` submission endpoints accept XML ISO envelopes or
+the flat field format used by the bridge tests. Optional `SplmtryData` fields
+can pin the target Iroha ledger, source and target account IDs or addresses,
+and asset definition ID. The response is `202 Accepted` with `message_id`,
+`transaction_hash`, `status`, `pacs002_code`, and the resolved
+ledger/account/asset context.
 
-### Parser and Mapping Support
+### Additional Parser and Mapping Support
 
-The IVM ISO helper also validates and materializes additional message families
-used by bridge tests, settlement mapping, or downstream reconciliation. These
-messages do not have standalone Torii ingestion endpoints unless listed above.
+The IVM ISO helper also validates and materializes the following message
+families for envelope validation, settlement mapping, or downstream
+reconciliation. They do not have standalone Torii routes.
 
 | Message family | Current support |
 | --- | --- |
 | `head.001` | Business application header validation for ISO envelopes, including `BizMsgIdr`, `MsgDefIdr`, creation time, and optional sender/receiver BIC fields |
-| `pacs.002` | Payment status report parsing and status-code vocabulary used by `GET /v1/iso20022/status/{msg_id}` |
-| `pacs.004` | Payment return parsing for return/unwind flows |
-| `pacs.007`, `pacs.028`, `pacs.029` | Payment reversal, status request, and resolution/status scaffolding for investigation flows |
-| `pain.001`, `pain.002` | Customer payment initiation and payment status report validation scaffolding |
-| `camt.052`, `camt.053`, `camt.054`, `camt.056` | Account report, statement, notification, and cancellation-request validation scaffolding |
-| `sese.023`, `sese.025` | Securities settlement instruction and confirmation mapping for DvP/PvP flows |
-| `colr.007` | Collateral substitution confirmation mapping |
-
-Settlement choreography may refer to related market messages such as
-`sese.024`, `sese.030`, `sese.031`, `colr.010`, `colr.011`, `colr.012`, or
-`camt.029`. Treat those as integration-level workflow references until a Torii
-endpoint or IVM schema is added for the specific message.
+| `pacs.007`, `pacs.028`, `pacs.029` | Payment reversal, status request, and investigation resolution/status parsing |
+| `pain.001`, `pain.002` | Customer payment initiation and payment status report validation |
+| `camt.052`, `camt.053`, `camt.054` | Account report, statement, and notification validation |
 
 ## Kaigi Sessions
 
@@ -268,23 +272,31 @@ application that talks directly to Torii through the local `@iroha/iroha-js`
 binding and includes a `/kaigi` route for browser-native one-to-one media.
 
 Use the demo with
-[`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/i23-features/javascript/iroha_js)
-from the Iroha `i23-features` branch:
+[`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/main/javascript/iroha_js)
+from the Iroha source repository. The demo pins the SDK through
+`file:../iroha/javascript/iroha_js`, so keep both checkouts in this sibling
+layout:
 
 ```bash
+mkdir iroha-wallet-workspace
+cd iroha-wallet-workspace
+git clone https://github.com/hyperledger-iroha/iroha.git
 git clone https://github.com/soramitsu/iroha-demo-javascript.git
-cd iroha-demo-javascript
+
+cd iroha/javascript/iroha_js
+npm install
+npm run build:native
+npm run build:dist
+
+cd ../../../iroha-demo-javascript
 npm install
 npm run dev
 ```
 
 Use Node.js 20 or newer and a Rust toolchain so the native `iroha_js_host`
-module can build. If you rebuild or update the SDK manually, refresh the
-native binding:
-
-```bash
-(cd node_modules/@iroha/iroha-js && npm run build:native)
-```
+module can build. Rebuild the SDK in the sibling Iroha checkout after changing
+its source; the clean package layout does not contain the Cargo workspace
+needed by `npm run build:native`.
 
 For a controlled test, point the demo at a Kaigi-capable Torii endpoint:
 
@@ -385,8 +397,8 @@ When an endpoint accepts or returns typed Norito directly, use
 
 ## Telemetry Profiles
 
-Endpoint visibility depends on telemetry settings. The upstream docs describe
-five profile levels:
+Endpoint visibility depends on the node's `telemetry.profile` setting. The
+current configuration exposes five profile levels:
 
 | Profile | `/status` | `/metrics` | Developer routes |
 | --- | --- | --- | --- |
@@ -404,12 +416,11 @@ The `iroha` CLI already wraps many of these endpoints:
 iroha --config ./localnet/client.toml --output-format text ops sumeragi status
 iroha --config ./localnet/client.toml --output-format text ops sumeragi phases
 iroha --config ./localnet/client.toml ops sumeragi params
-iroha --config ./localnet/client.toml ops sumeragi collectors
+iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetry
 ```
 
 ## Upstream References
 
-- [README.md API and Observability](https://github.com/hyperledger-iroha/iroha/blob/i23-features/README.md)
-- [docs/source/telemetry.md](https://github.com/hyperledger-iroha/iroha/blob/i23-features/docs/source/telemetry.md)
-- [ISO 20022 bridge implementation](https://github.com/hyperledger-iroha/iroha/blob/i23-features/crates/iroha_torii/src/iso20022_bridge.rs)
-- [Settlement ISO mapping](https://github.com/hyperledger-iroha/iroha/blob/i23-features/docs/portal/docs/finance/settlement-iso-mapping.md)
+- [README API and observability overview](https://github.com/hyperledger-iroha/iroha/blob/main/README.md)
+- [ISO 20022 bridge implementation](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_torii/src/iso20022_bridge.rs)
+- [Performance and metrics](/guide/advanced/metrics.md)

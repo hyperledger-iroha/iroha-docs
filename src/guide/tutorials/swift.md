@@ -1,8 +1,9 @@
 # Swift and iOS
 
 The Swift SDK shipped by the upstream workspace is the `IrohaSwift` Swift
-package under `IrohaSwift/`. Its package manifest defines one library product,
-`IrohaSwift`, and targets iOS 15+ and macOS 12+ with Swift tools 5.9.
+package under `IrohaSwift/`. Its package manifest defines three library
+products—`IrohaSwift`, `IrohaSwiftMobileTransports`, and
+`IrohaSwiftTransferUI`—and targets iOS 15+ and macOS 12+ with Swift tools 5.9.
 
 The package depends on the native `NoritoBridge` binary target. Package
 resolution validates `../dist/NoritoBridge.xcframework` before building, and
@@ -103,7 +104,8 @@ let transfer = TransferRequest(
     assetDefinitionId: "66owaQmAQMuHxPzxUN3bqZ6FJfDa",
     quantity: "1",
     destination: accountId,
-    description: "demo"
+    description: "demo",
+    feePayment: .authority(chargeLimits: [], gasLimit: nil)
 )
 
 if #available(iOS 15.0, macOS 12.0, *) {
@@ -190,26 +192,15 @@ The Swift source currently includes:
   escrow
 - Connect WebSocket, frame, crypto, session, queue, replay, and diagnostics
   helpers
-- Offline V2 note, receipt, QR stream, and transaction models
+- Kagemusha readiness, typed top-up and redemption, operation status, note,
+  peer bundle, receipt, and QR stream models
 - SoraFS, data-availability, and proof-attachment helpers
 
-## In-Tree Samples
+## API Examples
 
-The upstream workspace contains Swift/iOS example directories under
-`examples/ios/`, but the project manifests are not a reliable source of current
-setup instructions:
-
-- `examples/ios/ConnectMinimalApp` is a SwiftPM executable harness, but its
-  package manifest currently resolves `../../IrohaSwift` to
-  `examples/IrohaSwift`, and its source references Connect helpers that are not
-  present in `IrohaSwift/Sources`.
-- `examples/ios/NoritoDemo` and `examples/ios/NoritoDemoXcode` contain SwiftUI
-  code that imports `IrohaSwift` and conditionally uses `NoritoBridgeKit`, but
-  their checked-in project manifests do not declare the `IrohaSwift` package
-  dependency.
-
-Use `IrohaSwift/Sources/IrohaSwift` and `IrohaSwift/Tests/IrohaSwiftTests` as
-the current API references until those sample manifests are brought back in sync.
+Use `IrohaSwift/Sources/IrohaSwift` for the public implementation and
+`IrohaSwift/Tests/IrohaSwiftTests` for tested usage examples from the same
+source revision.
 
 ## Source References
 
@@ -220,4 +211,3 @@ the current API references until those sample manifests are brought back in sync
 - `IrohaSwift/Sources/IrohaSwift/TransactionEncoder.swift`
 - `IrohaSwift/Sources/IrohaSwift/ConnectClient.swift`
 - `IrohaSwift/Sources/IrohaSwift/ConnectSession.swift`
-- `examples/ios/ConnectMinimalApp/Package.swift`

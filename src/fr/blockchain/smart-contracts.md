@@ -1,0 +1,64 @@
+---
+translation_locale: fr
+translation_source: /blockchain/smart-contracts.md
+translation_source_hash: 7c35c609442df65328fa619b6673be76f801cfc2abc28afd853d7fe61e439e9c
+translation_status: machine-validated
+translation_engine: nllb-200-ct2+codex-semantic-review
+---
+
+# Les contrats intelligents {#smart-contracts}
+
+Les transactions Iroha exécutent des charges utiles `Executable`. Le modèle de données actuel prend en charge:
+
+- `Executable::Instructions`: un ensemble ordonné d'instructions spéciales Iroha
+- `Executable::ContractCall`: appel de référence parallèle à une instance de contrat déployée
+- `Executable::Ivm`: code en octets Iroha VM
+- `Executable::IvmProved`: code byte Iroha VM avec une superposition précomputée d'instructions et des engagements en matière de preuve
+
+Kotodama est le langage de contrats intelligents de haut niveau d’Iroha. Un fichier source `.ko` est compilé en bytecode IVM déterministe, stocké par convention sous forme d’un artefact `.to` pour le déploiement. Kotodama cible uniquement l’IVM. Il ne cible ni RISC-V ni WebAssembly.
+
+La première version ne prend en charge que la version 1 de l’ABI. La politique relative à syscall et à pointer-ABI est appliquée sans condition lors de l’admission et de l’exécution des contrats ; il n’existe aucun commutateur de compatibilité à l’exécution.
+
+## Quand utiliser des contrats intelligents {#when-to-use-smart-contracts}
+
+Utilisez les instructions normales lorsque la transaction peut être exprimée directement:
+
+- les objets enregistrés ou non enregistrés
+- actifs de la menthe, du brûlure ou du transfert
+- mettre à jour les métadonnées
+- accorder ou révoquer des autorisations
+- d' exécuter un déclencheur
+- paramètres sur la chaîne définis
+
+Utilisez un contrat intelligent lorsque la transaction a besoin d'une logique packaged qui est difficile à exprimer sous forme de séquence d'instructions statiques, ou lorsqu'une instance de contrat déployée doit être appelée par référence.
+
+## IVM Exécutables {#ivm-executables}
+
+`Executable::Ivm` contient le code octal brut IVM. Les nœuds exécutent ce code octal à l'intérieur des limites de temps d'exécution configurées pour la chaîne. Gardez un code octal petit et déterministique; les contrats font partie de l'exécution des transactions et affectent donc le consensus.
+
+`Executable::IvmProved` est destiné aux flux de transport à épreuve.
+
+- Le code octal IVM
+- une superposition d'instruction déterministe
+- un engagement en matière d'exécution des événements
+- un engagement en matière de politique du gaz
+
+La preuve lie la superposition au code octal exécuté. Selon la politique du pipeline, les validateurs peuvent vérifier la preuve et reproduire l'exécution en tant que contrôle de sécurité supplémentaire.
+
+## Les appels contractuels déployés {#deployed-contract-calls}
+
+`Executable::ContractCall` invoque une instance de contrat déployée par adresse.Utilisez-la lorsque le code du contrat est enregistré séparément et que les transactions doivent l'appeler par référence au lieu de porter chaque fois le bytecode.
+
+## Conseils opérationnels {#operational-guidance}
+
+- Gardez les contrats déterministes. Le comportement des contrats ne doit pas dépendre de l'heure locale du mur, de l'état du système de fichiers hôte, des appels réseau ou d'autres entrées locales par les pairs.
+- Gardez les charges utiles compactes. Un grand code octal augmente la taille de la transaction et le coût de propagation des blocs.
+- Les instructions typées sont préférées pour les modifications simples du registre. Elles sont plus faciles à vérifier et moins chères à exécuter.
+- Traiter la mise à niveau du contrat et les autorisations d'enregistrement comme des contrôles opérationnels à haut risque.
+
+Voir aussi:
+
+- [Instructions ](/fr/blockchain/instructions.md)
+- [Les déclencheurs ](/fr/blockchain/triggers.md)
+- [Autorisations ](/fr/blockchain/permissions.md)
+- [Schéma de modèle de données](/fr/reference/data-model-schema.md)

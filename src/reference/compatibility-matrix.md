@@ -1,14 +1,19 @@
 # Compatibility Matrix
 
 The compatibility matrix shows cross-SDK scenario coverage for the current
-Iroha 3 docs set. By default, the page loads the bundled snapshot for the
-[`hyperledger-iroha/iroha` `i23-features` branch](https://github.com/hyperledger-iroha/iroha/tree/i23-features).
+Iroha 3 docs set. By default, the page loads the bundled snapshot generated
+from the pinned [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha)
+revision.
 
 The matrix consists of:
 
 - **Stories** in the first column
 - **SDKs** across the remaining columns
 - **Status symbols** for covered, failed, and missing data
+
+Only results verified by the refresh workflow are reported as covered or
+failed. Scenarios without evidence for the pinned revision are shown as
+missing data rather than inheriting results from another source revision.
 
 <CompatibilityMatrixTable />
 

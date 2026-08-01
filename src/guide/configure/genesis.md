@@ -1,8 +1,7 @@
 # Genesis
 
-Genesis defines the initial chain state. In the current Iroha 2 and Iroha 3
-codebase, the editable source is a JSON manifest and the node consumes a signed
-Norito transaction file.
+Genesis defines the initial chain state. The editable source is a JSON manifest,
+and an Iroha 3 node consumes a signed Norito transaction file.
 
 ::: details Default genesis manifest
 

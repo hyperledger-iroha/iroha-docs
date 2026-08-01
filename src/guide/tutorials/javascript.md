@@ -1,34 +1,27 @@
 # JavaScript and TypeScript
 
-The current JavaScript SDK is published as `@iroha/iroha-js`. It is the
-Node.js-first SDK for Torii, Norito builders, signing, pagination, Connect
-previews, and offline readiness plus QR stream workflows.
+The current JavaScript SDK is the `@iroha/iroha-js` package in the Iroha
+source tree. It is the Node.js-first SDK for Torii, Norito builders, signing,
+pagination, Connect previews, and Kagemusha command transport.
 
-## Install
+## Build From Source
 
-```bash
-npm install @iroha/iroha-js
-npm run build:native
-```
-
-The native build wraps `cargo build -p iroha_js_host` and records the
-platform-specific checksum used at SDK startup. Run it after installing the
-Rust toolchain from the upstream workspace. The package is ESM-only; from
-CommonJS, use dynamic `import()`.
-
-## Working from Source
-
-When using the workspace checkout directly:
+The package is not currently available from the public npm registry. Build it
+from the same pinned Iroha source revision as the node you target:
 
 ```bash
-cd javascript/iroha_js
+git clone https://github.com/hyperledger-iroha/iroha.git
+cd iroha/javascript/iroha_js
 npm install
 npm run build:native
 npm run build:dist
 ```
 
-Set `IROHA_JS_NATIVE_DIR` only for tests that need to point at an alternate
-`native/` directory. Normal applications should use the packaged native build.
+The native build wraps `cargo build -p iroha_js_host` and records the
+platform-specific checksum used at SDK startup. The source build places that
+verified host in `native/`. Set `IROHA_JS_NATIVE_DIR` only when intentionally
+supplying a separately built, checksum-verified host. The package is ESM-only;
+from CommonJS, use dynamic `import()`.
 
 ## Quickstart
 
@@ -46,7 +39,7 @@ console.log(keys.publicKey);
 
 ## Try Taira Read-Only
 
-Use built-in `fetch` in Node.js 18+ to probe Taira before adding signing and
+Use built-in `fetch` in Node.js 24 to probe Taira before adding signing and
 Norito transaction code:
 
 ```js
@@ -90,12 +83,6 @@ import { noritoEncodeInstruction } from "@iroha/iroha-js/norito";
 import { generateKeyPair } from "@iroha/iroha-js/crypto";
 ```
 
-Offline QR stream helpers are exported from the package root:
-
-```js
-import { OfflineQrStream } from "@iroha/iroha-js";
-```
-
 For browser-only Connect bootstrap, use `@iroha/iroha-js/connect-browser`
 instead of importing the Node-first `ToriiClient` surface.
 
@@ -118,7 +105,8 @@ The SDK focuses on:
 - Ed25519 signing and key generation
 - pagination and retry helpers
 - Connect browser bootstrap helpers
-- Offline V2 readiness and QR stream tooling
+- Kagemusha readiness, top-up, redemption, and operation-status transport
+  helpers
 
 ## Upstream References
 

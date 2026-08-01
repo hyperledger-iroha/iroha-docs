@@ -1,8 +1,9 @@
 # Python
 
-The Python SDK in the upstream workspace is `iroha-python`. It targets the
-current Torii and Norito surfaces. Treat it as a fast-moving preview SDK and
-pin the package version or source revision used by your integration.
+The Python SDK in the upstream workspace is `iroha-python`. The first Iroha 3
+release targets the current Torii and Norito surfaces. Pin the package version
+or source revision used by your integration so that the SDK and node stay on
+the same wire-format revision.
 
 The read-only examples below were checked against public Taira at
 `https://taira.sora.org`. Mutating examples are transaction templates: they
@@ -89,7 +90,7 @@ from iroha_python import (
 )
 
 TORII_URL = "https://taira.sora.org"
-CHAIN_ID = "taira"
+CHAIN_ID = "fc56984b-2be7-431d-840e-21514d1883f0"
 AUTH_TOKEN = None
 
 # Replace these placeholders with the real signing keys for your accounts.
@@ -149,7 +150,13 @@ envelope, status = client.build_and_submit_transaction(
     authority=alice,
     private_key=alice_pair.private_key,
     # Fee metadata is attached to the transaction, not the instruction.
-    instructions=[Instruction.register_domain("wonderland")],
+    instructions=[
+        Instruction.set_account_key_value(
+            alice,
+            "python_fee_example",
+            "ready",
+        )
+    ],
     metadata=TX_METADATA,
     wait=True,
 )
@@ -246,7 +253,7 @@ instruction variant that does not have a Python helper yet.
 
 | Instruction family | Python surface |
 | --- | --- |
-| Register | `register_domain`, `register_account`, `register_asset_definition_numeric`, `register_rwa`, `register_time_trigger`, `register_precommit_trigger` |
+| Register | `register_account`, `register_asset_definition_numeric`, `register_rwa`, `register_time_trigger`, `register_precommit_trigger`; `register_domain` is reserved for genesis/bootstrap tooling |
 | Unregister | `unregister_trigger`; use `Instruction.from_json` for other variants |
 | Mint/Burn | `mint_asset_numeric`, `burn_asset_numeric`, `mint_trigger_repetitions`, `burn_trigger_repetitions` |
 | Transfer | `transfer_asset_numeric`, `transfer_domain`, `transfer_asset_definition`, `transfer_nft`, `transfer_rwa`, `force_transfer_rwa` |
@@ -262,16 +269,22 @@ For escrow-style conditional payments, see
 currently exposes first-class helpers for generic asset locks; marketplace and
 anonymous escrow helpers are not first-class Python methods yet.
 
-### Register Domains, Accounts, and Assets
+### Set Up Domains, Then Register Accounts and Assets
 
-Registration examples assume the signer has permission to create objects in
-the target domain. On a shared network such as Taira, use a domain and account
-namespace assigned to you.
+Ordinary domain creation goes through the declarative alias planner so the SNS
+lease, owner capabilities, quote guard, and domain state are checked together.
+Create a secret-free `AliasSetupPlanRequestV1` intent with your SDK or
+onboarding service, then use `iroha app alias setup plan` and
+`iroha app alias setup apply`. Do not submit `Instruction.register_domain`
+from an application transaction; that builder remains for genesis/bootstrap
+tooling.
+
+After the domain setup plan commits, register domain-owned objects. On a shared
+network such as Taira, use a domain and account namespace assigned to you.
 
 ```python
-# Submit related registrations together when they share one authority.
+# The domain and its SNS lease already exist before this transaction.
 submit(
-    Instruction.register_domain("wonderland", {"environment": "dev"}),
     Instruction.register_account(alice, {"display_name": "Alice"}),
     Instruction.register_account(bob, {"display_name": "Bob"}),
     Instruction.register_asset_definition_numeric(
@@ -664,8 +677,8 @@ config = TransactionConfig(
 )
 
 draft = TransactionDraft(config)
-# Draft methods append instructions but do not submit anything yet.
-draft.register_domain("wonderland", metadata={"owner": "docs"})
+# Draft methods append instructions but do not submit anything yet. Domain
+# setup is a separate alias-planner flow and has already committed here.
 draft.register_account(bob, metadata={"role": "user"})
 draft.register_asset_definition_numeric(
     ROSE_DEFINITION,
@@ -813,7 +826,9 @@ ed_pair = derive_keypair_from_seed(b"alice", ED25519_ALGORITHM)
 signature = ed_pair.sign(b"payload")
 assert verify(ED25519_ALGORITHM, ed_pair.public_key, b"payload", signature)
 
-# Account addresses combine a domain and public key into canonical I105 form.
+# Canonical AccountId/I105 identity is derived only from the controller key.
+# This constructor currently requires `domain`; canonical identity ignores it
+# and AccountAddress.from_account emits a domainless address.
 address = AccountAddress.from_account(domain="wonderland", public_key=ed_pair.public_key)
 print(address.canonical_hex())
 print(address.to_i105(0x02F1))
@@ -968,6 +983,8 @@ CHAIN_DISCRIMINANT = 0x02F1
 message = b"iroha gost and post-quantum example"
 
 # Crypto helpers use canonical labels; account addresses use compact aliases.
+# Every `domain=` argument below is ignored when the canonical AccountId/I105
+# address is encoded.
 GOST_ADDRESS_ALIASES = {
     GOST_3410_2012_256_PARAMSET_A_ALGORITHM: "gost-256-a",
     GOST_3410_2012_256_PARAMSET_B_ALGORITHM: "gost-256-b",
@@ -1072,17 +1089,28 @@ client = create_torii_client(
 )
 ```
 
-## Offline V2 Readiness
+## Kagemusha Readiness
 
-The current Python SDK exposes Torii's Offline V2 readiness endpoint. It does
-not expose high-level offline allowance registration or renewal helpers.
+The Python SDK can query the current JSON readiness route through its generic
+Torii request helper:
 
 ```python
-readiness = client.get_offline_v2_readiness()
-print(readiness.offline_note_v2)
-print(readiness.offline_one_use_keys)
-print(readiness.offline_fountain_qr_v1)
+ASSET_DEFINITION_ID = "<canonical_asset_definition_id>"
+
+readiness = client.request_json(
+    "GET",
+    "/v1/offline/readiness",
+    params={"asset_definition_id": ASSET_DEFINITION_ID},
+    headers={"Accept": "application/json"},
+    expected_status=(200,),
+)
+print(readiness["ready"])
+print(readiness["blockers"])
 ```
+
+Python does not expose typed Kagemusha top-up or redemption archive builders.
+Use a typed Swift or JVM wallet to construct the canonical V4 archives, then
+submit and poll them through a supported Kagemusha Torii client.
 
 ## Subscriptions
 
@@ -1157,7 +1185,7 @@ from iroha_python.connect import ConnectUri, build_connect_uri, parse_connect_ur
 uri = build_connect_uri(
     ConnectUri(
         sid="base64url-session-id",
-        chain_id="taira",
+        chain_id=CHAIN_ID,
         node="taira.sora.org",
     )
 )
@@ -1165,7 +1193,7 @@ parsed = parse_connect_uri(uri)
 # Status tells you whether the node currently exposes Connect.
 status = client.get_connect_status_typed()
 
-assert parsed.chain_id == "taira"
+assert parsed.chain_id == CHAIN_ID
 print(status.enabled, status.sessions_active)
 ```
 
@@ -1378,7 +1406,8 @@ The Python SDK already includes helpers for:
 - transaction drafts, manifests, signing, and signed transaction envelope
   workflows
 - streaming events, filters, and resumable cursors
-- Offline V2 readiness and Torii subscription helpers
+- generic Kagemusha readiness access and Torii subscription helpers; typed
+  top-up and redemption builders are not exposed
 - account address, all-algorithm signing helpers, multihash round trips, SM2,
   GOST, ML-DSA, BLS, and confidential key handling
 - Connect URIs, sessions, frames, encryption helpers, and registry admin
@@ -1391,5 +1420,5 @@ The Python SDK already includes helpers for:
 - `python/iroha_python/DESIGN.md`
 - `python/iroha_python/src/iroha_python`
 
-Those files track the current Python surface more accurately than the older
-Iroha 2-era examples that used the `iroha2` package name.
+Those files are the source of truth for the Python surface in the pinned
+workspace revision.

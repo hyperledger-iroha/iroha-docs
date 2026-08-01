@@ -9,12 +9,11 @@ the same set of permissions. In a private blockchain, most accounts are
 assumed not to be able to do anything outside the authority granted to them
 unless explicitly granted the relevant permission.
 
-Having a permission to do something means having a `PermissionToken` to do
-so. There are two ways for users to receive permission tokens: they can be
-granted directly or as a part of a [`Role`](#permission-groups-roles) (a
-set of permission tokens). Permissions are granted via `Grant` special
-instruction. Permission tokens and roles do not expire, they can only be
-removed using `Revoke` instruction.
+Having a permission to do something means that the account has the
+corresponding `Permission`. Permissions can be granted directly or through a
+[`Role`](#permission-groups-roles), which groups a set of permissions.
+Permissions are granted with the `Grant` instruction. Permissions and roles
+do not expire; remove them with the `Revoke` instruction.
 
 ## Permission Tokens
 

@@ -134,7 +134,11 @@ async function scan(options: Options): Promise<LinkIssues> {
   const entries = await Promise.all(
     files.map(async (file) => {
       const html = await readFile(file, { encoding: 'utf-8' })
-      const { links, anchors } = scanLinksAndAnchorsInHTML(html)
+      const { links, anchors, resourceUrls } = scanLinksAndAnchorsInHTML(html)
+
+      for (const url of resourceUrls) {
+        assertUrlWithinPublicPath(url, options.publicPath)
+      }
 
       const parsedLinks = links
         .map((x) => parseLink({ root: options.root, source: file, href: x, publicPath: options.publicPath }))
@@ -156,17 +160,16 @@ async function findFiles(root: string): Promise<string[]> {
   return globby(path.join(root, '**/*.html'))
 }
 
-const ANCHORS_QUERY = cssSelect.compile('main [id]')
+const ANCHORS_QUERY = cssSelect.compile('[id]')
 
-const LINKS_QUERY = cssSelect.compile('main a[href]')
+const LINKS_QUERY = cssSelect.compile('a[href]')
 
-/**
- * This scans `<main>` only. Links in `<aside>` and `<header>` repeat from
- * page to page; validating them here would make duplicate reports noisy.
- */
+const URL_ATTRIBUTES_QUERY = cssSelect.compile('[href], [src], [srcset]')
+
 function scanLinksAndAnchorsInHTML(html: string): {
   links: string[]
   anchors: Set<string>
+  resourceUrls: string[]
 } {
   const doc = htmlparser.parseDocument(html)
 
@@ -188,7 +191,24 @@ function scanLinksAndAnchorsInHTML(html: string): {
     }),
   )
 
-  return { links, anchors }
+  const resourceUrls = cssSelect.selectAll(URL_ATTRIBUTES_QUERY, doc.children).flatMap((elem) => {
+    if (!('attribs' in elem)) return []
+    const { href, src, srcset } = elem.attribs
+    const urls: string[] = []
+    if (href) urls.push(href)
+    if (src) urls.push(src)
+    if (srcset) {
+      urls.push(
+        ...srcset
+          .split(',')
+          .map((candidate) => candidate.trim().split(/\s+/u)[0])
+          .filter(Boolean),
+      )
+    }
+    return urls
+  })
+
+  return { links, anchors, resourceUrls }
 }
 
 type ParsedLink = LinkSelfAnchor | LinkOtherFile | LinkExternal
@@ -209,11 +229,25 @@ export interface LinkExternal {
   url: URL
 }
 
+/** Reject a root-relative built URL that would escape a non-root deployment base. */
+export function assertUrlWithinPublicPath(url: string, publicPath?: string): void {
+  if (
+    publicPath &&
+    publicPath !== '/' &&
+    url.startsWith('/') &&
+    !url.startsWith('//') &&
+    !new URL(url, 'http://dummy.dummy').pathname.startsWith(publicPath)
+  ) {
+    throw new Error(`root-relative URL escapes public path ${publicPath}: ${url}`)
+  }
+}
+
 // export for tests
 export function parseLink(opts: { root: string; source: string; href: string; publicPath?: string }): ParsedLink {
   const relative = path.relative(opts.root, opts.source)
   const DUMMY_ORIGIN = 'http://dummy.dummy'
   const url = new URL(opts.href, DUMMY_ORIGIN + (opts.publicPath ?? '/') + `${relative}`)
+  assertUrlWithinPublicPath(opts.href, opts.publicPath)
 
   return match(url)
     .with(
@@ -229,7 +263,7 @@ export function parseLink(opts: { root: string; source: string; href: string; pu
         if (path.extname(file) !== '.html') file = path.join(file, 'index.html')
 
         if (path.normalize(file) === path.normalize(opts.source)) {
-          if (!anchor) throw new Error('found self link without anchor')
+          if (!anchor) return { type: 'other', file }
           return { type: 'self', anchor }
         }
 
