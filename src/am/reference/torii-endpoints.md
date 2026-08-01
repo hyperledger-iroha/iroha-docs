@@ -1,9 +1,9 @@
 ---
 translation_locale: am
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: 9bec41b1b419e252fdcff8328e7950a294bdad3ac40112a5a7f2ce451d19e9cb
+translation_source_hash: c23170b2949bae9c9483ecbee6f0c09fea503904ae93934aef56537ddd13c42d
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2
 ---
 
 # Torii መጨረሻ ነጥቦች {#torii-endpoints}
@@ -12,7 +12,7 @@ Torii ለ HTTP ፣ SSE እና WebSocket የጌትዌይ ነው ። ለ Iroha 3 �
 
 አሁን ያሉት የፕሮቶኮል ደንቦች የሚከተሉት ናቸው:
 
-- የሁለትዮሽ ቅርጸት Norito ነው
+- ቀኖናዊ የሁለትዮሽ ቅርጸት Norito ነው
 - ብዙ መጨረሻ ነጥቦችም ድጋፍ ያደርጋሉ JSON ሲላክ `Accept: application/json`
 - መለኪያዎች በፕሮሜቲየስ ቅርጸት የተገለጹ ናቸው
 
@@ -22,34 +22,43 @@ Torii ለ HTTP ፣ SSE እና WebSocket የጌትዌይ ነው ። ለ Iroha 3 �
 
 |የመጨረሻ ነጥብ |ቅርጸት |ዓላማ|
 | --- | --- | --- |
-|`POST /transaction` |Norito |የተፈረመ ግብይት ያቅርቡ |
-|`POST /query` |Norito |የተፈረመ ጥያቄ ያቅርቡ |
-|`GET /events` |WebSocket |የዝግጅት ዥረቶችን ይመዝገቡ|
-|`GET /block/stream` |WebSocket |የተሰማሩ ብሎኮችን |
-|`GET /peers` |JSON |በ Torii የተጋለጡ የአቻዎች ዝርዝር |
-|`GET /health` |JSON |ቀለል ያለ የኑሮ ደረጃ |
-|`GET /api_version` |JSON |ነባሪው API ስሪት |
-|`GET /status` |JSON |ለኦፕሬተሮች ከፍተኛ ደረጃ ያለው የደረጃ አጠቃላይ መረጃ |
+|`POST /v1/pipeline/transactions` |Norito |የተፈረመ ግብይት ያቅርቡ |
+|`POST /v1/query` |Norito |የተፈረመ ጥያቄ ማስገባት |
+|`GET /v1/events/ws` |WebSocket |የዝግጅት ዥረቶችን ይመዝገቡ|
+|`GET /v1/events/sse` |SSE |ከ SSE በላይ ለሆኑ ክስተቶች ዥረቶች ይመዝገቡ|
+|`GET /v1/blocks/stream` |WebSocket |የተዋቀሩ ብሎኮችን |
+|`GET /v1/peers` |JSON |በ Torii የተጋለጡ የአቻዎች ዝርዝር |
+|`GET /livez` |ጽሑፍ |የፕሮሰስ-ብቻ ሕይወት; ይህ ፕሮቶኮል ዝግጁነት አያመለክትም |
+|`GET /readyz` |JSON |ከመስመር ውጭ የሚደረጉ የግዴታ የገንዘብ ቼኮችን ጨምሮ የተሟላ የአገናኝ ዝግጁነት |
+|`GET /health` |JSON |ተመሳሳይ ከመስመር ውጭ የገንዘብ ተለዋዋጭ ጋር ዝግጁነት ምርመራ |
+|`GET /v1/api/version` |ጽሑፍ |የአሁኑ የብሎክ ራስጌ ስሪት |
+|`GET /status` |Norito ወይም JSON |የከፍተኛ ደረጃ የምርመራ ሁኔታ; በግልጽ መጠየቅ JSON|
 |`GET /metrics` |ፕሮሜቲየስ |የፕሮሜቲየስ ማጭበርበሪያ መጨረሻ |
-|`GET /schema` |JSON |በመረጃ ሞዴል መርሃግብር ቅጽበታዊ ገጽ እይታ በአገናኙ የተገለጸ |
+|`GET /v1/schema` |JSON |የሂሳብ ሞዴል መርሃግብር ቅጽበታዊ ገጽ እይታ በኖዱ ሲገለግል |
 |`GET /openapi` ወይም `GET /openapi.json` |JSON |የ OpenAPI ሰነድ ለሥራ ላይ የሚውሉ Torii HTTP መንገዶች |
 |`GET /v1/parameters` |JSON |የአገናኝ መለኪያ ቅጽበታዊ ገጽ እይታ |
 |`GET /v1/node/capabilities` |JSON |የአውታረ መረብ አቅም እና የመረጃ ሞዴል ሜታዳታ |
-|`GET /v1/api/versions` |JSON |የሚደገፉ Torii API ስሪቶች |
-|`GET /v1/events/sse` |SSE |ለረጅም ጊዜ የቆዩ ደንበኞች የዝግጅት ዥረት|
 |`GET /v1/time/now` |JSON |የአገናኝ የግድግዳ ሰዓት ቅጽበታዊ ገጽ እይታ|
 |`GET /v1/time/status` |JSON |የጊዜ ማመሳሰል ሁኔታ |
 
-`/openapi` ለሂደቱ ኖት ትክክለኛ የፍጻሜ ነጥብ ዝርዝር ነው ። ትክክለኛው ወለል በ ባህሪያትን ለመገንባት እና የሂደት ጊዜ ውቅር, ስለዚህ የተፈጠሩ ደንበኞች በቀጥታ OpenAPI በእጅ በተገለጸው የመንገድ ዝርዝር ላይ ሰነድ። [Torii API ኮንሶል](/am/reference/torii-api-console.md) ያንን የቀጥታ ሰነድ ለመጫን, ሙከራ JSON መስመሮች፣ ቅጂ curl ጥያቄዎችን ያቀርባል፣ እና ከወቅቱ መርሃግብር የደንበኛ ኮድ ይፈጥራል።
+ለ SSE ጥያቄ የአገር ውስጥ ዥረት እና የተጻፈ የወደፊት መልሶ ማቋረጥ ማስታወቂያ ያቅርቡ:
+
+```http
+Accept: text/event-stream, application/json
+```
+
+Torii በመጀመሪያ በጠየቀው ንብርብሮች ላይ የ JSON ወይም Norito ውክልናን ይደራደራል ፣ ከዚያ የተፈጥሮውን `text/event-stream` ምላሽ ያረጋግጣል ። ስለሆነም መላክ ብቻ `text/event-stream` ከ `406` ጋር ውድቅ ነው ፤ የ [ ዥረት ክስተቶች የምግብ አዘገጃጀት መመሪያ ](/am/cookbook/stream-events.md) ሙሉውን ራስጌ ይጠቀማል።
+
+`/openapi` በፕሮግራሙ ውስጥ ለተገለጹት መስመሮች የመጀመሪያው የተፈጠረው ውል ነው ፣ የአሁኑ ሰነድ የተሟላ የኦፕሬቲንግ ሳንድ ዝርዝር አይደለም። `/livez` እና `/readyz`, እና የእሱ `/health` መግለጫ ዝግጁነት አስተዳዳሪ መዘግየት ይችላሉ. የቀጥታ ሰነድ ከ መንገድ ደንበኞች ማመንጨት, ነገር ግን በቀጥታ በሂደት ላይ ካለው አገናኝ እና በተጣበቁ አስተናጋጆች ላይ የኑሮ ሁኔታን እና ዝግጁነትን ያረጋግጡ። ትክክለኛው ወለል አሁንም በግንባታ ባህሪዎች እና በመሮጫ ጊዜ ውቅር ላይ የተመሠረተ ነው። [Torii API ኮንሶል](/am/reference/torii-api-console.md) ያንን የቀጥታ ሰነድ ለመጫን, ሙከራ JSON መስመሮች፣ ቅጂ curl ጥያቄዎችን ያቀርባል፣ እና ከወቅቱ መርሃግብር የደንበኛ ኮድ ይፈጥራል።
 
 ## የቀጥታ Taira መስመሮችን ይሞክሩ {#try-live-taira-routes}
 
-የህዝብ Taira የሙከራ አውታረመረብ የመተግበሪያ ደንበኞች ለንባብ-ብቻ ፍለጋ የሚጠቀሙበትን ተመሳሳይ Torii JSON ወለል ይገልጻል። እነዚህ ትዕዛዞች ቁልፎችን አያስፈልጋቸውም:
+የህዝብ Taira የሙከራ አውታረመረብ የመተግበሪያ ደንበኞች ለንባብ-ብቻ ፍለጋ የሚጠቀሙበትን ተመሳሳይ Torii JSON ወለል ያሳያል ። እነዚህ ትዕዛዞች ቁልፎችን አያስፈልጋቸውም
 
 ```bash
 TAIRA_ROOT=https://taira.sora.org
 
-curl -fsS "$TAIRA_ROOT/status" \
+curl -fsS -H 'Accept: application/json' "$TAIRA_ROOT/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA_ROOT/openapi.json" \
@@ -57,7 +66,8 @@ curl -fsS "$TAIRA_ROOT/openapi.json" \
   | grep '^/v1/' \
   | head -n 20
 
-curl -fsS "$TAIRA_ROOT/v1/node/capabilities" \
+curl -fsS -H 'Accept: application/json' \
+  "$TAIRA_ROOT/v1/node/capabilities" \
   | jq '{abi_version, data_model_version, query: .query.aggregate.supported_resources}'
 ```
 
@@ -71,7 +81,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=5" \
   | jq -r '.items[] | [.id, .name, .total_quantity] | @tsv'
 ```
 
-አንድ የህዝብ የሙከራ አውታረመረብ መንገድ `502` የሚመልስ ከሆነ ፣ ጊዜዎችን ያቆማል ወይም የተሟላ ረድፍ ሪፖርት የሚያደርግ ከሆነ ፣ እንደ መጨረሻ ነጥብ ተደራሽነት ችግር አድርገው ይመለከቱት እና ከደንበኛ ኮድዎን ከማስተካከልዎ በፊት በኋላ እንደገና ይሞክሩ ።
+አንድ የህዝብ የሙከራ አውታረመረብ መንገድ `502` የሚመልስ ከሆነ ፣ ጊዜዎችን ያቆማል ወይም የተሟላ ረድፍ ሪፖርት የሚያደርግ ከሆነ ፣ እንደ መጨረሻ ነጥብ ተደራሽነት ችግር አድርገው ይመለከቱት እና ከደንበኛ ኮድዎን ከማስተካከልዎ በፊት በኋላ እንደገና ይሞክሩት ።
 
 ## የጋራ ስምምነት እና የአሂድ ጊዜ መጨረሻ ነጥቦች {#consensus-and-runtime-endpoints}
 
@@ -86,12 +96,12 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=5" \
 |`GET /v1/sumeragi/qc` |Norito ወይም JSON |የቅርብ ጊዜው የቁጥር ማረጋገጫ ማጠቃለያ |
 |`GET /v1/sumeragi/checkpoints` |JSON |የስምምነት ፍተሻ ነጥቦች ማጠቃለያ |
 |`GET /v1/sumeragi/consensus-keys` |JSON |የጋራ ስምምነት ቁልፎች |
-|`GET /v1/sumeragi/bls_keys` |JSON |ንቁ BLS የጋራ ቁልፎች |
+|`GET /v1/sumeragi/bls_keys` |JSON |ንቁ BLS ስምምነት ቁልፎች |
 |`GET /v1/sumeragi/phases` |JSON |የመጨረሻው የደረጃ መዘግየት ናሙና |
 |`GET /v1/sumeragi/rbc` |JSON |RBC የስብሰባ እና የውጤት ፍሰት መለኪያዎች |
 |`GET /v1/sumeragi/rbc/sessions` |JSON |ንቁ RBC ክፍለ ጊዜ ቅጽበታዊ ገጽ እይታ|
 |`GET /v1/sumeragi/pacemaker` |JSON |የልብ ምት ማመቻቸት |
-|`GET /v1/sumeragi/params` |JSON |የአሁኑ ሰንሰለት Sumeragi መለኪያዎች |
+|`GET /v1/sumeragi/params` |JSON |የአሁኑ ሰንሰለት ላይ Sumeragi መለኪያዎች |
 |`GET /v1/sumeragi/collectors` |JSON |የዴተሪሚኒስት ሰብሳቢ ዕቅድ ቅጽበታዊ ገጽ እይታ |
 |`GET /v1/sumeragi/key-lifecycle` |JSON |የጋራ ቁልፍ የሕይወት ዑደት ሁኔታ |
 |`GET /v1/sumeragi/telemetry` |JSON |የጋራ ስምምነት ቴሌሜትሪ ቅጽበታዊ ገጽ እይታ |
@@ -113,27 +123,27 @@ Torii በመተግበሪያ-ተኮር ባህሪ ስብስብ ሲገነባ ለተ
 
 |የመንገድ ቤተሰብ |ዓላማ|
 | --- | --- |
-|`/v1/accounts/*`, `/v1/domains/*`, `/v1/assets/*` |JSON ያነባል፣ የሚጠይቅ ረዳት፣ የማስገባት ረዳት እንዲሁም ፖርትፎሊዮ ወይም ባለቤት እይታዎች |
-|`/v1/nfts/*`, `/v1/rwas/*`, `/v1/confidential/*` |NFT ፣ በእውነተኛ ዓለም ንብረት፣ እና ምስጢራዊ ንብረት እይታዎች |
-|`/v1/aliases/*`, `/v1/assets/aliases/*`, `/v1/sns/*`, `/v1/identifiers/*` |ስም፣ ቅጽል ስያሜ እና መታወቂያ ጥራት |
+|`/v1/accounts/`, `/v1/domains/`, `/v1/assets/*` |JSON ያነባል፣ የሚጠይቅ ረዳት፣ የማስገባት ረዳት እንዲሁም ፖርትፎሊዮ ወይም ባለቤት እይታዎች |
+|`/v1/nfts/`, `/v1/rwas/`, `/v1/confidential/*` |NFT ፣ በእውነተኛ ዓለም ንብረት፣ እና ምስጢራዊ ንብረት እይታዎች |
+|`/v1/aliases/`, `/v1/assets/aliases/`, `/v1/sns/`, `/v1/identifiers/` |ስም፣ ቅጽል ስያሜ እና መታወቂያ ጥራት |
 |`/v1/explorer/*` |Explorer-oriented account, asset, block, transaction, instruction, metric, and stream views  ለሰፋፊው የተመሠረቱ መለያዎች፣ ንብረቶች፣ ብሎኮች፣ ግብይቶች፣ መመሪያዎች፣ መለኪያዎች እና ፍሰት እይታዎች|
-|`/v1/transactions/*`, `/v1/pipeline/*`, `/v1/iso20022/*` |የግብይት ታሪክ፣ የቧንቧ መስመር መልሶ ማቋቋም ወይም ሁኔታ፣ እና ISO 20022 ረዳት |
+|`/v1/transactions/`, `/v1/pipeline/`, `/v1/iso20022/*` |የግብይት ታሪክ፣ የቧንቧ መስመር መልሶ ማቋቋም ወይም ሁኔታ፣ እና ISO 20022 ረዳት |
 |`/v1/contracts/*` |የኮንትራት ኮድ, ማሰማራት, ጥቅል, ጥሪ, እይታ, ክስተት, እንቅስቃሴ, rollup, እና ሁኔታ መስመሮች |
-|`/v1/multisig/*` ፣ `/v1/controls/*` |ባለብዙ ስምምነቶች ጥቆማዎች፣ ማጽደቅ እና የዝውውር ቁጥጥር ረዳቶች |
-|`/v1/bridge/*`, `/v1/ledger/*`, `/v1/proofs/*` |ፍፃሜ፣ የስቴት ማስረጃ፣ ብሎክ ማስረጃ፣ ማስረጃ ማቆየት እና ማስረጃ ጥያቄ መስመሮች |
+|`/v1/multisig/` ፣ `/v1/controls/` |ባለብዙ ስምምነቶች ጥቆማዎች፣ ማጽደቅ እና የዝውውር ቁጥጥር ረዳቶች |
+|`/v1/bridge/`, `/v1/ledger/`, `/v1/proofs/*` |ፍፃሜ፣ የስቴት ማስረጃ፣ ብሎክ ማስረጃ፣ ማስረጃ ማቆየት እና ማስረጃ ጥያቄ መስመሮች |
 |`/v1/da/*` |የውሂብ ተደራሽነት አጠቃቀም፣ ማሳያዎች፣ የማረጋገጫ ፖሊሲዎች፣ ግዴታዎች እና የፒን ዓላማዎች |
 |`/v1/zk/*` |ZK ሥሮች፣ የምስክርነት ማረጋገጫ፣ IVM ማስረጃ፣ የድምፅ መቁጠር፣ የማረጋገጫ ቁልፎች፣ የምሥክርነት መዝገቦች እና አባሪዎች |
-|`/v1/gov/*` ፣ `/v1/ministry/*` |የአስተዳደር ፕሮፖዛሎች፣ የምርጫ ወረቀቶች፣ የምክር ቤት ሁኔታ፣ የተጠበቁ የስም ቦታዎች፣ የአጀንዳ ፕሮፖዛል፣ አዋጅ ማውጣትና ማጠናቀቅ |
-|`/v1/nexus/*` ፣ `/v1/sccp/*` |Nexus ጎዳና, የመረጃ ቦታ, እና መስቀለኛ ሰንሰለት መከላከያ ረዳቶች |
+|`/v1/gov/` ፣ `/v1/ministry/` |የአስተዳደር ፕሮፖዛሎች፣ የምርጫ ወረቀቶች፣ የምክር ቤት ሁኔታ፣ የተጠበቁ የስም ቦታዎች፣ የአጀንዳ ፕሮፖዛል፣ አዋጅ ማውጣትና ማጠናቀቅ |
+|`/v1/nexus/` ፣ `/v1/sccp/` |Nexus ጎዳና, የመረጃ ቦታ, እና መስቀለኛ ሰንሰለት መከላከያ ረዳቶች |
 |`/v1/musubi/*` |Musubi የፓኬጅ መዝገብ አንባቢዎች እና መመሪያ አምራቾች |
 |`/v1/subscriptions/*` |የደንበኝነት ምዝገባ ዕቅዶች፣ የደንበኞቻችን የሕይወት ዑደት፣ አጠቃቀም እና ክፍያዎች |
-|`/v1/sorafs/*`, `/sorafs/*`, `/.well-known/sorafs/*` |SoraFS አቅራቢ ግኝት, አቅም ማረጋገጫ, ፒኒንግ, የማከማቻ ያመጣል, እና የሕዝብ ይዘት በማቅረብ |
-|`/v1/soracloud/*`, `/v1/soradns/*`, `/soradns/*`, `/api/*` |SoraCloud የአገልግሎት የሕይወት ዑደት፣ የግል ኮምፒውተር/ሞዴል ፍሰቶች፣ የህዝብ ግኝት እና የተስተናገደ የመተግበሪያ አሰራር |
-|`/v1/connect/*` ፣ `/v1/vpn/*` |Iroha የግንኙነት ክፍለ ጊዜዎች፣ WebSocket ትራንስፖርት፣ VPN ክፍለ ጊዜዎች ፣ መገለጫዎች እና ደረሰኞች |
-|`/v1/app-api/*`, `/v1/api/*`, `/v1/content/*` |App API ትስስር እና ጥቅል/CID የተደገፈ ይዘት አሰላለፍ |
+|`/v1/sorafs/`, `/sorafs/`, `/.well-known/sorafs/*` |SoraFS አቅራቢ ግኝት, አቅም ማረጋገጫ, ፒኒንግ, የማከማቻ ያመጣል, እና የሕዝብ ይዘት በማቅረብ |
+|`/v1/soracloud/`, `/v1/soradns/`, `/soradns/`, `/api/` |SoraCloud የአገልግሎት የሕይወት ዑደት፣ የግል ኮምፒውተር/ሞዴል ፍሰቶች፣ የህዝብ ግኝት እና የተስተናገደ የመተግበሪያ አሰራር |
+|`/v1/connect/` ፣ `/v1/vpn/` |Iroha የግንኙነት ክፍለ ጊዜዎች፣ WebSocket ትራንስፖርት፣ VPN ክፍለ ጊዜዎች ፣ መገለጫዎች እና ደረሰኞች |
+|`/v1/app-api/`, `/v1/api/`, `/v1/content/*` |App API ትስስር እና ጥቅል/CID የተደገፈ ይዘት አሰላለፍ |
 |`/v1/operator/*` ፣ `/v1/mcp` |የኦፕሬተር ማረጋገጫ እና የአገር ውስጥ MCP JSON-RPC ድልድይ |
-|`/v1/offline/*`, `/v1/repo/*`, `/v1/space-directory/*`, `/v1/ram-lfe/*` |ከመስመር ውጪ ዝግጁነት ፣ የመረጃ ቋት ስምምነቶች ፣ የውሂብ ቦታ ማኒፊስቶች እና [RAM-LFE ረዳቶች ](/am/blockchain/ram-lfe.md#torii-routes) ።|
-|`/v1/kaigi/*`, `/v1/webhooks/*`, `/v1/notify/*`, `/v1/telemetry/*` |ትብብር, የድር አገናኝ, የግፋ ማሳወቂያዎች እና የቀጥታ ቴሌሜትሪ ውህደቶች |
+|`/v1/offline/`, `/v1/repo/`, `/v1/space-directory/`, `/v1/ram-lfe/` |ከመስመር ውጪ ዝግጁነት ፣ የመረጃ ቋት ስምምነቶች ፣ የውሂብ ቦታ ማኒፊስቶች እና [RAM-LFE ረዳቶች ](/am/blockchain/ram-lfe.md#torii-routes) ።|
+|`/v1/kaigi/`, `/v1/webhooks/`, `/v1/notify/`, `/v1/telemetry/` |ትብብር, የድር አገናኝ, የግፋ ማሳወቂያዎች እና የቀጥታ ቴሌሜትሪ ውህደቶች |
 
 ## ISO 20022 ድልድይ {#iso-20022-bridge}
 
@@ -152,7 +162,7 @@ Torii ያጋልጣል ISO 20022 ድልድይ በታች `/v1/iso20022/*` አፕ�
 |`POST /v1/iso20022/sese024` |የዋጋ ንብረቶችን የማስተካከል ሁኔታ መልዕክት ያቅርቡ |
 |`POST /v1/iso20022/sese025` |የዋጋ ንብረቶችን የማስተካከያ ማረጋገጫ ማስገባት |
 |`POST /v1/iso20022/colr012` |የዋስትና ምትክ መልዕክት ማቅረብ |
-|`GET /v1/iso20022/messages/{msg_id}` |አንድ መልዕክት ለማግኘት የቅዱሳን መጻሕፍት ድልድይ መዝገብን አንብቡ።|
+|`GET /v1/iso20022/messages/{msg_id}` |አንድ መልዕክት ለማግኘት የካኖኒክ ድልድይ መዝገብን አንብብ።|
 |`GET /v1/iso20022/audit/messages` |የሐሰት መልእክት ኦዲት ማኔፊስት ያንብቡ ።|
 |`GET /v1/iso20022/messages/{msg_id}/pacs002` |የአሁኑን የክፍያ ሁኔታ `pacs.002` XML አድርገው ያስገቡ።|
 |`GET /v1/iso20022/messages/{msg_id}/pacs004` |የአሁኑን የክፍያ ማመልከቻ `pacs.004` XML አድርገው ያስገቡ።|
@@ -275,7 +285,7 @@ Kaigi UI ለመሞከር:
 
 የግል Kaigi ያስፈልገዋል ይከላከላል XOR ለግል መግቢያ ነጥብ ክፍያ ለመክፈል. የ ማሳያ ሪፖርት ከሆነ የግል Kaigi ያስፈልገናል ይከላከላሉ XOR, በመተግበሪያው ውስጥ ራስ-መከላከል ጥያቄን ይጠቀሙ እና እንደገና ይሞክሩ ያድርጉ ወይም እርምጃ ይቀላቀሉ. የማረጋገጫ ማመንጨት ፣ የግል ፋይናንስ ወይም የቀጥታ ምልክት የማይገኝ ከሆነ ማሳያው ወደ ግልፅ / በእጅ ፍሰት ተመልሶ ሊመጣ ይችላል ። በዚህ ሁኔታ ውስጥ የላቀ ምልክትን ይክፈቱ ፣ ጥሬውን አቅርቦት ወይም መልስ ጥቅልን ቅጂ ያድርጉ እና ወደ ሌላ መስኮት ይስኩት ።
 
-በዲሞ ሪፖ ውስጥ ለተፈቀደ ቁጥጥር የሚከተሉትን ይሂዱ:
+በዴሞ ሪፖ ውስጥ ለተፈቀደ ቁጥጥር የሚከተሉትን ይሮጡ:
 
 ```bash
 npm test -- tests/kaigiView.spec.ts tests/preloadKaigiBridge.spec.ts
@@ -314,15 +324,15 @@ Accept: application/json
 
 ## የቴሌሜትሪ መገለጫዎች {#telemetry-profiles}
 
-የመጨረሻ ነጥቦች ታይነት በኖዱ `telemetry.profile` ቅንብር ላይ ይመሰረታል። የአሁኑ ውቅር አምስት የፕሮፋይል ደረጃዎችን ያቀርባል፦
+የ መጨረሻ ነጥብ ታይነት የአገናኙ `telemetry.profile` ቅንብር ላይ የተመሠረተ ነው። የአሁኑ ውቅር አምስት የመገለጫ ደረጃዎችን ያጋልጣል-
 
 |መገለጫ |`/status` |`/metrics` |የገንቢዎች መንገዶች |
 | --- | --- | --- | --- |
-|`disabled` |አይ |አይ |አይ |
-|`operator` |አዎ |አይ |አይ |
-|`extended` |አዎ |አዎ |አይ |
-|`developer` |አዎ |አይ |አዎ |
-|`full` |አዎ |አዎ |አዎ |
+|`disabled` |አይደለም|አይደለም|አይደለም|
+|`operator` |አዎ .|አይደለም|አይደለም|
+|`extended` |አዎ .|አዎ .|አይደለም|
+|`developer` |አዎ .|አይደለም|አዎ .|
+|`full` |አዎ .|አዎ .|አዎ .|
 
 ## CLI አቋራጮች {#cli-shortcuts}
 

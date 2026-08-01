@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: feddadb1b50c5cc8beea188fd7053eeaae58d6ab9203687e9a1378f203229168
+translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -22,7 +22,7 @@ npm run build:native
 npm run build:dist
 ```
 
-يقوم البناء الأصلي بتغطية `cargo build -p iroha_js_host` وتسجيل مبلغ التحقق المحدد للمنصة المستخدم في بدء SDK. يقوم المصدر ببناء الأماكن التي تؤكد استضافة في `native/`. يضع `IROHA_JS_NATIVE_DIR` فقط عند توفير مستضيف تم تصنيعه بشكل منفصل، ومجموع التحقق من المعلومات. الحزمة هي ESM فقط؛ من CommonJS، استخدام ديناميكي `import()`.
+يقوم البناء الأصلي بتغطية `cargo build -p iroha_js_host` ويُسجل مبلغ التحقق المحدد للنظام الأساسي المستخدم في بدء SDK. يُسجل البناء المصدر أماكن التي تؤكد استضافة في `native/`. تعيين `IROHA_JS_NATIVE_DIR` فقط عند توفير مستضيف مبني بشكل منفصل معتمد على مبلغ التحقق. الحزمة هي ESM فقط؛ من CommonJS، استخدام ديناميكي `import()`.
 
 ## بداية سريعة {#quickstart}
 
@@ -45,7 +45,9 @@ console.log(keys.publicKey);
 ```js
 const root = "https://taira.sora.org";
 
-const status = await fetch(`${root}/status`).then((res) => res.json());
+const status = await fetch(`${root}/status`, {
+  headers: { Accept: "application/json" },
+}).then((res) => res.json());
 console.log({
   blocks: status.blocks,
   queueSize: status.queue_size,
@@ -81,11 +83,11 @@ import { noritoEncodeInstruction } from "@iroha/iroha-js/norito";
 import { generateKeyPair } from "@iroha/iroha-js/crypto";
 ```
 
-لاستخدام `@iroha/iroha-js/connect-browser` بدلاً من استيراد سطح Node-first `ToriiClient` لـ Connect bootstrap للمصفح فقط
+لاستخدام `@iroha/iroha-js/connect-browser` بدلاً من استيراد سطح Node-first `ToriiClient` لـ Connect bootstrap المتصفح فقط
 
 ## الخصم الأصلي {#native-escrow}
 
-يمكن أن تستخدم التطبيقات JavaScript و TypeScript الاحتفاظ الأصلي من خلال عقود Kotodama. قم بتجميع دعوات استضافة الاحتفاض مع `@iroha/iroha-js/kotodama-compiler` ؛ لا يتم عرض بناء معاملات الاحتفاذ الأصلية المباشرة حاليًا من قبل JavaScript SDK. انظر [ الاحتفاظ بالأصول الطبيعية](/ar/blockchain/escrow.md#javascript-and-typescript-kotodama) لمثال استدعاء مضيف الاحتفاض.
+يمكن أن تستخدم تطبيقات JavaScript و TypeScript الاحتفاظ الأصلي من خلال عقود Kotodama. قم بتجميع مكالمات استضافة الاحتفاض مع `@iroha/iroha-js/kotodama-compiler`; الاحتفاذ الأصلي المباشر لا يتعرض بناء المعاملات حاليًا لخطر JavaScript SDK. انظر [ الاحتفاظ بالأصول الأصلية ](/ar/blockchain/escrow.md#javascript-and-typescript-kotodama) لمثال استدعاء المضيف الاحتفاضي.
 
 ## التغطية الحالية {#current-coverage}
 
@@ -96,8 +98,8 @@ SDK يركز على:
 - Kotodama التجميع، بما في ذلك مدخلات دعوة استضافة الاحتفاظ بها
 - إد 25519 توقيع وتوليد المفاتيح
 - المساعدون في تصفية الصفحات وإعادة المحاولة
-- قم بتوصيل مساعدات تشغيل المتصفح
-- إعداد كاغيموشا ومكملاتها وإفراجها ومساعدات النقل في حالة تشغيل
+- قم بتوصيل مساعدات تشغيل المتصفح .
+- إعداد كاغيموشا ومكملاتها وإفراجها ومساعدات النقل في حالة تشغيلها
 
 ## الإشارات المتقدمة {#upstream-references}
 

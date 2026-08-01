@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: feddadb1b50c5cc8beea188fd7053eeaae58d6ab9203687e9a1378f203229168
+translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -22,7 +22,7 @@ npm run build:native
 npm run build:dist
 ```
 
-የተፈጥሮ መገንባት `cargo build -p iroha_js_host` ይሸፍናል እና በ SDK ጅምር ላይ ጥቅም ላይ የዋለውን የመሣሪያ ስርዓት-ተኮር ቼክ አኃዝ ይመዘግባል። ምንጭው አስተናጋጅ በ `native/` ውስጥ ያረጋገጡትን ቦታዎች ይገነባል ። በተለየ መንገድ የተሰራ ፣ ቼክስ አሃዝ-የተረጋገጠ አስተናጋጁ ሲሰጥ ብቻ `IROHA_JS_NATIVE_DIR` ያዘጋጁ። ማሸጊያው ESM ብቻ ነው; ከ CommonJS, ተለዋዋጭ መጠቀም `import()`.
+የተፈጥሮ መገንባት `cargo build -p iroha_js_host` ይሸፍናል እና በ SDK ጅምር ላይ ጥቅም ላይ የዋለውን የመሣሪያ ስርዓት-ተኮር ቼክ አኃዝ ይመዘግባል። ምንጭ መገንባት በ `native/` ውስጥ አስተናጋጅ ያረጋገጡ ቦታዎችን ያስቀምጣል ። `IROHA_JS_NATIVE_DIR` በግለሰብ ደረጃ የተገነባ ፣ የቁጥር መጠን-የተረጋገጠ አስተናጋጅ ሆን ተብሎ በሚሰጥበት ጊዜ ብቻ ያዘጋጁ። ጥቅሉ ESM - ብቻ ነው; ከ CommonJS ጀምሮ ተለዋዋጭ `import()` ይጠቀሙ።
 
 ## ፈጣን ጅምር {#quickstart}
 
@@ -45,7 +45,9 @@ console.log(keys.publicKey);
 ```js
 const root = "https://taira.sora.org";
 
-const status = await fetch(`${root}/status`).then((res) => res.json());
+const status = await fetch(`${root}/status`, {
+  headers: { Accept: "application/json" },
+}).then((res) => res.json());
 console.log({
   blocks: status.blocks,
   queueSize: status.queue_size,

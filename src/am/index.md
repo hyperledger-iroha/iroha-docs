@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /index.md
-translation_source_hash: 505e8224a59534717045c34b1bf796760d06f9d6808a2a1fd9773aa2f6a00c2d
+translation_source_hash: 3b2ad4ee285a821b56c9cf6fd3f4a8431f1cfa478e88082b45788765d68ed833
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 
@@ -18,6 +18,28 @@ hero:
   #- theme: alt
   #  text: View on GitHub
   #  link: https://github.com/hyperledger-iroha/iroha
+
+nexusPortal:
+  eyebrow: SORA Nexus
+  title: "Iroha 3 / SORA Nexus ላይ መገንባት"
+  details: "በ Taira የሙከራ አውታረመረብ ላይ ይጀምሩ ፣ የአሁኑን የግብይት ፍሰት ይወቁ እና ለማምረት ዝግጁ የሆኑ መተግበሪያዎችን ለመገንባት ዒላማ የተደረጉ የምግብ አዘገጃጀት መመሪያዎችን ይጠቀሙ ።"
+  primaryAction:
+    text: "Taira ላይ ይጀምሩ"
+    link: /am/get-started/sora-nexus-dataspaces
+  secondaryAction:
+    text: "የምግብ አዘገጃጀት መመሪያ"
+    link: /am/cookbook/
+  recipes:
+    title: "ታዋቂ የምግብ አዘገጃጀት መመሪያዎች"
+    items:
+      - title: "አንድ ግብይት ማቅረብ እና ማረጋገጥ"
+        link: /am/cookbook/submit-and-verify-transactions
+      - title: "ተንቀሳቃሽ ንብረቶችን ማስተላለፍ"
+        link: /am/cookbook/fungible-assets
+      - title: "መጠይቅ መቁጠሪያ ሁኔታ"
+        link: /am/cookbook/query-ledger-state
+      - title: "የዥረት ክስተቶች"
+        link: /am/cookbook/stream-events
 
 features:
   - icon:
@@ -44,16 +66,8 @@ features:
     title: "ማጣቀሻ"
     details: "የአሁኑን የሁለትዮሽ ፣ የመነሻ ፣ Torii እና ተኳሃኝነት ማጣቀሻ ገጾችን ያንብቡ"
     link: /am/reference/
-  # - title: Cookbook # (TBA)
-
 footer: true
 ---
-
-<section class="nexus-build" aria-labelledby="nexus-build-title">
-<a class="nexus-build__panel" href="./get-started/sora-nexus-dataspaces.html">
-    <span class="nexus-buildcopy"> <span class="nexus-buildeyebrow">SORA Nexus</span> <span id="nexus-build-title" class="nexus-buildtitle">ይቀጥሉ Iroha 3 / SORA Nexus</span> <span class="nexus-builddetails">ይቀጥሉ SORA 3 ጋር Taira የሙከራ መረብ፣ Minamoto አሁን መሞከር የሚችሉት ዋነኛ እና ኮፒ-ፓስት ምሳሌዎች ናቸው.</span> </span> <span class="nexus-build__action">ክፍት መመሪያ <span aria-hidden="true">-&gt;</span></span>
-</a>
-</section>
 
 <hr style="margin-top: 3rem;">
 <p style="font-weight: 200; font-size: 0.875rem;">Hyperledger Iroha አካል ነው <a href="https://www.lfdecentralizedtrust.org/projects/tag/ledger-technology" target="_blank">LF Decentralized Trust</a>. ተጨማሪ መረጃ ለማግኘት <a href="https://iroha.tech/" target="_blank">iroha.tech</a>.</p>

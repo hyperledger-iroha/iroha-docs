@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 63c317ab61ba912176c43c83d5b4f026f23a7a6e5fb633872a133c9ea1295686
+translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -37,6 +37,20 @@ SORA 3 اے پی پی کی طرف متوجہ عوامی تعیناتی ٹریک 
 3. Taira کے خلاف آپ کی ایپ منطق کا استعمال کریں جب تک کہ ناکامی بورنگ اور مشاہدہ نہیں ہوتی۔
 4. ایک علیحدہ Minamoto دستخط کنندہ بنائیں، اسے اصلی XOR کے ساتھ فنڈ کریں، اور صرف وہی ثابت شدہ آپریشنز کو مین نیٹ پر منتقل کریں۔
 
+## کھانا پکانے کی کتاب کے ساتھ جاری رکھیں {#continue-with-the-cookbook}
+
+اس گائیڈ کا استعمال نیٹ ورک کا انتخاب کرنے ، دستخط کرنے والے کو ترتیب دینے اور فنڈز کی فیسوں کے لئے کریں۔ پھر اس ہدایت نامے کے ساتھ آگے بڑھیں جو درخواست کے رویے سے ملتا ہے جسے آپ بنانا چاہتے ہیں:
+
+|مقصد |نسخہ|
+| --- | --- |
+|Taira چیک کریں اور ایک کلائنٹ ترتیب دیں | [Taira](/ur/cookbook/connect-to-taira.md) سے رابطہ کریں|
+|پہلے ایک تحریر بھیجیں اور اس کے نتائج کی تصدیق کریں | [ٹرانزیکشنز جمع کروائیں اور تصدیق کریں ](/ur/cookbook/submit-and-verify-transactions.md) |
+|رجسٹر، مینٹ، اور منتقل قیمت | [فنگبل اثاثہ جات](/ur/cookbook/fungible-assets.md) |
+|فلٹر شدہ درخواست کی حالت پڑھیں۔ | [Query Ledger State](/ur/cookbook/query-ledger-state.md) |
+|متفقہ تبدیلیوں پر رد عمل ظاہر کرنا | [سٹریم واقعات](/ur/cookbook/stream-events.md) |
+
+باورچی خانے کی کتاب ہر کام کے بہاؤ کو توجہ مرکوز کرتی ہے اور جب اسے Taira فنڈنگ یا SORA Nexus نیٹ ورک کے تناظر کی ضرورت ہوتی ہے تو یہاں واپس لنکس دیتی ہے۔
+
 ## ۱۔ سمجھیں کہ آپ کیا کر رہے ہیں {#_1-understand-what-you-are-setting-up}
 
 SORA Nexus میں ، ڈیٹا اسپیس نیٹ ورک لین اور روٹنگ کیٹلاگ کا حصہ ہے۔ ایک کلائنٹ صرف `client.toml` کو تبدیل کرکے نیا عوامی ڈیٹا اسپیس نہیں بناتا ہے۔ کلائنٹ سیٹ اپ دو چیزیں کرتا ہے: -
@@ -60,6 +74,7 @@ Taira کے لئے:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -67,6 +82,7 @@ Minamoto کے لئے:
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -74,6 +90,7 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
@@ -94,6 +111,7 @@ Taira ایجنٹ کے رن ٹائمز کے لئے Torii - مقامی ماڈل ک
 
 ```bash
 curl -fsS https://taira.sora.org/v1/mcp \
+  -H 'Accept: application/json' \
   | jq '{protocolVersion, server: .serverInfo.name, tools: .capabilities.tools.count}'
 ```
 
@@ -131,15 +149,15 @@ say "submit this transaction".
 
 ### ایجنٹوں کے ذریعے لین دین کا ورک فلو {#transaction-workflow-through-agents}
 
-MCP پل ایک دستخط شدہ Iroha ٹرانزیکشن جمع کروا سکتا ہے ، لیکن یہ معمول کے لین دین کی ضروریات کو ختم نہیں کرتا ہے۔ ایک لین دین کو ابھی بھی صحیح اتھارٹی ، اجازتوں ، فیس فنڈنگ ، سلسلہ ID ، میٹا ڈیٹا اور دستخط کی ضرورت ہے۔
+MCP پل ایک دستخط شدہ Iroha ٹرانزیکشن جمع کروا سکتا ہے ، لیکن یہ معمول کے لین دین کی ضروریات کو ختم نہیں کرتا ہے۔ ایک لین دین کو ابھی بھی صحیح اتھارٹی ، اجازت ، فیس فنڈنگ ، چین ID ، میٹا ڈیٹا اور دستخط کی ضرورت ہوتی ہے۔
 
-خام Iroha ٹرانزیکشنز کے لئے، ٹرانزیکtion envelope کو پہلے SDK یا CLI کے ساتھ بنائیں اور اس پر دستخط کریں، پھر ایجنٹ کو صرف `body_base64` کے طور پر انکوڈ کردہ کینونیکل دستخط شدہ ٹرانزیکشنل بائٹس دیں. ایجنٹ `iroha.transactions.submit_and_wait` کے ساتھ لفافہ جمع کروا سکتا ہے، یا `iroha.transactions.submit` کے ساتھ جمع کروا سکتے ہیں اور `iroha.transactions.wait` کے ساتھ سروے کرسکتے ہیں۔
+خام کے لئے Iroha ٹرانزیکشنز، تعمیر اور ایک کے ساتھ ٹرانزیکtion envelope دستخط SDK یا CLI سب سے پہلے، پھر ایجنٹ کو صرف canonical دستخط شدہ ٹرانزیکشن بائٹس کوڈ کے طور پر دیں `body_base64`. ایجنٹ کو لفافہ جمع کروا سکتے ہیں `iroha.transactions.submit_and_wait`, یا جمع کروائیں `iroha.transactions.submit` اور سروے `iroha.transactions.wait`.
 
-ایجنٹ پرامپٹ میں نجی چابیاں پیسٹ نہ کریں۔ اگر کسی ایجنٹ کو ٹرانزیکشن بنانے کی ضرورت ہو تو ، اسے مقامی کوڈ کی طرف اشارہ کریں جو صارف کے رن ٹائم ماحول ، کلیدی چین ، ہارڈ ویئر دستخط کرنے والے یا نظرانداز شدہ ٹیسٹ نیٹ کنفیگریشن فائل سے راز بھری ہوئی ہو۔ ایجنٹ کو کبھی بھی اہم مواد کو مارک ڈاؤن میں لکھنا نہیں چاہئے، فکسچر، logs، یا commits.
+ایک ایجنٹ پرامپٹ میں نجی چابیاں پیسٹ نہ کریں۔ اگر کسی ایجنٹ کو ٹرانزیکشن بنانے کی ضرورت ہو تو ، اسے مقامی کوڈ کی طرف اشارہ کریں جو صارف کے رن ٹائم سے راز بھری ہوئی ہے۔ ایجنٹ کو کبھی بھی کلیدی مواد کو مارک ڈاؤن ، فکسچرز ، لاگس یا کمیٹس میں نہیں لکھنا چاہئے۔
 
 ٹرانزیکشن جمع کروانے سے پہلے، ایجنٹ کو ایک مختصر ٹرانزیکtion پلان تیار کرنے کے لئے کہیں:
 
-- `network`: Taira ٹیسٹ نیٹ ورک جڑ اور سلسلہ ID
+- `network`: Taira ٹیسٹ نیٹ ورک جڑ اور سلسلہ ID۔
 - `authority`: اکاؤنٹ جس پر دستخط کیے جائیں اور فیس ادا کی جائیں
 - `instructions`: رجسٹر، مینٹ، برن، ٹرانسفر، میٹا ڈیٹا، اجازت یا معاہدہ کال کا خلاصہ۔
 - `fee asset`: اثاثہ جو Taira سے چارج کیا جائے گا
@@ -188,6 +206,7 @@ for network in taira minamoto; do
   root="https://$network.sora.org"
   printf '\n%s\n' "$network"
   curl -fsS "$root/status" \
+    -H 'Accept: application/json' \
     | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 done
 ```
@@ -196,6 +215,7 @@ Taira کے ذریعہ پبلک ڈیٹا اسپیس لینز کی فہرست بن
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -205,6 +225,7 @@ Minamoto کے خلاف ایک ہی کمانڈ چلائیں جب آپ کو مین
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -220,7 +241,9 @@ const roots = {
 };
 
 for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`).then((res) => res.json());
+  const status = await fetch(`${root}/status`, {
+    headers: { Accept: 'application/json' },
+  }).then((res) => res.json());
   const publicSpaces = status.teu_lane_commit
     .filter((lane) => lane.visibility === 'public')
     .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
@@ -286,7 +309,7 @@ iroha --config ./taira.client.toml taira write-canary \
   --json
 ```
 
-کینری ایک دستخط شدہ پینگ جمع کراتا ہے ، تصدیق کا انتظار کرتا ہے ، اور جب `--write-config` فراہم کیا جاتا ہے تو رن ٹائم سائنگر ترتیب لکھتا ہے۔ Taira ایک عوامی ٹیسٹ نیٹ ورک ہے ، لہذا قطار کی سیر ہونے سے یہاں تک کہ نل خود کام کرتے وقت بھی دستخط شدہ پنگ ناکام ہوجاتا ہے۔ اگر `taira doctor` ایک بھرپور قطار کی اطلاع دیتا ہے یا کینری `PRTRY:NEXUS_FEE_ADMISSION_REJECTED` لوٹاتا ہے، تو انتظار کریں اور اسے کلائنٹ ترتیب غلطی کے طور پر علاج کرنے سے پہلے دوبارہ کوشش کریں.
+کینری ایک دستخط شدہ پنگ بھیجتا ہے، تصدیق کا انتظار کرتا ہے، اور رن ٹائم دستخط کنفیگریشن لکھتا ہے `--write-config` فراہم کی جاتی ہے۔ Taira ایک عوامی ٹیسٹ نیٹ ورک ہے، لہذا قطار کے saturation دستخط شدہ پنگ ناکام ہو سکتا ہے یہاں تک کہ جب نل خود کام کرتا ہے. اگر `taira doctor` ایک بھرپور قطار یا کینری کی واپسی کی اطلاع دیتا ہے `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`, انتظار کریں اور اسے کلائنٹ ترتیب کی خرابی کے طور پر علاج کرنے سے پہلے دوبارہ کوشش کریں۔
 
 بے نگرانی دھواں ٹیسٹ کے لئے، کینری کو ایک محدود دوبارہ آزمائشی لوپ میں لفافہ کریں:
 
@@ -328,7 +351,7 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-جب بھی Nexus API یا CLI کمانڈ کینیکل اکاؤنٹ ID کے لئے پوچھتا ہے تو اس سے حاصل ہونے والا اکاؤنٹ ID استعمال کریں، مثال کے طور پر Taira نل `account_id` ، بیلنس سوالات، سخت اکاؤنٹ فیلڈز، یا عرف پابندیاں۔ اپنے کلائنٹ کی ترتیب میں مماثل نجی کلید رکھیں، اور `[account].profile = "taira"` یا `[account].profile = "minamoto"` کے ساتھ ایک ہی عوامی نیٹ ورک کا انتخاب کریں۔
+حاصل کردہ اکاؤنٹ کا استعمال کریں ID جہاں بھی ایک Nexus API یا CLI کمانڈ ایک کینونیکل اکاؤنٹ کے لئے پوچھتا ہے ID, مثلاً Taira نل `account_id`, توازن کے سوالات ، سخت اکاؤنٹ فیلڈز ، یا عرفی پابندیاں۔ ملاپ کو برقرار رکھیں آپ کے کلائنٹ کی ترتیب میں نجی کلید، اور منتخب کریں ایک ہی عوامی نیٹ ورک کے ساتھ `[account].profile = "taira"` یا `[account].profile = "minamoto"`.
 
 ID پیدا کرنے سے خود میں فنڈ آن لائن اکاؤنٹ نہیں بنتا ہے۔ Taira پر ، نل ٹیسٹ نیٹ لکھنے کے لئے اکاؤنٹ تشکیل دے سکتا ہے اور اسے فنڈ کرسکتا ہے۔ Minamoto پر ، ایک منظور شدہ مین نیٹ بورڈنگ یا خزانہ کے بہاؤ کا استعمال کریں۔
 
@@ -363,10 +386,12 @@ SORA Nexus اکاؤنٹس کے لئے ان طریقوں کا استعمال کر
 iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 ```
 
-پازل لے لو:
+پہیلی لانا:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
+curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
+  -H 'Accept: application/json' \
+  | jq .
 ```
 
 نل ایک عوامی ٹیسٹ نیٹ سروس ہے۔ اگر پہیلی یا دعویٰ اختتامی نقطہ `502` ، ٹائم آؤٹ ، یا گیٹ وے کی سطح کی کسی اور غلطی کو واپس کرتا ہے تو ، اپنی چابیاں یا کلائنٹ ترتیب تبدیل کرنے سے پہلے انتظار کریں اور دوبارہ کوشش کریں۔
@@ -391,23 +416,29 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
-  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}'
+  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
 جب `difficulty_bits` `0` سے زیادہ ہو تو، پہیلی کو حل کریں اور لنگر کی اونچائی کے علاوہ nonce شامل کریں:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
   -d '{
     "account_id": "<TAIRA_I105_ACCOUNT_ID>",
     "pow_anchor_height": 741,
     "pow_nonce_hex": "<NONCE_HEX>"
-  }'
+  }' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
-پہیلی الگورتھم ہے:
+پہیلی الگورتھم یہ ہے:
 
 1. چیلنج کو SHA-256 کے طور پر تعمیر کریں:
    - `iroha:accounts:faucet:pow:v2` کے بائٹس
@@ -415,7 +446,7 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet \
    - `anchor_height` کے طور پر big-endian `u64`
    - `anchor_block_hash_hex` بائٹس کے طور پر ڈیکوڈ
    - `challenge_salt_hex` جب موجود ہو تو بائٹس کے طور پر ڈیکوڈ کریں
-2. `u64` nonces کوڈ big-endian 8 بائٹ اقدار کے طور پر کوشش کریں.
+2. `u64` nonces کوڈ بڑے اینڈین 8 بائٹ اقدار کے طور پر کوشش کریں.
 3. ہر نونس کے لئے، اسکرپٹ کے ساتھ چلائیں:
    - پاس ورڈ: 8 بائٹ نونس
    - نمک: 32 بائٹ چیلنج
@@ -430,21 +461,25 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet \
 ```json
 {
   "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-  "asset_definition_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
+  "asset_definition_id": "<TAIRA_FEE_ASSET_DEFINITION_ID>",
   "asset_id": "...",
-  "amount": "25000",
+  "amount": "<FUNDED_AMOUNT>",
   "tx_hash_hex": "...",
   "status": "QUEUED"
 }
 ```
 
-فی الحال جواب HTTP `202 Accepted` کے ساتھ واپس کیا جاتا ہے۔ اوپر کی اثاثہ تعریف ID عوامی نل سے مالی اعانت حاصل کرنے والے Taira فیس اثاثہ ہے. نل نے درخواست کو قبول کرلیا ہے جب وہ `tx_hash_hex` اور `status: "QUEUED"` واپس کرتا ہے۔
+جواب فی الحال واپس کیا جاتا ہے HTTP `202 Accepted`. اس کا `asset_definition_id` موجودہ ہے Taira عوامی نل کی طرف سے فنڈ کردہ فیس اثاثہ؛ ایک مثال کاپی کرنے کے بجائے جواب سے اخذ کریں. ID. نل نے درخواست قبول کر لی ہے جب وہ واپس آئے `tx_hash_hex` اور `status: "QUEUED"`.
 
 پھر اپنی فیس ادا کرنے والی ٹرانزیکشنز جمع کروانے سے پہلے فنڈ شدہ اثاثے کے لئے سروے کریں:
 
 ```bash
+TAIRA_FEE_ASSET_DEFINITION=$(
+  jq -er '.asset_definition_id' ./taira-faucet-response.json
+)
+
 iroha --config ./taira.client.toml ledger asset get \
-  --definition 6TEAJqbb8oEPmLncoNiMRbLEK6tw \
+  --definition "$TAIRA_FEE_ASSET_DEFINITION" \
   --account <TAIRA_I105_ACCOUNT_ID>
 ```
 
@@ -470,7 +505,12 @@ def has_leading_zero_bits(digest: bytes, bits: int) -> bool:
 root = "https://taira.sora.org"
 account_id = sys.argv[1]
 
-with urllib.request.urlopen(f"{root}/v1/accounts/faucet/puzzle") as res:
+puzzle_request = urllib.request.Request(
+    f"{root}/v1/accounts/faucet/puzzle",
+    headers={"Accept": "application/json"},
+)
+
+with urllib.request.urlopen(puzzle_request) as res:
     puzzle = json.load(res)
 
 claim = {"account_id": account_id}
@@ -503,7 +543,7 @@ if difficulty > 0:
 request = urllib.request.Request(
     f"{root}/v1/accounts/faucet",
     data=json.dumps(claim).encode(),
-    headers={"content-type": "application/json"},
+    headers={"Accept": "application/json", "content-type": "application/json"},
     method="POST",
 )
 
@@ -599,7 +639,7 @@ alice@apps.universal
 alice@universal
 ```
 
-سخت اکاؤنٹ فیلڈز اب بھی کینونیکل I105 اکاؤنٹ IDs کا استعمال کرتے ہیں۔ عرفی ناموں کو انسانی طور پر پڑھنے کے قابل پابندیاں سمجھیں جو کینونیکل اکاؤنٹ IDs میں حل ہوتی ہیں۔
+سخت اکاؤنٹ فیلڈز اب بھی کینونیکل I105 اکاؤنٹ IDs کا استعمال کرتے ہیں۔ عرفی ناموں کو انسانی پڑھنے کے قابل پابندیاں سمجھیں جو کینونیکل اکاؤنٹ IDs پر حل ہوجاتی ہیں۔
 
 ## 8۔ نیا ڈیٹا اسپیس فراہم کرنا {#_8-provision-a-new-dataspace}
 
@@ -609,6 +649,7 @@ alice@universal
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
@@ -664,6 +705,7 @@ description = "Route payments domains to the payments dataspace"
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | select(.dataspace_alias == "payments")'
 ```
 

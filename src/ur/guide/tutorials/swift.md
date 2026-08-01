@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: 85cc94399b9892984615bf8a0821a1f30395eb87ec164592ca98fbd9903ef834
+translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -43,7 +43,7 @@ make bridge-xcframework
 
 ## CocoaPods {#cocoapods}
 
-کوڈ بیس میں بھی شامل ہے `IrohaSwift/IrohaSwift.podspec`. یہ اعلان کرتا ہے کہ `IrohaSwift` پوڈ، Swift 5.9، اور iOS 15. پوڈ سپیک کھینچتا ہے Swift مرکزی مخزن سے ذرائع؛ مقامی پل اب بھی موجود ہونا ضروری ہے اور ٹرانزیکشن کوڈنگ کے لئے منسلک کیا جانا چاہئے، غیر ایڈی25519 دستخط، اور کنیکٹ کرپٹو.
+کوڈ بیس میں بھی شامل ہے `IrohaSwift/IrohaSwift.podspec`. یہ اعلان کرتا ہے کہ `IrohaSwift` پوڈ، Swift 5.9، اور iOS 15. پوڈ سپیک کھینچتا ہے Swift مرکزی ذخیرہ سے ذرائع؛ مقامی پل اب بھی موجود ہونا ضروری ہے اور ٹرانزیکشن کوڈنگ کے لئے منسلک، غیر ایڈی25519 دستخط، اور کنیکٹ کرپٹو.
 
 ## فوری آغاز {#quickstart}
 
@@ -72,7 +72,9 @@ import Foundation
 
 if #available(iOS 15.0, macOS 12.0, *) {
     let url = URL(string: "https://taira.sora.org/status")!
-    let (data, response) = try await URLSession.shared.data(from: url)
+    var request = URLRequest(url: url)
+    request.setValue("application/json", forHTTPHeaderField: "Accept")
+    let (data, response) = try await URLSession.shared.data(for: request)
 
     if let http = response as? HTTPURLResponse {
         print("status:", http.statusCode)

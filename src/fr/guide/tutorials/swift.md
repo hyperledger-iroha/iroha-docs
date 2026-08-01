@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: 85cc94399b9892984615bf8a0821a1f30395eb87ec164592ca98fbd9903ef834
+translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -43,7 +43,7 @@ Il en résulte `dist/NoritoBridge.xcframework`; `IrohaSwift/Package.swift` le re
 
 ## CocoaPods {#cocoapods}
 
-La base de code contient également: `IrohaSwift/IrohaSwift.podspec`. Il déclare que le `IrohaSwift` une capsule, Swift 5.9 et iOS 15. Le podspec tire Swift les sources provenant du référentiel principal; le pont natif doit toujours être présent et lié pour le codage des transactions, non-édition25519 signature, et connecte crypto.
+La base de code contient également: `IrohaSwift/IrohaSwift.podspec`. Il déclare que le `IrohaSwift` une capsule, Swift 5.9 et iOS 15. Le podspec tire Swift sources du référentiel principal; le pont d'origine doit toujours être présent et liés pour le codage des transactions, la signature non-Ed25519 et Connect crypto.
 
 ## Démarrage rapide {#quickstart}
 
@@ -72,7 +72,9 @@ import Foundation
 
 if #available(iOS 15.0, macOS 12.0, *) {
     let url = URL(string: "https://taira.sora.org/status")!
-    let (data, response) = try await URLSession.shared.data(from: url)
+    var request = URLRequest(url: url)
+    request.setValue("application/json", forHTTPHeaderField: "Accept")
+    let (data, response) = try await URLSession.shared.data(for: request)
 
     if let http = response as? HTTPURLResponse {
         print("status:", http.statusCode)
@@ -123,7 +125,7 @@ let pqSdk = IrohaSDK(
 let signingKey = try pqSdk.generateSigningKey()
 ```
 
-Les États membres `SigningAlgorithm` enum comprend actuellement l'édition 25519, secp256k1, BLS les variantes normales et petites, ML-DSA, GOST R 34.10-2012 ensembles de paramètres, et SM2. Le support du pont natif est requis en dehors de la voie de commodité Ed25519.
+L'enum `SigningAlgorithm` comprend actuellement Ed25519, secp256k1, normal BLS et de petites variantes, ML-DSA, GOST R 34.10-2012 ensembles de paramètres, et SM2. Le support du pont natif est requis en dehors de la voie de commodité Ed25519.
 
 ## Connectez {#connect}
 

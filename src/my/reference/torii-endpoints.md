@@ -1,9 +1,9 @@
 ---
 translation_locale: my
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: 9bec41b1b419e252fdcff8328e7950a294bdad3ac40112a5a7f2ce451d19e9cb
+translation_source_hash: c23170b2949bae9c9483ecbee6f0c09fea503904ae93934aef56537ddd13c42d
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2
 ---
 
 # Torii အဆုံးသတ်ချက်များ {#torii-endpoints}
@@ -12,7 +12,7 @@ Torii အဲဒါက HTTP, SSE, နှင့် WebSocket ဂိတ်တံခ
 
 လက်ရှိ စည်းမျဉ်းစည်းကမ်းများမှာ-
 
-- ဘိုင်နရီပုံစံက Norito ပါ။
+- Canonical binary format သည် Norito ဖြစ်သည်။
 - အဆုံးအဖြတ်များစွာကလည်း ထောက်ခံတယ်။ JSON ပေးပို့တဲ့အခါ `Accept: application/json`
 - metrics တွေကို Prometheus format မှာ ဖော်ပြထားပါတယ်
 
@@ -22,34 +22,43 @@ Torii အဲဒါက HTTP, SSE, နှင့် WebSocket ဂိတ်တံခ
 
 |အဆုံးသတ်ချက် |Format ကို |ရည်ရွယ်ချက်|
 | --- | --- | --- |
-|`POST /transaction` |Norito |လက်မှတ်ရေးထိုးထားတဲ့ ငွေပေးချေမှု တင်ပြပါ|
-|`POST /query` |Norito |လက်မှတ်ထိုးသော မေးမြန်းချက်ကို တင်ပြပါ |
-|`GET /events` |WebSocket |Event streams ကို subscribe လုပ်ပါ |
-|`GET /block/stream` |WebSocket |ချုပ်ဆိုထားသော ဘလော့များ Stream |
-|`GET /peers` |JSON |Torii မှ ထုတ်ပြန်ထားသော အဖော်စာရင်း |
-|`GET /health` |JSON |ပေါ့ပါးတဲ့ သက်တောင့်သက်သာ အဆုံးသတ်ချက် |
-|`GET /api_version` |JSON |Default API ဗားရှင်း |
-|`GET /status` |JSON |လုပ်ငန်းရှင်များအတွက် အဆင့်မြင့် အခြေအနေ အကျဉ်းချုပ် |
+|`POST /v1/pipeline/transactions` |Norito |လက်မှတ်ရေးထိုးထားတဲ့ ငွေပေးချေမှု တင်ပြပါ|
+|`POST /v1/query` |Norito |လက်မှတ်ထိုးသော မေးမြန်းချက်ကို တင်ပြပါ |
+|`GET /v1/events/ws` |WebSocket |Event streams ကို subscribe လုပ်ပါ |
+|`GET /v1/events/sse` |SSE |SSE ကျော် Event Streams ကို Subscribe လုပ်ပါ။ |
+|`GET /v1/blocks/stream` |WebSocket |ချုပ်ဆိုထားသော ဘလော့များ Stream |
+|`GET /v1/peers` |JSON |Torii မှ ထုတ်ပြန်ထားသော အချိုးအစားစာရင်း|
+|`GET /livez` |စာသား|လုပ်ငန်းစဉ်တစ်ခုတည်းသော သက်ရှိစွမ်းဆောင်ရည်၊ ပရိုတိုကောလက်လျှာက်မှု မဆိုလိုပါ။ |
+|`GET /readyz` |JSON |offline cash checks အပါအဝင် node အသင့်ရှိမှုပြည့်စုံခြင်း |
+|`GET /health` |JSON |ပြင်ဆင်မှု စွန်ဒါနဲ့အတူတူ offline-cash invariant ကို |
+|`GET /v1/api/version` |စာသား|လက်ရှိ Block Header ဗားရှင်းများ |
+|`GET /status` |Norito သို့မဟုတ် JSON |အဆင့်မြင့် ရောဂါစစ်ဆေးမှုအခြေအနေ၊ JSON ကို ရှင်းလင်းစွာ တောင်းဆိုခြင်း |
 |`GET /metrics` |Prometheus |Prometheus scrape အဆုံးမှတ် |
-|`GET /schema` |JSON |ဒေတာပုံစံ schema snapshot ကို node က serve လုပ်ပေး |
+|`GET /v1/schema` |JSON |Data-model schema snapshot ကို node က activated လုပ်တဲ့အခါမှာ ပြသပေးပါတယ်။ |
 |`GET /openapi` သို့မဟုတ် `GET /openapi.json` |JSON | OpenAPI တက်ကြွမှုအတွက် စာရွက်စာတမ်း Torii HTTP လမ်းကြောင်းများ |
 |`GET /v1/parameters` |JSON |Node Parameters snapshot ကို ရိုက်ယူပါ|
 |`GET /v1/node/capabilities` |JSON |Node အရည်အသွေးနှင့် ဒေတာပုံစံ metadata များ |
-|`GET /v1/api/versions` |JSON |ထောက်ခံထားသော Torii API ဗားရှင်းများ |
-|`GET /v1/events/sse` |SSE |ရှည်လျားသော ဖောက်သည်များအတွက် Event Stream |
 |`GET /v1/time/now` |JSON |Node နံရံနာရီ snapshot ကို |
 |`GET /v1/time/status` |JSON |အချိန်ပေါင်းစပ်မှုအခြေအနေ |
 
-`/openapi` သည် Running Node အတွက် အတည်ပြုသည့် Endpoint စာရင်းဖြစ်သည်။ တိကျသော မျက်နှာပြင်သည် build features နှင့် runtime ဖွဲ့စည်းမှုအပေါ် မူတည်သည်။ ထို့ကြောင့်ထုတ်လုပ်ထားသော client များသည် လက်ဖြင့်ကူးယူထားသော route စာရင်းထက် live OpenAPI စာရွက်စာတမ်းကိုသာ ဦးစားပေးသင့်ပါသည်။ [Torii API ကွန်စောလ် ](/my/reference/torii-api-console.md) ကို အသုံးပြုပြီး သက်ရှိစာရွက်စာတမ်းကို ထည့်သွင်းရန်၊ JSON လမ်းကြောင်းများကို စစ်ဆေးရန်၊ curl တောင်းဆိုချက်များကို ကူးယူရန်နှင့် လက်ရှိ အစီအစဉ်မှ ဖောက်သည်ကုဒ်ကို ထုတ်လုပ်ရန်။
+SSE တောင်းဆိုချက်အတွက် ဒေသခံစီးကြောင်းကို ထပ်မံရိုက်ထည့်လိုက်တဲ့ ကျော့ပြန်မှုတစ်ခုနဲ့ ကြော်ငြာပါ။
+
+```http
+Accept: text/event-stream, application/json
+```
+
+Torii သည် ပထမဦးဆုံးအားဖြင့် JSON သို့မဟုတ် Norito ကိုယ်စားပြုချက်ကို တောင်းဆိုမှုလွှာတွင် ညှိနှိုင်းပြီးနောက် ဒေသခံ `text/event-stream` တုံ့ပြန်မှုကို အတည်ပြုသည်။ ထို့ကြောင့် `text/event-stream` ကိုသာ ပို့ခြင်းသည် `406` ဖြင့် ပယ်ချခံရသည်။ [ စီးမျောမှုဖြစ်စဉ်နည်းလမ်း ](/my/cookbook/stream-events.md) တွင်အပြည့်အစုံသော ခေါင်းစီးကို အသုံးပြုသည်။
+
+`/openapi` အစီအစဉ်မှာ ဖော်ပြထားတဲ့ လမ်းကြောင်းတွေအတွက် အဓိကထုတ်လုပ်တဲ့ စာချုပ်ပါ။ လက်ရှိစာရွက်စာတမ်းမှာ အပြည့်အဝ လုပ်ဆောင်မှု စူးစမ်းစစ်ဆေးရေး စာရင်းမရှိပါဘူး။ `/livez` နှင့် `/readyz`, ၎င်း၏ `/health` သရုပ်ဖော်ချက်က အသင့်ရှိမှု စီမံခန့်ခွဲရေးကို နောက်ကျသွားနိုင်သည်။ တိုက်ရိုက်စာရွက်စာတမ်းမှ လမ်းကြောင်းဖောက်သည်များကို ဖန်တီးပါ။ ဒါပေမဲ့ တက်ကြွမှုနဲ့ အသင့်ရှိမှုကို ပြေးနေတဲ့ node နဲ့ ပိတ်ထားတဲ့ handle တွေနဲ့ တိုက်ရိုက် အတည်ပြုပါ။ တိကျတဲ့ မျက်နှာပြင်က build features နဲ့ runtime configuration တွေအပေါ် မူတည်နေဆဲပါ။ [Torii API console ကို](/my/reference/torii-api-console.md) ဒီလက်ရှိစာရွက်စာတမ်းကို တင်ဖို့ စမ်းသပ်ပါ။ JSON လမ်းကြောင်းများ၊ ပုံတူ curl request တွေကို လုပ်ပြီး လက်ရှိ schema ကနေ client code ကို ထုတ်ပေးပါ။
 
 ## Taira တိုက်ရိုက်လမ်းကြောင်းတွေကို စမ်းကြည့်ပါ။ {#try-live-taira-routes}
 
-အများပြည်သူ Taira testnet သည် application clients များက read-only exploration အတွက် အသုံးပြုသော Torii JSON မျက်နှာပြင်ကိုပဲ ဖေါ်ပြပေးသည်။ ဤ commands များတွင် key များလိုအပ်ခြင်းမရှိပါ။
+အများပြည်သူ Taira testnet သည် application clients များက read-only exploration အတွက် အသုံးပြုသော Torii JSON မျက်နှာပြင်ကိုပဲ ဖော်ပြသည်။ ဤအမိန့်များအတွက် key တွေလိုအပ်ခြင်းမရှိပါ။
 
 ```bash
 TAIRA_ROOT=https://taira.sora.org
 
-curl -fsS "$TAIRA_ROOT/status" \
+curl -fsS -H 'Accept: application/json' "$TAIRA_ROOT/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA_ROOT/openapi.json" \
@@ -57,7 +66,8 @@ curl -fsS "$TAIRA_ROOT/openapi.json" \
   | grep '^/v1/' \
   | head -n 20
 
-curl -fsS "$TAIRA_ROOT/v1/node/capabilities" \
+curl -fsS -H 'Accept: application/json' \
+  "$TAIRA_ROOT/v1/node/capabilities" \
   | jq '{abi_version, data_model_version, query: .query.aggregate.supported_resources}'
 ```
 
@@ -86,22 +96,22 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=5" \
 |`GET /v1/sumeragi/qc` |Norito သို့မဟုတ် JSON |နောက်ဆုံး Quorum-certificate အနှစ်ချုပ်|
 |`GET /v1/sumeragi/checkpoints` |JSON |သဘောတူညီချက် စစ်ဆေးရေးစခန်း အတိုကောက် |
 |`GET /v1/sumeragi/consensus-keys` |JSON |Active Consensus Key များ |
-|`GET /v1/sumeragi/bls_keys` |JSON |Active BLS သဘောတူညီချက် သော့များ |
+|`GET /v1/sumeragi/bls_keys` |JSON |Active BLS သဘောတူညီချက် ခလုတ်များ |
 |`GET /v1/sumeragi/phases` |JSON |နောက်ဆုံးအဆင့်တစ်ခုချင်း latency နမူနာ |
 |`GET /v1/sumeragi/rbc` |JSON |RBC session နဲ့ throughput metrics တွေ|
 |`GET /v1/sumeragi/rbc/sessions` |JSON |တက်ကြွတဲ့ RBC အစည်းအဝေး snapshot |
 |`GET /v1/sumeragi/pacemaker` |JSON |နှလုံးခုန်စက်အခြေအနေ |
-|`GET /v1/sumeragi/params` |JSON |လက်ရှိကွင်းဆက် Sumeragi သတ်မှတ်ချက်များ |
+|`GET /v1/sumeragi/params` |JSON |လက်ရှိ ချိတ်ဆက်ထားသော ပမာဏများ Sumeragi |
 |`GET /v1/sumeragi/collectors` |JSON |Deterministic Collector အစီအစဉ်ရဲ့ snapshot ကို |
 |`GET /v1/sumeragi/key-lifecycle` |JSON |သဘောတူညီချက် အဓိက သက်တမ်း စက်ဝန်း အခြေအနေ |
 |`GET /v1/sumeragi/telemetry` |JSON |Consensus telemetry snapshot ကို ရိုက်ယူပါ|
-|`GET /v1/sumeragi/evidence` |JSON |အတည်ပြုချက် မှတ်တမ်းများ၊ ရွေးချယ်မှုအရ query string ဖြင့် filter လုပ်ထားသည် |
+|`GET /v1/sumeragi/evidence` |JSON |အတည်ပြုချက် မှတ်တမ်းများ၊ ရွေးချယ်မှုအရ မေးမြန်းမှု string ဖြင့် စစ်ဆေး |
 |`GET /v1/sumeragi/evidence/count` |JSON |အထောက်အထား မှတ်တမ်းအရေအတွက်|
 |`POST /v1/sumeragi/evidence/submit` |JSON |သဘောတူညီမှု အထောက်အထားတွေ တင်ပြပါ။|
 |`GET /v1/sumeragi/commit_qc/{hash}` |Norito သို့မဟုတ် JSON |Block hash အတွက် QC မှတ်တမ်းကို commit လုပ်ပါ။ |
 |`GET /v1/runtime/abi/active` |JSON |Active runtime ABI သရုပ်ဖော်ချက် |
 |`GET /v1/runtime/abi/hash` |JSON |Active runtime ABI hash |
-|`GET /v1/runtime/metrics` |JSON |Runtime မက်ထရစ်များ snapshot |
+|`GET /v1/runtime/metrics` |JSON |Runtime မက်ထရစ်များ snapshot ကို |
 |`GET /v1/runtime/upgrades` |JSON |Runtime မြှင့်တင်ခြင်းစာရင်း |
 |`POST /v1/runtime/upgrades/propose` |JSON |Runtime ကို upgrade လုပ်ဖို့ အဆိုပြုပါ |
 |`POST /v1/runtime/upgrades/activate/{id}` |JSON |အဆိုပြုထားတဲ့ runtime upgrade ကို activate လုပ်ပါ။ |
@@ -113,27 +123,27 @@ Torii ကို app-facing feature set ဖြင့်တည်ဆောက်�
 
 |လမ်းကြောင်း မိသားစု |ရည်ရွယ်ချက်|
 | --- | --- |
-|`/v1/accounts/*`, `/v1/domains/*`, `/v1/assets/*`|JSON စာဖတ်သူ၊ မေးမြန်းမှု အကူအညီပေးသူ၊ တင်သွင်းခြင်း အကူအညီ ပေးသူ၊ ပရိုဖိုင် (သို့) ထိန်းသိမ်းသူ အမြင်များ |
-|`/v1/nfts/*`, `/v1/rwas/*`, `/v1/confidential/*`|NFT, ဒိဌလောကဝင်ငွေများနှင့် လျှို့ဝှက်ဝင်ငွေများကို ကြည့်ရှုခြင်း |
-|`/v1/aliases/*`, `/v1/assets/aliases/*`, `/v1/sns/*`၊ `/v1/identifiers/*` |နာမည်၊ အမည်မဖော်လိုသူနှင့် မှတ်သားရေးမှတ်ချက် |
+|`/v1/accounts/`, `/v1/domains/`, `/v1/assets/*`|JSON စာဖတ်သူ၊ မေးမြန်းမှု အကူအညီပေးသူ၊ တင်သွင်းခြင်း အကူအညီ ပေးသူ၊ ပရိုဖိုင် (သို့) ထိန်းသိမ်းသူ အမြင်များ |
+|`/v1/nfts/`, `/v1/rwas/`, `/v1/confidential/*`|NFT, ဒိဌလောကဝင်ငွေများနှင့် လျှို့ဝှက်ဝင်ငွေများကို ကြည့်ရှုခြင်း |
+|`/v1/aliases/`, `/v1/assets/aliases/`, `/v1/sns/`၊ `/v1/identifiers/` |နာမည်၊ အမည်မဖော်လိုသူနှင့် မှတ်သားရေးမှတ်ချက် |
 |`/v1/explorer/*` |Explorer-oriented account, asset, block, transaction, instruction, metric နဲ့ stream view တွေကို ကြည့်ပါ။|
-|`/v1/transactions/*`, `/v1/pipeline/*`, `/v1/iso20022/*`|ငွေပေးချေမှု သမိုင်း၊ ရေငွေ့လိုင်း ပြန်လည်ထူထောင်ခြင်း သို့မဟုတ် အခြေအနေနှင့် ISO 20022 အကူအညီများ |
+|`/v1/transactions/`, `/v1/pipeline/`, `/v1/iso20022/*`|ငွေပေးချေမှု သမိုင်း၊ ရေငွေ့လိုင်း ပြန်လည်ထူထောင်ခြင်း သို့မဟုတ် အခြေအနေနှင့် ISO 20022 အကူအညီများ |
 |`/v1/contracts/*` |Contract code, deployment, bundle, call, view, event, activity, rollup နဲ့ state routes တွေကို တင်ပေးပါ။ |
-|`/v1/multisig/*`၊ `/v1/controls/*`|Multisig အဆိုပြုချက်များ၊ ခွင့်ပြုချက်များနှင့် လွှဲပြောင်းမှုထိန်းချုပ်ရေး အကူအညီများ |
-|`/v1/bridge/*`, `/v1/ledger/*`, `/v1/proofs/*`|အပြီးသတ်ချက်၊ ပြည်နယ်သက်သေ၊ ပိတ်ဆို့မှုသက်သေ၊ သက်သေခံ ထိန်းသိမ်းခြင်းနဲ့ သက်သေခံမေးမြန်းမှု လမ်းကြောင်းများ |
+|`/v1/multisig/`, `/v1/controls/` |Multisig အဆိုပြုချက်များ၊ ခွင့်ပြုချက်များနှင့် လွှဲပြောင်းမှုထိန်းချုပ်ရေး အကူအညီများ |
+|`/v1/bridge/`, `/v1/ledger/`, `/v1/proofs/*`|အပြီးသတ်ချက်၊ ပြည်နယ်သက်သေ၊ ပိတ်ဆို့မှုသက်သေ၊ သက်သေခံ ထိန်းသိမ်းခြင်းနဲ့ သက်သေခံမေးမြန်းမှု လမ်းကြောင်းများ |
 |`/v1/da/*` |ဒေတာရရှိနိုင်မှုသုံးစွဲမှု၊ ထုတ်ပြန်ချက်များ၊ အထောက်အထားမူဝါဒများ၊ ကတိပေးချက်များနှင့် ပစ်မှတ်ရည်ရွယ်ချက်များ |
 |`/v1/zk/*` |ZK root, proof verification, IVM proofing, vote counting, verification keys, proof records, and attachments  အတည်ပြုချက်များအား စစ်ဆေးခြင်း|
-|`/v1/gov/*`၊ `/v1/ministry/*`|အုပ်ချုပ်ရေး အဆိုပြုချက်များ၊ မဲစာရင်းများ၊ ကောင်စီအခြေအနေ၊ ကာကွယ်ထားသော နာမည်နေရာများ၊ အစီအစဉ်ဆိုင်ရာ အဆိုပြုချက် များ၊ ဥပဒေချမှတ်ခြင်းနှင့် နောက်ဆုံးသတ်မှတ်ခြင်း |
-|`/v1/nexus/*`၊ `/v1/sccp/*`|Nexus လမ်းကြောင်း၊ ဒေတာနေရာနဲ့ cross-chain proof အကူအညီများ|
+|`/v1/gov/`, `/v1/ministry/` |အုပ်ချုပ်ရေး အဆိုပြုချက်များ၊ မဲစာရင်းများ၊ ကောင်စီအခြေအနေ၊ ကာကွယ်ထားသော နာမည်နေရာများ၊ အစီအစဉ်ဆိုင်ရာ အဆိုပြုချက် များ၊ ဥပဒေချမှတ်ခြင်းနှင့် နောက်ဆုံးသတ်မှတ်ခြင်း |
+|`/v1/nexus/`, `/v1/sccp/` |Nexus လမ်းကြောင်း၊ ဒေတာနေရာနဲ့ cross-chain proof အကူအညီများ|
 |`/v1/musubi/*` |Musubi package registry readers နဲ့ ညွှန်ကြားချက် ဆောက်လုပ်သူများ |
 |`/v1/subscriptions/*` |စာရင်းသွင်းခြင်း အစီအစဉ်များ၊ စာရင်းသွင်းသက်တမ်း စက်ဝန်း၊ အသုံးပြုမှုနှင့် အကူအညီတောင်းခံသူများ |
-|`/v1/sorafs/*`, `/sorafs/*`, `/.well-known/sorafs/*`|SoraFS ပေးသွင်းသူ ရှာဖွေမှု၊ စွမ်းဆောင်မှု သက်သေခံမှု၊ ပိုက်ချိတ်ခြင်း၊ သိုလှောင်ခြင်း၊ အများပြည်သူအတွက် ထုတ်လွှင့်ပေးခြင်း |
-|`/v1/soracloud/*`, `/v1/soradns/*`, `/soradns/*`၊ `/api/*` |SoraCloud ဝန်ဆောင်မှုသက်တမ်းကာလ၊ ပုဂ္ဂလိက ကွန်ပျူတာ/မော်ဒယ်စီးကြောင်းများ၊ အများပြည်သူ ရှာဖွေခြင်းနှင့် ဟိုတယ် အက်ပ်များကို လမ်းညွှန်ပေးခြင်း |
-|`/v1/connect/*`၊ `/v1/vpn/*`| Iroha ချိတ်ဆက်မှု အစည်းအဝေးတွေ၊ WebSocket ပို့ဆောင်ရေး၊ VPN အစည်းအဝေးများ၊ ပရိုဖိုင်းများနှင့် လက်မှတ်များ |
-|`/v1/app-api/*`, `/v1/api/*`, `/v1/content/*`|App API ချိတ်ဆက်ချက်များနှင့် bundle/CID ထောက်ပံ့ထားသော content routing |
-|`/v1/operator/*`၊ `/v1/mcp`|Operator authentication နှင့် native MCP JSON-RPC bridge ကို|
-|`/v1/offline/*`, `/v1/repo/*`, `/v1/space-directory/*`၊ `/v1/ram-lfe/*` |အွန်လိုင်းပြင်ဆင်မှု, မှတ်ပုံတင်သဘောတူညီချက်များ, ဒေတာနေရာထုတ်ပြန်ချက်များနှင့် [RAM-LFE အကူအညီပေးသူများ ](/my/blockchain/ram-lfe.md#torii-routes) |
-|`/v1/kaigi/*`, `/v1/webhooks/*`, `/v1/notify/*`၊ `/v1/telemetry/*` |ပူးပေါင်းဆောင်ရွက်မှု, webhook, push အသိပေးချက်များနှင့် live telemetry ပေါင်းစပ်ခြင်း |
+|`/v1/sorafs/`, `/sorafs/`, `/.well-known/sorafs/*`|SoraFS ပေးသွင်းသူ ရှာဖွေမှု၊ စွမ်းဆောင်မှု သက်သေခံမှု၊ ပိုက်ချိတ်ခြင်း၊ သိုလှောင်ခြင်း၊ အများပြည်သူအတွက် ထုတ်လွှင့်ပေးခြင်း |
+|`/v1/soracloud/`, `/v1/soradns/`, `/soradns/`၊ `/api/` |SoraCloud ဝန်ဆောင်မှုသက်တမ်းကာလ၊ ပုဂ္ဂလိက ကွန်ပျူတာ/မော်ဒယ်စီးကြောင်းများ၊ အများပြည်သူ ရှာဖွေခြင်းနှင့် ဟိုတယ် အက်ပ်များကို လမ်းညွှန်ပေးခြင်း |
+|`/v1/connect/`, `/v1/vpn/` | Iroha ချိတ်ဆက်မှု အစည်းအဝေးတွေ၊ WebSocket ပို့ဆောင်ရေး၊ VPN အစည်းအဝေးများ၊ ပရိုဖိုင်းများနှင့် လက်မှတ်များ |
+|`/v1/app-api/`, `/v1/api/`, `/v1/content/*`|App API ချိတ်ဆက်ချက်များနှင့် bundle/CID ထောက်ပံ့ထားသော content routing |
+|`/v1/operator/*`, `/v1/mcp` |Operator authentication နှင့် native MCP JSON-RPC bridge ကို|
+|`/v1/offline/`, `/v1/repo/`, `/v1/space-directory/`၊ `/v1/ram-lfe/` |အွန်လိုင်းပြင်ဆင်မှု, မှတ်ပုံတင်သဘောတူညီချက်များ, ဒေတာနေရာထုတ်ပြန်ချက်များနှင့် [RAM-LFE အကူအညီပေးသူများ ](/my/blockchain/ram-lfe.md#torii-routes) |
+|`/v1/kaigi/`, `/v1/webhooks/`, `/v1/notify/`၊ `/v1/telemetry/` |ပူးပေါင်းဆောင်ရွက်မှု, webhook, push အသိပေးချက်များနှင့် live telemetry ပေါင်းစပ်ခြင်း |
 
 ## ISO 20022 တံတား {#iso-20022-bridge}
 
@@ -275,7 +285,7 @@ Kaigi UI ကို စမ်းသပ်ရန်:
 
 Private Kaigi needs shielded XOR to pay the private entry point fee. demo မှာ private Kaigi needs protected XOR ကို အစီရင်ခံထားတယ်ဆိုရင်, app ထဲက self-shield prompt ကိုသုံးပြီး create (သို့) join လုပ်ရပ်ကို ထပ်မံကြိုးစားပါ။ အထောက်အထားထုတ်လုပ်ခြင်း၊ ပုဂ္ဂလိကထောက်ပံ့မှု (သို့) တိုက်ရိုက်အချက်ပြခြင်း မရှိပါက demo သည် ပွင့်လင်းမြင်သာသော / လက်ကိုင်စီးဆင်းမှုအဖြစ် ပြန်ကျသွားနိုင်သည်။ ထိုကိစ္စတွင် Advanced Signaling ကိုဖွင့်ပြီး ရိုးရိုးလက်ဆောင် (သို့မဟုတ်) အဖြေအိတ်ကို ကူးယူပြီး အခြား ပြတင်းပေါက်ထဲကပ်ပါ။
 
-demo repo ထဲက အလိုအလျောက် စစ်ဆေးမှုအတွက် run:
+demo repo မှာ အလိုအလျောက် စစ်ဆေးမှုအတွက်: run:
 
 ```bash
 npm test -- tests/kaigiView.spec.ts tests/preloadKaigiBridge.spec.ts
@@ -296,7 +306,7 @@ Status နဲ့ metrics endpoints တွေဟာ Dashboards ထဲမှာ �
 
 Nexus လုပ်နိုင်သော node များတွင် status output တွင် lane နှင့် data-space ကို သိရှိနားလည်သည့် sections များလည်း ပါဝင်သည်။ `nexus.enabled = false` ရှိပါက ထို sections များကို ချန်ထားပါ။
 
-## JSON vs Norito {#json-vs-norito}
+## JSON နှင့် Norito {#json-vs-norito}
 
 အော်ပရေတာအဆုံးသတ်မှတ်ချက်များစွာသည် အလိုလျောက် Norito ကိုပြန်လည်ပို့ပေးသည်။ အဆုံးသတ်မှတ်ချက်သည် JSON ကိုထောက်ပံ့သောအခါ, ပေးပို့ပါ:
 
@@ -314,15 +324,15 @@ Accept: application/json
 
 ## Telemetry Profiles များ {#telemetry-profiles}
 
-အဆုံးမှတ်များကို မြင်နိုင်မှုသည် node ၏ `telemetry.profile` ဆက်တင်ပေါ် မူတည်သည်။ လက်ရှိ ဖွဲ့စည်းသတ်မှတ်ချက်တွင် profile အဆင့် ငါးဆင့်ကို ဖော်ထုတ်ထားသည်:
+Endpoint မြင်ကွင်းသည် node ၏ `telemetry.profile` သတ်မှတ်ချက်အပေါ် မူတည်သည်။ လက်ရှိ configuration သည် profile အဆင့်ငါးခုကိုဖေါ်ပြထားပါသည်။
 
 |Profile ကို |`/status` |`/metrics` |ဆောက်လုပ်ရေးလမ်းကြောင်းများ |
 | --- | --- | --- | --- |
-|`disabled` |မဟုတ် |မဟုတ် |မဟုတ် |
-|`operator` |ဟုတ် |မဟုတ် |မဟုတ် |
-|`extended` |ဟုတ် |ဟုတ် |မဟုတ် |
-|`developer` |ဟုတ် |မဟုတ် |ဟုတ် |
-|`full` |ဟုတ် |ဟုတ် |ဟုတ် |
+|`disabled` |မဟုတ်ဘူး။|မဟုတ်ဘူး။|မဟုတ်ဘူး။|
+|`operator` |ဟုတ်ပါတယ်|မဟုတ်ဘူး။|မဟုတ်ဘူး။|
+|`extended` |ဟုတ်ပါတယ်|ဟုတ်ပါတယ်|မဟုတ်ဘူး။|
+|`developer` |ဟုတ်ပါတယ်|မဟုတ်ဘူး။|ဟုတ်ပါတယ်|
+|`full` |ဟုတ်ပါတယ်|ဟုတ်ပါတယ်|ဟုတ်ပါတယ်|
 
 ## CLI ဖြတ်လမ်းများ {#cli-shortcuts}
 

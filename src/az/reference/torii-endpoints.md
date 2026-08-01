@@ -1,9 +1,9 @@
 ---
 translation_locale: az
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: 9bec41b1b419e252fdcff8328e7950a294bdad3ac40112a5a7f2ce451d19e9cb
+translation_source_hash: c23170b2949bae9c9483ecbee6f0c09fea503904ae93934aef56537ddd13c42d
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2
 ---
 
 # Torii Son nöqtələr {#torii-endpoints}
@@ -12,7 +12,7 @@ Torii Bu HTTP, SSE, və WebSocket qapı Iroha 3. Bu, hər iki kitabçaya yönəl
 
 Mövcud protokol qaydaları aşağıdakılardır:
 
-- kanonik ikili format Norito dir.
+- kanonik ikili format Norito
 - JSON göndərdiyiniz zaman bir çox uç nöqtəsi də `Accept: application/json` dəstəkləyir
 - Metriklər Prometheus formatında təqdim olunur.
 
@@ -22,34 +22,43 @@ Format ətraflı məlumatları, məzmun danışıqları, düzənlik bayraqları,
 
 |Son nöqtə |Format |Məqsəd|
 | --- | --- | --- |
-|`POST /transaction` |Norito |İmzalanmış bir əməliyyat təqdim edin |
-|`POST /query` |Norito |İmzalanmış sorğu göndərin |
-|`GET /events` |WebSocket |Tədbir axınlarına abunə olun |
-|`GET /block/stream` |WebSocket |Əlaqə bağlanmış bloklar axın |
-|`GET /peers` |JSON |Torii tərəfindən məruzə edilən rəfiqə siyahısı |
-|`GET /health` |JSON |Yüngül ömrü son nöqtəsi |
-|`GET /api_version` |JSON |API standart versiyası |
-|`GET /status` |JSON |Operatorlar üçün yüksək səviyyəli status ümumiləşdirilməsi |
+|`POST /v1/pipeline/transactions` |Norito |İmzalanmış bir əməliyyat təqdim edin |
+|`POST /v1/query` |Norito |İmzalanmış sorğu göndərin |
+|`GET /v1/events/ws` |WebSocket |Tədbir axınlarına abunə olun |
+|`GET /v1/events/sse` |SSE |SSE üzərindəki tədbir axınlarına abunə olun |
+|`GET /v1/blocks/stream` |WebSocket |Əlaqə bağlanmış bloklar axın |
+|`GET /v1/peers` |JSON |Torii tərəfindən məruzə edilən rəfiqə siyahısı |
+|`GET /livez` |Mətn|Yalnız proses həyatı; bu protokol hazırlığı demək deyil |
+|`GET /readyz` |JSON |Qeydiyyatdan kənarda pul yoxlamaları da daxil olmaqla bağların tam hazırlığı |
+|`GET /health` |JSON |Eyni offline pul invariantı ilə hazırlıq sondası |
+|`GET /v1/api/version` |Mətn|Block başlığı versiyası |
+|`GET /status` |Norito və ya JSON |Yüksək səviyyəli diaqnostik status; açıq şəkildə JSON tələb etmək |
 |`GET /metrics` |Prometheus |Prometheus scrape endpoint |
-|`GET /schema` |JSON |Nodu tərəfindən xidmət edilən məlumat model sxeminin sürətli görüntüsü |
+|`GET /v1/schema` |JSON |Nodu aktivləşdirildiyi zaman verilən modellərin sxeminin sürətli görüntüsü |
 |`GET /openapi` və ya `GET /openapi.json` |JSON |Aktiv Torii HTTP yolları üçün OpenAPI sənədi |
 |`GET /v1/parameters` |JSON |Qeydiyyat parametrləri görüntüsü |
 |`GET /v1/node/capabilities` |JSON |Node qabiliyyəti və məlumat modelinin metadataları |
-|`GET /v1/api/versions` |JSON |Dəstəklənən Torii API versiyaları |
-|`GET /v1/events/sse` |SSE |Uzunmüddətli müştərilər üçün tədbir axını |
 |`GET /v1/time/now` |JSON |Nodu divar saatı snapshot |
-|`GET /v1/time/status` |JSON |Vaxt sinxronizasiyasının vəziyyəti |
+|`GET /v1/time/status` |JSON |Zaman sinxronizasiyasının vəziyyəti |
 
-`/openapi` İdarə olunan bir düyün üçün etibarlı son nöqtələr siyahısıdır. qurma xüsusiyyətləri və icra vaxt konfigüratsiyası, belə ki, yaradılmış müştərilər canlı OpenAPI İstifadəçidən istifadə edin. [Torii API konsol](/az/reference/torii-api-console.md) Bu canlı sənədi yükləmək üçün test JSON marşrutlar, nüsxə curl tələblər, və mövcud sxemdən müştəri kodu yaratmaq.
+SSE tələbatı üçün yerli axını əlavə edilmiş bir fallback ilə reklam edin:
 
-## Canlı Taira Yolları sınayın. {#try-live-taira-routes}
+```http
+Accept: text/event-stream, application/json
+```
 
-İctimai Taira testnet tətbiq müştərilərinin yalnız oxumaq üçün istifadə etdiyi eyni Torii JSON səthini aşkar edir. Bu əmrlərə açar tələb olunmur:
+Torii əvvəlcə danışıqlar JSON və ya Norito tələb qatında təmsil, sonra yerli təsdiqləyir `text/event-stream` Cavab. Yalnız göndərmək `text/event-stream` Ona görə də, `406`; Dövlət [axın tədbirləri resepti](/az/cookbook/stream-events.md) tam başlığı istifadə edir.
+
+`/openapi` sxemdə təmsil olunan marşrutlar üçün əsas istehsal edilmiş müqavilədir; Mövcud sənəd tam əməliyyat sondası inventarı deyil. `/livez` və `/readyz`, və onun `/health` Təsvir hazırlıq idarəetməsindən geri qala bilər. Canlı sənəddən istiqamət müştəriləri istehsal edin, Ancaq canlılığı və hazırlığını birbaşa işləyən düyünə və bağlanmış idarəçilərə qarşı təsdiqləyin. Tam səth hələ də qurma xüsusiyyətlərindən və icra vaxtının konfigüratsiyasından asılıdır. [Torii API konsol](/az/reference/torii-api-console.md) Bu canlı sənədi yükləmək üçün test JSON marşrutlar, nüsxə curl tələblər, və mövcud sxemdən müştəri kodu yaratmaq.
+
+## Canlı Taira marşrutlarını sınayın {#try-live-taira-routes}
+
+İctimai Taira testnet, tətbiq müştərilərinin yalnız oxumaq üçün istifadə etdiyi eyni Torii JSON səthini aşkar edir. Bu əmrlərə açar tələb olunmur:
 
 ```bash
 TAIRA_ROOT=https://taira.sora.org
 
-curl -fsS "$TAIRA_ROOT/status" \
+curl -fsS -H 'Accept: application/json' "$TAIRA_ROOT/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA_ROOT/openapi.json" \
@@ -57,7 +66,8 @@ curl -fsS "$TAIRA_ROOT/openapi.json" \
   | grep '^/v1/' \
   | head -n 20
 
-curl -fsS "$TAIRA_ROOT/v1/node/capabilities" \
+curl -fsS -H 'Accept: application/json' \
+  "$TAIRA_ROOT/v1/node/capabilities" \
   | jq '{abi_version, data_model_version, query: .query.aggregate.supported_resources}'
 ```
 
@@ -91,11 +101,11 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=5" \
 |`GET /v1/sumeragi/rbc` |JSON |RBC sessiya və keçid ölçüləri |
 |`GET /v1/sumeragi/rbc/sessions` |JSON |Aktiv RBC iclası görüntüsü |
 |`GET /v1/sumeragi/pacemaker` |JSON |Pacemaker statusu |
-|`GET /v1/sumeragi/params` |JSON |Hələlik zəncirdəki Sumeragi parametrləri |
+|`GET /v1/sumeragi/params` |JSON |Hələlik zəncirdəki mövcud parametrlər Sumeragi |
 |`GET /v1/sumeragi/collectors` |JSON |Deterministik kollektor planı görüntüsü |
 |`GET /v1/sumeragi/key-lifecycle` |JSON |Konsensus əsas həyat dövrü statusu |
 |`GET /v1/sumeragi/telemetry` |JSON |Konsensus telemetriyası sürətli görüntüsü |
-|`GET /v1/sumeragi/evidence` |JSON |Ədalət qeydləri, istintaq silsiləsi ilə filtrlənir |
+|`GET /v1/sumeragi/evidence` |JSON |Əldə edilən sübut qeydləri, istintaq silsiləsi ilə seçilmişdir |
 |`GET /v1/sumeragi/evidence/count` |JSON |Əldə edilən sübutların sayı|
 |`POST /v1/sumeragi/evidence/submit` |JSON |Konsensus üçün sübutlar təqdim edin |
 |`GET /v1/sumeragi/commit_qc/{hash}` |Norito və ya JSON |Bir blok hash üçün QC qeydini bağlayın |
@@ -113,27 +123,27 @@ Torii tətbiqetmə ilə üzləşən xüsusiyyətlər toplusu ilə qurulduqda, k�
 
 |Yol ailəsi |Məqsəd|
 | --- | --- |
-|`/v1/accounts/*`, `/v1/domains/*`, `/v1/assets/*` |JSON oxumaq, sorğu köməkçisi, onboarding köməkçisi və portfel və ya sahibinin görünüşləri |
-|`/v1/nfts/*`, `/v1/rwas/*`, `/v1/confidential/*` |NFT, real dünya aktivləri və məxfi aktivlər baxışları |
-|`/v1/aliases/*`, `/v1/assets/aliases/*`, `/v1/sns/*`, `/v1/identifiers/*` |Ad, alias və identifikator qətnaməsi |
+|`/v1/accounts/`, `/v1/domains/`, `/v1/assets/*` |JSON oxumaq, sorğu köməkçisi, onboarding köməkçisi və portfel və ya sahibinin görünüşləri |
+|`/v1/nfts/`, `/v1/rwas/`, `/v1/confidential/*` |NFT, real dünya aktivləri və məxfi aktivlər baxışları |
+|`/v1/aliases/`, `/v1/assets/aliases/`, `/v1/sns/`, `/v1/identifiers/` |Ad, alias və identifikator qətnaməsi |
 |`/v1/explorer/*` |Explorer-ə yönəlmiş hesab, aktiv, blok, əməliyyat, təlimat, metrik və axın görünüşləri |
-|`/v1/transactions/*`, `/v1/pipeline/*`, `/v1/iso20022/*` |Əməliyyat tarixçəsi, boru kəmərinin bərpası və ya vəziyyəti və ISO 20022 köməkçisi |
+|`/v1/transactions/`, `/v1/pipeline/`, `/v1/iso20022/*` |Əməliyyat tarixçəsi, boru kəmərinin bərpası və ya vəziyyəti və ISO 20022 köməkçisi |
 |`/v1/contracts/*` |Müqavilə kodu, yerləşdirmə, paket, zəng, görünüş, hadisə, fəaliyyət, rollup və dövlət yolları |
-|`/v1/multisig/*`, `/v1/controls/*` |Multisig təklifləri, təsdiqləri və köçürmə nəzarətində köməkçiləri |
-|`/v1/bridge/*`, `/v1/ledger/*`, `/v1/proofs/*` |Nəticə, dövlət sübutu, blok sübutü, sübut saxlama və sübut sorğusunun yolları |
+|`/v1/multisig/`, `/v1/controls/` |Multisig təklifləri, təsdiqləri və köçürmə nəzarətində köməkçiləri |
+|`/v1/bridge/`, `/v1/ledger/`, `/v1/proofs/*` |Nəticə, dövlət sübutu, blok sübutü, sübut saxlama və sübut sorğusunun yolları |
 |`/v1/da/*` |Məlumatların mövcudluğu, manifestlər, sübut siyasətləri, öhdəliklər və niyyətlər |
 |`/v1/zk/*` |ZK kökləri, sübut yoxlamaları, IVM sübutları, səslərin sayılması, sübut açarları, sübut qeydləri və əlavələr |
-|`/v1/gov/*`, `/v1/ministry/*` |İdarəetmə təklifləri, səsvermələr, şura dövləti, qorunan ad sahələri, gündəlik təklifləri, qanunvericilik və yekunlaşdırma. |
-|`/v1/nexus/*`, `/v1/sccp/*` |Nexus yol, məlumat sahəsi və çarşı silsilə sübut köməkçiləri |
+|`/v1/gov/`, `/v1/ministry/` |İdarəetmə təklifləri, səsvermələr, şura dövləti, qorunan ad sahələri, gündəlik təklifləri, qanunvericilik və yekunlaşdırma. |
+|`/v1/nexus/`, `/v1/sccp/` |Nexus yol, məlumat sahəsi və çarşı silsilə sübut köməkçiləri |
 |`/v1/musubi/*` |Musubi paketlər qeydiyyatı oxucuları və təlimat qurucuları |
 |`/v1/subscriptions/*` |Abunə planları, abunə həyat dövrü, istifadə və ödəmə köməkçiləri |
-|`/v1/sorafs/*`, `/sorafs/*`, `/.well-known/sorafs/*` |SoraFS təchizatçı kəşfi, məhdudluq sübutları, pinning, saxlama və ictimai məzmun xidmətləri |
-|`/v1/soracloud/*`, `/v1/soradns/*`, `/soradns/*`, `/api/*` |SoraCloud xidmət həyat dövrü, özəl hesablama/model axınları, ictimai kəşfiyyat və ev sahibliyi edilən tətbiqlərin yönləndirməsi |
-|`/v1/connect/*`, `/v1/vpn/*` |Iroha Qoşulma seansları, WebSocket nəqliyyatı, VPN seansları, profilləri və rəsmlər |
-|`/v1/app-api/*`, `/v1/api/*`, `/v1/content/*` |App API bağlamaları və paket / CID dəstəklənən məzmun yönləndirmələri |
+|`/v1/sorafs/`, `/sorafs/`, `/.well-known/sorafs/*` |SoraFS təchizatçı kəşfi, məhdudluq sübutları, pinning, saxlama və ictimai məzmun xidmətləri |
+|`/v1/soracloud/`, `/v1/soradns/`, `/soradns/`, `/api/` |SoraCloud xidmət həyat dövrü, özəl hesablama/model axınları, ictimai kəşfiyyat və ev sahibliyi edilən tətbiqlərin yönləndirməsi |
+|`/v1/connect/`, `/v1/vpn/` |Iroha Qoşulma seansları, WebSocket nəqliyyatı, VPN seansları, profilləri və rəsmlər |
+|`/v1/app-api/`, `/v1/api/`, `/v1/content/*` |App API bağlamaları və paket / CID dəstəklənən məzmun yönləndirmələri |
 |`/v1/operator/*`, `/v1/mcp` |Operatorun təsdiqlənməsi və yerli MCP JSON-RPC körpüsü |
-|`/v1/offline/*`, `/v1/repo/*`, `/v1/space-directory/*`, `/v1/ram-lfe/*` |Offline hazırlıq, saxlama müqavilələri, məlumat sahəsi manifestləri və [RAM-LFE köməkçiləri ](/az/blockchain/ram-lfe.md#torii-routes) |
-|`/v1/kaigi/*`, `/v1/webhooks/*`, `/v1/notify/*`, `/v1/telemetry/*` |Əməkdaşlıq, webhook, push bildirişləri və canlı telemetri inteqrasiyaları |
+|`/v1/offline/`, `/v1/repo/`, `/v1/space-directory/`, `/v1/ram-lfe/` |Offline hazırlıq, saxlama müqavilələri, məlumat sahəsi manifestləri və [RAM-LFE köməkçiləri ](/az/blockchain/ram-lfe.md#torii-routes) |
+|`/v1/kaigi/`, `/v1/webhooks/`, `/v1/notify/`, `/v1/telemetry/` |Əməkdaşlıq, webhook, push bildirişləri və canlı telemetri inteqrasiyaları |
 
 ## ISO 20022 Köprü {#iso-20022-bridge}
 
@@ -170,11 +180,11 @@ Torii tətbiqə baxan API və körpünün işləmə vaxtı aktivləşdirildiyi z
 
 İndiki IVM ISO köməkçi, həmçinin aşağıdakı mesaj ailələrini təsdiqləyir və materiallaşdırır. təsdiqləmə, hesablama xəritələşdirilməsi və ya aşağı axınındakı uyğunlaşdırma. Torii marşrutlar.
 
-|Mesaj ailəsi |Hal-hazırda dəstək |
+|Mesaj ailəsi |Hal-hazırda göstərilən dəstək |
 | --- | --- |
 |`head.001` |`BizMsgIdr`, `MsgDefIdr` sahələri, yaradılış vaxtı və seçmə yolu ilə göndərən / qəbul edən BIC sahələri daxil olmaqla ISO pultları üçün iş arzusunun başlıqlarının təsdiqlənməsi |
 |`pacs.007`, `pacs.028`, `pacs.029` |Ödənişlərin geri qaytarılması, status tələbləri və araşdırmanın həlli / status analizi |
-|`pain.001`, `pain.002` |Müştəri ödənişinin başlanması və ödəniş statusu hesabatının təsdiq edilməsi |
+|`pain.001`, `pain.002` |Müştəri ödənişinin başlanğıcı və ödəniş statusu hesabatının təsdiq edilməsi |
 |`camt.052`, `camt.053`, `camt.054` |Hesab hesabatı, bəyanat və bildirişlərin təsdiqlənməsi |
 
 ## Kaigi Sessiyalar {#kaigi-sessions}
@@ -246,7 +256,7 @@ npm run dev
 
 Node.js 20 və ya daha yeni bir Rust vasitə zəncirindən istifadə edin ki, yerli `iroha_js_host` modulu quraşdırıla bilsin. Mənbəyi dəyişdirdikdən sonra qardaşı Iroha kassasında SDK yenidən qurun; təmiz paket tərtibində `npm run build:native` üçün lazım olan yük iş məkanı yoxdur.
 
-Nəzarət edilmiş bir sınaq üçün demo Kaigi -ə malik olan Torii son nöqtəyə yönəltmək:
+Nəzarət edilmiş bir sınaq üçün demo Kaigi -ə malik olan Torii son nöqtəsinə yönəlt:
 
 1. SORA/Kaigi tətbiqi ilə üzləşən APIs nodu aktivləşdirməklə Iroha düyünü başlatın və ya ehtiyacınız olan Kaigi səthlərini aşkar edən ictimai bir son nöqtədən istifadə edin.
 2. `/health` ilə əsas əlçatanlığı yoxlayın, sonra canlı marşrut səthini `/openapi` və ya `/openapi.json` ilə yoxlayın. Bəzi yerləşdirmələrdə `/v1/health` də aşkar edilir, lakin `/health` daşınma qabiliyyətinin yoxlanmasıdır.
@@ -260,7 +270,7 @@ Nəzarət edilmiş bir sınaq üçün demo Kaigi -ə malik olan Torii son nöqt�
    ```
 
 Bu yoxlamalar Torii və Kaigi relay telemetriyasının əldə edilə biləcəyini sübut edir. Onlar bir görüş yaratmır; `CreateKaigi` və `JoinKaigi` hələ də maliyyələşdirilmiş cüzdanlara və imzalanan əməliyyatların təqdim olunmasına ehtiyac duyurlar.
-4. Demosunu açın, Ayarlara gedin, Torii URL təyin edin və tətbiq endpoint-dən zəncirini ID və şəbəkə prefiksini yükləsin.
+4. Demosunu açın, Ayarlara gedin, Torii URL təyin edin və tətbiqə zəncir ID və şəbəkə prefiksini son nöqtəsindən yükləməsinə icazə verin.
 5. Demo-da iki yerli cüzdan yaratın və ya bərpa edin. Ev sahibinin və qonağın ayrı cüzdan vəziyyətinə malik olması üçün ayrı tətbiq pəncərələrindən, profillərindən və ya maşınlardan istifadə edin.
 
 Kaigi UI testi üçün:
@@ -275,7 +285,7 @@ Kaigi UI testi üçün:
 
 Şəxsi Kaigi qoruyan ehtiyaclar XOR Əgər demo bildirir ki, şəxsi giriş nöqtəsi haqqı Kaigi qoruyan ehtiyaclar XOR, tətbiqetmə içərisindəki öz qoruyucu təzyiqdən istifadə edin və yaratmaq və ya qoşulma hərəkətini yenidən sınayın. Əgər sübut istehsalı, özəl maliyyələşdirmə və ya canlı siqnallaşdırma mövcud deyilsə, demo şəffaf / əl axınına qayıda bilər. Bu vəziyyətdə, Gelişmiş siqnal açın, xam təklif və ya cavab paketini kopyalayın və digər pəncərəyə yapışdırın.
 
-Demo repo-da avtomatik yoxlamalar üçün aşağıdakıları icra edin:
+Demo repo-da avtomatlaşdırılmış yoxlamalar üçün:
 
 ```bash
 npm test -- tests/kaigiView.spec.ts tests/preloadKaigiBridge.spec.ts
@@ -314,15 +324,15 @@ Bir son nöqtə qəbul edərkən və ya yazılanları qaytararkən Norito birba�
 
 ## Telemetriya Profilləri {#telemetry-profiles}
 
-Son nöqtələrin görünməsi qovşağın `telemetry.profile` parametrindən asılıdır. Cari konfiqurasiya beş profil səviyyəsini təqdim edir:
+Son nöqtələrin görünüşü nodun `telemetry.profile` parametrindən asılıdır. Hal-hazırda quruluş beş profil səviyyəsinə açıqlanır:
 
 |Profil |`/status` |`/metrics` |İnkişafçıların marşrutları |
 | --- | --- | --- | --- |
-|`disabled` |xeyr |xeyr |xeyr |
-|`operator` |bəli |xeyr |xeyr |
-|`extended` |bəli |bəli |xeyr |
-|`developer` |bəli |xeyr |bəli |
-|`full` |bəli |bəli |bəli |
+|`disabled` |Yox.|Yox.|Yox.|
+|`operator` |Bəli.|Yox.|Yox.|
+|`extended` |Bəli.|Bəli.|Yox.|
+|`developer` |Bəli.|Yox.|Bəli.|
+|`full` |Bəli.|Bəli.|Bəli.|
 
 ## CLI Qısa yollar {#cli-shortcuts}
 

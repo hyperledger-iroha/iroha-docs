@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: feddadb1b50c5cc8beea188fd7053eeaae58d6ab9203687e9a1378f203229168
+translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -22,7 +22,7 @@ npm run build:native
 npm run build:dist
 ```
 
-本来のビルドは `cargo build -p iroha_js_host` を巻いて, SDK の起動時に使用されるプラットフォーム特有のチェックサムを記録する.ソースビルドは`native/` でホストを確認した場所を設定します.別々に構築されたチェックサム-検証されたホストを意図的に供給する場合にのみ `IROHA_JS_NATIVE_DIR` をセットします.梱包は ESM のみ; CommonJS から,動態を使用する `import()`.
+本来のビルドは `cargo build -p iroha_js_host` を巻き込み, SDK の起動で使用されたプラットフォーム特別のチェックサムを記録します.ソースビルドは, `native/` でホストを確認した場所です.`IROHA_JS_NATIVE_DIR` を設定するのは,別々に構築されたチェックサムで確認されたホストを意図的に供給する場合にのみ.パッケージは ESM のみ; CommonJS から,ダイナミック `import()` を使用します.
 
 ## スピードスタート {#quickstart}
 
@@ -45,7 +45,9 @@ Node.js 24 に内蔵された `fetch` を使用して,署名と Norito 取引コ
 ```js
 const root = "https://taira.sora.org";
 
-const status = await fetch(`${root}/status`).then((res) => res.json());
+const status = await fetch(`${root}/status`, {
+  headers: { Accept: "application/json" },
+}).then((res) => res.json());
 console.log({
   blocks: status.blocks,
   queueSize: status.queue_size,
@@ -85,7 +87,7 @@ import { generateKeyPair } from "@iroha/iroha-js/crypto";
 
 ## 国産エスクロー {#native-escrow}
 
-JavaScript と TypeScript アプリケーションは, Kotodama 契約を通じてネイティブ・エスクローを利用できます. `@iroha/iroha-js/kotodama-compiler` でエスクローホスト コールをまとめます.直接ネイティブ エスクロー トランザクションの構築者は現在 JavaScript SDK によって暴露されていない.[Native Asset Escrow](/ja/blockchain/escrow.md#javascript-and-typescript-kotodama) を参照してください.
+JavaScript および TypeScript アプリケーションは, Kotodama 契約を通じてネイティブ・エスクローを利用できます. `@iroha/iroha-js/kotodama-compiler` でエスクローホストの呼び出しをまとめます.トランザクション構築者は現在 JavaScript SDK によって暴露されていない. エスクローホスト呼び出しの例については, [ネイティブアセットエスクロー](/ja/blockchain/escrow.md#javascript-and-typescript-kotodama)を参照してください.
 
 ## 現在 の 対象 {#current-coverage}
 

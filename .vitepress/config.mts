@@ -14,6 +14,7 @@ import {
   SEARCH_LOCALES,
   SITE_LOCALES,
   TRANSLATED_LOCALES,
+  type CookbookGroupLabels,
   type DocsLocale,
   type NavigationLabels,
 } from '../etc/locales'
@@ -27,6 +28,11 @@ function nav(
       text: labels.getStarted,
       link: prefixRoute('/get-started/', locale),
       activeMatch: prefixRoute('/get-started/', locale),
+    },
+    {
+      text: labels.cookbook,
+      link: prefixRoute('/cookbook/', locale),
+      activeMatch: prefixRoute('/cookbook/', locale),
     },
     {
       text: labels.guides,
@@ -76,6 +82,97 @@ function sidebarStart(): DefaultTheme.SidebarItem[] {
         {
           text: 'Sponsor Private Dataspace Fees',
           link: '/get-started/private-dataspace-fee-sponsor',
+        },
+      ],
+    },
+  ]
+}
+
+function sidebarCookbook(
+  labels: CookbookGroupLabels = ROOT_LOCALE.navigation.cookbookGroups,
+): DefaultTheme.SidebarItem[] {
+  return [
+    {
+      text: labels.start,
+      collapsed: false,
+      items: [
+        {
+          text: 'Overview',
+          link: '/cookbook/',
+        },
+        {
+          text: 'Connect to Taira',
+          link: '/cookbook/connect-to-taira',
+        },
+        {
+          text: 'Submit and Verify Transactions',
+          link: '/cookbook/submit-and-verify-transactions',
+        },
+      ],
+    },
+    {
+      text: labels.ledger,
+      collapsed: false,
+      items: [
+        {
+          text: 'Accounts and Aliases',
+          link: '/cookbook/accounts-and-aliases',
+        },
+        {
+          text: 'Fungible Assets',
+          link: '/cookbook/fungible-assets',
+        },
+        {
+          text: 'NFTs',
+          link: '/cookbook/nfts',
+        },
+        {
+          text: 'Metadata',
+          link: '/cookbook/metadata',
+        },
+        {
+          text: 'Query Ledger State',
+          link: '/cookbook/query-ledger-state',
+        },
+      ],
+    },
+    {
+      text: labels.accessAndAutomation,
+      collapsed: false,
+      items: [
+        {
+          text: 'Permissions and Roles',
+          link: '/cookbook/permissions-and-roles',
+        },
+        {
+          text: 'Stream Events',
+          link: '/cookbook/stream-events',
+        },
+        {
+          text: 'Triggers',
+          link: '/cookbook/triggers',
+        },
+        {
+          text: 'Multisig',
+          link: '/cookbook/multisig',
+        },
+        {
+          text: 'Smart Contracts',
+          link: '/cookbook/smart-contracts',
+        },
+      ],
+    },
+    {
+      text: labels.appPatterns,
+      collapsed: false,
+      items: [
+        {
+          text: 'Wallet Connect',
+          link: '/cookbook/wallet-connect',
+        },
+        {
+          text: 'Native Escrow',
+          link: '/cookbook/native-escrow',
         },
       ],
     },
@@ -478,6 +575,7 @@ function localizeSidebarItems(items: DefaultTheme.SidebarItem[], locale: DocsLoc
 function sidebars(locale: DocsLocale = ROOT_LOCALE): DefaultTheme.Sidebar {
   const entries: [string, DefaultTheme.SidebarItem[]][] = [
     ['/get-started/', sidebarStart()],
+    ['/cookbook/', sidebarCookbook(locale.navigation.cookbookGroups)],
     ['/guide/', sidebarGuide()],
     ['/blockchain/', sidebarChain()],
     ['/reference/', sidebarReference()],

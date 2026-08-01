@@ -1,3 +1,5 @@
 .vitepress/dist
 .vitepress/cache
 .vercel
+.cache
+.venv-translate

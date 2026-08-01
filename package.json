@@ -6,7 +6,7 @@
   },
   "scripts": {
     "dev": "vitepress dev",
-    "build": "NODE_OPTIONS=--max-old-space-size=8192 vitepress build",
+    "build": "NODE_OPTIONS=--max-old-space-size=12288 vitepress build",
     "serve": "vitepress serve",
     "format": "prettier-eslint --include-dot-files \"**/*.{js,ts,mts,vue,json}\"",
     "format:check": "pnpm format --list-different",
@@ -16,9 +16,10 @@
     "refresh:iroha": "tsx etc/refresh-iroha.ts",
     "translate": "tsx etc/translate.ts",
     "validate:content": "tsx etc/validate-content-policy.ts",
+    "validate:cookbook": "tsx etc/validate-cookbook.ts",
     "validate:i18n": "tsx etc/validate-i18n.ts",
     "validate:provenance": "tsx etc/validate-provenance.ts",
-    "validate": "pnpm validate:content && pnpm validate:i18n && pnpm validate:provenance",
+    "validate": "pnpm validate:content && pnpm validate:cookbook && pnpm validate:i18n && pnpm validate:provenance",
     "test": "VITE_CJS_IGNORE_WARNING=true vitest run",
     "cli": "tsx etc/cli"
   },

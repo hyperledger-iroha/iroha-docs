@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: 85cc94399b9892984615bf8a0821a1f30395eb87ec164592ca98fbd9903ef834
+translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -43,7 +43,7 @@ make bridge-xcframework
 
 ## CocoaPods {#cocoapods}
 
-ဒီကုဒ်ဘေ့စ်မှာလည်း ပါဝင်ပါတယ်။ `IrohaSwift/IrohaSwift.podspec`. ၎င်းက ကြေညာသည် `IrohaSwift` အိတ်၊ Swift 5.9 နဲ့ iOS 15 တို့ပါ။ podspec က ဆွဲပေးတယ်။ Swift အဓိက သိုလှောင်ရုံမှ ရင်းမြစ်များ; ဒေသခံတံတားသည် တည်ရှိပြီး ငွေပေးချေမှု ကုဒ်သွင်းခြင်းအတွက် ချိတ်ဆက်ထားရဦးမည်။ Ed25519 မဟုတ်တဲ့ လက်မှတ်ရေးထိုးခြင်းနဲ့ Connect crypto ကိုပါ။
+ဒီကုဒ်ဘေ့စ်မှာလည်း ပါဝင်ပါတယ်။ `IrohaSwift/IrohaSwift.podspec`. ၎င်းက ကြေညာသည် `IrohaSwift` အိတ်၊ Swift 5.9 နဲ့ iOS 15 တို့ပါ။ podspec က ဆွဲပေးတယ်။ Swift အဓိက သိုလှောင်ရုံမှ ရင်းမြစ်များ; မူလတံတားက ရှိနေဆဲပါ။ Transaction encoding, non-Ed25519 လက်မှတ်ထိုးခြင်းနဲ့ Connect crypto အတွက် ချိတ်ဆက်ထားတယ်။
 
 ## အမြန်စတင်ခြင်း {#quickstart}
 
@@ -72,7 +72,9 @@ import Foundation
 
 if #available(iOS 15.0, macOS 12.0, *) {
     let url = URL(string: "https://taira.sora.org/status")!
-    let (data, response) = try await URLSession.shared.data(from: url)
+    var request = URLRequest(url: url)
+    request.setValue("application/json", forHTTPHeaderField: "Accept")
+    let (data, response) = try await URLSession.shared.data(for: request)
 
     if let http = response as? HTTPURLResponse {
         print("status:", http.statusCode)

@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /index.md
-translation_source_hash: 505e8224a59534717045c34b1bf796760d06f9d6808a2a1fd9773aa2f6a00c2d
+translation_source_hash: 3b2ad4ee285a821b56c9cf6fd3f4a8431f1cfa478e88082b45788765d68ed833
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 
@@ -18,6 +18,28 @@ hero:
   #- theme: alt
   #  text: View on GitHub
   #  link: https://github.com/hyperledger-iroha/iroha
+
+nexusPortal:
+  eyebrow: SORA Nexus
+  title: "Basear-se em Iroha 3 / SORA Nexus"
+  details: "Comece com a rede de teste Taira, aprenda o fluxo atual de transações e use receitas focadas para criar aplicações prontas para produção."
+  primaryAction:
+    text: "Começar em Taira"
+    link: /pt/get-started/sora-nexus-dataspaces
+  secondaryAction:
+    text: "Explore o livro de cozinha"
+    link: /pt/cookbook/
+  recipes:
+    title: "Receitas populares"
+    items:
+      - title: "Submeter e verificar uma transacção"
+        link: /pt/cookbook/submit-and-verify-transactions
+      - title: "Movimento de activos fungíveis"
+        link: /pt/cookbook/fungible-assets
+      - title: "Estado do livro-razão de consulta"
+        link: /pt/cookbook/query-ledger-state
+      - title: "Eventos de streaming"
+        link: /pt/cookbook/stream-events
 
 features:
   - icon:
@@ -44,16 +66,8 @@ features:
     title: "Referência"
     details: "Consulte as páginas de referência binárias, gênese, Torii e compatibilidade atuais."
     link: /pt/reference/
-  # - title: Cookbook # (TBA)
-
 footer: true
 ---
-
-<section class="nexus-build" aria-labelledby="nexus-build-title">
-<a class="nexus-build__panel" href="./get-started/sora-nexus-dataspaces.html">
-    <span class="nexus-buildcopy"> <span class="nexus-buildeyebrow">SORA Nexus</span> <span id="nexus-build-title" class="nexus-buildtitle">Construir sobre Iroha 3 / SORA Nexus</span> <span class="nexus-builddetails">Construir sobre SORA 3 com Taira rede de teste, Minamoto Exemplos de mainnet e copy-paste que podem tentar agora.</span> </span> <span class="nexus-build__action">Guia aberta <span aria-hidden="true">-&gt;</span></span>
-</a>
-</section>
 
 <hr style="margin-top: 3rem;">
 <p style="font-weight: 200; font-size: 0.875rem;">Hyperledger Iroha faz parte do <a href="https://www.lfdecentralizedtrust.org/projects/tag/ledger-technology" target="_blank">LF Decentralized Trust</a>. Saiba mais em <a href="https://iroha.tech/" target="_blank">iroha.tech</a>.</p>

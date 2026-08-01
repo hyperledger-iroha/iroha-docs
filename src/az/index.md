@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /index.md
-translation_source_hash: 505e8224a59534717045c34b1bf796760d06f9d6808a2a1fd9773aa2f6a00c2d
+translation_source_hash: 3b2ad4ee285a821b56c9cf6fd3f4a8431f1cfa478e88082b45788765d68ed833
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 
@@ -18,6 +18,28 @@ hero:
   #- theme: alt
   #  text: View on GitHub
   #  link: https://github.com/hyperledger-iroha/iroha
+
+nexusPortal:
+  eyebrow: SORA Nexus
+  title: "Iroha 3 / SORA Nexus üzərində qurun"
+  details: "Taira test şəbəkəsinə başlayın, cari əməliyyat axını öyrənin və istehsal üçün hazır tətbiqlər qurmaq üçün diqqət mərkəzində olan reseptlərdən istifadə edin"
+  primaryAction:
+    text: "Taira ilə başlayın."
+    link: /az/get-started/sora-nexus-dataspaces
+  secondaryAction:
+    text: "Yemək kitabına baxın."
+    link: /az/cookbook/
+  recipes:
+    title: "Populyar reseptlər"
+    items:
+      - title: "Əməliyyatın təqdim edilməsi və təsdiqlənməsi"
+        link: /az/cookbook/submit-and-verify-transactions
+      - title: "Fungible aktivlərin köçürülməsi"
+        link: /az/cookbook/fungible-assets
+      - title: "Sorğu kitabının vəziyyəti"
+        link: /az/cookbook/query-ledger-state
+      - title: "Hadisələr axını"
+        link: /az/cookbook/stream-events
 
 features:
   - icon:
@@ -44,16 +66,8 @@ features:
     title: "Referensiya"
     details: "Mövcud binar, genesis, Torii və uyğunluq istinad səhifələrinə baxın."
     link: /az/reference/
-  # - title: Cookbook # (TBA)
-
 footer: true
 ---
 
-<section class="nexus-build" aria-labelledby="nexus-build-title">
-<a class="nexus-build__panel" href="./get-started/sora-nexus-dataspaces.html">
-    <span class="nexus-buildcopy"> <span class="nexus-buildeyebrow">SORA Nexus</span> <span id="nexus-build-title" class="nexus-buildtitle">Üstəlik, Iroha 3 / SORA Nexus</span> <span class="nexus-builddetails">Üstəlik, SORA 3 ilə Taira testnet, Minamoto İndi cəhd edə biləcəyiniz mainnet və kopyalama nümunələri.</span> </span> <span class="nexus-build__action">Açıq təlimat <span aria-hidden="true">-&gt;</span></span>
-</a>
-</section>
-
 <hr style="margin-top: 3rem;">
-<p style="font-weight: 200; font-size: 0.875rem;">Hyperledger Iroha <a href="https://www.lfdecentralizedtrust.org/projects/tag/ledger-technology" target="_blank">LF Decentralized Trust</a>. Daha çox məlumat əldə etmək üçün <a href="https://iroha.tech/" target="_blank">iroha.tech</a> </p>
+<p style="font-weight: 200; font-size: 0.875rem;">Hyperledger Iroha <a href="https://www.lfdecentralizedtrust.org/projects/tag/ledger-technology" target="_blank">LF Decentralized Trust</a> <a href="https://iroha.tech/" target="_blank"> iroha.tech </a> </p> [PH00500]

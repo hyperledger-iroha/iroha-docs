@@ -111,4 +111,14 @@ describe('content policy validation', () => {
 
     expect(await validateContentPolicy(root)).toEqual([])
   })
+
+  test('ignores documented local translation environments and model caches', async () => {
+    const root = await mkdtemp(path.join(os.tmpdir(), 'iroha-docs-policy-'))
+    for (const directory of ['.cache', '.venv-translate']) {
+      await mkdir(path.join(root, directory), { recursive: true })
+      await writeFile(path.join(root, directory, 'model-metadata.json'), '{"profile":"iroha2"}\n')
+    }
+
+    expect(await validateContentPolicy(root)).toEqual([])
+  })
 })

@@ -79,7 +79,9 @@ import Foundation
 
 if #available(iOS 15.0, macOS 12.0, *) {
     let url = URL(string: "https://taira.sora.org/status")!
-    let (data, response) = try await URLSession.shared.data(from: url)
+    var request = URLRequest(url: url)
+    request.setValue("application/json", forHTTPHeaderField: "Accept")
+    let (data, response) = try await URLSession.shared.data(for: request)
 
     if let http = response as? HTTPURLResponse {
         print("status:", http.statusCode)

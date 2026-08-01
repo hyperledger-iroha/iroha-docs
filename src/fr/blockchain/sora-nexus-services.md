@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /blockchain/sora-nexus-services.md
-translation_source_hash: 4608e4e651519144d206b4370e2c334f469460cf9542324b06924a838cb26cb5
+translation_source_hash: de50aa8206a5b82d4340f68173e9d89bb8eabab83369c363eb05c9d6632eed28
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -114,7 +114,7 @@ export TORII_URL=https://taira.sora.org
 curl -fsS "$TORII_URL/openapi.json" \
   | jq '.paths | keys[] | select(test("^/v1/(soracloud|sorafs|soradns|connect|vpn|da)/"))'
 
-curl -fsS "$TORII_URL/status" | jq .
+curl -fsS -H 'Accept: application/json' "$TORII_URL/status" | jq .
 ```
 
 Si `/openapi.json` n'est pas exposé par le profil, essayez `/openapi`. La disponibilité exacte du chemin dépend des fonctionnalités de la construction et de la configuration du réseau.
@@ -126,7 +126,7 @@ Le point d'extrémité public Taira est utile pour les vérifications côté lec
 ```bash
 export TORII_URL=https://taira.sora.org
 
-curl -fsS "$TORII_URL/status" \
+curl -fsS -H 'Accept: application/json' "$TORII_URL/status" \
   | jq '{version: .build.version, peers, blocks, lanes: (.teu_lane_commit | length)}'
 
 curl -fsS "$TORII_URL/v1/connect/status" | jq '{enabled, sessions_active}'

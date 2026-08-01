@@ -1713,6 +1713,18 @@ describe('translated documents', () => {
 layout: home
 hero:
   text: Documentation
+nexusPortal:
+  primaryAction:
+    text: Get Started
+    link: /get-started/sora-nexus-dataspaces
+  secondaryAction:
+    text: Guide
+    link: /cookbook/
+  recipes:
+    title: Guide
+    items:
+      - title: Install
+        link: /cookbook/connect-to-taira
 features:
   - title: Get Started
     link: /get-started/
@@ -1722,6 +1734,9 @@ features:
     expect(translated).toContain('text: "Documentation traduite"')
     expect(translated).toContain('title: "Bien démarrer"')
     expect(translated).toContain('link: /fr/get-started/')
+    expect(translated).toContain('link: /fr/get-started/sora-nexus-dataspaces')
+    expect(translated).toContain('link: /fr/cookbook/')
+    expect(translated).toContain('link: /fr/cookbook/connect-to-taira')
   })
 
   test('refreshes selected routes without deleting the rest of a locale', async () => {

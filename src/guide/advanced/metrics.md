@@ -22,7 +22,7 @@ Start with the operator surfaces exposed by Torii:
 ```bash
 export TORII=http://127.0.0.1:8180
 
-curl -s "$TORII/status" | jq .
+curl -s -H 'Accept: application/json' "$TORII/status" | jq .
 curl -s -H 'Accept: application/json' "$TORII/v1/sumeragi/status" | jq .
 curl -s "$TORII/v1/sumeragi/phases" | jq .
 curl -s "$TORII/v1/sumeragi/rbc" | jq .
@@ -35,7 +35,7 @@ You can try the same read-only pattern against public Taira:
 ```bash
 TAIRA=https://taira.sora.org
 
-curl -fsS "$TAIRA/status" \
+curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA/v1/time/status" \

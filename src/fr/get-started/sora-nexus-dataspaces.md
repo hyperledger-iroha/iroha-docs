@@ -1,14 +1,14 @@
 ---
 translation_locale: fr
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 63c317ab61ba912176c43c83d5b4f026f23a7a6e5fb633872a133c9ea1295686
+translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # S' appuyer sur SORA 3: Taira et Minamoto {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 est la piste de déploiement public face à l'application construite sur Iroha 3 et SORA Nexus. Construire et répétition sur Taira d'abord, puis déplacer la même forme du client à Minamoto uniquement lorsque vous avez des clés mainnet séparées, vraies XOR pour les frais et l'approbation de la production.
+SORA 3 est la piste de déploiement public face à l'application construite sur Iroha 3 et SORA Nexus. Construisez et répétissez d'abord sur Taira, puis déplacez la même forme client vers Minamoto uniquement lorsque vous avez des clés mainnet distinctes, réelles XOR pour les frais et l'approbation de la production.
 
 Ce didacticiel montre comment configurer un client Iroha pour les réseaux publics SORA 3:
 
@@ -37,6 +37,20 @@ Le flux pratique est le suivant:
 3. Exercez votre logique de l'application contre Taira jusqu'à ce que les défaillances soient ennuyeuses et observables.
 4. Créer un signataire séparé Minamoto, le financer avec réel XOR, et déplacer uniquement les mêmes opérations éprouvées sur mainnet.
 
+## Continuez avec le manuel de cuisine {#continue-with-the-cookbook}
+
+Utilisez ce guide pour choisir un réseau, configurer un signataire et payer des frais. Ensuite, continuez avec la recette qui correspond au comportement de l'application que vous souhaitez créer:
+
+|Objectif |La recette |
+| --- | --- |
+|Vérifiez Taira et configurez un client | [Connectez-vous à Taira](/fr/cookbook/connect-to-taira.md) |
+|Envoyez une première écriture et vérifiez son résultat | [Envoyer et vérifier les transactions ](/fr/cookbook/submit-and-verify-transactions.md) |
+|Enregistrement, monnaie et valeur de déplacement | [Les actifs fonciers](/fr/cookbook/fungible-assets.md) |
+|Lire l' état de la demande filtrée | [L'état du registre de requêtes ](/fr/cookbook/query-ledger-state.md) |
+|Réagir aux changements engagés | [Événements de flux](/fr/cookbook/stream-events.md) |
+
+Le manuel de cuisine maintient chaque flux de travail concentré et renvoie les liens ici lorsqu'il a besoin d'un financement Taira ou d'un contexte réseau SORA Nexus.
+
 ## 1. Comprenez ce que vous voulez faire {#_1-understand-what-you-are-setting-up}
 
 Dans SORA Nexus, un espace de données fait partie du catalogue de la voie réseau et du routage. Un client ne crée pas un nouveau espace public de données simplement en modifiant `client.toml`.
@@ -60,6 +74,7 @@ Pour Taira:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -67,6 +82,7 @@ Pour Minamoto:
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -74,6 +90,7 @@ Inspecter l'espace de données et la vue des voies exposées par le nœud:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
@@ -94,6 +111,7 @@ Vérifiez les métadonnées du pont avant d'ajouter un matériau de signature:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/mcp \
+  -H 'Accept: application/json' \
   | jq '{protocolVersion, server: .serverInfo.name, tools: .capabilities.tools.count}'
 ```
 
@@ -135,13 +153,13 @@ Les États membres MCP bridge peut soumettre une lettre signée Iroha la transac
 
 Pour le brut Iroha les transactions, construire et signer l'enveloppe de transaction avec une SDK ou CLI d'abord, donnez ensuite à l'agent seulement les octets de transaction canoniques signés codés comme `body_base64`. L' agent peut soumettre l' enveloppe avec `iroha.transactions.submit_and_wait`, ou soumettre avec `iroha.transactions.submit` et les sondages avec `iroha.transactions.wait`.
 
-Ne pas coller des clés privées dans une demande d'agent. Si un agent doit créer une transaction, appuyez-la sur le code local qui charge les secrets de l'environnement en cours d'exécution de l'utilisateur, la chaîne de clés, le signataire matériel ou le fichier de configuration testnet ignoré. L'agent ne devrait jamais écrire le matériel clé dans Markdown, fixtures, journaux, ou commits.
+Ne pas coller des clés privées dans une demande d'agent. Si un agent a besoin de construire une transaction, appuyez-la sur le code local qui charge les secrets du temps d'exécution de l'utilisateur L'agent ne devrait jamais écrire le matériel clé dans Markdown, fixtures, journaux ou commits.
 
 Avant de soumettre une transaction, demandez à l'agent d'élaborer un court plan de transaction:
 
 - `network`: Taira la racine et la chaîne du réseau de test ID
 - `authority`: compte signataire et payeur de frais
-- `instructions`: répertoire, ébauche, combustion, transfert, métadonnées, permis ou résumé de l'appel d'offres
+- `instructions`: répertoire, ébauche, combustion, transfert, métadonnées, autorisation ou résumé de l'appel d'offres
 - `fee asset`: actif qui sera facturé sur Taira
 - `preflight reads`: vérifications de compte, de solde d'actifs, d'autorisations, d'alias ou de blocs déjà effectuées
 - `expected result`: l'état qui doit être visible après confirmation
@@ -188,6 +206,7 @@ for network in taira minamoto; do
   root="https://$network.sora.org"
   printf '\n%s\n' "$network"
   curl -fsS "$root/status" \
+    -H 'Accept: application/json' \
     | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 done
 ```
@@ -196,6 +215,7 @@ Liste des voies de l'espace de données public exposées par Taira:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -205,6 +225,7 @@ Exécutez la même commande contre Minamoto lorsque vous avez besoin de l'affich
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -220,7 +241,9 @@ const roots = {
 };
 
 for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`).then((res) => res.json());
+  const status = await fetch(`${root}/status`, {
+    headers: { Accept: 'application/json' },
+  }).then((res) => res.json());
   const publicSpaces = status.teu_lane_commit
     .filter((lane) => lane.visibility === 'public')
     .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
@@ -286,7 +309,7 @@ iroha --config ./taira.client.toml taira write-canary \
   --json
 ```
 
-Le canary soumet un ping signé, attend une confirmation et écrit la configuration du signataire en temps d'exécution lorsque `--write-config` est fourni. Taira est un testnet public, de sorte que la saturation des files d'attente peut faire échouer le ping signé même lorsque le robinet lui-même fonctionne. Si `taira doctor` rapporte une file d'attente saturée ou que le canary renvoie `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`, attendez et réessayez avant de traiter cela comme une erreur de configuration du client.
+Le canary soumet un ping signé, attend la confirmation, et écrit la configuration du signataire de l'exécution quand `--write-config` est fournie. Taira est un réseau de test public, donc la saturation de file d'attente peut faire échouer le ping signé même lorsque le robinet lui-même fonctionne. `taira doctor` rapporte une file d'attente saturée ou les retours des canaries `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`, attendre et réessayer avant de le traiter comme une erreur de configuration du client.
 
 Pour les essais de fumée non surveillés, enveloppez le canary dans une boucle de réessai limitée:
 
@@ -328,7 +351,7 @@ Convertir une clé publique Minamoto avec le préfixe de réseau principal:
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-Utilisez le compte résultant ID partout où une Nexus API ou CLI Le commandement demande un compte canonique. ID, Par exemple, le Taira robinet `account_id`, Gardez la clé privée correspondante dans votre configuration de client, et sélectionnez le même réseau public avec `[account].profile = "taira"` ou `[account].profile = "minamoto"`.
+Utilisez le compte résultant ID partout où une Nexus API ou CLI Le commandement demande un compte canonique. ID, Par exemple, le Taira robinet `account_id`, les requêtes d'équilibre, les champs de compte stricts ou les liaisons par alias. clé privée dans votre configuration client, et sélectionnez le même réseau public avec `[account].profile = "taira"` ou `[account].profile = "minamoto"`.
 
 La génération de ID ne crée pas elle-même un compte en chaîne financé. Sur Taira, le robinet peut créer et financer le compte pour les écrits testnet. sur Minamoto, utilisez une connexion principale approuvée ou un flux de trésorerie.
 
@@ -366,7 +389,9 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 Apportez le puzzle:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
+curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
+  -H 'Accept: application/json' \
+  | jq .
 ```
 
 Le robinet est un service public de testnet. Si le puzzle ou le point d'extrémité de la demande renvoie `502`, un délai ou une autre erreur au niveau du gateway, attendez et réessayez avant de modifier vos clés ou votre configuration client.
@@ -391,20 +416,26 @@ Lorsque `difficulty_bits` est `0`, soumettez uniquement le compte ID:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
-  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}'
+  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
 Lorsque `difficulty_bits` est supérieur à `0`, résoudre le puzzle et inclure la hauteur de l'ancre plus la nonce:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
   -d '{
     "account_id": "<TAIRA_I105_ACCOUNT_ID>",
     "pow_anchor_height": 741,
     "pow_nonce_hex": "<NONCE_HEX>"
-  }'
+  }' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
 L'algorithme du puzzle est:
@@ -414,8 +445,8 @@ L'algorithme du puzzle est:
    - le compte UTF-8 ID
    - `anchor_height` en tant que big-endian `u64`
    - `anchor_block_hash_hex` décodé en octets
-   - `challenge_salt_hex` décodé en octets, lorsqu'il est présent;
-2. Essayez les nonces `u64` codées comme des valeurs de 8 bytes large-endian.
+   - `challenge_salt_hex` décodé en octets, lorsqu'il est présent.
+2. Essayez les nonces `u64` codées comme des valeurs de 8 octets à large enjeu.
 3. Pour chaque nonce, utilisez scrypt:
    - mot de passe: le nonce à 8 octets
    - sal: le défi de 32 octets
@@ -430,21 +461,25 @@ La réponse au robinet comprend l'actif financé et le hash des transactions en 
 ```json
 {
   "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-  "asset_definition_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
+  "asset_definition_id": "<TAIRA_FEE_ASSET_DEFINITION_ID>",
   "asset_id": "...",
-  "amount": "25000",
+  "amount": "<FUNDED_AMOUNT>",
   "tx_hash_hex": "...",
   "status": "QUEUED"
 }
 ```
 
-La réponse est actuellement renvoyée avec HTTP `202 Accepted`. La définition d'actif ID ci-dessus est l'actif de redevance Taira financé par le robinet public. Le robinet a accepté la demande lorsqu'il renvoie le `tx_hash_hex` et le `status: "QUEUED"`.
+La réponse est actuellement renvoyée avec HTTP `202 Accepted`. Il est `asset_definition_id` est le courant Taira l'actif de frais financé par le robinet public; dériver de la réponse au lieu de copier un exemple ID. Le robinet a accepté la demande à son retour. `tx_hash_hex` et `status: "QUEUED"`.
 
 Ensuite, enquête sur l'actif financé avant de soumettre vos propres transactions de paiement de frais:
 
 ```bash
+TAIRA_FEE_ASSET_DEFINITION=$(
+  jq -er '.asset_definition_id' ./taira-faucet-response.json
+)
+
 iroha --config ./taira.client.toml ledger asset get \
-  --definition 6TEAJqbb8oEPmLncoNiMRbLEK6tw \
+  --definition "$TAIRA_FEE_ASSET_DEFINITION" \
   --account <TAIRA_I105_ACCOUNT_ID>
 ```
 
@@ -470,7 +505,12 @@ def has_leading_zero_bits(digest: bytes, bits: int) -> bool:
 root = "https://taira.sora.org"
 account_id = sys.argv[1]
 
-with urllib.request.urlopen(f"{root}/v1/accounts/faucet/puzzle") as res:
+puzzle_request = urllib.request.Request(
+    f"{root}/v1/accounts/faucet/puzzle",
+    headers={"Accept": "application/json"},
+)
+
+with urllib.request.urlopen(puzzle_request) as res:
     puzzle = json.load(res)
 
 claim = {"account_id": account_id}
@@ -503,7 +543,7 @@ if difficulty > 0:
 request = urllib.request.Request(
     f"{root}/v1/accounts/faucet",
     data=json.dumps(claim).encode(),
-    headers={"content-type": "application/json"},
+    headers={"Accept": "application/json", "content-type": "application/json"},
     method="POST",
 )
 
@@ -609,6 +649,7 @@ Avant de préparer un changement, saisissez le catalogue en direct actuel:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
@@ -664,6 +705,7 @@ L'acceptation par l'opérateur doit inclure les portes suivantes:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | select(.dataspace_alias == "payments")'
 ```
 

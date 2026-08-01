@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/domains.md
-translation_source_hash: 4c42df3c179a086b8823264df2b69f68d7d3df500c8362d78f7ba56875dcfad1
+translation_source_hash: 5e52579436a181d76c83fa549991e56064ae57349b7109d5c41ec7953e5cbb2e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -45,7 +45,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
 ```
 
-A intenção identifica `payments.universal`, seu espaço de dados numérico, proprietário canônico I105, prazo de aquisição do arrendamento e guarda da cotação atual de política / pagamento. O ponto final do planejador é `POST /v1/aliases/setup/plan`; o plano devolvido é vinculado a cadeia, autoridade, estado e prazo. A remoção de domínio ainda usa [`Unregister`](/pt/blockchain/instructions.md#un-register).
+A intenção identifica `payments.universal`, o seu espaço de dados numérico, o proprietário canônico I105, o prazo da aquisição do arrendamento e a política/cotação de pagamento corrente. O ponto final do planejador é `POST /v1/aliases/setup/plan`; seu plano devolvido é limitado a cadeia, autoridade, estado e prazo. A remoção de domínio ainda usa [`Unregister`](/pt/blockchain/instructions.md#un-register).
 
 A criação ou remoção de um domínio requer a permissão apropriada de gerenciamento de domínio sob o validador ativo de tempo de execução. Os metadados do domínio podem ser atualizados com [`SetKeyValue` e `RemoveKeyValue`](/pt/blockchain/instructions.md#setkeyvalue-removekeyvalue) quando a autoridade tiver permissão para modificar esse domínio.
 
@@ -61,7 +61,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
 Mapear o catálogo de faixa pública de volta para os alias do espaço de dados:
 
 ```bash
-curl -fsS https://taira.sora.org/status \
+curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .block_height, .finality_lag_slots]
     | @tsv'
@@ -92,7 +92,7 @@ Construa a intenção de um nome de domínio único em testes repetidos da rede,
 
 ## Relações com outras entidades {#relationship-to-other-entities}
 
-As definições de ativos usam identificadores qualificados por domínio e as consultas podem listar domínios ou encontrar objetos com alcance para um domínio. As contas em si são sem domínio no modelo de dados atual, mas as contas podem possuir domínios e manter ativos cujas definições vivem sob os domínios.
+Os domínios agrupam objetos do livro-razão e fornecem um espaço de nomes para dados dimensionados por domínio. As definições de ativos usam identificadores qualificados por domínio, e as consultas podem listar domínios ou encontrar As contas em si são sem domínio no modelo de dados atual, mas as contas podem possuir domínios e manter ativos cujas definições vivem sob domínios.
 
 Veja também:
 

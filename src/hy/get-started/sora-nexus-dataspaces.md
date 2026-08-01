@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 63c317ab61ba912176c43c83d5b4f026f23a7a6e5fb633872a133c9ea1295686
+translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -24,7 +24,7 @@ SORA 3 ծրագրի ուղղված հանրային տեղակայման ուղ�
 
 |Քայլ |Taira Testnet |Minamoto Mainnet |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|Սկսեք կարդալ ցանցի վիճակը |Հարց `/status` առանց բանալիների |Հարցում `/status` առանց բանալիների |
+|Սկսեք կարդալ ցանցի վիճակը |Հարցում `/status` առանց բանալիների |Հարցում `/status` առանց բանալիների |
 |Ընտրեք տվյալների տարածք |Օգտագործեք հանրային `universal` , եթե ձեր հավելվածը չի պահանջում կառավարվող երթուղին |Օգտագործեք նույն տվյալների տարածքը միայն հիմնական ցանցի հաստատումից հետո: |
 |Ստացեք վճարային ակտիվ:|Օգտագործեք հանրային Taira ջրհեղեղ |Ստացեք XOR ֆինանսավորվող Minamoto հաշիվից կամ հաստատված գանձարանային հոսքից |
 |Թեստը գրում է |Օգտագործեք ջրհեղեղով ֆինանսավորվող փորձարկում XOR |Օգտագործել փորձարկման գործիքներ, գրում է ծախսել իրական XOR |
@@ -36,6 +36,20 @@ SORA 3 ծրագրի ուղղված հանրային տեղակայման ուղ�
 2. Ավելացրեք ստորագրող եւ ֆինանսավորեք այն Taira ջրհեղեղով:
 3. Օգտագործեք ձեր հավելվածի տրամաբանությունը Taira - ի դեմ, մինչեւ ձանձրալի եւ դիտարկելի չլինեն սխալները:
 4. Ստեղծեք առանձին Minamoto ստորագրող, ֆինանսավորել այն իրական XOR եւ տեղափոխել միայն նույն ապացուցված գործառույթները mainnet:
+
+## Շարունակեք խոհանոցի գիրքը {#continue-with-the-cookbook}
+
+Օգտագործեք այս ուղեցույցը ՝ ընտրելու ցանց, կոնֆիգուրացնել ստորագրող եւ ֆինանսավորել վճարները: Այնուհետեւ շարունակեք այն բաղադրատոմսը, որը համապատասխանում է ձեր ծրագրային վարքագիծին, որը ցանկանում եք ստեղծել.
+
+|Նպատակ |Պրակտիկա |
+| --- | --- |
+|Ստուգեք Taira եւ կարգավորեք հաճախորդը | [Կապակցեք Taira](/hy/cookbook/connect-to-taira.md) |
+|Առաջին գրառումը ուղարկեք եւ ստուգեք արդյունքը:| [Գործարքների ներկայացում եւ ստուգում](/hy/cookbook/submit-and-verify-transactions.md) |
+|Գրանցում, մինետ եւ փոխադրման արժեք | [Հաշվարկային ակտիվներ](/hy/cookbook/fungible-assets.md) |
+|Կարդալ ֆիլտրված դիմման վիճակը | [Հարցազրույց Ledger State](/hy/cookbook/query-ledger-state.md) |
+|Պատասխանել պարտավորվող փոփոխություններին | [Հոսքային իրադարձություններ](/hy/cookbook/stream-events.md) |
+
+Խոհանոցային գիրքը պահում է յուրաքանչյուր աշխատանքային հոսքի կենտրոնացած եւ կապեր այստեղ, երբ այն կարիք ունի Taira ֆինանսավորման կամ SORA Nexus ցանցի համատեքստ:
 
 ## 1. Հասկացեք, թե ինչ եք նախապատրաստում {#_1-understand-what-you-are-setting-up}
 
@@ -60,6 +74,7 @@ Taira համար՝
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -67,6 +82,7 @@ Minamoto համար՝
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -74,6 +90,7 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
@@ -94,6 +111,7 @@ Taira նաեւ բացահայտում է Torii- ի բնիկ մոդելի համ�
 
 ```bash
 curl -fsS https://taira.sora.org/v1/mcp \
+  -H 'Accept: application/json' \
   | jq '{protocolVersion, server: .serverInfo.name, tools: .capabilities.tools.count}'
 ```
 
@@ -133,9 +151,9 @@ say "submit this transaction".
 
 MCP կամուրջը կարող է ներկայացնել ստորագրված Iroha գործարք, բայց այն չի վերացնում գործարքի սովորական պահանջները: Գործարքի համար դեռ պետք է ճիշտ իշխանություն, թույլտվություններ, վճարային ֆինանսավորում, շղթա ID, մեթադատա եւ ստորագրություն:
 
-Հում Iroha գործարքների համար նախ կառուցեք եւ ստորագրեք գործարքի փաթեթը SDK կամ CLI անունով, ապա գործակալին տրամադրեք միայն `body_base64` կոդավորված կանոնիկ ստորագրված գործարքի բայտները: Գործակալը կարող է փաթեթը ներկայացնել `iroha.transactions.submit_and_wait`, կամ ներկայացնել `iroha.transactions.submit` եւ հարցազրույց՝ `iroha.transactions.wait`:
+Հատուկ Iroha գործարքների համար նախ ստեղծեք եւ ստորագրեք գործարքի փաթեթը SDK կամ CLI անունով, այնուհետեւ ներկայացրեք գործակալին միայն կանոնական ստորագրված գործարքի բայտներ, որոնք կոդավորված են `body_base64`։ Գործակալը կարող է փաթեթը ներկայացնել `iroha.transactions.submit_and_wait` կամ `iroha.transactions.submit` եւ հարցազրույց՝ `iroha.transactions.wait` անունով:
 
-Եթե գործակալը պետք է կառուցի գործարք, ապա ուղղեք այն տեղական կոդին, որը բեռնում է գաղտնիքները օգտագործողի վազման ժամանակի միջավայրից, բանալիրների շղթայից, սարքավորումների ստորագրողից կամ անտեսված testnet կոնֆիգ ֆայլից: Գործակալը երբեք չպետք է կարեւոր նյութը գրի Մարկդաունում, ֆիքսիչներում, օրագրերում կամ պարտավորություններում:
+Մի տեղադրեք մասնավոր բանալիները գործակալի հրահանգի մեջ: Եթե գործակալը պետք է կառուցի գործարք, ուղղեք այն տեղական կոդին, որը բեռնում է գաղտնիքները օգտագործողի վազման ժամանակ Շրջակա միջավայրի, ստեղնաշարի, սարքավորումների ստորագրող կամ անտեսված testnet կոնֆիգ ֆայլը. գործակալը երբեք չպետք է գրի հիմնական նյութը Markdown- ում, տեղադրումներում, օրագրերում կամ հանձնարարություններում։
 
 Առեւտրի ներկայացնելուց առաջ գործակալը պետք է պատրաստի կարճ գործարքի ծրագիր.
 
@@ -188,6 +206,7 @@ for network in taira minamoto; do
   root="https://$network.sora.org"
   printf '\n%s\n' "$network"
   curl -fsS "$root/status" \
+    -H 'Accept: application/json' \
     | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 done
 ```
@@ -196,6 +215,7 @@ done
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -205,6 +225,7 @@ curl -fsS https://taira.sora.org/status \
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -220,7 +241,9 @@ const roots = {
 };
 
 for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`).then((res) => res.json());
+  const status = await fetch(`${root}/status`, {
+    headers: { Accept: 'application/json' },
+  }).then((res) => res.json());
   const publicSpaces = status.teu_lane_commit
     .filter((lane) => lane.visibility === 'public')
     .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
@@ -286,7 +309,7 @@ iroha --config ./taira.client.toml taira write-canary \
   --json
 ```
 
-Canary- ն ներկայացնում է ստորագրված ping, սպասում է հաստատմանը եւ գրում է վազման ժամանակի ստորագրողի կոնֆիգը, երբ տրամադրվում է `--write-config`: Taira հանրային փորձարկման ցանց է, այնպես որ հերթի հագեցածությունը կարող է թույլ տալ, որ ստորագրված Ping- ը ձախողվի նույնիսկ այն դեպքում, երբ ինքնուրույն ջրհեղուկն աշխատում է: Եթե `taira doctor`-ը հայտնում է հագեցած հերթի մասին, կամ կանարին վերադարձնում է `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`-ը, սպասեք եւ կրկին փորձեք այն դիտարկել որպես հաճախորդի կազմավորման սխալ:
+Canary- ն ներկայացնում է ստորագրված ping, սպասում է հաստատմանը եւ գրում է runtime signer config- ը, երբ տրամադրվում է `--write-config`: Taira հանրային փորձարկման ցանց է, այնպես որ հերթի հագեցվածությունը կարող է թույլ տալ, որ ստորագրված պինգը ձախողվի նույնիսկ այն ժամանակ, երբ ինքնուրույն faucet- ը աշխատում է: Եթե `taira doctor`- ն հայտնում է հագեցած հերթի մասին կամ կանարին վերադարձնում է `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`, սպասեք եւ կրկին փորձեք, նախքան այն դիտարկելը որպես հաճախորդի կազմավորման սխալ.
 
 Առանց վերահսկողության ծխի փորձարկումների համար կաթիլը փակեք սահմանված կրկնակի փորձարկման փուլում.
 
@@ -308,7 +331,7 @@ test "$ok" = true
 
 ## Ստեղծեք SORA Nexus հաշիվ ID {#generate-a-sora-nexus-account-id}
 
-SORA Nexus հաշիվը ID հանդիսանում է հաշվառման հանրային բանալից եւ թիրախային ցանցի նախադրյալից ստացված քանոնիկ I105 հասցեն: Այն չի համարվում հաճախորդի `[account].domain` արժեքը TOML: Նույն հանրային բանալիները կոդավորվում են տարբեր IDs հասցեներում Taira եւ Minamoto, իսկ արտադրության օգտատերերը պետք է ստեղծեն առանձին բանալիների զույգ Minamoto համար:
+SORA Nexus հաշիվը ID հանդիսանում է հաշվառման հանրային բանալից եւ թիրախային ցանցի նախադրյալից ստացված քանոնիկ I105 հասցեն: Այն չի հանդիսանում հաճախորդի `[account].domain` արժեքը TOML: Նույն հանրային բանալիները կոդավորվում են տարբեր IDs հասցեներում Taira եւ Minamoto, իսկ արտադրության օգտատերերը պետք է ստեղծեն առանձին բանալիների զույգ Minamoto համար:
 
 Ստեղծել կամ բեռնել Ed25519 կոճակային զույգը, որը վերահսկում է հաշիվը:
 
@@ -328,7 +351,7 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-Օգտագործեք արդյունաբերված հաշիվը ID, երբ Nexus API կամ CLI հրամանը պահանջում է կանոնիկ հաշիվ ID, օրինակ՝ Taira ջրհեղեղին `account_id`, հավասարակշռության հարցումներ, խիստ հաշվառման դաշտեր կամ այլն: Պահպանեք համապատասխան գաղտնի բանալին ձեր հաճախորդի կարգավորման մեջ եւ ընտրեք նույն հանրային ցանցը `[account].profile = "taira"` կամ `[account].profile = "minamoto"`:
+Օգտագործեք ստացված հաշիվը ID այն դեպքում, երբ Nexus API կամ CLI հրամանը պահանջում է կանոնիկ հաշիվ ID, օրինակ՝ Taira ջրհեղեղի `account_id`, հավասարակշռման հարցումները, խիստ հաշիվների դաշտերը կամ alias- ի պարտավորությունները: Պահպանեք համապատասխան գաղտնի բանալին ձեր հաճախորդի կարգավորման մեջ եւ ընտրեք նույն հանրային ցանցը `[account].profile = "taira"` կամ `[account].profile = "minamoto"`:
 
 ID ստեղծելը ինքնուրույն չի ստեղծում ֆինանսավորվող շղթայի վրա հաշիվ: Taira -ի վրա ջրհեղեղեղը կարող է ստեղծել եւ ֆինանսավորել թեստային ցանցի գրառումների համար հաշիվը: Minamoto -ին, օգտագործեք հաստատված հիմնական ցանցի ներմուծում կամ գանձարանի հոսք:
 
@@ -366,7 +389,9 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 Գտիր հանելուկը:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
+curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
+  -H 'Accept: application/json' \
+  | jq .
 ```
 
 Գլխեղդը հանդիսանում է հանրային փորձարկման ցանցի ծառայություն: Եթե հանելուկը կամ պահանջվող վերջնական կետը վերադարձնում են `502`, ժամանակահատվածը, կամ Gateway- ի մակարդակի այլ սխալ, սպասեք եւ կրկին փորձեք նախքան ձեր բանալիները կամ հաճախորդի կարգավորումը փոխելը:
@@ -391,20 +416,26 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
-  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}'
+  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
 Երբ `difficulty_bits` մեծ է, քան `0`, լուծեք հանելուկը եւ ներառեք կեղտերի բարձրությունը գումարած nonce- ը.
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
   -d '{
     "account_id": "<TAIRA_I105_ACCOUNT_ID>",
     "pow_anchor_height": 741,
     "pow_nonce_hex": "<NONCE_HEX>"
-  }'
+  }' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
 Պազլային ալգորիթմը հետեւյալն է.
@@ -415,14 +446,14 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet \
    - `anchor_height` որպես խոշոր հնդիա `u64`
    - `anchor_block_hash_hex` կոդավորվել է որպես բայթներ
    - `challenge_salt_hex` կոդավորվում է որպես բայթներ, երբ ներկա է
-2. Փորձեք `u64` nonces կոդավորվել որպես մեծ-endian 8-բայտ արժեքներ.
+2. Փորձեք `u64` nonces կոդավորված որպես մեծ-endian 8-բայտ արժեքներ.
 3. Յուրաքանչյուր նոնսի համար ստեղագրեք հետեւյալը.
    - գաղտնաբառ. 8-բայտային նոնս
    - աղ. 32-բայտային մարտահրավեր
    - `N = 2^scrypt_log_n`
    - `r = scrypt_r`
    - `p = scrypt_p`
-   - արտադրանքի երկարություն. 32 բայտ
+   - արտադրանքի երկարությունը. 32 բայտ
 4. Հաղթող նոնսը առաջին դիժեսն է, որը առնվազն `difficulty_bits` առաջատար է զրոյական բիթներով:
 
 Բջիջային պատասխանը ներառում է ֆինանսավորվող ակտիվը եւ հերթով կատարված գործարքի հաշինգը.
@@ -430,21 +461,25 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet \
 ```json
 {
   "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-  "asset_definition_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
+  "asset_definition_id": "<TAIRA_FEE_ASSET_DEFINITION_ID>",
   "asset_id": "...",
-  "amount": "25000",
+  "amount": "<FUNDED_AMOUNT>",
   "tx_hash_hex": "...",
   "status": "QUEUED"
 }
 ```
 
-Պատասխանը ներկայումս վերադարձվում է HTTP `202 Accepted`։ Վերոնշյալ ակտիվի սահմանումը ID-ն հանդիսանում է հանրային գազանի կողմից ֆինանսավորվող Taira վճարային ակտիվը։ Գազանը ընդունել է խնդրանքը, երբ վերադարձնում է `tx_hash_hex` եւ `status: "QUEUED"`։
+Պատասխանը ներկայումս վերադարձվում է HTTP `202 Accepted`։ Նրա `asset_definition_id`-ն հանդիսանում է հանրային ջրհեղեղի կողմից ֆինանսավորվող ընթացիկ Taira վճարային ակտիվը, այն բխում է պատասխանից, այլ ոչ թե պատճենելով օրինակ ID։ Ջրհեղին ընդունել է խնդրանքը, երբ վերադարձնում է `tx_hash_hex` եւ `status: "QUEUED"`:
 
 Այնուհետեւ հարցում անցկացրեք ֆինանսավորվող ակտիվի վերաբերյալ, նախքան վճարովի գործարքները ներկայացնելուց:
 
 ```bash
+TAIRA_FEE_ASSET_DEFINITION=$(
+  jq -er '.asset_definition_id' ./taira-faucet-response.json
+)
+
 iroha --config ./taira.client.toml ledger asset get \
-  --definition 6TEAJqbb8oEPmLncoNiMRbLEK6tw \
+  --definition "$TAIRA_FEE_ASSET_DEFINITION" \
   --account <TAIRA_I105_ACCOUNT_ID>
 ```
 
@@ -470,7 +505,12 @@ def has_leading_zero_bits(digest: bytes, bits: int) -> bool:
 root = "https://taira.sora.org"
 account_id = sys.argv[1]
 
-with urllib.request.urlopen(f"{root}/v1/accounts/faucet/puzzle") as res:
+puzzle_request = urllib.request.Request(
+    f"{root}/v1/accounts/faucet/puzzle",
+    headers={"Accept": "application/json"},
+)
+
+with urllib.request.urlopen(puzzle_request) as res:
     puzzle = json.load(res)
 
 claim = {"account_id": account_id}
@@ -503,7 +543,7 @@ if difficulty > 0:
 request = urllib.request.Request(
     f"{root}/v1/accounts/faucet",
     data=json.dumps(claim).encode(),
-    headers={"content-type": "application/json"},
+    headers={"Accept": "application/json", "content-type": "application/json"},
     method="POST",
 )
 
@@ -599,7 +639,7 @@ alice@apps.universal
 alice@universal
 ```
 
-Հստակ հաշվառման դաշտերը դեռ օգտագործում են կանոնական I105 հաշիվը IDs: Բարեւեք կեղծանուններին որպես մարդկային ընթերցելի կապեր, որոնք լուծվում են կանոնային հաշվին IDs.
+Հստակ հաշվառման դաշտերը դեռեւս օգտագործում են կանոնական I105 հաշիվը IDs: Բարեւեք կեղծանունները որպես մարդկային ընթերցելի կապեր, որոնք լուծվում են կանոնային հաշվին IDs.
 
 ## 8. Տվյալների նոր տարածք տրամադրել {#_8-provision-a-new-dataspace}
 
@@ -609,6 +649,7 @@ alice@universal
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
@@ -664,6 +705,7 @@ description = "Route payments domains to the payments dataspace"
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | select(.dataspace_alias == "payments")'
 ```
 

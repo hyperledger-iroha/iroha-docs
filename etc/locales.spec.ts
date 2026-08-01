@@ -25,6 +25,19 @@ describe('locale registry', () => {
       'he',
     ])
   })
+
+  test('localizes the cookbook nav and unlinked sidebar group labels', () => {
+    const groupKeys = Object.keys(ROOT_LOCALE.navigation.cookbookGroups) as Array<
+      keyof typeof ROOT_LOCALE.navigation.cookbookGroups
+    >
+
+    for (const locale of TRANSLATED_LOCALES) {
+      expect(locale.navigation.cookbook).not.toBe(ROOT_LOCALE.navigation.cookbook)
+      for (const key of groupKeys) {
+        expect(locale.navigation.cookbookGroups[key]).not.toBe(ROOT_LOCALE.navigation.cookbookGroups[key])
+      }
+    }
+  })
 })
 
 describe('locale routes', () => {

@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: 85cc94399b9892984615bf8a0821a1f30395eb87ec164592ca98fbd9903ef834
+translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -43,7 +43,7 @@ Bu `dist/NoritoBridge.xcframework` ni hosil qiladi; `IrohaSwift/Package.swift` u
 
 ## CocoaPods {#cocoapods}
 
-Kod bazasida shuningdek: `IrohaSwift/IrohaSwift.podspec`. O ' zbekiston Respublikasining `IrohaSwift` kapsula, Swift 5.9 va iOS 15. Podspec olib tashlaydi Swift asosiy ma'muriyatdan olingan manbalar; natijali ko'prik hali ham mavjud bo'lishi va bitim kodlash uchun u bilan bog'lanish kerak, Ed25519 bo'lmagan imzolar va Connect kripto.
+Kod bazasida shuningdek: `IrohaSwift/IrohaSwift.podspec`. O ' zbekiston Respublikasining `IrohaSwift` kapsula, Swift 5.9 va iOS 15. Podspec olib tashlaydi Swift asosiy ombordan olingan manbalar; asl koʻprik hali ham mavjud boʻlishi kerak Transaksiya kodlash, Ed25519-dan tashqari imzolash va Connect kripto uchun bog'langan.
 
 ## Tez ishga tushirish {#quickstart}
 
@@ -72,7 +72,9 @@ import Foundation
 
 if #available(iOS 15.0, macOS 12.0, *) {
     let url = URL(string: "https://taira.sora.org/status")!
-    let (data, response) = try await URLSession.shared.data(from: url)
+    var request = URLRequest(url: url)
+    request.setValue("application/json", forHTTPHeaderField: "Accept")
+    let (data, response) = try await URLSession.shared.data(for: request)
 
     if let http = response as? HTTPURLResponse {
         print("status:", http.statusCode)

@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /get-started/operate-iroha-via-cli.md
-translation_source_hash: 9391bab95aa0ee20c7f036cc175f3a6d3a8852e6ea90b09d9ebf1a838973c765
+translation_source_hash: ab8f3bf6d2259dc1ea649273e695429a992108b936475b263fe9d1fae59e8766
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -49,10 +49,10 @@ CLI འདི་ མཐོ་ཤོས་གནས་ཚད་ཀྱི་བཀ
 
 ཁྱོད་ཀྱིས་ ས་གནས་ཀྱི་ འདྲ་མཉམ་ཅིག་མ་ལག་ལེན་འཐབ་པའི་ཧེ་མར་ ཀློག་རྐྱངམ་གཅིག་ལུ་ Taira བརྟག་ཞིབ་འབད་ཚུགས། འ་ནི་བཀའ་རྒྱ་ཚུ་གིས་ མི་མང་གི་ Torii JSON ལྕགས་ལམ་ཚུ་ལག་ལེན་འཐབ་དོ་ཡོདཔ་མ་ཚད་ testnet XOR མ་ལག་ལེན་འཐབ་ཨིན།
 
-Taira གསོ་བའི་བརྟག་དཔྱད་འབད་:
+Taira གནས་གོང་བརྟག་དཔྱད་འབད་:
 
 ```bash
-curl -fsS https://taira.sora.org/status \
+curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 ```
 

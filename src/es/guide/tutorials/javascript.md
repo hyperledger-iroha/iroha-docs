@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: feddadb1b50c5cc8beea188fd7053eeaae58d6ab9203687e9a1378f203229168
+translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -45,7 +45,9 @@ Utilice `fetch` incorporado en Node.js 24 para sondear Taira antes de añadir el
 ```js
 const root = "https://taira.sora.org";
 
-const status = await fetch(`${root}/status`).then((res) => res.json());
+const status = await fetch(`${root}/status`, {
+  headers: { Accept: "application/json" },
+}).then((res) => res.json());
 console.log({
   blocks: status.blocks,
   queueSize: status.queue_size,
@@ -85,7 +87,7 @@ Para la bandeja de arranque Connect solo para el navegador, utilice `@iroha/iroh
 
 ## Escrow nativo {#native-escrow}
 
-Las aplicaciones JavaScript y TypeScript pueden utilizar escrow nativo a través de contratos Kotodama. Compila las llamadas de host de escrow con `@iroha/iroha-js/kotodama-compiler`; los constructores directos de transacciones de escrow nativos no están actualmente expuestos por el JavaScript SDK. Vea [Native Asset Escrow](/es/blockchain/escrow.md#javascript-and-typescript-kotodama) para el ejemplo de llamada del anfitrión de la fianza.
+JavaScript y TypeScript las aplicaciones pueden utilizar el escrow nativo a través Kotodama Compila las llamadas del anfitrión de custodia con `@iroha/iroha-js/kotodama-compiler`; los constructores directos de las transacciones de escrow nativo no están actualmente expuestos por el JavaScript SDK. Veamos . [Aseguración de activos nativos](/es/blockchain/escrow.md#javascript-and-typescript-kotodama) para el ejemplo de la llamada del anfitrión en custodia.
 
 ## Cobertura actual {#current-coverage}
 

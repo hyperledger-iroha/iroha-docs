@@ -1,14 +1,14 @@
 ---
 translation_locale: my
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 63c317ab61ba912176c43c83d5b4f026f23a7a6e5fb633872a133c9ea1295686
+translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # SORA 3 ကို တည်ဆောက်ပါ: Taira နှင့် Minamoto {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 သည် Iroha 3 နှင့် SORA Nexus ပေါ်တွင်တည်ဆောက်ထားသော app မျက်နှာပြင် အများပြည်သူ ဖြန့်ဖြူးရေးလမ်းကြောင်းဖြစ်သည်။ ပထမဦးဆုံးအားဖြင့် Taira ကို တည်ဆောက်ပြီး လေ့ကျင့်ပါ၊ ထို့နောက် client ပုံစံတူကို Minamoto သို့ပြောင်းပါကသာ သီးခြား mainnet ခလုတ်များရှိသောအခါ၊ အခွန်အတွက်စစ်မှန်သော XOR နှင့်ထုတ်လုပ်မှုအတည်ပြုချက်ရှိသည်။
+SORA 3 သည် app ကို ဦးတည်ပြီး တည်ဆောက်ထားသော အများပြည်သူ ဖြန့်ချိရေးလမ်းကြောင်းဖြစ်သည်။ Iroha 3 နှင့် SORA Nexus. ဆောက်လုပ်ပြီး လေ့ကျင့်ပါ။ Taira ပထမဦးဆုံး၊ အဲဒီနောက်မှာ အလားတူ client shape ကို Minamoto သင်မှာ သီးခြားကလီးတွေရှိရင်သာ၊ တကယ့် XOR အခကြေးနဲ့ ထုတ်လုပ်မှု ခွင့်ပြုချက်အတွက်ပါ။
 
 ဒီသင်ခန်းစာမှာ အများပြည်သူ SORA 3 ကွန်ရက်များအတွက် Iroha ဖောက်သည်ကိုဘယ်လို configure လုပ်ရမလဲပြသထားပါတယ်
 
@@ -27,7 +27,7 @@ Taira ကို ပေါင်းစပ်မှု စမ်းသပ်မှ
 |ကွန်ရက်အခြေအနေကို စတင်ဖတ်ရှုပါ |သော့မရှိတဲ့ မေးခွန်း `/status` |သော့မရှိတဲ့ မေးခွန်း `/status` |
 |ဒေတာနေရာကို ရွေးချယ်ပါ။|အများသုံး `universal` ကို သုံးပါ၊ သင့်ရဲ့ app မှာ ထိန်းချုပ်ထားတဲ့ လမ်းကြောင်း မလိုဘူးဆိုရင် |အလားတူ ဒေတာနေရာကို အဓိကကွန်ရက် အတည်ပြုပြီးနောက်သာ သုံးပါ။ |
 |အခွန်အရင်းအမြစ်ရယူပါ။|အများပြည်သူ Taira faucet ကိုသုံးပါ။|ငွေကြေးထောက်ပံ့ထားတဲ့ Minamoto အကောင့်မှ (သို့) ခွင့်ပြုထားသော ဘဏ္ဍာငွေစီးဆင်းမှုမှ XOR ကိုရယူခြင်း |
-|Test က ရေးထားပါတယ်|faucet-financed test XOR ကို အသုံးပြုပါ။|စမ်းသပ်မှု tooling ကိုမသုံးပါနဲ့; စာရင်းအင်းစရိတ်စစ်မှန် XOR |
+|Test က ရေးထားတယ်|faucet-financed test XOR ကို အသုံးပြုပါ။|စမ်းသပ်မှု tooling ကိုမသုံးပါနဲ့; စာရင်းအင်းစရိတ်စစ်မှန် XOR |
 |အားဖြည့်ပေးပါ။|ဆင်ခြင်တုံတရား၊ စောင့်ကြည့်မှု၊ လက်မှတ်ရေးထိုးမှုကို ထပ်မံစမ်းသပ်ပါ။|သီးခြားသော့တွေ၊ ဘဏ္ဍာရေးနဲ့ ဖြန့်ချိမှု ထိန်းချုပ်မှုတွေကို သုံးပါ။ |
 
 လက်တွေ့ စီးဆင်းမှုဟာ-
@@ -36,6 +36,20 @@ Taira ကို ပေါင်းစပ်မှု စမ်းသပ်မှ
 2. လက်မှတ်ရေးထိုးသူကို ထည့်ပြီး Taira faucet နဲ့ ငွေပေးချေပါ။
 3. Taira ကို ဆန့်ကျင်ပြီး သင့်ရဲ့ app logic ကို လေ့ကျင့်ပါ၊ ပျက်ကွက်မှုတွေဟာ ငြီးငွေ့စရာဖြစ်ပြီး လေ့လာလို့ရတဲ့ အထိပါ။
 4. သီးခြား Minamoto လက်မှတ်ရေးထိုးသူကို ဖန်တီးပြီး တကယ့် XOR ဖြင့် ရင်းနှီးမြှုပ်နှံပြီး သက်သေပြထားတဲ့ လုပ်ငန်းတွေကိုပဲ mainnet သို့ ပြောင်းပါ။
+
+## Cookbook ကို ဆက်သုံးပါ {#continue-with-the-cookbook}
+
+Network ကို ရွေးချယ်ရန်၊ လက်မှတ်ရေးထိုးသူကို သတ်မှတ်ရန်နှင့် ငွေကြေးခများအတွက် ဤလမ်းညွှန်ကို အသုံးပြုပါ။ ထို့နောက်သင်တည်ဆောက်ချင်သော application ပြုမူပုံကိုက်ညီသည့် recipe ကိုဆက်လုပ်ပါ-
+
+|ရည်မှန်းချက်|ချက်ပြုတ်ချက်|
+| --- | --- |
+|Taira ကို စစ်ဆေးပြီး ဖောက်သည်ကို ညွှန်ပြပါ။ | [Taira](/my/cookbook/connect-to-taira.md) သို့ ချိတ်ဆက်ပါ။|
+|ပထမ စာကိုပို့ပြီး ရလဒ်ကို စစ်ဆေးပါ။| [ငွေပေးချေမှုများကို တင်ပြပြီး စစ်ဆေးခြင်း ](/my/cookbook/submit-and-verify-transactions.md) |
+|မှတ်ပုံတင်၊ ငွေကြေးထုတ်ပေးပြီး ရွှေ့တန်ဖိုး | [ဖောင်ဂျီနယ် အရင်းအမြစ်များ](/my/cookbook/fungible-assets.md) |
+|Filtered application status ကို ဖတ်ပါ။| [Query Ledger State ](/my/cookbook/query-ledger-state.md) |
+|ချုပ်ဆိုထားသောပြောင်းလဲမှုများကို တုံ့ပြန်ခြင်း | [Stream Event များ](/my/cookbook/stream-events.md) |
+
+ချက်ပြုတ်စာအုပ်က အလုပ်ဖြစ်စဉ်တိုင်းကို အာရုံစိုက်ထားပြီး Taira ထောက်ပံ့မှု (သို့) SORA Nexus ကွန်ရက် အခြေအနေလိုအပ်တဲ့အခါ ဒီနေရာကို ပြန်လည် link လုပ်တယ်။
 
 ## (၁) သင်ဘာကို သတ်မှတ်နေမှန်း နားလည်ပါ {#_1-understand-what-you-are-setting-up}
 
@@ -60,6 +74,7 @@ Taira အတွက်:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -67,6 +82,7 @@ Minamoto အတွက်:
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -74,6 +90,7 @@ node ကဖွင့်ထားတဲ့ data space နဲ့ lane view ကိ�
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
@@ -94,6 +111,7 @@ Taira သည် agent runtime များအတွက် Torii-native Model Con
 
 ```bash
 curl -fsS https://taira.sora.org/v1/mcp \
+  -H 'Accept: application/json' \
   | jq '{protocolVersion, server: .serverInfo.name, tools: .capabilities.tools.count}'
 ```
 
@@ -133,18 +151,18 @@ say "submit this transaction".
 
 MCP တံတားသည် လက်မှတ်ရေးထိုးထားသော Iroha ငွေပေးချေမှုကို တင်ပြနိုင်သော်လည်း ပုံမှန်ငွေပေးချေမှု လိုအပ်ချက်များကို ဖယ်ရှားခြင်းမရှိပေ။ ငွေပေးချေးမှုတစ်ခုအတွက် မှန်ကန်သော အာဏာ၊ ခွင့်ပြုချက်များ၊ အခွန်ထောက်ပံ့မှု၊ ချိတ်ဆက်ချက် ID၊ မီတာဒေတာနှင့် လက်မှတ်လိုအပ်ပါသေးတယ်။
 
-ရိုးရိုး Iroha ငွေပေးချေမှုအတွက် ပထမဦးဆုံးအနေနဲ့ SDK သို့မဟုတ် CLI ကို အသုံးပြုပြီး စာချုပ်အဖုံးကို ဆောက်လုပ်ပြီး လက်မှတ်ထိုးပြီး နောက်မှာ `body_base64` အဖြစ် ကုဒ်သွင်းထားတဲ့ ကန်နီကလက်မှတ်ရေးထိုးထားသော ငွေလဲလှယ်မှု ဘိုက်တာများကိုသာ ကိုယ်စားလှယ်အား ပေးပါ။ ကိုယ်စားလှယ်သည် စာအိတ်ကို `iroha.transactions.submit_and_wait` ဖြင့်တင်ပြနိုင်သည် သို့မဟုတ် `iroha.transactions.submit` နှင့် စစ်တမ်းကို `iroha.transactions.wait` ဖြင့် တင်ပြနိုင်သည်။
+ရိုးရိုး Iroha ငွေပေးချေမှုအတွက် ပထမဦးဆုံးအနေနဲ့ SDK သို့မဟုတ် CLI စာလုံးဖြင့် ငွေလဲလှယ်မှုအဖုံးကို တည်ဆောက်ပြီး လက်မှတ်ထိုးပြီး နောက်မှ ကိုယ်စားလှယ်အား သာမန်စာလုံးသာ ပေးပါ။ `body_base64` အဖြစ် ကုဒ်သွင်းထားသော လက်မှတ်ထိုးထားတဲ့ ငွေပေးချေမှု ဘိုက်များ။ ကိုယ်စားလှယ်သည် စာအိတ်ကို `iroha.transactions.submit_and_wait` ဖြင့်တင်ပြနိုင်ပြီး (သို့) `iroha.transactions.submit` နှင့် စစ်တမ်းကို `iroha.transactions.wait` ဖြင့် တင်ပြနိုင်ပါတယ်။
 
-ကိုယ်ရေးကိုယ်တာ သော့တွေကို Agent prompt ထဲမှာ မထည့်ပါနဲ့။ အကယ်၍ Agent က ငွေပေးချေမှုတစ်ခု တည်ဆောက်ဖို့လိုတယ်ဆိုရင် သုံးစွဲသူရဲ့ runtime ပတ်ဝန်းကျင်၊ keychain၊ hardware signer သို့မဟုတ် ignored testnet config ဖိုင်မှ လျှို့ဝှက်ချက်များကို load လုပ်တဲ့ ဒေသတွင်းကုဒ်ကို ညွှန်ပြပါ။ ကိုယ်စားလှယ်က ဘယ်တော့မှ Key Material ကို Markdown, Fixtures, logs, or commits ထဲမှာ မရေးသင့်ပါဘူး။
+Private key တွေကို agent prompt ထဲမှာ မထည့်ပါနဲ့။ agent က transaction တစ်ခု တည်ဆောက်ဖို့လိုတယ်ဆိုရင် user ရဲ့ runtime ရဲ့ လျှို့ဝှက်ချက်တွေကို load လုပ်တဲ့ local code ကို ညွှန်ပြပါ။ environment, keychain, hardware signer, or ignored testnet config file. agent က key material ကို Markdown, fixtures, logs, or commits ထဲမှာ ဘယ်တော့မှ မရေးသင့်ပါဘူး။
 
 ငွေပေးချေမှု မတင်မီ ကိုယ်စားလှယ်ကို ငွေပေးချေးမှု အစီအစဉ် အတိုထုတ်လုပ်ခိုင်းပါ။
 
 - `network`: Taira testnet root နှင့် chain ကို ID
 - `authority`: စာရင်းမှတ်ပုံတင်ပြီး အခွန်ပေးသွင်းတဲ့စာရင်း
 - `instructions`: မှတ်ပုံတင်၊ မိတ်ကပ်၊ မီးရှို့၊ လွှဲပြောင်းခြင်း၊ metadata များ၊ ခွင့်ပြုချက်များ သို့မဟုတ် စာချုပ်ခေါ်ဆိုမှု အကျဉ်းချုပ်
-- `fee asset`: Taira တွင် ငွေကောက်ခံမည့် အရင်းအမြစ်
+- `fee asset`: Taira တွင် ငွေကောက်ခံမည့် အရင်းအမြစ်များ
 - `preflight reads`: အကောင့်၊ အရင်းအမြစ်စုဆောင်းမှု၊ ခွင့်ပြုချက်များ၊ အမည်မဖော်လိုသူများ (သို့မဟုတ်) ဘလော့စစ်ဆေးမှုများ
-- `expected result`: အတည်ပြုပြီးနောက် မြင်ရသင့်တဲ့ အခြေအနေ
+- `expected result`: အတည်ပြုပြီးနောက် မြင်ရသင့်သော အခြေအနေ
 - `idempotency`: အလားတူတောင်းဆိုချက်ကို ထပ်မံစစ်ဆေးပါက ဘာတွေဖြစ်မလဲ။
 
 စာပို့ပြီးနောက် terminal status ကိုစောင့်ခိုင်းပြီး state change ကို read query ဖြင့် စစ်ဆေးပါ။ အသုံးဝင်ပြီးစီးမှု အစီရင်ခံစာမှာ:
@@ -188,6 +206,7 @@ for network in taira minamoto; do
   root="https://$network.sora.org"
   printf '\n%s\n' "$network"
   curl -fsS "$root/status" \
+    -H 'Accept: application/json' \
     | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 done
 ```
@@ -196,6 +215,7 @@ Taira မှ ထုတ်ပြန်ထားသော အများပြည
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -205,6 +225,7 @@ Minamoto ကို အဓိကကွန်ရက်အမြင်ကိုလ�
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -220,7 +241,9 @@ const roots = {
 };
 
 for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`).then((res) => res.json());
+  const status = await fetch(`${root}/status`, {
+    headers: { Accept: 'application/json' },
+  }).then((res) => res.json());
   const publicSpaces = status.teu_lane_commit
     .filter((lane) => lane.visibility === 'public')
     .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
@@ -286,7 +309,7 @@ iroha --config ./taira.client.toml taira write-canary \
   --json
 ```
 
-ကန်နာရီသည် လက်မှတ်ထိုးထားတဲ့ ping ကိုတင်သွင်းပြီး အတည်ပြုမှုကို စောင့်ဆိုင်းပြီး `--write-config` ပေးတဲ့အခါ runtime signer config ကိုရေးတယ်။ Taira သည် အများပြည်သူစမ်းသပ်ရေးကွန်ရက်တစ်ခုဖြစ်သည်၊ ထို့ကြောင့် queue saturation သည် faucet ကိုယ်တိုင်အလုပ်လုပ်နေသည့်အခါတောင်လက်မှတ်ထိုးထားသော ping ပျက်ကွက်စေနိုင်သည်။ `taira doctor` က ကျေနပ်နေတဲ့ အတန်းတစ်ခု (သို့) ကန်နာရီက `PRTRY:NEXUS_FEE_ADMISSION_REJECTED` ကိုပြန်ပို့တယ်ဆိုပါစို့၊ ဒါကို client configuration error အဖြစ် မကြည့်ခင် စောင့်ပြီး ထပ်မံကြိုးစားပါ။
+Canary က လက်မှတ်ထိုးထားတဲ့ ping ကိုတင်ပေးပြီး အတည်ပြုမှုကို စောင့်ဆိုင်းပြီး `--write-config` ပေးတဲ့အခါ Runtime Signer Config ကို ရေးပါတယ်။ Taira ဟာ အများပြည်သူ စမ်းသပ်ရေးကွန်ရက်တစ်ခုပါ။ ဒီတော့ queue saturation က faucet ကိုယ်တိုင်အလုပ်လုပ်နေချိန်မှာတောင် လက်မှတ်ထိုးထားတဲ့ ping ကို ကျရှုံးစေနိုင်ပါတယ်။ `taira doctor` သည်ပြည့်ဝတဲ့ queue တစ်ခုကို အစီရင်ခံပေးပါက (သို့) Canary က `PRTRY:NEXUS_FEE_ADMISSION_REJECTED` ကိုပြန်ပို့ပါက၊ ဒါကို client configuration error အဖြစ်မယူခင် စောင့်ပြီး ထပ်မံကြိုးစားပါ။
 
 ထိန်းချုပ်မှုမရှိတဲ့ မီးခိုးစမ်းသပ်မှုတွေအတွက် ကန်နာရီကို နယ်နိမိတ်ထားတဲ့ ပြန်လည်စမ်းသပ်မှု loop ထဲမှာ ဝိုင်းထားပါ။
 
@@ -328,7 +351,7 @@ Minamoto public key ကို mainnet prefix နဲ့ ပြောင်းပ�
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-ရလာတဲ့ အကောင့်ကို အသုံးပြုပါ။ ID ဘယ်နေရာမှာမဆို Nexus API ဒါမှမဟုတ် CLI အမိန့်က တရားဝင်စာရင်းကို တောင်းဆိုတယ်။ ID, ဥပမာ Taira ရေပိုက် `account_id`, Balance queries, stringent account fields (သို့) alias bindings တွေပါ။ သင့်ရဲ့ client config ထဲမှာ လိုက်ဖက်တဲ့ private key ကို သိမ်းထားပါ။ နောက်ပြီး တူညီတဲ့ အများသုံးကွန်ရက်ကို ရွေးချယ်ပါ။ `[account].profile = "taira"` ဒါမှမဟုတ် `[account].profile = "minamoto"`.
+ရလာတဲ့ အကောင့်ကို အသုံးပြုပါ။ ID ဘယ်နေရာမှာမဆို Nexus API ဒါမှမဟုတ် CLI အမိန့်က တရားဝင်စာရင်းကို တောင်းဆိုတယ်။ ID, ဥပမာ Taira ရေပိုက် `account_id`, balance queries များ၊ stringent account fields များ (သို့) alias bindings များကို ပြုလုပ်ပါ။ private key ကို client configuration ထဲမှာ ထည့်ပြီး public network ကို select လုပ်ပါ။ `[account].profile = "taira"` ဒါမှမဟုတ် `[account].profile = "minamoto"`.
 
 ID ကိုထုတ်လုပ်ခြင်းသည် ၎င်းဘာသာမှ ငွေကြေးပေးချေမှုအစီအစဉ်ပေါ်က အကောင့်ကို ဖန်တီးခြင်းမဟုတ်ပါ။ Taira တွင်၊ faucet သည် testnet ရေးသားချက်များအတွက် အကောင့်ကိုဖန်တီးနိုင်ပြီး ဘဏ္ဍာငွေပေးနိုင်သည်။ Minamoto တွင်, ခွင့်ပြုထားသော mainnet onboarding သို့မဟုတ် treasury flow ကိုအသုံးပြုပါ။
 
@@ -366,7 +389,9 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 ပဟေဠိကို ယူလာပါ။
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
+curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
+  -H 'Accept: application/json' \
+  | jq .
 ```
 
 Faucet သည် အများပိုင် testnet ဝန်ဆောင်မှုတစ်ခုဖြစ်သည်။ ပဟေဠိ (သို့) တောင်းဆိုချက်အဆုံးမှတ်က `502`၊ အချိန်ကုန်ခြင်း သို့မဟုတ် အခြားဂိတ်ဝဲအဆင့်အမှားကိုပြန်ပို့ပါက သော့များ (သို့မဟုတ်) ဖောက်သည်သတ်မှတ်ချက်ကိုမပြောင်းလဲခင် စောင့်ပြီး ထပ်မံကြိုးစားပါ။
@@ -391,34 +416,40 @@ Faucet သည် အများပိုင် testnet ဝန်ဆောင်
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
-  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}'
+  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
 `difficulty_bits` သည် `0` ထက်ပို၍ရှိပါက ပဟေဠိကိုဖြေရှင်းပြီး ancor height plus nonce ကို ထည့်သွင်းပါ။
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
   -d '{
     "account_id": "<TAIRA_I105_ACCOUNT_ID>",
     "pow_anchor_height": 741,
     "pow_nonce_hex": "<NONCE_HEX>"
-  }'
+  }' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
 ပဟေဠိရဲ့ အယ်လ်ဂိုရစ်သမ်က
 
 1. စိန်ခေါ်မှုကို SHA-256 အဖြစ် တည်ဆောက်ပါ။
    - `iroha:accounts:faucet:pow:v2` ၏ ဘိုက်များ
-   - UTF-8 အကောင့် ID
+   - UTF-8 စာရင်း ID
    - `anchor_height` ကို big-endian အဖြစ် `u64`
    - `anchor_block_hash_hex` ကို byte အဖြစ် decoded လုပ်ထားတယ်။
    - `challenge_salt_hex` ကို ဘိုက်များအဖြစ် ဖေါ်ထုတ်ထားသည်မှာ
 2. `u64` nonces များကို big-endian 8-byte တန်ဖိုးများအဖြစ် ကုဒ်ပေးပါ။
 3. nonce တစ်ခုစီအတွက် scrypt ကို run လုပ်ပါ။
    - စကားဝှက်: 8-byte nonce
-   - ဆား: 32 ဘိုက် စိန်ခေါ်မှု
+   - ဆား: 32-byte စိန်ခေါ်မှု
    - `N = 2^scrypt_log_n`
    - `r = scrypt_r`
    - `p = scrypt_p`
@@ -430,21 +461,25 @@ Faucet တုံ့ပြန်မှုမှာ ငွေကြေးထော
 ```json
 {
   "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-  "asset_definition_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
+  "asset_definition_id": "<TAIRA_FEE_ASSET_DEFINITION_ID>",
   "asset_id": "...",
-  "amount": "25000",
+  "amount": "<FUNDED_AMOUNT>",
   "tx_hash_hex": "...",
   "status": "QUEUED"
 }
 ```
 
-လက်ရှိတွင် HTTP `202 Accepted` ဖြင့် ပြန်လည်ဖြေကြားထားသည်။ အထက်ပါ အရင်းအမြစ်အဓိပ္ပါယ်ဖွင့်ဆိုချက် ID သည် အများပြည်သူရေပြွန်မှ ငွေကြေးထောက်ပံ့သော Taira အခွန်အရင်းအမြစ်ဖြစ်သည်။ ရေပြွန်သည် `tx_hash_hex` နှင့် `status: "QUEUED"` ကိုပြန်လည်ပေးသွင်းသည့်အခါ တောင်းဆိုချက်ကိုလက်ခံခဲ့သည်။
+လက်ရှိတွင် HTTP `202 Accepted` ဖြင့် ပြန်လည်ဖြေကြားခြင်းဖြစ်သည်။ ၎င်း၏ `asset_definition_id` သည် အများပြည်သူ faucet မှထောက်ပံ့သောလက်ရှိ Taira အခွန်အရင်းအမြစ်ဖြစ်သည်; ဥပမာတစ်ခုကို ကူးယူခြင်းအစား တုံ့ပြန်မှုမှ ရယူပါ။ ID ကိုပြန်လည်ပို့ပေးသောအခါ faucet ကတောင်းဆိုချက်ကို လက်ခံခဲ့သည်။ `tx_hash_hex` နှင့် `status: "QUEUED"`.
 
 ပြီးရင် ငွေကြေးထောက်ပံ့ထားတဲ့ အရင်းအမြစ်အတွက် စစ်တမ်းကောက်ယူပြီး သင့်ကိုယ်ပိုင် အခွန်ပေးချေမှုလုပ်ငန်းတွေကို မတင်ခင်:
 
 ```bash
+TAIRA_FEE_ASSET_DEFINITION=$(
+  jq -er '.asset_definition_id' ./taira-faucet-response.json
+)
+
 iroha --config ./taira.client.toml ledger asset get \
-  --definition 6TEAJqbb8oEPmLncoNiMRbLEK6tw \
+  --definition "$TAIRA_FEE_ASSET_DEFINITION" \
   --account <TAIRA_I105_ACCOUNT_ID>
 ```
 
@@ -470,7 +505,12 @@ def has_leading_zero_bits(digest: bytes, bits: int) -> bool:
 root = "https://taira.sora.org"
 account_id = sys.argv[1]
 
-with urllib.request.urlopen(f"{root}/v1/accounts/faucet/puzzle") as res:
+puzzle_request = urllib.request.Request(
+    f"{root}/v1/accounts/faucet/puzzle",
+    headers={"Accept": "application/json"},
+)
+
+with urllib.request.urlopen(puzzle_request) as res:
     puzzle = json.load(res)
 
 claim = {"account_id": account_id}
@@ -503,7 +543,7 @@ if difficulty > 0:
 request = urllib.request.Request(
     f"{root}/v1/accounts/faucet",
     data=json.dumps(claim).encode(),
-    headers={"content-type": "application/json"},
+    headers={"Accept": "application/json", "content-type": "application/json"},
     method="POST",
 )
 
@@ -609,6 +649,7 @@ Strict account fields တွေမှာ Canonical ကို အသုံးပ�
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
@@ -620,7 +661,7 @@ iroha --config ./operator.client.toml app nexus lane-report --summary
 
 လမ်းကြောင်း ID, ဒေတာနေရာ ID, validator set, fault tolerance, manifest, routing rules နှင့် operational owner တို့ကို အတူတကွ ပြန်လည်သုံးသပ်ထားမှသာ alias အသစ်တစ်ခုကို မကြေညာပါနဲ့။ လိုအပ်တဲ့ ခွင့်ပြုချက်တွေနဲ့ သာမန် အသုံးပြုသူ အကောင့်တစ်ခုဟာ တည်ရှိနေတဲ့ ဒေတာဝက်ဘ်ဆိုက်အတွင်းမှာ ဒိုမင်တစ်ခုရယူနိုင်ပြီး SNS လိုင်စင်ကို အမည်မဲ့ စီမံကိန်းမှတစ်ဆင့် ချေးယူနိုင်ပါတယ်။ ဒါက အများသုံး ဒေတာဝိုင်းသစ်ကို ဘေးကင်းစွာ မဖြည့်ဆည်းနိုင်ပါဘူး။
 
-ပုဂ္ဂလိက (သို့) အဖွဲ့အစည်းဆိုင်ရာ ဒေတာဇုန်အတွက်၊ အောက်ပါအတိုင်း စာရင်းအပြောင်းအလဲကို ပြင်ဆင်ပါ။
+ပုဂ္ဂလိက (သို့) အဖွဲ့အစည်းဆိုင်ရာ ဒေတာဇုန်အတွက်၊ အောက်ပါအတိုင်း စာရင်းအပြောင်းအလဲတစ်ခု ပြင်ဆင်ပါ။
 
 - တစ်ခုတည်းသော ဒေတာနေရာအမည်နှင့် နံပါတ်များ `id`
 - အချိတ်အဆက်လမ်းထည့်သွင်းမှု (သို့) တည်ဆဲလမ်းထည့်သတ်မှတ်ချက်
@@ -664,6 +705,7 @@ Operator လက်ခံမှုမှာ အောက်ပါဂိတ်တ�
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | select(.dataspace_alias == "payments")'
 ```
 

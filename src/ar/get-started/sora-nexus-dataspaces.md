@@ -1,14 +1,14 @@
 ---
 translation_locale: ar
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 63c317ab61ba912176c43c83d5b4f026f23a7a6e5fb633872a133c9ea1295686
+translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # بناء على SORA 3: Taira و Minamoto {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 هو مسار التنفيذ العام المواجهة للتطبيق الذي تم بناؤه على Iroha 3 و SORA Nexus. البناء والتدريب على Taira أولاً ، ثم نقل نفس شكل العميل إلى Minamoto فقط عندما يكون لديك مفاتيح رئيسية منفصلة ، حقيقية XOR مقابل الرسوم، وموافقة الإنتاج.
+SORA 3 هو مسار التنفيذ العام المواجهة للتطبيق الذي تم بناؤه على Iroha 3 و SORA Nexus. البناء والتدريب على Taira أولاً ، ثم نقل نفس شكل العميل إلى Minamoto فقط عندما يكون لديك مفاتيح رئيسية منفصلة ، حقيقية XOR مقابل الرسوم، وموافقة الإنتاج .
 
 يظهر هذا التعليم كيفية تكوين عميل Iroha للشبكات العامة SORA 3:
 
@@ -37,6 +37,20 @@ SORA 3 هو مسار التنفيذ العام المواجهة للتطبيق �
 3. تمارس منطق التطبيق الخاص بك ضد Taira حتى تكون الفشل مملة وملاحظة.
 4. إنشاء مؤشر منفصل Minamoto ، وتمويله بـ XOR الحقيقي ، ونقل فقط نفس العمليات المثبتة إلى mainnet.
 
+## استمر في كتاب الطهي {#continue-with-the-cookbook}
+
+استخدم هذا الدليل لاختيار الشبكة وإعداد الموقّع ومكافأة الرسوم ثم استمر بالوصفة التي تتناسب مع سلوك التطبيق الذي تريد إنشاؤه:
+
+|الهدف|وصفة|
+| --- | --- |
+|تحقق من Taira وتشغيل العميل | [التواصل مع Taira](/ar/cookbook/connect-to-taira.md) |
+|أرسل كتابة أولية وتحقق من النتيجة| [تقديم وتحقق من المعاملات ](/ar/cookbook/submit-and-verify-transactions.md) |
+|التسجيل، النقود والحركة القيمة | [الأصول المعدلة](/ar/cookbook/fungible-assets.md) |
+|قراءة حالة الطلب المصفاة | [استفسار الدولة ](/ar/cookbook/query-ledger-state.md) |
+|ردود الفعل على التغييرات الملتزمة | [أحداث التيار](/ar/cookbook/stream-events.md) |
+
+يحافظ كتاب الطهي على تركيز كل تدفق عمل ويربط إلى هنا عندما يحتاج إلى تمويل Taira أو سياق شبكة SORA Nexus.
+
 ## ١ - تفهم ما تحدده {#_1-understand-what-you-are-setting-up}
 
 في SORA Nexus ، يعد مساحة بيانات جزءًا من طرق الشبكة وكتالوج التوجيه. لا يقوم العميل بإنشاء مساحة جديدة لمعلومات عامة فقط عن طريق تغيير `client.toml`. تقوم إعداد العميل بشيءين:
@@ -60,6 +74,7 @@ wonderland.universal
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -67,6 +82,7 @@ curl -fsS https://taira.sora.org/status \
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -74,6 +90,7 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
@@ -94,6 +111,7 @@ Taira يعرض أيضًا بروتوكول سياق النموذج الأصلي 
 
 ```bash
 curl -fsS https://taira.sora.org/v1/mcp \
+  -H 'Accept: application/json' \
   | jq '{protocolVersion, server: .serverInfo.name, tools: .capabilities.tools.count}'
 ```
 
@@ -135,11 +153,11 @@ say "submit this transaction".
 
 للمواد الخام Iroha المعاملات، وتكوين وتوقيع ملف المعاملة مع SDK أو CLI أولاً، ثم إعطاء الوكيل فقط البايتات المعاملة الموقعة القنوني مشفرة `body_base64`. الوكيل يمكن أن يقدم الملف مع `iroha.transactions.submit_and_wait`, أو تقديم مع `iroha.transactions.submit` و استطلاع مع `iroha.transactions.wait`.
 
-لا تضع المفاتيح الخاصة في طلب الوكيل. إذا كان الوكيل يحتاج إلى بناء معاملة، اشيرها إلى الرمز المحلي الذي يقوم بتحميل أسرار من بيئة وقت تشغيل المستخدم، سلسلة المفاتيح، توقيع الأجهزة، أو تم تجاهل ملف تشكيل testnet. يجب على العميل أن لا يكتب المواد الرئيسية في (ماركداون) أو الإصلاحات أو السجلات أو التزامات.
+لا تضع المفاتيح الخاصة في طلب الوكيل. إذا كان الوكيل بحاجة إلى بناء معاملة، توجيهها إلى رمز محلي الذي يحمل أسرار من وقت تشغيل المستخدم البيئة، سلسلة المفاتيح، توقيع الأجهزة، أو تجاهل ملف تشكيل testnet. يجب على الوكيل أبدا كتابة المواد الرئيسية في Markdown، الإصلاحات، السجلات، أو الالتزامات.
 
 قبل تقديم المعاملة، اجعل الوكيل يصدر خطة قصيرة للمعاملة:
 
-- `network`: Taira جذور وشبكة شبكات الاختبار ID
+- `network`: Taira جذور الشبكة الاختبارية والسلسلة ID
 - `authority`: الحساب الذي يدفع الرسوم ويدفعها
 - `instructions`: التسجيل، النقود، الحرق، التحويل، البيانات المعدنية، الإذن، أو ملخص دعوة العقد
 - `fee asset`: الأصول التي سيتم تحصيلها على Taira
@@ -188,6 +206,7 @@ for network in taira minamoto; do
   root="https://$network.sora.org"
   printf '\n%s\n' "$network"
   curl -fsS "$root/status" \
+    -H 'Accept: application/json' \
     | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 done
 ```
@@ -196,6 +215,7 @@ done
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -205,6 +225,7 @@ curl -fsS https://taira.sora.org/status \
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -220,7 +241,9 @@ const roots = {
 };
 
 for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`).then((res) => res.json());
+  const status = await fetch(`${root}/status`, {
+    headers: { Accept: 'application/json' },
+  }).then((res) => res.json());
   const publicSpaces = status.teu_lane_commit
     .filter((lane) => lane.visibility === 'public')
     .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
@@ -286,7 +309,7 @@ iroha --config ./taira.client.toml taira write-canary \
   --json
 ```
 
-يقوم القناري بإرسال إشارة موقعة، وينتظر التأكيد، ويكتب تكوين مؤشر وقت تشغيل عندما يتم توفير `--write-config`. Taira هو شبكة اختبار عامة، لذلك يمكن أن يؤدي اكتئاب الصف إلى فشل الإشارة الموقعة حتى عندما يعمل المصباح نفسه. إذا أبلغ `taira doctor` عن صف مشبع أو يعود القناري `PRTRY:NEXUS_FEE_ADMISSION_REJECTED` ، انتظر وتحاول مرة أخرى قبل التعامل معها كخطأ في تكوين العميل.
+يقوم القناري بإرسال إشارة مؤكدة، وينتظر التأكيد، ويكتب إعداد توقيع وقت التشغيل عندما `--write-config` يتم توفيرها. Taira هو شبكة اختبار عامة، لذلك يمكن أن تشبع الطابور تجعل الصفحة الموقعة فشل حتى عندما تعمل المصباح نفسه. إذا `taira doctor` الإبلاغ عن الصف المشبّع أو عواقب القناريات `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`, الانتظار والحاول مرة أخرى قبل التعامل معها كخطأ في تكوين العميل.
 
 لإجراء اختبارات الدخان غير المراقبة، لف القناري في حلقة إعادة التجربة المحدودة:
 
@@ -328,7 +351,7 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-استخدم الحساب الناتج ID في كل مكان يطلب الأمر Nexus API أو CLI حسابًا تقليديًا ID ، على سبيل المثال الصنبور Taira `account_id` ، استفسارات التوازن ، وحقول الحساب الصارمة ، أو ملزمات الأسماء. الحفاظ على المقابلة مفتاح خاص في إعداد العميل الخاص بك، واختيار نفس الشبكة العامة مع `[account].profile = "taira"` أو `[account].profile = "minamoto"`.
+استخدم الحساب الناتج ID في كل مكان يطلب الأمر Nexus API أو CLI حسابًا طبيًا ID ، على سبيل المثال، الصنبور Taira `account_id`. استفسارات الموازنة، وحقول الحساب الصارمة، أو التزامات الاسم الأدنى. احتفظ بمفاتيح خاصة متطابقة في إعداد العميل الخاص بك، واختيار نفس الشبكة العامة مع `[account].profile = "taira"` أو `[account].profile = "minamoto"`.
 
 إن توليد ID لا يخلق بذاته حسابًا مدفوعًا في السلسلة. على Taira ، يمكن للمصنع إنشاء وتمويل الحساب للكتب التجريبية. على Minamoto ، استخدم إدخال الجهاز الرئيسي المعتمد أو تدفق الخزانة.
 
@@ -366,7 +389,9 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 أحضر اللغز:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
+curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
+  -H 'Accept: application/json' \
+  | jq .
 ```
 
 إن النوافذ هي خدمة شبكة اختبار عامة. إذا عادت اللغز أو نقطة نهاية المطاف للمطالبة `502` ، وقتاً طويلاً، أو خطأ آخر على مستوى البوابة، انتظر وتحاول مرة أخرى قبل تغيير مفتاحك أو إعداد العميل.
@@ -391,20 +416,26 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
-  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}'
+  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
 عندما يكون `difficulty_bits` أكبر من `0`، قم بحل اللغز وإدراج ارتفاع المرسوم بالإضافة إلى nonce:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
   -d '{
     "account_id": "<TAIRA_I105_ACCOUNT_ID>",
     "pow_anchor_height": 741,
     "pow_nonce_hex": "<NONCE_HEX>"
-  }'
+  }' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
 خوارزمية اللغز هي:
@@ -430,21 +461,25 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet \
 ```json
 {
   "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-  "asset_definition_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
+  "asset_definition_id": "<TAIRA_FEE_ASSET_DEFINITION_ID>",
   "asset_id": "...",
-  "amount": "25000",
+  "amount": "<FUNDED_AMOUNT>",
   "tx_hash_hex": "...",
   "status": "QUEUED"
 }
 ```
 
-يتم استرداد الإجابة حاليًا ب HTTP `202 Accepted`. تعريف الأصول ID أعلاه هو أصول الرسوم Taira التي تمولها الصنبور العام. وقد قبلت الصنبور الطلب عند إعادة `tx_hash_hex` و `status: "QUEUED"`.
+الرد في الوقت الحالي يعود مع HTTP `202 Accepted`. هذا هو `asset_definition_id` هو التيار Taira أصول الرسوم التي تمولها المصنع العام ؛ استخدامه من الاستجابة بدلاً من نسخ مثال. ID. لقد قبلت الصنبور الطلب عند عودته `tx_hash_hex` و `status: "QUEUED"`.
 
 ثم استطلاع الأصول الممولة قبل تقديم معاملات دفع الرسوم الخاصة بك:
 
 ```bash
+TAIRA_FEE_ASSET_DEFINITION=$(
+  jq -er '.asset_definition_id' ./taira-faucet-response.json
+)
+
 iroha --config ./taira.client.toml ledger asset get \
-  --definition 6TEAJqbb8oEPmLncoNiMRbLEK6tw \
+  --definition "$TAIRA_FEE_ASSET_DEFINITION" \
   --account <TAIRA_I105_ACCOUNT_ID>
 ```
 
@@ -470,7 +505,12 @@ def has_leading_zero_bits(digest: bytes, bits: int) -> bool:
 root = "https://taira.sora.org"
 account_id = sys.argv[1]
 
-with urllib.request.urlopen(f"{root}/v1/accounts/faucet/puzzle") as res:
+puzzle_request = urllib.request.Request(
+    f"{root}/v1/accounts/faucet/puzzle",
+    headers={"Accept": "application/json"},
+)
+
+with urllib.request.urlopen(puzzle_request) as res:
     puzzle = json.load(res)
 
 claim = {"account_id": account_id}
@@ -503,7 +543,7 @@ if difficulty > 0:
 request = urllib.request.Request(
     f"{root}/v1/accounts/faucet",
     data=json.dumps(claim).encode(),
-    headers={"content-type": "application/json"},
+    headers={"Accept": "application/json", "content-type": "application/json"},
     method="POST",
 )
 
@@ -549,7 +589,7 @@ iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 iroha --config ./minamoto.client.toml --output-format text ops sumeragi status
 ```
 
-لا تشغيل الصنبور Taira أو مساعدة الكتابة ضد Minamoto.
+لا تشغيل الصنبور Taira أو مساعدة الكتابة على Minamoto.
 
 ## 6 - تمويل حساب Minamoto مع XOR {#_6-fund-a-minamoto-account-with-xor}
 
@@ -599,7 +639,7 @@ alice@apps.universal
 alice@universal
 ```
 
-لا يزال حقل الحسابات الصارمة تستخدم حساب I105 الكنسي IDs. تعامل الأسماء الخفيفة باعتبارها روابط قابلة للقراءة من قبل الإنسان تحل إلى حساب IDs.
+لا يزال حقول الحساب الصارمة تستخدم الحساب الكنسي I105 الحساب IDs. تعامل الأسماء الخفيفة باعتبارها روابط قابلة للقراءة من قبل الإنسان تحل لحساب الكنسية IDs.
 
 ## 8 - توفير مساحة بيانات جديدة {#_8-provision-a-new-dataspace}
 
@@ -609,6 +649,7 @@ alice@universal
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
@@ -664,6 +705,7 @@ description = "Route payments domains to the payments dataspace"
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | select(.dataspace_alias == "payments")'
 ```
 

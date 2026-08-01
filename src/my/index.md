@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /index.md
-translation_source_hash: 505e8224a59534717045c34b1bf796760d06f9d6808a2a1fd9773aa2f6a00c2d
+translation_source_hash: 3b2ad4ee285a821b56c9cf6fd3f4a8431f1cfa478e88082b45788765d68ed833
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 
@@ -18,6 +18,28 @@ hero:
   #- theme: alt
   #  text: View on GitHub
   #  link: https://github.com/hyperledger-iroha/iroha
+
+nexusPortal:
+  eyebrow: SORA Nexus
+  title: "Iroha 3 / SORA Nexus ကို တည်ဆောက်ပါ။"
+  details: "Taira စမ်းသပ်ရေးကွန်ရက်ကို စပြီး လက်ရှိ ငွေပေးချေမှု စီးဆင်းမှုကို လေ့လာပြီး ထုတ်လုပ်မှု အဆင်သင့်ဖြစ်နေတဲ့ အက်ပ်တွေ တည်ဆောက်ဖို့ အာရုံစိုက်ထားတဲ့ ချက်ပြုတ်နည်းတွေကို အသုံးပြုပါ။"
+  primaryAction:
+    text: "Taira ကို စလိုက်ပါ"
+    link: /my/get-started/sora-nexus-dataspaces
+  secondaryAction:
+    text: "ချက်ပြုတ်စာအုပ်ကို ကြည့်ပါ။"
+    link: /my/cookbook/
+  recipes:
+    title: "လူကြိုက်များတဲ့ ချက်ပြုတ်နည်း"
+    items:
+      - title: "ငွေပေးချေမှုတစ်ခု တင်သွင်းပြီး စစ်ဆေးခြင်း"
+        link: /my/cookbook/submit-and-verify-transactions
+      - title: "ဖောက်ထွင်းနိုင်သော အရင်းအမြစ်များကို ရွှေ့ပြောင်းခြင်း"
+        link: /my/cookbook/fungible-assets
+      - title: "မေးမြန်းစာအုပ်အခြေအနေ"
+        link: /my/cookbook/query-ledger-state
+      - title: "Stream ဖြစ်ရပ်များ"
+        link: /my/cookbook/stream-events
 
 features:
   - icon:
@@ -44,16 +66,8 @@ features:
     title: "ရည်ညွှန်းချက်"
     details: "လက်ရှိ binary, genesis, Torii နှင့် ကိုက်ညီမှု ရည်ညွှန်း စာမျက်နှာများကို ကြည့်ပါ။"
     link: /my/reference/
-  # - title: Cookbook # (TBA)
-
 footer: true
 ---
-
-<section class="nexus-build" aria-labelledby="nexus-build-title">
-<a class="nexus-build__panel" href="./get-started/sora-nexus-dataspaces.html">
-<span class="nexus-buildcopy"> SORA Nexus <span id="nexus-build-title" class="nexus-buildtitle"> build on Iroha 3 / SORA Nexus</span> <span class="nexus-builddetails"> build on SORA 3 with Taira testnet, Minamoto mainnet, and copy-paste examples you can try now.</span> </span> <span class="nexus-build__action">Open guide <span aria-hidden="true">- &gt; </span> </span>
-</a>
-</section>
 
 <hr style="margin-top: 3rem;">
 <p style="font-weight: 200; font-size: 0.875rem;">Hyperledger Iroha အစိတ်အပိုင်းဖြစ်သည် <a href="https://www.lfdecentralizedtrust.org/projects/tag/ledger-technology" target="_blank">LF Decentralized Trust</a>. ပိုမိုသိရှိရန် <a href="https://iroha.tech/" target="_blank">iroha.tech</a>.</p>

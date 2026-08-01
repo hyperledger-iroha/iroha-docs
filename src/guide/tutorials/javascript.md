@@ -45,7 +45,9 @@ Norito transaction code:
 ```js
 const root = "https://taira.sora.org";
 
-const status = await fetch(`${root}/status`).then((res) => res.json());
+const status = await fetch(`${root}/status`, {
+  headers: { Accept: "application/json" },
+}).then((res) => res.json());
 console.log({
   blocks: status.blocks,
   queueSize: status.queue_size,

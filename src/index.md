@@ -15,6 +15,30 @@ hero:
   #  text: View on GitHub
   #  link: https://github.com/hyperledger-iroha/iroha
 
+nexusPortal:
+  eyebrow: SORA Nexus
+  title: Build on Iroha 3 / SORA Nexus
+  details:
+    Start on the Taira testnet, learn the current transaction flow, and use
+    focused recipes to build production-ready applications.
+  primaryAction:
+    text: Start on Taira
+    link: /get-started/sora-nexus-dataspaces
+  secondaryAction:
+    text: Browse cookbook
+    link: /cookbook/
+  recipes:
+    title: Popular recipes
+    items:
+      - title: Submit and verify a transaction
+        link: /cookbook/submit-and-verify-transactions
+      - title: Move fungible assets
+        link: /cookbook/fungible-assets
+      - title: Query ledger state
+        link: /cookbook/query-ledger-state
+      - title: Stream events
+        link: /cookbook/stream-events
+
 features:
   - icon:
       dark: /start.svg
@@ -48,21 +72,8 @@ features:
       Consult the current binary, genesis, Torii, and compatibility
       reference pages
     link: /reference/
-  # - title: Cookbook # (TBA)
-
 footer: true
 ---
-
-<section class="nexus-build" aria-labelledby="nexus-build-title">
-  <a class="nexus-build__panel" href="./get-started/sora-nexus-dataspaces.html">
-    <span class="nexus-build__copy">
-      <span class="nexus-build__eyebrow">SORA Nexus</span>
-      <span id="nexus-build-title" class="nexus-build__title">Build on Iroha 3 / SORA Nexus</span>
-      <span class="nexus-build__details">Build on SORA 3 with Taira testnet, Minamoto mainnet, and copy-paste examples you can try now.</span>
-    </span>
-    <span class="nexus-build__action">Open guide <span aria-hidden="true">-&gt;</span></span>
-  </a>
-</section>
 
 <hr style="margin-top: 3rem;">
 <p style="font-weight: 200; font-size: 0.875rem;">Hyperledger Iroha is part of <a href="https://www.lfdecentralizedtrust.org/projects/tag/ledger-technology" target="_blank">LF Decentralized Trust</a>. Learn more at <a href="https://iroha.tech/" target="_blank">iroha.tech</a>.</p>

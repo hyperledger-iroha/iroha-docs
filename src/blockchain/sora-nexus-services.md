@@ -131,7 +131,7 @@ export TORII_URL=https://taira.sora.org
 curl -fsS "$TORII_URL/openapi.json" \
   | jq '.paths | keys[] | select(test("^/v1/(soracloud|sorafs|soradns|connect|vpn|da)/"))'
 
-curl -fsS "$TORII_URL/status" | jq .
+curl -fsS -H 'Accept: application/json' "$TORII_URL/status" | jq .
 ```
 
 If `/openapi.json` is not exposed by the profile, try `/openapi`. Exact
@@ -146,7 +146,7 @@ intend to change live state.
 ```bash
 export TORII_URL=https://taira.sora.org
 
-curl -fsS "$TORII_URL/status" \
+curl -fsS -H 'Accept: application/json' "$TORII_URL/status" \
   | jq '{version: .build.version, peers, blocks, lanes: (.teu_lane_commit | length)}'
 
 curl -fsS "$TORII_URL/v1/connect/status" | jq '{enabled, sessions_active}'

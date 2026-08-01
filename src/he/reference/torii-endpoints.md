@@ -1,9 +1,9 @@
 ---
 translation_locale: he
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: 9bec41b1b419e252fdcff8328e7950a294bdad3ac40112a5a7f2ce451d19e9cb
+translation_source_hash: c23170b2949bae9c9483ecbee6f0c09fea503904ae93934aef56537ddd13c42d
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2
 ---
 
 # Torii נקודות סוף {#torii-endpoints}
@@ -22,34 +22,43 @@ Torii האם זה HTTP, SSE, ו WebSocket שער ל Iroha 3. זה משרת שנ�
 
 |נקודת סוף.|פורמט |מטרה.|
 | --- | --- | --- |
-|`POST /transaction` |Norito |תגיש עסקה חתומה |
-|`POST /query` |Norito |תשלח בקשה חתומה |
-|`GET /events` |WebSocket |לחתום על זרמי אירועים |
-|`GET /block/stream` |WebSocket |זרם בלוקים מחויבים |
-|`GET /peers` |JSON |רשימת עמיתים שחשפו על ידי Torii |
-|`GET /health` |JSON |נקודת הסיום לחיים קלים |
-|`GET /api_version` |JSON |דפוס API גרסה |
-|`GET /status` |JSON |סיכום מצב ברמה גבוהה למפעילים |
+|`POST /v1/pipeline/transactions` |Norito |תגיש עסקה חתומה |
+|`POST /v1/query` |Norito |תשלח בקשה חתומה |
+|`GET /v1/events/ws` |WebSocket |לחתום על זרמי אירועים |
+|`GET /v1/events/sse` |SSE |לחתום על זרמי אירועים מעל SSE |
+|`GET /v1/blocks/stream` |WebSocket |זרם בלוקים מחויבים |
+|`GET /v1/peers` |JSON |רשימת השותפים שחשפו על ידי Torii |
+|`GET /livez` |טקסט |חיות תהליך בלבד; זה לא מצביע על מוכנות פרוטוקול |
+|`GET /readyz` |JSON |הכנות מלאה של קשרים, כולל בדיקות כספיות חיוביות מחוץ למערכת |
+|`GET /health` |JSON |סופרת הכנות עם אותו אינפואריאנט מזומנים לא מקוונת |
+|`GET /v1/api/version` |טקסט |גרסה הנוכחית של כותרת בלוק |
+|`GET /status` |Norito או JSON |מצב דיאגנטי ברמה גבוהה; בקשה JSON במפורש |
 |`GET /metrics` |פרומטהיאוס |נקודת הסיום של Prometheus scrape.|
-|`GET /schema` |JSON |תמונת גיליון של מודל נתונים שמשרתת על ידי העמודה |
+|`GET /v1/schema` |JSON |תמונת גיליון של מודל נתונים שמשרתת על ידי הערך כאשר היא פעילה. |
 |`GET /openapi` או `GET /openapi.json` |JSON |מסמך OpenAPI למסלולים פעילים Torii HTTP |
 |`GET /v1/parameters` |JSON |תמונה של פרמטרים הערך |
 |`GET /v1/node/capabilities` |JSON |יכולת הערך ונתונים מטאטא מודל נתונים |
-|`GET /v1/api/versions` |JSON |גרסאות תומכות Torii API |
-|`GET /v1/events/sse` |SSE |זרם אירועים עבור לקוחות בעלי חיים ארוכים |
 |`GET /v1/time/now` |JSON |תמונה של שעון הקיר של Node|
 |`GET /v1/time/status` |JSON |מצב סינכרון זמן |
 
-`/openapi` הוא רשימת נקודות קץ סמכותית עבור קשר פועל. פני השטח המדויק תלוי בתכונות הבנייה ובהסדרת זמן ההפעלה, ולכן לקוחות שנוצרו צריכים להעדיף את המסמך חי OpenAPI על רשימת הנתיב שנעצמה ידנית. השתמש בקונסולת [Torii API ](/he/reference/torii-api-console.md) כדי לטעון את המסמך החי, לבחון את הדרכים של JSON , להעתיק את בקשות curl ולייצר קוד לקלינט מהשמעת הנוכחית.
+עבור בקשה SSE, תפרסמו את הזרם המקומי בתוספת הפסקת הכתובת:
+
+```http
+Accept: text/event-stream, application/json
+```
+
+Torii המשא ומתן הראשון JSON או Norito ייצוג על שכבת הדרישה, ולאחר מכן מאשר את המקור `text/event-stream` תגובה. שולחת רק `text/event-stream` לפיכך הוא נדחף `406`; ה- [מתכון של אירועי הזרם](/he/cookbook/stream-events.md) משתמשת בראש שלם.
+
+`/openapi` הוא החוזה העיקרי שנוצר עבור מסלולים המוצגים בסכמה, ולא רשימה מלאה של סנבות מבצעיות. המסמך הנוכחי מפספס את `/livez` ו- `/readyz`, ותוארתו של `/health` עשויה לעכב את מעבד הכנות. ליצור לקוחות מסלול מהמסמך חי, אך לאשר את החיות והכנות ישירות נגד הרכיב המפעיל ומעובדים מחוברים. פני השטח המדויק עדיין תלויים בתכונות הבנייה ובשינוי זמן הפעלה. השתמש בקונסולת [Torii API ](/he/reference/torii-api-console.md) כדי לטעון את המסמך החיה, לבחון את הדרכים של JSON , להעתיק את בקשות curl ולייצר קוד לקלינט מהשמעת הנוכחית.
 
 ## נסה לשרות Taira {#try-live-taira-routes}
 
-רשת המבחן הציבורית Taira חושפת את אותה פני השטח Torii JSON שלקוחות היישום משתמשים בהחקירה בקריאה בלבד. פקודות אלו לא דורשות מפתחות:
+רשת המבחן הציבורית Taira חושפת את אותה פני השטח Torii JSON שהלקוחות של יישומים משתמשים בהחקירה בקריאה בלבד. פקודות אלו לא דורשות מפתחות:
 
 ```bash
 TAIRA_ROOT=https://taira.sora.org
 
-curl -fsS "$TAIRA_ROOT/status" \
+curl -fsS -H 'Accept: application/json' "$TAIRA_ROOT/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA_ROOT/openapi.json" \
@@ -57,7 +66,8 @@ curl -fsS "$TAIRA_ROOT/openapi.json" \
   | grep '^/v1/' \
   | head -n 20
 
-curl -fsS "$TAIRA_ROOT/v1/node/capabilities" \
+curl -fsS -H 'Accept: application/json' \
+  "$TAIRA_ROOT/v1/node/capabilities" \
   | jq '{abi_version, data_model_version, query: .query.aggregate.supported_resources}'
 ```
 
@@ -82,7 +92,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=5" \
 |`GET /v1/sumeragi/validator-sets/{height}` |JSON |המוודא הוגדר בגובה של כביש.|
 |`GET /v1/sumeragi/status` |Norito או JSON |תמונה מדויקת של מצב ההסכמה |
 |`GET /v1/sumeragi/status/sse` |SSE |זרם מצב ההסכמה המתמשך |
-|`GET /v1/sumeragi/leader` |JSON |מידע עכשווי של המנהיג |
+|`GET /v1/sumeragi/leader` |JSON |מידע זמני על מנהיגים |
 |`GET /v1/sumeragi/qc` |Norito או JSON |סיכום האחרון של תעודת קוורום |
 |`GET /v1/sumeragi/checkpoints` |JSON |סיכום של נקודות בדיקת הסכמה |
 |`GET /v1/sumeragi/consensus-keys` |JSON |מפתחות הסכמה פעילות |
@@ -95,13 +105,13 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=5" \
 |`GET /v1/sumeragi/collectors` |JSON |תמונה מהיר של תוכנית אספקה דטרמיניסטית |
 |`GET /v1/sumeragi/key-lifecycle` |JSON |מצב מחזור החיים של מפתח הסכמה |
 |`GET /v1/sumeragi/telemetry` |JSON |תמונת טלמטריה של הסכמה |
-|`GET /v1/sumeragi/evidence` |JSON |רישומים של ראיות, בחופש מסנן על ידי שרשרת בקשת |
+|`GET /v1/sumeragi/evidence` |JSON |רישומים של ראיות, בחופש מסנן על ידי שרשרת שאל|
 |`GET /v1/sumeragi/evidence/count` |JSON |מספר הראיות.|
 |`POST /v1/sumeragi/evidence/submit` |JSON |להגיש ראיות של הסכמה |
 |`GET /v1/sumeragi/commit_qc/{hash}` |Norito או JSON |התחייב QC רשום עבור בלוק האש |
 |`GET /v1/runtime/abi/active` |JSON |מתאר זמן תפעול פעיל ABI |
 |`GET /v1/runtime/abi/hash` |JSON |זמן תפעול פעיל ABI האש |
-|`GET /v1/runtime/metrics` |JSON |תמונה של מדדים זמן ההפעלה |
+|`GET /v1/runtime/metrics` |JSON |תמונה של מדד זמן ההופעה |
 |`GET /v1/runtime/upgrades` |JSON |רשימת עדכונים בזמן הפעלה |
 |`POST /v1/runtime/upgrades/propose` |JSON |תציע שיפור בזמן הפעלה.|
 |`POST /v1/runtime/upgrades/activate/{id}` |JSON |להפעיל שיפור מתכנן של זמן ההפעלה |
@@ -113,27 +123,27 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=5" \
 
 |משפחה מסלול |מטרה.|
 | --- | --- |
-|`/v1/accounts/*`, `/v1/domains/*`, `/v1/assets/*` |JSON קורות, עוזרים לחיפוש, עוזרים להצטרף, ותצפיות פורטפוליו או בעלים |
-|`/v1/nfts/*`, `/v1/rwas/*`, `/v1/confidential/*` |NFT, נכס בעולם האמיתי, ותצפיות על נכסים סודיות |
-|`/v1/aliases/*`, `/v1/assets/aliases/*`, `/v1/sns/*`, `/v1/identifiers/*` |שם, פרופיל ומועד הגדלה |
+|`/v1/accounts/`, `/v1/domains/`, `/v1/assets/*` |JSON קורות, עוזרים לחיפוש, עוזרים להצטרף, ותצפיות פורטפוליו או בעלים |
+|`/v1/nfts/`, `/v1/rwas/`, `/v1/confidential/*` |NFT, נכס בעולם האמיתי, ותצפיות על נכסים סודיות |
+|`/v1/aliases/`, `/v1/assets/aliases/`, `/v1/sns/`, `/v1/identifiers/` |שם, פרופיל ומועד הגדלה |
 |`/v1/explorer/*` |תצפיות של חשבון, נכס, בלוק, עסקאות, הוראות, מטריקים וסטרים המכוונות ל- Explorer |
-|`/v1/transactions/*`, `/v1/pipeline/*`, `/v1/iso20022/*` |היסטוריית העסקאות, התאוששות או מצב של צינורות, ISO 20022 עוזרים |
+|`/v1/transactions/`, `/v1/pipeline/`, `/v1/iso20022/*` |היסטוריית העסקאות, התאוששות או מצב של צינורות, ISO 20022 עוזרים |
 |`/v1/contracts/*` |קוד החוזה, הפעלת, חבילה, קריאה, תצוגה, אירוע, פעילות, רולאפ ומסלולים של המדינה |
-|`/v1/multisig/*`, `/v1/controls/*` |הצעות מרובות, אישורים ועוזרי בקרת העברת |
-|`/v1/bridge/*`, `/v1/ledger/*`, `/v1/proofs/*` |סיום, הוכחה למדינה, הוכחה בלוק, שמירה על ראיות, ודרכי שאלת הראיות |
+|`/v1/multisig/`, `/v1/controls/` |הצעות מרובות, אישורים ועוזרי בקרת העברת |
+|`/v1/bridge/`, `/v1/ledger/`, `/v1/proofs/*` |סיום, הוכחה למדינה, הוכחה בלוק, שמירה על ראיות, ודרכי שאלת הראיות |
 |`/v1/da/*` |זמינות נתונים, מוניפסטים, מדיניות הוכחה, מחויבויות וכוונות קצרות |
 |`/v1/zk/*` |ZK שורשים, אימות ראיות, הוכחה של IVM, ספירת קולות, מפתחות אימות, רשומות ראיות ותארים |
-|`/v1/gov/*`, `/v1/ministry/*` |הצעות לניהול, קולות, מדינת המועצה, מרחבי שמות מוגנים, הצעות סדר היום, חקיקה וסיום |
-|`/v1/nexus/*`, `/v1/sccp/*` |Nexus ליין, מרחב נתונים, ועוזרי חסינות צלולת שרשרת |
+|`/v1/gov/`, `/v1/ministry/` |הצעות לניהול, קולות, מדינת המועצה, מרחבי שמות מוגנים, הצעות סדר היום, חקיקה וסיום |
+|`/v1/nexus/`, `/v1/sccp/` |Nexus ליין, מרחב נתונים, ועוזרי חסינות צלולת שרשרת |
 |`/v1/musubi/*` |Musubi קריאת רישום חבילות ופיתוח הוראות |
 |`/v1/subscriptions/*` |תוכניות חתימה, מחזור החיים של החתימה, שימוש וחיסול עוזרים |
-|`/v1/sorafs/*`, `/sorafs/*`, `/.well-known/sorafs/*` |SoraFS גילוי ספק, הוכחות קיבולות, סיבוב, אספקה של אחסון ותוכן ציבורי שירות |
-|`/v1/soracloud/*`, `/v1/soradns/*`, `/soradns/*`, `/api/*` |SoraCloud מחזור חיים של שירותים, זרמי מחשבים פרטיים/מודלים, גילוי ציבורי, ושיווק אפליקציות מאוחזקות |
-|`/v1/connect/*`, `/v1/vpn/*` |Iroha פגישות חיבור, תחבורה WebSocket, פגישות VPN, פרופילים ורשומות |
-|`/v1/app-api/*`, `/v1/api/*`, `/v1/content/*` | אפליקציה API חיבורים וחבילה/CID-שיחזור תוכן מבוסס |
+|`/v1/sorafs/`, `/sorafs/`, `/.well-known/sorafs/*` |SoraFS גילוי ספק, הוכחות קיבולות, סיבוב, אספקה של אחסון ותוכן ציבורי שירות |
+|`/v1/soracloud/`, `/v1/soradns/`, `/soradns/`, `/api/` |SoraCloud מחזור חיים של שירותים, זרמי מחשבים פרטיים/מודלים, גילוי ציבורי, ושיווק אפליקציות מאוחזקות |
+|`/v1/connect/`, `/v1/vpn/` |Iroha פגישות חיבור, תחבורה WebSocket, פגישות VPN, פרופילים ורשומות |
+|`/v1/app-api/`, `/v1/api/`, `/v1/content/*` | אפליקציה API חיבורים וחבילה/CID-שיחזור תוכן מבוסס |
 |`/v1/operator/*`, `/v1/mcp` |אימות המפעיל והגשר המקומי MCP JSON-RPC |
-|`/v1/offline/*`, `/v1/repo/*`, `/v1/space-directory/*`, `/v1/ram-lfe/*` |הכנות מקוונת, הסכמי אחסון נתונים, מוניסטים של חלל נתונים, ועוזרי [RAM-LFE ](/he/blockchain/ram-lfe.md#torii-routes) |
-|`/v1/kaigi/*`, `/v1/webhooks/*`, `/v1/notify/*`, `/v1/telemetry/*` |שיתוף פעולה, קישור אינטרנט, הודעות דחיפה ואינטגרציות טלמטריה חי |
+|`/v1/offline/`, `/v1/repo/`, `/v1/space-directory/`, `/v1/ram-lfe/` |הכנות מקוונת, הסכמי אחסון נתונים, מוניסטים של חלל נתונים, ועוזרי [RAM-LFE ](/he/blockchain/ram-lfe.md#torii-routes) |
+|`/v1/kaigi/`, `/v1/webhooks/`, `/v1/notify/`, `/v1/telemetry/` |שיתוף פעולה, קישור אינטרנט, הודעות דחיפה ואינטגרציות טלמטריה חי |
 
 ## ISO גשר 20022 {#iso-20022-bridge}
 
@@ -144,15 +154,15 @@ Torii חושף את גשר ISO 20022 תחת `/v1/iso20022/*` כאשר האפלי
 |שיטה ונקודת סוף |מטרה.|
 | --- | --- |
 |`POST /v1/iso20022/pacs008` |להגיש העברת אשראי FI ל FI לקוח ולבנות את העברה של נכסים Iroha המתאימה |
-|`POST /v1/iso20022/pacs009` |להגיש העברת אשראי FI ל FI ששימשו עבור PvP או למימון במזומן הקשור לכספים |
+|`POST /v1/iso20022/pacs009` |להגיש העברת אשראי FI ל FI ששימשה עבור PvP או מימון במזומן הקשור לכספים |
 |`POST /v1/iso20022/pacs002` |הגשת דו"ח מצב התשלום |
 |`POST /v1/iso20022/pacs004` |להגיש הצהרת תשלום |
-|`POST /v1/iso20022/camt056` |הגשת בקשה לבטל תשלום |
+|`POST /v1/iso20022/camt056` |להגיש בקשה לבטל תשלום |
 |`POST /v1/iso20022/sese023` |להגיש הוראה לפיצוי ניירות ערך |
 |`POST /v1/iso20022/sese024` |תשלח הודעה על מצב הסדר ערך |
 |`POST /v1/iso20022/sese025` |להגיש אישור הסדר ערך |
 |`POST /v1/iso20022/colr012` |להגיש הודעה על תחליף ביטוח |
-|`GET /v1/iso20022/messages/{msg_id}` |תקרא את תיעוד הגשר הקנוני עבור מסר אחד.|
+|`GET /v1/iso20022/messages/{msg_id}` |תקרא את תיעוד הגשר הקנוני בשביל מסר אחד.|
 |`GET /v1/iso20022/audit/messages` |תקרא את מסר הניתוח של הודעות מופרעות.|
 |`GET /v1/iso20022/messages/{msg_id}/pacs002` |להציג את מצב התשלום הנוכחי כ- `pacs.002` XML |
 |`GET /v1/iso20022/messages/{msg_id}/pacs004` |להציג את הצהרת התשלום הנוכחית כ `pacs.004` XML |
@@ -184,7 +194,7 @@ Kaigi מספקת חדרים באודיו / וידאו בתשלום ובזמן א
 מחזור החיים המסתובב על הספר הוא:
 
 - `CreateKaigi`: ליצור שיחה תחת דומיין ולשמר את מדיניותו, לוח הזמנים, מטא-מנתונים ומניסט ההחזקת בחופשי.
-- `JoinKaigi` ו `LeaveKaigi`: מעדכן את רשימת ההזמנות. במצב פרטי, המשתתפים משתמשים בהתחייבויות, בדיקות ביטול והראיות לרשימה במקום לחשוף באופן ישיר את חשבון המשתתף IDs.
+- `JoinKaigi` ו `LeaveKaigi`: עדכן את רשימת השיחות. במצב פרטי, המשתתפים משתמשים בהתחייבות, ביטול, ראיות רשימה במקום לחשוף חשבון המשתתף IDs ישירות.
 - `RecordKaigiUsage`: הוסף את משך הזמן הממוצע ואת סכום הגז.
 - `EndKaigi`: סגור את הפגישה ולהקליט את סימן הזמן הסופי.
 
@@ -260,12 +270,12 @@ npm run dev
    ```
 
 בדיקות אלה מוכיחות כי טלמטריה של Torii ו- Kaigi ניתן להגיע אליהן. הן לא יוצרות פגישה; `CreateKaigi` ו- `JoinKaigi` עדיין זקוקים לכרטיסים מיומנים ולהגיש עסקה חתומה.
-4. לפתוח את הדמו, ללכת להגדרות, להגדיר את Torii URL, ולתתת לאפליקציה לטעין את שרשרת ID ותיקום רשת מנקודת הסיום.
+4. לפתוח את הדמו, ללכת להגדרות, להגדיר את Torii URL, ולתתת לאפליקציה לטעין את שרשרת ID ותיקום רשת מהנקודת הסיום.
 5. ליצור או לשחזר שני ארנקים מקומיים בדמו. להשתמש חלונות אפליקציות נפרדים, פרופילים או מכונות כדי שהארח והאורח יש מצב ארנק נפרד.
 
 כדי לבדוק את Kaigi UI:
 
-1. בחלון המארח, לפתוח Kaigi, לבחור להתחיל פגישה, להגדיר כותרת, ולבחר הזמנה פרטית או הזמנה שקופה.
+1. בחלון המארח, לפתוח Kaigi, לבחור להתחיל פגישה, להגדיר כותרת, ולבחר הזמנה פרטית או הזמנה גלויה.
 2. בחר להפעיל מצלמה ומיקרופון כך WebRTC יש מדיה מקומית.
 3. בחר ליצור קישור פגישה. ארנק חי שולח `CreateKaigi`; האפליקציה מראה אחר כך הזמנה `iroha://kaigi/join?call=...&secret=...` ודרך חזרה `#/kaigi?...`.
 4. שמור את החלון של המארח פתוח וחלוק את ההזמנה עם האורח.
@@ -275,7 +285,7 @@ npm run dev
 
 פרטי Kaigi צרכים מוגנים XOR אם הדמו מדווח כי הפרטי Kaigi צרכים מוגנים XOR, השתמש בדפ"ח של הגנת עצמי בתוכנה ולנסות שוב את הפעולה ליצור או להצטרף. אם יצירת ראיות, מימון פרטי או סיגנליקה חי אינן זמינות, הדמוקרטיה יכולה לחזור לזרם שקוף / ידני. במקרה זה, לפתוח סימן מתקדם, להעתיק את ההצעה המקורית או פעקת התשובה, ולהדביק אותה לחלון השני.
 
-עבור בדיקות אוטומטיות במערכת הדמו, תפעיל:
+עבור בדיקות אוטומטיות בדמו repo, תפעיל:
 
 ```bash
 npm test -- tests/kaigiView.spec.ts tests/preloadKaigiBridge.spec.ts
@@ -314,15 +324,15 @@ Accept: application/json
 
 ## פרופיל טלמטריה {#telemetry-profiles}
 
-הנראות של נקודות הקצה תלויה בהגדרת `telemetry.profile` של הצומת. התצורה הנוכחית חושפת חמש רמות פרופיל:
+נראה של נקודת הסיום תלוי בהגדרת `telemetry.profile` של הערך. הקונפיגורציה הנוכחית חושפת חמישה רמות פרופיל:
 
 |פרופיל |`/status` |`/metrics` |מסלול פיתוח |
 | --- | --- | --- | --- |
-|`disabled` |לא |לא |לא |
-|`operator` |כן |לא |לא |
-|`extended` |כן |כן |לא |
-|`developer` |כן |לא |כן |
-|`full` |כן |כן |כן |
+|`disabled` |לא.|לא.|לא.|
+|`operator` |כן.|לא.|לא.|
+|`extended` |כן.|כן.|לא.|
+|`developer` |כן.|לא.|כן.|
+|`full` |כן.|כן.|כן.|
 
 ## CLI קיצוצים {#cli-shortcuts}
 

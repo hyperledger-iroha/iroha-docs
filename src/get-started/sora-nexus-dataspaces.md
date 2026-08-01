@@ -37,6 +37,23 @@ The practical flow is:
 4. Create a separate Minamoto signer, fund it with real XOR, and move only
    the same proven operations to mainnet.
 
+## Continue with the Cookbook
+
+Use this guide to choose a network, configure a signer, and fund fees. Then
+continue with the recipe that matches the application behavior you want to
+build:
+
+| Goal | Recipe |
+| --- | --- |
+| Check Taira and configure a client | [Connect to Taira](/cookbook/connect-to-taira.md) |
+| Send a first write and verify its result | [Submit and Verify Transactions](/cookbook/submit-and-verify-transactions.md) |
+| Register, mint, and move value | [Fungible Assets](/cookbook/fungible-assets.md) |
+| Read filtered application state | [Query Ledger State](/cookbook/query-ledger-state.md) |
+| React to committed changes | [Stream Events](/cookbook/stream-events.md) |
+
+The cookbook keeps each workflow focused and links back here when it needs
+Taira funding or SORA Nexus network context.
+
 ## 1. Understand What You Are Setting Up
 
 In SORA Nexus, a dataspace is part of the network lane and routing catalog.
@@ -68,6 +85,7 @@ For Taira:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -75,6 +93,7 @@ For Minamoto:
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -82,6 +101,7 @@ Inspect the dataspace and lane view exposed by the node:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
@@ -105,6 +125,7 @@ Check the bridge metadata before adding signing material:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/mcp \
+  -H 'Accept: application/json' \
   | jq '{protocolVersion, server: .serverInfo.name, tools: .capabilities.tools.count}'
 ```
 
@@ -239,6 +260,7 @@ for network in taira minamoto; do
   root="https://$network.sora.org"
   printf '\n%s\n' "$network"
   curl -fsS "$root/status" \
+    -H 'Accept: application/json' \
     | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 done
 ```
@@ -247,6 +269,7 @@ List the public dataspace lanes exposed by Taira:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -256,6 +279,7 @@ Run the same command against Minamoto when you need the mainnet view:
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -272,7 +296,9 @@ const roots = {
 };
 
 for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`).then((res) => res.json());
+  const status = await fetch(`${root}/status`, {
+    headers: { Accept: 'application/json' },
+  }).then((res) => res.json());
   const publicSpaces = status.teu_lane_commit
     .filter((lane) => lane.visibility === 'public')
     .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
@@ -456,7 +482,9 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 Fetch the puzzle:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
+curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
+  -H 'Accept: application/json' \
+  | jq .
 ```
 
 The faucet is a public testnet service. If the puzzle or claim endpoint
@@ -483,8 +511,11 @@ When `difficulty_bits` is `0`, submit only the account ID:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
-  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}'
+  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
 When `difficulty_bits` is greater than `0`, solve the puzzle and include
@@ -492,12 +523,15 @@ the anchor height plus nonce:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
   -d '{
     "account_id": "<TAIRA_I105_ACCOUNT_ID>",
     "pow_anchor_height": 741,
     "pow_nonce_hex": "<NONCE_HEX>"
-  }'
+  }' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
 The puzzle algorithm is:
@@ -524,16 +558,17 @@ The faucet response includes the funded asset and queued transaction hash:
 ```json
 {
   "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-  "asset_definition_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
+  "asset_definition_id": "<TAIRA_FEE_ASSET_DEFINITION_ID>",
   "asset_id": "...",
-  "amount": "25000",
+  "amount": "<FUNDED_AMOUNT>",
   "tx_hash_hex": "...",
   "status": "QUEUED"
 }
 ```
 
-The response is currently returned with HTTP `202 Accepted`. The asset
-definition ID above is the Taira fee asset funded by the public faucet. The
+The response is currently returned with HTTP `202 Accepted`. Its
+`asset_definition_id` is the current Taira fee asset funded by the public
+faucet; derive it from the response instead of copying an example ID. The
 faucet has accepted the request when it returns `tx_hash_hex` and
 `status: "QUEUED"`.
 
@@ -541,8 +576,12 @@ Then poll for the funded asset before submitting your own fee-paying
 transactions:
 
 ```bash
+TAIRA_FEE_ASSET_DEFINITION=$(
+  jq -er '.asset_definition_id' ./taira-faucet-response.json
+)
+
 iroha --config ./taira.client.toml ledger asset get \
-  --definition 6TEAJqbb8oEPmLncoNiMRbLEK6tw \
+  --definition "$TAIRA_FEE_ASSET_DEFINITION" \
   --account <TAIRA_I105_ACCOUNT_ID>
 ```
 
@@ -571,7 +610,12 @@ def has_leading_zero_bits(digest: bytes, bits: int) -> bool:
 root = "https://taira.sora.org"
 account_id = sys.argv[1]
 
-with urllib.request.urlopen(f"{root}/v1/accounts/faucet/puzzle") as res:
+puzzle_request = urllib.request.Request(
+    f"{root}/v1/accounts/faucet/puzzle",
+    headers={"Accept": "application/json"},
+)
+
+with urllib.request.urlopen(puzzle_request) as res:
     puzzle = json.load(res)
 
 claim = {"account_id": account_id}
@@ -604,7 +648,7 @@ if difficulty > 0:
 request = urllib.request.Request(
     f"{root}/v1/accounts/faucet",
     data=json.dumps(claim).encode(),
-    headers={"content-type": "application/json"},
+    headers={"Accept": "application/json", "content-type": "application/json"},
     method="POST",
 )
 
@@ -730,6 +774,7 @@ Before preparing a change, capture the current live catalog:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
@@ -794,6 +839,7 @@ Operator acceptance should include these gates:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | select(.dataspace_alias == "payments")'
 ```
 

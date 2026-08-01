@@ -1,9 +1,9 @@
 ---
 translation_locale: ur
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: 9bec41b1b419e252fdcff8328e7950a294bdad3ac40112a5a7f2ce451d19e9cb
+translation_source_hash: c23170b2949bae9c9483ecbee6f0c09fea503904ae93934aef56537ddd13c42d
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2
 ---
 
 # Torii اختتام پوائنٹس {#torii-endpoints}
@@ -22,34 +22,43 @@ Torii ہے HTTP, SSE, اور WebSocket گیٹ وے Iroha 3. یہ دونوں لی
 
 |اختتامی نقطہ |شکل |مقصد |
 | --- | --- | --- |
-|`POST /transaction` |Norito |دستخط شدہ ٹرانزیکشن جمع کروائیں |
-|`POST /query` |Norito |دستخط شدہ استفسار درج کریں |
-|`GET /events` |WebSocket |تقریبات کے سلسلے میں سبسکرائب کریں |
-|`GET /block/stream` |WebSocket |سلسلہ بندی شدہ بلاکس |
-|`GET /peers` |JSON |Torii کے ذریعہ بے نقاب ہونے والے ہم مرتبہ کی فہرست |
-|`GET /health` |JSON |ہلکے وزن کی زندگی کا اختتام |
-|`GET /api_version` |JSON |ڈیفالٹ API ورژن |
-|`GET /status` |JSON |آپریٹرز کے لیے اعلیٰ سطح کی حیثیت کا خلاصہ |
+|`POST /v1/pipeline/transactions` |Norito |دستخط شدہ ٹرانزیکشن جمع کروائیں |
+|`POST /v1/query` |Norito |دستخط شدہ استفسار درج کریں |
+|`GET /v1/events/ws` |WebSocket |تقریبات کے سلسلے میں سبسکرائب کریں |
+|`GET /v1/events/sse` |SSE |SSE سے زیادہ واقعات کے سلسلے میں سبسکرائب کریں |
+|`GET /v1/blocks/stream` |WebSocket |سلسلہ بندی شدہ بلاکس |
+|`GET /v1/peers` |JSON |Torii کے ذریعہ بے نقاب ہونے والے ہم مرتبہ کی فہرست |
+|`GET /livez` |متن |صرف عمل کی زندگی۔ اس سے پروٹوکول کی تیاری کا مطلب نہیں ہوتا |
+|`GET /readyz` |JSON |مکمل نوڈ کی تیاری ، بشمول لازمی آف لائن نقد چیک |
+|`GET /health` |JSON |ایک ہی آف لائن نقد غیر متغیر کے ساتھ تیاری کی تحقیقات |
+|`GET /v1/api/version` |متن |بلاک ہیڈر کی موجودہ ورژن |
+|`GET /status` |Norito یا JSON |اعلیٰ سطح کی تشخیصی حیثیت؛ صریح طور پر درخواست JSON |
 |`GET /metrics` |Prometeus |Prometheus سکریپ اختتام نقطہ |
-|`GET /schema` |JSON |ڈیٹا ماڈل شیما اسنیپ شاٹ نوڈ کی طرف سے خدمت |
+|`GET /v1/schema` |JSON |ڈیٹا ماڈل شیما snapshot نوڈ کی طرف سے خدمت جب فعال کیا جاتا ہے |
 |`GET /openapi` یا `GET /openapi.json` |JSON |فعال Torii HTTP راستوں کے لیے دستاویز OpenAPI |
 |`GET /v1/parameters` |JSON |نوڈ پیرامیٹر کی فوری شاٹ |
 |`GET /v1/node/capabilities` |JSON |نوڈ کی صلاحیت اور ڈیٹا ماڈل میٹا ڈیٹا |
-|`GET /v1/api/versions` |JSON |Torii API ورژن کی حمایت |
-|`GET /v1/events/sse` |SSE |طویل مدتی گاہکوں کے لئے ایونٹ سٹریم |
 |`GET /v1/time/now` |JSON |نوڈ دیوار کی گھڑی سنیپ شاٹ |
 |`GET /v1/time/status` |JSON |وقت کی ہم آہنگی کی حیثیت |
 
-`/openapi` ایک چلانے والے نوڈ کے لئے مستند اختتامی پوائنٹ کی فہرست ہے. تعمیر کی خصوصیات اور رن ٹائم ترتیب، تو پیدا کلائنٹس براہ راست ترجیح دینا چاہئے OpenAPI دستاویزی طور پر نقل شدہ روٹ لسٹ پر دستاویز۔ [Torii API کنسول](/ur/reference/torii-api-console.md) اس زندہ دستاویز کو لوڈ کرنے کے لئے، ٹیسٹ JSON راستے، کاپی curl درخواستیں، اور موجودہ شیما سے کلائنٹ کوڈ پیدا.
+SSE کی درخواست کے لئے، مقامی سلسلہ اور ٹائپ شدہ فال بیک کو اشتہار دیں:
+
+```http
+Accept: text/event-stream, application/json
+```
+
+Torii سب سے پہلے درخواست پرت پر JSON یا Norito نمائندگی پر بات چیت کرتا ہے ، پھر مقامی `text/event-stream` جواب کی توثیق کرتا ہے۔ لہذا صرف `text/event-stream` بھیجنا `406` کے ساتھ مسترد کیا جاتا ہے۔ [ اسٹریم ایونٹس کا نسخہ](/ur/cookbook/stream-events.md) مکمل سرخی استعمال کرتا ہے۔
+
+`/openapi` اسکیما میں نمائندگی کی جانے والی راستوں کے لئے بنیادی پیدا کردہ معاہدہ ہے ، نہ کہ ایک مکمل آپریشنل-سونڈ انوینٹری۔ موجودہ دستاویز میں `/livez` اور `/readyz` کو خارج کردیا گیا ہے ، اور اس کی `/health` تفصیل تیاری ہینڈلر سے پیچھے رہ سکتی ہے۔ براہ راست دستاویز سے روٹ کلائنٹس تیار کریں ، لیکن چلانے والے نوڈ اور پنڈ ہینڈلر کے خلاف براہ راست زندگی اور تیاری کی توثیق کریں۔ عین مطابق سطح اب بھی تعمیر کی خصوصیات اور رن ٹائم ترتیب پر منحصر ہے۔ اس لائیو دستاویز کو لوڈ کرنے ، JSON راستوں کا تجربہ کرنے ، curl درخواستوں کی کاپی کرنے اور موجودہ اسکیم سے کلائنٹ کوڈ تیار کرنے کے لئے [ Torii API کنسول](/ur/reference/torii-api-console.md) استعمال کریں۔
 
 ## Taira راستوں کو براہ راست آزمائیں {#try-live-taira-routes}
 
-عوامی Taira ٹیسٹ نیٹ ورک ایک ہی Torii JSON سطح کو بے نقاب کرتا ہے جو ایپلی کیشن کلائنٹس صرف پڑھنے کے لئے کھوج کے ل use استعمال کرتے ہیں۔ ان کمانڈز میں کلیدوں کی ضرورت نہیں ہے۔
+عوامی Taira ٹیسٹ نیٹ ورک ایک ہی Torii JSON سطح کو بے نقاب کرتا ہے جو ایپلی کیشن کلائنٹس صرف پڑھنے کے لئے کھوج کے لئے استعمال کرتے ہیں۔ ان کمانڈز میں چابیاں کی ضرورت نہیں ہوتی ہے۔
 
 ```bash
 TAIRA_ROOT=https://taira.sora.org
 
-curl -fsS "$TAIRA_ROOT/status" \
+curl -fsS -H 'Accept: application/json' "$TAIRA_ROOT/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA_ROOT/openapi.json" \
@@ -57,7 +66,8 @@ curl -fsS "$TAIRA_ROOT/openapi.json" \
   | grep '^/v1/' \
   | head -n 20
 
-curl -fsS "$TAIRA_ROOT/v1/node/capabilities" \
+curl -fsS -H 'Accept: application/json' \
+  "$TAIRA_ROOT/v1/node/capabilities" \
   | jq '{abi_version, data_model_version, query: .query.aggregate.supported_resources}'
 ```
 
@@ -91,11 +101,11 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=5" \
 |`GET /v1/sumeragi/rbc` |JSON |RBC سیشن اور ٹرانسمیٹ میٹرکس |
 |`GET /v1/sumeragi/rbc/sessions` |JSON |فعال RBC سیشن سنیپ شاٹ |
 |`GET /v1/sumeragi/pacemaker` |JSON |پیسی میکر کی حیثیت |
-|`GET /v1/sumeragi/params` |JSON |موجودہ آن لائن چین Sumeragi پیرامیٹرز |
+|`GET /v1/sumeragi/params` |JSON |موجودہ سلسلہ پر Sumeragi پیرامیٹرز |
 |`GET /v1/sumeragi/collectors` |JSON |Deterministic collector plan snapshot |
 |`GET /v1/sumeragi/key-lifecycle` |JSON |اتفاق رائے کلیدی زندگی کے دوران کی حیثیت |
 |`GET /v1/sumeragi/telemetry` |JSON |اتفاق رائے ٹیلی میٹری سنیپ شاٹ |
-|`GET /v1/sumeragi/evidence` |JSON |ثبوت ریکارڈ، اختیاری طور پر استفسار تار کی طرف سے فلٹر |
+|`GET /v1/sumeragi/evidence` |JSON |ثبوت ریکارڈ، اختیاری طور پر استفسار سٹرنگ کی طرف سے فلٹر |
 |`GET /v1/sumeragi/evidence/count` |JSON |ثبوت ریکارڈ گنتی |
 |`POST /v1/sumeragi/evidence/submit` |JSON |اتفاق رائے کا ثبوت پیش کریں |
 |`GET /v1/sumeragi/commit_qc/{hash}` |Norito یا JSON |بلاک ہیش کے لئے QC ریکارڈ پر عمل درآمد کریں |
@@ -105,7 +115,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=5" \
 |`GET /v1/runtime/upgrades` |JSON |رن ٹائم اپ گریڈ کی فہرست |
 |`POST /v1/runtime/upgrades/propose` |JSON |ایک رن ٹائم اپ گریڈ کی تجویز |
 |`POST /v1/runtime/upgrades/activate/{id}` |JSON |رن ٹائم اپ گریڈ کی تجویز کو فعال کریں |
-|`POST /v1/runtime/upgrades/cancel/{id}` |JSON |رن ٹائم اپ گریڈ کی تجویز کو منسوخ کریں |
+|`POST /v1/runtime/upgrades/cancel/{id}` |JSON |رن ٹائم اپ گریڈ کی تجویز منسوخ کریں |
 
 ## ایپ اور SORA روٹ کنبے {#app-and-sora-route-families}
 
@@ -113,27 +123,27 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=5" \
 
 |روٹ خاندان |مقصد |
 | --- | --- |
-|`/v1/accounts/*` ، `/v1/domains/*`، `/v1/assets/*` |JSON پڑھتا ہے، پوچھ گچھ کے مددگار، آن بورڈنگ کے مددگار، اور پورٹ فولیو یا ہولڈر کے خیالات |
-|`/v1/nfts/*` ، `/v1/rwas/*`، `/v1/confidential/*` |NFT ، حقیقی دنیا کے اثاثے، اور خفیہ اثاثوں کے خیالات |
-|`/v1/aliases/*` ، `/v1/assets/aliases/*`، `/v1/sns/*`، `/v1/identifiers/*`|نام، عرفان اور شناخت کنندہ قرارداد |
+|`/v1/accounts/` ، `/v1/domains/`، `/v1/assets/*` |JSON پڑھتا ہے، پوچھ گچھ کے مددگار، آن بورڈنگ کے مددگار، اور پورٹ فولیو یا ہولڈر کے خیالات |
+|`/v1/nfts/` ، `/v1/rwas/`، `/v1/confidential/*` |NFT ، حقیقی دنیا کے اثاثے، اور خفیہ اثاثوں کے خیالات |
+|`/v1/aliases/` ، `/v1/assets/aliases/`، `/v1/sns/`، `/v1/identifiers/`|نام، عرفان اور شناخت کنندہ قرارداد |
 |`/v1/explorer/*` |ایکسپلورر پر مبنی اکاؤنٹ ، اثاثہ ، بلاک ، ٹرانزیکشن ، ہدایات ، میٹرکس ، اور سٹریم ویوز |
-|`/v1/transactions/*` ، `/v1/pipeline/*`، `/v1/iso20022/*` |ٹرانزیکشن کی تاریخ، پائپ لائن کی بحالی یا حیثیت، اور ISO 20022 معاون |
+|`/v1/transactions/` ، `/v1/pipeline/`، `/v1/iso20022/*` |ٹرانزیکشن کی تاریخ، پائپ لائن کی بحالی یا حیثیت، اور ISO 20022 معاون |
 |`/v1/contracts/*` |معاہدے کا کوڈ، تعینات، بنڈل، کال، ویو، ایونٹ، سرگرمی، رول اپ، اور ریاستی راستے |
-|`/v1/multisig/*`، `/v1/controls/*` |Multisig تجاویز، منظوری اور منتقلی کے کنٹرول میں معاون |
-|`/v1/bridge/*` ، `/v1/ledger/*`، `/v1/proofs/*` |فائنلٹی، اسٹیٹ پروف، بلاک پروف، ثبوت برقرار رکھنے، اور ثبوت کے سوالات کے راستے |
+|`/v1/multisig/`، `/v1/controls/` |Multisig تجاویز، منظوری اور منتقلی کے کنٹرول میں معاون |
+|`/v1/bridge/` ، `/v1/ledger/`، `/v1/proofs/*` |فائنلٹی، اسٹیٹ پروف، بلاک پروف، ثبوت برقرار رکھنے، اور ثبوت کے سوالات کے راستے |
 |`/v1/da/*` |اعداد و شمار کی دستیابی کا استعمال، دستاویزات، ثبوت کی پالیسیاں، وعدے اور پِن ارادے |
 |`/v1/zk/*` |ZK جڑیں، ثبوت کی تصدیق، IVM ثابت کرنا، ووٹوں کی گنتی، تصدیق کی چابیاں، ثبوت کے ریکارڈ اور منسلکات |
-|`/v1/gov/*`، `/v1/ministry/*` |گورننس کی تجاویز، ووٹ، کونسل ریاست، محفوظ ناموں کی جگہیں، ایجنڈے کی تجاویزات، قانون سازی اور حتمی شکل |
-|`/v1/nexus/*`، `/v1/sccp/*` |Nexus لین، ڈیٹا اسپیس، اور کراس چین پروف ہیلپرز |
+|`/v1/gov/`، `/v1/ministry/` |گورننس کی تجاویز، ووٹ، کونسل ریاست، محفوظ ناموں کی جگہیں، ایجنڈے کی تجاویزات، قانون سازی اور حتمی شکل |
+|`/v1/nexus/`، `/v1/sccp/` |Nexus لین، ڈیٹا اسپیس، اور کراس چین پروف ہیلپرز |
 |`/v1/musubi/*` |Musubi پیکج رجسٹر پڑھتا ہے اور ہدایات کی تعمیر |
 |`/v1/subscriptions/*` |رکنیت کے منصوبے، رکنیت کی زندگی سائیکل، استعمال اور معاونین کا چارج |
-|`/v1/sorafs/*` ، `/sorafs/*`، `/.well-known/sorafs/*` |SoraFS فراہم کنندہ کا پتہ لگانا، صلاحیت کی تصدیق، پننگ، اسٹوریج لینے اور عوامی مواد کی خدمت کرنا |
-|`/v1/soracloud/*` ، `/v1/soradns/*`، `/soradns/*`، `/api/*`|SoraCloud سروس لائف سائیکل، نجی کمپیوٹر / ماڈل فلو، عوامی دریافت اور میزبان ایپ روٹنگ |
-|`/v1/connect/*`، `/v1/vpn/*` |Iroha کنیکٹ سیشن، WebSocket ٹرانسپورٹ، VPN سیشن، پروفائلز، اور رسیدیں |
-|`/v1/app-api/*` ، `/v1/api/*`، `/v1/content/*` |App API پابندیاں اور بنڈل/CID کی حمایت یافتہ مواد روٹنگ |
+|`/v1/sorafs/` ، `/sorafs/`، `/.well-known/sorafs/*` |SoraFS فراہم کنندہ کا پتہ لگانا، صلاحیت کی تصدیق، پننگ، اسٹوریج لینے اور عوامی مواد کی خدمت کرنا |
+|`/v1/soracloud/` ، `/v1/soradns/`، `/soradns/`، `/api/`|SoraCloud سروس لائف سائیکل، نجی کمپیوٹر / ماڈل فلو، عوامی دریافت اور میزبان ایپ روٹنگ |
+|`/v1/connect/`، `/v1/vpn/` |Iroha کنیکٹ سیشن، WebSocket ٹرانسپورٹ، VPN سیشن، پروفائلز، اور رسیدیں |
+|`/v1/app-api/` ، `/v1/api/`، `/v1/content/*` |App API پابندیاں اور بنڈل/CID کی حمایت یافتہ مواد روٹنگ |
 |`/v1/operator/*`، `/v1/mcp` |آپریٹر کی تصدیق اور مقامی MCP JSON-RPC پل |
-|`/v1/offline/*` ، `/v1/repo/*`، `/v1/space-directory/*`، `/v1/ram-lfe/*`|آف لائن تیاری، ذخیرہ معاہدوں، ڈیٹا اسپیس منشور، اور [RAM-LFE معاونین ](/ur/blockchain/ram-lfe.md#torii-routes) |
-|`/v1/kaigi/*` ، `/v1/webhooks/*`، `/v1/notify/*`، `/v1/telemetry/*`|تعاون، ویب ہوک، پش نوٹیفکیشن، اور لائیو ٹیلی میٹری انضمام |
+|`/v1/offline/` ، `/v1/repo/`، `/v1/space-directory/`، `/v1/ram-lfe/`|آف لائن تیاری، ذخیرہ معاہدوں، ڈیٹا اسپیس منشور، اور [RAM-LFE معاونین ](/ur/blockchain/ram-lfe.md#torii-routes) |
+|`/v1/kaigi/` ، `/v1/webhooks/`، `/v1/notify/`، `/v1/telemetry/`|تعاون، ویب ہوک، پش نوٹیفکیشن، اور لائیو ٹیلی میٹری انضمام |
 
 ## ISO 20022 برج {#iso-20022-bridge}
 
@@ -260,7 +270,7 @@ Node.js 20 یا اس سے نیا اور ایک Rust ٹولچین استعمال 
    ```
 
 ان چیکوں سے یہ ثابت ہوتا ہے کہ Torii اور Kaigi ریلے ٹیلی میٹری تک رسائی حاصل ہے۔ وہ ایک اجلاس نہیں بناتے ہیں۔ `CreateKaigi` اور `JoinKaigi` کو ابھی بھی فنڈ والیٹ اور دستخط شدہ لین دین کی پیش کش کی ضرورت ہوتی ہے۔
-4. ڈیمو کھولیں، ترتیبات پر جائیں، Torii URL سیٹ کریں، اور ایپ کو سلسلہ ID اور نیٹ ورک پریفیکس کو اختتام نقطہ سے لوڈ کرنے دیں.
+4. ڈیمو کھولیں، ترتیبات پر جائیں، Torii URL مقرر کریں، اور ایپ کو سلسلہ ID اور نیٹ ورک کا پریفیکس اختتامی نقطہ سے لوڈ کرنے دیں.
 5. ڈیمو میں دو مقامی بٹوے بنائیں یا بحال کریں۔ الگ الگ ایپ ونڈوز ، پروفائلز ، یا مشینیں استعمال کریں تاکہ میزبان اور مہمان کے پاس الگ الگ بٹوے کی حالت ہو۔
 
 Kaigi UI کا تجربہ کرنے کے لئے:
@@ -314,15 +324,15 @@ Accept: application/json
 
 ## ٹیلی میٹری پروفائلز {#telemetry-profiles}
 
-اختتامی نقاط کی مرئیت نوڈ کی `telemetry.profile` ترتیب پر منحصر ہے۔ موجودہ کنفیگریشن پروفائل کی پانچ سطحیں فراہم کرتی ہے:
+اختتامی نقطہ نظر کی نمائش نوڈ کی `telemetry.profile` ترتیب پر منحصر ہے۔ موجودہ ترتیب پانچ پروفائل سطحوں کو بے نقاب کرتی ہے:
 
 |پروفائل |`/status` |`/metrics` |ڈویلپرز کے راستے |
 | --- | --- | --- | --- |
-|`disabled` |نہیں |نہیں |نہیں |
-|`operator` |ہاں |نہیں |نہیں |
-|`extended` |ہاں |ہاں |نہیں |
-|`developer` |ہاں |نہیں |ہاں |
-|`full` |ہاں |ہاں |ہاں |
+|`disabled` |نہیں|نہیں|نہیں|
+|`operator` |جی ہاں|نہیں|نہیں|
+|`extended` |جی ہاں|جی ہاں|نہیں|
+|`developer` |جی ہاں|نہیں|جی ہاں|
+|`full` |جی ہاں|جی ہاں|جی ہاں|
 
 ## CLI شارٹ کٹس {#cli-shortcuts}
 
@@ -335,7 +345,7 @@ iroha --config ./localnet/client.toml ops sumeragi params
 iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetry
 ```
 
-## اوور اسٹریم ریفرنسز {#upstream-references}
+## اپ اسٹریم ریفرنسز {#upstream-references}
 
 - [README API اور مشاہدہ کرنے کی صلاحیت کا جائزہ](https://github.com/hyperledger-iroha/iroha/blob/main/README.md)
 - [ISO 20022 پل کی تنصیب](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_torii/src/iso20022_bridge.rs)

@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /blockchain/domains.md
-translation_source_hash: 4c42df3c179a086b8823264df2b69f68d7d3df500c8362d78f7ba56875dcfad1
+translation_source_hash: 5e52579436a181d76c83fa549991e56064ae57349b7109d5c41ec7953e5cbb2e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -45,7 +45,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
 ```
 
-התכוונה מזהה `payments.universal`, את חלקי הנתונים המספריים שלה, בעל הקנוניקה I105, תקופת רכישת השכרה, ומגן על הערכת המדיניות/שלם הנוכחית. נקודת הסיום של המתכנן היא `POST /v1/aliases/setup/plan`; תוכניתו החזרת קשורה, סמכות, מדינה ותקופה מאוחדת. הסרת תחום עדיין משתמשת [`Unregister` ](/he/blockchain/instructions.md#un-register).
+התכוון מזהה `payments.universal`, את חלל הנתונים המספרי שלו, הבעלים הקנוני של I105, תקופת רכישת השכרה, ואת המשמרת המדיניות/שלם הנוכחית. נקודת הסיום של מתכנן היא `POST /v1/aliases/setup/plan`; התוכנית המובילה שלה קשורה לשרשרת, סמכות, מדינה ותקופה. הסרת הדומיין עדיין משתמשת [`Unregister` ](/he/blockchain/instructions.md#un-register).
 
 יצירת או הסרת תחום דורשת רשות ניהול תחום מתאימה תחת מעודד זמן ההפעלה הפעיל. מטא נתוני תחום ניתן לעדכן עם [`SetKeyValue` ו `RemoveKeyValue`](/he/blockchain/instructions.md#setkeyvalue-removekeyvalue) כאשר לרשות יש רשות לשנות את התחום הזה.
 
@@ -61,7 +61,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
 תאר את קטלוג המסלול הציבורי בחזרה לכינויים של חלקי נתונים:
 
 ```bash
-curl -fsS https://taira.sora.org/status \
+curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .block_height, .finality_lag_slots]
     | @tsv'
@@ -92,7 +92,7 @@ iroha --config ./taira.client.toml \
 
 ## היחסים עם יחידות אחרות {#relationship-to-other-entities}
 
-קבוצת דומנים מחלקת אובייקטים ומספקת חלל שמות עבור נתונים בעלי גודל דומיין. הגדרות נכסים משתמשות במזהרים בעלי גבול דומיין, ושאלות יכולות לרשום דומנים או למצוא אובייקטות עם גודל לדומיין. החשבונות עצמם הם ללא דומנים במודל הנתונים הנוכחי, אבל חשבונות יכולים להיות בעלים של דומנים ולחזיק נכסים שההגדרות שלהם חיים תחת שדות.
+ארגונים קבוצת ספריה אובייקטים ומספקים חלל שמות עבור נתונים שנקבעו על ידי דומיין. הגדרות נכסים משתמשות במזהרים מוסמכים על ידי הדומיין, ושאלות יכולות לרשום דומנים או למצוא חישובים עצמם אינם בעלי תחום במודל הנתונים הנוכחי, אך חשבונות יכולים להיות בעלים של תחומים ולחזיק נכסים שההגדרות שלהם חיים תחת תחומי נתונים.
 
 ראו גם:
 

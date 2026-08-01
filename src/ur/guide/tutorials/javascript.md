@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: feddadb1b50c5cc8beea188fd7053eeaae58d6ab9203687e9a1378f203229168
+translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -22,7 +22,7 @@ npm run build:native
 npm run build:dist
 ```
 
-مقامی تعمیر لفافے `cargo build -p iroha_js_host` اور پلیٹ فارم کے لئے مخصوص چیک کی رقم ریکارڈ کرتا ہے SDK سٹارٹ اپ. ماخذ تعمیر مقامات میں میزبان کی تصدیق `native/`. سیٹ `IROHA_JS_NATIVE_DIR` صرف جب جان بوجھ کر ایک علیحدہ تعمیر، چیکسوم کی تصدیق شدہ میزبان فراہم کیا جاتا ہے. ESM-صرف؛ سے CommonJS, استعمال کی متحرک `import()`.
+مقامی بلڈ `cargo build -p iroha_js_host` کو لپیٹتا ہے اور SDK اسٹارٹ اپ میں استعمال ہونے والے پلیٹ فارم کے مخصوص چیکسم کو ریکارڈ کرتا ہے۔ ماخذ بلڈ مقامات جو میزبان کی تصدیق کرتے ہیں `native/` میں۔ `IROHA_JS_NATIVE_DIR` صرف اس وقت مقرر کریں جب جان بوجھ کر علیحدہ تعمیر شدہ ، چیکسوم کی تصدیق شدہ میزبان کو فراہم کیا جائے۔ پیکیج صرف ESM ہے۔ CommonJS سے ، متحرک استعمال کریں `import()`.
 
 ## فوری آغاز {#quickstart}
 
@@ -45,7 +45,9 @@ console.log(keys.publicKey);
 ```js
 const root = "https://taira.sora.org";
 
-const status = await fetch(`${root}/status`).then((res) => res.json());
+const status = await fetch(`${root}/status`, {
+  headers: { Accept: "application/json" },
+}).then((res) => res.json());
 console.log({
   blocks: status.blocks,
   queueSize: status.queue_size,
@@ -85,7 +87,7 @@ import { generateKeyPair } from "@iroha/iroha-js/crypto";
 
 ## مقامی ایسکرو {#native-escrow}
 
-JavaScript اور TypeScript ایپلی کیشنز کے ذریعے مقامی سکرو کا استعمال کر سکتے ہیں Kotodama معاہدوں. ایسکرو میزبان کالز مرتب کریں `@iroha/iroha-js/kotodama-compiler`; براہ راست مقامی ایسکرو ٹرانزیکشن بنانے والے فی الحال JavaScript SDK. دیکھو [مقامی اثاثہ جات کا حصول](/ur/blockchain/escrow.md#javascript-and-typescript-kotodama) اسرو میزبان کال کی مثال کے لیے۔
+JavaScript اور TypeScript ایپلی کیشنز Kotodama معاہدوں کے ذریعے مقامی اسرو کا استعمال کرسکتے ہیں۔ `@iroha/iroha-js/kotodama-compiler` کے ساتھ ایسرو میزبان کالیں مرتب کریں۔ براہ راست مقامی اسرو  ٹرانزیکشن بلڈرز فی الحال JavaScript SDK کے ذریعہ بے نقاب نہیں ہیں۔ اسرو میزبان کال کی مثال کے لئے [ نیشنل اثاثہ سکرو](/ur/blockchain/escrow.md#javascript-and-typescript-kotodama) دیکھیں.
 
 ## موجودہ کوریج {#current-coverage}
 

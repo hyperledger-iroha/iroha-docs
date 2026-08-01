@@ -1,16 +1,16 @@
 ---
 translation_locale: ka
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 63c317ab61ba912176c43c83d5b4f026f23a7a6e5fb633872a133c9ea1295686
+translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # SORA 3: Taira და Minamoto {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 არის აპლიკაციის მიმართულებით საჯარო განთავსების ტრეკი, რომელიც აშენებულია Iroha 3 და SORA Nexus. პირველ რიგში შეიქმნა და რეპეტირება Taira-ზე, შემდეგ კი იგივე კლიენტის ფორმა გადაიტანეთ Minamoto მხოლოდ მაშინ, როდესაც თქვენ გაქვთ ცალკე ძირითადი ქსელის გასაღები, რეალური XOR გადასახადებისთვის და წარმოების დამტკიცება .
+SORA 3 არის აპლიკაციების მიმართულებით შექმნილი საჯარო განთავსების გზა Iroha 3 და SORA Nexus. ააშენეთ და რეპეტირდით Taira ჯერ, შემდეგ გადაიტანეთ იგივე კლიენტის ფორმაში Minamoto მხოლოდ მაშინ, როდესაც თქვენ გაქვთ ცალკე mainnet გასაღები, ნამდვილი XOR გადასახადებისა და წარმოების დამტკიცებისათვის.
 
-ეს სახელმძღვანელო აჩვენებს, თუ როგორ კონფიგურონ Iroha კლიენტი საჯარო SORA 3 ქსელი:
+აღნიშნული სახელმძღვანელო აჩვენებს, თუ როგორ უნდა კონფიგურდეს Iroha კლიენტი საზოგადოებისთვის SORA 3 ქსელი:
 
 - Taira საგამოცდო ქსელი `https://taira.sora.org`
 - Minamoto ძირითადი ქსელი: `https://minamoto.sora.org`
@@ -37,6 +37,20 @@ SORA 3 არის აპლიკაციის მიმართულე�
 3. გამოიყენეთ თქვენი აპლიკაციის ლოგიკა Taira -ის წინააღმდეგ, სანამ შეცდომები მოსაწყენი და საყურადღებოა.
 4. შეიქმნას ცალკე Minamoto ხელმოწერილი, დაფინანსოს იგი რეალური XOR და გადაიყვანოს მხოლოდ იგივე დამტკიცებული ოპერაციები mainnet.
 
+## განაგრძეთ კულინარიის გამოყენება {#continue-with-the-cookbook}
+
+გამოიყენეთ ეს სახელმძღვანელო ქსელის შესარჩევად, ხელმოწერის კონფიგურაციისთვის და საფონდო გადასახადებისთვის. შემდეგ გააგრძელეთ რეცეპტი, რომელიც შეესაბამება აპლიკაციის ქცევას, რომელსაც გსურთ შექმნათ:
+
+|მიზანი |რეცეპტი |
+| --- | --- |
+|შეამოწმეთ Taira და დააყენეთ კლიენტი | [გაერთიანება Taira](/ka/cookbook/connect-to-taira.md) |
+|გამოგვიგზავნეთ პირველი წერა და შეამოწმეთ მისი შედეგი | [ტრანზაქციების წარდგენა და გადამოწმება](/ka/cookbook/submit-and-verify-transactions.md) |
+|რეგისტრაცია, მონეტა და გადაადგილება | [ფუნქციური აქტივები](/ka/cookbook/fungible-assets.md) |
+|წაკითხვა ფილტრირებული განაცხადის მდგომარეობა | [გამოკითხვა Ledger State](/ka/cookbook/query-ledger-state.md) |
+|რეაგირება ვალდებულ ცვლილებებზე | [ღონისძიებები](/ka/cookbook/stream-events.md) |
+
+სამზარეულოს წიგნი ინარჩუნებს თითოეულ სამუშაო პროცესზე კონცენტრირებას და აქ უკავშირდება მას, როდესაც მას სჭირდება Taira დაფინანსება ან SORA Nexus ქსელის კონტექსტი.
+
 ## 1. გაიგე, თუ რას აპირებ {#_1-understand-what-you-are-setting-up}
 
 SORA Nexus-ში, მონაცემთა სივრცე არის ქსელის ზოლისა და მარშრუტის კატალოგის ნაწილი. კლიენტი არ ქმნის ახალ საჯარო მონაცემთა სიფერს მხოლოდ იმით, რომ შეცვლის `client.toml`. კლიენტის კონფიგურაცია აკეთებს ორ რამეს:
@@ -60,6 +74,7 @@ Taira:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -67,6 +82,7 @@ Minamoto:
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -74,6 +90,7 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
@@ -94,6 +111,7 @@ Taira ასევე გამოყოფს Torii-ის მშობლი�
 
 ```bash
 curl -fsS https://taira.sora.org/v1/mcp \
+  -H 'Accept: application/json' \
   | jq '{protocolVersion, server: .serverInfo.name, tools: .capabilities.tools.count}'
 ```
 
@@ -139,12 +157,12 @@ MCP ხიდს შეუძლია წარადგინოს ხელ�
 
 გარიგების წარდგენის წინ, აგენტს მოუწოდეთ შეადგინოს მოკლე გარიგებების გეგმა:
 
-- `network`: Taira ტესტნეტის ფესვი და ჯაჭვი ID
+- `network`: Taira სატესტო ქსელის ფესვი და ჯაჭვი ID
 - `authority`: ანგარიში, რომელიც ხელს უწერს და გადაიხდის საფასურებს
 - `instructions`: რეგისტრაცია, მონტაჟი, დამწვრობა, გადაცემა, მეტადატანი, ნებართვა ან ხელშეკრულების მოწოდების შეჯამება
 - `fee asset`: აქტივი, რომელიც გადაიხადება Taira
 - `preflight reads`: უკვე განხორციელებული ანგარიშის, აქტივების ბალანსის, ნებართვების, ანალიზის ან ბლოკის შემოწმება
-- `expected result`: მდგომარეობა, რომელიც უნდა იყოს ხილული დადასტურების შემდეგ.
+- `expected result`: მდგომარეობა, რომელიც უნდა იყოს ხილული დადასტურების შემდეგ
 - `idempotency`: რა მოხდება იმ შემთხვევაში, თუ იგივე მოთხოვნა განმეორებით განიხილება
 
 წარდგენის შემდეგ, აგენტს უნდა დაელოდოს ტერმინალური სტატუსის მოლოდინში, შემდეგ შეამოწმეთ მდგომარეობის ცვლილება კითხვის გამოკითხვით. სასარგებლო დასრულების ანგარიში შეიცავს:
@@ -175,7 +193,7 @@ state with read-only iroha.* tools and report the hash, status, and
 verification result.
 ```
 
-Taira MCP საჯარო სატესტო ქსელის მართვის ზედაპირად უნდა იქნეს განკუთვნილი. Taira გასაღები, სატესტო ჯიხა XOR, საბანქის ანგარიშები და კანარიური ხელმოწერები ერთჯერადად გამოიყენება და უნდა დარჩეს ცალკე Minamoto გასაღებებისა და წარმოების გათავისუფლების სამუშაო პროცესებისგან.
+Taira MCP საჯარო სატესტო ქსელის მართვის ზედაპირად უნდა იქნეს განკუთვნილი. Taira გასაღები, სატესტო ჯიხა XOR, საბანქის ანგარიშები და კანარიური ხელმოწერები ერთჯერადად გამოიყენება და უნდა დარჩეს ცალკე Minamoto გასაღებებისა და წარმოების გათავისუფლების სამუშაო პროცესებისგან .
 
 ## სათამაშოების მაგალითები, რომელთა გამოცდა შეგიძლიათ ახლა {#toy-examples-you-can-try-now}
 
@@ -188,6 +206,7 @@ for network in taira minamoto; do
   root="https://$network.sora.org"
   printf '\n%s\n' "$network"
   curl -fsS "$root/status" \
+    -H 'Accept: application/json' \
     | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 done
 ```
@@ -196,6 +215,7 @@ done
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -205,6 +225,7 @@ curl -fsS https://taira.sora.org/status \
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -220,7 +241,9 @@ const roots = {
 };
 
 for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`).then((res) => res.json());
+  const status = await fetch(`${root}/status`, {
+    headers: { Accept: 'application/json' },
+  }).then((res) => res.json());
   const publicSpaces = status.teu_lane_commit
     .filter((lane) => lane.visibility === 'public')
     .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
@@ -316,7 +339,7 @@ SORA Nexus ანგარიში ID არის კანონიკურ�
 kagami keys --algorithm ed25519 --json
 ```
 
-საჯარო გასაღების გადაკეთება Taira ანგარიშზე ID:
+საჯარო გასაღები Taira ანგარიშში ID გადაიყვანოს:
 
 ```bash
 iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
@@ -366,7 +389,9 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 ეჲბპთ პაჟლარა:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
+curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
+  -H 'Accept: application/json' \
+  | jq .
 ```
 
 საბაგირო არის საჯარო ტესტნეტის სერვისი. თუ თავსატეხი ან მოთხოვნის ბოლო წერტილი ბრუნდება `502`, დროის გაჩერება, ან სხვა კარიბჭე დონეზე შეცდომა, დაელოდეთ და კიდევ ერთხელ სცადეთ სანამ შეცვლით თქვენი გასაღები ან კლიენტის კონფიგურაცია.
@@ -391,20 +416,26 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
-  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}'
+  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
 როდესაც `difficulty_bits` აღემატება `0`-ს, მოაგვარეთ თავსატეხი და შეიყვანეთ ანკრის სიმაღლე პლუს nonce:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
   -d '{
     "account_id": "<TAIRA_I105_ACCOUNT_ID>",
     "pow_anchor_height": 741,
     "pow_nonce_hex": "<NONCE_HEX>"
-  }'
+  }' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
 აალგორითმაა:
@@ -415,8 +446,8 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet \
    - `anchor_height` როგორც დიდი-endian `u64`
    - `anchor_block_hash_hex` დეკოდირებულია ბაიტებად
    - `challenge_salt_hex` დეკოდირებულია ბაიტებად, როდესაც არსებობს
-2. სცადეთ `u64` nonces კოდირებული როგორც დიდი-endian 8-ბაიტით ღირებულებები.
-3. თითოეულ ნონსზე, გაუშვით scrypt:
+2. სცადეთ `u64` nonces კოდირებული როგორც big-endian 8-byte ღირებულებები.
+3. თითოეული ნონსისთვის, გაუშვით scrypt:
    - პაროლი: 8-ბაიტიანი nonce
    - მარილი: 32-ბაიტიანი გამოწვევა
    - `N = 2^scrypt_log_n`
@@ -430,21 +461,25 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet \
 ```json
 {
   "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-  "asset_definition_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
+  "asset_definition_id": "<TAIRA_FEE_ASSET_DEFINITION_ID>",
   "asset_id": "...",
-  "amount": "25000",
+  "amount": "<FUNDED_AMOUNT>",
   "tx_hash_hex": "...",
   "status": "QUEUED"
 }
 ```
 
-ამჟამად პასუხის გაცემა ხდება HTTP `202 Accepted`. ზემოაღნიშნული აქტივის განსაზღვრა ID არის საჯარო ონკანის მიერ დაფინანსებული Taira გადასახადის აქტივი. ონკანმა მიიღო თხოვნა, როდესაც დაბრუნებს `tx_hash_hex` და `status: "QUEUED"`.
+ამჟამად პასუხის გაცემა ხდება HTTP `202 Accepted`. მისი `asset_definition_id` არის მიმდინარე Taira საფასურის აქტივი, რომელიც დაფინანსებულია საჯარო ონკანით; მიიღეთ ის პასუხიდან იმის მაგივრად, რომ ასახელოთ მაგალითი ID. ონკანმა მიიღო თხოვნა, როდესაც იგი დაბრუნებს `tx_hash_hex` და `status: "QUEUED"`.
 
 შემდეგ გამოკითხეთ დაფინანსებული აქტივი, სანამ წარადგინებთ საკუთარ საფასურის გადახდის ოპერაციებს:
 
 ```bash
+TAIRA_FEE_ASSET_DEFINITION=$(
+  jq -er '.asset_definition_id' ./taira-faucet-response.json
+)
+
 iroha --config ./taira.client.toml ledger asset get \
-  --definition 6TEAJqbb8oEPmLncoNiMRbLEK6tw \
+  --definition "$TAIRA_FEE_ASSET_DEFINITION" \
   --account <TAIRA_I105_ACCOUNT_ID>
 ```
 
@@ -470,7 +505,12 @@ def has_leading_zero_bits(digest: bytes, bits: int) -> bool:
 root = "https://taira.sora.org"
 account_id = sys.argv[1]
 
-with urllib.request.urlopen(f"{root}/v1/accounts/faucet/puzzle") as res:
+puzzle_request = urllib.request.Request(
+    f"{root}/v1/accounts/faucet/puzzle",
+    headers={"Accept": "application/json"},
+)
+
+with urllib.request.urlopen(puzzle_request) as res:
     puzzle = json.load(res)
 
 claim = {"account_id": account_id}
@@ -503,7 +543,7 @@ if difficulty > 0:
 request = urllib.request.Request(
     f"{root}/v1/accounts/faucet",
     data=json.dumps(claim).encode(),
-    headers={"content-type": "application/json"},
+    headers={"Accept": "application/json", "content-type": "application/json"},
     method="POST",
 )
 
@@ -580,7 +620,7 @@ iroha --config ./taira.client.toml \
   app alias setup apply --plan-file ./taira-apps-domain.plan.json
 ```
 
-Minamoto -ისათვის უნდა შეიქმნას და დაამტკიცოს ცალკე ძირითადი ქსელის განზრახვა და გეგმა. გეგმები დაკავშირებულია მათ ჯაჭვზე, ავტორიტეტზე, რეალურ მდგომარეობასთან და ვადაზე, ამიტომ Taira გეგმის ხელშეწყობა ან გათამაშება არ შეიძლება:
+Minamoto -ისათვის უნდა შეიქმნას და დაამტკიცოს ცალკე ძირითადი ქსელის განზრახვა და გეგმა. გეგმები დაკავშირებულია მათ ჯაჭვზე, ავტორიტეტზე, რეალურ მდგომარეობასთან და ვადაზე, ამიტომ Taira გეგმის პოპულარიზაცია ან გათამაშება არ შეიძლება:
 
 ```bash
 iroha --config ./minamoto.client.toml \
@@ -609,6 +649,7 @@ alice@universal
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
@@ -664,6 +705,7 @@ description = "Route payments domains to the payments dataspace"
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | select(.dataspace_alias == "payments")'
 ```
 

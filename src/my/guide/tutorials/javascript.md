@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: feddadb1b50c5cc8beea188fd7053eeaae58d6ab9203687e9a1378f203229168
+translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -22,7 +22,7 @@ npm run build:native
 npm run build:dist
 ```
 
-Native build သည် `cargo build -p iroha_js_host` ကိုဖုံးအုပ်ပြီး SDK startup တွင်အသုံးပြုသော platformer-specific checksum ကိုမှတ်တမ်းတင်သည်။ အရင်းအမြစ် build နေရာများသည် `native/` တွင်စစ်ဆေးထားသော host ကိုသာသတ်မှတ်သည်။ သီးခြားတည်ဆောက်ထားသော checksum စစ်ဆေးထားတဲ့ host ကိုရည်ရွယ်ချက်ရှိစွာဖြည့်သွင်းတဲ့အခါမှသာ `IROHA_JS_NATIVE_DIR` ကိုသတ်မှတ်ပါ။ Package က ESM - သာ ဖြစ်ပြီး CommonJS မှ dynamic `import()` ကို အသုံးပြုပါ။
+Native build သည် `cargo build -p iroha_js_host` ကိုဖုံးအုပ်ပြီး SDK startup တွင်အသုံးပြုသော platform-specific checksum ကိုမှတ်တမ်းတင်သည်။ အရင်းအမြစ် build များသည် `native/` တွင် host ကိုစစ်ဆေးသည့်နေရာများဖြစ်သည်။ `IROHA_JS_NATIVE_DIR` ကို သီးခြားတည်ဆောက်ပြီး checksum စစ်ဆေးထားတဲ့ host တစ်ခုကို အလိုအလျောက် ဖြည့်သွင်းတဲ့အခါသာ သတ်မှတ်ပါ။ Package က ESM-ပဲဖြစ်ပါတယ်; CommonJS မှ dynamic `import()` ကိုသုံးပါ။
 
 ## အမြန်စတင်ခြင်း {#quickstart}
 
@@ -45,7 +45,9 @@ Node.js 24 မှာ ထည့်သွင်းထားတဲ့ `fetch` က�
 ```js
 const root = "https://taira.sora.org";
 
-const status = await fetch(`${root}/status`).then((res) => res.json());
+const status = await fetch(`${root}/status`, {
+  headers: { Accept: "application/json" },
+}).then((res) => res.json());
 console.log({
   blocks: status.blocks,
   queueSize: status.queue_size,
@@ -73,7 +75,7 @@ node taira-readonly.mjs
 
 လက်မှတ်ထိုးထားသော SDK ဖုန်းခေါ်ဆိုမှုများကို ဤဖတ်ခြင်းသာ စစ်ဆေးချက်များ အလုပ်ဖြစ်ပြီးနောက်မှသာ ရွှေ့ပါ။ အများပြည်သူ Taira သည် satiated queue သို့မဟုတ် gateway error ကို ယာယီပြန်ပို့နိုင်သည်၊ ထို့ကြောင့် တိုက်ရိုက်ကွန်ရက် စမ်းသပ်မှုများ opt-in ကို CI တွင်ထိန်းသိမ်းပါ။
 
-အသုံးဝင်တဲ့ အပိုလမ်းကြောင်းတင်သွင်းမှု
+အသုံးဝင်တဲ့ အပိုလမ်းကြောင်း တင်သွင်းမှု
 
 ```js
 import { ToriiClient } from "@iroha/iroha-js/torii";
@@ -81,7 +83,7 @@ import { noritoEncodeInstruction } from "@iroha/iroha-js/norito";
 import { generateKeyPair } from "@iroha/iroha-js/crypto";
 ```
 
-Browser တစ်ခုတည်းသော Connect bootstrap အတွက် Node-first `ToriiClient` မျက်နှာပြင်ကို တင်သွင်းခြင်းအစား `@iroha/iroha-js/connect-browser` ကိုအသုံးပြုပါ။
+Browser-only Connect bootstrap အတွက် Node-first `ToriiClient` မျက်နှာပြင်ကို တင်သွင်းခြင်းအစား `@iroha/iroha-js/connect-browser` ကိုအသုံးပြုပါ။
 
 ## Native Escrow {#native-escrow}
 
@@ -94,7 +96,7 @@ SDK သည် အောက်ပါအချက်များအပေါ် �
 - Torii HTTP နှင့် WebSocket အကူအညီပေးသူများ
 - Norito ငွေပေးချေခြင်းနှင့် ညွှန်ကြားချက် တည်ဆောက်သူများ
 - Kotodama compilation၊ escrow host-call builds အပါအဝင်
-- Ed25519 လက်မှတ်ရေးထိုးခြင်းနှင့် သော့မျိုးဆက်
+- Ed25519 လက်မှတ်ရေးထိုးခြင်းနှင့် key generation
 - စာမျက်နှာပြုပြင်ခြင်းနှင့် ပြန်လည်စမ်းသပ်မှု အကူအညီများ
 - Browser bootstrap အကူများကို ချိတ်ဆက်ပါ
 - Kagemusha အသင့်ရှိမှု၊ ထပ်မံဖြည့်စွက်ခြင်း၊ ပြန်လည်ပေးသွင်းခြင်းနှင့် လုပ်ငန်းဆောင်ရွက်မှုအခြေအနေဆိုင်ရာ သယ်ယူပို့ဆောင်ရေးကူညီသူများ

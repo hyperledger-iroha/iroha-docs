@@ -14,6 +14,13 @@ const testLocale: DocsLocale = {
   direction: 'ltr',
   navigation: {
     getStarted: 'Commencer',
+    cookbook: 'Recettes',
+    cookbookGroups: {
+      start: 'Démarrage',
+      ledger: 'Registre',
+      accessAndAutomation: 'Accès et automatisation',
+      appPatterns: 'Modèles d’application',
+    },
     guides: 'Guides',
     architecture: 'Architecture',
     reference: 'Référence',

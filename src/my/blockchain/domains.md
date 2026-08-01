@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /blockchain/domains.md
-translation_source_hash: 4c42df3c179a086b8823264df2b69f68d7d3df500c8362d78f7ba56875dcfad1
+translation_source_hash: 5e52579436a181d76c83fa549991e56064ae57349b7109d5c41ec7953e5cbb2e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -45,7 +45,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
 ```
 
-အဆိုပါရည်ရွယ်ချက်သည် `payments.universal` ၊ ၎င်း၏ကိန်းဂဏန်းဒေတာနေရာ၊ တရားဝင် I105 ပိုင်ရှင်၊ ငှားရမ်းဝယ်ယူမှုသက်တမ်းနှင့်လက်ရှိမူဝါဒ / ငွေပေးချေမှု quote guard ကိုသတ်မှတ်သည်။ စီမံခန့်ခွဲသူအဆုံးမှတ်သည် `POST /v1/aliases/setup/plan` ဖြစ်သည်။ ၎င်း၏ပြန်လည်ပေးသွင်းသောစီမံကိန်းသည်ကွင်း၊ အာဏာ၊ ပြည်နယ်နှင့် နောက်ဆုံးရက်များဖြင့် ချိတ်ဆက်ထားပါသည်။ Domain Removal သည် [`Unregister`](/my/blockchain/instructions.md#un-register) ကို အသုံးပြုနေဆဲဖြစ်သည်။
+ရည်ရွယ်ချက်က `payments.universal`, ၎င်းရဲ့ ကိန်းဂဏန်း ဒေတာနေရာ, Canonical I105 ပိုင်ရှင်, လေလံဝယ်ယူမှုသက်တမ်းနှင့်လက်ရှိမူဝါဒ / ငွေပေးချေမှု quote guard ကိုရှာဖွေပါတယ်။ Planner အဆုံးသတ်မှတ်ချက်သည် `POST /v1/aliases/setup/plan` ဖြစ်သည်။ ၎င်း၏ပြန်လည်ပေးပို့ထားသောစီမံကိန်းသည်ကွင်းဆက်၊ အာဏာ၊ ပြည်နယ်နှင့် နောက်ဆုံးရက်များဖြင့် ချိတ်ဆက်ထားသည်။ ဒိုမိုင်းဖယ်ရှားမှုသည် [`Unregister` ](/my/blockchain/instructions.md#un-register) ကိုအသုံးပြုနေဆဲဖြစ်သည်။
 
 Domain တစ်ခုကို ဖန်တီးရန် သို့မဟုတ် ဖယ်ရှားရန်အတွက် Active Runtime Validator အောက်တွင် domain-management ခွင့်ပြုချက် လိုအပ်ပါသည်။ Domain metadata များကို [`SetKeyValue` နှင့် `RemoveKeyValue`](/my/blockchain/instructions.md#setkeyvalue-removekeyvalue) ဖြင့် update လုပ်နိုင်သည်။
 
@@ -61,7 +61,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
 ပြည်သူ့လမ်းကြောင်းစာရင်းကို ဒေတာနေရာ အမည်မဖော်လိုရာသို့ ပြန်ညွှန်းပါ။
 
 ```bash
-curl -fsS https://taira.sora.org/status \
+curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .block_height, .finality_lag_slots]
     | @tsv'
@@ -92,7 +92,7 @@ iroha --config ./taira.client.toml \
 
 ## အခြားအဖွဲ့အစည်းများနှင့် ဆက်ဆံရေး {#relationship-to-other-entities}
 
-Domain တွေကို အုပ်စုအုပ်ချုပ်ပြီး domain-scoped data တွေအတွက် နာမည်နေရာတစ်ခုပေးပါတယ်။ Asset အဓိပ္ပါယ်ဖွင့်ဆိုချက်တွေက domain-qualified identifiers ကိုသုံးပြီး queries တွေက domain တွေစာရင်းတင်နိုင်သလို domain တစ်ခုကို scoped လုပ်ထားတဲ့ object တွေလည်းရှာနိုင်ပါတယ်။ အကောင့်တွေဟာ လက်ရှိ ဒေတာပုံစံမှာ နယ်ပယ်မဲ့ဖြစ်ပေမဲ့ အကောင့်တွေက နယ်ပယ်တွေပိုင်နိုင်ပြီး အဓိပ္ပါယ်ဖွင့်ဆိုချက်တွေက နယ်မြေအောက်မှာ နေထိုင်တဲ့ အရင်းအမြစ်တွေကို သိမ်းဆည်းနိုင်တယ်။
+Domain များကို အုပ်စုအုပ်ချုပ်ရေးအရာဝတ္ထုများနှင့် domain-scoped ဒေတာအတွက်နာမည်နေရာကိုပေးသည်။ Asset အဓိပ္ပါယ်ဖွင့်ဆိုချက်များသည် domain-qualified identifiers ကိုအသုံးပြုပြီး query များသည် domain များကိုစာရင်းတင်နိုင်သည် သို့မဟုတ်ရှာဖွေနိုင်သည်။ Account တွေဟာ လက်ရှိ Data Model ထဲမှာ domainless ဖြစ်ကြပေမဲ့ account တွေက domain တွေကို ပိုင်ဆိုင်နိုင်ပြီး Domain တွေအောက်မှာ အဓိပ္ပါယ်ဖွင့်ဆိုချက်တွေ ရှိတဲ့ Assets ကို သိမ်းဆည်းနိုင်ပါတယ်။
 
 အောက်ပါအတိုင်းလည်း ကြည့်ပါ။
 

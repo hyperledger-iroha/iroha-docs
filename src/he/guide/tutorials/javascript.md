@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: feddadb1b50c5cc8beea188fd7053eeaae58d6ab9203687e9a1378f203229168
+translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -22,7 +22,7 @@ npm run build:native
 npm run build:dist
 ```
 
-הבניין המקומי עוסק `cargo build -p iroha_js_host` וירשום את סכום ההבדקה הספציפי לפלטפורמה המשמש ב- SDK סטארט-אפ. מקור הבניין מקומות שהבנו מארח ב- `native/`. להגדיר את `IROHA_JS_NATIVE_DIR` רק כאשר אתה מספק במכוון מארח מבנה בנוי בנפרד, עם סכום הבדיקות. החבילה היא ESM בלבד; מ- CommonJS, השתמש בדנמיקה `import()`.
+הבניין המקומי עוסק `cargo build -p iroha_js_host` וירשם את סכום ההבדקה הספציפית לפלטפורמה המשמש ב- SDK startup. הבניין מקורי מקומות אשר אישרו מארץ ב- `native/`. להגדיר `IROHA_JS_NATIVE_DIR` רק כאשר אתה מספק במכוון מארח מבוסס בנוי בנפרד, עם סכום בודק. החבילה היא ESM בלבד; מ- CommonJS, השתמש בדיינמיקה `import()`.
 
 ## התחלה מהירה {#quickstart}
 
@@ -45,7 +45,9 @@ console.log(keys.publicKey);
 ```js
 const root = "https://taira.sora.org";
 
-const status = await fetch(`${root}/status`).then((res) => res.json());
+const status = await fetch(`${root}/status`, {
+  headers: { Accept: "application/json" },
+}).then((res) => res.json());
 console.log({
   blocks: status.blocks,
   queueSize: status.queue_size,
@@ -85,7 +87,7 @@ import { generateKeyPair } from "@iroha/iroha-js/crypto";
 
 ## משכנתא מקומי {#native-escrow}
 
-היישומים JavaScript ו TypeScript יכולים להשתמש ב-escrow מקורי באמצעות Kotodama חוזים. לערוך שיחות מארגני אסקו עם `@iroha/iroha-js/kotodama-compiler`; הבניינים של עסקאות אסקו מקומית ישירות אינם חשופים כרגע על ידי JavaScript SDK. ראו [ אבטחת נכסים מקומיים](/he/blockchain/escrow.md#javascript-and-typescript-kotodama) לדוגמא של שיחות מארח אבטחה.
+JavaScript ו TypeScript יישומים יכולים להשתמש ב- native escrow דרך Kotodama מסדרת שיחות מארגני הסכום עם `@iroha/iroha-js/kotodama-compiler`; הבניינים של עסקאות אסקו יחידים ישירות אינם חשופים כרגע על ידי JavaScript SDK. תראו [אבטחה של נכסים מקומיים](/he/blockchain/escrow.md#javascript-and-typescript-kotodama) לדוגמא של שיחת המארח ב-escrow.
 
 ## הכיסוי הנוכחי {#current-coverage}
 

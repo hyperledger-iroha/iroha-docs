@@ -1,7 +1,7 @@
 ---
 translation_locale: ru
 translation_source: /blockchain/domains.md
-translation_source_hash: 4c42df3c179a086b8823264df2b69f68d7d3df500c8362d78f7ba56875dcfad1
+translation_source_hash: 5e52579436a181d76c83fa549991e56064ae57349b7109d5c41ec7953e5cbb2e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -45,7 +45,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
 ```
 
-Цель определяет `payments.universal`, его числовое пространство данных, канонический I105 владелец, срок приобретения аренды и охранник текущей политики/платежей. Конечный пункт планировщика - `POST /v1/aliases/setup/plan`; его возвращенный план ограничен цепочкой, полномочиями, государством и сроками. Удаление домена по-прежнему использует [`Unregister`](/ru/blockchain/instructions.md#un-register).
+Намерение определяет `payments.universal`, его числовые пространства данных, канонические I105 владельца, срок приобретения аренды и текущая политика/оценка платежей. `POST /v1/aliases/setup/plan`; его возвращенный план связан с цепочкой, властью, государством и сроком. [`Unregister`](/ru/blockchain/instructions.md#un-register).
 
 Создание или удаление домена требует соответствующего разрешения на управление доменом в соответствии с активным валидатором времени запуска. Метаданные домена могут быть обновлены с помощью [`SetKeyValue` и `RemoveKeyValue`](/ru/blockchain/instructions.md#setkeyvalue-removekeyvalue), когда у органа есть разрешение на изменение этого домена.
 
@@ -61,7 +61,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
 Карта каталога публичной полосы обратно на псевдонимы пространства данных:
 
 ```bash
-curl -fsS https://taira.sora.org/status \
+curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .block_height, .finality_lag_slots]
     | @tsv'
@@ -92,7 +92,7 @@ iroha --config ./taira.client.toml \
 
 ## Отношения с другими организациями {#relationship-to-other-entities}
 
-Домены группируют объекты реестра и предоставляют пространство имен для данных по домену. Определения активов используют идентификаторы, квалифицированные для домена, и запросы могут перечислять домены или находить объекты, охваченные доменой. Счета сами по себе не имеют доменов в текущей модели данных, но счета могут владеть доменами и держать активы, чьи определения живут под доменами.
+Домены группируют объекты реестра и предоставляют пространство имен для данных по домену. Определения активов используют идентификаторы, квалифицированные для домена, и запросы могут перечислять домены или находить объекты, охваченные доменой. Счета сами по себе не имеют доменов в текущей модели данных, но счета могут владеть доменами и иметь активы, чьи определения живут под доменами.
 
 См. также:
 

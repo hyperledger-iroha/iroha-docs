@@ -25,7 +25,7 @@ the host machine.
 For public Taira tests, start with an unsigned endpoint probe:
 
 ```bash
-curl -fsS https://taira.sora.org/status \
+curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS 'https://taira.sora.org/v1/domains?limit=5' \

@@ -1,14 +1,14 @@
 ---
 translation_locale: he
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 63c317ab61ba912176c43c83d5b4f026f23a7a6e5fb633872a133c9ea1295686
+translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # בנייה על SORA 3: Taira ו Minamoto {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 הוא מסלול ההפצה הציבורי הפנימי של האפליקציה שנבנה על Iroha 3 ו SORA Nexus. לבנות ולחזור על Taira קודם, ולאחר מכן להעביר את אותו צורת הלקוח ל Minamoto רק כאשר יש לך מפתחות מרכזיות נפרדות, XOR אמיתי עבור דמי, והישור לייצור.
+SORA 3 הוא מסלול ההפצה הציבורי הפנימי של האפליקציה שנבנה על Iroha 3 ו SORA Nexus. לבנות ולחזור על Taira קודם, ולאחר מכן להעביר את אותו צורת הלקוח ל Minamoto רק כאשר יש לך מפתחות מרכזיות נפרדות, XOR אמיתי עבור דמי, והסכמה לייצור.
 
 הדרכה זו מראה כיצד להגדיר קלינט Iroha לרשתות ציבוריות SORA 3:
 
@@ -24,7 +24,7 @@ SORA 3 הוא מסלול ההפצה הציבורי הפנימי של האפלי�
 
 |צעד |Taira Testnet |Minamoto מרכזית |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|תתחיל לקרוא מצב הרשת |שאלת `/status` ללא מפתחות |שאלת `/status` ללא מפתחות |
+|התחל לקרוא מצב הרשת |שאלת `/status` ללא מפתחות |שאלת `/status` ללא מפתחות |
 |בחר חלל נתונים |שימוש ציבורי `universal` אלא אם כן האפליקציה שלך זקוקה למסלול מנוהל |השתמשו באותו מרחב נתונים רק לאחר אישור הרשת הראשית |
 |קבל נכס תשלום.|השתמש ברצועה הציבורית Taira |קבל XOR מתוך חשבון מימון Minamoto או זרם כספי מאושר |
 |בדיקת כותבת |השתמשת בטיפול ממומלץ על ידי גלישה XOR |אל תשתמשו במכשירים בדיקות; כתבים מבזבזים אמיתי XOR |
@@ -36,6 +36,20 @@ SORA 3 הוא מסלול ההפצה הציבורי הפנימי של האפלי�
 2. הוסף חותם ולממן אותו עם המזרקה Taira.
 3. תפעיל את ההיגיון של האפליקציה שלך נגד Taira עד כישלונות הם משעממים ומצופים.
 4. ליצור חותם נפרד Minamoto, לממן אותו עם XOR אמיתי, ולהעביר רק את אותם פעולות מוכחות ל-mainnet.
+
+## המשך עם ספר הבישול {#continue-with-the-cookbook}
+
+השתמש בהנחיה זו כדי לבחור רשת, להגדיר חותם, ולממן עמלות. ואז תמשיך עם המתכון שמתאים להתנהגות היישום שאתה רוצה לבנות:
+
+|מטרה.|המתכון.|
+| --- | --- |
+|תבדקו Taira ותסדרו לקוח | [חיבור ל Taira](/he/cookbook/connect-to-taira.md) |
+|תשלח כתיבה ראשונה ותבדוק את התוצאה שלה.| [הגשת ומבחינת עסקאות ](/he/cookbook/submit-and-verify-transactions.md) |
+|רישום, מנטה וערך העברה | [נכסים פונגביים](/he/cookbook/fungible-assets.md) |
+|קראו את מצב היישום הגלוי | [רישוב של מדינת ה-Ledger](/he/cookbook/query-ledger-state.md) |
+|תגובה לשינויים שהוכרסו | [אירועי זרם](/he/cookbook/stream-events.md) |
+
+ספר הבישול שומר על כל זרימת עבודה ממוקדת ומקשרת חזרה לכאן כאשר היא זקוקה למימון Taira או לקשר רשת SORA Nexus.
 
 ## 1. להבין את מה שאתה מתכנן {#_1-understand-what-you-are-setting-up}
 
@@ -60,6 +74,7 @@ wonderland.universal
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -67,6 +82,7 @@ curl -fsS https://taira.sora.org/status \
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -74,6 +90,7 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
@@ -94,6 +111,7 @@ Taira חושף גם גשר של פרוטוקול תקין מודל ילידי To
 
 ```bash
 curl -fsS https://taira.sora.org/v1/mcp \
+  -H 'Accept: application/json' \
   | jq '{protocolVersion, server: .serverInfo.name, tools: .capabilities.tools.count}'
 ```
 
@@ -117,7 +135,7 @@ curl -fsS https://taira.sora.org/v1/mcp \
 2. שאל את הסוכן לכתוב קודם את הנתיב הקלינט הקטן ביותר: בדיקה של מצב, חיפוש חשבונות, פתרון פרופיל, או חיפוש מאזן.
 3. הוספת קוד בניית עסקאות רק לאחר שיחות קריאה בלבד עובדות נגד Taira.
 4. שמרו על ניסויים ברשתות חיתקות, לדוגמה מאחורי `TAIRA_LIVE=1`, כך שרוץ ניסוי יחידה רגיל לעולם לא מבזבז כספי רשתות בדיקה או תלוי זמינות הרשת.
-5. מחייב את הסוכן להודיע על שורש הרשת, שרשרת, חשבון הרשויות, סיכום הוראות, נכס תשלום, ושינוי מצב צפוי לפני שהוא מספק כל עסקאות .
+5. מחייב את הסוכן להודיע על שורש הרשת, שרשרת, חשבון הרשויות, סיכום הוראות, נכס תשלום, ושינוי מצב צפוי לפני שהוא מספק כל עסקאות.
 6. ביקורת קוד שנוצר לניהול סודי, התנהגות ניסיון חוזר, אידמפוטנטיות, וניהול דחייה לפני קידום אותו ל CI או זרמי עבודה מרכזיים.
 
 כלים שימושיים MCP עבור פיתוח כוללים חיפוש נכסים של חשבונות, החלטה תחת השם, חיפוש בלוק, חיפוש עסקאות, רשימות עסקאות ובדיקות מצב צינור. השתמש בהם כדי לבנות אמון לפני ששלחת כל מטען מועיל חתום .
@@ -133,15 +151,15 @@ say "submit this transaction".
 
 הגשר MCP יכול להגיש עסקאות חתומות על ידי Iroha, אך הוא אינו מסיר את דרישות העסקה הרגילות. עסקה עדיין צריכה סמכות נכונה, רשיונות, מימון עמלות, שרשרת ID, מטאדאטה וחתום .
 
-עבור עסקאות ברות Iroha, לבנות ולחתום על מעטפת העסקה עם SDK או CLI קודם, ולאחר מכן לתת לסוכן רק את האייטים הקנוניים של העסקה חתומה המוצגים כ- `body_base64`. הסוכן יכול להגיש את המעטפה ב- `iroha.transactions.submit_and_wait`, או להגיש אותה ב- `iroha.transactions.submit` ולסקר ב- `iroha.transactions.wait` .
+עבור חומרי Iroha עסקאות, לבנות ולחתום על מעטפת העסקות עם SDK או CLI ראשית, לאחר מכן לתת לסוכן רק את החתימה הקנונית של העסקה בייטים קודמים כ `body_base64`. הסוכן יכול להגיש את המעטפה עם `iroha.transactions.submit_and_wait`, או להגיש עם `iroha.transactions.submit` ובוחקר עם `iroha.transactions.wait`.
 
-אל תדביקי מפתחות פרטיות לפקודה של הסוכן. אם סוכן צריך לבנות עסקאות, ציין את זה בקוד מקומי שמטען סודות מהסביבה של זמן ההפעלה של המשתמש, שרשרת מפתח, חותם חומרה או תיק הקונפיגציה של testnet התעלמו ממנו. הסוכן אף פעם לא צריך לכתוב את החומר המרכזי לתוך מרקדון, קישורים, היומן, או מחויבויות.
+אל תדביקי מפתחות פרטיות לתוך פנקסט של סוכן. אם הסוכן צריך לבנות עסקאות, מכוון אותם לקוד מקומי שמטען סודות מהזמן ההפעלה של המשתמש הסוכן לעולם לא צריך לכתוב את החומר המרכזי לתוך Markdown, קישורים, מעקבנים או מחברים.
 
 לפני הגשת עסקה, לגרום לסוכן להכין תוכנית ארוכה של עסקה:
 
 - `network`: Taira שורש ושרשרת הרשתות המבחן ID
 - `authority`: חשבון אשר חותם ומשלם עמלות
-- `instructions`: רישום, מנטה, שריפה, העברה, מטא-מנתונים, אישור או סיכום קריאה לעסקאות
+- `instructions`: רישום, מנטה, שריפה, העברה, מטא-מנתונים, אישור או סיכום קריאת החוזה
 - `fee asset`: נכס אשר יועיל על Taira
 - `preflight reads`: חישוב חשבון, סכום נכסים, רשיונות, כינויים או בדיקות בלוק שכבר נעשו.
 - `expected result`: מצב אשר צריך להיות נראה לאחר אישור
@@ -188,6 +206,7 @@ for network in taira minamoto; do
   root="https://$network.sora.org"
   printf '\n%s\n' "$network"
   curl -fsS "$root/status" \
+    -H 'Accept: application/json' \
     | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 done
 ```
@@ -196,6 +215,7 @@ done
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -205,6 +225,7 @@ curl -fsS https://taira.sora.org/status \
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -220,7 +241,9 @@ const roots = {
 };
 
 for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`).then((res) => res.json());
+  const status = await fetch(`${root}/status`, {
+    headers: { Accept: 'application/json' },
+  }).then((res) => res.json());
   const publicSpaces = status.teu_lane_commit
     .filter((lane) => lane.visibility === 'public')
     .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
@@ -261,7 +284,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-הרמה העליונה `chain` היא שרשרת העסקאות המדויקת Taira ID. הגדרת `[account].profile = "taira"` בוחרת באופן עצמאי את ההבדל של שרשרת Taira I105. שרשרת ID אינה בוחרת את הפרופיל של החשבון.
+הרמה העליונה `chain` היא שרשרת העסקאות המדויקת Taira ID. הגדרת `[account].profile = "taira"` בוחרת באופן עצמאי את ההבדל של שרשרת Taira I105. שרשרת ID לא בוחרת את הפרופיל של החשבון.
 
 תבדקו רק קריאה:
 
@@ -286,7 +309,7 @@ iroha --config ./taira.client.toml taira write-canary \
   --json
 ```
 
-הקנרי שולח פינג חתום, מחכה לאישור, ומכתוב את ההסדרות של חותם בזמן הפעלה כאשר `--write-config` מסופק. Taira הוא רשת מבחן ציבורית, כך שסיפוק השורה יכול לגרום לפינג חתום להיכשל גם כאשר המזרקה עצמה עובדת . אם `taira doctor` מדווח על שורה מלאה או הקנרי חוזר `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`, חכו ותנסו שוב לפני שתייחסו לזה כטעיה בהשפעה של הלקוח.
+הקנרי מספק פינג חתום, מחכה לאישור ומכתוב את קונפיגציה של חותם בזמן ההפעלה כאשר `--write-config` נמסר. Taira הוא רשת מבחן ציבורית. אם `taira doctor` מדווח על שורה מלאה או שהקנרי חוזר `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`, חכו ותנסו שוב לפני שתייחסו לזה כטעיה בהשגחת הלקוח.
 
 עבור בדיקות עשן ללא פיקוח, לכסות את הקנרי במעגל חוזר מוגבל:
 
@@ -328,7 +351,7 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-השתמשו בחשבון המוצא ID בכל מקום Nexus API או CLI הפיקוד מבקש חשבון קנוני. ID, לדוגמה, Taira גלימה `account_id`, תשמור על המפתח הפרטי המתאים בהשגחת הלקוח שלך, ולבחר את אותה רשת ציבורית עם `[account].profile = "taira"` או `[account].profile = "minamoto"`.
+השתמשו בחשבון המוצא ID בכל מקום שבו פקודה Nexus API או CLI מבקשת חשבון קנוני ID, למשל, בנקודת Taira `account_id`, תשמור על המפתח הפרטי המתאימה בהקנה הלקוח שלך, ובחר את אותה רשת ציבורית עם `[account].profile = "taira"` או `[account].profile = "minamoto"`.
 
 יצירת ID איננה מעצמה מייצרת חשבון ממומן על שרשרת. ב Taira, המזרקה יכולה ליצור ולממן את החשבון עבור testnet כותבים. ב Minamoto, השתמשו ב-mainnet מורשה או זרם כספי.
 
@@ -342,7 +365,7 @@ iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 - השתמשו בשבילה ייחודית בעלת אנטרופיה גבוהה עבור כל שפת או חותם הייצור. שמור סיסמאים במנהל סיסמה או בתהליך אחסון חלקי, ולא באותו קבץ או חבילת גיבוי כמו המפתח הפרטי מוצפן.
 - שמרו על המפתחות Taira ו Minamoto בנפרד. מטרידו את המפתחות Taira כחומר רשת ניסוי חד פעמי ומפתחות Minamoto כמערכת כספי הייצור.
 - גיבוי המפתח הפרטי, המפתח הציבורי, החשבון ID, פרופיל החשבון, וכל הערות לשחזור חשבון או שמירה נדרשות כדי להחזיר את החותם. מפתח פרטי ללא ההקשר של הרשת הוא קל לשימוש לרעה במהלך השיקום.
-- שמרו לפחות גיבוי לא מקוון אחד מוצפן וגיבוי מוצפן אחד נפרד מבחינה גיאוגרפית עבור חותמי הייצור. תבדקו התאוששות עם פעולת קריאה קטנה בלבד לפני שתסתמכו על גיבוי .
+- שמרו לפחות גיבוי לא מקוון אחד מוצפן וגיבוי מוצפן אחד נפרד מבחינה גיאוגרפית עבור חותמי הייצור. תבדקו התאוששות עם פעולת קריאה קטנה בלבד לפני שתסתמך על הגיבוי.
 - סובב או תחליף חותם אם המפתח הפרטי, סיסמה, מדיה גיבוי, או מארח החתימה עשויים להיות חשופים.
 
 לקבלת פרטים נוספים, ראה [חסון מפתחות קריפטוגרפיים ](/he/guide/security/storing-cryptographic-keys.md) ו- [ אבטחת סיסמא ](/he/guide/security/password-security.md).
@@ -355,7 +378,7 @@ iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 2. תביא את הפאזל הנוכחי.
 3. לפתור את הפאזל אם `difficulty_bits` גדול יותר מ- `0`.
 4. תגיש את בקשת המנקה.
-5. חכו עד שהמשקל של החשבון או נכסים יראו לפני שישלחו הודעות תשלום.
+5. חכו עד שהמשקל של החשבון או נכסים ייראה לפני שישלחו הודעות תשלום.
 
 הפוך מפתח ציבורי לתוך Taira I105 חשבון ID צפוי על ידי המזרקה:
 
@@ -366,7 +389,9 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 תביא את הפאזל.
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
+curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
+  -H 'Accept: application/json' \
+  | jq .
 ```
 
 המזרקה היא שירות רשת מבחן ציבורי. אם הפאזל או נקודת הסיום של הדרישה חוזרת `502`, פסק זמן, או טעות אחרת ברמת השער, חכו ותנסו שוב לפני שינויים במפתחות או בהקנת הלקוח שלכם.
@@ -391,20 +416,26 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
-  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}'
+  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
 כאשר `difficulty_bits` הוא גדול יותר מ `0`, לפתור את הפאזל ולהכלל את גובה המעמד בתוספת הנונס:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
   -d '{
     "account_id": "<TAIRA_I105_ACCOUNT_ID>",
     "pow_anchor_height": 741,
     "pow_nonce_hex": "<NONCE_HEX>"
-  }'
+  }' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
 האלגוריתם של הפאזל הוא:
@@ -430,21 +461,25 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet \
 ```json
 {
   "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-  "asset_definition_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
+  "asset_definition_id": "<TAIRA_FEE_ASSET_DEFINITION_ID>",
   "asset_id": "...",
-  "amount": "25000",
+  "amount": "<FUNDED_AMOUNT>",
   "tx_hash_hex": "...",
   "status": "QUEUED"
 }
 ```
 
-התשובה מובילה כיום עם HTTP `202 Accepted`. הגדרת הנכסים ID לעיל היא הנכסים של Taira המימון על ידי המנקה הציבורית. המנקה קיבלה את הבקשה כאשר היא חוזרת `tx_hash_hex` ו `status: "QUEUED"`.
+התגובה מובילה כיום HTTP `202 Accepted`. זה `asset_definition_id` הוא הזרם Taira נכס תשלום הממומן על ידי צינור ציבורי; נגזר אותו מההתגובה במקום להעתיק דוגמה ID. המנקה קיבלה את ההצעה כשהיא חוזרת `tx_hash_hex` ו `status: "QUEUED"`.
 
-לאחר מכן סקר עבור הנכס המיועד לפני שתשלח את העסקאות שלך של תשלום דמי:
+לאחר מכן סקר עבור הנכס המיועד לפני שתשלח את העסקאות שלך של תשלום עמלות:
 
 ```bash
+TAIRA_FEE_ASSET_DEFINITION=$(
+  jq -er '.asset_definition_id' ./taira-faucet-response.json
+)
+
 iroha --config ./taira.client.toml ledger asset get \
-  --definition 6TEAJqbb8oEPmLncoNiMRbLEK6tw \
+  --definition "$TAIRA_FEE_ASSET_DEFINITION" \
   --account <TAIRA_I105_ACCOUNT_ID>
 ```
 
@@ -470,7 +505,12 @@ def has_leading_zero_bits(digest: bytes, bits: int) -> bool:
 root = "https://taira.sora.org"
 account_id = sys.argv[1]
 
-with urllib.request.urlopen(f"{root}/v1/accounts/faucet/puzzle") as res:
+puzzle_request = urllib.request.Request(
+    f"{root}/v1/accounts/faucet/puzzle",
+    headers={"Accept": "application/json"},
+)
+
+with urllib.request.urlopen(puzzle_request) as res:
     puzzle = json.load(res)
 
 claim = {"account_id": account_id}
@@ -503,7 +543,7 @@ if difficulty > 0:
 request = urllib.request.Request(
     f"{root}/v1/accounts/faucet",
     data=json.dumps(claim).encode(),
-    headers={"content-type": "application/json"},
+    headers={"Accept": "application/json", "content-type": "application/json"},
     method="POST",
 )
 
@@ -599,7 +639,7 @@ alice@apps.universal
 alice@universal
 ```
 
-שדות חשבון קפדניים עדיין משתמשים בחשבון קנוני I105 IDs. מתייחסו לכינויים כקשרים שניתן לקרוא על ידי אדם אשר מתפתחים לחשבון קאנוני IDs.
+שדות חשבון קפדניים עדיין משתמשים בחשבון קנוני I105 IDs. מתייחסים לכינויים כקשרים שניתן לקרוא על ידי אדם אשר מתפתחים לחשבון קנוני IDs.
 
 ## 8. סיפקת מרחב נתונים חדש {#_8-provision-a-new-dataspace}
 
@@ -609,6 +649,7 @@ alice@universal
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
@@ -664,6 +705,7 @@ description = "Route payments domains to the payments dataspace"
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | select(.dataspace_alias == "payments")'
 ```
 

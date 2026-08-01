@@ -1,14 +1,14 @@
 ---
 translation_locale: am
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 63c317ab61ba912176c43c83d5b4f026f23a7a6e5fb633872a133c9ea1295686
+translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # በ SORA 3 ላይ ይገንቡ: Taira እና Minamoto {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 በአፕሊኬሽኑ ላይ የተገነባ የህዝብ ማሰማራት ትራክ ነው Iroha 3 እና SORA Nexus. በመጀመሪያ በ Taira ላይ ይገንቡ እና ይለማመዱ ፣ ከዚያ ተመሳሳይ የደንበኛ ቅርፅ ወደ Minamoto የሚንቀሳቀሱት ለልዩ ዋና አውታረ መረብ ቁልፎች ሲኖሩዎት ብቻ ነው ፣ ክፍያዎች እውነተኛ XOR እና የምርት ማረጋገጫ።
+SORA 3 በመተግበሪያዎች ላይ የተመሠረተ የህዝብ ማሰማራት ትራክ ነው Iroha 3 እና SORA Nexus. ላይ መገንባት እና ለመለማመድ Taira በመጀመሪያ, ከዚያም ተመሳሳይ ደንበኛ ቅርጽ ወደ Minamoto ብቻ የተለዩ የማይንኔት ቁልፎች ካሉዎት, እውነተኛ XOR ለክፍያ እና ለምርት ማረጋገጫ።
 
 ይህ መመሪያ ለሕዝብ SORA 3 አውታረ መረቦች የ Iroha ደንበኛ እንዴት እንደሚዋቀር ያሳያል:
 
@@ -37,6 +37,20 @@ Taira ን ለመዋሃድ ሙከራዎች ፣ በቧንቧ የተደገፉ የ�
 3. ስህተቶች አሰልቺ እና ሊታዩ እስኪችሉ ድረስ የመተግበሪያዎን አመክንዮ በ Taira ላይ ይለማመዱ ።
 4. የተለየ Minamoto ፊርማ ይፍጠሩ, ከእውነተኛ XOR ጋር የገንዘብ ድጋፍ ያድርጉት, እና ወደ ዋናው ኔትወርክ ተመሳሳይ የተረጋገጡ ስራዎችን ብቻ ያስተላልፉ.
 
+## የምግብ አዘገጃጀት መመሪያዎች {#continue-with-the-cookbook}
+
+ይህንን መመሪያ በመጠቀም አውታረመረብን ለመምረጥ፣ ፊርማውን ለማዋቀር እና የፋይናንስ ክፍያዎችን ለመደገፍ ይጠቀሙ። ከዚያ ለመገንባት የሚፈልጉትን የመተግበሪያ ባህሪ የሚስማማውን የምግብ አዘገጃጀት መመሪያ ይቀጥሉ-
+
+|ግብ|የምግብ አሰራር |
+| --- | --- |
+|Taira ይፈትሹ እና ደንበኛን ያዋቅሩ | [ወደ Taira](/am/cookbook/connect-to-taira.md) ይገናኙ።|
+|የመጀመሪያውን ጻፍ እና ውጤቱን ያረጋግጡ ።| [ግብይቶችን ማቅረብ እና ማረጋገጥ ](/am/cookbook/submit-and-verify-transactions.md) |
+|የምዝገባ፣ የማዕድን ማውጫ እና የመንቀሳቀስ እሴት | [ተለዋዋጭ ሀብቶች](/am/cookbook/fungible-assets.md) |
+|የተጣራውን የማመልከቻ ሁኔታ ያንብቡ | [ጥያቄ መቁጠሪያ ሁኔታ ](/am/cookbook/query-ledger-state.md) |
+|ለተቀጠሩት ለውጦች ምላሽ መስጠት | [የዥረት ክስተቶች](/am/cookbook/stream-events.md) |
+
+የምግብ አሰራር መጽሐፉ እያንዳንዱ የስራ ፍሰት ትኩረቱን የሚይዝ ሲሆን Taira የገንዘብ ድጋፍ ወይም SORA Nexus የአውታረ መረብ ዐውደ-ጽሑፍ በሚያስፈልገው ጊዜ ወደዚህ ያገናኛል ።
+
 ## 1. የምታስቀመጡትን ነገር መረዳት {#_1-understand-what-you-are-setting-up}
 
 በ SORA Nexus ውስጥ የውሂብ ቦታ የአውታረ መረብ ጎዳና እና የመመሪያ ካታሎግ አካል ነው ። አንድ ደንበኛ `client.toml` ን በመቀየር ብቻ አዲስ የህዝብ ውሂብ ቦታ አይፈጥርም ። የደንበኛው ማዋቀር ሁለት ነገሮችን ያደርጋል-
@@ -60,6 +74,7 @@ wonderland.universal
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -67,6 +82,7 @@ curl -fsS https://taira.sora.org/status \
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -74,6 +90,7 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
@@ -94,6 +111,7 @@ Taira ለወኪል አሂድ ጊዜዎች የ Torii-አፍ መፍቻ ሞዴል �
 
 ```bash
 curl -fsS https://taira.sora.org/v1/mcp \
+  -H 'Accept: application/json' \
   | jq '{protocolVersion, server: .serverInfo.name, tools: .capabilities.tools.count}'
 ```
 
@@ -135,7 +153,7 @@ say "submit this transaction".
 
 ጥሬ Iroha ግብይቶች፣ የግብይት ፖስታን በመገንባት እና በ SDK ወይም CLI በመጀመሪያ, ከዚያም ወኪል ብቻ እንደ encoded የተፈረሙትን ቀኖናዊ የግብይት ባይቶች መስጠት `body_base64`. ወኪሉ መልዕክቱን በ `iroha.transactions.submit_and_wait`, ወይም ያቅርቡ `iroha.transactions.submit` እና የምርመራ ጋር `iroha.transactions.wait`.
 
-የግል ቁልፎችን በኤጀንት ግብይት ውስጥ አይጣበቁ። አንድ ኤጀንት ግብይትን ለመገንባት ከፈለገ የተጠቃሚውን ሩጫ ጊዜ አካባቢ ፣ የቁልፍ ሰንሰለት ፣ የሃርድዌር ፊርማ ወይም ችላ የተባለውን የሙከራ አውታረመረብ ውቅር ፋይል ሚስጥሮችን በሚጭነው አካባቢያዊ ኮድ ላይ ያነጣጥሩት ። ወኪሉ ቁልፍ ቁሳቁሶቹን በጭራሽ ወደ ማርክዳውን ፣ ማጣቀሻዎች ፣ መዝገቦች ወይም ግዴታዎች መጻፍ የለበትም ።
+የግል ቁልፎችን በወኪል ግብይት ውስጥ አይጣበቁ። አንድ ወኪል ግብይት ለመገንባት ከፈለገ፣ ምስጢሮችን በሚጭነው አካባቢያዊ ኮድ ላይ ያነጣጠረው። የተጠቃሚው የስራ ሰዓት አካባቢ፣ ቁልፍ ሰንሰለት፣ ሃርድዌር ፊርማ ወይም ችላ የተባለው የሙከራ ኔት ውቅር ፋይል። ወኪሉ ቁልፍ ቁሳቁሶቹን በጭራሽ ወደ ማርክዳውን ፣ ማጣቀሻዎች ፣ መዝገቦች ወይም ግዴታዎች መጻፍ የለበትም ።
 
 ግብይት ከማቅረብዎ በፊት ወኪሉ አጭር የግብይት ዕቅድ እንዲያዘጋጅ ያድርጉት:
 
@@ -188,6 +206,7 @@ for network in taira minamoto; do
   root="https://$network.sora.org"
   printf '\n%s\n' "$network"
   curl -fsS "$root/status" \
+    -H 'Accept: application/json' \
     | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 done
 ```
@@ -196,6 +215,7 @@ done
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -205,6 +225,7 @@ curl -fsS https://taira.sora.org/status \
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -220,7 +241,9 @@ const roots = {
 };
 
 for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`).then((res) => res.json());
+  const status = await fetch(`${root}/status`, {
+    headers: { Accept: 'application/json' },
+  }).then((res) => res.json());
   const publicSpaces = status.teu_lane_commit
     .filter((lane) => lane.visibility === 'public')
     .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
@@ -286,7 +309,7 @@ iroha --config ./taira.client.toml taira write-canary \
   --json
 ```
 
-ካናሪው የተፈረመ ፒንግ ያቀርባል ፣ ለማረጋገጫ ይጠብቃል ፣ እና `--write-config` በሚሰጥበት ጊዜ የስራ ሰዓት ፊርማ አገናኝን ይጽፋል ። Taira የህዝብ የሙከራ አውታረመረብ ነው ፣ ስለሆነም ረድፍ መጨናነቅ የፊርማ ፒንግ ራሱ በሚሠራበት ጊዜም እንኳ ሳይሳካ ሊያደርግ ይችላል። `taira doctor` የተሟላ ረድፍ ሪፖርት ከሆነ ወይም ካናሪው `PRTRY:NEXUS_FEE_ADMISSION_REJECTED` ይመልሳል ፣ እንደ ደንበኛ ውቅር ስህተት ከመያዝዎ በፊት ይጠብቁ እና እንደገና ይሞክሩ ።
+ካናሪው የተፈረመ ፒንግ ያቀርባል ፣ ማረጋገጫን ይጠብቃል እና `--write-config` ሲቀርብ የስራ ሰዓት ፊርማ አውድ ይጽፋል ። Taira የህዝብ ፈተና ኔት ነው ፣ ስለዚህ ረድፍ መጨናነቅ የተፈረመውን ፒንግ በራሱ ፍሰት በሚሰራበት ጊዜም እንኳ ሊያበላሽ ይችላል ። `taira doctor` የተሞላ ረድፍ ሪፖርት የሚያደርግ ከሆነ ወይም ካናሪው `PRTRY:NEXUS_FEE_ADMISSION_REJECTED` የሚመለስ ከሆነ ፣ እንደ ደንበኛ ውቅር ስህተት ከመያዝዎ በፊት ይጠብቁ እና እንደገና ይሞክሩ።
 
 ያለ ክትትል የጭስ ሙከራዎች ካናሪውን በተወሰነ ዳግም ሙከራ ሉፕ ውስጥ ይሸፍኑ:
 
@@ -316,7 +339,7 @@ SORA Nexus መለያ ID ከሂሳብ የህዝብ ቁልፍ እና ከዒላማ�
 kagami keys --algorithm ed25519 --json
 ```
 
-የህዝብ ቁልፍ ወደ Taira መለያ ID ይቀይሩ:
+የሕዝብ ቁልፍን ወደ Taira መለያ ID መለወጥ:
 
 ```bash
 iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
@@ -328,7 +351,7 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-የተገኘውን መለያ ይጠቀሙ ID የትም ቦታ Nexus API ወይም CLI ትዕዛዙ የቅዱሳን መጻሕፍትን ዘገባ ይጠይቃል ID, ለምሳሌ Taira ቧንቧ `account_id`, ሚዛን መጠይቆች, ጥብቅ የሂሳብ መስኮች, ወይም የማጠራቀሚያ አገናኞች. የእርስዎ ደንበኛ ውቅር ውስጥ ተመጣጣኝ የግል ቁልፍ ጠብቁ እና ጋር ተመሳሳይ የህዝብ አውታረ መረብ ይምረጡ `[account].profile = "taira"` ወይም `[account].profile = "minamoto"`.
+የተገኘውን መለያ ይጠቀሙ ID የትም ቦታ Nexus API ወይም CLI ትዕዛዙ የቅዱሳን መጻሕፍትን ዘገባ ይጠይቃል ID, ለምሳሌ Taira ቧንቧ `account_id`, ሚዛን መጠይቆች ፣ ጥብቅ የሂሳብ መስኮች ወይም ቅጽል ስም ግዴታዎች። መመሳሰል ይቀጥሉ። የደንበኛዎ ውቅር ውስጥ የግል ቁልፍ, እና ጋር ተመሳሳይ የህዝብ አውታረ መረብ ይምረጡ `[account].profile = "taira"` ወይም `[account].profile = "minamoto"`.
 
 የ ID ማመንጨት በራሱ በሰንሰለት ላይ የሚደገፍ መለያ አይፈጥርም ። በ Taira ላይ ቧንቧው ለሙከራ ኔትወርክ ጽሁፎች መለያውን መፍጠር እና ፋይናንስ ማድረግ ይችላል ። በ Minamoto ላይ የተረጋገጠ ዋና አውታረመረብ ውህደት ወይም የግምጃ ቤት ፍሰት ይጠቀሙ።
 
@@ -366,7 +389,9 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 እንቆቅልሹን አምጣ:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
+curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
+  -H 'Accept: application/json' \
+  | jq .
 ```
 
 ቧንቧው የህዝብ የሙከራ አውታረመረብ አገልግሎት ነው። እንቆቅልሽ ወይም የይገባኛል ጥያቄ መጨረሻ ነጥብ `502` ፣ የጊዜ ገደብ ወይም ሌላ የጌትዌይ ደረጃ ስህተት ከተመለሰ ቁልፎችንዎን ወይም የደንበኛ ውቅርዎን ከመቀየርዎ በፊት ይጠብቁ እና እንደገና ይሞክሩ።
@@ -391,20 +416,26 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
-  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}'
+  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
 `difficulty_bits` ከ `0` የሚበልጥ ከሆነ እንቆቅልሽውን ይፍቱ እና የአንከር ቁመት እና nonce ን ያካትቱ:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
   -d '{
     "account_id": "<TAIRA_I105_ACCOUNT_ID>",
     "pow_anchor_height": 741,
     "pow_nonce_hex": "<NONCE_HEX>"
-  }'
+  }' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
 የእንቆቅልሽ ስልተ ቀመር:
@@ -430,21 +461,25 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet \
 ```json
 {
   "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-  "asset_definition_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
+  "asset_definition_id": "<TAIRA_FEE_ASSET_DEFINITION_ID>",
   "asset_id": "...",
-  "amount": "25000",
+  "amount": "<FUNDED_AMOUNT>",
   "tx_hash_hex": "...",
   "status": "QUEUED"
 }
 ```
 
-መልሱ በአሁኑ ጊዜ በ HTTP `202 Accepted` ተመላሽ ተደርጓል። ከላይ የተጠቀሰው የንብረት ትርጉሙ ID ከህዝባዊ ቧንቧው የሚደገፈው Taira የክፍያ ንብረቱ ነው ። ቧንፉ `tx_hash_hex` እና `status: "QUEUED"` ሲመለሱ ጥያቄውን ተቀብሏል ።
+ምላሹ በአሁኑ ጊዜ በ HTTP `202 Accepted` ተመላሽ ነው ። የእሱ `asset_definition_id` የህዝብ ቧንቧ የገንዘብ ድጋፍ የሚያደርግ የአሁኑ Taira ክፍያ ንብረት ነው ፣ ከመልሱ በመውሰድ ምሳሌውን ከመቅዳት ይልቅ ID። ቧንፉ `tx_hash_hex` እና `status: "QUEUED"` ሲመለስ ጥያቄውን ተቀበለ ።
 
 ከዚያ የራስዎን ክፍያ የሚከፍሉ ግብይቶች ከማቅረባቸው በፊት ለገንዘብ የተደገፈ ንብረቱ የሕዝብ አስተያየት መስጠት:
 
 ```bash
+TAIRA_FEE_ASSET_DEFINITION=$(
+  jq -er '.asset_definition_id' ./taira-faucet-response.json
+)
+
 iroha --config ./taira.client.toml ledger asset get \
-  --definition 6TEAJqbb8oEPmLncoNiMRbLEK6tw \
+  --definition "$TAIRA_FEE_ASSET_DEFINITION" \
   --account <TAIRA_I105_ACCOUNT_ID>
 ```
 
@@ -470,7 +505,12 @@ def has_leading_zero_bits(digest: bytes, bits: int) -> bool:
 root = "https://taira.sora.org"
 account_id = sys.argv[1]
 
-with urllib.request.urlopen(f"{root}/v1/accounts/faucet/puzzle") as res:
+puzzle_request = urllib.request.Request(
+    f"{root}/v1/accounts/faucet/puzzle",
+    headers={"Accept": "application/json"},
+)
+
+with urllib.request.urlopen(puzzle_request) as res:
     puzzle = json.load(res)
 
 claim = {"account_id": account_id}
@@ -503,7 +543,7 @@ if difficulty > 0:
 request = urllib.request.Request(
     f"{root}/v1/accounts/faucet",
     data=json.dumps(claim).encode(),
-    headers={"content-type": "application/json"},
+    headers={"Accept": "application/json", "content-type": "application/json"},
     method="POST",
 )
 
@@ -599,16 +639,17 @@ alice@apps.universal
 alice@universal
 ```
 
-ጥብቅ የሂሳብ መስኮች አሁንም መደበኛ ይጠቀማሉ I105 ሂሳብ IDs. ቅጽል ስሞችን በሰው ዘንድ ሊነበብ የሚችልና ለካኖኒክ መለያ የሚፈታ ትስስር አድርገው ይመለከቱ IDs.
+ጥብቅ የሂሳብ መስኮች አሁንም የካኖኒካል I105 ሂሳብ IDs ይጠቀማሉ ። ቅጽል ስሞችን በሰው ሊነበብ የሚችል እና ወደ ካኖኒካል መለያ IDs የሚፈታ ትስስር አድርገው ይመለከቱ።
 
 ## 8. አዲስ የመረጃ ቋት ማዘጋጀት {#_8-provision-a-new-dataspace}
 
-አዲስ የውሂብ ክልል አንድ ኦፕሬተር እና የአስተዳደር ለውጥ ነው. የህዝብ Torii መጨረሻ ነጥብ ትራፊክን ወደ የተዋቀሩ የውሂብ ቦታዎች ሊያመራ ይችላል ፣ ግን ያልታወቁ የውሂብ ቦታ ቅጽል ስሞችን ይጥላል።
+አዲስ የውሂብ ክልል አንድ ኦፕሬተር እና የአስተዳደር ለውጥ ነው. የህዝብ Torii መጨረሻ ነጥብ ትራፊክን ወደ የተዋቀሩ የውሂብ ክፍሎች ሊያመራ ይችላል ፣ ግን ያልታወቁ የውሂብ ቦታ ቅጽል ስሞችን ይቃወማል።
 
 ለውጥ ከማዘጋጀትዎ በፊት የአሁኑን የቀጥታ ካታሎግ ይያዙ:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
@@ -664,6 +705,7 @@ description = "Route payments domains to the payments dataspace"
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | select(.dataspace_alias == "payments")'
 ```
 

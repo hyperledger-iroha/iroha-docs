@@ -1,14 +1,14 @@
 ---
 translation_locale: mn
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 63c317ab61ba912176c43c83d5b4f026f23a7a6e5fb633872a133c9ea1295686
+translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # SORA 3: Taira болон Minamoto дээр барилдана. {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 нь хэрэглээнд чиглэсэн олон нийтийн ашиглалтын замаар Iroha 3 болон SORA Nexus. Үндсэн барилдаж, туршиж үзээрэй Taira Нэгдүгээрт, дараа нь харилцагчийн ижил хэлбэрийг Minamoto Зөвхөн та өөрийнхөөрөө хориотой ханштай байх үед л XOR төлбөр тооцоо, үйлдвэрлэлийн зөвшөөрөл.
+SORA 3 нь Iroha 3 болон SORA Nexus дээр баригдсан аппликейшнээр чиглэсэн олон нийтийн нэвтрүүлгийн зам юм. Эхлээд Taira дээр бүтээж, туршиж үзээрэй, дараа нь ижил үйлчлүүлэгч хэлбэрийг Minamoto-д өөр хоорондоо байршуулах бол зөвхөн гарын сүлжээний түлхүүртэй байх үед, төлбөрийн хувьд жинхэнэ XOR болон үйлдвэрлэлийн зөвшөөрөлтэй байх болно.
 
 Энэ сургалтанд Iroha үйлчлүүлэгчийг олон нийтийн SORA 3 сүлжээний хувьд хэрхэн тохируулж байгааг харуулж байна:
 
@@ -37,6 +37,20 @@ SORA 3 нь хэрэглээнд чиглэсэн олон нийтийн аши
 3. Taira -ийн эсрэг аппликейшн логикийг ашиглаж, алдаа нь харамсалтай, ажиглах боломжтой хүртэл.
 4. Өөрөөр хэлбэл Minamoto гарын үсэг зурагч бий болгож, түүнийг бодит XOR мөнгөөр санхүүжүүлж, зөвхөн ижил батлагдсан үйл ажиллагааг гол сүлжээ рүү шилжүүлнэ.
 
+## Хөдөлмөрийг үргэлжлүүлэн үзээрэй {#continue-with-the-cookbook}
+
+Энэ удирдамжийг ашиглан сүлжээ сонгох, гарын үсэг зурагч тавих, санхүүжилтийн төлбөрийг хангахын тулд ашигла. Дараа нь та бүтээхийг хүсч буй аппликейшн заншилтай нийцсэн рецептээр үргэлжлүүлээрэй:
+
+|Зорилго .|Тэмцээ |
+| --- | --- |
+|Taira хяналт тавих, үйлчлүүлэгчийг тохируулна | [Taira](/mn/cookbook/connect-to-taira.md)-д холбох|
+|Анх бичиж, үр дүнг нь баталгаажуулна.| [Арилжааны танилцуулалт, шалгалт ](/mn/cookbook/submit-and-verify-transactions.md) |
+|Тодруул, санхүүжилт, хөдөлгөөн үнэ цэнэ | [Хөдөлмөрийн хөрөнгө](/mn/cookbook/fungible-assets.md) |
+|Сэтгэврийн хэрэгслийн байдлыг уншина уу | [Судалгааны бүртгэлийн байдал](/mn/cookbook/query-ledger-state.md) |
+|Үндсэн хуулийн өөрчлөлтөд хариуцлага | [Уламжлах үйл явдлууд](/mn/cookbook/stream-events.md) |
+
+Сургалтын хуудас нь ажлын урсгалыг төвлөрүүлж, Taira санхүүжилт эсвэл SORA Nexus сүлжээний хүрээнд шаардлагатай үед энд холбоно.
+
 ## 1. Та юу хийх вэ гэдгийг ойлгох {#_1-understand-what-you-are-setting-up}
 
 SORA Nexus-д өгөгдлийн орон зай нь сүлжээний замын болон чиглэлийн каталогийн нэг хэсэг юм. Клиент зөвхөн `client.toml` -ийг өөрчлөхөөр шинэ олон нийтийн өгөгдлийг бий болгодоггүй. Клиентын тохируулалт хоёр зүйлийг хийдэг:
@@ -60,6 +74,7 @@ Taira хувьд:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -67,6 +82,7 @@ Minamoto хувьд:
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -74,26 +90,28 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-`https://minamoto.sora.org/status` -тай ижил команд нь гол сүлжээний хувьд ашиглана.
+`https://minamoto.sora.org/status`-тай ижил команд нь гол сүлжээний хувьд ашиглана.
 
 ## Taira MCP агентлагчид {#taira-mcp-for-agents}
 
-Taira ч гэсэн а Torii-Үндэсний загварын хүрээлэнгийн протокол (MCP Цагдаагийн үйл ажиллагааны цаг хугацааг ашиглах нь цагдаагийн туршилтын сүлжээний шууд уншилт, скрипт шинжилгээ, эсвэл ёс сурталчилгааг бий болгохгүйгээр зохиолын туршилт хийх Torii Хэрэглэгч хамгийн түрүүнд.
+Taira ч гэсэн а Torii-Үндэсний загварын хүрээлэнгийн протокол (MCP Хөдөлмөрийн хэрэгслийн цахилгаан станцыг ашиглах зохиосон оношилгоо, эсвэл дүрэм шинжилгээний туршилтыг сайн боловсруулахгүйгээр хянасан Torii Хэрэглэгч хамгийн түрүүнд.
 
 |Хажуулалтын|Үр дүн |
 | --- | --- |
 |MCP эцсийн цэг |`https://taira.sora.org/v1/mcp` |
 |Сүлжээний гарал |`https://taira.sora.org` |
-|Дашрамдсан хэрэглээ |Taira шалгалтын сүлжээний уншдаг, цөмөрээс санхүүжүүлсэн бичгийн туршилтууд |
+|Дашрамдсан хэрэглээ |Taira шалгалтын сүлжээний уншдаг, цөмөрөөр санхүүжүүлсэн бичгийн туршилтууд |
 |Үйлдвэрлэлийн тэнцүү |Энэ нэвтрүүлгийг Minamoto гэж заахгүй бол гол сүлжээний MCP эцсийн цэг болон чөлөөлөх хяналтын системийг ялангуяа баталгаажуулахгүй бол|
 
 Гэрээ батлах материалыг нэмэхээс өмнө гүүрний метабараа шалгаарай:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/mcp \
+  -H 'Accept: application/json' \
   | jq '{protocolVersion, server: .serverInfo.name, tools: .capabilities.tools.count}'
 ```
 
@@ -114,7 +132,7 @@ Iroha үйлчлүүлэгчид, транзакцын бүтээн байгуу
 Үйл ажиллагааны үйл явц нь:
 
 1. SDK код, CLI команд, эсвэл MCP хэрэгслийн схэмыг код бичэхийн өмнө агент холбогдох баримт бичиг, [PH000000) кодыг шалгахыг хүснэ.
-2. Агент нь хамгийн бага үйлчлүүлэгч замыг түрээслүүлээрэй: байдлын хяналт, дансны хайлт, нууц товчлол эсвэл тэнцвэрний хайлт.
+2. Агент нь хамгийн бага үйлчлүүлэгч замыг түрээслүүлээрэй: байдлын хяналт, дансны хайлт, нууц товчлол, эсвэл тэнцвэр хайл.
 3. Taira -ийн эсрэг зөвхөн уншдаг дуудлага хийсний дараа л гүйлгээний бүтээн байгуулалтын код нэмнэ.
 4. Амьд сүлжээний туршилтын сонгон шалгаруулалтыг `TAIRA_LIVE=1` дэргэд байлгаарай, тиймээс хэвийн нэгжийн туршилтын ажил хэзээ ч тест сүлжээгийн хөрөнгийг зарцуулахгүй эсвэл сүлжээтэй холбоотой байдаг.
 5. Төлөөлөгч нь тухайн гүйлгээг хүргүүлэхийн өмнө сүлжээний түшиг, зангилал, эрх мэдлийн сан, заалын товч танилцуулалт, төлбөрийн хөрөнгө, төлөвлөсөн байдлын өөрчлөлтийг мэдээлэх ёстой.
@@ -133,9 +151,9 @@ say "submit this transaction".
 
 MCP гүүр нь гарын үсэг зурсан Iroha гүйлгээг өргөн мэдүүлж болно, гэхдээ энэ нь хэвийн гүйлгээний шаардлагыг арилгахгүй байна. Үйлдвэрлэлт аливаа зөв эрх мэдэл, зөвшөөрөл, төлбөрийн санхүүжилт, ID сүлжээ, метадэтгэлэг болон гарын үсгийн шаардлагатай байна.
 
-Iroha түүхий эдийн гүйлгээний хувьд гүйлгэний хувилбарыг эхлээд SDK эсвэл CLI тэмдэгээр бүтээж, гарын үсэг зурж, дараа нь агенттэд зөвхөн `body_base64` гэж кодлогдсон хуулийн гарын үсгийн гарын үнийн дүнгийн байтыг өгөх хэрэгтэй. Тус агент нь `iroha.transactions.submit_and_wait` буюу `iroha.transactions.submit` болон `iroha.transactions.wait`-ээр санал асуулга явуулах боломжтой.
+Iroha түүхий эдийн гүйлгээний хувьд гүйлгэний хувилбарыг хамгийн түрүүнд SDK эсвэл CLI тэмдэгээр бүрдүүлж, гарын үсэг зурж, дараа нь төлөөлөгчэд зөвхөн хуулийн дагуу гарын үсэг зурсан гүйлгээний байт `body_base64` гэсэн кодтой. Тус төлөөлөгч хуудасыг `iroha.transactions.submit_and_wait` буюу `iroha.transactions.submit` болон анкетаг `iroha.transactions.wait`ээр өргөн мэдүүлж болно.
 
-Шаардлагатай хэрэглэгчийн анхан шатны орчин, түлхүүр, хардварын гарын үсэг зурагч, эсвэл тестнет конфигурацийн файлыг үл тооцсон орон нутгийн код руу чиглүүлээрэй. Тухайн агент хэзээ ч ач холбогдол бүхий материалыг Markdown, Fixtures, Logs эсвэл Commit-д бичихгүй байх ёстой.
+Шаардлагатай төлөөлөгчийн анкетад хувийн түлхэгийг элсэхгүй. Хэрэв төлөөлөгч транзакцийг хийх шаардлагатай бол хэрэглэгчийн гүйлгээний цаг үеийн нууцыг борлуулах орон нутгийн код руу чиглүүлээрэй Байгаль орчин, түлхүүр, хардварын гарын үсэг зурагч, эсвэл тестнет конфигурацийн файлыг үл тоомлосон. Тус агент нь гол материалыг хэзээ ч Markdown, Fixtures, logs, эсвэл commit-т бичихгүй байх ёстой
 
 Арилжаа гаргахаас өмнө төлөөлөгчэд богино хугацааны гүйлгээний төлөвлөгөөг гаргах ёстой:
 
@@ -188,6 +206,7 @@ for network in taira minamoto; do
   root="https://$network.sora.org"
   printf '\n%s\n' "$network"
   curl -fsS "$root/status" \
+    -H 'Accept: application/json' \
     | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 done
 ```
@@ -196,6 +215,7 @@ Taira нэвтрүүлсэн олон нийтийн мэдээллийн оро
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -205,6 +225,7 @@ Minamoto -ийн эсрэг ижил команд гүйцэтгэхэд гол 
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -220,7 +241,9 @@ const roots = {
 };
 
 for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`).then((res) => res.json());
+  const status = await fetch(`${root}/status`, {
+    headers: { Accept: 'application/json' },
+  }).then((res) => res.json());
   const publicSpaces = status.teu_lane_commit
     .filter((lane) => lane.visibility === 'public')
     .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
@@ -237,7 +260,7 @@ EOF
 
 ## 3. Taira үйлчлүүлэгчдийн тохируулалтыг бий болгох {#_3-create-a-taira-client-config}
 
-Хэрэв та аль хэдийн нэгтэй биш бол түлхүүрний хосууд үүсгэх:
+Хэрэв та аль хэдийн нэгтэйгүй бол түлхүүрний хосууд үүсгэх:
 
 ```bash
 kagami keys --algorithm ed25519 --json
@@ -286,7 +309,7 @@ iroha --config ./taira.client.toml taira write-canary \
   --json
 ```
 
-Канар нь гарын үсэг зурсан ping-ийг өргөн мэдүүлж, баталгааг хүлээдэг бөгөөд `--write-config` нэвтрүүлэг хийлгэх үед гарын үсгийн хувилбарыг бичиж байна. Taira нь олон нийтийн туршилтын сүлжээ юм, тиймээс шуурхайны дүүрэн байдал нь гарын ургамал өөрөө ажиллахад ч гарын үүнд гарын үсийг алдаатай болгож болно. Хэрэв `taira doctor` нь дүүрэн шуурхайг мэдээлсэн бол эсвэл канар нь `PRTRY:NEXUS_FEE_ADMISSION_REJECTED` -ийг буцааж өгөөч бол үйлчлүүлэгчийн конфигурацийн алдаатай гэж үзэхээс өмнө хүлээгээд дахин туршиж үзээрэй.
+Canary нь гарын үсэг зурсан ping-ийг өргөн мэдүүлж, баталгааг хүлээдэг бөгөөд `--write-config` хангагдсанаар "runtime signer config" бичдэг. Taira бол олон нийтийн тест сүлжээ юм. Хэрэв `taira doctor` нь дүүрэн шуурхайг мэдэгдсэн бол эсвэл `PRTRY:NEXUS_FEE_ADMISSION_REJECTED` -ийг буцаасан бол үйлчлүүлэгчийн конфигурацийн алдаатай гэж үзэхээс өмнө хүлээх, дахин туршиж үзээрэй.
 
 Төмөрний хяналтгүй шинжилгээ хийхэд канаринг хязгаарлагдмал дахин туршилтын сүлжээнд ороод:
 
@@ -328,7 +351,7 @@ Minamoto олон нийтийн түлхэгийг гол сүлжээний п
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-Nexus API эсвэл CLI команд нь ID, жишээ нь, Taira кран `account_id`, тэнцвэрт асуултууд, хатуу тооцооны талбайнууд, ёс сурталчилгааны холболт шаарддаг тохиолдолд үр дүнд гарсан ID дансыг ашиглаарай. Та үйлчлүүлэгчдийн конфигурацынд тохиромжтой хувийн түлхүүр хадгалж, ижил олон нийтийн сүлжээг `[account].profile = "taira"` эсвэл `[account].profile = "minamoto"`-ээр сонгох.
+Үр дүнд хүрсэн мэдээллийг ашигла ID хаана ч Nexus API эсвэл CLI Захиргааны захирамж санхүүгийн мэдээллийг хүснэ. ID, Тухайлбал, Taira цөмөр `account_id`, тэнцвэрлэлийн асуултууд, хяналтын сангийн хатуу бүсүүд, эсвэл нууц үсэгтэй холболт. танай үйлчлүүлэгчийн конфигурацынд хувийн түлхэгийг сонгож, `[account].profile = "taira"` эсвэл `[account].profile = "minamoto"`.
 
 ID-ийг үүсгэх нь өөрөө санхүүжүүлсэн зах зээлийн дансыг бий болгодоггүй. Taira дээр, кран нь тестнэт бичгийн дансыг бий болгож, санхүүжүүлж болно. Minamoto-д зөвшөөрөлтэй гол сүлжээний борлуулалт эсвэл санхүүгийн урсгал ашиглах боломжтой.
 
@@ -366,10 +389,12 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 Тэмцээг аваарай:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
+curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
+  -H 'Accept: application/json' \
+  | jq .
 ```
 
-Тэмцэл нь олон нийтийн тест сүлжээний үйлчилгээ юм. Хэрэв цогцолбор эсвэл шаардлагын төгсгөлийн цэг `502`, цаг хугацааны хорио, эсвэл гадаад замын түвшний өөр алдааг буцааж өгөөч, та өөрийн товчоо эсвэл үйлчлүүлэгчдийн конфигуралыг өөрчлөхөөс өмнө хүлээх бөгөөд дахин туршиж үзээрэй.
+Тэмцэл нь олон нийтийн тест сүлжээний үйлчилгээ юм. Хэрэв цогцолбор эсвэл шаардлагын төгсгөлийн цэг `502`, цаг хугацааны хорио, эсвэл гадаад замын түвшний өөр алдааг буцааж өгөөч, та өөрийн товчоо болон үйлчлүүлэгчдийн конфигуралыг өөрчлөхөөс өмнө хүлээгээд дахин туршиж үзээрэй.
 
 Энэ хариу нь дараах хэлбэртэй:
 
@@ -391,25 +416,31 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
-  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}'
+  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
 Хэрэв `difficulty_bits` нь `0`-ээс илүү бол цогцолборыг шийдэж, анкерний өндөр болон нэнс нэмж:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
   -d '{
     "account_id": "<TAIRA_I105_ACCOUNT_ID>",
     "pow_anchor_height": 741,
     "pow_nonce_hex": "<NONCE_HEX>"
-  }'
+  }' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
 Тэмцээний алгоритм:
 
-1. Хөгдөлмөрийг SHA-256 гэж бүтээн байгуулах:
+1. Хөгдөлмөрийг SHA-256 гэж бүтээж:
    - `iroha:accounts:faucet:pow:v2` -ийн байт
    - UTF-8 бүртгэл ID
    - `anchor_height` нь их хэмжээний `u64` юм.
@@ -430,21 +461,25 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet \
 ```json
 {
   "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-  "asset_definition_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
+  "asset_definition_id": "<TAIRA_FEE_ASSET_DEFINITION_ID>",
   "asset_id": "...",
-  "amount": "25000",
+  "amount": "<FUNDED_AMOUNT>",
   "tx_hash_hex": "...",
   "status": "QUEUED"
 }
 ```
 
-Одоогийн байдлаар HTTP `202 Accepted` гэж хариулжээ. Дээр дурдсан активын тодорхойлолтыг ID нь олон нийтийн крангаас санхүүжүүлсэн Taira төлбөрийн хөрөнгө юм. Кран нь `tx_hash_hex` болон `status: "QUEUED"`-ийг эргүүлэн өгөхдөө хүсэлтээ хүлээн авсан байна.
+Тус хариу нь одоогоор HTTP `202 Accepted`ээр буцааж байна. Түүний `asset_definition_id` нь олон нийтийн крангийн санхүүжилтээр олгогдсон одоогийн Taira төлбөрийн актив юм; үүнийг үлгэр жишээг нунтаглахын оронд хариулснаас гаргаж авах ID. Кран нь хүсэлтээ хүлээн зөвшөөрсөн бол `tx_hash_hex` болон `status: "QUEUED"` -ийг буцаадаг.
 
 Дараа нь өөрийн төлбөр тооцооны гүйлгээг хүргэхээс өмнө санхүүжүүлсэн хөрөнгийн талаар санал асуулга хийх:
 
 ```bash
+TAIRA_FEE_ASSET_DEFINITION=$(
+  jq -er '.asset_definition_id' ./taira-faucet-response.json
+)
+
 iroha --config ./taira.client.toml ledger asset get \
-  --definition 6TEAJqbb8oEPmLncoNiMRbLEK6tw \
+  --definition "$TAIRA_FEE_ASSET_DEFINITION" \
   --account <TAIRA_I105_ACCOUNT_ID>
 ```
 
@@ -470,7 +505,12 @@ def has_leading_zero_bits(digest: bytes, bits: int) -> bool:
 root = "https://taira.sora.org"
 account_id = sys.argv[1]
 
-with urllib.request.urlopen(f"{root}/v1/accounts/faucet/puzzle") as res:
+puzzle_request = urllib.request.Request(
+    f"{root}/v1/accounts/faucet/puzzle",
+    headers={"Accept": "application/json"},
+)
+
+with urllib.request.urlopen(puzzle_request) as res:
     puzzle = json.load(res)
 
 claim = {"account_id": account_id}
@@ -503,7 +543,7 @@ if difficulty > 0:
 request = urllib.request.Request(
     f"{root}/v1/accounts/faucet",
     data=json.dumps(claim).encode(),
-    headers={"content-type": "application/json"},
+    headers={"Accept": "application/json", "content-type": "application/json"},
     method="POST",
 )
 
@@ -580,7 +620,7 @@ iroha --config ./taira.client.toml \
   app alias setup apply --plan-file ./taira-apps-domain.plan.json
 ```
 
-Үүнд Minamoto, Энэ нь өөрийн зангилаа, эрх мэдэл, амьд оршин тогтнолын зөгнөлд холбогдсон. болон эцсийн хугацаа, тиймээс Taira төлөвлөгөөг сурталчлах, дахин тоглох боломжгүй:
+Үүнд Minamoto, Үндсэн зорилт, төлөвлөгөөг тусгаарлан боловсруулж батлах. тэдгээрийн сүлжээ, эрх мэдэл, амьдрал-гоцны анкер, цаг хугацаа, Taira төлөвлөгөөг сурталчлах, дахин тоглох боломжгүй:
 
 ```bash
 iroha --config ./minamoto.client.toml \
@@ -609,6 +649,7 @@ alice@universal
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
@@ -664,6 +705,7 @@ description = "Route payments domains to the payments dataspace"
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | select(.dataspace_alias == "payments")'
 ```
 

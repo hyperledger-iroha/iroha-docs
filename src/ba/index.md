@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /index.md
-translation_source_hash: 505e8224a59534717045c34b1bf796760d06f9d6808a2a1fd9773aa2f6a00c2d
+translation_source_hash: 3b2ad4ee285a821b56c9cf6fd3f4a8431f1cfa478e88082b45788765d68ed833
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 
@@ -18,6 +18,28 @@ hero:
   #- theme: alt
   #  text: View on GitHub
   #  link: https://github.com/hyperledger-iroha/iroha
+
+nexusPortal:
+  eyebrow: SORA Nexus
+  title: "Iroha 3 / SORA Nexus өҫтөндә төҙөлөштәр"
+  details: "Taira тест селтәренән башлағыҙ, ғәмәлдәге транзакция ағымдарын белегеҙ һәм производствоға әҙер ҡушымталар төҙөү өсөн маҡсатлы рецепттар ҡулланығыҙ."
+  primaryAction:
+    text: "Taira менән башлана."
+    link: /ba/get-started/sora-nexus-dataspaces
+  secondaryAction:
+    text: "Ҡушымталарҙы ҡарап сығығыҙ ."
+    link: /ba/cookbook/
+  recipes:
+    title: "Халыҡ-ара рецепттар"
+    items:
+      - title: "Транзакцияны тапшырыу һәм аныҡлау"
+        link: /ba/cookbook/submit-and-verify-transactions
+      - title: "Функциональ активтарҙы күсереү"
+        link: /ba/cookbook/fungible-assets
+      - title: "Һорау яҙмаһының торошо"
+        link: /ba/cookbook/query-ledger-state
+      - title: "Ағымлы ваҡиғалар"
+        link: /ba/cookbook/stream-events
 
 features:
   - icon:
@@ -44,16 +66,8 @@ features:
     title: "Ссылка"
     details: "Хәҙерге бинар, генез, Torii һәм яраҡлаштырыу буйынса белешмәләр битенә ҡарағыҙ."
     link: /ba/reference/
-  # - title: Cookbook # (TBA)
-
 footer: true
 ---
-
-<section class="nexus-build" aria-labelledby="nexus-build-title">
-<a class="nexus-build__panel" href="./get-started/sora-nexus-dataspaces.html">
-<span class="nexus-buildcopy"> SORA Nexus <span id="nexus-build-title" class="nexus-buildtitle">Үҙгәртергә Iroha 3 / SORA Nexus</span> <span class="nexus-builddetails">Үҙгәртеп ҡуйығыҙ SORA 3 менән Taira тест селтәре, Minamoto төп селтәре һәм күсермә-таҫма өлгөләре һеҙ хәҙер һынап ҡарай алаһығыҙ.</span> </span> <span class="nexus-build__action">Асыҡ гид <span aria-hidden="true">-&gt;</span></span>
-</a>
-</section>
 
 <hr style="margin-top: 3rem;">
 <p style="font-weight: 200; font-size: 0.875rem;">Hyperledger Iroha өлөшө булып тора <a href="https://www.lfdecentralizedtrust.org/projects/tag/ledger-technology" target="_blank">LF Decentralized Trust</a>. Күберәк белер өсөн: <a href="https://iroha.tech/" target="_blank">iroha.tech</a>.</p>

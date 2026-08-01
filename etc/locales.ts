@@ -4,8 +4,17 @@ export const DOCS_ORIGIN = 'https://docs.iroha.tech'
 
 export type TextDirection = 'ltr' | 'rtl'
 
+export interface CookbookGroupLabels {
+  start: string
+  ledger: string
+  accessAndAutomation: string
+  appPatterns: string
+}
+
 export interface NavigationLabels {
   getStarted: string
+  cookbook: string
+  cookbookGroups: CookbookGroupLabels
   guides: string
   architecture: string
   reference: string
@@ -29,6 +38,13 @@ export interface DocsLocale {
 
 const englishNavigation: NavigationLabels = {
   getStarted: 'Get Started',
+  cookbook: 'Cookbook',
+  cookbookGroups: {
+    start: 'Start',
+    ledger: 'Ledger',
+    accessAndAutomation: 'Access and Automation',
+    appPatterns: 'App Patterns',
+  },
   guides: 'Guides',
   architecture: 'Architecture',
   reference: 'Reference',
@@ -57,6 +73,13 @@ export const TRANSLATED_LOCALES: readonly DocsLocale[] = [
     direction: 'ltr',
     navigation: {
       getStarted: 'Primeros pasos',
+      cookbook: 'Recetas',
+      cookbookGroups: {
+        start: 'Inicio',
+        ledger: 'Libro mayor',
+        accessAndAutomation: 'Acceso y automatización',
+        appPatterns: 'Patrones de aplicaciones',
+      },
       guides: 'Guías',
       architecture: 'Arquitectura',
       reference: 'Referencia',
@@ -72,6 +95,13 @@ export const TRANSLATED_LOCALES: readonly DocsLocale[] = [
     direction: 'ltr',
     navigation: {
       getStarted: 'Primeiros passos',
+      cookbook: 'Receitas',
+      cookbookGroups: {
+        start: 'Início',
+        ledger: 'Livro-razão',
+        accessAndAutomation: 'Acesso e automação',
+        appPatterns: 'Padrões de aplicações',
+      },
       guides: 'Guias',
       architecture: 'Arquitetura',
       reference: 'Referência',
@@ -87,6 +117,13 @@ export const TRANSLATED_LOCALES: readonly DocsLocale[] = [
     direction: 'ltr',
     navigation: {
       getStarted: 'Bien démarrer',
+      cookbook: 'Recettes',
+      cookbookGroups: {
+        start: 'Démarrage',
+        ledger: 'Registre',
+        accessAndAutomation: 'Accès et automatisation',
+        appPatterns: 'Modèles d’application',
+      },
       guides: 'Guides',
       architecture: 'Architecture',
       reference: 'Référence',
@@ -102,6 +139,13 @@ export const TRANSLATED_LOCALES: readonly DocsLocale[] = [
     direction: 'ltr',
     navigation: {
       getStarted: 'Начало работы',
+      cookbook: 'Рецепты',
+      cookbookGroups: {
+        start: 'Начало',
+        ledger: 'Реестр',
+        accessAndAutomation: 'Доступ и автоматизация',
+        appPatterns: 'Шаблоны приложений',
+      },
       guides: 'Руководства',
       architecture: 'Архитектура',
       reference: 'Справочник',
@@ -117,6 +161,13 @@ export const TRANSLATED_LOCALES: readonly DocsLocale[] = [
     direction: 'rtl',
     navigation: {
       getStarted: 'البدء',
+      cookbook: 'الوصفات',
+      cookbookGroups: {
+        start: 'البداية',
+        ledger: 'دفتر الأستاذ',
+        accessAndAutomation: 'الوصول والأتمتة',
+        appPatterns: 'أنماط التطبيقات',
+      },
       guides: 'الأدلة',
       architecture: 'البنية',
       reference: 'المرجع',
@@ -132,6 +183,13 @@ export const TRANSLATED_LOCALES: readonly DocsLocale[] = [
     direction: 'rtl',
     navigation: {
       getStarted: 'آغاز کریں',
+      cookbook: 'عملی مثالیں',
+      cookbookGroups: {
+        start: 'آغاز',
+        ledger: 'لیجر',
+        accessAndAutomation: 'رسائی اور خودکاری',
+        appPatterns: 'ایپ کے نمونے',
+      },
       guides: 'رہنما',
       architecture: 'ساخت',
       reference: 'حوالہ',
@@ -147,6 +205,13 @@ export const TRANSLATED_LOCALES: readonly DocsLocale[] = [
     direction: 'ltr',
     navigation: {
       getStarted: 'はじめに',
+      cookbook: 'クックブック',
+      cookbookGroups: {
+        start: 'はじめる',
+        ledger: '台帳',
+        accessAndAutomation: 'アクセスと自動化',
+        appPatterns: 'アプリパターン',
+      },
       guides: 'ガイド',
       architecture: 'アーキテクチャ',
       reference: 'リファレンス',
@@ -162,6 +227,13 @@ export const TRANSLATED_LOCALES: readonly DocsLocale[] = [
     direction: 'rtl',
     navigation: {
       getStarted: 'תחילת העבודה',
+      cookbook: 'ספר מתכונים',
+      cookbookGroups: {
+        start: 'התחלה',
+        ledger: 'ספר חשבונות',
+        accessAndAutomation: 'גישה ואוטומציה',
+        appPatterns: 'תבניות יישום',
+      },
       guides: 'מדריכים',
       architecture: 'ארכיטקטורה',
       reference: 'חומר עזר',
@@ -177,6 +249,13 @@ export const TRANSLATED_LOCALES: readonly DocsLocale[] = [
     direction: 'ltr',
     navigation: {
       getStarted: 'စတင်ရန်',
+      cookbook: 'လက်တွေ့နမူနာများ',
+      cookbookGroups: {
+        start: 'စတင်ရန်',
+        ledger: 'လယ်ဂျာ',
+        accessAndAutomation: 'ဝင်ရောက်ခွင့်နှင့် အလိုအလျောက်လုပ်ဆောင်ခြင်း',
+        appPatterns: 'အက်ပ်ပုံစံများ',
+      },
       guides: 'လမ်းညွှန်များ',
       architecture: 'ဗိသုကာ',
       reference: 'ကိုးကား',
@@ -192,6 +271,13 @@ export const TRANSLATED_LOCALES: readonly DocsLocale[] = [
     direction: 'ltr',
     navigation: {
       getStarted: 'დაწყება',
+      cookbook: 'რეცეპტები',
+      cookbookGroups: {
+        start: 'დაწყება',
+        ledger: 'რეესტრი',
+        accessAndAutomation: 'წვდომა და ავტომატიზაცია',
+        appPatterns: 'აპლიკაციის ნიმუშები',
+      },
       guides: 'სახელმძღვანელოები',
       architecture: 'არქიტექტურა',
       reference: 'ცნობარი',
@@ -207,6 +293,13 @@ export const TRANSLATED_LOCALES: readonly DocsLocale[] = [
     direction: 'ltr',
     navigation: {
       getStarted: 'Սկիզբ',
+      cookbook: 'Բաղադրատոմսեր',
+      cookbookGroups: {
+        start: 'Մեկնարկ',
+        ledger: 'Գրանցամատյան',
+        accessAndAutomation: 'Մուտք և ավտոմատացում',
+        appPatterns: 'Հավելվածների ձևանմուշներ',
+      },
       guides: 'Ուղեցույցներ',
       architecture: 'Ճարտարապետություն',
       reference: 'Տեղեկատու',
@@ -222,6 +315,13 @@ export const TRANSLATED_LOCALES: readonly DocsLocale[] = [
     direction: 'ltr',
     navigation: {
       getStarted: 'Başlanğıc',
+      cookbook: 'Reseptlər',
+      cookbookGroups: {
+        start: 'Başlanğıc',
+        ledger: 'Reyestr',
+        accessAndAutomation: 'Giriş və avtomatlaşdırma',
+        appPatterns: 'Tətbiq nümunələri',
+      },
       guides: 'Bələdçilər',
       architecture: 'Arxitektura',
       reference: 'İstinad',
@@ -237,6 +337,13 @@ export const TRANSLATED_LOCALES: readonly DocsLocale[] = [
     direction: 'ltr',
     navigation: {
       getStarted: 'Жұмысты бастау',
+      cookbook: 'Рецептер',
+      cookbookGroups: {
+        start: 'Бастау',
+        ledger: 'Тізілім',
+        accessAndAutomation: 'Қолжетімділік және автоматтандыру',
+        appPatterns: 'Қолданба үлгілері',
+      },
       guides: 'Нұсқаулықтар',
       architecture: 'Архитектура',
       reference: 'Анықтама',
@@ -252,6 +359,13 @@ export const TRANSLATED_LOCALES: readonly DocsLocale[] = [
     direction: 'ltr',
     navigation: {
       getStarted: 'Эш башлау',
+      cookbook: 'Рецептар',
+      cookbookGroups: {
+        start: 'Башлау',
+        ledger: 'Реестр',
+        accessAndAutomation: 'Ҡулланыу һәм автоматлаштырыу',
+        appPatterns: 'Ҡушымта өлгөләре',
+      },
       guides: 'Ҡулланмалар',
       architecture: 'Архитектура',
       reference: 'Белешмә',
@@ -267,6 +381,13 @@ export const TRANSLATED_LOCALES: readonly DocsLocale[] = [
     direction: 'ltr',
     navigation: {
       getStarted: 'መጀመሪያ',
+      cookbook: 'የምሳሌዎች መመሪያ',
+      cookbookGroups: {
+        start: 'መጀመሪያ',
+        ledger: 'መዝገብ',
+        accessAndAutomation: 'መዳረሻ እና አውቶሜሽን',
+        appPatterns: 'የመተግበሪያ ንድፎች',
+      },
       guides: 'መመሪያዎች',
       architecture: 'ንድፈ ሕንፃ',
       reference: 'ማጣቀሻ',
@@ -282,6 +403,13 @@ export const TRANSLATED_LOCALES: readonly DocsLocale[] = [
     direction: 'ltr',
     navigation: {
       getStarted: 'འགོ་བཙུགས།',
+      cookbook: 'ལག་ལེན་དཔེ་མཚོན།',
+      cookbookGroups: {
+        start: 'འགོ་བཙུགས།',
+        ledger: 'ཐོ་དེབ།',
+        accessAndAutomation: 'འཛུལ་སྤྱོད་དང་རང་འགུལ།',
+        appPatterns: 'ཉེར་སྤྱོད་དཔེ་གཞི།',
+      },
       guides: 'ལམ་སྟོན།',
       architecture: 'བཟོ་བཀོད།',
       reference: 'གཞི་བསྟུན།',
@@ -297,6 +425,13 @@ export const TRANSLATED_LOCALES: readonly DocsLocale[] = [
     direction: 'ltr',
     navigation: {
       getStarted: 'Boshlash',
+      cookbook: 'Amaliy misollar',
+      cookbookGroups: {
+        start: 'Boshlash',
+        ledger: 'Reestr',
+        accessAndAutomation: 'Kirish va avtomatlashtirish',
+        appPatterns: 'Ilova andozalari',
+      },
       guides: 'Qoʻllanmalar',
       architecture: 'Arxitektura',
       reference: 'Maʼlumotnoma',
@@ -312,6 +447,13 @@ export const TRANSLATED_LOCALES: readonly DocsLocale[] = [
     direction: 'ltr',
     navigation: {
       getStarted: 'Эхлэх',
+      cookbook: 'Жорууд',
+      cookbookGroups: {
+        start: 'Эхлэх',
+        ledger: 'Бүртгэл',
+        accessAndAutomation: 'Хандалт ба автоматжуулалт',
+        appPatterns: 'Аппын загварууд',
+      },
       guides: 'Гарын авлага',
       architecture: 'Архитектур',
       reference: 'Лавлагаа',
@@ -327,6 +469,13 @@ export const TRANSLATED_LOCALES: readonly DocsLocale[] = [
     direction: 'ltr',
     navigation: {
       getStarted: '開始使用',
+      cookbook: '實作範例',
+      cookbookGroups: {
+        start: '開始',
+        ledger: '帳本',
+        accessAndAutomation: '存取與自動化',
+        appPatterns: '應用程式模式',
+      },
       guides: '指南',
       architecture: '架構',
       reference: '參考',
@@ -342,6 +491,13 @@ export const TRANSLATED_LOCALES: readonly DocsLocale[] = [
     direction: 'ltr',
     navigation: {
       getStarted: '快速开始',
+      cookbook: '实战手册',
+      cookbookGroups: {
+        start: '开始',
+        ledger: '账本',
+        accessAndAutomation: '访问与自动化',
+        appPatterns: '应用模式',
+      },
       guides: '指南',
       architecture: '架构',
       reference: '参考',

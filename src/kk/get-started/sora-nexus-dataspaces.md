@@ -1,14 +1,14 @@
 ---
 translation_locale: kk
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 63c317ab61ba912176c43c83d5b4f026f23a7a6e5fb633872a133c9ea1295686
+translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # SORA 3: Taira және Minamoto бойынша құрылыс {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 - Iroha 3 және SORA Nexus негізінде салынған қолданбаға қарасты қоғамдық іске қосу трассасы. Алдымен Taira арқылы жасаңыз, содан кейін бірдей клиент пішінінді Minamoto-ге көшіріңіз, тек егер сізде жеке негізгі желі кілттері бар болса, ақы үшін нақты XOR және өндіріс бетімі.
+SORA 3 - Iroha 3 және SORA Nexus негізінде салынған қолданбаға қарасты қоғамдық іске қосу трассасы. Алдымен Taira арқылы жасаңыз, содан кейін бірдей клиент пішінінді Minamoto-ге көшіріңіз, тек егер сізде жеке негізгі желі кілттері бар болса, ақы үшін нақты XOR және өндіріс рұқсаты бар болса.
 
 Бұл оқу құралы Iroha клиентін қоғамдық SORA 3 желі үшін қалай баптау керектігін көрсетеді:
 
@@ -25,10 +25,10 @@ SORA 3 - Iroha 3 және SORA Nexus негізінде салынған қол�
 |Қадам |Taira Тестнет |Minamoto Негізгі |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
 |Желідегі жағдайды оқуды бастаңыз |Кілтсіз сұраныс `/status` |Кілтсіз сұраныс `/status` |
-|Деректер кеңістігін таңдаңыз|Қолданбаңызға басқарушы жол қажет болмаса, қоғамдық `universal` пайдалану |Майннеттің рұқсатын алғаннан кейін ғана бірдей деректер кеңістігін пайдалануға болады |
+|Деректер кеңістігін таңдаңыз|Қолданбаңызға басқарушы жол қажет болмаса, қоғамдық `universal` пайдалану |Майннеттің рұқсатын алғаннан кейін ғана бірдей деректер кеңістігін пайдалану |
 |Төлемақыны алыңыз .|Қоғамдық Taira кранды пайдалану |XOR қаржыландырылған Minamoto шоттан немесе бекітілген қазынашылық ағымнан алыңыз |
-|Тест жазған |Фаннеттен қаржыландырылған сынақтан пайдалану XOR |Сынақ құралын пайдаланбаңыз; нақты шығындарды жазады XOR |
-|Даму |Логиканы, мониторингті және қолтаңбалаушыларды қайта сынаңыз. |Бөлек кілттерді, қаржыландыруды және босатуды басқаруды қолдану |
+|Тест жазды |Фаннеттен қаржыландырылған сынақтан пайдалану XOR |Сынақ құралын пайдаланбаңыз; нақты шығындарды жазады XOR |
+|Даму |Логиканы, мониторингті және қолтаңбалаушыларды қайта сынаңыз. |Жеке кілттерді, қаржыландыруды және босатуды басқаруды қолдану |
 
 Практикалық ағым:
 
@@ -36,6 +36,20 @@ SORA 3 - Iroha 3 және SORA Nexus негізінде салынған қол�
 2. Қолтаңбалаушы қосылып, Taira кранмен қаржыландырыңыз.
 3. Қолданбаңыздың логикасын Taira -ға қарсы жаттығуға тырысыңыз, сәтсіздіктер кішіпейіл және байқалады.
 4. Жеке Minamoto қолтаңбалаушы жасаңыз, оны нақты XOR арқылы қаржыландырыңыз және тек дәлелденген операциялар ғана негізгі желіге көшірілсін.
+
+## Тағамдар кітабымен жалғастырыңыз {#continue-with-the-cookbook}
+
+Осы нұсқаулықты пайдалану арқылы желіді таңдаңыз, қолтаңбалаушыны баптау және ақы төлеу. Содан кейін қолданбалық мінез-құлқыңызбен сәйкес келетін рецептімен жалғастырыңыз:
+
+|Мақсат |Рецепті |
+| --- | --- |
+|Taira тексеру және клиентті баптау | [Taira](/kk/cookbook/connect-to-taira.md) телефонына қосылыңыз|
+|Алғашқы жазуды жіберіп , нәтижесін тексеріңіз .| [Транзакцияларды тапсыру және тексеру ](/kk/cookbook/submit-and-verify-transactions.md) |
+|Тіркел, монета және жылжыту құны | [Қатты активтер](/kk/cookbook/fungible-assets.md) |
+|Фильтрленген өтінімді оқыңыз | [Сұрақтар журналы Мемлекеттік](/kk/cookbook/query-ledger-state.md) |
+|Келісілген өзгерістерге қарсы әрекет ету | [Ағымдық оқиғалар](/kk/cookbook/stream-events.md) |
+
+Кітап әр жұмыс ағынын назар аударады және Taira қаржыландыруға немесе SORA Nexus желілік контекстке мұқтаж болған кезде бұған сілтеме жасайды.
 
 ## 1. Қандай мақсатқа қол жеткізетіндігіңді түсін {#_1-understand-what-you-are-setting-up}
 
@@ -60,6 +74,7 @@ Taira үшін:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -67,6 +82,7 @@ Minamoto үшін:
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -74,6 +90,7 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
@@ -94,6 +111,7 @@ Taira сонымен қатар агенттің орындалу уақытта
 
 ```bash
 curl -fsS https://taira.sora.org/v1/mcp \
+  -H 'Accept: application/json' \
   | jq '{protocolVersion, server: .serverInfo.name, tools: .capabilities.tools.count}'
 ```
 
@@ -114,7 +132,7 @@ Iroha клиенттеріне, транзакция жасаушыларға, �
 Қолданбалы жұмыс барысы:
 
 1. Агентті код жазудан бұрын тиісті құжаттарын, SDK кодын, CLI командасын немесе MCP құралдың схемасын тексеруді сұраңыз.
-2. Агентті ең кішкентай клиент жолын алдымен жазуға шақырыңыз: жай-күйін тексеру, шотты іздеу, псевдонимді шешу немесе балансты іздеу.
+2. Агентті ең кішкентай клиент жолын алдымен жазуға шақырыңыз: жай-күйін тексеру, шотты іздеу, псевдонимді шешу немесе баланс іздеу.
 3. Тек оқуға арналған шақырулар Taira бойынша жұмыс істегеннен кейін ғана транзакция жасау кодын қосу.
 4. Тікелей желілік тестілеулерді таңдаңыз, мысалы `TAIRA_LIVE=1` артында сақтаңыз, сондықтан қалыпты бірліктегі сынақ жүрісі ешқашан тест-нет қаражатын жұмсай алмайды немесе желіге қолжетімділікке байланысты болады.
 5. Агентті кез-келген транзакцияны ұсынғанға дейін желі тамырын, тізбекті, өкілеттілік есебін, нұсқаулардың жиынтығын, алым активтерін және күтілетін мемлекеттің өзгеруін мәлімдеуді талап етеді.
@@ -133,9 +151,9 @@ say "submit this transaction".
 
 Қауымдастық MCP bridge қол қойылған құжатты тапсыра алады Iroha транзакция, бірақ бұл қалыпты транзакциялық талаптарды алып тастамайды. Транзакцияға әлі де дұрыс өкілеттік қажет, рұқсаттар, алымдарды қаржыландыру, тізбек ID, Метамәліметтер және қолтаңба.
 
-Түйме Iroha операциялары үшін алдымен транзакция конвертін SDK немесе CLI белгісімен жасаңыз және қолтаңбалаңыз, содан кейін агентке тек `body_base64` ретінде кодталған каноникалық қол қойылған транзакциялық байттарды ғана беріңіз. Агенттік конвертті `iroha.transactions.submit_and_wait`, немесе `iroha.transactions.submit` және сауалнаманы `iroha.transactions.wait` арқылы тапсыра алады.
+Түйме Iroha операциялары үшін алдымен транзакция конвертін SDK немесе CLI белгісімен жасаңыз және қолтаңбалаңыз, содан кейін агентке тек қана каноникалық `body_base64` деп кодталған қол қойылған транзакция байттары. Агенттік конвертті `iroha.transactions.submit_and_wait` немесе `iroha.transactions.submit` және `iroha.transactions.wait` деген сауалнамамен бере алады.
 
-Жеке кілттерді агенттiк өтiнiшке орналастыруға болмайды. Егер агентке транзакцияны құру қажет болса, оны пайдаланушының жұмыс уақытындағы ортасының құпияларын жүктейтiн жергiлiктi кодқа бағыттаңыз, кілттер тізбегі, аппараттық қолтаңбалаушы немесе тестнет конфигурация файлын елемеген. Агенттің кілт материалдарын ешқашан Markdown, фиксаторлар, журналдарына жазуы керек емес.
+Агенттің тапсырмасына жеке кілттерді жапмаңыз. Егер агентке транзакция жасау керек болса, оны пайдаланушының жұмыс уақытының құпияларын жүктейтін жергілікті кодқа бағыттаңыз орта, кілттер тізбегі, аппараттық қолтаңбалаушы немесе тестілеу желісі конфигурациясы файлын елемеу. Агенттің кілті материалды ешқашан Markdown, фиксаторларға, журналдарына немесе коммиттерге жазуы керек емес.
 
 Транзакцияны тапсырудан бұрын агентті қысқаша транзакция жоспарын жасауға мәжбүрлеу:
 
@@ -145,7 +163,7 @@ say "submit this transaction".
 - `fee asset`: Taira бойынша алынатын активтер
 - `preflight reads`: есептік жазба, активтердің балансы, рұқсаттар, аты-жөндер немесе блок тексерулері
 - `expected result`: расталғаннан кейін көрінетін жай-күй
-- `idempotency`: егер сол өтінішті қайта қараса, не болады?
+- `idempotency`: егер осы өтінішті қайта қараса, не болады?
 
 Ұсынылғаннан кейін, агентті терминалдық жай-күйді күтуге мәжбүрлеңіз, содан кейін оқу сұрауымен мемлекеттің өзгергенін тексеріңіз. Пайдалы аяқталу есебіне:
 
@@ -188,6 +206,7 @@ for network in taira minamoto; do
   root="https://$network.sora.org"
   printf '\n%s\n' "$network"
   curl -fsS "$root/status" \
+    -H 'Accept: application/json' \
     | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 done
 ```
@@ -196,6 +215,7 @@ Taira ашық деректер кеңістігінің жолдарын кел
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -205,6 +225,7 @@ curl -fsS https://taira.sora.org/status \
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -220,7 +241,9 @@ const roots = {
 };
 
 for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`).then((res) => res.json());
+  const status = await fetch(`${root}/status`, {
+    headers: { Accept: 'application/json' },
+  }).then((res) => res.json());
   const publicSpaces = status.teu_lane_commit
     .filter((lane) => lane.visibility === 'public')
     .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
@@ -286,7 +309,7 @@ iroha --config ./taira.client.toml taira write-canary \
   --json
 ```
 
-Канарь қолтаңбаланған ping тапсырады, растауды күтеді және `--write-config` ұсынылған кезде орындалу уақыты қолтаңбалаушы конфигурациясын жазады. Taira қоғамдық тест желісі болып табылады, сондықтан кезек қанағаттандыруы кранның өзі жұмыс істегенде де қолтаңбаланган ping сәтсіздікке ұшырауы мүмкін. Егер `taira doctor` толы кезекті немесе канарлық `PRTRY:NEXUS_FEE_ADMISSION_REJECTED` қайтарса, оны клиент конфигурациясының қатесі ретінде қараудан бұрын күтіңіз және қайталап көріңіз.
+Канарь қолтаңбаланған пинг тапсырады, растауды күтеді және орындалу уақытында қолтаңбалаушының конфигурациясын жазады `--write-config` қамтамасыз етіледі. Taira - бұл қоғамдық тест желісі, сондықтан кезек қанағаттандыру қолтаңбаланған ping жұмыс істегенде де сәтсіздікке әкелуі мүмкін. Егер `taira doctor` толы кезекті немесе канарлық қайтаруды білдіреді `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`, клиент конфигурациясының қатесі ретінде қарамас бұрын күтіңіз және қайталап көріңіз.
 
 Бақыланбайтын түтін сынақтары үшін канарийді шектелген қайта сынау циклінде ораңыз:
 
@@ -328,7 +351,7 @@ Minamoto мемлекеттік кілтті негізгі желі префи�
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-Нәтижесінде есептен пайдалан ID кез келген жерде Nexus API немесе CLI командасы каноникалық есеп сұрайды ID, мысалы, Taira кран `account_id`, Баланс сұраныстары, қатаң тіркелгі өрістері немесе аты-жөнді байланыстар. Келесі жеке кілт клиент конфигурацияңызда сақтаңыз, және бірдей қоғамдық желіді таңдаңыз `[account].profile = "taira"` немесе `[account].profile = "minamoto"`.
+Нәтижесінде есептен пайдалан ID кез келген жерде Nexus API немесе CLI командасы каноникалық есеп сұрайды ID, мысалы, Taira кран `account_id`, Баланс сұраныстары, қатаң шоттар өрістері немесе аты-жөніне байланысты. клиентіңіздің конфигурациясында жеке кілтті таңдаңыз және `[account].profile = "taira"` немесе `[account].profile = "minamoto"`.
 
 ID генерациялау өздігінен қаржыландырылатын тізбектегі шотты құруға мүмкіндік бермейді. Taira -да кран тестнет жазулары үшін шотты құруы және қаржыландыруы мүмкін. Minamoto -де бекітілген негізгі желіге қосылу немесе қазынашылық ағынды пайдалану.
 
@@ -366,7 +389,9 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 Ілмекті әкеліңіз:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
+curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
+  -H 'Accept: application/json' \
+  | jq .
 ```
 
 Фаннет - бұл қоғамдық тест-нейт қызметі. Егер жұмбақ немесе талап ету аяқтық нүктесі `502`, уақыт үзілісі немесе басқа шлюз деңгейіндегі қате қайтарса, кілттеріңізді немесе клиент конфигурацияңызды өзгерту алдында күтіңіз және қайталап көріңіз.
@@ -391,20 +416,26 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
-  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}'
+  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
 Егер `difficulty_bits` `0`-дан асқан болса, түймелерді шешіп, якорь биіктігін қосу және нонс:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
   -d '{
     "account_id": "<TAIRA_I105_ACCOUNT_ID>",
     "pow_anchor_height": 741,
     "pow_nonce_hex": "<NONCE_HEX>"
-  }'
+  }' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
 Алгоритм мынау:
@@ -415,7 +446,7 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet \
    - `anchor_height` үлкен енділік `u64`
    - `anchor_block_hash_hex` байт ретінде шифрлансын
    - `challenge_salt_hex` болса байт түрінде декодтанған
-2. `u64` нонселерді үлкен ендиан 8 байт мәндері ретінде кодтауға тырысыңыз.
+2. `u64` нонселерді үлкен ендиан 8 байт мәндері ретінде кодтауды сынаңыз.
 3. Әрбір нонс үшін скриптпен орындаңыз:
    - Пароль: 8-байттық нонс
    - тұз: 32-байтқа арналған қиындық
@@ -430,21 +461,25 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet \
 ```json
 {
   "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-  "asset_definition_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
+  "asset_definition_id": "<TAIRA_FEE_ASSET_DEFINITION_ID>",
   "asset_id": "...",
-  "amount": "25000",
+  "amount": "<FUNDED_AMOUNT>",
   "tx_hash_hex": "...",
   "status": "QUEUED"
 }
 ```
 
-Жауап қазіргі уақытта HTTP `202 Accepted` ретінде қайтарылады. Жоғарыда келтірілген активтің анықтамасы ID - мемлекеттік краннан қаржыландырылатын Taira алым активтері. Кран қайтару кезінде өтінішті қабылдады `tx_hash_hex` және `status: "QUEUED"`.
+Жауап қазіргі уақытта HTTP `202 Accepted` арқылы қайтарылады. Оның `asset_definition_id` - мемлекеттік краннан қаржыландырылатын ағымдағы Taira алым активтері; оны жауаптан көшірудің орнына ID мысалынан алыңыз. Кран қайтарып берген кезде сұрауды қабылдады `tx_hash_hex` және `status: "QUEUED"`.
 
 Одан кейін қаржыландырылатын активтерді өздеріңіздің алым төлейтін транзакцияларыңызды ұсынғанға дейін сауалнама:
 
 ```bash
+TAIRA_FEE_ASSET_DEFINITION=$(
+  jq -er '.asset_definition_id' ./taira-faucet-response.json
+)
+
 iroha --config ./taira.client.toml ledger asset get \
-  --definition 6TEAJqbb8oEPmLncoNiMRbLEK6tw \
+  --definition "$TAIRA_FEE_ASSET_DEFINITION" \
   --account <TAIRA_I105_ACCOUNT_ID>
 ```
 
@@ -470,7 +505,12 @@ def has_leading_zero_bits(digest: bytes, bits: int) -> bool:
 root = "https://taira.sora.org"
 account_id = sys.argv[1]
 
-with urllib.request.urlopen(f"{root}/v1/accounts/faucet/puzzle") as res:
+puzzle_request = urllib.request.Request(
+    f"{root}/v1/accounts/faucet/puzzle",
+    headers={"Accept": "application/json"},
+)
+
+with urllib.request.urlopen(puzzle_request) as res:
     puzzle = json.load(res)
 
 claim = {"account_id": account_id}
@@ -503,7 +543,7 @@ if difficulty > 0:
 request = urllib.request.Request(
     f"{root}/v1/accounts/faucet",
     data=json.dumps(claim).encode(),
-    headers={"content-type": "application/json"},
+    headers={"Accept": "application/json", "content-type": "application/json"},
     method="POST",
 )
 
@@ -609,6 +649,7 @@ alice@universal
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
@@ -664,6 +705,7 @@ description = "Route payments domains to the payments dataspace"
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | select(.dataspace_alias == "payments")'
 ```
 

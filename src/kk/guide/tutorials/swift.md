@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: 85cc94399b9892984615bf8a0821a1f30395eb87ec164592ca98fbd9903ef834
+translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -43,7 +43,7 @@ make bridge-xcframework
 
 ## CocoaPods {#cocoapods}
 
-Код базасында сондай-ақ `IrohaSwift/IrohaSwift.podspec`. Ол мәлімдейді `IrohaSwift` қақпақ, Swift 5.9 және iOS 15. Podspec тартып Swift негізгі қоймадан алынған көздер; транзакцияларды кодтау үшін түпкiлiктi көпір әлі де болуы және байланысы болуы керек, Ed25519 емес қолтаңбалау, және Connect крипто.
+Код базасында сондай-ақ `IrohaSwift/IrohaSwift.podspec`. Ол мәлімдейді `IrohaSwift` қақпақ, Swift 5.9 және iOS 15. Podspec тартып Swift негізгі қоймадан алынған көздер; түпкүлдік көпір әлі де болуы керек және транзакцияларды кодтау, Ed25519 емес қолтаңбалау және Connect крипто үшін байланысты.
 
 ## Шұғыл бастау {#quickstart}
 
@@ -72,7 +72,9 @@ import Foundation
 
 if #available(iOS 15.0, macOS 12.0, *) {
     let url = URL(string: "https://taira.sora.org/status")!
-    let (data, response) = try await URLSession.shared.data(from: url)
+    var request = URLRequest(url: url)
+    request.setValue("application/json", forHTTPHeaderField: "Accept")
+    let (data, response) = try await URLSession.shared.data(for: request)
 
     if let http = response as? HTTPURLResponse {
         print("status:", http.statusCode)
@@ -123,7 +125,7 @@ let pqSdk = IrohaSDK(
 let signingKey = try pqSdk.generateSigningKey()
 ```
 
-Қауымдастық `SigningAlgorithm` enum қазіргі уақытта Ed25519, secp256k1-ті қамтиды, BLS қалыпты және шағын нұсқалар, ML-DSA, GOST R 34.10-2012 параметрлер жиынтығы, және SM2. Эд25519 ыңғайлы жолынан тыс жерде жергілікті көпірлік қолдау қажет.
+`SigningAlgorithm` ендігі қазіргі уақытта Ed25519, secp256k1, BLS қалыпты және шағын нұсқалар, ML-DSA, GOST R 34.10-2012 параметрлер жиынтығы, және SM2. Эд25519 ыңғайлы жолынан тыс жерде жергілікті көпірлік қолдау қажет.
 
 ## Қосылу {#connect}
 

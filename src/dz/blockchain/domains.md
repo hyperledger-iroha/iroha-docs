@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /blockchain/domains.md
-translation_source_hash: 4c42df3c179a086b8823264df2b69f68d7d3df500c8362d78f7ba56875dcfad1
+translation_source_hash: 5e52579436a181d76c83fa549991e56064ae57349b7109d5c41ec7953e5cbb2e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -45,7 +45,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
 ```
 
-འཆར་གཞི་འདི་ `payments.universal` དང་ ཨང་གྲངས་ཀྱི་ གནད་སྡུད་ས་སྟོང་དང་ ཀ་ནོ་ནི་ཀིསི་ I105 གི་ཇོ་བདག་དང་ ཁང་གླ་ཉོ་ནིའི་དུས་ཡུན་ དེ་ལས་ ད་ལྟོའི་ སྲིད་བྱུས་/སྤྲོད་ཁྲལ་གྱི་ཚིག་ཡིག་སྲུང་བ་ཚུ་ ངོས་འཛིན་འབདཝ་ཨིན། འཆར་འགོད་པའི་མཐའ་མཇུག་དེ་ `POST /v1/aliases/setup/plan`ཨིན། ཁོ་གི་ལོག་འགྱོ་སའི་འཆར་གཞི་འདི་ ལྕགས་ཐག་དང་དབང་ཆོད་ དེ་ལས་ མངའ་སྡེ་ དེ་ལས་ དུས་ཡུན་བཅའ་མར་གཏོགས་ཡོདཔ་ཨིན། ཌོ་मेनསེལ་འཐུ་འབད་མི་དེ་ [`Unregister`](/dz/blockchain/instructions.md#un-register) ལག་ལེན་འཐབ་ནི་ཨིན་མས།
+དམིགས་གཏད་འདི་ `payments.universal` འདི་དང་ ཨང་གྲངས་ཀྱི་ གནད་སྡུད་ས་ཁོངས་དེ་དང་ I105 གི་ དམ་ཚིག་ཅན་གྱི་ ཇོ་བདག་དང་ ཁང་གླ་ཉོ་ནི་གི་དུས་ཡུན་ དེ་ལས་ ད་རེས་ནངས་པའི་ སྲིད་བྱུས་/སྤྲོད་ལེན་གྱི་གནས་གོང་སྲུང་བ་ཚུ་ ངོ་རྟགས་འབདཝ་ཨིན། འཆར་འགོད་པའི་མཇུག་ཐིག་འདི་ `POST /v1/aliases/setup/plan`ཨིན། འདི་ལོག་འགྱོ་བའི་འཆར་གཞི་དེ་ ལྕགས་ཐག་དང་ དབང་ཚད་དང་ མངའ་སྡེ་ དེ་ལས་ དུས་ཡུན་མཐའ་མ་ལུ་བཅའ་མར་གཏོགསཔ་ཨིན། ཌོ་मेनསེལ་འཐུ་འབད་མི་དེ་ཡང་ [`Unregister`](/dz/blockchain/instructions.md#un-register) ལག་ལེན་འཐབ་ཡོདཔ་ཨིན།
 
 domain བཟོ་སྐྲུན་འབད་ནི་དང་སེལ་འཐུ་འབད་ནི་ལུ་ active runtime validator གི་འོག་ལུ་ appropriate domain-management permission དགོཔ་ཨིན། Domain metadata འདི་ [`SetKeyValue` དང་ `RemoveKeyValue`](/dz/blockchain/instructions.md#setkeyvalue-removekeyvalue) དང་གཅིག་ཁར་ ད་ལྟོའི་གནས་སྟངས་ནང་བཟོ་བཅོས་འབད་ཚུགས་དོ་ཡོདཔ་ཨིན།
 
@@ -61,7 +61,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
 མི་མང་གི་ལམ་ཐོ་ཡིག་འདི་ གནས་སྡུད་གནས་སྟངས་ཀྱི་ མིང་རྟགས་ལུ་ལོག་ mapping:
 
 ```bash
-curl -fsS https://taira.sora.org/status \
+curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .block_height, .finality_lag_slots]
     | @tsv'
@@ -92,7 +92,7 @@ iroha --config ./taira.client.toml \
 
 ## ལས་སྡེ་གཞན་ཚུ་དང་འབྲེལ་བའི་འབྲེལ་བ་ {#relationship-to-other-entities}
 
-ཌོ་མེ་ན (domains) གིས་ དོ་བདག་ཚུ་སྡེ་ཚན་འབད་ཞིནམ་ལས་ མིང་གི་ས་སྟོང་ཅིག་ བཟོ་དོ་ཡོདཔ་ད་ ཨེསི་ཊེ (asset) གི་འགྲེལ་བཤད་ནང་ དོ་བདག་ཚུ་གིས་ དོ་བདག་ཚུ་གི་མིང་ཐོ་ཚུ་ལག་ལེན་འཐབ་དོ་ཡོདཔ་མ་ཚད་ དྲི་བཀོད་གྱིས་ དོ་བདག་གི་མིང་ཐོ་བཀོད་འབད་ནི་དང་ ཡང་ན་ དོ་བདག་གྱི་མིང་ཐོ་བསྡུད་འབད་ནི་ཨིན། རྩིས་ཁྲ་ཚུ་ རང་གིས་རང་ལུ་ ད་ལྟོའི་ གནད་སྡུད་རྣམ་གཞག་ནང་ལུ་ domainless ཨིན། ཨིན་རུང་རྩིས་ཁྲ་ཚུ་གིས་ domain གི་དབང་འཛིན་འབད་ཚུགས་ནི་ཨིནམ་མ་ཚད་ domain གི་འོག་ལུ་ definitions སྡོད་མི་ assets འདི་ཡང་བཟུང་ཚུགས།
+ཌོ་མེ་ན (domains) གི་སྡེ་ཚན་ཚུ་ ལེ་ཇེར་གྱི་དངོས་རྫས་དང་ ཌོ་เมན (domein-scoped data) གི་དོན་ལས་མིང་སྟོང་པ་བཟོ་ཡོདཔ་ཨིན། རྒྱུ་དངོས་གི་འགྲེལ་བཤད་ནང་ལུ་ ཌོ་મેན (Domain) ལུ་ ཁྱད་ཚད་ལྡན་པའི་ ངོ་རྟགས་ཚུ་ལག་ལེན་འཐབ་དོ་ཡོདཔ་མ་ཚད་ བརྟག་དཔྱད་འབད་མི་ཚུ་ལུ་ ཌོ་ମେན (domenes) གི་ཐོ་ཡིག་བཀོད་ཚུགས། ཡང་ན་འཚོལ་ཚུགས། ས་ཁོངས་ཅིག་ལུ་ ཁྱབ་ཚད་ཡོད་པའི་དངོས་པོ་ཚུ་ཨིན། རྩིས་ཁྲ་དེ་ རང་རང་གིས་རང་ ད་ལྟོའི་གནས་སྡུད་དཔེ་ནང་ ས་ཁོངས་མེད་རུང་ རྩིས་ཁྲ་ཚུ་གིས་ ས་ཁོངས་ཚུ་ བདག་འཛིན་འཐབ་ཚུགས་ནི་ཨིནམ་མ་ཚད་ ས་ཁོངས་ཚུ་གི་འོག་ལུ་ གནས་སྡུད་ཡོད་མི་ཚུ་ཡང་བཞག་ཚུགས།
 
 འདི་ཡང་བལྟ་:
 

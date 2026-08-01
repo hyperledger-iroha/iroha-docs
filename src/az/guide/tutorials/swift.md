@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: 85cc94399b9892984615bf8a0821a1f30395eb87ec164592ca98fbd9903ef834
+translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -43,7 +43,7 @@ Bu, `dist/NoritoBridge.xcframework` istehsal edir; `IrohaSwift/Package.swift` on
 
 ## CocoaPods {#cocoapods}
 
-Kod bazasında həmçinin `IrohaSwift/IrohaSwift.podspec`. O, bəyan edir `IrohaSwift` kapsul, Swift 5.9 və iOS 15. Podspec çəkir Swift Əsas anbardan mənbələr; yerli körpü hələ də mövcud olmalıdır və əməliyyat kodlaşdırılması üçün əlaqələndirilməlidir. Ed25519 olmayan imzalanma və Connect kripto.
+Kod bazasında həmçinin `IrohaSwift/IrohaSwift.podspec`. O, bəyan edir `IrohaSwift` kapsul, Swift 5.9 və iOS 15. Podspec çəkir Swift Əsas anbardan mənbələr; yerli körpü hələ də mövcud olmalıdır Transaksiya kodlaşdırması, Ed25519 olmayan imzalanma və Connect kripto üçün əlaqələndirilir.
 
 ## Tez başlanğıc {#quickstart}
 
@@ -72,7 +72,9 @@ import Foundation
 
 if #available(iOS 15.0, macOS 12.0, *) {
     let url = URL(string: "https://taira.sora.org/status")!
-    let (data, response) = try await URLSession.shared.data(from: url)
+    var request = URLRequest(url: url)
+    request.setValue("application/json", forHTTPHeaderField: "Accept")
+    let (data, response) = try await URLSession.shared.data(for: request)
 
     if let http = response as? HTTPURLResponse {
         print("status:", http.statusCode)
@@ -123,7 +125,7 @@ let pqSdk = IrohaSDK(
 let signingKey = try pqSdk.generateSigningKey()
 ```
 
-`SigningAlgorithm` enumunda hazırda Ed25519, secp256k1, BLS normal və kiçik variantlar, ML-DSA daxildir. GOST R 34.10-2012-ci il parametrləri və SM2. Ed25519 rahatlıq yolu xaricində yerli körpü dəstəyi tələb olunur.
+`SigningAlgorithm` enum hazırda Ed25519, secp256k1, BLS normal və kiçik variantlar, ML-DSA, GOST R 34.10-2012-ci il parametrlər dəstləri və SM2. Ed25519 rahatlıq yolu xaricində yerli körpü dəstəyi tələb olunur.
 
 ## Bağlantı {#connect}
 
