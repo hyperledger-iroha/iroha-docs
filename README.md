@@ -33,7 +33,10 @@ the backup through GitHub's official Pages actions. The repository Pages source
 must therefore be set to **GitHub Actions**; this workflow does not publish a
 `gh-pages` branch. Domain ownership and routing are managed in the hosting and
 DNS control planes, so do not add a checked-in `CNAME` file. The checked-in
-`vercel.json` runs the complete validation suite before every Vercel build.
+GitHub workflows run the complete validation suite and verify that the
+canonical Vercel site serves the exact `main` revision, renders the language
+selector, and exposes a translated locale before reporting success. Vercel's
+project settings own its build and output configuration.
 
 ## Validation
 
@@ -47,6 +50,7 @@ pnpm test
 pnpm validate
 pnpm build
 pnpm cli validate-links .vitepress/dist
+pnpm cli validate-locales .vitepress/dist
 ```
 
 `pnpm validate:i18n` requires every English route in all 20 maintained

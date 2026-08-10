@@ -36,7 +36,7 @@
   },
   "scripts": {
     "dev": "vitepress dev",
-    "build": "NODE_OPTIONS=--max-old-space-size=8192 vitepress build",
+    "build": "NODE_OPTIONS=--max-old-space-size=6144 vitepress build",
     "serve": "vitepress serve",
     "format": "prettier-eslint --include-dot-files \"**/*.{js,ts,mts,vue,json}\"",
     "format:check": "pnpm format --list-different",
