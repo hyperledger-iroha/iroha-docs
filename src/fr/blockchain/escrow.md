@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /blockchain/escrow.md
-translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e217bc6ac9
+translation_source_hash: e81173a8f9a80bed6b1a204390e5a83fc87f69c45f14b1faddc0780f0432428b
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -151,7 +151,10 @@ fn drawdown_and_close_asset_locks(
     assert_eq!(partially_drawn.status, AssetEscrowStatus::Locked);
     assert_eq!(partially_drawn.remaining_amount, Numeric::from(25_u64));
 
-    opener_client.submit_blocking(CancelAssetLock::new(trusted_lock_id))?;
+    opener_client.submit_blocking(CancelAssetLock::new(
+        trusted_lock_id,
+        partially_drawn.remaining_amount.clone(),
+    ))?;
     let cancelled = opener_client.query_single(FindAssetEscrowById::new(trusted_lock_id))?;
     assert_eq!(cancelled.status, AssetEscrowStatus::Cancelled);
 

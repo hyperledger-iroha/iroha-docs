@@ -1,3 +1,3 @@
-declare module 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs' {
+declare module 'https://cdn.jsdelivr.net/npm/mermaid@10.9.6/dist/mermaid.esm.min.mjs' {
   export { default } from 'mermaid'
 }

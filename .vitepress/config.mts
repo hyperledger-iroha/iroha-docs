@@ -557,7 +557,7 @@ export default defineConfig({
     `,
     ],
     // KaTeX stylesheet
-    ['link', { rel: 'stylesheet', href: 'https://esm.sh/katex@0.16.8/dist/katex.min.css' }],
+    ['link', { rel: 'stylesheet', href: 'https://esm.sh/katex@0.18.1/dist/katex.min.css' }],
   ],
 
   markdown: {

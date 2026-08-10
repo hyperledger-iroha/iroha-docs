@@ -163,7 +163,10 @@ fn drawdown_and_close_asset_locks(
     assert_eq!(partially_drawn.status, AssetEscrowStatus::Locked);
     assert_eq!(partially_drawn.remaining_amount, Numeric::from(25_u64));
 
-    opener_client.submit_blocking(CancelAssetLock::new(trusted_lock_id))?;
+    opener_client.submit_blocking(CancelAssetLock::new(
+        trusted_lock_id,
+        partially_drawn.remaining_amount.clone(),
+    ))?;
     let cancelled = opener_client.query_single(FindAssetEscrowById::new(trusted_lock_id))?;
     assert_eq!(cancelled.status, AssetEscrowStatus::Cancelled);
 

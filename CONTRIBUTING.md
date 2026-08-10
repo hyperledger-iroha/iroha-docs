@@ -38,7 +38,7 @@ For a release-wide regeneration, prepare the recommended local NLLB-200
 provider once:
 
 ```bash
-python3.9 -m venv .venv-translate
+python3.10 -m venv .venv-translate
 .venv-translate/bin/pip install -r etc/requirements-translate.txt
 .venv-translate/bin/hf download \
   osa911/nllb-200-distilled-600M-ct2-int8 \

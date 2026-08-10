@@ -6,11 +6,11 @@ full regeneration. A release build never contacts either provider.
 
 ## Local NLLB-200
 
-Use Python 3.9 or newer, install the pinned translation environment, and
+Use Python 3.10 or newer, install the pinned translation environment, and
 download the int8 CTranslate2 conversion used for release generation:
 
 ```bash
-python3.9 -m venv .venv-translate
+python3.10 -m venv .venv-translate
 .venv-translate/bin/pip install -r etc/requirements-translate.txt
 .venv-translate/bin/hf download \
   osa911/nllb-200-distilled-600M-ct2-int8 \

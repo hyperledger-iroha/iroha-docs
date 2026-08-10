@@ -1,5 +1,5 @@
 import './mermaid-cdn.d.ts'
-import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs'
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10.9.6/dist/mermaid.esm.min.mjs'
 
 export async function renderSvg(
   id: string,
