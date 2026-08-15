@@ -1,10 +1,24 @@
 import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { pathToFileURL } from 'node:url'
-import { IROHA_REPOSITORY, PROVENANCE_PATH, readProvenance, resolveInsideRepository, sha256 } from './provenance'
+import {
+  CARGO_LOCK_SOURCE,
+  IROHA_REPOSITORY,
+  MAX_CARGO_LOCK_BYTES,
+  PROVENANCE_PATH,
+  readProvenance,
+  resolveInsideRepository,
+  sha256,
+} from './provenance'
 
 const SHA256_PATTERN = /^[0-9a-f]{64}$/u
 const COMMIT_PATTERN = /^[0-9a-f]{40}$/u
+const DATA_MODEL_SCHEMA_INPUTS = [
+  'crates/iroha_data_model',
+  'crates/iroha_kagami',
+  'crates/iroha_schema_gen',
+  'crates/norito',
+]
 
 export async function validateProvenance(repositoryRoot: string): Promise<string[]> {
   const errors: string[] = []
@@ -15,7 +29,9 @@ export async function validateProvenance(repositoryRoot: string): Promise<string
     return [`${PROVENANCE_PATH}: ${error instanceof Error ? error.message : String(error)}`]
   }
 
-  if (manifest.schema_version !== 1) errors.push(`${PROVENANCE_PATH}: schema_version must be 1`)
+  if (manifest.schema_version !== 1 && manifest.schema_version !== 2) {
+    errors.push(`${PROVENANCE_PATH}: schema_version must be 1 or 2`)
+  }
   if (manifest.source.repository !== IROHA_REPOSITORY) {
     errors.push(`${PROVENANCE_PATH}: source.repository must be ${IROHA_REPOSITORY}`)
   }
@@ -25,6 +41,35 @@ export async function validateProvenance(repositoryRoot: string): Promise<string
   if (!Array.isArray(manifest.artifacts) || manifest.artifacts.length === 0) {
     errors.push(`${PROVENANCE_PATH}: artifacts must not be empty`)
     return errors
+  }
+
+  const commandArtifacts = manifest.artifacts.filter((artifact) => artifact.kind === 'command')
+  const cargoLock = manifest.command_environment?.cargo_lock
+  if (manifest.schema_version === 1) {
+    if (manifest.command_environment !== undefined) {
+      errors.push(`${PROVENANCE_PATH}: schema_version 1 must not define command_environment`)
+    }
+    if (commandArtifacts.some((artifact) => artifact.status !== 'pending-signed-source-commit')) {
+      errors.push(
+        `${PROVENANCE_PATH}: current command artifacts require schema_version 2 and command_environment.cargo_lock`,
+      )
+    }
+  } else if (manifest.schema_version === 2) {
+    if (!cargoLock || typeof cargoLock !== 'object' || Array.isArray(cargoLock)) {
+      errors.push(`${PROVENANCE_PATH}: schema_version 2 requires command_environment.cargo_lock`)
+    } else {
+      if (cargoLock.source !== CARGO_LOCK_SOURCE) {
+        errors.push(`${PROVENANCE_PATH}: command_environment.cargo_lock.source must be ${CARGO_LOCK_SOURCE}`)
+      }
+      if (!Number.isSafeInteger(cargoLock.bytes) || cargoLock.bytes <= 0 || cargoLock.bytes > MAX_CARGO_LOCK_BYTES) {
+        errors.push(
+          `${PROVENANCE_PATH}: command_environment.cargo_lock.bytes must be within 1..${MAX_CARGO_LOCK_BYTES}`,
+        )
+      }
+      if (!SHA256_PATTERN.test(cargoLock.sha256)) {
+        errors.push(`${PROVENANCE_PATH}: command_environment.cargo_lock.sha256 must be lowercase SHA-256`)
+      }
+    }
   }
 
   const ids = new Set<string>()
@@ -66,6 +111,10 @@ export async function validateProvenance(repositoryRoot: string): Promise<string
       }
       if (!Array.isArray(artifact.inputs) || artifact.inputs.length === 0) {
         errors.push(`${artifact.id}: inputs must document the generator source`)
+      } else if (artifact.id === 'data-model-schema') {
+        for (const input of DATA_MODEL_SCHEMA_INPUTS) {
+          if (!artifact.inputs.includes(input)) errors.push(`${artifact.id}: inputs must include ${input}`)
+        }
       }
     } else {
       errors.push(`${artifactId}: unsupported artifact kind`)

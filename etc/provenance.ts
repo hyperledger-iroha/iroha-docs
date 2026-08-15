@@ -4,6 +4,8 @@ import path from 'node:path'
 
 export const PROVENANCE_PATH = 'provenance/iroha.json'
 export const IROHA_REPOSITORY = 'https://github.com/hyperledger-iroha/iroha.git'
+export const CARGO_LOCK_SOURCE = 'Cargo.lock'
+export const MAX_CARGO_LOCK_BYTES = 16 * 1024 * 1024
 
 interface ArtifactBase {
   id: string
@@ -24,10 +26,15 @@ export interface CommandArtifact extends ArtifactBase {
   inputs: string[]
 }
 
+export interface CargoLockBinding {
+  source: typeof CARGO_LOCK_SOURCE
+  bytes: number
+  sha256: string
+}
+
 export type ProvenanceArtifact = CopyArtifact | CommandArtifact
 
-export interface IrohaProvenance {
-  schema_version: 1
+interface IrohaProvenanceBase {
   source: {
     repository: string
     commit: string
@@ -35,6 +42,20 @@ export interface IrohaProvenance {
   }
   artifacts: ProvenanceArtifact[]
 }
+
+export interface IrohaProvenanceV1 extends IrohaProvenanceBase {
+  schema_version: 1
+  command_environment?: never
+}
+
+export interface IrohaProvenanceV2 extends IrohaProvenanceBase {
+  schema_version: 2
+  command_environment: {
+    cargo_lock: CargoLockBinding
+  }
+}
+
+export type IrohaProvenance = IrohaProvenanceV1 | IrohaProvenanceV2
 
 export function sha256(content: string | Buffer): string {
   return createHash('sha256').update(content).digest('hex')

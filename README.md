@@ -107,7 +107,9 @@ The source checkout must contain the commit pinned in
 `provenance/iroha.json`. Generated schema and CLI references require that exact
 commit in a clean checkout. Copy-only artifacts are read from the pinned Git
 tree. The refresh updates checked-in artifacts and their SHA-256 values; review
-all resulting diffs.
+all resulting diffs. Command refreshes require a POSIX host plus explicitly
+configured absolute `CARGO_HOME` and `RUSTUP_HOME` paths whose preinstalled
+toolchain and offline dependency cache are trusted maintainer inputs.
 
 The pinned candidate commit is publicly fetchable, and its copy-artifact paths
 and hashes match the public Git tree. The candidate is unsigned, however, and a

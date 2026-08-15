@@ -59,7 +59,7 @@
         "advanced",
         "schema"
       ],
-      "inputs": ["crates/iroha_data_model", "crates/iroha_kagami", "crates/norito"],
+      "inputs": ["crates/iroha_data_model", "crates/iroha_kagami", "crates/iroha_schema_gen", "crates/norito"],
       "target": "src/snippets/data-model-schema.md",
       "sha256": "a152dab457853c3964a5b50a49818123820e9acb297a21b770353be0621ee97c"
     },
