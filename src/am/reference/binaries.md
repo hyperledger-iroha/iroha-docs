@@ -1,30 +1,30 @@
 ---
 translation_locale: am
 translation_source: /reference/binaries.md
-translation_source_hash: fd9cefe7c0f5ee2f273a06b453d11d0e9bb896a35f872297276f5e052912a035
+translation_source_hash: 2a9274f1590c2816c72625e5ffd9b93ee4c0b6bc73faf60cdc3273c1314e0c3a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: google-translate
 ---
 
-# ከ Iroha ባነሪዎች ጋር መሥራት {#working-with-iroha-binaries}
+# ጋር በመስራት ላይ Iroha ሁለትዮሽ {#working-with-iroha-binaries}
 
-የ Iroha 3 ኦፕሬተር የስራ ፍሰት በሦስት ዋና ባናሪዎች ዙሪያ ይሽከረከራል።
+የ Iroha 3 ኦፕሬተር የስራ ፍሰት በሶስት ዋና ሁለትዮሽ ዙሪያ ያሽከረክራል፡
 
-- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad) የእኩዮችን ዳይሞን ለማስኬድ
-- [ለ CLI እና ለኦፕሬተር ትዕዛዞች `iroha`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_cli)
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_kagami) ለቁልፎች ፣ ለጀኔዝስ ፣ ለአካባቢያዊ አውታረ መረቦች እና ለመገለጫዎች
+- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad) አቻ ዴሞን ለማሄድ
+- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_cli) ለ CLI እና ከዋኝ ትዕዛዞች
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_kagami) ለቁልፍ, ለዘፍጥረት, ለአካባቢያዊ መረቦች እና መገለጫዎች
 
-## ምንጭን በመመርኮዝ መገንባት {#build-from-source}
+## ከምንጩ ይገንቡ {#build-from-source}
 
-ከስራ ቦታው ስርጭት:
+ከላይ ካለው የስራ ቦታ ስር፡
 
 ```bash
 cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ```
 
-ከዚያ በኋላ የተለቀቁ ባናሪዎች በ `target/release/` ይገኛሉ ።
+የመልቀቂያው ሁለትዮሾች በ ውስጥ ይገኛሉ `target/release/`.
 
-የመቆጣጠሪያውን ወለል ለመመርመር:
+የትዕዛዝ ወለልን ለመመርመር፡-
 
 ```bash
 ./target/release/irohad --help
@@ -32,9 +32,9 @@ cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ./target/release/kagami --help
 ```
 
-## በቀጥታ ከመደብር ይሂዱ {#run-directly-from-the-repository}
+## በቀጥታ ከማከማቻው ያሂዱ {#run-directly-from-the-repository}
 
-ምንም ነገር በዓለም አቀፍ ደረጃ መጫን የማይፈልጉ ከሆነ `cargo run` ን ይጠቀሙ:
+በአለምአቀፍ ደረጃ ማንኛውንም ነገር መጫን ካልፈለጉ ይጠቀሙ `cargo run`:
 
 ```bash
 cargo run --bin irohad -- --help
@@ -44,21 +44,23 @@ cargo run --bin kagami -- --help
 
 ## Docker ምስል {#docker-image}
 
-የስራ ቦታ አጠቃቀሞች `kagami localnet` እና `kagami docker` ለማመንጨት Docker Compose ከተረጋገጠው ኮድ ጋር የሚዛመዱ ፋይሎች። `hyperledger/iroha:dev` ምስሉ ከእነዚያ የተፈጠሩ ፋይሎች ጋር ጥቅም ላይ ሊውል ይችላል።
+የላይኛው የስራ ቦታ ይጠቀማል `kagami localnet` እና `kagami docker` ለማመንጨት
+Docker Compose ከተፈተሸው ኮድ ጋር የሚዛመዱ ፋይሎች።የ `hyperledger/iroha:dev`
+ምስል ከተፈጠሩት ፋይሎች ጋር መጠቀም ይቻላል.
 
-CLI በአንድ መያዣ ውስጥ ይጫኑ:
+አሂድ CLI በመያዣ ውስጥ;
 
 ```bash
 docker run -t hyperledger/iroha:dev iroha --help
 ```
 
-Kagami በአንድ መያዣ ውስጥ ይሂዱ:
+ሩጡ Kagami በመያዣ ውስጥ;
 
 ```bash
 docker run -t hyperledger/iroha:dev kagami --help
 ```
 
-ለባልደረባ ጅምር, አንድ አካባቢያዊኔት ማመንጨት እና በመጀመሪያ ፋይል ያጠናቅቁ:
+ለአቻ ጅምር የአካባቢ መረብ ይፍጠሩ እና መጀመሪያ ፋይል ይጻፉ፡
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
@@ -66,8 +68,45 @@ cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyper
 docker compose -f ./localnet/docker-compose.yml up
 ```
 
-## የትኛውን ባናሪ መጠቀም አለብኝ? {#which-binary-should-i-use}
+## የትኛውን ሁለትዮሽ ልጠቀም? {#which-binary-should-i-use}
 
-- የእኩዮቻችሁን ሥራ ሲጀምሩ ወይም ሲያከናውኑ `irohad` ይጠቀሙ።
-- መለያውን ለመጠየቅ፣ ግብይቶችን ለማቅረብ ወይም የኦፕሬተሩ መጨረሻ ነጥቦችን ለመፈተሽ በሚፈልጉበት ጊዜ `iroha` ይጠቀሙ።
-- ቁልፎችን፣ የጄኔሲስ መገለጫዎችን፣ የመገለጫ ጥቅሎችን ወይም አካባቢያዊ ኔት ንብረቶችን በሚፈልጉበት ጊዜ `kagami` ይጠቀሙ።
+- ተጠቀም `irohad` እኩዮችን ሲጀምሩ ወይም ሲሰሩ.
+- ተጠቀም `iroha` የሂሳብ ደብተሩን ለመጠየቅ፣ ግብይቶችን ለማስገባት ወይም የኦፕሬተር የመጨረሻ ነጥቦችን ለመፈተሽ ሲያስፈልግ።
+- ተጠቀም `kagami` ቁልፎች፣ የዘፍጥረት መግለጫዎች፣ የመገለጫ ቅርቅቦች ወይም የአካባቢ መረብ ንብረቶች ሲፈልጉ።
+
+## Kagemusha ልቀቅ ሕትመት እና ልቀት {#kagemusha-release-publication-and-rollout}
+
+ካጌሙሻ V4 ማተም እና ማግበር የተለዩ የተጠበቁ ድንበሮችን ያቋርጣሉ፡
+
+- `iroha_authenticated_tool_controller promote-kagemusha-release-v4` የሚለው ነው።
+  ማክሮስ-ብቻ፣ ስርወ-ብቻ አታሚ።የተሰካውን ያረጋግጣል Kagami ሁለትዮሽ እና
+  ትክክለኛው የአስራ ስድስት-ፋይል እጩ, የሌለውን ያትማል
+  `promotion-record-v4.norito` ያለ ምትክ, እና ስኬትን ብቻ ሪፖርት ያደርጋል
+  ትክክለኛው የአስራ ሰባት ፋይል አስተዋውቋል ከተለቀቀ በኋላ።
+- `iroha offline kagemusha rollout-v4 create-expectations` የተፈረመውን ያረጋግጣል
+  ቦታ ማስያዝ፣ አራት የታዘዙ አረጋጋጭ የብቃት ማረጋገጫ ማህተሞች፣ ትክክለኛው
+  አስቀድሞ የተፈቀደ የግብይት ሽቦ፣ እና የታመነው የተጠናቀቀ መልህቅ ከዚህ በፊት
+  ያለ ምትክ የተፈረመ የሚጠበቁ ማተም.
+- `iroha offline kagemusha rollout-v4 submit` በግልፅ ይጠይቃል
+  `--write-authorized` ስምምነት.በዘለቄታው መጽሔቶችን ያትማል እና ትክክለኛውን እንደገና ያረጋግጣል
+  ከአውታረ መረብ በፊት የሚጠበቁ ነገሮች ይፃፉ ወይም እንደገና ይሞክሩ።አን `Applied` ሁኔታ አይደለም
+  በቂ: ትዕዛዙም የተፈጸመውን እገዳ, የመጨረሻነት ተተኪውን ያረጋግጣል
+  ሰንሰለት፣ እና ሙሉ ፈቃድ ያለው የግብይት ሽቦ።
+- `iroha offline kagemusha rollout-v4 finalize-receipt` ተመሳሳዩን በማስረጃ
+  የተደገፈ ማስረጃ የሚሰበስበው ትክክለኛው የማስገቢያ መዝገብ እንደገና
+  ከተረጋገጠ በኋላ ብቻ ነው፣ በገለልተኛው ደረሰኝ ሰጪ ይፈርመዋል፣ እና
+  ቀኖናዊውን ደረሰኝ ሳይተካ ያትማል።
+
+የተረጋገጠው የከጌሙሻ ምርት ዝግጁነት የስራ ሂደት የማረጋገጫ-ብቻ ነው።
+የተረጋገጠውን አታሚ አይደውልም፣ የአረጋጋጭ መመዘኛን አትም።
+ማኅተም፣ ገቢር ያስገቡ ወይም የመጨረሻ ደረሰኝ ይፍጠሩ።የተሳካ የስራ ሂደት
+ሩጫ ስለዚህ ማስተዋወቅም ሆነ ቀጥታ መልቀቅን አያረጋግጥም።
+
+እነዚህ ትእዛዛት የአካባቢ ቀዳሚዎች እንጂ የቀጥታ ማስረጃዎች ምትክ አይደሉም።ሀ
+የምርት ልቀት ከእውነተኛ አካላዊ መተግበሪያ ማረጋገጫ እና እንደታገደ ይቆያል
+የእጩ ቅርሶች፣ አራቱም የተጠበቁ የአስተናጋጅ ማህተሞች፣ የአሂድ ጊዜ አስተዳደር እና
+ግብዓቶችን መፈረም፣ የቀጥታ ባለአራት አረጋጋጭ ማስረከቢያ እና የመጨረሻነት ማስረጃ፣ እና የ
+ቀኖናዊ ውጤታማ-ውቅር ትንበያ.የግል ቁልፎችን ያስቀምጡ ፣
+የማረጋገጫ ቁሳቁስ፣ እና የማስተዋወቂያ-ተኮር መለያዎች በተጠበቁ
+የአሂድ ጊዜ ጥበቃ;ወደ ምንጭ-ቁጥጥር ሰነዶች አይገለብጡ ወይም
+ኦፕሬተር ትኬቶች.

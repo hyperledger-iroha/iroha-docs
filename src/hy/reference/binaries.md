@@ -1,30 +1,30 @@
 ---
 translation_locale: hy
 translation_source: /reference/binaries.md
-translation_source_hash: fd9cefe7c0f5ee2f273a06b453d11d0e9bb896a35f872297276f5e052912a035
+translation_source_hash: 2a9274f1590c2816c72625e5ffd9b93ee4c0b6bc73faf60cdc3273c1314e0c3a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: google-translate
 ---
 
-# Iroha բինարների հետ աշխատելը {#working-with-iroha-binaries}
+# Աշխատելով հետ Iroha Երկուականներ {#working-with-iroha-binaries}
 
-Iroha 3 օպերատորի աշխատանքային հոսքը պտտվում է երեք հիմնական բինարների շուրջ.
+Այն Iroha 3 Օպերատորի աշխատանքային հոսքը պտտվում է երեք հիմնական երկուականների շուրջ.
 
-- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad) զուգընկերային դեյմոնի գործարկման համար
-- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_cli)՝ CLI եւ օպերատորի հրամանների համար
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_kagami) բանալիների, գենեզիզի, տեղական ցանցերի եւ պրոֆիլների համար:
+- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad) հասակակիցների դեյմոն վարելու համար
+- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_cli) համար CLI և օպերատորի հրամանները
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_kagami) բանալիների, genesis-ի, լոկալ ցանցերի և պրոֆիլների համար
 
-## Կառուցեք աղբյուրից {#build-from-source}
+## Կառուցել աղբյուրից {#build-from-source}
 
-Upstream աշխատատեղի արմատից.
+Վերին հոսքի աշխատանքային տարածքի արմատից.
 
 ```bash
 cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ```
 
-Դրանից հետո բինարների թողարկումը հասանելի է `target/release/`.
+Թողարկման երկուականներն այնուհետև հասանելի են այստեղ `target/release/`.
 
-Հրամանատարի մակերեսը ստուգելու համար.
+Հրամանի մակերեսը ստուգելու համար.
 
 ```bash
 ./target/release/irohad --help
@@ -32,9 +32,9 @@ cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ./target/release/kagami --help
 ```
 
-## Գործարկել ուղղակիորեն պահեստից {#run-directly-from-the-repository}
+## Գործարկեք անմիջապես պահեստից {#run-directly-from-the-repository}
 
-Եթե դուք չեք ցանկանում տեղադրել որեւէ բան գլոբալ մակարդակով, օգտագործեք `cargo run`:
+Եթե ​​դուք չեք ցանկանում գլոբալ որևէ բան տեղադրել, օգտագործեք `cargo run`:
 
 ```bash
 cargo run --bin irohad -- --help
@@ -42,23 +42,25 @@ cargo run --bin iroha -- --help
 cargo run --bin kagami -- --help
 ```
 
-## Docker Պատկերը {#docker-image}
+## Docker Պատկեր {#docker-image}
 
-Upstream աշխատանքային տարածքը օգտագործում է `kagami localnet` եւ `kagami docker` ՝ ստեղծելու համար Docker Compose ֆայլեր, որոնք համապատասխանում են ստուգված կոդին: `hyperledger/iroha:dev` պատկերը կարող է օգտագործվել այդ ստեղծված ֆայլերի հետ:
+Վերին հոսքի աշխատանքային տարածքը օգտագործում է `kagami localnet` և `kagami docker` առաջացնել
+Docker Compose ֆայլեր, որոնք համապատասխանում են դուրս գրված ծածկագրին:Այն `hyperledger/iroha:dev`
+պատկերը կարող է օգտագործվել այդ ստեղծվող ֆայլերի հետ:
 
-Գործարկեք CLI կոնտեյներում.
+Գործարկել CLI տարայի մեջ.
 
 ```bash
 docker run -t hyperledger/iroha:dev iroha --help
 ```
 
-Գործարկել Kagami կոնտեյներում.
+Վազիր Kagami տարայի մեջ.
 
 ```bash
 docker run -t hyperledger/iroha:dev kagami --help
 ```
 
-Համանախագահների մեկնարկի համար առաջադրեք localnet եւ նախ կազմեք ֆայլը.
+Գործընկերների գործարկման համար նախ ստեղծեք տեղական ցանց և Կազմեք ֆայլ՝
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
@@ -66,8 +68,45 @@ cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyper
 docker compose -f ./localnet/docker-compose.yml up
 ```
 
-## Ո՞ր երկկողմը պետք է օգտագործեմ: {#which-binary-should-i-use}
+## Ո՞ր երկուականը պետք է օգտագործեմ: {#which-binary-should-i-use}
 
-- Օգտագործեք `irohad`, երբ սկսում եք գործել զուգընկերների հետ:
-- Օգտագործեք `iroha` այն ժամանակ, երբ պետք է հարցաքննեք գլխավոր գրասենյակը, ներկայացնեք գործարքներ կամ ստուգեք օպերատորի վերջային կետերը:
-- Օգտագործեք `kagami` այն ժամանակ, երբ ձեզ անհրաժեշտ է բանալիներ, գենեզիզային մանիֆեսներ, պրոֆիլների փաթեթներ կամ տեղական ցանցի ակտիվներ:
+- Օգտագործեք `irohad` երբ դուք սկսում եք կամ գործում եք հասակակիցների հետ:
+- Օգտագործեք `iroha` երբ Ձեզ անհրաժեշտ է հարցումներ կատարել մատյանում, ներկայացնել գործարքներ կամ ստուգել օպերատորի վերջնակետերը:
+- Օգտագործեք `kagami` երբ ձեզ անհրաժեշտ են բանալիներ, գենեզի մանիֆեստներ, պրոֆիլային փաթեթներ կամ տեղական ցանցի ակտիվներ:
+
+## Kagemusha Release Publication and Rollout {#kagemusha-release-publication-and-rollout}
+
+Կագեմուշա V4 հրապարակումը և ակտիվացումը հատում են առանձին պաշտպանված սահմանները.
+
+- `iroha_authenticated_tool_controller promote-kagemusha-release-v4` է
+  միայն macOS-ի համար, միայն արմատային հրատարակիչ:Այն նույնականացնում է ամրացվածը Kagami երկուական և
+  ճշգրիտ տասնվեց ֆայլի թեկնածուն, հրապարակում է բացակաները
+  `promotion-record-v4.norito` առանց փոխարինման և հաղորդում է միայն հաջողության մասին
+  ճշգրիտ տասնյոթ ֆայլի խթանված թողարկումը հաստատելուց հետո:
+- `iroha offline kagemusha rollout-v4 create-expectations` ստուգում է ստորագրվածը
+  ամրագրում, չորս պատվիրված վավերացնողի որակավորման կնիք, ճշգրիտ
+  արդեն իսկ լիազորված գործարքի լարը, և վստահելի վերջնական խարիսխը նախկինում
+  ստորագրված ակնկալիքների հրապարակում՝ առանց փոխարինման։
+- `iroha offline kagemusha rollout-v4 submit` պահանջում է հստակ
+  `--write-authorized` համաձայնություն.Այն կայունորեն գրանցում և վերստուգում է ճշգրիտը
+  ակնկալիքները նախքան ցանցը գրելը կամ նորից փորձելը:Ան `Applied` կարգավիճակը չէ
+  բավական է. հրամանը նաև ստուգում է կատարված բլոկը, վերջնական իրավահաջորդը
+  շղթա և ամբողջական թույլտվություն կրող գործարքի մետաղալար:
+- `iroha offline kagemusha rollout-v4 finalize-receipt` հավաքում է նույն՝
+  ապացույցով խարսխված վկայությունը միայն ներկայացման ճշգրիտ մատյանի կրկնակի
+  ստուգումից հետո, ստորագրում է այն անկախ անդորրագրի թողարկողի միջոցով և
+  հրապարակում կանոնական անդորրագիրը՝ առանց փոխարինման։
+
+Ստուգված Kagemusha-ի արտադրության պատրաստության աշխատանքային հոսքը միայն ստուգման է:
+Այն չի կանչում վավերացված հրատարակչին, հրապարակել վավերացնողի որակավորում
+կնքում, ներկայացրեք ակտիվացում կամ ստեղծեք վերջնական անդորրագիր:Հաջող աշխատանքային հոսք
+Հետևաբար, վազքը չի ապացուցում ոչ առաջխաղացում, ոչ էլ ուղիղ հեռարձակում:
+
+Այս հրամանները տեղական պրիմիտիվներ են, այլ ոչ թե կենդանի ապացույցների փոխարինողներ:Ա
+արտադրության թողարկումը մնում է արգելափակված՝ առանց իրական ֆիզիկական App Attest-ի և
+թեկնածու արտեֆակտներ, բոլոր չորս պաշտպանված հյուրընկալող կնիքները, գործարկման ժամանակի կառավարումը և
+ստորագրման տվյալները, կենդանի չորս վավերացնողի ներկայացումը և վերջնական ապացույցները, և
+կանոնական արդյունավետ կոնֆիգուրացիայի պրոյեկցիա:Պահպանեք անձնական բանալիներ,
+Նույնականացման նյութը և գովազդին հատուկ նույնացուցիչները պաշտպանված են
+գործարկման պահառություն;մի պատճենեք դրանք աղբյուրի կողմից վերահսկվող փաստաթղթերում կամ
+օպերատորի տոմսեր.

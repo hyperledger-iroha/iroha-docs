@@ -1,30 +1,30 @@
 ---
 translation_locale: mn
 translation_source: /reference/binaries.md
-translation_source_hash: fd9cefe7c0f5ee2f273a06b453d11d0e9bb896a35f872297276f5e052912a035
+translation_source_hash: 2a9274f1590c2816c72625e5ffd9b93ee4c0b6bc73faf60cdc3273c1314e0c3a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: google-translate
 ---
 
-# Iroha бинартай ажиллах {#working-with-iroha-binaries}
+# Хамтран ажиллаж байна Iroha Хоёртын файлууд {#working-with-iroha-binaries}
 
-Iroha 3 операторын ажлын урсгал гурван үндсэн бинар дээр эргэн тойрч байна:
+The Iroha 3 Операторын ажлын урсгал гурван үндсэн хоёртын файлыг тойрон эргэдэг:
 
-- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad) зэрэглэлийн даемон ажиллуулахын тулд
-- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_cli) нь CLI болон үйлдвэрийн захиргааны хувьд
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_kagami) нөөц, үүсэл, орон нутгийн сүлжээ, профилийн хувьд
+- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad) үе тэнгийн демоныг ажиллуулахад зориулагдсан
+- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_cli) төлөө CLI болон операторын командууд
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_kagami) түлхүүр, генезис, локалнет, профайлд зориулагдсан
 
-## Барилгын эх үүсвэрээс бариарай {#build-from-source}
+## Эх сурвалжаас бүтээх {#build-from-source}
 
-Хөдөлмөрийн талбайны түлхнээс:
+Дээд талын ажлын талбарын үндэсээс:
 
 ```bash
 cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ```
 
-Дараа нь `target/release/` хэлбэрээр нээлттэй хувилбарыг гаргах боломжтой.
+Хувилбарын хоёртын файлууд дараа нь боломжтой болно `target/release/`.
 
-Захиргааны давхаргыг шалгахын тулд:
+Тушаалын гадаргууг шалгахын тулд:
 
 ```bash
 ./target/release/irohad --help
@@ -32,9 +32,9 @@ cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ./target/release/kagami --help
 ```
 
-## Тодруулгын сангаас шууд ажиллуулна {#run-directly-from-the-repository}
+## Хадгалах газраас шууд ажиллуул {#run-directly-from-the-repository}
 
-Хэрэв та дэлхийн хэмжээнд юуг ч байрлуулахыг хүсэхгүй байгаа бол `cargo run` -ийг ашигла:
+Хэрэв та дэлхий даяар ямар нэгэн зүйл суулгахыг хүсэхгүй байгаа бол ашиглаарай `cargo run`:
 
 ```bash
 cargo run --bin irohad -- --help
@@ -44,21 +44,23 @@ cargo run --bin kagami -- --help
 
 ## Docker Зураг {#docker-image}
 
-Өндөр урсгалын ажлын орон зай нь `kagami localnet` болон `kagami docker`-ийг ашиглаж, шалгарсан кодтой нийцсэн Docker Compose файлуудыг бий болгодог. `hyperledger/iroha:dev` зургийг эдгээр үүсгэсэн файлуудад ашиглах боломжтой.
+Дээд талын ажлын талбар ашигладаг `kagami localnet` болон `kagami docker` үүсгэх
+Docker Compose гарсан кодтой таарч байгаа файлууд.The `hyperledger/iroha:dev`
+зургийг тэдгээр үүсгэсэн файлд ашиглаж болно.
 
-CLI -ийг контейнерийн дотор хэрэглэх:
+-г ажиллуул CLI саванд:
 
 ```bash
 docker run -t hyperledger/iroha:dev iroha --help
 ```
 
-Kagami нь контейнерд хэрэглэнэ:
+Гүй Kagami саванд:
 
 ```bash
 docker run -t hyperledger/iroha:dev kagami --help
 ```
 
-Хөгжлийн эхлүүлэхэд, локалийн сүлжээг үүсгэн байгуулж, хамгийн түрүүнд файлыг бүрдүүлээрэй:
+Үе тэнгийнхэн эхлүүлэхийн тулд эхлээд локалнет үүсгэж, файл бичих:
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
@@ -66,8 +68,45 @@ cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyper
 docker compose -f ./localnet/docker-compose.yml up
 ```
 
-## -Хайн дундаж хэлбэрийг ашиглах вэ? {#which-binary-should-i-use}
+## Би аль хоёртын хувилбарыг ашиглах ёстой вэ? {#which-binary-should-i-use}
 
-- Хөдөлмөрийг эхлүүлэх, ашиглах үед `irohad` хэрэглэж болно.
-- `iroha` -ийг ашиглаж, томоохон бүртгэлээс асуух, гүйлгээ хийх эсвэл операторын төгсгөл хэсгийг шалгах шаардлагатай үед хэрэглэж болно.
-- `kagami` нэгийг хэрэглэнэ, генезис манифест, профилийн багц, эсвэл локаль сүлжээний хөрөнгийг хэрэгтэй үед.
+- Ашиглах `irohad` үе тэнгийнхэнээ эхэлж эсвэл ажиллуулж байх үед.
+- Ашиглах `iroha` дэвтэрээс лавлагаа авах, гүйлгээ хийх, операторын төгсгөлийн цэгүүдийг шалгах шаардлагатай үед.
+- Ашиглах `kagami` Танд түлхүүр, генезис манифест, профайл багц эсвэл локалнетийн хөрөнгө хэрэгтэй үед.
+
+## Kagemusha Release Publication and Rollout {#kagemusha-release-publication-and-rollout}
+
+Кагемуша V4 Нийтлэл ба идэвхжүүлэлт нь тусдаа хамгаалагдсан хил хязгаарыг давж байна:
+
+- `iroha_authenticated_tool_controller promote-kagemusha-release-v4` нь
+  Зөвхөн macOS, зөвхөн root нийтлэгч.Энэ нь бэхлэгдсэнийг баталгаажуулдаг Kagami хоёртын ба
+  яг арван зургаан файлын нэр дэвшигч, эзгүйд нийтэлдэг
+  `promotion-record-v4.norito` орлуулахгүйгээр, зөвхөн амжилтыг мэдээлдэг
+  яг арван долоон файлын сурталчилсан хувилбарыг баталгаажуулсны дараа.
+- `iroha offline kagemusha rollout-v4 create-expectations` гарын үсэг зурсныг баталгаажуулна
+  захиалга, дөрвөн захиалга баталгаажуулагч мэргэшлийн тамга, яг
+  аль хэдийн зөвшөөрөгдсөн гүйлгээний утас, өмнө нь итгэмжлэгдсэн эцсийн зангуу
+  гарын үсэг зурсан хүлээлтийг орлуулахгүйгээр нийтлэх.
+- `iroha offline kagemusha rollout-v4 submit` тодорхой байхыг шаарддаг
+  `--write-authorized` зөвшөөрөл.Энэ нь бат бөх тэмдэглэл хөтөлж, үнэн зөвийг дахин баталгаажуулдаг
+  сүлжээ бичих эсвэл дахин оролдохын өмнөх хүлээлт.Ан `Applied` статус биш
+  хангалттай: тушаал нь мөн хүлээсэн блок, эцсийн залгамжлагчийг баталгаажуулдаг
+  гинжин хэлхээ, болон бүрэн зөвшөөрөл агуулсан гүйлгээний утас.
+- `iroha offline kagemusha rollout-v4 finalize-receipt` ижил нотолгоонд
+  тулгуурласан баримтыг зөвхөн яг тохирох илгээлтийн журнал дахин баталгаажсаны
+  дараа цуглуулж, бие даасан баримт гаргагчаар гарын үсэг зуруулан, каноник
+  баримтыг солихгүйгээр нийтэлнэ.
+
+Шалгасан Кагемушагийн үйлдвэрлэлийн бэлэн байдлын ажлын урсгал нь зөвхөн баталгаажуулалт юм.
+Энэ нь баталгаажуулсан нийтлэгчийг дууддаггүй, нийтлэх баталгаажуулагчийн мэргэшил
+битүүмжлэх, идэвхжүүлэх, эсвэл эцсийн баримт үүсгэх.Амжилттай ажлын урсгал
+ажиллуулах нь сурталчилгаа эсвэл шууд нэвтрүүлгийн аль алиныг нь нотлохгүй.
+
+Эдгээр тушаалууд нь амьд нотлох баримтыг орлох биш харин орон нутгийн командууд юм.А
+Бодит бодит App Attest болон
+нэр дэвшигч олдворууд, бүх дөрвөн хамгаалагдсан хост тамга, ажиллах цагийн засаглал болон
+гарын үсэг зурах оролт, амьд дөрвөн баталгаажуулагч илгээх болон эцсийн нотлох баримт, болон
+каноник үр дүнтэй тохиргооны төсөөлөл.Хувийн түлхүүрээ хадгалах,
+баталгаажуулалтын материал, сурталчилгааны тусгай таниулбарууд хамгаалагдсан
+ажлын цагийг хадгалах;тэдгээрийг эх сурвалжийн хяналттай баримт бичигт хуулж болохгүй эсвэл
+операторын тасалбар.

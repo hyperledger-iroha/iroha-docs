@@ -1,30 +1,30 @@
 ---
 translation_locale: ar
 translation_source: /reference/binaries.md
-translation_source_hash: fd9cefe7c0f5ee2f273a06b453d11d0e9bb896a35f872297276f5e052912a035
+translation_source_hash: 2a9274f1590c2816c72625e5ffd9b93ee4c0b6bc73faf60cdc3273c1314e0c3a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: google-translate
 ---
 
-# العمل مع الثنائيات Iroha {#working-with-iroha-binaries}
+# العمل مع Iroha الثنائيات {#working-with-iroha-binaries}
 
-تدفق عمل عامل Iroha 3 يدور حول ثلاث ثنائيات أساسية:
+ال Iroha 3 يدور سير عمل المشغل حول ثلاثة ثنائيات أساسية:
 
-- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad) لإدارة ديمون زميل
-- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_cli) لـ CLI وأوامر المشغل
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_kagami) للمفاتيح والجنيس والشبكات المحلية والملفات الشخصية.
+- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad) لتشغيل البرنامج الخفي النظير
+- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_cli) ل CLI وأوامر المشغل
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_kagami) للمفاتيح والنشأة والشبكات المحلية والملفات الشخصية
 
-## بناء من مصدر {#build-from-source}
+## البناء من المصدر {#build-from-source}
 
-من الجذر في مساحة العمل الصعودية:
+من جذر مساحة العمل الأولية:
 
 ```bash
 cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ```
 
-ثنائيات الإفراج متوفرة بعد ذلك في `target/release/`.
+ثم تتوفر ثنائيات الإصدار في `target/release/`.
 
-للتفتيش على سطح القيادة:
+لفحص سطح الأوامر:
 
 ```bash
 ./target/release/irohad --help
@@ -32,9 +32,9 @@ cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ./target/release/kagami --help
 ```
 
-## تشغيل مباشرة من مخزن {#run-directly-from-the-repository}
+## تشغيل مباشرة من المستودع {#run-directly-from-the-repository}
 
-إذا كنت لا تريد تثبيت أي شيء عالميا، استخدم `cargo run`:
+إذا كنت لا ترغب في تثبيت أي شيء على مستوى العالم، استخدم `cargo run`:
 
 ```bash
 cargo run --bin irohad -- --help
@@ -44,21 +44,23 @@ cargo run --bin kagami -- --help
 
 ## Docker صورة {#docker-image}
 
-يستخدم مساحة العمل المباشرة `kagami localnet` و `kagami docker` لتوليد ملفات Docker Compose تتطابق مع الرمز الذي تم التحقق منه. يمكن استخدام صورة `hyperledger/iroha:dev` مع تلك الملفات التي يتم إنشاؤها.
+تستخدم مساحة العمل المنبع `kagami localnet` و `kagami docker` لتوليد
+Docker Compose الملفات التي تطابق رمز السحب.ال `hyperledger/iroha:dev`
+يمكن استخدام الصورة مع تلك الملفات التي تم إنشاؤها.
 
-إدراج CLI في حاوية:
+تشغيل CLI في حاوية:
 
 ```bash
 docker run -t hyperledger/iroha:dev iroha --help
 ```
 
-إدارة Kagami في حاوية:
+يجري Kagami في حاوية:
 
 ```bash
 docker run -t hyperledger/iroha:dev kagami --help
 ```
 
-لتشغيل الزملاء ، قم بتوليد شبكة محلية وتجميع الملف أولاً:
+لبدء تشغيل النظير، قم بإنشاء شبكة محلية وملف الإنشاء أولاً:
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
@@ -66,8 +68,44 @@ cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyper
 docker compose -f ./localnet/docker-compose.yml up
 ```
 
-## أي ثنائي يجب أن أستخدم؟ {#which-binary-should-i-use}
+## ما هو الثنائي الذي يجب أن أستخدمه؟ {#which-binary-should-i-use}
 
-- استخدم `irohad` عند بدء أو تشغيل أقرانهم.
-- استخدم `iroha` عندما تحتاج إلى استفسار دفتر الرسوم الكبرى أو تقديم المعاملات أو فحص نقاط النهاية للمشغل.
-- استخدم `kagami` عندما تحتاج إلى مفاتيح أو إشعارات التكوين أو مجموعات الملفات الشخصية أو أصول localnet.
+- يستخدم `irohad` عندما تبدأ أو تعمل مع أقرانك.
+- يستخدم `iroha` عندما تحتاج إلى الاستعلام عن دفتر الأستاذ أو إرسال المعاملات أو فحص نقاط نهاية المشغل.
+- يستخدم `kagami` عندما تحتاج إلى مفاتيح أو بيانات التكوين أو حزم الملفات الشخصية أو أصول الشبكة المحلية.
+
+## إصدار Kagemusha للنشر والطرح {#kagemusha-release-publication-and-rollout}
+
+كاجيموشا V4 النشر والتنشيط يعبران حدودًا محمية منفصلة:
+
+- `iroha_authenticated_tool_controller promote-kagemusha-release-v4` هو
+  macOS فقط، ناشر الجذر فقط.ويصادق على المثبتة Kagami ثنائي و
+  المرشح الدقيق ذو الستة عشر ملفًا، ينشر الغائب
+  `promotion-record-v4.norito` دون استبدال، وتقارير النجاح فقط
+  بعد التحقق من الإصدار الدقيق المكون من سبعة عشر ملفًا.
+- `iroha offline kagemusha rollout-v4 create-expectations` يتحقق من التوقيع
+  الحجز، وأربعة أختام تأهيل المدقق أمرت، بالضبط
+  سلك المعاملات المصرح به بالفعل، والمرسى النهائي الموثوق به من قبل
+  نشر التوقعات الموقعة دون استبدال.
+- `iroha offline kagemusha rollout-v4 submit` يتطلب صريحا
+  `--write-authorized` موافقة.يقوم بتدوين المجلات بشكل دائم وإعادة التحقق من الدقة
+  التوقعات قبل كتابة الشبكة أو إعادة المحاولة.ان `Applied` الوضع ليس كذلك
+  بما فيه الكفاية: يتحقق الأمر أيضًا من الكتلة الملتزم بها، والخليفة النهائي
+  سلسلة، وسلك المعاملات الكامل الحامل للترخيص.
+- `iroha offline kagemusha rollout-v4 finalize-receipt` يجمع الأدلة نفسها
+  المرتبطة بالإثبات فقط بعد إعادة التحقق من سجل الإرسال الدقيق، ويوقّعها باستخدام
+  مُصدر الإيصال المستقل، وينشر الإيصال القانوني دون استبدال.
+
+إن سير عمل جاهزية الإنتاج في Kagemusha الذي تم تسجيله هو للتحقق فقط.
+لا يستدعي الناشر المعتمد، وينشر مؤهلات المدقق
+الأختام أو إرسال التنشيط أو إنشاء إيصال نهائي.سير عمل ناجح
+وبالتالي فإن التشغيل لا يثبت الترويج ولا النشر المباشر.
+
+هذه الأوامر هي أوامر أولية محلية، وليست بدائل للأدلة الحية.أ
+يظل طرح الإنتاج محظورًا بدون شهادة التطبيق الفعلي و
+القطع الأثرية المرشحة، وجميع أختام المضيف الأربعة المحمية، وإدارة وقت التشغيل و
+توقيع المدخلات، وتقديم أربعة مدققين مباشرين، والأدلة النهائية، و
+إسقاط التكوين الفعال الكنسي.احتفظ بالمفاتيح الخاصة،
+مواد المصادقة، والمعرفات الخاصة بالترويج في المحمية
+الحضانة أثناء التشغيل؛لا تقم بنسخها إلى وثائق يتم التحكم فيها بالمصدر أو
+تذاكر المشغل.

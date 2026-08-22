@@ -1,30 +1,30 @@
 ---
 translation_locale: uz
 translation_source: /reference/binaries.md
-translation_source_hash: fd9cefe7c0f5ee2f273a06b453d11d0e9bb896a35f872297276f5e052912a035
+translation_source_hash: 2a9274f1590c2816c72625e5ffd9b93ee4c0b6bc73faf60cdc3273c1314e0c3a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: google-translate
 ---
 
-# Iroha ikkilamchilar bilan ishlash {#working-with-iroha-binaries}
+# Bilan ishlash Iroha Ikkilik {#working-with-iroha-binaries}
 
-Iroha 3 operatorning ish oqimi uchta asosiy ikkilamchi bo'yicha aylanadi:
+The Iroha 3 Operatorning ish jarayoni uchta asosiy ikkilik atrofida aylanadi:
 
-- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad) tengdoshlar daemonini ishlatish uchun
-- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_cli) uchun CLI va operator qo'mondonlari
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_kagami) kalitlar, genesis, lokal tarmoqlar va profillar uchun
+- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad) tengdosh demonini ishga tushirish uchun
+- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_cli) uchun CLI va operator buyruqlari
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_kagami) kalitlar, genezis, lokal tarmoqlar va profillar uchun
 
-## Manbaiga asoslanib quring {#build-from-source}
+## Manbadan yaratish {#build-from-source}
 
-Yuqori oqimdagi ish maydonining ildizidan:
+Yuqoridagi ish maydoni ildizidan:
 
 ```bash
 cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ```
 
-Bo'shash binarlari keyinchalik `target/release/` da mavjud bo'ladi.
+Reliz ikkiliklari keyin mavjud bo'ladi `target/release/`.
 
-Boshqaruv yuzasini tekshirish uchun:
+Buyruqlar yuzasini tekshirish uchun:
 
 ```bash
 ./target/release/irohad --help
@@ -32,9 +32,9 @@ Boshqaruv yuzasini tekshirish uchun:
 ./target/release/kagami --help
 ```
 
-## Repozitoriyadan toʻgʻridan-toʻgʻri ishga tushirish {#run-directly-from-the-repository}
+## To'g'ridan-to'g'ri ombordan ishga tushirish {#run-directly-from-the-repository}
 
-Agar siz global ravishda biron bir narsani o'rnatishni istamasangiz, `cargo run` dan foydalaning:
+Agar siz global miqyosda biror narsani o'rnatishni xohlamasangiz, foydalaning `cargo run`:
 
 ```bash
 cargo run --bin irohad -- --help
@@ -44,21 +44,23 @@ cargo run --bin kagami -- --help
 
 ## Docker Rasm {#docker-image}
 
-Yuqori oqimdagi ish maydonida `kagami localnet` va `kagami docker` kodga mos bo'lgan Docker Compose fayllarini hosil qilish uchun ishlatiladi. `hyperledger/iroha:dev` tasviridan ushbu hosil qilingan fayllar bilan foydalanish mumkin.
+Yuqori oqimdagi ish maydoni foydalanadi `kagami localnet` va `kagami docker` hosil qilish
+Docker Compose tekshirilgan kodga mos keladigan fayllar.The `hyperledger/iroha:dev`
+tasvir ushbu yaratilgan fayllar bilan ishlatilishi mumkin.
 
-CLI ni konteynerda ishga tushiring:
+ni ishga tushiring CLI konteynerda:
 
 ```bash
 docker run -t hyperledger/iroha:dev iroha --help
 ```
 
-Kagami konteynerda ishlatilsin:
+Yugurish Kagami konteynerda:
 
 ```bash
 docker run -t hyperledger/iroha:dev kagami --help
 ```
 
-Tengdoshlarni ishga tushirish uchun lokalnetni yaratish va birinchi navbatda faylni yozish:
+Tengdosh ishga tushirish uchun avval localnet yarating va faylni tuzing:
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
@@ -66,8 +68,45 @@ cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyper
 docker compose -f ./localnet/docker-compose.yml up
 ```
 
-## Qaysi binarydan foydalanishim kerak? {#which-binary-should-i-use}
+## Qaysi ikkilikdan foydalanishim kerak? {#which-binary-should-i-use}
 
-- Tengdoshlaringiz bilan ishlashni boshlaganingizda `irohad` dan foydalaning.
-- `iroha` dan foydalanib, katta daftarni so'rovlash, tranzaksiyalarni taqdim etish yoki operator oxirgi nuqtalarini tekshirish kerak bo'lganda foydalaning.
-- `kagami` kalitlar, genesis manifestlari, profil to'plamlari yoki localnet aktivlariga muhtoj bo'lganda ishlating.
+- Foydalanish `irohad` tengdoshlaringizni ishga tushirayotganingizda yoki ishlayotganingizda.
+- Foydalanish `iroha` daftarni so'rash, tranzaktsiyalarni topshirish yoki operatorning so'nggi nuqtalarini tekshirish kerak bo'lganda.
+- Foydalanish `kagami` sizga kalitlar, genezis manifestlari, profil to'plamlari yoki mahalliy tarmoq aktivlari kerak bo'lganda.
+
+## Kagemusha nashri va chiqarilishi {#kagemusha-release-publication-and-rollout}
+
+Kagemusha V4 nashr qilish va faollashtirish alohida himoyalangan chegaralarni kesib o'tadi:
+
+- `iroha_authenticated_tool_controller promote-kagemusha-release-v4` hisoblanadi
+  faqat macOS uchun, faqat root nashriyotchisi.U mahkamlanganlarni tasdiqlaydi Kagami ikkilik va
+  aniq o'n olti-fayl nomzod, yo'q nashr
+  `promotion-record-v4.norito` almashtirishsiz va faqat muvaffaqiyat haqida xabar beradi
+  aniq o'n yetti-fayl targ'ib ozod tekshiradi keyin.
+- `iroha offline kagemusha rollout-v4 create-expectations` imzolanganligini tasdiqlaydi
+  bron qilish, to'rtta buyurtma qilingan validator malaka muhri, aniq
+  allaqachon ruxsat berilgan tranzaksiya simi va ishonchli yakunlangan langar
+  imzolangan umidlarni almashtirmasdan nashr qilish.
+- `iroha offline kagemusha rollout-v4 submit` aniq talab qiladi
+  `--write-authorized` rozilik.U doimiy ravishda jurnalga yozib boradi va aniqlikni qayta tekshiradi
+  tarmoq yozish yoki qayta urinishdan oldin kutilgan.An `Applied` holat emas
+  yetarli: buyruq ham bajarilgan blokni, yakuniy vorisni tekshiradi
+  zanjir, va to'liq avtorizatsiyaga ega tranzaksiya simi.
+- `iroha offline kagemusha rollout-v4 finalize-receipt` xuddi shu isbot bilan
+  mustahkamlangan dalillarni faqat aniq yuborish jurnali qayta tekshirilgandan
+  keyingina to'playdi, ularni mustaqil kvitansiya emitenti bilan imzolaydi va
+  kanonik kvitansiyani almashtirmasdan nashr etadi.
+
+Tekshirilgan Kagemusha ishlab chiqarishga tayyor ish jarayoni faqat tekshirish uchun mo'ljallangan.
+Bu autentifikatsiya qilingan nashriyotchini chaqirmaydi, validator malakasini nashr etadi
+muhr qo'ying, faollashtirishni yuboring yoki yakuniy kvitansiyani yarating.Muvaffaqiyatli ish jarayoni
+shuning uchun ishga tushirish na reklamani, na jonli tarqatishni isbotlamaydi.
+
+Bu buyruqlar mahalliy ibtidoiy bo'lib, jonli dalillar o'rnini bosmaydi.A
+haqiqiy jismoniy App Attest va holda ishlab chiqarishni yo'lga qo'yish bloklangan qoladi
+nomzod artefaktlari, barcha to'rtta himoyalangan xost muhrlari, ish vaqti boshqaruvi va
+kirishlarni imzolash, jonli to'rtta-validator taqdim etish va yakuniy dalillar, va
+kanonik samarali konfiguratsiya proyeksiyasi.Shaxsiy kalitlarni saqlang,
+autentifikatsiya materiali va himoyalangan reklamaga xos identifikatorlar
+ish vaqtini saqlash;ularni manba tomonidan boshqariladigan hujjatlarga ko'chirmang yoki
+operator chiptalari.

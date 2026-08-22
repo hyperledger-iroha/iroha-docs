@@ -1,30 +1,30 @@
 ---
 translation_locale: he
 translation_source: /reference/binaries.md
-translation_source_hash: fd9cefe7c0f5ee2f273a06b453d11d0e9bb896a35f872297276f5e052912a035
+translation_source_hash: 2a9274f1590c2816c72625e5ffd9b93ee4c0b6bc73faf60cdc3273c1314e0c3a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: google-translate
 ---
 
-# עבודה עם Iroha בינאריים {#working-with-iroha-binaries}
+# עובדים עם Iroha בינאריים {#working-with-iroha-binaries}
 
-זרימת העבודה של המפעיל Iroha 3 מסתובבת סביב שלושה בינרים עיקריים:
+ה Iroha 3 זרימת העבודה של המפעיל סובבת סביב שלושה קבצים בינאריים ראשיים:
 
-- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad) לניהול דיימון משותף
-- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_cli) עבור פקודות CLI ושל המפעיל
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_kagami) עבור מפתחות, גנזיס, רשתות מקומיות ופרופילים
+- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad) על הפעלת דמון עמיתים
+- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_cli) עֲבוּר CLI ופקודות מפעיל
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_kagami) עבור מפתחות, Genesis, רשתות מקומיות ופרופילים
 
-## בנייה ממקור {#build-from-source}
+## בנה ממקור {#build-from-source}
 
-מהשורש של חלל העבודה העליון:
+משורש סביבת העבודה במעלה הזרם:
 
 ```bash
 cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ```
 
-משני השחרור זמינים לאחר מכן ב `target/release/`.
+הקבצים הבינאריים לשחרור זמינים לאחר מכן ב `target/release/`.
 
-כדי לבדוק את פני השטח של הפקודה:
+כדי לבדוק את משטח הפקודה:
 
 ```bash
 ./target/release/irohad --help
@@ -32,9 +32,9 @@ cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ./target/release/kagami --help
 ```
 
-## להפעיל ישירות מהמחסן {#run-directly-from-the-repository}
+## הפעל ישירות מהמאגר {#run-directly-from-the-repository}
 
-אם אתה לא רוצה להתקין משהו באופן גלובלי, השתמש `cargo run`:
+אם אינך רוצה להתקין שום דבר ברחבי העולם, השתמש `cargo run`:
 
 ```bash
 cargo run --bin irohad -- --help
@@ -42,23 +42,25 @@ cargo run --bin iroha -- --help
 cargo run --bin kagami -- --help
 ```
 
-## Docker תמונה {#docker-image}
+## Docker תְמוּנָה {#docker-image}
 
-מרחב העבודה העליון משתמש `kagami localnet` ו `kagami docker` כדי ליצור קבצים Docker Compose שמתאימים לקוד המוצא. תמונת `hyperledger/iroha:dev` יכולה לשמש עם הקבצים המובנים אלה.
+סביבת העבודה במעלה הזרם משתמשת `kagami localnet` ו `kagami docker` ליצור
+Docker Compose קבצים התואמים את הקוד שהוצא.ה `hyperledger/iroha:dev`
+ניתן להשתמש בתמונה עם אותם קבצים שנוצרו.
 
-תפעילו את CLI בקופסא:
+הפעל את CLI במיכל:
 
 ```bash
 docker run -t hyperledger/iroha:dev iroha --help
 ```
 
-להפעיל Kagami בקופסא:
+לָרוּץ Kagami במיכל:
 
 ```bash
 docker run -t hyperledger/iroha:dev kagami --help
 ```
 
-עבור ההתחלתה של השותפים, ליצור רשת מקומית ולהרכיב את הקובץ קודם:
+לאתחול עמיתים, צור תחילה קובץ מקומי וכתוב:
 
 ```bash
 cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
@@ -66,8 +68,44 @@ cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyper
 docker compose -f ./localnet/docker-compose.yml up
 ```
 
-## איזה בינארי אני צריך להשתמש? {#which-binary-should-i-use}
+## באיזה בינארי עלי להשתמש? {#which-binary-should-i-use}
 
-- השתמש `irohad` כאשר אתה מתחיל או מפעיל עמיתיך.
-- השתמש `iroha` כאשר אתה צריך לדרוש את הספר הגדול, להגיש עסקאות או לבחון נקודות הסיום של המפעיל .
-- השתמש `kagami` כאשר אתה זקוק למפתחות, מוניסטים גנזיס, קבוצות פרופילים או נכסים של רשת מקומית.
+- לְהִשְׁתַמֵשׁ `irohad` כאשר אתה מתחיל או מפעיל עמיתים.
+- לְהִשְׁתַמֵשׁ `iroha` כאשר אתה צריך לשאול את ספר החשבונות, לשלוח עסקאות או לבדוק את נקודות הקצה של המפעיל.
+- לְהִשְׁתַמֵשׁ `kagami` כאשר אתה צריך מפתחות, מניפסטים בראשית, חבילות פרופילים או נכסי רשת מקומית.
+
+## פרסום והשקה של קגמושה {#kagemusha-release-publication-and-rollout}
+
+קגמושה V4 פרסום והפעלה חוצים גבולות מוגנים נפרדים:
+
+- `iroha_authenticated_tool_controller promote-kagemusha-release-v4` הוא ה
+  מוציא לאור של macOS בלבד, שורש בלבד.זה מאמת את המוצמד Kagami בינארי ו
+  המועמד המדויק בן שישה עשר קבצים, מפרסם את הנפקד
+  `promotion-record-v4.norito` ללא החלפה, ומדווח על הצלחה בלבד
+  לאחר שהשחרור המקודם של שבעה עשר קבצים מדויק מאמת.
+- `iroha offline kagemusha rollout-v4 create-expectations` מאמת את החתום
+  הזמנה, ארבע חותמות הסמכה לתוקף, המדויק
+  תיל עסקה שכבר מורשה, והעוגן הסופי המהימן לפני כן
+  פרסום ציפיות חתומות ללא החלפה.
+- `iroha offline kagemusha rollout-v4 submit` דורש מפורש
+  `--write-authorized` הַסכָּמָה.זה מתעד באופן עמיד ומאמת מחדש את המדויק
+  ציפיות לפני כתיבה או ניסיון חוזר של רשת.א `Applied` הסטטוס לא
+  מספיק: הפקודה גם מאמתת את הבלוק המחויב, יורש הסופיות
+  שרשרת, וחוט עסקה נושא הרשאות מלא.
+- `iroha offline kagemusha rollout-v4 finalize-receipt` אוסף את אותן ראיות
+  המעוגנות בהוכחה רק לאחר שיומן ההגשה המדויק אומת מחדש, חותם עליהן באמצעות
+  מנפיק הקבלה העצמאי ומפרסם את הקבלה הקנונית ללא החלפה.
+
+זרימת העבודה המוכנות לייצור של Kagemusha שבוצעה בצ'ק-אין היא לאימות בלבד.
+זה לא קורא למוציא לאור המאומת, הסמכת מאמת פרסום
+חותם, שלח הפעלה או צור קבלה סופית.זרימת עבודה מוצלחת
+לפיכך run אינו מוכיח לא קידום ולא השקה חיה.
+
+הפקודות הללו הן פרימיטיבים מקומיים, לא תחליף לראיות חיות.א
+השקת הייצור נשארת חסומה ללא אישור אפליקציה פיזי אמיתי ו
+חפצי מועמדים, כל ארבעת חותמות המארח המוגנות, ניהול זמן ריצה ו
+חתימה על קלט, הגשת ארבעת אימות חי וראיות סופיות, וה
+הקרנת תצורה אפקטיבית קנונית.שמור מפתחות פרטיים,
+חומרי אימות ומזהים ספציפיים לקידום מוגנים
+משמורת בזמן ריצה;אל תעתיק אותם לתיעוד הנשלט על ידי מקור או
+כרטיסי מפעיל.
