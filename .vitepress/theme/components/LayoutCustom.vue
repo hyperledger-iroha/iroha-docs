@@ -7,7 +7,6 @@ import NexusBuildPortal, { type NexusBuildPortalContent } from './NexusBuildPort
 const { Layout } = DefaultTheme
 
 const ShareFeedback = defineAsyncComponent(() => import('./ShareFeedback.vue'))
-const MachineTranslationNotice = defineAsyncComponent(() => import('./MachineTranslationNotice.vue'))
 const FEEDBACK_URL: string | undefined = import.meta.env.VITE_FEEDBACK_URL
 
 const { frontmatter } = useData()
@@ -16,12 +15,6 @@ const nexusPortal = computed(() => frontmatter.value.nexusPortal as NexusBuildPo
 
 <template>
   <Layout>
-    <template #home-hero-before>
-      <MachineTranslationNotice />
-    </template>
-    <template #doc-before>
-      <MachineTranslationNotice />
-    </template>
     <template #home-features-before>
       <NexusBuildPortal
         v-if="nexusPortal"

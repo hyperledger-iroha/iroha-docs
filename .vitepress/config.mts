@@ -1,6 +1,6 @@
 /// <reference types="vite/client" />
 
-import { DefaultTheme, defineConfig } from 'vitepress'
+import { DefaultTheme, defineConfig, type HeadConfig } from 'vitepress'
 import footnote from 'markdown-it-footnote'
 import { resolve } from 'path'
 import ViteSvgLoader from 'vite-svg-loader'
@@ -18,6 +18,7 @@ import {
   type DocsLocale,
   type NavigationLabels,
 } from '../etc/locales'
+import { renderSearchHeadings, splitSearchHeadings } from '../etc/search-index'
 
 function nav(
   labels: NavigationLabels = ROOT_LOCALE.navigation,
@@ -606,12 +607,17 @@ const THEME_LOCALES = Object.fromEntries(
 
 const PUBLIC_BASE = process.env.PUBLIC_PATH ?? '/'
 const publicAsset = (name: string): string => `${PUBLIC_BASE}${name}`
+const BUILD_REVISION = process.env.VERCEL_GIT_COMMIT_SHA ?? process.env.GITHUB_SHA
+const revisionHead: HeadConfig[] = BUILD_REVISION
+  ? [['meta', { name: 'iroha-docs-revision', content: BUILD_REVISION }]]
+  : []
 
 export default defineConfig({
   base: PUBLIC_BASE,
   srcDir: 'src',
   srcExclude: ['snippets/*.md'],
-  buildConcurrency: 4,
+  buildConcurrency: 2,
+  metaChunk: true,
   cleanUrls: false,
   locales: SITE_LOCALES,
   title: 'Hyperledger Iroha 3 Docs',
@@ -636,6 +642,7 @@ export default defineConfig({
   lastUpdated: true,
 
   head: [
+    ...revisionHead,
     // Based on: https://evilmartians.com/chronicles/how-to-favicon-in-2021-six-files-that-fit-most-needs
     ['link', { rel: 'icon', href: publicAsset('favicon.ico'), sizes: 'any' }],
     ['link', { rel: 'icon', href: publicAsset('icon.svg'), sizes: 'image/svg+xml' }],
@@ -707,7 +714,9 @@ export default defineConfig({
           options: {
             fields: ['title', 'titles'],
           },
+          _splitIntoSections: splitSearchHeadings,
         },
+        _render: renderSearchHeadings,
       },
     },
   },

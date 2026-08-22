@@ -82,10 +82,6 @@ Use `pnpm translate --sync-structure` to synchronize both heading anchors and
 VitePress container keywords after a generator or renderer change. This
 mechanical mode does not send prose to a translation provider.
 
-Every translated page displays a machine-translation notice with a base-aware
-link to its English source. English is authoritative when translated wording
-is ambiguous or incorrect.
-
 `--locale` and `--route` can narrow that mechanical update in the same way as a
 normal generation run.
 
