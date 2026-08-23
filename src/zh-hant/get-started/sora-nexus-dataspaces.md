@@ -1,14 +1,14 @@
 ---
 translation_locale: zh-hant
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 63c317ab61ba912176c43c83d5b4f026f23a7a6e5fb633872a133c9ea1295686
+translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# 建立在 SORA 3:Taira 和 Minamoto {#build-on-sora-3-taira-and-minamoto}
+# 建立在 SORA 3:Taira 和 Minamoto 上 {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3是基於應用程序的公共部署軌道 Iroha 3 和 SORA Nexus. 建立和練習在 Taira 首先,然後移動相同的客戶端形狀到 Minamoto 只有當你有單獨的主網鑰匙時,真正的 XOR 費用和生產批准.
+SORA 3是基於 Iroha 3 和 SORA Nexus 構建的應用面向公衆部署軌道. 首先在 Taira 上構建和練習,然後將相同的客戶端形狀移動到 Minamoto,只有當您有單獨的主網鑰匙時,費用爲真實 XOR 和生產批准.
 
 這本教程展示瞭如何配置一個 Iroha 客戶端爲公共的 SORA 3個網絡:
 
@@ -33,9 +33,23 @@ SORA 3是基於應用程序的公共部署軌道 Iroha 3 和 SORA Nexus. 建立�
 實際流程是:
 
 1. 建立客戶端與 Taira 相反,並使用公開的 `universal`數據空間.
-2. 添加一個簽字者,並用 Taira 龍頭資助.
+2. 添加一個簽字者,並用 Taira 龍頭資助它.
 3. 運行應用程序的邏輯與 Taira 相比,直到故障無聊和可觀察.
 4. 創建一個單獨的 Minamoto 簽字器,用真實 XOR 資助它,並將相同的經過驗證的運算轉移到主網.
+
+## 繼續使用食譜 {#continue-with-the-cookbook}
+
+使用此指南來選擇網絡,配置簽名器和資金費用.然後繼續使用與您想要構建的應用程序行爲相匹配的食譜:
+
+|目標|配方|
+| --- | --- |
+|檢查 Taira 和配置一個客戶端 | [連接到 Taira](/zh-hant/cookbook/connect-to-taira.md)|
+|發送一個第一次寫下來,驗證結果| [提交和驗證交易](/zh-hant/cookbook/submit-and-verify-transactions.md) |
+|登記,硬幣和移動值| [性資產](/zh-hant/cookbook/fungible-assets.md) |
+|閱讀過的申請狀態| [查詢賬本狀態](/zh-hant/cookbook/query-ledger-state.md) |
+|應對承諾的變化反應| [流動事件](/zh-hant/cookbook/stream-events.md) |
+
+書籍將每個工作流程集中,並在需要 Taira 資金或 SORA Nexus 網絡環境時鏈接到此處.
 
 ## 1. 瞭解你設定的目標 {#_1-understand-what-you-are-setting-up}
 
@@ -60,6 +74,7 @@ wonderland.universal
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -67,6 +82,7 @@ curl -fsS https://taira.sora.org/status \
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -74,6 +90,7 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
@@ -94,6 +111,7 @@ Taira 也揭示了一個 Torii-本地模型文本議定書 (MCP 當一個代理�
 
 ```bash
 curl -fsS https://taira.sora.org/v1/mcp \
+  -H 'Accept: application/json' \
   | jq '{protocolVersion, server: .serverInfo.name, tools: .capabilities.tools.count}'
 ```
 
@@ -188,6 +206,7 @@ for network in taira minamoto; do
   root="https://$network.sora.org"
   printf '\n%s\n' "$network"
   curl -fsS "$root/status" \
+    -H 'Accept: application/json' \
     | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 done
 ```
@@ -196,6 +215,7 @@ done
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -205,6 +225,7 @@ curl -fsS https://taira.sora.org/status \
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -220,7 +241,9 @@ const roots = {
 };
 
 for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`).then((res) => res.json());
+  const status = await fetch(`${root}/status`, {
+    headers: { Accept: 'application/json' },
+  }).then((res) => res.json());
   const publicSpaces = status.teu_lane_commit
     .filter((lane) => lane.visibility === 'public')
     .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
@@ -237,7 +260,7 @@ EOF
 
 ## 3. 創建一個 Taira 客戶端配置. {#_3-create-a-taira-client-config}
 
-生成一個鍵對,如果您還沒有一個:
+如果您還沒有一個鍵組,生成鍵組:
 
 ```bash
 kagami keys --algorithm ed25519 --json
@@ -366,7 +389,9 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 拿來這個題:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
+curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
+  -H 'Accept: application/json' \
+  | jq .
 ```
 
 如果拼圖或索賠終點返回 `502`,截止時間,或者其他網關級別錯誤,請等待再嘗試,然後更改鍵或客戶端配置.
@@ -391,20 +416,26 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
-  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}'
+  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
 當 `difficulty_bits` 超過 `0`時,解答題幷包括杆高度加上nonce:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
   -d '{
     "account_id": "<TAIRA_I105_ACCOUNT_ID>",
     "pow_anchor_height": 741,
     "pow_nonce_hex": "<NONCE_HEX>"
-  }'
+  }' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
 題算法是:
@@ -415,7 +446,7 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet \
    - `anchor_height`作爲一個大子 `u64`
    - `anchor_block_hash_hex`被解碼爲字節
    - `challenge_salt_hex`在存在時被解碼爲字節
-2. 試用 `u64` 非符號編碼爲大端的8字節值.
+2. 試用 `u64` 非符號編碼爲大數值8字節.
 3. 對於每一個nonce,運行腳本:
    - 密碼:是8字節的
    - 鹽:32字節的挑戰
@@ -430,21 +461,25 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet \
 ```json
 {
   "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-  "asset_definition_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
+  "asset_definition_id": "<TAIRA_FEE_ASSET_DEFINITION_ID>",
   "asset_id": "...",
-  "amount": "25000",
+  "amount": "<FUNDED_AMOUNT>",
   "tx_hash_hex": "...",
   "status": "QUEUED"
 }
 ```
 
-目前回應是 HTTP `202 Accepted`.上述資產定義 ID 是由公共水龍頭資助的 Taira 費用資產.在返回 `tx_hash_hex` 和 `status: "QUEUED"`時,水龍頭已經接受了請求.
+答案目前以 HTTP `202 Accepted`返回.其 `asset_definition_id`是由公共水龍頭資助的當前 Taira 費用資產;從答案中取出,而不是複製一個例子 ID.該水龍頭在返回`tx_hash_hex`和 `status: "QUEUED"`時已經接受了請求.
 
 然後在提交您自己的付費交易之前,查詢資產:
 
 ```bash
+TAIRA_FEE_ASSET_DEFINITION=$(
+  jq -er '.asset_definition_id' ./taira-faucet-response.json
+)
+
 iroha --config ./taira.client.toml ledger asset get \
-  --definition 6TEAJqbb8oEPmLncoNiMRbLEK6tw \
+  --definition "$TAIRA_FEE_ASSET_DEFINITION" \
   --account <TAIRA_I105_ACCOUNT_ID>
 ```
 
@@ -470,7 +505,12 @@ def has_leading_zero_bits(digest: bytes, bits: int) -> bool:
 root = "https://taira.sora.org"
 account_id = sys.argv[1]
 
-with urllib.request.urlopen(f"{root}/v1/accounts/faucet/puzzle") as res:
+puzzle_request = urllib.request.Request(
+    f"{root}/v1/accounts/faucet/puzzle",
+    headers={"Accept": "application/json"},
+)
+
+with urllib.request.urlopen(puzzle_request) as res:
     puzzle = json.load(res)
 
 claim = {"account_id": account_id}
@@ -503,7 +543,7 @@ if difficulty > 0:
 request = urllib.request.Request(
     f"{root}/v1/accounts/faucet",
     data=json.dumps(claim).encode(),
-    headers={"content-type": "application/json"},
+    headers={"Accept": "application/json", "content-type": "application/json"},
     method="POST",
 )
 
@@ -559,7 +599,7 @@ Minamoto 費用由生產 XOR 支付,而 Minamoto 沒有公共水龍頭.通過批
 
 Taira XOR 不能支付 Minamoto 費用.測試網餘額和水龍頭索賠不會轉移到 Minamoto.
 
-## 7. 在現有數據空間內工作 {#_7-work-inside-an-existing-dataspace}
+## 7. 在現有的數據空間內工作 {#_7-work-inside-an-existing-dataspace}
 
 使用在數據空間內居住的賬本對象的完全合格域名.例如,公共數據空間中的項目域名應該使用:
 
@@ -609,6 +649,7 @@ alice@universal
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
@@ -664,6 +705,7 @@ description = "Route payments domains to the payments dataspace"
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | select(.dataspace_alias == "payments")'
 ```
 

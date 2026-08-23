@@ -1,12 +1,12 @@
 ---
 translation_locale: az
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 63c317ab61ba912176c43c83d5b4f026f23a7a6e5fb633872a133c9ea1295686
+translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# SORA 3: Taira və Minamoto üzərində qurun {#build-on-sora-3-taira-and-minamoto}
+# SORA 3: Taira və Minamoto üzərində qurun. {#build-on-sora-3-taira-and-minamoto}
 
 SORA 3. tətbiqetməyə yönəlmiş ictimaiyyət tətbiqi Iroha 3 və SORA Nexus. İnşaat və təcrübə Taira əvvəlcə, sonra eyni müştəri forma köçürmək Minamoto Yalnız fərdi əsas açarınız varsa, real. XOR ödənişlər və istehsalın təsdiqlənməsi üçün.
 
@@ -37,6 +37,20 @@ Praktiki axın:
 3. Taira əleyhinə tətbiq məntiqinizi səhvlər darıxdırıcı və müşahidə edilənə qədər təcrübə edin.
 4. Ayrı bir Minamoto imzaçı yaratın, onu real XOR ilə maliyyələşdirin və yalnız eyni sübut edilmiş əməliyyatları mainnet-ə köçürün.
 
+## Mətbəx Kitabını davam etdirin {#continue-with-the-cookbook}
+
+Bir şəbəkə seçmək, bir imzalayı qurmaq və fond ödənişləri üçün bu təlimatdan istifadə edin. Sonra qurmaq istədiyiniz tətbiq davranışına uyğun reseptlə davam edin:
+
+|Məqsəd |Resept |
+| --- | --- |
+|Taira yoxlayın və bir müştəri qurun | [Taira](/az/cookbook/connect-to-taira.md) ilə əlaqə saxlayın. |
+|İlk yazını göndərin və nəticəni yoxlayın.| [Transaksiyaların təqdim edilməsi və təsdiqlənməsi ](/az/cookbook/submit-and-verify-transactions.md) |
+|Qeydiyyat, mint və köçürmə qiyməti | [Fungible Assets](/az/cookbook/fungible-assets.md) |
+|Filtrləşdirilmiş tətbiq vəziyyətini oxuyun | [Query Ledger State](/az/cookbook/query-ledger-state.md) |
+|Təyin olunmuş dəyişikliklərə reaksiya vermək | [Aksiyalar](/az/cookbook/stream-events.md) |
+
+Mətbəx kitabı hər iş axınına diqqət yetirir və Taira maliyyələşdirməsinə və ya SORA Nexus şəbəkə kontekstinə ehtiyac duyduğu zaman buraya bağlayır.
+
 ## 1. Nələr qurduğunuzu başa düşün {#_1-understand-what-you-are-setting-up}
 
 SORA Nexus-də məlumat boşluğu şəbəkə zolağı və marşrut kataloqunun bir hissəsidir. Bir müştəri yalnız `client.toml` -i dəyişdirərək yeni ictimai məlumat boşluğu yaratmır. Müştəri quruluşu iki şeyi edir:
@@ -60,6 +74,7 @@ Taira üçün:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -67,6 +82,7 @@ Minamoto üçün:
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -74,6 +90,7 @@ Nodu tərəfindən aşkar edilmiş məlumat sahəsi və yol görünüşünü yox
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
@@ -94,6 +111,7 @@ Taira həmçinin agentlərin işləmə vaxtları üçün Torii-native Model Cont
 
 ```bash
 curl -fsS https://taira.sora.org/v1/mcp \
+  -H 'Accept: application/json' \
   | jq '{protocolVersion, server: .serverInfo.name, tools: .capabilities.tools.count}'
 ```
 
@@ -115,7 +133,7 @@ Praktiki iş axını:
 
 1. Agentdən kod yazmadan əvvəl müvafiq sənədləri, SDK kodunu, CLI komandanını və ya MCP vasitə sxemasını yoxlamalarını xahiş edin.
 2. Əvvəlcə agentdən ən kiçik müştəri yolunu yazın: status yoxlaması, hesab axtarışı, alias həll və ya balans axtarışı.
-3. Yalnız oxunma zəngləri Taira ilə işlədikdən sonra əməliyyatın qurulması kodunu əlavə edin
+3. Yalnız oxunma zəngləri Taira ilə işlədikdən sonra əməliyyat qurma kodunu əlavə edin.
 4. Canlı şəbəkə testlərini `TAIRA_LIVE=1` arxasında saxlayın, məsələn, normal birləşmiş sınaq çalışması heç vaxt testnet vəsaitini xərcləmir və ya şəbəkənin mövcudluğuna bağlıdır.
 5. Agentdən hər hansı bir əməliyyat təqdim etməzdən əvvəl şəbəkə kökünü, zəncirini, səlahiyyətli hesabını, təlimatların ümumiləşdirilməsini, ödəniş aktivini və gözlənilən vəziyyət dəyişikliyini bildirməyi tələb etmək.
 6. CI və ya əsas şəbəkə iş axınlarına yüksəltmədən əvvəl gizli idarəetmə, yenidən təcrübə davranışı, idempotency və rədd idarəetməsi üçün yaradılmış kodun nəzərdən keçirilməsi.
@@ -133,9 +151,9 @@ say "submit this transaction".
 
 İndiki MCP bridge imzalanmış bir sənəd təqdim edə bilər Iroha əməliyyat, lakin bu, normal əməliyyat tələblərini aradan qaldırmır. Bir əməliyyat hələ də düzgün bir səlahiyyətə, icazələrə, ödəniş maliyyələşdirilməsinə, zəncirə ehtiyac duyur. ID, Metadata və imzalanma.
 
-Qırmızı Iroha əməliyyatları üçün əvvəlcə SDK və ya CLI ilə əməliyyat qovşusunu qurun və imzalayın, sonra agentə yalnız `body_base64` kimi kodlanmış kanonik imzalanmış əməliyyat baytlarını verin. Agent müqaviləni `iroha.transactions.submit_and_wait` ilə təqdim edə bilər, ya da `iroha.transactions.submit` və `iroha.transactions.wait` ilə sorğuya müraciət edə bilər.
+Qırmızı Iroha əməliyyatları üçün əvvəlcə SDK və ya CLI ilə əməliyyat qovşusunu hazırlayın və imzalanın, sonra agentə yalnız kanoniki `body_base64` kimi şifrələnmiş imzalanmış əməliyyat baytları. Agent zarfı `iroha.transactions.submit_and_wait` ilə təqdim edə bilər və ya `iroha.transactions.submit` və `iroha.transactions.wait` ilə sorğuya müraciət edə bilər.
 
-Xüsusi açarları agent çağırışına yapıştırmayın. Bir agent bir əməliyyat qurmaq istəyirsə, istifadəçinin icra dövrü mühitindən, açar zəncirindən, aparat imzaçısından və ya testnet konfig faylından məxfilikləri yükləyən yerli koduna yönəltmək lazımdır. Agent heç vaxt əsas materialları Markdown, fixtures, logs və ya komitlərə yazmamalıdır.
+Xüsusi açarları agent çağırışına yapıştırmayın. Bir agent bir əməliyyat qurmaq lazımdırsa, istifadəçinin iş vaxtı sirlərini yükləyən yerli koduna yönəldin. Agent heç vaxt əsas materialı Markdown, fixtures, logs və ya commits yazmamalıdır.
 
 Bir əməliyyat təqdim etməzdən əvvəl agentə qısa bir əməliyyat planı hazırlamaq lazımdır:
 
@@ -188,6 +206,7 @@ for network in taira minamoto; do
   root="https://$network.sora.org"
   printf '\n%s\n' "$network"
   curl -fsS "$root/status" \
+    -H 'Accept: application/json' \
     | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 done
 ```
@@ -196,6 +215,7 @@ Taira tərəfindən açıqlanan ictimai məlumat məkanı zolaqlarını göstər
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -205,6 +225,7 @@ curl -fsS https://taira.sora.org/status \
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -220,7 +241,9 @@ const roots = {
 };
 
 for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`).then((res) => res.json());
+  const status = await fetch(`${root}/status`, {
+    headers: { Accept: 'application/json' },
+  }).then((res) => res.json());
   const publicSpaces = status.teu_lane_commit
     .filter((lane) => lane.visibility === 'public')
     .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
@@ -286,7 +309,7 @@ iroha --config ./taira.client.toml taira write-canary \
   --json
 ```
 
-Kanary imzalanmış bir ping göndərir, təsdiqlənməsini gözləyir və `--write-config` təqdim edildikdə icra vaxtı imzalanıcısı konfiqurasiyasını yazır. Taira ictimai test şəbəkəsidir, buna görə də növbə saturasiyası tapınmanın özü işləyəndə də imzalanan pingin uğursuz olmasına səbəb ola bilər. Əgər `taira doctor` doymuş bir sıra bildirirsə və ya kanary `PRTRY:NEXUS_FEE_ADMISSION_REJECTED` qaytarırsa, onu müştəri konfigurasiyasında səhv kimi qəbul etmədən əvvəl gözləyin və yenidən cəhd edin.
+Kanary imzalanmış bir ping təqdim edir, təsdiqlənməsini gözləyir və `--write-config` verildiyi zaman icra müddəti imzalayıcı konfigurasını yazır. Taira ictimai test şəbəkəsidir, Əgər `taira doctor` doymuş bir növbənin olduğunu bildirirsə və ya kanary `PRTRY:NEXUS_FEE_ADMISSION_REJECTED` qaytarırsa, onu müştəri konfigurasiyası səhv olaraq qəbul etmədən əvvəl gözləyin və yenidən cəhd edin.
 
 Təzyiqsiz duman sınaqları üçün kanariyanı sərhədli bir yenidən təcrübə döngüsündə qovun:
 
@@ -306,7 +329,7 @@ test "$ok" = true
 
 `iroha taira doctor` ağır uğursuzluqlar göstərirsə, yenidən cəhd etməyi dayandırın. Səyahət doymuşluğu və ödəniş qəbulunun rədd edilməsi keçidli ictimai test şəbəkəsi şərtləridir; DNS, TLS və ya `status = "fail"` diaqnozları yoxdur.
 
-## SORA Nexus Hesabı ID yaratmaq {#generate-a-sora-nexus-account-id}
+## A yaratmaq SORA Nexus Hesab ID {#generate-a-sora-nexus-account-id}
 
 A SORA Nexus hesab ID Kanonikdir. I105 Hesabın ictimai açarından və hədəf şəbəkə prefiksindən alınan ünvan. `[account].domain` müştəridə qiyməti TOML. Eyni ictimai açar müxtəlif kodlara aiddir. IDs haqqında Taira və Minamoto, və istehsal istifadəçiləri üçün ayrı bir açar cütü yaratmaq lazımdır Minamoto.
 
@@ -328,7 +351,7 @@ Minamoto ictimai açarı əsas şəbəkə prefiksi ilə çevirin:
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-Nexus API və ya CLI komandanın kanonik hesab ID istədiyi hər yerdə nəticələnən hesabı ID istifadə edin, məsələn, Taira faucet `account_id`, balans sorğuları, sərt hesab sahələri və ya alias bağlamalar. Müvafiq xüsusi açarı müştəri konfigurasında saxlayın və eyni ictimai şəbəkəni `[account].profile = "taira"` və ya `[account].profile = "minamoto"` ilə seçin.
+Nəticədə hesabı istifadə edin ID hər hansı bir Nexus API və ya CLI komandanlıq kanonik hesab tələb edir. ID, Məsələn, Taira faucet `account_id`, balans sorğuları, sərt hesab sahələri və ya alias bağlamalar. müştəri konfigurasında özəl açar, və eyni ictimai şəbəkə seçin `[account].profile = "taira"` və ya `[account].profile = "minamoto"`.
 
 ID istehsal etmək öz-özlüyündə maliyyələşdirilmiş bir zəncir hesabı yaratmır. Taira üzərində kran testnet yazıları üçün hesab yarada və maliyyələştirip bilər. Minamoto üzərində təsdiqlənmiş əsas şəbəkə onboardinqindən və ya xəzinə axınından istifadə edin.
 
@@ -366,7 +389,9 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 Qəbulunu gətir:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
+curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
+  -H 'Accept: application/json' \
+  | jq .
 ```
 
 Faucet ictimai testnet xidmətidir. Qəbul və ya tələb son nöqtəsi `502`, vaxt məhdudluğu və ya başqa bir qapı səviyyəsində səhv qaytarırsa, açarlarınızı və ya müştəri konfigurasını dəyişdirmədən əvvəl gözləyin və yenidən cəhd edin.
@@ -391,20 +416,26 @@ Cavabın forması belədir:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
-  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}'
+  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
 `difficulty_bits` `0`-dən böyük olduqda, puzzle-ni həll edin və demir hündürlüyü əlavə olun:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
   -d '{
     "account_id": "<TAIRA_I105_ACCOUNT_ID>",
     "pow_anchor_height": 741,
     "pow_nonce_hex": "<NONCE_HEX>"
-  }'
+  }' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
 Puzzle alqoritmi:
@@ -416,7 +447,7 @@ Puzzle alqoritmi:
    - `anchor_block_hash_hex` bayt kimi kəşf edilmişdir
    - `challenge_salt_hex` mövcud olduqda bayt kimi kəşf edilmişdir
 2. `u64` nonces kodlaşdırılmış big-endian 8-bayt dəyərləri ilə sınayın.
-3. Hər bir nonce üçün skript işlətmək:
+3. Hər bir nonce üçün skript işlədirin:
    - şifrə: 8 baytlı nonce
    - duz: 32-bayt çətinliyi
    - `N = 2^scrypt_log_n`
@@ -430,21 +461,25 @@ Faucet cavabı maliyyələşdirilmiş aktiv və növbəli əməliyyat hashini ə
 ```json
 {
   "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-  "asset_definition_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
+  "asset_definition_id": "<TAIRA_FEE_ASSET_DEFINITION_ID>",
   "asset_id": "...",
-  "amount": "25000",
+  "amount": "<FUNDED_AMOUNT>",
   "tx_hash_hex": "...",
   "status": "QUEUED"
 }
 ```
 
-Hal-hazırda cavab HTTP `202 Accepted` ilə qaytarılır. Yuxarıda göstərilən aktiv tərifi ID ictimai kran tərəfindən maliyyələşdirilən Taira ödənişli aktivdir. kran `tx_hash_hex` və `status: "QUEUED"` qaytarıldıqdan sonra tələbi qəbul edib.
+Cavab hazırda HTTP `202 Accepted` ilə qaytarılır. Onun `asset_definition_id` ictimai kran tərəfindən maliyyələşdirilən cari Taira ödəniş aktividir; onu bir nümunə ID nüsxəsini kopyalamaq əvəzinə cavabdan çıxarın. Kran `tx_hash_hex` və `status: "QUEUED"` qaytararkən tələbi qəbul etdi.
 
 Sonra öz ödəniş əməliyyatlarınızı təqdim etməzdən əvvəl maliyyələşdirilən aktiv üçün sorğular aparın:
 
 ```bash
+TAIRA_FEE_ASSET_DEFINITION=$(
+  jq -er '.asset_definition_id' ./taira-faucet-response.json
+)
+
 iroha --config ./taira.client.toml ledger asset get \
-  --definition 6TEAJqbb8oEPmLncoNiMRbLEK6tw \
+  --definition "$TAIRA_FEE_ASSET_DEFINITION" \
   --account <TAIRA_I105_ACCOUNT_ID>
 ```
 
@@ -470,7 +505,12 @@ def has_leading_zero_bits(digest: bytes, bits: int) -> bool:
 root = "https://taira.sora.org"
 account_id = sys.argv[1]
 
-with urllib.request.urlopen(f"{root}/v1/accounts/faucet/puzzle") as res:
+puzzle_request = urllib.request.Request(
+    f"{root}/v1/accounts/faucet/puzzle",
+    headers={"Accept": "application/json"},
+)
+
+with urllib.request.urlopen(puzzle_request) as res:
     puzzle = json.load(res)
 
 claim = {"account_id": account_id}
@@ -503,7 +543,7 @@ if difficulty > 0:
 request = urllib.request.Request(
     f"{root}/v1/accounts/faucet",
     data=json.dumps(claim).encode(),
-    headers={"content-type": "application/json"},
+    headers={"Accept": "application/json", "content-type": "application/json"},
     method="POST",
 )
 
@@ -609,6 +649,7 @@ Dəyişiklik hazırlamazdan əvvəl, mövcud canlı kataloq tutun:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
@@ -664,6 +705,7 @@ Operatorun qəbuluna aşağıdakı qapılar daxildir:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | select(.dataspace_alias == "payments")'
 ```
 

@@ -1,9 +1,9 @@
 ---
 translation_locale: uz
 translation_source: /index.md
-translation_source_hash: 505e8224a59534717045c34b1bf796760d06f9d6808a2a1fd9773aa2f6a00c2d
+translation_source_hash: 3b2ad4ee285a821b56c9cf6fd3f4a8431f1cfa478e88082b45788765d68ed833
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2
 
 layout: home
 
@@ -18,6 +18,28 @@ hero:
   #- theme: alt
   #  text: View on GitHub
   #  link: https://github.com/hyperledger-iroha/iroha
+
+nexusPortal:
+  eyebrow: SORA Nexus
+  title: "Iroha 3 / SORA Nexus ustida quring"
+  details: "Taira sinov tarmog'idan boshlang, joriy tranzaksiya oqimini o'rganing va ishlab chiqarish uchun tayyor dasturlarni yaratish uchun aniq retseptlardan foydalaning."
+  primaryAction:
+    text: "Taira bilan boshlang"
+    link: /uz/get-started/sora-nexus-dataspaces
+  secondaryAction:
+    text: "Oziq-ovqat kitobini koʻrish"
+    link: /uz/cookbook/
+  recipes:
+    title: "Ommabop retseptlar"
+    items:
+      - title: "Transaksionni taqdim etish va tasdiqlash"
+        link: /uz/cookbook/submit-and-verify-transactions
+      - title: "Fungible aktivlarni koʻchirish"
+        link: /uz/cookbook/fungible-assets
+      - title: "Soʻrovlar daftarining holati"
+        link: /uz/cookbook/query-ledger-state
+      - title: "O ' tkazish hodisalari"
+        link: /uz/cookbook/stream-events
 
 features:
   - icon:
@@ -44,21 +66,8 @@ features:
     title: "Ma'lumotlar"
     details: "Joriy ikkilamchi, boshlanish, Torii va moslashuvchanlik ma'lumot sahifalariga qarang."
     link: /uz/reference/
-  # - title: Cookbook # (TBA)
-
 footer: true
 ---
-
-<section class="nexus-build" aria-labelledby="nexus-build-title">
-  <a class="nexus-build__panel" href="./get-started/sora-nexus-dataspaces.html">
-    <span class="nexus-build__copy">
-      <span class="nexus-build__eyebrow">SORA Nexus</span>
-      <span id="nexus-build-title" class="nexus-build__title">Iroha 3 / SORA Nexus ustida yarating</span>
-      <span class="nexus-build__details">Taira testneti, Minamoto mainneti va hozir sinab ko'rishingiz mumkin bo'lgan nusxalab ishlatiladigan misollar bilan SORA 3 ustida yarating.</span>
-    </span>
-    <span class="nexus-build__action">Qo'llanmani ochish <span aria-hidden="true">-&gt;</span></span>
-  </a>
-</section>
 
 <hr style="margin-top: 3rem;">
 <p style="font-weight: 200; font-size: 0.875rem;">Hyperledger Iroha bir qismi hisoblanadi <a href="https://www.lfdecentralizedtrust.org/projects/tag/ledger-technology" target="_blank">LF Decentralized Trust</a>. Koʻproq maʼlumot olish <a href="https://iroha.tech/" target="_blank">iroha.tech</a>.</p>

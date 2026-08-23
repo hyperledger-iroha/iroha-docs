@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /blockchain/domains.md
-translation_source_hash: 4c42df3c179a086b8823264df2b69f68d7d3df500c8362d78f7ba56875dcfad1
+translation_source_hash: 5e52579436a181d76c83fa549991e56064ae57349b7109d5c41ec7953e5cbb2e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -61,7 +61,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
 Mettez le catalogue des voies publiques dans les aliases de l'espace de données:
 
 ```bash
-curl -fsS https://taira.sora.org/status \
+curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .block_height, .finality_lag_slots]
     | @tsv'
@@ -92,7 +92,7 @@ Construire l'intention d'un nom de domaine unique sur les tests répétés, et u
 
 ## Relations avec d'autres entités {#relationship-to-other-entities}
 
-Les domaines regroupent les objets et fournissent un espace de noms pour les données à portée de domaine. Les comptes eux-mêmes sont sans domaine dans le modèle de données actuel, mais les comptes peuvent posséder des domaines et détenir des actifs dont la définition vit sous des domaines.
+Les domaines regroupent des objets de registre et fournissent un espace de noms pour les données à l'échelle du domaine. Les comptes eux-mêmes sont sans domaine dans le modèle de données actuel, mais les comptes peuvent posséder des domaines et détenir des actifs dont les définitions vivent sous des domaines.
 
 Voir aussi:
 

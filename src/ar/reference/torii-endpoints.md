@@ -1,9 +1,9 @@
 ---
 translation_locale: ar
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: 9bec41b1b419e252fdcff8328e7950a294bdad3ac40112a5a7f2ce451d19e9cb
+translation_source_hash: c23170b2949bae9c9483ecbee6f0c09fea503904ae93934aef56537ddd13c42d
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2
 ---
 
 # Torii نقاط النهاية {#torii-endpoints}
@@ -12,7 +12,7 @@ Torii هو HTTP, SSE, و WebSocket بوابة Iroha 3. إنه يخدم كلتا 
 
 القواعد الحالية للبروتوكول هي:
 
-- الصيغة الثنائية الكنسية هي Norito
+- الصيغة الثنائية الكانونية هي Norito
 - العديد من النقاط النهائية تدعم أيضا JSON عند إرسال `Accept: application/json`
 - المقاييس المعروضة في شكل Prometheus
 
@@ -22,34 +22,43 @@ Torii هو HTTP, SSE, و WebSocket بوابة Iroha 3. إنه يخدم كلتا 
 
 |النقطة النهائية|تنسيق |الغرض|
 | --- | --- | --- |
-|`POST /transaction` |Norito |تقديم معاملة موقعة |
-|`POST /query` |Norito |قم بإرسال استفسار موقّع |
-|`GET /events` |WebSocket |اشترك في سلسلة الأحداث |
-|`GET /block/stream` |WebSocket |تدفق الكتل الملتزمة |
-|`GET /peers` |JSON |قائمة الأقران المعرضة من قبل Torii |
-|`GET /health` |JSON |نقطة نهاية لخفيفة الوزن |
-|`GET /api_version` |JSON |الإصدار الافتراضي API |
-|`GET /status` |JSON |ملخص حالة المستوى العالي للمشغلين |
+|`POST /v1/pipeline/transactions` |Norito |تقديم معاملة موقعة |
+|`POST /v1/query` |Norito |قم بإرسال استفسار موقّع |
+|`GET /v1/events/ws` |WebSocket |اشترك في سلسلة الأحداث |
+|`GET /v1/events/sse` |SSE |الاشتراك في تدفقات الأحداث عبر SSE |
+|`GET /v1/blocks/stream` |WebSocket |تدفق الكتل الملتزمة |
+|`GET /v1/peers` |JSON |قائمة الأقران المعرضة من قبل Torii |
+|`GET /livez` |النص |إمكانية العمل على العملية فقط ، لا تعني استعداداً للبروتوكول |
+|`GET /readyz` |JSON |الاستعداد الكامل للعقد، بما في ذلك عمليات التحقق الإلزامية من النقود خارج الاتصال |
+|`GET /health` |JSON |قناة الاستعداد مع نفس النقود غير المتغيرة خارج الاتصال |
+|`GET /v1/api/version` |النص |الإصدار الحالي لرأس الكتل |
+|`GET /status` |Norito أو JSON |الوضع التشخيصي على مستوى عال؛ طلب صريح JSON |
 |`GET /metrics` |بروميتيوس |نقطة نهاية " بروميتيهوس "|
-|`GET /schema` |JSON |صورة سريعة لنموذج بيانات مخطط خدمة العقد |
+|`GET /v1/schema` |JSON |صورة سريعة لنموذج البيانات التي يقدمها العقد عندما يتم تشغيلها |
 |`GET /openapi` أو `GET /openapi.json` |JSON |وثيقة OpenAPI للطرق النشطة Torii HTTP |
 |`GET /v1/parameters` |JSON |صورة مفاتيح العقدة|
 |`GET /v1/node/capabilities` |JSON |قدرة العقد و بيانات البيانات النموذجية |
-|`GET /v1/api/versions` |JSON |نسخة Torii API مدعومة |
-|`GET /v1/events/sse` |SSE |سلسلة الأحداث لعملاء طويلاً |
 |`GET /v1/time/now` |JSON |صورة لنقطة الساعة الحائطية|
 |`GET /v1/time/status` |JSON |حالة مزامنة الوقت |
 
-`/openapi` هو قائمة النقاط النهائية المعتمدة لعقدة تشغيل. تعتمد السطح الدقيق على ميزات البناء وتكوين وقت التشغيل ، لذلك يجب على العملاء الذين يتم إنشاؤهم تفضيل وثيقة OpenAPI الحية على قائمة الطرق التي تم نسخها يدوياً. استخدم [Torii API أجهزة التحكم ](/ar/reference/torii-api-console.md) لحميل هذا الوثيقة الحية واختبار طرق JSON ونسخ طلبات curl وإنتاج رمز العميل من النظام الحالي.
+بالنسبة لطلب SSE ، قم بالإعلان عن التيار الأصلي بالإضافة إلى إرجاع المخطط:
+
+```http
+Accept: text/event-stream, application/json
+```
+
+يتفاوض Torii أولاً على تمثيل JSON أو Norito في طبقة الطلب ، ثم يؤكد استجابة `text/event-stream` الأصلية. لذلك يتم رفض إرسال فقط `text/event-stream` مع `406` ؛ تستخدم وصفة [ أحداث التدفق](/ar/cookbook/stream-events.md) رأس كامل.
+
+`/openapi` هو العقد الأساسي الذي تم إنشاؤه للطرق الممثلة في النظام، لا يوجد مخزون كامل للقنابل التشغيلية. الوثيقة الحالية تفرغ `/livez` و `/readyz`, و هي `/health` وصف يمكن أن تتأخر معالج الاستعداد. إنشاء عملاء الطريق من الوثيقة الحية، ولكن التحقق من الحيوية والإستعداد مباشرة ضد العقدة الجارية والمعاملين المحاصرين. السطح الدقيق لا يزال يعتمد على ميزات البناء وتكوين وقت التشغيل. [Torii API أجهزة التحكم](/ar/reference/torii-api-console.md) لتحميل الوثيقة الحية، اختبار JSON الطرق، النسخة curl الطلبات، وتوليد رمز العميل من النظام الحالي.
 
 ## جرب مسارات Taira مباشرة {#try-live-taira-routes}
 
-تكتشف شبكة الاختبار العامة Taira نفس سطح Torii JSON الذي يستخدمه عملاء التطبيقات لاستكشاف القراءة فقط. هذه الأوامر لا تتطلب مفاتيحا:
+تكتشف شبكة الاختبار العامة Taira نفس سطح Torii JSON الذي يستخدمه عملاء التطبيقات لاستكشاف القراءة فقط. هذه الأوامر لا تتطلب المفاتيح: .
 
 ```bash
 TAIRA_ROOT=https://taira.sora.org
 
-curl -fsS "$TAIRA_ROOT/status" \
+curl -fsS -H 'Accept: application/json' "$TAIRA_ROOT/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA_ROOT/openapi.json" \
@@ -57,7 +66,8 @@ curl -fsS "$TAIRA_ROOT/openapi.json" \
   | grep '^/v1/' \
   | head -n 20
 
-curl -fsS "$TAIRA_ROOT/v1/node/capabilities" \
+curl -fsS -H 'Accept: application/json' \
+  "$TAIRA_ROOT/v1/node/capabilities" \
   | jq '{abi_version, data_model_version, query: .query.aggregate.supported_resources}'
 ```
 
@@ -90,7 +100,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=5" \
 |`GET /v1/sumeragi/phases` |JSON |أحدث عينة تأخير لكل مرحلة |
 |`GET /v1/sumeragi/rbc` |JSON |RBC مقاييس الجلسة والإنتاجية |
 |`GET /v1/sumeragi/rbc/sessions` |JSON |صورة سريعة للجلسة النشطة RBC |
-|`GET /v1/sumeragi/pacemaker` |JSON |وضع جهاز تحديد الأوتار النفسية|
+|`GET /v1/sumeragi/pacemaker` |JSON |وضع جهاز تحفيز القلب |
 |`GET /v1/sumeragi/params` |JSON |المعايير الحالية على سلسلة Sumeragi |
 |`GET /v1/sumeragi/collectors` |JSON |صورة لخطط المجموعة التحديدية |
 |`GET /v1/sumeragi/key-lifecycle` |JSON |حالة دورة الحياة الرئيسية للاتفاق|
@@ -113,27 +123,27 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=5" \
 
 |عائلة الطرق|الغرض|
 | --- | --- |
-|`/v1/accounts/*` ، `/v1/domains/*`، `/v1/assets/*` |JSON القراءة، المساعدين في الاستفسارات، مساعدين في الإدخال، ومشاهدة محفظة أو حاملها |
-|`/v1/nfts/*` ، `/v1/rwas/*`، `/v1/confidential/*` |NFT ، الأصول في العالم الحقيقي، ومشاهدة الأصول السرية |
-|`/v1/aliases/*`، `/v1/assets/aliases/*`، `/v1/sns/*`، `/v1/identifiers/*` |الاسم، الأسماء الخفيفة، وقرار المحدد |
+|`/v1/accounts/` ، `/v1/domains/`، `/v1/assets/*` |JSON القراءة، المساعدين في الاستفسارات، مساعدين في الإدخال، ومشاهدة محفظة أو حاملها |
+|`/v1/nfts/` ، `/v1/rwas/`، `/v1/confidential/*` |NFT ، الأصول في العالم الحقيقي، ومشاهدة الأصول السرية |
+|`/v1/aliases/`، `/v1/assets/aliases/`، `/v1/sns/`، `/v1/identifiers/` |الاسم، الأسماء الخفيفة، وقرار المحدد |
 |`/v1/explorer/*` |ملاحظات الحساب، الأصول، الكتلة، المعاملة، التعليمات والمقاييس، وتدفق المستخدمين المتجهة إلى المستكشف |
-|`/v1/transactions/*` ، `/v1/pipeline/*`، `/v1/iso20022/*` |تاريخ المعاملات، استعادة خط الأنابيب أو وضعها، و ISO 20022 مساعدين |
+|`/v1/transactions/` ، `/v1/pipeline/`، `/v1/iso20022/*` |تاريخ المعاملات، استعادة خط الأنابيب أو وضعها، و ISO 20022 مساعدين |
 |`/v1/contracts/*` |رمز العقد، النشر، الحزمة، المكالمة، الرؤية، الحدث، النشاط، التدفق، والطرق الدولة |
-|`/v1/multisig/*`، `/v1/controls/*`|المقترحات المتعددة الأطراف والموافقات ومساعدون في مراقبة التحويلات |
-|`/v1/bridge/*` ، `/v1/ledger/*`، `/v1/proofs/*` |النهائيّة، إثبات الحالة، إثباط الكتل، احتفاظ الأدلة، وطرق استفسار الأدلة|
+|`/v1/multisig/`، `/v1/controls/` |المقترحات المتعددة الأطراف والموافقات ومساعدون في مراقبة التحويلات |
+|`/v1/bridge/` ، `/v1/ledger/`، `/v1/proofs/*` |النهائيّة، إثبات الحالة، إثباط الكتل، احتفاظ الأدلة، وطرق استفسار الأدلة|
 |`/v1/da/*` |تناول إمكانية توافر البيانات، والإبلاغات، وسياسات الدليل، والالتزامات، ومقصودها. |
 |`/v1/zk/*` |ZK الجذور، التحقق من الإثبات، إثبات IVM، احتساب الأصوات، مفاتيح التحقق، سجلات الأدلة، وروابط |
-|`/v1/gov/*`، `/v1/ministry/*`|مقترحات الحكم والتصويت والدولة المجلس ومناطق الأسماء المحمية ومقترحات جدول الأعمال وتنفيذها وإنهاءها |
-|`/v1/nexus/*`، `/v1/sccp/*`|Nexus الشارع، مساحة البيانات، والسلاسل المتقاطعة المساعدين الدليل |
+|`/v1/gov/`، `/v1/ministry/` |مقترحات الحكم والتصويت والدولة المجلس ومناطق الأسماء المحمية ومقترحات جدول الأعمال وتنفيذها وإنهاءها |
+|`/v1/nexus/`، `/v1/sccp/` |Nexus الشارع، مساحة البيانات، والسلاسل المتقاطعة المساعدين الدليل |
 |`/v1/musubi/*` |Musubi قراءة سجل الحزم ومصممي التعليمات |
 |`/v1/subscriptions/*` |خطط الاشتراك ، دورة حياة الاشتراك، الاستخدام ، ومساعدات الشحن |
-|`/v1/sorafs/*` ، `/sorafs/*`، `/.well-known/sorafs/*` |SoraFS اكتشاف مزود، إثباتات القدرة، التخزين، استلام المخزن، وتقديم المحتوى العام |
-|`/v1/soracloud/*`، `/v1/soradns/*`، `/soradns/*`، `/api/*` |SoraCloud دورة حياة الخدمات، وتدفقات الحوسبة الخاصة / النموذج، والاكتشاف العام، وتوجيه التطبيقات المضيفة |
-|`/v1/connect/*`، `/v1/vpn/*`|Iroha جلسات الاتصال ، WebSocket النقل، VPN جلسات ، الملفات الشخصية والإيصالات |
-|`/v1/app-api/*` ، `/v1/api/*`، `/v1/content/*` |التطبيق API الارتباطات والحزمة/CID مدعومة توجيه المحتوى |
-|`/v1/operator/*`، `/v1/mcp`|المصادقة على المشغل والجسر الأصلي MCP JSON-RPC |
-|`/v1/offline/*`، `/v1/repo/*`، `/v1/space-directory/*`، `/v1/ram-lfe/*` |الاستعداد عبر الإنترنت، واتفاقات مخزن المعلومات، بيانات مجال البيانات، ومساعدين [RAM-LFE ](/ar/blockchain/ram-lfe.md#torii-routes) |
-|`/v1/kaigi/*`، `/v1/webhooks/*`، `/v1/notify/*`، `/v1/telemetry/*` |التعاون، شبكة الويب، إشعارات الدفع، وتكاملات التلفاز المباشر |
+|`/v1/sorafs/` ، `/sorafs/`، `/.well-known/sorafs/*` |SoraFS اكتشاف مزود، إثباتات القدرة، التخزين، استلام المخزن، وتقديم المحتوى العام |
+|`/v1/soracloud/`، `/v1/soradns/`، `/soradns/`، `/api/` |SoraCloud دورة حياة الخدمات، وتدفقات الحوسبة الخاصة / النموذج، والاكتشاف العام، وتوجيه التطبيقات المضيفة |
+|`/v1/connect/`، `/v1/vpn/` |Iroha جلسات الاتصال ، WebSocket النقل، VPN جلسات ، الملفات الشخصية والإيصالات |
+|`/v1/app-api/` ، `/v1/api/`، `/v1/content/*` |التطبيق API الارتباطات والحزمة/CID مدعومة توجيه المحتوى |
+|`/v1/operator/*`، `/v1/mcp` |المصادقة على المشغل والجسر الأصلي MCP JSON-RPC |
+|`/v1/offline/`، `/v1/repo/`، `/v1/space-directory/`، `/v1/ram-lfe/` |الاستعداد عبر الإنترنت، واتفاقات مخزن المعلومات، بيانات مجال البيانات، ومساعدين [RAM-LFE ](/ar/blockchain/ram-lfe.md#torii-routes) |
+|`/v1/kaigi/`، `/v1/webhooks/`، `/v1/notify/`، `/v1/telemetry/` |التعاون، شبكة الويب، إشعارات الدفع، وتكاملات التلفاز المباشر |
 
 ## ISO 20022 جسر {#iso-20022-bridge}
 
@@ -275,7 +285,7 @@ npm run dev
 
 خاصة Kaigi الاحتياجات المحمية XOR لدفع رسوم نقطة الدخول الخاصة. إذا تم الإبلاغ Kaigi الاحتياجات المحمية XOR, استخدم طلب الحماية الذاتية داخل التطبيق ومحاولة عمل إنشاء أو الانضمام مرة أخرى. إذا لم يتم توفير إثباتات أو تمويل خاص أو إشارة مباشرة، يمكن أن يعود التجربة إلى تدفق شفاف / يدوي. في هذه الحالة، افتح الإشارات المتقدمة، ونسخ العرض الخام أو حزمة الإجابة، وألصقها في النافذة الأخرى
 
-للتحقق الآلي في إعادة الإعلان التجريبي، قم بتشغيل:
+للتحقق الآلي في إعادة التثبيت ، قم بتشغيل:
 
 ```bash
 npm test -- tests/kaigiView.spec.ts tests/preloadKaigiBridge.spec.ts
@@ -289,7 +299,7 @@ npm run verify
 
 ## الحالة والمقاييس {#status-and-metrics}
 
-النقاط النهائية للحالة والمقاييس هي أول شيء يتم توصيله إلى لوحة التحكم:
+النقاط النهائية للحالة والمقاييس هي أول شيء يتم توصيله إلى لوحات التحكم:
 
 - `/status` يعرض حقل الأقران والبلوك والصف والموافقة على المستوى الأعلى.
 - `/metrics` يعرّف عدادات Prometheus ومقياسات وهيستوجرامات
@@ -312,17 +322,17 @@ Accept: application/json
 
 عندما تقبل نقطة نهائية أو تعود بتصفية Norito مباشرة، استخدم `application/x-norito` كنوع المحتوى أو قيمة `Accept` المفضلة. انظر [Norito](/ar/reference/norito.md#torii-and-norito-rpc) لمعلومات النقل.
 
-## ملفات تعريف القياس عن بُعد {#telemetry-profiles}
+## ملفات تعريف الهواتف {#telemetry-profiles}
 
-يعتمد ظهور نقاط النهاية على إعداد `telemetry.profile` للعقدة. يتيح التكوين الحالي خمسة مستويات للملف التعريفي:
+تعتمد مرئية النقطة النهائية على إعداد `telemetry.profile` للعقد. يظهر التكوين الحالي خمسة مستويات من الملفات الشخصية:
 
 |الملف الشخصي |`/status` |`/metrics` |طرق المطورين |
 | --- | --- | --- | --- |
-|`disabled` |لا |لا |لا |
-|`operator` |نعم |لا |لا |
-|`extended` |نعم |نعم |لا |
-|`developer` |نعم |لا |نعم |
-|`full` |نعم |نعم |نعم |
+|`disabled` |لا ..|لا ..|لا ..|
+|`operator` |نعم .|لا ..|لا ..|
+|`extended` |نعم .|نعم .|لا ..|
+|`developer` |نعم .|لا ..|نعم .|
+|`full` |نعم .|نعم .|نعم .|
 
 ## CLI اختصارات {#cli-shortcuts}
 

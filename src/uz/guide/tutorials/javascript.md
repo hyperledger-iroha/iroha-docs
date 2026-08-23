@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: feddadb1b50c5cc8beea188fd7053eeaae58d6ab9203687e9a1378f203229168
+translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -22,7 +22,7 @@ npm run build:native
 npm run build:dist
 ```
 
-Asosiy qurilma `cargo build -p iroha_js_host` ni qoplaydi va SDK ishga tushirishida ishlatiladigan platformaga mos checksumni yozib oladi. Manba `native/`da xostni tasdiqlagan joylarni yaratadi. Faqat alohida qurilgan, checksum-tahqiqlangan xostni qasddan etkazib berganda `IROHA_JS_NATIVE_DIR` ni o'rnating. To'plam faqat ESM; CommonJS dan foydalanish dinamik `import()`.
+Yerli qurilmalar toʻplami `cargo build -p iroha_js_host` va platformasiga oid tekshiruvlar summasini qayd etadi; SDK boshlang'ich. Manba o'rnatilgan joylar `native/`. Oʻrnatilgan `IROHA_JS_NATIVE_DIR` faqat alohida qurilgan, checksum-verified uy egasi bilan qasddan ta'minlangan holda. ESM- faqat; CommonJS, foydalanish dinamikasi `import()`.
 
 ## Tez ishga tushirish {#quickstart}
 
@@ -45,7 +45,9 @@ Imzolash va Norito muomala kodini qo'shishdan oldin Taira ni tekshirish uchun No
 ```js
 const root = "https://taira.sora.org";
 
-const status = await fetch(`${root}/status`).then((res) => res.json());
+const status = await fetch(`${root}/status`, {
+  headers: { Accept: "application/json" },
+}).then((res) => res.json());
 console.log({
   blocks: status.blocks,
   queueSize: status.queue_size,
@@ -85,7 +87,7 @@ Faqat brauzerda ishlaydigan Connect bootstrap uchun Node-first `ToriiClient` yuz
 
 ## Native escrow {#native-escrow}
 
-JavaScript va TypeScript ilovalar nativ escrow orqali foydalanish mumkin Kotodama kontraktlar. "Esrow host" qo'ng'iroqlarini `@iroha/iroha-js/kotodama-compiler`; toʻgʻridan-toʻgʻri vujudga kelgan eskrov tranzaksiyalarini tuzgan shaxslar hozirda JavaScript SDK. Koʻring [Native Asset Escrow](/uz/blockchain/escrow.md#javascript-and-typescript-kotodama) "Eskrow host call" misoli uchun.
+JavaScript va TypeScript ilovalari Kotodama shartnomalari orqali natiy escrowdan foydalanishlari mumkin. `@iroha/iroha-js/kotodama-compiler` bilan escrow host qo'ng'iroqlarini tuzish; to'g'ridan-to'g'ri natiy escro JavaScript SDK tomonidan amal qiluvchilar hozirda ekspozitsiya qilinmaydi. [Native Asset Escrow](/uz/blockchain/escrow.md#javascript-and-typescript-kotodama) ni ko'rib chiqing.
 
 ## Joriy qamrov {#current-coverage}
 
@@ -99,7 +101,7 @@ SDK quyidagilarga e'tibor qaratadi:
 - Browserni ishga tushirish yordamchilarini ulash
 - Kagemusha tayyorgarligi, to'ldirish, sotib olish va faoliyat ko'rsatishi holatidagi transport yordamchilari
 
-## Yuqoridagi ma'lumotlar {#upstream-references}
+## Yuqori yo'nalishdagi referentlar {#upstream-references}
 
 - `javascript/iroha_js/README.md`
 - `javascript/iroha_js/package.json`

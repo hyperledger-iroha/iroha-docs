@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 63c317ab61ba912176c43c83d5b4f026f23a7a6e5fb633872a133c9ea1295686
+translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -13,7 +13,7 @@ SORA 3 འདི་ལག་ལེན་ཁ་ཐུག་གི་ མི་ས
 འ་ནི་སྟོན་ཐངས་འདི་ public SORA networksགི་དོན་ལུ་ Iroha client གཞི་སྒྲིག་འབད་ནིའི་ཐབས་ལམ་ཚུ་སྟོན་འབདཝ་ཨིན།
 
 - Taira བརྟག་དཔྱད་འབད་ཐངས་འདི་ `https://taira.sora.org`
-- Minamoto མང་ཤོས་ཀྱི་ཁ་བྱང་འདི་ `https://minamoto.sora.org`
+- Minamoto མང་སྡེ་ཁ་ལུ་ `https://minamoto.sora.org`
 
 མཉམ་འབྲེལ་བརྟག་དཔྱད་འབད་ནི་ལུ་ Taira ལག་ལེན་འཐབ་ནི་, ཐབ་ཤིང་ལས་དངུལ་བསྡུ་ལེན་འབད་མི་ཡིག་འབྲུ་འཕྲུལ་ཆས་ཚུ་དང་ བཙུགས་ནི་གི་ཉམས་མྱོང་། བཟོ་སྐྲུན་གྱི་དོན་ལུ་ གྲ་སྒྲིག་འབད་ཡོད་པའི་ majinnet ལས་འགུལ་ཚུ་གི་དོན་ལུ་རྐྱངམ་ཅིག་ Minamoto ལག་ལེན་འཐབ་ནི། གློག་ཐག་གཉིས་ཆ་ར་གིས་XOR ལུ་འཐུས་སྤྲོད་དོ་ཡོདཔ་ཨིན།
 
@@ -36,6 +36,20 @@ SORA 3 འདི་ལག་ལེན་ཁ་ཐུག་གི་ མི་ས
 2. ཟུར་རྟགས་བཀོད་མི་ཅིག་བཙུགས་ཞིནམ་ལས་ Taira faucet གྱི་ཐོག་ལས་ དངུལ་རྐྱང་གཏང་དགོ།
 3. ཁྱོད་ཀྱིས་ Taira གྱི་ཐད་ལུ་ ཁྱོད་ཀྱི་ལག་ལེན་གི་རྣམ་གཞག་ བརྟག་ཞིབ་འབད་དགོ་པའི་སྐབས་ འཛོལ་བ་ཚུ་ ཁེ་རྒོ་དང་ མཐོང་ཚུགས་པའི་བར་ན་ཡང་ཨིན།
 4. Minamoto འབྲི་ཤོག་སོ་སོ་བཟོ་ནི་དང་ ངོ་མ་ XOR ལུ་དངུལ་སྤྲོད་ནི་ དེ་ལས་བརྟག་ཞིབ་འབད་ཡོད་པའི་ལག་ལེན་ཚུ་རྐྱངམ་གཅིག་ མའི་ནེཊ་ལུ་སྤོ་བཤུད་འབདཝ་ཨིན།
+
+## བཞེས་སྒོའི་དེབ་འདི་ འཕྲོ་མཐུད་ལག་ལེན་འཐབ་དགོ། {#continue-with-the-cookbook}
+
+འ་ནི་ལམ་སྟོན་འདི་ལག་ལེན་འཐབ་ཞིནམ་ལས་ ཁྱོད་ཀྱིས་ཁ་ཐོ་བཀོད་འབད་མི་དང་ ལག་ལེན་གྱི་འཐུས་ཚུ་ གདམ་ཁ་རྐྱབས་ཨིན། དེ་ལས་ཁྱོད་ཀྱིས་བཟོ་དགོ་པའི་ལག་ལེན་གི་སྤྱོད་ལམ་ལུ་ འགྱུར་ལྡནམ་སྦེ་ བཟོ་ནིའི་སྨན་རྫས་འདི་མུ་མཐུད་འབད་:
+
+|དམིགས་གཏད་ |བཏང་ཐིག་ |
+| --- | --- |
+|Taira བརྟག་ཞིབ་འབད་ཞིནམ་ལས་ མཁན་པོ་ཅིག་བཟོ་ནི། | [Taira](/dz/cookbook/connect-to-taira.md) ལུ་མཐུད་སྦྲེལ་འབད་ |
+|དང་པ་ཡིག་འབྲུ་བཏང་ཞིནམ་ལས་ གྲུབ་འབྲས་འདི་བརྟག་དཔྱད་འབད།| [ཚོང་འབྲེལ་ཚུ་ བཏང་ནི་དང་ བདེན་དཔྱད་འབད་ ](/dz/cookbook/submit-and-verify-transactions.md) |
+|ཐོ་བཀོད་དང་དངུལ་ཀྲམ་བཟོ་ནི་དང་ གནས་སྤོ་གོང་ | [ཕན་ནུས་ཅན་གྱི་རྒྱུ་དངོས་ཚུ་](/dz/cookbook/fungible-assets.md) |
+|ཀློག་ཐེངསམ་ལག་ལེན་གྱི་གནས་གོང་ | [ཞིབ་འཚོལ་ཞིབ་འཇུག་གི་གནས་སྟངས་](/dz/cookbook/query-ledger-state.md) |
+|བསྒྱུར་བཅོས་འབད་ནིའི་དོན་ལས་ གྲོས་ཐག་ཆོད་ | [རྒྱུན་འགྲུལ་གྱི་བྱུང་རྐྱེན་](/dz/cookbook/stream-events.md) |
+
+བཞེས་སྒོའི་དཔེ་དེབ་འདི་ ལཱ་གི་རྒྱུན་ལམ་རེ་རེ་ལུ་ དམིགས་གཏད་ཅན་སྦེ་བཞག་ཞིནམ་ལས་ Taira དངུལ་རྐྱང་དང་ ཡང་ན་ SORA Nexus འབྲེལ་མཐུད་ཀྱི་ གནས་སྟངས་ནང་ལུ་ དགོས་མཁོ་བྱུང་བའི་སྐབས་ལུ་ འདི་ཁར་སླར་ལོག་འབད་ཡོདཔ་ཨིན།
 
 ## 1. ཁྱོད་ཀྱིས་ག་ཅི་བརྩམས་དོ་ཡོདཔ་ཨིན་ན་ ཧ་གོ་དགོ། {#_1-understand-what-you-are-setting-up}
 
@@ -60,6 +74,7 @@ Taira གི་དོན་ལུ་:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -67,6 +82,7 @@ Minamoto གི་དོན་ལུ་:
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -74,6 +90,7 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
@@ -94,6 +111,7 @@ Taira གིས་ཡང་ Torii-native Model Context Protocol (MCP) གྱི�
 
 ```bash
 curl -fsS https://taira.sora.org/v1/mcp \
+  -H 'Accept: application/json' \
   | jq '{protocolVersion, server: .serverInfo.name, tools: .capabilities.tools.count}'
 ```
 
@@ -133,9 +151,9 @@ say "submit this transaction".
 
 MCP སྦྲག་འདི་གིས་ Iroha གོ་བརྡ་སྤྲོད་ལེན་ཅིག་བཙུགས་རུང་ ངོ་མ་གི་ཚོང་འབྲེལ་གྱི་ དགོས་མཁོ་ཚུ་ བཏོན་མི་བཏུབ་ཨིན། ཚོང་འབྲེལ་དེ་གི་དོན་ལུ་ ཁྱད་ལྡན་དབང་འཛིན་, ངོས་ལེན་, དངུལ་ཕོགས་དངུལ་ཁང་, ལྕགས་ཐག་ ID, མེ་ཊ་ཌེ་ཊ་དང་མིང་ཐོ་བཀོད་འབད་དགོཔ་ཡོདཔ་ཨིན།
 
-Iroha སྣུམ་འཁོར་གྱི་ཚོང་འབྲེལ་ཚུ་གི་དོན་ལུ་ དང་པ་ར་ SDK ཡང་ན་ CLI ཟེར་མི་ཡིག་གཟུགས་བཟོ་སྟེ་ བཏང་ཞིནམ་ལས་ ཨེབ་ལྡེ་སྦེ་བཙུགས་ཞིནམ་ལས་ ཨེན་ཇེཊ་ལུ་ `body_base64` ལུ་ཨེབ་ལྡེ་འབད་ཡོད་པའི་ ཀན་ནོ་བིཀཱསི་ལག་ལེན་འཐབ་མི་ ཚོང་འབྲེལ་ཡེཊི་ཚུ་རྐྱངམ་ཅིག་བྱིན་དགོ། ལས་འཛིན་གྱིས་ཁེབས་འདི་ `iroha.transactions.submit_and_wait` ལུ་བཙུགས་ཚུགས། ཡང་ན་ `iroha.transactions.submit` དང་དྲི་བ་དྲིས་ལེན་ `iroha.transactions.wait` ལུ་བཙུགས་ཚུགས།
+རིན་པོ་ཆེ་ Iroha གྱི་ཚོང་འབྲེལ་ཚུ་གི་དོན་ལུ་ དང་པ་ར་ SDK ཡང་ན་ CLI ཟེར་མི་ཡིག་གཟུགས་ཚུ་བཟོ་སྟེ་ བཏང་ཞིནམ་ལས་ ཨེབ་གཏང་འབད་ཞིནམ་ལས་ ཌོག་ཊར་ལུ་ ཀ་ནོ་ནི་ཀཱན་གྱི་ཡིག་གཟུགས་རྐྱངམ་གཅིག་བྱིན་དགོ། ཟད་འགྲོ་བཏང་མི་ བའི་ཊི་ཚུ་ `body_base64` ལུ་ཨེབ་གཏང་འབད་ཚུགས། ལས་འཛིན་གྱིས་ཁེབས་འདི་ `iroha.transactions.submit_and_wait` དང་གཅིག་ཁར་བཙུགས་ཚུགས། ཡང་ན་ `iroha.transactions.submit` དང་གཅིག་ཁར་བཙུགས་ནི་དང་ ཞིབ་འཚོལ་དེ་ `iroha.transactions.wait` ཟེར་མི་ནང་བཙུགས་འོང་།
 
-སྒེར་གྱི་ལྡེ་མིག་ཚུ་ ཨེཇེན་བརྡ་སྟོན་ནང་མ་བཙུགས། གལ་སྲིད་ཨེཇེན་ཅིག་གིས་ ཌོག་ཊར་ཚུ་བཟོ་དགོ་པ་ཅིན་ ལག་ལེན་འཐབ་མིའི་ runtime གནས་སྟངས་, keychain, hardware signer ཡང་ན་ ignored testnet config ཡིག་སྣོད་ནང་ལས་གསང་བ་ཚུ་ བཙུགས་ཡོད་པའི་ ས་གནས་ཀྱི་ code ལུ་བཏོན་དགོ། གནད་སྡུད་འདི་ Markdown ལུ་ གཏན་འཇགས་སྦེ་བཙུགས་མ་བཅུགཔ་ ཡང་ན་ ཡིག་ཐོག་ལུ་བྲིས་མ་གཏང་།
+སྒེར་གྱི་ལྡེ་མིག་ཚུ་ ཨེགསི་ཨེབ་གཏང་མ་རྐྱབས། གལ་སྲིད་ ཌོག་ཊར་ཅིག་གིས་ ཚོང་འབྲེལ་བཟོ་དགོ་པ་ཅིན་ ལག་ལེན་འཐབ་མིའི་དུས་ཚོད་ནང་ལས་ གསང་བ་ཚུ་ བསྡུ་བསྒྱོམ་འབད་ཡོད་པའི་ ས་གནས་ཀྱི་ ཀོ་ཌ་ལུ་བཏོན་གཏང་དགོ། གནས་སྟངས་, keychain, hardware signer, ཡང་ན་ testnet སྒྲིག་གཞི་ཡིག་སྣོད་ཚུ་སྣང་མེད་བསྐྱུར་དགོ། ལས་འཛིན་དེ་གིས་ Key material འདི་ Markdown, fixtures, logs, ཡང་ན་ commits ལུ་ནམ་ཡང་འབྲི་ནི་མི་འོང་།
 
 ཚོང་འབྲེལ་མ་སྤྲོད་པའི་ཧེ་མར་ ལས་འཛིན་གྱིས་ ཚོང་འབྲེལ་གྱི་འཆར་གཞི་ཐུང་ཀུ་ཅིག་བཟོ་དགོཔ་ཨིན།
 
@@ -188,6 +206,7 @@ for network in taira minamoto; do
   root="https://$network.sora.org"
   printf '\n%s\n' "$network"
   curl -fsS "$root/status" \
+    -H 'Accept: application/json' \
     | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 done
 ```
@@ -196,6 +215,7 @@ Taira གིས་ གསལ་སྟོན་འབད་ཡོད་པའི�
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -205,6 +225,7 @@ curl -fsS https://taira.sora.org/status \
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -220,7 +241,9 @@ const roots = {
 };
 
 for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`).then((res) => res.json());
+  const status = await fetch(`${root}/status`, {
+    headers: { Accept: 'application/json' },
+  }).then((res) => res.json());
   const publicSpaces = status.teu_lane_commit
     .filter((lane) => lane.visibility === 'public')
     .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
@@ -286,7 +309,7 @@ iroha --config ./taira.client.toml taira write-canary \
   --json
 ```
 
-ཀ་ནེ་རིའུ་གིས་མིང་རྟགས་བཀོད་མི་ པིན་ཨེབ་གཏང་འབད་ཞིནམ་ལས་ ངོས་ལེན་གྱི་དོན་ལུ་བསྒུག་སྟེ་ཡོདཔ་མ་ཚད་ `--write-config` བྱིན་པའི་སྐབས་ རན་ཊི་མའིན་ཌིང་གི་བརྡ་དོན་འདི་འབྲི་དོ་ཡོདཔ་ཨིན། Taira འདི་ མི་མང་གི་བརྟག་དཔྱད་དྲ་རྒྱ་ཅིག་ཨིནམ་ལས་ ཐིག་ཁྲམ་ཚངམ་གིས་ ལག་ལེན་འཐབ་མི་ པིན་ ཨེབ་གཏང་འབད་མི་ཚུ་ལུ་ ཐོ་བཀོད་འབད་མ་ཚུགས་པར་ བཟོ་ཚུགས་ནི་ཨིན་མས། གལ་སྲིད་ `taira doctor` གིས་གང་རུང་གི་གྲལ་རིམ་ཅིག་ སྙན་ཞུ་འབད་བ་ཅིན་ ཡང་ན་ ཀ་ནེ་རི་གིས་ `PRTRY:NEXUS_FEE_ADMISSION_REJECTED` སླར་ལོག་འབདཝ་ཨིན་པ་ཅིན་ བསྒུག་སྟེ་བལྟ་ཞིནམ་ལས་ ལོག་སྟེ་རང་ བརྟག་དཔྱད་འབད་ཞིནམ་ལས་ དེ་གི་དོན་ལུ་ ཁྱོད་ཀྱིས་ client configuration error ཟེར་ངོས་འཛིན་འབདཝ་ཨིན།
+Canary གིས་མིང་རྟགས་བཀོད་མི་ ping བཏབ་ནི་ དེ་ལས་ confirmation གི་དོན་ལུ་སྒུག་སྟེ་ཡོདཔ་དང་ runtime signer config འདི་ `--write-config` བྱིན་པའི་བསྒང་ཨིན། Taira ནི་ མི་མང་གི་ testnet ཨིན་ཨིན། འདི་འབདཝ་ལས་ གྱངས་ཁ་ཚངམ་གིས་ ཐོ་བཀོད་འབད་ཡོད་པའི་ པིན་ཌི་དེ་ ཐབས་ལམ་ནང་མ་ལྷོད་པའི་སྐབས་ཡང་ འབད་ཚུགས། གལ་སྲིད་ `taira doctor` གིས་ གྱངས་ཐངས་ཚངམ་ཅིག་ སྙན་ཞུ་འབད་བ་ཅིན་ ཡང་ན་ ཀ་ནའི་རི་འདི་གིས་ `PRTRY:NEXUS_FEE_ADMISSION_REJECTED` བཏབ་པ་ཅིན་ དེ་ client config error ཨིན་ཟེར་ མ་སླབ་པར་སྒུག་སྟེ་ ལོག་ལྟབ་སྦེ་ བལྟ་དགོ།
 
 ཉེན་སྲུང་མེད་པའི་དུ་པ་བརྟག་དཔྱད་ཚུ་གི་དོན་ལུ་ ཀ་ནེ་རི་ལུ་ མཐའ་ཟུར་གྱི་སླར་ལོག་བརྟག་དཔྱད་ ལྡེ་མིག་ནང་བཀབ་དགོ།
 
@@ -328,7 +351,7 @@ Minamoto public key འདི་ mainnet prefix དང་གཅིག་ཁར�
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-གྲུབ་འབྲས་ཐོན་པའི་རྩིས་འདི་ལག་ལེན་འཐབ་ནི། ID ས་ཆ་གང་རུང་ཅིག་ Nexus API ཡང་ན་ CLI བཀའ་རྒྱ་འདི་ ཀན་ནོག་གི་རྩིས་འཚོལ་ནུག ID, དཔེར་ན་ Taira པ་ཝེཊི་ `account_id`, བཀྲམ་སྤེལ་འབད་དགོ་པའི་དྲིས་ལན། བཀག་དམ་ཅན་གྱི་རྩིས་ཁྲ་ Fields ཡང་ན་ Alias འབྲེལ་བ་འཐབ་ཐབས། ཁྱོད་ཀྱི་ client གི་ config ནང་རང་ལྡནམ་སྦེ་ཡོད་པའི་ སྒེར་གྱི་ལྡེ་མིག་བཞག་ནི། དེ་ལས་སེལ་འཐུ་འབད་ཡོད་པའི་ མི་མང་གི་ཁ་ཐུག་ལུ་ `[account].profile = "taira"` ཡང་ན་ `[account].profile = "minamoto"`.
+ཁྱོད་ཀྱིས་ Nexus API ཡང་ན་ CLI བཀའ་རྒྱ་ནང་ ཀ་ནོ་ནི་ཀཱོལ་རྩིས་ཁྲ་ ID འབྲི་དགོ་པ་ཅིན་ གྲུབ་འབྲས་ཐོན་པའི་རྩིས་ཁྲ་འདི་ ID ལག་ལེན་འཐབ་དགོ། དཔེར་ན་ Taira འབུད་ཀ་ `account_id` བཀྲམ་སྤེལ་འབད་དགོ་པའི་དྲིས་ལན། ཟད་དམ་ཅན་གྱི་རྩིས་ཁྲ་ Fields ཡང་ན་ Alias འབྲེལ་གཏུགས་འབད་ཐབས། ཁྱོད་ཀྱིས་ client config ནང་དང་བསྟུན་མི་ སྒེར་གྱི་ལྡེ་མིག་འདི་བཞག་ཞིནམ་ལས་ `[account].profile = "taira"` ཡང་ན་ `[account].profile = "minamoto"` གི་ public network འདི་རང་བཙག་དགོ།
 
 ID བཟོ་སྐྲུན་འབད་ནི་འདི་གིས་ རང་གིས་རང་ལུ་ དངུལ་ཐོག་གི་རྩིས་ཁྲ་བཟོ་མི་ཚུགས། Taira ལུ་ ཐབ་རྡོག་དེ་གིས་ རྩིས་ཁྲ་བཟོ་ནི་དང་ དངུལ་ཕོགས་སྤྲོད་ནི་ཨིན། Minamoto ལུ་, ངོས་ལེན་ཅན་གྱི་ mainnetonboarding ཡང་ན་ Treasury flow ལག་ལེན་འཐབ་དགོ།
 
@@ -338,7 +361,7 @@ ID བཟོ་སྐྲུན་འབད་ནི་འདི་གིས་ �
 
 SORA Nexus རྩིས་ཁྲ་ཚུ་གི་དོན་ལུ་ འ་ནི་ལག་ལེན་ཚུ་ལག་ལེན་འཐབ་དགོ།
 
-- སྒེར་གྱི་ལྡེ་མིག་ཚུ་ སྦྲགས་ཡོད་པའི་ Password Manager, Hardware-backed keystore, ཡང་ན་ དམིགས་གཏད་ཅན་གྱི་ Signage ཞབས་ཏོག་ནང་བཞག་དགོ། གཞི་རྟེན་འཛིན་སྐྱོང་ལུ་ལྡེ་མིག་ལག་ལེན་མ་རྐྱབས། ཡང་ཅིན་ ཤེལ་ལོ་གི་ལོ་རྒྱུས་ནང་ལུ་ བཟོ་སྐྲུན་ལྡེ་མིག་བཞག་ནི་མི་འོང་། ཐོ་བཀོད་འབད་ནི་དང་ བཀྲིས་བསྡུར་འབད་ནི་ དེ་ལས་ ལག་ལེན་མ་འཐབ་པའི་རྒྱབ་སྐྱོར་ཚུ་ནང་བཞག་མི་ཆོག།
+- སྒེར་གྱི་ལྡེ་མིག་ཚུ་ སྦྲགས་ཡོད་པའི་ Password Manager, Hardware-backed keystore, ཡང་ན་ དམིགས་གཏད་ཅན་གྱི་ Signage ཞབས་ཏོག་ནང་བཞག་དགོ། གཞི་རྟེན་འཛིན་སྐྱོང་ལུ་ལྡེ་མིག་ལག་ལེན་མ་རྐྱབས། ཡང་ཅིན་ ཤེལ་ལོ་གི་ལོ་རྒྱུས་ནང་ལུ་ བཟོ་སྐྲུན་ལྡེ་མིག་བཞག་ནི་མི་འོང་། ཐོ་བཀོད་འབད་ནི་དང་ བཀྲིས་བསྡུར་འབད་ནི་ དེ་ལས་ ལག་ལེན་མ་འཐབ་པའི་རྒྱབ་སྐྱོར་ཚུ་ནང་བཞག་མི་དགོ་།
 - ཝོཊ ཡང་ན་ བཟོ་སྐྲུན་རྟགས་བཀོད་མི་རེ་གི་དོན་ལུ་ ཁྱད་དུ་འཕགས་པའི་ ཨེན་ཏྲོ་པི་ལྡེ་ཌིསི་ལག་ལེན་འཐབ་ཨིན། Passphrases འདི་ཁ་བྱང་འཛིན་སྐྱོང་པ་ ཡང་ན་ བཀྲམ་སྤེལ་བཞག་སའི་ བྱ་རིམ་ནང་ལུ་བཙུགསཔ་མ་གཏོགས་ ཡིག་སྣོད་དང་ རྒྱབ་སྐྱོར་སྦ་སྒོར་ཚུ་ནང་མ་བཙུགསཔ་སྦེ་ གསལ་བཀོད་འབད་ཡོད་པའི་ སྒེར་གྱི་ལྡེ་ཌེསི་ཅིག་ནང་ བཙུགས།
 - Taira དང་ Minamoto གི་ལྡེ་མིག་ཚུ་སོ་སོ་སྦེ་བཞག་དགོཔ་ཨིན། Taira གི་ལྡེ་མིག་འདི་ ལག་ལེན་འཐབ་མ་བཏུབ་པའི་བརྟག་དཔྱད་འཕྲུལ་ཆས་ཅིག་ཨིནམ་ད་ Minamoto གྱི་ལྡེ་མིག་དེ་ བཟོ་སྐྲུན་གྲོགས་རམ་དབང་འཛིན་ཅིག་སྦེ་ལག་ལེན་འབད་དགོ།
 - སྒེར་གྱི་ལྡེ་མིག་དང་ མི་མང་ལྡེ་མིག་ དེ་ལས་རྩིས་ཁྲ་ ID དང་རྩིས་ཁྲ་གི་ཡིག་གཟུགས་ དེ་ལས་ཁ་ཐོ་བཀོད་འབད་མི་ཚུ་ ལོག་སྤྱོད་འབད་ནི་ལུ་ འོས་འབབ་ཡོད་པའི་རྩིས་ཁྲ་སླར་གསོ་ ཡང་ན་ གསལ་སྟོན་ཚུ་ རྒྱབ་སྐྱོར་འབད། གྲོག་སྡེའི་ལྡེ་མིག་མེད་པའི་སྒེར་ལྡེ་མིག་འདི་ ལོག་སྤྱོད་འབད་བའི་སྐབས་ལུ་ ལག་ལེན་འཐབ་ནི་འཇམ་ཏོང་ཏོ་ཨིན།
@@ -366,7 +389,9 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 རོལ་གྲོལ་འདི་འབག་ཤོག
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
+curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
+  -H 'Accept: application/json' \
+  | jq .
 ```
 
 ཐབ་ཤིང་འདི་ མི་མང་གི་ བརྟག་དཔྱད་དྲ་ལམ་ ཞབས་ཏོག་ཨིན། གལ་སྲིད་ puzzle ཡང་ན་ claim endpoint གིས་ `502`, timeout, ཡང་ན་ gateway level གི་འཛོལ་བ་གཞན་ཅིག་ལོག་འོང་པ་ཅིན་ ཁྱོད་ཀྱི་ལྡེ་མིག་དང་ client config ཚུ་མ་འགྱུར་བའི་ཧེ་མ་སྒུག་སྟེ་ ཡང་བསྐྱར་བརྩམས་དགོ།
@@ -391,27 +416,33 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
-  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}'
+  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
 `difficulty_bits` ཚད་འདི་ `0` ལས་བརྒལ་མེད་པ་ཅིན་ མཚམས་སྦྱོར་དེ་ སེལ་ཞིནམ་ལས་ ཀྲོང་ཏོ་གི་མཐོ་ཚད་དང་ nonce འདི་རྩིས་དགོ།
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
   -d '{
     "account_id": "<TAIRA_I105_ACCOUNT_ID>",
     "pow_anchor_height": 741,
     "pow_nonce_hex": "<NONCE_HEX>"
-  }'
+  }' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
 གྲུབ་ཚིག་གི་ ཨག་རི་ཏིམ་འདི་:
 
-1. བརྩོན་འགྲུས་འདི་ SHA-256 སྦེ་བཟོ་ནི།
+1. བརྩོན་འགྲུས་འདི་ SHA-256 སྦེ་བཟོ་ནི་:
    - `iroha:accounts:faucet:pow:v2` གི་ བའི་ཊི་ཚུ་
-   - UTF-8 རྩིས་ཁྲ་ ID
+   - UTF-8 གི་རྩིས་ཁྲ་ ID
    - `anchor_height` འདི་བཟུམ་སྦེ་ big-endian `u64`
    - `anchor_block_hash_hex` བའི་ཊི་སྦེ་རྩིས་སྟོནམ་ཨིན།
    - `challenge_salt_hex` བའི་ཊི་སྦེ་ཁ་གསལ་འབད་ཡོདཔ་ད་
@@ -430,21 +461,25 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet \
 ```json
 {
   "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-  "asset_definition_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
+  "asset_definition_id": "<TAIRA_FEE_ASSET_DEFINITION_ID>",
   "asset_id": "...",
-  "amount": "25000",
+  "amount": "<FUNDED_AMOUNT>",
   "tx_hash_hex": "...",
   "status": "QUEUED"
 }
 ```
 
-གནད་དོན་འདི་ ད་རེས་ HTTP `202 Accepted` ལུ་ བཏབ་སྟེ་ཡོདཔ་ཨིན། གོང་གི་རྒྱུ་དངོས་ཀྱི་འགྲེལ་བཤད་དེ་ ID གིས་ གཞུང་གི་ཁྲལ་ལས་ དངུལ་ཕོགས་ཐོབ་མི་ Taira གི་ཁྲལ་གྱི་རྒྱུ་དངོས་ཨིན། འབུབ་འདི་གིས་ ཞུ་ཡིག་འདི་ཁས་ལེན་འབད་ཡོདཔ་ད་ ཁོ་གིས་ `tx_hash_hex` དང་ `status: "QUEUED"` སླར་ལོག་འབད་བའི་སྐབས་ཨིན།
+གནད་དོན་འདི་ ད་རེས་ HTTP `202 Accepted` ལུ་ བཏབ་དོ་ཡོདཔ་ཨིན། འདི་གི་ `asset_definition_id` འདི་ མི་མང་གི་ཁྲལ་ལས་ དངུལ་ཕོགས་ཐོབ་མི་ ད་ལྟོའི་ Taira ཁྲལ་གྱི་རྒྱུ་དངོས་ཨིན། དཔེ་སྟོན་ ID གི་ཚབ་ལུ་ ལན་འདེབས་ནང་ལས་བཏོན་དགོ། འབུབ་འདི་གིས་ ཞུ་ཡིག་དེ་ ཆ་འཇོག་འབད་ཡོདཔ་ད་ ཁོ་གིས་ `tx_hash_hex` དང་ `status: "QUEUED"` སླར་ལོག་རྐྱབ་པའི་བསྒང་ཨིན།
 
 དེ་ལས་ རང་སོའི་འཐུས་སྤྲོད་ལེན་གྱི་ཞལ་འདེབས་མ་བཙུགས་པའི་ཧེ་མར་ དངུལ་རྐྱང་གི་རྒྱུ་དངོས་ཚུ་གི་དོན་ལུ་ ཞིབ་འཚོལ་འབད་:
 
 ```bash
+TAIRA_FEE_ASSET_DEFINITION=$(
+  jq -er '.asset_definition_id' ./taira-faucet-response.json
+)
+
 iroha --config ./taira.client.toml ledger asset get \
-  --definition 6TEAJqbb8oEPmLncoNiMRbLEK6tw \
+  --definition "$TAIRA_FEE_ASSET_DEFINITION" \
   --account <TAIRA_I105_ACCOUNT_ID>
 ```
 
@@ -470,7 +505,12 @@ def has_leading_zero_bits(digest: bytes, bits: int) -> bool:
 root = "https://taira.sora.org"
 account_id = sys.argv[1]
 
-with urllib.request.urlopen(f"{root}/v1/accounts/faucet/puzzle") as res:
+puzzle_request = urllib.request.Request(
+    f"{root}/v1/accounts/faucet/puzzle",
+    headers={"Accept": "application/json"},
+)
+
+with urllib.request.urlopen(puzzle_request) as res:
     puzzle = json.load(res)
 
 claim = {"account_id": account_id}
@@ -503,7 +543,7 @@ if difficulty > 0:
 request = urllib.request.Request(
     f"{root}/v1/accounts/faucet",
     data=json.dumps(claim).encode(),
-    headers={"content-type": "application/json"},
+    headers={"Accept": "application/json", "content-type": "application/json"},
     method="POST",
 )
 
@@ -515,7 +555,7 @@ with urllib.request.urlopen(request) as res:
 
 ## 5. Minamoto Client Config བཟོ་དགོ། {#_5-create-a-minamoto-client-config}
 
-Minamoto གི་དོན་ལུ་ ཁྱད་པར་ཅན་ལྡེ་མིག་གཉིས་ལག་ལེན་འཐབ་ འབྲེལ་མཐུད་འབད་ནིའི་དོན་ལུ་ Taira ལྡེ་མིག་ཚུ་ ལོག་མ་ལག་ལེན་འཐབ་
+Minamoto གི་དོན་ལུ་ ཁྱད་པར་ཅན་ལྡེ་མིག་གཉིས་ལག་ལེན་འཐབ་ འབྲེལ་མཐུད་ཀྱི་དོན་ལུ་ Taira ལྡེ་མིག་ཚུ་ ལོག་མ་ལག་ལེན་འཐབ་།
 
 བཟོ་ནི་ `minamoto.client.toml`:
 
@@ -599,16 +639,17 @@ alice@apps.universal
 alice@universal
 ```
 
-ཐད་ཀར་དུ་རྩིས་ཁྲ་གི་ས་ཁོངས་ཚུ་ནང་ལུ་ Canonical I105 account IDs ལག་ལེན་འཐབ་དོ་ཡོདཔ་ཨིན། མིང་མིང་འདི་ མི་གིས་ཀློག་ཚུགས་པའི་བཅའ་ཡིག་ཅིག་སྦེ་ལག་ལེན་འབད་ཞིནམ་ལས་ Canonical account IDs ལུ་སེལ་འཐུ་འབདཝ་ཨིན།
+ཐད་ཀར་དུ་རྩིས་ཐོ་བཀོད་འབད་སའི་ ས་ཁོངས་ཚུ་ནང་ལུ་ Canonical still ལག་ལེན་འཐབ་དོ་ཡོདཔ་ཨིན། I105 རྩིས་ཁྲ་ IDs. མིང་མིང་འདི་ མི་གིས་ཀློག་ཚུགས་པའི་ བསྡུ་སྒྲིག་ཅིག་སྦེ་ ལག་ལེན་འཐབ་དོ་ཡོདཔ་ལས་ དེ་ཚུ་ ཀ་ནོ་ནི་ཀཱན་གྱི་རྩིས་ཁྲམ་ནང་ བཀག་ཆ་འབད་ཡོདཔ་ཨིན། IDs.
 
 ## ཌེ་ཊ་ས་པི་སི་གསརཔ་ བཟོ་ནི་ {#_8-provision-a-new-dataspace}
 
 ཌེ་ཊ་ས་པི་སི་གསརཔ་འདི་ ལས་འཛིན་དང་ གཞུང་སྐྱོང་གནས་སྟངས་ལུ་ བསྒྱུར་བཅོས་འབདཝ་ཨིན། མི་མང་ Torii མཇུག་མཐར་ཐུག་གིས་ འགྲུལ་ལམ་དེ་ གཞི་སྒྲིག་འབད་ཡོད་པའི་ཌེ་ཊའི་ས་པིསི་ཚུ་ལུ་ བཏོན་གཏང་ཚུགས་རུང་ ངོ་མ་ཤེས་པའི་ཌེ་ཊི་ས་པི་ཨེས་ཀྱི་མིང་ཚུ་མ་བཏུབ་ཨིན།
 
-བསྒྱུར་བཅོས་ཚུ་ གྲ་སྒྲིག་མ་རྐྱབ་པའི་ཧེ་མར་ ད་ལྟོའི་གནས་གོང་གི་ཡིག་ཐོ་འདི་ སེལ་འཐུ་འབད།
+བསྒྱུར་བཅོས་ཚུ་ གྲ་སྒྲིག་མ་རྐྱབ་པའི་ཧེ་མར་ ད་ལྟོའི་གནས་གོང་གི་ཡིག་ཐོ་འདི་ལག་ལེན་འབད་:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
@@ -664,6 +705,7 @@ description = "Route payments domains to the payments dataspace"
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | select(.dataspace_alias == "payments")'
 ```
 

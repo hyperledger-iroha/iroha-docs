@@ -1,7 +1,7 @@
 ---
 translation_locale: mn
 translation_source: /guide/tutorials/rust.md
-translation_source_hash: 2044ca68337afb2663b4ab5fda63cb72b5c90ce850d028d09ef8569897e315cd
+translation_source_hash: 98b0c3a193c6dfe8b266bcc498d7016426cf2f838a7bf7ebfbef145ffdcc7944
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -47,7 +47,7 @@ cargo run --bin iroha -- taira doctor \
 Замын түвшинд хяналт шалгахын тулд Torii-ийн JSON API хэсгийг шууд ашигла:
 
 ```bash
-curl -fsS https://taira.sora.org/status \
+curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=5' \

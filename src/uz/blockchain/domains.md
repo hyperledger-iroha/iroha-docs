@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/domains.md
-translation_source_hash: 4c42df3c179a086b8823264df2b69f68d7d3df500c8362d78f7ba56875dcfad1
+translation_source_hash: 5e52579436a181d76c83fa549991e56064ae57349b7109d5c41ec7953e5cbb2e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -45,13 +45,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
 ```
 
-Niyat `payments.universal`, uning raqamli ma'lumotlar maydonini, kanonik I105 egasini, ijara sotib olish muddati va joriy siyosat / to'lov quote qo'riqchini aniqlaydi. rejalashtiruvchining oxirgi nuqtasi `POST /v1/aliases/setup/plan`; uning qaytarilgan rejasi zanjir, vakolat, davlat va muddatga bog'liq . Domenlarni olib tashlash hali ham [`Unregister`](/uz/blockchain/instructions.md#un-register)dan foydalanadi.
+Niyat `payments.universal`, uning raqamli ma'lumotlar maydoni, kanonik I105 egasi, ijara shartnomasini sotib olish muddati va joriy siyosat / to'lov quote qo'riqchisi aniqlanadi. rejalashtiruvchining oxirgi nuqtasi `POST /v1/aliases/setup/plan`; uning qaytarilgan rejasi zanjir, vakolat, davlat va muddatga bog'liq. Domain olib tashlash hali ham [`Unregister`](/uz/blockchain/instructions.md#un-register)dan foydalanadi.
 
 Domeni yaratish yoki olib tashlash uchun aktiv ishga tushirish vaqtini tasdiqlash vositasida tegishli domen boshqaruv ruxsatnomasi kerak. [`SetKeyValue` va `RemoveKeyValue`](/uz/blockchain/instructions.md#setkeyvalue-removekeyvalue) bilan domen metadatalari yangilanishi mumkin, agar hokimiyat ushbu domenni o'zgartirishga ruxsatnomaga ega bo'lsa.
 
 ## Taira bilan sinab ko'ring. {#try-it-on-taira}
 
-Hozirda ommaviy Taira testnetida ko'rinadigan domenlarni ro'yxatga oling:
+Hozirda ommaviy Taira testnetda ko'rinadigan domenlarni ro'yxatga oling:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
@@ -61,7 +61,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
 Jamoat yoʻli katalogini maʼlumotlar maydonining aliaslariga qaytarish:
 
 ```bash
-curl -fsS https://taira.sora.org/status \
+curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .block_height, .finality_lag_slots]
     | @tsv'
@@ -92,7 +92,7 @@ Tekroriy testnet ishlarida noyob domen nomi uchun niyatni yaratish va foydalanis
 
 ## Boshqa subyektlar bilan munosabatlar {#relationship-to-other-entities}
 
-Domenlar ob'ektlarni guruhiga qo'shadi va domen ko'lamli ma'lumotlar uchun nom maydonini taqdim etadi. Asset ta'riflari domen malakali identifikatorlardan foydalanadi, so'rovlar domenlarni ro'yxatga olishi yoki domenga doiradagi ob'ektlar topilishi mumkin. Hisobotlarning o'zi joriy ma'lumotlar modelida domensiz, ammo hisobotlar domenlarga ega bo'lishi va ularning ta'riflari domenlar ostida yashaydigan aktivlarni saqlashi mumkin.
+Domenlar guruhi ob'ektlarini guruhlaydi va domen ko'rsatkichli ma'lumotlar uchun nom maydonini taqdim etadi. Asset ta'riflari domenlarga mos identifikatorlardan foydalanadi, so'rovlar domenlarni ro'yxatga olish yoki topish mumkin Obyektlar mavjud ma'lumotlar modelida domensiz hisoblanadi, lekin hisoblar domenlarga ega bo'lishi mumkin va ularning ta'riflari domenlar ostida yashaydigan aktivlarni saqlashi mumkin.
 
 Shuningdek qarang:
 

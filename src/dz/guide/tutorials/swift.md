@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: 85cc94399b9892984615bf8a0821a1f30395eb87ec164592ca98fbd9903ef834
+translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -43,7 +43,7 @@ make bridge-xcframework
 
 ## CocoaPods {#cocoapods}
 
-གཞི་རྟེན་ code འདི་ནང་ལུ་ཡང་ཡོདཔ་ཨིན། `IrohaSwift/IrohaSwift.podspec`. འདི་གིས་གསལ་བསྒྲགས་འབདཝ་ཨིན། `IrohaSwift` ཀེ་བ་ཚུ་ Swift ༥.༩ དང་ iOS ༡༥ ཨིན། གློག་རིག་དཔྱད་ཡིག་འདི་ pulls Swift ལས་འཛིན་གྱི་ཡིག་མཛོད་ནང་ལས་ འབྱུང་ཁུངས་; རང་ལུགས་ཀྱི་གཞུང་ལམ་དེ་ ད་ལྟོ་ཡང་ཡོད་དགོཔ་མ་ཚད་ འབྲེལ་མཐུད་འབད་ཡོདཔ་ད་ བརྒྱུད་འཕྲིན་ཚུ་ ཨེབ་གཏང་འབད་ནི་ལུ་ཨིན། ཨེཌི་༢༥༥༡༩ གྱི་མིང་ཐོ་བཀོད་དང་ Connect crypto
+གཞི་རྟེན་ code འདི་ནང་ལུ་ཡང་ཡོདཔ་ཨིན། `IrohaSwift/IrohaSwift.podspec`. འདི་གིས་གསལ་བསྒྲགས་འབདཝ་ཨིན། `IrohaSwift` ཀེ་བ་ཚུ་ Swift ༥.༩ དང་ iOS ༡༥ ཨིན། གློག་རིག་དཔྱད་ཡིག་འདི་ pulls Swift གཞི་རྟེན་རྫས་ནང་ལས་འབྱུང་ཁུངས་ཚུ་; རང་ལུགས་ཀྱི་གཞུང་ལམ་དེ་ ད་ལྟོ་ཡང་ཡོད་དགོཔ་ཨིན། འབྲེལ་མཐུད་འབད་ཡོདཔ་ད་ བརྒྱུད་འཕྲིན་ཨེབ་གཏང་འབད་ནི་དང་ Ed25519མེན་པའི་རྟགས་བཀོད་ དེ་ལས་ Connect cryptoགི་དོན་ལུ་ཨིན།
 
 ## མགྱོགས་པ་རང་འགོ་བཙུགས་ {#quickstart}
 
@@ -72,7 +72,9 @@ import Foundation
 
 if #available(iOS 15.0, macOS 12.0, *) {
     let url = URL(string: "https://taira.sora.org/status")!
-    let (data, response) = try await URLSession.shared.data(from: url)
+    var request = URLRequest(url: url)
+    request.setValue("application/json", forHTTPHeaderField: "Accept")
+    let (data, response) = try await URLSession.shared.data(for: request)
 
     if let http = response as? HTTPURLResponse {
         print("status:", http.statusCode)

@@ -2,3 +2,5 @@
 .vitepress/cache
 .vitepress/.temp
 .vercel
+.cache
+.venv-translate

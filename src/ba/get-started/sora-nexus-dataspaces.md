@@ -1,16 +1,16 @@
 ---
 translation_locale: ba
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 63c317ab61ba912176c43c83d5b4f026f23a7a6e5fb633872a133c9ea1295686
+translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# SORA 3: Taira һәм Minamoto нигеҙендә төҙөлгән {#build-on-sora-3-taira-and-minamoto}
+# SORA 3 нигеҙендә төҙөлгән: Taira һәм Minamoto {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 - ҡушымтаға ҡараған асыҡ ҡулланыу трассаһы, ул Iroha 3 һәм SORA Nexus өҫтөндә төҙөлгән. Тәүҙә Taira өҫтөндә төҙөйһөгөҙ һәм репетициялайһығыҙ, һуңынан шул уҡ клиент формаһын Minamoto тип күсерегеҙ, тик айырым төп селтәр асҡыстары булған саҡта ғына, түләүҙәр өсөн реаль XOR һәм производство раҫлау.
+SORA 3 - ҡушымтаға ҡараған асыҡ ҡулланыу трассаһы Iroha 3 һәм SORA Nexus. Төҙөү һәм күнекмәләр Taira тәүҙә, һуңынан шул уҡ клиент формаһын күсерергә Minamoto тик әгәр һеҙ айырым төп селтәр асҡыстары бар, реаль XOR түләүҙәр һәм етештереүҙе раҫлау.
 
-Был дәреслек нисек конфигурировать күрһәтелә Iroha клиенты өсөн йәмәғәт SORA 3 селтәрҙәре:
+Был дәреслек нисек конфигурировать күрһәтелә Iroha клиенты өсөн йәмәғәт SORA 3 селтәрҙәр:
 
 - Taira һынау селтәре `https://taira.sora.org`
 - Minamoto төп селтәрендә `https://minamoto.sora.org`
@@ -37,6 +37,20 @@ SORA 3 - ҡушымтаға ҡараған асыҡ ҡулланыу трасс�
 3. Ҡулланма логикаһын Taira менән ҡулланығыҙ, уңышһыҙлыҡтар киҫкен һәм күҙәтеләсәк тиклем.
 4. Айырым Minamoto ҡултамғасы булдырыу, уны реаль XOR менән финанслау һәм шул уҡ иҫбатланған операцияларҙы ғына mainnet-ҡа күсереү.
 
+## Әҙерлек китабы менән уҡығыҙ {#continue-with-the-cookbook}
+
+Был күрһәткес менән селтәрҙе һайларға, имзалаусыны конфигурациялау һәм түләүҙәрҙе түләргә. Һуңынан ҡушымта тәртибен төҙөргә теләгән рецепт менән дауам итегеҙ:
+
+|Маҡсат |Рецепты |
+| --- | --- |
+|Taira тикшерегеҙ һәм клиентты көйләгеҙ | [Taira](/ba/cookbook/connect-to-taira.md) менән тоташтырығыҙ |
+|Тәүге тапҡыр яҙып ебәреп , һөҙөмтәһен тикшерегеҙ .| [Транзакцияларҙы тапшырыу һәм тикшереү](/ba/cookbook/submit-and-verify-transactions.md) |
+|Реестр, минет һәм күсмә ҡиммәт | [Функциональ активтар](/ba/cookbook/fungible-assets.md) |
+|Фильтрланған ғаризаны уҡығыҙ | [Һорау Леджер Дәүләт](/ba/cookbook/query-ledger-state.md) |
+|Тәҡдим ителгән үҙгәрештәргә ҡаршы тороу | [Ташҡын ваҡиғалары](/ba/cookbook/stream-events.md) |
+
+Аш-һыу китабы һәр эш ағымын туплай һәм уға Taira финанслау йәки SORA Nexus селтәр контексты кәрәк булғанда бында тоташтыра.
+
 ## 1. Ниндәй маҡсаттар ҡуйырға теләгәнеңде аңла {#_1-understand-what-you-are-setting-up}
 
 Эсендәге SORA Nexus, мәғлүмәт киңлеге селтәр юлы һәм маршрутизация каталогының бер өлөшө булып тора. клиент яңы асыҡ мәғлүмәт киңлеген үҙгәртеп кенә барлыҡҡа килтермәй. `client.toml`. Клиент ҡоролмаһы ике эш итә:
@@ -60,6 +74,7 @@ Taira өсөн:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -67,6 +82,7 @@ Minamoto өсөн:
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -74,6 +90,7 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
@@ -81,7 +98,7 @@ curl -fsS https://taira.sora.org/status \
 
 ## Агенттар өсөн Taira MCP {#taira-mcp-for-agents}
 
-Taira шулай уҡ а Torii-урындағы Контекст протоколы моделе (MCP агенттар өсөн күпер. уны агент тере тест селтәре уҡый, скрипт диагностикаһы кәрәк саҡта ҡулланырға, йәки ғәҙәттәгесә төҙөмәйенсә ентекле тикшерелгән яҙыу репетициялары Torii Иң тәүҙә клиент.
+Taira шулай уҡ а Torii-урындағы Контекст протоколы моделе (MCP агенттар өсөн күпер. уны агент тере тест селтәре уҡырға кәрәк саҡта ҡулланыу, сценарий диагностикаһы, йәки ентекле тикшерелгән яҙыу репетициялар булдырыуһыҙ Torii Иң тәүҙә клиент.
 
 |Ҡуйыу |Ҡиммәт |
 | --- | --- |
@@ -94,6 +111,7 @@ Taira шулай уҡ а Torii-урындағы Контекст протоко�
 
 ```bash
 curl -fsS https://taira.sora.org/v1/mcp \
+  -H 'Accept: application/json' \
   | jq '{protocolVersion, server: .serverInfo.name, tools: .capabilities.tools.count}'
 ```
 
@@ -133,13 +151,13 @@ say "submit this transaction".
 
 MCP күпере ҡул ҡуйылған Iroha транзакцияны тапшыра ала, әммә ул ғәҙәти транзакция талаптарын алып ташлай алмай. Транзакцияға дөрөҫ хоҡуҡ, рөхсәт, түләүҙәр финанслау, ID сылбыр, метамәғлүмәт һәм ҡултамға кәрәк.
 
-Iroha операциялары өсөн, транзакция конвертын башта SDK йәки CLI менән төҙөү һәм имзалау, һуңынан агентҡа бары тик `body_base64` тип кодланған каноник ҡул ҡуйылған транзакция байттары ғына бирегеҙ. Агент конвертты `iroha.transactions.submit_and_wait` менән тапшыра ала, йәки `iroha.transactions.submit` һәм `iroha.transactions.wait` менән һорау алыуҙы бирә ала.
+Raw Iroha транзакциялар өсөн, һатыу конвертын төҙөү һәм имзалау башта SDK йәки CLI менән, һуңынан агентҡа тик каноник ҡул ҡуйылған транзакция байттары `body_base64` тип кодлана. агент конвертты `iroha.transactions.submit_and_wait` менән тапшыра ала, йәки `iroha.transactions.submit` һәм `iroha.transactions.wait` менән анкета бирә ала.
 
-Әгәр агент транзакцияны төҙөргә теләй икән, уны локаль кодҡа йүнәлтегеҙ, ул ҡулланыусының йүгереү ваҡыты мөхитендәге серҙәрҙе, клавиатураны, аппарат имзалаусыһын йә тестнет конфигурация файлын иҫәпкә алмай. Агент бер ҡасан да төп материалды "Маркдаун"ға, фиксаторҙарға, журналдарына йә йөкләмәләргә яҙырға тейеш түгел.
+Әгәр агенттың транзакция төҙөргә кәрәк булһа, уны локаль кодҡа йүнәлтегеҙ, ул файҙаланыусыларҙың йүгереү ваҡытын серҙәр йөкмәтә . тирә-яҡ мөхитте, клавиатураны, аппарат имзалаусыһын йәки testnet конфигурация файлын иғтибарһыҙ ҡалдырыу. агент бер ҡасан да төп материалды Markdown, фиксаторҙар, журналдар, йә commits яҙырға тейеш түгел.
 
 Транзакцияны тапшыр алдынан, агентҡа ҡыҫҡа транзакция планын әҙерләргә ҡуш:
 
-- `network`: Taira тест селтәре тамырҙары һәм сылбырҙары ID
+- `network`: Taira тест селтәренең тамырҙары һәм сылбырҙары ID
 - `authority`: яҙыусы һәм түләүселәр иҫәбенә
 - `instructions`: реестр, банкротлыҡ, яндырыу, күсереү, метамәғлүмәт, рөхсәт йәки килешеү саҡырыуы йомғаҡтары
 - `fee asset`: Taira өсөн түләнә торған актив
@@ -188,6 +206,7 @@ for network in taira minamoto; do
   root="https://$network.sora.org"
   printf '\n%s\n' "$network"
   curl -fsS "$root/status" \
+    -H 'Accept: application/json' \
     | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 done
 ```
@@ -196,6 +215,7 @@ Taira асыҡ мәғлүмәттәр киңлектәре юлдары исем
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -205,6 +225,7 @@ curl -fsS https://taira.sora.org/status \
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -220,7 +241,9 @@ const roots = {
 };
 
 for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`).then((res) => res.json());
+  const status = await fetch(`${root}/status`, {
+    headers: { Accept: 'application/json' },
+  }).then((res) => res.json());
   const publicSpaces = status.teu_lane_commit
     .filter((lane) => lane.visibility === 'public')
     .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
@@ -237,7 +260,7 @@ EOF
 
 ## 3. Taira клиент конфигурацияһын булдырыу. {#_3-create-a-taira-client-config}
 
-Әгәр һеҙҙә юҡ икән, асҡыс парын булдырыу:
+Әгәр һеҙҙә юҡ булһа , асҡыс парын булдырыу:
 
 ```bash
 kagami keys --algorithm ed25519 --json
@@ -286,7 +309,7 @@ iroha --config ./taira.client.toml taira write-canary \
   --json
 ```
 
-`--write-config` күрһәтелгәс, канар ҡултамғалы пинг тапшыра, раҫлауҙы көтә һәм йүгереү ваҡыты имзалаусының конфигурацияһын яҙа. Taira асыҡ тест селтәре булып тора, шуға күрә сираттың туйыныуы ҡултамғаланған пингтың крана үҙе эшләгәндә лә уңышҡа өлгәшеүе мөмкин. Әгәр `taira doctor` ҡәнәғәтләндерелгән сират тураһында хәбәр итә йәки канарий кире ҡайтарһа `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`, уны клиент конфигурацияһы хатаһы тип иҫәпләгәнгә тиклем көтөп һәм яңынан һынап ҡарағыҙ.
+Канарий ҡул ҡуйылған пинг тапшыра, раҫлауын көтә һәм ҡуҙғатыу ваҡытын билдәләүҙе яҙҙыра `--write-config` күрһәтелә. Taira был асыҡ тест селтәре, шуға күрә сиратты ҡәнәғәтләндереү ҡул ҡуйылған ping эшләһә лә уңышһыҙлыҡ килтерә ала. `taira doctor` ҡәнәғәтләндерелгән сиратты йәки канарийҙар тураһында хәбәр итә `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`, уны клиент конфигурацияһы хатаһы тип иҫәпләгәнгә тиклем көтөп, тағы ла тырышығыҙ.
 
 Күҙәтеүһеҙ тәмәке һынауҙары өсөн, канарийҙы сикләнгән ҡабаттан һынау циклына төрөп ҡуйығыҙ:
 
@@ -328,7 +351,7 @@ Minamoto асыҡ асҡысын төп селтәр префиксы менән
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-Һөҙөмтәлә алынған иҫәбен ҡулланығыҙ ID ҡайҙа Nexus API йәки CLI командование канонический отчет һорай ID, мәҫәлән, Taira кран `account_id`, баланс һорауҙары, ҡаты иҫәп-хисап баҫыуҙар, йәки псевдонимы бәйләнештәр. тура килә шәхси асҡысын клиент конфигурацияһында һаҡларға, һәм шул уҡ йәмәғәт селтәрен һайларға `[account].profile = "taira"` йәки `[account].profile = "minamoto"`.
+Һөҙөмтәлә алынған иҫәбен ҡулланығыҙ ID ҡайҙа Nexus API йәки CLI командование канонический отчет һорай ID, мәҫәлән, Taira кран `account_id`, баланс һорауҙар, ҡаты иҫәп-хисап баҫыуҙары, йәки псевдоним бәйләнештәре. клиент конфигурацияһында шәхси асҡыс, һәм шул уҡ йәмәғәт селтәрен һайлағыҙ `[account].profile = "taira"` йәки `[account].profile = "minamoto"`.
 
 ID генерацияһы үҙенән-үҙе финансланған сылбыр иҫәбенә барлыҡҡа килмәй. Taira өҫтөндә, кран булдыра һәм тестнет яҙған өсөн иҫәпте финанслай ала. Minamoto өҫтөндә, раҫланған төп селтәрҙе ҡушыу йәки ҡаҙна ағымдарын ҡулланыу .
 
@@ -366,7 +389,9 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 Төшөнсәһен алып кил:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
+curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
+  -H 'Accept: application/json' \
+  | jq .
 ```
 
 Грант - асыҡ тест селтәре сервисы. Әгәр табышмак йәки талап йомғаҡ нөктәһе `502`, ваҡыт үтеү, йәки башҡа шлюз кимәлендәге хатаны кире ҡайтарһа, көт һәм үҙ асҡыстарығыҙҙы йәки клиент конфигурацияһын үҙгәртер алдынан тағы ла тырышығыҙ.
@@ -391,20 +416,26 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
-  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}'
+  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
 Әгәр `difficulty_bits` `0`-тан ҙурыраҡ булһа, табышмакты хәл итегеҙ һәм якорь бейеклеген өҫтәп nonce иҫәбенә индерегеҙ:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
   -d '{
     "account_id": "<TAIRA_I105_ACCOUNT_ID>",
     "pow_anchor_height": 741,
     "pow_nonce_hex": "<NONCE_HEX>"
-  }'
+  }' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
 Алгоритмы:
@@ -415,7 +446,7 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet \
    - `anchor_height` ҙур эндиан `u64`
    - `anchor_block_hash_hex` байтҡа декодланған
    - `challenge_salt_hex` байт рәүешендә декодланған, әгәр улар бар булһа
-2. `u64` nonces кодланған ҙур эндиан 8-байт ҡиммәттәрен һынап ҡарарға.
+2. `u64` nonces кодланған ҙур эндиан 8-байт ҡиммәттәрен һынап ҡара.
 3. Һәр nonce өсөн scrypt менән эшләгеҙ:
    - пароль: 8-байт нонс
    - тоҙ: 32 байтлыҡ проблема
@@ -430,21 +461,25 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet \
 ```json
 {
   "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-  "asset_definition_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
+  "asset_definition_id": "<TAIRA_FEE_ASSET_DEFINITION_ID>",
   "asset_id": "...",
-  "amount": "25000",
+  "amount": "<FUNDED_AMOUNT>",
   "tx_hash_hex": "...",
   "status": "QUEUED"
 }
 ```
 
-Хәҙерге ваҡытта HTTP `202 Accepted` менән яуап ҡайтарыла. Юғарыла күрһәтелгән актив билдәләмәһе ID - йәмәғәт краны тарафынан финансланған Taira түләүле актив. `tx_hash_hex` һәм `status: "QUEUED"` кире ҡайтарғандан һуң, кранит үтенесе ҡабул ителгән.
+Хәҙерге ваҡытта яуап ҡайтарыла HTTP `202 Accepted`. Уның `asset_definition_id` ағым Taira түләү активы дәүләт краны тарафынан финанслана; уны миҫалды күсергән урынына яуаптан сығарыу ID. Һыуыҡ кире ҡайтарылғанда үтенесе ҡабул ителгән `tx_hash_hex` һәм `status: "QUEUED"`.
 
 Һуңынан үҙ түләүҙәр менән килешеүҙәрҙе тапшырыуҙан алда финансланған актив буйынса һорау алыу үткәрегеҙ:
 
 ```bash
+TAIRA_FEE_ASSET_DEFINITION=$(
+  jq -er '.asset_definition_id' ./taira-faucet-response.json
+)
+
 iroha --config ./taira.client.toml ledger asset get \
-  --definition 6TEAJqbb8oEPmLncoNiMRbLEK6tw \
+  --definition "$TAIRA_FEE_ASSET_DEFINITION" \
   --account <TAIRA_I105_ACCOUNT_ID>
 ```
 
@@ -470,7 +505,12 @@ def has_leading_zero_bits(digest: bytes, bits: int) -> bool:
 root = "https://taira.sora.org"
 account_id = sys.argv[1]
 
-with urllib.request.urlopen(f"{root}/v1/accounts/faucet/puzzle") as res:
+puzzle_request = urllib.request.Request(
+    f"{root}/v1/accounts/faucet/puzzle",
+    headers={"Accept": "application/json"},
+)
+
+with urllib.request.urlopen(puzzle_request) as res:
     puzzle = json.load(res)
 
 claim = {"account_id": account_id}
@@ -503,7 +543,7 @@ if difficulty > 0:
 request = urllib.request.Request(
     f"{root}/v1/accounts/faucet",
     data=json.dumps(claim).encode(),
-    headers={"content-type": "application/json"},
+    headers={"Accept": "application/json", "content-type": "application/json"},
     method="POST",
 )
 
@@ -609,6 +649,7 @@ alice@universal
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
@@ -664,6 +705,7 @@ description = "Route payments domains to the payments dataspace"
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | select(.dataspace_alias == "payments")'
 ```
 

@@ -2,6 +2,8 @@
 .vitepress/cache
 .vitepress/.temp
 .vercel
+.cache
+.venv-translate
 /src/public/openapi
 /src/snippets
 /src/example_code

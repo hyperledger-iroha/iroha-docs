@@ -49,7 +49,7 @@ const FORBIDDEN_TERMS: readonly ForbiddenTerm[] = [
 ]
 
 const SCANNED_EXTENSIONS = new Set(['.json', '.md', '.mts', '.scss', '.toml', '.ts', '.vue', '.yaml', '.yml'])
-const EXCLUDED_DIRECTORIES = new Set(['.git', 'dist', 'node_modules'])
+const EXCLUDED_DIRECTORIES = new Set(['.cache', '.git', '.venv-translate', 'dist', 'node_modules'])
 const EXCLUDED_FILES = new Set([
   'etc/validate-content-policy.ts',
   'etc/validate-content-policy.spec.ts',

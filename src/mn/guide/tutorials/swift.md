@@ -1,7 +1,7 @@
 ---
 translation_locale: mn
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: 85cc94399b9892984615bf8a0821a1f30395eb87ec164592ca98fbd9903ef834
+translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -43,7 +43,7 @@ make bridge-xcframework
 
 ## CocoaPods {#cocoapods}
 
-Үндсэн код нь мөн `IrohaSwift/IrohaSwift.podspec`. Энэ нь `IrohaSwift` цогц, Swift 5.9 болон iOS 15. Podspec нь татдаг Swift гол хадгаламжийн эх үүсвэрүүд; төлөөлөгчийн гүүр одоо ч байх ёстой бөгөөд гүйлгээний кодлохын тулд холбогдсон байх ёстой. Эд25519-ийн бус гарын үсэг зурах, Connect крипто.
+Үндсэн код нь мөн `IrohaSwift/IrohaSwift.podspec`. Энэ нь `IrohaSwift` цогц, Swift 5.9 болон iOS 15. Podspec нь татдаг Swift гол хадгаламжийн эх үүсвэрүүд; үндсэн гүүр одоо ч байх ёстой транзакцын кодлолт, Ed25519 бус гарын үсэг зурах, Connect крипто.
 
 ## Удахгүй эхлэх {#quickstart}
 
@@ -72,7 +72,9 @@ import Foundation
 
 if #available(iOS 15.0, macOS 12.0, *) {
     let url = URL(string: "https://taira.sora.org/status")!
-    let (data, response) = try await URLSession.shared.data(from: url)
+    var request = URLRequest(url: url)
+    request.setValue("application/json", forHTTPHeaderField: "Accept")
+    let (data, response) = try await URLSession.shared.data(for: request)
 
     if let http = response as? HTTPURLResponse {
         print("status:", http.statusCode)

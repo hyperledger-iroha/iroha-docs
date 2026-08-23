@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /blockchain/domains.md
-translation_source_hash: 4c42df3c179a086b8823264df2b69f68d7d3df500c8362d78f7ba56875dcfad1
+translation_source_hash: 5e52579436a181d76c83fa549991e56064ae57349b7109d5c41ec7953e5cbb2e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -45,7 +45,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
 ```
 
-Məqsəd `payments.universal`, onun rəqəmsal məlumat sahəsi, kanonik I105 sahibini, icarə satın alma müddəti və cari siyasət / ödəniş qiymətləndirilməsi mühafizəsini müəyyənləşdirir. Planlaşdırıcı son nöqtəsi `POST /v1/aliases/setup/plan`; geri qaytarılmış planı zəncir, səlahiyyət, dövlət və vaxt məhdudiyyəti ilə bağlıdır. Domen aradan qaldırılması hələ də [`Unregister`](/az/blockchain/instructions.md#un-register) istifadə edir.
+Məqsəd `payments.universal`, onun rəqəmsal məlumat sahəsi, kanonik I105 sahibi, icarə satın alma müddəti və cari siyasət / ödəniş qiymətləndirmə mühafizəsini müəyyən edir. planlaşdırıcı son nöqtəsi `POST /v1/aliases/setup/plan`; geri qaytarılan planı zəncir, səlahiyyət, dövlət və müddətə bağlıdır. Domen aradan qaldırılması hələ də [`Unregister`](/az/blockchain/instructions.md#un-register) istifadə edir.
 
 Bir domenin yaradılması və ya çıxarılması aktiv icra vaxtı təsdiqçisi altında müvafiq domen idarəetmə icazəsi tələb edir. Domen metadataları [`SetKeyValue` və `RemoveKeyValue`](/az/blockchain/instructions.md#setkeyvalue-removekeyvalue) ilə yenilənə bilər.
 
@@ -61,7 +61,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
 İctimai zolaq kataloqunu məlumat məkanı aliaslarına qaytarın:
 
 ```bash
-curl -fsS https://taira.sora.org/status \
+curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .block_height, .finality_lag_slots]
     | @tsv'
@@ -92,7 +92,7 @@ Təkrarlanan test şəbəkələrin icrasında unikal bir domen adının niyyəti
 
 ## Digər subyektlərlə münasibətlər {#relationship-to-other-entities}
 
-Domenlər obyektləri qruplaşdırır və domen ölçülü məlumatlar üçün ad məkanı təmin edir. Əmlak tərifləri domen təsnifatlı identifikatorlardan istifadə edir və sorğular domenlərin siyahısına daxil ola bilər və ya bir domena ölçülü obyektləri tapa bilər. Hesabların özləri mövcud məlumat modelində domensizdirlər, lakin hesablar domenlərə sahib ola bilər və tərifləri domenlərin altında yaşayan aktivləri saxlaya bilərlər.
+Domains qrup ledger obyektləri və domen ölçülü məlumatlar üçün bir ad məkanı təmin edir. Əsasyyət tərifləri domen təsnifatlı identifikatorlardan istifadə edir, suallar domenlərin siyahısı və ya tapmaq olar. Hesabların özləri mövcud məlumat modellərində domensizdirlər, lakin hesablar domenlərə sahib ola bilər və tərifləri domenlərin altında yaşayan aktivləri saxlaya bilər.
 
 Həmçinin bax:
 

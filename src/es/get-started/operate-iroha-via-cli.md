@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /get-started/operate-iroha-via-cli.md
-translation_source_hash: 9391bab95aa0ee20c7f036cc175f3a6d3a8852e6ea90b09d9ebf1a838973c765
+translation_source_hash: ab8f3bf6d2259dc1ea649273e695429a992108b936475b263fe9d1fae59e8766
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -49,10 +49,10 @@ Utilice `--output-format text` para la salida legible por el usuario y `--machin
 
 Puede probar las comprobaciones de sólo lectura Taira antes de ejecutar un peer local o crear un firmante. Estos comandos utilizan rutas públicas Torii JSON y no gastan testnet XOR.
 
-Verificación de la salud Taira:
+Verifique el estado de Taira:
 
 ```bash
-curl -fsS https://taira.sora.org/status \
+curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 ```
 

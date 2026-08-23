@@ -1,64 +1,73 @@
 ---
 translation_locale: zh-hant
 translation_source: /index.md
-translation_source_hash: 505e8224a59534717045c34b1bf796760d06f9d6808a2a1fd9773aa2f6a00c2d
+translation_source_hash: 3b2ad4ee285a821b56c9cf6fd3f4a8431f1cfa478e88082b45788765d68ed833
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2
 
 layout: home
 
 hero:
   name: Hyperledger Iroha 3
   text: "文件"
-  tagline: "為 SORA Nexus、SDKs 與維運工作流程打造的確定性區塊鏈平台"
+  tagline: "對 SORA Nexus, SDKs 和運營商工作流程的確定性區塊鏈平臺"
   image:
     src: /icon.svg
-    alt: "Hyperledger Iroha 3 標誌"
+    alt: "Hyperledger Iroha 3號標誌"
   #actions:
   #- theme: alt
   #  text: View on GitHub
   #  link: https://github.com/hyperledger-iroha/iroha
 
+nexusPortal:
+  eyebrow: SORA Nexus
+  title: "建立在 Iroha 3 / SORA Nexus 上"
+  details: "開始使用 Taira 測試網絡,瞭解當前的交易流量,並使用專注的食譜來構建準備生產的應用程序."
+  primaryAction:
+    text: "在 Taira 開始"
+    link: /zh-hant/get-started/sora-nexus-dataspaces
+  secondaryAction:
+    text: "瀏覽廚師書"
+    link: /zh-hant/cookbook/
+  recipes:
+    title: "熱門的食譜"
+    items:
+      - title: "提交和驗證交易"
+        link: /zh-hant/cookbook/submit-and-verify-transactions
+      - title: "移動可的資產"
+        link: /zh-hant/cookbook/fungible-assets
+      - title: "查詢賬本狀態"
+        link: /zh-hant/cookbook/query-ledger-state
+      - title: "流動事件"
+        link: /zh-hant/cookbook/stream-events
+
 features:
   - icon:
       dark: /start.svg
       light: /start-light.svg
-    title: "開始使用"
-    details: "建置目前的工作區、啟動本機網路，並開始使用 Iroha 3 CLI"
+    title: "開始"
+    details: "建立當前的工作空間,啓動本地網絡,並開始使用 Iroha 3 CLI"
     link: /zh-hant/get-started/
   - icon:
       dark: /build.svg
       light: /build-light.svg
     title: "指南"
-    details: "查閱 SDKs、最佳實務、設定、安全性與維運工作流程"
+    details: "找到 SDKs,最佳實踐,配置,安全和操作員工作流程"
     link: /zh-hant/guide/
   - icon:
       dark: /explained.svg
       light: /explained-light.svg
-    title: "架構"
-    details: "瞭解 Torii、Sumeragi、Norito、IVM 與 Nexus 資料空間模型"
+    title: "建築"
+    details: "瞭解 Torii,Sumeragi, Norito, IVM 和 Nexus 的數據空間模型"
     link: /zh-hant/blockchain/iroha-explained
   - icon:
       dark: /reference.svg
       light: /reference-light.svg
-    title: "參考資料"
-    details: "查閱目前的執行檔、創世區塊、Torii 與相容性參考頁面"
+    title: "參考"
+    details: "查看當前的二進制,基因, Torii,和兼容性參考頁面"
     link: /zh-hant/reference/
-  # - title: Cookbook # (TBA)
-
 footer: true
 ---
 
-<section class="nexus-build" aria-labelledby="nexus-build-title">
-  <a class="nexus-build__panel" href="./get-started/sora-nexus-dataspaces.html">
-    <span class="nexus-build__copy">
-      <span class="nexus-build__eyebrow">SORA Nexus</span>
-      <span id="nexus-build-title" class="nexus-build__title">在 Iroha 3 / SORA Nexus 上建置</span>
-      <span class="nexus-build__details">使用 Taira 測試網、Minamoto 主網，以及可立即嘗試的複製貼上範例，在 SORA 3 上建置。</span>
-    </span>
-    <span class="nexus-build__action">開啟指南 <span aria-hidden="true">-&gt;</span></span>
-  </a>
-</section>
-
 <hr style="margin-top: 3rem;">
-<p style="font-weight: 200; font-size: 0.875rem;">Hyperledger Iroha 是 <a href="https://www.lfdecentralizedtrust.org/projects/tag/ledger-technology" target="_blank">LF Decentralized Trust</a> 的一部分。前往 <a href="https://iroha.tech/" target="_blank">iroha.tech</a> 瞭解更多資訊。</p>
+<p style="font-weight: 200; font-size: 0.875rem;">Hyperledger Iroha 是 <a href="https://www.lfdecentralizedtrust.org/projects/tag/ledger-technology" target="_blank">LF Decentralized Trust</a>的一部分. 更多信息請訪問 <a href="https://iroha.tech/" target="_blank">iroha.tech</a>.</p>

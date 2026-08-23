@@ -1,9 +1,9 @@
 ---
 translation_locale: pt
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: 9bec41b1b419e252fdcff8328e7950a294bdad3ac40112a5a7f2ce451d19e9cb
+translation_source_hash: c23170b2949bae9c9483ecbee6f0c09fea503904ae93934aef56537ddd13c42d
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2
 ---
 
 # Torii Pontos finais {#torii-endpoints}
@@ -20,27 +20,36 @@ Para detalhes de formato, negociação de conteúdo, bandeiras de layout, hashes
 
 ## Pontos finais comuns {#common-endpoints}
 
-|Ponto final .|Formatar |Propósito .|
+|Ponto final .|Formato |Propósito |
 | --- | --- | --- |
-|`POST /transaction` |Norito |Submeter uma transacção assinada |
-|`POST /query` |Norito |Enviar uma consulta assinada |
-|`GET /events` |WebSocket |Subscreva os fluxos de eventos |
-|`GET /block/stream` |WebSocket |Fluxo de blocos comprometidos |
-|`GET /peers` |JSON |Lista de pares expostas por Torii |
-|`GET /health` |JSON |Endpoint de vida leve |
-|`GET /api_version` |JSON |A versão padrão API |
-|`GET /status` |JSON |Resumo de status de alto nível para os operadores |
+|`POST /v1/pipeline/transactions` |Norito |Submeter uma transacção assinada |
+|`POST /v1/query` |Norito |Enviar uma consulta assinada |
+|`GET /v1/events/ws` |WebSocket |Subscreva os fluxos de eventos |
+|`GET /v1/events/sse` |SSE |Subscrever-se a fluxos de eventos em SSE |
+|`GET /v1/blocks/stream` |WebSocket |Fluxo de blocos comprometidos |
+|`GET /v1/peers` |JSON |Lista de pares expostas por Torii |
+|`GET /livez` |Texto |A viabilidade só de processo; não implica a prontidão de protocolo |
+|`GET /readyz` |JSON |Preparação completa do nó, incluindo as verificações obrigatórias de caixa offline |
+|`GET /health` |JSON |Análise de prontidão com a mesma invariante offline-cash |
+|`GET /v1/api/version` |Texto |Versão atual do bloco de cabeçalhos |
+|`GET /status` |Norito ou JSON |Estatuto de diagnóstico de alto nível; solicitação expressa JSON |
 |`GET /metrics` |Prometheus |Prometheus raspe endpoint |
-|`GET /schema` |JSON |Impressão do esquema de modelo de dados servido pelo nó |
+|`GET /v1/schema` |JSON |Impressão do esquema de modelo de dados servido pelo nó quando habilitado |
 |`GET /openapi` ou `GET /openapi.json` |JSON |Documento OpenAPI para as rotas ativas Torii HTTP |
 |`GET /v1/parameters` |JSON |Impressão de parâmetro do nó |
 |`GET /v1/node/capabilities` |JSON |Capacidade do nodo e metadados do modelo de dados |
-|`GET /v1/api/versions` |JSON |As versões Torii API suportadas |
-|`GET /v1/events/sse` |SSE |Fluxo de eventos para clientes de longa duração |
 |`GET /v1/time/now` |JSON |Snapshot do nó de relógio de parede |
 |`GET /v1/time/status` |JSON |Situação de sincronização do tempo |
 
-`/openapi` é a lista de endpoint autorizada para um nó em execução. A superfície exata depende da criar recursos e configuração de tempo de execução, por isso os clientes gerados devem preferir o OpenAPI O documento sobre uma lista de rotas copiada à mão [Torii API consola](/pt/reference/torii-api-console.md) para carregar o documento ao vivo, teste JSON rotas, cópia curl solicitações, e gerar código do cliente a partir do esquema atual.
+Para uma solicitação SSE, anunciar o fluxo nativo mais um fallback digitado:
+
+```http
+Accept: text/event-stream, application/json
+```
+
+Torii primeiro negocia um JSON ou Norito representação na camada de solicitação, em seguida, valida o nativo `text/event-stream` Resposta. Envio apenas `text/event-stream` é, portanto, rejeitada com `406`; O [Receita para eventos de streaming](/pt/cookbook/stream-events.md) usa o cabeçalho completo.
+
+`/openapi` É o contrato primário gerado para as rotas representadas no esquema, Não é um inventário completo da sonda operacional. `/livez` e `/readyz`, e do seu `/health` Descrição pode atrasar o processador de prontidão. Gerar clientes de rota a partir do documento ao vivo, Mas validar a vitalidade e prontidão diretamente contra o nó de corrida e os manipuladores apertados. A superfície exata ainda depende das características da construção e da configuração do tempo de execução. [Torii API consola](/pt/reference/torii-api-console.md) para carregar o documento ao vivo, teste JSON rotas, cópia curl solicitações, e gerar código do cliente a partir do esquema atual.
 
 ## Experimente as rotas ao vivo Taira {#try-live-taira-routes}
 
@@ -49,7 +58,7 @@ A rede de teste pública Taira expõe a mesma superfície Torii JSON que os clie
 ```bash
 TAIRA_ROOT=https://taira.sora.org
 
-curl -fsS "$TAIRA_ROOT/status" \
+curl -fsS -H 'Accept: application/json' "$TAIRA_ROOT/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA_ROOT/openapi.json" \
@@ -57,7 +66,8 @@ curl -fsS "$TAIRA_ROOT/openapi.json" \
   | grep '^/v1/' \
   | head -n 20
 
-curl -fsS "$TAIRA_ROOT/v1/node/capabilities" \
+curl -fsS -H 'Accept: application/json' \
+  "$TAIRA_ROOT/v1/node/capabilities" \
   | jq '{abi_version, data_model_version, query: .query.aggregate.supported_resources}'
 ```
 
@@ -75,7 +85,7 @@ Se uma rota de testnet pública retornar `502`, temporizar ou relatar uma fila s
 
 ## Consenso e pontos finais do tempo de execução {#consensus-and-runtime-endpoints}
 
-|Ponto final .|Formatar |Propósito .|
+|Ponto final .|Formato |Propósito |
 | --- | --- | --- |
 |`GET /v1/sumeragi/commit-certificates` |JSON |Resumos recentes dos certificados de compromisso |
 |`GET /v1/sumeragi/validator-sets` |JSON |Histórico de configuração do validador |
@@ -95,7 +105,7 @@ Se uma rota de testnet pública retornar `502`, temporizar ou relatar uma fila s
 |`GET /v1/sumeragi/collectors` |JSON |Impressão do plano de colecionador determinista |
 |`GET /v1/sumeragi/key-lifecycle` |JSON |Status do ciclo de vida da chave de consenso |
 |`GET /v1/sumeragi/telemetry` |JSON |Imagem de telemetria de consenso |
-|`GET /v1/sumeragi/evidence` |JSON |Registros de provas, opcionalmente filtrados por cadeia de consulta |
+|`GET /v1/sumeragi/evidence` |JSON |Registros de evidências, opcionalmente filtrados por cadeia de consulta |
 |`GET /v1/sumeragi/evidence/count` |JSON |Contagem dos registos de evidências .|
 |`POST /v1/sumeragi/evidence/submit` |JSON |Submeter provas de consenso |
 |`GET /v1/sumeragi/commit_qc/{hash}` |Norito ou JSON |Cometer QC registro para um hash de bloco |
@@ -113,27 +123,27 @@ Quando Torii é construído com o conjunto de recursos voltados para aplicativos
 
 |Família da rota |Propósito |
 | --- | --- |
-|`/v1/accounts/*`, `/v1/domains/*`, `/v1/assets/*` |JSON leituras, auxiliares de consulta, auxiliares para embarque e visualizações do portfólio ou dos titulares |
-|`/v1/nfts/*`, `/v1/rwas/*`, `/v1/confidential/*` |NFT, ativos do mundo real e visões confidenciais de activos |
-|`/v1/aliases/*`, `/v1/assets/aliases/*`, `/v1/sns/*`, `/v1/identifiers/*` |Nome, alias e resolução do identificador |
+|`/v1/accounts/`, `/v1/domains/`, `/v1/assets/*` |JSON leituras, auxiliares de consulta, auxiliares para embarque e visualizações do portfólio ou dos titulares |
+|`/v1/nfts/`, `/v1/rwas/`, `/v1/confidential/*` |NFT, ativos do mundo real e visões confidenciais de activos |
+|`/v1/aliases/`, `/v1/assets/aliases/`, `/v1/sns/`, `/v1/identifiers/` |Nome, alias e resolução do identificador |
 |`/v1/explorer/*` |Contas, ativos, blocos, transações, instruções, métricas e visualizações de fluxo orientadas para exploradores |
-|`/v1/transactions/*`, `/v1/pipeline/*`, `/v1/iso20022/*` |Histórico de transacções, recuperação ou estado do gasoduto e ISO 20022 auxiliares |
+|`/v1/transactions/`, `/v1/pipeline/`, `/v1/iso20022/*` |Histórico de transacções, recuperação ou estado do gasoduto e ISO 20022 auxiliares |
 |`/v1/contracts/*` |Código de contrato, implantação, pacote, chamada, visualização, evento, atividade, roll-up e rotas de estado |
-|`/v1/multisig/*`, `/v1/controls/*` |Propostas, aprovações e auxiliares de controlo das transferências multisig |
-|`/v1/bridge/*`, `/v1/ledger/*`, `/v1/proofs/*` |Finalidade, prova de estado, prova de bloco, retenção de provas e rotas de consulta de provas |
+|`/v1/multisig/`, `/v1/controls/` |Propostas, aprovações e auxiliares de controlo das transferências multisig |
+|`/v1/bridge/`, `/v1/ledger/`, `/v1/proofs/*` |Finalidade, prova de estado, prova de bloco, retenção de provas e rotas de consulta de provas |
 |`/v1/da/*` |Avaliabilidade de dados ingestão, manifestos, políticas de prova, compromissos e intenções pin |
 |`/v1/zk/*` |ZK raízes, verificação de provas, comprovação de IVM, contagem de votos, chaves de verificação, registos de provas e anexos |
-|`/v1/gov/*`, `/v1/ministry/*` |Propostas de governança, folhetos de votação, estado do conselho, espaços de nome protegidos, propostas de ordem do dia, promulgação e finalização.|
-|`/v1/nexus/*`, `/v1/sccp/*` |Nexus faixa, espaço de dados, e auxiliares de prova cruzada.|
+|`/v1/gov/`, `/v1/ministry/` |Propostas de governança, folhetos de votação, estado do conselho, espaços de nome protegidos, propostas de ordem do dia, promulgação e finalização.|
+|`/v1/nexus/`, `/v1/sccp/` |Nexus faixa, espaço de dados, e auxiliares de prova cruzada.|
 |`/v1/musubi/*` |Musubi leituras do registo de pacotes e construção de instruções |
 |`/v1/subscriptions/*` |Planejamento de assinatura, ciclo de vida da assinatura, utilização e cobrança de assistentes |
-|`/v1/sorafs/*`, `/sorafs/*`, `/.well-known/sorafs/*` |SoraFS descoberta do fornecedor, comprovação de capacidade, fixação, recolha de armazenamento e serviço público de conteúdo |
-|`/v1/soracloud/*`, `/v1/soradns/*`, `/soradns/*`, `/api/*` |SoraCloud ciclo de vida do serviço, fluxos de computação privada/modelo, descoberta pública e roteamento de aplicativos hospedados |
-|`/v1/connect/*`, `/v1/vpn/*` | Iroha Conectar sessões, WebSocket Transportes, VPN sessões, perfis e recibos |
-|`/v1/app-api/*`, `/v1/api/*`, `/v1/content/*` |Aplicações API ligações e pacotes / roteamento de conteúdo apoiado em CID |
+|`/v1/sorafs/`, `/sorafs/`, `/.well-known/sorafs/*` |SoraFS descoberta do fornecedor, comprovação de capacidade, fixação, recolha de armazenamento e serviço público de conteúdo |
+|`/v1/soracloud/`, `/v1/soradns/`, `/soradns/`, `/api/` |SoraCloud ciclo de vida do serviço, fluxos de computação privada/modelo, descoberta pública e roteamento de aplicativos hospedados |
+|`/v1/connect/`, `/v1/vpn/` | Iroha Conectar sessões, WebSocket Transportes, VPN sessões, perfis e recibos |
+|`/v1/app-api/`, `/v1/api/`, `/v1/content/*` |Aplicações API ligações e pacotes / roteamento de conteúdo apoiado em CID |
 |`/v1/operator/*`, `/v1/mcp` |A autenticação do operador e a ponte nativa MCP JSON-RPC |
-|`/v1/offline/*`, `/v1/repo/*`, `/v1/space-directory/*`, `/v1/ram-lfe/*` |Preparação offline, acordos de repositório, manifestos do espaço de dados e assistentes [RAM-LFE ](/pt/blockchain/ram-lfe.md#torii-routes) |
-|`/v1/kaigi/*`, `/v1/webhooks/*`, `/v1/notify/*`, `/v1/telemetry/*` |Colaboração, webhook, notificação push e integrações de telemetria ao vivo |
+|`/v1/offline/`, `/v1/repo/`, `/v1/space-directory/`, `/v1/ram-lfe/` |Preparação offline, acordos de repositório, manifestos do espaço de dados e assistentes [RAM-LFE ](/pt/blockchain/ram-lfe.md#torii-routes) |
+|`/v1/kaigi/`, `/v1/webhooks/`, `/v1/notify/`, `/v1/telemetry/` |Colaboração, webhook, notificação push e integrações de telemetria ao vivo |
 
 ## Ponte ISO 20022 {#iso-20022-bridge}
 
@@ -260,7 +270,7 @@ Para um ensaio controlado, aponte a demonstração para um ponto final Kaigi cap
    ```
 
 Estas verificações comprovam que a telemetria de relevo Torii e Kaigi são acessíveis. Não criam uma reunião; `CreateKaigi` e `JoinKaigi` ainda precisam de carteiras financiadas e apresentação assinada de transacções.
-4. Abra a demonstração, vá para Configurações, configure o Torii URL e deixe que o aplicativo carregue a cadeia ID e prefixo de rede do ponto final.
+4. Abra a demonstração, vá para Configurações, configure o Torii URL e deixe o aplicativo carregar a cadeia ID e o prefixo de rede do ponto final.
 5. Criar ou restaurar duas carteiras locais na demonstração. Use janelas de aplicativos separadas, perfis ou máquinas para que o anfitrião e o convidado tenham estado de carteira separado.
 
 Para testar o Kaigi UI:
@@ -314,15 +324,15 @@ Quando um ponto final aceita ou retorna digitado Norito diretamente, utilizaçã
 
 ## Perfis de telemetria {#telemetry-profiles}
 
-A visibilidade dos endpoints depende da configuração `telemetry.profile` do nó. A configuração atual expõe cinco níveis de perfil:
+A visibilidade do ponto final depende da configuração `telemetry.profile` do nó. A configuração atual expõe cinco níveis de perfil:
 
-|Perfil .|`/status` |`/metrics` |Rutas de desenvolvimento |
+|Perfil .|`/status` |`/metrics` |Roteiras de desenvolvimento |
 | --- | --- | --- | --- |
-|`disabled` |não |não |não |
-|`operator` |sim |não |não |
-|`extended` |sim |sim |não |
-|`developer` |sim |não |sim |
-|`full` |sim |sim |sim |
+|`disabled` |- Não .|- Não .|- Não .|
+|`operator` |Sim , sim .|- Não .|- Não .|
+|`extended` |Sim , sim .|Sim , sim .|- Não .|
+|`developer` |Sim , sim .|- Não .|Sim , sim .|
+|`full` |Sim , sim .|Sim , sim .|Sim , sim .|
 
 ## CLI Curta-metragens {#cli-shortcuts}
 

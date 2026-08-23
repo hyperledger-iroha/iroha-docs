@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /help/integration-issues.md
-translation_source_hash: f9f8a1e5f8c66714532523ef40467d3e79d4d023b3b353244f0317647e755b38
+translation_source_hash: c5f169e423806fa2a9e9d198971588d1aa0b199a28d64e8b089b9f81727550a5
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -29,14 +29,14 @@ Docker またはKubernetesで peer が実行されている場合,クライア�
 公的な Taira 試験では,署名されていないエンドポイント探査機から開始します.
 
 ```bash
-curl -fsS https://taira.sora.org/status \
+curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS 'https://taira.sora.org/v1/domains?limit=5' \
   | jq -r '.items[].id'
 ```
 
-この命令が失敗した場合 `502`, TLS, DNS, またはタイムアウトエラー,ネットワークアクセシビリティを修正するか,アカウントキーまたはトランザクションのデバッグ前に公開テストネットエンドポイントを待つパイロード
+この命令が失敗した場合 `502`, TLS, DNS, ネットワークのアクセシビリティを修正したり,公衆に待機したりする口座鍵やトランザクションの有用な負荷をデバッグする前にテストネットエンドポイント
 
 ## 取引は拒否される {#transactions-are-rejected}
 

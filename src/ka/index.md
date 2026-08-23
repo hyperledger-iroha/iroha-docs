@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /index.md
-translation_source_hash: 505e8224a59534717045c34b1bf796760d06f9d6808a2a1fd9773aa2f6a00c2d
+translation_source_hash: 3b2ad4ee285a821b56c9cf6fd3f4a8431f1cfa478e88082b45788765d68ed833
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 
@@ -18,6 +18,28 @@ hero:
   #- theme: alt
   #  text: View on GitHub
   #  link: https://github.com/hyperledger-iroha/iroha
+
+nexusPortal:
+  eyebrow: SORA Nexus
+  title: "Iroha 3 / SORA Nexus-ზე დამყარება"
+  details: "დაიწყეთ Taira ტესტნეტზე, შეისწავლეთ მიმდინარე ტრანზაქციული ნაკადი და გამოიყენეთ ორიენტირებული რეცეპტები წარმოებისათვის მზად პროგრამების შესაქმნელად."
+  primaryAction:
+    text: "დაიწყეთ Taira"
+    link: /ka/get-started/sora-nexus-dataspaces
+  secondaryAction:
+    text: "გაეცანით სამზარეულოს წიგნს"
+    link: /ka/cookbook/
+  recipes:
+    title: "პოპულარული რეცეპტები"
+    items:
+      - title: "ტრანზაქციის წარდგენა და შემოწმება"
+        link: /ka/cookbook/submit-and-verify-transactions
+      - title: "გადაადგილება ფუნგებადი აქტივების შესახებ"
+        link: /ka/cookbook/fungible-assets
+      - title: "გამოკითხვის რეგისტრაციის მდგომარეობა"
+        link: /ka/cookbook/query-ledger-state
+      - title: "გადაცემის მოვლენები"
+        link: /ka/cookbook/stream-events
 
 features:
   - icon:
@@ -44,16 +66,8 @@ features:
     title: "რეფერენცია"
     details: "იხილეთ მიმდინარე ბინარული, გენეზიის, Torii, და თავსებადობის რეფერენციის გვერდები."
     link: /ka/reference/
-  # - title: Cookbook # (TBA)
-
 footer: true
 ---
 
-<section class="nexus-build" aria-labelledby="nexus-build-title">
-<a class="nexus-build__panel" href="./get-started/sora-nexus-dataspaces.html">
-<span class="nexus-buildcopy"> SORA Nexus <span id="nexus-build-title" class="nexus-buildtitle">დააშენეთ Iroha 3 / SORA Nexus</span> <span class="nexus-builddetails">დააშენოთ SORA 3 Taira testnet, Minamoto mainnet და copy-paste მაგალითები შეგიძლიათ შეეცადოთ ახლავე.</span> </span> <span class="nexus-build__action">Open სახელმძღვანელო <span aria-hidden="true">- &gt; </span> </span>
-</a>
-</section>
-
 <hr style="margin-top: 3rem;">
-<p style="font-weight: 200; font-size: 0.875rem;">Hyperledger Iroha არის ნაწილი <a href="https://www.lfdecentralizedtrust.org/projects/tag/ledger-technology" target="_blank">LF Decentralized Trust</a>. გაიგეთ მეტი <a href="https://iroha.tech/" target="_blank">iroha.tech</a>.</p>
+<p style="font-weight: 200; font-size: 0.875rem;">Hyperledger Iroha შედის <a href="https://www.lfdecentralizedtrust.org/projects/tag/ledger-technology" target="_blank">LF Decentralized Trust</a>. გაიგეთ მეტი <a href="https://iroha.tech/" target="_blank">iroha.tech</a>.</p>

@@ -72,7 +72,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
 Map the public lane catalog back to dataspace aliases:
 
 ```bash
-curl -fsS https://taira.sora.org/status \
+curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .block_height, .finality_lag_slots]
     | @tsv'

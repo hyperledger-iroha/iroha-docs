@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /get-started/operate-iroha-via-cli.md
-translation_source_hash: 9391bab95aa0ee20c7f036cc175f3a6d3a8852e6ea90b09d9ebf1a838973c765
+translation_source_hash: ab8f3bf6d2259dc1ea649273e695429a992108b936475b263fe9d1fae59e8766
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -49,10 +49,10 @@ Utilisez `--output-format text` pour la sortie de l'opérateur lisible par l'hom
 
 Vous pouvez essayer les contrôles Taira en lecture seulement avant d'exécuter un pair local ou de créer un signataire. Ces commandes utilisent des routes publiques Torii JSON et ne dépensent pas de testnet XOR.
 
-Vérifiez la santé de Taira:
+Vérifiez l'état de Taira:
 
 ```bash
-curl -fsS https://taira.sora.org/status \
+curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 ```
 

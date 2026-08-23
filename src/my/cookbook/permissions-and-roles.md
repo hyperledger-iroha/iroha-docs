@@ -1,0 +1,140 @@
+---
+translation_locale: my
+translation_source: /cookbook/permissions-and-roles.md
+translation_source_hash: 734437b8530ad0efb9ddd83b24cb90c30dc29843a03753babd8dca5e86a3f91d
+translation_status: machine-validated
+translation_engine: nllb-200-ct2
+---
+
+# ခွင့်ပြုချက်များနှင့် အခန်းကဏ္ဍ {#permissions-and-roles}
+
+## ရလဒ် {#outcome}
+
+Account တစ်ခုမှာ metadata ကို update လုပ်ဖို့ ခွင့်ပြုချက် ပေးတဲ့ Role တစ်ခုကို ဖန်တီးပြီး ကိုယ်စားလှယ်တစ်ယောက်ဆီ လွှဲပြောင်းပေးပါ၊ ကိုယ်စားလှေစာရေးတာကို သက်သေပြပြီး သင့်လျော်တဲ့ Rust ရိုက်ထားတဲ့ ညွှန်ကြားချက်ကို ပြသပါ။
+
+## လိုအပ်ချက်များ {#prerequisites}
+
+- Taira မှ ရင်းနှီးမြှုပ်နှံထားသော ဖောက်သည်နှင့် အခွန် metadata ကို [မှ Taira သို့ ချိတ်ဆက်ပါ။](./connect-to-taira.md).
+- `TARGET_ACCOUNT` နှင့် `DELEGATE_ACCOUNT` canonical သို့ သတ်မှတ်ထားသည် I105 အကောင့် IDs.
+- Taira မှာ permission-gated အုပ်ချုပ်ရေးလုပ်ဆောင်မှုတစ်ခုဖြစ်သည်၊ `CanManageRoles` နှင့် scoped ခွင့်ပြုချက်ပေးရန်လိုအပ်သည့်အာဏာပိုင်ကိုရရှိခြင်း၊ သို့မဟုတ် ထုတ်လုပ်သော ဒေသတွင်းကွန်ရက်တွင်နည်းပြကို run လုပ်ခြင်း။
+
+```bash
+CONFIG=./taira.client.toml
+FEE_METADATA=./taira.tx-metadata.json
+ROLE_ID=cookbook_metadata_editors
+test -n "$TARGET_ACCOUNT"
+test -n "$DELEGATE_ACCOUNT"
+```
+
+စာသားကို သက်သေပြတဲ့အခါ ကိုယ်စားလှယ်အတွက် ဒုတိယ client ကို configuration သုံးပါ။
+
+```bash
+DELEGATE_CONFIG=./taira.delegate.toml
+```
+
+## ခြေလှမ်း {#steps}
+
+### (၁) နေရာလွတ်ကို မှတ်ပုံတင်ပါ။ {#_1-register-an-empty-role}
+
+ပြည်နယ်ပြောင်းတဲ့ CLI အမိန့်တိုင်းမှာ အခွန်ပေးသူကို ရှင်းလင်းစွာအမည်ပေးထားတယ်။ metadata ဖိုင်မှာ faucet တုံ့ပြန်မှုကနေ ရယူထားတဲ့ လက်ရှိ Taira အခွန်အရင်းအမြစ် ပါပါတယ်။
+
+```bash
+iroha --config "$CONFIG" \
+  --fee-payer authority \
+  --metadata "$FEE_METADATA" \
+  ledger role register --id "$ROLE_ID"
+```
+
+### (၂) ရည်မှန်းချက်စာရင်းတွင် ခွင့်ပြုချက်အကန့်အသတ် ထည့်သွင်းပါ။ {#_2-add-a-permission-scoped-to-the-target-account}
+
+ခွင့်ပြုချက်လက်မှတ်များသည် JSON အရာဝတ္ထုများကို ရိုက်ထည့်ထားသည်။ အကောင့်ကို `payload` တွင် I105 ID အဖြစ် သိမ်းဆည်းပါ။ ဤတင်းကျပ်သော ကွင်းတွင် အမည်မဖော်လိုပါ။
+
+```bash
+jq -cn --arg account "$TARGET_ACCOUNT" \
+  '{name:"CanModifyAccountMetadata",payload:{account:$account}}' |
+  iroha --config "$CONFIG" \
+    --fee-payer authority \
+    --metadata "$FEE_METADATA" \
+    ledger role permission grant --id "$ROLE_ID"
+```
+
+### (၃) ကိုယ်စားလှယ်ကို တာဝန်ပေးခြင်း {#_3-assign-the-role-to-the-delegate}
+
+```bash
+iroha --config "$CONFIG" \
+  --fee-payer authority \
+  --metadata "$FEE_METADATA" \
+  ledger account role grant \
+  --id "$DELEGATE_ACCOUNT" \
+  --role "$ROLE_ID"
+```
+
+အခန်းကဏ္ဍများနှင့် ၎င်းတို့၏ ထောက်ပံ့ငွေများသည် သက်တမ်းကုန်ဆုံးခြင်းမရှိဘဲ ဝင်ရောက်ရန် မလိုတော့သည့်အခါ တိတိကျကျ ပြန်လည်သိမ်းဆည်းပါ။
+
+### (၄) ခွင့်ပြုချက်ပေးခြင်း {#_4-exercise-the-delegated-permission}
+
+စာရေးခြင်းအတွက် ကိုယ်စားလှယ်၏ လက်မှတ်ရေးထိုးသူနှင့် အခွန်စာရင်းကို အသုံးပြုပါ။ JSON တန်ဖိုးများကို ပုံမှန် input မှ ဖတ်ရှုသည်။
+
+```bash
+printf '"delegated"\n' |
+  iroha --config "$DELEGATE_CONFIG" \
+    --fee-payer authority \
+    --metadata "$FEE_METADATA" \
+    ledger account meta set \
+    --id "$TARGET_ACCOUNT" \
+    --key cookbook_access
+```
+
+Rust ဖောက်သည်များအတွက် အလားတူမော်ဒယ်ရရှိနိုင်သည်။ ဤတွင် `client` သည် `registrar_account` အဖြစ်မှတ်သားထားပြီး CLI စီးဆင်းမှုမှာလိုပဲ အခန်းကဏ္ဍ၏ မူလပိုင်ရှင်ဖြစ်လာသည်။ သုံးခုစလုံးသောစာရင်းအပြောင်းအရွှေ့များသည် `AccountId` တန်ဖိုးများကိုစစ်ဆေးပြီးသားဖြစ်သည်:
+
+```rust
+use iroha::data_model::{prelude::*, transaction::FeePaymentIntent};
+use iroha_executor_data_model::permission::account::CanModifyAccountMetadata;
+
+let role_id: RoleId = "cookbook_metadata_editors".parse()?;
+let role = Role::new(role_id.clone(), registrar_account).add_permission(
+    CanModifyAccountMetadata {
+        account: target_account.clone(),
+    },
+);
+
+client.submit_all_blocking::<InstructionBox>(
+    [
+        Register::role(role).into(),
+        Grant::account_role(role_id, delegate_account).into(),
+    ],
+    FeePaymentIntent::authority(Vec::new(), None),
+)?;
+```
+
+## စစ်ဆေးပါ {#verify}
+
+တာဝန်ရဲ့ နှစ်ဖက်စလုံးကို စာရင်းပေးပြီး ကိုယ်စားလှယ်က ရေးသားတဲ့ တိကျတဲ့ တန်ဖိုးကို ဖတ်ပါ။
+
+```bash
+iroha --config "$CONFIG" ledger role permission list --id "$ROLE_ID"
+iroha --config "$CONFIG" ledger account role list --id "$DELEGATE_ACCOUNT"
+
+iroha --config "$CONFIG" ledger account meta get \
+  --id "$TARGET_ACCOUNT" \
+  --key cookbook_access
+```
+
+ခွင့်ပြုချက်စာရင်းမှာ ပါဝင်ရပါမယ်။ `CanModifyAccountMetadata` ကန့်သတ်ချက် `TARGET_ACCOUNT`, ကိုယ်စားလှယ်ရဲ့ အခန်းကဏ္ဍစာရင်းမှာ ပါဝင်ရမယ်။ `ROLE_ID`, စာဖတ်တဲ့ metadata က ပြန်လာရပါမယ်။ `"delegated"`.
+
+## ပြဿနာဖြေရှင်းခြင်း {#troubleshooting}
+
+- `Not permitted` မှတ်ပုံတင်ခြင်း၊ တည်းဖြတ်ခြင်း သို့မဟုတ် အခန်းကဏ္ဍကို သတ်မှတ်ရာတွင် လက်မှတ်ရေးထိုးသူသည် လိုအပ်သော Taira ခွင့်ပြုချက်မရှိဟုဆိုလိုသည်။ ကန့်သတ်ထားသည့် အမှတ်တံဆိပ်ကို ကမ္ဘာလုံးဆိုင်ရာတစ်ခုနှင့် အစားမထိုးပါနဲ့။ တိကျတဲ့ ထောက်ပံ့မှုကို တောင်းခံပါ (သို့) localnet ကိုအသုံးပြုပါ။
+- အသုံးဝင်ဝန်ဆောင်မှု စာရင်းစစ်ခြင်းအမှားတစ်ခုက `account` ကို `payload` အနားမှာ ထားတာ၊ I105 ID အစား အမည်မဖော်လိုတာ (သို့မဟုတ်) JSON တန်ဖိုးကို နှစ်ကြိမ်ဖော်ပြတာပါ။
+- အခွန်ကို ငြင်းပယ်ခြင်းသည် ထိုအဆင့်ကို တင်ပြသည့် လက်မှတ်ရေးထိုးသူနှင့်ဆိုင်သည်။ စီမံခန့်ခွဲရေးမှူးအား ငွေကြေးထောက်ပံ့ခြင်း၊ လွတ်လပ်စွာ လွှဲပြောင်းခြင်း နှင့် faucet-derived fee asset metadata ကို သိမ်းဆည်းထားခြင်းဖြစ်သည်။
+- အောင်မြင်သော role grant သည် token များတွင် ကုဒ်သွင်းထားသော scope ကို override မပြုပါ။ ဤ role သည် permission payload တွင်အမည်ပေးထားသည့် account ကိုသာပြောင်းလဲနိုင်သည်။
+- သန့်ရှင်းရေးအတွက် `ledger account role revoke`, နောက် `ledger role permission revoke` နှင့် နောက်ဆုံး `ledger role unregister` ကို run လုပ်ပါ။ တစ်ခုချင်းစီက သီးခြားစာရင်းဖြစ်ပြီး `--fee-payer authority` နဲ့ အခွန် metadata တွေပါဝင်ဖို့လိုပါတယ်။
+
+## အရင်းအမြစ်နှင့် ဆက်စပ်သော စာတမ်းများ {#source-and-related-docs}
+
+- [ပိတ်ထားတဲ့ commit မှာ Role Integration စမ်းသပ်ချက်များ ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/roles.rs)
+- [ခွင့်ပြုချက် ပေါင်းစပ်မှု စမ်းသပ်ချက်များ ပိတ်ထားသော commit ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/permissions.rs)
+- [ချိတ်ဆက်ထားသော commit ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_executor_data_model/src/permission.rs) တွင်တည်ဆောက်ထားသော ခွင့်ပြုချက်ဒေတာပုံစံ
+- [ခွင့်ပြုချက်များနှင့် ကဏ္ဍများ ](/my/blockchain/permissions.md)
+- [ခွင့်ပြုချက် အမှတ်တံဆိပ် မှတ်ပုံတင် ](/my/reference/permissions.md)
+- [metadata](./metadata.md)

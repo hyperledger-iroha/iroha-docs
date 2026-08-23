@@ -1,14 +1,14 @@
 ---
 translation_locale: ru
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 63c317ab61ba912176c43c83d5b4f026f23a7a6e5fb633872a133c9ea1295686
+translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Построение на SORA 3: Taira и Minamoto {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 - это трасса общественного развертывания, ориентированная на приложение, построенная на Iroha 3 и SORA Nexus. Сначала построить и репетировать на Taira, а затем переместить ту же форму клиента в Minamoto только тогда, когда у вас есть отдельные ключи магистральной сети, реальные XOR за сборы и разрешение на производство.
+SORA 3 - это публичная трасса развертывания, ориентированная на приложение, построенная на Iroha 3 и SORA Nexus. Сначала построить и репетировать на Taira, а затем переместить ту же форму клиента в Minamoto только тогда, когда у вас есть отдельные ключи магистральной сети, реальные XOR за сборы и разрешение производства.
 
 В этом руководстве показано, как настроить клиент Iroha для общественных сетей SORA 3:
 
@@ -37,6 +37,20 @@ SORA 3 - это трасса общественного развертывани
 3. Используйте свою логику приложения против Taira до тех пор, пока ошибки не будут скучными и наблюдаемыми.
 4. Создайте отдельный Minamoto подписитель, финансируйте его с реальным XOR и переместите только те же проверенные операции в mainnet.
 
+## Продолжайте с книгой по приготовлению пищи {#continue-with-the-cookbook}
+
+Используйте это руководство, чтобы выбрать сеть, настроить подписи и оплатить сборы. Затем продолжайте с рецептом, который соответствует поведению приложения , которое вы хотите создать:
+
+|Цель |Рецепт .|
+| --- | --- |
+|Проверьте Taira и настройку клиента | [Подключить к Taira](/ru/cookbook/connect-to-taira.md) |
+|Отправить первое письмо и проверить его результат | [Представление и проверка транзакций](/ru/cookbook/submit-and-verify-transactions.md) |
+|Регистрация, метка и перемещение стоимости | [Функциональные активы](/ru/cookbook/fungible-assets.md) |
+|Прочитайте состояние фильтрованной заявки | [Вопрос Ledger состояние](/ru/cookbook/query-ledger-state.md) |
+|Реакция на принятые изменения | [Поток событий](/ru/cookbook/stream-events.md) |
+
+Книга кулинарии сохраняет каждый рабочий процесс ориентированным и ссылается сюда, когда он нуждается в финансировании Taira или контексте сети SORA Nexus.
+
 ## 1. Подумайте о том, что вы делаете. {#_1-understand-what-you-are-setting-up}
 
 В SORA Nexus пространство данных является частью каталога сетевой полосы и маршрутизации. Клиент не создает новое общественное пространство данных, просто изменив `client.toml`.
@@ -54,12 +68,13 @@ wonderland.universal
 
 ## 2. Проверьте конечный пункт общественности Torii {#_2-check-the-public-torii-endpoint}
 
-Проверьте, что целевая конечная точка включена перед конфигурацией подписи.
+Проверьте, что целевая конечная точка включена перед настройкой подписи.
 
 Для Taira:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -67,6 +82,7 @@ curl -fsS https://taira.sora.org/status \
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
@@ -74,6 +90,7 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
@@ -94,6 +111,7 @@ Taira также раскрывает Torii-нативный Модель Кон
 
 ```bash
 curl -fsS https://taira.sora.org/v1/mcp \
+  -H 'Accept: application/json' \
   | jq '{protocolVersion, server: .serverInfo.name, tools: .capabilities.tools.count}'
 ```
 
@@ -129,13 +147,13 @@ then update the client code. Do not submit transactions unless I explicitly
 say "submit this transaction".
 ```
 
-### Рабочий поток транзакций через агентов {#transaction-workflow-through-agents}
+### Транзакционный рабочий процесс через агентов {#transaction-workflow-through-agents}
 
 В настоящее время MCP bridge может представить подписанный документ Iroha сделки, но это не исключает нормальных требований к сделке. Транзакции все еще нужны правильный авторитет, разрешения, финансирование сборов, цепочка ID, метаданные, и подпись.
 
-Для сырья Iroha транзакции, создать и подписывать конверт с SDK или CLI Сначала, затем дайте агенту только канонические подписанные биты транзакции кодируются как: `body_base64`. Агент может представить конверт с `iroha.transactions.submit_and_wait`, или представить с `iroha.transactions.submit` и опроса с `iroha.transactions.wait`.
+Для необработанных транзакций Iroha сначала сооружайте и подпишите конверт с транзакцией SDK или CLI, а затем предоставьте агенту только каноническое подписанные байты транзакции, кодированные как `body_base64`. Агент может представить конверт с помощью `iroha.transactions.submit_and_wait` или подать заявку с `iroha.transactions.submit` и опрос с `iroha.transactions.wait`.
 
-Не вставляйте частные ключи в запрос агента. Если агент должен создать транзакцию, укажите ее на локальный код, который загружает секреты из среды работы пользователя, цепочки ключей, аппаратного подписи или проигнорированный файл конфигурации тестирования сети. Агент никогда не должен записывать ключевой материал в Markdown, фиксации, журналы, или обязательства.
+Не вставляйте частные ключи в запрос агента. Если агент нуждается в создании транзакции, укажите его на местный код, который загружает секреты из времени выполнения пользователя Агент никогда не должен записывать ключевой материал в Markdown, фиксации, журналы или коммитации.
 
 Прежде чем подать транзакцию, попросите агента составить короткий план транзакции:
 
@@ -188,6 +206,7 @@ for network in taira minamoto; do
   root="https://$network.sora.org"
   printf '\n%s\n' "$network"
   curl -fsS "$root/status" \
+    -H 'Accept: application/json' \
     | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 done
 ```
@@ -196,6 +215,7 @@ done
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -205,6 +225,7 @@ curl -fsS https://taira.sora.org/status \
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
+  -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
@@ -220,7 +241,9 @@ const roots = {
 };
 
 for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`).then((res) => res.json());
+  const status = await fetch(`${root}/status`, {
+    headers: { Accept: 'application/json' },
+  }).then((res) => res.json());
   const publicSpaces = status.teu_lane_commit
     .filter((lane) => lane.visibility === 'public')
     .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
@@ -328,7 +351,7 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-Используйте полученную учетную запись ID всякий раз, когда команда Nexus API или CLI требует канонической учетной записи ID, например, крана Taira `account_id`, запросов на баланс, строгих полей учетной записи или обязательств под псевдонимом . Сохраняйте соответствующий частный ключ в конфигурации клиента и выберите такую же общественную сеть с `[account].profile = "taira"` или `[account].profile = "minamoto"`.
+Используйте полученную учетную запись ID всякий раз, когда команда Nexus API или CLI запрашивает канонический учетный запись ID, например, крана Taira `account_id`. Сохраняйте соответствующий частный ключ в конфигурации клиента и выберите ту же публичную сеть, что и `[account].profile = "taira"` или `[account].profile = "minamoto"`.
 
 Создание ID не создает само по себе финансируемого счета на цепочке. Taira, в кране может создать и финансировать счет для testnet пишет. на Minamoto, использовать одобренное включение в основную сеть или поток казначейства.
 
@@ -366,7 +389,9 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 Принеси мне головоломку:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
+curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
+  -H 'Accept: application/json' \
+  | jq .
 ```
 
 Если головоломка или конечная точка претензии возвращает `502`, перерыв времени или другую ошибку на уровне шлюза, подождите и попробуйте снова, прежде чем изменить ключи или конфигурацию клиента.
@@ -391,20 +416,26 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
-  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}'
+  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
 Если `difficulty_bits` превышает `0`, решить головоломку и включить высоту якоря плюс нонс:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
+  -H 'Accept: application/json' \
   -H 'content-type: application/json' \
   -d '{
     "account_id": "<TAIRA_I105_ACCOUNT_ID>",
     "pow_anchor_height": 741,
     "pow_nonce_hex": "<NONCE_HEX>"
-  }'
+  }' \
+  | tee ./taira-faucet-response.json \
+  | jq .
 ```
 
 Алгоритм головоломки:
@@ -415,14 +446,14 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet \
    - `anchor_height` как большая эндия `u64`
    - `anchor_block_hash_hex` расшифрованные в байтах
    - `challenge_salt_hex` декодируются в байтах, если они присутствуют
-2. Попробуйте `u64` nonces кодируются как величайшие 8-байтные значения.
+2. Попробуйте `u64` nonces кодируются как большие эндиан 8-байтные значения.
 3. Для каждой нонси, выполните скрипт с:
    - пароль: 8-байтный нонс
-   - соль: 32-байтовая задача
+   - Соль: 32-байтовая задача
    - `N = 2^scrypt_log_n`
    - `r = scrypt_r`
    - `p = scrypt_p`
-   - длина выхода: 32 байта
+   - протяженность выхода: 32 байта
 4. Преимущественный нонс - это первый дигест с по меньшей мере `difficulty_bits` ведущим нулевым битом.
 
 Ответ на трубку включает в себя финансируемый актив и хэширование транзакций в очереди:
@@ -430,21 +461,25 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet \
 ```json
 {
   "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-  "asset_definition_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
+  "asset_definition_id": "<TAIRA_FEE_ASSET_DEFINITION_ID>",
   "asset_id": "...",
-  "amount": "25000",
+  "amount": "<FUNDED_AMOUNT>",
   "tx_hash_hex": "...",
   "status": "QUEUED"
 }
 ```
 
-В настоящее время ответ возвращается с HTTP `202 Accepted`. Определение активов ID Выше - Taira актива по счетам, финансируемый государственным краном. Фантик принял запрос, когда он возвращается `tx_hash_hex` и `status: "QUEUED"`.
+Ответ в настоящее время возвращается HTTP `202 Accepted`. Его `asset_definition_id` является текущим активами сборов Taira, финансируемыми государственным краном; извлечь его из ответа вместо копирования примера ID. Кранок принял запрос, когда он возвращает `tx_hash_hex` и `status: "QUEUED"`.
 
 Затем проанализируйте финансируемые активы перед тем, как представить свои собственные платежные операции:
 
 ```bash
+TAIRA_FEE_ASSET_DEFINITION=$(
+  jq -er '.asset_definition_id' ./taira-faucet-response.json
+)
+
 iroha --config ./taira.client.toml ledger asset get \
-  --definition 6TEAJqbb8oEPmLncoNiMRbLEK6tw \
+  --definition "$TAIRA_FEE_ASSET_DEFINITION" \
   --account <TAIRA_I105_ACCOUNT_ID>
 ```
 
@@ -470,7 +505,12 @@ def has_leading_zero_bits(digest: bytes, bits: int) -> bool:
 root = "https://taira.sora.org"
 account_id = sys.argv[1]
 
-with urllib.request.urlopen(f"{root}/v1/accounts/faucet/puzzle") as res:
+puzzle_request = urllib.request.Request(
+    f"{root}/v1/accounts/faucet/puzzle",
+    headers={"Accept": "application/json"},
+)
+
+with urllib.request.urlopen(puzzle_request) as res:
     puzzle = json.load(res)
 
 claim = {"account_id": account_id}
@@ -503,7 +543,7 @@ if difficulty > 0:
 request = urllib.request.Request(
     f"{root}/v1/accounts/faucet",
     data=json.dumps(claim).encode(),
-    headers={"content-type": "application/json"},
+    headers={"Accept": "application/json", "content-type": "application/json"},
     method="POST",
 )
 
@@ -599,7 +639,7 @@ alice@apps.universal
 alice@universal
 ```
 
-В строгих учетных полях все еще используются канонические I105 счета IDs. Обращайтесь с псевдонимами как с человекочитаемыми связями, которые решаются в каноническом отношении. IDs.
+Поле строгих учетных записей все еще используют канонический I105 счет IDs. Обращайтесь с псевдонимами как с человекочитаемыми обязательствами, которые решаются на каноническом учете IDs.
 
 ## 8. Предоставление нового пространства данных {#_8-provision-a-new-dataspace}
 
@@ -609,6 +649,7 @@ alice@universal
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
@@ -664,6 +705,7 @@ description = "Route payments domains to the payments dataspace"
 
 ```bash
 curl -fsS https://taira.sora.org/status \
+  -H 'Accept: application/json' \
   | jq '.teu_lane_commit[] | select(.dataspace_alias == "payments")'
 ```
 

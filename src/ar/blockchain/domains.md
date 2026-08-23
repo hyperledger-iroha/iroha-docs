@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /blockchain/domains.md
-translation_source_hash: 4c42df3c179a086b8823264df2b69f68d7d3df500c8362d78f7ba56875dcfad1
+translation_source_hash: 5e52579436a181d76c83fa549991e56064ae57349b7109d5c41ec7953e5cbb2e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -45,7 +45,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
 ```
 
-يحدد النية `payments.universal` ، ومساحة البيانات الرقمية لها ، والمالك القنوني I105 ، وشروط استحواذ الإيجار ، وحارس السياسة الحالية / مدفوعات الدفع. نقطة نهاية المخطط هي `POST /v1/aliases/setup/plan` ؛ خطتها المستردة مرتبطة بالسلسلة والسلطة والدولة والموعد النهائي . إزالة النطاق لا تزال تستخدم [`Unregister` ](/ar/blockchain/instructions.md#un-register).
+يحدد النية `payments.universal` ، ومساحة البيانات الرقمية لها، والمالك القنوني I105، وشروط استحواذ الإيجار، وحارس السياسة الحالية / مدفوعات الدفع. نقطة نهاية المخطط هي `POST /v1/aliases/setup/plan`؛ خطتها المستردة مقيدة بالسلسلة والسلطة والدولة والموعد النهائي. لا يزال إزالة النطاق تستخدم [`Unregister`](/ar/blockchain/instructions.md#un-register).
 
 إنشاء أو إزالة نطاق يتطلب الإذن المناسب لإدارة النطاق تحت مؤكدة التشغيل النشطة. يمكن تحديث بيانات المجال مع [`SetKeyValue` و `RemoveKeyValue`](/ar/blockchain/instructions.md#setkeyvalue-removekeyvalue) عندما يكون لدى السلطة إذن لتعديل هذا النطاق .
 
@@ -61,7 +61,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
 خريطة كتالوج الشارع العام مرة أخرى إلى مستعار مساحة البيانات:
 
 ```bash
-curl -fsS https://taira.sora.org/status \
+curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .block_height, .finality_lag_slots]
     | @tsv'
@@ -92,7 +92,7 @@ iroha --config ./taira.client.toml \
 
 ## العلاقات مع الكيانات الأخرى {#relationship-to-other-entities}
 
-مجموعة النطاقات الكبرى العناصر وتوفير مساحة أسماء للبيانات التي تمتد على نطاق النطاق. تعريفات الأصول تستخدم المعرفات المؤهلة للنطاقات، ويمكن للمسائل إدراج النطاقين أو العثور على الأشياء التي تمتدت على النطاق من النطاق . الحسابات نفسها بلا نطاق في نموذج البيانات الحالية، ولكن يمكن للحسابات امتلاك النطاقات واحتفاظ بالأصول التي تعريفاتها تعيش تحت النطاقين.
+مجموعة النطاقات الكبرى العناصر وتوفير مساحة أسماء للبيانات التي تمتد على نطاق النطاق. تعريفات الأصول تستخدم المعرفات المؤهلة للنطاقات، والمسائل يمكن أن تدرج المناطق أو البحث الكائنات المحددة إلى نطاق النطاق. الحسابات نفسها بلا نطاق في نموذج البيانات الحالية، ولكن يمكن للحسابات امتلاك النطاقات والاحتفاظ بالأصول التي تعريفاتها تعيش تحت النطاقين.
 
 انظر أيضاً:
 

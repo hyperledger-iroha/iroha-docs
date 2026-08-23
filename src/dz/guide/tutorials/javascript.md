@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: feddadb1b50c5cc8beea188fd7053eeaae58d6ab9203687e9a1378f203229168
+translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -22,7 +22,7 @@ npm run build:native
 npm run build:dist
 ```
 
-རང་ལུགས་བཟོ་སྐྲུན་འདི་གིས་ `cargo build -p iroha_js_host` སྦྲགས་ཏེ་ SDK འགོ་བཙུགས་པའི་སྐབས་ལུ་ལག་ལེན་འཐབ་མི་ platform-specific checksum ཐོ་བཀོད་འབདཝ་ཨིན། གཞི་རྟེན་བཟོ་སྐྲུན་ས་ཁོངས་འདི་ `native/` ནང་ host འདི་བདེན་ཁུངས་བཟོཝ་ཨིན། དམིགས་གཏད་ཅན་སྦེ་བཟོ་སྐྲུན་འབད་ཡོད་པའི་ checksum-verified host བྱིན་པའི་སྐབས་རྐྱངམ་ཅིག་ `IROHA_JS_NATIVE_DIR` གཞི་སྒྲིག་འབདཝ་ཨིན། སྦ་སྒོར་འདི་ ESM རྐྱངམ་གཅིག་ཨིན། CommonJS ལས་ ལག་ལེན་འཐབ་ནི་ཤུགས་ཅན་ `import()`.
+རང་ལུགས་བཟོ་སྐྲུན་འདི་གིས་ `cargo build -p iroha_js_host` སྦྲགས་ཏེ་ SDK འགོ་བཙུགས་པའི་སྐབས་ལུ་ལག་ལེན་འཐབ་མི་ platform-specific checksum འདི་ཐོ་བཀོད་འབདཝ་ཨིན། གཞི་རྟེན་བཟོ་སྐྲུན་ས་ཁོངས་འདི་ `native/` ནང་ host བརྟག་ཞིབ་འབད་ཡོད་པའི་ས་སྒོ་ཨིན། `IROHA_JS_NATIVE_DIR` གཞི་བཙུགས་འབད་ཞིནམ་ལས་རྐྱངམ་ཅིག་ དམིགས་བསལ་དུ་བཟོ་སྐྲུན་འབད་མི་, checksum-verified host མཁོ་སྤྲོད་འབད་བའི་སྐབས་འབད། སྦ་སྒོར་འདི་ ESM -རྐྱངམ་ཅིག་ཨིན། CommonJS ལས་, ལག་ལེན་འཐབ་ནི་ཤུགས་ཅན་ `import()`.
 
 ## མགྱོགས་པ་རང་འགོ་བཙུགས་ {#quickstart}
 
@@ -45,7 +45,9 @@ Node.js 24ནང་ལུ་བཙུགས་ཡོད་པའི་ `fetch` �
 ```js
 const root = "https://taira.sora.org";
 
-const status = await fetch(`${root}/status`).then((res) => res.json());
+const status = await fetch(`${root}/status`, {
+  headers: { Accept: "application/json" },
+}).then((res) => res.json());
 console.log({
   blocks: status.blocks,
   queueSize: status.queue_size,
@@ -85,7 +87,7 @@ import { generateKeyPair } from "@iroha/iroha-js/crypto";
 
 ## རང་ལུགས་ཀྱི་ Escrow {#native-escrow}
 
-JavaScript དང་ TypeScript applications གིས་ native escrow གི་ཐོག་ལས་ལག་ལེན་འཐབ་ཚུགས། Kotodama ཁེ་རྒུད་འཐུས་མགྲོན་པོ་ཚུ་དང་གཅིག་ཁར་ བསྡུ་སྒྲིག་ `@iroha/iroha-js/kotodama-compiler`; direct native escrow transaction builders འདི་ ད་རེས་ JavaScript SDK. མཐོང་དགོ་ [རང་སོའི་རྒྱུ་དངོས་ཚུ་གི་ ཉེན་སྲུང་འབད་ཐབས།](/dz/blockchain/escrow.md#javascript-and-typescript-kotodama) སྦ་སྒོར་གྱི་ host call གི་དཔེ་མཚོན་ལུ་བལྟ་བ་ཅིན་
+JavaScript དང་TypeScript གི་ལག་ལེན་ཚུ་ནང་ native escrow གྱི་ཐོག་ལས་ Kotodama གི་ཞལ་འཆེས་ཚུ་ ལག་ལེན་འཐབ་ཚུགས། `@iroha/iroha-js/kotodama-compiler`དང་གཅིག་ཁར་ escrow host calls བསྡུ་སྒྲིག་འབད། direct native escrew ཚོང་འབྲེལ་བཟོ་མི་ཚུ་ ད་རེས་ JavaScript SDK གིས་ ཉེན་ཁ་མ་ཐོནམ་ཨིན། དཔེ་འདི་བལྟ་ནིའི་དོན་ལུ་ [ Native Asset Escrow](/dz/blockchain/escrow.md#javascript-and-typescript-kotodama) འདི་ལྟ་དགོ།
 
 ## ད་ལྟོའི་ཁེ་ཕན་ {#current-coverage}
 

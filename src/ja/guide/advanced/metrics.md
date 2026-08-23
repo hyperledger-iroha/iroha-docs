@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: 868481b9f7482e936d6c7013557c7ff5334c7bb93fabf74d6eb726e526fb4e43
+translation_source_hash: 5772bf7175b693fbbed54b59304859a33c2e19fef0c402141b6f4ad4cfd6714f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -26,7 +26,7 @@ Torii で暴露された操作者の表面から始めます.
 ```bash
 export TORII=http://127.0.0.1:8180
 
-curl -s "$TORII/status" | jq .
+curl -s -H 'Accept: application/json' "$TORII/status" | jq .
 curl -s -H 'Accept: application/json' "$TORII/v1/sumeragi/status" | jq .
 curl -s "$TORII/v1/sumeragi/phases" | jq .
 curl -s "$TORII/v1/sumeragi/rbc" | jq .
@@ -39,7 +39,7 @@ Taira に対して同じ読み込み式を試すことができます.
 ```bash
 TAIRA=https://taira.sora.org
 
-curl -fsS "$TAIRA/status" \
+curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA/v1/time/status" \

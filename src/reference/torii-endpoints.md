@@ -16,30 +16,45 @@ Norito RPC guidance, see the [Norito reference](/reference/norito.md).
 
 | Endpoint | Format | Purpose |
 | --- | --- | --- |
-| `POST /transaction` | Norito | Submit a signed transaction |
-| `POST /query` | Norito | Submit a signed query |
-| `GET /events` | WebSocket | Subscribe to event streams |
-| `GET /block/stream` | WebSocket | Stream committed blocks |
-| `GET /peers` | JSON | Peer list exposed by Torii |
-| `GET /health` | JSON | Lightweight liveness endpoint |
-| `GET /api_version` | JSON | Default API version |
-| `GET /status` | JSON | High-level status summary for operators |
+| `POST /v1/pipeline/transactions` | Norito | Submit a signed transaction |
+| `POST /v1/query` | Norito | Submit a signed query |
+| `GET /v1/events/ws` | WebSocket | Subscribe to event streams |
+| `GET /v1/events/sse` | SSE | Subscribe to event streams over SSE |
+| `GET /v1/blocks/stream` | WebSocket | Stream committed blocks |
+| `GET /v1/peers` | JSON | Peer list exposed by Torii |
+| `GET /livez` | Text | Process-only liveness; it does not imply protocol readiness |
+| `GET /readyz` | JSON | Complete node readiness, including mandatory offline-cash checks |
+| `GET /health` | JSON | Readiness probe with the same offline-cash invariant |
+| `GET /v1/api/version` | Text | Current block-header version |
+| `GET /status` | Norito or JSON | High-level diagnostic status; request JSON explicitly |
 | `GET /metrics` | Prometheus | Prometheus scrape endpoint |
-| `GET /schema` | JSON | Data-model schema snapshot served by the node |
+| `GET /v1/schema` | JSON | Data-model schema snapshot served by the node when enabled |
 | `GET /openapi` or `GET /openapi.json` | JSON | OpenAPI document for the active Torii HTTP routes |
 | `GET /v1/parameters` | JSON | Node parameter snapshot |
 | `GET /v1/node/capabilities` | JSON | Node capability and data-model metadata |
-| `GET /v1/api/versions` | JSON | Supported Torii API versions |
-| `GET /v1/events/sse` | SSE | Event stream for long-lived clients |
 | `GET /v1/time/now` | JSON | Node wall-clock snapshot |
 | `GET /v1/time/status` | JSON | Time synchronization status |
 
-`/openapi` is the authoritative endpoint list for a running node. The exact
-surface depends on build features and runtime configuration, so generated
-clients should prefer the live OpenAPI document over a hand-copied route list.
-Use the [Torii API console](/reference/torii-api-console.md) to load that live
-document, test JSON routes, copy curl requests, and generate client code from
-the current schema.
+For an SSE request, advertise the native stream plus a typed fallback:
+
+```http
+Accept: text/event-stream, application/json
+```
+
+Torii first negotiates a JSON or Norito representation at the request layer,
+then validates the native `text/event-stream` response. Sending only
+`text/event-stream` is therefore rejected with `406`; the
+[stream-events recipe](/cookbook/stream-events.md) uses the complete header.
+
+`/openapi` is the primary generated contract for routes represented in the
+schema, not a complete operational-probe inventory. The current document omits
+`/livez` and `/readyz`, and its `/health` description can lag the readiness
+handler. Generate route clients from the live document, but validate liveness
+and readiness directly against the running node and pinned handlers. The exact
+surface still depends on build features and runtime configuration. Use the
+[Torii API console](/reference/torii-api-console.md) to load that live document,
+test JSON routes, copy curl requests, and generate client code from the current
+schema.
 
 ## Try Live Taira Routes
 
@@ -49,7 +64,7 @@ clients use for read-only exploration. These commands do not require keys:
 ```bash
 TAIRA_ROOT=https://taira.sora.org
 
-curl -fsS "$TAIRA_ROOT/status" \
+curl -fsS -H 'Accept: application/json' "$TAIRA_ROOT/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA_ROOT/openapi.json" \
@@ -57,7 +72,8 @@ curl -fsS "$TAIRA_ROOT/openapi.json" \
   | grep '^/v1/' \
   | head -n 20
 
-curl -fsS "$TAIRA_ROOT/v1/node/capabilities" \
+curl -fsS -H 'Accept: application/json' \
+  "$TAIRA_ROOT/v1/node/capabilities" \
   | jq '{abi_version, data_model_version, query: .query.aggregate.supported_resources}'
 ```
 

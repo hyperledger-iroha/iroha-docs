@@ -47,10 +47,10 @@ You can try read-only Taira checks before running a local peer or creating a
 signer. These commands use public Torii JSON routes and do not spend testnet
 XOR.
 
-Check Taira health:
+Check Taira status:
 
 ```bash
-curl -fsS https://taira.sora.org/status \
+curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 ```
 

@@ -41,7 +41,7 @@ cargo run --bin iroha -- taira doctor \
 For route-level checks, use Torii's JSON API directly:
 
 ```bash
-curl -fsS https://taira.sora.org/status \
+curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=5' \

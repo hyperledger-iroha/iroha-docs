@@ -1,9 +1,9 @@
 ---
 translation_locale: ja
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: 9bec41b1b419e252fdcff8328e7950a294bdad3ac40112a5a7f2ce451d19e9cb
+translation_source_hash: c23170b2949bae9c9483ecbee6f0c09fea503904ae93934aef56537ddd13c42d
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2
 ---
 
 # Torii エンドポイント {#torii-endpoints}
@@ -22,25 +22,34 @@ Torii は HTTP, SSE, そして WebSocket ゲートウェイ Iroha 3. 2つのレ�
 
 |終点|フォーマット|目的|
 | --- | --- | --- |
-|`POST /transaction`|Norito|署名された取引を提出する|
-|`POST /query`|Norito|署名した問い合わせを提出する|
-|`GET /events`|WebSocket|イベントストリームを登録する |
-|`GET /block/stream`|WebSocket|ストリームコミットブロック|
-|`GET /peers`|JSON|Torii によって暴露された同級者リスト|
-|`GET /health`|JSON|軽量寿命の終点|
-|`GET /api_version`|JSON|既定バージョン API |
-|`GET /status`|JSON|事業者の高いレベルの状況概要 |
+|`POST /v1/pipeline/transactions`|Norito|署名された取引を提出する|
+|`POST /v1/query`|Norito|署名した問い合わせを提出する|
+|`GET /v1/events/ws`|WebSocket|イベントストリームを登録する |
+|`GET /v1/events/sse`|SSE|SSE 以上のイベントストリームを登録する|
+|`GET /v1/blocks/stream`|WebSocket|ストリームコミットブロック|
+|`GET /v1/peers`|JSON|Torii によって暴露された同級者リスト|
+|`GET /livez`|テキスト|プロセスのみの活性を示し,プロトコル準備を暗示しない.|
+|`GET /readyz`|JSON|強制的なオフライン現金チェックを含むノードの完全な準備性|
+|`GET /health`|JSON|同様のオフラインキャッシュインバリアントの準備探査機|
+|`GET /v1/api/version`|テキスト|現在のブロックヘッダバージョン |
+|`GET /status`|Norito または JSON |高レベルの診断状態; 明確に要求する JSON |
 |`GET /metrics`|プロメテウス |プロメテウススラップエンドポイント|
-|`GET /schema`|JSON|ノードが提供するデータモデルスケーマスナップショット|
+|`GET /v1/schema`|JSON|接続されたときにノードが提供するデータモデルスケーマスナップショット|
 |`GET /openapi` または `GET /openapi.json` |JSON|OpenAPI 文書は,アクティブの Torii HTTP ルートについてです |
 |`GET /v1/parameters`|JSON|ノードパラメータのスナップショット|
 |`GET /v1/node/capabilities`|JSON|ノード能力とデータモデルメタデータ|
-|`GET /v1/api/versions`|JSON|サポートされた Torii API バージョン|
-|`GET /v1/events/sse`|SSE|長期間の顧客のためのイベントストリーム|
 |`GET /v1/time/now`|JSON|ノード壁時計のインシュート|
 |`GET /v1/time/status`|JSON|時間同期状態 |
 
-`/openapi` は実行ノードの権威あるエンドポイントリストである.正確な表面はビルド機能と実行時間の設定に依存しているため,生成されたクライアントは手書きコピーされたルートリストよりもライブ OpenAPI 文書を好むべきである.[Torii API コンソール](/ja/reference/torii-api-console.md) を使用して,そのライブドキュメントをロードし, JSON ルートをテストし, curl リクエストをコピーし,現在のスキーマからクライアントコードを生成します.
+SSE 要求の場合,ネイティブストリームと入力されたフォールバックを広告する.
+
+```http
+Accept: text/event-stream, application/json
+```
+
+Torii は最初に,要求層で JSON または Norito の表現を交渉し,その後ネイティブ `text/event-stream` 応答を検証する.したがって,ただ `text/event-stream` を送信することは `406` で拒否される. [ ストリームイベントレシピ](/ja/cookbook/stream-events.md) では完全なヘッダーを使用します.
+
+`/openapi`は,スケーマで表現されているルートのための主要な生成された契約であり,完全な運用探査物資ではありません.現在の文書では `/livez` と `/readyz` が省略され,その `/health` の記述は準備管理器に遅れている可能性があります.ライブドキュメントからルートクライアントを生成しますが,実行ノードとピンされたハンドラーに対して直接活性性と準備性を検証します.正確な表面は依然としてビルド機能やランタイム設定に依存します.[Torii API コンソール](/ja/reference/torii-api-console.md) を使用して,そのライブドキュメントをロードし, JSON ルートをテストし, curl リクエストをコピーし,現在のスキーマからクライアントコードを作成します.
 
 ## Taira 経路を試す {#try-live-taira-routes}
 
@@ -49,7 +58,7 @@ Torii は HTTP, SSE, そして WebSocket ゲートウェイ Iroha 3. 2つのレ�
 ```bash
 TAIRA_ROOT=https://taira.sora.org
 
-curl -fsS "$TAIRA_ROOT/status" \
+curl -fsS -H 'Accept: application/json' "$TAIRA_ROOT/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA_ROOT/openapi.json" \
@@ -57,7 +66,8 @@ curl -fsS "$TAIRA_ROOT/openapi.json" \
   | grep '^/v1/' \
   | head -n 20
 
-curl -fsS "$TAIRA_ROOT/v1/node/capabilities" \
+curl -fsS -H 'Accept: application/json' \
+  "$TAIRA_ROOT/v1/node/capabilities" \
   | jq '{abi_version, data_model_version, query: .query.aggregate.supported_resources}'
 ```
 
@@ -88,7 +98,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=5" \
 |`GET /v1/sumeragi/consensus-keys`|JSON|アクティブコンセンサスキー |
 |`GET /v1/sumeragi/bls_keys`|JSON|アクティブ BLS コンセンサスキー |
 |`GET /v1/sumeragi/phases`|JSON|最新の段階間遅延サンプル|
-|`GET /v1/sumeragi/rbc`|JSON|RBC セッションと吞吐量測定値|
+|`GET /v1/sumeragi/rbc`|JSON|RBC セッションと吞吐量指標|
 |`GET /v1/sumeragi/rbc/sessions`|JSON|アクティブ RBC セッションスナップショット |
 |`GET /v1/sumeragi/pacemaker`|JSON|ペースメーカーの状態|
 |`GET /v1/sumeragi/params`|JSON|チェーン上の現在のパラメータ Sumeragi |
@@ -113,27 +123,27 @@ Torii がアプリ面の機能セットで構築された場合,探検器のた�
 
 |経路ファミリー|目的|
 | --- | --- |
-|`/v1/accounts/*`, `/v1/domains/*`, `/v1/assets/*` |JSON 読書,查询助手,オンボード助手,ポートフォリオまたは保持者のビュー |
-|`/v1/nfts/*`, `/v1/rwas/*`, `/v1/confidential/*` |NFT,実世界の資産,そして機密的な資産の見方|
-|`/v1/aliases/*`, `/v1/assets/aliases/*`,`/v1/sns/*`, `/v1/identifiers/*` |名前,ニックネーム,識別子解析度|
+|`/v1/accounts/`, `/v1/domains/`, `/v1/assets/*` |JSON 読書,查询助手,オンボード助手,ポートフォリオまたは保持者のビュー |
+|`/v1/nfts/`, `/v1/rwas/`, `/v1/confidential/*` |NFT,実世界の資産,そして機密的な資産の見方|
+|`/v1/aliases/`, `/v1/assets/aliases/`,`/v1/sns/`, `/v1/identifiers/` |名前,ニックネーム,識別子解析度|
 |`/v1/explorer/*`|エクスプローラー向けアカウント,資産,ブロック,トランザクション,指示,メトリック,ストリームビュー |
-|`/v1/transactions/*`, `/v1/pipeline/*`, `/v1/iso20022/*` |取引履歴,パイプラインの復旧または状態,および ISO 20022助手|
+|`/v1/transactions/`, `/v1/pipeline/`, `/v1/iso20022/*` |取引履歴,パイプラインの復旧または状態,および ISO 20022助手|
 |`/v1/contracts/*`|契約コード,デプロイ,バンドル,コール,ビュー,イベント,アクティビティ,ロールアップ,ステートルート |
-|`/v1/multisig/*`, `/v1/controls/*` |マルチシグの提案,承認,および転送制御支援者 |
-|`/v1/bridge/*`, `/v1/ledger/*`, `/v1/proofs/*` |確定性,ステート証明,ブロック証明,証拠保存,および証拠查詢経路|
+|`/v1/multisig/`, `/v1/controls/` |マルチシグの提案,承認,および転送制御支援者 |
+|`/v1/bridge/`, `/v1/ledger/`, `/v1/proofs/*` |確定性,ステート証明,ブロック証明,証拠保存,および証拠查詢経路|
 |`/v1/da/*`|データの利用量,マニフェスト,証明方針,コミットメント,ピン意図|
 |`/v1/zk/*`|ZK ルーツ,証明検証, IVM 証明,投票計測,確認鍵,証拠記録,添付書 |
-|`/v1/gov/*`, `/v1/ministry/*` |統治提案,投票票,理事会国家,保護された名前の空間,議題提案,制定と最終化|
-|`/v1/nexus/*`, `/v1/sccp/*` |Nexus レーン,データスペース,そしてクロスチェーンの防護支援者|
+|`/v1/gov/`, `/v1/ministry/` |統治提案,投票票,理事会国家,保護された名前の空間,議題提案,制定と最終化|
+|`/v1/nexus/`, `/v1/sccp/` |Nexus レーン,データスペース,そしてクロスチェーンの防護支援者|
 |`/v1/musubi/*`|Musubi パッケージレジスタの読み書きと指示作成者 |
 |`/v1/subscriptions/*`|サブスクリプションプラン,サブスクリプションライフサイクルの利用と補助料の請求 |
-|`/v1/sorafs/*`, `/sorafs/*`, `/.well-known/sorafs/*` |SoraFS プロバイダー発見,能力証明,ピニング,収納取出し,公共コンテンツ配信 |
-|`/v1/soracloud/*`, `/v1/soradns/*`,`/soradns/*`, `/api/*` |SoraCloud サービスライフサイクル,プライベートコンピューティング/モデルフロー,公開発見,ホストされたアプリルーティング|
-|`/v1/connect/*`, `/v1/vpn/*` | Iroha 接続セッション WebSocket 輸送 VPN セッション,プロフィール,領収 |
-|`/v1/app-api/*`, `/v1/api/*`, `/v1/content/*` |App API 結合とバンドル/CID サポートされたコンテンツルーティング|
+|`/v1/sorafs/`, `/sorafs/`, `/.well-known/sorafs/*` |SoraFS プロバイダー発見,能力証明,ピニング,収納取出し,公共コンテンツ配信 |
+|`/v1/soracloud/`, `/v1/soradns/`,`/soradns/`, `/api/` |SoraCloud サービスライフサイクル,プライベートコンピューティング/モデルフロー,公開発見,ホストされたアプリルーティング|
+|`/v1/connect/`, `/v1/vpn/` | Iroha 接続セッション WebSocket 輸送 VPN セッション,プロフィール,領収 |
+|`/v1/app-api/`, `/v1/api/`, `/v1/content/*` |App API 結合とバンドル/CID サポートされたコンテンツルーティング|
 |`/v1/operator/*`, `/v1/mcp` |オペレーターの認証とネイティブ MCP JSON-RPC ブリッジ|
-|`/v1/offline/*`, `/v1/repo/*`,`/v1/space-directory/*`, `/v1/ram-lfe/*` |オフラインの準備,リポジトリ契約,データスペースマニフェスト,および [RAM-LFE 支援者](/ja/blockchain/ram-lfe.md#torii-routes) |
-|`/v1/kaigi/*`, `/v1/webhooks/*`,`/v1/notify/*`, `/v1/telemetry/*` |協働,Webhook,プッシュ通知,およびライブテレメトリ統合|
+|`/v1/offline/`, `/v1/repo/`,`/v1/space-directory/`, `/v1/ram-lfe/` |オフラインの準備,リポジトリ契約,データスペースマニフェスト,および [RAM-LFE 支援者](/ja/blockchain/ram-lfe.md#torii-routes) |
+|`/v1/kaigi/`, `/v1/webhooks/`,`/v1/notify/`, `/v1/telemetry/` |協働,Webhook,プッシュ通知,およびライブテレメトリ統合|
 
 ## ISO 20022橋 {#iso-20022-bridge}
 
@@ -143,16 +153,16 @@ Torii は,APP向きの API とブリッジ実行時間が有効である場合, 
 
 |メソッドとエンドポイント|目的|
 | --- | --- |
-|`POST /v1/iso20022/pacs008`|FI から FI までの顧客信用譲渡を提出し,対応する Iroha 資産譲渡を構築します |
+|`POST /v1/iso20022/pacs008`|FI から FI までの顧客信用譲渡を提出し,対応する Iroha 資産譲渡を構成します |
 |`POST /v1/iso20022/pacs009`|FI から FI へ, PvP または証券関連キャッシュ資金に使用されたクレジット転送を提出する |
 |`POST /v1/iso20022/pacs002`|支払状の報告を提出する|
 |`POST /v1/iso20022/pacs004`|決済申報を提出する|
-|`POST /v1/iso20022/camt056`|支払いをキャンセルする請求を提出します|
+|`POST /v1/iso20022/camt056`|支払いをキャンセルする要請を提出します|
 |`POST /v1/iso20022/sese023`|証券決済指示を提出する |
 |`POST /v1/iso20022/sese024`|証券決済状況のメッセージを送信する|
 |`POST /v1/iso20022/sese025`|証券決済の確認を提出する|
 |`POST /v1/iso20022/colr012`|担保置換のメッセージを送信する|
-|`GET /v1/iso20022/messages/{msg_id}`|"つのメッセージのために 橋の記録を読む|
+|`GET /v1/iso20022/messages/{msg_id}`|一つのメッセージのために 橋の記録を読み取れ|
 |`GET /v1/iso20022/audit/messages`|偽造性のあるメッセージの監査マニストを読んでください|
 |`GET /v1/iso20022/messages/{msg_id}/pacs002`|現在の支払状を `pacs.002` XML と返信する.|
 |`GET /v1/iso20022/messages/{msg_id}/pacs004`|`pacs.004` XML として現行決済申報を提出する.|
@@ -275,7 +285,7 @@ Kaigi UI をテストするには:
 
 プライベート Kaigi は,私的なエントリーポイント料金を支払うために保護された XOR の必要性があります. デモが私的な Kaigi が保護された XOR の必要性を報告している場合は,アプリ内自保護のプロンプトを使用し,作成または加入アクションを再試してください.証拠生成,個人資金提供,またはライブシグネリングが利用できない場合,デモは透明/手動流に戻ることができます.その場合は,先端シグネレーションを開いて,原稿のオファーや回答パケットをコピーし,他のウィンドウにペストします.
 
-デモレポの自動チェックについては,次の手順を実行します.
+デモレポの自動チェックについては,実行する:
 
 ```bash
 npm test -- tests/kaigiView.spec.ts tests/preloadKaigiBridge.spec.ts
@@ -296,7 +306,7 @@ npm run verify
 
 Nexus が有効なノードでは,ステータス出力にはレーンとデータスペース意識のセクションも含まれます. `nexus.enabled = false`の場合,これらのセクションは省略されます.
 
-## JSON 対 Norito {#json-vs-norito}
+## JSON と Norito {#json-vs-norito}
 
 複数のオペレーターエンドポイントはデフォルトで Norito を返信します.エンドポイントが JSON をサポートする場合は,送信してください:
 
@@ -314,15 +324,15 @@ Accept: application/json
 
 ## テレメトリプロフィール {#telemetry-profiles}
 
-エンドポイントの可視性は、ノードの `telemetry.profile` 設定によって決まります。現在の構成では、5 段階のプロファイルレベルが公開されます:
+エンドポイントの可視性は,ノードの `telemetry.profile` 設定に依存する.現在の構成では,5 つのプロフィールレベルが表示されます:
 
 |プロフィール |`/status`|`/metrics`|開発者経路|
 | --- | --- | --- | --- |
-|`disabled`|いいえ |いいえ |いいえ |
-|`operator`|はい |いいえ |いいえ |
-|`extended`|はい |はい |いいえ |
-|`developer`|はい |いいえ |はい |
-|`full`|はい |はい |はい |
+|`disabled`|いいえ|いいえ|いいえ|
+|`operator`|ええ|いいえ|いいえ|
+|`extended`|ええ|ええ|いいえ|
+|`developer`|ええ|いいえ|ええ|
+|`full`|ええ|ええ|ええ|
 
 ## CLI ショートカット {#cli-shortcuts}
 

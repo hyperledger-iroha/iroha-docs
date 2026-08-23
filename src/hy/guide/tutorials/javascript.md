@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: feddadb1b50c5cc8beea188fd7053eeaae58d6ab9203687e9a1378f203229168
+translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -22,7 +22,7 @@ npm run build:native
 npm run build:dist
 ```
 
-Native build- ը փակում է `cargo build -p iroha_js_host` եւ գրանցում է պլատֆորմի հատուկ ստուգման գումարը, որն օգտագործվում է SDK մեկնարկի ժամանակ: Աղբյուրը կառուցում է այն վայրերը, որոնք հաստատել են հյուրընկալողը `native/`: Սահմանեք `IROHA_JS_NATIVE_DIR` միայն այն դեպքում, երբ դիտավորաբար մատակարարում եք առանձին կառուցված, ստուգման գումարով ստուգված հյուրընկիր: Փաթեթը միայն ESM-ն է, իսկ CommonJS-ից օգտագործեք դինամիկ `import()`:
+Native build- ը փակում է `cargo build -p iroha_js_host` եւ գրանցում է պլատֆորմի հատուկ ստուգման գումարը, որը օգտագործվում է SDK մեկնարկի ժամանակ: Աղբյուրը կառուցում է այն վայրերը, որոնք հաստատել են հյուրընկալողը `native/`. Սահմանեք `IROHA_JS_NATIVE_DIR` միայն այն դեպքում, երբ դիտավորաբար մատակարարում եք առանձին կառուցված, ստուգողական գումարի հաստատված հյուրընկալող: Պաթեթը միայն ESM-ն է; CommonJS-ից օգտագործեք դինամիկ `import()`.
 
 ## Արագ սկիզբ {#quickstart}
 
@@ -45,7 +45,9 @@ console.log(keys.publicKey);
 ```js
 const root = "https://taira.sora.org";
 
-const status = await fetch(`${root}/status`).then((res) => res.json());
+const status = await fetch(`${root}/status`, {
+  headers: { Accept: "application/json" },
+}).then((res) => res.json());
 console.log({
   blocks: status.blocks,
   queueSize: status.queue_size,
@@ -85,7 +87,7 @@ import { generateKeyPair } from "@iroha/iroha-js/crypto";
 
 ## Բնակչական վարձակալություն {#native-escrow}
 
-JavaScript եւ TypeScript հավելվածները կարող են օգտագործել native escrow միջոցով Kotodama Պայմանագրեր: Կոմպիլիզացիոն հյուրընկալողների զանգերը `@iroha/iroha-js/kotodama-compiler`; Ներկայումս արտահոսքային գործարքի կատարողներ չեն ենթարկվում JavaScript SDK. Տեսեք [Բնական ակտիվների վարկավճար](/hy/blockchain/escrow.md#javascript-and-typescript-kotodama) վարկային հյուրընկալող զանգի օրինակին:
+JavaScript եւ TypeScript ծրագրերը կարող են օգտագործել ներքին պահպանումներ Kotodama պայմանագրերի միջոցով: Կազմեք պահպանումների հյուրընկալող զանգեր `@iroha/iroha-js/kotodama-compiler`; ուղղակի ներքին պահապան Գործարքի կառուցողները ներկայումս չեն ենթարկվում JavaScript SDK հաշվետվության: Դիտեք [Native Asset Escrow](/hy/blockchain/escrow.md#javascript-and-typescript-kotodama) վարկային հյուրընկալող զանգերի օրինակը:
 
 ## Ներկայիս ծավալը {#current-coverage}
 

@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /blockchain/domains.md
-translation_source_hash: 4c42df3c179a086b8823264df2b69f68d7d3df500c8362d78f7ba56875dcfad1
+translation_source_hash: 5e52579436a181d76c83fa549991e56064ae57349b7109d5c41ec7953e5cbb2e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -45,7 +45,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
 ```
 
-ዓላማው `payments.universal` ፣ ቁጥራዊ የውሂብ ቦታውን ፣ ቀኖናዊውን I105 ባለቤት ፣ የኪራይ ግዥን ጊዜ እና የአሁኑ ፖሊሲ / የክፍያ ዋጋ ጠባቂን ይገልጻል ። የታቀደው መጨረሻ ነጥብ `POST /v1/aliases/setup/plan` ነው ፤ የተመለሰው እቅድ ሰንሰለት ፣ ስልጣን ፣ ግዛት እና የጊዜ ገደብ የተገደበ ነው ። የጎራ ማስወገጃ አሁንም [`Unregister`](/am/blockchain/instructions.md#un-register) ይጠቀማል.
+ዓላማው `payments.universal`, ቁጥራዊ የውሂብ ክፍሉ, ቀኖናዊ I105 ባለቤት, የኪራይ ግዥ ጊዜ, እና የአሁኑ ፖሊሲ / ክፍያ ዋጋ ጠባቂ ይለያል. የፕላነር መጨረሻ ነጥብ `POST /v1/aliases/setup/plan` ነው; የተመለሰው ዕቅድ ሰንሰለት ፣ ስልጣን ፣ ግዛት እና የጊዜ ገደብ የተገደበ ነው። የጎራ ማስወገጃ አሁንም [`Unregister`](/am/blockchain/instructions.md#un-register) ይጠቀማል.
 
 ጎራ ለመፍጠር ወይም ለማስወገድ በተግባር ባለው የሂደት ጊዜ ማረጋገጫ ስር ተገቢውን የጎራ አስተዳደር ፈቃድ ይጠይቃል። ባለሥልጣኑ ያንን ጎራ ለማሻሻል ፈቃድ ካለው የጎራ ሜታዳታ በ [`SetKeyValue` እና `RemoveKeyValue`](/am/blockchain/instructions.md#setkeyvalue-removekeyvalue) ሊዘመን ይችላል።
 
@@ -61,7 +61,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
 የሕዝብ ጎዳና ካታሎግ ወደ ዳታስፔስ ስያሜዎች ተመልሶ ካርታ:
 
 ```bash
-curl -fsS https://taira.sora.org/status \
+curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .block_height, .finality_lag_slots]
     | @tsv'
@@ -92,7 +92,7 @@ iroha --config ./taira.client.toml \
 
 ## ከሌሎች አካላት ጋር ያለው ግንኙነት {#relationship-to-other-entities}
 
-ጎራዎች የቡድን መቁጠሪያ ዕቃዎችን ይሰጣሉ እና የጎራ-ስኬድ መረጃዎች ለስም ቦታ ያቀርባሉ ። የንብረት ትርጉሞች የጎራ ብቃት ያላቸው መታወቂያዎችን ይጠቀማሉ ፣ መጠይቆች ጎራዎችን ሊዘርዝሩ ወይም ወደ ጎራ የተዘረዘሩ ነገሮችን ሊያገኙ ይችላሉ ። መለያዎች እራሳቸው አሁን ባለው የመረጃ ሞዴል ውስጥ ጎራ የሌላቸው ናቸው ፣ ግን መለያዎች ጎራዎችን ሊይዙ እና ትርጓሜዎቻቸው በጎራ ስር የሚኖሩ ንብረቶችን ሊይዙ ይችላሉ ።
+ጎራዎች የቡድን መቁጠሪያ ዕቃዎች እና የጎራ-ተኮር ውሂብ ስም ቦታ ይሰጣሉ. ንብረት ትርጓሜዎች የጎራ ብቃት መታወቂያዎችን ይጠቀማሉ, እና መጠይቆች ጎራዎችን ሊዘረዝሩ ወይም ማግኘት ይችላሉ መለያዎች እራሳቸው አሁን ባለው የመረጃ ሞዴል ውስጥ ጎራ የሌላቸው ናቸው ፣ ግን መለያዎች ጎራዎችን ሊይዙ እና ትርጓሜያቸው በጎራ ስር የሚኖሩ ንብረቶችን ሊያከማቹ ይችላሉ።
 
 በተጨማሪም ተመልከት።
 

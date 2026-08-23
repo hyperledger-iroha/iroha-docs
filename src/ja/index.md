@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /index.md
-translation_source_hash: 505e8224a59534717045c34b1bf796760d06f9d6808a2a1fd9773aa2f6a00c2d
+translation_source_hash: 3b2ad4ee285a821b56c9cf6fd3f4a8431f1cfa478e88082b45788765d68ed833
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 
@@ -18,6 +18,28 @@ hero:
   #- theme: alt
   #  text: View on GitHub
   #  link: https://github.com/hyperledger-iroha/iroha
+
+nexusPortal:
+  eyebrow: SORA Nexus
+  title: "Iroha 3 / SORA Nexus に基づく"
+  details: "Taira テストネットで開始し,現在のトランザクションフローを学び,生産準備のアプリケーションを構築するために集中されたレシピを使用します."
+  primaryAction:
+    text: "Taira で開始する"
+    link: /ja/get-started/sora-nexus-dataspaces
+  secondaryAction:
+    text: "料理本を閲覧する"
+    link: /ja/cookbook/
+  recipes:
+    title: "人気なレシピ"
+    items:
+      - title: "取引を提出し確認する"
+        link: /ja/cookbook/submit-and-verify-transactions
+      - title: "変形可能な資産を移動する"
+        link: /ja/cookbook/fungible-assets
+      - title: "查询本簿状態"
+        link: /ja/cookbook/query-ledger-state
+      - title: "ストリームイベント"
+        link: /ja/cookbook/stream-events
 
 features:
   - icon:
@@ -44,16 +66,8 @@ features:
     title: "参照"
     details: "現在のバイナリー,ジェネシス, Torii および互換性参照ページを参照してください"
     link: /ja/reference/
-  # - title: Cookbook # (TBA)
-
 footer: true
 ---
-
-<section class="nexus-build" aria-labelledby="nexus-build-title">
-<a class="nexus-build__panel" href="./get-started/sora-nexus-dataspaces.html">
-<span class="nexus-buildcopy"> SORA Nexus <span id="nexus-build-title" class="nexus-buildtitle"> Iroha 3 / SORA Nexus</span> <span class="nexus-builddetails"> SORA 3 を Taira テストネット, Minamoto メインネット,コピーペストの例で構築してください.今試してみてください.</span> </span> <span class="nexus-build__action">オープンガイド <span aria-hidden="true">- &gt; </span></span>
-</a>
-</section>
 
 <hr style="margin-top: 3rem;">
 <p style="font-weight: 200; font-size: 0.875rem;">Hyperledger Iroha の一部である <a href="https://www.lfdecentralizedtrust.org/projects/tag/ledger-technology" target="_blank">LF Decentralized Trust</a>. 詳しくは <a href="https://iroha.tech/" target="_blank">iroha.tech</a>.</p>

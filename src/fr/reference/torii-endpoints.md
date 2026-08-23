@@ -1,18 +1,18 @@
 ---
 translation_locale: fr
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: 9bec41b1b419e252fdcff8328e7950a294bdad3ac40112a5a7f2ce451d19e9cb
+translation_source_hash: c23170b2949bae9c9483ecbee6f0c09fea503904ae93934aef56537ddd13c42d
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2
 ---
 
-# Torii Points de référence {#torii-endpoints}
+# Torii Points de fin {#torii-endpoints}
 
 Torii est le HTTP, SSE, et WebSocket porte d'entrée pour Iroha 3. Il sert à la fois face au registre APIs et les points d'arrêt de l'opérateur.
 
 Les règles actuelles du protocole sont les suivantes:
 
-- Le format binaire canonique est Norito
+- le format binaire canonique est Norito
 - de nombreux endpoints prennent également en charge JSON lorsque vous envoyez `Accept: application/json`
 - Les mesures sont exposées au format Prometheus.
 
@@ -22,25 +22,34 @@ Pour des détails sur le format, la négociation du contenu, les drapeaux de mis
 
 |Le point final |Le format |Le but |
 | --- | --- | --- |
-|`POST /transaction` |Norito |Soumettre une transaction signée |
-|`POST /query` |Norito |Soumettre une requête signée |
-|`GET /events` |WebSocket |Abonnez-vous aux flux d' événements |
-|`GET /block/stream` |WebSocket |Flux de blocs engagés |
-|`GET /peers` |JSON |Liste des pairs exposés par Torii |
-|`GET /health` |JSON |Endpoint de vie légère |
-|`GET /api_version` |JSON |La version par défaut API |
-|`GET /status` |JSON |Résumé du statut des opérateurs de haut niveau |
+|`POST /v1/pipeline/transactions` |Norito |Soumettre une transaction signée |
+|`POST /v1/query` |Norito |Soumettre une requête signée |
+|`GET /v1/events/ws` |WebSocket |Abonnez-vous aux flux d' événements |
+|`GET /v1/events/sse` |SSE |Abonnez-vous à des flux d'événements sur SSE |
+|`GET /v1/blocks/stream` |WebSocket |Flux de blocs engagés |
+|`GET /v1/peers` |JSON |Liste de pairs exposés par Torii |
+|`GET /livez` |Le texte |La viabilité des processus seulement; elle n' implique pas la préparation au protocole |
+|`GET /readyz` |JSON |La préparation complète des nœuds, y compris les contrôles obligatoires en espèces hors ligne |
+|`GET /health` |JSON |Sondage de préparation avec la même invariante en espèces hors ligne |
+|`GET /v1/api/version` |Le texte |La version actuelle des en-têtes de bloc |
+|`GET /status` |Norito ou JSON |Statut de diagnostic à haut niveau; demande explicite JSON |
 |`GET /metrics` |Prométhée |L' endpoint de grattage Prometheus |
-|`GET /schema` |JSON |Une capture instantanée du schéma de modèle de données desservie par le nœud |
+|`GET /v1/schema` |JSON |Une capture instantanée du schéma de modèle de données servi par le nœud lorsque activé |
 |`GET /openapi` ou `GET /openapi.json` |JSON |document OpenAPI pour les lignes actives Torii HTTP |
 |`GET /v1/parameters` |JSON |Récapitulatif des paramètres du nœud |
 |`GET /v1/node/capabilities` |JSON |Capacité des nœuds et métadonnées du modèle de données |
-|`GET /v1/api/versions` |JSON |Les versions Torii API prises en charge |
-|`GET /v1/events/sse` |SSE |Flux d' événements pour les clients de longue durée |
 |`GET /v1/time/now` |JSON |Résumé de l' horloge du nœud|
 |`GET /v1/time/status` |JSON |Statut de synchronisation du temps |
 
-`/openapi` est la liste d'endpoints autorisés pour un nœud en cours de fonctionnement. construire des fonctionnalités et la configuration de l'exécution, donc les clients générés devraient préférer le live OpenAPI document sur une liste de itinéraires copiée à la main. [Torii API console](/fr/reference/torii-api-console.md) pour charger ce document en direct, test JSON Route, copie curl les requêtes, et générer le code client à partir du schéma actuel.
+Pour une demande SSE, annoncez le flux natif plus un retrait de type:
+
+```http
+Accept: text/event-stream, application/json
+```
+
+Torii d'abord négocie une JSON ou Norito la représentation à la couche de demande, puis valide le natif `text/event-stream` Réponse. Envoi uniquement `text/event-stream` est donc rejetée par: `406`; le [recette d'événements en continu](/fr/cookbook/stream-events.md) Il utilise l'en-tête complet.
+
+`/openapi` est le contrat principal généré pour les itinéraires représentés dans le schéma, Le document actuel omet l'inventaire des sondes opérationnelles. `/livez` et `/readyz`, et de ses `/health` la description peut être retardé le gestionnaire de préparation. Générer des clients de route à partir du document en direct, mais valider la vitalité et la préparation directement contre le nœud en cours d'exécution et les manipulateurs fixés. La surface exacte dépend toujours des fonctionnalités de construction et de la configuration du temps d'exécution. [Torii API console](/fr/reference/torii-api-console.md) pour charger ce document en direct, test JSON Route, copie curl les requêtes, et générer le code client à partir du schéma actuel.
 
 ## Essayez les itinéraires en direct Taira {#try-live-taira-routes}
 
@@ -49,7 +58,7 @@ Le réseau de test public Taira expose la même surface Torii JSON que les clien
 ```bash
 TAIRA_ROOT=https://taira.sora.org
 
-curl -fsS "$TAIRA_ROOT/status" \
+curl -fsS -H 'Accept: application/json' "$TAIRA_ROOT/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA_ROOT/openapi.json" \
@@ -57,7 +66,8 @@ curl -fsS "$TAIRA_ROOT/openapi.json" \
   | grep '^/v1/' \
   | head -n 20
 
-curl -fsS "$TAIRA_ROOT/v1/node/capabilities" \
+curl -fsS -H 'Accept: application/json' \
+  "$TAIRA_ROOT/v1/node/capabilities" \
   | jq '{abi_version, data_model_version, query: .query.aggregate.supported_resources}'
 ```
 
@@ -113,27 +123,27 @@ Lorsque Torii est construit avec le jeu de fonctionnalités face à l'applicatio
 
 |La famille des routes |Le but |
 | --- | --- |
-|`/v1/accounts/*`, `/v1/domains/*`, `/v1/assets/*` |JSON les lecteurs, les aides à la requête, les aides d'intégration et les vues du portefeuille ou du titulaire |
-|`/v1/nfts/*`, `/v1/rwas/*`, `/v1/confidential/*` |NFT, actifs du monde réel et vues confidentielles d'actifs |
-|`/v1/aliases/*`, `/v1/assets/aliases/*`, `/v1/sns/*`, `/v1/identifiers/*` |Nom, prénom et résolution de l'identifiant |
+|`/v1/accounts/`, `/v1/domains/`, `/v1/assets/*` |JSON les lecteurs, les aides à la requête, les aides d'intégration et les vues du portefeuille ou du titulaire |
+|`/v1/nfts/`, `/v1/rwas/`, `/v1/confidential/*` |NFT, actifs du monde réel et vues confidentielles d'actifs |
+|`/v1/aliases/`, `/v1/assets/aliases/`, `/v1/sns/`, `/v1/identifiers/` |Nom, prénom et résolution de l'identifiant |
 |`/v1/explorer/*` |Compte, actif, bloc, transaction, instruction, métriques et flux orientés vers l'explorateur |
-|`/v1/transactions/*`, `/v1/pipeline/*`, `/v1/iso20022/*` |L'historique des transactions, le rétablissement ou l'état du pipeline et les aides ISO 20022 |
+|`/v1/transactions/`, `/v1/pipeline/`, `/v1/iso20022/*` |L'historique des transactions, le rétablissement ou l'état du pipeline et les aides ISO 20022 |
 |`/v1/contracts/*` |Code de contrat, déploiement, paquet, appel, affichage, événement, activité, mise en œuvre et routes d'état |
-| `/v1/multisig/*`, `/v1/controls/*` |Propositions, approbations et aides à la gestion des transferts |
-|`/v1/bridge/*`, `/v1/ledger/*`, `/v1/proofs/*` |Finalité, preuve d'état, preuve de blocage, retenue des preuves et routes de requête des preuves |
+|`/v1/multisig/`, `/v1/controls/` |Propositions, approbations et aides à la gestion des transferts |
+|`/v1/bridge/`, `/v1/ledger/`, `/v1/proofs/*` |Finalité, preuve d'état, preuve de blocage, retenue des preuves et routes de requête des preuves |
 |`/v1/da/*` |Intégration de la disponibilité des données, manifestes, politiques de preuve, engagements et intentions précises |
 |`/v1/zk/*` |ZK racines, vérification des preuves, vérification de IVM, dénombrement des voix, clés de vérification, dossiers et pièces jointes |
-| `/v1/gov/*`, `/v1/ministry/*` |Propositions de gouvernance, bulletins de vote, état des conseils, espaces protégés, propositions d'ordre du jour, promulgation et finalisation |
-| `/v1/nexus/*`, `/v1/sccp/*` |Nexus la voie, l'espace de données, et les aides à l'épreuve croisée chaîne |
+|`/v1/gov/`, `/v1/ministry/` |Propositions de gouvernance, bulletins de vote, état des conseils, espaces protégés, propositions d'ordre du jour, promulgation et finalisation |
+|`/v1/nexus/`, `/v1/sccp/` |Nexus la voie, l'espace de données, et les aides à l'épreuve croisée chaîne |
 |`/v1/musubi/*` |Musubi lecteurs de registre des paquets et constructeurs d'instructions |
 |`/v1/subscriptions/*` |Les plans d'abonnement, le cycle de vie des abonnements, l'utilisation et les aides à la charge |
-|`/v1/sorafs/*`, `/sorafs/*`, `/.well-known/sorafs/*` |SoraFS Découverte du fournisseur, preuve de capacité, pinning, récupération de stockage et service public de contenu |
-|`/v1/soracloud/*`, `/v1/soradns/*`, `/soradns/*`, `/api/*` |SoraCloud cycle de vie des services, flux informatiques / modèles privés, découverte publique et routage d'applications hébergées |
-| `/v1/connect/*`, `/v1/vpn/*` |Iroha Connecter les séances, WebSocket le transport, VPN les sessions, les profils et les reçus |
-|`/v1/app-api/*`, `/v1/api/*`, `/v1/content/*` |App API liaisons et bundle/routage de contenu soutenu par CID |
-| `/v1/operator/*`, `/v1/mcp` |L'authentification de l'opérateur et le pont natif MCP JSON-RPC|
-|`/v1/offline/*`, `/v1/repo/*`, `/v1/space-directory/*`, `/v1/ram-lfe/*` |Préparation en ligne, accords de référentiel, manifestes d'espace de données et aides [RAM-LFE ](/fr/blockchain/ram-lfe.md#torii-routes)  |
-|`/v1/kaigi/*`, `/v1/webhooks/*`, `/v1/notify/*`, `/v1/telemetry/*` |Collaboration, connexion web, notifications push et intégration en direct de télémétrie |
+|`/v1/sorafs/`, `/sorafs/`, `/.well-known/sorafs/*` |SoraFS Découverte du fournisseur, preuve de capacité, pinning, récupération de stockage et service public de contenu |
+|`/v1/soracloud/`, `/v1/soradns/`, `/soradns/`, `/api/` |SoraCloud cycle de vie des services, flux informatiques / modèles privés, découverte publique et routage d'applications hébergées |
+|`/v1/connect/`, `/v1/vpn/` |Iroha Connecter les séances, WebSocket le transport, VPN les sessions, les profils et les reçus |
+|`/v1/app-api/`, `/v1/api/`, `/v1/content/*` |App API liaisons et bundle/routage de contenu soutenu par CID |
+|`/v1/operator/*`, `/v1/mcp` |L'authentification de l'opérateur et le pont natif MCP JSON-RPC|
+|`/v1/offline/`, `/v1/repo/`, `/v1/space-directory/`, `/v1/ram-lfe/` |Préparation en ligne, accords de référentiel, manifestes d'espace de données et aides [RAM-LFE ](/fr/blockchain/ram-lfe.md#torii-routes)  |
+|`/v1/kaigi/`, `/v1/webhooks/`, `/v1/notify/`, `/v1/telemetry/` |Collaboration, connexion web, notifications push et intégration en direct de télémétrie |
 
 ## ISO pont 20022 {#iso-20022-bridge}
 
@@ -152,7 +162,7 @@ Torii dévoile les ISO 20022 pont sous `/v1/iso20022/*` lorsque l'application es
 |`POST /v1/iso20022/sese024` |Soumettre un message sur l' état du règlement des titres |
 |`POST /v1/iso20022/sese025` |Présentation d' une confirmation de règlement des titres |
 |`POST /v1/iso20022/colr012` |Envoyer un message de remplacement des garanties |
-|`GET /v1/iso20022/messages/{msg_id}` |Lisez le record canonique du pont pour un message |
+|`GET /v1/iso20022/messages/{msg_id}` |Lisez le record du pont canonique pour un message |
 |`GET /v1/iso20022/audit/messages` |Lisez le manifeste de vérification des messages falsifiés .|
 |`GET /v1/iso20022/messages/{msg_id}/pacs002` |Retourner l'état actuel du paiement en `pacs.002` XML |
 |`GET /v1/iso20022/messages/{msg_id}/pacs004` |Retourner la déclaration de paiement en cours comme `pacs.004` XML |
@@ -275,7 +285,7 @@ Pour l'essai du Kaigi UI:
 
 Propriété Kaigi besoins protégés XOR Si le démonstrateur rapporte que l'entrée privée Kaigi besoins protégés XOR, Utilisez l'interrupteur de protection automatique intégré à l'application et réessayez l'action Créer ou Joindre. Si la génération de preuves, le financement privé ou la signalisation en direct ne sont pas disponibles, la démonstration peut revenir à un flux transparent / manuel. Dans ce cas, ouvrez la signalisation avancée, copiez l'offre brute ou le paquet de réponse, et collez-le dans l'autre fenêtre.
 
-Pour les vérifications automatisées dans le repo de démonstration, exécuter:
+Pour les vérifications automatisées dans le repo démo, exécuter:
 
 ```bash
 npm test -- tests/kaigiView.spec.ts tests/preloadKaigiBridge.spec.ts
@@ -294,7 +304,7 @@ Les points d'extrémité de l'état et des métriques sont les premières choses
 - `/status` expose les champs de partage, de blocage, de file d'attente et de consensus de premier niveau
 - `/metrics` expose les compteurs Prometheus, les gauges et les histogrammes
 
-Sur les nœuds activés Nexus, la sortie d'état comprend également des sections relatives à la voie et aux espaces de données. Lorsque `nexus.enabled = false`, ces sections sont omises.
+Sur les nœuds activés Nexus, la sortie d'état comprend également des sections relatives à la voie et à l'espace de données. Lorsque `nexus.enabled = false`, ces sections sont omises.
 
 ## JSON par rapport à Norito {#json-vs-norito}
 
@@ -314,15 +324,15 @@ Lorsqu'un point d'extrémité accepte ou retourne typé Norito directement, util
 
 ## Profiles de télémétrie {#telemetry-profiles}
 
-La visibilité des points de terminaison dépend du paramètre `telemetry.profile` du nœud. La configuration actuelle expose cinq niveaux de profil :
+La visibilité du point d'extrémité dépend de la configuration `telemetry.profile` du noeud. La configuration actuelle expose cinq niveaux de profil:
 
 |Le profil |`/status` |`/metrics` |Routes de développement |
 | --- | --- | --- | --- |
-|`disabled` |non |non |non |
-|`operator` |oui |non |non |
-|`extended` |oui |oui |non |
-|`developer` |oui |non |oui |
-|`full` |oui |oui |oui |
+|`disabled` |- Je ne sais pas .|- Je ne sais pas .|- Je ne sais pas .|
+|`operator` |Oui , oui .|- Je ne sais pas .|- Je ne sais pas .|
+|`extended` |Oui , oui .|Oui , oui .|- Je ne sais pas .|
+|`developer` |Oui , oui .|- Je ne sais pas .|Oui , oui .|
+|`full` |Oui , oui .|Oui , oui .|Oui , oui .|
 
 ## CLI Des raccourcis {#cli-shortcuts}
 

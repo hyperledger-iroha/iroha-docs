@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/domains.md
-translation_source_hash: 4c42df3c179a086b8823264df2b69f68d7d3df500c8362d78f7ba56875dcfad1
+translation_source_hash: 5e52579436a181d76c83fa549991e56064ae57349b7109d5c41ec7953e5cbb2e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -45,7 +45,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
 ```
 
-意図は `payments.universal`,その数値データ空間,法典的な I105 所有者,リース取得期限,および現在のポリシー/支払い配当保護者を識別する.プランナーエンドポイントは `POST /v1/aliases/setup/plan`;返済プランはチェーン・権限・州・締め切りの制限である.ドメインの削除は [`Unregister`](/ja/blockchain/instructions.md#un-register)を使用している.
+意図は `payments.universal`,その数値データスペース,カノニカル I105 の所有者,リース買収期限,および現在のポリシー/支払い配当保護者を識別します. プランナーエンドポイントは `POST /v1/aliases/setup/plan`;返却されたプランはチェーン,権限,州,および期限制限です.ドメイン削除はまだ [`Unregister`](/ja/blockchain/instructions.md#un-register)を使用しています.
 
 ドメインを作成または削除するには,アクティブランタイム検証器の下で適切なドメイン管理許可が必要です. 当局がそのドメインを変更する権限がある場合,ドメインメタデータは [`SetKeyValue`と `RemoveKeyValue`](/ja/blockchain/instructions.md#setkeyvalue-removekeyvalue)で更新できます.
 
@@ -61,7 +61,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
 パブリック・レーンのカタログをデータスペースの偽名に映し出します:
 
 ```bash
-curl -fsS https://taira.sora.org/status \
+curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .block_height, .finality_lag_slots]
     | @tsv'
@@ -92,7 +92,7 @@ iroha --config ./taira.client.toml \
 
 ## 他の組織との関係 {#relationship-to-other-entities}
 
-ドメインはドメインをグループし,ドメインスケープデータのためのネームスペースを提供します.資産定義ではドメインに適した識別子を使用し,クエリはドメインのリストやドメインにスケープされたオブジェクトを見つけることができます.アカウント自体は現在のデータモデルではドメインレスですが,アカウントはドメインを所有し,その定義がドメインの下で生息する資産を保有することができます.
+ドメインはドメインをグループするレジャーオブジェクトであり,ドメインスケープデータのための名前空間を提供します.資産定義ではドメインに適した識別子を使用し,クエリはドメインのリストや検索を行うことができます アカウント自体は現在のデータモデルのドメインレスですが,アカウントはドメインを所有し,その定義がドメインの下にある資産を保持することができます.
 
 参照:
 

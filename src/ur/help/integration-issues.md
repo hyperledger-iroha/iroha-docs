@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /help/integration-issues.md
-translation_source_hash: f9f8a1e5f8c66714532523ef40467d3e79d4d023b3b353244f0317647e755b38
+translation_source_hash: c5f169e423806fa2a9e9d198971588d1aa0b199a28d64e8b089b9f81727550a5
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -29,7 +29,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 عوامی Taira ٹیسٹ کے لئے، ایک غیر دستخط شدہ اختتامی نقطہ نظر کی تحقیقات سے شروع کریں:
 
 ```bash
-curl -fsS https://taira.sora.org/status \
+curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS 'https://taira.sora.org/v1/domains?limit=5' \

@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /blockchain/domains.md
-translation_source_hash: 4c42df3c179a086b8823264df2b69f68d7d3df500c8362d78f7ba56875dcfad1
+translation_source_hash: 5e52579436a181d76c83fa549991e56064ae57349b7109d5c41ec7953e5cbb2e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -14,7 +14,7 @@ translation_engine: nllb-200-ct2
 domain.dataspace
 ```
 
-مثال کے طور پر، `payments.universal` `payments` ڈومین کا نام `universal` ڈیٹا اسپیس کے اندر.
+مثال کے طور پر، `payments.universal` `universal` ڈیٹا اسپیس کے اندر `payments` ڈومین کا نام دیتا ہے۔
 
 ## ڈھانچہ {#structure}
 
@@ -22,7 +22,7 @@ domain.dataspace
 
 - `id`: ڈیٹا اسپیس کے لئے اہل `DomainId`
 - `logo`: ایک ڈومین لوگو کے لئے اختیاری `SoraFS` URI
-- `metadata`: تعصبی کلیدی قدر میٹا ڈیٹا۔
+- `metadata`: تعمیری کلیدی قدر میٹا ڈیٹا۔
 - `owned_by`: اکاؤنٹ جو ڈومین کا مالک ہے، عام طور پر اس اکاؤنٹ جس نے اسے رجسٹر کیا
 
 ایک ڈومین کی حقیقت بنانے کے لئے استعمال کیا بوٹسٹریپ payload ہے `NewDomain`. یہ لے جاتا ہے `id`, اختیاری `logo`, اور ابتدائی `metadata`. رن ٹائم بھرتا ہے `owned_by` حکام کی طرف سے. عام گاہکوں کو براہ راست اس مفید بوجھ پیش نہیں کرتے ہیں.
@@ -45,7 +45,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
 ```
 
-ارادے میں `payments.universal` ، اس کی عددی ڈیٹا اسپیس ، کینونیکل I105 مالک ، لیز کے حصول کی مدت ، اور موجودہ پالیسی / ادائیگی کوٹ گارڈ کی نشاندہی کی گئی ہے۔ منصوبہ ساز کا اختتامی نقطہ `POST /v1/aliases/setup/plan` ہے؛ اس کا واپسی والا منصوبہ سلسلہ ، اتھارٹی ، ریاست اور آخری تاریخ پر پابند ہے۔ ڈومین ہٹانا اب بھی استعمال کرتا ہے [`Unregister`](/ur/blockchain/instructions.md#un-register).
+ارادے `payments.universal` کی نشاندہی کرتا ہے، اس کے عددی ڈیٹا اسپیس، کینونیکل I105 مالک، لیز حاصل کرنے کی مدت، اور موجودہ پالیسی / ادائیگی کوٹ گارڈ. منصوبہ ساز کے اختتامی نقطہ `POST /v1/aliases/setup/plan` ہے۔ اس کا واپس آنے والا منصوبہ سلسلہ ، اتھارٹی ، ریاست اور آخری تاریخ پر پابند ہے۔ ڈومین ہٹانا اب بھی استعمال کرتا ہے [`Unregister`](/ur/blockchain/instructions.md#un-register).
 
 ڈومین بنانے یا ہٹانے کے لئے فعال رن ٹائم ویلیڈیٹر کے تحت مناسب ڈومین مینجمنٹ اجازت کی ضرورت ہوتی ہے۔ ڈومین میٹا ڈیٹا کو [`SetKeyValue` اور `RemoveKeyValue`](/ur/blockchain/instructions.md#setkeyvalue-removekeyvalue) کے ساتھ اپ ڈیٹ کیا جاسکتا ہے جب اتھارٹی کو اس ڈومین میں ترمیم کرنے کا اختیار حاصل ہو۔
 
@@ -61,7 +61,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
 پبلک لین کیٹلاگ کا نقشہ واپس ڈیٹا اسپیس کے ناموں میں:
 
 ```bash
-curl -fsS https://taira.sora.org/status \
+curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq -r '.teu_lane_commit[]
     | [.lane_id, .alias, .dataspace_alias, .visibility, .block_height, .finality_lag_slots]
     | @tsv'
@@ -92,7 +92,7 @@ iroha --config ./taira.client.toml \
 
 ## دیگر اداروں کے ساتھ تعلقات {#relationship-to-other-entities}
 
-ڈومینز کو گروپ لجر اشیاء اور ڈومین سکپڈ ڈیٹا کے لئے ایک نام کی جگہ فراہم کرتے ہیں۔ اثاثہ تعریفیں ڈومین کے اہل شناختی کاروں کا استعمال کرتی ہیں ، اور استفسارات ڈومینوں کی فہرست یا کسی ڈومین پر سکپڈ اشیاء تلاش کرسکتی ہیں۔ اکاؤنٹ خود موجودہ ڈیٹا ماڈل میں ڈومینلیس ہیں، لیکن اکاؤنٹس ڈومینز کے مالک ہوسکتے ہیں اور ایسے اثاثے رکھ سکتے ہیں جن کی تعریفیں ڈومینس کے تحت رہتی ہیں۔
+ڈومینز گروپ لجر اشیاء اور ڈومین سکپڈ ڈیٹا کے لئے ایک نام کی جگہ فراہم کرتے ہیں۔ اثاثہ تعریفیں ڈومین کوالیفائیڈ شناختی کارڈ استعمال کرتی ہیں ، اور سوالات ڈومینوں کی فہرست یا تلاش کرسکتے ہیں۔ ایک ڈومین کے لئے scoped اشیاء. اکاؤنٹس خود موجودہ ڈیٹا ماڈل میں ڈومینلیس ہیں، لیکن اکاؤنٹس ڈومینز کا مالک اور اثاثے رکھ سکتے ہیں جن کی تعریفیں ڈومینوں کے تحت رہتے ہیں.
 
 یہ بھی ملاحظہ کریں:
 

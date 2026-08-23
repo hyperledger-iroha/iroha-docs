@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /get-started/operate-iroha-via-cli.md
-translation_source_hash: 9391bab95aa0ee20c7f036cc175f3a6d3a8852e6ea90b09d9ebf1a838973c765
+translation_source_hash: ab8f3bf6d2259dc1ea649273e695429a992108b936475b263fe9d1fae59e8766
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -49,10 +49,10 @@ CLI 分为以下最高级别指挥组:
 
 在运行本地同行或创建签名器之前,您可以尝试仅阅读的 Taira 检查.这些命令使用公共的 Torii JSON 路线,并且不使用测试网 XOR.
 
-检查 Taira 的健康情况:
+检查 Taira 的状态:
 
 ```bash
-curl -fsS https://taira.sora.org/status \
+curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 ```
 
