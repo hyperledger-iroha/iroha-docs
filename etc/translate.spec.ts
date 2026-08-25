@@ -12,6 +12,7 @@ import {
   addStableHeadingAnchors,
   chunkForTranslation,
   curatedExactTranslation,
+  curatedExactTranslationEntries,
   generateTranslations,
   hasExactProtectedMarkerMultiset,
   isCompleteCompactCjkRetryClause,
@@ -33,12 +34,14 @@ import {
 
 const french = TRANSLATED_LOCALES.find((locale) => locale.key === 'fr')!
 const georgian = TRANSLATED_LOCALES.find((locale) => locale.key === 'ka')!
+const hebrew = TRANSLATED_LOCALES.find((locale) => locale.key === 'he')!
 const japanese = TRANSLATED_LOCALES.find((locale) => locale.key === 'ja')!
 const kazakh = TRANSLATED_LOCALES.find((locale) => locale.key === 'kk')!
 const portuguese = TRANSLATED_LOCALES.find((locale) => locale.key === 'pt')!
 const spanish = TRANSLATED_LOCALES.find((locale) => locale.key === 'es')!
 const simplifiedChinese = TRANSLATED_LOCALES.find((locale) => locale.key === 'zh-hans')!
 const traditionalChinese = TRANSLATED_LOCALES.find((locale) => locale.key === 'zh-hant')!
+const uzbek = TRANSLATED_LOCALES.find((locale) => locale.key === 'uz')!
 
 class MarkerAwareProvider implements TranslationProvider {
   async translate(text: string): Promise<string> {
@@ -117,6 +120,287 @@ class InlineContextProvider implements TranslationProvider {
 }
 
 describe('Markdown translation protection', () => {
+  test('uses reviewed exact Spanish I105 safety terminology', () => {
+    const reviewed = new Map([
+      [
+        ' - Preserve letter case and do not apply `Unicode` normalization. ',
+        ' - Conserve exactamente las mayúsculas y minúsculas, y no aplique la normalización de `Unicode`. ',
+      ],
+      [
+        ' The checksum-only HRP is the ASCII string `snx`. ',
+        ' El HRP usado exclusivamente para la suma de comprobación es la cadena ASCII `snx`. ',
+      ],
+      [
+        ' 4. Split off the six checksum digits. ',
+        ' 4. Separe los seis dígitos correspondientes a la suma de comprobación. ',
+      ],
+      [
+        ' 6. Verify the checksum over those canonical bytes. ',
+        ' 6. Verifique la suma de comprobación calculada sobre esos bytes canónicos. ',
+      ],
+      [
+        ' 9. Render the `AccountId` canonically for the expected discriminant. ',
+        ' 9. Genere la representación canónica del `AccountId` para el discriminante esperado. ',
+      ],
+      [
+        ' - Use a collation that preserves letter case and character width. ',
+        ' - Use una intercalación que preserve las mayúsculas y minúsculas y el ancho de los caracteres. ',
+      ],
+    ])
+
+    for (const [source, expected] of reviewed) {
+      expect(curatedExactTranslation(source, spanish)).toBe(expected)
+    }
+  })
+
+  test('applies the reviewed Spanish safety wording through the I105 translation pipeline', async () => {
+    const provider: TranslationProvider = {
+      engine: 'i105-spanish-integration-test',
+      protectedMarkdownMode: 'inline-identifiers',
+      languageCode: () => 'spa_Latn',
+      translate: async () => {
+        throw new Error('inline translation must use the batch method')
+      },
+      translateBatch: async (texts) => [...texts],
+    }
+    const source = await readFile(path.resolve('src/reference/i105.md'), 'utf8')
+
+    const translated = await translateDocument(source, 'reference/i105.md', spanish, provider)
+
+    expect(translated).toContain('Separe los seis dígitos correspondientes a la suma de comprobación.')
+    expect(translated).toContain('Verifique la suma de comprobación calculada sobre esos bytes canónicos.')
+    expect(translated).toContain('Genere la representación canónica del `AccountId` para el discriminante esperado.')
+    expect(translated).toContain(
+      'Use una intercalación que preserve las mayúsculas y minúsculas y el ancho de los caracteres.',
+    )
+    expect(translated).not.toContain('Render the `AccountId` canonically for the expected discriminant.')
+  })
+
+  test('uses reviewed exact Unicode terminology for the Uzbek I105 guide', () => {
+    const reviewed = new Map([
+      [' The alphabet is `Unicode`-sensitive. ', ' Alifbo `Unicode` kod nuqtalarini aynan farqlaydi. '],
+      [
+        ' The exact sequence uses `compatibility-width` Japanese `kana` symbols plus the code points shown for `ヰ` and `ヱ`. ',
+        ' Aniq ketma-ketlik `compatibility-width` formatidagi yapon `kana` belgilaridan hamda `ヰ` va `ヱ` uchun ko\u2018rsatilgan aynan shu kod nuqtalaridan foydalanadi. ',
+      ],
+      [
+        ' Do not apply NFC, NFKC, width conversion, case folding, or look-alike substitution. ',
+        ' NFC yoki NFKC tarzida normallashtirishni, belgi kengligini o\u2018zgartirishni, harf registrini birxillashtirishni yoki belgilarni ko\u2018rinishi o\u2018xshash boshqa belgilar bilan almashtirishni qo\u2018llamang. ',
+      ],
+      [
+        ' ASCII `0`, `O`, `I`, and `l` are not alphabet symbols. ',
+        ' ASCII `0`, `O`, `I` va `l` alifbo belgilari emas. ',
+      ],
+    ])
+
+    for (const [source, expected] of reviewed) {
+      expect(curatedExactTranslation(source, uzbek)).toBe(expected)
+    }
+  })
+
+  test('applies the reviewed Uzbek Unicode wording through the I105 translation pipeline', async () => {
+    const provider: TranslationProvider = {
+      engine: 'i105-uzbek-integration-test',
+      protectedMarkdownMode: 'inline-identifiers',
+      languageCode: () => 'uzn_Latn',
+      translate: async () => {
+        throw new Error('inline translation must use the batch method')
+      },
+      translateBatch: async (texts) => [...texts],
+    }
+    const source = await readFile(path.resolve('src/reference/i105.md'), 'utf8')
+
+    const translated = await translateDocument(source, 'reference/i105.md', uzbek, provider)
+
+    expect(translated).toContain('Alifbo `Unicode` kod nuqtalarini aynan farqlaydi.')
+    expect(translated).toContain(
+      'Aniq ketma-ketlik `compatibility-width` formatidagi yapon `kana` belgilaridan hamda `ヰ` va `ヱ` uchun ko\u2018rsatilgan aynan shu kod nuqtalaridan foydalanadi.',
+    )
+    expect(translated).toContain(
+      'NFC yoki NFKC tarzida normallashtirishni, belgi kengligini o\u2018zgartirishni, harf registrini birxillashtirishni yoki belgilarni ko\u2018rinishi o\u2018xshash boshqa belgilar bilan almashtirishni qo\u2018llamang.',
+    )
+    const reviewedSafetyUnits = [
+      'Tarmoq sentineli',
+      'Matnni bitta `u16` zanjir diskriminantiga moslaydi',
+      'Kanonik hisob boshqaruvchisi baytlarining `base-105` kodlanishi',
+      'I105 alifbosi orqali ifodalangan `Bech32m` uslubidagi oltita `5-bit` qiymat',
+      'Dekoder kutilgan diskriminantni majburiy tekshirishi kerak.',
+      'Tekshiruv summasi sentinel almashtirilganini aniqlay olmaydi.',
+      '### Tarmoq sentinellari {#network-sentinels}',
+      'Nomli qiymatlar uchun har doim ularning nomli sentineli ishlatiladi.',
+      'Endpoint yoki zanjir ID sini tanlash manzil profilini avtomatik ravishda tanlamaydi.',
+      'Taira shakli ayni shu foydali yukga Taira sentinelini qo‘llaydi:',
+      'Ular sentinel, alifbo, tekshiruv summasi, bayt uzunliklari, `CurveId`/kalit tuzilishi va manzil qatlamining aynan qayta kodlanishini tekshiradi.',
+      'Ular `AccountId` obyektini hosil qilmaydi.',
+      'Ular sarlavha sinfi boshqaruvchiga mos kelishini isbotlamaydi.',
+      'Avtorizatsiya yoki doimiy saqlashdan oldin qat’iy `AccountId` tekshiruvidan foydalaning.',
+      '`base-105` tanasi ochiq kalit satrini yoki Norito JSON obyektini emas, ikkilik hisob foydali yukini kodlaydi:',
+      'Zaxiralangan `extension flag`',
+      '`extension flag` qiymati `1` bo‘lsa, u rad etiladi.',
+      'Quyi darajadagi dekoder boshqa versiya va normallashtirish bit qiymatlarini saqlab qolishi mumkin, ammo sinfni boshqaruvchi tegi bilan mustaqil ravishda o‘zaro tekshirmaydi.',
+      'Xom kalit uzunligi',
+      'Ochiq kalitning xom foydali yuki',
+      'A’zoning tasdiqlash vazni',
+      'Yaroqli siyosatda kamida bitta a’zo, musbat vaznlar va takrorlanmagan ochiq kalitlar bo‘lishi, chegara qiymati esa `1` dan a’zolar vaznlari yig‘indisigacha bo‘lishi kerak.',
+      'Kanonik tuzilish a’zolarni avval imzolash algoritmining barqaror nomi, keyin nol ajratuvchi bayt va undan so‘ng xom ochiq kalit baytlari bo‘yicha saralaydi.',
+      '## Qat’iy AccountId tekshiruvi va kanoniklik {#strict-accountid-validation-and-canonicality}',
+      "SDK'ni kutilgan zanjir diskriminanti bilan sozlagach, qiymatni `AccountId` sifatida tahlil qiling va qaytarilgan kanonik ko‘rinishni chetki bo‘shliqlari olib tashlangan kirish bilan taqqoslang.",
+      'Ishonchsiz satr uchun talablarga mos ilova quyidagilarni bajarishi kerak:',
+      '1. Faqat to‘liq qiymatning boshi va oxiridagi ruxsat etilgan transport bo‘shliqlarini olib tashlang.',
+      '2. Sentinelni o‘qing va kutilgan zanjir diskriminantini talab qiling.',
+      '3. Qolgan har bir `Unicode` belgisini aniq 105 belgili alifbo bo‘yicha xaritalang.',
+      '4. Tekshiruv summasining olti raqamini ajrating.',
+      '5. Foydali yuk raqamlarini qayta kanonik baytlarga aylantiring.',
+      '6. Shu kanonik baytlar bo‘yicha tekshiruv summasini tekshiring.',
+      '7. Sarlavha va boshqaruvchini tahlil qilib, quyidagilarni talab qiling:',
+      '   - maydonlarning aniq uzunliklari',
+      '   - qo‘llab-quvvatlanadigan `CurveId`',
+      '   - yaroqli ochiq kalit',
+      '   - oxirida ortiqcha baytlar yo‘qligi',
+      '   - tegishli holatda yaroqli multisig siyosati',
+      '8. `AccountId` yarating.',
+      '9. `AccountId` obyektini kutilgan diskriminant uchun kanonik tarzda ifodalang.',
+      '10. Chetki bo‘shliqlari olib tashlangan kirish bilan `byte-for-byte` tenglikni talab qiling.',
+      '- oxiriga `@domain` suffiksi qo‘shilgan I105 literali',
+      '- JSON hisob maydonlarida aynan I105 UTF-8 satrini yuboring.',
+      '- Harf registri va belgi kengligini saqlaydigan kollatsiyadan foydalaning.',
+      '- Zanjir diskriminantini yoki nomlangan tarmoq profilini eksport qilingan hisob ma’lumotlari va zaxira nusxalari bilan birga saqlang.',
+      '- Har bir `kana` belgisini aynan saqlang.',
+      'Tana foydali yuk va tekshiruv summasining ikkalasini ham sig‘dira olmaydi',
+      "I105 ID'ni hosil qilish hisobni ro‘yxatdan o‘tkazmaydi va uni moliyalashtirmaydi.",
+      '- Regex I105 validatori emas.',
+    ]
+
+    for (const reviewedUnit of reviewedSafetyUnits) {
+      expect(translated).toContain(reviewedUnit)
+    }
+    expect(translated).not.toContain('The alphabet is `Unicode`-sensitive.')
+  })
+
+  test('applies a reviewed I105 safety canary for every maintained locale', async () => {
+    const sharedSource = '- Preserve letter case and do not apply `Unicode` normalization.'
+    const uzbekSource = 'The alphabet is `Unicode`-sensitive.'
+
+    for (const locale of TRANSLATED_LOCALES) {
+      const provider: TranslationProvider = {
+        engine: `i105-${locale.key}-reviewed-canary-test`,
+        protectedMarkdownMode: 'inline-identifiers',
+        languageCode: () => NLLB_LANGUAGE_CODES[locale.key],
+        translate: async () => {
+          throw new Error('inline translation must use the batch method')
+        },
+        translateBatch: async (texts) => [...texts],
+      }
+      const source = locale.key === 'uz' ? uzbekSource : sharedSource
+      const translated = await translateDocument(`${source}\n`, 'reference/i105.md', locale, provider)
+
+      expect(translated, locale.key).not.toContain(source)
+      expect(translated, locale.key).toContain('`Unicode`')
+    }
+  })
+
+  test('applies reviewed full-table-row translations before translating individual cells', async () => {
+    const provider: TranslationProvider = {
+      engine: 'i105-hebrew-table-row-test',
+      protectedMarkdownMode: 'inline-identifiers',
+      languageCode: () => NLLB_LANGUAGE_CODES.he,
+      translate: async () => {
+        throw new Error('inline translation must use the batch method')
+      },
+      translateBatch: async (texts) => [...texts],
+    }
+    const source =
+      '| Network sentinel | Maps the text to one `u16` chain discriminant                      | Not covered       |\n'
+
+    const translated = await translateDocument(source, 'reference/i105.md', hebrew, provider)
+
+    expect(translated).toContain('| סנטינל רשת | ממפה את הטקסט למבחין שרשרת `u16` אחד | לא מכוסה |')
+    expect(translated).not.toContain('Network sentinel')
+  })
+
+  test('keeps every reviewed I105 unit in the checked-in locale pages', async () => {
+    const normalizeWhitespace = (value: string): string => value.replace(/\s+/gu, ' ').trim()
+    const source = normalizeWhitespace(
+      addStableHeadingAnchors(await readFile(path.resolve('src/reference/i105.md'), 'utf8')),
+    )
+
+    for (const locale of TRANSLATED_LOCALES) {
+      const translated = normalizeWhitespace(
+        await readFile(path.resolve('src', locale.key, 'reference/i105.md'), 'utf8'),
+      )
+
+      for (const [sourceUnit, reviewedUnit] of curatedExactTranslationEntries(locale)) {
+        if (!source.includes(normalizeWhitespace(sourceUnit))) continue
+        expect(translated, `${locale.key}: ${sourceUnit}`).toContain(normalizeWhitespace(reviewedUnit))
+      }
+    }
+  })
+
+  test('keeps inline I105 wire and signing identifiers out of provider input', async () => {
+    const identifiers = [
+      'BLS12-381',
+      'BLS12-381 normal',
+      'Base58',
+      'Bech32m',
+      'Bitcoin',
+      'Cargo',
+      'Ed25519',
+      'GOST R 34.10-2012',
+      'GOST R 34.10-2012 256-bit, parameter set A',
+      'ML-DSA',
+      'SM2',
+      'Unicode',
+      'secp256k1',
+    ]
+    const batches: string[][] = []
+    const provider: TranslationProvider = {
+      engine: 'i105-identifier-protection-test',
+      protectedMarkdownMode: 'inline-identifiers',
+      languageCode: () => 'fra_Latn',
+      translate: async () => {
+        throw new Error('inline translation must use the batch method')
+      },
+      translateBatch: async (texts) => {
+        batches.push([...texts])
+        return texts.map((text) =>
+          identifiers.reduce((result, identifier) => result.replaceAll(identifier, 'BROKEN'), text),
+        )
+      },
+    }
+    const source = `Preserve ${identifiers.map((identifier) => `\`${identifier}\``).join(', ')} in this protocol description.\n`
+
+    const translated = await translateDocument(source, 'reference/i105-identifiers.md', french, provider)
+    const providerInput = batches.flat().join('\n')
+
+    for (const identifier of identifiers) {
+      expect(providerInput).not.toContain(identifier)
+      expect(translated).toContain(identifier)
+    }
+    expect(translated).not.toContain('BROKEN')
+  })
+
+  test('keeps ordinary I105 prose available to the translation provider', async () => {
+    const batches: string[][] = []
+    const provider: TranslationProvider = {
+      engine: 'i105-prose-scope-test',
+      protectedMarkdownMode: 'inline-identifiers',
+      languageCode: () => 'fra_Latn',
+      translate: async () => {
+        throw new Error('inline translation must use the batch method')
+      },
+      translateBatch: async (texts) => {
+        batches.push([...texts])
+        return [...texts]
+      },
+    }
+    const source =
+      'Encode and decode a public key with a chain discriminant, regular expression, extension flag, and byte-preserving comparison.\n'
+
+    await translateDocument(source, 'reference/i105-prose.md', french, provider)
+
+    expect(batches.flat().join('\n')).toContain(source.trim())
+  })
+
   test('uses reviewed exact Norito status terminology for Chinese locales', () => {
     expect(curatedExactTranslation(' Account report, statement, and notification validation ', simplifiedChinese)).toBe(
       ' 账户报告、对账单和通知的验证 ',

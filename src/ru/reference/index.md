@@ -1,7 +1,7 @@
 ---
 translation_locale: ru
 translation_source: /reference/index.md
-translation_source_hash: 5c0a033ff9c0ab357c2fba22c269a9b141cb02ef7a3703955e28d6b7b4dac961
+translation_source_hash: ea6507424c3e7d25377062b19c2c0dad9868addc712fe4f3abe176000baaffa3
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,6 +12,7 @@ translation_engine: nllb-200-ct2
 
 Начинайте здесь:
 
+- [Формат адреса счета I105](/ru/reference/i105.md)
 - [Работа с бинарными системами Iroha](/ru/reference/binaries.md)
 - [Ссылка на Бытие](/ru/reference/genesis.md)
 - [конечные точки Torii](/ru/reference/torii-endpoints.md)

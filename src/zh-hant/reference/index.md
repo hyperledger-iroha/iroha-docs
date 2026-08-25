@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /reference/index.md
-translation_source_hash: 5c0a033ff9c0ab357c2fba22c269a9b141cb02ef7a3703955e28d6b7b4dac961
+translation_source_hash: ea6507424c3e7d25377062b19c2c0dad9868addc712fe4f3abe176000baaffa3
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,6 +12,7 @@ translation_engine: nllb-200-ct2
 
 開始在這裏:
 
+- [I105 賬戶地址格式](/zh-hant/reference/i105.md)
 - [與 Iroha 二進制](/zh-hant/reference/binaries.md) 合作
 - [創世記引用](/zh-hant/reference/genesis.md)
 - [Torii 終端點](/zh-hant/reference/torii-endpoints.md)

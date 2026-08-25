@@ -1,14 +1,14 @@
 ---
 translation_locale: zh-hans
 translation_source: /blockchain/accounts.md
-translation_source_hash: 7a0130655b4caae240ee261bc7d2059914828da258616bc78ccff41ee455e6d3
+translation_source_hash: 015a85d81c44b7ef7f13cdafb2ed8e493ef512b94dc500939655c70285eac3bd
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # 账户 {#accounts}
 
-帐户是一个可以签署交易的权威机构,并拥有账本状态.在当前 Iroha 3 数据模型中,`AccountId`是正规和无域名的:它源于账户控制器,可编码为 I105. 人能阅读的域名和数据空间背景属于单独的帐户代号结合.
+帐户是一个可以签署交易的权威机构,并拥有账本状态.在当前 Iroha 3 数据模型中,`AccountId`是正规和无域名的:它源于账户控制器,可编码为 [I105](/zh-hans/reference/i105.md). 人能阅读的域名和数据空间背景属于单独的帐户代号结合.
 
 ## 结构 {#structure}
 

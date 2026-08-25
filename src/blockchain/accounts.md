@@ -2,9 +2,9 @@
 
 An account is an authority that can sign transactions and own ledger state.
 In the current Iroha 3 data model, `AccountId` is canonical and domainless:
-it is derived from the account controller and encoded canonically as I105.
-Human-readable domain and dataspace context belongs to separate account-alias
-bindings.
+it is derived from the account controller and encoded canonically as
+[I105](/reference/i105.md). Human-readable domain and dataspace context belongs
+to separate account-alias bindings.
 
 ## Structure
 

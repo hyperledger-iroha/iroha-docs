@@ -1,14 +1,14 @@
 ---
 translation_locale: am
 translation_source: /blockchain/accounts.md
-translation_source_hash: 7a0130655b4caae240ee261bc7d2059914828da258616bc78ccff41ee455e6d3
+translation_source_hash: 015a85d81c44b7ef7f13cdafb2ed8e493ef512b94dc500939655c70285eac3bd
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # ሂሳቦች {#accounts}
 
-አንድ ሂሳብ ግብይቶች መፈረም እና የራሱን መቁጠሪያ ሁኔታ ሊኖረው የሚችል ባለስልጣን ነው. አሁን ባለው Iroha 3 የመረጃ ሞዴል ውስጥ, `AccountId` ቀኖናዊ እና ጎራ የሌለው ነው: ከሂሳቡ ተቆጣጣሪ የተወሰደ ሲሆን በካኖኒካዊ መንገድ እንደ I105 ይገለጻል. ለሰው ሊነበብ የሚችል ጎራ እና የመረጃ ቦታ አውድ በተናጠል የሂሳብ-አልባ ስያሜ አገናኞች ውስጥ ይካተታል ።
+አንድ ሂሳብ ግብይቶች መፈረም እና የራሱን መቁጠሪያ ሁኔታ ሊኖረው የሚችል ባለስልጣን ነው. አሁን ባለው Iroha 3 የመረጃ ሞዴል ውስጥ, `AccountId` ቀኖናዊ እና ጎራ የሌለው ነው: ከሂሳቡ ተቆጣጣሪ የተወሰደ ሲሆን በካኖኒካዊ መንገድ እንደ [I105](/am/reference/i105.md) ይገለጻል. ለሰው ሊነበብ የሚችል ጎራ እና የመረጃ ቦታ አውድ በተናጠል የሂሳብ-አልባ ስያሜ አገናኞች ውስጥ ይካተታል ።
 
 ## መዋቅር {#structure}
 

@@ -1,14 +1,14 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/accounts.md
-translation_source_hash: 7a0130655b4caae240ee261bc7d2059914828da258616bc78ccff41ee455e6d3
+translation_source_hash: 015a85d81c44b7ef7f13cdafb2ed8e493ef512b94dc500939655c70285eac3bd
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # 賬戶 {#accounts}
 
-帳戶是一個可以簽署交易的權威機構,並擁有賬本狀態.在當前 Iroha 3 數據模型中,`AccountId`是正規和無域名的:它源於賬戶控制器,可編碼爲 I105. 人能閱讀的域名和數據空間背景屬於單獨的帳戶代號結合.
+帳戶是一個可以簽署交易的權威機構,並擁有賬本狀態.在當前 Iroha 3 數據模型中,`AccountId`是正規和無域名的:它源於賬戶控制器,可編碼爲 [I105](/zh-hant/reference/i105.md). 人能閱讀的域名和數據空間背景屬於單獨的帳戶代號結合.
 
 ## 結構 {#structure}
 
