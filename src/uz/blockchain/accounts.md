@@ -1,14 +1,14 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/accounts.md
-translation_source_hash: 7a0130655b4caae240ee261bc7d2059914828da258616bc78ccff41ee455e6d3
+translation_source_hash: 015a85d81c44b7ef7f13cdafb2ed8e493ef512b94dc500939655c70285eac3bd
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Hisob-kitoblar {#accounts}
 
-Hisobvaraq - bu bitimlarni imzolash va o'z hisobvarag'ining holati bo'lishi mumkin bo'lgan organ. Hozirgi Iroha 3 ma'lumotlar modelida, `AccountId` kanonik va domensiz: u hisob boshqaruvchisidan kelib chiqadi va kanonik ravishda I105 sifatida kodlanadi. Inson o'qishi mumkin bo'lgan domen va ma'lumotlar maydonining konteksti alohida hisob-alias bog'liqliklarga tegishli.
+Hisobvaraq - bu bitimlarni imzolash va o'z hisobvarag'ining holati bo'lishi mumkin bo'lgan organ. Hozirgi Iroha 3 ma'lumotlar modelida, `AccountId` kanonik va domensiz: u hisob boshqaruvchisidan kelib chiqadi va kanonik ravishda [I105](/uz/reference/i105.md) sifatida kodlanadi. Inson o'qishi mumkin bo'lgan domen va ma'lumotlar maydonining konteksti alohida hisob-alias bog'liqliklarga tegishli.
 
 ## Tashkilot {#structure}
 

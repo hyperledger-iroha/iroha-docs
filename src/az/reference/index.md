@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /reference/index.md
-translation_source_hash: 5c0a033ff9c0ab357c2fba22c269a9b141cb02ef7a3703955e28d6b7b4dac961
+translation_source_hash: ea6507424c3e7d25377062b19c2c0dad9868addc712fe4f3abe176000baaffa3
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,6 +12,7 @@ Bu bölmə Iroha 3 sənədlər dəstinin operatorla üzləşən mövcud istinad 
 
 Burdan başlayın:
 
+- [I105 hesab ünvanı formatı](/az/reference/i105.md)
 - [Iroha binarları](/az/reference/binaries.md) ilə işləmək
 - [Genesis istinadı](/az/reference/genesis.md)
 - [Torii bitki nöqtələri](/az/reference/torii-endpoints.md)

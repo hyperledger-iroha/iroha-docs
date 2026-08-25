@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /reference/index.md
-translation_source_hash: 5c0a033ff9c0ab357c2fba22c269a9b141cb02ef7a3703955e28d6b7b4dac961
+translation_source_hash: ea6507424c3e7d25377062b19c2c0dad9868addc712fe4f3abe176000baaffa3
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,6 +12,7 @@ translation_engine: nllb-200-ct2
 
 یہاں سے شروع کریں:
 
+- [I105 اکاؤنٹ ایڈریس فارمیٹ](/ur/reference/i105.md)
 - [Iroha بائنریوں کے ساتھ کام کرنا](/ur/reference/binaries.md)
 - [پیدائش کا حوالہ](/ur/reference/genesis.md)
 - [Torii اختتام پوائنٹس](/ur/reference/torii-endpoints.md)

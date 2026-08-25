@@ -503,6 +503,10 @@ function sidebarReference(): DefaultTheme.SidebarItem[] {
           link: '/reference/',
         },
         {
+          text: 'I105 Account Addresses',
+          link: '/reference/i105.md',
+        },
+        {
           text: 'Binaries',
           link: '/reference/binaries.md',
         },

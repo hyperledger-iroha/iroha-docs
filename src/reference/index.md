@@ -5,6 +5,7 @@ Iroha 3 docs set.
 
 Start here for:
 
+- [I105 account address format](/reference/i105.md)
 - [Working with Iroha binaries](/reference/binaries.md)
 - [Genesis reference](/reference/genesis.md)
 - [Torii endpoints](/reference/torii-endpoints.md)

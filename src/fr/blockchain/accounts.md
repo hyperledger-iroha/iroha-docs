@@ -1,14 +1,14 @@
 ---
 translation_locale: fr
 translation_source: /blockchain/accounts.md
-translation_source_hash: 7a0130655b4caae240ee261bc7d2059914828da258616bc78ccff41ee455e6d3
+translation_source_hash: 015a85d81c44b7ef7f13cdafb2ed8e493ef512b94dc500939655c70285eac3bd
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Comptes {#accounts}
 
-Un compte est une autorité qui peut signer des transactions et son propre état de registre. Dans le modèle de données actuel Iroha 3, `AccountId` est canonique et sans domaine: il est dérivé du contrôleur du compte et codé canoniquement comme I105. Le contexte du domaine et de l'espace de données lisibles par l'homme appartient à des liaisons séparées sous le nom d'alias compte.
+Un compte est une autorité qui peut signer des transactions et son propre état de registre. Dans le modèle de données actuel Iroha 3, `AccountId` est canonique et sans domaine: il est dérivé du contrôleur du compte et codé canoniquement comme [I105](/fr/reference/i105.md). Le contexte du domaine et de l'espace de données lisibles par l'homme appartient à des liaisons séparées sous le nom d'alias compte.
 
 ## La structure {#structure}
 

@@ -1,14 +1,14 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/accounts.md
-translation_source_hash: 7a0130655b4caae240ee261bc7d2059914828da258616bc78ccff41ee455e6d3
+translation_source_hash: 015a85d81c44b7ef7f13cdafb2ed8e493ef512b94dc500939655c70285eac3bd
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Contas {#accounts}
 
-Uma conta é uma autoridade que pode assinar transações e o seu próprio estado de registro. No atual modelo de dados Iroha 3, `AccountId` é canônico e sem domínio: é derivado do controlador da conta e codificado canonicamente como I105. O contexto do domínio e espaço de dados legíveis ao ser humano pertence a vínculos separados entre contas alias.
+Uma conta é uma autoridade que pode assinar transações e o seu próprio estado de registro. No atual modelo de dados Iroha 3, `AccountId` é canônico e sem domínio: é derivado do controlador da conta e codificado canonicamente como [I105](/pt/reference/i105.md). O contexto do domínio e espaço de dados legíveis ao ser humano pertence a vínculos separados entre contas alias.
 
 ## Estrutura {#structure}
 
