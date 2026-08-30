@@ -155,6 +155,45 @@ families are not all enabled on every network profile.
 | `/v1/offline/*`, `/v1/repo/*`, `/v1/space-directory/*`, `/v1/ram-lfe/*` | Offline readiness, repository agreements, dataspace manifests, and [RAM-LFE helpers](/blockchain/ram-lfe.md#torii-routes) |
 | `/v1/kaigi/*`, `/v1/webhooks/*`, `/v1/notify/*`, `/v1/telemetry/*` | Collaboration, webhook, push notification, and live telemetry integrations |
 
+## Account Authentication, Visibility, and Explorer Cursors
+
+App-facing ledger reads use one optional canonical account-signature boundary.
+An unsigned request receives only routes configured as public. A valid signed
+request adds the dataspaces bound to the caller's current UAID and any exact
+read permissions held by that account. Supplying only `X-Iroha-Account`, or any
+incomplete or malformed signature header set, returns `401 Unauthorized`; it
+does not fall back to anonymous visibility.
+
+The same visibility object filters account, domain, asset-definition, asset,
+NFT, RWA, holder, and Explorer reads. An absent object and an object that is
+outside the caller's visible routes are intentionally indistinguishable.
+Committed transaction and instruction history is shown only when every route
+leg recorded for the transaction is visible. A mixed-dataspace transaction is
+therefore hidden when even one participant leg is outside the caller's scope;
+missing, stale, or malformed routing context is visible only to a global
+reader.
+
+The six world-backed Explorer collections use opaque canonical base64url
+keyset cursors. The default page limit is 25, the maximum is 100, and one page
+inspects at most 512 candidate keys. Each cursor is bound to its collection,
+filters, canonical last key, and the caller's visible route-set digest, so it
+cannot be replayed on another query or after the caller's visibility changes.
+
+Block, transaction, latest-transaction, instruction, and latest-instruction
+history cursors additionally pin the committed snapshot height and block hash.
+Responses expose `pagination.limit`, `pagination.snapshot_height`,
+`pagination.snapshot_hash`, `pagination.next_cursor`, and
+`pagination.has_more`. A cursor for another route or filter set, a changed
+visibility digest, or a snapshot that the node can no longer validate fails
+closed. History scanning remains inside Torii's query-admission permit while
+the blocking worker runs.
+
+Explorer WebSocket streams emit filtered summaries and recompute visibility as
+ledger permissions change. The native `GET /v1/blocks/stream` route is
+different: it emits complete signed blocks, requires
+`CanReadAllLedgerData` during the handshake, and closes if that permission is
+later revoked. Do not use the native stream for a dataspace-scoped explorer.
+
 ## ISO 20022 Bridge
 
 Torii exposes the ISO 20022 bridge under `/v1/iso20022/*` when the app-facing
@@ -169,12 +208,12 @@ their ledger status.
 | --- | --- |
 | `POST /v1/iso20022/pacs008` | Submit an FI-to-FI customer credit transfer and build the matching Iroha asset transfer |
 | `POST /v1/iso20022/pacs009` | Submit an FI-to-FI credit transfer used for PvP or securities-related cash funding |
-| `POST /v1/iso20022/pacs002` | Submit a payment status report |
-| `POST /v1/iso20022/pacs004` | Submit a payment return |
-| `POST /v1/iso20022/camt056` | Submit a payment cancellation request |
+| `POST /v1/iso20022/pacs002` | Submit a counterparty-owned payment status report; settlement needs committed transaction evidence |
+| `POST /v1/iso20022/pacs004` | Submit a counterparty-owned payment return |
+| `POST /v1/iso20022/camt056` | Submit an originator-owned payment cancellation request |
 | `POST /v1/iso20022/sese023` | Submit a securities settlement instruction |
-| `POST /v1/iso20022/sese024` | Submit a securities settlement status message |
-| `POST /v1/iso20022/sese025` | Submit a securities settlement confirmation |
+| `POST /v1/iso20022/sese024` | Submit a counterparty-owned securities settlement status message |
+| `POST /v1/iso20022/sese025` | Submit a counterparty-owned securities settlement confirmation |
 | `POST /v1/iso20022/colr012` | Submit a collateral substitution message |
 | `GET /v1/iso20022/messages/{msg_id}` | Read the canonical bridge record for one message |
 | `GET /v1/iso20022/audit/messages` | Read the tamper-evident message audit manifest |
@@ -202,6 +241,71 @@ can pin the target Iroha ledger, source and target account IDs or addresses,
 and asset definition ID. The response is `202 Accepted` with `message_id`,
 `transaction_hash`, `status`, `pacs002_code`, and the resolved
 ledger/account/asset context.
+
+### Participant Authorization and Lifecycle Ownership
+
+Every enabled bridge has a participant catalog. Each participant entry has a
+unique participant ID, one or more operator public keys, one or more financial
+identifiers, an allowed-profile set, and the `originator`, `counterparty`, or
+both roles. Operator keys and financial identifiers cannot belong to more than
+one participant. Configure `audit_admin_keys` separately; an audit-admin key
+cannot also be a participant mutation key.
+
+All ISO routes require a fresh operator signature. For an initial `pacs.008`,
+`pacs.009`, `sese.023`, or `colr.012` submission, the authenticated operator
+must belong to the participant identified by the application header `From`
+financial identity. The `To` identity must name another configured participant,
+and the selected profile must be allowed for both parties. Durable admission
+records the originator, counterparty, admitting participant and operator key,
+and the original profile and embedded-signature policy.
+
+Lifecycle authorization is derived from that immutable record rather than from
+caller-selected values:
+
+| Lifecycle message | Required participant |
+| --- | --- |
+| `pacs.002`, `pacs.004`, `sese.024`, `sese.025` | Original counterparty with the `counterparty` role |
+| `camt.056` | Original originator with the `originator` role |
+
+The original profile and signature policy remain pinned for the entire
+lifecycle, so a caller cannot select a weaker profile for an update. A
+`pacs.002` code that represents settlement (`ACSC`, `ACCP`, `SETT`, or
+`SETTLED`) changes the original record to settled only when Torii has committed
+transaction evidence.
+
+Either original party can read its message record and generated outbox
+documents. The audit endpoint returns only records in which the authenticated
+participant is the originator or counterparty. A separately configured audit
+administrator receives a global read-only audit view and cannot submit or
+change messages. Unknown participants and unrelated message identifiers are
+not disclosed.
+
+### Durable Replay Identity and Signed Outbox Documents
+
+ISO record stores accept only schema V2 records and replay tombstones. Torii
+fails startup with a clear incompatibility error when persisted data does not
+match that schema, so first-release stores and fixtures must be regenerated.
+Each rich record keeps immutable participant provenance. A separate durable
+tombstone keeps the message ID, payload hash, business message ID, and UETR for
+the complete deduplication TTL even after rich record details are pruned.
+
+Torii persists replay admission before it signs or processes a lifecycle
+message. It never evicts an unexpired replay identity. If the configured record
+capacity contains only TTL-protected entries, submissions receive retryable
+`503 Service Unavailable` without mutating lifecycle or accounting state.
+
+Every generated `pacs.002`, `pacs.004`, `camt.029`, `sese.024`, or `sese.025`
+document is returned as `application/xml` with these response headers:
+
+| Header | Meaning |
+| --- | --- |
+| `X-Iroha-Iso-Signature-Domain` | Always `iroha.iso20022.outbound.v2` |
+| `X-Iroha-Iso-Signer` | Canonical public key for the configured bridge signer |
+| `X-Iroha-Iso-Signature` | Base64 signature over the domain-separated XML bytes |
+
+Verify the signature over the UTF-8 byte sequence
+`iroha.iso20022.outbound.v2`, one zero byte, and the exact response body. Do
+not reformat or normalize the XML before verification.
 
 ### Additional Parser and Mapping Support
 

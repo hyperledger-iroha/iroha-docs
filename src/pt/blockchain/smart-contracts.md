@@ -1,9 +1,9 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: 7c35c609442df65328fa619b6673be76f801cfc2abc28afd853d7fe61e439e9c
+translation_source_hash: 7d6f8e1a0316b312b43c278b377e08382dbb2bff538a7bca4c43b585d12567ca
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2
 ---
 
 # Contratos inteligentes {#smart-contracts}
@@ -48,6 +48,18 @@ A prova liga a sobreposição ao bytecode executado. Dependendo da política de 
 ## Aplicações de contrato implantadas {#deployed-contract-calls}
 
 `Executable::ContractCall` invoca uma instância de contrato implantada por endereço. Use-a quando o código do contrato é registado separadamente e as transacções devem chamá-lo por referência em vez de carregar o código de byte sempre.
+
+## Ciclo de vida do contrato e propriedade {#contract-lifecycle-and-ownership}
+
+Cada endereço implantado mantém um registo `ContractLifecycleControlV1`, inclusive enquanto o contrato estiver inativo. O registo contém a proveniência imutável da primeira implantação, o proprietário atual e pendente, qualquer delegação do Parlamento revogável, o hash de código ativo, uma revisão de comparação e troca não-zero, Uma implantação direta registra a conta de implantação. uma implantação do Parlamento registra o seu proponente, o conteúdo da proposta ID e a tentativa de governança bem-sucedida ID.
+
+O proprietário do ciclo de vida é uma conta ou o Parlamento.As alterações na propriedade da conta utilizam uma oferta e aceitação separadas; a aceitação de uma oferta autoriza qualquer delegação do Parlamento. Um proprietário de conta pode permitir que o Parlamento ative ou desative o contrato, revogando em seguida essa delegação, mas a delegação nunca permite que o Parlamento transfira a propriedade.
+
+Cereais `ActivateContractInstance` e `DeactivateContractInstance` As instruções só estão disponíveis para o titular da conta corrente. `expected_revision`; As revisões obsoletas ou de zero não conseguem ser fechadas. Registo do ciclo de vida, que valida o artefato registado, o manifesto e ABI antes da mudança `active_code_hash`. A desativação limpa o hash do código ativo, mas mantém a propriedade e a proveniência. Cada transição bem-sucedida do ciclo de vida avança na revisão e emite o estado pós-completo.
+
+Uma proposta do Parlamento de nível de emergência pode impor uma suspensão para um máximo de 3.600 blocos quando vincula a revisão atual, o hash de código e uma digestão de incidentes não nula. A expiração restabelece a execução, mas não elimina a retenção. Uma ação certificada `CompleteEmergencyHoldRetrospective` deve posteriormente ligar a retenção exata IDs e digerir mais uma raiz de localização não-zero antes que o registro seja limpo; outra retenção não pode ser imposta enquanto essa retrospectiva permanece pendente.
+
+Quando o aplicativo API estiver ativado, leia o estado retido com `GET /v1/gov/contracts/{contract_address}`. Seu campo `found` significa que existe um registro do ciclo de vida, não que o endereço tenha atualmente código ativo.
 
 ## Orientações operacionais {#operational-guidance}
 

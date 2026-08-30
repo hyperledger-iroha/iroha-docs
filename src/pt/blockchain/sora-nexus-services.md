@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/sora-nexus-services.md
-translation_source_hash: de50aa8206a5b82d4340f68173e9d89bb8eabab83369c363eb05c9d6632eed28
+translation_source_hash: 667f691b84fab27114ffab4bb78e3df6356aaf25b1cba6aea14a193e33471f52
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -377,6 +377,12 @@ sorafs_cli fetch \
 
 Os relatórios do fornecedor de registos resumidos, recibos em pedaços, metadados proxy locais e as configurações efetivas da rota usadas para a busca.
 
+### Lista de Verificadores de Incentivos para Relais {#relay-incentive-verifier-roster}
+
+Quando `incentives.enable` é verdade, `incentives.trusted_verifier_ids` deve conter pelo menos uma e no máximo 64 contas canônicas IDs. O runtime armazena a lista como um conjunto ordenado determinista, e a geometria inválida da lista é rejeitada durante o início do relate.
+
+Cada `RelayBandwidthProof` é decodificado sob um quadro fixo/orçamento de atribuição e deve consumir o quadro completo. A conta verificadora da prova deve estar presente na lista configurada, e `RelayBandwidthProof::verify_signature()` deve ser bem sucedida; Antes de o relevo bloquear ou alterar o seu acumulador de desempenho. Um signatário não confiável ou uma prova de assinatura inválida/manipulada, portanto, não contribuem para a medição e não podem produzir um instantâneo de incentivo.
+
 ## Disponibilidade de dados (DA) {#data-availability-da}
 
 DA é a camada de evidência da disponibilidade para cargas úteis que são muito grandes, demasiado sensíveis à privacidade ou muito específicas do serviço para colocarem-se diretamente no estado mundial. Ele registra compromissos deterministas e obrigações de recuperação para que os validadores, gateways e clientes possam concordar sobre quais bytes foram prometidos, qual é a política aplicável e quais evidências foram observadas.
@@ -484,6 +490,23 @@ Usar o [Referência de consulta](/pt/reference/queries.md#nexus-data-availabilit
 SoraFS é o tecido de armazenamento descentralizado com endereço de conteúdo. Ele empacotam bytes em pedaços deterministas, arquivos CAR e manifestos Norito que ligam raízes de conteúdo, Os fornecedores de armazenamento anunciam a capacidade e a disponibilidade do conteúdo, enquanto os gateways verificam os manifestos e compromissos de fragmentos antes de servir o conteúdo.
 
 Os usos típicos do SoraFS incluem ativos de aplicativos estáticos, edificações de documentação, bundles de zonas, referências de modelos ou artefatos e bundles de evidências de governança. O modelo de dados Iroha expõe os eventos do gateway SoraFS e uma consulta [`FindSorafsProviderOwner`](/pt/reference/queries.md#nexus-data-availability-and-packages) para resolução da propriedade do provedor.
+
+### Portal público local CID e site gateways {#public-local-cid-and-site-gateways}
+
+Todos os nós Torii habilitados para SoraFS montam estas rotas públicas anônimas, mesmo quando o aplicativo opcional API não é construído:
+
+|Método e ponto final |Propósito |
+| --- | --- |
+|`GET /.well-known/sorafs/manifest` |Devolver o manifesto selecionado pelo anfitrião da solicitação canónica |
+|`GET /v1/sorafs/cid/{cid}` |Retorna os metadados do manifesto local e as entradas de arquivo para um CID |
+|`GET /sorafs/cid/{cid}` |Servir o documento raiz para um site local com endereço de conteúdo |
+|`GET /sorafs/cid/{cid}/{*path}` |Servir um caminho normalizado, ou uma faixa de bytes limitada, sob esse CID |
+
+Estas rotas nunca aceitam `x-sorafs-stream-token` ou `x-sorafs-token-id`. A presença de qualquer cabeçalho é um pedido ruim. Um manifesto canônico já presente na loja local autorizada do nó é o capacidade de leitura pública; uma falta de cache não autoriza a hidratação do provedor remoto. CAR E as rotas fragmentadas continuam a ser superfícies de protocolo autenticadas separadas.
+
+Antes de ler bytes, Torii valida a codificação canônica do manifesto local, restrições semânticas, digest e raiz CID. Em seguida, requer a identidade do fornecedor local autorizado, admissão de governança e conformidade regida para o manifesto, CID, e provedor. A política de taxa/ban do gateway usa o endereço efetivo do cliente, honrando os endereços encaminhados apenas através de proxies confiáveis configurados. A política faltante, conformidade, identidade ou estado de admissão não são fechadas.
+
+Uma solicitação detém uma licença de entrada pública de ponta a ponta; o limite para todo o processo é de 64 leituras simultâneas, com pedidos excessivos devolvidos `503 Service Unavailable` e `Retry-After: 1`. As respostas manifestas são limitadas a 16 MiB, as listas de arquivos são definidas por padrão para 50 entradas e aceitam no máximo 500, e um arquivo completo ou intervalo de byte único é limitado a 8 MiB. CIDs, consultas, hospedeiros, caminhos e cabeçalhos de intervalo devem usar seus formulários canônicos de valor único. O conteúdo ativo HTML, script, SVG, XML, PDF ou Wasm é servido apenas a partir de uma origem isolada (ou redirecionada) derivada de CID configurada, impedindo que uma origem gateway partilhada execute conteúdo sem confiança.
 
 ### Paque, manifeste, assine e apresente {#pack-manifest-sign-and-submit}
 

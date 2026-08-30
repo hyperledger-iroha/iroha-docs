@@ -58,6 +58,43 @@ safety check.
 Use this when contract code is registered separately and transactions should
 call it by reference instead of carrying the bytecode every time.
 
+## Contract Lifecycle and Ownership
+
+Every deployed address retains a `ContractLifecycleControlV1` record, including
+while the contract is inactive. The record contains immutable first-deployment
+provenance, the current and pending owner, any revocable Parliament delegation,
+the active code hash, a non-zero compare-and-swap revision, and any retained
+emergency hold. A direct deployment records the deploying account. A Parliament
+deployment records its proposer, proposal-content ID, and successful governance
+attempt ID.
+
+The lifecycle owner is either one account or Parliament. Account ownership
+changes use a separate offer and acceptance; accepting an offer clears any
+Parliament delegation. An account owner can allow Parliament to activate or
+deactivate the contract, then revoke that delegation, but delegation never
+allows Parliament to transfer ownership. Parliament-owned changes and
+Parliament acceptance are enacted through certified governance effects.
+
+Raw `ActivateContractInstance` and `DeactivateContractInstance` instructions
+are available only to the current account owner. They must carry the record's
+exact `expected_revision`; stale or zero revisions fail closed. Raw activation
+cannot create a lifecycle record, and it validates the registered artifact,
+manifest, and ABI before changing `active_code_hash`. Deactivation clears the
+active code hash but retains ownership and provenance. Every successful
+lifecycle transition advances the revision and emits the complete post-state.
+
+An Emergency-tier Parliament proposal can impose a hold for at most 3,600
+blocks when it binds the current revision, code hash, and a non-zero incident
+digest. Calls are blocked from the imposition height up to, but not including,
+the expiry height. Expiry restores execution but does not erase the hold. A
+certified `CompleteEmergencyHoldRetrospective` action must later bind the exact
+hold IDs and digest plus a non-zero finding root before the record is cleared;
+another hold cannot be imposed while that retrospective remains outstanding.
+
+When the app API is enabled, read the retained state with
+`GET /v1/gov/contracts/{contract_address}`. Its `found` field means that a
+lifecycle record exists, not that the address currently has active code.
+
 ## Operational Guidance
 
 - Keep contracts deterministic. Contract behavior must not depend on local

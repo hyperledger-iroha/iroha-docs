@@ -434,6 +434,20 @@ sorafs_cli fetch \
 The summary records provider reports, chunk receipts, local proxy metadata,
 and the effective route settings used for the fetch.
 
+### Relay Incentive Verifier Roster
+
+Relay incentive ingestion is fail-closed. When `incentives.enable` is true,
+`incentives.trusted_verifier_ids` must contain at least one and at most 64
+canonical account IDs. The runtime stores the roster as a deterministic
+ordered set, and invalid roster geometry is rejected during relay startup.
+
+Each `RelayBandwidthProof` is decoded under a fixed frame/allocation budget and
+must consume the complete frame. The proof's verifier account must be present
+in the configured roster, and `RelayBandwidthProof::verify_signature()` must
+succeed, before the relay locks or changes its performance accumulator. An
+untrusted signer or a signature-invalid/tampered proof therefore contributes no
+measurement and cannot produce an incentive snapshot.
+
 ## Data Availability (DA)
 
 DA is the availability-evidence layer for payloads that are too large, too
@@ -637,6 +651,42 @@ builds, zone bundles, model or artifact references, and governance evidence
 bundles. The Iroha data model exposes SoraFS gateway events and a
 [`FindSorafsProviderOwner`](/reference/queries.md#nexus-data-availability-and-packages)
 query for provider ownership resolution.
+
+### Public Local CID and Site Gateways
+
+Every SoraFS-enabled Torii node mounts these anonymous public routes even when
+the optional app API is not built:
+
+| Method and endpoint | Purpose |
+| --- | --- |
+| `GET /.well-known/sorafs/manifest` | Return the manifest selected by the canonical request host |
+| `GET /v1/sorafs/cid/{cid}` | Return bounded local manifest metadata and file entries for one CID |
+| `GET /sorafs/cid/{cid}` | Serve the root document for one local content-addressed site |
+| `GET /sorafs/cid/{cid}/{*path}` | Serve one normalized path, or one bounded byte range, under that CID |
+
+These routes never accept `x-sorafs-stream-token` or
+`x-sorafs-token-id`. Presence of either header is a bad request. A canonical
+manifest already present in the node's authoritative local store is the public
+read capability; a cache miss does not authorize remote-provider hydration.
+Protected provider CAR and chunk routes remain separate authenticated
+protocol surfaces.
+
+Before reading bytes, Torii validates the local manifest's canonical encoding,
+semantic constraints, digest, and root CID. It then requires the authoritative
+local provider identity, governance admission, and governed compliance for the
+manifest, CID, and provider. Gateway rate/ban policy uses the effective client
+address, honoring forwarded addresses only through configured trusted proxies.
+Missing policy, compliance, identity, or admission state fails closed.
+
+One request holds an end-to-end public-gateway permit; the process-wide limit
+is 64 concurrent reads, with excess requests returning `503 Service
+Unavailable` and `Retry-After: 1`. Manifest responses are capped at 16 MiB,
+file listings default to 50 entries and accept at most 500, and a full file or
+single byte range is capped at 8 MiB. CIDs, queries, hosts, paths, and range
+headers must use their canonical single-valued forms. Active HTML, script,
+SVG, XML, PDF, or Wasm content is served only from a configured CID-derived
+isolated origin (or redirected there), preventing a shared path-gateway origin
+from executing untrusted content.
 
 ### Pack, Manifest, Sign, and Submit
 
