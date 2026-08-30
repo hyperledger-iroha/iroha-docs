@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /cookbook/query-ledger-state.md
-translation_source_hash: a81f6cc04befb0b92a0a01c2cb3c1ecbbc631ce1f2a923cb046241c295db7806
+translation_source_hash: ca76923f5ae35b96c52a6a4c23c5d9e69549d1ca91d6d1507e7b9a1aee1f1676
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -160,9 +160,9 @@ Pageed application query တွေအတွက် IDs ကို စာမျက�
 
 ## အရင်းအမြစ်နှင့် ဆက်စပ်သော စာတမ်းများ {#source-and-related-docs}
 
-- [Cursor-backed pagination integration tests at the pinned commit ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/pagination.rs)
-- [Query Builder နှင့် Selector အပြုအမူကို pinned commit တွင်](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/query/builder/mod.rs)
-- [Query parameters and cursor model at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/query/parameters.rs)
+- [Cursor-backed pagination integration tests at the pinned commit ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/pagination.rs)
+- [Query Builder နှင့် Selector အပြုအမူကို pinned commit တွင်](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/builder/mod.rs)
+- [Query parameters and cursor model at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/parameters.rs)
 - [မေးမြန်းချက်များ ](/my/blockchain/queries.md)
 - [မေးမြန်းချက် မှတ်တမ်း ](/my/reference/queries.md)
 - [JavaScript နှင့် TypeScript](/my/guide/tutorials/javascript.md)

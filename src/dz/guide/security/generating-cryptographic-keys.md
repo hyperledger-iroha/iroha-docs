@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: ccbb076ef3e2ba45d074ad3394ac354d0c2233cdd4286c5fa7a77f0d1c413988
+translation_source_hash: f3d08a8e7fe7569ef783b93bccdc900ca74b85179a749b48b96c32028c749233
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review
 ---
@@ -12,39 +12,32 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 
 ## གཞི་རྟེན་ལག་ལེན་ {#basic-usage}
 
-Iroha གི་ source checkout ནང་ལས་:
-
-```bash
-cargo run --bin kagami -- keys --algorithm ed25519
-```
-
-JSON ཕྱིར་བཏོན་འདི་ TOML ཡང་ན་ རང་བཞིན་བཟོ་བཀོད་ནང་ལུ་ ཨེབ་གཏང་འབད་ནི་དེ་འཇམ་ཤོས་ཨིན།
-
-```bash
-cargo run --bin kagami -- keys --algorithm ed25519 --json
-```
-
-བཀའ་རྒྱ་འདི་གིས་ public key དང་ གསང་སྲུང་མེད་པའི་ private key གཉིས་ཀྱི་གྲུབ་འབྲས་བཏོནམ་ཨིན། private key འདི་ secret material སྦེ་བཞག་དགོ། བཟོ་སྐྲུན་གྱི་ production key ཚུ་ repository ནང་ commit འབད་ནི་མི་འོང་།
-
-རྒྱབ་སྐྱོར་ཡོད་པའི་ Unix platform གུ་ secure local export ཡང་ན་ custody handoff འབདཝ་ད་ private key འདི་གྲུབ་འབྲས་ནང་མ་བཏོན་པར་ key pair གསརཔ་འདི་ owner-only གི་ directory སྟོངམ་ནང་བྲིས་:
+From the Iroha source checkout:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-Parent directory འདི་ཧེ་མ་ལས་ཡོད་དགོ། Target directory འདི་གསརཔ་ ཡང་ན་ current user གྱི་བདག་དབང་ནང་ཡོད་མི་ mode `0700`, symbolic link མེད་མི་དང་ སྟོངམ་ཨིན་དགོ། `kagami` གིས་ `public.key` དང་ `private.key` འདི་ mode `0600` ནང་བྲིས་ཏེ་ private key འདི་གྲུབ་འབྲས་ནང་མི་བཏོན། `--pop` ཡོད་པ་ཅིན་ `pop.hex` ཡང་འབྲི་འོང་།
+The parent directory must already exist. The target must be new or already
+owned by the current user, mode `0700`, free of symbolic links, and empty.
+`kagami` writes `public.key` and `private.key` with mode `0600` and does not
+print key material. With `--pop`, it also writes `pop.hex`.
 
-Kagami གིས་ owner-only filesystem rules ཚུ་ངེས་པར་ལག་ལེན་འཐབ་མ་ཚུགས་པའི་ platform གུ་ `--out-dir` འདི་ fail closed འབད་དེ་འཛོལ་བ་སྟོན་འོང་། private-key file འདི་ unencrypted export ཨིན་པ་ལས་ hardware signer ཡང་ན་ non-exportable production signer མེན། འདི་ approved custody boundary ནང་ནང་འདྲེན་འབད་ཞིནམ་ལས་ deployment procedure དང་འཁྲིལ་ཏེ་ export file འདི་བཏོན་གཏང་།
+`--out-dir` fails closed on platforms where Kagami cannot enforce these
+owner-only filesystem rules. The private-key file is an unencrypted export,
+not a hardware or non-exportable production signer. Import it into the
+approved custody boundary and remove the export according to the deployment's
+procedure.
 
 ## ཨལ་ག་རི་ཏམ་ཚུ་ {#algorithms}
 
-སྤྱིར་བཏང་གི་ ཨལ་ག་རི་ཏིམ་ཚུ་འདི་ཨིན།
+Common algorithms are:
 
-- Client account དང་ streaming identity གི་དོན་ལུ་ `ed25519`།
-- Client account ལུ་ secp256k1 identity དགོཔ་ད་ `secp256k1`།
-- Build གིས་ BLS support འབད་མི་ད་ node ཡང་ན་ peer consensus identity རེ་རེའི་དོན་ལུ་ `bls_normal`།
+- `ed25519` for client accounts and streaming identities.
+- `secp256k1` when a client account requires a secp256k1 identity.
+- `bls_normal` for every node or peer consensus identity.
 
-ཁྱོད་ཀྱི་ build གིས་རྒྱབ་སྐྱོར་འབད་མི་ algorithm ངེས་ཏིག་ཚུ་འདི་གིས་བརྟག་དཔྱད་འབད་:
+Check the exact algorithms supported by your build with:
 
 ```bash
 cargo run --bin kagami -- keys --help
@@ -52,35 +45,49 @@ cargo run --bin kagami -- keys --help
 
 ## དངོས་གྲུབ་ཅན་གྱི་གོང་འཕེལ་གྱི་ལྡེ་མིག་ཚུ་ {#deterministic-development-keys}
 
-Reproducible fixture གི་དོན་ལུ་ 32-byte seed འདི་ hexadecimal character 64 སྦེ་བཀོད་དེ་བྱིན། Optional `0x` prefix འདི་བཏུབ་ཨིན།
+For reproducible fixtures, pass a 32-byte seed encoded as 64 hexadecimal
+characters. An optional `0x` prefix is accepted:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 \
   --seed-hex 1111111111111111111111111111111111111111111111111111111111111111 \
-  --json
+  --out-dir ./fixture-client-key
 ```
 
-Seed འདི་ private-key material ཨིན། Deterministic seed འདི་ local development དང་ test གི་དོན་ལུ་རྐྱངམ་ཅིག་ལག་ལེན་འཐབ། Production key འདི་ operating-system randomness ལས་བཟོ་ནིའི་དོན་ལུ་ `--seed-hex` མ་བྱིན།
+The seed is private-key material. Use deterministic seeds only for local
+development and tests. Omit `--seed-hex` to generate a production key from
+operating-system randomness.
 
 ## BLS ངོས་ལེན་གྱི་ལྡེ་མིག་དང་ བདག་དབང་གི་ཁུངས་ཚུ་ {#bls-consensus-keys-and-proofs-of-possession}
 
-Iroha 3 node དང་ peer consensus identities གིས་ BLS-normal keys ལག་ལེན་འཐབ་ཨིན། BLS-normal key དང་ possessive proof (PoP) བཟོ་ནི་འདི་:
+Iroha 3 node and peer consensus identities use BLS-normal keys. Generate a
+BLS-normal key and proof-of-possession (PoP) with:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./validator-key
 ```
 
-`--pop` འདི་ `bls_normal` དང་གཅིག་ཁར་རྐྱངམ་ཅིག་ཆ་གནས་ཡོད། JSON output ནང་ `pop_hex` ཡོད། Signed genesis གིས་ voting validator རེ་རེའི་དོན་ལུ་ matching PoP དགོ། Peer configuration ནང་ non-empty `trusted_peers_pop` map གིས་ validator subset གདམ་ཁ་རྐྱབ་ཨིན། དེ་ནང་མེད་པའི་ trusted peer ཚུ་ observer ཨིན། Map སྟོངམ་ཨིན་པ་ཅིན་ BLS-normal trusted peer ཆ་མཉམ་ bootstrap candidate set ནང་འཛུལ་འོང་། Voting PoPs ཚུ་ signed genesis གིས་རང་བྱིན་འོང་།
+`--pop` is valid only with `bls_normal`; it adds `pop.hex` to the custody
+directory.
+Signed genesis requires a matching PoP for every voting validator. In peer
+configuration, a non-empty `trusted_peers_pop` map selects the validator
+subset; trusted peers omitted from that non-empty map are observers. If the map
+is empty, all BLS-normal trusted peers enter the bootstrap candidate set, with
+voter PoPs still supplied by signed genesis.
 
-## ཐོན་སྐྱེད་བཟོ་རྣམ་ཚུ་ {#output-formats}
+## Custody Output {#custody-output}
 
-Terminal inspection གི་དོན་ལུ་ default output, automation གི་དོན་ལུ་ `--json`, script གཞན་ལུ་ line-oriented values དགོ་པ་ཅིན་ `--compact` ལག་ལེན་འཐབ་:
+`kagami keys` requires `--out-dir` and never writes private key material to
+standard output. Read `public.key`, `private.key`, and optional `pop.hex` from
+the generated directory. Each file contains one canonical value followed by a
+newline, which makes explicit file-based automation straightforward:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm ed25519 --compact
+PUBLIC_KEY=$(tr -d '\n' < ./client-key/public.key)
 ```
 
-ཡོངས་ཁྱབ་ཐོན་སྐྱེད་འབད་ནིའི་དོན་ལུ་ Kagami གྲོགས་རམ་:
+For full generated Kagami help:
 
 ```bash
 cargo run -p iroha_kagami -- advanced markdown-help > crates/iroha_kagami/CommandLineHelp.md

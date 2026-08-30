@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /cookbook/fungible-assets.md
-translation_source_hash: 6b50c995afaf9f46df6fdaab31add40b106cfa12fdaa31dabbb74448486f87f9
+translation_source_hash: 669b5a1c12e9ab6ffb64e149148993e7b924feb29c6fa4db883a2065f58ecd7e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -169,8 +169,8 @@ iroha --config "$LOCAL_CONFIG" ledger asset definition get \
 
 ## 来源及相关文件 {#source-and-related-docs}
 
-- [资产生命周期集成测试在固定的承诺](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/asset.rs)
-- [Rust 固定承诺的资产构建例子](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha/examples/tutorial.rs)
+- [资产生命周期集成测试在固定的承诺](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/asset.rs)
+- [Rust 固定承诺的资产构建例子](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/examples/tutorial.rs)
 - [资产](/zh-hans/blockchain/assets.md)
 - [指示](/zh-hans/blockchain/instructions.md)
 - [许可证代币](/zh-hans/reference/permissions.md)

@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: 23b3ddbdadb0d177b2b12de60e0947a94ecdb20fa6ee1b3a2c6b83e5c91ba2f3
+translation_source_hash: 429535e5bb4ad1d3110f29a5b3896c0d3ce39264dbd357fa932fcc2a5f48d0f1
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -158,8 +158,8 @@ fi
 
 ## Бастапқы және осыған байланысты құжаттар {#source-and-related-docs}
 
-- [Тіркелген міндеттемедегі Canonical тіркелгі адресін іске асыру](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/account/address.rs)
-- [Тіркелген commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii/tests/accounts_endpoints.rs)-де есептік жазба және псевдоним Torii сынақтары
+- [Тіркелген міндеттемедегі Canonical тіркелгі адресін іске асыру](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs)
+- [Тіркелген commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs)-де есептік жазба және псевдоним Torii сынақтары
 - [Есепшоттар](/kk/blockchain/accounts.md)
 - [Деректер үлгісінің аты-жөні](/kk/blockchain/data-model.md#aliases)
 - [Атау конвенциялары](/kk/reference/naming.md)

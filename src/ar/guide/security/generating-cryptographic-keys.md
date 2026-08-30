@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: ccbb076ef3e2ba45d074ad3394ac354d0c2233cdd4286c5fa7a77f0d1c413988
+translation_source_hash: f3d08a8e7fe7569ef783b93bccdc900ca74b85179a749b48b96c32028c749233
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review
 ---
@@ -12,39 +12,32 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 
 ## استخدام أساسي {#basic-usage}
 
-من نسخة عمل للشيفرة المصدرية لـ Iroha:
-
-```bash
-cargo run --bin kagami -- keys --algorithm ed25519
-```
-
-عادةً ما يكون نسخ ناتج JSON إلى TOML أو استخدامه في الأتمتة هو الأسهل:
-
-```bash
-cargo run --bin kagami -- keys --algorithm ed25519 --json
-```
-
-يطبع الأمر مفتاحًا عامًا ويكشف مفتاحًا خاصًا. تعامل مع المفتاح الخاص على أنه مادة سرية؛ ولا تضف مفاتيح الإنتاج المولّدة إلى مستودع الشيفرة.
-
-للتصدير المحلي الآمن أو النقل إلى جهة حفظ على منصة Unix مدعومة، اكتب زوج مفاتيح جديدًا في دليل فارغ لا يصل إليه إلا المالك بدلًا من طباعة المفتاح الخاص:
+From the Iroha source checkout:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-يجب أن يكون الدليل الأصل موجودًا بالفعل. ويجب أن يكون الدليل الهدف جديدًا أو مملوكًا بالفعل للمستخدم الحالي، وبالوضع `0700`، وخاليًا من الروابط الرمزية، وفارغًا. يكتب `kagami` الملفين `public.key` و`private.key` بالوضع `0600` ولا يطبع المفتاح الخاص. ومع `--pop` يكتب أيضًا `pop.hex`.
+The parent directory must already exist. The target must be new or already
+owned by the current user, mode `0700`, free of symbolic links, and empty.
+`kagami` writes `public.key` and `private.key` with mode `0600` and does not
+print key material. With `--pop`, it also writes `pop.hex`.
 
-يفشل `--out-dir` بأمان على المنصات التي لا يستطيع فيها Kagami فرض قواعد نظام الملفات التي تقصر الوصول على المالك. ملف المفتاح الخاص نسخة مصدّرة غير مشفرة، وليس موقّع إنتاج محميًا بالأجهزة أو غير قابل للتصدير. استورده إلى نطاق الحفظ المعتمد واحذف النسخة المصدّرة وفقًا لإجراء النشر.
+`--out-dir` fails closed on platforms where Kagami cannot enforce these
+owner-only filesystem rules. The private-key file is an unencrypted export,
+not a hardware or non-exportable production signer. Import it into the
+approved custody boundary and remove the export according to the deployment's
+procedure.
 
 ## الخوارزميات {#algorithms}
 
-الخوارزميات الشائعة هي:
+Common algorithms are:
 
-- `ed25519` لحسابات العملاء و هويات البث.
-- `secp256k1` عندما يتطلب حساب عميل هوية secp256k1.
-- `bls_normal` لهوية الإجماع لكل عقدة أو نظير عندما يكون دعم BLS مفعّلًا في البناء.
+- `ed25519` for client accounts and streaming identities.
+- `secp256k1` when a client account requires a secp256k1 identity.
+- `bls_normal` for every node or peer consensus identity.
 
-تحقق من الخوارزميات الدقيقة التي يدعمها بناؤك باستخدام:
+Check the exact algorithms supported by your build with:
 
 ```bash
 cargo run --bin kagami -- keys --help
@@ -52,35 +45,49 @@ cargo run --bin kagami -- keys --help
 
 ## مفاتيح التطوير الحتمية {#deterministic-development-keys}
 
-لبيانات الاختبار القابلة لإعادة الإنتاج، مرّر بذرة من 32 بايت مرمّزة في 64 محرفًا ست عشريًا. وتُقبل البادئة الاختيارية `0x`:
+For reproducible fixtures, pass a 32-byte seed encoded as 64 hexadecimal
+characters. An optional `0x` prefix is accepted:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 \
   --seed-hex 1111111111111111111111111111111111111111111111111111111111111111 \
-  --json
+  --out-dir ./fixture-client-key
 ```
 
-البذرة هي مادة مفتاح خاص. استخدم البذور الحتمية للتطوير المحلي والاختبارات فقط. احذف `--seed-hex` لتوليد مفتاح إنتاج من العشوائية التي يوفرها نظام التشغيل.
+The seed is private-key material. Use deterministic seeds only for local
+development and tests. Omit `--seed-hex` to generate a production key from
+operating-system randomness.
 
 ## مفاتيح إجماع BLS وإثباتات الامتلاك {#bls-consensus-keys-and-proofs-of-possession}
 
-تستخدم هويات الإجماع للعقد والأقران في Iroha 3 مفاتيح BLS العادية. ولتوليد مفتاح BLS عادي وإثبات امتلاك (PoP)، استخدم:
+Iroha 3 node and peer consensus identities use BLS-normal keys. Generate a
+BLS-normal key and proof-of-possession (PoP) with:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./validator-key
 ```
 
-لا يصح `--pop` إلا مع `bls_normal`. يتضمن ناتج JSON الحقل `pop_hex`. تتطلب كتلة التكوين الموقّعة PoP مطابقًا لكل مدقق يملك حق التصويت. في إعداد الأقران، تحدد خريطة `trusted_peers_pop` غير الفارغة مجموعة المدققين الفرعية؛ أما الأقران الموثوقون غير المدرجين في تلك الخريطة غير الفارغة فهم مراقبون. وإذا كانت الخريطة فارغة، يدخل كل الأقران الموثوقين ذوي مفاتيح BLS العادية في مجموعة مرشحي الإقلاع، بينما تظل PoPs الخاصة بالمدققين المصوتين مقدمة من كتلة التكوين الموقّعة.
+`--pop` is valid only with `bls_normal`; it adds `pop.hex` to the custody
+directory.
+Signed genesis requires a matching PoP for every voting validator. In peer
+configuration, a non-empty `trusted_peers_pop` map selects the validator
+subset; trusted peers omitted from that non-empty map are observers. If the map
+is empty, all BLS-normal trusted peers enter the bootstrap candidate set, with
+voter PoPs still supplied by signed genesis.
 
-## تنسيقات الخروج {#output-formats}
+## Custody Output {#custody-output}
 
-استخدم الخروج الافتراضي لتحقق المحطة، `--json` للأتمتة، و `--compact` عندما يحتاج كتابة أخرى إلى قيم ذات اتجاه خط بسيط:
+`kagami keys` requires `--out-dir` and never writes private key material to
+standard output. Read `public.key`, `private.key`, and optional `pop.hex` from
+the generated directory. Each file contains one canonical value followed by a
+newline, which makes explicit file-based automation straightforward:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm ed25519 --compact
+PUBLIC_KEY=$(tr -d '\n' < ./client-key/public.key)
 ```
 
-للحصول على المساعدة الكاملة Kagami:
+For full generated Kagami help:
 
 ```bash
 cargo run -p iroha_kagami -- advanced markdown-help > crates/iroha_kagami/CommandLineHelp.md

@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /guide/security/vpn.md
-translation_source_hash: 4161cec5d601ad3a57decc19402738358a03648adad8502b5282e8e9bacc3fa8
+translation_source_hash: 020591f0d7c5560dfb2e9f3f4537f429cbeba864c3eb022856d42addcf32e225
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -25,7 +25,7 @@ VPN ကို deployment တစ်ခုစီအတွက်လိုအပ်�
 
 ::: tip
 
-VPN ရှာဖွေရေးကိရိယာသည် ထိုရှာဖွေရေးခလုတ်မှ ယာဉ်ကြောကိုသာ ကာကွယ်ပေးသည်။ ထိုလုပ်ငန်းစဉ်များကို တစ်ကိုယ်ရေကွန်ရက်တစ်ခုတည်းမှတစ်ဆင့် လမ်းညွှန်မပို့ဘဲ `irohad`, CLI, SDK, SSH၊ မက်ထရစ်များသို့မဟုတ် Backup Traffic များကို ကာကွယ်ခြင်းမရှိပါ။
+VPN ရှာဖွေရေးကိရိယာသည် ထိုရှာဖွေရေးခလုတ်မှ ယာဉ်ကြောကိုသာ ကာကွယ်ပေးသည်။ ထိုလုပ်ငန်းစဉ်များကို တစ်ကိုယ်ရေကွန်ရက်တစ်ခုတည်းမှတစ်ဆင့် လမ်းညွှန်မပို့ဘဲ `iroha3d`, CLI, SDK, SSH၊ မက်ထရစ်များသို့မဟုတ် Backup Traffic များကို ကာကွယ်ခြင်းမရှိပါ။
 
 :::
 

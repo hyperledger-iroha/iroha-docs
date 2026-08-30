@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /cookbook/triggers.md
-translation_source_hash: 93080591f5171c7ce25173eb1ef826d6f5ca661a17797be53e90aedab33ed0c3
+translation_source_hash: 6c8f436b5a41cf41c0ac37aeed6b6cd8c73009cfcca2fe7f5642cef1ad115e6f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -116,9 +116,9 @@ iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
 
 ## Mənbə və əlaqəli sənədlər {#source-and-related-docs}
 
-- [Qeyri-dövlət çağırışı ilə bağlanmış komitdə inteqrasiya testləri ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/triggers/by_call_trigger.rs)
-- [Qeydiyyatlı komitdə hadisə və tetikleme inteqrasiyası sınaqları](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/events_and_triggers.rs)
-- [Trigger təlimatının bağlanmış commit-də icrası](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs)
+- [Qeyri-dövlət çağırışı ilə bağlanmış komitdə inteqrasiya testləri ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/triggers/by_call_trigger.rs)
+- [Qeydiyyatlı komitdə hadisə və tetikleme inteqrasiyası sınaqları](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events_and_triggers.rs)
+- [Trigger təlimatının bağlanmış commit-də icrası](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs)
 - [Triggerlər](/az/blockchain/triggers.md)
 - [Trigger nümunələri](/az/blockchain/trigger-examples.md)
 - [Hadisələr](./stream-events.md)

@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/fastpq.md
-translation_source_hash: f1dc55e4b2146de009203e19adb5cc1e9ce5302bc0ee27fe0b442693c5112c22
+translation_source_hash: 55b57e6aeeef2aefa1c8359d9b9487029b106eaebed12a58268b61dc583e97f6
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -905,7 +905,7 @@ FastPQ プロバーは,トラスを作成する前に,移行キー,操作ラン�
 
 ## プロバー・レーン {#prover-lane}
 
-`irohad` は,プロバーバックエンドを初期化できる場合,起動時に FastPQ プロバーレーンを開始します. レーンは,境界線のあるフォロータスクです.ブロックが実行証人を生成した後,コンビートパスではブロックハッシュ,高度,ビュー,および証明を含むプロバーワークを提出します.
+`iroha3d` は,プロバーバックエンドを初期化できる場合,起動時に FastPQ プロバーレーンを開始します. レーンは,境界線のあるフォロータスクです.ブロックが実行証人を生成した後,コンビートパスではブロックハッシュ,高度,ビュー,および証明を含むプロバーワークを提出します.
 
 レーンが動かないか,列が満員である場合,作業はスキップされ,通常のブロック処理が継続されます. つまり,背景のプロバーレーンは取引受付やコンセンサスのゲートではありません. これは既に実行されている 州上の証明生産経路です
 
@@ -1072,7 +1072,7 @@ $$
 
 ## SCCP 透明なメッセージ証明 {#sccp-transparent-message-proofs}
 
-SCCP ヘルパーキャストは,透明なクロスチェーンメッセージ証明のために FastPQ を使用します.この経路は, `irohad` 背景プロバーレーンから分離されています.SCCP メッセージ証明バンドルとマニフェストから直接 FastPQ バッチを構築し,その結果となる証明をオープン検証のために巻きます.
+SCCP ヘルパーキャストは,透明なクロスチェーンメッセージ証明のために FastPQ を使用します.この経路は, `iroha3d` 背景プロバーレーンから分離されています.SCCP メッセージ証明バンドルとマニフェストから直接 FastPQ バッチを構築し,その結果となる証明をオープン検証のために巻きます.
 
 SCCP バッチは, `fastpq-lane-balanced`と3つのメタデータ移行を使用する.
 
@@ -1210,14 +1210,14 @@ metal_debug_enum = false
 metal_debug_fused = false
 ```
 
-`irohad`から同じ実行およびテレメトリラベルを覆すことができる.
+`iroha3d`から同じ実行およびテレメトリラベルを覆すことができる.
 
 ```shell
-irohad --fastpq-execution-mode auto
-irohad --fastpq-poseidon-mode cpu
-irohad --fastpq-device-class apple-m4
-irohad --fastpq-chip-family m4
-irohad --fastpq-gpu-kind integrated
+iroha3d --fastpq-execution-mode gpu
+iroha3d --fastpq-poseidon-mode cpu
+iroha3d --fastpq-device-class apple-m4
+iroha3d --fastpq-chip-family m4
+iroha3d --fastpq-gpu-kind integrated
 ```
 
 環境変数は構成フィールドにもサポートされています. FastPQ 特定の変数は以下のとおりです:
@@ -1258,4 +1258,4 @@ irohad --fastpq-gpu-kind integrated
 - `TransferTranscript`
 - `AxtFastpqBinding`
 - `LaneFastpqProofMaterial`
-- [`irohad` FastPQ オプション](/ja/reference/irohad-cli.md#arg-fastpq-execution-mode)
+- [`iroha3d` FastPQ オプション](/ja/reference/iroha3d-cli.md#arg-fastpq-execution-mode)

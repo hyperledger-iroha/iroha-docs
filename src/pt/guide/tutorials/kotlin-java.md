@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: 91dfd38597028531ec579eeb97dcd5acbfcdf6d27ba51991ca96a2d40077aaef
+translation_source_hash: 62d6f434e5af4213420c456ee27ebdc260c8b0e9f7a85bc3ba955ee9c79a058d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -77,4 +77,4 @@ O Kotlin SDK inclui:
 - Android Integrações de teclado e telemetria do dispositivo
 - Transporte Android desconectado QR, Próximo e NFC
 
-Consulte o [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/main/kotlin/README.md) para os comandos de construção específicos do módulo APIs e exatos.
+Consulte o [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/kotlin/README.md) para os comandos de construção específicos do módulo APIs e exatos.

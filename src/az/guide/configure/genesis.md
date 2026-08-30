@@ -1,34 +1,39 @@
 ---
 translation_locale: az
 translation_source: /guide/configure/genesis.md
-translation_source_hash: d3c04386c8d6e2778e53477e8f717a04247a66714cfed2c25ca84fbfb3871813
+translation_source_hash: a6b8b2b02e0074e6c90d9aa9337af3e2496a02beb2f57f575dc0780014df04b2
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: google-translate
 ---
 
-# Müqəddəs Kitab {#genesis}
+# Yaradılış {#genesis}
 
-Genesis başlanğıc silsilə vəziyyətini təyin edir. Düzenlənə bilən mənbə JSON manifestidir və Iroha 3 düyün imzalanmış Norito əməliyyat faylini istehlak edir.
+Yaradılış ilkin zəncir vəziyyətini müəyyən edir.Redaktə edilə bilən mənbə a JSON aşkar,
+və bir Iroha 3 node imzalanmış istehlak edir Norito əməliyyat faylı.
 
-::: details Default genesis manifestı
+::: details Defolt genezis manifestosu
 
 <<< @/snippets/genesis.json
 
 :::
 
-## Dosyalar {#files}
+## Fayllar {#files}
 
-Upstream repository default manifestini `defaults/genesis.json` ünvanına göndərir. Kagami tərəfindən istehsal olunan şəbəkələr öz manifesti və imzalanmış əməliyyatlarını çıxışı dizaynına yazırlar:
+Yuxarı repozitor defolt manifest göndərir `defaults/genesis.json`.
+Kagami-yaradılmış şəbəkələr öz manifestlərini və imzalanmış əməliyyatlarını yazır
+çıxış kataloqu:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-Bu dizaynda yaradılan `README.md` seçilmiş profil üçün dəqiq faylları və başlatma əmrlərini qeyd edir.
+Yaradılan `README.md` həmin kataloqda dəqiq faylları qeyd edir və işə salır
+seçilmiş profil üçün əmrlər.
 
-## Tərəflər arasındakı seçim {#peer-configuration}
+## Peer Konfiqurasiyası {#peer-configuration}
 
-`config.toml` `[genesis]` bölməsində imzalanmış genesis əməliyyatı ilə əlaqəli rəfiqələr:
+Həmyaşıdları imzalanmış genezis əməliyyatına işarə edir `[genesis]` bölməsi
+`config.toml`:
 
 ```toml
 [genesis]
@@ -36,22 +41,32 @@ file = "./genesis.signed.nrt"
 public_key = "ed0120..."
 ```
 
-Şəbəkədəki bütün həmyaşıdlar imzalanmış genesis əməliyyatı və genesis ictimai açarı barədə razılığa gəlməlidirlər.
+Şəbəkədəki bütün həmyaşıdlar imzalanmış genezis əməliyyatı və müqavilə ilə razılaşmalıdırlar
+genesis açıq açarı.
 
-## Qədim Mövzunun imzalanması {#signing-genesis}
+## Yaradılışın imzalanması {#signing-genesis}
 
-Manifesti əl ilə redaktə edirsinizsə, həmyaşıdları başlamadan əvvəl təsdiqləyin və imzalayın:
+Manifesti əl ilə redaktə edirsinizsə, həmyaşıdlara başlamazdan əvvəl onu təsdiqləyin və imzalayın:
 
 ```bash
 cargo run --bin kagami -- genesis validate ./genesis.json
 cargo run --bin kagami -- genesis sign ./genesis.json \
-  --private-key "$GENESIS_PRIVATE_KEY_HEX" \
-  --algorithm ed25519 \
+  --private-key-file "$GENESIS_PRIVATE_KEY_FILE" \
   --out-file ./genesis.signed.nrt
 ```
 
-NPoS və ya Nexus profilləri üçün topoloji və BLS Yaradılmış profil tərəfindən tələb olunan mülkiyyət sübutları daxil edin. Kagami `localnet`, `wizard` və profil istehsalı əmrləri həmin detalları avtomatik olaraq idarə edir.
+`GENESIS_PRIVATE_KEY_FILE` sahibi tərəfindən idarə olunan rejim olmalıdır-`0600`, tək keçid
+bir kanonik xüsusi açar multihash və sondan ibarət müntəzəm fayl
+yeni sətir. Kagami simvolik əlaqələri rədd edir və heç vaxt özəl bir xam genesis qəbul etmir
+komanda xəttində düyməni basın.
 
-## Yaradılışın yenidən qurulması {#recommitting-genesis}
+NPoS üçün və ya Nexus profillər, topologiya və daxildir BLS Sahiblik sübutları
+yaradılan profil tərəfindən tələb olunur. Kagami `localnet`, `wizard`, və profil
+nəsil əmrləri bu detalları avtomatik idarə edir.
 
-Bir həmyaşıd yalnız saxlama boş olduğu zaman genesi həyata keçirir.Birbaşa istifadə edilə bilən lokal şəbəkədə yeni bir genesi sınaqdan keçirmək üçün həmyaşıdıları dayandırın, istehsal olunan dövlət dizini çıxarın və yeni imzalanmış genesisdən başlayın. Hər təsdiqçi eyni miqrasiyanı əlaqələndirmədiyi təqdirdə işləyən şəbəkədə genesi əvəz etməyin.
+## Yaradılışın təkrar edilməsi {#recommitting-genesis}
+
+Həmyaşıd yalnız anbarı boş olduqda yaranır.Yeni bir genezisi sınamaq üçün
+birdəfəlik yerli şəbəkə, həmyaşıdları dayandırın, onların yaradılan dövlət qovluğunu silin,
+və yeni imzalanmış genezisdən başlayın.Qaçışda genezisi əvəz etməyin
+hər validator eyni miqrasiyanı koordinasiya etmirsə, şəbəkə.

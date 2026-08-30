@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 17ffd2979e2ff7a0e0c3f5c9f1457a5eb630713bba40fca0246afc0c2f7fd5e4
+translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # མཐུན་རྐྱེན་ལག་ལེན་གྱི་དོན་ལུ་ Key {#keys-for-network-deployment}
@@ -21,30 +21,35 @@ translation_engine: nllb-200-ct2
 ས་གནས་ཀྱི་ ཡང་ན་ བརྟག་དཔྱད་ལག་ལེན་ཚུ་གི་དོན་ལུ་ Kagami གིས་ འ་ནི་ཡིག་སྣོད་ཚུ་ གཅིག་ཁར་སྤེལ་གཏང་དགོ།
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 ད་ལྟོའི་ཐོ་བཀོད་འབད་ཡོད་པའི་དྲ་ལམ་དང་འབྲེལ་བའི་ཡིག་གཟུགས་ཚུ་གི་དོན་ལུ་ འགྲུལ་བསྐྱོད་ལམ་སྟོན་ལག་ལེན་འཐབ་དགོ།
 
 ```bash
-cargo run --bin kagami -- wizard --profile nexus
+cargo run --bin kagami -- wizard
 ```
 
 ## རང་རྐྱང་གི་ལྡེ་མིག་གཉིས་བཟོ་ནི། {#generate-individual-key-pairs}
 
-`kagami keys` ལག་ལེན་འཐབ་ནི་ རང་རང་སོ་སོ་གི་ལྡེ་མིག་གི་དོན་ལུ་:
+Use `kagami keys` for standalone key material:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm ed25519 --json
+cargo run --bin kagami -- keys --algorithm ed25519 \
+  --out-dir ./client-key
 ```
 
-BLS ཚོད་བསྲེ་སྣོད་ཚུ་གི་དོན་ལུ་ ལག་ལེན་གྱི་རྟགས་མཚན་ཚུ་ ඇතුළත්འབད་:
+For BLS validator material, include a Proof-of-Possession:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./validator-key
 ```
 
-`--seed` ལག་ལེན་འཐབ་ནི་འདི་ སླར་ལོག་འབད་ཚུགས་པའི་བཟོ་སྐྲུན་འཕྲུལ་ཆས་ཚུ་གི་དོན་ལུ་རྐྱངམ་གཅིག་ཨིན། བཟོ་སྐྲུན་གྱི་ལཱ་ཚུ་ འགོ་འདྲེན་འཐབ་ནིའི་དོན་ལུ་ ལྕེ་མིག་གསརཔ་བཟོ། དེ་ལས་ སྒེར་གྱི་ལྡེ་མིག་ཚུ་ སྒྲིང་ཁྱིམ་གི་ཕྱི་ཁར་བཞག་དགོ།
+Use `--seed-hex` only with an exact 32-byte hexadecimal secret for reproducible
+development fixtures. For production deployment, omit it so Kagami uses
+operating-system randomness, then move the unencrypted private-key export into
+the approved custody boundary. The command never prints private keys.
 
 ## འདྲན་འདྲ་གི་མཐུན་ལམ་ {#peer-consistency}
 

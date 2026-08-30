@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /reference/norito.md
-translation_source_hash: 4297b0ff795a5cdb6556424e89de7191522271519aa36720ed45a695ad402211
+translation_source_hash: 5196decc9e42428b787285d9e0f763bfcedabea2b19af618612f4509492c87fc
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -206,5 +206,5 @@ Axtarış xüsusi kodeklər və entropiya profilləri əsas Norito əməliyyat /
 
 ## Əvvəlki istinadlar {#upstream-references}
 
-- [Norito formatının spesifikasiyası](https://github.com/hyperledger-iroha/iroha/blob/main/norito.md)
-- [Norito qutu README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/norito/README.md)
+- [Norito formatının spesifikasiyası](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/norito.md)
+- [Norito qutu README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/norito/README.md)

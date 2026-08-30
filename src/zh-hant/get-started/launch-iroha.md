@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 9341b2404624dec2230bc294c3d60dc124ac9574a0a5803b9bba744f4c5e7f50
+translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2
 從當前的 Kagami 代碼生成一個四對子本地網絡:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 輸出目錄包含相匹配的同行配置, `genesis.json`, `genesis.signed.nrt`, `client.toml`和輔助腳本.
@@ -33,10 +33,10 @@ cargo run --bin kagami -- docker \
   --peers 4 \
   --config-dir ./localnet \
   --image hyperledger/iroha:dev \
-  --out-file ./localnet/docker-compose.yml \
+  --out-file ./docker-compose.yml \
   --force
 
-docker compose -f ./localnet/docker-compose.yml up
+docker compose -f ./docker-compose.yml up
 ```
 
 默認生成的堆曝光:
@@ -72,7 +72,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 運行一個具有 Nexus 配置文件的原生同行:
 
 ```bash
-./target/release/irohad --sora --config ./defaults/nexus/config.toml
+./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
 ```
 
 使用 `defaults/nexus/client.toml`來獲取 CLI 該配置文件.
@@ -88,7 +88,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 對於生成的Compose堆:
 
 ```bash
-docker compose -f ./localnet/docker-compose.yml down
+docker compose -f ./docker-compose.yml down
 ```
 
 網絡運行後,繼續使用 [通過 CLI](/zh-hant/get-started/operate-iroha-via-cli.md)運行 Iroha 3.

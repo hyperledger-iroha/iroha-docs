@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /cookbook/permissions-and-roles.md
-translation_source_hash: 734437b8530ad0efb9ddd83b24cb90c30dc29843a03753babd8dca5e86a3f91d
+translation_source_hash: 7ee18275d25837da53f533f5e9205906ccaa71b48afd9b11ffad79b599da7f21
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -132,9 +132,9 @@ La liste des autorisations doit contenir `CanModifyAccountMetadata` à l'étendu
 
 ## Sources et documents connexes {#source-and-related-docs}
 
-- [Tests d'intégration des rôles sur le commit fixé](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/roles.rs)
-- [Tests d'intégration des autorisations au niveau de l'engagement fixé](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/permissions.rs)
-- [Modèle de données d'autorisation intégré à l'accord fixé](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_executor_data_model/src/permission.rs)
+- [Tests d'intégration des rôles sur le commit fixé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/roles.rs)
+- [Tests d'intégration des autorisations au niveau de l'engagement fixé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/permissions.rs)
+- [Modèle de données d'autorisation intégré à l'accord fixé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/permission.rs)
 - [Autorisations et rôles ](/fr/blockchain/permissions.md)
 - [Références de jetons d'autorisation ](/fr/reference/permissions.md)
 - [Metadonnées ](./metadata.md)

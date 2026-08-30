@@ -1,14 +1,14 @@
 ---
 translation_locale: ru
 translation_source: /cookbook/index.md
-translation_source_hash: cdcfb3549506a65a7dbd1c37672893956a0252153a4075c82333804674aa07b6
+translation_source_hash: aceef9f4e42462614a5cdf41a89f55e26e0399503a48d4b50c08359e7bd7532e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Iroha 3 Книга применения {#iroha-3-application-cookbook}
 
-Постройте против Iroha 3 с помощью небольших, проверяемых рецептов, которые начинаются на тестовой сети Taira и сохраняют Minamoto только для чтения в основной сети. Команды используют текущий I105 учетный запись IDs, ясный выбор сборов и поведение, зарегистрированное на Iroha обязательство [`bc7114ed1c7f265a156d2100ff09e851cc95702c`](https://github.com/hyperledger-iroha/iroha/tree/bc7114ed1c7f265a156d2100ff09e851cc95702c).
+Постройте против Iroha 3 с помощью небольших, проверяемых рецептов, которые начинаются на тестовой сети Taira и сохраняют Minamoto только для чтения в основной сети. Команды используют текущий I105 учетный запись IDs, ясный выбор сборов и поведение, зарегистрированное на Iroha обязательство [`0010c5a70039eac101a4846499ba9ceaf43eb65c`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c).
 
 Начните с [Свяжитесь с Taira](./connect-to-taira.md). Он создает конфигурацию клиента и метаданные о сборах, которые повторно используются рецептами командной строки. Никогда не копируйте актив сборов ID из этой документации: выводите его из текущего ответа на трубку Taira.
 

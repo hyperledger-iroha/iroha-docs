@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /reference/queries.md
-translation_source_hash: 22e8a75acd72d066e3516ba46a0afe075d2d02790154458aec00a5d8bb861838
+translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -99,10 +99,17 @@ Iroha հարցումները կարդում են գլխավոր գրքի վիճ�
 |`FindLaneRelayEnvelopeByRef` |Գտեք վավերացված երթուղային ռելե փաթեթ: |
 |`FindSorafsProviderOwner` |Բացահայտել SoraFS մատակարարի սեփականատիրոջը: |
 |`FindDataspaceNameOwnerById` |Բացահայտեք տվյալների տարածքի անվանումի սեփականատերը: |
-|`FindMusubiReleaseByRef` |Գտեք Musubi արձակուրդը հղումով: |
-|`FindMusubiPackageVersions` |Musubi փաթեթի վարկածների ցանկը: |
-|`FindMusubiPackageReleases` |Musubi փաթեթի ցուցակի հրապարակումները: |
-|`FindMusubiShortAliasByName` |լուծել Musubi կարճ alias. |
+|`FindMusubiExactPackageV1` |Կարդացեք մեկ ճշգրիտ փաթեթային արձանագրությունը եւ դրա ներկայիս վերանայմանները: |
+|`FindMusubiExactReleaseV1` |Կարդացեք մեկ ճշգրիտ արձանագրություն: |
+|`FindMusubiProviderBundleAttestationV1` |Կարդացեք մեկ մատակարարի արխիվային փաթեթավորման վկայականը: |
+|`FindMusubiResolverIndexV1` |Հրապարակեք վերջնական լուծման ինդեքսը: |
+|`FindMusubiVersionsV1` |էջը վերջնականացված տարբերակներ մեկ փաթեթ. |
+|`FindMusubiMaintainersV1` |Էջը ընդունել է պահապանների եւ սպասարկվող հրավիրումների: |
+|`FindMusubiArchiveLocationsV1` |Էջը վերջնականացրել է SoraFS վայրերը մեկ արխիվի համար: |
+|`FindMusubiArchiveRetentionV1` |Կայքի արխիվային պահեստավորման փաստաթղթերը: |
+|`FindMusubiAliasV1` |Կարդացեք գլոբալ alias- ի ներկայիս թիրախը եւ վերանայման մասին: |
+|`FindMusubiAliasHistoryV1` |Գլոբալ alias- ի անփոխարինելի վերանայման պատմությունը: |
+|`FindMusubiOrderedPrefixV1` |Էջի փաթեթները մեկ կարգավորված կառուցվածքային նախադրյալի ներքո: |
 
 ## Գործարկիչներ, պայմանագրեր, գործարքներ եւ արգելափակումներ {#triggers-contracts-transactions-and-blocks}
 

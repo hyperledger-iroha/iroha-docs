@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: 4fe9b19fc4d13cfc71d9b9558fe7cdb1d14bd88c2d20f4d23c66313ba3ddd4b6
+translation_source_hash: 67778f9fc4f2b6fa0288f5921402cf5509515aae678e98b8192e103dfe284db3
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -14,7 +14,7 @@ translation_engine: nllb-200-ct2
 
 ## الشروط المسبقة {#prerequisites}
 
-- التحقق من مصدر Iroha عند `bc7114ed1c7f265a156d2100ff09e851cc95702c` ، Rust، و Cargo.
+- التحقق من مصدر Iroha عند `0010c5a70039eac101a4846499ba9ceaf43eb65c` ، Rust، و Cargo.
 - العميل الحالي `iroha` CLI بالإضافة إلى عميل تمويله Taira من [ربط مع Taira ](./connect-to-taira.md).
 - المسارات المطلقة في `IROHA_CONFIG` و `IROHA_PRIVATE_KEY_FILE`. يجب أن يكون ملف المفتاح ملفًا منتظمًا واحدًا يحتفظ به المالك مع وضع `0600`. ليس لدى مساعد التنفيذ عمداً حجة مفتاح خاص داخل الخط.
 - الموافقة على المشغل Taira. يتطلب تسجيل رمز العقد `CanRegisterSmartContractCode` ، والتنفيذات المحمية قد تتطلب إعطاء الحكم وتنفيذها. إذا لم يمنح Taira هذا الوصول، قم بتنفيذ النشر على شبكة محلية تم إنشاؤها التي تمنح السلطة من أصلها.
@@ -131,7 +131,7 @@ jq '{contract_address, code_hash_hex, final, fee_quotes}' \
   ./build/deployment.json
 ```
 
-الطلب الفارغ `charge_limits` ليس هو معرف الأصول المنسخ: يقبل المساعد الاقتباس الحي الدقيق قبل التوقيع. مقارنة أصل الرسوم المستردة مع استجابة الصمام الحالية. لا تربط البيانات الوصفية القديمة `gas_asset_id` بالمكالمات العقدية.
+الطلب الفارغ `charge_limits` ليس تحديد الأصول المنسخ: المساعد يقبل الاقتراح الحي الدقيق قبل التوقيع. مقارنة أصل الرسوم المستردة مع الـ استجابة النوافذ الحالية. دعوات العقد تقبل اختيار الرسوم فقط من خلال الاقتراح المكتوب مباشر؛ `gas_asset_id` بيانات المعاملة ليست جزءاً من عقد الإصدار الأول.
 
 ### 5 - محاكاة وتصوير نقطة الدخول المنشورة {#_5-simulate-and-call-the-deployed-entrypoint}
 
@@ -197,17 +197,17 @@ jq -e '.ok == true and .result == ["3", "5"]' \
 
 - يتطلب فشل `CanRegisterSmartContractCode` منح مشغل Taira أو تغيير الجينيس / التشغيل على localnet. لا يمكن للحساب العادي أن يمنح هذا الإذن بنفسه بعد الحقيقة.
 - الحكم أو رفض المسارات المحمية يعني أن الانتشار يحتاج إلى تصنيف الموافقة الدقيقة التي تتطلبها تلك الشبكة. تنسيق قائمة الموافقة؛ لا تختلق حساب IDs.
-- يُعَني عدم مطابقة المظاهر أو ABI أن شفرة البايت، والمظاهر، وأوقات تشغيل العقدة لا تصف نفس الفن. إعادة بناء في التزامن مع `--verify` .
+- يُعَني عدم مطابقة المظاهر أو ABI أن شفرة البايت، والمظاهر، وأوقات تشغيل العقدة لا تصف نفس القطع الأثرية. أعيد بناءها في التزامن المتعلق مع `--verify`.
 - `fee quote changed ... gas bound` تعني عدم توافق النية المطبوعة المطلوبة والاقتباس الحي. إعادة التقدم بدلاً من تعديل المعاملة الموقعة.
 - يرفض مساعد النشر المفاتيح الداخلية، وأوضاع ملفات المفاتيح السماحية، والروابط المتزايدة، ومضاعفة الملفات المرتبطة قبل تقديم الشبكة.
 - خطأ نقطة دخول عرض فقط يعني أن `compute` تم توجيهها من خلال عائلة الأوامر الخاطئة. هذه العينة تعلن `kotoage` ، لذلك استخدم محاكاة المكالمة أو تقديمها.
-- تتطلب المكالمات العقدية حدًا إيجابيًا للغاز. يتم رفض بيانات الغاز القديمة أو البيانات المتعلقة بالأصول الرسومية في المستوى الأعلى.
+- تتطلب المكالمات العقدية حدًا إيجابيًا للغاز. يرفض عقد المكالمة الأولى الإفراج عن بيانات الغاز أو أصول الرسوم على مستوى الأعلى.
 
 ## المصدر والوثائق ذات الصلة {#source-and-related-docs}
 
-- [تنفيذ الأوامر Kotodama V1 في اللجنة المثبتة](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/ivm/src/bin/koto.rs)
-- [عينة مصدر العودة المضطربة في الالتزام المتعلق ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
-- [مساعد النشر الأصلي في الالتزام المعلق](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
-- [اختبارات تكامل العقود في الالتزام المثبت ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/contracts.rs)
+- [تنفيذ الأوامر Kotodama V1 في اللجنة المثبتة](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/src/bin/koto.rs)
+- [عينة مصدر العودة المضطربة في الالتزام المتعلق ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
+- [مساعد النشر الأصلي في الالتزام المعلق](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
+- [اختبارات تكامل العقود في الالتزام المثبت ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs)
 - [العقود الذكية ](/ar/blockchain/smart-contracts.md)
 - [إشارة CLI](/ar/get-started/operate-iroha-via-cli.md)

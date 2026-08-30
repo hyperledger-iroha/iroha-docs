@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /cookbook/query-ledger-state.md
-translation_source_hash: a81f6cc04befb0b92a0a01c2cb3c1ecbbc631ce1f2a923cb046241c295db7806
+translation_source_hash: ca76923f5ae35b96c52a6a4c23c5d9e69549d1ca91d6d1507e7b9a1aee1f1676
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -160,9 +160,9 @@ Para las consultas de aplicaciones en páginas, también compruebe que IDs no se
 
 ## Fuente y documentos relacionados {#source-and-related-docs}
 
-- [Pruebas de integración de paginado respaldadas por el cursor en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/pagination.rs)
-- [El comportamiento del creador de consultas y el selector en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/query/builder/mod.rs)
-- [Parámetros de consulta y modelo del cursor en el comit fijado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/query/parameters.rs)
+- [Pruebas de integración de paginado respaldadas por el cursor en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/pagination.rs)
+- [El comportamiento del creador de consultas y el selector en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/builder/mod.rs)
+- [Parámetros de consulta y modelo del cursor en el comit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/parameters.rs)
 - [Las consultas ](/es/blockchain/queries.md)
 - [Referencia de la consulta ](/es/reference/queries.md)
 - [JavaScript y TypeScript ](/es/guide/tutorials/javascript.md)

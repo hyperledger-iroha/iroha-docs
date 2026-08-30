@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /cookbook/triggers.md
-translation_source_hash: 93080591f5171c7ce25173eb1ef826d6f5ca661a17797be53e90aedab33ed0c3
+translation_source_hash: 6c8f436b5a41cf41c0ac37aeed6b6cd8c73009cfcca2fe7f5642cef1ad115e6f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -116,9 +116,9 @@ iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
 
 ## ምንጭ እና ተዛማጅ ሰነዶች {#source-and-related-docs}
 
-- [በተጣበቀ የኮሚት ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/triggers/by_call_trigger.rs) ላይ በዝውውር ጥሪ ተነሳሽነት ውህደት ሙከራዎች
-- [የዝግጅት እና ተነሳሽነት ውህደት ሙከራዎች በተጣበቀ ኮሚቴ ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/events_and_triggers.rs)
-- [በፒን የተቀመጠው ኮምፕዩተር ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs) ላይ የማስነሳት መመሪያ አፈፃፀም
+- [በተጣበቀ የኮሚት ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/triggers/by_call_trigger.rs) ላይ በዝውውር ጥሪ ተነሳሽነት ውህደት ሙከራዎች
+- [የዝግጅት እና ተነሳሽነት ውህደት ሙከራዎች በተጣበቀ ኮሚቴ ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events_and_triggers.rs)
+- [በፒን የተቀመጠው ኮምፕዩተር ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs) ላይ የማስነሳት መመሪያ አፈፃፀም
 - [መንስኤዎች](/am/blockchain/triggers.md)
 - [ማስነሳት ምሳሌዎች](/am/blockchain/trigger-examples.md)
 - [ክስተቶች](./stream-events.md)

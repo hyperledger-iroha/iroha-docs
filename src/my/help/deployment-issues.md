@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /help/deployment-issues.md
-translation_source_hash: 6f35ac59053e312f56a716810c8f0b625752500d1fc64b27d93cbd8317b6cc19
+translation_source_hash: 5c7d26b39d4ddf4e7e164f7bef79c9e1659db51587fb0dde9cf3f1dc0e3b057b
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2
 ဒေသတွင်း (သို့) စမ်းသပ်မှု ဖြန့်ချိချက်များအတွက် Kagami မှထုတ်လုပ်ထားသော အနုပညာပစ္စည်းများကို လက်နဲ့ရေးသားထားသည့် တူညီတဲ့ ဖိုင်တွေအစား ဦးစားပေးပါ။
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 Generated directory မှာ peer configs, genesis material, start script တွေနဲ့ README build line အတွက် Iroha 3 ကို ထည့်သွင်းထားတယ်။
@@ -24,7 +24,7 @@ Generated directory မှာ peer configs, genesis material, start script တ�
 
 ဒီပစ္စည်းတွေကို အရင်စစ်ကြည့်ပါ။
 
-- `irohad --config <path>` အချက်အလက်များကို တူညီသူ၏ TOML ဖိုင်တွင် ထည့်သွင်းထားပါသည်။
+- `iroha3d --config <path>` အချက်အလက်များကို တူညီသူ၏ TOML ဖိုင်တွင် ထည့်သွင်းထားပါသည်။
 - `public_key` နဲ့ `private_key` တို့ဟာ တူညီတဲ့ သော့စုံကို ပိုင်ဆိုင်ပါတယ်။
 - `genesis.public_key` က genesis transaction ကို လက်မှတ်ရေးထိုးဖို့ အသုံးပြုခဲ့တဲ့ သော့နဲ့ ကိုက်ညီပါတယ်။
 - validator peer identities use BLS-Normal keys, and `trusted_peers_pop` contains proof of possession entries for the local key and trusted peers (ထည့်သွင်းရန်လိုအပ်သော)
@@ -34,7 +34,7 @@ Generated directory မှာ peer configs, genesis material, start script တ�
 Daemon က TOML အလွှာတစ်ခုထက်ပိုပြီးဖတ်တဲ့အခါ config tracing ကိုသုံးပါ။
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --trace-config
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 ```
 
 ## Docker နှင့် Composite {#docker-and-compose}
@@ -42,9 +42,9 @@ cargo run --bin irohad -- --config ./config.toml --trace-config
 Generate Current Kagami localnet output မှပေါင်းစပ်ပါ command line arguments နှင့် config files များသည် check-out code ကိုက်ညီစေရန်:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./localnet/docker-compose.yml --force
-docker compose -f ./localnet/docker-compose.yml up
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
+docker compose -f ./docker-compose.yml up
 ```
 
 compose deployment ကိုစတင်ပြီးနောက် stalks လုပ်ရင် daemon log တွေကို စစ်ဆေးပါ
@@ -72,7 +72,7 @@ Pod တစ်ခုကို အကြိမ်ကြိမ် ပြန်လ�
 Iroha 3 deployments များမှာ Nexus၊ SoraFS သို့မဟုတ် multi-lane flows တွေကို အသုံးပြုရင် Sora profile ကို activated လုပ်ထားပြီး daemon ကို start လုပ်သင့်ပါတယ်။
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --sora
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora
 ```
 
 ကွန်ရက်တစ်ခုတည်းရှိ validator များအကြားမှာ တူညီသော profile ကို တစ်ချိန်လုံးအသုံးပြုပါ။

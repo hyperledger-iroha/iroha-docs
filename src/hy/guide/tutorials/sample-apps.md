@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: af3e0b8698f877c035ccd3bb71926cea14d1029fc2eb73e23756d57357935f0e
+translation_source_hash: 71258f4da9afcd94afce2fc2a53ce43540d8f67054ea789f0b2d105daba26006
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,7 +12,7 @@ Iroha աղբյուրի պահեստը պարունակում է SDK բաղադր
 
 ## JavaScript բաղադրատոմսեր {#javascript-recipes}
 
-[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/main/javascript/iroha_js/recipes) պարունակում է դետերմինիստական գործարքների խմբավորման կենտրոնացված օրինակներ, Nexus հավելվածների փոխանցում, NFT եւ հաշիվների կրկնությունը, ISO կամուրջի հոսքեր, եւ Torii Յուրաքանչյուր բաղադրատոմս փաստագրում է, թե արդյոք այն աշխատում է անջատ կամ կարիք ունի կենդանի Torii վերջնական կետ:
+[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes) պարունակում է դետերմինիստական գործարքների խմբավորման կենտրոնացված օրինակներ, Nexus հավելվածների փոխանցում, NFT եւ հաշիվների կրկնությունը, ISO կամուրջի հոսքեր, եւ Torii Յուրաքանչյուր բաղադրատոմս փաստագրում է, թե արդյոք այն աշխատում է անջատ կամ կարիք ունի կենդանի Torii վերջնական կետ:
 
 ## Swift եւ iOS {#swift-and-ios}
 

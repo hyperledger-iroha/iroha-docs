@@ -1,29 +1,31 @@
 ---
 translation_locale: fr
 translation_source: /reference/genesis.md
-translation_source_hash: 6710e76508e6a38a6b68d274247cc1383de2472e74f10be85000b30f74cb04a6
+translation_source_hash: 1312e80d9e662cc3e8cf4d0668ff4bb9e6ce3f74a60bb5287205aeeb5afd5de8
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# La référence de la Genèse {#genesis-reference}
+# Référence Genèse {#genesis-reference}
 
-Dans le flux de travail Iroha 3 actuel, un manifeste `genesis.json` décrit les premières transactions et paramètres qui seront appliqués lorsque le réseau sera démarré.
+Dans le courant Iroha 3 flux de travail, un `genesis.json` manifeste décrit le premier
+transactions et paramètres qui seront appliqués au démarrage du réseau.
 
-L'artefact signé distribué à des pairs est un fichier `.nrt` codé Norito produit par `kagami genesis sign`.
+L'artefact signé distribué aux pairs est un Norito-codé `.nrt` déposer
+produit par `kagami genesis sign`.
 
-## Principaux champs {#main-fields}
+## Champs principaux {#main-fields}
 
-Un manifeste génétique peut définir:
+Un manifeste de genèse peut définir :
 
 - `chain` pour l'identifiant de la chaîne
-- `executor` pour une voie de mise à niveau par code octal optionnelle d'exécuteur
-- `ivm_dir` pour les bibliothèques IVM utilisées par des déclencheurs et des mises à niveau
+- `executor` pour un chemin de bytecode de mise à niveau facultative de l'exécuteur
+- `ivm_dir` pour IVM bibliothèques utilisées par les déclencheurs et les mises à niveau
 - `consensus_mode` pour le mode initial annoncé par le manifeste
-- `transactions` pour les mises à jour des paramètres, les instructions, les déclencheurs et la topologie
-- `crypto` pour le premier instantané de cryptage
+- `transactions` pour les mises à jour ordonnées des paramètres, les instructions, les déclencheurs et la topologie
+- `crypto` pour l'instantané cryptographique initial
 
-Dans `transactions`, les entrées de topologie associent des identifiants par pairs et PoPs ensemble:
+Dans `transactions`, les entrées de topologie associent les identifiants d'homologues et PoPs ensemble:
 
 ```json
 {
@@ -32,9 +34,9 @@ Dans `transactions`, les entrées de topologie associent des identifiants par pa
 }
 ```
 
-## Créer un manifeste {#generate-a-manifest}
+## Générer un manifeste {#generate-a-manifest}
 
-Utilisez Kagami pour générer un modèle:
+Utiliser Kagami pour générer un modèle :
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
@@ -43,23 +45,30 @@ cargo run -p iroha_kagami -- genesis generate \
   --genesis-public-key <PUBLIC_KEY> > genesis.json
 ```
 
-Pour l'espace de données public SORA Nexus, `npos` est le mode consensus attendu. D'autres déploiements Iroha 3 peuvent utiliser permis ou NPoS selon le profil cible.
+Pour le public SORA Nexus espace de données, `npos` est le mode de consensus attendu.
+Autre Iroha 3 les déploiements peuvent utiliser des autorisations ou NPoS en fonction de la cible
+profil.
 
 ## Signez le manifeste {#sign-the-manifest}
 
-Après avoir modifié et validé le JSON, signez-le dans un bloc `.nrt` déployable:
+Après avoir édité et validé le JSON, connectez-le à un déployable `.nrt` bloc:
 
 ```bash
 cargo run -p iroha_kagami -- genesis sign genesis.json \
-  --private-key <PRIVATE_KEY> \
+  --private-key-file <MODE_0600_PRIVATE_KEY_FILE> \
   --out-file genesis.signed.nrt
 ```
 
-`kagami genesis sign` lit la clé publique de génèse du manifeste et utilise la clé privée fournie, semence, et un algorithme pour produire le bloc signé déployable. Le résultat est le fichier que les pairs devraient faire référence à partir de leur configuration.
+`kagami genesis sign` lit la clé publique Genesis à partir du manifeste et utilise
+la clé privée à partir d'un fichier régulier à lien unique détenu par le propriétaire pour produire le
+bloc signé déployable.Le fichier doit contenir une clé privée canonique
+multihash suivi d'une nouvelle ligne ; Kagami rejette les liens symboliques et les modes autres
+que `0600`. Les clés privées brutes ne sont pas acceptées sur la ligne de commande.Le résultat
+est le fichier que les pairs doivent référencer à partir de leur configuration.
 
-## La configuration `irohad` {#configure-irohad}
+## Configurer `iroha3d` {#configure-iroha3d}
 
-Pointez le démon sur le bloc de génèse signé:
+Pointez le démon sur le bloc Genesis signé :
 
 ```toml
 [genesis]
@@ -67,7 +76,7 @@ file = "genesis.signed.nrt"
 public_key = "<PUBLIC_KEY>"
 ```
 
-## Les outils connexes {#related-tools}
+## Outils associés {#related-tools}
 
 - `kagami genesis validate`
 - `kagami genesis normalize`
@@ -75,4 +84,5 @@ public_key = "<PUBLIC_KEY>"
 - `kagami localnet`
 - `cargo xtask kagami-profiles`
 
-Pour les détails de la mise en œuvre du générateur et des commandes, voir le [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_kagami/README.md).
+Pour l'implémentation du générateur et les détails des commandes, consultez le
+[Kagami README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami/README.md).

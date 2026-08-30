@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /blockchain/fastpq.md
-translation_source_hash: f1dc55e4b2146de009203e19adb5cc1e9ce5302bc0ee27fe0b442693c5112c22
+translation_source_hash: 55b57e6aeeef2aefa1c8359d9b9487029b106eaebed12a58268b61dc583e97f6
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -905,7 +905,7 @@ $$
 
 ## ፕሮፕሮ ሌይን {#prover-lane}
 
-`irohad` የ FastPQ ፕሮቨር መስመሩን በጅምር ላይ ያስጀምራል ከሆነ የፕሮቨር ዳግም ማስጀመር ይቻላል. መስመሩ የተወሰነ ረድፍ ያለው የጀርባ ተግባር ነው ። አንድ ብሎክ የአፈፃፀም ምስክር ካወጣ በኋላ ፣ የኮሚት ዱካው የብሎክ ሃሽ ፣ ቁመት ፣ እይታ እና ምስክር ያሉትን የፕሮቬር ሥራ ያቀርባል ።
+`iroha3d` የ FastPQ ፕሮቨር መስመሩን በጅምር ላይ ያስጀምራል ከሆነ የፕሮቨር ዳግም ማስጀመር ይቻላል. መስመሩ የተወሰነ ረድፍ ያለው የጀርባ ተግባር ነው ። አንድ ብሎክ የአፈፃፀም ምስክር ካወጣ በኋላ ፣ የኮሚት ዱካው የብሎክ ሃሽ ፣ ቁመት ፣ እይታ እና ምስክር ያሉትን የፕሮቬር ሥራ ያቀርባል ።
 
 መስመሩ እየሰራ ካልሆነ ወይም ረድፉ ሞልቶ ከሆነ ሥራው ይተላለፋል እና መደበኛ የብሎክ ማቀነባበሪያ ይቀጥላል ። ይህ ማለት የጀርባ አመልካች መስመሩ የግብይት መግቢያ ወይም የስምምነት በር አይደለም ማለት ነው ፣ እሱ ቀድሞውኑ የተፈፀመበት የስቴት ላይ የመረጋገጫ ምርት መንገድ ነው።
 
@@ -1072,7 +1072,7 @@ $$
 
 ## SCCP ግልፅ መልዕክት ማስረጃዎች {#sccp-transparent-message-proofs}
 
-የ SCCP ረዳት ሳጥን ደግሞ ይጠቀማል FastPQ ለንጹህ መስቀል ሰንሰለት መልዕክት ማስረጃዎች ይህ መንገድ ከ `irohad` የጀርባ ፕሮቨር ሌን. FastPQ ጭነት በቀጥታ ከ SCCP መልዕክት ማረጋገጫ ጥቅል እና መገለጫ, ከዚያም ክፍት ማረጋገጫ ለማግኘት የተገኘው ማስረጃ ይሸፈናል.
+የ SCCP ረዳት ሳጥን ደግሞ ይጠቀማል FastPQ ለንጹህ መስቀል ሰንሰለት መልዕክት ማስረጃዎች ይህ መንገድ ከ `iroha3d` የጀርባ ፕሮቨር ሌን. FastPQ ጭነት በቀጥታ ከ SCCP መልዕክት ማረጋገጫ ጥቅል እና መገለጫ, ከዚያም ክፍት ማረጋገጫ ለማግኘት የተገኘው ማስረጃ ይሸፈናል.
 
 የ SCCP ክምችት `fastpq-lane-balanced` እና ሦስት ሜታዳታ ሽግግርን ይጠቀማል-
 
@@ -1210,14 +1210,14 @@ metal_debug_enum = false
 metal_debug_fused = false
 ```
 
-ተመሳሳይ አፈፃፀም እና የቴሌሜትሪ መለያዎች ከ `irohad` ሊሻሩ ይችላሉ-
+ተመሳሳይ አፈፃፀም እና የቴሌሜትሪ መለያዎች ከ `iroha3d` ሊሻሩ ይችላሉ-
 
 ```shell
-irohad --fastpq-execution-mode auto
-irohad --fastpq-poseidon-mode cpu
-irohad --fastpq-device-class apple-m4
-irohad --fastpq-chip-family m4
-irohad --fastpq-gpu-kind integrated
+iroha3d --fastpq-execution-mode gpu
+iroha3d --fastpq-poseidon-mode cpu
+iroha3d --fastpq-device-class apple-m4
+iroha3d --fastpq-chip-family m4
+iroha3d --fastpq-gpu-kind integrated
 ```
 
 የአካባቢ ተለዋዋጮች ለኮንፊግሬሽን መስኮችም ይደገፋሉ። ለ FastPQ የተወሰኑ ተለዋዋጮችን ያካትታሉ:
@@ -1258,4 +1258,4 @@ irohad --fastpq-gpu-kind integrated
 - `TransferTranscript`
 - `AxtFastpqBinding`
 - `LaneFastpqProofMaterial`
-- [`irohad` FastPQ አማራጮች](/am/reference/irohad-cli.md#arg-fastpq-execution-mode)
+- [`iroha3d` FastPQ አማራጮች](/am/reference/iroha3d-cli.md#arg-fastpq-execution-mode)

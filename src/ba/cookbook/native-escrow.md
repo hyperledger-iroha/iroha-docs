@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 0185b6a341ee90ed6cd52fb9f510549b20592468abe6627d3efa639c3b67d1fd
+translation_source_hash: aa8e079684879bdcda2b4439e9c12742d4ab477e6f560f7c326a59b6be5bf666
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,7 +16,7 @@ translation_engine: nllb-200-ct2
 
 - Санлы активтар билдәләмәһе һәм етерлек күләмдә булған асыусы/сатыусы.
 - Берҙән-бер асҡыс менән финансланған I105 клиенттар өсөн һәр партияһы баҫҡыс тапшыра. ҡулланыу туранан-тура власть түләүле `fee_payment` маҡсат, уның түләү активы ағымдағы Taira кранға яуап биреү; активты ҡуймағыҙ ID документтарҙан.
-- Хәҙерге Rust йәки Python SDK Iroha йөкләмәһе `bc7114ed1c7f265a156d2100ff09e851cc95702c`.
+- Хәҙерге Rust йәки Python SDK Iroha йөкләмәһе `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
 - өсөн JavaScript компилятор миҫалы, Node.js 24 плюс урындағы төҙөлгән `@iroha/iroha-js` пакеты һәм уның сығышы `iroha_js_host`; күҙәтеү [JavaScript SDK сығанаҡ төҙөлөшөн көйләү](/ba/guide/tutorials/javascript.md#build-from-source). Браузер төҙөү тәьмин ителергә тейеш `compilerUrl` урындағы хужаны йөкләү урынына.
 - Taira активтар күсереү һәм һаҡланыу инструкцияларын ҡабул итергә тейеш. Аҡса хужалары ғәҙәттәгесә йәшәү циклын ҡуллана ала, әгәр уларҙың актив сәйәсәте рөхсәт итһә; бәхәстәрҙе хәл итеү өсөн глобаль `CanResolveEscrowDispute` рөхсәтен талап итә.
 
@@ -249,10 +249,10 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 
 ## Сығанаҡ һәм уның менән бәйле документтар {#source-and-related-docs}
 
-- [Туған эскроу инструкцияһы моделе ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/isi/escrow.rs)
-- [Туған эскроу интеграцияһы һынауҙары ҡуйылған йөкләмә буйынса](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/native_escrow.rs)
-- [Python конфиденциаль клиенттарҙың билдәләнгән йөкләмә буйынса алымдары](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama фиктив commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/native_escrow.ko) буйынса урындағы депозит өлгөһө
+- [Туған эскроу инструкцияһы моделе ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
+- [Туған эскроу интеграцияһы һынауҙары ҡуйылған йөкләмә буйынса](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
+- [Python конфиденциаль клиенттарҙың билдәләнгән йөкләмә буйынса алымдары](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama фиктив commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko) буйынса урындағы депозит өлгөһө
 - [Тыуған милке менән һаҡланған активтар](/ba/blockchain/escrow.md)
 - [Функциональ активтар](./fungible-assets.md)
 - [Рөхсәт һәм ролдәр](./permissions-and-roles.md)

@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /reference/queries.md
-translation_source_hash: 22e8a75acd72d066e3516ba46a0afe075d2d02790154458aec00a5d8bb861838
+translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -99,10 +99,17 @@ Iroha سوالات لیجر کی حالت کو تبدیل کیے بغیر پڑھ
 |`FindLaneRelayEnvelopeByRef` |ایک تصدیق شدہ لین ریلے لفافہ تلاش کریں. |
 |`FindSorafsProviderOwner` |SoraFS فراہم کنندہ کے مالک کو حل کریں. |
 |`FindDataspaceNameOwnerById` |ایک ڈیٹا اسپیس نام مالک کو حل کریں. |
-|`FindMusubiReleaseByRef` |Musubi ریفرنس کے ذریعہ ایک رہائی تلاش کریں. |
-|`FindMusubiPackageVersions` |Musubi پیکج کے لیے ورژن درج کریں۔ |
-|`FindMusubiPackageReleases` |Musubi پیکج کے لیے فہرست جاری کرنا۔ |
-|`FindMusubiShortAliasByName` |Musubi مختصر عرفی نام کو حل کریں۔ |
+|`FindMusubiExactPackageV1` |ایک عین مطابق پیکج ریکارڈ اور اس کے موجودہ نظر ثانیوں کو پڑھیں. |
+|`FindMusubiExactReleaseV1` |ایک عین مطابق ریلیز تصویر پڑھیں. |
+|`FindMusubiProviderBundleAttestationV1` |ایک فراہم کنندہ کے آرکائیو کٹ کی تصدیق پڑھیں۔ |
+|`FindMusubiResolverIndexV1` |حتمی حل کرنے والے انڈیکس کا صفحہ. |
+|`FindMusubiVersionsV1` |صفحہ ایک پیکج کے لئے حتمی ورژن. |
+|`FindMusubiMaintainersV1` |صفحہ نے منتظمین کو قبول کیا اور زیر التواء دعوت نامے. |
+|`FindMusubiArchiveLocationsV1` |صفحہ ایک آرکائیو کے لئے SoraFS مقامات کو حتمی. |
+|`FindMusubiArchiveRetentionV1` |صفحہ محفوظ شدہ دستاویزات کے ریکارڈ. |
+|`FindMusubiAliasV1` |ایک عالمی عرف کا موجودہ ہدف اور نظر ثانی پڑھیں۔ |
+|`FindMusubiAliasHistoryV1` |ایک عالمی عرف کی ناقابل تبدیل ری ٹارگٹ تاریخ کا صفحہ. |
+|`FindMusubiOrderedPrefixV1` |صفحے کے پیکجوں کو ایک ترتیب شدہ ڈھانچے کی پیش گوئی کے تحت ترتیب دیا گیا ہے۔ |
 
 ## ٹرگرز، معاہدوں، لین دین اور بلاک {#triggers-contracts-transactions-and-blocks}
 

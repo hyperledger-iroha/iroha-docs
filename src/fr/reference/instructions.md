@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /reference/instructions.md
-translation_source_hash: e300187da832a8f82258a36b7c4aaebf505adc09c771de5b0c7ab8fb0052d3db
+translation_source_hash: 9ba8e06d10f0896169feddbdad32f4fed7a8d46effa2293c64df578c197c970e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -29,6 +29,7 @@ Le modèle de données actuel expose ces familles d'instructions intégrées:
 | [Réserve de l'actif natif](/fr/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
 | [Les verrous d'actifs génériques ](/fr/blockchain/escrow.md#generic-asset-locks) |`OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, `ExpireAssetLock` |
 | [Réservation d'actifs anonymes ](/fr/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
+| [Règlement privé atomique](/fr/blockchain/instructions.md#atomic-private-settlement) | `ActivatePrivateSettlementPoolV1`, `RotatePrivateSettlementPoolPolicyV1`, `FinalizeAtomicPrivateSettlementV1`, `AbortAtomicPrivateSettlementV1` |
 
 D'autres modules Iroha 3 peuvent enregistrer des types d'instructions spécifiques à un domaine par l'intermédiaire du registre des instructions. Pour la liste de niveau de schéma générée à partir de l'arbre source actuel, voir [Schéma modèle de données](./data-model-schema.md).
 

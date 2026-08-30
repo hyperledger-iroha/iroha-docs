@@ -1,7 +1,7 @@
 ---
 translation_locale: ru
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 0185b6a341ee90ed6cd52fb9f510549b20592468abe6627d3efa639c3b67d1fd
+translation_source_hash: aa8e079684879bdcda2b4439e9c12742d4ab477e6f560f7c326a59b6be5bf666
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,7 +16,7 @@ translation_engine: nllb-200-ct2
 
 - Цифровое определение активов и открыватель/продавец, владеющий достаточным количеством.
 - Финансируемые, одноключевые клиенты I105 для каждой стороны, которая подает шаг. Используйте намерение `fee_payment`, которое оплачивается властями в режиме прямого времени и чьи платежные активы совпадают с текущим ответом на трубку Taira; не вставляйте актив ID из документации.
-- Текущий Rust или Python SDK от Iroha обязательство `bc7114ed1c7f265a156d2100ff09e851cc95702c`.
+- Текущий Rust или Python SDK от Iroha обязательство `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
 - Для JavaScript пример компилятора, Node.js 24 плюс локально построенный `@iroha/iroha-js` упаковка и ее происхождение `iroha_js_host`; Следуйте [JavaScript SDK установка сборной источника](/ru/guide/tutorials/javascript.md#build-from-source). Создание браузера должно обеспечивать `compilerUrl` вместо того, чтобы загружать родного хозяина.
 - Taira должен принимать инструкции по передаче активов и поручительству. Владельцы активов могут использовать обычный жизненный цикл, если это позволяет их политика в отношении активов; для разрешения споров требуется глобальное разрешение `CanResolveEscrowDispute`. Используйте генерируемую локальную сеть, когда отсутствует необходимый орган государственной сети.
 
@@ -249,10 +249,10 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 
 ## Источник и связанные с ним документы {#source-and-related-docs}
 
-- [Нативная модель инструкций по поручительству на финированном обязательстве](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/isi/escrow.rs)
-- [Тесты интеграции нативных депозитов при закрепленном обязательстве](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/native_escrow.rs)
-- [Python методы кредиторского клиента при закрепленном обязательстве](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama образец коренных депозитов на финированном обязательстве](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [Нативная модель инструкций по поручительству на финированном обязательстве](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
+- [Тесты интеграции нативных депозитов при закрепленном обязательстве](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
+- [Python методы кредиторского клиента при закрепленном обязательстве](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama образец коренных депозитов на финированном обязательстве](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [Конфиденциальный депозит на активы ](/ru/blockchain/escrow.md)
 - [Функциональные активы](./fungible-assets.md)
 - [Разрешения и роли](./permissions-and-roles.md)

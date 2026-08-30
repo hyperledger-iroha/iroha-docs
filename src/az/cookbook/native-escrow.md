@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 0185b6a341ee90ed6cd52fb9f510549b20592468abe6627d3efa639c3b67d1fd
+translation_source_hash: aa8e079684879bdcda2b4439e9c12742d4ab477e6f560f7c326a59b6be5bf666
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,7 +16,7 @@ Marketplace escrow və destination-bound asset lock arasında seçim edin, Rust 
 
 - Rəqəmli aktiv tərifi və kifayət qədər miqdarda sahib olan açıcı/satıcı.
 - Maliyyələşdirilmiş, tək açarlı I105 Hər bir tərəf üçün müştərilər. `fee_payment` maliyyələşdirmə vəsaitinin mövcud Taira faucet cavabı; aktiv daxil etməyin ID sənədlərdən alınır.
-- Rust və ya Python SDK axınları Iroha səlahiyyətindən `bc7114ed1c7f265a156d2100ff09e851cc95702c`.
+- Rust və ya Python SDK axınları Iroha səlahiyyətindən `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
 - İcra Hakimiyyəti JavaScript kompilyer nümunəsi, Node.js 24 ədəd əlavə olaraq yerli qurulmuş `@iroha/iroha-js` paket və onun mənşəli `iroha_js_host`; izləmək [JavaScript SDK mənbə quruluşunun quraşdırılması](/az/guide/tutorials/javascript.md#build-from-source). Browser qurğuları təmin etməlidir `compilerUrl` Yerli ev sahibi yükləmək əvəzinə.
 - Taira aktivlərin ötürülməsi və əmanət verilməsinə dair göstərişləri qəbul etməlidir. Əmlak sahibləri normal həyat dövründən istifadə edə bilərlər, əgər onların əmlak siyasəti buna imkan verirsə; mübahisənin həlli üçün qlobal `CanResolveEscrowDispute` icazəsi tələb olunur. Lazım olan ictimai şəbəkə orqanının olmaması halında yaradılmış yerli şəbəkəni istifadə edin.
 
@@ -249,10 +249,10 @@ Həmçinin istiqamətin aktiv saxlamalarını soruşun və onun dörd birliyə a
 
 ## Mənbə və əlaqəli sənədlər {#source-and-related-docs}
 
-- [Yüklənmiş komitdə yerli escrow təlimat modeli ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/isi/escrow.rs)
-- [Qeydiyyatdan keçirilən məbləğdə yerli depozit inteqrasiya sınaqları](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/native_escrow.rs)
-- [Python əmanət müştəri metodları bağlanmış həcmdə](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama bağlanmış məbləğdəki yerli əmanət nümunəsi](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [Yüklənmiş komitdə yerli escrow təlimat modeli ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
+- [Qeydiyyatdan keçirilən məbləğdə yerli depozit inteqrasiya sınaqları](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
+- [Python əmanət müştəri metodları bağlanmış həcmdə](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama bağlanmış məbləğdəki yerli əmanət nümunəsi](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [Yerli aktivlərin vəsiqəsi ](/az/blockchain/escrow.md)
 - [Fungible assets](./fungible-assets.md)
 - [icazələr və rollar ](./permissions-and-roles.md)

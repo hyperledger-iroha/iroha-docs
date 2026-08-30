@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 0185b6a341ee90ed6cd52fb9f510549b20592468abe6627d3efa639c3b67d1fd
+translation_source_hash: aa8e079684879bdcda2b4439e9c12742d4ab477e6f560f7c326a59b6be5bf666
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,7 +16,7 @@ Bozordagi depozit va manzilga bog'liq aktivni qulflash o'rtasida tanlang, Rust y
 
 - Raqamli aktiv ta'rifi va etarli miqdorda egalik qiluvchi ochuvchi/sotuvchi.
 - Har bir qadamni taqdim etadigan tomon uchun moliyalashtirilgan, bitta kalitli I105 mijozlardan foydalaning. To'lov aktivlari joriy Taira kran javoblariga mos bo'lgan jonli hokimiyat tomonidan to'lanadigan `fee_payment` niyatidan foydalaning; hujjatlardan ID aktivini o'rnatmang.
-- Rust yoki Python SDK sohasi Iroha bilan bog'liq bo'lgan majburiyat `bc7114ed1c7f265a156d2100ff09e851cc95702c`.
+- Rust yoki Python SDK sohasi Iroha bilan bog'liq bo'lgan majburiyat `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
 - O ' zbekiston Respublikasining JavaScript yig'uvchi namuna, Node.js 24 va mahalliy ishlab chiqarilgan `@iroha/iroha-js` to'plam va uning natijasi `iroha_js_host`; qoʻllash [JavaScript SDK manba konstruksiyalarini o'rnatish](/uz/guide/tutorials/javascript.md#build-from-source). Brauzerni yaratish uchun `compilerUrl` o'rniga mahalliy uy egasini yuklab olish.
 - Taira aktivlarni o'tkazish va depozit qo'yish yo'l-yo'riqlarini qabul qilishi kerak. Asset egalari oddiy hayot davridan foydalanishi mumkin, agar ularning aktiv siyosati bunga ruxsat beradi; nizolarni hal qilish uchun global `CanResolveEscrowDispute` ruxsati talab etiladi. Kerakli ommaviy tarmoq hokimiyati mavjud bo'lmaganida hosil qilingan mahalliy tarmoqdan foydalanish.
 
@@ -249,10 +249,10 @@ Shuningdek, manzilning aktivlari saqlanishini so'rang va ular to'rt nafarga oshg
 
 ## Manba va u bilan bog'liq hujjatlar {#source-and-related-docs}
 
-- [Native escrow yo'l-yo'riq modeli ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/isi/escrow.rs) biriktirilgan commitda
-- [Native escrow integratsiyasi testlari ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/native_escrow.rs) to'xtatilgan majburiyatda
-- [Python garovga ega bo'lgan mijozlarning to'g'ri yo'l-yo'riqlari qo'yilgan majburiyatlarda](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama tug'ma depozit namunasini qo'lga kiritilgan majburiyatlarda](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [Native escrow yo'l-yo'riq modeli ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs) biriktirilgan commitda
+- [Native escrow integratsiyasi testlari ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs) to'xtatilgan majburiyatda
+- [Python garovga ega bo'lgan mijozlarning to'g'ri yo'l-yo'riqlari qo'yilgan majburiyatlarda](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama tug'ma depozit namunasini qo'lga kiritilgan majburiyatlarda](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [Asosiy aktivlar garovi](/uz/blockchain/escrow.md)
 - [O'zgaruvchan aktivlar](./fungible-assets.md)
 - [Ruxsatlar va vazifalar ](./permissions-and-roles.md)

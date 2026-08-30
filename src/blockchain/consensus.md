@@ -1,7 +1,3 @@
-<script setup>
-import { withBase } from 'vitepress'
-</script>
-
 # Consensus
 
 Transactions enter a queue before Sumeragi proposes them in a block.
@@ -9,8 +5,9 @@ Validators independently validate and execute the proposal, then sign only
 the state transition they can reproduce. A block commits after the required
 validator quorum agrees on that result and the matching payload is available.
 
-All Iroha 3 networks use the data-availability and reliable-broadcast paths.
-They are consensus requirements, not optional deployment features.
+All Iroha 3 networks use signed RS16 data-availability manifests and chunks,
+plus certified-body recovery. Data availability is a consensus requirement,
+not an optional deployment feature.
 
 ## Sumeragi
 
@@ -18,8 +15,6 @@ Sumeragi is Iroha's Byzantine-fault-tolerant consensus engine. It takes
 transactions from the queue, has validator peers agree on the same ordered
 block, and finalizes that block only after enough validators have
 reproduced the same result and signed the commit certificate.
-
-<img :src="withBase('/sumeragi-round-dataflow.svg')" alt="Sumeragi proposal-to-commit data flow" />
 
 ### Proposal and commit path
 
@@ -47,28 +42,23 @@ the expected state transition. If the local result differs, the validator
 rejects the proposal instead of voting for it.
 
 Votes are small signed consensus messages. They refer to the proposed block,
-the height, the view, and the validator identity. Collectors aggregate those
-votes into a quorum certificate or commit certificate. The certificate is the
-durable proof that enough validators observed the same result for the same
-block.
+the height, the view, and the validator identity. Verified signatures form
+prepare and commit quorum certificates. A commit certificate is the durable
+proof that enough validators observed the same result for the same block.
+Each validator sends its Prepare and Commit votes to the full committee; any
+validator can aggregate the required equal votes and broadcast the resulting
+certificate.
 
-### Quorum, collectors, and observers
+### Quorum and observers
 
-The voting validator count `n` defines the Byzantine fault budget. For
-networks with at least four validators, the budget is `f = floor((n - 1) / 3)`
-and the commit quorum is `2f + 1`. For one to three validators, all validators
-are required for commit, which is useful for development but has no practical
-offline slack.
-
-Collectors are a fanout optimization. Instead of every validator sending every
-vote to every other validator, Sumeragi can select one or more collectors for a
-height. The collectors assemble votes, publish quorum progress, and reduce the
-amount of duplicate vote traffic. The effective collector settings are exposed
-through `GET /v1/sumeragi/collectors`; the CLI's
-`ops sumeragi telemetry` snapshot reports the current collector count.
+The first-release protocol admits only an exact `3f + 1` voting committee,
+from 4 through 31 validators. Valid sizes are therefore 4, 7, 10, and so on,
+up to 31. For `n = 3f + 1`, the Byzantine fault budget is `f` and the commit
+quorum is `2f + 1`. Genesis generation and startup validation reject any other
+committee geometry.
 
 Observer peers can synchronize committed blocks, but they do not propose,
-vote, collect votes, or count toward the commit quorum. Use observers when a
+vote, or count toward the commit quorum. Use observers when a
 deployment needs local query capacity, indexing, monitoring, or regional block
 replication without increasing the number of voting validators.
 
@@ -83,24 +73,24 @@ do not finalize conflicting blocks.
 
 Payload recovery is separate from the finality decision. A peer might receive
 a quorum or commit certificate before it has the full block payload. In that
-case, the peer uses reliable broadcast (RBC) or block sync to recover the
-payload, verifies it against the advertised hashes, and only then applies the
-block to the world state and Kura.
+case, the peer requests signed RS16 payload chunks or a certified body,
+verifies the recovered bytes against the advertised hashes, and only then
+applies the block to the world state and Kura.
 
 ### Consensus modes
 
 The selected mode controls how the validator set is formed and operated. It
-is declared in genesis through [`consensus_mode`](/reference/genesis.md)
-and in peer configuration through `sumeragi.consensus_mode`. Treat it as
-network-wide state: validators need the same signed genesis, topology,
-trusted peer data, and effective Sumeragi parameters.
-
-<img :src="withBase('/sumeragi-mode-dataflow.svg')" alt="Sumeragi consensus mode data flow" />
+is declared in signed genesis through
+[`consensus_mode`](/reference/genesis.md) and frozen into each height context.
+Local `[sumeragi]` configuration selects only the node role and finite block,
+queue, runtime, storage, and key-policy limits; it cannot override the mode or
+block cadence. Validators need the same signed genesis, topology, trusted peer
+data, and effective Sumeragi parameters.
 
 | Mode         | Best fit                                                                               | Validator set                                                                                                      | Operational focus                                                                                          |
 | ------------ | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
 | Permissioned | Private, consortium, and operator-managed networks                                     | Validators come from the trusted peer topology agreed by the deployment                                            | Keep all validators on the same signed genesis, trusted peers, peer keys, and Sumeragi parameters          |
-| NPoS         | Public or Nexus-oriented networks where validation follows nomination and stake policy | Validators are selected by the NPoS profile, usually across epochs, and require BLS keys plus Proofs-of-Possession | Keep stake snapshots, epoch parameters, validator PoPs, and NPoS phase timeouts aligned across the network |
+| NPoS         | Public or Nexus-oriented networks where validation follows nomination and stake policy | Validators are selected by the NPoS profile, usually across epochs, and require BLS keys plus Proofs-of-Possession | Keep stake snapshots, signed epoch and election inputs, validator PoPs, and immutable block cadence aligned across the network |
 
 ::: tip Permissioned mode
 
@@ -136,13 +126,13 @@ inside that stream.
 
 The runtime configuration builds three pieces of lane state:
 
-- `lane_catalog`: the configured lanes, each with a numeric `LaneId`,
+- `nexus.lane_catalog`: the configured lanes, each with a numeric `LaneId`,
   alias, dataspace, visibility, storage profile, proof scheme, and
   metadata.
-- `dataspace_catalog`: the configured dataspaces, each with a numeric
+- `nexus.dataspace_catalog`: the configured dataspaces, each with a numeric
   `DataSpaceId` and a fault-tolerance value used for relay committee
   sizing.
-- `routing_policy`: the default lane/dataspace pair and ordered routing
+- `nexus.routing_policy`: the default lane/dataspace pair and ordered routing
   rules that can match accounts or instruction paths.
 
 When a transaction enters the queue, the lane router resolves it to a
@@ -165,51 +155,46 @@ the lane metadata in two ways:
   except that the first overweight transaction for a lane can be admitted
   to avoid livelock.
 
-During reliable broadcast, Sumeragi aggregates the proposed payload by lane
-and dataspace. The recorded totals include transaction count, broadcast
-chunks, payload bytes, and TEU. After commit, those totals become the lane
-and dataspace commitment snapshots exposed through Sumeragi status. If a
+During candidate preparation, Sumeragi aggregates the proposed payload by lane
+and dataspace and derives the lane-local data-availability identities. The
+recorded totals include transaction count, chunks, payload bytes, and TEU.
+After commit, those totals become the lane and dataspace commitment snapshots
+exposed through authenticated Sumeragi diagnostics. If a
 block contains lane settlement receipts, block processing also creates lane
 settlement commitments and relay envelopes that bind the block header,
 commit certificate, data-availability commitment hash, settlement proof,
 and lane payload size.
 
-## Reliable broadcast (RBC)
+## Data availability and payload recovery
 
-Reliable broadcast (RBC) is Sumeragi's payload dissemination and recovery
-path. It helps validators and observers obtain the block body that belongs
-to a proposal or commit certificate, especially when a `BlockCreated`
-message, block-sync update, or direct payload transfer is delayed or lost.
+Sumeragi v2 carries global payload availability through signed RS16
+`PayloadManifest` and `PayloadChunk` messages. The leader sends the signed
+manifest to the full committee and initially distributes deterministic chunks
+to Set A. A validator can Prepare-vote only after reconstructing the canonical
+body, validating the manifest and chunk hashes, storing the body durably, and
+completing deterministic validation. If the fast path stalls, recovery expands
+chunk delivery to Set B. Certified-body recovery and block sync provide the
+bounded recovery path when a peer learns finality before receiving the body.
 
-RBC works at the payload level. The proposer announces an RBC session for a
-block height, view, and payload hash, then sends payload chunks across the
-commit topology. Peers track chunk receipt, validate the recovered payload
-against the advertised hash, and exchange `READY` and `DELIVER` signals
-once enough validators have observed the same payload. Sessions are bounded
-by TTL, chunk, fanout, pending-stash, and persisted-store limits so
-recovery traffic cannot grow without limit.
+Multilane execution additionally derives a deterministic payload-ownership
+hash and lane-local RBC instance hash for each lane subject. Those identities
+bind lane proposals and certificates to the global carrier; they are not a
+separate global consensus session. A block still finalizes only when the peer
+has a valid commit certificate and the matching payload locally.
 
-RBC is not a separate consensus decision and it does not replace the commit
-certificate. A block still finalizes only when the peer has a valid commit
-certificate and the matching payload locally. RBC contributes mandatory
-availability evidence and payload recovery, while commit progress is driven by
-the commit certificate plus local payload. If the certificate arrives before
-the payload, the peer can recover the payload through RBC or block sync and
-then commit.
+Use the authenticated operator surfaces rather than a separate RBC endpoint:
 
-Operationally, RBC is useful for diagnosing missing-payload and
-data-availability bottlenecks:
-
-- `iroha --output-format text ops sumeragi telemetry` shows aggregate
-  availability votes, the current collector count, and pending RBC sessions.
-- `GET /v1/sumeragi/rbc` and `GET /v1/sumeragi/rbc/sessions` expose detailed
-  aggregate and active-session data over Torii, including chunk progress,
-  readiness, delivery state, and lane or dataspace backlog; see
-  [Torii endpoints](/reference/torii-endpoints.md).
-- Prometheus signals such as `sumeragi_rbc_store_pressure`,
-  `sumeragi_rbc_backpressure_deferrals_total`, and per-lane or
-  per-dataspace RBC backlog gauges help separate network loss, chunk
-  recovery, and storage pressure; see
+- `iroha --operator-private-key-file <path> --output-format text ops sumeragi status`
+  reports the authoritative height, view, phase, certificates, and liveness
+  state.
+- `iroha --operator-private-key-file <path> --output-format text ops sumeragi diagnostics`
+  reports non-authoritative queue, pipeline, NPoS, lane, and dataspace
+  diagnostics, including lane payload ownership.
+- Prometheus signals such as `sumeragi_missing_block_requests`,
+  `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`,
+  `sumeragi_da_gate_block_total`, and `sumeragi_da_gate_satisfied_total`
+  separate missing-body recovery, data-availability gates, and message
+  handling; see
   [Performance and metrics](/guide/advanced/metrics.md).
 
 Kura uses the derived lane configuration for storage layout. Each lane

@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /cookbook/permissions-and-roles.md
-translation_source_hash: 734437b8530ad0efb9ddd83b24cb90c30dc29843a03753babd8dca5e86a3f91d
+translation_source_hash: 7ee18275d25837da53f533f5e9205906ccaa71b48afd9b11ffad79b599da7f21
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -132,9 +132,9 @@ iroha --config "$CONFIG" ledger account meta get \
 
 ## 來源及相關文件 {#source-and-related-docs}
 
-- [在固定提交時的角色集成測試](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/roles.rs)
-- [在固定提交](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/permissions.rs)上進行許可集成測試
-- [在固定提交](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_executor_data_model/src/permission.rs)內置的權限數據模型
+- [在固定提交時的角色集成測試](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/roles.rs)
+- [在固定提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/permissions.rs)上進行許可集成測試
+- [在固定提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/permission.rs)內置的權限數據模型
 - [許可證和角色](/zh-hant/blockchain/permissions.md)
 - [許可證代幣引用](/zh-hant/reference/permissions.md)
 - [超值數據](./metadata.md)

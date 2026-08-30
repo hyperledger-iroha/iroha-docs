@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /cookbook/wallet-connect.md
-translation_source_hash: ab5b6c560ed8b0a208666e5854306ba6adce7af1210fc3c94b9c560d8e6eb686
+translation_source_hash: 38283321d51ddbb528272bb4429906eb41545ed3933ae695fb05a24675bff9c8
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -279,11 +279,11 @@ curl -fsS -G \
 
 ## ソースおよび関連文書 {#source-and-related-docs}
 
-- [ブラウザ接続の実装は,ピンされたコミット](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/src/connect.browser.js) で
-- [ブラウザコネクトテストは,ピンされた commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/test/connect.browser.test.js) で
-- [Rust アプリフレームの例 ピンされた commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii_shared/examples/connect_app.rs)
-- [Rust 固定された commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii_shared/examples/connect_wallet.rs)の財布フレーム例
-- [ピン Torii OpenAPI スキーマ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/artifacts/openapi/torii.json)
+- [ブラウザ接続の実装は,ピンされたコミット](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/src/connect.browser.js) で
+- [ブラウザコネクトテストは,ピンされた commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/test/connect.browser.test.js) で
+- [Rust アプリフレームの例 ピンされた commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_app.rs)
+- [Rust 固定された commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_wallet.rs)の財布フレーム例
+- [ピン Torii OpenAPI スキーマ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/artifacts/openapi/torii.json)
 - [SORA Nexus サービス](/ja/blockchain/sora-nexus-services.md)
 - [浮動資産](./fungible-assets.md)
 - [取引を提出し確認する](./submit-and-verify-transactions.md)

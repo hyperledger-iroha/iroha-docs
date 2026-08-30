@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /reference/peer-config/params.md
-translation_source_hash: d9fa3775e65b26b4eda726b27e54d167097b8bbd5bb766c27d7eeefdbc7ef10b
+translation_source_hash: 027486a17e7624cc301f939429baf9ea9ed1259564c3b99b8dc63cce17a7b26e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 
@@ -352,7 +352,7 @@ max_content_len = 64_000_000
 
 ### `torii.query_idle_time_ms` {#param-torii-query-idle-time-ms}
 
-Bir sorğunun əldə edilmədiyi təqdirdə mağazada qala biləcəyi müddət.
+Bir sorğunun əldə edilmədiyi halda mağazada qala biləcəyi müddət.
 
 <param-table type=millis default-value=10_000 default-note="10 seconds" />
 
@@ -443,7 +443,7 @@ Bu parametr Torii operatorun son nöqtələri vasitəsilə işləmə vaxtının 
 <param-table type=string env=LOG_FILTER>
 <template #type>
 
-String, bir və ya daha çox komada ayrılmış direktivdən ibarətdir. Hər bir direktivə uyğun maksimum verbosity səviyyəsi ola bilər ki, imkan verir (məsələn, seçir) aralıqlar və hadisələr uyğun. Iroha daha az eksklüziv səviyyələri (məsələn, `trace` və ya `info`) daha eksklüziv səviyyələrə nisbətən daha sözlü hesab edir (məs., `error` və ya `warn`).
+String, bir və ya daha çox komada ayrılmış direktivdən ibarətdir. Hər bir direktivə uyğun maksimum verbosity səviyyəsi ola bilər ki, imkan verir (məsələn, seçir) aralıqlar və hadisələrin uyğun. Iroha daha az eksklüziv səviyyələri (məsələn, `trace` və ya `info`) daha çox müstəsna səviyyələrdən daha sözlü hesab edir (məs., `error` və ya `warn`).
 
 Yüksək səviyyədədirektivlərin sintaksisinin bir neçə hissəsi vardır:
 
@@ -470,7 +470,7 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 
 :::
 
-::: info [`logger.level`](#param-logger-level) ilə uyğunluq
+::: info [`logger.level`](#param-logger-level) ilə birlikdə istifadə
 
 `logger.filter` [`logger.level`](#param-logger-level) ilə birlikdə işləyir və heç biri digərini ört-basdır etmir.
 
@@ -493,10 +493,10 @@ Qeydiyyat formatı.
 
 String, mümkün dəyərlər:
 
-- `full`: Standart formatlaşdırıcı. Bu, baş verən hər hadisə üçün insan tərəfindən oxunula bilən, bir satırlıq qeydlər verir və hadisənin formatlaşdırılmış təmsilindən əvvəl mövcud məsafə kontekstinin göstərilir.
-- `compact`: Qısa xətt uzunluqları üçün optimallaşdırılmış standart formatlaşdırıcının bir variantı. Formatlaşdırılan hadisənin sahələrinə hazırkı span kontekstindən olan sahələr əlavə olunur və zaman adları göstərilmir; verbosity səviyyəsi yalnız bir xarakterə qısaldılır.
-- `pretty`: İnsanların oxumağı üçün optimallaşdırılmış həddindən artıq gözəl, çox xətti qeydlər buraxır. Bu əsasən yerli inkişaf və düzəldilmədə və ya əmr xətti tətbiqləri üçün istifadə edilmək üçün nəzərdə tutulmuşdur, kitabların avtomatlaşdırılmış təhlili və kompakt saxlanılması oxumaq qabiliyyətindən daha az üstünlük təşkil edən hallarda.
-- `json`: Yeni xətti məhdudlaşdırılmış JSON qeydlərin çıxışı. Bu, strukturlu qeydlərin analiz və izləmə vasitələri ilə JSON kimi istehlak edildiyi sistemlərlə istehsal istifadəsi üçün nəzərdə tutulmuşdur. JSON buraxılışı insan oxumaq qabiliyyəti üçün optimallaşdırılmayıb.
+- `full`: Standart formatlaşdırıcı. Bu, baş verən hər hadisə üçün insan tərəfindən oxunula bilən, bir xətti qeydləri yayır və hadisənin formatlaşdırılmış təmsilindən əvvəl mövcud məsafə kontekstini göstərir.
+- `compact`: Qısa xətti uzunluqlar üçün optimallaşdırılmış standart formatlaşdırıcının bir variantı. Formatlaşdırılan hadisə sahələrinə hazırkı span kontekstindən olan sahələr əlavə olunur və span adları göstərilmir; sözversiyyət səviyyəsi tək bir simvolla qısaldılır.
+- `pretty`: İnsan oxumaq üçün optimallaşdırılmış həddindən artıq gözəl, çox xətti jurnallar buraxır. Bu əsasən yerli inkişafda və Qərar xətti tətbiqetmələri üçün, avtomatik analizinin və jurnalların kompakt saxlanılmasının oxunma qabiliyyətindən və vizual müraciətdən daha az üstünlük təşkil etdiyi zaman.
+- `json`: Yeni xətti məhdudlaşdırılmış JSON qeydlərin çıxışı. Bu, strukturlu qeydlərin analiz və izləmə vasitələri ilə JSON kimi istehlak edildiyi sistemlərlə istehsal istifadəsi üçün nəzərdə tutulmuşdur. JSON buraxılış insan oxunması üçün optimallaşdırılmamışdır.
 
 Daha ətraflı məlumat və nümunə çıxışı üçün [`tracing-subscriber` sənədliyinə baxın ](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/format/index.html).
 
@@ -543,15 +543,21 @@ KURA_BLOCKS_IN_MEMORY=1024
 
 ### `kura.init_mode` {#param-kura-init-mode}
 
-Kura başlanğıc rejimi
+Kura başlanğıc rejimi. `strict` normal və standart rejimdir: qovşağın aktivləşməsindən əvvəl kanonik tarix, bərpa artefaktları, köməkçi indekslər və saxlama mühasibatını təsdiqləyir.
 
-<param-table  default-value=strict env=KURA_INIT_MODE>
+`fast` Təcili vəziyyətə düşmüş xidmət rejimidir, bu da bir Bu, əvvəlcədən initialized saxlama üçün tələb edir `strict` və tam olaraq beş əşyaları ehtiva edən hazırkı sürətli şəkil nəsli: `snapshot.data`, `snapshot.sha256`, `snapshot.sig`, `snapshot.fast.norito`, və `snapshot.merkle.json`. Döminə görə ayrılmış operator imzası reklamda olan pay yükü həzmini və sərhədləndirilmiş manifestı bağlayır. manifesti paylı yükün uzunluğu, zəncir/ şəbəkə kimliyi, terminal hündürlüyü/hashı bağlayır. SCCP siyasət hash, və bootstrap-lineage varlığı. Fast bootstrap rədd edir nəsil və uzunmüddətli ilə eyni dəqiq markalı / say / uç sərhədi tələb edir. Kura. İlk buraxılış qovşaqları tam olaraq bu beş artefaktı qəbul edir və hər digər artefakt sayını və ya fayl adlarını rədd edir.
+
+Bu beş ad və metadataları sürətli inventarlaşdırır. Fayl yükünü və Merkle fayllarını bağlayır, lakin onların məzmunu oxumur, hash etmir, təhlil etmir və ya dekodlamır. İmzalanmış manifestdən minimal bir Dünya / Nexus qurur, dəqiq Kura həş prefiksini yalnız oxumaq üçün xəritə edir və sürətlə World, blok-hash dizini tərk edir. əməliyyat tarixçəsi, mənşəli indekslər və davamlı bərpa jurnalları açılmayıb. Merkle, kanonik və semantik sürətli görüntülərin yoxlanması, tarixi blok/sonluq/SCCP uyğunlaşdırılması, Sumeragi aktiv hündürlükdə bərpa, birləşmə və sorğu jurnalları, yol manifesti/müvafiqlik mənbələri, Kura dəstəklənmiş SoraFS arxivləri, rekursiv saxlama mühasibatlığı və seçmə xidmətləri uyğunlaşdırıcıları təxirə salınıb. Yerli əməliyyatların qəbul edilməsi, təkliflər, səsvermə, kanonik yazılar və köməkçi istehsalçılar məhdudlaşır. Kura özü yazıçının başlanğıcını və davamlı mutasiyaları rədd edir; boru xəttləri və FASTPQ davamlılıq sıraları onu saxlamaq və ya kodlaşdırmaq əvəzinə işləri dərhal rədd edirlər. Kura oxuyun APIs həmçinin təmir və davamlılıq-sinkronizasiya davranışını söndürün: müvəqqəti yan avtomobillər təbliğ edilmir, yoxa çıxan zolaq artefaktları nəşr olunmur və irəliləyiş maneələri tənzimlənmir. Sumeragi və əməliyyat dedikoduları başlatılmır. Torii yalnız sağlamlıq, canlılıq, hazırlıq, həmyaşıd və konfigurasiya əməliyyatlarını açıqlayır; API-versiya, status, metriklər və bütün adi vəziyyət / tarix yolları mövcud deyil.
+
+`fast` yalnız bir hadisə üçün istifadə edin. Xidmət sabit olduqda, düyünü dayandırın, `strict` bərpa edin və yenidən başlatın ki, hər təxirə salınan yoxlama və indeks yenidən qurulması istehsalı bərpa edilməzdən əvvəl işləsin. Sürətli rejim təxirə salınmış birləşmə qeydini tələb etmir və kanonik saxlama yaratmır, təmir olunmur, kəsilmir və ya idxal edilmir; nəşr edilməmiş sufikslər və gözlənilir köməkçi bərpa mərhələləri oxunmadan və ya mutasiya etmədən unudulur və sonra Sərt bərpa üçün qalır. İndirilən yalnız hash sürətli görüntülərin nəsli hələ də mövcud deyil. Yoxuyan və ya etibarsız olan cari sürət görüntüsü dərhal uğursuz olur; Sürətli heç vaxt boş bir dünyaya və ya tarixi yenidən yaratma yenidən qurulmasına qayıtmır.
+
+<param-table default-value=strict>
 <template #type>
 
 String, mümkün dəyərlər:
 
-- `strict`: bütün blokların qəti təsdiqlənməsi
-- `fast`: Yalnız əsas yoxlamalarla sürətli başlanğıclandırma
+- `strict`: tam təsdiqlənmə və normal istehsal
+- `fast`: sərhədli fövqəladə başlanğıc, istehsalın bərpasına qədər karantində saxlanılması
 
 </template>
 </param-table>
@@ -563,15 +569,11 @@ String, mümkün dəyərlər:
 init_mode = "fast"
 ```
 
-```shell [Environment]
-KURA_INIT_MODE=fast
-```
-
 :::
 
 ### `kura.store_dir` {#param-kura-store-dir}
 
-Bloqların saxlandığı dizaynı[^paths] təyin edir.
+Blokların saxlandığı dizaynı [^paths] göstərir.
 
 Həmçinin baxın: [`snapshot.store_dir`](#param-snapshot-store-dir).
 
@@ -613,7 +615,7 @@ KURA_DEBUG_OUTPUT_NEW_BLOCKS=true
 
 ### `queue.capacity` {#param-queue-capacity}
 
-Sifarişdə gözləyən əməliyyatların sayının yuxarı həddi.
+Səddə gözləyən əməliyyatların sayının yuxarı həddi.
 
 <param-table type=number default-value=65_536 />
 
@@ -662,7 +664,7 @@ transaction_time_to_live_ms = 43_200_000
 
 ### `sumeragi.debug.force_soft_fork` <Badge type="warning" text="debug" /> {#param-sumeragi-debug-force-soft-fork}
 
-Sumeragi yumşaq çatal idarəetmə yollarını həyata keçirmək üçün yalnız debug açar. Bunu nəzarət olunan testlərdən kənarda saxlayın; işləyən bir istehsal şəbəkəsində dəyişdirmək həmyaşıdların konsensus davranışı haqqında fikir ayrılığına səbəb ola bilər.
+Sumeragi yumşaq çatal idarəetmə yollarını həyata keçirmək üçün yalnız debug açar. Bunu nəzarət olunan testlərdən kənarda saxlayın; işləyən bir istehsal şəbəkəsində dəyişdirmək həmyaşıdların konsensus davranışı barədə fikir ayrılığına səbəb ola bilər.
 
 <param-table type=bool default-value=false />
 
@@ -675,15 +677,25 @@ force_soft_fork = true
 
 :::
 
+## Nexus Atom özəl məzənnəsi {#nexus-atomic-private-settlement}
+
+`[nexus.atomic_private_settlement]` ayrı `AtomicPrivateSettlementV1` yolunu idarə edir. Standart olaraq söndürülmüşdür. `enabled = true` təyinatında da `activation_height` tələb olunur; giriş hələ də silinmir, əgər zəncirdə olan qabiliyyət, bildiriş müddəti, sabit sübut profili və pul/audit idarəetməsi aktiv deyilsə.
+
+Əsas məhdudiyyətlər: `max_participants`, `max_expiry_blocks`, `audit_timeout_blocks`, `prepare_timeout_blocks`, `commit_timeout_blocks`, `max_proof_bytes`, `max_capsule_bytes`, `max_carrier_bytes`, `sidecar_retention_blocks`, `sidecar_max_records`, və `sidecar_max_total_bytes`. `capsule_padding_classes_bytes` Dərhal artmaqda olan subset olmalıdır V1 Yükləmə dərsləri. `permitted_policy_versions` yalnız qəbul edir V1.
+
+`max_capsule_bytes` tam `PrivateSettlementAuditCapsuleV1` AAD, nonce, şifrəli mətn, vektor çərçivəsi və DEK satırında əhatə olunan hər auditorun qanuni Norito baytlarını ölçür; bu yalnız şifrəli məzmuna aid bir məhdudiyyət deyil. Hər aktivləşdirilmiş doldurma sinifi ən azı `default_min_auditor_approvals` auditorları üçün konservativ bütün kapsula qabığına uyğun olmalıdır. Bu təsdiqləmə parametrləri də idarə olunan mərtəbədir: Torii daha aşağı `min_approvals` dəyərinə malik yeni qəbul edilmiş bir siyasəti rədd edir və qanuni bayt məhdudluğundan yuxarı olan hər hansı bir faktiki kapsulunu rədd edir.
+
+Bu parametrlərdə istehsal mühitinin dəyişən aktivləşdirilməsi bypassı yoxdur. [Run Atomic Private Cross-DataSpace Settlement](/az/get-started/atomic-private-settlement) baxın. tam konfigürasiya nümunəsi və əməliyyat tələbləri üçün. Yolu sənədləşdirilmiş xarici buraxılış qapıları keçənədək istehsal üçün uyğunlaşdırılmır.
+
 ## Hələlik şəkil {#snapshot}
 
 Bu modul [World State View](/az/blockchain/world#world-state-view-wsv) şəklini oxumaq və ya yazmaq üçün məsuliyyət daşıyır.
 
-Snapshots World State View-in seriyalı bir yoxlama nöqtəsini saxlayır, belə ki, bir həmyaşıd Kura -dan hər blokun yenidən oynatılmadan yenidən başlaya bilər. Kura davamlı blok tarixi və yenidən oynamaq üçün həqiqət mənbəyi olaraq qalır; snapshots sürətləndirmə yoludur. Başlanğıc zamanı Iroha bir sürətli görüntüyü yükləmək və ya yenidən oynamaq üçün geri qayıtmaq qərarına gəlmədən əvvəl qurulmuş zəncirlə və saxlanan bloklarla sürətli metadata baxır.
+Snapshots World State View-un seriyalı bir yoxlama nöqtəsini saxlayır, belə ki bir həmyaşıd Kura -dan hər blokunu yenidən oynatmadan yenidən başlaya bilər. Kura davamlı blok tarixçəsi və yenidən oynamaq üçün həqiqət mənbəyi olaraq qalır; snapshots sürətləndirmə yoludır. Başlanğıc zamanı Iroha bir sürətli görüntüyü yükləmək və ya yenidən oynamaq üçün geri qayıtmaq qərarına gəlmədən əvvəl qurulmuş zəncirlə və saxlanan bloklarla sürətli metadata baxır.
 
 ::: tip Şəkilləri silin
 
-Əgər sürətli görüntülər sistemində bir şey səhv olarsa və boş səhifədən başlamaq istəyirsinizsə (sürətli görüntülər baxımından), [`snapshot.store_dir`](#param-snapshot-store-dir) tərəfindən müəyyən edilmiş dizaynı silə bilərsiniz.
+Əgər sürətli görüntülər sistemində bir şey səhv olarsa və boş səhifədən başlamaq istəyirsinizsə (sürətli görüntülər baxımından), [`snapshot.store_dir`](#param-snapshot-store-dir) tərəfindən göstərilən dizaynı silə bilərsiniz.
 
 :::
 
@@ -696,7 +708,7 @@ Snapshot sisteminin işlədiyi rejim.
 
 String, mümkün dəyərlər:
 
-- `read_write`: Iroha [`snapshot.create_every_ms`](#param-snapshot-create-every-ms) tərəfindən müəyyən edilmiş müddətdə sürətli görüntüləri yaradır. Başlatarkən, Iroha mövcud bir sürətli görüntü (mümkünsə) oxuyur və blokların saxlanılması ilə yenilənməsini yoxlayır .
+- `read_write`: Iroha [`snapshot.create_every_ms`](#param-snapshot-create-every-ms) tərəfindən müəyyən edilmiş bir müddətdə sürətli görüntüləri yaradır. Başlatarkən, Iroha mövcud bir sürətli görüntüni oxuyur (mümkünsə) və blokların saxlanılması ilə güncellendiyini yoxlayır.
 - `readonly`: `read_write`-ə bənzər, lakin Iroha heç bir sürətli görüntüləri yaratmır.
 - `disabled`: Iroha ne yeni sürətli görüntüləri yaratır, nə də başlanğıc zamanı mövcud olanları oxuyur.
 

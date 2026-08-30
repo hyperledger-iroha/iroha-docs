@@ -3,13 +3,13 @@
 ## Outcome
 
 Check and compile a Kotodama V1 contract, execute its public entrypoint
-locally, deploy the verified IVM artifact, simulate the deployed entrypoint,
-and submit it with an explicitly quoted authority-paid fee.
+locally, deploy the verified IVM artifact, simulate the deployed
+entrypoint, and submit it with an explicitly quoted authority-paid fee.
 
 ## Prerequisites
 
 - An Iroha source checkout at commit
-  `bc7114ed1c7f265a156d2100ff09e851cc95702c`, Rust, and Cargo.
+  `0010c5a70039eac101a4846499ba9ceaf43eb65c`, Rust, and Cargo.
 - The current `iroha` CLI plus a funded Taira client from
   [Connect to Taira](./connect-to-taira.md).
 - Absolute paths in `IROHA_CONFIG` and `IROHA_PRIVATE_KEY_FILE`. The key
@@ -147,14 +147,15 @@ jq '{contract_address, code_hash_hex, final, fee_quotes}' \
 
 The empty `charge_limits` request is not a copied asset identifier: the
 helper accepts the exact live quote before signing. Compare the returned
-charge asset with the current faucet response. Do not attach legacy
-`gas_asset_id` metadata to contract calls.
+charge asset with the current faucet response. Contract calls accept fee
+selection only through the typed live quote; `gas_asset_id` transaction
+metadata is not part of the first-release contract.
 
 ### 5. Simulate and call the deployed entrypoint
 
 Simulation runs the public entrypoint on Torii without submission. The
-following call is a transaction and therefore selects the authority fee payer
-explicitly. Both commands bind the 1,500,000 gas limit.
+following call is a transaction and therefore selects the authority fee
+payer explicitly. Both commands bind the 1,500,000 gas limit.
 
 ```bash
 iroha --config "$IROHA_CONFIG" --machine contract call \
@@ -234,14 +235,14 @@ simulations return `["3", "5"]`, and the submitted call reaches `Applied`.
 - A view-only entrypoint error means `compute` was routed through the wrong
   command family. This sample declares `kotoage`, so use call simulation or
   submission.
-- Contract calls require a positive typed gas limit. Top-level legacy gas
-  or fee-asset metadata is rejected.
+- Contract calls require a positive typed gas limit. The first-release call
+  contract rejects top-level gas or fee-asset metadata.
 
 ## Source and related docs
 
-- [Kotodama V1 command implementation at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/ivm/src/bin/koto.rs)
-- [Tuple-return source sample at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
-- [Native deployment helper at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
-- [Contract integration tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/contracts.rs)
+- [Kotodama V1 command implementation at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/src/bin/koto.rs)
+- [Tuple-return source sample at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
+- [Native deployment helper at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
+- [Contract integration tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs)
 - [Smart contracts](/blockchain/smart-contracts.md)
 - [CLI reference](/get-started/operate-iroha-via-cli.md)

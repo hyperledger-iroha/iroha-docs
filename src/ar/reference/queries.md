@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /reference/queries.md
-translation_source_hash: 22e8a75acd72d066e3516ba46a0afe075d2d02790154458aec00a5d8bb861838
+translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -99,10 +99,17 @@ translation_engine: nllb-200-ct2
 |`FindLaneRelayEnvelopeByRef` |ابحث عن غطاء مُحقق.|
 |`FindSorafsProviderOwner` |تحل مالك مقدم SoraFS |
 |`FindDataspaceNameOwnerById` |حل مالك مساحة بيانات اسم. |
-|`FindMusubiReleaseByRef` |العثور على Musubi الإفراج عن طريق المرجعية. |
-|`FindMusubiPackageVersions` |إصدارات قائمة لحزمة Musubi. |
-|`FindMusubiPackageReleases` |إصدارات القائمة للحزمة Musubi. |
-|`FindMusubiShortAliasByName` |قم بحل مستعار Musubi قصير |
+|`FindMusubiExactPackageV1` |اقرأ سجل الحزمة المحددة ومراجعاتها الحالية. |
+|`FindMusubiExactReleaseV1` |اقرأ صورة واحدة دقيقة|
+|`FindMusubiProviderBundleAttestationV1` |اقرأ شهادة مجموعة الأرشيف من مقدم واحد. |
+|`FindMusubiResolverIndexV1` |صفحة مؤشر حل النهائي. |
+|`FindMusubiVersionsV1` |الصفحة الإصدارات النهائية لحزمة واحدة. |
+|`FindMusubiMaintainersV1` |الصفحة قبلت الحفاظ والدعوات المنتظرة. |
+|`FindMusubiArchiveLocationsV1` |الصفحة النهائية SoraFS المواقع لمؤلف واحد. |
+|`FindMusubiArchiveRetentionV1` |صفحة سجلات الاحتفاظ بالأرشيف |
+|`FindMusubiAliasV1` |اقرأ الهدف الحالي ومراجعة الاسم العالمي |
+|`FindMusubiAliasHistoryV1` |صفحة تاريخ إعادة الهدف غير المتغير من مستعار عالمي. |
+|`FindMusubiOrderedPrefixV1` |حزم الصفحات تحت إضافة هيكلية واحدة مرتبة. |
 
 ## المحفزات والعقود والمعاملات والحواجز {#triggers-contracts-transactions-and-blocks}
 

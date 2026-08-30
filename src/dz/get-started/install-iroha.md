@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 49e1a29243151fec1ada2729c315378455a8502811e1ae124e5917a88d59b55d
+translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -36,7 +36,10 @@ cargo build --workspace
 operator-focused བཟོ་སྐྲུན་གྱི་དོན་ལུ་ མང་ཤོས་ཀྱི་པིན་་རི་ཚུ་རྐྱངམ་ཅིག་ བསྡུ་སྒྲིག་འབད་:
 
 ```bash
-cargo build --release -p irohad -p iroha_cli -p iroha_kagami
+cargo build --release \
+  -p irohad --bin iroha3d --bin iroha3d_taira \
+  -p iroha_cli --bin iroha \
+  -p iroha_kagami --bin kagami
 ```
 
 འབྱུང་ཁུངས་ཀྱི་འགྱུར་ལྡེ་ཚུ་ `target/debug/` ཡང་ན་ `target/release/` ལུ་བྲིས་ནུག
@@ -44,14 +47,16 @@ cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ## 4. གཞི་བཙུགས་འབད་མི་ ལག་ཆས་ཚུ་ བརྟག་ཞིབ་འབད་ {#_4-verify-the-installed-tools}
 
 ```bash
-cargo run --bin irohad -- --help
+cargo run -p irohad --bin iroha3d -- --help
+cargo run -p irohad --bin iroha3d_taira -- --help
 cargo run --bin iroha -- --help
 cargo run --bin kagami -- --help
 ```
 
-ཁྱོད་ཀྱིས་ལག་ལེན་འཐབ་མི་ ཌའི་ལོག་གསུམ་འདི་:
+ཁྱོད་ཀྱིས་ སྤྱིར་བཏང་སྦེ་ལག་ལེན་འཐབ་མི་ ཌའི་ལོག་གྲངས་༤ འདི་ཚུ་ཨིན།
 
-- `irohad` འདྲན་འདྲ་གི་ daemonགི་དོན་ལུ་
+- `iroha3d` ཚད་ལྡན་པི་རཌ་མཱོན་གི་དོན་ལུ་
+- `iroha3d_taira` ཚད་ལྡན་ Taira བདེན་ཁུངས་སྐྱེལ་འཕྲུལ་ཆས་གཏང་ཐངས་ཀྱི་དོན་ལུ་
 - `iroha`གི་དོན་ལུ་ CLI རྒྱུན་འགྲུལ་འཐབ་མི་ཐོ་བཀོད་འབད་ནིའི་དོན་ལས་ Torii དང་ ལས་འཛིན་གྱི་མཐའན་མཇུག་གི་སྒོ་ཚུ་
 - `kagami` ལྡེ་མིག་ཚུ་དང་ འབྱུང་ཁུངས་ཀྱི་ཐོ་ཡིག་ དེ་ལས་ ས་གནས་ཁ་ཐུག་གི་དྲ་རྒྱ་ཚུ་གི་དོན་ལུ་
 

@@ -1,16 +1,17 @@
 ---
 translation_locale: zh-hans
 translation_source: /guide/configure/genesis.md
-translation_source_hash: d3c04386c8d6e2778e53477e8f717a04247a66714cfed2c25ca84fbfb3871813
+translation_source_hash: a6b8b2b02e0074e6c90d9aa9337af3e2496a02beb2f57f575dc0780014df04b2
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: google-translate
 ---
 
-# 创世记 {#genesis}
+# 创世纪 {#genesis}
 
-创世纪定义了初始链状态.可编辑的源是 JSON 表格,一个 Iroha 3 节点消耗了一个签署的 Norito 交易文件.
+Genesis 定义了初始链状态。可编辑源是 JSON 显现，
+和一个 Iroha 3 节点消耗一个签名的 Norito 交易文件。
 
-::: details 默认基因表
+::: details 默认创世清单
 
 <<< @/snippets/genesis.json
 
@@ -18,17 +19,21 @@ translation_engine: nllb-200-ct2
 
 ## 文件 {#files}
 
-在 `defaults/genesis.json` 上游存储库中,输出目录中写入 Kagami 生成的网络自己的表格和签署交易:
+上游存储库在以下位置提供了默认清单 `defaults/genesis.json`.
+Kagami-生成的网络将自己的清单和签名的交易写入
+输出目录：
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-在该目录中生成的 `README.md`记录了选定的个人资料的精确文件和启动命令.
+生成的 `README.md` 在该目录中记录确切的文件并启动
+所选配置文件的命令。
 
-## 同龄人配置 {#peer-configuration}
+## 对等配置 {#peer-configuration}
 
-在 `config.toml` 的 `[genesis]` 节中,同行指出签署的创始交易:
+节点指向已签名的创世交易 `[genesis]` 的部分
+`config.toml`:
 
 ```toml
 [genesis]
@@ -36,22 +41,32 @@ file = "./genesis.signed.nrt"
 public_key = "ed0120..."
 ```
 
-网络中的所有同行必须同意签署的基因交易和基因公钥.
+网络中的所有节点必须就已签名的创世交易和
+创世公钥。
 
-## 创世纪的签名 {#signing-genesis}
+## 签署创世纪 {#signing-genesis}
 
-如果您手动编辑表格,在启动同行之前验证并签字:
+如果您手动编辑清单，请在启动对等点之前验证并对其进行签名：
 
 ```bash
 cargo run --bin kagami -- genesis validate ./genesis.json
 cargo run --bin kagami -- genesis sign ./genesis.json \
-  --private-key "$GENESIS_PRIVATE_KEY_HEX" \
-  --algorithm ed25519 \
+  --private-key-file "$GENESIS_PRIVATE_KEY_FILE" \
   --out-file ./genesis.signed.nrt
 ```
 
-对于NPOS或 Nexus 个人资料,包括拓学和 BLS 根据生成的配置文件所要求的拥有证明. Kagami `localnet`, `wizard`, 配置文件生成命令将自动处理这些细节.
+`GENESIS_PRIVATE_KEY_FILE` 必须是业主持有模式-`0600`, 单链接
+包含一个规范私钥多重哈希和最终的常规文件
+换行符。 Kagami 拒绝符号链接并且从不接受原始创世私有
+命令行上的键。
 
-## 重复创世记 {#recommitting-genesis}
+对于 NPoS 或 Nexus 配置文件，包括拓扑和 BLS 所有权证明
+生成的配置文件所需的。 Kagami `localnet`, `wizard`, 和简介
+生成命令会自动处理这些细节。
 
-一个同行只会在存储空时进行生成.在一次性本地网中测试一个新的生成,停止同行,删除其生成的状态目录,并从新签署的生成开始.除非每个验证器协调相同的迁移,否则不要在运行的网络上替换基因.
+## 重新承诺创世纪 {#recommitting-genesis}
+
+节点仅在其存储为空时才提交创世。测试新的起源
+一次性本地网，停止对等点，删除其生成的状态目录，
+并从新签署的创世开始。不要在运行时替换 genesis
+网络，除非每个验证者都协调相同的迁移。

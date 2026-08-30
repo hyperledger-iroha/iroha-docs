@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /reference/instructions.md
-translation_source_hash: e300187da832a8f82258a36b7c4aaebf505adc09c771de5b0c7ab8fb0052d3db
+translation_source_hash: 9ba8e06d10f0896169feddbdad32f4fed7a8d46effa2293c64df578c197c970e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -29,6 +29,7 @@ translation_engine: nllb-200-ct2
 | [Жергiлiктi активтердiң депозитi ](/kk/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
 | [Жалпы активтердің құлыптары](/kk/blockchain/escrow.md#generic-asset-locks) |`OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, `ExpireAssetLock` |
 | [Анонимді активтерді кепілдендіру](/kk/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
+| [Атомдық құпия есеп айырысу](/kk/blockchain/instructions.md#atomic-private-settlement) | `ActivatePrivateSettlementPoolV1`, `RotatePrivateSettlementPoolPolicyV1`, `FinalizeAtomicPrivateSettlementV1`, `AbortAtomicPrivateSettlementV1` |
 
 Қосымша Iroha 3 модульдері тапсырмалар тізілімі арқылы доменге тән нұсқаулық түрлерін тіркей алады. Ағымдағы көз ағашынан құрылған схема деңгейі тізімі үшін [Дан модельінің схемасын қараңыз](./data-model-schema.md).
 

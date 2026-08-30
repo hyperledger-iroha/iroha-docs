@@ -1,9 +1,9 @@
 ---
 translation_locale: ur
 translation_source: /blockchain/instructions.md
-translation_source_hash: adc3eff9758dd73e9114e78eaa18ddf6271db3bc4042611e1ed6ed1aac226246
+translation_source_hash: ade5ba2b693de7e798490be0947099d0306d9565b88550e201dccd181810fb18
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Iroha خصوصی ہدایات {#iroha-special-instructions}
@@ -21,6 +21,7 @@ translation_engine: nllb-200-ct2
 | [Grant/Revoke](#grant-revoke) |اجازت اور کردار دیں یا ہٹا دیں۔ |
 | [منتقلی](#transfer) |ملکیت یا اثاثہ کی قیمت منتقل کرنا۔ |
 | [مقامی گرو اور اثاثوں کے تالے](#native-escrow-and-asset-locks) |پروٹوکول کی دیکھ بھال میں عددی اثاثوں کو بند کریں. |
+| [ایٹمی نجی تصفیہ](#atomic-private-settlement) | خفیہ پولز اور ایٹمی بنڈلز کو منظم کرتا ہے۔ |
 | [ExecuteTrigger](#executetrigger) |ٹرگرز کو انجام دیں۔ |
 | [لاگ / کسٹم / اپ گریڈ](#other-instructions) |رجسٹر، توسیع، یا رن ٹائم رویے کو اپ گریڈ. |
 
@@ -42,6 +43,7 @@ translation_engine: nllb-200-ct2
 | [Grant/Revoke](#grant-revoke) | [کردار، اجازت کے ٹوکن](/ur/blockchain/permissions.md) |اکاؤنٹس یا کردار |
 | [منتقلی](#transfer) |ڈومینز، اثاثوں کی تعریفیں، عددی اثاثے، NFTs |اکاؤنٹس |
 | [مقامی گرو اور اثاثوں کے تالے](#native-escrow-and-asset-locks) |اعداد و شمار کے اثاثوں کی ضمانتیں ، اثاثوں کو بند کرنا ، گمنام اثاثہ جات کی ذمہ داریاں |خریدار، منزل یا تنازعہ تقسیم |
+| [ایٹمی نجی تصفیہ](#atomic-private-settlement) | مخصوص روٹ کے خفیہ پولز، پالیسی کی گردشیں، حتمی بنڈلز اور منسوخی کے نشانات | |
 | [ExecuteTrigger](#executetrigger) |ٹرگرز |                      |
 | [لاگ / کسٹم / اپ گریڈ](#other-instructions) |نوشتہ جات، عملدرآمد کے لئے مخصوص مفید بوجھ ، عملدرآمد کو اپ گریڈ کرنا |                      |
 
@@ -234,7 +236,10 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 رجسٹر اور غیر رجسٹر ہم مرتبہ. اگر آپ کے پاس پہلے سے ہی نہیں ہیں تو BLS کلید اور PoP کے ساتھ `kagami` پیدا کریں:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./peer-key
+PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
+PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
@@ -325,6 +330,14 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 مارکیٹ پلیس ایسرو کا استعمال `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, اور `ResolveEscrowDispute`. عام اثاثہ بندش کا استعمال `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, اور `ExpireAssetLock`. Anonymous escrow مارکیٹ لائف سائیکل کی عکاسی کرتا ہے `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, اور `ResolveAnonymousEscrowDispute`.
 
 ان ISIs میں فی الحال فرسٹ کلاس CLI کمانڈز نہیں ہیں۔ ٹائپ شدہ SDK بلڈرز یا سیریل انسٹرکشن پے لوڈز کا استعمال کریں ، اور زندگی کے سائیکل کی تفصیلات ، اجازتیں ، سوالات ، واقعات ، اور Rust مثالوں کے لئے [Native Asset Escrow](/ur/blockchain/escrow.md) کو دیکھیں.
+
+## ایٹمی نجی تصفیہ {#atomic-private-settlement}
+
+گورننس کے تحت ایٹمی نجی تصفیے کی ہدایات شفاف Native AMX سے الگ ہیں۔ `ActivatePrivateSettlementPoolV1` ترمیم شدہ گورننس پروجیکشن اور کینونیکل ماخذ کمٹمنٹس سے ایک عین روٹ کے لیے ایک خفیہ `pool` بناتا ہے۔ `FinalizeAtomicPrivateSettlementV1` تمام شریک کمیٹیوں سے تصدیق شدہ مکمل بنڈل کو ایٹمی طور پر لاگو کرتا ہے۔ `AbortAtomicPrivateSettlementV1` صرف اسپانسر سے مجاز عوامی اختتامی نشان شائع کرتا ہے۔
+
+صرف پرائیویسی گورننس `RotatePrivateSettlementPoolPolicyV1` چلا سکتی ہے۔ ہدایت عین موجودہ گورننس ڈائجسٹ مانگتی ہے؛ روٹ، `pool`، اثاثہ بائنڈنگ کمٹمنٹ، اسٹیٹ فرنٹیئر، ری پلے سیٹس اور حتمی رسیدیں برقرار رکھتی ہے، عوامی ریویژن میں ایک کا اضافہ کرتی ہے اور آڈیٹر کلید کا نیا دور استعمال کرتی ہے۔ گردش شمولیت کی اونچائی پر فعال ہوتی ہے، اور اسی روٹ اور `pool` کی رسید اس اونچائی پر حتمی نہیں ہو سکتی۔ عوامی ریویژن سلسلہ گردش سے پہلے کی حتمی رسیدوں کو دوبارہ آغاز کے بعد بھی درست اور ان کے عین ری پلے کو idempotent رکھتا ہے۔ پرانی پالیسی کے زیر عمل بنڈلز اسٹیٹ بدلنے سے پہلے بند انداز میں ناکام ہوتے ہیں۔ آپریٹرز پرانی ڈکرپشن کلیدیں محفوظ رکھیں، یا انہیں تلف کرنے سے پہلے کیپسولز کی گورننس کے تحت دوبارہ ریپنگ اور اس کی جانچ کریں۔
+
+یہ راستہ بطور ڈیفالٹ غیر فعال ہے اور پروڈکشن کے لیے اہل قرار نہیں دیا گیا۔ کنفیگریشن، اختیار، آڈٹ، بازیابی اور ریلیز کے تقاضوں کے لیے [ڈیٹا اسپیسز کے درمیان ایٹمی نجی تصفیہ چلائیں](/get-started/atomic-private-settlement) دیکھیں۔
 
 ## گرانٹ / منسوخی {#grant-revoke}
 

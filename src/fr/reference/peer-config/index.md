@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /reference/peer-config/index.md
-translation_source_hash: 5cc6ddf62a45f655d61a0ff3ebc7e20b939fe78c9d542087b717c2e17e19250d
+translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f29469aaf4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 La configuration locale des pairs est définie dans les fichiers TOML. Cela diffère de la configuration en chaîne modifiée par l'intermédiaire des instructions [`SetParameter`](/fr/blockchain/instructions.md#setparameter). Le comportement de production doit être représenté dans un fichier de configuration ou un paramètre en chaîne; les variables d'environnement ne sont pas des portes de fonctionnalité.
 
-Utilisez l'argument [`--config`](../irohad-cli#arg-config) CLI pour spécifier le chemin vers le fichier de configuration.
+Utilisez l'argument [`--config`](../iroha3d-cli#arg-config) CLI pour spécifier le chemin vers le fichier de configuration.
 
 ## Template {#template}
 
@@ -65,4 +65,4 @@ La configuration qui en résulte sera: `chain` à partir `a.toml`, `max_content_
 
 ## Résolution des problèmes {#troubleshooting}
 
-Passez le drapeau [`--trace-config`](../irohad-cli#arg-trace-config) CLI pour voir une trace de la façon dont la configuration est lue et analysée.
+Passez le drapeau [`--trace-config`](../iroha3d-cli#arg-trace-config) CLI pour voir une trace de la façon dont la configuration est lue et analysée.

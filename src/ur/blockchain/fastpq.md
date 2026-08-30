@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /blockchain/fastpq.md
-translation_source_hash: f1dc55e4b2146de009203e19adb5cc1e9ce5302bc0ee27fe0b442693c5112c22
+translation_source_hash: 55b57e6aeeef2aefa1c8359d9b9487029b106eaebed12a58268b61dc583e97f6
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -905,7 +905,7 @@ AIR ساخت کھولنے کو `R_air_composition` کے تحت تصدیق کرن
 
 ## پروور لین {#prover-lane}
 
-`irohad` شروع ہونے پر FastPQ prover lane کو شروع کرتا ہے اگر پروور بیک اینڈ کو ابتدائی بنایا جاسکتا ہے۔ لین ایک محدود قطار کے ساتھ پس منظر کا کام ہے۔ ایک بلاک کے عملدرآمد کے گواہ کی پیداوار کرنے کے بعد ، commit path ایک پروور ٹاسک پیش کرتا ہے جس میں بلاک ہیش ، اونچائی ، نقطہ نظر اور گواہ شامل ہیں۔
+`iroha3d` شروع ہونے پر FastPQ prover lane کو شروع کرتا ہے اگر پروور بیک اینڈ کو ابتدائی بنایا جاسکتا ہے۔ لین ایک محدود قطار کے ساتھ پس منظر کا کام ہے۔ ایک بلاک کے عملدرآمد کے گواہ کی پیداوار کرنے کے بعد ، commit path ایک پروور ٹاسک پیش کرتا ہے جس میں بلاک ہیش ، اونچائی ، نقطہ نظر اور گواہ شامل ہیں۔
 
 اگر لین کام نہیں کررہا ہے یا قطار بھری ہوئی ہے تو ، نوکری کو چھوڑ دیا جاتا ہے اور عام بلاک پروسیسنگ جاری رہتی ہے۔ اس کا مطلب یہ ہے کہ پس منظر پروور لین ٹرانزیکشن ایڈمیشن یا کنسنس گیٹ نہیں ہے۔ یہ پہلے ہی عمل میں لایا گیا ریاست پر ثبوت کی پیداوار کا راستہ ہے۔
 
@@ -1072,7 +1072,7 @@ $$
 
 ## SCCP شفاف پیغام کے ثبوت {#sccp-transparent-message-proofs}
 
-SCCP ہیلپر خانہ شفاف کراس چین پیغام پروف کے لئے بھی FastPQ کا استعمال کرتا ہے۔ یہ راستہ `irohad` پس منظر پروور لین سے الگ ہے۔ یہ ایک FastPQ بیچ کو براہ راست SCCP پیغام ثبوت بنڈل اور manifesto سے تعمیر کرتا ہے، پھر کھلی تصدیق کے لئے نتیجہ ثابت لفافہ.
+SCCP ہیلپر خانہ شفاف کراس چین پیغام پروف کے لئے بھی FastPQ کا استعمال کرتا ہے۔ یہ راستہ `iroha3d` پس منظر پروور لین سے الگ ہے۔ یہ ایک FastPQ بیچ کو براہ راست SCCP پیغام ثبوت بنڈل اور manifesto سے تعمیر کرتا ہے، پھر کھلی تصدیق کے لئے نتیجہ ثابت لفافہ.
 
 SCCP بیچ میں `fastpq-lane-balanced` اور تین میٹا ڈیٹا منتقلی کا استعمال کیا جاتا ہے:
 
@@ -1210,14 +1210,14 @@ metal_debug_enum = false
 metal_debug_fused = false
 ```
 
-اسی عمل اور ٹیلی میٹری لیبلز کو `irohad` سے ختم کیا جاسکتا ہے:
+اسی عمل اور ٹیلی میٹری لیبلز کو `iroha3d` سے ختم کیا جاسکتا ہے:
 
 ```shell
-irohad --fastpq-execution-mode auto
-irohad --fastpq-poseidon-mode cpu
-irohad --fastpq-device-class apple-m4
-irohad --fastpq-chip-family m4
-irohad --fastpq-gpu-kind integrated
+iroha3d --fastpq-execution-mode gpu
+iroha3d --fastpq-poseidon-mode cpu
+iroha3d --fastpq-device-class apple-m4
+iroha3d --fastpq-chip-family m4
+iroha3d --fastpq-gpu-kind integrated
 ```
 
 ترتیب کے شعبوں کے لئے ماحولیاتی متغیرات کی بھی حمایت کی جاتی ہے۔ FastPQ مخصوص متغیر میں شامل ہیں:
@@ -1258,4 +1258,4 @@ irohad --fastpq-gpu-kind integrated
 - `TransferTranscript`
 - `AxtFastpqBinding`
 - `LaneFastpqProofMaterial`
-- [`irohad` FastPQ اختیارات ](/ur/reference/irohad-cli.md#arg-fastpq-execution-mode)
+- [`iroha3d` FastPQ اختیارات ](/ur/reference/iroha3d-cli.md#arg-fastpq-execution-mode)

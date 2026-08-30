@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/iroha-explained.md
-translation_source_hash: 3fdd22338e826b1ce335ebf5e4e850cf3deb9415c36a0c8d21ad63c397cec8c0
+translation_source_hash: ba591b2c1aa819837177625b1ae457b5fa492197576dc690b19ca2897562a436
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,7 +12,7 @@ Iroha 3 - birinchi chiqarilgan Hyperledger Iroha platformasi. Xuddi shu markaz o
 
 ## Asosiy qurilish bloklari {#core-building-blocks}
 
-- `irohad` tengdoshlarni boshqaradi
+- `iroha3d` tengdoshlarni boshqaradi
 - Torii mijoz va operator darvozasi hisoblanadi
 - Sumeragi konsensusni o'zlashtiradi
 - Norito - bu [kanonik ikkilamchi format ](/uz/reference/norito.md)

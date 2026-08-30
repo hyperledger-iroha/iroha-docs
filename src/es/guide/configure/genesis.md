@@ -1,16 +1,17 @@
 ---
 translation_locale: es
 translation_source: /guide/configure/genesis.md
-translation_source_hash: d3c04386c8d6e2778e53477e8f717a04247a66714cfed2c25ca84fbfb3871813
+translation_source_hash: a6b8b2b02e0074e6c90d9aa9337af3e2496a02beb2f57f575dc0780014df04b2
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: google-translate
 ---
 
 # Génesis {#genesis}
 
-Génesis define el estado inicial de la cadena. La fuente editable es un JSON manifiesto, y un nodo Iroha 3 consume un archivo de transacción firmado Norito.
+Génesis define el estado inicial de la cadena.La fuente editable es una JSON manifiesto,
+y un Iroha 3 el nodo consume un firmado Norito archivo de transacciones.
 
-::: details Manifiesto de génesis por defecto
+::: details Manifiesto de génesis predeterminado
 
 <<< @/snippets/genesis.json
 
@@ -18,17 +19,21 @@ Génesis define el estado inicial de la cadena. La fuente editable es un JSON ma
 
 ## Archivos {#files}
 
-El repositorio upstream envía un manifiesto predeterminado al `defaults/genesis.json`. Las redes generadas por Kagami escriben su propio manifiesto y transacción firmada en el directorio de salida:
+El repositorio ascendente envía un manifiesto predeterminado en `defaults/genesis.json`.
+Kagami-Las redes generadas escriben su propio manifiesto y transacción firmada en
+el directorio de salida:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-El `README.md` generado en ese directorio registra los archivos exactos y los comandos de lanzamiento para el perfil seleccionado.
+el generado `README.md` en ese directorio registra los archivos exactos y ejecuta
+comandos para el perfil seleccionado.
 
-## Configuración entre pares {#peer-configuration}
+## Configuración de pares {#peer-configuration}
 
-Los pares señalan la transacción de génesis firmada en la sección `[genesis]` del `config.toml`:
+Los pares señalan la transacción de génesis firmada en el `[genesis]` sección de
+`config.toml`:
 
 ```toml
 [genesis]
@@ -36,22 +41,32 @@ file = "./genesis.signed.nrt"
 public_key = "ed0120..."
 ```
 
-Todos los pares de la red deben ponerse de acuerdo en la transacción genesis firmada y en la clave pública genesis.
+Todos los pares en la red deben estar de acuerdo sobre la transacción de génesis firmada y el
+clave pública de génesis.
 
-## Firmar el Génesis {#signing-genesis}
+## Firmando Génesis {#signing-genesis}
 
-Si edita manualmente un manifiesto, valida y firma antes de comenzar a trabajar con pares:
+Si edita un manifiesto manualmente, valídelo y fírmelo antes de iniciar con los pares:
 
 ```bash
 cargo run --bin kagami -- genesis validate ./genesis.json
 cargo run --bin kagami -- genesis sign ./genesis.json \
-  --private-key "$GENESIS_PRIVATE_KEY_HEX" \
-  --algorithm ed25519 \
+  --private-key-file "$GENESIS_PRIVATE_KEY_FILE" \
   --out-file ./genesis.signed.nrt
 ```
 
-Para NPOS o Nexus los perfiles, incluyen la topología y BLS Las pruebas de posesión requeridas por el perfil generado. Kagami `localnet`, `wizard`, y los comandos de generación de perfil manejan esos detalles automáticamente.
+`GENESIS_PRIVATE_KEY_FILE` debe ser un modelo propiedad del propietario.`0600`, enlace único
+archivo normal que contiene un multihash canónico de clave privada y un archivo final
+nueva línea. Kagami Rechaza los vínculos simbólicos y nunca acepta una génesis cruda y privada.
+clave en la línea de comando.
 
-## Recomiendo el Génesis {#recommitting-genesis}
+Para NPoS o Nexus perfiles, incluyen la topología y BLS Pruebas de posesión
+requerido por el perfil generado. Kagami `localnet`, `wizard`, y perfil
+Los comandos de generación manejan esos detalles automáticamente.
 
-Para probar una nueva genesis en un localnet desechable, detenga a los pares, elimine su directorio de estado generado y comience desde la nueva genesis firmada. No reemplace la genesis en una red en ejecución a menos que cada validador esté coordinando la misma migración.
+## Reenviar Génesis {#recommitting-genesis}
+
+Un par solo comete génesis cuando su almacenamiento está vacío.Para probar una nueva génesis en
+una red local desechable, detener a los pares, eliminar su directorio de estado generado,
+y comenzar desde la nueva génesis firmada.No reemplace genesis en un running
+red a menos que cada validador esté coordinando la misma migración.

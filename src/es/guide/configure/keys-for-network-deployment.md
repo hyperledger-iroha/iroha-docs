@@ -1,9 +1,9 @@
 ---
 translation_locale: es
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 17ffd2979e2ff7a0e0c3f5c9f1457a5eb630713bba40fca0246afc0c2f7fd5e4
+translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Claves para el despliegue de la red {#keys-for-network-deployment}
@@ -21,30 +21,35 @@ Cada red necesita un material clave distinto para clientes, pares, firma de gén
 Para las implementaciones locales o de prueba, permita a Kagami generar todos estos archivos juntos:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 Para una red o perfil existente, utilice el flujo guiado:
 
 ```bash
-cargo run --bin kagami -- wizard --profile nexus
+cargo run --bin kagami -- wizard
 ```
 
 ## Generar pares de claves individuales {#generate-individual-key-pairs}
 
-Utilizar `kagami keys` para el material de llave independiente:
+Use `kagami keys` for standalone key material:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm ed25519 --json
+cargo run --bin kagami -- keys --algorithm ed25519 \
+  --out-dir ./client-key
 ```
 
-Para el material de validación BLS incluya una prueba de posesión:
+For BLS validator material, include a Proof-of-Possession:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./validator-key
 ```
 
-Utilice `--seed` únicamente para dispositivos de desarrollo reproducibles. Para el despliegue en producción, genera llaves nuevas y almacena las llaves privadas fuera del repositorio.
+Use `--seed-hex` only with an exact 32-byte hexadecimal secret for reproducible
+development fixtures. For production deployment, omit it so Kagami uses
+operating-system randomness, then move the unencrypted private-key export into
+the approved custody boundary. The command never prints private keys.
 
 ## Consistencia entre pares {#peer-consistency}
 

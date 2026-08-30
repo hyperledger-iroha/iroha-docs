@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 9341b2404624dec2230bc294c3d60dc124ac9574a0a5803b9bba744f4c5e7f50
+translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2
 Ағымдағы Kagami кодынан төрт жұптық локальдік желіні құру:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 Шығу каталогында сәйкес келетін теңгерімдік конфигурациялар, `genesis.json`, `genesis.signed.nrt`, `client.toml` және көмекші скрипттер бар.
@@ -33,10 +33,10 @@ cargo run --bin kagami -- docker \
   --peers 4 \
   --config-dir ./localnet \
   --image hyperledger/iroha:dev \
-  --out-file ./localnet/docker-compose.yml \
+  --out-file ./docker-compose.yml \
   --force
 
-docker compose -f ./localnet/docker-compose.yml up
+docker compose -f ./docker-compose.yml up
 ```
 
 Әдетті пайдаланған ұяшықта:
@@ -72,7 +72,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 Nexus профилі бар түпкiлiктi теңгершiн жүргiзу үшiн:
 
 ```bash
-./target/release/irohad --sora --config ./defaults/nexus/config.toml
+./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
 ```
 
 Осы профильге CLI қатынау үшін `defaults/nexus/client.toml` қолданылсын.
@@ -88,7 +88,7 @@ Nexus профилі бар түпкiлiктi теңгершiн жүргiзу ү
 Жаратылған Compose ұяшығы үшін:
 
 ```bash
-docker compose -f ./localnet/docker-compose.yml down
+docker compose -f ./docker-compose.yml down
 ```
 
 Желі жұмыс істегеннен кейін [мен жалғастырыңыз Iroha 3 арқылы CLI](/kk/get-started/operate-iroha-via-cli.md) арқылы әрекет ету.

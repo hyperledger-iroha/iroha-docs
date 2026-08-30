@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 0185b6a341ee90ed6cd52fb9f510549b20592468abe6627d3efa639c3b67d1fd
+translation_source_hash: aa8e079684879bdcda2b4439e9c12742d4ab477e6f560f7c326a59b6be5bf666
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,7 +16,7 @@ translation_engine: nllb-200-ct2
 
 - የቁጥር ሀብት ትርጉም እና በቂ መጠን ያለው የመክፈቻ / ሻጭ።
 - አንድ እርምጃ ለሚያቀርብ ለእያንዳንዱ ወገን የገንዘብ ድጋፍ የተደረገበት, ነጠላ ቁልፍ I105 ደንበኞች። የክፍያ ንብረቱ ከወቅታዊው Taira faucet ምላሽ ጋር የሚስማማ በቀጥታ ባለስልጣን የተከፈለ `fee_payment` ዓላማ ይጠቀሙ; ከዝግጅት ውስጥ የንብረትን ID አያካትቱ.
-- የአሁኑ Rust ወይም Python SDK ከ Iroha ተሳትፎ ማድረግ `bc7114ed1c7f265a156d2100ff09e851cc95702c`.
+- የአሁኑ Rust ወይም Python SDK ከ Iroha ተሳትፎ ማድረግ `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
 - ለ JavaScript የኮምፒተር ምሳሌ፣ Node.js 24 እና በአካባቢው የተገነባ `@iroha/iroha-js` ማሸጊያ እና ተወላጅ `iroha_js_host`; ይከተሉ [JavaScript SDK ምንጭ-ግንባታ ማዋቀር](/am/guide/tutorials/javascript.md#build-from-source). የአሳሽ ገንቢዎች ማቅረብ አለባቸው `compilerUrl` የአካባቢውን አስተናጋጅ ከመጫን ይልቅ።
 - Taira የንብረት ማስተላለፍ እና የመጠባበቂያ መመሪያዎችን መቀበል አለበት ። የንብረት ባለቤቶች የተለመደውን የሕይወት ዑደት መጠቀም ይችላሉ የእነሱ የንብረት ፖሊሲ ሲፈቅድለት; አለመግባባት ለመፍታት ዓለም አቀፍ `CanResolveEscrowDispute` ፈቃድ ይጠይቃል. አስፈላጊው የህዝብ አውታረ መረብ ባለስልጣን በሌለበት ጊዜ የተፈጠረ አካባቢያዊ አውታረመረብ ይጠቀሙ።
 
@@ -249,10 +249,10 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 
 ## ምንጭ እና ተዛማጅ ሰነዶች {#source-and-related-docs}
 
-- [የተጣራ ግዴታ ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/isi/escrow.rs) ላይ የአገር ውስጥ የኤስኮር መመሪያ ሞዴል
-- [የተጣራ ግዴታ ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/native_escrow.rs) ላይ የአገር ውስጥ የኤስሮ ውህደት ሙከራዎች
-- [Python የተጣራ ግዴታ ላይ የዋስትና ደንበኛ ዘዴዎች](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama የተጣራ ግዴታ ላይ ተወላጅ ኤስኮር ናሙና](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [የተጣራ ግዴታ ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs) ላይ የአገር ውስጥ የኤስኮር መመሪያ ሞዴል
+- [የተጣራ ግዴታ ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs) ላይ የአገር ውስጥ የኤስሮ ውህደት ሙከራዎች
+- [Python የተጣራ ግዴታ ላይ የዋስትና ደንበኛ ዘዴዎች](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama የተጣራ ግዴታ ላይ ተወላጅ ኤስኮር ናሙና](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [የአገሬው ተወላጅ ንብረት የዋስትና ማስከበሪያ ](/am/blockchain/escrow.md)
 - [ተንቀሳቃሽ ሀብቶች](./fungible-assets.md)
 - [ፍቃዶች እና ሚናዎች](./permissions-and-roles.md)

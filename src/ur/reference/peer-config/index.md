@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /reference/peer-config/index.md
-translation_source_hash: 5cc6ddf62a45f655d61a0ff3ebc7e20b939fe78c9d542087b717c2e17e19250d
+translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f29469aaf4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 مقامی ہم مرتبہ ترتیب TOML فائلوں میں مقرر کی جاتی ہے۔ یہ [`SetParameter`](/ur/blockchain/instructions.md#setparameter) ہدایات کے ذریعہ تبدیل کردہ آن لائن ترتیب سے مختلف ہے۔ پیداوار کا رویہ تشکیل فائل یا آن لائن پیرامیٹر میں نمائندگی کیا جانا چاہئے۔ ماحول متغیرات فیچر گیٹس نہیں ہیں۔
 
-ترتیب فائل کے راستے کی وضاحت کرنے کے لئے [`--config`](../irohad-cli#arg-config) CLI دلیل کا استعمال کریں۔
+ترتیب فائل کے راستے کی وضاحت کرنے کے لئے [`--config`](../iroha3d-cli#arg-config) CLI دلیل کا استعمال کریں۔
 
 ## سانچہ {#template}
 
@@ -65,4 +65,4 @@ max_content_len = 2048
 
 ## خرابی کا سراغ لگانا {#troubleshooting}
 
-ترتیب کو پڑھنے اور تجزیہ کرنے کے طریقے کا نشان دیکھنے کے لئے [`--trace-config`](../irohad-cli#arg-trace-config) CLI پرچم پاس کریں۔
+ترتیب کو پڑھنے اور تجزیہ کرنے کے طریقے کا نشان دیکھنے کے لئے [`--trace-config`](../iroha3d-cli#arg-trace-config) CLI پرچم پاس کریں۔

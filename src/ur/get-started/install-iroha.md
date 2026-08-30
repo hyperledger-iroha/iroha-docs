@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 49e1a29243151fec1ada2729c315378455a8502811e1ae124e5917a88d59b55d
+translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -36,7 +36,10 @@ cargo build --workspace
 ایک چھوٹے سے آپریٹر پر توجہ مرکوز بلڈ کے لئے، صرف اہم بائنری مرتب کریں:
 
 ```bash
-cargo build --release -p irohad -p iroha_cli -p iroha_kagami
+cargo build --release \
+  -p irohad --bin iroha3d --bin iroha3d_taira \
+  -p iroha_cli --bin iroha \
+  -p iroha_kagami --bin kagami
 ```
 
 نتیجے میں بائنریوں کو `target/debug/` یا `target/release/` پر لکھا جاتا ہے.
@@ -44,14 +47,16 @@ cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ## تنصیب شدہ ٹولز کی تصدیق کریں {#_4-verify-the-installed-tools}
 
 ```bash
-cargo run --bin irohad -- --help
+cargo run -p irohad --bin iroha3d -- --help
+cargo run -p irohad --bin iroha3d_taira -- --help
 cargo run --bin iroha -- --help
 cargo run --bin kagami -- --help
 ```
 
-آپ عام طور پر استعمال کریں گے تین بائنری ہیں:
+چار بائنری آپ عام طور پر استعمال کریں گے ہیں:
 
-- `irohad` پیئر ڈیمون کے لئے
+- `iroha3d` ایک معیاری ہم مرتبہ ڈیمون کے لئے
+- `iroha3d_taira` کے لئے canonical Taira تصدیق کنندہ لانچر
 - `iroha` CLI تک رسائی کے لئے Torii اور آپریٹر کے اختتامی پوائنٹس
 - `kagami` چابیاں، پیدائش کے دستاویزات اور مقامی نیٹ پروفائلز کے لئے
 

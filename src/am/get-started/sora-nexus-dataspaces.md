@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
+translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -263,7 +263,7 @@ EOF
 ቀድሞውኑ ከሌለዎት የቁልፍ ሰሌዳ ማመንጨት:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./taira-client-key
 ```
 
 `taira.client.toml` ይፍጠሩ:
@@ -336,7 +336,7 @@ SORA Nexus መለያ ID ከሂሳብ የህዝብ ቁልፍ እና ከዒላማ�
 ሂሳቡን የሚቆጣጠር Ed25519 ቁልፍ ጥንድ ያመነጩ ወይም ይጫኑ:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./nexus-account-key
 ```
 
 የሕዝብ ቁልፍን ወደ Taira መለያ ID መለወጥ:
@@ -697,7 +697,7 @@ description = "Route payments domains to the payments dataspace"
 
 የኦፕሬተር ተቀባይነት የሚከተሉትን በሮች ሊያካትት ይገባል-
 
-- `irohad --sora --config <config.toml> --trace-config` የተፈታውን የአገናኝ ውቅር ያስተላልፋል
+- `iroha3d --sora --config <config.toml> --trace-config` የተፈታውን የአገናኝ ውቅር ያስተላልፋል
 - የተፈጠረው ወይም የተጠናቀቀው ሰነድ በሃሽስ እና ፊርማዎች ይከበራል ።
 - የጭስ ሙከራዎች ከማንኛውም Minamoto ማስተዋወቂያ በፊት በ Taira ውስጥ ማለፍ
 - ከለውጥ በኋላ `/status` ካታሎግ የታቀደውን ጎዳና እና የመረጃ ቦታ ያሳያል ።

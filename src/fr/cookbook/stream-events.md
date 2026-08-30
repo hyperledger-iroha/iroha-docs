@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /cookbook/stream-events.md
-translation_source_hash: 1267a7e22bb6601674557f349e4fc5c6b883ce83b7dc62115ea2b8c3a0c39261
+translation_source_hash: 66d22cd3b913d1c097cf74cf322cd86b3b50e1165e221a153705cb393e2b156f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -189,10 +189,10 @@ Pour chaque événement de transaction qui vous intéresse, localiser son hash d
 
 ## Sources et documents connexes {#source-and-related-docs}
 
-- [JavaScript recette de diffusion à l'aide d'un fichier fixe](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/recipes/streaming.mjs)
-- [Tests d'intégration SSE à l'implémentation fixée](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/events/sse_smoke.rs)
-- [Parseur Torii FilterExpr à l'accord fixé](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii/src/filter.rs)
-- [Torii routage de l'événement à l'engagement fixé](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii/src/routing.rs)
+- [JavaScript recette de diffusion à l'aide d'un fichier fixe](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes/streaming.mjs)
+- [Tests d'intégration SSE à l'implémentation fixée](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events/sse_smoke.rs)
+- [Parseur Torii FilterExpr à l'accord fixé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/filter.rs)
+- [Torii routage de l'événement à l'engagement fixé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/routing.rs)
 - [Les événements](/fr/blockchain/events.md)
 - [points d'extrémité Torii](/fr/reference/torii-endpoints.md)
 - [État du registre de requête](./query-ledger-state.md)

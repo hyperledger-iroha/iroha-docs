@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /cookbook/wallet-connect.md
-translation_source_hash: ab5b6c560ed8b0a208666e5854306ba6adce7af1210fc3c94b9c560d8e6eb686
+translation_source_hash: 38283321d51ddbb528272bb4429906eb41545ed3933ae695fb05a24675bff9c8
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -279,11 +279,11 @@ curl -fsS -G \
 
 ## གཞི་རྟེན་དང་འབྲེལ་བའི་ཡིག་ཆ་ཚུ་ {#source-and-related-docs}
 
-- [ཕབ་ལེན་འབད་ཡོད་པའི་ commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/src/connect.browser.js) ལུ་ Browser Connect ལག་ལེན་འཐབ་ནི་
-- [Browser Connect གྱི་བརྟག་དཔྱད་ཚུ་ པིན་ཌི་ commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/test/connect.browser.test.js) ལུ་འབདཝ་ཨིན།
-- [Rust app framework དཔེ་འདི་ pinned commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii_shared/examples/connect_app.rs) ལུ་འབདཝ་ཨིན།
-- [Rust བསྡུ་སྒྲིག་འབད་ཡོད་པའི་ commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii_shared/examples/connect_wallet.rs)ནང་ལུ་ wallet framework དཔེ་སྟོན་འབདཝ་ཨིན།
-- [Torii OpenAPI བཟོ་བཀོད་འབད་ཐངས་ ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/artifacts/openapi/torii.json)
+- [ཕབ་ལེན་འབད་ཡོད་པའི་ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/src/connect.browser.js) ལུ་ Browser Connect ལག་ལེན་འཐབ་ནི་
+- [Browser Connect གྱི་བརྟག་དཔྱད་ཚུ་ པིན་ཌི་ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/test/connect.browser.test.js) ལུ་འབདཝ་ཨིན།
+- [Rust app framework དཔེ་འདི་ pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_app.rs) ལུ་འབདཝ་ཨིན།
+- [Rust བསྡུ་སྒྲིག་འབད་ཡོད་པའི་ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_wallet.rs)ནང་ལུ་ wallet framework དཔེ་སྟོན་འབདཝ་ཨིན།
+- [Torii OpenAPI བཟོ་བཀོད་འབད་ཐངས་ ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/artifacts/openapi/torii.json)
 - [SORA Nexus ཞབས་ཏོག་ཚུ་](/dz/blockchain/sora-nexus-services.md)
 - [དངུལ་རྐྱང་གི་རྒྱུ་དངོས་ཚུ་](./fungible-assets.md)
 - [ཚོང་འབྲེལ་ཚུ་ བཏང་ནི་དང་ བདེན་དཔྱད་འབད་ནི་](./submit-and-verify-transactions.md)

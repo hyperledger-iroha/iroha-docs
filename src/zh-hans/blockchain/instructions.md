@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hans
 translation_source: /blockchain/instructions.md
-translation_source_hash: adc3eff9758dd73e9114e78eaa18ddf6271db3bc4042611e1ed6ed1aac226246
+translation_source_hash: ade5ba2b693de7e798490be0947099d0306d9565b88550e201dccd181810fb18
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Iroha 特殊指令 {#iroha-special-instructions}
@@ -21,6 +21,7 @@ translation_engine: nllb-200-ct2
 | [资助/撤销](#grant-revoke) |给予或删除权限和角色.|
 | [转移](#transfer)|转移所有权或资产价值.|
 | [本地保证金和资产锁定](#native-escrow-and-asset-locks) |锁定数字资产在协议监护.|
+| [原子私密结算](#atomic-private-settlement) | 管理机密 pool 和原子捆绑包。 |
 | [ExecuteTrigger](#executetrigger) |执行触发器.|
 | [记录/定制/升级](#other-instructions) |记录,延长或升级运行时间行为.|
 
@@ -42,6 +43,7 @@ translation_engine: nllb-200-ct2
 | [资助/撤销](#grant-revoke) | [角色,许可证代码](/zh-hans/blockchain/permissions.md) |账户或角色|
 | [转移](#transfer)|域名,资产定义,数值资产, NFTs|账户|
 | [本地保证金和资产锁定](#native-escrow-and-asset-locks) |数字资产保证券,资产锁定,匿名的保证券承诺 |购物者,目的地或争端分歧|
+| [原子私密结算](#atomic-private-settlement) | 绑定精确路由的机密 pool、策略轮换、已完成捆绑包和中止标记 | |
 | [ExecuteTrigger](#executetrigger) |触发器|                      |
 | [记录/定制/升级](#other-instructions) |记录,执行者特定的有效载荷,执行器升级 |                      |
 
@@ -234,7 +236,10 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 注册和退出注册的同行. 如果您尚未拥有 BLS 密钥,则将 PoP 和 `kagami` 发明:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./peer-key
+PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
+PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
@@ -325,6 +330,14 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 市场保证金使用 `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, 和 `ResolveEscrowDispute`. 一般资产锁的使用 `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, 和 `ExpireAssetLock`. 匿名保证人反映了市场的生命周期 `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, 和 `ResolveAnonymousEscrowDispute`.
 
 这些 ISIs 目前没有一流的 CLI 命令.使用类型 SDK 构建器或序列化指令有效载荷,并参见 [原生资产抵押](/zh-hans/blockchain/escrow.md)为生命周期详细信息,权限,查询,事件和 Rust 示例.
+
+## 原子私密结算 {#atomic-private-settlement}
+
+受治理的原子私密结算指令与透明的 Native AMX 相互独立。`ActivatePrivateSettlementPoolV1` 根据经过删减的治理投影和规范来源承诺，为精确路由建立一个机密 `pool`。`FinalizeAtomicPrivateSettlementV1` 以原子方式应用由所有参与委员会认证的完整捆绑包。`AbortAtomicPrivateSettlementV1` 仅发布经发起方授权的公开终止标记。
+
+只有隐私治理可以执行 `RotatePrivateSettlementPoolPolicyV1`。此指令要求与当前治理摘要完全匹配；它保留路由、`pool`、资产绑定承诺、状态前沿、重放集合和已完成收据，将公开修订版加一，并使用更新的审计者密钥 epoch。轮换在指令纳入的高度生效，同一路由和 `pool` 的收据不得在该高度完成。公开修订版谱系使轮换前完成的收据在重启后仍然有效，并使完全相同的重放具有幂等性。启用时仍在处理的旧策略捆绑包会在更改状态前以 fail-closed 方式失败。运营方必须保留旧解密密钥，或在销毁密钥前，通过治理流程重新包装胶囊并验证结果。
+
+此路径默认禁用，尚未通过生产环境资格验证。有关配置、权限、审计、恢复和发布要求，请参阅[运行跨数据空间原子私密结算](/get-started/atomic-private-settlement)。
 
 ## 资助/撤销 {#grant-revoke}
 

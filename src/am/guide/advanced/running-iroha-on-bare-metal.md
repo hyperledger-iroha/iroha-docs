@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 77780600fa59ba353e2aa79fb339adb6a02f7ac731e04cd0d5f51821ec54e794
+translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,12 +15,15 @@ translation_engine: nllb-200-ct2
 ከፕሮግራሙ Iroha የሥራ ቦታ:
 
 ```bash
-cargo build --release -p irohad -p iroha_cli -p iroha_kagami
+cargo build --release \
+  -p irohad --bin iroha3d \
+  -p iroha_cli --bin iroha \
+  -p iroha_kagami --bin kagami
 ```
 
 ይህም የሚከተሉትን ያመጣል፦
 
-- `target/release/irohad` ለባልደረባ ዳይሞን
+- `target/release/iroha3d` ለባልደረባ ዳይሞን
 - `target/release/iroha` ለ CLI
 - `target/release/kagami` ለቁልፍ፣ ለጄኔሲስ እና ለአካባቢያዊ አውታረ መረብ ማመንጫ
 
@@ -29,7 +32,7 @@ cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 የአራት እኩዮች Iroha 3 አካባቢያዊ አውታረ መረብ መፍጠር:
 
 ```bash
-target/release/kagami localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+target/release/kagami localnet --peers 4 --out-dir ./localnet
 ```
 
 የውጤት ማውጫ የተፈጠረውን ይዟል `genesis.json`, `genesis.signed.nrt`, የእኩዮች `config.toml` መዝገቦች፣ `client.toml`, ረዳት ስክሪፕቶች፣ እና የተፈጠረ `README.md` ለዚያ ክምችት ትክክለኛ ትዕዛዞችን ጋር።

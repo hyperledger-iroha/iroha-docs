@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /blockchain/iroha-explained.md
-translation_source_hash: 3fdd22338e826b1ce335ebf5e4e850cf3deb9415c36a0c8d21ad63c397cec8c0
+translation_source_hash: ba591b2c1aa819837177625b1ae457b5fa492197576dc690b19ca2897562a436
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,7 +12,7 @@ Iroha 3 הוא פלטפורמה של השחרור הראשון Hyperledger Iroha
 
 ## אבני בניין מרכזיות {#core-building-blocks}
 
-- `irohad` מנהל עמיתים
+- `iroha3d` מנהל עמיתים
 - Torii הוא שער הלקוח והפעיל
 - Sumeragi מטפל בהסכמה
 - Norito האם זה [פורמט בינארי קנוני](/he/reference/norito.md)

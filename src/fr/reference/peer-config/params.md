@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /reference/peer-config/params.md
-translation_source_hash: d9fa3775e65b26b4eda726b27e54d167097b8bbd5bb766c27d7eeefdbc7ef10b
+translation_source_hash: 027486a17e7624cc301f939429baf9ea9ed1259564c3b99b8dc63cce17a7b26e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 
@@ -22,7 +22,7 @@ import ParamTable from './ParamTable.vue';
 
 Chaîne ID qui doit être incluse dans chaque transaction. Utilisé pour prévenir les attaques de répétition.
 
-Une attaque de répétition est une tentative de soumettre une transaction valide à un réseau différent de celui pour lequel elle était destinée. Étant donné que le `chain` fait partie de la charge utile des transactions signées, une transaction signée pour une chaîne est rejetée par des pairs utilisant une autre chaîne ID.
+Une attaque de répétition est une tentative de soumettre une transaction valide à un réseau différent de celui pour lequel elle était destinée. Étant donné que le `chain` fait partie de la charge utile des transactions signées, une transaction signée pour une chaîne est rejetée par les pairs utilisant une autre chaîne ID.
 
 <param-table type=string env=CHAIN />
 
@@ -78,12 +78,12 @@ PRIVATE_KEY="8926201CA347641228C3B79AA43839DEDC85FA51C0E8B9B6A00F6B0D6B0423E9029
 
 Liste des pairs de confiance prédéfinis.
 
-Les validateurs de consensus doivent utiliser des clés BLS-normales. Pour chaque validateur, fournissez également une entrée correspondante [`trusted_peers_pop`](#param-trusted-peers-pop).
+Les validateurs de consensus doivent utiliser les clés BLS-normales. Pour chaque validateur, fournissez également une entrée correspondante [`trusted_peers_pop`](#param-trusted-peers-pop).
 
 <param-table env="TRUSTED_PEERS">
 <template #type>
 
-Array of peer strings. Utilisez `PUBLIC_KEY@ADDRESS` lorsque l'adresse P2P est connue; le bare `PUBLIC_KEY` est également accepté et permet de découvrir l'adresse des pairs à partir du bavardage.
+Array of peer strings. Utilisez `PUBLIC_KEY@ADDRESS` lorsque l'adresse P2P est connue; le bare `PUBLIC_KEY` est également accepté et permet de détecter l'adresse des pairs à partir de plaisanteries.
 
 </template>
 </param-table>
@@ -443,7 +443,7 @@ Filtres de journaux raffinés en plus de [`logger.level`](#param-logger-level). 
 <param-table type=string env=LOG_FILTER>
 <template #type>
 
-Chaque directive peut avoir un niveau de verbosité maximal correspondant qui permet (par exemple, sélectionne pour) des intervalles et des événements correspondants. Iroha considère que les niveaux moins exclusifs (comme `trace` ou `info`) sont plus verbeux que les niveaux plus exclusives (comme`error` ou `warn`).
+Chaque directive peut avoir un niveau de verbosité maximum correspondant qui permet (par exemple, sélectionne pour) des intervalles et des événements correspondants. Iroha considère que les niveaux moins exclusifs (comme `trace` ou `info`) sont plus verbeux que les niveaux plus exclusives (comme`error` ou `warn`).
 
 A un niveau élevé, la syntaxe des directives est composée de plusieurs parties:
 
@@ -470,7 +470,7 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 
 :::
 
-::: info Compatibilité avec le [`logger.level`](#param-logger-level)
+::: info Composition avec [`logger.level`](#param-logger-level)
 
 `logger.filter` fonctionne conjointement avec [`logger.level`](#param-logger-level) et aucun des deux ne superpose l'autre.
 
@@ -493,10 +493,10 @@ Le format des journaux.
 
 Chaîne, valeurs possibles:
 
-- `full`: Le formatateur par défaut. Il émet des journaux lisibles par l'homme, en ligne unique pour chaque événement qui se produit, avec le contexte d'espace actuel affiché avant la représentation formattée de l'événement.
+- `full`: Le formatateur par défaut. Il émet des journaux lisibles par l'homme, en ligne unique pour chaque événement qui se produit, avec le contexte d'espace actuel affiché avant la représentation formatée de l'événement.
 - `compact`: Une variante du formatateur par défaut, optimisée pour les longueurs de lignes courtes. Les champs du contexte d'étendue actuel sont ajoutés aux champs de l'événement formaté et les noms d'étendu ne sont pas affichés; le niveau de verbosité est abrégé à un seul caractère.
-- `pretty`: Émet des journaux de plusieurs lignes extrêmement beaux, optimisés pour la lisibilité humaine. Ceci est principalement destiné à être utilisé dans le développement local et le débogage, ou pour les applications de ligne de commande, lorsque l'analyse automatisée et le stockage compact des journaux sont moins prioritaires que la lisibilité et l'attrait visuel.
-- `json`: Sorties de journaux JSON délimités en nouvelle ligne. Ceci est destiné à l'utilisation dans la production avec des systèmes où les journaux structurés sont consommés comme JSON par des outils d'analyse et de visualisation. La sortie JSON n'est pas optimisée pour la lisibilité humaine.
+- `pretty`: Il émet des journaux extrêmement beaux et multiliniers, optimisés pour la lisibilité humaine. débogage, ou pour les applications de ligne de commande où l'analyse automatisée et le stockage compact des journaux sont moins prioritaires que la lisibilité et l'attrait visuel.
+- `json`: Sorties de journaux JSON délimités en nouvelle ligne. Il est destiné à l'utilisation dans la production avec des systèmes où les journaux structurés sont consommés comme JSON par des outils d'analyse et de visualisation. La sortie JSON n'est pas optimisée pour la lisibilité humaine.
 
 Pour plus de détails et des résultats d'échantillonnage, voir la documentation [`tracing-subscriber` ](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/format/index.html).
 
@@ -543,15 +543,21 @@ KURA_BLOCKS_IN_MEMORY=1024
 
 ### `kura.init_mode` {#param-kura-init-mode}
 
-Mode d'initialisation Kura
+Kura mode d'initialisation. `strict` est le mode normal et par défaut: il valide l'historique canonique, les artefacts de récupération, les indices auxiliaires et la comptabilité du stockage avant que le nœud ne soit actif.
 
-<param-table  default-value=strict env=KURA_INIT_MODE>
+`fast` est un mode de service dégradé d'urgence pour rétablir la visibilité opérationnelle lorsqu'une Une vérification de démarrage complète risquerait d'être coupée. `strict` et une génération d'images instantanées actuelle contenant exactement cinq objets: `snapshot.data`, `snapshot.sha256`, `snapshot.sig`, `snapshot.fast.norito`, et `snapshot.merkle.json`. Une signature de l'opérateur séparée par domaine lie le digeste de charge utile annoncé et le manifeste délimité; le manifeste lie la longueur de la charge utile, l'identité de la chaîne/réseau, la hauteur du terminal/le hachage; SCCP la présence d'une lignée de démarrage rapide rejette le démarrage généalogie et nécessite la même limite exacte de marqueur/compte / pointe à partir durable. Kura. Les nœuds de première sortie acceptent exactement ces cinq artefacts et rejettent tous les autres numéros d'artefacts ou l'ensemble de noms de fichiers.
+
+L'inventaire rapide de ces cinq noms et métadonnées lie la charge utile et les fichiers Merkle, mais ne lit pas, hash, analyse ou décode leur contenu. Il construit un monde minimal / Nexus à partir du manifeste signé, carte le préfixe hash exact Kura en lecture uniquement, et laisse l'instantané World, bloc-hash array , l'historique des transactions, les indices dérivés et les journaux de récupération durable non ouverts. Merkle, vérifications canoniques et sémantiques d'images instantanées, réconciliation du bloc historique/finalité/SCCP, récupération de hauteur active Sumeragi, journals de fusion et de requête, manifestes de voie/sources de conformité, Les archives SoraFS soutenues par Kura, la comptabilité du stockage récursif et les reconciliateurs de services facultatifs restent reportés. Kura lui-même rejette le démarrage du rédacteur et les mutations durables; les files d'attente de pipeline et de persistance FASTPQ rejettent immédiatement le travail au lieu de le conserver ou de le codifier. Kura lire APIs également désactiver la réparation et le comportement de synchronisation de la durabilité: les voitures secondaires temporaires ne sont pas promues, les artefacts manquants de la voie ne sont pas publiés et les barrières à la progression ne sont pas synchronisées. Sumeragi et les rumeurs de transaction ne sont pas lancées. Torii n'expose que la santé, la vitalité, la préparation, les opérations de peer et de configuration; API - version, statut, métriques et toutes les routes d'état/historique ordinaires restent indisponibles.
+
+Utilisez `fast` uniquement pour un incident. Une fois que le service est stable, arrêtez le nœud, rétablissez `strict` et redémarrez afin que chaque vérification différée et chaque reconstruction d'index se déroulent avant la reprise de production. Le mode rapide n'exige pas le journal de fusion différé et ne crée, ne répare, ne tranche ni n'importe aucun stockage canonique; les suffixes non publiés et les étapes de récupération auxiliaire en attente sont ignorées sans être lues ou mutées, puis laissées pour la récupération stricte. Une séquence d'instantanés importée uniquement par hachage reste indisponible. Un instantané courant manquant ou non valide échoue immédiatement; Fast ne revient jamais à un monde vide ou à une reconstruction historique de la reproduction.
+
+<param-table default-value=strict>
 <template #type>
 
 Chaîne, valeurs possibles:
 
-- `strict`: validation stricte de tous les blocs
-- `fast`: Initialisation rapide avec seulement des contrôles de base
+- `strict`: validation complète et production normale
+- `fast`: démarrage d'urgence limité avec la production en quarantaine jusqu'à un redémarrage strict.
 
 </template>
 </param-table>
@@ -563,15 +569,11 @@ Chaîne, valeurs possibles:
 init_mode = "fast"
 ```
 
-```shell [Environment]
-KURA_INIT_MODE=fast
-```
-
 :::
 
 ### `kura.store_dir` {#param-kura-store-dir}
 
-Désigne le répertoire[^paths] où les blocs sont stockés.
+Indique l'annuaire [^paths] où les blocs sont stockés.
 
 Voir aussi: [`snapshot.store_dir`](#param-snapshot-store-dir).
 
@@ -662,7 +664,7 @@ transaction_time_to_live_ms = 43_200_000
 
 ### `sumeragi.debug.force_soft_fork` <Badge type="warning" text="debug" /> {#param-sumeragi-debug-force-soft-fork}
 
-Le commutateur de débogage uniquement pour l'exercice des chemins de manipulation de la fourchette douce Sumeragi. Laissez cela désactivé en dehors des tests contrôlés; le modifier sur un réseau de production en cours d'exécution peut amener les pairs à ne pas être d'accord sur le comportement consensuel.
+Le commutateur de débogage uniquement pour l'exercice des chemins de manipulation de fourchettes douces Sumeragi. Laissez-le désactivé en dehors des tests contrôlés; le modifier sur un réseau de production en cours d'exécution peut amener les pairs à ne pas être d'accord au sujet du comportement consensuel.
 
 <param-table type=bool default-value=false />
 
@@ -675,13 +677,23 @@ force_soft_fork = true
 
 :::
 
+## Nexus Régulation privée de l'énergie atomique {#nexus-atomic-private-settlement}
+
+`[nexus.atomic_private_settlement]` régit le chemin séparé `AtomicPrivateSettlementV1`. Il est désactivé par défaut. L'installation `enabled = true` nécessite également un `activation_height`; l'admission ne se ferme toujours pas à moins que la capacité en chaîne, le délai d'avis, le profil de preuve fixe et la gouvernance du pool/audit ne soient activés.
+
+Les limites principales sont: `max_participants`, `max_expiry_blocks`, `audit_timeout_blocks`, `prepare_timeout_blocks`, `commit_timeout_blocks`, `max_proof_bytes`, `max_capsule_bytes`, `max_carrier_bytes`, `sidecar_retention_blocks`, `sidecar_max_records`, et `sidecar_max_total_bytes`. `capsule_padding_classes_bytes` doit être un sous-ensemble strictement croissant de la V1 Des cours de rembourrage. `permitted_policy_versions` n'accepte que V1.
+
+`max_capsule_bytes` mesure les octets canoniques Norito de l'intégralité `PrivateSettlementAuditCapsuleV1`, y compris AAD, nonce, texte chiffré, encadrement vectoriel et chaque ligne d'auditeur enveloppée-DEK; il ne s'agit pas d'une limite pour le texte chiffré seulement. Chaque classe de rembourrage activée doit s'adapter à l'enveloppe conservatrice de la capsule entière pour au moins `default_min_auditor_approvals` auditeurs. Ce réglage d'approbation est également un étage réglementé: Torii rejette une politique nouvellement admise avec une valeur inférieure `min_approvals` et rejette toute capsule réelle au-delà de la limite canonique en octets.
+
+Ces paramètres n'ont pas de contournement d'activation des variables environnement de production. Voir [Run Atomic Private Cross-Dataspace Settlement](/fr/get-started/atomic-private-settlement) pour l'exemple complet de configuration et les exigences opérationnelles. Le chemin n'est pas qualifié de production tant que les portes de sortie externes documentées ne sont pas passées.
+
 ## Une prise de vue {#snapshot}
 
 Ce module est responsable de la lecture et de l'écriture d'images instantanées du [World State View](/fr/blockchain/world#world-state-view-wsv).
 
 Les snapshots stockent un point de contrôle sérialisé du World State View afin qu'un pair puisse redémarrer sans reproduire chaque bloc de Kura. Kura reste l'historique durable des blocs et la source de vérité pour la reproduction; les snapshots sont une voie d'accélération. Lors du démarrage, Iroha vérifie les métadonnées d'instantané avec la chaîne configurée et les blocs stockés avant de décider de charger un instantané ou de revenir à la reproduction.
 
-::: tip Éliminer les instantanés
+::: tip Effacer les instantanés
 
 Dans le cas où quelque chose ne va pas avec le système de snapshots, et que vous souhaitiez commencer à partir d'une page vide (en termes de snapshot), vous pouvez supprimer l'annuaire spécifié par [`snapshot.store_dir`](#param-snapshot-store-dir).
 
@@ -696,7 +708,7 @@ Le mode dans lequel fonctionne le système Snapshot.
 
 Chaîne, valeurs possibles:
 
-- `read_write`: Iroha crée des instantanés avec une période spécifiée par [`snapshot.create_every_ms`](#param-snapshot-create-every-ms). Lors du démarrage, Iroha lit un instantané existant (le cas échéant) et vérifie qu'il est à jour avec le stockage de blocs.
+- `read_write`: Iroha crée des instantanés avec une période spécifiée par [`snapshot.create_every_ms`](#param-snapshot-create-every-ms). Lors du démarrage, Iroha lit un instantané existant (le cas échéant) et vérifie qu'il est à jour avec le stockage des blocs.
 - `readonly`: similaire à `read_write` mais Iroha ne crée aucun instantané.
 - `disabled`: Iroha ne crée pas de nouveaux instantanés ni ne lit un instantané existant au démarrage.
 
@@ -733,7 +745,7 @@ create_every_ms = 60_000
 
 ### `snapshot.store_dir` {#param-snapshot-store-dir}
 
-L'annuaire où stocker les instantanés.
+L'annuaire où stocker des instantanés.
 
 Voir aussi: [`kura.store_dir`](#param-kura-store-dir)
 
@@ -754,7 +766,7 @@ SNAPSHOT_STORE_DIR="/path/to/storage"
 
 ## Télémétrie {#telemetry}
 
-La télémétrie exporte le diagnostic des pairs vers un collecteur de télémétrique externe. Configurez à la fois `telemetry.name` et `telemetry.url` lorsqu'un paire doit faire rapport à un collecteur; omettez la section lorsque la téléméthérie n'est pas utilisée.
+La télémétrie exporte le diagnostic des pairs vers un collecteur de télémétrie externe. Configurez à la fois `telemetry.name` et `telemetry.url` lorsqu'un paire doit signaler à un collecteur; omettez la section lorsque la télémètre n'est pas utilisée. "
 
 `name` et `url` doivent être associés.
 

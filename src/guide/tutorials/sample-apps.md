@@ -5,7 +5,7 @@ same revision as the node.
 
 ## JavaScript Recipes
 
-[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/main/javascript/iroha_js/recipes)
+[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes)
 contains focused examples for deterministic transaction batching, Nexus app
 transfers, NFT and account iteration, ISO bridge flows, and Torii streaming.
 Each recipe documents whether it runs offline or needs a live Torii endpoint.

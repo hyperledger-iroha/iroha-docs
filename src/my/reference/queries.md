@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /reference/queries.md
-translation_source_hash: 22e8a75acd72d066e3516ba46a0afe075d2d02790154458aec00a5d8bb861838
+translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -99,10 +99,17 @@ SDK typeed builders သို့မဟုတ် CLI ကို လက်နဲ့
 |`FindLaneRelayEnvelopeByRef` |မှန်ကန်တဲ့ Lane-relay envelope ကိုရှာပါ။|
 |`FindSorafsProviderOwner` |SoraFS ပေးသွင်းသူ၏ ပိုင်ရှင်ကို ဖြေရှင်းပါ။ |
 |`FindDataspaceNameOwnerById` |ဒေတာနေရာအမည်ရှင်ကို ဖြေရှင်းပါ။ |
-|`FindMusubiReleaseByRef` |Musubi ကို Reference နဲ့ ရှာပါ။ |
-|`FindMusubiPackageVersions` |Musubi package အတွက် ဗားရှင်းများကို စာရင်းပေးပါ။ |
-|`FindMusubiPackageReleases` |Musubi package အတွက် စာရင်းထုတ်ပြန်ချက်များ။ |
-|`FindMusubiShortAliasByName` |Musubi ဆိုတဲ့ အမည်တိုကို ဖြေရှင်းပါ။ |
+|`FindMusubiExactPackageV1` |တိကျတဲ့ package record တစ်ခုနဲ့ လက်ရှိ ပြင်ဆင်ချက်တွေကို ဖတ်ပါ။|
+|`FindMusubiExactReleaseV1` |တိကျတဲ့ ထုတ်လွှင့်ချက် တစ်ပုံကို ဖတ်ပါ။|
+|`FindMusubiProviderBundleAttestationV1` |ပေးသွင်းသူတစ်ဦးရဲ့ မှတ်တမ်းစု အထောက်အထားကို ဖတ်ပါ။ |
+|`FindMusubiResolverIndexV1` |နောက်ဆုံးသတ်မှတ်ထားတဲ့ Resolver Index ကို Page လုပ်ပါ။ |
+|`FindMusubiVersionsV1` |စာမျက်နှာ တစ်ခုအတွက် နောက်ဆုံးပြုလုပ်ထားသော မူကွဲများ။ |
+|`FindMusubiMaintainersV1` |Page က Maintenance တွေနဲ့ စောင့်ဆိုင်းနေတဲ့ ဖိတ်ကြားချက်တွေကို လက်ခံခဲ့ပါတယ်။ |
+|`FindMusubiArchiveLocationsV1` |စာမျက်နှာတစ်ခုအတွက် SoraFS တည်နေရာများကို နောက်ဆုံးသတ်မှတ်ခဲ့သည်။ |
+|`FindMusubiArchiveRetentionV1` |စာမျက်နှာ မှတ်တမ်းတင်မှတ်တမ်းများ။|
+|`FindMusubiAliasV1` |Global alias ရဲ့ လက်ရှိ ရည်မှန်းချက်နဲ့ ပြင်ဆင်မှုကို ဖတ်ပါ။ |
+|`FindMusubiAliasHistoryV1` |Global alias တစ်ခုရဲ့ မပြောင်းလဲနိုင်တဲ့ retarget သမိုင်းကို Page လုပ်ပါ။ |
+|`FindMusubiOrderedPrefixV1` |စာမျက်နှာပက်ကတ်များမှာ စီစဉ်ထားသော အဆောက်အအုံ ကြိုတင်စာရင်းတစ်ခုပါ |
 
 ## ကြိုးပမ်းချက်များ၊ စာချုပ်များ၊ ငွေပေးချေမှုများနှင့် ပိတ်ပင်ခြင်း {#triggers-contracts-transactions-and-blocks}
 

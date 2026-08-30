@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 77780600fa59ba353e2aa79fb339adb6a02f7ac731e04cd0d5f51821ec54e794
+translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,12 +15,15 @@ Bu iş axını Docker Compose vasitəsilə deyil, birbaşa qonaqlarda həmyaşı
 Iroha yuxarı axın iş sahəsindən:
 
 ```bash
-cargo build --release -p irohad -p iroha_cli -p iroha_kagami
+cargo build --release \
+  -p irohad --bin iroha3d \
+  -p iroha_cli --bin iroha \
+  -p iroha_kagami --bin kagami
 ```
 
 Bu, aşağıdakıları meydana gətirir:
 
-- `target/release/irohad` həmyaşıd daemon üçün
+- `target/release/iroha3d` həmyaşıd daemon üçün
 - `target/release/iroha` üçün CLI
 - `target/release/kagami` açar, genesis və localnet istehsalı üçün
 
@@ -29,7 +32,7 @@ Bu, aşağıdakıları meydana gətirir:
 Dörd paylı Iroha 3 lokal şəbəkə yaratmaq:
 
 ```bash
-target/release/kagami localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+target/release/kagami localnet --peers 4 --out-dir ./localnet
 ```
 
 Çıxış lüğətində `genesis.json`, `genesis.signed.nrt`, peer `config.toml` faylları, `client.toml`, köməkçi skriptləri və bu paket üçün dəqiq əmrlər ilə yaradılmış `README.md` var.

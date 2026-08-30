@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: ccbb076ef3e2ba45d074ad3394ac354d0c2233cdd4286c5fa7a77f0d1c413988
+translation_source_hash: f3d08a8e7fe7569ef783b93bccdc900ca74b85179a749b48b96c32028c749233
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review
 ---
@@ -12,39 +12,32 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 
 ## 基本用法 {#basic-usage}
 
-在 Iroha 原始碼檢出目錄中執行：
-
-```bash
-cargo run --bin kagami -- keys --algorithm ed25519
-```
-
-JSON 輸出通常最方便複製至 TOML 或自動化流程：
-
-```bash
-cargo run --bin kagami -- keys --algorithm ed25519 --json
-```
-
-此命令會印出公開金鑰及明文私鑰。私鑰必須視為祕密資料；切勿將產生的生產金鑰提交至版本控制。
-
-若要在支援的 Unix 平台安全地匯出至本機或交付給保管系統，請將新金鑰對寫入僅擁有者可存取的空目錄，而不要印出私鑰：
+From the Iroha source checkout:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-父目錄必須已存在。目標目錄必須是新目錄，或已由目前使用者擁有、模式為 `0700`、不含符號連結且內容為空。`kagami` 會以模式 `0600` 寫入 `public.key` 與 `private.key`，且不會印出私鑰；搭配 `--pop` 時也會寫入 `pop.hex`。
+The parent directory must already exist. The target must be new or already
+owned by the current user, mode `0700`, free of symbolic links, and empty.
+`kagami` writes `public.key` and `private.key` with mode `0600` and does not
+print key material. With `--pop`, it also writes `pop.hex`.
 
-若 Kagami 無法強制執行這些僅限擁有者的檔案系統規則，`--out-dir` 會採取安全失敗並拒絕操作。私鑰檔是未加密的匯出物，不是硬體式或不可匯出的生產簽署器。請將它匯入經核准的保管邊界，然後依部署程序移除該匯出物。
+`--out-dir` fails closed on platforms where Kagami cannot enforce these
+owner-only filesystem rules. The private-key file is an unencrypted export,
+not a hardware or non-exportable production signer. Import it into the
+approved custody boundary and remove the export according to the deployment's
+procedure.
 
 ## 演算法 {#algorithms}
 
-常用演算法如下：
+Common algorithms are:
 
-- `ed25519`：用於用戶端帳戶與串流身分。
-- `secp256k1`：用於需要 secp256k1 身分的用戶端帳戶。
-- `bls_normal`：建置啟用 BLS 支援時，用於每個節點或對等節點的共識身分。
+- `ed25519` for client accounts and streaming identities.
+- `secp256k1` when a client account requires a secp256k1 identity.
+- `bls_normal` for every node or peer consensus identity.
 
-使用下列命令查看目前建置實際支援的演算法：
+Check the exact algorithms supported by your build with:
 
 ```bash
 cargo run --bin kagami -- keys --help
@@ -52,35 +45,49 @@ cargo run --bin kagami -- keys --help
 
 ## 確定性的開發金鑰 {#deterministic-development-keys}
 
-若要建立可重現的測試固定資料，請傳入編碼為 64 個十六進位字元的 32 位元組種子；也可加上 `0x` 前綴：
+For reproducible fixtures, pass a 32-byte seed encoded as 64 hexadecimal
+characters. An optional `0x` prefix is accepted:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 \
   --seed-hex 1111111111111111111111111111111111111111111111111111111111111111 \
-  --json
+  --out-dir ./fixture-client-key
 ```
 
-種子屬於私鑰材料。確定性種子只能用於本機開發與測試。產生生產金鑰時應省略 `--seed-hex`，讓作業系統的隨機來源產生金鑰。
+The seed is private-key material. Use deterministic seeds only for local
+development and tests. Omit `--seed-hex` to generate a production key from
+operating-system randomness.
 
 ## BLS 共識金鑰與持有證明 {#bls-consensus-keys-and-proofs-of-possession}
 
-Iroha 3 節點及對等節點的共識身分使用 BLS-normal 金鑰。使用下列命令產生 BLS-normal 金鑰與持有證明（PoP）：
+Iroha 3 node and peer consensus identities use BLS-normal keys. Generate a
+BLS-normal key and proof-of-possession (PoP) with:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./validator-key
 ```
 
-`--pop` 只能搭配 `bls_normal` 使用。JSON 輸出包含 `pop_hex`。已簽署的創世區塊要求每個具投票權的驗證者都有相符的 PoP。在對等節點組態中，非空的 `trusted_peers_pop` 對應表會選出驗證者子集；未列入該非空對應表的可信任對等節點是觀察者。若對應表為空，所有使用 BLS-normal 的可信任對等節點都會進入啟動候選集合，而投票者 PoPs 仍由已簽署的創世區塊提供。
+`--pop` is valid only with `bls_normal`; it adds `pop.hex` to the custody
+directory.
+Signed genesis requires a matching PoP for every voting validator. In peer
+configuration, a non-empty `trusted_peers_pop` map selects the validator
+subset; trusted peers omitted from that non-empty map are observers. If the map
+is empty, all BLS-normal trusted peers enter the bootstrap candidate set, with
+voter PoPs still supplied by signed genesis.
 
-## 輸出格式 {#output-formats}
+## Custody Output {#custody-output}
 
-終端檢查請使用預設輸出，自動化請使用 `--json`；其他指令碼需要純文字逐行值時，請使用 `--compact`：
+`kagami keys` requires `--out-dir` and never writes private key material to
+standard output. Read `public.key`, `private.key`, and optional `pop.hex` from
+the generated directory. Each file contains one canonical value followed by a
+newline, which makes explicit file-based automation straightforward:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm ed25519 --compact
+PUBLIC_KEY=$(tr -d '\n' < ./client-key/public.key)
 ```
 
-若要取得完整產生的 Kagami 說明：
+For full generated Kagami help:
 
 ```bash
 cargo run -p iroha_kagami -- advanced markdown-help > crates/iroha_kagami/CommandLineHelp.md

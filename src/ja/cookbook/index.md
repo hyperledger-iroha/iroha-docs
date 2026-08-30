@@ -1,14 +1,14 @@
 ---
 translation_locale: ja
 translation_source: /cookbook/index.md
-translation_source_hash: cdcfb3549506a65a7dbd1c37672893956a0252153a4075c82333804674aa07b6
+translation_source_hash: aceef9f4e42462614a5cdf41a89f55e26e0399503a48d4b50c08359e7bd7532e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Iroha 3 アプリケーション・クックブック {#iroha-3-application-cookbook}
 
-反対に作る Iroha 3 小規模で検証可能なレシピが Taira テストネットと保持 Minamoto 各レシピは 公開読めばどうかを示しています命令は,現在使用する I105 口座 IDs, 明らかに料金の選択,および行動チェックインで Iroha コミットする [`bc7114ed1c7f265a156d2100ff09e851cc95702c`](https://github.com/hyperledger-iroha/iroha/tree/bc7114ed1c7f265a156d2100ff09e851cc95702c).
+反対に作る Iroha 3 小規模で検証可能なレシピが Taira テストネットと保持 Minamoto 各レシピは 公開読めばどうかを示しています命令は,現在使用する I105 口座 IDs, 明らかに料金の選択,および行動チェックインで Iroha コミットする [`0010c5a70039eac101a4846499ba9ceaf43eb65c`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c).
 
 始めましょう [接続する Taira](./connect-to-taira.md). コマンドラインレシピで再利用されたクライアント構成と料金のメタデータを作成します. ID このドキュメントから:現在の Taira ポンプの反応
 

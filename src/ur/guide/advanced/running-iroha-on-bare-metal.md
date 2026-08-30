@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 77780600fa59ba353e2aa79fb339adb6a02f7ac731e04cd0d5f51821ec54e794
+translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,12 +15,15 @@ translation_engine: nllb-200-ct2
 بہاؤ سے اوپر Iroha کام کی جگہ سے:
 
 ```bash
-cargo build --release -p irohad -p iroha_cli -p iroha_kagami
+cargo build --release \
+  -p irohad --bin iroha3d \
+  -p iroha_cli --bin iroha \
+  -p iroha_kagami --bin kagami
 ```
 
 اس کے نتیجے میں:
 
-- `target/release/irohad` پیئر ڈیمون کے لئے
+- `target/release/iroha3d` پیئر ڈیمون کے لئے
 - `target/release/iroha` کے لئے CLI
 - `target/release/kagami` کلیدی، پیداوار اور لوکل نیٹ کی نسل کے لئے
 
@@ -29,7 +32,7 @@ cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 چار پیئر Iroha 3 لوکل نیٹ پیدا کریں:
 
 ```bash
-target/release/kagami localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+target/release/kagami localnet --peers 4 --out-dir ./localnet
 ```
 
 آؤٹ پٹ ڈائرکٹری میں پیدا کردہ `genesis.json` ، `genesis.signed.nrt`، ہم مرتبہ `config.toml` فائلیں، `client.toml`، مددگار اسکرپٹس اور ایک جنریٹڈ `README.md` شامل ہیں جس میں اس بنڈل کے لئے عین مطابق کمانڈز ہیں۔

@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /cookbook/query-ledger-state.md
-translation_source_hash: a81f6cc04befb0b92a0a01c2cb3c1ecbbc631ce1f2a923cb046241c295db7806
+translation_source_hash: ca76923f5ae35b96c52a6a4c23c5d9e69549d1ca91d6d1507e7b9a1aee1f1676
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -160,9 +160,9 @@ Səhifələşdirilmiş tətbiq sorğuları üçün IDs səhifələr arasında t�
 
 ## Mənbə və əlaqəli sənədlər {#source-and-related-docs}
 
-- [Kursor dəstəkləyən səhifələşmə inteqrasiyası testləri bağlanmış komitdə](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/pagination.rs)
-- [Soruşma qurucusu və seçicisi davranışı bağlanmış komitdə](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/query/builder/mod.rs)
-- [Qeydiyyat parametrləri və bağlanmış commit-də kursor modeli](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/query/parameters.rs)
+- [Kursor dəstəkləyən səhifələşmə inteqrasiyası testləri bağlanmış komitdə](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/pagination.rs)
+- [Soruşma qurucusu və seçicisi davranışı bağlanmış komitdə](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/builder/mod.rs)
+- [Qeydiyyat parametrləri və bağlanmış commit-də kursor modeli](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/parameters.rs)
 - [Suallar](/az/blockchain/queries.md)
 - [Məlumat istintaq](/az/reference/queries.md)
 - [JavaScript və TypeScript ](/az/guide/tutorials/javascript.md)

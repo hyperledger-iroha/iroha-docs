@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
+translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -263,7 +263,7 @@ EOF
 如果您還沒有一個鍵組,生成鍵組:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./taira-client-key
 ```
 
 創建 `taira.client.toml`:
@@ -336,7 +336,7 @@ SORA Nexus 賬戶 ID 是一個源於帳戶公鑰和目標網絡前的常規 I105
 創建或加載將控制帳戶的Ed25519鍵組:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./nexus-account-key
 ```
 
 轉換公鑰爲 Taira 賬戶 ID:
@@ -697,7 +697,7 @@ description = "Route payments domains to the payments dataspace"
 
 運營商的接受應包括以下門戶:
 
-- `irohad --sora --config <config.toml> --trace-config` 傳輸已解決的節點配置
+- `iroha3d --sora --config <config.toml> --trace-config` 傳輸已解決的節點配置
 - 生成或檢查的表格是用哈希和簽名存檔的
 - 在任何 Minamoto 促銷之前,煙霧測試通過 Taira
 - 變更後的目錄 `/status` 表示預期的車道和數據空間

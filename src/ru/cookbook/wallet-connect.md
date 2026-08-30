@@ -1,7 +1,7 @@
 ---
 translation_locale: ru
 translation_source: /cookbook/wallet-connect.md
-translation_source_hash: ab5b6c560ed8b0a208666e5854306ba6adce7af1210fc3c94b9c560d8e6eb686
+translation_source_hash: 38283321d51ddbb528272bb4429906eb41545ed3933ae695fb05a24675bff9c8
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -279,11 +279,11 @@ curl -fsS -G \
 
 ## Источник и связанные с ним документы {#source-and-related-docs}
 
-- [Использование Browser Connect на закрепленном commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/src/connect.browser.js)
-- [Тесты Browser Connect на финированном commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/test/connect.browser.test.js)
-- [Пример рамки приложения Rust на финированном комитете](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii_shared/examples/connect_app.rs)
-- [Rust пример рамки кошелька на финированном commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii_shared/examples/connect_wallet.rs)
-- [Застегнутые Torii OpenAPI схема](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/artifacts/openapi/torii.json)
+- [Использование Browser Connect на закрепленном commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/src/connect.browser.js)
+- [Тесты Browser Connect на финированном commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/test/connect.browser.test.js)
+- [Пример рамки приложения Rust на финированном комитете](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_app.rs)
+- [Rust пример рамки кошелька на финированном commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_wallet.rs)
+- [Застегнутые Torii OpenAPI схема](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/artifacts/openapi/torii.json)
 - [Услуги SORA Nexus](/ru/blockchain/sora-nexus-services.md)
 - [Функциональные активы](./fungible-assets.md)
 - [Предоставление и проверка транзакций](./submit-and-verify-transactions.md)

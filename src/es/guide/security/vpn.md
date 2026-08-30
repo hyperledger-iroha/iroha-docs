@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /guide/security/vpn.md
-translation_source_hash: 4161cec5d601ad3a57decc19402738358a03648adad8502b5282e8e9bacc3fa8
+translation_source_hash: 020591f0d7c5560dfb2e9f3f4537f429cbeba864c3eb022856d42addcf32e225
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -25,7 +25,7 @@ No se requiere un VPN para cada implementación. Las redes públicas pueden expo
 
 ::: tip
 
-Un navegador VPN solo protege el tráfico de ese navegador. No protege a `irohad`, CLI, SDK, SSH, métricas o tráfico de copia de seguridad a menos que esos procesos se enruten a través de la misma red privada.
+Un navegador VPN solo protege el tráfico de ese navegador. No protege a `iroha3d`, CLI, SDK, SSH, métricas o tráfico de copia de seguridad a menos que esos procesos se enruten a través de la misma red privada.
 
 :::
 

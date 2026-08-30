@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 0185b6a341ee90ed6cd52fb9f510549b20592468abe6627d3efa639c3b67d1fd
+translation_source_hash: aa8e079684879bdcda2b4439e9c12742d4ab477e6f560f7c326a59b6be5bf666
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,7 +16,7 @@ translation_engine: nllb-200-ct2
 
 - ایک عددی اثاثہ کی تعریف اور ایک کھولنے والا / بیچنے والا جو کافی مقدار کا مالک ہے.
 - ہر پارٹی کے لئے مالی اعانت یافتہ ، واحد کلید I105 کلائنٹ جو ایک قدم پیش کرتے ہیں۔ براہ راست حکام کی طرف سے ادا کردہ `fee_payment` ارادے کا استعمال کریں جس کی فیس اثاثہ موجودہ Taira نل کے جواب سے ملتا ہے۔ دستاویزات میں اثاثہ ID کو شامل نہ کریں۔
-- موجودہ Rust یا Python SDK سے Iroha کی ذمہ داری `bc7114ed1c7f265a156d2100ff09e851cc95702c`.
+- موجودہ Rust یا Python SDK سے Iroha کی ذمہ داری `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
 - کے لئے JavaScript کمپائلر کی مثال، Node.js 24 پلس ایک مقامی طور پر تعمیر `@iroha/iroha-js` پیکج اور اس کی اصل `iroha_js_host`; مندرجہ ذیل [JavaScript SDK ماخذ کی تعمیر کا ترتیب](/ur/guide/tutorials/javascript.md#build-from-source). براؤزر کی تعمیرات فراہم کرنا ضروری ہے `compilerUrl` مقامی میزبان کو لوڈ کرنے کے بجائے.
 - Taira کو اثاثہ جات کی منتقلی اور اسکرور ہدایات کا اعتراف کرنا ہوگا۔ اثاثوں کے مالکان عام زندگی سائیکل کا استعمال کرسکتے ہیں جب ان کی اثاثہ پالیسی اس کی اجازت دیتی ہے۔ تنازعہ حل کرنے کے لئے عالمی `CanResolveEscrowDispute` اجازت کی ضرورت ہوتی ہے۔ جب ضروری عوامی نیٹ ورک اتھارٹی غائب ہو تو ایک مقامی نیٹ ورک کا استعمال کریں.
 
@@ -249,10 +249,10 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 
 ## ماخذ اور متعلقہ دستاویزات {#source-and-related-docs}
 
-- [پنڈٹ commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/isi/escrow.rs) پر native escrow instruction model
-- [مقررہ کمیٹ پر مقامی ایسکرو انٹیگریشن ٹیسٹ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/native_escrow.rs)
-- [Python مقررہ ذمہ داری پر اسرو کلائنٹ کے طریقے](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama پنڈ commit پر native escrow sample](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [پنڈٹ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs) پر native escrow instruction model
+- [مقررہ کمیٹ پر مقامی ایسکرو انٹیگریشن ٹیسٹ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
+- [Python مقررہ ذمہ داری پر اسرو کلائنٹ کے طریقے](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama پنڈ commit پر native escrow sample](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [مقامی اثاثہ جات کا حامی ](/ur/blockchain/escrow.md)
 - [فنگبل اثاثے](./fungible-assets.md)
 - [اجازت اور کردار](./permissions-and-roles.md)

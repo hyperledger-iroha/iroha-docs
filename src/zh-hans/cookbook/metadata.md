@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /cookbook/metadata.md
-translation_source_hash: 07b065b28eca44939a92b40a81a47b57178de4539abb0daf51913969e34eced7
+translation_source_hash: 238595124cd0a1b71900020d650fb208f844e051d2db4427801fe6405ff591c8
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -133,8 +133,8 @@ fi
 
 ## 来源及相关文件 {#source-and-related-docs}
 
-- [在固定的提交](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/queries/metadata.rs)中测试对元数据查询集成
-- [Python SDK 交易构建者在固定的承诺上](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/python/iroha_python/README.md)
+- [在固定的提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/queries/metadata.rs)中测试对元数据查询集成
+- [Python SDK 交易构建者在固定的承诺上](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/README.md)
 - [超值数据](/zh-hans/blockchain/metadata.md)
 - [大数据和账本存储的选择](/zh-hans/guide/configure/metadata-and-store-assets.md)
 - [指示参考](/zh-hans/reference/instructions.md)

@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /cookbook/permissions-and-roles.md
-translation_source_hash: 734437b8530ad0efb9ddd83b24cb90c30dc29843a03753babd8dca5e86a3f91d
+translation_source_hash: 7ee18275d25837da53f533f5e9205906ccaa71b48afd9b11ffad79b599da7f21
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -132,9 +132,9 @@ La lista de permisos debe contener `CanModifyAccountMetadata` con el alcance de 
 
 ## Fuente y documentos relacionados {#source-and-related-docs}
 
-- [Pruebas de integración de roles en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/roles.rs)
-- [Pruebas de integración de permisos en el commit fijado ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/permissions.rs)
-- [Modelo de datos de permisos incorporado en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_executor_data_model/src/permission.rs)
+- [Pruebas de integración de roles en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/roles.rs)
+- [Pruebas de integración de permisos en el commit fijado ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/permissions.rs)
+- [Modelo de datos de permisos incorporado en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/permission.rs)
 - [Permisos y funciones ](/es/blockchain/permissions.md)
 - [Referencia a los tokens de autorización ](/es/reference/permissions.md)
 - [Metadatos ](./metadata.md)

@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /reference/queries.md
-translation_source_hash: 22e8a75acd72d066e3516ba46a0afe075d2d02790154458aec00a5d8bb861838
+translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -99,10 +99,17 @@ Hesablama sorğuları [dövlət əmlakının vəsiqəsi ISIs](/az/blockchain/esc
 |`FindLaneRelayEnvelopeByRef` |Verifikasiya edilmiş bir yol-relay zarfını tapın.|
 |`FindSorafsProviderOwner` |SoraFS təchizatçısının sahibini həll etmək. |
 |`FindDataspaceNameOwnerById` |Məlumat sahəsi ad sahibini həll edin. |
-|`FindMusubiReleaseByRef` |Musubi buraxılışını istinad yolu ilə tapın. |
-|`FindMusubiPackageVersions` |Musubi paketinin versiyalarını siyahıya alın. |
-|`FindMusubiPackageReleases` |Musubi paketinin siyahı buraxılışları. |
-|`FindMusubiShortAliasByName` |Qısa bir Musubi alias həll edin. |
+|`FindMusubiExactPackageV1` |Tək bir paket qeydini və onun hazırkı dəyişikliklərini oxuyun. |
+|`FindMusubiExactReleaseV1` |Bir dəqiq buraxılış görüntüsünü oxuyun. |
+|`FindMusubiProviderBundleAttestationV1` |Bir provayderin arxiv qutusunun təsdiqini oxuyun. |
+|`FindMusubiResolverIndexV1` |Qeydiyyatlı həllçi indeksini səhifəyə göndərin. |
+|`FindMusubiVersionsV1` |Səhifə bir paket üçün yekun versiyalar. |
+|`FindMusubiMaintainersV1` |Səhifə saxlayıcıları və gözlənilir dəvətləri qəbul etdi. |
+|`FindMusubiArchiveLocationsV1` |Səhifə bir arxiv üçün SoraFS yerlərini yekunlaşdırdı. |
+|`FindMusubiArchiveRetentionV1` |Səhifə arxiv saxlama qeydləri. |
+|`FindMusubiAliasV1` |Ümumdünya aliasının hazırkı hədəfini və yenidənqurmasını oxuyun. |
+|`FindMusubiAliasHistoryV1` |Qlobal bir aliasın dəyişməz yenidən hədəfləmə tarixi səhifəni. |
+|`FindMusubiOrderedPrefixV1` |Səhifə paketləri bir sıralamalı struktur prefiksi altında. |
 
 ## Triggerlər, müqavilələr, əməliyyatlar və bloklar. {#triggers-contracts-transactions-and-blocks}
 

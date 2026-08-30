@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 77780600fa59ba353e2aa79fb339adb6a02f7ac731e04cd0d5f51821ec54e794
+translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,12 +15,15 @@ translation_engine: nllb-200-ct2
 Iroha 上流作業場から:
 
 ```bash
-cargo build --release -p irohad -p iroha_cli -p iroha_kagami
+cargo build --release \
+  -p irohad --bin iroha3d \
+  -p iroha_cli --bin iroha \
+  -p iroha_kagami --bin kagami
 ```
 
 これは:
 
-- `target/release/irohad` ピアダイモン
+- `target/release/iroha3d` ピアダイモン
 - `target/release/iroha`について CLI
 - `target/release/kagami` キー,ゲネス,ローカルネット生成
 
@@ -29,7 +32,7 @@ cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 4ペアを生成する Iroha 3 ローカルネット
 
 ```bash
-target/release/kagami localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+target/release/kagami localnet --peers 4 --out-dir ./localnet
 ```
 
 出力ディレクトリには,生成された `genesis.json`, `genesis.signed.nrt`,ペア`config.toml`ファイル,`client.toml`,ヘルパースクリプト,および生成された `README.md` が含まれ,そのバンドルに対する正確なコマンドが表示されます.

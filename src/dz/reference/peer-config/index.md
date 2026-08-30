@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /reference/peer-config/index.md
-translation_source_hash: 5cc6ddf62a45f655d61a0ff3ebc7e20b939fe78c9d542087b717c2e17e19250d
+translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f29469aaf4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 ས་གནས་ཀྱི་ མཉམ་འབྲེལ་བཟོ་རྣམ་འདི་ TOML ཡིག་སྣོད་ཚུ་ནང་ གཞི་སྒྲིག་འབདཝ་ཨིན། འདི་ [`SetParameter`](/dz/blockchain/instructions.md#setparameter) གི་བཀོད་རྒྱ་བརྒྱུད་དེ་ བསྒྱུར་བཅོས་འབད་མི་ On-chain སྒྲིག་གཞི་ལས་ཁྱད་པར་ཅན་ཨིན། བཟོ་སྐྲུན་འབད་ནིའི་ བྱ་སྤྱོད་འདི་ སྒྲིག་གཞི་བཟོ་ཐངས་ཡིག་སྣོད་ ཡང་ན་ On-chain ཁྱད་ཚད་ནང་ལུ་ངོ་སྤྲོད་འབད་དགོཔ་ཨིན། གནས་སྟངས་འགྱུར་ལྡེ་མིག་ཚུ་ features gatesམེན།
 
-གཞི་སྒྲིག་ཡིག་སྣོད་ལུ་ལམ་སྟོན་འབད་ནིའི་དོན་ལུ་ [`--config`](../irohad-cli#arg-config)CLI གྲོས་བསྡུར་ལག་ལེན་འཐབ་ཨིན།
+གཞི་སྒྲིག་ཡིག་སྣོད་ལུ་ལམ་སྟོན་འབད་ནིའི་དོན་ལུ་ [`--config`](../iroha3d-cli#arg-config)CLI གྲོས་བསྡུར་ལག་ལེན་འཐབ་ཨིན།
 
 ## དཔྱད་ཡིག་འདི་ {#template}
 
@@ -65,4 +65,4 @@ max_content_len = 2048
 
 ## དཀའ་ངལ་སེལ་ཐབས། {#troubleshooting}
 
-སྒྲིག་གཞི་འདི་ག་དེ་སྦེ་བཀླག་ནི་དང་ བརྟག་ཞིབ་འབད་ཡི་ག་གི་ཤུལ་རྟགས་བལྟ་ནིའི་དོན་ལུ་ [`--trace-config`](../irohad-cli#arg-trace-config) CLI ཌིང་སྒྲི་བབ་གཏང་དགོ།
+སྒྲིག་གཞི་འདི་ག་དེ་སྦེ་བཀླག་ནི་དང་ བརྟག་ཞིབ་འབད་ཡི་ག་གི་ཤུལ་རྟགས་བལྟ་ནིའི་དོན་ལུ་ [`--trace-config`](../iroha3d-cli#arg-trace-config) CLI ཌིང་སྒྲི་བབ་གཏང་དགོ།

@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
+translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -263,7 +263,7 @@ EOF
 キーペアを生成する
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./taira-client-key
 ```
 
 `taira.client.toml` を作成する:
@@ -336,7 +336,7 @@ A SORA Nexus 口座 ID は,法典的な I105 アドレスはアカウントパ�
 アカウントを制御する Ed25519 キーパーの生成またはロード:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./nexus-account-key
 ```
 
 公钥を Taira 口座 ID に変換する:
@@ -697,7 +697,7 @@ description = "Route payments domains to the payments dataspace"
 
 オペレーターの受け入れには以下のゲートが含まれます.
 
-- `irohad --sora --config <config.toml> --trace-config` は解決されたノード構成を転送します
+- `iroha3d --sora --config <config.toml> --trace-config` は解決されたノード構成を転送します
 - 生成されたまたはレビューされたマニフェストはハッシュと署名でアーカイブされます
 - 煙のテストが合格 Taira その前に Minamoto 昇進
 - 変更後のカタログ `/status` では,意図されたレーンとデータスペースが表示されます.

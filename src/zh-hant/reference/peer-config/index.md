@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /reference/peer-config/index.md
-translation_source_hash: 5cc6ddf62a45f655d61a0ff3ebc7e20b939fe78c9d542087b717c2e17e19250d
+translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f29469aaf4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 當地同行配置設置在 TOML 文件中.這與通過[`SetParameter`](/zh-hant/blockchain/instructions.md#setparameter)指令改變的鏈上配置不同.生產行爲必須在一個配置文件或鏈上參數中表示;環境變量不是特徵門
 
-使用[`--config`](../irohad-cli#arg-config) CLI 參數來指定配置文件的路徑.
+使用[`--config`](../iroha3d-cli#arg-config) CLI 參數來指定配置文件的路徑.
 
 ## 模板 {#template}
 
@@ -65,4 +65,4 @@ max_content_len = 2048
 
 ## 解決問題 {#troubleshooting}
 
-通過[`--trace-config`](../irohad-cli#arg-trace-config) CLI 旗,查看配置如何閱讀和解析的痕跡.
+通過[`--trace-config`](../iroha3d-cli#arg-trace-config) CLI 旗,查看配置如何閱讀和解析的痕跡.

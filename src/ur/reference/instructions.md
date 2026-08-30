@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /reference/instructions.md
-translation_source_hash: e300187da832a8f82258a36b7c4aaebf505adc09c771de5b0c7ab8fb0052d3db
+translation_source_hash: 9ba8e06d10f0896169feddbdad32f4fed7a8d46effa2293c64df578c197c970e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -29,6 +29,7 @@ translation_engine: nllb-200-ct2
 | [مقامی اثاثہ جات کی ضمانت ](/ur/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
 | [عام اثاثوں کے تالے](/ur/blockchain/escrow.md#generic-asset-locks) |`OpenAssetLock` ، `DrawdownAssetLock`، `CancelAssetLock`، `ExpireAssetLock`|
 | [گمنام اثاثوں کا ضامن](/ur/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
+| [ایٹمی نجی تصفیہ](/ur/blockchain/instructions.md#atomic-private-settlement) | `ActivatePrivateSettlementPoolV1`, `RotatePrivateSettlementPoolPolicyV1`, `FinalizeAtomicPrivateSettlementV1`, `AbortAtomicPrivateSettlementV1` |
 
 اضافی Iroha 3 ماڈیول ڈومین مخصوص ہدایات کی اقسام کو ہدایات کے رجسٹری کے ذریعے درج کرسکتے ہیں۔ موجودہ ماخذ درخت سے پیدا کردہ شیما سطح کی فہرست کے لئے ، دیکھیں [ ڈیٹا ماڈل اسکیم](./data-model-schema.md)۔
 

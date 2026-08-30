@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 49e1a29243151fec1ada2729c315378455a8502811e1ae124e5917a88d59b55d
+translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -36,7 +36,10 @@ cargo build --workspace
 operator-focused အသေးစား build အတွက် အဓိက binaries တွေကိုသာ compile လုပ်ပါ။
 
 ```bash
-cargo build --release -p irohad -p iroha_cli -p iroha_kagami
+cargo build --release \
+  -p irohad --bin iroha3d --bin iroha3d_taira \
+  -p iroha_cli --bin iroha \
+  -p iroha_kagami --bin kagami
 ```
 
 ရလာသော ဘိုင်နရီများကို `target/debug/` သို့မဟုတ် `target/release/` သို့ ရေးသားထားပါသည်။
@@ -44,14 +47,16 @@ cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ## 4. တပ်ဆင်ထားသော ကိရိယာများကို စစ်ဆေးပါ။ {#_4-verify-the-installed-tools}
 
 ```bash
-cargo run --bin irohad -- --help
+cargo run -p irohad --bin iroha3d -- --help
+cargo run -p irohad --bin iroha3d_taira -- --help
 cargo run --bin iroha -- --help
 cargo run --bin kagami -- --help
 ```
 
-ပုံမှန်သုံးတဲ့ ဘိုင်နရီ သုံးခုက-
+ပုံမှန်သုံးတဲ့ ဘိုင်နရီ လေးခုက-
 
-- `irohad` တူညီတဲ့ နတ်ဆိုးအတွက်
+- `iroha3d` စံချိန်တင် peer daemon အတွက်
+- `iroha3d_taira` ကို Canonical Taira validator launcher အတွက်။
 - `iroha` အတွက် CLI ကို Torii နှင့် လုပ်ငန်းရှင်များ၏ အဆုံးသတ်မှတ်ချက်များသို့ ဝင်ရောက်ရန်။
 - `kagami` သော့များ၊ ဗီဇထုတ်ပြန်ချက်များနှင့် localnet profile များအတွက်။
 

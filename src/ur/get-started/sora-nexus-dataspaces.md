@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
+translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -263,7 +263,7 @@ EOF
 اگر آپ کے پاس پہلے سے ہی کوئی ہے تو ایک کلیدی جوڑا پیدا کریں:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./taira-client-key
 ```
 
 `taira.client.toml` بنائیں:
@@ -336,7 +336,7 @@ SORA Nexus اکاؤنٹ ID اکاؤنٹ پبلک کلید اور ہدف نیٹ �
 ایڈ25519 کلید جو اکاؤنٹ کو کنٹرول کرے گا پیدا یا لوڈ کریں:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./nexus-account-key
 ```
 
 عوامی کلید کو ایک Taira اکاؤنٹ ID میں تبدیل کریں:
@@ -697,7 +697,7 @@ description = "Route payments domains to the payments dataspace"
 
 آپریٹر کی قبولیت میں درج ذیل دروازے شامل ہوں گے:
 
-- `irohad --sora --config <config.toml> --trace-config` حل شدہ نوڈ ترتیب کو منتقل کرتا ہے
+- `iroha3d --sora --config <config.toml> --trace-config` حل شدہ نوڈ ترتیب کو منتقل کرتا ہے
 - جنریٹڈ یا نظرثانی شدہ دستاویز کو ہیش اور دستخطوں کے ساتھ محفوظ کیا جاتا ہے۔
 - کسی بھی Minamoto پروموشن سے پہلے دھواں کے ٹیسٹ Taira پر گزرنا
 - تبدیلی کے بعد کیٹلاگ `/status` میں منصوبہ بندی شدہ لین اور ڈیٹا اسپیس دکھایا گیا ہے۔

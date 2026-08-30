@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 9341b2404624dec2230bc294c3d60dc124ac9574a0a5803b9bba744f4c5e7f50
+translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2
 現在の Kagami コードから4ペアローカルネットを生成する:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 出力ディレクトリには,匹敵するペアコンフィギュレーション, `genesis.json`, `genesis.signed.nrt`, `client.toml`,およびヘルパースクリプトが含まれています.
@@ -33,10 +33,10 @@ cargo run --bin kagami -- docker \
   --peers 4 \
   --config-dir ./localnet \
   --image hyperledger/iroha:dev \
-  --out-file ./localnet/docker-compose.yml \
+  --out-file ./docker-compose.yml \
   --force
 
-docker compose -f ./localnet/docker-compose.yml up
+docker compose -f ./docker-compose.yml up
 ```
 
 デフォルトで生成されたスタックは:
@@ -72,7 +72,7 @@ SORA Nexus に指向された設定プロフィールも `defaults/nexus/` に�
 Nexus プロフィールでネイティブピアを実行するには:
 
 ```bash
-./target/release/irohad --sora --config ./defaults/nexus/config.toml
+./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
 ```
 
 そのプロフィールへのアクセス CLI に `defaults/nexus/client.toml` を使用する.
@@ -88,7 +88,7 @@ Nexus プロフィールでネイティブピアを実行するには:
 生成されたコンポーズスタックについては:
 
 ```bash
-docker compose -f ./localnet/docker-compose.yml down
+docker compose -f ./docker-compose.yml down
 ```
 
 ネットワークが実行された後, [で続行する Iroha 3 を介して CLI](/ja/get-started/operate-iroha-via-cli.md)を操作する.

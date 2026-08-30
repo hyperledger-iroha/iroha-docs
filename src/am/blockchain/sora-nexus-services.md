@@ -1,28 +1,29 @@
 ---
 translation_locale: am
 translation_source: /blockchain/sora-nexus-services.md
-translation_source_hash: de50aa8206a5b82d4340f68173e9d89bb8eabab83369c363eb05c9d6632eed28
+translation_source_hash: 0dcdda5185d25e113fb636b8b2aede6081ca8ee89b8b38c50b69fed88622df49
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # SORA Nexus አገልግሎቶች {#sora-nexus-services}
 
+
 SORA Nexus ዙሪያ መተግበሪያ-ተኮር አገልግሎት አውሮፕላኖች ያክላል Iroha 3. እነዚህ አገልግሎቶች የተለዩ መለያዎች አይደሉም ። Iroha የዓለም መንግስት፣ Norito መገለጫዎች፣ የአስተዳደር መዝገቦች እና Torii የጉዞ ቤተሰቦች።
 
-ተደራሽነት በአገናኝ ግንባታ እና በአውታረ መረብ መገለጫ ላይ የተመሠረተ ነው ። [`/openapi`](/am/reference/torii-endpoints.md#app-and-sora-route-families) በዒላማው አገናኝ ላይ እንደ የተፈቀዱ መስመሮች ስልጣን ያለው ዝርዝር ይጠቀሙ።
+ተደራሽነት በአገናኝ ግንባታ እና በአውታረ መረብ መገለጫ ላይ የተመሠረተ ነው። በዒላማው አገናኝ ላይ የተፈጠሩትን መተግበሪያ-API መስመሮችን ለመፈለግ [ `/openapi`](/am/reference/torii-endpoints.md#app-and-sora-route-families) ይጠቀሙ። የህዝብ አካባቢያዊ SoraFS CID እና በደንብ የታወቁ መስመሮች ከተፈጠረው ሰነድ ውጭ ተጭነዋል ፣ ስለሆነም አንድ ማሰማራት ሲፈትሹ እነዚያን መስመሮች በቀጥታ ይመርምሩ ።
 
 ## አካላት ካርታ {#component-map}
 
 |አካል |ሚና |ዋናው ገጽታ |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
 |Soracloud |የመተግበሪያ ማሰማራት፣ የተስተናገዱ አገልግሎቶች፣ የግል ሞዴል/የስራ ሰዓት ሁኔታ እና የአገልግሎት የሕይወት ዑደት ቁጥጥር። |`/v1/soracloud/`, `/api/`, `iroha app soracloud ...` |
-|ወደ ውስጥ |Soracloud የቀጥታ HTTP አውሮፕላን ለሚያስፈልጋቸው የአገልግሎት ማሻሻያዎች HTTP አሂድ ጊዜን አስተናግዷል |Soracloud የስራ ሰዓት ውቅር, አስተናጋጅ አቅም ማስታወቂያዎች, ተለዋዋጭ የሥራ ሰዓት ሁኔታ |
-|SoraNet |የግላዊነት እና የትራንስፖርት ሽፋን ለሰርኩቶች ፣ ለሪሌይ ትራፊክ ፣ VPN ፣ ለተገናኙ ክፍለ ጊዜዎች እና ለዥረት መስመሮች ። |`/v1/connect/` ፣ `/v1/vpn/`፣ SoraNet የመንገድ ሜታዳታ |
+|ወደ ውስጥ |Soracloud የቀጥታ HTTP አውሮፕላን ለሚያስፈልጋቸው የአገልግሎት ማሻሻያዎች HTTP አሂድ ጊዜን ያስተናግዳል። |Soracloud የስራ ሰዓት ውቅር, አስተናጋጅ አቅም ማስታወቂያዎች, ተለዋዋጭ የሥራ ሰዓት ሁኔታ |
+|SoraNet |የግላዊነት እና የትራንስፖርት ሽፋን ለሰርኩቶች ፣ ለሪሌይ ትራፊክ ፣ VPN ፣ ለተገናኙ ክፍለ ጊዜዎች እና ለዥረት መስመሮች። |`/v1/connect/` ፣ `/v1/vpn/`፣ SoraNet የመንገድ ሜታዳታ |
 |የመረጃ ተደራሽነት (DA) |Nexus መስመሮች, SoraFS መገለጫዎች እና የማረጋገጫ ፍሰቶች የተመለከቱት ለጠቅላላ ሸቀጦች ተደራሽነት ማስረጃ, ቁርጠኝነት, እና የፒን-ምኞት ንብርብሮች. |`/v1/da/`, `FindDaPinIntent`, `[sumeragi.da]` |
 |SoraFS |CAR ጥቅማጥቅሞች፣ የተጣበቁ ይዘቶች፣ የጌትዌይ ማሰባሰቢያዎች እና የማረጋገጫ-የመመለስ ፍሰቶች ይዘት-አስተናጋጅ ማከማቻ ጨርቅ። |`/v1/sorafs/`, `/sorafs/`, `FindSorafsProviderOwner` |
 |SoraDNS |ለ SORA አስተናጋጅ አገልግሎቶች እና ይዘት የዲተሪሚኒስት ስም አሰጣጥ እና የመፍትሄ ሰጪ ማረጋገጫ ንብርብር። |`/v1/soradns/`, `/soradns/`, መፍትሔ ማውጫ ክስተቶች |
-|Aitai |በመተግበሪያ ደረጃ ፋይት እና የንብረት መፈፀሚያ ኮሪደር በተፈጥሮ ኤስኮር መዝገቦች የተደገፈ እንጂ በተለየ ዋና መጽሐፍ አይደለም ። |`OpenAssetEscrow`, `FindAssetEscrow*`, `EscrowEventFilter`, Kotodama `escrow_*` ሕንፃዎች |
+|አይታይ |በመተግበሪያ ደረጃ ፋይት እና የንብረት መፈፀሚያ አቋራጭ በኦሪጂናል ኤስኮር መዝገቦች የተደገፈ እንጂ በተለየ ዋና መጽሐፍ አይደለም ።|`OpenAssetEscrow`, `FindAssetEscrow*`, `EscrowEventFilter`, Kotodama `escrow_*` ሕንፃዎች |
 
 ```mermaid
 flowchart LR
@@ -59,7 +60,7 @@ flowchart LR
 
 |መንገድ |የጀርባ አውሮፕላን |ለምን ?|
 | ----------------- | --------------------- | ------------------------------------------------- |
-| `/`               |SoraFS ቋሚ ይዘት |ሊተገበር የሚችል ይዘት ሥር እና መግቢያ መሸጎጫ |
+| `/`               |SoraFS ቋሚ ይዘት |ሊተላለፍ የሚችል ይዘት ሥር እና በር መሸጎጫ |
 |`/assets/*` |SoraFS ቋሚ ይዘት |በይዘት ላይ የተመሠረቱ ሀብቶች እና ግልፅ ማስረጃዎች |
 |`/api/auth*` |Soracloud IVM |የመልሶ ማጫወት ደህንነቱ የተጠበቀ የጽሁፍ እና የኪስ ቦርሳ ፈተና ሁኔታ |
 |`/api/v1/user*` |Soracloud IVM |ለአስተዳደር የሚጠቁሙ የመንግሥት ለውጦች |
@@ -73,32 +74,32 @@ SoraFS ህትመት አንድ ስም ከመጠቆምዎ በፊት ዘላቂ ቅ�
 2. ወደ CAR ማህደር ውስጥ አስቀምጥ እና ቁራጭ ዕቅድ.
 3. የፒን ፖሊሲ እና የአስተዳደር መረጃዎችን ያካተተ Norito ማኒፊስት ይፍጠሩ።
 4. የምዝገባ ወረቀቱን ለ Torii ማቅረብ።
-5. የዒላማው መገለጫ ግልፅ ማስረጃ በሚጠይቅበት ጊዜ የ DA ፒን ዓላማ ወይም ተደራሽነት ቃል ኪዳንን መዝገብ።
+5. የዒላማው መገለጫ ግልፅ ማስረጃ በሚጠይቅበት ጊዜ DA ፒን ዓላማ ወይም ተደራሽነት ግዴታ ይመዝገቡ።
 6. መገለጫውን SoraDNS ስም ወይም Soracloud ቋሚ የፊት መስመር ላይ ያያይዙ።
 
 ### የግል ማጓጓዣ ወይም የዥረት መንገድ {#private-fetch-or-streaming-route}
 
 SoraNet ከ SoraFS ወይም Soracloud ፊት ለፊት መቀመጥ ይችላል:
 
-1. ደንበኛው ስሙን ወይም መገለጫውን ይፈታል.
+1. ደንበኛው ስሙን ወይም ማስታወሻውን ይፈታል.
 2. አንድ ጠባቂ ማውጫ ወይም የመንገድ መመዘኛ መግቢያ እና መውጣት ሪሌዎችን ይመርጣል.
 3. ትራፊክ ይሞላል እና በ SoraNet ወረዳ በኩል ይላካል.
 4. የ መውጫ ትራንስፖርት ወደ SoraFS መግቢያ በር ፣ Torii ጅረት ወይም Soracloud መንገድ ይደርሳል ።
 
 ## አይታይ {#aitai}
 
-Aitai የ SORA መተግበሪያ ኮሪደር ነው የገበያ ቅጥ ስምምነት አንድ ገዢ እና ሻጭ ከሰንሰለት ውጪ ክፍያዎችን በማስተባበር ላይ ሳለ Iroha የሚቆጣጠረው በሰንሰለት ላይ ያሉ ንብረቶች ጥበቃ። ለአዳዲስ የቁጥር ንብረቶች የጥበቃ ፍሰቶች የውል ባለቤትነት ኤስሮው ሂሳብን ከመጠቀም ይልቅ የተወለደውን የኤስሮው መመሪያ ቤተሰብ መጠቀም አለበት.
+Aitai የ SORA መተግበሪያ ኮሪደር ነው የገበያ ቅጥ ስምምነት አንድ ገዢ እና ሻጭ ከሰንሰለት ውጪ ክፍያዎችን በማስተባበር ላይ ሳለ Iroha ይቆጣጠራል በሰንሰለት ላይ ያሉ ንብረቶች ጥበቃ። ለአዳዲስ የቁጥር ንብረቶች የጥበቃ ፍሰቶች የውል ባለቤትነት ኤስሮው ሂሳብን ከመጠቀም ይልቅ የተወለደውን የኤስሮው መመሪያ ቤተሰብ መጠቀም አለበት.
 
-ተወላጅ ዋስትና በዋናው መለያ ውስጥ ጥበቃን ይይዛል። ሻጩ `OpenAssetEscrow` የሚል ቅናሽ ይከፍታል ፣ ገዢው ከሰንሰለት ውጭ ክፍያውን `AcceptAssetEscrow` እና `MarkEscrowPaymentSent` በሚል ይቀበላል እንዲሁም ምልክት ያደርገዋል ፣ እና ሻጩ ክፍያ ከመታወቁ በፊት `ReleaseAssetEscrow` ይለቀቃል ወይም ይሰርዛል። ገዢው እና ሻጩ የማይስማሙ ከሆነ ሁለቱም ወገኖች ክርክር ሊከፍቱ ይችላሉ እናም በ `CanResolveEscrowDispute` የሚፈታ መፍትሄ ሰጭ የተቆለፈውን መጠን ሊከፋፈል ይችላል።
+ተወላጅ ዋስትና በዋናው መለያ ውስጥ ጥበቃን ይይዛል። ሻጩ `OpenAssetEscrow` የሚል ቅናሽ ይከፍታል ፣ ገዢው ከሰንሰለት ውጭ ክፍያውን `AcceptAssetEscrow` እና `MarkEscrowPaymentSent` በሚል ይቀበላል እንዲሁም ምልክት ያደርገዋል ። እና ሻጩ ክፍያ ከመታወቁ በፊት `ReleaseAssetEscrow` ይለቀቃል ወይም ይሰርዛል። ገዢው እና ሻጩ የማይስማሙ ከሆነ ሁለቱም ወገኖች ክርክር ሊከፍቱ ይችላሉ እናም በ `CanResolveEscrowDispute` የሚፈታ መፍትሄ ሰጭ የተቆለፈውን መጠን ሊከፋፈል ይችላል።
 
 ለሙሉ የሕይወት ዑደት, አጠቃላይ የንብረቶች መቆለፊያዎች, የማይታወቁ አስክሮዎች, መጠይቆች, ክስተቶች እና Rust ምሳሌዎች, ይመልከቱ [አገር ውስጥ ንብረት አስክሮ ](/am/blockchain/escrow.md).
 
-|የአይታይ ገጽ |ይጠቀሙበት|
+|የአይታይ ገጽ |ለመጠቀም|
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-|`OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow` |በ XOR የተሰየሙ የፍርድ ሂሳቦችን ጨምሮ ግልፅ የቁጥር ንብረት አቅርቦቶች። |
-|`OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow` |የተጠበቁ ቅናሾች ለገንዘብ ድጋፍ እና ለመዝጋት እንቅስቃሴዎች የማረጋገጫ ማያዣዎችን ይጠቀማሉ። |
-|`OpenEscrowDispute`, `ResolveEscrowDispute`, `OpenAnonymousEscrowDispute`፣ `ResolveAnonymousEscrowDispute` |ክርክር መግባትና በፍርድ ቤት አሠራር የሚወሰድበት ውሳኔ። |
-|`FindAssetEscrowById`, `FindAssetEscrowsBySeller`, `FindAssetEscrowsByBuyer`፣ `FindAssetEscrowsByStatus` |የመተግበሪያ ሁኔታ ገጾች፣ የማመቻቸት ስራዎች እና የድጋፍ መሳሪያዎች። |
+| `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`                                                    |በ XOR የተሰየሙ የፍርድ ሂሳቦችን ጨምሮ ግልፅ የቁጥር ንብረት አቅርቦቶች። |
+| `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`       |የተጠበቁ ቅናሾች ለገንዘብ ድጋፍ እና ለመዝጋት እንቅስቃሴዎች የማረጋገጫ ማያዣዎችን ይጠቀማሉ። |
+|`OpenEscrowDispute`, `ResolveEscrowDispute`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |አለመግባባት መፍታት እና የፍርድ ቤት አሰራር። |
+|`FindAssetEscrowById`, `FindAssetEscrowsBySeller`, `FindAssetEscrowsByBuyer`, `FindAssetEscrowsByStatus` |የመተግበሪያ ሁኔታ ገጾች፣ የማመቻቸት ስራዎች እና የድጋፍ መሳሪያዎች። |
 |`EscrowEventFilter` |በቀጥታ ግልፅ የኤስኮር ምዝገባዎች በኤስኮው መታወቂያ, ሻጭ, ገዢ, ሁኔታ, ወይም ክስተት አይነት.|
 | Kotodama `escrow_open_offer`, `escrow_accept`, `escrow_mark_payment_sent`, `escrow_release`, `escrow_cancel`, `escrow_open_dispute`, `escrow_resolve_dispute` |Kotodama የውል ጥሪዎች በ V1 ኤስሮው ሲስተምስ የተደገፉ ናቸው.|
 
@@ -117,11 +118,11 @@ curl -fsS "$TORII_URL/openapi.json" \
 curl -fsS -H 'Accept: application/json' "$TORII_URL/status" | jq .
 ```
 
-`/openapi.json` በመገለጫው የተጋለጠ ካልሆነ, `/openapi` ይሞክሩ. ትክክለኛ የመንገድ ተገኝነት በግንባታ ባህሪያት እና በአውታረ መረብ ውቅር ላይ የተመሠረተ ነው.
+`/openapi.json` በመገለጫው የተጋለጠ ካልሆነ, `/openapi` ይሞክሩ. ትክክለኛው የመንገድ ተደራሽነት በግንባታ ባህሪዎች እና በአውታረ መረብ ውቅር ላይ የተመሠረተ ነው. ሰነዱ የህዝብ አካባቢያዊ SoraFS CID እና የታወቁ መንገዶችን አይዘረዝርም; እነዚህን መጨረሻ ነጥቦች በቀጥታ ይመልከቱ ከዚህ በታች እንደተገለጸው.
 
 ### Taira የትንባሆ ቼኮች ለንባብ ብቻ {#taira-read-only-smoke-checks}
 
-የህዝብ Taira መጨረሻ ነጥብ ለንባብ ጎን ምርመራዎች ጠቃሚ ነው ፣ ነገር ግን የተፈቀደ መለያ ካልተያዙ እና የቀጥታ ሁኔታ ለመቀየር ከፈለጉ በስተቀር ለውጦች ምሳሌዎች ላይ አይጠቀሙበት ።
+የህዝብ Taira መጨረሻ ነጥብ ለንባብ-ጎን ምርመራዎች ጠቃሚ ነው ፣ ነገር ግን የተፈቀደ መለያ ካልተጠቀሙ እና የሕዝብ የሙከራ ኔትዌር ሁኔታን ለመለወጥ ካሰቡ በስተቀር ለውጦች ምሳሌዎች ላይ አይጠቀሙበት።
 
 ```bash
 export TORII_URL=https://taira.sora.org
@@ -134,22 +135,22 @@ curl -fsS "$TORII_URL/v1/connect/status" | jq '{enabled, sessions_active}'
 curl -fsS "$TORII_URL/v1/vpn/profile" \
   | jq '{available, relay_endpoint, supported_exit_classes}'
 
-curl -fsS "$TORII_URL/v1/sorafs/storage/state" \
-  | jq '{bytes_capacity, bytes_used, pin_queue_depth, por_inflight}'
+curl -fsS "$TORII_URL/v1/sorafs/storage/peers?limit=4" \
+  | jq '{gateway_base_url, pin_torii_urls}'
 
 curl -fsS -H 'Accept: application/json' "$TORII_URL/v1/soracloud/status" \
   | jq '.control_plane | {service_count, services: [.services[] | {service_name, current_version}]}'
 ```
 
-Taira በፕሮጀክቱ ውስጥ ያልተዘረዘሩትን የክትትል አውሮፕላን መስመሮችን ለትክክለኛነት ሊያጋልጡ ይችላሉ ። OpenAPI የመንገድ ካርታ. `/openapi` በዋናነት የተፈጠረው API ውል፣ ከዚያ በቀጥታ በቀጥታ ከመመዘገቡ በፊት ማንኛውንም የማሰማሪያ-ተኮር መንገድ ያረጋግጡ።
+Taira በ OpenAPI የመንገድ ካርታ ላይ ያልተዘረዘሩትን የልውውጥ-ተኮር የቁጥጥር አውሮፕላን መስመሮችን ሊያጋልጥ ይችላል ። `/openapi` ለያዙት መስመሮች የተፈጠረውን ውል አድርገው ይይዙ ፣ ከዚያ በቀጥታ ከመሰየማቸው በፊት የልውውጥን-ተኮራ እና የህዝብ አካባቢያዊ SoraFS መስመሮችን እንደ ይገኛሉ ያረጋግጡ ።
 
 ## Soracloud {#soracloud}
 
 Soracloud የ SORA ትግበራ መቆጣጠሪያ አውሮፕላን ነው ። የማሰማራት ጥቅሎችን ፣ የአገልግሎት ማሻሻያዎችን ፣ መስመሮችን ፣ የመተላለፊያ ሁኔታን ፣ ስልጣን ያላቸው የመዋቅር ግቤቶችን ፣ የተመሰጠረ የአገልግሎት ምስጢሮችን ፣ የሞዴል ምዝገባ መዝገቦችን ፣ የግል መደምደሚያ ክፍለ ጊዜዎችን እና የአሂድ ጊዜ ደረሰኞችን ይከታተላል ።
 
-Soracloud ሁለት የማስፈፀም አውሮፕላኖች ይጠቀማል:
+Soracloud ሁለት የፍጻሜ አውሮፕላኖች ይጠቀማል:
 
-|የአፈፃፀም አውሮፕላን |የስራ ሰዓት |ይጠቀሙበት|
+|የአፈፃፀም አውሮፕላን |የስራ ሰዓት |ለመጠቀም|
 | ---------------------- | ------- | -------------------------------------------------------------------------------------------- |
 |`DeterministicService` |`Ivm` |ደራሲ፣ የደብዳቤ ማስቀመጫ ሁኔታ፣ የተረጋገጠ ንባቦች፣ የታዘዙ የፖስታ ሳጥኖች አስተናጋጆች፣ ለአስተዳደር ተለዋዋጭነት |
 |`HttpService` |`Inrou` |በቀጥታ HTTP APIs፣ በቅጂ ሰጭ ሥራ፣ ካሽ የተደገፉ አገልግሎቶች፣ SSE፣ በአሳሽ የታገዙ ፍሰት |
@@ -204,7 +205,7 @@ iroha app soracloud rollback \
   --torii-url "$SORACLOUD_TORII_URL"
 ```
 
-### የተገለበጠና ምስጢራዊ ቁሳቁስ {#config-and-secret-material}
+### ሚስጥራዊና ተደራሽ የሆነ ቁሳቁስ {#config-and-secret-material}
 
 Soracloud ውቅር እና ምስጢራዊ ግቤቶች የሥልጣን ማሰማራት ሁኔታ አካል ናቸው. አስፈላጊው ውቅር ወይም ምስጢራዊ አገናኞች ሲጎድሉ ወይም ከንቃት ማሳያዎች ጋር የማይጣጣሙ ከሆነ የማሰማራት ፣ የማሻሻል እና የመመለስ ችግር ይዘጋል ።
 
@@ -241,9 +242,9 @@ iroha app soracloud secret-set --help
 - የአገልግሎት ማሳያ አፈፃፀም አውሮፕላን `HttpService` መሆን አለበት ።
 - `HttpService + Inrou` በ `/` ላይ የተጫነ በትክክል አንድ `PersistentRootLeaseVolume` ይጠይቃል ።
 - የተደገፉ የ Inrou አገልግሎቶች ተለዋዋጭ የተጋራ ሁኔታን በሚጠብቁበት ጊዜም የተጋራ አገልግሎት ወይም ምስጢራዊ ኪራይ ማከማቻ ያስፈልጋቸዋል።
-- የምርት ማስተናገጃ ማእከሎች እንደ ወኪል ብቻ ከመሥራት ይልቅ በእውነተኛ የ Inrou አቅም ላይ ማስታወቂያ ማቅረብ አለባቸው።
+- የምርት ማስተናገጃ ማእከሎች እንደ ወኪል ብቻ ከመሥራት ይልቅ በእውነተኛ የ Inrou አቅም ላይ ማስታወቂያ ማቅረብ አለባቸው ።
 
-### የተገለጠ ቁራጭ {#manifest-fragment}
+### በግልጽ የሚታየው ቁራጭ {#manifest-fragment}
 
 ከዚህ በታች ያለው ምሳሌ የሁለቱን መገለጫዎች ቅርፅ ያሳያል ። ይህ የተሟላ የማሰማራት ጥቅል ሳይሆን ቁራጭ ነው።
 
@@ -330,7 +331,7 @@ SORACLOUD_LEASE_VOLUME_INDEX_STATE_MOUNT_PATH
 
 ## SoraNet {#soranet}
 
-SoraNet የግላዊነት እና የትራንስፖርት ሽፋን ነው ። በቀጥታ ከዒላማው መግቢያ በር ወይም አገልግሎት ጋር መገናኘት የሌለባቸው በትራፊክ ላይ የተመሠረቱ መንገዶችን ያቀርባል ። የትራንስፖርት ዲዛይን የመግቢያ ፣ መካከለኛ እና መውጫ ሪያል ሚናዎችን ፣ QUIC ትራንስፖርት ፣ በጩኸት ላይ የተመሠረተ ሃይብሪድ እጅ መንሻ ፣ የአቅም ድርድር ፣ የሬሌ ማውጫ ሜታዳታ እና ቋሚ መጠን ያላቸው የታሸጉ ሴሎች ይጠቀማል።
+SoraNet የግላዊነት እና የትራንስፖርት ሽፋን ነው ። በቀጥታ ከዒላማው መግቢያ በር ወይም አገልግሎት ጋር መገናኘት የሌለባቸው በትራፊክ ላይ የተመሠረቱ መንገዶችን ያቀርባል ። የትራንስፖርት ዲዛይን የመግቢያ ፣ መካከለኛ እና መውጫ ሪያል ሚናዎችን ፣ QUIC ትራንስፖርት ፣ በጩኸት ላይ የተመሠረተ ሃይብሪድ እጅ መንሻ ፣ የአቅም ድርድር ፣ የሬሌ ማውጫ ሜታዳታ እና ቋሚ መጠን ያላቸው የታሸጉ ሴሎችን ይጠቀማል ።
 
 በ Nexus ትግበራዎች ውስጥ, SoraNet የይዘት መያዣዎችን, የጌትዌይ ትራፊክን, VPN ወይም የግንኙነት ክፍለ ጊዜዎችን እና Norito ዥረት መስመሮችን ማጓጓዝ ይችላል. የመረጃ ቋት ግቤቶች ለ `norito-stream` የሚደግፉ ሪሌዎችን ምልክት ሊያደርጉ ይችላሉ, ይህም ደንበኞች ለ Torii RPC ወይም ለዥረት ትራፊክ ተስማሚ የሆኑ መንገዶችን እንዲመርጡ ያስችላቸዋል.
 
@@ -353,33 +354,49 @@ provision_window_segments = 4
 provision_queue_capacity = 256
 ```
 
-`access_kind = "read-only"` ን ለተመልካች ማረጋገጫ የማይጠይቁ የይዘት መስመሮች ይጠቀሙ። ወደ Torii ወይም አስተናጋጅ አገልግሎት ከመገናኘትዎ በፊት የመውጫ ዥረት ትኬቶችን ወይም ተመልካቾችን ማንነት ማስከበር ሲኖርበት `authenticated` ን ይጠቀሙ ።
+`access_kind = "read-only"` ን ለተመልካች ማረጋገጫ የማይጠይቁ የይዘት መስመሮች ይጠቀሙ። ወደ Torii ወይም ወደ አስተናጋጅ አገልግሎት ከመግባቱ በፊት የመውጫ ዥረት ትኬቶችን ወይም ተመልካቾችን ማንነት ማስከበር ሲኖርበት `authenticated` ን ይጠቀሙ።
 
 ### SoraNet-ማወቅ SoraFS ማምጣት {#soranet-aware-sorafs-fetch}
 
-የ SoraFS መያዣ CLI ለአሳሽ ማራዘሚያዎች ወይም ለ SDK አስማሚዎች የአካባቢያዊ ፕሮክሲ ማኒፌስት እና ስፖል SoraNet የመንገድ ሜታዳታ ሊያወጣ ይችላል-
+የ SoraFS ማምጣት CLI አንድ አካባቢያዊ ወኪል ማሳያ እና spool ማሰራጨት ይችላሉ SoraNet የአሳሽ ማራዘሚያዎች የጉዞ ሜታዳታ ወይም SDK አስማሚዎች. JSON መወሰን አለበት `local_proxy` ጋር `"emit_browser_manifest": true`, እና CLI የተሰራ መሆን አለበት `local-quic-proxy` ድጋፍ። Taira, የታዘዙትን አቅራቢዎች ካታሎግ በህዝባዊ የሙከራ ኔትወርክ ሥር ይፈትሹ ፣ ከዚያ ለዚያ አቅራቢ የተሰጠውን የተጠበቀ አቅራቢ ቱፕል ይሙሉ:
 
 ```bash
-sorafs_cli fetch \
-  --plan artifacts/payload_plan.json \
-  --manifest-id 7bb2...9d31 \
-  --provider name=alpha,provider-id=9f5c...73aa,base-url=https://gw-alpha.example.org/,stream-token="$(cat alpha.token)" \
-  --output artifacts/payload.bin \
-  --json-out artifacts/fetch_summary.json \
-  --local-proxy-manifest-out artifacts/proxy_manifest.json \
-  --local-proxy-mode bridge \
-  --local-proxy-norito-spool storage/streaming/soranet_routes \
-  --local-proxy-kaigi-spool storage/streaming/soranet_routes \
-  --local-proxy-kaigi-policy authenticated \
+export TAIRA_ROOT=https://taira.sora.org
+curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
+
+: "${TAIRA_SORAFS_PROVIDER_ID:?set the admitted provider ID from Taira discovery}"
+: "${TAIRA_SORAFS_GATEWAY_KEY:?set the provider gateway key}"
+: "${TAIRA_SORAFS_PROVIDER_URL:?set the advertised provider base URL}"
+: "${TAIRA_SORAFS_STREAM_TOKEN_FILE:?set the issued stream-token file}"
+
+cargo run -p sorafs_orchestrator --features=local-quic-proxy --bin=sorafs_cli -- \
+  fetch \
+  --plan=artifacts/payload_plan.json \
+  --manifest-id=<manifest-digest-hex> \
+  --orchestrator-config=artifacts/orchestrator.json \
+  --provider=name=taira,provider-id="$TAIRA_SORAFS_PROVIDER_ID",gateway-key="$TAIRA_SORAFS_GATEWAY_KEY",base-url="$TAIRA_SORAFS_PROVIDER_URL",stream-token="$(cat "$TAIRA_SORAFS_STREAM_TOKEN_FILE")" \
+  --output=artifacts/payload.bin \
+  --json-out=artifacts/fetch_summary.json \
+  --local-proxy-manifest-out=artifacts/proxy_manifest.json \
+  --local-proxy-mode=bridge \
+  --local-proxy-norito-spool=storage/streaming/soranet_routes \
+  --local-proxy-kaigi-spool=storage/streaming/soranet_routes \
+  --local-proxy-kaigi-policy=authenticated \
   --max-peers=2 \
   --retry-budget=4
 ```
 
 ማጠቃለያ መዝገብ አቅራቢ ሪፖርቶች, ቁርጥራጭ ደረሰኞች, አካባቢያዊ ወኪል ሜታዳታ, እና ለማምጣት ጥቅም ላይ የዋሉ ውጤታማ የመንገድ ቅንብሮች.
 
+### የቅልጥፍና ማበረታቻ ተቆጣጣሪ ዝርዝር {#relay-incentive-verifier-roster}
+
+የቅልጥፍና ማበረታቻ የመውሰድ ማስረጃዎችን ውድቅ ያደርገዋል ሁሉም አስፈላጊ ምርመራዎች ስኬታማ ካልሆኑ በስተቀር. `incentives.enable` እውነት ከሆነ, `incentives.trusted_verifier_ids` ቢያንስ አንድ የካኖኒካል መለያ ID ሊኖረው ይገባል. የዝርዝሩ ማበረታቻዎች የተሰናከሉ ቢሆንም እንኳ ከ 64 ግቤቶች መብለጥ የለበትም ። ሩጫው ጊዜ እንደ ተወስኖ የታቀደ ስብስብ ያስቀምጣል ፣ እና በትራንስፖርት ጅምር ወቅት ልክ ያልሆነ የዝርዝሩን ጂኦሜትሪ ውድቅ ያደርጋል ።
+
+እያንዳንዱ `RelayBandwidthProofV1` በተወሰነ ክፈፍ/የመከፋፈል በጀት መሠረት ይገለጻል እናም ሙሉውን ክፈፍ ያጠቃልላል ። የምስክር ወረቀቱ ማረጋገጫ መለያ በተዋቀረው ዝርዝር ውስጥ መኖር አለበት ፣ እና `RelayBandwidthProofV1::verify_signature()` ተለጣፊው ከመቆለፉ ወይም የአሠራር accumulator ን ከመቀየሩ በፊት ስኬታማ መሆን አለበት ። ሬሌው የማይታመን ፊርማውን ወይም የፊርማውን ልክ ያልሆነ / የተበላሸ ማስረጃን ችላ ይላል ። እንዲህ ዓይነቱ ማስረጃ ምንም ዓይነት መለኪያ አይጨምርም እናም የማበረታቻ ቅጽበታዊ ገጽ እይታን ሊያመጣ አይችልም ።
+
 ## የመረጃ ተደራሽነት (DA) {#data-availability-da}
 
-DA በጣም ትልቅ ፣ ለግላዊነት ስሜታዊ ወይም በቀጥታ በዓለም ሁኔታ ውስጥ ለማስቀመጥ በጣም ለአገልግሎት የተወሰነ ለሆኑ ጥቅማጥቅሞች ተደራሽነት-ማስረጃ ንብርብሮች ነው ። ይህ የዲተሪሚኒስት ግዴታዎች እና የማገገም ግዴታዎችን ይመዝግባል ስለዚህ ማረጋገጫ ሰጪዎች ፣ መግቢያ ገጾች እና ደንበኞች የትኞቹ ባይቶች የተስፋ ቃል እንደተደረጉ ፣ የትኛው ፖሊሲ እንደሚተገበር እና የትኞቹ ማስረጃዎች እንደተመለከቱ መስማማት ይችላሉ.
+DA በጣም ትልቅ ፣ ለግላዊነት ስሜታዊ ወይም በቀጥታ በዓለም ሁኔታ ውስጥ ለማስቀመጥ በጣም ለአገልግሎት የተወሰነ ለሆኑ ጥቅማጥቅሞች ተደራሽነት-ማስረጃ ንብርብሮች ነው ። ይህ የዲተሪሚኒስት ግዴታዎች እና የማገገም ግዴታዎችን ይመዝግባል ስለዚህ ማረጋገጫ ሰጪዎች ፣ መግቢያ ገጾች እና ደንበኞች የትኞቹ ባይቶች የተስፋ ቃል እንደተደረጉ ፣ የትኛው ፖሊሲ የሚተገበር እና የትኞቹ ማስረጃዎች እንደተመለከቱ መስማማት ይችላሉ.
 
 DA Kura ወይም SoraFS ን አይተካም።
 
@@ -395,7 +412,7 @@ DA አፕሊኬሽን ወይም Nexus ጎዳና ከሰንሰለት ውጭ ያሉ
 | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
 |ዓላማው|አንድ ትኬት, ግልፅ ማጣቀሻ, ቅጽል ስያሜ, መንገድ / ዘመን / ቅደም ተከተል አመልካች, የማቆየት ፖሊሲ, ወይም የመተግበሪያ ግብ. |
 |ቁርጠኝነት |ማኒፌስት፣ የመንገድ ጭነት፣ የማረጋገጫ ጥቅል ወይም የይዘት ሥር ወደ መቁጠሪያ-የሚታይ መዝገብ የሚያገናኝ ቁሳቁስ ይዘርፉ። |
-|ማስረጃዎች|ተደራሽነት ድምጾች፣ የምስክር ወረቀት ክፍት ቦታዎች፣ የአቅራቢዎች ማረጋገጫዎች ወይም ሌሎች በዒላማው አውታረመረብ ተቀባይነት ያላቸው የመገለጫ ልዩ ማስረጃዎች። |
+|ማስረጃዎች|ተደራሽነት ድምጾች፣ የምስክር ወረቀት ክፍት ቦታዎች፣ የአቅራቢዎች ማረጋገጫዎች ወይም በዒላማው አውታረመረብ ተቀባይነት ያላቸው ሌሎች መገለጫ-ተኮር ማስረጃዎች። |
 |ጥያቄ |በ `FindDaPinIntentByTicket`, `FindDaPinIntentByManifest`, `FindDaPinIntentByAlias` ወይም `FindDaPinIntentByLaneEpochSequence` በኩል የፒን ዓላማ ፍለጋዎች።|
 
 በ DA የተደገፈ አንድ መደበኛ የሕትመት ፍሰት:
@@ -410,11 +427,11 @@ DA አፕሊኬሽን ወይም Nexus ጎዳና ከሰንሰለት ውጭ ያሉ
 
 DA አንድ ጠቃሚ ጭነት ወደ ተፈርሟል, እንደገና መጫወት የተጠበቀ, ብሎክ-የተመዘገበ ግዴታ ይቀይረዋል. አስፈላጊ ስልተ ቀመሮች ናቸው ስለዚህ ማረጋገጫዎች እና መግቢያዎች ከ ተመሳሳይ ባይት ተመሳሳይ ዲጀቶችን እንደገና ማስላት ይችላሉ.
 
-1. Torii በ `(lane_id, epoch, sequence)` ፣ በጠቅላላ ጭነት ባይቶች ፣ በመጭመቂያ ሜታዳታ ፣ በከፊል መጠን ፣ በመሰረዝ መገለጫ የግብዓት ጥያቄን ይቀበላል ። የማከማቻ ፖሊሲ እና የመላኪያ ፊርማ። አንጓው ሲጠየቅ gzip ፣ deflate ወይም Zstandard ጥቅማጥቅሞችን ይሰብራል ፣ ከዚያ የካኖኒካዊ ባይት ርዝመት `total_size` መሆኑን ያረጋግጣል ።
-2. የመንገድ እና የክፍያ መለኪያዎችን ያረጋግጡ ። የመንገድ Nexus የመንገድ ካታሎግ ውስጥ መኖር አለበት ። `chunk_size` ከዜሮ ያልሆነ ኃይል ሁለት ፣ ቢያንስ ሁለት ባይት መሆን አለበት። እና ከተዋቀረው ከፍተኛ መጠን አይበልጥም። የመሰረዝ መገለጫው የውሂብ ቅንጣቶችን እና ቢያንስ ሁለት የእኩልነት ቅንጣቶችን ሊያካትት ይገባል ። የመስመሩ ካታሎግ `merkle_sha256` ወይም `kzg_bls12_381` የሆነውን የማረጋገጫ መርሃ ግብር ይመርጣል ።
+1. Torii በ `(lane_id, epoch, sequence)` ፣ በጠቅላላ ጭነት ባይቶች ፣ በመጭመቂያ ሜታዳታ ፣ በክፍሉ መጠን ፣ በመሰረዝ መገለጫ የመውሰድ ጥያቄን ይቀበላል ። የማከማቻ ፖሊሲ እና የመላኪያ ፊርማ። አንጓው ሲጠየቅ gzip ፣ deflate ወይም Zstandard ጥቅማጥቅሞችን ይሰብራል ፣ ከዚያ የካኖኒካዊ ባይት ርዝመት `total_size` መሆኑን ያረጋግጣል ።
+2. የመንገድ እና የክፍያ መለኪያዎችን ያረጋግጡ ። የመንገድ Nexus የመንገድ ካታሎግ ውስጥ መኖር አለበት ። `chunk_size` ሁለት ፣ ቢያንስ ሁለት ባይት ያልሆነ ኃይል ሊኖረው ይገባል ። እና ከተዋቀረው ከፍተኛ መጠን አይበልጥም። የመሰረዝ መገለጫው የውሂብ ቅንጣቶችን እና ቢያንስ ሁለት የእኩልነት ቅንጣቶችን ሊያካትት ይገባል ። የመስመሩ ካታሎግ `merkle_sha256` ወይም `kzg_bls12_381` የሆነውን የማረጋገጫ መርሃ ግብር ይመርጣል ።
 3. የአውታረ መረብ ፖሊሲን ተግባራዊ ያድርጉ። ኖዱ ለብሎብ ክፍል የተቀየሰውን የመተባበር እና የማቆያ መሰረታዊ መስመር ያስገድዳል ። የህዝብ ሜታዳታ በቀጥታ ጽሑፍ ውስጥ መቆየት አለበት ፣ በመስተዳድሩ ውስጥ ከመፃፉ በፊት በመስተዳደሩ አስተዳደር ሜታዳታ ቁልፍ ብቻ የተመሰጠረ ነው ።
 4. ቁርጥራጭ እና ግዴታ. የካኖኒካል ጥቅማጥቅሞች ከ `chunk_size` የተወሰደ ቋሚ መጠን ያለው መገለጫ ጋር ይከፈላሉ. Torii የክፍያ ጭነት ዲጀስት, የመረጃ ማስረጃ መልሶ ማግኛ ዛፍ ሥር እና በአንድ ቁራጭ ግዴታዎች ያሰላስላል. የውሂብ ቁርጥሮች በባይቶቻቸው ላይ BLAKE3 ግዴታዎች ይይዛሉ.
-5. የመሰረዝ ግዴታዎች ይጨምሩ. `data_shards`. የመጨረሻው መስመሩ ውስጥ የጎደሉ ሕዋሳት ለፓሪቲ ስሌት ዜሮ የተሸፈኑ ናቸው. RS(16) እኩልነት ረድፍ/ዓለም አቀፋዊ እኩልነት ክፍሎችን ይፈጥራል; አማራጭ `row_parity_stripes` በማትሪክስ ውስጥ በገመድ-ቅጥ ባንድነት ይጨምሩ. BLAKE3 ትናንሽ አንዲያን ምግቦች `u16` ምልክቶች።
+5. የመሰረዝ ግዴታዎች ይጨምሩ. ቁርጥራጮች ወደ `data_shards` ጎማዎች ይመደባሉ. የመጨረሻው ጎማ ውስጥ የጎደሉ ሴሎች ለፓሪቲ ስሌት ዜሮ የተሞሉ ናቸው. RS(16) ፓሪቲ ይፈጥራል ረድፍ/ዓለም አቀፋዊ እኩልነት ቁርጥራጮች; አማራጭ `row_parity_stripes` በመግቢያው ላይ አምድ-ቅጥ ባንድ እኩልነት ይጨምሩ. የእኩልነት ቁራጭ ግዴታዎች BLAKE3 አነስተኛ መጠን ያላቸው የ `u16` ምልክቶች ናቸው።
 6. መገለጫውን ይገንቡ. `DaManifestV1` ጎዳና, ዘመን, ቅጥያ ክፍል, ኮዴክ, ጠቃሚ ጭነት ዳይጀስት, ቁራጭ ሥር, ቁራጮች መጠን, የመሰረዝ መገለጫ, የማቆየት ፖሊሲ, የኪራይ ዋጋ, ቁራጮችን ግዴታዎች, አማራጭ IPA ግዴታ, ሜታዳታ, እና እትም ጊዜ ይመዘግባል. የማከማቻ ትኬት የተወሰነ ነው: ኖዱ በመጀመሪያ በባዶ ትኬት አማካኝነት በማኒፌስት አብነት ላይ ሃሽ ያደርጋል, ከዚያ ያንን የጣት አሻራ እንደ የመጨረሻው `storage_ticket` ይጽፋል.
 7. የመልሶ ማጫዎቻ ግጭቶችን ውድቅ ያድርጉ። የመልሶ የማጫዎቻ ቁልፍ `(lane_id, epoch, sequence, manifest_fingerprint)` ነው ። ተመሳሳይ የጣት አሻራ ያለው ዳግመኛ ቅጂ የማይችል ነው። የቆየ ቅደም ተከተል ወይም የተለየ የጣት ሥዕላዊ መግለጫ ያለው ተመሳሳይ ቅደም ተከተል ውድቅ ይደረጋል ።
 8. የተፈረሙትን ዕቃዎች ያቅርቡ. Torii ይለካሉ PDP ቁርጠኝነት፣ ፊርማ ሀ `DaIngestReceipt`, ይገነባል `DaCommitmentRecord`, ለእነዚያ ለታዋቂዎችም (በመጽሐፉ ውስጥ) የሚጻፍ ነው ፡ ፡ PDP ተሳትፎ፣ ተሳትፎ መዝገብ፣ የተሳትፎ መርሃግብር፣ የፒን ዓላማ፣ ደረሰኝ ፋይል እና ደረሰኝ መዝገብ። የምስክር ወረቀት ካርሰር በአንድ ጊዜ በቀን አንድ ጊዜ ይቀጥላል `(lane_id, epoch)`.
@@ -427,7 +444,7 @@ DA አንድ ጠቃሚ ጭነት ወደ ተፈርሟል, እንደገና መጫ�
 - ቁራጭ ሥር
 - ለ KZG ጎዳናዎች አማራጭ KZG ግዴታ።
 - PDP/የማረጋገጫ ማስቀመጫ
-- የማቆያ ክፍል እና ማከማቻ ትኬት
+- የማከማቻ ክፍል እና ማከማቻ ትኬት
 - Torii DA የምስክርነት ፊርማ
 
 አንድ ብሎክ DA መዝገቦችን ከማካተት በፊት, የብሎክ ስብስብ መንገድ ጥቅሉን ያረጋግጣል:
@@ -449,9 +466,9 @@ DA አንድ ጠቃሚ ጭነት ወደ ተፈርሟል, እንደገና መጫ�
 3. መረጃ ጠቋሚው በድንበር ውስጥ ነው እናም ግዴታው በዚያ መረጃ ጠቋሜታ ላይ ያለውን የቡንዶች ዝርዝር እኩል ነው።
 4. የመንገድ መከላከያ ፖሊሲው ግዴታውን ይቀበላል ።
 5. ከተቀማጭ ወረቀት የወንድማማች ጎዳናውን ማጠፍ የተሰጠውን ሥር እንደገና ያድሳል ።
-6. እንደገና የተገነባው ሥር የቡድን ሥር ጋር እኩል ነው።
+6. ዳግም የተገነባው ሥር የቡድን ሥር ጋር እኩል ነው።
 
-ይህ በተወሰነ የብሎክ ጥቅማጥቅሞች ውስጥ አንድ የተወሰነ ተደራሽነት ግዴታ እንደተካተተ ያረጋግጣል; እያንዳንዱ ቅጂ በአሁኑ ጊዜ በመስመር ላይ መሆኑን አያረጋግጥም. የቀጥታ መልሶ ማግኛ በ SoraFS አቅራቢዎች ምርመራዎች ፣ PDP/PoTR ፍተሻዎች ወይም ለፕሮፋይል የተወሰኑ የእውቀት ማስረጃዎች አማካኝነት በተናጠል ይመረመራል ።
+ይህ በተወሰነ የብሎክ ጥቅማጥቅሞች ውስጥ አንድ የተወሰነ ተደራሽነት ግዴታ እንደተካተተ ያረጋግጣል; እያንዳንዱ ቅጂ በአሁኑ ጊዜ በመስመር ላይ መሆኑን አያረጋግጥም. የቀጥታ መልሶ ማግኛ በ SoraFS አቅራቢዎች ምርመራዎች ፣ PDP/PoTR ፍተሻዎች ወይም ለፕሮፋይል የተወሰኑ የእውቀት ማስረጃዎችን በመጠቀም በተናጠል ይመረመራል ።
 
 ### የስምምነት መስተጋብር {#consensus-interaction}
 
@@ -464,7 +481,7 @@ DA አስተማማኝ ስርጭት (RBC) አማካኝነት ከ Sumeragi ጋር 
 
 አንዳቸውም ሁኔታዎች ካልተፈጸሙ, የጋራ መዝገቦች `missing_local_data`, በ RBC ወይም በብሎክ ማመሳሰል አማካኝነት ጠቃሚ ጭነት መልሶ ለማግኘት ይሞክራል, እና ሁኔታ እና ቴሌሜትሪ ውስጥ DA በር ሪፖርት ያደርጋል. አሁን ባለው ትግበራ ውስጥ እነዚህ DA ምልክቶች ለፍፃሜነት አማካሪ ናቸው-አንድ ብሎክ አሁንም የሚጠናቀቀው ከተመዘገበው የምስክር ወረቀት እና ከሚዛመደው አካባቢያዊ ጥቅማጥቅሞች እንጂ በተለየ የ DA ጥራዝ ምስክር ወረቀት አይደለም ።
 
-DA ጊዜ ማግኛ መስኮቶች ያስፋፋል. ውጤታማው DA የኳርየም ጊዜ መቆረጥ ከተዋቀረው ብሎክ እና የተደራጁ ጊዜዎች የተገኘ ሲሆን ከዚያ በ `sumeragi.advanced.da.quorum_timeout_multiplier` ይጨምራል ። የመገኛ ጊዜ መቆጠብ `max(quorum_timeout, availability_timeout_floor_ms) * availability_timeout_multiplier` ነው. ይህ ተደራሽነት የጊዜ ገደብ ከመጠናቀቁ በፊት አንጓው የፍጆታ ጭነት ማግኛን ይደግፋል እንዲሁም ቀደም ሲል እንደገና መወሰንን ያስወግዳል; ከተጠናቀቀ በኋላ መደበኛ የማገገም እና የእይታ ለውጥ መንገዶች ሊቀጥሉ ይችላሉ ።
+DA የጊዜ ሰሌዳ ማግኛ መስኮቶች ያስፋፋል. DA የቁጥር ጊዜ ቆይታ ከተዋቀረው ብሎክ እና የተደራጁትን ጊዜዎች የሚመነጭ ሲሆን ከዚያ በ `sumeragi.advanced.da.quorum_timeout_multiplier`. የጊዜ ገደቡ `max(quorum_timeout, availability_timeout_floor_ms) * availability_timeout_multiplier`. ይህ ተደራሽነት የጊዜ ገደብ ከመጠናቀቁ በፊት አንጓው የፍጆታ ጭነት መልሶ ማግኘትን ይደግፋል እንዲሁም ቀደም ሲል እንደገና መወሰን ይከላከላል; ከተጠናቀቀ በኋላ መደበኛ የመልሶ ማግኛ እና የእይታ ለውጥ መንገዶች ሊቀጥሉ ይችላሉ።
 
 ### የኦፕሬተር ማስታወሻዎች {#operator-notes}
 
@@ -485,82 +502,161 @@ SoraFS ያልተማከለ ይዘት-አስተናጋጅ ማከማቻ ጨርቅ �
 
 የተለመዱ SoraFS አጠቃቀሞች ቋሚ የመተግበሪያ ሀብቶችን ፣ የሰነድ ግንባታዎችን ፣ የዞን ጥቅሎችን ፣ የሞዴል ወይም የአርቴፋክት ማጣቀሻዎችን እና የአስተዳደር ማስረጃ ጥቅሎችን ያካትታሉ። የ Iroha የውሂብ ሞዴል SoraFS የጌትዌይ ክስተቶችን እና ለጋሽ ባለቤትነት መፍትሄ የ [ `FindSorafsProviderOwner`](/am/reference/queries.md#nexus-data-availability-and-packages) መጠይቅ ያሳያል ።
 
-### ማሸግ፣ መግለጽ፣ ፊርማ ማድረግና ማስገባት {#pack-manifest-sign-and-submit}
+### Taira የሙከራ መርጃ መገለጫ {#taira-testnet-profile}
 
-```bash
-cargo run -p sorafs_car --features cli --bin sorafs_cli -- \
-  car pack \
-  --input ./dist \
-  --car-out artifacts/site.car \
-  --plan-out artifacts/site.chunk-plan.json \
-  --summary-out artifacts/site.car-summary.json
+Taira የካኖኒክ የህዝብ የሙከራ ኔትወርክ ነው SoraFS። የተረጋገጠ የማረጋገጫ መገለጫው ሰንሰለት `fc56984b-2be7-431d-840e-21514d1883f0` እና ሰንሰለት ልዩነት `369` ይጠቀማል ። የታተሙት SoraFS ቅንብሮች የሚከተሉት ናቸው:
 
-cargo run -p sorafs_car --features cli --bin sorafs_cli -- \
-  manifest build \
-  --summary artifacts/site.car-summary.json \
-  --manifest-out artifacts/site.manifest.to \
-  --manifest-json-out artifacts/site.manifest.json \
-  --pin-min-replicas=3 \
-  --pin-storage-class=warm \
-  --pin-retention-epoch=42
+- መረብ ID: `hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94`
+- የጌትዌይ መሠረት URL: `https://taira.sora.org`
+- ፒን Torii URLs: ከ `https://taira-validator-1.sora.org` እስከ `https://taira-validator-4.sora.org`
+- የማግኘት ችሎታዎች: `torii_gateway`, `chunk_range_fetch`, እና `potr_mldsa`
+- የተለዩ ይዘት መነሻ: `https://{cid}.sorafs.taira.sora.org/{path}`
+- የህዝብ ፒን ፖሊሲ: ያለፈቃድ እና ክፍያ የታገደ, `require_council_signatures = false`
 
-SIGSTORE_ID_TOKEN=$(oidc-client fetch-token) \
-cargo run -p sorafs_car --features cli --bin sorafs_cli -- \
-  manifest sign \
-  --manifest artifacts/site.manifest.to \
-  --bundle-out artifacts/site.manifest.bundle.json \
-  --signature-out artifacts/site.manifest.sig
+```toml
+[sorafs.storage]
+enabled = false
+max_capacity_bytes = 13743895347
 
-cargo run -p sorafs_car --features cli --bin sorafs_cli -- \
-  manifest submit \
-  --manifest artifacts/site.manifest.to \
-  --chunk-plan artifacts/site.chunk-plan.json \
-  --torii-url "$TORII_URL" \
-  --resolve-submitted-epoch=true \
-  --authority=<i105-account-id> \
-  --private-key-file ./secrets/authority.ed25519 \
-  --summary-out artifacts/site.manifest.submit.json \
-  --response-out artifacts/site.manifest.submit.body
+[sorafs.discovery]
+discovery_enabled = true
+known_capabilities = ["torii_gateway", "chunk_range_fetch", "potr_mldsa"]
+
+[sorafs.discovery.publish]
+gateway_base_url = "https://taira.sora.org"
+pin_torii_urls = [
+  "https://taira-validator-1.sora.org",
+  "https://taira-validator-2.sora.org",
+  "https://taira-validator-3.sora.org",
+  "https://taira-validator-4.sora.org",
+]
+
+[sorafs.gateway.untrusted_hosting]
+enabled = true
+path_gateway_redirect = true
+redirect_html_only = true
+
+[sorafs.gateway.untrusted_hosting.cid_host_suffixes]
+taira = "sorafs.taira.sora.org"
+
+[sorafs.repair]
+enabled = false
+
+[sorafs.gc]
+enabled = false
+
+[gov.sorafs_pin_policy]
+require_council_signatures = false
 ```
 
-`/v1/sorafs/pin/register` በዒላማው ኖት ላይ ካልተመዘገበው, CLI ወደ ፊርማ የተደረገለት `/transaction` ማቅረቢያ ተመልሶ ወደ ተርሚናል የቧንቧ መስመር ሁኔታ መጠበቅ ይችላል.
+የ Taira ማረጋገጫ ሰጪዎች SoraFS የማከማቻ ፣ የጥገና እና የቆሻሻ መጣያ መሰብሰብን ያሰናክላሉ ። የተዋቀረው አቅም አሁንም የመረጋገጫ ሰጭ አካል ሆኖ ይቆያል። የዲስክ-በጀት ፍተሻ; ይህ ማለት ማረጋገጫው የማከማቻ አቅራቢ ነው ማለት አይደለም. የሙከራ በፊት የአሁኑን የተዋቀሩ የጌትዌይ እና የፒን መዳረሻዎችን ለማንበብ `GET /v1/sorafs/storage/peers?limit=4` ይጠቀሙ።
+
+የ `sorafs.sora.org` CID ቅደም ተከተል የቀጥታ / የምርት መገለጫ ነው ፣ Taira አይደለም ። በ Taira ማሳያዎች ፣ የመነሻ ማረጋገጫዎች ወይም በአሳሽ ሙከራዎች ውስጥ አያካትቱት። የምርት ልውውጦች የራሳቸውን የአውታረ መረብ ማንነት, አስተዳደር ቁልፎች, አቅራቢ የመግቢያ ቁሳቁስ, ፒን መጨረሻ ነጥቦች, እና አቅም / ጥገና ፖሊሲ መጠቀም አለባቸው; Taira ማረጋገጫ ወይም የመጨረሻ ነጥብ ግምቶችን ወደ ምርት ውቅር ውስጥ በጭራሽ አይገልጹም.
+
+### የሕዝብ አካባቢያዊ CID እና የጣቢያ መግቢያዎች {#public-local-cid-and-site-gateways}
+
+SoraFS የተፈቀደለት እያንዳንዱ Torii አንጓ እነዚህን ስም አልባ የህዝብ መስመሮች ይጫናል አማራጭ መተግበሪያው API ባይገነባም እንኳ:
+
+|ዘዴና መጨረሻ ነጥብ |ዓላማ|
+| ---------------------------------- | -------------------------------------------------------------------- |
+|`GET /.well-known/sorafs/manifest` |በካኖኒካል ጥያቄ አስተናጋጅ የተመረጠውን ማኔፊስት ይመልሱ |
+|`GET /v1/sorafs/cid/{cid}` |ለአንድ CID የተገደበ አካባቢያዊ ማኒፌስት ሜታዳታ እና የፋይል ማስገቢያዎችን ይመልሱ |
+|`GET /sorafs/cid/{cid}` |ለአንድ አካባቢያዊ ይዘት አድራሻ ላለው ጣቢያ የስር ሰነዱን ያገለግሉ |
+|`GET /sorafs/cid/{cid}/{*path}` |በዚያ CID ስር አንድ መደበኛ መንገድ ወይም አንድ የተወሰነ የባይት ክልል ያገለግሉ|
+
+እነዚህ መስመሮች `x-sorafs-stream-token` ወይም `x-sorafs-token-id` በጭራሽ አይቀበሉም ። የሁለቱም ራስጌዎች መኖራቸው መጥፎ ጥያቄ ነው። ቀደም ሲል በአውራጃው ባለሥልጣን አካባቢያዊ መደብር ውስጥ ያለው የካኖኒካል ማኒፌስት ነው የተጠበቀ አቅራቢ CAR እና ቁርጥራጭ መስመሮች የተረጋገጡ የፕሮቶኮል ወለሎች ሆነው ይቆያሉ ።
+
+ባይቶችን ከመነበቡ በፊት Torii የአከባቢው ማኒፌስት ካኖኒካል ኮዲንግ ፣ የሴማንቲክ ገደቦች ፣ ዲጀስት እና ሥር CID ያረጋግጣል ። ከዚያ ለማኒፌስት ፣ CID እና ለአቅራቢው ስልጣናዊ የአከባቢ አቅራቢ ማንነት ፣ የአስተዳደር እውቅና እና የተደነገገው ተገዢነት ይጠይቃል ። የጌትዌይ ተመን / እገዳ ፖሊሲ ውጤታማውን የደንበኛ አድራሻ ይጠቀማል ፣ የተላኩ አድራሻዎችን የሚያከብራው በተዋቀሩ የታመኑ ወኪሎች በኩል ብቻ ነው ። ፖሊሲ ፣ ተገዢነት ፣ ማንነት ወይም የመግቢያ ሁኔታ ከሌለ Torii ጥያቄውን ውድቅ ያደርጋል።
+
+አንድ ጥያቄ መጨረሻ-ወደ-መጨረሻ የህዝብ መግቢያ ፍቃድ ይዟል; ለሂደቱ በሙሉ ገደቡ 64 concurrent ንባቦች ነው, ከመጠን በላይ ጥያቄዎችን በመመለስ `503 Service Unavailable` እና `Retry-After: 1`. በግልጽ የሚታዩ መልሶች በ 16 ላይ የተገደቡ ናቸው MiB, የፋይል ዝርዝሮች በነባሪነት ወደ 50 ግቤቶች እና ከፍተኛውን 500 ይመልሳሉ ፣ እና ሙሉ ፋይል ወይም ነጠላ ባይት ክልል በ 8 ይገደባል ። MiB. መጠይቅ ትንታኔ በግንባታ ላይ የተመሠረተ ነው. `app_api` build ያልተፈረመ የ32 ቢት ዲኮድ ተቀባይነት አለው `limit`, ሌሎች መጠይቅ ቁልፎችን ችላ ይላል, የመጨረሻው እንዲደጋገም ይፈቅድለታል `limit` ያሸንፋል, እና ዋጋ ወደ clamps `1..=500`. ያለ ባህሪ አነስተኛ ግንባታ `app_api` የሚቀበለው አንደኛው ብቻ ነው `limit=1..500` የማይታወቁ, ተደጋጋሚ, መቶኛ-ኮድ, ወይም ያልቻሉ ቅጾች ይክዳል. `limit=<1..500>` በግንባታዎች ውስጥ ተንቀሳቃሽ የሆነ ባህሪን ያመጣል ። CIDs, አስተናጋጆች, መስመሮች, እና ክልል ራስጌዎች በሁለቱም ግንባታዎች ውስጥ ቀኖናዊ እና ነጠላ ዋጋ አላቸው. HTML, CSS, JavaScript, SVG, XML, PDF, ወይም Wasm ይዘት ብቻ ነው የተዋቀረ CID-የተገኘ ገለልተኛ አመጣጥ (ወይም ወደዚያ የሚመራ) ፣ የተጋራ የመንገድ-ጌትዌይ አመጣጥ የማይታመን ይዘት እንዳይፈጽም ይከላከላል ።
+
+### ማሸግ፣ መገንባትና ማስተላለፍ {#pack-build-and-submit}
+
+የሚከተለው የዝግመተ ለውጥ ምሳሌ የተረጋገጠ Taira `NetworkId` ፣ ፒን መጨረሻ ነጥብ ፣ የማባዛት ወለል እና የአስተዳደር ፖሊሲን ይጠቀማል ። የገንዘብ ድጋፍ የተደረገለት የሙከራ ኔት መለያ እና ለአንድ ጊዜ ባለቤት ብቻ የሚሆን ቁልፍ ፋይል ይጠቀሙ። Taira ያለፍቃድ ፒኖዎችን ያለ ምክር ቤት ፊርማዎች ይፈቅዳል ፣ ግን አሁንም የሚገዛውን ክፍያ ይከፍላል።
+
+```bash
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  car pack \
+  --input=./dist \
+  --car-out=artifacts/site.car \
+  --plan-out=artifacts/site.chunk-plan.json \
+  --summary-out=artifacts/site.car-summary.json
+
+: "${TAIRA_AUTHORITY:?set a funded Taira I105 account}"
+export TAIRA_NETWORK_ID='hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94'
+export TAIRA_PIN_TORII_URL=https://taira-validator-1.sora.org
+export TAIRA_PRIVATE_KEY_FILE="${TAIRA_PRIVATE_KEY_FILE:-./secrets/taira-authority.ed25519}"
+export TAIRA_RETENTION_EPOCH=$(( $(date -u +%s) + 86400 ))
+
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  manifest build \
+  --summary=artifacts/site.car-summary.json \
+  --manifest-out=artifacts/site.manifest.to \
+  --manifest-json-out=artifacts/site.manifest.json \
+  --pin-min-replicas=1 \
+  --pin-storage-class=warm \
+  --pin-retention-epoch="$TAIRA_RETENTION_EPOCH"
+
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  manifest submit \
+  --manifest=artifacts/site.manifest.to \
+  --chunk-plan=artifacts/site.chunk-plan.json \
+  --torii-url="$TAIRA_PIN_TORII_URL" \
+  --network-id="$TAIRA_NETWORK_ID" \
+  --authority="$TAIRA_AUTHORITY" \
+  --private-key-file="$TAIRA_PRIVATE_KEY_FILE" \
+  --summary-out=artifacts/site.manifest.submit.json \
+  --response-out=artifacts/site.manifest.submit.body
+```
+
+`manifest submit` `/v1/sorafs/pin/register` ያስፈልገዋል. ዒላማው ኖት መንገዱን የማይመራ ከሆነ ትዕዛዙ ይከሽፋል; የመጀመሪያው ልቀት CLI ወደ አጠቃላይ `/transaction` መጨረሻ ነጥብ አይመለስም.
 
 ### አረጋግጥና አምጣ {#verify-and-fetch}
 
-```bash
-cargo run -p sorafs_car --features cli --bin sorafs_cli -- \
-  proof verify \
-  --manifest artifacts/site.manifest.to \
-  --car artifacts/site.car \
-  --chunk-plan artifacts/site.chunk-plan.json \
-  --summary-out artifacts/site.verify.json
+የተጠበቀ የመውሰድ ቱፕል ለአቅራቢ-ተኮር ነው። የአቅራቢውን ID እና የታወጁትን መሠረት URL ከ Taira አቅራቢ ካታሎግ ያግኙ ፣ እና በበሩ ቁልፍን እና የዥረት ቶከንን በዚያ በኩል ያግኙ። የአቅራቢው የመግቢያ ፍሰት እነዚህ እሴቶች የማረጋገጫ-የማከማቻ ቅንብሮች አይደሉም ። የተመለከቱት Taira ማረጋገጫ ሰጪዎች የተቀረጹትን ማከማቻ አሰናክተዋል ፣ ስለሆነም ለማረጋገጫ ፒን URL ለአቅራቢ URL አይተኩ ።
 
-sorafs_cli fetch \
-  --plan artifacts/site.chunk-plan.json \
-  --manifest-id <manifest-digest-hex> \
-  --provider name=primary,provider-id=<provider-id-hex>,base-url=https://gateway.example.org/,stream-token="$(cat provider.token)" \
-  --output artifacts/site.fetch.tar \
-  --json-out artifacts/site.fetch.json
+```bash
+export TAIRA_ROOT=https://taira.sora.org
+curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
+
+: "${TAIRA_SORAFS_PROVIDER_ID:?set the admitted provider ID from Taira discovery}"
+: "${TAIRA_SORAFS_GATEWAY_KEY:?set the provider gateway key}"
+: "${TAIRA_SORAFS_PROVIDER_URL:?set the advertised provider base URL}"
+: "${TAIRA_SORAFS_STREAM_TOKEN_FILE:?set the issued stream-token file}"
+
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  proof verify \
+  --manifest=artifacts/site.manifest.to \
+  --car=artifacts/site.car \
+  --chunk-plan=artifacts/site.chunk-plan.json \
+  --summary-out=artifacts/site.verify.json
+
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  fetch \
+  --plan=artifacts/site.chunk-plan.json \
+  --manifest-id=<manifest-digest-hex> \
+  --provider=name=taira,provider-id="$TAIRA_SORAFS_PROVIDER_ID",gateway-key="$TAIRA_SORAFS_GATEWAY_KEY",base-url="$TAIRA_SORAFS_PROVIDER_URL",stream-token="$(cat "$TAIRA_SORAFS_STREAM_TOKEN_FILE")" \
+  --output=artifacts/site.fetch.tar \
+  --json-out=artifacts/site.fetch.json
 ```
 
 ### የመመለሻ ማስረጃ ምርመራዎች {#proof-of-retrievability-checks}
 
-ኦፕሬተሮች ለማከማቻ አቅራቢዎች የማረጋገጫ ምርመራዎችን መመርመር እና ማስጀመር ይችላሉ:
+ኦፕሬተሮች የመረጃ ማረጋገጫ ውጤቶችን መመርመር ፣ ወደ ውጭ መላክ እና ሪፖርት ማድረግ ይችላሉ ። ተግዳሮቶች በኔትወርኩ የማረጋገጫ ቧንቧ የተዘረዘሩ ናቸው; CLI ውጤቶቻቸውን ያስወጣል ።
 
 ```bash
-sorafs_cli por status \
-  --torii-url "$TORII_URL" \
-  --manifest <manifest-digest-hex> \
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  por status \
+  --torii-url="$TAIRA_PIN_TORII_URL" \
+  --manifest=<manifest-digest-hex> \
   --status=failed \
   --limit=20
 
-sorafs_cli por trigger \
-  --torii-url "$TORII_URL" \
-  --manifest <manifest-digest-hex> \
-  --provider <provider-id-hex> \
-  --reason=latency_probe \
-  --samples=48 \
-  --auth-token artifacts/challenge_token.to
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  por report \
+  --torii-url="$TAIRA_PIN_TORII_URL" \
+  --week=<YYYY-Www> \
+  --format=json
 ```
 
 ## SoraDNS {#soradns}
@@ -574,7 +670,7 @@ SoraDNS ለ SORA አገልግሎቶች እና ይዘት የተወሰነ ስያ�
 |ቅጽ |ምሳሌ|ዓላማ|
 | --- | --- | --- |
 |የከንቱነት አመጣጥ|`https://<fqdn>/<path>` |ካኖኒካዊ መተግበሪያ URL በምናፊስት እና በመልቀቂያ ማስታወሻዎች ውስጥ ተመዝግቧል |
-|Taira አሳሽ መግቢያ |`https://<fqdn>.mon.taira.sora.net/<path>` |ንቁ ስያሜ ለማግኘት የህዝብ አሳሽ መግቢያ |
+|Taira አሳሽ መግቢያ |`https://<fqdn>.mon.taira.sora.net/<path>` |ንቁ ስያሜ ለማግኘት የህዝብ አሳሽ መግቢያ በር |
 |Torii ወደ ኋላ መንገድ |`https://taira.sora.org/soradns/<fqdn>/<path>` |Torii ንቁ ቅጽል ስያሜ ለማግኘት የቦክስ እና ወደ ኋላ መንገድ |
 |የካኖኒካል ሃሽ ጌትዌይ |`<base32(blake3(name))>.gw.sora.id` |የፍተሻ በር ማንነት እና GAR ማረጋገጫ |
 
@@ -636,17 +732,17 @@ SoraDNS አስተናጋጅ ማመንጨት መደበኛ የበይነመረብ DN
 ለ Nexus አገልግሎቶች የሚገኙት ከ FHE ጋር የተያያዙ ቦታዎች የሚከተሉትን ያካትታሉ:
 
 - `iroha_crypto::fhe_bfv` ለስካላር ምስጢራዊ ጽሑፍ ግምገማ የ deterministic BFV ድጋፍን ይተግብራል ። የመለየት ጥራት `BfvIdentifierPublicParameters` እና `BfvIdentifierCiphertext` ን ይጠቀማል ፣ እዚያም ክፍተት 0 የመግቢያ ባይት ርዝመት የሚከማች ሲሆን በኋላ ላይ ክፍተቶች እያንዳንዳቸው አንድ የተመሰጠረ ባይት ያስቀምጣሉ ።
-- Soracloud የስቴት እና የስራ መርሃግብሮች ሞዴል FHE በመንግስት አስተዳደር የሚተዳደሩ ፓራሜትር ስብስቦች ፣ የማስፈፀም ፖሊሲዎች ፣ የኮምፒተር ጽሑፍ ግዴታዎች ፣ የጥያቄ ፖስታዎች እና የመግለጫ ጥያቄዎችን ያካተቱ ምስጠራ ጽሑፎች የሥራ ጭነቶች።
+- Soracloud የስቴት እና የስራ መርሃግብሮች ሞዴል FHE በመንግስት አስተዳደር የሚተዳደሩ ፓራሜትር ስብስቦች ፣ የማስፈፀም ፖሊሲዎች ፣ የኮምፒተር ጽሑፍ ግዴታዎች ፣ የጥያቄ ፖስታዎች እና የመግለጫ ጥያቄዎችን ያካተቱ የቁልፍ ጽሑፍ ሥራ ጭነቶች።
 
 የ BFV መታወቂያ መንገድ ግላዊነትን ለመጠበቅ ምዝገባ ጥቅም ላይ ይውላል. አንድ ደንበኛ የተመሰጠረ መታወቂያ ወደ Torii መፍትሔ ማቅረብ ይችላሉ. መፍትሄው ይገመግማል በአክቲቭ መታወቂያ ፖሊሲው መሠረት `OpaqueAccountId` ይወጣል እንዲሁም ደረሰኝ ያወጣል። `ClaimIdentifier` ከዚያ ያንን ደረሰኝ ከዒላማ ሂሳብ ጋር የተያያዘውን UAID ያገናኛል.
 
 የ UAID የውሂብ ሞዴሉ ውስጥ፣ `UniversalAccountId` በሃሽ የተደገፈ እና እንደ ይታያል `uaid:<hash>`. የፓርሰሮች ተቀባይነት ሁለቱም `uaid:<hash>` ወይም ጥሬ የሆነው የ64 ሄክሰርስ ዲጀስት። `Account` እና `NewAccount` አማራጭ ይጨምሩ `uaid` እና `opaque_ids` መስኮች. የስራ ሰዓት ምዝገባ አንድ-ወደ-አንድ UAID-ከሂሳብ ወደ ሂሳብ መረጃ ጠቋሚ፣ ተደጋጋሚ ወይም የሚጋጩ ግልጽ ያልሆኑ መታወቂያዎችን ይክዳል፣ እና ያለ ግልጽ ያልሆኑ UAID. አንድ ጊዜ UAID የሂሳብ አስገዳጅነት ለውጦች, ሩጫ ጊዜ እንደገና ይገነባል ቦታ ማውጫ የውሂብ ጎታ አስገዳጅነቶች በዚያ UAID.
 
-የቦታ ማውጫ UAID ላይ የማያያዝ ችሎታዎች ይገልጻል. አንድ `AssetPermissionManifest` የ UAID, የውሂብ ቦታ, ንቅናቄ እና አማራጭ ማብቂያ ዘመን ስሞች ይሰጣሉ, እና የመረጃ ቦታ, ፕሮግራም, ዘዴ, ንብረት, እና AMX ሚና የተዘረዘሩ መፍቀድ / ውድቅ ግቤቶችን ያስቀምጣል. . ግምገማ ውድቅ-ማሸነፍ ነው: የመጀመሪያው ተዛማጅ ውድቅ ጥያቄውን ይክዳል, አለበለዚያ የቅርብ ጊዜው ተዛማጅ ፍቃድ እጩ ከማንኛውም መጠን ገደብ ጋር ይመረምራል. እነዚህን ማኒፊስቶች ማተም, ማጠናቀቅ እና መሰረዝ በ `CanPublishSpaceDirectoryManifest` የተጠበቀ ነው.
+የቦታ ማውጫ UAID ላይ የማያያዝ ችሎታዎች ይገልጻል. አንድ `AssetPermissionManifest` የ UAID, የውሂብ ቦታ, ንቅናቄ እና አማራጭ ማብቂያ ዘመን ስሞች ይሰጣሉ, እና የመረጃ ቦታ, ፕሮግራም, ዘዴ, ንብረት, እና AMX ሚና የተዘረዘሩ መፍቀድ / ውድቅ ግቤቶችን ያስቀምጣል. . ግምገማ ውድቅ-ማሸነፍ ነው: የመጀመሪያው ተዛማጅ ውድቅ ጥያቄውን ውድቅ ያደርገዋል, አለበለዚያ የመጨረሻው ተዛማጅ ፍቃድ እጩ ከማንኛውም መጠን ገደብ ጋር ይመረምራል. እነዚህን ማኒፊስቶች ማተም, ማጠናቀቅ እና መሰረዝ በ `CanPublishSpaceDirectoryManifest` የተጠበቀ ነው.
 
 ለ Soracloud FHE ሁኔታ የተተገበሩ ስርዓቶች የሚከተሉት ናቸው:
 
-|መርሃ ግብር|ምን ይቆጣጠራል ?|
+|መርሃ ግብር|ምን ይቆጣጠራል?|
 | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
 |`SoraStateBindingV1` ከ `FheCiphertext` ጋር |አንድ የስቴት ቁልፍ ቅድመ እሴት FHE ምስጠራ ጽሑፎች እንደሆኑ ይገልጻል.|
 |`FheParamSetV1` |ስያሜዎች መርሃግብር, የጀርባ ጫፍ, ሞዱል ሰንሰለት, ፖሊኖሚያል ዲግሪ, ክፍተቶች ብዛት, የደህንነት ግብ, የሕይወት ዑደት, እና ልኬቶች |
@@ -658,7 +754,7 @@ SoraDNS አስተናጋጅ ማመንጨት መደበኛ የበይነመረብ DN
 
 `FheJobSpecV1::validate_for_execution` የስራ፣ የአፈፃፀም ፖሊሲ እና የፓራሜትር ስብስብ ከመግባቱ በፊት ይስማማሉ የሚለውን ያረጋግጣል። በተጨማሪም ለአሠራር የተወሰኑ ደንቦችን ያስገድዳል፦ ማከልና ማባዛት ቢያንስ ሁለት ግብዓቶች ያስፈልጋቸዋል፤ rotate እና bootstrap በትክክል አንድ ግብዓት ያስፈልጋቸዋል, እና የተጠየቀው ጥልቀት, የሽግግር ብዛት, የመነሻ ቁጥር, የመግቢያ ብዛት, ጠቃሚ ጭነት ባይቶች, እና ውስን የውጤት መጠን በፖሊሲ ገደቦች ውስጥ መቆየት አለበት.
 
-UAID የቁልፍ ጽሑፍ አይደለም እና እራሱም ፖሊሲው አይደለም FHE ። ሂሳቡን ለማግኘት ጥቅም ላይ የሚውለው የተረጋጋ የመለያ አቅም መልህቅ ፣ ግልጽ ያልሆኑ የማጣሪያ የይገባኛል ጥያቄዎች እና የአገልግሎት ወይም የውሂብ ቦታ ፍሰት የሚያፀድቁ የቦታ ማውጫ ትስስርዎች ናቸው ። FHE መርሃግብሮች በፓራሜትር ስብስቦች ፣ በመፈፀም ፖሊሲዎች ፣ በ ciphertext ግዴታዎች እና በዲክሪፕት ባለስልጣን ፖሊሲዎች አማካኝነት የተመሰጠረ ጥቅማጥቅሞችን መቀበል እና አፈፃፀም በተናጠል ይቆጣጠራሉ ።
+UAID የቁልፍ ጽሑፍ አይደለም እና እራሱም ፖሊሲው አይደለም FHE ። ሂሳቡን ለማግኘት ጥቅም ላይ የሚውለው የተረጋጋ የመለያ አቅም መልህቅ ፣ ግልጽ ያልሆኑ የማጣሪያ የይገባኛል ጥያቄዎች እና የአገልግሎት ወይም የውሂብ ቦታ ፍሰት የሚያፀድቁ የቦታ ማውጫ ትስስርዎች ናቸው ። FHE መርሃግብሮች በፓራሜትር ስብስቦች ፣ በመፈፀም ፖሊሲዎች ፣ በ ciphertext ግዴታዎች እና በዲክሪፕት ባለስልጣን ፖሊሲዎች አማካኝነት የተመሰጠረ ጥቅማጥቅሞችን ለመቀበል እና ለማስፈጸም በተናጠል ይቆጣጠራሉ ።
 
 ተዛማጅ Torii ወለሎች የሚከተሉትን ያካትታሉ:
 
@@ -677,16 +773,17 @@ UAID የቁልፍ ጽሑፍ አይደለም እና እራሱም ፖሊሲው አ
 
 ## የስራ ፍተሻ ዝርዝር {#operational-checklist}
 
-- በዒላማው Torii አንጓ ላይ `/openapi` ያለው የተፈቀደ የአገልግሎት ቤተሰብ ያረጋግጡ ።
-- ፈውስ Soracloud የማሰማራት ማኒፌስት፣ SoraFS መገለጫዎች፣ SoraDNS የ resolver ማውጫ መዝገቦች፣ SoraNet የመተላለፊያ መዝገብ መዛግብት፣ እና DA የአስተዳደር ስሜታዊ ዕቃዎች እንደመሆናቸው መጠን የተወሰኑ ዓላማዎች ወይም ተደራሽነት ግዴታዎች።
+- በዒላማው Torii አንጓ ላይ `/openapi` ጋር የተፈጠሩትን የአገልግሎት ቤተሰቦች ያረጋግጡ ፣ እና የህዝብ አካባቢያዊ SoraFS CID እና በደንብ የታወቁ መንገዶችን በቀጥታ ይመርምሩ።
+- የ Soracloud ማሰማራት መገለጫዎች ፣ SoraFS መገለጫዎችን ፣ SoraDNS መፍትሄ ማውጫ መዝገቦችን ፣ SoraNet ተለጣፊ ማውጫ መዝገብን እና DA ፒን ዓላማዎችን ወይም ተገኝነት ግዴታዎችን እንደ አስተዳደር-ስሜታዊ ቅርሶች ይይዙ።
 - ተመሳሳይ SORA Nexus መገለጫን በአንድ አውታረመረብ ውስጥ በተለያዩ ማረጋገጫ ሰጪዎች ላይ በቋሚነት ይጠቀሙ።
 - በ ad hoc node-local paths ላይ ከመተማመን ይልቅ Inrou ሥር እና የተጋሩ የኪራይ መጠኖችን በመግለጫዎች ውስጥ ያቆዩ.
 - የይዘት ስያሜዎችን ከማስተዋወቅዎ በፊት SoraFS ማስረጃ ማረጋገጫ ይጠቀሙ።
 - ተቆጣጣሪ SoraNet የእጅ መጨናነቅ ውድቀቶች፣ DA የቁጥር ገደብ ወይም ተደራሽነት ጊዜያት፣ SoraFS የጌትዌይ ውድቀቶች፣ SoraDNS RAD ትኩስነት እና Soracloud የጤና አገልግሎት.
-- ለሕዝብ Taira ወይም Minamoto አጠቃቀም፣ ከ [ጋር ይገናኙ SORA Nexus የውሂብ ክፍሎች](/am/get-started/sora-nexus-dataspaces.md).
+- ለህዝብ የሙከራ አውታረመረብ አጠቃቀም የ Taira መገለጫ ይጠቀሙ እና ከ [ ጋር ይጀምሩ ወደ SORA Nexus የውሂብ ጎራዎች ይገናኙ](/am/get-started/sora-nexus-dataspaces.md).
 
 በተጨማሪም ተመልከት።
 
 - [Torii መጨረሻ ነጥቦች](/am/reference/torii-endpoints.md)
 - [የመረጃ ክስተት ማጣሪያዎች ](/am/blockchain/filters.md#data-event-filters)
 - [መጠይቅ ማጣቀሻ ](/am/reference/queries.md#nexus-data-availability-and-packages)
+- [ቀናተኛ Taira ማረጋገጫ ኮንፊግሬሽን በተጣበቀ ኮሚቴ ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/configs/soranexus/taira/config.toml)

@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
+translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -263,7 +263,7 @@ EOF
 Әгәр һеҙҙә юҡ булһа , асҡыс парын булдырыу:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./taira-client-key
 ```
 
 `taira.client.toml` булдырыу:
@@ -336,7 +336,7 @@ test "$ok" = true
 Бухгалтер иҫәбенә контроллек итеүсе Ed25519 төймәһе парын булдырыу йәки йөкләү:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./nexus-account-key
 ```
 
 Йәмәғәт асҡысын Taira иҫәбенә ID күсерергә:
@@ -697,7 +697,7 @@ description = "Route payments domains to the payments dataspace"
 
 Операторҙың ҡабул итеүендә түбәндәге ҡапҡалар булырға тейеш:
 
-- `irohad --sora --config <config.toml> --trace-config` хәл ителгән узел конфигурацияһын тапшыра
+- `iroha3d --sora --config <config.toml> --trace-config` хәл ителгән узел конфигурацияһын тапшыра
 - генерацияланған йәки тикшерелгән манифест хеш һәм ҡултамғалар менән архивланған
 - Тәмәке һынауҙары Taira өҫтөндә үтә, ә Minamoto акцияһына тиклем.
 - `/status` үҙгәрештән һуң каталогы планлаштырылған трассаны һәм мәғлүмәт киңлеген күрһәтә.

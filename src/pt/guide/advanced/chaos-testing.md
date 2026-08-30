@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /guide/advanced/chaos-testing.md
-translation_source_hash: dfd2d4196827da3563e377baae2fb823871d7a2c293dfafb6dc4de37f9ddbc61
+translation_source_hash: 5ceee448217a42e4f8bbae9595486b79019e7a880dfd0f2c71bf580409d0e4b9
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 Izanami é o orquestador de chaosnet no espaço de trabalho Iroha upstream. Ele inicia um cluster local descartável Iroha, envia uma carga de trabalho configurável e injeta falhas em pares selecionados para que os operadores possam verificar se a rede continua fazendo progresso sob falha controlada.
 
-Use Izanami para verificações de resiliência pré-produção, reprodução de regressão e sintonização de consenso. Não aponte para uma rede de produção: a ferramenta é projetada para possuir os pares que inicia, incluindo reinicializações de pares, toalhas de armazenamento, perda artificial de pacotes e pressão local CPU ou disco.
+Use Izanami para verificações de resiliência pré-produção, reprodução de regressão e sintonização de consenso. Não aponte para uma rede de produção: a ferramenta é projetada para possuir os pares que inicia, incluindo reinicialização de pares, toalhas de armazenamento, partições temporárias confiáveis por pares e pressão local CPU ou disco.
 
 ## Pré-requisitos {#prerequisites}
 
@@ -34,7 +34,7 @@ Para uma configuração de execução interativa:
 cargo run -p izanami -- --tui --allow-net
 ```
 
-Izanami persiste as configurações TUI e CLI no diretório de configuração do usuário, por isso verifique as configurações exibidas antes de reutilizar um perfil anterior.
+Izanami persiste as configurações TUI e CLI no diretório de configuração do usuário. O arquivo da primeira versão tem um byte de layout explícito V1; as configurações pré-lançadas ou não versionadas são rejeitadas e devem ser recriadas em vez de migradas. Examine as configurações exibidas antes de reutilizar um perfil atual.
 
 ## Execução de linha de base {#baseline-run}
 
@@ -103,32 +103,29 @@ Quando `--faulty` Se for superior a zero, deve ser habilitado pelo menos um cen�
 |Spam de transações inválidas |`--fault-enable-spam-invalid-transactions` |Percurso de admissão e rejeição |
 |Latência da rede |`--fault-enable-network-latency` |O boato lento e as mensagens de consenso atrasadas .|
 |Partilha de rede |`--fault-enable-network-partition` |Isolamento temporário entre pares de confiança .|
-|P2P perda de pacotes |`--fault-enable-network-packet-loss` |Tráfego do quadro de aplicativos foi reduzido |
 |CPU tensão |`--fault-enable-cpu-stress` |Pressão de validação local e agendamento |
 |Saturação de disco |`--fault-enable-disk-saturation` |Pressão local de armazenamento |
 
-Para uma corrida com apenas perda de pacotes:
+Para uma execução com apenas partição de rede:
 
 ```bash
 cargo run -p izanami -- \
   --allow-net \
-  --peers 20 \
-  --faulty 5 \
-  --duration 800s \
-  --fault-window-start 133s \
-  --fault-window-end 266s \
-  --tps 200 \
-  --submitters 20 \
-  --max-inflight 512 \
+  --peers 4 \
+  --faulty 1 \
+  --duration 5m \
+  --fault-window-start 60s \
+  --fault-window-end 180s \
+  --tps 15 \
+  --submitters 1 \
+  --max-inflight 32 \
   --fault-enable-crash-restart=false \
   --fault-enable-wipe-storage=false \
   --fault-enable-spam-invalid-transactions=false \
   --fault-enable-network-latency=false \
-  --fault-enable-network-partition=false \
-  --fault-enable-network-packet-loss=true \
+  --fault-enable-network-partition=true \
   --fault-enable-cpu-stress=false \
   --fault-enable-disk-saturation=false \
-  --fault-network-packet-loss-percent 75 \
   --seed 42
 ```
 
@@ -142,9 +139,8 @@ O catálogo Izanami upstream mapeia as formas comuns de falhas de comunicação 
 | --------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 |Carga direcionada |`--faulty 0`, elevado `--tps`, um apresentador, alto `--max-inflight` |
 |Falha transitória .|Habilitar o crash/reinicialização apenas dentro de uma janela de falha limitada |
-|Perda de pacotes |Permitir somente a perda de pacotes, geralmente com a taxa padrão de perda de 75% |
 |Paragem e recuperação .|Use uma grande população de pares defeituosos com crash/reinicialização |
-|Isolamento do líder |Utilize exatamente um peer defeituoso com apenas falhas de partição de rede ou perda de pacotes; Izanami segue a telemetria líder Sumeragi |
+|Isolamento do líder |Usar exatamente um peer defeituoso com apenas a falha de partição da rede; Izanami segue Sumeragi líder telemetria |
 
 Mantenha uma variável fixa de cada vez. Se você alterar a contagem de pares, o perfil da carga de trabalho, a janela de falhas e TPS na mesma execução, o resultado é difícil de interpretar.
 
@@ -156,7 +152,7 @@ Durante a corrida, observe os mesmos sinais utilizados para a validação do des
 - Transações submetidas, aceitas, rejeitadas e terminadas
 - profundidade da fila, saturação da fila e contrapressão do ponto final
 - alterações de visualização, caminhos de recuperação, blocos faltantes e certificados de quórum faltantes.
-- RBC atrasos, sessões pendentes e tráfego de consenso diminuído ou retardado.
+- RS16 registro de atrasos de disponibilidade, sessões pendentes e tráfego de consenso adiado
 - CPU, memória, disco e saturação da rede no host executando os pares
 
 Para a análise da latência de validação, habilite os registos de depuração do circuito principal:
@@ -179,7 +175,7 @@ Tratar uma corrida como um fracasso quando:
 - a latência de p95 excede `--latency-p95-threshold`
 - As filas crescem para o resto da corrida após a fechadura de uma janela de falha
 - Transações rejeitadas ou com prazo não são explicadas pela carga de trabalho selecionada.
-- Reinicialização por pares, limpeza do armazenamento ou recuperação de perda de pacotes requer limpeza manual
+- Reinicialização por pares, limpeza de armazenamento ou recuperação de partições requer limpeza manual.
 
 Após um fracasso, repete com a mesma semente e um tipo de falha menos. Isto mantém a carga de trabalho e o cronograma reprodutíveis, ao mesmo tempo que restringe a superfície da falha.
 

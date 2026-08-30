@@ -1094,6 +1094,8 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
     'ASCII `0`, `O`, `I`, and `l` are not alphabet symbols.': 'ASCII `0`, `O`, `I` va `l` alifbo belgilari emas.',
   },
   'zh-hans': {
+    'Either original party can read its message record and generated outbox documents. The audit endpoint returns only records in which the authenticated participant is the originator or counterparty. A separately configured audit administrator receives a global read-only audit view and cannot submit or change messages. Unknown participants and unrelated message identifiers are not disclosed.':
+      '原始交易的任一方都可以读取其消息记录和生成的发件箱文档。审计端点只返回已认证参与者为发起方或交易对手方的记录。单独配置的审计管理员可以获得全局只读审计视图，但不能提交或更改消息。系统不会泄露未知参与者或无关消息标识符是否存在。',
     '- Store and compare the canonical UTF-8 string exactly.': '- 精确存储并比较规范 UTF-8 字符串。',
     '- Preserve letter case and do not apply `Unicode` normalization.':
       '- 保留字母大小写，且不要应用 `Unicode` 规范化。',
@@ -1187,6 +1189,8 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
     'Supported with requirements': '有条件支持',
   },
   'zh-hant': {
+    'Either original party can read its message record and generated outbox documents. The audit endpoint returns only records in which the authenticated participant is the originator or counterparty. A separately configured audit administrator receives a global read-only audit view and cannot submit or change messages. Unknown participants and unrelated message identifiers are not disclosed.':
+      '原始交易的任一方都可以讀取其訊息記錄及產生的寄件匣文件。稽核端點只會傳回已驗證參與者為發起方或交易對手方的記錄。另行設定的稽核管理員可取得全域唯讀稽核檢視，但不能提交或變更訊息。系統不會揭露未知參與者或不相關訊息識別碼是否存在。',
     '- Store and compare the canonical UTF-8 string exactly.': '- 精確儲存並比較規範 UTF-8 字串。',
     '- Preserve letter case and do not apply `Unicode` normalization.':
       '- 保留字母大小寫，且不要套用 `Unicode` 正規化。',

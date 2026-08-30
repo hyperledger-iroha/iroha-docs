@@ -402,6 +402,14 @@ describe('Markdown translation protection', () => {
   })
 
   test('uses reviewed exact Norito status terminology for Chinese locales', () => {
+    const isoAuditScope =
+      'Either original party can read its message record and generated outbox documents. The audit endpoint returns only records in which the authenticated participant is the originator or counterparty. A separately configured audit administrator receives a global read-only audit view and cannot submit or change messages. Unknown participants and unrelated message identifiers are not disclosed.'
+    expect(curatedExactTranslation(isoAuditScope, simplifiedChinese)).toBe(
+      '原始交易的任一方都可以读取其消息记录和生成的发件箱文档。审计端点只返回已认证参与者为发起方或交易对手方的记录。单独配置的审计管理员可以获得全局只读审计视图，但不能提交或更改消息。系统不会泄露未知参与者或无关消息标识符是否存在。',
+    )
+    expect(curatedExactTranslation(isoAuditScope, traditionalChinese)).toBe(
+      '原始交易的任一方都可以讀取其訊息記錄及產生的寄件匣文件。稽核端點只會傳回已驗證參與者為發起方或交易對手方的記錄。另行設定的稽核管理員可取得全域唯讀稽核檢視，但不能提交或變更訊息。系統不會揭露未知參與者或不相關訊息識別碼是否存在。',
+    )
     expect(curatedExactTranslation(' Account report, statement, and notification validation ', simplifiedChinese)).toBe(
       ' 账户报告、对账单和通知的验证 ',
     )
@@ -966,7 +974,7 @@ describe('Markdown translation protection', () => {
 
   test('recovers the exact Japanese production-capacity omission at a safe for-clause boundary', async () => {
     const source =
-      'Public `irohad` metrics are useful for learning the signal names. Do not use them as production capacity numbers for your own deployment.'
+      'Public `iroha3d` metrics are useful for learning the signal names. Do not use them as production capacity numbers for your own deployment.'
     const maskedSource =
       'Public [PH000000] metrics are useful for learning the signal names. Do not use them as production capacity numbers for your own deployment.'
     const sentenceChunks = [
@@ -1004,7 +1012,7 @@ describe('Markdown translation protection', () => {
     expect(batches).toContainEqual(sentenceChunks)
     expect(batches).toContainEqual(forChunks)
     expect(forChunks.join('')).toBe(sentenceChunks[1])
-    expect(translated).toContain('`irohad`')
+    expect(translated).toContain('`iroha3d`')
     expect(translated).toContain(recovered[1])
   })
 
@@ -1033,7 +1041,7 @@ describe('Markdown translation protection', () => {
 
   test('rejects marker substitution in a for-clause recovery', async () => {
     const source =
-      'Public metrics help operators learn signal names. Do not use `irohad` benchmark results as production capacity numbers for your own deployment.'
+      'Public metrics help operators learn signal names. Do not use `iroha3d` benchmark results as production capacity numbers for your own deployment.'
     const maskedSource = protectMarkdown(source, japanese, 'identifier').masked
     const sentenceChunks = Array.from(
       new Intl.Segmenter('en', { granularity: 'sentence' }).segment(maskedSource),
@@ -1768,7 +1776,7 @@ describe('Markdown translation protection', () => {
 
   test('restores code, technical names, links, and Markdown delimiters', () => {
     const source =
-      '# Install Iroha\n\nUse **Norito** with [`iroha_cli`](/reference/irohad-cli), [instructions](/blockchain/instructions.md), and https://example.com.\n'
+      '# Install Iroha\n\nUse **Norito** with [`iroha_cli`](/reference/iroha3d-cli), [instructions](/blockchain/instructions.md), and https://example.com.\n'
     const protectedMarkdown = protectMarkdown(source, french)
     const translated = protectedMarkdown.masked
       .replace(/<span\b[^>]*>(\d+)<\/span>/gu, '$1')
@@ -1776,7 +1784,7 @@ describe('Markdown translation protection', () => {
       .replace('Use', 'Utilisez')
       .replace('with', 'avec')
     expect(protectedMarkdown.restore(translated)).toBe(
-      '# Installer Iroha\n\nUtilisez **Norito** avec [`iroha_cli`](/fr/reference/irohad-cli), [instructions](/fr/blockchain/instructions.md), and https://example.com.\n',
+      '# Installer Iroha\n\nUtilisez **Norito** avec [`iroha_cli`](/fr/reference/iroha3d-cli), [instructions](/fr/blockchain/instructions.md), and https://example.com.\n',
     )
   })
 

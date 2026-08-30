@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /cookbook/query-ledger-state.md
-translation_source_hash: a81f6cc04befb0b92a0a01c2cb3c1ecbbc631ce1f2a923cb046241c295db7806
+translation_source_hash: ca76923f5ae35b96c52a6a4c23c5d9e69549d1ca91d6d1507e7b9a1aee1f1676
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -160,9 +160,9 @@ iroha --config ./localnet/client.toml \
 
 ## المصدر والوثائق ذات الصلة {#source-and-related-docs}
 
-- [اختبارات تكامل صفحة المدعومة بواسطة cursor في commit ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/pagination.rs)
-- [سلوك البنّاء والاختيار في المشاركة المثبتة](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/query/builder/mod.rs)
-- [معايير الاستفسار ونموذج السيطرة في الإتفاق المثبت ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/query/parameters.rs)
+- [اختبارات تكامل صفحة المدعومة بواسطة cursor في commit ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/pagination.rs)
+- [سلوك البنّاء والاختيار في المشاركة المثبتة](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/builder/mod.rs)
+- [معايير الاستفسار ونموذج السيطرة في الإتفاق المثبت ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/parameters.rs)
 - [الأسئلة ](/ar/blockchain/queries.md)
 - [إشارة الاستفسار](/ar/reference/queries.md)
 - [JavaScript و TypeScript ](/ar/guide/tutorials/javascript.md)

@@ -1,7 +1,7 @@
 ---
 translation_locale: mn
 translation_source: /reference/peer-config/index.md
-translation_source_hash: 5cc6ddf62a45f655d61a0ff3ebc7e20b939fe78c9d542087b717c2e17e19250d
+translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f29469aaf4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 TOML файлуудад орон нутгийн ижил төстэй конфигурацийг байгуулж байна. Энэ нь [`SetParameter`](/mn/blockchain/instructions.md#setparameter) заавар дамжуулан өөрчлөгдсөн зангилааны конфигурацыас ялгаатай. Үйлдвэрлэлийн зангилаа конфигурацийн файл эсвэл зангилаа дахь параметрээр илэрхийлэх ёстой; байгаль орчны хувьчлал нь онцлог дархан биш юм.
 
-Байгалийн файлын замыг тодорхойлхын тулд [`--config`](../irohad-cli#arg-config) CLI аргументийг ашиглах.
+Байгалийн файлын замыг тодорхойлхын тулд [`--config`](../iroha3d-cli#arg-config) CLI аргументийг ашиглах.
 
 ## Нүүр хуудас {#template}
 
@@ -65,4 +65,4 @@ max_content_len = 2048
 
 ## Ашигтвортой байдлын асуудал {#troubleshooting}
 
-[`--trace-config`](../irohad-cli#arg-trace-config)CLI зургийг дамжуулан конфигурацыг хэрхэн уншиж, шинжилгээ хийх талаар үзнэ үү.
+[`--trace-config`](../iroha3d-cli#arg-trace-config)CLI зургийг дамжуулан конфигурацыг хэрхэн уншиж, шинжилгээ хийх талаар үзнэ үү.

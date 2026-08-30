@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /reference/queries.md
-translation_source_hash: 22e8a75acd72d066e3516ba46a0afe075d2d02790154458aec00a5d8bb861838
+translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -99,10 +99,17 @@ SDK ཡིག་སྣོད་བཟོ་སྐྲུན་འབད་མི�
 |`FindLaneRelayEnvelopeByRef` |ཕྲང་ལམ་-relay འཕྱགས་ཤོག་ཅིག་འཚོལ་ပါ။|
 |`FindSorafsProviderOwner` |SoraFS ཞབས་ཏོག་བྱིན་མི་གི་ཇོ་བདག་ལུ་ སེལ་འཐུ་འབད། |
 |`FindDataspaceNameOwnerById` |ཌེ་ཊ་ས་པི་སི་མིང་གི་བདག་འཛིན་འདི་ སེལ་འཐུ་འབད།|
-|`FindMusubiReleaseByRef` |Musubi ཕྱིར་བཏོན་འབད་ཐངས་འདི་ གྲོས་བསྡུར་ཐོག་ལས་འཚོལ་ပါ။ |
-|`FindMusubiPackageVersions` |Musubi སྦ་སྒོར་གྱི་དོན་ལུ་ ཨེབ་གཏང་འབད་ཡོདཔ་ཨིན། |
-|`FindMusubiPackageReleases` |Musubi སྦ་སྒོར་གྱི་དོན་ལུ་ ཐོ་བཀོད་བཏོན་ཐབས།|
-|`FindMusubiShortAliasByName` |Musubi གི་མིང་ཐུང་ཀུ་འདི་ སེལ་འཐུ་འབད། |
+|`FindMusubiExactPackageV1` |སྒྲིག་གཞི་ཅིག་དང་ ད་ལྟོའི་བསྐྱར་བཅོས་ཚུ་ ཀློག་ཐེངས།|
+|`FindMusubiExactReleaseV1` |དྭངས་གསལ་སྦེ་གློག་བརྙན་འདི་བལྟ་གནང་། |
+|`FindMusubiProviderBundleAttestationV1` |ཞབས་ཏོག་བྱིན་མི་ཅིག་གི་ ཡིག་སྣོད་མཐུན་རྐྱེན་ལག་ཁྱེར་ཚུ་ ཀློག་ཐེངས། |
+|`FindMusubiResolverIndexV1` |མཇུག་བསྡུ་བའི་ resolver ཌའི་ལོག་འདི་ཐོ་བཀོད་གནང་། |
+|`FindMusubiVersionsV1` |གྲ་སྒྲིག་གཅིག་གི་དོན་ལུ་ ཤོག་ལེབ་ཀྱི་མཐའ་མ་བཟོ་བཞག་ཡོདཔ་ཨིན།|
+|`FindMusubiMaintainersV1` |ཤོག་ལེབ་འདི་ འཛིན་སྐྱོང་འཐབ་མི་ཚུ་དང་ གྲ་སྒྲིག་འབད་མི་མགྲོན་བརྡ་ཚུ་ ཆ་འཇོག་འབད་ཡོདཔ་ཨིན།|
+|`FindMusubiArchiveLocationsV1` |ཤོག་ལེབ་འདི་ ཡིག་སྣོད་གཅིག་གི་དོན་ལུ་ SoraFS ས་གནས་ཚུ་ མཇུག་བསྡུ་ནུག|
+|`FindMusubiArchiveRetentionV1` |འོག་གི་ཤོག་ལེབ་ནང་ལུ་ ཡིག་སྣོད་བཞག་ཐངས་ཚུ་ |
+|`FindMusubiAliasV1` |ད་ལྟོའི་ དམིགས་གཏད་དང་ འཛམ་གླིང་ཡོངས་ཀྱི་མིང་བསྒྱུར་བཅོས་ཚུ་ ཀློག་ཐེངས། |
+|`FindMusubiAliasHistoryV1` |global alias གི་འགྱུར་བ་མེད་མི་ retarget བྱུང་རབས་ཀྱི་ཤོག་ལེབ་ཅིག་བཟོ།|
+|`FindMusubiOrderedPrefixV1` |འོག་གི་ཤོག་ལེབ་ཚུ་ནང་ལུ་ སྒྲིག་གཞི་བཟོ་སྐྲུན་གྱི་ སྔོན་སྒྲིག་གཅིག་བཀོད་ཡོདཔ་ཨིན། |
 
 ## ཐིག་ཁྲམ་ཚུ་དང་ རིན་བསྡུར་ དེ་ལས་ བཀྲམ་སྤེལ་འབད་ནི་ {#triggers-contracts-transactions-and-blocks}
 

@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 0185b6a341ee90ed6cd52fb9f510549b20592468abe6627d3efa639c3b67d1fd
+translation_source_hash: aa8e079684879bdcda2b4439e9c12742d4ab477e6f560f7c326a59b6be5bf666
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,7 +16,7 @@ translation_engine: nllb-200-ct2
 
 - הגדרה מספרית של נכס ופתוח/מכר שיש לו כמות מספקת.
 - לקוחות I105 בעלים מפתח אחד עבור כל צד המגיש צעד. השתמשו בכוונה `fee_payment` בתשלום ישיר של הסמכות אשר נכסי העלות שלה מתאימים לתגובה הטנק הנוכחית Taira; אל תשתלבו נכס ID מתוך המסמך.
-- ההתחייבויות המתמשכות Rust או Python SDK מ Iroha `bc7114ed1c7f265a156d2100ff09e851cc95702c`.
+- ההתחייבויות המתמשכות Rust או Python SDK מ Iroha `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
 - עבור JavaScript דוגמה של קומפיילר, Node.js 24 ועוד אחד שנבנה מקומית. `@iroha/iroha-js` חבילה ומוצאתו `iroha_js_host`; לעקוב אחרי [JavaScript SDK הגדרת מבנה מקור](/he/guide/tutorials/javascript.md#build-from-source). בניית הדפדפן חייבת לספק `compilerUrl` במקום לטעין את המארח המקומי.
 - Taira חייב להודות בהוראות העברת נכסים ולקחת כספים. בעלי נכסים יכולים להשתמש במחזור החיים הרגיל כאשר מדיניות הנכסים שלהם מאפשרת זאת; פתרון מחלוקת דורש רשות גלובלית `CanResolveEscrowDispute`.
 
@@ -249,10 +249,10 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 
 ## מקור ומסמכים קשורים {#source-and-related-docs}
 
-- [מודל ההוראות של הבטחון המקומי בביצוע הקבלה ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/isi/escrow.rs)
-- [בדיקות אינטגרציה של הבטוחים המקומיים בהתחייבויות קשורות ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/native_escrow.rs)
-- [Python שיטות לקוחות מאובטחים בביצוע ההתחייבויות הקשורות ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama דגימה של אבטחה ילידית בביצוע הקבילת ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [מודל ההוראות של הבטחון המקומי בביצוע הקבלה ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
+- [בדיקות אינטגרציה של הבטוחים המקומיים בהתחייבויות קשורות ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
+- [Python שיטות לקוחות מאובטחים בביצוע ההתחייבויות הקשורות ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama דגימה של אבטחה ילידית בביצוע הקבילת ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [סכום הנכס המקומי ](/he/blockchain/escrow.md)
 - [נכסים פונגביים](./fungible-assets.md)
 - [רשיונות ותפקידים ](./permissions-and-roles.md)

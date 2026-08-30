@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /cookbook/stream-events.md
-translation_source_hash: 1267a7e22bb6601674557f349e4fc5c6b883ce83b7dc62115ea2b8c3a0c39261
+translation_source_hash: 66d22cd3b913d1c097cf74cf322cd86b3b50e1165e221a153705cb393e2b156f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -189,10 +189,10 @@ curl -fsS \
 
 ## གཞི་རྟེན་དང་འབྲེལ་བའི་ཡིག་ཆ་ཚུ་ {#source-and-related-docs}
 
-- [JavaScript སྒྲིག་འཇུག་བྱས་ཚད། ཐེངས་ 1 ལས་ཉུང་བ། ཐོན་རིམ་ 5.7.1 ནང་དུ་ཚོད་ལྟ་བྱས་ཟིན། ལོ 5 སྔོན་ལ་གསར་བཅོས་བྱས།](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/recipes/streaming.mjs)
-- [SSE འབྲེལ་མཐུད་བརྟག་དཔྱད་ཚུ་ ཕིན་ཌ་ commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/events/sse_smoke.rs) ལུ་འབདཝ་ཨིན།
-- [Torii FilterExpr བརྟག་ཞིབ་འབད་ཐངས་ཚུ་ ཕིན་ཌ་ commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii/src/filter.rs)
-- [Torii རྒྱུན་བསྡུར་འབད་ཡོད་པའི་ commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii/src/routing.rs) ལུ་བྱུང་རྐྱེན་ལམ་སྟོན་འབདཝ་ཨིན།
+- [JavaScript སྒྲིག་འཇུག་བྱས་ཚད། ཐེངས་ 1 ལས་ཉུང་བ། ཐོན་རིམ་ 5.7.1 ནང་དུ་ཚོད་ལྟ་བྱས་ཟིན། ལོ 5 སྔོན་ལ་གསར་བཅོས་བྱས།](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes/streaming.mjs)
+- [SSE འབྲེལ་མཐུད་བརྟག་དཔྱད་ཚུ་ ཕིན་ཌ་ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events/sse_smoke.rs) ལུ་འབདཝ་ཨིན།
+- [Torii FilterExpr བརྟག་ཞིབ་འབད་ཐངས་ཚུ་ ཕིན་ཌ་ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/filter.rs)
+- [Torii རྒྱུན་བསྡུར་འབད་ཡོད་པའི་ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/routing.rs) ལུ་བྱུང་རྐྱེན་ལམ་སྟོན་འབདཝ་ཨིན།
 - [གནད་དོན་ཚུ་](/dz/blockchain/events.md)
 - [Torii ཚད་མཇུག་གི་ཐིག་ཁྲ།](/dz/reference/torii-endpoints.md)
 - [འབྲི་ཤོག་གི་གནས་གོང་](./query-ledger-state.md)

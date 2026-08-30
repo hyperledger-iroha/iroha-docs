@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /blockchain/iroha-explained.md
-translation_source_hash: 3fdd22338e826b1ce335ebf5e4e850cf3deb9415c36a0c8d21ad63c397cec8c0
+translation_source_hash: ba591b2c1aa819837177625b1ae457b5fa492197576dc690b19ca2897562a436
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,7 +12,7 @@ Iroha 3 ilk buraxılışda olan Hyperledger Iroha platformasıdır. Eyni mərkə
 
 ## Əsas inşaat blokları {#core-building-blocks}
 
-- `irohad` həmyaşıdları idarə edir
+- `iroha3d` həmyaşıdları idarə edir
 - Torii müştərinin və operatorun girişidir
 - Sumeragi konsensus ilə məşğul olur
 - Norito [kanoniki ikili formatdır ](/az/reference/norito.md)

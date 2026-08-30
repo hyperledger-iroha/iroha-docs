@@ -1,9 +1,9 @@
 ---
 translation_locale: az
 translation_source: /blockchain/instructions.md
-translation_source_hash: adc3eff9758dd73e9114e78eaa18ddf6271db3bc4042611e1ed6ed1aac226246
+translation_source_hash: ade5ba2b693de7e798490be0947099d0306d9565b88550e201dccd181810fb18
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Iroha Xüsusi təlimatlar {#iroha-special-instructions}
@@ -21,6 +21,7 @@ Iroha Xüsusi təlimatların tam siyahısı:
 | [Grant/Revoke](#grant-revoke) |icazələr və rollar verin və ya çıxarın. |
 | [Transfer](#transfer) |Mülkiyyət və ya aktiv dəyərinin köçürülməsi. |
 | [Yerli depozit və aktivlər ](#native-escrow-and-asset-locks) |Saylı aktivləri protokol saxlamaqda kilidləyin. |
+| [Atomik məxfi hesablaşma](#atomic-private-settlement) | Məxfi hovuzları və atomik paketləri idarə edir. |
 | [ExecuteTrigger](#executetrigger) |Başlatıcıları icra edin. |
 | [Log/Custom/Upgrade](#other-instructions) |Sürüş vaxtı davranışını qeyd edin, uzatın və ya təkmilləşdirin. |
 
@@ -42,6 +43,7 @@ Bəzi təlimatlarda məqsədin müəyyən edilməsi tələb olunur. Məsələn, 
 | [Grant/Revoke](#grant-revoke) | [rolu, icazə nömrələri](/az/blockchain/permissions.md) |Hesablar və ya rollar |
 | [Transfer](#transfer) |domenlər, aktiv tərifləri, rəqəmsal aktivlər, NFTs |Hesabatlar |
 | [Yerli depozit və aktivlər ](#native-escrow-and-asset-locks) |rəqəmsal vəsait əmanətləri, aktivlər bağlamaları, anonim vəsait əmanı öhdəlikləri |Alıcılar, istiqamətlər və ya mübahisə bölünmələri |
+| [Atomik məxfi hesablaşma](#atomic-private-settlement) | marşrutla məhdud məxfi hovuzlar, siyasət rotasiyaları, yekun paketlər və ləğv işarələri | |
 | [ExecuteTrigger](#executetrigger) |başlatıcılar|                      |
 | [Log/Custom/Upgrade](#other-instructions) |loglar, icraçı xüsusi paylı yüklər, icraçının yüksəldilməsi |                      |
 
@@ -234,7 +236,10 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 BLS açarını və PoP açarını `kagami` ilə istehsal edin, əgər sizdə hələ yoxdursa:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./peer-key
+PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
+PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
@@ -325,6 +330,14 @@ Native escrow instructions lock numeric assets in ledger-managed protocol custod
 Marketplace escrow istifadəsi `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, və `ResolveEscrowDispute`. Ümumi aktivlər qapaqlarının istifadəsi `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, və `ExpireAssetLock`. Anonymous escrow bazarın həyat dövrünü əks etdirir `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, və `ResolveAnonymousEscrowDispute`.
 
 Bu ISIs hazırda birinci dərəcəli CLI əmrlərinə malik deyil. Tiplənmiş SDK qurucularından və ya seriyalı təlimat yüklərindən istifadə edin və həyat dövrü detalları, icazələr, sorğular, hadisələr və Rust nümunələri üçün [Native Asset Escrow](/az/blockchain/escrow.md) baxın.
+
+## Atomik məxfi hesablaşma {#atomic-private-settlement}
+
+İdarə olunan atomik məxfi hesablaşma təlimatları şəffaf Native AMX-dən ayrıdır. `ActivatePrivateSettlementPoolV1` redaktə edilmiş idarəetmə proyeksiyasından və kanonik mənşə öhdəliklərindən dəqiq marşrut üçün bir məxfi `pool` yaradır. `FinalizeAtomicPrivateSettlementV1` bütün iştirakçı komitələrin təsdiqlədiyi tam paketi atomik tətbiq edir. `AbortAtomicPrivateSettlementV1` yalnız sponsorun icazə verdiyi açıq son işarəni dərc edir.
+
+`RotatePrivateSettlementPoolPolicyV1` yalnız məxfilik idarəetməsi tərəfindən icra oluna bilər. Təlimat qüvvədə olan idarəetmə digest-i ilə dəqiq uyğunluq tələb edir; marşrutu, `pool`-u, aktiv bağlama öhdəliyini, vəziyyət sərhədini, replay dəstlərini və yekun qəbzləri saxlayır, açıq reviziyanı bir artırır və auditor açarının daha yeni epoxasını işlədir. Rotasiya daxil edilmə hündürlüyündə aktivləşir və həmin hündürlükdə eyni marşrut və `pool` üçün qəbz yekunlaşdırıla bilməz. Açıq reviziya xətti rotasiyadan əvvəl yekunlaşdırılmış qəbzləri yenidən başladıldıqdan sonra da etibarlı, onların dəqiq təkrarını isə idempotent saxlayır. Köhnə siyasətlə icrada olan paketlər vəziyyət dəyişməzdən əvvəl qapalı şəkildə uğursuz olur. Operatorlar köhnə deşifrə açarlarını saxlamalı, yaxud açarları məhv etməzdən əvvəl kapsulları idarə olunan qaydada yenidən büküb sınaqdan keçirməlidirlər.
+
+Bu yol standart olaraq söndürülüb və istehsal istifadəsi üçün kvalifikasiya edilməyib. Konfiqurasiya, səlahiyyət, audit, bərpa və buraxılış tələbləri üçün [dataspace-lər arasında atomik məxfi hesablaşmanı işə salmaq](/get-started/atomic-private-settlement) bölməsinə baxın.
 
 ## Grant/Revoque {#grant-revoke}
 

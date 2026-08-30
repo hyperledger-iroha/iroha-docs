@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/instructions.md
-translation_source_hash: adc3eff9758dd73e9114e78eaa18ddf6271db3bc4042611e1ed6ed1aac226246
+translation_source_hash: ade5ba2b693de7e798490be0947099d0306d9565b88550e201dccd181810fb18
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Iroha 特殊指令 {#iroha-special-instructions}
@@ -21,6 +21,7 @@ translation_engine: nllb-200-ct2
 | [資助/撤銷](#grant-revoke) |給予或刪除權限和角色.|
 | [轉移](#transfer)|轉移所有權或資產價值.|
 | [本地保證金和資產鎖定](#native-escrow-and-asset-locks) |鎖定數字資產在協議監護.|
+| [原子私密結算](#atomic-private-settlement) | 管理機密 pool 與原子套件。 |
 | [ExecuteTrigger](#executetrigger) |執行觸發器.|
 | [記錄/定製/升級](#other-instructions) |記錄,延長或升級運行時間行爲.|
 
@@ -42,6 +43,7 @@ translation_engine: nllb-200-ct2
 | [資助/撤銷](#grant-revoke) | [角色,許可證代碼](/zh-hant/blockchain/permissions.md) |賬戶或角色|
 | [轉移](#transfer)|域名,資產定義,數值資產, NFTs|賬戶|
 | [本地保證金和資產鎖定](#native-escrow-and-asset-locks) |數字資產保證券,資產鎖定,匿名的保證券承諾 |購物者,目的地或爭端分歧|
+| [原子私密結算](#atomic-private-settlement) | 綁定精確路由的機密 pool、政策輪替、已完成套件及中止標記 | |
 | [ExecuteTrigger](#executetrigger) |觸發器|                      |
 | [記錄/定製/升級](#other-instructions) |記錄,執行者特定的有效載荷,執行器升級 |                      |
 
@@ -234,7 +236,10 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 註冊和退出註冊的同行. 如果您尚未擁有 BLS 密鑰,則將 PoP 和 `kagami` 發明:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./peer-key
+PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
+PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
@@ -325,6 +330,14 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 市場保證金使用 `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, 和 `ResolveEscrowDispute`. 一般資產鎖的使用 `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, 和 `ExpireAssetLock`. 匿名保證人反映了市場的生命週期 `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, 和 `ResolveAnonymousEscrowDispute`.
 
 這些 ISIs 目前沒有一流的 CLI 命令.使用類型 SDK 構建器或序列化指令有效載荷,並參見 [原生資產抵押](/zh-hant/blockchain/escrow.md)爲生命週期詳細信息,權限,查詢,事件和 Rust 示例.
+
+## 原子私密結算 {#atomic-private-settlement}
+
+受治理的原子私密結算指令與透明的 Native AMX 相互獨立。`ActivatePrivateSettlementPoolV1` 根據經刪減的治理投影與規範來源承諾，為精確路由建立一個機密 `pool`。`FinalizeAtomicPrivateSettlementV1` 以原子方式套用由所有參與委員會認證的完整套件。`AbortAtomicPrivateSettlementV1` 僅發佈經發起方授權的公開終止標記。
+
+只有隱私治理可以執行 `RotatePrivateSettlementPoolPolicyV1`。此指令要求與目前治理摘要完全相符；它保留路由、`pool`、資產綁定承諾、狀態前緣、重放集合及已完成收據，將公開修訂版加一，並使用較新的稽核者金鑰 epoch。輪替在指令納入的高度生效，同一路由與 `pool` 的收據不得在該高度完成。公開修訂版譜系使輪替前完成的收據在重啟後仍然有效，且完全相同的重放具有冪等性。啟用時仍在處理的舊政策套件會在變更狀態前以 fail-closed 方式失敗。營運者必須保留舊解密金鑰，或在銷毀金鑰前，以治理程序重新包裝膠囊並驗證結果。
+
+此路徑預設停用，尚未通過正式環境資格驗證。設定、權限、稽核、復原與發佈要求請參閱[執行跨資料空間原子私密結算](/get-started/atomic-private-settlement)。
 
 ## 資助/撤銷 {#grant-revoke}
 

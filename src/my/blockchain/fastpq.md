@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /blockchain/fastpq.md
-translation_source_hash: f1dc55e4b2146de009203e19adb5cc1e9ce5302bc0ee27fe0b442693c5112c22
+translation_source_hash: 55b57e6aeeef2aefa1c8359d9b9487029b106eaebed12a58268b61dc583e97f6
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -905,7 +905,7 @@ Trace တွင် transfer, mint, burn, role grant, role revoke, metadata set �
 
 ## Prover Lane {#prover-lane}
 
-`irohad` သည် FastPQ prover lane ကိုစတင်ချိန်တွင် စေလွှတ်နိုင်ပါက prover backend ကို အစပျိုးနိုင်သည်။လမ်းကြောင်းသည်သတ်မှတ်ထားသောအတန်းနှင့်အတူနောက်ခံလုပ်ဆောင်ချက်ဖြစ်သည်။ ဘလော့က အကောင်အထည်ဖော်သက်သေကိုထုတ်လုပ်ပြီးနောက် commit path က block hash၊ အမြင့်, view နှင့် witness ကိုပါဝင်သည့် prover အလုပ်ကိုတင်ပြသည်။
+`iroha3d` သည် FastPQ prover lane ကိုစတင်ချိန်တွင် စေလွှတ်နိုင်ပါက prover backend ကို အစပျိုးနိုင်သည်။လမ်းကြောင်းသည်သတ်မှတ်ထားသောအတန်းနှင့်အတူနောက်ခံလုပ်ဆောင်ချက်ဖြစ်သည်။ ဘလော့က အကောင်အထည်ဖော်သက်သေကိုထုတ်လုပ်ပြီးနောက် commit path က block hash၊ အမြင့်, view နှင့် witness ကိုပါဝင်သည့် prover အလုပ်ကိုတင်ပြသည်။
 
 trajectory ကို run မလုပ်ဘူးဆိုရင် (သို့) queue ကပြည့်နေရင် အလုပ်ကို skip လုပ်ပြီး ပုံမှန် block processing ဆက်ဖြစ်သွားပါတယ်။ ဆိုလိုတာက background prover trajectory ဟာ transaction admit or consensus gate မဟုတ်ဘူး။ ဒါက state over proof-production path ဖြစ်ပြီး လုပ်ဆောင်ပြီးသားပါ။
 
@@ -1072,7 +1072,7 @@ $$
 
 ## SCCP ပွင့်လင်းမြင်သာသော သတင်းအချက်အလက် သက်သေခံချက်များ {#sccp-transparent-message-proofs}
 
-SCCP အကူအကူသေတ္တာမှာလည်း ပွင့်လင်းမြင်သာတဲ့ ကွင်းဆက်ဖြတ် သတင်းအချက်အလက် သက်သေခံမှုအတွက် FastPQ ကို အသုံးပြုပါတယ်။ ဒီလမ်းကြောင်းဟာ `irohad` နောက်ခံ prover lane မှ သီးခြားပါ။ SCCP သတင်းအချက်အလက် အထောက်အထား ဘက်ဒရယ်နဲ့ မော်နီဖစ်ကနေ တိုက်ရိုက် FastPQ အစုကို တည်ဆောက်ပြီး ရလာတဲ့ အထောက်အထားကို ပွင့်လင်းတဲ့ စစ်ဆေးမှုအတွက် ဖုံးလွှမ်းတယ်။
+SCCP အကူအကူသေတ္တာမှာလည်း ပွင့်လင်းမြင်သာတဲ့ ကွင်းဆက်ဖြတ် သတင်းအချက်အလက် သက်သေခံမှုအတွက် FastPQ ကို အသုံးပြုပါတယ်။ ဒီလမ်းကြောင်းဟာ `iroha3d` နောက်ခံ prover lane မှ သီးခြားပါ။ SCCP သတင်းအချက်အလက် အထောက်အထား ဘက်ဒရယ်နဲ့ မော်နီဖစ်ကနေ တိုက်ရိုက် FastPQ အစုကို တည်ဆောက်ပြီး ရလာတဲ့ အထောက်အထားကို ပွင့်လင်းတဲ့ စစ်ဆေးမှုအတွက် ဖုံးလွှမ်းတယ်။
 
 SCCP အုပ်စုမှာ `fastpq-lane-balanced` နဲ့ metadata အပြောင်းအလဲ သုံးခုကိုသုံးပါတယ်။
 
@@ -1210,14 +1210,14 @@ metal_debug_enum = false
 metal_debug_fused = false
 ```
 
-`irohad` မှတူညီသော အကောင်အထည်ဖော်မှုနှင့် တယ်လီမီတာ တံဆိပ်များကို လွှဲပြောင်းနိုင်သည်
+`iroha3d` မှတူညီသော အကောင်အထည်ဖော်မှုနှင့် တယ်လီမီတာ တံဆိပ်များကို လွှဲပြောင်းနိုင်သည်
 
 ```shell
-irohad --fastpq-execution-mode auto
-irohad --fastpq-poseidon-mode cpu
-irohad --fastpq-device-class apple-m4
-irohad --fastpq-chip-family m4
-irohad --fastpq-gpu-kind integrated
+iroha3d --fastpq-execution-mode gpu
+iroha3d --fastpq-poseidon-mode cpu
+iroha3d --fastpq-device-class apple-m4
+iroha3d --fastpq-chip-family m4
+iroha3d --fastpq-gpu-kind integrated
 ```
 
 ပြင်ဆင်မှု ကွင်းများအတွက် ပတ်ဝန်းကျင် ကိန်းရှင်များကိုလည်း ထောက်ပံ့ထားသည်။ FastPQ အတွက် သီးသန့် ကိန်းရှင်များသည် အောက်ပါအတိုင်းဖြစ်သည်။
@@ -1258,4 +1258,4 @@ FastPQ က Backend ရွေးချယ်မှုနဲ့ Metal Runtime အ�
 - `TransferTranscript`
 - `AxtFastpqBinding`
 - `LaneFastpqProofMaterial`
-- [`irohad` FastPQ ရွေးချယ်စရာများ](/my/reference/irohad-cli.md#arg-fastpq-execution-mode)
+- [`iroha3d` FastPQ ရွေးချယ်စရာများ](/my/reference/iroha3d-cli.md#arg-fastpq-execution-mode)

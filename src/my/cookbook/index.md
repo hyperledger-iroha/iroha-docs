@@ -1,14 +1,14 @@
 ---
 translation_locale: my
 translation_source: /cookbook/index.md
-translation_source_hash: cdcfb3549506a65a7dbd1c37672893956a0252153a4075c82333804674aa07b6
+translation_source_hash: aceef9f4e42462614a5cdf41a89f55e26e0399503a48d4b50c08359e7bd7532e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Iroha 3 လျှောက်လွှာစာအုပ် {#iroha-3-application-cookbook}
 
-Taira စမ်းသပ်ရေးကွန်ရက်မှစ၍ Minamoto အဓိကကွန်ရက်ကို ဖတ်ရန်သာ ထိန်းထားသော အသေးစား စစ်ဆေးနိုင်သောအချက်ပြနည်းများဖြင့် Iroha 3 ကို ဆောက်လုပ်ပါ။ ချက်ပြုတ်မှုတစ်ခုစီတွင် အများပြည်သူဖတ်ခြင်း၊ ပုံမှန်ငွေထောက်ပံ့စာရင်း ရေးခြင်း သို့မဟုတ် ခွင့်ပြုချက်ဂိတ်တပ်ဆင်မှုဖြစ်သည်ဆိုပါစို့။ commands use current I105 account IDs, explicit fee selection, and the behavior checked in at Iroha commit [`bc7114ed1c7f265a156d2100ff09e851cc95702c`](https://github.com/hyperledger-iroha/iroha/tree/bc7114ed1c7f265a156d2100ff09e851cc95702c).
+Taira စမ်းသပ်ရေးကွန်ရက်မှစ၍ Minamoto အဓိကကွန်ရက်ကို ဖတ်ရန်သာ ထိန်းထားသော အသေးစား စစ်ဆေးနိုင်သောအချက်ပြနည်းများဖြင့် Iroha 3 ကို ဆောက်လုပ်ပါ။ ချက်ပြုတ်မှုတစ်ခုစီတွင် အများပြည်သူဖတ်ခြင်း၊ ပုံမှန်ငွေထောက်ပံ့စာရင်း ရေးခြင်း သို့မဟုတ် ခွင့်ပြုချက်ဂိတ်တပ်ဆင်မှုဖြစ်သည်ဆိုပါစို့။ commands use current I105 account IDs, explicit fee selection, and the behavior checked in at Iroha commit [`0010c5a70039eac101a4846499ba9ceaf43eb65c`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c).
 
 [ နှင့် စတင်ပါ Taira](./connect-to-taira.md) သို့ဆက်သွယ်ပါ။ ၎င်းသည်ဖောက်သည်ကွန်figuration ကိုဖန်တီးပြီး command-line recipes များမှပြန်လည်အသုံးပြုသော fee metadata ကိုဖန်တီးသည်။ ဤစာရွက်စာတမ်းမှ fee asset ID ကိုတစ်ခါမျှမကူးယူပါနဲ့။ လက်ရှိ Taira faucet တုံ့ပြန်မှုမှထုတ်ယူပါ။
 

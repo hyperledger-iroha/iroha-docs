@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /cookbook/query-ledger-state.md
-translation_source_hash: a81f6cc04befb0b92a0a01c2cb3c1ecbbc631ce1f2a923cb046241c295db7806
+translation_source_hash: ca76923f5ae35b96c52a6a4c23c5d9e69549d1ca91d6d1507e7b9a1aee1f1676
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -160,9 +160,9 @@ iroha --config ./localnet/client.toml \
 
 ## Աղբյուրը եւ դրա հետ կապված փաստաթղթերը {#source-and-related-docs}
 
-- [Cursor-backed pagination ինտեգրման փորձարկումները pinned commit- ում](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/pagination.rs)
-- [Հարցազրույցի ստեղծողի եւ ընտրողի վարքագիծը փակված հանձնաժողովում](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/query/builder/mod.rs)
-- [Հարցման պարամետրերը եւ կուրսորի մոդելը փինված commit- ում](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/query/parameters.rs):
+- [Cursor-backed pagination ինտեգրման փորձարկումները pinned commit- ում](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/pagination.rs)
+- [Հարցազրույցի ստեղծողի եւ ընտրողի վարքագիծը փակված հանձնաժողովում](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/builder/mod.rs)
+- [Հարցման պարամետրերը եւ կուրսորի մոդելը փինված commit- ում](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/parameters.rs):
 - [Հարցեր](/hy/blockchain/queries.md)
 - [Հարցման հղում](/hy/reference/queries.md)
 - [JavaScript եւ TypeScript](/hy/guide/tutorials/javascript.md)

@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /reference/instructions.md
-translation_source_hash: e300187da832a8f82258a36b7c4aaebf505adc09c771de5b0c7ab8fb0052d3db
+translation_source_hash: 9ba8e06d10f0896169feddbdad32f4fed7a8d46effa2293c64df578c197c970e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -29,6 +29,7 @@ translation_engine: nllb-200-ct2
 | [国産資産のエスクロー](/ja/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
 | [一般的な資産ロック](/ja/blockchain/escrow.md#generic-asset-locks) |`OpenAssetLock`, `DrawdownAssetLock`,`CancelAssetLock`, `ExpireAssetLock` |
 | [匿名資産保証人](/ja/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
+| [アトミック・プライベート決済](/ja/blockchain/instructions.md#atomic-private-settlement) | `ActivatePrivateSettlementPoolV1`, `RotatePrivateSettlementPoolPolicyV1`, `FinalizeAtomicPrivateSettlementV1`, `AbortAtomicPrivateSettlementV1` |
 
 追加の Iroha 3 モジュールは,指示レジストリを通じてドメイン特定の命令タイプを登録することができる.現在のソースツリーから生成されたスケーマレベルリストについては, [データモデルスケーマ](./data-model-schema.md)を参照してください.
 

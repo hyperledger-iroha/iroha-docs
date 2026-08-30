@@ -79,5 +79,5 @@ The Kotlin SDK includes:
 - Android keystore and device telemetry integrations
 - Android offline QR, Nearby, and NFC transports
 
-See the [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/main/kotlin/README.md)
+See the [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/kotlin/README.md)
 for module-specific APIs and exact build commands.

@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: af3e0b8698f877c035ccd3bb71926cea14d1029fc2eb73e23756d57357935f0e
+translation_source_hash: 71258f4da9afcd94afce2fc2a53ce43540d8f67054ea789f0b2d105daba26006
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,7 +12,7 @@ Iroha 源存储库包含 SDK 配方和测试套件,跟踪与节点相同的修�
 
 ## JavaScript 配方 {#javascript-recipes}
 
-[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/main/javascript/iroha_js/recipes) 包含确定性交易分批的专注示例, Nexus 应用程序转移, NFT 和账户回复, ISO 桥梁流动,以及 Torii 每个食谱都记录在线运行或需要现场播放 Torii 终点.
+[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes) 包含确定性交易分批的专注示例, Nexus 应用程序转移, NFT 和账户回复, ISO 桥梁流动,以及 Torii 每个食谱都记录在线运行或需要现场播放 Torii 终点.
 
 ## Swift 和iOS {#swift-and-ios}
 

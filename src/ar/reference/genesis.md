@@ -1,29 +1,31 @@
 ---
 translation_locale: ar
 translation_source: /reference/genesis.md
-translation_source_hash: 6710e76508e6a38a6b68d274247cc1383de2472e74f10be85000b30f74cb04a6
+translation_source_hash: 1312e80d9e662cc3e8cf4d0668ff4bb9e6ce3f74a60bb5287205aeeb5afd5de8
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# الإشارة إلى سفر التكوين {#genesis-reference}
+# مرجع سفر التكوين {#genesis-reference}
 
-في سير العمل الحالي Iroha 3، يصف بيان `genesis.json` أول المعاملات والمعايير التي سيتم تطبيقها عند بدء الشبكة.
+في الحالي Iroha 3 سير العمل، أ `genesis.json` البيان يصف الأول
+المعاملات والمعلمات التي سيتم تطبيقها عند بدء تشغيل الشبكة.
 
-القطع الأثرية الموقعة التي تم توزيعها على أقرانها هي ملف Norito مرموز `.nrt` الناتج عن `kagami genesis sign`.
+القطعة الأثرية الموقعة الموزعة على أقرانهم هي أ Norito-مشفر `.nrt` ملف
+من إنتاج `kagami genesis sign`.
 
 ## الحقول الرئيسية {#main-fields}
 
-ويمكن أن يحدد إشارة التكوين:
+يمكن لبيان التكوين أن يحدد:
 
-- `chain` للتعرف على السلسلة
-- `executor` لمرحلة تطوير بايت كود تنفيذية اختيارية
-- `ivm_dir` لمكتبات IVM المستخدمة من خلال محفزات وتحديثات
-- `consensus_mode` للطريقة الابتدائية التي يتم الإعلان عنها في المذكرة
-- `transactions` للتحديثات المرتبة للمعلمات والإرشادات والتحفيزات والتوبولوجيا
-- `crypto` لقطة العملات الرقمية الأولى
+- `chain` لمعرف السلسلة
+- `executor` للحصول على مسار رمز بايت لترقية المنفذ الاختياري
+- `ivm_dir` ل IVM المكتبات المستخدمة بواسطة المشغلات والترقيات
+- `consensus_mode` للوضع الأولي المعلن عنه بواسطة البيان
+- `transactions` لتحديثات المعلمات المطلوبة والتعليمات والمشغلات والطوبولوجيا
+- `crypto` للحصول على لقطة التشفير الأولية
 
-داخل `transactions` ، إدخالات التوبولوجيات تتزامن مع هويات الأقران و PoPs معاً:
+داخل `transactions`, تقوم إدخالات الطوبولوجيا بإقران معرفات الأقران و PoPs معاً:
 
 ```json
 {
@@ -32,9 +34,9 @@ translation_engine: nllb-200-ct2
 }
 ```
 
-## إنشأ إشارة {#generate-a-manifest}
+## إنشاء بيان {#generate-a-manifest}
 
-استخدم Kagami لتوليد نموذج:
+يستخدم Kagami لإنشاء قالب:
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
@@ -43,23 +45,30 @@ cargo run -p iroha_kagami -- genesis generate \
   --genesis-public-key <PUBLIC_KEY> > genesis.json
 ```
 
-بالنسبة لمجال البيانات العام SORA Nexus، `npos` هو وضع الإجماع المتوقع. قد تستخدم تنفيذات Iroha 3 الأخرى المسموح بها أو NPoS اعتمادًا على ملف الهدف.
+للجمهور SORA Nexus مساحة البيانات, `npos` هو وضع الإجماع المتوقع.
+آخر Iroha 3 قد تستخدم عمليات النشر إذنًا أو NPoS اعتمادًا على الهدف
+حساب تعريفي.
 
-## التوقيع على الإعلان {#sign-the-manifest}
+## التوقيع على البيان {#sign-the-manifest}
 
-بعد تحرير وتصديق JSON، وقم بتوقيعه في كتلة `.nrt` قابلة للتنفيذ:
+بعد التحرير والتحقق من صحة JSON, قم بتسجيله في ملف قابل للنشر `.nrt` حاجز:
 
 ```bash
 cargo run -p iroha_kagami -- genesis sign genesis.json \
-  --private-key <PRIVATE_KEY> \
+  --private-key-file <MODE_0600_PRIVATE_KEY_FILE> \
   --out-file genesis.signed.nrt
 ```
 
-`kagami genesis sign` يقرأ مفتاح الجينس العام من المخطط ويستخدم مفتاح خاص، البذور، والخوارزمية المقدمة لإنتاج الكتلة الموقعة القابلة للتنفيذ. النتيجة هي الملف الذي يجب أن يشير إليه الأقران من إعداداتهم.
+`kagami genesis sign` يقرأ المفتاح العام للتكوين من البيان والاستخدامات
+المفتاح الخاص من ملف عادي أحادي الارتباط يملكه المالك لإنتاج ملف
+كتلة موقعة قابلة للنشر.يجب أن يحتوي الملف على مفتاح خاص أساسي واحد
+تجزئة متعددة متبوعة بسطر جديد؛ Kagami يرفض الروابط الرمزية والأوضاع الأخرى
+من `0600`. لا يتم قبول المفاتيح الخاصة الأولية في سطر الأوامر.النتيجة
+هو الملف الذي يجب على الأقران الرجوع إليه من التكوين الخاص بهم.
 
-## إعداد `irohad` {#configure-irohad}
+## تكوين `iroha3d` {#configure-iroha3d}
 
-اشير الـ (دايمون) إلى كتلة التكوين الموقع:
+قم بتوجيه البرنامج الخفي إلى كتلة التكوين الموقعة:
 
 ```toml
 [genesis]
@@ -75,4 +84,5 @@ public_key = "<PUBLIC_KEY>"
 - `kagami localnet`
 - `cargo xtask kagami-profiles`
 
-للحصول على تفاصيل تنفيذ المولد والإرشادات، انظر [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_kagami/README.md).
+للحصول على تفاصيل تنفيذ المولد والأمر، راجع
+[Kagami README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami/README.md).

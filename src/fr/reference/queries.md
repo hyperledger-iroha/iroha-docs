@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /reference/queries.md
-translation_source_hash: 22e8a75acd72d066e3516ba46a0afe075d2d02790154458aec00a5d8bb861838
+translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -99,10 +99,17 @@ Les requêtes d'escroquerie examinent les registres créés par [native asset es
 |`FindLaneRelayEnvelopeByRef` |Trouvez une enveloppe vérifiée pour le relais.|
 |`FindSorafsProviderOwner` |Résoudre le propriétaire d'un fournisseur SoraFS. |
 |`FindDataspaceNameOwnerById` |Résolvez un propriétaire de l'espace de données. |
-|`FindMusubiReleaseByRef` |Trouver une libération Musubi en référence. |
-|`FindMusubiPackageVersions` |Liste des versions d'un forfait Musubi. |
-|`FindMusubiPackageReleases` |Listes publiées pour un forfait Musubi. |
-|`FindMusubiShortAliasByName` |Résolvez un Musubi surnom court. |
+|`FindMusubiExactPackageV1` |Lisez un enregistrement de l'emballage exact et ses révisions actuelles. |
+|`FindMusubiExactReleaseV1` |Lisez une photo de sortie exacte. |
+|`FindMusubiProviderBundleAttestationV1` |Lisez l'attestation d'un ensemble d'archives d'un fournisseur. |
+|`FindMusubiResolverIndexV1` |Faites une page sur l'indice de résolution définie. |
+|`FindMusubiVersionsV1` |Page des versions finalisées pour un paquet. |
+|`FindMusubiMaintainersV1` |Page a accepté les entretiens et les invitations en attente. |
+|`FindMusubiArchiveLocationsV1` |Page finalisé SoraFS les emplacements d'un seul archive. |
+|`FindMusubiArchiveRetentionV1` |Page des dossiers de conservation d'archives. |
+|`FindMusubiAliasV1` |Lisez l'objectif et la révision actuels d'un alias mondial. |
+|`FindMusubiAliasHistoryV1` |Page l'historique de retarget immutable d'un alias mondial. |
+|`FindMusubiOrderedPrefixV1` |Les paquets de page sous un préfixe structurel ordonné. |
 
 ## Les déclencheurs, les contrats, les transactions et les blocs {#triggers-contracts-transactions-and-blocks}
 

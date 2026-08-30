@@ -1,16 +1,17 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/sora-nexus-services.md
-translation_source_hash: de50aa8206a5b82d4340f68173e9d89bb8eabab83369c363eb05c9d6632eed28
+translation_source_hash: 0dcdda5185d25e113fb636b8b2aede6081ca8ee89b8b38c50b69fed88622df49
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # SORA Nexus サービス {#sora-nexus-services}
 
-SORA Nexus は, Iroha 3 に関するアプリ面のサービス飛行機を追加します.これらのサービスは別々のレジャーではありません.それらは Iroha 世界国家, Norito マニフェスト,ガバナンス記録,および Torii ルートファミリーによって固定されています.
 
-利用可能性は,ノードビルドとネットワークプロフィールに依存する.対象ノードで有効な経路の権威的なリストとして [`/openapi`](/ja/reference/torii-endpoints.md#app-and-sora-route-families) を使用します.
+SORA Nexus は, Iroha 3 に関するアプリ面のサービス飛行機を追加します.これらのサービスは別々のレジャーではありません.それらは Iroha 世界国家, Norito マニフェスト,ガバナンス記録,および Torii 経路ファミリーによって固定されています.
+
+利用可能性はノードビルドとネットワークプロフィールに依存する. [`/openapi`](/ja/reference/torii-endpoints.md#app-and-sora-route-families) 生成されたアプリを発見する API ターゲットのノードでの経路 SoraFS CID 既知の経路は生成されたドキュメントの外に設置されているので,部署をチェックする際に直接その経路を調べてください.
 
 ## 構成要素の地図 {#component-map}
 
@@ -18,11 +19,11 @@ SORA Nexus は, Iroha 3 に関するアプリ面のサービス飛行機を追�
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
 |Soracloud|アプリケーション部署,ホストされたサービス,プライベートモデル/ランタイム状態,およびサービスのライフサイクル制御. |`/v1/soracloud/`, `/api/`, `iroha app soracloud ...` |
 |入り口|Soracloud は,ライブ HTTP 飛行機を必要とするサービス修正のための実行時間をホストした HTTP. |Soracloud ランタイム設定,ホスト能力広告,レプリカのランタイム状態|
-|SoraNet|サーキット,リレートラフィック, VPN,コネクトセッション,ストリーミングルートのためのプライバシーと輸送の重なり. |`/v1/connect/`,`/v1/vpn/`, SoraNet ルートメタデータ |
+|SoraNet|サーキット,リレートラフィック, VPN,コネクトセッション,ストリーミングルーツのプライバシーと輸送オーバーレイです.|`/v1/connect/`,`/v1/vpn/`, SoraNet 経路メタデータ |
 |データの利用可能性 (DA)|Nexus レーン, SoraFS マニフェスト,および証明フローで参照されている役に立たない負荷のための利用可能性証拠,コミットメント,ピン意図層. |`/v1/da/`, `FindDaPinIntent`, `[sumeragi.da]` |
 |SoraFS|マニフェスト, CAR 役に立たない負荷,固定されたコンテンツ,ゲートウェイの取出し,復元性の証明の流れのための内容アドレスストレージ布. |`/v1/sorafs/`, `/sorafs/`, `FindSorafsProviderOwner` |
 |SoraDNS|SORA ホストされたサービスおよびコンテンツの決定的な命名と解析者認証層. |`/v1/soradns/`, `/soradns/`, resolver ディレクトリ イベント|
-|アイタイ|アップレベルのフィアットおよび資産決済走廊は,別々のレジスタンスではなくネイティブエスクロー記録によって裏付けられています. |`OpenAssetEscrow`,`FindAssetEscrow*`, `EscrowEventFilter`, Kotodama `escrow_*`の建物 |
+|アイタイ|アップレベルのフィアットおよび資産決済走廊は,別々のレジスタンスではなく,ネイティブエスクロー記録によってサポートされます. |`OpenAssetEscrow`,`FindAssetEscrow*`, `EscrowEventFilter`, Kotodama `escrow_*`の建物 |
 
 ```mermaid
 flowchart LR
@@ -54,15 +55,15 @@ flowchart LR
 1. 静的なフロントエンド資産は, SoraFS でパッケージ化され,固定されます.
 2. 公共のホストは `<app>.sora`, 登録されている SoraDNS.
 3. Soracloud ルート `/api/v1/search`または `/api/v1/stream`からインルー HTTP サービスへ.
-4. Soracloud 経路は `/api/auth`と `/api/v1/user`で,決定的な IVM 処理者に.
+4. Soracloud 経路 `/api/auth`と `/api/v1/user`は,決定的な IVM 処理者に.
 5. プライバシーを必要とするクライアントは,同じコンテンツまたは API 経路を SoraNet 回路を通じてアクセスできます.
 
 |経路|支援機|なぜ?|
 | ----------------- | --------------------- | ------------------------------------------------- |
-| `/`               |SoraFS 静態含量 |複製可能なコンテンツのルーツとゲートウェイキャッシュ|
-|`/assets/*`|SoraFS 静態含量 |内容を対象とした資産と明示証明書|
+| `/`               |SoraFS 静態値|複製可能なコンテンツのルーツとゲートウェイキャッシュ|
+|`/assets/*`|SoraFS 静態値|内容を対象とした資産と明示証明書|
 |`/api/auth*`|Soracloud IVM|リプレイ・セーフ・オートとウォレットチャレンジ状態 |
-|`/api/v1/user*`|Soracloud IVM|統治に敏感な状態変異|
+|`/api/v1/user*`|Soracloud IVM|治理に敏感な状態変異|
 |`/api/v1/search*`|Soracloud インルー |ライブ HTTP サービス,キャッシュ, SSE,またはコレクター状態|
 
 ### コンテンツ出版 {#content-publication}
@@ -73,8 +74,8 @@ SoraFS 出版物は,名称が指す前に耐久性のある文物を生成する
 2. CAR のアーカイブに詰め込み パーツプランを
 3. ピンポリシーとガバナンスデータを備えた Norito マニフィストを作成する.
 4. Torii に明示書を提出する.
-5. ターゲットプロフィールに明示的な証拠を必要とする場合, DA ピンの意図または利用可能性のコミットメントを記録する.
-6. マニフェストを SoraDNS 名前または Soracloud 静止前端ルートに結合する.
+5. ターゲットプロフィールに明示的な証拠を必要とする場合, DA ピン意図または利用可能性のコミットメントを記録する.
+6. マニフェストを SoraDNS 名前または Soracloud 静止前端経路に結合する.
 
 ### プライベート・フリッチまたはストリーミングルート {#private-fetch-or-streaming-route}
 
@@ -87,7 +88,7 @@ SoraNet は, SoraFS または Soracloud の前に座ることができる.
 
 ## アイタイ {#aitai}
 
-Aitai は SORA 市場型決済のためのアプリ廊下で,買い手と売り手はチェーン外での支払いを協調する一方, Iroha が取引を制御する.チェーン上の資産保管.新しい数値資産保管流のために契約所有のエスクローアカウントではなく,ネイティブエスクロー指示ファミリーを使用すべきである.
+Aitai は SORA 市場型決済のためのアプリ廊下で,買い手と売り手はチェーン外での支払いを協調する一方, Iroha が取引を制御するチェーン上の資産保管.新しい数値資産保管流のために契約所有のエスクローアカウントではなく,ネイティブエスクロー指示ファミリーを使用すべきである.
 
 Native escrow は本簿に保管する.売り手は `OpenAssetEscrow` でオファーを開設し,購入者は `AcceptAssetEscrow` と `MarkEscrowPaymentSent` でオフチェーン支払いを受け入れ,マークします.`ReleaseAssetEscrow`で開示し,支払いがマークされる前にキャンセルする.購入者と販売者が意見が異なった場合,当事者は紛争を開くことができ, `CanResolveEscrowDispute` で解決者はロックされた金額を分割できます.
 
@@ -117,11 +118,11 @@ curl -fsS "$TORII_URL/openapi.json" \
 curl -fsS -H 'Accept: application/json' "$TORII_URL/status" | jq .
 ```
 
-`/openapi.json`がプロフィールで暴露されていない場合は, `/openapi` を試してみてください.正確なルート利用可能性はビルド機能とネットワーク構成に依存します.
+`/openapi.json`がプロフィールによって暴露されない場合は, `/openapi`を試してみてください.正確なルート利用可能性はビルド機能とネットワーク構成に依存します.ドキュメントでは公共のローカル SoraFS CID およびよく知られているルートを列挙していません.これらのエンドポイントを以下のとおり直接確認してください.
 
 ### Taira 読み込みのみの喫煙チェック {#taira-read-only-smoke-checks}
 
-公開 Taira エンドポイントは読み方チェックに有用ですが,認証されたアカウントを運営し,ライブ状態を変更するつもりがない限り,変異例に使用しないでください.
+公開 Taira エンドポイントは,読み方チェックに有用だが,認証されたアカウントを運営し,公開テストネット状態を変更する意図がない限り,変異例に使用してはならない.
 
 ```bash
 export TORII_URL=https://taira.sora.org
@@ -134,14 +135,14 @@ curl -fsS "$TORII_URL/v1/connect/status" | jq '{enabled, sessions_active}'
 curl -fsS "$TORII_URL/v1/vpn/profile" \
   | jq '{available, relay_endpoint, supported_exit_classes}'
 
-curl -fsS "$TORII_URL/v1/sorafs/storage/state" \
-  | jq '{bytes_capacity, bytes_used, pin_queue_depth, por_inflight}'
+curl -fsS "$TORII_URL/v1/sorafs/storage/peers?limit=4" \
+  | jq '{gateway_base_url, pin_torii_urls}'
 
 curl -fsS -H 'Accept: application/json' "$TORII_URL/v1/soracloud/status" \
   | jq '.control_plane | {service_count, services: [.services[] | {service_name, current_version}]}'
 ```
 
-Taira は,展開特有の制御平面路線を OpenAPI 経路地図に記載されていないことを暴露することができる. `/openapi` を主要な生成された API 契約として扱って,それをライブとして文書化する前に,直接任意の展開特別のルートを確認してください.
+Taira は,展開特異的な制御平面路線を OpenAPI 経路地図に記載されていないことを暴露することができる.その路線の生成された契約として `/openapi` を扱って,展開特別のおよび公共のローカル SoraFS 路線を入手可能なものとして文書化する前に直接確認する.
 
 ## Soracloud {#soracloud}
 
@@ -151,7 +152,7 @@ Soracloud は2つの実行機を使用する.
 
 |執行機|実行時間|使うよ|
 | ---------------------- | ------- | -------------------------------------------------------------------------------------------- |
-|`DeterministicService`|`Ivm`|作成者,保管庫状態,認証された読み取り,注文された郵便箱の管理者,統治に敏感な変異|
+|`DeterministicService`|`Ivm`|作成者,保管庫状態,認証された読み取り,注文された郵便箱処理者,管理に敏感な変異 |
 |`HttpService`|`Inrou`|ライブ HTTP APIs,コレクター重労働,キャッシュバックのサービス, SSE,ブラウザ支援フロー |
 
 制御平面は権威ある.部署,アップグレード,ロールバック,コンフィギュレーション,秘密,モデル,およびステータスコマンドは Torii を介して送信され,コミットされた世界状態を読み取ります;彼らは別々の CLI-ローカル鏡に依存しません.パブリックルーティングは,最も長いプレフィックスに基づいているため,登録されたホストがホストされている HTTP ルートと決定的な API ルートの間でトラフィックを分けることができる.
@@ -204,7 +205,7 @@ iroha app soracloud rollback \
   --torii-url "$SORACLOUD_TORII_URL"
 ```
 
-### 機密 な 資料 {#config-and-secret-material}
+### 機密 資料 {#config-and-secret-material}
 
 Soracloud コンフィギュレーションおよび秘密入力は,権限のある展開状態の一部です.必要なコンフィギュランスまたは秘密結合が欠けている場合やアクティブマニフェストと不一致する場合は,デプロイ,アップグレード,ロールバックが終了します.
 
@@ -353,29 +354,45 @@ provision_window_segments = 4
 provision_queue_capacity = 256
 ```
 
-視聴者認証を必要としないコンテンツルートでは `access_kind = "read-only"` を使用する. 出口リレーが Torii またはホストサービスへの橋渡し前にチケットまたは視聴者のアイデンティティを強制しなければならない場合, `authenticated` を使用します.
+視聴者認証を必要としないコンテンツルートでは `access_kind = "read-only"` を使用する. 出口リレーが Torii またはホストサービスへの橋渡し前にチケットまたは視聴者の身分を強制しなければならない場合, `authenticated` を使用する.
 
 ### SoraNet - 意識する SoraFS 引き寄せ {#soranet-aware-sorafs-fetch}
 
-SoraFS リッチ CLI は,ブラウザ拡張子または SDK アダプタのためのローカルプロキシマニストおよびスループ SoraNet 経路メタデータを発行できます.
+労働組合 SoraFS 引き寄せ CLI ローカルプロキシマニストとスクロールを送信できます SoraNet ブラウザ拡張子のためのルートメタデータまたは SDK アダプター,オーケストラ JSON 定義しなければならない `local_proxy` と `"emit_browser_manifest": true`, そして CLI 組み立てなければならない `local-quic-proxy` 支援する Taira, 公的なテストネットルーツで認められたプロバイダーカタログを検査する.その後,そのプロバイダーのために発行された保護された提供者タプルを記入する.
 
 ```bash
-sorafs_cli fetch \
-  --plan artifacts/payload_plan.json \
-  --manifest-id 7bb2...9d31 \
-  --provider name=alpha,provider-id=9f5c...73aa,base-url=https://gw-alpha.example.org/,stream-token="$(cat alpha.token)" \
-  --output artifacts/payload.bin \
-  --json-out artifacts/fetch_summary.json \
-  --local-proxy-manifest-out artifacts/proxy_manifest.json \
-  --local-proxy-mode bridge \
-  --local-proxy-norito-spool storage/streaming/soranet_routes \
-  --local-proxy-kaigi-spool storage/streaming/soranet_routes \
-  --local-proxy-kaigi-policy authenticated \
+export TAIRA_ROOT=https://taira.sora.org
+curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
+
+: "${TAIRA_SORAFS_PROVIDER_ID:?set the admitted provider ID from Taira discovery}"
+: "${TAIRA_SORAFS_GATEWAY_KEY:?set the provider gateway key}"
+: "${TAIRA_SORAFS_PROVIDER_URL:?set the advertised provider base URL}"
+: "${TAIRA_SORAFS_STREAM_TOKEN_FILE:?set the issued stream-token file}"
+
+cargo run -p sorafs_orchestrator --features=local-quic-proxy --bin=sorafs_cli -- \
+  fetch \
+  --plan=artifacts/payload_plan.json \
+  --manifest-id=<manifest-digest-hex> \
+  --orchestrator-config=artifacts/orchestrator.json \
+  --provider=name=taira,provider-id="$TAIRA_SORAFS_PROVIDER_ID",gateway-key="$TAIRA_SORAFS_GATEWAY_KEY",base-url="$TAIRA_SORAFS_PROVIDER_URL",stream-token="$(cat "$TAIRA_SORAFS_STREAM_TOKEN_FILE")" \
+  --output=artifacts/payload.bin \
+  --json-out=artifacts/fetch_summary.json \
+  --local-proxy-manifest-out=artifacts/proxy_manifest.json \
+  --local-proxy-mode=bridge \
+  --local-proxy-norito-spool=storage/streaming/soranet_routes \
+  --local-proxy-kaigi-spool=storage/streaming/soranet_routes \
+  --local-proxy-kaigi-policy=authenticated \
   --max-peers=2 \
   --retry-budget=4
 ```
 
 概要記録プロバイダの報告,断片領収書,地元の代理メタデータ,そして取得のために使用された有効なルート設定.
+
+### リレーインセンティブ 検証者リスト {#relay-incentive-verifier-roster}
+
+リレーインセンティブの摂取は,必要なすべてのチェックが成功しない限り証明を拒絶します. `incentives.enable` それは本当だ `incentives.trusted_verifier_ids` 少なくとも1つの聖典記事が含まれなければならない. ID. リストはインセンティブが無効である場合でも,決して64件のエントリーを超えてはならない.ランタイムは決定的な順序集合として保存し,リレー起動時に無効なリストの幾何学を拒絶します.
+
+各 `RelayBandwidthProofV1` は固定フレーム/割り当て予算の下で解読され,完全なフレームを消費しなければならない.証明の検証アカウントは設定されたリストに存在し,リレーがロックまたは性能蓄積機を変更する前に, `RelayBandwidthProofV1::verify_signature()` が成功する必要があります. リレーは,信頼されていない署名者または署名無効/偽造された証明を無視する. そのような証明は測定を加えず,インセンティブスナップショットを生み出すことはできない.
 
 ## データ利用可能性 (DA) {#data-availability-da}
 
@@ -394,7 +411,7 @@ DA を使用する,アプリケーションまたは Nexus レーンが本簿に
 |ステージ|記録されていること|
 | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
 |意図|チケット,マニフェスト参照,仮名,レーン/エポーク/シーケンス参照,保存ポリシー,または複製目標. |
-|コミットメント|マニフェスト,レーン用荷,証明バンドル,またはコンテンツルーツを レジで可視の記録に結合する素材を消化します. |
+|コミットメント|マニフェスト,レーン用荷,証明バンドル,またはコンテンツルーツを本簿で可視の記録に結合する素材を消化します. |
 |証拠|対象ネットワークが承認した可用性投票,証拠開示,プロバイダー証明書,または他のプロフィール特定の証拠. |
 |疑問です|`FindDaPinIntentByTicket`,`FindDaPinIntentByManifest`, `FindDaPinIntentByAlias`,または `FindDaPinIntentByLaneEpochSequence`を通じてピン意図の検索. |
 
@@ -404,14 +421,14 @@ DA のサポートを受けた典型的な出版流は:
 2. Norito マネスティックまたはルート専用のコミットメント記録で有用な負荷をハッシュして記述する.
 3. そのルートファミリーが有効になったとき,またはネットワークの署名されたトランザクションパスを通じて `/v1/da/*` を介してマニフェスト,ピン意図,またはコミットメントを提出する.
 4. 検証者または可用性提供者は,アクティブ証明ポリシーで要求される証拠を収集させてください.
-5. 代名詞,決済証明書,またはゲートウェイ経路をプロモーションする前に 結果のピン意図またはコミットメントを尋ねる.
+5. 代名詞,決済証明書,またはゲートウェイ経路をプロモーションする前に 結果のピン意図やコミットメントを尋ねる.
 
 ### アルゴリズムモデル {#algorithmic-model}
 
 DA は,有用な負荷を署名され,再生によって保護され,ブロックインデックスされたコミットメントに変換します.重要なアルゴリズムは決定的なため,検証者とゲートウェイは同じバイトから同じダイジェストを再計算することができます.
 
 1. 送信された用荷をキャノニカル化する Torii 摂取の要請を承認する `(lane_id, epoch, sequence)`, パイロードバイト,圧縮メタデータ,パーツサイズ,削除プロフィール,保持ポリシー,送信者の署名.ノードは要求されたときに gzip, deflate,または Zstandard の有用な負荷を解圧し,その後,カノニカルバイトの長さが等しいことを確認します `total_size`.
-2. Nexus レーンのカタログに存在しなければならない. `chunk_size` は,少なくとも2バイトの非ゼロパワーでなければならない.設定された最大限度を超えない.削除プロフィールには,データ・ショートと少なくとも2つのパリティ・ショットが含まれなければならない.レーンのカタログでは,証明式 `merkle_sha256` または `kzg_bls12_381` を選択する.
+2. Nexus レーンのカタログに存在しなければならない. `chunk_size` は,少なくとも2バイトの非ゼロ電源である必要があります.設定された最大限度を超えない.削除プロフィールには,データ・ショートと少なくとも2つのパリティ・ショットが含まれなければならない.レーンのカタログでは,証明式 `merkle_sha256` または `kzg_bls12_381` を選択する.
 3. ネットワークポリシーを適用する.ノードは,blobクラスのための構成された複製および保持ベースラインを強制します.公共のメタデータは素文に留まなければなりません.ガバナンスのみのメタデータがマニフェストに書き込まれる前にノードの設定したガバナンスのメタデータキーで暗号化されます.
 4. `chunk_size`から得られる固定サイズプロフィールでカノニカル用荷が割れられ, Torii は用荷消化,復元性証明の樹根,およびパーチャックによるコミットメントを計算する.データブロックはバイトにわたって BLAKE3 のコミットメントを持ちます.
 5. 切除約束を追加する. 切片は `data_shards`. 最後のストライプの欠落した細胞は平価計算のために0で詰められています. RS(16) parity は row/global parity shards を作成する. `row_parity_stripes` 列式のストライプ・パリティをマトリックス全体に追加する. パリティスクラッシュコミットメントは BLAKE3 小の消化物 `u16` シンボルです
@@ -430,7 +447,7 @@ DA は,有用な負荷を署名され,再生によって保護され,ブロッ�
 - 収納クラスと保管券
 - Torii DA 承認署名
 
-ブロックが DA の記録を埋め込む前に,ブロックの組み立て経路はバンドルを検証する.
+ブロックが DA の記録を埋め込む前に,ブロックの組み立て経路はバンドルを検証します.
 
 - `(lane_id, epoch, sequence)`はバネルの内側にユニークでなければならない.
 - マネフィスト・ハッシュは,バンドルの内側でゼロではなくユニークでなければならない.
@@ -444,12 +461,12 @@ DA は,有用な負荷を署名され,再生によって保護され,ブロッ�
 
 `/v1/da/commitments/prove` はブロック内の1つのコミットメントの証明を作成できます.証明にはコミットメント,ブロック高度,バンドルのインデックス,バンドルハッシュ,バンドルが長さ,メルケルルーツ,そして兄弟姉妹経路が含まれます.検証チェック:
 
-1. 証明バンドルのハッシュは,ブロックヘッダの DA コミットメントハッシュに一致する.
+1. 証明バンドルハッシュは,ブロックヘッダの DA コミットメントハッシュに一致する.
 2. 証明ブロックの高さは参照されたブロックヘッダーに一致する.
 3. 索引は制限で,コミットメントはその指数におけるバンドエントリに等しい.
 4. レーン防護政策は 約束を受け入れます
 5. コミットメントの葉から兄弟道を折り畳むことは 提供された根を再構築します
-6. 復元された根は束の根に等しい.
+6. 復元された根は バンドル根に等しい.
 
 これは,特定のブロックの有用な負荷に特定の利用性コミットメントが含まれていたことを証明する;それは現在すべての複製がオンラインであることを証明するものではありません.SoraFS プロバイダの採取, PDP/PoTR チェック,またはプロフィール特有の可用性証拠によってライブ取得が別途確認されます.
 
@@ -460,7 +477,7 @@ DA は信頼性の高い放送 (RBC) によって Sumeragi に接続されてい
 Iroha 3 では,ペアが次のいずれかの場合,待機中のブロック用荷を利用可能とする.
 
 - ローカル・ペンディングブロックは,予想される使用負荷のハッシュにハッシュするバイトまたは
-- RBC はブロックハッシュ,高度,ビュー,および有用荷ハッシュに一致する 役に立たない負荷を回収しました
+- RBC はブロックハッシュ,高度,ビュー,および有用荷ハッシュに一致する 役に立たない負荷を回収しました.
 
 条件の2つも成立しない場合, 同級記録 `missing_local_data`, 荷物を取り戻そうとする RBC または シンクロをブロックし, DA ステータスとテレメトリーのゲートです. DA 信号は最終性に関する助言です ブロックはまだ最終的な契約証明書と一致する本地用荷物,別途からではなく DA クォーラム証明書
 
@@ -468,7 +485,7 @@ DA タイムリングは復元ウィンドウを拡大します.有効な DA ク
 
 ### オペレーターノート {#operator-notes}
 
-Iroha 3 のコンセンサスプロフィールには, RBC がサポートする有用な負荷の拡散,マニフェスト・ガード,DA バンドル検証,および復元テレメトリが含まれています.同級型は `[sumeragi.da]`の限界を明らかにします ブロックごとにコミットメントと証明開設,および `[sumeragi.advanced.da]` クォーラムと可用性行動のためのタイムアウト倍数.これらの設定をネットワークプロフィール内の検証者間で一貫して保持します.
+Iroha 3 のコンセンサスプロフィールには, RBC がサポートする有用な負荷の拡散,マニフェスト・ガード,DA バンドル検証,および復元テレメトリが含まれています.同級型は `[sumeragi.da]`の限界を明らかにします ブロックごとにコミットメントと証明開設,およびクオラムと可用性行動のためのタイムアウト倍数 `[sumeragi.advanced.da]`.これらの設定を1つのネットワークプロフィールで検証者間で一貫して保持します.
 
 経路発見については,ノードの OpenAPI ドキュメントから開始します:
 
@@ -481,86 +498,165 @@ curl -fsS "$TORII_URL/openapi.json" \
 
 ## SoraFS {#sorafs}
 
-SoraFS は,分散型コンテンツアドレッシングのストレージタスクです. それはバイトを決定的なブロックにパッケージし, CAR アーカイブ,および Norito マネスティックでコンテンツルーツを結びつける.ストレージプロバイダは容量とコンテンツの可用性を宣伝し,ゲートウェイはコンテンツを配信する前にマニフェストとチャックコミットメントを確認します.
+SoraFS は,分散型コンテンツアドレッシングのストレージタスクです. それはバイトを決定的なブロックにパッケージし, CAR アーカイブ,および Norito マネスティックでコンテンツルーツを結びつける.ストレージプロバイダは容量とコンテンツの可用性を宣伝し,ゲートウェイはコンテンツを配信する前にマニフェストや部品コミットメントを確認します.
 
-典型的な SoraFS ステティックアプリケーション資産,ドキュメンテーションビルド,ゾーンを含む.モデルやアーテファクトの参照,およびガバナンス証拠の束. Iroha データモデルの暴露 SoraFS ゲートウェイイベントと [`FindSorafsProviderOwner`](/ja/reference/queries.md#nexus-data-availability-and-packages) 提供者の所有権解決に関する問い合わせ
+典型的な SoraFS の用途には,静的なアプリケーション資産,ドキュメントビルド,ゾーンバンドル,モデルまたはアーティファクト参照,およびガバナンス証拠バンドルが含まれます. Iroha データモデルは SoraFS ゲートウェイイベントとプロバイダー所有権解像度のための [`FindSorafsProviderOwner`](/ja/reference/queries.md#nexus-data-availability-and-packages)クエリを暴露する.
 
-### 梱包 し,宣言 し,署名 し,提出 する {#pack-manifest-sign-and-submit}
+### Taira テストネット プロファイル {#taira-testnet-profile}
 
-```bash
-cargo run -p sorafs_car --features cli --bin sorafs_cli -- \
-  car pack \
-  --input ./dist \
-  --car-out artifacts/site.car \
-  --plan-out artifacts/site.chunk-plan.json \
-  --summary-out artifacts/site.car-summary.json
+Taira は,公認公開の SoraFS テストネットである.そのチェックインした検証者プロフィールでは鎖 `fc56984b-2be7-431d-840e-21514d1883f0` と鎖識別子 `369` を使用している.その発行された SoraFS 設定は:
 
-cargo run -p sorafs_car --features cli --bin sorafs_cli -- \
-  manifest build \
-  --summary artifacts/site.car-summary.json \
-  --manifest-out artifacts/site.manifest.to \
-  --manifest-json-out artifacts/site.manifest.json \
-  --pin-min-replicas=3 \
-  --pin-storage-class=warm \
-  --pin-retention-epoch=42
+- ID ネットワーク: `hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94`
+- ゲートウェイベース URL: `https://taira.sora.org`
+- ピン Torii URLs: `https://taira-validator-1.sora.org` 経由で `https://taira-validator-4.sora.org`
+- 検出能力: `torii_gateway`, `chunk_range_fetch`,および `potr_mldsa`
+- 単離された含有源: `https://{cid}.sorafs.taira.sora.org/{path}`
+- 公的なピン政策:許可なく,手数料が制限されている. `require_council_signatures = false`
 
-SIGSTORE_ID_TOKEN=$(oidc-client fetch-token) \
-cargo run -p sorafs_car --features cli --bin sorafs_cli -- \
-  manifest sign \
-  --manifest artifacts/site.manifest.to \
-  --bundle-out artifacts/site.manifest.bundle.json \
-  --signature-out artifacts/site.manifest.sig
+```toml
+[sorafs.storage]
+enabled = false
+max_capacity_bytes = 13743895347
 
-cargo run -p sorafs_car --features cli --bin sorafs_cli -- \
-  manifest submit \
-  --manifest artifacts/site.manifest.to \
-  --chunk-plan artifacts/site.chunk-plan.json \
-  --torii-url "$TORII_URL" \
-  --resolve-submitted-epoch=true \
-  --authority=<i105-account-id> \
-  --private-key-file ./secrets/authority.ed25519 \
-  --summary-out artifacts/site.manifest.submit.json \
-  --response-out artifacts/site.manifest.submit.body
+[sorafs.discovery]
+discovery_enabled = true
+known_capabilities = ["torii_gateway", "chunk_range_fetch", "potr_mldsa"]
+
+[sorafs.discovery.publish]
+gateway_base_url = "https://taira.sora.org"
+pin_torii_urls = [
+  "https://taira-validator-1.sora.org",
+  "https://taira-validator-2.sora.org",
+  "https://taira-validator-3.sora.org",
+  "https://taira-validator-4.sora.org",
+]
+
+[sorafs.gateway.untrusted_hosting]
+enabled = true
+path_gateway_redirect = true
+redirect_html_only = true
+
+[sorafs.gateway.untrusted_hosting.cid_host_suffixes]
+taira = "sorafs.taira.sora.org"
+
+[sorafs.repair]
+enabled = false
+
+[sorafs.gc]
+enabled = false
+
+[gov.sorafs_pin_policy]
+require_council_signatures = false
 ```
 
-`/v1/sorafs/pin/register`がターゲットノードにルーティングされていない場合, CLI は署名された `/transaction` 送信に戻り,端末パイプラインの状態を待つことができます.
+労働組合 Taira 検証器が組み込まれている SoraFS 貯蔵,修理,ゴミ収集は無効化しました.バリダーターのディスク・予算チェック;これはバリダーターがストレージプロバイダーであることを意味するものではありません. `GET /v1/sorafs/storage/peers?limit=4` テスト前に,現在の設定されたゲートウェイとピン目的地を読み取れる.
+
+`sorafs.sora.org` CID のサフイックスは,ライブ/制作プロフィールであり, Taira ではありません. Taira のマニフェスト,起源チェック,ブラウザテストに挿入しないでください.生産部署は,独自のネットワークアイデンティティ,ガバナンスキー,プロバイダー入口資料,ピンエンドポイント,および能力/修理ポリシーを使用しなければならない. Taira 認証情報やエンドポイント仮定を生産構成に決してコピーしてはならない.
+
+### 公共局地 CID とサイトゲートウェイ {#public-local-cid-and-site-gateways}
+
+どれも SoraFS- 許可された Torii ノードはこの匿名公共ルートを設置します オプションアプリでは API 製造されていない:
+
+|方法と終点|目的|
+| ---------------------------------- | -------------------------------------------------------------------- |
+|`GET /.well-known/sorafs/manifest`|カノニカルリクエストホストが選択したマニフェストを返します |
+|`GET /v1/sorafs/cid/{cid}`|CID 限定されたローカルマニストメタデータとファイルエントリを返します.|
+|`GET /sorafs/cid/{cid}`|1 つの本地コンテンツアドレスサイトにルーツドキュメントを配信する |
+|`GET /sorafs/cid/{cid}/{*path}`|CID の下に標準化されたパス,または制限されたバイト範囲を1つ提供する.|
+
+これらの経路は決して `x-sorafs-stream-token` または `x-sorafs-token-id` を受け入れません.どちらのヘッダの存在も悪い要求です.ノードの権威のあるローカルストアに既に存在している法典的なマニフェストは, 公開読み込み能力;キャッシュミスによりリモートプロバイダの水分処理が許可されません.保護されたプロバイダー CAR と断片路線は分離した認証プロトコル表面であり続けます.
+
+バイトを読む前に, Torii はローカル・マニフェストのカノニック・エンコーディング,セマンティック・制限,ダイジェスト,ルーツ CID を検証します.その後,マニフェス, CID,およびプロバイダに対する権威のあるローカル プロバイダーアイデンティティ,ガバナンスの承認,および規制されたコンプライアンスが必要です.ゲートウェイ料金/禁止方針は,有効なクライアントアドレスを使用し,転送されたアドレスを構成された信頼性のある代理人によってのみ尊重します.ポリシー,コンプライアンス,アイデンティティ,または入学状態が欠けている場合, Torii は要求を拒否します.
+
+1 つの要求は,エンド-トゥ-エンドの公共ゲートウェイ許可を有し,プロセス全体の制限は 64 回の同時読み込みです.過剰な要求が返却される `503 Service Unavailable` そして `Retry-After: 1`. 明らかに回答は16に制限されています MiB, ファイルリストはデフォルトで50エントリーに,最大500回返し,完全なファイルまたは単行バイト範囲が8に制限されます MiB. 查询解析はビルドに依存する `app_api` Build は 32 ビット の 解読 未署名式 を 受け入れる `limit`, 他のクエリキーを無視し,最後のキーを繰り返す `limit` そして,その値を `1..=500`. 機能の最小限のビルドは `app_api` 1つの法典のみを受け入れる `limit=1..500` 未知,繰り返される,百分数で暗号化された,または非法典的な形式を拒絶します. `limit=<1..500>` 組み立てを介してポータブルな行動のためのペア. CIDs, ホスト,パス,および範囲ヘッダは両方のビルドでカノニカルであり,単価である. HTML, CSS, JavaScript, SVG, XML, PDF, または ワームコンテンツは,設定された CID 共有経路ゲートウェイの起源が信頼されていないコンテンツを実行することを防ぐために,分離された由来 (またはそこに転送される)
+
+### 包装 し,建設 し,提出 する {#pack-build-and-submit}
+
+次の変異例では,チェックインされた Taira `NetworkId`,ピンエンドポイント,複製フロア,およびガバナンスポリシーを使用しています.資金調達したテストネットアカウントと使い捨て所有者専用キーファイルを使用します. Taira は,理事会署名なしで許可のないピンを承認しますが,依然として管理料を請求します.
+
+```bash
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  car pack \
+  --input=./dist \
+  --car-out=artifacts/site.car \
+  --plan-out=artifacts/site.chunk-plan.json \
+  --summary-out=artifacts/site.car-summary.json
+
+: "${TAIRA_AUTHORITY:?set a funded Taira I105 account}"
+export TAIRA_NETWORK_ID='hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94'
+export TAIRA_PIN_TORII_URL=https://taira-validator-1.sora.org
+export TAIRA_PRIVATE_KEY_FILE="${TAIRA_PRIVATE_KEY_FILE:-./secrets/taira-authority.ed25519}"
+export TAIRA_RETENTION_EPOCH=$(( $(date -u +%s) + 86400 ))
+
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  manifest build \
+  --summary=artifacts/site.car-summary.json \
+  --manifest-out=artifacts/site.manifest.to \
+  --manifest-json-out=artifacts/site.manifest.json \
+  --pin-min-replicas=1 \
+  --pin-storage-class=warm \
+  --pin-retention-epoch="$TAIRA_RETENTION_EPOCH"
+
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  manifest submit \
+  --manifest=artifacts/site.manifest.to \
+  --chunk-plan=artifacts/site.chunk-plan.json \
+  --torii-url="$TAIRA_PIN_TORII_URL" \
+  --network-id="$TAIRA_NETWORK_ID" \
+  --authority="$TAIRA_AUTHORITY" \
+  --private-key-file="$TAIRA_PRIVATE_KEY_FILE" \
+  --summary-out=artifacts/site.manifest.submit.json \
+  --response-out=artifacts/site.manifest.submit.body
+```
+
+`manifest submit` は `/v1/sorafs/pin/register` を要求する.ターゲットノードがそれを経路しない場合,コマンドは失敗します.最初のリリース CLI は一般的な `/transaction` エンドポイントに戻らない.
 
 ### 確認し,持ち帰る {#verify-and-fetch}
 
-```bash
-cargo run -p sorafs_car --features cli --bin sorafs_cli -- \
-  proof verify \
-  --manifest artifacts/site.manifest.to \
-  --car artifacts/site.car \
-  --chunk-plan artifacts/site.chunk-plan.json \
-  --summary-out artifacts/site.verify.json
+保護されたフリッチタップルは,プロバイダー専用です.そのプロバイダーを取得 ID 広告されたベース URL から Taira ゲートウェイキーとストリームトークンをそのプロバイダのエントリーフローを通じて取得する.この値は検証器のストレージ設定ではない. Taira 検証器には埋め込みストレージが無効になっているので,認証器ピンを入れ替えるな. URL 提供者について URL.
 
-sorafs_cli fetch \
-  --plan artifacts/site.chunk-plan.json \
-  --manifest-id <manifest-digest-hex> \
-  --provider name=primary,provider-id=<provider-id-hex>,base-url=https://gateway.example.org/,stream-token="$(cat provider.token)" \
-  --output artifacts/site.fetch.tar \
-  --json-out artifacts/site.fetch.json
+```bash
+export TAIRA_ROOT=https://taira.sora.org
+curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
+
+: "${TAIRA_SORAFS_PROVIDER_ID:?set the admitted provider ID from Taira discovery}"
+: "${TAIRA_SORAFS_GATEWAY_KEY:?set the provider gateway key}"
+: "${TAIRA_SORAFS_PROVIDER_URL:?set the advertised provider base URL}"
+: "${TAIRA_SORAFS_STREAM_TOKEN_FILE:?set the issued stream-token file}"
+
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  proof verify \
+  --manifest=artifacts/site.manifest.to \
+  --car=artifacts/site.car \
+  --chunk-plan=artifacts/site.chunk-plan.json \
+  --summary-out=artifacts/site.verify.json
+
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  fetch \
+  --plan=artifacts/site.chunk-plan.json \
+  --manifest-id=<manifest-digest-hex> \
+  --provider=name=taira,provider-id="$TAIRA_SORAFS_PROVIDER_ID",gateway-key="$TAIRA_SORAFS_GATEWAY_KEY",base-url="$TAIRA_SORAFS_PROVIDER_URL",stream-token="$(cat "$TAIRA_SORAFS_STREAM_TOKEN_FILE")" \
+  --output=artifacts/site.fetch.tar \
+  --json-out=artifacts/site.fetch.json
 ```
 
 ### 復元性の証明のチェック {#proof-of-retrievability-checks}
 
-運行者は,貯蔵庫提供者について検査を行い,検証を誘発することができる.
+オペレーターは,復元性証明の結果を検査し,輸出し,報告することができます. ネットワークの証明パイプラインによって課題がスケジュールされます; CLI はその結果を表します.
 
 ```bash
-sorafs_cli por status \
-  --torii-url "$TORII_URL" \
-  --manifest <manifest-digest-hex> \
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  por status \
+  --torii-url="$TAIRA_PIN_TORII_URL" \
+  --manifest=<manifest-digest-hex> \
   --status=failed \
   --limit=20
 
-sorafs_cli por trigger \
-  --torii-url "$TORII_URL" \
-  --manifest <manifest-digest-hex> \
-  --provider <provider-id-hex> \
-  --reason=latency_probe \
-  --samples=48 \
-  --auth-token artifacts/challenge_token.to
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  por report \
+  --torii-url="$TAIRA_PIN_TORII_URL" \
+  --week=<YYYY-Www> \
+  --format=json
 ```
 
 ## SoraDNS {#soradns}
@@ -623,7 +719,7 @@ soradns_resolver rad verify \
 
 ゲートウェイは,解体証明書が欠けている,期限切れ,署名されていない解析者を拒否すべきです.ネットワークでまだ resolver ディレクトリが公開されていない場合, `/v1/soradns/directory/latest` 戻れる `404` 経路が有効であるにもかかわらず
 
-### DNS 公共の代表団 {#public-dns-delegation}
+### 公開 DNS 代表団 {#public-dns-delegation}
 
 SoraDNS ホストデリエーションは,通常のインターネット DNS デレグレーションを置き換えない.公共の DNS 名前が SoraDNS ゲートウェイを指す場合は:
 
@@ -636,7 +732,7 @@ SoraDNS ホストデリエーションは,通常のインターネット DNS デ
 FHE 関連で, Nexus サービスに利用可能な表面は,次のとおりである.
 
 - `iroha_crypto::fhe_bfv`は,スケラー暗号文字の評価のための決定的な BFV サポートを実装する.識別子解像度では, `BfvIdentifierPublicParameters` と `BfvIdentifierCiphertext` を使用し,スロット 0 は入力バイト長さを保存し,後にスロットがそれぞれ1 つの暗号化されたバイトを保存します.
-- Soracloud 状態と雇用計画モデル FHE 管理管理管理のパラメータセット,実行方針,暗号文字コミットメント,クエリエンベルや公開要求を含む暗号テキストワークロード.
+- Soracloud 状態と雇用スケームモデル FHE 管理管理管理のパラメータセット,実行ポリシー,暗号テキストコミットメント,クエリエンベル,および開示要求を含む暗号文字作業量.
 
 BFV 識別子経路は,プライバシーを守る登録に使用されます.クライアントは Torii 解析者に暗号化された識別子を提出できます.解析者は評価します アクティブ識別子ポリシーに基づき, `OpaqueAccountId` を取得し,領収書を発行します. `ClaimIdentifier`は,その領収書を目標口座に付属した UAID に結合します.
 
@@ -677,16 +773,17 @@ UAID は暗号文字ではなく, FHE ポリシー自体ではありません. �
 
 ## 運用チェックリスト {#operational-checklist}
 
-- 目標 Torii ノードに `/openapi` を搭載した有効サービスファミリーを確認する.
-- Soracloud デプロイメント・マニフェスト, SoraFS マニフェスト,SoraDNS リスルバーディレクトリ記録, SoraNet リレーディレクトリレコード,および DA ピン意図または可用性コミットメントを管理に敏感なアーテファクトとして扱います.
-- 同じ SORA Nexus プロフィールをネットワーク内の検証器間で一貫して使用する.
+- 生産されたサービスファミリーを確認する `/openapi` 標的について Torii ノード,および探査公共のローカル SoraFS CID そしてよく知られた経路を直接行きます
+- Soracloud デプロイメント・マニフェスト, SoraFS マニフェスト,SoraDNS リスルバーディレクトリ記録, SoraNet リレーディレクトリレコード,および DA ピン意図または可用性コミットメントをガバナンスに敏感なアーティファクトとして扱う.
+- 同じ SORA Nexus プロフィールをネットワーク内の認証器間で一貫して使用する.
 - Ad hoc node-local pathsに頼る代わりに,Inrou rootと共有リースボリュームをマニフェストに保持する.
 - SoraFS 証拠検証を活用して,コンテンツの偽名を発信する前に.
 - モニター SoraNet 握手失敗 DA クォーラムや可用性タイムアウト SoraFS ゲートウェイの拒否 SoraDNS RAD 新鮮さ,および Soracloud 部署健康について
-- 公共の Taira または Minamoto の使用については, [で開始します SORA Nexus データダースに接続する ](/ja/get-started/sora-nexus-dataspaces.md).
+- Taira プロフィールを使用して, [Connect to SORA Nexus datapaces](/ja/get-started/sora-nexus-dataspaces.md)から開始します.
 
 参照:
 
 - [Torii エンドポイント](/ja/reference/torii-endpoints.md)
 - [データのイベントフィルター](/ja/blockchain/filters.md#data-event-filters)
 - [問い合わせの参照](/ja/reference/queries.md#nexus-data-availability-and-packages)
+- [固定された commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/configs/soranexus/taira/config.toml) で Canonical Taira validator の構成

@@ -986,7 +986,7 @@ counters.
 
 ## Prover Lane
 
-`irohad` starts the FastPQ prover lane at startup if the prover backend can
+`iroha3d` starts the FastPQ prover lane at startup if the prover backend can
 be initialized. The lane is a background task with a bounded queue. After a
 block produces an execution witness, the commit path submits a prover job
 containing the block hash, height, view, and witness.
@@ -1000,13 +1000,15 @@ The lane constructs a prover with:
 
 ```text
 parameter = "fastpq-lane-balanced"
-execution_mode = auto | cpu | gpu
-poseidon_mode = auto | cpu | gpu
+execution_mode = cpu | gpu
+poseidon_mode = cpu | gpu
 ```
 
-`auto` lets the prover choose the available backend. `cpu` pins execution
-to the CPU. `gpu` prefers GPU execution, with CPU fallback where the
-backend cannot use the requested kernels.
+Both settings default to `cpu`. Selecting `gpu` is an explicit,
+fail-closed request: if GPU support is not compiled or a requested GPU
+backend fails preflight, the prover lane remains disabled. The first
+release has no `auto` value and does not fall back from a requested GPU
+mode to CPU.
 
 ## Verification
 
@@ -1179,7 +1181,7 @@ $$
 ## SCCP Transparent Message Proofs
 
 The SCCP helper crate also uses FastPQ for transparent cross-chain message
-proofs. This path is separate from the `irohad` background prover lane. It
+proofs. This path is separate from the `iroha3d` background prover lane. It
 builds a FastPQ batch directly from an SCCP message proof bundle and
 manifest, then wraps the resulting proof for open verification.
 
@@ -1317,8 +1319,8 @@ FastPQ configuration is nested under `zk.fastpq`.
 
 ```toml
 [zk.fastpq]
-execution_mode = "auto"
-poseidon_mode = "auto"
+execution_mode = "cpu"
+poseidon_mode = "cpu"
 
 # Optional telemetry labels.
 device_class = "apple-m4"
@@ -1335,14 +1337,14 @@ metal_debug_enum = false
 metal_debug_fused = false
 ```
 
-The same execution and telemetry labels can be overridden from `irohad`:
+The same execution and telemetry labels can be overridden from `iroha3d`:
 
 ```shell
-irohad --fastpq-execution-mode auto
-irohad --fastpq-poseidon-mode cpu
-irohad --fastpq-device-class apple-m4
-irohad --fastpq-chip-family m4
-irohad --fastpq-gpu-kind integrated
+iroha3d --fastpq-execution-mode gpu
+iroha3d --fastpq-poseidon-mode cpu
+iroha3d --fastpq-device-class apple-m4
+iroha3d --fastpq-chip-family m4
+iroha3d --fastpq-gpu-kind integrated
 ```
 
 Environment variables are also supported for the configuration fields. The
@@ -1380,11 +1382,11 @@ signals listed in [Performance and Metrics](/guide/advanced/metrics.md).
 
 ## Related Reference
 
-- [Data Model Schema](/reference/data-model-schema.md) for generated type
-  details
+- [Data Model Schema](/reference/data-model-schema.md) for the node-authoritative
+  type snapshot
 - `FastpqTransitionBatch`
 - `FastpqPublicInputs`
 - `TransferTranscript`
 - `AxtFastpqBinding`
 - `LaneFastpqProofMaterial`
-- [`irohad` FastPQ options](/reference/irohad-cli.md#arg-fastpq-execution-mode)
+- [`iroha3d` FastPQ options](/reference/iroha3d-cli.md#fastpq-overrides)

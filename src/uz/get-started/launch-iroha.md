@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 9341b2404624dec2230bc294c3d60dc124ac9574a0a5803b9bba744f4c5e7f50
+translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,7 +15,7 @@ Ushbu sahifa Iroha 3 uchun joriy mahalliy tarmoq oqimi bo'ylab o'tadi, chunki u 
 Joriy Kagami kodidan to'rt kishilik lokalnetni yaratish:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 Ishlab chiqarish direktoriyasida moslashtirilgan tengdosh konfiguratsiyalari `genesis.json`, `genesis.signed.nrt`, `client.toml` va yordamchi skriptlar mavjud.
@@ -33,10 +33,10 @@ cargo run --bin kagami -- docker \
   --peers 4 \
   --config-dir ./localnet \
   --image hyperledger/iroha:dev \
-  --out-file ./localnet/docker-compose.yml \
+  --out-file ./docker-compose.yml \
   --force
 
-docker compose -f ./localnet/docker-compose.yml up
+docker compose -f ./docker-compose.yml up
 ```
 
 Andoza hosil qilingan toʻplam quyidagilarni aniqlaydi:
@@ -72,7 +72,7 @@ Repozitoriyada SORA Nexus-ga yo'naltirilgan konfig profilini ham `defaults/nexus
 Nexus profilini o'z ichiga olgan mahalliy tenglamani ishlatish uchun:
 
 ```bash
-./target/release/irohad --sora --config ./defaults/nexus/config.toml
+./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
 ```
 
 Ushbu profilga CLI kirish uchun `defaults/nexus/client.toml` dan foydalaning.
@@ -88,7 +88,7 @@ Yerli ishlab chiqarilgan lokal tarmoq uchun:
 Ishlab chiqarilgan kompozit to'plam uchun:
 
 ```bash
-docker compose -f ./localnet/docker-compose.yml down
+docker compose -f ./docker-compose.yml down
 ```
 
 Tarmoq ishlayotganidan so'ng, [da davom eting Iroha 3 orqali CLI](/uz/get-started/operate-iroha-via-cli.md) orqali ishlating.

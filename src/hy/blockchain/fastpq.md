@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /blockchain/fastpq.md
-translation_source_hash: f1dc55e4b2146de009203e19adb5cc1e9ce5302bc0ee27fe0b442693c5112c22
+translation_source_hash: 55b57e6aeeef2aefa1c8359d9b9487029b106eaebed12a58268b61dc583e97f6
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -905,7 +905,7 @@ AIR կազմի բացումը պետք է ստուգվի `R_air_composition` ն�
 
 ## Պրոբեր Լեյն {#prover-lane}
 
-`irohad` սկսում է FastPQ պրովեր լեյնը մեկնարկելիս, եթե պրովերի հետագա վերջը կարող է նախաձեռնվել: Լեյնը ֆոնային խնդիր է սահմանված հերթով: Երբ բլոկը արտադրում է կատարման վկան, commit ուղին ներկայացնում է պրովոր աշխատանք, որը պարունակում է բլոկի շիշը, բարձրությունը, տեսքը եւ վկանը:
+`iroha3d` սկսում է FastPQ պրովեր լեյնը մեկնարկելիս, եթե պրովերի հետագա վերջը կարող է նախաձեռնվել: Լեյնը ֆոնային խնդիր է սահմանված հերթով: Երբ բլոկը արտադրում է կատարման վկան, commit ուղին ներկայացնում է պրովոր աշխատանք, որը պարունակում է բլոկի շիշը, բարձրությունը, տեսքը եւ վկանը:
 
 Եթե երթուղին չի աշխատում կամ հերթը լցված է, աշխատանքը բաց է թողնում եւ բլոկի սովորական մշակումը շարունակվում է: Սա նշանակում է, որ ֆոնային պրովեր երթուղինը գործարքի ընդունման կամ համաձայնության դարպաս չէ: Այն ապացուցող արտադրության ուղին է պետության վրա, որը արդեն կատարվել է:
 
@@ -1072,7 +1072,7 @@ $$
 
 ## SCCP Հաղորդագրության թափանցիկ ապացույցներ {#sccp-transparent-message-proofs}
 
-SCCP օգնական տուփը նաեւ օգտագործում է FastPQ թափանցիկ խաչմերուկային հաղորդագրությունների ապացուցման համար: Այս ուղին առանձին է `irohad` ֆոնային պրովեր լայնից: Այն կառուցում է FastPQ խմբաքանակ ուղղակիորեն SCCP հաղորդագրության ապացույցի փաթեթից եւ մանիֆեստից, այնուհետեւ փակում է ստացված ապացույցը բաց ստուգման համար:
+SCCP օգնական տուփը նաեւ օգտագործում է FastPQ թափանցիկ խաչմերուկային հաղորդագրությունների ապացուցման համար: Այս ուղին առանձին է `iroha3d` ֆոնային պրովեր լայնից: Այն կառուցում է FastPQ խմբաքանակ ուղղակիորեն SCCP հաղորդագրության ապացույցի փաթեթից եւ մանիֆեստից, այնուհետեւ փակում է ստացված ապացույցը բաց ստուգման համար:
 
 SCCP խմբաքանակում օգտագործվում է `fastpq-lane-balanced` եւ երեք մետադատային անցում:
 
@@ -1210,14 +1210,14 @@ metal_debug_enum = false
 metal_debug_fused = false
 ```
 
-Նույն կատարման եւ հեռաչափության տեքստերը կարող են վերածվել `irohad`:
+Նույն կատարման եւ հեռաչափության տեքստերը կարող են վերածվել `iroha3d`:
 
 ```shell
-irohad --fastpq-execution-mode auto
-irohad --fastpq-poseidon-mode cpu
-irohad --fastpq-device-class apple-m4
-irohad --fastpq-chip-family m4
-irohad --fastpq-gpu-kind integrated
+iroha3d --fastpq-execution-mode gpu
+iroha3d --fastpq-poseidon-mode cpu
+iroha3d --fastpq-device-class apple-m4
+iroha3d --fastpq-chip-family m4
+iroha3d --fastpq-gpu-kind integrated
 ```
 
 Շրջակա միջավայրի փոփոխականները աջակցվում են նաեւ կոնֆիգուրացիոն դաշտերի համար: FastPQ- ի հատուկ փոփոխականները ներառում են՝
@@ -1258,4 +1258,4 @@ irohad --fastpq-gpu-kind integrated
 - `TransferTranscript`
 - `AxtFastpqBinding`
 - `LaneFastpqProofMaterial`
-- [`irohad` FastPQ տարբերակներ](/hy/reference/irohad-cli.md#arg-fastpq-execution-mode)
+- [`iroha3d` FastPQ տարբերակներ](/hy/reference/iroha3d-cli.md#arg-fastpq-execution-mode)

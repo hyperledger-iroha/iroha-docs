@@ -1,14 +1,14 @@
 ---
 translation_locale: ur
 translation_source: /cookbook/index.md
-translation_source_hash: cdcfb3549506a65a7dbd1c37672893956a0252153a4075c82333804674aa07b6
+translation_source_hash: aceef9f4e42462614a5cdf41a89f55e26e0399503a48d4b50c08359e7bd7532e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Iroha 3 ایپلی کیشنز کا کتابچہ {#iroha-3-application-cookbook}
 
-Iroha 3 کے خلاف تعمیر کریں چھوٹے ، قابل تصدیق نسخوں کے ساتھ جو Taira ٹیسٹ نیٹ پر شروع ہوتے ہیں اور صرف پڑھنے کے لئے Minamoto مین نیٹ کو برقرار رکھتے ہیں۔ ہر نسخے میں بتایا گیا ہے کہ آیا یہ عوامی پڑھنا ہے ، ایک عام فنڈ اکاؤنٹ لکھنا ہے ، یا اجازت سے بند عمل۔ کمانڈ موجودہ I105 اکاؤنٹ IDs ، واضح فیس کا انتخاب، اور Iroha پر چیک ان کیا رویہ استعمال کرتے ہیں [`bc7114ed1c7f265a156d2100ff09e851cc95702c`](https://github.com/hyperledger-iroha/iroha/tree/bc7114ed1c7f265a156d2100ff09e851cc95702c).
+Iroha 3 کے خلاف تعمیر کریں چھوٹے ، قابل تصدیق نسخوں کے ساتھ جو Taira ٹیسٹ نیٹ پر شروع ہوتے ہیں اور صرف پڑھنے کے لئے Minamoto مین نیٹ کو برقرار رکھتے ہیں۔ ہر نسخے میں بتایا گیا ہے کہ آیا یہ عوامی پڑھنا ہے ، ایک عام فنڈ اکاؤنٹ لکھنا ہے ، یا اجازت سے بند عمل۔ کمانڈ موجودہ I105 اکاؤنٹ IDs ، واضح فیس کا انتخاب، اور Iroha پر چیک ان کیا رویہ استعمال کرتے ہیں [`0010c5a70039eac101a4846499ba9ceaf43eb65c`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c).
 
 [کے ساتھ شروع کریں Taira](./connect-to-taira.md) سے رابطہ کریں۔ یہ کمانڈ لائن کی ترکیبیں کے ذریعہ کلائنٹ ترتیب اور فیس میٹا ڈیٹا دوبارہ استعمال کرتا ہے۔ اس دستاویز سے کبھی بھی فیس اثاثہ ID کاپی نہ کریں: اسے موجودہ Taira نل کے جواب سے اخذ کریں۔
 

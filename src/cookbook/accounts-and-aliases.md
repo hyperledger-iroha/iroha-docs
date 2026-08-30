@@ -187,8 +187,8 @@ Retain the canonical account ID used for the operation.
 
 ## Source and related docs
 
-- [Canonical account address implementation at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/account/address.rs)
-- [Account and alias Torii tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii/tests/accounts_endpoints.rs)
+- [Canonical account address implementation at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs)
+- [Account and alias Torii tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs)
 - [Accounts](/blockchain/accounts.md)
 - [Data-model aliases](/blockchain/data-model.md#aliases)
 - [Naming conventions](/reference/naming.md)

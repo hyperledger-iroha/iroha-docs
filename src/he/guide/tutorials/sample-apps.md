@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: af3e0b8698f877c035ccd3bb71926cea14d1029fc2eb73e23756d57357935f0e
+translation_source_hash: 71258f4da9afcd94afce2fc2a53ce43540d8f67054ea789f0b2d105daba26006
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,7 +12,7 @@ translation_engine: nllb-200-ct2
 
 ## JavaScript מתכונים {#javascript-recipes}
 
-[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/main/javascript/iroha_js/recipes) מכיל דוגמאות ממוקדות לגיבוי עסקאות דטרמיניסטיות, Nexus העברת אפליקציות, NFT ושינוי חשבונות, ISO זרימות גשר, ו Torii כל מתכון מסמך בין אם הוא פועל מקוון או זקוק ל- Torii נקודת סוף.
+[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes) מכיל דוגמאות ממוקדות לגיבוי עסקאות דטרמיניסטיות, Nexus העברת אפליקציות, NFT ושינוי חשבונות, ISO זרימות גשר, ו Torii כל מתכון מסמך בין אם הוא פועל מקוון או זקוק ל- Torii נקודת סוף.
 
 ## Swift ו-iOS {#swift-and-ios}
 

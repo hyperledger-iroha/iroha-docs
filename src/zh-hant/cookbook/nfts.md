@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /cookbook/nfts.md
-translation_source_hash: f34043c1940b556439c23de7decc5e79f198f52eca8517dd8a9a5892d997e211
+translation_source_hash: 5eb6a349b815afbac9717f7b44c499adc78b1280625388656015ff4b133b9085
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -162,9 +162,9 @@ jq -e --arg owner "$NEW_OWNER" \
 
 ## 來源及相關文件 {#source-and-related-docs}
 
-- [NFT 集成測試在固定的承諾](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/nft.rs)
-- [Kotodama NFT 在固定提交時進行主機調用測試](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
-- [確切的 Kotodama NFT 生命週期固定在定提交](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/ivm/docs/examples/12_nft_flow.ko)
+- [NFT 集成測試在固定的承諾](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/nft.rs)
+- [Kotodama NFT 在固定提交時進行主機調用測試](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
+- [確切的 Kotodama NFT 生命週期固定在定提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/docs/examples/12_nft_flow.ko)
 - [NFTs](/zh-hant/blockchain/nfts.md)
 - [超值數據](/zh-hant/blockchain/metadata.md)
 - [指示](/zh-hant/blockchain/instructions.md)

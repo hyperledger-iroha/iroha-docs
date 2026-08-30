@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: ccbb076ef3e2ba45d074ad3394ac354d0c2233cdd4286c5fa7a77f0d1c413988
+translation_source_hash: f3d08a8e7fe7569ef783b93bccdc900ca74b85179a749b48b96c32028c749233
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review
 ---
@@ -12,39 +12,32 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 
 ## ძირითადი გამოყენება {#basic-usage}
 
-Iroha-ს საწყისი კოდის checkout-იდან:
-
-```bash
-cargo run --bin kagami -- keys --algorithm ed25519
-```
-
-JSON გამომუშავება, როგორც წესი, ყველაზე ადვილია TOML ან ავტომატიზაციაში ჩაწეროს:
-
-```bash
-cargo run --bin kagami -- keys --algorithm ed25519 --json
-```
-
-ბრძანება საჯარო გასაღებსა და დაუფარავ პირად გასაღებს ბეჭდავს. პირად გასაღებს საიდუმლო მასალასავით მოექეცით; გენერირებული საწარმოო გასაღებები ვერსიების მართვის სისტემაში არ შეიტანოთ.
-
-უსაფრთხო ადგილობრივი ექსპორტისთვის ან მეურვისთვის გადასაცემად, მხარდაჭერილ Unix პლატფორმაზე პირადი გასაღების დაბეჭდვის ნაცვლად გასაღებების ახალი წყვილი მხოლოდ მფლობელისთვის ხელმისაწვდომ ცარიელ დირექტორიაში ჩაწერეთ:
+From the Iroha source checkout:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-მშობელი დირექტორია წინასწარ უნდა არსებობდეს. სამიზნე დირექტორია უნდა იყოს ახალი ან უკვე ეკუთვნოდეს მიმდინარე მომხმარებელს, ჰქონდეს რეჟიმი `0700`, არ შეიცავდეს სიმბოლურ ბმულებს და იყოს ცარიელი. `kagami` `public.key`-სა და `private.key`-ს რეჟიმით `0600` წერს და პირად გასაღებს არ ბეჭდავს. `--pop`-ის გამოყენებისას ის ასევე წერს `pop.hex`-ს.
+The parent directory must already exist. The target must be new or already
+owned by the current user, mode `0700`, free of symbolic links, and empty.
+`kagami` writes `public.key` and `private.key` with mode `0600` and does not
+print key material. With `--pop`, it also writes `pop.hex`.
 
-`--out-dir` შეცდომით სრულდება იმ პლატფორმებზე, სადაც Kagami მხოლოდ მფლობელისთვის განკუთვნილი ფაილური სისტემის წესების აღსრულებას ვერ ახერხებს. პირადი გასაღების ფაილი დაუშიფრავი ექსპორტია და არა აპარატული ან არაექსპორტირებადი საწარმოო ხელმომწერი. შეიტანეთ ის დამტკიცებული მეურვეობის საზღვარში და შემდეგ, დანერგვის პროცედურის შესაბამისად, ექსპორტი წაშალეთ.
+`--out-dir` fails closed on platforms where Kagami cannot enforce these
+owner-only filesystem rules. The private-key file is an unencrypted export,
+not a hardware or non-exportable production signer. Import it into the
+approved custody boundary and remove the export according to the deployment's
+procedure.
 
 ## ალგორითმები {#algorithms}
 
-საერთო ალგორითმები არიან:
+Common algorithms are:
 
-- `ed25519` კლიენტის ანგარიშებისა და ნაკადური იდენტობებისთვის.
-- `secp256k1`, როდესაც კლიენტის ანგარიშს სჭირდება secp256k1 იდენტობა.
-- `bls_normal` ყოველი კვანძის ან peer-ის კონსენსუსის იდენტობისთვის, როცა build-ში BLS-ის მხარდაჭერა ჩართულია.
+- `ed25519` for client accounts and streaming identities.
+- `secp256k1` when a client account requires a secp256k1 identity.
+- `bls_normal` for every node or peer consensus identity.
 
-შეამოწმეთ ზუსტი ალგორითმები, რომლებიც მხარდაჭერილნი არიან თქვენი მშენებლობით:
+Check the exact algorithms supported by your build with:
 
 ```bash
 cargo run --bin kagami -- keys --help
@@ -52,35 +45,49 @@ cargo run --bin kagami -- keys --help
 
 ## დეტერმინისტური განვითარების გასაღები {#deterministic-development-keys}
 
-განმეორებადი fixture-ებისთვის მიუთითეთ 32-ბაიტიანი seed, რომელიც 64 თექვსმეტობით სიმბოლოდაა კოდირებული. დასაშვებია არასავალდებულო `0x` პრეფიქსი:
+For reproducible fixtures, pass a 32-byte seed encoded as 64 hexadecimal
+characters. An optional `0x` prefix is accepted:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 \
   --seed-hex 1111111111111111111111111111111111111111111111111111111111111111 \
-  --json
+  --out-dir ./fixture-client-key
 ```
 
-Seed პირადი გასაღების მასალაა. დეტერმინისტული seed-ები მხოლოდ ადგილობრივი განვითარებისა და ტესტებისთვის გამოიყენეთ. საწარმოო გასაღების ოპერაციული სისტემის შემთხვევითობის წყაროდან შესაქმნელად `--seed-hex` გამოტოვეთ.
+The seed is private-key material. Use deterministic seeds only for local
+development and tests. Omit `--seed-hex` to generate a production key from
+operating-system randomness.
 
 ## BLS კონსენსუსის გასაღები და ფლობის მტკიცებულებები {#bls-consensus-keys-and-proofs-of-possession}
 
-Iroha 3-ის კვანძებისა და peer-ების კონსენსუსის იდენტობები BLS-normal გასაღებებს იყენებს. BLS-normal გასაღები და ფლობის მტკიცებულება (PoP) ასე შექმენით:
+Iroha 3 node and peer consensus identities use BLS-normal keys. Generate a
+BLS-normal key and proof-of-possession (PoP) with:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./validator-key
 ```
 
-`--pop` მხოლოდ `bls_normal`-თან არის დასაშვები. JSON გამომავალი შეიცავს `pop_hex`-ს. ხელმოწერილი genesis ყველა ხმის მიმცემ ვალიდატორს შესაბამის PoP-ს სთხოვს. Peer-ის კონფიგურაციაში არაცარიელი `trusted_peers_pop` რუკა ვალიდატორთა ქვეჯგუფს არჩევს; ამ არაცარიელ რუკაში არშეტანილი სანდო peer-ები დამკვირვებლები არიან. თუ რუკა ცარიელია, ყველა BLS-normal სანდო peer bootstrap-ის კანდიდატთა ნაკრებში შედის, ხოლო ხმის მიმცემთა PoPs კვლავ ხელმოწერილი genesis-იდან მიეწოდება.
+`--pop` is valid only with `bls_normal`; it adds `pop.hex` to the custody
+directory.
+Signed genesis requires a matching PoP for every voting validator. In peer
+configuration, a non-empty `trusted_peers_pop` map selects the validator
+subset; trusted peers omitted from that non-empty map are observers. If the map
+is empty, all BLS-normal trusted peers enter the bootstrap candidate set, with
+voter PoPs still supplied by signed genesis.
 
-## გამოშვების ფორმატები {#output-formats}
+## Custody Output {#custody-output}
 
-ტერმინალის ინსპექტირებისთვის გამოიყენეთ გათვალისწინებული გამოსავალი `--json` ავტომატიზაციისთვის და `--compact` მაშინ, როდესაც სხვა სცენარს სჭირდება უბრალო ხაზზე ორიენტირებული მნიშვნელობები:
+`kagami keys` requires `--out-dir` and never writes private key material to
+standard output. Read `public.key`, `private.key`, and optional `pop.hex` from
+the generated directory. Each file contains one canonical value followed by a
+newline, which makes explicit file-based automation straightforward:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm ed25519 --compact
+PUBLIC_KEY=$(tr -d '\n' < ./client-key/public.key)
 ```
 
-სრულად წარმოქმნილი Kagami დახმარებისათვის:
+For full generated Kagami help:
 
 ```bash
 cargo run -p iroha_kagami -- advanced markdown-help > crates/iroha_kagami/CommandLineHelp.md

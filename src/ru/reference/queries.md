@@ -1,7 +1,7 @@
 ---
 translation_locale: ru
 translation_source: /reference/queries.md
-translation_source_hash: 22e8a75acd72d066e3516ba46a0afe075d2d02790154458aec00a5d8bb861838
+translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -99,10 +99,17 @@ Iroha запросы читают состояние бухгалтерског�
 |`FindLaneRelayEnvelopeByRef` |Найдите проверенный конверт. |
 |`FindSorafsProviderOwner` |Решение о владельце поставщика SoraFS. |
 |`FindDataspaceNameOwnerById` |Разрешить владельца имен пространства данных. |
-|`FindMusubiReleaseByRef` |Найти Musubi по ссылке. |
-|`FindMusubiPackageVersions` |Перечислить версии для пакета Musubi. |
-|`FindMusubiPackageReleases` |Список выпусков для пакета Musubi. |
-|`FindMusubiShortAliasByName` |Разрешить короткое псевдоним Musubi. |
+|`FindMusubiExactPackageV1` |Прочитайте один точный пакет и его текущие пересмотры. |
+|`FindMusubiExactReleaseV1` |Прочитайте один точный снимок. |
+|`FindMusubiProviderBundleAttestationV1` |Прочитайте свидетельство об архиве одного поставщика. |
+|`FindMusubiResolverIndexV1` |Сделайте страницу с окончательным индексом решений. |
+|`FindMusubiVersionsV1` |Оконченные версии страницы для одного пакета. |
+|`FindMusubiMaintainersV1` |Страница приняла обслуживающих работников и приглашения. |
+|`FindMusubiArchiveLocationsV1` |Страница завершила SoraFS местоположения для одного архива. |
+|`FindMusubiArchiveRetentionV1` |Страница архивных записей. |
+|`FindMusubiAliasV1` |Прочитайте текущую цель и пересмотр глобального псевдонима. |
+|`FindMusubiAliasHistoryV1` |Укажите неизменную историю ретаргета глобального псевдонима. |
+|`FindMusubiOrderedPrefixV1` |Пакеты страниц под одним упорядоченным структурным префиксом. |
 
 ## Триггеры, контракты, транзакции и блоки {#triggers-contracts-transactions-and-blocks}
 

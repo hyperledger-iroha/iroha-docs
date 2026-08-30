@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 9341b2404624dec2230bc294c3d60dc124ac9574a0a5803b9bba744f4c5e7f50
+translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2
 လက်ရှိ Kagami ကုဒ်မှ ၄- peer localnet ကိုထုတ်လုပ်ပါ
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 Output directory ထဲမှာ `genesis.json`, `genesis.signed.nrt`, `client.toml` နဲ့ helper script တွေ ပါပါတယ်။
@@ -33,10 +33,10 @@ cargo run --bin kagami -- docker \
   --peers 4 \
   --config-dir ./localnet \
   --image hyperledger/iroha:dev \
-  --out-file ./localnet/docker-compose.yml \
+  --out-file ./docker-compose.yml \
   --force
 
-docker compose -f ./localnet/docker-compose.yml up
+docker compose -f ./docker-compose.yml up
 ```
 
 အလိုအလျောက်ဖန်တီးထားတဲ့ stack က:
@@ -72,7 +72,7 @@ SORA Nexus ကို ဦးတည်တဲ့ config profile တစ်ခုက�
 Nexus profile နဲ့ native peer ကို run လုပ်ဖို့-
 
 ```bash
-./target/release/irohad --sora --config ./defaults/nexus/config.toml
+./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
 ```
 
 CLI သို့ ဝင်ရောက်ရန်အတွက် `defaults/nexus/client.toml` ကို အသုံးပြုပါ။
@@ -88,7 +88,7 @@ CLI သို့ ဝင်ရောက်ရန်အတွက် `defaults/nexu
 ထုတ်လုပ်သော Compose stack အတွက်:
 
 ```bash
-docker compose -f ./localnet/docker-compose.yml down
+docker compose -f ./docker-compose.yml down
 ```
 
 ကွန်ရက်အလုပ်လုပ်ပြီးနောက် [ကို ဆက်လုပ်ပါ Iroha 3 ကို CLI](/my/get-started/operate-iroha-via-cli.md) မှတစ်ဆင့် လုပ်ဆောင်ပါ။

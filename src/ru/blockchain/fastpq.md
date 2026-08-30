@@ -1,7 +1,7 @@
 ---
 translation_locale: ru
 translation_source: /blockchain/fastpq.md
-translation_source_hash: f1dc55e4b2146de009203e19adb5cc1e9ce5302bc0ee27fe0b442693c5112c22
+translation_source_hash: 55b57e6aeeef2aefa1c8359d9b9487029b106eaebed12a58268b61dc583e97f6
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -905,7 +905,7 @@ $$
 
 ## Проверка Лейна {#prover-lane}
 
-`irohad` запускает проверку FastPQ при запуске, если проверка может быть инициирована. Проверка представляет собой задачу в фоне с ограниченной очередью. После того, как блок производит свидетель выполнения, путь commit отправляет работу проверки, содержащую хэш блока, высоту, вид и свидетель.
+`iroha3d` запускает проверку FastPQ при запуске, если проверка может быть инициирована. Проверка представляет собой задачу в фоне с ограниченной очередью. После того, как блок производит свидетель выполнения, путь commit отправляет работу проверки, содержащую хэш блока, высоту, вид и свидетель.
 
 Если полоса не работает или очередь заполнена, работа пропущена и обычная обработка блоков продолжается. Это означает, что фоновый проверный полос - это не прием транзакций или шлюз консенсуса. Это путь проверки производства над состоянием, который уже выполнен.
 
@@ -1072,7 +1072,7 @@ $$
 
 ## SCCP Прозрачное подтверждение сообщения {#sccp-transparent-message-proofs}
 
-В помощном ящике SCCP также используется FastPQ для прозрачных доказательств передачи сообщений с перекрестной цепочкой. Этот путь отделен от фоновой полосы проверки `irohad`. Он создает партию FastPQ непосредственно из пакета доказательств сообщений SCCP и манифеста, а затем заворачивает полученное доказательство для открытой проверки.
+В помощном ящике SCCP также используется FastPQ для прозрачных доказательств передачи сообщений с перекрестной цепочкой. Этот путь отделен от фоновой полосы проверки `iroha3d`. Он создает партию FastPQ непосредственно из пакета доказательств сообщений SCCP и манифеста, а затем заворачивает полученное доказательство для открытой проверки.
 
 В партии SCCP используются `fastpq-lane-balanced` и три перехода метаданных:
 
@@ -1210,14 +1210,14 @@ metal_debug_enum = false
 metal_debug_fused = false
 ```
 
-Те же маркировки выполнения и телеметрии могут быть отменены на `irohad`:
+Те же маркировки выполнения и телеметрии могут быть отменены на `iroha3d`:
 
 ```shell
-irohad --fastpq-execution-mode auto
-irohad --fastpq-poseidon-mode cpu
-irohad --fastpq-device-class apple-m4
-irohad --fastpq-chip-family m4
-irohad --fastpq-gpu-kind integrated
+iroha3d --fastpq-execution-mode gpu
+iroha3d --fastpq-poseidon-mode cpu
+iroha3d --fastpq-device-class apple-m4
+iroha3d --fastpq-chip-family m4
+iroha3d --fastpq-gpu-kind integrated
 ```
 
 Окружающие переменные также поддерживаются для полей конфигурации. FastPQ-специфические переменные включают:
@@ -1258,4 +1258,4 @@ irohad --fastpq-gpu-kind integrated
 - `TransferTranscript`
 - `AxtFastpqBinding`
 - `LaneFastpqProofMaterial`
-- [`irohad` FastPQ опционы](/ru/reference/irohad-cli.md#arg-fastpq-execution-mode)
+- [`iroha3d` FastPQ опционы](/ru/reference/iroha3d-cli.md#arg-fastpq-execution-mode)

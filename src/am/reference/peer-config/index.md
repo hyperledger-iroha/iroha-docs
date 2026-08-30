@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /reference/peer-config/index.md
-translation_source_hash: 5cc6ddf62a45f655d61a0ff3ebc7e20b939fe78c9d542087b717c2e17e19250d
+translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f29469aaf4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 የአካባቢያዊ የእኩዮች ውቅር በ TOML ፋይሎች ውስጥ ተዘጋጅቷል ። ይህ በ [ `SetParameter`](/am/blockchain/instructions.md#setparameter) መመሪያዎች ከተቀየረው በሰንሰለት ላይ ካለው ውቅር የተለየ ነው። የምርት ባህሪው በቅንጅት ፋይል ወይም በ ሰንሰለት ላይ ባለው መለኪያ መወከል አለበት ፣ የአከባቢ ተለዋዋጮች የባህር በር አይደሉም ።
 
-አጠቃቀም [`--config`](../irohad-cli#arg-config) CLI ወደ ውቅር ፋይል የሚወስደውን መንገድ ለመግለጽ አመክንዮ።
+አጠቃቀም [`--config`](../iroha3d-cli#arg-config) CLI ወደ ውቅር ፋይል የሚወስደውን መንገድ ለመግለጽ አመክንዮ።
 
 ## አብነት {#template}
 
@@ -65,4 +65,4 @@ max_content_len = 2048
 
 ## ችግሮችን መፍታት {#troubleshooting}
 
-ኮንፊግሬሽኑ እንዴት እንደሚነበብ እና እንደሚመረመር አንድ ፍለጋ ለማየት [`--trace-config`](../irohad-cli#arg-trace-config) CLI ባንዲራውን ያለፍ ።
+ኮንፊግሬሽኑ እንዴት እንደሚነበብ እና እንደሚመረመር አንድ ፍለጋ ለማየት [`--trace-config`](../iroha3d-cli#arg-trace-config) CLI ባንዲራውን ያለፍ ።

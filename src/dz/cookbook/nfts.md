@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /cookbook/nfts.md
-translation_source_hash: f34043c1940b556439c23de7decc5e79f198f52eca8517dd8a9a5892d997e211
+translation_source_hash: 5eb6a349b815afbac9717f7b44c499adc78b1280625388656015ff4b133b9085
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -162,9 +162,9 @@ CLI གིས་ཐོ་ཡིག་འདི་ཐོན་སྐྱེད་�
 
 ## གཞི་རྟེན་དང་འབྲེལ་བའི་ཡིག་ཆ་ཚུ་ {#source-and-related-docs}
 
-- [NFT འབྲེལ་མཐུད་བརྟག་དཔྱད་ཚུ་ ཕིན་ཌ་ commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/nft.rs) ལུ་འབདཝ་ཨིན།
-- [Kotodama NFT host-call བརྟག་དཔྱད་ཚུ་ ཕིན་ཌ་ commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
-- [ཕྲང་བདེན་ Kotodama NFT སྲོལ་རྒྱུན་འཁོར་གྱི་ མཐུད་སྦྲེལ་ཐོ་བཀོད་ནང་](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/ivm/docs/examples/12_nft_flow.ko)
+- [NFT འབྲེལ་མཐུད་བརྟག་དཔྱད་ཚུ་ ཕིན་ཌ་ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/nft.rs) ལུ་འབདཝ་ཨིན།
+- [Kotodama NFT host-call བརྟག་དཔྱད་ཚུ་ ཕིན་ཌ་ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
+- [ཕྲང་བདེན་ Kotodama NFT སྲོལ་རྒྱུན་འཁོར་གྱི་ མཐུད་སྦྲེལ་ཐོ་བཀོད་ནང་](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/docs/examples/12_nft_flow.ko)
 - [NFTs](/dz/blockchain/nfts.md)
 - [metadata](/dz/blockchain/metadata.md)
 - [བརྡ་བཀོད་ཚུ་](/dz/blockchain/instructions.md)

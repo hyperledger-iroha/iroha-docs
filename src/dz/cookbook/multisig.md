@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /cookbook/multisig.md
-translation_source_hash: 7090228c4fea7321c93fe0d2c67ef6de842de95bc3befa11d83c12b9f15b4752
+translation_source_hash: 9654923faf6c84dfd21a428ebe3c53dbd074b8e3274c12c8aa41bf31884686f7
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -202,8 +202,8 @@ metadata གནས་གོང་འདི་ `"approved"`འབད་ནི་�
 
 ## གཞི་རྟེན་དང་འབྲེལ་བའི་ཡིག་ཆ་ཚུ་ {#source-and-related-docs}
 
-- [མཉམ་འབྲེལ་འཕྲུལ་ཆས་མང་རབས་ཅིག་ ཕྲ་སྒྲིག་ commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/multisig.rs) ལུ་ བརྟག་དཔྱད་འབདཝ་ཨིན།
-- [ཨང་གྲངས་མང་རབས་ཀྱི་ བརྡ་དོན་རྣམ་གཞག་ཚུ་ ཕིན་ཌ་ commit ལུ་](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_executor_data_model/src/isi.rs)
-- [CLI མང་སྡེ་བརྡ་ལག་བསྟར་སྤྱོད་འབད་ཐབས།](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/main_shared.rs)
+- [མཉམ་འབྲེལ་འཕྲུལ་ཆས་མང་རབས་ཅིག་ ཕྲ་སྒྲིག་ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/multisig.rs) ལུ་ བརྟག་དཔྱད་འབདཝ་ཨིན།
+- [ཨང་གྲངས་མང་རབས་ཀྱི་ བརྡ་དོན་རྣམ་གཞག་ཚུ་ ཕིན་ཌ་ commit ལུ་](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/isi.rs)
+- [CLI མང་སྡེ་བརྡ་ལག་བསྟར་སྤྱོད་འབད་ཐབས།](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
 - [ལས་སྣ་ཚུ་](/dz/blockchain/transactions.md)
 - [འཁྲུན་ཆོད་དང་ འགན་ཁུར་ཚུ་](./permissions-and-roles.md)

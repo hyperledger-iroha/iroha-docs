@@ -1,9 +1,9 @@
 ---
 translation_locale: ka
 translation_source: /blockchain/instructions.md
-translation_source_hash: adc3eff9758dd73e9114e78eaa18ddf6271db3bc4042611e1ed6ed1aac226246
+translation_source_hash: ade5ba2b693de7e798490be0947099d0306d9565b88550e201dccd181810fb18
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Iroha სპეციალური ინსტრუქციები {#iroha-special-instructions}
@@ -21,6 +21,7 @@ Iroha სპეციალური ინსტრუქციის სრუ
 | [დაფინანსება/გამოწვევა](#grant-revoke) |მისცეს ან ამოიღოს ნებართვები და როლები. |
 | [გადაცემა](#transfer) |გადარიცხვა საკუთრების ან აქტივების ღირებულების. |
 | [ნაციონალური საფინანსო და აქტივების ჩაკეტვა](#native-escrow-and-asset-locks) |ნომერული აქტივების ჩაკეტვა პროტოკოლით. |
+| [ატომური კერძო ანგარიშსწორება](#atomic-private-settlement) | მართავს კონფიდენციალურ პულებსა და ატომურ პაკეტებს. |
 | [ExecuteTrigger](#executetrigger) |ვ თჱდლვზექ ჟრანთრვ.|
 | [რეგისტრაცია/ჩვეულებრივი წესები/განახლება](#other-instructions)|ჟანრი, გაგრძელება ან განახლება runtime ქცევა. |
 
@@ -42,6 +43,7 @@ Iroha სპეციალური ინსტრუქციის სრუ
 | [დაფინანსება/გამოწვევა](#grant-revoke) | [როლები, ნებართვის ნიშნები ](/ka/blockchain/permissions.md) |ანგარიშები ან როლები |
 | [გადაცემა](#transfer) |დომენები, აქტივების განმარტებები, ციფრული აქტივები, NFTs |ანგარიშები |
 | [ნაციონალური საფინანსო და აქტივების ჩაკეტვა](#native-escrow-and-asset-locks) |ნომერული აქტივების დაფარვა, აქტივების ჩაკეტვა, ანონიმური დაფარვის ვალდებულებები |მყიდველები, მიმართულებები ან სადავო განხეთქილება |
+| [ატომური კერძო ანგარიშსწორება](#atomic-private-settlement) | მარშრუტზე მიბმული კონფიდენციალური პულები, პოლიტიკის როტაციები, დასრულებული პაკეტები და გაუქმების ნიშნები | |
 | [ExecuteTrigger](#executetrigger) |ტრიგერები |                      |
 | [რეგისტრაცია/ჩვეულებრივი წესები/განახლება](#other-instructions)|ჩანაწერები, აღსრულების სპეციფიკური სასარგებლო ტვირთები, აღმასრულებელი განახლება |                      |
 
@@ -234,7 +236,10 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 რეგისტრირება და არარეგისტრირების პარტნიორები. გენერაცია BLS გასაღები და PoP ერთად `kagami`, თუ თქვენ ჯერ კიდევ არ გაქვთ ისინი:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./peer-key
+PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
+PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
@@ -325,6 +330,14 @@ Native escrow instructions lock numeric assets in ledger-managed protocol custod
 საბაზრო საფარდების გამოყენება `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, და `ResolveEscrowDispute`. ზოგადი აქტივების ჩაკეტვის გამოყენება `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, და `ExpireAssetLock`. Anonymous escrow ასახავს ბაზრის სიცოცხლის ციკლს `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, და `ResolveAnonymousEscrowDispute`.
 
 ესენი ISIs ამჟამად არ აქვს პირველი კლასის CLI ბრძანებები. გამოიყენეთ typed SDK მშენებლები ან სერიალიზებული ინსტრუქციის სასარგებლო ტვირთები, და იხილეთ [ნაციონალური აქტივების დაფარვა](/ka/blockchain/escrow.md) სიცოცხლის ციკლის დეტალების, ნებართვების, გამოკითხვების, მოვლენებისათვის და Rust მაგალითები.
+
+## ატომური კერძო ანგარიშსწორება {#atomic-private-settlement}
+
+მმართველობით კონტროლირებული ატომური კერძო ანგარიშსწორების ინსტრუქციები გამჭვირვალე Native AMX-ისგან განცალკევებულია. `ActivatePrivateSettlementPoolV1` გასუფთავებული მმართველობის პროექციისა და კანონიკური საწყისი ვალდებულებების საფუძველზე ზუსტი მარშრუტისთვის ერთ კონფიდენციალურ `pool`-ს ქმნის. `FinalizeAtomicPrivateSettlementV1` ყველა მონაწილე კომიტეტის მიერ დამოწმებულ სრულ პაკეტს ატომურად იყენებს. `AbortAtomicPrivateSettlementV1` მხოლოდ სპონსორის მიერ ნებადართულ საჯარო საბოლოო ნიშანს აქვეყნებს.
+
+`RotatePrivateSettlementPoolPolicyV1`-ის შესრულება მხოლოდ კონფიდენციალურობის მმართველობას შეუძლია. ინსტრუქცია მოქმედი მმართველობის ზუსტ დაიჯესტს მოითხოვს; ინარჩუნებს მარშრუტს, `pool`-ს, აქტივის მიბმის ვალდებულებას, მდგომარეობის საზღვარს, გამეორების საწინააღმდეგო ნაკრებებსა და დასრულებულ ქვითრებს, საჯარო რევიზიას ერთით ზრდის და აუდიტორის გასაღების უფრო ახალ ეპოქას იყენებს. როტაცია ჩართვის სიმაღლეზე აქტიურდება და იმავე სიმაღლეზე იმავე მარშრუტისა და `pool`-ის ქვითარი ვერ დასრულდება. საჯარო რევიზიების გენეალოგია როტაციამდე დასრულებულ ქვითრებს გადატვირთვის შემდეგაც ვალიდურს და მათ ზუსტ გამეორებას იდემპოტენტურს ტოვებს. ძველი პოლიტიკის მიმდინარე პაკეტები მდგომარეობის შეცვლამდე fail-closed წესით მარცხდება. ოპერატორებმა ძველი გაშიფვრის გასაღებები უნდა შეინახონ ან გასაღებების განადგურებამდე კაფსულების ხელახალი შეფუთვა მმართველობით ჩაატარონ და შეამოწმონ.
+
+ეს გზა ნაგულისხმევად გამორთულია და საწარმოო გამოყენებისთვის კვალიფიცირებული არ არის. კონფიგურაციის, უფლებამოსილების, აუდიტის, აღდგენისა და გამოშვების მოთხოვნებისთვის იხილეთ [ატომური კერძო ანგარიშსწორება მონაცემთა სივრცეებს შორის](/get-started/atomic-private-settlement).
 
 ## დაფინანსება/შეღავათი {#grant-revoke}
 

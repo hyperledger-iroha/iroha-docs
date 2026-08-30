@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /cookbook/fungible-assets.md
-translation_source_hash: 6b50c995afaf9f46df6fdaab31add40b106cfa12fdaa31dabbb74448486f87f9
+translation_source_hash: 669b5a1c12e9ab6ffb64e149148993e7b924feb29c6fa4db883a2065f58ecd7e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -169,8 +169,8 @@ iroha --config "$LOCAL_CONFIG" ledger asset definition get \
 
 ## གཞི་རྟེན་དང་འབྲེལ་བའི་ཡིག་ཆ་ཚུ་ {#source-and-related-docs}
 
-- [རྒྱུ་དངོས་ཚུ་གི་ཚེ་རིང་འབྲེལ་མཐུད་བརྟག་དཔྱད་ཚུ་ ཐོ་བཀོད་འབད་ཡོད་པའི་ commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/asset.rs)
-- [Rust རྒྱུ་དངོས་བཟོ་སྐྲུན་གྱི་དཔེ་བསྡུར་འབད་ཡོད་པའི་ commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha/examples/tutorial.rs)
+- [རྒྱུ་དངོས་ཚུ་གི་ཚེ་རིང་འབྲེལ་མཐུད་བརྟག་དཔྱད་ཚུ་ ཐོ་བཀོད་འབད་ཡོད་པའི་ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/asset.rs)
+- [Rust རྒྱུ་དངོས་བཟོ་སྐྲུན་གྱི་དཔེ་བསྡུར་འབད་ཡོད་པའི་ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/examples/tutorial.rs)
 - [རྒྱུ་དངོས་ཚུ་](/dz/blockchain/assets.md)
 - [བརྡ་བཀོད་ཚུ་](/dz/blockchain/instructions.md)
 - [ངོས་ལེན་གྱི་རྟགས་མཚན་](/dz/reference/permissions.md)

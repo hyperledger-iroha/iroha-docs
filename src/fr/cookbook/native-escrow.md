@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 0185b6a341ee90ed6cd52fb9f510549b20592468abe6627d3efa639c3b67d1fd
+translation_source_hash: aa8e079684879bdcda2b4439e9c12742d4ab477e6f560f7c326a59b6be5bf666
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,7 +16,7 @@ Choisissez entre une garantie de marché et un verrouillage d'actif lié à la d
 
 - Une définition numérique d'actif et un ouvreur/vendeur qui possède une quantité suffisante.
 - Clients à clé unique I105 financés pour chaque partie qui soumet une étape. Utilisez une intention `fee_payment` payée par l'autorité en direct dont l'actif de redevance correspond à la réponse du robinet Taira actuel; n'incorporez pas un actif ID dans la documentation.
-- Le courant Rust ou Python SDK à partir Iroha commettre `bc7114ed1c7f265a156d2100ff09e851cc95702c`.
+- Le courant Rust ou Python SDK à partir Iroha commettre `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
 - Pour le JavaScript l'exemple du compilateur, Node.js 24 plus une maison construite localement `@iroha/iroha-js` l'emballage et son origine `iroha_js_host`; suivre le [JavaScript SDK configuration de la construction source](/fr/guide/tutorials/javascript.md#build-from-source). Les constructions de navigateur doivent fournir `compilerUrl` au lieu de charger l'hôte.
 - Taira doit admettre les instructions de transfert d'actifs et d'escroquerie. Les propriétaires d'actif peuvent utiliser le cycle de vie ordinaire lorsque leur politique en matière d'actions le permet; la résolution d'un différend nécessite l'autorisation globale `CanResolveEscrowDispute`. Utilisez un réseau local généré lorsque l'autorité publique nécessaire est absente.
 
@@ -249,10 +249,10 @@ Demandez également la détention d'actifs de la destination et confirmez qu'ell
 
 ## Sources et documents connexes {#source-and-related-docs}
 
-- [Modèle d'instruction en escrow native à l'obligation fixée](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/isi/escrow.rs)
-- [Tests d'intégration en escrow native à l'engagement fixé](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/native_escrow.rs)
-- [Python méthodes de fidélisation du client à l'obligation fixée](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama échantillon d'escrow natif à l'impôt fixé](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [Modèle d'instruction en escrow native à l'obligation fixée](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
+- [Tests d'intégration en escrow native à l'engagement fixé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
+- [Python méthodes de fidélisation du client à l'obligation fixée](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama échantillon d'escrow natif à l'impôt fixé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [Réserve des actifs natifs ](/fr/blockchain/escrow.md)
 - [Les actifs fonciers](./fungible-assets.md)
 - [Autorisations et rôles ](./permissions-and-roles.md)

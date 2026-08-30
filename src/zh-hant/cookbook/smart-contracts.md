@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: 4fe9b19fc4d13cfc71d9b9558fe7cdb1d14bd88c2d20f4d23c66313ba3ddd4b6
+translation_source_hash: 67778f9fc4f2b6fa0288f5921402cf5509515aae678e98b8192e103dfe284db3
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -14,7 +14,7 @@ translation_engine: nllb-200-ct2
 
 ## 預先條件 {#prerequisites}
 
-- 在 Iroha, `bc7114ed1c7f265a156d2100ff09e851cc95702c`,Rust 和 Cargo 的源清算.
+- 在 Iroha, `0010c5a70039eac101a4846499ba9ceaf43eb65c`,Rust 和 Cargo 的源清算.
 - 目前的 `iroha` CLI 加上由 [資助的 Taira 客戶,連接到 Taira](./connect-to-taira.md).
 - 在 `IROHA_CONFIG` 和 `IROHA_PRIVATE_KEY_FILE` 中的絕對路徑. 關鍵文件必須是一個擁有者持有的,單鏈接常規文件,具有模式 `0600`;部署輔助器故意沒有內線私鑰參數.
 - Taira 運營商批准.合同代碼註冊需要 `CanRegisterSmartContractCode`,受保護的部署可能需要管理屬性和頒佈.如果 Taira 沒有授予該訪問,則在一個生成的本地網絡上執行部署,其起源授權了.
@@ -131,7 +131,7 @@ jq '{contract_address, code_hash_hex, final, fee_quotes}' \
   ./build/deployment.json
 ```
 
-虛空的 `charge_limits`請求不是複製的資產標識符:助手在簽署之前接受準確的現場報價.將返回收費資產與當前水龍頭響應進行比較.不要將傳統的 `gas_asset_id`元數據添加到合同調用中.
+`charge_limits`空格請求不是複製的資產識別符:助手在簽署前接受準確的現場報價.合同調用只通過輸入現場報價接受收費選擇; `gas_asset_id`交易元數據不是首次發佈合同的一部分.
 
 ### 5. 模擬並調用部署的入口點 {#_5-simulate-and-call-the-deployed-entrypoint}
 
@@ -195,19 +195,19 @@ jq -e '.ok == true and .result == ["3", "5"]' \
 
 ## 解決問題 {#troubleshooting}
 
-- `CanRegisterSmartContractCode`失敗需要一個 Taira 運營商授權或在 localnet上發生/啓動鏈變化.正常帳戶不能自行授予此許可事實後.
+- `CanRegisterSmartContractCode`失敗需要一個 Taira 運營商授權或在 localnet上發生/啓動鏈變化.正常賬戶不能自行授予此許可事實後.
 - 管理或受保護軌道拒絕意味着部署需要該網絡所要求的準確批准屬性.協調批准者列表;不要創作賬戶 IDs.
-- 一個明示或 ABI 不匹配意味着字節代碼,明示和節點運行時間不描述相同的文物.重建與 `--verify` 固定提交時.
+- 一個明示或 ABI 不匹配意味着字節碼,明示和節點運行時間沒有描述相同的文物.重建與 `--verify` 固定的提交.
 - `fee quote changed ... gas bound` 表示所要求的輸入意圖和現場報價不同意見.重新預期,而不是修改簽署交易.
 - 部署輔助器在網絡提交之前拒絕內線鍵,允許鍵文件模式,符號鏈接和複製鏈接的文件.
 - 只有視圖輸入點的錯誤意味着 `compute` 通過錯誤的命令家族進行了路由. 這個樣本聲明`kotoage`,所以使用調用模擬或提交.
-- 合同調用需要一個正型氣體限制.最高級別的遺產氣體或收費資產元數據被拒絕.
+- 合同調用需要正型氣體限制.第一次發佈的呼叫合約拒絕最高級別的氣體或費用資產元數據.
 
 ## 來源及相關文件 {#source-and-related-docs}
 
-- [Kotodama V1 命令的執行在固定提交上](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/ivm/src/bin/koto.rs)
-- [在固定提交](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)的雙重返回源樣本
-- [在固定提交中本地部署輔助員](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
-- [合同集成測試在固定承諾上](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/contracts.rs)
+- [Kotodama V1 命令的執行在固定提交上](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/src/bin/koto.rs)
+- [在固定提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)的雙重返回源樣本
+- [在固定提交中本地部署輔助員](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
+- [合同集成測試在固定承諾上](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs)
 - [智能合同](/zh-hant/blockchain/smart-contracts.md)
 - [CLI 引用](/zh-hant/get-started/operate-iroha-via-cli.md)

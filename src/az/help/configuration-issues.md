@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /help/configuration-issues.md
-translation_source_hash: b62b106e985933d90dab1258d3b991674dd75d14322f2326148164b0fbee0f20
+translation_source_hash: 4b96a4f740203aace2e8c091ed89156146ba117e23eff1d08f3bbb01de92f24a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -25,7 +25,7 @@ Bu addımlarla uğursuzluğu yoxlayın:
 Belə bir problemin həllinin yolu Iroha istifadəsinə bağlıdır. Bu əsas demo olsa və həmyaşıd məlumatlarını qorumağa ehtiyacınız yoxdursa, uyğun localnet və ya Docker Compose paketini Kagami ilə bərpa edin:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
 ```
 

@@ -1,12 +1,13 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: 7c35c609442df65328fa619b6673be76f801cfc2abc28afd853d7fe61e439e9c
+translation_source_hash: 4281cb307762443c85b67659310da69f1f1ea5b99926bad43b90abe36e87075e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2
 ---
 
 # 賢明な契約 {#smart-contracts}
+
 
 Iroha 取引は, `Executable` の役に立たない負荷を実行する.現在のデータモデルでは:
 
@@ -15,9 +16,9 @@ Iroha 取引は, `Executable` の役に立たない負荷を実行する.現在�
 - `Executable::Ivm`: Iroha VM バイトコード
 - `Executable::IvmProved`: Iroha VM バイトコードで,事前に計算された指示の重複と証明義務がある
 
-Kotodama は Iroha の高水準スマートコントラクト言語です。`.ko` ソースファイルは決定論的な IVM バイトコードにコンパイルされ、通常はデプロイ用の `.to` アーティファクトとして保存されます。Kotodama の対象は IVM のみです。RISC-V や WebAssembly は対象ではありません。
+Kotodama は Iroha 高レベルのスマートコントラクトの言語です `.ko` ソースファイルは決定的なコンパイル IVM バイトコードは,従来として保存される `.to` 配備のためのアーテファクト Kotodama 目標 IVM 対象ではない. RISC-V または WebAssembly.
 
-最初のリリースでサポートされるのは ABI バージョン 1 のみです。syscall と pointer-ABI のポリシーはコントラクトの受け入れ時および実行時に無条件で適用され、実行時互換性を切り替える設定はありません。
+最初のリリースでは ABI バージョン1のみがサポートされています. syscallとpointer-ABI のポリシーは,受付および実行によって強制される無条件の V1 契約です.代替ランタイムモードはありません.
 
 ## 賢明 な 契約 を いつ 使う か {#when-to-use-smart-contracts}
 
@@ -48,6 +49,22 @@ Kotodama は Iroha の高水準スマートコントラクト言語です。`.ko
 ## 配備された契約電話 {#deployed-contract-calls}
 
 `Executable::ContractCall` はアドレスでデプロイされた契約インスタンスを呼び出す.契約コードが別々に登録され,取引はバイトコードを毎回運ぶ代わりに参照で呼び出すべきである場合,これを使用します.
+
+## 契約寿命と所有権 {#contract-lifecycle-and-ownership}
+
+各部署されたアドレスは,契約が無効であるときも `ContractLifecycleControlV1` の記録を保持する.この記録には,最初の部署の源泉,現在のおよび未定所有者,撤回可能な議会代表団,アクティブコードハッシュ,ゼロ以外の比較・交換修正が含まれます.直接部署は部署のアカウントを記録する.議会部署は提案者,提案内容 ID,そして成功した統治試行 ID を記録している.
+
+ライフサイクルの所有者は1つの口座または議会です.口座所有権変更には,別々の申し出と受け入れが使われます.申し出を受け入れると,議会の代表団はクリアされます. 口座所有者は,議会に契約を有効または無効にすることを許すことができる.代表団は決して議会に所有権を譲渡することを許さない. 議会が所有する変更と議会の承認は,認定された統治効果によって制定されます.
+
+RAW `ActivateContractInstance`と `DeactivateContractInstance`の指示は,流通口座所有者にのみ提供される.それらは記録の正確な `expected_revision`を載せなければならない.実行時間は旧版またはゼロ修正を拒否する.原発アクティベーションはライフサイクル記録を作成できず,登録されたアーテファクト,マニフェスト,および ABI を変更する前に有効化します `active_code_hash`.無効化 アクティブコードハッシュをクリアしますが,所有権と起源を維持します. ライフサイクルのすべての成功的な移行は修正を加速し,完全なポストステートを発行します.
+
+アクティベーションはまた,マニストが宣言されたライフサイクルハックを1つのステージに設定することもできます. `EntryPointKind::Hajimari` 入り口 (`hajimari`/`始まり`) 段階 `Hajimari`. アクティブアドレスをコードに再編する `EntryPointKind::Kaizen` 入り口 (`kaizen`/`改善`) 段階 `Kaizen`. 契約は即座に変更されますが,まだ準備ができていません. `Kotoage` そして `View` 呼び出しは,正確なステージフックが成功するまで拒否されます. フックが待機中に別のアクティベーションも拒絶されます.
+
+`Executable::ContractCall` と同じ契約アドレスと新しいコードハッシュで,正確な `hajimari`または `kaizen` 入口点およびその明示書で宣言された議論を使用して段階的なフックを呼び出します.ランタイムは,アドレスとセレクターでスケープされた `CanInvokeContractEntrypoint`許可を提供します.呼び出し者はその許可を作成または授与することはできません.待機マークには,ランタイム生成の決定的な `transition_id` と新しい `code_hash` が含まれます. `Kaizen` マーカーはまた, `previous_code_hash` を含む.顧客は `transition_id` を計算したり提出したりしない.成功するハックがマーカーを原子的に消費し,失敗したハックは後で再試されるまで待機してしまいます.
+
+緊急段階の議会提案は,現在の修正,コードハッシュおよびゼロでないインシデントダイジェストを結びつけるときに最大3600ブロックの猶予を課すことができます.呼び出しは課金高度から期限値までブロックされています.EXPIRYは実行を復元しますが,Holdを消すものではありません.証明された `CompleteEmergencyHoldRetrospective` アクションは,記録がクリアされる前に正確なHold IDs を結合し,非ゼロの検索ルートと消化する必要があります.そのリトロスペクティブが残っている間に,別のHoldを課すことはできません.
+
+アプリ API が有効になったとき,保存状態を `GET /v1/gov/contracts/{contract_address}` で読む.その `found` フィールドは,ライフサイクルの記録が存在することを意味し,アドレスには現在アクティブコードがあるわけではない.
 
 ## 運用ガイドライン {#operational-guidance}
 

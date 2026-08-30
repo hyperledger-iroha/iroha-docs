@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /guide/advanced/chaos-testing.md
-translation_source_hash: dfd2d4196827da3563e377baae2fb823871d7a2c293dfafb6dc4de37f9ddbc61
+translation_source_hash: 5ceee448217a42e4f8bbae9595486b79019e7a880dfd0f2c71bf580409d0e4b9
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 Izanami是上游 Iroha 工作空间中的混沌网管.它启动一次性本地 Iroha 集群,提交可配置的工作负载,并将故障注入选定的同行中,以便运营商可以检查网络是否在受控故障下继续取得进展.
 
-使用 Izanami 进行产前弹性检查,回归复制和共识调整.不要指向生产网络:该工具旨在拥有它启动的同行,包括同行重新启动,存储 wipes,人工包损失以及本地 CPU 或磁盘压力.
+使用 Izanami进行产前弹性检查,回归复制和共识调整.不要指向生产网络:该工具旨在拥有它启动的同行,包括同行重启,存储 wipes,临时可信任同行分区和本地 CPU 或磁盘压力.
 
 ## 预先条件 {#prerequisites}
 
@@ -34,7 +34,7 @@ cargo run -p izanami -- --allow-net --peers 4 --faulty 1 --duration 120s
 cargo run -p izanami -- --tui --allow-net
 ```
 
-在用户配置目录中, Izanami 仍然存在 TUI 和 CLI 设置,因此在重新使用之前的个人资料之前,请检查显示的设置.
+在用户配置目录中, Izanami 仍然保留 TUI 和 CLI 设置.首次发布的文件有一个明确的 V1 布局字节;预发或其他未版本的设置被拒绝,并且应该重建而不是迁移.在重新使用当前的配置文件之前,请查看显示的设置.
 
 ## 基线运行 {#baseline-run}
 
@@ -103,32 +103,29 @@ cargo run -p izanami -- \
 |无效的交易垃圾邮件|`--fault-enable-spam-invalid-transactions`|录取和拒绝的路径|
 |网络延迟|`--fault-enable-network-latency`|缓慢的八和延迟的共识信息|
 |网络分区|`--fault-enable-network-partition`|暂时的可信同行隔离|
-|P2P 包装损失|`--fault-enable-network-packet-loss`|应用程序框架流量下降|
 |CPU 压力|`--fault-enable-cpu-stress`|局部验证和规划压力|
 |磁盘度|`--fault-enable-disk-saturation`|局部存储压力|
 
-对于只输入包的运行:
+对于只为网络分区运行:
 
 ```bash
 cargo run -p izanami -- \
   --allow-net \
-  --peers 20 \
-  --faulty 5 \
-  --duration 800s \
-  --fault-window-start 133s \
-  --fault-window-end 266s \
-  --tps 200 \
-  --submitters 20 \
-  --max-inflight 512 \
+  --peers 4 \
+  --faulty 1 \
+  --duration 5m \
+  --fault-window-start 60s \
+  --fault-window-end 180s \
+  --tps 15 \
+  --submitters 1 \
+  --max-inflight 32 \
   --fault-enable-crash-restart=false \
   --fault-enable-wipe-storage=false \
   --fault-enable-spam-invalid-transactions=false \
   --fault-enable-network-latency=false \
-  --fault-enable-network-partition=false \
-  --fault-enable-network-packet-loss=true \
+  --fault-enable-network-partition=true \
   --fault-enable-cpu-stress=false \
   --fault-enable-disk-saturation=false \
-  --fault-network-packet-loss-percent 75 \
   --seed 42
 ```
 
@@ -142,9 +139,8 @@ cargo run -p izanami -- \
 | --------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 |目标载荷|`--faulty 0`,高`--tps`,一个提交人,高 `--max-inflight` |
 |暂时故障|只有在有限的故障窗口内启动机/重启|
-|包装损失|仅允许输出数据包,通常是默认的75%的丢失率.|
 |停止和恢复|使用大量的故障同行群体与崩/重新启动|
-|领导人隔离|使用完全一个错误的同行,只有网络分区或数据包丢失故障; Izanami 遵循 Sumeragi 领先的远程测量|
+|领导人隔离|使用一个错误的同行,只有网络分区错误; Izanami 遵循 Sumeragi 的领先远程测量.|
 
 如果您同时改变同行数量,工作负载配置文件,故障窗口和 TPS,结果就很难解释.
 
@@ -156,7 +152,7 @@ cargo run -p izanami -- \
 - 提交,接受,拒绝和截止期的交易
 - 排队深度,排队和终点反压力
 - 查看变化,恢复路径,缺失的区块和缺失的定制证书
-- RBC 滞后,待定会议和降低或延迟共识流量
+- 签署的 RS16 可用性后期记录,待定会议和延迟共识流量.
 - CPU,存储器,磁盘和网络度在运行同行的主机上
 
 为了验证延迟分析,请启用主循环调试日志:

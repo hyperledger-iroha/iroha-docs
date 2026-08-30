@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /reference/instructions.md
-translation_source_hash: e300187da832a8f82258a36b7c4aaebf505adc09c771de5b0c7ab8fb0052d3db
+translation_source_hash: 9ba8e06d10f0896169feddbdad32f4fed7a8d46effa2293c64df578c197c970e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -29,6 +29,7 @@ translation_engine: nllb-200-ct2
 | [الاحتفاظ بالأصول الأصلية ](/ar/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
 | [مقفلات الأصول العامة ](/ar/blockchain/escrow.md#generic-asset-locks) |`OpenAssetLock`، `DrawdownAssetLock`، `CancelAssetLock`، `ExpireAssetLock` |
 | [الاحتفاظ بالأصول المجهولة ](/ar/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
+| [التسوية الخاصة الذرية](/ar/blockchain/instructions.md#atomic-private-settlement) | `ActivatePrivateSettlementPoolV1`, `RotatePrivateSettlementPoolPolicyV1`, `FinalizeAtomicPrivateSettlementV1`, `AbortAtomicPrivateSettlementV1` |
 
 يمكن أن تسجل وحدات Iroha 3 إضافية أنواع تعليمات محددة للمجال من خلال سجل التعليمات. للحصول على قائمة مستوى الخطة التي تم إنشاؤها من شجرة المصدر الحالية ، انظر [نموذج البيانات Schema](./data-model-schema.md).
 

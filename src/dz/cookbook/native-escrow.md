@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 0185b6a341ee90ed6cd52fb9f510549b20592468abe6627d3efa639c3b67d1fd
+translation_source_hash: aa8e079684879bdcda2b4439e9c12742d4ab477e6f560f7c326a59b6be5bf666
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,7 +16,7 @@ translation_engine: nllb-200-ct2
 
 - ཨང་གྲངས་ཀྱི་ རྒྱུ་དངོས་གི་འགྲེལ་བཤད་དང་ འཕྱེས་/བཙོང་མི་ཅིག་ལུ་ ཚད་ལྡན་ཡོད་མི་དེ་ཨིན།
 - དངུལ་རྐྱང་གི་ལྡེ་མིག་ I105 ལས་བྱེདཔ་ཚུ་གི་དོན་ལུ་ ཐབས་ལམ་འདི་བཙུགས་ཏེ་ ལག་ལེན་འཐབ་ཨིན། འབྲེལ་ཡོད་དབང་འཛིན་ཀྱིས་སྤྲོད་འོང་མི་ `fee_payment` དམིགས་གཏད་ལག་ལེན་དེ་ ལག་ལེན་འཐབ་ནི་ཨིནམ་དང་ རིན་གོང་དངུལ་ཀྲམ་དེ་ ད་ལྟོའི་ Taira ཆུ་གཡུར་གྱི་ལན་ཐོ་བཀོད་དང་འདྲན་འདྲ་ཨིན་; ཡིག་ཆ་ནང་ལས་ རྒྱུ་དངོས་ཅིག་ ID ནང་མ་སྦྲེལ་གཏང་།
-- ད་ལྟོའི་ Rust ཡང་ན་ Python SDK ལས་ Iroha ཁས་བླངས་འབད་ `bc7114ed1c7f265a156d2100ff09e851cc95702c`.
+- ད་ལྟོའི་ Rust ཡང་ན་ Python SDK ལས་ Iroha ཁས་བླངས་འབད་ `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
 - གྱི་དོན་ལུ་ JavaScript དཔེ་སྒྲོམ་བཟོ་མི་ Node.js 24 དེ་ལས་ ས་གནས་ཀྱི་བཟོ་སྐྲུན་འབད་མི་ཅིག་ `@iroha/iroha-js` སྦ་སྒོར་དང་ ཨའི་གི་ཐོན་ཁུངས་ `iroha_js_host`; ལྟ་རྟོག་འབད་ [JavaScript SDK source-build གཞི་སྒྲིག་འབདཝ་ཨིན།](/dz/guide/tutorials/javascript.md#build-from-source). བལྟ་བཤལཔ་གིས་བཟོ་སྐྲུན་འབད་དགོཔ་ཨིན། `compilerUrl` ས་གནས་ཀྱི་མགྲོན་པོ་ལུ་ བཀྲམ་སྤེལ་འབད་ནི་མེན་པར་
 - Taira གིས་ རྒྱུ་དངོས་གནས་སྤེལ་དང་ གཏན་འཁེལ་གྱི་བཀོད་རྒྱ་ཚུ་ ངོས་ལེན་འབད་དགོཔ་ཨིན། རྒྱུ་དངོས་གི་ཇོ་བདག་ཚུ་གིས་ རང་བཞིན་གྱི་ སྲིད་བྱུས་དེ་གིས་ དེ་གི་དོན་ལུ་ གོ་སྐབས་ཡོད་པ་ཅིན་ ཚེ་སྲོག་འཁོར་ལོའི་ལག་ལེན་འཐབ་ཚུགས། རྩོད་གཞི་འདི་ སེལ་ཐབས་ལུ་ འཛམ་གླིང་ཡོངས་ཀྱི་ `CanResolveEscrowDispute` གི་ཆོག་ཐམ་ དགོཔ་ཨིན། དགོས་མཁོ་ཅན་གྱི་ མི་མང་གི་དྲ་ལམ་དབང་འཛིན་མེད་པ་ཅིན་ ཐོན་སྐྱེད་འབད་མི་ ས་གནས་ཁ་ཐུག་གི་དྲ་ལམ་ལག་ལེན་འཐབ་འོང་།
 
@@ -249,10 +249,10 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 
 ## གཞི་རྟེན་དང་འབྲེལ་བའི་ཡིག་ཆ་ཚུ་ {#source-and-related-docs}
 
-- [རང་ལུགས་ཀྱི་གཏེར་ཁའི་བརྡ་སྟོན་གྱི་རྣམ་གཞག་ ཚོད་བསྲེ་འབད་ཡོད་པའི་ commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/isi/escrow.rs)
-- [རང་ལུགས་ཀྱི་གཏེར་ཁའི་མཐུན་འབྲེལ་གྱི་བརྟག་དཔྱད་ཚུ་ ཕིན་ཌ་གི་བཅའ་ཁྲིམས་ནང་](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/native_escrow.rs)
-- [Python ཟད་འགྲོ་ཕབ་ལེན་འབད་ནིའི་ ཐབས་ལམ་ཚུ་](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama རང་སོའི་གཏེར་དངུལ་གྱི་དཔེ་རྙིཊ་ཚུ་ ཕབ་ལེན་འབད་ཡོད་པའི་ commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [རང་ལུགས་ཀྱི་གཏེར་ཁའི་བརྡ་སྟོན་གྱི་རྣམ་གཞག་ ཚོད་བསྲེ་འབད་ཡོད་པའི་ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
+- [རང་ལུགས་ཀྱི་གཏེར་ཁའི་མཐུན་འབྲེལ་གྱི་བརྟག་དཔྱད་ཚུ་ ཕིན་ཌ་གི་བཅའ་ཁྲིམས་ནང་](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
+- [Python ཟད་འགྲོ་ཕབ་ལེན་འབད་ནིའི་ ཐབས་ལམ་ཚུ་](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama རང་སོའི་གཏེར་དངུལ་གྱི་དཔེ་རྙིཊ་ཚུ་ ཕབ་ལེན་འབད་ཡོད་པའི་ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [རང་སོའི་རྒྱུ་དངོས་གི་གཏའ་མ་](/dz/blockchain/escrow.md)
 - [དངུལ་རྐྱང་གི་རྒྱུ་དངོས་ཚུ་](./fungible-assets.md)
 - [འཁྲུན་ཆོད་དང་ འགན་ཁུར་ཚུ་](./permissions-and-roles.md)

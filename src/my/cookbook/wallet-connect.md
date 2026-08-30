@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /cookbook/wallet-connect.md
-translation_source_hash: ab5b6c560ed8b0a208666e5854306ba6adce7af1210fc3c94b9c560d8e6eb686
+translation_source_hash: 38283321d51ddbb528272bb4429906eb41545ed3933ae695fb05a24675bff9c8
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -279,11 +279,11 @@ curl -fsS -G \
 
 ## အရင်းအမြစ်နှင့် ဆက်စပ်သော စာတမ်းများ {#source-and-related-docs}
 
-- [ပိတ်ထားသော commit တွင် Browser Connect အကောင်အထည်ဖော်ခြင်း](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/src/connect.browser.js)
-- [ပိတ်ထားသော commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/test/connect.browser.test.js) တွင် Browser Connect စမ်းသပ်မှုများ
-- [Rust app frame နမူနာကို pinned commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii_shared/examples/connect_app.rs) တွင်
-- [Rust ချိတ်ဆက်ထားသော commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii_shared/examples/connect_wallet.rs) မှာ wallet frame နမူနာ
-- [ပိတ်ထားခြင်း Torii OpenAPI အစီအစဉ်](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/artifacts/openapi/torii.json)
+- [ပိတ်ထားသော commit တွင် Browser Connect အကောင်အထည်ဖော်ခြင်း](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/src/connect.browser.js)
+- [ပိတ်ထားသော commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/test/connect.browser.test.js) တွင် Browser Connect စမ်းသပ်မှုများ
+- [Rust app frame နမူနာကို pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_app.rs) တွင်
+- [Rust ချိတ်ဆက်ထားသော commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_wallet.rs) မှာ wallet frame နမူနာ
+- [ပိတ်ထားခြင်း Torii OpenAPI အစီအစဉ်](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/artifacts/openapi/torii.json)
 - [SORA Nexus ဝန်ဆောင်မှုများ](/my/blockchain/sora-nexus-services.md)
 - [ငွေကြေးအထောက်အပံ့များ ](./fungible-assets.md)
 - [ငွေပေးချေမှုများကို တင်ပြခြင်း၊ စစ်ဆေးခြင်း](./submit-and-verify-transactions.md)

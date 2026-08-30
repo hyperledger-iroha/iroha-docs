@@ -1,7 +1,7 @@
 ---
 translation_locale: mn
 translation_source: /blockchain/iroha-explained.md
-translation_source_hash: 3fdd22338e826b1ce335ebf5e4e850cf3deb9415c36a0c8d21ad63c397cec8c0
+translation_source_hash: ba591b2c1aa819837177625b1ae457b5fa492197576dc690b19ca2897562a436
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,7 +12,7 @@ Iroha 3 нь анхны нэвтрүүлгийн Hyperledger Iroha платфо�
 
 ## Барилгын гол блок {#core-building-blocks}
 
-- `irohad` өрсөлдөгчдийг удирддаг
+- `iroha3d` өрсөлдөгчдийг удирддаг
 - Torii нь үйлчлүүлэгч болон үйл ажиллагаа эрхлэгчдийн хаалга юм
 - Sumeragi нь санал нэгдлийг хангадаг
 - Norito бол [каноникийн хошой формат](/mn/reference/norito.md) байна

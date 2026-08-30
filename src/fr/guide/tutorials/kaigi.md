@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /guide/tutorials/kaigi.md
-translation_source_hash: e55c7aebc89c39edb8e7077db2414a6d432aafb05aff8df04c248fce444d7dea
+translation_source_hash: 24dc7e6a41ea8a06d24663aebaeca2469c522e391a5de61f039c47a1cd020c91
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -47,7 +47,7 @@ npm install
 npm run dev
 ```
 
-Utilisez la démonstration avec [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/main/javascript/iroha_js) du référentiel source frère Iroha. Sa dépendance à `file:` résolve directement ce processus de paiement. Si la liaison native change, reconstruisez-la sous `iroha/javascript/iroha_js`; un répertoire de paquets propre ne contient pas l'espace de travail Cargo nécessaire par `npm run build:native`.
+Utilisez la démonstration avec [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js) du référentiel source frère Iroha. Sa dépendance à `file:` résolve directement ce processus de paiement. Si la liaison native change, reconstruisez-la sous `iroha/javascript/iroha_js`; un répertoire de paquets propre ne contient pas l'espace de travail Cargo nécessaire par `npm run build:native`.
 
 Avant d'exécuter une réunion en direct sur TAIRA, vérifiez la surface publique de Torii dont dépend la démo:
 

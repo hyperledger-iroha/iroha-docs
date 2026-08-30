@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 0185b6a341ee90ed6cd52fb9f510549b20592468abe6627d3efa639c3b67d1fd
+translation_source_hash: aa8e079684879bdcda2b4439e9c12742d4ab477e6f560f7c326a59b6be5bf666
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,7 +16,7 @@ Rust သို့မဟုတ် Python ဖြင့် လက်ရှိရိ
 
 - အရင်းအမြစ်ရဲ့ ကိန်းဂဏန်းဆိုင်ရာ အဓိပ္ပါယ်ဖွင့်ချက်နဲ့ လုံလောက်တဲ့ ပမာဏကို ပိုင်ဆိုင်ထားတဲ့ ဖွင့်သူ/ရောင်းသူပါ။
 - ငွေကြေးထောက်ပံ့မှု (one-key) I105 အဆင့်တစ်ဆင့် တင်ပြတဲ့ အဖွဲ့တိုင်းအတွက် ဖောက်သည်များ။ သက်ရှိအာဏာပိုင်မှ ပေးဆပ်သော `fee_payment` ရည်ရွယ်ချက်၊ အခွန်အရင်းအမြစ်သည် လက်ရှိနှင့် ကိုက်ညီသည်။ Taira faucet response; အရင်းအမြစ်ကို ထည့်သွင်းမထားပါ။ ID စာရွက်စာတမ်းကနေပါ။
-- Rust (သို့) Python SDK မှ Iroha ကမ်းလှမ်းချက်အား `bc7114ed1c7f265a156d2100ff09e851cc95702c`
+- Rust (သို့) Python SDK မှ Iroha ကမ်းလှမ်းချက်အား `0010c5a70039eac101a4846499ba9ceaf43eb65c`
 - နိုင်ငံခြားရေးဝန်ကြီး JavaScript compilator ဥပမာ၊ Node.js ၂၄ ထပ်ပြီး ဒေသတွင်းတည်ဆောက်ထားတဲ့ `@iroha/iroha-js` အိတ်အိတ်နှင့် ၎င်း၏ မူလနေရာ `iroha_js_host`; နောက်လိုက်ပါ [JavaScript SDK source build ကို setup လုပ်ပေးခြင်း](/my/guide/tutorials/javascript.md#build-from-source). Browser builds တွေက ပေးရပါမယ်။ `compilerUrl` ဒေသခံ အိမ်ရှင်ကို တင်တာအစားပါ။
 - Taira သည် အရင်းအမြစ်လွှဲပြောင်းခြင်းနှင့် အာမခံပေးခြင်း ညွှန်ကြားချက်များကို လက်ခံရမည်ဖြစ်သည်။ အရင်းအမြတ်ပိုင်ရှင်များသည် ၎င်းတို့၏အရင်းအမြစ်မူဝါဒက ခွင့်ပြုသည့်အခါ သာမန်သက်တမ်းလည်ပတ်မှုကို အသုံးပြုနိုင်သည်။ ပဋိပက္ခဖြေရှင်းရန်အတွက် ကမ္ဘာလုံးဆိုင်ရာ `CanResolveEscrowDispute` ခွင့်ပြုချက်လိုအပ်သည်။ လိုအပ်သော အများပြည်သူကွန်ရက်အာဏာပိုင်မရှိပါက ဖန်တီးထားသော ဒေသတွင်းကွန်ရက်ကိုအသုံးပြုပါ။
 
@@ -249,10 +249,10 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 
 ## အရင်းအမြစ်နှင့် ဆက်စပ်သော စာတမ်းများ {#source-and-related-docs}
 
-- [Native escrow instruction model at the pinned commit ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/isi/escrow.rs)
-- [Native escrow integration tests at the pinned commit ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/native_escrow.rs) (ရင်းနှီးမြှုပ်နှံမှု)
-- [Python ကန့်သတ်ထားသော commit တွင် escrow client method များ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama အမိန့်ချမှတ်ထားသော commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/native_escrow.ko) တွင် မူရင်း escrow နမူနာ
+- [Native escrow instruction model at the pinned commit ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
+- [Native escrow integration tests at the pinned commit ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs) (ရင်းနှီးမြှုပ်နှံမှု)
+- [Python ကန့်သတ်ထားသော commit တွင် escrow client method များ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama အမိန့်ချမှတ်ထားသော commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko) တွင် မူရင်း escrow နမူနာ
 - [တိုင်းရင်းသားလက်နက်ကိုင် အရင်းအမြစ် (Native asset escrow) ](/my/blockchain/escrow.md)
 - [ငွေကြေးအထောက်အပံ့များ ](./fungible-assets.md)
 - [ခွင့်ပြုချက်များနှင့် ကဏ္ဍများ ](./permissions-and-roles.md)

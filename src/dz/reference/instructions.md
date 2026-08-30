@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /reference/instructions.md
-translation_source_hash: e300187da832a8f82258a36b7c4aaebf505adc09c771de5b0c7ab8fb0052d3db
+translation_source_hash: 9ba8e06d10f0896169feddbdad32f4fed7a8d46effa2293c64df578c197c970e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -29,6 +29,7 @@ translation_engine: nllb-200-ct2
 | [རང་བཞིན་གྱི་རྒྱུ་དངོས་གི་གཏའ་མ་ ](/dz/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
 | [སྤྱིར་བཏང་གི་ རྒྱུ་དངོས་ཀྱི་ལྡེ་མིག་ཚུ་ ](/dz/blockchain/escrow.md#generic-asset-locks) |`OpenAssetLock`,`DrawdownAssetLock`, `CancelAssetLock`, `ExpireAssetLock` |
 | [དངུལ་རྐྱང་གི་མིང་མ་ཤེསཔ་](/dz/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
+| [རང་རྐྱང་གི་བར་ནའི་མཐུན་རྐྱེན་ཚུ་](/dz/blockchain/instructions.md#atomic-private-settlement) | `ActivatePrivateSettlementPoolV1`, `RotatePrivateSettlementPoolPolicyV1`, `FinalizeAtomicPrivateSettlementV1`, `AbortAtomicPrivateSettlementV1` |
 
 Iroha 3 ཚད་གཞིའི་ཆ་ཤས་གཞན་ཚུ་གིས་ བརྡ་བཀོད་ཡིག་ཚང་ནང་ལུ་ domain-specific instruction type ཐོ་བཀོད་འབད་ཚུགས། ད་ལྟོའི་ source tree ལས་འབྱུང་འོང་མི་ schema level གི་ཐོ་ཡིག་གི་དོན་ལུ་ [Data Model Schema](./data-model-schema.md) ལུ་བལྟ་དགོ།
 

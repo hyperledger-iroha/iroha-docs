@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: c23170b2949bae9c9483ecbee6f0c09fea503904ae93934aef56537ddd13c42d
+translation_source_hash: 995701cfca9594b88a0da73a5b582c75c5962449a9ccf150e65738d3656d4f02
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,7 +12,7 @@ Torii အဲဒါက HTTP, SSE, နှင့် WebSocket ဂိတ်တံခ
 
 လက်ရှိ စည်းမျဉ်းစည်းကမ်းများမှာ-
 
-- Canonical binary format သည် Norito ဖြစ်သည်။
+- ဘိုင်နရီပုံစံက Norito ပါ။
 - အဆုံးအဖြတ်များစွာကလည်း ထောက်ခံတယ်။ JSON ပေးပို့တဲ့အခါ `Accept: application/json`
 - metrics တွေကို Prometheus format မှာ ဖော်ပြထားပါတယ်
 
@@ -20,22 +20,22 @@ Torii အဲဒါက HTTP, SSE, နှင့် WebSocket ဂိတ်တံခ
 
 ## တူညီသော အဆုံးသတ်ချက်များ {#common-endpoints}
 
-|အဆုံးသတ်ချက် |Format ကို |ရည်ရွယ်ချက်|
-| --- | --- | --- |
-|`POST /v1/pipeline/transactions` |Norito |လက်မှတ်ရေးထိုးထားတဲ့ ငွေပေးချေမှု တင်ပြပါ|
-|`POST /v1/query` |Norito |လက်မှတ်ထိုးသော မေးမြန်းချက်ကို တင်ပြပါ |
+|နိဂုံးချုပ်ချက်|ဖိုရမ်|ရည်ရွယ်ချက်|
+| ------------------------------------- | -------------- | ---------------------------------------------------------------- |
+|`POST /v1/pipeline/transactions` |Norito |လက်မှတ်ထိုးထားတဲ့ ငွေပေးချေမှု တင်ပြပါ |
+|`POST /v1/query` |Norito |လက်မှတ်ထိုး မေးမြန်းချက် တင်ပါ |
 |`GET /v1/events/ws` |WebSocket |Event streams ကို subscribe လုပ်ပါ |
 |`GET /v1/events/sse` |SSE |SSE ကျော် Event Streams ကို Subscribe လုပ်ပါ။ |
 |`GET /v1/blocks/stream` |WebSocket |ချုပ်ဆိုထားသော ဘလော့များ Stream |
-|`GET /v1/peers` |JSON |Torii မှ ထုတ်ပြန်ထားသော အချိုးအစားစာရင်း|
+|`GET /v1/peers` |JSON |Torii မှ ထုတ်ပြန်ထားသော အဖော်စာရင်း |
 |`GET /livez` |စာသား|လုပ်ငန်းစဉ်တစ်ခုတည်းသော သက်ရှိစွမ်းဆောင်ရည်၊ ပရိုတိုကောလက်လျှာက်မှု မဆိုလိုပါ။ |
 |`GET /readyz` |JSON |offline cash checks အပါအဝင် node အသင့်ရှိမှုပြည့်စုံခြင်း |
 |`GET /health` |JSON |ပြင်ဆင်မှု စွန်ဒါနဲ့အတူတူ offline-cash invariant ကို |
 |`GET /v1/api/version` |စာသား|လက်ရှိ Block Header ဗားရှင်းများ |
 |`GET /status` |Norito သို့မဟုတ် JSON |အဆင့်မြင့် ရောဂါစစ်ဆေးမှုအခြေအနေ၊ JSON ကို ရှင်းလင်းစွာ တောင်းဆိုခြင်း |
-|`GET /metrics` |Prometheus |Prometheus scrape အဆုံးမှတ် |
+|`GET /metrics` |Prometheus |Prometheus Scrape အဆုံးသတ်ချက်|
 |`GET /v1/schema` |JSON |Data-model schema snapshot ကို node က activated လုပ်တဲ့အခါမှာ ပြသပေးပါတယ်။ |
-|`GET /openapi` သို့မဟုတ် `GET /openapi.json` |JSON | OpenAPI တက်ကြွမှုအတွက် စာရွက်စာတမ်း Torii HTTP လမ်းကြောင်းများ |
+|`GET /openapi` သို့မဟုတ် `GET /openapi.json` |JSON | OpenAPI တက်ကြွမှုအတွက် စာရွက်စာတမ်း Torii HTTP လမ်းကြောင်းများ                |
 |`GET /v1/parameters` |JSON |Node Parameters snapshot ကို ရိုက်ယူပါ|
 |`GET /v1/node/capabilities` |JSON |Node အရည်အသွေးနှင့် ဒေတာပုံစံ metadata များ |
 |`GET /v1/time/now` |JSON |Node နံရံနာရီ snapshot ကို |
@@ -53,7 +53,7 @@ Torii သည် ပထမဦးဆုံးအားဖြင့် JSON သိ�
 
 ## Taira တိုက်ရိုက်လမ်းကြောင်းတွေကို စမ်းကြည့်ပါ။ {#try-live-taira-routes}
 
-အများပြည်သူ Taira testnet သည် application clients များက read-only exploration အတွက် အသုံးပြုသော Torii JSON မျက်နှာပြင်ကိုပဲ ဖော်ပြသည်။ ဤအမိန့်များအတွက် key တွေလိုအပ်ခြင်းမရှိပါ။
+အများပြည်သူ Taira testnet သည် application clients များက read-only exploration အတွက် အသုံးပြုသော Torii JSON မျက်နှာပြင်ကိုပဲ ဖေါ်ပြပေးသည်။ ဤ commands များတွင် key များလိုအပ်ခြင်းမရှိပါ။
 
 ```bash
 TAIRA_ROOT=https://taira.sora.org
@@ -96,22 +96,22 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=5" \
 |`GET /v1/sumeragi/qc` |Norito သို့မဟုတ် JSON |နောက်ဆုံး Quorum-certificate အနှစ်ချုပ်|
 |`GET /v1/sumeragi/checkpoints` |JSON |သဘောတူညီချက် စစ်ဆေးရေးစခန်း အတိုကောက် |
 |`GET /v1/sumeragi/consensus-keys` |JSON |Active Consensus Key များ |
-|`GET /v1/sumeragi/bls_keys` |JSON |Active BLS သဘောတူညီချက် ခလုတ်များ |
+|`GET /v1/sumeragi/bls_keys` |JSON |Active BLS သဘောတူညီချက် သော့များ |
 |`GET /v1/sumeragi/phases` |JSON |နောက်ဆုံးအဆင့်တစ်ခုချင်း latency နမူနာ |
 |`GET /v1/sumeragi/rbc` |JSON |RBC session နဲ့ throughput metrics တွေ|
 |`GET /v1/sumeragi/rbc/sessions` |JSON |တက်ကြွတဲ့ RBC အစည်းအဝေး snapshot |
 |`GET /v1/sumeragi/pacemaker` |JSON |နှလုံးခုန်စက်အခြေအနေ |
-|`GET /v1/sumeragi/params` |JSON |လက်ရှိ ချိတ်ဆက်ထားသော ပမာဏများ Sumeragi |
+|`GET /v1/sumeragi/params` |JSON |လက်ရှိကွင်းဆက် Sumeragi သတ်မှတ်ချက်များ |
 |`GET /v1/sumeragi/collectors` |JSON |Deterministic Collector အစီအစဉ်ရဲ့ snapshot ကို |
 |`GET /v1/sumeragi/key-lifecycle` |JSON |သဘောတူညီချက် အဓိက သက်တမ်း စက်ဝန်း အခြေအနေ |
 |`GET /v1/sumeragi/telemetry` |JSON |Consensus telemetry snapshot ကို ရိုက်ယူပါ|
-|`GET /v1/sumeragi/evidence` |JSON |အတည်ပြုချက် မှတ်တမ်းများ၊ ရွေးချယ်မှုအရ မေးမြန်းမှု string ဖြင့် စစ်ဆေး |
+|`GET /v1/sumeragi/evidence` |JSON |အတည်ပြုချက် မှတ်တမ်းများ၊ ရွေးချယ်မှုအရ query string ဖြင့် filter လုပ်ထားသည် |
 |`GET /v1/sumeragi/evidence/count` |JSON |အထောက်အထား မှတ်တမ်းအရေအတွက်|
 |`POST /v1/sumeragi/evidence/submit` |JSON |သဘောတူညီမှု အထောက်အထားတွေ တင်ပြပါ။|
 |`GET /v1/sumeragi/commit_qc/{hash}` |Norito သို့မဟုတ် JSON |Block hash အတွက် QC မှတ်တမ်းကို commit လုပ်ပါ။ |
-|`GET /v1/runtime/abi/active` |JSON |Active runtime ABI သရုပ်ဖော်ချက် |
+|`GET /v1/runtime/abi/active` |JSON |Active runtime ABI သရုပ်ဖော်ကိန်း |
 |`GET /v1/runtime/abi/hash` |JSON |Active runtime ABI hash |
-|`GET /v1/runtime/metrics` |JSON |Runtime မက်ထရစ်များ snapshot ကို |
+|`GET /v1/runtime/metrics` |JSON |Runtime မက်ထရစ်များ snapshot |
 |`GET /v1/runtime/upgrades` |JSON |Runtime မြှင့်တင်ခြင်းစာရင်း |
 |`POST /v1/runtime/upgrades/propose` |JSON |Runtime ကို upgrade လုပ်ဖို့ အဆိုပြုပါ |
 |`POST /v1/runtime/upgrades/activate/{id}` |JSON |အဆိုပြုထားတဲ့ runtime upgrade ကို activate လုပ်ပါ။ |
@@ -121,33 +121,107 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=5" \
 
 Torii ကို app-facing feature set ဖြင့်တည်ဆောက်တဲ့အခါ စူးစမ်းရှာဖွေသူများအတွက် နောက်ထပ် JSON မိသားစုများ၊ SORA ဝန်ဆောင်မှုများ၊ တံတားစီးကြောင်းများ၊ အထောက်အထားများနှင့် သိုလှောင်မှုများကို ဖော်ပြသည်။ ဤမိသားစုအားလုံးသည်ကွန်ရက်ပရိုဖိုင်တိုင်းတွင်စွမ်းဆောင်နိုင်ခြင်းမရှိပါ။
 
+`/openapi` သည်ထုတ်လုပ်ထားသော app-API စာရင်းတွင် မှတ်ပုံတင်ထားသည့် လမ်းကြောင်းများကို ဖော်ပြသည်၊ ၎င်းပါဝင်သော စာရင်းများအတွက် ခွင့်ပြုချက်ရှိပြီး တပ်ဆင်ထားသောလမ်းကြောင်းတိုင်းအတွက် မဟုတ်ပါ။ အထူးသဖြင့် ပြည်သူ့လမ်းကြောင်း SoraFS CID နှင့် နာမည်ကြီး လမ်းကြောင်းများကို ထုတ်ပေးထားသည့် စာရွက်စာတမ်းအပြင်ဘက်တွင် တပ်ဆင်ထားပြီး တိုက်ရိုက် စစ်ဆေးရန် လိုအပ်သည်။
+
 |လမ်းကြောင်း မိသားစု |ရည်ရွယ်ချက်|
-| --- | --- |
+| ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
 |`/v1/accounts/`, `/v1/domains/`, `/v1/assets/*`|JSON စာဖတ်သူ၊ မေးမြန်းမှု အကူအညီပေးသူ၊ တင်သွင်းခြင်း အကူအညီ ပေးသူ၊ ပရိုဖိုင် (သို့) ထိန်းသိမ်းသူ အမြင်များ |
 |`/v1/nfts/`, `/v1/rwas/`, `/v1/confidential/*`|NFT, ဒိဌလောကဝင်ငွေများနှင့် လျှို့ဝှက်ဝင်ငွေများကို ကြည့်ရှုခြင်း |
 |`/v1/aliases/`, `/v1/assets/aliases/`, `/v1/sns/`၊ `/v1/identifiers/` |နာမည်၊ အမည်မဖော်လိုသူနှင့် မှတ်သားရေးမှတ်ချက် |
 |`/v1/explorer/*` |Explorer-oriented account, asset, block, transaction, instruction, metric နဲ့ stream view တွေကို ကြည့်ပါ။|
 |`/v1/transactions/`, `/v1/pipeline/`, `/v1/iso20022/*`|ငွေပေးချေမှု သမိုင်း၊ ရေငွေ့လိုင်း ပြန်လည်ထူထောင်ခြင်း သို့မဟုတ် အခြေအနေနှင့် ISO 20022 အကူအညီများ |
 |`/v1/contracts/*` |Contract code, deployment, bundle, call, view, event, activity, rollup နဲ့ state routes တွေကို တင်ပေးပါ။ |
-|`/v1/multisig/`, `/v1/controls/` |Multisig အဆိုပြုချက်များ၊ ခွင့်ပြုချက်များနှင့် လွှဲပြောင်းမှုထိန်းချုပ်ရေး အကူအညီများ |
+|`/v1/multisig/`၊ `/v1/controls/`|Multisig အဆိုပြုချက်များ၊ ခွင့်ပြုချက်များနှင့် လွှဲပြောင်းမှုထိန်းချုပ်ရေး အကူအညီများ |
 |`/v1/bridge/`, `/v1/ledger/`, `/v1/proofs/*`|အပြီးသတ်ချက်၊ ပြည်နယ်သက်သေ၊ ပိတ်ဆို့မှုသက်သေ၊ သက်သေခံ ထိန်းသိမ်းခြင်းနဲ့ သက်သေခံမေးမြန်းမှု လမ်းကြောင်းများ |
 |`/v1/da/*` |ဒေတာရရှိနိုင်မှုသုံးစွဲမှု၊ ထုတ်ပြန်ချက်များ၊ အထောက်အထားမူဝါဒများ၊ ကတိပေးချက်များနှင့် ပစ်မှတ်ရည်ရွယ်ချက်များ |
 |`/v1/zk/*` |ZK root, proof verification, IVM proofing, vote counting, verification keys, proof records, and attachments  အတည်ပြုချက်များအား စစ်ဆေးခြင်း|
-|`/v1/gov/`, `/v1/ministry/` |အုပ်ချုပ်ရေး အဆိုပြုချက်များ၊ မဲစာရင်းများ၊ ကောင်စီအခြေအနေ၊ ကာကွယ်ထားသော နာမည်နေရာများ၊ အစီအစဉ်ဆိုင်ရာ အဆိုပြုချက် များ၊ ဥပဒေချမှတ်ခြင်းနှင့် နောက်ဆုံးသတ်မှတ်ခြင်း |
-|`/v1/nexus/`, `/v1/sccp/` |Nexus လမ်းကြောင်း၊ ဒေတာနေရာနဲ့ cross-chain proof အကူအညီများ|
+|`/v1/gov/`၊ `/v1/ministry/`|အုပ်ချုပ်ရေး အဆိုပြုချက်များ၊ မဲစာရင်းများ၊ ကောင်စီအခြေအနေ၊ ကာကွယ်ထားသော နာမည်နေရာများ၊ အစီအစဉ်ဆိုင်ရာ အဆိုပြုချက် များ၊ ဥပဒေချမှတ်ခြင်းနှင့် နောက်ဆုံးသတ်မှတ်ခြင်း |
+|`/v1/nexus/`၊ `/v1/sccp/`|Nexus လမ်းကြောင်း၊ ဒေတာနေရာနဲ့ cross-chain proof အကူအညီများ|
 |`/v1/musubi/*` |Musubi package registry readers နဲ့ ညွှန်ကြားချက် ဆောက်လုပ်သူများ |
 |`/v1/subscriptions/*` |စာရင်းသွင်းခြင်း အစီအစဉ်များ၊ စာရင်းသွင်းသက်တမ်း စက်ဝန်း၊ အသုံးပြုမှုနှင့် အကူအညီတောင်းခံသူများ |
 |`/v1/sorafs/`, `/sorafs/`, `/.well-known/sorafs/*`|SoraFS ပေးသွင်းသူ ရှာဖွေမှု၊ စွမ်းဆောင်မှု သက်သေခံမှု၊ ပိုက်ချိတ်ခြင်း၊ သိုလှောင်ခြင်း၊ အများပြည်သူအတွက် ထုတ်လွှင့်ပေးခြင်း |
 |`/v1/soracloud/`, `/v1/soradns/`, `/soradns/`၊ `/api/` |SoraCloud ဝန်ဆောင်မှုသက်တမ်းကာလ၊ ပုဂ္ဂလိက ကွန်ပျူတာ/မော်ဒယ်စီးကြောင်းများ၊ အများပြည်သူ ရှာဖွေခြင်းနှင့် ဟိုတယ် အက်ပ်များကို လမ်းညွှန်ပေးခြင်း |
-|`/v1/connect/`, `/v1/vpn/` | Iroha ချိတ်ဆက်မှု အစည်းအဝေးတွေ၊ WebSocket ပို့ဆောင်ရေး၊ VPN အစည်းအဝေးများ၊ ပရိုဖိုင်းများနှင့် လက်မှတ်များ |
+|`/v1/connect/`၊ `/v1/vpn/`| Iroha ချိတ်ဆက်မှု အစည်းအဝေးတွေ၊ WebSocket ပို့ဆောင်ရေး၊ VPN အစည်းအဝေးများ၊ ပရိုဖိုင်းများနှင့် လက်မှတ်များ                                         |
 |`/v1/app-api/`, `/v1/api/`, `/v1/content/*`|App API ချိတ်ဆက်ချက်များနှင့် bundle/CID ထောက်ပံ့ထားသော content routing |
-|`/v1/operator/*`, `/v1/mcp` |Operator authentication နှင့် native MCP JSON-RPC bridge ကို|
+|`/v1/operator/*`၊ `/v1/mcp`|Operator authentication နှင့် native MCP JSON-RPC bridge ကို|
 |`/v1/offline/`, `/v1/repo/`, `/v1/space-directory/`၊ `/v1/ram-lfe/` |အွန်လိုင်းပြင်ဆင်မှု, မှတ်ပုံတင်သဘောတူညီချက်များ, ဒေတာနေရာထုတ်ပြန်ချက်များနှင့် [RAM-LFE အကူအညီပေးသူများ ](/my/blockchain/ram-lfe.md#torii-routes) |
 |`/v1/kaigi/`, `/v1/webhooks/`, `/v1/notify/`၊ `/v1/telemetry/` |ပူးပေါင်းဆောင်ရွက်မှု, webhook, push အသိပေးချက်များနှင့် live telemetry ပေါင်းစပ်ခြင်း |
+
+## Account Authentication, Visibility, and Explorer Cursors များကို အသုံးပြုရန် {#account-authentication-visibility-and-explorer-cursors}
+
+### App Account တောင်းဆိုမှု ပရိုတိုကော {#app-account-request-protocol}
+
+App-facing routes များတွင် စစ်ဆေးရေး ခေါင်းစီးများ၊ တိုက်ရိုက် single-key proof သို့မဟုတ် multisig witness တစ်ခုကို လက်မခံနိုင်ပါ။ စစ်ဆေးရေးခေါင်းစီးတိုင်းသည် အများဆုံးတစ်ကြိမ်သာ ပေါ်ပေါက်ရမည်ဖြစ်သည်။
+
+တိုက်ရိုက်သက်သေခံဖို့ ခေါင်းစဉ်လေးခုကို အတူတကွပို့ပါ။
+
+- `X-Iroha-Account`: အတိအကျ Canonical Smallcase `0x` account-address hex သို့မဟုတ် Active canonical account ASCII account alias ကိုသုံးပါ။ I105 စာသားဟာ HTTP field value အဖြစ် လုံခြုံမှုမရှိပါဘူး။ အဲဒီစာရင်းအတွက် Canonical hex spelling ကို အသုံးပြုပါ။
+- `X-Iroha-Signature`: ကျဉ်းမြောင်းတဲ့ padded-base64 လက်မှတ်အကူအညီဝန်ဆောင်မှု။
+- `X-Iroha-Timestamp-Ms`: သတ်မှတ်ထားတဲ့ ဘက်လိုက်တဲ့ ပြူတင်းပေါက်အတွင်း မီလီစက္ကန့်များမှာ လက်မှတ်မထိုးသေးတဲ့ Unix အချိန်တံဆိပ်တစ်လုံးပါ။
+- `X-Iroha-Nonce`: ပုံနှိပ်နိုင်သော ASCII byte (`0x21` မှ `0x7e`) 1 မှ 256 အထိ၊ ပြန်လည်ကစားခြင်း ပြူတင်းပေါက်အတွင်းမှာ တစ်မျိုးတည်းဖြစ်ပါသည်။
+
+မှတ်ပုံတင်ထားတဲ့ Single-key controller က ဒီတိကျတဲ့ byte တွေကို လက်မှတ်ထိုးတယ်။
+
+```text
+iroha.app.request.network.v1\0 || <genesis-derived network_id[32]> ||
+<UPPERCASE_METHOD>\n
+<exact request path>\n
+<canonical query>\n
+<lowercase hex SHA-256 of the raw body>\n
+<canonical timestamp_ms>\n
+<nonce>
+```
+
+Canonical query construction သည် raw query ကို `application/x-www-form-urlencoded` (`+` ဆိုသည်မှာနေရာကိုဆိုလိုသည်) အဖြစ်စစ်ဆေးသည်၊ ၎င်း၏စုံတွဲများကို %-decodes လုပ်၍ `(key, value)` ဖြင့် sort လုပ်ပြီး form-coding ပြန်လုပ်သည်။ အဆိုပါပရိုတိုကောသည် အများဆုံး 64 decoded pairs နှင့် 64 KiB raw query စာသားကိုလက်ခံသည်။ hash ကိုအခွံ bytes exactly as transmitted။ တည်ငြိမ် 32-byte ကွန်ရက် ID နှင့်အကြီးအကျယ်နည်းလမ်းကြားတွင်ခွဲခြားသူမထည့်ပါနဲ့။
+
+V1 verifier သည် method token ကို 32 byte, %-encoded request path ကို 64 KiB နှင့် direct account identity ကို 36 KiB တွင် parsing မလုပ်မီတွင် caps လုပ်ပေးသည်။ Account aliases တွေမှာ name segment သုံးခု plus their separators ရဲ့ stricter structural limit ရှိပြီး bound တစ်ခုကျော်ရင် လက်မှတ်စစ်ဆေးခြင်း (သို့) source size allocation မတိုင်ခင် စစ်ဆေးမှု ကျရှုံးသွားမှာပါ။
+
+multisig controller တစ်ခုက `X-Iroha-Witness` ပြင်းထန်တဲ့ padded-base64 ကနောနိကအဖြစ် Norito ကလစ်နှိပ်ခြင်း `X-Iroha-Signature`, `X-Iroha-Timestamp-Ms`, နှင့် `X-Iroha-Nonce`. `X-Iroha-Account` ဤပုံစံတွင် ရွေးချယ်မှုရှိသည်မှာ၊ ရှိပါက သက်သေနှင့် ညီမျှရမည်။ `subject_account`. နိုင်ငံတကာ `CanonicalRequestWitnessV1` ပါဝင်ပါတယ်။ `schema_version`, `subject_account`, `timestamp_ms`, `nonce`, တစ် Iroha `Hash` အတိအကျကွန်ရက်တောင်းဆိုချက် bytes ခန္ဓာကိုယ် digest ကိုဖြတ်သန်းပေမဲ့ အသေးစိတ်နယ်ပယ်များနှင့် အများဆုံး အဖွဲ့ဝင်လက်မှတ် ၆၄ လက်မှတ်။ အဖွဲ့ဝင်တစ်ဦးချင်းစီသည် တရားဝင်လက်မှတ်ထိုး Norito Signature array မပါဘဲ အလားတူ payload ကို encoding လုပ်ပေးခြင်းပါ။ စာရင်းရဲ့ လက်ရှိ multisig မူဝါဒကို ဖြည့်ဆည်းပေးရပါမယ်။ ကုဒ်သွင်းထားတဲ့ သက်သေက ၁ MiB.
+
+အတည်ပြုမှုခေါင်းစဉ်မရှိခြင်းသည် အမည်မသိဝင်ရောက်မှုကိုရွေးချယ်သည်။ တစ်စိတ်တစ်ပိုင်း၊ ရောနှောထားခြင်း၊ ထပ်ကျော့ခြင်း၊ မှားယွင်းခြင်း၊ ခေတ်နောက်ကျနေခြင်း သို့မဟုတ် ပြန်လည်ပြသသည့် အထောက်အထားတစ်ခုခုကိုပေးခြင်းသည် အတည်ပြုခြင်းကို ကျရှုံးစေပြီး မည်သည့်အခါမှ အမည်မသိမြင်နိုင်မှုသို့ မပြန်လာပါ။
+
+### လုပ်ငန်းရှင်တောင်းဆိုချက် မှတ်ပုံတင် {#operator-request-protocol}
+
+operator-authenticated အဖြစ် အမှတ်ပေးထားသော လမ်းကြောင်းများအတွက် singleton headers လေးခုစလုံးလိုအပ်သည်
+
+- `x-iroha-operator-public-key`: Canonical Iroha multihash အများသုံးသော့။
+- `x-iroha-operator-timestamp-ms`: မီလီစက္ကန့်များတွင် လက်မှတ်မထိုးသေးသော Canonical decimal Unix အချိန်တံဆိပ်။
+- `x-iroha-operator-nonce`: ပုံနှိပ်နိုင်သော ASCII ဘိုက် (၁) မှ ၂၅၆ အထိ၊ ပြန်လည်ကစားရန် ပြူတင်းပေါက်အတွင်းရှိ အဲဒီခလုတ်အတွက် သီးသန့်ပါ။
+- `x-iroha-operator-signature`: ကျဉ်းမြောင်းတဲ့ padded-base64 လက်မှတ်အကူအညီဝန်ဆောင်မှု။
+
+ခေါင်းစဉ်တန်ဖိုးတွေဟာ ပတ်ဝန်းကျင်က အဖြူရောင်နေရာကို မပါရစေနဲ့။
+
+```text
+iroha.operator.http-request.network.v1\0 || <genesis-derived network_id[32]> ||
+<UPPERCASE_METHOD>\n
+<exact request path>\n
+<canonical query>\n
+<lowercase hex SHA-256 of the raw body>\n
+<canonical timestamp_ms>\n
+<nonce>
+```
+
+Path, query, body, timestamp နဲ့ nonce စည်းမျဉ်းတွေဟာ app ပရိုတိုကောမှာ သုံးတဲ့ တရားဝင် စည်းမျဉ်းတွေပါပဲ။ သော့ကိုလည်း လက်ခံထားရမယ်။ `[torii.operator_signatures]`: စာရင်းပေးပါ `allowed_public_keys`, (သို့) တိတိကျကျ ခွင့်ပြုချက် `allow_node_key` node key ကို သုံးတဲ့အခါမှာ ပြန်လည်ဖြည့်ထားတဲ့ cache ကို saturate လုပ်တဲ့အခါ Torii အဆိုပါ တောင်းဆိုချက်ကို ပယ်ချသည် `503 Service Unavailable`. ရွေးချယ်မှု WebAuthn (သို့) mTLS operator authentication ဟာ ထပ်မံကိန်းတစ်ခုဖြစ်ပြီး ဒီတိကျတဲ့ တောင်းဆိုချက် လက်မှတ်ကို ဘယ်တော့မှ အစားထိုးမှာမဟုတ်ဘူး။
+
+ISO 20022 လမ်းကြောင်းတွေမှာ လွတ်လပ်တဲ့ စစ်ဆေးမှု နှစ်ခုရှိပါတယ်။ တောင်းဆိုချက်က ဒီစီမံခန့်ခွဲသူ ခွင့်ပြုချက်စာရင်းနဲ့ လက်မှတ်ရေးထိုးခြင်း ပရိုတိုကောကို အရင်ဆုံး ကျော်လွှားဖို့လိုပါတယ်။ ISO ကိုင်တွယ်သူက အောက်မှာဖော်ပြထားတဲ့ အတိအကျ ပါဝင်သူ (သို့) စာရင်းစစ်ဆေးမှုအခန်းကဏ္ဍကို သိမ်းပိုက်ဖို့ တူညီတဲ့ သော့ကို လိုအပ်တယ်။
+
+### Ledger မြင်ကွင်းနှင့် Explorer Cursors များ {#ledger-visibility-and-explorer-cursors}
+
+App-facing ledger reads များတွင် optional app account boundary ကို အသုံးပြုသည်။ လက်မှတ်မထိုးသော request သည် အများပြည်သူအဖြစ် သတ်မှတ်ထားသော dataspaces များကိုသာ ရရှိပါသည်။ သက်ဆိုင်ရာလက်မှတ်ထိုးသော request တစ်ခုက ထပ်မံဖြည့်သည် ဖုန်းခေါ်ဆိုသူရဲ့ လက်ရှိ UAID နဲ့ ချိတ်ဆက်ထားတဲ့ ဒေတာဇုန်များ၊ တိကျတဲ့ `CanReadRestrictedDataspace { dataspace }` ခွင့်ပြုချက်ဖြင့် အမည်ပေးထားတဲ့ ကန့်သတ်ထားတဲ့ ဒေတာ ဇုန်တိုင်း (သို့) အကောင့်မှာ `CanReadAllLedgerData` ရှိတဲ့အခါ လမ်းကြောင်းအားလုံးပါ။
+
+NFT, RWA, holder နှင့် Explorer တို့သည်စာရင်း၊ ဒိုမင်၊ အရင်းအမြစ်အဓိပ္ပါယ်ဖွင့်ဆိုချက်များနှင့်အတူတူသော မြင်နိုင်မှုအရာဝတ္ထုများကို စစ်ဆေးသည်။ ပျောက်ကွယ်သည့် အရာဝတ္ထုတစ်ခုနှင့်ခေါ်သူ၏မြင်ရတဲ့ လမ်းကြောင်းများအပြင်ရှိရာ အရာဝတ္ထုကို ရည်ရွယ်၍ ခွဲခြားမရပါ။ Transaction အတွက် မှတ်တမ်းတင်ထားသော route leg တစ်ခုချင်းစီကို မြင်နိုင်သည့်အခါသာ Committed transaction နှင့် instruction history ကိုပြသပေးပါသည်။ ဒါကြောင့် ပါဝင်သူရဲ့ ခြေထောက်တစ်ခုတောင်မှ ဖုန်းခေါ်ဆိုသူရဲ့ နယ်ပယ်အပြင်မှာ ရှိတဲ့အခါ ပုန်းကွယ်နေတာပါ။ ပျောက်နေတဲ့၊ ခေတ်မမီတဲ့ (သို့) မှားယွင်းတဲ့ လမ်းညွှန်ရေး အခြေအနေဟာ ကမ္ဘာလုံးဆိုင်ရာ စာဖတ်သူတွေသာ မြင်နိုင်တာပါ။
+
+ကမ္ဘာအနှံ့ထောက်ပံ့ထားတဲ့ Explorer ကော်လီကေးရှင်း ခြောက်ခုမှာ ပွင့်လင်းမြင်သာမှုမရှိတဲ့ base64url ခလုတ်စု ညွှန်ပြချက်တွေကို အသုံးပြုပါတယ်။ ကြိုတင်သတ်မှတ်ထားသော စာမျက်နှာက ၂၅၊ အမြင့်ဆုံးက ၁၀၀ဖြစ်ပြီး စာမျက်နှာတစ်ခုဟာ အများဆုံး 512 ပြိုင်ဘက်ခလုတ်ကို စစ်ဆေးတယ်။ Cursor တစ်ခုစီဟာ ၎င်းရဲ့ စုစည်းမှု၊ စစ်ဆေးမှုတွေ၊ Canonical Last Key နဲ့ ဖုန်းခေါ်သူရဲ့ မြင်နိုင်တဲ့ လမ်းကြောင်း-set digest တွေနဲ့ ချည်နှောင်ထားတယ်။ ဒီတော့ အခြားမေးမြန်းချက်တစ်ခုမှာ (သို့) ဖုန်းခေါ်သူ၏မြင်ကွင်း ပြောင်းလဲပြီးနောက်မှာ ပြန်လည်ကစားလို့မရဘူး။
+
+Block, transaction, latest-transaction, instruction နှင့် latest-instruction history cursors တို့သည် commited snapshot အမြင့်နှင့် block hash ကို ထပ်မံသတ်မှတ်ထားသည်။ တုံ့ပြန်မှုများသည် `pagination.limit`, `pagination.snapshot_height`, `pagination.snapshot_hash`, `pagination.next_cursor` နှင့် `pagination.has_more` ကို ဖော်ပြသည်။ Torii သည် အခြားလမ်းကြောင်း (သို့) စစ်ဆေးမှုအစီအစဉ်တစ်ခုအတွက် ညွှန်ပြချက်ကို ပယ်ချသည်၊ မြင်ကွင်း ပြောင်းလဲခြင်း သို့မဟုတ် node ကအတည်မပြုနိုင်သော snapshot ကိုပယ်ချသည်။ ဘလော့ကာလုပ်သား ပြေးဆွဲနေစဉ်တွင် Torii ၏ query-admission ခွင့်ပြုချက်အတွင်းမှာသမိုင်းစကင် remain remains။
+
+Explorer WebSocket streams က filtered summaries တွေကို emit လုပ်ပေးပြီး ledger ခွင့်ပြုချက်တွေ ပြောင်းလဲလာတာနဲ့အမျှ အမြင်အာရုံကို ပြန်လည် တွက်ချက်ပေးပါတယ်။ ဒေသခံ `GET /v1/blocks/stream` လမ်းကြောင်းက ခြားနားပါတယ်: ၎င်းဟာ complete ကို emit ပါတယ်။ လက်ညှိနှိုင်းမှုအတွင်း `CanReadAllLedgerData` ကိုလိုအပ်ပြီး ထိုခွင့်ပြုချက်ကို နောက်ပိုင်း ပယ်ဖျက်လိုက်ပါက ပိတ်ထားသည်။ ဒေတာနေရာကို စကုပ်ထားတဲ့ Explorer အတွက် native stream ကို မသုံးပါ။
 
 ## ISO 20022 တံတား {#iso-20022-bridge}
 
 Torii ပွင့်လင်းမြင်သာမှု ISO 20022 တံတားအောက် `/v1/iso20022/*` app ကို မျက်နှာပြုတဲ့အခါမှာ API တံတားက ရည်ရွယ်ချက်ရှိပြီး အသုံးချမှုမရှိပါ။ ISO 20022 ရှင်းလင်းရေးဂိတ်တံခါး၊ ဒါပေမဲ့ ရွေးချယ်ထားတဲ့ ငွေပေးချေမှု သတင်းအချက်အလက်တွေကို လက်မှတ်ထိုးချက်အဖြစ် ပြောင်းဖို့ ထောက်ပံ့တဲ့ အစိတ်အပိုင်းစု Iroha ငွေလွှဲပြောင်းခြင်းများနှင့် ၎င်းတို့၏ စာရင်းအင်းအခြေအနေကို ခြေရာခံရန်အတွက်ပါ။
+
+မည်သည့်ပို့မှုမဆို လက်ခံရန်မတိုင်မီ ရေရှည်တည်တံ့သော ဒေသခံ `torii.iso_bridge.store_dir` ကိုသတ်မှတ်ပါ။ သတ်မှတ်ချက် ကွင်းသည် ရွေးချယ်စရာတစ်ခုတည်းဖြစ်သည်၊ ထို့ကြောင့် node သည်ဖတ်ခြင်းသာ သို့မဟုတ် ရောဂါရှာဖွေရေးအသုံးပြုမှုအတွက် စတင်နိုင်သည်: စစ်ဆေးထားသော ISO တင်သွင်းမှုတိုင်းမှာ ပြတိုက်ကိုလိုအပ်ပြီး persistence မရှိတဲ့အခါ (သို့) replay-tombstone သို့မဟုတ် rich-record ရေးသားမှု ကျရှုံးတဲ့အခါ ပြန်လည်စစ်ဆေးလို့ရတဲ့ `503 Service Unavailable` ကိုပြန်ပို့တယ်။
 
 ### Torii ISO 20022 နိဂုံးချုပ်ချက်များ {#torii-iso-20022-endpoints}
 
@@ -155,13 +229,13 @@ Torii ပွင့်လင်းမြင်သာမှု ISO 20022 တံတ
 | --- | --- |
 |`POST /v1/iso20022/pacs008` |FI-to-FI customer credit transfer ကို တင်သွင်းပြီး သင့်တော်တဲ့ Iroha asset transfer ကို တည်ဆောက်ပါ။ |
 |`POST /v1/iso20022/pacs009` |FI မှFI သို့ PvP သို့မဟုတ် စာရင်းအင်းများနှင့် ဆက်စပ်သည့် ငွေကြေးထောက်ပံ့မှုအတွက် အသုံးပြုသော ချေးငွေလွှဲပြောင်းမှုကို တင်ပြပါ။ |
-|`POST /v1/iso20022/pacs002` |ငွေပေးချေမှုအခြေအနေ အစီရင်ခံစာ တင်ပြပါ |
-|`POST /v1/iso20022/pacs004` |ငွေပေးချေမှု ပြန်လည်တင်ပြခြင်း |
-|`POST /v1/iso20022/camt056` |ငွေပေးချေမှုကို ဖျက်သိမ်းရန် တောင်းဆိုချက် တင်ပြပါ |
+|`POST /v1/iso20022/pacs002` |ငွေပေးချေမှုအခြေအနေ အစီရင်ခံစာကို တင်ပြပါ  ငွေပေးချေးမှု လိုအပ်ချက်များ|
+|`POST /v1/iso20022/pacs004` |ငွေပေးချေမှု ပြန်လည်ထုတ်ပြန်ချက် ပေးပို့ခြင်း|
+|`POST /v1/iso20022/camt056` |originator ပိုင်ဆိုင်သော ငွေပေးချေမှုကို ဖျက်သိမ်းရန် တောင်းဆိုချက် တင်ပြပါ |
 |`POST /v1/iso20022/sese023` |စာရွက်စာတမ်းများ ဖြေရှင်းရန် ညွှန်ကြားချက် ပေးပို့ခြင်း |
-|`POST /v1/iso20022/sese024` |စာရွက်စာတမ်းများ ဖြေရှင်းမှု အခြေအနေကို သတင်းပို့ခြင်း |
-|`POST /v1/iso20022/sese025` |စာရွက်စာတမ်းများ ဖြေရှင်းခြင်း အတည်ပြုချက် တင်ပြပါ |
-|`POST /v1/iso20022/colr012` |အာမခံ အစားထိုးမှု သတင်းစာကို ပေးပို့ပါ။|
+|`POST /v1/iso20022/sese024` |ငွေပေးချေမှု အခြေအနေကို အပြန်အလှန်ပိုင်ဆိုင်သော စာရွက်စာတမ်းများတွင် သတင်းပို့ခြင်း |
+|`POST /v1/iso20022/sese025` |ငွေလဲလှယ်မှုအထောက်အထားကို အတည်ပြုရန်|
+|`POST /v1/iso20022/colr012` |အာမခံ အစားထိုးမှု သတင်းစာကို တင်ပါ |
 |`GET /v1/iso20022/messages/{msg_id}` |စာတိုတစ်ပုဒ်အတွက် Canonical Bridge မှတ်တမ်းကို ဖတ်ပါ။|
 |`GET /v1/iso20022/audit/messages` |အမှားအယွင်းထင်ရှားတဲ့ သတင်းစာ စစ်ဆေးမှု မှတ်တမ်းကို ဖတ်ပါ။|
 |`GET /v1/iso20022/messages/{msg_id}/pacs002` |လက်ရှိငွေပေးချေမှုအခြေအနေကို `pacs.002` XML အဖြစ်ပြန်ညွှန်းပါ။|
@@ -176,6 +250,43 @@ Torii ပွင့်လင်းမြင်သာမှု ISO 20022 တံတ
 
 `pacs.008` နှင့် `pacs.009` တင်ပြမှုအဆုံးမှတ်များတွင် XML ISO ပတ်စောင်များ (သို့) တံတားစမ်းသပ်မှုများတွင် အသုံးပြုသော ပွင့်လင်းတဲ့ ကွင်းပုံစံကို လက်ခံနိုင်သည်။ ရွေးချယ်စရာ `SplmtryData` ကွင်းများသည် ရည်မှန်းချက်စာအုပ် Iroha ကို pin လုပ်နိုင်ပါသည်။ အရင်းအမြစ်နှင့်ရည်မှန်းချက်စာရင်း IDs သို့မဟုတ်လိပ်စာများ၊ ပိုင်ဆိုင်မှုဆိုင်ရာ အဓိပ္ပါယ်ဖွင့်ဆိုချက် ID။ အဖြေသည် `202 Accepted` နှင့် `message_id`, `transaction_hash`, `status`, `pacs002_code` နှင့် ဖြေရှင်းထားသော လက်မှတ်/စာရင်း/ပိုင်ဆိုင်မှု အခြေအနေဖြစ်သည်။
 
+### ပါဝင်သူ၏ ခွင့်ပြုချက်နှင့် သက်တမ်းပတ်လည်ပိုင်ဆိုင်မှု {#participant-authorization-and-lifecycle-ownership}
+
+အကောင်အထည်ဖော်ထားသော တံတားတိုင်းတွင် ပါဝင်သူစာရင်းရှိသည်။ ပါဝင်သူ စာရင်းတစ်ခုစီမှာ ထူးခြားတဲ့ ပါဝင်သူ ID ၊ လုပ်ငန်းရှင် အများသုံး သော့တစ်လုံး (သို့မဟုတ်) များ၊ ငွေရေးကြေးဆိုင်ရာ မှတ်သားစရာ တစ်ခု (သို့) များ၊ ခွင့်ပြုထားတဲ့ ပရိုဖိုင်စုတစ်ခုနှင့် `originator`, `counterparty` သို့မဟုတ် နှစ်ခုစလုံးပါဝင်သည်။ `audit_admin_keys` ကို သီးခြားသတ်မှတ်ပါ။ စစ်ဆေးမှု-စီမံအုပ်ချုပ်ရေးမှူး သော့သည်လည်း ပါဝင်သူ အပြောင်းအလဲ သော့ဖြစ်မရနိုင်ပါ။
+
+ISO လမ်းကြောင်းအားလုံးအတွက် လုပ်ငန်းရှင်လက်မှတ်သစ်တစ်ခုလိုအပ်သည်။ ပထမဦးဆုံး `pacs.008`, `pacs.009`, `sese.023` သို့မဟုတ် `colr.012` တင်ပြမှုအတွက် စစ်ဆေးသော လုပ်ငန်းရှင်သည် လျှောက်လွှာခေါင်းစဉ် `From` ဖြင့် သတ်မှတ်ထားသည့် ပါဝင်သူ၏ ငွေကြေးကိုယ်စားလှယ်ဖြစ်ရမည်။ `To` လက္ခဏာဟာ `counterparty` အခန်းကဏ္ဍနဲ့ ဖွဲ့စည်းထားတဲ့ ပါဝင်သူတစ်ဦးကို ဖြေရှင်းရပြီး ရွေးချယ်တဲ့ ပရိုဖိုင်ကို နှစ်ဖက်စလုံးအတွက် ခွင့်ပြုဖို့လိုပါတယ်။ တည်တံ့တဲ့ လက်မှတ်ရေးထိုးခြင်းသည် မူရင်းထုတ်ပြန်သူ၊ ငွေပေးချေသူ၊ လက်မှတ်ရေးဆွဲသူနှင့် လုပ်ငန်းရှင်လက်မှတ်ရေးထိုးသူ၊ မူရင်းပရိုဖိုင်းနှင့် ထည့်သွင်းထားသော လက်မှတ် ရေးထိုးမှု မူဝါဒကို မှတ်တမ်းတင်သည်။
+
+သက်တမ်းပတ်လည် ခွင့်ပြုချက်ဟာ ဖုန်းခေါ်သူက ရွေးချယ်တဲ့ တန်ဖိုးတွေထက် ဒီမပြောင်းလဲနိုင်တဲ့ မှတ်တမ်းကနေ ရတာပါ။
+
+|ဘဝပတ်လည် သတင်းစကား |လိုအပ်တဲ့ ပါဝင်သူ |
+| ---------------------------------------------- | -------------------------------------------------- |
+|`pacs.002`, `pacs.004`, `sese.024`၊ `sese.025` |`counterparty` အခန်းကဏ္ဍရှိ မူရင်းပဋိပက္ခသည် |
+|`camt.056` |`originator` အခန်းကဏ္ဍနဲ့ မူရင်းထုတ်ပြန်သူ |
+
+မူလ profile နဲ့ လက်မှတ်ရေးထိုးတဲ့ မူဝါဒဟာ တစ်လျှောက်လုံး ပိတ်ထားနေဆဲပါ။ lifecycle ဆိုတော့ ဖုန်းခေါ်သူဟာ update လုပ်ဖို့ အားနည်းတဲ့ profile ကို ရွေးလို့မရဘူး။ `pacs.002` Settlement ကို ကိုယ်စားပြုတဲ့ ကုဒ် (`ACSC`, `ACCP`, `SETT`, ဒါမှမဟုတ် `SETTLED`) မူလစာရင်းကို settled အဖြစ် ပြောင်းလဲလိုက်ပါကသာ Torii ငွေလဲလှယ်မှု အထောက်အထားကို ချုပ်ဆိုခဲ့သူပါ။
+
+မူရင်းပါတီ နှစ်ခုစလုံးသည် ၎င်း၏ သတင်းအချက်အလက် မှတ်တမ်းနှင့် ထုတ် generated outbox စာရွက်စာတမ်းများကိုဖတ်ရှုနိုင်သည်။ စစ်ဆေးရေးအဆုံးမှတ်သည် အထောက်အထားရရှိသူက originator သို့မဟုတ် counterparty ဖြစ်သည့် မှတ်တမ်းများသာ ပြန်လည်ပို့ပေးသည်။ သီးခြားသတ်မှတ်ထားသော စစ်ဆေးရေး အုပ်ချုပ်ရေးမှူးသည် တစ်ကမ္ဘာလုံး စာဖတ်ခြင်းသာ ရှိသည့် စစ်ဆေးမှု အမြင်ကို ရရှိပြီး သတင်းအချက်အလက်များကို ပေးပို့ရန် သို့မဟုတ် ပြောင်းလဲရန် မဖြစ်နိုင်ပါ။ မသိသော ပါဝင်သူများနှင့် ဆက်စပ်မှုမရှိသော သတင်းအချက်အလက် identifikator များကို ထုတ်ပြန်ခြင်း မရှိပါ။
+
+### ခိုင်ခံ့သော ပြန်လည်ဖြန့်ဝေမှု မှတ်တမ်းများနှင့် လက်မှတ်ရေးထိုးထားသော Outbox Documents {#durable-replay-identity-and-signed-outbox-documents}
+
+Torii က မဖတ်နိုင်၊ ကြီးမားလွန်း၊ မှားယွင်း၊ အမည်မမှန်၊ ပဋိပက္ခဖြစ်တာ (သို့) ရှင်းလင်းစွာ လိုက်ဖက်မှုမရှိတဲ့ သင်္ချိုင်းကျောက်တစ်ခုအတွက် အစပျိုးမှုကို ဖယ်ရှားတယ်။ ၎င်းသည် ပွင့်လင်းစွာမလိုက်ဖက်သော schema ဗားရှင်း၊ လက်ရှိ configuration မှပျောက်ကွယ်သည့် ပါဝင်သူ၊ profile သို့မဟုတ် လက်မှတ်မူဝါဒများနှင့်အတူ Rich Record ကိုလည်း abort လုပ်ပေးသည်။
+
+Rich-record ပျက်စီးမှုများကို မတူညီစွာ စီမံခန့်ခွဲနိုင်သည် - မဖတ်ရှုနိုင်သော (သို့) ကြီးမားသောအဖိုင်များ၊ မမှန်ကန်သည့် JSON ၊ မမှန်ကန်သော current-schema မှတ်တမ်းများ၊ ကန်နိုနစ်မဟုတ်သော ဖိုင်နာမည်များနှင့် ပဋိပက္ခဖြစ်သော ပြန်လည်ရိုက်ကူးခြင်းအမည်များကို မှတ်ပုံတင် သို့မဟုတ် ခလုတ်ချပါ။ မဖတ်နိုင်တဲ့ (သို့) မတည်ငြိမ်တဲ့ လက်ရှိဗားရှင်း စစ်ဆေးရေး အညွှန်းကိန်းကို ထိန်းသိမ်းထားသော မှတ်တမ်းများမှ ပြန်လည်ပြုပြင်ပေးသည်။ ရှင်းလင်းစွာမလိုက်ဖက်သည့် စစ်ဆေးရေးအညွှန်းကိန်း ဗားရှင်းတစ်ခုတည်းက စတင်ခြင်းများကို ရပ်ဆိုင်းပေးသည်။ Start logs တွေကို စောင့်ကြည့်ပြီး ပြန်လည်ပြုပြင်ထားတဲ့ audit manifest ကို reconcile လုပ်လိုက်ပါ၊ ချိုးဖောက်နေတဲ့ rich record ဖိုင်တိုင်းက node ကို serve မလုပ်စေဘူးလို့ ယူဆတာအစားပါ။
+
+ချုပ်ကိုင်ထားသော Rich Record တစ်ခုစီသည် ပါဝင်သူ၏ မပြောင်းလဲနိုင်သော ဘိုးဘွားဖြစ်စဉ်ကို ထိန်းသိမ်းထားသည်။ သီးခြား ရေရှည်တည်တံ့သော tombstone သည် Rich Record အသေးစိတ်များကို ဖြတ်တောက်ပြီးနောက်တောင်မှ အပြည့်အဝ deduplication TTL အတွက် သတင်းစကား ID, payload hash, စီးပွားရေးသတင်းစာ ID နှင့် UETR ကိုထိန်းသိမ်းထားပါသည်။
+
+Torii သည် lifecycle သတင်းစကားတစ်စောင်ကို လက်မှတ်မထိုးခင် သို့မဟုတ် စီမံခန့်ခွဲခင် ပြန်လည်ကစားခွင့်ပြုမှုကို ဆက်လက်တည်ရှိသည်။ သက်တမ်းမကုန်သေးတဲ့ ပြန်လည်ကစားလက္ခဏာတစ်ခုကို ဘယ်တော့မှ ပယ်ရှားခြင်းမရှိပါ။ သတ်မှတ်ထားသော အရည်အချင်းက ကာကွယ်ထားတဲ့ မှတ်တမ်းများ (သို့) သက်တမ်းမကုန်သေးတဲ့ ပြန်လည်ရိုက်ကူးမှုအမည်များဖြင့် အပြည့်အဝ နေရာယူထားသည်ဆိုပါစို့၊ တင်သွင်းချက်များသည် ဘဝပတ်ဝန်းကျင် သို့မဟုတ် စာရင်းအခြေအနေကို ပြောင်းလဲခြင်းမရှိဘဲ ပြန်လည်သုံးစွဲနိုင်သော `503 Service Unavailable` ကို ရရှိသည်။
+
+ထုတ်လုပ်မှုတိုင်းမှာ `pacs.002`, `pacs.004`, `camt.029`, `sese.024`, ဒါမှမဟုတ် `sese.025` စာရွက်စာတမ်းကို ပြန်ပို့ခြင်း `application/xml` ဒီတုံ့ပြန်မှု ခေါင်းစဉ်တွေနဲ့:
+
+|ခေါင်းစဉ် |အဓိပ္ပါယ်|
+| ------------------------------ | ----------------------------------------------------- |
+|`X-Iroha-Iso-Signature-Domain` |အမြဲတမ်း `iroha.iso20022.outbound.v2`|
+|`X-Iroha-Iso-Signer` |configured bridge signer အတွက် Canonical public key ကို အသုံးပြုပါ။|
+|`X-Iroha-Iso-Signature` |ဒိုမင်ခွဲခြားထားသော XML ဘိုက်များပေါ်တွင် Base64 လက်မှတ် |
+
+UTF-8 byte sequence `iroha.iso20022.outbound.v2`, zero byte တစ်ခုနဲ့ တိကျတဲ့ တုံ့ပြန်မှု body ပေါ်က လက်မှတ်ကို စစ်ဆေးပါ။ စစ်ဆေးခြင်းမတိုင်မီ XML ကို ပြန်လည်ဖေါ်မြူတာ (သို့မဟုတ်) ပုံမှန်မပြုလုပ်ပါနဲ့။
+
 ### နောက်ထပ် Parser နှင့် မြေပုံထုတ်ခြင်း Support {#additional-parser-and-mapping-support}
 
 IVM ISO အကူသည်လည်း envelope validation, settlement mapping သို့မဟုတ် downstream reconciliation အတွက် အောက်ပါ message families များကို validates နှင့် materializes သည်။ ၎င်းတို့တွင် standalone Torii လမ်းကြောင်းမရှိပါ။
@@ -184,7 +295,7 @@ IVM ISO အကူသည်လည်း envelope validation, settlement mapping �
 | --- | --- |
 |`head.001` |`BizMsgIdr`, `MsgDefIdr`၊ ဖန်တီးချိန်နှင့် ရွေးချယ်စရာ ပေးပို့သူ/လက်ခံသူ BIC ကွင်းများအပါအဝင် ISO စာစောင်များအတွက် စီးပွားရေး လျှောက်လွှာ ခေါင်းစဉ် အတည်ပြုခြင်း |
 |`pacs.007`, `pacs.028`, `pacs.029`|ငွေပေးချေမှု ပြန်လည်ကောက်ခံခြင်း၊ အခြေအနေတောင်းဆိုခြင်းနှင့် စုံစမ်းစစ်ဆေးမှုဖြေရှင်းရေး/အခြေအနေ စစ်ဆေးခြင်း |
-|`pain.001`, `pain.002` |Customer payment initiation နှင့် ငွေပေးချေမှုအခြေအနေ အစီရင်ခံစာကို အတည်ပြုခြင်း |
+|`pain.001`၊ `pain.002`|Customer payment initiation နှင့် ငွေပေးချေမှုအခြေအနေ အစီရင်ခံစာကို အတည်ပြုခြင်း |
 |`camt.052`, `camt.053`, `camt.054`|စာရင်းအင်း အစီရင်ခံစာ၊ ထုတ်ပြန်ချက်နှင့် အသိပေးချက် အတည်ပြုချက် |
 
 ## Kaigi အစည်းအဝေး {#kaigi-sessions}
@@ -236,7 +347,7 @@ iroha kaigi end --domain streaming --call-name daily
 
 သုံးပါ [soramitsu/iroha-demo-javascript](https://github.com/soramitsu/iroha-demo-javascript) Desktop Demo ကို End-to-End Wallet စမ်းသပ်မှုအတွက်ပါ။ ဒီမိုဟာ Electron နဲ့ Vue Application တစ်ခုဖြစ်ပြီး Torii ဒေသတွင်းကနေ `@iroha/iroha-js` အမိန့်ချမှတ်ထားပြီး `/kaigi` browser-native media တစ်ခုမှတစ်ဆင့် လမ်းကြောင်း။
 
-Iroha အရင်းအမြစ် သိုလှောင်ရုံမှ [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/main/javascript/iroha_js) နှင့်အတူ demo ကိုအသုံးပြုပါ။ ဒီမို pins များသည် SDK မှ `file:../iroha/javascript/iroha_js` အထိဖြစ်သည်၊ ထို့ကြောင့် စစ်ဆေးမှု နှစ်ခုစလုံးကိုညီအစ်ကိုစီအစဉ်တွင်ထားပါ:
+Iroha အရင်းအမြစ် သိုလှောင်ရုံမှ [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js) နှင့်အတူ demo ကိုအသုံးပြုပါ။ ဒီမို pins များသည် SDK မှ `file:../iroha/javascript/iroha_js` အထိဖြစ်သည်၊ ထို့ကြောင့် စစ်ဆေးမှု နှစ်ခုစလုံးကိုညီအစ်ကိုစီအစဉ်တွင်ထားပါ:
 
 ```bash
 mkdir iroha-wallet-workspace
@@ -256,7 +367,7 @@ npm run dev
 
 Node.js 20 သို့မဟုတ် ပိုမိုသစ်သောနှင့် Rust toolchain ကိုအသုံးပြု၍ ဒေသခံ `iroha_js_host` မော်ဒူးကို တည်ဆောက်နိုင်သည်။ အရင်းအမြစ်ပြောင်းပြီးနောက် ညီအစ်ကို Iroha checkout တွင် SDK ကိုပြန်လည်တည်ဆောက်ပါ။ သန့်ရှင်းသော package layout တွင် `npm run build:native` အတွက်လိုအပ်သည့် Cargo အလုပ်ခွင်မရှိပါ။
 
-Controlled test အတွက် Kaigi-capable Torii endpoint ကို demo ကို ညွှန်ပြပါ။
+Controlled test အတွက် Kaigi-capable Torii endpoint ကို demonstration ကို ညွှန်ပြပါ။
 
 1. SORA/Kaigi app-facing APIs ကို enable လုပ်ပြီး Iroha node တစ်ခုကိုစတင်ပါ သို့မဟုတ် လိုအပ်တဲ့ Kaigi မျက်နှာပြင်တွေကို ဖော်ပြပေးမယ့် အများသုံး endpoint ကို အသုံးပြုပါ။
 2. `/health` ဖြင့် အခြေခံရရှိနိုင်မှုကို စစ်ဆေးပြီး `/openapi` သို့မဟုတ် `/openapi.json` ဖြင့် သက်ရှိလမ်းကြောင်း မျက်နှာပြင်ကို စစ်ဆေးပါ။ တစ်ချို့ တပ်ဆင်မှုတွေမှာလည်း `/v1/health` ကို နှိပ်စက်ထားပေမဲ့ `/health` ကတော့ သယ်ယူပို့ဆောင်ရေးသက်တမ်းစစ်ဆေးခြင်းဖြစ်သည်။
@@ -285,7 +396,7 @@ Kaigi UI ကို စမ်းသပ်ရန်:
 
 Private Kaigi needs shielded XOR to pay the private entry point fee. demo မှာ private Kaigi needs protected XOR ကို အစီရင်ခံထားတယ်ဆိုရင်, app ထဲက self-shield prompt ကိုသုံးပြီး create (သို့) join လုပ်ရပ်ကို ထပ်မံကြိုးစားပါ။ အထောက်အထားထုတ်လုပ်ခြင်း၊ ပုဂ္ဂလိကထောက်ပံ့မှု (သို့) တိုက်ရိုက်အချက်ပြခြင်း မရှိပါက demo သည် ပွင့်လင်းမြင်သာသော / လက်ကိုင်စီးဆင်းမှုအဖြစ် ပြန်ကျသွားနိုင်သည်။ ထိုကိစ္စတွင် Advanced Signaling ကိုဖွင့်ပြီး ရိုးရိုးလက်ဆောင် (သို့မဟုတ်) အဖြေအိတ်ကို ကူးယူပြီး အခြား ပြတင်းပေါက်ထဲကပ်ပါ။
 
-demo repo မှာ အလိုအလျောက် စစ်ဆေးမှုအတွက်: run:
+demo repo ထဲက အလိုအလျောက် စစ်ဆေးမှုအတွက် run:
 
 ```bash
 npm test -- tests/kaigiView.spec.ts tests/preloadKaigiBridge.spec.ts
@@ -302,11 +413,11 @@ npm run verify
 Status နဲ့ metrics endpoints တွေဟာ Dashboards ထဲမှာ ပထမဆုံး ထည့်သွင်းရမယ့် အရာတွေပါ။
 
 - `/status` အဆင့်မြင့် peer, block, queue, and consensus fields တွေကို ဖော်ပြတယ်။
-- `/metrics` က Prometheus counters တွေ၊ gauges တွေနဲ့ histograms တွေကို ဖေါ်ပြပါတယ်။
+- `/metrics` က Prometheus counters တွေ၊ gauges တွေနဲ့ histograms တွေကို ဖေါ်ပြတယ်။
 
 Nexus လုပ်နိုင်သော node များတွင် status output တွင် lane နှင့် data-space ကို သိရှိနားလည်သည့် sections များလည်း ပါဝင်သည်။ `nexus.enabled = false` ရှိပါက ထို sections များကို ချန်ထားပါ။
 
-## JSON နှင့် Norito {#json-vs-norito}
+## JSON vs Norito {#json-vs-norito}
 
 အော်ပရေတာအဆုံးသတ်မှတ်ချက်များစွာသည် အလိုလျောက် Norito ကိုပြန်လည်ပို့ပေးသည်။ အဆုံးသတ်မှတ်ချက်သည် JSON ကိုထောက်ပံ့သောအခါ, ပေးပို့ပါ:
 
@@ -347,6 +458,6 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
 
 ## အထက်ပိုင်းဆိုင်ရာ ရည်ညွှန်းချက်များ {#upstream-references}
 
-- [README API နှင့် လေ့လာနိုင်မှု အပြည့်အစုံ](https://github.com/hyperledger-iroha/iroha/blob/main/README.md)
-- [ISO 20022 တံတား အကောင်အထည်ဖော်ခြင်း](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_torii/src/iso20022_bridge.rs)
-- [စွမ်းဆောင်ရည်နှင့် မက်ထရစ်များ](/my/guide/advanced/metrics.md)
+- [README API နှင့် လေ့လာနိုင်မှု အပြည့်အစုံ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/README.md)
+- [ISO 20022 တံတား အကောင်အထည်ဖော်ခြင်း](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/iso20022_bridge.rs)
+- [စွမ်းဆောင်ရည်နှင့် မက်ထရစ်များ ](/my/guide/advanced/metrics.md)

@@ -5,7 +5,7 @@ Taira testnet and keep Minamoto mainnet read-only. Each recipe states
 whether it is a public read, a normal funded-account write, or a
 permission-gated operation. Commands use current I105 account IDs, explicit
 fee selection, and the behavior checked in at Iroha commit
-[`bc7114ed1c7f265a156d2100ff09e851cc95702c`](https://github.com/hyperledger-iroha/iroha/tree/bc7114ed1c7f265a156d2100ff09e851cc95702c).
+[`0010c5a70039eac101a4846499ba9ceaf43eb65c`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c).
 
 Start with [Connect to Taira](./connect-to-taira.md). It creates the client
 configuration and fee metadata reused by the command-line recipes. Never

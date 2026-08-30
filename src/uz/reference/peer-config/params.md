@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /reference/peer-config/params.md
-translation_source_hash: d9fa3775e65b26b4eda726b27e54d167097b8bbd5bb766c27d7eeefdbc7ef10b
+translation_source_hash: 027486a17e7624cc301f939429baf9ea9ed1259564c3b99b8dc63cce17a7b26e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 
@@ -22,7 +22,7 @@ import ParamTable from './ParamTable.vue';
 
 ID zanjiri har bir muomalaga kiritilishi kerak. Takrorlash hujumlarini oldini olish uchun ishlatiladi.
 
-Takrorlash hujumlari - bu haqiqiy operatsiyani o'ziga mo'ljallanganidan boshqacha tarmoqga taqdim etish urinishidir. `chain` imzolangan operatsiya faydali yukning bir qismi bo'lgani uchun, bitta zanjir uchun imzolangan tranzaksiya boshqa zanjirdan foydalanuvchi tengdoshlar tomonidan rad etiladi ID
+Takrorlash hujumlari - bu haqiqiy operatsiyani o'ziga mo'ljallanganidan boshqacha tarmoqga taqdim etish urinishidir. `chain` imzolangan operatsiya payloadining bir qismi bo'lgani uchun, bitta zanjir uchun imzolangan tranzaksiya boshqa zanjirdan foydalanuvchi tengdoshlar tomonidan rad etiladi ID
 
 <param-table type=string env=CHAIN />
 
@@ -58,7 +58,7 @@ PUBLIC_KEY="ea01309060D021340617E9554CCBC2CF3CC3DB922A9BA323ABDF7C271FCC6EF69BE7
 
 ### `private_key` <Badge text="required" /> {#param-private-key}
 
-Tengdoshning xususiy kaliti. U `public_key` bilan mos bo'lishi kerak; konsensusni tasdiqlovchi tengdoshlar BLS-Normal kalitlaridan foydalanishlari kerak.
+Tengdoshning xususiy kaliti. U `public_key` bilan mos bo'lishi kerak; konsensus tasdiqlovchi tengdoshlar BLS-Normal kalitlaridan foydalanishlari kerak.
 
 <param-table type="private-key" env="PRIVATE_KEY" />
 
@@ -78,12 +78,12 @@ PRIVATE_KEY="8926201CA347641228C3B79AA43839DEDC85FA51C0E8B9B6A00F6B0D6B0423E9029
 
 Ishonchli tengdoshlar ro'yxati.
 
-Konsensus tasdiqlovchilaridan BLS-Normal peer kalitlari foydalanilishi kerak. Har bir tasdiqlovchi uchun ham moslashtirilgan [`trusted_peers_pop`](#param-trusted-peers-pop) yozuvini taqdim eting.
+Konsensus tasdiqlovchilaridan BLS-Normal peer kalitlari foydalanilishi kerak. Har bir tasdiqlovchi uchun ham moslashtirilgan [`trusted_peers_pop`](#param-trusted-peers-pop) yozuvni taqdim eting.
 
 <param-table env="TRUSTED_PEERS">
 <template #type>
 
-Tengdoshlar qatoridan. P2P manzili ma'lum bo'lganda `PUBLIC_KEY@ADDRESS` dan foydalaning; yalang'och `PUBLIC_KEY` ham qabul qilinadi va tengdoshlar manzili g'iybatlardan aniqlanishiga imkon beradi.
+Tengdoshlar simlaridan iborat qator. `PUBLIC_KEY@ADDRESS` manzili P2P ma'lum bo'lganda foydalaning; yalang'och `PUBLIC_KEY` ham qabul qilinadi va tengdoshlar manzilini g'iybatdan aniqlash imkonini beradi.
 
 </template>
 </param-table>
@@ -470,7 +470,7 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 
 :::
 
-::: info [`logger.level`](#param-logger-level) bilan mos keladi.
+::: info [`logger.level`](#param-logger-level) bilan birgalikda ishlash
 
 `logger.filter` bilan birga ishlaydi [`logger.level`](#param-logger-level) va hech biri boshqa biridan ustun qo'ymadi.
 
@@ -494,9 +494,9 @@ Yozuvlar shakli.
 Urug'lar, mumkin bo'lgan qiymat:
 
 - `full`: Andoza formatlovchi. Bu har bir hodisa uchun inson o'qishi mumkin bo'lgan, bitta satrli loglarni chiqaradi va hodisaning formatlangan ifodaidan oldin joriy uzluk kontekst ko'rsatiladi.
-- `compact`: Qisqa satr uzunliklari uchun optimallashtirilgan andoza formatlash vositasining variantidir. Hozirgi vaqt kontekstidagi maydonlar formatlangan hodisaning maydonlariga ilova qilinadi va vaqt nomlari ko'rsatilmaydi; aytilish darajasi bitta belgiga qisqartiriladi.
-- `pretty`: Inson o'qishi uchun optimallashtirilgan juda chiroyli, ko'p satrli jurnallarni chiqaradi. Bu asosan mahalliy rivojlanish va xatoliklarni aniqlashda yoki buyruq satridagi dasturlarda ishlatilishga mo'ljallangan, ro'yxatlarning avtomatlashtirilgan tahlili va kompakt saqlanishi o'qishchanlik va vizual jozibadorlikdan kamroq ustuvor ahamiyatga ega bo'lgan hollarda.
-- `json`: Yangi yo'nalishdagi cheklangan JSON loglarni ishlab chiqaradi. Bu tizimlar bilan ishlab chiqarish uchun mo'ljallangan bo'lib, u erda tuzilgan loglar tahlil va ko'rish vositalari orqali JSON sifatida iste'mol qilinadi. JSON natijasi insonning o'qishi uchun optimallashtirilmagan.
+- `compact`: Qisqa satr uzunliklari uchun optimallashtirilgan andoza formatlash vositasining variantidir. Hozirgi tarang kontekstidagi maydonlar formatlangan hodisaning maydonlariga ilova qilinadi va tarang nomlari ko'rsatilmaydi; verbosity darajasi bitta belgiga qisqartiriladi.
+- `pretty`: inson o'qishi uchun optimallashtirilgan juda chiroyli, ko'p chiziqli jurnallarni chiqaradi. yo'qlash yoki buyruq satrida qo'llaniladigan dasturlar uchun, avtomatlashtirilgan tahlil va jurnallarni kompakt saqlash o'qish va ko'rinishga ega bo'lishdan kamroq ustuvor ahamiyatga ega.
+- `json`: Yangi yo'nalishdagi cheklangan JSON loglarni ishlab chiqaradi. Bu tizimlar bilan ishlab chiqarish uchun mo'ljallangan bo'lib, u erda tuzilgan loglar tahlil va ko'rish vositalari orqali JSON sifatida iste'mol qilinadi. JSON mahsulotlari inson o'qishi uchun optimallashtirilmagan.
 
 Ko'proq ma'lumot va namuna mahsulotlari uchun [`tracing-subscriber` hujjatlarini ko'rish ](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/format/index.html).
 
@@ -543,15 +543,21 @@ KURA_BLOCKS_IN_MEMORY=1024
 
 ### `kura.init_mode` {#param-kura-init-mode}
 
-Kura ishga tushirish usuli
+Kura boshlash usuli. `strict` odatiy va andoza usulidir: u nod faollashishdan oldin kanonik tarix, tiklanish artefaktlari, yordamchi indekslar va saqlash hisobini tasdiqlaydi.
 
-<param-table  default-value=strict env=KURA_INIT_MODE>
+`fast` - operatsiyaviy ko'rinishni tiklash uchun favqulodda holatda xizmatni buzgan rejimdir. to'liq boshlang'ich audit uzilish xavfi bo'lishi mumkin. `strict` va to'g'ri beshta artefaktni o'z ichiga olgan joriy fotosuratlar avlodi: `snapshot.data`, `snapshot.sha256`, `snapshot.sig`, `snapshot.fast.norito`, va `snapshot.merkle.json`. Domenlar bo'yicha alohida operator imzosi reklama qilingan foydali yukni o'chirish va cheklangan manifestni bog'laydi; manifestda foydali yukning uzunligi, zanjir/tarmoq kimligi, terminal balandligi/hash to'g'risida ma'lumot beriladi; SCCP siyosat hash, va bootstrap liniyasi mavjudligi. tezlik bilan bootstrap rad etadi nasldan kelib chiqishi va o'ziga xos belgilash/hisoblash/to'g'ri chiziq chegaralarini talab qiladi Kura. Birinchi chiqarilgan nodlar aynan shu beshta artefaktni qabul qiladi va boshqa barcha artefaktlar soni yoki fayl nomlari setini rad etadi.
+
+Ushbu beshta ism va metadatalarni tezkor inventarizatsiya qiladi, payload va Merkle fayllarini bog'laydi, ammo ularning mazmunini o'qib, hash qilmaydi, tahlil qilmaydi yoki dekodlamaydi. U imzolangan manifestdan minimal dunyo / Nexus yaratadi, aniq Kura hash prefiksini faqat o'qish uchun xaritalaydi va world, block-hash arrayni qoldiradi. operatsiyalar tarixi, hosil bo'lgan indekslar va uzoq muddatli tiklanish jurnallari ochilmagan. Merkle, kanonik va semantik tezkor tekshiruvlar, tarixiy blok / yakun/SCCP muvofiqlashtirish, Sumeragi faol balandlikni tiklash, birlashtirish va so'rov jurnallari, yo'nalish manifesti / muvofiqlik manbalari, Kura tomonidan qo'llab-quvvatlanadigan SoraFS arxivlari, rekursiv saqlash hisobi va ixtiyoriy xizmatlarni birlashtiruvchi vositalar kechiktirilmoqda. Mahalliy bitimlarni qabul qilish, takliflar, ovoz berish, kanonik yozuvlar va yordamchi ishlab chiqaruvchilar faoliyatsiz qolmoqda. Kura o'zi yozuvchi ishga tushirilishini va uzoq muddatli mutatsiyalarni rad etadi; quvur va FASTPQ chidamlilik navbatlari uni saqlab qolish yoki kodlashning o'rniga ishni darhol rad qiladi. Kura o'qiladi APIs shuningdek, ta'mirlash va chidamlilik-sinkronizatsiya xatti-harakatlarini o'chirib tashlaydi: vaqtinchalik yon mashinalari rag'batlantirilmaydi, yo'qolgan yo'l artefaktlari nashr etilmaydi va rivojlanish to'siqlari sinxronlashtirilmaydi. Sumeragi va tranzaksiya mish-mishlar ishga tushirilmaydi . Torii faqat sog'liq, jonlilik, tayyorlik, tengdoshlar va konfiguratsiya operatsiyalarini aks ettiradi; API-versiya, status, metrikalar va barcha odatdagi holat / tarix yo'nalishlari mavjud emas.
+
+`fast` ni faqat hodisa uchun ishlating. Xizmat barqaror bo'lganidan so'ng, nodni to'xtatish, `strict` ni tiklash va qayta ishga tushirish, shuning uchun har bir kechiktirilgan tekshirish va indeksni qayta qurish ishlab chiqarish davom etmasdan oldin ishlaydi. Tezkor rejimda kechiktirilgan birlashtirish logini talab qilmaydi va kanonik saqlashni yaratmaydi, ta'mirlamaydi, qisqartirmaydi yoki import qilmaydi; nashr etilmagan suffixlar va kutilmagan yordamchi tiklash bosqichlari o'qib bo'lmasdan yoki mutatsiya qilinmasdan e'tiborsiz qoldiriladi, so'ngra qat'iy tiklash uchun qoldiriladi. Import qilingan faqat hashli fotosuratlar liniyasi mavjud emas. Yo'qolgan yoki haqiqiy bo'lmagan joriy fotosurat darhol muvaffaqiyatsizlikka uchraydi; tez hech qachon bo'sh dunyoga yoki tarixiy takrorlashni qayta tiklashga tushmaydi.
+
+<param-table default-value=strict>
 <template #type>
 
 Urug'lar, mumkin bo'lgan qiymat:
 
-- `strict`: barcha bloklarning qat'iy tasdiqlanganligi
-- `fast`: Faqatgina bazaviy tekshiruvlar bilan tezkor boshlov berish
+- `strict`: to'liq tasdiqlash va normal ishlab chiqarish
+- `fast`: qat'iy qayta ishga tushirilgunga qadar ishlab chiqarish karantinga qo'yilgan cheklangan favqulodda ishga tushirish;
 
 </template>
 </param-table>
@@ -563,15 +569,11 @@ Urug'lar, mumkin bo'lgan qiymat:
 init_mode = "fast"
 ```
 
-```shell [Environment]
-KURA_INIT_MODE=fast
-```
-
 :::
 
 ### `kura.store_dir` {#param-kura-store-dir}
 
-Bloklar saqlanadigan direktoriyani [^paths] belgilaydi.
+Bloklar saqlanadigan direktoriyani [^paths] aniqlaydi.
 
 Shuningdek, ko'ring: [`snapshot.store_dir`](#param-snapshot-store-dir).
 
@@ -609,7 +611,7 @@ KURA_DEBUG_OUTPUT_NEW_BLOCKS=true
 
 :::
 
-## Chegaralar {#queue}
+## Tartib {#queue}
 
 ### `queue.capacity` {#param-queue-capacity}
 
@@ -662,7 +664,7 @@ transaction_time_to_live_ms = 43_200_000
 
 ### `sumeragi.debug.force_soft_fork` <Badge type="warning" text="debug" /> {#param-sumeragi-debug-force-soft-fork}
 
-Sumeragi yumshoq furqonlarni boshqarish yo'nalishlarini amalga oshirish uchun faqat debug o'chirgich. Uni nazorat qilinadigan sinovlardan tashqarida o'chirib qo'ying; uni ishlayotgan ishlab chiqarish tarmog'ida o'zgartirish tengdoshlarning konsensus xatti-harakati haqida kelishmovchiliklarga olib kelishi mumkin.
+Sumeragi yumshoq furqonlarni boshqarish yo'nalishlarini amalga oshirish uchun faqat debug-switch. Uni nazorat qilinadigan sinovlardan tashqarida o'chirib qo'ying; uni ishlaydigan ishlab chiqarish tarmog'ida o'zgartirish tengdoshlarning konsensus xatti-harakatlari haqida kelishmovchiliklarga olib kelishi mumkin.
 
 <param-table type=bool default-value=false />
 
@@ -675,6 +677,16 @@ force_soft_fork = true
 
 :::
 
+## Nexus Atomik xususiy kelishuv {#nexus-atomic-private-settlement}
+
+`[nexus.atomic_private_settlement]` alohida `AtomicPrivateSettlementV1` yo'nalishini boshqaradi. U andoza ravishda o'chiritiladi. `enabled = true` sozlash uchun ham `activation_height` kerak; kirish hali ham yopilmaydi, agar zanjirdagi imkoniyat, xabardorlik muddati, qat'iy dalil profillari va fond / audit boshqaruvi faol bo'lmasa.
+
+Asosiy chegaralar: `max_participants`, `max_expiry_blocks`, `audit_timeout_blocks`, `prepare_timeout_blocks`, `commit_timeout_blocks`, `max_proof_bytes`, `max_capsule_bytes`, `max_carrier_bytes`, `sidecar_retention_blocks`, `sidecar_max_records`, va `sidecar_max_total_bytes`. `capsule_padding_classes_bytes` O'z navbatida, bu o'simliklarning V1 to'ldirish sinflari. `permitted_policy_versions` faqat qabul qiladi V1.
+
+`max_capsule_bytes` to'liq `PrivateSettlementAuditCapsuleV1` bytesining kanonik Norito baytlarini, shu jumladan AAD, nonce, kodli matn, vektorlar o'rnatish va har bir auditorning DEK qatorini o'lchab oladi; bu faqat kodli matnda bo'lgan chegara emas. Har bir qo'llaniladigan to'ldirish sinflari kamida `default_min_auditor_approvals` auditorlar uchun konservativ butun kapsula qadoqqa mos bo'lishi kerak. Ushbu ruxsat berish sohasi ham tartibga solinadi: Torii yangi qabul qilingan siyosatni `min_approvals` qiymatidan kamroq va har qanday haqiqiy kapsulani kanonik byt chegarasidan ortiqcha rad etadi.
+
+Ushbu sozlamalarda ishlab chiqarish muhitida o'zgaruvchi aktivatsiya bypass yo'q. To'liq konfiguratsiya namunasi va operatsion talablar uchun ](/uz/get-started/atomic-private-settlement) Atom Private Cross-Dataspace Settlement[ni ko'ring. Yo'l hujjatli tashqi chiqarib yuborish darvozalari o'tmaguncha ishlab chiqarishga mos kelmaydi.
+
 ## Oʻrinli fotosurat {#snapshot}
 
 Ushbu modul [World State View](/uz/blockchain/world#world-state-view-wsv) fotosuratlarini o'qish va yozish uchun mas'ul.
@@ -683,7 +695,7 @@ Snapshots World State View-ning seriyalangan nazorat punktini saqlaydi, shunda t
 
 ::: tip Rasmlarni oʻchirish
 
-Agar fotosuratlar tizimida biror narsa noto'g'ri bo'lsa va siz bo'sh sahifadan boshlashni xohlasangiz (snapshotlar bo'yicha), [`snapshot.store_dir`](#param-snapshot-store-dir) tomonidan aniqlangan direktoriyani olib tashlashingiz mumkin.
+Agar fotosuratlar tizimida biror narsa noto'g'ri bo'lsa va siz bo'sh sahifadan boshlashni xohlasangiz (snapshotlar bo'yicha), [`snapshot.store_dir`](#param-snapshot-store-dir) tomonidan ko'rsatilgan direktoriyani olib tashlash mumkin.
 
 :::
 
@@ -754,7 +766,7 @@ SNAPSHOT_STORE_DIR="/path/to/storage"
 
 ## Telemetriya {#telemetry}
 
-Telemetriya tengdoshlari tashxisini tashqi telemetriya kollektoridan eksport qiladi. Tengdoshlari to'plamchiga xabar berishi kerak bo'lganda `telemetry.name` va `telemetry.url` ni o'rnatish; telemetriyadan foydalanilmaganida, bu bo'limni qoldiring.
+Telemetriya tengdoshlari tashxisini tashqi telemetriya kollektoriga eksport qiladi. Tengdoshlari to'plamga xabar berishi kerak bo'lganda `telemetry.name` va `telemetry.url` ni sozlash; telemetriyadan foydalanilmaganida, bu bo'limni qoldiring.
 
 `name` va `url` juftlanishi kerak.
 

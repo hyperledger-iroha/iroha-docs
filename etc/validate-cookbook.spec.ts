@@ -2,7 +2,9 @@ import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 import { describe, expect, test } from 'vitest'
-import { COOKBOOK_ROUTES, IROHA_SOURCE_COMMIT, validateCookbook } from './validate-cookbook'
+import { COOKBOOK_ROUTES, validateCookbook } from './validate-cookbook'
+
+const FIXTURE_SOURCE_COMMIT = '0123456789abcdef0123456789abcdef01234567'
 
 const VALID_RECIPE = `# Recipe
 
@@ -30,7 +32,7 @@ Inspect the error.
 
 ## Source and related docs
 
-Source: https://github.com/hyperledger-iroha/iroha/tree/${IROHA_SOURCE_COMMIT}
+Source: https://github.com/hyperledger-iroha/iroha/tree/${FIXTURE_SOURCE_COMMIT}
 `
 
 const RETIRED_MAJOR_VERSION_EXAMPLE = ['Iroha', String(2)].join(' ')
@@ -39,6 +41,11 @@ async function fixture(): Promise<string> {
   const root = await mkdtemp(path.join(os.tmpdir(), 'iroha-docs-cookbook-'))
   const cookbook = path.join(root, 'src', 'cookbook')
   await mkdir(cookbook, { recursive: true })
+  await mkdir(path.join(root, 'provenance'), { recursive: true })
+  await writeFile(
+    path.join(root, 'provenance', 'iroha.json'),
+    `${JSON.stringify({ source: { commit: FIXTURE_SOURCE_COMMIT } }, null, 2)}\n`,
+  )
   await Promise.all(
     COOKBOOK_ROUTES.map((route) => {
       let source = route === 'index.md' ? '# Cookbook\n' : VALID_RECIPE
@@ -84,11 +91,24 @@ describe('cookbook validation', () => {
     const issues = await validateCookbook(root)
     expect(issues).toContain('metadata.md: missing required section ## Outcome')
     expect(issues).toContain('metadata.md: recipe must include at least one fenced example')
-    expect(issues).toContain(`metadata.md: recipe must cite pinned Iroha source commit ${IROHA_SOURCE_COMMIT}`)
+    expect(issues).toContain(`metadata.md: recipe must cite pinned Iroha source commit ${FIXTURE_SOURCE_COMMIT}`)
     expect(issues).toContain('metadata.md: contains TODO placeholder')
     expect(issues).toContain('metadata.md: contains historical major-version reference')
     expect(issues).toContain('metadata.md: contains retired account literal')
     expect(issues).toContain('metadata.md: contains retired multisig API')
+  })
+
+  test('derives the required source pin from provenance', async () => {
+    const root = await fixture()
+    const nextCommit = '89abcdef0123456789abcdef0123456789abcdef'
+    await writeFile(
+      path.join(root, 'provenance', 'iroha.json'),
+      `${JSON.stringify({ source: { commit: nextCommit } }, null, 2)}\n`,
+    )
+
+    expect(await validateCookbook(root)).toContain(
+      `accounts-and-aliases.md: recipe must cite pinned Iroha source commit ${nextCommit}`,
+    )
   })
 
   test('requires explicit JSON negotiation for status examples', async () => {

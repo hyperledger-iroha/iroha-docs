@@ -17,13 +17,13 @@ and, for NPoS or Nexus profiles, BLS validator identities.
 For local or test deployments, let Kagami generate all of these files together:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 For an existing network or profile, use the guided flow:
 
 ```bash
-cargo run --bin kagami -- wizard --profile nexus
+cargo run --bin kagami -- wizard
 ```
 
 ## Generate Individual Key Pairs
@@ -31,17 +31,21 @@ cargo run --bin kagami -- wizard --profile nexus
 Use `kagami keys` for standalone key material:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm ed25519 --json
+cargo run --bin kagami -- keys --algorithm ed25519 \
+  --out-dir ./client-key
 ```
 
 For BLS validator material, include a Proof-of-Possession:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./validator-key
 ```
 
-Use `--seed` only for reproducible development fixtures. For production
-deployment, generate fresh keys and store private keys outside the repository.
+Use `--seed-hex` only with an exact 32-byte hexadecimal secret for reproducible
+development fixtures. For production deployment, omit it so Kagami uses
+operating-system randomness, then move the unencrypted private-key export into
+the approved custody boundary. The command never prints private keys.
 
 ## Peer Consistency
 

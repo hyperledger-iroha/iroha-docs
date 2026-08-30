@@ -1,171 +1,212 @@
 ---
 translation_locale: he
 translation_source: /guide/tutorials/musubi.md
-translation_source_hash: 6b33c687fd1d81d931b932d38908d9a87e9c619e5aca5714d09d892160a6b704
+translation_source_hash: 4a76626522ecb9fe32e98e9c1e4552223cf820d40d0de16690dc589b0f40c901
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Musubi Kotodama חבילות {#musubi-kotodama-packages}
 
-Musubi הוא מנהל החבילה עבור חבילות מקור של Kotodama. זה נותן למפתחים זרימת עבודה דומה ל- Cargo לחלוק פונקציות Kotodama מורכבות תוך שמירה על זהותו של החבילה קשורה לאזורים של שמות SORA ו Iroha במקום טבלה של שמות ראשונים עולמית.
+Musubi הוא מנהל חבילה לשחרור ראשון עבור חבילות מקור Kotodama. זה פותר גרף של תלות מדויק על שרשרת, מזדהה את SoraFS ארכיונים מקוריים, מסדרים ומבחנים את חלל העבודה הנבחר, בונים ארכיונים קנוניים CAR, ומפרסמים שידורים בלתי משתנים דרך Iroha.
 
 השתמשו Musubi כאשר אתם צריכים:
 
-- לפרסם ספרות מקור Kotodama שניתן להשתמש בהן שוב
-- קישור תלות מקורות מעבר מדויקות ב `Musubi.lock`
-- לשחזר את מקור ההסתמכות על מחויבויות ארכיון SoraFS מבוקשות
-- קישור חלל שמות של חבילה ל- dapp פרופיל חוזים באותו החלל
-- לבחון, לפרסם, להוריד או לחשוף חבילות דרך רישום שרשרת
+- לפרסם ספריות פונקציות Kotodama שניתן להשתמש בהן מחדש
+- צבעו גרף מעבר מדויק ב `Musubi.lock`
+- לשחזר את מקור ההסתמכות על מחויבויות ארכיון SoraFS הסופיות
+- בניית ומבחן חלל עבודה אחד או מספר חבילות
+- לבחון, לפרסם, למשוך, לשמור או לחשוף חבילות באמצעות רישום שרשרת.
 
 ## שמות החבילה {#package-names}
 
-שימוש באותיות חבילת קאנוניקה:
+בוחרים חבילות קנוניים משתמשים:
 
 ```text
 namespace/package
 ```
 
-השתמשת בהתייחסות לשחרור מדויקות:
+מזהים שחרור מדויקים מוסיפים גרסה:
 
 ```text
 namespace/package@version
 ```
 
-אין פיקוד `@` לפני חלל שמות. מפריד `@` מיועד לסוף הגרסה.
+אין `@` מוביל לפני חלל שמות. החלל שמות הוא בין אם שורש חלל נתונים כגון `universal` או חלל נתוני מוסמך לתחום כמו `dex.universal`. הספר הגדול מחבר את חלל המנים המבצעי לחלק נתונים מקומי יציב אחד לפני שניתן לדרוש חבילה.
 
-קטע חלל שמות תואם את הסופיקס המשמש על ידי Kotodama דפ חוזים כינויים:
+## מוניפסט וארכיב נעול {#manifest-and-lockfile}
 
-|איד החבילה |צורת פרופיל חוזים קשורים |
-| ------------------------- | ---------------------------- |
-|`universal/math` |`router::universal` |
-|`dex.universal/swap-core` |`router::dex.universal` |
-
-למקומות שמות יש גם צורה `<dataspace>` או `<domain>.<dataspace>`. כאשר בקבוצת יש קישור dapp, Musubi בודק שכל שם חוזר מקושר משתמש באותו סופיקס במקום שמות כמו הקבוצת.
-
-## מפורסם {#manifest}
-
-החבילה מתחילה עם `Musubi.toml`:
+חבילה משתמשת בספרה הראשונה סגורה. `Musubi.toml` המוניסטור חייב להכריז `manifest-version = 1`, Kotodama עיתון `"1"`, ו IVM ABI גרסה `1`; אין מסמך חלופי או ABI מצב.
 
 ```toml
+manifest-version = 1
+
 [package]
 namespace = "dex.universal"
 name = "swap-core"
 version = "0.1.0"
+edition = "1"
+abi-version = 1
+
+[lib]
+source-dir = "src"
+exports = ["quote"]
 
 [dependencies.math]
 package = "std.universal/math"
 version = "^1.0.0"
-
-[exports]
-functions = ["quote"]
-
-[dapp]
-namespace = "dex.universal"
-contracts = ["router::dex.universal"]
 ```
 
-תלות יכולות להשתמש בגרסאות מדויקות, דרישות טיפול, דרישת טילד, כרטיסים פראי כגון `1.*`, או רשימות משוואות כמו `>=1.0.0,<2.0.0`.
+תלות יכולות להשתמש גרסאות מדויקות, דרישות טיפול או טילד, כרטיסי חיצוניים כגון `1.*`, וקבוצות משוואות נפרדות מקומה כמו `>=1.0.0,<2.0.0`. מפתח שולחן התלות הוא שם השלט של ההובלה המקומי; `package` הוא תמיד סלקטר הרישום הקנוני.
 
-`Musubi.lock` רשום את הגרף העברתי הנבחר מהרשם על שרשרת. כל nodo מנעול מאחסן את הקנוניקה של החבילה שלו ref, הדרישה שנבחרת, SoraFS דיגסט המניפסט, האש הארכיון המקור, ספירת בייטים, ספירת קבצים, פונקציות הוצאת, תוכנית ארכיון מקור דטרמיסטית, ושמות תלות. כינויים קצרים מתפתחים לפני שהם נכנסים לקובץ המנעולים.
+`Musubi.lock` מחבר את הגרף לגרף מדויק של הגנזה-מוצא `NetworkId` ומצלמה רישום סופית. הוא רשום את שורשי החלל העבודה הנבחרים ונקודות השחרור הבלתי משתנות. כולל שחרור, מקור, אינטרס, ארכיון, ABI, והתחייבויות של קצה תלות מדויק. גרפיות מקבילות מותרות כאשר הגרף המפתר דורש אותם.
+
+## הגדרת Taira SoraFS {#configure-taira-sorafs-fetching}
+
+Taira הוא הרשת המבחנת הציבורית עבור זרימת העבודה זו. התחל עם תיקון הלקוח של Taira עם זהות שרשרת ורשת מסובכת, ואז הוסף את קשרי הבאת מזוהה ספציפיים למספק למטה. חומר חתימה לחשבון ומפתחות המפעיל של ספקית חייבים להישאר בקבצים של זמן ההפעלה של הבעלים בלבד.
+
+```toml
+torii_url = "https://taira.sora.org/"
+chain = "fc56984b-2be7-431d-840e-21514d1883f0"
+network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+
+[musubi.fetch]
+network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+client_id = "musubi-taira"
+request_timeout_ms = 30000
+
+[[musubi.fetch.provider_gateways]]
+provider_id = "REPLACE_WITH_ADMITTED_PROVIDER_ID_HEX"
+url = "REPLACE_WITH_ADVERTISED_PROVIDER_HTTPS_ORIGIN"
+operator_public_key = "REPLACE_WITH_PROVIDER_AUTHORIZED_OPERATOR_PUBLIC_KEY"
+operator_private_key_file = "./secrets/taira-sorafs-provider.key"
+```
+
+גלה את ספקי Taira המוקדמים מהשורש הציבורי של הרשתות הטסטים:
+
+```bash
+export TAIRA_ROOT=https://taira.sora.org
+curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
+```
+
+קטלוג הספק מספק את זהויות הספק והנקודות הסיום המפורסמות. לקבלת אישור מפעיל התאמה מהספק הנבחר. זמן ההפעלה משתמש במפתח הזה כדי לבקש סימני זרם מוגבלים; סימנים הם לא ארגומנטים CLI או תוכן קובץ נעילה.
+
+לא להשתמש ב- Taira סימן אישור URL כמו `url`. ההסמכים המוקדמים שהועברו SoraFS האחסון פוסק. `https://taira-validator-{1,2,3,4}.sora.org` נקודות קץ מקבלות רישום פין, בעוד קריאת הארכיון משתמשת במסמכים של ספקית המוגנת HTTPS מקור.
 
 ## זרימת עבודה מקומית {#local-workflow}
 
-מהשורש של חלל העבודה Iroha מעלה, להפעיל את Musubi דרך Cargo:
+מתוך שורש החלל העבודה Iroha מעלה, ליצור או להכניס את תיק המשלוח ולהפעיל Musubi דרך Cargo:
 
 ```bash
-cargo run -p musubi -- init --namespace dex.universal --name swap-core --dapp
-cargo run -p musubi -- add std.universal/math --version '^1.0.0' --alias math
-cargo run -p musubi -- install --config client.toml
-cargo run -p musubi -- build src/lib.ko --manifest-out target/lib.contract.json
-cargo run -p musubi -- pack \
-  --car-out source.car \
-  --sorafs-manifest-out manifest.norito \
-  --source-plan-out source-plan.norito
+mkdir -p examples/swap-core
+cd examples/swap-core
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  init . --namespace dex.universal --name swap-core --export quote
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  add std.universal/math --version '^1.0.0' --rename math
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- fetch --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- check --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- build --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- test --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- package --config client.toml
 ```
 
-השתמש `install --offline` כדי לכתוב קובץ נעילה לא פתור עבור תלונות גרסה מדויקת ללא שאלת קשר. השתמש `install --locked` ב CI כדי לדחות קובץ נדל"ן מיושן.
+`fetch` פותרת את גרף הרישום הסופי, עדכונים `Musubi.lock` כאשר זה מותר, וממלא את הקש המקומי הבלתי משתנה SoraFS מיקומים. `check`, `build`, `test`, ו `package` לבצע את אותם בדיקות גרף ומחסון לפני העבודה שלהם.
 
-`build` מקושרת את מקורות ההסתמכות המובטלים על ידי כתיבת מחדש של שיחות כגון `math::add()` לשמות פונקציות פנימיות דeterministic Kotodama. היא דוחה שיחות לתפקידים שההסתמכות לא יצאת. ספריות Musubi v1 הן פונקציות בלבד: מקורות תלות המכילים הצהרות מדינה, גורמים, בלוקים קוטובא, קונסטנטיות או פריטים חוזים אחרים שאינם פונקציות נדחלו.
+השתמש `--locked` כדי לדחות כל שינוי בקובץ מנעולים. השתמש ב `--offline` רק כאשר אינדיקס הרישום וכל הארכיון הנדרש כבר מוחזקים. `--frozen` משלב את שני המגבלות הללו. מקובץ מקוון נכשל; Musubi אף פעם לא כותב קובץ בלתי פתור.
 
-## קבלת מקור ארכיונים {#fetching-source-archives}
+מקורות תלות קשורים על ידי כתיבת מחדש של שיחות מוסמכות כגון `math::add()` לשמות פנימיים דטרמיסטיים Kotodama. שיחת תלות לתפקיד לא הוצא החוצה נדחתה. ספריות ייבואות חושפות פונקציות; מטרות מקומיות `[[contract]]` ו `[[test]]` נשארו מטרות חבילת מפורשות.
 
-Musubi יכול להשיג מקורות תלות חסרים בזמן פתרון או מאוחר יותר באמצעות הפקודות הקטנות של הקש:
+## אימות וריפוי מאחסון {#cache-verification-and-repair}
+
+פקודות המזמון הציבורי פועלות על ארכיונים בלתי משתנים, מחויבים לרשום:
 
 ```bash
-cargo run -p musubi -- install --config client.toml --fetch \
-  --provider-payload math.payload
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  cache verify --all --config client.toml
 
-cargo run -p musubi -- cache import math --source-root ../math
-cargo run -p musubi -- cache fetch math --provider-payload math.payload
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  cache repair --config client.toml
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  cache prune --dry-run --config client.toml
 ```
 
-קביעת שער חי משתמשת בתכונות אחת או יותר של ספק השער SoraFS:
+`cache repair` קווארנטיין מושחת צאצאים אמינים ומחזיר את הארכיונים המדויקים כאשר ראיות מתפקדת סופית מאפשרות זאת. Musubi דוחה מוטציה חיה שאינה ריקה של ניתוק. השתמש ב `--dry-run` לבחון את המועמדים הסווגים.
+
+## ארגזות ופרסום {#packaging-and-publishing}
+
+בדוק את קבוצת הקובץ החיובי הנקי לפני כתיבת ארכיון, ואז לבנות את החבילה הקנונית:
 
 ```bash
-cargo run -p musubi -- install --config client.toml --fetch \
-  --gateway-provider 'name=hot-a,provider-id=1111111111111111111111111111111111111111111111111111111111111111,base-url=https://gw.example,stream-token=BASE64,package=math'
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  package --list --locked --config client.toml
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  package --locked --config client.toml
 ```
 
-הקבצים של המטען הפועל של ספקית ומספקי שער הם עצמאיים זה לזה עבור מבצע אחד. אם חסרים יותר מפקט אחד מנעול, קבעו את כל ספק השער עם `package=<dependency-alias>`, `package=<namespace/package@version>`, `package=<namespace/package>` או `manifest=<64-hex SoraFS manifest digest>`.
+`package` כותב `target/package/<namespace>-<name>-<version>.car`. ה- CAR קשור למניפסט החבילה הקנוני, למניפסת השחרור הסמנטי, למנעול אימות מדויק, לעץ המקור, לחיזוק הפנים, ו SoraFS התחייבות לאריכיון. אין `pack`, `--car-out`, `--sorafs-manifest-out`, או `--source-plan-out` פקודות בשחרור הראשון CLI.
 
-כניסה `base-url` ו `privacy-url` הערכים חייבים להשתמש `https://` בדפוס מקומי. שערות בדיקת מקומיות יכולות להשתמש `http://localhost`, `http://127.0.0.1`, או `http://[::1]` רק עם `--gateway-allow-insecure-localhost`. סימני הזרם הם תעודות אישור runtime ולא נכתבו לתוך `Musubi.lock`.
-
-## פרסום {#publishing}
-
-`pack` מחשב את הדטרמיניסטית BLAKE3-256 האש של הארכיון המקור ועוד בייט המקור ואת ספירת הקובץ. `--car-out`, `--sorafs-manifest-out`, או `--source-plan-out` הוא מספק, זה גם בונה את הדטרמיניסטית SoraFS CAR מטען מועיל, SoraFS מפורסם, ו Musubi תוכנית ארכיון מקור מאותו קבוצה של קבצים מקור.
-
-השתמשו בטיפול יבש לפני הפרסום:
+פרסום הוא זרימת עבודה של רשת חתומה, שניתן להפעיל מחדש. ה- `client.toml` הנבחר חייב להכיל את קשרי ההפקה `[musubi.publication]`, כמו גם את האקאונט והקונפיגורציה של הרשת Taira.
 
 ```bash
-cargo run -p musubi -- publish --config client.toml --dry-run
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  publish -p dex.universal/swap-core --locked --config client.toml
 ```
 
-בלי `--dry-run`, `publish` כותב פריטים מקובלים תחת `.musubi/dist/<namespace>/<name>/<version>/`, באופן אופציונלי מעלה את המניפסט ואת המטען הפועל דרך Torii זה... SoraFS נקודת הסיום של עמודי אחסון עם `--upload`, רשום את המוצר SoraFS חותם, ומגיש `PublishMusubiRelease` דרך ההסדר Iroha לקוח.
-
-הפרסומים המפורסמים חייבים לכלול:
-
-- ארכיון מקור קנוני שאינו ריק.
-- תוכנית ארכיון מקור דeterministic
-- לפחות פונקציה Kotodama אחת שנשלחה
-- רישומי תלות שאינם מצביעים על שחרורים מושכים
-- קישור dapp, אם קיים, ששמות החוזה שלו תואמים את חלל שמות החבילה.
+השתמש `--detach` כדי לחזור לאחר שזומן הפעולה והגבול של כניסה הזרעים הם יציבים. המשך פעילות יציבה עם `publish --resume <operation-id> --config client.toml`. הנתיב הצמוד יותר `--recover <operation-id>` רק חוזר מחדש אין פרסום `--dry-run` או ההפעלה הציבורית הגנרית fallback; להפעיל `package --list` ו `package` עבור טיסה מקומית.
 
 ## שאלות רישום וסייקל חיים {#registry-queries-and-lifecycle}
 
-לחפש ולבדוק את רישום עם:
+לחפש ולבדוק את הרישום הסופית עם אותו הגדרת הלקוח Taira:
 
 ```bash
-cargo run -p musubi -- search swap --config client.toml
-cargo run -p musubi -- versions dex.universal/swap-core --config client.toml
-cargo run -p musubi -- alias resolve swap --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  search swap --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  info dex.universal/swap-core --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  versions dex.universal/swap-core --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  alias resolve swap --config client.toml
 ```
 
-ינקינג מסתיר שחרור ממבטא חדש, אך מחזיק בקבצים נעולים קיימים חוזרים על עצמם:
+ינקינג מסרבת שחרור בלתי משתנה מתוך החלטות חדשות בזמן שמנעולים מדויקים קיימים נשארים ניתן לשחזר. קרא תחילה את התיקון הנוכחי של yank, ולאחר מכן הגיש מוטציה להשוות ולתקן:
 
 ```bash
-cargo run -p musubi -- yank dex.universal/swap-core@0.1.0 \
-  --reason "bad archive" \
-  --config client.toml \
-  --dry-run
+: "${EXPECTED_YANK_REVISION:?set the current non-zero yank revision}"
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  yank dex.universal/swap-core 0.1.0 \
+  --expected-revision="$EXPECTED_YANK_REVISION" \
+  --reason="bad archive" \
+  --config client.toml
 ```
 
-Musubi נמנע מקפיצה של שמות גלובליים על ידי הכנת `namespace/package` את שם החבילה הקנוני. פרסום לתוך חלל שמות חייב להיות מורשה על-ידי אותו בעל או מודל רשיונות מחויבים המשמש עבור החלל שמות dapp זה Kotodama. כינויים קצרים גלובליים מאורגנים נפרדים מהחברה בעלת החבילה: `SetMusubiShortAlias` דורש את רשיון `CanSetMusubiShortAlias`, והחבילה המטרה חייבת כבר להיות בעלת לפחות שחרור פעיל.
+השתמש `unyank` עם אותו קובץ, גרסה, ושינוי בקריאה טהורה כדי להפוך את המצב הזה. תפקידי הבעלים של הקובץ ושומרן שליטה לפרסם, yank, מטאדאטה, ובאפשרויות מיקום ארכיון. ל- Global aliases יש רישום מחיר משלהם, היסטוריית ריטרג'ט, ושינויים בהשוואה והיצירה; הם לא קיצורות בבעלות החבילה.
 
 ## Iroha שטחים {#iroha-surfaces}
 
-Musubi משתמש בהוראות ושאילות מדרגה ראשונה Iroha:
+Musubi משתמש בהוראות ושאלות שפורסמו לראשונה V1:
 
-|פני השטח.|מטרה|
-| ---------------------------- | -------------------------------------------------- |
-|`PublishMusubiRelease` |לפרסם פרסום חבילת בלתי משתנה. |
-|`YankMusubiRelease` |חישוב שחרור קיים כמשוך. |
-|`SetMusubiShortAlias` |לחבר זיהוי חבילה ארוך עולמי. |
-|`AssertMusubiReleaseExists` |נדרש גרסה קונקרטית של חבילה כדי להתקיים. |
-|`FindMusubiReleaseByRef` |תביא את ההפרש על פי רשימת החבילה המדויקת. |
-|`FindMusubiPackageVersions` |רשימה של גרסאות עבור זיהוי חבילת. |
-|`FindMusubiPackageReleases` |רשימת סיכומים של פרסום עבור תעודת זיהוי חבילה. |
-|`SearchMusubiPackages` |חיפוש סיכומים של חבילות לפי מקום שמות וטקסט. |
-|`FindMusubiShortAliasByName` |לפתור כינוי קצר. |
+|פני השטח.|מטרה.|
+| -------------------------------------------------- | -------------------------------------------------------------- |
+|`RegisterMusubiNamespaceBindingV1` |לחבר חלל שמות למרחב נתונים של הבית שלו. |
+|`RegisterMusubiArchiveV1` |רשום מחויבות ארכיון מקור מאושרת בלתי משתנה. |
+|`AddMusubiArchiveLocationV1` |הוספת או חידוש מיקום ארכיון מוכשר SoraFS. |
+|`PublishMusubiReleaseV1` |תדרוש או עדכן חבילה ותפרסם שחרור בלתי משתנה אחד. |
+|`SetMusubiReleaseYankV1` |להשוות ולתקן את המצב של שחרור מדויק.|
+|`InviteMusubiPackageMaintainerV1` |להתחיל את זרימת ההזמנה למפקידים במפורש. |
+|`RegisterMusubiAliasV1` / `RetargetMusubiAliasV1` |רישום או ריטג את שם כינוי גלובלי נשלט. |
+|`AssertMusubiReleaseDigestV1` |תדגיש את ההשפעה המדויקת של השחרור.|
+|`FindMusubiExactPackageV1` |תקרא את החבילה המדויקת אחת וההסגורים שלה. |
+|`FindMusubiExactReleaseV1` |קרא תמונה אחת מדויקת של השחרור.|
+|`FindMusubiResolverIndexV1` / `FindMusubiVersionsV1` |פתרון או רשימה של מועמדים לשחרור סופיים. |
+|`FindMusubiArchiveLocationsV1` |קראו את מקומות הארכיון הסופיים הנמכרים על ידי ספק. |
+|`FindMusubiAliasV1` / `FindMusubiAliasHistoryV1` |קרא את המטרה הנוכחית או ההיסטוריה הבלתי משתנה שלה. |
 
-Torii מגלה את Musubi HTTP משפחת המסלול תחת `/v1/musubi/`. פונה לסוכן MCP כלים נחשפים כ `iroha.musubi.` כינויים. [Torii נקודות קצה](/he/reference/torii-endpoints.md) ו [קישור בקשה](/he/reference/queries.md) עבור הרחבה API מפה.
+Torii חושף את משפחת המסלול של האפליקציה `/v1/musubi/`. MCP כלים משתמשים במזומן `iroha.musubi.queries.` ו `iroha.musubi.instructions.*` שמות. [Torii נקודות סוף](/he/reference/torii-endpoints.md) ו... [קישור בקשה](/he/reference/queries.md) עבור הרחבה API מפה.

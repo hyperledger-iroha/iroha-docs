@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /blockchain/fastpq.md
-translation_source_hash: f1dc55e4b2146de009203e19adb5cc1e9ce5302bc0ee27fe0b442693c5112c22
+translation_source_hash: 55b57e6aeeef2aefa1c8359d9b9487029b106eaebed12a58268b61dc583e97f6
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -905,7 +905,7 @@ FastPQ провери эҙләүҙе төҙөүҙән алда партия тә
 
 ## Проверка Лейн {#prover-lane}
 
-`irohad` башланғыс ваҡытта FastPQ провер лентаһын башлай, әгәр провер бэкэндаһы инициациялана алһа. Лен - сикләнгән сиратлы фоновой эш. Блок башҡарғандан һуң бойондороҡлау юлы блок хэшигы, бейеклеге, ҡарашы һәм шаһиты булған провер заданиеһын тапшыра.
+`iroha3d` башланғыс ваҡытта FastPQ провер лентаһын башлай, әгәр провер бэкэндаһы инициациялана алһа. Лен - сикләнгән сиратлы фоновой эш. Блок башҡарғандан һуң бойондороҡлау юлы блок хэшигы, бейеклеге, ҡарашы һәм шаһиты булған провер заданиеһын тапшыра.
 
 Әгәр ҙә юл хәрәкәте туҡтап ҡалһа йәки сират тулы булһа, эштән ситтә ҡала һәм ғәҙәти блок эшкәртеү дауам итә. Тимәк, фоновый провер леняһы транзакция ҡабул итеү йәки консенсус ҡапҡаһы түгел. Был инде ғәмәлгә ашырылған дәүләт буйынса иҫбатлау-производство юлы.
 
@@ -1072,7 +1072,7 @@ $$
 
 ## SCCP Асыҡ хәбәр иҫбатлауҙары {#sccp-transparent-message-proofs}
 
-SCCP ярҙамсы һандығында шулай уҡ транспарентлы селтәр аша хәбәрҙәр иҫбатлау өсөн FastPQ ҡулланыла. Был юл `irohad` фоновой провер лентаһынан айырылып тора. Ул FastPQ партияһын туранан-тура SCCP хәбәр иҫбатлау төрөнән һәм манифестан төҙөй, һуңынан һөҙөмтәле иҫбатлауҙы асыҡ тикшереү өсөн уратып ала.
+SCCP ярҙамсы һандығында шулай уҡ транспарентлы селтәр аша хәбәрҙәр иҫбатлау өсөн FastPQ ҡулланыла. Был юл `iroha3d` фоновой провер лентаһынан айырылып тора. Ул FastPQ партияһын туранан-тура SCCP хәбәр иҫбатлау төрөнән һәм манифестан төҙөй, һуңынан һөҙөмтәле иҫбатлауҙы асыҡ тикшереү өсөн уратып ала.
 
 SCCP партияһы `fastpq-lane-balanced` һәм өс метамәғлүмәт күсеүҙәр ҡуллана:
 
@@ -1210,14 +1210,14 @@ metal_debug_enum = false
 metal_debug_fused = false
 ```
 
-Шул уҡ үтәү һәм телеметрия этикеттарын `irohad` аша кире ҡағырға мөмкин:
+Шул уҡ үтәү һәм телеметрия этикеттарын `iroha3d` аша кире ҡағырға мөмкин:
 
 ```shell
-irohad --fastpq-execution-mode auto
-irohad --fastpq-poseidon-mode cpu
-irohad --fastpq-device-class apple-m4
-irohad --fastpq-chip-family m4
-irohad --fastpq-gpu-kind integrated
+iroha3d --fastpq-execution-mode gpu
+iroha3d --fastpq-poseidon-mode cpu
+iroha3d --fastpq-device-class apple-m4
+iroha3d --fastpq-chip-family m4
+iroha3d --fastpq-gpu-kind integrated
 ```
 
 Конфигурация майҙансыҡтары өсөн тирә-яҡ мөхит үҙгәреүсәндәре лә ярҙам ителә. FastPQ‐ҡа ярашлы үҙгәреүсәндәр:
@@ -1258,4 +1258,4 @@ irohad --fastpq-gpu-kind integrated
 - `TransferTranscript`
 - `AxtFastpqBinding`
 - `LaneFastpqProofMaterial`
-- [`irohad` FastPQ варианттары](/ba/reference/irohad-cli.md#arg-fastpq-execution-mode)
+- [`iroha3d` FastPQ варианттары](/ba/reference/iroha3d-cli.md#arg-fastpq-execution-mode)

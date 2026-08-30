@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /blockchain/fastpq.md
-translation_source_hash: f1dc55e4b2146de009203e19adb5cc1e9ce5302bc0ee27fe0b442693c5112c22
+translation_source_hash: 55b57e6aeeef2aefa1c8359d9b9487029b106eaebed12a58268b61dc583e97f6
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -905,7 +905,7 @@ AIR құрамының ашылуы `R_air_composition` астында куәл�
 
 ## Провер Лейн {#prover-lane}
 
-`irohad` іске қосылған кезде FastPQ prover жолын бастайды, егер prov backend-ті бастауға болады. Lane - бұл шектелген кезегі бар аяқтық тапсырма. Блок орындау куәсін шығарғаннан кейін, commit жолы блок хэшін, биіктігін, көрініс пен куәсын қамтитын prover жұмысын ұсынады.
+`iroha3d` іске қосылған кезде FastPQ prover жолын бастайды, егер prov backend-ті бастауға болады. Lane - бұл шектелген кезегі бар аяқтық тапсырма. Блок орындау куәсін шығарғаннан кейін, commit жолы блок хэшін, биіктігін, көрініс пен куәсын қамтитын prover жұмысын ұсынады.
 
 Егер жол жүрмесе немесе кезек толы болса, жұмыс өткізіледі және қалыпты блок өңдеу жалғасады. Бұл фоновый провер лентасы транзакцияны қабылдау немесе консенсус қақпасы емес дегенді білдіреді. Ол қазірдің өзінде орындалған мемлекет бойынша дәлелді-өндірістік жолы.
 
@@ -1072,7 +1072,7 @@ $$
 
 ## SCCP Өткінші хабарлардың дәлелдері {#sccp-transparent-message-proofs}
 
-SCCP көмекші коробкасы сондай-ақ мөлдір тізбектегі хабарларды дәлелдеу үшін FastPQ пайдаланады. Бұл жол `irohad` фоновый провер лентасынан бөлек болады. Ол FastPQ партиясын тікелей SCCP хабарлама дәлелдемесі топтамасынан және манифестінен құрастырады, содан кейін нәтижесінде пайда болған дәлелді ашық тексеру үшін оралады.
+SCCP көмекші коробкасы сондай-ақ мөлдір тізбектегі хабарларды дәлелдеу үшін FastPQ пайдаланады. Бұл жол `iroha3d` фоновый провер лентасынан бөлек болады. Ол FastPQ партиясын тікелей SCCP хабарлама дәлелдемесі топтамасынан және манифестінен құрастырады, содан кейін нәтижесінде пайда болған дәлелді ашық тексеру үшін оралады.
 
 SCCP партиясы `fastpq-lane-balanced` және үш метамәдени ауысуды пайдаланады:
 
@@ -1210,14 +1210,14 @@ metal_debug_enum = false
 metal_debug_fused = false
 ```
 
-Бірдей орындау және телеметриялық таңбаларды `irohad` -дан ауыстыра алады:
+Бірдей орындау және телеметриялық таңбаларды `iroha3d` -дан ауыстыра алады:
 
 ```shell
-irohad --fastpq-execution-mode auto
-irohad --fastpq-poseidon-mode cpu
-irohad --fastpq-device-class apple-m4
-irohad --fastpq-chip-family m4
-irohad --fastpq-gpu-kind integrated
+iroha3d --fastpq-execution-mode gpu
+iroha3d --fastpq-poseidon-mode cpu
+iroha3d --fastpq-device-class apple-m4
+iroha3d --fastpq-chip-family m4
+iroha3d --fastpq-gpu-kind integrated
 ```
 
 Конфигурация өрістері үшін қоршаған ортаның айнымалылары да қолданады. FastPQ -ға арналған айнымалылар:
@@ -1258,4 +1258,4 @@ irohad --fastpq-gpu-kind integrated
 - `TransferTranscript`
 - `AxtFastpqBinding`
 - `LaneFastpqProofMaterial`
-- [`irohad` FastPQ параметрлері](/kk/reference/irohad-cli.md#arg-fastpq-execution-mode)
+- [`iroha3d` FastPQ параметрлері](/kk/reference/iroha3d-cli.md#arg-fastpq-execution-mode)

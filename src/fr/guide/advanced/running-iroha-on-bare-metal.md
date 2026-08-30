@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 77780600fa59ba353e2aa79fb339adb6a02f7ac731e04cd0d5f51821ec54e794
+translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,12 +15,15 @@ Utilisez ce flux de travail lorsque vous voulez exécuter des pairs directement 
 Dans l'espace de travail Iroha en amont:
 
 ```bash
-cargo build --release -p irohad -p iroha_cli -p iroha_kagami
+cargo build --release \
+  -p irohad --bin iroha3d \
+  -p iroha_cli --bin iroha \
+  -p iroha_kagami --bin kagami
 ```
 
 Ce qui produit:
 
-- `target/release/irohad` pour le daimon par rapport à l'autre
+- `target/release/iroha3d` pour le daimon par rapport à l'autre
 - `target/release/iroha` pour le CLI
 - `target/release/kagami` pour la génération de clés, d'origine et de réseaux locaux
 
@@ -29,7 +32,7 @@ Ce qui produit:
 Générer un localnet Iroha 3 à quatre pairs:
 
 ```bash
-target/release/kagami localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+target/release/kagami localnet --peers 4 --out-dir ./localnet
 ```
 
 Le répertoire de sortie contient les fichiers générés `genesis.json`, `genesis.signed.nrt`, peer `config.toml`, `client.toml`, scripts d'aide et un `README.md` généré avec des commandes exactes pour ce paquet.

@@ -1,7 +1,7 @@
 ---
 translation_locale: ru
 translation_source: /reference/peer-config/index.md
-translation_source_hash: 5cc6ddf62a45f655d61a0ff3ebc7e20b939fe78c9d542087b717c2e17e19250d
+translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f29469aaf4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 Местная конфигурация сверстников устанавливается в файлах TOML. Это отличается от конфигурации на цепи, измененной посредством инструкций [`SetParameter`](/ru/blockchain/instructions.md#setparameter). Производственное поведение должно быть представлено в файле конфигураций или параметре на цепи; переменные окружающей среды не являются воротами функций.
 
-Используйте аргумент [`--config`](../irohad-cli#arg-config) CLI для указания пути к файлу конфигурации.
+Используйте аргумент [`--config`](../iroha3d-cli#arg-config) CLI для указания пути к файлу конфигурации.
 
 ## Шаблон {#template}
 
@@ -65,4 +65,4 @@ max_content_len = 2048
 
 ## Устранение неполадок {#troubleshooting}
 
-Пройдите флаг [`--trace-config`](../irohad-cli#arg-trace-config) CLI, чтобы увидеть следы того, как конфигурация читается и анализируется.
+Пройдите флаг [`--trace-config`](../iroha3d-cli#arg-trace-config) CLI, чтобы увидеть следы того, как конфигурация читается и анализируется.

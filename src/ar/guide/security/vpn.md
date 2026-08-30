@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /guide/security/vpn.md
-translation_source_hash: 4161cec5d601ad3a57decc19402738358a03648adad8502b5282e8e9bacc3fa8
+translation_source_hash: 020591f0d7c5560dfb2e9f3f4537f429cbeba864c3eb022856d42addcf32e225
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -25,7 +25,7 @@ translation_engine: nllb-200-ct2
 
 ::: tip
 
-متصفح VPN يحمي فقط حركة المرور من هذا المتصفح. `irohad`, CLI, SDK, SSH, المقاييس، أو حركة مرور النسخ الاحتياطية ما لم يتم توجيه هذه العمليات عبر نفس الشبكة الخاصة.
+متصفح VPN يحمي فقط حركة المرور من هذا المتصفح. `iroha3d`, CLI, SDK, SSH, المقاييس، أو حركة مرور النسخ الاحتياطية ما لم يتم توجيه هذه العمليات عبر نفس الشبكة الخاصة.
 
 :::
 

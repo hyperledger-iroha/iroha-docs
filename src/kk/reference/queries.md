@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /reference/queries.md
-translation_source_hash: 22e8a75acd72d066e3516ba46a0afe075d2d02790154458aec00a5d8bb861838
+translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -99,10 +99,17 @@ ISIs](/kk/blockchain/escrow.md) жергiлiктi активтердiң депо
 |`FindLaneRelayEnvelopeByRef` |Сызық-релелік конвертті табу. |
 |`FindSorafsProviderOwner` |SoraFS провайдерінің иесін шешу. |
 |`FindDataspaceNameOwnerById` |Деректер кеңістігінің атауы иеленушісін шешу. |
-|`FindMusubiReleaseByRef` |Musubi анықтамасын анықтаңыз. |
-|`FindMusubiPackageVersions` |Musubi пакетінің нұсқаларын тізбеңіз. |
-|`FindMusubiPackageReleases` |Musubi топтамасы үшін тізімді шығару. |
-|`FindMusubiShortAliasByName` |Musubi қысқа аты-жөнін шешу. |
+|`FindMusubiExactPackageV1` |Бір топтаманы және оның ағымдағы түзетулерін оқыңыз. |
+|`FindMusubiExactReleaseV1` |Бір-бірін оқып көріңіз.|
+|`FindMusubiProviderBundleAttestationV1` |Бір провайдердің архивтік топтама куәлігін оқыңыз. |
+|`FindMusubiResolverIndexV1` |Аяқталған шешуші индексін басыңыз. |
+|`FindMusubiVersionsV1` |Бір пакеттің түпкілікті нұсқалары. |
+|`FindMusubiMaintainersV1` |Сайт қызметшілер мен шақыруларды қабылдады. |
+|`FindMusubiArchiveLocationsV1` |Бір архив үшін SoraFS жерлерін түпкіліктілеген беттер. |
+|`FindMusubiArchiveRetentionV1` |Архивті сақтау деректері бет. |
+|`FindMusubiAliasV1` |Жаһандық аты-жөннің ағымдағы мақсаты мен қайта қаралуын оқыңыз. |
+|`FindMusubiAliasHistoryV1` |Жаһандық атаудың өзгермейтін ретаргеті тарихын басыңыз. |
+|`FindMusubiOrderedPrefixV1` |Бет пакеттері бір реттелген құрылымдық префикспен. |
 
 ## Қозғалтқыштар, келісім-шарттар, мәмілелер және блоктар {#triggers-contracts-transactions-and-blocks}
 

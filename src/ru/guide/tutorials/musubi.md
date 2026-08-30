@@ -1,171 +1,212 @@
 ---
 translation_locale: ru
 translation_source: /guide/tutorials/musubi.md
-translation_source_hash: 6b33c687fd1d81d931b932d38908d9a87e9c619e5aca5714d09d892160a6b704
+translation_source_hash: 4a76626522ecb9fe32e98e9c1e4552223cf820d40d0de16690dc589b0f40c901
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Musubi Kotodama упаковки {#musubi-kotodama-packages}
 
-Musubi - управляющий пакетами для исходных пакетов Kotodama. Он предоставляет разработчикам рабочий процесс, похожий на Cargo, для совместного использования совместимых функций Kotodama при сохранении идентичности пакета, связанной с именными пространствами SORA и Iroha вместо глобальной таблицы имен первого прихода.
+Musubi является управляющим пакетами первой версии для исходных пакетов Kotodama. Он решает точный график зависимости на цепочке, удостоверяет аутентификацию SoraFS исходные архивы, составляет и тестирует выбранное рабочее пространство, создает канонические CAR архивы и публикует неизменные релизы через Iroha.
 
 Используйте Musubi, когда вам нужно:
 
-- публиковать вновь используемые исходные библиотеки Kotodama
-- точные переходные зависимости от источника в `Musubi.lock`
-- восстановление источника зависимости от проверенных обязательств по архиву SoraFS
-- подключить именное пространство пакета к псевдонимам контракта dapp в том же именном пространстве
-- проверять, публиковать, извлекать пакеты или прозвища через реестр в цепочке;
+- публиковать библиотеки функций Kotodama, которые могут быть использованы повторно
+- записывать точный переходный график в `Musubi.lock`
+- восстановить источник зависимости от завершенных архивных обязательств SoraFS
+- построение и испытание одного пакета или многопакетного рабочего пространства;
+- проверять, публиковать, вытягивать, поддерживать или переименовать пакеты через реестр в цепочке
 
 ## Названия пакетов {#package-names}
 
-Использование канонических идентификаторов упаковки:
+Канонические селекторы упаковки используют:
 
 ```text
 namespace/package
 ```
 
-Использование точных ссылок на выпуск:
+Точные идентификаторы выпуска добавляют версию:
 
 ```text
 namespace/package@version
 ```
 
-Перед пространством имен не существует лидера `@`. Разделитель `@` предназначен для задокумента.
+Не существует лидирующей `@` перед пространством имен. Название пространства является либо корнем пространства данных, например `universal` или доменно-квалифицированным пространством данных, таким как `dex.universal`.
 
-Сегмент namespace соответствует суфиксу, используемому Kotodama дapp контрактными псевдонимами:
+## Манифест и запись {#manifest-and-lockfile}
 
-|Идентификатор упаковки|Форма связанного контракта под псевдонимом |
-| ------------------------- | ---------------------------- |
-|`universal/math` |`router::universal` |
-|`dex.universal/swap-core` |`router::dex.universal` |
-
-Намеровые пространства имеют форму `<dataspace>` или `<domain>.<dataspace>`. Когда в пакете есть ссылка dapp, Musubi проверяет, использует ли каждый связанный контрактный псевдоним тот же Suffix namespace, что и на пакете.
-
-## Проявление {#manifest}
-
-Пакет начинается с `Musubi.toml`:
+В пакете используется схема закрытого первого выпуска `Musubi.toml`. Манифест должен декларировать `manifest-version = 1`, Kotodama издание `"1"` и IVM ABI версию `1`; нет альтернативного манифеста или режима ABI.
 
 ```toml
+manifest-version = 1
+
 [package]
 namespace = "dex.universal"
 name = "swap-core"
 version = "0.1.0"
+edition = "1"
+abi-version = 1
+
+[lib]
+source-dir = "src"
+exports = ["quote"]
 
 [dependencies.math]
 package = "std.universal/math"
 version = "^1.0.0"
-
-[exports]
-functions = ["quote"]
-
-[dapp]
-namespace = "dex.universal"
-contracts = ["router::dex.universal"]
 ```
 
-Зависимости могут использовать точные версии, требования к опеке, требования к тильде, дикие карты, такие как `1.*`, или сравнительные списки, такие как`>=1.0.0,<2.0.0`.
+Зависимости могут использовать точные версии, требования к заботе или тильде, дикие карты, такие как `1.*`, и наборы сравнительных устройств с разделением комы, таких как `>=1.0.0,<2.0.0`. Ключ к таблице зависимостей - это псевдоним импорта родительско-местного значения; `package` всегда является избирателем канонического реестра.
 
-`Musubi.lock` записывает выбранный переходный график из реестра на цепочке. Каждый запертый узел сохраняет свой канонический пакет ref, выбранное требование, SoraFS манифест-дигест, хэш исходного архива, количество байтов, количества файлов, экспортируемые функции, детерминистический план исходных архивов и прозвища зависимостей. Краткие псевдонимы решаются до того, как они войдут в файл замка.
+`Musubi.lock` связывает график с точным генезисом `NetworkId` и завершенным снижением реестра. Он записывает выбранные корни рабочего пространства и неизменные узлы выпуска. включая выпуск, источник, интерфейс, архив, ABI и точные обязательства по краю зависимости. Параллельные версии разрешаются, когда требуется разрешённая графика.
+
+## Конфигурирование Taira SoraFS Привлечение {#configure-taira-sorafs-fetching}
+
+Taira является публичной тестовой сетью для этого рабочего потока. Начните с конфигурации клиента Taira с зарегистрированной цепочкой и идентичностью сети, а затем добавьте подробные связки аутентифицированного загрузки для поставщика. Материал подписи счета и ключи оператора поставщика должны оставаться в файлах времени запуска, предназначенных только для собственника.
+
+```toml
+torii_url = "https://taira.sora.org/"
+chain = "fc56984b-2be7-431d-840e-21514d1883f0"
+network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+
+[musubi.fetch]
+network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+client_id = "musubi-taira"
+request_timeout_ms = 30000
+
+[[musubi.fetch.provider_gateways]]
+provider_id = "REPLACE_WITH_ADMITTED_PROVIDER_ID_HEX"
+url = "REPLACE_WITH_ADVERTISED_PROVIDER_HTTPS_ORIGIN"
+operator_public_key = "REPLACE_WITH_PROVIDER_AUTHORIZED_OPERATOR_PUBLIC_KEY"
+operator_private_key_file = "./secrets/taira-sorafs-provider.key"
+```
+
+Откройте зарегистрированных поставщиков Taira из общедоступной корни тестирования сети:
+
+```bash
+export TAIRA_ROOT=https://taira.sora.org
+curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
+```
+
+Каталог поставщика предоставляет идентификации поставщика и рекламные конечные точки. Получить разрешение соответствующего оператора от выбранного поставщика. Время выполнения использует этот ключ для запроса ограниченных токенов потока; токены не являются ни аргументами CLI, ни контентом блокировки файла.
+
+Не используйте Taira Пин проверяющего устройства URL как `url`. Зарегистрированные валидаторы встроены SoraFS Сохранение отключено. `https://taira-validator-{1,2,3,4}.sora.org` конечные точки принимают регистрацию пин, в то время как чтение архива использует выбранный допустимый провайдер. HTTPS происхождение.
 
 ## Местный рабочий процесс {#local-workflow}
 
-От корня рабочего пространства Iroha вверх по течению, запустить Musubi через Cargo:
+С корня рабочего пространства Iroha вверх по течению, создать или ввести каталог пакетов и запустить Musubi через Cargo:
 
 ```bash
-cargo run -p musubi -- init --namespace dex.universal --name swap-core --dapp
-cargo run -p musubi -- add std.universal/math --version '^1.0.0' --alias math
-cargo run -p musubi -- install --config client.toml
-cargo run -p musubi -- build src/lib.ko --manifest-out target/lib.contract.json
-cargo run -p musubi -- pack \
-  --car-out source.car \
-  --sorafs-manifest-out manifest.norito \
-  --source-plan-out source-plan.norito
+mkdir -p examples/swap-core
+cd examples/swap-core
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  init . --namespace dex.universal --name swap-core --export quote
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  add std.universal/math --version '^1.0.0' --rename math
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- fetch --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- check --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- build --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- test --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- package --config client.toml
 ```
 
-Используйте `install --offline` для написания неразрешенного файла блокировки для зависимостей точных версий без запроса узла. Используйте `install --locked` в CI для отказа от устаревшего файла блокировок.
+`fetch` решает завершенный график реестра , обновления `Musubi.lock` когда это разрешено, и заполняет неизменный локальный кеш из аутентифицированного SoraFS местоположения. `check`, `build`, `test`, и `package` выполнять те же графические и кеширующие проверки перед своей работой.
 
-`build` соединяет запасные источники зависимости путем переписки вызовов, таких как `math::add()`, к детерминистским внутренним названиям функций Kotodama. Он отвергает вызовы к функциям, которые зависимость не экспортировала. Библиотеки Musubi v1 предназначены только для функций: источники зависимости, содержащие государственные декларации, триггеры, блоки kotoba, константы или другие нефункциональные элементы контракта, отклоняются.
+Используйте `--locked` для отказа от любого изменения файла блокировки. Используйте `--offline` только тогда, когда индекс реестра и каждый необходимый архив уже вкладываются в кэш. `--frozen` сочетает эти два ограничения. Оффлайн-кэш не работает; Musubi никогда не пишет незарешенный кэш-файл.
 
-## Доставка источника архивов {#fetching-source-archives}
+Источники зависимости связываются путем переписки квалифицированных вызовов, таких как `math::add()` с детерминистскими внутренними названиями Kotodama. Призыв к зависимости к неэкспортируемой функции отклоняется. Импортируемые библиотеки выставляют функции; локальные цели `[[contract]]` и `[[test]]` остаются ясными целями пакета.
 
-Musubi может найти исчезающие источники зависимости при решении или позже через подкоманды кеша:
+## Проверка и ремонт кеша {#cache-verification-and-repair}
+
+Публичные каш-команды работают на неизменных архивах, связанных с регистрацией:
 
 ```bash
-cargo run -p musubi -- install --config client.toml --fetch \
-  --provider-payload math.payload
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  cache verify --all --config client.toml
 
-cargo run -p musubi -- cache import math --source-root ../math
-cargo run -p musubi -- cache fetch math --provider-payload math.payload
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  cache repair --config client.toml
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  cache prune --dry-run --config client.toml
 ```
 
-При живых доставках шлюзов используются одна или более спецификаций поставщика шлюзов SoraFS:
+`cache repair` карантин коррумпирует доверенных потомков и перечисляет точные архивы, когда позволяют завершенные доказательства поставщика. Musubi отвергает живую непустую мутацию подрезания. Используйте `--dry-run` для проверки классифицированных кандидатов.
+
+## Опаковка и издание {#packaging-and-publishing}
+
+Перед написанием архива проверьте чистый положительный файл, а затем создайте канонический пакет:
 
 ```bash
-cargo run -p musubi -- install --config client.toml --fetch \
-  --gateway-provider 'name=hot-a,provider-id=1111111111111111111111111111111111111111111111111111111111111111,base-url=https://gw.example,stream-token=BASE64,package=math'
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  package --list --locked --config client.toml
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  package --locked --config client.toml
 ```
 
-Файлы полезной нагрузки провайдера и провайдеры шлюзов являются взаимоисключающими для одной операции по доставке. Если отсутствует более одного заблокированного пакета, объедините каждого провайдера шлюзов с `package=<dependency-alias>`, `package=<namespace/package@version>`, `package=<namespace/package>` или `manifest=<64-hex SoraFS manifest digest>`.
+`package` пишет `target/package/<namespace>-<name>-<version>.car`. CAR связывает канонический пакетный манифест, семантический манифест выпуска, точное блокирование проверки, источник дерево, интерфейс Digest и SoraFS обязательства по архиву. В первом выпуске CLI не существует отдельных команд `pack`, `--car-out`, `--sorafs-manifest-out` или `--source-plan-out`.
 
-Ворота . `base-url` и `privacy-url` значения должны быть использованы `https://` По умолчанию. локальные тестовые шлюзы могут использовать `http://localhost`, `http://127.0.0.1`, или `http://[::1]` только с `--gateway-allow-insecure-localhost`. Токены потока являются учетными знаками для запуска и не записываются в `Musubi.lock`.
-
-## Издательство {#publishing}
-
-`pack` вычисляет детерминистический BLAKE3-256 исходный архив хэш плюс исходный байт и количество файлов. Когда `--car-out`, `--sorafs-manifest-out`, или `--source-plan-out` Это также создает детерминистическую SoraFS CAR полезная нагрузка, SoraFS манифестации, и Musubi план исходного архива из одного и того же набора исходных файлов.
-
-Перед публикацией используйте сухой пробег:
+Публикация - это подписанный, перезагружаемый рабочий процесс сети. Выбранные `client.toml` должны содержать обязательства по производству `[musubi.publication]`, а также конфигурацию учетной записи и сети Taira.
 
 ```bash
-cargo run -p musubi -- publish --config client.toml --dry-run
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  publish -p dex.universal/swap-core --locked --config client.toml
 ```
 
-Без `--dry-run`, `publish` записывает дефолтные артефакты в `.musubi/dist/<namespace>/<name>/<version>/`, опционально загружает манифест и полезную нагрузку через Torii Это ... SoraFS конечный пункт накопительной установки с `--upload`, регистрирует генерируемые SoraFS Пин, и подает `PublishMusubiRelease` через конфигурированный Iroha Клиент.
-
-Опубликованные публикации должны включать в себя:
-
-- непустый архив канонического источника
-- детерминистический план архива источника
-- по меньшей мере одна экспортированная функция Kotodama
-- записи о зависимости, которые не выбирают вытянутые выпуска
-- dapp-ссылка, при наличии которой контрактные псевдонимы совпадают с именным пространством пакета;
+Использование `--detach` после того, как дневник работы и граница входа семян будут прочными. `publish --resume <operation-id> --config client.toml`. В узком. `--recover <operation-id>` Путь только восстанавливает отсутствующие неизменные боковые машины для нетронутого журнала до входа. `--dry-run` или общий общественный загрузка fallback; выполнять `package --list` и `package` для местного предлетового полета.
 
 ## Вопросы по регистру и жизненный цикл {#registry-queries-and-lifecycle}
 
-Поиск и проверка в регистре с помощью:
+Поиск и проверка завершенного реестра с той же конфигурацией Taira клиента:
 
 ```bash
-cargo run -p musubi -- search swap --config client.toml
-cargo run -p musubi -- versions dex.universal/swap-core --config client.toml
-cargo run -p musubi -- alias resolve swap --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  search swap --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  info dex.universal/swap-core --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  versions dex.universal/swap-core --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  alias resolve swap --config client.toml
 ```
 
-Янкинг скрывает выпуск от нового разрешения, но поддерживает воспроизводимость существующих файлов блокировки:
+Янкинг исключает неизменное освобождение от новых разрешений, в то время как существующие точные блоки остаются воспроизводимыми. Сначала прочитайте текущий пересмотр yank, а затем представьте мутацию сравнения и сбора:
 
 ```bash
-cargo run -p musubi -- yank dex.universal/swap-core@0.1.0 \
-  --reason "bad archive" \
-  --config client.toml \
-  --dry-run
+: "${EXPECTED_YANK_REVISION:?set the current non-zero yank revision}"
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  yank dex.universal/swap-core 0.1.0 \
+  --expected-revision="$EXPECTED_YANK_REVISION" \
+  --reason="bad archive" \
+  --config client.toml
 ```
 
-Musubi избегает глобального заполнения имен, сделав `namespace/package` каноническим именем пакета. Публикация в пространство имен должна быть разрешена той же собственностью или моделью делегированных разрешений, используемой для этого пространства имен dapp Kotodama . Курированные глобальные короткие прозвища отделены от собственности пакета: `SetMusubiShortAlias` требует разрешения на `CanSetMusubiShortAlias`, а целевой пакет должен уже иметь по крайней мере один активный выпуск.
+Используйте `unyank` с одним и тем же пакетом, версией и свежепрочитанным пересмотром, чтобы отменить это состояние. Глобальные псевдонимы имеют свою собственную регистрацию по цене, историю ретаргетинга и пересмотры сравнения и настройки; они не являются кратковременными маршрутами собственности пакетов.
 
 ## Поверхности Iroha {#iroha-surfaces}
 
-Musubi использует инструкции первого класса Iroha и запросы:
+Musubi использует инструкции и запросы первой версии V1:
 
 |Поверхность .|Цель .|
-| ---------------------------- | -------------------------------------------------- |
-|`PublishMusubiRelease` |Публикуйте неизменный пакет. |
-|`YankMusubiRelease` |Отметьте существующую выпускную запись как вытянутую.|
-|`SetMusubiShortAlias` |Привязать выбранный глобальный короткий псевдоним к идентификатору пакета. |
-|`AssertMusubiReleaseExists` |Требуется наличие конкретной пакетной версии. |
-|`FindMusubiReleaseByRef` |Приведите выпуск по точной упаковке. |
-|`FindMusubiPackageVersions` |Перечислить версии для идентификатора пакета. |
-|`FindMusubiPackageReleases` |Перечислить резюме выпуска для идентификатора пакета. |
-|`SearchMusubiPackages` |Поиск резюме пакета по пространству имен и тексту. |
-|`FindMusubiShortAliasByName` |Раскройте выбранный короткий псевдоним.|
+| -------------------------------------------------- | -------------------------------------------------------------- |
+|`RegisterMusubiNamespaceBindingV1` |Привязать пространство имен к его стабильному домашнему пространству данных. |
+|`RegisterMusubiArchiveV1` |Зарегистрируйте неизменный аутентифицированный обязательство архива источника. |
+|`AddMusubiArchiveLocationV1` |Добавить или возобновить проверенное место архива SoraFS. |
+|`PublishMusubiReleaseV1` |Заявление или обновление пакета и публикация одного неизменного выпуска. |
+|`SetMusubiReleaseYankV1` |Сравните и установите вытянутое состояние точного высвобождения. |
+|`InviteMusubiPackageMaintainerV1` |Начните открытый поток приглашений на роль пакета. |
+|`RegisterMusubiAliasV1` / `RetargetMusubiAliasV1` |Регистрировать или переназначить управляемый глобальный псевдоним. |
+|`AssertMusubiReleaseDigestV1` |Укажите точный неизменный расщепление.|
+|`FindMusubiExactPackageV1` |Прочитайте один конкретный пакет и его пересмотры. |
+|`FindMusubiExactReleaseV1` |Прочитайте один точный снимок. |
+|`FindMusubiResolverIndexV1` / `FindMusubiVersionsV1` |Разрешить или перечислить кандидатов на окончательное освобождение. |
+|`FindMusubiArchiveLocationsV1` |Прочитайте окончательные архивные локации, поддерживаемые поставщиком. |
+|`FindMusubiAliasV1` / `FindMusubiAliasHistoryV1` |Прочитайте текущую цель или ее неизменную историю. |
 
-Torii раскрывает Musubi HTTP Семейство маршрутов `/v1/musubi/`. Относится к агенту MCP инструменты выявлены как `iroha.musubi.` псевдонимы. [Torii конечные точки](/ru/reference/torii-endpoints.md) и [ссылка на запрос](/ru/reference/queries.md) для более широкого API Карта.
+Torii раскрывает семейство маршрутов приложений в `/v1/musubi/`. MCP инструменты используют ток `iroha.musubi.queries.` и `iroha.musubi.instructions.*` Названия. [Torii конечные точки](/ru/reference/torii-endpoints.md) и [ссылка на запрос](/ru/reference/queries.md) для более широкого API Карта.

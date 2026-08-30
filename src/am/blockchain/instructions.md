@@ -1,9 +1,9 @@
 ---
 translation_locale: am
 translation_source: /blockchain/instructions.md
-translation_source_hash: adc3eff9758dd73e9114e78eaa18ddf6271db3bc4042611e1ed6ed1aac226246
+translation_source_hash: ade5ba2b693de7e798490be0947099d0306d9565b88550e201dccd181810fb18
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Iroha ልዩ መመሪያዎች {#iroha-special-instructions}
@@ -21,6 +21,7 @@ translation_engine: nllb-200-ct2
 | [Grant/Revoke](#grant-revoke) |ፈቃድ መስጠት ወይም ማስወገድ። |
 | [ማስተላለፍ](#transfer) |የባለቤትነት ወይም የንብረት ዋጋ ማስተላለፍ። |
 | [የአገር ውስጥ የዋጋ ማስከበሪያ እና ንብረት መቆለፊያዎች ](#native-escrow-and-asset-locks) |የቁጥር ንብረቶችን በፕሮቶኮል ጥበቃ ውስጥ ይዝጉ።|
+| [አቶሚክ የግል ስምምነት](#atomic-private-settlement) | ሚስጥራዊ pool-ዎችን እና አቶሚክ bundle-ዎችን ያስተዳድራል። |
 | [ExecuteTrigger](#executetrigger) |ተነሳሽነቶችን አሂድ። |
 | [መዝገብ / ብጁ / ማሻሻል ](#other-instructions) |መዝገብ, ማራዘም, ወይም የስራ ሰዓት ባህሪ ለማሻሻል. |
 
@@ -42,6 +43,7 @@ Iroha ልዩ መመሪያዎች ማጠቃለያ እንጀምር; የትኞቹ �
 | [Grant/Revoke](#grant-revoke) | [ሚናዎች, ፍቃድ መለያዎች](/am/blockchain/permissions.md) |ሂሳቦች ወይም ሚናዎች |
 | [ማስተላለፍ](#transfer) |ጎራዎች፣ የንብረት ትርጉሞች፣ ቁጥራዊ ንብረቶች፣ NFTs |መለያዎች |
 | [የአገር ውስጥ የዋጋ ማስከበሪያ እና ንብረት መቆለፊያዎች ](#native-escrow-and-asset-locks) |ቁጥራዊ የዋጋ ማስያዣዎች፣ የዋጋ መቆለፊያዎች፣ የማይታወቁ የዋጋ ማረጋገጫ ግዴታዎች |ገዢዎች፣ መዳረሻዎች ወይም አለመግባባት |
+| [አቶሚክ የግል ስምምነት](#atomic-private-settlement) | በትክክለኛ route የተገደቡ ሚስጥራዊ pool-ዎች፣ የpolicy ሽግግሮች፣ የተጠናቀቁ bundle-ዎች እና የማቋረጥ ምልክቶች | |
 | [ExecuteTrigger](#executetrigger) |ማነቃቂያዎች|                      |
 | [መዝገብ / ብጁ / ማሻሻል ](#other-instructions) |መዝገቦች፣ ለተፈፃሚው የተወሰኑ ጥቅማጥቅሞች፣ ለፈጻሚው ማሻሻያዎች |                      |
 
@@ -234,7 +236,10 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 BLS ቁልፉን እና PoP ቁልፉን ከ `kagami` ጋር ይፍጠሩ ፣ እርስዎ ቀድሞውኑ ከሌላቸው:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./peer-key
+PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
+PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
@@ -325,6 +330,14 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 የገበያ ቦታ የኤስኮር አጠቃቀም `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, እና `ResolveEscrowDispute`. አጠቃላይ የንብረት መቆለፊያዎች አጠቃቀም `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, እና `ExpireAssetLock`. የማይታወቁ ኤስሮዎች የገበያውን የህይወት ዑደት የሚያንፀባርቁ ናቸው `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, እና `ResolveAnonymousEscrowDispute`.
 
 እነዚህ ISIs በአሁኑ ጊዜ የመጀመሪያ ደረጃ ያላቸው አይደሉም CLI ትዕዛዞች. SDK ገንቢዎች ወይም ተከታታይ መመሪያ ጥቅማጥቅሞች, እና ተመልከት [የአገር ውስጥ ንብረት ማስከበሪያ](/am/blockchain/escrow.md) ለህይወት ዑደት ዝርዝሮች፣ ፍቃዶች፣ ጥያቄዎች፣ ክስተቶች እና Rust ምሳሌዎች።
+
+## አቶሚክ የግል ስምምነት {#atomic-private-settlement}
+
+የሚተዳደሩ የአቶሚክ የግል የማስተካከያ መመሪያዎች ከግልፅ ተወላጅ AMX የተለዩ ናቸው ። `ActivatePrivateSettlementPoolV1` ከተሰረዘ አስተዳደር መዝገብ እና ካኖኒካዊ አመጣጥ ግዴታዎች ትክክለኛውን መንገድ ለማግኘት አንድ ምስጢራዊ `pool` ይፈጥራል. `FinalizeAtomicPrivateSettlementV1` በጠቅላላው ተሳታፊ ኮሚቴዎች የተረጋገጠ አንድ ሙሉ ጥቅል በአቶሚክ ይተገበራል. `AbortAtomicPrivateSettlementV1` በስፖንሰር የተፈቀደውን የህዝብ ማረፊያ ምልክት ብቻ ያወጣል።
+
+የግላዊነት አስተዳደር ብቻ `RotatePrivateSettlementPoolPolicyV1` ሊፈጽም ይችላል። መመሪያው ከአሁኑ governance digest ጋር ትክክለኛ መዛመድን ይጠይቃል፤ route-ን፣ `pool`-ን፣ asset-binding commitment-ን፣ state frontier-ን፣ replay set-ዎችን እና የተጠናቀቁ ደረሰኞችን ይጠብቃል፣ public revision-ን በአንድ ያሳድጋል እና አዲስ auditor key epoch ይጠቀማል። Rotation-ው በinclusion height ላይ ይነቃል፣ እና ለተመሳሳይ route እና `pool` የሚሆን ደረሰኝ በዚያ ቁመት ሊጠናቀቅ አይችልም። Public revision lineage-ው ከrotation በፊት የተጠናቀቁ ደረሰኞችን ከrestart በኋላም ትክክለኛ ያደርጋል፣ ትክክለኛ ድግግሞሻቸውም idempotent ነው። በአሮጌ policy ላይ እየተሰሩ ያሉ bundle-ዎች state ከመቀየሩ በፊት fail closed ይሆናሉ። ኦፕሬተሮች የድሮ decryption key-ዎችን ማስቀመጥ ወይም key-ዎቹን ከማጥፋታቸው በፊት capsule-ዎቹን በአስተዳደር ስር rewrap አድርገው መፈተሽ አለባቸው።
+
+መስመሩ በነባሪነት ተሰናክሏል እና ለምርቱ ብቁ አይደለም ። ለግንባታ ፣ ለሥልጣን ፣ ለኦዲት ፣ ለማገገም እና ለመልቀቅ የሚያስፈልጉትን መስፈርቶች ለማግኘት [ ን ይመልከቱ የአቶሚክ የግል የመረጃ-ተላለፍ ቦታ መስተካከል ](/get-started/atomic-private-settlement)።
 
 ## የገንዘብ ድጋፍ/የማስወገድ መብት {#grant-revoke}
 

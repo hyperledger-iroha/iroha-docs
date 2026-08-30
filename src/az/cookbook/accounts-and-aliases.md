@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: 23b3ddbdadb0d177b2b12de60e0947a94ecdb20fa6ee1b3a2c6b83e5c91ba2f3
+translation_source_hash: 429535e5bb4ad1d3110f29a5b3896c0d3ce39264dbd357fa932fcc2a5f48d0f1
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -158,8 +158,8 @@ Kanonik hesabı saxlayın IDs. İmzalar, icazələr və əməliyyat təlimatlar�
 
 ## Mənbə və əlaqəli sənədlər {#source-and-related-docs}
 
-- [Qeydiyyatlı komitdə Canonical hesab ünvanının tətbiqi](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/account/address.rs)
-- [Hesab və alias testləri Torii sabitləşdirilmiş komitdə ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii/tests/accounts_endpoints.rs)
+- [Qeydiyyatlı komitdə Canonical hesab ünvanının tətbiqi](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs)
+- [Hesab və alias testləri Torii sabitləşdirilmiş komitdə ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs)
 - [Hesablar](/az/blockchain/accounts.md)
 - [Məlumat modelləri aliases](/az/blockchain/data-model.md#aliases)
 - [Adlandırma konvensiyaları](/az/reference/naming.md)

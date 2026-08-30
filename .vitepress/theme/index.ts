@@ -23,10 +23,6 @@ export default {
       defineAsyncComponent(async () => import('./components/CompatibilityMatrixTableIcon.vue')),
     )
     app.component(
-      'DataModelSchema',
-      defineAsyncComponent(() => import('./components/DataModelSchema.vue')),
-    )
-    app.component(
       'ToriiApiConsole',
       defineAsyncComponent(() => import('./components/ToriiApiConsole.vue')),
     )

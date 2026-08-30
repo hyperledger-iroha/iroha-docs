@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /reference/peer-config/index.md
-translation_source_hash: 5cc6ddf62a45f655d61a0ff3ebc7e20b939fe78c9d542087b717c2e17e19250d
+translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f29469aaf4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 הקונפיגורציה המקומית של השותפים מוגדרת בקבצים TOML. זה שונה מהקונפיגוריית שרשרת שנשנה באמצעות הוראות [`SetParameter`](/he/blockchain/instructions.md#setparameter). התנהגות הייצור חייבת להיות מוצגת בקובץ קונפיגורציות או בפרמטר ברשת; משתנים סביבתיים אינם שערים תכונות .
 
-השתמשו ב[ `--config`](../irohad-cli#arg-config) CLI כדי לציין את הנתיב לקובץ ההסדרות .
+השתמשו ב[ `--config`](../iroha3d-cli#arg-config) CLI כדי לציין את הנתיב לקובץ ההסדרות .
 
 ## תבנית {#template}
 
@@ -65,4 +65,4 @@ max_content_len = 2048
 
 ## פתרון בעיות {#troubleshooting}
 
-העבר את דגל [`--trace-config`](../irohad-cli#arg-trace-config) CLI כדי לראות עקבות של האופן שבו הקונפיגורציה נקראת ונתקשת.
+העבר את דגל [`--trace-config`](../iroha3d-cli#arg-trace-config) CLI כדי לראות עקבות של האופן שבו הקונפיגורציה נקראת ונתקשת.

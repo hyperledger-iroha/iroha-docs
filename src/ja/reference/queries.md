@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /reference/queries.md
-translation_source_hash: 22e8a75acd72d066e3516ba46a0afe075d2d02790154458aec00a5d8bb861838
+translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -99,10 +99,17 @@ SDK タイプされたビルダーまたは CLI を使用して,手動でクエ�
 |`FindLaneRelayEnvelopeByRef`|確認されたレーンリレーの封筒を 見つけろ|
 |`FindSorafsProviderOwner`|SoraFS 提供者の所有者を解決する. |
 |`FindDataspaceNameOwnerById`|データスペースの名前所有者を解決する. |
-|`FindMusubiReleaseByRef`|Musubi のリフレッシュを参照で検索する. |
-|`FindMusubiPackageVersions`|Musubi パッケージのバージョンをリストする. |
-|`FindMusubiPackageReleases`|Musubi パッケージのリストリリース. |
-|`FindMusubiShortAliasByName`|Musubi の略称を解決する. |
+|`FindMusubiExactPackageV1`|詳細なパッケージ記録と現在の修正をご覧ください.|
+|`FindMusubiExactReleaseV1`|正確なリリース・スナップショットを 読んでください|
+|`FindMusubiProviderBundleAttestationV1`|提供者のアーカイブパケット証明書を読む. |
+|`FindMusubiResolverIndexV1`|完了したレジューラーインデックスをページに表示します. |
+|`FindMusubiVersionsV1`|ページは1つのパッケージの最終バージョンです.|
+|`FindMusubiMaintainersV1`|ページはメンテナンスと待機中の招待状を受け入れた.|
+|`FindMusubiArchiveLocationsV1`|SoraFS の場所が最終的なページです. |
+|`FindMusubiArchiveRetentionV1`|ページのアーカイブ保存記録|
+|`FindMusubiAliasV1`|グローバル・アライアスの現在の目標と修正を読む. |
+|`FindMusubiAliasHistoryV1`|グローバル・アライアスの 不変なリターゲットの歴史をページに載せます|
+|`FindMusubiOrderedPrefixV1`|ページのパッケージは,順序化された構造プレフィックスであります.|
 
 ## トリガー,契約,トランザクション,ブロック {#triggers-contracts-transactions-and-blocks}
 

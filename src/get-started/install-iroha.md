@@ -30,7 +30,10 @@ cargo build --workspace
 For a smaller operator-focused build, compile just the main binaries:
 
 ```bash
-cargo build --release -p irohad -p iroha_cli -p iroha_kagami
+cargo build --release \
+  -p irohad --bin iroha3d --bin iroha3d_taira \
+  -p iroha_cli --bin iroha \
+  -p iroha_kagami --bin kagami
 ```
 
 The resulting binaries are written to `target/debug/` or `target/release/`.
@@ -38,14 +41,16 @@ The resulting binaries are written to `target/debug/` or `target/release/`.
 ## 4. Verify the Installed Tools
 
 ```bash
-cargo run --bin irohad -- --help
+cargo run -p irohad --bin iroha3d -- --help
+cargo run -p irohad --bin iroha3d_taira -- --help
 cargo run --bin iroha -- --help
 cargo run --bin kagami -- --help
 ```
 
-The three binaries you will usually use are:
+The four binaries you will usually use are:
 
-- `irohad` for the peer daemon
+- `iroha3d` for a standard peer daemon
+- `iroha3d_taira` for the canonical Taira validator launcher
 - `iroha` for CLI access to Torii and operator endpoints
 - `kagami` for keys, genesis manifests, and localnet profiles
 

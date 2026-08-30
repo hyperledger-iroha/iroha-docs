@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
+translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -263,7 +263,7 @@ EOF
 გენერირება საკვანძო წყვილი, თუ თქვენ ჯერ არ გაქვთ ერთი:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./taira-client-key
 ```
 
 შეიქმნას `taira.client.toml`:
@@ -336,7 +336,7 @@ SORA Nexus ანგარიში ID არის კანონიკურ�
 გენერირება ან დატვირთვა Ed25519 საკვანძო წყვილი, რომელიც მართავს ანგარიში:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./nexus-account-key
 ```
 
 საჯარო გასაღები Taira ანგარიშში ID გადაიყვანოს:
@@ -697,7 +697,7 @@ description = "Route payments domains to the payments dataspace"
 
 ოპერატორის მიღება უნდა მოიცავდეს შემდეგ კარიბჭეებს:
 
-- `irohad --sora --config <config.toml> --trace-config` გადადის გადაწყვეტილი კვანძის კონფიგურაცია
+- `iroha3d --sora --config <config.toml> --trace-config` გადადის გადაწყვეტილი კვანძის კონფიგურაცია
 - გენერირებული ან გადამოწმებული მანიფესტი არქივდება ჰეშებითა და ხელმოწერებით
 - სიგარეტის ტესტირება Taira გაიმართება ნებისმიერი Minamoto აქციის წინ.
 - ცვლილების შემდგომ `/status` კატალოგში მოცემულია განკუთვნილი ზოლი და მონაცემთა სივრცე.

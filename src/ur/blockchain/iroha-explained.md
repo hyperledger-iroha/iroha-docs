@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /blockchain/iroha-explained.md
-translation_source_hash: 3fdd22338e826b1ce335ebf5e4e850cf3deb9415c36a0c8d21ad63c397cec8c0
+translation_source_hash: ba591b2c1aa819837177625b1ae457b5fa492197576dc690b19ca2897562a436
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,7 +12,7 @@ Iroha 3 پہلا ریلیز Hyperledger Iroha پلیٹ فارم ہے۔ ایک ہ
 
 ## بنیادی بلڈنگ بلاکس {#core-building-blocks}
 
-- `irohad` ہم مرتبہ چلاتا ہے
+- `iroha3d` ہم مرتبہ چلاتا ہے
 - Torii کلائنٹ اور آپریٹر گیٹ وے ہے
 - Sumeragi اتفاق رائے کو سنبھالتا ہے
 - Norito ہے [کنونیکل بائنری فارمیٹ ](/ur/reference/norito.md)

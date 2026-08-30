@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /reference/peer-config/params.md
-translation_source_hash: d9fa3775e65b26b4eda726b27e54d167097b8bbd5bb766c27d7eeefdbc7ef10b
+translation_source_hash: 027486a17e7624cc301f939429baf9ea9ed1259564c3b99b8dc63cce17a7b26e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 
@@ -16,13 +16,13 @@ import ParamTable from './ParamTable.vue';
 
 汚染物質
 
-## ルーツレベル {#root}
+## 根本レベル {#root}
 
 ### `chain` <Badge text="required" /> {#param-chain-id}
 
 各トランザクションに含まれなければならないチェーン ID リプレイ攻撃を防ぐために使用される.
 
-リプレイ攻撃は,その目的とは異なるネットワークに有効なトランザクションを提出する試みである. `chain`が署名されたトランザクションの有用荷の一部であるため,一つのチェーンに署名したトランザクションは,別のチェーン ID を使用するピアによって拒否される.
+リプレイ攻撃は,その目的とは異なるネットワークに有効なトランザクションを送信する試みである. `chain`が署名されたトランザクションの役に立たない負荷の一部であるため,一つのチェーンで署名したトランザクションは,別のチェーン ID を使用するピアによって拒否される.
 
 <param-table type=string env=CHAIN />
 
@@ -161,7 +161,7 @@ GENESIS="./genesis.signed.nrt"
 
 ### `genesis.public_key` <Badge text="required" /> {#param-genesis-public-key}
 
-ゲネスキーパーの公钥
+ジェネスキーパーの公钥.
 
 <param-table type="public-key" env="GENESIS_PUBLIC_KEY" />
 
@@ -443,7 +443,7 @@ LOG_LEVEL=INFO
 <param-table type=string env=LOG_FILTER>
 <template #type>
 
-文字列 (String) は,コマで分離された1つまたは複数の指令で構成される.各指令には,対応する最大動詞性レベルが可能であるため (例えば,選択する) 範囲と一致するイベントがあります.Iroha は,より少ない排他的なレベル (例えば `trace`または`info`) を,より多くの排他的な水準 (例えば `error`または `warn`) に比べて,より言語的に表現すると考えます.
+文字列 (String) は,コマによって分離された1つまたは複数の指令で構成される.各指令には,相応しい最大動詞性レベルがあり,それに対応する範囲とイベントを可能とする (例えば選択する)Iroha は,より少ない排他的なレベル (例えば `trace`または`info`) を,より多くの排他的な水準 (例えば `error`または `warn`) に比べて,より言語的に表現すると考えます.
 
 高いレベルでは,指令の構文はいくつかの部分で構成されている.
 
@@ -470,7 +470,7 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 
 :::
 
-::: info [`logger.level`](#param-logger-level)との互換性
+::: info [`logger.level`](#param-logger-level) との組み合わせ
 
 `logger.filter`は, [`logger.level`](#param-logger-level)と協働し,いずれも他のいずれかを重複しない.
 
@@ -493,10 +493,10 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 
 文字列,可能な値:
 
-- `full`: デフォルトフォーマッター. これは,発生するすべてのイベントに対して人間に読み取れる単行列ログを発信し,現在のスペンコンテキストがイベントのフォーマットされた表現の前に表示されます.
-- `compact`:短行の長さのために最適化されたデフォルトフォーマターの変形.現在のスペンコンテキストからのフィールドは,フォーマットされたイベントのフィールドに添付され,スペンの名前が表示されません. 動詞性レベルは単一の文字に縮小されます.
-- `pretty`: 人間が読めるように最適化された,過度に美しい多行ログを発行する. これは主にローカル開発やデバッグ,またはコマンドラインアプリケーションで使用するために意図されています.ログの自動化分析とコンパクトな保管が読みやすさと視覚的な魅力よりも優先事項ではない場合.
-- `json`: ニューラインデレミテッド JSON ログの出力. これは,構造化されたログが分析および閲覧ツールによって JSON として消費されるシステムでの生産使用のために意図されています. JSON 出力は人間の読みやすさのために最適化されていません.
+- `full`: デフォルトフォーマッター. これは,発生するすべてのイベントに対して人間に読める単行列ログを発信し,現在のスペンコンテキストがイベントのフォーマットされた表示前に表示されます.
+- `compact`:短行の長さのために最適化されたデフォルトフォーマッターの変形.現在のスペンコンテキストからのフィールドは,フォーマットされたイベントのフィールドに添付され,スペン名は表示されません.動詞性レベルが単一文字に縮小されます.
+- `pretty`: あまりにも美しい,多行的なログを排出し,人間の読めるために最適化されています. これは主に地域開発に使用されるためログの自動分析とコンパクトストレージが可読性や視覚的な魅力を上回る優先事項である場合,デバッグまたはコマンドラインアプリケーション.
+- `json`:ニューラインデリミテッド JSON ログの出力.これは,構造化されたログが分析および閲覧ツールによって JSON として消費されるシステムでの生産使用のために設計されています. JSON 輸出は人間の読みやすさに最適化されていません.
 
 詳細とサンプル出力については, [`tracing-subscriber`ドキュメント](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/format/index.html)を参照してください.
 
@@ -543,15 +543,21 @@ KURA_BLOCKS_IN_MEMORY=1024
 
 ### `kura.init_mode` {#param-kura-init-mode}
 
-Kura 初期化モード
+Kura 初期化モード. `strict`は通常のおよびデフォルトモードである:ノードがアクティブになる前に,正規史,復元アーテファクト,補助インデックス,およびストレージ会計を検証する.
 
-<param-table  default-value=strict env=KURA_INIT_MODE>
+`fast`は,完全なスタートアップ監査が停電を脅かす場合,運用可視性を回復するための緊急劣化サービスモードである. `strict` で以前に初期化されたストレージと,正確に5つのアーテファクトを含む現在のスナップショット生成を必要とする.`snapshot.data`,`snapshot.sha256`, `snapshot.sig`, `snapshot.fast.norito`,および `snapshot.merkle.json`.ドメイン別々のオペレーター署名は,広告されたペイロードダイジェストと制限されたマニフェストを結びつける.マニフェスは,ペイロードの長さ,チェーン/ネットワークアイデンティティ,端末高度/ハッシュ, SCCP ポリシーハッシュ,ブットストラップラインージの存在を結び付ける.Fastはブートストラップ系を拒絶し,耐久性 Kura から同じマーク/カウント/チップ境界を必要とします.最初のリリースノードはちょうどそれらの5つのアーテファクトを受け入れ,他のすべてのアーテファルト数またはファイル名セットを拒否します.
+
+これらの5つの名前とメタデータを迅速に収集し,ペイロードとメルクルファイルを結合しますが,その内容を読み取ったり,ハッシュしたり,解析したり,解読したりしません.署名したマニフェストから最小の世界/Nexus を構築し,正確な Kura ハッシュプレフィキスを読み取りのみで地図化し,スナップショットワールド,ブロック-ハッシュアレイを残します.取引履歴,衍生指数,耐久性回復日記未開封. メークル,カノニック・セマンティックスナップショット監査,歴史的ブロック/最終性/SCCP 和解, Sumeragi アクティブ高度復元,合併およびクエリ日記,レーンマニスト/コンプライアンスソース,Kura が支援する SoraFS アーカイブ,リクティブストレージ会計,オプションサービスコンシリエーターは延期され続けています.地方の取引受付,提案,投票,正規文書,補助生産者は無効です.Kura 自体はライター起動と耐久性変異を拒絶し,パイプラインおよび FASTPQ 持続性キューは作業を保持またはコーディングするのではなくすぐに拒否します.Kura は APIs を読み取り,修理と耐久性同期の行動を無効化します:一時的なサイドカーが宣伝されず,行列遺跡が公表されず,進捗障壁が同期されない. Sumeragi とトランザクションゴシップは開始されません.Torii は健康,活力,準備性,同級型および構成操作のみを暴露する. API - バージョン,状態,メトリック,およびすべての通常の状態/歴史経路は利用できないままである. 準備性は厳重を再起動するまで使用できません.
+
+`fast` をインシデントでのみ使用します.サービスが安定すると,ノードを停止し, `strict` を復元して再起動します.急速モードは,延期された合併ログを必要とせず,カノニカルストレージを作成したり,修理したり,切断したり,輸入したりしません. 未公開したサフイックスおよび待機中の補助復元段階は読み取らずにまたは変異せずに無視され,その後厳格復旧のために残されます.輸入されたハッシュのみのスナップショット配列は利用できないままです.欠落または無効な現在のスナップшотがすぐに失敗します.Fastは空の世界や歴史的な再生再構築に再び落ちません.
+
+<param-table default-value=strict>
 <template #type>
 
 文字列,可能な値:
 
-- `strict`:すべてのブロックの厳格な検証
-- `fast`: 基本的なチェックのみによる迅速な初期化
+- `strict`:完全な検証と通常の生産
+- `fast`: 生産が厳格な再起動まで隔離された緊急開始制限
 
 </template>
 </param-table>
@@ -561,10 +567,6 @@ Kura 初期化モード
 ```toml [Config File]
 [kura]
 init_mode = "fast"
-```
-
-```shell [Environment]
-KURA_INIT_MODE=fast
 ```
 
 :::
@@ -609,7 +611,7 @@ KURA_DEBUG_OUTPUT_NEW_BLOCKS=true
 
 :::
 
-## 排列 {#queue}
+## 排隊 {#queue}
 
 ### `queue.capacity` {#param-queue-capacity}
 
@@ -662,7 +664,7 @@ transaction_time_to_live_ms = 43_200_000
 
 ### `sumeragi.debug.force_soft_fork` <Badge type="warning" text="debug" /> {#param-sumeragi-debug-force-soft-fork}
 
-Sumeragi ソフトフォーク処理経路を実行するためのデバッグのみスイッチ.制御されたテストの外にこれを無効にしておく;実行中の生産ネットワークで変更すると,共感行動について同僚の意見が異なってしまう可能性があります.
+Sumeragi ソフトフォーク処理経路を行使するためのデバッグのみスイッチ.制御されたテストの外にこれを無効にしておく.実行中の生産ネットワークで変更すると,共感行動について同僚が異議を唱える可能性があります.
 
 <param-table type=bool default-value=false />
 
@@ -675,15 +677,25 @@ force_soft_fork = true
 
 :::
 
+## Nexus 原子力民間決済 {#nexus-atomic-private-settlement}
+
+`[nexus.atomic_private_settlement]` は別々の `AtomicPrivateSettlementV1` 経路を管理します.これはデフォルトで無効化されます. `enabled = true` の設定には, `activation_height` が必要です.オンチェーン機能,通知期間,固定証明プロフィール,プール/監査ガバナンスが有効でない限り,入場はまだ閉じるわけではありません.
+
+主な境界線は `max_participants`, `max_expiry_blocks`, `audit_timeout_blocks`, `prepare_timeout_blocks`, `commit_timeout_blocks`, `max_proof_bytes`, `max_capsule_bytes`, `max_carrier_bytes`, `sidecar_retention_blocks`, `sidecar_max_records`, そして `sidecar_max_total_bytes`. `capsule_padding_classes_bytes` 厳格に増加するサブセットである必要があります V1 パッシング教室 `permitted_policy_versions` 受け取るだけ V1.
+
+`max_capsule_bytes`は, AAD, nonce, ciphertext, vector framing,および DEK 行に包まれたすべての監査者を含む完全な `PrivateSettlementAuditCapsuleV1` のカノニカル Norito バイトを測定する.すべての有効なパッディングクラスは,少なくとも `default_min_auditor_approvals` 監査者にとって保守的な全カプセル封筒に適合しなければならない.この承認設定はまた管理される階層である: Torii は`min_approvals` の値を下げる新たに認められたポリシーを拒絶し,正規バイト制限を超えた実際のカプセルを拒否する.
+
+これらの設定には,生産環境変数アクティベーションバイパスがない.完全な構成例と運用要件については[Run Atomic Private Cross-Dataspace Settlement ](/ja/get-started/atomic-private-settlement) を参照してください.文書化された外部リリースゲートが通過するまではパスは生産資格を有しません.
+
 ## スナップショット {#snapshot}
 
 このモジュールは, [World State View](/ja/blockchain/world#world-state-view-wsv)の瞬間の読み書きを担当します.
 
-スナップショットは World State View の連続化チェックポイントを保存し,ピアが Kura からすべてのブロックを再再生することなく再起動することができます. Kura は持続的なブロックの歴史であり,再プレイの真実源であり,スナップショットは加速経路です.起動時に, Iroha はスナップショットメタデータを設定されたチェーンと保存されたブロックに対して確認し,スナップシュートをロードするか再再生するかどうかを決定します.
+スナップショットは World State View の連続化チェックポイントを保存し,ピアが Kura からすべてのブロックを再再生することなく再起動することができます. Kura は持続的なブロックの歴史であり,再プレイのための真実の源であり,スナップショットは加速経路である.起動時に, Iroha はスナップショットメタデータを設定されたチェーンと保存されたブロックに対して確認し,スナップシュートをロードするか再再生するかどうかを決定します.
 
 ::: tip スナップショットを消す
 
-[`snapshot.store_dir`](#param-snapshot-store-dir)で指定したディレクトリを削除できます.
+[`snapshot.store_dir`](#param-snapshot-store-dir)で指定されているディレクトリを削除できます.
 
 :::
 
@@ -696,7 +708,7 @@ force_soft_fork = true
 
 文字列,可能な値:
 
-- `read_write`: Iroha は, [`snapshot.create_every_ms`](#param-snapshot-create-every-ms)で指定された期間でのスナップショットを作成します.起動時に, Iroha は既存のスナップシュートを読み取って (存在する場合は) ブロックのストレージに最新であることを確認します.
+- `read_write`: Iroha は, [`snapshot.create_every_ms`](#param-snapshot-create-every-ms)で指定された期間でのスナップショットを作成します.起動時に, Iroha は既存のスナップシュートを読み取り (存在する場合は) ブロックのストレージと最新であることを確認します.
 - `readonly`: `read_write` に似ていますが, Iroha はスナップショットを作成しません.
 - `disabled`: Iroha は起動時に新しいスナップショットを作成したり,既存の写真を読み取ったりしません.
 
@@ -733,7 +745,7 @@ create_every_ms = 60_000
 
 ### `snapshot.store_dir` {#param-snapshot-store-dir}
 
-スナップショットを保存する目録.
+スナップショットを保存する目録
 
 参照: [`kura.store_dir`](#param-kura-store-dir)
 
@@ -754,7 +766,7 @@ SNAPSHOT_STORE_DIR="/path/to/storage"
 
 ## テレメトリ {#telemetry}
 
-テレメトリは,ペア診断を外部のテレメトリ・コレクターに輸出する. ピアが収集者に報告すべきときに `telemetry.name` と `telemetry.url`の両方を設定し,テレメトリックを使用しない場合はセクションを省略します.
+テレメトリは,ペア診断を外部テレメトリコレクターに輸出する. ピアが収集者に報告すべきときに `telemetry.name` と `telemetry.url`の両方を設定し,テレメトリックを使用しない場合はセクションを省略します.
 
 `name`と `url`はペアする必要があります.
 

@@ -1,7 +1,7 @@
 ---
 translation_locale: mn
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 9341b2404624dec2230bc294c3d60dc124ac9574a0a5803b9bba744f4c5e7f50
+translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2
 Одоогийн Kagami кодтоос дөрвөн түвшний локалийн сүлжээг бий болгох:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 Гадаад өгөгдлийн сүлжээнд `genesis.json`, `genesis.signed.nrt`, `client.toml` болон туслах скриптийн тохиромжтой дундаг хувилбар байдаг.
@@ -33,10 +33,10 @@ cargo run --bin kagami -- docker \
   --peers 4 \
   --config-dir ./localnet \
   --image hyperledger/iroha:dev \
-  --out-file ./localnet/docker-compose.yml \
+  --out-file ./docker-compose.yml \
   --force
 
-docker compose -f ./localnet/docker-compose.yml up
+docker compose -f ./docker-compose.yml up
 ```
 
 Үндсэн хуулийн дагуу үүсгэсэн түлхүүр нь:
@@ -72,7 +72,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 Nexus хувилбарыг ашиглан эх орондоо оршин тогтнож байх:
 
 ```bash
-./target/release/irohad --sora --config ./defaults/nexus/config.toml
+./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
 ```
 
 Энэ хувилбарыг CLI-д хангахын тулд `defaults/nexus/client.toml` ашиглах.
@@ -88,7 +88,7 @@ Nexus хувилбарыг ашиглан эх орондоо оршин тог�
 Тулгарсан Compose Stack:
 
 ```bash
-docker compose -f ./localnet/docker-compose.yml down
+docker compose -f ./docker-compose.yml down
 ```
 
 Тээврийн хэрэгслийг ашигласны дараа [Хөдөлмөрийг Iroha 3-ээр дамжуулан CLI](/mn/get-started/operate-iroha-via-cli.md)-ээр үргэлжлүүлээрэй.

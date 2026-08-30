@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /reference/peer-config/index.md
-translation_source_hash: 5cc6ddf62a45f655d61a0ff3ebc7e20b939fe78c9d542087b717c2e17e19250d
+translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f29469aaf4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 Local peer configuration ကို TOML ဖိုင်များတွင်သတ်မှတ်ထားသည်။ ဤသည်မှာ [`SetParameter`](/my/blockchain/instructions.md#setparameter) ညွှန်ကြားချက်များဖြင့်ပြောင်းလဲသော on-chain configuration မှခြားနားသည်။ ထုတ်လုပ်မှုအပြုအမူကို configure file သို့မဟုတ် on-chain parameter တွင်ဖော်ပြရမည်ဖြစ်သည်။ ပတ်ဝန်းကျင်ကိန်းရှင်များသည် feature gates မဟုတ်ပါ။
 
-[`--config`](../irohad-cli#arg-config)CLI ဆွေးနွေးချက်ကို အသုံးပြုပြီး ဖွဲ့စည်းမှုဖိုင်သို့ လမ်းကြောင်းကို သတ်မှတ်ပါ။
+[`--config`](../iroha3d-cli#arg-config)CLI ဆွေးနွေးချက်ကို အသုံးပြုပြီး ဖွဲ့စည်းမှုဖိုင်သို့ လမ်းကြောင်းကို သတ်မှတ်ပါ။
 
 ## Template ကို {#template}
 
@@ -65,4 +65,4 @@ max_content_len = 2048
 
 ## ပြဿနာဖြေရှင်းခြင်း {#troubleshooting}
 
-[`--trace-config`](../irohad-cli#arg-trace-config)CLI အလံကို ဖြတ်ပြီး ဖွဲ့စည်းပုံဖတ်ခြင်းနှင့် စာရင်းစစ်ခြင်းနည်းလမ်း၏ ခြေရာကို မြင်နိုင်ရန်။
+[`--trace-config`](../iroha3d-cli#arg-trace-config)CLI အလံကို ဖြတ်ပြီး ဖွဲ့စည်းပုံဖတ်ခြင်းနှင့် စာရင်းစစ်ခြင်းနည်းလမ်း၏ ခြေရာကို မြင်နိုင်ရန်။

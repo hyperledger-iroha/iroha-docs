@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
+translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -263,7 +263,7 @@ Taira faucet claim ဖြစ်သင့်သည်။ testnet XOR ကို �
 လက်ရှိမှာ မရှိဘူးဆိုရင် Keypair ကို Generate လုပ်ပါ။
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./taira-client-key
 ```
 
 `taira.client.toml` ကို ဖန်တီးပါ
@@ -336,7 +336,7 @@ A ကို SORA Nexus အကောင့် ID ကနောဂဗေဒဆိ�
 Account ကို Control လုပ်ပေးမယ့် Ed25519 Keypair ကို Generate (သို့) load လုပ်ပါ။
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./nexus-account-key
 ```
 
 အများသုံး သော့ကို Taira အကောင့် ID သို့ ပြောင်းပါ။
@@ -697,7 +697,7 @@ description = "Route payments domains to the payments dataspace"
 
 Operator လက်ခံမှုမှာ အောက်ပါဂိတ်တွေ ပါဝင်သင့်ပါတယ်။
 
-- `irohad --sora --config <config.toml> --trace-config` သည် ဖြေရှင်းသော node configuration ကို လွှဲပြောင်းပေးသည်
+- `iroha3d --sora --config <config.toml> --trace-config` သည် ဖြေရှင်းသော node configuration ကို လွှဲပြောင်းပေးသည်
 - ဖန်တီးထားသော (သို့) ပြန်လည်သုံးသပ်ထားသော စာရင်းကို hash နှင့် လက်မှတ်များဖြင့် သိမ်းဆည်းထားသည်။
 - မီးခိုးစမ်းသပ်မှု Taira ကို Minamoto တိုးမြှင့်ခြင်းတစ်ခုခုမတိုင်မီ ဖြတ်သန်းပါ။
 - ပြင်ဆင်ပြီးနောက် စာရင်း `/status` တွင် ရည်ရွယ်ထားသောလမ်းကြောင်းနှင့် ဒေတာနေရာကို ဖော်ပြထားသည်။

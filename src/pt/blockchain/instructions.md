@@ -1,9 +1,9 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/instructions.md
-translation_source_hash: adc3eff9758dd73e9114e78eaa18ddf6271db3bc4042611e1ed6ed1aac226246
+translation_source_hash: ade5ba2b693de7e798490be0947099d0306d9565b88550e201dccd181810fb18
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Instruções especiais Iroha {#iroha-special-instructions}
@@ -21,6 +21,7 @@ Esta é a lista completa das instruções especiais Iroha:
 | [Subsídio/Revocação ](#grant-revoke) |Dar ou remover permissões e papéis. |
 | [Transferência](#transfer) |Transferência de propriedade ou valor do activo. |
 | [Localizações de garantia e activos nativos ](#native-escrow-and-asset-locks) |Bloquear ativos numéricos na custódia do protocolo. |
+| [Liquidação privada atômica](#atomic-private-settlement) | Governa pools confidenciais e lotes atômicos. |
 | [ExecuteTrigger](#executetrigger)|Execução de gatilhos. |
 | [Log/Custom/Upgrade](#other-instructions) |Registrar, estender ou atualizar o comportamento do tempo de execução. |
 
@@ -42,6 +43,7 @@ Algumas instruções exigem que se especifique um destino. Por exemplo, se trans
 | [Subsídio/Revocação ](#grant-revoke) | [funções, tokens de permissão](/pt/blockchain/permissions.md) |Contas ou funções |
 | [Transferência](#transfer) |Domínios, definições de activos, ativos numéricos, NFTs |contas |
 | [Localizações de garantia e activos nativos ](#native-escrow-and-asset-locks) |Ativos numéricos em garantia, bloqueio de activos, compromissos anônimos em garantia |compradores, destinos ou divisões de litígios |
+| [Liquidação privada atômica](#atomic-private-settlement) | pools confidenciais delimitados por rota, rotações de política, lotes finalizados e marcadores de aborto | |
 | [ExecuteTrigger](#executetrigger)|gatilhos .|                      |
 | [Log/Custom/Upgrade](#other-instructions) |registos, cargas úteis específicas para executores, atualizações de executores |                      |
 
@@ -234,7 +236,10 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 Registre e desregistre os pares. Gerencie a chave BLS e PoP com `kagami`, se ainda não tiverem:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./peer-key
+PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
+PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
@@ -325,6 +330,14 @@ As instruções de custódia nativa bloqueiam os ativos numéricos na custódia 
 Utilizações de empréstimos no mercado `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, e `ResolveEscrowDispute`. Utilização de bloqueios genéricos de activos `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, e `ExpireAssetLock`. O escrow anônimo reflete o ciclo de vida do mercado com `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, e `ResolveAnonymousEscrowDispute`.
 
 Estes ISIs atualmente não possuem comandos de primeira classe CLI. Use construtores de instruções SDK tipografados ou cargas de instrução serializadas, e veja [Native Asset Escrow](/pt/blockchain/escrow.md) para detalhes do ciclo de vida, permissões, consultas, eventos e exemplos de Rust.
+
+## Liquidação privada atômica {#atomic-private-settlement}
+
+As instruções governadas de liquidação privada atômica são separadas do Native AMX transparente. `ActivatePrivateSettlementPoolV1` cria um `pool` confidencial para uma rota exata a partir de uma projeção de governança expurgada e de compromissos de origem canônicos. `FinalizeAtomicPrivateSettlementV1` aplica atomicamente um lote completo certificado por todos os comitês participantes. `AbortAtomicPrivateSettlementV1` publica somente o marcador terminal público autorizado pelo patrocinador.
+
+Somente a governança de privacidade pode executar `RotatePrivateSettlementPoolPolicyV1`. A instrução exige o resumo exato da governança vigente; preserva a rota, o `pool`, o compromisso de vinculação do ativo, a fronteira de estado, os conjuntos de repetição e os recibos finalizados, incrementa em um a revisão pública e usa uma época de chave de auditor mais recente. A rotação é ativada na altura de inclusão, e nenhum recibo da mesma rota e do mesmo `pool` pode ser finalizado nessa altura. A linhagem pública de revisões mantém válidos após reinício os recibos finalizados antes da rotação e torna idêntica repetição idempotente. Lotes em andamento sob a política antiga falham de modo fechado antes de qualquer mudança de estado. Os operadores devem conservar as chaves de descriptografia antigas ou governar e testar o reempacotamento das cápsulas antes de destruí-las.
+
+O caminho fica desativado por padrão e não está qualificado para produção. Consulte [Executar liquidação privada atômica entre espaços de dados](/get-started/atomic-private-settlement) para os requisitos de configuração, autoridade, auditoria, recuperação e lançamento.
 
 ## Subvenção/Revocação {#grant-revoke}
 

@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /cookbook/stream-events.md
-translation_source_hash: 1267a7e22bb6601674557f349e4fc5c6b883ce83b7dc62115ea2b8c3a0c39261
+translation_source_hash: 66d22cd3b913d1c097cf74cf322cd86b3b50e1165e221a153705cb393e2b156f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -189,10 +189,10 @@ curl -fsS \
 
 ## 來源及相關文件 {#source-and-related-docs}
 
-- [JavaScript 在固定提交](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/recipes/streaming.mjs)的流媒體配方
-- [SSE 集成測試在固定的承諾](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/events/sse_smoke.rs)
-- [Torii FilterExpr 解析器在固定的提交上](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii/src/filter.rs)
-- [Torii 事件路由在固定的提交](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii/src/routing.rs)
+- [JavaScript 在固定提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes/streaming.mjs)的流媒體配方
+- [SSE 集成測試在固定的承諾](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events/sse_smoke.rs)
+- [Torii FilterExpr 解析器在固定的提交上](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/filter.rs)
+- [Torii 事件路由在固定的提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/routing.rs)
 - [事件](/zh-hant/blockchain/events.md)
 - [Torii 終端點](/zh-hant/reference/torii-endpoints.md)
 - [查詢大本狀態](./query-ledger-state.md)

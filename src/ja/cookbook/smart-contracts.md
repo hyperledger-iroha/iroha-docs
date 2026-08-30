@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: 4fe9b19fc4d13cfc71d9b9558fe7cdb1d14bd88c2d20f4d23c66313ba3ddd4b6
+translation_source_hash: 67778f9fc4f2b6fa0288f5921402cf5509515aae678e98b8192e103dfe284db3
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -14,7 +14,7 @@ Kotodama V1 契約をチェック・コンパイルし,その公開エントリ�
 
 ## 必須条件 {#prerequisites}
 
-- Iroha のソースチェックアウトは,commit `bc7114ed1c7f265a156d2100ff09e851cc95702c`, Rust,および Cargoで.
+- Iroha のソースチェックアウトは,commit `0010c5a70039eac101a4846499ba9ceaf43eb65c`, Rust,および Cargoで.
 - 流れ `iroha` CLI 資金提供された Taira 顧客から [接続する Taira](./connect-to-taira.md).
 - 絶対的な経路 `IROHA_CONFIG` そして `IROHA_PRIVATE_KEY_FILE`. キーファイルは,モード付きの単リンクで所有者が持てる通常のファイルである必要があります. `0600`; 部署助手が意図的に 秘密鍵の議論をしていない.
 - Taira オペレーターの承認.契約コードの登録は `CanRegisterSmartContractCode` を要求し,保護された展開には管理属性と法令が必要になる. Taira がそのアクセスを許可しなかった場合,生成されたローカルネットワークで展開を実行する.
@@ -131,7 +131,7 @@ jq '{contract_address, code_hash_hex, final, fee_quotes}' \
   ./build/deployment.json
 ```
 
-空き `charge_limits` リクエストはコピーされた資産識別子ではありません.ヘルパーが署名する前に正確なライブオートを受け付けます.返済請求資産を現在の faucet 応答と比較してください.契約通話にレガシー `gas_asset_id` メタデータを添付しないでください.
+空き `charge_limits` リクエストはコピーされた資産識別子ではありません. 援助者は署名前に正確なライブオートを受け入れます.返済請求資産と 比較します 契約電話は,入力されたライブオートを通してのみ料金を選択することを認めます. `gas_asset_id`トランザクションメタデータは,最初のリリース契約の一部ではありません.
 
 ### 5. 部署されたエントリーポイントをシミュレートし,呼び出す {#_5-simulate-and-call-the-deployed-entrypoint}
 
@@ -197,17 +197,17 @@ jq -e '.ok == true and .result == ["3", "5"]' \
 
 - `CanRegisterSmartContractCode`の故障は, Taira オペレーター補助金またはローカルネットでのゲネス/ブートストラップ変更を必要とします.通常のアカウントは,この許可を事実後に自主的に認めることはできません.
 - 管理または保護されたレーンの拒否は,部署がそのネットワークが要求する正確な承認属性を必要とすることを意味します.承認者リストを調整します;アカウント IDs を発明しないでください.
-- マネスティフまたは ABI の不一致とは,バイトコード,マネスティフ,ノードランタイムが同じアーテファクトを記述しないことを意味します. `--verify` で固定された commit を再構築します.
+- マネスティフまたは ABI の不一致とは,バイトコード,マネスティフ,ノードランタイムが同じアーテファクトを記述しないことを意味します. `--verify` でピンされた commit に再構築します.
 - `fee quote changed ... gas bound` は,要求された入力した意図とライブオートが一致しないことを意味します. 署名された取引を修正する代わりに再開します.
 - 部署ヘルパーは,ネットワークの送信前にインラインキー,許容鍵ファイルモード,シンボルリンク,およびリンクされたファイルを倍増する.
 - ビューのみエントリーポイントのエラーは, `compute` が誤ったコマンドファミリーを通過されたことを意味します.このサンプルでは `kotoage` を宣言しますので,呼び出しシミュレーションまたは送信を使用します.
-- 契約通話には,正型ガス制限が必要です.最高レベルのレガシーガスや料金の資産メタデータは拒否されます.
+- 契約通話には,正型タイプされたガス制限が必要です.最初のリリース通話契約は最高レベルのガスまたは料金の資産メタデータを拒否します.
 
 ## ソースおよび関連文書 {#source-and-related-docs}
 
-- [Kotodama V1 コマンドの実行 固定されたコミット](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/ivm/src/bin/koto.rs)
-- [固定された commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/tuple_return_demo.ko) の tuple-return source サンプル
-- [固定されたコミットでネイティブデプロイメントヘルパー](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
-- [](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/contracts.rs) 固定されたコミットでの契約統合テスト
+- [Kotodama V1 コマンドの実行 固定されたコミット](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/src/bin/koto.rs)
+- [固定された commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/tuple_return_demo.ko) の tuple-return source サンプル
+- [固定されたコミットでネイティブデプロイメントヘルパー](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
+- [](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs) 固定されたコミットでの契約統合テスト
 - [スマート契約](/ja/blockchain/smart-contracts.md)
 - [CLI 参照](/ja/get-started/operate-iroha-via-cli.md)

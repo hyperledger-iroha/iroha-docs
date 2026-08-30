@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: ccbb076ef3e2ba45d074ad3394ac354d0c2233cdd4286c5fa7a77f0d1c413988
+translation_source_hash: f3d08a8e7fe7569ef783b93bccdc900ca74b85179a749b48b96c32028c749233
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review
 ---
@@ -12,39 +12,32 @@ Iroha 3 өсөн клиент, peer һәм validator асҡыс материал
 
 ## Төп ҡулланыу {#basic-usage}
 
-Iroha сығанаҡ кодының checkout каталогынан:
-
-```bash
-cargo run --bin kagami -- keys --algorithm ed25519
-```
-
-JSON сығанағын, ғәҙәттә, TOML йәки автоматикаға күсереп яҙыу еңелерәк:
-
-```bash
-cargo run --bin kagami -- keys --algorithm ed25519 --json
-```
-
-Команда асыҡ асҡысты һәм асыҡ күренештәге шәхси асҡысты баҫтыра. Шәхси асҡысты йәшерен материал тип иҫәпләгеҙ; булдырылған производство асҡыстарын репозиторийға commit итмәгеҙ.
-
-Ярҙам ителгән Unix платформаһында хәүефһеҙ урындағы экспорт йәки һаҡсыға тапшырыу өсөн шәхси асҡысты баҫтырыу урынына яңы асҡыс парын тик хужа инә алған буш каталогҡа яҙығыҙ:
+From the Iroha source checkout:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-Ата-әсә каталогы алдан булырға тейеш. Маҡсат каталог яңы йәки хәҙерге ҡулланыусыныҡы, `0700` режимында, символик һылтанмаларһыҙ һәм буш булырға тейеш. `kagami` `public.key` менән `private.key` файлдарын `0600` режимында яҙа һәм шәхси асҡысты баҫтырмай. `--pop` ҡулланғанда `pop.hex` файлын да яҙа.
+The parent directory must already exist. The target must be new or already
+owned by the current user, mode `0700`, free of symbolic links, and empty.
+`kagami` writes `public.key` and `private.key` with mode `0600` and does not
+print key material. With `--pop`, it also writes `pop.hex`.
 
-Kagami тик хужа өсөн файл системаһы ҡағиҙәләрен үтәй алмаған платформаларҙа `--out-dir` хәүефһеҙ рәүештә хата менән туҡтай. Шәхси асҡыс файлы — шифрланмаған экспорт; ул аппарат йәки экспортланмай торған производство имзалаусыһы түгел. Уны раҫланған һаҡлау сигенә импортлағыҙ һәм экспорт файлын урынлаштырыу тәртибенә ярашлы алып ташлағыҙ.
+`--out-dir` fails closed on platforms where Kagami cannot enforce these
+owner-only filesystem rules. The private-key file is an unencrypted export,
+not a hardware or non-exportable production signer. Import it into the
+approved custody boundary and remove the export according to the deployment's
+procedure.
 
 ## Алгоритмдар {#algorithms}
 
-Киң ҡулланылған алгоритмдар:
+Common algorithms are:
 
-- `ed25519` клиенттар иҫәбенә һәм трансляция идентификацияһы өсөн.
-- `secp256k1` клиенттар иҫәбенә secp256k1 идентификация талап ителгәндә.
-- build BLS ярҙамын ҡабыҙһа, һәр node йәки peer консенсус идентификаторы өсөн `bls_normal`.
+- `ed25519` for client accounts and streaming identities.
+- `secp256k1` when a client account requires a secp256k1 identity.
+- `bls_normal` for every node or peer consensus identity.
 
-Төҙөлөшөңдөң теүәл алгоритмдарын тикшерегеҙ:
+Check the exact algorithms supported by your build with:
 
 ```bash
 cargo run --bin kagami -- keys --help
@@ -52,35 +45,49 @@ cargo run --bin kagami -- keys --help
 
 ## Детерминистик үҫеш асҡыстары {#deterministic-development-keys}
 
-Ҡабатлана торған fixture өсөн 64 ун алтылы символ менән кодланған 32 байтлы seed бирегеҙ. Мәжбүри булмаған `0x` префиксы ҡабул ителә:
+For reproducible fixtures, pass a 32-byte seed encoded as 64 hexadecimal
+characters. An optional `0x` prefix is accepted:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 \
   --seed-hex 1111111111111111111111111111111111111111111111111111111111111111 \
-  --json
+  --out-dir ./fixture-client-key
 ```
 
-Seed — шәхси асҡыс материалы. Детерминистик seed-ты тик урындағы үҫеш һәм һынау өсөн ҡулланығыҙ. Производство асҡысын операцион системаның осраҡлылыҡ сығанағынан булдырыу өсөн `--seed-hex` параметрын бирмәгеҙ.
+The seed is private-key material. Use deterministic seeds only for local
+development and tests. Omit `--seed-hex` to generate a production key from
+operating-system randomness.
 
 ## BLS Консенсус асҡыстары һәм милектең иҫбатланмаһы {#bls-consensus-keys-and-proofs-of-possession}
 
-Iroha 3 node һәм peer консенсус идентификаторҙары BLS-normal асҡыстарын ҡуллана. BLS-normal асҡысын һәм эйә булыу дәлилен (PoP) шулай булдырығыҙ:
+Iroha 3 node and peer consensus identities use BLS-normal keys. Generate a
+BLS-normal key and proof-of-possession (PoP) with:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./validator-key
 ```
 
-`--pop` тик `bls_normal` менән генә дөрөҫ. JSON сығышы `pop_hex`-ты үҙ эсенә ала. Ҡул ҡуйылған genesis һәр тауыш биреүсе validator өсөн тап килгән PoP талап итә. Peer конфигурацияһында буш булмаған `trusted_peers_pop` картаһы validator-ҙарҙың өлөшөн һайлай; шул буш булмаған картала күрһәтелмәгән ышаныслы peer-ҙар observer була. Карта буш булһа, бөтә BLS-normal ышаныслы peer-ҙар bootstrap кандидаттары йыйылмаһына инә, ә тауыш биреүселәрҙең PoPs-ы барыбер ҡул ҡуйылған genesis аша бирелә.
+`--pop` is valid only with `bls_normal`; it adds `pop.hex` to the custody
+directory.
+Signed genesis requires a matching PoP for every voting validator. In peer
+configuration, a non-empty `trusted_peers_pop` map selects the validator
+subset; trusted peers omitted from that non-empty map are observers. If the map
+is empty, all BLS-normal trusted peers enter the bootstrap candidate set, with
+voter PoPs still supplied by signed genesis.
 
-## Сығарылыш форматтары {#output-formats}
+## Custody Output {#custody-output}
 
-Терминалда тикшереү өсөн ғәҙәти сығышты, автоматлаштырыу өсөн `--json`-ды, ә икенсе скриптҡа ябай юллап бирелгән ҡиммәттәр кәрәк булғанда `--compact`-ты ҡулланығыҙ:
+`kagami keys` requires `--out-dir` and never writes private key material to
+standard output. Read `public.key`, `private.key`, and optional `pop.hex` from
+the generated directory. Each file contains one canonical value followed by a
+newline, which makes explicit file-based automation straightforward:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm ed25519 --compact
+PUBLIC_KEY=$(tr -d '\n' < ./client-key/public.key)
 ```
 
-Тулы рәүештә барлыҡҡа килгән Kagami ярҙам өсөн:
+For full generated Kagami help:
 
 ```bash
 cargo run -p iroha_kagami -- advanced markdown-help > crates/iroha_kagami/CommandLineHelp.md

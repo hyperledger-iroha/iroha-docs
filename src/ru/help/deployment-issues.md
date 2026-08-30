@@ -1,7 +1,7 @@
 ---
 translation_locale: ru
 translation_source: /help/deployment-issues.md
-translation_source_hash: 6f35ac59053e312f56a716810c8f0b625752500d1fc64b27d93cbd8317b6cc19
+translation_source_hash: 5c7d26b39d4ddf4e7e164f7bef79c9e1659db51587fb0dde9cf3f1dc0e3b057b
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2
 Для локальных и тестовых развертываний предпочтительнее артефакты, генерируемые Kagami, чем ручно написанные файлы-партнеры:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 В генерируемом каталоге содержится конфигурация сверстников, материал по генезису, стартовые скрипты и README для строки строительства Iroha 3.
@@ -24,7 +24,7 @@ cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./loc
 
 Сначала проверьте эти предметы:
 
-- `irohad --config <path>` пунктов в собственном файле TOML.
+- `iroha3d --config <path>` пунктов в собственном файле TOML.
 - `public_key` и `private_key` в конфигурации сверстников относятся к одной и той же паре ключей.
 - `genesis.public_key` совпадает с ключом, использованным для подписания сделки о генезисе.
 - идентификаторы сверстников validator используют BLS-Normal keys, а `trusted_peers_pop` содержит записи подтверждения владения для локального ключа и доверенных сверстниц.
@@ -34,7 +34,7 @@ cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./loc
 Используйте конфигурационное отслеживание, когда дэймон читает более одного слоя TOML:
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --trace-config
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 ```
 
 ## Docker и Композиция {#docker-and-compose}
@@ -42,9 +42,9 @@ cargo run --bin irohad -- --config ./config.toml --trace-config
 Генерация Составлять из текущего выхода локальной сети Kagami, чтобы аргументы командной строки и файлы конфигурации соответствовали проверенному коду:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./localnet/docker-compose.yml --force
-docker compose -f ./localnet/docker-compose.yml up
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
+docker compose -f ./docker-compose.yml up
 ```
 
 Если развертывание композиции начинается, а затем останавливается, проверьте журналы демонов на:
@@ -72,7 +72,7 @@ docker compose -f ./localnet/docker-compose.yml up
 Iroha 3 развертывания, которые используют Nexus, SoraFS или многополосные потоки, должны запускать демона с включенным профилем Sora:
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --sora
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora
 ```
 
 Используйте один и тот же профиль последовательно для validators в той же сети.

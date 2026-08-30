@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /cookbook/submit-and-verify-transactions.md
-translation_source_hash: e07cc42a3fd5579db312bfbfbb8010f473062edebe0141eb9bb8c2a0e7faa4da
+translation_source_hash: 01907ea433e711cb0b1aa327d46c44744aad0a7571a65430dddd7a8aed3df373
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -125,8 +125,8 @@ Taqdim qilingan hujjatni va yakuniy holatini sinov dalillari sifatida saqlang. U
 
 ## Manba va u bilan bog'liq hujjatlar {#source-and-related-docs}
 
-- [Tranzaksiyalarni taqdim etish va to'lov kvotasi o'rnatilgan majburiyatda amalga oshirilishi ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/main_shared.rs)
-- [Transaction confirmation tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha/tests/tx_confirmation.rs)
+- [Tranzaksiyalarni taqdim etish va to'lov kvotasi o'rnatilgan majburiyatda amalga oshirilishi ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
+- [Transaction confirmation tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/src/client.rs)
 - [Operatsiyalar](/uz/blockchain/transactions.md)
 - [CLI qo'llanma](/uz/get-started/operate-iroha-via-cli.md)
 - [Torii oxirgi nuqtalari](/uz/reference/torii-endpoints.md)

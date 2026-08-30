@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /reference/queries.md
-translation_source_hash: 22e8a75acd72d066e3516ba46a0afe075d2d02790154458aec00a5d8bb861838
+translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -99,10 +99,17 @@ translation_engine: nllb-200-ct2
 |`FindLaneRelayEnvelopeByRef` |תמצא מעטפה מאושרת.|
 |`FindSorafsProviderOwner` |לפתור את הבעלים של ספק SoraFS. |
 |`FindDataspaceNameOwnerById` |לפתור בעל שמות חלל נתונים. |
-|`FindMusubiReleaseByRef` |תמצאו Musubi שחרור באמצעות התייחסות. |
-|`FindMusubiPackageVersions` |רשימה של גרסאות עבור חבילת Musubi. |
-|`FindMusubiPackageReleases` |פרש רשימות עבור חבילת Musubi. |
-|`FindMusubiShortAliasByName` |לפתור שם שמה קצר Musubi. |
+|`FindMusubiExactPackageV1` |קראו רישום מסגר מדויק אחד ושינויים הנוכחיים בו. |
+|`FindMusubiExactReleaseV1` |קרא תמונה אחת מדויקת של השחרור.|
+|`FindMusubiProviderBundleAttestationV1` |קראו את תעודת האריכיון של ספקית אחת. |
+|`FindMusubiResolverIndexV1` |דף האינדקס של הגורם הסופי. |
+|`FindMusubiVersionsV1` |דף גרסאות סופיות עבור חבילת אחת. |
+|`FindMusubiMaintainersV1` |דף קיבל מחזיקים וזמנות ממתינות. |
+|`FindMusubiArchiveLocationsV1` |דף סיים את מקומות SoraFS לארכיון אחד. |
+|`FindMusubiArchiveRetentionV1` |דף רשומות אחסון ארכיון. |
+|`FindMusubiAliasV1` |קראו את המטרה הנוכחית וההפכה של שם גלובלי. |
+|`FindMusubiAliasHistoryV1` |תפרסם את ההיסטוריה הבלתי משתנה של התכלית העולמית. |
+|`FindMusubiOrderedPrefixV1` |חבילות עמודים תחת תצוגה מבוצעת אחת. |
 
 ## גורמים, חוזים, עסקאות ובלוקים {#triggers-contracts-transactions-and-blocks}
 

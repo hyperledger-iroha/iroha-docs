@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /cookbook/wallet-connect.md
-translation_source_hash: ab5b6c560ed8b0a208666e5854306ba6adce7af1210fc3c94b9c560d8e6eb686
+translation_source_hash: 38283321d51ddbb528272bb4429906eb41545ed3933ae695fb05a24675bff9c8
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -279,11 +279,11 @@ curl -fsS -G \
 
 ## წყარო და შესაბამისი დოკუმენტები {#source-and-related-docs}
 
-- [Browser Connect-ის განხორციელება ჩაკეტილი commit-ზე](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/src/connect.browser.js)
-- [ბრაუზერის კავშირის ტესტები ჩაკეტილი commit-ზე](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/test/connect.browser.test.js)
-- [Rust აპლიკაციის ჩარჩოს მაგალითი pinned commit-ზე](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii_shared/examples/connect_app.rs)
-- [Rust საფულის ჩარჩოს მაგალითი ჩაკეტილი commit-ზე](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii_shared/examples/connect_wallet.rs)
-- [დახურული Torii OpenAPI სქემა](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/artifacts/openapi/torii.json)
+- [Browser Connect-ის განხორციელება ჩაკეტილი commit-ზე](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/src/connect.browser.js)
+- [ბრაუზერის კავშირის ტესტები ჩაკეტილი commit-ზე](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/test/connect.browser.test.js)
+- [Rust აპლიკაციის ჩარჩოს მაგალითი pinned commit-ზე](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_app.rs)
+- [Rust საფულის ჩარჩოს მაგალითი ჩაკეტილი commit-ზე](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_wallet.rs)
+- [დახურული Torii OpenAPI სქემა](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/artifacts/openapi/torii.json)
 - [SORA Nexus მომსახურება](/ka/blockchain/sora-nexus-services.md)
 - [ფუნქციური აქტივები](./fungible-assets.md)
 - [ტრანზაქციების წარდგენა და შემოწმება ](./submit-and-verify-transactions.md)

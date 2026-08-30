@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /guide/tutorials/kaigi.md
-translation_source_hash: e55c7aebc89c39edb8e7077db2414a6d432aafb05aff8df04c248fce444d7dea
+translation_source_hash: 24dc7e6a41ea8a06d24663aebaeca2469c522e391a5de61f039c47a1cd020c91
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -47,7 +47,7 @@ npm install
 npm run dev
 ```
 
-Iroha Source Repository-ден [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/main/javascript/iroha_js) демоны пайдаланыңыз. оның `file:` тәуелділігі тікелей тексеруді шешеді. Егер түпкілікті байлауды өзгертсеңіз, оны `iroha/javascript/iroha_js` деп қайта құру; таза пакет каталогында `npm run build:native` үшін қажет жүк жұмыс кеңістігі жоқ.
+Iroha Source Repository-ден [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js) демоны пайдаланыңыз. оның `file:` тәуелділігі тікелей тексеруді шешеді. Егер түпкілікті байлауды өзгертсеңіз, оны `iroha/javascript/iroha_js` деп қайта құру; таза пакет каталогында `npm run build:native` үшін қажет жүк жұмыс кеңістігі жоқ.
 
 TAIRA желісіндегі тікелей кездесуді жүргізгенге дейін, демонстрация көз каранды болатын қоғамдық Torii бетін тексеру:
 

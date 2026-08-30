@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /guide/advanced/chaos-testing.md
-translation_source_hash: dfd2d4196827da3563e377baae2fb823871d7a2c293dfafb6dc4de37f9ddbc61
+translation_source_hash: 5ceee448217a42e4f8bbae9595486b79019e7a880dfd0f2c71bf580409d0e4b9
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 Izanami est l'orchestrateur de chaosnet dans l'espace de travail Iroha en amont. Il démarre un cluster local jetable Iroha, soumet une charge de travail configurable et injecte des défauts dans des pairs sélectionnés afin que les opérateurs puissent vérifier si le réseau continue à progresser en cas de panne contrôlée.
 
-Utilisez Izanami pour les contrôles de résilience pré-production, la reproduction en régression et l'ajustement du consensus. Ne le pointez pas vers un réseau de production: l'outil est conçu pour posséder les pairs qu'il démarre, y compris les redémarrages par pairs, les serviettes de stockage, la perte artificielle de paquets et la pression locale CPU ou disque.
+Utilisez Izanami pour les vérifications de résilience pré-production, la reproduction en régression et l'ajustement du consensus. Ne le pointez pas vers un réseau de production: l'outil est conçu pour posséder les pairs qu'il démarre, y compris les redémarrages par pairs, les serviettes de stockage, les partitions temporaires de confiance des pairs et la pression discale locale CPU.
 
 ## Conditions préalables {#prerequisites}
 
@@ -34,7 +34,7 @@ Pour une configuration d'exécution interactive:
 cargo run -p izanami -- --tui --allow-net
 ```
 
-Izanami persiste les paramètres TUI et CLI dans le répertoire de configuration de l'utilisateur, alors consultez les paramèters affichés avant de réutiliser un profil précédent.
+Izanami persiste les paramètres TUI et CLI dans le répertoire de configuration de l'utilisateur. Le fichier de première version a un octet explicite de mise en page V1; les réglages pré-édition ou autrement non versionnés sont rejetés et doivent être recréés plutôt que migrés. Revoir les paramètres affichés avant de réutiliser un profil actuel.
 
 ## Exécution de base {#baseline-run}
 
@@ -103,32 +103,29 @@ Quand ? `--faulty` s'il est supérieur à zéro, au moins un scénario de défau
 |Spam de transaction non valide |`--fault-enable-spam-invalid-transactions` |Route d'admission et de rejet |
 |La latence du réseau |`--fault-enable-network-latency` |Des rumeurs lentes et des messages de consensus retardés .|
 |Partition réseau |`--fault-enable-network-partition` |L' isolement temporaire entre pairs de confiance |
-|P2P perte de paquet |`--fault-enable-network-packet-loss` |Traffic de l' application-frame diminué |
 |CPU stress |`--fault-enable-cpu-stress` |Prise en charge de la validation locale et de la planification |
 |La saturation du disque |`--fault-enable-disk-saturation` |Pressure de stockage locale |
 
-Pour une course à perte de paquets uniquement:
+Pour une mise en œuvre uniquement par partition réseau:
 
 ```bash
 cargo run -p izanami -- \
   --allow-net \
-  --peers 20 \
-  --faulty 5 \
-  --duration 800s \
-  --fault-window-start 133s \
-  --fault-window-end 266s \
-  --tps 200 \
-  --submitters 20 \
-  --max-inflight 512 \
+  --peers 4 \
+  --faulty 1 \
+  --duration 5m \
+  --fault-window-start 60s \
+  --fault-window-end 180s \
+  --tps 15 \
+  --submitters 1 \
+  --max-inflight 32 \
   --fault-enable-crash-restart=false \
   --fault-enable-wipe-storage=false \
   --fault-enable-spam-invalid-transactions=false \
   --fault-enable-network-latency=false \
-  --fault-enable-network-partition=false \
-  --fault-enable-network-packet-loss=true \
+  --fault-enable-network-partition=true \
   --fault-enable-cpu-stress=false \
   --fault-enable-disk-saturation=false \
-  --fault-network-packet-loss-percent 75 \
   --seed 42
 ```
 
@@ -142,9 +139,8 @@ Le catalogue Izanami en amont trace les formes communes d'échec de communicatio
 | --------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 |Charge ciblée |`--faulty 0`, haut de gamme `--tps`, un soumissionnaire, élevé `--max-inflight` |
 |Une défaillance transitoire |Activer l'arrêt / redémarrage uniquement à l'intérieur d'une fenêtre de défaillance délimitée |
-|La perte de paquets|Activer uniquement la perte de paquets, habituellement avec le taux de perte par défaut de 75% |
 |Arrêt et récupération |Utiliser une grande population de pairs défectueux avec crash / redémarrage |
-|Isolement des dirigeants |Utilisez exactement un pair défectueux avec uniquement des défauts de partition réseau ou de perte de paquets; Izanami suit la télémétrie leader Sumeragi.|
+|Isolement des dirigeants |Utilisez exactement un homologue défectueux avec seulement la défaillance de partition réseau; Izanami suit Sumeragi leader télémétrie |
 
 Gardez une variable fixe à la fois. Si vous changez le nombre de pairs, le profil de charge de travail, la fenêtre d'erreur et TPS en même temps, le résultat est difficile à interpréter.
 
@@ -152,11 +148,11 @@ Gardez une variable fixe à la fois. Si vous changez le nombre de pairs, le prof
 
 Pendant la course, surveillez les mêmes signaux utilisés pour la validation des performances:
 
-- progression de la hauteur du bloc à travers chaque paire en cours d'exécution
+- progression de la hauteur des blocs à travers tous les pairs en course
 - les transactions soumises, acceptées, rejetées et épuisées
 - profondeur de file d'attente, saturation de file et pression inversée du point final
 - voir les modifications, les voies de récupération, les blocs manquants et les certificats de quorum manquants.
-- RBC décalage, sessions en attente et trafic de consensus diminué ou retardé
+- le dossier de disponibilité signé RS16, les séances en attente et le trafic consensuel retardé;
 - CPU, mémoire, disque et saturation du réseau sur l'hôte exécutant les pairs.
 
 Pour l'analyse de la latence de validation, activer les journaux de débogage main-loop:
@@ -179,7 +175,7 @@ Traiter une course comme un échec lorsque:
 - une latence de p95 supérieure à `--latency-p95-threshold`
 - Les files d'attente augmentent pour le reste de la course après la fermeture d'une fenêtre de défaillance
 - Les opérations rejetées ou reportées ne sont pas expliquées par la charge de travail sélectionnée.
-- le redémarrage par pairs, l'effacement du stockage ou la récupération des paquets perdus nécessitent un nettoyage manuel.
+- le redémarrage par les pairs, l'effacement du stockage ou la récupération des partitions nécessitent un nettoyage manuel
 
 Après une défaillance, redémarrer avec le même grain et un type de faille en moins. Cela permet de reproduire la charge de travail et le timing tout en restreignant la surface de défaillance.
 

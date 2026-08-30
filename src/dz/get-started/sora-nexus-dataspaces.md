@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
+translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -263,7 +263,7 @@ EOF
 ཁྱོད་ཀྱིས་ ལག་ལེན་མ་འཐབ་པར་ཡོད་པ་ཅིན་ Keypair བཟོ་:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./taira-client-key
 ```
 
 བཟོ་ནི་ `taira.client.toml`:
@@ -336,7 +336,7 @@ SORA Nexus རྩིས་ཁྲ་ ID འདི་རྩིས་ཁྲའི�
 ཨེཌ་༢༥༥༡༩ གི་ལྡེ་མིག་རྣམ་གཉིས་འདི་བཟོ། ཡང་ན་ཨེབ་གཏང་འབད། འདི་གིས་རྩིས་ཁྲ་འཛིན་སྐྱོང་འབད་འོང་།
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./nexus-account-key
 ```
 
 མི་མང་གི་ལྡེ་མིག་འདི་ Taira རྩིས་ཁྲ་ ID ལུ་བསྒྱུར་གཏང་དགོ།
@@ -697,7 +697,7 @@ description = "Route payments domains to the payments dataspace"
 
 ལས་འཛིན་གྱི་ འཛིན་སྐྱོང་འབད་ཐངས་ནང་ འ་ནི་སྒོ་ར་ཚུ་ཚུད་དགོ།
 
-- `irohad --sora --config <config.toml> --trace-config` གིས་ སེལ་འཐུ་འབད་ཡོད་པའི་ མཚམས་སྦྱོར་དེ་ བཏོན་འོང་།
+- `iroha3d --sora --config <config.toml> --trace-config` གིས་ སེལ་འཐུ་འབད་ཡོད་པའི་ མཚམས་སྦྱོར་དེ་ བཏོན་འོང་།
 - བཟོ་སྐྲུན་འབད་མི་ ཡང་ན་ བསྐྱར་ཞིབ་འབད་ཡོད་པའི་བརྡ་སྟོན་འདི་ ཧེཤ་དང་མིང་རྟགས་ཚུ་དང་གཅིག་ཁར་ archive འབད་ནི་ཨིན།
 - དུ་པ་བརྟག་དཔྱད་ཚུ་ Taira ལུ་འབད་ཚར་ཞིནམ་ལས་ Minamoto སྐུལ་བསྒྲགས་མ་འབད་བའི་ཧེ་མ་ འབད་ཚུགས།
 - བསྒྱུར་བཅོས་འབད་བའི་ཤུལ་ལུ་ `/status` གི་ཡིག་ཐོ་ནང་ལུ་ གྲོས་འཆར་ཅན་གྱི་ལམ་དང་ ཌེ་ཊ་ས་པི་སི་སྟོན་ཡོདཔ་ཨིན།

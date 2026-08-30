@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /guide/advanced/chaos-testing.md
-translation_source_hash: dfd2d4196827da3563e377baae2fb823871d7a2c293dfafb6dc4de37f9ddbc61
+translation_source_hash: 5ceee448217a42e4f8bbae9595486b79019e7a880dfd0f2c71bf580409d0e4b9
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 Izanami Iroha ish maydonida chaosnet orkestratoridir. U bir martalik mahalliy Iroha klasterini ishga tushiradi, konfiguratsiya qilinadigan ish yukini taqdim etadi va tanlangan tengdoshlarga xatolarni o'tkazadi, shunda operatorlar tarmoq nazorat qilingan nosozlikda muvaffaqiyat qozonishini tekshirishlari mumkin.
 
-Ishlab chiqarishdan oldin chidamlilik tekshiruvlari, regressiya reproduksiyasi va konsensus sozlash uchun Izanami-dan foydalaning. Uni ishlab chiqarish tarmog'iga qaratmang: vosita ishga tushirgan tengdoshlarga ega bo'lish uchun mo'ljallangan, shu jumladan tengdoshlarni qayta boshlash, saqlash silliqlarini, sun'iy paketni yo'qotish va mahalliy CPU yoki disk bosimini o'zlashtirish uchun yaratilgan.
+Ishlab chiqarishdan oldingi chidamlilik tekshiruvlari, regressiya reproduksiyasi va konsensusni o'zgartirish uchun Izanami-dan foydalaning. Ishlab chiqarish tarmog'iga yo'naltirmang: vositani ishga tushirgan tengdoshlarga ega bo'lish uchun mo'ljallangan, shu jumladan tengdoshlarni qayta boshlash, saqlash to'plamlari, vaqtinchalik ishonchli tenglamalar partitsiyalari va mahalliy CPU yoki disk bosimlari.
 
 ## Oldingi shartlar {#prerequisites}
 
@@ -22,7 +22,7 @@ cd iroha
 cargo build -p izanami
 ```
 
-Ikkilamchiga tarmoqdagi tengdoshlarni yaratish va manipulyatsiya qilish uchun aniq ruxsat berish kerak. TUI bo'lmagan har bir ishga tushirish uchun `--allow-net`ni o'tkazib yuborish yoki TUI da `allow_net` ni qo'llash.
+Ikkilamchiga tarmoqdagi tengdoshlarni yaratish va manipulyatsiya qilish uchun aniq ruxsat berish kerak. Oʻtish `--allow-net` har bir non-TUI ishga tushirish yoki qo'llash `allow_net` bilan TUI.
 
 ```bash
 cargo run -p izanami -- --allow-net --peers 4 --faulty 1 --duration 120s
@@ -34,7 +34,7 @@ Interaktiv ishga tushirish konfiguratsiyasi uchun:
 cargo run -p izanami -- --tui --allow-net
 ```
 
-Izanami TUI va CLI sozlamalarini foydalanuvchi konfiguratsiya direktoriyasi ostida saqlab qoladi, shuning uchun oldingi profildan qayta foydalanishdan oldin ko'rsatilgan sozlamalarni ko'rib chiqing.
+Izanami TUI va CLI sozlamalarini foydalanuvchi konfiguratsiya direktoriyasi ostida saqlaydi. Birinchi nashr faylida bitta aniq V1 layout byti mavjud; oldindan nashr qilingan yoki boshqacha tarzda ko'rsatilmagan sozlamalar rad etiladi va migratsiya qilishning o'rniga qayta yaratilishi kerak. Joriy profilni qayta ishlatishdan oldin ko'rsatiladigan sozlamalarni tekshiring.
 
 ## Boshlangʻich yoʻnalish {#baseline-run}
 
@@ -103,32 +103,29 @@ Qachon `--faulty` noldan katta bo'lsa, kamida bitta xatolar xulosasi qo'llanilis
 |Toʻgʻri yoʻllanma spam |`--fault-enable-spam-invalid-transactions` |Qabul qilish va rad etish yoʻllari |
 |Tarmoqning kechiktirilishi |`--fault-enable-network-latency` |Sekin gʻiybatlar va kechiktirilgan konsensus xabarlari |
 |Tarmoq partitsiyasi |`--fault-enable-network-partition` |Vaqtinchalik ishonchli tengdoshlar izolyatsiyasi |
-|P2P paketni yo'qotish |`--fault-enable-network-packet-loss` |Foydalanuvchilarning koʻpligi kamaydi |
 |CPU bosim |`--fault-enable-cpu-stress` |Mahalliy tasdiqlash va rejalashtirish bosimlari |
 |Diskni toʻylash |`--fault-enable-disk-saturation` |Mahalliy saqlash bosimi |
 
-Faqat paketni yo'qotish bilan o'tkazilishi uchun:
+Faqat tarmoq bo'limlari bilan ishlaydigan ish uchun:
 
 ```bash
 cargo run -p izanami -- \
   --allow-net \
-  --peers 20 \
-  --faulty 5 \
-  --duration 800s \
-  --fault-window-start 133s \
-  --fault-window-end 266s \
-  --tps 200 \
-  --submitters 20 \
-  --max-inflight 512 \
+  --peers 4 \
+  --faulty 1 \
+  --duration 5m \
+  --fault-window-start 60s \
+  --fault-window-end 180s \
+  --tps 15 \
+  --submitters 1 \
+  --max-inflight 32 \
   --fault-enable-crash-restart=false \
   --fault-enable-wipe-storage=false \
   --fault-enable-spam-invalid-transactions=false \
   --fault-enable-network-latency=false \
-  --fault-enable-network-partition=false \
-  --fault-enable-network-packet-loss=true \
+  --fault-enable-network-partition=true \
   --fault-enable-cpu-stress=false \
   --fault-enable-disk-saturation=false \
-  --fault-network-packet-loss-percent 75 \
   --seed 42
 ```
 
@@ -142,9 +139,8 @@ Yuqori oqimdagi Izanami katalogida CLI profillariga umumiy blokcheyn aloqa muvaf
 | --------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 |Maqsadli yuklama |`--faulty 0`, yuqori `--tps`, bitta ariza beruvchi, yuqori `--max-inflight` |
 |Vaqtinchalik xato |Faqat cheklangan xatolar oynasining ichida crash / restartni qoʻllash |
-|Paketning yoʻqolishi |Faqat paketni yo'qotishni qo'llash, odatda andoza 75% yo'qotish darajasi bilan |
 |Toʻxtatish va tiklanish |Hujum / qaytadan ishga tushirish bilan katta nosoz tenglamchilarni ishlatish |
-|Liderning izolyatsiyasi |Toʻgʻri bitta nosoz tenglamani faqat tarmoq partitsiyasi yoki paket yoʻqotish xatolari bilan ishlating; Izanami Sumeragi yetakchi telemetriyani izlaydi |
+|Liderning izolyatsiyasi |Toʻgʻri bitta nosoz tengdoshni faqat tarmoq boʻlimida xato bilan ishlating; Izanami Sumeragi yetakchi telemetriyani izlaydi |
 
 Bir vaqtning o'zida bitta o'zgaruvchini to'g'ri saqlang. Agar siz tengdoshlari sonini, ish yukining profilini, xatolar oynasini va TPS ni bir vaqtda o'zgartirsangiz, natijani tushuntirish qiyin bo'ladi.
 
@@ -156,7 +152,7 @@ Dastur davomida ishlashni tasdiqlash uchun ishlatiladigan o'sha signallarni kuza
 - taqdim etilgan, qabul qilingan, rad etilgan va muddati tugagach bo'lgan operatsiyalar
 - navbat chuqurligi, navbat to'ldirilishi va oxirgi nuqtadagi qarshi bosim
 - ko'rinish o'zgarishlari, tiklanish yo'llari, yo'qolgan bloklar va yo'q bo'lgan quorum sertifikatlari
-- RBC orqaga tushish, yig'ilishlar davom etishi va konsensus trafikining kamayishi yoki kechiktirilishi
+- imzolangan RS16 mavjudlik zaxirasi, kutilayotgan yig'ilishlar va kechiktirilgan konsensus trafiklari
 - CPU, xotira, disk va tengdoshlari ishlaydigan uy egasi tarmog'ining to'ldirilishi
 
 Baholash kechiktirilganligi tahlili uchun asosiy to'plamdagi xatolar ro'yxatini yoqing:
@@ -166,7 +162,7 @@ RUST_LOG=iroha_core::sumeragi::main_loop=debug \
   cargo run -p izanami -- --allow-net --seed 42
 ```
 
-Har bir blok `block validation timings` ni `stateless_ms`, `execution_ms` va `total_ms` bilan chiqarib tashlashi kerak. O'sha vaqtlarni p95 blok intervallari, ko'rinish o'zgarishi hisoblagichlari va navbatdagi bosim bilan taqqoslang.
+Har bir blok chiqarib yuborishi kerak `block validation timings` bilan `stateless_ms`, `execution_ms`, va `total_ms`. O'sha vaqtlarni p95 blok intervallari, ko'rinish o'zgarishi hisoblagichlari va navbatdagi bosim bilan taqqoslang.
 
 ## Natijalarni tarjima qilish {#interpreting-results}
 
@@ -179,7 +175,7 @@ Yugurishni muvaffaqiyatsizlik deb hisoblang:
 - p95 kechikish vaqti `--latency-p95-threshold` dan oshadi
 - xatolar oynasi yopilgandan so'ng navbatlar davom etadi
 - rad etilgan yoki muddati tugagach bo'lgan operatsiyalar tanlangan ish haqi bilan tushuntirilmaydi
-- Parvardigorlarni qayta ishga tushirish, saqlashni tozalash yoki paket yo'qotishdan tiklanish uchun qo'lda tozalash kerak
+- Partiyalarni qayta ishga tushirish, saqlashni olib tashlash yoki tiklash uchun qo'lda tozalash kerak.
 
 Muvaffaqiyat yo'q bo'lganidan so'ng, bir xil urug' va bitta kamroq xato turi bilan qaytadan ishga tushiring. Bu ish yukini va vaqtni qayta tiklash imkonini beradi.
 

@@ -1,14 +1,14 @@
 ---
 translation_locale: fr
 translation_source: /cookbook/index.md
-translation_source_hash: cdcfb3549506a65a7dbd1c37672893956a0252153a4075c82333804674aa07b6
+translation_source_hash: aceef9f4e42462614a5cdf41a89f55e26e0399503a48d4b50c08359e7bd7532e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Iroha 3 Manuel de préparation des demandes {#iroha-3-application-cookbook}
 
-Construisez contre Iroha 3 avec de petites recettes vérifiables qui commencent sur le testnet Taira et gardez Minamoto mainnet en lecture seule. Les commandes utilisent le compte actuel I105 IDs, la sélection explicite des frais et le comportement vérifié à Iroha engager [`bc7114ed1c7f265a156d2100ff09e851cc95702c`](https://github.com/hyperledger-iroha/iroha/tree/bc7114ed1c7f265a156d2100ff09e851cc95702c).
+Construisez contre Iroha 3 avec de petites recettes vérifiables qui commencent sur le testnet Taira et gardez Minamoto mainnet en lecture seule. Les commandes utilisent le compte actuel I105 IDs, la sélection explicite des frais et le comportement vérifié à Iroha engager [`0010c5a70039eac101a4846499ba9ceaf43eb65c`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c).
 
 Commencez par [Connectez-vous à Taira](./connect-to-taira.md). Il crée la configuration du client et les métadonnées des frais réutilisées par les recettes de ligne de commande. Ne jamais copier un actif des frais ID à partir de cette documentation: tirez-le de la réponse actuelle au robinet Taira.
 

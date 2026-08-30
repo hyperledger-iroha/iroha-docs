@@ -148,8 +148,8 @@ public transaction material, not the signing key.
 
 ## Source and related docs
 
-- [Transaction submission and fee-quote implementation at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/main_shared.rs)
-- [Transaction confirmation tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha/tests/tx_confirmation.rs)
+- [Transaction submission and fee-quote implementation at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
+- [Transaction confirmation implementation and tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/src/client.rs)
 - [Transactions](/blockchain/transactions.md)
 - [CLI guide](/get-started/operate-iroha-via-cli.md)
 - [Torii endpoints](/reference/torii-endpoints.md)

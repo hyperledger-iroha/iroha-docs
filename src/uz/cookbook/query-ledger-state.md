@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /cookbook/query-ledger-state.md
-translation_source_hash: a81f6cc04befb0b92a0a01c2cb3c1ecbbc631ce1f2a923cb046241c295db7806
+translation_source_hash: ca76923f5ae35b96c52a6a4c23c5d9e69549d1ca91d6d1507e7b9a1aee1f1676
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -160,9 +160,9 @@ Sahifalashtirilgan dastur so'rovlari uchun IDs sahifalar bo'ylab takrorlanmaslig
 
 ## Manba va u bilan bog'liq hujjatlar {#source-and-related-docs}
 
-- [Kursor tomonidan qo'llab-quvvatlanadigan sahifalashtirish integratsiyasi testlari pinned commitda](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/pagination.rs)
-- [Query builder va selektor xatti-harakatlari pinned commitda](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/query/builder/mod.rs)
-- [Query parametrlari va kursor modeli pined commitda](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/query/parameters.rs)
+- [Kursor tomonidan qo'llab-quvvatlanadigan sahifalashtirish integratsiyasi testlari pinned commitda](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/pagination.rs)
+- [Query builder va selektor xatti-harakatlari pinned commitda](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/builder/mod.rs)
+- [Query parametrlari va kursor modeli pined commitda](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/parameters.rs)
 - [So'rovlar](/uz/blockchain/queries.md)
 - [So'rov uchun ma'lumot](/uz/reference/queries.md)
 - [JavaScript va TypeScript](/uz/guide/tutorials/javascript.md)

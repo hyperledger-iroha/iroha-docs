@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /cookbook/multisig.md
-translation_source_hash: 7090228c4fea7321c93fe0d2c67ef6de842de95bc3befa11d83c12b9f15b4752
+translation_source_hash: 9654923faf6c84dfd21a428ebe3c53dbd074b8e3274c12c8aa41bf31884686f7
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -202,8 +202,8 @@ iroha --config "$SIGNER_A_CONFIG" ledger multisig inspect \
 
 ## ソースおよび関連文書 {#source-and-related-docs}
 
-- [固定された commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/multisig.rs)でマルチシグ統合テスト
-- [固定された commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_executor_data_model/src/isi.rs) のマルチシグデータモデル
-- [CLI マルチシグ実装 ピン commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/main_shared.rs)
+- [固定された commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/multisig.rs)でマルチシグ統合テスト
+- [固定された commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/isi.rs) のマルチシグデータモデル
+- [CLI マルチシグ実装 ピン commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
 - [取引](/ja/blockchain/transactions.md)
 - [許可と役割](./permissions-and-roles.md)

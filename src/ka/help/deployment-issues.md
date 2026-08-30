@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /help/deployment-issues.md
-translation_source_hash: 6f35ac59053e312f56a716810c8f0b625752500d1fc64b27d93cbd8317b6cc19
+translation_source_hash: 5c7d26b39d4ddf4e7e164f7bef79c9e1659db51587fb0dde9cf3f1dc0e3b057b
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2
 ადგილობრივი და სატესტო დანერგვისთვის, სასურველია Kagami-ის მიერ შექმნილი არტეფაქტები ხელით დაწერილი თანატოლების ფაილების ნაცვლად:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 გენერირებული დირექტორი შეიცავს პარტნიორთა კონფიგურაციას, გენეზის მასალას, საწყისი სცენარებს და README Iroha 3 მშენებლობის ხაზისთვის.
@@ -24,7 +24,7 @@ cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./loc
 
 პირველ რიგში, შეამოწმეთ ეს ნივთები:
 
-- `irohad --config <path>` პუნქტები პარტნიორის საკუთარ ფაილში TOML.
+- `iroha3d --config <path>` პუნქტები პარტნიორის საკუთარ ფაილში TOML.
 - `public_key` და `private_key` პარტნიორების კონფიგურაციაში ერთსა და იმავე საკვანძო წყვილს ეკუთვნის.
 - `genesis.public_key` შეესაბამება გენეზის ტრანზაქციაზე ხელმოწერისთვის გამოყენებულ გასაღებელს.
 - ვალიდატორების თანატოლთა იდენტობა იყენებს BLS-ნორმალურ საკიდებს, ხოლო `trusted_peers_pop` შეიცავს ადგილობრივი გასაღების და სანდო თანატოლების საკუთრების მტკიცებულებების მითითებებს.
@@ -34,7 +34,7 @@ cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./loc
 გამოიყენეთ კონფიგურაციის თვალსაზრისი, როდესაც დეიმონი კითხულობს ერთზე მეტ TOML ფენას:
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --trace-config
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 ```
 
 ## Docker და კომპოზიტი {#docker-and-compose}
@@ -42,9 +42,9 @@ cargo run --bin irohad -- --config ./config.toml --trace-config
 გენერირება შეადგინეთ მიმდინარე Kagami ადგილობრივი ქსელის გამოშვებიდან, ასე რომ ბრძანების ხაზის არგუმენტები და კონფიგურაციის ფაილები შეესაბამებიან ამოღებულ კოდს:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./localnet/docker-compose.yml --force
-docker compose -f ./localnet/docker-compose.yml up
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
+docker compose -f ./docker-compose.yml up
 ```
 
 თუ კომპოზიციის განთავსება იწყება და შემდეგ ჩერდება, შეამოწმეთ დეიმონების ლოგები:
@@ -72,7 +72,7 @@ Kubernetes- ისთვის, თითოეული ვალიდატ�
 Iroha 3 განთავსებები, რომლებიც იყენებენ Nexus, SoraFS ან მრავალგზის ნაკადებს, უნდა დაიწყონ დეიმონი Sora-ს პროფილის ჩართვით:
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --sora
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora
 ```
 
 გამოიყენეთ იგივე პროფილი მუდმივად ერთი და იმავე ქსელში არსებული ვალიდატორების შორის.

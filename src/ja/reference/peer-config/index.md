@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /reference/peer-config/index.md
-translation_source_hash: 5cc6ddf62a45f655d61a0ff3ebc7e20b939fe78c9d542087b717c2e17e19250d
+translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f29469aaf4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 TOML ファイルでローカルピア構成が設定されている.これは,[`SetParameter`](/ja/blockchain/instructions.md#setparameter)指示によって変更されたオンチェーン構成とは異なります.生産行動は構成ファイルまたはオンチェーンパラメータで表示されなければならない.環境変数は機能ゲートではありません.
 
-設定ファイルへの経路を指定するには [`--config`](../irohad-cli#arg-config)CLI アレグメントを使用します.
+設定ファイルへの経路を指定するには [`--config`](../iroha3d-cli#arg-config)CLI アレグメントを使用します.
 
 ## テンプレート {#template}
 
@@ -65,4 +65,4 @@ max_content_len = 2048
 
 ## 問題を解く {#troubleshooting}
 
-[`--trace-config`](../irohad-cli#arg-trace-config)CLI フラグをパスして,構成が読み取られ解析される方法の痕跡を見ることができます.
+[`--trace-config`](../iroha3d-cli#arg-trace-config)CLI フラグをパスして,構成が読み取られ解析される方法の痕跡を見ることができます.

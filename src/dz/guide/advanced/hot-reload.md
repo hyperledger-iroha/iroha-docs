@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 2c71e6c135d862d626d3b184eef3cbed350f1353d7dee78cc129092e7b857924
+translation_source_hash: 96505bdba910beb902c399004f5cd24f5e5b0773f01df9cdcfdb49d019830d03
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,27 +15,27 @@ translation_engine: nllb-200-ct2
 ཌའི་མཱོན་པིན་རི་ཅིག་བཟོ་ནི་འདི་ Linux ལུ་མཐུན་ལྡནམ་ཨིན། ལས་རིམ་གོང་འཕེལ་ལས་ཀ་ནང་ལས་:
 
 ```bash
-cargo build --release -p irohad --target x86_64-unknown-linux-musl
+cargo build --release -p irohad --bin iroha3d --target x86_64-unknown-linux-musl
 ```
 
 འདི་ལག་ལེན་འཐབ་མི་ འདྲན་འདྲ་རྫ་ནང་ལུ་ ཨེབ་གཏང་འབད་ཞིནམ་ལས་ རྫ་དེ་སླར་ལོག་འབད་ནི་:
 
 ```bash
-docker cp target/x86_64-unknown-linux-musl/release/irohad <container>:/usr/local/bin/irohad
+docker cp target/x86_64-unknown-linux-musl/release/iroha3d <container>:/usr/local/bin/iroha3d
 docker restart <container>
 ```
 
-སྦ་སྒོར་གྱི་མིང་འདི་ངོས་འཛིན་འབད་ནིའི་དོན་ལུ་ `docker ps` ལག་ལེན་འཐབ་ཨིན། བཟོ་སྐྲུན་འབད་ཡོད་པའི་ཐིག་ཁྲམ་ནང་ལུ་ གྲྭ་ཚང་གི་སྦ་སྒོའི་མིང་འདི་ `./localnet/docker-compose.yml` གིས་གསལ་སྟོན་འབདཝ་ཨིན།
+སྦ་སྒོར་གྱི་མིང་འདི་ངོས་འཛིན་འབད་ནིའི་དོན་ལུ་ `docker ps` ལག་ལེན་འཐབ་ཨིན། བཟོ་སྐྲུན་འབད་ཡོད་པའི་ཐིག་ཁྲམ་ནང་ལུ་ གྲྭ་ཚང་གི་སྦ་སྒོའི་མིང་འདི་ `./docker-compose.yml` གིས་གསལ་སྟོན་འབདཝ་ཨིན།
 
 ## ཇི་ནེསི་འདི་ ལག་ལེན་འཐབ་མ་བཏུབ་པའི་དྲ་ལམ་ནང་ལུ་ ལོག་སྤྱོད་འབད། {#recommit-genesis-in-a-disposable-network}
 
 གྲྭ་ཚང་ཅིག་གིས་ genesis བཏོན་དོ་ཡོདཔ་ད་ འདི་ནང་ལུ་བཞག་སའི་ས་ཆ་འདི་སྟོངམ་སྦེ་ཡོད་མི་འདི་མ་གཏོགས་ཨིན། ཁྱོད་ཀྱིས་ Docker སྒྲིག་ལམ་གཅིག་སྦེ་ ལག་ལེན་འཐབ་མ་དགོ་པའི་དོན་ལུ་, stack འདི་མཚམས་འཇོག་འབད་ཞིནམ་ལས་ ཐོན་སྐྱེད་འབད་ཡོད་པའི་གནས་སྟངས་དེ་བཏོན་གཏང་། ཟུར་རྟགས་བཀོད་མི་ genesis སྦ་སྒོར་དེ་ སླར་ལོག་སླར་གསོ་འབད་ནི་དང་འགོ་བཙུགས:
 
 ```bash
-docker compose -f ./localnet/docker-compose.yml down
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./localnet/docker-compose.yml --force
-docker compose -f ./localnet/docker-compose.yml up
+docker compose -f ./docker-compose.yml down
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
+docker compose -f ./docker-compose.yml up
 ```
 
 གནས་སྟངས་དེ་ བསྲུང་སྐྱོབ་འབད་དགོ་པའི་ ネットワークནང་ལུ་ འབྱུང་ཁུངས་ཀྱི་ཚབ་མ་བཟོ།

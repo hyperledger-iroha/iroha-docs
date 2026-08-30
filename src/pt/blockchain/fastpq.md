@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/fastpq.md
-translation_source_hash: f1dc55e4b2146de009203e19adb5cc1e9ce5302bc0ee27fe0b442693c5112c22
+translation_source_hash: 55b57e6aeeef2aefa1c8359d9b9487029b106eaebed12a58268b61dc583e97f6
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -905,7 +905,7 @@ O rastreamento contém colunas de selector para transferência, moeda, queima, a
 
 ## Provérbio Lane {#prover-lane}
 
-`irohad` inicia a faixa de prover FastPQ na inicialização se o backend do prover pode ser iniciado. A faixa é uma tarefa de fundo com uma fila limitada. Depois que um bloco produz um testemunho de execução, o caminho de commit apresenta um trabalho de prover contendo o hash do bloco, altura, vista e testemunho.
+`iroha3d` inicia a faixa de prover FastPQ na inicialização se o backend do prover pode ser iniciado. A faixa é uma tarefa de fundo com uma fila limitada. Depois que um bloco produz um testemunho de execução, o caminho de commit apresenta um trabalho de prover contendo o hash do bloco, altura, vista e testemunho.
 
 Se a faixa não estiver em execução ou a fila estiver cheia, o trabalho é ignorado e o processamento normal do bloco continua. Isso significa que a faixa de verificação de fundo não é uma entrada de transação ou um portal de consenso. É um caminho de produção de prova sobre estado que já foi executado.
 
@@ -1072,7 +1072,7 @@ $$
 
 ## SCCP Prova de mensagem transparente {#sccp-transparent-message-proofs}
 
-A caixa auxiliar SCCP também usa FastPQ para provas transparentes de mensagens transversais. Este caminho é separado da faixa de provedor de fundo `irohad`. Ele constrói um lote FastPQ diretamente a partir de um pacote e manifesto de prova de mensagem SCCP, em seguida, enrola a prova resultante para verificação aberta.
+A caixa auxiliar SCCP também usa FastPQ para provas transparentes de mensagens transversais. Este caminho é separado da faixa de provedor de fundo `iroha3d`. Ele constrói um lote FastPQ diretamente a partir de um pacote e manifesto de prova de mensagem SCCP, em seguida, enrola a prova resultante para verificação aberta.
 
 O lote SCCP utiliza o `fastpq-lane-balanced` e três transições de metadados:
 
@@ -1210,14 +1210,14 @@ metal_debug_enum = false
 metal_debug_fused = false
 ```
 
-Os mesmos rótulos de execução e telemetria podem ser substituídos a partir do `irohad`:
+Os mesmos rótulos de execução e telemetria podem ser substituídos a partir do `iroha3d`:
 
 ```shell
-irohad --fastpq-execution-mode auto
-irohad --fastpq-poseidon-mode cpu
-irohad --fastpq-device-class apple-m4
-irohad --fastpq-chip-family m4
-irohad --fastpq-gpu-kind integrated
+iroha3d --fastpq-execution-mode gpu
+iroha3d --fastpq-poseidon-mode cpu
+iroha3d --fastpq-device-class apple-m4
+iroha3d --fastpq-chip-family m4
+iroha3d --fastpq-gpu-kind integrated
 ```
 
 As variáveis ambientais são também suportadas para os campos de configuração. FastPQ- as variáveis específicas incluem:
@@ -1258,4 +1258,4 @@ Para triagem geral de desempenho, utilize-as com os sinais de consenso e filas l
 - `TransferTranscript`
 - `AxtFastpqBinding`
 - `LaneFastpqProofMaterial`
-- [Opções `irohad` FastPQ ](/pt/reference/irohad-cli.md#arg-fastpq-execution-mode)
+- [Opções `iroha3d` FastPQ ](/pt/reference/iroha3d-cli.md#arg-fastpq-execution-mode)

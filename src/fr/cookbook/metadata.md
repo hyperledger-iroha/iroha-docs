@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /cookbook/metadata.md
-translation_source_hash: 07b065b28eca44939a92b40a81a47b57178de4539abb0daf51913969e34eced7
+translation_source_hash: 238595124cd0a1b71900020d650fb208f844e051d2db4427801fe6405ff591c8
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -133,8 +133,8 @@ La lecture du compte séparé distingue une clé de métadonnées manquante d'un
 
 ## Sources et documents connexes {#source-and-related-docs}
 
-- [Tests d'intégration des requêtes de métadonnées dans le commit fiché](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/queries/metadata.rs)
-- [Python SDK constructeurs d'opérations à l'échéance fixée](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/python/iroha_python/README.md)
+- [Tests d'intégration des requêtes de métadonnées dans le commit fiché](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/queries/metadata.rs)
+- [Python SDK constructeurs d'opérations à l'échéance fixée](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/README.md)
 - [Metadonnées ](/fr/blockchain/metadata.md)
 - [Méta-données et choix de stockage du registre ](/fr/guide/configure/metadata-and-store-assets.md)
 - [Référence de l'instruction ](/fr/reference/instructions.md)

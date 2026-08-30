@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /get-started/private-dataspace-fee-sponsor.md
-translation_source_hash: 270e6705186d74efad6a8d2e6eeb432ab1b12649b66d4b11309e7da1e07b384f
+translation_source_hash: 37a2c29dccf3d2abacbbba16869d65b70b93545875a122470601194231c2263b
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -283,7 +283,7 @@ Reinicie ou rode esta configuração através do seu processo normal de operador
 Gerar um par de chaves do patrocinador, se necessário:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./fee-sponsor-key
 ```
 
 Converte a chave pública no formato da conta para a sua rede:

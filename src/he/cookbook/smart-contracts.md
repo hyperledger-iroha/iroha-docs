@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: 4fe9b19fc4d13cfc71d9b9558fe7cdb1d14bd88c2d20f4d23c66313ba3ddd4b6
+translation_source_hash: 67778f9fc4f2b6fa0288f5921402cf5509515aae678e98b8192e103dfe284db3
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -14,7 +14,7 @@ translation_engine: nllb-200-ct2
 
 ## תנאים מוקדמים {#prerequisites}
 
-- קישוט מקור Iroha ב- commit `bc7114ed1c7f265a156d2100ff09e851cc95702c`, Rust ו- Cargo.
+- קישוט מקור Iroha ב- commit `0010c5a70039eac101a4846499ba9ceaf43eb65c`, Rust ו- Cargo.
 - הלקוח הנוכחי `iroha` CLI ועוד לקוח מיומן Taira מ [חבר ל Taira ](./connect-to-taira.md).
 - מסלולים מוחלטים ב `IROHA_CONFIG` ו `IROHA_PRIVATE_KEY_FILE`. הקובץ המפתח חייב להיות קובץ רגיל בעל רישום אחד עם מצב `0600`; העוזר להגדיר במכוון אין טענת מפתח פרטי פנימית.
 - אישור מפעיל Taira. רישום קוד החוזה דורש `CanRegisterSmartContractCode`, ופיצוצים מוגנים עשויים דורשים מיתוי של ממשל וחקיקה. אם Taira לא העניק גישה כזו, לבצע את הפיצוץ ברשת מקומית שנוצרה אשר הגנזיה מעניקה את הרשות.
@@ -131,7 +131,7 @@ jq '{contract_address, code_hash_hex, final, fee_quotes}' \
   ./build/deployment.json
 ```
 
-בקשה ריקה `charge_limits` אינה מזהה נכס משותף: העוזר מקבל את הציטוט החי המדויק לפני חתימה. השווא את נכס המחיר המובא עם תגובה הפנק הנוכחית. אל תלוגן נתונים מטאטא `gas_asset_id` מורשים לשיחות חוזרות.
+בקשה ריקה `charge_limits` היא לא מזהה נכס משותף: העוזר מקבל את הציטוט החי המדויק לפני חתימה. התגובה הנוכחית למזרקה. שיחות חוזה מקבלות בחירה של דמי רק באמצעות הציטוט חי מודפס; `gas_asset_id` מטא נתוני עסקאות אינם חלק מחוזה שחרור ראשון.
 
 ### 5. סימול ולהתקשר לנקודת כניסה המוצבת. {#_5-simulate-and-call-the-deployed-entrypoint}
 
@@ -200,14 +200,14 @@ jq -e '.ok == true and .result == ["3", "5"]' \
 - מסמך או ABI חוסר התאמה פירושו כי בייטקוד, מוניסט ו- node runtime לא מתארים את אותו פריט. `--verify`.
 - `fee quote changed ... gas bound` פירושו את התכוון הנדרש והציטוט חי לא מסכימים. תחזור לדרך במקום לשנות עסקאות חתומות.
 - העוזר להגדיר דוחה מפתחות קבועות, אופנים של קבצים מפתח מורשים, סימלינקים ומפחידים קבצים מקושרים לפני הגשת רשת.
-- שגיאה בנקודת כניסה תצפית בלבד פירושה `compute` נשלח דרך משפחת הפקודות הלא נכונה. הדגם הזה מציין `kotoage`, אז השתמשו בסימולציה של שיחה או הגשת.
-- שיחות חוזה דורשות גבול גז חיובי. הנתונים המתארים של הגז העתיק או מטא-תמונות על נכסים דחויים.
+- טעות בנקודת כניסה תצפית בלבד פירושה `compute` נשלח דרך משפחת הפקודות הלא נכונה. הדגימה זו מכריז על `kotoage`, אז השתמשו בסימולציה של שיחה או העברה.
+- שיחות חוזה דורשות גבול של גז טופס חיובי. החוזה של שיחת הזמנה לשחרור הראשון מסירב את הנתונים הגזים או המטא-מכסים ברמה העליונה.
 
 ## מקור ומסמכים קשורים {#source-and-related-docs}
 
-- [Kotodama V1 יישום פקודה בקימת קישור](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/ivm/src/bin/koto.rs)
-- [דגימה של מקור ההחזרת כפולה ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
-- [עוזר הפעלת ילידי ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
-- [בדיקות אינטגרציה של החוזה בביצוע ההתחייבויות ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/contracts.rs)
+- [Kotodama V1 יישום פקודה בקימת קישור](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/src/bin/koto.rs)
+- [דגימה של מקור ההחזרת כפולה ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
+- [עוזר הפעלת ילידי ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
+- [בדיקות אינטגרציה של החוזה בביצוע ההתחייבויות ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs)
 - [חוזים חכמים](/he/blockchain/smart-contracts.md)
 - [דף CLI ](/he/get-started/operate-iroha-via-cli.md)

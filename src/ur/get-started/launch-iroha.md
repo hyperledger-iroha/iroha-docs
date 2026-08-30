@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 9341b2404624dec2230bc294c3d60dc124ac9574a0a5803b9bba744f4c5e7f50
+translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2
 موجودہ Kagami کوڈ سے چار پیر لوکل نیٹ پیدا کریں:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 آؤٹ پٹ ڈائرکٹری میں مماثل ہم مرتبہ ترتیب، `genesis.json`، `genesis.signed.nrt`، `client.toml`، اور مددگار اسکرپٹس شامل ہیں.
@@ -33,10 +33,10 @@ cargo run --bin kagami -- docker \
   --peers 4 \
   --config-dir ./localnet \
   --image hyperledger/iroha:dev \
-  --out-file ./localnet/docker-compose.yml \
+  --out-file ./docker-compose.yml \
   --force
 
-docker compose -f ./localnet/docker-compose.yml up
+docker compose -f ./docker-compose.yml up
 ```
 
 ڈیفالٹ کے طور پر پیدا کردہ اسٹیک:
@@ -72,7 +72,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 Nexus پروفائل کے ساتھ ایک مقامی ہم مرتبہ چلانے کے لئے:
 
 ```bash
-./target/release/irohad --sora --config ./defaults/nexus/config.toml
+./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
 ```
 
 اس پروفائل تک CLI رسائی کے لیے `defaults/nexus/client.toml` کا استعمال کریں۔
@@ -88,7 +88,7 @@ Nexus پروفائل کے ساتھ ایک مقامی ہم مرتبہ چلانے 
 پیدا کردہ کمپوز اسٹیک کے لئے:
 
 ```bash
-docker compose -f ./localnet/docker-compose.yml down
+docker compose -f ./docker-compose.yml down
 ```
 
 نیٹ ورک چلانے کے بعد، [Operate Iroha 3 via CLI](/ur/get-started/operate-iroha-via-cli.md) کے ذریعے جاری رکھیں.

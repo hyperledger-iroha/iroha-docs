@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /cookbook/query-ledger-state.md
-translation_source_hash: a81f6cc04befb0b92a0a01c2cb3c1ecbbc631ce1f2a923cb046241c295db7806
+translation_source_hash: ca76923f5ae35b96c52a6a4c23c5d9e69549d1ca91d6d1507e7b9a1aee1f1676
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -160,9 +160,9 @@ iroha --config ./localnet/client.toml \
 
 ## གཞི་རྟེན་དང་འབྲེལ་བའི་ཡིག་ཆ་ཚུ་ {#source-and-related-docs}
 
-- [Cursor-རྒྱབ་སྐྱོར་འབད་མི་ pagination integrated testingཚུ་ pinned commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/pagination.rs) ལུ་འབདཝ་ཨིན།
-- [སླར་ལོག་བཟོ་སྐྲུན་འབད་མི་དང་ བཙག་འཐུ་འབད་མི་ཚུ་གི་ སྤྱོད་ལམ་ཚུ་ ཕིན་ཌ་ commit ལུ་](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/query/builder/mod.rs)
-- [སླར་བསྡུར་འབད་ཡོད་པའི་ commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/query/parameters.rs) ལུ་དྲི་བ་གི་ཚད་གཞི་དང་ cursor model
+- [Cursor-རྒྱབ་སྐྱོར་འབད་མི་ pagination integrated testingཚུ་ pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/pagination.rs) ལུ་འབདཝ་ཨིན།
+- [སླར་ལོག་བཟོ་སྐྲུན་འབད་མི་དང་ བཙག་འཐུ་འབད་མི་ཚུ་གི་ སྤྱོད་ལམ་ཚུ་ ཕིན་ཌ་ commit ལུ་](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/builder/mod.rs)
+- [སླར་བསྡུར་འབད་ཡོད་པའི་ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/parameters.rs) ལུ་དྲི་བ་གི་ཚད་གཞི་དང་ cursor model
 - [དྲི་བཀོད་ཚུ་](/dz/blockchain/queries.md)
 - [དྲི་བཀོད་གི་ཁ་བྱང་](/dz/reference/queries.md)
 - [JavaScript དང་ TypeScript](/dz/guide/tutorials/javascript.md)

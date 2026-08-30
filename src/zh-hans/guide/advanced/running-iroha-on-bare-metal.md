@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 77780600fa59ba353e2aa79fb339adb6a02f7ac731e04cd0d5f51821ec54e794
+translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,12 +15,15 @@ translation_engine: nllb-200-ct2
 从上游 Iroha 工作空间:
 
 ```bash
-cargo build --release -p irohad -p iroha_cli -p iroha_kagami
+cargo build --release \
+  -p irohad --bin iroha3d \
+  -p iroha_cli --bin iroha \
+  -p iroha_kagami --bin kagami
 ```
 
 这产生了:
 
-- `target/release/irohad` 对同龄妖怪
+- `target/release/iroha3d` 对同龄妖怪
 - `target/release/iroha`用于 CLI
 - `target/release/kagami`用于关键,基因和局域网生成
 
@@ -29,7 +32,7 @@ cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 创建一个四对的 Iroha 3 本地网络:
 
 ```bash
-target/release/kagami localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+target/release/kagami localnet --peers 4 --out-dir ./localnet
 ```
 
 输出目录包含生成的 `genesis.json`, `genesis.signed.nrt`,同行`config.toml`文件, `client.toml`,辅助脚本以及生成的 `README.md`,其中包含该捆绑的确切命令.

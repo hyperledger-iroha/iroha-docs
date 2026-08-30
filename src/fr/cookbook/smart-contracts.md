@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: 4fe9b19fc4d13cfc71d9b9558fe7cdb1d14bd88c2d20f4d23c66313ba3ddd4b6
+translation_source_hash: 67778f9fc4f2b6fa0288f5921402cf5509515aae678e98b8192e103dfe284db3
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -14,7 +14,7 @@ Vérifiez et compilez un contrat Kotodama V1, exécutez son point d'entrée publ
 
 ## Conditions préalables {#prerequisites}
 
-- Une facturation à la source Iroha à l'adresse de commande `bc7114ed1c7f265a156d2100ff09e851cc95702c`, Rust et Cargo.
+- Une facturation à la source Iroha à l'adresse de commande `0010c5a70039eac101a4846499ba9ceaf43eb65c`, Rust et Cargo.
 - Le client actuel `iroha` CLI ainsi qu'un client financé Taira de [Connectez-vous à Taira ](./connect-to-taira.md).
 - Les chemins absolus dans `IROHA_CONFIG` et `IROHA_PRIVATE_KEY_FILE`. Le fichier clé doit être un fichier régulier à lien unique avec le mode `0600`; l'assistant de déploiement n'a intentionnellement pas d'argument de clé privée interne.
 - Approbation de l'opérateur Taira. L'enregistrement du code de contrat nécessite `CanRegisterSmartContractCode`, et les déploiements protégés peuvent nécessiter l'attribution et la promulgation de la gouvernance. Si Taira n'a pas accordé cet accès, effectuer le déploiement sur un réseau local généré dont la génèse accorde l'autorisation.
@@ -131,7 +131,7 @@ jq '{contract_address, code_hash_hex, final, fee_quotes}' \
   ./build/deployment.json
 ```
 
-La demande vide `charge_limits` n'est pas un identifiant d'actif copié: l'assistant accepte le devis en direct exact avant de signer. Comparer l'actif de charge retourné avec la réponse du robinet actuelle. Ne joignez pas les métadonnées héritées `gas_asset_id` aux appels à contrat.
+La requête vide `charge_limits` n'est pas un identifiant d'actif copié: l'assistant accepte la cotation exacte en direct avant de signer. Réponse actuelle au robinet. Les appels de contrat acceptent la sélection des frais uniquement par l'intermédiaire du devis en direct typé; `gas_asset_id` les métadonnées de transaction ne font pas partie du contrat de première sortie.
 
 ### 5. Simuler et appeler le point d'entrée déployé. {#_5-simulate-and-call-the-deployed-entrypoint}
 
@@ -195,19 +195,19 @@ Le déploiement n'est terminé que lorsque l'alias se résolve à l'adresse reto
 
 ## Résolution des problèmes {#troubleshooting}
 
-- Les défaillances `CanRegisterSmartContractCode` nécessitent une subvention de l'opérateur Taira ou un changement de génèse/bootstrap sur le localnet.
+- Les défaillances `CanRegisterSmartContractCode` nécessitent une subvention de l'opérateur Taira ou un changement de génèse/bootstrap sur localnet. Un compte normal ne peut pas autoriser cette permission après le fait.
 - La gouvernance ou le rejet de la voie protégée signifie que le déploiement nécessite l'attribution exacte d'approbation requise par ce réseau. Coordonner la liste des approuvés; ne pas inventer le compte IDs.
-- Un manifest ou ABI déséquilibre signifie que le code par octets, le manifeste et la durée d'exécution du nœud ne décrivent pas le même artefact. Reconstruire à l'engagement fiché avec `--verify`.
+- Un manifest ou ABI déséquilibre signifie que le code par octets, le manifeste et l'heure d'exécution du nœud ne décrivent pas le même artefact. Reconstruire à la mise en commun collée avec `--verify`.
 - `fee quote changed ... gas bound` désigne le désaccord entre l'intention typée demandée et la citation en direct. Retour au lieu de modifier une transaction signée.
 - L'assistant de déploiement rejette les clés en ligne, les modes permissifs de fichiers clés, les liens symboliques et le multiplication des fichiers liés avant la soumission du réseau.
-- Une erreur de point d'entrée à vue seulement signifie que `compute` a été routé par la mauvaise famille de commandes. Cet échantillon déclare `kotoage`, utilisez donc une simulation d'appel ou une soumission.
-- Les appels contractuels nécessitent une limite de gaz typée positive.Les métadonnées liées au gaz ou aux actifs sont rejetées.
+- Une erreur de point d'entrée à vue uniquement signifie que `compute` a été routé par la mauvaise famille de commandes. Cet échantillon déclare `kotoage`, alors utilisez une simulation d'appel ou une soumission.
+- Les appels contractuels nécessitent une limite de gaz type positive. Le contrat d'appel pour la première sortie rejette les métadonnées de gaz ou d'actifs de redevance de premier niveau.
 
 ## Sources et documents connexes {#source-and-related-docs}
 
-- [La mise en œuvre de la commande Kotodama V1 à l'appui fixé](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/ivm/src/bin/koto.rs)
-- [L'échantillon de source de retour duple à l'obligation fixée](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
-- [L'assistant de déploiement natif à l'appel fixé ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
-- [Tests d'intégration des contrats à l'obligation fixée ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/contracts.rs)
+- [La mise en œuvre de la commande Kotodama V1 à l'appui fixé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/src/bin/koto.rs)
+- [L'échantillon de source de retour duple à l'obligation fixée](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
+- [L'assistant de déploiement natif à l'appel fixé ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
+- [Tests d'intégration des contrats à l'obligation fixée ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs)
 - [Contrats intelligents ](/fr/blockchain/smart-contracts.md)
 - [référence CLI ](/fr/get-started/operate-iroha-via-cli.md)

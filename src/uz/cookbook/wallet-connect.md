@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /cookbook/wallet-connect.md
-translation_source_hash: ab5b6c560ed8b0a208666e5854306ba6adce7af1210fc3c94b9c560d8e6eb686
+translation_source_hash: 38283321d51ddbb528272bb4429906eb41545ed3933ae695fb05a24675bff9c8
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -279,11 +279,11 @@ Tekshirish faqat JavaScript xizmatkor kuzatadi `Applied` taqdim etilgan tranzaks
 
 ## Manba va u bilan bog'liq hujjatlar {#source-and-related-docs}
 
-- [Browser Connect-ni o'rnatilgan commit-da amalga oshirish ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/src/connect.browser.js)
-- [Browser Connect testlari pinlangan commitda](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/test/connect.browser.test.js)
-- [Rust qo'llanma ramka namunasida pinning commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii_shared/examples/connect_app.rs)
-- [Rust bog'langan commit-dagi portfeli ramka namunasi](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii_shared/examples/connect_wallet.rs)
-- [Pinned Torii OpenAPI sxema](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/artifacts/openapi/torii.json)
+- [Browser Connect-ni o'rnatilgan commit-da amalga oshirish ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/src/connect.browser.js)
+- [Browser Connect testlari pinlangan commitda](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/test/connect.browser.test.js)
+- [Rust qo'llanma ramka namunasida pinning commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_app.rs)
+- [Rust bog'langan commit-dagi portfeli ramka namunasi](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_wallet.rs)
+- [Pinned Torii OpenAPI sxema](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/artifacts/openapi/torii.json)
 - [SORA Nexus xizmatlari](/uz/blockchain/sora-nexus-services.md)
 - [O'zgaruvchan aktivlar](./fungible-assets.md)
 - [Transaksiyalarni taqdim etish va tekshirish ](./submit-and-verify-transactions.md)

@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /cookbook/connect-to-taira.md
-translation_source_hash: a7347a7e8ea055fd5bab9a34b6124ea19ef6f355f9beef9e9488794d9c6e3202
+translation_source_hash: 263e058a0877e1a3c48b6514b127bc56022e3d244284e0b72881743a4aee0f58
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -134,8 +134,8 @@ iroha --config ./taira.client.toml \
 
 ## གཞི་རྟེན་དང་འབྲེལ་བའི་ཡིག་ཆ་ཚུ་ {#source-and-related-docs}
 
-- [Taira CLI ནད་གཞི་བརྟག་དཔྱད་དང་ ཀ་ནའི་རི་གི་འབྱུང་ཁུངས་ཚུ་ པིན་ཌི་ commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/taira.rs)
-- [ཟད་འགྲོ་བཏང་མི་འཐུས་གདམ་ཁ་དང་ CLI བསྡུ་སྒྲིག་འབད་ཡོད་པའི་ ཁས་བླངས་ཀྱི་འབྱུང་ཁུངས་](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/main_shared.rs)།
+- [Taira CLI ནད་གཞི་བརྟག་དཔྱད་དང་ ཀ་ནའི་རི་གི་འབྱུང་ཁུངས་ཚུ་ པིན་ཌི་ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/taira.rs)
+- [ཟད་འགྲོ་བཏང་མི་འཐུས་གདམ་ཁ་དང་ CLI བསྡུ་སྒྲིག་འབད་ཡོད་པའི་ ཁས་བླངས་ཀྱི་འབྱུང་ཁུངས་](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)།
 - [Taira རྩིས་ཁྲ་དང་ ཐབ་ཤིང་གི་ལམ་སྟོན་](/dz/get-started/sora-nexus-dataspaces.md)
 - [སྲོལ་འཛིན་གྱི་སྒྲིག་གཞི་](/dz/guide/configure/client-configuration.md)
 - [ལས་སྣ་ཚུ་](/dz/blockchain/transactions.md)

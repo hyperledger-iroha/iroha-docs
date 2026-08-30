@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /reference/peer-config/params.md
-translation_source_hash: d9fa3775e65b26b4eda726b27e54d167097b8bbd5bb766c27d7eeefdbc7ef10b
+translation_source_hash: 027486a17e7624cc301f939429baf9ea9ed1259564c3b99b8dc63cce17a7b26e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 
@@ -16,13 +16,13 @@ import ParamTable from './ParamTable.vue';
 
 标签:
 
-## 根级别 {#root}
+## 根级 {#root}
 
 ### `chain` <Badge text="required" /> {#param-chain-id}
 
 链 ID 必须在每个交易中包含. 用于防止重复攻击.
 
-复制攻击是试图将有效的交易提交给与其预期的不同网络.由于 `chain` 是签署的交易实用负载的一部分,使用另一个链 ID 的同行拒绝了一项为一连锁签署的事务.
+复制攻击是试图将有效的交易提交给与其目的网络不同的网络. `chain` 是签署的交易实用负载的一部分,为一条链签署的事务被使用另一条链的同行拒绝 ID.
 
 <param-table type=string env=CHAIN />
 
@@ -78,12 +78,12 @@ PRIVATE_KEY="8926201CA347641228C3B79AA43839DEDC85FA51C0E8B9B6A00F6B0D6B0423E9029
 
 预先定义的可信同行列表.
 
-共识验证器必须使用 BLS-Normal peer keys.对于每个验证器,还提供匹配的 [`trusted_peers_pop`](#param-trusted-peers-pop)输入.
+共识验证器必须使用 BLS-Normal peer keys.对于每个验证器,也提供相匹配的 [`trusted_peers_pop`](#param-trusted-peers-pop)入口.
 
 <param-table env="TRUSTED_PEERS">
 <template #type>
 
-在 P2P 地址已知时使用`PUBLIC_KEY@ADDRESS`;裸体 `PUBLIC_KEY`也被接受,并且允许从言中发现同行地址.
+在 P2P 地址已知时使用`PUBLIC_KEY@ADDRESS`;裸体 `PUBLIC_KEY`也被接受,并允许从言中发现同龄人地址.
 
 </template>
 </param-table>
@@ -138,7 +138,7 @@ TRUSTED_PEERS_POP='[
 
 :::
 
-## 创世记 {#genesis}
+## 创世纪 {#genesis}
 
 ### `genesis.file` {#param-genesis-file}
 
@@ -288,7 +288,7 @@ transaction_gossip_period_ms = 5_000
 
 ### `network.idle_timeout_ms` {#param-network-idle-timeout-ms}
 
-如果同行无事,则终止与同行的联系的时间.
+如果同行无事,则终止与同行的连接时间.
 
 <param-table type=millis default-value=300_000 default-note="5 minutes" />
 
@@ -443,7 +443,7 @@ LOG_LEVEL=INFO
 <param-table type=string env=LOG_FILTER>
 <template #type>
 
-字符串由一个或多个以逗号分开的指令组成. 每条指令都可能具有相应的最大语文性水平,允许 (例如选择) 相匹配的跨度和事件;Iroha 认为较少的独占水平 (如`trace`或`info`) 是比更为独占的水平 (如 `error`或 `warn`) 更有口头性.
+字符串由一个或多个以逗号分开的指令组成. 每条指令都可能具有相应的最大语音水平,允许 (例如选择) 相匹配的跨度和事件.Iroha 认为较少的独占水平 (如`trace`或`info`) 是比更为独占的水平 (如 `error`或 `warn`) 更有口头性.
 
 在高层面上,指令的语法由几个部分组成:
 
@@ -470,7 +470,7 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 
 :::
 
-::: info 与 [`logger.level`](#param-logger-level)的兼容性
+::: info 与 [`logger.level`](#param-logger-level) 搭配使用
 
 `logger.filter`与 [`logger.level`](#param-logger-level)一起工作,没有一个覆盖另一个.
 
@@ -494,9 +494,9 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 字符串,可能值:
 
 - `full`:默认格式化器. 它为每次事件发出可读的单行日志,在格式化的演示之前显示当前跨度文本.
-- `compact`:为短线长度优化的默认格式器的一种变体.当前跨度文本中的字段添加到格式事件的字段中,并且没有显示跨度名称;语法性水平缩写成单个字符.
+- `compact`:为短线长度优化的默认格式器的一种变体.当前跨度文本中的字段添加到格式事件的字段中,并没有显示跨度名称;语法性水平缩写成单个字符.
 - `pretty`: 发射过度漂亮的多行日志,优化为人类可读性.调试,或用于命令行应用程序,自动分析和日志的紧存储比可读性和视觉吸引力少于优先考虑.
-- `json`:输出新线界限的 JSON 日志. 这用于生产系统中使用结构化日志作为 JSON 通过分析和查看工具消耗. JSON 输出并非为人类可读性优化的.
+- `json`:输出新线界限的 JSON 日志. 这用于生产系统中使用结构化日志作为 JSON 通过分析和查看工具消耗. JSON 输出并未为人类可读性优化的.
 
 更多详细信息和样本输出,请见 [`tracing-subscriber`文档](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/format/index.html).
 
@@ -543,15 +543,21 @@ KURA_BLOCKS_IN_MEMORY=1024
 
 ### `kura.init_mode` {#param-kura-init-mode}
 
-Kura 启动方式
+Kura 启动模式. `strict`是正常和默认的模式:它在节点激活之前验证了正规历史,恢复文物,辅助索引和存储会计.
 
-<param-table  default-value=strict env=KURA_INIT_MODE>
+`fast`是恢复运营可见性的紧急降级服务模式,当一个完整的启动审计可能会出现停机时.它需要先前由 `strict`初始化的存储和包含五件精品的当前快照生成:`snapshot.data`,`snapshot.sha256`, `snapshot.sig`, `snapshot.fast.norito`,和 `snapshot.merkle.json`.一个域分开的运营商签名绑定广告的有效载荷消化和有限的表格;表格绑定了有效载荷长度,链/网络身份,终端高度/hash,SCCP 政策hash,以及启动线条存在.快速拒绝了启动线条,并需要从耐用 Kura 的相同的标记/计数/尖端界限.首次发布节点完全接受这些五件文物,并且拒绝了其他所有文物的数量或文件名集.
+
+快速库存这些五个名字和元数据 - 绑定有效载荷和Merkle文件,但不会读取,哈希,解析或解码其内容.它从签署的表格构建一个最小的世界/Nexus,映射了精确的 Kura 哈希前仅阅读,并离开快照世界,区块-哈希阵列,交易历史,衍生指数和持久恢复日志未开放. Merkle,正义和语义快照审计,历史区块/最终性/SCCP 调整, Sumeragi 活跃高度恢复,合并和查询日志,行径表/合规来源,Kura 支持的 SoraFS 档案,递归存储会计和可选服务调整器仍然被推迟.本地交易录取,提议,投票,正文书籍和辅助生产商仍被禁用.Kura 本身拒绝了作者启动和持久突变;管道和 FASTPQ 持续性队列立即拒绝工作,而不是保留或编码它.Kura 阅读 APIs 也禁用维修和耐久性-同步行为:暂时侧车不推广,缺失的车道文物不公布,进步障碍也没有同步. Sumeragi 和交易八不发行.Torii 仅暴露了健康,活力,准备,同行和配置操作; API-版本,状态,指标以及所有普通状态/历史路线仍然不可使用. 准备直到严格重新启动才不提供.
+
+使用 `fast` 一旦服务稳定,停止节点,恢复 `strict`, 在恢复生产之前,每次推迟的检查和指数重建都会运行.快速模式不需要推迟合并日志,也不创建,修复,切断或进口正规存储器;无公布的后尾和未发布的辅助恢复阶段被忽视,没有读取或突变;进口的仅使用哈希的快照流程仍然不可用.一个失踪或无效的当前快照立即失败; 快速永远不会回到一个空世界或历史重演重建.
+
+<param-table default-value=strict>
 <template #type>
 
 字符串,可能值:
 
-- `strict`:所有块的严格验证
-- `fast`:快速启动,仅进行基本检查
+- `strict`:完整验证和正常生产
+- `fast`:有限的紧急启动,生产被隔离到严格重启.
 
 </template>
 </param-table>
@@ -561,10 +567,6 @@ Kura 启动方式
 ```toml [Config File]
 [kura]
 init_mode = "fast"
-```
-
-```shell [Environment]
-KURA_INIT_MODE=fast
 ```
 
 :::
@@ -675,15 +677,25 @@ force_soft_fork = true
 
 :::
 
+## Nexus 原子核私人和解 {#nexus-atomic-private-settlement}
+
+`[nexus.atomic_private_settlement]`控制了单独的 `AtomicPrivateSettlementV1`路径.它默认禁用.设置`enabled = true`也需要一个 `activation_height`;除非连锁功能,通知期限,固定的证据配置文件和池/审计治理是活跃的,否则录取仍然无法关闭.
+
+主要限制是: `max_participants`, `max_expiry_blocks`, `audit_timeout_blocks`, `prepare_timeout_blocks`, `commit_timeout_blocks`, `max_proof_bytes`, `max_capsule_bytes`, `max_carrier_bytes`, `sidecar_retention_blocks`, `sidecar_max_records`, 和 `sidecar_max_total_bytes`. `capsule_padding_classes_bytes` 必须是一个严格增长的子集 V1 装课. `permitted_policy_versions` 仅接受 V1.
+
+`max_capsule_bytes`测量了完整的 `PrivateSettlementAuditCapsuleV1`中正规 Norito 字节,包括 AAD,nonce,加密文本,向量框架以及每一个包装为 DEK 行的审计员;这不是仅限于加密文体.每个启用的填充类别都必须适用于至少 `default_min_auditor_approvals`审计员的保守整体囊.该批准设置也是一个规定的层次:Torii 拒绝具有较低 `min_approvals`值的新被允许政策,并拒绝任何超越法定字节限量的实际囊.
+
+这些设置没有生产环境变量激活绕行.查看[Run Atomic Private Cross-Dataspace Settlement](/zh-hans/get-started/atomic-private-settlement),了解完整的配置示例和操作要求.直到文档化外部释放门通过,路径不会获得生产资格.
+
 ## 快照 {#snapshot}
 
 该模块负责阅读和编写[世界状态视图](/zh-hans/blockchain/world#world-state-view-wsv)的快照.
 
-快照存储世界状态视图的序列化检查点,以便一个同行可以重新启动而不需要重播从 Kura 的每个区块. Kura 仍然是持续的区块历史和重播的真相来源;快照是一个加速路径.在启动时, Iroha 检查了设置链和存储的区块之间的快照元数据,然后决定是否要加载快照或重新播放.
+快照存储了世界状态视图的序列化检查点,这样一个同行可以重新启动而不需要重播从 Kura 的每个块. Kura 仍然是持续的区块历史和重播的真相来源;快照是一种加速路径.在启动时, Iroha 检查了设置链和存储的区块之间的快照元数据,然后决定是否要加载快照或重新播放.
 
 ::: tip 删除快照
 
-如果快照系统有什么问题,并且您想从空白页面开始 (即快照),则可以删除 [`snapshot.store_dir`](#param-snapshot-store-dir)所指定的目录.
+如果快照系统有问题,并且您想从空白页面开始 (即快照),则可以删除 [`snapshot.store_dir`](#param-snapshot-store-dir)所指定的目录.
 
 :::
 
@@ -696,7 +708,7 @@ force_soft_fork = true
 
 字符串,可能值:
 
-- `read_write`:Iroha 创建了由 [`snapshot.create_every_ms`](#param-snapshot-create-every-ms)指定的时段的快照.在启动时, Iroha 阅读一个现有快照 (如果有的话) 并验证它是否与区块存储更新.
+- `read_write`:Iroha 创建了由 [`snapshot.create_every_ms`](#param-snapshot-create-every-ms)指定的时段的快照.在启动时, Iroha 阅读一个现有快照 (如果有的话) 并验证它是否与区块存储保持更新.
 - `readonly`:类似于 `read_write`但 Iroha 没有创建任何快照.
 - `disabled`: Iroha 既不会创建新的快照,也不会在启动时读取现有的快照.
 
@@ -754,11 +766,11 @@ SNAPSHOT_STORE_DIR="/path/to/storage"
 
 ## 电测仪 {#telemetry}
 
-远程测量将同行诊断输出到外部远程测量的收集器.当同行报告给收藏器时,设置 `telemetry.name` 和 `telemetry.url`;如果不使用远程测试,则省略该节目.
+远程测量将同行诊断输出到外部远程测量的收集器.当同行报告给收藏器时,设置`telemetry.name` 和 `telemetry.url`;如果不使用远程测试时,省略该节目.
 
 `name`和 `url`必须配对.
 
-所有的 `telemetry` 部分是可选的.
+所有 `telemetry` 节目都是可选的.
 
 ### `telemetry.name` {#param-telemetry-name}
 

@@ -850,7 +850,7 @@ identifier helpers:
 | `POST /v1/identifiers/resolve` | Resolve a normalized identifier input to the bound account when an active claim exists. |
 | `GET /v1/identifiers/receipts/{receipt_hash}` | Look up a persisted identifier claim by receipt hash for audit and support tooling. |
 
-Always check the target node's `/openapi` or `/openapi.json` document before
+Always check the target node's `/openapi.json` document before
 building against these routes. Availability depends on the node build and
 network profile.
 

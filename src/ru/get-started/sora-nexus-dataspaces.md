@@ -1,7 +1,7 @@
 ---
 translation_locale: ru
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
+translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -263,7 +263,7 @@ EOF
 Создать пара ключей, если у вас уже нет:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./taira-client-key
 ```
 
 Создать `taira.client.toml`:
@@ -336,7 +336,7 @@ test "$ok" = true
 Создать или загрузить клавишу Ed25519 , которая будет управлять аккаунтом:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./nexus-account-key
 ```
 
 Преобразовать государственный ключ на счет Taira ID:
@@ -697,7 +697,7 @@ description = "Route payments domains to the payments dataspace"
 
 Прием оператора должен включать в себя следующие ворота:
 
-- `irohad --sora --config <config.toml> --trace-config` передает конфигурацию решенного узла.
+- `iroha3d --sora --config <config.toml> --trace-config` передает конфигурацию решенного узла.
 - генерируемый или пересмотренный манифест архивируется хэшами и подписями.
 - прохождение испытаний дыма на Taira до любого продвижения Minamoto
 - каталог `/status` после изменения показывает предполагаемую полосу и пространство данных

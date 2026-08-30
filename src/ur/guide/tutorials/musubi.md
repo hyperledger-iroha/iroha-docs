@@ -1,171 +1,212 @@
 ---
 translation_locale: ur
 translation_source: /guide/tutorials/musubi.md
-translation_source_hash: 6b33c687fd1d81d931b932d38908d9a87e9c619e5aca5714d09d892160a6b704
+translation_source_hash: 4a76626522ecb9fe32e98e9c1e4552223cf820d40d0de16690dc589b0f40c901
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Musubi Kotodama پیکجوں {#musubi-kotodama-packages}
 
-Musubi Kotodama سورس پیکجوں کے لئے پیکیج مینیجر ہے۔ یہ ڈویلپرز کو ایک کارگو کی طرح ورک فلو فراہم کرتا ہے تاکہ وہ Kotodama افعال کا اشتراک کرسکیں جبکہ پیکیج کی شناخت کو عالمی سطح پر پہلے آنے والے نام ٹیبل کے بجائے SORA اور Iroha ناموں سے منسلک کیا جاسکے۔
+Musubi Kotodama سورس پیکجوں کے لئے پہلا ریلیز پیکیج مینیجر ہے۔ یہ ایک عین مطابق آن چین انحصار گراف کو حل کرتا ہے ، SoraFS کی تصدیق کرتا ہے۔ ماخذ آرکائیوز، منتخب کردہ کام کی جگہ کو مرتب اور جانچتا ہے، کینونیکل CAR آرکائیو بناتا ہے، اور Iroha کے ذریعے ناقابل تبدیلی ریلیز شائع کرتا ہے.
 
 Musubi کا استعمال کریں جب آپ کی ضرورت ہو:
 
-- دوبارہ استعمال ہونے والی Kotodama ماخذ لائبریریاں شائع کریں۔
-- `Musubi.lock` میں عین مطابق منتقلی کے ذریعہ انحصار
-- تصدیق شدہ SoraFS آرکائیو کی ذمہ داریوں سے انحصار کا ذریعہ دوبارہ بنائیں۔
-- ایک ہی نام کی جگہ میں dapp معاہدہ عرفات کے لئے پیکجوں کے نام کی جگہ مربوط کریں
-- آن لائن رجسٹری کے ذریعے پیکجوں کا معائنہ، شائع کرنا، ٹریک کرنا، یا عرفان دینا
+- دوبارہ استعمال ہونے والی Kotodama فنکشن لائبریریاں شائع کریں
+- `Musubi.lock` میں ایک درست ٹرانزٹیو گراف پائن کریں۔
+- حتمی شدہ SoraFS آرکائیو کی ذمہ داریوں سے انحصار کا ذریعہ دوبارہ بنائیں
+- ایک پیکج یا کثیر پیکج ورک اسپیس کی تعمیر اور جانچ کرنا۔
+- آن لائن رجسٹری کے ذریعے پیکجوں کا معائنہ، شائع کرنا، کھینچنا، برقرار رکھنا یا مستعار نام
 
 ## پیکجوں کے نام {#package-names}
 
-کینیکل پیکج آئی ڈی کا استعمال:
+کینونیکل پیکج سلیکٹرز استعمال کرتے ہیں:
 
 ```text
 namespace/package
 ```
 
-درست ریلیز حوالہ جات کا استعمال:
+درست ریلیز کی شناخت کرنے والے ایک ورژن شامل کریں:
 
 ```text
 namespace/package@version
 ```
 
-کسی نام کی جگہ سے پہلے کوئی اہم `@` نہیں ہے۔ `@` جداکار ورژن کے ضمیمہ کے لئے مخصوص ہے۔
+ناموں کی جگہ سے پہلے کوئی لیڈ `@` نہیں ہے۔ ایک نام کی جگہ یا تو ڈیٹا اسپیس جڑ ہے جیسے `universal` یا ڈومین کے اہل ڈیٹا اسپیس جیسے `dex.universal`۔ لائیجر اس ساختی نام کی جگہ کو ایک مستحکم ہوم ڈیٹا اسپیس سے منسلک کرتا ہے جس پر پیکیج کا دعوی کیا جاسکتا ہے۔
 
-ناموں کی جگہ کا سیگمنٹ Kotodama dapp معاہدے کے مستعار میں استعمال ہونے والے ضمیمہ سے ملتا ہے:
+## مینیفیسٹ اور لاک فائل {#manifest-and-lockfile}
 
-|پیکیج کی شناخت |متعلقہ معاہدے کا عرفی شکل |
-| ------------------------- | ---------------------------- |
-|`universal/math` |`router::universal` |
-|`dex.universal/swap-core` |`router::dex.universal` |
-
-نام خالی جگہوں میں یا تو `<dataspace>` یا `<domain>.<dataspace>` فارم ہوتا ہے۔ جب کسی پیکیج میں ڈی اے پی پی لنک ہوتا ہے تو ، Musubi چیک کرتا ہے کہ ہر منسلک معاہدے کا مستعار پیکیج کے ساتھ ایک ہی نام خالی ضمیمہ استعمال کرتا ہے.
-
-## ظاہر {#manifest}
-
-ایک پیکج `Musubi.toml` سے شروع ہوتا ہے:
+ایک پیکج بند پہلی رہائی کا استعمال کرتا ہے `Musubi.toml` schema. manifesto میں اعلان کرنا ضروری ہے `manifest-version = 1`, Kotodama ایڈیشن `"1"`, اور IVM ABI ورژن `1`; کوئی متبادل دستاویز نہیں ہے یا ABI موڈ.
 
 ```toml
+manifest-version = 1
+
 [package]
 namespace = "dex.universal"
 name = "swap-core"
 version = "0.1.0"
+edition = "1"
+abi-version = 1
+
+[lib]
+source-dir = "src"
+exports = ["quote"]
 
 [dependencies.math]
 package = "std.universal/math"
 version = "^1.0.0"
-
-[exports]
-functions = ["quote"]
-
-[dapp]
-namespace = "dex.universal"
-contracts = ["router::dex.universal"]
 ```
 
-انحصار درست ورژن، دیکھ بھال کے تقاضے، ٹائلڈ کی ضروریات، وائلڈ کارڈز جیسے `1.*` یا موازنہ فہرستوں جیسے `>=1.0.0,<2.0.0` استعمال کرسکتے ہیں.
+انحصار درست ورژن ، دیکھ بھال یا ٹائلڈ کی ضروریات ، `1.*` جیسے وائلڈ کارڈز اور `>=1.0.0,<2.0.0` جیسے کوما سے الگ موازنہ سیٹ استعمال کرسکتے ہیں۔ انحصار ٹیبل کلید والدین مقامی درآمد کا مستعار ہے۔ `package` ہمیشہ کینونیکل رجسٹری سلیکٹر ہوتا ہے۔
 
-`Musubi.lock` منتخب شدہ منتقلی گراف کو آن چین رجسٹری سے ریکارڈ کرتا ہے۔ ہر مقفل شدہ نوڈ اپنا کینیکل پیکیج ریف ، منتخب ضرورت ، SoraFS manifest digest ، ماخذ آرکائیو ہیش ، بائٹ گنتی ، فائل گنتی ، برآمد شدہ افعال ، تعیناتی ذریعہ آرکائیوز پلان ، اور انحصار کے عرفات کو اسٹور کرتا ہے۔ قفل فائل میں داخل ہونے سے پہلے مختصر ناموں کو حل کیا جاتا ہے.
+`Musubi.lock` گراف کو بالکل جینیس سے اخذ شدہ `NetworkId` اور ایک حتمی رجسٹری اسنیپ شاٹ سے منسلک کرتا ہے۔ یہ منتخب کردہ ورک اسپیس جڑیں اور ناقابل تبدیل ریلیز نوڈس ریکارڈ کرتا ہے، ریلیز ، ماخذ ، انٹرفیس ، آرکائیو ، ABI ، اور عین مطابق انحصار کے کنارے کے وعدے شامل ہیں۔ جب حل شدہ گراف کی ضرورت ہوتی ہے تو متوازی ورژن کی اجازت دی جاتی ہے۔
+
+## ترتیب دیں Taira SoraFS کھینچنا {#configure-taira-sorafs-fetching}
+
+Taira اس کام کے بہاؤ کے لئے عوامی ٹیسٹ نیٹ ورک ہے۔ Taira کلائنٹ ترتیب سے شروع کریں جس میں چین اور نیٹ ورک کی شناخت کو چیک کیا گیا ہے ، پھر ذیل میں فراہم کنندہ مخصوص تصدیق شدہ وصولی پابندیاں شامل کریں۔ اکاؤنٹ پر دستخط کرنے کا مواد اور فراہم کنندہ آپریٹر کی چابیاں صرف مالکان کے رن ٹائم فائلوں میں رہیں گی۔
+
+```toml
+torii_url = "https://taira.sora.org/"
+chain = "fc56984b-2be7-431d-840e-21514d1883f0"
+network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+
+[musubi.fetch]
+network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+client_id = "musubi-taira"
+request_timeout_ms = 30000
+
+[[musubi.fetch.provider_gateways]]
+provider_id = "REPLACE_WITH_ADMITTED_PROVIDER_ID_HEX"
+url = "REPLACE_WITH_ADVERTISED_PROVIDER_HTTPS_ORIGIN"
+operator_public_key = "REPLACE_WITH_PROVIDER_AUTHORIZED_OPERATOR_PUBLIC_KEY"
+operator_private_key_file = "./secrets/taira-sorafs-provider.key"
+```
+
+پبلک ٹیسٹ نیٹ روٹ سے Taira کے منظور شدہ فراہم کنندگان کو دریافت کریں:
+
+```bash
+export TAIRA_ROOT=https://taira.sora.org
+curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
+```
+
+فراہم کنندہ کیٹلاگ فراہم کرنے والے کی شناخت اور اشتہاری اختتامی پوائنٹس فراہم کرتا ہے۔ منتخب کردہ فراہم کنندہ سے مماثل آپریٹر کی اجازت حاصل کریں۔ رن ٹائم اس کلید کو محدود سلسلہ ٹوکن کے لئے درخواست کرنے کے لئے استعمال کرتا ہے۔ ٹوکن نہ تو CLI دلیلیں ہیں اور نہ ہی لاک فائل کا مواد۔
+
+استعمال نہ کریں Taira تصدیق کنندہ پن URL کے طور `url`. چیک ان کی تصدیق کرنے والوں نے داخل کیا ہے SoraFS اسٹوریج غیر فعال ہے. `https://taira-validator-{1,2,3,4}.sora.org` اختتامی پوائنٹس پن رجسٹریشن قبول کرتے ہیں، جبکہ آرکائیو ریڈ منتخب کردہ منظور شدہ فراہم کنندہ کے استعمال کرتے ہیں. HTTPS اصل۔
 
 ## مقامی ورک فلو {#local-workflow}
 
-بہاؤ Iroha کام کی جگہ جڑ سے، Cargo کے ذریعے Musubi چلائیں:
+بہاؤ Iroha کام کی جگہ جڑ سے، پیکج ڈائرکٹری بنائیں یا داخل کریں اور کارگو کے ذریعے Musubi چلائیں:
 
 ```bash
-cargo run -p musubi -- init --namespace dex.universal --name swap-core --dapp
-cargo run -p musubi -- add std.universal/math --version '^1.0.0' --alias math
-cargo run -p musubi -- install --config client.toml
-cargo run -p musubi -- build src/lib.ko --manifest-out target/lib.contract.json
-cargo run -p musubi -- pack \
-  --car-out source.car \
-  --sorafs-manifest-out manifest.norito \
-  --source-plan-out source-plan.norito
+mkdir -p examples/swap-core
+cd examples/swap-core
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  init . --namespace dex.universal --name swap-core --export quote
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  add std.universal/math --version '^1.0.0' --rename math
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- fetch --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- check --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- build --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- test --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- package --config client.toml
 ```
 
-`install --offline` کا استعمال کسی نوڈ سے استفسار کیے بغیر درست ورژن کی انحصار کے لئے غیر حل شدہ لاک فائل لکھنے کے لئے کریں۔ CI میں ایک پرانی لاک فائل کو مسترد کرنے کے لیے `install --locked` کا استعمال کریں.
+`fetch` حتمی رجسٹری گراف کو حل کرتا ہے ، اپ ڈیٹس `Musubi.lock` جب اجازت دی جاتی ہے، اور تصدیق شدہ سے ناقابل تبدیل مقامی کیش بھرتا ہے SoraFS مقامات. `check`, `build`, `test`, اور `package` اپنے کام سے پہلے ایک ہی گراف اور کیش چیک کریں.
 
-`build` کیشڈ انحصار کے ذرائع کو `math::add()` جیسے کالز کو تعیناتی اندرونی Kotodama فنکشن ناموں سے دوبارہ لکھ کر منسلک کرتا ہے۔ یہ ان افعال پر کالز کو مسترد کرتا ہے جن پر انحصار برآمد نہیں کیا گیا تھا۔ Musubi v1 لائبریریاں صرف فنکشن ہیں: انحصار کے ذرائع جن میں ریاستی اعلامیے ، ٹرگرز ، کوٹوبا بلاکس ، مستقل یا دیگر غیر فنکشن معاہدے کی اشیاء شامل ہیں وہ مسترد کردیئے جاتے ہیں۔
+کسی بھی لاک فائل کی تبدیلی کو مسترد کرنے کے لئے `--locked` کا استعمال کریں۔ صرف اس وقت `--offline` کا استعمال کریں جب رجسٹری انڈیکس اور ہر مطلوبہ آرکائیو دونوں پہلے ہی کیشڈ ہوں۔ `--frozen` ان دو پابندیوں کو یکجا کرتا ہے۔ ایک آف لائن کیشے ناکام ہوجاتا ہے۔ Musubi کبھی بھی غیر حل شدہ لاک فائل نہیں لکھتا ہے۔
 
-## ماخذ آرکائیو حاصل کرنا {#fetching-source-archives}
+انحصار کے ذرائع کو `math::add()` جیسے اہل کالوں کو تعیناتی داخلی Kotodama ناموں سے دوبارہ لکھ کر منسلک کیا جاتا ہے۔ ایک غیر برآمد شدہ فنکشن پر انحصار کی کال مسترد کردی جاتی ہے۔ درآمد شدہ لائبریریاں افعال کو بے نقاب کرتی ہیں۔ مقامی `[[contract]]` اور `[[test]]` اہداف واضح پیکیج کے اہداف رہتے ہیں۔
 
-Musubi کیش کے ذیلی حکموں کے ذریعے یا بعد میں حل کرتے وقت لاپتہ انحصار ذرائع کو حاصل کر سکتا ہے:
+## کیش کی تصدیق اور مرمت {#cache-verification-and-repair}
+
+عوامی کیش کمانڈز غیر تبدیل شدہ ، رجسٹری کے مصروف آرکائیوز پر کام کرتے ہیں:
 
 ```bash
-cargo run -p musubi -- install --config client.toml --fetch \
-  --provider-payload math.payload
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  cache verify --all --config client.toml
 
-cargo run -p musubi -- cache import math --source-root ../math
-cargo run -p musubi -- cache fetch math --provider-payload math.payload
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  cache repair --config client.toml
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  cache prune --dry-run --config client.toml
 ```
 
-براہ راست گیٹ وے وصول کرنے کے لئے ایک یا زیادہ SoraFS گیٹ وائی فراہم کنندہ کی وضاحتیں استعمال ہوتی ہیں۔
+`cache repair` قرنطینہ قابل اعتماد اولاد کو خراب کرتا ہے اور جب حتمی فراہم کنندہ کے ثبوت کی اجازت دیتے ہیں تو درست آرکائیو دوبارہ بھیجتا ہے۔ Musubi ایک زندہ غیر خالی کٹائی کی تبدیلی کو مسترد کرتا ہے۔ درجہ بندی شدہ امیدواروں کا معائنہ کرنے کے لئے `--dry-run` استعمال کریں.
+
+## پیکیجنگ اور اشاعت {#packaging-and-publishing}
+
+آرکائیو لکھنے سے پہلے صاف مثبت فائل سیٹ کی جانچ پڑتال کریں، پھر کینونیکل پیکج بنائیں:
 
 ```bash
-cargo run -p musubi -- install --config client.toml --fetch \
-  --gateway-provider 'name=hot-a,provider-id=1111111111111111111111111111111111111111111111111111111111111111,base-url=https://gw.example,stream-token=BASE64,package=math'
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  package --list --locked --config client.toml
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  package --locked --config client.toml
 ```
 
-فراہم کنندہ کی پائل لوڈ فائلیں اور گیٹ وے فراہم کرنے والے ایک دوسرے کو نکالنے کے آپریشن کے لئے الگ تھلگ ہیں۔ اگر ایک سے زیادہ لاک شدہ پیکج غائب ہے تو ، ہر گیٹ وائی فراہم کنندہ کو `package=<dependency-alias>` ، `package=<namespace/package@version>` ، `package=<namespace/package>` ، یا `manifest=<64-hex SoraFS manifest digest>` کے ساتھ دائرہ کار کریں۔
+`package` لکھتا ہے `target/package/<namespace>-<name>-<version>.car`. CAR کینونیکل پیکج منیٹ، سیمانٹک ریلیز منیٹ، عین مطابق تصدیق لاک، ماخذ درخت، انٹرفیس منسلک کرتا ہے ۔ ڈائجسٹ ، اور SoraFS آرکائیو کا عزم۔ پہلی رہائی میں کوئی علیحدہ `pack` ، `--car-out` ، `--sorafs-manifest-out` ، یا `--source-plan-out` کمانڈ نہیں ہیں CLI.
 
-گیٹ وے `base-url` اور `privacy-url` اقدار کو استعمال کرنا ضروری ہے `https://` ڈیفالٹ کے طور پر. مقامی ٹیسٹ گیٹ ویز استعمال کر سکتے ہیں `http://localhost`, `http://127.0.0.1`, یا `http://[::1]` صرف `--gateway-allow-insecure-localhost`. سٹریم ٹوکن رن ٹائم اسناد ہیں اور ان میں نہیں لکھا جاتا ہے `Musubi.lock`.
-
-## اشاعت {#publishing}
-
-`pack` deterministic حساب کرتا ہے BLAKE3-256 ماخذ آرکائیو ہیش پلس ماخذ بائٹ اور فائل گنتی. جب `--car-out`, `--sorafs-manifest-out`, یا `--source-plan-out` فراہم کیا جاتا ہے، یہ بھی تعیناتی کی تعمیر SoraFS CAR مفید بوجھ، SoraFS واضح، اور Musubi ایک ہی منبع فائل سیٹ سے ماخذ آرکائیو پلان.
-
-شائع کرنے سے پہلے ایک خشک رن کا استعمال کریں:
+اشاعت ایک دستخط شدہ ، دوبارہ شروع ہونے والا نیٹ ورک ورک ورک فلو ہے۔ منتخب کردہ `client.toml` میں پیداوار `[musubi.publication]` پابندیاں کے ساتھ ساتھ اکاؤنٹ اور Taira نیٹ ورک کی ترتیب شامل ہونی چاہئے۔ پیکج بالکل ایک کام کی جگہ کا رکن:
 
 ```bash
-cargo run -p musubi -- publish --config client.toml --dry-run
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  publish -p dex.universal/swap-core --locked --config client.toml
 ```
 
-بغیر `--dry-run`, `publish` پہلے سے طے شدہ دستاویزات کے تحت لکھتا ہے `.musubi/dist/<namespace>/<name>/<version>/`, اختیاری طور پر manifest اور payload کے ذریعے اپ لوڈ کرتا ہے Torii میں ہوں SoraFS اسٹوریج پن اختتامی نقطہ کے ساتھ `--upload`, پیدا کردہ ریکارڈ کرتا ہے SoraFS pin، اور پیش کرتا ہے `PublishMusubiRelease` ترتیب کے ذریعے Iroha کلائنٹ.
-
-شائع شدہ ریلیزوں میں درج ذیل شامل ہوں گے:
-
-- ایک غیر خالی کینیکل ماخذ آرکائیو
-- ایک تعیناتی ماخذ آرکائیو پلان
-- کم از کم ایک برآمد شدہ Kotodama فنکشن
-- انحصار کے ریکارڈ جو ٹریک ریلیز کو منتخب نہیں کرتے ہیں
-- جب موجود ہو تو ایک ڈی اے پی لنک، جس کے معاہدے کا عرفی نام پیکج کے نام کی جگہ سے ملتا ہے
+استعمال `--detach` ایک پائیدار آپریشن کے ساتھ جاری رکھیں `publish --resume <operation-id> --config client.toml`. تنگ ترین `--recover <operation-id>` راستہ صرف ایک pristine پری داخلہ رسالے کے لئے لاپتہ ناقابل تبدیل سائیڈ کاروں کی تعمیر. کوئی اشاعت نہیں `--dry-run` یا عام عوامی اپ لوڈ fallback؛ چلائیں `package --list` اور `package` مقامی پری فلائٹ کے لئے.
 
 ## رجسٹری سوالات اور زندگی کا دورانیہ {#registry-queries-and-lifecycle}
 
-رجسٹری کو تلاش کریں اور اس کی جانچ پڑتال:
+ایک ہی Taira کلائنٹ ترتیب کے ساتھ حتمی رجسٹری کی تلاش اور جانچ پڑتال کریں:
 
 ```bash
-cargo run -p musubi -- search swap --config client.toml
-cargo run -p musubi -- versions dex.universal/swap-core --config client.toml
-cargo run -p musubi -- alias resolve swap --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  search swap --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  info dex.universal/swap-core --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  versions dex.universal/swap-core --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  alias resolve swap --config client.toml
 ```
 
-ینکنگ نئی ریزولوشن سے ایک رہائی چھپاتا ہے، لیکن موجودہ لاک فائلوں کو دوبارہ پیش کیا جا سکتا ہے:
+ینکنگ نئے ریزولوشنز سے ایک ناقابل تبدیل رہائی کو خارج کرتا ہے جبکہ موجودہ عین مطابق قفلیں دوبارہ پیش کی جاسکتی ہیں۔ پہلے موجودہ ینکنج نظر ثانی پڑھیں ، پھر موازنہ اور سیٹ تغیرات جمع کرو:
 
 ```bash
-cargo run -p musubi -- yank dex.universal/swap-core@0.1.0 \
-  --reason "bad archive" \
-  --config client.toml \
-  --dry-run
+: "${EXPECTED_YANK_REVISION:?set the current non-zero yank revision}"
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  yank dex.universal/swap-core 0.1.0 \
+  --expected-revision="$EXPECTED_YANK_REVISION" \
+  --reason="bad archive" \
+  --config client.toml
 ```
 
-Musubi `namespace/package` کو کینیکل پیکیج کا نام بنا کر عالمی نام سکوٹنگ سے بچتا ہے۔ کسی نام کی جگہ میں شائع کرنے کی اجازت اسی ملکیت یا تفویض کردہ اجازت ماڈل کے ذریعہ ہونی چاہئے جو اس Kotodama dapp نام کی جگہ کے لئے استعمال کیا جاتا ہے۔ کوریٹڈ گلوبل شارٹ عرفی پیکیج کے مالک سے علیحدہ ہیں: `SetMusubiShortAlias` کو `CanSetMusubiShortAlias` اجازت کی ضرورت ہوتی ہے ، اور ہدف والے پیکیج میں پہلے ہی کم از کم ایک فعال ریلیز ہونا ضروری ہے۔
+اس حالت کو تبدیل کرنے کے لئے `unyank` کا استعمال کریں اسی پیکیج، ورژن، اور تازہ طور پر پڑھا نظر ثانی. پیکیج کی ملکیت اور برقرار رکھنے کے کردار کنٹرول شائع، yank، میٹا ڈیٹا، اور آرکائیو مقام کی اجازت۔ گلوبل عرفات میں اپنی قیمتوں پر رجسٹریشن، ری ٹارگٹ ہسٹری، اور موازنہ اور سیٹ revisions ہیں؛ وہ پیکج کے مالک کا شارٹ کٹ نہیں ہیں.
 
 ## Iroha سطحیں {#iroha-surfaces}
 
-Musubi پہلی کلاس Iroha کی ہدایات اور سوالات کا استعمال کرتا ہے:
+Musubi پہلی اشاعت V1 ہدایات اور سوالات کا استعمال کرتا ہے:
 
 |سطح |مقصد |
-| ---------------------------- | -------------------------------------------------- |
-|`PublishMusubiRelease` |ایک ناقابلِ تبدیلی پیکیج ریلیز شائع کریں۔ |
-|`YankMusubiRelease` |ایک موجودہ ریلیز کو ٹریک کے طور پر نشان لگاؤ. |
-|`SetMusubiShortAlias` |ایک پیکج کی شناخت کے لئے ایک کوریٹڈ عالمی مختصر عرفی منسلک کریں. |
-|`AssertMusubiReleaseExists` |ایک ٹھوس پیکیج ورژن کے وجود کی ضرورت ہے. |
-|`FindMusubiReleaseByRef` |پیکیج ریفرنس کے مطابق ایک رہائی حاصل کریں. |
-|`FindMusubiPackageVersions` |پیکیج کی شناخت کے لیے ورژن درج کریں۔ |
-|`FindMusubiPackageReleases` |پیکیج آئی ڈی کے لئے ریلیز خلاصے درج کریں۔ |
-|`SearchMusubiPackages` |ناموں کی جگہ اور متن کے لحاظ سے پیکج خلاصہ تلاش کریں۔ |
-|`FindMusubiShortAliasByName` |ایک کوریٹڈ مختصر عرفی حل. |
+| -------------------------------------------------- | -------------------------------------------------------------- |
+|`RegisterMusubiNamespaceBindingV1` |ایک نام کی جگہ کو اس کے مستحکم گھر ڈیٹا اسپیس سے منسلک کریں. |
+|`RegisterMusubiArchiveV1` |ایک ناقابل تبدیل تصدیق شدہ ماخذ آرکائیو کی ذمہ داری درج کریں. |
+|`AddMusubiArchiveLocationV1` |ایک ثابت شدہ SoraFS آرکائیو مقام شامل کریں یا تجدید کریں۔ |
+|`PublishMusubiReleaseV1` |ایک پیکیج کا دعویٰ کریں یا اسے اپ ڈیٹ کریں اور ایک ناقابلِ تبدیلی ریلیز شائع کریں۔ |
+|`SetMusubiReleaseYankV1` |ایک درست ریلیز کی کھینچی ہوئی حالت کا موازنہ کریں اور مقرر کریں۔|
+|`InviteMusubiPackageMaintainerV1` |واضح پیکیج رول دعوت نامہ بہاؤ شروع کریں۔ |
+|`RegisterMusubiAliasV1` / `RetargetMusubiAliasV1` |ایک منظم عالمی عرف کو رجسٹر کریں یا دوبارہ ہدف بنائیں۔ |
+|`AssertMusubiReleaseDigestV1` |درست غیر متغیر ریلیز ہضم کی تصدیق کریں. |
+|`FindMusubiExactPackageV1` |ایک عین مطابق پیکیج اور اس کے ترمیم کو پڑھیں۔ |
+|`FindMusubiExactReleaseV1` |ایک عین مطابق ریلیز تصویر پڑھیں. |
+|`FindMusubiResolverIndexV1` / `FindMusubiVersionsV1` |حتمی رہائی کے امیدواروں کو حل کریں یا فہرست بنائیں۔ |
+|`FindMusubiArchiveLocationsV1` |حتمی فراہم کنندہ کی طرف سے حمایت شدہ آرکائیو مقامات کو پڑھیں. |
+|`FindMusubiAliasV1` / `FindMusubiAliasHistoryV1` |موجودہ عرف ہدف یا اس کی ناقابل تبدیل تاریخ کو پڑھیں. |
 
-Torii ظاہر کرتا ہے کہ Musubi HTTP کے تحت روٹ فیملی `/v1/musubi/`. ایجنٹ کا سامنا کرنا MCP آلات کے طور پر بے نقاب کیا جاتا ہے `iroha.musubi.` مستعار۔ دیکھیں [Torii اختتام پوائنٹس](/ur/reference/torii-endpoints.md) اور [سوال کا حوالہ](/ur/reference/queries.md) وسیع تر کے لئے API نقشہ.
+Torii ذیل میں ایپ روٹ فیملی کو بے نقاب کرتا ہے `/v1/musubi/`. MCP آلات موجودہ استعمال کرتے ہیں `iroha.musubi.queries.` اور `iroha.musubi.instructions.*` نام. دیکھیں [Torii اختتام پوائنٹس](/ur/reference/torii-endpoints.md) اور [استفسار کا حوالہ](/ur/reference/queries.md) وسیع تر کے لئے API نقشہ.

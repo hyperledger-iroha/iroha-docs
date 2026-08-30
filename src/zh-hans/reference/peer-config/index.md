@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /reference/peer-config/index.md
-translation_source_hash: 5cc6ddf62a45f655d61a0ff3ebc7e20b939fe78c9d542087b717c2e17e19250d
+translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f29469aaf4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 当地同行配置设置在 TOML 文件中.这与通过[`SetParameter`](/zh-hans/blockchain/instructions.md#setparameter)指令改变的链上配置不同.生产行为必须在一个配置文件或链上参数中表示;环境变量不是特征门
 
-使用[`--config`](../irohad-cli#arg-config) CLI 参数来指定配置文件的路径.
+使用[`--config`](../iroha3d-cli#arg-config) CLI 参数来指定配置文件的路径.
 
 ## 模板 {#template}
 
@@ -65,4 +65,4 @@ max_content_len = 2048
 
 ## 解决问题 {#troubleshooting}
 
-通过[`--trace-config`](../irohad-cli#arg-trace-config) CLI 旗,查看配置如何阅读和解析的痕迹.
+通过[`--trace-config`](../iroha3d-cli#arg-trace-config) CLI 旗,查看配置如何阅读和解析的痕迹.

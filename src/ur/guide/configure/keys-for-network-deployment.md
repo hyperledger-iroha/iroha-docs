@@ -1,9 +1,9 @@
 ---
 translation_locale: ur
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 17ffd2979e2ff7a0e0c3f5c9f1457a5eb630713bba40fca0246afc0c2f7fd5e4
+translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # نیٹ ورک کے تعیناتی کی چابیاں {#keys-for-network-deployment}
@@ -21,30 +21,35 @@ translation_engine: nllb-200-ct2
 مقامی یا ٹیسٹ کی تعیناتی کے لئے، Kagami کو ان تمام فائلوں کو ایک ساتھ پیدا کرنے دیں:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 ایک موجودہ نیٹ ورک یا پروفائل کے لئے، ہدایت شدہ بہاؤ کا استعمال کریں:
 
 ```bash
-cargo run --bin kagami -- wizard --profile nexus
+cargo run --bin kagami -- wizard
 ```
 
 ## انفرادی کلیدی جوڑے پیدا کریں {#generate-individual-key-pairs}
 
-خود مختار کلیدی مواد کے لیے `kagami keys` کا استعمال کریں:
+Use `kagami keys` for standalone key material:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm ed25519 --json
+cargo run --bin kagami -- keys --algorithm ed25519 \
+  --out-dir ./client-key
 ```
 
-BLS توثیق کنندہ مواد کے لئے، مالکیت کا ثبوت شامل کریں:
+For BLS validator material, include a Proof-of-Possession:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./validator-key
 ```
 
-`--seed` کا استعمال صرف reproducible ترقیاتی فکسچر کے لئے. پیداوار کی تعیناتی کے لئے، نئی چابیاں پیدا کریں اور نجی چابیاں ذخیرہ کرنے کے باہر محفوظ کریں.
+Use `--seed-hex` only with an exact 32-byte hexadecimal secret for reproducible
+development fixtures. For production deployment, omit it so Kagami uses
+operating-system randomness, then move the unencrypted private-key export into
+the approved custody boundary. The command never prints private keys.
 
 ## ہم مرتبہ مطابقت {#peer-consistency}
 

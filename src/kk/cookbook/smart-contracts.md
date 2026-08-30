@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: 4fe9b19fc4d13cfc71d9b9558fe7cdb1d14bd88c2d20f4d23c66313ba3ddd4b6
+translation_source_hash: 67778f9fc4f2b6fa0288f5921402cf5509515aae678e98b8192e103dfe284db3
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -14,7 +14,7 @@ Kotodama V1 шартын тексеру және құрастыру, оның м
 
 ## Алдын ала талаптар {#prerequisites}
 
-- Iroha, `bc7114ed1c7f265a156d2100ff09e851cc95702c`, Rust және жүк мекенжайындағы көзді тексеру.
+- Iroha, `0010c5a70039eac101a4846499ba9ceaf43eb65c`, Rust және жүк мекенжайындағы көзді тексеру.
 - Ағымдағы `iroha` CLI және қаржыландырылған Taira клиенті [ қосылымынан Taira ](./connect-to-taira.md).
 - `IROHA_CONFIG` және `IROHA_PRIVATE_KEY_FILE` кодтарында абсолютті жолдар. Кілті файлы меншік иесі ұстап тұрған, бір сілтемелі қалыпты файл болуы тиіс, оның режимі `0600`; іске қосу көмекшісі қасақана жеке кілті аргументіне ие болмайды.
 - Taira оператордың рұқсаты. Келісімшарт кодын тіркеу үшін `CanRegisterSmartContractCode` қажет, ал қорғалған орналасуларға басқарушылық беру және енгізу талап етілуі мүмкін. Егер Taira бұл қолжетімділікті бермесе, рұқсат берген жергiлiктi желiде орналастыруды жүргiзу.
@@ -131,7 +131,7 @@ jq '{contract_address, code_hash_hex, final, fee_quotes}' \
   ./build/deployment.json
 ```
 
-Бос `charge_limits` сұранысы көшірілген активтің идентификаторы емес: көмекші қолтаңбалаудан бұрын нақты тірі цитатаны қабылдайды. Қайтарылған алым активін ағымдағы кранға жауаппен салыстыру. Келісім-шарт шақыруларына мұралық `gas_asset_id` метамәдени деректерін қоса бермеңіз.
+Бос `charge_limits` сұранысы көшірілген активтің идентификаторы емес: көмекші қолтаңбалаудан бұрын нақты тірі цитатаны қабылдайды. Қайтарылған төлем активін Ағымдағы кранды жауап беру. Келісімшарт шақырулары төлемді тек түрленген тірі цитата арқылы қабылдайды; `gas_asset_id` мәміле метамәліметтері бірінші шығарылған келісімшарттың бөлігі болып табылмайды.
 
 ### 5. Жоспарланған кіру нүктесін бейнелеу және шақыру. {#_5-simulate-and-call-the-deployed-entrypoint}
 
@@ -200,14 +200,14 @@ jq -e '.ok == true and .result == ["3", "5"]' \
 - Манифест немесе ABI сәйкессіздік байткоды, манифесті және түйінді орындау уақыты бірдей артефактті сипаттамайды. `--verify`.
 - `fee quote changed ... gas bound` дегенді білдіреді, сұрау салынған түрленген ниеті мен тірі цитата келіспеушілігі. Қол қойылған транзакцияны өзгертудің орнына қайта алдын ала қарау.
 - Демонстрациялау көмекшісі желідегі кілттерді, рұқсат етілетін кілті файл режимін, симлингтерді және қосылған файлдарды көптеп тапсырудан бұрын бас тартады.
-- Тек көрінетін кіру нүктесі қатесі `compute` дұрыс емес командалық отбасы арқылы бағытталды дегенді білдіреді. Бұл үлгіде `kotoage` деп мәлімдейді, сондықтан шақыру симуляциясын немесе тапсыруды қолданыңыз.
-- Контракттық шақыруларға оң типті газ лимиті қажет. Жоғары деңгейдегі мұралық газ немесе алым активтерінің метамәдени деректері қабылданбайды.
+- Тек көрінетін кіру нүктесі қатесі `compute` дұрыс емес командалық отбасы арқылы бағытталды дегенді білдіреді. Бұл үлгіде `kotoage` деп мәлімдейді, сондықтан шақыру симуляциясын немесе тапсыруды пайдаланыңыз.
+- Контракттық шақырулар жағымды типті газ лимитін талап етеді. Бірінші шығарылымдағы шақыру келісімшарты жоғары деңгейдегі газ немесе алым активтері метамәдени деректерін қабылдамайды.
 
 ## Бастапқы және осыған байланысты құжаттар {#source-and-related-docs}
 
-- [Kotodama V1 команданы орнатылған commit-де іске асыру ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/ivm/src/bin/koto.rs)
-- [Түптік қайтару көзінің үлгісі түйірілген commit-де](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
-- [Тіркелген жүктемеде жергілікті орналасу көмекшісі](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
-- [Контрактты интеграциялау сынақтары бекітілген міндеттемеде](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/contracts.rs)
+- [Kotodama V1 команданы орнатылған commit-де іске асыру ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/src/bin/koto.rs)
+- [Түптік қайтару көзінің үлгісі түйірілген commit-де](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
+- [Тіркелген жүктемеде жергілікті орналасу көмекшісі](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
+- [Контрактты интеграциялау сынақтары бекітілген міндеттемеде](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs)
 - [Ақылды келісім-шарттар](/kk/blockchain/smart-contracts.md)
 - [CLI сілтемесі](/kk/get-started/operate-iroha-via-cli.md)

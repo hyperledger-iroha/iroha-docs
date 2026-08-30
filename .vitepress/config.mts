@@ -84,6 +84,10 @@ function sidebarStart(): DefaultTheme.SidebarItem[] {
           text: 'Sponsor Private Dataspace Fees',
           link: '/get-started/private-dataspace-fee-sponsor',
         },
+        {
+          text: 'Run Atomic Private Settlement',
+          link: '/get-started/atomic-private-settlement',
+        },
       ],
     },
   ]

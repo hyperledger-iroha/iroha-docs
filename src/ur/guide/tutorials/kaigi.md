@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /guide/tutorials/kaigi.md
-translation_source_hash: e55c7aebc89c39edb8e7077db2414a6d432aafb05aff8df04c248fce444d7dea
+translation_source_hash: 24dc7e6a41ea8a06d24663aebaeca2469c522e391a5de61f039c47a1cd020c91
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -47,7 +47,7 @@ npm install
 npm run dev
 ```
 
-Iroha سورس ریپوزٹری سے [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/main/javascript/iroha_js) کے ساتھ ڈیمو کا استعمال کریں۔ اس کی `file:` انحصار براہ راست چیک آؤٹ کو حل کرتی ہے۔ اگر مقامی پابندیاں تبدیل ہوجاتی ہیں تو ، اسے `iroha/javascript/iroha_js` کے تحت دوبارہ بنائیں۔ ایک صاف پیکج ڈائرکٹری میں کارگو ورک اسپیس نہیں ہوتا ہے جس کی ضرورت ہے `npm run build:native` .
+Iroha سورس ریپوزٹری سے [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js) کے ساتھ ڈیمو کا استعمال کریں۔ اس کی `file:` انحصار براہ راست چیک آؤٹ کو حل کرتی ہے۔ اگر مقامی پابندیاں تبدیل ہوجاتی ہیں تو ، اسے `iroha/javascript/iroha_js` کے تحت دوبارہ بنائیں۔ ایک صاف پیکج ڈائرکٹری میں کارگو ورک اسپیس نہیں ہوتا ہے جس کی ضرورت ہے `npm run build:native` .
 
 TAIRA پر براہ راست میٹنگ چلانے سے پہلے، عوامی سطح Torii کو چیک کریں جس پر ڈیمو انحصار کرتا ہے:
 

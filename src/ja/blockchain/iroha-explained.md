@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/iroha-explained.md
-translation_source_hash: 3fdd22338e826b1ce335ebf5e4e850cf3deb9415c36a0c8d21ad63c397cec8c0
+translation_source_hash: ba591b2c1aa819837177625b1ae457b5fa492197576dc690b19ca2897562a436
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,7 +12,7 @@ Iroha 3 は最初のリリースです Hyperledger Iroha 同じコアでは自�
 
 ## 主要な建材 {#core-building-blocks}
 
-- `irohad` 仲間を運営する
+- `iroha3d` 仲間を運営する
 - Torii はクライアントとオペレーターのゲートウェイです
 - Sumeragi は共感を扱う
 - Norito は[カノニカルバイナリフォーマット](/ja/reference/norito.md)である

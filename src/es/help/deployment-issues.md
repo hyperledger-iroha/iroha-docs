@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /help/deployment-issues.md
-translation_source_hash: 6f35ac59053e312f56a716810c8f0b625752500d1fc64b27d93cbd8317b6cc19
+translation_source_hash: 5c7d26b39d4ddf4e7e164f7bef79c9e1659db51587fb0dde9cf3f1dc0e3b057b
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,7 +15,7 @@ Esta sección ofrece consejos de resolución de problemas para los despliegues I
 Para las implementaciones locales y de ensayo, se prefieren los artefactos generados por Kagami en lugar de los archivos escritos a mano:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 El directorio generado contiene configuraciones de pares, material de génesis, guiones de inicio y un README para la línea de construcción Iroha 3.
@@ -24,7 +24,7 @@ El directorio generado contiene configuraciones de pares, material de génesis, 
 
 Compruebe estos artículos primero:
 
-- `irohad --config <path>` puntos en el expediente propio del mismo TOML.
+- `iroha3d --config <path>` puntos en el expediente propio del mismo TOML.
 - `public_key` y `private_key` en la configuración de pares pertenecen al mismo par de teclas.
 - `genesis.public_key` coincide con la llave utilizada para firmar la transacción de génesis.
 - las identidades de pares del validador utilizan claves BLS-Normales, y `trusted_peers_pop` contiene entradas de prueba de posesión para la clave local y sus pares de confianza.
@@ -34,7 +34,7 @@ Compruebe estos artículos primero:
 Utilice el seguimiento de configuración cuando el daemon lea más de una capa TOML:
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --trace-config
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 ```
 
 ## Docker y Composición {#docker-and-compose}
@@ -42,9 +42,9 @@ cargo run --bin irohad -- --config ./config.toml --trace-config
 Generar Componer a partir de la salida localnet actual Kagami para que los argumentos de línea de comandos y archivos de configuración coincidan con el código eliminado:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./localnet/docker-compose.yml --force
-docker compose -f ./localnet/docker-compose.yml up
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
+docker compose -f ./docker-compose.yml up
 ```
 
 Si un despliegue de composiciones comienza y luego se detiene, inspeccione los registros del daemon para:
@@ -72,7 +72,7 @@ Si una cápsula se reinicia repetidamente, comparar la configuración renderizad
 Las instalaciones Iroha 3 que utilicen Nexus, SoraFS o flujos de varias vías deben iniciar el daemon con el perfil Sora habilitado:
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --sora
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora
 ```
 
 Utilice el mismo perfil de manera consistente entre validadores en la misma red.

@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /reference/norito.md
-translation_source_hash: 4297b0ff795a5cdb6556424e89de7191522271519aa36720ed45a695ad402211
+translation_source_hash: 5196decc9e42428b787285d9e0f763bfcedabea2b19af618612f4509492c87fc
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -206,5 +206,5 @@ Los códecs y perfiles de entropía específicos para la transmisión están sep
 
 ## Referencias de aguas arriba {#upstream-references}
 
-- [Especificación del formato Norito](https://github.com/hyperledger-iroha/iroha/blob/main/norito.md)
-- [Cisterna Norito README ](https://github.com/hyperledger-iroha/iroha/blob/main/crates/norito/README.md)
+- [Especificación del formato Norito](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/norito.md)
+- [Cisterna Norito README ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/norito/README.md)

@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: 23b3ddbdadb0d177b2b12de60e0947a94ecdb20fa6ee1b3a2c6b83e5c91ba2f3
+translation_source_hash: 429535e5bb4ad1d3110f29a5b3896c0d3ce39264dbd357fa932fcc2a5f48d0f1
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -158,8 +158,8 @@ fi
 
 ## ماخذ اور متعلقہ دستاویزات {#source-and-related-docs}
 
-- [پنڈل کمیٹ پر کینونیکل اکاؤنٹ ایڈریس لاگو کرنا ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/account/address.rs)
-- [پِنڈ commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii/tests/accounts_endpoints.rs) میں اکاؤنٹ اور عرفی Torii ٹیسٹ
+- [پنڈل کمیٹ پر کینونیکل اکاؤنٹ ایڈریس لاگو کرنا ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs)
+- [پِنڈ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs) میں اکاؤنٹ اور عرفی Torii ٹیسٹ
 - [اکاؤنٹس](/ur/blockchain/accounts.md)
 - [ڈیٹا ماڈل عرفی نام ](/ur/blockchain/data-model.md#aliases)
 - [ناموں کے کنونشنز](/ur/reference/naming.md)

@@ -1,9 +1,9 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/instructions.md
-translation_source_hash: adc3eff9758dd73e9114e78eaa18ddf6271db3bc4042611e1ed6ed1aac226246
+translation_source_hash: ade5ba2b693de7e798490be0947099d0306d9565b88550e201dccd181810fb18
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Iroha Maxsus ko'rsatmalar {#iroha-special-instructions}
@@ -21,6 +21,7 @@ Iroha maxsus yo'l-yo'riqlarining to'liq ro'yxati quyidagicha:
 | [Grant/Revoke](#grant-revoke) |Ruxsatlar berish yoki olib tashlash. |
 | [Transfer](#transfer) |O ' tkazish egaligi yoki aktiv qiymati. |
 | [Native escrow va aktivlar qulflari ](#native-escrow-and-asset-locks) |Raqamli aktivlarni protokol nazoratida qulflash. |
+| [Atomik maxfiy hisob-kitob](#atomic-private-settlement) | Maxfiy pool-lar va atomik paketlarni boshqaradi. |
 | [ExecuteTrigger](#executetrigger) |Qo'zg'atuvchilarni bajaring. |
 | [Log/Sustom/Upgrade](#other-instructions) |Ish vaqti xatti-harakatini qayd etish, uzaytirish yoki yangilash. |
 
@@ -42,6 +43,7 @@ Ba'zi yo'l-yo'riqlarga ko'ra, maqsadni belgilash kerak bo'ladi. Misol uchun, aga
 | [Grant/Revoke](#grant-revoke) | [vazifalar, ruxsatnoma tokenlari ](/uz/blockchain/permissions.md) |hisoblar yoki vazifalar |
 | [Transfer](#transfer) |domenlar, aktivlarning tavsiflari, raqamli aktivlar, NFTs |hisob raqamlari |
 | [Native escrow va aktivlar qulflari ](#native-escrow-and-asset-locks) |raqamli aktivlar garovlari, aktivlar qulflari , anonim garov majburiyatlari |xaridorlar, yo'nalishlar yoki nizo bo'linishi |
+| [Atomik maxfiy hisob-kitob](#atomic-private-settlement) | aniq yo'nalishga bog'langan maxfiy pool-lar, siyosat rotatsiyalari, yakunlangan paketlar va bekor qilish belgilari | |
 | [ExecuteTrigger](#executetrigger) |qoʻzgʻatuvchilar |                      |
 | [Log/Sustom/Upgrade](#other-instructions) |ro'yxatlar, ijrochiga mos bo'lgan foydali yuklamalar, ijrochining yangilanishlari |                      |
 
@@ -234,7 +236,10 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 Ro'yxatdan o'tish va ro'yxatdan chiqarish tengdoshlari. Agar sizda hali mavjud bo'lmasa, BLS kalitini va PoP ni `kagami` bilan yarating:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./peer-key
+PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
+PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
@@ -325,6 +330,14 @@ Native escrow ko'rsatmalari raqamli aktivlarni katta qog'ozda boshqariladigan pr
 Bozordagi depozitni ishlatish `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, va `ResolveEscrowDispute`. Umumiy aktivlar qulflaridan foydalanish `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, va `ExpireAssetLock`. Anonymous escrow bozorning hayot davrini aks ettiradi `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, va `ResolveAnonymousEscrowDispute`.
 
 Ushbu ISIs hozirda birinchi sinfdagi CLI buyruqlariga ega emas. SDK tiklangan quruvchilardan yoki seriyalangan ko'rsatma yuklaridan foydalaning va hayot davri tafsilotlari, ruxsatnomalar, so'rovlar, hodisalar va Rust misollar uchun [Native Asset Escrow](/uz/blockchain/escrow.md)-ni ko'ring .
+
+## Atomik maxfiy hisob-kitob {#atomic-private-settlement}
+
+Boshqariladigan atomik maxfiy hisob-kitob ko'rsatmalari shaffof Native AMX-dan alohida. `ActivatePrivateSettlementPoolV1` tahrirlangan boshqaruv proyeksiyasi va kanonik boshlang'ich majburiyatlardan aniq yo'nalish uchun bitta maxfiy `pool` yaratadi. `FinalizeAtomicPrivateSettlementV1` barcha qatnashuvchi qo'mitalar tasdiqlagan to'liq paketni atomik ravishda qo'llaydi. `AbortAtomicPrivateSettlementV1` faqat homiy ruxsat bergan ochiq yakun belgisini e'lon qiladi.
+
+`RotatePrivateSettlementPoolPolicyV1` ni faqat maxfiylik boshqaruvi bajarishi mumkin. Ko'rsatma amaldagi boshqaruv digest-i bilan aniq moslikni talab qiladi; yo'nalish, `pool`, aktivni bog'lash majburiyati, holat chegarasi, replay to'plamlari va yakunlangan kvitansiyalarni saqlaydi, ochiq reviziyani bittaga oshiradi va auditor kalitining yangiroq epoch-idan foydalanadi. Rotatsiya kiritish balandligida kuchga kiradi va ayni balandlikda o'sha yo'nalish hamda `pool` uchun kvitansiya yakunlanmaydi. Ochiq reviziyalar nasabi rotatsiyadan oldin yakunlangan kvitansiyalarni qayta ishga tushirgandan keyin ham yaroqli, ularning aniq takrorini esa idempotent saqlaydi. Eski siyosat bilan ishlanayotgan paketlar holat o'zgarmasidan oldin fail closed bo'ladi. Operatorlar eski deshifrlash kalitlarini saqlashi yoki kalitlarni yo'q qilishdan oldin kapsulalarni boshqariladigan tartibda qayta o'rab, natijani sinashi kerak.
+
+Bu yo'l odatiy holatda o'chirilgan va ishlab chiqarishda foydalanish uchun malakadan o'tmagan. Konfiguratsiya, vakolat, audit, tiklash va chiqarish talablari uchun [ma'lumot makonlari orasida atomik maxfiy hisob-kitobni ishga tushirish](/get-started/atomic-private-settlement) bo'limiga qarang.
 
 ## Grant/Revoq {#grant-revoke}
 

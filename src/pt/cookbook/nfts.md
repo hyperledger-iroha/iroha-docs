@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /cookbook/nfts.md
-translation_source_hash: f34043c1940b556439c23de7decc5e79f198f52eca8517dd8a9a5892d997e211
+translation_source_hash: 5eb6a349b815afbac9717f7b44c499adc78b1280625388656015ff4b133b9085
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -162,9 +162,9 @@ Se o CLI envolver o registro em um envelope de saída, inscreva o JSON uma vez e
 
 ## Fonte e documentos relacionados {#source-and-related-docs}
 
-- [Ensaios de integração NFT no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/nft.rs)
-- [Kotodama NFT Testes de ligação host no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
-- [Fixação exacta do ciclo de vida Kotodama NFT no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/ivm/docs/examples/12_nft_flow.ko).
+- [Ensaios de integração NFT no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/nft.rs)
+- [Kotodama NFT Testes de ligação host no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
+- [Fixação exacta do ciclo de vida Kotodama NFT no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/docs/examples/12_nft_flow.ko).
 - [NFTs](/pt/blockchain/nfts.md)
 - [Metadados ](/pt/blockchain/metadata.md)
 - [Instruções ](/pt/blockchain/instructions.md)

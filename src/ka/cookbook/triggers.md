@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /cookbook/triggers.md
-translation_source_hash: 93080591f5171c7ce25173eb1ef826d6f5ca661a17797be53e90aedab33ed0c3
+translation_source_hash: 6c8f436b5a41cf41c0ac37aeed6b6cd8c73009cfcca2fe7f5642cef1ad115e6f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -116,9 +116,9 @@ iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
 
 ## წყარო და შესაბამისი დოკუმენტები {#source-and-related-docs}
 
-- [ჩაკეტილი კომიტეტზე ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/triggers/by_call_trigger.rs) დაწვრილებით მოწოდების გამოწვეული ინტეგრაციის ტესტები
-- [მოვლენებისა და გამომწვევი ინტეგრაციის ტესტები ჩაკეტილ კომიტეტზე](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/events_and_triggers.rs)
-- [ტრიგერის ინსტრუქციის შესრულება ჩაკეტილი commit-ზე](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs)
+- [ჩაკეტილი კომიტეტზე ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/triggers/by_call_trigger.rs) დაწვრილებით მოწოდების გამოწვეული ინტეგრაციის ტესტები
+- [მოვლენებისა და გამომწვევი ინტეგრაციის ტესტები ჩაკეტილ კომიტეტზე](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events_and_triggers.rs)
+- [ტრიგერის ინსტრუქციის შესრულება ჩაკეტილი commit-ზე](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs)
 - [ტრიგერები](/ka/blockchain/triggers.md)
 - [ტრიგერების მაგალითები](/ka/blockchain/trigger-examples.md)
 - [მოვლენები](./stream-events.md)

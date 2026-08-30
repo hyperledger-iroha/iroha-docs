@@ -1,23 +1,24 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: 7c35c609442df65328fa619b6673be76f801cfc2abc28afd853d7fe61e439e9c
+translation_source_hash: 4281cb307762443c85b67659310da69f1f1ea5b99926bad43b90abe36e87075e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2
 ---
 
 # Aqlli shartnomalar {#smart-contracts}
 
-Iroha tranzaksiyalari `Executable` foydali yuklarni amalga oshiradi. Hozirgi ma'lumot modeli quyidagilarni qo'llab-quvvatlaydi:
+
+Iroha operatsiyalari `Executable` foydali yuklarni amalga oshiradi. Hozirgi ma'lumotlar modeli quyidagilarni qo'llab-quvvatlaydi:
 
 - `Executable::Instructions`: Iroha maxsus yo'l-yo'riqlarining tartiblangan to'plami.
 - `Executable::ContractCall`: ishga tushirilgan shartnoma instansiyasiga qo'shimcha ma'lumotnoma chaqirichi
 - `Executable::Ivm`: Iroha VM bytekod
 - `Executable::IvmProved`: Iroha VM bayt kodi oldindan hisoblangan ko'rsatma qoplamasi va isbot majburiyatlari bilan
 
-Kotodama — Iroha'ning yuqori darajali aqlli shartnomalar tili. `.ko` manba fayli deterministik IVM bayt-kodiga kompilyatsiya qilinadi va joylashtirish uchun odatda `.to` artefakti sifatida saqlanadi. Kotodama faqat IVM-ni nishonga oladi. U RISC-V yoki WebAssembly-ni nishonga olmaydi.
+Kotodama bo ' lmoqda Iroha yuqori darajadagi aqlli shartnoma tili. `.ko` manbali fayllarni deterministik IVM Byte kod, an'anaviy ravishda `.to` joylashtirishga mo'ljallangan artefakt. Kotodama maqsadlar IVM Faqatgina. RISC-V yoki WebAssembly.
 
-Birinchi reliz faqat ABI 1-versiyasini qo‘llab-quvvatlaydi. syscall va pointer-ABI siyosati shartnomani qabul qilish va bajarish vaqtida hech qanday shartsiz qo‘llanadi; ish vaqti mosligi tugmasi mavjud emas.
+Birinchi nashr faqat ABI versiyasini qo'llab-quvvatlaydi 1. Syscall va pointer-ABI siyosati bir shartsiz V1 shartnomasi bo'lib, uni qabul qilish va ijro etish orqali amalga oshiriladi; boshqa ishga tushirish vaqti usuli mavjud emas.
 
 ## Aqlli shartnomalardan qachon foydalanish kerak {#when-to-use-smart-contracts}
 
@@ -43,11 +44,27 @@ Transaksiya uchun o'rnatilgan logika kerak bo'lganda, uni statik yo'l-yo'riqlar 
 - bajarishga doir tadbirlar majburiyati
 - gaz siyosati majburiyati
 
-Dasturi o'rnatilgan bytekod bilan qoplamani bog'laydi. Pipeline siyosatiga qarab, validatorlar dalilni tasdiqlashlari va uni qo'shimcha xavfsizlik tekshiruvi sifatida takrorlashlari mumkin.
+Dasturi o'rnatilgan bytekod bilan qoplamani bog'laydi. Pipeline siyosatiga qarab, tasdiqlovchilar dalilni tasdiqlashlari va uni qo'shimcha xavfsizlik tekshiruvi sifatida takrorlashlari mumkin.
 
 ## Ishlab chiqarilgan shartnoma qo'ng'iroqlari {#deployed-contract-calls}
 
 `Executable::ContractCall` jo'natilgan kontrakt ko'rinishini manzil orqali chaqiradi. Agar shartnoma kodi alohida ro'yxatdan o'tkazilgan bo'lsa va bitimlar bayt kodini har safar olib yurishning o'rniga, uni ma'lumotnoma asosida chaqirishlari kerak bo'lsa, buni ishlating.
+
+## Shartnoma Hayot davri va mulkdorlik {#contract-lifecycle-and-ownership}
+
+Har bir jo'natilgan manzil `ContractLifecycleControlV1` yozuvini saqlaydi, shu jumladan shartnoma faoliyatsiz bo'lsa ham. Yozuvda birinchi jo'natishning o'zgarmas kelib chiqishi, joriy va davom etayotgan egasi, Parlamentning istisno qilinishi mumkin bo'lgan delegatsiyasi, faol kod hash, noldan tashqari solishtirish-va almashtirish tekshiruvi mavjud; va har qanday saqlab qolgan favqulodda holatlarni saqlash. To'g'ridan-to'g'ri ishga tushirish ishga tushirish hisobini qayd etadi. Parlament ishga tushirish uning taklifchisi, taklif tarkibi ID va muvaffaqiyatli boshqaruv urinishlarini ID qayd etadi.
+
+Hayot davri egasi yoki bitta hisobvaraq yoki Parlamentdir. Hisobvaraq egaligi o'zgarishlarida alohida taklif va qabul qilinadi; taklifni qabul qilish har qanday Parlament delegatsiyasidan voz kechadi. Hisobvaraq egasi Parlamentga kontraktni faollashtirishga yoki uni deaktiv qilishga ruxsat berishi mumkin. keyinchalik ushbu delegatsiyani bekor qiladi, lekin delegatsiya hech qachon Parlamentga egalikni o'tkazishga ruxsat bermaydi. Parlament tomonidan o'zgartirilgan o'zgarishlar va parlamentning qabul qilishi tasdiqlangan boshqaruvni amalga oshirish orqali amalga oshiriladi.
+
+Raw `ActivateContractInstance` va `DeactivateContractInstance` ko'rsatmalari faqat joriy hisob raqami egasi uchun mavjud. Ular rekordning to'g'ri `expected_revision` bo'lishi kerak; Ish vaqti eskirgan yoki nol o'zgartirishlarni rad etadi. Xom faollashtirish hayoti davrining rekordini yaratolmaydi va u `active_code_hash` o'zgartirishdan oldin ro'yxatdan o'tgan artefakt, manifest va ABI ni tasdiqlaydi. faol kod hashini tozalaydi, ammo mulkdorlik va kelib chiqishini saqlab qoladi. Har bir muvaffaqiyatli hayot davridagi o'tish qayta ko'rib chiqishni ilgari suradi va to'liq post-davlatni chiqaradi.
+
+Aktivlashtirish, shuningdek, bir manifest-deklaratsiyalangan hayot davomiyligi ho'ki o'tishi mumkin. Manifestida `EntryPointKind::Hajimari` kirish punkti (`hajimari`/`始まり`) bosqichlari `Hajimari`. Aktiv manzilni kodga qayta qo'yish `EntryPointKind::Kaizen` kirish punkti (`kaizen`/`改善`) bosqichlari `Kaizen`. Shartnoma darhol o'zgarib turadi, ammo shartnoma hali tayyor emas: har bir `Kotoage` va `View` to'g'ri bosqichga ko'tarilgan xok muvaffaqiyatli bo'lguncha qo'ng'iroq rad qilinadi.
+
+`hajimari` yoki `kaizen` aniq kirish nuqtasi va uning manifestida bayon etilgan dalillarni qo'llab-quvvatlagan holda, `Executable::ContractCall` bilan bosqichma-bosqich bo'lgan hoqni xuddi shu shartnoma manzilida va yangi kod hashidan chaqiring. Ish vaqti `CanInvokeContractEntrypoint` ruxsatnomasini manzil va tanlovchi tomonidan ko'rib chiqiladi; qo'ng'iroq qiluvchilar ushbu ruxsatni yaratishi yoki bermasligi kerak. Cheklanib turgan markerda ish vaqti natijasida hosil bo'ladigan, deterministik `transition_id` va yangi `code_hash` mavjud; `Kaizen` belgisi ham `previous_code_hash`. Mijozlar `transition_id` ni hisoblab ham, taqdim ham qilmaydilar. Muvaffaqiyatli qamish markerni atomik ravishda iste'mol qiladi, muvaffaqiyatsiz qolgan qamish esa uni keyinchalik qayta sinab ko'rish uchun kutmoqda.
+
+Parlamentning favqulodda darajadagi taklifi amaldagi qayta ko'rib chiqish, kod hash va nol bo'lmagan hodisalarni o'chirishni bog'lagan holda eng ko'pida 3600 ta blok uchun to'xtatishni qo'llashi mumkin. Vaqt tugashi ijroni tiklaydi, ammo to'siqni o'chirmaydi. Sertifikatlangan `CompleteEmergencyHoldRetrospective` harakat keyinchalik to'g'ri to'siq IDs ni bog'lashi va yozib olishdan oldin nol bo'lmagan qidiruv ildizini sindirib tashlashi kerak; ushbu retrospektiv mavjud bo'lganda boshqa to'siq qo'yilishi mumkin emas.
+
+API dasturi yoqilg'i bo'lganda, saqlangan holatni `GET /v1/gov/contracts/{contract_address}` bilan o'qing. Uning `found` maydoni hayot davri ro'yxati mavjudligini anglatadi, biroq manzilda hozirgi kunda faol kod mavjud emas.
 
 ## Operativ yo'l-yo'riq {#operational-guidance}
 

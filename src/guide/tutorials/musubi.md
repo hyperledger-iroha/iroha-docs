@@ -1,212 +1,273 @@
 # Musubi Kotodama Packages
 
-Musubi is the package manager for Kotodama source packages. It gives
-developers a Cargo-like workflow for sharing composable Kotodama functions
-while keeping package identity tied to SORA and Iroha namespaces instead of
-a global first-come name table.
+Musubi is the first-release package manager for Kotodama source packages.
+It resolves an exact on-chain dependency graph, authenticates SoraFS source
+archives, compiles and tests the selected workspace, builds canonical CAR
+archives, and publishes immutable releases through Iroha.
 
 Use Musubi when you need to:
 
-- publish reusable Kotodama source libraries
-- pin exact transitive source dependencies in `Musubi.lock`
-- reconstruct dependency source from verified SoraFS archive commitments
-- connect a package namespace to dapp contract aliases in the same
-  namespace
-- inspect, publish, yank, or alias packages through the on-chain registry
+- publish reusable Kotodama function libraries
+- pin an exact transitive graph in `Musubi.lock`
+- reconstruct dependency source from finalized SoraFS archive commitments
+- build and test one package or a multi-package workspace
+- inspect, publish, yank, maintain, or alias packages through the on-chain
+  registry
 
 ## Package Names
 
-Canonical package ids use:
+Canonical package selectors use:
 
 ```text
 namespace/package
 ```
 
-Exact release references use:
+Exact release identifiers add a version:
 
 ```text
 namespace/package@version
 ```
 
-There is no leading `@` before a namespace. The `@` separator is reserved
-for the version suffix.
+There is no leading `@` before a namespace. A namespace is either a
+dataspace root such as `universal` or a domain-qualified dataspace such as
+`dex.universal`. The ledger binds that structural namespace to one stable
+home dataspace before a package can be claimed.
 
-The namespace segment matches the suffix used by Kotodama dapp contract
-aliases:
+## Manifest and Lockfile
 
-| Package id                | Related contract alias shape |
-| ------------------------- | ---------------------------- |
-| `universal/math`          | `router::universal`          |
-| `dex.universal/swap-core` | `router::dex.universal`      |
-
-Namespaces have either `<dataspace>` or `<domain>.<dataspace>` form. When a
-package has a dapp link, Musubi checks that every linked contract alias
-uses the same namespace suffix as the package.
-
-## Manifest
-
-A package starts with `Musubi.toml`:
+A package uses the closed first-release `Musubi.toml` schema. The manifest
+must declare `manifest-version = 1`, Kotodama edition `"1"`, and IVM ABI
+version `1`; there is no alternate manifest or ABI mode.
 
 ```toml
+manifest-version = 1
+
 [package]
 namespace = "dex.universal"
 name = "swap-core"
 version = "0.1.0"
+edition = "1"
+abi-version = 1
+
+[lib]
+source-dir = "src"
+exports = ["quote"]
 
 [dependencies.math]
 package = "std.universal/math"
 version = "^1.0.0"
-
-[exports]
-functions = ["quote"]
-
-[dapp]
-namespace = "dex.universal"
-contracts = ["router::dex.universal"]
 ```
 
-Dependencies may use exact versions, caret requirements, tilde
-requirements, wildcards such as `1.*`, or comparator lists such as
-`>=1.0.0,<2.0.0`.
+Dependencies can use exact versions, caret or tilde requirements, wildcards
+such as `1.*`, and comma-separated comparator sets such as
+`>=1.0.0,<2.0.0`. The dependency table key is the parent-local import
+alias; `package` is always the canonical registry selector.
 
-`Musubi.lock` records the selected transitive graph from the on-chain
-registry. Each locked node stores its canonical package ref, selected
-requirement, SoraFS manifest digest, source archive hash, byte count, file
-count, exported functions, deterministic source archive plan, and
-dependency aliases. Short aliases are resolved before they enter the
-lockfile.
+`Musubi.lock` binds the graph to the exact genesis-derived `NetworkId` and
+a finalized registry snapshot. It records the selected workspace roots and
+immutable release nodes, including release, source, interface, archive,
+ABI, and exact dependency-edge commitments. Parallel versions are allowed
+when the resolved graph requires them.
+
+## Configure Taira SoraFS Fetching
+
+Taira is the public testnet for this workflow. Start from a Taira client
+configuration with the checked-in chain and current pinned genesis-derived
+network identity, then add the provider-specific authenticated fetch
+bindings below. A Taira reset can change the `NetworkId`; refresh it from
+the signed deployment profile instead of inferring it from the stable chain
+UUID. Account signing material and provider operator keys must remain in
+owner-only runtime files.
+
+```toml
+torii_url = "https://taira.sora.org/"
+chain = "fc56984b-2be7-431d-840e-21514d1883f0"
+network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+
+[musubi.fetch]
+network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+client_id = "musubi-taira"
+request_timeout_ms = 30000
+
+[[musubi.fetch.provider_gateways]]
+provider_id = "REPLACE_WITH_ADMITTED_PROVIDER_ID_HEX"
+url = "REPLACE_WITH_ADVERTISED_PROVIDER_HTTPS_ORIGIN"
+operator_public_key = "REPLACE_WITH_PROVIDER_AUTHORIZED_OPERATOR_PUBLIC_KEY"
+operator_private_key_file = "./secrets/taira-sorafs-provider.key"
+```
+
+Discover Taira's admitted providers from the public testnet root:
+
+```bash
+export TAIRA_ROOT=https://taira.sora.org
+curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
+```
+
+The provider catalog supplies provider identities and advertised endpoints.
+Obtain the matching operator authorization from the chosen provider. The
+runtime uses that key to request bounded stream tokens; tokens are neither
+CLI arguments nor lockfile content.
+
+Do not use a Taira validator pin URL as `url`. The checked-in validators
+have embedded SoraFS storage disabled. Their
+`https://taira-validator-{1,2,3,4}.sora.org` endpoints accept pin
+registration, while archive reads use the selected admitted provider's
+HTTPS origin.
 
 ## Local Workflow
 
-From the upstream Iroha workspace root, run Musubi through Cargo:
+From the upstream Iroha workspace root, create or enter the package
+directory and run Musubi through Cargo:
 
 ```bash
-cargo run -p musubi -- init --namespace dex.universal --name swap-core --dapp
-cargo run -p musubi -- add std.universal/math --version '^1.0.0' --alias math
-cargo run -p musubi -- install --config client.toml
-cargo run -p musubi -- build src/lib.ko --manifest-out target/lib.contract.json
-cargo run -p musubi -- pack \
-  --car-out source.car \
-  --sorafs-manifest-out manifest.norito \
-  --source-plan-out source-plan.norito
+mkdir -p examples/swap-core
+cd examples/swap-core
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  init . --namespace dex.universal --name swap-core --export quote
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  add std.universal/math --version '^1.0.0' --rename math
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- fetch --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- check --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- build --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- test --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- package --config client.toml
 ```
 
-Use `install --offline` to write an unresolved lockfile for exact-version
-dependencies without querying a node. Use `install --locked` in CI to
-reject a stale lockfile.
+`fetch` resolves the finalized registry graph, updates `Musubi.lock` when
+allowed, and fills the immutable local cache from authenticated SoraFS
+locations. `check`, `build`, `test`, and `package` perform the same graph
+and cache checks before their own work.
 
-`build` links cached dependency sources by rewriting calls such as
-`math::add()` to deterministic internal Kotodama function names. It rejects
-calls to functions that the dependency did not export. Musubi v1 libraries
-are function-only: dependency sources that contain state declarations,
-triggers, kotoba blocks, constants, or other non-function contract items
-are rejected.
+Use `--locked` to reject any lockfile change. Use `--offline` only when
+both the registry index and every required archive are already cached.
+`--frozen` combines those two constraints. An offline cache miss fails;
+Musubi never writes an unresolved lockfile.
 
-## Fetching Source Archives
+Dependency sources are linked by rewriting qualified calls such as
+`math::add()` to deterministic internal Kotodama names. A dependency call
+to an unexported function is rejected. Imported libraries expose functions;
+local `[[contract]]` and `[[test]]` targets remain explicit package
+targets.
 
-Musubi can fetch missing dependency sources while resolving or later
-through the cache subcommands:
+## Cache Verification and Repair
+
+The public cache commands operate on immutable, registry-committed
+archives:
 
 ```bash
-cargo run -p musubi -- install --config client.toml --fetch \
-  --provider-payload math.payload
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  cache verify --all --config client.toml
 
-cargo run -p musubi -- cache import math --source-root ../math
-cargo run -p musubi -- cache fetch math --provider-payload math.payload
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  cache repair --config client.toml
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  cache prune --dry-run --config client.toml
 ```
 
-Live gateway fetches use one or more SoraFS gateway provider specs:
+`cache repair` quarantines corrupt trusted descendants and refetches exact
+archives when finalized provider evidence permits it. Pruning is
+deliberately fail-closed for live non-empty mutation; use `--dry-run` to
+inspect the classified candidates.
+
+## Packaging and Publishing
+
+Inspect the clean positive file set before writing an archive, then build
+the canonical package:
 
 ```bash
-cargo run -p musubi -- install --config client.toml --fetch \
-  --gateway-provider 'name=hot-a,provider-id=1111111111111111111111111111111111111111111111111111111111111111,base-url=https://gw.example,stream-token=BASE64,package=math'
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  package --list --locked --config client.toml
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  package --locked --config client.toml
 ```
 
-Provider payload files and gateway providers are mutually exclusive for one
-fetch operation. If more than one locked package is missing, scope every
-gateway provider with `package=<dependency-alias>`,
-`package=<namespace/package@version>`, `package=<namespace/package>`, or
-`manifest=<64-hex SoraFS manifest digest>`.
+`package` writes `target/package/<namespace>-<name>-<version>.car`. The CAR
+binds the canonical package manifest, semantic release manifest, exact
+verification lock, source tree, interface digest, and SoraFS archive
+commitment. There are no separate `pack`, `--car-out`,
+`--sorafs-manifest-out`, or `--source-plan-out` commands in the
+first-release CLI.
 
-Gateway `base-url` and `privacy-url` values must use `https://` by default.
-Local test gateways can use `http://localhost`, `http://127.0.0.1`, or
-`http://[::1]` only with `--gateway-allow-insecure-localhost`. Stream
-tokens are runtime credentials and are not written into `Musubi.lock`.
-
-## Publishing
-
-`pack` computes the deterministic BLAKE3-256 source archive hash plus the
-source byte and file counts. When `--car-out`, `--sorafs-manifest-out`, or
-`--source-plan-out` is supplied, it also builds the deterministic SoraFS
-CAR payload, SoraFS manifest, and Musubi source archive plan from the same
-source file set.
-
-Use a dry run before publishing:
+Publication is a signed, resumable network workflow. The selected
+`client.toml` must contain the required `[musubi.publication]` bindings as
+well as the account and Taira network configuration. Package exactly one
+workspace member:
 
 ```bash
-cargo run -p musubi -- publish --config client.toml --dry-run
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  publish -p dex.universal/swap-core --locked --config client.toml
 ```
 
-Without `--dry-run`, `publish` writes default artifacts under
-`.musubi/dist/<namespace>/<name>/<version>/`, optionally uploads the
-manifest and payload through Torii's SoraFS storage-pin endpoint with
-`--upload`, registers the generated SoraFS pin, and submits
-`PublishMusubiRelease` through the configured Iroha client.
-
-Published releases must include:
-
-- a non-empty canonical source archive
-- a deterministic source archive plan
-- at least one exported Kotodama function
-- dependency records that do not select yanked releases
-- a dapp link, when present, whose contract aliases match the package
-  namespace
+Use `--detach` to return after the operation journal and seed-ingress
+boundary are durable. Continue a durable operation with
+`publish --resume <operation-id> --config client.toml`. The narrower
+`--recover <operation-id>` path only reconstructs missing immutable
+sidecars for a pristine pre-ingress journal. There is no publication
+`--dry-run` or generic public upload fallback; run `package --list` and
+`package` for local preflight.
 
 ## Registry Queries and Lifecycle
 
-Search and inspect the registry with:
+Search and inspect the finalized registry with the same Taira client
+configuration:
 
 ```bash
-cargo run -p musubi -- search swap --config client.toml
-cargo run -p musubi -- versions dex.universal/swap-core --config client.toml
-cargo run -p musubi -- alias resolve swap --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  search swap --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  info dex.universal/swap-core --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  versions dex.universal/swap-core --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  alias resolve swap --config client.toml
 ```
 
-Yanking hides a release from new resolution, but keeps existing lockfiles
-reproducible:
+Yanking excludes an immutable release from new resolutions while existing
+exact locks remain reproducible. Read the current yank revision first, then
+submit a compare-and-set mutation:
 
 ```bash
-cargo run -p musubi -- yank dex.universal/swap-core@0.1.0 \
-  --reason "bad archive" \
-  --config client.toml \
-  --dry-run
+: "${EXPECTED_YANK_REVISION:?set the current non-zero yank revision}"
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  yank dex.universal/swap-core 0.1.0 \
+  --expected-revision="$EXPECTED_YANK_REVISION" \
+  --reason="bad archive" \
+  --config client.toml
 ```
 
-Musubi avoids global name squatting by making `namespace/package` the
-canonical package name. Publishing into a namespace must be authorized by
-the same ownership or delegated permission model used for that Kotodama
-dapp namespace. Curated global short aliases are separate from package
-ownership: `SetMusubiShortAlias` requires the `CanSetMusubiShortAlias`
-permission, and the target package must already have at least one active
-release.
+Use `unyank` with the same package, version, and freshly read revision to
+reverse that state. Package ownership and maintainer roles control publish,
+yank, metadata, and archive-location permissions. Global aliases have their
+own priced registration, retarget history, and compare-and-set revisions;
+they are not package ownership shortcuts.
 
 ## Iroha Surfaces
 
-Musubi uses first-class Iroha instructions and queries:
+Musubi uses first-release V1 instructions and queries:
 
-| Surface                      | Purpose                                            |
-| ---------------------------- | -------------------------------------------------- |
-| `PublishMusubiRelease`       | Publish an immutable package release.              |
-| `YankMusubiRelease`          | Mark an existing release as yanked.                |
-| `SetMusubiShortAlias`        | Bind a curated global short alias to a package id. |
-| `AssertMusubiReleaseExists`  | Require a concrete package version to exist.       |
-| `FindMusubiReleaseByRef`     | Fetch a release by exact package reference.        |
-| `FindMusubiPackageVersions`  | List versions for a package id.                    |
-| `FindMusubiPackageReleases`  | List release summaries for a package id.           |
-| `SearchMusubiPackages`       | Search package summaries by namespace and text.    |
-| `FindMusubiShortAliasByName` | Resolve a curated short alias.                     |
+| Surface                                              | Purpose                                                        |
+| ---------------------------------------------------- | -------------------------------------------------------------- |
+| `RegisterMusubiNamespaceBindingV1`                   | Bind a namespace to its stable home dataspace.                 |
+| `RegisterMusubiArchiveV1`                            | Register an immutable authenticated source archive commitment. |
+| `AddMusubiArchiveLocationV1`                         | Add or renew a proven SoraFS archive location.                 |
+| `PublishMusubiReleaseV1`                             | Claim or update a package and publish one immutable release.   |
+| `SetMusubiReleaseYankV1`                             | Compare-and-set the yanked state of an exact release.          |
+| `InviteMusubiPackageMaintainerV1`                    | Start the explicit package role invitation flow.               |
+| `RegisterMusubiAliasV1` / `RetargetMusubiAliasV1`    | Register or retarget a governed global alias.                  |
+| `AssertMusubiReleaseDigestV1`                        | Assert the exact immutable release digest.                     |
+| `FindMusubiExactPackageV1`                           | Read one exact package and its revisions.                      |
+| `FindMusubiExactReleaseV1`                           | Read one exact release snapshot.                               |
+| `FindMusubiResolverIndexV1` / `FindMusubiVersionsV1` | Resolve or list finalized release candidates.                  |
+| `FindMusubiArchiveLocationsV1`                       | Read finalized provider-backed archive locations.              |
+| `FindMusubiAliasV1` / `FindMusubiAliasHistoryV1`     | Read the current alias target or its immutable history.        |
 
-Torii exposes the Musubi HTTP route family under `/v1/musubi/*`.
-Agent-facing MCP tools are exposed as `iroha.musubi.*` aliases. See
-[Torii endpoints](/reference/torii-endpoints.md) and
+Torii exposes the app route family under `/v1/musubi/*`. MCP tools use the
+current `iroha.musubi.queries.*` and `iroha.musubi.instructions.*` names.
+See [Torii endpoints](/reference/torii-endpoints.md) and the
 [query reference](/reference/queries.md) for the broader API map.

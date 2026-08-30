@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/fastpq.md
-translation_source_hash: f1dc55e4b2146de009203e19adb5cc1e9ce5302bc0ee27fe0b442693c5112c22
+translation_source_hash: 55b57e6aeeef2aefa1c8359d9b9487029b106eaebed12a58268b61dc583e97f6
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -905,7 +905,7 @@ Izda o'tkazish, mint, yoqish, rol berish, roli bekor qilish, metadatalar to'plam
 
 ## Provor Lane {#prover-lane}
 
-`irohad` ishga tushirishda FastPQ prover yo'nalishini boshlaydi, agar prover backendni dastlabkilashtirish mumkin bo'lsa. Yo'nalish cheklangan navbatga ega fon vazifasidir. Bir blok ijro guvohini ishlab chiqargandan so'ng, commit yo'li blok hash, balandlik, ko'rinish va guvohlarni o'z ichiga olgan prover vazifasini taqdim etadi.
+`iroha3d` ishga tushirishda FastPQ prover yo'nalishini boshlaydi, agar prover backendni dastlabkilashtirish mumkin bo'lsa. Yo'nalish cheklangan navbatga ega fon vazifasidir. Bir blok ijro guvohini ishlab chiqargandan so'ng, commit yo'li blok hash, balandlik, ko'rinish va guvohlarni o'z ichiga olgan prover vazifasini taqdim etadi.
 
 Agar yo'nalish ishlamayotgan bo'lsa yoki navbat to'liq bo'lsa, ish o'tkaziladi va odatdagidek blokni qayta ishlash davom etadi. Bu shuni anglatadiki, orqa fon prover yo'nalishi tranzaksiya qabul qilish yoki konsensus darvoza emas. Bu allaqachon amalga oshirilgan holat ustidan isbot ishlab chiqarish yo'li hisoblanadi.
 
@@ -1072,7 +1072,7 @@ $$
 
 ## SCCP Ochiq xabarni tasdiqlovchi hujjatlar {#sccp-transparent-message-proofs}
 
-SCCP yordamchi qutisi ham shaffof zanjirli o'tkazib yuborilgan xabarlarni tasdiqlash uchun FastPQ dan foydalanadi. Ushbu yo'l `irohad` orqa fon prover yo'nalishidan ajralib turadi. U FastPQ partiyasini to'g'ridan-to'g'ri SCCP xabarni tasdiqlovchi paket va manifestdan yaratadi, so'ngra hosil bo'lgan dalilni ochiq tekshirish uchun o'rab oladi.
+SCCP yordamchi qutisi ham shaffof zanjirli o'tkazib yuborilgan xabarlarni tasdiqlash uchun FastPQ dan foydalanadi. Ushbu yo'l `iroha3d` orqa fon prover yo'nalishidan ajralib turadi. U FastPQ partiyasini to'g'ridan-to'g'ri SCCP xabarni tasdiqlovchi paket va manifestdan yaratadi, so'ngra hosil bo'lgan dalilni ochiq tekshirish uchun o'rab oladi.
 
 SCCP partiyasida `fastpq-lane-balanced` va uchta metadata o'tishi ishlatiladi:
 
@@ -1210,14 +1210,14 @@ metal_debug_enum = false
 metal_debug_fused = false
 ```
 
-O'sha o'rnatish va telemetriya etiketlarini `irohad` dan bekor qilish mumkin:
+O'sha o'rnatish va telemetriya etiketlarini `iroha3d` dan bekor qilish mumkin:
 
 ```shell
-irohad --fastpq-execution-mode auto
-irohad --fastpq-poseidon-mode cpu
-irohad --fastpq-device-class apple-m4
-irohad --fastpq-chip-family m4
-irohad --fastpq-gpu-kind integrated
+iroha3d --fastpq-execution-mode gpu
+iroha3d --fastpq-poseidon-mode cpu
+iroha3d --fastpq-device-class apple-m4
+iroha3d --fastpq-chip-family m4
+iroha3d --fastpq-gpu-kind integrated
 ```
 
 Konfiguratsiya maydonlari uchun ham atrof-muhit o'zgaruvchilari qo'llab-quvvatlanadi. FastPQ xususiyatiga ega bo'lgan o'zgaluvchilar quyidagilarni o'z ichiga oladi:
@@ -1258,4 +1258,4 @@ Umumiy ishlashni sinchkovlik qilish uchun [ Ishlab chiqarish va metrikalar ](/uz
 - `TransferTranscript`
 - `AxtFastpqBinding`
 - `LaneFastpqProofMaterial`
-- [`irohad` FastPQ variantlari](/uz/reference/irohad-cli.md#arg-fastpq-execution-mode)
+- [`iroha3d` FastPQ variantlari](/uz/reference/iroha3d-cli.md#arg-fastpq-execution-mode)

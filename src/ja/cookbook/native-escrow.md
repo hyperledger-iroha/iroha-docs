@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 0185b6a341ee90ed6cd52fb9f510549b20592468abe6627d3efa639c3b67d1fd
+translation_source_hash: aa8e079684879bdcda2b4439e9c12742d4ab477e6f560f7c326a59b6be5bf666
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,7 +16,7 @@ Rust または Python で現在のタイプされたライフサイクルを実�
 
 - 数値的な資産定義と,十分な量を持つ開業者/売り手.
 - ステップを提出する各当事者に対して,資金提供された単鍵 I105 クライアント.手数料資産が現在の Taira faucet応答に一致している実体当局の支払った `fee_payment`意図を使用;ドキュメントから資産 ID を埋め込むことなく.
-- Iroha からの現在の Rust または Python SDK のコミットメント `bc7114ed1c7f265a156d2100ff09e851cc95702c`.
+- Iroha からの現在の Rust または Python SDK のコミットメント `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
 - 目的として JavaScript コンパイラ例 Node.js 24 プラス 地元で作られた `@iroha/iroha-js` 包装とその原産物 `iroha_js_host`; フォローする [JavaScript SDK ソースビルドの設定](/ja/guide/tutorials/javascript.md#build-from-source). ブラウザのビルドは提供する必要があります `compilerUrl` 地元のホストを 負荷する代わりに
 - Taira は資産譲渡およびエスクロー指示を認めなければならない.資産所有者は,その資産政策が許可するときに通常のライフサイクルを使用することができる.紛争解決にはグローバルな `CanResolveEscrowDispute` の許可が必要です.必要な公共ネットワーク当局が欠席している場合,生成されたローカルネットワークを使用します.
 
@@ -249,10 +249,10 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 
 ## ソースおよび関連文書 {#source-and-related-docs}
 
-- [固定されたコミット](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/isi/escrow.rs)でネイティブエスクロー指示モデル
-- [固定されたコミット](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/native_escrow.rs)でネイティブ・エスクロー統合テスト
-- [Python 固定されたコミットでエスクロークライアントの方法](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama 固定されたコミット](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/native_escrow.ko)のネイティブエスクローサンプル
+- [固定されたコミット](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)でネイティブエスクロー指示モデル
+- [固定されたコミット](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)でネイティブ・エスクロー統合テスト
+- [Python 固定されたコミットでエスクロークライアントの方法](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama 固定されたコミット](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)のネイティブエスクローサンプル
 - [国産資産の保証書](/ja/blockchain/escrow.md)
 - [浮動資産](./fungible-assets.md)
 - [許可と役割](./permissions-and-roles.md)

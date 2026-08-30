@@ -1,16 +1,17 @@
 ---
 translation_locale: ja
 translation_source: /guide/configure/genesis.md
-translation_source_hash: d3c04386c8d6e2778e53477e8f717a04247a66714cfed2c25ca84fbfb3871813
+translation_source_hash: a6b8b2b02e0074e6c90d9aa9337af3e2496a02beb2f57f575dc0780014df04b2
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: google-translate
 ---
 
 # 創世記 {#genesis}
 
-創世記は初期チェーン状態を定義する.編集可能なソースは JSON マネスティックであり, Iroha 3 ノードは署名された Norito トランザクションファイルを使用します.
+Genesis はチェーンの初期状態を定義します。編集可能なソースは、 JSON マニフェスト、
+そして Iroha 3 ノードは署名付きを消費します Norito トランザクションファイル。
 
-::: details デフォルトジェネシス マニフェスト
+::: details デフォルトのジェネシスマニフェスト
 
 <<< @/snippets/genesis.json
 
@@ -18,17 +19,21 @@ translation_engine: nllb-200-ct2
 
 ## ファイル {#files}
 
-上流リポジトリは `defaults/genesis.json` にデフォルトマニストを送信する. Kagami で生成されたネットワークは,出力ディレクトリに自社のマニストと署名したトランザクションを書き込む:
+上流リポジトリにはデフォルトのマニフェストが含まれています。 `defaults/genesis.json`.
+Kagami- 生成されたネットワークは、独自のマニフェストと署名済みトランザクションを書き込みます。
+出力ディレクトリ:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-そのディレクトリに生成された `README.md` は,選択したプロフィールの正確なファイルと起動コマンドを記録します.
+生成された `README.md` そのディレクトリに正確なファイルを記録して起動します
+選択したプロファイルのコマンド。
 
-## 同級 者 の 構成 {#peer-configuration}
+## ピア構成 {#peer-configuration}
 
-`config.toml` の `[genesis]` セクションで署名されたジェネス取引の先輩は,
+ピアは、署名されたジェネシス トランザクションを指します。 `[genesis]` のセクション
+`config.toml`:
 
 ```toml
 [genesis]
@@ -36,22 +41,32 @@ file = "./genesis.signed.nrt"
 public_key = "ed0120..."
 ```
 
-ネットワーク内のすべての同級者は署名されたジェネス取引とジェネス公開鍵について合意しなければなりません.
+ネットワーク内のすべてのピアは、署名されたジェネシス トランザクションと
+ジェネシスの公開鍵。
 
-## 創世記 の 署名 {#signing-genesis}
+## 創世記に署名する {#signing-genesis}
 
-マニフェストを手動で編集する場合は,同級者を開始する前に確認し署名します.
+マニフェストを手動で編集する場合は、ピアを開始する前にマニフェストを検証して署名します。
 
 ```bash
 cargo run --bin kagami -- genesis validate ./genesis.json
 cargo run --bin kagami -- genesis sign ./genesis.json \
-  --private-key "$GENESIS_PRIVATE_KEY_HEX" \
-  --algorithm ed25519 \
+  --private-key-file "$GENESIS_PRIVATE_KEY_FILE" \
   --out-file ./genesis.signed.nrt
 ```
 
-NPOS または Nexus プロフィールには,トポロジーと BLS 生成されたプロフィールで要求される所有の証明書 Kagami `localnet`, `wizard`, プロフィール生成コマンドは,その詳細を自動的に処理します.
+`GENESIS_PRIVATE_KEY_FILE` 所有者保持モードである必要があります -`0600`, シングルリンク
+1 つの正規秘密キー マルチハッシュと最終的なハッシュを含む通常のファイル
+改行。 Kagami シンボリックリンクを拒否し、生のジェネシスプライベートを決して受け入れません
+コマンドラインで キーを押します。
 
-## 創世記 を 再発 する {#recommitting-genesis}
+NPOS または Nexus プロファイルには、トポロジと BLS 所持証明
+生成されたプロファイルで必要となります。 Kagami `localnet`, `wizard`, そしてプロフィール
+生成コマンドはこれらの詳細を自動的に処理します。
 
-ピアは,保存が空いている場合にのみゲネスを実行する.一次性ローカルネットで新しいゲネスをテストするには,ピアを停止し,生成されたステートディレクトリを取り除いて,新しい署名したゲネスから開始します.すべての検証者が同じ移行を調整していない限り,実行中のネットワーク上のゲネスを置き換えてはいけません.
+## ジェネシスの再コミット {#recommitting-genesis}
+
+ピアは、ストレージが空の場合にのみジェネシスをコミットします。新しい起源をテストするために
+使い捨てローカルネット、ピアを停止し、生成された状態ディレクトリを削除します。
+そして新しい署名されたジェネシスから始めます。実行中にジェネシスを置き換えないでください
+すべてのバリデーターが同じ移行を調整していない限り、ネットワークに移行できません。

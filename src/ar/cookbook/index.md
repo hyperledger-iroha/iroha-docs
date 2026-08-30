@@ -1,14 +1,14 @@
 ---
 translation_locale: ar
 translation_source: /cookbook/index.md
-translation_source_hash: cdcfb3549506a65a7dbd1c37672893956a0252153a4075c82333804674aa07b6
+translation_source_hash: aceef9f4e42462614a5cdf41a89f55e26e0399503a48d4b50c08359e7bd7532e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Iroha 3 دليل الطلب {#iroha-3-application-cookbook}
 
-بناء ضد Iroha 3 مع وصفات صغيرة قابلة للتحقق من أنها تبدأ على شبكة اختبار Taira والحفاظ على Minamoto الصفحة الرئيسية القراءة فقط. كل وصفة تنص على ما إذا كان ذلك قراءة عامة، أو كتابة حساب تمويلي عادي، أو عملية مصدر الإذن. تستخدم الأوامر حساب I105 الحالي IDs ، واختيار رسوم صريحة، والسلوك المحقق في Iroha الالتزام [`bc7114ed1c7f265a156d2100ff09e851cc95702c`](https://github.com/hyperledger-iroha/iroha/tree/bc7114ed1c7f265a156d2100ff09e851cc95702c).
+بناء ضد Iroha 3 مع وصفات صغيرة قابلة للتحقق من أنها تبدأ على شبكة اختبار Taira والحفاظ على Minamoto الصفحة الرئيسية القراءة فقط. كل وصفة تنص على ما إذا كان ذلك قراءة عامة، أو كتابة حساب تمويلي عادي، أو عملية مصدر الإذن. تستخدم الأوامر حساب I105 الحالي IDs ، واختيار رسوم صريحة، والسلوك المحقق في Iroha الالتزام [`0010c5a70039eac101a4846499ba9ceaf43eb65c`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c).
 
 البدء مع [الارتباط إلى Taira](./connect-to-taira.md). فإنه يخلق تكوين العميل وتعريفات الرسوم التي تستخدم مرة أخرى من قبل وصفات خط الأوامر. لا نسخ أبدا أصول الرسوم ID من هذه الوثائق: استنبذها من الاستجابة الحالية Taira الصمام.
 

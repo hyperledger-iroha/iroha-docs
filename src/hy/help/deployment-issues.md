@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /help/deployment-issues.md
-translation_source_hash: 6f35ac59053e312f56a716810c8f0b625752500d1fc64b27d93cbd8317b6cc19
+translation_source_hash: 5c7d26b39d4ddf4e7e164f7bef79c9e1659db51587fb0dde9cf3f1dc0e3b057b
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2
 Տեղական եւ փորձարկման տեղակայման համար նախընտրեք Kagami կողմից ստեղծված արվեստի գործիքներ ձեռքով գրված զուգահեռ ֆայլերի փոխարեն.
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 Ստեղծված ցուցակը պարունակում է զուգընկերների կոնֆիգներ, գենեզի նյութեր, սկիզբային գրառումներ եւ README ՝ Iroha 3 կառուցման գծի համար:
@@ -24,7 +24,7 @@ cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./loc
 
 Նախ ստուգեք հետեւյալ կետերը.
 
-- `irohad --config <path>` կետերը, որոնք գտնվում են գործընկերոջ սեփական TOML ֆայլում:
+- `iroha3d --config <path>` կետերը, որոնք գտնվում են գործընկերոջ սեփական TOML ֆայլում:
 - `public_key` եւ `private_key` զուգընկերային կոնֆիգում պատկանում են նույն բանալիների զույգին:
 - `genesis.public_key` համապատասխանում է գենեզիսային գործարքի ստորագրման համար օգտագործված բանալին:
 - վավերացնող զուգընկերների ինքնությունները օգտագործում են BLS-նորմալ բանալիներ, եւ `trusted_peers_pop` պարունակում է տեղական բանալի եւ վստահելի զուգընկերի սեփականության ապացույցի գրառումներ:
@@ -34,7 +34,7 @@ cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./loc
 Օգտագործեք config tracing, երբ daemon- ը կարդում է ավելի քան մեկ TOML շերտ.
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --trace-config
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 ```
 
 ## Docker եւ Համադրում {#docker-and-compose}
@@ -42,9 +42,9 @@ cargo run --bin irohad -- --config ./config.toml --trace-config
 Generate Compose from the current Kagami localnet output so that the command-line arguments and config files match the checked-out code: Ստեղծեք կազմել ներկա localnet ելքից, որպեսզի հրամանատարի գծի փաստարկները եւ կոնֆիգերի ֆայլերը համապատասխանում են ստուգված կոդին.
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./localnet/docker-compose.yml --force
-docker compose -f ./localnet/docker-compose.yml up
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
+docker compose -f ./docker-compose.yml up
 ```
 
 Եթե կոմպոզատոր տեղադրումը սկսվում է, ապա կանգ է առնում, ստուգեք դեյմոնների օրագրերը ՝
@@ -72,7 +72,7 @@ Kubernetes- ի համար, յուրաքանչյուր վավերացնողին �
 Iroha 3 տեղակայումները, որոնք օգտագործում են Nexus, SoraFS կամ բազմակողմանի հոսքեր, պետք է սկսեն դեյմոնը՝ Սորա պրոֆիլն ակտիվացնելով.
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --sora
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora
 ```
 
 Օգտագործեք նույն պրոֆիլը միեւնույն ցանցի վավերացողների միջեւ:

@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /reference/instructions.md
-translation_source_hash: e300187da832a8f82258a36b7c4aaebf505adc09c771de5b0c7ab8fb0052d3db
+translation_source_hash: 9ba8e06d10f0896169feddbdad32f4fed7a8d46effa2293c64df578c197c970e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -29,6 +29,7 @@ Joriy ma'lumotlar modeli ushbu o'rnatilgan ta'lim oilalarini aniqlaydi:
 | [Asosiy aktivlar garovi](/uz/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
 | [Umumiy aktivlar qulflari](/uz/blockchain/escrow.md#generic-asset-locks) |`OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, `ExpireAssetLock` |
 | [Anonim aktivlar garovi](/uz/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
+| [Atomik maxfiy hisob-kitob](/uz/blockchain/instructions.md#atomic-private-settlement) | `ActivatePrivateSettlementPoolV1`, `RotatePrivateSettlementPoolPolicyV1`, `FinalizeAtomicPrivateSettlementV1`, `AbortAtomicPrivateSettlementV1` |
 
 Qo'shimcha Iroha 3 modullari ko'rsatmalar reyestri orqali domenga mos ko'rsatma turlarini ro'yxatdan o'tkazishi mumkin. Joriy manba daraxtidan hosil qilingan sxema-darajali ro'yxat uchun [Ma'lumotlar modeli sxemasi](./data-model-schema.md) ni ko'ring.
 

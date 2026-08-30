@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: 23b3ddbdadb0d177b2b12de60e0947a94ecdb20fa6ee1b3a2c6b83e5c91ba2f3
+translation_source_hash: 429535e5bb4ad1d3110f29a5b3896c0d3ce39264dbd357fa932fcc2a5f48d0f1
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -158,8 +158,8 @@ Guarde la cuenta canónica IDs. Utilice la IDs canónica para firmas, permisos e
 
 ## Fuente y documentos relacionados {#source-and-related-docs}
 
-- [Implementación de la dirección de cuenta canónica en el compromiso fijado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/account/address.rs)
-- [Pruebas de cuenta y alias Torii en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii/tests/accounts_endpoints.rs)
+- [Implementación de la dirección de cuenta canónica en el compromiso fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs)
+- [Pruebas de cuenta y alias Torii en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs)
 - [Cuentas ](/es/blockchain/accounts.md)
 - [Los alias del modelo de datos](/es/blockchain/data-model.md#aliases)
 - [Convenciones de nombramiento](/es/reference/naming.md)

@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /reference/queries.md
-translation_source_hash: 22e8a75acd72d066e3516ba46a0afe075d2d02790154458aec00a5d8bb861838
+translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -99,10 +99,17 @@ As consultas de custódia inspecionam os registos criados pela [contribuição d
 |`FindLaneRelayEnvelopeByRef` |Encontre um envelope verificado.|
 |`FindSorafsProviderOwner` |Resolver o proprietário de um prestador SoraFS. |
 |`FindDataspaceNameOwnerById` |Resolver um proprietário de nome do espaço de dados. |
-|`FindMusubiReleaseByRef` |Encontrar um Musubi de liberação por referência. |
-|`FindMusubiPackageVersions` |Lista de versões para um pacote Musubi. |
-|`FindMusubiPackageReleases` |Lista de libertações para um pacote Musubi. |
-|`FindMusubiShortAliasByName` |Resolver um alias curto Musubi. |
+|`FindMusubiExactPackageV1` |Leia um registro exato do pacote e as suas revisões atuais. |
+|`FindMusubiExactReleaseV1` |Leia uma imagem exata. |
+|`FindMusubiProviderBundleAttestationV1` |Leia a certificação do conjunto de arquivos de um fornecedor. |
+|`FindMusubiResolverIndexV1` |Pague o índice de resolver final. |
+|`FindMusubiVersionsV1` |Página versões finalizadas para um pacote. |
+|`FindMusubiMaintainersV1` |A página aceitou mantê-los e os convites pendentes. |
+|`FindMusubiArchiveLocationsV1` |Página finalizada SoraFS localizações para um arquivo. |
+|`FindMusubiArchiveRetentionV1` |Página dos registos de arquivamento. |
+|`FindMusubiAliasV1` |Leia a atual meta e revisão de um alias global. |
+|`FindMusubiAliasHistoryV1` |Página da história imutável de retargeting de um alias global. |
+|`FindMusubiOrderedPrefixV1` |Pacotes de páginas com um prefixo estrutural ordenado. |
 
 ## Ativadores, contratos, transações e bloqueios {#triggers-contracts-transactions-and-blocks}
 

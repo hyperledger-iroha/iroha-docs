@@ -1,25 +1,29 @@
 ---
 translation_locale: fr
 translation_source: /reference/binaries.md
-translation_source_hash: fd9cefe7c0f5ee2f273a06b453d11d0e9bb896a35f872297276f5e052912a035
+translation_source_hash: 5a36877954bec97691e45697680bfbd6e0a7c7695e48a796bc7c9a41d4756644
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Travailler avec les binaires Iroha {#working-with-iroha-binaries}
 
-Le flux de travail de l'opérateur Iroha 3 tourne autour de trois bases binaires principales:
+Le flux de travail de l'opérateur Iroha 3 tourne autour de quatre binaires principaux:
 
-- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad) pour l'exécution d'un daemon partagé
-- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_cli) pour le CLI et les commandes de l'opérateur
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_kagami) pour les clés, l'origine, les réseaux locaux et les profils
+- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) pour l'exécution d'un daemon partagé
+- `iroha3d_taira` pour le lanceur de validateur canonique Taira
+- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli) pour le CLI et les commandes de l'opérateur
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami) pour les clés, l'origine, les réseaux locaux et les profils
 
 ## Construisez à partir de la source {#build-from-source}
 
 À partir de la racine d'espace de travail en amont:
 
 ```bash
-cargo build --release -p irohad -p iroha_cli -p iroha_kagami
+cargo build --release \
+  -p irohad --bin iroha3d --bin iroha3d_taira \
+  -p iroha_cli --bin iroha \
+  -p iroha_kagami --bin kagami
 ```
 
 Les options binaires de libération sont ensuite disponibles en `target/release/`.
@@ -27,7 +31,8 @@ Les options binaires de libération sont ensuite disponibles en `target/release/
 Pour inspecter la surface de commande:
 
 ```bash
-./target/release/irohad --help
+./target/release/iroha3d --help
+./target/release/iroha3d_taira --help
 ./target/release/iroha --help
 ./target/release/kagami --help
 ```
@@ -37,7 +42,8 @@ Pour inspecter la surface de commande:
 Si vous ne souhaitez pas installer quoi que ce soit à l'échelle mondiale, utilisez `cargo run`:
 
 ```bash
-cargo run --bin irohad -- --help
+cargo run -p irohad --bin iroha3d -- --help
+cargo run -p irohad --bin iroha3d_taira -- --help
 cargo run --bin iroha -- --help
 cargo run --bin kagami -- --help
 ```
@@ -61,13 +67,14 @@ docker run -t hyperledger/iroha:dev kagami --help
 Pour le démarrage par les pairs, générez un localnet et composez d'abord le fichier:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./localnet/docker-compose.yml --force
-docker compose -f ./localnet/docker-compose.yml up
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
+docker compose -f ./docker-compose.yml up
 ```
 
 ## Quelle option binaire dois- je utiliser ? {#which-binary-should-i-use}
 
-- Utilisez `irohad` lorsque vous démarrez ou exploitez des pairs.
+- Utilisez `iroha3d` lorsque vous démarrez ou exploitez des pairs en dehors de la version publique du validateur Taira.
+- Utilisez `iroha3d_taira --sora` uniquement pour un déploiement de validateur canonique Taira; il impose le profil de la chaîne, du stockage et du signataire en temps d'exécution Taira.
 - Utilisez `iroha` lorsque vous avez besoin de consulter le registre, de soumettre des transactions ou d'inspecter les points finaux de l'opérateur.
 - Utilisez `kagami` lorsque vous avez besoin de clés, de manifestes de génèse, de paquets de profils ou d'actifs localnet.

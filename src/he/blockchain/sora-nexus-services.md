@@ -1,16 +1,17 @@
 ---
 translation_locale: he
 translation_source: /blockchain/sora-nexus-services.md
-translation_source_hash: de50aa8206a5b82d4340f68173e9d89bb8eabab83369c363eb05c9d6632eed28
+translation_source_hash: 0dcdda5185d25e113fb636b8b2aede6081ca8ee89b8b38c50b69fed88622df49
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # SORA Nexus שירותים {#sora-nexus-services}
 
-SORA Nexus מוסיפה מטוסים של שירותים פונים לאפליקציות סביב Iroha 3. השירותים האלה אינם ספרי ספרים נפרדים. הם מקושרים על ידי משפחות המסלול של Iroha המדינה העולמית, Norito מסמכים, רישומי ממשל, ו Torii.
 
-זמינות תלויה בניית הערך ובפרופיל הרשת. השתמש [`/openapi`](/he/reference/torii-endpoints.md#app-and-sora-route-families) על הערך היעד בתור רשימת סמכותית של הדרכים המאפשרות.
+SORA Nexus מוסיפה מטוסים של שירותים פונים לאפליקציות סביב Iroha 3. השירותים האלה אינם ספרי ספרים נפרדים. הם מעוקבים על ידי Iroha מדינת העולם, Norito מסמכים, רישומים של ממשל, ו Torii משפחות שורות.
+
+זמינות תלויה בניית הערך ובפרופיל הרשת. השתמש [`/openapi`](/he/reference/torii-endpoints.md#app-and-sora-route-families) כדי לגלות את המסלולים המיוצרים של האפליקציה-API על הערך המטרה. מסלולים מקומיים ציבוריים SoraFS CID ומוכרים היטב מובנים מחוץ לתסמך שנוצר, כך שתבדקו את המסלולים האלה ישירות בעת בדיקה של הפעלת.
 
 ## מפה מרכיבים {#component-map}
 
@@ -18,11 +19,11 @@ SORA Nexus מוסיפה מטוסים של שירותים פונים לאפליק
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
 |Soracloud |הפעלת יישומים, שירותי הוסטים, מודל פרטי/מדינה של זמן ההפעלה ופיקוח על מחזור החיים של השירות. |`/v1/soracloud/`, `/api/`, `iroha app soracloud ...` |
 |בפנים.|Soracloud מארח את זמן הפעולה של HTTP לשינויים בשירותים שזקוקים למטוס חי HTTP. |Soracloud קונפיגציה של זמן ההפעלה, מודעות יכולת מארח, מדינת זמן ההפקה.|
-|SoraNet |פרטיות ותחבורה על גבי מעגלים, תנועה רלוונטית, VPN, פגישות חיבור, וסלולים זרימה. |`/v1/connect/`, `/v1/vpn/`, SoraNet נתונים מטאטא של מסלול |
+|SoraNet |פרטיות ותחבורה על גבי מעגלים, תנועה רלוונטית, VPN, פגישות חיבור וסלולים זרימה. |`/v1/connect/`, `/v1/vpn/`, SoraNet נתונים מטאטא של מסלול |
 |זמינות נתונים (DA) |ראיות זמינות, מחויבות, שכבת כוונה של חומרי תועלת המוצגים על ידי שורות Nexus, מוניסטים SoraFS וזרזות הוכחה. |`/v1/da/`, `FindDaPinIntent`, `[sumeragi.da]` |
 |SoraFS |שטח אחסון עם כתובת תוכן למניפסטים, מטענים מועילים CAR, תוכן מחובר, קביעות שערות וזרמים של הוכחה לתאוששות. |`/v1/sorafs/`, `/sorafs/`, `FindSorafsProviderOwner` |
-|SoraDNS |שכבת כינוי דטרמיניסטית ותישור פתרון עבור שירותים ותוכן הועברו ב SORA. |`/v1/soradns/`, `/soradns/`, אירועים של תיקון הגורם |
-|אייטאי |קורדור פיתטי ושלון נכסים ברמה של אפליקציה, המבוסס על רישומים מקומיים, לא על ידי ספרי ספרים נפרדים.|`OpenAssetEscrow`, `FindAssetEscrow*`, `EscrowEventFilter`, Kotodama `escrow_*` בניינים |
+|SoraDNS |שכבת כינוי דטרמיניסטית ותישור פתרון עבור שירותים ותוכן הוגדרו ב SORA. |`/v1/soradns/`, `/soradns/`, אירועים של תיקון הגורם |
+|אייטאי |קורדור פיתטי ושלון נכסים ברמה של אפליקציה, המבוסס על רשומות מאבטחות מקומיות, לא על ידי ספריה נפרדים. |`OpenAssetEscrow`, `FindAssetEscrow*`, `EscrowEventFilter`, Kotodama `escrow_*` בניינים |
 
 ```mermaid
 flowchart LR
@@ -54,13 +55,13 @@ flowchart LR
 1. נכסים סטטיים של הקצה הקדמי מצטופפים ומחוסרים דרך SoraFS.
 2. המארח הציבורי, למשל `<app>.sora`, רשום באמצעות SoraDNS.
 3. מסלולים Soracloud `/api/v1/search` או `/api/v1/stream` לשירות Inrou HTTP.
-4. מסלולים Soracloud `/api/auth` ו `/api/v1/user` למפעילים דטרמיניסטיים IVM.
+4. מסלולים Soracloud `/api/auth` ו `/api/v1/user` למפעילים דטרמיסטיים IVM.
 5. לקוחות שזקוקים לפרטיות יכולים להגיע לאותו תוכן או למסלול API דרך מעגילת SoraNet.
 
-|דרך |מטוס תומך |למה?|
+|דרך |מטוס אחראי.|למה?|
 | ----------------- | --------------------- | ------------------------------------------------- |
 | `/`               |SoraFS תוכן סטטי |קש של תוכן שניתן לשחזר .|
-|`/assets/*` |SoraFS תוכן סטטי |נכסים עם כתובת תוכן וראיות מפורשות |
+|`/assets/*` |SoraFS תוכן סטטי |נכסים עם כתובת תוכן וראיות מובילות |
 |`/api/auth*` |Soracloud IVM |מצב האותופיות והמטבעות מאובטחים|
 |`/api/v1/user*` |Soracloud IVM |מוטציות מדינה רגישות לניהול |
 |`/api/v1/search*` |Soracloud Inrou |שירות HTTP חי, קש, SSE או מצב הקולקטור |
@@ -69,14 +70,14 @@ flowchart LR
 
 פרסום SoraFS יוצר חפצים קבועים לפני שמות מצביעים עליהם:
 
-1. תבנה מטען מועיל או תיק.
+1. לבנות מטען מועיל או תיק.
 2. ארוז את זה בארכיון CAR ותוכנית חתיכות.
 3. לבנות מוניסט Norito עם מדיניות פין ונתונים לניהול.
 4. להגיש את ההודעה ל- Torii.
-5. רשום כוונה סימן DA או מחויבות זמינות כאשר הפרופיל היעד דורש ראיות מפורשות.
+5. רשום כוונת סימן DA או מחויבות זמינות כאשר הפרופיל המטרה דורש ראיות מפורשות.
 6. קשור את המניפסט לשמות SoraDNS או למסלול הפנים סטטי של Soracloud.
 
-### מסלול רכיבה פרטית או זרימה {#private-fetch-or-streaming-route}
+### מסלול רכישה פרטי או זרימה {#private-fetch-or-streaming-route}
 
 SoraNet יכול לשבת מול SoraFS או Soracloud:
 
@@ -104,7 +105,7 @@ SoraNet יכול לשבת מול SoraFS או Soracloud:
 
 לשימוש ציבורי Taira או Minamoto, התייחסו לרכבת תשלומים מחוץ למשרשרת ולכל זרימת עבודה של תמיכה או בית המשפט כמדיניות היישום. Iroha רשום את מצב האבטחה, אירועי מחזור החיים, חישובים ראיות, ותנועה נכסים סופית; הוא אינו בודק את הסדר הפיהט בעצמו.
 
-## בדוק קו יעד {#check-a-target-node}
+## בדוק קשר יעד {#check-a-target-node}
 
 לפני השימוש בדוגמאות מהדף הזה, אושר כי משפחת המסלול קיימת על הערך שאתה מכוון:
 
@@ -117,11 +118,11 @@ curl -fsS "$TORII_URL/openapi.json" \
 curl -fsS -H 'Accept: application/json' "$TORII_URL/status" | jq .
 ```
 
-אם `/openapi.json` אינו חשוף על ידי הפרופיל, נסה `/openapi`. זמינות הנתיב המדויקת תלויה בתכונות הבניין ובהסדרת הרשת.
+אם `/openapi.json` אינו חשוף על ידי הפרופיל, נסה `/openapi`. זמינות הנתיב המדויקת תלויה בתכונות הבניין ובקונפיגורת הרשת. המסמך לא מכיל את הנתיבים המקומיים הציבוריים SoraFS CID ומוכרים; בדוק את נקודות הסיום האלה ישירות כפי שמתואר בהמשך .
 
 ### Taira בדיקות עישון קריאה בלבד {#taira-read-only-smoke-checks}
 
-נקודת הסיום הציבורית Taira היא שימושית עבור בדיקות בצד קריאה, אך אל תשתמשו בה לדוגמאות מוטציות אלא אם כן אתם מפעילים חשבון מורשה וכוונתם לשנות את מצב הקבלה.
+נקודת הסיום הציבורית Taira היא שימושית עבור בדיקות בצד קריאה, אך אל תשתמשו בה לדוגמאות מוטציות אלא אם כן אתם מפעילים חשבון מורשה וכוונתם לשנות את מצב הרשת המבחנת ציבורית.
 
 ```bash
 export TORII_URL=https://taira.sora.org
@@ -134,24 +135,24 @@ curl -fsS "$TORII_URL/v1/connect/status" | jq '{enabled, sessions_active}'
 curl -fsS "$TORII_URL/v1/vpn/profile" \
   | jq '{available, relay_endpoint, supported_exit_classes}'
 
-curl -fsS "$TORII_URL/v1/sorafs/storage/state" \
-  | jq '{bytes_capacity, bytes_used, pin_queue_depth, por_inflight}'
+curl -fsS "$TORII_URL/v1/sorafs/storage/peers?limit=4" \
+  | jq '{gateway_base_url, pin_torii_urls}'
 
 curl -fsS -H 'Accept: application/json' "$TORII_URL/v1/soracloud/status" \
   | jq '.control_plane | {service_count, services: [.services[] | {service_name, current_version}]}'
 ```
 
-Taira עשוי לחשוף דרכים של מטוס בקרה ספציפיות לשימוש שאינן רשומות במפה של המסלול של OpenAPI. מתייחסו ל- `/openapi` כלקוח הנגרם העיקרי של API, ולאחר מכן מאשרו את כל מסלול ספציפי לשימוש ישירות לפני שתדokumentו אותו כחיה.
+Taira רשאי לחשוף מסלולים של מטוסים שליטה ספציפיים לשימוש שלא נכללו במפה של המסלול של OpenAPI. התייחסו ל- `/openapi` כעסקה שנוצרה עבור המסלולים שבהם הוא מכיל, ולאחר מכן תאשרו ישירות את מסלולים מקומיים ספציפיים לשירות וציבוריים של SoraFS לפני שתדokumentו אותם כפי שהם זמינים.
 
 ## Soracloud {#soracloud}
 
 Soracloud הוא שטח הבקרה של היישום SORA. הוא מעקב על חבילות הפעלת, תיקונים שירותים, כיוון, מצב ההשפעה, הכניסים הרשמיים של הקונפיגציה, סודות שירות מוצפן, רשומות רישום מודל, פגישות דמיון פרטיים וקבלות זמני תשלום.
 
-Soracloud משתמשת בשתי מטוסים של ביצוע:
+Soracloud משתמש בשתי מטוסים של ביצוע:
 
-|מטוס ההוצאה להורג |זמן ההפעלה |השתמשו בו עבור |
+|מטוס ההוצאה להורג |זמן ההפעלה|השתמשו בו עבור |
 | ---------------------- | ------- | -------------------------------------------------------------------------------------------- |
-|`DeterministicService` |`Ivm` |מחבר, מצב הכספת, קריאה מוסמכת, מנהלים של תיבת הדואר, מוטציות רגישות לניהול |
+|`DeterministicService` |`Ivm` |מחבר, מצב הכספת, קריאה מוסמכת, מנהלים של תיבת דואר, מוטציות רגישות לניהול |
 |`HttpService` |`Inrou` |חיים HTTP APIs, עבודה כבדה בקולקטור, שירותים באבטחת קש, SSE, זרמים בעזרת דפדפן |
 
 שטוח הבקרה הוא סמכותי. פקודות הפעלת, העדכון, ההפסקות, הקונפיגציה, סודיות, מודל ומצב מסופקים באמצעות Torii וקוראים את מצב העולם המחויב; הם לא מסתמכים על מראה מקומי נפרד CLI . מסלול ציבורי מבוסס על קובץ מקדם ארוך ביותר, כך שאחד מארח רשום יכול לחלק את התנועה בין מסלולי HTTP ומסלולים דטרמיניסטיים API.
@@ -177,7 +178,7 @@ iroha app soracloud app doctor \
 
 `local-plan` מדפס את חלוקת המסלול, מוניסט שירותי ילדים, מסלולי סקרט במרחב עבודה, ואת מצב הפרסום צפוי בחזית. `doctor` מאשר את חוזה השחרור המקומי לפני שאתה מעורב Torii.
 
-### שימו לב את המצב של האפליקציה {#deploy-and-inspect-app-state}
+### שימו לב את מצב האפליקציה {#deploy-and-inspect-app-state}
 
 ```bash
 export SORACLOUD_TORII_URL=https://<soracloud-enabled-torii>
@@ -204,7 +205,7 @@ iroha app soracloud rollback \
   --torii-url "$SORACLOUD_TORII_URL"
 ```
 
-### חומר סודי {#config-and-secret-material}
+### חומר מוסתר וסודי {#config-and-secret-material}
 
 Soracloud הכניסה וסודיות הם חלק ממצב הפעלת סמכותי. פיתוח, העדכון ו- rollback נכשלים לסגור כאשר הכניסה או הקשרים הסודיים הנדרשים חסרים או אינם תואמים עם המוניסטים הפעילים.
 
@@ -238,7 +239,7 @@ Inrou הוא זמן ההפעלה HTTP המארח המשמש על ידי Soraclou
 ### דרישות בזמן ההפעלה {#runtime-requirements}
 
 - זמן ההפעלה של מוניסטר המכולות חייב להיות `Inrou`.
-- רמת ההפעלה של מסמך שירות חייבת להיות `HttpService`.
+- רמת ההפעלה של מסמך השירות חייבת להיות `HttpService`.
 - `HttpService + Inrou` דורש בדיוק אחד `PersistentRootLeaseVolume` המוסד על `/`.
 - שירותי Inrou משותפים זקוקים גם לשירות משותף או לאחסון שכר סודי כאשר הם שומרים מצב משותף משתנה.
 - עמודי האוסטינג לייצור צריכים לפרסם יכולת אינטרו אמיתית במקום לפעול רק בתור פרוקסי.
@@ -353,29 +354,45 @@ provision_window_segments = 4
 provision_queue_capacity = 256
 ```
 
-השתמש `access_kind = "read-only"` בשבילים של תוכן שאינם דורשים אימות הצופים. השתמש ב- `authenticated` כאשר רלווי היציאה חייב לאכוף כרטיסים או זהותו של הצופה לפני הגשר ל- Torii או לשירות מקובל.
+השתמש `access_kind = "read-only"` עבור מסלולי תוכן שאינם דורשים אימות הצופה. השתמש ב- `authenticated` כאשר רלווי היציאה חייב לאכוף כרטיסים או זהות הצופה לפני הגשר ל- Torii או לשירות מארח.
 
 ### SoraNet-יודעת SoraFS {#soranet-aware-sorafs-fetch}
 
-SoraFS קבל CLI יכול להוציא מוניסט פרוקסי מקומי ומטאטא הנתונים של מסלול SoraNet למרחבות הדפדפן או לאדפקטורים SDK:
+ה- SoraFS קבל CLI יכול להפיץ מוניסט פרוקסי מקומי ו- spool SoraNet נתונים מטאטא של מסלול להרחיבות הדפדפן או SDK האדפסטרים. JSON יש להגדיר `local_proxy` עם `"emit_browser_manifest": true`, ו... CLI יש לבנות עם `local-quic-proxy` תמיכה. Taira, לבחון את קטלוג האספקה המוגנת ב-root testnet ציבורי, לאחר מכן למלא את הטופל של ספק מוגן שוחרר עבור ספק זה:
 
 ```bash
-sorafs_cli fetch \
-  --plan artifacts/payload_plan.json \
-  --manifest-id 7bb2...9d31 \
-  --provider name=alpha,provider-id=9f5c...73aa,base-url=https://gw-alpha.example.org/,stream-token="$(cat alpha.token)" \
-  --output artifacts/payload.bin \
-  --json-out artifacts/fetch_summary.json \
-  --local-proxy-manifest-out artifacts/proxy_manifest.json \
-  --local-proxy-mode bridge \
-  --local-proxy-norito-spool storage/streaming/soranet_routes \
-  --local-proxy-kaigi-spool storage/streaming/soranet_routes \
-  --local-proxy-kaigi-policy authenticated \
+export TAIRA_ROOT=https://taira.sora.org
+curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
+
+: "${TAIRA_SORAFS_PROVIDER_ID:?set the admitted provider ID from Taira discovery}"
+: "${TAIRA_SORAFS_GATEWAY_KEY:?set the provider gateway key}"
+: "${TAIRA_SORAFS_PROVIDER_URL:?set the advertised provider base URL}"
+: "${TAIRA_SORAFS_STREAM_TOKEN_FILE:?set the issued stream-token file}"
+
+cargo run -p sorafs_orchestrator --features=local-quic-proxy --bin=sorafs_cli -- \
+  fetch \
+  --plan=artifacts/payload_plan.json \
+  --manifest-id=<manifest-digest-hex> \
+  --orchestrator-config=artifacts/orchestrator.json \
+  --provider=name=taira,provider-id="$TAIRA_SORAFS_PROVIDER_ID",gateway-key="$TAIRA_SORAFS_GATEWAY_KEY",base-url="$TAIRA_SORAFS_PROVIDER_URL",stream-token="$(cat "$TAIRA_SORAFS_STREAM_TOKEN_FILE")" \
+  --output=artifacts/payload.bin \
+  --json-out=artifacts/fetch_summary.json \
+  --local-proxy-manifest-out=artifacts/proxy_manifest.json \
+  --local-proxy-mode=bridge \
+  --local-proxy-norito-spool=storage/streaming/soranet_routes \
+  --local-proxy-kaigi-spool=storage/streaming/soranet_routes \
+  --local-proxy-kaigi-policy=authenticated \
   --max-peers=2 \
   --retry-budget=4
 ```
 
 אספק מסמכים סיכומים מדווחים, קבלות חתיכות, מטא נתונים מקומיים, ואת הגדרות של הנסיעה הפועלת בשימוש עבור הביאה.
+
+### רשימה של בדיקות תמריצים {#relay-incentive-verifier-roster}
+
+קבלת תמריץ מרחף דוחה הוכחות אלא אם כן כל בדיקה הנדרשת מצליחה. כאשר `incentives.enable` הוא נכון, `incentives.trusted_verifier_ids` חייב להכיל לפחות חשבון קנוני אחד ID. הרשימה אף פעם לא צריכה להיות גדולה יותר מ-64 כתיבים, גם כאשר תמריצים מוגבלים. runtime מאחסנים אותה כמגוון מסודר דטרמיניסטי, ומסרב את גיאומטריה הבלתי חוקית של הרשימה במהלך הפעלת רלווי.
+
+כל `RelayBandwidthProofV1` מפורסמת תחת מסגרת קבועה/צעת תקציב וצריכה לצרוך את המסגרת המלאה. חשבון הבדיקת של ההוכחה חייב להיות נוכח ברשימת הקונפיגירציה, ו`RelayBandwidthProofV1::verify_signature()` חייב להצליח, לפני ש-relay נעול או משנה את אקימולטור הביצועים שלו. הרשת מתעלמת ממחתן לא מבוסס על אמון או מחברת חתימה חסרת תוקף/טמיפציה. הוכחה כזו לא מוסיפה שום מדידה ואינה יכולה לייצר תמונה מעודדת.
 
 ## זמינות נתונים (DA) {#data-availability-da}
 
@@ -394,7 +411,7 @@ DA לא מחליף את Kura או SoraFS:
 |שלב |מה נרשם.|
 | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
 |כוונה |כרטיס, תיקון מפורסם, שם כינוי, תיקוני קו/עונה/שלב, מדיניות שמירה או מטרה של כתיבה. |
-|התחייבות |ציין את החומר שמקשר את המניפסט, עומס המסלול, חבילה של ראיות, או שורש התוכן לרקוד הנראה בספר. |
+|התחייבות |תיקון חומר שמחבר את המוניסט, עומס המסלול, חבילה של ראיות, או שורש התוכן לרשום הנראה בספר.|
 |ראיות |קולות זמינות, פתיחות הוכחה, תעודות ספקית או ראיות אחרות ספציפיות לפרופיל שהרשת היעד קיבלה. |
 |שאלה |חיפושים של כוונות סימון באמצעות `FindDaPinIntentByTicket`, `FindDaPinIntentByManifest`, `FindDaPinIntentByAlias` או `FindDaPinIntentByLaneEpochSequence`. |
 
@@ -410,11 +427,11 @@ DA לא מחליף את Kura או SoraFS:
 
 DA הופך עומס תועלת לתוך מחויבות חתומה, מוגנת על ידי שידור חוזר, ה-block-indexed. האלגוריתמים החשובים הם דטרמיסטיים כך שתואלידורים ו-gateways יכולים לחשב מחדש את אותם דיגסטים מאותו בייט.
 
-1. קאנוניקליז את המטען הפועל הנשלח. Torii מקבל בקשה לנטול עם `(lane_id, epoch, sequence)`, בייטים מטען פועל, נתונים מתאחסנים, גודל חתיכה, פרופיל חיסוך, מדיניות שמירה, וחתום של המגיש. הערך מפרץ את עומסי השימוש gzip, deflate או Zstandard בעת בקשה, ולאחר מכן מאשר כי אורך הביט הקנוני הוא שווה `total_size`.
+1. קאנוניקליז את המטען הפועל הנשלח. Torii מקבל בקשה לחיסול עם `(lane_id, epoch, sequence)`, בייטים מטען פועל, נתונים מתאוחצים, גודל חתיכה, פרופיל למחוק, מדיניות שמירה, וחתום של המגיש. הערך מפרץ את עומסי השימוש gzip, deflate או Zstandard בעת בקשה, ולאחר מכן מאשר כי אורך הביט הקנוני הוא שווה `total_size`.
 2. אישור רצועה ופרמטרים של חתיכות. הרצועה חייבת להתקיים בקאטלוג הרצועות Nexus. `chunk_size` חייב להיות בעל כוח שאינו אפס של שני, לפחות שני בייטים, פרופיל החיסול חייב לכלול חלקי נתונים ושתי חלקי שוויון לפחות. קטלוג המסלול בוחר את תוכנית ההוכחה, `merkle_sha256` או `kzg_bls12_381`.
 3. ליישם מדיניות רשת. הערך מכיל את קו בסיס ההשפכה והתחזוקה המוגדרים עבור מעמד ה-blob. מטא נתונים ציבוריים חייבים להישאר טקסט ברורה; מטא נתוני הממשל בלבד מוצפן עם מפתח המטא נתונים המוגדר של הערך לפני שהוא נכתב למניפסט.
 4. חתיכה ומחייב. המטען הפועל הקנוני הוא חתיכה עם פרופיל בגודל קבוע המוצא מ `chunk_size`. Torii מחושב את ההזיה של המטען הפוטנציאלי, שורש עץ הוכחת השיקום, וההתחייבויות לחתיכה. חתיכות הנתונים נושאות התחייבות BLAKE3 מעל בייטים שלהם.
-5. הוספת מחויבויות למחוק. חתיכות מתקבצים לשורות של `data_shards`. תאים חסרים בשורה הסופית הם אפס מכבשים לחישוב השוויון. RS חתיכות משוויון של שורה/גלובלית; בחופשי `row_parity_stripes` מוסיפים את השוויון של קישור בסגנון עמוד בכל המתריש. מחויבויות לחתיכות השוויון הן BLAKE3 סימבולות של סמלים קטנים `u16`.
+5. הוספת מחויבויות למחוק. חתיכות מתקבצים לשורות של `data_shards`. תאים חסרים בשורה הסופית הם אפס מכבשים לחישוב השוויון. RS חתיכות משוויון שורה/גלובלית; בחופשי `row_parity_stripes` מוסיפים לשוויון קווים בסגנון עמוד במתריש. התחייבויות של חתיכות השוויון הן סימבלים BLAKE3 של סמלים קטנים `u16`.
 6. `DaManifestV1` רשום את המסלול, התקופה, כיתה של בלאב, קודק, תרגיל המטען הפועל, שורש חתיכה, גודל החתיכה, פרופיל למחוק, מדיניות שמירה, ציטוט שכר, מחויבות חתיכת, התחייבות אופציונלית IPA, מטאדאטה, וזמן ההוצאה. כרטיס האחסון הוא דטרמיניסטי: הערך קודם כל חותם טמבלט מוניסט עם כרטיס ריק, ולאחר מכן כותב את טביעת האצבע הזאת בחזרה בתור `storage_ticket` הסופי.
 7. סירוב קונפליקטים של שידור חוזר. מפתח שידור הוא `(lane_id, epoch, sequence, manifest_fingerprint)`. דופליקציה עם אותו טביעת אצבע היא אידומטנטה. רצף ישן או אותה רצף עם טביעת יד שונה נדחתה.
 8. שחרר חפצים חתומים. Torii מחשובים a PDP מחויבות, חתום על `DaIngestReceipt`, בונה a `DaCommitmentRecord`, והוא כותב חתיכות של מכתבים, PDP התחייבות, רישום התחייבות. לוח הזמנים של התחייבות; כוונה של פין. קורסר הקבלה מתקדם באופן מונוטוני לכל `(lane_id, epoch)`.
@@ -438,7 +455,7 @@ DA הופך עומס תועלת לתוך מחויבות חתומה, מוגנת �
 - קווי מרקל דוחקים מחויבות KZG; קווי KZG דורשים מחויבות שאינה אפס KZG.
 - כוונות פין קנוניקליות, מסווגות ומסגורות על ידי ליין, המניפסט האש, כרטיס אחסון, חשבון הבעלים, וחוקים של התנגשות תחת השם.
 
-כותרת הבלוק מאחסנת חשיפים למדיניות ההוכחה של DA, מחויבויות וכוונות פין. עבור הוכחות חברות, קובץ ההתחייבויות חושף גם שורש מרקל אשר עורות הם חישובים של ערכי `DaCommitmentRecord` קנוניקלים Norito. הערכים ההורים חישובים את הקשר בין הילדים השמאלי והימין; דף מוזר מופעל ללא שינוי לשכת הבאה.
+כותרת הבלוק מאחסנת חשיפים למדיניות ההוכחה של DA, מחויבויות וכוונות פין. עבור הוכחות חברות, קובץ ההתחייבויות חושף גם שורש מרקל אשר עורות הם חישובים של ערכי `DaCommitmentRecord` קנוניקלים Norito. הערכים ההורים חישובים את הקשר בין הילדים השמאלי והימין; דף מוזר מופעל ללא שינוי לכתבה הבאה.
 
 ### ביקורת ראיות {#proof-verification}
 
@@ -447,9 +464,9 @@ DA הופך עומס תועלת לתוך מחויבות חתומה, מוגנת �
 1. ה-Hash של חבילה הוכחה מתאים ל- DA ההתחייבות של כותרת הבלוק.
 2. גובה הבלוק ההוכחה תואם את כותרת הבלוק המוצגת.
 3. האינדיקס נמצא בגבולות וההתחייבויות שוות את הכניסה של הקבוצה באינדיקס הזה.
-4. מדיניות ההגנה על המסלול מקבלת את התחייבות.
+4. מדיניות ההגנה על המסלול מקבלת את ההתחייבות.
 5. כפוף את הנתיב האחים מן העלת ההתחייבות מייצג מחדש את השורש המוצא.
-6. השורש המוקם מחדש שווה לשורש הקוטב.
+6. השורש המוקדש שווה לשורש הקסדה.
 
 זה מוכיח כי מחויבות זמינות ספציפית נכללה במשולש מועיל של בלוק ספציפי; זה לא מוכיח שכל דגמה נמצאת כיום מקוון. ניתן לבדוק את השימוש בשידור חי בנפרד באמצעות קניות של ספק SoraFS, בדיקה של PDP/PoTR, או ראיות זמינות ספציפיות לפרופיל.
 
@@ -460,11 +477,11 @@ DA מקושר ל- Sumeragi באמצעות שידור אמין (RBC), אך זה �
 ב- Iroha 3, שוויון נחשב לנטל הפועל המתמשך של בלוק זמין כאשר או:
 
 - האש של הבלוק הממתין המקומי באייטים לשאש המטען הפועל הנצפה, או
-- RBC השיא מטען שימושי מתאים לבלוק האש, גובה, תצוגה, ואש של המטען.
+- RBC השיג מטען שימושי המתאים לבלוק האש, גובה, תצפית, ואש של המטען.
 
 אם אף אחד מהמצבים לא מתקיים, הדוגמא רשום `missing_local_data`, ממשיך לנסות לשחזר את המטען המשפטי באמצעות RBC או סינכרון בלוק, ומודיע על שער DA במצב וטלמטריה. בהיישום הנוכחי, אותות אלה DA הם ייעוץ עבור סופית: בלוק עדיין מסתיים מתוך תעודת ההתחייבויות ועוד המטען המקומי המתאים, ולא מתוך תעודת קוורום נפרדת DA .
 
-זמן DA מרחיב את חלונות ההתאוששות. הזמן הקוורום הפועל של DA נגזר מהבלוק המוגדר והזמני ההתחייבויות, ואז הוכפל על ידי `sumeragi.advanced.da.quorum_timeout_multiplier`. זמן זמינות הזמינות הוא `max(quorum_timeout, availability_timeout_floor_ms) * availability_timeout_multiplier`. לפני שזמן זמינות זה ייגמר, הערך מעדיף את השיקום של עומס תועלת וממנע מחודש מוקדם; לאחר שהוא יגמר, ניתן להמשיך בנתיבים רגילים של חיזור ושינוי התצפיות .
+זמן DA מרחיב את חלונות ההתאוששות. הזמן הקוורום הפועל של DA נגזר מהבלוק המוגדר והזמני ההתחייבויות, ולאחר מכן הוכפל על ידי `sumeragi.advanced.da.quorum_timeout_multiplier`. זמן זמינות הזמינות הוא `max(quorum_timeout, availability_timeout_floor_ms) * availability_timeout_multiplier`. לפני שזמן זמינות זה ייגמר, הערך מעדיף את השיקום של עומס תועלת וממנע מחודש מוקדם; לאחר שהוא יגמר, ניתן להמשיך בנתיבים רגילים של חיזור ושינוי התצפיות .
 
 ### הערות של המפעילים {#operator-notes}
 
@@ -485,82 +502,161 @@ SoraFS הוא הרכב האחסון הבלתי מרכזי עם כתובת תוכ
 
 טיפוסי SoraFS השימוש כולל נכסי יישומים סטטיים, בניית מסמכים, אזור קבוצות, דוגמאות או תיקונים של חפצים, וקבוצות ראיות לניהול. Iroha מודל נתונים חשוף SoraFS אירועים כניסה ו [`FindSorafsProviderOwner`](/he/reference/queries.md#nexus-data-availability-and-packages) בקשה לפתרון הבעלים של ספק.
 
-### קבלו, הודיעו, חתמו ושלחו {#pack-manifest-sign-and-submit}
+### Taira פרופיל טסטנט {#taira-testnet-profile}
 
-```bash
-cargo run -p sorafs_car --features cli --bin sorafs_cli -- \
-  car pack \
-  --input ./dist \
-  --car-out artifacts/site.car \
-  --plan-out artifacts/site.chunk-plan.json \
-  --summary-out artifacts/site.car-summary.json
+Taira הוא הציבור הקנוני SoraFS רשת בדיקת. פרופיל ההסכם שלו משתמש בשולש `fc56984b-2be7-431d-840e-21514d1883f0` ודיסקרימיננט שרשרת `369`. הוא פורסם SoraFS הגדרות הן:
 
-cargo run -p sorafs_car --features cli --bin sorafs_cli -- \
-  manifest build \
-  --summary artifacts/site.car-summary.json \
-  --manifest-out artifacts/site.manifest.to \
-  --manifest-json-out artifacts/site.manifest.json \
-  --pin-min-replicas=3 \
-  --pin-storage-class=warm \
-  --pin-retention-epoch=42
+- רשת ID: `hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94`
+- בסיס שער URL: `https://taira.sora.org`
+- קישור Torii URLs: `https://taira-validator-1.sora.org` עד `https://taira-validator-4.sora.org`
+- יכולות גילוי: `torii_gateway`, `chunk_range_fetch`, ו `potr_mldsa`
+- מקור תוכן מבודד: `https://{cid}.sorafs.taira.sora.org/{path}`
+- מדיניות ה-PIN הציבורית: ללא רשות ומוסגרת תשלום, עם `require_council_signatures = false`
 
-SIGSTORE_ID_TOKEN=$(oidc-client fetch-token) \
-cargo run -p sorafs_car --features cli --bin sorafs_cli -- \
-  manifest sign \
-  --manifest artifacts/site.manifest.to \
-  --bundle-out artifacts/site.manifest.bundle.json \
-  --signature-out artifacts/site.manifest.sig
+```toml
+[sorafs.storage]
+enabled = false
+max_capacity_bytes = 13743895347
 
-cargo run -p sorafs_car --features cli --bin sorafs_cli -- \
-  manifest submit \
-  --manifest artifacts/site.manifest.to \
-  --chunk-plan artifacts/site.chunk-plan.json \
-  --torii-url "$TORII_URL" \
-  --resolve-submitted-epoch=true \
-  --authority=<i105-account-id> \
-  --private-key-file ./secrets/authority.ed25519 \
-  --summary-out artifacts/site.manifest.submit.json \
-  --response-out artifacts/site.manifest.submit.body
+[sorafs.discovery]
+discovery_enabled = true
+known_capabilities = ["torii_gateway", "chunk_range_fetch", "potr_mldsa"]
+
+[sorafs.discovery.publish]
+gateway_base_url = "https://taira.sora.org"
+pin_torii_urls = [
+  "https://taira-validator-1.sora.org",
+  "https://taira-validator-2.sora.org",
+  "https://taira-validator-3.sora.org",
+  "https://taira-validator-4.sora.org",
+]
+
+[sorafs.gateway.untrusted_hosting]
+enabled = true
+path_gateway_redirect = true
+redirect_html_only = true
+
+[sorafs.gateway.untrusted_hosting.cid_host_suffixes]
+taira = "sorafs.taira.sora.org"
+
+[sorafs.repair]
+enabled = false
+
+[sorafs.gc]
+enabled = false
+
+[gov.sorafs_pin_policy]
+require_council_signatures = false
 ```
 
-אם `/v1/sorafs/pin/register` לא נשלח על הערך היעד, CLI יכול לחזור למסר `/transaction` חתום ולחכות לסטטוס של צינור טערמין.
+בדיקות Taira יש דמיון מעובד SoraFS אחסון, תיקון ואספקה אשפה. יכולתם המוגדרת נשארת חלק מהבדיקת בדיקת התקציב של דיסק; זה לא אומר שהמתוקן הוא ספק אחסון. השתמש `GET /v1/sorafs/storage/peers?limit=4` כדי לקרוא את הכניסה הקונפיגורית הנוכחית ואת יעדים הפין לפני מבחן.
+
+ה- `sorafs.sora.org` CID המשנה היא פרופיל ההפקה/הצירום, לא Taira. אל תשים את זה. Taira מוניפסטים, בדיקות מקור או מבחני דפדפן. פיתוחי הייצור חייבים להשתמש בדמות רשת משלהם, במפתחות ניהול חומר הכניסה של ספק, נקודות סיום פין ומדיניות קיבולות/תקן; אף פעם לא להעתיק Taira רשימות או הנחות של נקודות סיום לתוך תיקון ייצור.
+
+### שערות מקומיות ציבוריות CID ושערים באתר {#public-local-cid-and-site-gateways}
+
+כל קשר Torii המאפשר SoraFS מקין את המסלולים הציבוריים האנונימיים הללו גם כאשר האפליקציה אופציונלית API אינה בנויה:
+
+|שיטה ונקודת סוף |מטרה.|
+| ---------------------------------- | -------------------------------------------------------------------- |
+|`GET /.well-known/sorafs/manifest` |תחזיר את המניפסט שנבחר על ידי מארח בקשה קנוניקה |
+|`GET /v1/sorafs/cid/{cid}` |להחזיר מטא נתונים מקומיים מגבילים ופרסומים בקבצים עבור אחד CID |
+|`GET /sorafs/cid/{cid}` |לשרת את המסמך המקור עבור אתר אחד מקומי עם כתובת תוכן |
+|`GET /sorafs/cid/{cid}/{*path}` |לשרת מסלול נורמלי אחד, או טווח בייט מוגבל אחד, תחת CID |
+
+הנתיבים האלה אף פעם לא מקבלים `x-sorafs-stream-token` או `x-sorafs-token-id`. נוכחות של שני כותרות היא בקשה גרועה. מוניסט קנוני כבר קיים בחנות המקומית הרשמית של הערך הוא יכולת קריאה ציבורית; חוסר קש לא מאפשר מיזוג מתפקד מרוחק. ספק מוגן CAR וסלולים קטלניים נשארים שטחים פרטיים של פרוטוקול מאושרים.
+
+לפני קריאת בייטים, Torii מאשר את ההצפנה הקנוניקה של המניסט מקומי, המגבלות סימנטיות, דיגסט והשורש CID. הוא דורש אז את זהותו של ספק מקומי סמכותי, הכרת השלטון והתאימות נשלטת למניסט, CID ומספק. מדיניות שערי הכניסה/מסר משתמשת בכתובת הלקוח הפועלת, ומכבדת כתובות מועברות רק באמצעות פרוקסיות אמינות מותאמות. אם מדיניות, תקיפות, זהות או מצב קבלה חסרים, Torii דוחה את בקשה.
+
+בקשה אחת יש רישיון שער ציבורי מסוף עד הסוף; הגבול של התהליך כולו הוא 64 קריאות בו זמנית. עם בקשות מוגזמות שהוחזרו `503 Service Unavailable` ו `Retry-After: 1`. תגובות מפורשות מוגבלות ל-16 MiB, רשימת הקבצים מקובלת ל-50 כתיבים ומחזירה לכל היותר 500, וקובץ שלם או טווח בייט אחד מוגבל ל-8 MiB. חישוב השאלות תלוי בנייה. `app_api` build מקבלת 32 ביטים לא חתומים. `limit`, מתעלמים מפתחי חיפוש אחרים, מאפשרים לחזור על האחרונים `limit` ניצחון, ומכניס את הערך לתוך `1..=500`. מבנה מינימלי ללא תכונות `app_api` מקבל רק קנוניקה אחת `limit=1..500` זוג ומסרב צורות לא ידועות, חוזרות ונשנות, מקודדות אחוזים או שאינן קנוניקות. `limit=<1..500>` זוג להתנהגות ניידת בין מבנים. CIDs, המארחים, הנתיבים והכותרות של טווח נשארו קנוניים ועם ערך חד פעמי בשני הבדלים. HTML, CSS, JavaScript, SVG, XML, PDF, או תוכן Wasm משמש רק ממערכת מוגדרת CID-מוצא מבודד (או ממוקם לשם), שמונע מקורות שער משותפים מבצעים תוכן לא אמין.
+
+### חבילת, בנייה ושלוח {#pack-build-and-submit}
+
+הדוגמא של מוטציה הבאה משתמשת ב- Taira `NetworkId`, נקודת הסיום של סימן, רצפת העכבה ומדיניות השלטון. השתמשו בחשבון טסטנץ מימון וקובץ מפתח חד פעמי לבעלים בלבד. Taira מקבל פנים ללא רשות ללא חתימות מועצה, אך עדיין דורש את עמלה המוסרת.
+
+```bash
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  car pack \
+  --input=./dist \
+  --car-out=artifacts/site.car \
+  --plan-out=artifacts/site.chunk-plan.json \
+  --summary-out=artifacts/site.car-summary.json
+
+: "${TAIRA_AUTHORITY:?set a funded Taira I105 account}"
+export TAIRA_NETWORK_ID='hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94'
+export TAIRA_PIN_TORII_URL=https://taira-validator-1.sora.org
+export TAIRA_PRIVATE_KEY_FILE="${TAIRA_PRIVATE_KEY_FILE:-./secrets/taira-authority.ed25519}"
+export TAIRA_RETENTION_EPOCH=$(( $(date -u +%s) + 86400 ))
+
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  manifest build \
+  --summary=artifacts/site.car-summary.json \
+  --manifest-out=artifacts/site.manifest.to \
+  --manifest-json-out=artifacts/site.manifest.json \
+  --pin-min-replicas=1 \
+  --pin-storage-class=warm \
+  --pin-retention-epoch="$TAIRA_RETENTION_EPOCH"
+
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  manifest submit \
+  --manifest=artifacts/site.manifest.to \
+  --chunk-plan=artifacts/site.chunk-plan.json \
+  --torii-url="$TAIRA_PIN_TORII_URL" \
+  --network-id="$TAIRA_NETWORK_ID" \
+  --authority="$TAIRA_AUTHORITY" \
+  --private-key-file="$TAIRA_PRIVATE_KEY_FILE" \
+  --summary-out=artifacts/site.manifest.submit.json \
+  --response-out=artifacts/site.manifest.submit.body
+```
+
+`manifest submit` דורש `/v1/sorafs/pin/register`. אם הערך היעד אינו מוביל אותו, הפקודה נכשלת; השחרור הראשון CLI לא חוזר לנקודת הסיום הגנרית `/transaction`.
 
 ### תבדקו ותביאו {#verify-and-fetch}
 
-```bash
-cargo run -p sorafs_car --features cli --bin sorafs_cli -- \
-  proof verify \
-  --manifest artifacts/site.manifest.to \
-  --car artifacts/site.car \
-  --chunk-plan artifacts/site.chunk-plan.json \
-  --summary-out artifacts/site.verify.json
+קבל את ספקו ID ואת בסיס המפרסם URL מהקטלוג של ספקן Taira, וקבל את מפתח הכניסה והצבעת הזרם באמצעות זה זרימת הכניסה של ספק. הערכים אלה אינם הגדרות אחסון מתוקן. המתוקנים המודפסים Taira מעבירים את האחסון, ולכן אל תחליפו את סינור התוקן URL למספק URL.
 
-sorafs_cli fetch \
-  --plan artifacts/site.chunk-plan.json \
-  --manifest-id <manifest-digest-hex> \
-  --provider name=primary,provider-id=<provider-id-hex>,base-url=https://gateway.example.org/,stream-token="$(cat provider.token)" \
-  --output artifacts/site.fetch.tar \
-  --json-out artifacts/site.fetch.json
+```bash
+export TAIRA_ROOT=https://taira.sora.org
+curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
+
+: "${TAIRA_SORAFS_PROVIDER_ID:?set the admitted provider ID from Taira discovery}"
+: "${TAIRA_SORAFS_GATEWAY_KEY:?set the provider gateway key}"
+: "${TAIRA_SORAFS_PROVIDER_URL:?set the advertised provider base URL}"
+: "${TAIRA_SORAFS_STREAM_TOKEN_FILE:?set the issued stream-token file}"
+
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  proof verify \
+  --manifest=artifacts/site.manifest.to \
+  --car=artifacts/site.car \
+  --chunk-plan=artifacts/site.chunk-plan.json \
+  --summary-out=artifacts/site.verify.json
+
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  fetch \
+  --plan=artifacts/site.chunk-plan.json \
+  --manifest-id=<manifest-digest-hex> \
+  --provider=name=taira,provider-id="$TAIRA_SORAFS_PROVIDER_ID",gateway-key="$TAIRA_SORAFS_GATEWAY_KEY",base-url="$TAIRA_SORAFS_PROVIDER_URL",stream-token="$(cat "$TAIRA_SORAFS_STREAM_TOKEN_FILE")" \
+  --output=artifacts/site.fetch.tar \
+  --json-out=artifacts/site.fetch.json
 ```
 
 ### בדיקות הוכחה לגיבוי {#proof-of-retrievability-checks}
 
-המפעילים יכולים לבדוק ולפעול בדיקות ראיות עבור ספקי אחסון:
+מפעלים יכולים לבחון, לייצא ולדווח על תוצאות הוכחה לתאוששות. האתגרים מתוכננים על ידי צינור ההוכחות של הרשת; CLI מפרסם את התוצאות שלהם.
 
 ```bash
-sorafs_cli por status \
-  --torii-url "$TORII_URL" \
-  --manifest <manifest-digest-hex> \
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  por status \
+  --torii-url="$TAIRA_PIN_TORII_URL" \
+  --manifest=<manifest-digest-hex> \
   --status=failed \
   --limit=20
 
-sorafs_cli por trigger \
-  --torii-url "$TORII_URL" \
-  --manifest <manifest-digest-hex> \
-  --provider <provider-id-hex> \
-  --reason=latency_probe \
-  --samples=48 \
-  --auth-token artifacts/challenge_token.to
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  por report \
+  --torii-url="$TAIRA_PIN_TORII_URL" \
+  --week=<YYYY-Www> \
+  --format=json
 ```
 
 ## SoraDNS {#soradns}
@@ -574,13 +670,13 @@ SoraDNS הוא שכבת ההגדרה של השמות עבור שירותים ו�
 |טופס |דוגמה |מטרה.|
 | --- | --- | --- |
 |מקור השטויות |`https://<fqdn>/<path>` |אפליקציית קאנוניקה URL נרשמת במניפסטים ובנקודות השחרור |
-|Taira שער הדפדפן |`https://<fqdn>.mon.taira.sora.net/<path>` |שער דפדפן ציבורי לכינוי זיהוי פעיל |
+|Taira שער הדפדפן |`https://<fqdn>.mon.taira.sora.net/<path>` |שער הדפדפן הציבורי לכינוי זיהוי פעיל |
 |Torii נתיב אחורה |`https://taira.sora.org/soradns/<fqdn>/<path>` |Torii תיקון ומסלול אחזור לכינוי כתיב פעיל |
-|שער חישוי קאנוני|`<base32(blake3(name))>.gw.sora.id` |זהות כניסה דטרמינסטית והבדיקת GAR |
+|שער חישוי קאנוני|`<base32(blake3(name))>.gw.sora.id` |זהות כניסה דטרמינסטית וחיקוי GAR |
 
-ההפסקות `/soradns/<alias>/...` אינה הציבורית המועדפת URL. כלי, מוניסטים של אפליקציות, ועיצוב קצה הקדמי צריך להעדיף את המארח הריק עצמו. אם שם כינוי אינו פעיל ב Taira, שער הדפדפן או מסלול ההחזרה יכול לחזור `404` או להיכשל TLS לפני שתתחיל הנסיעה של היישום. .
+ההפסקות `/soradns/<alias>/...` אינה הציבורית המועדפת URL. כלי, מוניסטים של אפליקציות, ועיצוב קצה הקדמי צריך להעדיף את המארח הריק עצמו. אם שם כינוי אינו פעיל ב Taira, שער הדפדפן או מסלול ההחזרה יכול לחזור `404` או להיכשל TLS לפני שתתחיל הנתיב של היישום. .
 
-### מארגני שער נגזרים {#derive-gateway-hosts}
+### מארגני שער מוצא {#derive-gateway-hosts}
 
 ```ts
 import {
@@ -607,7 +703,7 @@ console.log(hostPatternsCoverDerivedHosts(patterns, derived))
 
 GAR המשאבים הפועלים צריכים לכסות את מארח ההש הקנוני, את כרטיס הברזל הקנוני והארח היפה הנבחר.
 
-### קבל תמונה של תיקון Resolver Snapshot {#fetch-a-resolver-directory-snapshot}
+### קבל תמונה של תיקון Resolver {#fetch-a-resolver-directory-snapshot}
 
 ```bash
 curl -i "$TORII_URL/v1/soradns/directory/latest"
@@ -621,28 +717,28 @@ soradns_resolver rad verify \
   --rad ./state/soradns-directory/rad/resolver-a.norito
 ```
 
-שערות צריכות לסרב את המפתחים אשר מסמך אישור הגורם שלהם חסר, נגמר, לא חתום או לא מקושר לקובץ Merkle root האחרון. ברשת שבה עדיין לא פורסם קובץ גורם הגורם, `/v1/soradns/directory/latest` יכול להחזיר `404` גם אם הנתיב פעיל.
+שערות צריכות לסרב את המפתחים אשר מסמך אישור הגורם שלהם חסר, נגמר, לא חתום או לא מקושר לקובץ Merkle שורש. ברשת שבה עדיין לא פורסם קובץ גורם הגורם, `/v1/soradns/directory/latest` יכול להחזיר `404` למרות שהדרך פעילה.
 
-### מחלקת ציבורית DNS {#public-dns-delegation}
+### משלחת ציבורית DNS {#public-dns-delegation}
 
-SoraDNS תוצרת מארח לא מחליפה את משלחת האינטרנט הרגילה DNS. אם שם ציבורי DNS צריך להצביע על שער SoraDNS:
+SoraDNS תוצרת המארח לא מחליפה את משלחת האינטרנט רגילה DNS. אם שם ציבורי DNS צריך להצביע על שער SoraDNS:
 
-- עבור תת-גופים, לפרסם CNAME למארח הנבחר יפה
+- עבור תת-גבולות, לפרסם CNAME למארח הנבחר יפה
 - עבור שמות העליון, השתמשו ALIAS/ANAME או A/AAAA רשומות בשער anycast IPs
-- לשמור על מארח ההש הקנוני תחת תחום שער SoraDNS עבור בדיקות GAR
+- לשמור את מארח ההש הקנוני תחת תחום שער SoraDNS עבור בדיקות GAR.
 
 ## FHE ו UAID {#fhe-and-uaid}
 
 שטחים הקשורים FHE הזמינים לשירותים Nexus כוללים:
 
 - `iroha_crypto::fhe_bfv` מיישמת תמיכה דטרמיסטית BFV לביצוע הערכה של טקסט סיפר סקאלארי. החלטת מזהה משתמשת ב `BfvIdentifierPublicParameters` ו `BfvIdentifierCiphertext`, שבו חלון 0 מאחסן את אורך הביט הכניסה ואת חלונות מאוחר יותר מאחסנים בייט אחד מוצפן לכל אחד.
-- Soracloud מודל של תכניות מצב ומשרות FHE עומסי עבודה של טקסט סיפר עם קבוצות פרמטרים ניהוליות, מדיניות ביצוע, מחויבות בטקסט סיפרי, מעטפות בקשות וזמנות גילוי מידע.
+- Soracloud מודל של תכניות מצב ומשרות FHE עומסי עבודה של טקסט סיפרת עם קבוצות פרמטרים ניהוליות, מדיניות ביצוע, מחויבות בטקסט סיפריה, מעטפות שאלות וזמי לבקש גילוי מידע.
 
 נתיב מזהה BFV משמש להירשם שמגן על הפרטיות. לקוח יכול לשלוח מזהה מוצפן למפתר Torii. המפתר מעריך על פי מדיניות ההזהה הפעילה, הוא מוצא `OpaqueAccountId` ומעניק קבלה. `ClaimIdentifier` לאחר מכן מחבר את הקבלה ל- UAID המוסמך לחשבון היעד.
 
 ה- UAID הוא זהות ויכולת מעוגד סביב הזרימה הזאת. במודל הנתונים, `UniversalAccountId` הוא נתמך בהשיש ומוצג כ `uaid:<hash>`. הפרסורים מקבלים או `uaid:<hash>` או את ה-64 העקסיות המקוריות. `Account` ו `NewAccount` כולל אופציונלי `uaid` ו `opaque_ids` שדות. רישום בזמן ההפעלה מכיל UAID-אינדקס לחשבון, דוחה מזהים חיוורים כפולים או מתנגשים, ודוחה מזהים לא שקולים ללא UAID. בכל פעם ש UAID שינויים בהקשר לחשבון, זמן ההפעלה מבנה מחדש Space Directory קשרים נתונים UAID.
 
-קובץ מרחב מונפסט מקושר יכולות ל UAID. `AssetPermissionManifest` מכניסים את UAID, חלל נתונים, תקופת הפעולה והסגירה אופציונלית, ומזוהרים הרשמי / סירוב הכתיבות על ידי חלל נתוני, תוכנית, שיטה, נכס, ו AMX תפקיד. הערכה היא סירוב-ניצחונות: סירוב התאמה הראשון דוחה את בקשה, אחרת המועמד האחרון מאפשר התאמה הוא בודק נגד כל גבול הסכום. פרסום, סיפוק וביטול המוניסטרים אלה מוגנים על ידי `CanPublishSpaceDirectoryManifest`.
+קובץ מרחב מונפסט מקושר יכולות ל UAID. `AssetPermissionManifest` מכניסים את UAID, חלל נתונים, תקופת הפעולה והסגירה אופציונלית, ומזוהרים הרשמי / סירוב הכתיבות על ידי חלל נתוני, תוכנית, שיטה, נכס, ו AMX תפקיד. הערכה היא סירוב-ניצחונות: סירוב התאמה הראשון דוחה את בקשה, אחרת המועמד האחרון מאפשר התאמה נבדק נגד כל גבול הסכום. פרסום, סיפוק וביטול המוניסטרים האלה מוגנים על ידי `CanPublishSpaceDirectoryManifest`.
 
 עבור מצב Soracloud FHE, התכניות המוצעות הן:
 
@@ -658,7 +754,7 @@ SoraDNS תוצרת מארח לא מחליפה את משלחת האינטרנט �
 
 `FheJobSpecV1::validate_for_execution` בודק אם המשימה, מדיניות הביצוע והסגנום של הפרמטרים מסכימים לפני הקבלה. הוא גם מכיל חוקים ספציפיים לפעילות: הוספת ומضاعفة דורשים לפחות שני הכניסות. רוטוט ו-bootstrap צריכים בדיוק הכניסה אחת, ואת עומק המבוקש, ספירת הרוטציה, ספירה של bootstrap, ספירת הכניסה, בייטים של עומס מועיל וגודל ההוצאת הדeterministic חייבים להישאר בתוך גבולות המדיניות. תוצאות שאלת סיפר טקסט לא צריכות להחזיר שורות של טקסט פשוט.
 
-UAID אינו טקסט הסיפר ולא המדיניות של FHE עצמה. זהו מעגד יכולת חשבון יציב המשמש למצוא את החשבון, דרישות מזהה לא ברורות, וחיבורי תיווך מרחב אשר מאשרים שירות או זרם חלל נתונים. תכניות FHE משלטות את הכניסה והבצע של מטען מועיל מוצפן בנפרד באמצעות קבוצות פרמטרים, מדיניות ביצוע, מחויבות טקסט סיפרים, ומדיניות סמכות פירוק.
+UAID אינו טקסט הסיפר ולא המדיניות של FHE עצמה. זהו מעגד יכולת חשבון יציב המשמש למצוא את החשבון, דרישות מזהה לא ברורות, וחיבורי תיווך מרחב אשר מאשרים שירות או זרם חלל נתונים. תכניות FHE משלטות את הכניסה והבצע של מטען מועיל מוצפן בנפרד באמצעות קבוצות פרמטרים, מדיניות ביצוע, מחויבות טקסט סיפרים ומדיניות סמכות פירוק.
 
 שטחי Torii רלוונטיים כוללים:
 
@@ -677,16 +773,17 @@ UAID אינו טקסט הסיפר ולא המדיניות של FHE עצמה. ז�
 
 ## רשימת בדיקת פעילות {#operational-checklist}
 
-- אישור משפחות שירות פעילות עם `/openapi` על הערך היעד Torii.
-- מתייחסו למניפסטים של הפעלת Soracloud, למניפסטן של SoraFS, לרשומות של תיק המפתר SoraDNS, לרשומים של תיק המשך SoraNet, ולכוונות של פין או מחויבויות זמינות DA כאל חפצים רגישים לניהול.
+- אישור משפחות שירות שנוצרו עם `/openapi` על הערך המטרה Torii, ולחקור באופן ישיר את המסלולים הציבוריים המקומיים SoraFS CID ומוכרים היטב .
+- מתייחסו למניפסטים של הפעלת Soracloud, למניפסטן של SoraFS, לרשומות של תיק המפתר SoraDNS, לרשומים של תיק המשך SoraNet ו DA התכוונות של פין או התחייבויות זמינות כאל חפצים רגישים לשלטון.
 - השתמשו באותו פרופיל SORA Nexus באופן עקבי בין מתוארים ברשת אחת.
 - שמרו על שורש Inrou וקובץ השכרה משותפים במניפסטים במקום להסתמך על מסלולים מקומיים של עמודי דף.
 - השתמשו בדיקת הוכחה SoraFS לפני קידום שם כינוי לתוכן.
 - מעקב SoraNet תקלות של מחזק יד, DA קוורום או זמן זמינות, SoraFS סירובים בשער, SoraDNS RAD טריות, ו Soracloud רולאוט בריאות.
-- לשימוש ציבורי Taira או Minamoto, תתחיל עם [תקשר לתאונות הנתונים SORA Nexus ](/he/get-started/sora-nexus-dataspaces.md).
+- לשימוש ברשת בדיקת ציבורית, השתמשו בפרופיל Taira ותתחילו עם [התקשרות לשטחי נתונים SORA Nexus ](/he/get-started/sora-nexus-dataspaces.md).
 
 ראו גם:
 
 - [נקודות קצה Torii ](/he/reference/torii-endpoints.md)
 - [פילטר אירועי נתונים ](/he/blockchain/filters.md#data-event-filters)
 - [רשיון השאלות](/he/reference/queries.md#nexus-data-availability-and-packages)
+- [קנוניקה Taira תאי אישור ב- commit pinned](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/configs/soranexus/taira/config.toml)

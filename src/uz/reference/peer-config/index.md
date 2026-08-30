@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /reference/peer-config/index.md
-translation_source_hash: 5cc6ddf62a45f655d61a0ff3ebc7e20b939fe78c9d542087b717c2e17e19250d
+translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f29469aaf4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 Mahalliy tengdosh konfiguratsiyasi TOML fayllarida o'rnatilgan. Bu [`SetParameter`](/uz/blockchain/instructions.md#setparameter) ko'rsatmalari orqali o'zgartirilgan zanjirdagi konfiguratsiyadan farq qiladi. Mahsulot xatti-harakati konfiguratsiya fayli yoki zanjirdagi parametrda ifoda etilishi kerak; atrof muhit o'zgaruvchilari xususiyat darvozalari emas.
 
-Konfiguratsiya fayliga yo'lni aniqlash uchun [`--config`](../irohad-cli#arg-config) CLI argumentidan foydalaning.
+Konfiguratsiya fayliga yo'lni aniqlash uchun [`--config`](../iroha3d-cli#arg-config) CLI argumentidan foydalaning.
 
 ## Namuna {#template}
 
@@ -65,4 +65,4 @@ Natijada `a.toml` dan `chain`, `max_content_len` dan `b.toml` va `torii.address`
 
 ## Muammolarni hal qilish {#troubleshooting}
 
-Konfiguratsiya qanday o'qilishi va tahlil qilinishini ko'rish uchun [`--trace-config`](../irohad-cli#arg-trace-config) CLI bayroqini o'tkazib yuboring.
+Konfiguratsiya qanday o'qilishi va tahlil qilinishini ko'rish uchun [`--trace-config`](../iroha3d-cli#arg-trace-config) CLI bayroqini o'tkazib yuboring.

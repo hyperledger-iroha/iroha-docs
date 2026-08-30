@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 49e1a29243151fec1ada2729c315378455a8502811e1ae124e5917a88d59b55d
+translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -36,7 +36,10 @@ cargo build --workspace
 爲了一個較小的操作員集中構建,只編譯主要二進制:
 
 ```bash
-cargo build --release -p irohad -p iroha_cli -p iroha_kagami
+cargo build --release \
+  -p irohad --bin iroha3d --bin iroha3d_taira \
+  -p iroha_cli --bin iroha \
+  -p iroha_kagami --bin kagami
 ```
 
 由此產生的二進制字符是以 `target/debug/`或 `target/release/`編寫.
@@ -44,14 +47,16 @@ cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ## 4. 檢查安裝的工具 {#_4-verify-the-installed-tools}
 
 ```bash
-cargo run --bin irohad -- --help
+cargo run -p irohad --bin iroha3d -- --help
+cargo run -p irohad --bin iroha3d_taira -- --help
 cargo run --bin iroha -- --help
 cargo run --bin kagami -- --help
 ```
 
-你通常會使用的三個二進制是:
+您通常使用的四個二進制是:
 
-- `irohad` 對同齡妖怪
+- `iroha3d`用於標準的同齡妖怪
+- `iroha3d_taira` 對於法典 Taira 驗證器發射器
 - `iroha` 對於 CLI 訪問 Torii 和運營商終端點
 - `kagami` 對於密鑰,基因表和局域網配置文件
 

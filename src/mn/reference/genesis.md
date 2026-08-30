@@ -1,29 +1,31 @@
 ---
 translation_locale: mn
 translation_source: /reference/genesis.md
-translation_source_hash: 6710e76508e6a38a6b68d274247cc1383de2472e74f10be85000b30f74cb04a6
+translation_source_hash: 1312e80d9e662cc3e8cf4d0668ff4bb9e6ce3f74a60bb5287205aeeb5afd5de8
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Женезийн өгүүлэл {#genesis-reference}
+# Эхлэл ишлэл {#genesis-reference}
 
-Одоогийн Iroha 3 ажлын урсгалд `genesis.json` манфист нь сүлжээг эхлүүлэх үед хэрэглэх анхны гүйлгээ, параметрүүдийг тодорхойлж байна.
+Одоогийн байдлаар Iroha 3 ажлын урсгал, a `genesis.json` манифест нь эхнийхийг тайлбарладаг
+сүлжээг эхлүүлэх үед хэрэгжих гүйлгээ болон параметрүүд.
 
-Norito-ийн кодтой `.nrt` файл нь `kagami genesis sign` үйлдвэрлэсэн гарын үсэг зурсан артефакт юм.
+Үе тэнгийнхэндээ тараасан гарын үсэгтэй олдвор нь а Norito-кодлогдсон `.nrt` файл
+үйлдвэрлэсэн `kagami genesis sign`.
 
-## Үндсэн талбар {#main-fields}
+## Үндсэн талбарууд {#main-fields}
 
-Женезисийн манифест тодорхойлох боломжтой:
+Генезисийн манифест нь дараахь зүйлийг тодорхойлж болно.
 
-- `chain` сүлжээний тодруулгын хувьд
-- `executor` сонголттой гүйцэтгэгч шинэчлэлийн байткод замыг
-- `ivm_dir` нь IVM номын сангийн үйл ажиллагааг эхлүүлэх болон шинэчлэл хийхэд ашигладаг
-- `consensus_mode` анхан шатны хэв маягт зарласан
-- `transactions` нь параметр шинэчлэл, заавар, хөдөлгөөн үүсгэгчид болон топологийн дараалалтай
-- `crypto` эхлүүлэх крипто урсгалын хувьд
+- `chain` гинжин танигчийн хувьд
+- `executor` нэмэлт гүйцэтгэгч шинэчлэх байт кодын замын хувьд
+- `ivm_dir` төлөө IVM өдөөгч болон шинэчлэлтүүдийн ашигладаг номын сангууд
+- `consensus_mode` манифестээр сурталчилсан анхны горимын хувьд
+- `transactions` захиалгат параметрийн шинэчлэлт, зааварчилгаа, триггер, топологийн хувьд
+- `crypto` анхны крипто агшин зургийн хувьд
 
-`transactions` дотроо топологийн бүртгэлүүд нь өрсөлдөгчийн ID болон PoPs-ийн хамтдаа:
+Дотор `transactions`, топологийн оруулгууд хос ids болон PoPs хамтдаа:
 
 ```json
 {
@@ -32,9 +34,9 @@ Norito-ийн кодтой `.nrt` файл нь `kagami genesis sign` үйлдв
 }
 ```
 
-## Үргэлж гаргах {#generate-a-manifest}
+## Манифест үүсгэх {#generate-a-manifest}
 
-Kagami -ийг ашиглан загварыг бүтээх:
+Ашиглах Kagami загвар үүсгэхийн тулд:
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
@@ -43,23 +45,30 @@ cargo run -p iroha_kagami -- genesis generate \
   --genesis-public-key <PUBLIC_KEY> > genesis.json
 ```
 
-Олон нийтийн SORA Nexus өгөгдлийн орон зайд, `npos` бол хүлээгдсэн тохиролцооны хэв маяг юм. бусад Iroha 3 нэвтрүүлэгүүд нь зорилтын профилийн дагуу зөвшөөрөлтэй эсвэл NPoS-ийг ашиглаж болно.
+Олон нийтийн төлөө SORA Nexus өгөгдлийн орон зай, `npos` хүлээгдэж буй зөвшилцлийн горим юм.
+Бусад Iroha 3 байршуулалт нь зорилтот байдлаас хамааран зөвшөөрөгдсөн эсвэл NPoS ашиглаж болно
+профайл.
 
-## Бүртгэлд гарын үсэг зурна {#sign-the-manifest}
+## Манифестт гарын үсэг зурна уу {#sign-the-manifest}
 
-JSON-ийг зохицуулж, баталгаажуулсан дараа ашиглах боломжтой `.nrt` блок руу гарын үсэг зур:
+Засаж, баталгаажуулсны дараа JSON, байршуулах боломжтой болгон гарын үсэг зурна уу `.nrt` блок:
 
 ```bash
 cargo run -p iroha_kagami -- genesis sign genesis.json \
-  --private-key <PRIVATE_KEY> \
+  --private-key-file <MODE_0600_PRIVATE_KEY_FILE> \
   --out-file genesis.signed.nrt
 ```
 
-`kagami genesis sign` нь генезисийн олон нийтийн түлхүүрг манифестээс уншдаг бөгөөд нэвтрүүлэх боломжтой гарын үсэг зурсан блок үйлдвэрлэхэд зориулсан хувийн түлх, үр тариа, алгоритмыг ашиглаж байна.
+`kagami genesis sign` манифестээс генезийн нийтийн түлхүүрийг уншиж, ашигладаг
+үүсгэхийн тулд эзэмшигчийн эзэмшдэг, нэг холбоостой ердийн файлын хувийн түлхүүр
+байрлуулж болох гарын үсэгтэй блок.Файл нь нэг канон хувийн түлхүүр агуулсан байх ёстой
+multihash дараа нь шинэ мөр; Kagami бэлгэдлийн холбоосууд болон бусад горимуудаас татгалздаг
+-аас `0600`. Түүхий хувийн түлхүүрүүдийг тушаалын мөрөнд хүлээн авахгүй.Үр дүн
+нь үе тэнгийнхэн нь тохиргооноос нь лавлах ёстой файл юм.
 
-## `irohad` тохируулалт {#configure-irohad}
+## Тохируулах `iroha3d` {#configure-iroha3d}
 
-Даемонг гарын үсэг зурсан Женезисийн блок руу чиглүүлж:
+Гарын үсэг зурсан генезисын блок дээр демоныг чиглүүл:
 
 ```toml
 [genesis]
@@ -67,7 +76,7 @@ file = "genesis.signed.nrt"
 public_key = "<PUBLIC_KEY>"
 ```
 
-## Үүнтэй холбоотой хэрэгсэл {#related-tools}
+## Холбогдох хэрэгслүүд {#related-tools}
 
 - `kagami genesis validate`
 - `kagami genesis normalize`
@@ -75,4 +84,5 @@ public_key = "<PUBLIC_KEY>"
 - `kagami localnet`
 - `cargo xtask kagami-profiles`
 
-Женерарын хэрэгжилт, командлалтын дэлгэрэнгүй мэдээллийг [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_kagami/README.md) хаягаар үзнэ үү.
+Генераторын хэрэгжилт болон тушаалын дэлгэрэнгүй мэдээллийг үзнэ үү
+[Kagami README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami/README.md).

@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 9341b2404624dec2230bc294c3d60dc124ac9574a0a5803b9bba744f4c5e7f50
+translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,7 +15,7 @@ Esta página percorre o fluxo de rede local atual para Iroha 3 usando os ativos 
 Gerar uma rede local de quatro pares a partir do código Kagami atual:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 O diretório de saída contém configurações de pares correspondentes, `genesis.json`, `genesis.signed.nrt`, `client.toml` e scripts auxiliares.
@@ -33,10 +33,10 @@ cargo run --bin kagami -- docker \
   --peers 4 \
   --config-dir ./localnet \
   --image hyperledger/iroha:dev \
-  --out-file ./localnet/docker-compose.yml \
+  --out-file ./docker-compose.yml \
   --force
 
-docker compose -f ./localnet/docker-compose.yml up
+docker compose -f ./docker-compose.yml up
 ```
 
 A pilha gerada por padrão expõe:
@@ -72,7 +72,7 @@ O repositório também envia um perfil de configuração orientado para SORA Nex
 Para executar um peer native com o perfil Nexus:
 
 ```bash
-./target/release/irohad --sora --config ./defaults/nexus/config.toml
+./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
 ```
 
 Utilize `defaults/nexus/client.toml` para o acesso a esse perfil CLI.
@@ -88,7 +88,7 @@ Para uma rede local nativa gerada:
 Para a pilha de Compose gerada:
 
 ```bash
-docker compose -f ./localnet/docker-compose.yml down
+docker compose -f ./docker-compose.yml down
 ```
 
 Após a operação da rede, continue com [Operar Iroha 3 através de CLI](/pt/get-started/operate-iroha-via-cli.md).

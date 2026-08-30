@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 49e1a29243151fec1ada2729c315378455a8502811e1ae124e5917a88d59b55d
+translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -36,7 +36,10 @@ cargo build --workspace
 Ավելի փոքր օպերատորների վրա կենտրոնացած կառուցվածքի համար կազմեք միայն հիմնական բինարները.
 
 ```bash
-cargo build --release -p irohad -p iroha_cli -p iroha_kagami
+cargo build --release \
+  -p irohad --bin iroha3d --bin iroha3d_taira \
+  -p iroha_cli --bin iroha \
+  -p iroha_kagami --bin kagami
 ```
 
 Բինարները գրվում են `target/debug/` կամ `target/release/` հասցեով:
@@ -44,14 +47,16 @@ cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ## 4. Ստուգեք տեղադրված գործիքները {#_4-verify-the-installed-tools}
 
 ```bash
-cargo run --bin irohad -- --help
+cargo run -p irohad --bin iroha3d -- --help
+cargo run -p irohad --bin iroha3d_taira -- --help
 cargo run --bin iroha -- --help
 cargo run --bin kagami -- --help
 ```
 
-Այն երեք բինարները, որոնք դուք սովորաբար կօգտագործեք, հետեւյալն են.
+Այն չորս բինարները, որոնք դուք սովորաբար օգտագործում եք հետեւյալն են.
 
-- `irohad` զուգընկերային դեյմոնի համար
+- `iroha3d` ստանդարտ զուգընկերային դեյմոնի համար
+- `iroha3d_taira` քանոնիկ Taira վավերացնող գործարկիչի համար
 - `iroha` ՝ CLI մուտքի համար Torii եւ օպերատորի վերջային կետերի:
 - `kagami` բանալիների, գեներիզային գրքերի եւ տեղական ցանցի պրոֆիլների համար:
 

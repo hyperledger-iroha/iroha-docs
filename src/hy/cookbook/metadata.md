@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /cookbook/metadata.md
-translation_source_hash: 07b065b28eca44939a92b40a81a47b57178de4539abb0daf51913969e34eced7
+translation_source_hash: 238595124cd0a1b71900020d650fb208f844e051d2db4427801fe6405ff591c8
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -133,8 +133,8 @@ fi
 
 ## Աղբյուրը եւ դրա հետ կապված փաստաթղթերը {#source-and-related-docs}
 
-- [Մետադատա հարցումների ինտեգրման փորձարկումներ փինացված հանձնաժողովում](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/queries/metadata.rs)
-- [Python SDK գործարքի կառուցողները փակված պարտավորության վրա](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/python/iroha_python/README.md)
+- [Մետադատա հարցումների ինտեգրման փորձարկումներ փինացված հանձնաժողովում](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/queries/metadata.rs)
+- [Python SDK գործարքի կառուցողները փակված պարտավորության վրա](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/README.md)
 - [Մետադատա](/hy/blockchain/metadata.md)
 - [Մետադատա եւ գլխավոր գրքի պահեստավորման տարբերակներ](/hy/guide/configure/metadata-and-store-assets.md)
 - [Ուղարկման հղում](/hy/reference/instructions.md)

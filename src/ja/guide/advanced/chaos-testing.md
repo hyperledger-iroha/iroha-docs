@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /guide/advanced/chaos-testing.md
-translation_source_hash: dfd2d4196827da3563e377baae2fb823871d7a2c293dfafb6dc4de37f9ddbc61
+translation_source_hash: 5ceee448217a42e4f8bbae9595486b79019e7a880dfd0f2c71bf580409d0e4b9
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 Izanami は,上流 Iroha ワークスペースの混沌ネットオーケストラです. これは使い捨てローカル Iroha クスターを起動し,構成可能な作業負荷を提出し,選択したピースにエラーを注入しますので,オペレーターは制御された故障下でネットワークが継続的に進歩しているかどうかを確認できます.
 
-イザナミは生産前耐性チェック,レグレーション再現,コンセンサスの調節のために使用します.それを生産ネットワークに指さないでください:このツールはピースリセット,ストレージ wipes,人工パケット損失,およびローカル CPU またはディスク圧力を含む起動するピースを所有するように設計されています.
+Izanami を使用して,生産前耐性チェック,レグレーション再現,コンセンサスの調節を行います.それを生産ネットワークに指さないでください:このツールはピアリスタート,ストレージ wipes,一時的な信頼性の高いピアパーティション,およびローカル CPU またはディスク圧力を含む起動するピークを所有するように設計されています.
 
 ## 必須条件 {#prerequisites}
 
@@ -34,7 +34,7 @@ cargo run -p izanami -- --allow-net --peers 4 --faulty 1 --duration 120s
 cargo run -p izanami -- --tui --allow-net
 ```
 
-Izanami は,ユーザの設定ディレクトリの下にある TUI と CLI の設定を保持しているので,以前のプロフィールを再利用する前に表示された設定を再確認してください.
+Izanami は,ユーザー設定ディレクトリの下にある TUI と CLI の設定を保持します.最初のリリースファイルには明示的な V1 レイアウトバイトがあります.プリリリースのまたはその他の未バージョンの設定は拒絶され,移行するのではなく再作成されるべきです.現在のプロフィールを再利用する前に表示された設定を確認します.
 
 ## ベースライン実行 {#baseline-run}
 
@@ -103,32 +103,29 @@ cargo run -p izanami -- \
 |不正なトランザクションスパム|`--fault-enable-spam-invalid-transactions`|受け入れと拒否の経路|
 |ネットワーク遅延|`--fault-enable-network-latency`|遅い噂と合意のメッセージ|
 |ネットワークパーティション|`--fault-enable-network-partition`|信頼される仲間との一時的な隔離|
-|P2P パケットの損失|`--fault-enable-network-packet-loss`|アプリケーションフレームトラフィックが減少しました|
 |CPU ストレス|`--fault-enable-cpu-stress`|ローカル検証とスケジュールプレッシャー |
 |ディスクの飽和度|`--fault-enable-disk-saturation`|ローカルストレージ圧力|
 
-パケット損失のみの実行:
+ネットワークパーティションのみの実行:
 
 ```bash
 cargo run -p izanami -- \
   --allow-net \
-  --peers 20 \
-  --faulty 5 \
-  --duration 800s \
-  --fault-window-start 133s \
-  --fault-window-end 266s \
-  --tps 200 \
-  --submitters 20 \
-  --max-inflight 512 \
+  --peers 4 \
+  --faulty 1 \
+  --duration 5m \
+  --fault-window-start 60s \
+  --fault-window-end 180s \
+  --tps 15 \
+  --submitters 1 \
+  --max-inflight 32 \
   --fault-enable-crash-restart=false \
   --fault-enable-wipe-storage=false \
   --fault-enable-spam-invalid-transactions=false \
   --fault-enable-network-latency=false \
-  --fault-enable-network-partition=false \
-  --fault-enable-network-packet-loss=true \
+  --fault-enable-network-partition=true \
   --fault-enable-cpu-stress=false \
   --fault-enable-disk-saturation=false \
-  --fault-network-packet-loss-percent 75 \
   --seed 42
 ```
 
@@ -142,9 +139,8 @@ cargo run -p izanami -- \
 | --------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 |標的型負荷|`--faulty 0`,高い `--tps`,1人の提出者,高い `--max-inflight` |
 |暫定故障|クラッシュ/再起動を制限された故障ウィンドウ内でのみ有効にする|
-|パケットの損失|パケットの損失のみを有効にします 通常 75% のデフォルト損失率です |
 |停止と回復|クラッシュ/再起動で大きな欠陥ペア集団を使用します |
-|リーダーを孤立させる|ネットワークパーティションまたはパケット損失の故障のみで,正確に1つの欠陥のあるピアを使用します. Izanami は Sumeragi メーカーテレメトリに従います.|
+|リーダーを孤立させる|ネットワークパーティションの故障のみで正確に1つの欠陥ペアを使用します. Izanami は Sumeragi のリーダーテレメトリに従います.|
 
 同じ実行で同級数,作業負荷プロファイル,エラーウィンドウ,および TPS を変更した場合,結果を解釈することは困難です.
 
@@ -156,7 +152,7 @@ cargo run -p izanami -- \
 - 提出された,受け入れられた,拒否された,期限切れの取引
 - 排列深さ,排列飽和度,エンドポイントのバックプレッシャー
 - 閲覧変更,復元経路,欠落ブロック,および欠落するクオラム証明書
-- RBC バックログ,待機セッション,および合意トラフィック減少または遅延
+- 署名された RS16 の可用性バックログ,待機中のセッション,および合意トラフィック遅延
 - CPU,メモリ,ディスク,同級端を実行しているホスト上のネットワークの飽和性
 
 認証遅延分析のために,メインループデバッグログを有効にしてください.
@@ -179,7 +175,7 @@ RUST_LOG=iroha_core::sumeragi::main_loop=debug \
 - p95 遅延度は `--latency-p95-threshold` を上回る
 - 欠陥ウィンドウが閉じた後,ランの残りの時間には排列が増える.
 - 拒否された取引は,選択した作業量によって説明されない.
-- ピアリセット,ストレージ拭き,またはパケット損失復元は手動の掃除を必要とする
+- パイアリセット,ストレージ拭き,またはパーティション復元は手動の掃除を必要とする.
 
 失敗後,同じ種子と欠陥タイプを 1 つ減らして再起動します. これにより,作業負荷とタイミングが再現可能になり,故障の表面は狭くなります.
 

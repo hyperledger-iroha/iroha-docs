@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 77780600fa59ba353e2aa79fb339adb6a02f7ac731e04cd0d5f51821ec54e794
+translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,12 +15,15 @@ translation_engine: nllb-200-ct2
 Iroha жоғары ағыстағы жұмыс кеңістігінен:
 
 ```bash
-cargo build --release -p irohad -p iroha_cli -p iroha_kagami
+cargo build --release \
+  -p irohad --bin iroha3d \
+  -p iroha_cli --bin iroha \
+  -p iroha_kagami --bin kagami
 ```
 
 Бұл:
 
-- `target/release/irohad` жасөспірім дэймон үшін
+- `target/release/iroha3d` жасөспірім дэймон үшін
 - `target/release/iroha` үшін CLI
 - `target/release/kagami` кілттер, генездер және локальдік желілерді өндіру үшін
 
@@ -29,7 +32,7 @@ cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 Төрт жұпты Iroha 3 жергілікті желісін құру:
 
 ```bash
-target/release/kagami localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+target/release/kagami localnet --peers 4 --out-dir ./localnet
 ```
 
 Шығыс каталогында `genesis.json`, `genesis.signed.nrt`, `config.toml` файлдар, `client.toml`, көмекші скрипттер және осы топтамаға арналған нақты командалар бар `README.md` генерацияланған каталогтар болады.

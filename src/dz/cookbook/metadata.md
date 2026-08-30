@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /cookbook/metadata.md
-translation_source_hash: 07b065b28eca44939a92b40a81a47b57178de4539abb0daf51913969e34eced7
+translation_source_hash: 238595124cd0a1b71900020d650fb208f844e051d2db4427801fe6405ff591c8
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -133,8 +133,8 @@ fi
 
 ## གཞི་རྟེན་དང་འབྲེལ་བའི་ཡིག་ཆ་ཚུ་ {#source-and-related-docs}
 
-- [རྩིས་སྒྲིག་འབད་ཡོད་པའི་ commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/queries/metadata.rs) ལུ་ metadata query འབྲེལ་མཐུད་དཔྱད་འབདཝ་ཨིན།
-- [Python SDK འབྲེལ་གཏད་བཟོ་སྐྲུན་འབད་མི་ཚུ་ ཕིན་ཌ་གི་བཅའ་ཁྲིམས་ནང་](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/python/iroha_python/README.md)
+- [རྩིས་སྒྲིག་འབད་ཡོད་པའི་ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/queries/metadata.rs) ལུ་ metadata query འབྲེལ་མཐུད་དཔྱད་འབདཝ་ཨིན།
+- [Python SDK འབྲེལ་གཏད་བཟོ་སྐྲུན་འབད་མི་ཚུ་ ཕིན་ཌ་གི་བཅའ་ཁྲིམས་ནང་](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/README.md)
 - [metadata](/dz/blockchain/metadata.md)
 - [མེ་ཊ་ཌའི་ཊ་དང་ ལེ་ཇར་གི་གནས་སྡུད་བཞག་ནིའི་ གདམ་ཁ་ཚུ་](/dz/guide/configure/metadata-and-store-assets.md)
 - [བརྡ་བཀོད་གི་ཁ་བྱང་](/dz/reference/instructions.md)

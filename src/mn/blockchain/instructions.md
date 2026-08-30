@@ -1,9 +1,9 @@
 ---
 translation_locale: mn
 translation_source: /blockchain/instructions.md
-translation_source_hash: adc3eff9758dd73e9114e78eaa18ddf6271db3bc4042611e1ed6ed1aac226246
+translation_source_hash: ade5ba2b693de7e798490be0947099d0306d9565b88550e201dccd181810fb18
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Iroha Ардчилсан заавар {#iroha-special-instructions}
@@ -21,6 +21,7 @@ Iroha тусгай заавар бичгийн бүрэн жагсаалтыг �
 | [](#grant-revoke) олгох/сэргээх|Тусгай зөвшөөрөл, үүрэг олгох эсвэл арилгах. |
 | [](#transfer) шилжүүлэн суулгах|Ашигт малтмалын эзэмшлийн болон хөрөнгийн үнэ цэнийг шилжүүлнэ. |
 | [Үндэсний хадгаламж болон хөрөнгийн хаалгалтын ](#native-escrow-and-asset-locks) |Санхүүгийн эд хөрөнгийг протоколын хяналтад байлгах.|
+| [Атомын нууц тооцоо](#atomic-private-settlement) | Нууц pool болон атомын багцуудыг удирдана. |
 | [ExecuteTrigger](#executetrigger) |Хөгжүүлэгчийг гүйцэтгэнэ. |
 | [Хөгжлийн тэмдэглэл/Хүнзэт хэрэглээ/Үндэсний шинэчлэл ](#other-instructions) |Хөгжлийн явцыг тэмдэглэх, өргөжүүлэх, шинэчлэх. |
 
@@ -42,6 +43,7 @@ Iroha тусгай заавар бичгийн бүрэн жагсаалтыг �
 | [](#grant-revoke) олгох/сэргээх| [үүрэг, зөвшөөрлийн тэмдэгүүд](/mn/blockchain/permissions.md) |нягтлан бодох бүртгэл, үүрэг|
 | [](#transfer) шилжүүлэн суулгах|доменүүд, хөрөнгийн тодорхойлолтууд, тооны хөрөнгө NFTs |бүртгэл|
 | [Үндэсний хадгаламж болон хөрөнгийн хаалгалтын ](#native-escrow-and-asset-locks) |санхүүгийн хөрөнгийн хадгаламж, хөрөнгийн хаалгалт, нууцлагдсан хадгаламжийн үүрэг |худалдан авагчид, чиглэлүүд эсвэл маргаан хуваагдал |
+| [Атомын нууц тооцоо](#atomic-private-settlement) | тодорхой чиглэлд хязгаарлагдсан нууц pool, бодлогын эргэлт, эцэслэсэн багц болон цуцлах тэмдэг | |
 | [ExecuteTrigger](#executetrigger) |хөдөлгөөнч .|                      |
 | [Хөгжлийн тэмдэглэл/Хүнзэт хэрэглээ/Үндэсний шинэчлэл ](#other-instructions) |бүртгэл, гүйцэтгэгчд зориулсан ашиг ачаалал, гүйцэтгэхчийн шинэчлэл |                      |
 
@@ -234,7 +236,10 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 Сэтгүүлчид бүртгэлтэй, бүртгэлгүй байна. Үргэлж BLS түлхүүр, PoP хамтран `kagami` Хэрэв та аль хэдийн эдэлгээгүй бол:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./peer-key
+PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
+PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
@@ -325,6 +330,14 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 Зах зээлийн хадгаламжийн хэрэглээ `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, болон `ResolveEscrowDispute`. Ашигт малтмалын нууцлал ашиглах `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, болон `ExpireAssetLock`. Үндэсний зах зээлийн амьдралын эргэлтийг тодорхойлох `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, болон `ResolveAnonymousEscrowDispute`.
 
 Эдгээр ISIs одоогийн байдлаар нэгдүгээр ангитай биш CLI тушаалуудыг ашиглах SDK барилгын ажилтнууд эсвэл цувралтай сургалтын хэрэглэгдэх ачааллууд, [Тухайн хөрөнгийн хяналт тавих](/mn/blockchain/escrow.md) амьдралын мөрийн дэлгэрэнгүй мэдээлэл, зөвшөөрөл, асуултууд, үйл явдлууд, Rust үлгэр жишээ.
+
+## Атомын нууц тооцоо {#atomic-private-settlement}
+
+Засаглалын хяналттай атомын нууц тооцооны заавар нь ил тод Native AMX-ээс тусдаа. `ActivatePrivateSettlementPoolV1` засаглалын засварласан проекц болон каноник эх үүсвэрийн үүргээс тодорхой чиглэлд нэг нууц `pool` үүсгэнэ. `FinalizeAtomicPrivateSettlementV1` оролцогч бүх хороо баталгаажуулсан бүрэн багцыг атомын зарчмаар хэрэгжүүлнэ. `AbortAtomicPrivateSettlementV1` зөвхөн ивээн тэтгэгчийн зөвшөөрсөн нийтэд нээлттэй төгсгөлийн тэмдгийг нийтэлнэ.
+
+`RotatePrivateSettlementPoolPolicyV1`-ийг зөвхөн нууцлалын засаглал гүйцэтгэнэ. Заавар нь одоогийн засаглалын digest-тэй яг таарахыг шаардана; чиглэл, `pool`, хөрөнгө холбох үүрэг, төлөвийн хязгаар, replay багцууд болон эцэслэсэн баримтуудыг хадгалж, нийтэд нээлттэй revision-ийг нэгээр нэмэгдүүлэн аудиторын түлхүүрийн шинэ epoch-ийг ашиглана. Эргэлт нь оруулсан өндөрт идэвхжих бөгөөд яг тэр өндөрт ижил чиглэл болон `pool`-ийн баримтыг эцэслэхгүй. Нийтэд нээлттэй revision-ийн удам нь эргэлтээс өмнө эцэслэсэн баримтуудыг дахин эхлүүлсний дараа ч хүчинтэй, яг адил давталтыг idempotent байлгана. Хуучин бодлогоор боловсруулагдаж буй багцууд төлөв өөрчлөгдөхөөс өмнө fail closed болно. Операторууд хуучин тайлах түлхүүрүүдийг хадгалах, эсвэл түлхүүрийг устгахаас өмнө капсулыг засаглалын дагуу дахин боож турших ёстой.
+
+Энэ зам анхдагчаар унтраалттай бөгөөд үйлдвэрлэлийн хэрэглээнд тэнцсэн гэж баталгаажаагүй. Тохиргоо, эрх мэдэл, аудит, сэргээх болон гаргалтын шаардлагыг [өгөгдлийн орон зайн хооронд атомын нууц тооцоо ажиллуулах](/get-started/atomic-private-settlement) хэсгээс үзнэ үү.
 
 ## Төлөөт / Хуцалтгүй болгох {#grant-revoke}
 

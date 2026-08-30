@@ -123,7 +123,7 @@ Torii exposes chain-state routes such as `/v1/rwas` and `/v1/rwas/query`,
 plus explorer routes such as `/v1/explorer/rwas` and
 `/v1/explorer/rwas/{rwa_id}` when that route family is enabled. Generated
 clients should prefer the live
-[`/openapi`](/reference/torii-endpoints.md#common-endpoints) document for
+[`/openapi.json`](/reference/torii-endpoints.md#common-endpoints) document for
 the exact response shape exposed by a node.
 
 ### Try It on Taira
@@ -161,7 +161,7 @@ routes are enabled:
 from iroha_python import create_torii_client
 
 client = create_torii_client("https://taira.sora.org")
-openapi = client.request_json("GET", "/openapi", expected_status=(200,))
+openapi = client.request_json("GET", "/openapi.json", expected_status=(200,))
 
 rwa_paths = sorted(
     path for path in openapi.get("paths", {}) if path.startswith("/v1/rwas")

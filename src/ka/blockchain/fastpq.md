@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /blockchain/fastpq.md
-translation_source_hash: f1dc55e4b2146de009203e19adb5cc1e9ce5302bc0ee27fe0b442693c5112c22
+translation_source_hash: 55b57e6aeeef2aefa1c8359d9b9487029b106eaebed12a58268b61dc583e97f6
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -905,7 +905,7 @@ FastPQ პროვერი ტრეის შესაქმნელამ�
 
 ## პრობერ ლეინი {#prover-lane}
 
-`irohad` იწყებს FastPQ prover lane startup- ში, თუ prover backend შეიძლება ინიციალიზდეს. Lane არის ფონის ამოცანა შეზღუდული რიგით. მას შემდეგ, რაც ბლოკი წარმოქმნის შესრულების მოწმეს, commit path წარუდგენს prover სამუშაო, რომელიც შეიცავს ბლოკის ჰეშის, სიმაღლის, ნახვის და მოწმე.
+`iroha3d` იწყებს FastPQ prover lane startup- ში, თუ prover backend შეიძლება ინიციალიზდეს. Lane არის ფონის ამოცანა შეზღუდული რიგით. მას შემდეგ, რაც ბლოკი წარმოქმნის შესრულების მოწმეს, commit path წარუდგენს prover სამუშაო, რომელიც შეიცავს ბლოკის ჰეშის, სიმაღლის, ნახვის და მოწმე.
 
 თუ ბილიკი არ მუშაობს ან რიგები სავსეა, სამუშაო გადაწყდება და ჩვეულებრივი ბლოკის დამუშავება გრძელდება. ეს ნიშნავს, რომ ფონზე პროვორი ბილიკი ტრანზაქციის მიღების ან კონსენსუსის კარიბჭე არ არის. ეს არის პროფი-პროდუქციის გზა სახელმწიფოსთვის, რომელიც უკვე შესრულებულია.
 
@@ -1072,7 +1072,7 @@ $$
 
 ## SCCP გამჭვირვალე შეტყობინების მტკიცებულებები {#sccp-transparent-message-proofs}
 
-SCCP დამხმარე ყუთში ასევე გამოიყენება FastPQ გამჭვირვალე ჯაჭვური შეტყობინებების დასამტკიცებლად. ეს გზა განცალკევებულია `irohad` ფონის პროვერიდან . Line. იგი აშენებს FastPQ პარტიას უშუალოდ SCCP შეტყობინების მტკიცებულების ბუნდიდან და manifesto- სგან, შემდეგ კი გახსნის შემოწმებისთვის მოიცავს მიღებულ მტკიცებულებას.
+SCCP დამხმარე ყუთში ასევე გამოიყენება FastPQ გამჭვირვალე ჯაჭვური შეტყობინებების დასამტკიცებლად. ეს გზა განცალკევებულია `iroha3d` ფონის პროვერიდან . Line. იგი აშენებს FastPQ პარტიას უშუალოდ SCCP შეტყობინების მტკიცებულების ბუნდიდან და manifesto- სგან, შემდეგ კი გახსნის შემოწმებისთვის მოიცავს მიღებულ მტკიცებულებას.
 
 SCCP პარტიაში გამოიყენება `fastpq-lane-balanced` და სამი მეტადიტური გადასვლა:
 
@@ -1210,14 +1210,14 @@ metal_debug_enum = false
 metal_debug_fused = false
 ```
 
-ამავე განხორციელებისა და ტელემეტრიის ეტიკეტების გადატანა შესაძლებელია `irohad`:
+ამავე განხორციელებისა და ტელემეტრიის ეტიკეტების გადატანა შესაძლებელია `iroha3d`:
 
 ```shell
-irohad --fastpq-execution-mode auto
-irohad --fastpq-poseidon-mode cpu
-irohad --fastpq-device-class apple-m4
-irohad --fastpq-chip-family m4
-irohad --fastpq-gpu-kind integrated
+iroha3d --fastpq-execution-mode gpu
+iroha3d --fastpq-poseidon-mode cpu
+iroha3d --fastpq-device-class apple-m4
+iroha3d --fastpq-chip-family m4
+iroha3d --fastpq-gpu-kind integrated
 ```
 
 გარემოს ცვლადი ასევე მხარდაჭერილია კონფიგურაციის ველებისათვის. FastPQ-ს სპეციფიკური ცვლადი მოიცავს:
@@ -1258,4 +1258,4 @@ irohad --fastpq-gpu-kind integrated
 - `TransferTranscript`
 - `AxtFastpqBinding`
 - `LaneFastpqProofMaterial`
-- [`irohad` FastPQ ვარიანტები](/ka/reference/irohad-cli.md#arg-fastpq-execution-mode)
+- [`iroha3d` FastPQ ვარიანტები](/ka/reference/iroha3d-cli.md#arg-fastpq-execution-mode)

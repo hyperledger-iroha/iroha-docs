@@ -1,14 +1,14 @@
 ---
 translation_locale: he
 translation_source: /cookbook/index.md
-translation_source_hash: cdcfb3549506a65a7dbd1c37672893956a0252153a4075c82333804674aa07b6
+translation_source_hash: aceef9f4e42462614a5cdf41a89f55e26e0399503a48d4b50c08359e7bd7532e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Iroha 3 ספר הבישול של היישום {#iroha-3-application-cookbook}
 
-תבנה נגד Iroha 3 עם מתכונים קטנים, שניתן לוודא שהם מתחילים על רשת המבחן של Taira ותשאיר את Minamoto כריאה בלבד. כל מתכון מציין אם זה קריאה ציבורית, כתוב חשבון מימון רגיל, או מבצע בעל רישיון מוגבל. פקודות משתמשות בחשבון הנוכחי I105 IDs, בחירת עמלה מפורשת, והתנהגות שנבדקה ב Iroha להתחייב [`bc7114ed1c7f265a156d2100ff09e851cc95702c`](https://github.com/hyperledger-iroha/iroha/tree/bc7114ed1c7f265a156d2100ff09e851cc95702c).
+תבנה נגד Iroha 3 עם מתכונים קטנים, שניתן לוודא שהם מתחילים על רשת המבחן של Taira ותשאיר את Minamoto כריאה בלבד. כל מתכון מציין אם זה קריאה ציבורית, כתוב חשבון מימון רגיל, או מבצע בעל רישיון מוגבל. פקודות משתמשות בחשבון הנוכחי I105 IDs, בחירת עמלה מפורשת, והתנהגות שנבדקה ב Iroha להתחייב [`0010c5a70039eac101a4846499ba9ceaf43eb65c`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c).
 
 התחל עם [תחבר ל Taira](./connect-to-taira.md). הוא יוצר את ההסדרות של הלקוח ונתוני העלויות המשמשים מחדש על ידי המתכונים בקו הפקודה. אף פעם לא להעתיק נכס העלויות ID מהמסמך הזה: תוצא אותו מהתגובה הנוכחית Taira של המזרקה.
 

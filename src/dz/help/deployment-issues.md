@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /help/deployment-issues.md
-translation_source_hash: 6f35ac59053e312f56a716810c8f0b625752500d1fc64b27d93cbd8317b6cc19
+translation_source_hash: 5c7d26b39d4ddf4e7e164f7bef79c9e1659db51587fb0dde9cf3f1dc0e3b057b
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2
 ས་གནས་དང་ བརྟག་དཔྱད་ལག་ལེན་ཚུ་གི་དོན་ལུ་ ལག་ཐོག་ལས་བྲིས་མི་ འདྲ་མཉམ་ཡིག་སྣོད་ཚུ་အစား Kagami གིས་ བཟོ་སྐྲུན་འབད་མི་ ཨེ་རེ་ཕ་ཀེཊ་ཚུ་ གདམ་ཁ་རྐྱབ་དགོ།
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 བཟོ་སྐྲུན་འབད་མིའི་ཐོ་ཡིག་ནང་ འདྲན་འདྲ་བཟོ་ཐངས་ཚུ་, འབྱུང་ཁུངས་ཀྱི་དོན་ཆས་, འགོ་འདྲེན་འཐབ་ནིའི་ ཡིག་འབྲུ་ཚུ་ དེ་ལས་ README གི་དོན་ལུ་ Iroha 3 སྒྲིག་འཇུག་གི་ཐོ་བཀོད་ཡོདཔ་ཨིན།
@@ -24,7 +24,7 @@ cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./loc
 
 དང་པ་ འ་ནི་ ཅ་ཆས་ཚུ་ བརྟག་དཔྱད་འབད་:
 
-- `irohad --config <path>` གྲྭ་ཚང་གི་ཡིག་སྣོད་ནང་ TOML ཐོ་བཀོད་འབད་ཡོདཔ་ཨིན།
+- `iroha3d --config <path>` གྲྭ་ཚང་གི་ཡིག་སྣོད་ནང་ TOML ཐོ་བཀོད་འབད་ཡོདཔ་ཨིན།
 - `public_key` དང་ `private_key` འདྲན་འདྲ་བཟོ་ཐངས་ནང་གི་ལྡེ་མིག་གཉིས་དེ་ཅིག་རང་ཨིན།
 - `genesis.public_key` གིས་ genesis གྱི་ཚོང་འབྲེལ་གུ་ མཚན་རྟགས་བཀོད་ནིའི་དོན་ལུ་ལག་ལེན་འཐབ་མི་ལྡེ་མིག་དང་མཐུནམ་ཨིན།
 - Validator peer identities གིས་ BLS-Normal keys ལག་ལེན་འཐབ་དོ་ཡོདཔ་ད་ `trusted_peers_pop` ནང་ལུ་ local key དང་ trusted peers གི་བདག་འཛིན་རྟགས་བཀོད་ཡོད་པའི་ནང་འཁོད་ཚུ་ཡོདཔ་ཨིན།
@@ -34,7 +34,7 @@ cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./loc
  config tracing ལག་ལེན་འཐབ་ད་ daemon གིས་ TOML layer མང་ཤོས་ཅིག་བཀླག་ཨིན།
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --trace-config
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 ```
 
 ## Docker དང་ མཉམ་འབྲེལ་འབད་ {#docker-and-compose}
@@ -42,9 +42,9 @@ cargo run --bin irohad -- --config ./config.toml --trace-config
 བཟོ་སྐྲུན་འབད་ ད་ལྟོའི་ Kagami localnet ཐོན་ཐོ་བཀོད་ནང་ལས་ བསྡུ་སྒྲིག་རྐྱབས་ དེ་འབདཝ་ལས་ བཀའ་རྒྱ་གི་གྲལ་རིམ་གྱི་ གྲོས་བསྡུར་དང་ གཞི་སྒྲིག་ཡིག་སྣོད་ཚུ་ ཐོ་བཀོད་འབད་ཚར་མི་ code ལུ་ сәйкесའོང་།
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./localnet/docker-compose.yml --force
-docker compose -f ./localnet/docker-compose.yml up
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
+docker compose -f ./docker-compose.yml up
 ```
 
 compose deployment འགོ་བཙུགས་ཞིནམ་ལས་ བཏུབ་པ་ཅིན་ daemon logs འདི་ནང་ལུ་བལྟ་དགོ།
@@ -72,7 +72,7 @@ Kubernetes གི་དོན་ལས་ སྒྲུབ་རྟགས་ས�
 Iroha 3 གཞི་བཙུགས་འབད་མི་ཚུ་ནང་ Nexus, SoraFS ཡང་ན་ ལྕང་ལམ་མང་རབས་ཅིག་གི་རྒྱུན་འགྲུལ་ཚུ་ ལག་ལེན་འཐབ་པ་ཅིན་ ཌའི་མཱོན་དེ་ Sora Profile enable འབད་ནི་ལུ་འགོ་བཙུགས་དགོ།
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --sora
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora
 ```
 
 འབྲེལ་མཐུད་དེ་ཅིག་ནང་ འཛིན་སྐྱོང་འབད་མི་ཚུ་ལུ་ དུས་རྒྱུན་གྱི་དོན་ལུ་ ཕན་ཁྱད་གཅིག་རང་ ལག་ལེན་འཐབ་དགོ།

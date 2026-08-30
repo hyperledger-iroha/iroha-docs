@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /guide/tutorials/kaigi.md
-translation_source_hash: e55c7aebc89c39edb8e7077db2414a6d432aafb05aff8df04c248fce444d7dea
+translation_source_hash: 24dc7e6a41ea8a06d24663aebaeca2469c522e391a5de61f039c47a1cd020c91
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -47,7 +47,7 @@ npm install
 npm run dev
 ```
 
-ཌེ་མོ་འདི་ལག་ལེན་འཐབ་ནི་ [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/main/javascript/iroha_js) སྤུན་ཆ་ཚུ་གི་ནང་ལས་ Iroha གཞི་རྟེན་རྩིས་ཁང་། འདི་ `file:` འབྲེལ་བ་འཐབ་ནི་དེ་ checkout འདི་ཐད་ཀར་དུ་སེལ་འཐུ་འབདཝ་ཨིན། གལ་སྲིད་ native binding བསྒྱུར་བཅོས་འབད་བ་ཅིན་ `iroha/javascript/iroha_js`; དྭངས་འཕྲོས་འཕྲོས་ཅན་གྱི་ ཡིག་སྣོད་ནང་ ལཱ་འབད་སའི་ས་ཁོངས་ཚུ་མེདཔ་ཨིན། `npm run build:native`.
+ཌེ་མོ་འདི་ལག་ལེན་འཐབ་ནི་ [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js) སྤུན་ཆ་ཚུ་གི་ནང་ལས་ Iroha གཞི་རྟེན་རྩིས་ཁང་། འདི་ `file:` འབྲེལ་བ་འཐབ་ནི་དེ་ checkout འདི་ཐད་ཀར་དུ་སེལ་འཐུ་འབདཝ་ཨིན། གལ་སྲིད་ native binding བསྒྱུར་བཅོས་འབད་བ་ཅིན་ `iroha/javascript/iroha_js`; དྭངས་འཕྲོས་འཕྲོས་ཅན་གྱི་ ཡིག་སྣོད་ནང་ ལཱ་འབད་སའི་ས་ཁོངས་ཚུ་མེདཔ་ཨིན། `npm run build:native`.
 
 TAIRA གི་ཐོག་ལུ་ ཐད་ཀར་དུ་ཚོགས་འདུ་འགོ་འདྲེན་འཐབ་པའི་ཧེ་མར་ ཌེམ་ཨོ་གི་ཁ་ཐུག་ལས་ མི་མང་གི་ཁ་ཐུག་གི་ཁ་ཐུག་ལུ་ Torii བརྟག་དཔྱད་འབད་:
 

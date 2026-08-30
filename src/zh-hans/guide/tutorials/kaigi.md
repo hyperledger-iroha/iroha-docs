@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /guide/tutorials/kaigi.md
-translation_source_hash: e55c7aebc89c39edb8e7077db2414a6d432aafb05aff8df04c248fce444d7dea
+translation_source_hash: 24dc7e6a41ea8a06d24663aebaeca2469c522e391a5de61f039c47a1cd020c91
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -47,7 +47,7 @@ npm install
 npm run dev
 ```
 
-使用演示 [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/main/javascript/iroha_js) 从兄弟姐妹 Iroha 它的源存储库. `file:` 如果本土的绑定变化,重建它根据 `iroha/javascript/iroha_js`; 清洁包装目录不包含需要的货物工作空间 `npm run build:native`.
+使用演示 [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js) 从兄弟姐妹 Iroha 它的源存储库. `file:` 如果本土的绑定变化,重建它根据 `iroha/javascript/iroha_js`; 清洁包装目录不包含需要的货物工作空间 `npm run build:native`.
 
 在在 TAIRA 上进行现场会议之前,请检查演示程序依赖于的公共 Torii 表面:
 

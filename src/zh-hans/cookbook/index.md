@@ -1,14 +1,14 @@
 ---
 translation_locale: zh-hans
 translation_source: /cookbook/index.md
-translation_source_hash: cdcfb3549506a65a7dbd1c37672893956a0252153a4075c82333804674aa07b6
+translation_source_hash: aceef9f4e42462614a5cdf41a89f55e26e0399503a48d4b50c08359e7bd7532e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Iroha 3 应用程序食谱 {#iroha-3-application-cookbook}
 
-通过从 Taira 测试网开始的小可验证的食谱来对抗 Iroha 3,并将 Minamoto 主网仅进行阅读.每个食谱都说明这是一个公开阅读,是正常的资助账户写作,还是一个被许可关闭的操作.命令使用当前的 I105 帐户 IDs,明确的费用选择,以及在 Iroha 提交 [`bc7114ed1c7f265a156d2100ff09e851cc95702c`](https://github.com/hyperledger-iroha/iroha/tree/bc7114ed1c7f265a156d2100ff09e851cc95702c)上检查的行为
+通过从 Taira 测试网开始的小可验证的食谱来对抗 Iroha 3,并将 Minamoto 主网仅进行阅读.每个食谱都说明这是一个公开阅读,是正常的资助账户写作,还是一个被许可关闭的操作.命令使用当前的 I105 帐户 IDs,明确的费用选择,以及在 Iroha 提交 [`0010c5a70039eac101a4846499ba9ceaf43eb65c`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c)上检查的行为
 
 开始使用 [连接到 Taira](./connect-to-taira.md).它创建了客户端配置和费用元数据,由命令行配方重复使用.从未复制本文档中的费用资产 ID:从当前的 Taira 龙头响应中提取它.
 

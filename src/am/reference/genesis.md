@@ -1,29 +1,31 @@
 ---
 translation_locale: am
 translation_source: /reference/genesis.md
-translation_source_hash: 6710e76508e6a38a6b68d274247cc1383de2472e74f10be85000b30f74cb04a6
+translation_source_hash: 1312e80d9e662cc3e8cf4d0668ff4bb9e6ce3f74a60bb5287205aeeb5afd5de8
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# የዘፍጥረት ዘገባ {#genesis-reference}
+# የዘፍጥረት ማጣቀሻ {#genesis-reference}
 
-አሁን ባለው Iroha 3 የስራ ፍሰት ውስጥ `genesis.json` ማኒፌስት አውታረ መረቡ ሲጀምር የሚተገበሩትን የመጀመሪያዎቹ ግብይቶች እና መለኪያዎች ይገልጻል።
+አሁን ባለው ሁኔታ Iroha 3 የስራ ሂደት፣ ሀ `genesis.json` አንጸባራቂ የመጀመሪያውን ይገልፃል።
+አውታረ መረቡ ሲጀምር የሚተገበሩ ግብይቶች እና ግቤቶች።
 
-ለባልደረቦቹ የተሰራጨው የተፈረመ ጥንቅር Norito-የተመሰጠረ `.nrt` ፋይል ነው በ `kagami genesis sign` የተፈጠረ።
+ለእኩዮች የተሰራጨው የተፈረመበት ቅርስ ሀ Norito- ኮድ የተደረገ `.nrt` ፋይል
+በ `kagami genesis sign`.
 
 ## ዋና መስኮች {#main-fields}
 
-የጄኔሲስ መገለጫ የሚከተሉትን ሊገልጽ ይችላል፦
+የዘፍጥረት መግለጫ የሚከተሉትን ሊገልጽ ይችላል-
 
-- ለሰንሰለት መታወቂያ `chain`
-- `executor` ለ አማራጭ አስፈፃሚ ማሻሻያ ባይትኮድ መንገድ
-- `ivm_dir` ለ IVM ቤተ-መጽሐፍት ተነሳሽነት እና ማሻሻያዎች ጥቅም ላይ የሚውሉ
-- `consensus_mode` በጋዜጣው ውስጥ ለታወጀው የመጀመሪያ ሁኔታ
-- `transactions` ለተዘረዘሩት መለኪያዎች ዝማኔዎች፣ መመሪያዎች፣ አስነሳሾች እና ቶፖሎጂ።
-- `crypto` ለቀዳሚ የ ‹crypto› ቅጽበታዊ ምስል
+- `chain` ለ ሰንሰለት መለያ
+- `executor` ለአማራጭ አስፈፃሚ የባይቴኮድ መንገድ አሻሽል።
+- `ivm_dir` ለ IVM ቀስቅሴዎች እና ማሻሻያዎች የሚጠቀሙባቸው ቤተ-መጻሕፍት
+- `consensus_mode` በአንጸባራቂው ለተዋወቀው የመጀመሪያ ሁነታ
+- `transactions` ለታዘዙ የመለኪያ ማሻሻያዎች፣ መመሪያዎች፣ ቀስቅሴዎች እና ቶፖሎጂ
+- `crypto` ለመጀመሪያው crypto ቅጽበታዊ ገጽ እይታ
 
-በ `transactions` ውስጥ ፣ የቶፖሎጂ አቃፊዎች የእኩዮች መታወቂያዎችን እና PoPs አንድ ላይ ያገናኙ:
+ውስጥ `transactions`, ቶፖሎጂ ግቤቶች ጥንድ አቻ መታወቂያ እና PoPs አንድ ላየ፥
 
 ```json
 {
@@ -32,9 +34,9 @@ translation_engine: nllb-200-ct2
 }
 ```
 
-## ማኒፌስት አዘጋጅ {#generate-a-manifest}
+## አንጸባራቂ ይፍጠሩ {#generate-a-manifest}
 
-ሞዴል ለመፍጠር Kagami ይጠቀሙ:
+ተጠቀም Kagami አብነት ለመፍጠር፡-
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
@@ -43,23 +45,30 @@ cargo run -p iroha_kagami -- genesis generate \
   --genesis-public-key <PUBLIC_KEY> > genesis.json
 ```
 
-ለህዝብ SORA Nexus የውሂብ ቦታ, `npos` የሚጠበቀው የጋራ ስምምነት ሁነታ ነው. ሌሎች Iroha 3 ልውውጦች እንደ ግቡ መገለጫ ፈቃድ ወይም NPoS መጠቀም ይችላሉ.
+ለህዝብ SORA Nexus የመረጃ ቦታ፣ `npos` የሚጠበቀው የጋራ ስምምነት ሁነታ ነው.
+ሌላ Iroha 3 በዒላማው ላይ በመመስረት ማሰማራት የተፈቀደ ወይም NPoS ሊጠቀሙ ይችላሉ።
+መገለጫ.
 
-## የምስክር ወረቀቱን ይፈርሙ {#sign-the-manifest}
+## መግለጫውን ይፈርሙ {#sign-the-manifest}
 
-JSON ን ካስተረዱ እና ከተረጋገጡ በኋላ ወደ ሊተገበር የሚችል `.nrt` ብሎክ ያስገቡት:
+አርትዖት ካደረጉ እና ካረጋገጡ በኋላ JSON, ወደ ማሰማራት ይፈርሙ `.nrt` አግድ
 
 ```bash
 cargo run -p iroha_kagami -- genesis sign genesis.json \
-  --private-key <PRIVATE_KEY> \
+  --private-key-file <MODE_0600_PRIVATE_KEY_FILE> \
   --out-file genesis.signed.nrt
 ```
 
-`kagami genesis sign` ከጋዜጣው የህዝብ ቁልፍን ያነባል እና የተሰጠውን የግል ቁልፍ ፣ ዘር እና ስልተ ቀመር በመጠቀም ሊተገበር የሚችል የተፈረመ ብሎክን ይፈጥራል ። ውጤቱ እኩዮቻቸው ከመዋቅርዎ ሊያመለክቷቸው የሚገባ ፋይል ነው ።
+`kagami genesis sign` የዘፍጥረት ህዝባዊ ቁልፍን ከማንፀባረቂያው ያነባል እና ይጠቀማል
+የግል ቁልፉን በባለቤትነት ከተያዘ፣ ነጠላ አገናኝ መደበኛ ፋይል ለማምረት
+ሊሰራ የሚችል የተፈረመ እገዳ.ፋይሉ አንድ ቀኖናዊ የግል ቁልፍ መያዝ አለበት።
+መልቲሃሽ በአዲስ መስመር ተከትሎ; Kagami ተምሳሌታዊ አገናኞችን እና ሌሎች ሁነታዎችን ውድቅ ያደርጋል
+ከ `0600`. ጥሬ የግል ቁልፎች በትእዛዝ መስመር ላይ ተቀባይነት የላቸውም።ውጤቱ
+አቻዎች ከውቅራቸው መጥቀስ ያለባቸው ፋይል ነው።
 
-## ቅርጸት `irohad` {#configure-irohad}
+## አዋቅር `iroha3d` {#configure-iroha3d}
 
-ዲያሞኑን በፈረመበት የጅነሲስ ብሎክ ላይ አኑሩ:
+ዲሞንን በተፈረመው የዘረመል እገዳ ላይ ያመልክቱ፡-
 
 ```toml
 [genesis]
@@ -67,7 +76,7 @@ file = "genesis.signed.nrt"
 public_key = "<PUBLIC_KEY>"
 ```
 
-## ተዛማጅ መሣሪያዎች {#related-tools}
+## ተዛማጅ መሳሪያዎች {#related-tools}
 
 - `kagami genesis validate`
 - `kagami genesis normalize`
@@ -75,4 +84,5 @@ public_key = "<PUBLIC_KEY>"
 - `kagami localnet`
 - `cargo xtask kagami-profiles`
 
-ለጀነሬተር ትግበራ እና ትዕዛዝ ዝርዝሮች [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_kagami/README.md) የሚለውን ይመልከቱ።
+ለጄነሬተር አተገባበር እና የትዕዛዝ ዝርዝሮች, ይመልከቱ
+[Kagami README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami/README.md).

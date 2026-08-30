@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /cookbook/permissions-and-roles.md
-translation_source_hash: 734437b8530ad0efb9ddd83b24cb90c30dc29843a03753babd8dca5e86a3f91d
+translation_source_hash: 7ee18275d25837da53f533f5e9205906ccaa71b48afd9b11ffad79b599da7f21
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -132,9 +132,9 @@ iroha --config "$CONFIG" ledger account meta get \
 
 ## အရင်းအမြစ်နှင့် ဆက်စပ်သော စာတမ်းများ {#source-and-related-docs}
 
-- [ပိတ်ထားတဲ့ commit မှာ Role Integration စမ်းသပ်ချက်များ ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/roles.rs)
-- [ခွင့်ပြုချက် ပေါင်းစပ်မှု စမ်းသပ်ချက်များ ပိတ်ထားသော commit ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/permissions.rs)
-- [ချိတ်ဆက်ထားသော commit ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_executor_data_model/src/permission.rs) တွင်တည်ဆောက်ထားသော ခွင့်ပြုချက်ဒေတာပုံစံ
+- [ပိတ်ထားတဲ့ commit မှာ Role Integration စမ်းသပ်ချက်များ ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/roles.rs)
+- [ခွင့်ပြုချက် ပေါင်းစပ်မှု စမ်းသပ်ချက်များ ပိတ်ထားသော commit ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/permissions.rs)
+- [ချိတ်ဆက်ထားသော commit ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/permission.rs) တွင်တည်ဆောက်ထားသော ခွင့်ပြုချက်ဒေတာပုံစံ
 - [ခွင့်ပြုချက်များနှင့် ကဏ္ဍများ ](/my/blockchain/permissions.md)
 - [ခွင့်ပြုချက် အမှတ်တံဆိပ် မှတ်ပုံတင် ](/my/reference/permissions.md)
 - [metadata](./metadata.md)

@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /reference/queries.md
-translation_source_hash: 22e8a75acd72d066e3516ba46a0afe075d2d02790154458aec00a5d8bb861838
+translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -99,10 +99,17 @@ Las consultas de garantía inspeccionan los registros creados por el [de garant�
 |`FindLaneRelayEnvelopeByRef` |Encuentra un envelope verificado del relé de carril.|
 |`FindSorafsProviderOwner` |Resolver el propietario de un proveedor SoraFS. |
 |`FindDataspaceNameOwnerById` |Resolver un propietario de nombre del espacio de datos. |
-|`FindMusubiReleaseByRef` |Encontrar una liberación Musubi por referencia. |
-|`FindMusubiPackageVersions` |Lista de las versiones para un paquete Musubi. |
-|`FindMusubiPackageReleases` |Las publicaciones de la lista para un paquete Musubi. |
-|`FindMusubiShortAliasByName` |Resolver un alias corto de Musubi. |
+|`FindMusubiExactPackageV1` |Lea un registro del paquete exacto y sus revisiones actuales. |
+|`FindMusubiExactReleaseV1` |Lea una instantánea exacta de liberación. |
+|`FindMusubiProviderBundleAttestationV1` |Leer el certificado de archivo de un proveedor. |
+|`FindMusubiResolverIndexV1` |Página del índice de resolver finalizado. |
+|`FindMusubiVersionsV1` |Página versiones finalizadas para un paquete. |
+|`FindMusubiMaintainersV1` |Página aceptó mantenedores y invitaciones pendientes. |
+|`FindMusubiArchiveLocationsV1` |La página finalizó SoraFS ubicaciones para un archivo. |
+|`FindMusubiArchiveRetentionV1` |Página de archivos y registros de retención. |
+|`FindMusubiAliasV1` |Lea el objetivo actual y la revisión de un alias global. |
+|`FindMusubiAliasHistoryV1` |Página de la historia inmutable retargeting de un alias global. |
+|`FindMusubiOrderedPrefixV1` |Paquetes de páginas con un prefijo estructural ordenado. |
 
 ## Los desencadenantes, los contratos, las transacciones y los bloques {#triggers-contracts-transactions-and-blocks}
 

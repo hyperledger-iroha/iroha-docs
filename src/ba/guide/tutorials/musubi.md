@@ -1,171 +1,212 @@
 ---
 translation_locale: ba
 translation_source: /guide/tutorials/musubi.md
-translation_source_hash: 6b33c687fd1d81d931b932d38908d9a87e9c619e5aca5714d09d892160a6b704
+translation_source_hash: 4a76626522ecb9fe32e98e9c1e4552223cf820d40d0de16690dc589b0f40c901
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Musubi Kotodama Пакеттар {#musubi-kotodama-packages}
 
-Musubi - Kotodama сығанаҡ пакеттары өсөн пакет менеджеры. Ул уйлап табыусыларға глобаль беренсе килгән исем таблицаһы урынына SORA һәм Iroha исемдәр киңлектәре менән бәйләнгән пакеттың идентификацияһын һаҡлап ҡалып, Kotodama функцияларын уртаҡлашыу өсөн Cargo-ҡа оҡшаш эш аҙымын бирә.
+Musubi - Kotodama сығанаҡ пакеттары өсөн беренсе тапҡыр сығарылған пакет менеджеры. Ул сылбырҙа бәйлелек графикаһын асыҡлай, SoraFS-ны раҫлай сығанаҡ архивтары, һайлап алынған эш майҙанын йыя һәм һынап ҡарай, CAR каноник архивтар төҙөй, һәм Iroha аша үҙгәрешһеҙ релиздар баҫтыра.
 
 Әгәр кәрәк булһа, Musubi ҡулланығыҙ:
 
-- ҡабаттан ҡулланыла торған Kotodama сығанаҡ китапханаларын баҫтырырға
-- `Musubi.lock` төп күсмә сығанаҡ бәйлелектәре.
-- тикшерелгән SoraFS архив йөкләмәләре буйынса бәйлелек сығанағын реконструкциялау
-- пакеттың исемдәр арауығын шул уҡ исемдәр аравындағы dapp килешеү атамалары менән тоташтырыу
-- Сылбырҙағы реестр аша пакеттарҙы тикшерергә, баҫтырып сығарырға, тартып алырға йә исем-шәрифкә алмаштырырға
+- ҡабаттан ҡулланылған Kotodama функциялар китапханаларын баҫтырыу
+- `Musubi.lock` тип теүәл күсереү графикаһын яҙығыҙ.
+- SoraFS архив йөкләмәләренән бәйлелек сығанағын үҙгәртергә.
+- бер пакет йәки күп пакетта эш итеү урыны төҙөргә һәм һынарға.
+- Сылбырҙағы реестр аша пакеттарҙы тикшерергә, баҫтырырға, тартып алырға, һаҡлауға йә исем-шәрифкә алмаштырырға
 
 ## Пакеттарҙың исемдәре {#package-names}
 
-Canonical пакеттар идентификаторҙары ҡулланыу:
+Канонник пакеттар һайлап алыу аппараттары ҡуллана:
 
 ```text
 namespace/package
 ```
 
-Дөрөҫ сығарыу һылтанмалары ҡулланыла:
+Дөрөҫ сығарыу идентификаторҙары версияны өҫтәй:
 
 ```text
 namespace/package@version
 ```
 
-Исемдәр арауығы алдынан `@` билдәһе юҡ. `@` айырыусыһы версия һуффиксы өсөн һаҡлана.
+Исемдәр арауығы алдынан `@` билдәһе юҡ. Исемдәр арауығы йәки мәғлүмәт арауығы тамыр, мәҫәлән: `universal` йәки домен-квалификациялы мәғлүмәт базаһы, мәҫәлән: `dex.universal`. Букмекер был структуралы исемдәр киңлеген бер тотороҡло төп мәғлүмәт киңлеге менән бәйләй, пакетты талап итеү мөмкин тиклем.
 
-Исемдәр арауығы сегменты Kotodama dapp килешеү ҡушаматтары ҡулланылған һуффикс менән тап килә:
+## Манифест һәм бикләү файлы {#manifest-and-lockfile}
 
-|Пакеттың идентификаторы |Ҡатнашыусы килешеү ҡушамат формаһы |
-| ------------------------- | ---------------------------- |
-|`universal/math` |`router::universal` |
-|`dex.universal/swap-core` |`router::dex.universal` |
-
-Исемдәр киңлектәрендә `<dataspace>` йәки `<domain>.<dataspace>` формаһы бар. Пакетта dapp һылтанмаһы булғанда, Musubi бәйләнгән контракттың һәр атамаһы пакет менән бер үк исемдәр киңлеге суффиксын ҡулланамы икәнен тикшерә.
-
-## Билдәле {#manifest}
-
-Баҫма `Musubi.toml` менән башлана:
+Бер пакетта ябыҡ беренсе сығарылыш ҡулланыла `Musubi.toml` схема. манифестҡа белдерергә тейеш `manifest-version = 1`, Kotodama баҫмаһы `"1"`, һәм IVM ABI версияһы `1`; Яуаплы билдә юҡ, йәки ABI режимы.
 
 ```toml
+manifest-version = 1
+
 [package]
 namespace = "dex.universal"
 name = "swap-core"
 version = "0.1.0"
+edition = "1"
+abi-version = 1
+
+[lib]
+source-dir = "src"
+exports = ["quote"]
 
 [dependencies.math]
 package = "std.universal/math"
 version = "^1.0.0"
-
-[exports]
-functions = ["quote"]
-
-[dapp]
-namespace = "dex.universal"
-contracts = ["router::dex.universal"]
 ```
 
-Тейешле версиялар, һаҡланыу талаптары, тильд талаптары, `1.*` кеүек ҡырағай карталар йәки `>=1.0.0,<2.0.0` кеүек сағыштырма исемлектәр ҡулланырға мөмкин.
+Тейешле версиялар, ҡарау йәки тилде талаптары, wildcards кеүек ҡулланырға мөмкин. `1.*`, һәм комета менән айырылған сағыштырыу йыйылмалары, мәҫәлән: `>=1.0.0,<2.0.0`. Яҡшылыҡ таблицаһы асҡысы - ата-әсә урындағы импорт исемдәре; `package` һәр ваҡыт канонический реестр һайлаусыһы.
 
-`Musubi.lock` ҡулланма реестрынан һайлап алынған күсмә графты яҙҙыра.Һәр бикләнгән узел үҙенең каноник пакетын, һайланған талапты, SoraFS манифест дигесен, сығанаҡ архивы хешын, байт һанын, файл һанын, экспортланған функцияларҙы, детерминистик сығанаҡ archive планын һәм бәйлелек атамаларын һаҡлай. Ҡыҫҡа ҡушаматтар бикләү файлына ингәнгә тиклем хәл ителә.
+`Musubi.lock` графты теүәл генезистарҙан алынған `NetworkId` һәм тамамланған реестр фотоһүрәтенә бәйләй. Ул һайлап алынған эш урыны тамырҙарын һәм үҙгәрешһеҙ сығарыу узелдарын теркәп бара, релиз, сығанаҡ, интерфейс, архив, ABI һәм теүәл бәйлелек сигендәге йөкләмәләрҙе үҙ эсенә ала.
+
+## Конфигурация Taira SoraFS Ашырыу {#configure-taira-sorafs-fetching}
+
+Taira был эш ағымы өсөн асыҡ тест селтәре булып тора. Taira клиент конфигурацияһынан башланып, теркәлгән сылбыр һәм селтәр идентификаторы менән, һуңынан түбәндәге провайдер-белгесле аутентификацияланған алыу бәйләнештәрен өҫтәгеҙ. Мәҡәләгә ҡул ҡуйыу материалдары һәм провайдер оператор асҡыстары бары тик хужалар өсөн генә иҫәпләнгән файлдарҙа һаҡланырға тейеш.
+
+```toml
+torii_url = "https://taira.sora.org/"
+chain = "fc56984b-2be7-431d-840e-21514d1883f0"
+network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+
+[musubi.fetch]
+network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+client_id = "musubi-taira"
+request_timeout_ms = 30000
+
+[[musubi.fetch.provider_gateways]]
+provider_id = "REPLACE_WITH_ADMITTED_PROVIDER_ID_HEX"
+url = "REPLACE_WITH_ADVERTISED_PROVIDER_HTTPS_ORIGIN"
+operator_public_key = "REPLACE_WITH_PROVIDER_AUTHORIZED_OPERATOR_PUBLIC_KEY"
+operator_private_key_file = "./secrets/taira-sorafs-provider.key"
+```
+
+Taira асыҡ тест селтәре тамырҙарынан ҡабул ителгән провайдерҙарҙы табығыҙ:
+
+```bash
+export TAIRA_ROOT=https://taira.sora.org
+curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
+```
+
+Провайдер каталогы провайдер идентификацияларын һәм рекламаланған һуңғы нөктәләрҙе тәьмин итә. һайланған провайдерҙан тапҡан операторға рөхсәт алыу. Runtime был асҡысты сикләнгән ағым токендәрен һорап ҡуллана; токендар CLI аргументтары ла түгел, ә бикләү файлы йөкмәткеһе лә түгел.
+
+Ҡулланырға ярамай Taira раҫлаусы штрих URL тип `url`. Теркәлгән валидаторҙар индерелгән SoraFS Һаҡлау һәләте һүндерелгән. `https://taira-validator-{1,2,3,4}.sora.org` һуңғы нөктәләр PIN теркәү ҡабул итә, ә архив уҡыуҙар һайлап алынған рөхсәт ителгән провайдерҙың HTTPS сығышы.
 
 ## Урындағы эш ағымы {#local-workflow}
 
-Iroha өҫтөнлөктәге эш урыны тамырынан, Musubi аша йөк үтә:
+Iroha өҫтөнлөктәге эш урыны тамырҙан, пакет каталогын булдырығыҙ йәки индерегеҙ һәм Musubi ҙы Cargo аша эшләйһегеҙ:
 
 ```bash
-cargo run -p musubi -- init --namespace dex.universal --name swap-core --dapp
-cargo run -p musubi -- add std.universal/math --version '^1.0.0' --alias math
-cargo run -p musubi -- install --config client.toml
-cargo run -p musubi -- build src/lib.ko --manifest-out target/lib.contract.json
-cargo run -p musubi -- pack \
-  --car-out source.car \
-  --sorafs-manifest-out manifest.norito \
-  --source-plan-out source-plan.norito
+mkdir -p examples/swap-core
+cd examples/swap-core
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  init . --namespace dex.universal --name swap-core --export quote
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  add std.universal/math --version '^1.0.0' --rename math
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- fetch --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- check --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- build --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- test --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- package --config client.toml
 ```
 
-`install --offline` ҡулланып, нигеҙе һорамайынса теүәл версияһы бәйлелектәре өсөн хәл ителмәгән бикләү файлын яҙырға. Ҡулланыу `install --locked` үҙ эсенә CI иҫкергән бикләү файлын кире ҡағыу өсөн.
+`fetch` тамамланған реестр графикаһын хәл итә, рөхсәт ителгән ваҡытта `Musubi.lock`-ны яңырта һәм аутентификацияланған SoraFS урындарҙан үҙгәрешһеҙ локаль кеште тултыра. `check`, `build`, `test` һәм `package` үҙ эштәре алдынан шул уҡ график һәм кеште тикшерәләр.
 
-`build` шылтыратыуҙарҙы күсереп яҙыу ярҙамында ҡашҡа ҡуйылған бәйлелек сығанаҡтары менән бәйләнештәр `math::add()` детерминистик эске Kotodama Функция исемдәре. ул бәйлелек экспорты булмаған функцияларҙы саҡырыуҙар кире ҡаға. Musubi v1 китапханалар функциялар өсөн генә: дәүләт декларациялары, ҡуҙғатҡыстар, kotoba блоктары, константтар булған бәйлелек сығанаҡтары; йәки башҡа функциялы булмаған контракт пункттары кире ҡағыла.
+`--locked` ҡулланып, ниндәй ҙә булһа бикләү файлы үҙгәрештәрен кире ҡаҡ. `--offline`-ны тик реестр индексы ла, бөтә кәрәкле архивтар ҙа һаҡланған саҡта ғына ҡулланығыҙ. `--frozen` был ике сикләүҙе берләштерә. Оффлайн кэш уңышһыҙлыҡҡа осрай; Musubi бер ҡасан да хәл ителмәгән бикләү файлын яҙмай.
 
-## Сығанаҡ сығанағы архивтары {#fetching-source-archives}
+Ҡатнашыусылыҡ сығанаҡтары `math::add()` кеүек квалификациялы саҡырыуҙарҙы детерминистик эске Kotodama исемдәргә күсереп яҙып бәйләйҙәр. Экспортланмаған функцияға бәйлелек саҡырыуы кире ҡағыла. Импортланған китапханалар функцияларҙы аса; урындағы `[[contract]]` һәм `[[test]]` маҡсаттары асыҡ пакет маҡсаттары булып ҡала.
 
-Musubi ҡаш аҫты командалары аша хәл иткәндә йәки һуңыраҡ юғалған бәйлелек сығанаҡтарын алырға мөмкин:
+## Кэшты тикшереү һәм ремонтлау {#cache-verification-and-repair}
+
+Йәмәғәт кеши командалары үҙгәрешһеҙ, реестр йөкмәтелгән архивтарҙа эшләй:
 
 ```bash
-cargo run -p musubi -- install --config client.toml --fetch \
-  --provider-payload math.payload
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  cache verify --all --config client.toml
 
-cargo run -p musubi -- cache import math --source-root ../math
-cargo run -p musubi -- cache fetch math --provider-payload math.payload
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  cache repair --config client.toml
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  cache prune --dry-run --config client.toml
 ```
 
-Тере ҡапҡаны алыуҙар бер йәки бер нисә SoraFS ҡапҡа тәьмин итеүсе спецификацияһын ҡуллана:
+`cache repair` карантин ышаныслы нәҫелдәрҙе боҙоу һәм аныҡ архивтарҙы үҙгәртеү, әгәр раҫланған тәьмин итеүсе иҫбатлау быны рөхсәт итә. Musubi тере буш булмаған ҡырҡыу мутацияһын кире ҡаға. Квалификацияланған кандидаттарҙы тикшереү өсөн `--dry-run` ҡулланығыҙ.
+
+## Баҫмалар һәм баҫмалар {#packaging-and-publishing}
+
+Архив яҙыр алдынан саф ыңғай файлдар йыйылмаһын тикшерегеҙ, һуңынан канонник пакет төҙөгөҙ:
 
 ```bash
-cargo run -p musubi -- install --config client.toml --fetch \
-  --gateway-provider 'name=hot-a,provider-id=1111111111111111111111111111111111111111111111111111111111111111,base-url=https://gw.example,stream-token=BASE64,package=math'
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  package --list --locked --config client.toml
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  package --locked --config client.toml
 ```
 
-Провайдерҙың файҙалы йөкләмә файлдары һәм шлюз менән тәьмин итеүселәр бер операция өсөн үҙ-ара айырылып тора. Әгәр берҙән-бер бикләнгән пакет булмаһа, һәр шлюз менән хеҙмәтләндереүсене `package=<dependency-alias>`, `package=<namespace/package@version>`, `package=<namespace/package>` йәки `manifest=<64-hex SoraFS manifest digest>` тип билдәләгеҙ.
+`package` яҙа `target/package/<namespace>-<name>-<version>.car`. CAR каноник пакет манифест, семантик сығарыу манифест бәйләй, теүәл тикшереү бикләү, сығанаҡ ағасы, интерфейс. digest һәм SoraFS архив йөкләмәһе. Тәүге сығарылышта `pack`, `--car-out`, `--sorafs-manifest-out` йәки `--source-plan-out` бойороҡтары юҡ CLI.
 
-Ҡапҡаһы `base-url` һәм `privacy-url` ҡиммәттәр ҡулланырға тейеш `https://` урындағы тест шлюздарын ҡулланырға мөмкин `http://localhost`, `http://127.0.0.1`, йәки `http://[::1]` менән генә `--gateway-allow-insecure-localhost`. Ташҡыс токендары үтәү ваҡыты менән таныҡлыҡ билдәләре һәм улар яҙылмаған `Musubi.lock`.
-
-## Баҫма {#publishing}
-
-`pack` детерминистик иҫәпләй BLAKE3-256 сығанаҡ архивы хеш өҫтәп сығанаҡ байт һәм файл иҫәпләнә. ҡасан `--car-out`, `--sorafs-manifest-out`, йәки `--source-plan-out` тәьмин ителгән, ул шулай уҡ детерминистик төҙөү SoraFS CAR файҙалы йөк, SoraFS асыҡтан-асыҡ, һәм Musubi шул уҡ сығанаҡ файл йыйылмаһынан архив планы.
-
-Баҫтырғанға тиклем киптереп уҡырға кәрәк:
+Публикация - ҡул ҡуйылған, ҡабатланырға мөмкин булған селтәрҙең эш аҙымы. һайлап алынған `client.toml` составында `[musubi.publication]` етештереү бәйләнештәрен, шулай уҡ иҫәп һәм Taira селтәр конфигурацияһы булырға тейеш.
 
 ```bash
-cargo run -p musubi -- publish --config client.toml --dry-run
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  publish -p dex.universal/swap-core --locked --config client.toml
 ```
 
-Юғиһә `--dry-run`, `publish` аҫтындағы дефолт артефакттарҙы яҙа `.musubi/dist/<namespace>/<name>/<version>/`, факультатив рәүештә манифест һәм файҙалы йөкмәтке аша Torii Ул - SoraFS Складка-пин һуңғы пункты менән `--upload`, генерируемых теркәлгән SoraFS Пин, һәм тапшыра `PublishMusubiRelease` конфигурацияланған аша Iroha клиент.
-
-Баҫтырылған баҫмаларҙа түбәндәгеләр булырға тейеш:
-
-- буш булмаған каноник сығанаҡ архивы
-- детерминистик сығанаҡ архивы планы
-- Берҙән-бер экспортланған Kotodama функцияһы
-- Тейешле релиздарҙы һайламаған бәйлелек яҙмалары
-- dapp һылтанмаһы, әгәр бар булһа, уның контракт исемдәре пакеттың атама киңлегенә тап килә
+Ҡулланыу `--detach` Эшләү журналы һәм орлоҡ инеү сиге оҙайлы булғандан һуң кире ҡайтыу өсөн. `publish --resume <operation-id> --config client.toml`. Тарраҡ `--recover <operation-id>` Юл ғына үҙгәрмәй торған сираттағы вагондар юғалған pristine инеү алдында журнал өсөн реконструкциялай. `--dry-run` йәки дөйөм йәмәғәт йөкмәткеһе fallback; йүгереү `package --list` һәм `package` урындағы рейс алдынан.
 
 ## Теркәү һорауҙары һәм ғүмер циклы {#registry-queries-and-lifecycle}
 
-Реестрҙы эҙләгеҙ һәм тикшерегеҙ:
+Шул уҡ Taira клиент конфигурацияһы менән тамамланған реестрҙы эҙлә һәм тикшерегеҙ:
 
 ```bash
-cargo run -p musubi -- search swap --config client.toml
-cargo run -p musubi -- versions dex.universal/swap-core --config client.toml
-cargo run -p musubi -- alias resolve swap --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  search swap --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  info dex.universal/swap-core --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  versions dex.universal/swap-core --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  alias resolve swap --config client.toml
 ```
 
-Янкинг яңы резолюциянан сығарыуҙы йәшереп тора, әммә ғәмәлдәге бикләү файлдарын ҡабатлай ала:
+Йәнкин яңы резолюцияларҙан үҙгәрешһеҙ сығарыуҙы ситләтә, ә ғәмәлдәге теүәл бикләүҙәр ҡабатланмаҫ булып ҡала. Тәүҙә хәҙерге yank ревизияһын уҡығыҙ, һуңынан сағыштырыу һәм билдәләү мутацияһын тапшырығыҙ:
 
 ```bash
-cargo run -p musubi -- yank dex.universal/swap-core@0.1.0 \
-  --reason "bad archive" \
-  --config client.toml \
-  --dry-run
+: "${EXPECTED_YANK_REVISION:?set the current non-zero yank revision}"
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  yank dex.universal/swap-core 0.1.0 \
+  --expected-revision="$EXPECTED_YANK_REVISION" \
+  --reason="bad archive" \
+  --config client.toml
 ```
 
-Musubi глобаль исем ҡыҫырыҡлауҙан ҡаса, `namespace/package` исемдәр киңлегенә баҫтырып сығарыу шул уҡ хужалыҡ йәки тапшырылған рөхсәт моделе менән рөхсәт ителергә тейеш. был маҡсатта ҡулланыла Kotodama dapp исемдәр арауығы. Курацияланған глобаль ҡыҫҡа ҡушаматтар пакеттарҙың хужалығынан айырыла: `SetMusubiShortAlias` талап итә `CanSetMusubiShortAlias` рөхсәт, һәм маҡсатлы пакетта инде бер актив сығарыу булырға тейеш.
+`unyank` ҡулланырға шул уҡ пакеты, версияһы һәм яңы уҡып ревизия менән был хәлде кире ҡайтарыу өсөн. Пакеттар хужалыҡ һәм һаҡлау ролдәрен контроль баҫтырып сығарыу, yank, метамәғлүмәттәрҙе, һәм архив урынлаштырыу рөхсәттәре. Глобаль алфавиттарҙың үҙ хаҡлы теркәлеүе, ретаргет тарихы һәм сағыштырыу һәм ҡуйыу ревизиялары бар; улар пакеттың милекселеге өсөн ҡыҫҡа юлдар түгел.
 
 ## Iroha Ер өҫтө {#iroha-surfaces}
 
-Musubi беренсе класлы Iroha күрһәтмәләрен һәм һорауҙарын ҡуллана:
+Musubi беренсе тапҡыр сығарылған V1 күрһәтмәләрен һәм һорауҙарын ҡуллана:
 
-|Ер өҫтө |Маҡсат |
-| ---------------------------- | -------------------------------------------------- |
-|`PublishMusubiRelease` |Үҙгәрмәсле пакетты баҫтырығыҙ. |
-|`YankMusubiRelease` |Хәҙерге сығарылышты тартып алынған тип билдәләгеҙ. |
-|`SetMusubiShortAlias` |Бөтә донъяға хас ҡыҫҡа исемде пакеттың идентификаторы менән бәйләгеҙ. |
-|`AssertMusubiReleaseExists` |Конкрет пакет версияһы кәрәк. |
-|`FindMusubiReleaseByRef` |Пакеткаға ҡағылышлы документтар килтерегеҙ. |
-|`FindMusubiPackageVersions` |Пакет идентификаторы өсөн версиялар исемлеге. |
-|`FindMusubiPackageReleases` |Баҫма идентификаторы өсөн резюмеларҙы яҙығыҙ. |
-|`SearchMusubiPackages` |Исемдәр арауығы һәм текст буйынса пакет йомғаҡтары эҙләгеҙ. |
-|`FindMusubiShortAliasByName` |Ҡыҫҡа ғына ҡушаматты хәл итегеҙ. |
+|Йөҙөлөш |Маҡсат |
+| -------------------------------------------------- | -------------------------------------------------------------- |
+|`RegisterMusubiNamespaceBindingV1` |Исемдәр киңлеген уның тотороҡло йорт мәғлүмәттәр киңлегенә бәйләү. |
+|`RegisterMusubiArchiveV1` |Үҙгәрмәсле аутентификацияланған сығанаҡ архивы йөкләмәһен теркәгеҙ. |
+|`AddMusubiArchiveLocationV1` |SoraFS архивының иҫбатланған урынын өҫтәү йәки яңыртыу. |
+|`PublishMusubiReleaseV1` |Пакетты талап итегеҙ йәки яңыртығыҙ һәм бер үҙгәрешһеҙ версияны баҫтырығыҙ. |
+|`SetMusubiReleaseYankV1` |Сағыштырығыҙ һәм туранан-тура иреккә сығарыуҙың тартылған торошон билдәләгеҙ|
+|`InviteMusubiPackageMaintainerV1` |Яуаплы пакет роле саҡырыу ағымын башларға. |
+|`RegisterMusubiAliasV1` / `RetargetMusubiAliasV1` |Хакимлыҡ иткән глобаль алфавитты теркәү йәки яңынан адреслау. |
+|`AssertMusubiReleaseDigestV1` |Дөрөҫ, үҙгәрешһеҙ сығартыуҙы раҫлау. |
+|`FindMusubiExactPackageV1` |Дөрөҫ генә бер пакетты һәм уның үҙгәртеп ҡороуҙарын уҡығыҙ. |
+|`FindMusubiExactReleaseV1` |Дөрөҫөн генә әйткәндә, бер фотоны уҡығыҙ. |
+|`FindMusubiResolverIndexV1` / `FindMusubiVersionsV1` |Аҙаҡтан сығарылған кандидаттарҙы хәл итергә йәки исемлеккә индерергә. |
+|`FindMusubiArchiveLocationsV1` |Провайдер ярҙамында архив ҡуйылған урындарҙы уҡығыҙ. |
+|`FindMusubiAliasV1` / `FindMusubiAliasHistoryV1` |Хәҙерге алфавитты йәки уның үҙгәрешһеҙ тарихын уҡығыҙ. |
 
-Torii асыҡлай Musubi HTTP маршрут ғаиләһе `/v1/musubi/`. Агентҡа ҡараған MCP ҡорамалдар асыҡланған `iroha.musubi.` Алмаш исемдәр. [Torii йомғаҡлау пункттары](/ba/reference/torii-endpoints.md) һәм [Һорау һылтанмаһы](/ba/reference/queries.md) киңлек өсөн API Карта.
+Torii ҡушымта маршруты ғаиләһен `/v1/musubi/` аҫтында асыҡлай. MCP инструменттар хәҙерге `iroha.musubi.queries.` һәм `iroha.musubi.instructions.*` исемдәрен ҡуллана. киңрәк API картаһы өсөн [Torii һуңғы нөктәләрен](/ba/reference/torii-endpoints.md) һәм [ һорау шиғырын](/ba/reference/queries.md) ҡарағыҙ.

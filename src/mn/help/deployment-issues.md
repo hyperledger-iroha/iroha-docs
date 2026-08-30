@@ -1,7 +1,7 @@
 ---
 translation_locale: mn
 translation_source: /help/deployment-issues.md
-translation_source_hash: 6f35ac59053e312f56a716810c8f0b625752500d1fc64b27d93cbd8317b6cc19
+translation_source_hash: 5c7d26b39d4ddf4e7e164f7bef79c9e1659db51587fb0dde9cf3f1dc0e3b057b
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2
 Орон нутгийн болон шинжилгээний хэрэглээнд Kagami нь бүтээсэн артефактыг гарын үсэгээр бичигдсэн ижил төстэй файлуудын оронд сонгох хэрэгтэй:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 Бүтээгдсэн захиалга нь Iroha 3 бүтээн байгуулалтын шугамд өрсөлдөгчдийн тохируулалт, генезисийн материал, эхлүүлэх скриптүүд болон README-ийг бүрдүүлдэг.
@@ -24,7 +24,7 @@ cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./loc
 
 Хамгийн түрүүнд эдгээр зүйлсийг шалгаарай:
 
-- `irohad --config <path>` баримт нь ижил хүйстний TOML файл дээр байдаг.
+- `iroha3d --config <path>` баримт нь ижил хүйстний TOML файл дээр байдаг.
 - `public_key` болон `private_key` нь ижил төстэй түлхүүрний хосууд юм.
 - `genesis.public_key` нь генезис бүтээн байгуулалтын гарын үсэг зурахад ашигласан түлхэцтэй нийлж байна.
 - баталгаажуулагч өрсөлдөгчний тодруулгыг BLS-Нормаль түлхүүр ашигладаг бөгөөд `trusted_peers_pop` нь орон нутгийн түлхүүн болон итгэмжлэгдсэн өрсөлөгчдийн эзэмшлийн гэрчилгээний бүртгэлтэй байдаг.
@@ -34,7 +34,7 @@ cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./loc
 Daemon нь нэгээс илүү TOML шатыг уншдаг бол конфигуратын байцаах системийг ашигла:
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --trace-config
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 ```
 
 ## Docker болон Композит {#docker-and-compose}
@@ -42,9 +42,9 @@ cargo run --bin irohad -- --config ./config.toml --trace-config
 Урьдчилсан Kagami локаль сүлжээний өнөөгийн өгөгдлийг бүрдүүлэн командын шугамын аргумент, конфигурацийн файлууд шалгарсан кодтой нийцүүлнэ:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./localnet/docker-compose.yml --force
-docker compose -f ./localnet/docker-compose.yml up
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
+docker compose -f ./docker-compose.yml up
 ```
 
 Хэрэв Composite-ийн хэрэглээг эхлүүлж, дараа нь зогсоосон бол:
@@ -72,7 +72,7 @@ Kubernetes-ийн хувьд аль нэг баталгаажуулагчаар 
 Iroha 3 ашиглаж байгаа хэрэгслийн Nexus, SoraFS, эсвэл олон замын урсгал нь Sora хувилбарыг ашиглаж, Daemon-ийг эхлүүлэх ёстой:
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --sora
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora
 ```
 
 Нэг л сүлжээний баталгаажуулагчдын хооронд ижил профилийг тогтмол ашиглах.

@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
+translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -263,7 +263,7 @@ Birinchi yozish tomoni o'yinchoq Taira faucet da'vosi bo'lishi kerak. U testnetd
 Agar sizda allaqachon yoʻq boʻlsa , kalit juftligini yaratish:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./taira-client-key
 ```
 
 `taira.client.toml` ni yaratish:
@@ -336,7 +336,7 @@ A SORA Nexus hisob ID kanonik hisoblanadi I105 hisobning ommaviy kalitidan va ma
 Hisobotni boshqaradigan Ed25519 tugmalarini yaratish yoki yuklash:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./nexus-account-key
 ```
 
 Ochiq kalitni Taira hisob raqamiga ID o'zgartirish:
@@ -697,7 +697,7 @@ description = "Route payments domains to the payments dataspace"
 
 Operatorning qabul qilishida quyidagi darvozalar bo'lishi kerak:
 
-- `irohad --sora --config <config.toml> --trace-config` hal qilingan nod konfiguratsiyasini o'tkazadi
+- `iroha3d --sora --config <config.toml> --trace-config` hal qilingan nod konfiguratsiyasini o'tkazadi
 - hosil qilingan yoki ko'rib chiqilgan manifest hash va imzolar bilan arxivlanadi.
 - tutun sinovlari oʻtadi Taira har qanday Minamoto rag'batlantirish
 - o'zgarishdan keyingi `/status` katalogida belgilangan yo'nalish va ma'lumotlar maydoni ko'rsatilgan;

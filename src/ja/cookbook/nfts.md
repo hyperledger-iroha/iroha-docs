@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /cookbook/nfts.md
-translation_source_hash: f34043c1940b556439c23de7decc5e79f198f52eca8517dd8a9a5892d997e211
+translation_source_hash: 5eb6a349b815afbac9717f7b44c499adc78b1280625388656015ff4b133b9085
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -162,9 +162,9 @@ CLI が記録を出力封筒に包装する場合は,一度 JSON を検査し,�
 
 ## ソースおよび関連文書 {#source-and-related-docs}
 
-- [NFT 固定されたコミットで統合試験](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/nft.rs)
-- [Kotodama NFT 固定されたコミットでホスト呼び出しテスト](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
-- [固定されたコミット](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/ivm/docs/examples/12_nft_flow.ko)で正確な Kotodama NFT ライフサイクル固定
+- [NFT 固定されたコミットで統合試験](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/nft.rs)
+- [Kotodama NFT 固定されたコミットでホスト呼び出しテスト](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
+- [固定されたコミット](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/docs/examples/12_nft_flow.ko)で正確な Kotodama NFT ライフサイクル固定
 - [NFTs](/ja/blockchain/nfts.md)
 - [メタデータ](/ja/blockchain/metadata.md)
 - [指示](/ja/blockchain/instructions.md)

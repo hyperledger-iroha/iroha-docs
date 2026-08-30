@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 0185b6a341ee90ed6cd52fb9f510549b20592468abe6627d3efa639c3b67d1fd
+translation_source_hash: aa8e079684879bdcda2b4439e9c12742d4ab477e6f560f7c326a59b6be5bf666
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,7 +16,7 @@ translation_engine: nllb-200-ct2
 
 - تعريف أصول رقمية ومفتاح/بائع يملك كمية كافية.
 - عملاء I105 الممولون بمفتاح واحد لكل طرف يقدم خطوة. استخدم نية `fee_payment` مدفوعة من قبل السلطة مباشرة تتطابق أصول الرسوم مع استجابة الصنبور الحالية Taira ؛ لا تضمين أصول ID من الوثائق.
-- الحالي Rust أو Python SDK من Iroha الالتزام `bc7114ed1c7f265a156d2100ff09e851cc95702c`.
+- الحالي Rust أو Python SDK من Iroha الالتزام `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
 - من أجل JavaScript نموذج المجمع، Node.js 24 بالإضافة إلى إصدار محلي `@iroha/iroha-js` الحزمة ومصدرها `iroha_js_host`; اتبعوا [JavaScript SDK إعداد بناء المصدر](/ar/guide/tutorials/javascript.md#build-from-source). يجب أن توفر بناءات المتصفح `compilerUrl` بدلاً من تحميل المضيف الأصلي.
 - يجب على Taira الاعتراف بإرشادات نقل الأصول والاحتفاظ بها. يمكن لأصحاب الأصول استخدام دورة الحياة العادية عندما تسمح سياسة الأصول الخاصة بهم بذلك؛ يحتاج حل النزاع إلى إذن عالمي `CanResolveEscrowDispute`. استخدم شبكة محلية تم إنشاؤها عندما لا توجد سلطة الشبكات العامة المطلوبة .
 
@@ -249,10 +249,10 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 
 ## المصدر والوثائق ذات الصلة {#source-and-related-docs}
 
-- [نموذج تعليمات الاحتفاظ بالأمانة الأصلية عند التزامات المحمولة](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/isi/escrow.rs)
-- [اختبارات تكامل الاحتفاظ الأصلي في الالتزامات المثبتة ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/native_escrow.rs)
-- [Python أساليب العميل الاحتفظي عند التزامات المثبتة](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama عينة الاحتفاظ الأساسي عند التزامن المحدد](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [نموذج تعليمات الاحتفاظ بالأمانة الأصلية عند التزامات المحمولة](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
+- [اختبارات تكامل الاحتفاظ الأصلي في الالتزامات المثبتة ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
+- [Python أساليب العميل الاحتفظي عند التزامات المثبتة](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama عينة الاحتفاظ الأساسي عند التزامن المحدد](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [الاحتفاظ بالأصول الأصلية ](/ar/blockchain/escrow.md)
 - [الأصول المثقلة ](./fungible-assets.md)
 - [الترخيصات والأدوار ](./permissions-and-roles.md)

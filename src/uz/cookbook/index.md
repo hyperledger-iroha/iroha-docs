@@ -1,14 +1,14 @@
 ---
 translation_locale: uz
 translation_source: /cookbook/index.md
-translation_source_hash: cdcfb3549506a65a7dbd1c37672893956a0252153a4075c82333804674aa07b6
+translation_source_hash: aceef9f4e42462614a5cdf41a89f55e26e0399503a48d4b50c08359e7bd7532e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Iroha 3 Ilovalar uchun dasturiy ta'minot {#iroha-3-application-cookbook}
 
-qarshi qurish Iroha 3 kichik, tekshirish mumkin bo'lgan retseptlar bilan Taira testnet va saqlash Minamoto har bir retseptda ommaviy o'qiladigan yoki bo'lmaydiganligi qayd etiladi. Oddiy moliyalashtirilgan hisobda yozish yoki ruxsatnomalar bilan bog'liq operatsiya. Buyruqlar joriy foydalanish I105 hisob IDs, aniq to'lov tanlash, va xulq-atvor tekshirib Iroha qo'llab-quvvatlash [`bc7114ed1c7f265a156d2100ff09e851cc95702c`](https://github.com/hyperledger-iroha/iroha/tree/bc7114ed1c7f265a156d2100ff09e851cc95702c).
+qarshi qurish Iroha 3 kichik, tekshirish mumkin bo'lgan retseptlar bilan Taira testnet va saqlash Minamoto har bir retseptda ommaviy o'qiladigan yoki bo'lmaydiganligi qayd etiladi. Oddiy moliyalashtirilgan hisobda yozish yoki ruxsatnomalar bilan bog'liq operatsiya. Buyruqlar joriy foydalanish I105 hisob IDs, aniq to'lov tanlash, va xulq-atvor tekshirib Iroha qo'llab-quvvatlash [`0010c5a70039eac101a4846499ba9ceaf43eb65c`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c).
 
 [ bilan boshlang Taira](./connect-to-taira.md)ga ulanish. Bu buyruq satridagi retseptlar tomonidan qayta ishlatiladigan mijoz konfiguratsiyasi va to'lov metadatalarini yaratadi. Ushbu hujjatdan hech qachon to'lov aktivini ID nusxa olmang: uni joriy Taira faucet javobidan olish.
 

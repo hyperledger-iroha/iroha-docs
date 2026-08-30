@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /cookbook/query-ledger-state.md
-translation_source_hash: a81f6cc04befb0b92a0a01c2cb3c1ecbbc631ce1f2a923cb046241c295db7806
+translation_source_hash: ca76923f5ae35b96c52a6a4c23c5d9e69549d1ca91d6d1507e7b9a1aee1f1676
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -160,9 +160,9 @@ iroha --config ./localnet/client.toml \
 
 ## ምንጭ እና ተዛማጅ ሰነዶች {#source-and-related-docs}
 
-- [በ ‹Pinned commit› ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/pagination.rs) ላይ በካርሰር የተደገፈ የፓጅኔሽን ውህደት ሙከራዎች
-- [ጠይቅ ገንቢ እና ተመራጭ ባህሪ በ ተጣብቋል commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/query/builder/mod.rs)
-- [የጥያቄ መለኪያዎች እና የኮርሰር ሞዴል በፒን የተቀመጠበት commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/query/parameters.rs)
+- [በ ‹Pinned commit› ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/pagination.rs) ላይ በካርሰር የተደገፈ የፓጅኔሽን ውህደት ሙከራዎች
+- [ጠይቅ ገንቢ እና ተመራጭ ባህሪ በ ተጣብቋል commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/builder/mod.rs)
+- [የጥያቄ መለኪያዎች እና የኮርሰር ሞዴል በፒን የተቀመጠበት commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/parameters.rs)
 - [ጥያቄዎች](/am/blockchain/queries.md)
 - [መጠይቅ ማጣቀሻ ](/am/reference/queries.md)
 - [JavaScript እና TypeScript ](/am/guide/tutorials/javascript.md)

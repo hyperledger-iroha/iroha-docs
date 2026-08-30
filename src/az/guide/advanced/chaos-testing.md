@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /guide/advanced/chaos-testing.md
-translation_source_hash: dfd2d4196827da3563e377baae2fb823871d7a2c293dfafb6dc4de37f9ddbc61
+translation_source_hash: 5ceee448217a42e4f8bbae9595486b79019e7a880dfd0f2c71bf580409d0e4b9
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 Izanami Iroha iş məkanında kaos şəbəkəsi orkestratorudur. Birbaşa istifadə edilə bilən yerli Iroha klasteri başlatır, konfigurassiya olunan bir iş yükü təqdim edir və operatorların şəbəkənin nəzarət olunmuş uğursuzluq altında irəliləyişini davam etdirdiyini yoxlaya bilməsi üçün seçilmiş həmyaşıllılara səhvlər enjeksiyaya verir.
 
-Izanami-ni istehsaldan əvvəl dayanıqlılıq yoxlamaları, regressiya reproduksiyası və konsensus tənzimlənməsi üçün istifadə edin. Onu istehsal şəbəkəsinə yönəltməyin: vasitə başladığı həmyaşıdlara sahib olmaq üçün nəzərdə tutulmuşdur, o cümlədən həmyaşıda yenidən başlamaq, saxlama süpürmələri, süni paket itkisi və yerli CPU və ya disk təzyiqi.
+Izanami-ni istehsaldan əvvəl dayanıqlılıq yoxlamaları, regressiya reproduksiyası və konsensus tənzimlənməsi üçün istifadə edin. Onu bir istehsal şəbəkəsinə yönəltməyin: vasitə başladığı həmyaşıllılara sahib olmaq üçün nəzərdə tutulmuşdur, o cümlədən həmyaşılsız bərpa, saxlama silsilələri, müvəqqəti etibarlı həmyaşıl partisiyaları və yerli CPU və ya disk təzyiqi.
 
 ## Əvvəlki şərtlər {#prerequisites}
 
@@ -34,7 +34,7 @@ cargo run -p izanami -- --allow-net --peers 4 --faulty 1 --duration 120s
 cargo run -p izanami -- --tui --allow-net
 ```
 
-Izanami TUI və CLI parametrlərini istifadəçi konfiqurasiya dizaynı altında saxlayır, buna görə əvvəlki profildən yenidən istifadə etməzdən əvvəl göstərilən parametrləri nəzərdən keçirin.
+Izanami TUI və CLI parametrlərini istifadəçi konfiqurasiyası dizaynı altında saxlayır. Birinci buraxılış dosyasında bir açıq V1 düzəliş byti var; əvvəlcədən yayımlanmış və ya başqa cür versiyalaşdırılmamış parametrlər rədd edilir və köçürülmədən yenidən yaradılmalıdır. Mövcud profildən yenidən istifadə etməzdən əvvəl göstərilən parametrləri nəzərdən keçirin.
 
 ## Bazanın icra olunması {#baseline-run}
 
@@ -103,32 +103,29 @@ Nə vaxt? `--faulty` sıfırdan böyükdürsə, ən azı bir səhv ssenariyası 
 |Ədalətsiz əməliyyat spamı |`--fault-enable-spam-invalid-transactions` |Qəbul və rədd yolları |
 |Şəbəkə gecikməsi |`--fault-enable-network-latency` |Yavaş dedikodular və gecikmiş razılaşma mesajları.|
 |Şəbəkə partisiyası |`--fault-enable-network-partition` |Müvəqqəti etibarlı həmyaşıdların təcrid edilməsi |
-|P2P paket itkisi |`--fault-enable-network-packet-loss` |Tətbiq çərçivəsində trafik azalıb |
 |CPU stres |`--fault-enable-cpu-stress` |Yerli təsdiq və planlaşdırma təzyiqi |
 |Disk doymuşluğu |`--fault-enable-disk-saturation` |Yerli saxlama təzyiqi |
 
-Yalnız paket itkisi ilə həyata keçirilən yarış üçün:
+Yalnız şəbəkə partisiyası ilə işləyən üçün:
 
 ```bash
 cargo run -p izanami -- \
   --allow-net \
-  --peers 20 \
-  --faulty 5 \
-  --duration 800s \
-  --fault-window-start 133s \
-  --fault-window-end 266s \
-  --tps 200 \
-  --submitters 20 \
-  --max-inflight 512 \
+  --peers 4 \
+  --faulty 1 \
+  --duration 5m \
+  --fault-window-start 60s \
+  --fault-window-end 180s \
+  --tps 15 \
+  --submitters 1 \
+  --max-inflight 32 \
   --fault-enable-crash-restart=false \
   --fault-enable-wipe-storage=false \
   --fault-enable-spam-invalid-transactions=false \
   --fault-enable-network-latency=false \
-  --fault-enable-network-partition=false \
-  --fault-enable-network-packet-loss=true \
+  --fault-enable-network-partition=true \
   --fault-enable-cpu-stress=false \
   --fault-enable-disk-saturation=false \
-  --fault-network-packet-loss-percent 75 \
   --seed 42
 ```
 
@@ -142,9 +139,8 @@ Yuxarıdakı Izanami kataloqu CLI profillərinə ümumi blockchain ünsiyyət ç
 | --------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 |Məqsədli yük|`--faulty 0`, yüksək `--tps`, bir təqdimatçı, yüksək `--max-inflight` |
 |Keçmiş uğursuzluq |Yalnız sərhədli bir səhv pəncərəsi daxilində qəzaya / yenidən başlama imkanı |
-|Paket itkisi |Yalnız paket itkisini təmin etmək, ümumiyyətlə 75% itirmə nisbəti ilə |
 |Qalanma və bərpa |Qəza / yenidən başlama ilə böyük bir səhv yaşıllı populyasiyasından istifadə edin |
-|Liderlərin təcrid edilməsi |Yalnız şəbəkə partisiyası və ya paket itkisi səhvləri olan tam bir qüsurlu həmyaşıd istifadə edin; Izanami Sumeragi lider telemetriyasını izləyir |
+|Liderlərin təcrid edilməsi |Təkcə şəbəkə bölüşməsindəki səhvlə tam bir qüsurlu həmyaşıd istifadə edin; Izanami Sumeragi lider telemetriyasını izləyir .|
 
 Bir dəfədə bir dəyişən sabit saxlayın. Əgər həmkarların sayını, iş yükü profilini, səhv pəncərəsini və TPS eyni vaxtda dəyişdirirsinizsə, nəticəni şərh etmək çətindir.
 
@@ -156,8 +152,8 @@ Döyüş zamanı performans təsdiq üçün istifadə olunan eyni siqnallara diq
 - təqdim olunmuş, qəbul edilmiş, rədd edilmiş və vaxtla başa çatmış əməliyyatlar;
 - Səyahət dərinliyi, səyahət doymuşluğu və son nöqtələrin geri basıncı
 - baxış dəyişiklikləri, bərpa yolları, çatışmayan bloklar və çatışmayan quorum sertifikatları
-- RBC geri qalxma, gözlənici iclaslar və düşmüş və ya gecikmiş konsensus trafikləri
-- CPU, yaddaş, disk və həmyaşıdları idarə edən ev sahibi şəbəkə doymuşluğu
+- İmzalanmış RS16 mövcudluq arxa cəhəti, gözlənilir mövzusu və gecikmiş konsensus trafikləri
+- CPU, yaddaş, disk və həmyaşıdları idarə edən hostda şəbəkə doymuşluğu
 
 Validasiya gecikməsinin təhlili üçün əsas döngədəki debug qeydlərini aktivləşdirin:
 
@@ -176,10 +172,10 @@ Döyüşü uğursuzluq kimi qəbul edin:
 
 - `--progress-timeout`dən uzun blok irəliləyiş stallları.
 - Rəfiqələrin hündürlüyü fərqlənir və yenidən birləşmir
-- p95 gecikmə müddəti `--latency-p95-threshold` -dən çoxdur
+- p95 gecikmə müddəti `--latency-p95-threshold`-dən çoxdur
 - Çətinlik pəncərəsinin bağlandıqdan sonra növbələr yarışın qalan hissəsi üçün böyüyür.
 - rədd edilən və ya vaxtla başa çatmış əməliyyatlar seçilmiş iş yükü ilə izah olunmur.
-- Peer restart, saxlama silinməsi və ya paket itkisi bərpası əl təmizləmə tələb edir.
+- Peer restart, saxlama silinməsi və ya bölmə bərpası əl təmizlənməsini tələb edir.
 
 Bir uğursuzluqdan sonra eyni toxum və bir az səhv növü ilə yenidən çalışın. Bu, iş yükünü və vaxtını təkrarlayır və uğursuzluğun səthini daraldır.
 

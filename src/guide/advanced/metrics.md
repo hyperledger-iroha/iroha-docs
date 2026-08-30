@@ -17,20 +17,34 @@ TPS.
 
 ## What to Measure
 
-Start with the operator surfaces exposed by Torii:
+Start with the public node snapshot and Prometheus scrape, then use the CLI
+for operator-authenticated consensus state. The operator key must be allowed by
+the target node and is loaded only at runtime:
 
 ```bash
 export TORII=http://127.0.0.1:8180
+export OPERATOR_KEY_FILE=./secrets/operator.key
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
-curl -s -H 'Accept: application/json' "$TORII/v1/sumeragi/status" | jq .
-curl -s "$TORII/v1/sumeragi/phases" | jq .
-curl -s "$TORII/v1/sumeragi/rbc" | jq .
-curl -s "$TORII/v1/sumeragi/params" | jq .
 curl -s "$TORII/metrics" > metrics.prom
+
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi status
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi diagnostics
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi qc
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi params
 ```
 
-You can try the same read-only pattern against public Taira:
+Public Taira is useful for learning the shape of anonymous node snapshots. Its
+operator diagnostics are intentionally unavailable without a Taira operator
+key:
 
 ```bash
 TAIRA=https://taira.sora.org
@@ -38,32 +52,21 @@ TAIRA=https://taira.sora.org
 curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
-curl -fsS "$TAIRA/v1/time/status" \
-  | jq '{healthy: .health.healthy, peers, samples_used, rtt_count: .rtt.count}'
-
-curl -fsS "$TAIRA/metrics" \
-  | grep -E '^(block_height|queue_size|sumeragi_tx_queue_depth|txs|view_changes)' \
-  | head -n 20
+curl -fsS "$TAIRA/v1/time/now" \
+  | jq '{now_ms, offset_ms}'
 ```
 
-Public Taira metrics are useful for learning the signal names. Do not use them
-as production capacity numbers for your own deployment.
+Do not use public-testnet observations as production capacity numbers for your
+own deployment.
 
-The same consensus snapshots are available through the CLI:
-
-```bash
-iroha --config ./localnet/client.toml --output-format text ops sumeragi status
-iroha --config ./localnet/client.toml --output-format text ops sumeragi phases
-iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetry
-iroha --config ./localnet/client.toml ops sumeragi params
-```
-
-Telemetry visibility depends on the configured profile. Use `extended` when you
-need `/metrics`, and use `full` during test runs when you also need the detailed
-Sumeragi operator routes.
+Telemetry visibility depends on the configured profile. `operator` enables
+the status and diagnostics snapshots. `extended` adds `/metrics` and costly
+timings, while `developer` adds developer snapshots such as leader, QC,
+parameters, and evidence without enabling `/metrics`. Use `full` when one run
+needs both sets. `telemetry_profile` is the sole first-release telemetry
+switch.
 
 ```toml
-telemetry_enabled = true
 telemetry_profile = "full"
 ```
 
@@ -86,19 +89,22 @@ look healthy.
 ## Node Count and Quorum
 
 More validators improve fault tolerance but increase coordination, signature,
-and network fanout costs. In the current Sumeragi implementation:
+and network fanout costs. The first-release Sumeragi protocol requires:
 
-- validator count `n` derives the fault budget `f = floor((n - 1) / 3)`
-- for `n >= 4`, commit quorum is `2f + 1`
-- for `n <= 3`, all validators are required for commit
+- an exact `n = 3f + 1` voting committee
+- `4 <= n <= 31`, so valid sizes are 4, 7, 10, and so on
+- a commit quorum of `2f + 1`
 - observer peers sync blocks but do not vote, propose, or collect
 
 | Validators | Fault budget | Commit quorum | Capacity note |
 | --- | --- | --- | --- |
-| 1 to 3 | 0 practical offline slack | all validators | Useful for development and small tests; any missing validator can stall commits |
 | 4 | 1 | 3 | Common minimum for one-fault tolerance |
 | 7 | 2 | 5 | More resilient, with more vote and propagation traffic |
-| 10 | 3 | 7 | Higher coordination cost; network and collector tuning matter more |
+| 10 | 3 | 7 | Higher coordination cost; network and ingress tuning matter more |
+| 31 | 10 | 21 | Maximum first-release committee; benchmark coordination and signature cost carefully |
+
+Genesis generation and startup validation reject nonconforming committee
+sizes; do not benchmark a topology that the release cannot admit.
 
 When evaluating "X nodes", separate voting validators from observers. Adding
 observers usually costs less than adding validators, but observers still consume
@@ -122,43 +128,50 @@ Record:
 Small transfer transactions are not a proxy for contract-heavy or metadata-heavy
 workloads.
 
-### Consensus Timing
+### Consensus Cadence
 
-Sumeragi timing is controlled by the effective Sumeragi parameters:
+The effective Sumeragi parameter snapshot contains the signed immutable block
+cadence and the clock-drift bound:
 
-- `block_time_ms`
-- `commit_time_ms`
-- `min_finality_ms`
-- `pacing_factor_bps`
-- NPoS phase timeouts when NPoS mode is enabled
+- `block_cadence_ms`
+- `max_clock_drift_ms`
 
 Inspect them with:
 
 ```bash
-iroha --config ./localnet/client.toml ops sumeragi params
-curl -s "$TORII/v1/sumeragi/params" | jq .
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi params
 ```
 
-Lower timing targets can improve latency only while the network, storage, and
-execution layers can keep up. Once view changes, missing-payload fetches, or
-backpressure appear, lowering timers usually makes performance worse.
+`block_cadence_ms` is committed by signed genesis and frozen at startup; it is
+not a live tuning knob. Compare networks with different signed genesis inputs
+only as separate benchmark scenarios. Once view changes, missing-payload
+fetches, or backpressure appear, a shorter cadence usually makes the overload
+more visible rather than increasing sustainable throughput.
 
-### Collector Fanout
+### Candidate and Ingress Bounds
 
-Collector settings affect how quickly commit votes converge:
+Node-local Sumeragi bounds determine how much candidate and recovery work a
+validator can retain:
 
-- `sumeragi.collectors.k` controls how many collectors assemble votes per height
-- `sumeragi.collectors.redundant_send_r` controls additional vote fanout after a
-  local timeout
-- `sumeragi.collectors.parallel_topology_fanout` adds topology fanout alongside
-  collectors
+- `sumeragi.block.max_transactions`
+- `sumeragi.block.max_payload_bytes`
+- `sumeragi.block.proposal_queue_scan_multiplier`
+- `sumeragi.queues.commands`
+- `sumeragi.queues.bodies` and `sumeragi.queues.body_bytes`
+- `sumeragi.queues.body_source_bytes`, `sumeragi.queues.chunks`, and
+  `sumeragi.queues.ready_bodies`
 
-Increasing fanout can reduce tail latency in larger or less reliable networks,
-but it also increases traffic. Compare aggregate availability and collector
-telemetry with latency and backpressure metrics before changing these values:
+Too-small bounds create queue or payload-recovery pressure; oversized bounds
+increase retained memory and the amount of work available to an abusive peer.
+Compare the diagnostics snapshot with process memory, message handling, and
+missing-body metrics before changing one bound at a time:
 
 ```bash
-iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetry
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi diagnostics
 ```
 
 ### Network Conditions
@@ -167,7 +180,7 @@ Consensus performance is sensitive to:
 
 - RTT between validators
 - jitter and packet loss
-- bandwidth for block payloads and RBC chunks
+- bandwidth for block payloads and signed RS16 chunks
 - asymmetric links between regions
 - NAT, firewall, or relay behavior that delays peer connectivity
 
@@ -181,6 +194,7 @@ Admission and queue settings define how much burst pressure a peer can absorb:
 
 - `queue.capacity`
 - `queue.capacity_per_user`
+- `queue.max_retained_bytes`
 - `queue.transaction_time_to_live_ms`
 - genesis transaction limits such as max signatures, instructions, bytes, and
   decompressed bytes
@@ -194,7 +208,7 @@ sustainable throughput. A stable queue is healthy; a growing queue is a backlog.
 Measure every validator, not only the leader:
 
 - CPU saturation during validation, signature verification, and execution
-- memory pressure from queues, snapshots, and active RBC sessions
+- memory pressure from queues, snapshots, and payload-recovery buffers
 - disk write latency for block storage and snapshots
 - network transmit/receive saturation
 - optional hardware acceleration settings when used by the workload
@@ -203,8 +217,9 @@ The slowest voting validator can determine the network's tail latency.
 
 ## Prometheus Signals
 
-Metric names can vary by build profile and feature set. Inspect `/metrics` on
-your node first, then build dashboards around the available series.
+Metric names come from the checked-in telemetry catalog. Series availability
+and sampling still depend on build features and `telemetry_profile`, so inspect
+`/metrics` on the target node before building a dashboard.
 
 Common signals include:
 
@@ -217,7 +232,7 @@ Common signals include:
 | Queue saturation | `sumeragi_tx_queue_saturated` | Sustained non-zero values mean overload |
 | View changes | `view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` | Rising values indicate timing, topology, payload, or network trouble |
 | Dropped messages | `dropped_messages`, `sumeragi_consensus_message_handling_total` | Drops during load usually explain latency spikes |
-| RBC pressure | `sumeragi_rbc_store_pressure`, `sumeragi_rbc_backpressure_deferrals_total` | Non-zero pressure points to payload recovery or storage bottlenecks |
+| Payload and DA recovery | `sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total`, `sumeragi_da_gate_satisfied_total` | Persistent requests, rising age, or repeated DA gates indicate body or chunk acquisition trouble |
 | Commit quorum | `sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` | Counted signatures should reach the required quorum quickly |
 
 When a metric exists only in `/v1/sumeragi/status`, capture the JSON snapshot in
@@ -235,10 +250,18 @@ the same run artefacts as the Prometheus scrape.
 2. Record the effective configuration:
 
    ```bash
-   iroha --config ./localnet/client.toml --output-format json ops sumeragi params \
+   iroha --config ./localnet/client.toml \
+     --operator-private-key-file "$OPERATOR_KEY_FILE" \
+     --output-format json ops sumeragi params \
      > artifacts/sumeragi-params.json
-   curl -s "$TORII/v1/sumeragi/collectors" \
-     > artifacts/sumeragi-collectors.json
+   iroha --config ./localnet/client.toml \
+     --operator-private-key-file "$OPERATOR_KEY_FILE" \
+     --output-format json ops sumeragi status \
+     > artifacts/sumeragi-status.json
+   iroha --config ./localnet/client.toml \
+     --operator-private-key-file "$OPERATOR_KEY_FILE" \
+     --output-format json ops sumeragi diagnostics \
+     > artifacts/sumeragi-diagnostics.json
    ```
 
 3. Run the workload at the target TPS.
@@ -252,8 +275,10 @@ Publish performance numbers only with enough context to reproduce them:
 
 - Iroha commit, release, and feature flags
 - validator and observer counts
-- consensus mode and Sumeragi parameters
-- collector `k`, redundant send `r`, and topology fanout
+- consensus mode, signed block cadence, and DA layout
+- exact `3f + 1` committee, quorum, and observer roster
+- `sumeragi.block`, `sumeragi.queues`, `sumeragi.limits`, network-ingress, and
+  transaction-queue bounds
 - telemetry profile
 - hardware, storage, and OS details
 - network RTT, jitter, loss, and bandwidth assumptions
@@ -262,7 +287,7 @@ Publish performance numbers only with enough context to reproduce them:
 - accepted/rejected TPS
 - p50/p95/p99 commit latency
 - queue depth and saturation
-- view changes, dropped messages, RBC pressure, and missing-payload counters
+- view changes, dropped messages, missing-block fetches, and DA-gate counters
 - CPU, memory, disk, and network utilization per validator
 
 Without these details, a TPS number should be treated as anecdotal.

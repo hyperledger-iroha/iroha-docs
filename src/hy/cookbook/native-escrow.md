@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 0185b6a341ee90ed6cd52fb9f510549b20592468abe6627d3efa639c3b67d1fd
+translation_source_hash: aa8e079684879bdcda2b4439e9c12742d4ab477e6f560f7c326a59b6be5bf666
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,7 +16,7 @@ translation_engine: nllb-200-ct2
 
 - Թվային ակտիվի սահմանում եւ բացող/վաճառող, որը ունի բավարար քանակություն:
 - Ֆինանսավորված, մեկ բանալիր I105 հաճախորդներ յուրաքանչյուր կողմի համար, որը ներկայացնում է քայլ: Օգտագործեք կենդանի իշխանության կողմից վճարված `fee_payment` մտադրություն, որի վճարային ակտիվը համապատասխանում է ընթացիկ Taira գետնահեղուկի արձագանքին; փաստաթղթերից մի ներմուծեք ակտիվ ID.
-- Ներկայումս Rust կամ Python SDK _ ից Iroha պարտավորվել `bc7114ed1c7f265a156d2100ff09e851cc95702c`.
+- Ներկայումս Rust կամ Python SDK _ ից Iroha պարտավորվել `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
 - JavaScript կոմպիլերային օրինակի համար, Node.js 24 գումարած տեղական կառուցված `@iroha/iroha-js` փաթեթ եւ դրա բնիկ `iroha_js_host`; հետեւեք [JavaScript SDK աղբյուրի շինարարության կարգավորմանը](/hy/guide/tutorials/javascript.md#build-from-source): Բրաուզերի շինարարությունները պետք է ապահովեն `compilerUrl` ՝ փոխարենը ներբեռնելու բնիկ հոստը:
 - Taira-ը պետք է ընդունի ակտիվների փոխանցման եւ գրավման հրահանգները: Գույքի սեփականատերերը կարող են օգտագործել սովորական կյանքի ցիկլը, երբ իրենց ակտիվային քաղաքականությունը դա թույլ է տալիս; վեճի լուծումը պահանջում է գլոբալ `CanResolveEscrowDispute` թույլտվություն: Օգտագործեք ստեղծված տեղական ցանց, երբ բացակայել է անհրաժեշտ հանրային ցանցի իշխանությունը:
 
@@ -249,10 +249,10 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 
 ## Աղբյուրը եւ դրա հետ կապված փաստաթղթերը {#source-and-related-docs}
 
-- [Սահմանված պարտավորության վրա ստուգման բնիկ մոդելը ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/isi/escrow.rs)
-- [Native escrow ինտեգրման փորձարկումները փակված պարտավորության վրա](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/native_escrow.rs)
-- [Python գրավյալ հաճախորդի մեթոդները փակված պարտավորության վրա](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama ներքին պահապանների նմուշը փակված պարտավորության](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [Սահմանված պարտավորության վրա ստուգման բնիկ մոդելը ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
+- [Native escrow ինտեգրման փորձարկումները փակված պարտավորության վրա](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
+- [Python գրավյալ հաճախորդի մեթոդները փակված պարտավորության վրա](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama ներքին պահապանների նմուշը փակված պարտավորության](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [Բնային ակտիվների պահպանում](/hy/blockchain/escrow.md)
 - [Գործունակ ակտիվներ](./fungible-assets.md)
 - [թույլտվություններ եւ դերակատարություններ](./permissions-and-roles.md)

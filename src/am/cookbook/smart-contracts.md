@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: 4fe9b19fc4d13cfc71d9b9558fe7cdb1d14bd88c2d20f4d23c66313ba3ddd4b6
+translation_source_hash: 67778f9fc4f2b6fa0288f5921402cf5509515aae678e98b8192e103dfe284db3
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -14,7 +14,7 @@ translation_engine: nllb-200-ct2
 
 ## ቅድመ ሁኔታዎች {#prerequisites}
 
-- የ Iroha ምንጭ ማረጋገጫ በ `bc7114ed1c7f265a156d2100ff09e851cc95702c` ፣ Rust እና በ Cargo.
+- የ Iroha ምንጭ ማረጋገጫ በ `0010c5a70039eac101a4846499ba9ceaf43eb65c` ፣ Rust እና በ Cargo.
 - የአሁኑ `iroha` CLI እና የገንዘብ ድጋፍ የተደረገለት Taira ደንበኛ ከ [ ወደ Taira](./connect-to-taira.md) ይገናኙ።
 - በ `IROHA_CONFIG` እና `IROHA_PRIVATE_KEY_FILE` ውስጥ ፍጹም መንገዶች. ቁልፍ ፋይሉ ባለቤት የሚይዝ, ሁነታ ጋር ነጠላ አገናኝ መደበኛ ፋይል መሆን አለበት `0600`; የማሰማራት ረዳት ሆን ተብሎ ምንም ውስጣዊ የግል-ቁልፍ ክርክር የለውም.
 - Taira ኦፕሬተር ማጽደቅ። የውል ኮድ ምዝገባ `CanRegisterSmartContractCode` ይጠይቃል ፣ እና የተጠበቁ ልውውጦች የአስተዳደር መመዘኛ እና ህግ ማውጣት ሊጠይቁ ይችላሉ ። Taira ያንን መዳረሻ ካላቀረበ ልውውጡን በጄኔሬተሩ ፈቃድ በሚሰጥበት አካባቢያዊ አውታረመረብ ላይ ያድርጉ።
@@ -131,7 +131,7 @@ jq '{contract_address, code_hash_hex, final, fee_quotes}' \
   ./build/deployment.json
 ```
 
-ባዶው `charge_limits` ጥያቄ የተገለጸ የንብረት መታወቂያ አይደለም: ረዳቱ ከመፈረምዎ በፊት ትክክለኛውን የቀጥታ ዋጋ ይቀበላል. የተመለሰውን የክፍያ ንብረትን ከአሁኑ የቧንቧ ምላሽ ጋር ያነፃፅሩ. በውል ጥሪዎች ላይ የቀድሞውን `gas_asset_id` ሜታዳታ አያያይዙ ።
+ባዶው `charge_limits` ጥያቄ የተገለጸ የንብረት መታወቂያ አይደለም: ረዳቱ ከመፈረምዎ በፊት ትክክለኛውን የቀጥታ ዋጋ ይቀበላል. የአሁኑ የውሃ ቧንቧ ምላሽ: የውል ጥሪዎች ክፍያ ምርጫን የሚቀበሉት በተጻፈው የቀጥታ ዋጋ አቅርቦት ብቻ ነው; `gas_asset_id` ግብይት ሜታዳታ የመጀመሪያ-ልቀት ውል አካል አይደለም.
 
 ### 5. የተሰማራውን የመግቢያ ነጥብ ማስመሰል እና ጥሪ ማድረግ። {#_5-simulate-and-call-the-deployed-entrypoint}
 
@@ -195,19 +195,19 @@ jq -e '.ok == true and .result == ["3", "5"]' \
 
 ## ችግሮችን መፍታት {#troubleshooting}
 
-- `CanRegisterSmartContractCode` ውድቀቶች የ Taira ኦፕሬተር ድጎማ ወይም በ localnet ላይ የመነሻ / ቡትስትራፕ ለውጥ ይጠይቃሉ። አንድ መደበኛ መለያ ይህንን ፈቃድ ከሁኔታው በኋላ እራሱን መስጠት አይችልም ።
+- `CanRegisterSmartContractCode` ውድቀቶች የ Taira ኦፕሬተር ድጎማ ወይም በ localnet ላይ የመነሻ / bootstrap ለውጥ ይጠይቃሉ። አንድ መደበኛ መለያ ይህንን ፈቃድ ከሁኔታው በኋላ በራሱ መስጠት አይችልም ።
 - አስተዳደር ወይም የተጠበቁ መስመሮች ውድቀት ማለት ልውውጥ በዚያ አውታረ መረብ የሚፈለገውን ትክክለኛ ማረጋገጫ መመዘኛ ይፈልጋል ። የማረጋገጫ ዝርዝሩን ማስተባበር; ሂሳብ IDs አይፈጥሩ.
 - አንድ manifest ወይም ABI አለመመሳሰል ማለት ባይትኮድ, manifest እና ኖት ሩጫ ጊዜ ተመሳሳይ ንጥረ ነገር አይገልጹም ማለት ነው. በ `--verify` የተጣበቀውን commit ላይ እንደገና ይገንቡ ።
 - `fee quote changed ... gas bound` ማለት የተጠየቀው የታተመ ዓላማ እና የቀጥታ ዋጋ ስምምነት አለመግባባት ማለት ነው.
 - የማሰማራት ረዳቱ የመስመር ላይ ቁልፎችን ፣ የመፍቀድ ቁልፍ-ፋይል ሁነቶችን ፣ symlinks እና የተገናኙ ፋይሎችን ከመቅረባቸው በፊት በማባዛት ይቀበላል ።
-- አንድ እይታ ብቻ የመግቢያ ነጥብ ስህተት ማለት `compute` የተሳሳተ ትዕዛዝ ቤተሰብ በኩል አመራ ነበር. ይህ ናሙና ይገልጻል `kotoage`, ስለዚህ ጥሪ ማስመሰል ወይም ማቅረቢያ ይጠቀሙ.
-- የኮንትራት ጥሪዎች አዎንታዊ የተጻፈ ጋዝ ገደብ ይጠይቃሉ። ከፍተኛ-ደረጃ ውርስ ጋዝ ወይም ክፍያ ንብረት ሜታዳታ ውድቅ ተደርጓል.
+- አንድ እይታ ብቻ የመግቢያ ነጥብ ስህተት ማለት `compute` የተሳሳተ ትዕዛዝ ቤተሰብ በኩል አቅጣጫ ነበር. ይህ ናሙና ይገልጻል `kotoage`, ስለዚህ ጥሪ ማስመሰያ ወይም ማቅረቢያ መጠቀም.
+- የኮንትራት ጥሪዎች አዎንታዊ የተጻፈ ጋዝ ገደብ ይጠይቃሉ. የመጀመሪያው ልቀት ጥሪ ውል ከፍተኛ ደረጃ ጋዝ ወይም ክፍያ-አክሲዮን ሜታዳታ ውድቅ ያደርጋል.
 
 ## ምንጭ እና ተዛማጅ ሰነዶች {#source-and-related-docs}
 
-- [Kotodama V1 ትዕዛዝ ትግበራ በፒን የተደረገ ኮሚቴ ላይ ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/ivm/src/bin/koto.rs)
-- [በፒን የተደረገባቸው commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/tuple_return_demo.ko) ላይ የቱፕል-ሪተርን ምንጭ ናሙና
-- [የተጣራ ተልእኮ ላይ ተወላጅ የማሰማራት ረዳት ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
-- [በኮንትራት ውህደት ሙከራዎች በተጣራ ተሳትፎ ላይ ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/contracts.rs)
+- [Kotodama V1 ትዕዛዝ ትግበራ በፒን የተደረገ ኮሚቴ ላይ ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/src/bin/koto.rs)
+- [በፒን የተደረገባቸው commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/tuple_return_demo.ko) ላይ የቱፕል-ሪተርን ምንጭ ናሙና
+- [የተጣራ ተልእኮ ላይ ተወላጅ የማሰማራት ረዳት ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
+- [በኮንትራት ውህደት ሙከራዎች በተጣራ ተሳትፎ ላይ ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs)
 - [ስማርት ኮንትራቶች](/am/blockchain/smart-contracts.md)
 - [CLI ማጣቀሻ](/am/get-started/operate-iroha-via-cli.md)

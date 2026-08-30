@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 2c71e6c135d862d626d3b184eef3cbed350f1353d7dee78cc129092e7b857924
+translation_source_hash: 96505bdba910beb902c399004f5cd24f5e5b0773f01df9cdcfdb49d019830d03
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,27 +15,27 @@ Yalnız yerli düzəliş üçün isti yenidən yükləyin. Normal yerli inkişaf
 Linux-a uyğun bir daemon binarını yuxarı axın iş məkanından qurun:
 
 ```bash
-cargo build --release -p irohad --target x86_64-unknown-linux-musl
+cargo build --release -p irohad --bin iroha3d --target x86_64-unknown-linux-musl
 ```
 
 Onu işləyən bir rəfiqə konteynerinə kopyalayın, sonra həmin konteyneri yenidən başlatın:
 
 ```bash
-docker cp target/x86_64-unknown-linux-musl/release/irohad <container>:/usr/local/bin/irohad
+docker cp target/x86_64-unknown-linux-musl/release/iroha3d <container>:/usr/local/bin/iroha3d
 docker restart <container>
 ```
 
-Konteynerin adını təsdiq etmək üçün `docker ps` istifadə edin. Yaradılmış yığında həmyaşıd konteynerləri `./localnet/docker-compose.yml` ilə təyin olunur.
+Konteynerin adını təsdiq etmək üçün `docker ps` istifadə edin. Yaradılmış yığında həmyaşıd konteynerləri `./docker-compose.yml` ilə təyin olunur.
 
 ## Genesis'i birbaşa istifadə edilə bilən şəbəkədə yenidən yükləyin {#recommit-genesis-in-a-disposable-network}
 
 Bir həmyaşıd yalnız saxlama boş olduğu zaman genesis həyata keçirir.Birbaşa istifadə edilə bilən Docker şəbəkə üçün yığmağı dayandırın, yaranmış vəziyyətini çıxarın, imzalanan genesis paketini yeniləyin və ya əvəz edin və yenidən başlayın:
 
 ```bash
-docker compose -f ./localnet/docker-compose.yml down
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./localnet/docker-compose.yml --force
-docker compose -f ./localnet/docker-compose.yml up
+docker compose -f ./docker-compose.yml down
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
+docker compose -f ./docker-compose.yml up
 ```
 
 Vəziyyəti qorunması lazım olan bir şəbəkədə genesin yerini tutmayın.

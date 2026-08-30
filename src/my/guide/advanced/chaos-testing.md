@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /guide/advanced/chaos-testing.md
-translation_source_hash: dfd2d4196827da3563e377baae2fb823871d7a2c293dfafb6dc4de37f9ddbc61
+translation_source_hash: 5ceee448217a42e4f8bbae9595486b79019e7a880dfd0f2c71bf580409d0e4b9
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 Izanami သည် upstream Iroha လုပ်ငန်းခွင်တွင် chaosnet orchestrator ဖြစ်သည်။ ၎င်းသည် တစ်ခါသုံး ဒေသခံ Iroha အုပ်စုကိုစတင်ပြီး သတ်မှတ်နိုင်သော အလုပ်အကိုင်အားသွင်းမှုကို ပေးပို့ကာ ရွေးချယ်ထားသည့် အဖော်များသို့အမှားများကို ထိုးပေးခြင်းဖြင့် ကွန်ရက်က ထိန်းချုပ်မှုပျက်စီးမှုအောက်မှာ တိုးတက်မှုရှိမရှိ စစ်ဆေးနိုင်သည်။
 
-Izanami ကိုထုတ်လုပ်မှုမတိုင်မီ ခံနိုင်ရည် စစ်ဆေးခြင်း၊ ပြန်လည်ဖန်တီးခြင်းနှင့် သဘောတူညီချက် ညှိနှိုင်းမှုအတွက် အသုံးပြုပါ။ ထုတ်လုပ်ရေးကွန်ရက်ကို မညွှန်းပါနဲ့။ ကိရိယာသည် peer restarts, storage wipes, artificial packet loss နှင့် ဒေသတွင်း CPU သို့မဟုတ် disk ဖိအားအပါအဝင်စတင်သည့် peers ကိုပိုင်ဆိုင်ရန်ဒီဇိုင်းပြုပြင်ထားသည်။
+Izanami ကို ထုတ်လုပ်မှုမတိုင်မီ ကြံ့ခိုင်မှု စစ်ဆေးခြင်း၊ ပြန်လည်ဖန်တီးခြင်းနှင့် သဘောတူညီချက် ညှိနှိုင်းမှုအတွက် အသုံးပြုပါ။ ထုတ်လုပ်ရေးကွန်ရက်ကို မညွှန်းပါနဲ့။ ကိရိယာသည် peer restarts, storage wipes, ယာယီ trusted-peer partitions နှင့် ဒေသတွင်း CPU သို့မဟုတ် disk ဖိအားအပါအဝင်စတင်သည့် peers ကိုပိုင်ဆိုင်ရန်ဒီဇိုင်းထုတ်ထားသည်။
 
 ## လိုအပ်ချက်များ {#prerequisites}
 
@@ -34,7 +34,7 @@ cargo run -p izanami -- --allow-net --peers 4 --faulty 1 --duration 120s
 cargo run -p izanami -- --tui --allow-net
 ```
 
-Izanami သည် user config directory တွင် TUI နှင့် CLI setting များကို ဆက်ရှိနေသည်၊ ထို့ကြောင့် ယခင် profile ကို ပြန်လည်အသုံးပြုရန်မတိုင်မီ ပြထားသော settings များအား စစ်ဆေးပါ။
+Izanami သည် user config directory တွင် TUI နှင့် CLI settings များကို ဆက်လက်တည်ရှိသည်။ ပထမထုတ်ပြန်မှုဖိုင်မှာ explicit V1 layout byte တစ်ခုရှိသည်၊ ကြိုတင်ထုတ်ဝေခြင်း (သို့မဟုတ်) အခြားနည်းဖြင့် unversioned settings များအား ပယ်ချပြီး ရွှေ့ပြောင်းခြင်းအစား ပြန်လည်ဖန်တီးသင့်ပါသည်။ လက်ရှိပရိုဖိုင်ကို ပြန်လည်အသုံးပြုရန် မတိုင်မီ ပြသထားသော settings များကို စစ်ဆေးပါ။
 
 ## မူလတန်း Run {#baseline-run}
 
@@ -102,33 +102,30 @@ cargo run -p izanami -- \
 |Storage ကို ဖျက်ပြီး restart လုပ်ပါ |`--fault-enable-wipe-storage` |ပျောက်ဆုံးနေတဲ့ ဒေသခံပြည်နယ်မှ ပြန်လည်ထူထောင်ခြင်း |
 |မမှန်ကန်သော ငွေပေးချေမှု spam |`--fault-enable-spam-invalid-transactions` |လက်ခံခြင်းနှင့် ပယ်ချခြင်း လမ်းကြောင်းများ |
 |ကွန်ရက် latency ကို |`--fault-enable-network-latency` |နှေးကွေးတဲ့ ဝေဖန်သံတွေ၊ နောက်ကျနေတဲ့ သဘောတူညီချက် စာတိုတွေ|
-|ကွန်ရက်ပိုင်းခြားခြင်း |`--fault-enable-network-partition` |ယာယီ ယုံကြည်မှုရှိတဲ့ အဖော်တွေနဲ့ သီးသန့်နေခြင်း |
-|P2P Package ဆုံးရှုံးမှု|`--fault-enable-network-packet-loss` |Application Framework Traffic ကျဆင်းသွားပြီ|
+|ကွန်ရက်ပိုင်းခြားခြင်း |`--fault-enable-network-partition` |ယာယီ ယုံကြည်မှုရှိတဲ့ အဖော်တွေနဲ့ သီးသန့်ထားခြင်း |
 |CPU စိတ်ဖိစီးမှု|`--fault-enable-cpu-stress` |ဒေသတွင်း စစ်ဆေးရေးနှင့် အစီအစဉ်ချရန် ဖိအား |
 |Disk saturation ကို|`--fault-enable-disk-saturation` |ဒေသတွင်း သိုလှောင်မှု ဖိအား |
 
-Package-loss-only run အတွက်:
+Network partition တစ်ခုတည်းသော run အတွက်:
 
 ```bash
 cargo run -p izanami -- \
   --allow-net \
-  --peers 20 \
-  --faulty 5 \
-  --duration 800s \
-  --fault-window-start 133s \
-  --fault-window-end 266s \
-  --tps 200 \
-  --submitters 20 \
-  --max-inflight 512 \
+  --peers 4 \
+  --faulty 1 \
+  --duration 5m \
+  --fault-window-start 60s \
+  --fault-window-end 180s \
+  --tps 15 \
+  --submitters 1 \
+  --max-inflight 32 \
   --fault-enable-crash-restart=false \
   --fault-enable-wipe-storage=false \
   --fault-enable-spam-invalid-transactions=false \
   --fault-enable-network-latency=false \
-  --fault-enable-network-partition=false \
-  --fault-enable-network-packet-loss=true \
+  --fault-enable-network-partition=true \
   --fault-enable-cpu-stress=false \
   --fault-enable-disk-saturation=false \
-  --fault-network-packet-loss-percent 75 \
   --seed 42
 ```
 
@@ -142,9 +139,8 @@ Upstream Izanami Catalogue က CLI profile တွေကို blockchain ဆက�
 | --------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 |ရည်မှန်းထားသော ဝန်ဆောင်မှု |`--faulty 0`, မြင့်မားသော `--tps`, တင်သွင်းသူတစ်ဦး၊ မြင့်မားတဲ့ `--max-inflight` |
 |ယာယီ ကျရှုံးမှု |အကန့်အသတ်ထားသော fault window အတွင်းတွင်သာ crash/restart လုပ်နိုင်ပါသည်။|
-|Package ဆုံးရှုံးမှု |Packet Loss ကိုသာ Activate လုပ်ပေးပါ အများအားဖြင့် default 75% loss rate နဲ့|
 |ရပ်တန့်ခြင်းနဲ့ ပြန်လည်ထူထောင်ခြင်း |crash/ restart နဲ့အတူ ကျရှုံးနေတဲ့ peer population များစွာကို သုံးပါ။|
-|ခေါင်းဆောင် အထီးကျန်မှု |Network partition (သို့) packet loss) အမှားများသာရှိသည့် မှားယွင်းသော peer တစ်ခုကိုတိကျစွာအသုံးပြုပါ Izanami သည် Sumeragi leader telemetry ကိုလိုက်နာသည်။ |
+|ခေါင်းဆောင် အထီးကျန်မှု |Network-partition fault ကိုသာ အသုံးပြုပါ Sumeragi leader telemetry ကို Izanami ကလိုက်နာသည်။|
 
 အပြောင်းအလဲတစ်ခုတည်းကို တစ်ချိန်တည်းမှာ တည်ငြိမ်ထားပါ။ သင်ဟာ peer count, workload profile, fault window နဲ့ TPS ကို တစ်ကြိမ်တည်း ပြောင်းလိုက်ရင် ရလဒ်ကို အဓိပ္ပါယ်ဖွင့်ဖို့ ခက်ခဲပါတယ်။
 
@@ -156,7 +152,7 @@ Upstream Izanami Catalogue က CLI profile တွေကို blockchain ဆက�
 - တင်သွင်း၊ လက်ခံ၊ ပယ်ချပြီး အချိန်ကုန်ဆုံးသည့် ငွေကြေးလုပ်ငန်းများ
 - queue depth၊ queue saturation နဲ့ endpoint backpressure တွေကို
 - View changes, recovery paths, missing blocks နဲ့ missing quorum certificates တွေကို ကြည့်ပါ။
-- RBC နောက်ကျနေခြင်း၊ စောင့်ဆိုင်းနေသော အစည်းအဝေးများနှင့် သဘောတူညီမှု ရောင်းအားလျှော့ချခြင်း (သို့မဟုတ်) နှောင့်နှေးခြင်း
+- လက်မှတ်ရေးထိုးထားသော RS16 အသုံးပြုနိုင်မှု နောက်ကျနေခြင်း၊ စောင့်ဆိုင်းနေသည့် အစည်းအဝေးများနှင့် သဘောတူညီချက် ရောင်းဝယ်မှု နှောင့်နှေးခြင်း
 - CPU, မှတ်ဉာဏ်, disk နှင့် peer များကို run host တွင်ကွန်ရက် saturation
 
 validation-latency analysis အတွက် main-loop debug log တွေကို enable လုပ်ပါ။
@@ -179,7 +175,7 @@ RUST_LOG=iroha_core::sumeragi::main_loop=debug \
 - p95 နှောင့်နှေးမှုသည် `--latency-p95-threshold` ထက်ပိုသည်။
 - အဆက်မပြတ် ပြတင်းပေါက်ပိတ်ပြီးနောက် ပြေးလွှားရဲ့ ကျန်တဲ့အပိုင်းမှာ တန်းစီတွေ တိုးလာပါတယ်။
 - ငြင်းပယ်ခံရတဲ့ (သို့) အချိန်ကုန်ဆုံးသွားတဲ့ ငွေကြေးလုပ်ငန်းတွေကို ရွေးချယ်ထားတဲ့ အလုပ်အကိုင် ဝန်ဆောင်မှုကြောင့် ရှင်းမပြနိုင်ပါ။
-- peer restart၊ storage wipe (သို့) packet loss recovery ကို manual cleanup လုပ်ဖို့လိုပါတယ်။
+- peer restart၊ storage wipe (သို့) partition recovery တွေကို manual cleanup လုပ်ဖို့ လိုအပ်ပါတယ်။
 
 ကျရှုံးမှုအပြီးမှာ တူညီတဲ့ မျိုးစေ့နဲ့ ကျရှုံးမှုအမျိုးအစား တစ်မျိုးနည်းနဲ့ ပြန်လည်ဖြန့်ချိပါ။ ဒါက အလုပ်ဝန်ဆောင်မှုနဲ့ အချိန်ကို ပြန်လည်ဖန်တီးနိုင်စေကာ ကျရှုံးမှု မျက်နှာပြင်ကို ကျဉ်းမြောင်းစေတယ်။
 

@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
+translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -263,7 +263,7 @@ EOF
 Егер сізде әлі жоқ болса , кілті жұп жасаңыз:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./taira-client-key
 ```
 
 `taira.client.toml` құру:
@@ -336,7 +336,7 @@ SORA Nexus шоты ID - шоттың қоғамдық кілті мен ныс�
 Эд25519 қойындысын құру немесе жүктеу тіркелгіні басқару үшін:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./nexus-account-key
 ```
 
 Қоғамдық кілтті Taira тіркелгісіне ID ауыстыру:
@@ -697,7 +697,7 @@ description = "Route payments domains to the payments dataspace"
 
 Оператордың қабылдауында мынадай қақпалар болуы тиіс:
 
-- `irohad --sora --config <config.toml> --trace-config` шешілген түйін конфигурациясын береді
+- `iroha3d --sora --config <config.toml> --trace-config` шешілген түйін конфигурациясын береді
 - Жаратылған немесе тексерілген манифест хештармен және қолтаңбалармен мұрағатталады
 - Minamoto көтермелеуден бұрын түтін сынақтары Taira тапсырылады.
 - өзгергеннен кейінгі `/status` каталогы жоспарланған жолақ пен деректер кеңістігін көрсетеді.

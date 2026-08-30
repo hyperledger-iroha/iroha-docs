@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: 4fe9b19fc4d13cfc71d9b9558fe7cdb1d14bd88c2d20f4d23c66313ba3ddd4b6
+translation_source_hash: 67778f9fc4f2b6fa0288f5921402cf5509515aae678e98b8192e103dfe284db3
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -14,7 +14,7 @@ Kotodama V1 စာချုပ်ကို စစ်ဆေးပြီး စု
 
 ## လိုအပ်ချက်များ {#prerequisites}
 
-- Iroha source checkout at commit `bc7114ed1c7f265a156d2100ff09e851cc95702c`, Rust နှင့် Cargo တို့တွင် ပေးပို့ခြင်း။
+- Iroha source checkout at commit `0010c5a70039eac101a4846499ba9ceaf43eb65c`, Rust နှင့် Cargo တို့တွင် ပေးပို့ခြင်း။
 - လက်ရှိ `iroha` CLI နောက်ပြီး ငွေကြေးထောက်ပံ့မှု Taira ဖောက်သည်မှ [ချိတ်ဆက် Taira](./connect-to-taira.md).
 - `IROHA_CONFIG` နှင့် `IROHA_PRIVATE_KEY_FILE` တို့တွင် Absolute paths များဖြစ်သည်။ key file သည်ပိုင်ရှင်ထိန်းသိမ်းထားသော, single-link ပုံမှန်ဖိုင်တစ်ခုဖြစ်ရမည်ဖြစ်ပြီး mode `0600` ရှိရမည်။ deploy helper ကရည်ရွယ်ချက်ရှိပြီး inline private key argument ကိုမပါရှိပါ။
 - Taira operator approval. Contract code registration requires `CanRegisterSmartContractCode`, and protected deployments may require governance attribution and enactment. Taira သည်ဤဝင်ရောက်ခွင့်ကိုမပေးပါက, ၎င်း၏ဗီဇက ခွင့်ပြုချက်ပေးသည့် ထုတ်လုပ်သော ဒေသတွင်းကွန်ရက်တစ်ခုတွင် deployment လုပ်ပါ။
@@ -131,7 +131,7 @@ jq '{contract_address, code_hash_hex, final, fee_quotes}' \
   ./build/deployment.json
 ```
 
-အလွတ် `charge_limits` တောင်းဆိုချက်သည် ကူးယူထားသော အရင်းအမြစ်အမှတ်တံဆိပ်မဟုတ်ပေ။ အကူအညီပေးသူက လက်မှတ်မထိုးမီမှာ တိကျတဲ့ တိုက်ရိုက် quote ကိုလက်ခံသည်။ ပြန်လာသော အခွန်အရင်းအမြစ်ကို လက်ရှိ faucet တုံ့ပြန်မှုနှင့် နှိုင်းယှဉ်ပါ။ စာချုပ်ခေါ်ဆိုမှုများတွင် အမွေအနှစ် `gas_asset_id` မီတာဒေတာများကို မဆက်စပ်ပါနဲ့။
+empty `charge_limits` request သည် coped asset identifier မဟုတ်ပေ။ အကူအညီပေးသူသည် လက်မှတ်မထိုးမီတွင် တိကျသော live quote ကိုလက်ခံသည်။ ပြန်လာသော charge asset နှင့် လက်ရှိ faucet တုံ့ပြန်မှု။ စာချုပ်ခေါ်ဆိုမှုက ရိုက်နှိပ်ထားတဲ့ live quote မှတစ်ဆင့်သာ အခွန်ရွေးချယ်မှုကိုလက်ခံတယ်။ `gas_asset_id` ငွေလဲလှယ်မှု metadata ဟာ ပထမဆုံးထုတ်ဝေစာချုပ်ရဲ့ အစိတ်အပိုင်းမဟုတ်ဘူး။
 
 ### (၅) စေလွှတ်ထားသောဝင်ပေါက်ကို တုပပြီးခေါ်ယူပါ။ {#_5-simulate-and-call-the-deployed-entrypoint}
 
@@ -195,19 +195,19 @@ Deployment သည် ပြန်လည်ပို့သောလိပ်စ�
 
 ## ပြဿနာဖြေရှင်းခြင်း {#troubleshooting}
 
-- `CanRegisterSmartContractCode` ကျရှုံးမှုအတွက် Taira operator grant သို့မဟုတ် localnet တွင် genesis/bootstrap ကိုပြောင်းလဲရန်လိုအပ်သည်။ သာမန်အကောင့်တစ်ခုသည်ဤခွင့်ပြုချက်ကိုဖြစ်ရပ်ပြီးနောက်မှာ ကိုယ်တိုင်မပေးနိုင်ပါ။
+- `CanRegisterSmartContractCode` ကျရှုံးမှုအတွက် Taira operator grant သို့မဟုတ် localnet တွင် genesis/bootstrap ကိုပြောင်းလဲရန်လိုအပ်သည်။ သာမန်အကောင့်တစ်ခုသည် ဤခွင့်ပြုချက်ကို အမှန်တရားနောက်တွင် မိမိဘာသာမပေးနိုင်ပါ။
 - စီမံခန့်ခွဲမှု (သို့မဟုတ် Protected-lane rejection) ဆိုသည်မှာ ဖြန့်ချိမှုအတွက် ကွန်ရက်က တောင်းဆိုသည့် အတိအကျ ခွင့်ပြုချက် သတ်မှတ်ချက် လိုအပ်ခြင်းဖြစ်သည်။ ခွင့်ပြုသူစာရင်းကို ညှိနှိုင်းပါ။ အကောင့် IDs ကို မဖန်တီးပါ။
-- manifest (သို့) ABI ကွဲပြားမှုဆိုသည်မှာ bytecode, manifest နှင့် node runtime တို့ဟာ တူညီသော artefact ကိုဖော်ပြခြင်းမဟုတ်ပါ။ `--verify` ဖြင့် pinned commit တွင်ပြန်လည်တည်ဆောက်ပါ။
+- manifest (သို့) ABI ကွဲပြားမှုဆိုသည်မှာ bytecode, manifest နှင့် node runtime တို့က တူညီသော artefact ကိုဖော်ပြခြင်းမဟုတ်ပါ။ `--verify` ဖြင့် pinned commit တွင်ပြန်လည်တည်ဆောက်ပါ။
 - `fee quote changed ... gas bound` ဆိုသည်မှာ requested typed intent နှင့် live quote ကွဲပြားမှုပါ။ လက်မှတ်ရေးထိုးထားသော ငွေပေးချေမှုကို ပြင်ဆင်ခြင်းထက် ပြန်လည် ကြိုတင်ပြင်ဆင်ပါ။
 - deploy helper သည် inline key များ၊ ခွင့်ပြုချက်ရှိသော key-file mode များ၊ symlinks များနှင့်ဆက်စပ်သော file များကို network တင်မပေးမီမှာ ပယ်ချသည်။
 - View Only Entry Point Error ဆိုသည်မှာ `compute` ကို မှားယွင်းသော Command Family မှတစ်ဆင့် လမ်းညွှန်ပေးခဲ့ခြင်းဖြစ်သည်။ ဤနမူနာတွင် `kotoage` ကို ကြေညာထားသည်၊ ထို့ကြောင့် Call Simulation သို့မဟုတ် Submission ကို အသုံးပြုပါ။
-- စာချုပ်ခေါ်ဆိုမှုတွေမှာ အပြုသဘော ရိုက်နှိပ်ထားတဲ့ ဓာတ်ငွေ့ ကန့်သတ်ချက်တစ်ခု လိုအပ်ပါတယ်။ အဆင့်မြင့် ရှေးဟောင်း ဓာတ်ငွေ့ (သို့) အခွန်အရင်းအမြစ် metadata တွေကို ပယ်ချလိုက်တယ်။
+- စာချုပ်ခေါ်ဆိုမှုတွေမှာ အပြုသဘော ရိုက်နှိပ်ထားတဲ့ ဓာတ်ငွေ့ ကန့်သတ်ချက်တစ်ခု လိုအပ်ပါတယ်။ ပထမဆုံးထုတ်ပြန်တဲ့ ဖုန်းခေါ်ဆိုမှုစာချုပ်မှာ ထိပ်တန်းအဆင့် ဓာတ်ငွေ့ (သို့) ကုန်ကျစရိတ်အရင်းအမြစ် metadata ကို ပယ်ချတယ်။
 
 ## အရင်းအမြစ်နှင့် ဆက်စပ်သော စာတမ်းများ {#source-and-related-docs}
 
-- [Kotodama V1 command implementation at the pinned commit ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/ivm/src/bin/koto.rs)
-- [ချိတ်ဆက်ထားသော commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/tuple_return_demo.ko) တွင် tuple-return source sample ကို
-- [ချိတ်ဆက်ထားသော commit တွင် Native deployment assistant ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
-- [စာချုပ်ပေါင်းစပ်မှု စမ်းသပ်ချက်များ ချိတ်ဆက်ထားသော commit ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/contracts.rs)
+- [Kotodama V1 command implementation at the pinned commit ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/src/bin/koto.rs)
+- [ချိတ်ဆက်ထားသော commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/tuple_return_demo.ko) တွင် tuple-return source sample ကို
+- [ချိတ်ဆက်ထားသော commit တွင် Native deployment assistant ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
+- [စာချုပ်ပေါင်းစပ်မှု စမ်းသပ်ချက်များ ချိတ်ဆက်ထားသော commit ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs)
 - [ဉာဏ်ရည်မြင့် စာချုပ်များ](/my/blockchain/smart-contracts.md)
 - [CLI ကိုးကားချက်](/my/get-started/operate-iroha-via-cli.md)

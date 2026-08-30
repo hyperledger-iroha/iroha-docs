@@ -1,9 +1,9 @@
 ---
 translation_locale: ru
 translation_source: /blockchain/instructions.md
-translation_source_hash: adc3eff9758dd73e9114e78eaa18ddf6271db3bc4042611e1ed6ed1aac226246
+translation_source_hash: ade5ba2b693de7e798490be0947099d0306d9565b88550e201dccd181810fb18
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Iroha Специальные инструкции {#iroha-special-instructions}
@@ -21,6 +21,7 @@ translation_engine: nllb-200-ct2
 | [Грант/отмена](#grant-revoke) |Дать или удалять разрешения и роли. |
 | [Передача ](#transfer) |Передача собственности или стоимости активов. |
 | [Начальные депозитные и активные блокировки](#native-escrow-and-asset-locks) |Закрыть числовые активы в протокольном хранении. |
+| [Атомарные приватные расчёты](#atomic-private-settlement) | Управляет конфиденциальными пулами и атомарными пакетами. |
 | [ExecuteTrigger](#executetrigger) |Используйте триггеры. |
 | [Регистрация/настройка/совершенствование ](#other-instructions) |Зарегистрировать, продлить или улучшить поведение запуска. |
 
@@ -42,6 +43,7 @@ translation_engine: nllb-200-ct2
 | [Грант/отмена](#grant-revoke) | [роли, токены разрешений](/ru/blockchain/permissions.md) |счета или роли |
 | [Передача ](#transfer) |домены, определения активов, числовые активы, NFTs |счета |
 | [Начальные депозитные и активные блокировки](#native-escrow-and-asset-locks) |Цифровые гарантии активов, блокировки активов, анонимные гарантийные обязательства |покупатели, направления или разделение спора |
+| [Атомарные приватные расчёты](#atomic-private-settlement) | конфиденциальные пулы для точных маршрутов, ротации политик, финализированные пакеты и маркеры отмены | |
 | [ExecuteTrigger](#executetrigger) |триггеры |                      |
 | [Регистрация/настройка/совершенствование ](#other-instructions) |журналы, конкретные нагрузки для исполнителей, обновления исполнителей |                      |
 
@@ -234,7 +236,10 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 Регистрируйте и не регистрируйте сверстников. Составьте ключ BLS и PoP с `kagami`, если у вас их еще нет:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./peer-key
+PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
+PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
@@ -325,6 +330,14 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 Использование банковских депозитов на рынке `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, и `ResolveEscrowDispute`. Использование генеральных замков активов `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, и `ExpireAssetLock`. Anonymous escrow отражает рыночный жизненный цикл с `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, и `ResolveAnonymousEscrowDispute`.
 
 Эти ISIs в настоящее время не имеют команд первого класса CLI. Используйте типовые конструкторы SDK или сериализированные полезные нагрузки инструкций, и см. [Native Asset Escrow](/ru/blockchain/escrow.md) для деталей жизненного цикла, разрешений, запросов, событий и примеров Rust.
+
+## Атомарные приватные расчёты {#atomic-private-settlement}
+
+Управляемые инструкции атомарных приватных расчётов отделены от прозрачного Native AMX. `ActivatePrivateSettlementPoolV1` создаёт конфиденциальный `pool` для точного маршрута из отредактированной проекции управления и канонических исходных обязательств. `FinalizeAtomicPrivateSettlementV1` атомарно применяет полный пакет, заверенный всеми участвующими комитетами. `AbortAtomicPrivateSettlementV1` публикует только открытый конечный маркер, разрешённый спонсором.
+
+Только управление конфиденциальностью может выполнить `RotatePrivateSettlementPoolPolicyV1`. Инструкция требует точный дайджест действующего управления; сохраняет маршрут, `pool`, обязательство привязки актива, границу состояния, наборы защиты от повтора и финализированные квитанции, увеличивает открытую ревизию на единицу и использует более новую эпоху ключей аудитора. Ротация активируется на высоте включения, и на этой высоте нельзя финализировать квитанцию для того же маршрута и `pool`. Открытая цепочка ревизий сохраняет действительность финализированных до ротации квитанций после перезапуска и идемпотентность их точного повтора. Находящиеся в обработке пакеты старой политики отклоняются до изменения состояния. Операторы должны хранить старые ключи расшифрования либо управляемо переобернуть капсулы и проверить результат до уничтожения ключей.
+
+Путь по умолчанию отключён и не квалифицирован для промышленной эксплуатации. Требования к конфигурации, полномочиям, аудиту, восстановлению и выпуску приведены в [руководстве по атомарным приватным расчётам между пространствами данных](/get-started/atomic-private-settlement).
 
 ## Предоставление гранта/отмена {#grant-revoke}
 

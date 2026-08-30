@@ -1,9 +1,9 @@
 ---
 translation_locale: ar
 translation_source: /blockchain/instructions.md
-translation_source_hash: adc3eff9758dd73e9114e78eaa18ddf6271db3bc4042611e1ed6ed1aac226246
+translation_source_hash: ade5ba2b693de7e798490be0947099d0306d9565b88550e201dccd181810fb18
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Iroha تعليمات خاصة {#iroha-special-instructions}
@@ -21,6 +21,7 @@ translation_engine: nllb-200-ct2
 | [الإعانة/الإلغاء](#grant-revoke) |إعطاء أو إزالة الإذن والأدوار. |
 | [النقل ](#transfer) |نقل ملكية أو قيمة الأصول. |
 | [حفلات الاحتفاظ بالأموال الأصلية ](#native-escrow-and-asset-locks) |قفل الأصول الرقمية في حجز البروتوكول.|
+| [التسوية الخاصة الذرية](#atomic-private-settlement) | تحكم المجمّعات السرية والحزم الذرية. |
 | [ExecuteTrigger](#executetrigger) |إنفاذ محفزات.|
 | [التسجيل/التخصيص / التحديث ](#other-instructions) |سجل، تمديد، أو تحديث سلوك الوقت التشغيل. |
 
@@ -42,6 +43,7 @@ translation_engine: nllb-200-ct2
 | [الإعانة/الإلغاء](#grant-revoke) | [الأدوار، رموز الإذن](/ar/blockchain/permissions.md) |الحسابات أو الأدوار |
 | [النقل ](#transfer) |النطاقات، تعريف الأصول، الأصول الرقمية NFTs |الحسابات |
 | [حفلات الاحتفاظ بالأموال الأصلية ](#native-escrow-and-asset-locks) |الاحتفاظ بالأصول الرقمية، قفل الأصول، التزامات الاحتفاض المجهولة |المشترين أو الوجهات، أو الانقسام في النزاع|
+| [التسوية الخاصة الذرية](#atomic-private-settlement) | مجمّعات سرية محددة بالمسار، وتدوير السياسات، وحزم منتهية، وعلامات إلغاء | |
 | [ExecuteTrigger](#executetrigger) |المحفزات |                      |
 | [التسجيل/التخصيص / التحديث ](#other-instructions) |السجلات، الحملات المفيدة الخاصة بالجهاز التنفيذي، تحديثات الجهاز التنفسي |                      |
 
@@ -234,7 +236,10 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 قم بتسجيل و إلغاء تسجيل الأقران. توليد مفتاح BLS و PoP مع `kagami` إذا لم يكن لديكما بالفعل:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./peer-key
+PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
+PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
@@ -325,6 +330,14 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 استخدامات الاحتفاظ بالأمانة في السوق `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, و `ResolveEscrowDispute`. استخدام قفلات الأصول العامة `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, و `ExpireAssetLock`. الأمانة المجهولة تعكس دورة حياة السوق مع `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, و `ResolveAnonymousEscrowDispute`.
 
 هذه ISIs لا تحتوي حاليًا على أوامر CLI من الدرجة الأولى. استخدم بناءات SDK المطبوعة أو تحميلات التعليمات المتسلسلة ، وشاهد [ الأصول الطبيعية التأمين](/ar/blockchain/escrow.md) للحصول على تفاصيل دورة الحياة والإجازات والاستفسارات والأحداث ومثلة Rust.
+
+## التسوية الخاصة الذرية {#atomic-private-settlement}
+
+تعليمات التسوية الخاصة الذرية الخاضعة للحوكمة منفصلة عن Native AMX الشفافة. ينشئ `ActivatePrivateSettlementPoolV1` مجمّعًا سريًا واحدًا `pool` لمسار محدد بدقة من إسقاط حوكمة منقح والتزامات منشأ معيارية. يطبّق `FinalizeAtomicPrivateSettlementV1` ذريًا حزمة كاملة مصدقًا عليها من جميع لجان المشاركين. ولا ينشر `AbortAtomicPrivateSettlementV1` سوى علامة النهاية العامة التي أجازها الراعي.
+
+لا يجوز إلا لحوكمة الخصوصية تنفيذ `RotatePrivateSettlementPoolPolicyV1`. تتطلب التعليمة ملخص الحوكمة الحالي المطابق؛ وتحفظ المسار و`pool` والتزام ربط الأصل وحد الحالة ومجموعات منع إعادة التنفيذ والإيصالات المنتهية، ثم تزيد المراجعة العامة بمقدار واحد وتستخدم حقبة أحدث لمفتاح المدقق. يُفعّل التدوير عند ارتفاع الإدراج، ولا يجوز إنهاء إيصال للمسار و`pool` نفسيهما عند ذلك الارتفاع. يحافظ تسلسل المراجعات العامة على صلاحية الإيصالات المنتهية قبل التدوير بعد إعادة التشغيل، ويجعل إعادة الإيصال المطابق خاملة. تفشل الحزم الجارية وفق السياسة القديمة بصورة مغلقة قبل أي تغيير للحالة. ويجب على المشغلين الاحتفاظ بمفاتيح فك التشفير القديمة، أو إخضاع إعادة تغليف الكبسولات للحوكمة واختبارها قبل إتلاف المفاتيح.
+
+هذا المسار معطل افتراضيًا وغير مؤهل للاستخدام الإنتاجي. راجع [تشغيل تسوية خاصة ذرية بين مساحات البيانات](/get-started/atomic-private-settlement) لمعرفة متطلبات الإعداد والصلاحيات والتدقيق والاسترداد والإصدار.
 
 ## المنحة/إلغاء {#grant-revoke}
 

@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
+translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -263,7 +263,7 @@ El primer juguete de escritura debe ser una reclamación del grifo Taira. Utiliz
 Generar un par de teclas si aún no tienes uno:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./taira-client-key
 ```
 
 Creación de `taira.client.toml`:
@@ -336,7 +336,7 @@ Una cuenta SORA Nexus ID es una dirección canónica I105 derivada de la clave p
 Generar o cargar el par de teclas Ed25519 que controlará la cuenta:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./nexus-account-key
 ```
 
 Convertir la clave pública en una cuenta Taira ID:
@@ -697,7 +697,7 @@ description = "Route payments domains to the payments dataspace"
 
 La aceptación del operador debe incluir las siguientes puertas:
 
-- `irohad --sora --config <config.toml> --trace-config` pasa a la configuración del nodo resuelto
+- `iroha3d --sora --config <config.toml> --trace-config` pasa a la configuración del nodo resuelto
 - El manifiesto generado o revisado se archivará con hashes y firmas
 - Los ensayos de humo pasan en Taira antes de cualquier promoción Minamoto
 - el catálogo `/status` posterior al cambio muestra el carril previsto y el espacio de datos

@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 9341b2404624dec2230bc294c3d60dc124ac9574a0a5803b9bba744f4c5e7f50
+translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,7 +15,7 @@ Bu səhifə Iroha 3 üçün mövcud yerli şəbəkə axınından yuxarı axın a
 Hələlik Kagami kodu ilə dörd nömrəli lokal şəbəkə yaratmaq:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 Çıxış direktoru uyğunlaşdırılmış həmyaşıd konfiqurasiyaları, `genesis.json`, `genesis.signed.nrt`, `client.toml` və köməkçi skriptləri ehtiva edir.
@@ -33,10 +33,10 @@ cargo run --bin kagami -- docker \
   --peers 4 \
   --config-dir ./localnet \
   --image hyperledger/iroha:dev \
-  --out-file ./localnet/docker-compose.yml \
+  --out-file ./docker-compose.yml \
   --force
 
-docker compose -f ./localnet/docker-compose.yml up
+docker compose -f ./docker-compose.yml up
 ```
 
 Default generated stack exposes:
@@ -72,7 +72,7 @@ Repozitor həmçinin SORA Nexus istiqamətində konfiqurasiya profilinə `defaul
 Nexus profili olan bir yerli həmyaşıd işlətmək üçün:
 
 ```bash
-./target/release/irohad --sora --config ./defaults/nexus/config.toml
+./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
 ```
 
 Bu profilə CLI daxil olmaq üçün `defaults/nexus/client.toml` istifadə edin.
@@ -88,7 +88,7 @@ Yerli istehsal olunan localnet üçün:
 İstehsal olunmuş Compose yığın üçün:
 
 ```bash
-docker compose -f ./localnet/docker-compose.yml down
+docker compose -f ./docker-compose.yml down
 ```
 
 Şəbəkə işlədikdən sonra [ ilə davam edin Iroha 3 vasitəsilə CLI](/az/get-started/operate-iroha-via-cli.md) istifadə edin.

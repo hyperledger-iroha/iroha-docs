@@ -1,16 +1,17 @@
 ---
 translation_locale: uz
 translation_source: /guide/configure/genesis.md
-translation_source_hash: d3c04386c8d6e2778e53477e8f717a04247a66714cfed2c25ca84fbfb3871813
+translation_source_hash: a6b8b2b02e0074e6c90d9aa9337af3e2496a02beb2f57f575dc0780014df04b2
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: google-translate
 ---
 
 # Ibtido {#genesis}
 
-Ibtido dastlabki zanjir holatini belgilaydi. tahrirlanadigan manba JSON manifestidir va Iroha 3 nod imzolangan Norito transaksiya faylini iste'mol qiladi.
+Genesis boshlang'ich zanjir holatini belgilaydi.Tahrirlanadigan manba a JSON manifest,
+va an Iroha 3 tugun imzolanganni iste'mol qiladi Norito tranzaksiya fayli.
 
-::: details Andoza genesis manifesti
+::: details Birlamchi genezis manifest
 
 <<< @/snippets/genesis.json
 
@@ -18,17 +19,21 @@ Ibtido dastlabki zanjir holatini belgilaydi. tahrirlanadigan manba JSON manifest
 
 ## Fayllar {#files}
 
-`defaults/genesis.json`. Kagami tomonidan yaratilgan tarmoqlar o'zlarining manifesti va imzolangan tranzaksiyalarini chiqarish direktoriyasiga yozadi:
+Yuqori oqim ombori standart manifestni jo'natadi `defaults/genesis.json`.
+Kagami-Yaratilgan tarmoqlar o'zlarining manifest va imzolangan tranzaktsiyalarini yozadilar
+chiqish katalogi:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-Ushbu direktoriyada yaratilgan `README.md` tanlangan profil uchun aniq fayllarni va ishga tushirish buyruqlarini qayd etadi.
+Yaratilgan `README.md` bu katalogda aniq fayllarni yozib oladi va ishga tushiradi
+tanlangan profil uchun buyruqlar.
 
-## Tengdoshlar soni {#peer-configuration}
+## Tengdosh konfiguratsiyasi {#peer-configuration}
 
-`config.toml` ning `[genesis]` bo'limida imzolangan genesis tranzaksiyasida tengdoshlar quyidagilarni ko'rsatadilar:
+Tengdoshlar imzolangan genezis bitimiga ishora qiladilar `[genesis]` bo'limi
+`config.toml`:
 
 ```toml
 [genesis]
@@ -36,22 +41,32 @@ file = "./genesis.signed.nrt"
 public_key = "ed0120..."
 ```
 
-Tarmoqdagi barcha tengdoshlar imzolangan genesis muomalasi va genesis jamoatchilik kalitini kelishishlari kerak.
+Tarmoqdagi barcha tengdoshlar imzolangan genezis bitimi va bitim bo'yicha kelishib olishlari kerak
+genezis ochiq kaliti.
 
-## Ibtido kitobining imzolanishi {#signing-genesis}
+## Ibtidoni imzolash {#signing-genesis}
 
-Agar siz manifestni qo'lda tahrirlasangiz, tengdoshlarni boshlashdan oldin uni tasdiqlash va imzolash:
+Agar siz manifestni qo'lda tahrir qilsangiz, tengdoshlarni ishga tushirishdan oldin uni tasdiqlang va imzolang:
 
 ```bash
 cargo run --bin kagami -- genesis validate ./genesis.json
 cargo run --bin kagami -- genesis sign ./genesis.json \
-  --private-key "$GENESIS_PRIVATE_KEY_HEX" \
-  --algorithm ed25519 \
+  --private-key-file "$GENESIS_PRIVATE_KEY_FILE" \
   --out-file ./genesis.signed.nrt
 ```
 
-NPoS yoki Nexus profillari uchun topologiya va BLS hosil qilingan profil tomonidan talab etiladigan egalik hujjati kiritiladi. Kagami `localnet`, `wizard` va profil yaratish buyruqlari ushbu tafsilotlarni avtomatik ravishda boshqaradi.
+`GENESIS_PRIVATE_KEY_FILE` egasining rejimi bo'lishi kerak`0600`, yagona bo'g'inli
+bitta kanonik shaxsiy kalit multihash va yakuniy kalitni o'z ichiga olgan oddiy fayl
+yangi qator. Kagami ramziy aloqalarni rad etadi va hech qachon xom genezni xususiy qabul qilmaydi
+buyruq satridagi tugmachani bosing.
 
-## Ibtido kitobini qayta yozish {#recommitting-genesis}
+NPoS uchun yoki Nexus profillar, topologiyani o'z ichiga oladi va BLS Egalik guvohnomalari
+yaratilgan profil tomonidan talab qilinadi. Kagami `localnet`, `wizard`, va profil
+avlod buyruqlari ushbu tafsilotlarni avtomatik ravishda boshqaradi.
 
-Bir tengdoshi genesisni faqat uning saqlanishi bo'sh bo'lganda amalga oshiradi. Bir martalik lokalnetda yangi genesisni sinovdan o'tkazish uchun tengdoshlarni to'xtatish, ularning yaratilgan davlat direktoriyasini olib tashlash va yangi imzolangan genesisdan boshlanish kerak. Har bir tasdiqlovchi bir xil migratsiyani muvofiqlashtirmasa, harakatlanayotgan tarmoqda genesisni almashtirmang.
+## Ibtidoni takrorlash {#recommitting-genesis}
+
+Tengdosh faqat saqlash joyi bo'sh bo'lganda genezisni amalga oshiradi.Yangi genezisni sinab ko'rish uchun
+bir martalik mahalliy tarmoq, tengdoshlarni to'xtating, ularning yaratilgan davlat katalogini olib tashlang,
+va yangi imzolangan genezisdan boshlang.Yugurishda genezisni almashtirmang
+har bir validator bir xil migratsiyani muvofiqlashtirmasa, tarmoq.

@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /help/deployment-issues.md
-translation_source_hash: 6f35ac59053e312f56a716810c8f0b625752500d1fc64b27d93cbd8317b6cc19
+translation_source_hash: 5c7d26b39d4ddf4e7e164f7bef79c9e1659db51587fb0dde9cf3f1dc0e3b057b
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2
 مقامی اور ٹیسٹ کی تعیناتی کے لئے، ہاتھ سے تحریری ہم مرتبہ فائلوں کے بجائے Kagami کی طرف سے پیدا کردہ آثار کو ترجیح دیں:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 جنریٹڈ ڈائرکٹری میں ہم مرتبہ تشکیلات، ابتداء مواد، شروع اسکرپٹس، اور README کی تعمیر لائن کے لئے ایک Iroha 3 شامل ہے.
@@ -24,7 +24,7 @@ cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./loc
 
 سب سے پہلے ان اشیاء کو چیک کریں:
 
-- `irohad --config <path>` پیئر کی اپنی فائل میں پوائنٹس TOML.
+- `iroha3d --config <path>` پیئر کی اپنی فائل میں پوائنٹس TOML.
 - پیئر ترتیب میں `public_key` اور `private_key` ایک ہی کلید کے جوڑے سے تعلق رکھتے ہیں۔
 - `genesis.public_key` جینیس ٹرانزیکشن پر دستخط کرنے کے لئے استعمال کی گئی کلید سے ملتا ہے.
 - توثیق کنندہ ہم مرتبہ کی شناختیں BLS-معمولی چابیاں استعمال کرتی ہیں، اور `trusted_peers_pop` میں مقامی چابی اور قابل اعتماد ہم مرتبہ کے لئے ثبوت کے اندراجات شامل ہیں۔
@@ -34,7 +34,7 @@ cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./loc
 جب ڈییمون ایک سے زیادہ TOML پرت کو پڑھتا ہے تو ترتیب کی نشاندہی کا استعمال کریں:
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --trace-config
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 ```
 
 ## Docker اور کمپوز {#docker-and-compose}
@@ -42,9 +42,9 @@ cargo run --bin irohad -- --config ./config.toml --trace-config
 تخلیق کریں موجودہ Kagami لوکل نیٹ آؤٹ پٹ سے تحریر کریں تاکہ کمانڈ لائن کی دلیلیں اور ترتیب فائلیں چیک آؤٹ کوڈ سے ملیں:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./localnet/docker-compose.yml --force
-docker compose -f ./localnet/docker-compose.yml up
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
+docker compose -f ./docker-compose.yml up
 ```
 
 اگر کمپوز کی تعیناتی شروع ہوتی ہے اور پھر اسٹال ہوجاتی ہے تو ، ڈیمون لاگس کو چیک کریں تاکہ:
@@ -72,7 +72,7 @@ Kubernetes کے لئے، ہر تصدیق کنندہ کو ریاستی انفرا
 Iroha 3 تنصیبات جو Nexus، SoraFS، یا کثیر لین کے بہاؤ کا استعمال کرتے ہیں اس ڈییمون کو سورا پروفائل چالو کرنے کے ساتھ شروع کرنا چاہئے:
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --sora
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora
 ```
 
 ایک ہی نیٹ ورک میں تصدیق کاروں کے درمیان مسلسل ایک ہی پروفائل کا استعمال کریں۔

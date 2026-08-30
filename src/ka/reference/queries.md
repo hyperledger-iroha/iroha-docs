@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /reference/queries.md
-translation_source_hash: 22e8a75acd72d066e3516ba46a0afe075d2d02790154458aec00a5d8bb861838
+translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -99,10 +99,17 @@ Iroha შეკითხვები კითხულობს მთავა
 |`FindLaneRelayEnvelopeByRef` |ნაოპაგთ ოჲჟლვევნა ოპვრთნარაჲ. |
 |`FindSorafsProviderOwner` |SoraFS მომწოდებლის მფლობელის განსაზღვრა. |
 |`FindDataspaceNameOwnerById` |აღმოფხვრა მონაცემთა სივრცის სახელების მფლობელი. |
-|`FindMusubiReleaseByRef` |იპოვეთ Musubi განთავისუფლება რეფერენციით. |
-|`FindMusubiPackageVersions` |ჩამოთვლილი ვერსიები Musubi პაკეტისათვის. |
-|`FindMusubiPackageReleases` |Musubi პაკეტის ჩამონათვალის გამოშვებები. |
-|`FindMusubiShortAliasByName` |გადაწყვიტეთ Musubi მოკლე alias. |
+|`FindMusubiExactPackageV1` |წაიკითხეთ ერთი ზუსტი ჩანაწერი და მისი ამჟამინდელი რევიზიები. |
+|`FindMusubiExactReleaseV1` |წაკითხეთ ერთი ზუსტი გამოსვლის სურათი. |
+|`FindMusubiProviderBundleAttestationV1` |წაიკითხეთ ერთ-ერთი პროვაიდერის არქივური ბუნდის ატესტაცია. |
+|`FindMusubiResolverIndexV1` |საიტი საბოლოო მრეცხველის ინდექსი. |
+|`FindMusubiVersionsV1` |გვერდი დასრულებული ვერსიები ერთი პაკეტი. |
+|`FindMusubiMaintainersV1` |პაიჟმა მიიღო მენეჯერები და მოქმედ მოწვევები. |
+|`FindMusubiArchiveLocationsV1` |გვერდი დაასრულა SoraFS ადგილმდებარეობა ერთი არქივის. |
+|`FindMusubiArchiveRetentionV1` |გვერდის არქივის შენახვის ჩანაწერები. |
+|`FindMusubiAliasV1` |წაიკითხეთ ამჟამინდელი მიზანი და რევიზია გლობალური alias. |
+|`FindMusubiAliasHistoryV1` |პაჟი გლობალური ალექსანდრის შეუცვლელი retarget ისტორია. |
+|`FindMusubiOrderedPrefixV1` |გვერდის პაკეტები ერთი დალაგებული სტრუქტურული პრეფიქსით. |
 
 ## ტრიგერები, ხელშეკრულებები, ოპერაციები და ბლოკები {#triggers-contracts-transactions-and-blocks}
 

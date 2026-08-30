@@ -1,7 +1,7 @@
 ---
 translation_locale: mn
 translation_source: /reference/queries.md
-translation_source_hash: 22e8a75acd72d066e3516ba46a0afe075d2d02790154458aec00a5d8bb861838
+translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -99,10 +99,17 @@ SDK бичигдсэн бүтээн байгуулагч эсвэл CLI ашиг
 |`FindLaneRelayEnvelopeByRef` |Тэмцээний шилжилтийн баталгаатай хуудас олох.|
 |`FindSorafsProviderOwner` |SoraFS үйлчилгээ үзүүлэгчний эзэмшигчээр шийдвэрлэх. |
 |`FindDataspaceNameOwnerById` |Мэдээллийн орон тооны нэр эзэмшигчг шийдвэрлэх. |
-|`FindMusubiReleaseByRef` |Musubi нэвтрүүлгийг дуудлагаар олох. |
-|`FindMusubiPackageVersions` |Musubi багцын хувилбаруудыг жагсаалт. |
-|`FindMusubiPackageReleases` |Musubi багцын жагсаалтыг гаргах. |
-|`FindMusubiShortAliasByName` |Musubi товч нэрсийг шийднэ. |
+|`FindMusubiExactPackageV1` |Тухайн цогцолборын баримт бичиг болон түүний одоогийн шинэчлэлтийг уншина уу. |
+|`FindMusubiExactReleaseV1` |Тухайн нэг илтгэлийг уншина уу. |
+|`FindMusubiProviderBundleAttestationV1` |Нэг үйлчилгээ үзүүлэгчээс архивын баглааны баталгааг уншина уу. |
+|`FindMusubiResolverIndexV1` |Оролцогчын эцсийн индекс хуудас. |
+|`FindMusubiVersionsV1` |Нэг багцын эцсийн хувилбар . |
+|`FindMusubiMaintainersV1` |Сайт нь захиалгыг хүлээн авч, урьж байна. |
+|`FindMusubiArchiveLocationsV1` |Нэг архивын SoraFS байршлыг эцэслэн гаргажээ. |
+|`FindMusubiArchiveRetentionV1` |Архив хадгалах бүртгэлийн хуудас. |
+|`FindMusubiAliasV1` |Дэлхий даяар нэр дэвшигчдийн одоогийн зорилт, шинэчлэл уншина уу. |
+|`FindMusubiAliasHistoryV1` |Дэлхий даяар цогцолболт нэртэй шинэчлэлийн түүхийг бичнэ.|
+|`FindMusubiOrderedPrefixV1` |Нүүр хуудасны багцыг нэг зохион байгуулалттай префикс дор. |
 
 ## Тэгжер, гэрээ, гүйлгээ, блокууд {#triggers-contracts-transactions-and-blocks}
 

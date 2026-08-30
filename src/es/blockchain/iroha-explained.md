@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /blockchain/iroha-explained.md
-translation_source_hash: 3fdd22338e826b1ce335ebf5e4e850cf3deb9415c36a0c8d21ad63c397cec8c0
+translation_source_hash: ba591b2c1aa819837177625b1ae457b5fa492197576dc690b19ca2897562a436
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,7 +12,7 @@ Iroha 3 es la plataforma Hyperledger Iroha de primera versión. El mismo núcleo
 
 ## Bloques de construcción centrales {#core-building-blocks}
 
-- `irohad` ejecuta compañeros
+- `iroha3d` ejecuta compañeros
 - Torii es la puerta de entrada del cliente y el operador
 - Sumeragi maneja el consenso
 - Norito es el formato binario canónico de [](/es/reference/norito.md)

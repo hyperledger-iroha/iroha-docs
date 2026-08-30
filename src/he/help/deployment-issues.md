@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /help/deployment-issues.md
-translation_source_hash: 6f35ac59053e312f56a716810c8f0b625752500d1fc64b27d93cbd8317b6cc19
+translation_source_hash: 5c7d26b39d4ddf4e7e164f7bef79c9e1659db51587fb0dde9cf3f1dc0e3b057b
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2
 עבור יישומים מקומיים וניסויים, מעדיפים ארטפקטים שנוצרו על ידי Kagami במקום קבצים משותפים כתובים ידנית:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 תיק המוצר מכיל קונפיגציות עמיתות, חומר גנזה, תסריטים התחלה, ו README לקו הבנייה של Iroha 3 .
@@ -24,7 +24,7 @@ cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./loc
 
 בדוק קודם את הדברים האלה:
 
-- `irohad --config <path>` נקודות בתיק של הדמיון עצמו TOML.
+- `iroha3d --config <path>` נקודות בתיק של הדמיון עצמו TOML.
 - `public_key` ו `private_key` בקונפיגציה של השותפים שייכים לאותו זוג מפתחות.
 - `genesis.public_key` תואם את המפתח המשמש לחתום על העסקה הגנזית.
 - זהויות הדוגמאות של מבטיחים משתמשים BLS-מפתחות נורמליות, ו `trusted_peers_pop` מכילה רשומות מוכיחות רכוש עבור המפתח המקומי ודוגמאות הנאמנות.
@@ -34,7 +34,7 @@ cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./loc
 השתמשו במעקב הקונפיגציה כאשר הדיימון קורא יותר מעמד TOML:
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --trace-config
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 ```
 
 ## Docker ו- Compose {#docker-and-compose}
@@ -42,9 +42,9 @@ cargo run --bin irohad -- --config ./config.toml --trace-config
 יצר תור על פי ההוצאת של הרשת המקומית הנוכחית Kagami כך שתדברי קו הפקודה וקובצי הקונפיגציה יתאימו לקוד הנמלא:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./localnet/docker-compose.yml --force
-docker compose -f ./localnet/docker-compose.yml up
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
+docker compose -f ./docker-compose.yml up
 ```
 
 אם הפעלת Compose מתחילה ולאחר מכן מפסיקה, בדוק את תיעודי הדיימון עבור:
@@ -72,7 +72,7 @@ docker compose -f ./localnet/docker-compose.yml up
 פיתוח Iroha 3 שמשתמשים ב Nexus, SoraFS או זרימות מרובות קווי צריך להפעיל את הדיימון עם פרופיל סורה מופעל:
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --sora
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora
 ```
 
 השתמשו באותו פרופיל באופן עקבי בין מדווחים ברשת אחת.

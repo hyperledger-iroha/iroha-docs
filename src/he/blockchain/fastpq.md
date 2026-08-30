@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /blockchain/fastpq.md
-translation_source_hash: f1dc55e4b2146de009203e19adb5cc1e9ce5302bc0ee27fe0b442693c5112c22
+translation_source_hash: 55b57e6aeeef2aefa1c8359d9b9487029b106eaebed12a58268b61dc583e97f6
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -905,7 +905,7 @@ $$
 
 ## פרובור ליין {#prover-lane}
 
-`irohad` מתחיל את FastPQ מסלול הסבר בהתחלה אם ניתן להפעיל את האחורי של הסבר. המסלול הוא משימת רקע עם שורה מוגבלת. לאחר שחגור מייצר עדות ביצוע, מסלול ההפעלה שולח עבודה סבר המכילה את ה-block hash, גובה, תצוגה ועידה.
+`iroha3d` מתחיל את FastPQ מסלול הסבר בהתחלה אם ניתן להפעיל את האחורי של הסבר. המסלול הוא משימת רקע עם שורה מוגבלת. לאחר שחגור מייצר עדות ביצוע, מסלול ההפעלה שולח עבודה סבר המכילה את ה-block hash, גובה, תצוגה ועידה.
 
 אם המסלול לא פועל או שהצורה מלאה, התפקיד הופספס והמעבודת הבלוק הרגילה ממשיכה. זה אומר כי המסלול של ה-background prover אינו שער הכניסה למבצעים או שער הסכמה. הוא מסלול ההפקה על מצב שכבר נעשה.
 
@@ -1072,7 +1072,7 @@ $$
 
 ## SCCP ראיות של הודעות שקופות {#sccp-transparent-message-proofs}
 
-קופסת העזרה של SCCP משתמשת גם ב- FastPQ כדי להוכיח הודעות חיוות בין שרשרת. הנתיב הזה נפרד מ- `irohad` מסלול ההצהרה של רקע. הוא בונה כיסוי FastPQ ישירות מתוך חבורת ראיות של הודעות SCCP ומניפסט, ולאחר מכן מקיף את הראיה המוצאת לאישור פתוח. .
+קופסת העזרה של SCCP משתמשת גם ב- FastPQ כדי להוכיח הודעות חיוות בין שרשרת. הנתיב הזה נפרד מ- `iroha3d` מסלול ההצהרה של רקע. הוא בונה כיסוי FastPQ ישירות מתוך חבורת ראיות של הודעות SCCP ומניפסט, ולאחר מכן מקיף את הראיה המוצאת לאישור פתוח. .
 
 הקבוצת SCCP משתמשת ב- `fastpq-lane-balanced` ובשלוש המעברים של מטא נתונים:
 
@@ -1210,14 +1210,14 @@ metal_debug_enum = false
 metal_debug_fused = false
 ```
 
-את אותן תוויות הביצוע והטלמטריה ניתן לשבור מ- `irohad`:
+את אותן תוויות הביצוע והטלמטריה ניתן לשבור מ- `iroha3d`:
 
 ```shell
-irohad --fastpq-execution-mode auto
-irohad --fastpq-poseidon-mode cpu
-irohad --fastpq-device-class apple-m4
-irohad --fastpq-chip-family m4
-irohad --fastpq-gpu-kind integrated
+iroha3d --fastpq-execution-mode gpu
+iroha3d --fastpq-poseidon-mode cpu
+iroha3d --fastpq-device-class apple-m4
+iroha3d --fastpq-chip-family m4
+iroha3d --fastpq-gpu-kind integrated
 ```
 
 משתנים סביבתיים תומכים גם בשדות ההסדרות. FastPQ- משתנים ספציפיים כוללים:
@@ -1258,4 +1258,4 @@ irohad --fastpq-gpu-kind integrated
 - `TransferTranscript`
 - `AxtFastpqBinding`
 - `LaneFastpqProofMaterial`
-- [`irohad` FastPQ אופציות](/he/reference/irohad-cli.md#arg-fastpq-execution-mode)
+- [`iroha3d` FastPQ אופציות](/he/reference/iroha3d-cli.md#arg-fastpq-execution-mode)

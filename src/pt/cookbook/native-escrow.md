@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 0185b6a341ee90ed6cd52fb9f510549b20592468abe6627d3efa639c3b67d1fd
+translation_source_hash: aa8e079684879bdcda2b4439e9c12742d4ab477e6f560f7c326a59b6be5bf666
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,7 +16,7 @@ Escolha entre um escrow de mercado e um bloqueio de ativo vinculado ao destino, 
 
 - Uma definição numérica de ativo e um operador/vendedor que tenha quantidade suficiente.
 - Clientes de chave única I105 financiados para cada parte que submeter um passo. Utilize uma intenção `fee_payment` paga pela autoridade ao vivo cujo ativo de taxa corresponde à resposta atual do torneiro Taira; não incorpore um ativo ID na documentação.
-- O atual Rust ou Python SDK do Iroha compromete o `bc7114ed1c7f265a156d2100ff09e851cc95702c`.
+- O atual Rust ou Python SDK do Iroha compromete o `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
 - Para o JavaScript Exemplo de compilador, Node.js 24 mais um construído localmente `@iroha/iroha-js` embalagem e o seu nativo `iroha_js_host`; Seguir o [JavaScript SDK Configuração da construção de fonte](/pt/guide/tutorials/javascript.md#build-from-source). As construções do navegador devem fornecer `compilerUrl` Em vez de carregar o anfitrião nativo.
 - Taira deve admitir as instruções de transferência e custódia dos ativos. Os proprietários de ativos podem usar o ciclo normal de vida quando sua política de ativos o permite; resolver uma disputa requer a permissão global `CanResolveEscrowDispute`.
 
@@ -249,10 +249,10 @@ Além disso, consulte a posse de activos do destino e confirme que aumentou em q
 
 ## Fonte e documentos relacionados {#source-and-related-docs}
 
-- [Modelo nativo de instrução em custódia no compromisso fixado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/isi/escrow.rs)
-- [Ensaios de integração nativa do escrow no compromisso fixado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/native_escrow.rs)
-- [Python Métodos de garantia do cliente no compromisso fixado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama amostra de custódia nativa no compromisso fixado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [Modelo nativo de instrução em custódia no compromisso fixado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
+- [Ensaios de integração nativa do escrow no compromisso fixado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
+- [Python Métodos de garantia do cliente no compromisso fixado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama amostra de custódia nativa no compromisso fixado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [Ativos nativos em garantia ](/pt/blockchain/escrow.md)
 - [Ativos funcionais ](./fungible-assets.md)
 - [Permissões e funções ](./permissions-and-roles.md)

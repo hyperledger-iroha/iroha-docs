@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 0185b6a341ee90ed6cd52fb9f510549b20592468abe6627d3efa639c3b67d1fd
+translation_source_hash: aa8e079684879bdcda2b4439e9c12742d4ab477e6f560f7c326a59b6be5bf666
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,7 +16,7 @@ translation_engine: nllb-200-ct2
 
 - ნომერული აქტივის განსაზღვრა და გამხსნელი/გაყიდველი, რომელსაც აქვს საკმარისი რაოდენობა.
 - დაფინანსებული, ერთმნიშვნელოვანი I105 კლიენტები თითოეული მხარისთვის, რომელიც წარადგენს ნაბიჯს. გამოიყენეთ პირდაპირი ხელისუფლების მიერ გადახდილი `fee_payment` განზრახვა, რომლის საფასური აქტივი შეესაბამება მიმდინარე Taira საბანკო რეაგირებას; არ ჩასვათ აქტივი ID დოკუმენტაციიდან .
-- ამჟამინდელი Rust ან Python SDK მოცულობა Iroha ვალდებულებისგან `bc7114ed1c7f265a156d2100ff09e851cc95702c`.
+- ამჟამინდელი Rust ან Python SDK მოცულობა Iroha ვალდებულებისგან `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
 - JavaScript კომპილერის მაგალითისთვის, Node.js 24 პლუს ადგილობრივად შექმნილი `@iroha/iroha-js` პაკეტი და მისი მშობლიური `iroha_js_host`; დაიცავით [JavaScript SDK წყარო ნაგებობის პარამეტრები ](/ka/guide/tutorials/javascript.md#build-from-source). ბრაუზერის ნაგებობები უნდა უზრუნველყოს `compilerUrl` ნაცვლად ადგილობრივი მასპინძლის დატვირთვისა.
 - Taira უნდა აღიაროს აქტივების გადაცემის და საფინანსო ინსტრუქციები. აქტივების მფლობელებს შეუძლიათ გამოიყენონ ჩვეულებრივი სიცოცხლის ციკლი, როდესაც მათი აქტივების პოლიტიკა ამის საშუალებას იძლევა; დავების მოგვარებისთვის საჭიროა გლობალური `CanResolveEscrowDispute` ნებართვა. გამოიყენეთ გენერირებული ადგილობრივი ქსელი, როდესაც არ არის საჭირო საზოგადოებრივი ქსელის ორგანო.
 
@@ -249,10 +249,10 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 
 ## წყარო და შესაბამისი დოკუმენტები {#source-and-related-docs}
 
-- [ნაციონალური საფინანსო ინსტრუქციის მოდელი დაწესებულ კომიტეტზე](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/isi/escrow.rs)
-- [Native escrow integration tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/native_escrow.rs)
-- [Python საფინანსო კლიენტის მეთოდები ჩაკეტილი ვალდებულების განსაზღვრისას](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama ნაციონალური საფინანსო ანაზღაურების ნიმუში ჩაკეტილი ვალდებულების](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [ნაციონალური საფინანსო ინსტრუქციის მოდელი დაწესებულ კომიტეტზე](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
+- [Native escrow integration tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
+- [Python საფინანსო კლიენტის მეთოდები ჩაკეტილი ვალდებულების განსაზღვრისას](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama ნაციონალური საფინანსო ანაზღაურების ნიმუში ჩაკეტილი ვალდებულების](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [ეროვნული აქტივების საფინანსო დავალიანება](/ka/blockchain/escrow.md)
 - [ფუნქციური აქტივები](./fungible-assets.md)
 - [ნებართვები და როლები](./permissions-and-roles.md)

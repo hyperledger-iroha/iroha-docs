@@ -1,9 +1,9 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/instructions.md
-translation_source_hash: adc3eff9758dd73e9114e78eaa18ddf6271db3bc4042611e1ed6ed1aac226246
+translation_source_hash: ade5ba2b693de7e798490be0947099d0306d9565b88550e201dccd181810fb18
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Iroha 特別指示 {#iroha-special-instructions}
@@ -21,6 +21,7 @@ Iroha 特別指示の完全なリストは以下のとおりです.
 | [補助金/撤回](#grant-revoke)|許可や役割を与えるか削除する|
 | [転送](#transfer) |譲渡所有権または資産価値. |
 | [](#native-escrow-and-asset-locks) ローカル・キャストと資産ロック|番号資産をプロトコル保管にロックする|
+| [アトミック・プライベート決済](#atomic-private-settlement) | 機密プールとアトミック・バンドルを管理する。 |
 | [ExecuteTrigger](#executetrigger) |触発機を実行する|
 | [記録/カスタム/アップグレード](#other-instructions) |実行時間の行動を記録し,拡張したりアップグレードする.|
 
@@ -42,6 +43,7 @@ Iroha 特殊指示の概要から始めましょう. どのオブジェクトを
 | [補助金/撤回](#grant-revoke)| [役割,許可トークン ](/ja/blockchain/permissions.md) |口座や役割|
 | [転送](#transfer) |域名,資産定義,数値資産, NFTs|口座|
 | [](#native-escrow-and-asset-locks) ローカル・キャストと資産ロック|数値資産のエスクロー,資産ロック,匿名のエスクローコミットメント |購入者,目的地,または紛争の分断|
+| [アトミック・プライベート決済](#atomic-private-settlement) | 経路単位の機密プール、ポリシー・ローテーション、確定済みバンドル、中止マーカー | |
 | [ExecuteTrigger](#executetrigger) |触発機|                      |
 | [記録/カスタム/アップグレード](#other-instructions) |ログ,実行者専用用荷物,執行者アップグレード |                      |
 
@@ -234,7 +236,10 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 同級生を登録し,非登録する BLS キーと PoP を `kagami` で生成するすでに持っていない場合:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./peer-key
+PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
+PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
@@ -325,6 +330,14 @@ Native escrow instruction は,レジャー管理のプロトコル保管に数�
 市場のエスクローの利用 `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, そして `ResolveEscrowDispute`. 一般的な資産ロックの使用 `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, そして `ExpireAssetLock`. アノニマス・エスクローは市場ライフサイクルを反映しています `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, そして `ResolveAnonymousEscrowDispute`.
 
 これらの ISIs には現在一流の CLI コマンドはありません. タイプされた SDK ビルダーまたはシリアライズされた指示ペイロードを使用し,ライフサイクルの詳細,許可,查询,イベント,および Rust 例については [ネイティブアセットエスクロー ](/ja/blockchain/escrow.md) を参照してください.
+
+## アトミック・プライベート決済 {#atomic-private-settlement}
+
+ガバナンス対象のアトミック・プライベート決済命令は、透明な Native AMX とは別の機能です。`ActivatePrivateSettlementPoolV1` は、秘匿化されたガバナンス投影と正規の起点コミットメントから、厳密な経路に対応する機密 `pool` を作成します。`FinalizeAtomicPrivateSettlementV1` は、参加する全委員会が証明した完全なバンドルをアトミックに適用します。`AbortAtomicPrivateSettlementV1` は、スポンサーが承認した公開終端マーカーだけを公開します。
+
+`RotatePrivateSettlementPoolPolicyV1` を実行できるのはプライバシー・ガバナンスだけです。この命令は現在のガバナンス・ダイジェストとの厳密な一致を要求し、経路、`pool`、資産バインディング・コミットメント、状態フロンティア、リプレイ集合、確定済みレシートを保持したまま、公開リビジョンを 1 増やし、より新しい監査者鍵エポックを使用します。ローテーションは命令が取り込まれた高さで有効になり、同じ経路と `pool` のレシートをその高さで確定することはできません。公開リビジョンの系譜により、ローテーション前に確定したレシートは再起動後も有効で、同一レシートの再実行は冪等です。有効化時点で処理中の旧ポリシー・バンドルは、状態を変更する前に閉じた形で失敗します。運用者は古い復号鍵を保持するか、鍵を破棄する前に、ガバナンス下でカプセルを再ラップして検証する必要があります。
+
+この機能は既定で無効であり、本番運用の認定は受けていません。構成、権限、監査、復旧、リリースの要件については、[データスペース間のアトミック・プライベート決済を実行する](/get-started/atomic-private-settlement)を参照してください。
 
 ## 補助金/撤回 {#grant-revoke}
 

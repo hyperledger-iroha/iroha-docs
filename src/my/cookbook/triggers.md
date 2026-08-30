@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /cookbook/triggers.md
-translation_source_hash: 93080591f5171c7ce25173eb1ef826d6f5ca661a17797be53e90aedab33ed0c3
+translation_source_hash: 6c8f436b5a41cf41c0ac37aeed6b6cd8c73009cfcca2fe7f5642cef1ad115e6f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -116,9 +116,9 @@ iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
 
 ## အရင်းအမြစ်နှင့် ဆက်စပ်သော စာတမ်းများ {#source-and-related-docs}
 
-- [ချိတ်ဆက်ထားသော commit ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/triggers/by_call_trigger.rs) တွင် By-call trigger ပေါင်းစပ်မှု စမ်းသပ်မှုများ
-- [ပိတ်ထားသော commit တွင်ဖြစ်စဉ်နှင့် trigger ပေါင်းစပ်မှု စမ်းသပ်ချက်များ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/events_and_triggers.rs)
-- [Trigger instruction execution at the pinned commit ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs)
+- [ချိတ်ဆက်ထားသော commit ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/triggers/by_call_trigger.rs) တွင် By-call trigger ပေါင်းစပ်မှု စမ်းသပ်မှုများ
+- [ပိတ်ထားသော commit တွင်ဖြစ်စဉ်နှင့် trigger ပေါင်းစပ်မှု စမ်းသပ်ချက်များ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events_and_triggers.rs)
+- [Trigger instruction execution at the pinned commit ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs)
 - [အစပျိုးစက်များ ](/my/blockchain/triggers.md)
 - [အစပျိုးစက် နမူနာများ](/my/blockchain/trigger-examples.md)
 - [ဖြစ်ရပ်များ](./stream-events.md)

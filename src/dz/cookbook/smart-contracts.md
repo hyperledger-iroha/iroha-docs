@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: 4fe9b19fc4d13cfc71d9b9558fe7cdb1d14bd88c2d20f4d23c66313ba3ddd4b6
+translation_source_hash: 67778f9fc4f2b6fa0288f5921402cf5509515aae678e98b8192e103dfe284db3
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -14,7 +14,7 @@ Kotodama V1 ལས་འཆམ་དེ་ བརྟག་ཞིབ་འབད�
 
 ## དགོས་མཁོ་ཚུ་ {#prerequisites}
 
-- Iroha ལས་ཁུངས་ནང་ལས་ བཏང་མི་ཡིག་ཚང་ `bc7114ed1c7f265a156d2100ff09e851cc95702c`, Rust དང་ ཅ་ཅོ་གཟེར་ཁ་ཐོ་བཀོད་འབད་ཡོདཔ་ཨིན།
+- Iroha ལས་ཁུངས་ནང་ལས་ བཏང་མི་ཡིག་ཚང་ `0010c5a70039eac101a4846499ba9ceaf43eb65c`, Rust དང་ ཅ་ཅོ་གཟེར་ཁ་ཐོ་བཀོད་འབད་ཡོདཔ་ཨིན།
 - ད་ལྟོའི་ `iroha` CLI མཉམ་འབྲེལ་འབད་ཡོད་པའི་ དངུལ་ཕོགས་སྤྲོད་མི་ Taira ཚོང་མགྲོན་པ་ཅིག་ལས་ [ འབྲེལ་བ་འཐབ་ནི་ Taira](./connect-to-taira.md).
 - `IROHA_CONFIG` དང་ `IROHA_PRIVATE_KEY_FILE` ནང་གི་རྩ་བ་མེད་པའི་ལམ་ཚུ་ཨིན། ལྡེ་མིག་ཡིག་སྣོད་འདི་ ཇོ་བདག་གིས་ལག་ལེན་འབད་ཡོད་པའི་ ལེན་རྐྱང་ལྡེ་མིག་ཅིག་ཨིན་པའི་ ཕུངམ་ཅིག་ཨིནམ་ད་ ཐབས་ལམ་དེ་ `0600` ཨིན། ལག་ལེན་འཐབ་ནིའི་རོགས་འདི་གིས་ དམིགས་བསལ་གྱི་ སྒེར་སྡེའི་ལྡེ་མིག་ནང་ གྲོས་བསྡུར་ག་ནི་ཡང་མེདཔ་ཨིན།
 - Taira ལས་འཛིན་གྱི་ ངོས་ལེན་འབད་ཐབས། གྲོས་ཆོད་ཀྱི་ཀོ་བིཌ་གུ་ ཐོ་བཀོད་འབད་དགོ་པ་ཅིན་ `CanRegisterSmartContractCode` དེ་ལས་ ཉེན་སྲུང་ཅན་གྱི་ལག་ལེན་འཐབ་ཐངས་ཚུ་གིས་ གཞུང་སྐྱོང་གི་འགན་ཁུར་དང་ ལག་ལེན་འཐབ་ཐངས་ཚུ་ དགོཔ་ཨིན། གལ་སྲིད་ Taira གིས་ ཐོབ་ཐངས་དེ་མ་བྱིན་པ་ཅིན་ ཐོན་སྐྱེད་འབད་མི་ ས་གནས་ཁ་ཐུག་ལས་ འབྲེལ་བ་འཐབ་ཐངས་ནང་ལུ་ ལག་ལེན་འཐབ་ཐབས།
@@ -131,7 +131,7 @@ jq '{contract_address, code_hash_hex, final, fee_quotes}' \
   ./build/deployment.json
 ```
 
-སྟོངམ་ `charge_limits` ཞུ་བ་འདི་ རྒྱུ་དངོས་ངོ་རྟགས་བཟོ་མི་ཅིག་ཨིན། གྲོགས་རམ་कर्ताའདི་གིས་ ཐོ་བཀོད་མ་རྐྱབ་པའི་ཧེ་མར་ འོག་ཐོག་གི་རིན་གོང་ཚུ་ངོས་ལེན་འབདཝ་ཨིན། བསྐྱལ་བའི་ཁྲལ་གྱི་རྒྱུ་དངོས་དེ་ ད་ལྟོའི་ཐབ་ལན་དང་བསྡུར་འབད། ཞལ་འདེབས་ནང་འབོ་མི་ཚུ་ལུ་ legacy `gas_asset_id` metadata མཉམ་འབྲེལ་མ་གཏང་།
+empty `charge_limits` request འདི་ assets identifier འདྲ་བཤུས་འབད་མི་ཅིག་མེན་: assistant གིས་ signing མ་འབད་པའི་ཧེ་མར་ live quote དེ་བདེན་སྦེ་ལེན་ཨིན། Return charge asset དང་ ད་ལྟོའི་གློག་མེ་འཕྲུལ་ཆས་ཀྱི་ལན་ཐོ་བཀོད་འབད་: ཟད་འགྲོ་བཏང་མི་ཅོང་འཐུས་ཚུ་ ཐོ་བཀོད་འབད་མི་གནས་གོང་གི་ཐོག་ལས་རྐྱངམ་ཅིག་འཐུ་འབད། `gas_asset_id` ཕྱིར་ཚོང་གྱི་བརྡ་དོན་འདི་ འགོ་དང་པ་བཏང་བའི་འཆམ་ཡིག་གི་ཡན་ལག་མེདཔ།
 
 ### 5. བཏང་ཡོད་པའི་འཛུལ་སྒོ་འདི་ སི་མུལ་དང་འབོ་འབད། {#_5-simulate-and-call-the-deployed-entrypoint}
 
@@ -195,19 +195,19 @@ jq -e '.ok == true and .result == ["3", "5"]' \
 
 ## དཀའ་ངལ་སེལ་ཐབས། {#troubleshooting}
 
-- `CanRegisterSmartContractCode` གྱི་འཛོལ་བ་ཚུ་གིས་ Taira ལས་འཛིན་གྱི་གྲོགས་རམ་ ཡང་ན་ localnet ལུ་ genesis/bootstrap བསྒྱུར་བཅོས་འབད་དགོཔ་ཨིན། རང་ལུགས་ཀྱི་རྩིས་ཁྲ་འདི་ གནད་དོན་འདི་གི་ཤུལ་ལས་ རང་གིས་རང་ལུ་ཆོག་ཐམ་བྱིན་མི་ཚུགས།
+- `CanRegisterSmartContractCode` གྱི་འཛོལ་བ་ཚུ་གིས་ Taira ལས་འཛིན་གྱི་གྲོགས་རམ་ ཡང་ན་ localnet ལུ་ genesis/bootstrap བསྒྱུར་བཅོས་འབད་དགོཔ་ཨིན། སྤྱིར་བཏང་རྩིས་ཁྲ་འདི་གིས་ རང་གིས་རང་ལུ་ཆོག་ཐམ་འདི་བྱིན་མ་ཚུགསཔ་ཨིན།
 - སྲིད་སྐྱོང་འབད་ནི་དང་ ཡང་ན་ ཉེན་སྲུང་ཅན་གྱི་ལམ་ལུགས་ལུ་ རྒྱབ་སྐྱོར་འབད་མ་དགོ་པའི་དོན་ལས་ ལག་ལེན་འཐབ་ནིའི་དོན་ལས་ འབྲེལ་མཐུད་དེ་ཅིག་གིས་ དགོས་མཁོ་ཡོད་མི་ ངོས་ལེན་ཡིག་ཆ་ཚུ་ ངེས་བདེན་སྦེ་ བཏང་དགོཔ་ཨིན། ངོས་ལེན་གྱི་ཐོ་ཡིག་འདི་ མཉམ་སྒྲིག་འབད། རྩིས་རྩིས་ IDs བཟོ་མི་དགོ།
-- manifest ཡང་ན་ ABI མ་མཐུན་པའི་དོན་ལས་ bytecode, manifest དང་ node runtime འདི་ same artifact གསལ་བཀོད་མི་འབདཝ་ཨིན། `--verify` ལུ་ pinned commit ལུ་སླར་གསོ་འབད་འོང་།
+- manifest ཡང་ན་ ABI མ་མཐུན་པའི་དོན་དག་དེ་ bytecode, manifest དང་ node runtime འདི་ same artifact གསལ་བཀོད་མི་འབདཝ་ཨིན་མས། `--verify` ལུ་ pinned commit ལུ་སླར་གསོ་འབདཝ་ཨིན།
 - `fee quote changed ... gas bound` གིས་ དགོས་མཁོ་ཅན་གྱི་ ཐོ་བཀོད་ intent དང་ live quote ངོས་ལེན་མེད་ཟེར་ཞུཝ་ཨིན། བསྐྱར་གསོ་འབད་ཞིནམ་ལས་ རྟགས་མཚན་རྟགས་བཀོད་མི་ཅ་ཆས་ཅིག་ལུ་འགྱུར་བཅོས་མ་འབད་བར་བཞག་དགོ།
 - deploy helper གིས་ inline key དང་ permissive key-file mode དེ་ལས་ symlink ཚུ་དང་འབྲེལ་མཐུད་འབད་ཡོད་པའི་ཡིག་སྣོད་ཚུ་ མང་ཤོས་ཅིག་ལུ་མ་བཙུགས་པའི་ཧེ་མ་ rejectའབདཝ་ཨིན།
-- མཐོང་ཐངས་རྐྱངམ་ཅིག་གི་འཛུལ་སྒོ་གི་འཛོལ་བ་འདི་གིས་འབད་བ་ཅིན་ `compute` འདི་བཀའ་བཀོད་གྱི་བཟའ་ཚན་དེ་ནང་ལས་ བཏོན་བཏང་ཡོདཔ་ཨིན། འ་ནི་དཔེ་སྟོན་ནང་ལུ་ `kotoage` གིས་ གསལ་སྟོན་འབདཝ་ཨིན་ དེ་འབདཝ་ལས་ call simulation ཡང་ན་ submit ལག་ལེན་འཐབ་འོང་།
-- གྲོས་ཆོད་ནང་འབོ་པའི་དོན་ལས་ བསྣུམ་སྣུམ་གྱི་ཐོ་བཀོད་ཡངས་ཚད་ཅིག་ དགོཔ་ཨིན། མཐོ་ཤོས་གནས་ཚད་ཀྱི་ རྒྱུན་འཛིན་འབད་ཡོད་པའི་སྣུམ་དང་ ཡང་ན་འཐུས་དངུལ་རྩིས་གི་ metadata འདི་མ་བཏུབ་ཨིན།
+- མཐོང་ཐངས་རྐྱངམ་ཅིག་གི་འཛུལ་སྒོ་གི་འཛོལ་བ་འདི་གིས་འབད་བ་ཅིན་ `compute` འདི་བཀའ་བཀོད་གྱི་བཟའ་ཚན་ནང་ལུ་ འཛུལ་ཞུགས་འབད་ཡོདཔ་ཨིན། འ་ནི་དཔེ་སྟོན་འདི་ནང་ `kotoage` གསལ་སྟོན་འབདཝ་ཨིན་ དེ་འབདཝ་ལས་ བརྒྱུད་འཕྲིན་ཨེབ་གཏང་འབད་ནི་དང་ ཡང་ན་ བསྡུ་སྒྲིག་འབད་ནི་ལག་ལེན་འཐབ་འོང་།
+- ཁེ་རྒུད་ཀྱི་ཅ་ལ་ལུ་ བསྣུམ་སྣུམ་གྱི་མཐའ་མཚམས་ཅིག་ དགོཔ་ཨིན། དང་པ་བཏང་བའི་ཅ་ལ་གྱི་ཅ་ལ་གི་ཅ་ལ་འདི་གིས་ མཐོ་ཤོས་གནས་ཚད་ཀྱི་སྣུམ་དང་ ཡང་ན་འཐུས་དངུལ་རྩིས་ཀྱི་ metadata འདི་མ་བཏུབ་ཨིན།
 
 ## གཞི་རྟེན་དང་འབྲེལ་བའི་ཡིག་ཆ་ཚུ་ {#source-and-related-docs}
 
-- [Kotodama V1 བཀའ་རྒྱ་ལག་ལེན་འབད་ཐབས། པིན་ཌི་གི་ commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/ivm/src/bin/koto.rs)
-- [ཨེབ་གཏང་འབད་ཡོད་པའི་ commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/tuple_return_demo.ko) ལུ་ Tuple-return source sample
-- [རང་བཞིན་གནས་སྟངས་ནང་ལུ་ གྲོགས་རམ་འབད་མི་ ཕབ་ལེན་འབད་ཡོད་པའི་ commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
-- [ཟད་འགྲོ་བཏང་བཞག་མི་ commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/contracts.rs) ལུ་ སྦྲེལ་མཐུད་འབད་ནིའི་དོན་ལས་ བརྟག་དཔྱད་འབདཝ་ཨིན།
+- [Kotodama V1 བཀའ་རྒྱ་ལག་ལེན་འབད་ཐབས། པིན་ཌི་གི་ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/src/bin/koto.rs)
+- [ཨེབ་གཏང་འབད་ཡོད་པའི་ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/tuple_return_demo.ko) ལུ་ Tuple-return source sample
+- [རང་བཞིན་གནས་སྟངས་ནང་ལུ་ གྲོགས་རམ་འབད་མི་ ཕབ་ལེན་འབད་ཡོད་པའི་ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
+- [ཟད་འགྲོ་བཏང་བཞག་མི་ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs) ལུ་ སྦྲེལ་མཐུད་འབད་ནིའི་དོན་ལས་ བརྟག་དཔྱད་འབདཝ་ཨིན།
 - [མཁས་མཆོག་གི་འཆམ་ཁ་](/dz/blockchain/smart-contracts.md)
 - [CLI གི་ཁ་བྱང་](/dz/get-started/operate-iroha-via-cli.md)

@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /guide/security/vpn.md
-translation_source_hash: 4161cec5d601ad3a57decc19402738358a03648adad8502b5282e8e9bacc3fa8
+translation_source_hash: 020591f0d7c5560dfb2e9f3f4537f429cbeba864c3eb022856d42addcf32e225
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -25,7 +25,7 @@ translation_engine: nllb-200-ct2
 
 ::: tip
 
-浏览器 VPN 只保护该浏览器的流量.除非这些过程通过同一私人网络路由,否则它不会保护`irohad`,CLI,SDK,SSH,指标或备份流量.
+浏览器 VPN 只保护该浏览器的流量.除非这些过程通过同一私人网络路由,否则它不会保护`iroha3d`,CLI,SDK,SSH,指标或备份流量.
 
 :::
 

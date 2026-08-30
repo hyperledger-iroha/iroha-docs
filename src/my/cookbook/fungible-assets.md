@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /cookbook/fungible-assets.md
-translation_source_hash: 6b50c995afaf9f46df6fdaab31add40b106cfa12fdaa31dabbb74448486f87f9
+translation_source_hash: 669b5a1c12e9ab6ffb64e149148993e7b924feb29c6fa4db883a2065f58ecd7e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -169,8 +169,8 @@ iroha --config "$LOCAL_CONFIG" ledger asset definition get \
 
 ## အရင်းအမြစ်နှင့် ဆက်စပ်သော စာတမ်းများ {#source-and-related-docs}
 
-- [ချိတ်ဆက်ထားသော commit ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/asset.rs) တွင် asset lifecycle integration စမ်းသပ်မှုများ
-- [Rust ချိတ်ဆက်ထားသော commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha/examples/tutorial.rs) တွင် အရင်းအမြစ်တည်ဆောက်ခြင်းဥပမာများ
+- [ချိတ်ဆက်ထားသော commit ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/asset.rs) တွင် asset lifecycle integration စမ်းသပ်မှုများ
+- [Rust ချိတ်ဆက်ထားသော commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/examples/tutorial.rs) တွင် အရင်းအမြစ်တည်ဆောက်ခြင်းဥပမာများ
 - [အရင်းအမြစ်များ](/my/blockchain/assets.md)
 - [ညွှန်ကြားချက်များ ](/my/blockchain/instructions.md)
 - [ခွင့်ပြုချက် လက်မှတ်များ ](/my/reference/permissions.md)

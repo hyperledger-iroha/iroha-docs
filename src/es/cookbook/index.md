@@ -1,14 +1,14 @@
 ---
 translation_locale: es
 translation_source: /cookbook/index.md
-translation_source_hash: cdcfb3549506a65a7dbd1c37672893956a0252153a4075c82333804674aa07b6
+translation_source_hash: aceef9f4e42462614a5cdf41a89f55e26e0399503a48d4b50c08359e7bd7532e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Iroha 3 Manual de aplicaciones {#iroha-3-application-cookbook}
 
-Construir contra Iroha 3 con recetas pequeñas y verificables que comienzan en el Taira red de prueba y mantenimiento Minamoto Cada receta indica si es una lectura pública, una escritura normal de la cuenta financiada, o una operación con acceso a permisos. I105 cuentas IDs, la selección explícita de las tarifas, y el comportamiento verificado en Iroha Compromiso [`bc7114ed1c7f265a156d2100ff09e851cc95702c`](https://github.com/hyperledger-iroha/iroha/tree/bc7114ed1c7f265a156d2100ff09e851cc95702c).
+Construir contra Iroha 3 con recetas pequeñas y verificables que comienzan en el Taira red de prueba y mantenimiento Minamoto Cada receta indica si es una lectura pública, una escritura normal de la cuenta financiada, o una operación con acceso a permisos. I105 cuentas IDs, la selección explícita de las tarifas, y el comportamiento verificado en Iroha Compromiso [`0010c5a70039eac101a4846499ba9ceaf43eb65c`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c).
 
 Comience con [Conecte a Taira](./connect-to-taira.md). Crea la configuración del cliente y los metadatos de tarifas reutilizados por las recetas de línea de comandos. Nunca copie un activo de tarifas ID de esta documentación: obtenga de la respuesta actual del grifo de corriente Taira.
 

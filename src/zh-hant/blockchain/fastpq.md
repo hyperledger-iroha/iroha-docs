@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/fastpq.md
-translation_source_hash: f1dc55e4b2146de009203e19adb5cc1e9ce5302bc0ee27fe0b442693c5112c22
+translation_source_hash: 55b57e6aeeef2aefa1c8359d9b9487029b106eaebed12a58268b61dc583e97f6
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -905,7 +905,7 @@ $$
 
 ## 經驗者林 {#prover-lane}
 
-`irohad`在啓動時啓動 FastPQ 檢查路徑,如果可以初始化檢查後端.該路徑是一個帶有界限的隊列的背景任務.一個區塊生成執行證人後,提交路徑會提交包含區塊哈希,高度,視圖和證人的檢查路程.
+`iroha3d`在啓動時啓動 FastPQ 檢查路徑,如果可以初始化檢查後端.該路徑是一個帶有界限的隊列的背景任務.一個區塊生成執行證人後,提交路徑會提交包含區塊哈希,高度,視圖和證人的檢查路程.
 
 如果車道沒有運行或排隊滿,工作將被跳過,正常的區塊處理繼續.這意味着背景檢查車道不是一個交易錄取或共識門.它是一個已經執行的狀態上的證明生產路徑.
 
@@ -1072,7 +1072,7 @@ $$
 
 ## SCCP 透明信息證明 {#sccp-transparent-message-proofs}
 
-SCCP 輔助箱還使用 FastPQ 用於透明的跨鏈信息證明.該路徑與`irohad`背景檢查器分開.它直接從 SCCP 信息證明捆綁和表格中構建 FastPQ 批量,然後將結果的證據包裝爲開放驗證.
+SCCP 輔助箱還使用 FastPQ 用於透明的跨鏈信息證明.該路徑與`iroha3d`背景檢查器分開.它直接從 SCCP 信息證明捆綁和表格中構建 FastPQ 批量,然後將結果的證據包裝爲開放驗證.
 
 SCCP 批量使用`fastpq-lane-balanced`和三個元數據過渡:
 
@@ -1210,14 +1210,14 @@ metal_debug_enum = false
 metal_debug_fused = false
 ```
 
-同樣的執行和遠程測量標籤可以在 `irohad` 中取消:
+同樣的執行和遠程測量標籤可以在 `iroha3d` 中取消:
 
 ```shell
-irohad --fastpq-execution-mode auto
-irohad --fastpq-poseidon-mode cpu
-irohad --fastpq-device-class apple-m4
-irohad --fastpq-chip-family m4
-irohad --fastpq-gpu-kind integrated
+iroha3d --fastpq-execution-mode gpu
+iroha3d --fastpq-poseidon-mode cpu
+iroha3d --fastpq-device-class apple-m4
+iroha3d --fastpq-chip-family m4
+iroha3d --fastpq-gpu-kind integrated
 ```
 
 環境變量也支持配置字段. FastPQ 特定的變量包括:
@@ -1258,4 +1258,4 @@ irohad --fastpq-gpu-kind integrated
 - `TransferTranscript`
 - `AxtFastpqBinding`
 - `LaneFastpqProofMaterial`
-- [`irohad` FastPQ 的選項](/zh-hant/reference/irohad-cli.md#arg-fastpq-execution-mode)
+- [`iroha3d` FastPQ 的選項](/zh-hant/reference/iroha3d-cli.md#arg-fastpq-execution-mode)

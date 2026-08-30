@@ -1,9 +1,9 @@
 ---
 translation_locale: kk
 translation_source: /blockchain/instructions.md
-translation_source_hash: adc3eff9758dd73e9114e78eaa18ddf6271db3bc4042611e1ed6ed1aac226246
+translation_source_hash: ade5ba2b693de7e798490be0947099d0306d9565b88550e201dccd181810fb18
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Iroha Арнайы нұсқаулар {#iroha-special-instructions}
@@ -21,6 +21,7 @@ Iroha арнайы нұсқаулардың толық тізбесі:
 | [Grant/Revoke](#grant-revoke) |Ролдар мен рұқсаттарды беру немесе алу. |
 | [Алу](#transfer) |Меншік иелігін немесе активтердің құнын ауыстыру. |
 | [Жергiлiктi депозиттер мен активтер құптары](#native-escrow-and-asset-locks) |Цифрлық активтерді протоколдық күтімге алу. |
+| [Атомдық құпия есеп айырысу](#atomic-private-settlement) | Құпия пулдар мен атомдық пакеттерді басқарады. |
 | [ExecuteTrigger](#executetrigger) |Қозғалтқыштарды орындаңыз. |
 | [Журнал/Сарттылық/Жаңарту ](#other-instructions) |Оқу уақытын тіркеңіз, ұзартыңыз немесе жаңартыңыз. |
 
@@ -42,6 +43,7 @@ Iroha Арнайы нұсқаулықтардың жиынтығымен бас�
 | [Grant/Revoke](#grant-revoke) | [рөлдер, рұқсат белгілері](/kk/blockchain/permissions.md) |есептері немесе рөлдері |
 | [Алу](#transfer) |Домендер, активтердің анықтамасы, сандық активтер, NFTs |есеп айырысу |
 | [Жергiлiктi депозиттер мен активтер құптары](#native-escrow-and-asset-locks) |сандық активтер кепілдендірілуі, активтердің жабылуы, анонимдік кепілдендірілген міндеттемелері |сатып алушылар, мақсаттар немесе даулар бөлінісі |
+| [Атомдық құпия есеп айырысу](#atomic-private-settlement) | нақты маршрутқа байланған құпия пулдар, саясат ротациялары, аяқталған пакеттер және тоқтату белгілері | |
 | [ExecuteTrigger](#executetrigger) |триггерлер |                      |
 | [Журнал/Сарттылық/Жаңарту ](#other-instructions) |журналдары, орындаушыға тән пайдалы жүктемелер, орындаушыларды жаңарту |                      |
 
@@ -234,7 +236,10 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 BLS кілтін және PoP кілтін `kagami` арқылы пайдаланыңыз, егер сізде олар жоқ болса:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./peer-key
+PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
+PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
@@ -325,6 +330,14 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 Базардағы депозит пайдалану `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, және `ResolveEscrowDispute`. Жалпы активтердің құлыптарын пайдалану `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, және `ExpireAssetLock`. Анонимдік кепілгерлік нарықтың өмір циклін бейнелейді `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, және `ResolveAnonymousEscrowDispute`.
 
 Бұлар ISIs қазіргі кезде бірінші сыныпты маман жоқ CLI командалар. пайдалану түрлендіру SDK конструкторлар немесе сериалдық нұсқаулық пайдалы жүктер, және қара: [Жергiлiктi активтердi басқару](/kk/blockchain/escrow.md) Өмір циклі мәліметтері, рұқсаттары, сұраныстары, оқиғалары және Rust мысалдар.
+
+## Атомдық құпия есеп айырысу {#atomic-private-settlement}
+
+Басқарылатын атомдық құпия есеп айырысу нұсқаулары ашық Native AMX-тен бөлек. `ActivatePrivateSettlementPoolV1` қысқартылған басқару проекциясы мен канондық бастапқы міндеттемелерден нақты маршрут үшін бір құпия `pool` жасайды. `FinalizeAtomicPrivateSettlementV1` барлық қатысушы комитеттер растаған толық пакетті атомдық түрде қолданады. `AbortAtomicPrivateSettlementV1` демеуші рұқсат еткен ашық соңғы белгіні ғана жариялайды.
+
+`RotatePrivateSettlementPoolPolicyV1` нұсқауын тек құпиялылықты басқару орындай алады. Нұсқау қолданыстағы басқару дайджестімен дәл сәйкестікті талап етеді; маршрутты, `pool`-ды, активті байланыстыру міндеттемесін, күй шекарасын, қайталаудан қорғау жиындарын және аяқталған түбіртектерді сақтап, ашық ревизияны бірге арттырады және аудитор кілтінің жаңарақ дәуірін қолданады. Ротация енгізу биіктігінде күшіне енеді, сол биіктікте дәл сол маршрут пен `pool` үшін түбіртек аяқталмайды. Ашық ревизиялар тізбегі ротацияға дейін аяқталған түбіртектерді қайта іске қосқаннан кейін де жарамды, ал олардың дәл қайталануын идемпотентті етеді. Ескі саясатпен өңделіп жатқан пакеттер күй өзгермей тұрып жабық түрде сәтсіз аяқталады. Операторлар ескі шифрды ашу кілттерін сақтауы немесе кілттерді жоймас бұрын капсулаларды басқарылатын түрде қайта орап, нәтижесін сынауы тиіс.
+
+Бұл жол әдепкіде өшірулі және өндірістік қолдануға біліктілігі расталмаған. Конфигурация, өкілеттік, аудит, қалпына келтіру және шығару талаптарын [деректер кеңістіктері арасындағы атомдық құпия есеп айырысуды іске қосу](/get-started/atomic-private-settlement) бөлімінен қараңыз.
 
 ## Грант / Қайтарып алу {#grant-revoke}
 

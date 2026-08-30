@@ -1,29 +1,31 @@
 ---
 translation_locale: ur
 translation_source: /reference/genesis.md
-translation_source_hash: 6710e76508e6a38a6b68d274247cc1383de2472e74f10be85000b30f74cb04a6
+translation_source_hash: 1312e80d9e662cc3e8cf4d0668ff4bb9e6ce3f74a60bb5287205aeeb5afd5de8
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # پیدائش کا حوالہ {#genesis-reference}
 
-موجودہ Iroha 3 ورک فلو میں، ایک `genesis.json` مینفیس پہلی لین دین اور پیرامیٹرز کی وضاحت کرتا ہے جو نیٹ ورک شروع ہونے پر لاگو کیا جائے گا.
+موجودہ میں Iroha 3 ورک فلو، a `genesis.json` مینی فیسٹ پہلے کی وضاحت کرتا ہے۔
+لین دین اور پیرامیٹرز جو نیٹ ورک شروع ہونے پر لاگو ہوں گے۔
 
-ساتھیوں کو تقسیم کردہ دستخط شدہ آرٹیفیکٹ ایک Norito-کوڈڈڈ `.nrt` فائل ہے جو `kagami genesis sign` کے ذریعہ تیار کی گئی ہے۔
+ساتھیوں میں تقسیم کردہ دستخط شدہ نمونے a ہے۔ Norito-انکوڈ شدہ `.nrt` فائل
+کی طرف سے تیار `kagami genesis sign`.
 
-## اہم شعبے {#main-fields}
+## مین فیلڈز {#main-fields}
 
-ایک پیدائش کا مظاہرہ بیان کر سکتا ہے:
+ایک جینیسس مینی فیسٹ وضاحت کر سکتا ہے:
 
-- `chain` زنجیروں کی شناخت کے لئے
-- `executor` ایک اختیاری انجام دینے والے اپ گریڈ بائٹ کوڈ راستے کے لئے
-- `ivm_dir` کے لیے IVM لائبریریوں کو ٹرگرز اور اپ گریڈ کے ذریعے استعمال کیا جاتا ہے۔
-- `consensus_mode` دستاویز میں اعلان کردہ ابتدائی موڈ کے لئے
-- `transactions` ترتیب شدہ پیرامیٹر اپ ڈیٹس، ہدایات، ٹرگرز اور ٹاپولوجی کے لئے
-- `crypto` ابتدائی کریپٹو اسنیپ شاٹ کے لئے
+- `chain` سلسلہ شناخت کنندہ کے لیے
+- `executor` ایک اختیاری ایگزیکیوٹر اپ گریڈ بائٹ کوڈ پاتھ کے لیے
+- `ivm_dir` کے لیے IVM محرکات اور اپ گریڈ کے ذریعہ استعمال ہونے والی لائبریریاں
+- `consensus_mode` مینی فیسٹ کے ذریعہ مشتہر کردہ ابتدائی وضع کے لیے
+- `transactions` آرڈر شدہ پیرامیٹر اپ ڈیٹس، ہدایات، محرکات اور ٹوپولوجی کے لیے
+- `crypto` ابتدائی کرپٹو سنیپ شاٹ کے لیے
 
-`transactions` کے اندر، ٹاپولوجی اندراجات جوڑے پیئر آئی ڈی اور PoPs ایک ساتھ مل کر:
+کے اندر `transactions`, ٹوپولوجی اندراجات جوڑے ہم مرتبہ کی شناخت اور PoPs ایک ساتھ:
 
 ```json
 {
@@ -32,9 +34,9 @@ translation_engine: nllb-200-ct2
 }
 ```
 
-## ایک مظاہرہ پیدا کریں {#generate-a-manifest}
+## ایک مینی فیسٹ بنائیں {#generate-a-manifest}
 
-ایک ٹیمپلیٹ پیدا کرنے کے لیے Kagami کا استعمال کریں:
+استعمال کریں۔ Kagami ٹیمپلیٹ بنانے کے لیے:
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
@@ -43,23 +45,30 @@ cargo run -p iroha_kagami -- genesis generate \
   --genesis-public-key <PUBLIC_KEY> > genesis.json
 ```
 
-عوامی SORA Nexus ڈیٹا اسپیس کے لئے ، `npos` متوقع اتفاق رائے موڈ ہے۔ دیگر Iroha 3 تعیناتی ہدف پروفائل پر منحصر ہے اجازت یا NPoS استعمال کرسکتے ہیں۔.
+عوام کے لیے SORA Nexus ڈیٹا اسپیس، `npos` متوقع اتفاق رائے کا موڈ ہے۔
+دیگر Iroha 3 تعیناتیاں ہدف کے لحاظ سے اجازت یافتہ یا NPoS استعمال کر سکتی ہیں۔
+پروفائل
 
-## دستخط پر دستخط کریں {#sign-the-manifest}
+## مینی فیسٹ پر دستخط کریں۔ {#sign-the-manifest}
 
-JSON کو ترمیم اور توثیق کرنے کے بعد، اسے ایک تعیناتی قابل `.nrt` بلاک میں دستخط کریں:
+ترمیم اور توثیق کے بعد JSON, اسے قابل تعیناتی میں سائن کریں۔ `.nrt` بلاک:
 
 ```bash
 cargo run -p iroha_kagami -- genesis sign genesis.json \
-  --private-key <PRIVATE_KEY> \
+  --private-key-file <MODE_0600_PRIVATE_KEY_FILE> \
   --out-file genesis.signed.nrt
 ```
 
-`kagami genesis sign` مینیفیس سے جینس پبلک کلید پڑھتا ہے اور فراہم کردہ نجی کلید ، بیج اور الگورتھم کا استعمال ڈسپلے ایبل دستخط شدہ بلاک تیار کرنے کے لئے کرتا ہے۔ نتیجہ فائل ہے جو ساتھیوں کو اپنی تشکیل سے حوالہ دینا چاہئے۔
+`kagami genesis sign` مینی فیسٹ سے جینیسس پبلک کلید پڑھتا ہے اور استعمال کرتا ہے۔
+پیدا کرنے کے لیے مالک کے قبضے میں، سنگل لنک ریگولر فائل کی نجی کلید
+قابل تعیناتی دستخط شدہ بلاک۔فائل میں ایک کینونیکل نجی کلید ہونی چاہیے۔
+ملٹی ہیش کے بعد ایک نئی لائن۔ Kagami علامتی روابط اور دیگر طریقوں کو مسترد کرتا ہے۔
+سے `0600`. خام نجی چابیاں کمانڈ لائن پر قبول نہیں کی جاتی ہیں۔نتیجہ
+وہ فائل ہے جس کا ساتھیوں کو اپنی تشکیل سے حوالہ دینا چاہئے۔
 
-## ترتیب `irohad` {#configure-irohad}
+## ترتیب دیں۔ `iroha3d` {#configure-iroha3d}
 
-دستخط شدہ جینیس بلاک پر ڈیمون کی طرف اشارہ کریں:
+ڈیمون کو دستخط شدہ جینیسس بلاک کی طرف اشارہ کریں:
 
 ```toml
 [genesis]
@@ -67,7 +76,7 @@ file = "genesis.signed.nrt"
 public_key = "<PUBLIC_KEY>"
 ```
 
-## متعلقہ آلات {#related-tools}
+## متعلقہ ٹولز {#related-tools}
 
 - `kagami genesis validate`
 - `kagami genesis normalize`
@@ -75,4 +84,5 @@ public_key = "<PUBLIC_KEY>"
 - `kagami localnet`
 - `cargo xtask kagami-profiles`
 
-جنریٹر لاگو کرنے اور کمانڈ کی تفصیلات کے لئے، [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_kagami/README.md) دیکھیں.
+جنریٹر کے نفاذ اور کمانڈ کی تفصیلات کے لیے، دیکھیں
+[Kagami README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami/README.md).

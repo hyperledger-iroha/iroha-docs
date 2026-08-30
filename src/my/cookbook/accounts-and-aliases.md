@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: 23b3ddbdadb0d177b2b12de60e0947a94ecdb20fa6ee1b3a2c6b83e5c91ba2f3
+translation_source_hash: 429535e5bb4ad1d3110f29a5b3896c0d3ce39264dbd357fa932fcc2a5f48d0f1
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -158,8 +158,8 @@ IDs ကို သိမ်းဆည်းပါ။ လက်မှတ်၊ ခ�
 
 ## အရင်းအမြစ်နှင့် ဆက်စပ်သော စာတမ်းများ {#source-and-related-docs}
 
-- [ချိတ်ဆက်ထားသော commit ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/account/address.rs) တွင် Canonical account address အကောင်အထည်ဖော်ခြင်း
-- [အကောင့်နှင့် အမည်မဖော်လိုသူ Torii ချိတ်ဆက်ထားသော commit တွင် စမ်းသပ်မှုများ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii/tests/accounts_endpoints.rs)
+- [ချိတ်ဆက်ထားသော commit ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs) တွင် Canonical account address အကောင်အထည်ဖော်ခြင်း
+- [အကောင့်နှင့် အမည်မဖော်လိုသူ Torii ချိတ်ဆက်ထားသော commit တွင် စမ်းသပ်မှုများ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs)
 - [ငွေစာရင်းများ](/my/blockchain/accounts.md)
 - [ဒေတာပုံစံ အမည်အမည်များ ](/my/blockchain/data-model.md#aliases)
 - [အမည်ပေးခြင်းဆိုင်ရာ ညီလာခံများ](/my/reference/naming.md)

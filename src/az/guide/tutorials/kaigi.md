@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /guide/tutorials/kaigi.md
-translation_source_hash: e55c7aebc89c39edb8e7077db2414a6d432aafb05aff8df04c248fce444d7dea
+translation_source_hash: 24dc7e6a41ea8a06d24663aebaeca2469c522e391a5de61f039c47a1cd020c91
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -47,7 +47,7 @@ npm install
 npm run dev
 ```
 
-Iroha mənbə anbarından olan [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/main/javascript/iroha_js) ilə demo istifadə edin. Onun `file:` asılılığı birbaşa yoxlanışı həll edir. Doğrudan bağlama dəyişsə, onu `iroha/javascript/iroha_js` altında yenidən qurun; təmiz paketlər dizaynında `npm run build:native` üçün lazım olan yük iş məkanı yoxdur.
+Iroha mənbə anbarından olan [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js) ilə demo istifadə edin. Onun `file:` asılılığı birbaşa yoxlanışı həll edir. Doğrudan bağlama dəyişsə, onu `iroha/javascript/iroha_js` altında yenidən qurun; təmiz paketlər dizaynında `npm run build:native` üçün lazım olan yük iş məkanı yoxdur.
 
 TAIRA şəbəkəsində canlı iclas keçirməzdən əvvəl demo-dan asılı olan ictimai Torii səthini yoxlayın:
 

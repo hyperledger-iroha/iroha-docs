@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /blockchain/iroha-explained.md
-translation_source_hash: 3fdd22338e826b1ce335ebf5e4e850cf3deb9415c36a0c8d21ad63c397cec8c0
+translation_source_hash: ba591b2c1aa819837177625b1ae457b5fa492197576dc690b19ca2897562a436
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,7 +12,7 @@ Iroha 3 သည်ပထမဦးဆုံးထုတ်ဝေသော Hyperled
 
 ## အခြေခံ အဆောက်အအုံများ {#core-building-blocks}
 
-- `irohad` လုပ်ဖော်ကိုင်ဖက်တွေကို လည်ပတ်တယ်။
+- `iroha3d` လုပ်ဖော်ကိုင်ဖက်တွေကို လည်ပတ်တယ်။
 - Torii က client နဲ့ operator gateway ဖြစ်ပါတယ်
 - Sumeragi က သဘောတူညီချက် ကိုင်တွယ်တယ်။
 - Norito သည် [canonical binary format](/my/reference/norito.md) ဖြစ်သည်။

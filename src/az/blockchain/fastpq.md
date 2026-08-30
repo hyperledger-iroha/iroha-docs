@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /blockchain/fastpq.md
-translation_source_hash: f1dc55e4b2146de009203e19adb5cc1e9ce5302bc0ee27fe0b442693c5112c22
+translation_source_hash: 55b57e6aeeef2aefa1c8359d9b9487029b106eaebed12a58268b61dc583e97f6
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -905,7 +905,7 @@ Transfer transkripsiyaları üçün verilişdən sonra yoxlamalar aşağıdakıl
 
 ## Prover Lane {#prover-lane}
 
-`irohad` start zamanı FastPQ prover zolağını başlayır, əgər prov backend başlanğıclandırıla bilərsə. Lane sərhədlənmiş bir sıra ilə bir arxa plan vəzifəsidir. Bir blok icra şahidini istehsal etdikdən sonra commit yolu blok hash, hündürlük, görünüş və şahidini ehtiva edən prov işini təqdim edir.
+`iroha3d` start zamanı FastPQ prover zolağını başlayır, əgər prov backend başlanğıclandırıla bilərsə. Lane sərhədlənmiş bir sıra ilə bir arxa plan vəzifəsidir. Bir blok icra şahidini istehsal etdikdən sonra commit yolu blok hash, hündürlük, görünüş və şahidini ehtiva edən prov işini təqdim edir.
 
 Əgər zolaq işləmirsə və ya növbə doludursa, iş buraxılır və normal blok işlənməsi davam edir. Bu o deməkdir ki, arxa plan profer yolu əməliyyat qəbul və ya razılaşma qapısı deyil. Bu, artıq icra olunmuş bir dövlət üzərində sübut-təsərrüfat yoludır.
 
@@ -1072,7 +1072,7 @@ $$
 
 ## SCCP Şəffaf mesaj sübutları {#sccp-transparent-message-proofs}
 
-SCCP köməkçi qutu, şəffaf çarşı silsilə mesajı sübutları üçün də FastPQ istifadə edir. Bu yol `irohad` arxa plan prowver zolağından ayrıdır. SCCP mesaj sübut qutusundan və manifestindən birbaşa FastPQ partiyasını qurur, sonra nəticələnən sübutı açıq yoxlama üçün bağlayır.
+SCCP köməkçi qutu, şəffaf çarşı silsilə mesajı sübutları üçün də FastPQ istifadə edir. Bu yol `iroha3d` arxa plan prowver zolağından ayrıdır. SCCP mesaj sübut qutusundan və manifestindən birbaşa FastPQ partiyasını qurur, sonra nəticələnən sübutı açıq yoxlama üçün bağlayır.
 
 SCCP partiyasında `fastpq-lane-balanced` və üç metadata keçid istifadə olunur:
 
@@ -1210,14 +1210,14 @@ metal_debug_enum = false
 metal_debug_fused = false
 ```
 
-Eyni icra və telemetriya etiketləri `irohad` ilə ləğv edilə bilər:
+Eyni icra və telemetriya etiketləri `iroha3d` ilə ləğv edilə bilər:
 
 ```shell
-irohad --fastpq-execution-mode auto
-irohad --fastpq-poseidon-mode cpu
-irohad --fastpq-device-class apple-m4
-irohad --fastpq-chip-family m4
-irohad --fastpq-gpu-kind integrated
+iroha3d --fastpq-execution-mode gpu
+iroha3d --fastpq-poseidon-mode cpu
+iroha3d --fastpq-device-class apple-m4
+iroha3d --fastpq-chip-family m4
+iroha3d --fastpq-gpu-kind integrated
 ```
 
 Konfiqurasiya sahələri üçün ətraf mühit dəyişənləri də dəstəklənilir. FastPQ xüsusi dəyişənlər aşağıdakılardır:
@@ -1258,4 +1258,4 @@ Telemetriya aktivləşdirildiyi zaman FastPQ arxa plan seçimi və Metal runtime
 - `TransferTranscript`
 - `AxtFastpqBinding`
 - `LaneFastpqProofMaterial`
-- [`irohad` FastPQ variantları](/az/reference/irohad-cli.md#arg-fastpq-execution-mode)
+- [`iroha3d` FastPQ variantları](/az/reference/iroha3d-cli.md#arg-fastpq-execution-mode)

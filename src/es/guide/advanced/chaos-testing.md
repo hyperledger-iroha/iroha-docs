@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /guide/advanced/chaos-testing.md
-translation_source_hash: dfd2d4196827da3563e377baae2fb823871d7a2c293dfafb6dc4de37f9ddbc61
+translation_source_hash: 5ceee448217a42e4f8bbae9595486b79019e7a880dfd0f2c71bf580409d0e4b9
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 Izanami es el orquestador de chaosnet en el espacio de trabajo upstream Iroha. Inicia un grupo local desechable Iroha, presenta una carga de trabajo configurable e inyecta fallas en pares seleccionados para que los operadores puedan comprobar si la red sigue progresando bajo falla controlada.
 
-Utilice Izanami para las comprobaciones de resistencia previa a la producción, reproducción de regresión y sintonización de consenso. No lo apunte a una red de producción: la herramienta está diseñada para poseer los pares que inicia, incluidos los arranques por pares, toallitas de almacenamiento, pérdida artificial de paquetes y presión local CPU o disco.
+Usar Izanami para comprobar la resistencia preproductiva, reproducción de regresión y sintonización del consenso. No lo apunte a una red de producción: la herramienta está diseñada para poseer los pares que inicia, incluyendo reinicios de pares, toallitas de almacenamiento, particiones temporales de confianza de pares y presión local CPU o disco.
 
 ## Los requisitos previos {#prerequisites}
 
@@ -34,7 +34,7 @@ Para una configuración de ejecución interactiva:
 cargo run -p izanami -- --tui --allow-net
 ```
 
-Izanami persiste las configuraciones TUI y CLI en el directorio de configuración del usuario, así que revisa las configuraciones mostradas antes de reutilizar un perfil anterior.
+Izanami persiste las configuraciones TUI y CLI en el directorio de configuración del usuario. El archivo de la primera versión tiene un byte de diseño explícito V1; se rechazan las configuraciones pre-lanzadas o no versionadas de otra manera y deben recrearse en lugar de migrarse. Revise las configuraciones que se muestran antes de volver a utilizar un perfil actual.
 
 ## Ejecutar la línea de base {#baseline-run}
 
@@ -64,7 +64,7 @@ Registra el comando, la semilla, Iroha commit, el conteo de pares, el conteos de
 
 Izanami tiene dos perfiles de carga de trabajo:
 
-|Profiles |Utilizarlo para|Notas |
+|Profiles |Utilizarlo para|Las notas |
 | -------- | -------------------------------------------------- | -------------------------------------- |
 |`stable` |Largas carreras de remojo y verificaciones de rendimiento reproducibles |Prefiere recetas seguras para la ejecución |
 |`chaos` |Cobertura de vías de fracaso |Incluye recetas intencionalmente inválidas |
@@ -96,39 +96,36 @@ Utilizar `--nexus` cuando la ejecución debe utilizar los valores predeterminado
 
 ¿Cuándo? `--faulty` si es mayor que cero, se debe habilitar al menos un escenario de falla. El error cambia por defecto a activado, y las banderas booleanas se pueden deshabilitar con `=false`.
 
-|Culpa |Bandera CLI |Lo que hace .|
+|Culpa |Bandera CLI |¿ Qué ejerce ?|
 | ------------------------ | ------------------------------------------ | ------------------------------------------ |
 |Crash y reinicio .|`--fault-enable-crash-restart` |Pérdida y recuperación del proceso entre pares |
 |Eliminar el almacenamiento y reiniciar |`--fault-enable-wipe-storage` |Recuperación del estado local desaparecido |
 |Spam de transacciones inválidas |`--fault-enable-spam-invalid-transactions` |Recursos de admisión y rechazo |
 |Latencia de la red |`--fault-enable-network-latency` |Los chismes lentos y los mensajes de consenso retrasados .|
 |Partición de red |`--fault-enable-network-partition` |El aislamiento temporal entre pares de confianza |
-|P2P pérdida de paquete|`--fault-enable-network-packet-loss` |Disminución del tráfico de las aplicaciones |
 |CPU tensión |`--fault-enable-cpu-stress` |Presión de validación y programación local |
 |Saturación del disco |`--fault-enable-disk-saturation` |Presión local de almacenamiento |
 
-Para una carrera con pérdida de paquetes solamente:
+Para una ejecución solo en partición de red:
 
 ```bash
 cargo run -p izanami -- \
   --allow-net \
-  --peers 20 \
-  --faulty 5 \
-  --duration 800s \
-  --fault-window-start 133s \
-  --fault-window-end 266s \
-  --tps 200 \
-  --submitters 20 \
-  --max-inflight 512 \
+  --peers 4 \
+  --faulty 1 \
+  --duration 5m \
+  --fault-window-start 60s \
+  --fault-window-end 180s \
+  --tps 15 \
+  --submitters 1 \
+  --max-inflight 32 \
   --fault-enable-crash-restart=false \
   --fault-enable-wipe-storage=false \
   --fault-enable-spam-invalid-transactions=false \
   --fault-enable-network-latency=false \
-  --fault-enable-network-partition=false \
-  --fault-enable-network-packet-loss=true \
+  --fault-enable-network-partition=true \
   --fault-enable-cpu-stress=false \
   --fault-enable-disk-saturation=false \
-  --fault-network-packet-loss-percent 75 \
   --seed 42
 ```
 
@@ -142,21 +139,20 @@ El catálogo Izanami upstream mapea las formas comunes de fallas en la comunicac
 | --------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 |Carga dirigida |`--faulty 0`, alto `--tps`, uno de los remitentes, elevado `--max-inflight` |
 |Fallo transitorio |Habilitar el bloqueo/reinicio sólo dentro de una ventana de falla limitada |
-|La pérdida de paquetes |Solo se permite la pérdida de paquetes, por lo general con la tasa de pérdida predeterminada del 75% |
 |Detenerse y recuperarse|Usar una gran población de pares defectuosos con choque/reinicio |
-|El aislamiento de los líderes |Utilice exactamente un peer defectuoso con solo fallas de partición de red o pérdida de paquetes; Izanami sigue la telemetría del líder Sumeragi |
+|El aislamiento de los líderes |Utilice exactamente un peer defectuoso con sólo la falla de partición de red; Izanami sigue Sumeragi líder telemetría |
 
-Mantenga una variable fija a la vez. Si cambia el recuento de pares, perfil de carga de trabajo, ventana de fallos y TPS en la misma ejecución, el resultado es difícil de interpretar.
+Mantenga una variable fija a la vez. Si cambia el número de pares, perfil de carga de trabajo, ventana de fallas y TPS en la misma ejecución, el resultado es difícil de interpretar.
 
 ## Lo que hay que ver {#what-to-watch}
 
 Durante la carrera, observe las mismas señales utilizadas para la validación del rendimiento:
 
-- progreso en la altura de los bloques a través de cada par corriente
+- progreso en la altura de los bloques a través de todos los pares corrientes
 - transacciones presentadas, aceptadas, rechazadas y transcurridas por tiempo
 - profundidad de la cola, saturación de la cola y retropresión en el punto final
 - cambios de visualización, vías de recuperación, bloques faltantes y certificados de quórum faltantes
-- RBC atrasos, sesiones pendientes y tráfico de consenso reducido o retrasado.
+- el registro de disponibilidad RS16 firmado, las sesiones pendientes y el tráfico de consenso atrasado
 - CPU, memoria, disco y saturación de la red en el host ejecutando los pares
 
 Para el análisis de la latencia de validación, habilite los registros de depuración del circuito principal:
@@ -179,7 +175,7 @@ Tratar una carrera como un fracaso cuando:
 - la latencia de p95 excede `--latency-p95-threshold`
 - Las colas crecen durante el resto de la carrera después de que una ventana de falla se cierra
 - las transacciones rechazadas o transcurridas por tiempo no se explican por la carga de trabajo seleccionada
-- reiniciación por pares, limpieza de almacenamiento o recuperación de pérdida de paquetes requiere una limpieza manual
+- Reinicio de pares, limpieza de almacenamiento o recuperación de particiones requiere una limpieza manual.
 
 Después de un fallo, vuelva a ejecutar con la misma semilla y un tipo de falla menos. Esto mantiene la carga de trabajo y el tiempo reproducibles mientras que estrecha la superficie del fallo.
 

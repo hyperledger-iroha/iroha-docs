@@ -1,171 +1,212 @@
 ---
 translation_locale: dz
 translation_source: /guide/tutorials/musubi.md
-translation_source_hash: 6b33c687fd1d81d931b932d38908d9a87e9c619e5aca5714d09d892160a6b704
+translation_source_hash: 4a76626522ecb9fe32e98e9c1e4552223cf820d40d0de16690dc589b0f40c901
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Musubi Kotodama སྦ་སྒོར་ཚུ་ {#musubi-kotodama-packages}
 
-Musubi འདི་ Kotodama གཞི་རྟེན་པིག་ཁྲམ་ཚུ་གི་དོན་ལུ་ ཕབ་ལེནཌ་འཛིན་སྐྱོང་པ་ཨིན། འདི་གིས་བཟོ་བཀོད་མི་ཚུ་ལུ་ Cargoབཟུམ་ཅིག་སྦེ་ ལཱ་འབད་ནིའི་ལམ་སྟོན་བྱིན་དོ་ཡོདཔ་ད་ བསྡུ་སྒྲིག་འབད་ཚུགས་པའི་ Kotodama འགན་ཁུར་ཚུ་བགོ་བཤའ་རྐྱབ་ནི་དང་ ཕབ་ལེན། ངོས་འཛིན་དེ་ འཛམ་གླིང་ཡོངས་ཀྱི་འགོ་དང་པ་འོང་མི་མིང་ཐོ་བཀོད་ཀྱི་ཚབ་ལུ་ SORA དང་ Iroha མིང་གི་ས་སྒོ་ཚུ་ལུ་ འབྲེལ་མཐུད་འབད་བཞག་ནུག
+Musubi འདི་ Kotodama གཞི་རྟེན་པིག་ཁྲམ་ཚུ་གི་དོན་ལུ་ འགོ་དང་པ་བཏང་བའི་པིག་ཁྲ་འཛིན་སྐྱོང་པ་ཨིན། འདི་གིས་ཐད་ཀར་དུ་ ལྕགས་ཐག་ནང་ལུ་ ཡོངས་འབྲེལ་འབྲེལ་བ་ཡོད་པའི་ རྩིས་རིས་ཅིག་ སེལ་འཐུ་འབད་ཞིནམ་ལས་ SoraFS འདི་བདེན་ཁུངས་འབདཝ་ཨིན། གཞི་རྟེན་ཡིག་སྣོད་ཚུ་ བསྡུ་སྒྲིག་དང་བརྟག་དཔྱད་འབདཝ་ཨིན། བཙག་འཐུ་གྲུབ་མི་ ལཱ་གི་ས་ཁོངས་འདི་ བཟོ་སྐྲུན་འབད་དོ་ཡོདཔ་ཨིན། CAR ཡིག་སྣོད་ཚུ་ ཀ་ནན་གྱི་ཐོག་ལས་བཟོ་བཀོད་འབད་དོ་ཡོདཔ་མ་ཚད་ Iroha གྱི་རྒྱུད་ལས་ བསྒྱུར་བཅོས་འབད་མི་བཏུབ་པའི་ པར་སྐྲུན་ཡང་འབདཝ་ཨིན།
 
 ཁྱོད་ཀྱིས་ Musubi ལག་ལེན་འཐབ་དགོ་པ་ཅིན་:
 
-- སླར་ལོག་སྤྱོད་འབད་ཚུགས་པའི་ Kotodama སྐྱེ་ཁོག་དཔེ་མཛོད་ཚུ་ དཔར་བསྐྲུན་འབདཝ་ཨིན།
-- ཕྲང་གནས་ཀྱི་འབྱུང་ཁུངས་ལུ་བརྟེན་པའི་ ཐབས་ལམ་ཚུ་ `Musubi.lock`
-- དངོས་འཛིན་འབད་ཡོད་པའི་ SoraFS ཡིག་སྣོད་གི་འགན་ཁུར་ཚུ་ལས་བརྟེན་པའི་ གཞི་རྟེན་སླར་གསོ་འབདཝ་ཨིན།
-- སྦ་སྒོའི་མིང་གི་ས་སྒོ་འདི་ མིང་གི་ས་ཁོངས་དེ་ནང་ཡོད་པའི་ dapp contract aliases ལུ་ සම්බන්ධརྐྱབས་ཚུགས།
-- ལྕགས་ཐག་གི་ནང་འཁོད་ལུ་ ཐོ་བཀོད་འབད་ཡོད་པའི་ ཐོ་བཀོད་ཀྱི་ཐོག་ལས་ བརྟག་ཞིབ་འབད་ནི་དང་ དཔར་བསྐྲུན་འབད་ནི་ དེ་ལས་ ཌིཊ་ཨེབ་གཏང་འབད་ནི་ ཡང་ན་ ཨེབ་གཏང་འབད་ནི་
+- སླར་ལོག་ལག་ལེན་འཐབ་ཚུགས་པའི་ Kotodama འགན་ཁུར་གི་དཔེ་མཛོད་ཚུ་ དཔར་བསྐྲུན་འབདཝ་ཨིན།
+- ཟད་འགྲོ་བཏང་ཐངས་ཚུ་ `Musubi.lock` ལུ་བཙུགས་དགོ།
+- མཐའན་མཇུག་གི་ SoraFS ཡིག་སྣོད་འགན་ཁག་ཚུ་ལས་བརྟེན་པའི་འབྱུང་ཁུངས་སླར་གསོ་འབད་ནི།
+- བསྡུ་སྒྲིག་གཅིག་ ཡང་ན་ བསྡུ་ཡིག་མང་རབས་ཅིག་བཟོ་སྟེ་ བརྟག་དཔྱད་འབདཝ་ཨིན།
+- ལྕགས་ཐག་གི་གུ་ཡོད་པའི་ ཐོ་བཀོད་ནང་ལུ་ བརྟག་ཞིབ་འབད་ནི་དང་ དཔར་བསྐྲུན་འབད་ནི་ དེ་ལས་ འབག་ཐོབ། བདག་འཛིན་འཐབ་ནི་ ཡང་ན་ མིང་གཞན་གྱི་པེ་ཅེསཌ་ཚུ་
 
 ## སྦ་སྒོའི་མིང་། {#package-names}
 
-Canonical package ids ལག་ལེན་འཐབ་ནི་:
+Canonical Package Selectors གིས་ ལག་ལེན་འཐབ་དོ་ཡོདཔ་ཨིན།
 
 ```text
 namespace/package
 ```
 
-འདྲ་བཤུས་གསལ་གཏང་ཐངས་ཚུ་ལག་ལེན་འཐབ་:
+དཔར་བསྐྲུན་འབད་ནིའི་ ངོ་རྟགས་ཚུ་ འདྲ་བཤུས་ཅིག་བཙུགས་ནི།
 
 ```text
 namespace/package@version
 ```
 
-མིང་གི་ས་སྟོང་གི་ཧེ་མར་ `@` གི་ངོ་རྟགས་མེད་ཨིན། `@` སྦྲགས་ཐིག་འདི་ བསྒྱུར་བཅོས་འབད་ནིའི་དོན་ལས་བཞག་ཡོདཔ་ཨིན།
+མིང་གི་ས་སྟོང་ཅིག་གི་ཧེ་མར་ `@` འདི་མེད་ཨིན། མིང་གི་ས་ཆ་འདི་ `universal`བཟུམ་ཅིག་སྦེ་ ཌེ་ཊ་ས་སྟོང་གི་རྩ་བ་ ཡང་ན་ `dex.universal`བཟུམ་ཅིག་སྦེ་ ས་ཁོངས་ནང་ ཁྱད་ཚད་ལྡན་པའི་ གནད་སྡུད་ས་སྟོང་ཨིན། ལེ་ཇིར་འདི་གིས་ གཞི་སྒྲིག་གི་མིང་གི་ས་སྟོང་དེ་ གྲོང་གསེབ་ཅིག་བཀོད་མ་ཚུགསཔ་ལས་ ཧེ་མའི་ཁུངས་ཀྱི་ གནས་སྡུད་ས་ཁོངས་གཅིག་ལུ་བསྡོམས་འབདཝ་ཨིན།
 
-མིང་གི་ས་ཁོངས་འདི་ Kotodama dapp contract aliases ཚུ་གིས་ལག་ལེན་འཐབ་མི་རྒྱབ་སྒྲིལ་དང་མཐུནམ་ཨིན།
+## manifest དང་ lockfile {#manifest-and-lockfile}
 
-|ཕབ་ལེནཌ་ id |འབྲེལ་མཐུད་འབད་ཡོད་པའི་གན་ཡིག་གི་མཚན་རྟགས་བཟོ་རྣམ་ |
-| ------------------------- | ---------------------------- |
-|`universal/math` |`router::universal` |
-|`dex.universal/swap-core` |`router::dex.universal` |
-
-མིང་གི་ས་སྟོང་འདི་ `<dataspace>` ཡང་ན་ `<domain>.<dataspace>` གི་བཟོ་རྣམ་ལུ་ཡོདཔ་ཨིན། ཕབ་ལེག་ཅིག་ནང་ dapp འབྲེལ་མཐུད་ཡོད་ཨིན་པ་ཅིན་ Musubi གིས་ བསྡུ་སྒྲིག་འབད་ཡོད་པའི་མིང་ཡིག་ཚང་རེ་རེ་གིས་ མིང་གི་ས་ཁོངས་ཀྱི་རྒྱབ་སྒྲིལ་དེ་ ཕབ་ལེག་གི་དོན་ལུ་ ལག་ལེན་འཐབ་ཡོདཔ་ཨིན་ན་བརྟག་དཔྱད་འབདཝ་ཨིན།
-
-## གསལ་སྟོན་འབདཝ་ཨིན། {#manifest}
-
-སྦ་སྒོར་འདི་ `Musubi.toml` ལས་འགོ་འདྲེན་འཐབ་ཨིན།
+སྦ་སྒོར་ཅིག་ནང་ སྒོ་བསྡམས་བཞག་མི་ ཨང་དང་པ་ཐོན་ཐངས་ལག་ལེན་འཐབ་ཨིན། `Musubi.toml` schema. manifest གིས་ གསལ་སྟོན་འབད་དགོཔ་ཨིན། `manifest-version = 1`, Kotodama དཔར་བསྐྲུན་ `"1"`, དང་ IVM ABI འདྲ་ཕབ། `1`; བསྒྱུར་བཅོས་གསལ་སྟོན་ཚུ་མེད་ ཡང་ན་ ABI གནས་སྟངས་འདི་ཨིན།
 
 ```toml
+manifest-version = 1
+
 [package]
 namespace = "dex.universal"
 name = "swap-core"
 version = "0.1.0"
+edition = "1"
+abi-version = 1
+
+[lib]
+source-dir = "src"
+exports = ["quote"]
 
 [dependencies.math]
 package = "std.universal/math"
 version = "^1.0.0"
-
-[exports]
-functions = ["quote"]
-
-[dapp]
-namespace = "dex.universal"
-contracts = ["router::dex.universal"]
 ```
 
-དཀའཝ་སྤྱད་མི་ཚུ་གིས་ འདྲ་བཤུས་ཚུ་ ངེས་པར་དུ་ལག་ལེན་འཐབ་ཚུགས། རིམ་ལུགས་ཀྱི་དགོས་མཁོ་དང་ ཐིག་ཁྲམ་གི་དགོས་མཁོ་ དེ་ལས་ wildcards དཔེར་ན་ `1.*` ཡང་ན་ comparator lists འདི་བཟུམ་སྦེ་ `>=1.0.0,<2.0.0`.
+dependencies གིས་དག་པ་ཅན་གྱི་བཟོ་བཀོད་དང་ caret ཡང་ན་ tilde དགོས་མཁོ་ཚུ་ wildcards དཔེར་ན་ `1.*` དང་ comma-separated comparator sets འདི་བཟུམ་སྦེ་ `>=1.0.0,<2.0.0` ལག་ལེན་འཐབ་ཚུགས། dependency table keyའདི་ parent-local import aliasཨིན་; `package` འདི་ཨ་རྟག་རང་ canonical registry selectorཨིན།
 
-`Musubi.lock` གིས་ ལྕགས་ཐག་གི་ཐོ་ཡིག་ནང་ལས་ གདམ་འཐུ་འབད་ཡོད་པའི་ མཐར་འཁྱོལ་ཅན་གྱི་ རྩིས་ཁྲ་འདི་ ཐོ་བཀོད་འབདཝ་ཨིན། ལྕགས་ཀྱུའི་ལྡེ་མིག་སོ་སོ་གིས་ རང་སོའི་དབྱེ་གསལ་གྱི་ ཕབ་ལེག་ ref, དགོས་མཁོ་སེལ་འཐུ་, SoraFS manifest digest, source archive hash, byte count, file count, exported functions, deterministic source archive plan, and dependence aliases འདི་ཚུ་ གསལ་བཀོད་འབད་ཡོདཔ་ཨིན། short aliases འདི་ lockfile ནང་མ་འཛུལ་བའི་ཧེ་མ་ སེལ་འཐུ་འབད་ཡོདཔ་ཨིན།
+`Musubi.lock` གིས་ རྩིས་ཁྲ་འདི་ genesis-derived exact `NetworkId` དང་ མཇུག་བསྡུ་མི་ register snapshot ལུ་བསྡུགསཔ་ཨིན། འདི་གིས་སེལ་འཐུ་འབད་ཡོད་པའི་ workspace rootsདང་ immutable release nodeཚུ་ ཐོ་བཀོད་འབདཝ་ཨིན། ཐོ་བཀོད་འབད་ནིའི་དོན་ལས་ ཌེ་པི་ཨེསི་ཨེམ་གི་ཁ་བྱང་ཚུ་ ཨེབ་གཏང་འབད་ནི་དང་ གཞི་རྟེན་དང་ ཡོངས་འབྲེལ་དང་ ཡིག་སྣོད་ ABI དེ་ལས་ དྭངས་གསལ་སྦེ་འབྲེལ་བ་ཡོད་པའི་མཐའ་མཚམས་ལུ་ བསྡུ་ལེན་འབད་ནི་ཨིན། གྲ་སྒྲིག་འདྲ་བཤུས་ཚུ་ སེལ་འཐུ་འབད་ཡོད་མི་ རྩིས་ཁྲམ་གིས་ དགོས་མཁོ་འབད་བའི་སྐབས་བཏུབ་ཨིན།
+
+## གཞི་སྒྲིག་འབདཝ་ཨིན། Taira SoraFS འབག་འོང་ནི་ {#configure-taira-sorafs-fetching}
+
+Taira འདི་ འ་ནི་ལཱ་རྒྱུན་འགྲུལ་གྱི་དོན་ལུ་ མི་མང་གི་བརྟག་དཔྱད་ཐིག་ཨིན། ཁྱོད་ཀྱིས་ Taira ཌའི་ལོག་ client གཞི་སྒྲིག་ནང་ལས་འགོ་བཙུགས་ཏེ་ ཐོ་བཀོད་འབད་ཡོད་པའི་ chain དང་ network ངོ་རྟགས་ཚུ་དང་ཕྱདཔ་ད་ འོག་ལུ་ provider-specific authenticated fetch bindings བཅའ་མར་གཏོགས་དགོ། Account signing material དང་ provider operator keys འདི་ owner-only runtime files ནང་བཞག་དགོཔ་ཨིན།
+
+```toml
+torii_url = "https://taira.sora.org/"
+chain = "fc56984b-2be7-431d-840e-21514d1883f0"
+network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+
+[musubi.fetch]
+network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+client_id = "musubi-taira"
+request_timeout_ms = 30000
+
+[[musubi.fetch.provider_gateways]]
+provider_id = "REPLACE_WITH_ADMITTED_PROVIDER_ID_HEX"
+url = "REPLACE_WITH_ADVERTISED_PROVIDER_HTTPS_ORIGIN"
+operator_public_key = "REPLACE_WITH_PROVIDER_AUTHORIZED_OPERATOR_PUBLIC_KEY"
+operator_private_key_file = "./secrets/taira-sorafs-provider.key"
+```
+
+ཁྱོད་ཀྱིས་ Taira གྱི་ལག་ལེན་འཐབ་མི་ ཞབས་ཏོག་ཚུ་ public testnet rootནང་ལས་འཚོལ་ཚུགས།
+
+```bash
+export TAIRA_ROOT=https://taira.sora.org
+curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
+```
+
+ཞབས་ཏོག་བྱིན་མི་གི་ཐོ་ཡིག་འདི་ ཞབས་ཏོག་སྤྲོད་མི་གི་ ངོ་རྟགས་དང་མཐའན་མཇུག་གི་གསལ་བསྒྲགས་འབད་ཡོད་པའི་ཐོ་བཀོད་ཚུ་ གྲོང་སྒྲིག་འབདཝ་ཨིན། ཁྱོད་ཀྱིས་ གདམ་ཁ་རྐྱབ་མི་ ཞབས་ཏོག་མཁོ་ཆས་ལས་ མཐུན་རྐྱེན་ལག་ལེན་པའི་ཆོག་ཐམ་ཐོབ་ཨིན། འགྲུལ་ལམ་དུས་ཚོད་འདི་གིས་ འ་ནི་ལྡེ་མིག་དེ་ལག་ལེན་འཐབ་ཐོག་ལས་ ཚོད་བསྲེའི་རྒྱུན་འགྲུལ་གྱི་ལྡེ་མིག་ཚུ་བཙུགསཔ་ཨིན། ཐོ་བཀོད་ཀྱི་ལྡེ་མིག་འདི་ CLI གྲོས་བསྡུར་དང་ལྡེ་མིག་གི་ ཡིག་སྣོད་ཚུ་ཡང་མེདཔ།
+
+ལག་ལེན་འཐབ་ནི་མི་འོང་། Taira པ་ཝེ་ཌི་ཊར་པིན་ URL འདི་བཟུམ་སྦེ་ `url`. ཐོ་བཀོད་འབད་ཡོད་པའི་བརྟག་དཔྱད་འཕྲུལ་ཆས་ཚུ་ནང་ བཙུགས་ཡོདཔ་ཨིན། SoraFS སྦ་སྒོར་མ་བཏུབ་པར་བཞག་ཡོདཔ་ཨིན། `https://taira-validator-{1,2,3,4}.sora.org` མཐའན་མཇུག་གི་སྒོ་སྒྲིག་ཚུ་གིས་ པིན་གྱི་ ཐོ་བཀོད་ཆ་ལེན་འབད་དོ་ཡོདཔ་ད་ ཡིག་སྣོད་ལྷག་ཐངས་ཚུ་ གདམ་ཁ་རྐྱབ་མི་ ངོས་འཛིན་ཅན་གྱི་ ཞབས་ཏོག་བྱིན་མི་གི་ ཐོ་བཀོད་ཀྱི་ལག་ལེན་འཐབ་ཨིན། HTTPS འབྱུང་ཁུངས།
 
 ## ས་གནས་ཀྱི་ ལཱ་འབད་ཐངས་ {#local-workflow}
 
-Iroha ལས་འགུལ་ས་ཁོངས་ཀྱི་རྩ་བ་ལས་ཡར་ཐུག་ལུ་ Musubi རྒྱུན་འགྲུལ་འཐབ་དགོ།
+ཡར་ཐུག་ལུ་ Iroha ཝང་མིག་གི་རྩ་ལས་, Package Directory བཟོ་ནི་དང་ ཡང་ན་ ནང་བཙུགས་འབད་ཞིནམ་ལས་ Musubi འདི་ Cargo གྱི་ཐོག་ལས་ལག་ལེན་འཐབ་འོང་།
 
 ```bash
-cargo run -p musubi -- init --namespace dex.universal --name swap-core --dapp
-cargo run -p musubi -- add std.universal/math --version '^1.0.0' --alias math
-cargo run -p musubi -- install --config client.toml
-cargo run -p musubi -- build src/lib.ko --manifest-out target/lib.contract.json
-cargo run -p musubi -- pack \
-  --car-out source.car \
-  --sorafs-manifest-out manifest.norito \
-  --source-plan-out source-plan.norito
+mkdir -p examples/swap-core
+cd examples/swap-core
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  init . --namespace dex.universal --name swap-core --export quote
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  add std.universal/math --version '^1.0.0' --rename math
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- fetch --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- check --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- build --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- test --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- package --config client.toml
 ```
 
-ཁྱོད་ཀྱིས་ `install --offline` ལག་ལེན་འཐབ་སྟེ་ ཐད་ཀར་དུ་ཨེབ་གཏང་མ་བཏུབ་པའི་ལྡེ་མིག་ཡིག་སྣོད་ཅིག་ ཡིག་སྣོད་ནང་བཙུགས་ཏེ་ ཨེབ་གཏང་འབད། ཁྱོད་ཀྱིས་ CI ནང་ `install --locked` ལག་ལེན་འཐབ་ཞིནམ་ལས་ རྒྱུན་ཆད་མེད་པའི་ལྡེ་མིག་ ཡིག་སྣོད་འདི་ ཁ་བཟེད་ཚུགས།
+`fetch` གིས་ ཐོ་བཀོད་འབད་ཚར་མི་ ཐོ་བཀོད་ཀྱི་རྩིས་ཁྲ་འདི་ སེལ་འཐུ་འབགཔ་ཨིན། ཕབ་ལེན་འབད་བ་ཅིན་ ད་ལྟོའི་གནས་སྟངས་ནང་ `Musubi.lock` བཏོན་གཏང་ནི་ དེ་ལས་ རང་སོའི་ལཱ་མ་འབད་བའི་ཧེ་མར་ SoraFS གི་གནས་ས་ནང་ལས་ གནས་སྐབས་ཀྱི་ ས་གནས་དེ་ བསྡུ་སྒྲིག་འབདཝ་ཨིན། `check`, `build`, `test` དང་ `package` འདི་བཟུམ་སྦེ་ རྩིས་ཁྲ་དང་ དྲན་རྫི་ཚུ་ བརྟག་ཞིབ་འབདཝ་ཨིན།
 
-`build` གིས་ `math::add()`བཟུམ་ཅིག་སྦེ་ ཀི་ལོ་མི་ཊར་ཚུ་ ཌེ་ཊི་མཱནསི་ཊིཀགི་ ནང་འཁོད་ Kotodama འགན་ཁུར་གྱི་མིང་ལུ་བསྐྱར་ཡིག་འབྲུ་འབད་བའི་ཐོག་ལས་ ཉེན་སྲུང་ཅན་གྱི་འབྲེལ་བ་འབྱུང་ཁུངས་ཚུ་ མཐུད་སྦྲེལ་འབད་ཡོདཔ་ཨིན། འདི་གིས་ dependence གིས་ཕྱིར་ཚོང་མ་འབད་མི་ འགན་ཁུར་ཚུ་གི་དོན་ལུ་ ཀི་ལོམ་ཚུ་ ཆ་མེད་གཏང་འོང་། Musubi v1 ལི་བེརི་ཚུ་འགན་འཛིན་རྐྱངམ་གཅིག་ཨིན། གནས་སྡུད་ཀྱི་གསལ་སྒྲགས་དང་ ཐིག་གཱར་ དེ་ལས་ ཀོ་ཊོ་བྷ་ བཀྲམ་སྤེལ་འབད་ཐངས་ ཡང་ན་ འགན་འཁྲི་མེད་མི་ ཁག་འབགཔ་གཞན་ཚུ་ཡོད་པའི་འབྲེལ་བ་འབྱུང་ཁུངས་ཚུ་ ཆ་མེད་གཏང་ཡོདཔ་ཨིན།
+ལག་ལེན་འཐབ་ནི་ `--locked` ལོགསི་ཡིག་སྣོད་ནང་ལུ་ བསྒྱུར་བཅོས་འབད་མི་ཚུ་ ཆ་མེད་གཏང་ནིའི་དོན་ལུ་ ལག་ལེན་འཐབ་ `--offline` ཐོ་བཀོད་ཐོ་ཡིག་དང་ དགོས་མཁོ་ཅན་གྱི་ ཡིག་སྣོད་གཉིས་ཆ་ར་ ཕྱིར་བཏོན་འབད་ཚར་ཞིནམ་ལས་རྐྱངམ་ཅིག་ཨིན། `--frozen` འདི་གཉིས་ཆ་ར་ འབྲེལ་མཐུད་འབདཝ་ཨིན། Offline cache མེདཔ་བཟོཝ་ཨིན། Musubi སླར་ཡང་ སེལ་མ་ཚུགས་པའི་ལྡེ་མིག་ཡིག་སྣོད་ཅིག་འབྲི་མི་ཚུགས།
 
-## གཞི་རྟེན་ཡིག་སྣོད་ཚུ་འབག་ཐོབ། {#fetching-source-archives}
+འབྲེལ་བ་འབྱུང་ཁུངས་ཚུ་ `math::add()`བཟུམ་ ཁྱད་ཚད་ཅན་གྱི་འབོ་མི་ཚུ་ལུ་ deterministic ནང་འཁོད་གི་མིང་ Kotodama ལུ་བསྐྱར་ཡིག་འབྲུ་འབད་ཐོག་ལས་འབྲེལ་མཐུད་འབདཝ་ཨིན། ཕྱིར་ཚོང་མ་འབད་མི་ འགན་ཁུར་ལུ་བརྟེན་པའི་འབོ་མི་འདི་ ཆ་མེད་བཏང་ཡོདཔ་ཨིན། ནང་འདྲེན་འབད་མི་ དཔེ་མཛོད་ཁང་ཚུ་གིས་ འགན་ཁུར་ཚུ་བཏོན་དོ་ཡོདཔ་ལས་ ས་གནས་ཀྱི་ `[[contract]]` དང་ `[[test]]` དམིགས་གཏད་ཚུ་ ངེས་པར་དུ་ ཕབ་ལེནཌ་གི་ དམིགས་གཏདཔ་སྦེ་ བཞག་དོ་ཡོདཔ་ཨིན།
 
-Musubi གིས་སེལ་འཐུ་འབད་བའི་སྐབས་ལུ་ ཡང་ན་ཤུལ་ལས་ cache གི་འོག་ལས་བཀའ་བཀོད་ཚུ་བརྒྱུད་དེ་ འགལ་བའི་འབྲེལ་བ་འབྱུང་ཁུངས་ཚུ་འཚོལ་ཚུགས་:
+## Cache བརྟག་དཔྱད་དང་ ཉམས་བཅོས་ {#cache-verification-and-repair}
+
+མི་སེར་གྱི་ ཀ་ཤིའི་བཀའ་རྒྱ་ཚུ་ བསྒྱུར་བཅོས་མ་བཏུབ་པའི་ ཐོ་བཀོད་ཅན་གྱི་ཡིག་སྣོད་ཚུ་ནང་ལུ་ ལག་ལེན་འཐབ་ཨིན།
 
 ```bash
-cargo run -p musubi -- install --config client.toml --fetch \
-  --provider-payload math.payload
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  cache verify --all --config client.toml
 
-cargo run -p musubi -- cache import math --source-root ../math
-cargo run -p musubi -- cache fetch math --provider-payload math.payload
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  cache repair --config client.toml
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  cache prune --dry-run --config client.toml
 ```
 
-ཐོ་བཀོད་འབད་ཡོད་པའི་སྒོ་སྒྲིག་ཚུ་ནང་ SoraFS སྒོ་སྒྲིག་སྤྲོད་མི་ ཞབས་ཏོག་གི་ ཁྱད་ཚད་གཅིག་ ཡང་ན་མང་ཤོས་ཅིག་ ལག་ལེན་འཐབ་ཡོདཔ་ཨིན།
+`cache repair` ཟུར་བཞག་ཁང་གིས་ ཡིད་ཆེས་མི་བརྒྱུད་ཚུ་ལུ་ གནོད་སྐྱོན་རྐྱབ་དོ་ཡོདཔ་མ་ཚད་ སྒྲིག་གཞི་བཟོ་སྐྲུན་འབད་ནིའི་ ཐབས་ལམ་མཇུག་བསྡུ་བའི་སྐབས་ དབྱེ་ཞིབ་ཡིག་ཚང་ཚུ་ བསྐྱར་གསོ་འབདཝ་ཨིན། Musubi གིས་ འཚོ་བ་མེད་པའི་ ལྕང་ལཱ་གི་འགྱུར་བཅོས་ཅིག་ ཆ་མེད་བཏང་དོ་ཡོདཔ་ཨིན། གསལ་བསྒྲགས་འབད་མི་ འདེམས་ངོ་ཚུ་ལུ་བལྟ་ནིའི་དོན་ལུ་ `--dry-run` ལག་ལེན་འཐབ་དགོ།
+
+## སྦ་སྒོར་དང་ དཔར་སྐྲུན་ {#packaging-and-publishing}
+
+ཡིག་སྣོད་བཀོད་པའི་ཧེ་མར་ གཞི་སྒྲིག་འབད་ཡོད་པའི་གཙང་མ་ཨང་ལྡོག་ཅན་གྱི་ཡིག་སྣོད་ཚུ་ བརྟག་ཞིབ་འབད་ཞིནམ་ལས་ སྒྲིག་གཞི་འདི་བཟོ་དགོ།
 
 ```bash
-cargo run -p musubi -- install --config client.toml --fetch \
-  --gateway-provider 'name=hot-a,provider-id=1111111111111111111111111111111111111111111111111111111111111111,base-url=https://gw.example,stream-token=BASE64,package=math'
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  package --list --locked --config client.toml
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  package --locked --config client.toml
 ```
 
-ཞབས་ཏོག་སྤྲོད་མི་ ཕུལ་ཆས་ཕོཌ་ཡིག་སྣོད་དང་ གེ་ཊི་བེཡ (gateway providers) ཚུ་ གཅིག་གིས་གཅིག་ལུ་ བཏོན་འབག་ནིའི་ལཱ་གཅིག་གི་དོན་ལུ་ ཁྱད་པར་ཅན་ཨིན། ག་དེམ་ཅིག་སྦེ་ ཟམ་འབུམ་ཅིག་ལས་ལྷག་སྟེ་མེད་པ་ཅིན་ གེ་ཊིབེཡགི་ ཞབས་ཏོག་བྱིན་མི་རེ་རེ་ལུ་ `package=<dependency-alias>`, `package=<namespace/package@version>`, `package=<namespace/package>` ཡང་ན་ `manifest=<64-hex SoraFS manifest digest>` ལུ་ཁྱབ་སྒྲགས་འབད་དགོ།
+`package` གིས་ `target/package/<namespace>-<name>-<version>.car` འབྲི་དོ་ཡོདཔ་ཨིན། CAR གིས་ ཀ་ནོ་ནི་ཀཱལ་པེ་ཁེཌི་ manifest, semantic release manifest, exact verification lock, source tree, interface ཚུ་བཅིངས་འབདཝ་ཨིན། digest དང་ SoraFS ཡིག་སྣོད་གི་འགན་ཁུར་ཚུ་ཨིན། འགོ་དང་པ་བཏང་མི་ནང་ `pack`, `--car-out`, `--sorafs-manifest-out` ཡང་ན་ `--source-plan-out` གི་བཀའ་རྒྱ་ཚུ་མེད་ CLI
 
-སྒོ་ར་སྒོ་ `base-url` དང་ `privacy-url` གནས་གོང་ཚུ་ ལག་ལེན་འཐབ་དགོཔ་ཨིན། `https://` རང་བཞིན་གྱི་ བརྟག་དཔྱད་སྒོ་སྒྲིག་ཚུ་ ལག་ལེན་འཐབ་ཚུགསཔ་ཨིན། `http://localhost`, `http://127.0.0.1`, ཡང་ན་ `http://[::1]` མཉམ་འབྲེལ་རྐྱང་ `--gateway-allow-insecure-localhost`. stream tokens འདི་ runtime credentials དང་ནང་བྲིས་མི་ཨིན། `Musubi.lock`.
-
-## དཔེ་སྐྲུན་ཁང་ {#publishing}
-
-`pack` computes the deterministic BLAKE3-256 source archive hash དེ་ལས་ source byte དང་ file counts. `--car-out`, `--sorafs-manifest-out`, ཡང་ན་ `--source-plan-out` འདི་བཀྲམ་སྤེལ་འབད་ཡོདཔ་ད་ འདི་ཡང་ deterministic བཟོ་སྐྲུན་ SoraFS CAR ཁེ་ཕན་གྱི་འགན་ཁུར་ཚུ་ SoraFS མངོན་གསལ་འབད་ཡོདཔ་དང་ Musubi གཞི་རྟེན་ཡིག་སྣོད་གི་འཆར་གཞི་ འདི་བཟུམ་སྦེ་ གཞི་རྟེན་ཡིག་སྡོམ་ཅིག་ལས་ཨིན།
-
-དཔར་བསྐྲུན་མ་འབད་པའི་ཧེ་མ་ སྐམ་ལག་ལེན་འཐབ་:
+དཔར་བསྐྲུན་འབད་ཐངས་འདི་ ཐོ་བཀོད་འབད་ཚུགས་མི་ སྒྲིག་འཇུག་གི་ལས་རིམ་ཨིན། བཙག་འཐུ་གྲུབ་པའི་ `client.toml` འདི་ནང་ བཟོ་སྐྲུན་ `[musubi.publication]` གི་བཅའ་ཡིག་ཚུ་ དེ་ལས་རྩིས་ཁྲ་དང་ Taira གྱི་དྲ་ལམ་བཟོ་སྒྲིག་ཚུ་ཡང་ཡོད་དགོཔ་ཨིན། ལས་འགན་གནས་སྟངས་ཀྱི་ཡན་ལག་ཅིག་:
 
 ```bash
-cargo run -p musubi -- publish --config client.toml --dry-run
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  publish -p dex.universal/swap-core --locked --config client.toml
 ```
 
-`--dry-run`མེད་པ་ཅིན་ `publish` གིས་ default artifacts ཚུ་ `.musubi/dist/<namespace>/<name>/<version>/` གི་འོག་ལུ་བྲིས་ཞིནམ་ལས་ ཐབས་ལམ་སྒྲིག་འབད་ཐོག་ལས་ manifest དང་ payload འདི་ Torii གི་ SoraFS storage-pin endpoint གྱི་ཐོག་ལས་ `--upload` ལུ་ཕབ་རྐྱབ་ཨིན། དེ་གིས་ ཐོན་སྐྱེད་འབད་མི་ SoraFS pin འདི་ཐོ་བཀོད་འབདཝ་ཨིན། དེ་ལས་ གཞི་སྒྲིག་འབད་ཡོད་མི་ Iroha client ཀྱི་ཐོག་ལས་ `PublishMusubiRelease` བཏང་འོང་།
-
-དཔར་བསྐྲུན་འབད་མི་ གནས་ཚུལ་ཚུ་ནང་ལུ་:
-
-- འབྱུང་ཁུངས་ཀྱི་ཡིག་སྣོད་མ་སྟོང་པ་ཅིག་
-- གཞི་རྟེན་ཡིག་སྣོད་འཆར་གཞི་ཅིག་
-- ཕྱིར་ཚོང་འཐབ་མི་ Kotodama འགན་ཁུར་གཅིག་མ་གཏོགས་མེད་
-- ཐོ་བཀོད་འབད་ཐངས་ཚུ་ སེལ་འཐུ་མ་འབད་བར་བཞག་ཡོདཔ་ཨིན།
-- dapp འབྲེལ་མཐུད་དེ་ཅིག་ཡོདཔ་ད་ འདི་ནང་ལུ་ contract aliases གིས་ package name space དང་འདྲ་མཉམ་ཨིན།
+ལག་ལེན་འཐབ་ `--detach` ལས་འགུལ་གྱི་དུས་དེབ་དང་ སོན་འཛུལ་ཐོ་བཀོད་མཐའ་མཚམས་ཚུ་ ཡུན་བརྟན་སྦེ་ཡོད་པའི་ཤུལ་ལུ་ ལོག་སྤྱོད་འབད་ནིའི་དོན་ལུ་ ལག་ལེན་འཐབ་ རྒྱུན་སྐྱོང་གི་ལཱ་འདི་ `publish --resume <operation-id> --config client.toml` ལུ་ འཕྲོ་མཐུད་འབད་བཅུགཔ་ཨིན། ལམ་ཆུང་བ་ `--recover <operation-id>` གིས་བསྐྱར་བཟོ་འབདཝ་ཨིན། འཛུལ་ཞུགས་འབད་མ་འོང་པའི་ སྔོན་འགོག་དུས་དེབ་གི་དོན་ལུ་ བསྒྱུར་བཅོས་འབད་མི་ sidecars མེད་དོ་ཡོདཔ་ཨིན། `--dry-run` ཡང་ན་ སྤྱིར་བཏང་སེལ་འཐུ་འབད་མི་ fallback འདི་མེད་; ས་གནས་ཀྱི་ preflight གི་དོན་ལུ་ `package --list` དང་ `package` རྒྱུགས་གཏང་།
 
 ## ཐོ་བཀོད་ཡིག་ཚང་གི་དྲི་བ་དང་ དུས་ཚོད། {#registry-queries-and-lifecycle}
 
-ཐོ་བཀོད་ནང་ལུ་འཚོལ་ཞིབ་དང་བརྟག་དཔྱད་འབད་:
+ཁྱོད་ཀྱིས་ Taira ཌོག་ཊར་གྱི་སྒྲིག་གཞི་དེ་བཟུམ་སྦེ་ ཐོ་བཀོད་འབད་ཡོད་པའི་ཐོ་ཡིག་འདི་འཚོལ་ཞིནམ་ལས་ བརྟག་ཞིབ་འབདཝ་ཨིན།
 
 ```bash
-cargo run -p musubi -- search swap --config client.toml
-cargo run -p musubi -- versions dex.universal/swap-core --config client.toml
-cargo run -p musubi -- alias resolve swap --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  search swap --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  info dex.universal/swap-core --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  versions dex.universal/swap-core --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  alias resolve swap --config client.toml
 ```
 
-Yanking གིས་ གྲོས་ཐག་གསརཔ་ལས་གློག་འཁྱོལ་མི་འདི་སྦ་བཞག་སྟེ་ ད་ལྟོའི་ལྡེ་མིག་ཚུ་ སླར་ལོག་འབད་ཚུགསཔ་བཟོཝ་ཨིན།
+Yanking གིས་ གྲོས་ཐག་གསརཔ་ཚུ་ནང་ལས་ བསྒྱུར་བཅོས་འབད་མ་ཚུགསཔ་ཅིག་ལུ་ བཀག་ཆ་འབད་ཡོདཔ་ད་ ཧེ་མ་ཡོད་མི་ཚུ་ ཡང་དག་པའི་ལྡེ་མིག་སྦེ་ བཟོ་ཚུགས་པའི་བསྒང་ཡོད། དང་པ་ར་ ད་ལྟོའི་ yank བསྐྱར་ཞིབ་དེ་ ཀློག་སྟེ་ བལྟ་ཞིནམ་ལས་ compar-and-set གྱི་འགྱུར་བཅོས་བཙུགས་དགོ།
 
 ```bash
-cargo run -p musubi -- yank dex.universal/swap-core@0.1.0 \
-  --reason "bad archive" \
-  --config client.toml \
-  --dry-run
+: "${EXPECTED_YANK_REVISION:?set the current non-zero yank revision}"
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  yank dex.universal/swap-core 0.1.0 \
+  --expected-revision="$EXPECTED_YANK_REVISION" \
+  --reason="bad archive" \
+  --config client.toml
 ```
 
-Musubi འཛམ་གླིང་ཡོངས་ཀྱི་མིང་ squatting བཀག་ཐབས་ལུ་བཟོ་ `namespace/package` མིང་གི་ས་ཁོངས་ནང་ དཔར་བསྐྲུན་འབད་ནི་ལུ་ འདྲ་མཉམ་གྱི་དབང་འཛིན་ ཡང་ན་ བརྗེ་སོར་འབད་ཡོད་པའི་ཆོག་ཐམ་བཟོ་རྣམ་ལས་ ངོས་ལེན་འབད་དགོཔ་ཨིན། དེ་གི་དོན་ལུ་ལག་ལེན་འཐབ་ཡོདཔ་ཨིན། Kotodama dapp གི་མིང་གི་ས་ཁོངས། འཛམ་གླིང་ཡོངས་ཀྱི་ short aliases འདི་ package གྱི་བདག་འཛིན་ལས་སོ་སོ་ཨིན། `SetMusubiShortAlias` དགོས་མཁོ་ཅན་གྱི་ `CanSetMusubiShortAlias` ངོས་ལེན་དང་ དམིགས་གཏད་གྱི་པེ་ཀེསི་ནང་ ཧེ་མ་ལས་ཨང་ཉུང་ཤོས་ཅིག་རང་ ཕྱིར་བཏོན་འབད་དགོཔ་ཨིན།
+ལག་ལེན་འཐབ་ `unyank` འདི་ཡང་པིག་ཁྲ། འདྲ་བཤུས་དང་ ཀློག་པ་གསརཔ་ལུ་བསྐྱར་བཅོས་འབད་ཡོད་པའི་གནས་སྟངས་འདི་ལོག་འགྱོ་བཅུག་ཨིན། པིག་ཁྲ་གི་བདག་འཛིན་དང་ ལྟ་རྟོག་པའི་འགན་ཁུར་ཚུ་ Publish, yank, metadata, དེ་ལས་ ཡིག་སྣོད་གནས་སྡུད་གི་ཆོག་ཐམ་ཡང་ཡོདཔ་ཨིན། འཛམ་གླིང་ཡོངས་ཀྱི་མིང་རྟགས་འདི་ རང་སོའི་རིན་ཐོ་བཀོད་དང་ བསྐྱར་ཞིབ་འབྱུང་ཁུངས། འདྲ་བཤུས་དང་བསྡུར་དང་གཞི་སྒྲིག་བསྐྱར་བཅོས། དེ་ཚུ་པེ་ཅོག་གི་བདག་འཛིན་གྱི་ shortcutsམེན།
 
 ## Iroha ས་ཁོངས། {#iroha-surfaces}
 
-Musubi ལག་ལེན་འཐབ་མི་ དབྱེ་རིམ་དང་པོ། Iroha ལམ་སྟོན་དང་དྲི་ཚུ་:
+Musubi གིས་ འགོ་དང་པ་བཏང་མི་ བརྡ་བཀོད་དང་དྲི་ཚུ་ V1 ལག་ལེན་འཐབ་ཨིན།
 
-|ས་ཁོངས། |དམིགས་གཏད་ |
-| ---------------------------- | -------------------------------------------------- |
-|`PublishMusubiRelease` |བསྒྱུར་བཅོས་འབད་མ་བཏུབ་པའི་ ཕབ་ལེནཌ་ གསར་བསྐྲུན་འབད།|
-|`YankMusubiRelease` |ད་ལྟོའི་གློག་བརྙན་འདི་ ཕྱིར་བཏོན་འབད་ཡོད་པའི་རྟགས་བཀོད་རྐྱབས།|
-|`SetMusubiShortAlias` |བསྡུ་སྒྲིག་འབད་ཡོད་པའི་ འཛམ་གླིང་ཡོངས་ཀྱི་མིང་ཐུང་ཀུ་འདི་ ཕབ་ལེནཌ་གི་ངོ་རྟགས་ཅིག་ལུ་བསྡུད། |
-|`AssertMusubiReleaseExists` |འོས་འབབ་ཅན་གྱི་ སྦ་སྒོར་གྱི་དཔེ་ཆ་ཅིག་བཟོ་དགོཔ་ཨིན། |
-|`FindMusubiReleaseByRef` |བསྡུ་སྒྲིག་གི་ཁ་བྱང་ཚུ་དང་གཅིག་ཁར་ ཐོ་བཀོད་འབད་དགོ་། |
-|`FindMusubiPackageVersions` |ཕབ་ལེནཌི་ ID གི་དོན་ལུ་ བསྒྱུར་བཅོས་ཚུ་ཐོ་འགོད་རྐྱབས།|
-|`FindMusubiPackageReleases` |བསྡུ་སྒྲིག་གི་ ID གི་དོན་ལུ་ ཐོ་བཀོད་ཡོངས་བསྡོམས་ཚུ་ཐོ་བཀོད་ ചെയ്യുക|
-|`SearchMusubiPackages` |མིང་གི་ས་སྒོ་དང་ ཡིག་སྣོད་ལུ་བརྟེན་ བསྡུ་ཡིག་བསྡོམས་ཚུ་འཚོལ་དགོ། |
-|`FindMusubiShortAliasByName` |ཕྲང་མཚན་ཐུང་ཀུ་ཅིག་ སེལ་འཐུ་འབད།|
+|ས་ཁུལ |དམིགས་གཏད་ |
+| -------------------------------------------------- | -------------------------------------------------------------- |
+|`RegisterMusubiNamespaceBindingV1` |མིང་གི་ས་སྟོང་འདི་ ཁྱིམ་ནང་གི་ གནས་སྡུད་ཀྱི་ས་སྟོང་ལུ་བསྡམ་དགོ།|
+|`RegisterMusubiArchiveV1` |གཞི་རྟེན་ཡིག་སྣོད་ནང་ལུ་ བསྒྱུར་བཅོས་འབད་མ་ཚུགསཔ་ཅིག་ཨིན་པའི་ ཁས་བླངས་འདི་ ཐོ་བཀོད་འབད། |
+|`AddMusubiArchiveLocationV1` |SoraFS ཡིག་སྣོད་གནས་སྟངས་དེ་ བརྟག་ཞིབ་འབད་ཡོད་པའི་ ས་སྒོ་ཅིག་ ཁ་སྐོང་རྐྱབས་ ཡང་ན་ གསར་གཏོབ། |
+|`PublishMusubiReleaseV1` |ཕབ་ལེནཌ་ཚུ་ གསལ་ཞུ་འབད་ནི་དང་ ཡང་བསྐྱར་བཟོ་བཅོས་འབད་ཞིནམ་ལས་ བསྒྱུར་བཅོས་མ་བཏུབ་པའི་ ཐོ་བཀོད་ཅིག་བསྐྲུན་འབད། |
+|`SetMusubiReleaseYankV1` |དབྱེ་བ་དང་དབྱེ་ཞིབ་འབད་ཞིནམ་ལས་ འོག་གི་གནས་སྟངས་འདི་ ཕྲང་གསལ་བཏང་བའི་གནས་སྟངས་ལུ་ གཞི་སྒྲིག་འབདཝ་ཨིན།|
+|`InviteMusubiPackageMaintainerV1` |བསྡུ་སྒྲིག་གི་འགན་ཁུར་གྱི་གསལ་སྒྲགས་འབད་ནི་ འགོ་བཙུགས་ནི། |
+|`RegisterMusubiAliasV1` / `RetargetMusubiAliasV1` |གཞུང་སྐྱོང་འབད་མི་ འཛམ་གླིང་ཡོངས་ཀྱི་ མིང་རྟགས་ཅིག་ ཐོ་བཀོད་འབད་ ཡང་ན་ ལོག་བཟུང་འབདཝ་ཨིན། |
+|`AssertMusubiReleaseDigestV1` |རང་བཞིན་གནས་སྟངས་དེ་ བསྒྱུར་བཅོས་འབད་མ་ཚུགསཔ་སྦེ་ བཟའ་སྤྱོད་འབད་མི་འདི་ གསལ་བཀོད་རྐྱབས།|
+|`FindMusubiExactPackageV1` |དཔེ་སྒྲོམ་གཅིག་དང་ འདི་ནང་ལུ་ བསྐྱར་ཞིབ་ཚུ་ ཀློག་ཐེངས།|
+|`FindMusubiExactReleaseV1` |དྭངས་གསལ་སྦེ་གློག་བརྙན་འདི་བལྟ་གནང་། |
+|`FindMusubiResolverIndexV1` / `FindMusubiVersionsV1` |གྲོས་ཐག་ཆོད་ ཡང་ན་ མཇུག་བསྡུ་བའི་དགོངས་ཡངས་ཀྱི་འདེམས་ངོ་ཚུ་གི་ཐོ་འགོད་འབད་ |
+|`FindMusubiArchiveLocationsV1` |ཞབས་ཏོག་བྱིན་མི་གིས་ རྒྱབ་སྐྱོར་འབད་མི་ ཡིག་སྣོད་གནས་ཚད་ཚུ་ ཀློག་ཚུགས། |
+|`FindMusubiAliasV1` / `FindMusubiAliasHistoryV1` |ད་ལྟོའི་མིང་རྟགས་ཀྱི་ དམིགས་གཏད་ ཡང་ན་ དེའི་འགྱུར་བ་མེད་པའི་ལོ་རྒྱུས་ཚུ་ ཀློག་ཐེངས། |
 
-Torii གསལ་སྟོན་འབདཝ་ཨིན། Musubi HTTP འོག་གི་ཤོག་ལེབ་ཚུ་ `/v1/musubi/`. ཁྲིམས་སྲུང་འགག་པ་ལུ་གདོང་གཏོགསཔ་ཨིན། MCP ལག་ཆས་ཚུ་ གསལ་སྟོན་འབདཝ་ཨིན། `iroha.musubi.` མིང་རྟགས་ཚུ་ མཐོང་དགོ། [Torii མཐའན་མཇུག་གི་གནས་ཚད་ཚུ་](/dz/reference/torii-endpoints.md) དང་ [འདྲི་དཔྱད་ཡིག་](/dz/reference/queries.md) སྦོམ་ཤོས་ཀྱི་དོན་ལུ་ API ས་ཁྲ་འདི་
+Torii གིས་ `/v1/musubi/` གི་འོག་ལུ་ལག་ལེན་ལམ་གྱི་བཟའ་ཚན་བཏོན་འབདཝ་ཨིན། MCP ལག་ཆས་ཚུ་གིས་ ད་ལྟོའི་ `iroha.musubi.queries.` དང་ `iroha.musubi.instructions.*`གི་མིང་ཚུ་ལག་ལེན་འཐབ་ཨིན། [Torii མཇུག་མཐར་ཐུག་གི་ཐིག་ཁྲམ་](/dz/reference/torii-endpoints.md)དང་ [དྲི་བའི་ཁ་བྱང་](/dz/reference/queries.md)ལུ་བལྟ་ཚུགས། API ས་མཚམས་ཀྱི་དོན་ལུ་

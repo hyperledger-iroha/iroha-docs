@@ -1,34 +1,39 @@
 ---
 translation_locale: my
 translation_source: /guide/configure/genesis.md
-translation_source_hash: d3c04386c8d6e2778e53477e8f717a04247a66714cfed2c25ca84fbfb3871813
+translation_source_hash: a6b8b2b02e0074e6c90d9aa9337af3e2496a02beb2f57f575dc0780014df04b2
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: google-translate
 ---
 
-# ဇင်နဝါရီ {#genesis}
+# ကမ္ဘာဦး {#genesis}
 
-Genesis က အစပိုင်းကွင်းဆက်အခြေအနေကိုသတ်မှတ်သည်။ ပြင်ဆင်နိုင်သောအရင်းအမြစ်သည် JSON manifest ဖြစ်ပြီး Iroha 3 node သည် လက်မှတ်ထိုးထားသော Norito ငွေကြေးဖိုင်ကိုသုံးစွဲသည်။
+ကမ္ဘာဦးကျမ်းက ကနဦးကွင်းဆက်အခြေအနေကို သတ်မှတ်သည်။တည်းဖြတ်နိုင်သော အရင်းအမြစ်မှာ တစ်ခုဖြစ်သည်။ JSON ထင်ရှား၊
+နှင့် တစ်ခု Iroha 3 node သည် signed ကိုစားသုံးသည်။ Norito ငွေပေးငွေယူဖိုင်။
 
-::: details Default genesis manifest ကို အသုံးပြုရန် လိုအပ်ပါသည်။
+::: details ပုံသေ ဥပါဒ် ထင်ရှား
 
 <<< @/snippets/genesis.json
 
 :::
 
-## ဖိုင်များ {#files}
+## ဖို {#files}
 
-Upstream repository က default manifest ကို `defaults/genesis.json`. Kagami-ဖန်တီးထားတဲ့ ကွန်ရက်တွေဟာ ထုတ်ကုန် directory ထဲမှာ ကိုယ်ပိုင် manifesto နဲ့ လက်မှတ်ထိုးတဲ့ transaction တွေကို ရေးကြတယ်။
+အထက်ပိုင်း သိုလှောင်ရေးဌာနသည် မူရင်း manifest ကို ပေးပို့သည်။ `defaults/genesis.json`.
+Kagami-generated networks များသည် ၎င်းတို့၏ကိုယ်ပိုင် manifest ကိုရေးပြီး အရောင်းအ ၀ ယ်သို့လက်မှတ်ထိုးပါ။
+အထွက်လမ်းညွှန်-
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-ဒီစာရင်းထဲမှာ ဖန်တီးထားတဲ့ `README.md` ဟာ ရွေးချယ်ထားတဲ့ profile အတွက် တိကျတဲ့ file တွေနဲ့ launch command တွေကို မှတ်တမ်းတင်ပါတယ်။
+ထုတ်ပေးသည်။ `README.md` အဲဒီလမ်းညွှန်ထဲမှာ ဖိုင်တွေကို အတိအကျ မှတ်တမ်းတင်ပြီး စတင်လိုက်ပါ။
+ရွေးချယ်ထားသော ပရိုဖိုင်အတွက် ညွှန်ကြားချက်များ။
 
-## တန်းတူညီမျှမှု {#peer-configuration}
+## သက်တူရွယ်တူ ဖွဲ့စည်းမှု {#peer-configuration}
 
-`config.toml` ၏ `[genesis]` အပိုင်းတွင် လက်မှတ်ရေးထိုးထားသော Genesis ငွေပေးချေမှုအပေါ် တူညီသည့် အချက်များ:
+သက်တူရွယ်တူများသည် နိမိတ်လက္ခဏာ၌ ဥပါဒ် အရောင်းအဝယ်ကို ထောက်ပြကြသည်။ `[genesis]` အပိုင်း
+`config.toml`:
 
 ```toml
 [genesis]
@@ -36,22 +41,32 @@ file = "./genesis.signed.nrt"
 public_key = "ed0120..."
 ```
 
-ကွန်ယက်ထဲက တူညီသူအားလုံးက လက်မှတ်ထိုးထားတဲ့ genesis transaction နဲ့ genesis public key ကို သဘောတူဖို့လိုပါတယ်။
+ကွန်ရက်ရှိ သက်တူရွယ်တူများအားလုံးသည် လက်မှတ်ရေးထိုးထားသော ဥပါဒ် အရောင်းအဝယ်နှင့် အဆိုပါအပေါ် သဘောတူရပါမည်။
+ဥပါဒ် ြကီး။
 
-## Genesis ကို လက်မှတ်ရေးထိုးခြင်း {#signing-genesis}
+## ကမ္ဘာဦးနိမိတ် {#signing-genesis}
 
-မန်နီဖစ်ကို လက်နဲ့ တည်းဖြတ်ရင် တူညီသူတွေကို စမလုပ်ခင် validate နဲ့ sign လုပ်ပါ။
+မန်နီးဖက်စ်တစ်ခုကို သင်ကိုယ်တိုင် တည်းဖြတ်ပါက၊ သက်တူရွယ်တူများကို မစတင်မီ ၎င်းကို အတည်ပြုပြီး လက်မှတ်ထိုးပါ။
 
 ```bash
 cargo run --bin kagami -- genesis validate ./genesis.json
 cargo run --bin kagami -- genesis sign ./genesis.json \
-  --private-key "$GENESIS_PRIVATE_KEY_HEX" \
-  --algorithm ed25519 \
+  --private-key-file "$GENESIS_PRIVATE_KEY_FILE" \
   --out-file ./genesis.signed.nrt
 ```
 
-NPoS သို့မဟုတ် Nexus ပရိုဖိုင်များအတွက်၊ Topology နှင့် BLS Proof-of-Possession များကို Generated Profile တွင်လိုအပ်သည်။ Kagami `localnet`, `wizard` နှင့် Profile Generation Commands တို့တွင် ထိုအချက်အလက်များကို အလိုအလျောက် စီမံခန့်ခွဲနိုင်သည်။
+`GENESIS_PRIVATE_KEY_FILE` ပိုင်ရှင်ထိန်းမုဒ် ဖြစ်ရမည်-`0600`, single-link
+canonical private-key multihash တစ်ခုနှင့် နောက်ဆုံးတစ်ခုပါရှိသော ပုံမှန်ဖိုင်
+လိုင်းအသစ်။ Kagami ပုံဆောင်လင့်ခ်များကို ငြင်းပယ်ပြီး အကြမ်းဥပါဒ်သီးသန့်ကို ဘယ်တော့မှ လက်မခံပါ။
+command line တွင် သော့။
 
-## Genesis ကို ပြန်လည်ကျင်းပခြင်း {#recommitting-genesis}
+NPoS အတွက် သို့မဟုတ် Nexus ပရိုဖိုင်များ၊ topology နှင့် ပါဝင်သည်။ BLS ပိုင်ဆိုင်မှုအထောက်အထားများ
+ထုတ်ပေးသော ပရိုဖိုင်မှ လိုအပ်သည်။ Kagami `localnet`, `wizard`, နှင့် ပရိုဖိုင်
+Generation command များသည် ထိုအသေးစိတ်အချက်အလက်များကို အလိုအလျောက် ကိုင်တွယ်ပါသည်။
 
-Peer သည် ၎င်း၏ သိုလှောင်မှုအလွတ်ရှိမှသာ genesis ကိုပြုလုပ်သည်။ တစ်ခါသုံး localnet တွင် genesis အသစ်တစ်ခုကိုစမ်းသပ်ရန် peers များကိုရပ်ဆိုင်းခြင်း၊ သူတို့ဖန်တီးထားသော state directory ကိုဖယ်ရှားခြင်းနှင့် လက်မှတ်ထိုးထားတဲ့ genesis အသစ်ကနေစတင်ခြင်း။ validator တစ်ခုချင်းစီသည်တူညီသောအပြောင်းရွှေ့မှုကို ညှိနှိုင်းမနေလျှင် ပြေးဆွဲနေသည့် ကွန်ရက်တစ်ခုပေါ်တွင် genesis ကိုအစားထိုးခြင်းမရှိပါ။
+## ကမ္ဘာဦးကျမ်းကို ပြန်လည်လက်ခံခြင်း။ {#recommitting-genesis}
+
+သက်တူရွယ်တူတစ်ဦးသည် ၎င်း၏သိုလှောင်မှုအလွတ်တွင်သာ ဥပါဒ်ကျူးလွန်သည်။ဥပါဒ်အသစ်ကို စမ်းသပ်ရန်
+တစ်ခါသုံး localnet၊ ရွယ်တူများကို ရပ်ပါ၊ ၎င်းတို့၏ ထုတ်လုပ်ထားသော ပြည်နယ်လမ်းညွှန်ကို ဖယ်ရှားပါ၊
+လက်မှတ်ရေးထိုးထားသော ဥပါဒ်အသစ်မှ စတင်ပါ။ပြေးခြင်းတွင် ဥပါဒ်ကို အစားထိုးခြင်းမပြုပါနှင့်
+တရားဝင်သူတိုင်းသည် တူညီသောပြောင်းရွှေ့မှုကို ညှိနှိုင်းဆောင်ရွက်ခြင်းမပြုပါက ကွန်ရက်။

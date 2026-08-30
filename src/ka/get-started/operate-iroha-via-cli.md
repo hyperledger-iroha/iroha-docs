@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /get-started/operate-iroha-via-cli.md
-translation_source_hash: ab8f3bf6d2259dc1ea649273e695429a992108b936475b263fe9d1fae59e8766
+translation_source_hash: 0a0a0735015dee015da76d5a9f5d174f8ae8b2ad67ff8924d9596850a33fc1c1
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -170,7 +170,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml ops sumeragi params
 - [SDK მასწავლებლები](/ka/guide/tutorials/)
 - [Torii საბოლოო წერტილები](/ka/reference/torii-endpoints.md)
 - [Iroha ბინარებთან მუშაობა](/ka/reference/binaries.md)
-- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_cli/README.md)
+- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/README.md)
 
 სრული მარკდაუნის დახმარების სურათის რეგენერაციისთვის წყაროდან ამოღებული ჩანართი, გაუშვით:
 

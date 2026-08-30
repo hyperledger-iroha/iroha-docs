@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
+translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -263,7 +263,7 @@ Birinci yazma oyuncağı bir Taira Bu, testnetdən istifadə edir. XOR və heç 
 Əvvəlcədən yoxdursa bir açar cütü yaratın:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./taira-client-key
 ```
 
 `taira.client.toml` yaratmaq:
@@ -336,7 +336,7 @@ A SORA Nexus hesab ID Kanonikdir. I105 Hesabın ictimai açarından və hədəf 
 Hesabı idarə edəcək Ed25519 açar cütlüyünü yaratın və ya yükləyin:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./nexus-account-key
 ```
 
 İctimai açar Taira hesabına ID çevirin:
@@ -697,7 +697,7 @@ description = "Route payments domains to the payments dataspace"
 
 Operatorun qəbuluna aşağıdakı qapılar daxildir:
 
-- `irohad --sora --config <config.toml> --trace-config` həll olunmuş düyün konfigurasiyasını keçirir.
+- `iroha3d --sora --config <config.toml> --trace-config` həll olunmuş düyün konfigurasiyasını keçirir.
 - Yaradılan və ya nəzərdən keçirilən manifest hash və imzalarla arxivlənir.
 - Hər hansı bir Minamoto təşviqatdan əvvəl duman sınaqları Taira keçirilir.
 - dəyişiklikdən sonra `/status` kataloq planlaşdırılan zolağı və məlumat sahəsini göstərir.

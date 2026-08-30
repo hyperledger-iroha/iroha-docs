@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /cookbook/fungible-assets.md
-translation_source_hash: 6b50c995afaf9f46df6fdaab31add40b106cfa12fdaa31dabbb74448486f87f9
+translation_source_hash: 669b5a1c12e9ab6ffb64e149148993e7b924feb29c6fa4db883a2065f58ecd7e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -169,8 +169,8 @@ As afirmações de aplicação devem comparar os valores numéricos como decimai
 
 ## Fonte e documentos relacionados {#source-and-related-docs}
 
-- [Testes de integração do ciclo de vida dos ativos no commit fixado ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/asset.rs)
-- [Rust exemplos de construção de ativos no compromisso fixado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha/examples/tutorial.rs)
+- [Testes de integração do ciclo de vida dos ativos no commit fixado ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/asset.rs)
+- [Rust exemplos de construção de ativos no compromisso fixado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/examples/tutorial.rs)
 - [Ativos](/pt/blockchain/assets.md)
 - [Instruções ](/pt/blockchain/instructions.md)
 - [Tokens de permissão ](/pt/reference/permissions.md)

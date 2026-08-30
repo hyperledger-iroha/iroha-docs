@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /cookbook/triggers.md
-translation_source_hash: 93080591f5171c7ce25173eb1ef826d6f5ca661a17797be53e90aedab33ed0c3
+translation_source_hash: 6c8f436b5a41cf41c0ac37aeed6b6cd8c73009cfcca2fe7f5642cef1ad115e6f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -116,9 +116,9 @@ Le déclencheur doit rester actif avec deux exécutions restantes. Une soumissio
 
 ## Sources et documents connexes {#source-and-related-docs}
 
-- [Tests d'intégration du déclencheur de l'appel par défaut sur le commit fixé](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/triggers/by_call_trigger.rs)
-- [Tests d'intégration de l'événement et du déclencheur dans le commit fixé](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/events_and_triggers.rs)
-- [Exécution de l'instruction de déclenchement à la commande coincée](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs)
+- [Tests d'intégration du déclencheur de l'appel par défaut sur le commit fixé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/triggers/by_call_trigger.rs)
+- [Tests d'intégration de l'événement et du déclencheur dans le commit fixé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events_and_triggers.rs)
+- [Exécution de l'instruction de déclenchement à la commande coincée](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs)
 - [Les déclencheurs ](/fr/blockchain/triggers.md)
 - [Exemples de déclencheurs](/fr/blockchain/trigger-examples.md)
 - [Les événements](./stream-events.md)

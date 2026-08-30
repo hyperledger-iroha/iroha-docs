@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /help/deployment-issues.md
-translation_source_hash: 6f35ac59053e312f56a716810c8f0b625752500d1fc64b27d93cbd8317b6cc19
+translation_source_hash: 5c7d26b39d4ddf4e7e164f7bef79c9e1659db51587fb0dde9cf3f1dc0e3b057b
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2
 对于本地和测试部署,优先使用 Kagami 生成的文物而不是手写的同行文件:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 生成的目录包含同行配置,基因材料,启动脚本以及 README 为 Iroha 3 构建线.
@@ -24,7 +24,7 @@ cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./loc
 
 首先要检查这些物品:
 
-- `irohad --config <path>`在同行自己的档案 TOML 中的点.
+- `iroha3d --config <path>`在同行自己的档案 TOML 中的点.
 - 在同等配置中, `public_key` 和 `private_key`属于同一键对.
 - `genesis.public_key`与签署基因交易所使用的密钥相匹配.
 - 验证器同行身份使用 BLS-正常密钥,并且`trusted_peers_pop`包含本地密钥和可信任同行的拥有证明条目.
@@ -34,7 +34,7 @@ cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./loc
 如果 daemon 阅读超过一个 TOML 层时,请使用配置追踪:
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --trace-config
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 ```
 
 ## Docker 和复合 {#docker-and-compose}
@@ -42,9 +42,9 @@ cargo run --bin irohad -- --config ./config.toml --trace-config
 生成 从当前的 Kagami localnet输出中编写,以便命令行参数和配置文件与已检查出来的代码匹配:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./localnet/docker-compose.yml --force
-docker compose -f ./localnet/docker-compose.yml up
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
+docker compose -f ./docker-compose.yml up
 ```
 
 如果构建部署开始,然后停下来,请检查 daemon日志:
@@ -72,7 +72,7 @@ docker compose -f ./localnet/docker-compose.yml up
 Iroha 3 使用 Nexus, SoraFS 或多道流的部署应启动索拉配置文件的妖怪:
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --sora
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora
 ```
 
 在同一网络中的验证器中,使用相同的配置文件.

@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /cookbook/permissions-and-roles.md
-translation_source_hash: 734437b8530ad0efb9ddd83b24cb90c30dc29843a03753babd8dca5e86a3f91d
+translation_source_hash: 7ee18275d25837da53f533f5e9205906ccaa71b48afd9b11ffad79b599da7f21
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -132,9 +132,9 @@ Ruxsatlar ro'yxati `CanModifyAccountMetadata` ga ko'ra `TARGET_ACCOUNT`, delegat
 
 ## Manba va u bilan bog'liq hujjatlar {#source-and-related-docs}
 
-- [Roli integratsiyasi sinovlari qat'iy qo'yilgan commit-da](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/roles.rs)
-- [To'g'ri yo'lga qo'yilgan commitda ruxsatnoma integratsiyasi sinovlari ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/permissions.rs)
-- [](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_executor_data_model/src/permission.rs) qo'yilgan commit-da o'rnatilgan ruxsatnoma ma'lumotlar modeli
+- [Roli integratsiyasi sinovlari qat'iy qo'yilgan commit-da](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/roles.rs)
+- [To'g'ri yo'lga qo'yilgan commitda ruxsatnoma integratsiyasi sinovlari ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/permissions.rs)
+- [](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/permission.rs) qo'yilgan commit-da o'rnatilgan ruxsatnoma ma'lumotlar modeli
 - [Ruxsatlar va vazifalar ](/uz/blockchain/permissions.md)
 - [Ruxsat belgisi referensiyasi](/uz/reference/permissions.md)
 - [Metadatalar](./metadata.md)

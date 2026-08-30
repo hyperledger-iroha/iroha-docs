@@ -1,9 +1,9 @@
 ---
 translation_locale: my
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 17ffd2979e2ff7a0e0c3f5c9f1457a5eb630713bba40fca0246afc0c2f7fd5e4
+translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # ကွန်ရက် ဖြန့်ချိခြင်းအတွက် သော့ချက်များ {#keys-for-network-deployment}
@@ -21,30 +21,35 @@ translation_engine: nllb-200-ct2
 ဒေသတွင်း (သို့) စမ်းသပ်မှု ဖြန့်ချိချက်များအတွက် Kagami သည် ဤဖိုင်အားလုံးကို စုပေါင်းထုတ်လုပ်ပါ:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 ရှိနေတဲ့ ကွန်ရက် (သို့) ပရိုဖိုင်အတွက် guide flow ကိုသုံးပါ။
 
 ```bash
-cargo run --bin kagami -- wizard --profile nexus
+cargo run --bin kagami -- wizard
 ```
 
 ## ပုဂ္ဂိုလ်ရေး သော့စုံများ ဖန်တီးခြင်း {#generate-individual-key-pairs}
 
-`kagami keys` ကို standalone key material အတွက် အသုံးပြုပါ။
+Use `kagami keys` for standalone key material:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm ed25519 --json
+cargo run --bin kagami -- keys --algorithm ed25519 \
+  --out-dir ./client-key
 ```
 
-BLS အတည်ပြုပစ္စည်းအတွက် ပိုင်ဆိုင်မှု သက်သေခံစာကို ထည့်သွင်းပါ။
+For BLS validator material, include a Proof-of-Possession:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./validator-key
 ```
 
-`--seed` ကို ပြန်လည်ဖန်တီးနိုင်သော ဖွံ့ဖြိုးရေး ကိရိယာများအတွက်သာ အသုံးပြုပါ။ ထုတ်လုပ်မှု ဖြန့်ချိရန်အတွက် အသစ်သော့များကို ဖန်တီးပြီး သီးသန့်သော့များကို သိုလှောင်ထားပါ။
+Use `--seed-hex` only with an exact 32-byte hexadecimal secret for reproducible
+development fixtures. For production deployment, omit it so Kagami uses
+operating-system randomness, then move the unencrypted private-key export into
+the approved custody boundary. The command never prints private keys.
 
 ## အတန်းတူညီမှု {#peer-consistency}
 

@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 9341b2404624dec2230bc294c3d60dc124ac9574a0a5803b9bba744f4c5e7f50
+translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2
 ད་ལྟོའི་ Kagami ཀོ་ཌ་ནང་ལས་ ཌོག་ཊར་༤ གི་ localnet བཟོ་:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 ཕྱིར་བཏོན་པའི་ཐོ་ཡིག་ནང་ལུ་ ཕན་ཁྱད་ཅན་གྱི་མཉམ་འབྲེལ་སྒྲིག་གཞི་ཚུ་ `genesis.json`, `genesis.signed.nrt`, `client.toml`དང་ རྒྱབ་སྐྱོར་ཡིག་འབྲུ་ཚུ་ཡོདཔ་ཨིན།
@@ -33,10 +33,10 @@ cargo run --bin kagami -- docker \
   --peers 4 \
   --config-dir ./localnet \
   --image hyperledger/iroha:dev \
-  --out-file ./localnet/docker-compose.yml \
+  --out-file ./docker-compose.yml \
   --force
 
-docker compose -f ./localnet/docker-compose.yml up
+docker compose -f ./docker-compose.yml up
 ```
 
 རང་བཞིན་གྱིས་ ཐོན་སྐྱེད་འབད་ཡོད་པའི་ Stack གིས་:
@@ -72,7 +72,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 Nexus གི་ཡིག་གཟུགས་དང་གཅིག་ཁར་ རང་ལུགས་ཀྱི་ འདྲ་མཉམ་ཅིག་ལག་ལེན་འཐབ་ནིའི་དོན་ལུ་:
 
 ```bash
-./target/release/irohad --sora --config ./defaults/nexus/config.toml
+./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
 ```
 
 `defaults/nexus/client.toml` ལག་ལེན་འཐབ་ནི་དེ་ CLI ཌའི་ལོག་གི་ཁ་བྱང་ཨིན།
@@ -88,7 +88,7 @@ Nexus གི་ཡིག་གཟུགས་དང་གཅིག་ཁར་ �
 བཟོ་སྐྲུན་འབད་ཡོད་པའི་ Compose Stack གི་དོན་ལུ་:
 
 ```bash
-docker compose -f ./localnet/docker-compose.yml down
+docker compose -f ./docker-compose.yml down
 ```
 
 འབྲེལ་བ་འཐབ་པའི་ཤུལ་ལས་ [ལས་འགོ་བཙུགས་ཏེ་ Iroha 3 བརྒྱུད་དེ་འབད་ CLI](/dz/get-started/operate-iroha-via-cli.md).

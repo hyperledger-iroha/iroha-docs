@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /guide/configure/client-configuration.md
-translation_source_hash: 0d897a79e6118de2e7e88a45f1daf1444b515fd35e7b2562f7c1cc18ed0a83b4
+translation_source_hash: 6da8a0abddc9723b16477a935a3953ebd497300f02eadd635e4e38027a11d095
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -84,7 +84,7 @@ Workflow တစ်ခုအတွက် ရေရှည်တည်တံ့တ�
 တစ်ခါသုံး ဒေသတွင်းကွန်ရက်များအတွက် Kagami ကို ကြိုက်သည်မှာ Iroha 3 ကောင်ဖိုင်များ၊ ဇာစ်မြစ်များ၊ စာသားများနှင့် တူညီသော README ကို ရေးထားသည့်ကြောင့်ဖြစ်သည်။
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 ထုတ်လုပ်ထားသော `./localnet/client.toml` ကို CLI နှင့်အတူ အသုံးပြုပါ-

@@ -8,7 +8,7 @@ default workspace assets from the upstream repository.
 Generate a four-peer localnet from the current Kagami code:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 The output directory contains matching peer configs, `genesis.json`,
@@ -27,10 +27,10 @@ cargo run --bin kagami -- docker \
   --peers 4 \
   --config-dir ./localnet \
   --image hyperledger/iroha:dev \
-  --out-file ./localnet/docker-compose.yml \
+  --out-file ./docker-compose.yml \
   --force
 
-docker compose -f ./localnet/docker-compose.yml up
+docker compose -f ./docker-compose.yml up
 ```
 
 The default generated stack exposes:
@@ -67,7 +67,7 @@ The repository also ships a SORA Nexus-oriented config profile under
 To run a native peer with the Nexus profile:
 
 ```bash
-./target/release/irohad --sora --config ./defaults/nexus/config.toml
+./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
 ```
 
 Use `defaults/nexus/client.toml` for CLI access to that profile.
@@ -83,7 +83,7 @@ For a native generated localnet:
 For the generated Compose stack:
 
 ```bash
-docker compose -f ./localnet/docker-compose.yml down
+docker compose -f ./docker-compose.yml down
 ```
 
 After the network is running, continue with

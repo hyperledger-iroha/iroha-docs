@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 77780600fa59ba353e2aa79fb339adb6a02f7ac731e04cd0d5f51821ec54e794
+translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,12 +15,15 @@ translation_engine: nllb-200-ct2
 Iroha վերածառային աշխատանքային տարածքից՝
 
 ```bash
-cargo build --release -p irohad -p iroha_cli -p iroha_kagami
+cargo build --release \
+  -p irohad --bin iroha3d \
+  -p iroha_cli --bin iroha \
+  -p iroha_kagami --bin kagami
 ```
 
 Սա բերում է հետեւյալը.
 
-- `target/release/irohad` զուգընկերային դեյմոնի համար
+- `target/release/iroha3d` զուգընկերային դեյմոնի համար
 - `target/release/iroha` համար CLI
 - `target/release/kagami` բանալիների, գենեզների եւ տեղական ցանցերի արտադրության համար
 
@@ -29,7 +32,7 @@ cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 Ստեղծեք չորս զուգընկերային Iroha 3 տեղական ցանց.
 
 ```bash
-target/release/kagami localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+target/release/kagami localnet --peers 4 --out-dir ./localnet
 ```
 
 Արտադրանքի ցուցակը պարունակում է առաջադրված `genesis.json`, `genesis.signed.nrt`, զուգընկերային `config.toml` ֆայլեր, `client.toml`, օգնական սցենարներ եւ առաջադրվող `README.md` ՝ այդ փաթեթի համար ճշգրիտ հրամաններով:

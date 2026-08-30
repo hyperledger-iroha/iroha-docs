@@ -1,7 +1,7 @@
 ---
 translation_locale: mn
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
+translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -263,7 +263,7 @@ EOF
 Хэрэв та аль хэдийн нэгтэйгүй бол түлхүүрний хосууд үүсгэх:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./taira-client-key
 ```
 
 `taira.client.toml` бүтээх:
@@ -336,7 +336,7 @@ SORA Nexus данс ID бол дансны олон нийтийн ач холб
 Эд25519 товчлогыг үүсгэх эсвэл борлуулах:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./nexus-account-key
 ```
 
 Олон нийтийн түлхүүрг Taira дансанд ID шилжүүлнэ:
@@ -697,7 +697,7 @@ description = "Route payments domains to the payments dataspace"
 
 Үйлчлүүлэгч хүлээн зөвшөөрөх нь дараах хаалгуудыг багтаасан байх ёстой:
 
-- `irohad --sora --config <config.toml> --trace-config` нь шийдвэрлэсэн түймрийн конфигурацийг дамжуулж байна
+- `iroha3d --sora --config <config.toml> --trace-config` нь шийдвэрлэсэн түймрийн конфигурацийг дамжуулж байна
 - бүтээсэн эсвэл шинжилгээ хийсэн манифст хэшүүд, гарын үсэгтэйгээр архивлагдана.
 - төмрийн шинжилгээ Taira нь ямар нэгэн Minamoto сурталчилгаанаас өмнө явагдана
 - `/status` өөрчлөлтийн дараах жагсаалтад төлөвлөсөн замыг болон мэдээллийн орон зайг харуулж байна

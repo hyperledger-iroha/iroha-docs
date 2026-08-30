@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /guide/configure/client-configuration.md
-translation_source_hash: 0d897a79e6118de2e7e88a45f1daf1444b515fd35e7b2562f7c1cc18ed0a83b4
+translation_source_hash: 6da8a0abddc9723b16477a935a3953ebd497300f02eadd635e4e38027a11d095
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -84,7 +84,7 @@ Utilisez ceci lorsque un flux de travail a besoin d'un stockage durable des file
 Pour les réseaux locaux jetables, préférer Kagami parce qu'il écrit des configures correspondantes Iroha 3, génèse, scripts et un README:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 Utilisez le `./localnet/client.toml` généré avec le CLI:

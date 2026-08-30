@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /reference/instructions.md
-translation_source_hash: e300187da832a8f82258a36b7c4aaebf505adc09c771de5b0c7ab8fb0052d3db
+translation_source_hash: 9ba8e06d10f0896169feddbdad32f4fed7a8d46effa2293c64df578c197c970e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -29,6 +29,7 @@ translation_engine: nllb-200-ct2
 | [တိုင်းရင်းသား အရင်းအမြစ်များအတွက် ကန့်သတ်ချက် ](/my/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
 | [အထွေထွေအရင်းအမြစ်ပိတ်ခြင်းများ ](/my/blockchain/escrow.md#generic-asset-locks) |`OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`၊ `ExpireAssetLock` |
 | [အမည်မသိ အရင်းအမြစ်အထောက်အထား ](/my/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
+| [အက်တမ်မစ် သီးသန့် စာရင်းရှင်းလင်းမှု](/my/blockchain/instructions.md#atomic-private-settlement) | `ActivatePrivateSettlementPoolV1`, `RotatePrivateSettlementPoolPolicyV1`, `FinalizeAtomicPrivateSettlementV1`, `AbortAtomicPrivateSettlementV1` |
 
 နောက်ထပ် Iroha 3 မော်ဂျူးများသည် ညွှန်ကြားချက်စာရင်းမှတစ်ဆင့် ဒိုမင်သတ်မှတ်ထားသော ညွှန်ပြမှုအမျိုးအစားများကို မှတ်ပုံတင်နိုင်သည်။ လက်ရှိအရင်းအမြစ်ပင်မှထုတ်လုပ်သည့် စကေးမားအဆင့် စာရင်းအတွက် [Data Model Schema](./data-model-schema.md) ကိုကြည့်ပါ။
 

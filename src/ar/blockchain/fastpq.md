@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /blockchain/fastpq.md
-translation_source_hash: f1dc55e4b2146de009203e19adb5cc1e9ce5302bc0ee27fe0b442693c5112c22
+translation_source_hash: 55b57e6aeeef2aefa1c8359d9b9487029b106eaebed12a58268b61dc583e97f6
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -905,7 +905,7 @@ $$
 
 ## (لاين) {#prover-lane}
 
-`irohad` يبدأ طريق إثبات FastPQ عند البدء إذا كان يمكن تشغيل نهاية الخلفية الإثبات. المسار هو مهمة خلفية مع صف محدد. بعد أن ينتج كتلة شهادة تنفيذ ، يقوم مسار الالتزام بإرسال عمل إثبات يحتوي على هشات الكتلة وارتفاعها ورؤيتها وشهدها.
+`iroha3d` يبدأ طريق إثبات FastPQ عند البدء إذا كان يمكن تشغيل نهاية الخلفية الإثبات. المسار هو مهمة خلفية مع صف محدد. بعد أن ينتج كتلة شهادة تنفيذ ، يقوم مسار الالتزام بإرسال عمل إثبات يحتوي على هشات الكتلة وارتفاعها ورؤيتها وشهدها.
 
 إذا لم يتم تشغيل الشارع أو كان الصف ممتلئًا ، فيتم تخطي الوظيفة وتستمر معالجة الكتل العادية. وهذا يعني أن شارع البحث الخلفي ليس بوابة قبول المعاملات أو إجماع. إنه طريق إثبات الإنتاج على الحالة التي تم تنفيذها بالفعل.
 
@@ -1072,7 +1072,7 @@ $$
 
 ## SCCP إثباتات الرسالة الشفافة {#sccp-transparent-message-proofs}
 
-يستخدم صندوق المساعدة SCCP أيضًا FastPQ لإثبات رسائل عبر السلسلة الشفافة. هذا الطريق منفصل عن طريق إثبات الخلفية `irohad`. يقوم ببناء مجموعة FastPQ مباشرة من حزمة إثبات الرسالة SCCP ومشورة، ثم يلف الأدلة الناتجة للتحقق المفتوح.
+يستخدم صندوق المساعدة SCCP أيضًا FastPQ لإثبات رسائل عبر السلسلة الشفافة. هذا الطريق منفصل عن طريق إثبات الخلفية `iroha3d`. يقوم ببناء مجموعة FastPQ مباشرة من حزمة إثبات الرسالة SCCP ومشورة، ثم يلف الأدلة الناتجة للتحقق المفتوح.
 
 تستخدم اللفة SCCP `fastpq-lane-balanced` وثلاث عمليات انتقال البيانات المعدنية:
 
@@ -1210,14 +1210,14 @@ metal_debug_enum = false
 metal_debug_fused = false
 ```
 
-يمكن إلغاء نفس علامات التنفيذ والتلفونية من `irohad`:
+يمكن إلغاء نفس علامات التنفيذ والتلفونية من `iroha3d`:
 
 ```shell
-irohad --fastpq-execution-mode auto
-irohad --fastpq-poseidon-mode cpu
-irohad --fastpq-device-class apple-m4
-irohad --fastpq-chip-family m4
-irohad --fastpq-gpu-kind integrated
+iroha3d --fastpq-execution-mode gpu
+iroha3d --fastpq-poseidon-mode cpu
+iroha3d --fastpq-device-class apple-m4
+iroha3d --fastpq-chip-family m4
+iroha3d --fastpq-gpu-kind integrated
 ```
 
 يتم دعم متغيرات البيئة أيضًا للحقول التكوينية. تتضمن المتغيرات الخاصة FastPQ:
@@ -1258,4 +1258,4 @@ irohad --fastpq-gpu-kind integrated
 - `TransferTranscript`
 - `AxtFastpqBinding`
 - `LaneFastpqProofMaterial`
-- [`irohad` FastPQ خيارات](/ar/reference/irohad-cli.md#arg-fastpq-execution-mode)
+- [`iroha3d` FastPQ خيارات](/ar/reference/iroha3d-cli.md#arg-fastpq-execution-mode)

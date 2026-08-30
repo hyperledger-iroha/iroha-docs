@@ -19,14 +19,14 @@ function markdownWithAnchors(): MarkdownIt {
 describe('search index rendering', () => {
   test('extracts heading hierarchy and anchors without rendered page bodies', () => {
     const rendered = renderSearchHeadings(
-      '# Iroha\n\nBody that is not indexed.\n\n## Install `irohad`\n\nMore body.',
+      '# Iroha\n\nBody that is not indexed.\n\n## Install `iroha3d`\n\nMore body.',
       {},
       markdownWithAnchors(),
     )
 
     expect(splitSearchHeadings('guide.md', rendered)).toEqual([
       { anchor: 'iroha', text: 'Iroha', titles: ['Iroha'] },
-      { anchor: 'install-irohad', text: 'Install irohad', titles: ['Iroha', 'Install irohad'] },
+      { anchor: 'install-iroha3d', text: 'Install iroha3d', titles: ['Iroha', 'Install iroha3d'] },
     ])
     expect(rendered).not.toContain('Body that is not indexed')
   })

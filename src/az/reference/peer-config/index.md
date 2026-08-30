@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /reference/peer-config/index.md
-translation_source_hash: 5cc6ddf62a45f655d61a0ff3ebc7e20b939fe78c9d542087b717c2e17e19250d
+translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f29469aaf4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 Yerli həmyaşıd konfigurasiyası TOML fayllarında müəyyən edilir. Bu, [`SetParameter`](/az/blockchain/instructions.md#setparameter) təlimatları vasitəsilə dəyişdirilən zəncirdəki konfigurassiyadan fərqlənir. İstehsal davranışı bir konfigurassiya sənədində və ya zəncir üzərindəki parametrdə təmsil edilməlidir; ətraf mühit dəyişiklikləri xüsusiyyət qapıları deyil.
 
-Konfigurasiya faylına yol göstərmək üçün [`--config`](../irohad-cli#arg-config) CLI argumentindən istifadə edin.
+Konfigurasiya faylına yol göstərmək üçün [`--config`](../iroha3d-cli#arg-config) CLI argumentindən istifadə edin.
 
 ## Şablon {#template}
 
@@ -65,4 +65,4 @@ Nəticədə quruluş olacaq `chain` üçün `a.toml`, `max_content_len` üçün 
 
 ## Problemlərin həlli {#troubleshooting}
 
-Konfiqurasiyanın necə oxunması və təhlil edilməsinin izini görmək üçün [`--trace-config`](../irohad-cli#arg-trace-config) CLI bayrağını keç.
+Konfiqurasiyanın necə oxunması və təhlil edilməsinin izini görmək üçün [`--trace-config`](../iroha3d-cli#arg-trace-config) CLI bayrağını keç.

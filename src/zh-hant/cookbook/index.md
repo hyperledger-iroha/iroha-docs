@@ -1,14 +1,14 @@
 ---
 translation_locale: zh-hant
 translation_source: /cookbook/index.md
-translation_source_hash: cdcfb3549506a65a7dbd1c37672893956a0252153a4075c82333804674aa07b6
+translation_source_hash: aceef9f4e42462614a5cdf41a89f55e26e0399503a48d4b50c08359e7bd7532e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Iroha 3 應用程序食譜 {#iroha-3-application-cookbook}
 
-通過從 Taira 測試網開始的小可驗證的食譜來對抗 Iroha 3,並將 Minamoto 主網僅進行閱讀.每個食譜都說明這是一個公開閱讀,是正常的資助賬戶寫作,還是一個被許可關閉的操作.命令使用當前的 I105 帳戶 IDs,明確的費用選擇,以及在 Iroha 提交 [`bc7114ed1c7f265a156d2100ff09e851cc95702c`](https://github.com/hyperledger-iroha/iroha/tree/bc7114ed1c7f265a156d2100ff09e851cc95702c)上檢查的行爲
+通過從 Taira 測試網開始的小可驗證的食譜來對抗 Iroha 3,並將 Minamoto 主網僅進行閱讀.每個食譜都說明這是一個公開閱讀,是正常的資助賬戶寫作,還是一個被許可關閉的操作.命令使用當前的 I105 帳戶 IDs,明確的費用選擇,以及在 Iroha 提交 [`0010c5a70039eac101a4846499ba9ceaf43eb65c`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c)上檢查的行爲
 
 開始使用 [連接到 Taira](./connect-to-taira.md).它創建了客戶端配置和費用元數據,由命令行配方重複使用.從未複製本文檔中的費用資產 ID:從當前的 Taira 龍頭響應中提取它.
 

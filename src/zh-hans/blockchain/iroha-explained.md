@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /blockchain/iroha-explained.md
-translation_source_hash: 3fdd22338e826b1ce335ebf5e4e850cf3deb9415c36a0c8d21ad63c397cec8c0
+translation_source_hash: ba591b2c1aa819837177625b1ae457b5fa492197576dc690b19ca2897562a436
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,7 +12,7 @@ Iroha 3 是首次发布的 Hyperledger Iroha 平台.同一个核心支持自主�
 
 ## 核心建筑物 {#core-building-blocks}
 
-- `irohad` 运营同行
+- `iroha3d` 运营同行
 - Torii 是客户端和运营商门口
 - Sumeragi 处理共识
 - Norito 是[法定二进制格式](/zh-hans/reference/norito.md)

@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /blockchain/instructions.md
-translation_source_hash: adc3eff9758dd73e9114e78eaa18ddf6271db3bc4042611e1ed6ed1aac226246
+translation_source_hash: ade5ba2b693de7e798490be0947099d0306d9565b88550e201dccd181810fb18
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Iroha ཁྱད་ཆོས་ཀྱི་བསླབ་བྱ་ཚུ་ {#iroha-special-instructions}
@@ -21,6 +21,7 @@ Iroha དམིགས་བསལ་བསླབ་བྱ་ཚུ་གི་�
 | [Grant/Revoke](#grant-revoke) |ངོས་ལེན་དང་ འགན་འཁྲི་ཚུ་བྱིན་ ཡང་ན་བཏོན་གཏང་། |
 | [བསྒྱུར་བཅོས་](#transfer) |རྒྱུ་དངོས་གི་བཅའ་མར་གཏོགས་ནི་དང་ གཏན་འཁེལ་གྱི་གནས་གོང་ཚུ་ བསྒྱུར་བཅོས་འབདཝ་ཨིན། |
 | [རང་ལུགས་ཀྱི་གཏའ་མ་དང་ རྒྱུ་དངོས་གི་ལྡེ་མིག་ཚུ་ ](#native-escrow-and-asset-locks) |ཐོ་བཀོད་འབད་ཡོད་པའི་ཨང་གྲངས་ནོར་རྫས་ཚུ་ ལྕོགས་གྲུབ་ཅན་སྦེ་བཞག་དགོ།|
+| [རང་རྐྱང་གི་བར་ནའི་མཐུན་རྐྱེན་ཚུ་](#atomic-private-settlement) | གསང་བའི་ pool དང་ atomic bundle ཚུ་ བདག་འཛིན་འཐབ་ཨིན། |
 | [ExecuteTrigger](#executetrigger) |ཐིག་ཁྲམ་ཚུ་ལག་ལེན་འཐབ་དགོ། |
 | [ཐོ་བཀོད་/སྤྱོད་ལམ་/ཡར་དྲག་གཏང་ ](#other-instructions) |ཐོ་བཀོད་, རྒྱུན་རིམ། ཡང་ན་ runtime གི་སྤྱོད་ལམ་ཡར་དྲག་གཏང་། |
 
@@ -42,6 +43,7 @@ Iroha དམིགས་བསལ་བསླབ་བྱ་ཚུ་གི་�
 | [Grant/Revoke](#grant-revoke) | [འགན་འཁྲི་ཚུ་དང་ ངོས་ལེན་གྱི་རྟགས་མཚན་](/dz/blockchain/permissions.md) |རྩིས་ཁྲ་དང་ འགན་ཁུར་ཚུ་ |
 | [བསྒྱུར་བཅོས་](#transfer) |ས་ཁོངས་, རྒྱུ་དངོས་གི་འགྲེལ་བཤད་, ཨང་གྲངས་ཀྱི་རྒྱུ་དངོས་, NFTs |རྩིས་ཁྲ་ |
 | [རང་ལུགས་ཀྱི་གཏའ་མ་དང་ རྒྱུ་དངོས་གི་ལྡེ་མིག་ཚུ་ ](#native-escrow-and-asset-locks) |ཨང་གྲངས་ཀྱི་ རྒྱུ་དངོས་གི་བཅའ་ཁྲལ་དང་ རྒྱུ་དངོས་ཚུ་གི་བཅའ་ཁྲལ། ངོ་མ་ཤེས་པའི་བཅའ་ཁྲལཔ་ཚུ་ |ཚོང་ཉོ་མི་ཚུ་དང་ འགྲོ་འགྲུལ་འབད་སའི་ ས་ཁོངས་ཚུ་ ཡང་ན་ རྩོད་གཞི་ནང་ བཅའ་མར་གཏོགས་ནི་ |
+| [རང་རྐྱང་གི་བར་ནའི་མཐུན་རྐྱེན་ཚུ་](#atomic-private-settlement) | route ལུ་བཀག་པའི་གསང་བའི་ pool ཚུ་ policy rotation ཚུ་ མཇུག་བསྡུ་ཡོད་པའི་ bundle ཚུ་དང་ abort marker ཚུ་ | |
 | [ExecuteTrigger](#executetrigger) |trigger |                      |
 | [ཐོ་བཀོད་/སྤྱོད་ལམ་/ཡར་དྲག་གཏང་ ](#other-instructions) |ཐོ་བཀོད་ཐོ་ཡིག་, ལག་ལེན་པ་ལུ་དམིགས་ཏེ་ ཁེ་ཕན་གྱི་ཐོ་བཀོད་ཚུ་, ལག་ལེན་པའི་གནས་གོང་བཟོ། |                      |
 
@@ -234,7 +236,10 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 གྲྭ་ཚང་ཚུ་ ཐོ་བཀོད་དང་མ་ཐོ་བཀོད་འབད་ BLS ལྡེ་མིག་དང་ PoP འདི་ཡང་ `kagami` དང་གཅིག་ཁར་བཏོན་གཏང་པ་ཅིན་ ཁྱོད་ཀྱིས་ད་ལྟོ་འདི་མེད་པ་ཅིན་:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./peer-key
+PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
+PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
@@ -325,6 +330,14 @@ Native escrow instructions གིས་ ཨང་གྲངས་ཀྱི་ར�
 ཚོང་འབྲེལ་གྱི་ས་ཁོངས་ནང་ གཏན་འཁེལ་གྱི་ལག་ལེན་ཚུ་ `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, དང་ `ResolveEscrowDispute`. སྤྱིར་བཏང་རྒྱུ་དངོས་ཀྱི་ལྡེ་མིག་ལག་ལེན་འཐབ་ནི་ `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, དང་ `ExpireAssetLock`. Anonymous escrow གིས་ཚོང་ཁྲོམ་གྱི་ཚེ་རིང་ཚུ་ནང་ལུ་ `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, དང་ `ResolveAnonymousEscrowDispute`.
 
 འ་ནི་ ISIs འདི་ནང་ ད་རེས་ དབྱེ་རིམ་༡ པའི་ CLI བཀའ་རྒྱ་ཚུ་མེད་ཨིན། ཁྱོད་ཀྱིས་ SDK བཟོ་སྐྲུན་འབད་མི་ཚུ་དང་ ཡང་ན་ གྲལ་སྒྲིག་ཅན་གྱི་བསླབ་བྱ་གི་ཁེ་ཕན་འབག་མི་ཚུ་ལག་ལེན་འཐབ་སྟེ་བལྟ་ཞིནམ་ལས་ [Native Asset Escrow](/dz/blockchain/escrow.md) འཚོལ་བའི་ཚེ་ཚད་ཀྱི་ཐོ་ཡིག་དང་ ངོས་ལེན་དང་དྲི་བཀོད་དང་བྱུང་རྐྱེན་ དེ་ལས་ Rust དཔེ་ཚུགས།
+
+## རང་རྐྱང་གི་བར་ནའི་མཐུན་རྐྱེན་ཚུ་ {#atomic-private-settlement}
+
+ཚད་འཛིན་ཅན་གྱི་ རང་བཞིན་གྱི་གཞི་སྒྲིག་གི་བསླབ་བྱ་ཚུ་ དྭངས་འཕྲོས་འཕྲོས་སྦེ་ཡོད་མི་ ཨེ་མ་ལས་སོ་སོ་ཨིན། AMX. `ActivatePrivateSettlementPoolV1` གཅིག་ གསང་བའི་བཟོ་སྐྲུན་ `pool` གཞུང་སྐྱོང་གི་ཐོ་ཡིག་དང་ རྫོང་ཁའི་འབྱུང་ཁུངས་ཀྱི་ ཁས་བླངས་ཚུ་ནང་ལས་ ཕྲང་ལམ་ཅིག་བཏོན་ནིའི་དོན་ལུ་ཨིན། `FinalizeAtomicPrivateSettlementV1` གྲོས་འཛོམས་ནང་ བཅའ་མར་གཏོགས་མི་སྡེ་ཚན་ག་ར་གིས་ འཛིན་སྐྱོང་འཐབ་མི་སྡེ་ཚན་ཆ་མཉམ་ཅིག་གིས་ ཆ་འཇོག་འབད་ཡོད་པའི་ ཐོ་བཀོད་ལག་ལེན་དེ་ ལག་ལེན་འཐབ་ཨིན། `AbortAtomicPrivateSettlementV1` ཞབས་ཏོག་བྱིན་མི་གིས་ ངོས་འཛིན་འབད་མི་ མི་མང་གི་མཐའ་མཚམས་རྟགས་འདི་རྐྱངམ་གཅིག་ དཔར་བསྐྲུན་འབདཝ་ཨིན།
+
+གསང་བའི་གཞུང་སྐྱོང་ (privacy governance) རྐྱངམ་གཅིག་གིས་ `RotatePrivateSettlementPoolPolicyV1` ལག་ལེན་འཐབ་ཚུགས། ལམ་སྟོན་འདི་གིས་ ད་ལྟོའི་ governance digest དང་ཏན་ཏན་མཐུན་དགོཔ་དང་ route, `pool`, asset-binding commitment, state frontier, replay set ཚུ་དང་ finalized receipt ཚུ་བཞག་སྟེ་ public revision གཅིག་གིས་ཡར་སེང་འབད་དེ་ auditor key epoch གསརཔ་ལག་ལེན་འཐབ་ཨིན། Rotation འདི་ inclusion height ལུ་འགོ་བཙུགསཔ་དང་ height དེ་ནང་ route དང་ `pool` གཅིག་པའི་ receipt མཇུག་བསྡུ་མི་ཆོག། Public revision lineage གིས་ rotation གི་ཧེ་མ་མཇུག་བསྡུ་ཡོད་པའི་ receipt ཚུ་ restart གི་ཤུལ་ལས་ཡང་བདེན་པ་བཞགཔ་ཨིནམ་དང་ receipt གཅིག་པ་ལོག་བསྐྱར་འབད་མི་འདི་ idempotent ཨིན། སྲིད་བྱུས་རྙིང་པའི་ bundle ལག་ལེན་ནང་ཡོད་མི་ཚུ་ state མ་སྒྱུར་བའི་ཧེ་མ་ fail closed འབད་འོང་། Operator ཚུ་གིས་ decryption key རྙིང་པ་ཚུ་བཞག་དགོཔ་དང་ ཡང་ན་ key ཚུ་མེདཔ་མ་གཏང་པའི་ཧེ་མ་ capsule ཚུ་ གཞུང་སྐྱོང་འོག་ལུ་ rewrap འབད་དེ་བརྟག་དཔྱད་འབད་དགོ།
+
+ཐབས་ལམ་འདི་ སྔོན་སྒྲིག་ཐོག་ལས་ བཀག་ཆ་འབད་ཡོདཔ་ལས་ བཟོ་སྐྲུན་ལུ་ ཁྱད་ཚད་མེདཔ་ཨིན། སྒྲིག་གཞི་བཟོ་ནི་དང་ དབང་ཚད་སྤྲོད་ནི་ དེ་ལས་ བརྟག་ཞིབ་འབད་ནི་དང་ ལོག་སྤྱོད་འབད་ནི་ དེ་ལས་ ཕྱིར་བཏོན་འབད་ནི་གི་ དགོས་མཁོ་ཚུ་གི་དོན་ལུ་ [Run Atomic Private Cross-Data-Space Settlement](/get-started/atomic-private-settlement) ལུ་བལྟ་དགོ།
 
 ## གྲོགས་རམ་/ཕྱིར་འབུད་ {#grant-revoke}
 

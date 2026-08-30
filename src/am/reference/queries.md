@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /reference/queries.md
-translation_source_hash: 22e8a75acd72d066e3516ba46a0afe075d2d02790154458aec00a5d8bb861838
+translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -99,10 +99,17 @@ Iroha መጠይቆች መለያውን ሁኔታ ሳይቀይሩ ያነባሉ ።
 |`FindLaneRelayEnvelopeByRef` |አንድ የተረጋገጠ የመንገድ-ሪሌይ ፖስታ ያግኙ.|
 |`FindSorafsProviderOwner` |የ SoraFS አቅራቢ ባለቤት መፍትሄ። |
 |`FindDataspaceNameOwnerById` |የውሂብ ቦታ ስም ባለቤት መፍታት. |
-|`FindMusubiReleaseByRef` |የ Musubi መለቀቅ በመረጃ አማካኝነት ይፈልጉ። |
-|`FindMusubiPackageVersions` |ለ Musubi ጥቅል ስሪቶችን ይዘርዝሩ። |
-|`FindMusubiPackageReleases` |ለ Musubi ጥቅል የዝርዝር መግለጫዎች። |
-|`FindMusubiShortAliasByName` |አንድ Musubi አጭር ቅጽል ስም መፍታት.|
+|`FindMusubiExactPackageV1` |አንድ ትክክለኛ የፓኬጅ መዝገብ እና ወቅታዊ ማሻሻያዎቹን ያንብቡ። |
+|`FindMusubiExactReleaseV1` |አንድ ትክክለኛ የመልቀቂያ ቅጽበታዊ ገጽ እይታን አንብብ። |
+|`FindMusubiProviderBundleAttestationV1` |የአንድ አቅራቢ የመረጃ ቋት ማረጋገጫ ያንብቡ። |
+|`FindMusubiResolverIndexV1` |የመጨረሻው መፍትሔ ማውጫ ገጽ. |
+|`FindMusubiVersionsV1` |ለአንድ ፓኬጅ የተጠናቀቁ ስሪቶች ገጽ። |
+|`FindMusubiMaintainersV1` |ገጽ አስተዳዳሪዎችን ተቀብሏል እና በመጠባበቅ ላይ ያሉ ግብዣዎች። |
+|`FindMusubiArchiveLocationsV1` |ገጽ ለአንድ ማህደር SoraFS አካባቢዎችን አጠናቋል ። |
+|`FindMusubiArchiveRetentionV1` |ገጽ የአርኪቭ ማቆያ መዛግብት. |
+|`FindMusubiAliasV1` |የአሁኑን የዓለማቀፍ ስያሜ አላማ እና ማሻሻያ ያንብቡ። |
+|`FindMusubiAliasHistoryV1` |የአለም አቀፋዊ ስያሜዎች የማይለዋወጥ ዳግም ማጣቀሻ ታሪክ ይለጥፉ። |
+|`FindMusubiOrderedPrefixV1` |በአንድ ቅደም ተከተል የተቀመጠ መዋቅራዊ ቅድመ-ጽሑፍ ስር የገጽ ጥቅሎች። |
 
 ## ተነሳሽነት፣ ውል፣ ግብይት እና ማገድ {#triggers-contracts-transactions-and-blocks}
 

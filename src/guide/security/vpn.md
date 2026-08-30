@@ -31,7 +31,7 @@ restricted network whenever possible.
 ::: tip
 
 A browser VPN only protects traffic from that browser. It does not protect
-`irohad`, CLI, SDK, SSH, metrics, or backup traffic unless those processes are
+`iroha3d`, CLI, SDK, SSH, metrics, or backup traffic unless those processes are
 routed through the same private network.
 
 :::

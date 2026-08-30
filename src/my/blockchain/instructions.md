@@ -1,9 +1,9 @@
 ---
 translation_locale: my
 translation_source: /blockchain/instructions.md
-translation_source_hash: adc3eff9758dd73e9114e78eaa18ddf6271db3bc4042611e1ed6ed1aac226246
+translation_source_hash: ade5ba2b693de7e798490be0947099d0306d9565b88550e201dccd181810fb18
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Iroha အထူးညွှန်ကြားချက်များ {#iroha-special-instructions}
@@ -21,6 +21,7 @@ Iroha အထူးညွှန်ကြားချက်များ အပြ�
 | [Grant/Revoke ](#grant-revoke) |ခွင့်ပြုချက်များနှင့် အခန်းကဏ္ဍများကို ပေးပါ (သို့) ဖယ်ရှားပါ|
 | [လွှဲပြောင်းခြင်း ](#transfer) |ပိုင်ဆိုင်မှု သို့မဟုတ် အရင်းအမြစ်တန်ဖိုး လွှဲပြောင်းခြင်း။ |
 | [Native escrow နှင့် asset lock များ ](#native-escrow-and-asset-locks) |ပရိုတိုကောလစ် ထိန်းသိမ်းမှုမှာ ကိန်းဂဏန်းအရင်းအမြစ်တွေကို Lock လုပ်ပါ။|
+| [အက်တမ်မစ် သီးသန့် စာရင်းရှင်းလင်းမှု](#atomic-private-settlement) | လျှို့ဝှက် pool များနှင့် အက်တမ်မစ် bundle များကို အုပ်ချုပ်သည်။ |
 | [ExecuteTrigger](#executetrigger) |trigger တွေကို လုပ်ဆောင်ပါ။ |
 | [Log/Custom/Upgrade](#other-instructions) |Runtime အပြုအမူကို မှတ်တမ်းတင်၊ တိုးချဲ့ (သို့) အဆင့်မြှင့်ပါ။ |
 
@@ -42,6 +43,7 @@ Iroha အထူးညွှန်ကြားချက်တွေရဲ့ အ�
 | [Grant/Revoke ](#grant-revoke) | [ကဏ္ဍများ၊ ခွင့်ပြုချက် လက်မှတ်များ ](/my/blockchain/permissions.md) |အကောင့်များ သို့မဟုတ် အခန်းကဏ္ဍများ |
 | [လွှဲပြောင်းခြင်း ](#transfer) |ဒိုမင်များ၊ အရင်းအမြစ် အဓိပ္ပါယ်ဖွင့်ဆိုချက်များ, ကိန်းဂဏန်းအရင်းအမြစ်များ NFTs |ငွေစာရင်းများ|
 | [Native escrow နှင့် asset lock များ ](#native-escrow-and-asset-locks) |ကိန်းဂဏန်းအရ အရင်းအမြစ် အချုပ်အခြာများ၊ ရင်းနှီးမြှုပ်နှံမှု ပိတ်သိမ်းချက်များ၊ အမည်မသိ အချုပ်အခမဲ့ ချေးငွေချေးခြင်း |ဝယ်ယူသူတွေ၊ ခရီးသွားနေရာတွေ (သို့) အငြင်းပွားမှု ကွဲပြားမှု |
+| [အက်တမ်မစ် သီးသန့် စာရင်းရှင်းလင်းမှု](#atomic-private-settlement) | route အလိုက် လျှို့ဝှက် pool များ၊ policy rotation များ၊ finalize လုပ်ပြီး bundle များနှင့် abort marker များ | |
 | [ExecuteTrigger](#executetrigger) |trigger များ|                      |
 | [Log/Custom/Upgrade](#other-instructions) |မှတ်တမ်းများ၊ အကောင်အထည်ဖော်သူဆိုင်ရာ အသုံးဝင်ဝန်ဆောင်မှုများ၊ အကောင် အထည်ဖော်မှု အဆင့်မြှင့်တင်ခြင်းများ |                      |
 
@@ -234,7 +236,10 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 တန်းတူလူငယ်တွေ မှတ်ပုံတင်ပြီး မမှတ်ပုံတင်ပါ။ Generate ကို BLS သော့နဲ့ PoP နှင့်အတူ `kagami` သင့်မှာ မရှိသေးဘူးဆိုရင်-
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./peer-key
+PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
+PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
@@ -325,6 +330,14 @@ Native escrow ညွှန်ကြားချက်များသည် ledge
 စျေးကွက်အမှတ်တံဆိပ်သုံးစွဲမှု `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, နှင့် `ResolveEscrowDispute`. ယေဘုယျ အရင်းအမြစ်ပိတ်ခြင်း အသုံးပြုမှု `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, နှင့် `ExpireAssetLock`. Anonymous escrow ဟာ စျေးကွက်ရဲ့ သက်တမ်း စက်ဝန်းကို ပုံဖော်ပါတယ်။ `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, နှင့် `ResolveAnonymousEscrowDispute`.
 
 ဤ ISIs များမှာ လက်ရှိတွင်ပထမတန်းစား CLI commands မရှိပါ။ SDK builders သို့မဟုတ် serialized instruction payloads ကိုသုံးပြီး [ Native Asset Escrow](/my/blockchain/escrow.md) ကိုကြည့်ပါ သက်တမ်းပတ်စဉ် အသေးစိတ်၊ ခွင့်ပြုချက်များ၊ မေးမြန်းမှုများ၊ အဖြစ်အပျက်များနှင့် Rust နမူနာများအတွက်။
+
+## အက်တမ်မစ် သီးသန့် စာရင်းရှင်းလင်းမှု {#atomic-private-settlement}
+
+အုပ်ချုပ်မှုအောက်ရှိ အက်တမ်မစ် သီးသန့်စာရင်းရှင်းလင်းမှု instruction များသည် ပွင့်လင်းမြင်သာသော Native AMX နှင့် သီးခြားဖြစ်သည်။ `ActivatePrivateSettlementPoolV1` သည် ဖျောက်ထားသော governance projection နှင့် canonical origin commitment များမှ တိကျသော route တစ်ခုအတွက် လျှို့ဝှက် `pool` တစ်ခု ဖန်တီးသည်။ `FinalizeAtomicPrivateSettlementV1` သည် ပါဝင်သော committee အားလုံးက အသိအမှတ်ပြုထားသည့် bundle အပြည့်အစုံကို အက်တမ်မစ်နည်းဖြင့် အသုံးချသည်။ `AbortAtomicPrivateSettlementV1` သည် sponsor က ခွင့်ပြုထားသော အများမြင် terminal marker ကိုသာ ထုတ်ပြန်သည်။
+
+`RotatePrivateSettlementPoolPolicyV1` ကို ကိုယ်ရေးလုံခြုံမှုဆိုင်ရာ အုပ်ချုပ်မှုကသာ လုပ်ဆောင်နိုင်သည်။ Instruction သည် လက်ရှိ governance digest နှင့် အတိအကျကိုက်ညီရန် လိုအပ်ပြီး route၊ `pool`၊ asset-binding commitment၊ state frontier၊ replay set များနှင့် finalize လုပ်ပြီး receipt များကို ထိန်းသိမ်းထားကာ public revision ကို တစ်ဆင့်တိုး၍ auditor key epoch အသစ်ကို သုံးသည်။ Rotation သည် inclusion height တွင် အလုပ်လုပ်ပြီး ထို height မှာ တူညီသော route နှင့် `pool` ၏ receipt ကို finalize မလုပ်နိုင်ပါ။ Public revision lineage ကြောင့် rotation မတိုင်မီ finalize လုပ်ထားသော receipt များသည် restart ပြီးနောက်လည်း မှန်ကန်နေပြီး တူညီသော receipt ကို ထပ်မံအသုံးချခြင်းသည် idempotent ဖြစ်သည်။ Policy အဟောင်းဖြင့် လုပ်ဆောင်နေဆဲ bundle များသည် state မပြောင်းမီ fail closed ဖြစ်သည်။ Operator များသည် decryption key အဟောင်းများကို သိမ်းထားရမည်၊ သို့မဟုတ် key မဖျက်မီ governance အောက်တွင် capsule များကို rewrap လုပ်ပြီး စမ်းသပ်ရမည်။
+
+ဤလမ်းကြောင်းသည် မူလအတိုင်း ပိတ်ထားပြီး production အသုံးပြုရန် အရည်အချင်းစစ် မပြီးသေးပါ။ Configuration၊ authority၊ audit၊ recovery နှင့် release လိုအပ်ချက်များအတွက် [ဒေတာစပေ့စ်များကြား အက်တမ်မစ် သီးသန့်စာရင်းရှင်းလင်းမှု လုပ်ဆောင်ခြင်း](/get-started/atomic-private-settlement) ကိုကြည့်ပါ။
 
 ## ထောက်ပံ့မှု / ပြန်လည်သိမ်းဆည်းခြင်း {#grant-revoke}
 

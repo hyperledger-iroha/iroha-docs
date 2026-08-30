@@ -1,9 +1,9 @@
 ---
 translation_locale: ka
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 17ffd2979e2ff7a0e0c3f5c9f1457a5eb630713bba40fca0246afc0c2f7fd5e4
+translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # ქსელის განთავსების გასაღები {#keys-for-network-deployment}
@@ -21,30 +21,35 @@ translation_engine: nllb-200-ct2
 ადგილობრივი ან ტესტის განთავსებისათვის, Kagami უნდა შექმნას ყველა ეს ფაილი ერთად:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 არსებული ქსელის ან პროფილისთვის, გამოიყენეთ გაიდებული ნაკადი:
 
 ```bash
-cargo run --bin kagami -- wizard --profile nexus
+cargo run --bin kagami -- wizard
 ```
 
 ## გენერირება ინდივიდუალური საკვანძო წყვილი {#generate-individual-key-pairs}
 
-გამოიყენეთ `kagami keys` ცალკე გასაღები მასალისათვის:
+Use `kagami keys` for standalone key material:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm ed25519 --json
+cargo run --bin kagami -- keys --algorithm ed25519 \
+  --out-dir ./client-key
 ```
 
-BLS დამტკიცების მასალისათვის უნდა შეიცვალოს მფლობელობის მტკიცებულება:
+For BLS validator material, include a Proof-of-Possession:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./validator-key
 ```
 
-გამოიყენეთ `--seed` მხოლოდ რეპროდუქციული განვითარების მოწყობილობებისთვის. საწარმოო განთავსებისათვის, შექმენით ახალი გასაღები და ინახეთ კერძო გასაღები საცავის გარეთ.
+Use `--seed-hex` only with an exact 32-byte hexadecimal secret for reproducible
+development fixtures. For production deployment, omit it so Kagami uses
+operating-system randomness, then move the unencrypted private-key export into
+the approved custody boundary. The command never prints private keys.
 
 ## თანატოლების თანმიმდევრობა {#peer-consistency}
 

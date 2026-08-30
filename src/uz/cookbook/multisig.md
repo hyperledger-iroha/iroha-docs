@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /cookbook/multisig.md
-translation_source_hash: 7090228c4fea7321c93fe0d2c67ef6de842de95bc3befa11d83c12b9f15b4752
+translation_source_hash: 9654923faf6c84dfd21a428ebe3c53dbd074b8e3274c12c8aa41bf31884686f7
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -202,8 +202,8 @@ Metadata qiymati `"approved"` bo'lishi kerak, tushirilgan yo'l-yo'riqlar hashini
 
 ## Manba va u bilan bog'liq hujjatlar {#source-and-related-docs}
 
-- [Pinned commit-da multisig integratsiya sinovlari](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/multisig.rs)
-- [Pinned commit-da multisig ma'lumotlar modeli](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_executor_data_model/src/isi.rs)
-- [CLI ko'p belgisi qo'llanilishi biriktirilgan commitda](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/main_shared.rs)
+- [Pinned commit-da multisig integratsiya sinovlari](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/multisig.rs)
+- [Pinned commit-da multisig ma'lumotlar modeli](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/isi.rs)
+- [CLI ko'p belgisi qo'llanilishi biriktirilgan commitda](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
 - [Operatsiyalar](/uz/blockchain/transactions.md)
 - [Ruxsatlar va vazifalar ](./permissions-and-roles.md)

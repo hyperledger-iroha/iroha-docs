@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 9341b2404624dec2230bc294c3d60dc124ac9574a0a5803b9bba744f4c5e7f50
+translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2
 የአሁኑን Kagami ኮድ ከ 4 ፒር localnet ይፍጠሩ:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 የውጤት ማውጫው ተዛማጅ የእኩዮች ውቅር, `genesis.json`, `genesis.signed.nrt`, `client.toml`, እና ረዳት ስክሪፕቶች ይዟል.
@@ -33,10 +33,10 @@ cargo run --bin kagami -- docker \
   --peers 4 \
   --config-dir ./localnet \
   --image hyperledger/iroha:dev \
-  --out-file ./localnet/docker-compose.yml \
+  --out-file ./docker-compose.yml \
   --force
 
-docker compose -f ./localnet/docker-compose.yml up
+docker compose -f ./docker-compose.yml up
 ```
 
 በነባሪነት የተፈጠረው ክምር የሚከተሉትን ይገልጻል:
@@ -72,7 +72,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 Nexus መገለጫ ጋር ተወላጅ እኩዮችን ለማሄድ:
 
 ```bash
-./target/release/irohad --sora --config ./defaults/nexus/config.toml
+./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
 ```
 
 ለ CLI ወደዚያ መገለጫ ለመድረስ `defaults/nexus/client.toml` ይጠቀሙ።
@@ -88,7 +88,7 @@ Nexus መገለጫ ጋር ተወላጅ እኩዮችን ለማሄድ:
 ለተፈጠረው የኮምፖዝ ክምር:
 
 ```bash
-docker compose -f ./localnet/docker-compose.yml down
+docker compose -f ./docker-compose.yml down
 ```
 
 አውታረ መረቡ ከተሰራ በኋላ [በ CLI](/am/get-started/operate-iroha-via-cli.md) በኩል Iroha 3 ይሂዱ.

@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /reference/peer-config/params.md
-translation_source_hash: d9fa3775e65b26b4eda726b27e54d167097b8bbd5bb766c27d7eeefdbc7ef10b
+translation_source_hash: 027486a17e7624cc301f939429baf9ea9ed1259564c3b99b8dc63cce17a7b26e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 
@@ -22,7 +22,7 @@ import ParamTable from './ParamTable.vue';
 
 Chain ID ကို transaction တစ်ခုချင်းစီမှာ ထည့်သွင်းရမယ်။ ပြန်လည်ဖြန့်ဝေမှု တိုက်ခိုက်မှုတွေကို တားဆီးဖို့ သုံးတယ်။
 
-`chain` သည် လက်မှတ်ရေးထိုးထားသော ငွေပေးချေမှု အသုံးဝင်မှု၏ တစ်စိတ်တစ်ပိုင်းဖြစ်သည်မို့၊ ချိတ်ဆက်မှုတစ်ခုအတွက် လက်မှတ်ရေးဆွဲထားသည့် ငွေလဲလှယ်မှုကို အခြားချိတ်ဆက်မှု ID ကို အသုံးပြုသူများက ပစ်ပယ်ကြသည်။
+replay တိုက်ခိုက်မှုဆိုသည်မှာ valid transaction ကို ရည်ရွယ်ချက်နှင့်မတူသောကွန်ရက်တစ်ခုသို့ တင်ပြရန်ကြိုးပမ်းခြင်းဖြစ်သည်။ `chain` လက်မှတ်ရေးထိုးထားတဲ့ ငွေပေးချေမှု အသုံးဝင် ဝန်ဆောင်မှု အစိတ်အပိုင်းတစ်ခုဖြစ်ပြီး ချိတ်ဆက်မှု တစ်ခုအတွက် လက်မှတ်ရေးဆွဲထားသည့် ငွေလဲလှယ်မှုတစ်ခုကို အခြား ချိတ်ဆက်မှုကို သုံးတဲ့ တူညီသူတွေက ပယ်ချလိုက်ပါတယ်။ ID.
 
 <param-table type=string env=CHAIN />
 
@@ -78,12 +78,12 @@ PRIVATE_KEY="8926201CA347641228C3B79AA43839DEDC85FA51C0E8B9B6A00F6B0D6B0423E9029
 
 အရင်ဆုံး သတ်မှတ်ထားတဲ့ ယုံကြည်ရတဲ့ အဖော်စာရင်း။
 
-Consensus validators များသည် BLS-Normal peer keys များကို အသုံးပြုရမည်ဖြစ်သည်။ validator တစ်ခုစီအတွက်လည်း [`trusted_peers_pop`](#param-trusted-peers-pop) entry ကိုပေးသွင်းပါ။
+Consensus validators များသည် BLS-Normal peer keys များကို အသုံးပြုရမည်ဖြစ်သည်။ validator တစ်ခုစီအတွက်လည်း [`trusted_peers_pop`](#param-trusted-peers-pop) entry ကိုပေးပါ။
 
 <param-table env="TRUSTED_PEERS">
 <template #type>
 
-P2P လိပ်စာသိရှိပါက `PUBLIC_KEY@ADDRESS` ကိုအသုံးပြုပါ။ bare `PUBLIC_KEY` ကိုလည်းလက်ခံပြီး gossip မှ peer address ကိုရှာဖွေနိုင်စေသည်။
+P2P လိပ်စာသိရှိပါက `PUBLIC_KEY@ADDRESS` ကို အသုံးပြုပါ။ bare `PUBLIC_KEY` ကိုလည်း လက်ခံထားပြီး gossip မှ peer address ကိုရှာဖွေခွင့်ပြုတယ်။
 
 </template>
 </param-table>
@@ -352,7 +352,7 @@ max_content_len = 64_000_000
 
 ### `torii.query_idle_time_ms` {#param-torii-query-idle-time-ms}
 
-ဝင်ရောက်မတွေ့ရင် စတိုးဆိုင်မှာ မေးမြန်းမှုရှိနေနိုင်တဲ့ အချိန်ပါ။
+ဝင်ရောက်မတွေ့ရင် စတိုးဆိုင်မှာ မေးမြန်းမှုတစ်ခု ဆက်ရှိနေနိုင်တဲ့ အချိန်ပါ။
 
 <param-table type=millis default-value=10_000 default-note="10 seconds" />
 
@@ -443,7 +443,7 @@ LOG_LEVEL=INFO
 <param-table type=string env=LOG_FILTER>
 <template #type>
 
-string သည် comma ကွဲပြားသော ညွှန်ကြားချက်တစ်ခု (သို့မဟုတ်) များစွာမှပါဝင်သည်။ ညွှန်ပြချက်တိုင်းသည်အလျောက်တူညီသော အမြင့်ဆုံး verbosity အဆင့်ရှိနိုင်ပြီး (ဥပမာ၊ရွေးချယ်ခြင်းများအတွက်) ကိုက်ညီသည့် span နှင့်ဖြစ်စဉ်များကိုခွင့်ပြုသည်။ Iroha ဆိုသည်မှာ ရှားပါးသော သီးခြားအဆင့်များ (ဥပမာ `trace` သို့မဟုတ် `info`) များကို ပိုပြီး သီးခြားအဆင့်များထက် ပို၍ စကားလုံးများသည်ဟု ယူဆသည် (ဥပမာ`error` သို့မဟုတ် `warn`) ။
+String ဆိုသည်မှာ ဝါယာကြိုးဖြင့်ခွဲခြားထားသော ညွှန်ကြားချက်တစ်ခု (သို့မဟုတ်) များစွာမှ ပါဝင်သည်။ ညွှန်ပြချက်တိုင်းတွင် corresponding maximum verbosity level which enables (e.g., selects for) spans and events that match (ဥပမာ၊ ရွေးချယ်ခြင်းများ) Iroha ပိုနည်းတဲ့ သီးခြားအဆင့်တွေကို ထည့်တွက်တယ် (ဥပမာ `trace` ဒါမှမဟုတ် `info`) ကို ပိုပိုပြီး သီးသန့်အဆင့်များထက် ပိုမိုပြောဆိုနိုင်ရန် (ဥပမာ: `error` ဒါမှမဟုတ် `warn`).
 
 အဆင့်မြင့်အဆင့်မှာ ညွှန်ကြားချက်တွေရဲ့ သဒ္ဒါဟာ အစိတ်အပိုင်းများစွာနဲ့ ဖွဲ့စည်းထားပါတယ်။
 
@@ -470,7 +470,7 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 
 :::
 
-::: info [`logger.level`](#param-logger-level) နှင့် ကိုက်ညီမှု
+::: info [`logger.level`](#param-logger-level) နှင့် ပေါင်းစပ်အသုံးပြုခြင်း
 
 `logger.filter` သည် [`logger.level`](#param-logger-level) နှင့် အတူတကွ အလုပ်လုပ်ပြီး တစ်ခုမှ အခြားတစ်ခုကို overwrites မလုပ်ပါ။
 
@@ -493,10 +493,10 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 
 ကြိုး၊ ဖြစ်နိုင်ခြေတန်ဖိုးများ:
 
-- `full`: Default formatter သည်ဖြစ်စဉ်တစ်ခုစီအတွက် လူသားဖတ်ရှုနိုင်သော တစ်တန်းတည်းမှတ်တမ်းများကို ထုတ်လွှင့်ပေးသည်၊ ဖြစ်ရပ်၏ ဖေါ်မြူထားသည့် ကိုယ်စားပြုမှုမတိုင်မီတွင် လက်ရှိအကန့်အသတ် အခြေအနေကို ပြသသည်။
-- `compact`: အတိုတန်းအလျားများအတွက်ကောင်းမွန်သော default formatter ၏ကွဲပြားမှုတစ်ခုဖြစ်သည်။ လက်ရှိ span အခြေအနေမှ Fields များကို formatted ဖြစ်ရပ်၏ field များနှင့်အတူဆက်စပ်ထားပြီး span နာမည်များကိုပြသခြင်းမရှိပါ။ verbosity အဆင့်သည်တစ်လုံးတည်းသောစာလုံးအဖြစ်တိုကောက်ခံသည်။
-- `pretty`: အလွန်အမင်း လှပတဲ့ လိုင်းစုံမှတ်တမ်းတွေကို ထုတ်လွှင့်ပေးတယ်၊ လူသားဖတ်နိုင်မှုအတွက် အကောင်းဆုံးပါ။ ဒါက အဓိကအားဖြင့် ဒေသတွင်း ဖွံ့ဖြိုးတိုးတက်မှုနဲ့ debugging မှာ (သို့) command-line application တွေမှာ သုံးဖို့ ရည်ရွယ်တာပါ။ စာရွက်စာတမ်းတွေကို အလိုအလျောက်သုံးပြီး သိမ်းဆည်းထားတာက ဖတ်လို့ရတာနဲ့ အမြင်ပိုင်းအရ ဆွဲဆောင်မှုထက် ပိုအရေးမကြီးပါဘူး။
-- `json`: newline-delimited JSON log များထုတ်လုပ်ခြင်း။ ဤသည်မှာ တည်ဆောက်ထားသော log များကို বিশ্লেষণနှင့်ကြည့်ရှုရေးကိရိယာများမှတစ်ဆင့် JSON အဖြစ်သုံးစွဲသည့်စနစ်များဖြင့် ထုတ်လုပ်မှုအသုံးပြုရန်ရည်ရွယ်သည်။ JSON ထုတ်ကုန်သည်လူသားဖတ်နိုင်စွမ်းအတွက်ကောင်းမွန်အောင်ပြုစုထားခြင်းမရှိပါ။
+- `full`: Default formatter။ ဒါက ဖြစ်စဉ်တစ်ခုစီအတွက် လူသားဖတ်လို့ရတဲ့ တစ်တန်းတည်းမှတ်တမ်းတွေကို ထုတ်လွှင့်ပေးပြီး ဖြစ်ရပ်ရဲ့ ပုံသွင်းထားတဲ့ ကိုယ်စားပြုမှုမတိုင်မီမှာ လက်ရှိ span အခြေအနေကို ပြသတယ်။
+- `compact`: အတိုတန်းအလျားများအတွက်ကောင်းမွန်သော default formatter ၏ကွဲပြားမှုတစ်ခုဖြစ်သည်။ လက်ရှိ span အခြေအနေမှ Fields များကို formatted ဖြစ်ရပ်၏ field များနှင့်အတူဆက်စပ်ထားပြီး span နာမည်များကိုပြသခြင်းမရှိပါ။ verbosity အဆင့်သည်တစ်လုံးတည်းသောစာလုံးအဖြစ် shortened ဖြစ်ပါသည်။
+- `pretty`: အလွန်အမင်း လှပတဲ့ လိုင်းများစွာပါတဲ့ မှတ်တမ်းတွေကို ထုတ်လွှင့်ပေးတယ်။ လူသားတွေ ဖတ်နိုင်ဖို့ အကောင်းဆုံးပါ။ ဒါက အဓိကအားဖြင့် ဒေသဖွံ့ဖြိုးရေးမှာ အသုံးပြုဖို့ ရည်ရွယ်ထားပြီး Debugging (သို့) command-line application များအတွက်တော့ အလိုအလျောက်လေ့လာခြင်းနှင့် log တွေကို compact store လုပ်ခြင်းသည် ဖတ်နိုင်မှုနှင့် visual appeal ထက် ပို၍ ဦးစားမပေးပါ။
+- `json`: newline-delimited JSON logs များထုတ်လုပ်ခြင်း။ ဤသည်မှာ တည်ဆောက်ထားသော logs များကို বিশ্লেষণနှင့်ကြည့်ရှုရေးကိရိယာများမှတစ်ဆင့် JSON အဖြစ်သုံးစွဲသည့်စနစ်များဖြင့် ထုတ်လုပ်မှုအသုံးပြုရန်ရည်ရွယ်သည်။ JSON ထုတ်ကုန်သည် လူသားဖတ်နိုင်စွမ်းအတွက်ကောင်းမွန်အောင်မပြုပြင်ပါ။
 
 အသေးစိတ်အချက်အလက်များနှင့် နမူနာထုတ်ကုန်များကို [`tracing-subscriber` စာရွက်စာတမ်း](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/format/index.html) ကိုကြည့်ပါ။
 
@@ -543,15 +543,21 @@ KURA_BLOCKS_IN_MEMORY=1024
 
 ### `kura.init_mode` {#param-kura-init-mode}
 
-Kura အစပျိုးမှုပုံစံ
+Kura အစပျိုးမှု mode။ `strict` သည် ပုံမှန်နှင့်အဓိက mode ဖြစ်သည်: node တက်ကြွမလာမီ Canonical History, Recovery artefacts, Auxiliary indexes နှင့် Storage accounting ကို validates လုပ်ပါသည်။
 
-<param-table  default-value=strict env=KURA_INIT_MODE>
+`fast` အရေးပေါ်အခြေအနေမှာ အန္တရာယ်ရှိနေတဲ့ ဝန်ဆောင်မှုစနစ်ကို အသုံးပြုပြီး လုပ်ငန်းခွင်ရဲ့ မြင်နိုင်မှုကို ပြန်လည်ထူထောင်ပေးပါတယ်။ အစပျိုးရေးစစ်ဆေးမှုတစ်ခုလုံးဟာ ချို့ယွင်းမှုအန္တရာယ်ရှိလိမ့်မယ်။ `strict` နောက်ပြီး လက်ရှိ snapshot မျိုးဆက်မှာ အနုပညာပစ္စည်း ငါးခုကို ထည့်သွင်းထားပါတယ်။ `snapshot.data`, `snapshot.sha256`, `snapshot.sig`, `snapshot.fast.norito`, နှင့် `snapshot.merkle.json`. Domain ကွဲပြားတဲ့ operator လက်မှတ်က ကြော်ငြာပြုလုပ်ထားတဲ့ payload digest နဲ့ bounded manifest ကို ချိတ်ဆက်ပါတယ်။ မော်နီဖစ်က အသုံးဝင် ဝန်ဆောင်မှုအလျား၊ သံကြိုး/ကွန်ရက် အထောက်အထား၊ အပြီးသတ်အမြင့်/ဟက်ရှ်ကို ချိတ်ဆက်ပေးပါတယ်။ SCCP မူဝါဒ hash နှင့် bootstrap lineage တည်ရှိမှု။ Fast က bootstrap ကိုငြင်းပယ် မျိုးရိုးစဉ်နဲ့ ရေရှည်ခံကနေ အမှတ်တံဆိပ်/ရေတွက်ချက်မှု/ထိပ်အကန့်အသတ် အတိအကျကိုပဲ လိုအပ်ပါတယ်။ Kura. ပထမဦးဆုံးထုတ်ပြန်တဲ့ node တွေက ဒီလက်ရာငါးခုကို အတိအကျ လက်ခံပြီး အခြားလက်ရာစာရင်း (သို့) ဖိုင်နာမ်အစီအစဉ်အားလုံးကို ပယ်ချပါတယ်။
+
+Fast inventories those five names and metadata-binds the payload and Merkle files, but does not read, hash, parse or decode their contents. it builds a minimal World/Nexus from the signed manifest, maps the exact Kura hash prefix read-only, and leaves the snapshot World, block-hash array, transaction history, derived indexes, and durable recovery journals unopened. Merkle, canonical and semantic snapshot audits, historical block/finality/SCCP reconciliation, Sumeragi active-height recovery, merge and query journals, lane manifest/conformity sources, Kura ထောက်ပံ့သော SoraFS မှတ်တမ်းများ၊ ပြန်လည်သိမ်းဆည်းမှု စာရင်းအင်းများနှင့် ရွေးချယ်စရာ ဝန်ဆောင်မှု ညှိနှိုင်းရေး ကိရိယာများကို အချိန်ဆွဲထားဆဲဖြစ်သည်။ ဒေသတွင်း ငွေပေးချေမှုကို လက်ခံခြင်း၊ အဆိုပြုချက်များ၊ မဲပေးခြင်းများ၊ ကျမ်းဝင်စာရွက်စာတမ်းများနှင့် အထောက်အကူထုတ်လုပ်သူများအား ပိတ်ပင်ထားဆဲဖြစ်သည်။ Kura ကိုယ်တိုင်သည် စာရေးသူစတင်ခြင်းနှင့် ရေရှည်တည်တံ့သော ဗီဇပြောင်းမှုကို ပယ်ချသည်။ pipeline နှင့် FASTPQ persistence queues သည်အလုပ်ကို ထိန်းသိမ်းခြင်း (သို့မဟုတ်) ကုဒ်သွင်းခြင်းအစား ချက်ချင်းပယ်ချသည်။ Kura စာဖတ်ပါ APIs ပြင်ဆင်ခြင်းနှင့် ရေရှည်တည်တံ့မှု နှိုင်းယှဉ်ပြုမူမှုကိုလည်းပိတ်ထားသည်: ယာယီ ဘေးကားများအား မကြော်ငြာခြင်း၊ လမ်းကြောင်းပျောက်ကွယ်သော လက်ရာပစ္စည်းများကို ထုတ်ဝေခြင်းမရှိခြင်း၊ တိုးတက်မှုအတားအဆီးများကို ပိတ်ပင်ခြင်းမရှိခြင်း။ Sumeragi နှင့် ငွေပေးချေမှု ဝေဖန်မှုများမစတင်ပါ။ Torii သည် ကျန်းမာရေး၊ သက်တောင့်သက်သာ၊ အသင့်ရှိမှု, အဖော်များနှင့် ဖွဲ့စည်းမှု လုပ်ဆောင်ချက်များကိုသာ ဖော်ပြသည်။ API-ဗားရှင်း, အခြေအနေ, မက်ထရစ်များနှင့် သာမန်အခြေအနေ / သမိုင်းလမ်းကြောင်းအားလုံးရရှိနိုင်ခြင်းမရှိပါ။ ကြံ့ခိုင်မှုသည် Strict ပြန်လည်မစတင်ခင်အထိမရရှိပါ။
+
+`fast` ကို ဖြစ်ရပ်တစ်ခုအတွက်သာ အသုံးပြုပါ။ ဝန်ဆောင်မှု တည်ငြိမ်ပြီးတာနဲ့ node ကို ရပ်ဆိုင်းပြီး `strict` ကိုပြန်လည် restart လုပ်ပါ၊ ထုတ်လုပ်မှုကို ပြန်မစတင်ခင် အချိန်ဆွဲထားတဲ့ စစ်ဆေးမှုနဲ့ အညွှန်းကိန်း ပြန်လည်တည်ဆောက်မှုတိုင်းကို ပြန်လည်စတင်ပါ။ Fast mode သည် ရွှေ့ဆိုင်းထားသော merge log ကိုလိုအပ်ခြင်းမရှိဘဲ Canonical Storage ကိုဖန်တီးခြင်း၊ ပြင်ဆင်ခြင်း၊ ဖြတ်တောက်ခြင်း သို့မဟုတ် တင်သွင်းခြင်းမရှိပါ။ မထုတ်ဝေသေးသည့် suffixes နှင့် စောင့်ဆိုင်းနေဆဲအကူအညီ recovery အဆင့်များကို ဖတ်ရှုခြင်း (သို့) အပြောင်းအလဲမပြုဘဲ လျစ်လျူရှုကာ Strict Recovery အတွက်ကျန်ရစ်သည်။ Imported hash-only snapshot lineage ကိုမရရှိနိုင်ပါ။ ပျောက်နေတဲ့ (သို့) မတည်ငြိမ်တဲ့ လက်ရှိ snapshot သည် ချက်ချင်း ကျရှုံးသည်; Fast သည်အလွတ်ကမ္ဘာသို့မဟုတ်သမိုင်းပြန်လည်ဖန်တီးခြင်းသို့ ဘယ်တော့မှ ပြန်မကျဘူး။
+
+<param-table default-value=strict>
 <template #type>
 
 ကြိုး၊ ဖြစ်နိုင်ခြေတန်ဖိုးများ:
 
-- `strict`: ဘလော့များအား တင်းကျပ်စွာ စစ်ဆေးခြင်း
-- `fast`: အခြေခံစစ်ဆေးချက်များသာဖြင့် အမြန်စတင်ခြင်း
+- `strict`: အပြည့်အဝစစ်ဆေးခြင်းနှင့် ပုံမှန်ထုတ်လုပ်မှု
+- `fast`: အရေးပေါ်စတင်မှု အကန့်အသတ်ရှိပြီး ထုတ်လုပ်မှုကို တင်းကျပ်တဲ့ ပြန်လည်စတင်ခြင်းမတိုင်မီ Quarantine လုပ်ထား
 
 </template>
 </param-table>
@@ -563,15 +569,11 @@ Kura အစပျိုးမှုပုံစံ
 init_mode = "fast"
 ```
 
-```shell [Environment]
-KURA_INIT_MODE=fast
-```
-
 :::
 
 ### `kura.store_dir` {#param-kura-store-dir}
 
-blocks တွေကို သိုလှောင်ထားတဲ့ directory [^paths] ကို သတ်မှတ်ပါတယ်။
+blocks တွေကို သိမ်းထားတဲ့ directory [^paths] ကို Specifies လုပ်ပါတယ်။
 
 [`snapshot.store_dir`](#param-snapshot-store-dir) ကိုလည်း ကြည့်ပါ။
 
@@ -662,7 +664,7 @@ transaction_time_to_live_ms = 43_200_000
 
 ### `sumeragi.debug.force_soft_fork` <Badge type="warning" text="debug" /> {#param-sumeragi-debug-force-soft-fork}
 
-Sumeragi soft-fork ကိုင်တွယ်ခြင်းလမ်းကြောင်းများကိုလေ့ကျင့်ရန် Debug-only switch ကိုပိတ်ပါ။ ထိန်းချုပ်ထားသောစမ်းသပ်ချက်များအပြင်တွင်၎င်းကိုပိတ်ထားပါ; ပြင်းထန်နေသည့်ထုတ်လုပ်ရေးကွန်ရက်တစ်ခုတွင်ပြောင်းသည်ဆိုသည်မှာညီညွတ်မှုပြုမူမှုအပေါ်တူညီမှုမရှိစေနိုင်သည်။
+Sumeragi soft-fork ကိုင်တွယ်ခြင်းလမ်းကြောင်းများအတွက် Debug-only switch ကိုလုပ်ပါ။ ထိန်းချုပ်ထားသောစမ်းသပ်ချက်များအပြင်ဘက်တွင်ဤကိုပိတ်ထားပါ; ပြင်းထန်နေသည့်ထုတ်လုပ်ရေးကွန်ရက်တစ်ခုတွင်ပြောင်းသည်ဆိုသည်မှာညီညွတ်မှုပြုမူမှုအပေါ်တူညီမှုမရှိစေနိုင်သည်။
 
 <param-table type=bool default-value=false />
 
@@ -675,15 +677,25 @@ force_soft_fork = true
 
 :::
 
+## Nexus Atomic Private Settlement {#nexus-atomic-private-settlement}
+
+`[nexus.atomic_private_settlement]` သည် သီးခြား `AtomicPrivateSettlementV1` လမ်းကြောင်းကို အုပ်ချုပ်သည်။ ၎င်းသည် အလိုအလျောက် ပိတ်ထားသည်။ `enabled = true` ကိုသတ်မှတ်ခြင်းသည်လည်း `activation_height` ကိုလိုအပ်သည်။ လက်ခံမှုသည် ဆက်လက်မပိတ်နိုင်ပါက လိုင်းပေါ်ရှိစွမ်းဆောင်ရည်၊ ကြေညာချက်ကာလ၊ တည်ငြိမ်သော သက်သေပြရေးဂုဏ်သတ္တိနှင့် စုစုပေါင်း / စစ်ဆေးမှုအုပ်ချုပ်ရေးက တက်ကြွမှတစ်ဆင့်ဖြစ်သည်။
+
+အဓိက ကန့်သတ်ချက်တွေက `max_participants`, `max_expiry_blocks`, `audit_timeout_blocks`, `prepare_timeout_blocks`, `commit_timeout_blocks`, `max_proof_bytes`, `max_capsule_bytes`, `max_carrier_bytes`, `sidecar_retention_blocks`, `sidecar_max_records`, နှင့် `sidecar_max_total_bytes`. `capsule_padding_classes_bytes` ပြင်းထန်စွာ တိုးတက်လာနေသော V1 အဝတ်လျှော်သင်တန်းတွေပေါ့။ `permitted_policy_versions` လက်ခံတာပဲ V1.
+
+`max_capsule_bytes` Canonical ကို တိုင်းတာ Norito complete ၏ byte များ `PrivateSettlementAuditCapsuleV1`, ပါဝင်သည် AAD, nonce, encrypted text, vector framing နဲ့ အော်ဒီတာတိုင်း ဖုံးအုပ်ထားတယ်။DEK စာလုံးစာသားကိုသာ ကန့်သတ်ထားခြင်းမဟုတ်ပါ။ ဖွင့်ထားတဲ့ padding class တစ်ခုစီသည် conservative whole capsule envelope ကို fit လုပ်ရန်လိုအပ်သည်။ အနည်းဆုံး `default_min_auditor_approvals` ဒီထောက်ခံမှု သတ်မှတ်ချက်ကလည်း ထိန်းချုပ်ထားတဲ့ အဆောက်အအုံတစ်ခုပါ။ Torii အသစ်လက်မှတ်ပြုထားတဲ့ မူဝါဒကို ပယ်ချလိုက်ပါတယ်။ `min_approvals` တန်ဖိုးရှိပြီး Canonical byte အကန့်အသတ်ကို ကျော်တဲ့ သက်ဆိုင်ရာ capsule တစ်ခုလုံးကို ပယ်ချတယ်။
+
+ဤ settings များတွင် production environment-variable activation bypass မရှိပါ။ အပြည့်အဝ configuration နမူနာနှင့် လုပ်ဆောင်မှုလိုအပ်ချက်များအတွက် ](/my/get-started/atomic-private-settlement) Run Atomic Private Cross-Dataspace Settlement[ ကိုကြည့်ပါ။ မှတ်တမ်းတင်ထားသော ပြင်ပ release gate များမကျော်မီ Path သည် production-qualified မဖြစ်ပေ။
+
 ## ဓာတ်ပုံရိုက်ကူးခြင်း {#snapshot}
 
 ဒီမော်ဂျူးက [World State View](/my/blockchain/world#world-state-view-wsv) ရဲ့ snapshots တွေကို ဖတ်ပြီး ရေးဖို့ တာဝန်ယူပါတယ်။
 
-Snapshots များသည် World State View ၏ အစဉ်လိုက် စစ်ဆေးရေးမှတ်တိုင်ကို သိမ်းဆည်းထားသည့်ကြောင့် peer သည် Kura မှ block တစ်ခုစီကို playback မလုပ်ဘဲ restart လုပ်နိုင်သည်။ Kura သည် ရေရှည်တည်တံ့သော block သမိုင်းနှင့် replay အတွက် အမှန်တရား၏ အရင်းအမြစ်ဖြစ်နေဆဲဖြစ်သည်။ snapshots သည်အရှိန်မြှင့်လမ်းကြောင်းတစ်ခုဖြစ်သည်။ startup မှာ Iroha က snapshot metadata တွေကို configured chain နဲ့ stored blocks တွေနဲ့ စစ်ဆေးပြီး snapshot ကို load လုပ်မလား ဒါမှမဟုတ် ပြန်လည် play လုပ်မလား ဆုံးဖြတ်ပါတယ်။
+Kura မှ block တစ်ခုစီကို playback မလုပ်ဘဲ peer က restart လုပ်နိုင်ရန် World State View ၏ serialized checkpoint ကို သိမ်းဆည်းထားသည်။ Kura သည် ရေရှည်တည်တံ့သော block သမိုင်းနှင့် replay အတွက် အမှန်တရား၏ အရင်းအမြစ်ဖြစ်နေဆဲဖြစ်သည်။ snapshots သည်အရှိန်မြှင့်လမ်းကြောင်းတစ်ခုဖြစ်သည်။ startup မှာ Iroha က snapshot metadata တွေကို configured chain နဲ့ stored blocks တွေနဲ့ စစ်ဆေးပြီး snapshot ကို load လုပ်မလား ဒါမှမဟုတ် ပြန်လည် play လုပ်မလား ဆုံးဖြတ်ပါတယ်။
 
-::: tip Snapshots များကို ဖယ်ရှားပါ
+::: tip Snapshots များကို ဖျက်ပစ်ပါ
 
-snapshots စနစ်မှာ တစ်ခုခု မှားယွင်းနေပါက ( snapshots တွေအရ) ပလပ်စတစ် စာမျက်နှာတစ်ခုကနေ စတင်ချင်ရင် [`snapshot.store_dir`](#param-snapshot-store-dir) က သတ်မှတ်ထားတဲ့ directory ကို ဖျက်ပစ်နိုင်ပါတယ်။
+snapshots စနစ်မှာ တစ်ခုခု မှားယွင်းနေပြီဆိုရင်၊ သင်ဟာ ပလပ်စတစ် စာမျက်နှာတစ်ခုကနေ စတင်ချင်တယ်ဆိုပါစို့ ( snapshots တွေအရ) [`snapshot.store_dir`](#param-snapshot-store-dir) က သတ်မှတ်ထားတဲ့ directory ကို ဖျက်ပစ်နိုင်ပါတယ်။
 
 :::
 
@@ -696,9 +708,9 @@ Snapshot စနစ် လုပ်ဆောင်မှုပုံစံ။
 
 ကြိုး၊ ဖြစ်နိုင်ခြေတန်ဖိုးများ:
 
-- `read_write`: Iroha သည် [`snapshot.create_every_ms`](#param-snapshot-create-every-ms) တွင် သတ်မှတ်ထားသော ကာလနှင့်အတူ snapshots များကိုဖန်တီးသည်။ စတင်ချိန်တွင်, Iroha သည်တည်ရှိသည့် snapshot ကိုဖတ်ရှုသည် (ဖြစ်ပါက) နှင့်စစ်ဆေးသည် blocks သိုလှောင်ခြင်းနှင့်အတူ update ဖြစ်သည်.
+- `read_write`: Iroha သည် [`snapshot.create_every_ms`](#param-snapshot-create-every-ms) တွင် သတ်မှတ်ထားသောကာလနှင့်အတူ snapshots များကိုဖန်တီးသည်။ စတင်ချိန်တွင်, Iroha သည်တည်ရှိသည့် snapshot ကိုဖတ်ရှုသည် (ဖြစ်ပါက) နှင့်စစ်ဆေးသည် blocks သိုလှောင်မှုနှင့်အတူ update ကို.
 - `readonly`: `read_write` နဲ့ ဆင်တူပေမဲ့ Iroha က snapshots တွေကို မဖန်တီးဘူး။
-- `disabled`: Iroha သည်စတင်ချိန်တွင် snapshots အသစ်များကို မဖန်တီးနိုင်၊ ရှိပြီးသား snapshot ကိုလည်း မဖတ်နိုင်ပါ။
+- `disabled`: Iroha သည်စတင်ချိန်တွင် snapshots အသစ်များကို မဖန်တီး၊ မရှိသေးသော snapshot ကိုလည်း မဖတ်ပါ။
 
 </template>
 </param-table>
@@ -754,7 +766,7 @@ SNAPSHOT_STORE_DIR="/path/to/storage"
 
 ## တယ်လီမီထရီ {#telemetry}
 
-`telemetry.name` နှင့် `telemetry.url` နှစ်ခုစလုံးကို ကောက်ခံသူထံ အစီရင်ခံသင့်သည့် အချိန်တွင် သတ်မှတ်ပါ။ တယ်လီမထရီကို မသုံးပါက အပိုင်းကို ချန်ထားပါ။
+`telemetry.name` နှင့် `telemetry.url` နှစ်ခုစလုံးကို ကောက်ခံသူထံ တိုင်ကြားသင့်သည့် အချိန်တွင် ညွှန်ပြပါ။ တယ်လီမီထရီ မသုံးပါက အပိုင်းကို ရှောင်ရှားပါ။
 
 `name` နှင့် `url` တို့ကို စုံတွဲထည့်ပေးရမည်။
 

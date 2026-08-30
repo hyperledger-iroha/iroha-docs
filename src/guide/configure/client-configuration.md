@@ -89,7 +89,7 @@ For disposable local networks, prefer Kagami because it writes matching Iroha
 3 configs, genesis, scripts, and a README:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 Use the generated `./localnet/client.toml` with the CLI:

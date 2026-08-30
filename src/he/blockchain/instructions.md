@@ -1,9 +1,9 @@
 ---
 translation_locale: he
 translation_source: /blockchain/instructions.md
-translation_source_hash: adc3eff9758dd73e9114e78eaa18ddf6271db3bc4042611e1ed6ed1aac226246
+translation_source_hash: ade5ba2b693de7e798490be0947099d0306d9565b88550e201dccd181810fb18
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Iroha הוראות מיוחדות {#iroha-special-instructions}
@@ -21,6 +21,7 @@ translation_engine: nllb-200-ct2
 | [סיוע / ביטול ](#grant-revoke) |לתת או להסיר רשיונות ותפקידים. |
 | [העברת ](#transfer) |העברה בעלות או ערך נכס. |
 | [אבטחה מקומית ומנעול נכסים ](#native-escrow-and-asset-locks) |סגור נכסים מספרים בפיקוח פרוטוקול. |
+| [סליקה פרטית אטומית](#atomic-private-settlement) | מנהלת מאגרים חסויים וחבילות אטומיות. |
 | [ExecuteTrigger](#executetrigger) |תפעיל את התניעים.|
 | [רישום / מנהל / שיפור ](#other-instructions) |רשום, להרחיב או לשפר את ההתנהגות של זמן ההפעלה. |
 
@@ -42,6 +43,7 @@ translation_engine: nllb-200-ct2
 | [סיוע / ביטול ](#grant-revoke) | [תפקידים, סימני רשיון ](/he/blockchain/permissions.md) |חשבונות או תפקידים |
 | [העברת ](#transfer) |תחומים, הגדרות נכסים, נכסי מספרים, NFTs |חשבונות |
 | [אבטחה מקומית ומנעול נכסים ](#native-escrow-and-asset-locks) |מאבטחות נכסים מספריות, סגרות נכסים, מחויבות מאבטחות אנוניות |קונים, יעדים, או מחלוקות|
+| [סליקה פרטית אטומית](#atomic-private-settlement) | מאגרים חסויים לפי מסלול, סבבי מדיניות, חבילות שהושלמו וסמני ביטול | |
 | [ExecuteTrigger](#executetrigger) |תפעילים.|                      |
 | [רישום / מנהל / שיפור ](#other-instructions) |רישומים, מטענים מועילים ספציפיים למבצעים, עדכונים למבצע. |                      |
 
@@ -234,7 +236,10 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 רשום או לא רשום עמיתים. ליצור את המפתח BLS ו PoP עם `kagami` אם עדיין אין לך אותם:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./peer-key
+PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
+PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
@@ -325,6 +330,14 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 השימוש בשכנות הבנקאות `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, ו `ResolveEscrowDispute`. שימוש במנעולים נכסים כלליים `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, ו `ExpireAssetLock`. הבטחון אנונימי משקף את מחזור החיים של השוק עם `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, ו `ResolveAnonymousEscrowDispute`.
 
 אלה ISIs אין כיום פקודות של מדרגה ראשונה CLI. השתמשו בפיתוחים דפוס SDK או עומסים מועילים של הוראות סדרתיות, וראו [ נטיף נכס Escrow ](/he/blockchain/escrow.md) עבור פרטים מחזור החיים, אישורות, שאילויות, אירועים ו Rust דוגמאות .
+
+## סליקה פרטית אטומית {#atomic-private-settlement}
+
+הוראות הסליקה הפרטית האטומית הכפופות לממשל נפרדות מ-Native AMX השקוף. `ActivatePrivateSettlementPoolV1` יוצר `pool` חסוי אחד למסלול מדויק, מתוך היטל ממשל מצונזר והתחייבויות מקור קנוניות. `FinalizeAtomicPrivateSettlementV1` מחיל באופן אטומי חבילה מלאה שאושרה בידי כל הוועדות המשתתפות. `AbortAtomicPrivateSettlementV1` מפרסם רק את סמן הסיום הציבורי שאישר נותן החסות.
+
+רק ממשל הפרטיות רשאי לבצע `RotatePrivateSettlementPoolPolicyV1`. ההוראה דורשת התאמה מדויקת לתמצית הממשל הנוכחית; היא משמרת את המסלול, ה-`pool`, התחייבות קישור הנכס, גבול המצב, קבוצות מניעת השמעה חוזרת וקבלות שהושלמו, מגדילה את הגרסה הציבורית באחת ומשתמשת בתקופה חדשה יותר של מפתח מבקר. הסבב מופעל בגובה ההכללה, ואסור להשלים באותו גובה קבלה של אותו מסלול ואותו `pool`. שושלת הגרסאות הציבורית משאירה קבלות שהושלמו לפני הסבב תקפות לאחר אתחול, וחזרה זהה עליהן היא אידמפוטנטית. חבילות בתהליך תחת המדיניות הישנה נכשלות באופן סגור לפני שינוי מצב. על המפעילים לשמור מפתחות פענוח ישנים, או לנהל ולבדוק עטיפה מחדש של הקפסולות לפני השמדת המפתחות.
+
+הנתיב מושבת כברירת מחדל ואינו מוסמך לשימוש בייצור. ראו [הפעלת סליקה פרטית אטומית בין מרחבי נתונים](/get-started/atomic-private-settlement) לדרישות תצורה, סמכות, ביקורת, התאוששות ושחרור.
 
 ## סיוע / ביטול {#grant-revoke}
 

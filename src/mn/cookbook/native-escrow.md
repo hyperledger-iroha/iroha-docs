@@ -1,7 +1,7 @@
 ---
 translation_locale: mn
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 0185b6a341ee90ed6cd52fb9f510549b20592468abe6627d3efa639c3b67d1fd
+translation_source_hash: aa8e079684879bdcda2b4439e9c12742d4ab477e6f560f7c326a59b6be5bf666
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,7 +16,7 @@ translation_engine: nllb-200-ct2
 
 - Санхүүгийн хөрөнгийн тодорхойлолт болон хангалттай хэмжээтэй нээгч / борлуулагч.
 - Санхүүжилттэй, нэг гол I105 үйлчлүүлэгчид нь алхам хүргүүлсэн аливаа оролцогчдад зориулалттай байдаг. Төрийн байгууллага төлсөн амьд `fee_payment` санаачлал ашиглаж, төлбөрийн актив нь өнөөгийн Taira крантын хариутай нийцдэг; баримтаас ID хөрөнгийг бүрдүүлж болохгүй.
-- Цахилгаан Rust эсвэл Python SDK цаашид Iroha үүрэг гүйцэтгэх `bc7114ed1c7f265a156d2100ff09e851cc95702c`.
+- Цахилгаан Rust эсвэл Python SDK цаашид Iroha үүрэг гүйцэтгэх `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
 - Үндсэн хуулийн JavaScript хувилбарч жишээ, Node.js 24 болон орон нутгийн үйлдвэрлэл `@iroha/iroha-js` багц, түүний эх үүсвэр `iroha_js_host`; дараа нь [JavaScript SDK эх үүсвэрийн бүтээн байгуулалтын систем](/mn/guide/tutorials/javascript.md#build-from-source). Бrowser-ийн бүтэцүүд нь `compilerUrl` Нүүдэлчнийг ачаалахын оронд.
 - Taira нь хөрөнгийн шилжүүлэн суулгах болон хадгаламжлах чиглэлийг хүлээн зөвшөөрөх ёстой. хөрөнгийн эзэмшигчид өөрийн хөрөнгө бодлого нь зөвшөөрсөн тохиолдолд хэвийн амьдралын мөрийг ашиглах боломжтой; маргааныг шийдвэрлэхэд дэлхийн `CanResolveEscrowDispute` зөвшөөрөл шаардагдана. шаардлагатай олон нийтийн сүлжээний эрх баригч байхгүй үед үүсгэсэн орон нутгийн сүлжээг ашиглах.
 
@@ -249,10 +249,10 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 
 ## Эх сурвалж, холбогдох баримт бичгүүд {#source-and-related-docs}
 
-- [Үндэсний хадгаламжийн зааварчилгааны загварын ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/isi/escrow.rs) тавигдсан үүрэг гүйцэтгэгч
-- [Үндэсний хадгаламжийн интеграцийн шинжилгээ ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/native_escrow.rs) байгуулсан үүрэг гүйцэтгэгч
-- [Python хадгаламжтай үйлчлүүлэгчдийн үйл ажиллагааны арга барилга](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama дотоод захиаллын үлгэр жишээ нь тавигдсан үүрэг гүйцэтгэгч](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [Үндэсний хадгаламжийн зааварчилгааны загварын ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs) тавигдсан үүрэг гүйцэтгэгч
+- [Үндэсний хадгаламжийн интеграцийн шинжилгээ ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs) байгуулсан үүрэг гүйцэтгэгч
+- [Python хадгаламжтай үйлчлүүлэгчдийн үйл ажиллагааны арга барилга](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama дотоод захиаллын үлгэр жишээ нь тавигдсан үүрэг гүйцэтгэгч](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [Үндэсний хөрөнгийн хадгаламж ](/mn/blockchain/escrow.md)
 - [Ашигт малтмалын хөрөнгө](./fungible-assets.md)
 - [Тусгай зөвшөөрөл, үүрэг ](./permissions-and-roles.md)

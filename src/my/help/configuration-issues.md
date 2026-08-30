@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /help/configuration-issues.md
-translation_source_hash: b62b106e985933d90dab1258d3b991674dd75d14322f2326148164b0fbee0f20
+translation_source_hash: 4b96a4f740203aace2e8c091ed89156146ba117e23eff1d08f3bbb01de92f24a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -25,7 +25,7 @@ Iroha ၏ Docker Compose ဗားရှင်းကို အသုံးပြ
 Iroha ကို အသုံးပြုခြင်းဖြင့် ဤကဲ့သို့သော ပြဿနာကို ဖြေရှင်းနိုင်ရန် နည်းလမ်းများရှိသည်။ ဤသည်မှာ အခြေခံပြသနာတစ်ခုဖြစ်ပါက နှင့်သင်၏ peer data များကို ထိန်းသိမ်းရန် မလိုပါက Kagami နှင့်အတူသင့်လျော်သော localnet သို့မဟုတ် Docker Compose ဘန်ဒယ်ကို ပြန်လည်ဖန်တီးပါ။
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
 ```
 

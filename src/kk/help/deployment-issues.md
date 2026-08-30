@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /help/deployment-issues.md
-translation_source_hash: 6f35ac59053e312f56a716810c8f0b625752500d1fc64b27d93cbd8317b6cc19
+translation_source_hash: 5c7d26b39d4ddf4e7e164f7bef79c9e1659db51587fb0dde9cf3f1dc0e3b057b
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2
 Жергілікті және сынақ орнату үшін Kagami арқылы құрылған артефакттерді қолмен жазылған теңгерім файлдардың орнына таңдаңыз:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 Жаратылған каталогта теңгерімдік конфигурациялар, генезис материалы, бастапқы скрипттер және README құрылымы үшін Iroha 3 желісі бар.
@@ -24,7 +24,7 @@ cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./loc
 
 Алдымен мына элементтерді тексеріңіз:
 
-- `irohad --config <path>` теңгерімшiлiктiң өзiнiң TOML құжаты бойынша белгiлер.
+- `iroha3d --config <path>` теңгерімшiлiктiң өзiнiң TOML құжаты бойынша белгiлер.
 - `public_key` және `private_key` теңгерімдік конфигурацияда бірдей кілттер жұпқа жатады.
 - `genesis.public_key` генез операциясына қол қою үшін пайдаланылған кілтімен сәйкес келеді.
 - куәландырушы теңгерімдік сәйкестіктер BLS-Әдеттегі кілттерді пайдаланады, ал `trusted_peers_pop` жергілікті кілттің және сенімді теңгерімдердің иелігіне дәлелді жазуларды қамтиды.
@@ -34,7 +34,7 @@ cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./loc
 Даemon бірден астам TOML қабатты оқыған кезде конфигурацияны анықтауды қолдану:
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --trace-config
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 ```
 
 ## Docker және Композиция {#docker-and-compose}
@@ -42,9 +42,9 @@ cargo run --bin irohad -- --config ./config.toml --trace-config
 Жарату Ағымдағы Kagami жергілікті желі шығысынан жазыңыз, сондықтан команда сызығының аргументтері мен конфигурациялық файлдар тексерілген кодқа сәйкес келеді:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./localnet/docker-compose.yml --force
-docker compose -f ./localnet/docker-compose.yml up
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
+docker compose -f ./docker-compose.yml up
 ```
 
 Егер композ орналасуы басталса, содан кейін тоқтаса, демондар журналдарын тексеріңіз:
@@ -72,7 +72,7 @@ Kubernetes үшін әрбір растаушыны мемлекеттік ин�
 Nexus, SoraFS немесе көп жолдық ағымдарды пайдаланатын Iroha 3 орналасулар демонды Sora профилі қосылғанда бастауы керек:
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --sora
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora
 ```
 
 Бір желідегі валидаторлардың арасында бірдей профильді жүйелі түрде қолдану.

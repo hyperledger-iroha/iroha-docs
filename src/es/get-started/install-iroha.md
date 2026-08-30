@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 49e1a29243151fec1ada2729c315378455a8502811e1ae124e5917a88d59b55d
+translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -36,7 +36,10 @@ cargo build --workspace
 Para una construcción más pequeña centrada en el operador, compilar sólo los binarios principales:
 
 ```bash
-cargo build --release -p irohad -p iroha_cli -p iroha_kagami
+cargo build --release \
+  -p irohad --bin iroha3d --bin iroha3d_taira \
+  -p iroha_cli --bin iroha \
+  -p iroha_kagami --bin kagami
 ```
 
 Los binarios resultantes se escribirán a `target/debug/` o a `target/release/`.
@@ -44,14 +47,16 @@ Los binarios resultantes se escribirán a `target/debug/` o a `target/release/`.
 ## 4. Verificar las herramientas instaladas {#_4-verify-the-installed-tools}
 
 ```bash
-cargo run --bin irohad -- --help
+cargo run -p irohad --bin iroha3d -- --help
+cargo run -p irohad --bin iroha3d_taira -- --help
 cargo run --bin iroha -- --help
 cargo run --bin kagami -- --help
 ```
 
-Los tres binarios que usualmente usará son:
+Los cuatro binarios que usualmente usará son:
 
-- `irohad` para el demonio de la pareja
+- `iroha3d` para un daimón de par estándar
+- `iroha3d_taira` para el lanzador de validadores canónicos Taira
 - `iroha` para el acceso de CLI a Torii y puntos finales del operador
 - `kagami` para las claves, los manifestos de génesis y los perfiles de localnet
 

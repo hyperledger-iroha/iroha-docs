@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 0185b6a341ee90ed6cd52fb9f510549b20592468abe6627d3efa639c3b67d1fd
+translation_source_hash: aa8e079684879bdcda2b4439e9c12742d4ab477e6f560f7c326a59b6be5bf666
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,7 +16,7 @@ translation_engine: nllb-200-ct2
 
 - 數字資產定義和擁有足夠數量的開放者/賣方.
 - 提供資金,單鑰匙 I105 每個提交步驟的客戶.使用現場授權付費 `fee_payment` 目的,其費用資產與當前相匹配 Taira 管響應;不嵌入資產 ID 根據文件.
-- Rust 或 Python SDK 的電流從 Iroha 承諾 `bc7114ed1c7f265a156d2100ff09e851cc95702c`.
+- Rust 或 Python SDK 的電流從 Iroha 承諾 `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
 - 對於 JavaScript 編譯器的例子,Node.js 24加上本地構建的 `@iroha/iroha-js`包及其原生 `iroha_js_host`;遵循[JavaScript SDK 源構建設置](/zh-hant/guide/tutorials/javascript.md#build-from-source).瀏覽器構建必須提供 `compilerUrl`而不是加載原生主機.
 - Taira 必須承認資產轉讓和保證指令.資產所有者可以使用其資產政策允許的普通生命週期;解決爭端需要全球的 `CanResolveEscrowDispute`許可.在缺席必要的公共網絡權威時,使用生成的本地網絡.
 
@@ -249,10 +249,10 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 
 ## 來源及相關文件 {#source-and-related-docs}
 
-- [在固定承諾](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/isi/escrow.rs)上,本地保證指令模型
-- [在固定的承諾中進行本地保證券整合測試](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/native_escrow.rs)
-- [Python 託管客戶的方法在固定承諾](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama 本地保證券樣本在固定承諾](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [在固定承諾](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)上,本地保證指令模型
+- [在固定的承諾中進行本地保證券整合測試](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
+- [Python 託管客戶的方法在固定承諾](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama 本地保證券樣本在固定承諾](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [國產資產保證金](/zh-hant/blockchain/escrow.md)
 - [性資產](./fungible-assets.md)
 - [許可證和角色](./permissions-and-roles.md)

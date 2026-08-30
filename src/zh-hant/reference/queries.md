@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hant
 translation_source: /reference/queries.md
-translation_source_hash: 22e8a75acd72d066e3516ba46a0afe075d2d02790154458aec00a5d8bb861838
+translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2
 ---
 
 # 查詢 {#queries}
@@ -99,10 +99,17 @@ Iroha 查詢可讀取分類帳狀態而不加以變更。目前的資料模型�
 | `FindLaneRelayEnvelopeByRef` | 尋找已驗證的通道轉送封套。 |
 | `FindSorafsProviderOwner` | 解析 SoraFS 提供者的擁有者。 |
 | `FindDataspaceNameOwnerById` | 解析資料空間名稱的擁有者。 |
-| `FindMusubiReleaseByRef` | 依參照尋找 Musubi 發行版本。 |
-| `FindMusubiPackageVersions` | 列出 Musubi 套件的版本。 |
-| `FindMusubiPackageReleases` | 列出 Musubi 套件的發行版本。 |
-| `FindMusubiShortAliasByName` | 解析 Musubi 短別名。 |
+|`FindMusubiExactPackageV1`|閱讀一個精確的包裝記錄及其當前修訂.|
+|`FindMusubiExactReleaseV1`|閱讀一個準確的釋放快照.|
+|`FindMusubiProviderBundleAttestationV1`|閱讀一個供應商的檔案包證書.|
+|`FindMusubiResolverIndexV1`|頁面已完成的解決器索引.|
+|`FindMusubiVersionsV1`|頁面爲一個包完成版本. |
+|`FindMusubiMaintainersV1`|頁面接受了維護人員和等待的邀請.|
+|`FindMusubiArchiveLocationsV1`|頁面最終確定了一個檔案的 SoraFS 位置.|
+|`FindMusubiArchiveRetentionV1`|頁面檔案存儲記錄.|
+|`FindMusubiAliasV1`|閱讀當前目標和全球名的修改.|
+|`FindMusubiAliasHistoryV1`|頁面是全球名的不可改變的重定目標歷史.|
+|`FindMusubiOrderedPrefixV1`|在一個順序結構前下列頁面包. |
 
 ## 觸發器、合約、交易與區塊 {#triggers-contracts-transactions-and-blocks}
 

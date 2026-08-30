@@ -1,7 +1,7 @@
 ---
 translation_locale: ru
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: 4fe9b19fc4d13cfc71d9b9558fe7cdb1d14bd88c2d20f4d23c66313ba3ddd4b6
+translation_source_hash: 67778f9fc4f2b6fa0288f5921402cf5509515aae678e98b8192e103dfe284db3
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -14,7 +14,7 @@ translation_engine: nllb-200-ct2
 
 ## Предварительные условия {#prerequisites}
 
-- Проверка источника Iroha по адресу: commit `bc7114ed1c7f265a156d2100ff09e851cc95702c`, Rust и Cargo.
+- Проверка источника Iroha по адресу: commit `0010c5a70039eac101a4846499ba9ceaf43eb65c`, Rust и Cargo.
 - Текущий `iroha` CLI плюс финансируемый Taira клиент от [Свяжитесь с Taira](./connect-to-taira.md).
 - Абсолютные пути в `IROHA_CONFIG` и `IROHA_PRIVATE_KEY_FILE`. Файл-ключ должен быть владельцем, односвязкой регулярный файл с режимом `0600`; помощник развертывания намеренно не имеет аргумента личного ключа.
 - Одобрение оператора Taira. Регистрация контрактного кода требует `CanRegisterSmartContractCode`, а защищенные развертывания могут потребовать присвоения управления и принятия закона. Если Taira не предоставил такой доступ, выполните развертывание на генерируемой локальной сети, генезис которой предоставляет разрешение.
@@ -131,7 +131,7 @@ jq '{contract_address, code_hash_hex, final, fee_quotes}' \
   ./build/deployment.json
 ```
 
-Пустой запрос `charge_limits` не является копированным идентификатором актива: помощник принимает точную прямую цитату до подписания. Сопоставьте возвращенный платежный актив с текущим ответом на трубку. Не присоединяйте прежние метаданные `gas_asset_id` к контрактным звонкам.
+Пустой запрос `charge_limits` не является копированным идентификатором актива: помощник принимает точную прямую цитату до подписания. текущий ответ на трубку. Контрактные звонки принимают выбор сборов только через типовую прямую цитату; метаданные транзакции `gas_asset_id` не являются частью контракта на первое выпущение.
 
 ### 5. Симулировать и позвонить в развернутый пункт въезда {#_5-simulate-and-call-the-deployed-entrypoint}
 
@@ -201,13 +201,13 @@ jq -e '.ok == true and .result == ["3", "5"]' \
 - `fee quote changed ... gas bound` означает, что запрошенный тип намерения и прямой цитаты не согласны. Возобновить переход, а не изменить подписанную транзакцию.
 - Помощник развертывания отклоняет встроенные ключи, разрешительные режимы файла-ключа, симссылки и умножают связанные файлы перед отправкой в сеть.
 - Ошибка входного пункта только для просмотра `compute` Этот образец указывает, что `kotoage`, Так что используйте симуляцию вызова или подачу.
-- Контрактные звонки требуют положительного ограничения на газ. Отклоняются метаданные о старых газовых или сборных активах высшего уровня.
+- Контрактные звонки требуют положительного ограничения на газ. Контракт по вызову первого выпуска отклоняет метаданные высочайшего уровня газа или сбора счета.
 
 ## Источник и связанные с ним документы {#source-and-related-docs}
 
-- [Kotodama V1 выполнение команд на финированном commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/ivm/src/bin/koto.rs)
-- [Образец источника с повторяющимся возвратами в закрепленном commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
-- [Местный помощник для развертывания на финированном commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
-- [Тесты интеграции контракта на закрепленном обязательстве](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/contracts.rs)
+- [Kotodama V1 выполнение команд на финированном commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/src/bin/koto.rs)
+- [Образец источника с повторяющимся возвратами в закрепленном commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
+- [Местный помощник для развертывания на финированном commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
+- [Тесты интеграции контракта на закрепленном обязательстве](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs)
 - [Умные контракты](/ru/blockchain/smart-contracts.md)
 - [ссылка CLI](/ru/get-started/operate-iroha-via-cli.md)

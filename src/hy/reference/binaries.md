@@ -1,25 +1,29 @@
 ---
 translation_locale: hy
 translation_source: /reference/binaries.md
-translation_source_hash: fd9cefe7c0f5ee2f273a06b453d11d0e9bb896a35f872297276f5e052912a035
+translation_source_hash: 5a36877954bec97691e45697680bfbd6e0a7c7695e48a796bc7c9a41d4756644
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Iroha բինարների հետ աշխատելը {#working-with-iroha-binaries}
 
-Iroha 3 օպերատորի աշխատանքային հոսքը պտտվում է երեք հիմնական բինարների շուրջ.
+Iroha 3 օպերատորի աշխատանքային հոսքը պտտվում է չորս հիմնական բինարների շուրջ.
 
-- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad) զուգընկերային դեյմոնի գործարկման համար
-- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_cli)՝ CLI եւ օպերատորի հրամանների համար
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_kagami) բանալիների, գենեզիզի, տեղական ցանցերի եւ պրոֆիլների համար:
+- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) զուգընկերային դեյմոնի գործարկման համար
+- `iroha3d_taira` քանոնիկ Taira վավերացնող արձակիչի համար
+- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli)՝ CLI եւ օպերատորի հրամանների համար
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami) բանալիների, գենեզիզի, տեղական ցանցերի եւ պրոֆիլների համար:
 
 ## Կառուցեք աղբյուրից {#build-from-source}
 
 Upstream աշխատատեղի արմատից.
 
 ```bash
-cargo build --release -p irohad -p iroha_cli -p iroha_kagami
+cargo build --release \
+  -p irohad --bin iroha3d --bin iroha3d_taira \
+  -p iroha_cli --bin iroha \
+  -p iroha_kagami --bin kagami
 ```
 
 Դրանից հետո բինարների թողարկումը հասանելի է `target/release/`.
@@ -27,7 +31,8 @@ cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 Հրամանատարի մակերեսը ստուգելու համար.
 
 ```bash
-./target/release/irohad --help
+./target/release/iroha3d --help
+./target/release/iroha3d_taira --help
 ./target/release/iroha --help
 ./target/release/kagami --help
 ```
@@ -37,7 +42,8 @@ cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 Եթե դուք չեք ցանկանում տեղադրել որեւէ բան գլոբալ մակարդակով, օգտագործեք `cargo run`:
 
 ```bash
-cargo run --bin irohad -- --help
+cargo run -p irohad --bin iroha3d -- --help
+cargo run -p irohad --bin iroha3d_taira -- --help
 cargo run --bin iroha -- --help
 cargo run --bin kagami -- --help
 ```
@@ -61,13 +67,14 @@ docker run -t hyperledger/iroha:dev kagami --help
 Համանախագահների մեկնարկի համար առաջադրեք localnet եւ նախ կազմեք ֆայլը.
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./localnet/docker-compose.yml --force
-docker compose -f ./localnet/docker-compose.yml up
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
+docker compose -f ./docker-compose.yml up
 ```
 
 ## Ո՞ր երկկողմը պետք է օգտագործեմ: {#which-binary-should-i-use}
 
-- Օգտագործեք `irohad`, երբ սկսում եք գործել զուգընկերների հետ:
+- Օգտագործեք `iroha3d`, երբ սկսում եք գործարկել կամ գործում եք զուգընկերները հանրային Taira վավերացողի թողարկմանից դուրս:
+- Օգտագործեք `iroha3d_taira --sora` միայն քանոնիկ Taira հավաստիացնողի տեղակայման համար: Այն պարտադրում է Taira շղթայի, պահեստավորման եւ վազքի ժամանակի ստորագրող պրոֆիլը.
 - Օգտագործեք `iroha` այն ժամանակ, երբ պետք է հարցաքննեք գլխավոր գրասենյակը, ներկայացնեք գործարքներ կամ ստուգեք օպերատորի վերջային կետերը:
 - Օգտագործեք `kagami` այն ժամանակ, երբ ձեզ անհրաժեշտ է բանալիներ, գենեզիզային մանիֆեսներ, պրոֆիլների փաթեթներ կամ տեղական ցանցի ակտիվներ:

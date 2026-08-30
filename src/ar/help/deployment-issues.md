@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /help/deployment-issues.md
-translation_source_hash: 6f35ac59053e312f56a716810c8f0b625752500d1fc64b27d93cbd8317b6cc19
+translation_source_hash: 5c7d26b39d4ddf4e7e164f7bef79c9e1659db51587fb0dde9cf3f1dc0e3b057b
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2
 بالنسبة للتنفيذ المحلي والاختباري، تفضل الأثرية التي تم إنشاؤها بواسطة Kagami بدلاً من الملفات ذات الصلة المكتوبة يدوياً:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 يحتوي المجلد الذي تم إنشاؤه على إعدادات الأقران، ومادة التكوين، ونصوص البدء، و README لخط بناء Iroha 3.
@@ -24,7 +24,7 @@ cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./loc
 
 تحقق من هذه العناصر أولاً:
 
-- `irohad --config <path>` نقاط في ملف الزملاء الخاص بهم TOML.
+- `iroha3d --config <path>` نقاط في ملف الزملاء الخاص بهم TOML.
 - `public_key` و `private_key` في تكوين الأقران ينتمون إلى نفس زوج المفاتيح.
 - `genesis.public_key` يطابق المفتاح الذي استخدم لتوقيع معاملة الجينز.
 - استخدام BLS - المفاتيح العادية، و `trusted_peers_pop` يحتوي على إدخالات دليل على حيازة للمفتاح المحلي والأقران الموثوقين.
@@ -34,7 +34,7 @@ cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./loc
 استخدم تعقب الإعدادات عندما يقرأ الديمون أكثر من طبقة واحدة TOML:
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --trace-config
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 ```
 
 ## Docker و تكوين {#docker-and-compose}
@@ -42,9 +42,9 @@ cargo run --bin irohad -- --config ./config.toml --trace-config
 توليد التركيب من النتائج الحالية Kagami للشبكة المحلية بحيث تتطابق حجج خط الأوامر وملفات التكوين مع رمز الخروج:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./localnet/docker-compose.yml --force
-docker compose -f ./localnet/docker-compose.yml up
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
+docker compose -f ./docker-compose.yml up
 ```
 
 إذا بدأ تنفيذ التجميع ثم توقف، تحقق من سجلات الديمون ل:
@@ -72,7 +72,7 @@ docker compose -f ./localnet/docker-compose.yml up
 Iroha 3 التنفيذات التي تستخدم Nexus، SoraFS، أو تدفقات متعددة المسارات يجب أن تبدأ الديمون مع تمكين ملف Sora:
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --sora
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora
 ```
 
 استخدم نفس الملف الشخصي باستمرار عبر المؤكدين في نفس الشبكة.

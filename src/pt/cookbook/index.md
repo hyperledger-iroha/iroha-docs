@@ -1,14 +1,14 @@
 ---
 translation_locale: pt
 translation_source: /cookbook/index.md
-translation_source_hash: cdcfb3549506a65a7dbd1c37672893956a0252153a4075c82333804674aa07b6
+translation_source_hash: aceef9f4e42462614a5cdf41a89f55e26e0399503a48d4b50c08359e7bd7532e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Iroha 3 Manual de aplicação {#iroha-3-application-cookbook}
 
-Construir contra Iroha 3 com receitas pequenas e verificáveis, que começam no Taira testnet e manter Minamoto Cada receita indica se é uma leitura pública. uma escrita normal de conta financiada, ou uma operação com limite de permissão. I105 Conta IDs, seleção explícita de taxas, e o comportamento verificado no Iroha Compromissar [`bc7114ed1c7f265a156d2100ff09e851cc95702c`](https://github.com/hyperledger-iroha/iroha/tree/bc7114ed1c7f265a156d2100ff09e851cc95702c).
+Construir contra Iroha 3 com receitas pequenas e verificáveis, que começam no Taira testnet e manter Minamoto Cada receita indica se é uma leitura pública. uma escrita normal de conta financiada, ou uma operação com limite de permissão. I105 Conta IDs, seleção explícita de taxas, e o comportamento verificado no Iroha Compromissar [`0010c5a70039eac101a4846499ba9ceaf43eb65c`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c).
 
 Comece com [Conecte-se a Taira](./connect-to-taira.md). Ele cria a configuração do cliente e os metadados de taxas reutilizados pelas receitas da linha de comando. Nunca copie um ativo de taxa ID desta documentação: derive-o da resposta atual do torneio Taira.
 

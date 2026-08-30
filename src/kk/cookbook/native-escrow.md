@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 0185b6a341ee90ed6cd52fb9f510549b20592468abe6627d3efa639c3b67d1fd
+translation_source_hash: aa8e079684879bdcda2b4439e9c12742d4ab477e6f560f7c326a59b6be5bf666
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,7 +16,7 @@ translation_engine: nllb-200-ct2
 
 - Сандық активтің анықтамасы және жеткілікті мөлшерге ие болған ашушы/сатушы.
 - Қаржыландырылған, бір кілт I105 әрбір тарапқа клиенттер үшін қадам тапсырады. Тікелей билік төленген `fee_payment` мақсат, оның алым активтері ағымдағы Taira кранның реакциясы; активті енгізуге болмайды ID құжаттамадан алынған.
-- Ағымдағы Rust немесе Python SDK бойынша Iroha міндеттеу `bc7114ed1c7f265a156d2100ff09e851cc95702c`.
+- Ағымдағы Rust немесе Python SDK бойынша Iroha міндеттеу `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
 - Бұл үшін JavaScript компилятор үлгісі, Node.js 24 және жергілікті тұрғыдан жасалған `@iroha/iroha-js` таңба және оның түпнұсқасы `iroha_js_host`; орындалсын [JavaScript SDK ресурс-құрылысын орнату](/kk/guide/tutorials/javascript.md#build-from-source). Браузердің құрылымы қамтамасыз етуі тиіс `compilerUrl` жергілікті қоректенушіге жүктеудің орнына.
 - Taira активтерді аудару және кепілдік беру нұсқауларын мойындауы тиіс. Актив иелері өздерінің актив саясаты мүмкіндік берген кезде әдеттегі өмір циклын пайдалана алады; дауларды шешу үшін жалпы `CanResolveEscrowDispute` рұқсатын қажет етеді. Қажетті қоғамдық желі билігі болмаған жағдайда құрылған жергілікті желілерді қолдана алады.
 
@@ -249,10 +249,10 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 
 ## Бастапқы және осыған байланысты құжаттар {#source-and-related-docs}
 
-- [Тіркелген міндеттемелер бойынша жергілікті кепілдік беру нұсқаулық моделі](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/isi/escrow.rs)
-- [Тіркелген міндеттемеде тумақшылдықты интеграциялау сынақтары](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/native_escrow.rs)
-- [Python фикцияланған міндеттемедегі кепіл клиентінің әдістері](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama түпкiлiктi кепілгерлiгiнiң үлгiсi бекiтiлген commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [Тіркелген міндеттемелер бойынша жергілікті кепілдік беру нұсқаулық моделі](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
+- [Тіркелген міндеттемеде тумақшылдықты интеграциялау сынақтары](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
+- [Python фикцияланған міндеттемедегі кепіл клиентінің әдістері](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama түпкiлiктi кепілгерлiгiнiң үлгiсi бекiтiлген commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [Жергiлiктi активтердiң депозитi](/kk/blockchain/escrow.md)
 - [Қатты активтер](./fungible-assets.md)
 - [Рұқсаттар және рөлдер](./permissions-and-roles.md)

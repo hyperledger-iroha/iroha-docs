@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /cookbook/submit-and-verify-transactions.md
-translation_source_hash: e07cc42a3fd5579db312bfbfbb8010f473062edebe0141eb9bb8c2a0e7faa4da
+translation_source_hash: 01907ea433e711cb0b1aa327d46c44744aad0a7571a65430dddd7a8aed3df373
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -125,8 +125,8 @@ curl -fsS -H 'Accept: application/json' \
 
 ## 来源及相关文件 {#source-and-related-docs}
 
-- [在固定承诺](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/main_shared.rs)中提交交易和执行费率配额
-- [在固定承诺](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha/tests/tx_confirmation.rs)中进行交易确认测试
+- [在固定承诺](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)中提交交易和执行费率配额
+- [在固定承诺](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/src/client.rs)中进行交易确认测试
 - [交易](/zh-hans/blockchain/transactions.md)
 - [CLI 指南](/zh-hans/get-started/operate-iroha-via-cli.md)
 - [Torii 终端点](/zh-hans/reference/torii-endpoints.md)

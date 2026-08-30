@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
+translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -263,7 +263,7 @@ EOF
 如果您还没有一个键组,生成键组:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./taira-client-key
 ```
 
 创建 `taira.client.toml`:
@@ -336,7 +336,7 @@ SORA Nexus 账户 ID 是一个源于帐户公钥和目标网络前的常规 I105
 创建或加载将控制帐户的Ed25519键组:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./nexus-account-key
 ```
 
 转换公钥为 Taira 账户 ID:
@@ -697,7 +697,7 @@ description = "Route payments domains to the payments dataspace"
 
 运营商的接受应包括以下门户:
 
-- `irohad --sora --config <config.toml> --trace-config` 传输已解决的节点配置
+- `iroha3d --sora --config <config.toml> --trace-config` 传输已解决的节点配置
 - 生成或检查的表格是用哈希和签名存档的
 - 在任何 Minamoto 促销之前,烟雾测试通过 Taira
 - 变更后的目录 `/status` 表示预期的车道和数据空间

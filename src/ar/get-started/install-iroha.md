@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 49e1a29243151fec1ada2729c315378455a8502811e1ae124e5917a88d59b55d
+translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -36,7 +36,10 @@ cargo build --workspace
 بالنسبة لبناء أصغر تركز على المشغل ، قم بتجميع الثنائيات الرئيسية فقط:
 
 ```bash
-cargo build --release -p irohad -p iroha_cli -p iroha_kagami
+cargo build --release \
+  -p irohad --bin iroha3d --bin iroha3d_taira \
+  -p iroha_cli --bin iroha \
+  -p iroha_kagami --bin kagami
 ```
 
 ويتم كتابة الثنائيات الناتجة على `target/debug/` أو `target/release/`.
@@ -44,18 +47,20 @@ cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 ## التحقق من الأدوات المثبتة {#_4-verify-the-installed-tools}
 
 ```bash
-cargo run --bin irohad -- --help
+cargo run -p irohad --bin iroha3d -- --help
+cargo run -p irohad --bin iroha3d_taira -- --help
 cargo run --bin iroha -- --help
 cargo run --bin kagami -- --help
 ```
 
-الثلاثة ثنائيات التي تستخدمها عادة هي:
+الأربعة الثنائية التي تستخدمها عادة هي:
 
-- `irohad` لـ (دايمون) الأقران
+- `iroha3d` لـ ديمون أقرانه القياسي
+- `iroha3d_taira` لمطلق المصادقة القنوني Taira
 - `iroha` للوصول إلى CLI و Torii ومواقع نهاية المشغل
 - `kagami` للمفاتيح، ومخططات التكوين، وملفات المواقع المحلية
 
-## 5 - الاختياري Localnet و Docker Path {#_5-optional-localnet-and-docker-path}
+## 5 . الاختيارية Localnet و Docker Path {#_5-optional-localnet-and-docker-path}
 
 يتم إنشاء تدفق localnet الحالي المدعوم من المصدر بواسطة Kagami. يكتب إعدادات الأقران ، وأشياء التكوين الجينيزي ، وإعدادات العميل ، ونصوص المساعد ، وملف Compose الاختياري الذي يطابق الرمز المحقق:
 

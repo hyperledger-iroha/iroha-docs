@@ -1,16 +1,17 @@
 ---
 translation_locale: zh-hans
 translation_source: /blockchain/sora-nexus-services.md
-translation_source_hash: de50aa8206a5b82d4340f68173e9d89bb8eabab83369c363eb05c9d6632eed28
+translation_source_hash: 0dcdda5185d25e113fb636b8b2aede6081ca8ee89b8b38c50b69fed88622df49
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # SORA Nexus 服务 {#sora-nexus-services}
 
-SORA Nexus 在 Iroha 3 周围添加了应用程序面向的服务飞机.这些服务不是单独的账本.它们由 Iroha 世界状态,Norito 公开表,治理记录和 Torii 路线家族固定.
 
-可用性取决于节点构建和网络配置文件. 在目标节点上使用 [`/openapi`](/zh-hans/reference/torii-endpoints.md#app-and-sora-route-families)作为启用路线的权威列表.
+SORA Nexus 在 Iroha 3 周围添加了应用程序面向的服务飞机. 这些服务不是单独的账本.它们由 Iroha 世界状态,Norito 公开表,治理记录和 Torii 路线家族固定.
+
+可用性取决于节点构建和网络配置. [`/openapi`](/zh-hans/reference/torii-endpoints.md#app-and-sora-route-families) 发现生成的应用程序.API 目标节点的路线. SoraFS CID 而已知路线在生成的文件之外安装,所以检查部署时直接探讨这些路线.
 
 ## 组件地图 {#component-map}
 
@@ -18,7 +19,7 @@ SORA Nexus 在 Iroha 3 周围添加了应用程序面向的服务飞机.这些�
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
 |Soracloud|应用部署,托管服务,私人模型/运行时间状态以及服务生命周期控制. |`/v1/soracloud/`, `/api/`,`iroha app soracloud ...` |
 |在里面|Soracloud 为需要直播 HTTP 飞机的服务修改运行时间托管 HTTP. |Soracloud 运行时间配置,主机功能广告,复制运行时间状态.|
-|SoraNet|电路,继电流, VPN,连接会议和流媒体线路的隐私和运输覆盖. |`/v1/connect/`,`/v1/vpn/`, SoraNet 的路线元数据 |
+|SoraNet|电路,继电流, VPN,连接会议和流媒体线路的隐私和运输覆盖.|`/v1/connect/`,`/v1/vpn/`, SoraNet 的路线元数据 |
 |数据可用性 (DA) |在 Nexus 车道, SoraFS 表格和证明流程中引用的有效载荷的可用性证据,承诺和准意图层. |`/v1/da/`, `FindDaPinIntent`,`[sumeragi.da]` |
 |SoraFS|文件表, CAR 有效载荷,固定内容,网关检索和可回收性证明流的内容定位存储布料. |`/v1/sorafs/`, `/sorafs/`,`FindSorafsProviderOwner` |
 |SoraDNS|对于 SORA 托管的服务和内容,确定性命名和解决器认证层. |`/v1/soradns/`, `/soradns/`,解决方程式事件|
@@ -59,11 +60,11 @@ flowchart LR
 
 |路径|后备飞机|为什么?|
 | ----------------- | --------------------- | ------------------------------------------------- |
-| `/`               |SoraFS 静态含量|可复制内容的根和网关缓存|
-|`/assets/*`|SoraFS 静态含量|内容地址的资产和明确证据|
+| `/`               |SoraFS 静态含量|可复制的内容根和网关缓存 |
+|`/assets/*`|SoraFS 静态含量|内容地址的资产和表现证据|
 |`/api/auth*`|Soracloud IVM |复制安全的作者和钱包挑战状态 |
 |`/api/v1/user*`|Soracloud IVM |对于治理敏感的状态突变|
-|`/api/v1/search*`|Soracloud 在线|现场 HTTP 服务,缓存, SSE,或收藏状态|
+|`/api/v1/search*`|Soracloud 在线 |现场 HTTP 服务,缓存, SSE,或收藏状态|
 
 ### 内容出版 {#content-publication}
 
@@ -73,10 +74,10 @@ SoraFS 出版物在名称指向它们之前,生产了持久的文物:
 2. 包装在一个 CAR 档案和零件计划.
 3. 建立一个 Norito 表格,包含针政策和治理数据.
 4. 提交说明书给 Torii.
-5. 如果目标配置文件需要明确的证据,则记录 DA 笔意图或可用性承诺.
+5. 如果目标配置文件需要明确的证据,请记录 DA 笔意图或可用性承诺.
 6. 绑定表与 SoraDNS 名称或 Soracloud 静态前端路线.
 
-### 乘坐私人车或播放路线 {#private-fetch-or-streaming-route}
+### 乘坐私人车辆或流通路线 {#private-fetch-or-streaming-route}
 
 SoraNet 可以坐在 SoraFS 或 Soracloud 前面:
 
@@ -95,7 +96,7 @@ Aitai是市场式结算的 SORA 应用程序走廊,买方和卖方在链外协�
 
 |艾塔伊表面|用它来|
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`                                                    |透明数值资产报价,包括以 XOR 为单位的结算流动. |
+| `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`                                                    |透明数值资产报价,包括以 XOR 计定的结算流. |
 | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`       |保护的报价使用证明附件对于资金和关闭活动.|
 |`OpenEscrowDispute`, `ResolveEscrowDispute`,`OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |纠纷和法庭方式的解决.|
 |`FindAssetEscrowById`, `FindAssetEscrowsBySeller`,`FindAssetEscrowsByBuyer`, `FindAssetEscrowsByStatus` |应用程序状态页面,调整工作和支持工具.|
@@ -106,7 +107,7 @@ Aitai是市场式结算的 SORA 应用程序走廊,买方和卖方在链外协�
 
 ## 检查目标节点 {#check-a-target-node}
 
-在使用本页面的示例之前,请确认您正在准的节点中存在路线家族:
+在使用本页面的示例之前,请确认您正在准的节点上存在路线家族:
 
 ```bash
 export TORII_URL=https://taira.sora.org
@@ -117,11 +118,11 @@ curl -fsS "$TORII_URL/openapi.json" \
 curl -fsS -H 'Accept: application/json' "$TORII_URL/status" | jq .
 ```
 
-如果 `/openapi.json` 没有被个人资料所暴露,请尝试 `/openapi`.准确的路线可用性取决于构建功能和网络配置.
+如果 `/openapi.json` 没有被个人资料所暴露,试着 `/openapi`. 确切的路线可用性取决于构建特性和网络配置. SoraFS CID 和已知路线;如下所述,直接检查这些终点.
 
 ### Taira 仅阅读烟雾检查 {#taira-read-only-smoke-checks}
 
-公开 Taira 终端点对于阅读侧检查是有用的,但除非您正在运营一个授权帐户并且打算更改现实状态,否则不要使用它用于突变例子.
+公开的 Taira 终端点对于阅读侧检查是有用的,但除非您运营一个授权帐户,并且打算改变公开测试网状态,否则不要使用它用于突变例子.
 
 ```bash
 export TORII_URL=https://taira.sora.org
@@ -134,14 +135,14 @@ curl -fsS "$TORII_URL/v1/connect/status" | jq '{enabled, sessions_active}'
 curl -fsS "$TORII_URL/v1/vpn/profile" \
   | jq '{available, relay_endpoint, supported_exit_classes}'
 
-curl -fsS "$TORII_URL/v1/sorafs/storage/state" \
-  | jq '{bytes_capacity, bytes_used, pin_queue_depth, por_inflight}'
+curl -fsS "$TORII_URL/v1/sorafs/storage/peers?limit=4" \
+  | jq '{gateway_base_url, pin_torii_urls}'
 
 curl -fsS -H 'Accept: application/json' "$TORII_URL/v1/soracloud/status" \
   | jq '.control_plane | {service_count, services: [.services[] | {service_name, current_version}]}'
 ```
 
-Taira 可能会暴露出未列在 OpenAPI 路径地图中的部署特定控制平面路线.将 `/openapi`视为首要生成的 API 合同,然后直接确认任何部署特定路线,然后记录它作为现场.
+Taira 可能会暴露出未列在 OpenAPI 路径地图中的部署特定控制平面路线.将 `/openapi`视为其包含的路线的生成合同,然后直接确认部署特定和公开的本地 SoraFS 路线之前就能记录它们作为可用的.
 
 ## Soracloud {#soracloud}
 
@@ -357,25 +358,41 @@ provision_queue_capacity = 256
 
 ### SoraNet-意识到 SoraFS 带来 {#soranet-aware-sorafs-fetch}
 
-SoraFS 获取 CLI 可以发射一个本地代理表格,并为浏览器扩展或 SDK 适配器输出 SoraNet 路线元数据:
+SoraFS 获取 CLI 可以发射一个本地代理表格,并为浏览器扩展或 SDK 适配器输出 SoraNet 路线元数据.调整器 JSON 必须用 `"emit_browser_manifest": true`定义 `local_proxy`,而 CLI 必须使用 `local-quic-proxy`支持构建.在 Taira 上,检查公开测试网络根上的被允许供应商目录,然后填写为该供应商发行的保护供应商图普:
 
 ```bash
-sorafs_cli fetch \
-  --plan artifacts/payload_plan.json \
-  --manifest-id 7bb2...9d31 \
-  --provider name=alpha,provider-id=9f5c...73aa,base-url=https://gw-alpha.example.org/,stream-token="$(cat alpha.token)" \
-  --output artifacts/payload.bin \
-  --json-out artifacts/fetch_summary.json \
-  --local-proxy-manifest-out artifacts/proxy_manifest.json \
-  --local-proxy-mode bridge \
-  --local-proxy-norito-spool storage/streaming/soranet_routes \
-  --local-proxy-kaigi-spool storage/streaming/soranet_routes \
-  --local-proxy-kaigi-policy authenticated \
+export TAIRA_ROOT=https://taira.sora.org
+curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
+
+: "${TAIRA_SORAFS_PROVIDER_ID:?set the admitted provider ID from Taira discovery}"
+: "${TAIRA_SORAFS_GATEWAY_KEY:?set the provider gateway key}"
+: "${TAIRA_SORAFS_PROVIDER_URL:?set the advertised provider base URL}"
+: "${TAIRA_SORAFS_STREAM_TOKEN_FILE:?set the issued stream-token file}"
+
+cargo run -p sorafs_orchestrator --features=local-quic-proxy --bin=sorafs_cli -- \
+  fetch \
+  --plan=artifacts/payload_plan.json \
+  --manifest-id=<manifest-digest-hex> \
+  --orchestrator-config=artifacts/orchestrator.json \
+  --provider=name=taira,provider-id="$TAIRA_SORAFS_PROVIDER_ID",gateway-key="$TAIRA_SORAFS_GATEWAY_KEY",base-url="$TAIRA_SORAFS_PROVIDER_URL",stream-token="$(cat "$TAIRA_SORAFS_STREAM_TOKEN_FILE")" \
+  --output=artifacts/payload.bin \
+  --json-out=artifacts/fetch_summary.json \
+  --local-proxy-manifest-out=artifacts/proxy_manifest.json \
+  --local-proxy-mode=bridge \
+  --local-proxy-norito-spool=storage/streaming/soranet_routes \
+  --local-proxy-kaigi-spool=storage/streaming/soranet_routes \
+  --local-proxy-kaigi-policy=authenticated \
   --max-peers=2 \
   --retry-budget=4
 ```
 
 总结记录提供商报告,零件收据,本地代理元数据以及用于采集的有效路线设置.
+
+### 继电激励验证器清单 {#relay-incentive-verifier-roster}
+
+如果`incentives.enable`是正确的, `incentives.trusted_verifier_ids`必须包含至少一个法典账户 ID.运行时间将其存储为确定性顺序集合,并在继电器启动期间拒绝无效的列表几何.
+
+每个 `RelayBandwidthProofV1` 都根据固定的框架/分配预算进行解码,并且必须消耗完整的框架.在继电器锁定或更改其性能蓄积器之前,证明验证器帐户必须存在于配置列表中,并且`RelayBandwidthProofV1::verify_signature()`必须成功. 继电器忽略了不值得信赖的签名者或无效/改的签名证明. 这种证据没有添加任何测量,不能产生激励性快照.
 
 ## 数据可用性 (DA) {#data-availability-da}
 
@@ -393,7 +410,7 @@ DA 不取代 Kura 或 SoraFS:
 
 |阶段|记录的内容|
 | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-|意图|一张门票,明确引用,号,车道/时代/序列参考,保留政策或复制目标. |
+|意图|一张门票,明确引用,号,车道/时代/序列引用,保留政策或复制目标. |
 |承诺|消化材料将表格,车道有效载荷,证据捆绑或内容根连接到本书可见的记录.|
 |证据|可用性投票,证据开放,供应商认证或其他被目标网络接受的个人资料特定证据. |
 |问题|通过 `FindDaPinIntentByTicket`,`FindDaPinIntentByManifest`, `FindDaPinIntentByAlias`或 `FindDaPinIntentByLaneEpochSequence`进行印意图查询.|
@@ -410,7 +427,7 @@ DA 不取代 Kura 或 SoraFS:
 
 DA 将一个有效载荷转化为签署的,反弹保护的,区块索引承诺.重要算法是确定性的,所以验证器和网关可以从相同字节中重新计算相同的消化.
 
-1. Torii 接受一个用量请求,包括 `(lane_id, epoch, sequence)`,用量字节,压缩元数据,零件大小,删除配置文件,节点在要求时将gzip,delate或Zstandard的有效载荷解压缩,然后验证标准字节长度等于 `total_size`.
+1. Torii 接受一个用量请求,包含`(lane_id, epoch, sequence)`,用量字节,压缩元数据,零件大小,删除配置文件,节点在要求时将gzip,delate或Zstandard的有效载荷解压缩,然后验证标准字节长度等于 `total_size`.
 2. 验证车道和零件参数.该车道必须存在于 Nexus 车道目录中. `chunk_size`必须具有两个,至少两个字节的非零功率.不大于配置的最大值.删除资料必须包括数据片段和至少两个平率片段.车道目录选择证明方案,无论是 `merkle_sha256`还是 `kzg_bls12_381`.
 3. 应用网络政策.节点强制对类的配置复制和保留基线.公共元数据必须保持纯文本;只使用统治方式的元数据在被写入表格之前,由节点的配置统治性元数据密钥加密.
 4. 常规的有效载荷是通过固体尺寸的配置文件进行的 `chunk_size`. Torii 计算有效载荷消化,可检索性证明树根和每块的承诺. 数据分量 BLAKE3 对于其字节的承诺.
@@ -419,7 +436,7 @@ DA 将一个有效载荷转化为签署的,反弹保护的,区块索引承诺.�
 7. 拒绝重播冲突.重播键是 `(lane_id, epoch, sequence, manifest_fingerprint)`.具有相同指纹的复制件是无效的.已过时的序列或具有不同的指纹的同一序列被拒绝.
 8. 发行签署的文物. Torii 计算 PDP 承诺,签署`DaIngestReceipt`,构建`DaCommitmentRecord`,并为公开文件编写卷文物;PDP 承诺,承诺记录,承诺时间表,笔意图,收件文件和收件日志.收件缓冲器每次`(lane_id, epoch)`均地推进.
 
-一个记录绑定了:
+一个记录结合了:
 
 - 路线,时代和序列
 - ID 的调用器和法典表格哈希
@@ -430,7 +447,7 @@ DA 将一个有效载荷转化为签署的,反弹保护的,区块索引承诺.�
 - 存储类和存储门票
 - Torii DA 确认签名
 
-在区块嵌入 DA 记录之前,区块组装路径验证了捆绑:
+在区块嵌入 DA 记录之前,区块组合路径验证了捆绑:
 
 - `(lane_id, epoch, sequence)`必须在捆绑中是唯一的.
 - 显而易见的哈希必须在捆绑中是非零和独特的.
@@ -442,14 +459,14 @@ DA 将一个有效载荷转化为签署的,反弹保护的,区块索引承诺.�
 
 ### 证据验证 {#proof-verification}
 
-`/v1/da/commitments/prove`可以为区块中的一个承诺提供证明.该证据包含承诺,区块高度,捆绑中索引,捆绑哈希,捆绑长度,默克尔根和兄弟路径.验证检查:
+`/v1/da/commitments/prove`可以为区块中的一个承诺提供证明.该证明包含承诺,区块高度,捆绑中的索引,捆绑哈希,捆绑长度,默克尔根和兄弟路径.验证检查:
 
 1. 证据捆绑哈希匹配区块标题的 DA 承诺哈希.
 2. 证明区块高度与引用的区块标题相匹配.
 3. 指数是限额的,承诺等于该指数中的包入.
-4. 车道防护政策接受了承诺.
+4. 道防护政策接受了承诺.
 5. 从承诺叶子折叠的兄弟路径重建了提供的根.
-6. 复制的根与捆绑根等.
+6. 复制的根相当于捆绑根.
 
 这证明,一个特定的区块有效载荷中包含了具体的可用性承诺;这并不证明每个复制品都目前在线.通过 SoraFS 供应商检查, PDP/PoTR 检查或特定配置文件的可用性证据来单独检查现场获取性.
 
@@ -464,11 +481,11 @@ DA 通过可靠的广播 (RBC) 连接到 Sumeragi,但它不是第二个最终协
 
 如果任何条件都不符合,同行记录 `missing_local_data`,通过 RBC 或区块同步继续试图恢复有效载荷,并报告状态和远程测量中 DA 门口.在目前的实施中,这些 DA 信号是最终性的建议:一个区块仍然从承诺证书加上相匹配的本地有效载荷来完成,而不是从单独的 DA 定制证书.
 
-DA 时间扩大恢复窗口.有效的 DA 定制时限从配置的区块中提取,然后乘以 `sumeragi.advanced.da.quorum_timeout_multiplier`.可用性时限为 `max(quorum_timeout, availability_timeout_floor_ms) * availability_timeout_multiplier`.在可用性截止日期到期之前,节点有利于有效载荷恢复并避免过早重新安排;在截止日后,正常恢复和视图更改路径可以继续进行.
+DA 时间扩大恢复窗口.有效的 DA 定制时限从配置的区块中提取,然后乘以`sumeragi.advanced.da.quorum_timeout_multiplier`.可用性时限为 `max(quorum_timeout, availability_timeout_floor_ms) * availability_timeout_multiplier`.在可用性截止日期到期之前,节点有利于有效载荷恢复并避免过早重新安排;在截止日后,正常恢复和视图更改路径可以继续进行.
 
 ### 运营商笔记 {#operator-notes}
 
-Iroha 3 共识配置文件包括 RBC 支持的有效载荷传播,表格保护,DA 捆绑验证和恢复远程测量.同行模板暴露`[sumeragi.da]`限制 对于每个区块的承诺和证据开放,再加上 `[sumeragi.advanced.da]` 定制和可用性行为时间延误乘法.保持这些设置在一个网络配置文件中的验证器中一致.
+Iroha 3 共识配置文件包括 RBC 支持的有效载荷传播,表格保护,DA 捆绑验证和恢复远程测量.同行模板暴露`[sumeragi.da]`限制 对于每个区块的承诺和证据开放,再加上对数量和可用性行为的时间延期乘法 `[sumeragi.advanced.da]`.保持这些设置在一个网络配置文件中的验证器中一致.
 
 对于路线发现,从节点的 OpenAPI 文档开始:
 
@@ -485,82 +502,161 @@ SoraFS 是分散的内容地址存储布料. 它将字节包装成决定性块, 
 
 典型的 SoraFS 用途包括静态应用资产,文档构建,区域捆绑,模型或文物引用和治理证据捆绑. Iroha 数据模型暴露了 SoraFS 门户事件和供应商所有权解决方案的[`FindSorafsProviderOwner`](/zh-hans/reference/queries.md#nexus-data-availability-and-packages)查询.
 
-### 包装,表达,签署和提交 {#pack-manifest-sign-and-submit}
+### Taira 测试网配置文件 {#taira-testnet-profile}
 
-```bash
-cargo run -p sorafs_car --features cli --bin sorafs_cli -- \
-  car pack \
-  --input ./dist \
-  --car-out artifacts/site.car \
-  --plan-out artifacts/site.chunk-plan.json \
-  --summary-out artifacts/site.car-summary.json
+Taira 是公开测试网 SoraFS.其注册验证器配置文件使用链 `fc56984b-2be7-431d-840e-21514d1883f0`和链分辨剂 `369`.其发布的 SoraFS 设置为:
 
-cargo run -p sorafs_car --features cli --bin sorafs_cli -- \
-  manifest build \
-  --summary artifacts/site.car-summary.json \
-  --manifest-out artifacts/site.manifest.to \
-  --manifest-json-out artifacts/site.manifest.json \
-  --pin-min-replicas=3 \
-  --pin-storage-class=warm \
-  --pin-retention-epoch=42
+- 网络 ID: `hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94`
+- 门口基 URL: `https://taira.sora.org`
+- 标签: Torii URLs: `https://taira-validator-1.sora.org` 到`https://taira-validator-4.sora.org`
+- 发现能力: `torii_gateway`, `chunk_range_fetch`,和 `potr_mldsa`
+- 单独含量来源: `https://{cid}.sorafs.taira.sora.org/{path}`
+- 公开标签政策:无许可和有费用目标,具有 `require_council_signatures = false`
 
-SIGSTORE_ID_TOKEN=$(oidc-client fetch-token) \
-cargo run -p sorafs_car --features cli --bin sorafs_cli -- \
-  manifest sign \
-  --manifest artifacts/site.manifest.to \
-  --bundle-out artifacts/site.manifest.bundle.json \
-  --signature-out artifacts/site.manifest.sig
+```toml
+[sorafs.storage]
+enabled = false
+max_capacity_bytes = 13743895347
 
-cargo run -p sorafs_car --features cli --bin sorafs_cli -- \
-  manifest submit \
-  --manifest artifacts/site.manifest.to \
-  --chunk-plan artifacts/site.chunk-plan.json \
-  --torii-url "$TORII_URL" \
-  --resolve-submitted-epoch=true \
-  --authority=<i105-account-id> \
-  --private-key-file ./secrets/authority.ed25519 \
-  --summary-out artifacts/site.manifest.submit.json \
-  --response-out artifacts/site.manifest.submit.body
+[sorafs.discovery]
+discovery_enabled = true
+known_capabilities = ["torii_gateway", "chunk_range_fetch", "potr_mldsa"]
+
+[sorafs.discovery.publish]
+gateway_base_url = "https://taira.sora.org"
+pin_torii_urls = [
+  "https://taira-validator-1.sora.org",
+  "https://taira-validator-2.sora.org",
+  "https://taira-validator-3.sora.org",
+  "https://taira-validator-4.sora.org",
+]
+
+[sorafs.gateway.untrusted_hosting]
+enabled = true
+path_gateway_redirect = true
+redirect_html_only = true
+
+[sorafs.gateway.untrusted_hosting.cid_host_suffixes]
+taira = "sorafs.taira.sora.org"
+
+[sorafs.repair]
+enabled = false
+
+[sorafs.gc]
+enabled = false
+
+[gov.sorafs_pin_policy]
+require_council_signatures = false
 ```
 
-如果 `/v1/sorafs/pin/register` 没有在目标节点上路由,则 CLI 可以回到已签署的 `/transaction` 提交中,并等待终端管道状态.
+Taira 验证器已经嵌入了 SoraFS 存储,维修和垃圾收集禁用.它们的配置容量仍然是验证器的一部分检查磁盘预算;这并不意味着验证器是存储提供商. 在测试之前,使用 `GET /v1/sorafs/storage/peers?limit=4` 来阅读当前配置的门口和接点目的地.
+
+`sorafs.sora.org` CID 后是现场/制作资料,而不是 Taira.不要将其放入 Taira 表格中,来源检查或浏览器测试中.生产部署必须使用其自己的网络身份,管理密钥,供应商录取材料,结点和能力/维修政策;永远不要将 Taira 凭证或终端点假设复制到生产配置中.
+
+### 公共局域 CID 和站点门口 {#public-local-cid-and-site-gateways}
+
+每一个 SoraFS- 启用了 Torii 节点安装这些匿名的公共路线,即使是可选应用程序 API 没有建造:
+
+|方法和终点| 用途                                                              |
+| ---------------------------------- | -------------------------------------------------------------------- |
+|`GET /.well-known/sorafs/manifest`|返回由常规请求主机选择的表格.|
+|`GET /v1/sorafs/cid/{cid}`|返回一个 CID 的局部公布元数据和文件输入|
+|`GET /sorafs/cid/{cid}`|服务一个本地内容地址的网站的根文件|
+|`GET /sorafs/cid/{cid}/{*path}`|在 CID 底下提供一个正常化路径,或一个有限的字节范围.|
+
+这些路线从来没有接受 `x-sorafs-stream-token`或 `x-sorafs-token-id`.任何一个标题的存在是一个糟糕的请求. 已经在节点的权威本地存储中存在的正规宣言是 公开阅读能力;缓存错误不允许远程提供商化. 保护的提供商 CAR 和零件路线仍然是单独的认证协议表面.
+
+在阅读字节之前, Torii 验证本地公布的法规编码,语义约束,消化和根 CID.然后需要授权本地供应商身份,管理认可以及对公布 CID 和提供商进行规范合规.门口关税/禁令政策使用有效客户端地址,仅通过配置的可信任代理来尊重转发的地址.如果 missing policy, compliance, identity或 admission state, Torii 将拒绝请求.
+
+一个请求持有端到端公开门口许可;整个过程的限制为64次同时阅读,返回过剩的请求 `503 Service Unavailable` 和 `Retry-After: 1`. 显而易见的答案限于16个 MiB, 文件列表默认为50个输入,返回最多500个,并且一个完整的文件或单字节范围限制在8个. MiB. 查询分析取决于构建. `app_api` 构建接受解码的未签名32位 `limit`, 忽略了其他查询键,让最后一个重复 `limit` 获胜,并将价值扣入 `1..=500`. 没有特征最小的构建 `app_api` 接受只有一个法典 `limit=1..500` 两对并拒绝未知的,重复的,百分比编码的或非正规形式. `limit=<1..500>` 对于跨构建的行为来说, CIDs, 在两个构建中,主机,路径和范围标题仍然是正规的,并且具有单重值. HTML, CSS, JavaScript, SVG, XML, PDF, 或是仅从配置的 CID- 衍生的孤立来源 (或转向到那里),防止共享路径-门户源执行不可信赖的内容.
+
+### 包装,建立和提交 {#pack-build-and-submit}
+
+下面的突变例子使用已注册的 Taira `NetworkId`,pin终端点,复制地板和治理政策. 使用资助的测试网络帐户和一次性所有者密钥文件. Taira 允许没有许可的脚无需委员会签名,但仍然收取受规定的费用.
+
+```bash
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  car pack \
+  --input=./dist \
+  --car-out=artifacts/site.car \
+  --plan-out=artifacts/site.chunk-plan.json \
+  --summary-out=artifacts/site.car-summary.json
+
+: "${TAIRA_AUTHORITY:?set a funded Taira I105 account}"
+export TAIRA_NETWORK_ID='hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94'
+export TAIRA_PIN_TORII_URL=https://taira-validator-1.sora.org
+export TAIRA_PRIVATE_KEY_FILE="${TAIRA_PRIVATE_KEY_FILE:-./secrets/taira-authority.ed25519}"
+export TAIRA_RETENTION_EPOCH=$(( $(date -u +%s) + 86400 ))
+
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  manifest build \
+  --summary=artifacts/site.car-summary.json \
+  --manifest-out=artifacts/site.manifest.to \
+  --manifest-json-out=artifacts/site.manifest.json \
+  --pin-min-replicas=1 \
+  --pin-storage-class=warm \
+  --pin-retention-epoch="$TAIRA_RETENTION_EPOCH"
+
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  manifest submit \
+  --manifest=artifacts/site.manifest.to \
+  --chunk-plan=artifacts/site.chunk-plan.json \
+  --torii-url="$TAIRA_PIN_TORII_URL" \
+  --network-id="$TAIRA_NETWORK_ID" \
+  --authority="$TAIRA_AUTHORITY" \
+  --private-key-file="$TAIRA_PRIVATE_KEY_FILE" \
+  --summary-out=artifacts/site.manifest.submit.json \
+  --response-out=artifacts/site.manifest.submit.body
+```
+
+`manifest submit` 要求 `/v1/sorafs/pin/register`. 如果目标节点不路由它,命令会失败; CLI 不属于普通产品. `/transaction` 终点.
 
 ### 检查和带来 {#verify-and-fetch}
 
-```bash
-cargo run -p sorafs_car --features cli --bin sorafs_cli -- \
-  proof verify \
-  --manifest artifacts/site.manifest.to \
-  --car artifacts/site.car \
-  --chunk-plan artifacts/site.chunk-plan.json \
-  --summary-out artifacts/site.verify.json
+获取其提供商. ID 和广告的基础 URL 来自 Taira 通过该供应商的录取流,获取门口钥匙和流通令牌.这些值不是验证器存储设置. Taira 验证器有嵌入式存储功能被禁用,因此不要替换验证器针 URL 供应商 URL.
 
-sorafs_cli fetch \
-  --plan artifacts/site.chunk-plan.json \
-  --manifest-id <manifest-digest-hex> \
-  --provider name=primary,provider-id=<provider-id-hex>,base-url=https://gateway.example.org/,stream-token="$(cat provider.token)" \
-  --output artifacts/site.fetch.tar \
-  --json-out artifacts/site.fetch.json
+```bash
+export TAIRA_ROOT=https://taira.sora.org
+curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
+
+: "${TAIRA_SORAFS_PROVIDER_ID:?set the admitted provider ID from Taira discovery}"
+: "${TAIRA_SORAFS_GATEWAY_KEY:?set the provider gateway key}"
+: "${TAIRA_SORAFS_PROVIDER_URL:?set the advertised provider base URL}"
+: "${TAIRA_SORAFS_STREAM_TOKEN_FILE:?set the issued stream-token file}"
+
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  proof verify \
+  --manifest=artifacts/site.manifest.to \
+  --car=artifacts/site.car \
+  --chunk-plan=artifacts/site.chunk-plan.json \
+  --summary-out=artifacts/site.verify.json
+
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  fetch \
+  --plan=artifacts/site.chunk-plan.json \
+  --manifest-id=<manifest-digest-hex> \
+  --provider=name=taira,provider-id="$TAIRA_SORAFS_PROVIDER_ID",gateway-key="$TAIRA_SORAFS_GATEWAY_KEY",base-url="$TAIRA_SORAFS_PROVIDER_URL",stream-token="$(cat "$TAIRA_SORAFS_STREAM_TOKEN_FILE")" \
+  --output=artifacts/site.fetch.tar \
+  --json-out=artifacts/site.fetch.json
 ```
 
 ### 检查可回收性证明 {#proof-of-retrievability-checks}
 
-运营商可以对存储提供商进行检查并启动验证:
+运营商可以检查,出口和报告可回收性证明结果.网络的证据管道规划挑战; CLI 将其结果表现出来.
 
 ```bash
-sorafs_cli por status \
-  --torii-url "$TORII_URL" \
-  --manifest <manifest-digest-hex> \
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  por status \
+  --torii-url="$TAIRA_PIN_TORII_URL" \
+  --manifest=<manifest-digest-hex> \
   --status=failed \
   --limit=20
 
-sorafs_cli por trigger \
-  --torii-url "$TORII_URL" \
-  --manifest <manifest-digest-hex> \
-  --provider <provider-id-hex> \
-  --reason=latency_probe \
-  --samples=48 \
-  --auth-token artifacts/challenge_token.to
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  por report \
+  --torii-url="$TAIRA_PIN_TORII_URL" \
+  --week=<YYYY-Www> \
+  --format=json
 ```
 
 ## SoraDNS {#soradns}
@@ -569,12 +665,12 @@ SoraDNS 是 SORA 服务和内容的确定性命名层.它将名称正常化,在 
 
 对于浏览器访问, SoraDNS 从注册的 FQDN 中导出网关主机. 注册的虚无性主机仍然是常规应用程序来源,而部署的网关配置文件则暴露了该来源的浏览器和 Torii 倒退路线.
 
-### 主持人表格 {#host-forms}
+### 接待者表格 {#host-forms}
 
-|表格|示例|目的|
+|表格|示例| 用途 |
 | --- | --- | --- |
 |虚荣的起源|`https://<fqdn>/<path>`|URL 记录在表格和公告中|
-|Taira 浏览器网关|`https://<fqdn>.mon.taira.sora.net/<path>`|公共浏览器网关为活跃的名|
+|Taira 浏览器网关|`https://<fqdn>.mon.taira.sora.net/<path>`|公共浏览器入口为活跃的名|
 |Torii 倒车路径|`https://taira.sora.org/soradns/<fqdn>/<path>`|Torii  active alias 的调试和回归路线|
 |佳能式哈希网关|`<base32(blake3(name))>.gw.sora.id`|确定性门口身份和 GAR 验证 |
 
@@ -607,7 +703,7 @@ console.log(hostPatternsCoverDerivedHosts(patterns, derived))
 
 GAR 有效载荷应该覆盖正规的哈希主机,正规的野生卡片和选择的漂亮的主机.
 
-### 获取一个分辨器目录快照 {#fetch-a-resolver-directory-snapshot}
+### 获取一个Resolver目录快照 {#fetch-a-resolver-directory-snapshot}
 
 ```bash
 curl -i "$TORII_URL/v1/soradns/directory/latest"
@@ -636,7 +732,7 @@ SoraDNS 主机衍生程序不取代常规互联网 DNS 委托程序.如果一个
 在 Nexus 服务中可用的与 FHE 有关的表面包括:
 
 - `iroha_crypto::fhe_bfv` 实现确定性 BFV 支持 skalar ciphertext评价.识别器分辨率使用 `BfvIdentifierPublicParameters` 和 `BfvIdentifierCiphertext`, 在此,插槽0存储输入字节长度,后来的插槽存储每一个加密字节.
-- Soracloud 状态和职位方案模型 FHE 密码文本工作负载与管理管理参数组,执行政策,密码文档承诺,查询封以及披露请求.
+- Soracloud 状态和职位方案模型 FHE 密码文本工作负载与管理管理参数组,执行政策,密码文档承诺,查询封和披露请求.
 
 BFV 识别器路径用于保护隐私的注册. 客户端可以提交加密识别器到 Torii 解决方案中.根据活跃识别器政策,获得一个 `OpaqueAccountId`,并发出一个收据. `ClaimIdentifier`然后将该收据绑定到目标账户附带的 UAID.
 
@@ -646,7 +742,7 @@ BFV 识别器路径用于保护隐私的注册. 客户端可以提交加密识�
 
 对于 Soracloud FHE 状态,实施的计划是:
 
-|方案|它控制了什么?|
+|方案|它所控制的东西|
 | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
 |`SoraStateBindingV1`与 `FheCiphertext`|声明状态密钥前置值为 FHE 密码文本. |
 |`FheParamSetV1`|名称:方案,后端,模块链,多项级别,插槽数量,安全目标,生命周期和参数消化.|
@@ -658,7 +754,7 @@ BFV 识别器路径用于保护隐私的注册. 客户端可以提交加密识�
 
 `FheJobSpecV1::validate_for_execution` 检查工作,执行政策和参数设置在录取前是否一致.它还强制执行特定操作规则:添加和乘法需要至少两个输入,旋转和启动带需要一个输入,要求的深度,旋转数量,启动带数量,输入数量,有效载荷字节和确定性输出尺寸必须保持在政策界限内.密码文字查询结果不得返回直文行.
 
-UAID 不是加密文本,也不是 FHE 政策本身.它是用于查找帐户,不透明的标识符索赔和空间目录绑定的稳定账户功能,允许服务或数据空间流程.FHE 方案通过参数集合,执行政策,密码文本承诺和解密权威政策分别管理加密有效载荷的输入和执行.
+UAID 不是加密文本,也不是 FHE 政策本身.它是用于查找帐户,不透明的标识符索赔和空间目录绑定的稳定账户功能,允许服务或数据空间流程.FHE 方案通过参数集,执行政策,密码文本承诺和解密权威政策分别管理加密有效载荷的输入和执行.
 
 相关的 Torii 表面包括:
 
@@ -677,16 +773,17 @@ UAID 不是加密文本,也不是 FHE 政策本身.它是用于查找帐户,不�
 
 ## 运营检查列表 {#operational-checklist}
 
-- 确认有 `/openapi`在目标 Torii 节点上的启用服务家庭.
+- 确认产生的服务家庭 `/openapi` 在目标上 Torii 节点,探测公共局部 SoraFS CID 直接使用已知路线.
 - 处理 Soracloud 部署表格, SoraFS 表格,SoraDNS 解决器目录记录, SoraNet 继电目录记录和 DA 笔意图或可用性承诺作为对治理敏感的文具.
 - 在一个网络中的验证器中,使用相同的 SORA Nexus 配置文件.
 - 保持Inrou根和共享租数量在表格中,而不是依赖于临时节点本地路径.
 - 在推广内容别名之前使用 SoraFS 证据验证.
 - 监视器 SoraNet 握手失败, DA 定制或可用性时间, SoraFS 网关拒绝, SoraDNS RAD 新鲜性,以及 Soracloud 部署健康.
-- 对于公开 Taira 或 Minamoto 的使用,首先使用[连接到 SORA Nexus 数据库](/zh-hans/get-started/sora-nexus-dataspaces.md).
+- 为了使用公共测试网络,请使用 Taira 的配置文件,从 [开始连接到 SORA Nexus 数据库](/zh-hans/get-started/sora-nexus-dataspaces.md).
 
 此外,请参见:
 
 - [Torii 终端点](/zh-hans/reference/torii-endpoints.md)
 - [数据事件过器](/zh-hans/blockchain/filters.md#data-event-filters)
 - [查询参考](/zh-hans/reference/queries.md#nexus-data-availability-and-packages)
+- [在固定的 commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/configs/soranexus/taira/config.toml)上可尼克式 Taira 验证器配置

@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: 4fe9b19fc4d13cfc71d9b9558fe7cdb1d14bd88c2d20f4d23c66313ba3ddd4b6
+translation_source_hash: 67778f9fc4f2b6fa0288f5921402cf5509515aae678e98b8192e103dfe284db3
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -14,7 +14,7 @@ Kotodama V1 shartnomasini tekshirish va tuzish, uning ommaviy kirish joyini maha
 
 ## Oldingi shartlar {#prerequisites}
 
-- Iroha manbai checking at commit `bc7114ed1c7f265a156d2100ff09e851cc95702c`, Rust, va Cargo.
+- Iroha manbai checking at commit `0010c5a70039eac101a4846499ba9ceaf43eb65c`, Rust, va Cargo.
 - Joriy `iroha` CLI qo'shimcha mablag ' bilan ta'minlangan Taira mijoz [Bogʻlanish Taira](./connect-to-taira.md).
 - Muqobil yo ' nalishlar `IROHA_CONFIG` va `IROHA_PRIVATE_KEY_FILE`. Yopiq fayl egalik qiladigan, bitta bog'liq odatdagi fayl bo'lishi kerak `0600`; qo'shish yordamchisi niyatda xususiy kalit bilan bog'liq hech qanday dalilga ega emas.
 - Taira operatorining ruxsatnomasi. Shartnoma kodini ro'yxatdan o'tkazish uchun `CanRegisterSmartContractCode` talab etiladi va himoyalangan joylashtirishlar boshqaruv taqsimoti va qonuniylashtirishni talab qilishi mumkin. Agar Taira bu kirish huquqini bermasa, jo'natilgan mahalliy tarmog'da joylashtirishni amalga oshiradi.
@@ -131,7 +131,7 @@ jq '{contract_address, code_hash_hex, final, fee_quotes}' \
   ./build/deployment.json
 ```
 
-Bo'sh `charge_limits` so'rovi nusxa ko'chirilgan aktiv identifikatori emas: yordamchi imzolashdan oldin aniq jonli taklifni qabul qiladi. Qaytarib berilgan to'lov aktivini joriy kran javob bilan taqqoslang. Shartnoma qo'ng'iroqlariga meros bo'lgan `gas_asset_id` metadatalarni ilova qilmang.
+Bo'sh `charge_limits` so'rovi nusxa ko'chirilgan aktiv identifikatori emas: yordamchi imzolashdan oldin aniq jonli taklifni qabul qiladi. qaytarilgan to'lov aktivini joriy kran javob. Shartnoma qo'ng'iroqlari faqat tiklangan jonli taklif orqali to'lovni tanlashni qabul qiladi; `gas_asset_id` muomala metadatalari birinchi nashr shartnomasining bir qismi emas.
 
 ### 5. O'rnatilgan kirish punktini simulyatsiya qilish va qo'llash {#_5-simulate-and-call-the-deployed-entrypoint}
 
@@ -195,19 +195,19 @@ Jo'natish faqat alias qaytarib yuborilgan manzilga o'zgarganda, manifest bir xil
 
 ## Muammolarni hal qilish {#troubleshooting}
 
-- `CanRegisterSmartContractCode` xatolari uchun Taira operator grantini yoki localnet-da genesis/bootstrap o'zgarishini talab qiladi. Oddiy hisob qaydnomasi ushbu ruxsatni faktdan keyin o'z-o'zi berishi mumkin emas.
+- `CanRegisterSmartContractCode` xatolari uchun Taira operator grantini yoki localnetda genesis/bootstrap o'zgarishini talab qiladi. Oddiy hisobvaraq ushbu ruxsatni faktdan keyin o'zi berolmaydi.
 - Boshqaruv yoki himoyalangan yoʻnalishlarni rad etish , ishga tushirish uchun toʻgʻri tasdiqlov talab etiladi . o'sha tarmoq tomonidan talab etiladigan ma'lumotlar; tasdiqlovchilar ro'yxatini muvofiqlashtirish; hisobni yaratmaslik IDs.
 - Manifesto yoki ABI mos kelmasligi - bu bytecode, manifest va nod ish vaqti bir xil artefaktni tasvirlamaydi degan ma'noni anglatadi. `--verify`.
 - `fee quote changed ... gas bound` so'ragan tizilgan niyat va jonli quote kelishmovchilikni anglatadi. imzolangan tranzaksiyani o'zgartirishning o'rniga qayta ko'rib chiqish.
 - Tarqatish yordamchisi tarmoqni taqdim etishdan oldin chiziqdagi kalitlarni, ruxsat beruvchi kalit fayl rejimlarini, sim havolalarini va bog'langan fayllarni ko'paytirishni rad etadi.
 - Faqat ko'rish uchun kirish nuqtasi xatosi `compute` noto'g'ri buyruq oilasi orqali yo'naltirilganligini anglatadi. Ushbu namuna `kotoage` deb e'lon qiladi, shuning uchun qo'ng'iroq simulyatsiyasi yoki taqdimotdan foydalaning.
-- Kontrakt qo'ng'iroqlari uchun ijobiy gaz chegarasi talab etiladi. Eng yuqori darajadagi eski gaz yoki to'lov aktivlari metadatalari rad etiladi.
+- Shartnoma qo'ng'iroqlari ijobiy gaz cheklovini talab qiladi. Birinchi chiqarilgan chaqiriq shartnomasi eng yuqori darajadagi gaz yoki to'lov aktivlari metadatalarini rad etadi.
 
 ## Manba va u bilan bog'liq hujjatlar {#source-and-related-docs}
 
-- [Kotodama V1 buyruqni qat'iy qo'yishda amalga oshirish](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/ivm/src/bin/koto.rs)
-- [Tuple-return manbai namunasini qatlamli commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
-- [](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs) o'rnatilgan commit-da mahalliy joylashtirishga yordamchi
-- [](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/contracts.rs) to'g'rilashtirilgan majburiyatda shartnoma integratsiyasi sinovlari
+- [Kotodama V1 buyruqni qat'iy qo'yishda amalga oshirish](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/src/bin/koto.rs)
+- [Tuple-return manbai namunasini qatlamli commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
+- [](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs) o'rnatilgan commit-da mahalliy joylashtirishga yordamchi
+- [](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs) to'g'rilashtirilgan majburiyatda shartnoma integratsiyasi sinovlari
 - [Aqlli shartnomalar](/uz/blockchain/smart-contracts.md)
 - [CLI ma'lumotnomasi](/uz/get-started/operate-iroha-via-cli.md)

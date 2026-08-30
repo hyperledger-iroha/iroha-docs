@@ -317,7 +317,7 @@ Restart or roll this config through your normal operator process.
 Generate a sponsor key pair if needed:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./fee-sponsor-key
 ```
 
 Convert the public key into the account format for your network:

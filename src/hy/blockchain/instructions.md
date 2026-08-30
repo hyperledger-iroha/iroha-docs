@@ -1,9 +1,9 @@
 ---
 translation_locale: hy
 translation_source: /blockchain/instructions.md
-translation_source_hash: adc3eff9758dd73e9114e78eaa18ddf6271db3bc4042611e1ed6ed1aac226246
+translation_source_hash: ade5ba2b693de7e798490be0947099d0306d9565b88550e201dccd181810fb18
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Iroha Հատուկ հրահանգներ {#iroha-special-instructions}
@@ -21,6 +21,7 @@ Iroha հատուկ հրահանգների ամբողջական ցանկը հետ
 | [Grant/Revoke](#grant-revoke) |Տվեք կամ հանեք թույլտվությունները եւ դերերը: |
 | [Տրանսֆեր](#transfer) |Տրանսֆերային սեփականություն կամ ակտիվի արժեք: |
 | [Բնային պահպանումների եւ ակտիվների կոճակները](#native-escrow-and-asset-locks) |Փակեք թվային ակտիվները արձանագրության պահեստում: |
+| [Ատոմային մասնավոր հաշվարկ](#atomic-private-settlement) | Կառավարում է գաղտնի pool-երը և ատոմային փաթեթները։ |
 | [ExecuteTrigger](#executetrigger) |Գործադրեք գործարկիչները: |
 | [Լոգ/Մշակութային/Աջատում](#other-instructions) |Գրեք, երկարացրեք կամ բարելավեք վազման ժամանակի վարքագիծը: |
 
@@ -42,6 +43,7 @@ Iroha հատուկ հրահանգների ամբողջական ցանկը հետ
 | [Grant/Revoke](#grant-revoke) | [դեր, թույլտվությունների տոքեր](/hy/blockchain/permissions.md) |հաշիվներ կամ դերակատարություններ |
 | [Տրանսֆեր](#transfer) |տիրույթներ, ակտիվների սահմանումներ, թվային ակտիվներ, NFTs |հաշվետվություններ|
 | [Բնային պահպանումների եւ ակտիվների կոճակները](#native-escrow-and-asset-locks) |թվային ակտիվների պահպանումներ, ակտիվների փակումներ, անանուն պահպանումի պարտավորություններ |գնորդներ, նպատակակետեր կամ վեճի բաժանումներ |
+| [Ատոմային մասնավոր հաշվարկ](#atomic-private-settlement) | երթուղուն կապված գաղտնի pool-եր, քաղաքականության ռոտացիաներ, վերջնականացված փաթեթներ և չեղարկման նշաններ | |
 | [ExecuteTrigger](#executetrigger) |գործարկիչներ |                      |
 | [Լոգ/Մշակութային/Աջատում](#other-instructions) |օրագրեր, կատարողին հատուկ օգտակար բեռներ, կատարողի թարմացումներ |                      |
 
@@ -234,7 +236,10 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 Գրանցել եւ չեղարկել զուգընկերները: Ստեղծեք BLS բանալին եւ PoP ՝ `kagami`, եթե դուք դեռ չունեք դրանք.
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./peer-key
+PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
+PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
@@ -325,6 +330,14 @@ Native escrow հրահանգները հաշիվային ակտիվների կո�
 Շուկայի պահպանակների օգտագործումը `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, եւ `ResolveEscrowDispute`. Գնացական ակտիվների փակման օգտագործումը `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, եւ `ExpireAssetLock`. Anonymous escrow արտացոլում է շուկայական կյանքի ցիկլը `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, եւ `ResolveAnonymousEscrowDispute`.
 
 Այս ISIs-ները ներկայումս չունեն առաջին դասի CLI հրամաններ: Օգտագործեք տիպված SDK կառուցապատողներ կամ շարականացված հրահանգների օգնական բեռներ, եւ տեսեք [Native Asset Escrow](/hy/blockchain/escrow.md) ՝ կյանքի ցիկլի մանրամասների, թույլտվությունների, հարցումների, իրադարձությունների եւ Rust օրինակների համար.
+
+## Ատոմային մասնավոր հաշվարկ {#atomic-private-settlement}
+
+Կառավարման ենթակա ատոմային մասնավոր հաշվարկի հրահանգները տարանջատված են թափանցիկ Native AMX-ից։ `ActivatePrivateSettlementPoolV1`-ը խմբագրված կառավարման պրոյեկցիայից և կանոնական սկզբնաղբյուրի պարտավորություններից ճշգրիտ երթուղու համար ստեղծում է մեկ գաղտնի `pool`։ `FinalizeAtomicPrivateSettlementV1`-ը ատոմային կերպով կիրառում է բոլոր մասնակից կոմիտեների կողմից վավերացված ամբողջական փաթեթը։ `AbortAtomicPrivateSettlementV1`-ը հրապարակում է միայն հովանավորի կողմից թույլատրված հանրային վերջնական նշանը։
+
+`RotatePrivateSettlementPoolPolicyV1`-ը կարող է կատարել միայն գաղտնիության կառավարումը։ Հրահանգը պահանջում է գործող կառավարման ճշգրիտ digest-ը, պահպանում է երթուղին, `pool`-ը, ակտիվի կապակցման պարտավորությունը, վիճակի սահմանը, replay set-երը և վերջնականացված անդորրագրերը, հանրային revision-ը մեծացնում է մեկով և օգտագործում աուդիտորի բանալիի ավելի նոր epoch։ Ռոտացիան ակտիվանում է ներառման բարձրության վրա, և նույն բարձրության վրա նույն երթուղու ու `pool`-ի անդորրագիրը չի կարող վերջնականացվել։ Հանրային revision-ների շղթան ռոտացիայից առաջ վերջնականացված անդորրագրերը վերագործարկումից հետո էլ վավեր է պահում, իսկ դրանց ճշգրիտ կրկնությունը idempotent է։ Հին քաղաքականությամբ ընթացիկ փաթեթները վիճակը փոխելուց առաջ fail closed են լինում։ Օպերատորները պետք է պահեն հին ապակոդավորման բանալիները կամ բանալիները ոչնչացնելուց առաջ կառավարվող կերպով վերափաթեթավորեն capsule-ները և փորձարկեն արդյունքը։
+
+Այս ուղին լռելյայն անջատված է և արտադրական օգտագործման համար որակավորված չէ։ Կազմաձևման, լիազորությունների, աուդիտի, վերականգնման և թողարկման պահանջների համար տես [ատոմային մասնավոր հաշվարկ տվյալների տարածքների միջև](/get-started/atomic-private-settlement)։
 
 ## Գրանտ/Վերահսկում {#grant-revoke}
 

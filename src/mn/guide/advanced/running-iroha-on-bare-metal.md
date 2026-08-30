@@ -1,7 +1,7 @@
 ---
 translation_locale: mn
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 77780600fa59ba353e2aa79fb339adb6a02f7ac731e04cd0d5f51821ec54e794
+translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,12 +15,15 @@ translation_engine: nllb-200-ct2
 Iroha тоног төхөөрөмжийн урсгалын өмнөд хэсгээр:
 
 ```bash
-cargo build --release -p irohad -p iroha_cli -p iroha_kagami
+cargo build --release \
+  -p irohad --bin iroha3d \
+  -p iroha_cli --bin iroha \
+  -p iroha_kagami --bin kagami
 ```
 
 Энэ нь:
 
-- `target/release/irohad` өрсөлдөгч даймон
+- `target/release/iroha3d` өрсөлдөгч даймон
 - `target/release/iroha` нь CLI
 - `target/release/kagami` нөөц, генез, локалийн сүлжээний үйлдвэрлэлийн хувьд
 
@@ -29,7 +32,7 @@ cargo build --release -p irohad -p iroha_cli -p iroha_kagami
 Дөрвөн ижил төстэй Iroha 3 локалийн сүлжээг бий болгох:
 
 ```bash
-target/release/kagami localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+target/release/kagami localnet --peers 4 --out-dir ./localnet
 ```
 
 Урьдчилгааны товчоо нь үүсгэн бүтээсэн `genesis.json`, `genesis.signed.nrt`, өрсөлдөгчийн `config.toml` файл, `client.toml`, туслах скрипт ба тухайн багцын тохирсон захирамжтай үүсгэсэн `README.md` байдаг.

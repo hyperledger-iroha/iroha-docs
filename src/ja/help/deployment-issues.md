@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /help/deployment-issues.md
-translation_source_hash: 6f35ac59053e312f56a716810c8f0b625752500d1fc64b27d93cbd8317b6cc19
+translation_source_hash: 5c7d26b39d4ddf4e7e164f7bef79c9e1659db51587fb0dde9cf3f1dc0e3b057b
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2
 Kagami によって生成されたアーテファクトを手書きのペアファイルではなく,ローカルおよびテストデプロイメントのために好みます.
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 生成されたディレクトリには,ピアコンフィギュア,ゲネス資料,スタートスクリプト,および Iroha 3 ビルドラインのための README が含まれています.
@@ -24,7 +24,7 @@ cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./loc
 
 まずこれらの項目をチェックします
 
-- `irohad --config <path>`は,同級者の自身のファイル TOML のポイントである.
+- `iroha3d --config <path>`は,同級者の自身のファイル TOML のポイントである.
 - ピア設定の `public_key` と `private_key` は,同じキーペアに属します.
 - `genesis.public_key` は創始取引に署名するために使用された鍵と一致します.
 - validator peer identities は BLS-Normal keys を使用し, `trusted_peers_pop` にはローカルキーと信頼できる peers の所有権証明のエントリが含まれています.
@@ -34,7 +34,7 @@ cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./loc
 TOML 層以上を読み出すとき,設定追跡を使用する.
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --trace-config
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 ```
 
 ## Docker およびコンポーズ {#docker-and-compose}
@@ -42,9 +42,9 @@ cargo run --bin irohad -- --config ./config.toml --trace-config
 生成 現在の Kagami localnet アウトプットから複製し,コマンドラインのアーグメントと構成ファイルがチェックアウトコードに一致するようにします:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./localnet/docker-compose.yml --force
-docker compose -f ./localnet/docker-compose.yml up
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
+docker compose -f ./docker-compose.yml up
 ```
 
 構成部署が開始され,その後停止した場合,デモンログをチェックしてください.
@@ -72,7 +72,7 @@ Kubernetesでは,各検証器をステートフルインフラとして扱う.
 Nexus,SoraFS または多レーンフローを使用する Iroha 3 部署は,Soraプロフィールが有効にされているデモンを起動する必要があります:
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --sora
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora
 ```
 
 同じネットワークの検証者間で一貫して同じプロフィールを使用します.

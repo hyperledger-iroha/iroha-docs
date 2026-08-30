@@ -1,9 +1,9 @@
 ---
 translation_locale: ba
 translation_source: /blockchain/instructions.md
-translation_source_hash: adc3eff9758dd73e9114e78eaa18ddf6271db3bc4042611e1ed6ed1aac226246
+translation_source_hash: ade5ba2b693de7e798490be0947099d0306d9565b88550e201dccd181810fb18
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+codex-semantic-review
 ---
 
 # Iroha Махсус күрһәтмәләр {#iroha-special-instructions}
@@ -21,6 +21,7 @@ Iroha Махсус күрһәтмәләрҙең тулы исемлеге:
 | [Grant/Revoke](#grant-revoke) |Ролдар һәм рөхсәт биреү йәки алып ташлау. |
 | [Трансфер](#transfer) |Милек хоҡуғын йәки актив хаҡын күсереү. |
 | [Һаҡлыҡ менән тәьмин итеү һәм активтарҙы һаҡлау](#native-escrow-and-asset-locks) |Протокол һаҡ аҫтында һанлы активтарҙы бикләгеҙ. |
+| [Атом шәхси иҫәпләшеүе](#atomic-private-settlement) | Йәшерен пулдарҙы һәм атом пакеттарын идара итә. |
 | [ExecuteTrigger](#executetrigger) |Тэггерҙарҙы үтәгеҙ. |
 | [Журнал/Ҡалыптар/Үҙгәртеү](#other-instructions) |Эш ваҡыты тәртибен теркәү, киңәйтеү йәки яңыртыу. |
 
@@ -42,6 +43,7 @@ Iroha Махсус күрһәтмәләрҙең тулы исемлеге:
 | [Grant/Revoke](#grant-revoke) | [ролдәр, рөхсәт билдәләре](/ba/blockchain/permissions.md) |иҫәптәр йәки ролдәр |
 | [Трансфер](#transfer) |домендар, активтар билдәләмәләре, һанлы активтар, NFTs |иҫәптәр |
 | [Һаҡлыҡ менән тәьмин итеү һәм активтарҙы һаҡлау](#native-escrow-and-asset-locks) |һанлы активтар депозиты, активтарҙы ябыу, аноним конфиденциаль бурыстар |һатып алыусылар, йүнәлештәр йәки бәхәстәр бүленә |
+| [Атом шәхси иҫәпләшеүе](#atomic-private-settlement) | аныҡ маршрутҡа бәйләнгән йәшерен пулдар, сәйәсәт ротациялары, тамамланған пакеттар һәм туҡтатыу билдәләре | |
 | [ExecuteTrigger](#executetrigger) |триггерҙар |                      |
 | [Журнал/Ҡалыптар/Үҙгәртеү](#other-instructions) |журналдар, башҡарыусыға ҡағылышлы файҙалы йөкләмәләр, башҡарыусыларҙы яңыртыу |                      |
 
@@ -234,7 +236,10 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 BLS асҡысын һәм PoP асҡысын, әгәр һеҙҙә улар юҡ икән, `kagami` менән булдырығыҙ:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./peer-key
+PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
+PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
@@ -325,6 +330,14 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 Баҙарҙа депозит ҡулланыу `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, һәм `ResolveEscrowDispute`. Ғәҙәттәгесә активты ябыу ҡулланыу `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, һәм `ExpireAssetLock`. Anonymous escrow баҙарҙа йәшәү циклын сағылдыра `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, һәм `ResolveAnonymousEscrowDispute`.
 
 Был ISIs хәҙерге ваҡытта беренсе класлы юҡ CLI командалар. типте ҡулланыу SDK төҙөүселәр йәки сериаллаштырылған инструкция файҙалы йөкләмәләре, һәм ҡара: [Тыуған милке иҫәбенә депозит](/ba/blockchain/escrow.md) тормош циклы мәғлүмәттәре, рөхсәттәре, һорауҙары, ваҡиғалары өсөн һәм Rust миҫалдар.
+
+## Атом шәхси иҫәпләшеүе {#atomic-private-settlement}
+
+Идара ителгән атом шәхси иҫәпләшеү күрһәтмәләре асыҡ Native AMX-тан айырым. `ActivatePrivateSettlementPoolV1` ҡыҫҡартылған идара итеү проекцияһынан һәм канонлы башланғыс йөкләмәләрҙән аныҡ маршрут өсөн бер йәшерен `pool` булдыра. `FinalizeAtomicPrivateSettlementV1` бөтә ҡатнашыусы комитеттар раҫлаған тулы пакетты атом рәүешендә ҡуллана. `AbortAtomicPrivateSettlementV1` бағыусы рөхсәт иткән асыҡ һуңғы билдәне генә баҫтыра.
+
+`RotatePrivateSettlementPoolPolicyV1`-ҙе тик хосусилыҡ идаралығы үтәй ала. Күрһәткән ғәмәлдәге идара итеү дайджесты менән теүәл тап килеүҙе талап итә; маршрутты, `pool`-ды, активты бәйләү йөкләмәһен, хәл сиген, ҡабатлауҙан һаҡлау йыйылмаларын һәм тамамланған квитанцияларҙы һаҡлай, асыҡ ревизияны бергә арттыра һәм аудитор асҡысының яңыраҡ дәүерен ҡуллана. Ротация индереү бейеклегендә көсөнә инә һәм шул бейеклектә шул уҡ маршрут менән `pool` өсөн квитанция тамамлана алмай. Асыҡ ревизиялар шәжәрәһе ротацияға тиклем тамамланған квитанцияларҙы яңынан эшләтеп ебәргәндән һуң да яраҡлы, ә уларҙы теүәл ҡабатлауҙы идемпотентлы итеп һаҡлай. Иҫке сәйәсәт менән эшкәртелгән пакеттар хәл үҙгәргәнгә тиклем fail closed рәүешендә уңышһыҙ була. Операторҙар иҫке дешифрлау асҡыстарын һаҡларға йәки асҡыстарҙы юҡ итер алдынан капсулаларҙы идара ителгән тәртиптә яңынан төрөп һынарға тейеш.
+
+Был юл ғәҙәттә һүндерелгән һәм етештереүҙә ҡулланыу өсөн квалификация үтмәгән. Конфигурация, вәкәләт, аудит, тергеҙеү һәм сығарыу талаптары өсөн [мәғлүмәт киңлектәре араһында атом шәхси иҫәпләшеүен эшләтеү](/get-started/atomic-private-settlement) бүлеген ҡарағыҙ.
 
 ## Грант/Ҡатҡарыу {#grant-revoke}
 

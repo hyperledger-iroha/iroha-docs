@@ -1,16 +1,17 @@
 ---
 translation_locale: am
 translation_source: /guide/configure/genesis.md
-translation_source_hash: d3c04386c8d6e2778e53477e8f717a04247a66714cfed2c25ca84fbfb3871813
+translation_source_hash: a6b8b2b02e0074e6c90d9aa9337af3e2496a02beb2f57f575dc0780014df04b2
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: google-translate
 ---
 
-# ዘፍጥረት {#genesis}
+# ኦሪት ዘፍጥረት {#genesis}
 
-ዘፍጥረት የመጀመሪያውን ሰንሰለት ሁኔታ ይገልጻል። ሊስተካከል የሚችል ምንጭ JSON ማኒፌስት ሲሆን Iroha 3 አንጓ የተፈረመ Norito የግብይት ፋይል ያጠቃልላል ።
+ዘፍጥረት የመጀመሪያውን ሰንሰለት ሁኔታ ይገልጻል።ሊስተካከል የሚችል ምንጭ ሀ JSON ገላጭ፣
+እና አንድ Iroha 3 መስቀለኛ መንገድ የተፈረመበትን ይበላል Norito የግብይት ፋይል.
 
-::: details ነባሪ የጄኔዚስ ማኒፌስት
+::: details ነባሪ ዘፍጥረት አንጸባራቂ
 
 <<< @/snippets/genesis.json
 
@@ -18,17 +19,21 @@ translation_engine: nllb-200-ct2
 
 ## ፋይሎች {#files}
 
-የቅድመ ፍሰት ማከማቻ በ ላይ ነባሪ ማንቂያ ይልካል `defaults/genesis.json`. Kagami-የተፈጠሩ አውታረ መረቦች የራሳቸውን ማሳያ እና የተፈረሙ ግብይቶች ወደ የውጤት ማውጫ ይጽፋሉ:
+ወደ ላይ ያለው ማከማቻ ነባሪ አንጸባራቂን በ `defaults/genesis.json`.
+Kagami-የተፈጠሩ አውታረ መረቦች የራሳቸውን መግለጫ እና የተፈረመ ግብይት ይጽፋሉ
+የውጽአት ማውጫ፡
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-በዚያ ማውጫ ውስጥ የተፈጠረው `README.md` ለተመረጠው መገለጫ ትክክለኛውን ፋይሎች እና የመነሻ ትዕዛዞችን ይመዝግባል።
+የተፈጠረው `README.md` በዚያ ማውጫ ውስጥ ትክክለኛውን ፋይሎች ይመዘግባል እና ያስነሳል።
+ለተመረጠው መገለጫ ትዕዛዞች.
 
-## የእኩዮች አሠራር {#peer-configuration}
+## የአቻ ውቅር {#peer-configuration}
 
-በ `config.toml` `[genesis]` ክፍል ውስጥ የተፈረመውን የጀኔዝ ግብይት የሚያመለክቱ አቻዎች:
+በ ውስጥ የተፈረመው የዘፍጥረት ግብይት ላይ እኩዮች ይጠቁማሉ `[genesis]` ክፍል የ
+`config.toml`:
 
 ```toml
 [genesis]
@@ -36,22 +41,32 @@ file = "./genesis.signed.nrt"
 public_key = "ed0120..."
 ```
 
-በአውታረ መረቡ ውስጥ ያሉ ሁሉም እኩዮች የተፈረመውን የጄኔዝ ግብይት እና የጄኔዚስ የህዝብ ቁልፍ መስማማት አለባቸው ።
+በአውታረ መረቡ ውስጥ ያሉ ሁሉም እኩዮች በተፈረመበት የዘፍጥረት ግብይት እና በ
+ዘፍጥረት የህዝብ ቁልፍ.
 
-## የዘፍጥረት መጽሐፍ ፊርማ {#signing-genesis}
+## ዘፍጥረትን መፈረም {#signing-genesis}
 
-አንድን ማኒፌስት በእጅ የሚያርትዑ ከሆነ, እኩዮችን ከመጀመርዎ በፊት ያረጋግጡ እና ይፈርሙበት:
+አንጸባራቂን እራስዎ አርትዕ ካደረጉት አጽድተው እኩዮችን ከመጀመርዎ በፊት ይፈርሙት፡-
 
 ```bash
 cargo run --bin kagami -- genesis validate ./genesis.json
 cargo run --bin kagami -- genesis sign ./genesis.json \
-  --private-key "$GENESIS_PRIVATE_KEY_HEX" \
-  --algorithm ed25519 \
+  --private-key-file "$GENESIS_PRIVATE_KEY_FILE" \
   --out-file ./genesis.signed.nrt
 ```
 
-ለ NPoS ወይም Nexus መገለጫዎች ፣ የቶፖሎጂ እና BLS የተፈጠረው መገለጫ የሚጠይቀው የንብረት ማስረጃ። Kagami `localnet`, `wizard`, እና የመገለጫ ትውልድ ትዕዛዞች እነዚያን ዝርዝሮች በራስ-ሰር ያስተናግዳሉ.
+`GENESIS_PRIVATE_KEY_FILE` በባለቤትነት የተያዘ ሁነታ መሆን አለበት-`0600`, ነጠላ-አገናኝ
+አንድ ቀኖናዊ የግል-ቁልፍ መልቲሃሽ እና የመጨረሻውን የያዘ መደበኛ ፋይል
+አዲስ መስመር. Kagami ምሳሌያዊ አገናኞችን አይቀበልም እና ጥሬ ዘፍጥረትን በጭራሽ አይቀበልም።
+በትእዛዝ መስመር ላይ ቁልፍ.
 
-## ዘፍጥረት ዳግመኛ መፈጸሙ {#recommitting-genesis}
+ለ NPoS ወይም Nexus መገለጫዎች, ቶፖሎጂን እና ያካትታሉ BLS የይዞታ ማረጋገጫዎች
+በተፈጠረው መገለጫ ያስፈልጋል. Kagami `localnet`, `wizard`, እና መገለጫ
+የትውልድ ትዕዛዞች እነዚያን ዝርዝሮች በራስ-ሰር ያስተናግዳሉ።
 
-አንድ እኩይ ብቻ ማከማቻው ባዶ በሚሆንበት ጊዜ ጀኔሲስን ይፈጽማል ። በአንድ ነጠላ localnet ውስጥ አዲስ ጀኔሲስ ለመሞከር ፣ እኩዮቹን ያቁሙ ፣ የተፈጠረውን የስቴት ማውጫቸውን ያስወግዱ እና ከአዲሱ የተፈረመ ጅኔሲስ ይጀምሩ። እያንዳንዱ ማረጋገጫ ሰጪ ተመሳሳይ ፍልሰት ካልተቀናጀ በስተቀር በሂደቱ አውታረ መረብ ላይ ጄኔሲን አይተካ።
+## ዘፍጥረትን እንደገና ማስጀመር {#recommitting-genesis}
+
+እኩያ ዘፍጥረትን የሚፈጽመው ማከማቻው ባዶ ሲሆን ብቻ ነው።ውስጥ አዲስ ዘፍጥረትን ለመሞከር
+ሊጣል የሚችል የአካባቢ መረብ፣ እኩዮቹን ያቁሙ፣ የፈጠሩትን የግዛት ማውጫ ያስወግዱ፣
+እና ከአዲሱ የተፈረመ ዘፍጥረት ይጀምሩ።በሩጫ ላይ ዘፍጥረትን አትተኩ
+እያንዳንዱ አረጋጋጭ ተመሳሳይ ፍልሰትን እያስተባበረ ካልሆነ በስተቀር አውታረ መረብ።

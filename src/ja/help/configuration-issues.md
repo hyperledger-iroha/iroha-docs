@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /help/configuration-issues.md
-translation_source_hash: b62b106e985933d90dab1258d3b991674dd75d14322f2326148164b0fbee0f20
+translation_source_hash: 4b96a4f740203aace2e8c091ed89156146ba117e23eff1d08f3bbb01de92f24a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -25,7 +25,7 @@ Iroha の Docker Compose バージョンを使用している場合,同等コン
 このような問題をトラブルシューティングする方法は, Iroha の使用に依存します.これは基本的なデモであり,ペアデータを保存する必要がない場合は, Kagami で一致するローカルネットまたは Docker Compose バンドルを再生してください.
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
 ```
 

@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /reference/peer-config/params.md
-translation_source_hash: d9fa3775e65b26b4eda726b27e54d167097b8bbd5bb766c27d7eeefdbc7ef10b
+translation_source_hash: 027486a17e7624cc301f939429baf9ea9ed1259564c3b99b8dc63cce17a7b26e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 
@@ -58,7 +58,7 @@ PUBLIC_KEY="ea01309060D021340617E9554CCBC2CF3CC3DB922A9BA323ABDF7C271FCC6EF69BE7
 
 ### `private_key` <Badge text="required" /> {#param-private-key}
 
-Clave privada del peer. Debe coincidir con `public_key`; los pares validadores de consenso deben utilizar las claves normales BLS.
+Clave privada del par. Debe coincidir con `public_key`; los pares validadores de consenso deben utilizar las claves normales BLS.
 
 <param-table type="private-key" env="PRIVATE_KEY" />
 
@@ -178,7 +178,7 @@ GENESIS_PUBLIC_KEY="ed01208BA62848CF767D72E7F7F4B9D2D7BA07FEE33760F79ABE5597A515
 
 :::
 
-## La red {#network}
+## Redes {#network}
 
 ### `network.address` <Badge text="required" /> {#param-network-address}
 
@@ -443,7 +443,7 @@ Filtros de registro refinados además de [`logger.level`](#param-logger-level). 
 <param-table type=string env=LOG_FILTER>
 <template #type>
 
-La cadena consiste en una o más directivas separadas por vírgulas, cada directiva puede tener un nivel máximo de verbosidad correspondiente que permita (por ejemplo, selecciona para) intervalos y eventos que coincidan. El Iroha considera que los niveles menos exclusivos (como el `trace` o el `info`) son más verbales que los niveles más exclusivos (cómo el `error` o el `warn`).
+La cadena consiste en una o más directivas separadas por vírgenes, cada directiva puede tener un nivel máximo de verbosidad correspondiente que permita (por ejemplo, selecciona) intervalos y eventos que coincidan. El Iroha considera que los niveles menos exclusivos (como `trace` o `info`) son más verbales que los niveles más exclusivos ( como `error` o `warn`).
 
 En un nivel elevado, la sintaxis de las directivas se compone de varias partes:
 
@@ -470,11 +470,11 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 
 :::
 
-::: info Compatibilidad con [`logger.level`](#param-logger-level)
+::: info Composición con [`logger.level`](#param-logger-level)
 
 `logger.filter` trabaja junto con [`logger.level`](#param-logger-level) y ninguno de ellos superpone al otro.
 
-Por ejemplo, si `logger.level` está configurado en `INFO` y `logger.filter` es configurado en`iroha_core=debug`, el conjunto de filtros resultante será `info,iroha_core=debug` (es decir, `info` para todos los módulos, `debug` para `iroha_core`.
+Por ejemplo, si `logger.level` se fija en `INFO` y `logger.filter` se fija en `iroha_core=debug`, el conjunto de filtros resultante será `info,iroha_core=debug` (es decir, `info` para todos los módulos, `debug` para `iroha_core`).
 
 :::
 
@@ -494,9 +494,9 @@ El formato de registro.
 Cuerdas, valores posibles:
 
 - `full`: El formatador predeterminado. Esto emite registros legibles por humanos de una sola línea para cada evento que ocurra, con el contexto actual del período mostrado antes de la representación formateada del evento.
-- `compact`: Una variante del formatador predeterminado, optimizada para longitudes de líneas cortas. Se adjuntan campos del contexto de extensión actual a los campos del evento formateado y no se muestran nombres de extensión; el nivel de verbosidad se abrevia a un solo carácter.
-- `pretty`: Emite registros excesivamente bonitos, de varias líneas, optimizados para la legibilidad humana. Esto está destinado principalmente a ser utilizado en el desarrollo local y depuración, o para aplicaciones de línea de comandos Cuando el análisis automatizado y el almacenamiento compacto de los registros sean menos prioritarios que la legibilidad y el atractivo visual.
-- `json`: Produce registros de nueva línea delimitados JSON. Esto está destinado a ser utilizado en producción con sistemas donde los registros estructurados se consumen como JSON mediante herramientas de análisis y visualización. La salida JSON no está optimizada para su legibilidad humana.
+- `compact`: Una variante del formatador predeterminado, optimizada para longitudes de líneas cortas. Los campos del contexto actual se adjuntan a los campos del evento formateado y no se muestran los nombres del período; el nivel de verbosidad se abreviará a un solo carácter.
+- `pretty`: Emite registros excesivamente bonitos y de varias líneas, optimizados para la legibilidad humana. la depuración, o para aplicaciones de línea de comandos, en las que el análisis automatizado y el almacenamiento compacto de registros son menos prioritarios que la legibilidad y el atractivo visual.
+- `json`: Produce registros de nueva línea delimitados JSON. Esto está destinado a su uso en la producción con sistemas donde los registros estructurados se consumen como JSON mediante herramientas de análisis y visualización. La salida JSON no está optimizada para la legibilidad humana.
 
 Para obtener más detalles y resultados de la muestra, véase la documentación [`tracing-subscriber` ](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/format/index.html).
 
@@ -543,15 +543,21 @@ KURA_BLOCKS_IN_MEMORY=1024
 
 ### `kura.init_mode` {#param-kura-init-mode}
 
-Modo de inicialización Kura
+Kura modo de inicialización. `strict` es el modo normal y predeterminado: valida el historial canónico, los artefactos de recuperación, los índices auxiliares y la contabilidad del almacenamiento antes de que el nodo se active.
 
-<param-table  default-value=strict env=KURA_INIT_MODE>
+`fast` es un modo de servicio degradado de emergencia para restaurar la visibilidad operativa cuando una la auditoría completa de inicio podría correr el riesgo de una interrupción. `strict` y una generación actual de instantáneas que contiene exactamente cinco artefactos: `snapshot.data`, `snapshot.sha256`, `snapshot.sig`, `snapshot.fast.norito`, y `snapshot.merkle.json`. Una firma del operador separada por dominio une el registro de carga útil anunciado y el manifiesto limitado. el manifiesto establece la longitud de la carga útil, la identidad de la cadena/red, la altura del terminal/hash; SCCP de la política hash, y la presencia de bootstrap-lineage. el linaje y requiere el mismo límite exacto de marcador/cuento/punta desde durable Kura. Los nodos de primera liberación aceptan exactamente esos cinco artefactos y rechazan cualquier otro conteo de artefactos o conjunto de nombres de archivos.
+
+Inventarios rápidos de esos cinco nombres y metadatos vincula la carga útil y los archivos Merkle, pero no lee, hash, analizar o decodificar su contenido. Construye un mundo mínimo / Nexus del manifiesto firmado, mapea el prefijo hash exacto Kura solo para lectura, y deja la instantánea Mundo, bloqueo-hash array, Historia de transacciones, índices derivados y revistas de recuperación duradera no abiertas. Merkle, auditorías de instantáneas canónicas y semánticas, reconciliación de bloque histórico/finalidad/SCCP, recuperación de altura activa Sumeragi, revistas de fusiones y consultas, manifiesto de carril/fuentes de cumplimiento, Los archivos de SoraFS respaldados por Kura, la contabilidad de almacenamiento recursivo y los reconciliadores opcionales de servicios siguen siendo diferidos. Kura en sí mismo rechaza la inicialización del escritor y las mutaciones duraderas; las colas de pipeline y persistencia FASTPQ rechazan el trabajo inmediatamente en lugar de retenerlo o codificarlo. Kura leído APIs también deshabilitar el comportamiento de reparación y sincronización de la durabilidad: no se promueven coches temporales, no se publican artefactos del carril faltantes y las barreras de progreso no se sincronizan. Sumeragi y no se lanzan chismes sobre transacciones. Torii expone sólo la salud, vitalidad, preparación, peer y las operaciones de configuración; API-versión, estado, métricas, y todas las rutas ordinarias del estado / historia permanecen no disponibles.
+
+Usar `fast` sólo para un incidente. Una vez que el servicio está estable, detenga el nodo, restablezca `strict` y reinicie para que cada verificación diferida y reconstrucción de índice se ejecute antes de que la producción vuelva a funcionar. El modo rápido no requiere el registro de fusión diferido y no crea, repara, truncata o importa almacenamiento canónico; los sufijos no publicados y las etapas de recuperación auxiliar pendientes se ignoran sin ser leídas ni mutadas, luego se dejan para la recuperación estricta. El linaje de instantáneas importadas solo con hash sigue sin estar disponible. Una instantánea actual faltante o inválida falla inmediatamente; Fast nunca vuelve a un mundo vacío o una reconstrucción histórica de repetición.
+
+<param-table default-value=strict>
 <template #type>
 
 Cuerdas, valores posibles:
 
-- `strict`: validación estricta de todos los bloques
-- `fast`: Iniciación rápida con solo controles básicos
+- `strict`: validación completa y producción normal
+- `fast`: arranque de emergencia limitado con la producción en cuarentena hasta un estricto reinicio
 
 </template>
 </param-table>
@@ -561,10 +567,6 @@ Cuerdas, valores posibles:
 ```toml [Config File]
 [kura]
 init_mode = "fast"
-```
-
-```shell [Environment]
-KURA_INIT_MODE=fast
 ```
 
 :::
@@ -609,7 +611,7 @@ KURA_DEBUG_OUTPUT_NEW_BLOCKS=true
 
 :::
 
-## Cuadra {#queue}
+## En la cola {#queue}
 
 ### `queue.capacity` {#param-queue-capacity}
 
@@ -662,7 +664,7 @@ transaction_time_to_live_ms = 43_200_000
 
 ### `sumeragi.debug.force_soft_fork` <Badge type="warning" text="debug" /> {#param-sumeragi-debug-force-soft-fork}
 
-El interruptor de depuración solo para ejercer las rutas de manejo de horquilla suave Sumeragi. Deja esto desactivado fuera de las pruebas controladas; cambiarlo en una red de producción en funcionamiento puede hacer que los pares no estén de acuerdo sobre el comportamiento de consenso.
+El interruptor de depuración sólo para ejercer las rutas de manejo de horquilla suave Sumeragi. Deja esto desactivado fuera de las pruebas controladas; cambiarlo en una red de producción en funcionamiento puede hacer que los compañeros no estén de acuerdo sobre el comportamiento de consenso.
 
 <param-table type=bool default-value=false />
 
@@ -675,11 +677,21 @@ force_soft_fork = true
 
 :::
 
+## Nexus Resolución privada atómica {#nexus-atomic-private-settlement}
+
+`[nexus.atomic_private_settlement]` rige el camino separado `AtomicPrivateSettlementV1`. Está desactivado por defecto. La configuración `enabled = true` también requiere un `activation_height`; la admisión aún no se cierra a menos que esté activa la capacidad en cadena, el período de notificación, el perfil de prueba fija y la gobernanza del grupo / auditoría.
+
+Los límites principales son: `max_participants`, `max_expiry_blocks`, `audit_timeout_blocks`, `prepare_timeout_blocks`, `commit_timeout_blocks`, `max_proof_bytes`, `max_capsule_bytes`, `max_carrier_bytes`, `sidecar_retention_blocks`, `sidecar_max_records`, y `sidecar_max_total_bytes`. `capsule_padding_classes_bytes` debe ser un subconjunto estrictamente creciente de la V1 Las clases de relleno. `permitted_policy_versions` sólo acepta V1.
+
+`max_capsule_bytes` mide los bytes canónicos Norito del `PrivateSettlementAuditCapsuleV1` completo, incluyendo AAD, nonce, texto cifrado, marco vectorial y cada línea de auditor envuelta-DEK; no es un límite solo para el texto cifrados. Cada clase de relleno habilitada debe ajustarse al sobre completo conservador para al menos los auditores `default_min_auditor_approvals`. Ese ajuste de aprobación también es un nivel regulado: Torii rechaza una política recientemente admitida con un valor más bajo `min_approvals` y rechaza cualquier cápsula real por encima del límite canónico de bytes.
+
+Estas configuraciones no tienen un bypass de activación variable del entorno de producción. Ver [Run Atomic Private Cross-Dataspace Settlement](/es/get-started/atomic-private-settlement) para el ejemplo completo de configuración y los requisitos operativos. La ruta no está calificada para la producción hasta que pasen las puertas externas documentadas de liberación.
+
 ## Imagen instantánea {#snapshot}
 
 Este módulo es responsable de leer y escribir instantáneas del [World State View](/es/blockchain/world#world-state-view-wsv).
 
-Las instantáneas almacenan un punto de control serializado de la vista del estado mundial para que un compañero pueda reiniciar sin reproducir cada bloque desde Kura. Kura sigue siendo el historial duradero del bloque y la fuente de verdad para la repetición; las instantáneas son una ruta de aceleración. Al iniciar, Iroha comprueba los metadatos de instantáneas con la cadena configurada y los bloques almacenados antes de decidir si cargar una instantánea o volver a reproducir.
+Las instantáneas almacenan un punto de control serializado de World State View para que un peer pueda reiniciar sin reproducir cada bloque desde Kura. Kura sigue siendo el historial duradero del bloque y la fuente de verdad para la reproducción; las instantáneas son un camino de aceleración. Al iniciar, Iroha comprueba los metadatos de instantáneas con la cadena configurada y los bloques almacenados antes de decidir si cargar una instantánea o volver a reproducir.
 
 ::: tip Esborrar las instantáneas
 
@@ -733,7 +745,7 @@ create_every_ms = 60_000
 
 ### `snapshot.store_dir` {#param-snapshot-store-dir}
 
-Directorio donde guardar las instantáneas.
+Directorio donde almacenar instantáneas.
 
 Véase también: [`kura.store_dir`](#param-kura-store-dir)
 
