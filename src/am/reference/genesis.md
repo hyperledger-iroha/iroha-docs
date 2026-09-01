@@ -1,31 +1,29 @@
 ---
 translation_locale: am
 translation_source: /reference/genesis.md
-translation_source_hash: 1312e80d9e662cc3e8cf4d0668ff4bb9e6ce3f74a60bb5287205aeeb5afd5de8
+translation_source_hash: ac6bad693ed382dede0818132b8649fe14726283508da897a32eea417e5bbb28
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# የዘፍጥረት ማጣቀሻ {#genesis-reference}
+# blockchain ጀነሲስ ማጣቀሻ {#genesis-reference}
 
-አሁን ባለው ሁኔታ Iroha 3 የስራ ሂደት፣ ሀ `genesis.json` አንጸባራቂ የመጀመሪያውን ይገልፃል።
-አውታረ መረቡ ሲጀምር የሚተገበሩ ግብይቶች እና ግቤቶች።
+አሁን ባለው Iroha 3 የስራ ሂደት፣ `genesis.json` ቴክኒካል ማኒፌስት አውታረ መረቡ ሲጀምር የሚተገበሩትን የመጀመሪያዎቹን ግብይቶች እና መለኪያዎች ይገልጻል።
 
-ለእኩዮች የተሰራጨው የተፈረመበት ቅርስ ሀ Norito- ኮድ የተደረገ `.nrt` ፋይል
-በ `kagami genesis sign`.
+ለኔትወርክ እኩዮች የተሰራጨው የተፈረመው አርቲፋክት በ`kagami genesis sign` የተሰራው Norito የተመሰጠረ `.nrt` ፋይል ነው።
 
 ## ዋና መስኮች {#main-fields}
 
-የዘፍጥረት መግለጫ የሚከተሉትን ሊገልጽ ይችላል-
+የብሎክቼይን ጀነሲስ ቴክኒካል ማኒፌስት የሚከተሉትን ሊገልጽ ይችላል -
 
-- `chain` ለ ሰንሰለት መለያ
-- `executor` ለአማራጭ አስፈፃሚ የባይቴኮድ መንገድ አሻሽል።
-- `ivm_dir` ለ IVM ቀስቅሴዎች እና ማሻሻያዎች የሚጠቀሙባቸው ቤተ-መጻሕፍት
-- `consensus_mode` በአንጸባራቂው ለተዋወቀው የመጀመሪያ ሁነታ
-- `transactions` ለታዘዙ የመለኪያ ማሻሻያዎች፣ መመሪያዎች፣ ቀስቅሴዎች እና ቶፖሎጂ
-- `crypto` ለመጀመሪያው crypto ቅጽበታዊ ገጽ እይታ
+- `chain` ለሰንሰለት መለያ
+- `executor` ለአማራጭ አስፈፃሚ የማሻሻያ ባይት ኮድ መንገድ
+- `ivm_dir` ቀስቅሴዎች እና ማሻሻያዎች ጥቅም ላይ ለሚውሉ IVM ቤተ-መጻሕፍት
+- `consensus_mode` በቴክኒካዊ ማኒፌስት ለማስታወቂያው የመጀመሪያ ሁነታ
+- `transactions` ለታዘዙ የመለኪያ ዝመናዎች፣ መመሪያዎች፣ ቀስቅሴዎች እና ቶፖሎጂ
+- `crypto` ለመጀመሪያው የ crypto ነጥብ-በጊዜ ውሂብ እይታ
 
-ውስጥ `transactions`, ቶፖሎጂ ግቤቶች ጥንድ አቻ መታወቂያ እና PoPs አንድ ላየ፥
+በ`transactions` ውስጥ፣ የቶፖሎጂ ግቤቶች የአውታረ መረብ አቻ መታወቂያዎችን እና PoPs ን አንድ ላይ ያጣምራሉ -
 
 ```json
 {
@@ -34,9 +32,9 @@ translation_engine: nllb-200-ct2
 }
 ```
 
-## አንጸባራቂ ይፍጠሩ {#generate-a-manifest}
+## ቴክኒካዊ ማኒስት ይፍጠሩ {#generate-a-manifest}
 
-ተጠቀም Kagami አብነት ለመፍጠር፡-
+አብነት ለማመንጨት Kagami ን ይጠቀሙ -
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
@@ -45,13 +43,11 @@ cargo run -p iroha_kagami -- genesis generate \
   --genesis-public-key <PUBLIC_KEY> > genesis.json
 ```
 
-ለህዝብ SORA Nexus የመረጃ ቦታ፣ `npos` የሚጠበቀው የጋራ ስምምነት ሁነታ ነው.
-ሌላ Iroha 3 በዒላማው ላይ በመመስረት ማሰማራት የተፈቀደ ወይም NPoS ሊጠቀሙ ይችላሉ።
-መገለጫ.
+ለህዝብ SORA Nexus የውሂብ ቦታ፣ `npos` የሚጠበቀው የጋራ መግባባት ሁነታ ነው። ሌሎች Iroha 3 ማሰማራቶች እንደ ዒላማው መገለጫ የተፈቀደ ወይም NPoS ሊጠቀሙ ይችላሉ።
 
-## መግለጫውን ይፈርሙ {#sign-the-manifest}
+## ቴክኒካዊ ማኒፌስት ይፈርሙ {#sign-the-manifest}
 
-አርትዖት ካደረጉ እና ካረጋገጡ በኋላ JSON, ወደ ማሰማራት ይፈርሙ `.nrt` አግድ
+JSON ን ካረትዑ እና ካረጋገጡ በኋላ ሊሰማራ በሚችል `.nrt` ብሎክ ውስጥ ይግቡ -
 
 ```bash
 cargo run -p iroha_kagami -- genesis sign genesis.json \
@@ -59,16 +55,11 @@ cargo run -p iroha_kagami -- genesis sign genesis.json \
   --out-file genesis.signed.nrt
 ```
 
-`kagami genesis sign` የዘፍጥረት ህዝባዊ ቁልፍን ከማንፀባረቂያው ያነባል እና ይጠቀማል
-የግል ቁልፉን በባለቤትነት ከተያዘ፣ ነጠላ አገናኝ መደበኛ ፋይል ለማምረት
-ሊሰራ የሚችል የተፈረመ እገዳ.ፋይሉ አንድ ቀኖናዊ የግል ቁልፍ መያዝ አለበት።
-መልቲሃሽ በአዲስ መስመር ተከትሎ; Kagami ተምሳሌታዊ አገናኞችን እና ሌሎች ሁነታዎችን ውድቅ ያደርጋል
-ከ `0600`. ጥሬ የግል ቁልፎች በትእዛዝ መስመር ላይ ተቀባይነት የላቸውም።ውጤቱ
-አቻዎች ከውቅራቸው መጥቀስ ያለባቸው ፋይል ነው።
+`kagami genesis sign` የብሎክቼይን ጀነሲስ የህዝብ ቁልፍን ከቴክኒካል ማኒፌስት ያነባል እና ሊሰማራ የሚችል የተፈረመውን ብሎክ ለማዘጋጀት በባለቤቱ ከተያዘው ነጠላ-ማገናኛ መደበኛ ፋይል የግል ቁልፍን ይጠቀማል።. ፋይሉ አንድ ነጠላ ፕሮቶኮል-ደረጃውን የጠበቀ የግል-ቁልፍ መልቲሃሽ እና አዲስ መስመር መያዝ አለበት; . Kagami ከ `0600` ሌላ ምሳሌያዊ አገናኞችን እና ሁነታዎችን ውድቅ ያደርጋል። ጥሬ የግል ቁልፎች በትእዛዝ መስመሩ ላይ ተቀባይነት የላቸውም. ውጤቱም የአውታረ መረብ እኩዮች ከማዋቀራቸው መጥቀስ ያለባቸው ፋይል ነው።
 
 ## አዋቅር `iroha3d` {#configure-iroha3d}
 
-ዲሞንን በተፈረመው የዘረመል እገዳ ላይ ያመልክቱ፡-
+ዴሞኑን በተፈረመው የብሎክቼይን ጀነሲስ ብሎክ ላይ ያመልክቱ -
 
 ```toml
 [genesis]
@@ -76,7 +67,7 @@ file = "genesis.signed.nrt"
 public_key = "<PUBLIC_KEY>"
 ```
 
-## ተዛማጅ መሳሪያዎች {#related-tools}
+## ተዛማጅ መሣሪያዎች {#related-tools}
 
 - `kagami genesis validate`
 - `kagami genesis normalize`
@@ -84,5 +75,4 @@ public_key = "<PUBLIC_KEY>"
 - `kagami localnet`
 - `cargo xtask kagami-profiles`
 
-ለጄነሬተር አተገባበር እና የትዕዛዝ ዝርዝሮች, ይመልከቱ
-[Kagami README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami/README.md).
+ለጄነሬተር ትግበራ እና የትእዛዝ ዝርዝሮች፣ [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami/README.md) የሚለውን ይመልከቱ።

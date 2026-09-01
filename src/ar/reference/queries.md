@@ -3,126 +3,126 @@ translation_locale: ar
 translation_source: /reference/queries.md
 translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# الأسئلة {#queries}
+# استفسارات {#queries}
 
-يقرأ استفسارات Iroha حالة دفتر التسجيل دون تغييرها. يعرض نموذج البيانات الحالي شكلين واسعين من استفسارات:
+Iroha الاستعلامات تقرأ حالة دفتر الأستاذ البلوكتشين دون تعديلها. نموذج البيانات الحالي يكشف عن نوعين عامين من الاستعلامات:
 
-- الأسئلة الفردية، التي تعود على كائن واحد أو قيمة واحدة
-- استفسارات قابلة للتكرار ، والتي تعيد تدفق أو مجموعة ويمكن دمجها مع التصفية والتقسيم والتنبيه والصفحات حيث يدعم نوع الاستفسار ذلك
+- استعلامات مفردة، التي تُرجع كائنًا واحدًا أو قيمة واحدة
+- الاستعلامات القابلة للتكرار، والتي تُرجع تدفقًا أو مجموعة ويمكن دمجها مع التصفية والترتيب والإسقاط والتقسيم إلى صفحات حيث يدعم نوع الاستعلام ذلك
 
-استخدم SDK صانعي النمط أو CLI بدلاً من بناء غلافات الاستفسارات يدوياً. الأسماء أدناه هي أنواع الاستفسارات الحالية المعروضة عن طريق `iroha_data_model::query`.
+استخدم البناة من نوع SDK أو CLI بدلاً من بناء حاويات بيانات الاستعلام يدويًا. الأسماء أدناه هي أنواع الاستعلام الحالية المتاحة من قبل `iroha_data_model::query`.
 
-## وقت التشغيل والترتيب {#runtime-and-configuration}
+## بيئة تنفيذ البرمجيات والتكوين {#runtime-and-configuration}
 
-|السؤال|الغرض|
+|استعلام|الغرض|
 | --- | --- |
-|`FindAbiVersion` |إرجاع نسخة ABI. |
-|`FindExecutorDataModel` |أعيد وصف نموذج البيانات التنفيذية. |
-|`FindParameters` |إرجاع معايير تشكيل تنفيذ السلسلة. |
+| `FindAbiVersion` |إرجع نسخة المنفذ ABI.|
+| `FindExecutorDataModel` |إرجاع وصف نموذج بيانات المنفذ.|
+| `FindParameters` |إرجاع معلمات تكوين المنفذ على السلسلة.|
 
-## الحسابات والإذن {#accounts-and-permissions}
+## الحسابات والأذونات {#accounts-and-permissions}
 
-|السؤال|الغرض|
+|استعلام|الغرض|
 | --- | --- |
-|`FindAccountById` |العثور على حساب واحد حسب الحساب الكنسي ID. |
-|`FindAccountByAlias` |حل حساب مستعار لحساب.|
-|`FindAccounts` |إدراج حسابات مسجلة |
-|`FindAccountIds` |القائمة الحساب المسجل IDs. |
-|`FindAccountsWithAsset` |إدراج حسابات تحتوي على تعريف خاص للأصول. |
-|`FindAliasesByAccountId` |إدراج أسماء مستعار مرتبطة بحساب |
-|`FindAccountRecoveryPolicyByAlias` |ابحثي عن سياسة استرداد لـ (أليف)|
-|`FindAccountRecoveryRequestByAlias` |ابحث عن طلب استرداد اسم مستعار.|
-|`FindRoles` |قائمة الأدوار. |
-|`FindRoleIds` |دور القائمة IDs. |
-|`FindRolesByAccountId` |قائمة الأدوار الممنوحة لحساب. |
-|`FindPermissionsByAccountId` |قائمة الإذن الممنوحة لحساب. |
+| `FindAccountById` |اعثر على حساب واحد باستخدام معرف حساب قياسي لبروتوكول مفرد.|
+| `FindAccountByAlias` |حل اسم الحساب المستعار إلى حساب.|
+| `FindAccounts` |قم بعرض الحسابات المسجلة.|
+| `FindAccountIds` |قائمة معرفات الحسابات المسجلة.|
+| `FindAccountsWithAsset` |قائمة الحسابات التي تمتلك تعريف الأصل المحدد.|
+| `FindAliasesByAccountId` |عرض الأسماء المستعارة المرتبطة بحساب.|
+| `FindAccountRecoveryPolicyByAlias` |ابحث عن سياسة الاسترداد لاسم مستعار.|
+| `FindAccountRecoveryRequestByAlias` |ابحث عن طلب الاسترداد لاسم مستعار.|
+| `FindRoles` |قائمة الأدوار.|
+| `FindRoleIds` |قم بسرد معرفات الأدوار.|
+| `FindRolesByAccountId` |عرض الأدوار الممنوحة لحساب.|
+| `FindPermissionsByAccountId` |عرض الأذونات الممنوحة لحساب.|
 
-## النطاقات و الأقران {#domains-and-peers}
+## النطاقات ونظائر الشبكة {#domains-and-peers}
 
-|السؤال|الغرض|
+|استعلام|الغرض|
 | --- | --- |
-|`FindDomainById` |إبحث عن نطاق واحد بواسطة `DomainId`. |
-|`FindDomains` |إدراج الأسماء المسجلة. |
-|`FindDomainsByAccountId` |إدراج الأسماء المملوكة لحساب. |
-|`FindDomainEndorsements` |إدراج سجلات دعم النطاقات|
-|`FindDomainEndorsementPolicy` |أعد سياسة تأييد النطاق|
-|`FindDomainCommittee` |أعد لجنة النطاق|
-|`FindPeers` |إدراج أقرانهم الموثوقين المعروفين في دفتر التسجيل. |
+| `FindDomainById` |ابحث عن نطاق واحد بواسطة `DomainId`.|
+| `FindDomains` |قم بسرد النطاقات المسجلة.|
+| `FindDomainsByAccountId` |قائمة المجالات التي يمتلكها الحساب.|
+| `FindDomainEndorsements` |قائمة سجلات تأييد المجال.|
+| `FindDomainEndorsementPolicy` |أعد سياسة تأييد المجال.|
+| `FindDomainCommittee` |أعد لجنة المجال.|
+| `FindPeers` |قائمة بالأقران الموثوقين في الشبكة المعروفين لدى دفتر الأستاذ الخاص بالبلوكشين.|
 
 ## الأصول، NFTs، و RWAs {#assets-nfts-and-rwas}
 
-|السؤال|الغرض|
+|استعلام|الغرض|
 | --- | --- |
-|`FindAssets` |إدراج رصيد الأصول |
-|`FindAssetsDefinitions` |إدراج تعريفات الأصول |
-|`FindAssetsByAccountId` |إدراج الأصول التي تمتلكها حساب. |
-|`FindAssetById` |العثور على رصيد واحد من الأصول بحلول `AssetId`. |
-|`FindAssetDefinitionById` |العثور على تعريف واحد للأصول بواسطة ID. |
-|`FindNfts` |قائمة NFTs. |
-|`FindNftsByAccountId` |قائمة NFTs تمتلكها حساب. |
-|`FindRwas` |القائمة مسجلة الكثير من الأصول الحقيقية.|
+| `FindAssets` |قم بسرد أرصدة الأصول.|
+| `FindAssetsDefinitions` |قم بسرد تعريفات الأصول.|
+| `FindAssetsByAccountId` |قائمة الأصول المحتفظ بها بواسطة حساب.|
+| `FindAssetById` |اعثر على رصيد أحد الأصول بواسطة `AssetId`.|
+| `FindAssetDefinitionById` |ابحث عن تعريف أصل واحد بالمعرّف.|
+| `FindNfts` |قائمة NFTs.|
+| `FindNftsByAccountId` |قائمة NFTs المملوكة بواسطة حساب.|
+| `FindRwas` |عرض قوائم الأصول الحقيقية المسجلة.|
 
-## سجلات الاحتفاظ بالأموال والأدلة {#escrow-and-proof-records}
+## سجلات الحساب الضماني والإثبات {#escrow-and-proof-records}
 
-استفسارات الاحتفاظ بفحص السجلات التي تم إنشاؤها من قبل [مصادر الأصول المحلية الاحتفالية ISIs](/ar/blockchain/escrow.md)، بما في ذلك الاحتفاضات في الأسواق، وقفلات الأصول العامة، وسجلات الاحتفاذ المجهول.
+تستعرض استفسارات الضمان السجلات التي أنشأها [الضمان للأصل المحلي ISIs](/ar/blockchain/escrow.md)، بما في ذلك ضمانات السوق، وتأمينات الأصول العامة، وسجلات الضمان المجهولة.
 
-|السؤال|الغرض|
+|استعلام|الغرض|
 | --- | --- |
-|`FindAssetEscrows` |إدراج سجلات الاحتفاظ بالأصول.|
-|`FindAssetEscrowById` |العثور على واحد من الاحتفاظ بالأصول بحلول ID. |
-|`FindAssetEscrowsBySeller` |إدراج الاحتفاظ بالأصول حسب البائع. |
-|`FindAssetEscrowsByBuyer` |إدراج الاحتفاظ بالأصول حسب المشتري. |
-|`FindAssetEscrowsByStatus` |إدراج الاحتفاظ بالأصول حسب الحالة. |
-|`FindAnonymousAssetEscrows` |قم بإدراج سجلات الاحتفاظ بالأصول المجهولة|
-|`FindAnonymousAssetEscrowById` |العثور على أحد الأصول الاحتياطية المجهولة من قبل ID. |
-|`FindAnonymousAssetEscrowsBySeller` |إدراج الاحتياطيات المجهولة حسب البائع. |
-|`FindAnonymousAssetEscrowsByBuyer` |إدراج الاحتياطيات المجهولة حسب المشتري.|
-|`FindAnonymousAssetEscrowsByStatus` |إدراج الاحتياطيات المجهولة حسب الحالة. |
-|`FindProofRecordById` |العثور على سجل دليل واحد من قبل ID. |
-|`FindProofRecords` |قم بإدراج سجلات الدليل|
-|`FindProofRecordsByBackend` |قم بإدراج سجلات إثبات لخلفية دليل. |
-|`FindProofRecordsByStatus` |إدراج سجلات الدليل حسب الحالة. |
+| `FindAssetEscrows` |قائمة سجلات الضمان للأصول.|
+| `FindAssetEscrowById` |ابحث عن ضمانة أصل واحدة بواسطة المعرف.|
+| `FindAssetEscrowsBySeller` |قائمة الضمانات المالية للأصول حسب البائع.|
+| `FindAssetEscrowsByBuyer` |قائمة الضمانات المالية للأصول حسب المشتري.|
+| `FindAssetEscrowsByStatus` |قائمة الضمانات المالية للأصول حسب الحالة.|
+| `FindAnonymousAssetEscrows` |عرض سجلات الضمان للأصول المجهولة|
+| `FindAnonymousAssetEscrowById` |ابحث عن حساب ضمان أصول مجهول واحد بواسطة المعرف.|
+| `FindAnonymousAssetEscrowsBySeller` |قائمة الضمانات المجهولة حسب البائع.|
+| `FindAnonymousAssetEscrowsByBuyer` |قائمة الضمانات المجهولة حسب المشتري.|
+| `FindAnonymousAssetEscrowsByStatus` |قائمة الضمانات المجهولة حسب الحالة.|
+| `FindProofRecordById` |ابحث عن سجل إثبات واحد بواسطة المعرف.|
+| `FindProofRecords` |قم بسرد سجلات الإثبات.|
+| `FindProofRecordsByBackend` |عرض سجلات الإثبات لنظام إثبات خلفي.|
+| `FindProofRecordsByStatus` |عرض سجلات الإثبات حسب الحالة.|
 
-## Nexus ، توافر البيانات، والحزم {#nexus-data-availability-and-packages}
+## Nexus، توفر البيانات، والحزم {#nexus-data-availability-and-packages}
 
-|السؤال|الغرض|
+|استعلام|الغرض|
 | --- | --- |
-|`FindRepoAgreements` |إدراج اتفاقات مخزن تخزين على سلسلة. |
-|`FindTwitterBindingByHash` |حل الارتباطات على تويتر بواسطة الهاش|
-|`FindDaPinIntentByTicket` |العثور على نية البيانات المتاحة عن طريق التذكرة. |
-|`FindDaPinIntentByManifest` |ابحث عن نية اللوحة من خلال إشارة واضحة. |
-|`FindDaPinIntentByAlias` |ابحث عن مقصود من قبل مستعار|
-|`FindDaPinIntentByLaneEpochSequence` |ابحث عن مقصود اللوحة حسب المسار، العصر، والترتيب|
-|`FindLaneRelayEnvelopeByRef` |ابحث عن غطاء مُحقق.|
-|`FindSorafsProviderOwner` |تحل مالك مقدم SoraFS |
-|`FindDataspaceNameOwnerById` |حل مالك مساحة بيانات اسم. |
-|`FindMusubiExactPackageV1` |اقرأ سجل الحزمة المحددة ومراجعاتها الحالية. |
-|`FindMusubiExactReleaseV1` |اقرأ صورة واحدة دقيقة|
-|`FindMusubiProviderBundleAttestationV1` |اقرأ شهادة مجموعة الأرشيف من مقدم واحد. |
-|`FindMusubiResolverIndexV1` |صفحة مؤشر حل النهائي. |
-|`FindMusubiVersionsV1` |الصفحة الإصدارات النهائية لحزمة واحدة. |
-|`FindMusubiMaintainersV1` |الصفحة قبلت الحفاظ والدعوات المنتظرة. |
-|`FindMusubiArchiveLocationsV1` |الصفحة النهائية SoraFS المواقع لمؤلف واحد. |
-|`FindMusubiArchiveRetentionV1` |صفحة سجلات الاحتفاظ بالأرشيف |
-|`FindMusubiAliasV1` |اقرأ الهدف الحالي ومراجعة الاسم العالمي |
-|`FindMusubiAliasHistoryV1` |صفحة تاريخ إعادة الهدف غير المتغير من مستعار عالمي. |
-|`FindMusubiOrderedPrefixV1` |حزم الصفحات تحت إضافة هيكلية واحدة مرتبة. |
+| `FindRepoAgreements` |قائمة اتفاقيات المستودع المخزنة على السلسلة.|
+| `FindTwitterBindingByHash` |حل ربط تويتر بواسطة التجزئة التشفيرية.|
+| `FindDaPinIntentByTicket` |ابحث عن نية تثبيت توفر البيانات بواسطة التذكرة.|
+| `FindDaPinIntentByManifest` |ابحث عن نية الدبوس عن طريق مرجع المانيفست الفني.|
+| `FindDaPinIntentByAlias` |ابحث عن نية دبوس بواسطة الاسم المستعار.|
+| `FindDaPinIntentByLaneEpochSequence` |ابحث عن نية دبوس حسب مسار التنفيذ والعصر والتسلسل.|
+| `FindLaneRelayEnvelopeByRef` |ابحث عن حاوية بيانات تبديل الممرات الموثوقة.|
+| `FindSorafsProviderOwner` |حل صاحب مزود SoraFS.|
+| `FindDataspaceNameOwnerById` |حل مالك اسم مساحة البيانات.|
+| `FindMusubiExactPackageV1` |اقرأ سجل حزمة واحد بالضبط ومراجعاته الحالية.|
+| `FindMusubiExactReleaseV1` |اقرأ لقطة إصدار واحدة بالضبط.|
+| `FindMusubiProviderBundleAttestationV1` |اقرأ تصريح حزمة الأرشيف لمزود واحد.|
+| `FindMusubiResolverIndexV1` |صفحة فهرس المحلل النهائي.|
+| `FindMusubiVersionsV1` |نسخ الصفحات النهائية لحزمة واحدة.|
+| `FindMusubiMaintainersV1` |الصفحة تعرض المطوّرين المعتمدين والدعوات المعلقة.|
+| `FindMusubiArchiveLocationsV1` |تم الانتهاء من الصفحة SoraFS للمواقع لأرشيف واحد.|
+| `FindMusubiArchiveRetentionV1` |سجلات أرشيف الاحتفاظ بالصفحات.|
+| `FindMusubiAliasV1` |اقرأ الهدف الحالي والمراجعة لاسم مستعار عالمي.|
+| `FindMusubiAliasHistoryV1` |صفح السجل غير القابل للتغيير لإعادة الاستهداف لاسم مستعار عالمي.|
+| `FindMusubiOrderedPrefixV1` |تجميع الصفحات تحت بادئة هيكلية مرتبة واحدة.|
 
-## المحفزات والعقود والمعاملات والحواجز {#triggers-contracts-transactions-and-blocks}
+## المحفزات، العقود، المعاملات، والكتل {#triggers-contracts-transactions-and-blocks}
 
-|السؤال|الغرض|
+|استعلام|الغرض|
 | --- | --- |
-|`FindActiveTriggerIds` |إدراج الزناد النشط IDs. |
-|`FindTriggers` |قائمة محفزات. |
-|`FindTriggerById` |ابحث عن محفز واحد بحلول ID. |
-|`FindContractManifestByCodeHash` |ابحث عن مذكرة عقود ذكية بواسطة رمز "هاشش"|
-|`FindTransactions` |قائمة المعاملات الملتزمة. |
-|`FindBlocks` |كتلة قائمة.|
-|`FindBlockHeaders` |إدراج عناوين كتلة.|
+| `FindActiveTriggerIds` |قائمة معرفات المشغلات النشطة.|
+| `FindTriggers` |قائمة المحفزات.|
+| `FindTriggerById` |اعثر على مشغل واحد بواسطة المعرف.|
+| `FindContractManifestByCodeHash` |ابحث عن تصريح تقني للعقد الذكي بواسطة تجزئة تشفيرية للكود.|
+| `FindTransactions` |قم بسرد المعاملات النهائية.|
+| `FindBlocks` |قائمة الكتل.|
+| `FindBlockHeaders` |قم بسرد رؤوس الكتل.|
 
-## الفلتر والصفحات {#filtering-and-pagination}
+## التصفية والتقسيم الصفحي {#filtering-and-pagination}
 
-استفسارات قابلة للتكرار يمكن أن تعرض دعم المواعيد والمتحركات. استخدم مرشحات نمطية محددة للمسألة من SDK بحيث يتناسب مدخل المرشح مع نوع خروج المسألة. بالنسبة لمجموعات النتائج الكبيرة ، استخدم معايير المسؤلة مثل المؤشر والحد بدلاً من الحصول على كل سطر في وقت واحد
+يمكن أن تكشف الاستعلامات القابلة للتكرار عن دعم المحدد والاختيار. استخدم المرشحات المحددة بالنوع الخاصة بالاستعلام من SDK بحيث تتطابق إدخالات المرشح مع نوع إخراج الاستعلام. بالنسبة لمجموعات النتائج الكبيرة، استخدم معلمات الاستعلام مثل المؤشر والحد بدلًا من جلب كل صف مرة واحدة.

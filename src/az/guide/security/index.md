@@ -3,45 +3,45 @@ translation_locale: az
 translation_source: /guide/security/index.md
 translation_source_hash: ec7fc2f950b007f52d837473ad7021565923e537df1d18b86055fb483cda375c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Təhlükəsizlik {#security}
 
-Həssas məlumatları və dəyərləri idarə edən hər hansı bir sistem kimi Iroha tətbiqini təmin edin. İmza açarlarını, şəbəkə girişini, düyün əməliyyatlarını, monitorinqi və hadisə cavabını qoruyun. Bir kitabxana bu nəzarətlərə ehtiyacını aradan qaldırmır.
+Hər hansı həssas məlumat və dəyəri idarə edən sistemdə olduğu kimi, Iroha yerləşdirməsini təhlükəsiz edin. İmzalama açarlarını, şəbəkə girişini, node əməliyyatlarını, monitorinq və hadisələrə cavabı qoruyun. Blokçeyn dəftəri bu nəzarətlərin ehtiyacını aradan qaldırmır.
 
 ### Naviqasiya {#navigation}
 
-Bu bölmədə Iroha şəbəkənizin təhlükəsizliyinin müxtəlif aspektləri haqqında məlumat ala bilərsiniz.
+Bu bölmədə Iroha şəbəkənizi təhlükəsizləşdirməyin müxtəlif aspektləri haqqında məlumat əldə edə bilərsiniz. Daha ətraflı öyrənmək üçün aşağıdakı mövzulardan birini seçin:
 
-- [Təhlükəsizlik prinsipləri](./security-principles):
+- [Təhlükəsizlik Prinsipləri](./security-principles):
 
-Məlumatların qorunması və pozulma riskini azaltmaq üçün əsas prinsiplər.
+Məlumatları qorumaq və pozuntu riskini azaltmaq üçün əsas prinsiplər.
 
 - [Virtual Özəl Şəbəkələr](./vpn.md):
 
-VPN-dən peer-to-peer, Torii və operatorun özəl və ya konsorsium tətbiqetmələrində girişini məhdudlaşdırmaq üçün necə istifadə etmək olar.
+Şəxsi və ya konsorsium yerləşdirmələrində həmyaşıd-həmsöhbət, Torii və operator girişini məhdudlaşdırmaq üçün VPN-dən necə istifadə etmək olar.
 
-- [Əməliyyat təhlükəsizliyi](./operational-security.md):
+- [Əməliyyat Təhlükəsizliyi](./operational-security.md):
 
-Giriş, monitorinq, hadisələrə cavab vermək və operatorun iş stansiyaları üçün gündəlik nəzarət.
+Giriş, izləmə, hadisələrə cavab və operator iş stansiyaları üçün gündəlik nəzarətlər.
 
-- [Xəyanətlərin nəzarəti](./fraud-monitoring.md):
+- [Fırıldaqçılığın Monitorinqi](./fraud-monitoring.md):
 
-Şübhəli fəaliyyətin aşkarlanması və reaksiya sübutlarının qorunması üçün kitab hadisələrindən, suallardan, icazələrdən və əməliyyat siqnallarından necə istifadə etmək olar.
+Şübhəli fəaliyyətləri aşkar etmək və cavab sübutlarını qorumaq üçün blokçeyn dəftər hadisələrindən, sorğulardan, icazələrdən və əməliyyat siqnallarından necə istifadə etmək.
 
-- [Şifrə təhlükəsizliyi](./password-security.md):
+- [Şifrə Təhlükəsizliyi](./password-security.md):
 
-Şifrə entropiyası, güclü şifrə qurulması və ümumi uğursuzluq rejimləri.
+Şifrə entropiyası, güclü şifrə qurumu və ümumi uğursuzluq nümunələri.
 
-- [İctimai açar Kriptografiyası](./public-key-cryptography.md):
+- [İctimai Açar Kriptoqrafiyası](./public-key-cryptography.md):
 
-İctimai açarlı şifrələmə, imzalanma və təsdiqlənmiş ünsiyyət.
+İctimai açar şifrələməsi, imzalar və autentifikasiya edilmiş ünsiyyət.
 
-  - [Kriptografik açarlar yaratmaq](./generating-cryptographic-keys.md):
+  - [Kriptoqrafik Açarların Yaradılması](./generating-cryptographic-keys.md):
 
-`kagami` ilə dəstəklənən kriptografik açarlar istehsal edin.
+    `kagami` ilə dəstəklənən kriptoqrafik açarları yaradın.
 
-  - [Kriptografik açarların saxlanması](./storing-cryptographic-keys.md):
+  - [Kriptoqrafik Açarların Saxlanması](./storing-cryptographic-keys.md):
 
-Kriptografik açarları yerləşdirilməyə uyğun qatlı idarəetmələrdən istifadə edərək saxlayın.
+Kriptoqrafik açarları yerləşdirməyə uyğun təbəqəli nəzarətlərlə saxlayın.

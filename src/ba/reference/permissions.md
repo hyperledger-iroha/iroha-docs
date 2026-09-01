@@ -26,7 +26,7 @@ translation_engine: nllb-200-ct2
 |`CanModifyAccountMetadata` |Хисап |Иҫәптәге метамәғлүмәттәрҙе үҙгәртергә. |
 |`CanUnregisterAssetDefinition` |Активтар билдәләмәһе |Активтың билдәләмәһен теркәүҙе бөтөрөү. |
 |`CanModifyAssetDefinitionMetadata` |Активтар билдәләмәһе |Аҡса билдәләмәһе метамәғлүмәттәре үҙгәртергә. |
-|`CanMintAssetWithDefinition` |Активтар |Махсус билдәләү өсөн минет активтары. |
+|`CanMintAssetWithDefinition` |Активтар |Махсус билдәләү өсөн минтлау активтары. |
 |`CanBurnAssetWithDefinition` |Активтар |Билдәле билдәләү өсөн активтарҙы яндырыу. |
 |`CanTransferAssetWithDefinition` |Активтар |Конкрет билдәләү өсөн активтарҙы күсереү. |
 |`CanMintAsset` |Активтар |Билдәле активтар балансын һала. |

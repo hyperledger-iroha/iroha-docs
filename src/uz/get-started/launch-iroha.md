@@ -3,30 +3,30 @@ translation_locale: uz
 translation_source: /get-started/launch-iroha.md
 translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Ishga tushirish Iroha 3 {#launch-iroha-3}
+# Ishga tushurish Iroha 3 {#launch-iroha-3}
 
-Ushbu sahifa Iroha 3 uchun joriy mahalliy tarmoq oqimi bo'ylab o'tadi, chunki u yuqori tomorqa ombordan andoza ish maydonlari aktivlaridan foydalanadi.
+Ushbu sahifa Iroha 3 uchun joriy mahalliy tarmoq oqimini yuqori darajadagi repozitoriyadan olingan standart ish maydoni aktivlaridan foydalanib tushuntirib beradi.
 
-## 1. Mahalliy ko'p tengdoshlar tarmog'ini yaratish {#_1-generate-a-local-multi-peer-network}
+## 1. Ko‘p tugunli mahalliy tarmoq yaratish {#_1-generate-a-local-multi-peer-network}
 
-Joriy Kagami kodidan to'rt kishilik lokalnetni yaratish:
+Joriy Kagami kodidan to‘rt tugunli localnet hosil qiling:
 
 ```bash
 cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-Ishlab chiqarish direktoriyasida moslashtirilgan tengdosh konfiguratsiyalari `genesis.json`, `genesis.signed.nrt`, `client.toml` va yordamchi skriptlar mavjud.
+Chiqarish papkasi mos keluvchi tarmoq hamkasbi konfiguratsiyalarini, `genesis.json`, `genesis.signed.nrt`, `client.toml`, va yordamchi skriptlarni o'z ichiga oladi.
 
-Mahalliy tutun testini o'tkazish uchun hosil qilingan tengdoshlarni to'g'ridan-to'g'ri boshlash
+Mahalliy mahalliy foydalanish testi uchun, yaratilgan tarmoq ishtirokchilarini to‘g‘ridan-to‘g‘ri ishga tushiring:
 
 ```bash
 ./localnet/start.sh
 ```
 
-Konteynerizatsiya qilingan ishga tushirish uchun bir xil lokalnet direktoriyasidan Compose hosil qiling:
+Konteynerlashtirilgan ish uchun, xuddi shu localnet papkasidan Compose yarating:
 
 ```bash
 cargo run --bin kagami -- docker \
@@ -39,56 +39,56 @@ cargo run --bin kagami -- docker \
 docker compose -f ./docker-compose.yml up
 ```
 
-Andoza hosil qilingan toʻplam quyidagilarni aniqlaydi:
+Standart yaratilgan stek quyidagilarni ko‘rsatadi:
 
-- P2P portlari `1337` dan `1340` gacha
-- Torii HTTP portlari `8080` dan `8083`gacha
-- `./localnet/client.toml` nomidagi tayyor mijoz konfiguratsiyasi
+- tarmoq tengdosh P2P portlar `1337` dan `1340` gacha
+- Torii HTTP portlarni `8080` dan `8083` gacha
+- `./localnet/client.toml` manzilda tayyor mijoz konfiguratsiyasi
 
-## 2. Tarmoqni ishga tushirishni tekshirib ko'ring {#_2-verify-that-the-network-is-up}
+## 2. Tarmoqning ishlashini tekshiring {#_2-verify-that-the-network-is-up}
 
-Birinchi tenglamada holat oxirgi nuqtani tekshiring:
+Birinchi tarmoq hamkasbida API endpoint holatini tekshiring:
 
 ```bash
 curl http://127.0.0.1:8080/status
 ```
 
-Dastlabki tibbiy tekshiruvlarda quyidagilar ham qo'llaniladi:
+Standart sog‘liqni tekshirishlar shuningdek quyidagilarni ishlatadi:
 
 ```bash
 curl http://127.0.0.1:8080/status/blocks
 ```
 
-Siz darhol CLI ni to'plangan mijoz konfiguratsiyasiga ko'rsatishingiz mumkin:
+Siz darhol CLI ni biriktirilgan mijoz konfiguratsiyasiga yo'naltirishingiz mumkin:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 ```
 
-## 3. Nexus profil {#_3-nexus-profile}
+## 3. Nexus Profil {#_3-nexus-profile}
 
-Repozitoriyada SORA Nexus-ga yo'naltirilgan konfig profilini ham `defaults/nexus/` raqamiga yuborish mumkin.
+Ombor shuningdek `defaults/nexus/` ostida SORA Nexus-ga yo'naltirilgan konfiguratsiya profilini yuboradi.
 
-Nexus profilini o'z ichiga olgan mahalliy tenglamani ishlatish uchun:
+Nexus profil bilan mahalliy tarmoq ishtirokchisini ishga tushirish uchun:
 
 ```bash
 ./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
 ```
 
-Ushbu profilga CLI kirish uchun `defaults/nexus/client.toml` dan foydalaning.
+Ushbu profilga kirish uchun `defaults/nexus/client.toml` dan CLI foydalaning.
 
-## 4. Mahalliy tarmoqni to'xtatish {#_4-stop-the-local-network}
+## 4. Mahalliy Tarmoqni To'xtatish {#_4-stop-the-local-network}
 
-Yerli ishlab chiqarilgan lokal tarmoq uchun:
+Mahalliy ishlab chiqarilgan localnet uchun:
 
 ```bash
 ./localnet/stop.sh
 ```
 
-Ishlab chiqarilgan kompozit to'plam uchun:
+Yaratilgan Compose steki uchun:
 
 ```bash
 docker compose -f ./docker-compose.yml down
 ```
 
-Tarmoq ishlayotganidan so'ng, [da davom eting Iroha 3 orqali CLI](/uz/get-started/operate-iroha-via-cli.md) orqali ishlating.
+Tarmoq ishga tushgach, [Iroha 3 ni CLI orqali boshqaring](/uz/get-started/operate-iroha-via-cli.md) bilan davom eting.

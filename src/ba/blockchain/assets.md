@@ -49,7 +49,7 @@ Iroha актив - иҫәптә тотолған һанлы баланс. Һәр
 |`Not` |Төп тәьминәт символы яндырылырға мөмкин, әммә ҡабаттан һуғылмай. |
 |`Limited(n)` |Был сәйәсәт яңы активтар берәмектәрен сикләнгән һанда өҫтәмә операцияларҙа сығарырға мөмкинлек бирә. |
 
-Ҡулланыу `Infinitely` ғәҙәти һығылмалы активтар өсөн һәм `Once` йәки `Limited(n)` даими йәки сикләнгән тәьминәт активтары өсөн. `Not` башланғыс сәйәсәт булараҡ, әгәр активтар менән тәьмин итеү инде билдәләнмәгән булһа.
+Ғәҙәти elastic assets өсөн `Infinitely`, ә fixed-supply йәки bounded-supply assets өсөн `Once` йәки `Limited(n)` ҡулланығыҙ. Asset supply алдан булдырылмаған булһа, `Not`-ты initial policy итеп ҡулланмағыҙ.
 
 ## Баланс күләме {#balance-scope}
 
@@ -89,9 +89,9 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-Өс миҫал да уҡыла. Taira буйынса активтарҙы яғыу, яндырыу йәки күсереү өсөн кран менән тәьмин ителгән иҫәп һәм һаҡланған ағымды ҡулланығыҙ [SORA Nexus Мәғлүмәт биттәренә тоташтырыу ](/ba/get-started/sora-nexus-dataspaces.md).
+Өс миҫал да уҡыла. Taira буйынса активтарҙы минтлау, яндырыу йәки күсереү өсөн faucet менән тәьмин ителгән иҫәп һәм һаҡланған ағымды ҡулланығыҙ [SORA Nexus Мәғлүмәт биттәренә тоташтырыу ](/ba/get-started/sora-nexus-dataspaces.md).
 
-Түләүле Taira актив миҫалы өсөн, кран ярҙамсыһын һаҡлағыҙ [Get Testnet XOR on Taira](/ba/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) as `taira_faucet_claim.py`, һуңынан башта кран активын талап итегеҙ һәм уны транзакция газ активы итеп ҡулланығыҙ:
+Түләүле Taira актив миҫалы өсөн, faucet ярҙамсыһын һаҡлағыҙ [Taira-ла тест селтәре XOR-ын алыу](/ba/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) as `taira_faucet_claim.py`, һуңынан башта faucet активын талап итегеҙ һәм уны транзакция газ активы итеп ҡулланығыҙ:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'

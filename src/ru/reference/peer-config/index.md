@@ -3,18 +3,18 @@ translation_locale: ru
 translation_source: /reference/peer-config/index.md
 translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f29469aaf4
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Конфигурация Iroha {#configuring-iroha}
+# Настройка Iroha {#configuring-iroha}
 
-Местная конфигурация сверстников устанавливается в файлах TOML. Это отличается от конфигурации на цепи, измененной посредством инструкций [`SetParameter`](/ru/blockchain/instructions.md#setparameter). Производственное поведение должно быть представлено в файле конфигураций или параметре на цепи; переменные окружающей среды не являются воротами функций.
+Настройка узла локальной сети задана в TOML файлы. Это отличается от изменения конфигурации в цепочке через [`SetParameter`](/ru/blockchain/instructions.md#setparameter) инструкции. Поведение производства должно быть представлено в конфигурации файл или параметр в цепочке; переменные окружения не являются функциональными переключателями.
 
-Используйте аргумент [`--config`](../iroha3d-cli#arg-config) CLI для указания пути к файлу конфигурации.
+Использовать [`--config`](../iroha3d-cli#arg-config) CLI аргумент для указания пути к файлу конфигурации.
 
 ## Шаблон {#template}
 
-Для подробного описания каждого параметра обратитесь к ссылке [Параметры](./params.md).
+Для подробного описания каждого параметра, пожалуйста, обратитесь к справочнику [Параметры](./params.md).
 
 ::: details `peer.template.toml`
 
@@ -22,9 +22,9 @@ translation_engine: nllb-200-ct2
 
 :::
 
-## Составление файлов конфигурации {#composing-configuration-files}
+## Создание конфигурационных файлов {#composing-configuration-files}
 
-Конфигурационные файлы TOML имеют дополнительное поле `extends`, указывающее на другие файлы TOML (s). Это может быть один путь или несколько:
+Файлы конфигурации TOML имеют дополнительное поле `extends`, указывающее на другие файлы TOML. Это может быть один путь или несколько путей:
 
 ::: code-group
 
@@ -38,7 +38,7 @@ extends = ["file1.toml", "file2.toml"]
 
 :::
 
-Iroha будет рекурсивно читать все файлы, указанные в `extends`, и составлять их в слои, где последние переписывают предыдущие на уровне параметров. Например, если чтение `config.toml`:
+Iroha будет рекурсивно читать все файлы, указанные в `extends`, и составлять их в слои, где последующие перекрывают предыдущие на уровне параметров. Например, при чтении `config.toml`:
 
 ::: code-group
 
@@ -61,8 +61,8 @@ max_content_len = 2048
 
 :::
 
-Полученная конфигурация будет `chain` от `a.toml`, `max_content_len` от `b.toml`, и `torii.address` от `config.toml` (перепись) `b.toml`).
+Полученная конфигурация будет `chain` из `a.toml`, `max_content_len` из `b.toml` и `torii.address` из `config.toml` (перезаписывает `b.toml`).
 
 ## Устранение неполадок {#troubleshooting}
 
-Пройдите флаг [`--trace-config`](../iroha3d-cli#arg-trace-config) CLI, чтобы увидеть следы того, как конфигурация читается и анализируется.
+Пропустить [`--trace-config`](../iroha3d-cli#arg-trace-config) CLI флаг для отслеживания того, как конфигурация читается и разбирается.

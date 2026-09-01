@@ -6,27 +6,27 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# 發射 Iroha 3 {#launch-iroha-3}
+# 啟動 Iroha 3 {#launch-iroha-3}
 
-本頁面通過使用上游存儲庫中的默認工作空間資產來查看 Iroha 3 的當前本地網絡流動.
+本頁面透過使用上游儲存庫中的預設工作空間資產來檢視 Iroha 3 的當前本地網路流動.
 
-## 1. 創建一個地方多同行網絡 {#_1-generate-a-local-multi-peer-network}
+## 1. 建立一個地方多對等節點網路 {#_1-generate-a-local-multi-peer-network}
 
-從當前的 Kagami 代碼生成一個四對子本地網絡:
+從當前的 Kagami 程式碼生成一個四對子本地網路:
 
 ```bash
 cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-輸出目錄包含相匹配的同行配置, `genesis.json`, `genesis.signed.nrt`, `client.toml`和輔助腳本.
+輸出目錄包含相匹配的對等節點配置, `genesis.json`, `genesis.signed.nrt`, `client.toml`和輔助指令碼.
 
-在本地煙霧測試中,直接啓動生成的同齡人:
+在本地冒煙測試中,直接啟動生成的對等節點:
 
 ```bash
 ./localnet/start.sh
 ```
 
-在一個容器運行中,從同一 localnet目錄生成 Compose:
+在一個容器執行中,從同一 localnet目錄生成 Compose:
 
 ```bash
 cargo run --bin kagami -- docker \
@@ -39,21 +39,21 @@ cargo run --bin kagami -- docker \
 docker compose -f ./docker-compose.yml up
 ```
 
-默認生成的堆曝光:
+預設生成的堆曝光:
 
-- 同等 P2P 端口 `1337`到 `1340`
+- 同等 P2P 埠 `1337`到 `1340`
 - Torii HTTP 港口 `8080`到 `8083`
-- 在 `./localnet/client.toml` 設置已完成的客戶端配置
+- 在 `./localnet/client.toml` 設定已完成的客戶端配置
 
-## 2. 檢查網絡是否開通 {#_2-verify-that-the-network-is-up}
+## 2. 檢查網路是否開通 {#_2-verify-that-the-network-is-up}
 
-檢查第一個同行狀態終點:
+檢查第一個對等節點狀態端點:
 
 ```bash
 curl http://127.0.0.1:8080/status
 ```
 
-默認健康檢查還使用:
+預設健康檢查還使用:
 
 ```bash
 curl http://127.0.0.1:8080/status/blocks
@@ -67,19 +67,19 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 
 ## 3. Nexus 個人資料 {#_3-nexus-profile}
 
-存儲庫還將一個以 SORA Nexus 爲導向的配置資料發送到 `defaults/nexus/`.
+儲存庫還將一個以 SORA Nexus 為導向的配置資料傳送到 `defaults/nexus/`.
 
-運行一個具有 Nexus 配置文件的原生同行:
+執行一個具有 Nexus 配置檔案的原生對等節點:
 
 ```bash
 ./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
 ```
 
-使用 `defaults/nexus/client.toml`來獲取 CLI 該配置文件.
+使用 `defaults/nexus/client.toml`來獲取 CLI 該配置檔案.
 
-## 4. 停止本地網絡 {#_4-stop-the-local-network}
+## 4. 停止本地網路 {#_4-stop-the-local-network}
 
-對於原生生成的本地網絡:
+對於原生生成的本地網路:
 
 ```bash
 ./localnet/stop.sh
@@ -91,4 +91,4 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 docker compose -f ./docker-compose.yml down
 ```
 
-網絡運行後,繼續使用 [通過 CLI](/zh-hant/get-started/operate-iroha-via-cli.md)運行 Iroha 3.
+網路執行後,繼續使用 [透過 CLI](/zh-hant/get-started/operate-iroha-via-cli.md)執行 Iroha 3.

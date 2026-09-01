@@ -3,30 +3,30 @@ translation_locale: ja
 translation_source: /get-started/launch-iroha.md
 translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# 打ち上げ Iroha 3 {#launch-iroha-3}
+# Iroha 3 を起動 {#launch-iroha-3}
 
-このページは,上流リポジトリからのデフォルトワークスペース資産を使用した Iroha 3 の現在のローカルネットワークフローを閲覧します.
+このページでは、上流リポジトリのデフォルトワークスペース資産を使用して、Iroha 3 の現在のローカルネットワークフローについて説明します。
 
-## 1. ローカル・マルチピアネットワークを作成する {#_1-generate-a-local-multi-peer-network}
+## 1. ローカルマルチピアネットワークを生成する {#_1-generate-a-local-multi-peer-network}
 
-現在の Kagami コードから4ペアローカルネットを生成する:
+現在の Kagami コードから、4ピアのローカルネットを生成する:
 
 ```bash
 cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-出力ディレクトリには,匹敵するペアコンフィギュレーション, `genesis.json`, `genesis.signed.nrt`, `client.toml`,およびヘルパースクリプトが含まれています.
+出力ディレクトリには、対応するネットワークピアの設定ファイル `genesis.json`、`genesis.signed.nrt`、`client.toml` およびヘルパースクリプトが含まれています。
 
-地元の煙のテストでは,生成された同類を直接開始します.
+ネイティブのローカルスモークテストを行うには、生成されたネットワークピアを直接起動します:
 
 ```bash
 ./localnet/start.sh
 ```
 
-コンテナ化された実行では,同じローカルネットディレクトリからComposeを生成します:
+コンテナ化された実行の場合、同じ localnet ディレクトリから Compose を生成します:
 
 ```bash
 cargo run --bin kagami -- docker \
@@ -39,27 +39,27 @@ cargo run --bin kagami -- docker \
 docker compose -f ./docker-compose.yml up
 ```
 
-デフォルトで生成されたスタックは:
+デフォルトで生成されたスタックは次のものを公開します:
 
-- ピア P2P ポート `1337`から `1340`まで
-- Torii HTTP 港口 `8080` について `8083`
-- `./localnet/client.toml`で完成したクライアント設定
+- ネットワークピア P2P ポート `1337` から `1340` へ
+- Torii HTTP ポートを `8080` から `8083` へ
+- `./localnet/client.toml` にある既製のクライアント設定
 
-## 2. ネットワーク が 稼働 し て いる か を 確認 する {#_2-verify-that-the-network-is-up}
+## 2. ネットワークが稼働していることを確認する {#_2-verify-that-the-network-is-up}
 
-最初のピアでステータスエンドポイントを確認する:
+最初のネットワークピアで API エンドポイントのステータスを確認してください:
 
 ```bash
 curl http://127.0.0.1:8080/status
 ```
 
-デフォルトの健康チェックには以下が含まれています.
+デフォルトのヘルスチェックは次も使用します:
 
 ```bash
 curl http://127.0.0.1:8080/status/blocks
 ```
 
-CLI をすぐにバンドされたクライアント設定に指すことができます:
+バンドルされたクライアント設定にすぐに CLI を指すことができます：
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
@@ -67,28 +67,28 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 
 ## 3. Nexus プロフィール {#_3-nexus-profile}
 
-SORA Nexus に指向された設定プロフィールも `defaults/nexus/` に送信する.
+このリポジトリは、`defaults/nexus/`の下で SORA Nexus 指向の設定プロファイルも提供します。
 
-Nexus プロフィールでネイティブピアを実行するには:
+Nexus プロファイルでネイティブネットワークピアを実行するには:
 
 ```bash
 ./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
 ```
 
-そのプロフィールへのアクセス CLI に `defaults/nexus/client.toml` を使用する.
+そのプロフィールへの CLI アクセスには`defaults/nexus/client.toml`を使用してください。
 
 ## 4. ローカルネットワークを停止する {#_4-stop-the-local-network}
 
-ネイティブ生成ローカルネット:
+ネイティブ生成のローカルネットの場合:
 
 ```bash
 ./localnet/stop.sh
 ```
 
-生成されたコンポーズスタックについては:
+生成されたComposeスタックの場合：
 
 ```bash
 docker compose -f ./docker-compose.yml down
 ```
 
-ネットワークが実行された後, [で続行する Iroha 3 を介して CLI](/ja/get-started/operate-iroha-via-cli.md)を操作する.
+ネットワークが稼働した後、[CLI を介して Iroha 3 を操作する](/ja/get-started/operate-iroha-via-cli.md) を続けてください。

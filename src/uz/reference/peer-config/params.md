@@ -22,7 +22,7 @@ import ParamTable from './ParamTable.vue';
 
 ID zanjiri har bir muomalaga kiritilishi kerak. Takrorlash hujumlarini oldini olish uchun ishlatiladi.
 
-Takrorlash hujumlari - bu haqiqiy operatsiyani o'ziga mo'ljallanganidan boshqacha tarmoqga taqdim etish urinishidir. `chain` imzolangan operatsiya payloadining bir qismi bo'lgani uchun, bitta zanjir uchun imzolangan tranzaksiya boshqa zanjirdan foydalanuvchi tengdoshlar tomonidan rad etiladi ID
+Takrorlash hujumlari - bu haqiqiy operatsiyani o'ziga mo'ljallanganidan boshqacha tarmoqga taqdim etish urinishidir. `chain` imzolangan operatsiya payloadining bir qismi bo'lgani uchun, bitta zanjir uchun imzolangan tranzaksiya boshqa zanjirdan foydalanuvchi tugunlar tomonidan rad etiladi ID
 
 <param-table type=string env=CHAIN />
 
@@ -40,7 +40,7 @@ CHAIN="00000000-0000-0000-0000-000000000000"
 
 ### `public_key` <Badge text="required" /> {#param-public-key}
 
-O'z tengdoshlari uchun ochiq kalit. Konsensni tasdiqlovchi tengdoshlar BLS-Normal kalitlaridan foydalanishlari kerak.
+O'z tugunlari uchun ochiq kalit. Konsensni tasdiqlovchi tugunlar BLS-Normal kalitlaridan foydalanishlari kerak.
 
 <param-table type="public-key" env="PUBLIC_KEY" />
 
@@ -58,7 +58,7 @@ PUBLIC_KEY="ea01309060D021340617E9554CCBC2CF3CC3DB922A9BA323ABDF7C271FCC6EF69BE7
 
 ### `private_key` <Badge text="required" /> {#param-private-key}
 
-Tengdoshning xususiy kaliti. U `public_key` bilan mos bo'lishi kerak; konsensus tasdiqlovchi tengdoshlar BLS-Normal kalitlaridan foydalanishlari kerak.
+Tugunning xususiy kaliti. U `public_key` bilan mos bo'lishi kerak; konsensus tasdiqlovchi tugunlar BLS-Normal kalitlaridan foydalanishlari kerak.
 
 <param-table type="private-key" env="PRIVATE_KEY" />
 
@@ -76,14 +76,14 @@ PRIVATE_KEY="8926201CA347641228C3B79AA43839DEDC85FA51C0E8B9B6A00F6B0D6B0423E9029
 
 ### `trusted_peers` {#param-trusted-peers}
 
-Ishonchli tengdoshlar ro'yxati.
+Ishonchli tugunlar ro'yxati.
 
-Konsensus tasdiqlovchilaridan BLS-Normal peer kalitlari foydalanilishi kerak. Har bir tasdiqlovchi uchun ham moslashtirilgan [`trusted_peers_pop`](#param-trusted-peers-pop) yozuvni taqdim eting.
+Konsensus tasdiqlovchi tugunlari BLS-Normal tugun kalitlaridan foydalanishi kerak. Har bir tasdiqlovchi tugun uchun mos [`trusted_peers_pop`](#param-trusted-peers-pop) yozuvini ham kiriting.
 
 <param-table env="TRUSTED_PEERS">
 <template #type>
 
-Tengdoshlar simlaridan iborat qator. `PUBLIC_KEY@ADDRESS` manzili P2P ma'lum bo'lganda foydalaning; yalang'och `PUBLIC_KEY` ham qabul qilinadi va tengdoshlar manzilini g'iybatdan aniqlash imkonini beradi.
+Tugunlar simlaridan iborat qator. `PUBLIC_KEY@ADDRESS` manzili P2P ma'lum bo'lganda foydalaning; yalang'och `PUBLIC_KEY` ham qabul qilinadi va tugunlar manzilini g'iybatdan aniqlash imkonini beradi.
 
 </template>
 </param-table>
@@ -109,7 +109,7 @@ TRUSTED_PEERS='[
 
 ### `trusted_peers_pop` {#param-trusted-peers-pop}
 
-BLS validatorning ishonchli tengdoshlari uchun egalik to'g'risidagi dalillar kiritiladi.
+BLS validatorning ishonchli tugunlari uchun egalik to'g'risidagi dalillar kiritiladi.
 
 <param-table env="TRUSTED_PEERS_POP">
 <template #type>
@@ -201,9 +201,9 @@ P2P_ADDRESS=0.0.0.0:1337
 
 ### `network.public_address` <Badge text="required" /> {#param-network-public-address}
 
-Tengdoshlardan to'g'ri manzil (tashkil, boshqa tengdoshlar ko'rganidek).
+Tugunlardan to'g'ri manzil (tashkil, boshqa tugunlar ko'rganidek).
 
-Boshqa tengdoshlarga gapirishlari uchun o'zaro bog'liq tengdoshlariga g'iybat qilishadi.
+Boshqa tugunlarga gapirishlari uchun o'zaro bog'liq tugunlariga g'iybat qilishadi.
 
 <param-table type="socket-addr" env="P2P_PUBLIC_ADDRESS" />
 
@@ -237,7 +237,7 @@ block_gossip_size = 256
 
 ### `network.block_gossip_period_ms` {#param-network-block-gossip-period-ms}
 
-Eng so'nggi blok uchun tengdoshlarga murojaatlar orasidagi vaqt oralig'i.
+Eng so'nggi blok uchun tugunlarga murojaatlar orasidagi vaqt oralig'i.
 
 Ko'proq tez-tez g'iybat qilish sinxronlashtirish vaqtini qisqartiradi, ammo tarmog'i ortiqcha bo'ladi.
 
@@ -271,7 +271,7 @@ transaction_gossip_size = 256
 
 ### `network.transaction_gossip_period_ms` {#param-network-transaction-gossip-period-ms}
 
-Tengdoshlar o'rtasidagi bitimni kutish paytida g'iybat qilish davri.
+Tugunlar o'rtasidagi bitimni kutish paytida g'iybat qilish davri.
 
 Ko'proq tez-tez g'iybat qilish sinxronlashtirish vaqtini qisqartiradi, ammo tarmog'i ortiqcha bo'ladi.
 
@@ -288,7 +288,7 @@ transaction_gossip_period_ms = 5_000
 
 ### `network.idle_timeout_ms` {#param-network-idle-timeout-ms}
 
-Agar tengdosh ishlamasa, tengdosh bilan bog'lanish tugatilgan vaqt davomiyligi.
+Agar tugun ishlamasa, tugun bilan bog'lanish tugatilgan vaqt davomiyligi.
 
 <param-table type=millis default-value=300_000 default-note="5 minutes" />
 
@@ -410,9 +410,9 @@ Urug'lar, mumkin bo'lgan qiymat:
 - `DEBUG`: Xavfsizlik darajasidagi xabarlar, diagnostika uchun foydali.
 - `INFO`: Umumiy axborot xabarlari.
 - `WARN`: Muvofiq muammolarni ko'rsatadigan ogohlantirishlar.
-- `ERROR`: Oddiy funktsiyani buzadigan, ammo ishlashni davom ettirish imkonini beradigan xatolar.
+- `ERROR`: Oddiy funktsiyani buzadigan, ammo ishlashni davom ettirish imkonini beradigan xatolar. Turli log darajalaridan foydalanish bo‘yicha qo‘shimcha tafsilotlar uchun Stack Overflow-ga qarang.
 
-Foydalanish holatingizga eng mos bo'lgan darajani tanlang. [Stack Overflow](https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels)-ni ko'rib chiqing.
+Foydalanish holatingizga eng mos darajani tanlang. Turli log level-lardan foydalanish bo'yicha qo'shimcha ma'lumot uchun [Stack Overflow](https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels)-ga qarang.
 
 </template>
 </param-table>
@@ -474,7 +474,7 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 
 `logger.filter` bilan birga ishlaydi [`logger.level`](#param-logger-level) va hech biri boshqa biridan ustun qo'ymadi.
 
-Masalan, agar: `logger.level` to ' ldirilgan `INFO` va `logger.filter` to ' ldirilgan `iroha_core=debug`, natijada filtr to'plami bo'ladi: `info,iroha_core=debug` (ya'ni `info` barcha modullar uchun; `debug` uchun `iroha_core`).
+Masalan, `logger.level` qiymati `INFO`, `logger.filter` qiymati esa `iroha_core=debug` bo‘lsa, hosil bo‘ladigan filtr `info,iroha_core=debug` bo‘ladi (ya’ni barcha modullar uchun `info`, `iroha_core` uchun `debug`).
 
 :::
 
@@ -545,11 +545,11 @@ KURA_BLOCKS_IN_MEMORY=1024
 
 Kura boshlash usuli. `strict` odatiy va andoza usulidir: u nod faollashishdan oldin kanonik tarix, tiklanish artefaktlari, yordamchi indekslar va saqlash hisobini tasdiqlaydi.
 
-`fast` - operatsiyaviy ko'rinishni tiklash uchun favqulodda holatda xizmatni buzgan rejimdir. to'liq boshlang'ich audit uzilish xavfi bo'lishi mumkin. `strict` va to'g'ri beshta artefaktni o'z ichiga olgan joriy fotosuratlar avlodi: `snapshot.data`, `snapshot.sha256`, `snapshot.sig`, `snapshot.fast.norito`, va `snapshot.merkle.json`. Domenlar bo'yicha alohida operator imzosi reklama qilingan foydali yukni o'chirish va cheklangan manifestni bog'laydi; manifestda foydali yukning uzunligi, zanjir/tarmoq kimligi, terminal balandligi/hash to'g'risida ma'lumot beriladi; SCCP siyosat hash, va bootstrap liniyasi mavjudligi. tezlik bilan bootstrap rad etadi nasldan kelib chiqishi va o'ziga xos belgilash/hisoblash/to'g'ri chiziq chegaralarini talab qiladi Kura. Birinchi chiqarilgan nodlar aynan shu beshta artefaktni qabul qiladi va boshqa barcha artefaktlar soni yoki fayl nomlari setini rad etadi.
+`fast` - operatsiyaviy ko'rinishni tiklash uchun favqulodda holatda xizmatni buzgan rejimdir. to'liq boshlang'ich audit uzilish xavfi bo'lishi mumkin. `strict` va to'g'ri beshta artefaktni o'z ichiga olgan joriy snapshotlar avlodi: `snapshot.data`, `snapshot.sha256`, `snapshot.sig`, `snapshot.fast.norito`, va `snapshot.merkle.json`. Domenlar bo'yicha alohida operator imzosi reklama qilingan foydali yukni o'chirish va cheklangan manifestni bog'laydi; manifestda foydali yukning uzunligi, zanjir/tarmoq kimligi, terminal balandligi/hash to'g'risida ma'lumot beriladi; SCCP siyosat hash, va bootstrap liniyasi mavjudligi. tezlik bilan bootstrap rad etadi nasldan kelib chiqishi va o'ziga xos belgilash/hisoblash/to'g'ri chiziq chegaralarini talab qiladi Kura. Birinchi chiqarilgan nodlar aynan shu beshta artefaktni qabul qiladi va boshqa barcha artefaktlar soni yoki fayl nomlari setini rad etadi.
 
-Ushbu beshta ism va metadatalarni tezkor inventarizatsiya qiladi, payload va Merkle fayllarini bog'laydi, ammo ularning mazmunini o'qib, hash qilmaydi, tahlil qilmaydi yoki dekodlamaydi. U imzolangan manifestdan minimal dunyo / Nexus yaratadi, aniq Kura hash prefiksini faqat o'qish uchun xaritalaydi va world, block-hash arrayni qoldiradi. operatsiyalar tarixi, hosil bo'lgan indekslar va uzoq muddatli tiklanish jurnallari ochilmagan. Merkle, kanonik va semantik tezkor tekshiruvlar, tarixiy blok / yakun/SCCP muvofiqlashtirish, Sumeragi faol balandlikni tiklash, birlashtirish va so'rov jurnallari, yo'nalish manifesti / muvofiqlik manbalari, Kura tomonidan qo'llab-quvvatlanadigan SoraFS arxivlari, rekursiv saqlash hisobi va ixtiyoriy xizmatlarni birlashtiruvchi vositalar kechiktirilmoqda. Mahalliy bitimlarni qabul qilish, takliflar, ovoz berish, kanonik yozuvlar va yordamchi ishlab chiqaruvchilar faoliyatsiz qolmoqda. Kura o'zi yozuvchi ishga tushirilishini va uzoq muddatli mutatsiyalarni rad etadi; quvur va FASTPQ chidamlilik navbatlari uni saqlab qolish yoki kodlashning o'rniga ishni darhol rad qiladi. Kura o'qiladi APIs shuningdek, ta'mirlash va chidamlilik-sinkronizatsiya xatti-harakatlarini o'chirib tashlaydi: vaqtinchalik yon mashinalari rag'batlantirilmaydi, yo'qolgan yo'l artefaktlari nashr etilmaydi va rivojlanish to'siqlari sinxronlashtirilmaydi. Sumeragi va tranzaksiya mish-mishlar ishga tushirilmaydi . Torii faqat sog'liq, jonlilik, tayyorlik, tengdoshlar va konfiguratsiya operatsiyalarini aks ettiradi; API-versiya, status, metrikalar va barcha odatdagi holat / tarix yo'nalishlari mavjud emas.
+Ushbu beshta ism va metadatalarni tezkor inventarizatsiya qiladi, payload va Merkle fayllarini bog'laydi, ammo ularning mazmunini o'qib, hash qilmaydi, tahlil qilmaydi yoki dekodlamaydi. U imzolangan manifestdan minimal dunyo / Nexus yaratadi, aniq Kura hash prefiksini faqat o'qish uchun xaritalaydi va world, block-hash arrayni qoldiradi. operatsiyalar tarixi, hosil bo'lgan indekslar va uzoq muddatli tiklanish jurnallari ochilmagan. Merkle, kanonik va semantik tezkor tekshiruvlar, tarixiy blok / yakun/SCCP muvofiqlashtirish, Sumeragi faol balandlikni tiklash, birlashtirish va so'rov jurnallari, yo'nalish manifesti / muvofiqlik manbalari, Kura tomonidan qo'llab-quvvatlanadigan SoraFS arxivlari, rekursiv saqlash hisobi va ixtiyoriy xizmatlarni birlashtiruvchi vositalar kechiktirilmoqda. Mahalliy bitimlarni qabul qilish, takliflar, ovoz berish, kanonik yozuvlar va yordamchi ishlab chiqaruvchilar faoliyatsiz qolmoqda. Kura o'zi yozuvchi ishga tushirilishini va uzoq muddatli mutatsiyalarni rad etadi; konveyer va FASTPQ chidamlilik navbatlari uni saqlab qolish yoki kodlashning o'rniga ishni darhol rad qiladi. Kura o'qiladi APIs shuningdek, ta'mirlash va chidamlilik-sinkronizatsiya xatti-harakatlarini o'chirib tashlaydi: vaqtinchalik yordamchi yozuvlari rag'batlantirilmaydi, yo'qolgan yo'l artefaktlari nashr etilmaydi va rivojlanish to'siqlari sinxronlashtirilmaydi. Sumeragi va tranzaksiya mish-mishlar ishga tushirilmaydi . Torii faqat sog'liq, jonlilik, tayyorlik, tugunlar va konfiguratsiya operatsiyalarini aks ettiradi; API-versiya, status, metrikalar va barcha odatdagi holat / tarix yo'nalishlari mavjud emas.
 
-`fast` ni faqat hodisa uchun ishlating. Xizmat barqaror bo'lganidan so'ng, nodni to'xtatish, `strict` ni tiklash va qayta ishga tushirish, shuning uchun har bir kechiktirilgan tekshirish va indeksni qayta qurish ishlab chiqarish davom etmasdan oldin ishlaydi. Tezkor rejimda kechiktirilgan birlashtirish logini talab qilmaydi va kanonik saqlashni yaratmaydi, ta'mirlamaydi, qisqartirmaydi yoki import qilmaydi; nashr etilmagan suffixlar va kutilmagan yordamchi tiklash bosqichlari o'qib bo'lmasdan yoki mutatsiya qilinmasdan e'tiborsiz qoldiriladi, so'ngra qat'iy tiklash uchun qoldiriladi. Import qilingan faqat hashli fotosuratlar liniyasi mavjud emas. Yo'qolgan yoki haqiqiy bo'lmagan joriy fotosurat darhol muvaffaqiyatsizlikka uchraydi; tez hech qachon bo'sh dunyoga yoki tarixiy takrorlashni qayta tiklashga tushmaydi.
+`fast` ni faqat hodisa uchun ishlating. Xizmat barqaror bo'lganidan so'ng, nodni to'xtatish, `strict` ni tiklash va qayta ishga tushirish, shuning uchun har bir kechiktirilgan tekshirish va indeksni qayta qurish ishlab chiqarish davom etmasdan oldin ishlaydi. Tezkor rejimda kechiktirilgan birlashtirish logini talab qilmaydi va kanonik saqlashni yaratmaydi, ta'mirlamaydi, qisqartirmaydi yoki import qilmaydi; nashr etilmagan suffixlar va kutilmagan yordamchi tiklash bosqichlari o'qib bo'lmasdan yoki mutatsiya qilinmasdan e'tiborsiz qoldiriladi, so'ngra qat'iy tiklash uchun qoldiriladi. Import qilingan faqat hashli snapshotlar liniyasi mavjud emas. Yo'qolgan yoki haqiqiy bo'lmagan joriy snapshot darhol muvaffaqiyatsizlikka uchraydi; tez hech qachon bo'sh dunyoga yoki tarixiy takrorlashni qayta tiklashga tushmaydi.
 
 <param-table default-value=strict>
 <template #type>
@@ -664,7 +664,7 @@ transaction_time_to_live_ms = 43_200_000
 
 ### `sumeragi.debug.force_soft_fork` <Badge type="warning" text="debug" /> {#param-sumeragi-debug-force-soft-fork}
 
-Sumeragi yumshoq furqonlarni boshqarish yo'nalishlarini amalga oshirish uchun faqat debug-switch. Uni nazorat qilinadigan sinovlardan tashqarida o'chirib qo'ying; uni ishlaydigan ishlab chiqarish tarmog'ida o'zgartirish tengdoshlarning konsensus xatti-harakatlari haqida kelishmovchiliklarga olib kelishi mumkin.
+Sumeragi yumshoq furqonlarni boshqarish yo'nalishlarini amalga oshirish uchun faqat debug-switch. Uni nazorat qilinadigan sinovlardan tashqarida o'chirib qo'ying; uni ishlaydigan ishlab chiqarish tarmog'ida o'zgartirish tugunlarning konsensus xatti-harakatlari haqida kelishmovchiliklarga olib kelishi mumkin.
 
 <param-table type=bool default-value=false />
 
@@ -685,17 +685,17 @@ Asosiy chegaralar: `max_participants`, `max_expiry_blocks`, `audit_timeout_block
 
 `max_capsule_bytes` to'liq `PrivateSettlementAuditCapsuleV1` bytesining kanonik Norito baytlarini, shu jumladan AAD, nonce, kodli matn, vektorlar o'rnatish va har bir auditorning DEK qatorini o'lchab oladi; bu faqat kodli matnda bo'lgan chegara emas. Har bir qo'llaniladigan to'ldirish sinflari kamida `default_min_auditor_approvals` auditorlar uchun konservativ butun kapsula qadoqqa mos bo'lishi kerak. Ushbu ruxsat berish sohasi ham tartibga solinadi: Torii yangi qabul qilingan siyosatni `min_approvals` qiymatidan kamroq va har qanday haqiqiy kapsulani kanonik byt chegarasidan ortiqcha rad etadi.
 
-Ushbu sozlamalarda ishlab chiqarish muhitida o'zgaruvchi aktivatsiya bypass yo'q. To'liq konfiguratsiya namunasi va operatsion talablar uchun ](/uz/get-started/atomic-private-settlement) Atom Private Cross-Dataspace Settlement[ni ko'ring. Yo'l hujjatli tashqi chiqarib yuborish darvozalari o'tmaguncha ishlab chiqarishga mos kelmaydi.
+Bu sozlamalarda ishlab chiqarish muhiti o‘zgaruvchisi orqali faollashtirishni chetlab o‘tish yo‘li yo‘q. To‘liq konfiguratsiya namunasi va operatsion talablar uchun [Ma’lumotlar makonlari orasidagi atomik maxfiy hisob-kitobni ishga tushirish](/uz/get-started/atomic-private-settlement) bo‘limiga qarang. Hujjatlashtirilgan tashqi reliz darvozalari o‘tmaguncha bu yo‘l ishlab chiqarish uchun yaroqli emas.
 
-## Oʻrinli fotosurat {#snapshot}
+## Oʻrinli snapshot {#snapshot}
 
-Ushbu modul [World State View](/uz/blockchain/world#world-state-view-wsv) fotosuratlarini o'qish va yozish uchun mas'ul.
+Ushbu modul [Jahon holati ko‘rinishi](/uz/blockchain/world#world-state-view-wsv) snapshotlarini o'qish va yozish uchun mas'ul.
 
-Snapshots World State View-ning seriyalangan nazorat punktini saqlaydi, shunda tengdosh Kura dan har bir blokni takrorlamasdan qayta ishga tushira oladi. Kura davomli blok tarixini va takrorlash uchun haqiqat manbai bo'lib qoladi; snapshots tezlashtirish yo'lidir. Boshlang'ichda Iroha fotosurat metadatalarini konfiguratsiya qilingan zanjir va saqlangan bloklar bilan tekshiradi, keyin fotosuratni yuklab olish yoki takrorlash haqida qaror qabul qiladi.
+Snapshots World State View-ning seriyalangan nazorat punktini saqlaydi, shunda tugun Kura dan har bir blokni takrorlamasdan qayta ishga tushira oladi. Kura davomli blok tarixini va takrorlash uchun haqiqat manbai bo'lib qoladi; snapshots tezlashtirish yo'lidir. Boshlang'ichda Iroha snapshot metadatalarini konfiguratsiya qilingan zanjir va saqlangan bloklar bilan tekshiradi, keyin snapshotni yuklab olish yoki takrorlash haqida qaror qabul qiladi.
 
 ::: tip Rasmlarni oʻchirish
 
-Agar fotosuratlar tizimida biror narsa noto'g'ri bo'lsa va siz bo'sh sahifadan boshlashni xohlasangiz (snapshotlar bo'yicha), [`snapshot.store_dir`](#param-snapshot-store-dir) tomonidan ko'rsatilgan direktoriyani olib tashlash mumkin.
+Agar snapshotlar tizimida biror narsa noto'g'ri bo'lsa va siz bo'sh sahifadan boshlashni xohlasangiz (snapshotlar bo'yicha), [`snapshot.store_dir`](#param-snapshot-store-dir) tomonidan ko'rsatilgan direktoriyani olib tashlash mumkin.
 
 :::
 
@@ -708,9 +708,9 @@ Snapshot tizimi faoliyat ko'rsatadigan rejim.
 
 Urug'lar, mumkin bo'lgan qiymat:
 
-- `read_write`: Iroha ko'rsatilgan muddatga mos o'yinlarni yaratadi: [`snapshot.create_every_ms`](#param-snapshot-create-every-ms). Boshlang'ichda Iroha mavjud fotosuratni o'qiydi (agar mavjud bo'lsa) va bloklar saqlanishi bilan to'g'riligini tasdiqlaydi.
-- `readonly`: `read_write` ga o'xshash, lekin Iroha hech qanday fotosurat yaratmaydi.
-- `disabled`: Iroha yangi fotosuratlarni yaratmaydi va ishga tushirilganda mavjud fotosuratlarni o'qib chiqarmaydi.
+- `read_write`: Iroha ko'rsatilgan muddatga mos o'yinlarni yaratadi: [`snapshot.create_every_ms`](#param-snapshot-create-every-ms). Boshlang'ichda Iroha mavjud snapshotni o'qiydi (agar mavjud bo'lsa) va bloklar saqlanishi bilan to'g'riligini tasdiqlaydi.
+- `readonly`: `read_write` ga o'xshash, lekin Iroha hech qanday snapshot yaratmaydi.
+- `disabled`: Iroha yangi snapshotlarni yaratmaydi va ishga tushirilganda mavjud snapshotlarni o'qib chiqarmaydi.
 
 </template>
 </param-table>
@@ -766,7 +766,7 @@ SNAPSHOT_STORE_DIR="/path/to/storage"
 
 ## Telemetriya {#telemetry}
 
-Telemetriya tengdoshlari tashxisini tashqi telemetriya kollektoriga eksport qiladi. Tengdoshlari to'plamga xabar berishi kerak bo'lganda `telemetry.name` va `telemetry.url` ni sozlash; telemetriyadan foydalanilmaganida, bu bo'limni qoldiring.
+Telemetriya tugunlari tashxisini tashqi telemetriya kollektoriga eksport qiladi. Tugunlari to'plamga xabar berishi kerak bo'lganda `telemetry.name` va `telemetry.url` ni sozlash; telemetriyadan foydalanilmaganida, bu bo'limni qoldiring.
 
 `name` va `url` juftlanishi kerak.
 

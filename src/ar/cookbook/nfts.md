@@ -1,28 +1,28 @@
 ---
 translation_locale: ar
 translation_source: /cookbook/nfts.md
-translation_source_hash: 5eb6a349b815afbac9717f7b44c499adc78b1280625388656015ff4b133b9085
+translation_source_hash: db99dab483d4e2fb3fd84be84f6e4ef9f8373f0c16eb2f34952f1232c4587561
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # NFTs {#nfts}
 
-## النتيجة {#outcome}
+## نتيجة {#outcome}
 
-تحقق من حالة Taira NFT ، ثم سجل وتحديث ونقل ومطالبة NFT فريدة على شبكة محلية تم إنشاؤها. يستخدم تدفق العمل صاحب `name$domain.dataspace` مؤهل بالكامل NFT ID و I105 القنوني IDs.
+افحص حالة Taira NFT، ثم قم بالتسجيل والتحديث والنقل والاستعلام عن NFT فريد على شبكة محلية مُنشأة. يستخدم سير العمل معرف `name$domain.dataspace` NFT مؤهل بالكامل ومعرفات مالك واحدة حسب معيار البروتوكول I105.
 
-## الشروط المسبقة {#prerequisites}
+## المتطلبات الأساسية {#prerequisites}
 
-- `curl` ، `jq`، Python 3.11 أو أحدث، والتيار `iroha` CLI.
-- إمكانية الوصول إلى Taira فقط.
-- بالنسبة للكتب، يتم إنشاء شبكة محلية من [إطلاق Iroha](/ar/get-started/launch-iroha.md)، مع `./localnet/client.toml` و Torii على `http://127.0.0.1:8080`.
+- `curl`، `jq`، Python 3.11 أو أحدث، و`iroha` الحالي CLI.
+- وصول للقراءة فقط Taira.
+- للكتابات، شبكة محلية مُولَّدة من [إطلاق Iroha](/ar/get-started/launch-iroha.md)، مع `./localnet/client.toml` و Torii على `http://127.0.0.1:8080`.
 
-## الخطوات {#steps}
+## خطوات {#steps}
 
-### 1 - التفتيش على المجموعة العامة Taira {#_1-inspect-the-public-taira-collection}
+### 1. فحص مجموعة Taira العامة {#_1-inspect-the-public-taira-collection}
 
-صفحة فارغة هي قراءة ناجحة: يعني أنه لا يوجد NFTs مرئي في الصفحة المطلوبة.
+الصفحة الفارغة هي قراءة ناجحة: فهذا يعني عدم وجود أي NFTs مرئية في الصفحة المطلوبة.
 
 ```bash
 curl -fsS -H 'Accept: application/json' \
@@ -30,11 +30,11 @@ curl -fsS -H 'Accept: application/json' \
   | jq '{total, nfts: [.items[] | {id, owned_by, content}]}'
 ```
 
-NFTs هي سجلات فريدة من نوعها، وليس رصيدات رقمية. لديهم ID، صاحب واحد، وخريطة مكونة من البيانات المعدنية `content` .
+NFTs هي سجلات فريدة، وليست أرصدة رقمية. لديها معرف واحد، ومالك واحد، وخريطة بيانات وصفية مضغوطة `content`.
 
-### إعداد المالك المحلي IDs {#_2-prepare-local-owner-ids}
+### 2. إعداد هويات المالك المحلي {#_2-prepare-local-owner-ids}
 
-يستخدم مثال الكتابة نطاق `wonderland.universal` المسجل. استخرج السلطة الموضحة دون الكشف عن مفتاحها الخاص ، ثم اختر حسابًا مسجلًا آخر كمنطقة النقل.
+يستخدم المثال الكتابي نطاق `wonderland.universal` المسجّل. استخرج الكيان المخول المكوَّن دون كشف مفتاحه الخاص، ثم اختر حسابًا مسجلاً آخر كوجهة للنقل.
 
 ```bash
 LOCAL_ROOT='http://127.0.0.1:8080'
@@ -59,11 +59,11 @@ NEW_OWNER="$(
 )"
 ```
 
-(الـ) `$` المفصل ينتمي إلى NFT النموذج النصي. احتفظ بالملء `wonderland.universal` إضافية المجال ومساحة البيانات
+الفاصل `$` ينتمي إلى نموذج النص NFT. احتفظ بنطاق `wonderland.universal` الكامل ولاحقة مساحة البيانات.
 
-### 3- تسجيل NFT مع المحتوى الأولي {#_3-register-the-nft-with-initial-content}
+### ٣. سجّل NFT بالمحتوى الابتدائي {#_3-register-the-nft-with-initial-content}
 
-يقرأ CLI الكائن الأولي JSON من المدخل القياسي. يصبح السلطة الحالية صاحبها.
+يقرأ CLI الكائن الأولي JSON من الإدخال القياسي. يصبح المبدأ الحالي للتفويض هو المالك.
 
 ```bash
 printf '%s\n' \
@@ -73,9 +73,9 @@ printf '%s\n' \
       ledger nft register --id "$NFT_ID"
 ```
 
-### 4. تحديث خريطة المحتوى {#_4-update-the-content-map}
+### ٤. تحديث خريطة المحتوى {#_4-update-the-content-map}
 
-قيم البيانات الأساسية هي JSON. إدخال مفتاح أو استبدال هذا الإدراج الواحد؛ فإنه لا يحل محل سجل NFT بأكمله.
+قيم البيانات الوصفية هي JSON. إدراج مفتاح يقوم بإضافة أو استبدال هذا الإدخال فقط؛ لا يقوم باستبدال سجل NFT بالكامل.
 
 ```bash
 printf '%s\n' '{"color":"blue","version":1}' \
@@ -87,9 +87,9 @@ iroha --config "$LOCAL_CONFIG" ledger nft meta get \
   --id "$NFT_ID" --key traits
 ```
 
-### 5 - نقل الملكية {#_5-transfer-ownership}
+### ٥. نقل الملكية {#_5-transfer-ownership}
 
-توفير كل من الحساب القنوني I105 IDs. يجب حل الاسم قبل استخدامه باسم `--from` أو `--to`.
+زوّد كل من معرفي حساب بروتوكول-قياسي مفرد I105. يجب حل الاسم المستعار قبل استخدامه كـ `--from` أو `--to`.
 
 ```bash
 iroha --config "$LOCAL_CONFIG" \
@@ -102,11 +102,11 @@ iroha --config "$LOCAL_CONFIG" \
 
 ::: warning حدود الإذن
 
-على Taira, كل كتابة تحتاج أيضا `--metadata ./taira.tx-metadata.json` ومدفوع رسوم صريحة. يتم التحقق من تسجيل، ونقل، وإزالة، وتحديث البيانات المعدنية عن طريق الوقت النشط للعمل (`CanRegisterNft`, `CanTransferNft`, `CanUnregisterNft`, و `CanModifyNftMetadata` في سطح الإذن الافتراضي). استخدم نطاقًا مخصصًا للتطبيق الخاص بك أو حافظ على هذا المشي عبر localnet.
+في Taira، كل عملية كتابة تتطلب أيضًا `--metadata ./taira.tx-metadata.json` ودافع رسوم صريح. يتم التحقق من التسجيل والنقل والإزالة وتحديثات البيانات الوصفية بواسطة تنفيذ البرنامج النشط البيئة (`CanRegisterNft`، `CanTransferNft`، `CanUnregisterNft`، و`CanModifyNftMetadata` في سطح الإذن الافتراضي). استخدم نطاقًا مخصصًا لتطبيقك أو احتفظ بهذا الدليل على الشبكة المحلية.
 
 :::
 
-بالنسبة لتدفقات العمل المملوكة للعقود، يعرض Kotodama المكالمات المستضيفة NFT التي يتم تطبيقها. ما يلي هو إطار دورة الحياة الدقيقة التي تم تجميعها وتنفيذها بواسطة اختبار الوثائق IVM:
+بالنسبة إلى سير العمل المملوك للعقد، يتيح Kotodama استدعاءات مضيف NFT محددة الأنواع. وفيما يلي حالة اختبار دورة الحياة الدقيقة التي يجمعها وينفذها اختبار توثيق IVM المثبّت:
 
 ```kotodama
 seiyaku NftFlow {
@@ -134,11 +134,11 @@ seiyaku NftFlow {
 }
 ```
 
-الإثنان ثابتة I105 القيم هي أجهزة الاختبار مقدمة التدفق؛ ويتسجل الحبال الوجهة قبل تنفيذها. `CURRENT_OWNER` و `NEW_OWNER` من CLI للحصول على عقد التطبيق، توفير الحسابات الكانونية الفعلية لها، ثم تجميع واختبار، نشر، ودعوة من خلال [العقود الذكية](./smart-contracts.md). لا تقوم بإرسال رمز البايت غير المراجعة إلى Taira, وتذكر أن تنفيذ العقد لا يزال يتجاوز تفويض وقت التشغيل.
+القيم الثابتة الاثنين I105 هي آثار اختبار أولية؛ يقوم مشغل الاختبار بتسجيل الوجهة قبل التنفيذ. إنها ليست `CURRENT_OWNER` و `NEW_OWNER` من جولة العمل CLI. لعقد تطبيق، قم بتزويد حساباته الفعلية ذات البروتوكول القياسي الفردي، ثم قم بتجميعه، اختباره، نشره، واستدعاؤه عبر [العقود الذكية](./smart-contracts.md). لا تقدم الشيفرة الثنائية غير المراجعة إلى Taira، وتذكر أن تنفيذ العقد لا يزال يمر عبر تفويض بيئة تنفيذ البرمجيات.
 
-## التحقق {#verify}
+## تحقق {#verify}
 
-قراءة NFT مباشرة وتأكيد أن صاحبها قد تغير بينما ظل محتوياتها مرفقة:
+اقرأ NFT مباشرة وأكد أن مالكه قد تغير بينما ظل محتواه متصلاً:
 
 ```bash
 iroha --config "$LOCAL_CONFIG" --machine ledger nft get --id "$NFT_ID" \
@@ -149,23 +149,23 @@ jq -e --arg owner "$NEW_OWNER" \
   cookbook-nft.json
 ```
 
-إذا كان CLI يلف السجل في غطاء خروجي، فحص JSON مرة واحدة وتطبيق الادعاء على NFT المادة السليمة هي `id`, `owned_by`, و `content`.
+إذا كان CLI يلف السجل في حاوية بيانات الإخراج، فافحص JSON مرة واحدة وطبق التأكيد على الكائن NFT المحتوى. الثوابت الموثوقة هي `id` و`owned_by` و`content`.
 
-## حل المشاكل {#troubleshooting}
+## استكشاف الأخطاء وإصلاحها {#troubleshooting}
 
-- `name$domain` يمكن أن تكون مساحة البيانات العالمية بشكل افتراضي في بعض المستخدمين، ولكن يجب على كتاب الطهي والتطبيق IDs استخدام نموذج صريح `name$domain.dataspace`.
-- تسجيل متكرر من نفس NFT ID يتم رفضها. استخدم شبكة محلية جديدة أو اختر شبكة جديدة مستقرة ID " للكتاب المبين " .
-- يجب أن تكون مدخلات البيانات المعدنية صالحة JSON على المدخلات القياسية. لا تعتبر سلسلة الغلاف دون إشارة إلى JSON قيمة بيانات المعدلة.
-- يحتاج التحويل الذي تم توقيعه من قبل حساب آخر غير صاحب الحساب الحالي إلى إذن دقيق؛ تغيير `--from` لا يغير الموقّع.
-- بعد النقل، قد لا يسمح للعميل الأصلي بتغيير NFT أو إلغاء تسجيلها. استخدم توقيع المالك الجديد أو مراقب مصرح به.
-- Taira يمكن إرجاع مجموعة فارغة NFT لا تعتبر `items: []` كدليل على عدم توافر تعليمات NFT.
+- `name$domain` يمكن أن يعتمد على مساحة البيانات العالمية في بعض المحللات، ولكن يجب على معرفات الكتب التطبيقية والتطبيقات استخدام الشكل الصريح `name$domain.dataspace`.
+- يتم رفض تسجيل متكرر لنفس معرف NFT. استخدم شبكة محلية جديدة أو اختر معرفًا جديدًا مستقرًا لسجل مختلف.
+- يجب أن تكون بيانات التعريف المدخلة صالحة JSON على الإدخال القياسي. سلسلة القشرة بدون اقتباس JSON ليست قيمة بيانات تعريف.
+- يتطلب التحويل الذي يوقعه حساب غير المالك الحالي إذنًا دقيقًا؛ تغيير `--from` لا يغير الموقّع التشفيري.
+- بعد النقل، قد لا يُسمح للعميل الأصلي بعد الآن بتغيير أو إلغاء تسجيل NFT. استخدم الموقّع التشفيري للمالك الجديد أو المتحكم المفوض.
+- Taira يمكن أن تُرجع مجموعة NFT فارغة. لا تعامل `items: []` كدليل على أن تعليمات NFT غير متاحة.
 
-## المصدر والوثائق ذات الصلة {#source-and-related-docs}
+## المصدر والمستندات ذات الصلة {#source-and-related-docs}
 
-- [اختبارات الاندماج NFT في المشاركة المحمولة ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/nft.rs)
-- [Kotodama NFT اختبارات المكالمة المضيفة في الالتزام المتعلق ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
-- [بالضبط Kotodama NFT نظام دورة حياة في الالتزام المثبت](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/docs/examples/12_nft_flow.ko)
+- [NFT اختبارات التكامل عند نسخة التعليمات البرمجية المثبتة](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/nft.rs)
+- [Kotodama NFT اختبارات استدعاء فني للمضيف عند نسخة رمز المصدر المثبتة](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
+- [أداة اختبار دورة الحياة الدقيقة Kotodama NFT عند إصدار الكود المصدري المثبت](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/docs/examples/12_nft_flow.ko)
 - [NFTs](/ar/blockchain/nfts.md)
-- [البيانات الأساسية](/ar/blockchain/metadata.md)
-- [التعليمات](/ar/blockchain/instructions.md)
-- [رموز الإذن ](/ar/reference/permissions.md)
+- [البيانات الوصفية](/ar/blockchain/metadata.md)
+- [تعليمات](/ar/blockchain/instructions.md)
+- [رموز الإذن](/ar/reference/permissions.md)

@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: 429535e5bb4ad1d3110f29a5b3896c0d3ce39264dbd357fa932fcc2a5f48d0f1
+translation_source_hash: 6d36784afef0ef10113cabc995ddfb45fd8d382d7c32c553d77cf03ba5c1f65f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,19 +10,19 @@ translation_engine: nllb-200-ct2
 
 ## ရလဒ် {#outcome}
 
-Domainless canonical နဲ့ လုံခြုံစွာ အလုပ်လုပ်ပါ။ I105 အကောင့် IDs ပြီးတော့ လူသားတွေ ဖတ်လို့ရတဲ့ အမည်မဖော်လိုတဲ့ သီးခြား ချိတ်ဆက်ထားတဲ့ `treasury@payments.universal`. သင်က စစ်ဆေးမယ်။ Taira သင့်ရဲ့ကိုယ်ပိုင် Canonical ကိုရယူ ID, Routing context ကို Identity နဲ့ မရှုပ်ထွေးဘဲ aliases တွေကို ဖြေရှင်းပေးပါ။
+Domainless Single Protocol-Standard I105 အကောင့် ID များနှင့် သီးခြား ချိတ်ဆက်ထားသော လူသားဖတ်လို့ရတဲ့ aliases များ၊ ဥပမာ `treasury@payments.universal` နှင့်အတူ လုံခြုံစွာ အလုပ်လုပ်ပါ။ သင်သည် Taira အကောင့်များကို စစ်ဆေးနိုင်ပြီး ကိုယ်ပိုင် single protocol-Standard ID ကို ရယူနိုင်ကာ Routing အခြေအနေကို Identity နဲ့ မရှုပ်ထွေးဘဲ aliases တွေကို ဖြေရှင်းနိုင်သည်။
 
 ## လိုအပ်ချက်များ {#prerequisites}
 
 - `curl`, `jq`, Python 3.11 သို့မဟုတ်နောက်ဆုံး၊ current `iroha` CLI။
-- [ကနေ `taira.client.toml` သင့်ကိုယ်ပိုင်စာရင်းကို စစ်ဆေးတဲ့အခါ Taira ](./connect-to-taira.md) သို့ ဆက်သွယ်ပါ။
-- Taira faucet (သို့) ကွန်ရက်ရဲ့ စည်းကမ်းထားတဲ့ Onboarding Path မှတစ်ဆင့် ရင်းနှီးမြှုပ်နှံထားသော အကောင့်တစ်ခုမှာ အကောင့်ဆိုင်ရာ ဖတ်ရှုမှု အောင်မြင်လိမ့်မယ်လို့ မျှော်လင့်မထားခင်မှာပါ။
+- သင့်ကိုယ်ပိုင်စာရင်းကို စစ်ဆေးတဲ့အခါ `taira.client.toml` မှ [Taira သို့ ချိတ်ဆက်ပါ။](./connect-to-taira.md) ကို။
+- Taira testnet ဘဏ္ဍာရေး ဝန်ဆောင်မှု (သို့) ကွန်ရက်ရဲ့ စည်းကမ်းထားတဲ့ Onboarding Path မှတစ်ဆင့် အကောင်အထည်ဖော်ထားပြီး Account Specific Reading အောင်မြင်မယ်လို့ မျှော်လင့်မထားသေးတဲ့ စာရင်းတစ်ခုပါ။
 
 ## ခြေလှမ်း {#steps}
 
-### (၁) Taira တွင် တရားဝင်စာရင်းများကို စစ်ဆေးပါ။ {#_1-inspect-canonical-accounts-on-taira}
+### (၁) Taira တွင် Single Protocol Standard Account များကို စစ်ဆေးပါ။ {#_1-inspect-canonical-accounts-on-taira}
 
-ပြည်သူ့စာရင်းစာရင်းမှာ အမြဲတမ်း Canonical I105 IDs ကိုပြန်ပို့တယ်။ အဓိက အမည်မဖော်လိုဘဲ သီးခြားတင်ပြပါတယ်။
+အများသုံးအကောင့်စာရင်းမှာ အမြဲတမ်း Single Protocol-Standard I105 ID တွေကို ပြန်ပို့တယ်။ အဓိက အမည်မဖော်လိုဘဲ သီးခြားပြန်ကြားပေးပါတယ်။
 
 ```bash
 curl -fsS -H 'Accept: application/json' \
@@ -30,11 +30,11 @@ curl -fsS -H 'Accept: application/json' \
   | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
 ```
 
-ID ကနေ `.id` သည်တင်းကျပ်သောစာရင်းကွင်းများအတွက်အတည်ပြုသည်။ ၎င်းသို့ဒိုမင်တစ်ခု မထည့်ပါနဲ့။ `.primary_alias` မှအမည်မဖော်လိုသည်မှာအသုံးပြုသူမျက်နှာလိုက်ရှာဖွေရေးခလုတ်ဖြစ်ပြီး အခြားသမရိုးကျကိုယ်စားလှယ်မဟုတ်ပါ။
+`.id` မှ ID သည်ကြမ်းတမ်းသောစာရင်းကွင်းများအတွက်အတည်ပြုသည်။ domain ကိုမထည့်ပါနဲ့။ `.primary_alias` မှ alias သည်အသုံးပြုသူမျက်နှာစာရှာဖွေရေး key ဖြစ်သည်၊ အခြား single protocol-standard identity တစ်ခုမဟုတ်ပါ။
 
-### (၂) သင့် Taira I105 ID ကို ရယူပြီး ပုံမှန်ပြုပြင်ပါ။ {#_2-derive-and-normalize-your-taira-i105-id}
+### (၂) သင့်ရဲ့ Taira I105 ID ကို ရယူပြီး ပုံမှန်ပြုပြင်ပါ။ {#_2-derive-and-normalize-your-taira-i105-id}
 
-Local Configuration မှ Public Key ကိုသာဖတ်ပါ။ တူညီသော public key ကို public network profile အမျိုးမျိုးအတွက် မတူညီစွာ encoded လုပ်ထားပြီး `taira` ကို တိကျစွာရွေးပါ။
+ဒေသတွင်း ဖွဲ့စည်းမှုမှ အများသုံး သော့ကိုသာ ဖတ်ပါ။ တူညီသော အများသုံး သုတ်ချက်သည် အများသုံး blockchain ကွန်ရက် ပရိုဖိုင်အမျိုးမျိုးအတွက် မတူကွဲပြားစွာ ကုဒ်သွင်းထားသည်။ ထို့ကြောင့် `taira` ကို ရှင်းလင်းစွာရွေးချယ်ပါ။
 
 ```bash
 TAIRA_PUBLIC_KEY="$(python3 - <<'PY'
@@ -75,7 +75,7 @@ curl -fsS -H 'Accept: application/json' \
 
 ### (၄) အကောင့်နဲ့ ချိတ်ဆက်ထားတဲ့ အမည်မဖော်လိုသူတွေကို ရှာပါ။ {#_4-look-up-aliases-bound-to-the-account}
 
-Reverse Resolver သည် တိကျသော Canonical Account ID တစ်ခုကိုလက်ခံသည်။ အများပြည်သူ Dataspace အတန်းများကို request-signature ခေါင်းစဉ်များမပါဘဲဖတ်ရှုနိုင်ပါသည်။ ကန့်သတ်ထားသော Database များတွင် Authorized Signed request ကိုလိုအပ်သည်.
+Reverse Resolver သည် ပရိုတိုကောတစ်ခုတည်းသော စံစံညွှန်းစာရင်း ID ကိုလက်ခံသည်။ အများပြည်သူ ဒေတာစေးတန်းများကို request-signature ခေါင်းစဉ်များမပါဘဲဖတ်ရှုနိုင်ပါသည်။ ကန့်သတ်ထားသောဒေတာစေးများသည် ခွင့်ပြုချက်ဖြင့် လက်မှတ်ထိုးထားသောတောင်းဆိုမှုလိုအပ်သည်။
 
 ```bash
 jq -nc --arg account_id "$TAIRA_ACCOUNT_ID" \
@@ -89,7 +89,7 @@ curl -fsS -H 'Accept: application/json' \
   | jq '{account_id, total, items}'
 ```
 
-`total: 0` သည်အတည်ရှိသည်: အကောင့်တစ်ခုအတွက် အမည်မဖော်လိုပါ။ ချုပ်ကိုင်မှုတစ်ခုရှိပါက ၎င်း၏ တိကျသော အရည်အသွေးပြည့်စုံတဲ့ အမည်မဖေါ်ထုတ်ပြီး ပြန်လည်ပေးပို့ထားသည့် အကောင့်ကို နှိုင်းယှဉ်ကြည့်ပါ ID
+`total: 0` သည်အတည်ရှိသည်: အကောင့်တစ်ခုအတွက် အမည်မဖော်လိုပါ။ ချုပ်ကိုင်မှုတစ်ခုရှိပါက ၎င်း၏ တိကျသော အရည်အသွေးပြည့်စုံတဲ့ အမည်မဖေါ်ထုတ်ပြီး ပြန်ပို့ထားသော အကောင့် ID ကို နှိုင်းယှဉ်ကြည့်ပါ။
 
 ```bash
 ALIAS_WAS_RESOLVED=false
@@ -111,11 +111,11 @@ fi
 
 ::: warning ခွင့်ပြုချက် ကန့်သတ်ချက်
 
-Taira faucet က တောင်းဆိုသူရဲ့ အကောင့်ကို ထောက်ပံ့နိုင်ပေမဲ့ ဒါကတော့ ယေဘုယျ အကောင့်မှတ်ပုံတင်ခွင့် (သို့) အမည်မဖော်လိုတဲ့ စီမံခန့်ခွဲမှု အာဏာကို မပေးပါဘူး။ အခြား အကောင့်တစ်ခုကို မှတ်ပုံတင်ဖို့ လုပ်ဆောင်နေတဲ့ validator အောက်မှာ `CanRegisterAccount` ကို လိုအပ်ပါတယ်။ Account aliases များအတွက်လည်း active SNS lease နှင့် သင့်လျော်သော alias ခွင့်ပြုချက်များလိုအပ်သည်။ စည်းကမ်းထားသည့် onboarding/alias planner ကိုအသုံးပြုပါ (သို့မဟုတ်) ဖန်တီးထားတဲ့ ဒေသတွင်းကွန်ရက်ကိုစစ်ဆေးရင်း မှတ်ပုံတင်ပါ။
+Taira testnet ငွေကြေးထောက်ပံ့မှု ဝန်ဆောင်မှုသည် လျှောက်ထားသူ၏ အကောင့်ကို ထောက်ပံ့နိုင်သော်လည်း ယင်းက ယေဘုယျ အကောင့်မှတ်ပုံတင်ခြင်း သို့မဟုတ် အမည်မဖော်လိုသော စီမံခန့်ခွဲမှု ခွင့်ပြုချက် မူလစာရင်းကို မပေးပါ။ အခြား အကောင့်တစ်ခုကို မှတ်ပုံတင်ရန်အတွက် တက်ကြွသည့် validator တွင် `CanRegisterAccount` ကိုလိုအပ်သည်။ Account aliases များအတွက်လည်း active SNS lease နှင့် သင့်လျော်သော alias ခွင့်ပြုချက်များလိုအပ်သည်။ စည်းကမ်းထားသည့် onboarding/alias planner ကိုအသုံးပြုပါ (သို့မဟုတ်) ဖန်တီးထားတဲ့ ဒေသတွင်းကွန်ရက်ကိုစစ်ဆေးရင်း မှတ်ပုံတင်ပါ။
 
 :::
 
-ဒေသတွင်းကွန်ရက်တစ်ခုမှာ လုံခြုံတဲ့ လက်မှတ်ရေးထိုးပေးခြင်း အဆင့်တစ်ခုကနေ Canonical `NEW_ACCOUNT_ID` အသစ်ကို တင်ပို့ပြီးတာနဲ့ မှတ်ပုံတင်မျက်နှာပြင်က:
+ဒေသတွင်းကွန်ရက်တစ်ခုတွင် လုံခြုံသော cryptographic signing-key provisioning step တစ်ခုသည် Single Protocol-standard `NEW_ACCOUNT_ID` အသစ်ကို တင်ပို့ပြီးနောက်မှာ မှတ်ပုံတင်မျက်နှာပြင်သည်:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -127,11 +127,11 @@ iroha --config ./localnet/client.toml ledger account get \
   --id "$NEW_ACCOUNT_ID"
 ```
 
-ကိုက်ညီတဲ့ ပုဂ္ဂလိက သော့ကို စာရွက်စာတမ်း (သို့) အက်ပလီကေးရှင်း မှတ်ပုံတင်အပြင်မှာ ဖန်တီးပြီး သိုလှောင်ပါ။ ID ကို မှတ်ပုံတင်ခြင်းအားဖြင့် Controller Key ပစ်ချထားသည်မှာ အသုံးပြုလို့မရသော Account တစ်ခုကို ဖန်တီးပေးသည်။
+ကိုက်ညီသော ပုဂ္ဂလိက သော့ကို မှတ်တမ်းတင်စာရွက်စာတမ်း (သို့) လျှောက်လွှာ သိုလှောင်ရန်။ Controller key ပစ်ချထားသည့် ID တစ်ခုမှတ်ပုံတင်ခြင်းသည် အသုံးမပြုနိုင်သော အကောင့်တစ်ခု ဖန်တီးသည်။
 
 ## စစ်ဆေးပါ {#verify}
 
-အများသုံး သော့ကို ထိန်းချုပ်ထားတာကို သက်သေပြပါ။ I105 encoding နဲ့ alias တွေကို ပေါင်းစပ်ပြီး တစ်ခုတည်းသော canonical account ကို ချိတ်ဆက်ပေးတယ်။ ID:
+Config public key, I105 encoding, and alias binding all converge on a single protocol-standard account ID ကို သက်သေပြပါ။
 
 ```bash
 NORMALIZED_ACCOUNT_ID="$(
@@ -145,22 +145,22 @@ if test "${ALIAS_WAS_RESOLVED:-false}" = true; then
 fi
 ```
 
-IDs ကို သိမ်းဆည်းပါ။ လက်မှတ်၊ ခွင့်ပြုချက်များနှင့် ငွေပေးချေမှု ညွှန်ကြားချက်များအတွက် canonical IDs ကို အသုံးပြုပါ။ application နယ်နိမိတ်တွင် alias တစ်ခုကို ဖြေရှင်းပါ။ လုပ်ဆောင်ချက်အတွက်အသုံးပြုသော canonical account ID ကို ထိန်းသိမ်းပါ။
+Single protocol-standard account ID များကို သိမ်းဆည်းပါ။ လက်မှတ်၊ ခွင့်ပြုချက်များနှင့် ငွေကြေးဆိုင်ရာ ညွှန်ကြားချက်များအတွက် single protocol-standard ID များကို အသုံးပြုပါ။ application နယ်နိမိတ်တွင် alias ကို ဖြေရှင်းပါ။ လုပ်ဆောင်မှုအတွက်အသုံးပြုသည့် single protocol-standard account ID ကို ထိန်းသိမ်းပါ။
 
 ## ပြဿနာဖြေရှင်းခြင်း {#troubleshooting}
 
 - Parse (သို့) prefix အမှားဆိုတာက ပုံမှန်အားဖြင့် အခြားကွန်ရက်ပရိုဖိုင်တစ်ခုအတွက်လိပ်စာကို ကုဒ်သွင်းထားတာကို ဆိုလိုတာပါ။ `--profile taira` နဲ့ ပုံမှန်ဖြစ်အောင်လုပ်ပြီး မညီမျှမှုကို ပယ်ချပါ။
-- `202` faucet နောက်က အကောင့်တစ်ခု `404` က ပျံ့နှံ့မှု နှောင့်နှေးမှုဖြစ်နိုင်တယ်။ စာရင်းကို (သို့) ငွေကြေးထောက်ပံ့တဲ့ အရင်းအမြစ်ကို စာရိုက်ပို့မပေးခင် စစ်ဆေးပါ။
+- စာရင်း `404` ကို testnet ငွေကြေးထောက်ပံ့မှု ဝန်ဆောင်မှု `202` နောက်ပိုင်းမှာ ပျံ့နှံ့ခြင်း နှောင့်နှေးနိုင်သည်။ စာရင်း (သို့မဟုတ်) ထောက်ပံ့သော အရင်းအမြစ်ကို စာရင်းမပို့မီတွင် စစ်ဆေးပါ။
 - `total: 0` Reverse Resolver ကနေ မြင်နိုင်တဲ့ alias ကို ချိတ်ဆက်မထားဘူးလို့ ဆိုလိုတာပါ။ ဒါက အကောင့်ရှာဖွေမှု ပျက်ကွက်ခြင်းမဟုတ်ဘူး။
 - `401` သို့မဟုတ် `403` မှ အမည်မဖော်လိုသော လမ်းကြောင်းက ကန့်သတ်ထားသော ဒေတာနေရာသို့မဟုတ် မလုံလောက်သော တိကျတဲ့ အဖြေရှာခွင့်ကို ညွှန်ပြသည်။ ကျယ်ပြန့်တဲ့ ကြိုတင်စာရင်းရှာဖွေမှုကို နောက်ပြန်လမ်းအဖြစ်မသုံးပါ။
-- စာဖတ်လို့ရတဲ့ `name@domain.dataspace` တန်ဖိုးကို Canonical I105 ID လိုတဲ့ နေရာတိုင်းမှာ လက်မခံဘူး။ ဒါကို အရင်ဆုံး ဖြေရှင်းပါ။
-- ဒေသတွင်းအကောင့်မှတ်ပုံတင်မှု အောင်မြင်ပေမဲ့ Taira က ငြင်းပယ်ရင် ခြားနားချက်က ခွင့်ပြုချက်ပါ။ `CanRegisterAccount` ကိုရယူပါ၊ validation ကို ရှောင်ရှားဖို့ ID အကောင့်ကို မပြောင်းပါနဲ့။
+- စာဖတ်လို့ရတဲ့ `name@domain.dataspace` တန်ဖိုးကို ဘယ်နေရာမဆို လက်ခံမထားနိုင်ပါ။ တစ်ခုတည်းသော ပရိုတိုကောစံညွှန်း ID I105 ကို လိုအပ်ပါတယ်။ ဒါကို အရင်ဆုံး ဖြေရှင်းလိုက်ပါ။
+- ဒေသတွင်းစာရင်းမှတ်ပုံတင်မှု အောင်မြင်ပေမဲ့ Taira က ငြင်းပယ်ရင် ခြားနားချက်က ခွင့်ပြုချက်ပါ။ `CanRegisterAccount` ကိုရယူပါ၊ အကောင့် ID ကို validation ကို ရှောင်ရှားဖို့ မပြောင်းပါနဲ့။
 
 ## အရင်းအမြစ်နှင့် ဆက်စပ်သော စာတမ်းများ {#source-and-related-docs}
 
-- [ချိတ်ဆက်ထားသော commit ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs) တွင် Canonical account address အကောင်အထည်ဖော်ခြင်း
-- [အကောင့်နှင့် အမည်မဖော်လိုသူ Torii ချိတ်ဆက်ထားသော commit တွင် စမ်းသပ်မှုများ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs)
-- [ငွေစာရင်းများ](/my/blockchain/accounts.md)
-- [ဒေတာပုံစံ အမည်အမည်များ ](/my/blockchain/data-model.md#aliases)
-- [အမည်ပေးခြင်းဆိုင်ရာ ညီလာခံများ](/my/reference/naming.md)
-- [ခွင့်ပြုချက် လက်မှတ်များ ](/my/reference/permissions.md)
+- [ချိတ်ဆက်ထားသော source code revision တွင် single protocol standard account address အကောင်အထည်ဖော်ခြင်း](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs)
+- [ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှုမှာ Account နဲ့ alias Torii စမ်းသပ်မှုတွေ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs)
+- [အကောင့်များ](/my/blockchain/accounts.md)
+- [ဒေတာမော်ဒယ်အမည်များ](/my/blockchain/data-model.md#aliases)
+- [နာမည်ပေးသော ညီလာခံများ](/my/reference/naming.md)
+- [ခွင့်ပြုချက် လက်မှတ်များ](/my/reference/permissions.md)

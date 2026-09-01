@@ -1,24 +1,24 @@
 ---
 translation_locale: hy
 translation_source: /guide/tutorials/python.md
-translation_source_hash: a87e8db2b77fa4952689276ae538e65b3b51070749dd0938a9e18d3a6a3dc5e4
+translation_source_hash: d0ecbade221ceba455730e80c6e12db930c65a4cbcf9e643c1c2d4cba47b0940
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Python {#python}
 
 Upstream աշխատանքային տարածքում Python SDK է `iroha-python`: Առաջին Iroha 3 թողարկումը ուղղված է ընթացիկ Torii եւ Norito մակերեւույթներին: Պին փաթեթի տարբերակը կամ աղբյուրի վերանայման, որը օգտագործվում է ձեր ինտեգրման համար, այնպես որ SDK եւ հանգույցը մնում են նույն կավառ ձեւաչափով վերանայման վրա:
 
-Ստորեւ ներկայացված միայն ընթերցվող օրինակները ստուգվել են հանրային Taira հասցեով՝ `https://taira.sora.org`։ Մուտացիոն օրինակներն են գործարքի ձեւանմուշներ. դրանք պահանջում են իրական Taira իշխանություն, մասնավոր բանալին, գազի մետադատա եւ ցանկացած օպերատորի տոքեր, որոնք պահանջվում են նպատակային երթուղու կողմից, նախքան դրանք կարող են ուղարկվել:
+Անանուն ընթերցման օրինակները Taira թիրախային հանրության ստորեւ՝ `https://taira.sora.org` հասցեով: Մի երթուղին կարող է լինել միայն ընթերցելու համար եւ դեռեւս պահանջում է կանոնիկ հաշիվի ստորագրություն կամ ճշգրիտ ցանցի օպերատորի ստորագրությունը. այդ օրինակները առանձնապես նշվում են: Մուտացիոն օրինակներ են գործարքի ձեւանմուշները եւ պահանջում են իրական Taira լիազոր հաշիվ, մասնավոր բանալին, տիպված վճարային վճարման մտադրություն, բավարար փորձարկման ցանց XOR եւ նպատակային երթուղու կողմից պահանջվող հավաստագրումը, նախքան դրանք կարող են ներկայացվել։
 
 Օգտագործեք օրինակները հետեւյալ կարգով.
 
-|Դասարան |Հարձակվել հանրային Taira? |Այն, ինչ ձեզ անհրաժեշտ է|
-| --- | --- | --- |
-|Միայն ընթերցող հաճախորդների զանգեր |Այո։|Python փաթեթ եւ ցանցային մուտք |
-|Տեղական ստորագրման եւ հրահանգների կառուցողներ |Ոչ մի ցանցային զանգ մինչեւ `submit()` |Բնական ընդլայնում եւ ձեր հիմնական նյութը |
-|Մուտացիոն գործարքներ եւ ծառայությունների զանգեր |Միայն ձեր սեփական ֆինանսավորված հաշիվով|Հանձնաժողովի հաշիվը, մասնավոր բանալին, շղթան ID, վճարային մետադատները, վճարային ակտիվների հավասարակշռությունը եւ երթեւեկության տոքերները |
+|Դասարան |Հարձակվել հանրային Taira? |Այն, ինչ ձեզ հարկավոր է|
+| --------------------------------------------- | ------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
+|Անանունները կարդում են զանգերը:|Այո։|Python փաթեթ եւ ցանցային մուտք |
+|Հաշվի կամ օպերատորի կողմից հաստատված ընթերցումներ |Միայն ձեր սեփական ճանաչված ինքնության հետ:|Ճշգրիտ Taira `NetworkId` եւ համապատասխան հաշվառման կամ օպերատորի բանալին |
+|Տեղական ստորագրման եւ հրահանգների շինարարներ |Ոչ մի ցանցային զանգ մինչեւ `submit()` |Բնական ընդլայնում եւ ձեր հիմնական նյութը |
+|Մուտացիոն գործարքներ եւ ծառայությունների զանգեր |Միայն ձեր սեփական ֆինանսավորված հաշիվով|Հանձնաժողովի հաշիվը, մասնավոր բանալին, ճշգրիտ Taira `NetworkId`, մուտքագրված վճարների նպատակը, վճարային ակտիվների մնացորդը եւ երթեւեկության տոկենները |
 |Կապակցեք շրջանակային կոդեկներ, կրիպտո եւ GPU օգնականների |Միայն տեղական |Բնակչական ընդլայնում. GPU օգնականները նույնպես պետք է ունենան CUDA- ի կարողություն backend |
 
 ## Բեռնել {#install}
@@ -65,21 +65,29 @@ for account in accounts.items:
 
 ## Համագործակցված կարգավորումը {#shared-setup}
 
-Օգտագործեք այս կարգավորումը մուտացիոն ձեւանմուշների համար: Նախքան ուղարկելը փոխարինեք յուրաքանչյուր տեղապահը ձեր տեղադրումից Taira իշխանությամբ, մասնավոր բանալով, տոքերով եւ ակտիվ / հաշիվով IDs:
+Օգտագործեք այս կարգավորումը մուտացիոն ձեւանմուշների համար: Նախքան ուղարկելը փոխարինեք յուրաքանչյուր տեղապահը ձեր տեղադրումից Taira լիազոր հաշվով, մասնավոր բանալով, տոքերով եւ ակտիվ / հաշիվով IDs:
 
-`authority` հաշիվն է, որը ստորագրում է գործարքը: `private_key`-ը պետք է համապատասխանի այդ հաշիվին, `CHAIN_ID`-ը՝ թիրախային ցանցին, եւ `TX_METADATA`-ը պետք է՝ ներառի ցանցի կողմից սպասվող վճարային դաշտերը: Ստորեւ բերված տեղակալները դիտավորյալ անվավեր են, ուստի դրանք չեն ներկայացվում պատահականությամբ:
+`authority` հաշիվն է, որը ստորագրում է գործարքը եւ `private_key`-ը պետք է համընկնի դրան: Գործարքները կապվում են Taira-ի ճշգրիտ գենեզից բխող `NetworkId`-ի հետ; շղթան UUID -ը տեղակայման տեքստ է, այլ ոչ թե գործարքի ինքնություն: Գանձումները օգտագործում են տիպված վճարման մտադրություն եւ ճշգրիտ կենդանի առաջարկ, անկախ դիմման մետադատայից: Ստորեւ բերված հաշիվը եւ հիմնական տեղակալները դիտավորաբար անվավեր են, ուստի դրանք չեն ներկայացվում պատահականությամբ:
+
+Ստորեւ բերված բառացիությունը ներկա փաթեթավորված Taira գենեզի նույնականությունն է: Փորձարկման ցանցի վերականգնումը կարող է փոխել այն, այնպես որ թարմացրեք այն ստորագրված տեղադրման պրոֆիլից եւ երբեք չհաշվեք այն UUID շղթայից.
 
 ```python
 from iroha_python import (
     Ed25519KeyPair,
     Instruction,
+    LocalSigningContext,
+    NetworkId,
+    ToriiClient,
+    ToriiCanonicalRequestAuth,
     TransactionConfig,
     TransactionDraft,
-    create_torii_client,
+    authority_fee_payment,
 )
 
 TORII_URL = "https://taira.sora.org"
-CHAIN_ID = "fc56984b-2be7-431d-840e-21514d1883f0"
+TAIRA_NETWORK_ID = NetworkId.parse(
+    "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+)
 AUTH_TOKEN = None
 
 # Replace these placeholders with the real signing keys for your accounts.
@@ -90,68 +98,83 @@ bob_pair = Ed25519KeyPair.from_private_key(bytes.fromhex("<bob-private-key-hex>"
 alice = "<alice-account-id>"
 bob = "<bob-account-id>"
 
+canonical_auth = ToriiCanonicalRequestAuth(
+    network_id=TAIRA_NETWORK_ID.literal,
+    account_id=alice,
+    signer=alice_pair.sign,
+)
+
 ROSE_DEFINITION = "rose#wonderland"
 ROSE_ASSET = "<rose-asset-id>"
 BADGE_NFT = "badge$wonderland"
 
-TX_METADATA = {
-    # Public Taira fee asset. Use the configured XOR asset on your network.
-    "gas_asset_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
-}
+APP_METADATA = {"source": "python-docs"}
+# Torii replaces the empty maxima with an exact, validated live fee quote before
+# anything is signed. The payer remains the transaction authority.
+BASE_FEE_PAYMENT = authority_fee_payment(charge_limits=[])
 
-client = create_torii_client(TORII_URL, auth_token=AUTH_TOKEN)
+client = ToriiClient(
+    TORII_URL,
+    local_signing_context=LocalSigningContext(TAIRA_NETWORK_ID),
+    canonical_request_auth=canonical_auth,
+    auth_token=AUTH_TOKEN,
+)
 
 
 def submit(*instructions):
-    # This is the network boundary: build, sign, submit, and wait for status.
-    return client.build_and_submit_transaction(
-        chain_id=CHAIN_ID,
-        authority=alice,
-        private_key=alice_pair.private_key,
-        instructions=list(instructions),
-        metadata=TX_METADATA,
-        wait=True,
+    draft = TransactionDraft(
+        TransactionConfig(
+            network_id=TAIRA_NETWORK_ID,
+            authority=alice,
+            fee_payment=BASE_FEE_PAYMENT,
+            metadata=APP_METADATA,
+        )
     )
+    draft.extend_instructions(instructions)
+
+    # Freeze one payload, obtain its exact fee limits, and sign that same payload.
+    envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
+    status = client.submit_transaction_envelope_and_wait(envelope)
+    return envelope, fee_quote, status
 ```
 
-`Instruction.*` կանչում է միայն կառուցման հրահանգների օգտակար բեռնվածքները: `submit()` այն կետն է, որտեղ SDK-ը ստորագրում է գործարքը, ուղարկում է այն Torii-ին եւ սպասում է կարգավիճակին:
+`Instruction.*` կոչում է միայն կառուցել հրահանգների օգտակար բեռնվածքները: `submit()` այն կետն է, որտեղ SDK- ը ստանում է կենդանի վճարային առաջարկը, ստորագրում է ճշգրիտ նշված օգտակար բեռը, ուղարկում է այն Torii- ին եւ սպասում է կարգավիճակին:
 
 ## Հաշվարկներ եւ գազ {#fees-and-gas}
 
-Գրիր գործարքները պահանջում են վճարային մետադատա եւ ֆինանսավորվող վճարային ակտիվի հավասարակշռություն: Taira-ին, վճարային ակտիվը ֆինանսավորվում է հանրային գազանի կողմից, եւ գործարքի մեթադատաները պետք է ներառեն `gas_asset_id`։ Minamoto- ում, վճարները վճարվում են իրական XOR-ով, եւ ակտիվը ID գալիս է այդ ցանցի կազմաձեւման միջոցով:
+Գրիր գործարքները պետք է տիպել `FeePaymentIntent` եւ ֆինանսավորված վճարովի ակտիվների մնացորդը: Taira, հանրային faucet ֆոնդերի փորձարկման ցանցը XOR. Գլխավոր էջ Python SDK ուղարկում է ֆիքսված ոչ ստորագրված շահագործման բեռը Torii ճշգրիտ վճարային առաջարկի համար, հաստատում է, որ առաջարկը չի փոխարինել վճարողի կամ Օգտակար բեռ, եւ ստորագրել նշված մտադրությունը. Մի տեղադրել վճարների ընտրություն գործարքի մետադատա.
 
-Վճարման մետադատները պատկանում են գործարքին, այլ ոչ թե առանձին հրահանգներին: Վերոնշյալ `submit()` օգնականը կցում է `TX_METADATA` յուրաքանչյուր գործարքի վրա, որը այն կառուցում է՝
+Վերոնշյալ `submit()` օգնականը սկսում է լիազոր հաշվի կողմից վճարված մտադրությամբ, որի վճարման սահմանները դիտավորաբար դատարկ են: `quote_and_sign()` դրանք լրացնում է կենդանի վճարի գնառաջարկ ստորագրելուց առաջ.
 
 ```python
-TX_METADATA = {
-    # Taira expects the fee asset definition in transaction metadata.
-    "gas_asset_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
-}
-
-envelope, status = client.build_and_submit_transaction(
-    chain_id=CHAIN_ID,
-    authority=alice,
-    private_key=alice_pair.private_key,
-    # Fee metadata is attached to the transaction, not the instruction.
-    instructions=[
-        Instruction.set_account_key_value(
-            alice,
-            "python_fee_example",
-            "ready",
-        )
-    ],
-    metadata=TX_METADATA,
-    wait=True,
+draft = TransactionDraft(
+    TransactionConfig(
+        network_id=TAIRA_NETWORK_ID,
+        authority=alice,
+        fee_payment=authority_fee_payment(charge_limits=[]),
+        metadata={"source": "python-fee-example"},
+    )
 )
+draft.add_instruction(
+    Instruction.set_account_key_value(
+        alice,
+        "python_fee_example",
+        "ready",
+    )
+)
+envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
+status = client.submit_transaction_envelope_and_wait(envelope)
+
+for limit in fee_quote["intent"]["value"]["charge_limits"]:
+    print(limit["asset_definition_id"], limit["max_amount"])
 ```
 
-Նախքան գրառումներ ուղարկելը, համոզվեք, որ իշխանության հաշիվը պատկանում է վճարային ակտիվի բավարար քանակին: Ճշգրիտ գետնե եւ ակտիվ ID ցանցային հատուկ են. սա Taira ձեւն է.
+Նախքան գրառումներ ուղարկելը, համոզվեք, որ լիազոր հաշվի հաշիվը պատկանում է վճարային ակտիվի բավարար քանակին: Ճշգրիտ գետնե եւ ակտիվ ID ցանցային հատուկ են. սա Taira ձեւն է.
 
 ```python
 FEE_ASSET_DEFINITION = "6TEAJqbb8oEPmLncoNiMRbLEK6tw"
 # The faucet returns the concrete account asset ID to check here.
 FEE_ASSET_ID = "<fee-asset-id-from-faucet-response>"
-TX_METADATA = {"gas_asset_id": FEE_ASSET_DEFINITION}
 
 # Fail before submitting if the signer cannot pay gas.
 fee_assets = client.list_account_assets_typed(
@@ -163,29 +186,28 @@ if not fee_assets.items:
     raise RuntimeError("fund the authority account with the Taira fee asset first")
 ```
 
-Հոսքը վերադարձնում է բետոնային `asset_id`, որը պետք է օգտագործվի հավասարակշռության ստուգման համար: `gas_asset_id` մետադատա դաշտում օգտագործվում է վճարային ակտիվի սահմանումը ID.
+Գլխամասը վերադարձնում է կոնկրետը `asset_id`, որը պետք է օգտագործվի հաշվեկշռի ստուգման համար: Ստուգեք, որ կենդանի առաջարկը վճարում է `FEE_ASSET_DEFINITION`; գործարքը չի ընտրում այդ ակտիվը մետադատայով:
 
-Պահպանեք դիմման մետադատները վճարային մետադատայից առանձին ՝ միավորելով քարտեզագրությունները, երբ ստեղծում եք գործարք.
+Ծրագրային մետադատները ընտրական են եւ չունեն վճարային սեմանտիկա.
 
 ```python
 APP_METADATA = {"source": "python-docs"}
-# Merge app metadata with required fee metadata before building the draft.
-metadata = {**TX_METADATA, **APP_METADATA}
 
 draft = TransactionDraft(
     TransactionConfig(
-        chain_id=CHAIN_ID,
+        network_id=TAIRA_NETWORK_ID,
         authority=alice,
-        metadata=metadata,
+        fee_payment=BASE_FEE_PAYMENT,
+        metadata=APP_METADATA,
     )
 )
 ```
 
-Եթե դուք բաց թողնում եք վճարային մետադատները, օգտագործում եք սխալ վճարային ակտիվը կամ ստորագրում եք առանց ֆինանսավորման հաշիվով, իսկական ցանցը պետք է մերժի գործարքը, նույնիսկ եթե հրահանգների օգտակար բեռնվածությունը այլ կերպ վավեր է:
+Եթե դուք բաց թողնում եք վճարման մտադրությունը, ընդունում եք անսպասելի ակտիվի համար առաջարկություն, փոխում եք գովազդից հետո օգնական բեռը կամ ստորագրում եք առանց ֆինանսավորման հաշիվով, գործարքը չպետք է ներկայացվի:
 
-## Taira-Վերահսկված միայն ընթերցման համար զանգեր {#taira-checked-read-only-calls}
+## Անանուն Taira Կարդում է {#anonymous-taira-reads}
 
-Այս զանգերը հաջողությամբ վերադարձվել են Taira հանրության դեմ.
+Այս զանգերը օգտագործում են Taira երթուղիներ, որոնց կատալոգային սահմանը թույլ է տալիս անանուն ընթերցել.
 
 ```python
 client = create_torii_client("https://taira.sora.org")
@@ -197,22 +219,18 @@ parameters = client.request_json("GET", "/v1/parameters", expected_status=(200,)
 # Typed helpers parse pagination and records into dataclasses.
 accounts = client.list_accounts_typed(limit=1)
 domains = client.list_domains_typed(limit=1)
-definitions = client.query_asset_definitions_typed(limit=1)
+definitions = client.list_asset_definitions_typed(limit=1)
 
 # These calls inspect live node subsystems without mutating state.
-time_now = client.get_time_now_typed()
-time_status = client.get_time_status_typed()
-sumeragi = client.get_sumeragi_status_typed()
-connect = client.get_connect_status_typed()
+time_now = client.get_time_now()
 
 print(status["build"]["version"])
-print(parameters["sumeragi"]["block_time_ms"])
+print(parameters["sumeragi"]["block_cadence_ms"])
 print(accounts.total, domains.total, definitions.total)
-print(time_now.now_ms, len(time_status.samples), sumeragi.leader_index)
-print(connect.enabled, connect.sessions_active)
+print(time_now.now_ms)
 ```
 
-Փորձարկման ընթացքում երթուղիներ, ինչպիսիք են `/v1/status`, հանրային զուգընկերների ինվենտարիա, Sumeragi RBC նմուշագրում, բջիջի ադմինիստրատորի ակնհայտ լուսանկարներ եւ Connect հավելվածի գրանցամատյաների կառավարումը հրապարակայնորեն հասանելի չէին Taira: Օգտագործեք `request_json("GET", "/status")` ՝ հանրային բջիակի կարգավիճակի օգտակար ծանրաբեռնման համար Taira:
+`/v1/time/status` եւ յուրաքանչյուր `/v1/sumeragi/*` օպերատոր snapshot պահանջում է ճշգրիտ ցանցային օպերացիոն ստորագրություն, չնայած նրանք չեն փոխել վիճակը: Օգտագործեք `request_json("GET", "/status")` անանուն հանգույցի կարգավիճակի համար Օգտակար բեռը եւ ստորեւ նշված օպերատորի կարգավորումը կոնսենսուսի կամ հանգույցային տեղական ժամացույցի ախտորոշման համար: Connect նստաշրջանի վիճակը առանձին արձանագրության երթուղն է եւ պահանջում է այդ նստաշրջանի կառավարման տոքերը:
 
 ## Ուսուցում շինարարների {#instruction-builders}
 
@@ -221,7 +239,7 @@ SDK-ը բացահայտում է ամենատարածված հրահանգներ
 Նախընտրում են մուտքագրված օգնականներ, երբ դրանք գոյություն ունեն. նրանք կարգավորում են Python արժեքները եւ վաղ ձախողվում են անվավեր ձեւերի վրա: Օգտագործեք `Instruction.from_json` միայն այն ժամանակ, երբ ձեզ անհրաժեշտ է հրահանգների տարբերակ, որը դեռ չունի Python օգնական։
 
 |Ուսումնական ընտանիք |Python մակերեսը |
-| --- | --- |
+| ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 |Գրանցվեք| `register_account`, `register_asset_definition_numeric`, `register_rwa`, `register_time_trigger`, `register_precommit_trigger`; `register_domain` պահվում է genesis/bootstrap գործիքների համար |
 |Գրանցվելը չեղարկել|`unregister_trigger`; օգտագործեք `Instruction.from_json` այլ տարբերակների համար |
 |Mint/Burn |`mint_asset_numeric`, `burn_asset_numeric`, `mint_trigger_repetitions`, `burn_trigger_repetitions` |
@@ -230,16 +248,16 @@ SDK-ը բացահայտում է ամենատարածված հրահանգներ
 |RWA կյանքի ցիկլ |`merge_rwas`, `redeem_rwa`, `freeze_rwa`, `unfreeze_rwa`, `hold_rwa`, `release_rwa` |
 |ExecuteTrigger |`execute_trigger` |
 |Վերահաստատման/հասարակության ընդլայնումներ |`repo_initiate`, `repo_unwind`, `repo_margin_call`, `settlement_dvp`, `settlement_pvp` |
-|Բնական ակտիվների կողպեքներ |`open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, `expire_asset_lock`, գումարած հաճախորդի օգնականների `*_and_wait` |
+|Բնական ակտիվների փակիչներ |`open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, `expire_asset_lock`, գումարած հաճախորդի օգնականների `*_and_wait` |
 |Grant/Revoque, SetParameter, Log, Custom, Upgrade եւ ավելի քիչ տարածված գրանցման / չեղարկման տարբերակները |`Instruction.from_json` կամ `TransactionBuilder.add_instruction_json` քանոնիկ `InstructionBox` JSON |
 
-Հաշվարկային ձեւով պայմանավորված վճարումների համար տես [Native Asset Escrow](/hy/blockchain/escrow.md#python-asset-locks). Python ներկայումս բացահայտում է առաջին դասի օգնականներ գեներիկ ակտիվների փակման համար. շուկայական եւ անանուն երաշխիքային օգնականները դեռեւս չեն առաջին դասի Python մեթոդներ:
+Հաշվարկային ձեւով պայմանավորված վճարումների համար տես [Ակտիվների ներկառուցված էսքրո](/hy/blockchain/escrow.md#python-asset-locks). Python ներկայումս բացահայտում է առաջին դասի օգնականներ գեներիկ ակտիվների փակման համար. շուկայական եւ անանուն երաշխիքային օգնականները դեռեւս չեն առաջին դասի Python մեթոդներ:
 
 ### Ստեղծեք դոմեյններ, ապա գրանցեք հաշիվներ եւ ակտիվներ {#set-up-domains-then-register-accounts-and-assets}
 
 Սովորական տիրույթի ստեղծումը անցնում է հայտարարական alias պլանավորիչի միջոցով, այնպես որ SNS վարձակալության պայմանագիրը, սեփականատերերի հնարավորությունները, գծագրային պահպանումը եւ տիրույթի վիճակը միասին ստուգվում են: Ստեղծեք գաղտնի ազատ `AliasSetupPlanRequestV1` մտադրություն ձեր SDK կամ ներբորդման ծառայությամբ, այնուհետեւ օգտագործեք `iroha app alias setup plan` եւ `iroha app alias setup apply`. Մի ներկայացրեք `Instruction.register_domain` հավելվածի գործարքից, այն կառուցողը մնում է genesis/bootstrap գործիքների համար:
 
-Դոմենի ստեղծման պլանը պարտավորվելուց հետո գրանցեք դոմենի սեփականության օբյեկտներ: Համագործակցված ցանցում, ինչպիսիք են Taira, օգտագործեք ձեզ տրված դոմենի եւ հաշիվի անվան տարածք:
+Դոմենի ստեղծման պլանը commit հետո գրանցեք դոմենի սեփականության օբյեկտներ: Համագործակցված ցանցում, ինչպիսիք են Taira, օգտագործեք ձեզ տրված դոմենի եւ հաշիվի անվան տարածք:
 
 ```python
 # The domain and its SNS lease already exist before this transaction.
@@ -276,7 +294,7 @@ submit(Instruction.burn_asset_numeric(ROSE_ASSET, "10.00"))
 
 ### Տրանսֆերային սեփականություն {#transfer-ownership}
 
-Տիրապետության փոխանցում փոփոխություն, ով վերահսկում է տիրույթը, ակտիվի սահմանումը կամ NFT. Օգտագործեք ներկայիս սեփականատերը որպես գործարքի իշխանությունը:
+Տիրապետության փոխանցում փոփոխություն, ով վերահսկում է տիրույթը, ակտիվի սահմանումը կամ NFT. Օգտագործեք ներկայիս սեփականատերը որպես գործարքի լիազոր հաշիվը:
 
 ```python
 # The first argument is the current owner; the last is the new owner.
@@ -287,7 +305,7 @@ submit(Instruction.transfer_nft(alice, BADGE_NFT, bob))
 
 ### Ստեղծել եւ հեռացնել մետադատա {#set-and-remove-metadata}
 
-Մետադատային արժեքները պետք է լինեն JSON-սերիալացվող: Երբ դուք օգտագործում եք `TransactionDraft`, `TransactionConfig`-ի իշխանությունը դառնում է կանխատեսված նպատակային հաշիվը:
+Մետադատային արժեքները պետք է լինեն JSON-սերիալացվող: Երբ դուք օգտագործում եք `TransactionDraft`, `TransactionConfig`-ի լիազոր հաշիվը դառնում է կանխատեսված նպատակային հաշիվը:
 
 ```python
 # Values are encoded as JSON metadata under the target account.
@@ -303,11 +321,16 @@ submit(
 submit(Instruction.remove_account_key_value(alice, "profile"))
 ```
 
-Բարձր մակարդակի նախագծային օգնականն ի սկզբանե ուղղված է գործարքի իշխանությանը.
+Բարձր մակարդակի նախագծային օգնականն ի սկզբանե ուղղված է գործարքի լիազոր հաշվին.
 
 ```python
 draft = TransactionDraft(
-    TransactionConfig(chain_id=CHAIN_ID, authority=alice, metadata=TX_METADATA)
+    TransactionConfig(
+        network_id=TAIRA_NETWORK_ID,
+        authority=alice,
+        fee_payment=BASE_FEE_PAYMENT,
+        metadata=APP_METADATA,
+    )
 )
 # With a draft, account metadata methods default to the draft authority.
 draft.set_account_key_value("nickname", "Queen Alice")
@@ -316,11 +339,16 @@ draft.remove_account_key_value("nickname")
 
 ### Իրական աշխարհի ակտիվներ {#real-world-assets}
 
-RWA օգնականները օգտագործում են JSON- ի շարականացվող օգտակար բեռներ ակտիվի հատուկ մետադատների, ծագման եւ վերահսկիչի քաղաքականության համար: `register_rwa` չի ընդունում `id` կամ `owner`: Runtime- ը ստեղծում է `RwaId`, եւ գործարքի իշխանությունը դառնում է սկզբնական սեփականատեր:
+RWA օգնականները օգտագործում են JSON- ի շարականացվող օգտակար բեռներ ակտիվի հատուկ մետադատների, ծագման եւ վերահսկիչի քաղաքականության համար: `register_rwa` չի ընդունում `id` կամ `owner`: Runtime- ը ստեղծում է `RwaId`, եւ գործարքի լիազոր հաշիվը դառնում է սկզբնական սեփականատեր:
 
 ```python
 draft = TransactionDraft(
-    TransactionConfig(chain_id=CHAIN_ID, authority=alice, metadata=TX_METADATA)
+    TransactionConfig(
+        network_id=TAIRA_NETWORK_ID,
+        authority=alice,
+        fee_payment=BASE_FEE_PAYMENT,
+        metadata=APP_METADATA,
+    )
 )
 
 # Register the lot in a domain. Store business identifiers in primary_reference
@@ -349,7 +377,7 @@ draft.register_rwa(
 )
 ```
 
-Գրանցման գործարքի պարտավորություններից հետո օգտագործեք `FindRwas`, `/v1/rwas`, RWA իրադարձություն կամ ստեղծված ID որոնիչի երթուղին՝ հայտնաբերելու համար:
+Գրանցման գործարքի commit հետո օգտագործեք `FindRwas`, `/v1/rwas`, RWA իրադարձություն կամ ստեղծված ID որոնիչի երթուղին՝ հայտնաբերելու համար:
 
 ```python
 page = client.list_rwas_typed(limit=20, offset=0)
@@ -367,7 +395,12 @@ registered_rwa_id = (
 )
 
 draft = TransactionDraft(
-    TransactionConfig(chain_id=CHAIN_ID, authority=alice, metadata=TX_METADATA)
+    TransactionConfig(
+        network_id=TAIRA_NETWORK_ID,
+        authority=alice,
+        fee_payment=BASE_FEE_PAYMENT,
+        metadata=APP_METADATA,
+    )
 )
 
 # Transfer, hold, release, freeze, and redeem model the lot lifecycle.
@@ -491,11 +524,12 @@ from iroha_python import (
 )
 
 config = TransactionConfig(
-    chain_id=CHAIN_ID,
+    network_id=TAIRA_NETWORK_ID,
     authority=alice,
+    fee_payment=BASE_FEE_PAYMENT,
     # Keep repo and settlement examples bounded by a short TTL.
     ttl_ms=120_000,
-    metadata=TX_METADATA,
+    metadata=APP_METADATA,
 )
 draft = TransactionDraft(config)
 
@@ -520,14 +554,8 @@ draft.repo_initiate(
     governance=governance,
 )
 draft.repo_margin_call("daily_repo")
-draft.repo_unwind(
-    agreement_id="daily_repo",
-    initiator=alice,
-    counterparty=bob,
-    cash_leg=cash,
-    collateral_leg=collateral,
-    settlement_timestamp_ms=1_704_086_400_000,
-)
+# Unwind uses the immutable counterparties, legs, and maturity stored on-chain.
+draft.repo_unwind("daily_repo")
 
 # DVP/PVP settlement plans encode ordering and atomicity for both legs.
 delivery = SettlementLeg(
@@ -561,16 +589,16 @@ draft.settlement_pvp(
     counter_leg=delivery,
 )
 
-envelope = draft.sign_with_keypair(alice_pair)
+envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### JSON Escape Hatch {#json-escape-hatch}
+### JSON-ի շրջանցման ուղի {#json-escape-hatch}
 
-Երբ Python օգնական դեռեւս հասանելի չէ, պարունակում է կանոնական տվյալների մոդել `InstructionBox` JSON մեջ `Instruction.from_json` կամ ուղղակիորեն `TransactionBuilder.add_instruction_json`. Սա խորհուրդ է տրվում `Grant`, `Revoke`, `SetParameter`, `Log`, `Custom`, `Upgrade`, զուգընկեր / դեր /NFT գրանցում, եւ ոչ-թրիգերային չներկայացնող տարբերակները մինչեւ այդ օգնականները մուտքագրված են:
+Երբ Python օգնականը չի հասանելի, պարունակում է կանոնիկ տվյալների մոդել `InstructionBox` JSON մեջ `Instruction.from_json`. Սա խորհուրդ է տրվում `Grant`, `Revoke`, `SetParameter`, `Log`, `Custom`, `Upgrade`, հանգույց / դեր /NFT գրանցում, եւ ոչ-թրիգերային չներկայացնող տարբերակները մինչեւ այդ օգնականները մուտքագրված են:
 
 ```python
-from iroha_python import Instruction, TransactionBuilder
+from iroha_python import Instruction
 
 # Copy this payload from Rust/CLI tooling or from a pinned data-model schema.
 instruction_box_json = """
@@ -583,16 +611,11 @@ instruction_box_json = """
 
 instruction = Instruction.from_json(instruction_box_json)
 submit(instruction)
-
-# Use TransactionBuilder when you need lower-level control than TransactionDraft.
-builder = TransactionBuilder(CHAIN_ID, alice)
-builder.set_metadata(TX_METADATA)
-builder.add_instruction_json(instruction_box_json)
-envelope = builder.sign(alice_pair.private_key)
-client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Ստեղծված կամ ոչ թափանցիկ հրահանգների համար, նախքան սարքավորումների պահեստավորմանը JSON անցնել եւ վերադառնալ:
+Պահպանեք տիպված նախագծի ուղին գործարքի սահմանի վրա. այն պահպանում է ճշգրիտ `NetworkId`, վճարային վճարման մտադրություն եւ նախքան ստորագրումը փոխարժեքը: Դirect `TransactionBuilder` օգտագործումը պահանջում է նույն արժեքները գումարած կենդանի առաջարկի հստակ վավերացումը, այնպես որ դա չի shortcut ծրագրի կոդի համար:
+
+Ստեղծված կամ ոչ թափանցիկ հրահանգների համար, նախքան թեստային տվյալները պահելը JSON անցնել եւ վերադառնալ:
 
 ```python
 # Round trips are useful for validating fixtures generated by another tool.
@@ -607,29 +630,32 @@ print(same_instruction.as_dict())
 
 ```python
 config = TransactionConfig(
-    chain_id=CHAIN_ID,
+    network_id=TAIRA_NETWORK_ID,
     authority=alice,
+    fee_payment=BASE_FEE_PAYMENT,
     # TTL and nonce are transaction-level properties shared by all instructions.
     ttl_ms=120_000,
     nonce=1,
-    metadata={**TX_METADATA, "source": "python-docs"},
+    metadata=APP_METADATA,
 )
 
 draft = TransactionDraft(config)
 # Draft methods append instructions but do not submit anything yet. Domain
 # setup is a separate alias-planner flow and has already committed here.
 draft.register_account(bob, metadata={"role": "user"})
-draft.register_asset_definition_numeric(
+draft.register_asset_definition(
     ROSE_DEFINITION,
-    owner=alice,
+    owning_domain=None,
+    balance_scope_policy="Global",
+    name="Rose",
     scale=2,
     mintable="Infinitely",
 )
-draft.mint_asset_numeric(ROSE_ASSET, "100")
-draft.transfer_asset_numeric(ROSE_ASSET, "25", destination=bob)
+draft.mint_asset_quantity(ROSE_ASSET, "100")
+draft.transfer_asset_quantity(ROSE_ASSET, "25", bob)
 
-# Signing freezes the draft into an envelope ready for Torii.
-envelope = draft.sign_with_keypair(alice_pair)
+# Quoting freezes the draft, validates exact fee limits, and signs that payload.
+envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
 receipt = client.submit_transaction_envelope(envelope)
 status = client.wait_for_transaction_status(envelope.hash_hex(), timeout=30)
 print(receipt, status)
@@ -659,17 +685,17 @@ draft.add_lane_privacy_merkle_proof(
     commitment_id=7,
     leaf=bytes.fromhex("aa" * 32),
     leaf_index=3,
-    audit_path=[bytes.fromhex("bb" * 32), None, bytes.fromhex("cc" * 32)],
+    audit_path=[bytes.fromhex("bb" * 32), bytes.fromhex("cc" * 32)],
     proof_backend="halo2/ipa",
     proof_bytes=b"...proof bytes...",
-    verifying_key_bytes=b"...verifying key bytes...",
+    verifying_key_name="lane_privacy_vk",
 )
-envelope = draft.sign_with_keypair(alice_pair)
+envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
 ```
 
-## Հարցեր {#queries}
+## Հարցումներ {#queries}
 
-Տիպված հարցման օգնականները վերադարձնում են տվյալների դասերը, այլ ոչ թե خام JSON բառարաններ: Նրանք ամենահեշտ միջոցն են սկսելու համար, քանի որ SDK-ը պարզում է էջավորումը եւ սովորական գրառումների դաշտերը ձեզ համար.
+Տիպված հարցման օգնականները վերադարձնում են տվյալների դասերը, այլ ոչ թե հում JSON բառարաններ: Նրանք ամենահեշտ միջոցն են սկսելու համար, քանի որ SDK-ը պարզում է էջավորումը եւ սովորական գրառումների դաշտերը ձեզ համար.
 
 ```python
 # Typed pages expose `.items` plus pagination metadata such as `.total`.
@@ -678,16 +704,23 @@ for account in accounts.items:
     print(account.id, account.metadata)
 
 domains = client.list_domains_typed(limit=10)
-definitions = client.query_asset_definitions_typed(limit=10)
+definitions = client.list_asset_definitions_typed(limit=10)
 print(domains.total, definitions.total)
 ```
 
-Օգտագործեք ընդհանուր խնդրանքային օգնականները, եթե Torii վերջային կետում դեռեւս չկա տիպված փաթեթ:
+Օգտագործեք հարցումների ընդհանուր օգնականները, երբ Torii endpoint-ը դեռ չունի տիպավորված wrapper:
 
 ```python
+from urllib.request import Request, urlopen
+
 # Drop to raw JSON when you need an endpoint before a typed helper exists.
 payload = client.request_json("GET", "/v1/parameters", expected_status=(200,))
-metrics = client.get_metrics(as_text=True)
+
+# Prometheus exposition is served at `/metrics` when telemetry is `extended`
+# or `full`; it is text, not a `/v1` JSON resource.
+request = Request(f"{TORII_URL}/metrics", headers={"Accept": "text/plain"})
+with urlopen(request, timeout=5) as response:
+    metrics = response.read().decode("utf-8")
 ```
 
 Հաշվեի առանձնակատարները պահանջում են հաշիվի նույնականացողը, որը ընդունվում է SDK նորմալացնողի կողմից: Օգտագործեք կանոնիկ I105 հաշիվը IDs կամ շղթայի վրա գտնվող կեղծանունները; եթե բլոկային հետազոտող կամ կաթնային վերջնական կետը վերադարձնում է ID, որը SDK-ը մերժում է, այն լուծեք քանոնիկ հաշվին ID ՝ նախքան այս օգնականներին զանգահարելը.
@@ -703,10 +736,10 @@ print(len(assets.items), len(transactions.items), len(permissions.items))
 
 ## Միջոցառումներ {#events}
 
-Streaming- ի օգնականները JSON օգտակար բեռնվածքները կոդավորում են որպես նախապայման: Անցրեք `with_metadata=True` երբ ձեզ անհրաժեշտ է SSE իրադարձության անունը, ID- ը, կրկին փորձեք հուշում եւ خام օգտակար բեռը: Զույգվեք `EventCursor` -ի հետ ՝ պահպանելու վերջին իրադարձության ID- ն։ Այս օրինակները սպասում են կենդանի իրադարձությունների, այնպես որ գործադրեք դրանք բջիջի դեմ, որտեղ համապատասխան իրադարձությունների հոսքը ակտիվ է եւ ակտիվ:
+Սթրիմինգի օգնականները JSON օգտակար բեռնվածքները դեկոդավորում են ստանդարտ կերպով: Անցրեք `with_metadata=True` երբ ձեզ անհրաժեշտ է SSE իրադարձության անունը, ID- ը, կրկնակի փորձել հուշումը եւ կաթվածային օգտակար բեռը: Կանոնիկ `/v1/events/sse` պարունակությունը միայն կենդանի է. այն չի թողարկում կրկնօրինակ IDs եւ չի պահպանում կրկնապատկման օրագիր, այնպես որ այս օգնականները չեն բացահայտում կուրսեր կամ վերսկսելու փաստարկ: Վերադարձ կապը սկսում է նոր բաժանորդագրություն եւ կարող է բաց լինել: Օգտագործեք `/v1/blocks/stream` հայտնի բարձրությունից, երբ անհրաժեշտ է ամբողջական գրասենյակային պատմություն: Այս օրինակները սպասում են կենդանի իրադարձություններին, այնպես որ դրանք գործարկեք մի հանգույցի դեմ, որտեղ հոսքը ակտիվ է եւ ակտիվ:
 
 ```python
-from iroha_python import DataEventFilter, EventCursor
+from iroha_python import DataEventFilter, SseStreamError
 
 # Narrow the stream to proof events with the expected backend and proof hash.
 proof_filter = DataEventFilter.proof(
@@ -714,18 +747,14 @@ proof_filter = DataEventFilter.proof(
     proof_hash_hex="deadbeef" * 8,
 )
 
-# Persist the latest SSE id so a reconnect can resume from the same point.
-cursor = EventCursor()
-for event in client.stream_events(
-    filter=proof_filter,
-    cursor=cursor,
-    resume=True,
-    with_metadata=True,
-):
-    print(event.id, event.event, event.data)
-    break
+try:
+    for event in client.stream_events(filter=proof_filter, with_metadata=True):
+        print(event.id, event.event, event.data)
+        break
+except SseStreamError as error:
+    print(error.code, error.dropped_messages, error.replay_available)
 
-for event in client.stream_trigger_events(trigger_id="hourly_reward", resume=True):
+for event in client.stream_trigger_events(trigger_id="hourly_reward"):
     print(event)
     break
 
@@ -736,7 +765,7 @@ for tx_event in client.stream_pipeline_transactions(status="Queued"):
 
 ## Գլխավորներ եւ հասցեներ {#keys-and-addresses}
 
-SDK-ը բացահայտում է տեղական ստորագրման օգնականները յուրաքանչյուր ստորագրության ալգորիթմի համար, որը կազմված է բնիկ ընդլայնման մեջ: Այս օգնականները չեն զանգահարում Taira, բայց նրանք պահանջում են բնիկ ընդարձակումը:
+SDK-ը բացահայտում է տեղական ստորագրման օգնականները յուրաքանչյուր ստորագրության ալգորիթմի համար, որը կազմված է ներկառուցված ընդլայնման մեջ: Այս օգնականները չեն զանգահարում Taira, բայց նրանք պահանջում են ներկառուցված ընդարձակումը:
 
 ```python
 from iroha_python import (
@@ -838,7 +867,7 @@ from iroha_python import (
     verify_sm2,
 )
 
-capabilities = client.get_node_capabilities_typed()
+capabilities = client.get_node_capabilities_typed(canonical_auth=canonical_auth)
 sm = capabilities.crypto.sm if capabilities.crypto else None
 # Use the node's default SM2 distinguishing ID when the node advertises one.
 distid = sm.sm2_distid_default if sm else SM2_DEFAULT_DISTINGUISHED_ID
@@ -864,7 +893,7 @@ print(pair.public_key_multihash)
 `crypto.sm.enabled` ցույց է տալիս, թե արդյոք հանգույցը ընդունում է SM ընտանիքի ալգորիթմները իր ընթացիկ քաղաքականության մեջ: Նույն գովազդը ներառում է SM շիշային քաղաքականությունը եւ արագացման կարգավիճակը, որը օգտակար է որոշելու համար, թե արդյոք պետք է ակտիվացնել SM2-հատուկ հոսքեր.
 
 ```python
-capabilities = client.get_node_capabilities_typed()
+capabilities = client.get_node_capabilities_typed(canonical_auth=canonical_auth)
 
 # `enabled` is the submit-time policy flag, not just local SDK support.
 if capabilities.crypto and capabilities.crypto.sm.enabled:
@@ -876,7 +905,7 @@ else:
     print("SM crypto is not enabled by this node")
 ```
 
-Հասարակական Taira-ը ստուգման ընթացքում բացահայտեց SM հնարավորության գովազդը, բայց այնտեղ SM ստորագրումը անջատվեց: Գովազդված ստորագրման ալգորիթմները եղել են `ed25519`, `secp256k1` եւ `bls_normal`: այնպես որ SM2 ստորագրված գործարքները չներկայացրեք այդ տեղակայման համար, եթե հնարավորության օգտակար բեռը չի փոխվում:
+Վավերացված հնարավորությունների օգտակար բեռը վերաբերվում է տեղակայված հանգույցի համար որպես լիազորություն: Մի ուղարկեք SM2 ստորագրված գործարք, եթե `crypto.sm.enabled` ճիշտ չէ եւ հայտարարված ստորագրման քաղաքականությունը դա թույլ չի տալիս:
 
 ### GOST եւ հետքվանտային բանալիները {#gost-and-post-quantum-keys}
 
@@ -944,18 +973,15 @@ print(post_quantum_address.to_i105(CHAIN_DISCRIMINANT))
 print(mldsa_keypair.prefixed_public_key_multihash)
 ```
 
-Gate GOST եւ post-quantum հոսանքները գոտի գովազդային ստորագրման ալգորիթմների վրա: Օգտագործեք կաթվածային հնարավորության օգտակար բեռը առաջընթաց համատեղելի ալգորիտմի անվանումների համար.
+GOST դարպասը եւ քվանտային հոսքը կոդի վավերացված, մուտքագրված հնարավորության գովազդում.
 
 ```python
-capabilities = client.request_json(
-    "GET",
-    "/v1/node/capabilities",
-    expected_status=(200,),
+capabilities = client.get_node_capabilities_typed(
+    canonical_auth=canonical_auth,
 )
-crypto = capabilities.get("crypto", {})
-sm = crypto.get("sm", {})
+sm = capabilities.crypto.sm if capabilities.crypto else None
 # Nodes advertise the signing algorithms they will accept for transactions.
-allowed = set(sm.get("allowed_signing", []))
+allowed = set(sm.allowed_signing if sm else ())
 
 GOST_ALGORITHMS = {
     "gost3410-2012-256-paramset-a",
@@ -968,7 +994,7 @@ GOST_ALGORITHMS = {
 # Local support is not enough; submit only when the node advertises support.
 supports_gost = bool(allowed & GOST_ALGORITHMS)
 supports_post_quantum = "ml-dsa" in allowed
-supports_sm2 = "sm2" in allowed and bool(sm.get("enabled", False))
+supports_sm2 = "sm2" in allowed and bool(sm and sm.enabled)
 
 print(supports_gost, supports_post_quantum, supports_sm2)
 ```
@@ -1001,7 +1027,7 @@ client = create_torii_client(
 
 ## Կագեմուսա պատրաստակամություն {#kagemusha-readiness}
 
-Python SDK կարող է ներկայիս JSON պատրաստության երթուղին հարցնել իր ընդհանուր Torii խնդրանքային օգնականի միջոցով.
+Python SDK կարող է ներկայիս JSON պատրաստության երթուղին հարցում կատարել իր ընդհանուր Torii խնդրանքային օգնականի միջոցով.
 
 ```python
 ASSET_DEFINITION_ID = "<canonical_asset_definition_id>"
@@ -1021,7 +1047,7 @@ Python չի բացահայտում Kagemusha- ի տիպավորված լրացո
 
 ## Աբոնամուտներ {#subscriptions}
 
-Հաշվառության օգնականները մուտացիոն ծառայությունների զանգերն են, որոնք ժառանգվել են Torii բաժնետոմսային հաճախորդից, որը օգտագործվում է `iroha_python.ToriiClient`: Օգտագործեք IDs եւ այն ակտիվները, որոնք գոյություն ունեն ձեր թիրախավորած ցանցում.
+Հաշվառության ընթերցումները եւ նախագծերի ստեղծողները ժառանգվում են Torii բաժանորդից, որը օգտագործվում է `iroha_python.ToriiClient` կողմից: Յուրաքանչյուր մուտացիան ընդունվում է մարմնի վրա կապված կանոնական հաշիվի ստորագրությամբ եւ վերադարձնում է չստորագրված գործարքի նախագիծ: Torii երբեք չի ընդունում մասնավոր բանալին եւ չի ներկայացնում նախագիծը ձեզ համար:
 
 ```python
 # The plan defines billing cadence, retry policy, and usage pricing.
@@ -1047,61 +1073,69 @@ usage_plan = {
     },
 }
 
-# The provider signs plan creation.
-client.create_subscription_plan(
+# The provider authorizes preparation of a plan-registration draft.
+plan_draft = client.create_subscription_plan(
     authority=alice,
-    private_key=alice_pair.private_key_hex,
     plan_id="compute#wonderland",
     plan=usage_plan,
+    canonical_auth=canonical_auth,
 )
 
-# The subscriber signs subscription creation.
-client.create_subscription(
+bob_canonical_auth = ToriiCanonicalRequestAuth(
+    network_id=TAIRA_NETWORK_ID.literal,
+    account_id=bob,
+    signer=bob_pair.sign,
+)
+
+# The subscriber authorizes preparation of a subscription-creation draft.
+subscription_draft = client.create_subscription(
     authority=bob,
-    private_key=bob_pair.private_key_hex,
     subscription_id="sub-001",
     plan_id="compute#wonderland",
+    canonical_auth=bob_canonical_auth,
 )
 
-# Usage is recorded by the provider and then charged on demand.
-client.record_subscription_usage(
+# Usage and charge-now operations also return unsigned transaction drafts.
+usage_draft = client.record_subscription_usage(
     "sub-001",
     authority=alice,
-    private_key=alice_pair.private_key_hex,
     unit_key="compute_ms",
     delta="3600000",
+    canonical_auth=canonical_auth,
 )
-client.charge_subscription_now(
+charge_draft = client.charge_subscription_now(
     "sub-001",
     authority=alice,
-    private_key=alice_pair.private_key_hex,
+    canonical_auth=canonical_auth,
 )
+
+for draft in (plan_draft, subscription_draft, usage_draft, charge_draft):
+    assert draft.submitted is False
+    print(draft.transaction_payload_b64, draft.signing_message_b64)
 ```
+
+Տվեք յուրաքանչյուր ճշգրիտ օգտակար բեռ եւ ստորագրման հաղորդագրություն համապատասխան հաշիվի տեղական դրամապանակին, ստուգեք այնտեղ պահանջված գործողությունը, հավաքեք ստորագրված գործարքը եւ ուղարկեք այն սովորական գործարքի գագաթուղթով: Python SDK-ը հաստատում է, որ ստորագրման հաղորդագրությունը վերադարձված օգտակար բեռի կանոնիկ հեշն է, բայց դրամապանակը շարունակում է պատասխանատվություն կրել ստորագրելուց առաջ գործարքի ապքոդավորման եւ հավանության համար։
 
 ## Կապակցեք {#connect}
 
-Կառուցել եւ վերլուծել Connect URIs, եւ կարդալ հանրային Connect կարգավիճակը, որը բացահայտվել է Taira:
+Կառուցել եւ վերլուծել Connect URIs տեղական. A Connect ինքնությունը կապում է SID ճշգրիտ `NetworkId`, հավելվածի հանրային բանալին, եւ nonce-ին:
 
 ```python
-from iroha_python.connect import ConnectUri, build_connect_uri, parse_connect_uri
+from iroha_python.connect import create_connect_session_preview, parse_connect_uri
 
-# Connect URIs are what an app hands to a wallet to start a session.
-uri = build_connect_uri(
-    ConnectUri(
-        sid="base64url-session-id",
-        chain_id=CHAIN_ID,
-        node="taira.sora.org",
-    )
+# Generate consistent SID, key, nonce, and URI values as one bundle.
+preview = create_connect_session_preview(
+    network_id=TAIRA_NETWORK_ID,
+    node="taira.sora.org",
 )
-parsed = parse_connect_uri(uri)
-# Status tells you whether the node currently exposes Connect.
-status = client.get_connect_status_typed()
+parsed = parse_connect_uri(preview.wallet_uri)
 
-assert parsed.chain_id == CHAIN_ID
-print(status.enabled, status.sessions_active)
+assert parsed.sid == preview.sid_base64url
+assert parsed.network_id.literal == TAIRA_NETWORK_ID.literal
+assert parsed.app_public_key == preview.app_key_pair.public_key
 ```
 
-Ռեմի կոդեկները, նստաշրջանի բանալիների արտահանումը եւ նստաշրջանի ստեղծումը պահանջում են տեղական ընդլայնումը եւ Connect նստաշրջանի երթուղին:
+Գրանցեք այդ ճշգրիտ նախադասությունը միայն այն ժամանակ, երբ նպատակային հանգույցը բացահայտում է Connect- ը: Հանդիպման ստեղծումը վերադարձնում է չորս դերի հատուկ կրող տոքեր: Յուրաքանչյուր նստաշրջանի կարգավիճակի երթեւեկությունը պահանջում է կառավարման տոքերին. Ամբողջական կարգավիճակը օպերատորի երթուղն է.
 
 ```python
 from iroha_python import (
@@ -1110,37 +1144,53 @@ from iroha_python import (
     ConnectDirection,
     ConnectFrame,
     ConnectPermissions,
+    bootstrap_connect_preview_session,
     decode_connect_frame,
     encode_connect_frame,
-    generate_connect_keypair,
 )
 
-# The app keypair is separate from the account key used for transactions.
-connect_pair = generate_connect_keypair()
-info = client.create_connect_session_info(
-    {"role": "app", "sid": connect_pair.public_key.hex()}
+bootstrap = bootstrap_connect_preview_session(
+    client,
+    network_id=TAIRA_NETWORK_ID,
+    node="taira.sora.org",
 )
-print(info.app_uri, info.wallet_token, info.expires_at)
+info = bootstrap.session
+tokens = bootstrap.tokens
+assert info is not None and tokens is not None
+
+session_status = client.request_json(
+    "GET",
+    "/v1/connect/status",
+    params={"sid": info.sid},
+    headers={"Authorization": f"Bearer {tokens.management}"},
+    expected_status=(200,),
+)
+print(info.app_uri, session_status)
 
 # Control frames negotiate permissions before encrypted messages are sent.
 frame = ConnectFrame(
-    sid=bytes.fromhex("01" * 32),
+    sid=bootstrap.preview.sid_bytes,
     direction=ConnectDirection.APP_TO_WALLET,
     sequence=1,
     control=ConnectControlOpen(
-        app_public_key=connect_pair.public_key,
-        chain_id=CHAIN_ID,
+        app_public_key=bootstrap.preview.app_key_pair.public_key,
+        network_id=TAIRA_NETWORK_ID,
         permissions=ConnectPermissions(methods=["SIGN_REQUEST_TX"], events=[]),
     ),
 )
 payload = encode_connect_frame(frame)
 assert decode_connect_frame(payload) == frame
 
-# Closing the control channel is explicit and carries a reason code.
-client.send_connect_control_frame(
-    "base64url-session-id",
-    ConnectControlClose(role="App", code=4100, reason="finished", retryable=False),
+# Closing the control channel is explicit and also travels as a frame.
+close_frame = ConnectFrame(
+    sid=bootstrap.preview.sid_bytes,
+    direction=ConnectDirection.APP_TO_WALLET,
+    sequence=2,
+    control=ConnectControlClose(
+        role="App", code=4100, reason="finished", retryable=False
+    ),
 )
+close_payload = encode_connect_frame(close_frame)
 ```
 
 Գլխավորագրեք հաստատումից հետո հաղորդագրությունները վիճակային նստաշրջանի միջոցով.
@@ -1173,59 +1223,54 @@ print(encrypted.sequence, state)
 
 ## Կառավարման, վազման ժամանակի եւ կառավարման մակերեսների {#governance-runtime-and-admin-surfaces}
 
-Այս միայն ընթերցվող զանգերը հաջողությամբ վերադարձվել են հանրային Taira դեմ.
+Կառավարման ընթերցումները վավերացված են հաշիվի միջոցով: Օգտագործելով [- ի լիազոր հաշվի եւ բանալիների զույգը Համատեղված Configuration](#shared-setup), կապեք յուրաքանչյուր օգնական զանգը Taira- ի ճշգրիտ գենեզից բխող `NetworkId`:
 
 ```python
-client = create_torii_client("https://taira.sora.org")
-
 # Governance reads return either current settings or typed not-found wrappers.
-protected = client.get_protected_namespaces()
-referendum = client.get_governance_referendum_typed("ref-1")
-tally = client.get_governance_tally_typed("ref-1")
-locks = client.get_governance_locks_typed("ref-1")
-unlock_stats = client.get_governance_unlock_stats_typed()
+protected = client.get_protected_namespaces(canonical_auth=canonical_auth)
+referendum = client.get_governance_referendum_typed(
+    "ref-1", canonical_auth=canonical_auth
+)
+tally = client.get_governance_tally_typed("ref-1", canonical_auth=canonical_auth)
+locks = client.get_governance_locks_typed("ref-1", canonical_auth=canonical_auth)
+unlock_stats = client.get_governance_unlock_stats_typed(
+    canonical_auth=canonical_auth
+)
 
 print(protected, referendum.found)
 print(tally.approve, list(locks.locks), unlock_stats.expired_locks_now)
 
-# Runtime reads expose the active ABI and any pending upgrade records.
-abi = client.get_runtime_abi_active_typed()
+# Account-authenticated runtime reads use the same canonical request proof.
+abi = client.get_runtime_abi_active_typed(canonical_auth=canonical_auth)
+# The ABI hash itself is a public read.
 abi_hash = client.get_runtime_abi_hash_typed()
-runtime_metrics = client.get_runtime_metrics_typed()
-upgrades = client.list_runtime_upgrades_typed()
-capabilities = client.get_node_capabilities_typed()
+runtime_metrics = client.get_runtime_metrics_typed(canonical_auth=canonical_auth)
+capabilities = client.get_node_capabilities_typed(canonical_auth=canonical_auth)
 
 print(abi, abi_hash, runtime_metrics)
-print(upgrades.total, capabilities.abi_version)
+print(capabilities.abi_version)
 ```
 
-Runtime թարմացման օգնականները ընդունում են վազման ժամանակի թարմացման կողմից օգտագործվող manifest ձեւը API: Նրանք օպերատորների գործողություններ են, այնպես որ դրանք օգտագործում եք միայն այն հանգույցի դեմ, որտեղ ձեր հաշիվն ու տոքերն թույլատրված են.
+Ստեղծեք օպերատորի ընթերցումների համար առանձին հաճախորդ: Գործնական ժամանակ ներբեռնել թույլատրված ցուցակում նշված օպերտորի բանալին եւ կապել այն Taira- ի ճշգրիտ `NetworkId`; կրող տոքերները եւ `x-api-token` չեն փոխարինում այս ստորագրությունը.
 
 ```python
-admin = create_torii_client(
+import os
+
+from iroha_python import Ed25519KeyPair, NetworkId, OperatorSigningContext
+
+operator_pair = Ed25519KeyPair.from_private_key(
+    bytes.fromhex(os.environ["IROHA_OPERATOR_PRIVATE_KEY_HEX"])
+)
+operator_client = create_torii_client(
     TORII_URL,
-    auth_token="admin-token",
-api_token="torii-token",
+    operator_signing_context=OperatorSigningContext(
+        TAIRA_NETWORK_ID,
+        operator_pair,
+    ),
 )
-
-# Propose creates the upgrade instructions; activation/cancel are operator actions.
-upgrade = admin.propose_runtime_upgrade(
-    {
-        "name": "Refresh runtime provenance",
-        "description": "Schedules a no-ABI-change runtime rollout.",
-        "abi_version": 1,
-        "abi_hash": "00" * 32,
-        "added_syscalls": [],
-        "added_pointer_types": [],
-        "start_height": 1_500_000,
-        "end_height": 1_500_256,
-    }
-)
-print(upgrade["tx_instructions"])
-
-admin.activate_runtime_upgrade("deadbeef" * 4)
-admin.cancel_runtime_upgrade("feedface" * 4)
 ```
+
+Գործընթացային ժամանակի թարմացման երթուղիները օպերատորի կողմից հավաստագրված հրահանգների ստեղծողներ են: Հաջողակ առաջարկել, ակտիվացնել կամ չեղյալ հայտարարել պատասխանը վերադարձնում է `tx_instructions`; այն չի սահմանում թարմացումը: Ներկայացրեք այդ փաթեթը սովորական ստորագրված գործարքի եւ կառավարման ուղու միջոցով: Python փաթեթավորված մեթոդները `propose_runtime_upgrade`, `activate_runtime_upgrade` եւ `cancel_runtime_upgrade` ներկայումս բնական պահանջներ են տալիս հաճախորդի `OperatorSigningContext` կիրառման փոխարեն, այնպես որ այս ձեռնարկը դրանք չի ներկայացնում որպես աշխատանքային օպերատոր:
 
 ## Պաշտոն, համաձայնություն եւ ցանցի հեռաչափություն {#status-consensus-and-network-telemetry}
 
@@ -1234,15 +1279,22 @@ admin.cancel_runtime_upgrade("feedface" * 4)
 status = client.request_json("GET", "/status", expected_status=(200,))
 print(status["blocks"], status["txs_approved"])
 
-# Sumeragi and time endpoints expose consensus and clock diagnostics.
-sumeragi = client.get_sumeragi_status_typed()
-print(sumeragi.highest_qc.height, sumeragi.tx_queue.saturated)
+# Sumeragi and time-status endpoints use the operator client configured above.
+sumeragi = operator_client.get_sumeragi_status_typed()
+diagnostics = operator_client.get_sumeragi_diagnostics_typed()
+print(sumeragi.last_committed_height, diagnostics.tx_queue_saturated)
 
-time_now = client.get_time_now_typed()
-time_status = client.get_time_status_typed()
+time_now = client.get_time_now()
+time_status = operator_client.get_time_status()
 for sample in time_status.samples:
     print(sample.peer, sample.last_offset_ms, sample.last_rtt_ms)
 print(time_now.now_ms)
+
+# Connect aggregate status is operator-authenticated. Individual sessions use
+# `/v1/connect/status?sid=...` with their management bearer token instead.
+connect_status = operator_client.get_connect_status_typed()
+if connect_status is not None:
+    print(connect_status.enabled, connect_status.sessions_active)
 ```
 
 ## SoraFS, UAID եւ Kaigi Օգնողները {#sorafs-uaid-and-kaigi-helpers}
@@ -1264,8 +1316,8 @@ manifests = client.list_space_directory_manifests_typed(
 )
 print(len(bindings.dataspaces), len(manifests.manifests))
 
-# Kaigi health summarizes relay availability when the route is enabled.
-health = client.get_kaigi_relays_health_typed()
+# Kaigi relay health is an operator snapshot, even though it is read-only.
+health = operator_client.get_kaigi_relays_health_typed()
 print(health.healthy_total, health.failovers_total)
 ```
 
@@ -1278,7 +1330,10 @@ from iroha_python import NoritoRpcClient, NoritoRpcConfig
 
 # Use the binary RPC client for endpoints that expect Norito bytes.
 with NoritoRpcClient(NoritoRpcConfig(TORII_URL, timeout=5.0)) as rpc:
-    response_bytes = rpc.call("/v1/transaction", envelope.signed_transaction_versioned)
+    response_bytes = rpc.call(
+        "/v1/pipeline/transactions",
+        envelope.signed_transaction_versioned,
+    )
     print(len(response_bytes))
 ```
 
@@ -1300,11 +1355,11 @@ Python SDK-ը արդեն ներառում է հետեւյալ օգնականնե
 - Torii ներկայացում, վիճակագրություն, հարցումներ եւ կառավարման հոսքեր
 - սովորական ISI եւ դոմեյնային հատուկ ընդլայնումների համար տիպված հրահանգների ստեղծող սարքեր
 - գործարքի նախագծերը, մանիֆեսները, ստորագրումը եւ ստորագրված գործարքային փաթեթների աշխատանքային հոսքը
-- հոսող իրադարձություններ, ֆիլտրեր եւ վերսկսելի դասիչներ
+- կենդանի իրադարձությունների հոսքեր եւ տիպված ֆիլտրեր. հաստատված բլոկային հոսքերը տրամադրում են ամբողջական պատմություն
 - Գլխավոր Kagemusha պատրաստության մուտք եւ Torii բաժանորդագրության օգնականներ: Տիպված լրացման եւ փրկարարների կառուցապատողները չեն բացահայտվում:
 - հաշիվի հասցե, բոլոր ալգորիթմների ստորագրման օգնականներ, բազմազան շփումներ՝ SM2, GOST, ML-DSA եւ BLS, ինչպես նաեւ գաղտնի բանալիների կառավարում
 - Կապակցեք URIs, նստաշրջաններ, շրջանակներ, կոդավորման օգնականներ եւ գրանցման կառավարիչ
-- կառավարման, վազման ժամանակի թարմացման, Sumeragi, node-admin, SoraFS, UAID եւ Kaigi վերջնական կետերի փաթեթները, որտեղ հանգույցը բացահայտում է այդ հատկանիշները:
+- governance-ի, runtime-ի թարմացման, Sumeragi-ի, node administration-ի, SoraFS-ի, UAID-ի և Kaigi-ի endpoint-ների ծրագրային wrapper-ները, երբ node-ը տրամադրում է այդ հնարավորությունները
 
 ## Վերածննդային հղումներ {#upstream-references}
 

@@ -1,18 +1,17 @@
 ---
 translation_locale: ur
 translation_source: /blockchain/rwas.md
-translation_source_hash: cbdc6d766fb90bea7e68dc67f2c705bb1638340feeb2fca9f2dd43a727ac03e7
+translation_source_hash: 8d64a9a17c93f60306c279e8656e6edde8ce5dd024e742218bfb9572b7438bb0
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review
 ---
-
 # حقیقی دنیا کے اثاثے {#real-world-assets}
 
 حقیقی دنیا کے اثاثے (RWAs) ماڈل آف چین اثاثے جن کی ملکیت یا کنٹرول کو زنجیر پر ٹریک کیا جاتا ہے۔ Iroha میں ، ایک RWA ایک رجسٹرڈ لیجر لاٹ ہے جس میں پیدا کردہ شناختی کارڈ ، مالک اکاؤنٹ ، مقدار ، کاروباری میٹا ڈیٹا ، اصل اور اختیاری لائف سائیکل کنٹرولز ہیں۔
 
 RWAs عددی اثاثوں کے بیلنس سے مختلف ہیں:
 
-- ایک عددی اثاثہ اکاؤنٹ کے زیر قبضہ قابل توازن ہے
+- ایک عددی اثاثہ اکاؤنٹ کے زیر قبضہ قابل بیلنس ہے
 - ایک NFT ایک مالک کے ساتھ منفرد آن چین ریکارڈ ہے
 - ایک RWA ایسا لاٹ ہے جس میں کاروباری میٹا ڈیٹا، مقدار، ہولڈز، منجمد حالت، ریڈیمپشن کی حالت، ماخذ اور کنٹرولر پالیسی شامل ہو سکتی ہے
 
@@ -96,13 +95,13 @@ RWA کام کے عام بہاؤ میں شامل ہیں:
 }
 ```
 
-کنٹرولر اکاؤنٹس اور کردار صرف ان آپریشنز کو انجام دے سکتے ہیں جو متعلقہ بولین پرچموں کے ذریعہ قابل بناتے ہیں۔ موجودہ کنٹرول لوڈ میں کنٹرولر کی شناختیں اور آپریشن پرچم شامل ہیں۔ منتقلی کی اجازت دینے والی فہرستیں اور گھومنے والے `transfers` قواعد اس مفید بوجھ سے باہر ہیں۔
+کنٹرولر اکاؤنٹس اور کردار صرف ان آپریشنز کو انجام دے سکتے ہیں جو متعلقہ بولین پرچموں کے ذریعہ قابل بناتے ہیں۔ موجودہ کنٹرول لوڈ میں کنٹرولر کی شناختیں اور آپریشن پرچم شامل ہیں۔ منتقلی کی اجازت دینے والی فہرستیں اور گھومنے والے `transfers` قواعد اس پے لوڈ سے باہر ہیں۔
 
-## سوالات، واقعات، اور APIs {#queries-events-and-apis}
+## استفسارات، واقعات، اور APIs {#queries-events-and-apis}
 
 استعمال [`FindRwas`](/ur/reference/queries.md#assets-nfts-and-rwas) رجسٹرڈ فہرست میں RWA بہت سے. ایپلی کیشنز کو جو براہ راست اپ ڈیٹس کی ضرورت ہے subscribe کر سکتے ہیں [`Rwa` ڈیٹا کے واقعات](/ur/blockchain/filters.md#data-event-filters) تخلیق، مالک کی تبدیلی، تقسیم، ضم، واپسی، منجمد، غیر منجمد، منعقد، جاری، طاقت کی منتقلی، کنٹرولز میں تبدیلی اور میٹا ڈیٹا واقعات.
 
-Torii سلسلہ ریاست کے راستے کو ظاہر کرتا ہے جیسے: `/v1/rwas` اور `/v1/rwas/query`, اس کے علاوہ دریافت کرنے والے راستوں جیسے `/v1/explorer/rwas` اور `/v1/explorer/rwas/{rwa_id}` جب اس روٹ فیملی کو چالو کیا گیا ہے. پیدا کردہ گاہکوں کو براہ راست [`/openapi`](/ur/reference/torii-endpoints.md#common-endpoints) ایک نوڈ کی طرف سے نمائش کے عین مطابق جواب شکل کے لئے دستاویز.
+Torii چین-اسٹیٹ روٹس جیسے `/v1/rwas` اور `/v1/rwas/query` کو بے نقاب کرتا ہے ، اس کے علاوہ ایک نوڈ کی طرف سے بے نقاب ہونے والی عین مطابق ردعمل کی شکل کے لئے جب یہ روٹ فیملی فعال ہوجائے تو `/v1/explorer/rwas` اور `/v1/explorer/rwas/{rwa_id}` جیسے دریافت کرنے والے راستے۔ جنریٹ کردہ کلائنٹس کو براہ راست [`/openapi.json`](/ur/reference/torii-endpoints.md#common-endpoints) دستاویز کا انتخاب کرنا چاہئے۔
 
 ### Taira پر آزمائیں {#try-it-on-taira}
 
@@ -134,7 +133,7 @@ curl -fsS https://taira.sora.org/openapi.json \
 from iroha_python import create_torii_client
 
 client = create_torii_client("https://taira.sora.org")
-openapi = client.request_json("GET", "/openapi", expected_status=(200,))
+openapi = client.request_json("GET", "/openapi.json", expected_status=(200,))
 
 rwa_paths = sorted(
     path for path in openapi.get("paths", {}) if path.startswith("/v1/rwas")
@@ -144,7 +143,7 @@ for path in rwa_paths:
     print(path)
 ```
 
-اگر فہرست خالی ہے تو، نوڈ اب بھی دیگر Torii APIs کے ذریعے RWA ہدایات اور سوالات کی حمایت کر سکتا ہے، لیکن یہ اختیاری JSON روٹ فیملی کو ظاہر نہیں کرتا.
+اگر فہرست خالی ہے تو، نوڈ اب بھی دیگر Torii APIs کے ذریعے RWA ہدایات اور استفسارات کی حمایت کر سکتا ہے، لیکن یہ اختیاری JSON روٹ فیملی کو ظاہر نہیں کرتا.
 
 ### ایک گودام کی رسید درج کریں {#register-a-warehouse-receipt}
 
@@ -273,7 +272,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### واپسی یا ریٹائرمنٹ کی مقدار {#redeem-or-retire-quantity}
 
-`RedeemRwa` جمع کروانے کے بعد نمائندگی کردہ آف چین اثاثہ کی فراہمی ، کھپت ، ریٹائرمنٹ یا دوسری صورت میں گردش سے ہٹا دیا جاتا ہے۔ اس سے مستقل طور پر جمع کرائی گئی مقدار کو بیچ سے کم کردیا جاتا ہے۔ بیچ میں `redeem_enabled` ہونا ضروری ہے۔ دستخط کنندہ مالک یا کنٹرولر ہونا چاہئے۔
+نمائندگی کردہ off-chain asset کی ترسیل، کھپت، retirement یا کسی اور طرح گردش سے ہٹائے جانے کے بعد `RedeemRwa` جمع کریں۔ یہ جمع کردہ مقدار کو lot سے مستقل طور پر گھٹا دیتا ہے۔ Lot میں `redeem_enabled` ہونا چاہیے۔ دستخط کنندہ owner یا controller ہونا چاہیے۔
 
 ```python
 draft = TransactionDraft(
@@ -457,5 +456,5 @@ Python ٹرانزیکشن کی مکمل مثال کے لئے، دیکھیں [ر�
 - [اثاثہ جات](/ur/blockchain/assets.md)
 - [میٹا ڈیٹا](/ur/blockchain/metadata.md)
 - [Iroha خصوصی ہدایات](/ur/blockchain/instructions.md)
-- [سوالات](/ur/reference/queries.md#assets-nfts-and-rwas)
+- [استفسارات](/ur/reference/queries.md#assets-nfts-and-rwas)
 - [Torii اختتام پوائنٹس](/ur/reference/torii-endpoints.md#app-and-sora-route-families)

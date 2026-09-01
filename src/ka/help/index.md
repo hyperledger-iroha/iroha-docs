@@ -10,6 +10,6 @@ translation_engine: nllb-200-ct2
 
 დროდადრო, თქვენ შეიძლება ჰქონდეთ კითხვები Iroha შესახებ, რომელთა დეტალურად განხილვა გსურთ სხვებთან. არსებობს სამი გზა, რომ სწრაფად დაუკავშირდეთ ჩვენს საზოგადოებას: Telegram, Discord და GitHub.
 
-საზოგადოება კომუნიკაციისთვის იყენებს [ტელეგრამს](https://t.me/hyperledgeriroha) და [LF Decentralized Trust დისკორდს](https://discord.gg/hyperledger). გამოიყენეთ `iroha` არხი პროექტის კითხვებისთვის.
+საზოგადოება კომუნიკაციისთვის იყენებს [ტელეგრამი](https://t.me/hyperledgeriroha) და [LF Decentralized Trust Discord](https://discord.gg/hyperledger). გამოიყენეთ `iroha` არხი პროექტის კითხვებისთვის.
 
-საბოლოოდ, შეგიძლიათ [ შექმნათ GitHub პრობლემა](https://github.com/hyperledger-iroha/iroha/issues/new/choose), იქნება ეს მოთხოვნა დოკუმენტაციის განახლებისთვის, წინადადება ძირითადი გუნდისთვის ან შეცდომა, რომელიც თქვენ აღმოაჩინეთ.
+ბოლოს, თქვენ შეგიძლიათ [შეიქმნას GitHub საკითხი](https://github.com/hyperledger-iroha/iroha/issues/new/choose), იქნება ეს თხოვნა დოკუმენტაციის განახლებისთვის, წინადადება ძირითადი გუნდისთვის ან შეცდომა, რომელიც აღმოაჩინეთ.

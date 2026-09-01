@@ -48,14 +48,14 @@ curl -fsS 'https://taira.sora.org/v1/accounts?limit=20' \
 
 Բարոյական արդյունքի համար դատարկ արտադրանքը: Դա նշանակում է, որ Taira օբյեկտների ընթացիկ էջը չի պարունակում մեթադատա, ոչ թե այն, որ վերջային կետը ձախողվել է:
 
-## Metadata- ի թարմացումը {#updating-metadata}
+## Մետատվյալների թարմացում {#updating-metadata}
 
 Metadata- ն փոխվում է Iroha հատուկ հրահանգներով.
 
 - [`SetKeyValue`](/hy/blockchain/instructions.md#setkeyvalue-removekeyvalue) միացվում է կամ փոխարինում է բանալին
 - [`RemoveKeyValue`](/hy/blockchain/instructions.md#setkeyvalue-removekeyvalue) հեռացնում է բանալին
 
-Գործարքը ներկայացնող մարմինը պետք է ունենա ակտիվ վարկային ժամանակով հաստատողի պահանջած թույլտվությունը: Նախնական թույլտվության մակերեսի համար դիտեք [Permission Tokens](/hy/reference/permissions.md).
+Գործարքը ներկայացնող մարմինը պետք է ունենա ակտիվ վարկային ժամանակով հաստատողի պահանջած թույլտվությունը: Նախնական թույլտվության մակերեսի համար դիտեք [Թույլտվության տոքեր](/hy/reference/permissions.md).
 
 ## Միջոցառումներ {#events}
 
@@ -83,7 +83,7 @@ MetadataChanged --> DomainMetadataChanged
 
 Օգտագործեք [ տվյալների իրադարձությունների ֆիլտրերը ](/hy/blockchain/filters.md#data-event-filters) միայն միավորման համար կարեւորող կազմակերպության տիպի կամ օբյեկտի ID մետադատային իրադարձությունների բաժանորդագրվելու համար:
 
-## Հարցեր {#queries}
+## Հարցումներ {#queries}
 
 Metadata- ն վերադարձվում է որպես հարցված օբյեկտի մաս: Օրինակ, օգտագործեք [`FindAccountById`](/hy/reference/queries.md#accounts-and-permissions), [`FindDomainById`](/hy/reference/queries.md#domains-and-peers) կամ [`FindAssetDefinitionById`](/hy/reference/queries.md#assets-nfts-and-rwas): Օգտագործեք [`FindNfts`](/hy/reference/queries.md#assets-nfts-and-rwas) կամ [`FindNftsByAccountId`](/hy/reference/queries.md#assets-nfts-and-rwas) NFTs, եւ [`FindRwas`](/hy/reference/queries.md#assets-nfts-and-rwas) RWA խմբերի համար: Այնուհետեւ կարդացեք օբյեկտի մետադատա դաշտը: NFT հարցման պատասխանները բացահայտում են NFT `content` քարտեզը որպես ձայնագրական մետադատա:
 

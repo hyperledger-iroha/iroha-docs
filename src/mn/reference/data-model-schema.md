@@ -1,13 +1,20 @@
 ---
 translation_locale: mn
 translation_source: /reference/data-model-schema.md
-translation_source_hash: 30235305046e4d9e7fd76b7dcf8859f9de0fe2182c61e1e96f455f6c5c4dbda6
+translation_source_hash: cf27b1f313a695b648ae450564a51120af0e3e39641ed140a187d128b930da97
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Мэдээллийн загварын схема {#data-model-schema}
+# Өгөгдлийн загварын схем {#data-model-schema}
 
-Энэ хуудас нь `kagami advanced schema` Зүрхлэгдсэнээс [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) баримт бичгийн шинэчлэл ажлын урсгал бүртгэгдсэн хяналтын зураг нь энэ хадгаламж дээр шалгарна баримт бичгийн бүтээн байгуулалтын шаардлагагүй Iroha эх үүсвэрийн төлбөр тооцоо.
+Таны нэгдэл чиглүүлж буй яг тэр зангилаагаас схемийг лавлаарай. Torii энэ гадаргуу идэвхтэй байх үед `GET /v1/schema` дээр идэвхтэй өгөгдлийн загварын схемийг өгдөг:
 
-<DataModelSchema />
+```bash
+export TORII_URL=http://127.0.0.1:8180
+
+curl -fsS -H 'Accept: application/json' "$TORII_URL/v1/schema" \
+  > iroha-data-model-schema.json
+```
+
+Батлагдсан бичиг баримтын хэсгээс үүсгэсэн холболтыг түүний гарал үүсэл хэвийн бус байдал хүлээгдэж байх үед бүү үүсгэ. Амьд зангилааны хариу нь тухайн зангилааны нийлэгжүүлсэн өгөгдлийн загварын эрх мэдэлт мэдээлэл бөгөөд интеграцид ашигласан зангилааны бүтээлийн хамт хадгалагдсан байлгах.

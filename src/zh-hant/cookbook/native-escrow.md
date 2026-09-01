@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: aa8e079684879bdcda2b4439e9c12742d4ab477e6f560f7c326a59b6be5bf666
+translation_source_hash: 576e03924f19b63681cdfafa641b996672e35a992478fc9eaf5b83f0e7baa6da
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,23 +10,23 @@ translation_engine: nllb-200-ct2
 
 ## 結果 {#outcome}
 
-選擇市場託管和目標綁定資產鎖,用 Rust 或 Python 執行當前輸入的生命週期,將每個鎖試連接到您實際觀察到的剩餘金額,並從 JavaScript 編譯本地 Kotodama 託管表面.
+選擇市場託管和目標繫結資產鎖,用 Rust 或 Python 執行當前輸入的生命週期,將每個鎖試連線到您實際觀察到的剩餘金額,並從 JavaScript 編譯本地 Kotodama 託管表面.
 
 ## 預先條件 {#prerequisites}
 
 - 數字資產定義和擁有足夠數量的開放者/賣方.
-- 提供資金,單鑰匙 I105 每個提交步驟的客戶.使用現場授權付費 `fee_payment` 目的,其費用資產與當前相匹配 Taira 管響應;不嵌入資產 ID 根據文件.
-- Rust 或 Python SDK 的電流從 Iroha 承諾 `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
-- 對於 JavaScript 編譯器的例子,Node.js 24加上本地構建的 `@iroha/iroha-js`包及其原生 `iroha_js_host`;遵循[JavaScript SDK 源構建設置](/zh-hant/guide/tutorials/javascript.md#build-from-source).瀏覽器構建必須提供 `compilerUrl`而不是加載原生主機.
-- Taira 必須承認資產轉讓和保證指令.資產所有者可以使用其資產政策允許的普通生命週期;解決爭端需要全球的 `CanResolveEscrowDispute`許可.在缺席必要的公共網絡權威時,使用生成的本地網絡.
+- 提供資金,單鑰匙 I105 每個提交步驟的客戶.使用現場授權付費 `fee_payment` 目的,其費用資產與當前相匹配 Taira 管響應;不嵌入資產 ID 根據檔案.
+- Rust 或 Python SDK 的電流從 Iroha 提交 `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
+- 對於 JavaScript 編譯器的例子,Node.js 24加上本地構建的 `@iroha/iroha-js`包及其原生 `iroha_js_host`;遵循[JavaScript SDK 源構建設定](/zh-hant/guide/tutorials/javascript.md#build-from-source).瀏覽器構建必須提供 `compilerUrl`而不是載入原生主機.
+- Taira 必須承認資產轉讓和保證指令.資產所有者可以使用其資產政策允許的普通生命週期;解決爭端需要全球的 `CanResolveEscrowDispute`許可.在缺席必要的公共網路授權主體時,使用生成的本地網路.
 
-市場託管模式是賣家,買家,鏈外支付和釋放.通用鎖定名稱一個目的地和可選的單獨釋放權限;它們支持部分撤銷,取消和過期.
+市場託管模式是賣家,買家,鏈外支付和釋放.通用鎖定名稱一個目的地和可選的單獨釋放許可權;它們支援部分撤銷,取消和過期.
 
 ## 步驟 {#steps}
 
 ### 1. 用 Rust 完成市場保證. {#_1-complete-a-marketplace-escrow-with-rust}
 
-這種函數接收了實類型的 IDs 和客戶.它打開了40個單位,讓買家接受並標記鏈外支付,然後讓賣方釋放監管權.每個提交都會通過 `FeePaymentIntent`命名授權費付款人.
+這種函式接收了實型別的 IDs 和客戶.它開啟了40個單位,讓買家接受並標記鏈外支付,然後讓賣方釋放監管權.每個提交都會透過 `FeePaymentIntent`命名授權費付款人.
 
 ```rust
 use eyre::{Result, ensure};
@@ -70,11 +70,11 @@ fn complete_marketplace_escrow(
 }
 ```
 
-存儲賬戶由本書管理. 授予正常資產轉讓代幣並不使活躍的存儲在保證券生命週期之外可剝離.
+儲存帳戶由帳本管理. 授予正常資產轉讓代幣並不使活躍的儲存在保證券生命週期之外可剝離.
 
-### 2. 用 Python 打開並部分繪製通用鎖. {#_2-open-and-partially-draw-a-generic-lock-with-python}
+### 2. 用 Python 開啟並部分繪製通用鎖. {#_2-open-and-partially-draw-a-generic-lock-with-python}
 
-發放機構在撤銷之前查詢已簽署的原始記錄.通過確切的 `remaining_amount`提供了樂觀的同步性:一個陳舊的並行請求被拒絕,而不是兩次扣除保證權.
+發放機構在撤銷之前查詢已簽署的原始記錄.透過確切的 `remaining_amount`提供了樂觀的同步性:一個陳舊的並行請求被拒絕,而不是兩次扣除保證權.
 
 ```python
 import secrets
@@ -145,7 +145,7 @@ def open_and_draw_lock(
     return escrow_id, after
 ```
 
-當 Python SDK 被遺漏時,可以自動查詢`expected_remaining_amount`,但通過觀察值使簽署的經濟先決條件可見於應用程序代碼中.
+當 Python SDK 被遺漏時,可以自動查詢`expected_remaining_amount`,但透過觀察值使簽署的經濟先決條件可見於應用程式程式碼中.
 
 對於 Rust 鎖流,電流構造器還需要觀察到的數量:
 
@@ -169,11 +169,11 @@ opener.submit_blocking(
 
 `DrawdownAssetLock::new`取三個值; `CancelAssetLock::new`取兩個. 省略預期剩餘數量描述了一個較舊的,不安全的呼叫形式.
 
-### 3. 從 JavaScript 編譯 Kotodama 保證金表面. {#_3-compile-the-kotodama-escrow-surface-from-javascript}
+### 3. 從 JavaScript 編譯 Kotodama 託管表面. {#_3-compile-the-kotodama-escrow-surface-from-javascript}
 
-JavaScript 不需要發明未類型的本土指令.當前的編譯器將內置的賬本託管暴露在 Kotodama;部署和調用然後遵循[構建並部署智能合同](./smart-contracts.md).
+JavaScript 無需自行構造無型別的原生指令。目前編譯器向 Kotodama 公開帳本託管內建函式；部署和呼叫隨後遵循[建置並部署智慧合約](./smart-contracts.md)。
 
-保存爲 `native_escrow.ko`:
+儲存為 `native_escrow.ko`:
 
 ```kotodama
 seiyaku NativeEscrowAitai {
@@ -196,7 +196,7 @@ seiyaku NativeEscrowAitai {
 }
 ```
 
-以 `compile-native-escrow.mjs`保存下文,並使用它從 Node.js 編譯出那個精確的來源:
+以 `compile-native-escrow.mjs`儲存下文,並使用它從 Node.js 編譯出那個精確的來源:
 
 ```js
 import { readFile } from 'node:fs/promises'
@@ -216,7 +216,7 @@ console.log({
 })
 ```
 
-運行從前列條件中所描述的源構建包裝環境:
+執行從前列條件中所描述的源構建包裝環境:
 
 ```bash
 node ./compile-native-escrow.mjs
@@ -224,7 +224,7 @@ node ./compile-native-escrow.mjs
 
 ## 驗證 {#verify}
 
-對於市場託管,查詢 `FindAssetEscrowById` 和雙方發佈後的資產持有.記錄必須是`Released`,命名接受買家,並沒有顯示剩餘保管權.對上述 Python 鎖來說,保留返回的 ID 並重復簽署的查詢:
+對於市場託管,查詢 `FindAssetEscrowById` 和雙方釋出後的資產持有.記錄必須是`Released`,命名接受買家,並沒有顯示剩餘保管權.對上述 Python 鎖來說,保留返回的 ID 並重復簽署的查詢:
 
 ```python
 record = client.get_asset_escrow(
@@ -240,19 +240,19 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 
 ## 解決問題 {#troubleshooting}
 
-- `Not permitted`在開放時通常意味着該機構無法將選定的資產轉移到保管中.爭端解決有單獨的全球 `CanResolveEscrowDispute`門口.
+- `Not permitted`在開放時通常意味著該機構無法將選定的資產轉移到保管中.爭端解決有單獨的全球 `CanResolveEscrowDispute`門口.
 - `expected remaining amount`拒絕是樂觀與競爭的衝突.重新查詢記錄,決定是否打算另一個撤銷/取消,並且只簽署新指示,如果新的狀態是可接受的.
-- 只有配置的釋放權威才能繪製一個值得信賴的鎖.目的地不能僅僅因爲它將收到資金而釋放.
-- 市場發佈僅在接受和支付發送狀態後纔有效;取消限於更早的生命週期狀態.
-- 截止日期使用權威的賬本時間. 不要把當地的牆鍾截止時間視爲證明`ExpireAssetLock`將通過.
-- 收費失效屬於提交該生命週期步驟的當事人.基金購買者,賣方/開放者和獨立釋放權限在 Taira.
+- 只有配置的釋放授權主體才能繪製一個值得信賴的鎖.目的地不能僅僅因為它將收到資金而釋放.
+- 市場釋出僅在接受和支付傳送狀態後才有效;取消限於更早的生命週期狀態.
+- 截止日期使用權威的賬本時間. 不要把當地的牆鍾截止時間視為證明`ExpireAssetLock`將透過.
+- 收費失效屬於提交該生命週期步驟的當事人.基金購買者,賣方/開放者和獨立釋放許可權在 Taira.
 
-## 來源及相關文件 {#source-and-related-docs}
+## 來源及相關檔案 {#source-and-related-docs}
 
-- [在固定承諾](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)上,本地保證指令模型
-- [在固定的承諾中進行本地保證券整合測試](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
-- [Python 託管客戶的方法在固定承諾](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama 本地保證券樣本在固定承諾](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
-- [國產資產保證金](/zh-hant/blockchain/escrow.md)
+- [在固定提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)上,本地保證指令模型
+- [在固定的提交中進行本地保證券整合測試](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
+- [Python 託管客戶的方法在固定提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama 本地保證券樣本在固定提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [原生資產託管](/zh-hant/blockchain/escrow.md)
 - [性資產](./fungible-assets.md)
 - [許可證和角色](./permissions-and-roles.md)

@@ -3,60 +3,57 @@ translation_locale: ja
 translation_source: /guide/configure/keys-for-network-deployment.md
 translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: bing-translator-llm
 ---
 
-# ネットワーク部署の鍵 {#keys-for-network-deployment}
+# ネットワーク展開のための鍵 {#keys-for-network-deployment}
 
-各ネットワークにはクライアント,同級者,ジェネシス署名,およびNPoSまたは Nexus プロフィールについては, BLS 認証人アイデンティティの異なるキー素材が必要です.
+すべてのネットワークは、クライアント、ネットワークピア、ブロックチェーンのジェネシス署名、そしてNPoSまたは Nexus プロファイルの場合は BLS バリデータの識別情報のために、異なる鍵素材を必要とします。
 
-## 鍵 が 使われる場所 {#where-keys-are-used}
+## キーが使用される場所 {#where-keys-are-used}
 
-- クライアントのサインキーは `client.toml` で, `[account]` の下に保管されます.
-- ピア・アイデンティティキーは,それぞれのピア `config.toml` に `public_key` と `private_key` として保管されます.
-- ピア・ディスカバリーは `trusted_peers` で各ピアの公開鍵を使用します.
-- BLS 認証器 NPoS プロフィールに対する所有権証明は, `trusted_peers_pop` に保管されます.
-- ジェネシスサインは,マニフェストの署名時に同級構成で `[genesis].public_key` と一致するプライベートキーを使用します.
+- クライアントの署名鍵は `[account]` の下の `client.toml` に保存されます。
+- ネットワークピアの識別キーは、各ネットワークピア `config.toml` に `public_key` および `private_key` として保存されます。
+- ネットワークピアの検出は、各ネットワークピアの公開鍵を`trusted_peers`で使用します。
+- BLS バリデーターの保有証明は、NPoS プロファイルのために `trusted_peers_pop` に保存されます。
+- ブロックチェーンのジェネシス署名は、ネットワークピアの設定にある`[genesis].public_key`と、テクニカルマニフェストを署名する際の対応する秘密鍵を使用します。
 
-ローカルまたはテストデプロイメントでは, Kagami がこれらのすべてのファイルを一緒に生成させてください.
+ローカルまたはテスト環境へのデプロイの場合、Kagami にこれらすべてのファイルを一緒に生成させてください:
 
 ```bash
 cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-既存のネットワークまたはプロフィールでは,ガイドフローを使用します:
+既存のネットワークまたはプロファイルの場合は、ガイド付きフローを使用してください。
 
 ```bash
 cargo run --bin kagami -- wizard
 ```
 
-## 単一のキーペアを生成する {#generate-individual-key-pairs}
+## 個別の鍵ペアを生成する {#generate-individual-key-pairs}
 
-Use `kagami keys` for standalone key material:
+独立した鍵素材には `kagami keys` を使用してください:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 \
   --out-dir ./client-key
 ```
 
-For BLS validator material, include a Proof-of-Possession:
+BLS バリデータの資料には、所有証明を含めてください:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm bls_normal --pop \
   --out-dir ./validator-key
 ```
 
-Use `--seed-hex` only with an exact 32-byte hexadecimal secret for reproducible
-development fixtures. For production deployment, omit it so Kagami uses
-operating-system randomness, then move the unencrypted private-key export into
-the approved custody boundary. The command never prints private keys.
+再現可能な開発用フィクスチャのために、`--seed-hex` は正確に32バイトの16進数シークレットと一緒にのみ使用してください。本番環境に展開する場合は、省略して Kagami にオペレーティングシステムの乱数を使用させ、その後、暗号化されていない秘密鍵のエクスポートを承認された管理境界に移動してください。そのコマンドはプライベートキーを決して表示しません。
 
-## 同級 者 の 一致 {#peer-consistency}
+## ネットワークピアの整合性 {#peer-consistency}
 
-すべての検証者は同じ生成トランザクション,トポロジー,信頼性のあるピアパブリックキー,および認証器 PoPs に一致する必要があります.単一の欠落または不一致したピアキーがネットワークの起動または合意に達するのを妨げる可能性があります.
+すべてのバリデーターは、同じブロックチェーンのジェネシス取引、トポロジー、信頼されたネットワークピアの公開鍵、およびバリデーター PoPs に合意する必要があります。ネットワークピアの鍵が1つでも欠落していたり不一致であったりすると、ネットワークの起動やコンセンサスの達成ができなくなる可能性があります。
 
-バイザンティアの欠陥耐性最小の部署のために,少なくとも4つのピアを使用してください.各ピアには独自のプライベートキーが必要ですが,すべてのピア構成は同じ信頼性の高いピアセットを必要とします.
+最小のビザンチン障害耐性(BFT)デプロイメントの場合、少なくとも4つのネットワークピアを使用してください。各ネットワークピアはそれぞれの秘密鍵を持つ必要がありますが、すべてのネットワークピアの構成には同じ信頼されたネットワークピアセットが必要です。
 
-## 顧客口座 {#client-accounts}
+## クライアントアカウント {#client-accounts}
 
-`client.toml` のクライアントアカウントは,既にチェーン上で存在している必要があります.これはゲネスマニストまたは後のトランザクションで登録することができます.長年のアプリケーションアカウントとしてゲネス署名アイデンティティを使用することを避けましょう;ジェネシス・ラウンドでのみ適用され,生産顧客は独自のアカウントと役割を使用する必要があります.
+`client.toml`のクライアントアカウントは、すでにブロックチェーン上に存在している必要があります。これは、ブロックチェーンのジェネシス技術マニフェストによって、または後のトランザクションによって登録することができます。ブロックチェーンのジェネシス署名アイデンティティを長期間使用するアプリケーションアカウントとして使用しないでください。ブロックチェーンのジェネシス特権はジェネシスラウンドの間のみ適用され、運用クライアントは自分自身のアカウントと役割を使用する必要があります。

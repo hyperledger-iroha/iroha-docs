@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /blockchain/ram-lfe.md
-translation_source_hash: 69c4dc0e01539f3ab1ffffaf9aee4859a7cdd507c42f78e6f10237678ac0b43f
+translation_source_hash: 66436bfdcdfea9bcd52834436dc8b6abe9812549583e6bfca06cbe73d5f75d35
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,19 +10,19 @@ translation_engine: nllb-200-ct2
 
 RAM-LFE 代表随机访问机器性函数评估. 在 Iroha 中,它是公共政策在链上的程序的通用隐藏函数层,但其评价者逻辑,秘密或原始输入不应该被写给世界状态.它被 SORA Nexus 识别器流,如私人电话或电子邮件搜索所使用,并且也可以作为一个通用的 Torii 程序执行辅助器,当节点配置文件启用应用面向路径时.
 
-链条存储了政策承诺和收件验证元数据.一个解决器或 Torii 运行时间评估隐藏的程序,只返回允许输出,并附加了一个客户端,支持工具或账本说明可以与注册的政策进行验证的收据.
+链条存储了政策承诺和回执验证元数据.一个解决器或 Torii 运行时评估隐藏的程序,只返回允许输出,并附加了一个客户端,支持工具或账本说明可以与注册的政策进行验证的收据.
 
 ## 命名 {#naming}
 
 命名分为重要:
 
-|时间|这意味着|
+|术语|含义|
 | --- | --- |
-|`ram_lfe`|外部隐藏函数抽象:程序政策,承诺,执行收据和收据验证模式. |
+|`ram_lfe`|外层隐藏函数抽象：包括程序策略、承诺、执行收据和收据验证模式。|
 |`BFV`|通过加密输入 RAM-LFE 后台使用的Brakerski/Fan-Vercauteren同样式加密方案. |
 |`ram_fhe_profile`|编程加密执行机器的 BFV 特定元数据. 它不是 RAM-LFE 的第二个名称. |
 
-在数据模型中, `RamLfeProgramPolicy` 和 `RamLfeExecutionReceipt` 是 RAM-LFE 类型. BFV 参数,加密文本包裹和隐藏的 RAM-FHE 程序配置文件属于一个政策使用的加密执行后端.
+在数据模型中, `RamLfeProgramPolicy` 和 `RamLfeExecutionReceipt` 是 RAM-LFE 类型. BFV 参数,加密文本封装和隐藏的 RAM-FHE 程序配置文件属于一个政策使用的加密执行后端.
 
 ## 它所记录的内容 {#what-it-records}
 
@@ -36,7 +36,7 @@ RAM-LFE 代表随机访问机器性函数评估. 在 Iroha 中,它是公共政�
 - 可选的公开加密输入元数据,例如 BFV 参数和 `ram_fhe_profile`
 - 一个 `active` 旗,控制该政策是否可以发行新收据
 
-隐藏的秘密,清晰文本识别值和隐藏的程序体都不存储在世界状态中.客户应将承诺,不透明的哈希,收件哈希,密码文字和程序消化视为不透明的协议价值.
+隐藏的秘密,清晰文本识别值和隐藏的程序体都不存储在世界状态中.客户应将承诺,不透明的哈希,回执哈希,密码文字和程序摘要视为不透明的协议价值.
 
 ## 背景 {#backends}
 
@@ -59,13 +59,13 @@ RAM-LFE 代表随机访问机器性函数评估. 在 Iroha 中,它是公共政�
 让:
 
 - \(H(m)\)是 Iroha `Hash::new(m)`:Blake2b-32在 `m`上,最后字节的最小显著位被迫到 `1`.
-- \(N(x)\)是 `x`的正规 Norito 编码.
+- \(N(x)\)是 `x`的规范 Norito 编码.
 - \(a \parallel b\) 字节串连的平均值
 - \(\operatorname{le64}(i)\) 是一个未签名整数的8字节小编码.
 - \(s\) 成为世界外的秘密解决者.
 - \(P\)是公共政策参数.
 - \(A\) 要求相关数据.
-- \(x\)是正常化输入字节或一个 Norito 编码的加密输入包裹,取决于后端.
+- \(x\)是正常化输入字节或一个 Norito 编码的加密输入封装,取决于后端.
 
 RAM-LFE 使用域分隔的哈希.下面的公式以目的命名域名;其当前字节字符串为:
 
@@ -120,11 +120,11 @@ $$
 (\mathrm{backend}, \mathrm{policy\_hash}, P)
 $$
 
-评估从运行时间秘密中重新计算相同的值.如果重新计算的哈希不同,评估失败了承诺不匹配.
+评估从运行时秘密中重新计算相同的值.如果重新计算的哈希不同,评估失败了承诺不匹配.
 
 ### HKDF-SHA3-512 后端 {#hkdf-sha3-512-backend}
 
-对于 `hkdf-sha3-512-prf-v1`,输出是正常化输入本身,但不透明的标识符和收件哈希是秘密绑定的 PRF 输出.
+对于 `hkdf-sha3-512-prf-v1`,输出是正常化输入本身,但不透明的标识符和回执哈希是秘密绑定的 PRF 输出.
 
 要求的转录是:
 
@@ -157,7 +157,7 @@ $$
 H(D_{\mathrm{opaque}} \parallel m_o)
 $$
 
-收件材料还将不透明的ID绑定到:
+回执材料还将不透明的ID绑定到:
 
 $$
 m_r =
@@ -188,10 +188,10 @@ BFV 是一个基于网格的同形加密方案. "同形"意味着程序可以添
 1. 一个钱包将一个私有价值正常化,例如电话号码或电子邮件地址.
 2. 钱包将字节转化为小的整数槽.
 3. 每个插槽都以解决器的公钥 BFV 加密.
-4. 解决器运行时间通过这些密码文本来评估隐藏的程序.
-5. 运行时间只会解密隐藏的程序输出,或证明收据.
+4. 解决器运行时通过这些密码文本来评估隐藏的程序.
+5. 运行时只会解密隐藏的程序输出,或证明收据.
 
-BFV 这就是为什么它更适合.与浮动点模型推断相比, Iroha 电流 BFV 每个加密的插槽都携带一个尺度值模块 \(t\), 通常是一个字节或一个字节长度的字段. \(q\). 两者之间的差距 \(q\) 和 \(t\) 为加密和同形操作带来的噪音提供了解密空间.
+BFV 执行精确整数运算，而不是近似运算。因此，与浮点模型推理相比，它更适合标识符字节和小型模运算。在 Iroha 当前的 BFV 用法中，每个加密槽携带一个模 \(t\) 的标量值，通常是一个字节或字节长度字段。密文本身位于一个大得多的整数模数 \(q\) 下。\(q\) 与 \(t\) 之间的差距为加密和同态运算引入的噪声留出了解密空间。
 
 一个 BFV 密码文本具有两个多项组件:
 
@@ -214,11 +214,11 @@ $$
 |\(\alpha m\)|通过 \(\alpha\)来测量两个密码文本组件. |
 |\(mn\)|乘以密码文本多项式,重新扩展,然后再线性化.|
 
-乘法是昂贵的操作.两个两组件加密文本的产品自然会创建一个三组件加码文本,以 \(1\), \(s_k\)和\(s_k^2\)来解密.重新线性化使用已发表的评估密钥将 \(s_k^2\)术语折叠成正常的两组件加密文本.
+乘法是开销较大的操作。两个双分量密文相乘后会自然产生一个三分量密文，该密文使用 \(1\)、\(s_k\) 和 \(s_k^2\) 解密。重线性化使用已发布的求值密钥，将 \(s_k^2\) 项折回普通的双分量密文，使后续加法和乘法可以继续使用相同的密文结构。
 
-BFV 也"级别化":每个加密操作都消耗了一些噪音预算.这种实现不会启动加密文本来更新该预算.相反,RAM-LFE 发布了一个小的 `ram_fhe_profile` 并只接受一个局限的隐藏程序形状.这使得评估保持在参数集的支持深度内.当前编程配置文件允许固定注册表计数,固定的内存轨道计数和每个编程步骤最多一个密码文字-密码文本乘法.
+BFV 也"级别化":每个加密操作都消耗了一些噪音预算.这种实现不会启动加密文本来更新该预算.相反,RAM-LFE 发布了一个小的 `ram_fhe_profile` 并只接受一个局限的隐藏程序形状.这使得评估保持在参数集的支持深度内.当前编程配置文件允许固定注册表计数,固定的内存通道计数和每个编程步骤最多一个密码文字-密码文本乘法.
 
-在这个 RAM-LFE 设计中,BFV 隐藏了客户端输入的公共账本数据和观察者只看到交易或路线有效载荷.这并不意味着链本身会执行任意加密程序.Torii 解析器运行时间仍然拥有 BFV 秘密材料,评估配置的隐藏程序,解密允许输出,并证明结果.本书随后验证了对链上政策承诺的认证,并解决公钥或证明元数据.
+在这个 RAM-LFE 设计中,BFV 隐藏了客户端输入的公共账本数据和观察者只看到交易或路线有效载荷.这并不意味着链本身会执行任意加密程序.Torii 解析器运行时仍然拥有 BFV 秘密材料,评估配置的隐藏程序,解密允许输出,并证明结果.账本随后验证了对链上政策承诺的认证,并解决公钥或证明元数据.
 
 标识符使用案例故意选择一个简单的表示.正常化字符串编码为:
 
@@ -226,7 +226,7 @@ BFV 也"级别化":每个加密操作都消耗了一些噪音预算.这种实现
 [length, byte_0, byte_1, ..., byte_n, 0, 0, ...]
 ```
 
-每个元素都被加密为其自己的 BFV skalar ciphertext. 这种形状使正常化和包裹验证显而易见,允许钱包从公共参数构建加密请求,并让解析器将相当的加密输入纳入一个稳定的收据转录中.
+每个元素都被加密为其自己的 BFV skalar ciphertext. 这种形状使正常化和封装验证显而易见,允许钱包从公共参数构建加密请求,并让解析器将相当的加密输入纳入一个稳定的收据转录中.
 
 ### BFV 指环模型 {#bfv-ring-model}
 
@@ -275,7 +275,7 @@ $$
 
 ### BFV 关键世代 {#bfv-key-generation}
 
-对于加密识别器输入, BFV 关键材料对分辨器的秘密和相关数据是决定性的:
+对于加密识别器输入, BFV 密钥材料对分辨器的秘密和相关数据是决定性的:
 
 $$
 \sigma_{\mathrm{id}} =
@@ -307,7 +307,7 @@ $$
 b_j = -a_j s_k - e_j + B^j s_k^2 \pmod q
 $$
 
-公众 BFV 政策元数据包含 \((n,q,t,B)\), 公共钥匙; `max_input_bytes`. 其他 BFV 秘密密钥和重新线性化密钥保持在解决器运行时间.
+公众 BFV 政策元数据包含 \((n,q,t,B)\), 公共钥匙; `max_input_bytes`. 其他 BFV 秘密密钥和重新线性化密钥保持在解决器运行时.
 
 ### BFV 加密和运营 {#bfv-encryption-and-operations}
 
@@ -405,7 +405,7 @@ $$
 H(D_{\mathrm{id\_slot}} \parallel \mathrm{seed} \parallel \operatorname{le64}(i))
 $$
 
-密码识别器封面是:
+密码识别器封装是:
 
 $$
 (\operatorname{BFV.Enc}_{\mathrm{pk}}([m_0];\sigma_0),\ldots,
@@ -416,7 +416,7 @@ $$
 
 ### BFV 简单的后果 {#bfv-affine-backend}
 
-对 `bfv-affine-sha3-256-v1`来说,运行时间首先从 \(s\) 和 \(A\)中获得 BFV 关键材料.
+对于 `bfv-affine-sha3-256-v1`，运行时首先根据 \(s\) 和 \(A\) 派生 BFV 密钥材料。派生出的公共参数必须与链上承诺的公共参数完全一致。
 
 圆的种子是:
 
@@ -426,7 +426,7 @@ H(D_{\mathrm{affine\_circuit}} \parallel s
 \parallel \mathrm{policy\_hash} \parallel A)
 $$
 
-从此种子中运行时间样本,modulo \(t\),一个32列的相似电路:
+从此种子中运行时样本,modulo \(t\),一个32列的相似电路:
 
 $$
 y_j = b_j + \sum_i w_{j,i} m_i \pmod t,
@@ -462,7 +462,7 @@ $$
 
 ### BFV 编程后端 {#bfv-programmed-backend}
 
-在 `bfv-programmed-sha3-256-v1` 中,公共参数包括 BFV 标识符加密参数以及隐藏程序消化:
+在 `bfv-programmed-sha3-256-v1` 中,公共参数包括 BFV 标识符加密参数以及隐藏程序摘要:
 
 $$
 \mathrm{program\_digest}
@@ -480,7 +480,7 @@ $$
 |`encrypted_input_mode`|`resolver_canonicalized_envelope_v1`|
 |`min_ciphertext_modulus`| \(2^{52}\) |
 
-在执行之前,向 Torii 提交的纯文本输入被加密在同一个 BFV 包裹中.该服务器侧加密的确定性种子是:
+在执行之前,向 Torii 提交的纯文本输入被加密在同一个 BFV 封装中.该服务器侧加密的确定性种子是:
 
 $$
 H(
@@ -489,7 +489,7 @@ H(
 )
 $$
 
-对于外部提供的加密输入,解析器将识别包解密码并在执行之前重新加密到这个决定性包中.该加нони化使收件哈希保持在语义上同等的 BFV 加密文本中稳定.
+对于外部提供的加密输入,解析器将识别包解密码并在执行之前重新加密到这个决定性包中.该规范化使回执哈希保持在语义上同等的 BFV 加密文本中稳定.
 
 最初的加密存储路由来源于:
 
@@ -500,7 +500,7 @@ H(D_{\mathrm{program\_memory}} \parallel s
 \parallel \operatorname{le64}(0))
 $$
 
-对于32条路径中的每一个,运行时间样本 \(r_j \in [0,t)\) 并存储 BFV 密码文字加密 \(r_j\).隐藏的程序随后通过加密注册表和加密内存执行:
+对于32条路径中的每一个,运行时样本 \(r_j \in [0,t)\) 并存储 BFV 密码文字加密 \(r_j\).隐藏的程序随后通过加密注册表和加密内存执行:
 
 |指示|算法|
 | --- | --- |
@@ -538,7 +538,7 @@ H(D_{\mathrm{program\_receipt}}
 \parallel \mathrm{opaque\_hash})
 $$
 
-默认编程识别带有64个输入插槽.对于每个插槽 \(i\),它加载输入插孔,加载内存轨道 \(i \bmod 32\),添加它们,并输出结果:
+默认编程识别带有64个输入插槽.对于每个插槽 \(i\),它加载输入插孔,加载内存通道 \(i \bmod 32\),添加它们,并输出结果:
 
 $$
 R_0 \leftarrow C_i,\qquad
@@ -587,7 +587,7 @@ $$
 \operatorname{Sign}_{\mathrm{resolver}}(N(R))
 $$
 
-验证通过 `resolver_public_key`检查签名并拒绝收件,除非所有这些等价均具有:
+验证通过 `resolver_public_key`检查签名并拒绝回执,除非所有这些等价均具有:
 
 $$
 R.\mathrm{program\_id} = \mathrm{policy.program\_id}
@@ -618,7 +618,7 @@ H(D_{\mathrm{output}} \parallel \operatorname{bytes}(\mathrm{output\_hex}))
 = R.\mathrm{output\_hash}
 $$
 
-在 `proof` 模式中,证明带有证据包裹而不是签名.验证检查证据后端,电路ID,公开输入方案哈希,验证密钥哈希和暴露的公共实例是否与证据验证器元数据和加码的收件付费哈希相匹配.让:
+在 `proof` 模式中,证明带有证明封装而不是签名.验证检查证明后端,电路ID,公开输入方案哈希,验证密钥哈希和暴露的公共实例是否与证明验证器元数据和加码的回执付费哈希相匹配.让:
 
 $$
 h_R = H(N(R)) = (h_0,\ldots,h_{31})
@@ -679,8 +679,8 @@ $$
 1. 管理或运营商注册表 `RamLfeProgramPolicy`.
 2. 车主会激活保险.
 3. 客户从 Torii 读取公共政策的元数据.
-4. 客户端向解决器提交一个输入表格:简体文本 `input_hex`或加密的输入包裹 BFV.
-5. 运行时间评估隐藏的程序,并返回 `output_hex`, `output_hash`, `opaque_hash`,`receipt_hash`和`RamLfeExecutionReceipt`.
+4. 客户端向解决器提交一个输入形式:简体文本 `input_hex`或加密的输入封装 BFV.
+5. 运行时评估隐藏的程序,并返回 `output_hex`, `output_hash`, `opaque_hash`,`receipt_hash`和`RamLfeExecutionReceipt`.
 6. 客户端或后端会根据公布的政策验证收据,可选地检查返回的 `output_hex`与收据的 `output_hash`哈希.
 7. 一个更高层次的指令,如 `ClaimIdentifier`,可以嵌入证实收据,而不是嵌入原始输入.
 
@@ -726,7 +726,7 @@ ActivateIdentifierPolicy(policy_id = "phone#team")
 - 隐藏函数所取出的不透明标识符
 - 确定性 `receipt_hash`
 - 账户的 UAID
-- 常规 `account_id`
+- 规范 `account_id`
 - 一般执行有效载荷 RAM-LFE
 
 对于面向用户的登录,请将帐户号与私人标识符分开.号是公众名称;电话号码,电子邮件地址和类似值应通过标识符政策和收据流动.
@@ -745,17 +745,17 @@ ActivateIdentifierPolicy(policy_id = "phone#team")
 |`POST /v1/identifiers/resolve`|当有活跃索赔时,解决对绑定账户的正常化识别器输入. |
 |`GET /v1/identifiers/receipts/{receipt_hash}`|通过收据哈希查找持久识别索赔,用于审计和支持工具. |
 
-在构建之前,总是检查目标节点的 `/openapi`或`/openapi.json`文档.可用性取决于节点构建和网络配置文件.
+在构建之前,总是检查目标节点的 `/openapi.json`文档.可用性取决于节点构建和网络配置文件.
 
-## 节点运行时间 {#node-runtime}
+## 节点运行时 {#node-runtime}
 
-Torii 的进程中运行时间 RAM-LFE 设置在 `torii.ram_lfe.programs[*]`下,按 `program_id`键.每个配置程序必须符合链上政策承诺,并且必须提供评估和证实收据所需的运行时间材料.识别路线重复使用相同的运行时段;它们不需要单独的识别器-解析器配置表面.
+Torii 的进程中运行时 RAM-LFE 设置在 `torii.ram_lfe.programs[*]`下,按 `program_id`键.每个配置程序必须符合链上政策承诺,并且必须提供评估和证实收据所需的运行时材料.识别路线重复使用相同的运行时段;它们不需要单独的识别器-解析器配置表面.
 
-在链上注册保险本身不够. 目标节点还必须暴露路线家族,并为其预期执行的程序提供匹配的运行时间材料.
+仅在链上注册策略并不足够。目标节点还必须开放相应的路由族，并为预期执行的程序配备匹配的运行时材料。
 
 ## 运营监护轨道 {#operational-guardrails}
 
-- 检查公众的元数据,然后激活它们.
+- 先将策略注册为非启用状态，验证公开元数据，然后再启用。
 - 在文件,日志,交易和客户群中隐藏评估员的秘密,解决器签字密钥和 BFV 的秘密材料.
 - 不要将原始标识符放入账户姓名,交易元数据,事件或世界状态字段中.
 - 在 SDK 暴露验证器时,在提交更高层次指令之前,向客户端核实收据.
@@ -765,5 +765,5 @@ Torii 的进程中运行时间 RAM-LFE 设置在 `torii.ram_lfe.programs[*]`下,
 ## 相关主题 {#related-topics}
 
 - [个人数据空间的赞助费用](/zh-hans/get-started/private-dataspace-fee-sponsor.md#_4-register-phone-and-email-privately-with-fhe)
-- [Torii 终点](/zh-hans/reference/torii-endpoints.md#app-and-sora-route-families)
+- [Torii 端点](/zh-hans/reference/torii-endpoints.md#app-and-sora-route-families)
 - [无名交易](/zh-hans/blockchain/anonymous-transactions.md)

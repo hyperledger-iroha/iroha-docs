@@ -1,31 +1,29 @@
 ---
 translation_locale: uz
 translation_source: /reference/genesis.md
-translation_source_hash: 1312e80d9e662cc3e8cf4d0668ff4bb9e6ce3f74a60bb5287205aeeb5afd5de8
+translation_source_hash: ac6bad693ed382dede0818132b8649fe14726283508da897a32eea417e5bbb28
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Ibtido ma'lumotnomasi {#genesis-reference}
+# blokcheyn genesis manbasi {#genesis-reference}
 
-Hozirgi vaqtda Iroha 3 ish jarayoni, a `genesis.json` manifest birinchisini tavsiflaydi
-tarmoq ishga tushganda qo'llaniladigan tranzaktsiyalar va parametrlar.
+Joriy Iroha 3 ish jarayonida, `genesis.json` manifest tarmoq ishga tushganda qo'llaniladigan birinchi tranzaksiyalar va parametrlarni tavsiflaydi.
 
-Tengdoshlarga tarqatilgan imzolangan artefakt a Norito-kodlangan `.nrt` fayl
-tomonidan ishlab chiqarilgan `kagami genesis sign`.
+Tarmoq hamkasblariga tarqatilgan imzolangan artefakt `kagami genesis sign` tomonidan ishlab chiqarilgan Norito-kodlangan `.nrt` fayl hisoblanadi.
 
-## Asosiy maydonlar {#main-fields}
+## Asosiy Sohalar {#main-fields}
 
-Genezis manifestini aniqlash mumkin:
+Blokcheyn genesis manifesti quyidagilarni belgilashi mumkin:
 
 - `chain` zanjir identifikatori uchun
-- `executor` ixtiyoriy bajaruvchini yangilash bayt-kod yo'li uchun
-- `ivm_dir` uchun IVM triggerlar va yangilanishlar tomonidan ishlatiladigan kutubxonalar
-- `consensus_mode` manifest tomonidan e'lon qilingan dastlabki rejim uchun
+- `executor` majburiy bo‘lmagan ijrochi yangilash baytkodi yo‘li uchun
+- IVM kutubxonalar uchun `ivm_dir`, triggerlar va yangilanishlar tomonidan ishlatiladi
+- `consensus_mode` manifestda e'lon qilingan boshlang'ich rejim uchun
 - `transactions` buyurtma qilingan parametr yangilanishlari, ko'rsatmalar, triggerlar va topologiya uchun
-- `crypto` dastlabki kripto surati uchun
+- `crypto` dastlabki kripto vaqt nuqtasi ma'lumotlari ko‘rinishi uchun
 
-Ichida `transactions`, topologiya yozuvlari juftlik identifikatorlari va PoPs birgalikda:
+`transactions` ichidagi topologiya yozuvlari tugun identifikatorlarini PoPs bilan juftlaydi:
 
 ```json
 {
@@ -34,9 +32,9 @@ Ichida `transactions`, topologiya yozuvlari juftlik identifikatorlari va PoPs bi
 }
 ```
 
-## Manifest yaratish {#generate-a-manifest}
+## Manifest yarating {#generate-a-manifest}
 
-Foydalanish Kagami shablonni yaratish uchun:
+Kagami dan shablon yaratish uchun foydalaning:
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
@@ -45,13 +43,11 @@ cargo run -p iroha_kagami -- genesis generate \
   --genesis-public-key <PUBLIC_KEY> > genesis.json
 ```
 
-Jamoat uchun SORA Nexus ma'lumotlar maydoni, `npos` kutilgan konsensus rejimi hisoblanadi.
-Boshqa Iroha 3 joylashtirishlar maqsadga qarab ruxsat etilgan yoki NPoS dan foydalanishi mumkin
-profil.
+Jamoat SORA Nexus ma’lumotlar makoni uchun, `npos` kutilayotgan konsensus rejimidir. Boshqa Iroha 3 joylashtirishlar maqsadli profilga qarab ruxsatli yoki NPoS dan foydalanishi mumkin.
 
-## Manifestga imzo cheking {#sign-the-manifest}
+## Manifestni imzolash {#sign-the-manifest}
 
-Tahrirlash va tasdiqlashdan keyin JSON, uni joylashtiriladigan qurilmaga imzolang `.nrt` blok:
+JSON ni tahrirlash va tekshirishdan so‘ng, uni joylashtiriladigan `.nrt` blokiga imzolang:
 
 ```bash
 cargo run -p iroha_kagami -- genesis sign genesis.json \
@@ -59,16 +55,11 @@ cargo run -p iroha_kagami -- genesis sign genesis.json \
   --out-file genesis.signed.nrt
 ```
 
-`kagami genesis sign` manifestdan genezis ochiq kalitini o'qiydi va foydalanadi
-ishlab chiqarish uchun egasiga tegishli, bitta havolali oddiy fayldan shaxsiy kalit
-joylashtiriladigan imzolangan blok.Faylda bitta kanonik shaxsiy kalit bo'lishi kerak
-multihash, undan keyin yangi qator; Kagami ramziy havolalarni va boshqa rejimlarni rad etadi
-dan `0600`. Xom shaxsiy kalitlar buyruq satrida qabul qilinmaydi.Natija
-tengdoshlari o'zlarining konfiguratsiyasiga murojaat qilishlari kerak bo'lgan fayldir.
+`kagami genesis sign` manifestdan blokcheynning boshlang‘ich publik kalitini o‘qiydi va foydalanuvchi egasida bo‘lgan, bitta havolali oddiy fayldagi private kalitni ishlatib, ishga tushiriladigan imzolangan blokni yaratadi. Fayl bitta kanonikga mos maxfiy kalitli multihashni o‘z ichiga olishi va keyin yangi qator bilan tugashi shart; Kagami ramziy havolalarni va `0600` dan boshqa rejimlarni rad etadi. Xom maxfiy kalitlar buyruq satrida qabul qilinmaydi. Natija — tarmoq hamkasblari o‘z konfiguratsiyasidan murojaat qilishi kerak bo‘lgan fayl.
 
-## Sozlang `iroha3d` {#configure-iroha3d}
+## `iroha3d` ni sozlash {#configure-iroha3d}
 
-Demonni imzolangan genezis blokiga qarating:
+Daimonni imzolangan blokcheynning boshlang‘ich blokiga yo‘naltiring:
 
 ```toml
 [genesis]
@@ -76,7 +67,7 @@ file = "genesis.signed.nrt"
 public_key = "<PUBLIC_KEY>"
 ```
 
-## Tegishli vositalar {#related-tools}
+## Bog‘liq Vositalar {#related-tools}
 
 - `kagami genesis validate`
 - `kagami genesis normalize`
@@ -84,5 +75,4 @@ public_key = "<PUBLIC_KEY>"
 - `kagami localnet`
 - `cargo xtask kagami-profiles`
 
-Generatorni amalga oshirish va buyruq tafsilotlari uchun qarang
-[Kagami README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami/README.md).
+Generatorni amalga oshirish va buyruq tafsilotlari uchun [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami/README.md) ga qarang.

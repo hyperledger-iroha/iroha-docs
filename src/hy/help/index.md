@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # Ստացեք աջակցություն {#receive-support}
 
-Ժամանակ առ ժամանակ դուք կարող եք հարցեր ունենալ Iroha Կա երեք միջոց՝ արագ կապ հաստատելու մեր համայնքի հետ. Telegram, Discord եւ GitHub.
+Ժամանակ առ ժամանակ կարող եք ունենալ Iroha-ի վերաբերյալ հարցեր, որոնք կցանկանաք մանրամասն քննարկել ուրիշների հետ։ Մեր համայնքի հետ արագ կապվելու երեք եղանակ կա՝ Telegram, Discord և GitHub։
 
 Համայնքը հաղորդակցման համար օգտագործում է [Telegram](https://t.me/hyperledgeriroha) եւ [LF Decentralized Trust Discord](https://discord.gg/hyperledger): Օգտագործեք նախագծի հարցերի համար `iroha` ալիքը:
 

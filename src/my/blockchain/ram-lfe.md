@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /blockchain/ram-lfe.md
-translation_source_hash: 69c4dc0e01539f3ab1ffffaf9aee4859a7cdd507c42f78e6f10237678ac0b43f
+translation_source_hash: 66436bfdcdfea9bcd52834436dc8b6abe9812549583e6bfca06cbe73d5f75d35
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 RAM-LFE သည် Random-Access Machine Laconic Function Evaluation ကိုဆိုလိုသည်။ Iroha တွင်၎င်းသည် အများပြည်သူ၏မူဝါဒများကချိတ်ဆက်ထားသောပရိုဂရမ်များအတွက် ယေဘုယျလျှို့ဝှက်လုပ်ဆောင်ချက်လွှာဖြစ်သော်လည်း ၀ င်ရောက်ရှိမှုများကိုကမ္ဘာနိုင်ငံသို့မရေးသားသင့်ပါ။ ၎င်းကို SORA Nexus ကိုယ်ပိုင်ဖုန်း (သို့) အီးမေးလ်ရှာဖွေရေးလို ID စီးဆင်းမှုများမှ အသုံးပြုပြီး node profile တစ်ခုက app ကို မျက်နှာမူတဲ့ လမ်းကြောင်းများကို enable လုပ်တဲ့အခါမှာ ယေဘုယျ Torii ပရိုဂရမ် အကူအညီအဖြစ်လည်း ထုတ်ဖော်နိုင်သည်။
 
-ကွင်းဆက်က မူဝါဒဆိုင်ရာ တာဝန်ယူမှုနှင့် လက်မှတ်အတည်ပြုမှု metadata ကို သိမ်းဆည်းထားသည်။ Resolver သို့မဟုတ် Torii runtime သည်ပုန်းကွယ်သော အစီအစဉ်ကို အကဲဖြတ်ပြီး ခွင့်ပြုချက်ရှိ output ကိုသာပြန်လည်ပို့ပေးပြီး ဖောက်သည်များ၊ ထောက်ပံ့ရေး tooling သို့မဟုတ် ledger ညွှန်ကြားချက်များကို မှတ်ပုံတင်မူဝါဒနှင့်ယှဉ်၍ စစ်ဆေးနိုင်သည့်လက်မှတ်တစ်စောင်ကို ချိတ်ဆက်တယ်။
+ကွင်းဆက်က မူဝါဒ cryptographic commitment value နဲ့ protocol result verification record ကို သိုလှောင်ထားတယ်။ resolver (သို့) Torii software အကောင်အထည်ဖော်မှု ပတ်ဝန်းကျင်က ပုန်းကွယ်နေတဲ့ ပရိုဂရမ်က ခွင့်ပြုထားတဲ့ ထုတ်ကုန်ကိုသာ ပြန်ပေးပြီး စာရင်းသွင်းထားတဲ့ မူဝါဒနဲ့ အပြန်အလှန် စစ်ဆေးနိုင်တဲ့ ဖောက်သည်တွေ၊ ထောက်ပံ့ရေး ကိရိယာတွေ (သို့) blockchain ledger ညွှန်ကြားချက်တွေကို မှတ်ပုံတင်တဲ့ ရလဒ်မှတ်တမ်းတစ်ခု ချိတ်ဆက်ပါတယ်။
 
 ## အမည်ပေးခြင်း {#naming}
 
@@ -18,11 +18,11 @@ RAM-LFE သည် Random-Access Machine Laconic Function Evaluation ကိုဆ
 
 |သက်တမ်း |အဓိပ္ပါယ်|
 | --- | --- |
-|`ram_lfe` |ပြင်ပ လျှို့ဝှက်လုပ်ဆောင်မှု abstraction: ပရိုဂရမ်မူဝါဒများ၊ ကတိပေးချက်များ၊ အကောင်အထည်ဖော်မှုလက်မှတ်များနှင့် လက်မှတ်စစ်ဆေးခြင်း mode ကို။ |
+|`ram_lfe` |ပြင်ပ hidden function abstraction: program policies, cryptographic commitment values, execution protocol result records နဲ့ protocol result verification mode တို့ကို အသုံးပြုပါ။ |
 |`BFV` |Brakerski/Fan-Vercauteren ကို encrypted input RAM-LFE backends တွေနဲ့ အသုံးပြုတဲ့ homomorphic encryption scheme ပါ။ |
 |`ram_fhe_profile` |Programmed encrypted execution machine အတွက် BFV သီးသန့် metadata ပါ။ ဒါက RAM-LFE ရဲ့ ဒုတိယအမည်မဟုတ်ဘူး။ |
 
-ဒေတာပုံစံမှာ `RamLfeProgramPolicy` နှင့် `RamLfeExecutionReceipt` ရှိသည် RAM-LFE အမျိုးအစားတွေပေါ့။ BFV parameters, encrypted text envelopes တွေနဲ့ ပုန်းနေတဲ့ RAM-FHE ပရိုဂရမ်ပရိုဖိုင်ဟာ မူဝါဒတစ်ခုမှာ အသုံးပြုတဲ့ encrypted-executing backend ကိုပါ ပါဝင်ပါတယ်။
+ဒေတာပုံစံမှာ `RamLfeProgramPolicy` နှင့် `RamLfeExecutionReceipt` ရှိသည် RAM-LFE အမျိုးအစားတွေပေါ့။ BFV parameters များ၊ encrypted text data containers တွေနဲ့ hidden RAM-FHE ပရိုဂရမ်ပရိုဖိုင်ဟာ မူဝါဒတစ်ခုမှာ အသုံးပြုတဲ့ encrypted-executing backend ကိုပါ ပါဝင်ပါတယ်။
 
 ## မှတ်တမ်းတင်ချက်များ {#what-it-records}
 
@@ -30,13 +30,13 @@ RAM-LFE အစီအစဉ် မူဝါဒကို ကမ္ဘာအနှ�
 
 - မူဝါဒကို တက်ကြွ၊ ပိတ်ပင် (သို့) အခြားနည်းဖြင့် ပြောင်းလဲနိုင်သော ပိုင်ရှင်စာရင်း
 - ဖောက်သည်များအား ကြော်ငြာထားသော backend
-- လက်မှတ်စစ်ဆေးမှုပုံစံ `signed` သို့မဟုတ် `proof`
-- လျှို့ဝှက်ထားတဲ့ ပရိုဂရမ် metadata နဲ့ အကဲဖြတ်သူလျှို့ဝှက်ချက်အတွက် ရည်စူးမှု
-- လက်မှတ်ရေးထိုးထားတဲ့လက်မှတ်များအတွက် Resolver အများသုံးသော့
+- `signed` သို့မဟုတ် `proof` ဖြစ်သော ပရိုဂရမ် ရလဒ် မှတ်တမ်း စစ်ဆေးမှု ပုံစံ
+- ပုန်းနေတဲ့ အစီအစဉ် metadata နဲ့ evaluator လျှို့ဝှက်ချက်အတွက် cryptographic commitment value ကို
+- လက်မှတ်ရေးထိုးထားတဲ့ ပရိုတိုကောလ် ရလဒ် မှတ်တမ်းများအတွက် Resolver အများသုံးသော့
 - BFV ပမာဏများနှင့် `ram_fhe_profile` ကဲ့သို့သော ရွေးချယ်စရာ အများပြည်သူ လျှို့ဝှက်သွင်းမှု metadata များ။
-- `active` လိပ်ပြာက မူဝါဒက လက်မှတ်အသစ်တွေ ထုတ်ပေးနိုင်လားဆိုတာ ထိန်းချုပ်တယ်။
+- `active` တံဆိပ်တစ်ခုက မူဝါဒက အစီရင်ခံစာ ရလဒ် မှတ်တမ်းသစ်တွေ ထုတ်ပေးနိုင်မလားဆိုတာ ထိန်းချုပ်တယ်။
 
-ပုန်းကွယ်သော လျှို့ဝှက်ချက်၊ ပွင့်လင်းစာသားအမှတ်တံဆိပ်တန်ဖိုးနှင့် ပုန်းကွယ်သည့်ပရိုဂရမ်ခန္ဓာကို ကမ္ဘာအခြေအနေတွင် သိမ်းထားခြင်းမရှိပါ။ ဖောက်သည်များသည် ကတိပေးချက်များ၊ မရှင်းလင်းတဲ့ ဟက်ရှ်များ၊ လက်ခံရရှိမှု ဟတ်ရှ်များ, ကုဒ်စာသားများနှင့် ပရိုဂရမ်း digests များကို မရှင်းလင်းသော ပရိုဂရပ်စ်တန်ဖိုးများအဖြစ် සලකා බැලිය යුතුය။
+ပုန်းကွယ်သော လျှို့ဝှက်ချက်၊ ရှင်းလင်းစာသားအမှတ်တံဆိပ်တန်ဖိုးနှင့် ပုန်းကွယ်သည့်ပရိုဂရမ်ကိုယ်ခန္ဓာသည်ကမ္ဘာအခြေအနေတွင် သိမ်းထားခြင်းမရှိပါ။ ဖောက်သည်များသည် cryptographic commitment တန်ဖိုးများ, opaque cryptographic hashes, protocol result record cryptographic Hashes, ciphertexts တို့ကိုကုသသင့်သည်။ ပြီးတော့ ပရိုဂရမ်အတွက် cryptographic digests တွေကို opaque protocol values အဖြစ် လုပ်ပေးတယ်။
 
 ## နောက်ခံသတင်းများ {#backends}
 
@@ -46,28 +46,28 @@ RAM-LFE အစီအစဉ် မူဝါဒကို ကမ္ဘာအနှ�
 | --- | --- |
 |`hkdf-sha3-512-prf-v1` |ကတိပြုချက်ချမှတ်ထားသော PRF အကဲဖြတ်မှု။ |
 |`bfv-affine-sha3-256-v1` |BFV ထောက်ပံ့ထားတဲ့ လျှို့ဝှက် အချိတ်အနှီး အကဲဖြတ်မှု ကုဒ်သွင်းထားတဲ့ မှတ်သားစရာ slot တွေမှာ။|
-|`bfv-programmed-sha3-256-v1` |BFV ကိုထောက်ပံ့ထားတဲ့ ပရိုဂရမ်လုပ်တဲ့ အကောင်အထည်ဖော်မှုက ကုဒ်သွင်းထားတဲ့ မှတ်ပုံတင်တွေနဲ့ မှတ်ဉာဏ်လမ်းကြောင်းတွေပေါ်မှာပါ။ |
+|`bfv-programmed-sha3-256-v1` |BFV ကိုထောက်ပံ့ထားတဲ့ ပရိုဂရမ်လုပ်တဲ့ အကောင်အထည်ဖော်မှုဟာ ကုဒ်သွင်းထားတဲ့ မှတ်ပုံတင်တွေနဲ့ မော်ရီ အကောင်အ ထည်ဖော်မှုလမ်းကြောင်းတွေပေါ်မှာပါ။ |
 
-ID မူဝါဒများအတွက် BFV ပရိုဂရမ်ပြု backend သည် အရေးကြီးသော ခေတ်မီလမ်းကြောင်းဖြစ်သည်။ ၎င်းသည် Wallet များကို ပုံမှန်ဝင်ရောက်မှုများကို ဒေသတွင်းတွင် ကုဒ်သွင်းခွင့်ပေးသည်။ ငွေချေးမှုလုပ်ငန်းစဉ်တွင် အများပြည်သူအမှတ်တံဆိပ်ကိုမမြင်ဘဲ resolver ကို အကဲဖြတ်နိုင်စေသည်။ ရလဒ် hash ကို မှတ်ပုံတင်ထားတဲ့ ပရိုဂရမ် မူဝါဒနဲ့ ချိတ်ဆက်တဲ့ လက်မှတ်ကို ပြန်ပို့တယ်။
+BFV backend ကို ပရိုဂရမ်ပြုလုပ်ထားသည်မှာ ID မူဝါဒများအတွက် အရေးကြီးသော ခေတ်မီလမ်းကြောင်းဖြစ်သည်။ ၎င်းက Wallet များကို ပုံမှန်ဝင်ရောက်မှုများကို ဒေသတွင်းတွင် ကုဒ်သွင်းခွင့်ပေးပြီး Resolver ကို အကဲဖြတ်နိုင်စေသည်။ Transaction ထဲမှာ public identifier ကိုမမြင်ဘဲနဲ့ output cryptographic hash ကို မှတ်ပုံတင်ထားတဲ့ program policy နဲ့ ချိတ်ဆက်တဲ့ protocol result record ကိုပြန်ပေးပါတယ်။
 
 ## သင်္ချာ {#math}
 
-ဤအပိုင်းသည် လက်ရှိ RAM-LFE ကုဒ်ဖြင့်အသုံးပြုသော အကောင်အထည်ဖော်မှုအဆင့် အက္ခရာကိုဖော်ပြသည်။ ဒါဟာလုံခြုံရေးသက်သေမဟုတ်ပေ။ မူဝါဒများ၊လက်မှတ်များနှင့်ဖောက်သည်များသည် သဘောတူညီရန်လိုအပ်သည့် သတ်မှတ်ချက်စာရင်းနှင့်ကုဒ်သွင်းထားသောတန်ဖိုးဖြတ်ခြင်းပုံစံဖြစ်သည်။
+ဤအပိုင်းသည် လက်ရှိ RAM-LFE ကုဒ်ကအသုံးပြုသော အကောင်အထည်ဖော်မှုအဆင့် အက္ခရာကိုဖော်ပြသည်။ ဒါဟာလုံခြုံရေးသက်သေမဟုတ်ပေ။ မူဝါဒများ၊ ပရိုတိုကုတ်ရလဒ်မှတ်တမ်းများနှင့်ဖောက်သည်များသည် သဘောတူညီရန်လိုအပ်သည့် သတ်မှတ်ချက်စာရင်းတင်ခြင်းနှင့်ကုဒ်သွင်းထားသောတန်ဖိုးသတ်မှတ်ခြင်းပုံစံဖြစ်သည်။
 
 ### မှတ်ချက်တင်ခြင်း {#notation}
 
 ခွင့်ပြုပါ။
 
-- Iroha `Hash::new(m)`: Blake2b-32 over `m` ဖြစ်ပြီး နောက်ဆုံး byte ရဲ့ အနည်းဆုံး သိသာတဲ့ bit ကို `1` သို့ တွန်းပို့ပေးတယ်။
-- \(N(x)\) သည် `x` ၏ Canonical Norito ကုဒ်ဖြစ်ရမည်။
+- \(H(m)\) be Iroha `Hash::new(m)`: Blake2b-32 over `m` with the least significant bit of the final byte being forced to `1`
+- \(N(x)\) ဆိုသည်မှာ `x` ၏ တစ်ခုတည်းသော ပရိုတိုကုတ်စံညွှန်း Norito ကုဒ်ဖြစ်ရမည်။
 - \(a \parallel b\) byte-string concatenation ကိုဆိုလိုပါတယ်။
-- \(\operatorname{le64} ((i)\) သည် လက်မှတ်မထိုးသေးတဲ့ အလုံးတစ်လုံး၏ 8-byte အသေးအမွှား encoding ကိုဖြစ်ရမည်။
+- \(\operatorname{le64}(i)\) ဟာ လက်မှတ်မထိုးတဲ့ တစ်လုံးလုံးရဲ့ ၈ ဘိုက် အနည်းဆုံး အင်ဒီန်း ကုဒ်ဖြစ်ဖို့ပါ။
 - \(s\) ပြင်ပကမ္ဘာနိုင်ငံမှာ ထိန်းသိမ်းထားတဲ့ လျှို့ဝှက်ချက် ဖြေရှင်းသူဖြစ်ဖို့။
-- \(P\) ပြည်သူ့မူဝါဒ ပမာဏတွေဖြစ်ဖို့ပါ။
+- \(P\) ပြည်သူ့မူဝါဒ ပမာဏများ ဖြစ်စေရန်။
 - \(A\) နှင့် ဆက်စပ်သော အချက်အလက်များကို တောင်းဆိုပါ။
-- \(x\) ကို ပုံမှန် input bytes သို့မဟုတ် Norito ကုဒ်သွင်းထားတဲ့ encrypted-input envelope ကို backend အပေါ် မူတည်ပြီး ဖြစ်စေ။
+- \(x\) ပုံမှန် input bytes သို့မဟုတ် backend ကိုအမှီပြုပြီး Norito ကုဒ်သွင်းထားတဲ့ encrypted-input data container တစ်ခုဖြစ်မယ်။
 
-RAM-LFE သည်ဒိုမင်ခွဲခြားသော hash များကိုအသုံးပြုသည်။ အောက်ပါ ပုံသေနည်းများသည်ဒိုမိုင်းများကိုရည်ရွယ်ချက်အရအမည်ပေးထားသည်၊ ၎င်းတို့၏လက်ရှိ byte string များမှာ:
+RAM-LFE သည်ဒိုမင်ခွဲခြားသော cryptographic hash များကိုအသုံးပြုသည်။ အောက်ပါ ပုံသေနည်းများသည်ဒိုမိုင်းများကိုရည်ရွယ်ချက်အရအမည်ပေးထားပြီး ၎င်းတို့၏လက်ရှိ byte string များမှာ:
 
 |သင်္ကေတ |Domain string ကို|
 | --- | --- |
@@ -93,9 +93,9 @@ RAM-LFE သည်ဒိုမင်ခွဲခြားသော hash မျာ
 |\(D_{\mathrm{id\_keygen}}\) |`iroha.crypto.fhe.bfv.identifier.keygen.v1` |
 |\(D_{\mathrm{id\_slot}}\) |`iroha.crypto.fhe.bfv.identifier.slot.v1` |
 
-### မူဝါဒ ကတိပြုချက် {#policy-commitment}
+### မူဝါဒဆိုင်ရာ cryptographic commitment တန်ဖိုး {#policy-commitment}
 
-မူဝါဒ ကတိကဝတ်တစ်ခုဟာ အများပြည်သူသတ်မှတ်ချက်တွေနဲ့ ပိတ်ထားတဲ့ လျှို့ဝှက် resolver ကို backend တစ်ခုနဲ့ ချည်နှောင်တယ်။ ပထမဦးဆုံးအနေနဲ့ လျှို့၀ှက်မှုကို သီးခြားချည်နှောင်ပါတယ်။
+မူဝါဒ cryptographic commitment value သည် အများပြည်သူ၏ parameters များနှင့် hidden resolver လျှို့ဝှက်ချက်များကို backend တစ်ခုသို့ ချိတ်ဆက်ပေးသည်။ ပထမဦးဆုံးအားဖြင့်, လျှို့ဝ secret ကို cryptographically သီးခြားချိတ်ဆက်ထားသည်:
 
 $$
 C_s = H(D_{\mathrm{secret}} \parallel s)
@@ -107,7 +107,7 @@ $$
 T_{\mathrm{policy}} = N(\mathrm{backend}, P, C_s)
 $$
 
-ပြီးတော့ ထုတ်ဝေထားတဲ့ မူဝါဒ hash ကတော့
+ပြီးတော့ ထုတ်ဝေထားတဲ့ မူဝါဒရဲ့ cryptographic hash ကတော့:
 
 $$
 \mathrm{policy\_hash} =
@@ -120,11 +120,11 @@ $$
 (\mathrm{backend}, \mathrm{policy\_hash}, P)
 $$
 
-အကဲဖြတ်မှုက runtime လျှို့ဝှက်ချက်ကနေ တူညီတဲ့တန်ဖိုးကိုပြန်တွက်တယ်။ ပြန်တွက် hash ကွာခြားရင် အကဲဖြတ်မှုဟာ commitment မလိုက်ဖက်မှုကြောင့် ကျရှုံးပါတယ်။
+အဆင့်သတ်မှတ်ခြင်းသည် ဆော့ဝဲလုပ်ဆောင်မှု ပတ်ဝန်းကျင် လျှို့ဝှက်ချက်မှ အလားတူတန်ဖိုးကိုပြန်လည်တွက်ချက်သည်။ ပြန်လည်တွက်ထားတဲ့ cryptographic hash ကွဲပြားပါက, အဆင့်သတ်မှတ်မှုက cryptographic commitment value မညီမျှမှုကြောင့် ကျရှုံးသွားသည်။
 
 ### HKDF-SHA3-512 Backend {#hkdf-sha3-512-backend}
 
-`hkdf-sha3-512-prf-v1` အတွက်ထုတ်ကုန်သည် ပုံမှန်ဝင်ရောက်မှုတစ်ခုတည်းဖြစ်သည်၊ သို့သော် opaque identifier နှင့်လက်မှတ် hash သည် လျှို့ဝှက်ချည်နှောင်ထားသော PRF ထုတ်ကုန်များဖြစ်သည်။
+`hkdf-sha3-512-prf-v1` အတွက်ထွက်ပေါက်သည် ပုံမှန်ဝင်ရောက်မှုတစ်ခုတည်းဖြစ်သော်လည်း opaque identifier နှင့် protocol ရလဒ်မှတ်တမ်း cryptographic hash များသည် လျှို့ဝှက်ချိတ်ဆက်ထားသော PRF ထွက်ပေါက်များဖြစ်သည်။
 
 တောင်းဆိုချက်စာရင်းက-
 
@@ -157,7 +157,7 @@ $$
 H(D_{\mathrm{opaque}} \parallel m_o)
 $$
 
-လက်ခံရရှိမှုပစ္စည်းက ပွင့်လင်းမြင်သာမှုမရှိတဲ့ ID ကို ထပ်ပြီး ချိတ်ဆက်ပေးပါတယ်။
+protocol ရလဒ် မှတ်တမ်းတင်မှု ပစ္စည်းက opaque id ကို ထပ်ပြီး ချိတ်ဆက်ပေးပါတယ်။
 
 $$
 m_r =
@@ -188,10 +188,10 @@ RAM-LFE အတွက်တော့ BFV ကို encrypted input mechanism အ�
 1. ငွေကြေးအိတ်ဟာ ဖုန်းနံပါတ် (သို့) အီးမေးလ်လိပ်စာလို ပုဂ္ဂလိကတန်ဖိုးကို ပုံမှန်ဖြစ်စေတယ်။
 2. ပိုက်ဆံအိတ်က ဘိုင်က်တွေကို အလုံးစုံပေါက်လေးတွေအဖြစ် ပြောင်းပေးတယ်။
 3. slot တစ်ခုစီကို resolver ရဲ့ public key BFV နဲ့ encrypt လုပ်ထားတယ်။
-4. Resolver Runtime က အဲဒီ ကုဒ်စာသားတွေကို သုံးပြီး ပုန်းနေတဲ့ အစီအစဉ်ကို အကဲဖြတ်တယ်။
-5. Runtime က ပုန်းကွယ်နေတဲ့ အစီအစဉ် ထုတ်ကုန်ကိုသာ ဖေါ်ထုတ်ပေးပြီး လက်မှတ်ထိုးတာ (သို့) လက်ခံလက်မှတ်ကို သက်သေပြတယ်။
+4. Resolver ဆော့ဖ်ဝဲ အကောင်အထည်ဖော်မှု ပတ်ဝန်းကျင်က ဒီကုဒ်စာသားတွေအပေါ် ပုန်းကွယ်နေတဲ့ အစီအစဉ်ကို အကဲဖြတ်တယ်။
+5. ဆော့ဖ်ဝဲ အကောင်အထည်ဖော်မှု ပတ်ဝန်းကျင်က ပုန်းကွယ်နေတဲ့ အစီအစဉ်ထုတ်ကုန်နဲ့ လက်မှတ်တွေကိုသာ ဖြေရှင်းပေးတယ် (သို့) Protocol ရလဒ် မှတ်တမ်းတစ်ခု သက်သေပြတယ်။
 
-BFV ဟာ တိကျတဲ့ အလုံးစုံ သင်္ချာပါ၊ နီးစပ်တဲ့ သင်္ချာမဟုတ်ဘူး။ ဒါကြောင့် ၎င်းဟာ floating-point model inference ထက် identifier byte နဲ့ အသေးစား modular computations တွေအတွက် ပိုတော်ပါတယ်။ အတွင်းမှာ Iroha current ကို BFV အသုံးပြုမှု, သွယ်ဝှက် slot တစ်ခုစီကို scalar တန်ဖိုး modulo ကိုဆောင်ထားပါတယ် \(t\), သာမန်အားဖြင့် ဘိုင်တာ (သို့) ဘိုင်တာအလျားကွင်းပါ။ ပိုးမွှားစာသားကိုယ်တိုင်က အများကြီး ပိုကြီးတဲ့ integer \(q\) ကို modulo လုပ်နေတာပါ။ အကြားက ကွာဟချက် \(q\) နှင့် \(t\) encryption နှင့် homomorphic operation များအတွက်အသံကို decryption နေရာပေးသည် မိတ်ဆက်ပေးပါ။
+BFV အမွတ္ (၁၀) ကို ေျဖရွင္းရန္ လိုအပ္ပါက အိုင်ဒီတီဖိုင်ဘိုက်များနှင့် အသေးစား modular computations များထက် floating point model inference ကို။ Iroha current ကို BFV အသုံးပြုမှု, သွယ်ဝှက် slot တစ်ခုစီကို scalar တန်ဖိုး module ကိုဆောင်ထားသည် \(t\), Cyphertext itself lives modulo a much larger integer ကို \(q\). အကြားက ကွာဟချက် \(q\) နှင့် \(t\) encryption နဲ့ homomorphic operations တွေက ဖန်တီးတဲ့ ဆူညံသံအတွက် decryption room ပေးတယ်။
 
 BFV ကုဒ်စာသားမှာ polynomial အစိတ်အပိုင်း နှစ်ခုရှိပါတယ်။
 
@@ -214,11 +214,11 @@ $$
 |\(\alpha m\) |စာလုံးဝှက်စာသား အစိတ်အပိုင်း နှစ်ခုစလုံးကို \(\alpha\) နဲ့ scale လုပ်ပါ။ |
 |\(mn\) |ciphertext polynomials တွေကို မြှောက်ပြီး ပြန်ချဲ့လိုက်၊ နောက်ပြန်တန်းတင်လိုက်|
 
-မြှောက်ခြင်းသည် စျေးကြီးသော လုပ်ငန်းစဉ်ဖြစ်သည်။ နှစ်ခုပါဝင်သော ကုဒ်စာသားများ၏ ထုတ်ကုန်တစ်ခုက သဘာဝအတိုင်း \(1\), \(s_k\) နှင့် \(s_k^2\) ဖြင့် decrypts လုပ်သော သုံးခုပါဝင်သောကုဒ်စာသားကို ဖန်တီးသည်။ Relinearization သည် \(s_k^2\) စာလုံးကို ပုံမှန် ၂ ဖွဲ့သော ကုဒ်စာသားအဖြစ် ပြန်လည်ထည့်ရန် ထုတ်ဝေထားသည့် အကဲဖြတ်ချက် သော့ကို အသုံးပြုသည်။ ထိုနည်းဖြင့် နောက်ပိုင်းတွင် ထပ်ပေါင်းခြင်းများနှင့် မြှင့်တင်မှုများကို တူညီသော ကုဒ် စာသားပုံစံဖြင့် ထိန်းသိမ်းနိုင်သည်။
+မြှောက်ခြင်းသည် စျေးကြီးသော လုပ်ငန်းစဉ်ဖြစ်သည်။ နှစ်ခုပါဝင်သော ကုဒ်စာသားများ၏ ထုတ်ကုန်တစ်ခုက သဘာဝအတိုင်း \(1\), \(s_k\) နှင့် \(s_k^2\) ဖြင့် decrypts လုပ်သည့် သုံးခုပါဝင်သောကုဒ်စာသားကို ဖန်တီးသည်။ Relinearization သည် \(s_k^2\) စာလုံးကို ပုံမှန် ၂ ဖွဲ့သော ကုဒ်စာသားအဖြစ် ပြန်လည်ထည့်ရန် ထုတ်ဝေထားသည့် အကဲဖြတ်ချက် သော့ကို အသုံးပြုသည်။ ထိုနည်းဖြင့် နောက်ပိုင်းတွင် ထပ်ပေါင်းခြင်းများနှင့် မြှင့်တင်မှုများကို တူညီသော ကုဒ် စာသားပုံစံဖြင့် ထိန်းသိမ်းနိုင်သည်။
 
 BFV သည်လည်း "leveled" ဖြစ်သည် - ကုဒ်သွင်းထားသော လုပ်ဆောင်ချက်တိုင်းမှာ ဆူညံမှု ဘတ်ဂျက်တစ်ချို့ကို စားသုံးသည်။ ဤလုပ်ဆောင်မှုက ဒီဘတ်ဂျက်ကို အသစ်ပြန်လည်ဆန်းသစ်ဖို့ ciphertexts ကို bootstrap မလုပ်ပါ။ ဒီအစား, RAM-LFE ကသေးငယ်တဲ့ `ram_fhe_profile` ကိုထုတ်ဝေပြီးသတ်မှတ်ထားတဲ့ ပုန်းကွယ်သောပရိုဂရမ်ပုံစံတစ်ခုသာလက်ခံသည်။ အဆိုပါ parameters set ၏ supported depth အတွင်းတွင်အကဲဖြတ်မှုကိုထိန်းသိမ်းထားသည်။ လက်ရှိပရိုဂရမ်ပြုလုပ်ထားသော profile သည် fixed register count, fixed memory-lane count နှင့် programmed step တစ်ခုလျှင် အများဆုံး ciphertext-ciphertext မြှောက်ခြင်းများကိုခွင့်ပြုပါသည်။
 
-RAM-LFE ဒီဇိုင်းမှာ BFV က client input ကို အများပြည်သူ ledger ဒေတာကနေနဲ့ ငွေပေးချေမှု (သို့) လမ်းကြောင်း အသုံးဝင်ဝန်ဆောင်မှုကိုသာမြင်တဲ့ လေ့လာသူတွေကနေ ပုန်းကွယ်ထားတယ်။ ဒါကကွင်းဆက်ဟာ အလိုလို ကုဒ်သွင်းထားတဲ့ အစီအစဉ်တွေကို ကိုယ်တိုင်လုပ်ဆောင်တာ မဆိုလိုပါဘူး။ Torii Resolver Runtime သည် BFV လျှို့ဝှက်ပစ္စည်းကို ပိုင်ဆိုင်နေဆဲဖြစ်ပြီး၊ ဖွဲ့စည်းထားသော ပုန်းကွယ်သောအစီအစဉ်ကို အကဲဖြတ်ပြီး ခွင့်ပြုသည့်ထွက်ကုန်များကို ဖော်ထုတ်ကာ ရလဒ်ကို သက်သေထူပြသည်။ နောက်တော့ Ledger ကအကန့်သတ်ချက်များကို စစ်ဆေးပြီး on-chain မူဝါဒဆိုင်ရာ တာဝန်ယူမှုနှင့်ပတ်သက်၍ သက်သေခံမှုကိုစစ်ဆေးပြီး အများသုံးကျော့ (သို့မဟုတ်) အထောက်အထား metadata ကို Resolver ပြုလုပ်သည်။
+RAM-LFE ဒီဇိုင်းမှာ BFV သည်ပရော်ဖက်ရှင်နယ် blockchain လက်ဂျာဒေတာများမှ client input ကိုဖုံးကွယ်ထားပြီး ငွေပေးချေမှု (သို့မဟုတ်) လမ်းကြောင်းအကျိုးစီးပွားကိုသာမြင်သော လေ့လာသူများထံမှပါ။ ဆိုလိုတာကကွင်းဆက်သည် အလိုလိုကုဒ်သွင်းထားတဲ့ အစီအစဉ်များကို ကိုယ်တိုင်လုပ်ဆောင်တာမဟုတ်ဘူး။ Torii resolver ဆော့ဖ်ဝဲ အကောင်အထည်ဖော်မှု ပတ်ဝန်းကျင်သည် BFV လျှို့ဝှက်ပစ္စည်းကို ပိုင်ဆိုင်နေဆဲဖြစ်ပြီး၊ ဖွဲ့စည်းထားသော ပုန်းကွယ်သော အစီအစဉ်ကို အကဲဖြတ်ပြီး ခွင့်ပြုချက်ရှိ output ကို dekrypt လုပ်ပြီး ရလဒ်ကို သက်သေပြသည်။ blockchain ledger ကနောက်မှာ on-chain မူဝါဒ cryptographic commitment တန်ဖိုးနဲ့အထောက်အထားကိုစစ်ဆေးပြီး အများပြည်သူ key (သို့မဟုတ်) proof metadata ကိုဖြေရှင်းတယ်။
 
 Identifier အသုံးပြုမှု ကိစ္စက ရည်ရွယ်ချက်အရ ရိုးရှင်းတဲ့ ကိုယ်စားပြုချက်ကို ရွေးချယ်တယ်။ ပုံမှန်လုပ်ထားတဲ့ string ကို အောက်ပါအတိုင်း ကုဒ်သွင်းထားတာပါ။
 
@@ -226,7 +226,7 @@ Identifier အသုံးပြုမှု ကိစ္စက ရည်ရွ�
 [length, byte_0, byte_1, ..., byte_n, 0, 0, ...]
 ```
 
-အစိတ်အပိုင်းတိုင်းကို ၎င်း၏ ကိုယ်ပိုင် BFV scalar ciphertext အဖြစ် encrypt လုပ်ထားသည်။ ထိုပုံစံက ပုံမှန်ပြုလုပ်ခြင်းနှင့် envelope validation ကိုရှင်းလင်းစေသည်၊ ငွေအိတ်များကို အများပြည်သူသတ်မှတ်ချက်များမှ encrypted request များကိုတည်ဆောက်ခွင့်ပေးပြီး resolver သည် stable receipt transcript တစ်ခုသို့ညီမျှသော encrypt input များကို canonicalize လုပ်နိုင်သည်။
+အစိတ်အပိုင်းတိုင်းကို ၎င်း၏ ကိုယ်ပိုင် BFV scalar ciphertext အဖြစ် encrypt လုပ်ထားသည်။ ထိုပုံစံက normalization နှင့် data container validation ကို explicit လုပ်ပေးပြီး wallet များကို တည်ဆောက်နိုင်စေပါသည်။ သမားရိုးကျ parameters မှ encrypted request များကို, နှင့် Resolver ကိုတည်ငြိမ်သော protocol ရလဒ်မှတ်တမ်း transcript ကိုညီမျှ encrypt input တွေကို canonicalize လုပ်ခွင့်ပေးသည်။
 
 ### BFV လက်စွပ်ပုံစံ {#bfv-ring-model}
 
@@ -300,14 +300,14 @@ $$
 \mathrm{pk}=(b,a),\qquad b = -a s_k - e \pmod q
 $$
 
-\(R_q\) ထဲက ကြိုးထုတ်ကုန်အဖြစ် \(s_k^2\) ကို ပြန်လည်ချိတ်ဆက်ရန်။ အခြေခံ-\(B\) ဂဏန်းတိုင်းအတွက် \(j\) အတွက်၊ အသေးစားဖြန့်ဝေမှုမှ နမူနာ \(a_j\) ကို တစ်ပုံစံတည်းနဲ့ \(e_j\) ကို ထုတ်ယူပြီး နောက်မှာ ဖော်ပြပါ:
+\(R_q\) ထဲက ကြိုးထုတ်ကုန်အဖြစ် \(s_k^2\) ကို ပြန်လည်ချိတ်ဆက်ရန်။ အခြေခံ-\(B\) ဂဏန်းတိုင်းအတွက် \(j\) အတွက်၊ အသေးစားဖြန့်ဝေမှုမှ နမူနာ \(a_j\) ကို တစ်ပုံစံတည်းနဲ့ \(e_j\) ကို ထုတ်ယူပြီးနောက် ဖော်ပြပါ:
 
 $$
 \mathrm{rlk}_j=(b_j,a_j),\qquad
 b_j = -a_j s_k - e_j + B^j s_k^2 \pmod q
 $$
 
-ပြည်သူလူထု BFV မူဝါဒ metadata များမှာ public key ကိုပါ ၀ င်သည်။ `max_input_bytes`. နိုင်ငံတကာ BFV လျှို့ဝှက်သော့နဲ့ relinearization key တွေဟာ Resolver Runtime မှာ ရှိနေတုန်းပါ။
+ပြည်သူလူထု BFV မူဝါဒ metadata ပါရှိသည် \((n,q,t,B)\), အများသုံး သော့၊ `max_input_bytes`. နိုင်ငံတကာ BFV လျှို့ဝှက် key နဲ့ relinearization key တွေကို Resolver software execution environment ထဲမှာ ထားပါ။
 
 ### BFV ကုဒ်သွင်းခြင်းနှင့် လုပ်ဆောင်ချက်များ {#bfv-encryption-and-operations}
 
@@ -327,7 +327,7 @@ $$
 c_1 = a u + e_2 \pmod q
 $$
 
-ကုဒ်စာသားက \(c=(c_0,c_1)\) ပါ။
+စာလုံးပေါင်းက \(c=(c_0,c_1)\) ပါ။
 
 ဟိုမိုမော်ဖစ် ပေါင်းထည့်ခြင်းသည် အစိတ်အပိုင်းဆိုင်ရာ အသိပညာရှိသည်:
 
@@ -347,7 +347,7 @@ $$
 \alpha c = (\alpha c_0,\ \alpha c_1)\pmod q
 $$
 
-c_0,c _1)\) နှင့် \(d=(d_0,d_1)\) အတွက်၊ ပိုးမွှားစာသား မြှောက်ခြင်းသည် အရွယ်အစားသုံးခုပါတဲ့ ပိုးမႊားစာသားကို ပထမဦးဆုံး တွက်ချက်ပြီး ကော်ဖိုင်နန်းတစ်ခုစီကို \(t/q\) ဖြင့် ပြန်လည်တွက်ပေးသည်။
+\(c=(c_0,c_1)\) နှင့် \(d=(d_0,d_1)\) စာလုံးနှစ်ခုအတွက်၊ စာလုံးပေါင်းမြှောက်ခြင်းသည် ပထမဦးဆုံးအားဖြင့် အရွယ်အစား သုံးခုရှိစာလုံးပေါင်းကို တွက်ချက်ပြီး ကော်ဖိုင်နန်းတစ်ခုစီကို \(t/q\) ဖြင့် ပြန်လည်ကျယ်ပြန့်စေသည်။
 
 $$
 \tilde c_0 = \left\lfloor \frac{t(c_0 d_0)}{q} \right\rceil \bmod q
@@ -380,7 +380,7 @@ $$
 
 ရလဒ်က နှစ်ခုပါဝင်တဲ့ BFV ကုဒ်စာပေပါ။
 
-### Identifier ကုဒ်စာသားအဖုံး {#identifier-ciphertext-envelope}
+### Identifier Ciphertext ဒေတာအိုး {#identifier-ciphertext-envelope}
 
 ID input byte string ကို:
 
@@ -405,7 +405,7 @@ $$
 H(D_{\mathrm{id\_slot}} \parallel \mathrm{seed} \parallel \operatorname{le64}(i))
 $$
 
-လျှို့ဝှက်မှတ်သားရေးအဖုံးက:
+ကုဒ်သွင်းထားတဲ့ ID အချက်အလက် ကွန်တိန်နာက-
 
 $$
 (\operatorname{BFV.Enc}_{\mathrm{pk}}([m_0];\sigma_0),\ldots,
@@ -416,7 +416,7 @@ $$
 
 ### BFV Affine Backend {#bfv-affine-backend}
 
-`bfv-affine-sha3-256-v1` အတွက် runtime သည် BFV key material ကို \(s\) နှင့် \(A\) တို့မှ ပထမဦးဆုံးထုတ်ယူသည်။ ထုတ်ယူထားသော အများပြည်သူ parameters များသည်အဆက်မပြတ် commit လုပ်ထားသည့် အများပြည်သူ parameter များနှင့်တိကျစွာညီမျှရမည်ဖြစ်သည်။
+`bfv-affine-sha3-256-v1` အတွက်တော့ ဆော့ဝဲ အကောင်အထည်ဖော်မှု ပတ်ဝန်းကျင်က ပထမဦးဆုံး BFV အဓိကပစ္စည်းကို \(s\) နဲ့ \(A\) တို့ကနေ ထုတ်ယူပါတယ်။ ရယူထားတဲ့ အများပြည်သူ ပမာဏတွေဟာ လိပ်စာပေါ်မှာ လျှို့ဝှက်ချက်နဲ့ ချိတ်ဆက်ထားတဲ့ အများပြည်သူပမာဏတွေနဲ့ အတိအကျ ကိုက်ညီဖို့လိုတယ်။
 
 ချောမွေ့တဲ့ ပတ်လမ်းမျိုးစေ့က-
 
@@ -426,7 +426,7 @@ H(D_{\mathrm{affine\_circuit}} \parallel s
 \parallel \mathrm{policy\_hash} \parallel A)
 $$
 
-ဤမျိုးစေ့မှ runtime နမူနာများ, modulo \(t\), 32-တန်း affine circuit ကို:
+ဒီမျိုးစေ့ကနေ ဆော့ဝဲ အကောင်အထည်ဖော်မှု ပတ်ဝန်းကျင် နမူနာများ, modulo \(t\), 32-တန်း affine circuit ကို:
 
 $$
 y_j = b_j + \sum_i w_{j,i} m_i \pmod t,
@@ -462,7 +462,7 @@ $$
 
 ### BFV ပရိုဂရမ်လုပ်ထားတဲ့ Backend {#bfv-programmed-backend}
 
-`bfv-programmed-sha3-256-v1` အတွက် အများပြည်သူသတ်မှတ်ချက်များမှာ BFV မှတ်သားရေး ကုဒ်သွင်းခြင်းသတ်မှတ်ချက်တွေနဲ့ ပုန်းကွယ်တဲ့ပရိုဂရမ် Digest ကို ထည့်သွင်းထားပါတယ်-
+`bfv-programmed-sha3-256-v1` အတွက် အများပြည်သူသတ်မှတ်ချက်များမှာ BFV မှတ်သားရေးကုဒ်သွင်းခြင်းသတ်မှတ်ချက်တွေနဲ့ လျှို့ဝှက်ပရိုဂရမ်အတွက် cryptographic digest value ကို ထည့်သွင်းထားတယ်။
 
 $$
 \mathrm{program\_digest}
@@ -480,7 +480,7 @@ $$
 |`encrypted_input_mode` |`resolver_canonicalized_envelope_v1` |
 |`min_ciphertext_modulus` | \(2^{52}\) |
 
-Torii သို့တင်သွင်းထားသော plaintext input ကို BFV envelope ထဲတွင် ပံ့ပိုးပေးခြင်းမပြုမီမှာ encrypt လုပ်ထားပါသည်။ server-side encryption အတွက် deterministic seed ကတော့:
+Torii သို့တင်သွင်းသော plaintext input ကို BFV data container တစ်ခုတည်းထဲတွင် executing မတိုင်မီ encrypt လုပ်ထားသည်။ server-side encryption အတွက် deterministic seed ကတော့:
 
 $$
 H(
@@ -489,9 +489,9 @@ H(
 )
 $$
 
-Externally provided encrypted input အတွက် resolver က identifier envelope ကို decrypts လုပ်ပြီး executing မလုပ်ခင် ဒီ deterministic envelope ထဲကို ပြန်လည်encrypt လုပ်ပေးပါတယ်။ အဲဒီ canonicalization ဟာ receipt hash တွေကို semantically equal BFV ciphertext တွေမှာ တည်ငြိမ်အောင် ထိန်းထားတယ်။
+ပြင်ပမှပေးသွင်းသော encrypted input များအတွက်, resolver သည် identifier data container ကို decrypt လုပ်ပြီး executing မလုပ်မီမှာ deterministic data container သို့ ပြန်လည် encrypt လုပ်သည်။ ထို canonicalization က protocol ရလဒ် မှတ်တမ်း cryptographic hashes ကို semantically တူညီသော BFV ciphertext တွေတွင် တည်ငြိမ်စေသည်။
 
-ပထမဦးဆုံး လျှို့ဝှက်ထားတဲ့ မှတ်ဉာဏ်လမ်းကြောင်းတွေက အောက်ပါကနေ ရတာပါ။
+ပထမဦးဆုံး encrypted memory execution paths တွေကို အောက်ပါကနေ ရယူထားပါတယ်
 
 $$
 \sigma_{\mathrm{mem}} =
@@ -500,7 +500,7 @@ H(D_{\mathrm{program\_memory}} \parallel s
 \parallel \operatorname{le64}(0))
 $$
 
-32 လမ်းကြောင်းတစ်ခုစီအတွက် Runtime နမူနာများ \(r_j \in [0,t)\) နဲ့ stores a ကို BFV encrypt text ကို encrypt လုပ်ခြင်း \(r_j\). အဲဒီနောက်မှာ ပုန်းကွယ်နေတဲ့ ပရိုဂရမ်က ကုဒ်သွင်းထားတဲ့ မှတ်ပုံတင်များနဲ့ ကုဒ်သွင်းထားသော မှတ်ဉာဏ်ကို အကောင်အထည်ဖော်ပါတယ်။
+စီမံခန့်ခွဲမှုလမ်းကြောင်း (၃၂) တစ်ခုစီအတွက် Software Execution Environment နမူနာများ \(r_j \in [0,t)\) a ကို သိုလှောင်တယ်။ BFV encrypt text ကို encrypt လုပ်ခြင်း \(r_j\). အဲဒီနောက်မှာ ပုန်းကွယ်နေတဲ့ ပရိုဂရမ်က ကုဒ်သွင်းထားတဲ့ မှတ်ပုံတင်များနဲ့ ကုဒ်သွင်းထားသော မှတ်ဉာဏ်ကို အကောင်အထည်ဖော်ပါတယ်။
 
 |ညွှန်ကြားချက်|အက္ခရာ |
 | --- | --- |
@@ -523,7 +523,7 @@ O = \operatorname{bytes}(\operatorname{Dec}(R_{o_0})_0,\ldots,
 \operatorname{Dec}(R_{o_k})_0)
 $$
 
-ပရိုဂရမ်ပြုလုပ်ထားသော backend hash များမှာ:
+ယေဘုယျ ပရိုဂရမ်ပြု backend cryptographic hash များမှာ:
 
 $$
 \mathrm{opaque\_hash} =
@@ -538,7 +538,7 @@ H(D_{\mathrm{program\_receipt}}
 \parallel \mathrm{opaque\_hash})
 $$
 
-default programmed identifier tape မှာ input slot (၆၄) ခုရှိပါတယ်။ slot တစ်ခုစီအတွက် \(i\) ဆိုရင် input slot ကို load လုပ်ပြီး memory lane \(i \bmod 32\) ကို loads လုပ်ပြီး add လုပ်ပေးပြီး result ကို output လုပ်ပါတယ်။
+Default Programmed Identifier Tape မှာ input slot ၆၄ ခုရှိပါတယ်။ slot တစ်ခုစီအတွက် \(i\) input slot ကို load လုပ်ပြီး memory execution lane \(i \bmod 32\) ကို loads လုပ်ပြီး add လုပ်ပြီး result ကို output လုပ်ပေးပါတယ်။
 
 $$
 R_0 \leftarrow C_i,\qquad
@@ -547,16 +547,16 @@ R_2 \leftarrow R_0 + R_1,\qquad
 \operatorname{Output}(R_2)
 $$
 
-### ထုတ်ကုန် hash များနှင့် လက်မှတ်များ {#output-hashes-and-receipts}
+### Output cryptographic hashs နှင့် protocol ရလဒ် မှတ်တမ်းများ {#output-hashes-and-receipts}
 
-အထွေထွေ RAM-LFE အကောင်အထည်ဖော်မှုလက်မှတ်က raw output ကို လက်မှတ်ထိုးခြင်းမဟုတ်ဘဲ output hash ကိုလက်မှတ်ထိုးသည်။
+အထွေထွေ RAM-LFE အကောင်အထည်ဖော်မှု ပရိုတိုကော ရလဒ် မှတ်တမ်းသည် raw output ကိုလက်မှတ်မထိုးဘဲ output cryptographic hash ကိုလက်မှတ်ထိုးသည်။
 
 $$
 \mathrm{output\_hash} =
 H(D_{\mathrm{output}} \parallel O)
 $$
 
-Torii RAM-LFE အကောင်အထည်ဖော်မှုလက်မှတ်များအတွက်၊ ဆက်စပ်သော ဒေတာသည် ပရိုဂရမ်ရှာဖွေရေးဘိုက်များဖြစ်ပါသည်။
+Torii RAM-LFE အကောင်အထည်ဖော်ရေးပရိုဂရမ် ရလဒ်မှတ်တမ်းများအတွက်၊ ဆက်စပ်သောဒေတာသည် single protocol-standard program identifier bytes ဖြစ်ပါသည်။
 
 $$
 A = N(\mathrm{program\_id})
@@ -566,7 +566,7 @@ $$
 \mathrm{associated\_data\_hash}=H(A)
 $$
 
-လက်မှတ်ရေးထိုးထားတဲ့ လက်ခံစာရဲ့ အသုံးဝင်ပစ္စည်းက-
+လက်မှတ်ထိုးထားတဲ့ ပရိုတိုကောလ် ရလဒ် မှတ်တမ်း အသုံးဝင်မှု ဝန်ဆောင်မှုက-
 
 $$
 R =
@@ -587,7 +587,7 @@ $$
 \operatorname{Sign}_{\mathrm{resolver}}(N(R))
 $$
 
-စစ်ဆေးခြင်းသည် `resolver_public_key` ဖြင့် လက်မှတ်ကိုစစ်ဆေးပြီး ဤညီမျှမှုအားလုံးမှာ မပါကလက်မှတ်အား ပယ်ချသည်။
+စစ်ဆေးခြင်းသည် `resolver_public_key` ဖြင့် လက်မှတ်ကိုစစ်ဆေးပြီး ဤညီမျှမှုအားလုံးမှာ မပါက ပရိုတိုကောလစ် ရလဒ် မှတ်တမ်းကို ငြင်းပယ်သည်-
 
 $$
 R.\mathrm{program\_id} = \mathrm{policy.program\_id}
@@ -618,7 +618,7 @@ H(D_{\mathrm{output}} \parallel \operatorname{bytes}(\mathrm{output\_hex}))
 = R.\mathrm{output\_hash}
 $$
 
-`proof` mode အတွက် သက်သေခံစာမှာ လက်မှတ်အစား အထောက်အထားအဖုံးတစ်ပုံး ပါပါတယ်။ စစ်ဆေးမှုက အတည်ပြုချက် backend, circuit id, public-input schema hash, verifying-key hash နဲ့ exposed public instances တွေဟာ proof verifier metadata နဲ့ encoded receipt-payload hash ကိုက်ညီမှုရှိလားဆိုတာစစ်ဆေးပါတယ်။
+`proof` mode အတွက် သက်သေခံချက်မှာ လက်မှတ်အစား အထောက်အထား အချက်အလက် ကွန်တိန်နာ ပါပါတယ်။ စစ်ဆေးချက်က အထောက်အထား backend, circuit id, public-input schema တွေကို စစ်ဆေးတယ်။ cryptographic hash၊ verifying-key cryptographic Hash နဲ့ exposed public instances တို့ဟာ proof verifier metadata နဲ့ encoded receipt-payload cryptographic hashtag တွေနဲ့ ကိုက်ညီပါတယ်။
 
 $$
 h_R = H(N(R)) = (h_0,\ldots,h_{31})
@@ -634,7 +634,7 @@ $$
 
 ### Identifier ပရိုဂျက်ခြင်း {#identifier-projection}
 
-Identifier Resolution သည် user-facing opaque account identifier အဖြစ် generic backend `opaque_hash` ကိုအသုံးပြုခြင်းမရှိပါ။ ၎င်းသည် RAM-LFE output hash ကို identifier-specific domains များမှတစ်ဆင့် ပရိုဂျက်သည်။
+Identifier Resolution သည် user-facing opaque account identifier အဖြစ် generic backend `opaque_hash` ကို အသုံးပြုခြင်းမရှိပါ။ ၎င်းသည် RAM-LFE output cryptographic hash ကို identifier-specific domains များမှတစ်ဆင့် ပရိုဂျက်လုပ်သည်။
 
 $$
 \mathrm{opaque\_id}_{\mathrm{id}} =
@@ -663,14 +663,14 @@ R,
 \mathrm{account\_id})
 $$
 
-လက်မှတ်ရေးထိုးထားတဲ့ မှတ်ပုံတင်လက်မှတ်များအတွက်-
+လက်မှတ်ရေးထိုးထားတဲ့ Identifier Protocol ရလဒ် မှတ်တမ်းများအတွက်-
 
 $$
 \mathrm{attestation} =
 \operatorname{Sign}_{\mathrm{resolver}}(N(I))
 $$
 
-`ClaimIdentifier` သည် လက်မှတ် (သို့) အထောက်အထားသည် သက်ဝင်မှုရှိလျှင်သာ လက်ခံလက်မှတ်ကို လက်ခံသည်၊ ထည့်သွင်းထားသော RAM-LFE အကောင်အထည်ဖော်မှု အသုံးဝင်ဝန်ဆောင်မှုသည် ရည်ညွှန်းသည့် အစီအစဉ် မူဝါဒနှင့် ကိုက်ညီပြီး `uaid` နှင့် `account_id` တို့သည် တောင်းဆိုနေသော အမိန့်ချမှတ်ချက်ဖြစ်သည်။
+`ClaimIdentifier` သည် လက်မှတ် (သို့) အထောက်အထားသည် သက်ရောက်မှုရှိသည့်အခါသာ ပရိုဂရမ် ရလဒ် မှတ်တမ်းကိုလက်ခံသည်၊ ထည့်သွင်းထားသော RAM-LFE အကောင်အထည်ဖော်မှု အသုံးဝင်ဝန်ဆောင်မှုသည် ရည်ညွှန်းသော အစီအစဉ်မူဝါဒနှင့် ကိုက်ညီပြီး `uaid` နှင့် `account_id` တို့သည် တောင်းဆိုနေသော ချုပ်ကိုင်မှုဖြစ်သည်။
 
 ## အကောင်အထည်ဖော်မှု စီးဆင်းမှု {#execution-flow}
 
@@ -679,10 +679,10 @@ $$
 1. အုပ်ချုပ်မှု (သို့) လုပ်ငန်းရှင် မှတ်ပုံတင် `RamLfeProgramPolicy`
 2. ပိုင်ရှင်က မူဝါဒကို တက်ကြွစေတယ်။
 3. ဖောက်သည်က Torii မှ အများပြည်သူရေးရာ metadata ကိုဖတ်တယ်။
-4. Client က Resolver ကို input form တစ်ခုကို အတိအကျတင်ပေးတယ်။ Plaintext `input_hex` ဒါမှမဟုတ် encrypted input envelope BFV ပါ။
-5. Runtime က ပုန်းနေတဲ့ပရိုဂရမ်ကို အကဲဖြတ်ပြီး ပြန်လာပေးတယ်။ `output_hex`, `output_hash`, `opaque_hash`, `receipt_hash`, နှင့် a `RamLfeExecutionReceipt`.
-6. Client (သို့) backend က ထုတ်ဝေထားတဲ့ မူဝါဒကို နှိုင်းယှဉ်ပြီး လက်မှတ်ရယူမှုကို စစ်ဆေးပြီး ပြန်လည်ပေးပို့ထားသော `output_hex` သည်လက်မှတ်ရယူသူရဲ့ `output_hash` ကို ဟက်ရှ်ဖြစ်သည်ကို ရွေးချယ်မှုအရ စစ်ဆေးတယ်။
-7. `ClaimIdentifier` လို အဆင့်မြင့် ညွှန်ကြားချက်တစ်ခုမှာ မူကြမ်း input ကို ထည့်သွင်းခြင်းအစား သက်သေခံလက်မှတ်ကို ထည့်သွင်းနိုင်ပါတယ်။
+4. Client က Resolver ကို input form တစ်ခုကို အတိအကျတင်ပေးတယ်၊ plaintext `input_hex` ဒါမှမဟုတ် encrypted BFV input data container ပါ။
+5. ဆော့ဖ်ဝဲ အကောင်အထည်ဖော်မှု ပတ်ဝန်းကျင်က ပုန်းနေတဲ့ပရိုဂရမ်ကို အကဲဖြတ်ပြီး ပြန်ပို့တယ်။ `output_hex`, `output_hash`, `opaque_hash`, `receipt_hash`, နှင့် a `RamLfeExecutionReceipt`.
+6. Client သို့မဟုတ် backend က ထုတ်ဝေထားတဲ့ မူဝါဒကို နှိုင်းယှဉ်ပြီး ပရိုတိုကောလ် ရလဒ် မှတ်တမ်းကို စစ်ဆေးပြီး ပြန်လည်ပေးပို့ထားသော `output_hex` cryptographic hash ကို ပရိုတိုကိုလ် ရလဒ်မှတ်တမ်းရဲ့ `output_hash` သို့ စစ်ဆေးတယ်။
+7. `ClaimIdentifier` လို အဆင့်မြင့် ညွှန်ကြားချက်တစ်ခုမှာ မူရင်း input ကို ထည့်သွင်းမယ့်အစား သက်သေခံထားတဲ့ protocol ရလဒ် မှတ်တမ်းကို ထည့်သွင်းနိုင်တာပါ။
 
 ```mermaid
 flowchart LR
@@ -720,16 +720,16 @@ RegisterIdentifierPolicy(
 ActivateIdentifierPolicy(policy_id = "phone#team")
 ```
 
-Identifier layer မှာ RAM-LFE လက်မှတ်ကို အသုံးပြုပြီး ချိတ်ဆက်ပေးပါတယ်။
+Identifier layer က RAM-LFE protocol result record ကို အသုံးပြုပြီး bind လုပ်ပါတယ်။
 
 - `policy_id`
 - လျှို့ဝှက် လုပ်ဆောင်ချက်ဖြင့် ရယူထားသော မရှင်းလင်းတဲ့ မှတ်သားစရာ
 - အချိုးသတ်ချက် `receipt_hash`
 - ငွေစာရင်း UAID
-- တရားဝင် `account_id`
+- Single Protocol Standard `account_id`
 - အထွေထွေ RAM-LFE အကောင်အထည်ဖော်မှု အသုံးဝင်လစာ
 
-User-facing onboarding အတွက် Account aliases ကို ပုဂ္ဂလိက ID တွေနဲ့ သီးခြားထားပါ။ Aliases တွေဟာ အများပြည်သူအမည်တွေပါ၊ ဖုန်းနံပါတ်တွေ၊ အီးမေးလ်လိပ်စာတွေနဲ့ အလားတူတန်ဖိုးတွေက ID မူဝါဒတွေနဲ့ လက်မှတ်တွေကနေ စီးဆင်းသင့်ပါတယ်။
+User-facing onboarding အတွက် Account aliases ကို Private Identifier တွေနဲ့ သီးခြားထားပါ။ Aliases တွေဟာ အများပြည်သူအမည်တွေပါ၊ ဖုန်းနံပါတ်တွေ၊ အီးမေးလ်လိပ်စာတွေနဲ့ အလားတူ တန်ဖိုးတွေဟာ ID မူဝါဒတွေနဲ့ ပရိုတိုကော ရလဒ် မှတ်တမ်းတွေကို ဖြတ်သန်းရမယ်။
 
 ## Torii လမ်းကြောင်းများ {#torii-routes}
 
@@ -738,32 +738,32 @@ App ကို ဦးတည်တဲ့ လမ်းကြောင်းမိ�
 |လမ်းကြောင်း |ရည်ရွယ်ချက်|
 | --- | --- |
 |`GET /v1/ram-lfe/program-policies` |RAM-LFE ပရိုဂရမ် မူဝါဒများနှင့် အများပြည်သူ အကောင်အထည်ဖော်မှု မီတာဒေတာများကို ပြသပါ။ |
-|`POST /v1/ram-lfe/programs/{program_id}/execute` |`input_hex` (သို့) `encrypted_input` ကနေ ပရိုဂရမ် တစ်ခုကို အကောင်အထည်ဖော်ပြီး output hash တွေနဲ့ stateless receipt ကိုပြန်ပို့ပါ။ |
+|`POST /v1/ram-lfe/programs/{program_id}/execute` |`input_hex` သို့မဟုတ် `encrypted_input` မှ program တစ်ခုကို run လုပ်ပြီး output cryptographic hash များနှင့် stateless protocol ရလဒ်မှတ်တမ်းကိုပြန်ပို့ပါ။ |
 |`POST /v1/ram-lfe/receipts/verify` |`RamLfeExecutionReceipt` ကို ထုတ်ပြန်ထားတဲ့ မူဝါဒနဲ့ စစ်ဆေးပြီး ရွေးချယ်စရာအနေနဲ့ `output_hex` နဲ့ `output_hash` ကို နှိုင်းယှဉ်ပါ။ |
 |`GET /v1/identifier-policies` |Identifier မူဝါဒများ၊ Normalization Mode များ၊ Resolver Key များနှင့် Encrypted Input Metadata များကို စာရင်းပေးပါ။ |
-|`POST /v1/accounts/{account_id}/identifiers/claim-receipt` |`ClaimIdentifier` ထဲမှာ အသုံးပြုသူ ထည့်သွင်းနိုင်မယ့် လက်မှတ်ထုတ်ပေးပါ။ |
+|`POST /v1/accounts/{account_id}/identifiers/claim-receipt` |`ClaimIdentifier` ထဲမှာ အသုံးပြုသူ ထည့်သွင်းနိုင်မယ့် ပရိုတိုကော ရလဒ်မှတ်တမ်းကို ထုတ်ပေးပါ။ |
 |`POST /v1/identifiers/resolve` |Active Claim ရှိပါက ချိတ်ဆက်ထားသောစာရင်းသို့ Normalized Identifier input ကို ဖြေရှင်းပါ။ |
-|`GET /v1/identifiers/receipts/{receipt_hash}` |စစ်ဆေးရေးနှင့် ထောက်ပံ့ရေး ကိရိယာများအတွက် လက်မှတ် hash ဖြင့် persisted identifier claim ကိုရှာဖွေပါ။ |
+|`GET /v1/identifiers/receipts/{receipt_hash}` |စာရင်းစစ်ခြင်းနှင့် ထောက်ပံ့ရေး ကိရိယာများအတွက် cryptographic hash ကို မှတ်တမ်းတင်ရန် protocol ရလဒ်များဖြင့် persisted identifier claim ကိုရှာပါ။ |
 
-`/openapi` သို့မဟုတ် `/openapi.json` စာရွက်စာတမ်းများကို ဤလမ်းကြောင်းများနှင့် ဆောက်လုပ်ရန်မတိုင်ခင် အမြဲစစ်ဆေးပါ။ ရယူနိုင်မှုသည် node build နှင့် network profile ကိုမူတည်သည်။
+`/openapi.json` စာရွက်စာတမ်းကို ဒီလမ်းကြောင်းတွေကို မဆောက်ခင် အမြဲ စစ်ဆေးပါ။ ရရှိနိုင်မှုက node build နဲ့ network profile ကို မူတည်ပါတယ်။
 
-## Node Runtime {#node-runtime}
+## Node ဆော့ဝဲ အကောင်အထည်ဖော်မှု ပတ်ဝန်းကျင် {#node-runtime}
 
-Torii လုပ်နေဆဲပါ။ RAM-LFE Runtime ကို အောက်မှာ သတ်မှတ်ထားပါတယ် `torii.ram_lfe.programs[*]`, keyed by `program_id`. ဖွဲ့စည်းထားသော အစီအစဉ်တိုင်းသည် ချုပ်ဆက်ရေး မူဝါဒဆိုင်ရာ ကတိပေးချက်နှင့် ကိုက်ညီပြီး အကဲဖြတ်ရန် လိုအပ်သည့် runtime ပစ္စည်းများကို ဖြည့်ဆည်းပေးရမည်။ Identifier Routes တွေဟာ ဒီ Runtime ကိုပဲ ပြန်သုံးကြတယ်၊ သီးခြား Identifier-Resolver Configuration Surface တစ်ခု မလိုပါဘူး။
+Torii ၏ လုပ်ငန်းစဉ်အတွင်းရှိ RAM-LFE ဆော့ဖ်ဝဲ အကောင်အထည်ဖော်ရေး ပတ်ဝန်းကျင်ကို `torii.ram_lfe.programs[*]` အောက်တွင် ဖွဲ့စည်းထားပြီး keyed by `program_id`. ဖွဲ့စည်းထားတဲ့ ပရိုဂရမ်တိုင်းသည် on-chain မူဝါဒဆိုင်ရာ cryptographic commitment တန်ဖိုးနှင့် ကိုက်ညီရမည်ဖြစ်ပြီး software အကောင်အ ထည်ဖော်မှု ပတ်ဝန်းကျင်အတွက် လိုအပ်သော ပစ္စည်းများကို အဆင့်သတ်မှတ်ရန်နှင့် သက်သေခံရန်လိုအပ်သည်။ protocol ရလဒ်မှတ်တမ်းများ။ Identifier လမ်းကြောင်းများက software execution ပတ်ဝန်းကျင်ကိုပဲ ပြန်လည်အသုံးပြုကြပြီး သီးခြား identifier-resolver config မျက်နှာပြင်တစ်ခု လိုအပ်ခြင်းမရှိပါ။
 
-ကွင်းဆက်ပေါ်က မူဝါဒကို မှတ်ပုံတင်ခြင်းသည် ၎င်းဘာသာ မလုံလောက်ပါ။ ရည်မှန်းချက် node သည် လမ်းကြောင်းမိသားစုကိုလည်းဖေါ်ပြရမည်ဖြစ်ပြီး လုပ်ဆောင်ရန်မျှော်လင့်ထားသော အစီအစဉ်များအတွက် လိုက်ဖက်တဲ့ runtime ပစ္စည်းရှိရမည်။
+ကွင်းဆက်ပေါ်က မူဝါဒကို မှတ်ပုံတင်ခြင်းသည် ၎င်းဘာသာ မလုံလောက်ပါ။ ရည်မှန်းချက် node သည် လမ်းကြောင်းမိသားစုကိုလည်းဖေါ်ပြရမည်ဖြစ်ပြီး လုပ်ဆောင်ရန်မျှော်လင့်ထားသော အစီအစဉ်များအတွက် software စီမံခန့်ခွဲမှု ပတ်ဝန်းကျင်နှင့် ကိုက်ညီသည့် ပစ္စည်းတစ်ခုရှိရမည်။
 
 ## စီမံခန့်ခွဲရေး စောင့်ရှောက်ရေး ရထားများ {#operational-guardrails}
 
 - မူဝါဒတွေ မလုပ်ဆောင်တာကို မှတ်ပုံတင်ပါ၊ အများပြည်သူရဲ့ metadata တွေကို စစ်ဆေးပြီး ဒါတွေကို တက်ကြွစေပါ။
 - အကဲဖြတ်သူ လျှို့ဝှက်ချက်တွေကို ဖုံးကွယ်ထားပါ၊ Resolver လက်မှတ်ရေးထိုးတဲ့ သော့တွေ၊ BFV စာရွက်စာတမ်းတွေ၊ မှတ်ပုံတင်တွေ၊ ငွေကြေးလွှဲပြောင်းမှုတွေနဲ့ ဖောက်သည်စုတွေထဲက လျှို့ဝှက်ပစ္စည်းတွေပါ။
 - Account aliases, transaction metadata, events (သို့) world-state fields များတွင် raw identifiers ကို မထည့်ပါနဲ့။
-- SDK က စစ်ဆေးသူကို ဖေါ်ပြတဲ့အခါ အဆင့်မြင့် ညွှန်ကြားချက်တွေ မတင်ခင် ဝယ်သူဘက်က လက်မှတ်တွေကို စစ်ဆေးပါ။
-- သက်တမ်းကုန်ဆုံးတဲ့ ကွင်းတွေကို အသုံးပြုပါ၊ ရှေးဟောင်းလက်မှတ်တွေဟာ ထာဝရ မတည်ငြိမ်သင့်ပါ။
-- ပရိုဂရမ် (သို့) ID မူဝါဒသစ်တစ်ခုကို မှတ်ပုံတင်ခြင်း၊ ဖောက်သည်များကို ရွှေ့ပြောင်းခြင်းနဲ့ ရယူမှုအသစ်တွေ စီးဆင်းတာနဲ့ မူဝါဒဟောင်းကို ပိတ်လိုက်ခြင်းဖြင့် လည်ပတ်ပါ။
+- SDK က စစ်ဆေးသူကို ဖေါ်ပြတဲ့အခါ အဆင့်မြင့် ညွှန်ကြားချက်တွေ မတင်ခင် စာရင်းအင်းရဲ့ ရလဒ်မှတ်တမ်းတွေကို စစ်ဆေးပါ။
+- သက်တမ်းကုန်ဆုံးတဲ့ ကွင်းတွေကို အသုံးပြုပါ၊ ရှေးဟောင်း ပရိုတိုကောလာရလဒ် မှတ်တမ်းတွေဟာ ထာဝရ မတည်ငြိမ်သင့်ပါ။
+- ပရိုဂရမ် (သို့) ID မူဝါဒသစ်တစ်ခုကို မှတ်ပုံတင်ခြင်း၊ ဖောက်သည်များကို ရွှေ့ပြောင်းခြင်းနှင့် မူဝါဒဟောင်းကို ဖျက်သိမ်းခြင်းဖြင့် ရှေ့ပြေးမူဝါဒ ရလဒ်မှတ်တမ်းအသစ်များ စီးဆင်းနေသည့်အခါ လည်ပါ။
 
 ## ဆက်စပ်သော အကြောင်းအရာများ {#related-topics}
 
-- [ပုဂ္ဂလိက ဒေတာနေရာအတွက် ပံ့ပိုးမှု အခွန်များ ](/my/get-started/private-dataspace-fee-sponsor.md#_4-register-phone-and-email-privately-with-fhe)
-- [Torii အဆုံးသတ်ချက်များ](/my/reference/torii-endpoints.md#app-and-sora-route-families)
+- [ပုဂ္ဂလိက ဒေတာနေရာအတွက် ထောက်ပံ့မှု အခွန်များ](/my/get-started/private-dataspace-fee-sponsor.md#_4-register-phone-and-email-privately-with-fhe)
+- [Torii API အဆုံးသတ်မှတ်ချက်များ](/my/reference/torii-endpoints.md#app-and-sora-route-families)
 - [အမည်မသိ ငွေပေးချေမှု](/my/blockchain/anonymous-transactions.md)

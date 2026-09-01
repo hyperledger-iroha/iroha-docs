@@ -8,12 +8,12 @@ translation_engine: nllb-200-ct2
 
 # SDK 教程 {#sdk-tutorials}
 
-这些页面总结了从主工作空间发送的 Iroha 3 客户端入口点,包括常规包名,安装路径和最小的起始点.
+这些页面总结了从主工作空间发送的 Iroha 3 客户端入口点,包括规范包名,安装路径和最小的起始点.
 
 ## 建议的命令 {#recommended-order}
 
 1. [安装 Iroha 3](/zh-hans/get-started/install-iroha.md)
-2. [发射 Iroha 3](/zh-hans/get-started/launch-iroha.md)
+2. [启动 Iroha 3](/zh-hans/get-started/launch-iroha.md)
 3. 选择一个 SDK:
    - [Rust](/zh-hans/guide/tutorials/rust.md)
    - [Python](/zh-hans/guide/tutorials/python.md)
@@ -21,12 +21,12 @@ translation_engine: nllb-200-ct2
    - [Kotlin,Android 和Java](/zh-hans/guide/tutorials/kotlin-java.md)
    - [Swift 和iOS](/zh-hans/guide/tutorials/swift.md)
 4. 当您想要一个完整的客户端应用参考时,请查看[样本应用程序](/zh-hans/guide/tutorials/sample-apps.md).
-5. 使用 [Embed Kaigi](/zh-hans/guide/tutorials/kaigi.md)当您想在自己的应用程序中添加支持钱包的音频/视频会议时.
+5. 使用 [嵌入 Kaigi](/zh-hans/guide/tutorials/kaigi.md)当您想在自己的应用程序中添加支持钱包的音频/视频会议时.
 6. 使用 [Musubi 包](/zh-hans/guide/tutorials/musubi.md),当您需要可重复使用的 Kotodama 源库,具有连锁链上注册表依赖.
 
 ## 样本 {#samples}
 
-在上游工作空间中包含 JavaScript 的食谱和 Swift/iOS样本项目.对于 Android,请从 Kotlin SDK 模块及其测试开始.
+在上游工作空间中包含 JavaScript 的操作指南和 Swift/iOS样本项目.对于 Android,请从 Kotlin SDK 模块及其测试开始.
 
 - [应用程序样本概述](/zh-hans/guide/tutorials/sample-apps.md)
 - [嵌入 Kaigi 在 JavaScript 应用中](/zh-hans/guide/tutorials/kaigi.md)

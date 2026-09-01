@@ -40,7 +40,7 @@ jq '{title: .info.title, version: .info.version, paths: (.paths | length)}' \
 
 جنریٹر کمانڈ ایک ہی لائیو OpenAPI دستاویز کا استعمال کرتا ہے جو کنسول لوڈ کرتی ہے۔ یہ JSON آپریٹر ، ایکسپلورر ، ایپ اور ٹیلی میٹری راستوں کے لئے مفید ہے۔
 
-دستخط شدہ لیجر ٹرانزیکشنز ، دستخط شدہ استفسارات اور Norito - مقامی مفید بوجھ کے ل the ، سرکاری Iroha SDKs کو ترجیح دیں۔ OpenAPI کلائنٹ آپ کے لئے دستخط جمع نہیں کرتے ہیں ، اکاؤنٹ کی چابیاں سنبھالتے ہیں ، یا Norito ٹرانزیکtionشن اداروں کو کوڈ کرتے ہیں۔
+signed ledger transactions، signed queries اور Norito-native payloads کے لیے سرکاری Iroha SDKs کو ترجیح دیں۔ OpenAPI clients آپ کی جانب سے signatures نہیں بناتے، account keys کا انتظام نہیں کرتے اور Norito transaction bodies encode نہیں کرتے۔
 
 OpenAPI جنریٹر کی حمایت سے ہر جنریٹر کا معائنہ کرنے کے لئے، چلائیں:
 

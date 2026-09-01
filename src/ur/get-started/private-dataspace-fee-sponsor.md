@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # نجی ڈیٹا اسپیس کے لئے سپانسر فیس {#sponsor-fees-for-a-private-dataspace}
 
-فیس سپانسرنگ صارفین کو XOR کے بغیر نجی ڈیٹا اسپیس ٹرانزیکشنز جمع کرانے کی اجازت دیتی ہے۔ صارف ابھی بھی ٹرانزیکtionہ پر دستخط کرتا ہے۔ ٹرانسمیشن میٹا ڈیٹا ایک اسپانسر اکاؤنٹ پر پوائنٹس دیتا ہے ، اور رن ٹائم نیٹ ورک فیس کے لئے اسپانسر کے XOR بیلنس کا ڈیبٹ کرتا ہے۔
+فیس سپانسرنگ صارفین کو XOR کے بغیر نجی ڈیٹا اسپیس ٹرانزیکشنز جمع کرانے کی اجازت دیتی ہے۔ صارف ابھی بھی ٹرانزیکشن پر دستخط کرتا ہے۔ ٹرانسمیشن میٹا ڈیٹا ایک اسپانسر اکاؤنٹ پر پوائنٹس دیتا ہے ، اور رن ٹائم نیٹ ورک فیس کے لئے اسپانسر کے XOR بیلنس کا ڈیبٹ کرتا ہے۔
 
 انضمام میں تین متحرک حصے ہیں:
 
@@ -128,7 +128,7 @@ iroha --config ./operator.client.toml \
   --quantity 100
 ```
 
-صارف کی توازن چیک کریں:
+صارف کی بیلنس چیک کریں:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -312,7 +312,7 @@ iroha --config ./treasury.client.toml \
   --quantity 1000
 ```
 
-کے لئے Taira پریکٹس، نل کے مددگار کو بچانے سے [ٹیسٹ نیٹ حاصل کریں XOR پر Taira](/ur/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) کے طور `taira_faucet_claim.py`, پھر ایک خزانہ کی منتقلی کے بجائے اسپانسر کو عوامی نل سے فنڈ دیں:
+کے لئے Taira پریکٹس، فوسیٹ کے مددگار کو بچانے سے [ٹیسٹ نیٹ حاصل کریں XOR پر Taira](/ur/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) کے طور `taira_faucet_claim.py`, پھر ایک خزانہ کی منتقلی کے بجائے اسپانسر کو عوامی فوسیٹ سے فنڈ دیں:
 
 ```bash
 export SPONSOR='<SPONSOR_TAIRA_I105_ACCOUNT_ID>'
@@ -337,7 +337,7 @@ iroha --config ./operator.client.toml \
 
 ## 7۔ صارف کو اسپانسر تک رسائی فراہم کریں۔ {#_7-grant-a-user-access-to-the-sponsor}
 
-سپانسر کو ہر صارف سے فیس وصول کرنے کی اجازت دینا ہوگی۔ یہ گرانٹ صارفین کو تعمیری اسپانسر اکاؤنٹس کا نام لگانے سے روکتی ہے۔
+اسپانسر کو ہر صارف کو اپنے نام پر فیس عائد کرنے کی اجازت دینی ہوگی۔ یہی grant صارفین کو من مانے sponsor accounts کا نام دینے سے روکتی ہے۔
 
 اس کو اسپانسر اکاؤنٹ کے طور پر چلائیں، یا آپ کی رن ٹائم پالیسی کی طرف سے اجازت دی گئی ایک آپریشنل اکاؤنٹ کے طور:
 
@@ -359,7 +359,7 @@ printf '{
 - ڈیٹا اسپیس یا درخواست
 - منظوری کا ٹکٹ یا گورننس فیصلہ
 
-صارف کی امداد کا معائنہ کرنے کے لیے:
+صارف کی اجازتوں کا معائنہ کرنے کے لیے:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -384,7 +384,7 @@ iroha --config ./alice.client.toml \
   ledger transaction ping --msg "sponsored private-dataspace write"
 ```
 
-SDKs کے لئے ، ایک ہی ٹرانزیکشن میٹا ڈیٹا آبجیکٹ کو دستخط شدہ لین دین سے منسلک کریں۔ صارف صارف کی کلید کے ساتھ لین دین پر دستخط کرتا ہے۔ سپانسر ہر صارف کے کاروبار پر دستخط نہیں کرتا کیونکہ سابقہ `CanUseFeeSponsor` گرانٹ اجازت ہے۔
+SDKs کے لئے ، ایک ہی ٹرانزیکشن میٹا ڈیٹا آبجیکٹ کو دستخط شدہ لین دین سے منسلک کریں۔ صارف صارف کی کلید کے ساتھ لین دین پر دستخط کرتا ہے۔ سپانسر ہر صارف کے کاروبار پر دستخط نہیں کرتا کیونکہ سابقہ `CanUseFeeSponsor` تفویض کردہ اجازت ہے۔
 
 ## نمونہ ۱: صارفین مفت ادائیگی کرتے ہیں {#pattern-1-users-pay-no-fees}
 
@@ -435,7 +435,7 @@ iroha --config ./alice.client.toml \
 
 - کس آپریشن کی لاگت کتنی مقامی ٹوکن یونٹس
 - XOR ٹاپ اپ کو سپانسر کرنے کے لئے مقامی ٹوکن انفیلو نقشے کیسے
-- اگر صارف کا توازن بہت کم ہو تو کیا ہوتا ہے؟
+- اگر صارف کا بیلنس بہت کم ہو تو کیا ہوتا ہے؟
 - جب سپانسر XOR بیلنس بہت کم ہو تو کیا ہوتا ہے؟
 
 ::: warning
@@ -453,11 +453,11 @@ iroha --config ./alice.client.toml \
 |`fee sponsorship is disabled` |`nexus.fees.sponsorship_enabled` اب بھی node پر `false` ہے. |
 |`fee sponsor is not authorized` |صارف کے پاس اس اسپانسر کے لیے `CanUseFeeSponsor` نہیں ہے۔ |
 |`fee asset ... is missing` |سپانسر کے پاس مقررہ XOR فیس اثاثہ نہیں ہے۔ |
-|`fee balance ... is insufficient` |سپانسر کے XOR توازن میں اضافہ کریں. |
+|`fee balance ... is insufficient` |سپانسر کے XOR بیلنس میں اضافہ کریں. |
 |`fee exceeds sponsor_max_fee` |`sponsor_max_fee` بڑھانا یا ٹرانزیکشن سائز / گیس کو کم کرنا۔ |
 |`invalid nexus fee asset id` |فکسڈ `nexus.fees.fee_asset_id` یا XOR اثاثہ کا نام۔ |
 
-جب ڈیبگ پیٹرن 2، دونوں توازن چیک کریں:
+جب ڈیبگ پیٹرن 2، دونوں بیلنس چیک کریں:
 
 ```bash
 iroha --config ./operator.client.toml \

@@ -3,18 +3,18 @@ translation_locale: pt
 translation_source: /guide/advanced/chaos-testing.md
 translation_source_hash: 5ceee448217a42e4f8bbae9595486b79019e7a880dfd0f2c71bf580409d0e4b9
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Teste de Caos com Izanami {#chaos-testing-with-izanami}
 
-Izanami é o orquestador de chaosnet no espaço de trabalho Iroha upstream. Ele inicia um cluster local descartável Iroha, envia uma carga de trabalho configurável e injeta falhas em pares selecionados para que os operadores possam verificar se a rede continua fazendo progresso sob falha controlada.
+Izanami é o orquestrador chaosnet no workspace upstream Iroha. Ele inicia um cluster local descartável Iroha, envia uma carga de trabalho configurável e injeta falhas em pares de rede selecionados para que os operadores possam verificar se a rede continua progredindo sob falhas controladas.
 
-Use Izanami para verificações de resiliência pré-produção, reprodução de regressão e sintonização de consenso. Não aponte para uma rede de produção: a ferramenta é projetada para possuir os pares que inicia, incluindo reinicialização de pares, toalhas de armazenamento, partições temporárias confiáveis por pares e pressão local CPU ou disco.
+Use o Izanami para verificações de resiliência em pré-produção, reprodução de regressões e ajuste de consensos. Não aponte para uma rede de produção: a ferramenta é projetada possuir os pares de rede que ele inicia, incluindo reinicializações de pares de rede, limpeza de armazenamento, partições temporárias de pares confiáveis e pressão local de CPU ou disco.
 
 ## Pré-requisitos {#prerequisites}
 
-Execute Izanami a partir do repositório fonte [Iroha ](https://github.com/hyperledger-iroha/iroha), não deste repositório de documentação:
+Execute o Izanami a partir do [Iroha repositório de origem](https://github.com/hyperledger-iroha/iroha), não a partir deste repositório de documentação:
 
 ```bash
 git clone https://github.com/hyperledger-iroha/iroha.git
@@ -22,7 +22,7 @@ cd iroha
 cargo build -p izanami
 ```
 
-O binário deve ser explicitamente autorizado a criar e manipular pares em rede. Passe `--allow-net` para cada execução não-TUI, ou ativar `allow_net` no TUI.
+O binário deve ser explicitamente permitido criar e manipular pares de rede em rede. Passe `--allow-net` para cada execução não-TUI, ou habilite `allow_net` no TUI.
 
 ```bash
 cargo run -p izanami -- --allow-net --peers 4 --faulty 1 --duration 120s
@@ -34,11 +34,11 @@ Para uma configuração de execução interativa:
 cargo run -p izanami -- --tui --allow-net
 ```
 
-Izanami persiste as configurações TUI e CLI no diretório de configuração do usuário. O arquivo da primeira versão tem um byte de layout explícito V1; as configurações pré-lançadas ou não versionadas são rejeitadas e devem ser recriadas em vez de migradas. Examine as configurações exibidas antes de reutilizar um perfil atual.
+Izanami persiste as configurações TUI e CLI no diretório de configuração do usuário. O arquivo da primeira versão possui um byte de layout V1 explícito; configurações pré-lançamento ou não versionadas são rejeitadas e devem ser recriadas em vez de migradas. Revise as configurações exibidas antes de reutilizar um perfil atual.
 
-## Execução de linha de base {#baseline-run}
+## Execução de Referência {#baseline-run}
 
-Comece com uma linha de base reprodutível antes da adição de falhas graves:
+Comece com uma linha de base reproduzível antes de adicionar falhas graves:
 
 ```bash
 cargo run -p izanami -- \
@@ -56,32 +56,32 @@ cargo run -p izanami -- \
   --seed 42
 ```
 
-Esta execução só é bem-sucedida se o cluster atingir a meta de bloco solicitada, continuar a progredir dentro do tempo limite e permanecer abaixo do limiar de intervalo opcional de blocos p95.
+Esta execução só é bem-sucedida se o cluster atingir a meta de blocos solicitada, continuar progredindo dentro do tempo limite e permanecer abaixo do limite opcional do intervalo de blocos p95.
 
-Registre o comando, seed, Iroha commit, peer count, faulty-peer count, workload profile, target TPS e limiar de latência com os logs. Sem esses valores, outro operador não pode reproduzir o mesmo padrão de falha.
+Registre o comando, semente, commit Iroha, contagem de pares da rede, contagem de pares com falha, perfil de carga de trabalho, alvo TPS e limite de latência com os logs. Sem esses valores, outro operador não poderá reproduzir o mesmo padrão de falha.
 
-## Perfis de carga de trabalho {#workload-profiles}
+## Perfis de Carga de Trabalho {#workload-profiles}
 
 Izanami tem dois perfis de carga de trabalho:
 
-|Perfil .|Usá-lo para |Notas|
+|Perfil|Use para|Notas|
 | -------- | -------------------------------------------------- | -------------------------------------- |
-|`stable` |Longas corridas de remoção e verificações de desempenho reprodutíveis |Favorece receitas seguras de execução |
-|`chaos` |Cobertura do caminho de falhas |Inclui receitas intencionalmente inválidas |
+| `stable` |Longos testes contínuos e verificações de desempenho reproduzíveis|Favorece receitas seguras para execução|
+| `chaos`  |Cobertura de caminhos de falha|Inclui receitas intencionalmente inválidas|
 
-Primeiro, use o perfil estável:
+Use o perfil estável primeiro:
 
 ```bash
 cargo run -p izanami -- --allow-net --workload-profile stable --seed 42
 ```
 
-Passe para o perfil do caos quando a linha de base já é compreendida:
+Mude para o perfil de caos quando a linha de base já for compreendida:
 
 ```bash
 cargo run -p izanami -- --allow-net --workload-profile chaos --seed 42
 ```
 
-As receitas de implantação de contratos são desativadas em corridas estáveis, a menos que sejam expressamente permitidos:
+As receitas de implantação de contratos estão desativadas em execuções estáveis, a menos que explicitamente permitidas:
 
 ```bash
 cargo run -p izanami -- \
@@ -90,23 +90,23 @@ cargo run -p izanami -- \
   --allow-contract-deploy-in-stable
 ```
 
-Utilize `--nexus` quando a execução deve utilizar as configurações padrão embutidas SORA Nexus do espaço de trabalho upstream.
+Use `--nexus` quando a execução deve usar os padrões incorporados SORA Nexus do espaço de trabalho upstream.
 
-## Controles de falhas {#fault-controls}
+## Controles de Falha {#fault-controls}
 
-Quando `--faulty` Se for superior a zero, deve ser habilitado pelo menos um cenário de falha. Falsa toggles padrão para habilitado, e bandeiras booleanas podem ser desativadas com: `=false`.
+Quando `--faulty` for maior que zero, pelo menos um cenário de falha deve ser ativado. Alternâncias de falha padrão estão ativadas, e flags booleanas podem ser desativadas com `=false`.
 
-|Culpa .|CLI bandeira |O que exerce .|
+|Falha| CLI bandeira                                   |O que ele exercita|
 | ------------------------ | ------------------------------------------ | ------------------------------------------ |
-|Crash e reinicialização .|`--fault-enable-crash-restart` |Perda e recuperação do processo de peer |
-|Esvaziar armazenamento e reiniciar |`--fault-enable-wipe-storage` |Recuperação do estado local desaparecido |
-|Spam de transações inválidas |`--fault-enable-spam-invalid-transactions` |Percurso de admissão e rejeição |
-|Latência da rede |`--fault-enable-network-latency` |O boato lento e as mensagens de consenso atrasadas .|
-|Partilha de rede |`--fault-enable-network-partition` |Isolamento temporário entre pares de confiança .|
-|CPU tensão |`--fault-enable-cpu-stress` |Pressão de validação local e agendamento |
-|Saturação de disco |`--fault-enable-disk-saturation` |Pressão local de armazenamento |
+|Falhar e reiniciar| `--fault-enable-crash-restart`             |perda e recuperação do processo de par de rede|
+|Apagar armazenamento e reiniciar| `--fault-enable-wipe-storage`              |Recuperação de estado local ausente|
+|Spam de transação inválida| `--fault-enable-spam-invalid-transactions` |Caminhos de admissão e rejeição|
+|Latência de rede| `--fault-enable-network-latency`           |Fofoqueiros lentos e mensagens de consenso atrasadas|
+|Partição de rede| `--fault-enable-network-partition`         |Isolamento temporário de par confiável|
+| CPU estresse               | `--fault-enable-cpu-stress`                |Validação local e pressão de agendamento|
+|Saturação do disco| `--fault-enable-disk-saturation`           |Pressão de armazenamento local|
 
-Para uma execução com apenas partição de rede:
+Para uma execução apenas com partição de rede:
 
 ```bash
 cargo run -p izanami -- \
@@ -129,58 +129,58 @@ cargo run -p izanami -- \
   --seed 42
 ```
 
-Usar `--fault-window-start` e `--fault-window-end` para manter um período de estado estável controlado antes e depois da falha injetada. Isso facilita a distinção entre o ruído de inicialização e o efeito da falha.
+Use `--fault-window-start` e `--fault-window-end` para manter um período de estado estacionário controlado antes e depois da falha injetada. Isso facilita a distinção do ruído de inicialização do efeito da falha.
 
-## Formas de cenário {#scenario-shapes}
+## Formas de Cenário {#scenario-shapes}
 
-O catálogo Izanami upstream mapeia as formas comuns de falhas de comunicação blockchain para perfis CLI. Podem ser modeladas com as mesmas bandeiras:
+O catálogo upstream Izanami mapeia formas comuns de falha de comunicação em blockchain para perfis CLI. Você pode modelá-los com os mesmos flags:
 
-|O cenário |Forma típica .|
+| Cenário              |Forma típica|
 | --------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-|Carga direcionada |`--faulty 0`, elevado `--tps`, um apresentador, alto `--max-inflight` |
-|Falha transitória .|Habilitar o crash/reinicialização apenas dentro de uma janela de falha limitada |
-|Paragem e recuperação .|Use uma grande população de pares defeituosos com crash/reinicialização |
-|Isolamento do líder |Usar exatamente um peer defeituoso com apenas a falha de partição da rede; Izanami segue Sumeragi líder telemetria |
+|Carga direcionada| `--faulty 0`, alto `--tps`, um remetente, alto `--max-inflight`|
+|Falha transitória|Ativar falha/reinício apenas dentro de uma janela de falha limitada|
+|Parada e recuperação|Use uma grande população de pares com falha com crash/restart|
+|Isolamento do líder|Use exatamente um par de rede com falha apenas com o defeito de partição de rede; Izanami segue a telemetria do líder Sumeragi|
 
-Mantenha uma variável fixa de cada vez. Se você alterar a contagem de pares, o perfil da carga de trabalho, a janela de falhas e TPS na mesma execução, o resultado é difícil de interpretar.
+Mantenha uma variável fixa por vez. Se você alterar a contagem de nós da rede, o perfil de carga de trabalho, a janela de falha e TPS na mesma execução, o resultado será difícil de interpretar.
 
-## O que observar {#what-to-watch}
+## O que assistir {#what-to-watch}
 
-Durante a corrida, observe os mesmos sinais utilizados para a validação do desempenho:
+Durante a execução, observe os mesmos sinais usados para validação de desempenho:
 
-- Progresso de altura de bloco em cada peer correndo
-- Transações submetidas, aceitas, rejeitadas e terminadas
-- profundidade da fila, saturação da fila e contrapressão do ponto final
-- alterações de visualização, caminhos de recuperação, blocos faltantes e certificados de quórum faltantes.
-- RS16 registro de atrasos de disponibilidade, sessões pendentes e tráfego de consenso adiado
-- CPU, memória, disco e saturação da rede no host executando os pares
+- progresso da altura do bloco em todos os pares de rede em execução
+- transações submetidas, aceitas, rejeitadas e expiradas
+- profundidade da fila, saturação da fila e retropressão do endpoint API
+- visualizar alterações, caminhos de recuperação, blocos ausentes e certificados de quórum ausentes
+- assinou RS16 atraso de disponibilidade, sessões pendentes e tráfego de consenso atrasado
+- CPU, saturação de memória, disco e rede no host que executa os pares de rede
 
-Para a análise da latência de validação, habilite os registos de depuração do circuito principal:
+Para análise de latência de validação, habilite os logs de depuração do loop principal:
 
 ```bash
 RUST_LOG=iroha_core::sumeragi::main_loop=debug \
   cargo run -p izanami -- --allow-net --seed 42
 ```
 
-Cada bloco deve emitir `block validation timings` com `stateless_ms`, `execution_ms` e `total_ms`. Comparar esses tempos com intervalos de blocos p95, contadores de mudança de visão e pressão na fila antes de mudar os temporizadores de consenso.
+Cada bloco deve emitir `block validation timings` com `stateless_ms`, `execution_ms` e `total_ms`. Compare esses tempos com os intervalos de bloco p95, contadores de mudança de visualização e pressão da fila antes de alterar os temporizadores de consenso.
 
-## Interpretação dos resultados {#interpreting-results}
+## Interpretando Resultados {#interpreting-results}
 
-Trate uma corrida como saudável quando todos os pares selecionados continuem a cometer blocos, o backlog não cresce sem limites e as falhas param de causar nova atividade de recuperação após a janela configurada terminar.
+Considere uma execução como saudável quando todos os pares de rede selecionados continuam a confirmar blocos, o acúmulo não cresce indefinidamente e falhas deixam de causar novas atividades de recuperação após o término da janela configurada.
 
-Tratar uma corrida como um fracasso quando:
+Considere uma corrida como um fracasso quando:
 
-- Blocos de progressos mais longos que `--progress-timeout`
-- As alturas de pares divergem e não se reconvergem.
-- a latência de p95 excede `--latency-p95-threshold`
-- As filas crescem para o resto da corrida após a fechadura de uma janela de falha
-- Transações rejeitadas ou com prazo não são explicadas pela carga de trabalho selecionada.
-- Reinicialização por pares, limpeza de armazenamento ou recuperação de partições requer limpeza manual.
+- o progresso do bloco estagna por mais de `--progress-timeout`
+- as alturas dos pares de rede divergem e não se reconvergem
+- latência p95 excede `--latency-p95-threshold`
+- as filas crescem pelo resto da execução após a janela de falha ser fechada
+- transações rejeitadas ou expiradas não são explicadas pela carga de trabalho selecionada
+- reinício do par de rede, limpeza de armazenamento ou recuperação de partição requer limpeza manual
 
-Após um fracasso, repete com a mesma semente e um tipo de falha menos. Isto mantém a carga de trabalho e o cronograma reprodutíveis, ao mesmo tempo que restringe a superfície da falha.
+Após uma falha, execute novamente com a mesma semente e um tipo de falha a menos. Isso mantém a carga de trabalho e o tempo reproduzíveis enquanto reduz a superfície de falha.
 
-## Páginas relacionadas {#related-pages}
+## Páginas Relacionadas {#related-pages}
 
-- [Desempenho e métricas](./metrics.md)
-- [Correndo Iroha em Bare Metal](./running-iroha-on-bare-metal.md)
-- [Pontos finais Torii](../../reference/torii-endpoints.md)
+- [Desempenho e Métricas](./metrics.md)
+- [Executando Iroha em Hardware Nativo](./running-iroha-on-bare-metal.md)
+- [Torii API pontos de extremidade](../../reference/torii-endpoints.md)

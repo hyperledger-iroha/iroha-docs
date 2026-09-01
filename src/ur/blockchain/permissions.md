@@ -56,7 +56,7 @@ translation_engine: nllb-200-ct2
 
 ### نیا کردار رجسٹر کریں {#register-a-new-role}
 
-آئیے ایک نیا کردار رجسٹر کریں جو، جب عطا کیا جائے تو، ماؤس کے اکاؤنٹ میں [میٹا ڈیٹا](/ur/blockchain/metadata.md) تک کسی اور اکاؤنٹ تک رسائی کی اجازت دے گا:
+آئیے ایک نیا کردار رجسٹر کریں جو، جب عطا کیا جائے تو، Mouse کے اکاؤنٹ میں [میٹا ڈیٹا](/ur/blockchain/metadata.md) تک کسی اور اکاؤنٹ تک رسائی کی اجازت دے گا:
 
 ```rust
 let role_id = RoleId::from_str("ACCESS_TO_MOUSE_METADATA")?;
@@ -69,7 +69,7 @@ let register_role = Register::role(role);
 
 ### کردار ادا کریں {#grant-a-role}
 
-کردار رجسٹرڈ ہونے کے بعد، ماؤس اسے ایلس کو دے سکتا ہے:
+کردار رجسٹرڈ ہونے کے بعد، Mouse اسے Alice کو دے سکتا ہے:
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
@@ -86,7 +86,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 
 - پیئر مینجمنٹ
 - ڈومینز اور اکاؤنٹس
-- اثاثہ جات، NFTs، اور اسکور
+- اثاثہ جات، NFTs، اور ایسکرور
 - ٹرگرز
 - کردار اور اجازت نامے
 - عملدرآمد / رن ٹائم ، ثبوت ، پل اور SORA/Nexus ماڈیولز
@@ -99,16 +99,16 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 
 توثیق کرنے والے ایک تصدیق کا فیصلہ واپس کرتے ہیں۔ توثیق کنندہ کسی آپریشن کی اجازت دے سکتا ہے ، اسے کسی وجہ سے مسترد کرسکتا ہے ، یا اگر آپریشن اس تصدیق کنندہ کے دائرہ کار سے باہر ہے تو اسے چھوڑ سکتا ہے۔ منتخب کردہ جج ان فیصلوں کو جوڑتا ہے تاکہ یہ فیصلہ کیا جاسکے کہ آیا ہدایات ، استفسار ، یا اظہار جاری ہوسکتا ہے۔
 
-## معاون سوالات {#supported-queries}
+## معاون استفسارات {#supported-queries}
 
 اجازت کے ٹوکن اور رولز سے پوچھ گچھ کی جا سکتی ہے۔
 
-کردار کے لئے سوالات:
+کردار کے لئے استفسارات:
 
 - [`FindRoles`](/ur/reference/queries.md#accounts-and-permissions)
 - [`FindRoleIds`](/ur/reference/queries.md#accounts-and-permissions)
 - [`FindRolesByAccountId`](/ur/reference/queries.md#accounts-and-permissions)
 
-اجازت ٹوکن کے لئے سوالات:
+اجازت ٹوکن کے لئے استفسارات:
 
 - [`FindPermissionsByAccountId`](/ur/reference/queries.md#accounts-and-permissions)

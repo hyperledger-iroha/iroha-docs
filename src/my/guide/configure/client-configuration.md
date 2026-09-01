@@ -18,7 +18,7 @@ Iroha CLI နှင့် SDK ဖောက်သည်များ အသုံ�
 
 ## Core Fields များ {#core-fields}
 
-အနည်းဆုံး Client Configuration မှာ Chain, Torii Endpoint နဲ့ Signing Account တွေကို သတ်မှတ်ထားပါတယ်
+အနည်းဆုံး Client Configuration တစ်ခုမှာ Chain, Torii API Endpoint နဲ့ Signing Account တွေကို သတ်မှတ်ထားတယ်။
 
 ```toml
 chain = "00000000-0000-0000-0000-000000000000"
@@ -31,21 +31,21 @@ private_key = "802620..."
 ```
 
 - `chain` သည် တင်ပြထားသော ငွေကြေးပူးပေါင်းဆောင်ရွက်မှုများ ပါဝင်သည့် ချုပ်ဆက်ကို ရွေးချယ်သည်။
-- `torii_url` တူညီတဲ့ အမှတ်တွေ Torii HTTP API.
-- `[account].domain` ကို CLI shortcuts နဲ့ address-selector encoding တွေက သုံးပါတယ်။ Canonical `AccountId` itself က domainless ပါ။
+- `torii_url` ကွန်ရက် peer မှာ အချက်တွေ Torii HTTP API.
+- `[account].domain` ကို CLI shortcuts နဲ့ address-selector encoding တွေက သုံးပါတယ်။ Single protocol standard `AccountId` က domainless ပါ။
 - `[account].public_key` နှင့် `[account].private_key` တို့သည် လက်မှတ်ရေးထိုးထားသော ငွေပေးချေမှုများဖြစ်သည်။
 
-အဲဒီအကောင့်ဟာ ချိတ်ဆက်ထားပြီးသား ဖြစ်ရပါမယ်။ ဒေသခံကွန်ရက်အတွက်တော့ ဒါက ဘူးတွဲထားတဲ့ Genesis Manifesto ကနေ စီမံပေးပါတယ်။
+အွန်လိုင်းမှာ ရှိပြီးသား ဖြစ်ရပါမယ်။ ပုံမှန် ဒေသတွင်းကွန်ရက်အတွက်တော့ ဒါက ဘူးတွဲထားတဲ့ blockchain genesis technical manifest ကနေ ကိုင်တွယ်ပါတယ်။
 
 ::: info ကိစ္စအသိစိတ်
 
-Iroha နာမည်များသည် Canonical Parsing အပြီးတွင် Case-sensitive ဖြစ်ပါသည်။ ဥပမာ, `wonderland.universal`, `Wonderland.universal` နှင့် `looking_glass.universal` တို့သည်ကွဲပြားခြားနားသော domain literal များဖြစ်သည်။
+Iroha နာမည်များသည် single protocol-standard parsing နောက်ပိုင်းတွင် case sensitive ဖြစ်ကြသည်။ ဥပမာ, `wonderland.universal`, `Wonderland.universal` နှင့် `looking_glass.universal` သည်ခြားနားသော domain literal များဖြစ်သည်။
 
 :::
 
-## အခြေခံ အထောက်အထား {#basic-authentication}
+## အခြေခံ အတည်ပြုမှု {#basic-authentication}
 
-ရွေးချယ်စရာ `[basic_auth]` အပိုဒ်မှာ HTTP `Authorization` ဖောက်သည်တောင်းဆိုချက်များအတွက် ခေါင်းစဉ်။ Iroha တူညီသူတွေဟာ ဒီလက်မှတ်တွေကို တိုက်ရိုက် အဓိပ္ပါယ်ကောက်မပေးကြဘူး။ Torii Nginx လို reverse proxy တစ်ခုရဲ့ နောက်မှာ ရှိနေပါတယ်။
+ရွေးချယ်စရာ `[basic_auth]` အပိုဒ်မှာ HTTP `Authorization` ဖောက်သည်တောင်းဆိုချက်များအတွက် ခေါင်းစဉ်။ Iroha Network peers တွေက ဒီလက်မှတ်တွေကို တိုက်ရိုက် အဓိပ္ပါယ်ကောက်မပေးကြဘူး။ Torii Nginx လို reverse proxy တစ်ခုရဲ့ နောက်မှာ ရှိနေပါတယ်။
 
 ```toml
 [basic_auth]
@@ -66,7 +66,7 @@ nonce = false
 
 - `time_to_live_ms` သည် ငွေပေးချေမှုသက်တမ်းကို မီလီစက္ကန့်များတွင် သတ်မှတ်သည်။
 - `status_timeout_ms` ကောက်သည်က ငွေပေးချေမှုအခြေအနေကို ဘယ်လောက်ကြာ စောင့်နေတယ်ဆိုတာကို ထိန်းချုပ်တယ်။
-- `nonce = true` က client ကို nonce တစ်ခု ထည့်သွင်းဖို့ တောင်းဆိုတယ် ဒီတော့ အကြိမ်ကြိမ်လုပ်တဲ့ transactions တွေဟာ hash အမျိုးမျိုး ဖြစ်ပေါ်စေတယ်။
+- `nonce = true` က client ကို cryptographic nonce value ထည့်သွင်းဖို့တောင်းဆိုသည်မှာ အကြိမ်ကြိမ်ပြုလုပ်တဲ့ ငွေချေးမှုတွေက မတူညီတဲ့ cryptographic hash တွေကို ဖြစ်ပေါ်စေဖို့ပါ။
 
 ## Queue Settings ကို ချိတ်ဆက်ပါ {#connect-queue-settings}
 
@@ -81,7 +81,7 @@ Workflow တစ်ခုအတွက် ရေရှည်တည်တံ့တ�
 
 ## Configurations များကို ဖန်တီးခြင်း {#generating-configurations}
 
-တစ်ခါသုံး ဒေသတွင်းကွန်ရက်များအတွက် Kagami ကို ကြိုက်သည်မှာ Iroha 3 ကောင်ဖိုင်များ၊ ဇာစ်မြစ်များ၊ စာသားများနှင့် တူညီသော README ကို ရေးထားသည့်ကြောင့်ဖြစ်သည်။
+တစ်ခါသုံး ဒေသတွင်းကွန်ရက်များအတွက် Kagami ကိုရွေးချယ်ပါ၊ အကြောင်းက Iroha 3 ဖွဲ့စည်းပုံ၊ blockchain မျိုးဆက်၊ စာသားများနှင့် README ကို လိုက်ဖက်စွာရေးသားလို့ပါ။
 
 ```bash
 cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet

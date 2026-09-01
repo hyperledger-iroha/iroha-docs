@@ -8,8 +8,7 @@ translation_engine: google-translate
 
 # 创世纪 {#genesis}
 
-Genesis 定义了初始链状态。可编辑源是 JSON 显现，
-和一个 Iroha 3 节点消耗一个签名的 Norito 交易文件。
+Genesis 定义了初始链状态。可编辑源是 JSON 显现， 和一个 Iroha 3 节点消耗一个签名的 Norito 交易文件。
 
 ::: details 默认创世清单
 
@@ -19,21 +18,17 @@ Genesis 定义了初始链状态。可编辑源是 JSON 显现，
 
 ## 文件 {#files}
 
-上游存储库在以下位置提供了默认清单 `defaults/genesis.json`.
-Kagami-生成的网络将自己的清单和签名的交易写入
-输出目录：
+上游存储库在以下位置提供了默认清单 `defaults/genesis.json`. Kagami-生成的网络将自己的清单和签名的交易写入 输出目录：
 
 ```bash
 cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-生成的 `README.md` 在该目录中记录确切的文件并启动
-所选配置文件的命令。
+生成的 `README.md` 在该目录中记录确切的文件并启动 所选配置文件的命令。
 
 ## 对等配置 {#peer-configuration}
 
-节点指向已签名的创世交易 `[genesis]` 的部分
-`config.toml`:
+节点指向已签名的创世交易 `[genesis]` 的部分 `config.toml`:
 
 ```toml
 [genesis]
@@ -41,8 +36,7 @@ file = "./genesis.signed.nrt"
 public_key = "ed0120..."
 ```
 
-网络中的所有节点必须就已签名的创世交易和
-创世公钥。
+网络中的所有对等节点都必须就已签名的创世交易和创世公钥达成一致。
 
 ## 签署创世纪 {#signing-genesis}
 
@@ -55,18 +49,10 @@ cargo run --bin kagami -- genesis sign ./genesis.json \
   --out-file ./genesis.signed.nrt
 ```
 
-`GENESIS_PRIVATE_KEY_FILE` 必须是业主持有模式-`0600`, 单链接
-包含一个规范私钥多重哈希和最终的常规文件
-换行符。 Kagami 拒绝符号链接并且从不接受原始创世私有
-命令行上的键。
+`GENESIS_PRIVATE_KEY_FILE` 必须是由所有者保管的普通文件，权限模式为 `0600` 且硬链接数为 1；文件内容必须是一个规范的私钥 multihash，末尾带换行符。Kagami 拒绝符号链接，且绝不接受通过命令行传入的原始创世私钥。
 
-对于 NPoS 或 Nexus 配置文件，包括拓扑和 BLS 所有权证明
-生成的配置文件所需的。 Kagami `localnet`, `wizard`, 和简介
-生成命令会自动处理这些细节。
+对于 NPoS 或 Nexus 配置文件，包括拓扑和 BLS 所有权证明 生成的配置文件所需的。 Kagami `localnet`, `wizard`, 和简介 生成命令会自动处理这些细节。
 
 ## 重新承诺创世纪 {#recommitting-genesis}
 
-节点仅在其存储为空时才提交创世。测试新的起源
-一次性本地网，停止对等点，删除其生成的状态目录，
-并从新签署的创世开始。不要在运行时替换 genesis
-网络，除非每个验证者都协调相同的迁移。
+节点仅在其存储为空时才提交创世。测试新的起源 一次性本地网，停止对等点，删除其生成的状态目录， 并从新签署的创世开始。不要在运行时替换 genesis 网络，除非每个验证者都协调相同的迁移。

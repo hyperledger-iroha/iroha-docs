@@ -3,16 +3,16 @@ translation_locale: ja
 translation_source: /guide/tutorials/javascript.md
 translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # JavaScript と TypeScript {#javascript-and-typescript}
 
-現在の JavaScript SDK は, Iroha ソースツリー内の `@iroha/iroha-js` パッケージである. Node.js-最初の SDK の Torii, Norito 構築者,署名,ページ化,接続プレビュー,カゲムシャコマンド輸送のためのものです.
+現在の JavaScript SDK は、Iroha ソースツリーの`@iroha/iroha-js`パッケージです。これは Node.js-最初の SDK で、Torii、Norito ビルダー、署名、ページ分割、Connectプレビュー、およびKagemushaコマンド転送向けです。
 
-## 源 から 建設 する {#build-from-source}
+## ソースからビルド {#build-from-source}
 
-パッケージは,現時点では公開 npm レジストリから利用できません. ターゲットにしたノードと同じ固定された Iroha ソース修正から作成します:
+このパッケージは現在、公開されている npm レジストリでは利用できません。ターゲットにするノードと同じ固定された Iroha ソースリビジョンからビルドしてください:
 
 ```bash
 git clone https://github.com/hyperledger-iroha/iroha.git
@@ -22,9 +22,9 @@ npm run build:native
 npm run build:dist
 ```
 
-本来のビルドは `cargo build -p iroha_js_host` を巻き込み, SDK の起動で使用されたプラットフォーム特別のチェックサムを記録します.ソースビルドは, `native/` でホストを確認した場所です.`IROHA_JS_NATIVE_DIR` を設定するのは,別々に構築されたチェックサムで確認されたホストを意図的に供給する場合にのみ.パッケージは ESM のみ; CommonJS から,ダイナミック `import()` を使用します.
+ネイティブビルドは `cargo build -p iroha_js_host` をラップし、SDK の起動時に使用されるプラットフォーム固有のチェックサムを記録します。ソースビルドは、その検証済みホストを `native/` に配置します。別途構築され、チェックサムで検証されたホストを意図的に供給する場合にのみ `IROHA_JS_NATIVE_DIR` を設定します。パッケージは ESM のみです。CommonJS からは、動的な `import()` を使用してください。
 
-## スピードスタート {#quickstart}
+## クイックスタート {#quickstart}
 
 ```js
 import { ToriiClient } from "@iroha/iroha-js/torii";
@@ -38,9 +38,9 @@ const keys = generateKeyPair();
 console.log(keys.publicKey);
 ```
 
-## Taira 試聴する {#try-taira-read-only}
+## 試す Taira 読み取り専用 {#try-taira-read-only}
 
-Node.js 24 に内蔵された `fetch` を使用して,署名と Norito 取引コードを追加する前に, Taira を探す.
+Node.js 24で組み込みの`fetch`を使用して、署名と Norito トランザクションコードを追加する前に Taira をプローブします:
 
 ```js
 const root = "https://taira.sora.org";
@@ -67,15 +67,15 @@ for (const asset of assets.items) {
 }
 ```
 
-`taira-readonly.mjs`として保存し,実行する:
+`taira-readonly.mjs`として保存し、次に実行してください:
 
 ```bash
 node taira-readonly.mjs
 ```
 
-署名に移動する SDK 読み込みのみのチェックが効いた後だけ通話します Taira 臨時的に飽和したキューまたはゲートウェイエラーを返却することができますので,ライブネットワークテストのオプトインを保持してください CI.
+これらの読み取り専用チェックが機能するようになった後に、署名された SDK の技術的呼び出しに移行してください。パブリック Taira は一時的に飽和したキューやゲートウェイエラーを返す可能性があるため、ライブネットワークのテストは CI でオプトインのままにしてください。
 
-便利なサブパス輸入:
+便利なサブパスインポート:
 
 ```js
 import { ToriiClient } from "@iroha/iroha-js/torii";
@@ -83,23 +83,23 @@ import { noritoEncodeInstruction } from "@iroha/iroha-js/norito";
 import { generateKeyPair } from "@iroha/iroha-js/crypto";
 ```
 
-ブラウザーのみの Connect ブートストラップでは,ノードファースト `ToriiClient` 表面を輸入する代わりに `@iroha/iroha-js/connect-browser` を使用します.
+ブラウザ専用の Connect ブートストラップの場合、Node 最優先の `ToriiClient` サーフェスをインポートする代わりに `@iroha/iroha-js/connect-browser` を使用してください。
 
-## 国産エスクロー {#native-escrow}
+## ネイティブエスクロー {#native-escrow}
 
-JavaScript および TypeScript アプリケーションは, Kotodama 契約を通じてネイティブ・エスクローを利用できます. `@iroha/iroha-js/kotodama-compiler` でエスクローホストの呼び出しをまとめます.トランザクション構築者は現在 JavaScript SDK によって暴露されていない. エスクローホスト呼び出しの例については, [ネイティブアセットエスクロー](/ja/blockchain/escrow.md#javascript-and-typescript-kotodama)を参照してください.
+JavaScript と TypeScript のアプリケーションは、Kotodama コントラクトを通じてネイティブエスクローを使用できます。エスクローホスト関数の呼び出しを `@iroha/iroha-js/kotodama-compiler` でコンパイルしてください。直接ネイティブのエスクロー取引ビルダーは、現在 JavaScript SDK では公開されていません。エスクロー ホストの技術的な呼び出し例については [ネイティブ資産エスクロー](/ja/blockchain/escrow.md#javascript-and-typescript-kotodama) を参照してください。
 
-## 現在 の 対象 {#current-coverage}
+## 現在のカバレッジ {#current-coverage}
 
-SDK は,以下に重点を置く.
+その SDK 焦点を当てる:
 
-- Torii HTTP と WebSocket の助手
-- Norito トランザクション・インストラクションビルダー
-- Kotodama コンパイル,エスクローホスト・コールビルドを含む
-- Ed25519 署名と鍵生成
-- 頁面化および再試助手
-- ブラウザのブートストラップヘルパーを接続
-- カゲムシャの準備,補充,償還,運行状態の輸送補助人
+- Torii、HTTP、および WebSocket の補助者
+- Norito トランザクションおよびインストラクションビルダー
+- Kotodama コンパイル、エスクロー ホスト技術呼び出し組み込み関数を含む
+- Ed25519 の署名と鍵生成
+- ページネーションおよび再試行ヘルパー
+- ブラウザブートストラップヘルパーを接続する
+- 影武者の準備、補充、償還、および稼働状況の輸送ヘルパー
 
 ## 上流参照 {#upstream-references}
 

@@ -1,35 +1,36 @@
 ---
 translation_locale: ja
 translation_source: /guide/tutorials/python.md
-translation_source_hash: a87e8db2b77fa4952689276ae538e65b3b51070749dd0938a9e18d3a6a3dc5e4
+translation_source_hash: d0ecbade221ceba455730e80c6e12db930c65a4cbcf9e643c1c2d4cba47b0940
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Python {#python}
 
-上流作業空間における Python SDK は `iroha-python`.最初の Iroha 3 リリースは,現在の Torii と Norito の表面を対象としています.あなたの統合によって使用されるパッケージバージョンまたはソースリベジションをピンして,SDK とノードが同じワイヤフォーマットリベジメントに保持します.
+上流ワークスペースの Python SDK は`iroha-python`です。最初の Iroha 3 リリースは現在の Torii および Norito サーフェスを対象としています。統合で使用するパッケージバージョンまたはソースリビジョンを固定して、SDK とノードが同じシリアル化フォーマットリビジョンのままであるようにしてください。
 
-`https://taira.sora.org`で公開された Taira のみの例をチェックした. 変異する例はトランザクション・テンプレートである:それらの提出前に実際の Taira 権限,プライベートキー,ガスメタデータ,およびターゲットルートによって要求されるすべてのオペレータートークンが必要.
+以下の匿名読み取り例は、`https://taira.sora.org` の公開 Taira を対象とします。読み取り専用のルートでも、正規のアカウント署名または対象ネットワークの正確なオペレーター署名が必要な場合があり、その例は個別に示します。状態を変更する例はトランザクションのテンプレートです。送信するには、実在する Taira の権限主体、秘密鍵、型付きの手数料支払い意図、十分な testnet XOR、および対象ルートが要求する認証が必要です。
 
-この順序で例を挙げてください.
+この順番で例を使ってください:
 
-|ステージ|Taira 公衆に対する競争? |必要なもの|
-| --- | --- | --- |
-|読み込みのみの顧客通話|ええ|Python パッケージとネットワークアクセス |
-|地方のサイン・インstruktionビルダー|`submit()`まで ネットワーク通話なし|ネイティブ拡張子とあなたのキー素材|
-|移転取引とサービス通話|資金調達口座でのみ|機関口座,プライベートキー,チェーン ID,料金のメタデータ,料金の資産バランス,ルートトークン |
-|フレームコーデック,暗号,および GPU ヘルパーを接続する |地域のみ|GPU 支援者はまた, CUDA 対応のバックエンドが必要です |
+|ステージ|公共に対して Taira に立候補する？|必要なもの|
+| --------------------------------------------- | ------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
+|非通知着信|はい| Python パッケージプラスネットワークアクセス|
+|アカウントまたはオペレーター認証済みの読み取り|自分で認めたアイデンティティだけで|正確な Taira `NetworkId` および対応するアカウントまたはオペレーターキー|
+|ローカル署名および命令ビルダー| `submit()` までネットワークコールはありません|ネイティブ拡張とあなたの鍵素材|
+|トランザクションとサービス呼び出しの変更|自分で資金を入れたアカウントのみで|認可の主要アカウント、秘密鍵、正確な Taira `NetworkId`、入力済みの手数料意図、手数料資産残高、およびルートトークン|
+|フレームコーデック、暗号、そして GPU ヘルパーを接続する|ローカルのみ|ネイティブ拡張；GPU ヘルパーも CUDA 対応のバックエンドが必要です|
 
 ## インストール {#install}
 
-パッケージのメタデータ名は `iroha-python` です. 固定されていない PyPI インストールがライブ Taira ネットワークと一致すると仮定しないでください.同じ上流修正から構築された車輪またはソースチェックアウトをインストールしてください.
+パッケージのメタデータ名は `iroha-python` です。固定されていない PyPI のインストールがライブの Taira ネットワークと一致するとは想定しないでください。統合が対象とする同じ上流リビジョンからビルドされたホイールまたはソースコードの作業コピーをインストールしてください:
 
 ```bash
 python -m pip install /path/to/iroha_python-*.whl
 ```
 
-`Instruction`, `TransactionDraft`,署名,暗号, SoraFS ネイティブヘルパー, GPU ヘルパー,または Connectフレームコデックを使用する例を実行する前に,あなたのプロジェクトが直接上流ワークスペースを消費している場合は, Python 依存機能をインストールし,ネイティブ拡張子を構築してください.`python/iroha_python/README.md`上流からのビルドコマンドを使用して,ネイティブ輸出負荷を確認します:
+プロジェクトが上流のワークスペースを直接利用する場合は、Python の依存関係をインストールし、`Instruction`、`TransactionDraft` を使用する例を実行する前にネイティブ拡張機能をビルドしてください。署名、暗号、SoraFS ネイティブヘルパー、GPU ヘルパー、または Connect フレームコーデック。アップストリーム `python/iroha_python/README.md` からビルドコマンドを使用し、ネイティブエクスポートがロードされることを確認してください:
 
 ```bash
 cd python/iroha_python
@@ -41,11 +42,11 @@ print(generate_ed25519_keypair().public_key.hex())
 PY
 ```
 
-`create_torii_client`輸入が失敗するが, `Instruction`または `generate_ed25519_keypair`は失敗した場合,純粋な Python パッケージが利用可能だが,本来の拡張は利用できない.
+もし `create_torii_client` のインポートが成功しても、`Instruction` または `generate_ed25519_keypair` が失敗した場合、純粋な Python パッケージは利用可能ですが、ネイティブ拡張は利用できません。
 
-## スピードスタート {#quickstart}
+## クイックスタート {#quickstart}
 
-公開,読み込みのみの Taira エンドポイントから始めます.
+パブリックで読み取り専用の Taira API エンドポイントから始めます:
 
 ```python
 from iroha_python import (
@@ -63,23 +64,31 @@ for account in accounts.items:
     print(account.id)
 ```
 
-## 共有の設定 {#shared-setup}
+## 共通設定 {#shared-setup}
 
-この設定を使用して,変異するテンプレートを表示します. 送信する前に,あなたのデプロイメントからの Taira 権限,プライベートキー,トークン,および資産/アカウント IDs によってすべての場所保持者を置き換えます.
+この設定は変異テンプレートに使用してください。提出する前に、すべてのプレースホルダーをあなたのデプロイメントからの Taira 認証プリンシパル、秘密鍵、トークン、および資産/アカウントIDに置き換えてください。
 
-`authority`は,取引を署名する口座である. `private_key` はそのアカウントと一致し, `CHAIN_ID` はターゲットネットワークと一致しなければならない.そして `TX_METADATA` はネットワークが期待する料金のフィールドを含む必要があります.下記の場所保有者は故意に無効なので,偶然に提出されない.
+`authority` はトランザクションに署名するアカウントであり、`private_key` はそれと一致する必要があります。トランザクションは Taira の正確なジェネシス由来 `NetworkId` に結びつきます。チェーン UUID はデプロイラベルであり、トランザクションIDではありません。手数料は、アプリケーションのメタデータとは独立して、タイプ化された支払い意図と正確なライブ見積もりを使用します。以下のアカウントおよびキーのプレースホルダーは意図的に無効であり、誤って送信されないようにしています。
+
+以下のリテラルは、現在固定されている Taira ブロックチェーンのジェネシスIDです。テストネットのリセットによって変更される可能性があるため、署名済みデプロイメントプロファイルから更新し、チェーンから推測しないでください UUID。
 
 ```python
 from iroha_python import (
     Ed25519KeyPair,
     Instruction,
+    LocalSigningContext,
+    NetworkId,
+    ToriiClient,
+    ToriiCanonicalRequestAuth,
     TransactionConfig,
     TransactionDraft,
-    create_torii_client,
+    authority_fee_payment,
 )
 
 TORII_URL = "https://taira.sora.org"
-CHAIN_ID = "fc56984b-2be7-431d-840e-21514d1883f0"
+TAIRA_NETWORK_ID = NetworkId.parse(
+    "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+)
 AUTH_TOKEN = None
 
 # Replace these placeholders with the real signing keys for your accounts.
@@ -90,68 +99,83 @@ bob_pair = Ed25519KeyPair.from_private_key(bytes.fromhex("<bob-private-key-hex>"
 alice = "<alice-account-id>"
 bob = "<bob-account-id>"
 
+canonical_auth = ToriiCanonicalRequestAuth(
+    network_id=TAIRA_NETWORK_ID.literal,
+    account_id=alice,
+    signer=alice_pair.sign,
+)
+
 ROSE_DEFINITION = "rose#wonderland"
 ROSE_ASSET = "<rose-asset-id>"
 BADGE_NFT = "badge$wonderland"
 
-TX_METADATA = {
-    # Public Taira fee asset. Use the configured XOR asset on your network.
-    "gas_asset_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
-}
+APP_METADATA = {"source": "python-docs"}
+# Torii replaces the empty maxima with an exact, validated live fee quote before
+# anything is signed. The payer remains the transaction authority.
+BASE_FEE_PAYMENT = authority_fee_payment(charge_limits=[])
 
-client = create_torii_client(TORII_URL, auth_token=AUTH_TOKEN)
+client = ToriiClient(
+    TORII_URL,
+    local_signing_context=LocalSigningContext(TAIRA_NETWORK_ID),
+    canonical_request_auth=canonical_auth,
+    auth_token=AUTH_TOKEN,
+)
 
 
 def submit(*instructions):
-    # This is the network boundary: build, sign, submit, and wait for status.
-    return client.build_and_submit_transaction(
-        chain_id=CHAIN_ID,
-        authority=alice,
-        private_key=alice_pair.private_key,
-        instructions=list(instructions),
-        metadata=TX_METADATA,
-        wait=True,
+    draft = TransactionDraft(
+        TransactionConfig(
+            network_id=TAIRA_NETWORK_ID,
+            authority=alice,
+            fee_payment=BASE_FEE_PAYMENT,
+            metadata=APP_METADATA,
+        )
     )
+    draft.extend_instructions(instructions)
+
+    # Freeze one payload, obtain its exact fee limits, and sign that same payload.
+    envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
+    status = client.submit_transaction_envelope_and_wait(envelope)
+    return envelope, fee_quote, status
 ```
 
-`Instruction.*`は,構築指示用荷物のみに呼び出す. `submit()`は, SDK が取引を署名し,それを Torii に送信し,ステータスを待たす点である.
+`Instruction.*` は構築命令のペイロードのみを呼び出します。`submit()` は、SDK がライブの手数料見積もりを取得し、正確に見積もられたペイロードに署名し、それを Torii に送信してステータスを待つポイントです。
 
-## 料金とガス {#fees-and-gas}
+## 手数料および取引実行コスト {#fees-and-gas}
 
-書き込み取引には料金のメタデータと資金調達料金の資産の余分が必要です. Taira, 料金資産は公共の faucet によって資金提供され,取引メタデータには含まれなければならない. `gas_asset_id`. オン Minamoto, 料金はリアルで支払われます XOR 資産 ID そのネットワークの構成から
+書き込みトランザクションには、型付きの`FeePaymentIntent`と資金がある手数料資産残高が必要です。Taira では、パブリックテストネットの資金提供サービスがテストネット XOR に資金を提供します。Python SDK は固定の署名されていないものを送信します正確な手数料見積もりのために Torii にペイロードを送信し、見積もりが支払人やペイロードを変更していないことを検証し、見積もり意図に署名します。手数料の選択は取引メタデータに入れないでください。
 
-料金メタデータは,個々の指示ではなく,取引に属します.上記の `submit()` アシスタントは,作成するすべてのトランザクションに `TX_METADATA` を添付します.
+上記の`submit()`ヘルパーは、手数料制限が意図的に空の、取引署名アカウントによって支払われる意図から始まります。`quote_and_sign()`は署名前にライブ見積もりからそれらを埋めます:
 
 ```python
-TX_METADATA = {
-    # Taira expects the fee asset definition in transaction metadata.
-    "gas_asset_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
-}
-
-envelope, status = client.build_and_submit_transaction(
-    chain_id=CHAIN_ID,
-    authority=alice,
-    private_key=alice_pair.private_key,
-    # Fee metadata is attached to the transaction, not the instruction.
-    instructions=[
-        Instruction.set_account_key_value(
-            alice,
-            "python_fee_example",
-            "ready",
-        )
-    ],
-    metadata=TX_METADATA,
-    wait=True,
+draft = TransactionDraft(
+    TransactionConfig(
+        network_id=TAIRA_NETWORK_ID,
+        authority=alice,
+        fee_payment=authority_fee_payment(charge_limits=[]),
+        metadata={"source": "python-fee-example"},
+    )
 )
+draft.add_instruction(
+    Instruction.set_account_key_value(
+        alice,
+        "python_fee_example",
+        "ready",
+    )
+)
+envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
+status = client.submit_transaction_envelope_and_wait(envelope)
+
+for limit in fee_quote["intent"]["value"]["charge_limits"]:
+    print(limit["asset_definition_id"], limit["max_amount"])
 ```
 
-書き込みを送信する前に,当局口座に料金の資産が十分に所有されていることを確認してください.正確な faucetと資産 ID はネットワーク特有のもので,これは Taira の形状です.
+書き込みを送信する前に、認可プリンシパルアカウントが手数料資産を十分に所有していることを確認してください。正確なテストネット資金提供サービスと資産IDはネットワーク固有です。これは Taira の形です。
 
 ```python
 FEE_ASSET_DEFINITION = "6TEAJqbb8oEPmLncoNiMRbLEK6tw"
 # The faucet returns the concrete account asset ID to check here.
 FEE_ASSET_ID = "<fee-asset-id-from-faucet-response>"
-TX_METADATA = {"gas_asset_id": FEE_ASSET_DEFINITION}
 
 # Fail before submitting if the signer cannot pay gas.
 fee_assets = client.list_account_assets_typed(
@@ -163,29 +187,28 @@ if not fee_assets.items:
     raise RuntimeError("fund the authority account with the Taira fee asset first")
 ```
 
-ポンプはコンクリートを返します `asset_id` バランスのチェックに使う. `gas_asset_id` メタデータフィールドは,手数料資産定義を使用します. ID.
+テストネットの資金提供サービスは、残高確認に使用する具体的な`asset_id`を返します。ライブ見積もりが`FEE_ASSET_DEFINITION`を請求することを確認してください。取引はメタデータを通じてその資産を選択しません。
 
-取引の作成時にマッピングを統合することで,アプリケーションメタデータを料金のメタデータから分離します:
+アプリケーションメタデータはオプションであり、料金の意味はありません：
 
 ```python
 APP_METADATA = {"source": "python-docs"}
-# Merge app metadata with required fee metadata before building the draft.
-metadata = {**TX_METADATA, **APP_METADATA}
 
 draft = TransactionDraft(
     TransactionConfig(
-        chain_id=CHAIN_ID,
+        network_id=TAIRA_NETWORK_ID,
         authority=alice,
-        metadata=metadata,
+        fee_payment=BASE_FEE_PAYMENT,
+        metadata=APP_METADATA,
     )
 )
 ```
 
-費用のメタデータを省略したり,誤った料金資産を使用したり,資金提供されていないアカウントでサインした場合,実際のネットワークは命令の有用な負荷が有効である場合でも取引を拒絶する必要があります.
+手数料の意図を省略したり、予期しない資産の見積もりを受け入れたり、見積もり後にペイロードを変更したり、資金のないアカウントで署名した場合、取引は送信してはいけません。
 
-## Taira - チェックされた読み込みのみの電話 {#taira-checked-read-only-calls}
+## 匿名 Taira が読む {#anonymous-taira-reads}
 
-Taira に対して,これらの呼び出しは成功に返回された.
+これらの呼び出しは、カタログ境界が匿名読み取りを許可する Taira ルートを使用します:
 
 ```python
 client = create_torii_client("https://taira.sora.org")
@@ -197,49 +220,45 @@ parameters = client.request_json("GET", "/v1/parameters", expected_status=(200,)
 # Typed helpers parse pagination and records into dataclasses.
 accounts = client.list_accounts_typed(limit=1)
 domains = client.list_domains_typed(limit=1)
-definitions = client.query_asset_definitions_typed(limit=1)
+definitions = client.list_asset_definitions_typed(limit=1)
 
 # These calls inspect live node subsystems without mutating state.
-time_now = client.get_time_now_typed()
-time_status = client.get_time_status_typed()
-sumeragi = client.get_sumeragi_status_typed()
-connect = client.get_connect_status_typed()
+time_now = client.get_time_now()
 
 print(status["build"]["version"])
-print(parameters["sumeragi"]["block_time_ms"])
+print(parameters["sumeragi"]["block_cadence_ms"])
 print(accounts.total, domains.total, definitions.total)
-print(time_now.now_ms, len(time_status.samples), sumeragi.leader_index)
-print(connect.enabled, connect.sessions_active)
+print(time_now.now_ms)
 ```
 
-`/v1/status`,パブリック・ピア・インベクトリー, Sumeragi RBC サンプリング,ノード管理者のスナップショット,およびConnectアプリレジストリ管理などの経路は,チェック中に Taira で公開されていなかった. Taira の公共ノードステータスの役に立たない負荷のために `request_json("GET", "/status")`を使用する.
+`/v1/time/status` およびすべての `/v1/sumeragi/*` オペレーターのデータスナップショットは、状態を変更しないにもかかわらず、正確なネットワークオペレーターの署名が必要です。匿名ノードの状態には `request_json("GET", "/status")` を使用してください。コンセンサスまたはノードローカルクロック診断のためのペイロードとオペレーター設定は以下の通りです。接続セッションのステータスは別のプロトコルルートであり、そのセッションの管理トークンが必要です。
 
-## 施工 の 指示 {#instruction-builders}
+## 指示ビルダー {#instruction-builders}
 
-労働組合 SDK 最も一般的な指示ファミリーのためのタイプビルダーを暴露し, JSON ファーストクラスでないバリエーションのための脱出口 Python 次のスニッペットはトランザクションテンプレートを変異させ,公開されていない. Taira 署名口座がない
+SDK は、最も一般的な命令ファミリー向けの型付きビルダーと、まだ第一級の Python メソッドではないバリアント向けの JSON エスケープハッチを公開します。以下のスニペットはミューテートするトランザクションテンプレートであり、署名付きアカウントなしで公開 Taira に提出されたものではありません。
 
-Python 値は正常化され,無効な形に早く失敗する.まだ Python ヘルパーを持たない指示変数が必要な場合にのみ, `Instruction.from_json` を使用します.
+存在する場合は型付きのヘルパーを優先してください：それらは Python の値を正規化し、無効な形状の場合には早期に失敗します。`Instruction.from_json`は、まだ Python ヘルパーがない命令バリアントが必要な場合にのみ使用してください。
 
-|指導家族|Python 表面|
-| --- | --- |
-|登録する| `register_account`, `register_asset_definition_numeric`, `register_rwa`, `register_time_trigger`, `register_precommit_trigger`; `register_domain` ゲネス/ブートストラップツールの使用に限定されています. |
-|登録を中止する|`unregister_trigger`;他のバリエーションでは`Instruction.from_json`を使用する |
-|ミント/バーン |`mint_asset_numeric`, `burn_asset_numeric`,`mint_trigger_repetitions`, `burn_trigger_repetitions` |
-|移転| `transfer_asset_numeric`, `transfer_domain`, `transfer_asset_definition`, `transfer_nft`, `transfer_rwa`, `force_transfer_rwa` |
-|メタデータと制御 | `set_account_key_value`, `remove_account_key_value`, `set_rwa_controls`, `set_rwa_key_value`, `remove_rwa_key_value` |
-|RWA ライフサイクル| `merge_rwas`, `redeem_rwa`, `freeze_rwa`, `unfreeze_rwa`, `hold_rwa`, `release_rwa` |
-|ExecuteTrigger|`execute_trigger`|
-|リポ・セッティングの延長 | `repo_initiate`, `repo_unwind`, `repo_margin_call`, `settlement_dvp`, `settlement_pvp` |
-|国産資産のロック| `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, `expire_asset_lock`, プラスクライアント `*_and_wait` 援助者 |
-|補助金/撤回, SetParameter,ログ,カスタム,アップグレード,およびより少ないレジストリ/非レジストリ バリアント| `Instruction.from_json` または `TransactionBuilder.add_instruction_json` カノニカルで `InstructionBox` JSON |
+|指導家族| Python 表面|
+| ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|登録|`register_account`、`register_asset_definition_numeric`、`register_rwa`、`register_time_trigger`、`register_precommit_trigger`；`register_domain` はジェネシス／ブートストラップツール用に予約されています|
+|登録解除| `unregister_trigger`; 他のバリアントには `Instruction.from_json` を使用してください|
+|生成/焼却| `mint_asset_numeric`, `burn_asset_numeric`, `mint_trigger_repetitions`, `burn_trigger_repetitions`|
+|転送| `transfer_asset_numeric`, `transfer_domain`, `transfer_asset_definition`, `transfer_nft`, `transfer_rwa`, `force_transfer_rwa` |
+|メタデータとコントロール| `set_account_key_value`, `remove_account_key_value`, `set_rwa_controls`, `set_rwa_key_value`, `remove_rwa_key_value` |
+| RWA ライフサイクル| `merge_rwas`, `redeem_rwa`, `freeze_rwa`, `unfreeze_rwa`, `hold_rwa`, `release_rwa`|
+| ExecuteTrigger | `execute_trigger` |
+|リポ／決済延長| `repo_initiate`, `repo_unwind`, `repo_margin_call`, `settlement_dvp`, `settlement_pvp`|
+|ネイティブ資産ロック| `open_asset_lock`、`drawdown_asset_lock`、`cancel_asset_lock`、`expire_asset_lock`、およびクライアント`*_and_wait`のヘルパー|
+|付与/取り消し、SetParameter、ログ、カスタム、アップグレード、およびあまり一般的でない登録/登録解除のバリアント| `Instruction.from_json` または `TransactionBuilder.add_instruction_json`、正規の `InstructionBox` JSON|
 
-エスクロー様式の条件決済については, [ネイティブアセットエスクロー](/ja/blockchain/escrow.md#python-asset-locks)を参照してください. Python は現在一般的な資産ロックのためのファーストクラスヘルパーを暴露しています.市場および匿名のエスクローヘルパーはまだファーストクラスの方法ではありません Python.
+エスクロー形式の条件付き支払いについては、[ネイティブ資産エスクロー](/ja/blockchain/escrow.md#python-asset-locks) を参照してください。Python は現在、汎用資産ロックのための一流のヘルパーを公開していますが、マーケットプレイスおよび匿名エスクローのヘルパーはまだ一流の Python メソッドではありません。
 
-### ドメインを設定し,口座と資産を登録する {#set-up-domains-then-register-accounts-and-assets}
+### ドメインを設定し、その後アカウントと資産を登録する {#set-up-domains-then-register-accounts-and-assets}
 
-通常のドメイン作成は, SNS レンタル契約,所有者機能,引用保護およびドメイン状態が一緒にチェックされるように宣言されたアライスプランナーを通過します.あなたの SDK またはオンボードサービスで秘密のない `AliasSetupPlanRequestV1` 意図を作成し,その後 `iroha app alias setup plan` と `iroha app alias setup apply` を使用します.アプリケーショントランザクションから `Instruction.register_domain` を提出しないでください.そのコンストラクタはゲネス/ブートストラップツールのために残ります.
+通常のドメイン作成は宣言型エイリアスプランナーを経由するため、SNS のリース、所有者の権限、料金価格の検証ガード、およびドメイン状態が一緒にチェックされます。あなたの SDK またはオンボーディングサービスでシークレットなしの`AliasSetupPlanRequestV1`インテントを作成し、次に`iroha app alias setup plan`と`iroha app alias setup apply`を使用してください。`Instruction.register_domain`をアプリケーショントランザクションから送信しないでください。そのビルダーはジェネシス/ブートストラップツール用に残ります。
 
-ドメイン設定プランがコミットした後,ドメイン所有のオブジェクトを登録します. Taira などの共有ネットワークでは,割り当てられたドメインとアカウント名空を使用します.
+ドメイン設定計画が確定した後、ドメイン所有のオブジェクトを登録してください。Taira のような共有ネットワーク上では、あなたに割り当てられたドメインおよびアカウントの名前空間を使用してください。
 
 ```python
 # The domain and its SNS lease already exist before this transaction.
@@ -257,11 +276,11 @@ submit(
 )
 ```
 
-`mintable` 受け入れます `Infinitely`, `Once`, `Not`, または `Limited(n)` データモデルで受け入れられた値です `scale` 制限のない数値資産について
+`mintable` は、データモデルで受け入れられる `Infinitely`、`Once`、`Not`、または `Limited(n)` の値を受け入れます。制約のない数値資産の場合は `scale` を省略してください。
 
-### ミント,バーン,および移転資産 {#mint-burn-and-transfer-assets}
+### 資産を発行、破壊、および譲渡する {#mint-burn-and-transfer-assets}
 
-これらの呼び出しは既存の資産 ID を使用します.最初に資産定義を登録し,その後に資産を所有する口座のために具体的な資産 ID を構築します.
+これらの呼び出しは既存の資産IDを使用します。まず資産定義を登録し、その後、資産を所有するアカウントの具体的な資産IDを作成してください。
 
 ```python
 # Increase the account's asset balance.
@@ -274,9 +293,9 @@ submit(Instruction.transfer_asset_numeric(ROSE_ASSET, "25.50", bob))
 submit(Instruction.burn_asset_numeric(ROSE_ASSET, "10.00"))
 ```
 
-### 譲渡所有権 {#transfer-ownership}
+### 所有権を移転する {#transfer-ownership}
 
-ドメイン,資産の定義,または NFT を制御する変更.現在の所有者を取引当局として使用します.
+所有権の移転は、ドメイン、資産の定義、または NFT を誰が管理するかを変更します。取引の承認主体には現在の所有者を使用してください。
 
 ```python
 # The first argument is the current owner; the last is the new owner.
@@ -285,9 +304,9 @@ submit(Instruction.transfer_asset_definition(alice, ROSE_DEFINITION, bob))
 submit(Instruction.transfer_nft(alice, BADGE_NFT, bob))
 ```
 
-### メタデータ を 設定 し,削除 する {#set-and-remove-metadata}
+### メタデータの設定と削除 {#set-and-remove-metadata}
 
-メタデータ値は JSON - シリアライズ可能である必要があります. `TransactionDraft` を使用すると, `TransactionConfig` の権限はデフォルトターゲットアカウントになります.
+メタデータの値は JSON でシリアライズ可能である必要があります。`TransactionDraft`を使用すると、`TransactionConfig`の認可プリンシパルがデフォルトのターゲットアカウントになります。
 
 ```python
 # Values are encoded as JSON metadata under the target account.
@@ -303,24 +322,34 @@ submit(
 submit(Instruction.remove_account_key_value(alice, "profile"))
 ```
 
-高レベルの助手草案は,デフォルトでトランザクション機関を対象とする.
+高レベルのドラフトヘルパーは、デフォルトで取引承認の主体をターゲットにします。
 
 ```python
 draft = TransactionDraft(
-    TransactionConfig(chain_id=CHAIN_ID, authority=alice, metadata=TX_METADATA)
+    TransactionConfig(
+        network_id=TAIRA_NETWORK_ID,
+        authority=alice,
+        fee_payment=BASE_FEE_PAYMENT,
+        metadata=APP_METADATA,
+    )
 )
 # With a draft, account metadata methods default to the draft authority.
 draft.set_account_key_value("nickname", "Queen Alice")
 draft.remove_account_key_value("nickname")
 ```
 
-### リアル・ワールド アセット {#real-world-assets}
+### 実物資産 {#real-world-assets}
 
-RWA ヘルパーは,資産特別のメタデータ,起源およびコントローラーポリシーのために JSON - シリアライズ可能な役に立たない負荷を使用します. `register_rwa` は`id`または `owner` を受け入れません:実行時間は`RwaId`を生成し,取引機関が最初の所有者になります.
+RWA ヘルパーは、資産固有のメタデータ、出所、コントローラーポリシーのために JSON-シリアライズ可能なペイロードを使用します。`register_rwa` は `id` または `owner` を受け入れません：ソフトウェアランタイムが `RwaId` を生成し、トランザクション承認プリンシパルが初期所有者となります。
 
 ```python
 draft = TransactionDraft(
-    TransactionConfig(chain_id=CHAIN_ID, authority=alice, metadata=TX_METADATA)
+    TransactionConfig(
+        network_id=TAIRA_NETWORK_ID,
+        authority=alice,
+        fee_payment=BASE_FEE_PAYMENT,
+        metadata=APP_METADATA,
+    )
 )
 
 # Register the lot in a domain. Store business identifiers in primary_reference
@@ -349,7 +378,7 @@ draft.register_rwa(
 )
 ```
 
-登録取引がコミットした後,生成された ID を発見するために `FindRwas`, `/v1/rwas`, RWA イベント,または設定した探査者ルートを使用して:
+登録取引が完了した後、生成されたIDを確認するには、`FindRwas`、`/v1/rwas`、RWA イベント、またはエクスプローラーのルートを使用してください。
 
 ```python
 page = client.list_rwas_typed(limit=20, offset=0)
@@ -358,7 +387,7 @@ for lot in page.items:
     print(lot.id)
 ```
 
-次の操作では,生成された `hash$domain` ID を使用します.
+後続の操作では、生成された `hash$domain` ID を使用します:
 
 ```python
 registered_rwa_id = (
@@ -367,7 +396,12 @@ registered_rwa_id = (
 )
 
 draft = TransactionDraft(
-    TransactionConfig(chain_id=CHAIN_ID, authority=alice, metadata=TX_METADATA)
+    TransactionConfig(
+        network_id=TAIRA_NETWORK_ID,
+        authority=alice,
+        fee_payment=BASE_FEE_PAYMENT,
+        metadata=APP_METADATA,
+    )
 )
 
 # Transfer, hold, release, freeze, and redeem model the lot lifecycle.
@@ -423,11 +457,11 @@ draft.force_transfer_rwa(
 )
 ```
 
-完全な移転は,既存の分数で `owned_by` を変化させることができる.部分的な移転と合併により,生成された子分数が生まれる.
+完全な移動は既存のロットの`owned_by`を変更できます。部分的な移動と結合は生成された子ロットを作成します。
 
-### 触発機 {#triggers}
+### トリガー {#triggers}
 
-実行可能が別の命令配列である場合,トリガー登録ヘルパーを使用します:
+実行ファイルが別の命令シーケンスである場合は、トリガー登録ヘルパーを使用してください:
 
 ```python
 # The trigger executable is just another instruction payload.
@@ -462,7 +496,7 @@ submit(Instruction.burn_trigger_repetitions("hourly_reward", 1))
 submit(Instruction.unregister_trigger("hourly_reward"))
 ```
 
-Torii は,トリガー・インベントリのために REST ヘルパーも暴露する.
+Torii はトリガーインベントリ用の REST ヘルパーも公開します。
 
 ```python
 # Inventory helpers are reads; they do not unregister or execute triggers.
@@ -473,11 +507,11 @@ for trigger in registered.items:
 details = client.get_trigger_typed("precommit_reward")
 ```
 
-トリガー・インベクトリー呼び出しは,トリガー記録のみを読み取ったりチェックしたりする.登録,実行,重複変更,および非登録は変異操作である.
+トリガーの在庫呼び出しは、トリガー記録を読み取るか検査するだけです。登録、実行、繰り返しの変更、および登録解除は変更操作です。
 
-### レポと決済の指示 {#repo-and-settlement-instructions}
+### レポおよび金融取引決済の指示 {#repo-and-settlement-instructions}
 
-Repoと二国間和解支援者は,手工作業の Norito 役に立たないドメイン特有の指示バリエーションを添付する.
+リポジトリおよび二国間決済ヘルパーは、手作業で作成した Norito ペイロードを使わずに、ドメイン固有の指示バリエーションを追加します。
 
 ```python
 from iroha_python import (
@@ -491,11 +525,12 @@ from iroha_python import (
 )
 
 config = TransactionConfig(
-    chain_id=CHAIN_ID,
+    network_id=TAIRA_NETWORK_ID,
     authority=alice,
+    fee_payment=BASE_FEE_PAYMENT,
     # Keep repo and settlement examples bounded by a short TTL.
     ttl_ms=120_000,
-    metadata=TX_METADATA,
+    metadata=APP_METADATA,
 )
 draft = TransactionDraft(config)
 
@@ -520,14 +555,8 @@ draft.repo_initiate(
     governance=governance,
 )
 draft.repo_margin_call("daily_repo")
-draft.repo_unwind(
-    agreement_id="daily_repo",
-    initiator=alice,
-    counterparty=bob,
-    cash_leg=cash,
-    collateral_leg=collateral,
-    settlement_timestamp_ms=1_704_086_400_000,
-)
+# Unwind uses the immutable counterparties, legs, and maturity stored on-chain.
+draft.repo_unwind("daily_repo")
 
 # DVP/PVP settlement plans encode ordering and atomicity for both legs.
 delivery = SettlementLeg(
@@ -561,16 +590,16 @@ draft.settlement_pvp(
     counter_leg=delivery,
 )
 
-envelope = draft.sign_with_keypair(alice_pair)
+envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### JSON エスケープハッチ {#json-escape-hatch}
+### JSON 脱出口 {#json-escape-hatch}
 
-A について Python ヘルパーはまだ利用できていません. カノニカルデータモデルを入力してください. `InstructionBox` JSON に `Instruction.from_json` または直接 `TransactionBuilder.add_instruction_json`. これが推奨された道です `Grant`, `Revoke`, `SetParameter`, `Log`, `Custom`, `Upgrade`, 同級者/役割 NFT これらのヘルパーが入力されるまで,非トリガー・アンリジスタバリエーションを登録します.
+Python ヘルパーがない場合は、正規のデータモデル `InstructionBox` JSON を `Instruction.from_json` に渡します。`Grant`、`Revoke`、`SetParameter`、`Log`、`Custom`、`Upgrade`、ピア／ロール／NFT の登録、およびトリガー以外の登録解除については、それぞれの型付きヘルパーが用意されるまで、この方法を推奨します。
 
 ```python
-from iroha_python import Instruction, TransactionBuilder
+from iroha_python import Instruction
 
 # Copy this payload from Rust/CLI tooling or from a pinned data-model schema.
 instruction_box_json = """
@@ -583,16 +612,11 @@ instruction_box_json = """
 
 instruction = Instruction.from_json(instruction_box_json)
 submit(instruction)
-
-# Use TransactionBuilder when you need lower-level control than TransactionDraft.
-builder = TransactionBuilder(CHAIN_ID, alice)
-builder.set_metadata(TX_METADATA)
-builder.add_instruction_json(instruction_box_json)
-envelope = builder.sign(alice_pair.private_key)
-client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-生成されたまたは不透明な指示については,固定装置を保管する前に JSON を往復して行ける.
+トランザクション境界で入力されたドラフトパスを保持してください：これは正確な`NetworkId`、手数料支払いの意図、および署名前の見積もり不変条件を保持します。直接の`TransactionBuilder`使用には同じ値に加えて、ライブの見積もりの明示的な検証が必要なため、アプリケーションコードのショートカットとしては利用できません。
+
+生成された指示や不透明な指示については、テスト成果物を保存する前に JSON を経由してください:
 
 ```python
 # Round trips are useful for validating fixtures generated by another tool.
@@ -601,41 +625,44 @@ same_instruction = Instruction.from_json(payload)
 print(same_instruction.as_dict())
 ```
 
-## トランザクション ワークフロー {#transaction-workflows}
+## 取引ワークフロー {#transaction-workflows}
 
-署名する前に複数の指示を作成するアプリケーションでは `TransactionDraft` を使用します. ドラフトは, `ttl_ms`, `nonce`,およびメタデータなどのトランザクションレベルの設定を1つの場所に保持し,一度にサインすることができます.
+署名前に複数の命令を構築するアプリケーションには`TransactionDraft`を使用してください。ドラフトを使うことで、`ttl_ms`、`nonce`、およびメタデータなどのトランザクションレベルの設定を一箇所にまとめ、その後一度だけ署名することができます:
 
 ```python
 config = TransactionConfig(
-    chain_id=CHAIN_ID,
+    network_id=TAIRA_NETWORK_ID,
     authority=alice,
+    fee_payment=BASE_FEE_PAYMENT,
     # TTL and nonce are transaction-level properties shared by all instructions.
     ttl_ms=120_000,
     nonce=1,
-    metadata={**TX_METADATA, "source": "python-docs"},
+    metadata=APP_METADATA,
 )
 
 draft = TransactionDraft(config)
 # Draft methods append instructions but do not submit anything yet. Domain
 # setup is a separate alias-planner flow and has already committed here.
 draft.register_account(bob, metadata={"role": "user"})
-draft.register_asset_definition_numeric(
+draft.register_asset_definition(
     ROSE_DEFINITION,
-    owner=alice,
+    owning_domain=None,
+    balance_scope_policy="Global",
+    name="Rose",
     scale=2,
     mintable="Infinitely",
 )
-draft.mint_asset_numeric(ROSE_ASSET, "100")
-draft.transfer_asset_numeric(ROSE_ASSET, "25", destination=bob)
+draft.mint_asset_quantity(ROSE_ASSET, "100")
+draft.transfer_asset_quantity(ROSE_ASSET, "25", bob)
 
-# Signing freezes the draft into an envelope ready for Torii.
-envelope = draft.sign_with_keypair(alice_pair)
+# Quoting freezes the draft, validates exact fee limits, and signs that payload.
+envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
 receipt = client.submit_transaction_envelope(envelope)
 status = client.wait_for_transaction_status(envelope.hash_hex(), timeout=30)
 print(receipt, status)
 ```
 
-審査,監査,または財布配送のための決定表を輸出する.
+レビュー、監査、またはウォレット引き渡しのために決定論的な技術マニフェストをエクスポートする:
 
 ```python
 import json
@@ -651,7 +678,7 @@ Path("transaction_manifest.json").write_text(
 )
 ```
 
-標的にされた車道に要求される場合,サインする前にレーンのプライバシー証明を添付する.
+対象の実行レーンがそれを必要とする場合、署名前に実行レーンのプライバシー証明を添付してください:
 
 ```python
 # Attach the proof before signing so it is covered by the transaction hash.
@@ -659,17 +686,17 @@ draft.add_lane_privacy_merkle_proof(
     commitment_id=7,
     leaf=bytes.fromhex("aa" * 32),
     leaf_index=3,
-    audit_path=[bytes.fromhex("bb" * 32), None, bytes.fromhex("cc" * 32)],
+    audit_path=[bytes.fromhex("bb" * 32), bytes.fromhex("cc" * 32)],
     proof_backend="halo2/ipa",
     proof_bytes=b"...proof bytes...",
-    verifying_key_bytes=b"...verifying key bytes...",
+    verifying_key_name="lane_privacy_vk",
 )
-envelope = draft.sign_with_keypair(alice_pair)
+envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
 ```
 
-## 質問 {#queries}
+## クエリ {#queries}
 
-タイプしたクエリヘルパーは,原始 JSON 辞書ではなくデータクラスを返します. SDK はページ化と共通の記録フィールドを解析するため,開始する最も簡単な方法です:
+入力されたクエリヘルパーは生の JSON 辞書ではなくデータクラスを返します。これらは最も簡単に始められる方法で、SDK がページネーションや一般的なレコードフィールドを解析してくれます:
 
 ```python
 # Typed pages expose `.items` plus pagination metadata such as `.total`.
@@ -678,19 +705,26 @@ for account in accounts.items:
     print(account.id, account.metadata)
 
 domains = client.list_domains_typed(limit=10)
-definitions = client.query_asset_definitions_typed(limit=10)
+definitions = client.list_asset_definitions_typed(limit=10)
 print(domains.total, definitions.total)
 ```
 
-Torii エンドポイントにはまだタイピングされた包装がない場合,一般的な要求ヘルパーを使用します.
+型付きソフトウェアアダプターがまだ存在しない Torii API エンドポイントの場合は、汎用リクエストヘルパーを使用してください:
 
 ```python
+from urllib.request import Request, urlopen
+
 # Drop to raw JSON when you need an endpoint before a typed helper exists.
 payload = client.request_json("GET", "/v1/parameters", expected_status=(200,))
-metrics = client.get_metrics(as_text=True)
+
+# Prometheus exposition is served at `/metrics` when telemetry is `extended`
+# or `full`; it is text, not a `/v1` JSON resource.
+request = Request(f"{TORII_URL}/metrics", headers={"Accept": "text/plain"})
+with urlopen(request, timeout=5) as response:
+    metrics = response.read().decode("utf-8")
 ```
 
-アカウント・インベントリー支援者は, SDK 標準化剤で,法典的な I105 口座 IDs ブロック探索者または原始エンドポイントが返信した場合, ID その SDK 拒否する場合は,それを法典的な説明に解決します ID 援助者を呼び出す前に,
+アカウントインベントリヘルパーには、SDK のノーマライザーが受け入れるアカウント識別子が必要です。正規の I105 アカウントIDまたはオンチェーンのエイリアスを使用してください；ブロックエクスプローラーや生の API エンドポイントが SDK に拒否されるIDを返す場合、これらのヘルパーを呼び出す前に、それを正規のアカウントIDに解決してください:
 
 ```python
 # These helpers expect a canonical account ID or an alias the SDK can normalize.
@@ -701,12 +735,12 @@ permissions = client.list_account_permissions_typed(alice, limit=20)
 print(len(assets.items), len(transactions.items), len(permissions.items))
 ```
 
-## 出来事 {#events}
+## イベント {#events}
 
-ストリーミングヘルパーはデフォルトで JSON パイロードを解読します. SSE イベント名,ID,リトライヒント,および原料パイロードが必要なときに `with_metadata=True` をパスします. 最新 イベント ID を維持するために,`EventCursor` とのストリームをペアします.これらの例はライブイベントを待っているので,対応するイベントストリームが有効でアクティブになっているノードに対して実行します.
+ストリーミングヘルパーはデフォルトで JSON ペイロードをデコードします。`with_metadata=True` を渡すと、SSE イベント名、ID、再試行ヒント、および生のペイロードが必要な場合に対応します。標準の `/v1/events/sse` フィードはライブ専用であり、リプレイIDを発行せず、リプレイログも保持しないため、これらのヘルパーはカーソルや再開引数を提供しません。再接続は新しいサブスクリプションを開始し、ギャップが発生する可能性があります。ブロックチェーン台帳の完全な履歴が必要な場合は、既知の高さから`/v1/blocks/stream`を使用してください。これらの例はライブイベントを待機するため、ストリームが有効でアクティブなノードで実行してください。
 
 ```python
-from iroha_python import DataEventFilter, EventCursor
+from iroha_python import DataEventFilter, SseStreamError
 
 # Narrow the stream to proof events with the expected backend and proof hash.
 proof_filter = DataEventFilter.proof(
@@ -714,18 +748,14 @@ proof_filter = DataEventFilter.proof(
     proof_hash_hex="deadbeef" * 8,
 )
 
-# Persist the latest SSE id so a reconnect can resume from the same point.
-cursor = EventCursor()
-for event in client.stream_events(
-    filter=proof_filter,
-    cursor=cursor,
-    resume=True,
-    with_metadata=True,
-):
-    print(event.id, event.event, event.data)
-    break
+try:
+    for event in client.stream_events(filter=proof_filter, with_metadata=True):
+        print(event.id, event.event, event.data)
+        break
+except SseStreamError as error:
+    print(error.code, error.dropped_messages, error.replay_available)
 
-for event in client.stream_trigger_events(trigger_id="hourly_reward", resume=True):
+for event in client.stream_trigger_events(trigger_id="hourly_reward"):
     print(event)
     break
 
@@ -734,9 +764,9 @@ for tx_event in client.stream_pipeline_transactions(status="Queued"):
     break
 ```
 
-## 鍵と住所 {#keys-and-addresses}
+## キーとアドレス {#keys-and-addresses}
 
-SDK は,ネイティブ拡張子にコンパイルされたすべての署名アルゴリズムのローカルサインヘルパーを暴露します.これらのヘルパーは Taira に電話しませんが,ネイティブ延長が必要です:
+その SDK ネイティブ拡張にコンパイルされたすべての署名アルゴリズムのためのローカル署名ヘルパーを公開します。これらのヘルパーは呼び出しを行いません Taira, しかし、それらはネイティブ拡張を必要とします：
 
 ```python
 from iroha_python import (
@@ -766,7 +796,7 @@ print(confidential.as_hex())
 print(hash_blake2b_32(b"payload").hex())
 ```
 
-`supported_crypto_algorithms()` を使用して,あなたの車輪がサポートしているものを確認してください. 一般的なヘルパーはカノニカルアルゴリズムラベルを使用し,これらのアルゴリズムのコンパイルを Ed25519, secp256k1, ML-DSA, GOST, BLS,および SM2 で実行します.
+`supported_crypto_algorithms()`を使用して、あなたのホイールが何をサポートしているかを確認してください。汎用ヘルパーは標準的なアルゴリズムラベルを使用し、Ed25519、secp256k1、ML-DSA、GOST、BLS、および SM2 がコンパイルされている場合に機能します。
 
 ```python
 from iroha_python import (
@@ -822,9 +852,9 @@ for algorithm in supported_crypto_algorithms():
     assert restored == keypair
 ```
 
-### 中国語 SM 暗号化 {#chinese-sm-cryptography}
+### 中国 SM 暗号学 {#chinese-sm-cryptography}
 
-Python SDK は,一般的な SM2 ヘルパーと SM2 特定の便利性ヘルパーの両方を暴露します.ノード機能広告を使用してターゲットネットワークが期待する SM2 識別子を選択してください:
+Python SDK は、汎用の SM2 ヘルパーと SM2 専用の便利なヘルパーの両方を公開します。ターゲットネットワークが期待する SM2 を区別する識別子を選択するには、ノードの機能広告を使用してください:
 
 ```python
 from iroha_python import (
@@ -838,7 +868,7 @@ from iroha_python import (
     verify_sm2,
 )
 
-capabilities = client.get_node_capabilities_typed()
+capabilities = client.get_node_capabilities_typed(canonical_auth=canonical_auth)
 sm = capabilities.crypto.sm if capabilities.crypto else None
 # Use the node's default SM2 distinguishing ID when the node advertises one.
 distid = sm.sm2_distid_default if sm else SM2_DEFAULT_DISTINGUISHED_ID
@@ -861,10 +891,10 @@ print(pair.public_key_sec1_hex)
 print(pair.public_key_multihash)
 ```
 
-`crypto.sm.enabled` は,ノードが現在のポリシーで SM ファミリーアルゴリズムを受け入れているかどうかを教えてくれます.同じ広告には, SM ハッシュポリシーと加速状態が含まれます.これは SM2 特定のフローを有効にするかどうかを決定するのに役立ちます:
+`crypto.sm.enabled` は、ノードが現在のポリシーで SM ファミリーのアルゴリズムを受け入れるかどうかを示します。同じアドバートには SM 暗号ハッシュポリシーとアクセラレーションの状態も含まれており、SM2 固有のフローを有効にするかどうかを決める際に便利です。
 
 ```python
-capabilities = client.get_node_capabilities_typed()
+capabilities = client.get_node_capabilities_typed(canonical_auth=canonical_auth)
 
 # `enabled` is the submit-time policy flag, not just local SDK support.
 if capabilities.crypto and capabilities.crypto.sm.enabled:
@@ -876,11 +906,11 @@ else:
     print("SM crypto is not enabled by this node")
 ```
 
-公開 Taira はチェック中に SM 機能広告を暴露したが,そこに SM 署名が無効になった.その広告されたサインアルゴリズムは `ed25519`, `secp256k1`,および `bls_normal`であった.SM2 に署名した取引を,能力の役に立たない負荷が変化しない限り,その部署に提出してはならない.
+認証された機能ペイロードは、展開されたノードに対して権威あるものとして扱います。`crypto.sm.enabled` が true であり、広告された署名ポリシーがそれを認めていない限り、SM2 で署名されたトランザクションを送信しないでください。
 
-### GOST および数値後の鍵 {#gost-and-post-quantum-keys}
+### GOST とポスト量子鍵 {#gost-and-post-quantum-keys}
 
-GOST R 34.10-2012 パラメータセットおよび ML-DSA (`ml-dsa`) 量子後の署名のために一般的な暗号 API を使用します.同じキーペアオブジェクトはサイン,検証,マルチハッシュ輸出を処理します:
+ジェネリック暗号 API を GOST R 34.10-2012 パラメータセットおよび ML-DSA (`ml-dsa`) ポスト量子署名に使用します。同じ鍵ペアオブジェクトが署名、検証、およびマルチハッシュのエクスポートを処理します：
 
 ```python
 from iroha_python import (
@@ -944,18 +974,15 @@ print(post_quantum_address.to_i105(CHAIN_DISCRIMINANT))
 print(mldsa_keypair.prefixed_public_key_multihash)
 ```
 
-ゲート GOST とノードの広告されたサインアルゴリズムでのポスト量子流量.前向きに互換性のあるアルゴリズムの名前には原始能力の役に立たない負荷を使用する:
+ノードの認証済み、型付き能力広告におけるゲート GOST とポスト量子フロー：
 
 ```python
-capabilities = client.request_json(
-    "GET",
-    "/v1/node/capabilities",
-    expected_status=(200,),
+capabilities = client.get_node_capabilities_typed(
+    canonical_auth=canonical_auth,
 )
-crypto = capabilities.get("crypto", {})
-sm = crypto.get("sm", {})
+sm = capabilities.crypto.sm if capabilities.crypto else None
 # Nodes advertise the signing algorithms they will accept for transactions.
-allowed = set(sm.get("allowed_signing", []))
+allowed = set(sm.allowed_signing if sm else ())
 
 GOST_ALGORITHMS = {
     "gost3410-2012-256-paramset-a",
@@ -968,16 +995,16 @@ GOST_ALGORITHMS = {
 # Local support is not enough; submit only when the node advertises support.
 supports_gost = bool(allowed & GOST_ALGORITHMS)
 supports_post_quantum = "ml-dsa" in allowed
-supports_sm2 = "sm2" in allowed and bool(sm.get("enabled", False))
+supports_sm2 = "sm2" in allowed and bool(sm and sm.enabled)
 
 print(supports_gost, supports_post_quantum, supports_sm2)
 ```
 
-ノードが必要なアルゴリズムを広告していない場合,鍵はローカルまたはオフラインワークフローのみに使用してください.そのノードにこのアルゴリズムで署名したトランザクションを送信しないでください.Taira の公開チェック中に, GOST と ML-DSA は上流 Python ライブラリに SDK 暗号助手として利用可能であったが,取引署名のためにノードによって宣伝されていなかった.
+ノードが必要なアルゴリズムを広告していない場合、そのキーはローカルまたはオフラインのワークフローにのみ使用してください。そのアルゴリズムで署名されたトランザクションをそのノードに送信しないでください。公開 Taira チェックの間、GOST と ML-DSA は上流の Python ライブラリで SDK 暗号補助として利用可能でしたが、トランザクション署名のためにノードによって宣伝されていませんでした。
 
-## 設定意識のクライアント作成 {#config-aware-client-creation}
+## 設定対応クライアント作成 {#config-aware-client-creation}
 
-`resolve_torii_client_config` を使用すると,アプリケーションはファイルからノード設定を読み取りますが,依然として環境またはテスト特有のオーバーリッドが必要です.
+アプリケーションがファイルからノード設定を読み取るが、それでも環境またはテスト固有のオーバーライドが必要な場合は、`resolve_torii_client_config` を使用してください:
 
 ```python
 import json
@@ -999,9 +1026,9 @@ client = create_torii_client(
 )
 ```
 
-## カゲムシャ の 準備 {#kagemusha-readiness}
+## 影武者の準備 {#kagemusha-readiness}
 
-Python SDK は,通用 Torii リクエストヘルパーを通じて現在の JSON 準備路線を查询することができる.
+Python SDK は、汎用の Torii リクエストヘルパーを通じて、現在の JSON の準備状況ルートを問い合わせることができます:
 
 ```python
 ASSET_DEFINITION_ID = "<canonical_asset_definition_id>"
@@ -1017,11 +1044,11 @@ print(readiness["ready"])
 print(readiness["blockers"])
 ```
 
-Python は,Kagemusha のタップアップやリデンプション アーカイブビルダーを露出しません. カノニカル V4 アーカイブを構築するために,タップされた Swift または JVM 財布を使用し,サポートされている Kagemusha Torii クライアントで提出およびアンケートします.
+Python は型付きの影武者のチャージや償還アーカイブビルダーを公開していません。型付きの Swift または JVM ウォレットを使用して、標準の V4 アーカイブを構築し、その後、サポートされている影武者の Torii クライアントを通じて送信およびポーリングしてください。
 
 ## サブスクリプション {#subscriptions}
 
-サブスクリプションヘルパーは, `iroha_python.ToriiClient` が使用する共有された Torii クライアントから受け継いだサービス呼び出しを変異します. ターゲットにしたネットワークに存在する IDs と資産を使用してください.
+サブスクリプションの読み取りおよびドラフトビルダーは、`iroha_python.ToriiClient` によって使用される共有の Torii クライアントから継承されます。すべてのミューテーションはボディ結合された標準的なアカウント署名とともに受理され、署名されていないトランザクションドラフトを返します。Torii は決して秘密鍵を受け取らず、ドラフトを代わりに送信することはありません。
 
 ```python
 # The plan defines billing cadence, retry policy, and usage pricing.
@@ -1047,61 +1074,69 @@ usage_plan = {
     },
 }
 
-# The provider signs plan creation.
-client.create_subscription_plan(
+# The provider authorizes preparation of a plan-registration draft.
+plan_draft = client.create_subscription_plan(
     authority=alice,
-    private_key=alice_pair.private_key_hex,
     plan_id="compute#wonderland",
     plan=usage_plan,
+    canonical_auth=canonical_auth,
 )
 
-# The subscriber signs subscription creation.
-client.create_subscription(
+bob_canonical_auth = ToriiCanonicalRequestAuth(
+    network_id=TAIRA_NETWORK_ID.literal,
+    account_id=bob,
+    signer=bob_pair.sign,
+)
+
+# The subscriber authorizes preparation of a subscription-creation draft.
+subscription_draft = client.create_subscription(
     authority=bob,
-    private_key=bob_pair.private_key_hex,
     subscription_id="sub-001",
     plan_id="compute#wonderland",
+    canonical_auth=bob_canonical_auth,
 )
 
-# Usage is recorded by the provider and then charged on demand.
-client.record_subscription_usage(
+# Usage and charge-now operations also return unsigned transaction drafts.
+usage_draft = client.record_subscription_usage(
     "sub-001",
     authority=alice,
-    private_key=alice_pair.private_key_hex,
     unit_key="compute_ms",
     delta="3600000",
+    canonical_auth=canonical_auth,
 )
-client.charge_subscription_now(
+charge_draft = client.charge_subscription_now(
     "sub-001",
     authority=alice,
-    private_key=alice_pair.private_key_hex,
+    canonical_auth=canonical_auth,
 )
+
+for draft in (plan_draft, subscription_draft, usage_draft, charge_draft):
+    assert draft.submitted is False
+    print(draft.transaction_payload_b64, draft.signing_message_b64)
 ```
 
-## 接続する {#connect}
+各正確なペイロードと署名メッセージを対応するアカウントのローカルウォレットに渡し、そこで要求された操作を確認し、署名済みトランザクションを組み立て、通常のトランザクションソフトウェア処理ワークフローを通じて提出します。 Python SDK は、署名メッセージが返されたペイロードの標準的な暗号ハッシュであることを検証しますが、ウォレットは署名前にトランザクションのデコードと承認の責任を負い続けます。
 
-URIs を構築して解析し, Taira によって公開された公共の接続状態を読み取る.
+## 接続 {#connect}
+
+Connect URIs をローカルで構築して解析します。Connect ID は SID を正確な `NetworkId`、アプリ公開鍵、および暗号化ノンス値に結び付けます:
 
 ```python
-from iroha_python.connect import ConnectUri, build_connect_uri, parse_connect_uri
+from iroha_python.connect import create_connect_session_preview, parse_connect_uri
 
-# Connect URIs are what an app hands to a wallet to start a session.
-uri = build_connect_uri(
-    ConnectUri(
-        sid="base64url-session-id",
-        chain_id=CHAIN_ID,
-        node="taira.sora.org",
-    )
+# Generate consistent SID, key, nonce, and URI values as one bundle.
+preview = create_connect_session_preview(
+    network_id=TAIRA_NETWORK_ID,
+    node="taira.sora.org",
 )
-parsed = parse_connect_uri(uri)
-# Status tells you whether the node currently exposes Connect.
-status = client.get_connect_status_typed()
+parsed = parse_connect_uri(preview.wallet_uri)
 
-assert parsed.chain_id == CHAIN_ID
-print(status.enabled, status.sessions_active)
+assert parsed.sid == preview.sid_base64url
+assert parsed.network_id.literal == TAIRA_NETWORK_ID.literal
+assert parsed.app_public_key == preview.app_key_pair.public_key
 ```
 
-フレームコデック,セッションキー誘導,およびセッション作成にはネイティブ拡張子と Connect セッションルートが有効化する必要があります.
+ターゲットノードが Connect を公開している場合にのみ、その正確なプレビューを登録します。セッション作成は、役割ごとの 4 つのベアラートークンを返します。セッションごとのステータスルートには管理トークンが必要です；集約ステータスはオペレーター用ルートです。
 
 ```python
 from iroha_python import (
@@ -1110,40 +1145,56 @@ from iroha_python import (
     ConnectDirection,
     ConnectFrame,
     ConnectPermissions,
+    bootstrap_connect_preview_session,
     decode_connect_frame,
     encode_connect_frame,
-    generate_connect_keypair,
 )
 
-# The app keypair is separate from the account key used for transactions.
-connect_pair = generate_connect_keypair()
-info = client.create_connect_session_info(
-    {"role": "app", "sid": connect_pair.public_key.hex()}
+bootstrap = bootstrap_connect_preview_session(
+    client,
+    network_id=TAIRA_NETWORK_ID,
+    node="taira.sora.org",
 )
-print(info.app_uri, info.wallet_token, info.expires_at)
+info = bootstrap.session
+tokens = bootstrap.tokens
+assert info is not None and tokens is not None
+
+session_status = client.request_json(
+    "GET",
+    "/v1/connect/status",
+    params={"sid": info.sid},
+    headers={"Authorization": f"Bearer {tokens.management}"},
+    expected_status=(200,),
+)
+print(info.app_uri, session_status)
 
 # Control frames negotiate permissions before encrypted messages are sent.
 frame = ConnectFrame(
-    sid=bytes.fromhex("01" * 32),
+    sid=bootstrap.preview.sid_bytes,
     direction=ConnectDirection.APP_TO_WALLET,
     sequence=1,
     control=ConnectControlOpen(
-        app_public_key=connect_pair.public_key,
-        chain_id=CHAIN_ID,
+        app_public_key=bootstrap.preview.app_key_pair.public_key,
+        network_id=TAIRA_NETWORK_ID,
         permissions=ConnectPermissions(methods=["SIGN_REQUEST_TX"], events=[]),
     ),
 )
 payload = encode_connect_frame(frame)
 assert decode_connect_frame(payload) == frame
 
-# Closing the control channel is explicit and carries a reason code.
-client.send_connect_control_frame(
-    "base64url-session-id",
-    ConnectControlClose(role="App", code=4100, reason="finished", retryable=False),
+# Closing the control channel is explicit and also travels as a frame.
+close_frame = ConnectFrame(
+    sid=bootstrap.preview.sid_bytes,
+    direction=ConnectDirection.APP_TO_WALLET,
+    sequence=2,
+    control=ConnectControlClose(
+        role="App", code=4100, reason="finished", retryable=False
+    ),
 )
+close_payload = encode_connect_frame(close_frame)
 ```
 
-承認後メッセージをステートセッションで暗号化する:
+承認後のメッセージをステートフルセッションで暗号化する:
 
 ```python
 from iroha_python import (
@@ -1171,83 +1222,85 @@ state = session.snapshot_state().to_dict()
 print(encrypted.sequence, state)
 ```
 
-## 管理,実行時間,および管理面 {#governance-runtime-and-admin-surfaces}
+## ガバナンス、ソフトウェアランタイム、管理サーフェス {#governance-runtime-and-admin-surfaces}
 
-Taira に対して,これらの読み込みのみの呼び出しが成功的に返回された.
+ガバナンスの読み取りはアカウント認証済みです。[共通設定](#shared-setup)の認可プリンシパルと鍵ペアを使用して、各ヘルパー呼び出しを Taira の正確なジェネシス由来の`NetworkId`にバインドします:
 
 ```python
-client = create_torii_client("https://taira.sora.org")
-
 # Governance reads return either current settings or typed not-found wrappers.
-protected = client.get_protected_namespaces()
-referendum = client.get_governance_referendum_typed("ref-1")
-tally = client.get_governance_tally_typed("ref-1")
-locks = client.get_governance_locks_typed("ref-1")
-unlock_stats = client.get_governance_unlock_stats_typed()
+protected = client.get_protected_namespaces(canonical_auth=canonical_auth)
+referendum = client.get_governance_referendum_typed(
+    "ref-1", canonical_auth=canonical_auth
+)
+tally = client.get_governance_tally_typed("ref-1", canonical_auth=canonical_auth)
+locks = client.get_governance_locks_typed("ref-1", canonical_auth=canonical_auth)
+unlock_stats = client.get_governance_unlock_stats_typed(
+    canonical_auth=canonical_auth
+)
 
 print(protected, referendum.found)
 print(tally.approve, list(locks.locks), unlock_stats.expired_locks_now)
 
-# Runtime reads expose the active ABI and any pending upgrade records.
-abi = client.get_runtime_abi_active_typed()
+# Account-authenticated runtime reads use the same canonical request proof.
+abi = client.get_runtime_abi_active_typed(canonical_auth=canonical_auth)
+# The ABI hash itself is a public read.
 abi_hash = client.get_runtime_abi_hash_typed()
-runtime_metrics = client.get_runtime_metrics_typed()
-upgrades = client.list_runtime_upgrades_typed()
-capabilities = client.get_node_capabilities_typed()
+runtime_metrics = client.get_runtime_metrics_typed(canonical_auth=canonical_auth)
+capabilities = client.get_node_capabilities_typed(canonical_auth=canonical_auth)
 
 print(abi, abi_hash, runtime_metrics)
-print(upgrades.total, capabilities.abi_version)
+print(capabilities.abi_version)
 ```
 
-ランタイムアップグレードのヘルパーは,ランタイムアップデート API で使用されるマニフェスト形状を受け入れます.これらはオペレーターアクションなので,アカウントとトークンが許可されているノードに対してのみ使用します.
+オペレーター読み取り用の別のクライアントを作成します。ソフトウェア実行時に許可リストにあるオペレーターキーをロードし、それを Taira の正確な`NetworkId`にバインドします。ベアラートークンと`x-api-token`はこの署名を置き換えません：
 
 ```python
-admin = create_torii_client(
+import os
+
+from iroha_python import Ed25519KeyPair, NetworkId, OperatorSigningContext
+
+operator_pair = Ed25519KeyPair.from_private_key(
+    bytes.fromhex(os.environ["IROHA_OPERATOR_PRIVATE_KEY_HEX"])
+)
+operator_client = create_torii_client(
     TORII_URL,
-    auth_token="admin-token",
-api_token="torii-token",
+    operator_signing_context=OperatorSigningContext(
+        TAIRA_NETWORK_ID,
+        operator_pair,
+    ),
 )
-
-# Propose creates the upgrade instructions; activation/cancel are operator actions.
-upgrade = admin.propose_runtime_upgrade(
-    {
-        "name": "Refresh runtime provenance",
-        "description": "Schedules a no-ABI-change runtime rollout.",
-        "abi_version": 1,
-        "abi_hash": "00" * 32,
-        "added_syscalls": [],
-        "added_pointer_types": [],
-        "start_height": 1_500_000,
-        "end_height": 1_500_256,
-    }
-)
-print(upgrade["tx_instructions"])
-
-admin.activate_runtime_upgrade("deadbeef" * 4)
-admin.cancel_runtime_upgrade("feedface" * 4)
 ```
 
-## ステータス,コンセンサス,およびネットワークテレメトリ {#status-consensus-and-network-telemetry}
+ランタイムアップグレードルートは、オペレーター認証済みの指示ビルダーです。提案、アクティブ化、またはキャンセルの応答が成功すると `tx_instructions` が返されますが、アップグレードは実行されません。そのバンドルは、通常の署名済みトランザクションおよびガバナンスの経路を通して提出してください。固定された Python メソッド`propose_runtime_upgrade`、`activate_runtime_upgrade`、および`cancel_runtime_upgrade`は現在、クライアントの`OperatorSigningContext`を適用するのではなく、通常のリクエストを発行するため、このチュートリアルではそれらを動作するオペレーターフローとして示していません。
+
+## ステータス、コンセンサス、およびネットワークテレメトリ {#status-consensus-and-network-telemetry}
 
 ```python
 # `/status` is the public node snapshot endpoint on Taira.
 status = client.request_json("GET", "/status", expected_status=(200,))
 print(status["blocks"], status["txs_approved"])
 
-# Sumeragi and time endpoints expose consensus and clock diagnostics.
-sumeragi = client.get_sumeragi_status_typed()
-print(sumeragi.highest_qc.height, sumeragi.tx_queue.saturated)
+# Sumeragi and time-status endpoints use the operator client configured above.
+sumeragi = operator_client.get_sumeragi_status_typed()
+diagnostics = operator_client.get_sumeragi_diagnostics_typed()
+print(sumeragi.last_committed_height, diagnostics.tx_queue_saturated)
 
-time_now = client.get_time_now_typed()
-time_status = client.get_time_status_typed()
+time_now = client.get_time_now()
+time_status = operator_client.get_time_status()
 for sample in time_status.samples:
     print(sample.peer, sample.last_offset_ms, sample.last_rtt_ms)
 print(time_now.now_ms)
+
+# Connect aggregate status is operator-authenticated. Individual sessions use
+# `/v1/connect/status?sid=...` with their management bearer token instead.
+connect_status = operator_client.get_connect_status_typed()
+if connect_status is not None:
+    print(connect_status.enabled, connect_status.sessions_active)
 ```
 
-## SoraFS,UAID,および Kaigi 支援者 {#sorafs-uaid-and-kaigi-helpers}
+## SoraFS、UAID、および Kaigi ヘルパー {#sorafs-uaid-and-kaigi-helpers}
 
-対象ノードが対応する Nexus/SORA エンドポイントを暴露するとき,これらのヘルパーが利用可能である.空きリストを有効な応答として扱う:公開 Taira はサンプルマニストまたは UAID のデータなしにルートが有効になっている可能性があります.
+これらのヘルパーは、ターゲットノードが対応する Nexus/SORA API エンドポイントを公開している場合に利用可能です。空のリストを有効な応答として扱ってください: public Taira は、サンプル技術マニフェストまたは UAID のデータなしでルートが有効になっている可能性があります。
 
 ```python
 # SoraFS status queries are reads scoped by manifest and status.
@@ -1264,25 +1317,28 @@ manifests = client.list_space_directory_manifests_typed(
 )
 print(len(bindings.dataspaces), len(manifests.manifests))
 
-# Kaigi health summarizes relay availability when the route is enabled.
-health = client.get_kaigi_relays_health_typed()
+# Kaigi relay health is an operator snapshot, even though it is read-only.
+health = operator_client.get_kaigi_relays_health_typed()
 print(health.healthy_total, health.failovers_total)
 ```
 
-## Norito RPC と GPU 支援者 {#norito-rpc-and-gpu-helpers}
+## Norito、RPC、および GPU ヘルパー {#norito-rpc-and-gpu-helpers}
 
-使用 `NoritoRpcClient` あなたがすでに持っているとき Norito バイトとバイナリーを呼び出す必要がある Torii エンドポイント.この例では,以前のトランザクションテンプレートから署名された封筒が必要です:
+Norito バイトをすでに持っていて、バイナリ Torii API エンドポイントを呼び出す必要がある場合は、`NoritoRpcClient` を使用してください。この例では、前のトランザクションテンプレートからの署名済みデータコンテナが必要です。
 
 ```python
 from iroha_python import NoritoRpcClient, NoritoRpcConfig
 
 # Use the binary RPC client for endpoints that expect Norito bytes.
 with NoritoRpcClient(NoritoRpcConfig(TORII_URL, timeout=5.0)) as rpc:
-    response_bytes = rpc.call("/v1/transaction", envelope.signed_transaction_versioned)
+    response_bytes = rpc.call(
+        "/v1/pipeline/transactions",
+        envelope.signed_transaction_versioned,
+    )
     print(len(response_bytes))
 ```
 
-CUDA 支援者は,バックエンドが利用できないときに `None` を返却するので,アプリケーションはスケラー実装に戻ることができる.
+CUDA ヘルパーは、バックエンドが利用できない場合に `None` を返すため、アプリケーションはスカラー実装にフォールバックできます:
 
 ```python
 from iroha_python import bn254_add_cuda, cuda_available, poseidon2_cuda
@@ -1293,18 +1349,18 @@ if cuda_available():
     print(bn254_add_cuda((1, 0, 0, 0), (2, 0, 0, 0)))
 ```
 
-## 現在 の 対象 {#current-coverage}
+## 現在のカバレッジ {#current-coverage}
 
-Python SDK には既に以下の支援者が含まれている.
+Python SDK には、すでに次のためのヘルパーが含まれています:
 
-- Torii 提出,状態,查询,管理流
-- 一般的な ISI およびドメイン特有の拡張子のためのタイピング・インストラクションビルダー
-- トランザクション・エベロープのワークフルーズ
-- ストリーミングイベント,フィルター,再開可能なカーサー
-- 一般的な Kagemusha 準備アクセスおよび Torii サブスクリプションヘルパー;入力された補充と償還の構築者は暴露されません
-- アカウントアドレス,全アルゴリズム署名支援者,マルチハッシュ回帰, SM2, GOST, ML-DSA, BLS,および機密鍵処理
-- 接続 URIs,セッション,フレーム,暗号化ヘルパー,およびレジストリ管理者
-- 管理,ランタイムアップグレード, Sumeragi,ノード-admin, SoraFS,UAID,および Kaigi エンドポイントの包装がノードはこれらの特徴を暴露する
+- Torii 提出、ステータス、問い合わせ、管理フロー
+- 一般的な ISI およびドメイン固有の拡張のための型付き命令ビルダー
+- 取引ドラフト、技術マニフェスト、署名、および署名済み取引データコンテナのワークフロー
+- ライブイベントストリームと入力されたフィルター；確定済みブロックストリームは完全な履歴を提供します
+- 一般的な影武者の準備アクセスおよび Torii 購読ヘルパー；型付きのチャージおよび償還ビルダーは公開されていません
+- アカウントアドレス、全アルゴリズム署名ヘルパー、マルチハッシュラウンドトリップ、SM2、GOST、ML-DSA、BLS、および機密キーの取り扱い
+- URIs、セッション、フレーム、暗号化ヘルパー、およびレジストリ管理者を接続する
+- ノードが対応する場合の、ガバナンス、ランタイム更新、Sumeragi、ノード管理、SoraFS、UAID、Kaigi 各エンドポイントのラッパー
 
 ## 上流参照 {#upstream-references}
 
@@ -1312,4 +1368,4 @@ Python SDK には既に以下の支援者が含まれている.
 - `python/iroha_python/DESIGN.md`
 - `python/iroha_python/src/iroha_python`
 
-これらのファイルは,固定されたワークスペース修正における Python 表面の真実源である.
+これらのファイルは、固定されたワークスペースのリビジョンにおける Python サーフェスの真実の源です。

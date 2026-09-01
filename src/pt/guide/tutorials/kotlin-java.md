@@ -1,31 +1,31 @@
 ---
 translation_locale: pt
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: 62d6f434e5af4213420c456ee27ebdc260c8b0e9f7a85bc3ba955ee9c79a058d
+translation_source_hash: f2411fec1cc35b1bf7795a7ab5a0eb7a8eb6b60b4799ebf3db47208b902f87e6
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Kotlin, Android e Java {#kotlin-android-and-java}
 
-O Kotlin SDK é a pilha de cliente padrão para as aplicações JVM e Android. Ele vive sob `kotlin/` no repositório Iroha e é dividido por plataforma, de modo que o código portátil não adquire dependências de Android.
+O Kotlin SDK é a pilha de cliente padrão para aplicações JVM e Android. Ele fica em `kotlin/` no repositório Iroha e é dividido por plataforma para que o código portátil não adquira dependências Android.
 
 ## Módulos {#modules}
 
-|Artefacto|Tipo .|Utilização |
+|Artefato|Tipo| Usar |
 | --- | --- | --- |
-|`org.hyperledger.iroha.sdk:core-jvm` |JAR |Pure Kotlin/JVM Norito, modelo de dados, criptografia, transação, Torii e código de protocolo |
-|`org.hyperledger.iroha.sdk:client-android` |AAR | Android armazenamento de chaves, telemetria do dispositivo e JNI- integrações de clientes apoiadas |
-|`org.hyperledger.iroha.sdk:offline-wallet-android` |AAR |Android Transporte e integração de carteiras offline baseadas em `client-android` |
+| `org.hyperledger.iroha.sdk:core-jvm` | JAR |Pure Kotlin/JVM Norito, modelo de dados, cripto, transação, Torii e código de protocolo|
+| `org.hyperledger.iroha.sdk:client-android` | AAR | Android keystore, telemetria do dispositivo e integrações de cliente suportadas por JNI |
+| `org.hyperledger.iroha.sdk:offline-wallet-android` | AAR | Android transportes de carteira offline e integração construídos em `client-android` |
 
-Os artefatos ainda não foram publicados no Maven Central. Construí-los e publicá-los localmente a partir da revisão de fonte fichada Iroha:
+Os artefatos ainda não foram publicados no Maven Central. Construa e publique-os localmente a partir da revisão de origem fixada Iroha:
 
 ```bash
 cd kotlin
 ./gradlew publishToMavenLocal
 ```
 
-Em seguida, selecione apenas o artefato de que a sua aplicação necessita:
+Então selecione apenas o artefato que seu aplicativo precisa:
 
 ```kotlin
 repositories {
@@ -41,40 +41,40 @@ dependencies {
 }
 ```
 
-`core-jvm` não contém dependências de Android. Mantenha o código do cliente e armazenamento-chave Android em `client-android`, e use `offline-wallet-android` apenas para carteira offline e fluxos JNI de Android
+`core-jvm` não contém dependências de Android. Mantenha o código do cliente e do keystore de Android em `client-android`, e use `offline-wallet-android` apenas para fluxos offline-wallet e JNI de Android.
 
-## Kotlin e Compatibilidade com o Java {#kotlin-and-java-compatibility}
+## Kotlin e Compatibilidade com Java {#kotlin-and-java-compatibility}
 
-O público API é Kotlin- primeiro e fornece interop de Java onde JVM As mudanças equivalentes são refletidas nos correspondentes `java/` Implementação. Android As integrações devem começar com a Kotlin Os artefatos acima.
+O público API é Kotlin-primeiro e fornece interoperabilidade Java onde os chamadores JVM precisam. Mudanças equivalentes são espelhadas na implementação correspondente de `java/`. Novas integrações Android devem começar com os artefatos Kotlin acima.
 
-Todos . Kotlin módulos de aplicação JDK 8 API Compatibilidade no momento da compilação com `-Xjdk-release=8`, Embora a própria cadeia de ferramentas de construção use JDK 21. Não use JDK 9+ APIs em SDK Código.
+Todos os módulos Kotlin aplicam a compatibilidade JDK 8 API em tempo de compilação com `-Xjdk-release=8`, mesmo que a cadeia de ferramentas de compilação use JDK 21. Não use JDK 9+ APIs no código SDK.
 
-## Construir e testar {#build-and-test}
+## Construir e Testar {#build-and-test}
 
-Realizar os testes portáteis JVM:
+Execute os testes portáteis JVM:
 
 ```bash
 cd kotlin
 ./gradlew :core-jvm:test --console=plain
 ```
 
-Construir os artefatos Android:
+Construa os artefatos Android:
 
 ```bash
 ./gradlew :client-android:assembleRelease \
   :offline-wallet-android:assembleRelease --quiet
 ```
 
-## Cobertura atual {#current-coverage}
+## Cobertura Atual {#current-coverage}
 
 O Kotlin SDK inclui:
 
 - Norito codificação e decodificação
-- Gestão de contas canônicas e endereços de activos
-- Construção de transações, assinatura e envelopes offline
-- Clientes Torii HTTP, WebSocket e SSE
-- Modelos de assinatura múltipla, assinatura, SoraFS, Nexus e Connect
-- Android Integrações de teclado e telemetria do dispositivo
-- Transporte Android desconectado QR, Próximo e NFC
+- manuseio de contas canônicas e endereços de ativos
+- construção de transação, assinatura e contêineres de dados offline
+- Clientes Torii, HTTP, WebSocket e SSE
+- multassinatura, assinatura, SoraFS, Nexus e modelos Connect
+- Android integrações de keystore e telemetria de dispositivo
+- Android offline QR, Próximo, e NFC transportes
 
-Consulte o [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/kotlin/README.md) para os comandos de construção específicos do módulo APIs e exatos.
+Veja o [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/kotlin/README.md) para APIs específico do módulo e comandos exatos de compilação.

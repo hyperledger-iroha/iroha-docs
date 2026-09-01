@@ -57,32 +57,34 @@ pnpm cli validate-locales .vitepress/dist
 translations. Each translated page records its source route, source SHA-256,
 locale, and honest `machine-validated` status in frontmatter.
 
-For a release-wide regeneration, use the local NLLB-200 provider. Create its
-isolated Python 3.9 environment and download the int8 CTranslate2 conversion:
+For a release-wide regeneration, use the corpus-tested provider split, then
+handle Dzongkha with Google or reviewed manual translation:
 
 ```bash
-python3.9 -m venv .venv-translate
-.venv-translate/bin/pip install -r etc/requirements-translate.txt
-.venv-translate/bin/hf download \
-  osa911/nllb-200-distilled-600M-ct2-int8 \
-  --revision 46858753dbaf8eb5e21bb6f0037c3b90851e090a \
-  --local-dir .cache/nllb-200-distilled-600M-ct2
+pnpm translate --provider=bing --locale=es,pt,fr,ru,ar,ur,ja,he,az,kk,ba,am,uz,mn,zh-hant,zh-hans
+pnpm translate --provider=nllb --python=.venv-translate/bin/python --model=.cache/nllb-200-distilled-600M-ct2 --locale=my,ka,hy
+pnpm translate --provider=google --locale=dz --concurrency=1
 ```
 
-Then regenerate every maintained locale from the final English sources and
-validate the result:
+Provider output is not publication-ready by itself. Compare every changed page
+with English, correct terminology and idiom, and run the complete locale audit:
 
 ```bash
-pnpm translate --provider=nllb \
-  --python=.venv-translate/bin/python \
-  --model=.cache/nllb-200-distilled-600M-ct2
 pnpm validate:i18n
+pnpm validate:i18n-audit
+pnpm exec tsx etc/audit-i18n-scripts.ts --english-leakage
+pnpm exec tsx etc/audit-i18n-scripts.ts --ratios
+pnpm exec tsx etc/audit-i18n-scripts.ts --high-ratios
 ```
 
 Use `--locale=fr,ja` for a selected comma-separated set and
-`--concurrency=4` to tune bounded translation requests. Google remains the
-default provider and can be selected explicitly with `--provider=google` for a
-focused update, but local NLLB is the recommended all-locale path. See
+`--concurrency=4` to tune bounded translation requests. Omitting `--locale`
+with Bing selects only the 16 corpus-approved targets; the CLI rejects Bing for
+`my`, `ka`, and `hy` because full-corpus probes introduced unrelated scripts.
+Google remains the default provider and can be selected explicitly with
+`--provider=google` for a focused update. The pinned local NLLB-200 environment
+handles those three locales and remains available as an offline fallback, but
+its output requires particularly close review. See
 [`etc/TRANSLATION.md`](etc/TRANSLATION.md) for implementation details.
 
 The separately downloaded

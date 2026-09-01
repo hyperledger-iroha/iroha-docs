@@ -10,6 +10,6 @@ translation_engine: nllb-200-ct2
 
 有时,你可能会有关于 Iroha 你想和其他人详细讨论这些问题.快速与我们的社区联系的方法:电讯,Discord, GitHub.
 
-社区使用 [电报](https://t.me/hyperledgeriroha) 和 [LF Decentralized Trust 争议](https://discord.gg/hyperledger) 对于通讯. `iroha` 项目问题道.
+社区使用 [电报](https://t.me/hyperledgeriroha) 和 [LF Decentralized Trust Discord](https://discord.gg/hyperledger) 对于通讯. `iroha` 项目问题道.
 
 最后,您可以 [创建一个 GitHub 问题](https://github.com/hyperledger-iroha/iroha/issues/new/choose),要求更新文件,对核心团队的建议或您发现的错误.

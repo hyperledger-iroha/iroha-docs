@@ -1,28 +1,28 @@
 ---
 translation_locale: az
 translation_source: /cookbook/metadata.md
-translation_source_hash: 238595124cd0a1b71900020d650fb208f844e051d2db4427801fe6405ff591c8
+translation_source_hash: bb486994faabb29fb48609a886862e44e565148be4800ec1244218ef37e2e54b
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Metadatalar {#metadata}
+# Metaməlumat {#metadata}
 
 ## Nəticə {#outcome}
 
-Taira metadatalarını oxuyun, açıq şəkildə ödənişli bir əməliyyatla bir hesabın metadata dəyərini müəyyənləşdirin və təsdiqləyin və qiyməti yenidən çıxarın.
+Taira üzərində metadatanı oxuyun, açıq şəkildə ödəniş edən bir əməliyyatla bir hesab metadatası dəyərini təyin edin və yoxlayın, sonra isə həmin dəyəri yenidən silin. Blokçeyn dəftəri obyekt metadatasını əməliyyat ödəniş metadatasından ayrı saxlayacaqsınız.
 
-## Əvvəlki şərtlər {#prerequisites}
+## Tələb olunan əvvəlcədən şərtlər {#prerequisites}
 
-- `curl`, `jq`, Python 3.11 və ya daha sonrakı dövrlər və axın `iroha` CLI.
-- [-dən Taira](./connect-to-taira.md)-ə bağlanan və maliyyələşdirilən `taira.client.toml` və `taira.tx-metadata.json`
-- Məqsədli hesabın metadataları üzərində səlahiyyət. nümunə qurulmuş səlahiyyəti hədəfləyir; başqa bir hesab dəqiq icazə tələb edir.
+- `curl`, `jq`, Python 3.11 və daha sonrakı versiyaları, həmçinin cari `iroha` CLI.
+- [Taira-ə qoşul](./connect-to-taira.md) tərəfindən maliyyələşdirilən `taira.client.toml` və `taira.tx-metadata.json`.
+- hədəf hesabın metadata üzərində səlahiyyət verən əsas. Nümunə özü konfiqurasiya edilmiş səlahiyyət verən əsas hədəfləyir; başqa bir hesab dəqiq icazə tələb edir.
 
-## Dərslər {#steps}
+## Addımlar {#steps}
 
-### 1. Metadataları imzalanmadan oxuyun. {#_1-read-metadata-without-a-signer}
+### 1. Kriptoqrafik imzalayan olmadan metadataları oxuyun {#_1-read-metadata-without-a-signer}
 
-Metadata `Name` ilə JSON xəritələrində yoxlanılır. Boş xəritələr və boş filtrlənmiş çıxış etibarlı nəticədir.
+Metaməlumat `Name`-dən JSON-ə yoxlanılmış bir xəritədir. Boş xəritələr və boş filtrelənmiş çıxışlar keçərli nəticələrdir.
 
 ```bash
 curl -fsS -H 'Accept: application/json' \
@@ -36,11 +36,11 @@ curl -fsS -H 'Accept: application/json' \
   | jq '.items[] | select((.metadata // {} | length) > 0)'
 ```
 
-Kiçik təsviri və ya indeksləmə sahələri üçün meta məlumatlardan istifadə edin. Böyük paylı yükləri kitabdan çıxarın və əvəzinə URI və ya SoraFS istinadını saxlayın.
+Kiçik təsviri və ya indeksləşdirmə sahələri üçün metadatalardan istifadə edin. Böyük yükləri blokçeyn dəftərxanasının xaricində saxlayın və əvəzinə kriptoqrafik həzm dəyəri, URI və ya SoraFS istinadını saxlayın.
 
-### 2. Hədəf hesabını çıxarın {#_2-derive-the-target-account}
+### 2. Hədəf hesabı çıxarın {#_2-derive-the-target-account}
 
-Taira konfiqurasiyasından yalnız ictimai açar oxuyun və onu kanonik domensiz I105 formasına çevirin.
+Taira konfiqurasiyasından yalnız açıq açarı oxuyun və onu tək protokol-standartı, domen olmayan I105 formasına çevirin.
 
 ```bash
 TAIRA_PUBLIC_KEY="$(python3 - <<'PY'
@@ -55,9 +55,9 @@ export TAIRA_ACCOUNT_ID="$(
 )"
 ```
 
-### 3. Bir JSON dəyərini təyin edin. {#_3-set-one-json-value}
+### 3. Bir JSON dəyəri təyin edin {#_3-set-one-json-value}
 
-Standart girişdən oxunan JSON hesabın `cookbook_profile` dəyərinə çevrilir. Buna müqayisədə, `--metadata ./taira.tx-metadata.json` əməliyyat zarfına ödəniş sahələrini əlavə edir.
+Standart girişdən oxunan JSON hesabın `cookbook_profile` dəyərinə çevrilir. Əksinə, `--metadata ./taira.tx-metadata.json` əməliyyat məlumat konteynerinə rüsum sahələrini əlavə edir. Bu iki xəritənin fərqli hədəfləri və məqsədləri var.
 
 ```bash
 printf '%s\n' \
@@ -71,17 +71,17 @@ printf '%s\n' \
       --key cookbook_profile
 ```
 
-İndiki CLI ödənişi qeyd edir, imzalar, təqdim edir və default olaraq gözləyir. `--no-wait` Sonrakı əməliyyat bu dəyərdən asılıdır.
+CLI ödənişi təklif edir, imzalayır, təqdim edir və defolt olaraq gözləyir. Bu dəyərdən asılı olan növbəti əməliyyat üçün `--no-wait` əlavə etməyin.
 
-::: warning Rəsmi sərhəd
+::: warning İcazə sərhədi
 
-Aktiv təsdiqləyici hər bir obyektin kim dəyişə biləcəyinə qərar verir. Başqa hesabı yeniləmək normal olaraq `CanModifyAccountMetadata` tələb edir; domenlər, aktiv tərifləri, NFTs və tetikçilərin öz hədəf xüsusi metadata icazələrinə malikdirlər. Əgər Taira tələb olunan səlahiyyəti verməyibsə, eyni hesab əmrlərini `./localnet/client.toml` ilə icra edin, istehsal olunan lokalnet səlahiyyətliyinin kanonik I105 ID adını əvəz edin və Taira ödəniş metadata dosyasını çıxarın.
+Fəal təsdiqləyici hər bir obyekti kim dəyişə biləcəyinə qərar verir. Başqa bir hesabı yeniləmək adətən `CanModifyAccountMetadata` tələb edir; domenlər, aktiv tərifləri, NFTs və tetiklər öz hədəfə spesifik metadata icazələrinə malikdirlər. Əgər Taira tələb olunan səlahiyyət verən prinsipi təmin etməyibsə, eyni hesab əmrlərini `./localnet/client.toml` ilə işlədin, yaradılmış localnet səlahiyyət verən prinsipin tək protokol-standart I105 identifikatorunu əvəz edin və Taira ödəniş metadatası faylını çıxarın. Açıq yerli ödəyici seçimini saxlayın.
 
 :::
 
-### 4. Açığı çıxarın. {#_4-remove-the-key}
+### 4. Açarı çıxarın {#_4-remove-the-key}
 
-Əvvəlcə öhdəlik götürülmüş qiyməti oxuyun, sonra ayrı bir çıxarış əməliyyatını təqdim edin.
+Əvvəlcə son dəyəri oxuyun, sonra ayrıca silmə əməliyyatı göndərin.
 
 ```bash
 iroha --config ./taira.client.toml --machine ledger account meta get \
@@ -100,11 +100,11 @@ iroha --config ./taira.client.toml \
   --key cookbook_profile
 ```
 
-Python tətbiqetmələri üçün uyğunlaşdırılmış tiplənmiş qurucular `Instruction.set_account_key_value` və `Instruction.remove_account_key_value`; onları tranzaksiya metadataları ilə birlikdə təqdim edin və [Python təlimatından gözləyən köməkçi ](/az/guide/tutorials/python.md#shared-setup).
+Python tətbiqləri üçün uyğun yazılı qurucular `Instruction.set_account_key_value` və `Instruction.remove_account_key_value`-dir; onları əməliyyat metadı və [Python dərsliyi](/az/guide/tutorials/python.md#shared-setup)-dən gözləyən köməkçi ilə təqdim edin.
 
-## Tətbiq edin {#verify}
+## Yoxla {#verify}
 
-Satılan əməliyyatdan sonra `meta get` obyektin `version: 1` ilə qaytarılması lazımdır. çıxarıldıqdan sonra birbaşa axtarış artıq dəyər qaytarmamalıdır:
+Müəyyən edilmiş əməliyyatdan sonra, `meta get` obyektini `version: 1` ilə qaytarmalıdır. Silindikdən sonra, birbaşa axtarış artıq dəyər qaytarmamalıdır:
 
 ```bash
 iroha --config ./taira.client.toml --machine ledger account get \
@@ -120,22 +120,22 @@ else
 fi
 ```
 
-Ayrı hesab oxunması çatışmayan metadata açarını şəbəkə və ya hesab pozuntularından ayırır. İstehsalat kodu, onu təyin etdikdən sonra bütün JSON dəyərini yoxlamalıdır.
+Ayrı hesab oxunuşu, itkin metadatalar açarını şəbəkə və ya hesab nasazlığından ayırd edir. İstehsal kodu, onu təyin etdikdən sonra bütün JSON dəyərini də yoxlamalıdır.
 
-## Problemlərin həlli {#troubleshooting}
+## Problemlərin aradan qaldırılması {#troubleshooting}
 
-- Standart giriş bir etibarlı JSON dəyərini ehtiva etməlidir. Satırlara JSON sitatları lazımdır; obyektlər və sıralar yaxşı formalaşdırılmalıdır .
-- Metadata açarları `Name` dəyərlərdir və analizdən sonra vəziyyətə həssasdırlar. Hər sxem dəyişikliyi üçün versiyalaşdırılmış açarlar yaratmaq əvəzinə sabit bir açar lüğəti saxlayın.
-- `--metadata` əməliyyat metadatalarıdır; bu, nəşriyyat obyekti metadatalarını təyin etmir. Sonrakı üçün müəssisənin `meta set` alt əmri istifadə edin.
-- Müvəffəqiyyətli göndərmə, köhnə oxunuşdan sonra yayılma gecikməsi ola bilər. İstifadə olunmuş yekunluğu gözləyin və yenidən göndərmədən əvvəl sualı təkrarlayın.
-- İzin verilməsinin rədd edilməsi hədəf obyektini və səlahiyyət sərhədlərini müəyyənləşdirir. Yerli şəkildə təcrübə edin və ya dəqiq token tələb edin; giriş nəzarətindən qaçmaq üçün xüsusi tətbiq məlumatlarını ictimai bir metadata sahəsinə köçürməyin.
-- Heç vaxt özəl açarları, xırda şəxsi identifikatorları, giriş nömrələri və ya böyük sənədləri metadata saxlama.
+- Standart girişdə bir dəyərli JSON olmalıdır. Sətirlər JSON sitat işarələrində olmalıdır; obyektlər və massivlər düzgün qurulmalıdır.
+- Metaməlumat açarları `Name` dəyərləridir və təhlildən sonra hərf böyük-kiçikliyinə həssastır. Hər sxema dəyişikliyi üçün versiyalı açarlar yaratmaq əvəzinə sabit açar lüğətini saxlayın.
+- `--metadata` əməliyyat metaverisidir; o, blokçeyn dəftər obyektinin metaverisini təyin etmir. Sonuncusu üçün varlığın `meta set` alt əmrindən istifadə edin.
+- Uğurlu təqdimatdan sonra köhnə oxunuş təkraralaşma gecikməsi ola bilər. Tətbiq edilmiş sonluğu gözləyin və sorğunu yenidən təqdim etməzdən əvvəl yenidən sınayın.
+- İcazənin rədd edilməsi hədəf obyektini və səlahiyyət prinsipi sərhədini müəyyən edir. Yerli olaraq məşq edin və ya dəqiq token tələb edin; giriş nəzarətindən qaçmaq üçün xüsusi tətbiq məlumatlarını ictimai metadata sahəsinə köçürməyin.
+- Meta məlumatlarda şəxsi açarları, xam şəxsiyyəti göstərən məlumatları, giriş tokenlərini və ya böyük sənədləri heç vaxt saxlamayın.
 
 ## Mənbə və əlaqəli sənədlər {#source-and-related-docs}
 
-- [Metadata sorğusunun birləşdirilməsi testləri bağlanmış komitdə](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/queries/metadata.rs)
-- [Python SDK əməliyyat qurucuları bağlanmış məbləğdə ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/README.md)
-- [Metadata](/az/blockchain/metadata.md)
-- [Metadata və kitabxana saxlama seçimləri ](/az/guide/configure/metadata-and-store-assets.md)
-- [Təlimat istinadları ](/az/reference/instructions.md)
-- [Rəsmi nişanlar ](/az/reference/permissions.md)
+- [Sabitlənmiş mənbə kodu versiyasında metaveri sorğusu inteqrasiya testləri](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/queries/metadata.rs)
+- [Python SDK pinlənmiş mənbə kodu reviziyasında əməliyyat qurucuları](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/README.md)
+- [Metaməlumat](/az/blockchain/metadata.md)
+- [Meta məlumatlar və blokçeyn dəftər saxlanması seçimləri](/az/guide/configure/metadata-and-store-assets.md)
+- [Təlimat istinadı](/az/reference/instructions.md)
+- [İcazə tokenləri](/az/reference/permissions.md)

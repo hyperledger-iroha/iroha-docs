@@ -1,54 +1,55 @@
 ---
 translation_locale: uz
 translation_source: /get-started/atomic-private-settlement.md
-translation_source_hash: 18b5e9c80bfa5542b996548fd07603a311099f76a4443cf143cd959991f80dc3
+translation_source_hash: d4c2c1a4e29e0352ac20be5320f79a2686527d55a19d65a6154aedcd63fa447e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Atomik xususiy ma'lumotlar maydoni boʻylab oʻzgartirishni ishga tushiring {#run-atomic-private-cross-dataspace-settlement}
+# Atomik Shaxsiy Cross-Dataspace moliyaviy tranzaksiya hisob-kitobini amalga oshiring {#run-atomic-private-cross-dataspace-settlement}
 
-`AtomicPrivateSettlementV1` 2 dan 255 gacha bo'lgan har bir konfidensial kelishuv bosqichini muvofiqlashtiradi. SORA Nexus ma'lumotlar maydonlari va bitta global davlat tranzaksiyasidagi har bir qadamni yakunlaydi. Ruxsat etilgan, muddati o'tgan yoki abort qilingan to'plamda hech qanday oyoq qo'llanmaydi. AMX DvP/PvP alohida protokol yo'li bo'lib qoladi.
+`AtomicPrivateSettlementV1` har bir 2 dan 255 gacha bo‘lgan SORA Nexus ma’lumotlar makonidagi maxfiy moliyaviy o‘tkazma qismini muvofiqlashtiradi va har bir moliyaviy o‘tkazma qismini yagona global holatda yakunlaydi tranzaksiya. Rad etilgan, muddati o'tgan yoki bekor qilingan paket moliyaviy o'tkazma qismidan foydalanmaydi. Shaffof Native AMX DvP/PvP alohida protokol yo'li sifatida qoladi.
 
-::: warning Bo'shatish holati Ushbu xususiyat boshqariladi, andoza ravishda o'chirib qo'yiladi.
-Va hali ishlab chiqarish uchun mo'ljallangan emas. Uni haqiqiy CBDC qiymatga qo'shmang, agar nashr etilgan funktsional, maxfiylik, xato, ishlash, qayta tiklanishi mumkin bo'lgan qurilish, mustaqil kriptografik ko'rib chiqish va artefaktlar nashri darvozalari to'g'ri chiqarilishi uchun o'tmaguncha:::::
+::: warning Chiqarish holati
+Ushbu xususiyat boshqariladi, standart bo‘yicha o‘chirib qo‘yilgan va hali ishlab chiqarishga tayyor emas. E’lon qilingan funksionallik mavjud bo‘lguncha uni haqiqiy CBDC qiymat uchun yoqmang, maxfiylik, xato, ishlash, qayta ishlab chiqariladigan qurilish, mustaqil kriptografik ko‘rib chiqish va artefakt nashr etish qoidalari aynan shu reliz uchun barchasi muvaffaqiyatli o‘tgan.
+:::
 
-## Protokol nimani yashirmoqda {#what-the-protocol-hides}
+## Protokol nimani yashiradi {#what-the-protocol-hides}
 
-Har bir to'g'ridan-to'g'ri ikki kirish va uch chiqishdan iborat xususiy nota dalillaridan foydalanadi. Komiteni tasdiqlovchilar dalilni va shaffof holat o'tishini tekshiradilar; ular oddiy matn partiyalarini, aktivlarni, miqdorni, notani yoki biznes natijalarini olmaydilar. Vakolatli mahalliy auditor to'ldirilgan audit kapsulalarini chifrlaydi, ushbu tarkibni tekshiradi va maqsad bo'yicha alohida ruxsatnomaga imzo oladi.
+Har bir moliyaviy o'tkazma qismi ikki kirishli, uch chiqishli maxfiy yozuv isboti bilan ishlaydi. Kengash tasdiqlovchilari isbotni va noaniq holat o'tishini tekshiradilar; ular ochiq matn partiyalarini, aktivni, miqdorni, eslatmani yoki biznes natijasini olmaydilar. Avtorize qilingan mahalliy auditor quvurlangan audit kapsulasini shifrdan chiqaradi, uning mazmunini tekshiradi va maqsadga ajratilgan tasdiqni imzolaydi. Standart siyosat boshqariladigan auditorlar to‘plamidan bitta tasdiqni qabul qiladi.
 
-Umumiy tashuvchi va rasmga ko'ra, bila turib:
+Ommaviy konteyner tranzaksiyasi va protokol natijalari yozuvi ataylab quyidagilarni oshkor qiladi:
 
 - tarmoq va paket identifikatorlari
-- ishtirokchi ma'lumotlar maydonining yo'nalishlari va ishtirokchilar soni
-- Vaqt va muddati tugaydigan balandliklar
-- barqaror shaffof bo'lmagan to'plam identifikatorlari, ildizlar, bekor qiluvchilar, majburiyatlar va qat'iy kodli matn slotslari
-- Qo'mita organlari va to'g'ri 3-dan 4-ta mavjudlik, tayyorlov va majburiyat sertifikatlari
-- Sponsor, ommaviy tarmoq to'lovlari va terminal holati
+- ishtirokchi ma’lumotlar makoni yo‘llari va ishtirokchi soni
+- vaqt va muddati balandliklari
+- barqaror yashirin pul identifikatorlari, ildizlar, nullifikatorlar, majburiyatlar va o‘zgarmas shifrmatn slotlari
+- qo'mita vakolat prinsiplari va aniq 3-dan 4 mavjudlik, tayyorlash va protokolni yakunlash sertifikatlari
+- sponsor, ochiq tarmoq to'lovi va terminal holati
 
-Bu tarkib maxfiyligi, trafik oqimi anonimligi emas. Vaqt, ishtirokchilar soni, ma'lumotlar maydonining identifikatsiyasi va barqaror to'plam faoliyati ommaviy bo'lib qolmoqda. Faqat bitta CBDC ga ega bo'lgan ma'lumot maydonida ma'lumotni yo'ldan ajratish mumkin, garchi hech qanday tom ma'nodagi aktiv identifikatori nashr etilmagan bo'lsa ham.
+Bu kontent maxfiyligi, trafik oqimi anonimligi emas. Vaqt, ishtirokchilar soni, dataspace identifikatori va barqaror havza faoliyati ommaviy bo'lib qoladi. Faqat bitta CBDC ni joylashtirgan dataspace ham, hech qanday haqiqiy aktiv identifikatori e'lon qilinmasa ham, aktivni marshrutdan aniqlash mumkin bo'lishi mumkin.
 
-## Ishlab chiqarish talablari {#deployment-requirements}
+## Joylashtirish talableri {#deployment-requirements}
 
-Operatorlar aktivlashdan oldin quyidagilarning barchasini bajarishlari kerak:
+Faollashtirishdan oldin, operatorlarga quyidagilarning barchasi kerak:
 
-1. Har bir ishtirokchi ma'lumotlar maydonida aniq to'rtta tasdiqlovchi, alohida BLS konsensus kalitlari va egalik guvohnomasi bilan;
-2. majburiy Sumeragi DA/RBC har bir balandlik uchun qo'llanilgan
-3. har bir ma'lumotlar maydonida boshqarish bilan bog'liq maxfiy hisob-kitoblar bazasi va dastlabki ildiz
-4. faol V1 xususiy yozuv qobiliyati va alohida to'lovni tasdiqlovchi profil
-5. Hech bo'lmaganda bitta tartibga solinadigan mahalliy `PrivateSettlementAuditPolicyV1`, shu jumladan alohida auditor imzosi va hibrid shafrlash kalitlari, asosiy davr, balandlik amal qilish muddati va ruxsat etish darajasi;
-6. konfiguratsiya qilingan saqlash davri uchun etarli miqdorda xususiy yon mashinalar saqlanishi
-7. yakuniy davlat tashuvchisini taqdim etish imkoniyatiga ega bo'lgan neytral sponsor hisob raqami
+1. har bir ishtirokchi ma’lumotlar makoni uchun alohida BLS konsensus kalitlari va egalik dalillariga ega aynan to‘rtta tasdiqlovchi
+2. har bir balandlik uchun majburiy Sumeragi DA/RBC yoqilgan
+3. har bir ma'lumot maydonida boshqariladigan maxfiy moliyaviy tranzaksiya yechimi protokoli guruhi va dastlabki ildiz
+4. faol V1 shaxsiy eslatma imkoniyati va alohida moliyaviy tranzaksiya yakunlash dalili profili
+5. hech bo‘lmaganda bitta boshqariladigan mahalliy `PrivateSettlementAuditPolicyV1`, jumladan alohida auditor imzolash va gibrid shifrlash kalitlari, kalit davri, balandlik haqiqiyligi va tasdiqlash mezoni
+6. sozlangan saqlash muddati uchun yetarli shaxsiy yordamchi yozuvlar saqlash
+7. yakuniy jamoat konteyner tranzaksiyasini yubora oladigan neytral homiy hisobida
 
-Auditor, shuningdek, tasdiqlovchi vositasini ishlatishi mumkin, ammo alohida konsensus, auditor imzolash va auditor shifrlash kalitlaridan foydalanishi kerak. Regulyatsiyaviy saqlanish davri uchun cheklangan kodlash kalitlarini ushlab turing yoki ularni o'chirishdan oldin test kapsulasini qayta to'plash va boshqarish.
+Auditor validatorni ham boshqarishi mumkin, ammo konsensus, auditor imzosi va auditor shifrlashi uchun alohida kalitlardan foydalanishi kerak. Foydalanishdan chiqarilgan deshifrlash kalitlarini me’yoriy saqlash muddati davomida saqlang yoki ularni chiqarishdan oldin kapsulalarni qayta o‘rash jarayonini boshqaring va sinang.
 
-To'rt ta'kidlovchi hokimiyat davlatga asoslangan, mijoz tomonidan taqdim etilmaydi. Manifestning `authority_context_height` har bir ta'kidlovchisi to'g'ri tartibdagi yo'nalish / ma'lumotlar maydonining ro'yxatini va faol yo'nalishni hal qiladi konsensus holati, aniqlangan balandlikni moslashtirishni talab qiladi va to'rtta BLS kalitlari va egalik guvohnomasini tasdiqlaydi. Yuklab olish, tayyorlash va yakuniy qabul qilish barcha bir xil tarixiy vakolatdan foydalanadi.
+To‘rtta tasdiqlovchi vakolat hisobi davlat tomonidan mustahkamlangan, mijoz tomonidan ta’minlanmaydi. Manifestning `authority_context_height` nuqtasida har bir tasdiqlovchi aniq tartiblangan yo‘l/ma’lumotlar makoni ro‘yxati va faol ijro yo‘li inkarnatsiyasini konsensus holatidan hal qiladi, hal qilingan balandlik mos kelishini talab qiladi, va to'rtta BLS kalitlari va egalik dalillarini tekshiradi. Yuklash, tayyorlash va yakuniy protokol natijalarini yozib olish barchasi shu tarixiy ruxsat olish printsipidan foydalanadi.
 
-## Kiritishni sozlash {#configure-admission}
+## Qabulni sozlash {#configure-admission}
 
-Barcha ishlab chiqarish xatti-harakatlari nod konfiguratsiyasidan kelib chiqadi. muhit o'zgaruvchilari ushbu yo'lni faollashtirolmaydilar. Jo'natilgan andoza `enabled = false`; xususiyatni o'chirib qo'yish uchun joylashtirishga mos konfiguratsiya talab qilinmaydi.
+Barcha ishlab chiqarish xatti-harakatlari tugun konfiguratsiyasidan kelib chiqadi. Muhit o'zgaruvchilari bu yo'lni faollayolmaydi. Yetkazib berilgan standart `enabled = false`; funksiyani o‘chirib qo‘yish maxsus hisob-kitob konfiguratsiyasini talab qilmaydi.
 
-Boshqaruvchanlik kerakli imkoniyatni ro'yxatdan o'tkazgandan so'ng va to'g'ri ogohlantirilgan holda faollashtirish balandligini tanlaganidan so'ng, har bir tegishli nodni mos ravishda konfiguratsiya qiling:
+Boshqaruv zarur imkoniyatni ro‘yxatga olgach va yetarlicha ogohlantirish bilan faollashtirish balandligini tanlagach, har bir tegishli tugunni izchil sozlang:
 
 ```toml
 [nexus.atomic_private_settlement]
@@ -72,81 +73,95 @@ default_min_auditor_approvals = 1
 permitted_policy_versions = [1]
 ```
 
-Misol uchun etkazib berilgan V1 chegaralaridan foydalanib, ishlashi mumkin bo'lgan tavsiya emas. Operativ chegaralarni tanlashdan oldin mo'ljallangan asbob-uskunalar. Uch bosqich vaqtlari `max_expiry_blocks` ichida o'rnatiladi va yon mashinalarini saqlab qolish hech bo'lmaganda o'sha muddati tugaydigan oyna bo'lishi kerak.
+Misolda jo‘natilgan V1 cheklovlari ishlatilgan, bu esa ish faoliyati bo‘yicha tavsiya emas. Saqlash, isbot, kapsula, konteyner tranzaksiya va kechikish ma’lumotlar konteynerlarini o‘lchang Amaliy chegaralarni tanlashdan oldin mo‘ljallangan apparatni hisobga oling. Uch fazali vaqt tugashlari `max_expiry_blocks` ichida bo‘lishi kerak, va qo‘shimcha yozuvlarni saqlash vaqti kamida shu yakunlanish oynasi bilan bir xil bo‘lishi kerak.
 
-`max_capsule_bytes` butun `PrivateSettlementAuditCapsuleV1`ning kanonik Norito kodlashini cheklaydi: AAD, nonce, shifr matni, vektorlar o'rnatish, auditor identifikatsiyalari va har bir qadoqlangan-DEK satr. Bu faqat shifr matniga doir chegara emas. Har bir konfiguratsiyalangan to'ldirish sinflari kamida `default_min_auditor_approvals` auditorlar uchun konservativ butun kapsula qadoqqa mos bo'lishi kerak. Torii shuningdek, yangi qabul qilingan siyosatni rad etadi, uning `min_approvals` bu tartibga solinadigan qavatdan past bo'lgan va to'liq kanonik kodlanishi juda katta bo'lgan har qanday haqiqiy kapsulani rad qiladi.
+`max_capsule_bytes` butun `PrivateSettlementAuditCapsuleV1`ning kanonik Norito kodlashini cheklaydi: AAD, kriptografik nonce qiymati, shifrlangan matn, vektor ramkalash, auditor identifikatorlari va har bir o'ralgan-DEK satr. Bu faqat shifrlangan matnga oid cheklov emas. Har bir sozlangan padding sinfi kamida `default_min_auditor_approvals` auditorlar uchun konservativ butun kapsula ma’lumot konteyneriga mos kelishi kerak. Torii shuningdek, yangi ... ni rad etadi qabul qilingan siyosat, uning `min_approvals` boshqariladigan minimal darajadan past bo‘lsa, va har qanday haqiqiy kapsulani rad etadi, agar uning to‘liq kanonik kodlash juda katta bo‘lsa.
 
-`max_carrier_bytes` faqat sertifikatlangan paket emas, balki sponsor tomonidan imzolangan to'liq kanonik operatsiyani cheklaydi. Hisobotga ro'yxatdan o'tgan yo'l-yo'riqlarni belgilash, operatsiya hokimiyati va metadatalar, to'lov niyatlari va imzosi kiradi. Oddiy tarmoq operatsiyalarining cheklovlari hali ham mustaqil yuqori chegara sifatida amal qiladi.
+`max_carrier_bytes` faqat sertifikatlangan paketni emas, balki to‘liq kanonik homiy imzolangan tranzaksiyani cheklaydi. Hisobga olingan son ro‘yxatga olingan ko‘rsatmani o‘z ichiga oladi freyming, tranzaksiya tasdiqlash asosiy elementi va metadata, to'lov niyati va imzo. Oddiy tarmoq tranzaksiya cheklovlari mustaqil yuqori chegarasi sifatida hanuz amal qilmoqda.
 
-Aktivatsiya o'chirilmaydi, agar boshqaruv qobiliyati faol bo'lmasa, uning holati va aktivlash balandliklari xabardorlik muddatini qondirmasa, yig'ilgan dalil profillari V1 bilan mos kelmasa va zanjirdagi to'plam va audit yozuvlari joriy bo'lsa. Konfiguratsiya bayrog'ini qo'llash yolg'iz etarli emas.
+Faollashtirish faqat boshqarilayotgan imkoniyat faol bo‘lmaganda muvaffaqiyatsiz bo‘ladi, uning holati va faollashtirish balandliklari ogohlantirish davriga javob beradi, yig‘ilgan isbot profili V1 ga mos keladi va zanjirdagi protokol ma’lumotlari guruhi hamda audit yozuvlari yangilangan bo‘ladi. Faoliyat bayrog‘ini yoqish o‘zi yetarli emas.
 
-## Toʻlash ish oqimi {#settlement-workflow}
+## moliyaviy tranzaksiya to'lovini yakunlash ish oqimi {#settlement-workflow}
 
-Mijoz dalillar va shifrlangan kapsulalarni mahalliy ravishda quradi. maxfiy shohidlar mahalliy hamyon yoki mahalliy ishchilarda qolishlari kerak; ularni arizalar jurnallariga, Python ob'ektlarga, HTTP so'rovlarga yoki uzoq muddatli koordinatsiya yozuvlariga seriallashtirmang.
+Mijoz isbotlar va shifrlangan kapsulalarni mahalliy ravishda yaratadi. Maxfiy guvohlar mahalliy hamyonda yoki mahalliy ishchida qolishi kerak; ularni ilova jurnallariga, Python ob’ektlarga, HTTP so‘rovlarga yoki barqaror muvofiqlashtirish yozuvlariga seriyalashtirmang.
 
-Kapsula va har bir auditor uchun DEK qadoqlash bilan tasdiqlangan ma'lumotlarga aniq davlat qo'mitasi va `authority_context_height` to'g'risidagi ma'lumotlar, shuningdek tarmoq kiradi. yo'nalish/tushkunlik, to'plam, oyoq, siyosat, asosiy davr va aniq matn majburiyatlari.
+Kapsula va har bir auditor uchun DEK o‘ramining autentifikatsiyalangan ma’lumotlari aniq holatga biriktirilgan qo‘mita dayjesti va `authority_context_height` qiymatini, shuningdek tarmoq, yo‘nalish/inkarnatsiya, to‘plam, bosqich, siyosat, kalit davri va ochiq matn majburiyatini o‘z ichiga oladi. O‘ralgan kalitni boshqa tarkibga yoki vakolatning boshqa tarixiy kontekstiga ko‘chirib bo‘lmaydi.
 
-Har bir kanonik oyog'i uchun koordinator keyinchalik quyidagi tartibni bajaradi:
+Har bir alohida protokol-standart moliyaviy o'tkazma qismi uchun, kordinator keyin ushbu ketma-ketlikni bajaradi:
 
-1. Vaqtinchalik shifrlangan materialni to'rtta tasdiqlovchiga yuklab oling va kanonik aniq 3 -dan 4 ta mavjudlik sertifikatini oling.
-2. Ruxsat berilgan auditor uning kapsulasini olib kelib, uzib qo'yishi kerak bo'lgan ma'lumotlarni qayta hisoblash, mahalliy siyosatni qo'llash va ruxsatnoma berish.
-3. Talab To'rtta tasdiqlovchilardan ovozlarni tayyorlang. Har bir tasdiqlovchi ovoz berishdan oldin deltani mustaqil ravishda tekshiradi va barqaror bosqichga ko'taradi. Har bir bosqichda javob beruvchida kanonik 3-of-4 Tayyorlash sertifikatini saqlab qoling.
-4. Har bir oyoq Tayyorlik sertifikatiga ega bo'lganidan so'ng, o'zgartirilmaydigan to'liq Tayyorlik bariyerini quring. Kanonik 3-of-4 Komit sertifikatlarini talab qiling va saqlang. Koordinator qayta ishga tushsa, ishtirokchi tugunlardan ularning mahalliy doimiy saqlangan Prepare va Commit sertifikatlarini so‘rang. Xuddi shu kvorumga teng kanonik sertifikatni tanlang va davom etishdan oldin uni qayta tarqating; sertifikatni autentifikatsiya qilinmagan mahalliy keshdan hech qachon qayta tuzmang.
-5. Manifest sponsor belgisini oling va aniq bir global tashuvchini taqdim eting. Tashuvchi bitta `FinalizeAtomicPrivateSettlementV1` ko'rsatma va to'liq sertifikatlangan paketni o'z ichiga oladi. Koordinator va WSV parvozdan oldin ro'yxatga olingan ko'rsatmalar ramkalarini ham o'lchash uchun to'liq qutiladigan topshiriqlarni o'lchov qiladi. Torii va asosiy bir martalik tashuvchi majburiyati `max_carrier_bytes` sponsor tomonidan imzolangan aniq kanonik tranzaksiya ustidan, shu jumladan vakolat, metadatalar, to'lov niyati va imzo. Torii tashuvchini o'z vakolatlari kontekstidan oldin, muddati tugagandan keyin yoki belgilangan muddatdan keyingi oxirgi kirish balandligida yoki undan keyin rad etadi.
-6. Jahon yakunigacha ommaviy to'plamning holati va qabul qilinishini so'rang. Mahalliy yon mashinalar davlatini o'zgaruvchan bo'lmagan global terminal rekordini yaratib bermaguncha vaqtinchalik holat deb hisoblang.
+1. Vaqtinchalik shifrlangan materialni barcha to'rtta validatorga yuklang va kanonikga mos aniq 3-dan-4 mavjudlik sertifikatini oling.
+2. Vakolatli auditorni yuboring va uning kapsulasini olib, shifrlashni ochsin, ommaviy bog‘lamalarni qayta hisoblasin, mahalliy siyosatni qo‘llasin va tasdiqni topshirsin.
+3. To‘rtta tasdiqlovchidan tayyorlash ovozini so‘rang. Har bir tasdiqlovchi ovoz berishdan oldin deltani mustaqil tekshiradi va barqaror saqlaydi. Har bir tayyorlagan javob beruvchida kanonik 3-of-4 Tayyorlash sertifikatini saqlang.
+4. Har bir moliyaviy o'tkazma qismi Prepare sertifikatiga ega bo'lgandan so'ng, o'zgarmas to'liq Prepare to'sig'ini yarating. Bitta protokol-standart 3-of-4 protokol yakunlash sertifikatlarini so'rang va saqlang. Agar koordinatchi qayta ishga tushsa, ishtirokchi tugunlardan ularning mahalliy barqaror Prepare va konsensus yakunlash sertifikatlarini so‘rang, bitta protokol-standartiga mos keluvchi kvorum-sinedir sertifikatni tanlang va davom etishdan oldin uni yana tarqating; hech qachon sertifikatni autentifikatsiya qilinmagan mahalliy keshdan qayta tuzmang.
+5. Manifest homiysi tomonidan bitta global konteyner tranzaksiyasini imzolab taqdim eting. Konteyner tranzaksiyasi bitta `FinalizeAtomicPrivateSettlementV1` ko‘rsatmasini va aniq to‘liq sertifikatlangan paketni o‘z ichiga oladi. Koordinator va WSV oldin uchish chorasi ro‘yxatdan o‘tgan ko‘rsatmalar tuzilishini o‘z ichiga olgan to‘liq tur-erased yakuniylashtirish ko‘rsatmasini o‘lchaydi. Torii va asosiy bir martalik konteyner tranzaksiya bog‘lamasi aniq kanonik homiy tomonidan imzolangan tranzaksiya ustidan `max_carrier_bytes` ni amalga oshiradi, shu jumladan vakolat hisobi, metadata, to‘lov niyati va imzo. Torii konteyner tranzaksiyasini uning vakolat hisobi konteksti oldidan, oxirgi kirish balandligidan keyin yoki yakuniy muddati orqali yetishi mumkin bo‘lgan paytdan keyin, yoki boshqariladigan muddatdan oshib ketganda rad etadi.
+6. Jamoaviy paket holati va protokol natijasi yozuvini global yakuniylikka yetguncha so‘rang. Mahalliy yordamchi yozuv holatini u o‘sha o‘zgarmas global yakuniy yozuv bilan moslashguncha vaqtinchalik deb hisoblang.
 
-O ' zbekiston Respublikasining Rust mijoz ushbu oqimni oʻz ichiga olgan usullar orqali namoyish etadi `certify_and_upload_private_settlement_legs_v1`, `prepare_private_settlement_bundle_v1`, `commit_private_settlement_bundle_v1`, va `submit_private_settlement_bundle_v1`. Qayta ishga tushirishga bardoshli muvofiqlashtirish `recover_or_prepare_private_settlement_bundle_v1` va `recover_or_commit_private_settlement_bundle_v1` dan foydalanadi. Qo'mita va auditorlik davolanishlari aniq roli haqida ma'lumotlarni talab qiladi; ular odatdagi hisobni imzolagan shaxsdan foydalanmaydi.
+Rust mijoz ushbu oqimni `certify_and_upload_private_settlement_legs_v1`, `prepare_private_settlement_bundle_v1`, `commit_private_settlement_bundle_v1` va `submit_private_settlement_bundle_v1` kabi usullar orqali namoyish etadi. Qayta ishga tushirishga chidamli muvofiqlashtirish `recover_or_prepare_private_settlement_bundle_v1` va `recover_or_commit_private_settlement_bundle_v1` dan foydalanadi. Qo‘mita va auditorning texnik chaqiriqlari aniq rol kredisentalarini talab qiladi; ular oddiy hisobning kriptografik imzosini qayta ishlatmaydi.
 
-## Auditorlik siyosatini xavfsiz ravishda aylantirish {#rotate-an-auditor-policy-safely}
+## Auditor siyosatini xavfsiz aylantiring {#rotate-an-auditor-policy-safely}
 
-Maxfiylik boshqaruvi tomonidan ruxsat etilgan `RotatePrivateSettlementPoolPolicyV1` ko'rsatmalaridan foydalaning. U to'g'ri joriy boshqaruvni o'z ichiga olishi, bir xil yo'nalishni, puli va aktivlarni bog'lash majburiyatini saqlashi, boshqaruvni qayta ko'rib chiqishni bir marta ilgari surishi, qat'iy ravishda yangi asosiy davrdan foydalanish va turli siyosat / boshqaruv dasturlaridan foydalanish kerak; va aylanishni o'z ichiga olgan blokda faollashtiring. hovuz chegaralari, ildizlar, bekor qiluvchilar, chiqindilar, takrorlash to'plamlari va yakuniy qabulnomalar saqlanib qoladi. O'sha yo'nalish / hovuzni harakatlanish balandligida uchratadigan rasmga kiritmang; ko'rsatma ushbu chegaralarni rad qiladi.
+Maxfiylik boshqaruvi ruxsat bergan `RotatePrivateSettlementPoolPolicyV1` ko‘rsatmasidan foydalaning. U joriy boshqaruv dayjestini aynan ko‘rsatishi, ayni yo‘nalish, protokol guruhi va aktivni bog‘lash majburiyatini saqlashi, boshqaruv tahririni bittaga oshirishi, albatta yangiroq kalit davri hamda boshqa siyosat va boshqaruv dayjestlaridan foydalanishi va aylantirishni o‘z ichiga olgan blokda faollashishi kerak. Protokol guruhi chegarasi, ildizlar, nullifikatorlar, natijalar, takroriy ijro to‘plamlari va yakunlangan kvitansiyalar saqlanadi. Aylantirish faollashadigan blok balandligida ayni yo‘nalish yoki protokol guruhiga tegishli kvitansiyani kiritmang; ko‘rsatma bu chegarani rad etadi.
 
-Umumiy fond proyeksiyasi to'liq o'zgartirilgan siyosat-taftish liniyasini saqlab qolmoqda. Rotatsiya qilishdan oldin yakunlangan risola shu sababli qayta ishga tushirilgandan keyin ham amalda qoladi va ushbu aniq risolani takrorlash yaroqsiz qoladi. Ta'minlanmagan ishlarga ruxsat berilmaydi: faollashtirish chegarasini kesib o'tgan har qanday eski siyosat to'plami global holat o'zgarishlaridan oldin yopilmaydi. O'rnatilgan kapsulalarni ochish uchun zarur bo'lgan barcha eski kodlash kalitlarini saqlang yoki uni yo'q qilishdan oldin boshqariladigan va sinovdan o'tkazilgan kapsulani qayta tiklang.
+Jamoat protokoli ma'lumotlari guruhi prognozi to'liq bekor qilingan siyosat-tahrir qatorini saqlaydi. Shuning uchun, aylanishdan oldin yakunlangan protokol natijalari yozuvi qayta ishga tushirilgandan keyin ham amal qiladi, va aynan shu protokol natijalari yozuvini qayta ijro etish idempotent bo'lib qoladi. Avlod tugallanmagan ishni ruxsat bermaydi: faollashtirish chegarasini kesib o'tadigan har qanday eski siyosat to'plami global holat o'zgarmasdan oldin yopiq bo'lib qoladi. Saqlangan kapsulalarni ochish uchun kerak bo'lgan barcha eski shifrlash kalitlarini saqlang yoki uni yo'q qilishdan oldin boshqariladigan va sinovdan o'tgan kapsula qayta o'ramini tugating.
 
-## Torii yo'l oilasi {#torii-route-family}
+## Torii marshrut oilasi {#torii-route-family}
 
-Ushbu yo'nalishlarda kanonik Norito so'rov va javob ob'ektlari ishlatiladi. Tasdiqlangan va cheklangan javoblar xususiy `no-store` kecha xatti-harakatidan foydalanadi.
+Bu marshrutlar bitta protokol-standart Norito so‘rov va javob obyektlaridan foydalanadi. Autentifikatsiyalangan va cheklangan javoblar maxfiy `no-store` keshlash xatti-harakatidan foydalanadi.
 
-|Operatsiya |usuli va yoʻli |Boshliq |
+|Operatsiya|Usul va yo'l|Direktor|
 | ------------------ | -------------------------------------------------------------------------- | --------------------------- |
-|Oyoq yuklash |`POST /v1/nexus/private-settlements/legs` |kanonik hisobning imzosi |
-|Foydalanish hissasi |`POST /v1/nexus/private-settlements/legs/availability-shares` |kanonik hisobning imzosi |
-|ovoz berishga tayyorlaning |`POST /v1/nexus/private-settlements/phases/prepare-votes` |kanonik hisobning imzosi |
-|Ovoz berish majburiyati |`POST /v1/nexus/private-settlements/phases/commit-votes` |kanonik hisobning imzosi |
-|O'simlik fasasi QC |`POST /v1/nexus/private-settlements/phases/certificates` |kanonik hisobning imzosi |
-| Bosqich QCs-ni qayta tiklash | `GET /v1/nexus/private-settlements/legs/{payload_digest}/phase-certificates` | koʻrsatilgan sponsor |
-|Oyoq holati |`GET /v1/nexus/private-settlements/legs/{payload_digest}/status` |kanonik hisobning imzosi |
-|Qoʻmita hujjati|`GET /v1/nexus/private-settlements/legs/{payload_digest}/committee-proof` |toʻgʻri roʻyxatni tasdiqlash|
-|Audit kapsulasi |`GET /v1/nexus/private-settlements/legs/{payload_digest}/audit-capsule` |Boshqaruvchi auditor |
-|Auditorning roziligi |`POST /v1/nexus/private-settlements/legs/{payload_digest}/audit-approvals` |Boshqaruvchi auditor |
-|Toʻplamni taqdim etish |`POST /v1/nexus/private-settlements/bundles` |koʻrsatilgan sponsor |
-|Toʻplam holati |`GET /v1/nexus/private-settlements/bundles/{bundle_id}` |ommaviy |
-|Qabul qilish yoki bekor qilish|`GET /v1/nexus/private-settlements/bundles/{bundle_id}/receipt` |ommaviy |
+|Moliyaviy o'tkazmalar qismini yuklash| `POST /v1/nexus/private-settlements/legs`                                  |kanonik hisob imzosi|
+|Mavjudlik ulushi| `POST /v1/nexus/private-settlements/legs/availability-shares`              |kanonik hisob imzosi|
+|Votaga tayyorlaning| `POST /v1/nexus/private-settlements/phases/prepare-votes`                  |kanonik hisob imzosi|
+|yakuniy bosqich ovozi| `POST /v1/nexus/private-settlements/phases/commit-votes`                   |kanonik hisob imzosi|
+|Uzluksiz faza QC| `POST /v1/nexus/private-settlements/phases/certificates`                   |kanonik hisob imzosi|
+|Qayta tiklash bosqichi QCs| `GET /v1/nexus/private-settlements/legs/{payload_digest}/phase-certificates` |manifest homiy|
+|moliyaviy o'tkazma qismi holati| `GET /v1/nexus/private-settlements/legs/{payload_digest}/status`           |kanonik hisob imzosi|
+|Qo‘mita isboti| `GET /v1/nexus/private-settlements/legs/{payload_digest}/committee-proof`  |aniq ro'yxat tekshirgichi|
+|Audit kapsula| `GET /v1/nexus/private-settlements/legs/{payload_digest}/audit-capsule`    |nazorat qilinadigan auditor|
+|Auditorning tasdiqlashi| `POST /v1/nexus/private-settlements/legs/{payload_digest}/audit-approvals` |nazorat qilinadigan auditor|
+|Yakunlash/to'xtatish| `POST /v1/nexus/private-settlements/bundles`                               |manifest homiy|
+|Paket holati| `GET /v1/nexus/private-settlements/bundles/{bundle_id}`                    |jamoat|
+|protokol natijasi yozuvi yoki bekor qilish| `GET /v1/nexus/private-settlements/bundles/{bundle_id}/receipt`            |jamoat|
 
-Umumiy status va rasmga APIs faqat hujjatlashtirilgan ommaviy maydonlarni ko'rsatadi. Xususan, odatdagi to'g'ri holatda tasdiqlangan raqamlar yoki tartibga solinadigan auditorlik darajasi oshkor etilmaydi. Cheklangan o'qishlar qasddan yo'qolgan, ruxsatsiz va saqlab qolish muddati tugagan materiallar bir xil mavjud bo'lmagan javob sinfida.
+Jamoat holati va protokol natijalari yozuvi APIs faqat hujjatlashtirilgan jamoat maydonlarini ochib beradi. Xususan, oddiy moliyaviy o'tkazmalar qismi holati tasdiqlash sonlarini yoki boshqariladigan auditor chegarasini oshkor qilmaydi. Cheklangan o‘qishlar, yo‘qolgan, ruxsatsiz va saqlash muddati tugagan materiallarni xuddi shu mavjud bo‘lmagan javob sinfiga qasddan birlashtiradi. Jo‘natish yo‘li aniq bitta to‘g‘ridan-to‘g‘ri homiy tomonidan imzolanilgan yakunlash yoki bekor qilish ko‘rsatmasini qabul qiladi. Uning `202` javobi faqat paket IDsi, kuzatilgan qabul balandligi va konteyner tranzaksiyasi kriptografik xashini o'z ichiga oladi; u navbatdagi bekor qilish allaqachon yakunlanganligini da'vo qilmaydi. SDKs ikkala identifikatorning ham kanonikli tekshiruv summasiga ega Norito `Hash` JSON literal bo‘lishini va balandlikning aniq belgisiz 64-bitli butun son bo‘lishini talab qiladi; yo‘q, qo‘shimcha, noto‘g‘ri yozilgan, kanonikiga mos bo‘lmagan, tekshiruv yig‘indisi noto‘g‘ri, manfiy, manfiy-nol, kasr yoki ortiqcha maydonlar yopiq tarzda xato beradi. Avtorizatsiyalangan terminal holati uchun paket holati yoki protokol natijalari yozuvidan foydalaning. Holat kodi ham aniq: bu konteyner tranzaksiya-qabul qilish yo'li `202` talab qiladi, holbuki har bir boshqa xususiy kelishuv V1 muvaffaqiyatli javob `200` talab qiladi. Mijozlar alternativ muvaffaqiyatli `2xx` kodlarini shartnoma sirpanishi sifatida rad etadilar, mijoz xatoliklari orqali kutilmagan javob tanasini aks ettirmasdan. Ular faqat server rad javob kodini ochib beradi u `[A-Za-z0-9_.:-]{1,128}` bilan mos kelganda va javob parseri/tekshirish sabablarini bekor qilib, tana mazmuni yoki hujumchi tanlagan JSON maydon nomlarining sababni biladigan loglar orqali qayta paydo bo‘lishining oldini oladi.
 
 ## Muvaffaqiyatsizlik va tiklanish {#failure-and-recovery}
 
-Yo'q bo'lgan yoki eskirgan auditorning ma'lumotlari, uchta nafardan kam tasdiqlovchi ovoz, noto'g'ri ildiz yoki davrlar, ikkilamchi bekor qiluvchi hujjatlar, o'rniga olingan dalillar yoki kapsullar, kanonik bo'lmagan to'lov tartibi, muddati tugagan paketlar va mos kelmagan kompensatsiya shartlari global mutatsiyadan oldin barchasi muvaffaqiyatsizlikka tushadi. Komit sertifikatlari hech qachon xususiy davlatni o'zgartirmaydi.
+Auditor tasdiqlari yo‘q yoki eskirgan bo‘lsa, tasdiqlovchi ovozlari uchtadan kam bo‘lsa, ildizlar yoxud davrlar noto‘g‘ri, nullifierlar takrorlangan, isbotlar yoki kapsulalar almashtirilgan, bosqich tartibi noaniq, to‘plam muddati tugagan yoki kompensatsiya shartlari mos kelmasa, jarayon global o‘zgarishdan oldin to‘xtaydi. Faqat kelishuvni yakunlash sertifikatlari xususiy holatni hech qachon o‘zgartirmaydi.
 
-Validatorlar ularni tan olishdan oldin yon mashinalar, tasodifdagi deltalar va bosqich sertifikatlarini sinxronlashtiradi. Qayta ishga tushirilganda ular kanonik mustahkam yozuvlardan rezervatsiyalarni qayta tiklaydilar, so'ngra o'zgaruvchan bo'lmagan global kvititlarni, abort belgilarini yoki muddati tugagani bilan uyg'unlashadi. Ko'zlab boriladigan yarashtiruvchi shuningdek, sinxronlik bilan kuzatilgan vakolatli balandlikda terminalni saqlab qolish uchun kesishni amalga oshiradi, hatto yarashtirish uchun terminal nomzod yo'q bo'lsa ham. Faqatgina ishonchli global terminal qaydnomasi bosqichma-bosqich qulflarni chiqaradi. Xuddi shunday yakuniy rasmni takrorlash imkonsiz bo'ladi; ziddiyatli takrorlash deterministik ravishda muvaffaqiyatsizlikka uchradi.
+Validatorlar yordamchi yozuvlar, tayyorlangan o‘zgarishlar va bosqich sertifikatlarini tasdiqlashdan oldin fsync qiladi. Qayta ishga tushganda ular kanonik bardoshli yozuvlardan rezervatsiyalarni qayta tiklaydi, so‘ngra o‘zgarmas global protokol natija yozuvlari, bekor qilish belgilar yoki muddati o‘tgan yozuvlarni uyg‘unlashtiradi. Nazorat qilinadigan muvofiqlashtiruvchi, muvofiqlashtiriladigan terminal nomzodi bo'lmasa ham, sinxron ravishda kuzatilgan vakolatli balandlikda terminalni saqlashni qisqartirishni amalga oshiradi. va u kesish xatosida yopiladi. Faqat vakolatli global terminal yozuvi sahnalashtirilgan qulflarni chiqaradi. Xuddi shu yakunlangan protokol natijasi yozuvini qayta ijro etish idempotent hisoblanadi; qarama-qarshi qayta ijro deterministic tarzda muvaffaqiyatsiz bo‘ladi.
 
-Qutqaruv identifikatsiyasi to'liq yo'nalishni o'z ichiga oladi. Havo boshlarida `(route, pool_id, epoch, root)`, bekor qiluvchilarda `(route, pool_id, nullifier)` va chiqindilarda `(route, pool_id, commitment)` ishlatiladi. Boshqa yo'nalishda teng shaffof qiymatlar mustaqil; qaytadan ishga tushirishda aniq yo'nalishdagi to'qnashuv qulflangan qoladi.
+Bandlik identifikatori to‘liq yo‘nalishni o‘z ichiga oladi. Protokol ma’lumotlar guruhi boshliqlari `(route, pool_id, epoch, root)` dan foydalanadi, nullifikatorlar `(route, pool_id, nullifier)` dan foydalanadi, va chiqishlar `(route, pool_id, commitment)` dan foydalanadi. Boshqa yo‘nalishda teng shaffof bo‘lmagan qiymatlar mustaqildir; aniq yo‘nalish to‘qnashuvi qayta ishga tushirishda qulflangan holda qoladi.
 
-Operativ ogohlantirishlarda faqat shaffof bo'lmagan to'plam, yo'nalish, bosqich, o'chirish, balandlik va sabab darajasi maydonlari ishlatilishi kerak. Hech qachon loglar, hodisalar, metrika etiketlari yoki izlanish muddatlarida chiptalarni, hisob yoki aktiv identifikatorlarini, miqdorlarni, xotiralarni, ko'rish ma'lumotlarini, dalil guvohlarini yoki tahlilchi yuklarini joylashtirmang.
+Operatsion ogohlantirishlar faqat shaffof bo'lmagan paket, marshrut, faza, kriptografik xulosalar qiymati, balandlik va sabab-sinf maydonlaridan foydalanishi kerak. Hech qachon loglarda, voqealarda, metrikalar yorliqlarida yoki izlash bo‘limlarida shifrlangan kapsulalarni, hisob yoki aktiv identifikatorlarini, miqdorlarni, eslatmalarni, ko‘rish ma’lumotlarini, guvoh dalillarini yoki parser yukini joylashtirmang.
 
-## Real qiymatdan oldin malaka {#qualification-before-real-value}
+## Haqiqiy qiymatdan oldin malaka {#qualification-before-real-value}
 
-Siz ishga tushirishni rejalashtirgan to'g'ri qurilish va konfiguratsiya uchun arxivda quyidagilarni o'z ichiga olgan dalillar mavjud:
+Siz joylashtirmoqchi bo‘lgan aniq qurilish va sozlamalar uchun, quyidagilarni qamrab olgan dalillarni arxivlang:
 
-- qarshilik to'g'risidagi dalillar, kapsula, siyosat, kalit aylanishi, qaytarish va takrorlash holatlari
-- 2, 3, 4, 8 va 16 ma'lumotlar bazasi uchun haqiqiy to'rt ta'minlovchi jarayonlar, shu jumladan validator va koordinatorni qayta ishga tushirish, 5%, 10% va 20% autentifikatsiya qilingan xabar yo'qotishi, bosqich partitsiyalari, tiklash va saqlanish chegaralari bilan bog'liq xatolar
-- Torii, P2P, bloklar, Kura bo'ylab kanari va differensial sovuqlarni tahlil qilish, tezkor ko'rinishlar, so'rovlar, hodisalar, loglar va telemetriya
-- Haqiqiy tarmoq ishtirokchilarining soniga nisbatan kamida besh issiqlik va o'ttiz o'lchovli to'plamlar, p50, p95, p99, ishonch intervallari, resurslar, trafik, dalil va rasmga ega bo'lgan hajmlar va nazorat sifatida shaffof AMX
-- Xizmat maydonida qat'iy sinovlar, lint va format tekshiruvlari, tartibsiz urug'lar, sug'orish, qayta tiklanishi mumkin bo'lgan qurilmalar, SBOMs, va imzolangan artefak hashlari
-- har ikki rasmiy qatlam: 3/255 oyoq bilan hisob-kitob simmetriyasi tekshiruvi va to'rtta validator bo'yicha aniq komissiya indeksasi N=2 validatorga qaratilgan va to'liq cheklangan xato, qog'ozdagi asosiy xato N=3, N=4 toza va N=3 muddati tugagan / qayta o'ynash konfiguratsiyalari, xatolar byudjetlari qo'mitasiga mustaqil ravishda
-- ko'rsatkich munosabatini mustaqil ravishda ko'rib chiqish, g'alati slot tanlovchilari, aktiv va kapsula bog'lanishlar, to'lov munosabatlari, kriptografiya va ko'p ma'lumotlar maydonining davlat usuli
+- raqobatbardosh isbot, kapsula, siyosat, kalit aylantirish, qaytarib to‘lash va qayta ijro etish holatlari
+- 2, 3, 4, 8 va 16 ma’lumot makoni uchun haqiqiy to‘rtta tasdiqlovchili jarayonlar; tasdiqlovchi va muvofiqlashtiruvchi qayta ishga tushishlari, autentifikatsiyalangan 5%, 10% va 20% xabar yo‘qotilishi, bosqich bo‘linishi, tiklash va barqarorlik chegarasi xatolarini qamrab oladi
+- kanarey va differensial oqim tahlili Torii, P2P bloklari, Kura, vaqt nuqtasidagi ma’lumot ko‘rinishlari, so‘rovlar, voqealar, jurnallar va telemetriya bo‘ylab
+- haqiqiy tarmoq ishtirokchisi soniga kamida beshta issiqroq mashq va o‘n o‘n o‘n o‘lchangan yig‘ma, p50, p95, p99, ishonch intervallari, resurslar, trafig, dalil va protokol natijalari yozuvlari hajmlari bilan va nazorat sifatida shaffof AMX
+- qatʼiy ish joyi testlari, lint va format tekshiruvlari, tasodifiy urugʻlar, soak, takrorlanadigan yigʻilishlar, SBOMs, va imzoli artefakt kriptografik xeshlar
+- ikkala rasmiy qatlam: 3/255 bosqich soni simmetriyasi tekshiruvlari hamda aniq to‘rt validatorli, qo‘mita bo‘yicha indekslangan N=2 validatorga yo‘naltirilgan va to‘liq chegaralangan xato, maqoladagi asosiy N=3 xato, N=4 xatosiz hamda N=3 muddat tugashi/qayta ijro konfiguratsiyalari; xato byudjetlari har bir qo‘mita uchun mustaqil
+- isbot munosabati, sun’iy-bo‘sh joy tanlagichlari, aktiv va kapsula bog‘lanishlari, qaytarib to‘lash munosabati, kriptografiya va kross-datavoya holat mashinasi mustaqil ko‘rib chiqilishi
 
-Quruq va tozalashtirilgan dalillarni, tahdid modeli, protokol argumenti, cheklovlar, commit ID, asbob-uskuna tavsifi va audit hisobotlarini o'zgartirilmaydigan DOI tomonidan qo'llab-quvvatlanadigan artefaktda nashr etish. Repository testlari yolg'iz xususiyatni ishlab chiqarish uchun malakali CBDC hisob-kitob tizimiga aylantirmaydi.
+Xom va tozalangan dalillarni, tahdid modelini, protokol argumentini, cheklovlarni, manba-kodining o‘zgartirish identifikatorlarini, apparat tavsifini va audit hisobotlarini chop eting o‘zgarmas DOI-asoslangan artefakt. Faqat ombor testlari xususiyatni ishlab chiqarishga mo‘ljallangan CBDC moliyaviy tranzaksiya hisob-kitob tizimiga aylantirmaydi.
 
-Har bir xom xato o'tkazilishi va kechikish namunasida to'liq chiqarib yuborish commit, SHA-256 bitta tarkibiy biriktirilgan asbob-uskuna tavsifi va SHA-256 uning aniq ishtirokchilar soni konfiguratsiyasi bog'lanishi kerak. N = 2,3,4,8,16 ga ega bo'lgan bitta kanonik konfiguratsiya manifestini arxivlash; har bir kirish saqlangan konfiguratsiya bytlariga murojaat qilib, ma'lumotlar maydonida to'rtta tasdiqlovchi, 3 dan 4 ta quorum va majburiy imzolangan RS16 DA/RBC ni tasdiqlashi kerak. Bo'shatish tekshiruvchisi turli xil qurilma, apparat profili yoki tarmoq konfiguratsiyasi asosida ishlab chiqarilgan qisqartmalarni rad etadi. Har bir alohida yo'qotish, bosqich kesish va chidamlilik-krashi qatorida global darajada qayta ishlatilmaydigan aniq JSONL rekord ma'lumotlarini ham SHA-256 bilan bog'liq bo'lishi kerak. autentifikatsiyalangan nazoratchi va atomlik tutish artefaktlari. Bo'shatish tekshiruvchisi ushbu o'tkazuvlarni hal qiladi va satrlar ishga tushirish identifikatsiyasi, sinov ko'rsatkichi va parametrlariga, boshqaruvchining tan olinishi yoki tiklanish natijasiga mos kelishini talab qiladi, doimiy tekshirish sonini, Keyinchalik chiqarilgan p95/p99 taqqoslashlar ham candidatdan hardware, konfiguratsiya yoki o'lchov talablari farq qiladigan imzolangan boshlang'ich liniyani rad qiladi. Oxirgi tekshiruvchi MADs hisoblangan barcha percentillarni va deterministik ishonch intervallarini arxivga olingan xom namunalardan ajratilgan ma'lumotlar to'plamiga ishonishning o'rniga tiklaydi. Shunga o'xshab, u kanary manifestini qayta yuklaydi va har bir arxivlangan maxfiylik yuzasini mustaqil ravishda ko'rib chiqadi, shuning uchun hisobot faylni qayta bog'laganidan so'ng qo'yilgan sirli hujumni bosib chiqarolmaydi. Arxiv shuningdek, har bir zarur maxfiylik yuzi uchun to'g'ri chap va o'ng fayl yo'nalishlari, turlari, bayt uzunliklari va SHA-256 distektlarini bog'laydigan kanonik differensial juftlik manifestini ham o'z ichiga olishi kerak. Oxirgi tekshiruvchi mustaqil ravishda teng o'lchamlarni talab qiladi va JSON ommaviy shakllarini qayta hisoblaydi, shuning uchun o'sha o'lchovdagi tarkibiy sotuv yoki juft bo'lmagan differensial faylini sotuv to'g'risidagi hisobotni qayta yozish orqali yashirish mumkin emas.
+Oxirgi toza Iroha chekautdan, chiqish manba inventarini yarating va uni ushbu chekautdan tashqaridagi oldindan mavjud bo‘lgan paket ildiziga muhrlang:
+
+```sh
+python3 scripts/private_settlement_source_evidence.py \
+  --repository-root . \
+  --bundle-root /absolute/path/to/release-bundle
+```
+
+Ishlab chiqaruvchi sahnalashtirilgan, sahnalashtirilmagan, izsiz yoki birlashtirilmagan fayllarda va yozib olish davomida har qanday manba o‘zgarishida ishlamay qoladi. U xom manba-kod versiyasi obyekti, kanonik Git daraxti inventari, aniq ikkilamchi yo‘l ro‘yxati, deterministik manba muhrini va `Cargo.lock` saqlaydi; yakuniy reliz manifestida uning JSON natijasidagi har bir artefakt deklaratsiyasini o‘z ichiga oladi. Bu yakuniy DOI-bundle tekshiruvchisini yoki har qanday tashqi reliz eshigini bekor qilmaydi.
+
+Manba muhrini ko'chma va yopiq bo'lib ishlaydi: ishlab chiqaruvchi va yakuniy tekshiruvchi barcha arxivlangan symlink grafini yakuniy hal qiladi, shunda ildizda ko'rinadigan, lekin boshqa link orqali chiqadigan, tsikl, `.git` o‘tish yoki Windows uslubidagi nishon bo‘lgan linklar yaratilishidan oldin rad etiladi. Tuzilgan manba va darvoza hisobotlari faqat kriptografik xulosa qiymati va uzunligi chiqarish manifestiga mos keladigan cheklangan barqaror fayllardan tahlil qilinadi, va har bir manba yuklanishi turi aniq bir marta uchrashishi kerak.
+
+Har bir xom xato yugurishi va kechikish namunasi to‘liq chiqarilgan manba-kodining tahririni, bitta tuzilgan pinli apparat tavsifining SHA-256 va uning aniq ishtirokchi-soni konfiguratsiyasining SHA-256 ni bog‘lashi kerak. Arxivga kiriting bitta protokol-standart konfiguratsiya manifesti, N=2,3,4,8,16 ni qamrab oladi; har bir yozuv saqlangan konfiguratsiya baytlariga ishora qilishi va har bir ma’lumot makonida aniq to‘rtta validatorni, 3-of-4 quorumini va majburiy imzolangan RS16 DA/RBC ni ta’kidlashi kerak. Nashr tekshiruvchisi boshqa qurilish, apparat profili yoki tarmoq konfiguratsiyasida yaratilgan qisqacha ma'lumotlarni rad etadi. Har bir yakka yo'qotish, faza kesilishi va uzluksiz-buzilish qatori shuningdek SHA-256-cheklangan ichida global qayta ishlatilmaydigan aniq JSONL yozuv havolalarini nomlashi kerak tasdiqlangan-boshqaruvchi va atomlilik-qayd etish artefaktlari. Reliz tasdiqlovchisi ushbu kriptografik xulosalarni hal qiladi va satrlarning ish identifikatori, sinov indeksi va parametrlar, boshqaruvchi tasdiqlashi yoki tiklash natijasi, uzluksiz tekshirish soniga mos kelishini talab qiladi, va nol qisman ko‘rinish va sarflanish kuzatuvlari. Keyinchalik chiqarilgan p95/p99 taqqoslashlar ham apparati, konfiguratsiyalari yoki o‘lchov talablarining nomzodnikidan farq qiluvchi imzolangan asosni rad etadi. Yakuni tekshiruvchi barcha xabar qilingan foizli ko'rsatkichlarni, MADs va saqlangan xom namunalar asosida deterministik ishonch intervallarini qayta yaratadi, ajratilgan benchmark xulosasiga ishonish o'rniga. Shuningdek, u kanari manifestni qayta yuklaydi va har bir arxivlangan maxfiylik yuzasini mustaqil ravishda qayta skanerlashni amalga oshiradi, shuning uchun hisobot fayl kriptografik yakunlarini qayta bog'lagandan keyin joylashtirilgan sirli hujumni bostira olmaydi. Har bir faqat sirli ishga tushirish uning egasiga qarashli filtrlarsiz loopback pcap, xom tcpdump stderr va nol yo‘qotish statistikasi, bitta protokol-standart port manifesti, siqilgan cheklangan manba arxivi va barcha hamkasblar atomiklik kuzatuvlarini saqlab qolishi kerak. So‘nggi tekshiruvchi nashr qilingan qisqacha ma’lumotlarga ishonish o‘rniga, arxivlangan baytlardan portga bog‘langan paket bo‘linmasi, manba prognozlari va bazaviydan terminal atomarlik tekshiruvlarini qayta bajaradi.
+
+Arxivda shuningdek, har bir zaruriy maxfiylik yuzasi uchun aniq chap va o‘ng fayl yo‘llari, turlari, bayt uzunliklari va SHA-256 kriptografik xashlarini bog‘laydigan kanonik juftlashtirilgan trafik hisoblash va differensial-juft manifestlar bo‘lishi kerak. E'lon qilingan ildizlari aniq juftlangan arxiv inventarizatsiyasini o'z ichiga olishi kerak. Tekshirish vositasi oddiy sirtlar uchun butun fayl o'lchamlari va JSON jamoat shakllarining tengligini talab qiladi. Entropiya tashuvchi xom loopback yozuvi va siqilgan cheklangan manbali arxiv aniq hajm istisnolaridir; u buning o‘rniga paket aloqasi turini va har bir paket uzunliklarini, cheklangan manbali identifikatorlarni va belgilangan shakldagi qator uzunliklarini solishtiradi. Har bir Torii so‘rov/javob, ommaviy/cheklangan P2P paket, blok, so‘rov, voqea, jurnal va telemetriya trafik hisoblagichi ham mos kelishi kerak. Paket shaklidagi o‘zgarish, bir xil o‘lchamdagi strukturaviy oqim, noto‘g‘ri kelib chiqishi da’vosi, yoki juftlanmagan fayl oqim hisobotini va uning kriptografik xeshlarini qayta yozish orqali yashirilishi mumkin emas.

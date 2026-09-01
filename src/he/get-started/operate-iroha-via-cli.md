@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /get-started/operate-iroha-via-cli.md
-translation_source_hash: 0a0a0735015dee015da76d5a9f5d174f8ae8b2ad67ff8924d9596850a33fc1c1
+translation_source_hash: c070c86b715b36079a7b6a47de2e31144187d7ebc6309f294a346be61a372660
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # פעל Iroha 3 דרך CLI {#operate-iroha-3-via-cli}
 
 ה- `iroha` בינארי הוא קלינט קו הפקודה ל- Iroha 3. השתמש בו כדי לבחון את מצב הספר הגדול, להגיש עסקאות ולבדוק נקודות הסיום של המפעיל.
@@ -34,7 +33,7 @@ CLI מאורגן לקבוצות הפיקוד הבאות:
 
 - `account` עבור קיצוצים ממוקדים על חשבון
 - `tx` עבור עוזרים ברמה של עסקאות
-- `ledger` עבור ספריה כתיבה וקריאה
+- `ledger` לקריאה ולכתיבה בספר החשבונות
 - `ops` לדיאגנסטיקה של המפעיל
 - `app` עבור עוזרי האפליקציה API
 - `contract` עבור הפעלת חוזים והזמנות
@@ -47,7 +46,7 @@ CLI מאורגן לקבוצות הפיקוד הבאות:
 
 ## 3. נסה את הרשת המבחנית הציבורית Taira {#_3-try-the-public-taira-testnet}
 
-אתה יכול לנסות בדיקות קריאה בלבד Taira לפני הפעלת עמיתי מקומי או יצירת חותם. פקודות אלה משתמשים בדרכים ציבוריות Torii JSON ולא מבזבזים את testnet XOR.
+אתה יכול לנסות בדיקות קריאה בלבד Taira לפני הפעלת צומתי מקומי או יצירת חותם. פקודות אלה משתמשים בדרכים ציבוריות Torii JSON ולא מבזבזים את testnet XOR.
 
 בדוק את מצב Taira:
 
@@ -76,9 +75,9 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=10' \
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-יציר `taira.client.toml` רק כאשר אתה מוכן לבחון פקודות חתומות. ראה [Connect to SORA Nexus Dataspaces](/he/get-started/sora-nexus-dataspaces.md) עבור הקונפיגציה, הכנור, וזרם קאנארי. אל תפעיל פקודות כתיבה נגד Taira עד שהחשבון יתממן עם נכס דמי הכנור.
+צרו את `taira.client.toml` רק כאשר אתם מוכנים לבדוק פקודות חתומות. להגדרות, לשירות המימון ולתהליך הקנרית ראו [התחברות למרחבי הנתונים של SORA Nexus](/he/get-started/sora-nexus-dataspaces.md). אל תריצו פקודות כתיבה מול Taira לפני שהחשבון מומן בנכס העמלה שמספק שירות המימון.
 
-עבור כל דוגמא בתשלום Taira CLI, שמור את עוזר המנקה מ- [Get Testnet XOR על Taira](/he/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) כ- `taira_faucet_claim.py`, ולאחר מכן תביאו קודם testnet XOR:
+עבור כל דוגמא בתשלום Taira CLI, שמור את עוזר ה-faucet מ- [Get Testnet XOR על Taira](/he/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) כ- `taira_faucet_claim.py`, ולאחר מכן תביאו קודם testnet XOR:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
@@ -92,9 +91,9 @@ iroha --config ./taira.client.toml ledger asset get \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-אם הפאזל של המזרקה או מסלול התביעה חוזר `502`, חכו ותנסו שוב. זו בעיה של זמינות רשתת מבחן ציבורית, ולא אות לשחזור מפתחות החשבון.
+אם הפאזל של faucet או מסלול התביעה חוזר `502`, חכו ותנסו שוב. זו בעיה של זמינות רשתת מבחן ציבורית, ולא אות לשחזור מפתחות החשבון.
 
-לאחר שהמשארית נראית, לצרף את הנתונים המטאטאליים של נכס העלויות לכתוב:
+לאחר שהמשארית נראית, לצרף את המטא-נתונים של נכס העלויות לכתוב:
 
 ```bash
 printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
@@ -104,7 +103,7 @@ iroha --config ./taira.client.toml \
   ledger transaction ping --msg "hello from faucet-funded taira"
 ```
 
-## 4. הפקודות הבסיסיות של Ledger {#_4-basic-ledger-commands}
+## 4. פקודות ספר החשבונות הבסיסיות {#_4-basic-ledger-commands}
 
 רשום את כל הדומנים:
 
@@ -124,7 +123,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml \
   app alias setup apply --plan-file ./docs-domain.plan.json
 ```
 
-התכוונה מחזיקה את חלל הנתונים ID, חשבון הבעלים הקנוני, תקופת השכרת, ומבטחת הציטוט הנוכחית. מתכנן בודק מצב חי ומחזיר את התוכנית האטומית המדויקת `EnsureAlias` להגיש. אל תדפיס באופן ידני הערכים של שמירת רשת אחרת.
+הכוונה מקבעת את ה־dataspace ID, את חשבון הבעלים הקנוני, את תקופת החכירה ואת מנגנון ההגנה העדכני על הצעת המחיר. המתכנן מאמת את המצב החי ומחזיר את תוכנית `EnsureAlias` האטומית המדויקת להגשה. אל תעתיקו ידנית ערכי הגנה מרשת אחרת.
 
 שלח עסקאות פינג פשוטות:
 
@@ -141,28 +140,42 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 
 ## 5. פיקוד המפעיל {#_5-operator-commands}
 
-מצב ההסכמה:
+פקודות של מפעיל הסכמה דורשות מפתח זמן עבודה רשמי. שמור אותו מחוץ ל `client.toml` ותעבירו את הקובץ של הבעלים בלבד במפורש:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi status
+: "${OPERATOR_KEY_FILE:=./secrets/operator.key}"
+
+cargo run --bin iroha -- \
+  --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format text ops sumeragi status
 ```
 
-תמונה של איחור פר-שלב:
+אבחון לא־סמכותי של התור, שרשרת עיבוד העיבוד, הבחירות וה־lane:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi phases
+cargo run --bin iroha -- \
+  --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format text ops sumeragi diagnostics
 ```
 
-זמינות, קולקטור, מאחרון של RBC ותצלום של VRF:
+תעודות קוורום גבוהים ביותר:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi telemetry
+cargo run --bin iroha -- \
+  --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format text ops sumeragi qc
 ```
 
 פרמטרים של הסכמה על שרשרת:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ops sumeragi params
+cargo run --bin iroha -- \
+  --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format text ops sumeragi params
 ```
 
 ## 6. לאן ללכת אחר כך? {#_6-where-to-go-next}
@@ -170,9 +183,9 @@ cargo run --bin iroha -- --config ./localnet/client.toml ops sumeragi params
 - [SDK לימודי הדרכה](/he/guide/tutorials/)
 - [נקודות קצה Torii ](/he/reference/torii-endpoints.md)
 - [עבודה עם Iroha בינרים](/he/reference/binaries.md)
-- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/README.md)
+- [קובץ README של ה־CLI](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/README.md)
 
-כדי לשחזר תמונה מלאה של סיוע מרקדון מהמחאה המקורית, תפעול:
+כדי לשחזר תמונת מצב מלאה של סיוע מרקדון מהמחאה המקורית, תפעול:
 
 ```bash
 cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/CommandLineHelp.md

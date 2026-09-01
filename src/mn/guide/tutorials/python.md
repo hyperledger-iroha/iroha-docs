@@ -1,35 +1,36 @@
 ---
 translation_locale: mn
 translation_source: /guide/tutorials/python.md
-translation_source_hash: a87e8db2b77fa4952689276ae538e65b3b51070749dd0938a9e18d3a6a3dc5e4
+translation_source_hash: d0ecbade221ceba455730e80c6e12db930c65a4cbcf9e643c1c2d4cba47b0940
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Python {#python}
 
-Өмнөговь ажлын орон зай дахь Python SDK нь `iroha-python`. Эхний Iroha 3 нэвтрүүлэг нь өнөөгийн Torii болон Norito гадаргуудыг зорилт болгодог. Таны интеграцийн ашигласан багцын хувилбар эсвэл эх үүсвэрийн шинэчлэлийг шилжүүлж, SDK болон түймэр ижил төстэй жижиг хэлбэртэй шинэчлэл дээр байх болно.
+Дээд урсгалын ажлын орчин дахь Python SDK нь `iroha-python` байна. Анхны Iroha 3 гаргалт нь одоогийн Torii ба Norito гадаргууг чиглэлээ. Интеграцчилалд ашигласан багцын хувилбар эсвэл эх кодын өөрчлөлтийг тогтоож, ингэснээр SDK ба зангилаа ижил дарааллаар хадгалагдах форматын хувилбарт үлдэнэ.
 
-Доорх зөвхөн унших жишээ нь Taira олон нийттэй `https://taira.sora.org` харьцуулахад шалгагдсан. Мутажлах жишээ бол гүйлгээний загварууд юм: тэдгээрийг өргөн мэдүүлэхээс өмнө жинхэнэ Taira эрх мэдэл, хувийн ач холбогдол, газрын метабараа болон зорилтот замаар шаардагдах оператор токенүүдийг шаарддаг байна.
+Доорх нэргүй уншигдах жишээнүүд нийтийн Taira дээр `https://taira.sora.org`-ыг чиглүүлдэг. Маршрутыг зөвхөн уншигдах байж болох ч ганц протокол-стандартын дансны гарын үсэг эсвэл яг сүлжээний операторын гарын үсгийг шаарддаг; тэдгээр жишээнүүд тусад нь тэмдэглэгдсэн байдаг. Өөрчлөгдөж буй жишээнүүд нь гүйлгээний загвар бөгөөд тэдгээрийг илгээхийн өмнө бодит Taira баталгаажуулах эрх мэдэл, хувийн түлхүүр, төрөлжсөн төлбөрийн хүсэлтийг, хангалттай тестнет XOR, болон зорилтот замаар шаардагдах нэвтрэлт шаардлагыг шаарддаг.
 
-Энэ жагсаалтыг дараах байдлаар ашигла:
+Эдгээр жишээг дараах дарааллаар ашиглана уу:
 
-|Сэдж .|Олон нийтийн Taira эсрэг гүйх? |Та юу хэрэгтэй вэ?|
-| --- | --- | --- |
-|Зөвхөн унших үйлчлүүлэгчдийн дуудлага |Тийм ээ .|Python багц ба сүлжээний хүртээмжтэй |
-|Орон нутгийн гарын үсэг зурагч, зааварч . |`submit()` хүртэл сүлжээний дуудлага байхгүй.|Үндэсний өргөтгөлийн болон таны гол материалын |
-|Арилжаа , үйлчилгээний дуудлагаг өөрчлөх|Зөвхөн өөрийн хөрөнгө оруулалттай дансанд .|Төрийн захиргааны бүртгэл, хувийн түлхүүр, ID сүлжээ, төлбөрийн метадэтгэлэг, төлбөрийг хадгалах хөрөнгийн үлдэгдэл, замын токенүүд |
-|Фрейм кодек, крипто болон GPU туслалцааг холбох |Зөвхөн орон нутгийн .|Үндэсний өргөтгөлийг; GPU туслагчдад мөн CUDA-ийн чадвартай хяналтын сүлжээ хэрэгтэй |
+|Талбай|Олон нийтийн эсрэг Taira-д уралдаарай?|Танд хэрэгтэй зүйл|
+| --------------------------------------------- | ------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
+|Нэрээ нууцлаж дуудлагыг уншсан|Тийм| Python багц болон сүлжээний хандалт|
+|Данс эсвэл оператороор баталгаажсан уншлага|Зөвхөн өөрийнхөө хүлээн зөвшөөрсөн таних тэмдгээр|Яг Taira `NetworkId` ба холбогдох данс эсвэл операторын түлхүүр|
+|Орон нутгийн гарын үсэг зурж, зааварчилгаа боловсруулах хүмүүс| `submit()` хүртэл сүлжээний дуудлага байхгүй|Уугуул өргөтгөл ба таны түлхүүр материал|
+|Гүйлгээ ба үйлчилгээний дуудлагын хувиргалт|Зөвхөн таны өөрийн санхүүжүүлсэн дансаар|баталгаажуулалтын гол данс, хувийн түлхүүр, яг Taira `NetworkId`, бичсэн шимтгэлийн зорилго, шимтгэлийн хөрөнгийн үлдлээ, болон маршрутын токенууд|
+|Фрейм кодек, крипто ба GPU туслахуудыг холбох|Зөвхөн орон нутгийн|Уламжлалт өргөтгөл; GPU туслагчид мөн CUDA чадвартай арын систем хэрэгтэй|
 
-## Нэвтрүүлэг {#install}
+## Суурилуулах {#install}
 
-Тус багцын метадангийн нэр `iroha-python`. Үргэлжгүй гэж бүү сана. PyPI монтаж нь шууд тохиромжтой Taira Сүлжээ. Таны интеграцийн зорилтуудыг нэгтгэсэн ижил дооргийн шинэчлэлээс үүссэн төвийг эсвэл эх үүсвэрийн шалгалтыг байгуулж:
+Сав баглаа боодолын мета өгөгдлийн нэр нь `iroha-python` байна. Залгалтгүй PyPI суулгалт амьд Taira сүлжээтэй нийцнэ гэж бүү таамагла. Таны интеграцийн зорилтот эх хэвлэлээс бүтээсэн дугуй эсвэл эх кодын ажиллах хуулбарыг суулгана уу:
 
 ```bash
 python -m pip install /path/to/iroha_python-*.whl
 ```
 
-Хэрэв таны төсөл нь өмнөд хэсгийн ажлын орон зайг шууд хэрэглэж байгаа бол Python -ийн хамаарлыг татаж, `Instruction`, `TransactionDraft`, гарын үсэг зурах, крипто, SoraFS -ийн үндсэн туслах, GPU -ийн туслагч эсвэл Connect-ийн рамкийн кодэк ашигладаг жишээг үйлдэхээс өмнө үндсэн өргөтгөлийг бариарай. `python/iroha_python/README.md` тоног төхөөрөмжийг ашиглаж, дараа нь гаралтай экспортын ачаалалтай болохыг шалгаарай:
+Хэрэв төсөл upstream ажлын орчныг шууд ашигладаг бол Python хамаарлуудыг суулгаж, `Instruction`, `TransactionDraft`, гарын үсэг, криптограф, SoraFS-ийн native туслах, GPU туслах эсвэл Connect frame codec ашигладаг жишээг ажиллуулахын өмнө native өргөтгөлийг бүтээнэ. Upstream-ийн `python/iroha_python/README.md`-д заасан бүтээх командыг ашиглаад, native экспорт ачаалагдаж буйг шалгана:
 
 ```bash
 cd python/iroha_python
@@ -41,11 +42,11 @@ print(generate_ed25519_keypair().public_key.hex())
 PY
 ```
 
-Хэрэв `create_torii_client` импортын `Instruction` эсвэл `generate_ed25519_keypair` үр дүнгүй бол цэвэр Python багцыг ашиглаж болно, гэхдээ үндэсний өргөтгөл нь байхгүй.
+Хэрэв `create_torii_client` импортолж байвал гэхдээ `Instruction` эсвэл `generate_ed25519_keypair` амжилтгүй болвол, цэвэр Python багц нь боломжтой боловч уугуул өргөтгөл нь биш юм.
 
-## Удахгүй эхлэх {#quickstart}
+## Хурдан эхлэлт {#quickstart}
 
-Олон нийтийн, зөвхөн уншигч Taira төгсгөлийн цэгүүдээс эхэлнэ:
+Олон нийтийн, зөвхөн унших боломжтой Taira API төгсгөлүүдээс эхлэ.
 
 ```python
 from iroha_python import (
@@ -63,23 +64,31 @@ for account in accounts.items:
     print(account.id)
 ```
 
-## Хамтарсан зохион байгуулалт {#shared-setup}
+## Хуваалцсан тохиргоо {#shared-setup}
 
-Үргэлттэй загваруудад энэ тохируулгыг ашигла. Та нэвтрүүлэхээс өмнө байр эзэмшигч бүрийн оронд Taira эрх мэдэл, хувийн түлхүүр, токен, хөрөнгө/хууль IDs оруулна уу.
+Энэ тохиргоог өөрчлөгдөж буй загваруудад ашигла. Илгээхээсээ өмнө бүх орлуулагчийг таны хэвлэн гаргах үеийн Taira эрх бүхий голын, хувийн түлхүүр, токен болон хөрөнгө/дансны ID-ээр солино уу.
 
-`authority` бол гүйлгээний гарын үсэг зурагч данс юм. `private_key` нь тухайн дансанд нийцэх ёстой, `CHAIN_ID` нь зорилтот сүлжээтэй нийцэх хэрэгтэй бөгөөд `TX_METADATA` нь сүлжээ хүлээсэн төлбөрийн талбайг багтаасан байх ёстой. Доорх байр эзэмшигчид санаатайгаар хүчингүй байдаг тул тэдгээр нь санамсаргүй байдлаар өргөн мэдүүлээгүй байна.
+`authority` бол гүйлгээнд гарын үсэг зурдаг данс бөгөөд `private_key` үүнтэй таарч байх ёстой. Гүйлгээнүүд Taira-ийн яг гарал үүсэлтэй `NetworkId`-д холбогддог; гинж UUID нь гүйлгээний таних тэмдэг биш, харин байршуулалтын шошго юм. Төлбөр нь програмын метадатанаас хамааралгүйгээр бичигдсэн төлбөрийн зорилго болон яг одоогийн амьд үнийн дүнг ашигладаг. Доорхи данс болон түлхүүрийн орлуулагчид санаатайгаар хүчин төгөлдөр бус байдаг тул тэд санамсаргүйгээр илгээгдэж болохгүй.
+
+Доорх бичих зүйл нь одоогийн тогтоожээ Taira блокчэйн санаачлын хэв шинж юм. Туршилтын сүлжээ дахин тохируулах нь үүнийг өөрчлөх боломжтой, тиймээс үүнийг гарын үсэгтэй нэвтрүүлгийн профайлээс шинэчилж, сүлжээ UUID-ээс битгий таамагла.
 
 ```python
 from iroha_python import (
     Ed25519KeyPair,
     Instruction,
+    LocalSigningContext,
+    NetworkId,
+    ToriiClient,
+    ToriiCanonicalRequestAuth,
     TransactionConfig,
     TransactionDraft,
-    create_torii_client,
+    authority_fee_payment,
 )
 
 TORII_URL = "https://taira.sora.org"
-CHAIN_ID = "fc56984b-2be7-431d-840e-21514d1883f0"
+TAIRA_NETWORK_ID = NetworkId.parse(
+    "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+)
 AUTH_TOKEN = None
 
 # Replace these placeholders with the real signing keys for your accounts.
@@ -90,68 +99,83 @@ bob_pair = Ed25519KeyPair.from_private_key(bytes.fromhex("<bob-private-key-hex>"
 alice = "<alice-account-id>"
 bob = "<bob-account-id>"
 
+canonical_auth = ToriiCanonicalRequestAuth(
+    network_id=TAIRA_NETWORK_ID.literal,
+    account_id=alice,
+    signer=alice_pair.sign,
+)
+
 ROSE_DEFINITION = "rose#wonderland"
 ROSE_ASSET = "<rose-asset-id>"
 BADGE_NFT = "badge$wonderland"
 
-TX_METADATA = {
-    # Public Taira fee asset. Use the configured XOR asset on your network.
-    "gas_asset_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
-}
+APP_METADATA = {"source": "python-docs"}
+# Torii replaces the empty maxima with an exact, validated live fee quote before
+# anything is signed. The payer remains the transaction authority.
+BASE_FEE_PAYMENT = authority_fee_payment(charge_limits=[])
 
-client = create_torii_client(TORII_URL, auth_token=AUTH_TOKEN)
+client = ToriiClient(
+    TORII_URL,
+    local_signing_context=LocalSigningContext(TAIRA_NETWORK_ID),
+    canonical_request_auth=canonical_auth,
+    auth_token=AUTH_TOKEN,
+)
 
 
 def submit(*instructions):
-    # This is the network boundary: build, sign, submit, and wait for status.
-    return client.build_and_submit_transaction(
-        chain_id=CHAIN_ID,
-        authority=alice,
-        private_key=alice_pair.private_key,
-        instructions=list(instructions),
-        metadata=TX_METADATA,
-        wait=True,
+    draft = TransactionDraft(
+        TransactionConfig(
+            network_id=TAIRA_NETWORK_ID,
+            authority=alice,
+            fee_payment=BASE_FEE_PAYMENT,
+            metadata=APP_METADATA,
+        )
     )
+    draft.extend_instructions(instructions)
+
+    # Freeze one payload, obtain its exact fee limits, and sign that same payload.
+    envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
+    status = client.submit_transaction_envelope_and_wait(envelope)
+    return envelope, fee_quote, status
 ```
 
-`Instruction.*` нь зөвхөн бүтээн байгуулалтын сургалтын ашигтай ачааллыг дууддаг. `submit()` бол SDK нь гүйлгээг гарын үсэг зурж, Torii руу илгээж, статусын хүлээлт хийх цэг юм.
+`Instruction.*` зөвхөн зааврын агуулгыг бүтээдэг. `submit()` нь SDK бодит төлбөрийн үнийн төсөөллийг авдаг, яг төлөвлөсөн агуулгыг гарын үсэг зурдаг, үүнийг Torii руу илгээдэг, бөгөөд төлвийг хүлээдэг цэг юм.
 
-## Төлбөр, газ {#fees-and-gas}
+## Төлбөр ба гүйлгээний процессын зардал {#fees-and-gas}
 
-Taira дээр төлбөрийн хөрөнгийг олон нийтийн кран санхүүжүүлдэг бөгөөд гүйлгээний метадэтгэл нь `gas_asset_id` -ийг багтаасан байх ёстой. Minamoto-д төлбөрийг бодит XOR -ээр төлдөг бөгөөд ID -ийн хөрөнгө нь тухайн сүлжээний конфигурацыоноос үүдэлтэй.
+Бичих гүйлгээнд `FeePaymentIntent` бичигдсэн ба санхүүжсэн хураамжийн хөрөнгийн тэнцэл хэрэгтэй. Taira дээр нийтийн тестнетийн санхүүжилтийн үйлчилгээ тестнет XOR-г санхүүжүүлдэг. Python SDK тогтсон гарын үсэггүйг илгээдэг заранд зориулсан Torii төлбөрийн яг үнийн үнэлгээнд зориулсан ачаа, үнийн санал төллөө авагчийг эсвэл ачааг орлуулсангүй гэдгийг баталгаажуулж, үнийн санал болгосон санааг гарын үсэг зурах. Гүйлгээний metadata-д төлбөрийн сонголтыг битгий оруулаарай.
 
-Төрийн төлбөрийн метабараа нь тухайн гүйлгээнд хамаарна, хувь хүний даалгавар дээр биш. Дээрх `submit()` туслах `TX_METADATA`-ийг бүтээн байгуулалт хийх бүрт:
+Дээрх `submit()` туслах нь төлбөрийг гүйлгээний гарын үсэг зурсан данснаас хэвлэж эхэлдэг бөгөөд түүний цэнэглэх хязгаарууд санаатайгаар хоосон байдаг. `quote_and_sign()` гарын үсэг зурхаас өмнө амьд үнийн саналаас тэдгээрийг бөгөлдөг:
 
 ```python
-TX_METADATA = {
-    # Taira expects the fee asset definition in transaction metadata.
-    "gas_asset_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
-}
-
-envelope, status = client.build_and_submit_transaction(
-    chain_id=CHAIN_ID,
-    authority=alice,
-    private_key=alice_pair.private_key,
-    # Fee metadata is attached to the transaction, not the instruction.
-    instructions=[
-        Instruction.set_account_key_value(
-            alice,
-            "python_fee_example",
-            "ready",
-        )
-    ],
-    metadata=TX_METADATA,
-    wait=True,
+draft = TransactionDraft(
+    TransactionConfig(
+        network_id=TAIRA_NETWORK_ID,
+        authority=alice,
+        fee_payment=authority_fee_payment(charge_limits=[]),
+        metadata={"source": "python-fee-example"},
+    )
 )
+draft.add_instruction(
+    Instruction.set_account_key_value(
+        alice,
+        "python_fee_example",
+        "ready",
+    )
+)
+envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
+status = client.submit_transaction_envelope_and_wait(envelope)
+
+for limit in fee_quote["intent"]["value"]["charge_limits"]:
+    print(limit["asset_definition_id"], limit["max_amount"])
 ```
 
-Хөдөлмөрийг илгээхийн өмнө эрх баригчдын дансанд төлбөрийн хөрөнгө хангалттай байгаа эсэхийг шалгаарай. Тухайн кран, актив ID нь сүлжээний хувьд тодорхой бөгөөд энэ бол Taira хэлбэр:
+Бичлэг илгээхээс өмнө зөвшөөрлийн үндсэн данс хангалттай шимтгэлийн хөрөнгөтэй байгаа эсэхээ шалгаарай. Нарийн тестнетийн санхүүжилтийн үйлчилгээ ба хөрөнгийн ID нь сүлжээний тусгай байдаг; энэ нь Taira хэлбэр юм:
 
 ```python
 FEE_ASSET_DEFINITION = "6TEAJqbb8oEPmLncoNiMRbLEK6tw"
 # The faucet returns the concrete account asset ID to check here.
 FEE_ASSET_ID = "<fee-asset-id-from-faucet-response>"
-TX_METADATA = {"gas_asset_id": FEE_ASSET_DEFINITION}
 
 # Fail before submitting if the signer cannot pay gas.
 fee_assets = client.list_account_assets_typed(
@@ -163,29 +187,28 @@ if not fee_assets.items:
     raise RuntimeError("fund the authority account with the Taira fee asset first")
 ```
 
-Бетон `asset_id` нь тэнцвэр хяналт шалгаруулалтаар ашиглахын тулд эргүүлнэ. `gas_asset_id` метрийн өгөгдлийн талбай нь төлбөрийн хөрөнгийн тодорхойлолтыг ID ашигладаг.
+Тестнет санхүүжүүлэх үйлчилгээ баланс шалгах зориулалтаар ашиглах тодорхой `asset_id`-ыг буцаана. Амьд үнийн саналыг `FEE_ASSET_DEFINITION` төлбөр авсан эсэхийг шалга; гүйлгээгээр тухайн хөрөнгийг метадатаар сонгохгүй.
 
-Хэрэглэлийн метабараа төлбөрийн метабараасаа тусгаарлан хадгалж, гүйлгээний бүтэц хийхдээ газрын тосыг нэгтгэж байна:
+Програмын мета өгөгдөл нь сайн дурынх бөгөөд төлбөрийн утга агуулагдаагүй:
 
 ```python
 APP_METADATA = {"source": "python-docs"}
-# Merge app metadata with required fee metadata before building the draft.
-metadata = {**TX_METADATA, **APP_METADATA}
 
 draft = TransactionDraft(
     TransactionConfig(
-        chain_id=CHAIN_ID,
+        network_id=TAIRA_NETWORK_ID,
         authority=alice,
-        metadata=metadata,
+        fee_payment=BASE_FEE_PAYMENT,
+        metadata=APP_METADATA,
     )
 )
 ```
 
-Хэрэв та төлбөрийн метадэтгэлийг орхиж, буруу төлбөрийн актив ашигласан бол эсвэл санхүүжилтгүй дансанд гарын үсэг зурсан бол бодит сүлжээ нь тушаалын ашигтай ачаалал өөрөөр хэлбэл хүчин төгөлдөр байсан ч гүйлгээг татгалзах ёстой.
+Хэрэв та хураамжийн зорилгыг орхиж, төлөвлөгөөгүй активын үнийг хүлээн авбал, үнийн дүнг тогтоосны дараа ачааг өөрчилбөл, эсвэл санхүүжилтгүй дансаар гарын үсэг зурвал, гүйлгээг илгээж болохгүй.
 
-## Taira-Тэглэгдсэн зөвхөн унших дуудлага {#taira-checked-read-only-calls}
+## Нэр нь нууц Taira уншиж байна {#anonymous-taira-reads}
 
-Эдгээр дуудлага нь Taira олон нийтэд амжилттай хүргэж байна:
+Эдгээр дуудлагууд нь каталогийн хаяг нь нэрээ нууцлах уншлагыг зөвшөөрдөг Taira чиглүүлэгчийг ашигладаг:
 
 ```python
 client = create_torii_client("https://taira.sora.org")
@@ -197,49 +220,45 @@ parameters = client.request_json("GET", "/v1/parameters", expected_status=(200,)
 # Typed helpers parse pagination and records into dataclasses.
 accounts = client.list_accounts_typed(limit=1)
 domains = client.list_domains_typed(limit=1)
-definitions = client.query_asset_definitions_typed(limit=1)
+definitions = client.list_asset_definitions_typed(limit=1)
 
 # These calls inspect live node subsystems without mutating state.
-time_now = client.get_time_now_typed()
-time_status = client.get_time_status_typed()
-sumeragi = client.get_sumeragi_status_typed()
-connect = client.get_connect_status_typed()
+time_now = client.get_time_now()
 
 print(status["build"]["version"])
-print(parameters["sumeragi"]["block_time_ms"])
+print(parameters["sumeragi"]["block_cadence_ms"])
 print(accounts.total, domains.total, definitions.total)
-print(time_now.now_ms, len(time_status.samples), sumeragi.leader_index)
-print(connect.enabled, connect.sessions_active)
+print(time_now.now_ms)
 ```
 
-`/v1/status`, олон нийтийн харьцааны жагсаалт, Sumeragi RBC үлгэрийн шинжилгээ, түйүлгийн удирдахчийн хяналт тавих зураг, Connect апп-ын бүртгэлийн захиргаа зэрэг чиглэлүүд шалгалтын үеэр Taira дээр олон нийтэд нээлттэй байгаагүй. `request_json("GET", "/status")`-ийг Taira-ийн олон нийтийг хамарсан түйүлний байдлын үр ашигтай ачаалалд ашиглаж байна.
+`/v1/time/status` ба бүх `/v1/sumeragi/*` операторын цэг-цагийн өгөгдлийн харагдах байдал нь төлөвийг өөрчилдөггүй байсан ч яг сүлжээний операторын гарын үсгийг шаарддаг. Нэргүй зангилаанд `request_json("GET", "/status")`-ыг ашигла. Консенсус буюу нодын дотоод цагийн оношилгооны хувьд доор дурдсан статусын өгөгдөл болон операторын тохиргоог ашиглана уу. Холболтын статус нь тусдаа протоколын маршрут бөгөөд тухайн сессийн удирдлагын токен хэрэгтэй.
 
-## Барилгын сургалт {#instruction-builders}
+## Заавар баригчид {#instruction-builders}
 
-SDK нь хамгийн түгээмэл сургалтын гэр бүлд зориулсан хэвлэлийн бүтээн байгуулагчдыг илрүүлж, нэгдүгээр зэрэглэлийн Python арга барилыг төсөөлөхгүй байгаа вариантуудад JSON -ийн аврах хаалгыг нэвтрүүлнэ. Дараах хэсгүүд нь өөрчлөлт орсон транзакцын загварууд бөгөөд гарын үсэг зурсан бүртгэлгүйгээр олон нийтэд Taira хүргүүлээгүй байна.
+SDK нь хамгийн нийтлэг зааврын гэр бүлүүдэд зориулсан төрөлжсөн бүтээх програмуудыг ил болгож, JSON нь анхдагч Python аргууд биш хувилбаруудын хувьд оргон зайлж болох гарцыг өгдөг. Дараах хэсгүүд нь гүйлгээний загварыг өөрчилж байгаа бөгөөд нээлттэй Taira-д гарын үсэг бүхий дансгүйгээр илгээгээгүй.
 
-Python-ийн үнэ цэнэүүдийг хэвийн болгож, хүчингүй хэлбэр дээр эрт алдаа гаргадаг. `Instruction.from_json` -ийг зөвхөн Python -ийн туслалцаагүй суурьчилгааны хувилбар хэрэгтэй үед ашиглах.
+Боломжтой бол төрөлжсөн туслахуудыг сонгоорой: тэдгээр нь хэвийн болгодог Python үнэт зүйлсийг шалгаж, буруу хэлбэртэй тохиолдолд эрт буруу гарга. Ашигла `Instruction.from_json` зөвхөн зааваргүй хувилбар хэрэгтэй үед Python туслагч одоогоор байхгүй.
 
-|Сургалтын гэр бүл |Python гадаргын .|
-| --- | --- |
-|Бүртгэл| `register_account`, `register_asset_definition_numeric`, `register_rwa`, `register_time_trigger`, `register_precommit_trigger`; `register_domain` Genesis/bootstrap хэрэгслийн зориулалттай |
-|Тодрууллаагүй болгох|`unregister_trigger`; бусад хувилбарын хувьд `Instruction.from_json` ашиглах |
-|Мунт/Бурна |`mint_asset_numeric`, `burn_asset_numeric`, `mint_trigger_repetitions`, `burn_trigger_repetitions`|
-|Хөдөлмөрийн шилжилт| `transfer_asset_numeric`, `transfer_domain`, `transfer_asset_definition`, `transfer_nft`, `transfer_rwa`, `force_transfer_rwa` |
-|Metadata болон хяналтын | `set_account_key_value`, `remove_account_key_value`, `set_rwa_controls`, `set_rwa_key_value`, `remove_rwa_key_value` |
-|RWA амьдралын эргэлт | `merge_rwas`, `redeem_rwa`, `freeze_rwa`, `unfreeze_rwa`, `hold_rwa`, `release_rwa` |
-|ExecuteTrigger |`execute_trigger` |
-|Хөдөлмөр / орлогын өргөтгөлтийн .| `repo_initiate`, `repo_unwind`, `repo_margin_call`, `settlement_dvp`, `settlement_pvp` |
-|Үндэсний хөрөнгийн гулгал .|`open_asset_lock`, `drawdown_asset_lock`,`cancel_asset_lock`, `expire_asset_lock` болон үйлчлүүлэгчдийн `*_and_wait` туслах ажилтнууд |
-|Грант/Сэргэлт, SetParameter, Логонг, Хувьсгал, шинэчлэл болон бага түгээмэл бүртгэлийн / бүртгүүлэхээс татгалзсан хувилбар |`Instruction.from_json` эсвэл `TransactionBuilder.add_instruction_json` нь Canonical `InstructionBox` JSON тэй|
+|Зааварчилгаа гэр бүл| Python гадаргуу |
+| ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|Бүртгүүлэх|`register_account`, `register_asset_definition_numeric`, `register_rwa`, `register_time_trigger`, `register_precommit_trigger`; `register_domain` нь genesis/bootstrap хэрэгслийн зориулалтаар хадгалагдсан болно|
+|Бүртгэлээс гаргах| `unregister_trigger`; бусад хувилбаруудад `Instruction.from_json` ашиглана уу|
+|Шинэчлэх/Шатаах| `mint_asset_numeric`, `burn_asset_numeric`, `mint_trigger_repetitions`, `burn_trigger_repetitions`                                                                                          |
+|Шилжүүлэх| `transfer_asset_numeric`, `transfer_domain`, `transfer_asset_definition`, `transfer_nft`, `transfer_rwa`, `force_transfer_rwa` |
+|Мета өгөгдөл ба хяналт| `set_account_key_value`, `remove_account_key_value`, `set_rwa_controls`, `set_rwa_key_value`, `remove_rwa_key_value`                                                                        |
+| RWA амьдралын мөчлөг| `merge_rwas`, `redeem_rwa`, `freeze_rwa`, `unfreeze_rwa`, `hold_rwa`, `release_rwa`|
+| ExecuteTrigger | `execute_trigger` |
+|Репо/төлбөрийн өргөтгөлүүд|`repo_initiate`, `repo_unwind`, `repo_margin_call`, `settlement_dvp`, `settlement_pvp`|
+|Уугуул хөрөнгийн түгжээ| `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, `expire_asset_lock`, мөн клиент `*_and_wait` туслахууд|
+|Өгөх/Хасах, SetParameter, Түүх, Захиалгат, Сайжруулах, мөн бага хэрэглэгддэг бүртгэх/бүртгэл устгах хувилбарууд|`Instruction.from_json` эсвэл `TransactionBuilder.add_instruction_json` нэг протокол-стандарт `InstructionBox` JSON|
 
-Хөдөлмөрийн санхүүжилтийн хэлбэрээр нөхөн төлбөр тооцоо хийх тухай [Тухайн хөрөнгийн хяналт тавих](/mn/blockchain/escrow.md#python-asset-locks). Python одоогийн байдлаар нэгдүгээр зэргийн туслалцаа эзэмшигчдийг нийтлэг хөрөнгийн буудалд илрүүлж байна; зах зээл болон үл мэдэгдэх хадгаламжийн туслах нь нэгдүгээр зэрэг биш Python Урьдчилгааны арга хэмжээг дуусгах.
+Эскроу маягийн нөхцөлт төлбөрийн хувьд [Уугуул хөрөнгийн эскроу](/mn/blockchain/escrow.md#python-asset-locks)-ыг үзнэ үү. Python нь одоогоор ерөнхий хөрөнгийн түгжээг дэмжих анхны зэрэглэлийн туслахуудыг үзүүлдэг; зах зээлийн болон нэргүй эскроу туслахууд нь одоогоор анхны зэрэглэлийн Python арга биш юм.
 
-### Домен байгуулах, дараа нь данс, хөрөнгө бүртгэх {#set-up-domains-then-register-accounts-and-assets}
+### Домэйнуудыг тохируулж, дараа нь данс болон хөрөнгүүдийг бүртгэ {#set-up-domains-then-register-accounts-and-assets}
 
-Байнгын доменийг бий болгох нь SNS лизингийн гэрээ, эзэмшигчдийн чадвар, дуудлага хамгаалагч, доменийн байдлын зэрэгцээ шалгагдана. Таны SDK эсвэл борлуулалтын үйлчилгээгээр нууцгүй `AliasSetupPlanRequestV1` зориулалтыг бий болгож, дараа нь `iroha app alias setup plan` болон `iroha app alias setup apply` ашиглаж болно. Хэрэглээний гүйлгээээс `Instruction.register_domain`-г өргөн мэдүүлэхгүй; энэ бүтээн байгуулагч нь Genesis/bootstrap хэрэгслийн хувьд үлдсэн байна.
+Энгийн домайн үүсгэх үйл явц мэдүүлгийн алиасын төлөвлөгчөөр дамжин явагддаг тул SNS түрээс, эзлэгчийн хүчин чадал, төлбөрийн үнэ баталгаажуулалтын хамгаалалт, болон домайн төлөвийг хамтдаа шалгадаг. Өөрийн SDK эсвэл нэвтрэлт үйлчилгээтэй нууцлалыг агуулаагүй `AliasSetupPlanRequestV1` зорилгыг үүсгээд, дараа нь `iroha app alias setup plan` ба `iroha app alias setup apply`-г ашиглана уу. `Instruction.register_domain`-ийг хэрэглээний гүйлгээнээс өгч болохгүй; тэр бүтээгч нь genesis/bootstrap хэрэгслийн хувьд үлдэнэ.
 
-Домен байгуулалтын төлөвлөгөө батлагдсанаас хойш доменийн өмчит объектүүдийг бүртгэнэ. Taira гэх мэт хуваалцсан сүлжээнд танд зориулсан домен, дансны нэр орон зай ашиглаарай.
+Домайн тохиргооны төлөвлөгөө батлагдсаны дараа домайн эзэмшдэг объектуудыг бүртгэ. Taira гэх мэт нийтлэг сүлжээнд домайн болон танд оноогдсон дансны нэрийн санг ашигла.
 
 ```python
 # The domain and its SNS lease already exist before this transaction.
@@ -257,11 +276,11 @@ submit(
 )
 ```
 
-`mintable` хүлээн зөвшөөрдөг `Infinitely`, `Once`, `Not`, эсвэл `Limited(n)` Мэдээллийн загварын дагуу хүлээн зөвшөөрөгдсөн үнэ цэнэ. `scale` хязгаарлагддаггүй тооны активын хувьд.
+`mintable` нь өгөгдлийн загварын хүлээн авдаг `Infinitely`, `Once`, `Not`, эсвэл `Limited(n)` утгуудыг хүлээн авдаг. Хязгааргүй тоон хөрөнгийн хувьд `scale`-ийг орхиж болно.
 
-### Хөдөлмөр, тэжээлийн болон хөрөнгийн нөөц {#mint-burn-and-transfer-assets}
+### асуудал үүсгэх, устгах, болон хөрөнгийг шилжүүлэх {#mint-burn-and-transfer-assets}
 
-Эдгээр дуудлага нь одоогийн хөрөнгө ID ашигладаг. Эхлээд хөрөнгийн тодорхойлолтыг бүртгүүлж, дараа нь тухайн хөрөнгийг эзэмшиж буй дансны хувьд конкрет актив ID бий болгоно.
+Эдгээр дуудлагууд нь өмнөөс нь бүртгэлтэй хөрөнгийн ID-г ашигладаг. Эхлээд хөрөнгийн тодорхойлолтыг бүртгүүлж, дараа нь хөрөнгийг эзэмшдэг дансны хувьд тодорхой хөрөнгийн ID-г бүтээнэ үү.
 
 ```python
 # Increase the account's asset balance.
@@ -274,9 +293,9 @@ submit(Instruction.transfer_asset_numeric(ROSE_ASSET, "25.50", bob))
 submit(Instruction.burn_asset_numeric(ROSE_ASSET, "10.00"))
 ```
 
-### Хөдөлмөрийн эзэмшилт {#transfer-ownership}
+### Өмчлөл шилжүүлэх {#transfer-ownership}
 
-Хууль эзэмшлийн шилжилт домен, хөрөнгийн тодорхойлолт, эсвэл NFT -ийг хяналт тавих хэн өөрчлөгдөж байна.
+Эзэмшлийн шилжүүлэг нь домайн, хөрөнгийн тодорхойлолт, эсвэл NFT-ын хэн удирдахыг өөрчилдөг. Гүйлгээний зөвшөөрлийн үндсэн этгээдээр одоогийн эзэмшигчийг ашигла.
 
 ```python
 # The first argument is the current owner; the last is the new owner.
@@ -285,9 +304,9 @@ submit(Instruction.transfer_asset_definition(alice, ROSE_DEFINITION, bob))
 submit(Instruction.transfer_nft(alice, BADGE_NFT, bob))
 ```
 
-### Мета өгөгдлийг байлгаж, арилгах {#set-and-remove-metadata}
+### Мета өгөгдлийг тогтоох ба устгах {#set-and-remove-metadata}
 
-Metadata үнэ цэнэ нь JSON-ийн цувралтай байх ёстой. Та `TransactionDraft` -ийг ашиглахад, `TransactionConfig` дахь эрх мэдэл бол урьдчилан сэргийлэх зорилтын данс болно.
+Мета өгөгдлийн утгууд JSON-д цуваагаар хувиргаж болохуйц байх ёстой. Та `TransactionDraft`-ыг ашиглах үед `TransactionConfig`-д байгаа эрх олгох гол нь анхдагч зорилтот данс болдог.
 
 ```python
 # Values are encoded as JSON metadata under the target account.
@@ -303,24 +322,34 @@ submit(
 submit(Instruction.remove_account_key_value(alice, "profile"))
 ```
 
-Дээд түвшний туслах төсөл нь гүйлгээ эрх баригч байгууллагыг урьдчилан сэргийлэхэд чиглэсэн:
+Өндөр түвшний ноорог туслах нь анхдагчаар гүйлгээний зөвшөөрлийн зарчмыг чиглүүлдэг:
 
 ```python
 draft = TransactionDraft(
-    TransactionConfig(chain_id=CHAIN_ID, authority=alice, metadata=TX_METADATA)
+    TransactionConfig(
+        network_id=TAIRA_NETWORK_ID,
+        authority=alice,
+        fee_payment=BASE_FEE_PAYMENT,
+        metadata=APP_METADATA,
+    )
 )
 # With a draft, account metadata methods default to the draft authority.
 draft.set_account_key_value("nickname", "Queen Alice")
 draft.remove_account_key_value("nickname")
 ```
 
-### Байгаль орчин үеийн хөрөнгө {#real-world-assets}
+### Бодит Дэлхийн Хөрөнгүүд {#real-world-assets}
 
-RWA туслах нь хөрөнгийн тухайн метадэтгэл, эх үүсвэр, хяналтын байгууллагын бодлогын хувьд JSON-ийн сериалж болох ашиг ачааллыг ашигладаг. `register_rwa` нь `id` эсвэл `owner` -ийг хүлээн зөвшөөрдөггүй: гүйлгээний цаг хугацаа нь `RwaId`-ийг бий болгодог бөгөөд бүтээн байгуулалтын эрх баригч анхны эзэмшигч болно.
+RWA туслахууд хөрөнгөнд онцгой metadata, гарал үүсэл, болон контроллерийн бодлогод зориулсан JSON-серилайз хийх боломжтой payload-уудыг ашигладаг. `register_rwa` нь `id` эсвэл `owner`-ийг хүлээн авдаггүй: программ хангамжийн гүйцэтгэлийн орчин нь `RwaId`-г үүсгэдэг бөгөөд гүйлгээний зөвшөөрлийн эрх мэдэлтэй этгээд анхны эзэмшигч болдог.
 
 ```python
 draft = TransactionDraft(
-    TransactionConfig(chain_id=CHAIN_ID, authority=alice, metadata=TX_METADATA)
+    TransactionConfig(
+        network_id=TAIRA_NETWORK_ID,
+        authority=alice,
+        fee_payment=BASE_FEE_PAYMENT,
+        metadata=APP_METADATA,
+    )
 )
 
 # Register the lot in a domain. Store business identifiers in primary_reference
@@ -349,7 +378,7 @@ draft.register_rwa(
 )
 ```
 
-бүртгэлийн бүтээн байгуулалтын дараа `FindRwas`, `/v1/rwas`, RWA үйл явдлыг эсвэл үүссэн ID-ийг илрүүлэхэд тохируулсан хайгуулын замыг ашигла:
+Бүртгэлийн гүйлгээ дууссаны дараа үүсгэсэн ID-ийг олоход `FindRwas`, `/v1/rwas`, RWA арга хэмжээ эсвэл хайгчийн чиглэлийг ашиглана уу:
 
 ```python
 page = client.list_rwas_typed(limit=20, offset=0)
@@ -358,7 +387,7 @@ for lot in page.items:
     print(lot.id)
 ```
 
-Дараах үйл ажиллагаанд үүссэн `hash$domain` ID:
+Дараагийн үйлдлүүд үүсгэсэн `hash$domain` ID-г ашиглана:
 
 ```python
 registered_rwa_id = (
@@ -367,7 +396,12 @@ registered_rwa_id = (
 )
 
 draft = TransactionDraft(
-    TransactionConfig(chain_id=CHAIN_ID, authority=alice, metadata=TX_METADATA)
+    TransactionConfig(
+        network_id=TAIRA_NETWORK_ID,
+        authority=alice,
+        fee_payment=BASE_FEE_PAYMENT,
+        metadata=APP_METADATA,
+    )
 )
 
 # Transfer, hold, release, freeze, and redeem model the lot lifecycle.
@@ -423,11 +457,11 @@ draft.force_transfer_rwa(
 )
 ```
 
-Тус бүрэн шилжүүлэн суулгах нь `owned_by` -ийг одоогийн жилд өөрчилж болно. Чамаал шилжүүлэлт болон нэгдмэлүүд үр хүүхдийн жилдээ үүсгэдэг.
+Бүх шилжүүлэг нь одоогийн талбай дээр `owned_by`-г өөрчлөх боломжтой. Хэсэгчлэн шилжүүлэг ба нэгтгэл нь үүссэн хүүхэд талбайг бий болгодог.
 
-### Хөгжүүлэгчид {#triggers}
+### Түгээгчид {#triggers}
 
-Хөдөлмөрийн хэрэгслийг гүйцэтгэх нь өөр захиалгын дараалал байх үед түлхэгийн бүртгэлийн туслагчдыг ашигла:
+Гүйцэтгэгдэх файл өөр зааврын дарааллаар байх үед триггер бүртгэлийн туслагчийг ашигла.
 
 ```python
 # The trigger executable is just another instruction payload.
@@ -462,7 +496,7 @@ submit(Instruction.burn_trigger_repetitions("hourly_reward", 1))
 submit(Instruction.unregister_trigger("hourly_reward"))
 ```
 
-Torii нь мөн REST хяналтын тоног төхөөрөмжүүдийг түлшний жагсаалтад гаргадаг:
+Torii мөн тригерийн сангийн туслах REST-ыг ил болгодог:
 
 ```python
 # Inventory helpers are reads; they do not unregister or execute triggers.
@@ -473,11 +507,11 @@ for trigger in registered.items:
 details = client.get_trigger_typed("precommit_reward")
 ```
 
-Триггерийн жагсаалтын дуудлага зөвхөн уншдаг, хяналт шалгадаг. бүртгэл, гүйцэтгэх, давтамжлах өөрчлөлт, бүртгэлийг зогсоох нь мөтийн үйл ажиллагаа юм.
+Триггерийн бүртгэлийн дуудлагууд зөвхөн триггерийн бичлэгийг унших эсвэл шалгах болно. Бүртгэл, гүйцэтгэл, давтамжийн өөрчлөлтүүд болон бүртгэлээс устгах нь өөрчлөлт оруулах үйлдлүүд юм.
 
-### Хяналт тавих, шийдвэрлэх журам {#repo-and-settlement-instructions}
+### Репо ба санхүүгийн гүйлгээний тохиролцооны зааврууд {#repo-and-settlement-instructions}
 
-Repo болон хоёр талын шийдвэрлэлийн туслагчид Norito гарын туршийн сургалтын төрөлүүдийг гар угаагүйгээр нэмэх:
+Repo ба хоёр талт төлбөр тооцооны туслахууд гараар боловсруулахгүйгээр Norito өгөгдлийн багцын оронд салбарын онцлогтой зааврын хувилбаруудыг нэмж оруулдаг:
 
 ```python
 from iroha_python import (
@@ -491,11 +525,12 @@ from iroha_python import (
 )
 
 config = TransactionConfig(
-    chain_id=CHAIN_ID,
+    network_id=TAIRA_NETWORK_ID,
     authority=alice,
+    fee_payment=BASE_FEE_PAYMENT,
     # Keep repo and settlement examples bounded by a short TTL.
     ttl_ms=120_000,
-    metadata=TX_METADATA,
+    metadata=APP_METADATA,
 )
 draft = TransactionDraft(config)
 
@@ -520,14 +555,8 @@ draft.repo_initiate(
     governance=governance,
 )
 draft.repo_margin_call("daily_repo")
-draft.repo_unwind(
-    agreement_id="daily_repo",
-    initiator=alice,
-    counterparty=bob,
-    cash_leg=cash,
-    collateral_leg=collateral,
-    settlement_timestamp_ms=1_704_086_400_000,
-)
+# Unwind uses the immutable counterparties, legs, and maturity stored on-chain.
+draft.repo_unwind("daily_repo")
 
 # DVP/PVP settlement plans encode ordering and atomicity for both legs.
 delivery = SettlementLeg(
@@ -561,16 +590,16 @@ draft.settlement_pvp(
     counter_leg=delivery,
 )
 
-envelope = draft.sign_with_keypair(alice_pair)
+envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### JSON Угаах хаалга {#json-escape-hatch}
+### JSON Оргих гарц {#json-escape-hatch}
 
-Хэрэв Python туслагч нь одоохондоо ашиглаж чадахгүй, санхүүгийн мэдээллийн загварыг хангах `InstructionBox` JSON цаашид `Instruction.from_json` эсвэл шууд `TransactionBuilder.add_instruction_json`. Энэ бол зөвлөж буй зам `Grant`, `Revoke`, `SetParameter`, `Log`, `Custom`, `Upgrade`, өрсөлдөгч / үүрэг/NFT бүртгэл, үйл ажиллагааг эхлүүлэх биш бүртгэлгүй хувилбарууд нь эдгээр туслах хэсгийг хэвлэх хүртэл.
+Хэрэв Python туслах бэлэн биш бол каноник өгөгдлийн загварын `InstructionBox` JSON-ийг `Instruction.from_json`-д өгнө. Туслахууд төрөлжиж бэлэн болтол `Grant`, `Revoke`, `SetParameter`, `Log`, `Custom`, `Upgrade`, зангилаа/үүрэг/NFT бүртгэл болон триггерээс бусад бүртгэл цуцлах хувилбарт энэ аргыг зөвлөж байна.
 
 ```python
-from iroha_python import Instruction, TransactionBuilder
+from iroha_python import Instruction
 
 # Copy this payload from Rust/CLI tooling or from a pinned data-model schema.
 instruction_box_json = """
@@ -583,16 +612,11 @@ instruction_box_json = """
 
 instruction = Instruction.from_json(instruction_box_json)
 submit(instruction)
-
-# Use TransactionBuilder when you need lower-level control than TransactionDraft.
-builder = TransactionBuilder(CHAIN_ID, alice)
-builder.set_metadata(TX_METADATA)
-builder.add_instruction_json(instruction_box_json)
-envelope = builder.sign(alice_pair.private_key)
-client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Үргэлтгүй эсвэл ил тод чиглэлийн хувьд JSON -ийн дагуу эргэн тойронд явж, төхөөрөмжийг хадгалахдаа:
+Транзакцын хязгаарт тайпсан хэсгийн замыг хадгалаарай: энэ нь яг `NetworkId`, төлбөрийн хүсэлтийг, мөн гарын үсэг зурхаас өмнөх үнийн тогтмол байдлыг хадгалдаг. Шууд `TransactionBuilder` ашиглах нь ижил утгуудыг шаарддаг бөгөөд амьд үнийн баталгааг тодорхой шалгахыг шаарддаг тул програмын кодын хувьд богино зам биш юм.
+
+Үүсгэсэн эсвэл ил тод бус заавруудын хувьд, тестийн материалуудыг хадгалахаасаа өмнө JSON-р дамжуулан эргүүлэх:
 
 ```python
 # Round trips are useful for validating fixtures generated by another tool.
@@ -601,41 +625,44 @@ same_instruction = Instruction.from_json(payload)
 print(same_instruction.as_dict())
 ```
 
-## Арилжааны ажлын урсгал {#transaction-workflows}
+## Гүйлгээний урсгалын процессууд {#transaction-workflows}
 
-Хэрэглээ `TransactionDraft` бүртгүүлэхээс өмнө хэд хэдэн захирамжийг бий болгодог хэрэглээнд зориулан. `ttl_ms`, `nonce`, нэг газар, дараа нь нэг удаа гарын үсэг зур:
+Гарын үсэг зурхаас өмнө олон заавар үүсгэдэг програмд `TransactionDraft` ашигла. Төслийг нэг дор гүйлгээний түвшний тохиргоо болох `ttl_ms`, `nonce` болон метадатаг хадгалах боломжийг олгож, дараа нь нэг удаа гарын үсэг зурна:
 
 ```python
 config = TransactionConfig(
-    chain_id=CHAIN_ID,
+    network_id=TAIRA_NETWORK_ID,
     authority=alice,
+    fee_payment=BASE_FEE_PAYMENT,
     # TTL and nonce are transaction-level properties shared by all instructions.
     ttl_ms=120_000,
     nonce=1,
-    metadata={**TX_METADATA, "source": "python-docs"},
+    metadata=APP_METADATA,
 )
 
 draft = TransactionDraft(config)
 # Draft methods append instructions but do not submit anything yet. Domain
 # setup is a separate alias-planner flow and has already committed here.
 draft.register_account(bob, metadata={"role": "user"})
-draft.register_asset_definition_numeric(
+draft.register_asset_definition(
     ROSE_DEFINITION,
-    owner=alice,
+    owning_domain=None,
+    balance_scope_policy="Global",
+    name="Rose",
     scale=2,
     mintable="Infinitely",
 )
-draft.mint_asset_numeric(ROSE_ASSET, "100")
-draft.transfer_asset_numeric(ROSE_ASSET, "25", destination=bob)
+draft.mint_asset_quantity(ROSE_ASSET, "100")
+draft.transfer_asset_quantity(ROSE_ASSET, "25", bob)
 
-# Signing freezes the draft into an envelope ready for Torii.
-envelope = draft.sign_with_keypair(alice_pair)
+# Quoting freezes the draft, validates exact fee limits, and signs that payload.
+envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
 receipt = client.submit_transaction_envelope(envelope)
 status = client.wait_for_transaction_status(envelope.hash_hex(), timeout=30)
 print(receipt, status)
 ```
 
-Хяналт шалгалт, аудитын болон хөрөнгийн санхүүжилтийн зорилгоор тодорхойлолттай манифст экспортлох:
+Шалгалт, аудит хийх эсвэл түрийвч шилжүүлэх зориулалтаар тодорхой техник manifest-ийг экспортлох:
 
 ```python
 import json
@@ -651,7 +678,7 @@ Path("transaction_manifest.json").write_text(
 )
 ```
 
-Зохиоллын замын нууцлалыг баталгаажуулах баримт бичгийг мөрдүүлэхээс өмнө хавсралтын замын шаардлага хангасан тохиолдолд:
+Зорилтот эгнээ шаарддаг бол гарын үсэг зурахаас өмнө эгнээний нууцлалын нотолгоог хавсаргана:
 
 ```python
 # Attach the proof before signing so it is covered by the transaction hash.
@@ -659,17 +686,17 @@ draft.add_lane_privacy_merkle_proof(
     commitment_id=7,
     leaf=bytes.fromhex("aa" * 32),
     leaf_index=3,
-    audit_path=[bytes.fromhex("bb" * 32), None, bytes.fromhex("cc" * 32)],
+    audit_path=[bytes.fromhex("bb" * 32), bytes.fromhex("cc" * 32)],
     proof_backend="halo2/ipa",
     proof_bytes=b"...proof bytes...",
-    verifying_key_bytes=b"...verifying key bytes...",
+    verifying_key_name="lane_privacy_vk",
 )
-envelope = draft.sign_with_keypair(alice_pair)
+envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
 ```
 
-## Судалгаа {#queries}
+## Асуултууд {#queries}
 
-Тавигдсан хайлтын туслах нь түүхий JSON товчооны оронд өгөгдлийн ангиудыг буцааж өгдөг. Тэд эхлэх хамгийн хялбар арга юм, учир нь SDK нь та бүхэнд сахилга болон нийтлэг бүртгэлийн талбайг шалгадаг:
+Товлосон лавлагааны туслахууд нь түүхий JSON толь бичгүүдийн оронд өгөгдлийн ангиудыг буцаадаг. Эдгээр нь эхлэх хамгийн хялбар арга юм, учир нь SDK нь таны хувьд хуудсанд хуваах болон нийтлэг бичлэгийн талбаруудыг задладаг:
 
 ```python
 # Typed pages expose `.items` plus pagination metadata such as `.total`.
@@ -678,19 +705,26 @@ for account in accounts.items:
     print(account.id, account.metadata)
 
 domains = client.list_domains_typed(limit=10)
-definitions = client.query_asset_definitions_typed(limit=10)
+definitions = client.list_asset_definitions_typed(limit=10)
 print(domains.total, definitions.total)
 ```
 
-Torii эцсийн цэгт хэвлэлийн хувилбар байхгүй бол нийтлэг хүсэлтэд туслах хэрэглээ:
+Torii-ийн төгсгөлийн цэгт төрөлжсөн бүрхүүл хараахан байхгүй бол ерөнхий хүсэлтийн туслахыг ашиглана:
 
 ```python
+from urllib.request import Request, urlopen
+
 # Drop to raw JSON when you need an endpoint before a typed helper exists.
 payload = client.request_json("GET", "/v1/parameters", expected_status=(200,))
-metrics = client.get_metrics(as_text=True)
+
+# Prometheus exposition is served at `/metrics` when telemetry is `extended`
+# or `full`; it is text, not a `/v1` JSON resource.
+request = Request(f"{TORII_URL}/metrics", headers={"Accept": "text/plain"})
+with urlopen(request, timeout=5) as response:
+    metrics = response.read().decode("utf-8")
 ```
 
-Санхүүгийн жагсаалтын туслалцаа эзэмшигчдэд SDK Энэ нь нормализатор. Canonical ашиглах I105 бүртгэл IDs Block explorer эсвэл raw endpoint нь ID Энэ нь SDK Үүнээс татгалзсан бол хуулийн дагуу шийдвэрлэнэ ID Та эдгээр туслагчдыг дуудахаас өмнө:
+Тооцооны бүртгэлийн туслахууд нь SDK ердийн нормалагчид хүлээн зөвшөөрөгддөг дансны танигч шаарддаг. Нэг протокол-стандартын I105 дансны ID эсвэл сүлжээнд холбогдсон нийцсэн нэрийг ашигла. Хэрэв блок судлаач эсвэл raw API төгсгөлийн цэг SDK-ийн зөвшөөрдөггүй ID буцаавал, эдгээр туслах функцуудыг дуудан өмнө үүнийг нэг протоколын стандарт дансны ID болгон шийдвэрлэнэ үү:
 
 ```python
 # These helpers expect a canonical account ID or an alias the SDK can normalize.
@@ -701,12 +735,12 @@ permissions = client.list_account_permissions_typed(alice, limit=20)
 print(len(assets.items), len(transactions.items), len(permissions.items))
 ```
 
-## Үргэлт {#events}
+## Арга хэмжээ {#events}
 
-Хэвлэлийн дамжуулах туслалцааг уншигч JSON Үндсэн хуулийн дагуу нөөц ачаалал. `with_metadata=True` хэрэв та SSE үйл явдлын нэр, ID, дахин туршилтын нэгийг, түүхий эд ачаалал. `EventCursor` Хамгийн сүүлийн үеийн үйл явдлын тодруулгыг хэвээр үлдээх. Эдгээр жишээ нь амьд үйл явдлыг хүлээж байна, Тиймээс тэдгээрийг тухайн үйл явдлын урсгалыг идэвхжүүлж, идэвхжиж байгаа түймэр рүү шилжүүлээрэй.
+Үргэлжийн дамжуулалтын туслахууд анхдагчаар JSON ачааг тайлбарлана. `with_metadata=True` өгөгдлийг SSE эвент нэр, ID, дахин оролдох заавар, болон түүхий ачаатай авах шаардлагатай үед дамжуулна. Нэг протоколын стандарт `/v1/events/sse` фид зөвхөн шууд дамжуулалттай: энэ нь ямар ч дахин тоглуулах ID-г гаргахгүй бөгөөд дахин тоглуулах тэмдэглэл хадгалдаггүй тул эдгээр туслахууд ямар ч курсор эсвэл үргэлжлүүлэх аргумент өгдөггүй. Дахин холболт нь шинэ захиалгыг эхлүүлдэг бөгөөд зай үүсч болох юм; бүрэн блокчейн бүртгэлийн түүх шаардлагатай үед мэдэгдсэн өндрөөс `/v1/blocks/stream`-ийг ашиглана уу. Эдгээр жишээнүүд амьд үйл явдлуудад хүлээж байгаа тул урсгал идэвхтэй байгаа нод дээр ажиллуулна уу.
 
 ```python
-from iroha_python import DataEventFilter, EventCursor
+from iroha_python import DataEventFilter, SseStreamError
 
 # Narrow the stream to proof events with the expected backend and proof hash.
 proof_filter = DataEventFilter.proof(
@@ -714,18 +748,14 @@ proof_filter = DataEventFilter.proof(
     proof_hash_hex="deadbeef" * 8,
 )
 
-# Persist the latest SSE id so a reconnect can resume from the same point.
-cursor = EventCursor()
-for event in client.stream_events(
-    filter=proof_filter,
-    cursor=cursor,
-    resume=True,
-    with_metadata=True,
-):
-    print(event.id, event.event, event.data)
-    break
+try:
+    for event in client.stream_events(filter=proof_filter, with_metadata=True):
+        print(event.id, event.event, event.data)
+        break
+except SseStreamError as error:
+    print(error.code, error.dropped_messages, error.replay_available)
 
-for event in client.stream_trigger_events(trigger_id="hourly_reward", resume=True):
+for event in client.stream_trigger_events(trigger_id="hourly_reward"):
     print(event)
     break
 
@@ -734,9 +764,9 @@ for tx_event in client.stream_pipeline_transactions(status="Queued"):
     break
 ```
 
-## Нүүр, хаяг {#keys-and-addresses}
+## Түлхүүрүүд болон Хаягнууд {#keys-and-addresses}
 
-SDK нь үндсэн өргөтгөлийн нэгдмэл болгонд орон нутгийн гарын үсэг зурах туслагчдыг илрүүлнэ. Эдгээр туслах нь Taira -ийг дууддаггүй боловч үндсэн өргөтийг шаарддаг:
+SDK нь нутгийн өргөтгөлийнд эмхтгэсэн бүх гарын үсгийн алгоритмуудын хувьд орон нутгийн гарын үсэгтэй туслахуудыг ил гаргадаг. Эдгээр туслахууд Taira-г дуудаж ажиллуулдаггүй боловч нутгийн өргөтгөлийг шаарддаг:
 
 ```python
 from iroha_python import (
@@ -766,7 +796,7 @@ print(confidential.as_hex())
 print(hash_blake2b_32(b"payload").hex())
 ```
 
-`supported_crypto_algorithms()` -ийг ашиглан танай төвийг дэмжих нь юу вэ гэж үзнэ үү. Дээрх ёсны туслалцаач нар Ed25519, secp256k1, ML-DSA, GOST, BLS болон SM2-д ажилладаг бөгөөд тэдгээр алгоритмүүд нь:
+`supported_crypto_algorithms()`-ыг ашиглан таны дугуй дэмжиж буй зүйл юу болохыг хараарай. Ерөнхий туслахууд нь нэг протокол-стандартын алгоритмын шошгыг ашигладаг бөгөөд эдгээр алгоритмуудыг компайл хийсэн үед Ed25519, secp256k1, ML-DSA, GOST, BLS, болон SM2-д ажиллана:
 
 ```python
 from iroha_python import (
@@ -822,9 +852,9 @@ for algorithm in supported_crypto_algorithms():
     assert restored == keypair
 ```
 
-### Хятад SM Шифрлэлт {#chinese-sm-cryptography}
+### Хятадын SM Криптографи {#chinese-sm-cryptography}
 
-Үндсэн хуулийн Python SDK аль алиныг нь илрүүлнэ. SM2 туслагч, SM2-Хүйцэтгүйн туслалцааг сонгохын тулд сүлжээний боломжийн зарлан SM2 зорилтот сүлжээний хүлээсэн тодорхойлох тэмдэг:
+Python SDK нь ерөнхий SM2 туслагч болон SM2-т зориулсан тусгай хэрэглээний туслагчийг ил гаргадаг. Зорилтот сүлжээний шаардлагатай SM2 ялгаварласан тодорхойлогчийг сонгохын тулд node-ийн боломжийг зарлах мэдээллийг ашиглаарай:
 
 ```python
 from iroha_python import (
@@ -838,7 +868,7 @@ from iroha_python import (
     verify_sm2,
 )
 
-capabilities = client.get_node_capabilities_typed()
+capabilities = client.get_node_capabilities_typed(canonical_auth=canonical_auth)
 sm = capabilities.crypto.sm if capabilities.crypto else None
 # Use the node's default SM2 distinguishing ID when the node advertises one.
 distid = sm.sm2_distid_default if sm else SM2_DEFAULT_DISTINGUISHED_ID
@@ -861,10 +891,10 @@ print(pair.public_key_sec1_hex)
 print(pair.public_key_multihash)
 ```
 
-`crypto.sm.enabled` нь өнөөгийн бодлогын хувьд SM-ийн гэр бүлийн алгоритмыг хүлээн зөвшөөрөх эсэхийг харуулж байна. ижил зарлан нь SM хэшийн бодлого болон хурдацлалтын байдлыг багтаасан бөгөөд энэ нь SM2-д тодорхой урсгалыг хүчингүй болгох эсэхийг шийдвэрлэхэд ашигтай:
+`crypto.sm.enabled` нь тухайн зангидаж буй бодлогын дагуу тухайн зангид SM-гэр бүлийн алгоритмуудыг хүлээн авч байгаа эсэхийг танд хэлдэг. Ижил зар сурталчилгаанд SM криптографийн хэш бодлого болон хурдсалтын байдал багтсан бөгөөд энэ нь SM2-д зориулсан урсгалуудыг идэвхжүүлэх эсэхийг шийдэхэд ашигтай юм:
 
 ```python
-capabilities = client.get_node_capabilities_typed()
+capabilities = client.get_node_capabilities_typed(canonical_auth=canonical_auth)
 
 # `enabled` is the submit-time policy flag, not just local SDK support.
 if capabilities.crypto and capabilities.crypto.sm.enabled:
@@ -876,11 +906,11 @@ else:
     print("SM crypto is not enabled by this node")
 ```
 
-Олон нийтийн Taira нь шалгалтын үеэр SM чадварын сурталчилгааг илрүүлсэн боловч SM гарын үсэг зургийг тэнд хүчингүй болгосон юм. Түүний гарын үсгийн алгоритм нь `ed25519`, `secp256k1`, `bls_normal` байсан. тул SM2-ийн гарын үсэг зурсан гүйлгээг тухайн нэвтрүүлэгт хүргүүлэхгүй бол хүчин чадлын ашигтай ачаалал өөрчлөгдөхгүй байх.
+Баталгаажсан хүчин чадлын ачааг суулгасан зангилаанд эрх мэдлийнх гэж үз. `crypto.sm.enabled` үнэн биш бол SM2-ээр гарын үсэг зурсан гүйлгээг илгээгээрэй, мөн сурталчилсан гарын үсэг зурах бодлого үүнийг зөвшөөрдөг байх ёстой.
 
-### GOST болон квантын дараах товчоо {#gost-and-post-quantum-keys}
+### GOST ба Посто-Квант түлхүүрүүд {#gost-and-post-quantum-keys}
 
-Үндсэн крипто ашиглах API . GOST R 34.10-2012-ийн параметрний багц, ML-DSA (`ml-dsa`) квантын дараах гарын үсэг зурсан. Энэ нь ... Үүнтэй ижил түлхүүрний тоног төхөөрөмж нь гарын үсэг зурах, баталгаажуулах, олон хаш экспорт хийхэд:
+Ерөнхий криптог API ашиглаарай GOST R 34.10-2012 параметрийн багцууд болон ML-DSA (`ml-dsa`) пост-квантын гарын үсгүүдэд. Ижил түлхүүрийн хос объект гарын үсэг зурах, баталгаажуулах, олон хэш экспортлохыг хариуцдаг:
 
 ```python
 from iroha_python import (
@@ -944,18 +974,15 @@ print(post_quantum_address.to_i105(CHAIN_DISCRIMINANT))
 print(mldsa_keypair.prefixed_public_key_multihash)
 ```
 
-Газар GOST болон квантын дараагийн урсгал нь түйүлгийн зарласан гарын үсэг зурах алгоритмүүд дээр байдаг. Цаашид тохиромжтой алгоритмын нэрлэлийн тулд түүхий хүчин чадлын ашиг ачааллыг ашигла:
+Хаалга GOST ба гарц-кивантын урсгалууд нь зангилааны баталгаажсан, төрөлжүүлсэн чадварын зар сурталчилгаанд:
 
 ```python
-capabilities = client.request_json(
-    "GET",
-    "/v1/node/capabilities",
-    expected_status=(200,),
+capabilities = client.get_node_capabilities_typed(
+    canonical_auth=canonical_auth,
 )
-crypto = capabilities.get("crypto", {})
-sm = crypto.get("sm", {})
+sm = capabilities.crypto.sm if capabilities.crypto else None
 # Nodes advertise the signing algorithms they will accept for transactions.
-allowed = set(sm.get("allowed_signing", []))
+allowed = set(sm.allowed_signing if sm else ())
 
 GOST_ALGORITHMS = {
     "gost3410-2012-256-paramset-a",
@@ -968,16 +995,16 @@ GOST_ALGORITHMS = {
 # Local support is not enough; submit only when the node advertises support.
 supports_gost = bool(allowed & GOST_ALGORITHMS)
 supports_post_quantum = "ml-dsa" in allowed
-supports_sm2 = "sm2" in allowed and bool(sm.get("enabled", False))
+supports_sm2 = "sm2" in allowed and bool(sm and sm.enabled)
 
 print(supports_gost, supports_post_quantum, supports_sm2)
 ```
 
-Хэрэв цэг нь танд хэрэгтэй алгоритмыг зарцуулахгүй бол зөвхөн орон нутгийн эсвэл офлайн ажлын урсгалд түлхэгийг ашигла. Тус алгоритмээр гарын үсэг зурсан гүйлгээг тухайн цэгт ирүүлэхгүй. Нийтийн Taira шалгалтын үеэр GOST болон ML-DSA нь SDK крипто туслалцаа үзэгчдийн хувьд гарааны өмнө Python номын сан дээр ашиглагдаж байсан боловч гүйлгээний гарын үсэг зурах зорилгоор цэгээр сурталчилдаггүй байв.
+Хэрэв зангилаа таны хэрэгтэй алгоритмыг зарладаггүй бол түлхүүрийг зөвхөн орон нутгийн эсвэл оффлайн урсгалд ашигла. Тухайн алгоритмоор гарын үсэг зурсан гүйлгээг тэр зангилаанд дамжуулж болохгүй. Олон нийтийн Taira шалгалтын үеэр GOST ба ML-DSA нь дээд түвшний Python номын сан дахь SDK крипто туслахууд болгон ашиглах боломжтой байсан ч гүйлгээ гарын үсэг зурах зориулалтаар үүнийг зангилаа зарлаагүй.
 
-## Конфигурацын мэдлэгтэй үйлчлүүлэгч бүтээх {#config-aware-client-creation}
+## Тохиргоог ойлгосон үйлчлүүлэгч бүтээх {#config-aware-client-creation}
 
-`resolve_torii_client_config` -ийг хэрэглээнд файлын сүлжээний тохируулгыг уншдаг боловч байгаль орчин, шинжилгээний онцлогтой зайлшгүй шаардлагатай тохиолдолд ашигла:
+Таны програм файлнаас node тохиргоог уншиж байхдаа ч гэсэн орчин эсвэл тестэд онцгой давуу эрх шаарддаг бол `resolve_torii_client_config`-ийг ашиглана уу:
 
 ```python
 import json
@@ -999,9 +1026,9 @@ client = create_torii_client(
 )
 ```
 
-## Kagemusha бэлтгэл {#kagemusha-readiness}
+## Кагэмуша Бэлэн байдал {#kagemusha-readiness}
 
-Python SDK нь одоогийн JSON бэлэн байдлын замыг ерөнхий Torii хүсэлтэд туслах дамжуулан асууж болно:
+Python SDK нь өөрийн ерөнхий Torii хүсэлтийн туслах хэрэгслийнхээ тусламжтайгаар одоогийн JSON бэлэн байдлын маршрутыг асууж болно:
 
 ```python
 ASSET_DEFINITION_ID = "<canonical_asset_definition_id>"
@@ -1017,11 +1044,11 @@ print(readiness["ready"])
 print(readiness["blockers"])
 ```
 
-Python нь Kagemusha-ийн нэмэлт оруулах болон чөлөөлөх архивын бүтээн байгуулагчдыг илтгэхгүй. Каноникийн V4 архив бүтээхийн тулд Swift эсвэл JVM хөрөнгийг ашиглаж, дараа нь дэмжсэн Kagemusha Torii клиентээр дамжуулан өргөн мэдүүлэн санал асуулга явуулна.
+Python нь Kagemusha-ийн төрөллөлттэй нөхөн сэргээх эсвэл нөхөн олговор хадгалах баримт бичиг бүтээгчүүдийг ил гаргахгүй. Нэг протокол-стандарт V4 архивыг бүтээхийн тулд төрөллөлттэй Swift эсвэл JVM түрийвчийг ашиглаад, дараа нь дэмжигдсэн Kagemusha Torii клиентээр дамжуулан илгээж, шалгаарай.
 
-## Ашиглал {#subscriptions}
+## Бүх захиалгууд {#subscriptions}
 
-Хөдөлмөрийн хэрэгслийн туслах нь хуваалцсанаас өвчилж буй үйлчилгээний дуудлагаг өөрчлөх Torii хэрэглэгчийн `iroha_python.ToriiClient`. Хэрэглээ IDs Таны зорилт тавьсан сүлжээнд байгаа эд хөрөнгө.
+Нийтлэлийн уншигчид болон төсөл бүтээгчид `iroha_python.ToriiClient`-аар ашиглагддаг нийтлэг Torii клиентээс өвлөгддөг. Бүх өөрчлөлтийг бие даасан нэг замаар хүлээн авдаг протокол-стандартад нийцсэн дансны гарын үсгийг ашигладаг ба гарын үсэггүй гүйлгээний ноорогийг буцаадаг. Torii хувийн түлхүүрийг хэзээ ч хүлээн авдаггүй ба таны төлөө нооргыг илгээдэггүй.
 
 ```python
 # The plan defines billing cadence, retry policy, and usage pricing.
@@ -1047,61 +1074,69 @@ usage_plan = {
     },
 }
 
-# The provider signs plan creation.
-client.create_subscription_plan(
+# The provider authorizes preparation of a plan-registration draft.
+plan_draft = client.create_subscription_plan(
     authority=alice,
-    private_key=alice_pair.private_key_hex,
     plan_id="compute#wonderland",
     plan=usage_plan,
+    canonical_auth=canonical_auth,
 )
 
-# The subscriber signs subscription creation.
-client.create_subscription(
+bob_canonical_auth = ToriiCanonicalRequestAuth(
+    network_id=TAIRA_NETWORK_ID.literal,
+    account_id=bob,
+    signer=bob_pair.sign,
+)
+
+# The subscriber authorizes preparation of a subscription-creation draft.
+subscription_draft = client.create_subscription(
     authority=bob,
-    private_key=bob_pair.private_key_hex,
     subscription_id="sub-001",
     plan_id="compute#wonderland",
+    canonical_auth=bob_canonical_auth,
 )
 
-# Usage is recorded by the provider and then charged on demand.
-client.record_subscription_usage(
+# Usage and charge-now operations also return unsigned transaction drafts.
+usage_draft = client.record_subscription_usage(
     "sub-001",
     authority=alice,
-    private_key=alice_pair.private_key_hex,
     unit_key="compute_ms",
     delta="3600000",
+    canonical_auth=canonical_auth,
 )
-client.charge_subscription_now(
+charge_draft = client.charge_subscription_now(
     "sub-001",
     authority=alice,
-    private_key=alice_pair.private_key_hex,
+    canonical_auth=canonical_auth,
 )
+
+for draft in (plan_draft, subscription_draft, usage_draft, charge_draft):
+    assert draft.submitted is False
+    print(draft.transaction_payload_b64, draft.signing_message_b64)
 ```
 
-## Холбоолуул {#connect}
+Яг тэр ачаалал болон гарын үсгийн мессежийг харгалзах дансны дотоод түрийвчинд өгч, хүссэн үйлдлийг тэнд шалгаад, гарын үсэгтэй гүйлгээг угсран ердийн гүйлгээний боловсруулалтын урсгалаар илгээнэ. Python SDK нь гарын үсгийн мессеж буцаасан ачааллын каноник хэш мөн эсэхийг шалгах боловч түрийвч гарын үсэг зурахаасаа өмнө гүйлгээг тайлж харуулан зөвшөөрүүлэх үүрэгтэй.
 
-Connect URIs-ийг бүтээж, шинжилгээ хийлгэж, Taira -ийн нэвтрүүлсэн олон нийтийн Connect статусыг уншина уу:
+## Холбох {#connect}
+
+Connect URIs-ийг локал дээр барьж, задлаарай. Connect танигч нь SID-ийг яг `NetworkId`, апп-ийн олон нийтийн түлхүүр, криптографийн nonce утгатай холбодог:
 
 ```python
-from iroha_python.connect import ConnectUri, build_connect_uri, parse_connect_uri
+from iroha_python.connect import create_connect_session_preview, parse_connect_uri
 
-# Connect URIs are what an app hands to a wallet to start a session.
-uri = build_connect_uri(
-    ConnectUri(
-        sid="base64url-session-id",
-        chain_id=CHAIN_ID,
-        node="taira.sora.org",
-    )
+# Generate consistent SID, key, nonce, and URI values as one bundle.
+preview = create_connect_session_preview(
+    network_id=TAIRA_NETWORK_ID,
+    node="taira.sora.org",
 )
-parsed = parse_connect_uri(uri)
-# Status tells you whether the node currently exposes Connect.
-status = client.get_connect_status_typed()
+parsed = parse_connect_uri(preview.wallet_uri)
 
-assert parsed.chain_id == CHAIN_ID
-print(status.enabled, status.sessions_active)
+assert parsed.sid == preview.sid_base64url
+assert parsed.network_id.literal == TAIRA_NETWORK_ID.literal
+assert parsed.app_public_key == preview.app_key_pair.public_key
 ```
 
-Фрейм кодек, сессийн түлхүүр ололт, сессийг бий болгохэд үндсэн өргөтгөөн болон Connect-ийн сессийн замыг ашиглах шаардлагатай:
+Тухайн урьдчилсан харааг зөвхөн зорилтот зангилаа Connect-г ил болгох үед бүртгэнэ. Сесс үүсгэхэд дөрвөн дүрмийн тодорхой токен буцаадаг. Сессийн байдал бүртгэх маршрут нь удирдлагын токенийг шаарддаг; нийт байдал нь операторын маршрут юм.
 
 ```python
 from iroha_python import (
@@ -1110,40 +1145,56 @@ from iroha_python import (
     ConnectDirection,
     ConnectFrame,
     ConnectPermissions,
+    bootstrap_connect_preview_session,
     decode_connect_frame,
     encode_connect_frame,
-    generate_connect_keypair,
 )
 
-# The app keypair is separate from the account key used for transactions.
-connect_pair = generate_connect_keypair()
-info = client.create_connect_session_info(
-    {"role": "app", "sid": connect_pair.public_key.hex()}
+bootstrap = bootstrap_connect_preview_session(
+    client,
+    network_id=TAIRA_NETWORK_ID,
+    node="taira.sora.org",
 )
-print(info.app_uri, info.wallet_token, info.expires_at)
+info = bootstrap.session
+tokens = bootstrap.tokens
+assert info is not None and tokens is not None
+
+session_status = client.request_json(
+    "GET",
+    "/v1/connect/status",
+    params={"sid": info.sid},
+    headers={"Authorization": f"Bearer {tokens.management}"},
+    expected_status=(200,),
+)
+print(info.app_uri, session_status)
 
 # Control frames negotiate permissions before encrypted messages are sent.
 frame = ConnectFrame(
-    sid=bytes.fromhex("01" * 32),
+    sid=bootstrap.preview.sid_bytes,
     direction=ConnectDirection.APP_TO_WALLET,
     sequence=1,
     control=ConnectControlOpen(
-        app_public_key=connect_pair.public_key,
-        chain_id=CHAIN_ID,
+        app_public_key=bootstrap.preview.app_key_pair.public_key,
+        network_id=TAIRA_NETWORK_ID,
         permissions=ConnectPermissions(methods=["SIGN_REQUEST_TX"], events=[]),
     ),
 )
 payload = encode_connect_frame(frame)
 assert decode_connect_frame(payload) == frame
 
-# Closing the control channel is explicit and carries a reason code.
-client.send_connect_control_frame(
-    "base64url-session-id",
-    ConnectControlClose(role="App", code=4100, reason="finished", retryable=False),
+# Closing the control channel is explicit and also travels as a frame.
+close_frame = ConnectFrame(
+    sid=bootstrap.preview.sid_bytes,
+    direction=ConnectDirection.APP_TO_WALLET,
+    sequence=2,
+    control=ConnectControlClose(
+        role="App", code=4100, reason="finished", retryable=False
+    ),
 )
+close_payload = encode_connect_frame(close_frame)
 ```
 
-Хууль батлагдсанаас хойшхи мэдээллийг хэвийн ээлжингээр шифрлэх:
+Засаг процесс бүхий сессээр батлагдсан дараах мессежүүдийг шифрлэ:
 
 ```python
 from iroha_python import (
@@ -1171,83 +1222,85 @@ state = session.snapshot_state().to_dict()
 print(encrypted.sequence, state)
 ```
 
-## Захиргааны засаглал, гүйцэтгэх цаг, удирдах газар {#governance-runtime-and-admin-surfaces}
+## Удирдлага, програм хангамжийн гүйцэтгэх орчин, ба Админ талыг {#governance-runtime-and-admin-surfaces}
 
-Эдгээр зөвхөн уншдаг дуудлагыг олон нийтэд Taira эсрэг амжилттай буцааж өгсөн:
+Захиргааны уншлагууд нь данс-нотлогдсон байна. [Хуваалцсан тохиргоо](#shared-setup)-ээс зөвшөөрлийн зарчим болон түлхүүрийн хосыг ашиглан тус бүрийн туслах дуудлагыг Taira-ийн яг гарал үүссэн `NetworkId`-д холбох:
 
 ```python
-client = create_torii_client("https://taira.sora.org")
-
 # Governance reads return either current settings or typed not-found wrappers.
-protected = client.get_protected_namespaces()
-referendum = client.get_governance_referendum_typed("ref-1")
-tally = client.get_governance_tally_typed("ref-1")
-locks = client.get_governance_locks_typed("ref-1")
-unlock_stats = client.get_governance_unlock_stats_typed()
+protected = client.get_protected_namespaces(canonical_auth=canonical_auth)
+referendum = client.get_governance_referendum_typed(
+    "ref-1", canonical_auth=canonical_auth
+)
+tally = client.get_governance_tally_typed("ref-1", canonical_auth=canonical_auth)
+locks = client.get_governance_locks_typed("ref-1", canonical_auth=canonical_auth)
+unlock_stats = client.get_governance_unlock_stats_typed(
+    canonical_auth=canonical_auth
+)
 
 print(protected, referendum.found)
 print(tally.approve, list(locks.locks), unlock_stats.expired_locks_now)
 
-# Runtime reads expose the active ABI and any pending upgrade records.
-abi = client.get_runtime_abi_active_typed()
+# Account-authenticated runtime reads use the same canonical request proof.
+abi = client.get_runtime_abi_active_typed(canonical_auth=canonical_auth)
+# The ABI hash itself is a public read.
 abi_hash = client.get_runtime_abi_hash_typed()
-runtime_metrics = client.get_runtime_metrics_typed()
-upgrades = client.list_runtime_upgrades_typed()
-capabilities = client.get_node_capabilities_typed()
+runtime_metrics = client.get_runtime_metrics_typed(canonical_auth=canonical_auth)
+capabilities = client.get_node_capabilities_typed(canonical_auth=canonical_auth)
 
 print(abi, abi_hash, runtime_metrics)
-print(upgrades.total, capabilities.abi_version)
+print(capabilities.abi_version)
 ```
 
-Хөдөлмөрийн цаг хугацааны шинэчлэлийн туслах нь API хөөцөлдөх цаг үеийн шинэчлэлийг ашиглаж байгаа манифст хэлбэрийг хүлээн зөвшөөрдөг. Тэд оператор үйл ажиллагаа юм, тиймээс таны данс болон токен зөвшөөрөлтэй цэг дээр зөвхөн ашигла:
+Үйлдэгчийн уншихад зориулсан тусдаа клиент үүсгээрэй. Зөвшөөрөгдсөн үйлдэгчийн түлхүүрийг програм хангамжийн гүйцэтгэлийн орчинд ачаалж, үүнийг Taira-ын яг `NetworkId`-т холбож өгнө; үүрэгч токенууд ба `x-api-token` энэхүү гарын үсгийг орлохгүй:
 
 ```python
-admin = create_torii_client(
+import os
+
+from iroha_python import Ed25519KeyPair, NetworkId, OperatorSigningContext
+
+operator_pair = Ed25519KeyPair.from_private_key(
+    bytes.fromhex(os.environ["IROHA_OPERATOR_PRIVATE_KEY_HEX"])
+)
+operator_client = create_torii_client(
     TORII_URL,
-    auth_token="admin-token",
-api_token="torii-token",
+    operator_signing_context=OperatorSigningContext(
+        TAIRA_NETWORK_ID,
+        operator_pair,
+    ),
 )
-
-# Propose creates the upgrade instructions; activation/cancel are operator actions.
-upgrade = admin.propose_runtime_upgrade(
-    {
-        "name": "Refresh runtime provenance",
-        "description": "Schedules a no-ABI-change runtime rollout.",
-        "abi_version": 1,
-        "abi_hash": "00" * 32,
-        "added_syscalls": [],
-        "added_pointer_types": [],
-        "start_height": 1_500_000,
-        "end_height": 1_500_256,
-    }
-)
-print(upgrade["tx_instructions"])
-
-admin.activate_runtime_upgrade("deadbeef" * 4)
-admin.cancel_runtime_upgrade("feedface" * 4)
 ```
 
-## Орчин байдал, санал нэгдмэл болон сүлжээний телеметри {#status-consensus-and-network-telemetry}
+Runtime шинэчлэлтийн чиглүүлэгчүүд нь операторын баталгаажуулсан зааварчилгааны бүтээгчид юм. Амжилттай санал болгох, идэвхжүүлэх, эсвэл цуцлах хариу нь `tx_instructions`-ийг буцаадаг; энэ нь шинэчлэлтийг хэрэгжүүлдэггүй. Тэр багцыг энгийн гарын үсэгтэй гүйлгээ болон захиргааны замаар илгээгээрэй. Одоогоор наалттай Python аргууд `propose_runtime_upgrade`, `activate_runtime_upgrade`, болон `cancel_runtime_upgrade` хэрэглэгчийн `OperatorSigningContext` хэрэгжүүлэлтийг ашиглахын оронд энгийн хүсэлтүүдийг гүйцэтгэж байгаа тул энэ зааварчилгаа тэдгээрийг ажиллах оператор урсгал болгон харуулдаггүй.
+
+## Төлөв, Нийтлэг ойлголт, Сүлжээний телеметри {#status-consensus-and-network-telemetry}
 
 ```python
 # `/status` is the public node snapshot endpoint on Taira.
 status = client.request_json("GET", "/status", expected_status=(200,))
 print(status["blocks"], status["txs_approved"])
 
-# Sumeragi and time endpoints expose consensus and clock diagnostics.
-sumeragi = client.get_sumeragi_status_typed()
-print(sumeragi.highest_qc.height, sumeragi.tx_queue.saturated)
+# Sumeragi and time-status endpoints use the operator client configured above.
+sumeragi = operator_client.get_sumeragi_status_typed()
+diagnostics = operator_client.get_sumeragi_diagnostics_typed()
+print(sumeragi.last_committed_height, diagnostics.tx_queue_saturated)
 
-time_now = client.get_time_now_typed()
-time_status = client.get_time_status_typed()
+time_now = client.get_time_now()
+time_status = operator_client.get_time_status()
 for sample in time_status.samples:
     print(sample.peer, sample.last_offset_ms, sample.last_rtt_ms)
 print(time_now.now_ms)
+
+# Connect aggregate status is operator-authenticated. Individual sessions use
+# `/v1/connect/status?sid=...` with their management bearer token instead.
+connect_status = operator_client.get_connect_status_typed()
+if connect_status is not None:
+    print(connect_status.enabled, connect_status.sessions_active)
 ```
 
-## SoraFS,UAID, Kaigi туслах ажилчид {#sorafs-uaid-and-kaigi-helpers}
+## SoraFS, UAID, ба Kaigi туслагчид {#sorafs-uaid-and-kaigi-helpers}
 
-Эдгээр туслах нь зорилтот түймэртэй холбоотой Nexus/SORA төгсгөлийн цэг. Бус жагсаалтыг хүчин төгөлдөр хариу гэж үзээрэй: олон нийт Taira үзэл баримт бичгийн мэдээлэлгүйгээр замыг ашиглах боломжтой, эсвэл UAID.
+Эдгээр туслахууд нь зорилтот товчлуур нь холбогдох Nexus/SORA API төгсгөлүүдийг ил гаргасан үед ашиглах боломжтой. Хоосон жагсаалтыг хүчинтэй хариу гэж үзнэ: олон нийтийн Taira нь дээжийн техникийн үзүүлэлт эсвэл UAID-ын хувьд өгөгдөлгүйгээр маршрутыг идэвхжүүлсэн байж болох юм.
 
 ```python
 # SoraFS status queries are reads scoped by manifest and status.
@@ -1264,25 +1317,28 @@ manifests = client.list_space_directory_manifests_typed(
 )
 print(len(bindings.dataspaces), len(manifests.manifests))
 
-# Kaigi health summarizes relay availability when the route is enabled.
-health = client.get_kaigi_relays_health_typed()
+# Kaigi relay health is an operator snapshot, even though it is read-only.
+health = operator_client.get_kaigi_relays_health_typed()
 print(health.healthy_total, health.failovers_total)
 ```
 
-## Norito RPC болон GPU Хөдөлмөрийн туслах {#norito-rpc-and-gpu-helpers}
+## Norito RPC ба GPU Туслагчид {#norito-rpc-and-gpu-helpers}
 
-Та аль хэдийн Norito байттай бол `NoritoRpcClient` ашиглаж, бинар Torii төгсгөлийн цэг рүү дуудлах хэрэгтэй. Тухайн жишээ нь өмнөх гүйлгээний загварын гарын үсэг зурсан хуудас шаарддаг:
+Та аль хэдийн Norito байттай бол `NoritoRpcClient`-ыг ашиглаж, хоёртын Torii API эцсийн цэгийг дуудахад хэрэгтэй. Жишээ нь өмнөх гүйлгээний загвараас гарсан гарын үсэгтэй өгөгдлийн сав шаарддаг:
 
 ```python
 from iroha_python import NoritoRpcClient, NoritoRpcConfig
 
 # Use the binary RPC client for endpoints that expect Norito bytes.
 with NoritoRpcClient(NoritoRpcConfig(TORII_URL, timeout=5.0)) as rpc:
-    response_bytes = rpc.call("/v1/transaction", envelope.signed_transaction_versioned)
+    response_bytes = rpc.call(
+        "/v1/pipeline/transactions",
+        envelope.signed_transaction_versioned,
+    )
     print(len(response_bytes))
 ```
 
-CUDA туслагч нь `None` -ийг буцааж өгөөч бэкэнд байхгүй бол хэрэглүүд скалар хэрэгжилтэд шилжүүлэх боломжтой:
+CUDA туслагчид backend ашиглах боломжгүй үед `None` буцаана, ингэснээр програмууд scalar хэрэгжилт рүү шилжиж болно:
 
 ```python
 from iroha_python import bn254_add_cuda, cuda_available, poseidon2_cuda
@@ -1293,23 +1349,23 @@ if cuda_available():
     print(bn254_add_cuda((1, 0, 0, 0), (2, 0, 0, 0)))
 ```
 
-## Одоогоор хамааралтай {#current-coverage}
+## Өнөөгийн хамрах хүрээ {#current-coverage}
 
-Python SDK нь дараахь чиглэлээр туслах ажилтнуудыг багтаасан:
+Python SDK нь аль хэдийн туслахуудыг дараах зүйлд багтаасан:
 
-- Torii өргөн мэдүүлэг, байдал, хайлт, удирдах урсгал
-- нийтлэг ISI болон доменийн тусгай өргөтгөлийг зориулсан дүрэмлэгийн зааварч
-- гүйлгээний төсөл, манфист, гарын үсэг зурах болон гарын үсгийн гүйлгэний хуудасны ажлын урсгал
-- урсгалын үйл явдлууд, филтрүүд, цаашид ашиглах боломжтой курсор
-- нийтлэг Kagemusha бэлэн байдлын нэвтрүүлэг болон Torii бүртгэлийн туслалцааг эзэмшигч; цахилгаан нэмэлт, нөхөн төлбөрийн бүтээн байгуулалтын ажилтнууд илэрэхгүй
-- дансны хаяг, бүх алгоритмийн гарын үсэг зурах туслалцаач, олон хашны эргэн тойронд аялал, SM2, GOST, ML-DSA, BLS болон нууц товчооны хэрэгжилт
-- URIs, чуулганы үеэр, төхөөрөмжүүд, шифрлэх туслах болон бүртгэлийн захирал холбоно
-- удирдлага, зардах цаг шинэчлэл, Sumeragi, түймэр-админ, SoraFS, UAID, болон Kaigi Хөгжлийн тоног төхөөрөмж нь эдгээр шинж чанаруудыг илрүүлэх
+- Torii илгээх, статус, лавлагаа, болон админ урсгалууд
+- ердийн ISI ба салбар-тусгай өргөтгөлүүдэд зориулсан бичвэр заавар бүтээгчид
+- гүйлгээний төсөл, техникийн мэдүүлэг, гарын үсэг зурах, гарын үсэг зурсан гүйлгээний өгөгдлийн савны ажлын урсгалууд
+- амьд үйл явдлын урсгалууд ба бичигдсэн шүүлтүүд; эцсийн блок урсгалууд бүрэн түүхийг өгдөг
+- ерөнхий Кагемуша бэлэн байдлын хандалт ба Torii захиалгын туслахууд; бичигдсэн дүүргэлт болон арилжааны бүтээгчид ил гаргагдаагүй
+- төлбөрийн дансны хаяг, бүх алгоритмын гарын үсэг зурах туслах хэрэгсэл, олон хэвлэлийн буцах замууд, SM2, GOST, ML-DSA, BLS, ба нууц түлхүүрийн удирдлага
+- Холбох URIs, хурал, кадрууд, нууцлалын туслагчид, болон бүртгэлийн админ
+- зангилаа эдгээр боломжийг гаргасан үед засаглал, гүйцэтгэх орчны шинэчлэлт, Sumeragi, node-admin, SoraFS, UAID болон Kaigi төгсгөлийн цэгийн бүрхүүлүүд
 
-## Урьдчилсан нэвтрүүлэг {#upstream-references}
+## Дээшээ чиглэсэн лавлагаа {#upstream-references}
 
 - `python/iroha_python/README.md`
 - `python/iroha_python/DESIGN.md`
 - `python/iroha_python/src/iroha_python`
 
-Эдгээр файлууд нь Python талбайны үнэн эх үүсвэрийн нэвтрүүлэгтэй ажлын байрны шинэчлэлт.
+Тэр файлууд нь наалттай ажлын орчны шинэчилсэн хувилбарт байгаа Python гадаргын үнэн эх сурвалж юм.

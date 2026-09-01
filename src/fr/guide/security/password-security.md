@@ -3,43 +3,43 @@ translation_locale: fr
 translation_source: /guide/security/password-security.md
 translation_source_hash: 093be5b91700b9a6f85b45dc873c8c29d90397d5c9e3c842a77bfb03e97b37da
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: bing-translator-llm
 ---
 
 # Sécurité des mots de passe {#password-security}
 
-Les mots de passe peuvent protéger les consoles d'opérateur, les magasins secrets, les sauvegardes et les fichiers clés locaux. Un mot de passe n'est qu'un seul contrôle. Utilisez-le avec la conservation sécurisée des clés, les contrôles d'accès et l'authentification à plusieurs facteurs lorsque cela est disponible.
+Les mots de passe peuvent protéger les consoles des opérateurs, les magasins secrets, les sauvegardes et les fichiers de clés locaux. Un mot de passe n'est qu'un contrôle. Utilisez-le avec la garde sécurisée des clés, les contrôles d'accès et l'authentification multifactorielle lorsque cela est disponible.
 
-## Utilisez des mots de passe uniques générés {#use-unique-generated-passwords}
+## Utilisez des mots de passe uniques et générés {#use-unique-generated-passwords}
 
-- Générer un mot de passe différent pour chaque compte et l'environnement.
-- Utilisez un gestionnaire de mots de passe pour créer et stocker de longs mots de passe aléatoires.
-- Utilisez une phrase de mot de passe à plusieurs mots uniquement lorsque ses mots sont sélectionnés au hasard dans une liste suffisamment importante.
-- Conservez les noms, les dates, les adresses, les citations, les modèles de clavier et les fragments réutilisés hors des mots de passe.
-- Utilisez un jeton ou une clé cryptographique généré par le service au lieu d'un mot de passe entré par l'homme lorsque le service prend en charge cette méthode.
+- Générez un mot de passe différent pour chaque compte et environnement.
+- Utilisez un gestionnaire de mots de passe pour créer et stocker des mots de passe longs et aléatoires.
+- N'utilisez une phrase de passe composée de plusieurs mots que lorsque ses mots sont choisis au hasard dans une liste suffisamment grande.
+- Ne mettez pas de noms, de dates, d'adresses, de citations, de motifs de clavier ni de fragments réutilisés dans les mots de passe.
+- Utilisez un jeton généré par le service ou une clé cryptographique au lieu d'un mot de passe saisi par un humain lorsque le service prend en charge cette méthode.
 
-La longueur et l'imprévisibilité comptent plus que les remplacements décoratifs. L'ajout d'un seul symbole à un mot prévisible ne rend pas le résultat sûr.
+La longueur et l'imprévisibilité comptent plus que les substitutions décoratives. Ajouter un symbole à un mot prévisible ne rend pas le résultat sûr.
 
 ## Protéger les comptes basés sur des mots de passe {#protect-password-based-accounts}
 
-- Activer l'authentification à plusieurs facteurs résistante au phishing lorsque celle-ci est disponible.
-- Appliquer des limites de tarifs, une politique de verrouillage et des alertes pour les échecs d'authentification répétés.
-- Envoyez des mots de passe uniquement par les canaux authentifiés et cryptés.
-- Gardez les mots de passe et les codes de récupération à l'écart des journaux, lignes de commande, dépôts sources, fichiers de configuration, billets et chat.
-- Conserver les vérificateurs de mots de passe du côté du serveur avec une fonction de hachage des mots de passe salée et durable en mémoire et des paramètres appropriés au déploiement.
+- Activez l'authentification multi-facteurs résistante au phishing là où elle est disponible.
+- Appliquer des limites de taux, une politique de verrouillage et des alertes aux échecs d'authentification répétés.
+- Envoyez les mots de passe uniquement via des canaux authentifiés et chiffrés.
+- Gardez les mots de passe et les codes de récupération hors des journaux, des lignes de commande, des dépôts de code source, des fichiers de configuration, des tickets et des discussions.
+- Stockez les vérificateurs de mot de passe côté serveur avec une fonction de hachage de mot de passe salée et résistante à la mémoire, ainsi que des paramètres appropriés au déploiement.
 
-## Le stockage, la récupération et le remplacement {#storage-recovery-and-replacement}
+## Stockage, Récupération et Remplacement {#storage-recovery-and-replacement}
 
-- Utilisez un gestionnaire de mot de passe vérifié avec des sauvegardes cryptées et testées.
-- Conserver les codes de récupération séparément du dispositif qu'ils récupèrent. Une copie papier hors ligne protégée peut être appropriée pour le matériel de récupération.
-- Limiter l'accès aux exportations de gestionnaires de mots de passe et aux supports de sauvegarde.
-- Remplacez un mot de passe après une exposition suspectée, une réutilisation non autorisée ou un événement d'une politique qui nécessite un changement.
-- Test des procédures de récupération des comptes avant le lancement de la production.
+- Utilisez un gestionnaire de mots de passe audité avec des sauvegardes cryptées et testées.
+- Conservez les codes de récupération séparément de l'appareil qu'ils permettent de récupérer. Une copie papier protégée hors ligne peut convenir pour le matériel de récupération.
+- Limiter l'accès aux exportations du gestionnaire de mots de passe et aux supports de sauvegarde.
+- Remplacez un mot de passe après une exposition suspectée, une réutilisation non autorisée ou un événement de politique qui nécessite un remplacement.
+- Tester les procédures de récupération de compte avant le lancement en production.
 
 ::: warning
 
-Un mot de passe qui déverrouille une clé privée ne peut pas rendre un exemplaire exposé de cette clé en sécurité. Si l'exposition à la clé privée est suspectée, suivez la procédure de remplacement ou de révocation de la clé du déploiement.
+Un mot de passe qui déverrouille une clé privée ne peut pas rendre sûre une copie exposée de cette clé. Si une exposition de clé privée est suspectée, suivez la procédure de remplacement ou de révocation des clés de l'environnement de déploiement.
 
 :::
 
-Voir [Sécurité opérationnelle](./operational-security.md) et [Couvertures cryptographiques de stockage ](./storing-cryptographic-keys.md).
+Voir [Sécurité opérationnelle](./operational-security.md) et [Stockage des clés cryptographiques](./storing-cryptographic-keys.md).

@@ -1,31 +1,29 @@
 ---
 translation_locale: es
 translation_source: /reference/genesis.md
-translation_source_hash: 1312e80d9e662cc3e8cf4d0668ff4bb9e6ce3f74a60bb5287205aeeb5afd5de8
+translation_source_hash: ac6bad693ed382dede0818132b8649fe14726283508da897a32eea417e5bbb28
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Referencia de Génesis {#genesis-reference}
+# Referencia del génesis de blockchain {#genesis-reference}
 
-en la actualidad Iroha 3 flujo de trabajo, un `genesis.json` manifiesto describe la primera
-transacciones y parámetros que se aplicarán cuando se inicie la red.
+En el flujo de trabajo actual Iroha 3, un manifiesto técnico `genesis.json` describe las primeras transacciones y parámetros que se aplicarán cuando la red comience.
 
-El artefacto firmado distribuido a los pares es un Norito-codificado `.nrt` archivo
-producido por `kagami genesis sign`.
+El artefacto firmado distribuido a los pares de la red es un archivo `.nrt` codificado en Norito producido por `kagami genesis sign`.
 
 ## Campos principales {#main-fields}
 
-Un manifiesto de génesis puede definir:
+Un manifiesto técnico de génesis de blockchain puede definir:
 
-- `chain` para el identificador de cadena
-- `executor` para una ruta de código de bytes de actualización de ejecutor opcional
-- `ivm_dir` para IVM bibliotecas utilizadas por activadores y actualizaciones
-- `consensus_mode` para el modo inicial anunciado por el manifiesto
-- `transactions` para actualizaciones ordenadas de parámetros, instrucciones, activadores y topología
-- `crypto` para la instantánea criptográfica inicial
+- `chain` para el identificador de la cadena
+- `executor` para una ruta de bytecode de actualización de ejecutor opcional
+- `ivm_dir` para IVM bibliotecas utilizadas por disparadores y actualizaciones
+- `consensus_mode` para el modo inicial anunciado por el manifiesto técnico
+- `transactions` para actualizaciones de parámetros ordenadas, instrucciones, disparadores y topología
+- `crypto` para la vista de datos de criptomonedas en un momento inicial
 
-Dentro `transactions`, Las entradas de topología emparejan ID de pares y PoPs juntos:
+Dentro de `transactions`, las entradas de topología emparejan los identificadores de pares de red y PoPs juntos:
 
 ```json
 {
@@ -34,9 +32,9 @@ Dentro `transactions`, Las entradas de topología emparejan ID de pares y PoPs j
 }
 ```
 
-## Generar un manifiesto {#generate-a-manifest}
+## Generar un manifiesto técnico {#generate-a-manifest}
 
-Usar Kagami para generar una plantilla:
+Usa Kagami para generar una plantilla:
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
@@ -45,13 +43,11 @@ cargo run -p iroha_kagami -- genesis generate \
   --genesis-public-key <PUBLIC_KEY> > genesis.json
 ```
 
-para el publico SORA Nexus espacio de datos, `npos` es el modo de consenso esperado.
-Otro Iroha 3 Las implementaciones pueden utilizar permisos o NPoS según el objetivo.
-perfil.
+Para el espacio de datos público SORA Nexus, `npos` es el modo de consenso esperado. Otros despliegues Iroha 3 pueden usar permissioned o NPoS dependiendo del perfil objetivo.
 
-## Firma el manifiesto {#sign-the-manifest}
+## Firmar el manifiesto técnico {#sign-the-manifest}
 
-Después de editar y validar el JSON, firmarlo en un desplegable `.nrt` bloquear:
+Después de editar y validar el JSON, fírmalo en un bloque `.nrt` desplegable:
 
 ```bash
 cargo run -p iroha_kagami -- genesis sign genesis.json \
@@ -59,16 +55,11 @@ cargo run -p iroha_kagami -- genesis sign genesis.json \
   --out-file genesis.signed.nrt
 ```
 
-`kagami genesis sign` lee la clave pública de génesis del manifiesto y usa
-la clave privada de un archivo regular de enlace único propiedad del propietario para producir la
-bloque firmado desplegable.El archivo debe contener una clave privada canónica
-multihash seguido de una nueva línea; Kagami rechaza vínculos simbólicos y modos otros
-que `0600`. Las claves privadas sin procesar no se aceptan en la línea de comando.El resultado
-es el archivo al que los pares deben hacer referencia desde su configuración.
+`kagami genesis sign` lee la clave pública génesis de la blockchain desde el manifiesto técnico y utiliza la clave privada de un archivo regular de enlace único en posesión del propietario para producir el bloque firmado desplegable. El archivo debe contener un multihash de clave privada canónica seguido de un salto de línea; Kagami rechaza enlaces simbólicos y modos distintos a `0600`. No se aceptan claves privadas en crudo en la línea de comandos. El resultado es el archivo al que los pares de la red deben hacer referencia desde su configuración.
 
 ## Configurar `iroha3d` {#configure-iroha3d}
 
-Apunta el demonio al bloque de génesis firmado:
+Apunta el demonio al bloque génesis de la cadena de bloques firmado:
 
 ```toml
 [genesis]
@@ -84,5 +75,4 @@ public_key = "<PUBLIC_KEY>"
 - `kagami localnet`
 - `cargo xtask kagami-profiles`
 
-Para conocer la implementación del generador y los detalles del comando, consulte la
-[Kagami README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami/README.md).
+Para la implementación del generador y los detalles del comando, consulte el [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami/README.md).

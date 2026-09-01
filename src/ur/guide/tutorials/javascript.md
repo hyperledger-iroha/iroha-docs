@@ -85,9 +85,9 @@ import { generateKeyPair } from "@iroha/iroha-js/crypto";
 
 براؤزر کے لئے صرف کنیکٹ بوٹسٹریپ کے ل Node ، `@iroha/iroha-js/connect-browser` کا استعمال کریں بجائے Node-first `ToriiClient` سطح کی درآمد کریں۔
 
-## مقامی ایسکرو {#native-escrow}
+## مقامی ایایسکرو {#native-escrow}
 
-JavaScript اور TypeScript ایپلی کیشنز Kotodama معاہدوں کے ذریعے مقامی اسرو کا استعمال کرسکتے ہیں۔ `@iroha/iroha-js/kotodama-compiler` کے ساتھ ایسرو میزبان کالیں مرتب کریں۔ براہ راست مقامی اسرو  ٹرانزیکشن بلڈرز فی الحال JavaScript SDK کے ذریعہ بے نقاب نہیں ہیں۔ اسرو میزبان کال کی مثال کے لئے [ نیشنل اثاثہ سکرو](/ur/blockchain/escrow.md#javascript-and-typescript-kotodama) دیکھیں.
+JavaScript اور TypeScript ایپلی کیشنز Kotodama کانٹریکٹس کے ذریعے مقامی ایایسکرو استعمال کر سکتی ہیں۔ `@iroha/iroha-js/kotodama-compiler` کے ساتھ ایایسکرو host calls کمپائل کریں۔ براہِ راست مقامی ایایسکرو ٹرانزیکشن بلڈرز فی الحال JavaScript SDK میں دستیاب نہیں۔ ایایسکرو host-call مثال کے لیے [مقامی اثاثہ ایایسکرو](/ur/blockchain/escrow.md#javascript-and-typescript-kotodama) دیکھیں۔
 
 ## موجودہ کوریج {#current-coverage}
 

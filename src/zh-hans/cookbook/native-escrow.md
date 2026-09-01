@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: aa8e079684879bdcda2b4439e9c12742d4ab477e6f560f7c326a59b6be5bf666
+translation_source_hash: 576e03924f19b63681cdfafa641b996672e35a992478fc9eaf5b83f0e7baa6da
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,9 +16,9 @@ translation_engine: nllb-200-ct2
 
 - 数字资产定义和拥有足够数量的开放者/卖方.
 - 提供资金,单钥匙 I105 每个提交步骤的客户.使用现场授权付费 `fee_payment` 目的,其费用资产与当前相匹配 Taira 管响应;不嵌入资产 ID 根据文件.
-- Rust 或 Python SDK 的电流从 Iroha 承诺 `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
+- Rust 或 Python SDK 的电流从 Iroha 提交 `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
 - 对于 JavaScript 编译器的例子,Node.js 24加上本地构建的 `@iroha/iroha-js`包及其原生 `iroha_js_host`;遵循[JavaScript SDK 源构建设置](/zh-hans/guide/tutorials/javascript.md#build-from-source).浏览器构建必须提供 `compilerUrl`而不是加载原生主机.
-- Taira 必须承认资产转让和保证指令.资产所有者可以使用其资产政策允许的普通生命周期;解决争端需要全球的 `CanResolveEscrowDispute`许可.在缺席必要的公共网络权威时,使用生成的本地网络.
+- Taira 必须承认资产转让和保证指令.资产所有者可以使用其资产政策允许的普通生命周期;解决争端需要全球的 `CanResolveEscrowDispute`许可.在缺席必要的公共网络授权主体时,使用生成的本地网络.
 
 市场托管模式是卖家,买家,链外支付和释放.通用锁定名称一个目的地和可选的单独释放权限;它们支持部分撤销,取消和过期.
 
@@ -70,7 +70,7 @@ fn complete_marketplace_escrow(
 }
 ```
 
-存储账户由本书管理. 授予正常资产转让代币并不使活跃的存储在保证券生命周期之外可剥离.
+存储账户由账本管理. 授予正常资产转让代币并不使活跃的存储在保证券生命周期之外可剥离.
 
 ### 2. 用 Python 打开并部分绘制通用锁. {#_2-open-and-partially-draw-a-generic-lock-with-python}
 
@@ -169,9 +169,9 @@ opener.submit_blocking(
 
 `DrawdownAssetLock::new`取三个值; `CancelAssetLock::new`取两个. 省略预期剩余数量描述了一个较旧的,不安全的呼叫形式.
 
-### 3. 从 JavaScript 编译 Kotodama 保证金表面. {#_3-compile-the-kotodama-escrow-surface-from-javascript}
+### 3. 从 JavaScript 编译 Kotodama 托管表面. {#_3-compile-the-kotodama-escrow-surface-from-javascript}
 
-JavaScript 不需要发明未类型的本土指令.当前的编译器将内置的账本托管暴露在 Kotodama;部署和调用然后遵循[构建并部署智能合同](./smart-contracts.md).
+JavaScript 无需自行构造无类型的原生指令。当前编译器向 Kotodama 公开账本托管内置函数；部署和调用随后遵循[构建并部署智能合约](./smart-contracts.md)。
 
 保存为 `native_escrow.ko`:
 
@@ -242,17 +242,17 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 
 - `Not permitted`在开放时通常意味着该机构无法将选定的资产转移到保管中.争端解决有单独的全球 `CanResolveEscrowDispute`门口.
 - `expected remaining amount`拒绝是乐观与竞争的冲突.重新查询记录,决定是否打算另一个撤销/取消,并且只签署新指示,如果新的状态是可接受的.
-- 只有配置的释放权威才能绘制一个值得信赖的锁.目的地不能仅仅因为它将收到资金而释放.
+- 只有配置的释放授权主体才能绘制一个值得信赖的锁.目的地不能仅仅因为它将收到资金而释放.
 - 市场发布仅在接受和支付发送状态后才有效;取消限于更早的生命周期状态.
 - 截止日期使用权威的账本时间. 不要把当地的墙钟截止时间视为证明`ExpireAssetLock`将通过.
 - 收费失效属于提交该生命周期步骤的当事人.基金购买者,卖方/开放者和独立释放权限在 Taira.
 
 ## 来源及相关文件 {#source-and-related-docs}
 
-- [在固定承诺](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)上,本地保证指令模型
-- [在固定的承诺中进行本地保证券整合测试](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
-- [Python 托管客户的方法在固定承诺](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama 本地保证券样本在固定承诺](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
-- [国产资产保证金](/zh-hans/blockchain/escrow.md)
+- [在固定提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)上,本地保证指令模型
+- [在固定的提交中进行本地保证券整合测试](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
+- [Python 托管客户的方法在固定提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama 本地保证券样本在固定提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [原生资产托管](/zh-hans/blockchain/escrow.md)
 - [性资产](./fungible-assets.md)
 - [许可证和角色](./permissions-and-roles.md)

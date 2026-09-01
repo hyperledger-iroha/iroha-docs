@@ -1,45 +1,45 @@
 ---
 translation_locale: az
 translation_source: /help/deployment-issues.md
-translation_source_hash: 5c7d26b39d4ddf4e7e164f7bef79c9e1659db51587fb0dde9cf3f1dc0e3b057b
+translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# İstifadəçi problemlərinin həlli {#troubleshooting-deployment-issues}
+# Yerləşdirmə Problemlərinin Həlli {#troubleshooting-deployment-issues}
 
-Bu bölmədə Iroha 3 tətbiqləri üçün problemlərin aradan qaldırılması məsləhətləri təqdim olunur. Başınıza gələn problem burada təsvir edilmirsə, [Telegram](https://t.me/hyperledgeriroha) vasitəsilə bizə müraciət edin.
+Bu bölmə Iroha 3 yerləşdirmələri üçün problem həll etmə məsləhətləri təklif edir. Əgər yaşadığınız problem burada təsvir edilməyibsə, bizə [Telegram](https://t.me/hyperledgeriroha) vasitəsilə müraciət edin.
 
-## Yaradılmış əşyalarla başlayın. {#start-with-generated-artifacts}
+## Yaradılmış artefaktlarla başlayın {#start-with-generated-artifacts}
 
-Yerli və sınaq tətbiqləri üçün Kagami tərəfindən istehsal olunan sənədləri əl yazılı dosyalar əvəzinə üstün tutun:
+Yerli və test yerləşdirmələri üçün, əl ilə yazılmış şəbəkə həmkarı faylları əvəzinə Kagami tərəfindən yaradılan artefaktları üstün tutun:
 
 ```bash
 cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-İstehsal edilən dizayn həmyaşıd konfiqurasiyaları, genesis materialı, başlanğıc skriptləri və README üçün bir Iroha 3 tikinti xəttini ehtiva edir.
+Yaradılan kataloq şəbəkə həmkarı konfiqurasiyalarını, blockchain başlanğıc materiallarını, başlanğıc skriptlərini və Iroha 3 quruluş xətti üçün README-i ehtiva edir.
 
-## Tərəfdaş başlamır {#peer-does-not-start}
+## şəbəkə bərabəri başlamır {#peer-does-not-start}
 
-Əvvəlcə bu maddələri yoxlayın:
+Əvvəlcə bu əşyaları yoxlayın:
 
-- `iroha3d --config <path>` tərəfdaşın özünün TOML sənədindəki nöqtələr.
-- `public_key` və `private_key` eyni düymədəki açar cütlüyünə aiddir.
-- `genesis.public_key` genesis əməliyyatının imzalanması üçün istifadə olunan açığa uyğun gəlir.
-- Validator həmyaşıllı kimlikləri BLS-Normal açarlardan istifadə edir və `trusted_peers_pop` yerli açar və etibarlı həmyaşıllar üçün mülkiyyət sübutunu göstərən girişlər ehtiva edir.
-- Torii və P2P üçün limanlar artıq başqa bir proseslə bağlanılmır.
-- Kura mağaza direktoru eyni zəncirə aiddir və fərqli bir şəbəkə profilindən kopiyalanmayıb.
+- `iroha3d --config <path>` şəbəkə qonşusunun öz TOML faylına işarə edir.
+- `public_key` və `private_key` şəbəkə həmkarı konfiqurasiyasında eyni açar cütünə aiddir.
+- `genesis.public_key` blokçeyn başlanğıc əməliyyatını imzalamaq üçün istifadə olunan açara uyğundur.
+- Təsdiqləyici şəbəkəsi iştirakçı identifikatorları BLS-Normal açarlardan istifadə edir və `trusted_peers_pop` yerli açar və etibarlı şəbəkə iştirakçıları üçün mülkiyyət sübutu daxilolmalarını ehtiva edir.
+-  Torii və P2P üçün portlar artıq başqa bir proses tərəfindən tutulmayıb.
+- Kura mağaza kataloqu eyni zəncərə aiddir və fərqli şəbəkə profilindən kopyalanmayıb.
 
-Daemon birdən çox TOML təbəqə oxuduqda konfig tracing istifadə edin:
+Daemon bir TOML qatından çox oxuyanda konfiqurasiya izləməsindən istifadə edin:
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 ```
 
-## Docker və Compose {#docker-and-compose}
+## Docker və Yarat {#docker-and-compose}
 
-Yaradın Hələlik Kagami localnet çıxışı ilə tərtib edin ki, əmr xətti argumentləri və konfiqurasiya faylları yoxlanılan kodla uyğunlaşsın:
+Cari Kagami localnet çıxışından Compose yaradın ki, əmr sətiri arqumentləri və konfiqurasiya faylları çıxarılmış kod ilə uyğun olsun:
 
 ```bash
 cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
@@ -47,32 +47,42 @@ cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyper
 docker compose -f ./docker-compose.yml up
 ```
 
-Əgər kompost tətbiqi başlayırsa və sonra dayandırılırsa, daemon loglarını yoxlayın:
+Əgər bir compose yerləşdirilməsi başlayır və sonra dayanırsa, daemon qeydlərini yoxlayın:
 
 - uyğunsuz `chain`
-- fərqli bir genesis əməliyyatını və ya manifestini istifadə edən bir həmyaşıd
-- Yalnız konteyner şəbəkəsi daxilində işləyən P2P ünvanları reklam olunur
-- Yerli həcmin bərpa edilmədən sonra təkrar istifadəsi
+- fərqli bir blokçeyn əsas əməliyyatı və ya texniki manifesto istifadə edən bir şəbəkə həmkarı
+- reklamı verilmiş P2P ünvanlar yalnız konteyner şəbəkəsi daxilində işləyir
+- blokçeyn başlanğıcını yenidən yaratdıqdan sonra yerli həcm təkrar istifadəsi
 
-Yeni bir genesis sınaqdan keçirərkən, yığın yenidən başlamadan əvvəl köhnə Kura həcmləri çıxarın. Köhnə blokların saxlanılması yeni bir cinslə oynamağın uğursuzluğuna səbəb olacaq.
+Yeni bir blockchain genesisini sınaqdan keçirərkən, yığın yenidən başlamazdan əvvəl köhnə Kura həcmləri silin. Köhnə blok saxlamağı yeni blockchain genesis ilə saxlamaq təkrar oynatma uğursuz olacaq.
 
-## Kubernetlər {#kubernetes}
+## Kubernetes {#kubernetes}
 
-Kubernetes üçün hər bir təsdiqləyici dövlətli infrastruktur kimi qəbul edin:
+Kubernetes üçün hər bir doğrulayıcıya vəziyyətli infrastruktur kimi yanaşın:
 
-- Hər bir rəqibə sabit kimlik açarı və sabit davamlı həcmi verin.
-- P2P ünvanlarını açıqlayın ki, digər həmyaşıdlar qrupun daxilində həll edə bilərlər.
-- Yükləmə üçün dəyişməz yığma kimi konfig və genesis fayllarını quraşdırın.
-- Bütün genesis və ya topoloji dəyişiklikləri avtomatik bir quruluş xəritəsinin yeniləməsi kimi yox, bilə-bilə həyata keçirmək
+- hər bir şəbəkə iştirakçısına sabit identifikasiya açarı və sabit davamlı həcm verin
+- klaster daxilindən digər şəbəkə həmkarlarının həll edə biləcəyi P2P ünvanlarını açmaq
+- Rolauta üçün dəyişdirilməz konfiqurasiya kimi montaj konfiqurasiyası və blokçeyn genesis faylları
+- bütün blokçeyn başlanğıc və ya topologiya dəyişikliklərini avtomatik konfiqurasiya xəritəsi yeniləməsi kimi deyil, qəsdən tətbiq edin
 
-Əgər bir pod dəfələrlə yenidən başlanırsa, modeldə göstərilən konfiqurasiyanı gözlənilən [`peer.template.toml`](/az/reference/peer-config/index.md#template) ilə müqayisə edin və həmyaşıdların köhnə Kura məlumatları oynadıqlarını yoxlayın.
+Əgər pod təkrar-təkrar yenidən başlasa, poddakı yaradılmış konfiqurasiyanı gözlənilənlə müqayisə edin [`peer.template.toml`](/az/reference/peer-config/index.md#template) və şəbəkə iştirakçısının köhnə məlumatları təkrar oynadığını yoxlayın Kura məlumat.
 
 ## Sora profili {#sora-profile}
 
-Nexus, SoraFS və ya çox yollu axınlardan istifadə edən Iroha 3 yerləşdirmələr Sora profilinin aktivləşdirilməsi ilə daemonı başlatmalıdır:
+Şəxsi və ya yerli Iroha 3 yerləşdirmələrində Nexus, SoraFS və ya çox zolaqlı axınlardan istifadə edildikdə, standart daemon Sora profili aktivləşdirilmiş şəkildə başlamalıdır:
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora
 ```
 
-Eyni şəbəkədəki təsdiqləyicilər arasında ardıcıl olaraq eyni profildən istifadə edin.
+Eyni şəbəkədəki doğrulayıcılar arasında eyni profildən ardıcıl istifadə edin.
+
+İctimai Taira doğrulayıcılar xüsusi işə salıcını istifadə edirlər, bu da Taira-in dəqiq zənciri, siyahısı, deaktiv edilmiş daxili-SoraFS yaddaşı və işləmə vaxtı imzalayıcı profilini tətbiq edir. Başlamazdan əvvəl işlənmiş Taira konfiqurasiyanı doğrulayın:
+
+```bash
+iroha3d_taira --sora \
+  --config /etc/iroha/taira/config.toml \
+  --check-config
+```
+
+İctimaiyyəti başlamayın Taira ümumi tipli doğrulayıcı `iroha3d`; görmək [`iroha3d` CLI istinad](/az/reference/iroha3d-cli.md) tələb olunan profil üçün.

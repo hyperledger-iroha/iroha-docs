@@ -3,22 +3,22 @@ translation_locale: pt
 translation_source: /guide/configure/keys-for-network-deployment.md
 translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: bing-translator-llm
 ---
 
-# Chaves para a implantação da rede {#keys-for-network-deployment}
+# Chaves para Implantação de Rede {#keys-for-network-deployment}
 
-Cada rede precisa de material-chave distinto para clientes, pares, assinatura da gênese e, para perfis NPoS ou Nexus, identidades de validador de BLS.
+Toda rede precisa de material chave distinto para clientes, pares de rede, assinatura do gênesis da blockchain e, para NPoS ou perfis Nexus, identidades de validadores BLS.
 
-## Onde as chaves são usadas {#where-keys-are-used}
+## Onde as Chaves São Usadas {#where-keys-are-used}
 
 - As chaves de assinatura do cliente são armazenadas em `client.toml` sob `[account]`.
-- As chaves de identidade de pares são armazenadas em cada igual `config.toml` como `public_key` e `private_key`.
-- A peer discovery utiliza a chave pública de cada peer em `trusted_peers`.
-- Validador BLS As provas de posse são armazenadas em `trusted_peers_pop` para perfis de NPoS.
-- A assinatura da Gênesis utiliza a `[genesis].public_key` em configuração de pares e a chave privada correspondente ao assinar o manifesto.
+- As chaves de identidade dos pares de rede são armazenadas em cada par de rede `config.toml` como `public_key` e `private_key`.
+- a descoberta de pares de rede usa a chave pública de cada par de rede em `trusted_peers`.
+- BLS provas de posse do validador são armazenadas em `trusted_peers_pop` para perfis NPoS.
+- A assinatura da gênese usa o `[genesis].public_key` na configuração do par de rede e a chave privada correspondente ao assinar o manifesto.
 
-Para implementações locais ou de teste, deixe Kagami gerar todos estes arquivos juntos:
+Para implantações locais ou de teste, deixe Kagami gerar todos esses arquivos juntos:
 
 ```bash
 cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
@@ -32,31 +32,28 @@ cargo run --bin kagami -- wizard
 
 ## Gerar pares de chaves individuais {#generate-individual-key-pairs}
 
-Use `kagami keys` for standalone key material:
+Use `kagami keys` para material de chave independente:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 \
   --out-dir ./client-key
 ```
 
-For BLS validator material, include a Proof-of-Possession:
+Para o material de validador BLS, inclua uma Prova de Posse:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm bls_normal --pop \
   --out-dir ./validator-key
 ```
 
-Use `--seed-hex` only with an exact 32-byte hexadecimal secret for reproducible
-development fixtures. For production deployment, omit it so Kagami uses
-operating-system randomness, then move the unencrypted private-key export into
-the approved custody boundary. The command never prints private keys.
+Use `--seed-hex` somente com um segredo hexadecimal exato de 32 bytes para casos de teste de desenvolvimento reproduzíveis. Para implantação em produção, omita-o para que Kagami use a aleatoriedade do sistema operacional, em seguida, mova a exportação da chave privada não criptografada para o limite de custódia aprovado. O comando nunca imprime chaves privadas.
 
-## Consistência entre pares {#peer-consistency}
+## Consistência de par de rede {#peer-consistency}
 
-Todos os validadores devem concordar na mesma transação de gênese, topologia, chaves públicas confiáveis e validador PoPs. Uma única chave perdida ou incomparável pode impedir a rede de iniciar ou alcançar consenso.
+Todos os validadores devem concordar com a mesma transação gênese da blockchain, topologia, chaves públicas de pares confiáveis da rede e validador PoPs. Uma única chave de par da rede ausente ou incompatível pode impedir que a rede seja iniciada ou atinja consenso.
 
-Para uma implantação mínima tolerante às falhas bizantinas, use pelo menos quatro pares. Cada pares deve ter sua própria chave privada, mas cada configuração de pares precisa do mesmo conjunto de pares confiável.
+Para uma implantação mínima tolerante a falhas bizantinas, use pelo menos quatro pares de rede. Cada par de rede deve ter sua própria chave privada, mas toda configuração de par de rede precisa do mesmo conjunto de pares de rede confiáveis.
 
-## Contas de clientes {#client-accounts}
+## Contas de Clientes {#client-accounts}
 
-A conta do cliente em `client.toml` deve já existir na cadeia. Pode ser registrada pelo manifesto genético ou por uma transação posterior. Evite usar a identidade de assinatura genética como uma conta de aplicação de longa duração; Os privilégios da Gênesis só se aplicam durante a rodada da Gênese, e os clientes de produção devem utilizar as suas próprias contas e papéis.
+A conta do cliente em `client.toml` já deve existir na blockchain. Ela pode ser registrada pelo manifesto técnico de gênese da blockchain ou por uma transação posterior. Evite usar a identidade de assinatura da gênese da blockchain como uma conta de aplicativo de longa duração; os privilégios da gênese da blockchain aplicam-se apenas durante a rodada de gênese da blockchain, e os clientes em produção devem usar suas próprias contas e funções.

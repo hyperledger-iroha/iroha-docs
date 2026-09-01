@@ -3,68 +3,68 @@ translation_locale: ar
 translation_source: /blockchain/nfts.md
 translation_source_hash: 6dd2d21a29f352a14cb17046c66cfa541ef501b733b95bb6874d2d3f86ec0504
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # NFTs {#nfts}
 
-Iroha NFT هو كائن رئيسي فريد مع صاحب واحد. استخدم NFTs عندما يحتاج سجل إلى هوية خاصة به، البيانات المعدنية، أحداث دورة الحياة، ونقل الملكية النطاقية، ولكن لا تحتاج إلى توازن عددي .
+يعد Iroha NFT كائن دفتر أستاذ فريد في سلسلة الكتل له مالك واحد. استخدم NFTs عندما يحتاج السجل إلى هويته الخاصة وبيانات التعريف الخاصة به وأحداث دورة الحياة وخصائص نقل الملكية، ولكنه لا يحتاج إلى رصيد رقمي.
 
-على عكس الأصول العددية [ ](/ar/blockchain/assets.md) ، لا تمتلك NFT دقة أو قابلية للتنقل أو كميات لكل حساب. يوجد NFT ككائن مسجل واحد ، ويتم تتبع الملكية مباشرة على هذا الكائن.
+على عكس [أصل](/ar/blockchain/assets.md) الرقمي، فإن NFT ليس له دقة، أو سياسة إصدار الأصول، أو كميات لكل حساب. يوجد NFT ككائن مسجل واحد، ويتم تتبع الملكية مباشرة على هذا الكائن.
 
-## الهيكل {#structure}
+## هيكل {#structure}
 
-`Nft` المسجلة تحتوي على:
+يحتوي `Nft` المسجل على:
 
-- `id`: و `NftId`
-- `content`: البيانات الأساسية التي تصف NFT
+- `id`: an `NftId`
+- `content`: بيانات وصفية تصف NFT
 - `owned_by`: الحساب الذي يملك NFT
 
-الحقل `content` هو خريطة `Metadata`. احتفظ بها بصيغة صغيرة: تخزين الحقول الوصفية، والمراجع المستقرة، والهاشات، أو مسارات URIs، أو SoraFS هناك. تخزين الوثائق الكبيرة، وسائل الإعلام، أو حالة التطبيقات عالية المعدل خارج السلسلة وتحتفظ فقط بمراجعة قابلة للتحقق من ذلك على NFT .
+حقل `content` هو خريطة `Metadata`. اجعله مضغوطًا: خزّن الحقول الوصفية، المراجع المستقرة، التجزئات التشفيرية، URIs، أو مسارات SoraFS هناك. خزّن المستندات الكبيرة، الوسائط، أو حالة التطبيق عالية التغير خارج السلسلة واحتفظ فقط بالإشارة القابلة للتحقق على NFT.
 
-## جربوا ذلك على Taira {#try-it-on-taira}
+## جرّبه على Taira {#try-it-on-taira}
 
-تحقق ما إذا كانت شبكة اختبار Taira العامة تمتلك حاليا سجلات NFT:
+تحقق مما إذا كان لدى شبكة الاختبار العامة Taira حاليًا سجلات NFT:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/nfts?limit=5' \
   | jq '{total, nft_ids: [.items[].id]}'
 ```
 
-تحقق من وثيقة OpenAPI الحية لطرق NFT المعروضة عن طريق العقدة:
+تحقق من المستند المباشر OpenAPI للمسارات NFT المكشوفة بواسطة العقدة:
 
 ```bash
 curl -fsS https://taira.sora.org/openapi.json \
   | jq -r '.paths | keys[] | select(startswith("/v1/nfts") or startswith("/v1/explorer/nfts"))'
 ```
 
-صف فارغ `items` هو رد صالح على شبكة اختبار عامة. يعني أنه لا توجد NFTs في الصفحة الحالية، وليس أن تعليمات NFT غير متوفرة.
+مصفوفة `items` فارغة هي استجابة صالحة على شبكة اختبار عامة. هذا يعني أنه لا توجد NFTs في الصفحة الحالية، وليس أن تعليمات NFT غير متوفرة.
 
-## NFT IDs {#nft-ids}
+## NFT هويات {#nft-ids}
 
-`NftId` يستخدم هذا النوع من النصوص:
+`NftId` يستخدم هذا النموذج النصي:
 
 ```text
 name$domain
 name$domain.dataspace
 ```
 
-على سبيل المثال `badge$docs.universal` يحدد `badge` NFT في `docs.universal` المجال. إذا تم حذف مساحة البيانات، فإن المحلل الحالي يستخدم `universal` مساحة البيانات، لذلك `badge$docs` يقرر أن `badge$docs.universal`.
+على سبيل المثال، `badge$docs.universal` يحدد `badge` NFT في مجال `docs.universal`. إذا تم حذف مساحة البيانات، يستخدم المحلل الحالي مساحة البيانات `universal`، لذلك `badge$docs` يتحول إلى `badge$docs.universal`.
 
-استخدم أسماء ثابتة NFT IDs. (الـ) ID هو هوية الكائن المستخدمة من خلال التعليمات والسئلة والإذن ومصفحات الأحداث ومرجع التطبيق.
+استخدم أسماء ثابتة لمعرفات NFT. المعرف هو هوية الكائن المستخدمة من قبل التعليمات والاستعلامات والأذونات ومرشحات الأحداث ومراجع التطبيقات.
 
 ## دورة الحياة {#lifecycle}
 
-NFT استخدام عمليات دورة الحياة Iroha تعليمات خاصة:
+NFT عمليات دورة الحياة تستخدم Iroha عمليات التعليمات:
 
-- [يخلق `Register`](/ar/blockchain/instructions.md#un-register) NFT مع البداية `content`.
-- [يزيل `Unregister`](/ar/blockchain/instructions.md#un-register) NFT.
-- [تغييرات `Transfer`](/ar/blockchain/instructions.md#transfer) `owned_by`.
-- [`SetKeyValue` و`RemoveKeyValue` ](/ar/blockchain/instructions.md#setkeyvalue-removekeyvalue) تحديث البيانات المعدنية NFT.
+- [`Register`](/ar/blockchain/instructions.md#un-register) يخلق NFT مع الحرف الأول `content`.
+- [`Unregister`](/ar/blockchain/instructions.md#un-register) يزيل الـ NFT.
+- [`Transfer`](/ar/blockchain/instructions.md#transfer) تغييرات `owned_by`.
+- [`SetKeyValue` و `RemoveKeyValue`](/ar/blockchain/instructions.md#setkeyvalue-removekeyvalue) تحديث NFT البيانات الوصفية.
 
-## جربها محلياً {#try-it-locally}
+## جربه محليًا {#try-it-locally}
 
-تفترض هذه الأمثلة أنك قد أطلقت شبكة محلية ولديك إعداد العميل الذي تم إنشاؤه من دليل [CLI ](/ar/get-started/operate-iroha-via-cli.md):
+تفترض هذه الأمثلة أنك قد أطلقت شبكة محلية ولديك تكوين العميل الذي تم إنشاؤه من [CLI دليل](/ar/get-started/operate-iroha-via-cli.md):
 
 ```bash
 export IROHA_CONFIG=./localnet/client.toml
@@ -72,9 +72,9 @@ export NFT_DOMAIN=wonderland.universal
 export NFT_ID='badge_intro$wonderland.universal'
 ```
 
-الشبكة المحلية التي تم إنشاؤها بالفعل `wonderland.universal` و هي SNS لإستخدام نطاق مختلف، قم بإنشائه أولاً مع الإعلانية `app alias setup plan` و `app alias setup apply` تدفق العمل الموصوف في: [المجالات](/ar/blockchain/domains.md#registration).
+يقوم الشبكة المحلية المولدة بالفعل بإعداد `wonderland.universal` وعقدها SNS. لاستخدام نطاق مختلف، قم بإنشائه أولاً باستخدام `app alias setup plan` و`app alias setup apply` التوضيحيين كما هو موضح في [النطاقات](/ar/blockchain/domains.md#registration).
 
-تسجيل NFT تسجيل يقرأ المحتوى الأولي JSON من المدخل القياسي:
+سجّل NFT. تقوم عملية التسجيل بقراءة المحتوى الأولي JSON من الإدخال القياسي:
 
 ```bash
 printf '{"kind":"badge","level":"intro","issuer":"docs"}\n' |
@@ -82,7 +82,7 @@ printf '{"kind":"badge","level":"intro","issuer":"docs"}\n' |
   ledger nft register --id "$NFT_ID"
 ```
 
-فحص NFT مباشرة ثم قم بإدراج كل NFTs مع الإدخالات الكاملة:
+افحص الـ NFT مباشرة ثم قم بإدراج جميع الـ NFTs مع الإدخالات الكاملة:
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -92,7 +92,7 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft list all --verbose
 ```
 
-إضافة مفتاح البيانات المتعددة وقراءة NFT مرة أخرى:
+أضف مفتاح بيانات وصفية واقرأ NFT مرة أخرى:
 
 ```bash
 printf '{"color":"blue","rarity":"tutorial"}\n' |
@@ -103,14 +103,14 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft get --id "$NFT_ID"
 ```
 
-إزالة مفتاح البيانات المتعددة:
+أزل مفتاح البيانات الوصفية:
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft meta remove --id "$NFT_ID" --key traits
 ```
 
-تحويل اخياريا NFT. الاستخدام `ledger nft get` ليقرأ المالك الحالي من `owned_by`, واستخدامها `ledger account list all` للعثور على حساب الوجهة ID.
+يمكنك نقل NFT اختياريًا. استخدم `ledger nft get` لقراءة المالك الحالي من `owned_by`، واستخدم `ledger account list all` للعثور على معرف حساب الوجهة.
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -123,44 +123,44 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
-إزالة المثال NFT بعد التشغيل. إذا قمت بنقله ، إما نقله مرة أخرى أو تقديم أمر عدم تسجيل مع تكوين حساب صاحب الحساب الحالي.
+قم بإزالة المثال NFT بعد الإرشادات. إذا قمت بنقله، إما أن تعيده مرة أخرى أو تقدم أمر إلغاء التسجيل باستخدام إعدادات حساب المالك الحالي.
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft unregister --id "$NFT_ID"
 ```
 
-## الأسئلة والأحداث {#queries-and-events}
+## الاستفسارات والفعاليات {#queries-and-events}
 
-الاستخدام [`FindNfts`](/ar/reference/queries.md#assets-nfts-and-rwas) لإدراجها NFTs و [`FindNftsByAccountId`](/ar/reference/queries.md#assets-nfts-and-rwas) لإدراجها NFTs تملك حساباً
+استخدم [`FindNfts`](/ar/reference/queries.md#assets-nfts-and-rwas) قائمة NFTs و [`FindNftsByAccountId`](/ar/reference/queries.md#assets-nfts-and-rwas) قائمة NFTs مملوك من قبل حساب.
 
-تنشر تحديثات تسجيل NFT وإزالة ونقل وبيانات البيانات المعدنية أحداث بيانات NFT. استخدم مرشح حدوث البيانات `Nft` عند الاشتراك في تغييرات دفتر التسجيل أو تشكيل محفزات تتفاعل مع أحداث دورة حياة NFT.
+NFT إصدار التسجيل والحذف والنقل وتحديثات البيانات الوصفية NFT أحداث البيانات. استخدم `Nft` تصفية أحداث البيانات عند الاشتراك في تغييرات دفتر الأستاذ في البلوكشين أو عند إنشاء محفزات تستجيب لـ NFT أحداث دورة الحياة.
 
-## الإذن {#permissions}
+## الأذونات {#permissions}
 
-يحتوي سطح الإذن الافتراضي على رموز محددة ل NFT:
+تتضمن واجهة الإذن الافتراضية الرموز المحددة بـ NFT:
 
 - `CanRegisterNft`
 - `CanUnregisterNft`
 - `CanTransferNft`
 - `CanModifyNftMetadata`
 
-يتم تطبيق عمليات التحقق من السماح بواسطة مؤكد وقت التشغيل النشط ، بحيث يمكن للشبكة تخصيص الإذن عن طريق تحديث المنفذ. انظر [رموز السماح](/ar/reference/permissions.md) لقائمة الرموز الافتراضية الحالية .
+تتم فرض فحوصات الأذونات بواسطة مدقق وقت التشغيل البرمجي النشط، لذلك يمكن للشبكة تخصيص التفويض عن طريق ترقية المنفذ. انظر [رموز الإذن](/ar/reference/permissions.md) لقائمة الرموز الافتراضية الحالية.
 
 ## اختيار NFTs {#choosing-nfts}
 
-استخدم NFT للمسجلات التي تتعلق بالفريدة من نوعها والملكية:
+استخدم NFT للسجلات حيث تكون الخصوصية والملكية مهمة:
 
-- الشهادات والشعارات والترخيصات وشهادات
+- الشهادات، الأوسمة، التراخيص، والإقرارات
 - سجلات العضوية أو الوصول
-- سجلات الطلبات المرتبطة بالهوية أو المملوكة للحساب
-- إشارات إلى وسائل الإعلام أو الوثائق أو المخططات خارج السلسلة
+- سجلات التطبيقات المرتبطة بالهوية أو المملوكة للحساب
+- الإشارات إلى الوسائط أو الوثائق أو المراسيم التقنية خارج السلسلة
 
-استخدم الأصول الرقمية لموازين قابلة للتلاعب، واستخدم البيانات المعدنية [ ](/ar/blockchain/metadata.md) عندما تكون البيانات مجرد صفة صغيرة من كائن الكتيب القائم.
+استخدم أصلًا رقميًا للأرصدة القابلة للاستبدال، واستخدم [البيانات الوصفية](/ar/blockchain/metadata.md) العادي عندما تكون البيانات مجرد سمة مضغوطة لكائن دفتر الأستاذ البلوكتشين الموجود.
 
-انظر أيضاً:
+انظر أيضًا:
 
 - [الأصول](/ar/blockchain/assets.md)
-- [البيانات الأساسية](/ar/blockchain/metadata.md)
-- [التعليمات](/ar/blockchain/instructions.md)
-- [الأسئلة ](/ar/blockchain/queries.md)
+- [البيانات الوصفية](/ar/blockchain/metadata.md)
+- [تعليمات](/ar/blockchain/instructions.md)
+- [استفسارات](/ar/blockchain/queries.md)

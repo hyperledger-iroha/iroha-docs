@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /cookbook/triggers.md
-translation_source_hash: 6c8f436b5a41cf41c0ac37aeed6b6cd8c73009cfcca2fe7f5642cef1ad115e6f
+translation_source_hash: 5267fb9bb232d52d9df4bedee414d745ccc30dd52cbc30993df3c5b975a0bc38
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,7 +16,7 @@ Taira پر ایک محدود بائی کال ٹرگر رجسٹر کریں، اس
 
 - ایک فنڈ دستخط، `taira.client.toml`, `taira.tx-metadata.json`, اور `TAIRA_ACCOUNT_ID` سے [سے رابطہ کریں Taira](./connect-to-taira.md).
 - Taira اجازت `TAIRA_ACCOUNT_ID` کے لئے ایک ٹرگر رجسٹر کرنے اور اس سے پیدا ہونے والے ٹرگر کو انجام دینے کے لئے۔ متعلقہ ٹوکنز `CanRegisterTrigger` کی طرف سے `authority` اور `CanExecuteTrigger` کی طرف سے`trigger` کی طرف سے scopeed ہیں.
-- اگر یہ امداد دستیاب نہیں ہیں تو، ایک پیدا کردہ مقامی نیٹ ورک اور اس کے ایڈمنسٹریٹر کلائنٹ کا استعمال کریں. ٹرگر اتھارٹی کو بھی ہدایات کی طرف سے مطلوبہ تمام اجازتوں کی ضرورت ہوتی ہے کہ ٹرگر انجام دے گا.
+- اگر یہ اجازتیں دستیاب نہیں ہیں تو، ایک پیدا کردہ مقامی نیٹ ورک اور اس کے ایڈمنسٹریٹر کلائنٹ کا استعمال کریں. ٹرگر اتھارٹی کو بھی ہدایات کی طرف سے مطلوبہ تمام اجازتوں کی ضرورت ہوتی ہے کہ ٹرگر انجام دے گا.
 
 ```bash
 CONFIG=./taira.client.toml
@@ -47,7 +47,7 @@ printf '%s\n' \
 
 ٹرگر زیادہ سے زیادہ تین بار چل سکتا ہے۔ اس کی بیان کردہ اتھارٹی ، نہ کہ کال کرنے والا جو واقعتا اسے انجام دیتا ہے ، کارروائی کے اندر ہدایات کو اختیار دیتا ہے۔
 
-### 2۔ پھانسی سے پہلے بیان کی جانچ پڑتال کریں {#_2-inspect-the-declaration-before-execution}
+### 2۔ عمل درآمد سے پہلے declaration کا معائنہ کریں {#_2-inspect-the-declaration-before-execution}
 
 ```bash
 iroha --config "$CONFIG" ledger trigger get --id "$TRIGGER_ID"
@@ -104,7 +104,7 @@ iroha --config "$CONFIG" ledger trigger completed list \
 iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
 ```
 
-کم از کم ایک تکمیل کامیابی کی اطلاع دینا ضروری ہے۔ ٹرگر کو دو عمل کے ساتھ فعال رہنا چاہئے۔ ٹرگر کی کامیاب تکمیل کے بغیر ایک کامیاب گذارش ناکافی تصدیق نہیں ہے.
+کم از کم ایک completion کو کامیابی رپورٹ کرنا ضروری ہے۔ Trigger کو دو executions باقی رکھتے ہوئے active رہنا چاہیے۔ کامیاب trigger completion کے بغیر صرف کامیاب submission کافی verification نہیں ہے۔
 
 ## خرابی کا سراغ لگانا {#troubleshooting}
 

@@ -3,20 +3,20 @@ translation_locale: az
 translation_source: /get-started/private-dataspace-fee-sponsor.md
 translation_source_hash: 37a2c29dccf3d2abacbbba16869d65b70b93545875a122470601194231c2263b
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Özəl məlumat sahəsi üçün sponsor haqqı {#sponsor-fees-for-a-private-dataspace}
+# Şəxsi Verilənlər Məkanı üçün Sponsor Haqları {#sponsor-fees-for-a-private-dataspace}
 
-Ödəniş sponsorluğu istifadəçilərə XOR saxlamadan şəxsi məlumat məkanı əməliyyatlarını təqdim etməyə imkan verir. İstifadəçi hələ də əməliyyatı imzalayır. Əməliyyat metadataları sponsor hesabına vurulur və icra vaxtı şəbəkə haqqı üçün sponsorun XOR balansını ödəyir.
+Ödəniş sponsorluğu istifadəçilərə XOR saxlamadan özəl məlumat-məkan əməliyyatlarını təqdim etməyə imkan verir. İstifadəçi hələ də əməliyyatı imzalayır. Əməliyyatın metadatası sponsor hesabına işarə edir və proqram təminatı icra mühiti şəbəkə ödənişi üçün sponsorun XOR balansından məbləği çıxır.
 
 İnteqrasiya üç hərəkətli hissədən ibarətdir:
 
-1. qovşaq ödəniş sponsorluğunu təmin edir
-2. sponsor hesabı mövcuddur və XOR
-3. Hər bir istifadəçi üçün bu sponsor üçün `CanUseFeeSponsor`
+1. düyün ödəniş sponsorluğuna imkan verir
+2. sponsor hesabı mövcuddur və XOR-a malikdir
+3. hər istifadəçinin həmin sponsor üçün `CanUseFeeSponsor` var
 
-Bundan sonra, hər sponsorlaşdırılmış istifadəçi əməliyyatı yalnız bu metadata ehtiyac duyur:
+Bundan sonra, hər bir sponsorlu istifadəçi əməliyyatı yalnız bu metadata məlumatlarını tələb edir:
 
 ```json
 {
@@ -24,16 +24,16 @@ Bundan sonra, hər sponsorlaşdırılmış istifadəçi əməliyyatı yalnız bu
 }
 ```
 
-Bu səhifədə iki ümumi nümunə göstərilir:
+Bu səhifə iki ümumi nümunəni göstərir:
 
-- Pulsuz istifadəçi yazır: sponsor XOR ödəyir və istifadəçi heç bir şey ödəmir.
-- Yerli token ödənişləri: istifadəçi sponsorunu bir tətbiq tokenində, sponsor isə şəbəkəni XOR ilə ödəyir.
+- Pulsuz istifadəçi yazır: sponsor XOR ödəyir və istifadəçi heç nə ödəmir.
+- Yerel-token ödənişləri: istifadəçi sponsoru bir tətbiq tokenində ödəyir və sponsor şəbəkəyə XOR ilə ödəyir.
 
-Əvvəlcə Taira və ya özəl test şəbəkəsindən istifadə edin. Yeni özəl məlumat sahəsi operator və idarəetmə dəyişikliyidir; müştəri konfigurasiyası ilə yaradılmır.
+Əvvəlcə Taira və ya xüsusi test şəbəkəsindən istifadə edin. Yeni xüsusi verilənlər sahəsi operator və idarəetmə dəyişiklikləridir; müştəri konfiqurasiyası ilə yaradılmır.
 
-## Misal dəyərləri {#example-values}
+## Nümunə Dəyərlər {#example-values}
 
-Aşağıda göstərilən əmrlərdə bu yer sahibləri istifadə olunur:
+Aşağıdakı əmrlər bu yer tutuculardan istifadə edir:
 
 ```bash
 export DATASPACE="team"
@@ -50,11 +50,11 @@ export EMAIL_POLICY="email#team"
 export POLICY_OWNER="<IDENTIFIER_POLICY_OWNER_ACCOUNT_I105>"
 ```
 
-I105 hesabı IDs istifadə edin, əgər sizin yerləşdirməniz eyni hesablar üçün aktiv hesab adları yoxdursa.
+Eyni hesablar üçün aktiv hesab ləqəbləriniz yoxdursa, tək protokol-standart I105 hesab ID-lərindən istifadə edin.
 
-## 1. Məlumat sahəsini hazırlayın. {#_1-prepare-the-dataspace}
+## 1. Verilənlər məkanını hazırlayın {#_1-prepare-the-dataspace}
 
-[da təsvir olunan xüsusi məlumat məkanı kataloqundan və yönümləmə işindən başlayın SORA Nexus Veri məkanlarına bağlanın](/az/get-started/sora-nexus-dataspaces.md#_8-provision-a-new-dataspace). Operatorla üzləşən bir fragment belə görünür:
+Təsvir olunan şəxsi məlumat məkanları kataloqu və yönləndirmə işindən başlayın [Qoşul SORA Nexus Məlumat məkanları](/az/get-started/sora-nexus-dataspaces.md#_8-provision-a-new-dataspace). Operatora yönəlmiş fraqment bu cür görünür:
 
 ```toml
 [[nexus.lane_catalog]]
@@ -81,21 +81,21 @@ description = "Route team domains to the private dataspace"
 
 İstifadəçi əməliyyatlarına keçməzdən əvvəl yoxlayın ki:
 
-- Xüsusi zolaq `/status` cavabında görünür
-- istifadəçi hesabları şəxsi yükləmə axını ilə qəbul edilir
+- şəxsi icra zolağı `/status` düyünü cavabında görünür
+- İstifadəçi hesabları sizin şəxsi onboarding prosessiniz tərəfindən qəbul edilir
 - sponsor hesabı mövcuddur
-- XOR ödəniş aktivinin və ödəniş yuvası hesabının şəbəkədə etibarlı olması
+- XOR ödəniş aktivi və ödəniş boşaldıcı hesab şəbəkədə etibarlıdır
 
-## 2. Məlumat sahəsində aktivlərin qeydiyyatına alınması {#_2-register-assets-in-the-dataspace}
+## 2. Məlumat məkanında aktivləri qeydiyyatdan keçirin {#_2-register-assets-in-the-dataspace}
 
-Xüsusi məlumat məkanında istifadəçilərin saxlayacaqları aktiv təriflərini tətbiq məntiqinə daxil etməzdən əvvəl qeyd edin. Yerli nömrə haqqı nümunəsi üçün dərslik `usage#billing.team` istifadə edir:
+İstifadəçilərin xüsusi məlumat sahəsində saxlayacağı aktiv təriflərini onları tətbiq məntiqinə qoşmazdan əvvəl qeyd edin. Yerli-token ödəniş nümunəsi üçün dərslik `usage#billing.team` istifadə edir:
 
 ```text
 <asset-name>#<domain>.<dataspace>
 usage#billing.team
 ```
 
-Əvvəlcə aktiv ad sahəsinə sahib olan domen və SNS icarəsini qurun. `$BILLING_DOMAIN` üçün nömrəli `team` məlumat sahəsi ID, kanonik sahibi, icarənin müddəti və cari sitat qoruyucusu daxil olmaqla gizli olmayan `AliasSetupPlanRequestV1` niyyətini yaratın:
+Əvvəlcə domeni və aktiv ad məkanına sahib olan SNS icarəni qurun. `$BILLING_DOMAIN` üçün gizlisiz `AliasSetupPlanRequestV1` niyyət yaradın, bura rəqəmsal `team` məlumat sahəsi ID-si, tək protokol-standart sahibi, icarə müddəti və cari təklif qoruyucu daxildir:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -107,7 +107,7 @@ iroha --config ./operator.client.toml \
   app alias setup apply --plan-file ./billing-domain.plan.json
 ```
 
-Sonra aktiv tərifini qeyd edin. Kanonik `--id` şəbəkə səviyyəli aktiv tərifidir ID. Təsvir edənlər və son istifadəçilər məlumat sahəsi kodunda istifadə etməlidir:
+Sonra aktiv təyinatını qeydiyyatdan keçirin. Tək protokol-standart `--id` şəbəkə səviyyəsində aktiv təyinatı ID-sidir. Ləqəb isə inkişaf etdiricilər və son istifadəçilərin dataspace kodunda istifadə etməli olduğu şeydir:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -118,7 +118,7 @@ iroha --config ./operator.client.toml \
   --scale 0
 ```
 
-İstifadəçiyə daxil olunarkən yerli tokenı mint və ya istifadəçiyə ötür:
+yerli tokeni istifadəçiyə qeydiyyat zamanı vermək və ya keçirmək:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -137,13 +137,13 @@ iroha --config ./operator.client.toml \
   --account "$USER"
 ```
 
-Məlumat sahəsində tətbiq aktivləri üçün eyni nümunədən istifadə edin. Hər bir token üçün bir aktiv tərifini qeyd edin, hər birinə məlumat sahəsi alias verin və sərt kodlaşdırılmış kanonik aktiv tərifinin IDs əvəzinə SDK kodundan olan aliaya müraciət edin.
+Dataspace-də tətbiq aktivləri üçün eyni naxışdan istifadə edin. Hər token üçün bir aktiv tərifi qeydiyyatdan keçirin, hər birinə dataspace ləqəbi verin və SDK kodundan birmənalı protokol-standart aktiv tərifi ID-lərini sərt kodlaşdırmaq əvəzinə ləqəbə istinad edin.
 
-## 3. İstifadəçi adlarını qeyd edin. {#_3-register-user-aliases}
+## 3. İstifadəçi Ləqəblərini Qeydiyyatdan Keçirmək {#_3-register-user-aliases}
 
-Hesablar hələ də kanonik I105 hesabı IDs dir. İstifadəçi üzü görən adlar hesab əlifbalarıdır və əlifbalar `alice@team` və ya `alice@members.team` kimi həssas olmayan əl olmalıdır. Telefon nömrələrindən və e-poçt ünvanlarından əlifba olaraq istifadə etməyin. Bunlar növbəti hissədəki şəxsi identifikator axınına aiddirlər.
+Hesablar hələ də tək protokol-standart I105 hesab identifikatorlarıdır. İstifadəçi qarşılıqlı adlar hesab ləqəbləridir və ləqəblər həssas olmayan idarələr olmalıdır. məsələn, `alice@team` və ya `alice@members.team`. Telefon nömrələrini və ya e-poçt ünvanlarını ləqəb kimi istifadə etməyin. Bunlar növbəti bölmədəki şəxsi tanımlayıcı axınında aiddir.
 
-Alias quruluşu domen quruluşu ilə eyni deklarativ planlaşdırıcıdan istifadə edir. SDK və ya onboarding xidməti hesabı alias giriş hədəfləri `$USER` olan gizli olmayan `AliasSetupPlanRequestV1` niyyətini yaratın, əsas rol seçin, rəqəmsal məlumat boşluğu ID pin edin və cari kirayə quote qoruyucusunu aparın. Sonra onu bir atom əməliyyatı kimi planlaşdırın və tətbiq edin:
+Alias qurulumu, domen qurulması ilə eyni bəyanedici planlayıcıdan istifadə edir. SDK və ya onboarding xidməti, hesab-alias girişi hədəfləyən gizli olmayan `AliasSetupPlanRequestV1` niyyəti yaratmalıdır `$USER`, əsas rolu seçir, rəqəmsal məlumat sahəsi ID-sini pinləyir və cari icarə haqqı-qiymət yoxlama qoruyucusunu daşıyır. Sonra onu bir atomik əməliyyat kimi planlaşdırın və tətbiq edin:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -155,9 +155,9 @@ iroha --config ./operator.client.toml \
   app alias setup apply --plan-file ./user-alias.plan.json
 ```
 
-İstifadəçi XOR ödəməməlidirsə, quraşdırma əməliyyatının qurulması və təqdim edilməsi üçün təsdiq edilmiş sponsor məlumatlı onboarding xidmətindən istifadə edin.
+Əgər istifadəçi XOR-ı ödəməməlidirsə, təsdiqlənmiş sponsor-məlumatlı qeydiyyat xidmətindən istifadə edərək quraşdırma əməliyyatını hazırlayıb təqdim edin. İcarə götürmə və alias bağlama əməliyyatlarını müstəqil tətbiq əməliyyatlarına bölməyin.
 
-Əksi adı bağlandıqdan sonra CLI vasitəsilə yoxlayın:
+Ləqəb bağlandıqdan sonra onu CLI vasitəsilə yoxlayın:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -169,21 +169,21 @@ iroha --config ./operator.client.toml \
   --dataspace "$DATASPACE"
 ```
 
-Yeni hesab yaratmaq üçün `NewAccount` sabit `uaid` və lazım gələrsə, ilkin `label` ilə quraşdırılan bir onboarding xidməti üstün tutun. Sadə `ledger account register --id` komandanı yalnız kanonik hesabı qeyd edir ID.
+Yeni hesab yaradılması üçün, sabit `uaid` ilə `NewAccount` yaradan və lazım olduqda ilkin `label` təmin edən onboarding xidmətini seçin. Sadə `ledger account register --id` əmri yalnız tək protokol-standart hesab ID-ni qeyd edir.
 
-## 4. Telefonu və e-poçtunu FHE ünvanında gizli olaraq qeyd edin. {#_4-register-phone-and-email-privately-with-fhe}
+## 4. Telefon və E-poçtu FHE ilə Şəxsi Qeydiyyatdan Keçirin {#_4-register-phone-and-email-privately-with-fhe}
 
-Telefon nömrələrindən və e-poçt ünvanlarından ictimaiyyət əlifbası deyil, şəxsi identifikator iddiaları kimi istifadə edin. FHE tərəfindən dəstəklənən axın hesab əlifbasından, əməliyyat metadatalarından və dünya vəziyyətindən xam identifikatorlar saxlayır:
+Telefon nömrələrini və elektron poçt ünvanlarını ictimai təxəllüslər deyil, şəxsi tanıtıcı iddialar kimi istifadə edin. FHE-dəstəklənmiş axın xam tanıtıcıları hesab təxəllüslərindən, əməliyyat metadata-sından və dünya vəziyyətindən kənarda saxlayır:
 
-1. operator telefon və e-poçt üçün [RAM-LFE/FHE proqram siyasətini ](/az/blockchain/ram-lfe.md) qeydiyyatdan keçirir
-2. Operator `phone#team` və `email#team` kimi aktiv identifikator siyasətlərini qeyd edir.
-3. cüzdan telefon və ya e-poçtunu yerli olaraq normallaşdırır.
-4. cüzdan şifrələnmiş dəyərini həllçiyə göndərir.
-5. həllçi bir `IdentifierResolutionReceipt` qaytarır.
-6. istifadəçi qəbulu ilə birlikdə `ClaimIdentifier` təqdim edir.
-7. zəncir, xam telefon və ya e-poçt dəyərini yox, qeyri-şəffaf bir identifikator və qəbulu hash saxlayır;
+1. operator telefon və e-poçt üçün [RAM-LFE/FHE proqram siyasəti](/az/blockchain/ram-lfe.md) qeyd edir
+2. operator `phone#team` və `email#team` kimi aktiv identifikator siyasətləri qeyd edir
+3. pulqabı telefonu və ya e-poçtu yerli olaraq normallaşdırır
+4. pul kisəsi şifrələnmiş dəyəri həll ediciyə göndərir
+5. resolver `IdentifierResolutionReceipt` qaytarır
+6. istifadəçi protokol nəticəsi qeydi ilə `ClaimIdentifier`-ı təqdim edir
+7. zəncir xam telefon və ya e-poçt dəyəri deyil, qeyri-şəffaf identifikator və protokol nəticəsi qeydi kriptoqrafik xəşini saxlayır
 
-Operator tərəfindəki siyasət quruluşu SDK və ya xidmət vəzifəsidir. Hər bir identifikator tipli üçün bu təlimat cütlərini hazırlayın və təqdim edin:
+Operator tərəfi siyasət qurğusu SDK və ya xidmət tapşıırığıdır. Hər identifikator növü üçün bu təlimat cütlərini hazırlayın və təqdim edin:
 
 ```text
 RegisterRamLfeProgramPolicy(
@@ -206,7 +206,7 @@ RegisterIdentifierPolicy(
 ActivateIdentifierPolicy(policy_id = "$PHONE_POLICY")
 ```
 
-E-poçt üçün təkrarlayın:
+E-poçt üçün bunu təkrarla:
 
 ```text
 program_id = "email_team"
@@ -214,14 +214,14 @@ policy_id = "$EMAIL_POLICY"
 normalization = "EmailAddress"
 ```
 
-Onboarding zamanı cüzdan və ya arxa hissə yerli olaraq normallaşdırılmalıdır:
+Əməkdaşlıq prosesində, cüzdan və ya backend yerli səviyyədə normalizasiya etməlidir:
 
 ```text
 PhoneE164: "+15551234567"
 EmailAddress: "alice@example.com"
 ```
 
-Sponsor metadata dosyası 8-ci addımda yaradıldıqdan sonra həmin metadata daxil olmaqla istifadəçinin imzalanmış iddia təlimatı təqdim edin:
+8-ci addımda sponsor metadata faylı yaradıldıqdan sonra, həmin metadata ilə istifadəçi tərəfindən imzalanmış iddia təlimatını təqdim edin:
 
 ```text
 ClaimIdentifier(
@@ -239,7 +239,7 @@ ClaimIdentifier(
 )
 ```
 
-Hələlik CLI bu kimlik təlimatları üçün tiplənmiş əmrləri açıqlamır. SDK ilə seriallaşdırılmış `InstructionBox` dəyərlərini yaratın və onları `ledger transaction stdin` vasitəsilə göndərin:
+Cari CLI bu şəxsiyyət təlimatları üçün tipli əmrləri açmır. SDK ilə ardıcıl `InstructionBox` dəyərləri yaradın və onları `ledger transaction stdin` vasitəsilə təqdim edin:
 
 ```bash
 printf '["<BASE64_CLAIM_IDENTIFIER_INSTRUCTION_BOX>"]\n' |
@@ -248,17 +248,17 @@ printf '["<BASE64_CLAIM_IDENTIFIER_INSTRUCTION_BOX>"]\n' |
     ledger transaction stdin
 ```
 
-Bu qoruyucuları yükləmə xidmətində saxlayın:
+Onboarding xidmətində bu qoruyucu çəpərləri qoruyun:
 
-- Hesab aliasları yalnız insan tərəfindən oxuna bilən əlimlərdir.
-- xam telefon və e-poçt qiymətləri heç vaxt aliaslarda, meta məlumatlarda, qeydlərdə və ya əməliyyat payloadlarında görünmür.
-- Hesabın özəl identifikatorları iddia etmədən əvvəl `uaid` hesabı var
-- Qiymətlərin bağlanması `policy_id`, `opaque_id`, `uaid`, `account_id` və müddəti bitəcək.
-- həllçi açarları və gizli proqram öhdəlikləri idarəetmə ilə nəzarət olunur
+- hesab ləqəbləri yalnız insan tərəfindən oxuna bilən ünvanlardır
+- xam telefon və e-poçt dəyərləri heç vaxt təxəllüslərdə, metadatalarda, jurnallarda və ya əməliyyat yükündə görünmür
+- hesabın özəl identifikatorlar tələb etməzdən əvvəl `uaid` var
+- protokol nəticə qeydləri `policy_id`, `opaque_id`, `uaid`, `account_id` və son istifadə tarixi ilə bağlanır
+- resolver açarları və gizli-proqram kriptoqrafik öhdəlik dəyərləri idarəetmə tərəfindən nəzarət olunur
 
-## 5. Qeydiyyatda sponsorluğu təmin edin {#_5-enable-sponsorship-on-the-node}
+## 5. Nodda Sponsorluğu Aktivləşdirin {#_5-enable-sponsorship-on-the-node}
 
-Ödəniş sponsorluğu node / runtime siyasətidir. Nexus ödəniş konfigurasında aktivləşdirin:
+Ödəniş sponsorluğu bir şəbəkə qovşağı/proqram icra mühiti siyasətidir. Bunu Nexus ödəniş konfiqurasiyasında aktiv edin:
 
 ```toml
 [nexus.fees]
@@ -272,21 +272,21 @@ sponsorship_enabled = true
 sponsor_max_fee = "0"
 ```
 
-`fee_asset_id` şəbəkə haqqı aktividir. SORA Nexus üçün bu, XOR dir. Şəbəkənizin açıqladığı aktiv XOR ya da kanonik XOR aktiv tərifindən istifadə edin ID .
+`fee_asset_id` şəbəkə ödənişi aktividir. SORA Nexus üçün bu XOR-dir. Şəbəkəniz tərəfindən göstərilən aktiv XOR ləqəbindən və ya tək protokol-standart XOR aktiv tərifi ID-sindən istifadə edin.
 
-`sponsor_max_fee = "0"` deməkdir ki, hər bir əməliyyat üçün sponsor həddi yoxdur. İstehsalat üçün məlumat məkanının əməliyyatlarının normal ölçüsünü və qaz profilinə sahib olduqdan sonra sıfır olmayan həddini təyin edin.
+`sponsor_max_fee = "0"` hər bir əməliyyat üzrə sponsor limitinin olmadığını bildirir. İstehsalda, dataspace əməliyyatlarınızın normal ölçüsünü və əməliyyat icra xərci profilini bildikdən sonra sıfır olmayan bir limit təyin edin.
 
-Bu təyinatı normal operator prosesi ilə yenidən başlatın və ya oynatın.
+Bu konfiqurasiyanı yenidən başladın və ya adi operator prosesiniz vasitəsilə tətbiq edin.
 
-## 6. Sponsoru yaratmaq və maliyyələşdirmək {#_6-create-and-fund-the-sponsor}
+## 6. Sponsoru Yarat və Maliyyələşdir {#_6-create-and-fund-the-sponsor}
 
-Lazım gələrsə, sponsor açar cütü yaratın:
+Əgər ehtiyac varsa, sponsor açar cütlüyünü yaradın:
 
 ```bash
 kagami keys --algorithm ed25519 --out-dir ./fee-sponsor-key
 ```
 
-İctimai açarı şəbəkə üçün hesab formatına çevirin:
+İctimai açarı şəbəkəniz üçün hesab formatına çevirin:
 
 ```bash
 iroha tools address convert \
@@ -294,14 +294,14 @@ iroha tools address convert \
   <SPONSOR_ED25519_PUBLIC_KEY_HEX>
 ```
 
-Sponsor hesabını öz şəxsi daxilolma axınınız vasitəsilə qeyd edin:
+Sponsor hesabını şəxsi qeydiyyat prosesiniz vasitəsilə qeydiyyatdan keçirin:
 
 ```bash
 iroha --config ./operator.client.toml \
   ledger account register --id "$SPONSOR"
 ```
 
-Təsərrüfatdan və ya digər maliyyələşdirilmiş hesabdan sponsorunu XOR ilə təminatlandırın:
+Sponsoru xəzinə, tələb hesabı və ya digər maliyyələşdirilmiş hesabdan XOR ilə maliyyələşdirin:
 
 ```bash
 iroha --config ./treasury.client.toml \
@@ -312,7 +312,7 @@ iroha --config ./treasury.client.toml \
   --quantity 1000
 ```
 
-Taira təcrübələri üçün faucet köməkçisini [-dən saxlayın Testnet XOR alın Taira](/az/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)-də `taira_faucet_claim.py`, sonra sponsorun maliyyə köçürülməsinin əvəzinə ictimai faucetlə maliyyələşdirilməsi:
+Taira məşqləri üçün, testnet maliyyələşdirmə xidmət köməkçisini [Taira üzərində Testnet XOR əldə edin](/az/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)-dən `taira_faucet_claim.py` kimi yadda saxlayın, sonra sponsorunu xəzinə köçürməsi əvəzinə ictimai testnet maliyyələşdirmə xidməti ilə maliyyələşdirin:
 
 ```bash
 export SPONSOR='<SPONSOR_TAIRA_I105_ACCOUNT_ID>'
@@ -335,11 +335,11 @@ iroha --config ./operator.client.toml \
   --account "$SPONSOR"
 ```
 
-## 7. İstifadəçiyə Sponsoru tapmaq imkanı verin. {#_7-grant-a-user-access-to-the-sponsor}
+## 7. İstifadəçiyə Sponsor-a Giriş İcazəsi Verin {#_7-grant-a-user-access-to-the-sponsor}
 
-Sponsor hər istifadəçiyə ödəniş tələb etmək üçün icazə verməlidir. Xüsusi sponsor hesablarının adlandırılmasının qarşısını verən yardımdır.
+Sponsor hər bir istifadəçiyə ona ödəniş etmək icazəsini verməlidir. Bu icazə istifadəçilərin təsadüfi sponsor hesablarını adlandırmasının qarşısını alır.
 
-Bunu sponsor hesabı kimi və ya iş vaxtı siyasətinə görə icazə verilən əməliyyat hesabı olaraq icra edin:
+Bunu sponsor hesabı kimi və ya proqram icra mühiti siyasətiniz tərəfindən icazə verilən əməliyyat hesabı kimi işlədin:
 
 ```bash
 printf '{
@@ -352,23 +352,23 @@ printf '{
     ledger account permission grant --id "$USER"
 ```
 
-Onboarding xidmətləri üçün bunu normal hesab təminatı addımına çevirin və qeyd edin:
+Xidmətlərə qoşulma üçün bunu normal bir hesab təmin etmə addımı kimi edin və qeyd edin:
 
 - istifadəçi hesabı
 - sponsor hesabı
-- məlumat sahəsi və ya tətbiqi
-- təsdiq biletləri və ya idarəetmə qərarı
+- məlumat sahəsi və ya tətbiq
+- təsdiq bileti və ya idarəetmə qərarı
 
-İstifadəçinin təqaüdlərinin yoxlanması üçün:
+İstifadəçinin icazələrini yoxlamaq üçün:
 
 ```bash
 iroha --config ./operator.client.toml \
   ledger account permission list --id "$USER"
 ```
 
-## 8. Sponsor Metadataları əlavə edin {#_8-attach-sponsor-metadata}
+## 8. Sponsor Metadatasını əlavə edin {#_8-attach-sponsor-metadata}
 
-Yenidən istifadə edilə bilən metadata faylını yaratmaq:
+Yenidən istifadə oluna bilən metadata faylı yaradın:
 
 ```bash
 printf '{
@@ -376,7 +376,7 @@ printf '{
 }\n' "$SPONSOR" > sponsored-fee.json
 ```
 
-Bu meta məlumatlarla təqdim olunan hər hansı bir yazı sponsordan ödənilir:
+Bu metadatanın daxil edildiyi hər hansı bir yazı sponsor tərəfindən ödənilir:
 
 ```bash
 iroha --config ./alice.client.toml \
@@ -384,40 +384,40 @@ iroha --config ./alice.client.toml \
   ledger transaction ping --msg "sponsored private-dataspace write"
 ```
 
-SDKs üçün imzalanan əməliyyatla eyni əməliyyat metadata obyektini əlavə edin. İstifadəçi əməliyyatı istifadəçinin açarı ilə imzalayır. Sponsor hər bir istifadəçi əməliyyatını imzalamır, çünki əvvəlki `CanUseFeeSponsor` təminat icazədir.
+SDKs üçün imzalanmış əməliyyata eyni əməliyyat metadata obyektini əlavə edin. İstifadəçi əməliyyatı istifadəçinin açarı ilə imzalayır. Sponsor hər istifadəçi əməliyyatını imzalamır, çünki əvvəlki `CanUseFeeSponsor` qrantı icazədir.
 
-## Şəkil 1: İstifadəçilər pul ödəmirlər {#pattern-1-users-pay-no-fees}
+## Nümunə 1: İstifadəçilər Heç Bir Ödəniş Etmir {#pattern-1-users-pay-no-fees}
 
-Tətbiq və ya operator bütün şəbəkə ödənişlərini əhatə etdikdə bu istifadə edin.
+Tətbiq və ya operator bütün şəbəkə ödənişlərini əvəz etdikdə bunu istifadə edin.
 
-İnşaatçıların yoxlama siyahısı:
+Tərtibatçı yoxlama siyahısı:
 
-1. İstifadəçinin normal əməliyyat yükünü dəyişmədən saxlayın.
-2. `fee_sponsor` ilə əməliyyatın metadatalarını əlavə edin.
-3. İstifadəçi kimi imza atın.
-4. Xüsusi məlumat məkanı yolu ilə göndərin.
+1. İstifadəçinin normal əməliyyat məlumat yükünü dəyişmədən saxlayın.
+2. `fee_sponsor` ilə əməliyyat metadatasını əlavə edin.
+3. İstifadəçi olaraq daxil olun.
+4. Məxfi məlumat sahəsi marşrutu vasitəsilə təqdim edin.
 
-İstifadəçi hesabı XOR balansına ehtiyac duymur. Sponsor hesabı konfigüratsiya edilmiş Nexus ödənişlərini ödəmək üçün kifayət qədər XOR saxlamalıdır.
+İstifadəçi hesabının XOR balansına ehtiyacı yoxdur. Sponsor hesabı, konfiqurasiya edilmiş Nexus ödənişlərini ödəmək üçün kifayət qədər XOR saxlamalıdır.
 
-## Şəkil 2: İstifadəçilər yerli simvol ödəyirlər {#pattern-2-users-pay-a-local-token}
+## Nümunə 2: İstifadəçilər Yerli Token ilə Ödəyir {#pattern-2-users-pay-a-local-token}
 
-İstifadəçilərin XOR saxlamaması lazım olduğu zaman bunu istifadə edin, lakin məlumat sahəsi hələ də daxili tətbiq haqqı, kredit xərcləri və ya kvot tokenini istəyir.
+Bunu istifadə edin, istifadəçilər XOR saxlamamalıdır, amma məlumat sahəsi hələ də daxili tətbiq haqqı, kredit xərci və ya kvota tokeni istəyir.
 
-Bu modeldə yerli token tətbiq ödənişidir. Şəbəkə haqqı aktiv deyil. Sponsor hələ də şəbəkə haqını ödəyir XOR.
+Bu nümunədə yerli token tətbiq ödənişidir. Bu, şəbəkə ödəniş aktivləri deyil. Sponsor hələ də şəbəkə ödənişini XOR ilə ödəyir.
 
-Məsələn, özəl məlumat məkanında yerli bir token istifadə edin:
+Məsələn, xüsusi məlumat sahəsində yerli token istifadə edin:
 
 ```text
 usage#billing.team
 ```
 
-`usage#billing.team` ilə fond istifadəçiləri onboarding, abunə yeniləməsi və ya kvotanın ayrılması zamanı. Sonra istifadəçi əməliyyat atom:
+İstifadəçiləri onboarding, abunəliyin yenilənməsi və ya kvota ayrılması zamanı `usage#billing.team` ilə təmin edin. Sonra istifadəçi əməliyyatını atomik edin:
 
-1. yerli tokenları istifadəçidən sponsoruna köçürmək
-2. tələb olunan tətbiq əməliyyatını yerinə yetirmək
-3. `fee_sponsor` metadata daxildir ki, sponsor XOR ödəsin.
+1. yerli tokenləri istifadəçidən sponsorə köçürmək
+2. tələb olunan tətbiq əməliyyatını yerinə yetirin
+3. `fee_sponsor` metadatasını daxil edin ki, sponsor XOR ödəsin
 
-Minimal CLI duman testi yalnız XOR tərəfindən sponsorlaşdırılan yerli nömrə köçürülməsi:
+Minimal CLI tüstü testi sadəcə XOR tərəfindən sponsorluq edilən lokal-token köçürməsidir:
 
 ```bash
 iroha --config ./alice.client.toml \
@@ -429,35 +429,35 @@ iroha --config ./alice.client.toml \
   --quantity 1
 ```
 
-Real bir tətbiq üçün yerli token ödənişini ayrı ən yaxşı səy əməliyyatı kimi təqdim etməyin. Həm ödənişi, həm də iş təlimatını ehtiva edən imzalanmış bir əməliyyat qurun və ya iş əməliyyatını tətbiq etməzdən əvvəl yerli token toplayan müqavilə giriş nöqtəsini açıqlayın .
+Həqiqi bir tətbiq üçün, yerli-jeton ödənişini ayrı bir ən yaxşı səy cəhdi olaraq təqdim etməyin. Həm ödənişi, həm də biznes təlimatını ehtiva edən bir imzalı əməliyyat yaradın və ya biznes əməliyyatını tətbiq etmədən əvvəl yerli jetonu toplayan bir müqavilə giriş nöqtəsini təqdim edin.
 
-Tətbiqinizdə və ya müqavilənizdə dönüşüm siyasəti saxlayın:
+Çevirim siyasətini tətbiqinizdə və ya müqavilənizdə saxlayın:
 
-- hansı əməliyyat nə qədər yerli token vahidləri xərcləyir
-- XOR top-up sponsorluğu üçün yerli token axın xəritələrinin necə aparılması
-- istifadəçi balansı çox aşağı olduqda nə olur?
-- sponsor XOR balansının çox aşağı olduğu zaman nə olur?
+- hansı əməliyyat neçə yerli token vahiti başa gəlir
+- yerli token axını sponsor XOR yükləmələrinə necə xəritələşdirilir
+- istifadəçi balansı çox aşağı olduqda nə baş verir
+- sponsor XOR balansı çox aşağı olduqda nə baş verir
 
 ::: warning
 
-İstifadə etməyin `gas_asset_id` Bu qaz aktivində sponsorun da ödəniş edilməsini istəmirsinizsə, "lokal token haqqı" modelinə görə. `fee_sponsor` Həmçinin sponsor qaz boru kəmərindəki aktivlərin məbləği üçün ödəyicisi hesab olunur. Yerli token istifadəçi ödənişləri üçün, transfer və ya müqavilə qaydaları ilə token açıq şəkildə toplayın.
+Sponsorun həmin gas aktivində də ödəniş etməsini istəmirsinizsə, “yerli token haqqı” nümunəsi üçün `gas_asset_id` istifadə etməyin. Cari icra mühitində `fee_sponsor` sponsoru konfiqurasiya edilmiş icra xəttinin gas aktivi üzrə debetlərin də ödəyicisi edir. Yerli tokenlə istifadəçi haqqı toplamaq üçün tokeni köçürmə və ya müqavilə qaydası ilə açıq şəkildə alın.
 
 :::
 
-## İstifadə edilməmiş əməliyyatları düzəltmək {#debug-failed-sponsored-transactions}
+## Sponsorlu Əməliyyatları Sınaqdan Keçirmək Uğursuz Oldu {#debug-failed-sponsored-transactions}
 
-Ümumilikdə rədd edilmə səbəbləri ümumiyyətlə bir quraşdırma mərhələsinin çatışmadığını göstərir:
+Ümumi rədd səbəbləri adətən bir çatışmayan quraşdırma addımına işarə edir:
 
-|Xəta mətni |Nəyi yoxlamaq lazımdır?|
+|Səhv mətn|Nəyə baxmalı|
 | --- | --- |
-|`fee sponsorship is disabled` |`nexus.fees.sponsorship_enabled` hələ də `false` dənədədir. |
-|`fee sponsor is not authorized` |İstifadəçinin bu sponsor üçün `CanUseFeeSponsor` pulu yoxdur. |
-|`fee asset ... is missing` |Sponsor XOR ödəniş aktivinə sahib deyil. |
-|`fee balance ... is insufficient` | Sponsorun pulunu toplayın. XOR bərabərlik. |
-|`fee exceeds sponsor_max_fee` |`sponsor_max_fee` artırmaq və ya əməliyyatın ölçüsünü / qazını azaltmaq. |
-|`invalid nexus fee asset id` |`nexus.fees.fee_asset_id` və ya XOR aktivləri. |
+| `fee sponsorship is disabled` | `nexus.fees.sponsorship_enabled` hələ də nodda `false` vəziyyətindədir. |
+| `fee sponsor is not authorized` |İstifadəçinin bu sponsor üçün `CanUseFeeSponsor` yoxdur.|
+| `fee asset ... is missing` |Sponsor təyin olunmuş XOR ödəniş aktivinə sahib deyil.|
+| `fee balance ... is insufficient` |Sponsorun XOR balansını artırın.|
+| `fee exceeds sponsor_max_fee` |Əməliyyat ölçüsünü/qazı artırın `sponsor_max_fee` və ya azaldın.|
+| `invalid nexus fee asset id` |`nexus.fees.fee_asset_id` və ya XOR aktiv ləqəbini düzəldin.|
 
-Debugging model 2, hər iki balansları yoxlayın:
+Nümunə 2-ni ayıklayarkən hər iki balansı yoxlayın:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -471,18 +471,18 @@ iroha --config ./operator.client.toml \
   --account "$USER"
 ```
 
-## Sponsoru idarə edin {#operate-the-sponsor}
+## Sponsoru işlədin {#operate-the-sponsor}
 
-Sponsoru xəzinə hesabı kimi qəbul edin:
+Sponsoru xəzinədarlıq hesabı kimi müalicə edin:
 
-- testnet, stajlaşdırma və əsas şəbəkə üçün ayrı-ayrı sponsor açarlarını saxlamaq
-- sponsorun XOR balansının qəbul mərtəbəsinə çatmasından əvvəl xəbərdarlıq
-- Trafik xarakterizə edildikdən sonra sıfırdan kənar `sponsor_max_fee` həddini təyin edin
-- Rate-limit sponsorlaşdırılmış yazılar tətbiq və ya girişdə
-- istifadəçilər məlumat sahəsindən çıxarkən `CanUseFeeSponsor` ləğv edilir.
-- istifadəçi əməliyyatlarının hashlərini, yerli token ödənişlərini və sponsor XOR debitlərini uyğunlaşdırmaq;
+- testnet, staging və mainnet üçün ayrı sponsor açarlarını saxlayın
+- sponsor XOR balansı qəbul minimal səviyyəsinə çatmazdan əvvəl xəbərdarlıq
+- trafik xarakterizə edildikdən sonra sıfırdan fərqli `sponsor_max_fee` limit təyin edin
+- tətbiqinizdə və ya keçidinizdə sponsorlu yazılara sürət məhdudiyyəti qoyun
+- istifadəçilər dataspaceni tərk etdikdə `CanUseFeeSponsor`-ı ləğv et
+- istifadəçi əməliyyatı kriptoqrafik xəşləri, yerli-token ödənişləri və sponsor XOR debetlərini uzlaşdırmaq
 
-İstifadəçi üçün sponsorluğu ləğv etmək:
+İstifadəçi üçün sponsorluğu ləğv et:
 
 ```bash
 printf '{
@@ -495,10 +495,10 @@ printf '{
     ledger account permission revoke --id "$USER"
 ```
 
-## Əlaqəli səhifələr {#related-pages}
+## Əlaqəli Səhifələr {#related-pages}
 
-- [SORA Nexus Database](/az/get-started/sora-nexus-dataspaces.md) ilə əlaqə saxlayın.
-- [Iroha 3 vasitəsilə CLI](/az/get-started/operate-iroha-via-cli.md) istifadə etmək
-- [Əmlaklar](/az/blockchain/assets.md)
-- [İzinlər](/az/blockchain/permissions.md)
-- [İzin Tokeni](/az/reference/permissions.md)
+- [SORA Nexus Məlumat Məkanlarına qoşul](/az/get-started/sora-nexus-dataspaces.md)
+- [Iroha 3-i CLI vasitəsilə işlədin](/az/get-started/operate-iroha-via-cli.md)
+- [Aktivlər](/az/blockchain/assets.md)
+- [İcazələr](/az/blockchain/permissions.md)
+- [İcazə Jetonları](/az/reference/permissions.md)

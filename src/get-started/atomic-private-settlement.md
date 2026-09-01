@@ -5,11 +5,13 @@ each of 2 to 255 SORA Nexus dataspaces and finalizes every leg in one
 global state transaction. A rejected, expired, or aborted bundle applies no
 leg. Transparent Native AMX DvP/PvP remains a separate protocol path.
 
-::: warning Release status This feature is governed, disabled by default,
+::: warning Release status
+This feature is governed, disabled by default,
 and not yet production-qualified. Do not enable it for real CBDC value
 until the published functional, privacy, fault, performance,
 reproducible-build, independent-cryptographic-review, and
-artifact-publication gates have all passed for the exact release. :::
+artifact-publication gates have all passed for the exact release.
+:::
 
 ## What the protocol hides
 
@@ -214,7 +216,7 @@ behavior.
 | Committee proof    | `GET /v1/nexus/private-settlements/legs/{payload_digest}/committee-proof`  | exact roster validator      |
 | Audit capsule      | `GET /v1/nexus/private-settlements/legs/{payload_digest}/audit-capsule`    | governed auditor            |
 | Auditor approval   | `POST /v1/nexus/private-settlements/legs/{payload_digest}/audit-approvals` | governed auditor            |
-| Submit bundle      | `POST /v1/nexus/private-settlements/bundles`                               | manifest sponsor            |
+| Submit final/abort | `POST /v1/nexus/private-settlements/bundles`                               | manifest sponsor            |
 | Bundle status      | `GET /v1/nexus/private-settlements/bundles/{bundle_id}`                    | public                      |
 | Receipt or abort   | `GET /v1/nexus/private-settlements/bundles/{bundle_id}/receipt`            | public                      |
 
@@ -223,6 +225,21 @@ In particular, ordinary leg status does not reveal approval counts or the
 governed auditor threshold. Restricted reads intentionally collapse missing,
 unauthorized, and retention-expired material into the same unavailable
 response class.
+The submit route accepts exactly one direct sponsor-signed finalization or
+abort instruction. Its `202` response contains the bundle ID, observed
+admission height, and carrier hash only; it does not claim a queued abort is
+already final. The SDKs require both identifiers to be canonical checksummed
+Norito `Hash` JSON literals and the height to be an exact unsigned 64-bit
+integer; missing, additional, mistyped, non-canonical, checksum-invalid,
+negative, negative-zero, fractional, or overflowed fields fail closed. Use
+bundle status or receipt for authoritative terminal state.
+The status code is exact as well: this carrier-admission route requires `202`,
+whereas every other private-settlement V1 success response requires `200`.
+Clients reject alternate successful `2xx` codes as contract drift without
+echoing the unexpected response body through client errors. They expose a
+server reject code only when it matches `[A-Za-z0-9_.:-]{1,128}` and discard
+response parser/validation causes, preventing body content or attacker-chosen
+JSON field names from resurfacing through cause-aware logs.
 
 ## Failure and recovery
 
@@ -283,6 +300,29 @@ Publish the raw and sanitized evidence, threat model, protocol argument,
 limitations, commit ID, hardware description, and audit reports in an
 immutable DOI-backed artifact. Repository tests alone do not turn the
 feature into a production-qualified CBDC settlement system.
+
+From the final clean Iroha checkout, generate the release source inventory and
+seal into a pre-existing bundle root outside that checkout:
+
+```sh
+python3 scripts/private_settlement_source_evidence.py \
+  --repository-root . \
+  --bundle-root /absolute/path/to/release-bundle
+```
+
+The producer fails on staged, unstaged, untracked, or unmerged files and on any
+source change during capture. It retains the raw commit object, canonical Git
+tree inventory, exact binary path list, deterministic source seal, and
+`Cargo.lock`; include every artifact declaration from its JSON result in the
+final release manifest. It does not waive the final DOI-bundle verifier or any
+external release gate.
+
+The source seal is portable and fail closed: the producer and final verifier
+resolve the entire archived symlink graph, so a link that appears in-root but
+escapes through another link, a cycle, `.git` traversal, or a Windows-style
+target is rejected before links are created. Structured source and gate reports
+are parsed only from bounded stable files whose digest and length match the
+release manifest, and each source payload kind must occur exactly once.
 
 Every raw fault run and latency sample must bind the full release commit,
 the SHA-256 of one structured pinned-hardware description, and the SHA-256

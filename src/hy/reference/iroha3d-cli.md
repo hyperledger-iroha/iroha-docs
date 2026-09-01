@@ -1,14 +1,14 @@
 ---
 translation_locale: hy
 translation_source: /reference/iroha3d-cli.md
-translation_source_hash: d621aa09f50cb44cb99af372100f418c44c3714b879a556038e47598949a3a6f
+translation_source_hash: bf4a63b05a149f0c935190b63cdb838b0a0265e99baedfc9b5bf00a9e621b108
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # `iroha3d` CLI {#iroha3d-cli}
 
-`iroha3d` է ստանդարտ Iroha 3 զուգընկերային դեյմոն: Cargo փաթեթը կոչվում է `irohad`, այնպես որ հրավիրեք բինարային աղբյուրից ստուգման հետ:
+`iroha3d` է ստանդարտ Iroha 3 հանգույցային դեյմոն: Cargo փաթեթը կոչվում է `irohad`, այնպես որ հրավիրեք բինարային աղբյուրից ստուգման հետ:
 
 ```shell
 cargo run -p irohad --bin iroha3d -- --config path/to/config.toml
@@ -29,7 +29,7 @@ iroha3d_taira --sora \
 - Տիպ: ֆայլերի ուղին
 - Անանուններ: `-c`
 
-Ճանապարհ դեպի [ զուգընկերների կարգավորումը ](/hy/reference/peer-config/index.md).
+Ճանապարհ դեպի [ հանգույցների կարգավորումը ](/hy/reference/peer-config/index.md).
 
 ## `--genesis-manifest-json` {#arg-genesis-manifest-json}
 
@@ -105,6 +105,8 @@ iroha3d --fastpq-execution-mode gpu \
 
 ## Ծրագրված օգնություն {#generated-help}
 
-Ստորեւ բերված ամբողջական արտադրանքը ստեղծվում է փաթեթավորված Iroha աղբյուրի կապիտից:
+Վերևում բերված ընտրանքների ամփոփագիրը ստուգվում է `iroha3d`-ի արգումենտների ընթացիկ սահմանումների համեմատ։ Շտեմարանում գրանցված ստեղծված օգնության պատկերը դիտավորյալ չի ցուցադրվում, քանի դեռ դրա ծագման կարգավիճակը սպասման մեջ է։ Ձեր սկզբնաղբյուրի պատճենի ճշգրիտ օգնությունը դիտելու համար գործարկեք.
 
-<<< @/snippets/iroha3d-help.md
+```shell
+cargo run --locked -p irohad --bin iroha3d -- --help
+```

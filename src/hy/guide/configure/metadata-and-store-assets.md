@@ -6,7 +6,7 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Մետադատա եւ Ledger- ի պահեստավորման տարբերակներ {#metadata-and-ledger-storage-choices}
+# Մետատվյալների և ռեեստրի պահպանման տարբերակներ {#metadata-and-ledger-storage-choices}
 
 Iroha 3 տվյալների մոդելը չի ունենա `Store` ակտիվի առանձին տեսակ կամայական առանցքային արժեքի տվյալների համար: Օգտագործեք հետեւյալ պահեստավորման տարբերակները.
 

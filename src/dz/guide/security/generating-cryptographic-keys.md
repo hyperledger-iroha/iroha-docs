@@ -3,41 +3,33 @@ translation_locale: dz
 translation_source: /guide/security/generating-cryptographic-keys.md
 translation_source_hash: f3d08a8e7fe7569ef783b93bccdc900ca74b85179a749b48b96c32028c749233
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: human-reviewed
 ---
-
 # ཨེབ་ལྡེ་མིག་ཚུ་ བཟོ་སྐྲུན་འབདཝ་ཨིན། {#generating-cryptographic-keys}
 
-`kagami keys` ལག་ལེན་འཐབ་སྟེ་ Iroha 3 གི་དོན་ལུ་ client, peer, and validator key ཐོན་སྐྱེད་འབད་ཚུགས།
+Iroha 3 གི་དོན་ལུ་ མཁོ་སྤྲོད་འབད་མི་དང་ མཉམ་རོགས་ དེ་ལས་ བདེན་དཔྱད་འབད་མི་ལྡེ་མིག་རྒྱུ་ཆ་ཚུ་ བཟོ་བཏོན་འབད་ནི་ལུ་ `kagami keys` ལག་ལེན་འཐབ།
 
 ## གཞི་རྟེན་ལག་ལེན་ {#basic-usage}
 
-From the Iroha source checkout:
+Iroha འབྱུང་ཁུངས་ འབྱུང་ཁུངས་ཕབ་ལེན ནང་ལས།
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-The parent directory must already exist. The target must be new or already
-owned by the current user, mode `0700`, free of symbolic links, and empty.
-`kagami` writes `public.key` and `private.key` with mode `0600` and does not
-print key material. With `--pop`, it also writes `pop.hex`.
+ཕ་མའི་སྣོད་ཐོ་འདི་ཧེ་མ་ལས་རང་ཡོདཔ་དགོ། དམིགས་གཏད་འདི་ ད་ལྟོའི་ལག་ལེན་པ་གིས་ གསརཔ་ཡང་ན་ ཧེ་མ་ལས་རང་ བདག་དབང་འབད་ཡོདཔ་ཨིན་ ཐབས་ལམ་ `0700` བརྡ་མཚོན་འབྲེལ་ལམ་ཚུ་མེདཔ་ དེ་ལས་ སྟོངམ་ཨིན། `kagami` གིས་ `public.key` དང་ `private.key` ཐབས་ལམ་ `0600` དང་གཅིག་ཁར་བྲིས་ཏེ་ ལྡེ་མིག་རྒྱུ་ཆ་དཔར་བསྐྲུན་མི་འབད། `--pop` དང་ཅིག་ཁར་ འདི་གིས་ `pop.hex` ཡང་འབྲིཝ་ཨིན།
 
-`--out-dir` fails closed on platforms where Kagami cannot enforce these
-owner-only filesystem rules. The private-key file is an unencrypted export,
-not a hardware or non-exportable production signer. Import it into the
-approved custody boundary and remove the export according to the deployment's
-procedure.
+`--out-dir` འདི་ Kagami གིས་ ཇོ་བདག་རྐྱངམ་ཅིག་གི་ཡིག་སྣོད་རིམ་ལུགས་ལམ་ལུགས་འདི་ཚུ་ བསྟར་སྤྱོད་འབད་མ་ཚུགས་པའི་ སྟེགས་བུ་ཚུ་གུ་ཁ་བསྡམ་མ་ཚུགས། སྒེར་གྱི་ལྡེ་མིག་ཡིག་སྣོད་འདི་གསང་བཟོ་མ་འབད་བའི་ཕྱིར་འདྲེན་ཨིན་ མཐུན་རྐྱེན་ཡང་ན་ཕྱིར་འདྲེན་འབད་མ་བཏུབ་པའི་ཐོན་སྐྱེད་གསང་ཡིག་བརྡ་རྟགས་བཀོད་མི་མེན། ཆ་འཇོག་འབད་ཡོད་པའི་ བཀག་འཛིན་མཚམས་ནང་ ནང་འདྲེན་འབད་ཞིནམ་ལས་ བཀྲམ་སྤེལ་གྱི་བྱ་རིམ་དང་འཁྲིལ་ཏེ་ ཕྱིར་འདྲེན་བཏོན་གཏང་།
 
 ## ཨལ་ག་རི་ཏམ་ཚུ་ {#algorithms}
 
-Common algorithms are:
+སྤྱིར་བཏང་གི་ཨཱལ་གོ་རི་དམ་ཚུ་ཨིན།
 
-- `ed25519` for client accounts and streaming identities.
-- `secp256k1` when a client account requires a secp256k1 identity.
-- `bls_normal` for every node or peer consensus identity.
+- `ed25519` མཁོ་སྤྲོད་འབད་མི་རྩིས་ཐོ་དང་ རྒྱུན་སྤེལ་ངོ་རྟགས་ཚུ་གི་དོན་ལུ་ཨིན།
+- `secp256k1` མཁོ་སྤྲོད་འབད་མི་རྩིས་ཐོ་ཅིག་ལུ་ secp256k1 ངོ་རྟགས་དགོཔ་ད་ལུ།
+- `bls_normal` མཐུད་མཚམས་རེ་རེ་ཡང་ན་ མཉམ་རོགས་མོས་མཐུན་ངོ་རྟགས་ཀྱི་དོན་ལུ་ཨིན།
 
-Check the exact algorithms supported by your build with:
+ཁྱོད་རའི་བཟོ་བསྐྲུན་གྱིས་རྒྱབ་སྐྱོར་འབད་མི་ཨཱལ་གོ་རི་དམ་ངེས་བདེན་འདི་ འདི་དང་གཅིག་ཁར་ཞིབ་དཔྱད་འབད།
 
 ```bash
 cargo run --bin kagami -- keys --help
@@ -45,8 +37,7 @@ cargo run --bin kagami -- keys --help
 
 ## དངོས་གྲུབ་ཅན་གྱི་གོང་འཕེལ་གྱི་ལྡེ་མིག་ཚུ་ {#deterministic-development-keys}
 
-For reproducible fixtures, pass a 32-byte seed encoded as 64 hexadecimal
-characters. An optional `0x` prefix is accepted:
+བསྐྱར་བཟོ་འབད་བཏུབ་པའི་སྒྲིག་བཀོད་ཚུ་གི་དོན་ལུ་ ༦༤ ཧེག་ས་ཌི་སི་མཱལ་ཡིག་འབྲུ་སྦེ་ ཨེན་ཀོ་ཌི་འབད་ཡོད་པའི་ ༣༢ བཱའིཊི་སོན་ཅིག་སྤྲོད། གདམ་ཁ་ཅན་གྱི་ `0x` སྔོན་སྒྲིག་འདི་ངོས་ལེན་འབད་ཡོདཔ་ཨིན།
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 \
@@ -54,40 +45,28 @@ cargo run --bin kagami -- keys --algorithm ed25519 \
   --out-dir ./fixture-client-key
 ```
 
-The seed is private-key material. Use deterministic seeds only for local
-development and tests. Omit `--seed-hex` to generate a production key from
-operating-system randomness.
+ས་བོན འདི་ སྒེར-ལྡེ་མིག གི་ནང་དོན་ཨིན། གཏན་འཁེལ་ཅན ས་བོན ཚུ་ ས་གནས གསར་སྤེལ དང་ བརྟག་དཔྱད་ཚུ གི་དོན་ལུ་རྐྱངམ་ཅིག་ལག་ལེན་འཐབ། བཀོལ་སྤྱོད་རིམ་ལུགས གང་བྱུང་ཚད ལས་ ཐོན་སྐྱེད་ལྡེ་མིག་ བཟོ་ནིའི་དོན་ལུ་ `--seed-hex` མ་བཙུགས།
 
 ## BLS ངོས་ལེན་གྱི་ལྡེ་མིག་དང་ བདག་དབང་གི་ཁུངས་ཚུ་ {#bls-consensus-keys-and-proofs-of-possession}
 
-Iroha 3 node and peer consensus identities use BLS-normal keys. Generate a
-BLS-normal key and proof-of-possession (PoP) with:
+Iroha 3 མཐུད་མཚམས དང་ མཉམ་རོགས གྲོས་མཐུན ངོ་རྟགས ཚུ་གིས་ BLS-སྤྱིར་བཏང ལྡེ་མིག་ཚུ ལག་ལེན་ འཐབ་ཨིན། BLS-སྤྱིར་བཏང ལྡེ་མིག དང་ བདག་དབང་བདེན་ཁུངས (PoP) འདི་གིས་བཟོ།
 
 ```bash
 cargo run --bin kagami -- keys --algorithm bls_normal --pop \
   --out-dir ./validator-key
 ```
 
-`--pop` is valid only with `bls_normal`; it adds `pop.hex` to the custody
-directory.
-Signed genesis requires a matching PoP for every voting validator. In peer
-configuration, a non-empty `trusted_peers_pop` map selects the validator
-subset; trusted peers omitted from that non-empty map are observers. If the map
-is empty, all BLS-normal trusted peers enter the bootstrap candidate set, with
-voter PoPs still supplied by signed genesis.
+`--pop` འདི་ `bls_normal` དང་གཅིག་ཁར་རྐྱངམ་ཅིག་ཆ་གནས་ཡོད། འདི་གིས་ `pop.hex` ཉེན་སྲུང་བཞག་སའི་ ཐོ་གཞུང ནང་ཁ་སྐོང་རྐྱབ་ཨིན། མིང་རྟགས་བཀོད་པའི་ འགོ་ཐོག་གནས་སྟངས ལུ་ཚོགས་རྒྱན་བཙུགས་མི་ བདེན་དཔྱད་པ རེ་ལུ་ མཐུན་པའི་ PoP དགོ། མཉམ་རོགས རིམ་སྒྲིག ནང་སྟོངམ་མེན་པའི་ `trusted_peers_pop` སྦྲེལ་སྒྲིག གིས་ བདེན་དཔྱད་པ ཡན་ལག་ཚན གདམ་ཁ་རྐྱབ་ཨིན། སྦྲེལ་སྒྲིག སྟོངམ་ མེན་མི་འདི་ནང་མ་བཙུགས་པའི་ བློ་གཏད་ཅན མཉམ་རོགས ཚུ་ ལྟ་རྟོག་པ ཨིན། སྦྲེལ་སྒྲིག འདི་སྟོངམ་ཨིན་པ་ཅིན་ BLS-normal བློ་གཏད་ཅན མཉམ་རོགས ག་ར་ འགོ་སྒྲིག གདམ་ག སྡེ༌ཚན༌ ནང་འཛུལཝ་ཨིནམ་དང་ ཚོགས་རྒྱན་བཙུགས་མིའི་ PoPs ཚུ་ད་རུང་ཡང་ མིང་རྟགས་བཀོད་པའི་ འགོ་ཐོག་གནས་སྟངས གིས་བྱིནམ་ཨིན།
 
-## Custody Output {#custody-output}
+## ཉེན་སྲུང་བཞག་སའི་གྲུབ་འབྲས་ {#custody-output}
 
-`kagami keys` requires `--out-dir` and never writes private key material to
-standard output. Read `public.key`, `private.key`, and optional `pop.hex` from
-the generated directory. Each file contains one canonical value followed by a
-newline, which makes explicit file-based automation straightforward:
+`kagami keys` དགོཔ་ `--out-dir` དང་ ཚད་ལྡན་ཐོན་འབྲས་ལུ་ སྒེར་གྱི་ལྡེ་མིག་རྒྱུ་ཆ་ཚུ་ ནམ་ཡང་མི་བྲིས། བཟོ་བཏོན་འབད་ཡོད་པའི་སྣོད་ཐོ་ལས་ `public.key`, `private.key`, དང་གདམ་ཁ་ཅན་ `pop.hex` ལྷག། ཡིག་སྣོད་རེ་རེ་ནང་ གྲལ་ཐིག་གསརཔ་ཅིག་གི་ཤུལ་ལས་ ཚད་ལྡན་གནས་གོང་གཅིག་ཡོདཔ་ཨིན་ དེ་གིས་ ཡིག་སྣོད་གཞི་བཞག་པའི་རང་བཞིན་འདི་ ཕྲང་ཏང་ཏ་བཟོཝ་ཨིན།
 
 ```bash
 PUBLIC_KEY=$(tr -d '\n' < ./client-key/public.key)
 ```
 
-For full generated Kagami help:
+Kagami གིས་བཟོ་བའི་ གྲོགས་རམ ཆ་ཚང་གི་དོན་ལུ།
 
 ```bash
 cargo run -p iroha_kagami -- advanced markdown-help > crates/iroha_kagami/CommandLineHelp.md

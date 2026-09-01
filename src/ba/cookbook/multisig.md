@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /cookbook/multisig.md
-translation_source_hash: 9654923faf6c84dfd21a428ebe3c53dbd074b8e3274c12c8aa41bf31884686f7
+translation_source_hash: e1b57e1c4310dd0db8be8d9f5a15e1d4f693abb90b634772857eb4b1e86e4baf
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,7 +16,7 @@ Taira иҫәбендә өс кешенән торған күп һанлы иҫә
 
 - Өс каноник I105 ҡултамғалаусы IDs үҙ эсенә `SIGNER_A`, `SIGNER_B`, һәм `SIGNER_C`.
 - A һәм C ҡултамғасылары өсөн финансланған Taira конфигурациялар. Тәҡдим итеүсе һәм һәр раҫлаусы үҙ транзакцияһы өсөн түләй.
-- `taira.tx-metadata.json` хәҙерге кран яуаптан яһалған, бер ҡасан да күсергән түләү активтан ID.
+- `taira.tx-metadata.json` хәҙерге faucet яуаптан яһалған, бер ҡасан да күсергән түләү активтан ID.
 - А Rust клиент проекты шул уҡ Iroha сығанаҡ ревизияһы Taira һуңғараҡ тәҡдим һәм раҫлау этаптарында ҡулланыу CLI.
 - Хәҙерге башҡарыусының күп миҡдарлы функцияһы булдырылған. Регистрация ябай иҫәптәр өсөн алдан билдәләнгән ваҡытта Iroha 3 эшләй, әммә Taira сәйәсәте һәм түләү ҡабул итеүе һаман да ғәмәлдә; әгәр йәмәғәт ҡулланыу уны инҡар итһә, localnet ҡулланығыҙ.
 
@@ -141,7 +141,7 @@ iroha --config "$SIGNER_A_CONFIG" ledger multisig list all \
 
 ### 4. ҡултамға ҡуйыусы C тип раҫлау. {#_4-approve-as-signer-c}
 
-A-ның ауырлығы 1 плюс C-ҙың ауырлығы 2 3-сө кворумға барып етә һәм тәҡдим ителгән күрһәтмәләрҙе күп һанлы иҫәп иҫәбенә ҡуя.
+A-ның 1 ауырлығы менән C-ның 2 ауырлығы quorum 3-кә етә һәм тәҡдим ителгән instruction-ды multisig account исеменән үтәй.
 
 ```bash
 iroha --config "$SIGNER_C_CONFIG" \

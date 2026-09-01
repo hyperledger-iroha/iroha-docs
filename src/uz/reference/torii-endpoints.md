@@ -1,14 +1,13 @@
 ---
 translation_locale: uz
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: 995701cfca9594b88a0da73a5b582c75c5962449a9ccf150e65738d3656d4f02
+translation_source_hash: f04e5e78329996d70926c4fd5dc034d41605d0a82fffd6460f67b252269480d9
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Torii Oxirgi nuqtalar {#torii-endpoints}
 
-Torii bo ' lmoqda HTTP, SSE, va WebSocket uchun darvoza Iroha 3. U ikkalaga ham xizmat qiladi . APIs va operator oxirgi nuqtalari.
+Torii - bu HTTP, SSE va WebSocket darvozalari bo'lgan Iroha 3. U zarbaxonaga qaraydigan APIs va operatorning oxirgi nuqtalariga ham xizmat qiladi.
 
 Amaldagi protokol qoidalari quyidagilardir:
 
@@ -21,25 +20,25 @@ Format tafsilotlari, tarkib muzokaralari, layout bayroqlari, sxema hashlari va N
 ## O'zaro o'xshash maqsadlar {#common-endpoints}
 
 |Keyingi nuqta |Format | Maqsad                                                          |
-| ------------------------------------- | -------------- | ---------------------------------------------------------------- |
+| -------------------------------- | -------------- | ---------------------------------------------------------------- |
 |`POST /v1/pipeline/transactions` |Norito |Imzolangan bitimni taqdim etish |
 |`POST /v1/query` |Norito |Imzolangan soʻrovni yuborish |
 |`GET /v1/events/ws` |WebSocket |Tadbirlar oqimiga obuna boʻling |
 |`GET /v1/events/sse` |SSE |SSE o'tkaziladigan voqealar oqimlariga obuna bo'ling. |
 |`GET /v1/blocks/stream` |WebSocket |Joʻnatilgan bloklar oqimi |
-|`GET /v1/peers` |JSON |Torii tomonidan aniqlangan tengdoshlar ro'yxati |
+|`GET /v1/peers` |JSON |Torii tomonidan aniqlangan tugunlar ro'yxati |
 |`GET /livez` |Matn |Faqatgina jarayonlar bilan ishlash; bu protokolga tayyorlikni anglatmaydi |
 |`GET /readyz` |JSON |To'liq nod tayyorligi, shu jumladan majburiy oflayn naqd pul tekshiruvlari |
 |`GET /health` |JSON |Tayyorlik sondasi xuddi shu oflayn naqdsiz invariant bilan |
 |`GET /v1/api/version` |Matn |Joriy blok sarlavhasi versiyasi |
 |`GET /status` |Norito yoki JSON |Yuqori darajadagi diagnostika holati; JSON soʻrovini aniqlab oling |
 |`GET /metrics` |Prometheus |Prometheus scraping oxirgi nuqtasi |
-|`GET /v1/schema` |JSON |Maʼlumotlar modeli sxemasi xatchoʻpchalari |
-|`GET /openapi` yoki `GET /openapi.json` |JSON |Aktiv Torii HTTP yo'nalishlari uchun OpenAPI hujjat |
-|`GET /v1/parameters` |JSON |Nukl parametrlari rasmga olish |
+|`GET /v1/schema` |JSON |Maʼlumotlar modeli sxemasi snapshotlari |
+|`GET /openapi.json` |JSON |Aktiv Torii HTTP yo'nalishlari uchun OpenAPI hujjati |
+|`GET /v1/parameters` |JSON |Nukl parametrlari snapshotlari |
 |`GET /v1/node/capabilities` |JSON |Nukllar qobiliyati va ma'lumotlar modeli metadatalari |
-|`GET /v1/time/now` |JSON |Nodular devor soatini koʻrish |
-|`GET /v1/time/status` |JSON |Vaqt sinxronlashtirish holati |
+|`GET /v1/time/now` |JSON |Nodular tizim soatini koʻrish |
+|`GET /v1/time/status` |JSON |Vaqt sinxronizatsiyasi holati |
 
 SSE so'rovi uchun mahalliy oqimni qo'shib, o'rnatilgan orqaga qaytarish:
 
@@ -49,7 +48,9 @@ Accept: text/event-stream, application/json
 
 Torii avval so'rov qatlamida JSON yoki Norito ifodalarini muzokara qiladi, so'ngra mahalliy `text/event-stream` javobini tasdiqlaydi. Shuning uchun faqat `text/event-stream` yuborish `406` bilan rad etiladi; [ oqim tadbirlari retseptasi ](/uz/cookbook/stream-events.md) to'liq boshliqdan foydalanadi.
 
-`/openapi` sxemada aks ettirilgan yo'nalishlar uchun asosiy ishlab chiqilgan shartnoma bo'lib, to'liq operatsion-sonda inventar emas. Joriy hujjatda `/livez` va `/readyz` qoldiriladi va uning `/health` tavsifi tayyorlik ko'rsatuvchisida orqaga borishi mumkin. Yo'nalish klientlarini jonli hujjatdan yarating, lekin faollik va tayyorlikni to'g'ridan-to'g'ri ishlamoqchi nodga va qo'lga kiritilgan boshqaruvchilariga qarshi tasdiqlang. To'g'rimi yuzasi hali ham qurilish xususiyatlari va ish vaqti konfiguratsiyasidan bog'liq. O'sha jonli hujjatni yuklash, JSON yo'nalishlarini sinovdan o'tkazish, curl so'rovlarini nusxa olish va joriy sxemadan mijoz kodini yaratish uchun [Torii API konsolini ](/uz/reference/torii-api-console.md) ishlating.
+`/openapi.json` sxemada tasvirlangan yo'nalishlar uchun ishlab chiqilgan shartnoma, to'liq operatsion-sonda inventar emas. Hozirgi hujjatda `/livez` va `/readyz` bo'shashtirilmoqda va uning `/health` tavsifi tayyorlik ko'rsatuvchidan ortda qolishi mumkin. Yo'nalish klientlarini jonli hujjatdan yarating, lekin faollik va tayyorlikni to'g'ridan-to'g'ri ishlamoqchi nodga va qo'lga kiritilgan boshqaruvchilariga qarshi tasdiqlang. To'g'rimi yuzasi hali ham qurilish xususiyatlari va ish vaqti konfiguratsiyasidan bog'liq. O'sha jonli hujjatni yuklash, JSON yo'nalishlarini sinovdan o'tkazish, curl so'rovlarini nusxa olish va joriy sxemadan mijoz kodini yaratish uchun [Torii API konsolini ](/uz/reference/torii-api-console.md) ishlating.
+
+Har bir katalog qo'llab-quvvatlangan OpenAPI operatsiyasi `x-iroha-route-auth` ob'ektini o'z ichiga oladi. Katalog qo'llab -quvvatlanadigan MCP vositalari `_meta["iroha/routeAuth"]` bilan bir xil kontraktni aks ettiradi. Ikkala proyektsiya ham `schemaVersion`, `stableRouteId`, `authentication` va `admission` ni olib boradi. `1` versiyasini to'g'ri shartnoma sifatida ko'rib chiqing: tasdiqlanmagan `schemaVersion` ni rad eting, balki uning autentifikatsiya yoki qabul etiketalarini qanday talqin qilish kerakligini tasavvur qiling. Yo'nalish metadatalari so'rov chegaraini tasvirlaydi; u ushbu chegara tomonidan talab etiladigan ma'lumotlarni almashtirmaydi.
 
 ## Taira yo'nalishlarini sinab ko'ring {#try-live-taira-routes}
 
@@ -85,73 +86,63 @@ Agar ommaviy testnet yo'nalishi `502` ni qaytarsa, vaqt o'tib ketsa yoki to'yilg
 
 ## Qoʻshma fikrlar va ish vaqti yakuniy nuqtalari {#consensus-and-runtime-endpoints}
 
-|Keyingi nuqta |Format | Maqsad |
-| --- | --- | --- |
-|`GET /v1/sumeragi/commit-certificates` |JSON |So ' nggi majburiyat sertifikatlari qisqartmalari |
-|`GET /v1/sumeragi/validator-sets` |JSON |Toʻgʻrilash vositasi tarixini koʻrsatish |
-|`GET /v1/sumeragi/validator-sets/{height}` |JSON |Validator blok balandligida oʻrnatilgan |
-|`GET /v1/sumeragi/status` |Norito yoki JSON |Konsensusning batafsil holati fotosurati |
-|`GET /v1/sumeragi/status/sse` |SSE |Tinchlik bilan kelishib olish holati oqimi |
+Quyidagi Sumeragi yo'nalishlarining har biri operatorning so'rov imzosini talab qiladi. Status, tashxislar, oqim, rahbar, kalit, QC va parametr yo'nalishlari ham telemetriyani qo'llab-quvvatlovchi qurilishni talab qiladi.
+
+|Keyingi nuqta |Format | Maqsad                                                 |
+| ----------------------------------------- | -------------- | ------------------------------------------------------- |
+|`GET /v1/sumeragi/status` |Norito yoki JSON |Avtolatli reduktor egalikidagi konsensus holati |
+|`GET /v1/sumeragi/diagnostics` |JSON |Sotuv, navbat va yo'nalish diagnostikasi uchun ruxsat berilmagan |
+|`GET /v1/sumeragi/status/sse` |SSE |Tinchlik bilan ishonchli konsensus holati oqimi |
 |`GET /v1/sumeragi/leader` |JSON |Hozirgi rahbar maʼlumotlari |
-|`GET /v1/sumeragi/qc` |Norito yoki JSON |So ' nggi quorum-sertifikatining qisqartmasi |
-|`GET /v1/sumeragi/checkpoints` |JSON |Konsensus tekshiruv punktlarining qisqacha ma ' lumotlari |
+|`GET /v1/sumeragi/qc` |Norito yoki JSON |Eng yuqori va qulflangan quorum sertifikatlari snapshotlari |
 |`GET /v1/sumeragi/consensus-keys` |JSON |Aktiv konsensus kalitlari |
-|`GET /v1/sumeragi/bls_keys` |JSON |Aktiv BLS konsensus kalitlari |
-|`GET /v1/sumeragi/phases` |JSON |Faza boʻyicha soʻnggi latency namunasini koʻrsatish |
-|`GET /v1/sumeragi/rbc` |JSON |RBC o'tirish va uzatish ma'lumotlari |
-|`GET /v1/sumeragi/rbc/sessions` |JSON |Aktiv RBC o'tkaziladigan fotosurat |
-|`GET /v1/sumeragi/pacemaker` |JSON |Pacemakerning holati |
+|`GET /v1/sumeragi/bls-keys` |JSON |Aktiv BLS konsensus kalitlari |
 |`GET /v1/sumeragi/params` |JSON |Zilziladagi joriy parametrlar Sumeragi |
-|`GET /v1/sumeragi/collectors` |JSON |Deterministik kollektor rejasi fotosuratlari |
-|`GET /v1/sumeragi/key-lifecycle` |JSON |Konsensus kalit hayotiy davrining holati |
-|`GET /v1/sumeragi/telemetry` |JSON |Konsens telemetriyasini koʻrish |
 |`GET /v1/sumeragi/evidence` |JSON |Ko'rsatkichlar ro'yxati, tanlov asosida so'rov satrlari bilan filtrlangan |
 |`GET /v1/sumeragi/evidence/count` |JSON |Koʻrsatkichlar soni |
-|`POST /v1/sumeragi/evidence/submit` |JSON |Konsensusga asoslangan dalillarni taqdim etish |
-|`GET /v1/sumeragi/commit_qc/{hash}` |Norito yoki JSON |Blok hash uchun QC rekordni oʻrnating |
 |`GET /v1/runtime/abi/active` |JSON |Aktiv ishga tushirish vaqti ABI tavsifchisi |
 |`GET /v1/runtime/abi/hash` |JSON |Aktiv ishga tushirish vaqti ABI hash |
-|`GET /v1/runtime/metrics` |JSON |Ish vaqti maʼlumotlarini koʻrish |
+|`GET /v1/runtime/metrics` |JSON |Ishga tushish vaqti maʼlumotlari |
 |`GET /v1/runtime/upgrades` |JSON |Ish vaqti yangilanish roʻyxati |
 |`POST /v1/runtime/upgrades/propose` |JSON |Ish vaqti yangilanishini taklif qiling |
 |`POST /v1/runtime/upgrades/activate/{id}` |JSON |Tartib qilingan ishga tushirish vaqti yangilanishini faollashtirish |
-|`POST /v1/runtime/upgrades/cancel/{id}` |JSON |Tartib qilingan ishga tushirish vaqti yangilanishini bekor qilish |
+|`POST /v1/runtime/upgrades/cancel/{id}` |JSON |Tartib qilingan ish vaqti yangilanishini bekor qilish |
 
 ## App va SORA yo'nalishidagi oilalar {#app-and-sora-route-families}
 
 Torii dasturga mos xususiyatlar to'plami bilan qurilganda, u qidiruvchilar uchun qo'shimcha JSON oilalarini, SORA xizmatlarini, ko'prik oqimlarini, dalillarni va saqlashni ochib beradi. Ushbu oilalarning barchasi har bir tarmoq profilida yoqilmaydi.
 
-`/openapi` ishlab chiqilgan app-API katalogida ro'yxatdan o'tgan yo'nalishlarni tasvirlaydi; u tarkibida mavjud bo'lgan yo'nalishlar uchun vakolatli, balki har bir yo'nalishga mo'ljallangan emas Xususan, ommaviy mahalliy SoraFS CID va yaxshi ma'lum yo'nalishlar ushbu ishlab chiqarilgan hujjatning tashqarisida o'rnatilgan va to'g'ridan-to'g'ri tekshirilishi kerak.
+`/openapi.json` ishlab chiqilgan app-API katalogida ro'yxatdan o'tgan yo'nalishlarni tasvirlaydi; u tarkibida mavjud bo'lgan yo'nalishlar uchun vakolatli, balki har bir yo'nalishga mo'ljallangan emas Xususan, ommaviy mahalliy SoraFS CID va yaxshi ma'lum yo'nalishlar ushbu ishlab chiqarilgan hujjatning tashqarisida o'rnatilgan va to'g'ridan-to'g'ri tekshirilishi kerak.
 
 |Yoʻnalish oilasi | Maqsad                                                                                                                   |
 | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-|`/v1/accounts/`, `/v1/domains/`, `/v1/assets/*` |JSON o'qishlar, so'rov yordamchilari, onboarding yordamchilari va portfel yoki egalar ko'rinishi |
-|`/v1/nfts/`, `/v1/rwas/`, `/v1/confidential/*` |NFT, real dunyo aktivlari va maxfiy aktivlar ko'rinishi |
-|`/v1/aliases/`, `/v1/assets/aliases/`, `/v1/sns/`, `/v1/identifiers/` |Ism, alias va identifikator rezolyutsiyasi |
+|`/v1/accounts/*`, `/v1/domains/*`, `/v1/assets/*` |JSON o'qishlar, so'rov yordamchilari, onboarding yordamchilari va portfel yoki egalar ko'rinishi |
+|`/v1/nfts/*`, `/v1/rwas/*`, `/v1/confidential/*` |NFT, real dunyo aktivlari va maxfiy aktivlar ko'rinishi |
+|`/v1/aliases/*`, `/v1/assets/aliases/*`, `/v1/sns/*`, `/v1/identifiers/*` |Ism, alias va identifikator rezolyutsiyasi |
 |`/v1/explorer/*` |Explorerga yoʻnaltirilgan hisobvaraq, aktiv, blok, tranzaksiya, koʻrsatma, metrika va oqim koʻrinishlari |
-|`/v1/transactions/`, `/v1/pipeline/`, `/v1/iso20022/*` |Transaksiya tarixi, quvurni tiklash yoki holati va ISO 20022 yordamchilar |
-|`/v1/contracts/*` |Shartnoma kodi, ishga tushirish, paketlash, qo'ng'iroq qilish, ko'rish, voqea, faoliyat, ro'yxatga olish va davlat yo'nalishlari |
-|`/v1/multisig/`, `/v1/controls/` |Multisig takliflari, ma'qullash va o'tkazib yuborishni nazorat qilishda yordamchilar |
-|`/v1/bridge/`, `/v1/ledger/`, `/v1/proofs/*` |So'nggi muddat, holatni tasdiqlash, blokni tasdiqlash, dalillarni saqlash va dalillar so'rovini olish yo'nalishlari |
+|`/v1/transactions/*`, `/v1/pipeline/*`, `/v1/iso20022/*` |Transaksiya tarixi, konveyerni tiklash yoki holati va ISO 20022 yordamchilar |
+|`/v1/contracts/*` |Shartnoma kodi, ishga tushirish, paketlash, qo'ng'iroq qilish, ko'rish, voqea, faoliyat, ro'yxatga olish va holat yo'nalishlari |
+|`/v1/multisig/*`, `/v1/controls/*` |Multisig takliflari, ma'qullash va o'tkazib yuborishni nazorat qilishda yordamchilar |
+|`/v1/bridge/*`, `/v1/ledger/*`, `/v1/proofs/*` |So'nggi muddat, holatni tasdiqlash, blokni tasdiqlash, dalillarni saqlash va dalillar so'rovini olish yo'nalishlari |
 |`/v1/da/*` |Ma'lumotlar mavjudligi qabul qilinishi, manifestlar, dalil siyosati, majburiyatlar va aniq maqsadlar |
 |`/v1/zk/*` |ZK ildizlar, dalillarni tekshirish, IVM dalillarini tasdiqlash, ovozlarni hisobga olish, tekshiruv kalitlari, dalillarni qayd etish va qo'shimchalar  |
-|`/v1/gov/`, `/v1/ministry/` |Boshqaruv takliflari, ovoz berish notasi, kengashning davlati, himoyalangan nomlar maydonlari, kun tartibidagi takliflar, qonun qabul qilinishi va yakunlanishi |
-|`/v1/nexus/`, `/v1/sccp/` |Nexus yo'nalish, ma'lumotlar maydoni va to'liq zanjirli sinov yordamchilari |
+|`/v1/gov/*`, `/v1/ministry/*` |Boshqaruv takliflari, ovoz berish notasi, kengash holati, himoyalangan nomlar maydonlari, kun tartibidagi takliflar, qonun qabul qilinishi va yakunlanishi |
+|`/v1/nexus/*`, `/v1/sccp/*` |Nexus yo'nalish, ma’lumotlar makoni va to'liq zanjirli sinov yordamchilari |
 |`/v1/musubi/*` |Musubi paketlar reyestrini oʻqish va koʻrsatmalarni yaratish |
 |`/v1/subscriptions/*` |Obunalik rejalari, obunalik hayot davri, foydalanish va yordamchilarni to'lash |
-|`/v1/sorafs/`, `/sorafs/`, `/.well-known/sorafs/*` |SoraFS provayderni kashf etish, quvvatni tasdiqlash, pinning qilish, saqlash va ommaviy tarkibni xizmat ko'rsatish |
-|`/v1/soracloud/`, `/v1/soradns/`, `/soradns/`, `/api/` |SoraCloud xizmat hayoti davri, xususiy hisoblash/model oqimlari, ommaviy kashfiyot va uyushtirilgan ilovalarni yo'naltirish |
-|`/v1/connect/`, `/v1/vpn/` |Iroha Qo'shish seanslari, WebSocket transport, VPN uchrashuvlar, profillar va rasmga ega bo'lish |
-|`/v1/app-api/`, `/v1/api/`, `/v1/content/*` |App API bog'lanish va paket/CID tomonidan qo'llab-quvvatlanadigan tarkib yo'nalishi |
+|`/v1/sorafs/*`, `/sorafs/*`, `/.well-known/sorafs/*` |SoraFS provayderni kashf etish, quvvatni tasdiqlash, pinning qilish, saqlash va ommaviy tarkibni xizmat ko'rsatish |
+|`/v1/soracloud/*`, `/v1/soradns/*`, `/soradns/*`, `/api/*` |SoraCloud xizmat hayoti davri, xususiy hisoblash/model oqimlari, ommaviy kashfiyot va uyushtirilgan ilovalarni yo'naltirish |
+|`/v1/connect/*`, `/v1/vpn/*` |Iroha Qo'shish seanslari, WebSocket transport, VPN uchrashuvlar, profillar va rasmga ega bo'lish |
+|`/v1/app-api/*`, `/v1/api/*`, `/v1/content/*` |App API bog'lanish va paket/CID tomonidan qo'llab-quvvatlanadigan tarkib yo'nalishi |
 |`/v1/operator/*`, `/v1/mcp` |Operatorning tasdiqlanishi va mahalliy MCP JSON-RPC ko'priklari |
-|`/v1/offline/`, `/v1/repo/`, `/v1/space-directory/`, `/v1/ram-lfe/` |Offline tayyorlik, ombor shartnomalari, ma'lumotlar maydonining manifestlari va [RAM-LFE yordamchilar ](/uz/blockchain/ram-lfe.md#torii-routes)  |
-|`/v1/kaigi/`, `/v1/webhooks/`, `/v1/notify/`, `/v1/telemetry/` |Hamkorlik, veb-qo'shish, push xabardorlik va jonli telemetri integratsiyalari |
+|`/v1/offline/*`, `/v1/repo/*`, `/v1/space-directory/*`, `/v1/ram-lfe/*` |Offline tayyorlik, ombor shartnomalari, ma’lumotlar makonining manifestlari va [RAM-LFE yordamchilar ](/uz/blockchain/ram-lfe.md#torii-routes)  |
+|`/v1/kaigi/*`, `/v1/webhooks/*`, `/v1/notify/*`, `/v1/telemetry/*` |Hamkorlik, veb-qo'shish, push xabardorlik va jonli telemetri integratsiyalari |
 
-## Hisobvaraqlarni tasdiqlash, ko'rinishi va Explorer cursorlari {#account-authentication-visibility-and-explorer-cursors}
+## Hisobvaraqlarni tasdiqlash, ko‘rinishi va Explorer kursorlari {#account-authentication-visibility-and-explorer-cursors}
 
-### Ilova hisobini soʻrash protokollari {#app-account-request-protocol}
+### Dastur hisobini soʻrash protokoli {#app-account-request-protocol}
 
-Ilovalarga mos yo'nalishlarda autentifikatsiya boshliqlari, bitta to'g'ridan-to'g'ri bir xil kalitli dalil yoki bitta ko'p nishonli guvohlar qabul qilinmaydi.
+Ilovaga yo‘naltirilgan marshrutlar uch variantdan birini qabul qiladi: autentifikatsiya sarlavhalarisiz so‘rov, bitta to‘g‘ridan-to‘g‘ri bir kalitli dalil yoki bitta multisig guvoh. Har bir autentifikatsiya sarlavhasi ko‘pi bilan bir marta kelishi kerak.
 
 To'g'ridan-to'g'ri isbot olish uchun to'rtta boshliqni birga yuboring:
 
@@ -201,35 +192,56 @@ iroha.operator.http-request.network.v1\0 || <genesis-derived network_id[32]> ||
 <nonce>
 ```
 
-Yo'l, so'rov, jism, vaqt belgisi va nonce qoidalari ilova protokoli tomonidan ishlatiladigan bir xil kanonik qoidalardir. Shunga o'xshab, kalitni `[torii.operator_signatures]`: roʻyxatga oling `allowed_public_keys`, yoki ochiqchasiga ruxsat berish `allow_node_key` nod kalitidan foydalanganda. Qayta o'ynash kechasi to'yilganda, Torii iltimosni rad etadi `503 Service Unavailable`. O'z navbatida WebAuthn yoki mTLS operatorini tasdiqlash qo'shimcha omil bo'lib, hech qachon ushbu aniq iltimos imzosi o'rniga olinmaydi.
+Yo'l, so'rov, jism, vaqt belgisi va nonce qoidalari ilova protokoli tomonidan ishlatiladigan bir xil kanonik qoidalardir. `[torii.operator_signatures]` kalitini ham qabul qilishi kerak: uni `allowed_public_keys` da ro'yxatdan o'tkazing yoki tugma kalitidan foydalanganida `allow_node_key` ni aniq faollashtiring. Replay-cache saturatsiyasi `503 Service Unavailable` bilan yopilmaydi.
+
+To'g'ri so'rov imzosi har doim majburiy. `[torii.operator_auth].enabled = true`da har bir odatdagi operator yo'li ham haqiqiy `x-iroha-operator-session` talab qiladi; `require_mtls = true`da u qo'shimcha ravishda ishonchli kirishdan `x-forwarded-client-cert` talab qiladi. Ikkala omil ham so'rovni almashtirmaydi.
+
+WebAuthn ro'yxatdan o'tish va kirish uchun ushbu to'rtta JSON oxirgi nuqtalardan foydalaning:
+
+|usuli va oxirgi nuqtasi | Maqsad                                  |
+| --------------------------------------------- | ---------------------------------------- |
+|`POST /v1/operator/auth/registration/options` |WebAuthn ma'lumotlar ro'yxatidan o'tish boshlanadi |
+|`POST /v1/operator/auth/registration/verify` |Sertifikatlarni tekshirish va saqlab qolish |
+|`POST /v1/operator/auth/login/options` |WebAuthn autentifikatsiyasini boshlash |
+|`POST /v1/operator/auth/login/verify` |Talabni tasdiqlash va sessiya oʻtkazish |
+
+`torii.operator_auth.tokens` ni maxsus bootstrap qiymatlari bilan konfiguratsiya qiling. Har qanday ma'lumotnoma mavjud bo'lishdan oldin, birinchi ro'yxatdan o'tishni boshlash uchun `x-iroha-operator-token` sifatida yuboring. Ushbu token hech qachon odatdagi operator yo'lini ruxsat bermaydi va tinglovchi `x-api-token` qiymatlari bu oqim uchun hech qachon qayta ishlatilmaydi. Bir marta ma'lumotnoma mavjud bo'lganidan so'ng, boshqa ma'lumotnomani ro'yxatdan o'tkazish uchun autentifikatsiya qilingan seans talab etiladi. Login tasdiqlash sesiya belgisini har bir yangi aniq tarmoq operatori iltimos imzosi bilan birga yuboradi. Ma'lumotnomalar `<torii.data_dir>/operator_auth/operator_webauthn.json` ostida saqlanib qoladi.
 
 ISO 20022 yo'nalishlari ikki mustaqil tekshiruvni amalga oshiradi. Talab dastlab ushbu operator ruxsatnomalari va imzo protokolini o'tkazishi kerak; ISO boshqaruvchisi keyinchalik quyida tasvirlangan aniq ishtirokchi yoki auditorlik rolini egallashi uchun bir xil kalitni talab qiladi.
 
-### Ledgerning koʻrinishi va Explorer cursorlari {#ledger-visibility-and-explorer-cursors}
+### Reyestrning ko‘rinishi va Explorer kursorlari {#ledger-visibility-and-explorer-cursors}
 
-Ilovalarga ko'ra katta kitobni o'qish uchun yuqoridagi tanlovli ilova hisobining chegaralaridan foydalaning. Imzolangan so'rov faqat ommaviy sifatida konfiguratsiyalangan ma'lumotlar maydonlarini oladi. Amaldagi imzolangan soʻrov qo'shiladi So'rovchining joriy UAID bilan bog'langan ma'lumotlar maydonlari, har bir cheklangan ma'lumot maydonining aniq `CanReadRestrictedDataspace { dataspace }` ruxsatnomasi bilan nomlanishi yoki hisobda `CanReadAllLedgerData` bo'lgan barcha yo'nalishlar.
+App-facing reyestr read-lari yuqoridagi optional application-account boundary-dan foydalanadi. Unsigned request faqat public deb configured qilingan data space-larni oladi. Valid signed request caller-ning joriy UAID-si bilan bog'langan data space-larni, aniq `CanReadRestrictedDataspace { dataspace }` permission-i bilan nomlangan har bir restricted data space-ni yoki account-da `CanReadAllLedgerData` bo'lsa barcha route-larni qo'shadi.
 
-Bir xil ko'rinish obʼektlari hisob, domen, aktiv-maʼrifi, aktiv, NFT, RWA, egasi va Explorerni oʻqiydi. Yoʻqolgan obyekt va chaqiruvchining ko'rinadigan yo'llaridan tashqarida bo'lgan object niyat bilan ajratib bo'lmaydi. Amalga oshirilgan tranzaksiya va ko'rsatmalar tarixi faqat tranzaksiya uchun qayd etilgan har bir yo'nalish bosqichini ko'rishganda ko'rsatiladi . shu sababli, hatto bitta ishtirokchi oyoq qo'ng'iroq qiluvchining qamrovidan tashqarida bo'lganda yashirilgan; yo'qolgan, eskirgan yoki noto'g'ri ko'rsatilgan yo'naltirish konteksti faqat global o'quvchi uchun ko'rinadi.
+Chaqiruvchining vakolatlariga mos keladigan yo'ldan foydalaning:
+
+|usuli va oxirgi nuqtasi |Tasdiqlash va koʻrinishlilik |
+| ------------------------------------- | --------------------------------------------------------------- |
+|`POST /v1/transactions/visible/query` |Kanonik hisob raqami imzosi; chaqiruvchining ko'rinishini ta'minlaydi |
+|`POST /v1/transactions/query` |Operatorning imzosi talab qilinadi; global operator koʻrinishiga ruxsat beradi |
+|`GET /v1/triggers/completed` |Operator imzo soʻraydi; nod-lokal toʻliqlash yozuvlarini oʻqiydi |
+
+Bir xil ko'rinish obʼektlari hisob, domen, aktiv-maʼrifi, aktiv, NFT, RWA, egasi va Explorerni oʻqiydi. Yoʻqolgan obyekt va chaqiruvchining ko'rinadigan yo'llaridan tashqarida bo'lgan object niyat bilan ajratib bo'lmaydi. Tasdiqlangan tranzaksiya va ko'rsatmalar tarixi faqat tranzaksiya uchun qayd etilgan har bir yo'nalish bosqichini ko'rishganda ko'rsatiladi . shu sababli, hatto bitta ishtirokchi bosqich qo'ng'iroq qiluvchining qamrovidan tashqarida bo'lganda yashirilgan; yo'qolgan, eskirgan yoki noto'g'ri ko'rsatilgan yo'naltirish konteksti faqat global o'quvchi uchun ko'rinadi.
 
 Olti butun dunyo tomonidan qo'llab-quvvatlanadigan Explorer kolleksiyalarida shaffof bo'lmagan kanonik base64url tugmachalar kursorlari ishlatiladi. Standart sahifa chegarasi 25, maksimal 100 va bitta sahifa eng ko'pida 512 nomzod tugmachasini tekshiradi. Har bir kursor o'zining to'plami, filtrlari, kanonik oxirgi kalit va chaqiruvchining ko'rinadigan yo'l-qoidasi bilan bog'liq, shuning uchun uni boshqa so'rovda yoki chaqiruvchining ko'rinishi o'zgarganidan keyin takrorlash mumkin emas.
 
-Blok, operatsiya, so'nggi tranzaksiya, ko'rsatma va so'ngki ko'rsatmalar tarix kursorlari qo'shimcha ravishda o'rnatilgan fotosurat balandligi va blok hashini belgilaydi. Javoblar `pagination.limit`, `pagination.snapshot_height`, `pagination.snapshot_hash`, `pagination.next_cursor` va `pagination.has_more` ni aniqlaydi. Torii boshqa yo'nalish yoki filtr setini, o'zgartirilgan ko'rinishni o'chirishni yoki nod endi tasdiqlay olmaydigan fotosuratni kursorni rad etadi. blokirovka qiluvchi ishchi ishlayotganda tarixni skanerlash Torii so'rov qabul qilish ruxsatnomasida qoladi.
+Blok, operatsiya, so'nggi tranzaksiya, ko'rsatma va so'ngki ko'rsatmalar tarix kursorlari qo'shimcha ravishda tasdiqlangan snapshot balandligi va blok hashini belgilaydi. Javoblar `pagination.limit`, `pagination.snapshot_height`, `pagination.snapshot_hash`, `pagination.next_cursor` va `pagination.has_more` ni aniqlaydi. Boshqa yo'nalish yoki filtrlar to'plami uchun kursor, o'zgartirilgan ko'rinish aniqlanishi yoki nod endi tasdiqlay olmaydigan darhol surat yopiladi. Torii blokiruvchi ishchi ishlayotganda tarixni skanerlash so'rovlarni qabul qilish ruxsatnomasida qoladi.
 
-Eksplorator WebSocket oqimlar filtrlangan qisqartmalarni chiqaradi va ko'rinishni qayta hisoblashda katta ma'lumotlar huquqlarini o'zgartirish. `GET /v1/blocks/stream` yo'nalish boshqacha: u to'liq imzolangan bloklarni chiqaradi, talab qiladi `CanReadAllLedgerData` qo'l urish paytida, agar ruxsatnoma keyinchalik bekor qilinsa, yopiladi. Ma'lumotlar maydonini ko'rib chiqayotgan kashfiyotchi uchun mahalliy oqishni ishlatmang.
+Eksplorator WebSocket oqimlar filtrlangan qisqartmalarni chiqaradi va ko'rinishni qayta hisoblashda katta ma'lumotlar huquqlarini o'zgartirish. `GET /v1/blocks/stream` yo'nalish boshqacha: u to'liq imzolangan bloklarni chiqaradi, talab qiladi `CanReadAllLedgerData` qo'l urish paytida, agar ruxsatnoma keyinchalik bekor qilinsa, yopiladi. Ma’lumotlar makonini ko'rib chiqayotgan kashfiyotchi uchun mahalliy oqishni ishlatmang.
 
 ## ISO 20022 ko'prik {#iso-20022-bridge}
 
 Torii ISO 20022 ko'prini `/v1/iso20022/*` ostida qo'llaydi, agar dasturga qaraydigan API va ko'prikni ishga tushirish vaqti yoqilgan bo'lsa. Ko'prik niyat bilan: bu umumiy maqsadga mo'ljallangan ISO 20022 clearing gateway emas, balki tanlangan to'lov xabarlarini Iroha imzolangan o'tkazmalarga aylantirish va ularning katta qog'ozdagi holatini kuzatish uchun qo'llab-quvvatlanadigan kichik guruhdir.
 
-So'rovlarni qabul qilishdan oldin uzoq muddatli lokal `torii.iso_bridge.store_dir` ni konfiguratsiya qiling. Konfiguratsiya maydoni faqat o'qish yoki tashxis uchun ishlatilishi mumkin bo'lgan nodni ishga tushirish imkoniyatiga ega: har bir autentifikatsiya qilingan ISO taqdimot direktoriyani talab qiladi va qat'iylik yo'q bo'lganda yoki takrorlash qabr tomi yoki boylik bilan yozilgan yozish muvaffaqiyatsiz tugasa, qayta tiklanishi mumkin bo'lgan `503 Service Unavailable` qaytaradi.
+So'rovlarni qabul qilishdan oldin uzoq muddatli lokal `torii.iso_bridge.store_dir` ni konfiguratsiya qiling. Konfiguratsiya maydoni faqat o'qish yoki tashxis uchun ishlatilishi mumkin bo'lgan nodni ishga tushirish imkoniyatiga ega: har bir autentifikatsiya qilingan ISO taqdimot direktoriyani talab qiladi va persistensiya yo'q bo'lganda yoki takrorlash takroriy yuborishni bloklash belgisi yoki boylik bilan yozilgan yozish muvaffaqiyatsiz tugasa, qayta tiklanishi mumkin bo'lgan `503 Service Unavailable` qaytaradi.
 
 ### Torii ISO 20022 Yakuniy nuqtalar {#torii-iso-20022-endpoints}
 
-|usuli va oxirgi nuqtasi | Maqsad |
-| --- | --- |
+|usuli va oxirgi nuqtasi | Maqsad                                                                                            |
+| -------------------------------------------- | -------------------------------------------------------------------------------------------------- |
 |`POST /v1/iso20022/pacs008` |FI-to-FI mijoz kreditini o'tkazish va moslashtirilgan Iroha aktivni o'tkazish |
 |`POST /v1/iso20022/pacs009` |FI dan FI ga PvP yoki qimmatli qog'ozlar bilan bog ' liq naqd pul mablag ' lari uchun ishlatilgan kredit o ' tkazmasini taqdim etish |
-|`POST /v1/iso20022/pacs002` |Qarzdorga tegishli toʻlov holatini koʻrsatishni taqdim etish; hisob-kitob qilish uchun majburiyatli tranzaksiya maʼlumotlari kerak |
+|`POST /v1/iso20022/pacs002` |Qarzdorga tegishli toʻlov holatini koʻrsatishni taqdim etish; hisob-kitob qilish uchun commit qilingan tranzaksiya dalillari kerak |
 |`POST /v1/iso20022/pacs004` |Qarzdorga tegishli to ' lov deklaratsiyasini taqdim etish |
 |`POST /v1/iso20022/camt056` |To ' lovni bekor qilish uchun tashabbuskorga tegishli talabnoma taqdim etish |
 |`POST /v1/iso20022/sese023` |Qimmatli qogʻozlar bilan hisob-kitob qilish boʻyicha koʻrsatma taqdim etish |
@@ -244,11 +256,11 @@ So'rovlarni qabul qilishdan oldin uzoq muddatli lokal `torii.iso_bridge.store_di
 |`GET /v1/iso20022/messages/{msg_id}/sese024` |Joriy hisob-kitob holatini `sese.024` XML deb berish. |
 |`GET /v1/iso20022/messages/{msg_id}/sese025` |Joriy hisob-kitob tasdiqnomasi `sese.025` XML sifatida berilsin. |
 
-`pacs.008` taqdimotlarida xabar ID, banklararo hisob-kitob miqdori, valyuta, hisob-kitob sanasi, qarzdor va kreditor IBANs hamda qarzdor bilan kreditor BICs ko'rsatilishi kerak. Referent ma'lumotlar sozlanganda, ko'prik ishlab chiqarilgan tranzaksiya quvurga kirishdan oldin BIC, IBAN va ISO 4217 valyutalar o'tish joylarini tekshiradi.
+`pacs.008` taqdimotlarida xabar ID, banklararo hisob-kitob miqdori, valyuta, hisob-kitob sanasi, qarzdor va kreditor IBANs hamda qarzdor bilan kreditor BICs bo'lishi kerak. Referent ma'lumotlar sozlanganda, ko'prik ishlab chiqarilgan tranzaksiya konveyerga kirishdan oldin BIC, IBAN va ISO 4217 valyutalar o'tish joylarini tekshiradi.
 
-`pacs.009` taqdimotlarida biznes xabarini ID, xabarning ta'rifini ID, yaratish vaqti, banklararo hisob-kitob miqdori, valyuta, hisob-kitob sanasi ko'rsatilishi kerak. topshiriq beruvchi va topshiriq beruvchi vakil BICs, qarzdor va kreditor IBANs. Agar xabarda `Purp` mavjud bo'lsa, ko'prik hozirda faqat qimmatli qog'ozlar uchun moliyalashtirishni qabul qiladi: `Purp=SECU`.
+`pacs.009` taqdimotlarida biznes xabarini ID, xabarning ta'rifini ID, yaratilish vaqti, banklararo hisob-kitob miqdori, valyuta, hisob-kitob sanasi ko'rsatilishi kerak. topshiriq beruvchi va topshiriq beruvchi vakil BICs, qarzdor va kreditor IBANs. Agar xabarda `Purp` mavjud bo'lsa, ko'prik hozirda faqat qimmatli qog'ozlar uchun moliyalashtirishni qabul qiladi: `Purp=SECU`.
 
-O ' zbekiston Respublikasining `pacs.008` va `pacs.009` ko'rsatkichlar qabul qilinadi XML ISO ko'prik sinovlarida qo'llaniladigan konvertlar yoki tekis maydon shakli. `SplmtryData` maydonlar maqsadni belgilashlari mumkin Iroha katta hisob raqami, manba va maqsadli hisob raqamlari IDs yoki manzillar va aktivlarni aniqlash ID. Javob: `202 Accepted` bilan `message_id`, `transaction_hash`, `status`, `pacs002_code`, va hal qilingan katta ma'lumotlar/hisob-kitob/mashnat kontekstini ko'rsatish.
+`pacs.008` va `pacs.009` yuborish endpoint-lari XML ISO konvertlarini yoki ko'prik testlarida ishlatiladigan tekis maydon formatini qabul qiladi. Ixtiyoriy `SplmtryData` maydonlari maqsad Iroha reyestrini, manba va maqsad hisob IDs yoki manzillarini hamda aktiv ta'rifi ID-sini belgilashi mumkin. Javob `message_id`, `transaction_hash`, `status`, `pacs002_code` va aniqlangan reyestr/hisob/aktiv konteksti bilan `202 Accepted` bo'ladi.
 
 ### Ishtirokchilarning ruxsatnomasi va hayot davri egaligi {#participant-authorization-and-lifecycle-ownership}
 
@@ -258,7 +270,7 @@ Hammasi ISO yo'nalishlarda operatorning yangi imzosi talab etiladi. `pacs.008`, 
 
 Hayot davri to'g'risidagi ruxsatnoma chaqiruvchi tomonidan tanlangan qiymatlardan ko'ra ushbu o'zgaruvchan rekorddan kelib chiqadi:
 
-|Hayot davri xabarlari |Kerakli ishtirokchi |
+|Hayot davri xabarlari |Talab qilingan ishtirokchi |
 | ---------------------------------------------- | -------------------------------------------------- |
 |`pacs.002`, `pacs.004`, `sese.024`, `sese.025` |`counterparty` rolini o'z ichiga olgan asl nusxasi |
 |`camt.056` |`originator` vazifasini egallagan asl nusxasi |
@@ -269,11 +281,11 @@ Asosiy tomonlarning har biri o'z xabar yozuvini va yaratilgan outbox hujjatlarin
 
 ### Qayta oʻynashning mustahkamligi va imzolangan chipta hujjatlari {#durable-replay-identity-and-signed-outbox-documents}
 
-Torii o'qib bo'lmaydigan, katta bo'lgan, noto'g'ri shakllangan, xato nomlangan, ziddiyatli yoki ochiqchasiga mos kelmaydigan qabr toshini ishga tushirishni bekor qiladi. Shuningdek, u ochiqchasiga mos kelmaydigan sxema versiyasiga ega bo'lgan boy rekord uchun abort qiladi, hozirgi konfiguratsiyadan mavjud bo'lmagan ishtirokchi, profil yoki imzo siyosati yoki yo'qolgan yoki mos kelmagan jonli qabr tomi.
+Torii o'qib bo'lmaydigan, katta bo'lgan, noto'g'ri shakllangan, xato nomlangan, ziddiyatli yoki ochiqchasiga mos kelmaydigan takroriy yuborishni bloklash belgisini ishga tushirishni bekor qiladi. Shuningdek, u ochiqchasiga mos kelmaydigan sxema versiyasiga ega bo'lgan boy rekord uchun abort qiladi, hozirgi konfiguratsiyadan mavjud bo'lmagan ishtirokchi, profil yoki imzo siyosati yoki yo'qolgan yoki mos kelmagan jonli takroriy yuborishni bloklash belgisi.
 
 Boshqa boylikdagi rekordlarga zarar yetkazilishi boshqacha tarzda hal etiladi: o'qilmaydigan yoki katta fayllar, haqiqiy bo'lmagan JSON, haqiqiy bo'lmaydigan joriy sxemasi rekordlari, kanonik bo'lmagan fayl nomlari va ziddiyatli takrorlash identifikatsiyalari qayd qilinadi yoki qoldiriladi. O'qib bo'lmaydigan yoki haqiqiy bo'lmagan joriy versiya auditorlik indeksini saqlangan yozuvlardan qayta tiklanadi; faqat ochiqchasiga mos kelmaydigan auditorlik indeksining versiyasi ishga tushirishni bekor qiladi. Boshlang'ich protokollarni kuzatib boring va qayta tiklangan audit manifestini har bir buzilgan boylikdagi fayl nodning xizmat ko'rsatishiga to'sqinlik qilishiga yo'l qo'ymang.
 
-Har bir saqlangan boy yozuv ishtirokchining o'zgaruvchan kelib chiqishini saqlaydi. alohida chidamli qabriston xabarni ID, foydali yuk hashini, biznes xabarini ID va UETR to'liq deduplikatsiya qilish uchun saqlaydi TTL hatto boy yozuvlarning tafsilotlari kesilganidan keyin ham.
+Har bir saqlangan boy yozuv ishtirokchining o'zgaruvchan kelib chiqishini saqlaydi. alohida chidamli takroriy yuborishni bloklash belgisi xabarni ID, foydali yuk hashini, biznes xabarini ID va UETR to'liq deduplikatsiya qilish uchun saqlaydi TTL hatto boy yozuvlarning tafsilotlari kesilganidan keyin ham.
 
 Torii lifecycle xabarini imzolash yoki qayta ishlashdan oldin takroriy qabul qilish davom etadi. U hech qachon muddati tugab bo'lmagan takroriy identifikatsiyalarni chiqarmaydi. Agar konfiguratsiyalangan quvvat to'liq himoyalangan yozuvlar yoki muddati tugamagan takrorlash identifikatsiyalari bilan egallab olingan bo'lsa, taqdimotlarni hayot davri yoki buxgalteriya holati o'zgartirmasdan qayta tiklanishi mumkin `503 Service Unavailable` oladi.
 
@@ -285,14 +297,14 @@ Har bir hosil boʻlgan `pacs.002`, `pacs.004`, `camt.029`, `sese.024`, yoki `ses
 |`X-Iroha-Iso-Signer` |Konfiguratsiya qilingan koʻprik imzochisi uchun kanonik ommaviy kalit |
 |`X-Iroha-Iso-Signature` |Domen bo ' yicha ajratilgan XML bytlar ustida Base64 imzosi |
 
-imzolarni tekshirish UTF-8 Bayt sekvensiyasi `iroha.iso20022.outbound.v2`, bir nol byte, va aniq javob tanasi. XML tekshiruvdan oldin.
+Imzoni `iroha.iso20022.outbound.v2` UTF-8 bayt ketma-ketligi, bitta nol bayt va aynan javob tanasi ustidan tekshiring. Tekshirishdan oldin XML-ni qayta formatlamang yoki normallashtirmang.
 
-### Qo'shimcha Parser va xaritalash qo'llab-quvvatlash {#additional-parser-and-mapping-support}
+### Qo‘shimcha tahlilchi va xaritalash yordami {#additional-parser-and-mapping-support}
 
-O ' zbekiston Respublikasining IVM ISO yordamchi , shuningdek , quyidagi xabarlarni tasdiqlaydi va materiallashtiradi . tasdiqlash, hisob-kitoblarni xaritalash yoki oqimdan keyingi kelishuvlarga ega emaslar. Torii yo'nalishlar.
+IVM ISO yordamchisi quyidagi xabarlarni ham tekshiradi va materiallashtiradi. Ular uchun tasdiqlash, hisob-kitob xaritalash yoki keyingi oqim bo'yicha maxsus Torii yo'nalishlari yo'q.
 
 |Xabarlar oilasi |Joriy qoʻllab-quvvatlash |
-| --- | --- |
+| ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
 |`head.001` | Ishlab chiqarish uchun arizalar boshliqini tasdiqlash ISO zarflar, shu jumladan: `BizMsgIdr`, `MsgDefIdr`, yaratilish vaqti va ixtiyoriy jo'natgich / qabul qiluvchi BIC maydonlar |
 |`pacs.007`, `pacs.028`, `pacs.029` |To'lovni qaytarish, status so'rovi va tekshiruvni hal qilish/statusni tahlil qilish |
 |`pain.001`, `pain.002` |Mijozning toʻlovni boshlash va toʻlov holati hisobotini tasdiqlash |
@@ -300,124 +312,87 @@ O ' zbekiston Respublikasining IVM ISO yordamchi , shuningdek , quyidagi xabarla
 
 ## Kaigi Uchrashuvlar {#kaigi-sessions}
 
-Kaigi pulli, real vaqtda audio / video xonalarini SORA Nexus da taqdim etadi. Ilovalar kitobga asoslangan seanslarni yaratish, ro'yxatni o'zgartirish, relay manifestlari, shifrlangan signallash va foydalanish o'lchovini saqlashning o'rniga barcha konferentsiya holatini zanjirdan tashlab qo'yish kerak bo'lganida foydalaning.
+Kaigi SORA Nexus-da pulli real-time audio/video room-larni taqdim etadi. Application barcha conference state-ni off-chain saqlash o'rniga reyestr-backed session creation, roster change, relay manifest, encrypted signaling va usage metering talab qilganda undan foydalaning.
 
 Ruxsatnomaga qarab hayot davri quyidagicha:
 
 - `CreateKaigi`: domen ostida qo'ng'iroqni yaratish va uning siyosati, jadvali, metadatalari va ixtiyoriy relay manifestini saqlash.
-- `JoinKaigi` va `LeaveKaigi`: qo'ng'iroq ro'yxatini yangilash. Xususiy rejimda ishtirokchilar ishtirokchi hisob raqami IDs ni to'g'ridan-to'g'ri ochib bermasdan, majburiyatlar, bekor qilish belgilari va ro'yxatni tasdiqlovchi hujjatlardan foydalanadilar.
+- `JoinKaigi`: qo'ng'iroqlar ro'yxatini yangilash. `zk-roster-v1` rejimida ishtirokchi hisob raqami IDs o'rniga, ommaviy qo'ngʻiroq ko'rinishida majburiyat va bekor qiluvchi raqamlar aniqlanadi.
+- `LeaveKaigi`: ishtirokchini shaffof qo'ng'iroqdan olib tashlash. Xususiy rejimda chiqish birinchi chiqarilgan protokolda zanjirdan tashqari hisoblanadi.
 - `RecordKaigiUsage`: o'lchash muddati va gaz to'plamlarini qo'shish.
 - `EndKaigi`: majlisni yakunlab, oxirgi vaqt belgilarini yozib oling.
 
-Torii relay telemetriyasini koʻrsatadi `/v1/kaigi/relays`, `/v1/kaigi/relays/{relay_id}`, `/v1/kaigi/relays/health`, va `/v1/kaigi/relays/events` ilova qachon API va telemetriya xususiyatlari qo'llanilgan. Kaigi domen hodisalari: `KaigiRosterSummary`, `KaigiRelayManifestUpdated`, `KaigiRelayHealthUpdated`, va `KaigiUsageSummary`.
+Torii quyidagi ilovaga ko'ra o'qishni ochadi:
+
+|Yo ' nalish |Tasdiqlash | Maqsad                                    |
+| ----------------------------------- | --------------------------------------- | ------------------------------------------ |
+|`/v1/kaigi/calls/{call_id}` |ommaviy |joriy qoʻngʻiroq yozuvi |
+|`/v1/kaigi/calls/{call_id}/signals` |Kanonik toʻgʻri tarmoq hisobini talab qilish |sahifalar bilan bogʻlangan signallash metadatalari |
+|`/v1/kaigi/calls/{call_id}/events` |Kanonik toʻgʻri tarmoq hisobini talab qilish |hayot davri oqimini chaqiring |
+|`/v1/kaigi/relays` |ro ' yxatga olingan operatorning iltimosi |relay qisqartmasi |
+|`/v1/kaigi/relays/{relay_id}` |ro ' yxatga olingan operatorning iltimosi |bir relayning ro'yxatdan o'tishi va sog'liqni saqlash tafsilotlari |
+|`/v1/kaigi/relays/health` |ro ' yxatga olingan operatorning iltimosi |agregat relay sogʻligʻi |
+|`/v1/kaigi/relays/events` |Kanonik toʻgʻri tarmoq hisobini talab qilish |Relay roʻyxatdan oʻtish va sogʻliqni saqlash tadbirlari oqimi |
+
+Ilova API yoqilgan bo‘lishi kerak. Relay xulosasi va sog‘liq yo‘nalishlari faqat o‘qish uchun bo‘lsa ham operator yuzalaridir; imzolanmagan `curl` so‘rovi mavjudlikni tekshirish uchun yaroqli probe emas. Sessiya holati `KaigiRosterSummary`, `KaigiRelayManifestUpdated`, `KaigiRelayHealthUpdated` va `KaigiUsageSummary` kabi Kaigi domen hodisalarida ham aks etadi.
 
 ### CLI Tut sinovlari {#cli-smoke-test}
 
-Boshlaning `iroha kaigi` CLI agar siz tekshirishni istasangiz Torii oxirgi nuqta qabul qiladi Kaigi birlashtirishdan oldin amalga oshirilgan UI. Tez ishga tushirish buyruqi faolga qarshi vaqtincha xona yaratadi . Torii oxirgi nuqta va qo'ng'iroq identifikatori, qo'shish buyruq bilan qisqartma bosib chiqaradi va SoraNet koʻkrakning taʼkidlashi:
+Boshlaning `iroha app kaigi` CLI agar siz tekshirishni istasangiz Torii oxirgi nuqta qabul qiladi Kaigi birlashtirishdan oldin amalga oshirilgan UI. Tez ishga tushirish qo'mondoni konfiguratsiya qilingan tugma nuqtaga qarshi xona yaratadi va uning qo'ng'iroq identifikatorini bosib chiqaradi va metadatalarni birlashtiradi:
 
 ```bash
-iroha kaigi quickstart --auto-join-host --summary-out kaigi-summary.json
+iroha app kaigi quickstart \
+  --domain kaigi.universal \
+  --summary-out kaigi-summary.json
 ```
 
 Skriptli oqimlar uchun xonaning hayot davrini aniq boshqarish:
 
 ```bash
-iroha kaigi create \
-  --domain streaming \
+iroha app kaigi create \
+  --domain kaigi.universal \
   --call-name daily \
   --host <i105-account-id> \
   --privacy-mode transparent \
   --room-policy authenticated
 
-iroha kaigi join --domain streaming --call-name daily --participant <i105-account-id>
-iroha kaigi leave --domain streaming --call-name daily --participant <i105-account-id>
+iroha app kaigi join \
+  --domain kaigi.universal \
+  --call-name daily \
+  --participant <i105-account-id>
 
-iroha kaigi record-usage \
-  --domain streaming \
+iroha app kaigi leave \
+  --domain kaigi.universal \
+  --call-name daily \
+  --participant <i105-account-id>
+
+iroha app kaigi record-usage \
+  --domain kaigi.universal \
   --call-name daily \
   --duration-ms 120000 \
   --billed-gas 1500
 
-iroha kaigi end --domain streaming --call-name daily
+iroha app kaigi end --domain kaigi.universal --call-name daily
 ```
 
 Foydalanish `--room-policy public` relaylar tomoshabinlar uchun chiptalarsiz ko'rsatilishi mumkin bo'lgan xonalar uchun yoki `--room-policy authenticated` Chiqishlar tomoshabinni tasdiqlashi kerak bo'lganda. `--privacy-mode zk-roster-v1` faqat tarmoqning Kaigi ro'yxat va foydalanishni tekshirish kalitlari konfiguratsiya qilingan; boshqacha tarzda qo'shiqlar, varaqlar; va shaxsiy foydalanish yozuvlari deterministik tekshiruvda muvaffaqiyatsiz tugadi.
 
-### JavaScript demo bilan sinov o'tkazish {#testing-with-the-javascript-demo}
+### JavaScript Integratsiya {#javascript-integration}
 
-[soramitsu/iroha-demo-javascript](https://github.com/soramitsu/iroha-demo-javascript) dasturiy ta'minotdan foydalanib, oxir-oqibat portfelni sinab ko'ring. Demo elektron va Vue dasturidir, u mahalliy `@iroha/iroha-js` bog'lash orqali to'g'ridan-to'g'ri Torii bilan gaplashadi va brauzerda tug'ilgan bir-bir media uchun `/kaigi` yo'nalishini o'z ichiga oladi.
+Joriy [Iroha JavaScript namoyishi](https://github.com/soramitsu/iroha-demo-javascript) shaffof, tasdiqlangan bir-bir uchrashuv profilini amalga oshiradi. Bu protokolning `zk-roster-v1` dalil oqimini oshkor qilmaydi. Uning rendereri WebRTC takliflari va javoblarini yaratadi, imtiyozli ko'prik esa mahalliy [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js) checkoutdan foydalanib, sozlash, imzolash, taqdim etish va yakunlangan Kaigi bitimlarni kutish uchun foydalanadi. .
 
-Iroha manbai omboridan [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js) bilan demo-ni ishlating. Demo pinlari SDK dan `file:../iroha/javascript/iroha_js` gacha bo'ladi, shuning uchun ikkala checkout ushbu singil layotida saqlang:
+Koʻring [Oʻrnatilgan Kaigi a JavaScript Ilova](/uz/guide/tutorials/kaigi.md) to'g'ri yo'nalish tasdiqlanishi, taklif shakli, ko'prik chegaralari va joriy demo sinov buyruqlari uchun.
 
-```bash
-mkdir iroha-wallet-workspace
-cd iroha-wallet-workspace
-git clone https://github.com/hyperledger-iroha/iroha.git
-git clone https://github.com/soramitsu/iroha-demo-javascript.git
-
-cd iroha/javascript/iroha_js
-npm install
-npm run build:native
-npm run build:dist
-
-cd ../../../iroha-demo-javascript
-npm install
-npm run dev
-```
-
-Node.js 20 yoki undan yangi va Rust asbob-uskunalar zanjiridan foydalanib, mahalliy `iroha_js_host` moduli qurilishi mumkin. SDK ning manbasini o'zgartirganidan so'ng qarindoshlari Iroha kassasida qayta tiklang; toza paket layoutida `npm run build:native` uchun zarur bo'lgan yuk ish maydonlari mavjud emas.
-
-Qo'riqlanadigan sinov uchun demo Kaigi qobiliyatiga ega bo'lgan Torii oxirgi nuqtaga ko'rsatilgan:
-
-1. SORA/Kaigi dasturiy ta'minotni ko'tarib turadigan APIs nishonchasi bilan Iroha nodni ishga tushiring yoki kerakli Kaigi yuzalarini ochib beradigan ommaviy oxirgi nuqtadan foydalaning.
-2. Boshlang'ichligini tekshiring `/health`, so'ngra jonli yo'nalish yuzasini tekshiring: `/openapi` yoki `/openapi.json`. Ba'zi ishga tushirishlar ham `/v1/health`, lekin `/health` bu o'ynaydigan hayot tarzini tekshirishdir.
-3. TAIRA uchun jonli uchrashuvdan oldin relay telemetriya yo'nalishlarini tekshirib ko'ring:
-
-   ```bash
-   TAIRA=https://taira.sora.org
-   curl -fsS "$TAIRA/health"
-   curl -fsS "$TAIRA/v1/kaigi/relays"
-   curl -fsS "$TAIRA/v1/kaigi/relays/health"
-   ```
-
-Ushbu tekshirishlar Torii va Kaigi relay telemetriyasiga erishish mumkinligini isbotlaydi. Ular uchrashuvni yaratmaydi; `CreateKaigi` va `JoinKaigi` hali ham mablag' bilan ta'minlangan qopchiqlarga va imzolangan tranzaksiyalarni taqdim etish kerak.
-4. Demo-ni oching, sozlamalarga boring, Torii URL ni o'rnating va ilova ID zanjirini va tarmoq prefiksini oxirgi nuqtadan yuklasin.
-5. Demo-da ikkita mahalliy hamyon yarating yoki tiklang. Uy egasi va mehmon alohida hamyon holatiga ega bo'lishi uchun alohida dastur oynasidan, profillaridan yoki mashinalardan foydalaning.
-
-Kaigi UI ni sinash uchun:
-
-1. Uy egalari oynasida Kaigi oching, uchrashuvni boshlashni tanlang, mavzuni o'rnating va xususiy taklif yoki shaffof taklifni tanlang.
-2. Kamera va mikrofonni yoqishni tanlang, shunda WebRTC mahalliy mediaga ega bo'ladi.
-3. O'tirish bog'ini yaratishni tanlang. To'g'ridan-to'g'ri pulka `CreateKaigi` taqdim etadi; ilova keyinchalik `iroha://kaigi/join?call=...&secret=...` taklifini va `#/kaigi?...` qaytish yo'lini ko'rsatadi.
-4. Uy egasi oynasini ochib qo'ying va taklifni mehmon bilan bo'ling.
-5. Mehmonlar oynasida taklifni oching yoki uni Qo'shilish yig'ilishiga qo'ying, mahalliy ommaviy axborot vositalarini yoqing va Qo'shilish yig'ilishini tanlang. To'g'ridan-to'g'ri bog'cha Torii dan shifrlangan mehmon taklifini olib keladi va `JoinKaigi` ni shifrlangan javob metadatalari bilan taqdim etadi.
-6. Uy egasi birinchi javobni avtomatik ravishda Kaigi qo'ng'iroq signallarini uzatish yoki ovoz berish orqali qo'llashi kerak. Ikkala darcha ham bog'langan media va yangilangan aloqa ma'lumotlarini ko'rsatishi kerak.
-7. Sessiyani uyushtiruvchidan tugating yoki xuddi shu qo'ng'iroq uchun CLI `iroha kaigi end` buyruqidan foydalaning ID.
-
-Xususiy Kaigi talablar himoyalangan XOR xususiy kirish punktining to'lovini to'lash uchun. agar demo Kaigi talablar himoyalangan XOR, ilova ichida o'z-o'zini himoya qilish qo'llanmasini ishlating va yaratish yoki qo'shilish harakatini yana sinab ko'ring. Agar dalillarni yaratish, xususiy mablag' bilan ta'minlash yoki jonli signalizatsiya mavjud bo'lmasa, demo shaffof / qo'llanma oqimiga qaytishi mumkin. Bunday holda, Advanced signalni oching, xom taklif yoki javob paketini nusxa oling va uni boshqa darchaga qo'ying.
-
-Demo repo-da avtomatik tekshiruvlar uchun quyidagilarni bosing:
-
-```bash
-npm test -- tests/kaigiView.spec.ts tests/preloadKaigiBridge.spec.ts
-npm run e2e:ui
-npm run verify
-```
-
-Tanlangan Vitest suitelari Kaigi uchrashuv bog'larini yaratish, kompakt takliflarni yuklash, xususiy yaratish / qo'shilish / tugash ko'prik qo'ng'iroqlari, o'z-o'zini himoya qilish iltimoslari, qo'ldan to'sqinlik qilish va javoblar so'rovini qamrab oladi. UI tutun testi ish stoli va mobil hajmdagi ko'rish portlarida `/kaigi` yo'lini o'z ichiga oladi. Ikki qopchiq o'rtasidagi jonli ommaviy axborot vositalari hali ham ikki darchali qo'llanma sinovga muhtoj, chunki brauzer kamera/mikrofon huquqlari va tengdoshlari media oqimlari atrof muhitga mos.
-
-Namuna integratsiya kodini ko'rish uchun [Mashnatda Kaigi qo'shilgan JavaScript App](/uz/guide/tutorials/kaigi.md).
-
-## Davlat holati va ma'lumotlari {#status-and-metrics}
+## Holat va metrikalar {#status-and-metrics}
 
 Status va oʻlchovlar oxirgi nuqtalari dastlabki ish stoli boʻladi:
 
-- `/status` yuqori darajadagi tengdoshlar, bloklar, navbat va konsensus maydonlarini ochadi
+- `/status` yuqori darajadagi tugunlar, bloklar, navbat va konsensus maydonlarini ochadi
 - `/metrics` Prometheus hisoblagichlari, o'lchovchilari va histogrammalarini aniqlaydi.
 
-Nexus qo'llab-quvvatlangan nodlarda holat chiqishi yo'l va ma'lumotlar maydonidan xabardor bo'lgan qismlarni ham o'z ichiga oladi. `nexus.enabled = false`da ushbu qismlar qoldiriladi.
+Nexus qo'llab-quvvatlangan nodlarda holat chiqishi yo'l va ma’lumotlar makonidan xabardor bo'lgan qismlarni ham o'z ichiga oladi. `nexus.enabled = false`da ushbu qismlar qoldiriladi.
 
-## JSON vs. Norito {#json-vs-norito}
+## JSON va Norito {#json-vs-norito}
 
 Bir nechta operator oxirgi nuqtalari qaytadi Norito Dastlabki sifatida. JSON, joʻnatish:
 
@@ -429,16 +404,15 @@ Bu ayniqsa quyidagilar uchun foydali:
 
 - `/v1/sumeragi/status`
 - `/v1/sumeragi/qc`
-- `/v1/sumeragi/commit_qc/{hash}`
 
 Oxirgi nuqta Norito tilida to'g'ridan-to'g'ri qabul qilganda yoki qaytarib berganda, `application/x-norito` ni tarkib turi yoki `Accept` ustun qiymat sifatida ishlating. Transport tafsilotlari uchun [Norito](/uz/reference/norito.md#torii-and-norito-rpc) ko'ring.
 
 ## Telemetriya profillari {#telemetry-profiles}
 
-Oxirgi nuqta ko'rinishi nodning `telemetry.profile` sozlamalariga bog'liq. Hozirgi konfiguratsiya beshta profil darajasiga ega:
+Oxirgi nuqta ko'rinishi nodning `telemetry.profile` sozlamalariga bog'liq. Joriy konfiguratsiya besh profil darajasini aniqlaydi:
 
 |Profil |`/status` |`/metrics` |Ishlab chiquvchilar yoʻllari |
-| --- | --- | --- | --- |
+| ----------- | --------- | ---------- | ---------------- |
 |`disabled` |yoʻq |yoʻq |yoʻq |
 |`operator` |Ha , shunday .|yoʻq |yoʻq |
 |`extended` |Ha , shunday .|Ha , shunday .|yoʻq |
@@ -450,10 +424,16 @@ Oxirgi nuqta ko'rinishi nodning `telemetry.profile` sozlamalariga bog'liq. Hozir
 `iroha` CLI allaqachon ushbu oxirgi nuqtalarning ko'pini o'z ichiga oladi:
 
 ```bash
-iroha --config ./localnet/client.toml --output-format text ops sumeragi status
-iroha --config ./localnet/client.toml --output-format text ops sumeragi phases
-iroha --config ./localnet/client.toml ops sumeragi params
-iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetry
+export IROHA_OPERATOR_KEY_FILE=/run/secrets/iroha/operator.key
+
+iroha --config ./localnet/client.toml --operator-private-key-file "$IROHA_OPERATOR_KEY_FILE" \
+  --output-format text ops sumeragi status
+iroha --config ./localnet/client.toml --operator-private-key-file "$IROHA_OPERATOR_KEY_FILE" \
+  --output-format text ops sumeragi diagnostics
+iroha --config ./localnet/client.toml --operator-private-key-file "$IROHA_OPERATOR_KEY_FILE" \
+  ops sumeragi params
+iroha --config ./localnet/client.toml --operator-private-key-file "$IROHA_OPERATOR_KEY_FILE" \
+  --output-format text ops sumeragi evidence count
 ```
 
 ## Yuqori yo'nalishdagi referentlar {#upstream-references}

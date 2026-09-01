@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: 71258f4da9afcd94afce2fc2a53ce43540d8f67054ea789f0b2d105daba26006
+translation_source_hash: 4979ab2c52eba4040d7f003f3da73dbc333fa7e047b0259816d0d34f97377749
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -20,4 +20,4 @@ Iroha ماخذ مخزن میں SDK ترکیبیں اور ٹیسٹ سویٹس ش�
 
 ## Android {#android}
 
-نئے Android کام کے لئے، Kotlin-پہلے `core-jvm` ، `client-android`، اور `offline-wallet-android` ماڈیولز کا استعمال کریں جو [Kotlin، Android، اور جاوا ](/ur/guide/tutorials/kotlin-java.md) میں بیان کیے گئے ہیں۔ Kotlin SDK Android صارفین کے لئے قانونی نقطہ آغاز ہے۔
+نئے Android کام کے لیے [`Kotlin، Android، اور Java`](/ur/guide/tutorials/kotlin-java.md) میں بیان کردہ Kotlin-first `core-jvm`، `client-android` اور `offline-wallet-android` ماڈیولز استعمال کریں۔ Android صارفین کے لیے Kotlin SDK کینونیکل نقطۂ آغاز ہے۔

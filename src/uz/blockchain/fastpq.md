@@ -1,82 +1,81 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/fastpq.md
-translation_source_hash: 55b57e6aeeef2aefa1c8359d9b9487029b106eaebed12a58268b61dc583e97f6
+translation_source_hash: d8dd61390f5df3dae09b70399e04e8f71716a912ef5dea9010feaf60573ed261
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # FastPQ {#fastpq}
 
-FastPQ bo ' lmoqda Iroha Bu ... STARK tanlangan ijro ta'sirlari uchun isbot yo'li. Bu odatdagi tranzaksiyalarni bajarish yoki konsensusni almashtirmaydi. Transaksiyalar hali ham o ' tmoqda ISI, IVM, va Sumeragi odatdagidek; FastPQ deterministik ijro guvohlarini iste'mol qiladi va qo'llab-quvvatlanadigan effektlarni dalil partiyalariga aylantiradi.
+FastPQ — tanlangan bajarish ta’sirlari uchun Iroha-ning STARK isbot yo‘li. U odatiy tranzaksiya bajarilishi yoki konsensusning o‘rnini bosmaydi. Tranzaksiyalar avvalgidek ISI, IVM va Sumeragi orqali bajariladi; FastPQ deterministik bajarish guvohini qabul qilib, qo‘llab-quvvatlanadigan ta’sirlarni isbot paketlariga aylantiradi.
 
-Hozirgi uy egasi integratsiyasi uchta asosiy yoʻlga ega:
+Joriy mezbon integratsiyasida uchta asosiy yo‘l bor:
 
-- blokni amalga oshirish paytida qayd etilgan shaffof raqamli aktiv o'tkazmalari
-- Nexus ta'minlangan yo'nalishdagi relaylar AXT ko'rsatkich zarfida FastPQ bog'lovchi
-- SCCP ochiq tekshirish qadoqchasida FastPQ isbotni o'rab oladigan shaffof xabarlarni tasdiqlovchi yordamchilar
+- blok bajarilishida qayd etilgan oshkora raqamli aktiv o‘tkazmalari;
+- AXT isbot konverti FastPQ bog‘lanishini olib yuradigan, Nexus tekshirgan yo‘lak uzatkichlari;
+- FastPQ isbotini ochiq tekshirish konvertiga joylaydigan SCCP oshkora xabar isboti yordamchilari.
 
-## Shohidlik yo'lini ko'chirish {#transfer-witness-path}
+## O‘tkazma guvohi yo‘li {#transfer-witness-path}
 
-Ochiq raqamli o'tkazuvlar ko'rsatma muvozanatni mutatsiya qilganda tuzilgan o'tkazish transkripti yaratadi. Transkript qayd etadi:
+Ochiq raqamli o‘tkazmalar ko‘rsatma balanslarni o‘zgartirganda tuzilgan o‘tkazma transkriptini yaratadi. Transkript quyidagilarni qayd etadi:
 
-- manba hisobvarag'i, maqsadli hisobvaraq, aktivni aniqlash va miqdori
-- O'tkazishdan oldin va keyin jo'natgich va qabul qiluvchining balanslari
-- partiya hash sifatida ishlatiladigan tranzaksiya kirish nuqtasi
-- taqdim etuvchi hisob raqamidan olingan vakolat to'g'risida ma'lumot
-- Single-delta transkripsiyalari uchun Poseidon digest
+- manba hisobi, manzil hisobi, aktiv ta’rifi va miqdor;
+- o‘tkazmadan oldingi va keyingi jo‘natuvchi hamda oluvchi balanslari;
+- paket xeshi sifatida ishlatiladigan tranzaksiya kirish nuqtasi xeshi;
+- yuboruvchi hisobdan hosil qilingan vakolat dayjesti;
+- bitta delta transkriptlari uchun Poseidon dayjesti
 
-Kataklarni o'tkazishda bir nechta deltalardan iborat transkript ishlatiladi. O'sha holda, bitta deltaga ega bo'lgan "Poseidon" digesti yo'q.
+Paketli o‘tkazmalar bir nechta deltali bitta transkriptdan foydalanadi. Bunday holatda bitta delta uchun Poseidon dayjesti bo‘lmaydi.
 
-Blokni yakunlash paytida Iroha ushbu transkripsiyalarni kirish nuqtasi hashidan guruhlaydi. Ijro guvohligi keyinchalik dastlabki transkripsiya to'plamlarini ham, prover uchun tayyorlangan FastPQ o'tish partiyalarini ham olib keladi.
+Blokni yakunlashda Iroha bu transkriptlarni kirish nuqtasi xeshi bo‘yicha guruhlaydi. Bajarish guvohi dastlabki transkript paketlari bilan birga isbotlovchi uchun tayyorlangan FastPQ o‘tish paketlarini ham olib yuradi.
 
-Har bir transfer delta ikki oʻtish satrlariga aylanadi:
+Har bir o‘tkazma deltasi ikkita o‘tish satriga aylanadi:
 
-|Qoʻshish |Asosiy shakli|Oldingi qiymat |Qiymatdan keyin |
+|Satr |Kalit shakli |Oldingi qiymat |Keyingi qiymat |
 | --------------- | ------------------------------------------------ | ----------------------- | ---------------------- |
-|Yo ' lovchi debeti |`asset/<asset-definition>/<source-account>` |oldingi jo ' natuvchi bilansi |jo ' natuvchining balansidan keyin |
-|Qabul qiluvchi kreditlari |`asset/<asset-definition>/<destination-account>` |oluvchi balansidan oldin |oluvchi balansidan keyin |
+|Jo‘natuvchi debeti |`asset/<asset-definition>/<source-account>` |jo‘natuvchining oldingi balansi |jo‘natuvchining keyingi balansi |
+|Oluvchi krediti |`asset/<asset-definition>/<destination-account>` |oluvchining oldingi balansi |oluvchining keyingi balansi |
 
-Raqamli qiymatlar to'liq sonli guvoh birliklariga normalashtiriladi. FastPQ partiyasi uchun qiymat tanlangan o'nlik ko'rsatkichda salbiy bo'lmagan `u64` sifatida ifoda etilishi mumkin bo'lmasa rad etiladi.
+Raqamli qiymatlar butun sonli guvoh birliklariga me’yorlashtiriladi. Tanlangan o‘nlik aniqlikda qiymatni manfiy bo‘lmagan `u64` sifatida ifodalab bo‘lmasa, u FastPQ paketiga kiritilmaydi.
 
-## Davlat mablag'lari {#public-inputs}
+## Ochiq kirishlar {#public-inputs}
 
-Har bir FastPQ o'tish partiyasida blok va ijro kontekstiga dalilni bog'laydigan ommaviy kirish ma'lumotlari mavjud:
+Har bir FastPQ o‘tish paketi isbotni blok va bajarish kontekstiga bog‘laydigan ochiq kirishlarni olib yuradi:
 
-|Kiritish |Maʼnosi |
+|Kirish |Ma’nosi |
 | ------------- | --------------------------------------------------------------- |
-|`dsid` |Maʼlumotlar maydonining identifikatori kichik baytlar sifatida kodlangan |
-|`slot` |Blok yaratish vaqti nanosekundlarga aylantiriladi |
-|`old_root` |Oʻlim guvohlaridan kelib chiqqan ota-ona davlatining ildizlari |
-|`new_root` |Hukm qilish guvohlaridan kelib chiqqan post-davlat ildizlari |
-|`perm_root` |Poseidonning faol rolga ruxsat berish bilan bogʻliq majburiyatlari |
-|`tx_set_hash` |Tashkilot va vaqtni qoʻzgʻatadigan kirish nuqtasi hashlari ustidan hash |
+|`dsid` |Kichik bayt tartibida kodlangan ma’lumotlar makoni identifikatori |
+|`slot` |Nanosekundlarga aylantirilgan blok yaratilish vaqti |
+|`old_root` |Bajarish guvohidan hosil qilingan ota holat ildizi |
+|`new_root` |Bajarish guvohidan hosil qilingan keyingi holat ildizi |
+|`perm_root` |Faol rol ruxsatlari ustidagi Poseidon majburiyati |
+|`tx_set_hash` |Tartiblangan tranzaksiya va vaqt qo‘zg‘atuvchisi kirish nuqtasi xeshlari ustidagi xesh |
 
-Uy egasi `fastpq-lane-balanced` ni ushbu partiyalar uchun qo'yilgan kanonik parametr sifatida ishlatadi.
+Mezbon bu paketlar uchun kanonik parametrlar majmuasi sifatida `fastpq-lane-balanced` dan foydalanadi.
 
-## Matematikaviy model {#mathematical-model}
+## Matematik model {#mathematical-model}
 
-Ushbu bo'limda joriy Rust prover va verificator tomonidan amalga oshirilgan aritmetika tasvirlanadi. Quyida keltirilgan barcha maydon operatsiyalari Goldilocks boshlangʻich maydoni ustida:
+Bu bo‘limda joriy Rust isbotlovchisi va tekshiruvchisi amalga oshiradigan arifmetika tavsiflanadi. Quyidagi barcha maydon amallari Goldilocks tub maydonida bajariladi:
 
 $$
 F = \mathbb{F}_p,\qquad p = 2^{64} - 2^{32} + 1
 $$
 
-FastPQ dala majburiyatlari uchun `F` o'rniga Poseidon2dan foydalanadi. Spongning kengligi `t = 3`, darajasi `r = 2` va quvvati `1` bo'ladi. Hash 2-darajali bloklarda maydon elementlarini o'z ichiga oladi va yakuniy permutatsiya qilishdan oldin bitta maydon elementi `1` qo'shadi:
+FastPQ maydon majburiyatlari uchun `F` ustida Poseidon2-dan foydalanadi. Gubka kengligi `t = 3`, tezligi `r = 2`, sig‘imi esa `1`. Xesh maydon elementlarini tezligi 2 bo‘lgan bloklarda qabul qiladi va yakuniy permutatsiyadan avval bitta `1` maydon elementini qo‘shadi:
 
 $$
 H_F(x_0,\ldots,x_{m-1}) =
 \operatorname{Poseidon2}_F(x_0,\ldots,x_{m-1},1)
 $$
 
-Byte simlari 7 bytli kichik endiklar bilan to'planadi, shuning uchun har bir a'zo `p` dan kamroq bo'ladi:
+Bayt satrlari 7 baytli, kichik bayt tartibidagi bo‘laklarga joylanadi; shu sabab har bir bo‘lak `p` dan qat’iy kichik bo‘ladi:
 
 $$
 \operatorname{pack}(b)_j =
 \sum_{i=0}^{6} b_{7j+i}2^{8i},\qquad 0 \leq \operatorname{pack}(b)_j < p
 $$
 
-Domenlar boʻyicha ajratilgan maydon hashlari quyidagicha ifodalanadi:
+Domen bo‘yicha ajratilgan maydon xeshlari quyidagicha ifodalanadi:
 
 $$
 H_D(m) =
@@ -86,18 +85,18 @@ H_F(
 )
 $$
 
-Byte-domain digestlaridan boshlanadigan hashlar uchun FastPQ birinchi sakkiz kichik indian byetlarini maydonga xaritalaydi:
+Bayt domeni dayjestidan boshlanadigan xeshlar uchun FastPQ dastlabki sakkizta kichik bayt tartibidagi baytni maydonga akslantiradi:
 
 $$
 \operatorname{seed}(D)=
 \operatorname{le64}(\operatorname{Hash}(D)[0..8])\bmod p
 $$
 
-Bu yerda `Hash` Iroha ning `iroha_crypto::Hash::new` 32-baytli Blake2bVar digestini anglatadi, agar formulada Poseidon2 yoki SHA-256 nomi aniq berilmagan bo'lsa.
+Formulada Poseidon2 yoki SHA-256 aniq ko‘rsatilmagan bo‘lsa, bu yerda `Hash` Iroha-ning `iroha_crypto::Hash::new` funksiyasi yaratadigan 32 baytli Blake2bVar dayjestini anglatadi.
 
 ### Maydon aritmetikasi {#field-arithmetic}
 
-Rust kodi maydon elementlarini `[0,p)`dagi kanonik `u64` qiymatlari sifatida ifodalaydi. Qo'shish va kamaytirish quyidagilardir:
+Rust kodi maydon elementlarini `[0,p)` oralig‘idagi kanonik `u64` qiymatlari sifatida ifodalaydi. Qo‘shish va ayirish quyidagicha:
 
 $$
 a +_F b = (a+b)\bmod p
@@ -107,13 +106,13 @@ $$
 a -_F b = (a-b)\bmod p
 $$
 
-Koʻpaytirish birinchi navbatda 128 bitli mahsulotni hisoblaydi:
+Ko‘paytirish avval 128 bitli ko‘paytmani hisoblaydi:
 
 $$
 a\cdot b = \operatorname{lo} + 2^{64}\operatorname{hi}
 $$
 
-Goldilocks kamaytirish keyin kimlik ishlatiladi:
+Keyin Goldilocks qisqartirishi quyidagi tenglikdan foydalanadi:
 
 $$
 2^{64}\equiv2^{32}-1\pmod p
@@ -125,7 +124,7 @@ $$
 \operatorname{hi}=\operatorname{hi}_{lo}+2^{32}\operatorname{hi}_{hi}
 $$
 
-so'ngra reduktor hisoblaydi:
+unda qisqartirgich quyidagini hisoblaydi:
 
 $$
 \operatorname{lo}
@@ -135,13 +134,13 @@ $$
 \pmod p
 $$
 
-Amalga oshirish sharti bilan `p` ni qo'shadi yoki chiqarib tashlaydi. Natija kanonik bo'lishigacha. Imzolangan to'liq sonlar, masalan balans deltalari quyidagilardan iborat bo'ladi:
+Natija kanonik bo‘lguncha amalga oshirish shartli ravishda `p` ni qo‘shadi yoki ayiradi. Balans deltalari kabi ishorali butun sonlar quyidagicha joylanadi:
 
 $$
 \operatorname{field}(x)=x\bmod p,\qquad 0\leq\operatorname{field}(x)<p
 $$
 
-### Poseidon2 Permutatsiya {#poseidon2-permutation}
+### Poseidon2 permutatsiyasi {#poseidon2-permutation}
 
 Poseidon2 permutatsiya holati quyidagicha:
 
@@ -149,13 +148,13 @@ $$
 \mathbf{x}=(x_0,x_1,x_2)\in F^3
 $$
 
-Uning " S-box " nomi:
+Uning S-box funksiyasi:
 
 $$
 S(x)=x^5
 $$
 
-FastPQ to'rtta to'liq turdan, ellik yettita qisman turdan, so'ngra yana to'rt nafar to'la turdan foydalanadi. `c_r = (c_{r,0}, c_{r,1}, c_{r,2})` davraviy konstantalarga ega bo'lgan to'liq round:
+FastPQ to‘rtta to‘liq raund, ellik yettita qisman raund va yana to‘rtta to‘liq raunddan foydalanadi. `c_r = (c_{r,0}, c_{r,1}, c_{r,2})` raund konstantalariga ega to‘liq raund quyidagicha:
 
 $$
 \mathbf{x}' =
@@ -167,7 +166,7 @@ S(x_2+c_{r,2})
 \end{bmatrix}
 $$
 
-Ba'zi qismlar:
+Qisman raund quyidagicha:
 
 $$
 \mathbf{x}' =
@@ -179,7 +178,7 @@ x_2+c_{r,2}
 \end{bmatrix}
 $$
 
-Barcha qo'shish va ko'paytirishlar `F`. Kanonik MDS matrisi quyidagilardan iborat:
+Barcha qo‘shish va ko‘paytirish amallari `F` da bajariladi. Kanonik MDS matritsasi quyidagicha:
 
 $$
 M=
@@ -190,18 +189,18 @@ M=
 \end{bmatrix}
 $$
 
-Hudud hashsizligi nol holatdan boshlanadi. Har bir to'liq stavka-2 blok uchun `(u,v)`:
+Maydon xeshi nol holatdan boshlanadi. Har bir to‘liq tezligi 2 bo‘lgan `(u,v)` blok uchun:
 
 $$
 (x_0,x_1,x_2)\leftarrow
 \operatorname{Poseidon2}(x_0+u,x_1+v,x_2)
 $$
 
-So'nggi blokda `1` so'nggi permutatsiyadan oldin to'ldirish elementi. `x_0`.
+Yakuniy blok oxirgi permutatsiyadan avval `1` to‘ldirish elementini qo‘shadi. Natija `x_0` dir.
 
-### Jamoatga kiritiladigan ma'lumotlar {#public-input-binding}
+### Ochiq kirishlarni bog‘lash {#public-input-binding}
 
-Uy egasi `u64` qiymatini 16-bayt maydonining birinchi sakkiz kichik bytilariga yozib, ma'lumotlar maydoni identifikatorini kodlaydi:
+Mezbon ma’lumotlar makoni identifikatorini `u64` qiymatini 16 baytli maydonning dastlabki sakkizta little-endian baytiga yozib kodlaydi:
 
 $$
 \operatorname{dsid\_bytes}(d)[0..8]=\operatorname{le64}(d),
@@ -216,7 +215,7 @@ $$
 (\operatorname{creation\_time\_ms},1{,}000{,}000)
 $$
 
-Transaction-set hash toʻgʻri yoʻlga qoʻyilgan kirish nuqtasi hashlariga nisbatan byte-domin hash hisoblanadi:
+Tranzaksiyalar to‘plami xeshi tartiblangan kirish nuqtasi xeshlari ustidagi bayt domeni xeshidir:
 
 $$
 \operatorname{tx\_set\_hash} =
@@ -225,7 +224,7 @@ $$
 )
 $$
 
-qaerda `h_i` Transaksiya va vaqtni qo'zg'atadigan kirish nuqtasi hashlari tarqatilgan. IO, agar `perm_root` yoki `tx_set_hash` barchasi nol bo'lsa, prover fallback qiymatlarini to'ldiradi:
+Bu yerda `h_i` — tartiblangan tranzaksiya va vaqt qo‘zg‘atuvchisi kirish nuqtasi xeshlari. Isbotning ochiq IO-sida `perm_root` yoki `tx_set_hash` butunlay nollardan iborat bo‘lsa, isbotlovchi zaxira qiymatlarni kiritadi:
 
 $$
 \operatorname{perm\_root} =
@@ -241,9 +240,9 @@ $$
 \operatorname{Hash}(\texttt{fastpq:v1:tx\_set}\|\operatorname{ordering\_hash})
 $$
 
-### Raqamli normalizatsiya {#numeric-normalization}
+### Raqamli me’yorlashtirish {#numeric-normalization}
 
-Har bir uzatish delta uchun maqsadli o'nlik ko'rsatkich miqdori bo'ylab eng yuqori kesilgan ko'rsatkichi va ikkala muvozanat sur'atlari:
+Har bir o‘tkazma deltasi uchun maqsadli o‘nlik shkala miqdor va ikkala balans tasviridagi eng katta qisqartirilgan shkaladir:
 
 $$
 s =
@@ -256,17 +255,17 @@ s =
 )
 $$
 
-A `Numeric` mantissa bilan qiymat `m` va hajmi `q` faqat `m >= 0` va `q <= s`. Uning FastPQ guvohning qiymati quyidagicha:
+Mantissasi `m` va shkalasi `q` bo‘lgan `Numeric` qiymat faqat `m >= 0` va `q <= s` bo‘lsa qabul qilinadi. Uning FastPQ guvohi qiymati quyidagicha:
 
 $$
 \operatorname{norm}_s(m,q)=m\cdot10^{s-q}
 $$
 
-Normallashtirilgan natija `u64` ga mos bo'lishi kerak.
+Me’yorlashtirilgan natija `u64` ga sig‘ishi kerak.
 
-### Kanonik tartibga solish {#canonical-ordering}
+### Kanonik tartiblash {#canonical-ordering}
 
-Ko'rsatkichlar qurilishidan oldin partiya o'tish kalitlari, ishlash darajasi va asl qo'shish indekslari bo'yicha tartiblanadi:
+Izni yaratishdan avval paket o‘tish kaliti, amal darajasi va dastlabki kiritish indeksi bo‘yicha tartiblanadi:
 
 $$
 r(\operatorname{Transfer})=0,\quad
@@ -277,7 +276,7 @@ r(\operatorname{RoleRevoke})=4,\quad
 r(\operatorname{MetaSet})=5
 $$
 
-Sortlangan o'tishlarning `fastpq:v1:ordering` domeni va Norito kodlash usuli bo'yicha Poseidon2 maydonining hashini tashkil etish majburiyati:
+Tartiblash majburiyati `fastpq:v1:ordering` domeni va tartiblangan o‘tishlarning Norito kodlanishi ustidagi Poseidon2 maydon xeshidir:
 
 $$
 \operatorname{ordering\_hash} =
@@ -286,11 +285,11 @@ H_F(
 )
 $$
 
-qaerda `P` 7 baytli paket bo'ladi, `E` bo ' lmoqda Norito kodlash, `D_o` bo ' lmoqda `fastpq:v1:ordering`, va `T*` to'g'rilashtirilgan o'tish ro'yxatidir.
+Bu yerda `P` — 7 baytli joylash, `E` — Norito kodlanishi, `D_o` — `fastpq:v1:ordering`, `T*` esa tartiblangan o‘tishlar ro‘yxati.
 
 ### Oʻtkazish tenglamalari {#transfer-equations}
 
-O'tkazish summasi `a`, jo'natgich saldi `f` va qabul qiluvchining saldi `t` uchun, izni yaratishdan oldin FastPQ normallashtirilgan guvoh qiymatlarini tasdiqlaydi:
+O‘tkazma miqdori `a`, jo‘natuvchi balansi `f` va oluvchi balansi `t` bo‘lsa, FastPQ izni yaratishdan avval me’yorlashtirilgan guvoh qiymatlarini tekshiradi:
 
 $$
 f_0 \geq a
@@ -304,7 +303,7 @@ $$
 t_1 = t_0 + a
 $$
 
-Oʻtish qatorlari keyinchalik kodlanadi:
+Keyin o‘tish satrlari quyidagilarni kodlaydi:
 
 $$
 \Delta_{\text{sender}} = f_1 - f_0 = -a
@@ -314,13 +313,13 @@ $$
 \Delta_{\text{receiver}} = t_1 - t_0 = a
 $$
 
-Ko'rsatkich ichida imzolangan deltalar `F` ga kamaytirilgan:
+Iz ichida ishorali deltalar `F` ga qisqartiriladi:
 
 $$
 \delta_i = (\operatorname{post}_i - \operatorname{pre}_i)\bmod p
 $$
 
-Optativ yagona delta o'tkazib yuborish digesti kodlangan o'tkaziladigan oldindan tasvirni amalga oshiradi:
+Bitta delta uchun ixtiyoriy o‘tkazma dayjesti kodlangan o‘tkazma proobraziga majburiyat hosil qiladi:
 
 $$
 d_{\text{transfer}} =
@@ -329,9 +328,9 @@ E(\text{from})\|E(\text{to})\|E(\text{asset})\|E(a)\|\text{batch\_hash}
 )
 $$
 
-Ko'p delta uzatish transkripsiyalari uchun joriy formatda ushbu yuqori darajadagi tarjima yo'q bo'lishi kerak.
+Ko‘p deltali o‘tkazma transkriptlarida joriy format bu yuqori darajadagi dayjest bo‘lmasligini talab qiladi.
 
-Oʻtkazish transkripsiyalari uchun qabul qiluvchi organni isteʼmol qilish:
+O‘tkazma transkriptlari uchun mezbon vakolati dayjesti quyidagicha:
 
 $$
 d_{\text{authority}} =
@@ -340,13 +339,13 @@ $$
 
 ### Izlar qatorlari {#trace-rows}
 
-Sortlangan o'tish ro'yxatida `n` haqiqiy satrlar bo'lsin.
+Tartiblangan o‘tishlar ro‘yxati `n` ta haqiqiy satrdan iborat bo‘lsin. Iz uzunligi ikkining keyingi darajasi bo‘ladi:
 
 $$
 N = 2^{\lceil\log_2(\max(1,n))\rceil}
 $$
 
-`0..n-1` qatorlari faol; `n..N-1` qatorlari to'ldirish satrlaridir. Har bir haqiqiy qatorda bitta operatsion tanlovchining seti mavjud:
+`0..n-1` satrlar faol, `n..N-1` satrlar esa to‘ldirish satrlaridir. Har bir haqiqiy satrda bitta amal selektori o‘rnatiladi:
 
 $$
 s_{\text{active}} =
@@ -358,13 +357,13 @@ s_{\text{role\_revoke}}+
 s_{\text{meta\_set}}
 $$
 
-Barcha selektor ustunlari Boolean:
+Barcha selektor ustunlari mantiqiy qiymatli:
 
 $$
 s(s-1)=0
 $$
 
-Ruxsatlarni qidirish qatorlari to'g'ri rol berish va roli bekor qilish qatorlaridir:
+Ruxsat qidirish satrlari aynan rol berish va rolni bekor qilish satrlaridir:
 
 $$
 s_{\text{perm}} =
@@ -377,14 +376,14 @@ $$
 \delta_i = \operatorname{value\_new}_{i,0} - \operatorname{value\_old}_{i,0}
 $$
 
-Quruvchi shuningdek , har bir aktiv boʻyicha ishlaydigan deltalarni kuzatadi:
+Quruvchi har bir aktiv bo‘yicha jamlanib boradigan deltalarni ham kuzatadi:
 
 $$
 R_i(a)=R_{i-1}(a)+\delta_i
 \quad\text{for transfer, mint, and burn rows of asset }a
 $$
 
-Faqat "Mint" va "burn" qatorlari ta'minot hisoblagichini yangilaydi:
+Faqat chiqarish va yoqish satrlari taklif hisoblagichini yangilaydi:
 
 $$
 S_i(a)=S_{i-1}(a)+
@@ -394,7 +393,7 @@ S_i(a)=S_{i-1}(a)+
 \end{cases}
 $$
 
-Metadonlar va ma'lumotlar maydonining izlari ustunlari qator materiallashuvidan oldin hosil bo'lgan maydon hashlari:
+Metama’lumot va ma’lumotlar makoni iz ustunlari satrlarni moddiylashtirishdan avval hosil qilingan maydon xeshlaridir:
 
 $$
 \operatorname{metadata\_hash} =
@@ -408,7 +407,7 @@ $$
 \operatorname{dsid\_trace}=H_D(\operatorname{public\_input\_dsid})
 $$
 
-Metadata hash, ma'lumotlar maydonining hash va slotlar yonma-yon iz qatorlarida barqaror:
+Metama’lumot xeshi, ma’lumotlar makoni xeshi va slot qiymati qo‘shni iz satrlarida o‘zgarmaydi:
 
 $$
 \operatorname{metadata\_hash}_i=\operatorname{metadata\_hash}_{i+1}
@@ -422,11 +421,11 @@ $$
 \operatorname{slot}_i=\operatorname{slot}_{i+1}
 $$
 
-### Merkle ustunlarini oʻtkazish {#transfer-merkle-columns}
+### O‘tkazma Merkle ustunlari {#transfer-merkle-columns}
 
-O'tkazib yuborish satrlari 32 darajali kamroq Merkle yo'nalishini o'z ichiga oladi. Agar uy egasi dalil yo'q bo'lsa, prover qator kalitidan deterministik yo'nalishni sintezlaydi, oldindan muvozanatni saqlaydi va satr jo'natgich yoki qabul qiluvchi tomondanmi.
+O‘tkazma satrlari 32 darajali siyrak Merkle yo‘lini o‘z ichiga oladi. Mezbon isboti bo‘lmasa, isbotlovchi satr kaliti, oldingi balans va satr jo‘natuvchi yoki oluvchi tomonga tegishli ekanidan deterministik yo‘l hosil qiladi.
 
-Sintetik yo'nalishlar uchun aromat tuzlari `fastpq:smt:from` jo'natgich qatorlar va `fastpq:smt:to` qabul qiluvchi qatorlar uchun:
+Sintetik yo‘llarda tur tuzi jo‘natuvchi satrlari uchun `fastpq:smt:from`, oluvchi satrlari uchun `fastpq:smt:to` dir:
 
 $$
 K =
@@ -450,7 +449,7 @@ s_\ell =
 )
 $$
 
-Sintetik varaq va ichki nodlar quyidagilardan iborat:
+Sintetik barg va ichki tugunlar quyidagicha:
 
 $$
 L = \operatorname{Hash}(
@@ -468,7 +467,7 @@ N_{\ell+1} =
 )
 $$
 
-Iz bitini `b_l`, aka-uka `s_l`, kirish nodini `x_l` va chiqish nodini `x_{l+1}` har bir darajadagi qayd etadi. Kodning shoxkon konvensiyasi bilan:
+Iz har bir darajada `b_l` biti, `s_l` qardosh tuguni, `x_l` kirish tuguni va `x_{l+1}` chiqish tugunini qayd etadi. Kodning tarmoq tanlash qoidasi bo‘yicha:
 
 $$
 (\operatorname{left}_\ell,\operatorname{right}_\ell)=
@@ -478,16 +477,16 @@ $$
 \end{cases}
 $$
 
-### Ruxsat berish hashlari {#permission-hashes}
+### Ruxsat xeshlari {#permission-hashes}
 
-Roli berish va bekor qilish satrlari ruxsat guvohini hash qilish:
+Rol berish va bekor qilish satrlari ruxsat guvohining xeshini hisoblaydi:
 
 $$
 h_{\text{perm}} =
 H_F(P(\operatorname{role\_id}\|\operatorname{permission\_id}\|\operatorname{epoch}_{le}))
 $$
 
-Qo'shni ruxsatlar jadvali ilovalarni rol baytlari, ruxsat baytlari va davr baytlari bo'yicha ajratadi, so'ngra Poseidon2 Merkle daraxtini yaratadi:
+Mezbon ruxsatlar jadvali yozuvlarni rol baytlari, ruxsat baytlari va davr baytlari bo‘yicha tartiblaydi, so‘ng Poseidon2 Merkle daraxtini yaratadi:
 
 $$
 M_0[j]=h_{\text{perm},j}
@@ -498,11 +497,11 @@ M_{k+1}[j] =
 H_F(\operatorname{seed}(\texttt{fastpq:v1:poseidon\_node}),M_k[2j],M_k[2j+1])
 $$
 
-Bo'sh kenglik darajasi oxirgi elementni ikki marta ko'paytiradi.
+Kengligi toq bo‘lgan darajalar yakuniy elementni takrorlaydi.
 
-### O'z izini yo'qotish {#trace-commitment}
+### Iz majburiyati {#trace-commitment}
 
-Har bir iz ustuni uchun `c`, FastPQ birinchi navbatda iz maydoni bo'ylab ustun qiymatlarini interpollaydi va koeffitsiyent vektorini hash qiladi:
+Har bir `c` iz ustuni uchun FastPQ avval ustun qiymatlarini iz domenida interpolyatsiya qiladi va koeffitsiyentlar vektorining xeshini hisoblaydi:
 
 $$
 C_c =
@@ -512,13 +511,13 @@ H_F(
 )
 $$
 
-Iz ildizlari ustun majburiyatlari ustidan Poseidon2 Merkle ildizidir:
+Iz ildizi ustun majburiyatlari ustidagi Poseidon2 Merkle ildizidir:
 
 $$
 R_{\text{trace}} = \operatorname{MerkleRoot}(C_0,\ldots,C_{m-1})
 $$
 
-Yakuniy izlanish majburiyati domen, parametrlar to'plami, izlanish shakli, ustun o'chirib tashlash va izlanish ildizidagi byt hashdir:
+Yakuniy iz majburiyati domen, parametrlar majmuasi, iz shakli, ustun dayjestlari va iz ildizi ustidagi bayt xeshidir:
 
 $$
 \operatorname{commitment} =
@@ -529,23 +528,23 @@ n\|N\|m\|C_0\|\cdots\|C_{m-1}\|R_{\text{trace}}
 )
 $$
 
-`D_c` bo'lganda `fastpq:v1:trace_commitment`.
+Bu yerda `D_c` — `fastpq:v1:trace_commitment`.
 
 ### AIR tarkibi {#air-composition}
 
-V1 AIR tarkib qiymati qator-lokal qoldiqlarning chiziqli kombinatsiyasi hisoblanadi. Transkript namunalari ikkita qiyinchilikni ko'rsatadi:
+V1 AIR kompozitsiyasi qiymati satrga xos qoldiqlarning chiziqli kombinatsiyasidir. Transkript ikkita sinov qiymatini tanlaydi:
 
 $$
 \alpha_0,\alpha_1 \in F
 $$
 
-Har bir qo'shni satr juftligi uchun `(i,i+1)` prover quyidagilarni hisoblaydi:
+Har bir qo‘shni `(i,i+1)` satr jufti uchun isbotlovchi quyidagini hisoblaydi:
 
 $$
 A_i=\sum_j \alpha_{j\bmod2}\rho_{i,j}
 $$
 
-Qoldiqlar `rho` kod tartibida quyidagicha:
+`rho` qoldiqlari koddagi tartibda quyidagicha:
 
 $$
 \rho=s(s-1)
@@ -569,7 +568,7 @@ $$
 s_{\text{active},i+1}(1-s_{\text{active},i})
 $$
 
-Hisob ustunlari bo'lgan satrlar uchun:
+Raqamli ustunlarga ega satrlar uchun:
 
 $$
 \rho =
@@ -578,7 +577,7 @@ $$
 ((\operatorname{value\_new}_{0}-\operatorname{value\_old}_{0})-\delta)
 $$
 
-Va barchning barqaror kontekst ustunlari uchun:
+Paketning barqaror kontekst ustunlari uchun esa:
 
 $$
 \rho =
@@ -595,11 +594,11 @@ $$
 \operatorname{slot}_i-\operatorname{slot}_{i+1}
 $$
 
-Tekshirishchi `A_i` namuna ko'rib chiqilgan qatorning ochilishlarini qayta hisoblab chiqadi va uni AIR tarkibidagi Merkle ildizida belgilangan tarkibiy qiymatga nisbatan tekshiradi.
+Tekshiruvchi tanlangan satr ochilishlari uchun `A_i` ni qayta hisoblaydi va uni AIR kompozitsiyasi Merkle ildizida majburiyatlangan kompozitsiya qiymati bilan solishtiradi.
 
 ### Qidiruv mahsuloti {#lookup-product}
 
-Ruxsatlarni qidirish akkumulyatorida Fiat-Shamir musobaqasi `gamma` qo'llaniladi. `s_perm` va `perm_hash` ning past darajadagi kengaytma baholari davomida ishlaydigan mahsulot quyidagicha:
+Ruxsat qidirish akkumulyatori Fiat–Shamir sinov qiymati `gamma` dan foydalanadi. `s_perm` va `perm_hash` ning quyi darajali kengaytma baholari ustidagi jamlanib boruvchi ko‘paytma quyidagicha:
 
 $$
 z_0=1
@@ -613,7 +612,7 @@ z_i,& s_{\text{perm},i}=0
 \end{cases}
 $$
 
-Ko'rsatkichlar:
+Isbot quyidagilarni qayd etadi:
 
 $$
 \operatorname{lookup\_grand\_product}=H_F(z_0,z_1,\ldots)
@@ -621,33 +620,33 @@ $$
 
 ### Kichik darajadagi kengaytma {#low-degree-extension}
 
-`omega_T` izlanish domenlari generatorini, `omega_E` baholash domenlari generatorini va `g` konfiguratsiyalangan coset offseti bo'lishi kerak. `v_i` qiymatlariga ega bo'lgan izlanish ustuni uchun interpolatsiya `a_j` koeffitsiyentlarini hosil qiladi:
+`omega_T` iz domeni generatori, `omega_E` baholash domeni generatori va `g` sozlangan koset siljishi bo‘lsin. `v_i` qiymatli iz ustuni uchun interpolyatsiya quyidagi `a_j` koeffitsiyentlarini hosil qiladi:
 
 $$
 f(\omega_T^i)=v_i
 $$
 
-Past darajali kengaytma kosetdagi bir xil polinomni baholaydi:
+Quyi darajali kengaytma ayni polinomni kosetda baholaydi:
 
 $$
 \operatorname{LDE}_f(i)=f(g\cdot\omega_E^i)
 $$
 
-Amalga oshirilishi ko'rsatkichlarni FFT dan oldin coset ofsetning kuchlari bilan ko'paytirish orqali hisoblab chiqiladi:
+Amalga oshirish buni FFT-dan avval koeffitsiyentlarni koset siljishi darajalariga ko‘paytirib hisoblaydi:
 
 $$
 a'_j = a_j g^j
 $$
 
-so'ngra baholash domenida `a'` ni baholash.
+so‘ng baholash domenida `a'` ni baholaydi.
 
-CPU FFT bit-inversed kirish usuli bo'yicha iterativ radix-2 Cooley-Tukey transformasi. bosqich uzunligi `L`, yarim uzunligi `H=L/2` va bosqich ildizida:
+CPU FFT — bitlari teskari tartiblangan kirishlar ustidagi iterativ, 2 asosli Cooley–Tukey o‘zgartirishidir. Bosqich uzunligi `L`, yarim uzunlik `H=L/2` va bosqich ildizi quyidagicha bo‘lsa:
 
 $$
 \omega_L=\omega^{N/L}
 $$
 
-har bir tola hisoblaydi:
+har bir kapalak amali quyidagini hisoblaydi:
 
 $$
 u=x_j
@@ -661,13 +660,13 @@ $$
 x_j'=u+v,\qquad x_{j+H}'=u-v
 $$
 
-Reversal FFT `omega^{-1}` bilan bir xil transformatsiyani amalga oshiradi va reversal domen o'lchamiga ko'tarilgan:
+Teskari FFT ayni o‘zgartirishni `omega^{-1}` bilan bajaradi va teskari domen o‘lchamiga ko‘paytiradi:
 
 $$
 \operatorname{IFFT}(x)=N^{-1}\cdot\operatorname{FFT}_{\omega^{-1}}(x)
 $$
 
-Katalog ildizlari foydalanishdan oldin tasdiqlanadi:
+Katalog ildizlari ishlatilishidan avval tekshiriladi:
 
 $$
 \omega^{2^k}=1
@@ -683,41 +682,41 @@ $$
 \omega_{\ell}=\omega_{\max}^{2^{k_{\max}-\ell}}
 $$
 
-### Qatlam va barg hashlari {#row-and-leaf-hashes}
+### Satr va barg xeshlari {#row-and-leaf-hashes}
 
-LDE dan keyin FastPQ har bir satrni barcha LDE ustunlarda hash qiladi. `m` ustunlari uchun:
+LDE-dan keyin FastPQ har bir satr xeshini barcha LDE ustunlari bo‘yicha hisoblaydi. `m` ta ustun uchun:
 
 $$
 r_i =
 H_F(i,m,x_{i,0},x_{i,1},\ldots,x_{i,m-1})
 $$
 
-Agar satr hashlari baholash domenidan ko'ra iz domenida bo'lsa, prover ushbu bitta satr hash ustunini LDE jarayoni bilan interpolatsiya qiladi va uzaytiradi.
+Agar satr xeshlari hali baholash domenida emas, iz domenida bo‘lsa, isbotlovchi shu bitta satr-xesh ustunini ayni koset LDE jarayoni bilan interpolyatsiya qiladi va kengaytiradi.
 
 ### Merkle ochilishlari {#merkle-openings}
 
-LDE qiymatlari quyidagi qismlarga bo'lingan:
+LDE qiymatlari quyidagi o‘lchamli bo‘laklarga guruhlanadi:
 
 $$
 B_{\text{lde}}=8\cdot\operatorname{fri\_arity}
 $$
 
-Har bir parcha barg quyidagicha:
+Har bir bo‘lak bargi quyidagicha:
 
 $$
 L_j=H_D(j\|v_{jB}\|\cdots\|v_{jB+B-1})
 $$
 
-Merklning ota-onasi:
+Merkle ota tugunlari quyidagicha:
 
 $$
 P_j =
 H_F(\operatorname{seed}(\texttt{fastpq:v1:trace:node}),L_{2j},L_{2j+1})
 $$
 
-O'zgarmas darajalar so'nggi nodni takrorlaydi. So'rov yo'llari har bir darajadagi so'rov varaqining indeks paritetiga ko'ra chap yoki o'ngga hash qilish orqali tasdiqlangan.
+Toq darajalar oxirgi tugunni takrorlaydi. So‘rov yo‘llari har bir darajadagi so‘rov bargi indeksining juft-toqligiga qarab chapdan yoki o‘ngdan xeshlab tekshiriladi.
 
-`i` ko'rsatkichdagi barg uchun `(s_0,\ldots,s_{d-1})` yo'nalishi `R` ildizga nisbatan takrorlanishi bilan aniqlanadi:
+Indeksi `i` bo‘lgan bargning `(s_0,\ldots,s_{d-1})` yo‘li `R` ildiziga nisbatan quyidagi rekurrensiya bilan tekshiriladi:
 
 $$
 y_0=L_i
@@ -733,13 +732,13 @@ H_F(\operatorname{seed}(\texttt{fastpq:v1:trace:node}),s_k,y_k),
 \end{cases}
 $$
 
-Chek faqat quyidagi hollarda o'tkaziladi:
+Tekshiruv faqat quyidagi shartda o‘tadi:
 
 $$
 y_d=R
 $$
 
-AIR izlar qatorli barglar quyidagicha:
+AIR iz satri barglari quyidagicha:
 
 $$
 L^{\text{air}}_i =
@@ -752,7 +751,7 @@ $$
 L^{\text{comp}}_i = H_D(i\|A_i)
 $$
 
-LDE so'rovni ochish, shuningdek, baholash indeksida `i` ochilgan qiymat uning tasdiqlangan qismida mavjudligini tekshiradi:
+LDE so‘rovi ochilishi baholash indeksi `i` da ochilgan qiymat autentifikatsiyalangan bo‘lagida mavjudligini ham tekshiradi:
 
 $$
 \operatorname{chunk\_index}=\left\lfloor\frac{i}{B_{\text{lde}}}\right\rfloor
@@ -766,16 +765,16 @@ $$
 \operatorname{chunk}[\operatorname{chunk\_offset}]=v_i
 $$
 
-### FRI Qo'shish {#fri-folding}
+### FRI yig‘ilishi {#fri-folding}
 
-FRI AIR tarkibining baholovchilarini amalga oshiradi. Har bir tur uchun `l`, transkript namunalari qiyinchilikka duchor bo'ladi `beta_l`. qatlam oxirgi qiymatni takrorlash orqali aritasining ko'paytirishiga to'ldirilgan.
+FRI AIR kompozitsiyasi baholariga majburiyat hosil qiladi. Har bir `l` raundida transkript `beta_l` sinov qiymatini tanlaydi. Qatlam oxirgi qiymatni takrorlash orqali aritet karralisigacha to‘ldiriladi. Har bir aritet o‘lchamidagi guruh quyidagiga yig‘iladi:
 
 $$
 y_{l+1,j} =
 \sum_{k=0}^{a-1} y_{l,ja+k}\beta_l^k
 $$
 
-`a` - bu FRI ariteti bo'lgan joyda. Tekshiruvchi har bir namunaga olingan so'rov zanjirida quyidagilarni tekshiradi:
+Bu yerda `a` — FRI ariteti. Tekshiruvchi har bir tanlangan so‘rov zanjiri uchun quyidagini tekshiradi:
 
 $$
 y_{l+1,\lfloor i/a\rfloor}
@@ -783,11 +782,11 @@ y_{l+1,\lfloor i/a\rfloor}
 \sum_{k=0}^{a-1} y_{l,\lfloor i/a\rfloor a+k}\beta_l^k
 $$
 
-va har bir ochilgan FRI guruhni tegishli FRI qatlamli ildiz bilan tasdiqlaydi.
+va har bir ochilgan FRI guruhini tegishli FRI qatlami ildiziga nisbatan autentifikatsiya qiladi.
 
 ### Fiat-Shamir transkripti {#fiat-shamir-transcript}
 
-Kanonik parametrlar katalog transkript hashini SHA3-256 deb belgilaydi. Hozirgi prover va tasdiqlovchi implementatsiyasi `iroha_crypto::Hash::new` bilan musobaqa bytlarini keltirib chiqaradi, bu 32 baytli Blake2bVar digestidir, so'ngra birinchi sakkiz kichik indian bytlarni `F` ga kamaytiradi:
+Kanonik parametrlar katalogi transkript xeshini SHA3-256 deb belgilaydi. Joriy isbotlovchi va tekshiruvchi dasturi sinov baytlarini 32 baytli Blake2bVar dayjestini qaytaradigan `iroha_crypto::Hash::new` bilan hosil qiladi, so‘ng kichik bayt tartibidagi dastlabki sakkiz baytni `F` ga qisqartiradi:
 
 $$
 \chi(\text{tag}) =
@@ -795,26 +794,26 @@ $$
 \bmod p
 $$
 
-Muammo qo'ng'iroqlari transkripsiya holatiga to'liq o'qishni qo'shadi. Takrorlash tartibi quyidagicha:
+Sinov qiymatini olish chaqiruvlari to‘liq dayjestni transkript holatiga qo‘shadi. Takrorlash tartibi quyidagicha:
 
-1. IO, protokol versiyasi, parametr versiyasi va parametr nomi
-2. LDE ildiz va izlar ildiz
+1. ochiq IO, protokol versiyasi, parametr versiyasi va parametr nomi
+2. LDE ildizi va iz ildizi
 3. `gamma`
-4. AIR tarkib muammolari `alpha_0`, `alpha_1`
-5. AIR orzu ildiz va AIR tarkibiy ildiz
-6. buyuk mahsulot qidirish
-7. FRI qatlam ildizlari va `beta_l` qiyinchiliklari
-8. namuna ko'rsatkichlari
+4. AIR kompozitsiyasi sinov qiymatlari `alpha_0`, `alpha_1`
+5. AIR iz ildizi va AIR kompozitsiyasi ildizi
+6. qidiruvning katta ko‘paytmasi
+7. FRI qatlam ildizlari va `beta_l` sinov qiymatlari
+8. tanlangan so‘rov indekslari
 
-So'rovli namuna olish 32-baytlik musobaqalarni chizishni davom ettiradi va uni talab qilingan yagona indekslar soniga ega bo'lgunga qadar `u64` kichik xilma-xil qismlar sifatida o'qiydi:
+So‘rovlarni tanlash so‘ralgan miqdordagi takrorlanmas indekslar yig‘ilguncha 32 baytli sinov dayjestlarini hosil qilishda va ularni kichik bayt tartibidagi `u64` bo‘laklari sifatida o‘qishda davom etadi:
 
 $$
 q = \operatorname{le64}(\text{digest chunk})\bmod N_{\text{eval}}
 $$
 
-Namunalar to'plami tartib bo'yicha qaytariladi.
+Tanlangan to‘plam tartiblangan holda qaytariladi.
 
-### Verifikatorni takrorlash {#verifier-replay}
+### Tekshiruvchining takrorlashi {#verifier-replay}
 
 Tekshiruvchi birinchi navbatda partiya majburiyatini qayta hisoblaydi:
 
@@ -830,7 +829,7 @@ $$
 =\operatorname{proof.trace\_commitment}
 $$
 
-Bundan tashqari, u IO davlatni tiklaydi:
+U ochiq IO-ni ham qayta yaratadi:
 
 $$
 \operatorname{PublicIO}=
@@ -840,7 +839,7 @@ $$
 \operatorname{permission\_hashes})
 $$
 
-Har bir maydon dalilning ommaviy IO byte-for-bytega mos bo'lishi kerak. Keyin tasdiqlovchi o'sha transkriptni rekonstruksiya qilib, uni quyidagicha keltirib chiqaradi:
+Har bir maydon isbotning ochiq IO-siga baytma-bayt mos kelishi kerak. Keyin tekshiruvchi ayni transkriptni qayta yaratib, quyidagilarni hosil qiladi:
 
 $$
 \gamma,\quad \alpha_0,\alpha_1,\quad
@@ -848,7 +847,7 @@ $$
 q_0,\ldots,q_{t-1}
 $$
 
-Har bir namunaviy so'rov uchun `q`, u quyidagilarni tekshiradi:
+Har bir tanlangan `q` so‘rovi uchun u quyidagilarni tekshiradi:
 
 $$
 \operatorname{MerkleVerify}(
@@ -886,73 +885,73 @@ A_q =
 )
 $$
 
-AIR tarkibning ochilishi `R_air_composition` ostida tasdiqlanishi kerak. FRI zanjiri keyinchalik xuddi shu `A_q` dan boshlanadi va FRI tugma chizig'i ostida tasdiqlangan oxirgi FRI varaq bilan yakunlanishi kerak.
+AIR kompozitsiyasi ochilishi `R_air_composition` ostida autentifikatsiyalanishi kerak. FRI zanjiri ayni `A_q` dan boshlanib, yakuniy FRI ildizi ostida autentifikatsiyalangan oxirgi FRI bargida tugashi shart.
 
-## Masalchi nimalarni tekshiradi {#what-the-prover-checks}
+## Isbotlovchi nimalarni tekshiradi {#what-the-prover-checks}
 
-FastPQ proveri izni yaratishdan oldin partiya tartibini o'tish tugmasi, operatsion daraja va qo'shish tartibi bo'yicha kanonikalashtiradi. O'tkazish satrlari transkript metadatalarini ham talab qiladi. Transfer satrlari mavjud bo'lgan partiya, ammo transfer transkriptlari yo'q.
+FastPQ isbotlovchisi izni yaratishdan avval paket tartibini o‘tish kaliti, amal darajasi va kiritish tartibi bo‘yicha kanonlashtiradi. O‘tkazma satrlari transkript metama’lumotini ham talab qiladi. O‘tkazma satrlari bor, ammo o‘tkazma transkriptlari yo‘q paket yaroqsiz.
 
-O'tkazish transkripsiyalari bo'yicha provayderlar tomonidan tekshiruvlar quyidagilarni o'z ichiga oladi:
+O‘tkazma transkriptlari uchun isbotlovchi quyidagilarni tekshiradi:
 
-- jo'natgichning muvozanati past o'tishi mumkin emas
-- `sender_after` teng bo'lishi kerak `sender_before - amount`
-- `receiver_after` teng bo'lishi kerak `receiver_before + amount`
-- transkripsiya partiyadagi har bir o'tkazish satrini qamrab olishi kerak
-- Poseidonning bitta deltali dijesining mavjud bo'lganida transkript oldindan ko'rsatilgan tasvirga mos kelishi kerak
-- agar kamroq Merkle isbotlari 1 versiyasi sifatida dekodlash kerak bo'lsa; yo'qolgan yo'llar deterministik sintetik isbotlar bilan to'ldiriladi
+- jo‘natuvchining balansi manfiy qiymatga tushmasligi kerak
+- `sender_after` qiymati `sender_before - amount` ga teng bo‘lishi kerak;
+- `receiver_after` qiymati `receiver_before + amount` ga teng bo‘lishi kerak;
+- transkript paketdagi har bir o‘tkazma satrini qamrab olishi kerak;
+- bitta delta uchun Poseidon dayjesti mavjud bo‘lsa, u transkript proobraziga mos kelishi kerak;
+- berilgan siyrak Merkle isbotlari 1-versiya sifatida dekodlanishi kerak; yetishmaydigan yo‘llar deterministik sintetik isbotlar bilan to‘ldiriladi.
 
-Izda o'tkazish, mint, yoqish, rol berish, roli bekor qilish, metadatalar to'plami va ruxsat qidirish satrlari uchun selektor ustunlari mavjud. Raqamli operatsion satrlarda imzolangan deltalar ham bor.
+Iz o‘tkazma, chiqarish, yoqish, rol berish, rolni bekor qilish, metama’lumot sozlash va ruxsat qidirish satrlari uchun selektor ustunlariga ega. Raqamli amal satrlari ishorali deltalar, har bir aktiv bo‘yicha jamlanib boradigan deltalar va taklif hisoblagichlarini ham olib yuradi.
 
-## Provor Lane {#prover-lane}
+## Isbotlovchi yo‘lagi {#prover-lane}
 
-`iroha3d` ishga tushirishda FastPQ prover yo'nalishini boshlaydi, agar prover backendni dastlabkilashtirish mumkin bo'lsa. Yo'nalish cheklangan navbatga ega fon vazifasidir. Bir blok ijro guvohini ishlab chiqargandan so'ng, commit yo'li blok hash, balandlik, ko'rinish va guvohlarni o'z ichiga olgan prover vazifasini taqdim etadi.
+Isbotlovchi ichki tizimini tayyorlash mumkin bo‘lsa, `iroha3d` ishga tushishda FastPQ isbotlovchi yo‘lagini boshlaydi. Yo‘lak — chegaralangan navbatga ega fon vazifasi. Blok bajarish guvohini hosil qilgach, yakunlash yo‘li blok xeshi, balandligi, ko‘rinishi va guvohni o‘z ichiga olgan isbotlash vazifasini yuboradi.
 
-Agar yo'nalish ishlamayotgan bo'lsa yoki navbat to'liq bo'lsa, ish o'tkaziladi va odatdagidek blokni qayta ishlash davom etadi. Bu shuni anglatadiki, orqa fon prover yo'nalishi tranzaksiya qabul qilish yoki konsensus darvoza emas. Bu allaqachon amalga oshirilgan holat ustidan isbot ishlab chiqarish yo'li hisoblanadi.
+Yo‘lak ishlamayotgan yoki navbat to‘la bo‘lsa, vazifa tashlab ketiladi va odatiy blokni qayta ishlash davom etadi. Demak, fondagi isbotlovchi yo‘lagi tranzaksiyani qabul qilish yoki konsensus darvozasi emas; u allaqachon bajarilgan holat uchun isbot yaratish yo‘lidir.
 
-Yo ' lda quyidagilardan foydalanib prover qurilgan:
+Yo‘lak isbotlovchini quyidagilar bilan yaratadi:
 
 ```text
 parameter = "fastpq-lane-balanced"
-execution_mode = auto | cpu | gpu
-poseidon_mode = auto | cpu | gpu
+execution_mode = cpu | gpu
+poseidon_mode = cpu | gpu
 ```
 
-`auto` ko'rsatgichga mavjud orqa qismni tanlash imkonini beradi. `cpu` o ' rnatish uchun CPU. `gpu` afzalliklari GPU ijro etish, CPU orqa tomonda talab qilingan yadrolardan foydalanish imkoniyati bo'lmagan holda.
+Har ikki sozlamaning standart qiymati `cpu`. `gpu` ni tanlash — xavfsiz rad etiladigan aniq talab: GPU qo‘llab-quvvatlashi yig‘ilmagan yoki so‘ralgan GPU ichki tizimining dastlabki tekshiruvi muvaffaqiyatsiz bo‘lsa, isbotlovchi yo‘lagi o‘chiq qoladi. Birinchi relizda `auto` qiymati yo‘q va so‘ralgan GPU rejimidan CPU-ga zaxira qaytish amalga oshirilmaydi.
 
 ## Tekshirish {#verification}
 
-FastPQ isbot tekshiruvi kanonik partiya majburiyatini qayta tiklaydi va ommaviy transkriptini almashtiradi. Tekshiruvchi protokol versiyasini, parametrlar o'rnatilgan versiyani, takrorlash cheklovlarini, izlanish majburiyatini, jamoatchi kirishlarni, namunalashtirilgan Merkle ochilishlarini, AIR ochilishlarini va FRI so'rov zanjirini tekshiradi.
+FastPQ isbotini tekshirish kanonik paket majburiyatini qayta yaratadi va ochiq transkriptni takrorlaydi. Tekshiruvchi protokol versiyasi, parametrlar majmuasi versiyasi, takrorlash chegaralari, iz majburiyati, ochiq kirishlar, tanlangan Merkle ochilishlari, AIR ochilishlari va FRI so‘rovi zanjirini tekshiradi.
 
-Dastlabki takrorlash cheklovlariga quyidagilar kiradi:
+Standart takrorlash chegaralari quyidagilarni o‘z ichiga oladi:
 
-|Chegara|Koʻrsatkichlar|
+|Chegara |Standart qiymat |
 | ------------------ | ------: |
 |Oʻtish qatorlari |     256 |
-|Batchning foydali yuk hajmi |256 KiB |
+|Paket foydali yuki o‘lchami |256 KiB |
 |FRI qatlamlari |      16 |
-|Savollar |     128 |
+|So‘rov ochilishlari |     128 |
 
-## Nexus Tekshirilgan relaylar {#nexus-verified-relays}
+## Nexus tekshirgan uzatkichlar {#nexus-verified-relays}
 
-Nexus AXT isbot konvertlarida `AxtFastpqBinding` qo'shilishi mumkin. `RegisterVerifiedLaneRelay` bajarilganda, Iroha:
+Nexus AXT isbot konverti `AxtFastpqBinding` ni o‘z ichiga olishi mumkin. `RegisterVerifiedLaneRelay` bajarilganda Iroha:
 
-1. yo'nalish relay qoplamasi va FastPQ issiqlik materialini tekshiradi;
-2. ma'lumotlar maydonini va rootni tekshiradi
-3. AXT isbot qadoqchasini ko'chirish
-4. `fastpq_binding` talab qiladi
-5. FastPQ partiyasini o'sha bog'lanishdan qayta qurish
-6. o'rnatilgan FastPQ isbotni dekodlash
-7. qayta tiklangan partiya va isbot haqida FastPQ tekshiruvchini chaqiradi
+1. yo‘lak uzatuvchi konverti va FastPQ isbot materialini tekshiradi;
+2. ma’lumotlar makoni va manifest ildizini tekshiradi;
+3. AXT isbot konvertini dekodlaydi;
+4. `fastpq_binding` mavjudligini talab qiladi;
+5. shu bog‘lanishdan FastPQ paketini qayta yaratadi;
+6. ichki FastPQ isbotini dekodlaydi;
+7. qayta yaratilgan paket va isbot uchun FastPQ tekshiruvchisini chaqiradi.
 
-Agar tekshirish muvaffaqiyatli bo'lsa, Iroha saqlash a `VerifiedLaneRelayRecord` relay ma'lumotnomasini, asl qadoqchani, isbotli yuk hashini, tekshirish balandligini, manifest ildizini o'z ichiga oluvchi va FastPQ bog'lovchi.
+Tekshiruv muvaffaqiyatli bo‘lsa, Iroha uzatuvchi havolasi, asl konvert, isbot foydali yuki xeshi, tekshirish balandligi, manifest ildizi va FastPQ bog‘lanishini o‘z ichiga olgan `VerifiedLaneRelayRecord` yozuvini saqlaydi.
 
-Lane relay zarflari ham kompakt FastPQ isbotlovchi materialni o'z ichiga oladi. Material yo'l identifikatori, ma'lumotlar maydonining identifikatori, blok balandligi, tasdiqlash balandligi, blok boshliq hash, qarorlash hash va manifest ildizidan iborat. Relay faqat QC va FastPQ tasdiqlangan materiallarga ega bo'lganida qo'shiladi.
+Yo‘lak uzatuvchi konvertlari ixcham FastPQ isbot materialini ham olib yuradi. Material yo‘lak identifikatori, ma’lumotlar makoni identifikatori, blok balandligi, tekshirish balandligi, blok sarlavhasi xeshi, hisob-kitob xeshi va manifest ildizi dayjestidir. Uzatuvchi yozuvi faqat QC va yaroqli FastPQ isbot materialiga ega bo‘lsa birlashtirishga qabul qilinadi.
 
-### AXT Bog'lovchi matematika {#axt-binding-math}
+### AXT bog‘lanishi matematikasi {#axt-binding-math}
 
-Nexus AXT zarflari uchun, `AxtFastpqBinding` isbotni takrorlashdan oldin kanonikalashtirilgan. Bo'sh parametr qiymatlari andoza `fastpq-lane-balanced`; bo'sh tasdiqlovchi id va versiyasi andoza `fastpq` va `v1`; talab turi qisqartirilgan va pastga ko'paytirilgan.
+Nexus AXT konvertlari uchun `AxtFastpqBinding` isbotni takrorlashdan avval kanonlashtiriladi. Bo‘sh parametr qiymatlari standart `fastpq-lane-balanced` ga, bo‘sh tekshiruvchi identifikatori va versiyasi mos ravishda `fastpq` va `v1` ga almashtiriladi; da’vo turi chetlaridagi bo‘shliqlardan tozalanib, kichik harflarga o‘tkaziladi.
 
-AXT FastPQ ommaviy kirishlar deterministik bayt hashlari hisoblanadi:
+AXT FastPQ ochiq kirishlari deterministik bayt xeshlaridir:
 
 $$
 \operatorname{dsid}=\operatorname{dsid\_bytes}(\operatorname{source\_dsid})
@@ -1002,14 +1001,14 @@ $$
 )
 $$
 
-AXT o'tish kalitlari quyidagilardir:
+AXT o‘tish kalitlari quyidagicha:
 
 $$
 \operatorname{key}(\operatorname{prefix},x,y)=
 \operatorname{prefix}\|\texttt{/}\|x\|\texttt{/}\|y
 $$
 
-`authorization` talabnomasiga ro'yxatni qo'shish satri kiritiladi:
+`authorization` da’vosi rol berish satrini kiritadi:
 
 $$
 \operatorname{role\_id}=\operatorname{claim\_digest}
@@ -1024,9 +1023,9 @@ $$
 \operatorname{le64}(\operatorname{policy\_commitment}[0..8])
 $$
 
-`compliance` da'vosi ikkita metadata satrini kiritadi: bittasi siyosat uchun va bittasi maqsadli ma'lumotlar maydonlari uchun.
+va vakolat siyosatini bog‘laydigan metama’lumot qatori. `compliance` da’vosi ikkita metama’lumot qatorini kiritadi: biri siyosat, ikkinchisi maqsadli ma’lumotlar makonlari uchun.
 
-`tx_predicate` va `value_conservation` uchun, bog'lanishda ijobiy manba yoki belgilangan miqdor mavjud bo'lganda aniq ta'sir miqdori ishlatiladi. Aks holda kod cheklangan deterministik miqdordan kelib chiqadi:
+`tx_predicate` va `value_conservation` uchun bog‘lanish musbat manba yoki manzil miqdorini o‘z ichiga olsa, aniq ta’sir miqdori ishlatiladi. Aks holda kod chegaralangan deterministik miqdorni hosil qiladi:
 
 $$
 \operatorname{bounded}(d,\min,\operatorname{span})
@@ -1034,7 +1033,7 @@ $$
 \min + (\operatorname{le64}(d[0..8])\bmod\max(\operatorname{span},1))
 $$
 
-Keyin bir xil o'tkazish tenglamalari qo'llaniladi:
+Keyin ayni o‘tkazma tenglamalari qo‘llaniladi:
 
 $$
 \operatorname{sender\_after}=\operatorname{sender\_before}-a
@@ -1044,14 +1043,14 @@ $$
 \operatorname{receiver\_after}=\operatorname{receiver\_before}+a
 $$
 
-Sentetik jo'natgich va qabul qiluvchining hisob raqamlari asosiy urug'lardan hosil qilinadi:
+Sintetik jo‘natuvchi va oluvchi hisob identifikatorlari kalit urug‘laridan hosil qilinadi:
 
 $$
 \operatorname{seed}=
 \operatorname{Hash}(\operatorname{label}\|\operatorname{entropy})[0..32]
 $$
 
-Oʻtkazish partiyasi hash quyidagicha:
+O‘tkazma paketi xeshi quyidagicha:
 
 $$
 \operatorname{batch\_hash} =
@@ -1063,43 +1062,43 @@ $$
 )
 $$
 
-AXT partiya manifestini SHA-256 kanonik bog'lanishning Norito kodlash usulidan o'chirish:
+AXT paketi manifesti dayjesti kanonik bog‘lanishning Norito kodlanishi ustidagi SHA-256 dayjestidir:
 
 $$
 \operatorname{manifest\_digest} =
 \operatorname{SHA256}(E(\operatorname{canonical\_binding}))
 $$
 
-## SCCP Ochiq xabarni tasdiqlovchi hujjatlar {#sccp-transparent-message-proofs}
+## SCCP oshkora xabar isbotlari {#sccp-transparent-message-proofs}
 
-SCCP yordamchi qutisi ham shaffof zanjirli o'tkazib yuborilgan xabarlarni tasdiqlash uchun FastPQ dan foydalanadi. Ushbu yo'l `iroha3d` orqa fon prover yo'nalishidan ajralib turadi. U FastPQ partiyasini to'g'ridan-to'g'ri SCCP xabarni tasdiqlovchi paket va manifestdan yaratadi, so'ngra hosil bo'lgan dalilni ochiq tekshirish uchun o'rab oladi.
+SCCP yordamchi krayti zanjirlararo oshkora xabar isbotlari uchun ham FastPQ-dan foydalanadi. Bu yo‘l `iroha3d` ning fondagi isbotlovchi yo‘lagidan alohida. U FastPQ paketini bevosita SCCP xabari isbot paketi va manifestidan yaratadi, so‘ng hosil bo‘lgan isbotni ochiq tekshirish uchun konvertga joylaydi.
 
-SCCP partiyasida `fastpq-lane-balanced` va uchta metadata o'tishi ishlatiladi:
+SCCP paketida `fastpq-lane-balanced` va uchta metama’lumot o‘tishi ishlatiladi:
 
-|Ochiq |Operatsiya |
+|Kalit |Amal |
 | ------------------------------- | --------- |
 |`sccp:transparent:v1:statement` |`MetaSet` |
 |`sccp:transparent:v1:context` |`MetaSet` |
 |`sccp:transparent:v1:payload` |`MetaSet` |
 
-Uning ommaviy kirish vositalari SCCP shaffof ichki isbotdan olinadi:
+Uning ochiq kirishlari SCCP oshkora ichki isbotidan hosil qilinadi:
 
 |FastPQ kirish |SCCP manbai |
 | ------------- | ---------------------------------------------------------- |
-|`dsid` |Blake2b faylining birinchi 16 baytlari bashorat hashini oʻz ichiga oladi .|
+|`dsid` |Bayonot xeshi ustidagi Blake2b dayjestining dastlabki 16 bayti |
 |`slot` |Yakuniylik balandligi |
-|`old_root` |Faydali yuk hash |
-|`new_root` |Bagʻishlanish ildizlari |
-|`perm_root` |Nihoyat blok hash |
-|`tx_set_hash` |Bayonot hash |
+|`old_root` |Foydali yuk xeshi |
+|`new_root` |Majburiyat ildizi |
+|`perm_root` |Yakuniylik bloki xeshi |
+|`tx_set_hash` |Bayonot xeshi |
 
-SCCP kanonik kodlovchilar to'liq sonlarni kichik xilda yozadi va o'zgaruvchan uzunlikdagi baytlar qatorlarini quyidagicha kodlaydi:
+SCCP kanonik kodlagichlari butun sonlarni kichik bayt tartibida yozadi va o‘zgaruvchan uzunlikdagi bayt massivlarini quyidagicha kodlaydi:
 
 $$
 \operatorname{vec}(x)=\operatorname{le32}(|x|)\|x
 $$
 
-Ochiq ommaviy kirish bytlari qatorida quyidagilar mavjud:
+Oshkora ochiq kirish baytlari satri quyidagicha:
 
 $$
 P =
@@ -1112,7 +1111,7 @@ P =
 \operatorname{finality\_block\_hash}
 $$
 
-shaffof baytlar - versiya, zanjir oilasi, mahalliy va qarama-qarshi domenlar, xavfsizlik modeli, quvur boshqaruvi, hisob kodeksi, yakuniylik modeli, tasdiqlovchi maqsad, tasdiqlovchi orqa tomoni oilasi, uzunlikdagi prefiks qilingan zanjir/orqa tomoni/manifest maydonlari, manzil bog'lovchi hash; hisob kodek kalitlari, foydali yukning turi, ommaviy kirish bytlari va foydali yuk hash.
+Oshkora bayonot baytlari versiya, zanjir oilasi, mahalliy va qarshi tomon domenlari, xavfsizlik modeli, tayanch boshqaruvi, hisob kodeki, yakuniylik modeli, tekshiruvchi maqsadi, tekshiruvchi ichki tizimi oilasi, uzunlik prefiksli zanjir/ichki tizim/manifest maydonlari, manzil bog‘lanishi xeshi, hisob kodeki kaliti, foydali yuk turi, ochiq kirish baytlari va foydali yuk xeshining birikmasidir. Bayonot xeshi quyidagicha:
 
 $$
 \operatorname{statement\_hash} =
@@ -1121,7 +1120,7 @@ $$
 )
 $$
 
-Ushbu isbot yo'li uchun FastPQ ma'lumotlar maydonining identifikatori Blake2b digestning birinchi o'n oltita bayti hisoblanadi:
+Bu isbot yo‘li uchun FastPQ ma’lumotlar makoni identifikatori boshqa bir prefiksli Blake2b dayjestining dastlabki o‘n olti baytidir:
 
 $$
 \operatorname{dsid} =
@@ -1130,7 +1129,7 @@ $$
 )[0..16]
 $$
 
-SCCP FastPQ partiyasi aniqlik bilan:
+SCCP FastPQ paketi aynan quyidagicha:
 
 $$
 (\texttt{sccp:transparent:v1:statement},\varnothing,\operatorname{statement},\operatorname{MetaSet})
@@ -1144,9 +1143,9 @@ $$
 (\texttt{sccp:transparent:v1:payload},\varnothing,\operatorname{canonical\_payload},\operatorname{MetaSet})
 $$
 
-so'ngra xuddi shu FastPQ buyurtma qoidasiga ko'ra tartibga solinadi.
+so‘ng ayni FastPQ tartiblash qoidasi bo‘yicha tartiblanadi.
 
-OpenVerify tekshiruvchining majburiyati SHA-256 bo'yicha SCCP xabarning orqa tomoni nomi va kanonik FastPQ tekshiruvchining tavsifi:
+OpenVerify tekshiruvchisi majburiyati — SCCP xabari ichki tizimi nomi va kanonik FastPQ tekshiruvchisi tavsifining SHA-256 dayjesti:
 
 $$
 \operatorname{vk\_hash} =
@@ -1155,22 +1154,22 @@ $$
 )
 $$
 
-Quru FastPQ dalil Norito-kodlangan `StarkFriOpenProofV1`, so'ngra bir `OpenVerifyEnvelope` orqa tomoni bilan `Stark`. SCCP tekshiruvi o'sha-o'sha tuzatish FastPQ to'plam va manifestdan partiya, ochiq tekshirish qadoqlagi metadatalarni tekshiradi va FastPQ qayta tiklangan partiyaning tekshiruvchisi va isbotlovchi qismlari.
+Xom FastPQ isboti Norito formatida `StarkFriOpenProofV1` ga kodlanadi, so‘ng `Stark` ichki tizimiga ega `OpenVerifyEnvelope` ichiga joylanadi. SCCP tekshiruvi paket va manifestdan ayni FastPQ paketini qayta yaratadi, ochiq tekshirish konverti metama’lumotini tekshiradi hamda qayta yaratilgan paket va isbot uchun FastPQ tekshiruvchisini chaqiradi.
 
-## Parametrlar toʻplami {#parameter-sets}
+## Parametrlar majmualari {#parameter-sets}
 
-Kanonik parametrlar katalogida ikkita parametr to'plami mavjud. Uy egasi prover yo'nalishi hozirda `fastpq-lane-balanced`dan foydalanadi.
+Kanonik parametrlar katalogida ikkita parametr majmuasi mavjud. Mezbon isbotlovchi yo‘lagi hozir `fastpq-lane-balanced` dan foydalanadi.
 
-|Parametri |Maqsad|Maydon |Hashlar |FRI |
+|Parametr |Maqsadi |Maydon |Xeshlar |FRI |
 | ---------------------- | -------------------------- | ------------------------------ | ------------------------------------------- | ------------------------------- |
-|`fastpq-lane-balanced` |muvozanatli provayder oʻtkazib berish |Oltin boʻgʻimlar kvadrat kengaytmasi |Poseidon2 majburiyatlari, katalog SHA3 etiketi |8-o'rin, 8, 46 ta so'rovlar |
-|`fastpq-lane-latency` |kechikish uchun sezgir yo'llar |Oltin boʻgʻimlar kvadrat kengaytmasi |Poseidon2 majburiyatlari, katalog SHA3 etiketi |16-o'rin, 16, 34 ta savollar |
+|`fastpq-lane-balanced` |isbotlovchining muvozanatli o‘tkazuvchanligi |Goldilocks kvadratik kengaytmasi |Poseidon2 majburiyatlari, katalogdagi SHA3 yorlig‘i |aritet 8, kengayish 8, 46 so‘rov |
+|`fastpq-lane-latency` |kechikishga sezgir yo‘laklar |Goldilocks kvadratik kengaytmasi |Poseidon2 majburiyatlari, katalogdagi SHA3 yorlig‘i |aritet 16, kengayish 16, 34 so‘rov |
 
-Ikkalasi ham 128-bitli xavfsizlikni maqsad qilib qo'yishadi va `2^16` ning izlanish domen o'lchamidan foydalanadilar. Rust V1 transkript takrorlash kodi hozirda SHA3-256 bilan Fiat-Shamir musobaqasining bytlarini to'g'ridan-to'g'ri chaqirishning o'rniga, `iroha_crypto::Hash::new` bilan olib keladi.
+Har ikki majmua 128 bitli xavfsizlikni ko‘zlaydi va `2^16` o‘lchamli iz domenidan foydalanadi. Rust V1 transkriptini takrorlash kodi hozir Fiat–Shamir sinov baytlarini SHA3-256-ni bevosita chaqirish o‘rniga `iroha_crypto::Hash::new` bilan hosil qiladi.
 
-Rust proveri tomonidan ishlatiladigan aniq katalog konstantalari quyidagilardir:
+Rust isbotlovchisi ishlatadigan aniq katalog konstantalari quyidagicha:
 
-|Doimiy |`fastpq-lane-balanced` |`fastpq-lane-latency` |
+|Konstanta |`fastpq-lane-balanced` |`fastpq-lane-latency` |
 | -------------------- | ---------------------: | --------------------: |
 |`target_security` |                    128 |                   128 |
 |`grinding_bits` |                     23 |                    21 |
@@ -1186,14 +1185,14 @@ Rust proveri tomonidan ishlatiladigan aniq katalog konstantalari quyidagilardir:
 |`fri_max_reductions` |                      8 |                     6 |
 |`fri_queries` |                     46 |                    34 |
 
-## Konfiguratsiya {#configuration}
+## Sozlash {#configuration}
 
-FastPQ konfiguratsiyasi `zk.fastpq` ostida o'rnatiladi.
+FastPQ sozlamasi `zk.fastpq` ostida joylashadi.
 
 ```toml
 [zk.fastpq]
-execution_mode = "auto"
-poseidon_mode = "auto"
+execution_mode = "cpu"
+poseidon_mode = "cpu"
 
 # Optional telemetry labels.
 device_class = "apple-m4"
@@ -1210,7 +1209,7 @@ metal_debug_enum = false
 metal_debug_fused = false
 ```
 
-O'sha o'rnatish va telemetriya etiketlarini `iroha3d` dan bekor qilish mumkin:
+Ayni bajarish va telemetriya yorliqlarini `iroha3d` orqali qayta belgilash mumkin:
 
 ```shell
 iroha3d --fastpq-execution-mode gpu
@@ -1220,7 +1219,7 @@ iroha3d --fastpq-chip-family m4
 iroha3d --fastpq-gpu-kind integrated
 ```
 
-Konfiguratsiya maydonlari uchun ham atrof-muhit o'zgaruvchilari qo'llab-quvvatlanadi. FastPQ xususiyatiga ega bo'lgan o'zgaluvchilar quyidagilarni o'z ichiga oladi:
+Sozlama maydonlari uchun muhit o‘zgaruvchilari ham qo‘llab-quvvatlanadi. FastPQ-ga xos o‘zgaruvchilar quyidagilarni o‘z ichiga oladi:
 
 - `FASTPQ_EXECUTION_MODE`
 - `FASTPQ_POSEIDON_MODE`
@@ -1237,25 +1236,25 @@ Konfiguratsiya maydonlari uchun ham atrof-muhit o'zgaruvchilari qo'llab-quvvatla
 
 ## Metriklar {#metrics}
 
-Telemetriya o'rnatib qo'yilganda FastPQ backend tanlash va Metal ish vaqti xatti-harakatini ko'rsatkichlarni eksport qiladi:
+Telemetriya yoqilganda FastPQ ichki tizim tanlovi va Metal bajarish muhiti xatti-harakatiga oid ko‘rsatkichlarni eksport qiladi:
 
-|Metrik |Maʼnosi |
+|Ko‘rsatkich |Ma’nosi |
 | --------------------------------- | --------------------------------------------------------------------------- |
-|`fastpq_execution_mode_total` |Orqa tomoni va qurilma etiketlari boʻyicha talab qilingan va hal etilgan ijro usuli |
-|`fastpq_poseidon_pipeline_total` |Soʻragan va hal qilingan Poseidon quvurining yoʻnalishi |
-|`fastpq_metal_queue_depth` |Metall navbat cheklovlari, parvozda maksimal soni, jo'natish soni va namuna olish oynasi |
-|`fastpq_metal_queue_ratio` |Metall navbatda mashgʻul va oʻzaro taqqoslash nisbatlari |
-|`fastpq_zero_fill_duration_ms` |Metall oʻtishlari uchun toʻldirish muddati nol .|
-|`fastpq_zero_fill_bandwidth_gbps` |Null toʻldirish bandwidthlari|
+|`fastpq_execution_mode_total` |Ichki tizim va qurilma yorliqlari bo‘yicha so‘ralgan hamda aniqlangan bajarish rejimi |
+|`fastpq_poseidon_pipeline_total` |So‘ralgan va aniqlangan Poseidon konveyeri yo‘li |
+|`fastpq_metal_queue_depth` |Metal navbati chegarasi, bir paytdagi ishlarning eng katta soni, yuborishlar soni va tanlash oynasi |
+|`fastpq_metal_queue_ratio` |Metal navbatining bandlik va ustma-ustlik nisbatlari |
+|`fastpq_zero_fill_duration_ms` |Metal bajarishlari uchun mezbonda nol bilan to‘ldirish davomiyligi |
+|`fastpq_zero_fill_bandwidth_gbps` |Hosil qilingan nol bilan to‘ldirish o‘tkazuvchanligi |
 
-Umumiy ishlashni sinchkovlik qilish uchun [ Ishlab chiqarish va metrikalar ](/uz/guide/advanced/metrics.md) da ko'rsatilgan konsensus va navbat signallari bilan ularni ishlating.
+Umumiy unumdorlik muammolarini aniqlashda bu ko‘rsatkichlarni [Unumdorlik va ko‘rsatkichlar](/uz/guide/advanced/metrics.md) bo‘limidagi konsensus hamda navbat signallari bilan birga ishlating.
 
-## Bog'liq ma'lumot {#related-reference}
+## Tegishli ma’lumotnomalar {#related-reference}
 
-- [Ishlab chiqarilgan turning tafsilotlari uchun ma'lumotlar modeli sxemasi](/uz/reference/data-model-schema.md)
+- tugun vakolatli turlarining oniy tasviri uchun [Ma’lumotlar modeli sxemasi](/uz/reference/data-model-schema.md)
 - `FastpqTransitionBatch`
 - `FastpqPublicInputs`
 - `TransferTranscript`
 - `AxtFastpqBinding`
 - `LaneFastpqProofMaterial`
-- [`iroha3d` FastPQ variantlari](/uz/reference/iroha3d-cli.md#arg-fastpq-execution-mode)
+- [`iroha3d` FastPQ parametrlari](/uz/reference/iroha3d-cli.md#fastpq-overrides)

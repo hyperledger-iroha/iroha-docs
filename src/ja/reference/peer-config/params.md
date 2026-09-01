@@ -3,26 +3,26 @@ translation_locale: ja
 translation_source: /reference/peer-config/params.md
 translation_source_hash: 027486a17e7624cc301f939429baf9ea9ed1259564c3b99b8dc63cce17a7b26e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 
-outline: [ 2, 3 ]
+outline: [2, 3]
 ---
 
 <script setup>
 import ParamTable from './ParamTable.vue';
 </script>
 
-# 設定パラメータ {#configuration-parameters}
+# 構成パラメータ {#configuration-parameters}
 
-汚染物質
+[[目次]]
 
-## 根本レベル {#root}
+## ルートレベル {#root}
 
 ### `chain` <Badge text="required" /> {#param-chain-id}
 
-各トランザクションに含まれなければならないチェーン ID リプレイ攻撃を防ぐために使用される.
+各トランザクションに含める必要があるチェーンID。リプレイ攻撃を防ぐために使用される。
 
-リプレイ攻撃は,その目的とは異なるネットワークに有効なトランザクションを送信する試みである. `chain`が署名されたトランザクションの役に立たない負荷の一部であるため,一つのチェーンで署名したトランザクションは,別のチェーン ID を使用するピアによって拒否される.
+リプレイ攻撃とは、有効な取引を意図されたネットワークとは異なるネットワークに送信しようとする試みです。`chain`が署名済み取引のペイロードの一部であるため、あるチェーン用に署名された取引は、別のチェーンIDを使用するネットワークのピアによって拒否されます。
 
 <param-table type=string env=CHAIN />
 
@@ -40,7 +40,7 @@ CHAIN="00000000-0000-0000-0000-000000000000"
 
 ### `public_key` <Badge text="required" /> {#param-public-key}
 
-同級の公開鍵.コンセンサス検証者同級者は BLS-Normalキーを使用しなければならない.
+ネットワークピアの公開鍵。コンセンサスのバリデーターピアは BLS-Normal 鍵を使用する必要があります。
 
 <param-table type="public-key" env="PUBLIC_KEY" />
 
@@ -58,7 +58,7 @@ PUBLIC_KEY="ea01309060D021340617E9554CCBC2CF3CC3DB922A9BA323ABDF7C271FCC6EF69BE7
 
 ### `private_key` <Badge text="required" /> {#param-private-key}
 
-ピアのプライベートキー. `public_key` に一致しなければならない;コンセンサス検証するピアは BLS-Normal キーを使用しなければならない.
+ネットワークピアの秘密鍵。`public_key` と一致する必要があります。コンセンサスのバリデーターピアは BLS-Normal 鍵を使用する必要があります。
 
 <param-table type="private-key" env="PRIVATE_KEY" />
 
@@ -76,14 +76,14 @@ PRIVATE_KEY="8926201CA347641228C3B79AA43839DEDC85FA51C0E8B9B6A00F6B0D6B0423E9029
 
 ### `trusted_peers` {#param-trusted-peers}
 
-既定の信頼性のある同級者のリスト
+事前に定義された信頼できるネットワークピアのリスト。
 
-コンセンサス検証者は BLS-Normal peer keysを使用しなければならない.各認証者に対して,一致する[`trusted_peers_pop`](#param-trusted-peers-pop)入力も提供してください.
+コンセンサスのバリデーターは BLS-Normal のピア鍵を使用する必要があります。各バリデーターについて、対応する [`trusted_peers_pop`](#param-trusted-peers-pop) エントリーも指定してください。
 
 <param-table env="TRUSTED_PEERS">
 <template #type>
 
-P2P アドレスが知られている場合, `PUBLIC_KEY@ADDRESS` を使用し,裸の `PUBLIC_KEY` も受け入れられ,同級者のアドレスを八から発見することができます.
+ネットワークピアの文字列の配列。P2P アドレスが分かっている場合は `PUBLIC_KEY@ADDRESS` を使用してください。裸の `PUBLIC_KEY` も受け入れられ、ゴシップからネットワークピアのアドレスを発見することができます。
 
 </template>
 </param-table>
@@ -109,12 +109,12 @@ TRUSTED_PEERS='[
 
 ### `trusted_peers_pop` {#param-trusted-peers-pop}
 
-BLS 検証者の信頼性のある同類の所有権証明書エントリー
+BLS バリデータ信頼ネットワークピアの証拠保有エントリ。
 
 <param-table env="TRUSTED_PEERS_POP">
 <template #type>
 
-`public_key` と `pop_hex` のフィールドを持つオブジェクトの配列
+`public_key`および`pop_hex`フィールドを持つオブジェクトの配列
 
 </template>
 </param-table>
@@ -138,11 +138,11 @@ TRUSTED_PEERS_POP='[
 
 :::
 
-## 創世記 {#genesis}
+## ブロックチェーンのジェネシス {#genesis}
 
 ### `genesis.file` {#param-genesis-file}
 
-`kagami genesis sign`によって生成される署名されたゲネスブロックの有用な負荷へのファイル経路.生成されたプロフィールでは,一般的に Norito `.nrt`ファイルとしてこれを記述する.
+`kagami genesis sign` によって生成された署名済みブロックチェーンジェネシスブロックペイロードのファイルパス。生成されたプロファイルは、通常これを Norito `.nrt` ファイルとして書き込みます。
 
 <param-table type="file-path" env="GENESIS" />
 
@@ -161,7 +161,7 @@ GENESIS="./genesis.signed.nrt"
 
 ### `genesis.public_key` <Badge text="required" /> {#param-genesis-public-key}
 
-ジェネスキーパーの公钥.
+ブロックチェーンのジェネシス鍵ペアの公開鍵。
 
 <param-table type="public-key" env="GENESIS_PUBLIC_KEY" />
 
@@ -182,7 +182,7 @@ GENESIS_PUBLIC_KEY="ed01208BA62848CF767D72E7F7F4B9D2D7BA07FEE33760F79ABE5597A515
 
 ### `network.address` <Badge text="required" /> {#param-network-address}
 
-合意 (sumeragi) とブロック同期 (block_sync) の目的のために p2p通信のアドレス.
+コンセンサス（sumeragi）およびブロック同期（block_sync）の目的でのピアツーピア通信のためのアドレス。
 
 <param-table type="socket-addr" env="P2P_ADDRESS" />
 
@@ -201,9 +201,9 @@ P2P_ADDRESS=0.0.0.0:1337
 
 ### `network.public_address` <Badge text="required" /> {#param-network-public-address}
 
-ピアツーピー アドレス (他のピアツーパーが見るように外部).
+ピアツーピアアドレス（外部、他のネットワークピアから見たもの）。
 
-他の同級生に噂を伝えられるように
+接続されたネットワークのピアにゴシップされ、それによって他のネットワークピアにゴシップされるようになります。
 
 <param-table type="socket-addr" env="P2P_PUBLIC_ADDRESS" />
 
@@ -222,7 +222,7 @@ P2P_PUBLIC_ADDRESS=0.0.0.0:5000
 
 ### `network.block_gossip_size` {#param-network-block-gossip-size}
 
-単一の同期メッセージで送信できるブロックの数.
+1つの同期メッセージで送信できるブロックの数。
 
 <param-table type=number default-value=4 />
 
@@ -237,9 +237,9 @@ block_gossip_size = 256
 
 ### `network.block_gossip_period_ms` {#param-network-block-gossip-period-ms}
 
-最新ブロックのピアへの要求間の時間間隔.
+ネットワークピアに最新のブロックを要求する間の時間間隔。
 
-より頻繁な雑言は シンクロレーションの時間を短縮しますが ネットワークを過積もることができます
+より頻繁な噂のやり取りは同期までの時間を短縮しますが、ネットワークに負荷をかける可能性があります。
 
 <param-table type=millis default-value=10_000 default-note="10 seconds" />
 
@@ -254,9 +254,9 @@ block_gossip_period_ms = 1_000
 
 ### `network.transaction_gossip_size` {#param-network-transaction-gossip-size}
 
-噂のバッチメッセージで最大取引数
+ゴシップバッチメッセージ内の最大取引数。
 
-サイズが小さければ,同期時間が長くなりますが,パケットの損失が高い場合,有用です.
+サイズが小さいと同期にかかる時間は長くなりますが、パケット損失が多い場合には役立ちます。
 
 <param-table type=number default-value=500 />
 
@@ -271,9 +271,9 @@ transaction_gossip_size = 256
 
 ### `network.transaction_gossip_period_ms` {#param-network-transaction-gossip-period-ms}
 
-同級者の間の取引を待機する噂の時期
+ネットワークピア間の取引保留中のゴシップ期間。
 
-より頻繁な雑言は シンクロレーションの時間を短縮しますが ネットワークを過積もることができます
+より頻繁な噂のやり取りは同期までの時間を短縮するが、ネットワークに負荷をかける可能性がある。
 
 <param-table type=millis default-value=1_000 default-note="1 second" />
 
@@ -288,7 +288,7 @@ transaction_gossip_period_ms = 5_000
 
 ### `network.idle_timeout_ms` {#param-network-idle-timeout-ms}
 
-同級者との接続が休止される期間.
+ネットワークピアがアイドル状態の場合に、ネットワークピアとの接続が終了するまでの期間。
 
 <param-table type=millis default-value=300_000 default-note="5 minutes" />
 
@@ -305,7 +305,7 @@ idle_timeout_ms = 300_000
 
 ### `torii.address` <Badge text="required" /> {#param-torii-address}
 
-Torii サーバーが聴いて,クライアントが要求するアドレス.
+Torii サーバーが待機し、クライアントがリクエストを行うアドレス。
 
 <param-table type=socket-addr env=API_ADDRESS />
 
@@ -324,19 +324,19 @@ API_ADDRESS=0.0.0.0:8080
 
 ### `torii.max_content_len` {#param-torii-max-content-len}
 
-[Torii エンドポイント](/ja/reference/torii-endpoints.md)によって受け入れられた原料要求体内の最大バイト数.
+[Torii API エンドポイント](/ja/reference/torii-endpoints.md) が受け入れる生リクエストボディの最大バイト数。
 
-この制限は, DOS 攻撃を防ぐために使用されます.
+この制限は、DOS 攻撃を防ぐために使用されます。
 
 <param-table>
 <template #type>
 
-バイト数
+数（バイト数）
 
 </template>
 <template #default-value>
 
-`64_000_000` (64百万バイト)
+`64_000_000`（6400万バイト）
 
 </template>
 </param-table>
@@ -352,7 +352,7 @@ max_content_len = 64_000_000
 
 ### `torii.query_idle_time_ms` {#param-torii-query-idle-time-ms}
 
-商店にアクセスできない場合,問い合わせが保持できる時間です.
+クエリがアクセスされない場合にストア内に保持される時間。
 
 <param-table type=millis default-value=10_000 default-note="10 seconds" />
 
@@ -367,7 +367,7 @@ query_idle_time_ms = 10_000
 
 ### `torii.query_store_capacity` {#param-torii-query-store-capacity}
 
-ライブリクエストの最大限度
+ライブクエリの数の上限。
 
 <param-table type=number default-value=128 />
 
@@ -382,7 +382,7 @@ query_store_capacity = 128
 
 ### `torii.query_store_capacity_per_user` {#param-torii-query-store-capacity-per-user}
 
-単一のユーザーに対するライブ查询数の上限.
+単一ユーザーのライブクエリの数の上限。
 
 <param-table type=number default-value=128 />
 
@@ -395,24 +395,24 @@ query_store_capacity_per_user = 128
 
 :::
 
-## 伐採家 {#logger}
+## ロガー {#logger}
 
 ### `logger.level` {#param-logger-level}
 
-一般的なログ付け動詞性 (精製された構成については [`logger.filter`](#param-logger-filter)を参照してください).
+一般的なログ出力の詳細度（参照 [`logger.filter`](#param-logger-filter) 洗練された設定用に)。
 
 <param-table default-value=INFO env=LOG_LEVEL>
 <template #type>
 
-文字列,可能な値:
+文字列、可能な値:
 
-- `TRACE`: 低レベル作戦を含むすべてのイベント
-- `DEBUG`:デバッグレベルのメッセージ,診断に使える.
-- `INFO`: 一般的な情報メッセージ
-- `WARN`: 潜在的な問題を示す警告
-- `ERROR`:正常な動作を妨げるが,継続的な操作が可能とするエラー.
+- `TRACE`: 低レベルの操作を含むすべてのイベント。
+- `DEBUG`: 診断に役立つデバッグレベルのメッセージ。
+- `INFO`：一般的な情報メッセージ。
+- `WARN`：潜在的な問題を示す警告。
+- `ERROR`: 通常の機能を妨げるが、操作の継続を可能にするエラー。
 
-使用事例に最も適したレベルを選択してください.異なるログレベルの使用方法についての詳細については [Stack Overflow](https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels)を参照してください.
+用途に最も適したレベルを選択してください。異なるログレベルの使い方についての詳細は、[Stack Overflow](https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels) を参照してください。
 
 </template>
 </param-table>
@@ -430,28 +430,28 @@ LOG_LEVEL=INFO
 
 :::
 
-::: tip 実行時間更新
+::: tip ソフトウェアランタイムの更新
 
-このパラメータは, Torii オペレーターのエンドポイントを通じて実行時間の設定更新の対象となります.
+このパラメータは、Torii オペレーターの API エンドポイントを通じて、ソフトウェアの実行時構成の更新の対象となります。
 
 :::
 
 ### `logger.filter` {#param-logger-filter}
 
-[`logger.level`](#param-logger-level)に加えて精製されたログフィルター. 目標ごとにログの動詞をカスタマイズすることができます.
+に加えて洗練されたログフィルター [`logger.level`](#param-logger-level). ターゲットごとにログの詳細度をカスタマイズできるようにします。
 
 <param-table type=string env=LOG_FILTER>
 <template #type>
 
-文字列 (String) は,コマによって分離された1つまたは複数の指令で構成される.各指令には,相応しい最大動詞性レベルがあり,それに対応する範囲とイベントを可能とする (例えば選択する)Iroha は,より少ない排他的なレベル (例えば `trace`または`info`) を,より多くの排他的な水準 (例えば `error`または `warn`) に比べて,より言語的に表現すると考えます.
+文字列で、1つ以上のカンマ区切りのディレクティブで構成されます。各ディレクティブには対応する最大冗長レベルがあり、これにより一致するスパンやイベントが有効になります（例：選択されます）。Iroha は、より排他的でないレベル（`trace`や`info`のような）を、より排他的なレベル（`error`や`warn`のような）よりも冗長であると考えています。
 
-高いレベルでは,指令の構文はいくつかの部分で構成されている.
+大まかに言えば、ディレクティブの構文は複数の部分で構成されています：
 
 ```
 target[span{field=value}]=level
 ```
 
-詳細については, [`tracing-subscriber`ドキュメント](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/filter/struct.EnvFilter.html)を参照してください.
+詳細については、こちらを参照してください [`tracing-subscriber` ドキュメント](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/filter/struct.EnvFilter.html).
 
 </template>
 
@@ -470,35 +470,35 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 
 :::
 
-::: info [`logger.level`](#param-logger-level) との組み合わせ
+::: info ～との構成 [`logger.level`](#param-logger-level)
 
-`logger.filter`は, [`logger.level`](#param-logger-level)と協働し,いずれも他のいずれかを重複しない.
+`logger.filter` 一緒に働く [`logger.level`](#param-logger-level) そして、どちらももう一方を上書きしません。
 
-例えば, `logger.level` 設定されている `INFO` そして `logger.filter` 設定されている `iroha_core=debug`, 発生したフィルターセットは `info,iroha_core=debug` (つまり, `info` すべてのモジュールについては, `debug` に関する `iroha_core`).
+例えば、`logger.level` が `INFO` に設定され、`logger.filter` が `iroha_core=debug` に設定されている場合、結果として得られるフィルターセットは `info,iroha_core=debug` になります（すなわち、すべてのモジュールに対して `info`、`iroha_core` に対して `debug`）。
 
 :::
 
-::: tip 実行時間更新
+::: tip ソフトウェアランタイムの更新
 
-このパラメータは, Torii オペレーターのエンドポイントを通じて実行時間の設定更新の対象となります.
+このパラメータは、Torii オペレーター API エンドポイントを通じてソフトウェアの実行時設定更新の対象となります。
 
 :::
 
 ### `logger.format` {#param-logger-format}
 
-記録格式
+ログの形式。
 
 <param-table default-value=full env=LOG_FORMAT>
 <template #type>
 
-文字列,可能な値:
+文字列、可能な値:
 
-- `full`: デフォルトフォーマッター. これは,発生するすべてのイベントに対して人間に読める単行列ログを発信し,現在のスペンコンテキストがイベントのフォーマットされた表示前に表示されます.
-- `compact`:短行の長さのために最適化されたデフォルトフォーマッターの変形.現在のスペンコンテキストからのフィールドは,フォーマットされたイベントのフィールドに添付され,スペン名は表示されません.動詞性レベルが単一文字に縮小されます.
-- `pretty`: あまりにも美しい,多行的なログを排出し,人間の読めるために最適化されています. これは主に地域開発に使用されるためログの自動分析とコンパクトストレージが可読性や視覚的な魅力を上回る優先事項である場合,デバッグまたはコマンドラインアプリケーション.
-- `json`:ニューラインデリミテッド JSON ログの出力.これは,構造化されたログが分析および閲覧ツールによって JSON として消費されるシステムでの生産使用のために設計されています. JSON 輸出は人間の読みやすさに最適化されていません.
+- `full`：デフォルトのフォーマッター。これは、発生する各イベントに対して人間が読みやすい単一行のログを出力し、イベントのフォーマットされた表現の前に現在のスパンコンテキストを表示します。
+- `compact`：デフォルトのフォーマッターのバリエーションで、短い行長に最適化されています。現在のスパンコンテキストのフィールドは、フォーマットされたイベントのフィールドに追加され、スパン名は表示されません；冗長度レベルは1文字で省略されます。
+- `pretty`: 過剰に美しい複数行のログを出力し、人間の可読性向けに最適化されています。これは主にローカル開発で使用することを意図しています。デバッグや、コマンドラインアプリケーション向けでは、ログの自動分析やコンパクトな保存よりも、可読性や視覚的な魅力が優先される場合があります。
+- `json`：改行区切りの JSON ログを出力します。これは、構造化されたログが分析および表示ツールによって JSON として処理されるシステムでの本番使用を意図しています。JSON の出力は人間の可読性には最適化されていません。
 
-詳細とサンプル出力については, [`tracing-subscriber`ドキュメント](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/format/index.html)を参照してください.
+詳細およびサンプル出力については、こちらを参照してください [`tracing-subscriber` ドキュメント](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/format/index.html).
 
 </template>
 </param-table>
@@ -518,13 +518,13 @@ LOG_FORMAT=json
 
 ## Kura {#kura}
 
-Kura は, Iroha (倉庫のための日本語) の持続的な貯蔵エンジンです.
+Kura は、Iroha（倉庫を意味する日本語）の永続的なストレージエンジンです。
 
 ### `kura.blocks_in_memory` {#param-kura-blocks-in-memory}
 
-最長はN最後のブロックがメモリに保存されます.
+最大でN個の最後のブロックがメモリに保存されます。
 
-古いブロックはメモリから削除され,必要に応じてディスクから読み込みされます.
+古いブロックは、必要に応じてメモリから削除され、ディスクから読み込まれます。
 
 <param-table type=number default-value=1024 env=KURA_BLOCKS_IN_MEMORY />
 
@@ -543,21 +543,21 @@ KURA_BLOCKS_IN_MEMORY=1024
 
 ### `kura.init_mode` {#param-kura-init-mode}
 
-Kura 初期化モード. `strict`は通常のおよびデフォルトモードである:ノードがアクティブになる前に,正規史,復元アーテファクト,補助インデックス,およびストレージ会計を検証する.
+Kura 初期化モード。`strict` は通常かつデフォルトのモードであり、ノードがアクティブになる前に、標準的な履歴、リカバリーアーティファクト、補助インデックス、およびストレージ会計を検証します。
 
-`fast`は,完全なスタートアップ監査が停電を脅かす場合,運用可視性を回復するための緊急劣化サービスモードである. `strict` で以前に初期化されたストレージと,正確に5つのアーテファクトを含む現在のスナップショット生成を必要とする.`snapshot.data`,`snapshot.sha256`, `snapshot.sig`, `snapshot.fast.norito`,および `snapshot.merkle.json`.ドメイン別々のオペレーター署名は,広告されたペイロードダイジェストと制限されたマニフェストを結びつける.マニフェスは,ペイロードの長さ,チェーン/ネットワークアイデンティティ,端末高度/ハッシュ, SCCP ポリシーハッシュ,ブットストラップラインージの存在を結び付ける.Fastはブートストラップ系を拒絶し,耐久性 Kura から同じマーク/カウント/チップ境界を必要とします.最初のリリースノードはちょうどそれらの5つのアーテファクトを受け入れ,他のすべてのアーテファルト数またはファイル名セットを拒否します.
+`fast` は、完全な起動監査を行うと停止のリスクがある場合に、運用の可視性を回復するための緊急のサービス低下モードです。これは、以前に `strict` によって初期化されたストレージと、正確に5つのアーティファクトを含む現在のデータスナップショット生成を必要とします。 `snapshot.data`、`snapshot.sha256`、`snapshot.sig`、`snapshot.fast.norito`、および`snapshot.merkle.json`。ドメイン分離されたオペレーター署名は、広告されたペイロードの暗号ダイジェスト値と制約された技術マニフェストを結びつけます。技術的マニフェストは、ペイロードの長さ、チェーン/ネットワークの識別、端末の高さ/ハッシュ、SCCP ポリシー暗号ハッシュ、およびブートストラップ系統の存在を結びつけます。Fastはブートストラップ系統を拒否し、durable Kura からのまったく同じマーカー/カウント/チップ境界を必要とします。初回リリースノードは、まさにこれらの5つのアーティファクトのみを受け入れ、他のすべてのアーティファクトのカウントやファイル名セットを拒否します。
 
-これらの5つの名前とメタデータを迅速に収集し,ペイロードとメルクルファイルを結合しますが,その内容を読み取ったり,ハッシュしたり,解析したり,解読したりしません.署名したマニフェストから最小の世界/Nexus を構築し,正確な Kura ハッシュプレフィキスを読み取りのみで地図化し,スナップショットワールド,ブロック-ハッシュアレイを残します.取引履歴,衍生指数,耐久性回復日記未開封. メークル,カノニック・セマンティックスナップショット監査,歴史的ブロック/最終性/SCCP 和解, Sumeragi アクティブ高度復元,合併およびクエリ日記,レーンマニスト/コンプライアンスソース,Kura が支援する SoraFS アーカイブ,リクティブストレージ会計,オプションサービスコンシリエーターは延期され続けています.地方の取引受付,提案,投票,正規文書,補助生産者は無効です.Kura 自体はライター起動と耐久性変異を拒絶し,パイプラインおよび FASTPQ 持続性キューは作業を保持またはコーディングするのではなくすぐに拒否します.Kura は APIs を読み取り,修理と耐久性同期の行動を無効化します:一時的なサイドカーが宣伝されず,行列遺跡が公表されず,進捗障壁が同期されない. Sumeragi とトランザクションゴシップは開始されません.Torii は健康,活力,準備性,同級型および構成操作のみを暴露する. API - バージョン,状態,メトリック,およびすべての通常の状態/歴史経路は利用できないままである. 準備性は厳重を再起動するまで使用できません.
+Fastはその五つの名前とメタデータをペイロードおよびMerkleファイルに結び付けますが、それらの内容を読み取ったり、暗号学的ハッシュを計算したり、解析したり、デコードしたりはしません。署名された技術マニフェストから最小限の World/Nexus を構築し、正確な Kura 暗号ハッシュの接頭辞を読み取り専用でマッピングし、データスナップショットの World、ブロックハッシュ配列、トランザクション履歴、派生インデックス、および耐久リカバリジャーナルは開かないままにします。メルクル、正準およびセマンティックデータスナップショット監査、履歴ブロック／最終確定／SCCP 照合、Sumeragi アクティブ高さ回復、マージおよびクエリジャーナル、実行レーンマニフェスト／コンプライアンスソース、Kura 支援 SoraFS アーカイブ、再帰的ストレージ会計、そしてオプションのサービス和解者は引き続き延期されています。ローカルトランザクションの承認、提案、投票、標準的な書き込み、および補助的なプロデューサーは引き続き無効のままです。Kura 自体はライターの起動や永続的な変更を拒否します。ソフトウェア処理のワークフローおよび FASTPQ 永続キューは、作業を保持またはエンコードするのではなく、直ちに処理を拒否します。 Kura は APIs を読み取り、修復および耐久性同期の動作も無効にします: 一時的な補助レコードは昇格されず、欠落している実行レーンのアーティファクトは公開されず、進行のバリアは fsync されません。 Sumeragi およびトランザクションのゴシップも起動されません。Torii はヘルス、ライブネス、レディネス、ネットワークピア、および構成の操作のみを公開します。API のバージョン、ステータス、メトリクス、およびすべての通常の状態/履歴ルートは利用できません。レディネスは厳格な再起動まで利用できません。
 
-`fast` をインシデントでのみ使用します.サービスが安定すると,ノードを停止し, `strict` を復元して再起動します.急速モードは,延期された合併ログを必要とせず,カノニカルストレージを作成したり,修理したり,切断したり,輸入したりしません. 未公開したサフイックスおよび待機中の補助復元段階は読み取らずにまたは変異せずに無視され,その後厳格復旧のために残されます.輸入されたハッシュのみのスナップショット配列は利用できないままです.欠落または無効な現在のスナップшотがすぐに失敗します.Fastは空の世界や歴史的な再生再構築に再び落ちません.
+`fast`はインシデントのみに使用してください。サービスが安定したら、ノードを停止し、`strict`を復元して再起動し、すべての延期されたチェックとインデックスの再構築が本番再開前に実行されるようにしてください。高速モードでは、遅延マージログは不要であり、標準ストレージの作成、修復、切り捨て、インポートは行われません。未公開のサフィックスや保留中の補助回復ステージは、読み取ったり変更したりせずに無視され、その後Strict回復のために残されます。インポートされたハッシュのみのデータスナップショット系統は利用できません。現在のデータスナップショットが存在しないか無効な場合、即座に失敗します。Fastは決して空のワールドや過去のリプレイ再構築にフォールバックしません。
 
 <param-table default-value=strict>
 <template #type>
 
-文字列,可能な値:
+文字列、可能な値:
 
-- `strict`:完全な検証と通常の生産
-- `fast`: 生産が厳格な再起動まで隔離された緊急開始制限
+- `strict`：完全な検証と通常の生産
+- `fast`：生産を隔離したままでの制限付き緊急起動、厳格な再起動まで
 
 </template>
 </param-table>
@@ -573,9 +573,9 @@ init_mode = "fast"
 
 ### `kura.store_dir` {#param-kura-store-dir}
 
-ブロックが保管されているディレクトリ[^paths]を指定します.
+ブロックが保存されるディレクトリ[^paths]を指定します。
 
-[`snapshot.store_dir`](#param-snapshot-store-dir)を参照してください.
+参照： [`snapshot.store_dir`](#param-snapshot-store-dir).
 
 <param-table env=KURA_STORE_DIR type=file-path default-value=./storage />
 
@@ -594,7 +594,7 @@ KURA_STORE_DIR=/path/to/storage
 
 ### `kura.debug.output_new_blocks` <Badge type="warning" text="debug" /> {#param-kura-debug-output-new-blocks}
 
-コンソールで新しいブロックを印刷できるようにするフラグ.
+新しいブロックをコンソールに出力するためのフラグ。
 
 <param-table env=KURA_DEBUG_OUTPUT_NEW_BLOCKS type=bool default-value=false />
 
@@ -611,11 +611,11 @@ KURA_DEBUG_OUTPUT_NEW_BLOCKS=true
 
 :::
 
-## 排隊 {#queue}
+## 列 {#queue}
 
 ### `queue.capacity` {#param-queue-capacity}
 
-順番待ちの取引数の上限.
+キューで待機している取引の件数の上限。
 
 <param-table type=number default-value=65_536 />
 
@@ -630,9 +630,9 @@ capacity = 1_048_576
 
 ### `queue.capacity_per_user` {#param-queue-capacity-per-user}
 
-単一のユーザの行列に待っている取引数の上限.
+単一ユーザーの待機中の取引数の上限。
 
-このオプションを使用して窒息を施す.
+このオプションを使用してスロットリングを適用してください。
 
 <param-table type=number default-value=65_536 />
 
@@ -647,7 +647,7 @@ capacity_per_user = 1_048_576
 
 ### `queue.transaction_time_to_live_ms` {#param-queue-transaction-time-to-live-ms}
 
-取引は,この時間以降,まだ排列中にいる場合,中止されます.
+この時間を過ぎても取引がまだキューにある場合、取引は取り消されます。
 
 <param-table type=millis default-value=86_400_000 default-note="24 hours" />
 
@@ -664,7 +664,7 @@ transaction_time_to_live_ms = 43_200_000
 
 ### `sumeragi.debug.force_soft_fork` <Badge type="warning" text="debug" /> {#param-sumeragi-debug-force-soft-fork}
 
-Sumeragi ソフトフォーク処理経路を行使するためのデバッグのみスイッチ.制御されたテストの外にこれを無効にしておく.実行中の生産ネットワークで変更すると,共感行動について同僚が異議を唱える可能性があります.
+デバッグ専用のスイッチで、Sumeragi ソフトフォークの処理パスを実行できます。制御されたテスト以外では無効のままにしてください。稼働中の本番ネットワークでこれを変更すると、ネットワークのピアがコンセンサスの挙動について意見が合わなくなる可能性があります。
 
 <param-table type=bool default-value=false />
 
@@ -677,40 +677,40 @@ force_soft_fork = true
 
 :::
 
-## Nexus 原子力民間決済 {#nexus-atomic-private-settlement}
+## Nexus アトミックな個人金融取引決済 {#nexus-atomic-private-settlement}
 
-`[nexus.atomic_private_settlement]` は別々の `AtomicPrivateSettlementV1` 経路を管理します.これはデフォルトで無効化されます. `enabled = true` の設定には, `activation_height` が必要です.オンチェーン機能,通知期間,固定証明プロフィール,プール/監査ガバナンスが有効でない限り,入場はまだ閉じるわけではありません.
+`[nexus.atomic_private_settlement]`は、個別の`AtomicPrivateSettlementV1`パスを管理します。デフォルトでは無効になっています。`enabled = true`を設定するには`activation_height`も必要です；オンチェーン機能、通知期間、固定証明プロファイル、およびプール/監査ガバナンスが有効でない限り、入場は依然として閉じた状態で失敗します。
 
-主な境界線は `max_participants`, `max_expiry_blocks`, `audit_timeout_blocks`, `prepare_timeout_blocks`, `commit_timeout_blocks`, `max_proof_bytes`, `max_capsule_bytes`, `max_carrier_bytes`, `sidecar_retention_blocks`, `sidecar_max_records`, そして `sidecar_max_total_bytes`. `capsule_padding_classes_bytes` 厳格に増加するサブセットである必要があります V1 パッシング教室 `permitted_policy_versions` 受け取るだけ V1.
+主な境界は`max_participants`、`max_expiry_blocks`、`audit_timeout_blocks`、`prepare_timeout_blocks`、`commit_timeout_blocks`、`max_proof_bytes`、`max_capsule_bytes`、`max_carrier_bytes`、`sidecar_retention_blocks`、`sidecar_max_records`、および`sidecar_max_total_bytes`です。`capsule_padding_classes_bytes`は V1 パディングクラスの厳密に増加する部分集合でなければなりません。`permitted_policy_versions`は V1 のみを受け入れます。
 
-`max_capsule_bytes`は, AAD, nonce, ciphertext, vector framing,および DEK 行に包まれたすべての監査者を含む完全な `PrivateSettlementAuditCapsuleV1` のカノニカル Norito バイトを測定する.すべての有効なパッディングクラスは,少なくとも `default_min_auditor_approvals` 監査者にとって保守的な全カプセル封筒に適合しなければならない.この承認設定はまた管理される階層である: Torii は`min_approvals` の値を下げる新たに認められたポリシーを拒絶し,正規バイト制限を超えた実際のカプセルを拒否する.
+`max_capsule_bytes` は、暗号化テキストのみの制限ではなく、`PrivateSettlementAuditCapsuleV1` の完全な Norito バイト、AAD、暗号用ノンス値、暗号文、ベクターフレーミング、そしてすべての監査人がラップした DEK 行を含めて測定します。すべての有効なパディングクラスは、少なくとも`default_min_auditor_approvals`人の監査人向けに、保守的な全カプセルデータコンテナに適合しなければなりません。その承認設定はまた規制された下限でもあります：Torii は、より低い`min_approvals`値を持つ新規承認ポリシーを拒否し、標準バイト制限を超える実際のカプセルも拒否します。
 
-これらの設定には,生産環境変数アクティベーションバイパスがない.完全な構成例と運用要件については[Run Atomic Private Cross-Dataspace Settlement ](/ja/get-started/atomic-private-settlement) を参照してください.文書化された外部リリースゲートが通過するまではパスは生産資格を有しません.
+これらの設定には、本番環境の環境変数アクティベーションのバイパスはありません。完全な構成例と運用要件については[アトミックなプライベートクロスデータスペースの金融取引決済を実行する](/ja/get-started/atomic-private-settlement)を参照してください。文書化された外部リリースゲートが通過するまでは、パスは本番適格ではありません。
 
-## スナップショット {#snapshot}
+## データスナップショット {#snapshot}
 
-このモジュールは, [World State View](/ja/blockchain/world#world-state-view-wsv)の瞬間の読み書きを担当します.
+このモジュールは、[ワールド・ステート・ビュー](/ja/blockchain/world#world-state-view-wsv) のデータスナップショットの読み取りと書き込みを担当します。
 
-スナップショットは World State View の連続化チェックポイントを保存し,ピアが Kura からすべてのブロックを再再生することなく再起動することができます. Kura は持続的なブロックの歴史であり,再プレイのための真実の源であり,スナップショットは加速経路である.起動時に, Iroha はスナップショットメタデータを設定されたチェーンと保存されたブロックに対して確認し,スナップシュートをロードするか再再生するかどうかを決定します.
+データスナップショットは、ネットワークピアがすべてのブロックを Kura から再生することなく再起動できるように、World State Viewのシリアライズされたチェックポイントを保存します。Kura は引き続き耐久性のあるブロック履歴であり、再生のための真実のソースです。データスナップショットは加速パスとして機能します。起動時、Iroha はデータスナップショットのメタデータを設定されたチェーンおよび保存されているブロックと照合し、データスナップショットをロードするか、リプレイに切り替えるかを決定します。
 
-::: tip スナップショットを消す
+::: tip データスナップショットを消去する
 
-[`snapshot.store_dir`](#param-snapshot-store-dir)で指定されているディレクトリを削除できます.
+データスナップショットシステムに何か問題があり、そこから再開したい場合は 空白のページ（データスナップショットの観点から）、指定されたディレクトリを削除することができます [`snapshot.store_dir`](#param-snapshot-store-dir).
 
 :::
 
 ### `snapshot.mode` {#param-snapshot-mode}
 
-スナップショットシステムが動作するモード.
+データスナップショットシステムが動作するモード。
 
 <param-table default-value=read_write env=SNAPSHOT_MODE>
 <template #type>
 
-文字列,可能な値:
+文字列、可能な値:
 
-- `read_write`: Iroha は, [`snapshot.create_every_ms`](#param-snapshot-create-every-ms)で指定された期間でのスナップショットを作成します.起動時に, Iroha は既存のスナップシュートを読み取り (存在する場合は) ブロックのストレージと最新であることを確認します.
-- `readonly`: `read_write` に似ていますが, Iroha はスナップショットを作成しません.
-- `disabled`: Iroha は起動時に新しいスナップショットを作成したり,既存の写真を読み取ったりしません.
+- `read_write`: Iroha 指定された期間でデータスナップショットを作成する [`snapshot.create_every_ms`](#param-snapshot-create-every-ms). 起動時に、 Iroha 既存のデータスナップショット（存在する場合）を読み取り、それがブロックストレージと最新であることを確認します。
+- `readonly`： `read_write`に似ていますが、Iroha はスナップショットを作成しません。
+- `disabled`：Iroha は、起動時に新しいデータスナップショットを作成したり、既存のものを読み取ったりしません。
 
 </template>
 </param-table>
@@ -730,7 +730,7 @@ SNAPSHOT_MODE=readonly
 
 ### `snapshot.create_every_ms` {#param-snapshot-create-every-ms}
 
-速拍の頻度
+スナップショットの頻度。
 
 <param-table type=millis default-value=600_000 default-note="10 minutes" />
 
@@ -745,9 +745,9 @@ create_every_ms = 60_000
 
 ### `snapshot.store_dir` {#param-snapshot-store-dir}
 
-スナップショットを保存する目録
+スナップショットを保存するディレクトリ。
 
-参照: [`kura.store_dir`](#param-kura-store-dir)
+参照： [`kura.store_dir`](#param-kura-store-dir)
 
 <param-table type=file-path default-value=./storage/snapshot env=SNAPSHOT_STORE_DIR />
 
@@ -764,17 +764,17 @@ SNAPSHOT_STORE_DIR="/path/to/storage"
 
 :::
 
-## テレメトリ {#telemetry}
+## テレメトリー {#telemetry}
 
-テレメトリは,ペア診断を外部テレメトリコレクターに輸出する. ピアが収集者に報告すべきときに `telemetry.name` と `telemetry.url`の両方を設定し,テレメトリックを使用しない場合はセクションを省略します.
+テレメトリはネットワークピアの診断情報を外部テレメトリコレクターにエクスポートします。ネットワークピアがコレクターにレポートする必要がある場合は、`telemetry.name` と `telemetry.url` の両方を設定してください。テレメトリを使用しない場合は、このセクションを省略してください。
 
-`name`と `url`はペアする必要があります.
+`name` と `url` はペアにする必要があります。
 
-すべての `telemetry`セクションはオプションです.
+すべての`telemetry`セクションは任意です。
 
 ### `telemetry.name` {#param-telemetry-name}
 
-テレメトリに表示されるノードの名前.
+テレメトリに表示されるノードの名前。
 
 <param-table type=string />
 
@@ -789,7 +789,7 @@ name = "iroha"
 
 ### `telemetry.url` {#param-telemetry-url}
 
-遠隔測定器の WebSocket URL
+テレメトリーコレクターの WebSocket URL。
 
 <param-table type=string />
 
@@ -804,7 +804,7 @@ url = "ws://telemetry.example.com/submit"
 
 ### `telemetry.min_retry_period_ms` {#param-telemetry-min-retry-period-ms}
 
-再び接続するまでの最小の待機期間
+再接続する前に待つ最小の期間。
 
 <param-table type=millis default-value=1_000  default-note="1 second" />
 
@@ -819,7 +819,7 @@ min_retry_period_ms = 5_000
 
 ### `telemetry.max_retry_delay_exponent` {#param-telemetry-max-retry-delay-exponent}
 
-再接続間の遅延を増やすために使用される最大指数2である.
+再接続間の遅延を増加させるために使用される2の最大指数。
 
 <param-table type=number default-value=4 />
 
@@ -834,7 +834,7 @@ max_retry_delay_exponent = 4
 
 ### `dev_telemetry.out_file` {#param-dev-telemetry-out-file}
 
-Dev-テレメトリを書き出すファイルパス
+dev-telemetryを書き込むファイルパス
 
 <param-table type=file-path />
 

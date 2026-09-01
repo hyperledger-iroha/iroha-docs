@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /cookbook/permissions-and-roles.md
-translation_source_hash: 7ee18275d25837da53f533f5e9205906ccaa71b48afd9b11ffad79b599da7f21
+translation_source_hash: 8d6fd7101094ba21cfc2c5fb9a89d2acd7e67f13ff47b9f8c8e01bbbd7bf2836
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -14,7 +14,7 @@ translation_engine: nllb-200-ct2
 
 ## תנאים מוקדמים {#prerequisites}
 
-- נתונים מטאטא של לקוח Taira ושלם מיומנים מ- [חברו ל- Taira ](./connect-to-taira.md).
+- מטא-נתונים של לקוח Taira ושלם מיומנים מ- [חברו ל- Taira ](./connect-to-taira.md).
 - `TARGET_ACCOUNT` ו `DELEGATE_ACCOUNT` נקבעו לחשבון הקנוני של I105 IDs.
 - חשבון החתימה חייב להיות מורשה לנהל את הרשיונות המטרה ואת התפקידים. ב Taira זה מבצע מנהלי עם פקודת רשיונות; לקבל `CanManageRoles` והרשויות הנדרשות כדי להעניק את הרשיון המוגדר, או להפעיל את המתכון ברשת מקומית שנוצרה.
 
@@ -36,7 +36,7 @@ DELEGATE_CONFIG=./taira.delegate.toml
 
 ### 1. רשום תפקיד ריק {#_1-register-an-empty-role}
 
-כל פקודה CLI המשתנה במדינה מכניסה באופן מפורש את מי ששלם את המחיר. הקובץ של הנתונים המכיל את נכס המחיר הנוכחי Taira המוצא מהתגובה למברקה.
+כל פקודת CLI שמשנה מצב מציינת במפורש את משלם העמלה. קובץ ה־metadata מכיל את נכס העמלה הנוכחי של Taira, שנגזר מתגובת ה־faucet.
 
 ```bash
 iroha --config "$CONFIG" \
@@ -128,7 +128,7 @@ iroha --config "$CONFIG" ledger account meta get \
 - שגיאה בנתח עומס מועיל בדרך כלל פירושה `account` הוצא לצד `payload`, נקבע כינוי במקום I105 ID, או שהערך של JSON נכתב פעמיים .
 - דחייה על עמלה שייכת לחותם שהגיש את הצעד הזה. מימון למנהל ומעבירה באופן עצמאי ושומרת על הנתונים המטאטא של נכס תשלום המוצא מהפלטה.
 - מתן תפקיד מוצלח אינו עיקף את היקף הקודד בתצוגותיו. תפקיד זה יכול לשנות רק את החשבון המזומן במשאב הפועל של הרשאה.
-- כדי לנקות, להפעיל `ledger account role revoke`, לאחר מכן `ledger role permission revoke`, ולבסוף `ledger role unregister`; כל אחד מהם הוא כתיבה נפרדת וצריך לכלול `--fee-payer authority` ונתונים מטאטא של תשלום.
+- כדי לנקות, להפעיל `ledger account role revoke`, לאחר מכן `ledger role permission revoke`, ולבסוף `ledger role unregister`; כל אחד מהם הוא כתיבה נפרדת וצריך לכלול `--fee-payer authority` ומטא-נתונים של תשלום.
 
 ## מקור ומסמכים קשורים {#source-and-related-docs}
 
@@ -137,4 +137,4 @@ iroha --config "$CONFIG" ledger account meta get \
 - [מודל נתונים של הרשאות מבוסס ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/permission.rs)
 - [רשיונות ותפקידים ](/he/blockchain/permissions.md)
 - [תיקון רשיונות ](/he/reference/permissions.md)
-- [נתונים מטאטא](./metadata.md)
+- [מטא-נתונים](./metadata.md)

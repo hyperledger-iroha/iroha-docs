@@ -3,16 +3,16 @@ translation_locale: az
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
 translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Iroha Bare Metal üzərində işləyir {#running-iroha-on-bare-metal}
+# Bare Metal-də Iroha işlətmək {#running-iroha-on-bare-metal}
 
-Bu iş axını Docker Compose vasitəsilə deyil, birbaşa qonaqlarda həmyaşıdları işlətmək istədiyiniz zaman istifadə edin. Hal-hazırda mənbə ağacı Kagami generatorlarını təqdim edir ki, uyğunlaşdırılmış genesis, həmyaşıdalar quruluşu, müştəri quruluşu və start/stop skriptləri yazır.
+Bu iş axınından istifadə edin, əgər şəbəkə yoldaşlarını Docker Compose vasitəsilə deyil, birbaşa hostlarda işlətmək istəyirsinizsə. Mövcud mənbə ağacı Kagami generatorları təqdim edir ki, bunlar uyğun blockchain genesis, şəbəkə yoldaşı konfiqurasiyaları, müştəri konfiqurasiyası və başlatmaq/dayandırmaq skriptlərini yaradır.
 
-## 1. İkiliklər qurun {#_1-build-the-binaries}
+## 1. İkilik faylları qurun {#_1-build-the-binaries}
 
-Iroha yuxarı axın iş sahəsindən:
+Yuxarı axın Iroha iş sahəsindən:
 
 ```bash
 cargo build --release \
@@ -21,53 +21,53 @@ cargo build --release \
   -p iroha_kagami --bin kagami
 ```
 
-Bu, aşağıdakıları meydana gətirir:
+Bu nəticə verir:
 
-- `target/release/iroha3d` həmyaşıd daemon üçün
+- `target/release/iroha3d` şəbəkə həmkarı daemon üçün
 - `target/release/iroha` üçün CLI
-- `target/release/kagami` açar, genesis və localnet istehsalı üçün
+- `target/release/kagami` açar, blokçeyn başlanğıcı və localnet yaradılması üçün
 
-## 2. Yerli şəbəkə yaradın. {#_2-generate-a-local-network}
+## 2. Lokal Şəbəkə Yarat {#_2-generate-a-local-network}
 
-Dörd paylı Iroha 3 lokal şəbəkə yaratmaq:
+Dörd iştirakçıdan ibarət Iroha 3 yerli şəbəkəsi yaradın:
 
 ```bash
 target/release/kagami localnet --peers 4 --out-dir ./localnet
 ```
 
-Çıxış lüğətində `genesis.json`, `genesis.signed.nrt`, peer `config.toml` faylları, `client.toml`, köməkçi skriptləri və bu paket üçün dəqiq əmrlər ilə yaradılmış `README.md` var.
+Çıxış qovluğu yaradılmış `genesis.json`, `genesis.signed.nrt`, şəbəkə həmrəyliyi `config.toml` fayllarını, `client.toml`, köməkçi skriptləri və həmin paket üçün dəqiq əmrləri olan yaradılmış `README.md` ehtiva edir.
 
-## 3. Tərəfdaşlara başlayın {#_3-start-peers}
+## 3. Şəbəkə tərəfdaşlarını başlat {#_3-start-peers}
 
-Yaradılan birbaşa istifadə edilə bilən lokalnet üçün yaradılmış skripti istifadə edin:
+Yaradılmış birdəfəlik yerli şəbəkə üçün, yaradılmış skriptdən istifadə edin:
 
 ```bash
 ./localnet/start.sh
 ```
 
-Hər bir həmkarı proses menecerinə bağlamaq lazımdırsa, systemd, İndirmə əmrini istifadə edin. `./localnet/README.md` Hər bir qohum üçün saxlayın. `config.toml`, Şəxsi açar, saxlama dizaynı və portlar ayrıdır.
+Əgər hər bir şəbəkə yoldaşını systemd kimi bir proses menecerinə qoşmaq lazımdırsa, hər bir şəbəkə yoldaşı üçün `./localnet/README.md` da qeyd edilmiş işə salma əmrindən istifadə edin. Hər bir şəbəkə yoldaşının `config.toml` sini, şəxsi açarını, yaddaş qovluğunu və portlarını ayrı saxlayın.
 
-## 4. Şəbəkəni idarə etmək. {#_4-operate-the-network}
+## 4. Şəbəkəni İşlədin {#_4-operate-the-network}
 
-Yaradılan müştəri konfigundan istifadə edin:
+Yaradılmış müştəri konfiqurasiyasından istifadə edin:
 
 ```bash
 target/release/iroha --config ./localnet/client.toml ledger domain list all
 target/release/iroha --config ./localnet/client.toml --output-format text ops sumeragi status
 ```
 
-Yaradılan localnet-i dayandır:
+Yerinə yetirilmiş localnet-i dayandırmaq üçün:
 
 ```bash
 ./localnet/stop.sh
 ```
 
-## 5. İstehsalat qeydləri {#_5-production-notes}
+## 5. İstehsal Qeydləri {#_5-production-notes}
 
-- İstehsal üçün yeni xüsusi açarlar istehsal edin və onları anbarın xaricində saxlayın.
-- Hər bir həmyaşıd eyni imzalanmış mənşəli əməliyyat, topologiya, etibarlı həmyaşındır və təsdiqçi PoPs haqqında razılığa gəlsin.
-- Dinləyici yalnız digər maşınlardan əldə edilə bilmədiyi zaman host-lokal interfeyslərə ünvanlar bağlayın.
-- Torii məruz qalması, əsas auth, TLS və dərəcə məhdudiyyəti üçün bir geri proxy və ya firewall istifadə edin.
-- Başlanğıc və ya konsensus topologiyasına edilən dəyişiklikləri tək bir dosya düzəlişləri deyil, koordinasiya edilmiş miqrasiyalar kimi qəbul edin.
+- İstehsalat üçün yeni şəxsi açarlar yaradın və onları deposun xaricində saxlayın.
+- Hər bir şəbəkə iştirakıçısını eyni imzalanmış blokçeyn başlanğıc əməliyyatı, topologiya, etibarlı şəbəkə iştirakçıları və təsdiqləyici PoPs üzərində razılaşdırmaq.
+- Dinləyici ünvanları yalnız şəbəkə yoldaşı digər maşınlardan əlçatmaz olmalıdırsa, host-lokal interfeyslərə bağlayın.
+- Torii açıqlanması, əsas autentifikasiya, TLS və sürət məhdudiyyəti üçün tərs proxy və ya firewall istifadə edin.
+- Blokçeyn başlanğıcını və ya konsensus topologiyasını dəyişiklikləri tək-şəbəkə həmkarı fayl redaktələri deyil, koordinasiyalı miqrasiyalar kimi qəbul edin.
 
-Konteynerləşdirilmiş yerli inkişaf üçün [Launch Iroha 3](../../get-started/launch-iroha.md) Docker Compose iş axınından istifadə edin.
+Qablaşdırılmış yerli inkişaf üçün [Başlat Iroha 3](../../get-started/launch-iroha.md) Docker Compose iş axınından istifadə edin.

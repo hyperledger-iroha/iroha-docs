@@ -1,40 +1,50 @@
 ---
 translation_locale: ja
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: 5772bf7175b693fbbed54b59304859a33c2e19fef0c402141b6f4ad4cfd6714f
+translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# 業績と指標 {#performance-and-metrics}
+# パフォーマンスと指標 {#performance-and-metrics}
 
-Iroha の性能は,ワークロード,検証器トポロジー,ネットワーク条件,コンセンサス設定に依存する.したがって,単一の TPS 番号は,固定配置のあるベンチマーク実行に結びついている場合にのみ有用である.
+Iroha のパフォーマンスは、ワークロード、バリデータのトポロジー、ネットワーク条件、コンセンサス設定に依存します。したがって、単一の TPS の数値は、固定された構成でのベンチマーク実行に関連付けられている場合にのみ有用です。
 
-容量計画については,パフォーマンスを運用対象として扱う.
+キャパシティ計画のために、パフォーマンスを運用データのコンテナとして扱います:
 
-- ネットワークは,要求されたトランザクションレートを受け入れます
-- 目標予算内での遅延維持を約束する
-- トランザクションのキューは制限されます
-- コンセンサスは繰り返しビュー変更や回復経路に依存しない.
+- ネットワークは要求されたトランザクションレートを受け入れます
+- プロトコルの最終化のレイテンシは目標の予算内に収まる
+- トランザクションキューは制限されたままです
+- コンセンサスは、繰り返されるビューの変更や回復経路に依存しない
 
-このページを使用して,あるノード数値,ネットワーク遅延しきい値およびターゲット TPS に対して,デプロイメントが高,中,低性能状態にあるかどうかを推定します.
+このページを使用して、指定されたノード数、ネットワーク遅延の閾値、および目標 TPS に対して、デプロイメントが高、中、または低のパフォーマンス状態にあるかを推定します。
 
-## 計測すべきもの {#what-to-measure}
+## 何を測るか {#what-to-measure}
 
-Torii で暴露された操作者の表面から始めます.
+まず、パブリックノードのデータスナップショットとPrometheusのスクレイプから始め、次にオペレーター認証済みのコンセンサス状態には CLI を使用します。オペレーターキーはターゲットノードで許可されている必要があり、ソフトウェアの実行時にのみ読み込まれます:
 
 ```bash
 export TORII=http://127.0.0.1:8180
+export OPERATOR_KEY_FILE=./secrets/operator.key
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
-curl -s -H 'Accept: application/json' "$TORII/v1/sumeragi/status" | jq .
-curl -s "$TORII/v1/sumeragi/phases" | jq .
-curl -s "$TORII/v1/sumeragi/rbc" | jq .
-curl -s "$TORII/v1/sumeragi/params" | jq .
 curl -s "$TORII/metrics" > metrics.prom
+
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi status
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi diagnostics
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi qc
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi params
 ```
 
-Taira に対して同じ読み込み式を試すことができます.
+Public Taira は、匿名ノードスナップショットの形状を学習するのに便利です。そのオペレーター診断は、Taira オペレーターキーなしでは意図的に利用できません:
 
 ```bash
 TAIRA=https://taira.sora.org
@@ -42,214 +52,215 @@ TAIRA=https://taira.sora.org
 curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
-curl -fsS "$TAIRA/v1/time/status" \
-  | jq '{healthy: .health.healthy, peers, samples_used, rtt_count: .rtt.count}'
-
-curl -fsS "$TAIRA/metrics" \
-  | grep -E '^(block_height|queue_size|sumeragi_tx_queue_depth|txs|view_changes)' \
-  | head -n 20
+curl -fsS "$TAIRA/v1/time/now" \
+  | jq '{now_ms, offset_ms}'
 ```
 
-公共の Taira メトリックは信号名を学ぶのに役立ちます. 生産能力番号として使わないでください自分の部署のために
+自分の展開のための生産能力の数値として、パブリックテストネットの観察結果を使用しないでください。
 
-CLI で同じ合意の瞬間の写真が利用できます.
-
-```bash
-iroha --config ./localnet/client.toml --output-format text ops sumeragi status
-iroha --config ./localnet/client.toml --output-format text ops sumeragi phases
-iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetry
-iroha --config ./localnet/client.toml ops sumeragi params
-```
-
-テレメトリの可視性は設定されたプロフィールに依存します. `/metrics`が必要なときに `extended` を使用し,また詳細な Sumeragi オペレーター経路が必要である場合,テスト実行中に `full` を使用してください.
+テレメトリの可視性は、設定されたプロファイルに依存します。`operator` はステータスと診断スナップショットを有効にします。`extended` は `/metrics` と高コストのタイミングを追加します。一方で `developer` は、`/metrics` を有効にせずに、リーダー、QC、パラメータ、証拠などの開発者データスナップショットを追加します。1回の実行で両方のセットが必要な場合は `full` を使用してください。`telemetry_profile` は唯一の初回リリーステレメトリスイッチです。
 
 ```toml
-telemetry_enabled = true
 telemetry_profile = "full"
 ```
 
-## 性能帯 {#performance-bands}
+## パフォーマンスバンド {#performance-bands}
 
-これらの帯域を使用して,ターゲットループット `Y` TPS と遅延予算 `L`ミリ秒で観測された実行を行います.加熱状態,安定状態,および予想されるピークロードの少なくとも1つの期間を含む十分な作業量を実行します.
+これらのバンドを使用して、目標スループット `Y` TPS および遅延予算 `L` ミリ秒で観測された実行を行います。ワークロードを、ウォームアップ、定常状態、そして予想されるピーク負荷の少なくとも1期間を含むのに十分な長さで実行してください。
 
 |バンド|条件|意味|
 | --- | --- | --- |
-|高い|受け入れられた吞吐量は `Y` 以上で, p95 コミット遅延度は `0.8 * L` 以下であり,キューは容量の10%未満であり,ビュー変更/回復カウンターは平らである.|部署は要求された作業量に十分なスペースを備えています|
-|中間 |受け入れられた吞吐量は `Y`に近い, p95 コミット遅延は `L` 以下の,並列は 50% の容量の以下で安定し,表示変更は稀である.|部署は有効だが 爆破容量は限られている|
-|低い|受け入れられた吞吐力は `Y` 以下のもので, p95 コミット遅延は `L` を超え,行走中に排列が増加するか,ビュー変化/バックプレッシャーカウンターは継続的に上昇する.|要求された作業量は,少なくとも1つのボトルネックスを上回る.|
+|高い|受け入れスループットは `Y` 以上であり、p95 プロトコル最終化レイテンシは `0.8 * L` 未満で、キューは容量の 10% 未満のままであり、ビュー変更／リカバリカウンタは横ばいです|そのデプロイメントには、要求されたワークロードの余裕があります|
+|中|受け入れられるスループットは`Y`に近く、p95プロトコル最終処理レイテンシは`L`以下であり、キューは容量の50％以下で安定しており、ビューの変更はまれです|デプロイは機能しますが、バースト耐性は限られています|
+|低い|受け入れられたスループットが`Y`未満であり、p95プロトコルの最終処理レイテンシが`L`を超え、実行中にキューが増加する、またはビュー変更／バックプレッシャーカウンターが継続的に上昇する|要求された作業負荷は少なくとも1つのボトルネックを超えています|
 
-キールールはキュー方向である.提出された TPS が約束された TPS より大きい場合,並びは増加し続けると,短いサンプルが健康に見えても,部署は過重になります.
+重要なルールはキューの方向です。提出された TPS が確定済みの TPS より大きく、キューが増え続けている場合、短いサンプルが正常に見えてもデプロイメントは過負荷です。
 
-## ノードカウントとクォーラム {#node-count-and-quorum}
+## ノード数とクォーラム {#node-count-and-quorum}
 
-より多くの検証装置は,故障耐性を向上させるが,調整,署名,およびネットワークアウトコストを増加させる. 現在の Sumeragi 実装では:
+バリデーターを増やすとフォールトトレランスは向上しますが、調整、署名、ネットワークファンアウトのコストが増加します。初回リリースの Sumeragi プロトコルでは次のことが必要です：
 
-- 検証者のカウント `n`は,故障予算 `f = floor((n - 1) / 3)` を導き出します.
-- `n >= 4` に対して,コミットクォーラムは `2f + 1`
-- `n <= 3` に対して,すべての検証者はコミットするために必要である.
-- 観測者は同期ブロックを編成するが,投票したり,提案したり,収集したりしない
+- 正確な`n = 3f + 1`投票委員会
+- `4 <= n <= 31`、したがって有効なサイズは4、7、10などです
+- 最終合意に必要な定足数 `2f + 1`
+- オブザーバーネットワークのピアはブロックを同期するが、投票、提案、または収集は行わない
 
-|検証者|欠陥予算|議決を決定する|容量に関する注意事項|
+|バリデーター|フォールト予算|コンセンサスの最終化定足数|容量メモ|
 | --- | --- | --- | --- |
-|1〜3 |0 実践的なオフラインスラック|すべての検証者|開発や小テストに役立つ.欠けている検証器は,コミットメントを遅らせる可能性があります |
-| 4 | 1 | 3 |単欠許容の共通最小値 |
-| 7 | 2 | 5 |より柔軟で 投票と広報のトラフィックが増加する|
-| 10 | 3 | 7 |高度な調整コスト ネットワークとコレクターの調節が重要だ |
+| 4 | 1 | 3 |単一障害耐性のための共通の最小値|
+| 7 | 2 | 5 |より回復力があり、より多くの投票と伝播トラフィックを持つ|
+| 10 | 3 | 7 |より高い調整コスト；ネットワークと入口のチューニングがより重要になる|
+| 31 | 10 | 21 |最大初回リリース委員会；ベンチマークの調整と署名コストを慎重に|
 
-"Xノード"を評価する際には,投票認証器を観察者から分離します.観測者を追加することは通常,検証器を加えるよりも費用が少なくなりますが,観測者は依然としてブロックゴシップ,ブロック同期,ディスク,およびネットワーク帯域幅を消費しています.
+ブロックチェーンのジェネシス生成とスタートアップ検証は、適合しない委員会サイズを拒否します；リリースが受け入れられないトポロジーをベンチマークしないでください。
 
-## 業績 に 影響 する 事柄 {#factors-that-influence-performance}
+「Xノード」を評価する際には、投票バリデータとオブザーバーを分けて考えてください。オブザーバーを追加する方が通常、バリデータを追加するよりコストは低いですが、オブザーバーもブロックのゴシップ、ブロックの同期、ディスク、ネットワーク帯域を消費します。
 
-### 作業負荷の形 {#workload-shape}
+## パフォーマンスに影響を与える要因 {#factors-that-influence-performance}
 
-同じ TPS は,それぞれの取引によって安価または高価である.記録:
+### ワークロードの形状 {#workload-shape}
 
-- 取引ごとに指示の数
-- 署名数とサインアルゴリズム
-- トランザクションバイトサイズとデコンプレスされたユーティフルロードサイズ
-- 読み書き比
-- メタデータサイズと資産運用
-- スマート契約,トリガー,および IVM 実行コスト
-- 同じ同級者に対して実行するクエリロード
+同じ TPS でも、取引ごとに何をするかによって安くなることも高くなることもあります。記録:
 
-小規模な転送取引は,契約重荷やメタデータ重荷の代弁ではありません.
+- トランザクションあたりの命令数
+- 署名数と署名アルゴリズム
+- トランザクションのバイトサイズと解凍後のペイロードサイズ
+- 読み書き比率
+- メタデータのサイズとアセット操作
+- スマートコントラクト、トリガー、そして IVM 実行コスト
+- 同じネットワークピアに対して実行されているクエリ負荷
 
-### 合意のタイミング {#consensus-timing}
+小規模な送金取引は、契約が多いワークロードやメタデータが多いワークロードの代理にはなりません。
 
-Sumeragi のタイミングは,有効な Sumeragi パラメータによって制御される.
+### コンセンサスケイデンス {#consensus-cadence}
 
-- `block_time_ms`
-- `commit_time_ms`
-- `min_finality_ms`
-- `pacing_factor_bps`
-- NPoS モードが有効である場合,NPoS 段階のタイムアウト
+有効な Sumeragi パラメータデータスナップショットには、署名された不変ブロックのケイデンスとクロックドリフトの上限が含まれています:
 
-検査は:
+- `block_cadence_ms`
+- `max_clock_drift_ms`
 
-```bash
-iroha --config ./localnet/client.toml ops sumeragi params
-curl -s "$TORII/v1/sumeragi/params" | jq .
-```
-
-ネットワーク,ストレージ,および実行層が対応している間のみ遅延を向上させることができる.変更や欠落のペイロード・フィッチ,またはバックプレッシャーが現れると,タイマーの低下は通常パフォーマンスを悪化させます.
-
-### コレクター・ファノート {#collector-fanout}
-
-コレクター設定は,コミット投票がどの程度迅速に収束するかを影響します:
-
-- `sumeragi.collectors.k` どのくらいの高さで投票を集めるか制御する
-- `sumeragi.collectors.redundant_send_r`は,地方のタイムアウト後に追加投票を制御します
-- `sumeragi.collectors.parallel_topology_fanout`は,コレクターと共にトポロジーを追加する.
-
-フォントアウトの増加は,より大きなまたは信頼性の低いネットワークにおける尾間遅延を減らすことができますが,トラフィックも増加します.これらの値を変更する前に,累積可用性とコレクターテレメトリーを遅延とバックプレッシャーメトリックと比較してください.
+それらを次で点検する:
 
 ```bash
-iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetry
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi params
 ```
 
-### ネットワーク条件 {#network-conditions}
+`block_cadence_ms` は署名付きブロックチェーンのジェネシスによって固定され、起動時にフリーズされます。これはライブの調整ノブではありません。異なる署名付きブロックチェーンのジェネシス入力を持つネットワークは、別々のベンチマークシナリオとしてのみ比較してください。ビューの変更、ペイロードの欠落による取得、またはバックプレッシャーが発生すると、短い周期のほうが持続可能なスループットを増やすよりも過負荷を目立たせることが多いです。
 
-合意の業績は以下に敏感である:
+### 候補およびイングレス境界 {#candidate-and-ingress-bounds}
 
-- RTT 検証者間の
-- 緊張感とパケット損失
-- ブロック用荷物および RBC パーツの帯域幅
-- 地域間の不対称なつながり
-- NAT,ピア接続を遅らせるファイアウォール,またはリレー行動
+ノードローカル Sumeragi の境界は、バリデーターが保持できる候補およびリカバリ作業の量を決定します:
 
-計画規則として,複数の検証者回帰旅行と実行およびディスクコミット時間をカバーするのに十分な遅延予算を設定します. p95ネットワーク RTT が既に望ましい p95コミット遅延に近づいている場合,ターゲットは現実的ではありません.
+- `sumeragi.block.max_transactions`
+- `sumeragi.block.max_payload_bytes`
+- `sumeragi.block.proposal_queue_scan_multiplier`
+- `sumeragi.queues.commands`
+- `sumeragi.queues.bodies` と `sumeragi.queues.body_bytes`
+- `sumeragi.queues.body_source_bytes`、`sumeragi.queues.chunks`、および`sumeragi.queues.ready_bodies`
 
-### 排列と入場制限 {#queues-and-admission-limits}
+小さすぎる境界はキューやペイロード回復の負荷を生じさせ、過大な境界は保持されるメモリと、悪用するネットワークピアに利用可能な作業量を増加させます。1つの制限を変更する前に、プロセスメモリ、メッセージ処理、欠落ボディのメトリクスと診断データのスナップショットを比較してください。
 
-アドミットとキュー設定は,ペアがどれだけの爆発圧力を吸収できるかを定義します:
+```bash
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi diagnostics
+```
+
+### ネットワーク環境 {#network-conditions}
+
+コンセンサスのパフォーマンスは以下に敏感です:
+
+- RTT バリデーター間
+- ジッターとパケット損失
+- ブロックペイロードおよび署名済み RS16 チャンクの帯域幅
+- 地域間の非対称リンク
+- NAT、ファイアウォール、またはネットワークピア接続を遅延させるリレーの挙動
+
+計画ルールとして、レイテンシ予算を、複数回のバリデータラウンドトリップと実行およびディスク永続化時間をカバーできるだけ十分に高く設定してください。もし p95 ネットワーク RTT がすでに望ましい p95 プロトコル確定レイテンシに近い場合、目標は現実的ではありません。
+
+### 待ち行列と入場制限 {#queues-and-admission-limits}
+
+アドミッションおよびキュー設定は、ネットワークピアが吸収できるバースト圧力の量を定義します。
 
 - `queue.capacity`
 - `queue.capacity_per_user`
+- `queue.max_retained_bytes`
 - `queue.transaction_time_to_live_ms`
-- ゲネススのトランザクション制限は,最大署名,指示,バイト,および解圧されたバイト
-- p2p 列の上限及び合意入場制限
+- ブロックチェーンのジェネシストランザクションの制限（最大署名数、命令数、バイト数、解凍後のバイト数など）
+- P2Pキューの上限とコンセンサスの入力制限
 
-高い排列容量はしばらくの間過剰な負荷を隠すことができますが,持続的な生産量を増やすことはできません.安定した排列は健康的です.増加する排列は滞り物です.
+高いキュー容量はしばらくの間オーバーロードを隠すことができますが、持続可能なスループットを増加させることはできません。安定したキューは健全であり、増加するキューはバックログです。
 
-### ハードウェアと収納 {#hardware-and-storage}
+### ハードウェアとストレージ {#hardware-and-storage}
 
-リーダーだけでなく すべての検証者を測る
+リーダーだけでなく、すべてのバリデーターを測定する:
 
-- CPU 認証,署名検証および実行中の飽和性
-- 列,スナップショット,およびアクティブ RBC セッションからのメモリ圧力
-- ブロックストレージとスナップショットのディスク書き込み遅延
-- ネットワークの送信/受信飽和性
-- 作業負荷によって使用された場合,オプションのハードウェア加速設定
+- CPU 検証、署名検証、および実行中の飽和
+- キュー、データスナップショット、およびペイロード回復バッファによるメモリ圧迫
+- ブロックストレージおよびデータスナップショットのディスク書き込みレイテンシ
+- ネットワーク送受信飽和
+- ワークロードで使用する場合のオプションのハードウェアアクセラレーション設定
 
-最も遅い投票認証器が ネットワークの尾間延期を決定できます
+最も遅い投票バリデーターがネットワークの末尾遅延を決定することができる。
 
 ## プロメテウスの信号 {#prometheus-signals}
 
-メトリック名は,ビルドプロフィールと機能セットによって異なります.まずノードで `/metrics` を検査し,その後利用可能なシリーズを囲むダッシュボードを作成します.
+メトリック名は、チェックインされたテレメトリカタログから取得されます。シリーズの利用可能性やサンプリングは、ビルド機能と`telemetry_profile`に依存するため、ダッシュボードを作成する前に対象ノードで`/metrics`を確認してください。
 
-一般的な信号は:
+一般的な信号には以下が含まれます:
 
-|信号|プロメテウスの例 |観るべきもの|
+|信号|Prometheusの例|何を見るか|
 | --- | --- | --- |
-|受け入れられた輸出量|`sum(rate(txs{type="accepted"}[5m]))`|安定状態で目標 TPS を満たすか超えなければならない|
-|拒否する|`sum(rate(txs{type="rejected"}[5m]))`|試験計画で説明できるはずです|
-|遅延を約束する|`histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))`|遅延予算と p95/p99を比較する|
-|列の深さ|`queue_size`, `sumeragi_tx_queue_depth` |負荷のピーク中に制限を保持すべきです|
-|列の飽和度|`sumeragi_tx_queue_saturated`|維持された非ゼロ値の平均負荷 |
-|変更を表示する|`view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` |増加する値はタイミング,トポロジー,有用な負荷,またはネットワーク障害を示します |
-|メッセージが落下した|`dropped_messages`, `sumeragi_consensus_message_handling_total` |負荷中の減少は通常遅延のピークを説明します|
-|RBC 圧力|`sumeragi_rbc_store_pressure`, `sumeragi_rbc_backpressure_deferrals_total` |役に立たない負荷回収や貯蔵のボトルネックスの非ゼロ圧力ポイント |
-|議決を決定する|`sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` |登録された署名は迅速に要求される数値に達すべきだ|
+|受理スループット| `sum(rate(txs{type="accepted"}[5m]))` |定常状態において、目標 TPS を達成するか、それを上回るべきです|
+|拒否| `sum(rate(txs{type="rejected"}[5m]))` |テスト計画で説明できるべきです|
+|プロトコルの確定遅延| `histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |p95/p99 をレイテンシー予算と比較する|
+|キューの深さ| `queue_size`、`sumeragi_tx_queue_depth` |ピーク時の負荷中は制限されたままであるべきです|
+|キュー飽和| `sumeragi_tx_queue_saturated` |持続的なゼロでない値は過負荷を意味します|
+|変更を表示| `view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` |値の上昇は、タイミング、トポロジー、ペイロード、またはネットワークの問題を示します|
+|ドロップされたメッセージ| `dropped_messages`、`sumeragi_consensus_message_handling_total` |負荷中のドロップは通常、レイテンシのスパイクを説明します|
+|ペイロードと DA の回収| `sumeragi_missing_block_requests`、`sumeragi_missing_block_oldest_ms`、`sumeragi_missing_block_fetch_total`、`sumeragi_da_gate_block_total`、`sumeragi_da_gate_satisfied_total` |しつこい要求、増加する年齢、または繰り返される DA ゲートは、体やチャンクの取得の問題を示しています|
+|コンセンサスの最終化定足数| `sumeragi_commit_signatures_counted`、`sumeragi_commit_signatures_required` |集計された署名は必要な定足数にすぐに達するはずです|
 
-メトリックが `/v1/sumeragi/status` にのみ存在する場合,プロメテウススクラップと同じランのアーテファクトで JSON スナップショットを捕まえます.
+メトリックが `/v1/sumeragi/status` にのみ存在する場合は、Prometheus スクレイプと同じ実行成果物に JSON のデータスナップショットを取得してください。
 
-## 推定ワークフロー {#estimation-workflow}
+## 見積もりワークフロー {#estimation-workflow}
 
-1. シナリオを定義する
-   - 検証者数と観察者の数
-   - 合意モード
+1. シナリオを定義する:
+   - バリデーター数とオブザーバー数
+   - コンセンサスモード
    - ターゲット TPS
-   - p95と p99のコミットメント遅延予算
-   - 取引ミックス
-   - 予想されるネットワーク RTT, jitter,および帯域幅
-2. 効果的な設定を記録する:
+   - p95およびp99プロトコル確定のレイテンシ予算
+   - 取引の種類
+   - 予想されるネットワーク RTT、ジッター、および帯域幅
+2. 有効な設定を記録してください：
 
    ```bash
-   iroha --config ./localnet/client.toml --output-format json ops sumeragi params \
+   iroha --config ./localnet/client.toml \
+     --operator-private-key-file "$OPERATOR_KEY_FILE" \
+     --output-format json ops sumeragi params \
      > artifacts/sumeragi-params.json
-   curl -s "$TORII/v1/sumeragi/collectors" \
-     > artifacts/sumeragi-collectors.json
+   iroha --config ./localnet/client.toml \
+     --operator-private-key-file "$OPERATOR_KEY_FILE" \
+     --output-format json ops sumeragi status \
+     > artifacts/sumeragi-status.json
+   iroha --config ./localnet/client.toml \
+     --operator-private-key-file "$OPERATOR_KEY_FILE" \
+     --output-format json ops sumeragi diagnostics \
+     > artifacts/sumeragi-diagnostics.json
    ```
 
-3. 作業負荷をターゲット TPS に実行する.
-4. 走行開始,中期,終了時の状態とメトリックを記録します.
-5. 実行を性能帯表で分類する.
-6. 帯が中低であれば 1つの要素を1つずつ変更して繰り返す
+3. ターゲット TPS でワークロードを実行してください。
+4. 実行の開始、中間、終了時にステータスと指標を記録する。
+5. パフォーマンスバンド表でランを分類してください。
+6. もしバンドが中程度または低い場合は、1つの要素を一度に変更して繰り返してください。
 
-## 基準報告テンプレート {#benchmark-report-template}
+## ベンチマークレポートテンプレート {#benchmark-report-template}
 
-性能番号を再現するのに十分な文脈のみで公開する.
+再現できる十分な文脈と共にのみ、パフォーマンスの数値を公開してください:
 
-- Iroha コミット,リリース,および特徴の旗
-- 検証者と観測者の数
-- 合意モードと Sumeragi パラメータ
-- コレクター `k`,冗長な送信 `r`,そしてトポロジー・ファヌート
-- テレメトリプロフィール
-- ハードウェア,ストレージ,および OS の詳細
-- ネットワーク RTT,ジッター,損失,および帯域幅の仮定
-- 取引ミックスと有用な負荷のサイズ
-- 提供された TPS および走行期間
-- 受け入れられた/拒否された TPS
-- p50/p95/p99 コミット遅延
-- 列の深さと飽和度
-- RBC 圧力,欠損のペイロードカウンタ
-- CPU,メモリ,ディスク,および認証器ごとにネットワーク利用
+- Iroha プロトコルの確定、リリース、および機能フラグ
+- バリデータおよびオブザーバーの数
+- コンセンサスモード、署名付きブロックのケイデンス、そして DA レイアウト
+- 正確な`3f + 1`委員会、定足数、およびオブザーバー名簿
+- `sumeragi.block`、`sumeragi.queues`、`sumeragi.limits`、network-ingress、およびtransaction-queueの境界
+- テレメトリープロファイル
+- ハードウェア、ストレージ、そして OS の詳細
+- ネットワーク RTT、ジッター、損失、帯域幅の前提
+- トランザクションの種類とペイロードサイズ
+- 提供された TPS と実行時間
+- 受理/拒否 TPS
+- p50/p95/p99 プロトコル最終化レイテンシ
+- キュー深度と飽和
+- ビューの変更、失われたメッセージ、欠落したブロックの取得、および DA-ゲートカウンター
+- CPU、各バリデーターごとのメモリ、ディスク、およびネットワーク使用率
 
-これらの詳細がなければ, TPS 番号は逸話であると考えられる.
+これらの詳細がなければ、TPS 番号は逸話的なものとして扱うべきです。
 
 ## 関連ページ {#related-pages}
 
-- [](./chaos-testing.md) Izanami で 混沌 テスト
-- [Torii エンドポイント](../../reference/torii-endpoints.md)
-- [動作する Iroha 3 経由 CLI](../../get-started/operate-iroha-via-cli.md)
-- [ピア・コンフィギュレーション参照](../../reference/peer-config/params.md)
+- [イザナミによるカオステスト](./chaos-testing.md)
+- [Torii API エンドポイント](../../reference/torii-endpoints.md)
+- [CLI を介して Iroha 3 を操作する](../../get-started/operate-iroha-via-cli.md)
+- [ネットワークピア設定リファレンス](../../reference/peer-config/params.md)

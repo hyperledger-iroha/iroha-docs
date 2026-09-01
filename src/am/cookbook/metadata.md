@@ -1,28 +1,28 @@
 ---
 translation_locale: am
 translation_source: /cookbook/metadata.md
-translation_source_hash: 238595124cd0a1b71900020d650fb208f844e051d2db4427801fe6405ff591c8
+translation_source_hash: bb486994faabb29fb48609a886862e44e565148be4800ec1244218ef37e2e54b
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# ሜታዳታ {#metadata}
+# ሜዳዳታ {#metadata}
 
-## ውጤቱ {#outcome}
+## ውጤት {#outcome}
 
-በ Taira ላይ ሜታዳታ ያንብቡ ፣ በግልጽ ክፍያ የሚከፈልበት ግብይት ጋር የአንድ የሂሳብ ሜታዳታ እሴት ያዘጋጁ እና ያረጋግጡ ፣ እና ዋጋውን እንደገና ያስወግዱ ። የመረጃ ቋት-ዕቃዎች ሜታዳታ ከግብይት ክፍያ ሜታዳታ የተለየ ይደረጋል ።
+በ Taira ላይ ሜታዳታ ያንብቡ፣ አንድ የመለያ ሜታዳታ እሴትን በግልፅ ክፍያ በሚከፍል ግብይት ያዘጋጁ እና ያረጋግጡ እና እሴቱን እንደገና ያስወግዱት። የብሎክቼይን መዝገብ ነገር ሜታዳታ ከግብይት ክፍያ ሜታዳታ እንዲለይ ያደርጋሉ።
 
 ## ቅድመ ሁኔታዎች {#prerequisites}
 
-- `curl`, `jq`, Python 11 ወይም ከዚያ በኋላ, እና የአሁኑ `iroha` CLI.
-- የገንዘብ ድጋፍ `taira.client.toml` እና `taira.tx-metadata.json` ከ [ጋር ይገናኙ Taira](./connect-to-taira.md).
-- የዒላማው መለያ ሜታዳታ ላይ ባለስልጣን። ምሳሌው የተዋቀረውን ባለስልጣን ራሱ ያነጣጠረ ሲሆን ሌላ መለያ ትክክለኛ ፈቃድ ይፈልጋል ።
+- `curl`፣ `jq`፣ Python 3.11 ወይም ከዚያ በኋላ፣ እና የአሁኑ `iroha` CLI።
+- በገንዘብ የተደገፈ `taira.client.toml` እና `taira.tx-metadata.json` ከ[ከ Taira ጋር ይገናኙ](./connect-to-taira.md)።
+- በዒላማው መለያ ሜታዳታ ላይ የፈቃድ ባለቤት። ምሳሌው የተዋቀረውን የፈቃድ ባለቤት ራሱ ያነጣጠረ ነው; ሌላ መለያ ትክክለኛ ፈቃድ ያስፈልገዋል።
 
 ## እርምጃዎች {#steps}
 
-### 1. ሜታዳታዎችን ያለ ፊርማ ማንበብ {#_1-read-metadata-without-a-signer}
+### 1. ያለ ምስጠራ ፈራሚ ሜታዳታ ያንብቡ {#_1-read-metadata-without-a-signer}
 
-ሜታዳታ ከ `Name` ወደ JSON ካርታ የተፈተነ ነው። ባዶ ካርታዎች እና ባዶ የተጣራ ውፅዓት ትክክለኛ ውጤቶች ናቸው።
+ሜታዳታ የተረጋገጠ `Name` ወደ JSON ካርታ ነው። ባዶ ካርታዎች እና ባዶ የተጣራ ውፅዓት ትክክለኛ ውጤቶች ናቸው።
 
 ```bash
 curl -fsS -H 'Accept: application/json' \
@@ -36,11 +36,11 @@ curl -fsS -H 'Accept: application/json' \
   | jq '.items[] | select((.metadata // {} | length) > 0)'
 ```
 
-ለትንሽ መግለጫ ወይም ኢንዴክሰሪንግ መስኮች ሜታዳታ ይጠቀሙ. ትላልቅ ጥቅማጥቅሞችን ከሊጀር አስወግዱ እና በምትኩ URI ወይም SoraFS ማጣቀሻን ያከማቹ ።
+ለአነስተኛ ገላጭ ወይም መረጃ ጠቋሚ መስኮች ሜታዳታ ይጠቀሙ። ትላልቅ ሸክሞችን ከብሎክቼይን መዝገብ ውጭ ያስቀምጡ እና በምትኩ የምስጠራ ዳይጀስት እሴት፣ URI ወይም SoraFS ማጣቀሻ ያከማቹ።
 
-### 2. የዒላማውን ሂሳብ ማውጣት {#_2-derive-the-target-account}
+### 2. የታለመውን መለያ ያውጡ {#_2-derive-the-target-account}
 
-ከ Taira ውቅር የሕዝብ ቁልፍን ብቻ ያንብቡ እና ወደ ካኖኒካል ጎራ የሌለው I105 ቅጽ ይቀይሩ ።
+የህዝብ ቁልፉን ከ Taira ውቅር ብቻ ያንብቡ እና ወደ ነጠላ ፕሮቶኮል-መደበኛ ጎራ አልባ I105 ቅጽ ይለውጡት።
 
 ```bash
 TAIRA_PUBLIC_KEY="$(python3 - <<'PY'
@@ -55,9 +55,9 @@ export TAIRA_ACCOUNT_ID="$(
 )"
 ```
 
-### አንድ JSON እሴት ያዘጋጁ። {#_3-set-one-json-value}
+### 3. አንድ JSON እሴት ያዘጋጁ {#_3-set-one-json-value}
 
-ከተለመደው ግብዓት የተነበበው JSON የሂሳብ ዋጋ `cookbook_profile` ይሆናል ። በተቃራኒው ፣ `--metadata ./taira.tx-metadata.json` የክፍያ መስኮችን ለግብይት ፖስታ ያያይዛል። ሁለቱ ካርታዎች የተለያዩ ግቦች እና ዓላማዎች አሏቸው ።
+ከመደበኛ ግቤት የተነበበው JSON የመለያው `cookbook_profile` እሴት ይሆናል። በአንፃሩ፣ `--metadata ./taira.tx-metadata.json` የክፍያ መስኮችን ከግብይት ውሂብ መያዣ ጋር ያያይዛል። ሁለቱ ካርታዎች የተለያዩ ኢላማዎች እና አላማዎች አሏቸው።
 
 ```bash
 printf '%s\n' \
@@ -71,17 +71,17 @@ printf '%s\n' \
       --key cookbook_profile
 ```
 
-የ CLI ክፍያ ይጠቀማል, ፊርማዎች, ያቀርባል, እና በነባሪ ይጠብቃል. በሚቀጥለው ክወና በዚህ ዋጋ ላይ የሚወሰን ጊዜ `--no-wait` አይጨምርም.
+CLI ክፍያውን ይጠቅሳል፣ ይፈርማል፣ ያስገባል እና በነባሪነት ይጠብቃል። የሚቀጥለው ክዋኔ በዚህ እሴት ላይ በሚመረኮዝ ጊዜ `--no-wait` አይጨምሩ።
 
-::: warning የተፈቀደለት ገደብ
+::: warning የፍቃድ ወሰን
 
-እያንዳንዱን ነገር ማን ሊለውጠው እንደሚችል የሚወስነው ንቁ ማረጋገጫ ነው። ሌላ መለያ ማዘመን በተለምዶ `CanModifyAccountMetadata` ይጠይቃል; ጎራዎች ፣ የንብረት ትርጓሜዎች ፣ NFTs እና አስነሳሾች የራሳቸው ዒላማ-ተኮር ሜታዳታ ፈቃድ አላቸው ። Taira የተጠየቀውን ስልጣን ካልሰጠ ፣ ተመሳሳይ የሂሳብ ትዕዛዞችን በ `./localnet/client.toml` ያካሂዱ ፣ የተፈጠረውን የአካባቢያዊ አውታረ መረብ ባለስልጣን ካኖኒካል I105 ID ይተኩ እና Taira ክፍያ ሜታዳታ ፋይልን ያስወግዱ ።
+ንቁ አረጋጋጩ እያንዳንዱን ነገር ማን እንደሚቀይር ይወስናል። ሌላ መለያ ማዘመን በመደበኛነት `CanModifyAccountMetadata` ያስፈልገዋል; ጎራዎች፣ የንብረት ፍቺዎች፣ NFTs እና ቀስቅሴዎች የራሳቸው ኢላማ-ተኮር ሜታዳታ ፈቃዶች አሏቸው። Taira የሚፈለገውን የፈቃድ ባለቤት ካልሰጠ፣ ተመሳሳይ የመለያ ትዕዛዞችን በ`./localnet/client.toml` ያሂዱ፣ የመነጨውን የlocalnet የፈቃድ ባለቤት ነጠላ ፕሮቶኮል-ስታንዳርድ I105 መታወቂያ ይተኩ እና የ Taira ክፍያ ሜታዳታ ፋይልን ይተዉት። ግልጽ የሆነውን የአካባቢ ክፍያ ከፋይ ምርጫ ያቆዩ።
 
 :::
 
-### 4. ቁልፉን አስወግድ። {#_4-remove-the-key}
+### 4. ቁልፉን ያስወግዱ {#_4-remove-the-key}
 
-በመጀመሪያ የተሰጠውን ዋጋ አንብበው፣ ከዚያም የተለየ የማስወገድ ግብይት ያቅርቡ።
+በመጀመሪያ የተጠናቀቀውን እሴት ያንብቡ እና የተለየ የማስወገጃ ግብይት ያስገቡ።
 
 ```bash
 iroha --config ./taira.client.toml --machine ledger account meta get \
@@ -100,11 +100,11 @@ iroha --config ./taira.client.toml \
   --key cookbook_profile
 ```
 
-ለ Python አፕሊኬሽኖች ፣ የሚዛመዱ የተጻፉ ገንቢዎች `Instruction.set_account_key_value` እና `Instruction.remove_account_key_value` ናቸው; ከግብይት ሜታዳታ እና ከ [ Python መማሪያ ](/am/guide/tutorials/python.md#shared-setup) ጋር ያቅርቡት.
+ለ Python መተግበሪያዎች፣ ተዛማጅ የተተየቡ ግንበኞች `Instruction.set_account_key_value` እና `Instruction.remove_account_key_value` ናቸው። ከግብይቱ ሜታዳታ እና ከ[Python አጋዥ ስልጠና](/am/guide/tutorials/python.md#shared-setup) በመጠባበቂያ ረዳት ያስገቡዋቸው።
 
-## ያረጋግጡ {#verify}
+## አረጋግጥ {#verify}
 
-ከተቀመጠው ግብይት በኋላ `meta get` ዕቃውን በ `version: 1` መመለስ አለበት። ከወሰዱ በኋላ ቀጥተኛ ፍለጋ ከእንግዲህ ዋጋን መመለስ የለበትም።
+ከተቀመጠው ግብይት በኋላ `meta get` እቃውን በ `version: 1` መመለስ አለበት። ከተወገደ በኋላ፣ ቀጥተኛ ፍለጋ ከአሁን በኋላ እሴት መመለስ የለበትም -
 
 ```bash
 iroha --config ./taira.client.toml --machine ledger account get \
@@ -120,22 +120,22 @@ else
 fi
 ```
 
-በተለየ የሂሳብ ንባብ የጎደለውን ሜታዳታ ቁልፍ ከአውታረ መረብ ወይም ከሂሳብ ብልሽት ይለያል። የምርት ኮድ ደግሞ ሙሉውን JSON እሴት ካስቀመጠ በኋላ ማረጋገጥ አለበት ።
+የተለየ መለያ የተነበበ የጎደለውን ሜታዳታ ቁልፍ ከአውታረ መረብ ወይም ከመለያ ውድቀት ይለያል። የምርት ኮድ ካቀናበረ በኋላ ሙሉውን JSON እሴት ማረጋገጥ አለበት።
 
-## ችግሮችን መፍታት {#troubleshooting}
+## መላ ፍለጋ {#troubleshooting}
 
-- መደበኛ ግብዓት አንድ ትክክለኛ JSON ዋጋ ሊኖረው ይገባል ። ገመዶች JSON ጥቅሶች ያስፈልጋሉ ፣ ዕቃዎች እና ቅጥያዎች በደንብ የተዋቀሩ መሆን አለባቸው።
-- የሜታዳታ ቁልፎች `Name` እሴቶች ናቸው እና ከፓንስ በኋላ ለጉዳዩ ስሜታዊ ናቸው። ለእያንዳንዱ መርሃግብር ለውጥ ስሪት ቁልፎችን ከመፍጠር ይልቅ የተረጋጋ ቁልፍ ቃላት ይያዙ ።
-- `--metadata` የግብይት ሜታዳታ ነው; ይህ የመረጃ ቋት-ዕቃዎች ሜታዳታ አያዘጋጅም። ለኋለኛው የድርጅት `meta set` ንዑስ ትዕዛዝ ይጠቀሙ።
-- አንድ ስኬታማ ማቅረቢያ ከቀድሞው አንባቢ በኋላ የስርጭት መዘግየት ሊሆን ይችላል። ለተተገበረ ፍፃሜ ይጠብቁ እና እንደገና ከመላክዎ በፊት ጥያቄውን እንደገና ይሞክሩ።
-- ፍቃድ መከልከል የዒላማውን ነገር እና የሥልጣን ወሰን ይገልጻል። በአካባቢው እንደገና ይለማመዱ ወይም ትክክለኛውን ምልክት ይጠይቁ; የመዳረሻ ቁጥጥርን ለማስወገድ የግል የመተግበሪያ መረጃዎችን ወደ ህዝባዊ ሜታዳታ መስክ አይንቀሳቀሱ ።
-- የግል ቁልፎችን፣ ጥሬ የግል መታወቂያዎችን፣ የመዳረሻ ኮዶችን ወይም ትላልቅ ሰነዶችን በሜታዳታ ውስጥ በጭራሽ አታስቀምጥ።
+- መደበኛ ግቤት አንድ ትክክለኛ JSON እሴት መያዝ አለበት። ሕብረቁምፊዎች JSON ጥቅሶች ያስፈልጋቸዋል; እቃዎች እና ድርድሮች በደንብ መፈጠር አለባቸው.
+- የሜታዳታ ቁልፎች `Name` እሴቶች ናቸው እና ከተተነተኑ በኋላ ለጉዳይ ስሜታዊ ናቸው። ለእያንዳንዱ የመርሃግብር ለውጥ የተስተካከሉ ቁልፎችን ከመፍጠር ይልቅ የተረጋጋ የቁልፍ መዝገበ ቃላት ያስቀምጡ።
+- `--metadata` የግብይት ሜታዳታ ነው; . የብሎክቼይን መዝገብ ነገር ሜታዳታ አያዘጋጅም። ለኋለኛው የድርጅቱን `meta set` ንዑስ ትዕዛዝ ይጠቀሙ።
+- የተሳካ ማስረከቢያ እና የድሮ ንባብ ተከትሎ የማሰራጨት መዘግየት ሊሆን ይችላል። የተተገበረውን የመጨረሻነት ይጠብቁ እና እንደገና ከማስገባትዎ በፊት ጥያቄውን እንደገና ይሞክሩ።
+- የፍቃድ አለመቀበል የታለመውን ነገር እና የፍቃድ ርእሰ መምህሩን ድንበር ይለያል። በአገር ውስጥ ይለማመዱ ወይም ትክክለኛውን ቶከን ይጠይቁ; የመዳረሻ መቆጣጠሪያ ችግሮችን ለማስወገድ የግል መተግበሪያ ውሂብን ወደ ይፋዊ ሜታዳታ መስክ አያንቀሳቅሱ።
+- የግል ቁልፎችን፣ ጥሬ የግል መለያዎችን፣ የመዳረሻ ቶከኖችን ወይም ትላልቅ ሰነዶችን በሜታዳታ በጭራሽ አያስቀምጡ።
 
 ## ምንጭ እና ተዛማጅ ሰነዶች {#source-and-related-docs}
 
-- [የሜታዳታ መጠይቅ ውህደት ሙከራዎች በፒን የተደረገለት ተልእኮ ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/queries/metadata.rs)
-- [Python SDK የግብይት ገንቢዎች በተቀመጠው ተሳትፎ ላይ ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/README.md)
-- [ሜታ መረጃዎች](/am/blockchain/metadata.md)
-- [ሜታዳታ እና መቁጠሪያ ማከማቻ አማራጮች ](/am/guide/configure/metadata-and-store-assets.md)
-- [መመሪያ ማጣቀሻ ](/am/reference/instructions.md)
-- [የፈቃድ ማስያዣዎች](/am/reference/permissions.md)
+- [በተሰካው የምንጭ-ኮድ ክለሳ ላይ የሜታዳታ መጠይቅ ውህደት ሙከራዎች](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/queries/metadata.rs)
+- [Python SDK የግብይት ግንበኞች በተሰካው የምንጭ-ኮድ ክለሳ ላይ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/README.md)
+- [ሜዳዳታ](/am/blockchain/metadata.md)
+- [ሜታዳታ እና blockchain መዝገብ ማከማቻ ምርጫዎች](/am/guide/configure/metadata-and-store-assets.md)
+- [የመመሪያ ማጣቀሻ](/am/reference/instructions.md)
+- [የፍቃድ ምልክቶች](/am/reference/permissions.md)

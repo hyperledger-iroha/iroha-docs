@@ -1,31 +1,31 @@
 ---
 translation_locale: mn
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: 62d6f434e5af4213420c456ee27ebdc260c8b0e9f7a85bc3ba955ee9c79a058d
+translation_source_hash: f2411fec1cc35b1bf7795a7ab5a0eb7a8eb6b60b4799ebf3db47208b902f87e6
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Kotlin, Android, Java {#kotlin-android-and-java}
+# Kotlin, Android, ба Java {#kotlin-android-and-java}
 
-Үндсэн хуулийн Kotlin SDK Энэ нь түгээмэл үйлчлүүлэгч барилгын JVM болон Android Хэрэглээний тухай. `kotlin/` УИХ-ын Iroha хадгаламж болон платформын дагуу хуваагдаж байгаа тул нэвтрүүлэгтэй код нь олж чадахгүй Android хамааралтай.
+Kotlin SDK нь JVM ба Android програмуудын анхдагч клиентийн стек юм. Энэ нь Iroha хадгалах сангийн `kotlin/` дор байрладаг ба платформоор хуваагддаг тул зөөвөрлөх боломжтой код нь Android хамаарлыг авахгүй.
 
 ## Модулууд {#modules}
 
-|Артифакт |Үргэлт|Хэрэглээ|
+|Эрдэнэс|Төрөл| Ашиглах |
 | --- | --- | --- |
-|`org.hyperledger.iroha.sdk:core-jvm` |JAR |Цэвэр Kotlin/JVM Norito, мэдээллийн загвар, крипто, гүйлгээ, Torii, протоколын код |
-|`org.hyperledger.iroha.sdk:client-android` |AAR |Android түлхүүр дэлгүүр, төхөөрөмжийн телеметрийн болон JNI-ийн дэмжлэгтэй үйлчлүүлэгчдийн нэгтгэл |
-|`org.hyperledger.iroha.sdk:offline-wallet-android` |AAR |Android `client-android` дээр суурилсан гарын үсэггүй хөрөнгийн тээвэрлэлт, интеграцлал |
+| `org.hyperledger.iroha.sdk:core-jvm` | JAR |Цэвэр Kotlin/JVM Norito, өгөгдлийн загвар, крипто, гүйлгээ, Torii, ба протоколын код|
+| `org.hyperledger.iroha.sdk:client-android` | AAR |Android түлхүүр хадгалах сан, төхөөрөмжийн алсын мэдээлэл, болон JNI-н дэмжлэгтэй клиент интеграцчилал|
+| `org.hyperledger.iroha.sdk:offline-wallet-android` | AAR | Android офлайн-вэлэт тээвэрлэлтийн систем ба `client-android` дээр суурилсан интеграц|
 
-Энэхүү артефактууд нь Maven Central-д хэвлэгдсэнгүй. Тэднийг Iroha эх үүсвэрийн шинэчилсэн найруулгаас орон нутгийн хувьд бүтээж хэвлүүлээрэй:
+Эдгээр бүтээлүүдийг одоогоор Maven Central-д нийтлээгүй байна. Тэдгээрийг локальноо барьж, Pinned Iroha эх хувилбараас нийтлэнэ үү:
 
 ```bash
 cd kotlin
 ./gradlew publishToMavenLocal
 ```
 
-Дараа нь зөвхөн таны хүсэлтэд шаардлагатай артефактыг сонгох:
+Дараа нь таны програмд хэрэгтэй ганц л бүтээлээс сонгоно уу:
 
 ```kotlin
 repositories {
@@ -41,40 +41,40 @@ dependencies {
 }
 ```
 
-`core-jvm` нөөцтэй Android Үндсэн хуулийн дагуу Android хэрэглэгчийн болон түлхүүр хадгаламжийн код `client-android`, болон ашиглах `offline-wallet-android` . Android- зөвхөн гарын үсэггүй мөнгөн тэмдэгт JNI урсгал.
+`core-jvm` нь Android хамааралгүй. Android клиент болон түлхүүрийн кодыг `client-android`-д хадгалаад, зөвхөн Android-ийн офлайн түрийвч болон JNI урсгалд `offline-wallet-android`-ыг ашигла.
 
-## Kotlin болон Java-ийн нийцүүлэл {#kotlin-and-java-compatibility}
+## Kotlin ба Java нийцтэй байдал {#kotlin-and-java-compatibility}
 
-Олон нийтийн API нь хамгийн түрүүнд Kotlin-д байдаг бөгөөд JVM дуудлага авагчдад шаардлагатай үед Java interopг хангадаг. тэнцүү өөрчлөлтийг холбогдох `java/` хэрэгжилтэд харуулж байна. Шинэ Android интеграцын эхлэл нь дээрх Kotlin артефакттай эхэлнэ.
+Олон нийтийн API нь Kotlin-т эхний ээлжинд бөгөөд JVM хүсэлт гаргаж буй клиентүүд шаардлагатай үед Java нийцүүлэлтийг хангаж өгдөг. Тохирох `java/` хэрэгжилтэд тэнцэх өөрчлөлтүүд нь тусгагдсан байдаг. Шинэ Android интеграцчлалууд дээр дурдсан Kotlin объектуудаар эхлэх ёстой.
 
-Бүгд Kotlin модуль нь хүчин төгөлдөр JDK 8 API нийцүүлэлт хийх үед `-Xjdk-release=8`, барилгын хэрэгслийн сүлжээ өөрөө ашигладаг ч JDK 21. хэрэглэхгүй JDK 9+ APIs цаашид SDK Код.
+Бүх Kotlin модулууд JDK 8 API нийцтэй байдлыг `-Xjdk-release=8` дээр компайл хийх үеэр шаардана, хэдийгээр барилгын хэрэгслийн бүрэлдэхүүн өөрөө JDK 21-г ашигладаг. SDK кодод JDK 9+ APIs ашиглаж болохгүй.
 
-## Хөгжүүлэн туршиж үзээрэй {#build-and-test}
+## Бариж, Туршиж үзэх {#build-and-test}
 
-Хөдөлмөрийн хэрэгслийн JVM шинжилгээг гүйцэтгэх:
+Зөөврийн JVM туршилтуудыг ажиллуулна уу:
 
 ```bash
 cd kotlin
 ./gradlew :core-jvm:test --console=plain
 ```
 
-Android артефактын бүтэц:
+Android үйлдвэрлэлийг бүтээгээрэй:
 
 ```bash
 ./gradlew :client-android:assembleRelease \
   :offline-wallet-android:assembleRelease --quiet
 ```
 
-## Одоогоор хамааралтай {#current-coverage}
+## Одоогийн хамрах хүрээ {#current-coverage}
 
-Kotlin SDK нь:
+Kotlin SDK нь дараах зүйлийг агуулна:
 
-- Norito кодлох, унтраах
-- санхүүгийн бүртгэл, активын хаягийг зохицуулах
-- гүйлгээний бүтээн байгуулалт, гарын үсэг зурах, офлайн хуудас
-- Torii HTTP, WebSocket болон SSE үйлчлүүлэгчдэд
-- олон гарын үсэг, захиалга, SoraFS, Nexus болон Connect загвар
-- Android тоног төхөөрөмжийн түлхүүгийн дэлгүүр болон телеметрийн интеграц
-- Android галтгүй QR, ойрхон, NFC тээврийн
+- Norito кодчилол ба код тайлалт
+- нэг протокол-стандарт данс болон хөрөнгийн хаягийн удирдлага
+- үйлдлийн барилга, гарын үсэг зурах, оффлайн өгөгдлийн савнууд
+- Torii HTTP, WebSocket, болон SSE үйлчлүүлэгчид
+- олон гарын үсэг, захиалга, SoraFS, Nexus, болон Холбоос загварууд
+- Android түлхүүр хадгалах сан ба төхөөрөмжийн телеметри интеграцчлалууд
+- Android офлайн QR, ойрхон, ба NFC тээвэрлэлт
 
-[Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/kotlin/README.md) нь модулийн тусгай APIs болон тод бүтээн байгуулалтын тушаалуудыг үзнэ үү.
+[Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/kotlin/README.md)-г харж, модульд онцлогтой APIs болон яг барилгын командуудыг үзнэ үү.

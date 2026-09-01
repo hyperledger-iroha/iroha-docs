@@ -3,32 +3,32 @@ translation_locale: am
 translation_source: /blockchain/accounts.md
 translation_source_hash: 015a85d81c44b7ef7f13cdafb2ed8e493ef512b94dc500939655c70285eac3bd
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# ሂሳቦች {#accounts}
+# መለያዎች {#accounts}
 
-አንድ ሂሳብ ግብይቶች መፈረም እና የራሱን መቁጠሪያ ሁኔታ ሊኖረው የሚችል ባለስልጣን ነው. አሁን ባለው Iroha 3 የመረጃ ሞዴል ውስጥ, `AccountId` ቀኖናዊ እና ጎራ የሌለው ነው: ከሂሳቡ ተቆጣጣሪ የተወሰደ ሲሆን በካኖኒካዊ መንገድ እንደ [I105](/am/reference/i105.md) ይገለጻል. ለሰው ሊነበብ የሚችል ጎራ እና የመረጃ ቦታ አውድ በተናጠል የሂሳብ-አልባ ስያሜ አገናኞች ውስጥ ይካተታል ።
+መለያ ግብይቶችን መፈረም እና የብሎክቼይን መዝገብ ሁኔታ ባለቤት የሆነ የፈቃድ ባለቤት ነው። አሁን ባለው Iroha 3 የውሂብ ሞዴል፣ `AccountId` ነጠላ ፕሮቶኮል-ስታንዳርድ እና ጎራ የሌለው ነው። ከመለያ ተቆጣጣሪው የተገኘ እና በነጠላ ፕሮቶኮል-መደበኛ ቅጽ እንደ [I105](/am/reference/i105.md) ተቀምጧል። በሰው ሊነበብ የሚችል ጎራ እና የውሂብ ቦታ አውድ የተለየ መለያ-ተለዋጭ ማሰሪያዎች ናቸው።
 
 ## መዋቅር {#structure}
 
-የተመዘገበ `Account` የሚከተሉትን ያካትታል፦
+የተመዘገበ `Account` የሚከተሉትን ያጠቃልላል -
 
-- `id`: ቀኖናዊው `AccountId`
-- `metadata`: የትርጉም ሂሳብ ሜታዳታ
-- `label`: አማራጭ የተረጋጋ ስያሜ
-- `uaid`: በ Nexus ፍሰቶች ጥቅም ላይ የሚውለው አማራጭ የዩኒቨርሳል ሂሳብ ID
-- `opaque_ids`: ከሂሳቡ UAID ጋር የተያያዙ ግልጽ ያልሆኑ መለያዎች።
+- `id` ነጠላ ፕሮቶኮል-መደበኛ `AccountId`
+- `metadata` የዘፈቀደ መለያ ሜታዳታ
+- `label` አማራጭ የተረጋጋ ተለዋጭ ስም
+- `uaid` በ Nexus ፍሰቶች ጥቅም ላይ የሚውል አማራጭ ሁለንተናዊ መለያ መታወቂያ
+- `opaque_ids` ከመለያው ጋር የተሳሰሩ ግልጽ ያልሆኑ መለያዎች UAID
 
-አንድ መለያ ለመፍጠር ጥቅም ላይ የዋለው የግብይት ጭነት `NewAccount` ነው። የተመዘገበው መለያ የሚጠቀምበትን ተመሳሳይ መታወቂያ, ሜታዳታ, መለያ, UAID እና ግልጽ ያልሆነ ID መስኮች ይይዛል.
+መለያ ለመፍጠር ጥቅም ላይ የሚውለው የግብይት ጭነት `NewAccount` ነው። በተመዘገበው መለያ የሚጠቀሙባቸውን ተመሳሳይ ማንነት፣ ሜታዳታ፣ መለያ፣ UAID እና ግልጽ ያልሆኑ የመታወቂያ መስኮችን ይይዛል።
 
-`uaid` የካኖኒካዊውን `AccountId`; የሚተካው አይደለም. Nexus አገልግሎቶች በመረጃ ማዕከላት ላይ የተረጋጋ ተጠቃሚ ወይም ድርጅት አያያዝ ያስፈልጋቸዋል ፣ የግላዊነትን የሚጠብቁ ምዝገባዎች ፣ የስራ ሰዓት አንድ-ወደ-አንድ UAID- ወደ ሂሳብ ማውጫ፣ ግልጽ ያልሆኑ መለኪያዎች በኤሌክትሮኒክ UAID, እና ሁለገብ ወይም የሚጋጩ ግልጽ ያልሆኑ መለኪያዎችን አይቀበልም. [FHE እና UAID](/am/blockchain/sora-nexus-services.md#fhe-and-uaid) ለ Nexus የአገልግሎት ደረጃ ፍሰት.
+`uaid` ነጠላ ፕሮቶኮል-ደረጃውን ያሟላል `AccountId`; አይተካውም. Nexus አገልግሎቶች በዳታ ቦታዎች፣ ግላዊነትን የሚጠብቅ ምዝገባ ወይም የአገልግሎት አቅም ፍለጋ ላይ የተረጋጋ ተጠቃሚ ወይም ድርጅት አያያዝ ሲፈልጉ ይጠቀሙበት። የሶፍትዌር ማስፈጸሚያ አካባቢ ከአንድ ለአንድ UAID-ወደ-መለያ መረጃ ጠቋሚን ይይዛል፣ ግልጽ ያልሆኑ መለያዎች በ UAID በኩል እንዲያያዙ ይፈልጋል፣ እና የተባዙ ወይም የሚጋጩ ግልጽ ያልሆኑ መለያዎችን ውድቅ ያደርጋል። ለ Nexus የአገልግሎት-ንብርብር ፍሰት [FHE እና UAID](/am/blockchain/sora-nexus-services.md#fhe-and-uaid)ን ይመልከቱ።
 
-## የሂሳብ ተቆጣጣሪዎች {#account-controllers}
+## መለያ ተቆጣጣሪዎች {#account-controllers}
 
-መቆጣጠሪያው ሂሳቡ እርምጃዎችን እንዴት እንደሚፈቅድ ይገልጻል። ነባሪው የደንበኛ ፍሰት ኤድ 25519 ቁልፍ ጥንድን ይጠቀማል ፣ ግን የመረጃ ሞዴሉ እንደ ባለብዙ ፊርማ ፖሊሲ መቆጣጠሪያዎች ያሉ የበለጠ ሀብታም መቆጣጠሪያንም ይደግፋል ።
+ተቆጣጣሪው መለያው ድርጊቶችን እንዴት እንደሚፈቅድ ይገልፃል። ነባሪው የደንበኛ ፍሰት የ Ed25519 ቁልፍ ጥንድ ይጠቀማል፣ ነገር ግን የውሂብ ሞዴሉ እንደ ባለብዙ ፊርማ ፖሊሲ ተቆጣጣሪዎች ያሉ የላቁ ተቆጣጣሪዎችን ይደግፋል።
 
-የደንበኛው ውቅር የመፈረም ባለስልጣንን ከባልደረባው ውቅር በተናጠል ያስቀምጣል-
+የደንበኛ ውቅር የፊርማ የፈቃድ ባለቤትን ከአውታረ መረብ አቻ ውቅር ተለይቶ ያከማቻል -
 
 ```toml
 [account]
@@ -36,18 +36,18 @@ public_key = "ed0120..."
 private_key = { digest_function = "ed25519", payload = "..." }
 ```
 
-ተመልከት [የደንበኛው ውቅር](/am/guide/configure/client-configuration.md) እና [ቁልፍ ትውልድ](/am/guide/security/generating-cryptographic-keys.md) ለወቅቱ ቁልፍ ቅርጸቶች።
+ለአሁኑ ቁልፍ ቅርጸቶች [የደንበኛ ውቅር](/am/guide/configure/client-configuration.md) እና [ቁልፍ ትውልድ](/am/guide/security/generating-cryptographic-keys.md) ይመልከቱ።
 
-## Taira ላይ ይሞክሩት {#try-it-on-taira}
+## ይህንን የስራ ፍሰት በ Taira ላይ ያሂዱ {#try-it-on-taira}
 
-ከህዝባዊ Taira የሙከራ ኔት የተገኙ ጥቂት የካኖኒክ ሂሳቦችን IDs ይዘርዝሩ:
+ከህዝብ Taira የሙከራ መረብ ጥቂት ነጠላ ፕሮቶኮል-መደበኛ መለያ መታወቂያዎችን ይዘርዝሩ -
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/accounts?limit=5' \
   | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
 ```
 
-የሂሳብን ንብረቶች ለመፈተሽ ከመጀመሪያው ጥሪ ጀምሮ ID ሂሳቡን ቅጂ ያድርጉ እና ወደ ዱካው ከማስገባትዎ በፊት URL-ይኮድ ያድርጉት። ይህ Python ቅንጥብ ለመጀመሪያው የተዘረዘረው ሂሳብ ይህን ያደርጋል
+የመለያ ንብረቶችን ለመመርመር የመለያ መታወቂያን ከመጀመሪያው ቴክኒካል ጥሪ ይቅዱ እና በመንገዱ ላይ ከማስቀመጥዎ በፊት URL-ኮድ ያድርጉት። ይህ Python ቅንጭብ ለመጀመሪያው የተዘረዘረው መለያ ያንን ያደርጋል -
 
 ```bash
 python3 - <<'PY'
@@ -67,33 +67,33 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-ሂሳቡን መፍጠር ወይም ማዘመን የተፈረመ ግብይት ነው እናም ከፋይሌት የገንዘብ ድጋፍ ይጠይቃል Taira በ ውስጥ የተገለጸው ውቅር [ጋር ይገናኙ SORA Nexus የመረጃ ቋቶች](/am/get-started/sora-nexus-dataspaces.md).
+እነዚህ ይፋዊ ንባቦች ናቸው። መለያ መፍጠር ወይም ማዘመን የተፈረመ ግብይት ነው እና በ[ከ SORA Nexus የውሂብ ቦታዎች ጋር ይገናኙ](/am/get-started/sora-nexus-dataspaces.md) ውስጥ የተገለጸውን በቴስትኔት የገንዘብ ድጋፍ የሚደረግለት Taira ማዋቀርን ይጠይቃል።
 
-## ምዝገባ እና ፍቃዶች {#registration-and-permissions}
+## ምዝገባ እና ፈቃዶች {#registration-and-permissions}
 
-ሂሳቦች በአጠቃላይ [`Register` እና `Unregister`](/am/blockchain/instructions.md#un-register) መመሪያዎች ተመዝግበዋል እና አልተመዘገቡም ። ማን መለያዎችን መፍጠር እንደሚችል እና የትኞቹ ፍቃድ ቶከኖች ወይም ሚናዎች ያስፈልጋሉ የሚለውን የሚወስነው ንቁ የሂደት ጊዜ ማረጋገጫ ነው.
+መለያዎች የተመዘገቡ እና ያልተመዘገቡ ናቸው [`Register` እና `Unregister`](/am/blockchain/instructions.md#un-register) መመሪያዎች. የነቃ የሶፍትዌር ማስፈጸሚያ አካባቢ አረጋጋጭ ይወስናል ማን መለያዎችን መፍጠር ይችላል እና የትኞቹ የፍቃድ ቶከኖች ወይም ሚናዎች ያስፈልጋሉ።
 
-ከተመዘገበ በኋላ ሂሳቡ የሚከተሉትን ማድረግ ይችላል፦
+ከተመዘገቡ በኋላ አንድ መለያ የሚከተሉትን ማድረግ ይችላል
 
-- ግብይቶችን መመዝገብ
-- ባለቤትነት ያላቸው ንብረቶች
+- ግብይቶችን ይፈርሙ
+- ንብረቶችን ይያዙ
 - የራሳቸው ጎራዎች
-- ሚናዎችን እና የመፈቃደሪያ ምልክቶችን መቀበል
-- የማከማቻ ሜታዳታ
-- እነዚህ ባህሪያት ሲፈቀዱ በ ‹alias› ፣ በ ‹ rekey› ፣ በማገገም እና በ Nexus ማንነት ፍሰቶች ውስጥ ይሳተፉ
+- ሚናዎችን እና የፍቃድ ምልክቶችን ይቀበሉ
+- ሜታዳታ ያከማቹ
+- እነዚያ ባህሪያት ሲነቁ ተለዋጭ ስም፣ ዳግም ኪይ፣ መልሶ ማግኛ እና Nexus የማንነት ፍሰቶች ውስጥ ይሳተፉ
 
-## የማንነት ችግሮችን መፍታት {#troubleshooting-identity-issues}
+## የማንነት ችግሮችን መላ መፈለግ {#troubleshooting-identity-issues}
 
-አንድ ግብይት ባልተጠበቀ ሁኔታ ተቀባይነት ካላገኘ የሚከተሉትን ያረጋግጡ፦
+ግብይቱ ባልተጠበቀ ሁኔታ ውድቅ ከተደረገ፣ የሚከተሉትን ያረጋግጡ -
 
-- የደንበኛው የሕዝብ ቁልፍ ለመፈረም ጥቅም ላይ የዋለው የግል ቁልፍ ጋር ይዛመዳል
-- ሂሳቡ በጄኔሲስ ወይም በተቀበለው ግብይት ተመዝግቧል
-- ባለሥልጣኑ መመሪያው የሚጠይቀውን ፈቃድ አለው
-- ጥብቅ የሂሳብ መስኮች ቀኖናዊውን I105 ሂሳብ ID ይጠቀማሉ ፣ ሊነበቡ የሚችሉ ስሞች ግን በንቃት የሂሳብ ቅጽል ስም ማያያዝ በኩል ይፈታሉ።
+- የደንበኛው የህዝብ ቁልፍ ለመፈረም ጥቅም ላይ ከሚውለው የግል ቁልፍ ጋር ይዛመዳል
+- መለያው በብሎክቼይን ጀነሲስ ወይም በተጠናቀቀ ግብይት ተመዝግቧል
+- የፈቃድ ርዕሰ መምህሩ በመመሪያው የሚፈለጉት ፈቃዶች አሉት
+- ጥብቅ የመለያ መስኮች ነጠላ ፕሮቶኮል-ስታንዳርድ I105 መለያ መታወቂያ ይጠቀማሉ፣ ሊነበቡ የሚችሉ ስሞች ደግሞ በነቃ መለያ-ተለዋጭ ስም አስገዳጅ በኩል ይፈታሉ
 
-በተጨማሪም ተመልከት።
+በተጨማሪ አንብበው
 
-- [ፍቃዶች](/am/blockchain/permissions.md)
-- [ሜታ መረጃዎች](/am/blockchain/metadata.md)
-- [የደንበኛው ውቅር](/am/guide/configure/client-configuration.md)
-- [SORA Nexus የመረጃ ቋቶች](/am/get-started/sora-nexus-dataspaces.md)
+- [ፈቃዶች](/am/blockchain/permissions.md)
+- [ሜዳዳታ](/am/blockchain/metadata.md)
+- [የደንበኛ ውቅር](/am/guide/configure/client-configuration.md)
+- [SORA Nexus የውሂብ ክፍተቶች](/am/get-started/sora-nexus-dataspaces.md)

@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /reference/binaries.md
-translation_source_hash: 5a36877954bec97691e45697680bfbd6e0a7c7695e48a796bc7c9a41d4756644
+translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,9 +10,9 @@ translation_engine: nllb-200-ct2
 
 Iroha 3 آپریٹر ورک فلو چار بنیادی بائنریوں کے گرد گھومتا ہے:
 
-- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) ایک ہم مرتبہ ڈیمون چلانے کے لئے
+- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) ایک نیٹ ورک نوڈ ڈیمون چلانے کے لئے
 - `iroha3d_taira` کے لئے canonical Taira تصدیق کنندہ لانچر
-- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli) for CLI and operator commands
+- CLI اور operator commands کے لیے [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli)
 - [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami) چابیاں، پیدائش، لوکل نیٹ ورک اور پروفائلز کے لئے
 
 ## ماخذ سے تعمیر کریں {#build-from-source}
@@ -74,7 +74,7 @@ docker compose -f ./docker-compose.yml up
 
 ## مجھے کون سا بائنری استعمال کرنا چاہئے؟ {#which-binary-should-i-use}
 
-- `iroha3d` کا استعمال کریں جب آپ پبلک Taira تصدیق کنندہ ریلیز کے باہر ہم مرتبہ شروع یا کام کر رہے ہو۔
+- `iroha3d` کا استعمال کریں جب آپ پبلک Taira تصدیق کنندہ ریلیز کے باہر نیٹ ورک نوڈ شروع یا کام کر رہے ہو۔
 - Taira تصدیق کنندہ کی تعیناتی کے لئے صرف `iroha3d_taira --sora` کا استعمال کریں؛ یہ Taira کے سلسلے، اسٹوریج اور رن ٹائم سگنل پروفائل کو نافذ کرتا ہے.
 - `iroha` کا استعمال کریں جب آپ کو لیجر سے استفسار کرنے، لین دین جمع کروانے یا آپریٹر کے اختتام پوائنٹس کی جانچ پڑتال کرنے کی ضرورت ہو.
 - `kagami` کا استعمال کریں جب آپ کو چابیاں، پیدائش کے دستاویزات، پروفائل بنڈل، یا مقامی نیٹ اثاثوں کی ضرورت ہو.

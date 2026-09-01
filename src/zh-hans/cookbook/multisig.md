@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /cookbook/multisig.md
-translation_source_hash: 9654923faf6c84dfd21a428ebe3c53dbd074b8e3274c12c8aa41bf31884686f7
+translation_source_hash: e1b57e1c4310dd0db8be8d9f5a15e1d4f693abb90b634772857eb4b1e86e4baf
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -14,11 +14,11 @@ translation_engine: nllb-200-ct2
 
 ## 预先条件 {#prerequisites}
 
-- 三种法典 I105 签字者 IDs 在 `SIGNER_A`, `SIGNER_B`, 和 `SIGNER_C`.
+- 三种规范 I105 签字者 IDs 在 `SIGNER_A`, `SIGNER_B`, 和 `SIGNER_C`.
 - 为签署者A和C提供资金的 Taira 配置. 提出者和每个批准者都为自己的交易付费.
 - `taira.tx-metadata.json`从当前的水龙头响应中构建,从未从复制费资产 ID 中构建.
 - 一个 Rust 客户端项目,用于注册阶段与 Taira 相同的 Iroha 源修改.后续的提案和批准阶段使用 CLI.
-- 现行执行程序的多签名功能已启用.普通账户可以在默认 Iroha 3 运行时间内进行注册,尽管 Taira 政策和收费仍然适用于;如果公众部署拒绝使用 localnet.
+- 现行执行程序的多签名功能已启用.普通账户可以在默认 Iroha 3 运行时内进行注册,尽管 Taira 政策和收费仍然适用于;如果公众部署拒绝使用 localnet.
 
 ```bash
 SIGNER_A_CONFIG=./taira.signer-a.toml
@@ -33,7 +33,7 @@ test -n "$SIGNER_C"
 
 ### 1. 注册权重政策 {#_1-register-a-weighted-policy}
 
-签字符C的重量为2;A和B的重量各为1.因此,3的定数需要C加上A或B.在注册前从该准则中导出正规账号,然后将相同值传递到 `MultisigRegister::with_account`:
+签字符C的重量为2;A和B的重量各为1.因此,3的定数需要C加上A或B.在注册前从该准则中导出规范账号,然后将相同值传递到 `MultisigRegister::with_account`:
 
 ```rust
 use std::{collections::BTreeMap, num::{NonZeroU16, NonZeroU64}};
@@ -91,7 +91,7 @@ MULTISIG_ACCOUNT='<POLICY_DERIVED_I105_ACCOUNT_ID>'
 test -n "$MULTISIG_ACCOUNT"
 ```
 
-在固定提交时, CLI 注册命令在运行时间重新设置之前打印其临时种子.不要再使用该种子作为控制器.没有控制器私钥:多签证权限仅来自批准的提案.
+在固定提交时, CLI 注册命令在运行时重新设置之前打印其临时种子.不要再使用该种子作为控制器.没有控制器私钥:多签证权限仅来自批准的提案.
 
 ### 2. 编写一个指令,而不是提交它 {#_2-build-one-instruction-without-submitting-it}
 
@@ -196,9 +196,9 @@ iroha --config "$SIGNER_A_CONFIG" ledger multisig inspect \
 - `signatory is not part of multisig` 表示提出或批准的客户不符合保险中注册的 I105 IDs 中的一个.
 - 如果多签名账户没有执行建议的指令的许可,最终批准可以被拒绝. 授权多签名帐户,而不是仅仅给其单个签署者,然后让剩余签署者再次尝试.
 - 缺失待定的提议可能意味着已经达到了权限, TTL 已过期,或者使用了错误的指令哈希/帐户选择器. 在再次提议之前,请查询后状态.
-- 复制批准不增加重量.每名注册签署者至少一次贡献其配置的重量.
+- 重复批准不会增加权重。每个已注册签名者最多贡献一次其配置的权重。
 - 直接签署正常交易,因为控制者是禁止的.总是使用 `MultisigPropose`和 `MultisigApprove`.
-- 如果后来的命令无法找到在 CLI 注册过程中打印的帐户,则您已经捕获了临时种子. 从订单的政策中取出正规账户并以上图所示的值注册.
+- 如果后来的命令无法找到在 CLI 注册过程中打印的帐户,则您已经捕获了临时种子. 从订单的政策中取出规范账户并以上图所示的值注册.
 
 ## 来源及相关文件 {#source-and-related-docs}
 

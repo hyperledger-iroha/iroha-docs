@@ -1,210 +1,210 @@
 ---
 translation_locale: az
 translation_source: /reference/norito.md
-translation_source_hash: 5196decc9e42428b787285d9e0f763bfcedabea2b19af618612f4509492c87fc
+translation_source_hash: b3b7c03bc0df3f7fa3df7e44b0ec8d755d615f9edca66bbcfe5613c33c8afbfe
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Norito {#norito}
 
-Norito olan Iroha Kanonik seriallaşdırma qatıdır. SDKs, CLI vasitələr, Torii, Kura, və istehsal olunan əşyaların eyni pay yükü ilə razılaşması lazımdır.
+Norito Iroha-in tək protokol-standart seriyalaşdırma təbəqəsidir. Bu, şəbəkə tərəfləri, SDKs, CLI alətləri, Torii, Kura və yaradılmış artefaktlar eyni dəqiq yük haqqında razılaşmalı olduqda istifadə olunan bayt formatıdır.
 
-Məlumatlar konsensus, imzalanma, hashinq, davamlılıq və ya SDK arasında qarşılıqlı işləmə qabiliyyətinin bir hissəsi olduqda Norito istifadə edin. Bir son nöqtə operatorlar üçün açıq şəkildə insan oxunacaq projeksiya təklif edərkən JSON istifadə edin.
+Məlumat konsensusun, imzalamanın, hash-ləmənin, davamlılığın və ya çarpaz-SDK qarşılıqlı işləmənin bir hissəsi olduqda Norito-dan istifadə edin. Operatorlar, tablolər və ya sürətli səhvlərin düzəldilməsi üçün insan tərəfindən oxuna bilən bir proyeksiyanı açıq şəkildə təklif edən API son nöqtəsi üçün JSON-dən istifadə edin.
 
-## Norito görünən yerlər {#where-norito-appears}
+## Norito Harada Görünür {#where-norito-appears}
 
-|Səth |Norito necə istifadə olunur |
+|Səth| Norito necə istifadə olunur|
 | --- | --- |
-|Əməliyyatlar və suallar |Torii vasitəsilə göndərilən imzalanmış əməliyyat və sorğu pay yükləri Norito kimi kodifikasiya olunur. |
-|Müqəddəs Kitab |`kagami genesis sign` başlanğıcda yüklənən həmyaşıdların imzalanmış `.nrt` blokunu yaradır. |
-|Torii yazılmış cavablar |Tiplənmiş ikitərəfli cavabları dəstəkləyən yekun nöqtələr `Accept: application/x-norito` istifadə edir. |
-|SDKs | Rust, Python, JavaScript, Kotlin/Java, Swift, və Android müştərilər istifadə Norito əl ilə yığılmış baytların əvəzinə qurucu və ya bağlayıcılar. |
-|Kura saxlama |Blok paylı yüklər, bərpa yan maşınları, siyahılar və commit markerləri Norito çərçivəsində məlumat olaraq saxlanılır. |
-|Manifestlər |Nexus, məlumatların mövcudluğu, SoraFS, axın və tətbiqə yönəlmiş manifestolar manifest imzalanması və ya hash edilməsi lazım olduqda Norito istifadə olunur. |
-|Axtarış |Norito Streaming Norito manifesti, segment başlıqları, idarəetmə çərçivələri və uyğunluq fixləri istifadə edir. |
+|Əməliyyatlar və sorğular| Torii vasitəsilə göndərilən imzalı əməliyyat və sorğu yükü Norito kimi kodlanır.|
+|blokçeyn başlanğıcı| `kagami genesis sign` şəbəkə dostlarının işə düşərkən yüklədiyi imzalanmış `.nrt` bloku yaradır. |
+| Torii yazılmış cavablar | API tipli ikili cavabları dəstəkləyən son nöqtələr `Accept: application/x-norito` istifadə edir. |
+| SDKs | Rust, Python, JavaScript, Kotlin/Java, Swift və Android müştərilər əl ilə yığılmış baytlar əvəzinə Norito qurucularından və ya bağlamalarından istifadə edirlər.|
+|Kura anbar|Blok yükü, bərpa yardımı qeydləri, siyahılar və blokun tamamlanmasını göstərən göstəricilər Norito-çərçivələnmiş məlumat kimi saxlanılır.|
+|texniki bəyanatlar| Nexus, məlumat əlçatanlığı, SoraFS, axın və tətbiq yönümlü texniki manifestlər texniki manifestin imzalanması və ya xəşlənməsi lazım olduqda Norito-dən istifadə edir.|
+|Axın| Norito Axın Norito texniki manifestlər, seqment başlıqları, nəzarət çərçivələri və uyğunluq cihazları istifadə edir. |
 
-Norito ağıllı müqavilə dili deyil, əməliyyatlar, müqavilələr çağırışları, manifestolar və API faydalı yükləri gətirən deterministik zarf və kodekdir.
+Norito ağıllı müqavilə dili deyil. Bu, əməliyyatları, müqavilə zənglərini, texniki manifesləri və tiplənmiş API yükləri daşıyan deterministik məlumat konteyneri və kodekdir.
 
-## Faydalı yük modeli {#payload-model}
+## Yük Modeli {#payload-model}
 
-Hər simli və ya diskdəki payload Norito kodlanmış payload bytləri ilə bir başlıqla bağlanır. Headersiz və ya çılpaq payloadlar daxili hashinq, benchmark və köməkçi APIs üçün nəzərdə tutulur ki, nəticəni nəqliyyatdan əvvəl dərhal bir başlığa sarır.
+Protokol ötürülməsi zamanı və ya diskteki Norito yükləmə bir başlıq ilə əhatə olunur, ardınca şifrələnmiş yükləmə baytları gəlir. Başlıq olmadan və ya sadə yükləmələr daxili həşləşdirmə, performans ölçmələri və nəticəni dərhal ötürməzdən əvvəl başlıqla əhatə edən köməkçi APIs üçün ayrılır.
 
-|Başlıq sahəsi |Ölçüsü |Məqsəd|
+|Başlıq sahəsi|Sizə|Məqsəd|
 | --- | ---: | --- |
-|Sihir.|4 bayt |ASCII `NRT0`, Norito olmayan məlumatları əvvəlcədən rədd etmək üçün istifadə olunur. |
-|Mayor .|1 bayt |Əsas versiyanı formatlayın. Hal-hazırda payloadlar `0` istifadə edir. |
-|Kiçik |1 bayt |V1 üçün dekodlama ipucu. mövcud dəyər `0x00`. Bayraqlar dizaynı təsvir edir. |
-|Şema hashı |16 bayt |Təxmin edilməmiş paylı yükləri rədd etmək üçün tiplənmiş dekoderlər tərəfindən istifadə olunan növ kimliyi |
-|Çıxış |1 bayt |`0 = None`, `1 = Zstd`.Məlum olmayan dəyərlər rədd edilir. |
-|Layihə yükü uzunluğu |8 bayt |Qeyri-qəsd edilmiş paylı yük uzunluğu `u64` kimi.|
-|CRC64 |8 bayt |CRC64-XZ sıxılmamış paylı yükün yoxlama suması. |
-|Bayraqlar |1 bayt |Kompakt uzunluqlar, paketlənmiş ardıcıllıqlar və paketlənmiş struktlar üçün dizayn bayraqları. |
+|Sehr|4 bayt|ASCII `NRT0`, qeyri-Norito məlumatları erkən rədd etmək üçün istifadə olunur.|
+|Baş|1 bayt|Formatın əsas versiyası. Mövcud yükləmələr `0` istifadə edir.|
+|Kiçik| 1 bayt |v1 üçün ipucunu deşifrə et. Mövcud dəyər `0x00` təşkil edir. Bayraqlar düzülüşü təsvir edir.|
+|Şema kriptoqrafik həş|16 bayt|Tipli dekoderlər tərəfindən gözlənilməz yükləri rədd etmək üçün istifadə olunan tip identifikatoru.|
+|Sıxma| 1 bayt | `0 = None`, `1 = Zstd`. Naməlum dəyərlər rədd edilir.|
+|Yük uzunluğu|8 bayt|Azaldılmamış yük uzunluğu kiçik-endian `u64` kimi.|
+| CRC64 |8 bayt|Sıxılmamış yükün CRC64-XZ yoxlama cəmi.|
+|Bayraqlar| 1 bayt |Sıx uzunluqlar, paketlənmiş ardıcıllıqlar və paketlənmiş strukturlar üçün yerləşdirmə bayraqları.|
 
-Başlıq 40 baytdır. Dekoderlər yazılan dəyərin yenidən qurulmasından əvvəl sehr, versiya, dəstəklənmiş bayraq maskası, payload uzunluğu, yoxlama suması və sxem hashini təsdiqləyirlər.
+Başlıq 40 baytdır. Dekoderlər tipə uyğun dəyəri yenidən yaratmazdan əvvəl sehrli dəyəri, versiyanı, dəstəklənən bayraq maskasını, yük uzunluğunu, yoxlama cəmini və sxem kriptoqrafik xəşini yoxlayır.
 
-## Lay-out bayraqları {#layout-flags}
+## Düzən Bayraqları {#layout-flags}
 
-Norito son header byte-də düzəliş seçimlərini saxlayır. Standart v1 köməkçiləri kompakt hər dəyər uzunluğu prefiksləri üçün `COMPACT_LEN` (`0x02`) buraxırlar. Çağrıçılar `flags = 0x00` ilə kodlaşdıqda açıq sabit genişlik uzunluğu prefixləri oxunur.
+Norito son başlıq baytında mağaza tərtibat seçimlərini saxlayır. Varsayılan v1 köməkçiləri sıxılmış hər dəyər üçün uzunluq prefiksləri üçün `COMPACT_LEN` (`0x02`) yayımlayır. Açıq şəkildə sabit genişlikli uzunluq prefiksləri, çağıranlar `flags = 0x00` ilə kodlaşdırdıqda oxunaqlı qalır.
 
-|Bayraq |Hex |Status |Nəticə |
+|Bayraq|Hex|Status|Təsir|
 | --- | ---: | --- | --- |
-|`PACKED_SEQ` |`0x01` |Dəstəklənir |Dəyişən ölçülü kolleksiyaları offset cədvəli ilə yanaşı, bitişik bir məlumat bloku ilə kodlaşdırır. |
-|`COMPACT_LEN` |`0x02` |Default |Qiymətə görə uzunluq prefiksləri üçün kanonik imzalanmamış varintlərdən istifadə edir. |
-|`PACKED_STRUCT` |`0x04` |Dəstəklənir |Kodlaşdırılmış sahə pay yükləri kimi istehsal olunan structs. |
-|`VARINT_OFFSETS` |`0x08` |Qeydiyyatda |V1-də rədd edilmişdir; paketlənmiş ardıcıllıq kompensasiyası sabit genişlik `u64`. |
-|`COMPACT_SEQ_LEN` |`0x10` |Qeydiyyatda |V1-də rədd edilmişdir; ən yüksək səviyyəli ardıcıllıq uzunluğunun başlıqları sabit genişlik `u64`. |
-|`FIELD_BITSET` |`0x20` |Tələblərlə dəstəklənir |Qeydiyyatlı strukturlar üçün bit setini əlavə edir, belə ki yalnız açıq ölçülərə ehtiyacı olan sahələr ölçülü prefiksləri daşıyır. `PACKED_STRUCT` və `COMPACT_LEN` tələb edir. |
+| `PACKED_SEQ` | `0x01` |Dəstəklənir|Dəyişən ölçülü kolleksiyaları ofset cədvəli ilə birlikdə ardıcıl məlumat bloku ilə kodlaşdırır.|
+| `COMPACT_LEN` | `0x02` | Standart | Hər dəyərin uzunluq prefiksi üçün kanonik işarəsiz varintlərdən istifadə edir. |
+| `PACKED_STRUCT` | `0x04` |Dəstəklənir|Kodlayıcılar derive ilə yaradılmış strukturları yığılmış sahə yükləri kimi kodlayır.|
+| `VARINT_OFFSETS` | `0x08` |Saxlanılıb|v1-də rədd edildi; paketlənmiş ardıcıllıq ofsetləri sabit enlikdədir `u64`.|
+| `COMPACT_SEQ_LEN` | `0x10` |Saxlanılıb|v1-də rədd edildi; yuxarı səviyyəli ardıcıllıq uzunluğu başlıqları sabit enli `u64`.|
+| `FIELD_BITSET` | `0x20` |Tələblərlə dəstəklənir|Sıxılmış strukturlar üçün yalnız açıq ölçü tələb edən sahələrin ölçü prefikslərini daşıması üçün bir bit dəsti əlavə edir. `PACKED_STRUCT` və `COMPACT_LEN` tələb olunur.|
 
-Bayraqlar açıqdır. Dekoderlər payload şəklindən, kiçik versiyadan və ya heuristikalardan düzəliş çıxarmır. Bilinməyən və ya etibarsız birləşmələr rədd edilir ki, bütün həmyaşıdlar payloadu eyni şəkildə şərh etsinlər.
+Bayraqlar açıqdır. Dekoderlər yüklənmiş məlumatın formasından, kiçik versiyadan və ya heurstikadan quruluşu çıxarmırlar. Naməlum və ya düzgün olmayan kombinasiyalar rədd edilir ki, bütün şəbəkə iştirakçıları yüklənmiş məlumatı eyni şəkildə şərh etsinlər.
 
-## Kodlama qaydaları {#encoding-rules}
+## Kodlaşdırma Qaydaları {#encoding-rules}
 
-Norito Iroha məlumat modellərində göstərilən ümumi məlumat formaları üçün deterministik düzənliklərdən istifadə edir:
+Norito Iroha məlumat modeliində ortaya çıxan ümumi məlumat formaları üçün deterministik yerləşimlərdən istifadə edir:
 
-- Əlaqələr `[len][utf8-bytes]`; `len` aktivləşdirildiyi zaman `COMPACT_LEN` ilə davam edir.
-- `COMPACT_LEN` müəyyən edildikdə, hər dəyər üçün uzunluq kompakt bir varintdən istifadə olunur.
-- `COMPACT_LEN` yoxdursa, hər dəyər üçün uzunluq 8 baytlıq kiçik bir ədəd `u64` olur.
-- Sequence uzunluğu başlıqları v1-də sabit 8-bayt kiçik endian `u64` var.
-- `Vec<u8>` bir bayt üçün bir uzunluq əvəzinə `[len_u64][raw-bytes]` kimi kodifikasiya olunur.
-- Yüklənmiş ardıcıllıqlarda `(len + 1)` monoton `u64` offsetlərdən istifadə edilir, bunlardan sonra konkatenləşdirilmiş element pay yükləri.
-- Xəritələr giriş saylarını sabit `u64` ilə kodlayır və deterministik açar sırasından istifadə edir. `HashMap` girişləri kodlaşdırmadan əvvəl açarlara görə sıralanır; `BTreeMap` təbii sırasını istifadə edir.
-- `BigInt` bir `u32` bayt uzunluğu və 512-bit qapısı olan kiçik indian iki's-komplement bytes istifadə edir.
-- `Numeric` `(mantissa, scale)` kimi kodlanır, burada mantissa tam say dəyərini saxlayır və miqyasda hissə rəqəmlərinin sayı saxlanılır.
+- Sətirlər `[len][utf8-bytes]`-dır; `len` aktiv ediləndə `COMPACT_LEN`-i izləyir.
+- `COMPACT_LEN` təyin edildikdə, hər bir dəyər uzunluğu kompakt varint istifadə edir.
+- `COMPACT_LEN` olmadıqda, hər dəyərin uzunluğu 8 baytlıq little-endian `u64` olur.
+- Sıra uzunluğu başlıqları v1-də sabit 8 baytlı kiçik sonlu `u64` şəklindədir.
+- `Vec<u8>` hər bayt üçün bir uzunluq əvəzinə `[len_u64][raw-bytes]` kimi kodlaşdırılır.
+- Yığılımış ardıcıllıqlar, ardınca birləşdirilmiş element yüklərindən sonra `(len + 1)` monoton `u64` ofsetlərindən istifadə edir.
+- Xəritələr giriş saylarını sabit `u64` ilə kodlayır və deterministik açar sırasından istifadə edir. `HashMap` girişləri kodlaşdırmadan əvvəl açara görə sıralanır; `BTreeMap` isə təbii sırasından istifadə edir.
+- `BigInt` 512-bit həddi və `u32` bayt uzunluğu ilə little-endian iki tamamlayıcı baytlardan istifadə edir.
+- `Numeric` `(mantissa, scale)` kimi kodlanır, burada mantissa tam ədədi saxlayır və scale kəsr rəqəmlərinin sayını saxlayır.
 
-Bu qaydalar imzalanmalar və hashlər üçün vacibdir. eyni məntiqi əməliyyatı quran iki SDKs eyni kanonik baytları istehsal etməlidir.
+Bu qaydalar imzalar və kriptoqrafik xəşlərin vacibdir. Eyni məntiqi əməliyyatı yaradacaq iki SDKs eyni protokol-standart baytları yaratmalıdır.
 
-## Şəkli hashlar {#schema-hashes}
+## Şema kriptoqrafik xəşlər {#schema-hashes}
 
-Tiplənmiş Norito payloadlar başlıqda 16 baytlı sxema hashini əhatə edir. Varsayılan hash tam ixtisaslaşmış növ adından alınır. Struktura sxeminin həşlənməsini təmin edən quruluşlar hashı kanonik sxemanın əvəzinə əldə edirlər.
+Tipləşdirilmiş Norito faydalı yükləri başlıqda 16 baytlıq sxem heşi daşıyır. Standart heş tam ixtisaslaşdırılmış tip adından törədilir. Struktur sxem heşləməsini aktiv edən yığımlar isə heşi kanonik sxemdən törədir.
 
-Tiplənmiş dekoderlər sxem uyğunsuzluqlarını rədd edir. Bu, müştərilərin etibarlı Norito çərçivəsini səhv bir növ kimi təsadüfi olaraq dekod etməsindən qoruyur və SDK qurğu paketinin node məlumat modelindən köçürüldüyü zaman adətən uğursuzluq rejimi olur.
+Typed dekoderlər sxema uyğunsuzluqlarını rədd edir. Bu, müştəriləri təsadüfən düzgün Norito çərçivəni səhv tip kimi dekodlamadan qoruyur və SDK test artefakt dəsti node məlumat modeli ilə fərqləndikdə adi uğursuzluq rejimi hesab olunur.
 
-## Çıxış və sürətlənmə {#compression-and-acceleration}
+## Sıxılma və Sürətləndirmə {#compression-and-acceleration}
 
-Norito məntiqi pay yükünü dəyişdirmədən açıq və uyğunlaşdırıcı sıxılma dəstəkləyir:
+Norito məntiqi yükü dəyişdirmədən açıq və adaptiv sıxılmanı dəstəkləyir:
 
-|Xüsusiyyət |Məqsəd|
+|Xüsusiyyət|Məqsəd|
 | --- | --- |
-|`to_bytes` |Bir başlığı kodlaşdırın, sonra bir sıxılmamış pay yükü. |
-|`to_compressed_bytes` |Zstd ilə kodlaşdırın və başlığındakı sıxılma etiketini qeyd edin. |
-|`to_bytes_auto` |Kompressiyanın dəyərli olub olmadığını müəyyən etmək üçün deterministik heuristika tətbiq edin. |
-|CRC64 sürətləndirmə | Qeydiyyatdan istifadə CRC64-XZ Hər yerdə, CLMUL x86-də_64 və ya PMULL Aarch64-də mövcud olduqda. |
-|GPU CRC64 və sıxılma |Seçilmiş Metal və ya CUDA köməkçiləri böyük paylı yükləri sürətləndirə bilərlər, sonra da CPU yollarına qayıda bilərlər. |
+| `to_bytes` |Sıxılmamış yükü izləyən bir başlığı kodlayın.|
+| `to_compressed_bytes` |Zstd ilə kodlayın və sıxılma teqini başlıqda qeyd edin.|
+| `to_bytes_auto` |Sıxmanın faydalı olub-olmadığını qərar vermək üçün deterministik heuristikləri tətbiq edin.|
+|CRC64 sürətlənmə|Hər yerdə daşınan CRC64-XZ-dan istifadə edir, mövcud olduqda x86_64-də CLMUL və ya aarch64-də PMULL.|
+| GPU CRC64 və sıxılma |Seçimli Metal və ya CUDA köməkçilər böyük yükləri sürətləndirə bilər, sonra isə CPU yollarına dönə bilərlər.|
 
-Hardver sürətləndirilməsi heç vaxt şifrələnmiş məzmunu dəyişdirmir. CRC və JSON sürətləndiriciləri portativ çıxışı bit-bit ilə uyğunlaşdırmalıdırlar. Zstd çərçivə baytları CPU və GPU kodlayıcıları arasında fərqlənə bilər, lakin şifrələnən pay yükü və Norito başlıq metadataları təsdiq üçün təyinatlı qalır.
+Hardware sürətləndirilməsi heç vaxt dekod edilmiş məzmunu dəyişdirmir. CRC və JSON sürətləndiriciləri daşına bilən çıxışı bitə-biti ilə uyğun olmalıdır. Zstd çərçivə baytları CPU və GPU kodlayıcıları arasında fərqlənə bilər, lakin dekod edilmiş məlumat yükü və Norito başlıq metadatası yoxlama üçün deterministik olaraq qalır.
 
 ## JSON Dəstək {#json-support}
 
-Norito Norito tipli sistemdən çıxmadan, JSON tələb edən son nöqtələr və alətlər üçün yerli JSON yığınını ehtiva edir.
+Norito API son nöqtələri və JSON tələb edən alətlər üçün yerli JSON stekini əhatə edir və bunu Norito tip sistemi tərk etmədən edir.
 
-|JSON xüsusiyyəti |İstifadə halı |
+| JSON xüsusiyyət |İstifadə vəziyyəti|
 | --- | --- |
-|`norito::json::{to_json, from_json}` |Deterministik tiplənmiş JSON kod/dekod. |
-|Gözəl və yazıçı köməkçiləri |CLI çıxışı, fixtures və axın `std::io` inteqrasiyası. |
-|DOM dəyərləri |Norito -nin JSON dəyər modeli ilə proqram təminatı. |
-|Sürətli yazılmış JSON |DTO isti yolları üçün struktur bant əsaslı dekod/kodlaşdırma. |
-|Sifir nüsxə oxucusu |Mümkün olduqda girişdən silsilələri borclayan simvol tarama. |
-|1-ci mərhələdəki sürətləndiricilər |AVX2, NEON, Metallı və ya CUDA struktur indeksləşdirilməsi skalar geri çəkilmə ilə. |
+| `norito::json::{to_json, from_json}` |Deterministik tipli JSON kodlama/dekodlama.|
+|Gözəl və yazıçı köməkçilər| CLI çıxış, test artefaktları və axın `std::io` inteqrasiyası. |
+| DOM dəyərlər |Norito-ın JSON dəyər modeli vasitəsilə proqramlı manipulyasiya.|
+|Sürətli yazdı JSON|İsti DTO yollar üçün struktur-lent əsaslı deşifrə/şifrə.|
+|Sıfır-nüsxə oxuyucu|Mümkün olduqda girişdən simvolları götürən token skan edilməsi.|
+|1-ci mərhələ akseleratorları|Seçim AVX2, NEON, Metal və ya CUDA struktur indeksləşdirmə ilə skaler əvəzləmə.|
 
-Iroha kod üstünlük verməlidir. `norito::json` tiplənmə üçün köməkçilər API payloads. düz əlavə `serde_json` İstehsal yolları üçün sxemdən və sahə idarəetməsindən fərqlənən risklər SDKs və Torii çıxarıcılar.
+Iroha kodu, tipli API məlumat daşıyıcıları üçün `norito::json` köməkçilərindən istifadə etməyi üstün tutmalıdır. Sadə `serde_json`-in istehsal yollarına əlavə edilməsi, SDKs və Torii çıxarıcılarının gözlədiyi sxem və sahə işləmə davranışından sapma riski yaradır.
 
-## İstifadəçi dəstəyi {#derive-support}
+## Dəstək əldə et {#derive-support}
 
-Rust məlumat növləri ümumiyyətlə manual kod kod əvəzinə mənşəli makrolardan istifadə edir. Norito ikili kodeklər, sxemlər və JSON köməkçilər.
+Rust məlumat tipləri adətən əl kodlu kodeklərdən daha çox törəmə makroslarından istifadə edir. Törəmə qatı Norito ikili kodeklər, sxemlər və JSON köməkçilər yarada bilər.
 
-Ümumi sahə xüsusiyyətləri:
+Ümumi sahə atributları bunlardır:
 
-|Attribut |Nəticə |
+|Xüsusiyyət|Təsir|
 | --- | --- |
-|`#[norito(rename = "other")]` |Şema və JSON uyğunluğu üçün sabit seriyalı bir ad istifadə edir. |
-|`#[norito(skip)]` |Kodlaşdırıcı sahəni buraxır. Dekoder onun `Default` dəyərini təmin edir. |
-|`#[norito(default)]` |`Default` kodlaşdırılmış pay yükünün sahəni daşımadığı zaman istifadə olunur. |
-|`#[norito(skip_serializing_if = "...")]` |Deterministik dekodlama standartlarını qoruyaraq predikatın uyğunlaşdığı zaman JSON sahələrini buraxır. |
+| `#[norito(rename = "other")]` |Şema və JSON uyğunluğu üçün sabit seriyalaşdırılmış ad istifadə edir.|
+| `#[norito(skip)]` |Kodlayıcı sahəni atır. Dekoder onun `Default` dəyərini təmin edir.|
+| `#[norito(default)]` |Dekodlanmış yük sahəni daşımadıqda `Default` istifadə edir.|
+| `#[norito(skip_serializing_if = "...")]` |Qəbul şərti uyğun gəldikdə JSON-dən sahələri atlır, deterministik dekodlama standartlarını qoruyur.|
 
-Nəticələr, mümkün olduqda kodlanmış uzunluq ipucularını və dəqiq uzunluq hesablamalarını da açıqlayır. Kodlaşdırıcılar bu ipucu istifadə edərək tamponu saxlayırlar və əlavə nüsxələrdən çəkinirlər.
+Derivlər həmçinin mümkün olduqda kodlaşdırılmış uzunluq göstəriciləri və dəqiq uzunluq hesablamalarını ortaya çıxarır. Kodlayıcılar bu göstəricilərdən buferləri ayırmaq və əlavə surətlərdən çəkinmək üçün istifadə edir.
 
-## Qutu xüsusiyyətli ailələr {#crate-feature-families}
+## proqram təminatı paketi Xüsusiyyət Ailələri {#crate-feature-families}
 
-Iroha və ya SDK bağlamalarını mənbədən qurarkən, Norito xüsusiyyətləri hansı köməkçilərin və sürətləndiricilərin mövcud olduğunu seçir:
+Mənbədən Iroha və ya SDK bağlılıqları qurarkən, Norito xüsusiyyətləri hansı köməkçilərin və sürətləndiricilərin mövcud olduğunu seçir:
 
-|Xüsusiyyət ailəsi |Bunun nəyə imkanı var?|
+|Xüsusiyyət ailəsi|Nəyə imkan verir|
 | --- | --- |
-|`derive` |Yenidən ixrac edilən ikili, sxem və JSON mənşəli prosedur makrosu. |
-|`compression` |Zstd başlıq çərçivəsində paylı yüklər üçün dəstək. |
-|`packed-seq` |Ofset cədvəllərdən istifadə edərək yığılmış kolleksiya düzənlikləri. |
-|`packed-struct` |Yüklənmiş mənşəli əmələ gələn struktur tərtibatları. |
-|`compact-len` |Varint hər qiymətə uzunluq prefiksləri. |
-|`columnar` |Norito Sütun blokları, adaptiv AoS/NCB satır kodekləri və skan ağır yollar üçün alınmış görünüşlər; standart `node-codec` xüsusiyyət dəstində daxil edilmişdir. |
-|`strict-safe` |Səhv yolları panikləri strukturlaşdırılmış səhvlərə çevirir. |
-|`simd-accel` |CPU təxirə salınması, əgər mövcuddursa, müəyyənləşdirilmiş geri çəkilmə ilə. |
-|`json` |Yerli JSON parser, yazıçı, DOM, tiplənmiş mənşəllər və sürətli yollar. |
-|`json-std-io` |JSON yığın üzərində qatlanmış oxucu və yazıçı köməkçiləri. |
-|`metal-stage1`, `cuda-stage1` |Fərqli GPU JSON struktur indeksinə aid arxa planlar. |
-|`metal-stage2` |JSON struktur bantı üçün metal metadata təsnifatı. |
-|`metal-crc64`, `cuda-crc64` |Böyük pay yükləri üçün GPU CRC64 yardımçıları. |
-|`gpu-compression` |Böyük paylı yüklər üçün metal və ya CUDA Zstd sürətlənməsi. |
-|`stage1-validate` |Sürətləndirilmiş JSON struktur indekslərini skalar çıxışı ilə müqayisə edən debug validasiyası. |
+| `derive` |İkili, sxem və JSON törəmələri üçün təkrar ixrac edilmiş prosedur makrosları.|
+| `compression` |Başlıq-çərçivəli yük üçün Zstd dəstəyi.|
+| `packed-seq` |Köçürmə cədvəllərindən istifadə edərək sıxılmış kolleksiya düzənləri.|
+| `packed-struct` |Yığılmış derive-tərəfindən yaradılmış struktur tərtibatları.|
+| `compact-len` |Hər bir dəyər üçün Varint uzunluq prefiksləri.|
+| `columnar` | Norito Sütun Blokları, adaptiv AoS/NCB sıra kodekləri və skan-ağırlıqlı yollar üçün icarəyə götürülmüş görünüşlər; standart `node-codec` xüsusiyyət dəstinə daxildir. |
+| `strict-safe` |Səhv yolarda deşifrə paniklərini strukturlaşdırılmış xətalara çevirir.|
+| `simd-accel` |CPU mövcud olduqda sürətləndirmə, deterministik ehtiyat planı ilə.|
+| `json` | Doğma JSON ayrıştırıcı, yazıcı, DOM, tipli törəmələr və sürətli yollar. |
+| `json-std-io` |Oxucu və yazıçı köməkçiləri JSON yığını üzərində təbəqələnmişdir.|
+| `metal-stage1`, `cuda-stage1` |İstəyə bağlı GPU JSON struktural-indeks arxa uçları.|
+| `metal-stage2` |JSON struktur lent üçün ixtiyari Metal metadata təsnifatı.|
+| `metal-crc64`, `cuda-crc64` |Böyük yüklər üçün isteğe bağlı GPU CRC64 köməkçilər.|
+| `gpu-compression` |Böyük fayllar üçün isteğe bağlı Metal və ya CUDA Zstd sürətləndirməsi.|
+| `stage1-validate` |Sürətləndirilmiş JSON struktural göstəriciləri skalyar çıxışla müqayisə edən səhv ayıklama yoxlaması.|
 
-Xüsusiyyətlərin mövcudluğu SDKs və buraxılış profilləri arasında fərqlənə bilər. Vay formatı yerli qurma bayraqları ilə deyil, başlıq və sxemlə idarə olunur.
+Funksiyaların mövcudluğu SDKs və buraxılış profilləri arasında fərqlənə bilər. Protokolun binar formatını yerli yığım bayraqları deyil, başlıq və sxem müəyyən edir.
 
 ## Torii və Norito RPC {#torii-and-norito-rpc}
 
-Torii məruz qalır JSON bir çox operator marşrutları üçün, lakin tipləşdirilmiş ikili marşrutlar istifadə Norito. Təsvir olunan axının media növü Norito HTTP cəsədlər `application/x-norito`.
+Torii bir çox operator marşrutları üçün JSON-ü ortaya çıxarır, lakin tipli ikili marşrutlar Norito-dən istifadə edir. Cari tipli Norito HTTP bədənləri üçün media tipi `application/x-norito`-dır.
 
-Son nöqtə Norito yazıldığında və ya geri qaytarıldıqda bu başlıqları istifadə edin:
+Typed Norito qəbul edən və ya qaytaran API uç nöqtəsində bu başlıqlardan istifadə edin:
 
 ```http
 Content-Type: application/x-norito
 Accept: application/x-norito
 ```
 
-Bir son nöqtə hər iki təmsilçiliyi dəstəklədiyi zaman müştərilər açıq bir üstünlük siyahısı göndərə bilərlər:
+Bir API son nöqtəsi hər iki təqdimatı dəstəklədikdə, müştərilər açıq üstünlük siyahısını göndərə bilərlər:
 
 ```http
 Accept: application/x-norito, application/json
 ```
 
-Dekodlama səhvləri Torii yazılmış səhvlər kimi ortaya çıxır və telemetriya ilə sayılır. Ümumi səbəblərə etibarsız sehr, dəstəklənməyən versiya, dəstəkləməyən xüsusiyyət bayrağı, yoxlama miqdarı uyğunsuzluğu, yanlış formalaşmış UTF-8, etibarsız enum etiket və sxema uyğunsuzluğu daxildir.
+Dekodlaşdırma uğursuzluqları tipli Torii xətası kimi göstərilir və telemetriya tərəfindən sayılır. Ümumi səbəblərə etibarsız sehr, dəstəklənməyən versiya, dəstəklənməyən xüsusiyyət işarəsi, yoxlama cəmi uyğunsuzluğu, pozulmuş UTF-8, etibarsız enum etiketi və sxem uyğunsuzluğu daxildir.
 
-Norito RPC nəqliyyatı nəqliyyat konfigüratsiyası vasitəsilə seçilir. Operator taxtaları tələblərin gecikməsini, uğursuzluqları, aktiv bağlantıları, cavab baytlarını və `torii_norito_decode_failures_total` nəqliyyatını JSON trafikindən ayrı izləməlidirlər.
+Norito RPC nəqliyyat nəqliyyat konfiqurasiyası vasitəsilə seçilir. Operator panelləri sorğu ləngiməsini, uğursuzluqları, aktiv əlaqələri, cavab baytlarını və `torii_norito_decode_failures_total`-ı JSON trafiki ilə ayrı-ayrılıqda izləməlidir.
 
-## Norito Streaming {#norito-streaming}
+## Norito Yayım {#norito-streaming}
 
-Norito Streaming eyni deterministik yanaşmanı mediaya və real vaxt nəqliyyat səthlərinə genişləndirir.
+Norito Yayım media və real vaxtda ötürmə sahələrinə eyni deterministik yanaşmanı genişləndirir. Onun əsas hissələri bunlardır:
 
-|Streaming xüsusiyyəti |Məqsəd|
+|Axın xüsusiyyəti|Məqsəd|
 | --- | --- |
-|Manifestlər |Seqment öhdəliklərini, məxfilik yollarını, imkanları, kodek profilini, şifrələmə paketini və məzmun açarının metadatalarını bildirin. |
-|Segment başlıqları |Bağlayın bölmə nömrəsi, müddəti, hissə sayı, vaxtlandırma, entropiya rejimi, səs ümumiləşdirməsi və Merkle kökləri. |
-|Bəzi öhdəliklər |İzləyicilər və relaylar xidmət etməzdən və ya şifrəmədən əvvəl payload parçalarını manifestə qarşı təsdiq etsinlər. |
-|Nəzarət çərçivələri|Açıq elanlar, rəylər, əsas yeniləmələr və imkan danışıqları aparın. |
-|HPKE əsas məlumatlar |Mübahisə edilən kompüterdən istifadə edərək nəqliyyat sirlərini fırlatın və monoton dərəcədə artırılan hesablar. |
-|Mümkünlük üzrə danışıqlar |Dəstəklənmiş xüsusiyyət bitləri, datagram məhdudiyyətləri, geri bildirmə cadensiyası və məxfilik tələbləri kəsilir. |
-|FEC və geri bildirim |Kəsil real vaxt yolları üçün deterministik alıcı hesabatları və parity qərarları istifadə edir. |
-|Müvafiqlik vektorları |Dillər arası qurğular SDKs eyni manifestləri, segmentləri və entropiya axınlarını dekodlaşdırır. |
+|texniki bəyanatlar|Seqment kriptoqrafik öhdəlik dəyərlərini, məxfilik marşrutlarını, imkanları, kodek profilini, şifrələmə paketini və məzmun açarı metadatasını elan edin.|
+|Seqment başlıqları|Seqment nömrəsini, müddətini, kəsik sayını, vaxtlamanı, entropiya rejimini, səs xülasəsini və Merkle köklərini bağlayın.|
+| Fraqment öhdəlikləri | İzləyicilərə və retranslyatorlara faydalı yük fraqmentlərini təqdim və ya dekod etməzdən əvvəl manifestə qarşı yoxlamağa imkan verir. |
+|Nəzarət çərçivələri|Texniki manifest elanlarını, rəyləri, əsas yeniləmələri və qabiliyyət danışıqlarını daşıyın.|
+| HPKE əsas yeniləmələr |Razılaşdırılmış paket və monoton artan sayğaclardan istifadə edərək nəqliyyat sirlərini döndərin.|
+|Qabiliyyət üzrə razılaşma|Kəsişir dəstəklənən xüsusiyyət bitləri, datagram məhdudiyyətləri, geribildirim tempi və məxfilik tələbləri.|
+| FEC və rəy |İtirilən real vaxt yolları üçün deterministik qəbul hesabatları və bərabərlik qərarlarından istifadə edir.|
+|Uyğunluq vektorları|Dil üzrə test artefaktları göstərir ki, SDKs eyni texniki manifestləri, seqmentləri və entropiya axınlarını deşifrə edir.|
 
-Axtarış xüsusi kodeklər və entropiya profilləri əsas Norito əməliyyat / sorğu formatından ayrıdır, lakin onların manifestoları və nəzarət məlumatları hələ də Norito istifadə edir, buna görə də marşrutlaşdırma, hesablama, yenidən oynamaq və audit sübutları təkrarlana bilər.
+Axın üçün xüsusi kodeklər və entropiya profilləri əsas Norito əməliyyat/sorğu formatından ayrı olsa da, onların texniki manifestləri və idarəetmə məlumatları hələ də Norito istifadə edir, beləliklə yönləndirmə, fakturalama, təkrar oynatma və audit sübutları təkrarlana bilən qalır.
 
-## Əməliyyat istiqamətləri {#operational-guidance}
+## Əməliyyat Təlimatı {#operational-guidance}
 
-- SDK qurucusu və istehsal olunan bağlamaları əl işlənmiş Norito baytlardan üstün tuturlar.
-- Şema uyğunsuzluğuna keçidli bir şəbəkə çatışmazlığı deyil, bir versiya və ya qurğu problemi kimi baxın.
-- Arxiv `.nrt`, `.norito` və onları istehsal edən buraxılış və ya hadisələr paketindəki manifest əşyaları.
-- İstifadə Norito İmzalanmış, həş edilmiş və ya davamlı məlumatlar üçün həqiqət mənbəyi kimi. JSON Dashboardlar üçün proqnozlar və əl yoxlamaları.
-- Yeni Torii final nöqtəsini əlavə edərkən, bu nöqtənin JSON, Norito və ya hər ikisini qəbul edib-etmədiyini sənədləşdirin və dəstəkləyən məzmun növlərini `/openapi` əlamətində göstərin.
-- Sürətləndiricini işlətmədən əvvəl, skalar çıxışı ilə bərabərlik sınaqları aparın. Əgər sürətləndiricisi uğursuz olarsa, deterministik skalar geri dönüşü istifadə edin. Faydalı yük semantikası dəyişməməlidir.
+- Əl ilə hazırlanmış Norito baytlardan çox, SDK qurucuları və yaradılmış bağlamaları üstün tutun.
+- Şema uyğunsuzluğunu keçici şəbəkə xətası kimi deyil, versiya və ya test artefaktı problemi kimi qəbul edin.
+- Buraxılış və ya onların yaradıldığı hadisə paketindəki `.nrt`, `.norito` və texniki manifesto artefaktlarını arxivləyin.
+- İmzalanmış, hash edilmiş və ya saxlanmış məlumatlar üçün həqiqət mənbəyi olaraq Norito-dan istifadə edin. Tabloslar və əl ilə yoxlama üçün JSON proyeksiyalarından istifadə edin.
+- Yeni tipli Torii API son nöqtəsi əlavə edərkən, onun JSON, Norito və ya hər ikisini qəbul edib-etmədiyini sənədləşdirin və dəstəklənən məzmun növlərini `/openapi.json`-da göstərin.
+- Akseleratoru aktivləşdirməzdən əvvəl, skaler çıxışa qarşı bərabərlik testlərini aparın. Əgər akselerator uğursuz olarsa, deterministik skaler ehtiyat yolundan istifadə edin. Yükləmə semantikasının dəyişməməsi lazımdır.
 
-## Əlaqəli səhifələr {#related-pages}
+## Əlaqəli Səhifələr {#related-pages}
 
-- [Torii bitki nöqtələri](/az/reference/torii-endpoints.md)
-- [Genesis istinadı](/az/reference/genesis.md)
-- [Məlumat modelləri sxemi](/az/reference/data-model-schema.md)
-- [JavaScript / TypeScript SDK ](/az/guide/tutorials/javascript.md)
+- [Torii API son nöqtələr](/az/reference/torii-endpoints.md)
+- [blokçeyn başlanğıc istinadı](/az/reference/genesis.md)
+- [Məlumat modeli sxemi](/az/reference/data-model-schema.md)
+- [JavaScript / TypeScript SDK](/az/guide/tutorials/javascript.md)
 - [Python SDK](/az/guide/tutorials/python.md)
 - [Swift və iOS SDK](/az/guide/tutorials/swift.md)
 
-## Əvvəlki istinadlar {#upstream-references}
+## Yuxarı Axın İstinadları {#upstream-references}
 
-- [Norito formatının spesifikasiyası](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/norito.md)
-- [Norito qutu README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/norito/README.md)
+- [Norito format tələbləri](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/norito.md)
+- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/norito/README.md)

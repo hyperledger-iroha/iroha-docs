@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /documenting/snippets.md
-translation_source_hash: e188082e05db85d5e514b782f93648fb402a09740840c9201e47db353f2192f5
+translation_source_hash: 48d6670f100c7c6368fa03f163c9ff9e0322d36e51c22f89562b23b0e2ee2a2f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -18,11 +18,11 @@ Iroha မှ ရယူသော snippets များကို သာမန် s
 pnpm refresh:iroha --source /path/to/iroha
 ```
 
-မှတ်ပုံတင်ခံရသူ [`etc/refresh-iroha.ts`](https://github.com/hyperledger-iroha/iroha-docs/blob/main/etc/refresh-iroha.ts) workflow က clean source checkout ကို verifies လုပ်တယ် `provenance/iroha.json`, ပြန်လည်ပြုပြင်ခြင်း `/src/snippets` နောက်ပြီး Torii OpenAPI snapshot နဲ့ update တွေ SHA-256 hashes များ။ အကြောင်းအရာများနှင့် မူရင်းအပြောင်းအလဲများကို အတူတကွစစ်ဆေးပါ။ ပုံမှန်မှီခိုမှုတပ်ဆင်ခြင်းနှင့် VitePress Builds တွေက check-in file တွေကို mutable branch ကို မယူပဲ စားသုံးကြတာပါ။
+စစ်ဆေးထားသော `etc/refresh-iroha.ts` အလုပ်ဖြစ်စဉ်သည် clean source checkout ကို `provenance/iroha.json` နှင့် နှိုင်းယှဉ်၍စစ်ဆေးပြီး `/src/snippets` နှင့် Torii OpenAPI point-in-time data view များကို ပြန်လည်ထုတ်လုပ်သည်။ SHA-256 cryptographic hashes ကို update လုပ်ပါ။ အကြောင်းအရာနဲ့ မူလနေရာ ပြောင်းလဲမှုတွေကို အတူတကွလေ့လာပါ။ ပုံမှန်မှီခိုမှု တပ်ဆင်ခြင်းနှင့် VitePress builds သည်ပြောင်းလဲနိုင်သောခွဲကို မယူဘဲ စစ်ဆေးထားသောဖိုင်များကိုစားသုံးသည်။
 
 ## Snippets အပါအဝင် {#including-snippets}
 
-[VitePress code-snippet syntax ](https://vitepress.dev/guide/markdown#import-code-snippets) ကို အသုံးပြုပြီး generated သို့မဟုတ် local source ကို ထည့်သွင်းပါ။
+[VitePress code-snippet syntax ကို](https://vitepress.dev/guide/markdown#import-code-snippets) ကို အသုံးပြုပြီး generated (သို့) local source ကို ထည့်သွင်းပါ။
 
 ```md
 <<< @/snippets/client.template.toml

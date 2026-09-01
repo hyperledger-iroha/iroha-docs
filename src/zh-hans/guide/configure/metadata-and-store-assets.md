@@ -12,7 +12,7 @@ Iroha 3 数据模型对于任意的关键值数据没有单独的 `Store`资产�
 
 ## 超级数据 {#metadata}
 
-使用 [大数据](/zh-hans/blockchain/metadata.md)用于属于本书对象的小 JSON 字段:
+对于属于 ledger 对象的小型 JSON 字段，请使用 [metadata](/zh-hans/blockchain/metadata.md)：
 
 - 显示名称和标签
 - 集成 IDs
@@ -37,7 +37,7 @@ Iroha 3 数据模型对于任意的关键值数据没有单独的 `Store`资产�
 
 - 一个内容哈希
 - 一 URI
-- 一条 SoraFS 路径或表格参考
+- 一条 SoraFS 路径或清单参考
 - 通过申请证明所使用的紧密承诺
 
 这使得 WSV 保持小,同时还允许应用程序验证连锁外的有效载荷是否符合连锁上参考.

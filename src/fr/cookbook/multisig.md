@@ -1,24 +1,24 @@
 ---
 translation_locale: fr
 translation_source: /cookbook/multisig.md
-translation_source_hash: 9654923faf6c84dfd21a428ebe3c53dbd074b8e3274c12c8aa41bf31884686f7
+translation_source_hash: e1b57e1c4310dd0db8be8d9f5a15e1d4f693abb90b634772857eb4b1e86e4baf
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Multisig pondéré {#weighted-multisig}
 
-## Le résultat {#outcome}
+## Résultat {#outcome}
 
-Enregistrer un compte multisig pondéré de trois membres sur Taira, proposer une instruction en matière de métadonnées, l'approuver avec suffisamment de poids pour satisfaire au quorum et vérifier l'exécution à partir de l'état du compte multisig.
+Enregistrez un compte multisig pondéré à trois membres sur Taira, proposez une instruction de métadonnées, approuvez-la avec suffisamment de poids pour atteindre le quorum, et vérifiez l'exécution à partir de l'état du compte multisig.
 
-## Conditions préalables {#prerequisites}
+## Prérequis {#prerequisites}
 
-- Trois canoniques I105 signataire IDs dans `SIGNER_A`, `SIGNER_B`, et `SIGNER_C`.
-- Configurations Taira financées pour les signataires A et C. Le proposant et chaque approuvé paient leur propre transaction.
-- `taira.tx-metadata.json` construit à partir de la réponse du robinet actuel, jamais à partir d'un actif de redevance copié ID.
-- Une Rust projet client fixé à la même Iroha révision de la source comme Taira Les étapes ultérieures de la proposition et de l'approbation utilisent le CLI.
-- La fonctionnalité multisig de l'exécuteur actuel est activée. L'enregistrement est disponible pour les comptes ordinaires en temps d'exécution par défaut Iroha 3, bien que la politique et l'admission des frais Taira soient toujours applicables; utilisez localnet si le déploiement public le nie.
+- Trois identifiants de signataires canoniques I105 dans `SIGNER_A`, `SIGNER_B` et `SIGNER_C`.
+- Configurations Taira financées pour les signataires cryptographiques A et C. Le proposant et chaque approbateur paient leur propre transaction.
+- `taira.tx-metadata.json` construit à partir de la réponse du service de financement du testnet actuel, jamais à partir d'un ID d'actif de frais copié.
+- Un projet client Rust épinglé à la même révision source Iroha que Taira pour l'étape d'enregistrement. Les étapes ultérieures de proposition et d'approbation utilisent le CLI.
+- La fonctionnalité multisig de l'exécuteur actuel est activée. L'inscription est disponible pour les comptes ordinaires dans l'environnement d'exécution logiciel par défaut Iroha 3, bien que la politique et les frais d'admission Taira s'appliquent toujours ; utilisez localnet si le déploiement public les refuse.
 
 ```bash
 SIGNER_A_CONFIG=./taira.signer-a.toml
@@ -29,11 +29,11 @@ test -n "$SIGNER_B"
 test -n "$SIGNER_C"
 ```
 
-## Les étapes {#steps}
+## Étapes {#steps}
 
 ### 1. Enregistrer une politique pondérée {#_1-register-a-weighted-policy}
 
-Le signe C a un poids 2; A et B ont chacun un poids. Un quorum de 3 nécessite donc C plus A ou B. Dériver le compte canonique à partir de cette politique exacte avant l'enregistrement, puis passer la même valeur à `MultisigRegister::with_account`:
+Le signataire cryptographique C a un poids de 2 ; A et B ont chacun un poids de 1. Un quorum de 3 nécessite donc C plus soit A, soit B. Dérivez le compte canonique à partir de cette politique exacte avant l'enregistrement, puis transmettez la même valeur à `MultisigRegister::with_account` :
 
 ```rust
 use std::{collections::BTreeMap, num::{NonZeroU16, NonZeroU64}};
@@ -84,18 +84,18 @@ registrar.submit_blocking::<InstructionBox>(
 println!("{}", multisig_account.canonical_i105()?);
 ```
 
-Gardez la valeur imprimée pour les étapes CLI:
+Enregistrez la valeur imprimée pour les étapes CLI :
 
 ```bash
 MULTISIG_ACCOUNT='<POLICY_DERIVED_I105_ACCOUNT_ID>'
 test -n "$MULTISIG_ACCOUNT"
 ```
 
-Lors de l'envoi fixé, la commande d'enregistrement CLI imprime sa semence temporaire avant que le temps d'exécution ne l'enregistre. Ne réutilisez pas ce grain comme contrôleur. Il n'y a pas de clé privée du contrôleur: l'autorité multisigne ne provient que des propositions approuvées.
+Au commit épinglé, la commande d'enregistrement CLI imprime sa graine temporaire avant que le logiciel d'exécution ne la recalcule. Ne réutilisez pas cette graine en tant que contrôleur. Il n'y a pas de clé privée du contrôleur : le principe d'autorisation multisignature vient uniquement des propositions approuvées.
 
-### 2. Construire une instruction sans la soumettre. {#_2-build-one-instruction-without-submitting-it}
+### 2. Construisez une instruction sans la soumettre {#_2-build-one-instruction-without-submitting-it}
 
-L'interrupteur global `-o` sérialise un tableau d'instructions à la sortie standard. Il ne soumet pas de transaction et ne dépense donc aucun frais.
+Le commutateur global `-o` sérialise un tableau d'instructions vers la sortie standard. Il ne soumet pas de transaction et ne engage donc aucun frais.
 
 ```bash
 printf '"approved"\n' |
@@ -108,9 +108,9 @@ printf '"approved"\n' |
 jq . multisig-instructions.json
 ```
 
-### 3. Proposez comme signe A {#_3-propose-as-signer-a}
+### 3. Proposer comme signataire cryptographique A {#_3-propose-as-signer-a}
 
-Le proposant contribue automatiquement à son propre poids. Capturez le hash exact de l'instruction imprimé par le CLI; les approbations se lient à ce hash.
+Le proposant contribue automatiquement avec son propre poids. Capturez le hachage cryptographique exact de l'instruction imprimé par le CLI ; les approbations se lient à ce hachage cryptographique.
 
 ```bash
 PROPOSE_OUTPUT="$({
@@ -132,16 +132,16 @@ INSTRUCTIONS_HASH="$({
 test -n "$INSTRUCTIONS_HASH"
 ```
 
-Liste de la proposition en attente avec un sélecteur fin explicite:
+Listez la proposition encore en attente avec un sélecteur fini explicite :
 
 ```bash
 iroha --config "$SIGNER_A_CONFIG" ledger multisig list all \
   --multisig-selector "$MULTISIG_ACCOUNT"
 ```
 
-### 4. Approuver comme signataire C {#_4-approve-as-signer-c}
+### 4. Approuver en tant que signataire cryptographique C {#_4-approve-as-signer-c}
 
-Le poids de A 1 plus le poids de C 2 atteint le quorum 3 et exécute l'instruction proposée en tant que compte multisig.
+Le poids 1 de A plus le poids 2 de C atteint le quorum 3 et exécute l'instruction proposée en tant que compte multisig.
 
 ```bash
 iroha --config "$SIGNER_C_CONFIG" \
@@ -152,7 +152,7 @@ iroha --config "$SIGNER_C_CONFIG" \
   --instructions-hash "$INSTRUCTIONS_HASH"
 ```
 
-Le client Rust peut continuer avec le même compte dérivé de la politique et les deux instructions du cycle de vie utilisées ci-dessus:
+Le client Rust peut continuer avec le même compte dérivé de la politique et les deux instructions de cycle de vie utilisées ci-dessus :
 
 ```rust
 let instructions = vec![SetKeyValue::account(
@@ -171,9 +171,9 @@ signer_c_client.submit_blocking::<InstructionBox>(
 )?;
 ```
 
-## Vérifiez {#verify}
+## Vérifier {#verify}
 
-Lisez l'état d'urgence et confirmez que la proposition n'est plus en attente:
+Lisez l'état postérieur et confirmez que la proposition n'est plus en attente :
 
 ```bash
 iroha --config "$SIGNER_A_CONFIG" ledger account meta get \
@@ -189,21 +189,21 @@ iroha --config "$SIGNER_A_CONFIG" ledger multisig inspect \
   jq .
 ```
 
-La valeur des métadonnées doit être `"approved"`, le hash de l'instruction capturé ne doit plus apparaître en attente et le contrôleur inspecté doit afficher les poids `1, 1, 2` avec quorum `3`.
+La valeur des métadonnées doit être `"approved"`, le hachage cryptographique de l'instruction capturée ne doit plus apparaître comme en attente, et le contrôleur inspecté doit afficher les poids `1, 1, 2` avec un quorum `3`.
 
-## Résolution des problèmes {#troubleshooting}
+## Dépannage {#troubleshooting}
 
-- `signatory is not part of multisig` signifie que le client proposant ou approuvant ne correspond pas à l'un des I105 IDs inscrits dans la police.
-- Une approbation finale peut être refusée lorsque le compte multisig ne dispose pas d'une autorisation pour exécuter les instructions proposées. Accordez l'autorisation au compte multisig, pas seulement à ses signataires individuels, puis laissez le signataire restant essayer de nouveau.
-- Une proposition en attente manquante peut signifier qu'un quorum a déjà été atteint, que le TTL a expiré ou que l'instruction hash/selecteur de compte a été utilisée incorrectement.
-- Les doubles approbations n'ajoutent pas de poids; chaque signataire enregistré contribue au plus une fois à son poids configuré.
-- La signature directe d'une transaction normale étant interdite par le contrôleur. `MultisigPropose` à la fois `MultisigApprove`.
-- Si les commandes ultérieures ne peuvent pas trouver le compte imprimé pendant l'enregistrement CLI, vous avez capturé la graine temporaire. Dérivez le compte canonique de la politique commandée et inscrivez-vous avec cette valeur comme indiqué ci-dessus.
+- `signatory is not part of multisig` signifie que le client proposant ou approuvant ne correspond pas à l'un des identifiants I105 enregistrés dans la police.
+- Une approbation finale peut être rejetée lorsque le compte multisig n'a pas la permission d'exécuter les instructions proposées. Accordez le principal d'autorisation au compte multisig, pas seulement à ses signataires cryptographiques individuels, puis laissez un signataire cryptographique restant réessayer.
+- Une proposition en attente manquante peut signifier que le quorum a déjà été atteint, que le TTL a expiré, ou que le mauvais hachage d'instruction/sélecteur de compte a été utilisé. Interrogez l'état postérieur avant de proposer à nouveau.
+- Les approbations en double n'ajoutent pas de poids. Chaque signataire enregistré contribue à son poids configuré au maximum une fois.
+- Il est interdit de signer directement une transaction normale en tant que contrôleur. Utilisez toujours `MultisigPropose` et `MultisigApprove`.
+- Si les commandes ultérieures ne peuvent pas trouver le compte imprimé lors de l'enregistrement CLI, vous avez capturé la graine temporaire. Dérivez le compte canonique à partir de la politique ordonnée et inscrivez-le avec cette valeur comme indiqué ci-dessus.
 
-## Sources et documents connexes {#source-and-related-docs}
+## Source et documents connexes {#source-and-related-docs}
 
-- [Des essais d'intégration multisig sur le commit fixé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/multisig.rs)
-- [Modèle de données multisig à l'accord fixé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/isi.rs)
-- [CLI mise en œuvre de plusieurs signes sur l'acte fixé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
-- [Les opérations ](/fr/blockchain/transactions.md)
-- [Autorisations et rôles ](./permissions-and-roles.md)
+- [Tests d'intégration multisignature au commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/multisig.rs)
+- [Modèle de données multisignature au commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/isi.rs)
+- [CLI implémentation multisig au commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
+- [Transactions](/fr/blockchain/transactions.md)
+- [Autorisations et rôles](./permissions-and-roles.md)

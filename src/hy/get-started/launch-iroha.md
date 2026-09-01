@@ -10,9 +10,9 @@ translation_engine: nllb-200-ct2
 
 Այս էջը անցնում է Iroha 3 համար տեղական ցանցի ընթացիկ հոսքի միջոցով ՝ օգտագործելով վերածնային պահեստից ստացված աշխատանքային տարածության նախնական ակտիվները:
 
-## 1. Ստեղծեք տեղական բազմազան ցանց {#_1-generate-a-local-multi-peer-network}
+## 1. Ստեղծեք տեղական բազմահանգույց ցանց {#_1-generate-a-local-multi-peer-network}
 
-Ներկայումս Kagami կոդից ստեղծեք չորս զուգընկեր localnet:
+Ներկայումս Kagami կոդից ստեղծեք չորս հանգույց localnet:
 
 ```bash
 cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
@@ -20,13 +20,13 @@ cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 
 Արտադրման ցուցակը պարունակում է համընկնում զուգահեռ կոնֆիգներ, `genesis.json`, `genesis.signed.nrt`, `client.toml` եւ օգնական սցենարները:
 
-Տեղական ծխի փորձարկման համար, անմիջապես սկսեք արտադրված զուգընկերները.
+Տեղական ծխի փորձարկման համար, անմիջապես սկսեք արտադրված հանգույցները.
 
 ```bash
 ./localnet/start.sh
 ```
 
-Containerized run- ի համար ստեղծեք Compose- ը նույն localnet թղթապանակից.
+Կոնտեյներով գործարկման համար Compose-ի ֆայլը ստեղծեք նույն `localnet` գրացուցակից.
 
 ```bash
 cargo run --bin kagami -- docker \
@@ -41,13 +41,13 @@ docker compose -f ./docker-compose.yml up
 
 Նախնական ձեւով ստեղծված փաթեթը բացահայտում է.
 
-- զուգընկերային P2P նավահանգիստներ `1337` մինչեւ `1340`
+- հանգույցային P2P նավահանգիստներ `1337` մինչեւ `1340`
 - Torii HTTP նավահանգիստները `8080` մինչեւ `8083`
 - `./localnet/client.toml` հասցեով պատրաստված հաճախորդի կարգավորումը:
 
 ## 2. Ստուգեք, թե արդյոք ցանցն աշխատում է {#_2-verify-that-the-network-is-up}
 
-Ստուգեք վիճակի վերջնական կետը առաջին զուգընկերության վրա.
+Ստուգեք վիճակի վերջնական կետը առաջին հանգույցային կապի վրա.
 
 ```bash
 curl http://127.0.0.1:8080/status
@@ -69,7 +69,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 
 SORA Nexus ուղղված կոնֆիգերի պրոֆիլը նաեւ ուղարկվում է `defaults/nexus/` թղթադրամում:
 
-Nexus պրոֆիլով բնիկ զուգընկերություն գործարկելու համար'
+Nexus պրոֆիլով ներկառուցված հանգույցային կապ գործարկելու համար'
 
 ```bash
 ./target/release/iroha3d --sora --config ./defaults/nexus/config.toml

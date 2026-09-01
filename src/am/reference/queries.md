@@ -3,126 +3,126 @@ translation_locale: am
 translation_source: /reference/queries.md
 translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# ጥያቄዎች {#queries}
+# መጠይቆች {#queries}
 
-Iroha መጠይቆች መለያውን ሁኔታ ሳይቀይሩ ያነባሉ ። የአሁኑ የመረጃ ሞዴል ሁለት ሰፊ የጥያቄ ቅርጾችን ያሳያል-
+Iroha መጠይቆች የብሎክቼይን መዝገብ ሁኔታን ሳይቀይሩ ያነባሉ። አሁን ያለው የውሂብ ሞዴል ሁለት ዋና ዋና የመጠይቅ ዓይነቶችን ያቀርባል -
 
-- አንድን ነገር ወይም አንድ እሴት የሚመልሱ ነጠላ ጥያቄዎች
-- የሚደጋገሙ መጠይቆች፣ አንድ ዥረት ወይም ስብስብ ይመልሳሉ እና መጠይቅ አይነት በሚደግፍበት ጊዜ ከማጣራት ፣ ከመደርደሪያ ፣ ከፕሮጀክሽን እና ከገጽ አሰጣጥ ጋር ሊዋሃዱ ይችላሉ።
+- ነጠላ ጥያቄዎች፣ አንድ እቃ ወይም አንድ ዋጋ የሚመልሱ
+- ሊደጋገሙ የሚችሉ መጠይቆች፣ ዥረት ወይም ስብስብ የሚመልሱ እና የመጠይቁ አይነት ከሚደግፈው ከማጣራት፣ ከመደርደር፣ ከትንበያ እና ከገጽ ጋር ሊጣመሩ ይችላሉ።
 
-የጥያቄዎችን ፖስታዎች በእጅ ከመገንባት ይልቅ SDK የተጻፉ ገንቢዎችን ወይም CLI ን ይጠቀሙ። ከታች ያሉት ስሞች በ `iroha_data_model::query` የተጋለጡ ወቅታዊ የጥያቄ ዓይነቶች ናቸው ።
+የመጠይቅ ውሂብ መያዣዎችን በእጅ ከመገንባት ይልቅ SDK የተተየቡ ግንበኞችን ወይም CLI ን ይጠቀሙ። ከታች ያሉት ስሞች በ`iroha_data_model::query` የተጋለጡ ወቅታዊ የመጠይቅ ዓይነቶች ናቸው።
 
-## የስራ ሰዓት እና አወቃቀር {#runtime-and-configuration}
+## የሶፍትዌር ማስፈጸሚያ አካባቢ እና ውቅር {#runtime-and-configuration}
 
-|ጥያቄ |ዓላማ|
+|መጠይቅ|ዓላማ|
 | --- | --- |
-|`FindAbiVersion` |ABI የተፈፀመውን ስሪት ይመልሱ። |
-|`FindExecutorDataModel` |የአስፈጻሚው የውሂብ ሞዴል መግለጫን ይመልሱ። |
-|`FindParameters` |ሰንሰለት ላይ አስፈፃሚ ውቅር መለኪያዎችን ይመልሱ. |
+|`FindAbiVersion`|አስፈፃሚውን ABI ስሪት ይመልሱ።|
+|`FindExecutorDataModel`|የአስፈፃሚውን የውሂብ-ሞዴል መግለጫ ይመልሱ።|
+|`FindParameters`|በሰንሰለት አስፈፃሚ ውቅር መለኪያዎችን ይመልሱ።|
 
-## ሂሳቦችና ፈቃዶች {#accounts-and-permissions}
+## መለያዎች እና ፈቃዶች {#accounts-and-permissions}
 
-|ጥያቄ |ዓላማ|
+|መጠይቅ|ዓላማ|
 | --- | --- |
-|`FindAccountById` |ID በካኖኒካል ሂሳብ አንድ መለያ ያግኙ። |
-|`FindAccountByAlias` |የሂሳብ ስያሜን ለመፍታት.|
-|`FindAccounts` |የተመዘገቡ ሂሳቦችን ጻፍ። |
-|`FindAccountIds` |ዝርዝር የተመዘገበ ሂሳብ IDs። |
-|`FindAccountsWithAsset` |የተወሰነ የንብረት ትርጉም ያላቸውን ሂሳቦች ይዘርዝሩ። |
-|`FindAliasesByAccountId` |ከሂሳብ ጋር የተገናኙ ስያሜዎችን ጻፍ። |
-|`FindAccountRecoveryPolicyByAlias` |የአስማት ስም ለማግኘት የማገገም ፖሊሲ ይፈልጉ። |
-|`FindAccountRecoveryRequestByAlias` |የአስማት ስም ለማግኘት የማገገም ጥያቄ ያግኙ። |
-|`FindRoles` |ዝርዝር ሚናዎች። |
-|`FindRoleIds` |የዝርዝር ሚና IDs.|
-|`FindRolesByAccountId` |ለሂሳብ የተሰጡትን ሚናዎች ይዘርዝሩ። |
-|`FindPermissionsByAccountId` |ለሂሳብ የተሰጡ ፍቃዶችን ይዘርዝሩ። |
+|`FindAccountById`|አንድ መለያ በአንድ ፕሮቶኮል-መደበኛ መለያ መታወቂያ ያግኙ።|
+|`FindAccountByAlias`|የመለያ ተለዋጭ ስም ወደ መለያ ይፍቱ።|
+|`FindAccounts`|የተመዘገቡ መለያዎችን ይዘርዝሩ ።|
+|`FindAccountIds`|የተመዘገቡ መለያ መታወቂያዎችን ይዘርዝሩ።|
+|`FindAccountsWithAsset`|የተሰጠውን የንብረት ፍቺ የያዙ መለያዎችን ይዘርዝሩ።|
+|`FindAliasesByAccountId`|ከመለያ ጋር የተሳሰሩ ተለዋጭ ስሞችን ይዘርዝሩ።|
+|`FindAccountRecoveryPolicyByAlias`|ለተለዋጭ ስም የመልሶ ማግኛ ፖሊሲን ያግኙ።|
+|`FindAccountRecoveryRequestByAlias`|ለተለዋጭ ስም የመልሶ ማግኛ ጥያቄን ያግኙ።|
+|`FindRoles`|ሚናዎችን ይዘርዝሩ።|
+|`FindRoleIds`|የሚና መታወቂያዎችን ይዘርዝሩ።|
+|`FindRolesByAccountId`|ለመለያ የተሰጡ ሚናዎችን ይዘርዝሩ።|
+|`FindPermissionsByAccountId`|ለመለያ የተሰጡ ፈቃዶችን ይዘርዝሩ።|
 
-## የጎራዎች እና እኩዮች {#domains-and-peers}
+## ጎራዎች እና የአውታረ መረብ እኩዮች {#domains-and-peers}
 
-|ጥያቄ |ዓላማ|
+|መጠይቅ|ዓላማ|
 | --- | --- |
-|`FindDomainById` |በ `DomainId` አንድ ጎራ ይፈልጉ።|
-|`FindDomains` |የተመዘገቡ ጎራዎችን ይዘርዝሩ። |
-|`FindDomainsByAccountId` |የአንድ መለያ ባለቤት የሆኑ ጎራዎችን ይዘርዝሩ። |
-|`FindDomainEndorsements` |የጎራ ማረጋገጫ መዝገቦችን ጻፍ። |
-|`FindDomainEndorsementPolicy` |የጎራ ማረጋገጫ ፖሊሲውን ይመልሱ። |
-|`FindDomainCommittee` |የጎራ ኮሚቴውን መልሰህ ስጥ።|
-|`FindPeers` |በመጽሐፉ ውስጥ የታወቁ ታማኝ እኩዮችን ጻፍ። |
+|`FindDomainById`|አንድ ጎራ በ `DomainId` ያግኙ።|
+|`FindDomains`|የተመዘገቡ ጎራዎችን ይዘርዝሩ።|
+|`FindDomainsByAccountId`|በመለያ ባለቤትነት የተያዙትን ጎራዎች ይዘርዝሩ።|
+|`FindDomainEndorsements`|የጎራ ድጋፍ መዝገቦችን ይዘርዝሩ።|
+|`FindDomainEndorsementPolicy`|የጎራ ድጋፍ ፖሊሲውን ይመልሱ።|
+|`FindDomainCommittee`|የጎራ ኮሚቴውን ይመልሱ።|
+|`FindPeers`|በብሎክቼይን መዝገብ የሚታወቁ የታመኑ የአውታረ መረብ እኩዮችን ይዘርዝሩ።|
 
-## NFTs እና RWAs ያሉ ንብረቶች። {#assets-nfts-and-rwas}
+## ንብረቶች፣ NFTs፣ እና RWAs {#assets-nfts-and-rwas}
 
-|ጥያቄ |ዓላማ|
+|መጠይቅ|ዓላማ|
 | --- | --- |
-|`FindAssets` |የንብረት ቀረጻዎችን ጻፍ። |
-|`FindAssetsDefinitions` |የአክሲዮን ትርጉሞችን ይዘርዝሩ። |
-|`FindAssetsByAccountId` |በሂሳብ የተያዙ ንብረቶችን መዝገብ። |
-|`FindAssetById` |በ `AssetId` ውስጥ አንድ የንብረት ቀሪውን ይፈልጉ። |
-|`FindAssetDefinitionById` |በ ID ውስጥ አንድ የንብረት ትርጉም ይፈልጉ። |
-|`FindNfts` |ዝርዝር NFTs.|
-|`FindNftsByAccountId` |የሂሳብ ባለቤትነት ያለው ዝርዝር NFTs. |
-|`FindRwas` |ዝርዝር የተመዘገቡ እውነተኛ ዓለም-አክሲዮን ዕቃዎች.|
+|`FindAssets`|የንብረት ቀሪ ሂሳቦችን ይዘርዝሩ።|
+|`FindAssetsDefinitions`|የንብረት ትርጓሜዎችን ይዘርዝሩ።|
+|`FindAssetsByAccountId`|በመለያ የተያዙ ንብረቶችን ይዘርዝሩ።|
+|`FindAssetById`|አንድ የንብረት ቀሪ ሂሳብ በ `AssetId` ያግኙ።|
+|`FindAssetDefinitionById`|አንድ ያግኙ የንብረት ፍቺ በመታወቂያ.|
+|`FindNfts`|ዝርዝር NFTs።|
+|`FindNftsByAccountId`|በመለያ ባለቤትነት የተያዘው NFTs ይዘረዝሩ።|
+|`FindRwas`|የተመዘገቡ የገሃዱ ዓለም የንብረት ዕጣዎችን ይዘርዝሩ።|
 
-## የኤስኮር እና የምስክር ወረቀቶች {#escrow-and-proof-records}
+## Escrow እና የማረጋገጫ መዝገቦች {#escrow-and-proof-records}
 
-የኤስኮር መጠይቆች በ [አገር ውስጥ ሀብት ኤስኮር ISIs ](/am/blockchain/escrow.md) የተፈጠሩ መዝገቦችን ይመረምራሉ ፣ ይህም የገበያ ቦታ ኤስኮሮችን ፣ አጠቃላይ የአክሲዮን መቆለፊያዎችን እና ስም አልባ ኤስኮርን መዝገብን ያጠቃልላል ።
+የ Escrow መጠይቆች በ[ቤተኛ የንብረት ማስያዣ ISIs](/am/blockchain/escrow.md) የተፈጠሩ መዝገቦችን ይመረምራሉ፣ የገበያ ቦታ ማስያዣዎችን፣ አጠቃላይ የንብረት መቆለፊያዎችን እና ማንነታቸው ያልታወቁ የማስያዣ መዝገቦችን ጨምሮ።
 
-|ጥያቄ |ዓላማ|
+|መጠይቅ|ዓላማ|
 | --- | --- |
-|`FindAssetEscrows` |የዋጋ ማስከበሪያ መዝገቦችን ጻፍ። |
-|`FindAssetEscrowById` |በ ID ውስጥ አንድ የንብረት ዋስትና ያግኙ። |
-|`FindAssetEscrowsBySeller` |በሻጩ የተያዙትን ንብረቶች መዝገብ። |
-|`FindAssetEscrowsByBuyer` |በገዢው የተያዙ ንብረቶችን መዝገብ። |
-|`FindAssetEscrowsByStatus` |የዋጋ ማስከበሪያዎችን በደረጃው ይዘርዝሩ። |
-|`FindAnonymousAssetEscrows` |የማይታወቁ የንብረት ማስከበሪያ መዝገቦችን ጻፍ። |
-|`FindAnonymousAssetEscrowById` |በ ID በኩል አንድ ስም አልባ ንብረት ማስያዣ ያግኙ። |
-|`FindAnonymousAssetEscrowsBySeller` |ስም አልባ የሆኑ የዋስትና ማረጋገጫዎችን በሸማች ዝርዝር ውስጥ ያስገቡ። |
-|`FindAnonymousAssetEscrowsByBuyer` |ስም አልባ የሆኑ የዋስትና ማረጋገጫዎችን በገዢዎች ዝርዝር ውስጥ ያስገቡ። |
-|`FindAnonymousAssetEscrowsByStatus` |ስማቸው ያልታወቀ የሆኑ የቁጠባ ባለቤቶችን በደረጃው ይዘርዝሩ። |
-|`FindProofRecordById` |ID ውስጥ አንድ ማስረጃ መዝገብ ያግኙ.|
-|`FindProofRecords` |የምስክር ወረቀቶችን ጻፍ።|
-|`FindProofRecordsByBackend` |የዳሰሳ ጥናት መዝገቦችን ለዳሰሳ ድጋሜ ያዘጋጁ። |
-|`FindProofRecordsByStatus` |የማረጋገጫ መዝገቦችን በደረጃዎች ተዘርዝሩ። |
+|`FindAssetEscrows`|የንብረት ማስያዣ መዝገቦችን ይዘርዝሩ።|
+|`FindAssetEscrowById`|አንዱን ያግኙ የንብረት ማስያዣ በመታወቂያ.|
+|`FindAssetEscrowsBySeller`|የንብረት ማስያዣዎችን በሻጭ ይዘርዝሩ።|
+|`FindAssetEscrowsByBuyer`|የንብረት ማስያዣዎችን በገዢ ይዘርዝሩ።|
+|`FindAssetEscrowsByStatus`|የንብረት ማስያዣዎችን በሁኔታ ይዘርዝሩ።|
+|`FindAnonymousAssetEscrows`|ማንነታቸው ያልታወቁ የንብረት ማስያዣ መዝገቦችን ይዘርዝሩ።|
+|`FindAnonymousAssetEscrowById`|አንድ ስም-አልባ የንብረት ማስያዣ በ መታወቂያ.|
+|`FindAnonymousAssetEscrowsBySeller`|በሻጭ የማይታወቁ escrows ይዘርዝሩ።|
+|`FindAnonymousAssetEscrowsByBuyer`|በገዢ የማይታወቁ escrows ይዘርዝሩ።|
+|`FindAnonymousAssetEscrowsByStatus`|ማንነታቸው ያልታወቁ escrows በሁኔታ ይዘርዝሩ።|
+|`FindProofRecordById`|አንድ የማረጋገጫ መዝገብ በ መታወቂያ.|
+|`FindProofRecords`|የማረጋገጫ መዝገቦችን ይዘርዝሩ።|
+|`FindProofRecordsByBackend`|ለማረጋገጫ ጀርባ የማረጋገጫ መዝገቦችን ይዘርዝሩ።|
+|`FindProofRecordsByStatus`|የማረጋገጫ መዝገቦችን በሁኔታ ይዘርዝሩ።|
 
-## Nexus፣ የውሂብ ተደራሽነትና ጥቅሎች {#nexus-data-availability-and-packages}
+## Nexus፣ የውሂብ ተገኝነት እና ጥቅሎች {#nexus-data-availability-and-packages}
 
-|ጥያቄ |ዓላማ|
+|መጠይቅ|ዓላማ|
 | --- | --- |
-|`FindRepoAgreements` |በሰንሰለት ላይ የተከማቹ የመረጃ ቋት ስምምነቶችን ይዘርዝሩ።|
-|`FindTwitterBindingByHash` |በሃሽ በኩል የትዊተር አገናኝን መፍታት። |
-|`FindDaPinIntentByTicket` |በቲኬት በኩል የመረጃ ተደራሽነት ፒን ዓላማ ያግኙ። |
-|`FindDaPinIntentByManifest` |በመግለጫ ማጣቀሻ አንድ ፒን ዓላማ ያግኙ።|
-|`FindDaPinIntentByAlias` |በቅጽል ስያሜ የፒን ዕቅድ ያግኙ።|
-|`FindDaPinIntentByLaneEpochSequence` |ከመንገድ፣ ዘመንና ቅደም ተከተል በመነሳት የፒን ዓላማ ይፈልጉ። |
-|`FindLaneRelayEnvelopeByRef` |አንድ የተረጋገጠ የመንገድ-ሪሌይ ፖስታ ያግኙ.|
-|`FindSorafsProviderOwner` |የ SoraFS አቅራቢ ባለቤት መፍትሄ። |
-|`FindDataspaceNameOwnerById` |የውሂብ ቦታ ስም ባለቤት መፍታት. |
-|`FindMusubiExactPackageV1` |አንድ ትክክለኛ የፓኬጅ መዝገብ እና ወቅታዊ ማሻሻያዎቹን ያንብቡ። |
-|`FindMusubiExactReleaseV1` |አንድ ትክክለኛ የመልቀቂያ ቅጽበታዊ ገጽ እይታን አንብብ። |
-|`FindMusubiProviderBundleAttestationV1` |የአንድ አቅራቢ የመረጃ ቋት ማረጋገጫ ያንብቡ። |
-|`FindMusubiResolverIndexV1` |የመጨረሻው መፍትሔ ማውጫ ገጽ. |
-|`FindMusubiVersionsV1` |ለአንድ ፓኬጅ የተጠናቀቁ ስሪቶች ገጽ። |
-|`FindMusubiMaintainersV1` |ገጽ አስተዳዳሪዎችን ተቀብሏል እና በመጠባበቅ ላይ ያሉ ግብዣዎች። |
-|`FindMusubiArchiveLocationsV1` |ገጽ ለአንድ ማህደር SoraFS አካባቢዎችን አጠናቋል ። |
-|`FindMusubiArchiveRetentionV1` |ገጽ የአርኪቭ ማቆያ መዛግብት. |
-|`FindMusubiAliasV1` |የአሁኑን የዓለማቀፍ ስያሜ አላማ እና ማሻሻያ ያንብቡ። |
-|`FindMusubiAliasHistoryV1` |የአለም አቀፋዊ ስያሜዎች የማይለዋወጥ ዳግም ማጣቀሻ ታሪክ ይለጥፉ። |
-|`FindMusubiOrderedPrefixV1` |በአንድ ቅደም ተከተል የተቀመጠ መዋቅራዊ ቅድመ-ጽሑፍ ስር የገጽ ጥቅሎች። |
+|`FindRepoAgreements`|በሰንሰለት ላይ የተከማቹ የማከማቻ ስምምነቶችን ይዘርዝሩ።|
+|`FindTwitterBindingByHash`|የትዊተር ማሰሪያን በምስጠራ ሃሽ ይፍቱ።|
+|`FindDaPinIntentByTicket`|በቲኬት የውሂብ ተገኝነት ፒን ዓላማ ያግኙ።|
+|`FindDaPinIntentByManifest`|በቴክኒካል አንጸባራቂ ማጣቀሻ የፒን ዓላማን ያግኙ።|
+|`FindDaPinIntentByAlias`|በተለዋጭ ስም የፒን ዓላማን ያግኙ።|
+|`FindDaPinIntentByLaneEpochSequence`|በማስፈጸሚያ መስመር፣ ዘመን እና ቅደም ተከተል የፒን ዓላማን ያግኙ።|
+|`FindLaneRelayEnvelopeByRef`|የተረጋገጠ የሌይን-ማስተላለፊያ ውሂብ መያዣ ያግኙ።|
+|`FindSorafsProviderOwner`|የ SoraFS አቅራቢውን ባለቤት ይፍቱ።|
+|`FindDataspaceNameOwnerById`|የውሂብ ቦታ-ስም ባለቤትን ይፍቱ።|
+|`FindMusubiExactPackageV1`|አንድ ትክክለኛ የጥቅል መዝገብ እና የአሁኑን ክለሳዎች ያንብቡ።|
+|`FindMusubiExactReleaseV1`|አንድ ትክክለኛ የመልቀቂያ ቅጽበታዊ ገጽ እይታን ያንብቡ።|
+|`FindMusubiProviderBundleAttestationV1`|የአንድ አቅራቢን ማህደር-ጥቅል ማረጋገጫ ያንብቡ።|
+|`FindMusubiResolverIndexV1`|የተጠናቀቀውን የመፍትሄ መረጃ ጠቋሚ ገጽ ያድርጉ።|
+|`FindMusubiVersionsV1`|ለአንድ ጥቅል ገጽ የተጠናቀቁ ስሪቶች።|
+|`FindMusubiMaintainersV1`|ገጽ ተቀብሏል ጠባቂዎች እና በመጠባበቅ ላይ ያሉ ግብዣዎች።|
+|`FindMusubiArchiveLocationsV1`|ገጽ ተጠናቅቋል SoraFS ቦታዎች ለአንድ ማህደር.|
+|`FindMusubiArchiveRetentionV1`|የገጽ ማህደር-ማቆያ መዝገቦች.|
+|`FindMusubiAliasV1`|የአሁኑን ኢላማ እና የአለምአቀፍ ተለዋጭ ስም ክለሳ ያንብቡ።|
+|`FindMusubiAliasHistoryV1`|የአለምአቀፍ ተለዋጭ ስም የማይለወጥ ዳግም ኢላማ ታሪክን ገጽ ገጽ።|
+|`FindMusubiOrderedPrefixV1`|በአንድ የታዘዘ መዋቅራዊ ቅድመ ቅጥያ ስር የገጽ ጥቅሎች።|
 
-## ተነሳሽነት፣ ውል፣ ግብይት እና ማገድ {#triggers-contracts-transactions-and-blocks}
+## ቀስቅሴዎች፣ ኮንትራቶች፣ ግብይቶች እና ብሎኮች {#triggers-contracts-transactions-and-blocks}
 
-|ጥያቄ |ዓላማ|
+|መጠይቅ|ዓላማ|
 | --- | --- |
-|`FindActiveTriggerIds` |አክቲቭ ማነቃቂያ IDs ይመዝገቡ። |
-|`FindTriggers` |የዝርዝር ማስነሻዎች.|
-|`FindTriggerById` |በ ID ውስጥ አንድ አስጀማሪ ያግኙ.|
-|`FindContractManifestByCodeHash` |የስማርት ኮንትራት መገለጫን በኮድ ሃሽ ይፈልጉ።|
-|`FindTransactions` |የተደራጁ ግብይቶች ዝርዝር። |
-|`FindBlocks` |የዝርዝር ዕቃዎች።|
-|`FindBlockHeaders` |የብሎክ ራስጌዎችን ይዘርዝሩ።|
+|`FindActiveTriggerIds`|ንቁ ቀስቅሴ መታወቂያዎችን ይዘርዝሩ።|
+|`FindTriggers`|ቀስቅሴዎችን ይዘርዝሩ።|
+|`FindTriggerById`|አንዱን ያግኙ ቀስቅሴ በመታወቂያ.|
+|`FindContractManifestByCodeHash`|ስማርት-ኮንትራት ቴክኒካል ማኒፌስት በኮድ ምስጠራ ሃሽ ያግኙ።|
+|`FindTransactions`|የተጠናቀቁ ግብይቶችን ይዘርዝሩ።|
+|`FindBlocks`|ብሎኮችን ይዘርዝሩ።|
+|`FindBlockHeaders`|የብሎክ ራስጌዎችን ይዘርዝሩ።|
 
-## ማጣሪያ እና ገጾች {#filtering-and-pagination}
+## ማጣራት እና አምልኮ {#filtering-and-pagination}
 
-ተለዋዋጭ መጠይቆች የፕሬዲኬትን እና የመምረጥ ድጋፍ ሊጋለጡ ይችላሉ ። የጥያቄ-ተኮር የተጻፉ ማጣሪያዎችን ከ SDK ይጠቀሙ ፣ ስለሆነም የማጣሪያ ግብዓት ከጥያቄው የውጤት ዓይነት ጋር ይዛመዳል ። ለትላልቅ ውጤቶች ስብስቦች እያንዳንዱን ረድፍ በአንድ ጊዜ ከማምጣት ይልቅ እንደ ካርሰር እና ገደብ ያሉ የጥያቄ መለኪያዎችን ይጠቀሙ።
+ሊደጋገሙ የሚችሉ መጠይቆች ቅድመ -ተባይ እና መራጭ ድጋፍን ሊያጋልጡ ይችላሉ። የማጣሪያው ግቤት ከጥያቄው ውፅዓት አይነት ጋር እንዲዛመድ ከ SDK በጥያቄ ላይ የተተየቡ ማጣሪያዎችን ይጠቀሙ። ለትልቅ የውጤት ስብስቦች እያንዳንዱን ረድፍ በአንድ ጊዜ ከማምጣት ይልቅ እንደ ጠቋሚ እና ገደብ ያሉ የመጠይቅ መለኪያዎችን ይጠቀሙ።

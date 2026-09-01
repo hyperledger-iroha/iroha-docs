@@ -1,23 +1,23 @@
 ---
 translation_locale: uz
 translation_source: /reference/binaries.md
-translation_source_hash: 5a36877954bec97691e45697680bfbd6e0a7c7695e48a796bc7c9a41d4756644
+translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Iroha ikkilamchilar bilan ishlash {#working-with-iroha-binaries}
+# Iroha Binarlar bilan ishlash {#working-with-iroha-binaries}
 
-Iroha 3 operatorning ish oqimi to'rtta asosiy ikkilamchi bo'yicha aylanadi:
+Iroha 3 operator ish jarayoni to'rtta asosiy ikkilik atrofida aylanadi:
 
-- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) tengdoshlar daemonini ishlatish uchun
-- `iroha3d_taira` kanonik Taira tasdiqlovchi ishga tushiruvchi uchun
-- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli) uchun CLI va operator qo'mondonlari
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami) kalitlar, genesis, lokal tarmoqlar va profillar uchun
+- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) tugun daemonini ishga tushirish uchun
+- `iroha3d_taira` kanonik Taira tasdiqlovchi tugunini ishga tushirish uchun
+- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli) uchun CLI va operator buyruqlari
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami) kalitlar, blokcheyn genesis, lokal tarmoqlar va profillar uchun
 
-## Manbaiga asoslanib quring {#build-from-source}
+## Manbadan yarating {#build-from-source}
 
-Yuqori oqimdagi ish maydonining ildizidan:
+Yuqori oqim ish maydoni ildizidan:
 
 ```bash
 cargo build --release \
@@ -26,9 +26,9 @@ cargo build --release \
   -p iroha_kagami --bin kagami
 ```
 
-Bo'shash binarlari keyinchalik `target/release/` da mavjud bo'ladi.
+Chiqarish binary fayllari shundan so‘ng `target/release/` da mavjud bo‘ladi.
 
-Boshqaruv yuzasini tekshirish uchun:
+Buyruq sirtini tekshirish uchun:
 
 ```bash
 ./target/release/iroha3d --help
@@ -37,9 +37,9 @@ Boshqaruv yuzasini tekshirish uchun:
 ./target/release/kagami --help
 ```
 
-## Repozitoriyadan toʻgʻridan-toʻgʻri ishga tushirish {#run-directly-from-the-repository}
+## To'g'ridan-to'g'ri repozitoriyadan ishga tushiring {#run-directly-from-the-repository}
 
-Agar siz global ravishda biron bir narsani o'rnatishni istamasangiz, `cargo run` dan foydalaning:
+Agar hech narsani global tarzda o‘rnatishni xohlamasangiz, `cargo run` dan foydalaning:
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --help
@@ -50,21 +50,21 @@ cargo run --bin kagami -- --help
 
 ## Docker Rasm {#docker-image}
 
-Yuqori oqimdagi ish maydonida `kagami localnet` va `kagami docker` kodga mos bo'lgan Docker Compose fayllarini hosil qilish uchun ishlatiladi. `hyperledger/iroha:dev` tasviridan ushbu hosil qilingan fayllar bilan foydalanish mumkin.
+Yuqqori darajadagi ish maydoni `kagami localnet` va `kagami docker` dan foydalangan holda tekshirilgan kodga mos keladigan Docker Compose fayllarini yaratadi. `hyperledger/iroha:dev` tasvir ushbu yaratilgan fayllar bilan ishlatilishi mumkin.
 
-CLI ni konteynerda ishga tushiring:
+Konteynerda CLI ni ishga tushiring:
 
 ```bash
 docker run -t hyperledger/iroha:dev iroha --help
 ```
 
-Kagami konteynerda ishlatilsin:
+Konteynerda Kagami ni ishga tushiring:
 
 ```bash
 docker run -t hyperledger/iroha:dev kagami --help
 ```
 
-Tengdoshlarni ishga tushirish uchun lokalnetni yarating va avval faylni yozing:
+Tarmoq peerini ishga tushirish uchun avval localnet va Compose faylini yarating:
 
 ```bash
 cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
@@ -72,9 +72,9 @@ cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyper
 docker compose -f ./docker-compose.yml up
 ```
 
-## Qaysi binarydan foydalanishim kerak? {#which-binary-should-i-use}
+## Qaysi ikkilikni ishlatishim kerak? {#which-binary-should-i-use}
 
-- Umumiy Taira tasdiqlovchidan tashqarida tengdoshlarni ishga tushirganingizda yoki ishlatganingizda `iroha3d` dan foydalaning.
-- `iroha3d_taira --sora` ni faqat kanonik Taira validatorni ishga tushirish uchun ishlating; u Taira ning zanjir, saqlash va ish vaqti belgisi profilini o'z ichiga oladi.
-- `iroha` dan foydalanib, katta daftarni so'rovlash, tranzaksiyalarni taqdim etish yoki operator oxirgi nuqtalarini tekshirish kerak bo'lganda foydalaning.
-- `kagami` kalitlar, genesis manifestlari, profil to'plamlari yoki localnet aktivlariga muhtoj bo'lganda ishlating.
+- Ochiq Taira tasdiqlovchi relizidan tashqaridagi tugunlarni ishga tushirish yoki boshqarish uchun `iroha3d` dan foydalaning.
+- `iroha3d_taira --sora` dan faqat kanonik Taira tasdiqlovchi tugunini joylashtirishda foydalaning; u Taira zanjiri, saqlash va bajarish muhiti imzolovchisi profilini majburiy qo‘llaydi.
+- `iroha` dan blockchain daftarini so‘rash, tranzaksiyalarni yuborish yoki operator API tugunlarini tekshirish kerak bo‘lganda foydalaning.
+- Kalitlar, boshlang‘ich holat manifestlari, profil to‘plamlari yoki mahalliy tarmoq resurslari kerak bo‘lsa, `kagami` dan foydalaning.

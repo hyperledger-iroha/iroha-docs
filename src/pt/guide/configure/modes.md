@@ -3,59 +3,59 @@ translation_locale: pt
 translation_source: /guide/configure/modes.md
 translation_source_hash: 3f6c2d84c7b6d325d76fb1b1a3ec0efb75381521f7fc69e7924a96532679bc61
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: bing-translator-llm
 ---
 
-# Cadeias de blocos públicas e privadas {#public-and-private-blockchains}
+# Blockchains Públicas e Privadas {#public-and-private-blockchains}
 
-Iroha pode ser executado em uma variedade de configurações. Como administrador da sua própria rede, você decide qual executor e política de permissão determinar se uma transação é aceita.
+Iroha pode ser executado em uma variedade de configurações. Como administrador da sua própria rede, você decide qual executor e política de permissões determinam se uma transação é aceita.
 
-Os perfis comuns são redes privadas com permissão e redes públicas mais abertas. Ambos são configurados através do estado de gênese e da política do executor, não por meio de binários de nós separados.
+Os perfis comuns são redes privadas com permissão e redes públicas mais abertas. Ambos são configurados através do estado gênese da blockchain e da política do executor, não através de binários de nó separados.
 
-Abaixo descrevemos as principais diferenças entre estes dois casos de utilização.
+A seguir, descrevemos as principais diferenças nesses dois casos de uso.
 
 ## Permissões {#permissions}
 
-Em um blockchain público, a maioria das contas tem o mesmo conjunto de permissões. em um blockchain privado, cada conta recebe apenas suas permissões explícitas.
+Em uma blockchain pública, a maioria das contas tem o mesmo conjunto de permissões. Em uma blockchain privada, cada conta recebe apenas suas permissões explícitas.
 
 ::: info
 
-Consulte a secção [ dedicada às permissões ](/pt/blockchain/permissions.md) para obter mais informações.
+Consulte o [seção dedicada a permissões](/pt/blockchain/permissions.md) para mais detalhes.
 
 :::
 
-## Companheiros {#peers}
+## pares de rede {#peers}
 
-Em um blockchain público, a admissão de pares faz parte da política de cadeia. Para um blockchain privado, as implementações geralmente definem o conjunto de pares confiável na configuração e genésica.
+Em uma blockchain pública, a admissão de pares na rede faz parte da política da cadeia. Para uma blockchain privada, as implantações geralmente definem o conjunto de pares confiáveis na configuração e no gênesis da blockchain.
 
 ::: info
 
-Para obter mais informações, consulte [ gestão entre pares ](peer-management.md).
+Consulte [gerenciamento de pares de rede](peer-management.md) para mais detalhes.
 
 :::
 
-## Conta de registo {#registering-accounts}
+## Registrando contas {#registering-accounts}
 
-Dependendo da forma como você decide configurar o seu [bloqueio de gênese (`genesis.json`)](genesis.md), O processo para registrar uma conta pode ser de duas formas. Para entender o porquê, vamos falar primeiro sobre permissão.
+Dependendo de como você decidir configurar seu [bloco gênese da blockchain (`genesis.json`)](genesis.md), o processo para registrar uma conta pode seguir um de dois caminhos. Para entender o porquê, vamos falar sobre permissão primeiro.
 
-O executor selecionado define quais verificações de permissões se aplicam. Você pode conceder os tokens de permissão padrão [ ](/pt/blockchain/permissions.md) em gênese para moldar uma rede privada, gerenciada pelo administrador ou uma rede mais aberta. Uma vez que essas permissões são ativas, o processo de registro de contas é diferente.
+O executor selecionado define quais verificações de permissão se aplicam. Você pode conceder o [tokens de permissão](/pt/blockchain/permissions.md) padrão na gênese da blockchain para criar uma rede privada gerenciada por administradores ou uma rede mais aberta. Uma vez que essas permissões estejam ativas, o processo de registro de contas é diferente.
 
-As políticas de registo público e privado geralmente diferem:
+As políticas de registro público e privado geralmente diferem:
 
-- Uma política de registo público aceita registros de contas de qualquer usuário elegível[^1]. O usuário precisa de um cliente adequado, uma chave privada para um algoritmo suportado e um pedido de registo aceito pela política.
+- Uma política de registro público aceita registros de conta de qualquer usuário elegível[^1]. O usuário precisa de um cliente adequado, uma chave privada para um algoritmo suportado e uma solicitação de registro aceita pela política.
 
-- Uma política de registo privado pode autorizar uma conta ou um contrato inteligente para enviar registros. Uma política personalizada pode limitar o registro a uma janela de tempo. Também pode exigir que o enviador gaste um token cuja oferta é fixa porque nenhuma autoridade tem permissão para fazer mais moeda.
+- Uma política de registro privado pode autorizar uma conta ou um contrato inteligente a enviar registros. Uma política personalizada pode limitar o registro a uma janela de tempo. Também pode exigir que o remetente gaste um token cujo fornecimento é fixo porque nenhum principal de autorização tem permissão para emitir mais.
 
-- Com o padrão de rede privada padrão, uma conta existente apresenta o registo para cada nova conta.
+- Com o padrão de rede privada padrão, uma conta existente envia o registro para cada nova conta.
 
-Os validadores de permissão padrão cobrem o típico caso de uso privado da blockchain.
+Os validadores de permissão padrão abrangem o caso de uso típico de blockchain privada.
 
 ::: info
 
-Os modos público e privado são opções de executor e gênese política. Ambos usam o mesmo nó binário. Revisar o executor selecionado e gênesis permissões antes de executar uma rede aberta.
+Modos públicos e privados são escolhas de política do executor e do gênese da blockchain. Ambos usam o mesmo binário de nó. Revise as permissões do executor e do gênese da blockchain selecionados antes de executar uma rede aberta.
 
 :::
 
-Para obter mais informações sobre as instruções `Register<Account>`, consulte a secção [ instruções](/pt/blockchain/instructions.md#un-register).
+Consulte a seção sobre [instruções](/pt/blockchain/instructions.md#un-register) para mais detalhes sobre as instruções de `Register<Account>`.
 
-[^1]: `Register<Account>` cria o estado do livro-razão para um canônico, sem domínio `AccountId`; roteamento de domínio e pseudônimos são geridos separadamente.
+[^1]: `Register<Account>` cria o estado do livro razão da blockchain para um `AccountId` canônico e sem domínio; o roteamento de domínios e os aliases são gerenciados separadamente.

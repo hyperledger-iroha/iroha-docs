@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: 429535e5bb4ad1d3110f29a5b3896c0d3ce39264dbd357fa932fcc2a5f48d0f1
+translation_source_hash: 6d36784afef0ef10113cabc995ddfb45fd8d382d7c32c553d77cf03ba5c1f65f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 ## 结果 {#outcome}
 
-在无域名的法典中安全工作 I105 账户 IDs 和单独绑定的人类可读的别名,如 `treasury@payments.universal`. 你会检查 Taira 根据自己的法典, ID, 解决别名,不使路由背景与身份混为一谈.
+在无域名的规范中安全工作 I105 账户 IDs 和单独绑定的人类可读的别名,如 `treasury@payments.universal`. 你会检查 Taira 根据自己的规范, ID, 解决别名,不使路由背景与身份混为一谈.
 
 ## 预先条件 {#prerequisites}
 
@@ -20,9 +20,9 @@ translation_engine: nllb-200-ct2
 
 ## 步骤 {#steps}
 
-### 1. 检查 Taira 的法典账户 {#_1-inspect-canonical-accounts-on-taira}
+### 1. 检查 Taira 的规范账户 {#_1-inspect-canonical-accounts-on-taira}
 
-公开账户列表总是返回正文号 I105 IDs.主要姓氏是可选的,并单独报告.
+公开账户列表总是返回正文号 I105 IDs.主要别名是可选的,并单独报告.
 
 ```bash
 curl -fsS -H 'Accept: application/json' \
@@ -75,7 +75,7 @@ curl -fsS -H 'Accept: application/json' \
 
 ### 4. 查找与账户相关的名 {#_4-look-up-aliases-bound-to-the-account}
 
-逆解析器接受一个准确的正规帐户 ID.公开数据库行可以在没有请求签名标题的情况下读取;限制的数据库需要授权签署的请求.
+逆解析器接受一个准确的规范帐户 ID.公开数据空间行可以在没有请求签名标题的情况下读取;限制的数据空间需要授权签署的请求.
 
 ```bash
 jq -nc --arg account_id "$TAIRA_ACCOUNT_ID" \
@@ -89,7 +89,7 @@ curl -fsS -H 'Accept: application/json' \
   | jq '{account_id, total, items}'
 ```
 
-`total: 0`是有效的:一个账户不需要姓氏.如果存在绑定,解决其完全合格的姓氏,并比较返回帐户 ID:
+`total: 0`是有效的:一个账户不需要别名.如果存在绑定,解决其完全合格的别名,并比较返回帐户 ID:
 
 ```bash
 ALIAS_WAS_RESOLVED=false
@@ -111,11 +111,11 @@ fi
 
 ::: warning 许可范围
 
-Taira 龙头可以提供其申请人账户,但这不授予一般帐户注册或称管理权. 注册另一个账户需要在活跃的验证器下进行`CanRegisterAccount`.帐户密码通常还需要活跃的 SNS 租合同和适当的密码许可. 使用管理的登录/密码规划器,或对生成的本地网络进行注册练习.
+Taira 水龙头可以提供其申请人账户,但这不授予一般帐户注册或称管理权. 注册另一个账户需要在活跃的验证器下进行`CanRegisterAccount`.帐户密码通常还需要活跃的 SNS 租合同和适当的密码许可. 使用管理的登录/密码规划器,或对生成的本地网络进行注册练习.
 
 :::
 
-在本地网络上,一旦一个安全的签名供应步骤出口了新的正规 `NEW_ACCOUNT_ID`,登记表面是:
+在本地网络上,一旦一个安全的签名供应步骤出口了新的规范 `NEW_ACCOUNT_ID`,登记表面是:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -131,7 +131,7 @@ iroha --config ./localnet/client.toml ledger account get \
 
 ## 验证 {#verify}
 
-证明公钥的配置, I105 编码,并称为结合所有 converge 在一个法典帐户 ID:
+证明公钥的配置, I105 编码,并称为结合所有 converge 在一个规范帐户 ID:
 
 ```bash
 NORMALIZED_ACCOUNT_ID="$(
@@ -145,12 +145,12 @@ if test "${ALIAS_WAS_RESOLVED:-false}" = true; then
 fi
 ```
 
-存储常规帐户 IDs.使用常规账户 IDs 为签名,权限和交易说明.在应用程序边界解决一个别名.保留用于操作的常规账号 ID.
+存储规范帐户 IDs.使用规范账户 IDs 为签名,权限和交易说明.在应用程序边界解决一个别名.保留用于操作的规范账号 ID.
 
 ## 解决问题 {#troubleshooting}
 
 - 一个解析或前置错误通常意味着一个地址为不同的网络配置文件编码.用 `--profile taira`来正常化,并拒绝不匹配.
-- 一个账户 `404` 在水龙头之后 `202` 在发送信件之前,请查询账户或资产.
+- 一个账户 `404` 在水龙头之后 `202` 在发送写入操作之前,请查询账户或资产.
 - `total: 0` 来自反向解析器意味着没有可见的代号绑定;这不是一个账户查找失败.
 - `401`或`403`来自一个别名路线表示数据空间有限或精确解析权限不足.不要作为倒退使用宽的前搜索.
 - 一个可读的 `name@domain.dataspace`值不被接受在任何地方需要一个正义的 I105 ID.首先解决它.

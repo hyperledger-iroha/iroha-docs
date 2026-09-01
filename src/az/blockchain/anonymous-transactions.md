@@ -1,59 +1,59 @@
 ---
 translation_locale: az
 translation_source: /blockchain/anonymous-transactions.md
-translation_source_hash: aabeb00dd0e94278177707c50e0a73e6e3c0ca47ef5005d9c79ee0dc892cc47e
+translation_source_hash: c5f10d1395e0b7704d29f4a535dd317b2cabe9c838208f76b7b776dd029089c0
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Anonim əməliyyatlar {#anonymous-transactions}
+# Anonim Əməliyyatlar {#anonymous-transactions}
 
-Iroha ilə anonim əməliyyatlar məxfi aktiv əməliyyatlarından qurulur. Cümi məbləğlərlə ictimai hesabdan hesaba köçürmələrin yazılması əvəzinə bir cüzdan dəyərini qorunan bir kitabxanaya köçürür və sonra sıfır bilik sübutları olan qeyri-şəffaf qeydləri xərcləyir.
+Iroha-də anonim əməliyyatlar məxfi aktiv əməliyyatlarından ibarətdir. İctimai məbləğlərlə açıq hesabdan-hesaba köçürmələr yazmaq əvəzinə, bir cüzdan dəyəri qorunan blokçeyn dəftərinə köçürür və sonra sıfır-bilik sübutları ilə qeyri-şəffaf qeydləri xərcləyir.
 
-İctimai nəşr hələ də gizli əməliyyatın baş verdiyini qeyd edir. O, öhdəlikləri, ləğv edənlər, sübut hashləri və hadisələri qeyd edir, lakin not sahibini, alıcını və ya qoruqdan qorunmuş hərəkət üçün məbləği qeyd etmir. Normal əməliyyat qovşağı hələ də təqdim edən hesabı aşkar edə bilər, buna görə burada "anonim" şəbəkə səviyyəsində və ya hesab səviyyəsində avtomatik anonimlik deyil, anonim aktivlərin hərəkəti deməkdir.
+İctimai blokçeyn dəftəri hələ də məxfi əməliyyatın baş verdiyini qeyd edir. O, kriptoqrafik öhdəlik dəyərlərini, nullifierləri, sübut kriptoqrafik xəşləri və hadisələri qeyd edir, lakin qorunan-dan-qorunana hərəkət üçün qeyd sahiblərini, alıcıları və məbləği qeyd etmir. Normal əməliyyat məlumat konteyneri hələ də göndərən hesabı göstərə bilər, beləliklə burada “anonim” sözü anonim aktiv hərəkətini, avtomatik şəbəkə səviyyəsində və ya hesab səviyyəsində anonimliyi deyil.
 
-## İnşaat blokları {#building-blocks}
+## Tikinti Blokları {#building-blocks}
 
-|Konsepsiya |Ledger təmsilçisi |
+|Konsept|blokçeyn dəftərxana təmsili|
 | ------------------ | ------------------------------------------------------------------------------------------------------------------ |
-|Mühafizə olunmuş qeyd|Bir aktiv, məbləğ, sahibinin məlumatları və təsadüfilik olan şəxsi cüzdan qeydləri. |
-|Məsuliyyət |32 baytlıq ictimai qiymət, onun sahələrini açıqlamadan bir qeydə sadiqdir. |
-|Qeyri-hüquqlu |Qeyd xərcləndikdə əldə edilən 32 bayt ictimai dəyər. Iroha ikiqat xərclərin qarşısını almaq üçün təkrarlanan ləğv edənləri rədd edir. |
-|Merkle kökü |Bu, aktivin öhdəlik ağacının yeni bir köküdür və sübutlar onu xərclənmiş notların mövcud olduğunu göstərmək üçün istifadə edir.|
-|Dayanıq əlavəsi |`ProofAttachment` əhatə edən sübut baytları və bir yoxlama açarı istinadı və ya inline yoxlama açar. |
-|Gizli hadisə |`ConfidentialEvent::Shielded`, `Transferred` və ya `Unshielded` kimi böyük kitabda baş verən hadisə. |
+|Qorunmuş qeyd|Bir aktiv, məbləğ, sahib məlumatları və təsadüfilik ehtiva edən şəxsi cüzdan qeydi.|
+|kriptovalyuta öhdəlik dəyəri|Bir qeydın sahələrini açıqlamadan ona kriptoqrafik olaraq bağlanan 32 baytlıq ictimai dəyər.|
+|Ləğv edən|Qeyd xərclənərkən əldə edilən 32 baytlıq ictimai dəyər. Iroha təkrar nullifierləri rədd edərək iki dəfə xərcləmənin qarşısını alır.|
+|Merkle kökü|Aktivin kriptoqrafik öhdəlik dəyər ağacının sonuncu kökü. Sübutlar xərclənmiş qeydlərin mövcud olduğunu göstərmək üçün bunu istifadə edir.|
+|Sənəd əlavə|A `ProofAttachment` sübut baytlarını və təsdiq açarı istinadı və ya xətti təsdiq açarını ehtiva edir.|
+|Gizli tədbir| `ConfidentialEvent::Shielded`, `Transferred` və ya `Unshielded` kimi bir blok zənciri dəftərçi hadisəsi.|
 
-Əsas təlimatlar aşağıdakılardır:
+Əsas təlimatlar bunlardır:
 
-- `RegisterZkAsset`: bir aktivin ZK -ə malik olduğunu qeydiyyatdan keçirir və transfer, qalxan və qalxan olmayan yoxlama açarlarını bağlayır.
-- `Shield`: ictimaiyyət balansını debit edir və bir qoruyucu not öhdəliyini əlavə edir.
-- `ZkTransfer`: mühafizə olunmuş əmanətləri yeni mühafizəsi olan əmanətlərə xərcləyir.
-- `Unshield`: qoruyucu banknote xərcləyir və dövlət hesabının balansını kreditləşdirir.
-- `ScheduleConfidentialPolicyTransition` və `CancelConfidentialPolicyTransition`: bir aktivin məxfilik siyasətini idarəetmə yolu ilə dəyişdirmək.
+- `RegisterZkAsset`: bir əmlakı ZK-qabiliyyətli olaraq qeydiyyata alır və transfer, qoruma və qoruma açarlarını bağlayır.
+- `Shield`: bir ictimai balansı debet edir və qorunan qeyd kriptoqrafik öhdəlik dəyərini əlavə edir.
+- `ZkTransfer`: qorunan qeydləri yeni qorunan qeyd kriptoqrafik öhdəlik dəyərlərinə xərcləyir.
+- `Unshield`: qorunan qeydləri xərcləyir və ictimai hesab balansını kreditləşdirir.
+- `ScheduleConfidentialPolicyTransition` və `CancelConfidentialPolicyTransition`: bir aktivin məxfi siyasətini idarəetmə vasitəsilə dəyişdirin.
 
-Bir aktiv tərifində həmçinin [`AssetConfidentialPolicy`](/az/reference/data-model-schema.md) adı var. Axınları nəzarət edən siyasət rejimi etibarlıdır:
+Aktiv tərifi həm də bir şeyi daşıyır [`AssetConfidentialPolicy`](/az/reference/data-model-schema.md). Siyasət rejimi hansı axınların etibarlı olduğunu idarə edir:
 
-|Modu |Məna|
+|Rejim|Mənası|
 | ----------------- | ---------------------------------------------------------------- |
-|`TransparentOnly` |Yalnız normal ictimai balanslar və köçürmələr qəbul edilir. |
-|`Convertible` |İstifadəçilər qiyməti ictimai balanslar və qoruyucu qeydlər arasında köçürə bilərlər. |
-|`ShieldedOnly` |Əşyaların buraxılışı və köçürülməsi qoruyan kitabda qalmalıdır. |
+| `TransparentOnly` |Yalnız normal ictimai balanslar və köçürmələr qəbul olunur.|
+| `Convertible`     |İstifadəçilər dəyəri ictimai balanslar ilə qorunan qeydlər arasında köçürə bilərlər.|
+| `ShieldedOnly`    |Əmlakın buraxılması və köçürmələri qorunan blokçeyn dəftərində qalmalıdır.|
 
-## Onları necə istifadə etmək olar {#how-to-use-them}
+## Onlardan Necə İstifadə Etmək Olar {#how-to-use-them}
 
-1. Validator qovşaqlarında məxfilik dəstəyini təmin edin. Validatorlar təsdiqləyici arxası, aktiv yoxlama açarları, Poseidon/Pedersen parametrləri IDs və məxfi qaydalar versiyası haqqında razılığa gəlməlidirlər. Qovşaqlar eşidilməyən məxfi xüsusiyyətlər ilə həmyaşıllı və ya blokları rədd edirlər.
-2. Çərçivələrdə istifadə olunan yoxlama açarları və parametrlər dəstlərini nəşr etmək və ya qeyd etmək. Cüzdanlar və operatorlar `VerifyingKeyId`, məsələn, `halo2/ipa:vk_transfer` ilə açarlara müraciət etməlidirlər.
-3. Əməliyyat vasitəsi ZK-ə görə `RegisterZkAsset` ilə qeydiyyatdan keçin və ya `TransparentOnly`-dən `Convertible` və ya `ShieldedOnly`-ə siyasət keçidinin həyata keçirilməsi.
-4. Dövlət vəsaitini `Shield` ilə qoruyun. Cüzdan, əməliyyatı təqdim etməzdən əvvəl alıcı üçün bir qeyd öhdəliyi və şifrəli pay yükü yaradır.
-5. `ZkTransfer` ilə şəxsi köçürülməsi. Cüzdan giriş qeydlərinə sahib olduğunu, giriş və çıxış dəyərlərinin balanslandığını və hər xərclənmiş notun son bir öhdəlik ağacına bağlandığını göstərir.
-6. Yalnız aktiv siyasəti buna icazə verdiyi təqdirdə şilddən çıxarın. `Unshield` ictimai məbləği və alıcının hesabını açıqlayır, şəxsi notların ləğvçisini xərcləyir, və özəl dəyişiklik çıxışı yarada bilər.
-7. Gizli hadisələri, sübut sənədlərini, ləğvçi statusunu və naməlum əmanət sənədlərini Torii son nöqtələrindən istifadə edərək oxumaqla audit.
+1. Təsdiqləyici düyünlərdə gizli dəstəyi aktiv edin. Təsdiqləyicilər yoxlayıcı arxa planı, aktiv təsdiqləmə açarları, Poseidon/Pedersen parametr identifikatorları və gizli qaydalar versiyası barədə razılığa gəlməlidirlər. Düyünlər uyğun gəlməyən gizli xüsusiyyət kriptoqrafik xülasələri olan şəbəkə yoldaşlarını və ya blokları rədd edir.
+2. Dairələr tərəfindən istifadə olunan doğrulama açarlarını və parametr dəstlərini dərc edin və ya qeydiyyatdan keçirin. Pulqabılar və operatorlar açarlara `VerifyingKeyId` ilə istinad etməlidir, məsələn `halo2/ipa:vk_transfer`.
+3. Əmlakı `RegisterZkAsset` ilə ZK-qabiliyyətli kimi qeyd edin, ya da siyasətin keçidini `TransparentOnly`-dən `Convertible` və ya `ShieldedOnly`-ə mərhələləndirin.
+4. Ümumi vəsaitləri `Shield` ilə qoruyun. Cüzdan əməliyyatı təqdim etməzdən əvvəl alıcı üçün bir qeyd kriptoqrafik öhdəlik dəyəri və şifrəli məlumat yaradır.
+5. Şəxsi şəkildə `ZkTransfer` ilə köçürün. Cüzdan, giriş qeydlərinə sahib olduğunu, giriş və çıxış dəyərlərinin balansda olduğunu və hər xərclənmiş qeydın son kriptoqrafik öhdəlik dəyəri ağacında yerləşdirildiyini sübut edən bir sübut yaradır.
+6. Varlıq siyasəti icazə verdikdə yalnız qorunmasız edin. `Unshield` ictimai məbləği və alıcının hesabını açır, şəxsi qeydlərin ləğv edicisini xərcləyir və şəxsi dəyişiklik çıxışları yarada bilər.
+7. Məxfi hadisələri, sübut qeydlərini, ləğv vəziyyətini və anonim əmanət qeydlərini yazılı sorğular və Torii API son nöqtələri vasitəsilə oxumaqla audit.
 
-## CLI nümunələr {#cli-examples}
+## CLI Nümunələr {#cli-examples}
 
-ZK CLI əmrləri operator və test axınları üçün nəzərdə tutulmuşdur. İstehsalat cüzdanları nəticələnən təlimatların təqdim edilməsindən əvvəl cüzdan/prover kitabxanası ilə öhdəliklər, şifrəli pay yükləri və sübutlar yaratmalıdırlar.
+ZK CLI əmrləri operator və test axınları üçün nəzərdə tutulub. İstehsalat cüzdanları nəticə əmrlərini təqdim etməzdən əvvəl kriptoqrafik öhdəlik dəyərləri, şifrələnmiş yükləmələr və sübutları bir cüzdan/sübutçu kitabxanası ilə yaratmalıdır.
 
-HİBRID ZK məbləğində olan aktivin qeydiyyatına alınması:
+Hibrid ZK-qabiliyyətli aktiv qeydiyyatdan keçirin:
 
 ```bash
 iroha app zk register-asset \
@@ -65,7 +65,7 @@ iroha app zk register-asset \
   --vk-shield halo2/ipa:vk_shield
 ```
 
-Mühafizə olunmuş qeyd üçün versiyalı şifrələnmiş payload zarfını qurun:
+Qorunan qeydlər üçün versiyalaşdırılmış şifrələnmiş məlumat konteyneri yaradın:
 
 ```bash
 iroha app zk envelope \
@@ -76,18 +76,9 @@ iroha app zk envelope \
   --output note-envelope.bin
 ```
 
-Dövlət vəsaitlərini aktivin qoruyucu kitabına daxil etmək:
+CLI aktiv siyasətini, yoxlayıcı açar istinadlarını və şifrəli qeyd məlumat konteynerini hazırlayır. O, `shield` və ya `unshield` əməliyyat alt komandalarını ifşa etmir. Bu təlimatları SDK ilə qurun və onları adi imzalanmış əməliyyat kimi, ödəniş qiymət təxmini ilə göndərin.
 
-```bash
-iroha app zk shield \
-  --asset <asset-definition-id> \
-  --from <account-id> \
-  --amount 1000 \
-  --note-commitment ABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABAB \
-  --enc-payload note-envelope.bin
-```
-
-Dayanıqlı bir əlavə JSON ilə qoruyan qalxan:
+Qorunmasız sübut əlavəsinin bu forması var:
 
 ```bash
 cat > unshield-proof.json <<'JSON'
@@ -100,18 +91,11 @@ cat > unshield-proof.json <<'JSON'
   }
 }
 JSON
-
-iroha app zk unshield \
-  --asset <asset-definition-id> \
-  --to <account-id> \
-  --amount 1000 \
-  --inputs DEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEF \
-  --proof-json unshield-proof.json
 ```
 
-## SDK Misal {#sdk-example}
+## SDK Nümunə {#sdk-example}
 
-Düzü sübut baytları konfigurasiya edilmiş sübut arxa enddən gəlir. Əməliyyat pay yükü yalnız ictimai girişlərə və sübut əlavələrinə ehtiyac duyur:
+Dəqiq sübut baytları təyin edilmiş sübut arxa ucundan gəlir. Əməliyyat yükləməsi yalnız ictimai girişləri və sübut əlavə faylını tələb edir:
 
 ```rust
 use iroha_data_model::{
@@ -167,99 +151,99 @@ fn unshield_instruction(
 }
 ```
 
-## Anonim varlıqların əmanət alınması {#anonymous-asset-escrow}
+## Anonim Aktiv Depoziti {#anonymous-asset-escrow}
 
-Anonim aktivlər vəsiqəsi vəsiqəli dəyər üçün eyni qorunan köçürmə maşınından istifadə edir. tərəflər və vəsiqəli vəziyyət hələ də vəsiqəli qeydə alınır, lakin maliyyələşdirmə, buraxılış, ləğv və həlli ayaqları korlanmış ləğvçilərdən və çıxış öhdəliklərindən istifadə edirlər.
+Anonim aktiv eskrovu, eskrova qoyulmuş dəyər üçün eyni qorunan köçürmə mexanizmini istifadə edir. Tərəflər və eskro vəziyyəti hələ də eskro qeydinə yazılır, lakin maliyyələşdirmə, buraxılış, ləğv, və maliyyə köçürmələrinin hissələrinin həlli qorunan nullifierlərdən və çıxış kriptoqrafik öhdəlik dəyərlərindən istifadə edir.
 
-ISI əxlaq davranışının və nümunələrinin ətraflı məlumatı üçün [ Yerli aktivlərin əxlaqını ](/az/blockchain/escrow.md#anonymous-escrow) baxın.
+Ətraflı depozit ISI davranışı və nümunələr üçün baxın [Yerli Aktiv Depoziti](/az/blockchain/escrow.md#anonymous-escrow).
 
-Həyat dövrü:
+Həyat dövrü belədir:
 
-1. `OpenAnonymousAssetEscrow` mühafizə edilmiş maliyyələşdirmə notlarını xərcləyir və bir depozit öhdəliyi yaratır.
-2. `AcceptAnonymousAssetEscrow` alıcı qeyd edir.
-3. `MarkAnonymousEscrowPaymentSent` alıcının ödənişləri zəncirdən kənarda göndərdiyini qeyd edir.
-4. `ReleaseAnonymousAssetEscrow` əmanət borcunu alıcı istehsalı öhdəliklərinə xərcləyir.
-5. `CancelAnonymousAssetEscrow` ödəniş işarə olunmadıqda satıcının çıxışı öhdəliklərinə geri götürülən vəsiqəni xərcləyir.
-6. `OpenAnonymousEscrowDispute` və `ResolveAnonymousEscrowDispute` mübahisəli əmanətləri sübut hashləri və həlli ilə idarə olunan bölünmə ilə həll edirlər.
+1. `OpenAnonymousAssetEscrow` qorunan maliyyələşdirmə qeydlərini xərcləyir və bir vasitə kriptoqrafik öhdəlik dəyəri yaradır.
+2. `AcceptAnonymousAssetEscrow` alıcını qeyd edir.
+3. `MarkAnonymousEscrowPaymentSent` qeydləri göstərir ki, alıcı ödənişi zəncir xaricində göndərib.
+4. `ReleaseAnonymousAssetEscrow` depozit kriptoqrafik öhdəlik dəyərini alıcı çıxış kriptoqrafik öhdəlik dəyərlərinə xərcləyir.
+5. `CancelAnonymousAssetEscrow` ödəniş işarələnmədikdə, satıcı çıxışının kriptoqrafik öhdəlik dəyərlərinə kirayə saxlanan kriptoqrafik öhdəlik dəyərini geri göndərir.
+6. `OpenAnonymousEscrowDispute` və `ResolveAnonymousEscrowDispute` mübahisəli əmanətləri sübut kriptoqrafik xeşlər və həlledicinin idarə etdiyi paylama ilə idarə edir.
 
-[Soruşmalar](/az/reference/queries.md#escrow-and-proof-records)-da göstərilən anonim depozit sorğularından istifadə edərək depozit qeydlərini və statuslarını yoxlayın.
+[Sorğular](/az/reference/queries.md#escrow-and-proof-records) ünvanında siyahıya alınmış anonim əmanət sorğularından istifadə edərək əmanət qeydlərini və vəziyyətlərini yoxlayın.
 
 ## Riyaziyyat {#math}
 
-Aşağıdakı qeyd məxfi aktiv axını təsvir edir. Tədbirlər aktiv siyasətindən və yoxlayıcı qeydiyyatından olan aktiv dövrə və parametrdən IDs istifadə edirlər, buna görə müştərilər öhdəlikləri, ləğv edənləri və sübut baytlarını cüzdanın / proverin qeyri-aşkar çıxışları kimi qəbul etməlidirlər.
+Aşağıdakı qeyd gizli aktiv axınını təsvir edir. Tətbiqlər aktiv siyasətindən və yoxlayıcı qeydindən aktiv dövrə və parametr ID-lərindən istifadə edir, buna görə müştərilər kriptoqrafik öhdəlik dəyərlərini, nullifier-ləri və sübut baytlarını cüzdan/prover tərəfindən yaranan qeyri-şəffaf nəticələr kimi qəbul etməlidir.
 
-Qoruyucu qeyd aşağıdakı kimi təsvir edilə bilər:
+Qorunmuş qeydi belə təsvir etmək olar:
 
 $$
 n = (\mathsf{asset}, \mathsf{amount}, \mathsf{owner}, \rho)
 $$
 
-`owner` alıcının baxdığı və ya xərclədiyi materialdan alınmış və `rho` qeyd olunan təsadüfilikdir.
+burada `owner` alıcının baxış və ya xərcləmə materialından əldə edilir və `rho` təsadüfi qeyddir.
 
-Qeydlərin öhdəliyi gizli bir öhdəlikdir:
+Qeyd kriptoqrafik öhdəlik dəyəri bir gizlədici kriptoqrafik öhdəlik dəyəridir:
 
 $$
 C = \mathsf{Commit}(\mathsf{asset}, \mathsf{amount}, \mathsf{owner}, \rho)
 $$
 
-Hal-hazırda məxfi ötürülmə dairələri üçün ictimai girişlər qeyd öhdəlikləri, ləğv edənlər, Merkle kökləri, Bir aktiv etiket və bir zəncir etiketi. Dairə bu şəklində bir öhdəlik münasibətini tətbiq edir:
+Cari məxfi köçürmə sxemləri üçün ictimai girişlərə qeydlərin kriptoqrafik öhdəlik dəyərləri, nullifier-lər, Merkle kökü, aktiv etiketi və zəncir etiketi daxildir. Sxem bu formada bir kriptoqrafik öhdəlik dəyəri əlaqəsini tətbiq edir:
 
 $$
 C = H_c(\mathsf{amount}, \rho, \mathsf{owner\_tag}, \mathsf{asset\_tag})
 $$
 
-Bir not xərcləndikdə, cüzdan bir nullifier əldə edir:
+Bir qeyd istifadə edildikdə, cüzdan bir nullifier əldə edir:
 
 $$
 N = H_n(\mathsf{spend\_key}, \rho, \mathsf{asset\_tag}, \mathsf{chain\_tag})
 $$
 
-`N` ictimaiyyətdir. Not açıqlamır, lakin bu not və zəncir üçün sabitdir, buna görə Iroha eyni ləğv edən ikinci bir xərcləməni rədd edə bilər.
+`N` ictimailəşdirilib. Bu qeydi aşkar etmir, amma həmin qeyd və zəncir üçün sabitdir, ona görə də Iroha eyni nullifier ilə ikinci xərcləməni rədd edə bilər.
 
-Əməkdarlıq ağacı qeydlərin mövcudluğunu sübut edir. Əgər bir cüzdan `C_i` ödənirsə, sübutda `C_i`-dən son bir ictimai kökə qədər xüsusi Merkle yolu var:
+Kriptovalyuta bağlılıq dəyər ağacı qeyd mövcudluğunu sübut edir. Əgər bir cüzdan kriptovalyuta bağlılıq dəyərini `C_i` xərcləyirsə, sübut `C_i`-dən son ictimai kökə qədər xüsusi Merkle yolunu əhatə edir:
 
 $$
 \mathsf{MerkleRoot}(C_i, \mathsf{path}) = R
 $$
 
-Qapalı-qapalı köçürülmə üçün sübut həmçinin dəyər qorunmasını tələb edir:
+Qalxana-qalxana köçürmə üçün, sübut həmçinin dəyərin qorunmasını təmin edir:
 
 $$
 \sum \mathsf{inputs} = \sum \mathsf{outputs}
 $$
 
-Qapalı olmayan bir şəxs üçün ictimai məbləğ aşağıdakılara aiddir:
+Qorunmasız üçün, ümumi məbləğ daxil edilir:
 
 $$
 \sum \mathsf{inputs} = \mathsf{public\_amount} + \sum \mathsf{private\_change}
 $$
 
-təqdim olunan sübut aşağıdakı kimi ümumiləşdirilə bilər:
+Təqdim olunmuş sübut aşağıdakı kimi ümumiləşdirilə bilər:
 
 $$
 \mathsf{Verify}(\mathsf{vk}, \mathsf{public\_inputs}, \pi) = \mathsf{true}
 $$
 
-burada `public_inputs` öhdəliklər, ləğv edənlər, kök, aktiv etiketləri, silsilə etiketləri və hər hansı ictimaiyyət qarşısı alınmayan məbləğdir. Şahid qeydlərin miqdarını, təsadüfiliyini, xərc materialını və Merkle yollarını ehtiva edir. Validatorlar sübutları yoxlayır və sonra çıxış öhdəliklərini əlavə edərək və giriş ləğvçilərini sərf edildiyi kimi qeyd edərək kitabın vəziyyətini dəyişir.
+burada `public_inputs` kriptoqrafik öhdəlik dəyərləri, nullifierlər, kök, aktiv etiketi, zəncir etiketi və hər hansı bir açıq gizlədilməmiş məbləğdir. Şahid isə qeyd məbləğlərini, təsadüfi dəyərləri, xərcləmə materialını və Merkle yollarını ehtiva edir. Təsdiqləyicilər sübutu yoxlayır və sonra çıxış kriptoqrafik öhdəlik dəyərlərini əlavə etməklə və giriş nullifikatorlarını xərclənmiş kimi işarələməklə blokçeyn dəftəri vəziyyətini dəyişdirirlər.
 
-## İctimaiyyətə nələr aiddir? {#what-is-public}
+## İctimai Nədir {#what-is-public}
 
-Anonim əməliyyatlar hər müşahidə olunan faktı gizliləşdirmir. Aşağıdakı məlumatlar hələ də açıq ola bilər:
+Anonim əməliyyatlar hər müşahidə oluna bilən faktı gizli etmir. Aşağıdakı məlumatlar hələ də ictimai ola bilər:
 
-- əməliyyat hash, blok hündürlüyü və sifariş
-- təqdim edən əməliyyat orqanı, əgər müraciət xüsusi giriş nöqtəsi və ya relay modelindən istifadə etməyibsə;
+- əməliyyatın kriptoqrafik xəşi, blok hündürlüyü və sifarişləşdirilməsi
+- müraciət şəxsi giriş nöqtəsi və ya vasitəçi nümunəsi istifadə etmədiyi halda təqdim edən əməliyyat icazəsi prinsipi
 - istifadə olunan aktiv tərifi
-- ləğv edənlər və çıxış öhdəlikləri
-- sübut hashləri, yoxlama açarı istinadları və seçməli qablaşdırma hashləri
+- ləğv edicilər və çıxış kriptoqrafik öhdəlik dəyərləri
+- sübut kriptoqrafik xeşlər, yoxlama açarı istinadları və isteğe bağlı məlumat konteyneri kriptoqrafik xeşlər
 - `Unshield` üçün ictimai məbləğ və alıcı hesabı
-- Anonim əmanət satıcısı, alıcı, status, vaxt möhtəşəmliyi və sübutlar
+- anonim depozit satıcısı, alıcı, vəziyyət, zaman möhürləri və sübut kriptoqrafik həşlər
 
-Tətbiqlər dizayn edin ki, bu ictimai meta məlumatlar qorumağa çalışdığınız iş əlaqələrini aşkar etməsin.
+Tətbiqləri belə dizayn edin ki, bu ümumi metadatalar qorumağa çalışdığınız biznes əlaqəsini açıqlamasın.
 
-## Əlaqəli istinad {#related-reference}
+## Əlaqəli İstinad {#related-reference}
 
 - [`AssetConfidentialPolicy`](/az/reference/data-model-schema.md)
 - [`ConfidentialEvent`](/az/reference/data-model-schema.md)
 - [`ProofAttachment`](/az/reference/data-model-schema.md)
 - [`SignedTransaction.attachments`](/az/reference/data-model-schema.md)
-- [Əmanət və sübut sorğuları](/az/reference/queries.md#escrow-and-proof-records)
+- [Etibarnamə və sübut sorğuları](/az/reference/queries.md#escrow-and-proof-records)

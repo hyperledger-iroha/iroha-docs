@@ -3,14 +3,14 @@ translation_locale: am
 translation_source: /guide/configure/client-configuration.md
 translation_source_hash: 6da8a0abddc9723b16477a935a3953ebd497300f02eadd635e4e38027a11d095
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# የደንበኛው ውቅር {#client-configuration}
+# የደንበኛ ውቅር {#client-configuration}
 
-Iroha CLI እና SDK ደንበኞች የ TOML ውቅር ይጠቀማሉ. የመረጃ ቋቱ የአሁኑን ነባሪ በ `defaults/client.toml` ይላካል; የተፈጠሩ አካባቢያዊ አውታረ መረቦችም ወደ የውጤት ማውጫዎቻቸው ውስጥ የሚዛመድ `client.toml` ይጽፋሉ.
+Iroha CLI እና SDK ደንበኞች የ TOML ውቅር ይጠቀማሉ። ማከማቻው የአሁኑን ነባሪ በ `defaults/client.toml` ይልካል። የተፈጠሩ የአካባቢ አውታረ መረቦች እንዲሁ ተዛማጅ `client.toml` ወደ ውፅዓት ማውጫቸው ይጽፋሉ።
 
-::: details የደንበኛው ውቅር አብነት
+::: details የደንበኛ ውቅር አብነት
 
 <<< @/snippets/client.template.toml
 
@@ -18,7 +18,7 @@ Iroha CLI እና SDK ደንበኞች የ TOML ውቅር ይጠቀማሉ. የመ�
 
 ## ዋና መስኮች {#core-fields}
 
-ቢያንስ የደንበኛው ውቅር ሰንሰለት ፣ Torii መጨረሻ ነጥብ እና ፊርማ መለያን ይገልጻል-
+ቢያንስ፣ የደንበኛ ውቅር ሰንሰለቱን፣ Torii API የመጨረሻ ነጥብን እና መለያን መፈረም ይለያል -
 
 ```toml
 chain = "00000000-0000-0000-0000-000000000000"
@@ -30,22 +30,22 @@ public_key = "ed0120..."
 private_key = "802620..."
 ```
 
-- `chain` ያቀረቡት ግብይቶች የሚገኙበትን ሰንሰለት ይመርጣል።
-- `torii_url` ነጥቦች በባልደረባው Torii HTTP API።
-- `[account].domain` በ CLI አቋራጭ መንገዶች እና በአድራሻ-ምርጫ ኮዲንግ ጥቅም ላይ ይውላል; ቀኖናዊው `AccountId` ራሱ የጎራ የሌለው ነው.
-- `[account].public_key` እና `[account].private_key` የሚፈርሙ ግብይቶች።
+- `chain` የቀረቡትን ግብይቶች ያሉበትን ሰንሰለት ይመርጣል።
+- `torii_url` በኔትወርክ አቻ Torii HTTP API ላይ ይጠቁማል።
+- `[account].domain` በ CLI አቋራጮች እና አድራሻ-መራጭ ኢንኮዲንግ ጥቅም ላይ ይውላል; ነጠላ ፕሮቶኮል-ስታንዳርድ `AccountId` ራሱ ጎራ የሌለው ነው።.
+- `[account].public_key` እና `[account].private_key` ግብይቶችን ይፈርማሉ።
 
-ሂሳቡ ቀድሞውኑ በሰንሰለት ላይ መኖር አለበት ። በነባሪው አካባቢያዊ አውታረመረብ ይህ በተቀናጀ የጄኔዝስ ማኒፌስት ይስተናገዳል ።
+መለያው አስቀድሞ በሰንሰለት ላይ መኖር አለበት። ለነባሪው የአካባቢ አውታረመረብ፣ ይህ የሚስተናገደው በተጠቀለለው blockchain ጀነሲስ ቴክኒካል ማኒፌስት ነው።
 
-::: info የጉዳይ ስሜታዊነት
+::: info የጉዳይ ትብነት
 
-Iroha ስሞች ከካኖኒካል ፓርሲንግ በኋላ ለጉዳዩ ስሜታዊ ናቸው ለምሳሌ ፣ `wonderland.universal` ፣ `Wonderland.universal` እና `looking_glass.universal` የተለዩ የጎራ ፊደላት ናቸው።
+Iroha ስሞች ከነጠላ ፕሮቶኮል-መደበኛ ትንተና በኋላ ለጉዳይ ሚስጥራዊነት ያላቸው ናቸው።. ለምሳሌ፣ `wonderland.universal`፣ `Wonderland.universal` እና `looking_glass.universal` የተለዩ የጎራ ቃል በቃል ናቸው።
 
 :::
 
 ## መሰረታዊ ማረጋገጫ {#basic-authentication}
 
-አማራጭ `[basic_auth]` ክፍል አንድ ይጨምራል HTTP `Authorization` የደንበኞቹን ጥያቄዎች ራስጌ። Iroha እኩዮች እነዚህን የምስክር ወረቀቶች በቀጥታ አይተረጉሙም; ሲጠቀሙባቸው Torii እንደ Nginx ባሉ የኋላ ኋላ ወኪሎች ጀርባ ነው.
+የአማራጭ `[basic_auth]` ክፍል ለደንበኛ ጥያቄዎች HTTP `Authorization` ራስጌን ይጨምራል። Iroha የአውታረ መረብ እኩዮች እነዚህን ምስክርነቶች በቀጥታ አይተረጉሙም; Torii እንደ Nginx ካሉ የተገላቢጦሽ ፕሮክሲ ጀርባ ሲሆን ይጠቀሙባቸው።
 
 ```toml
 [basic_auth]
@@ -55,7 +55,7 @@ password = "ilovetea"
 
 ## የግብይት ቅንብሮች {#transaction-settings}
 
-የግብይት ባህሪ በ `[transaction]` ክፍል ላይ የተመሠረተ ነው:
+የግብይት ባህሪ ከ`[transaction]` ክፍል ጋር ተዋቅሯል -
 
 ```toml
 [transaction]
@@ -64,30 +64,30 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-- `time_to_live_ms` በሚሊሰከንዶች ውስጥ የግብይት ዕድሜ ነው.
+- `time_to_live_ms` የግብይቱ የህይወት ዘመን በሚሊሰከንዶች ውስጥ ነው።
 - `status_timeout_ms` ደንበኛው የግብይት ሁኔታን ለምን ያህል ጊዜ እንደሚጠብቅ ይቆጣጠራል።
-- `nonce = true` ደንበኛው የተደጋገሙ ግብይቶች የተለያዩ ሃሽስ እንዲፈጥሩ አንድ ያልሆነ ነገር እንዲያካትት ይጠይቃል ።
+- `nonce = true` ደንበኛው የምስጠራ ኖሴ እሴትን እንዲያካትት ይጠይቃል ስለዚህ ተደጋጋሚ ግብይቶች የተለያዩ ምስጠራ ሃሽዎችን ያመነጫሉ።
 
-## ረድፍ ቅንብሮችን ያገናኙ {#connect-queue-settings}
+## የወረፋ ቅንብሮችን ያገናኙ {#connect-queue-settings}
 
-የአሁኑ Iroha ደንበኞች እንዲሁ ለአካባቢያዊ ረድፍ ሁኔታ አማራጭ የሆነውን `[connect]` ክፍል መጠቀም ይችላሉ-
+የአሁኑ Iroha ደንበኞች ለአካባቢያዊ ወረፋ ሁኔታ አማራጭ `[connect]` ክፍልን መጠቀም ይችላሉ -
 
 ```toml
 [connect]
 queue_root = "./queue"
 ```
 
-አንድ የስራ ፍሰት ዘላቂ የደንበኛ ጎን ረድፍ ማከማቻ ሲፈልግ ይህንን ይጠቀሙ።
+የስራ ፍሰት ዘላቂ የደንበኛ-ጎን ወረፋ ማከማቻ ሲፈልግ ይህንን ይጠቀሙ።
 
-## ውቅር ማመንጨት {#generating-configurations}
+## አወቃቀሮችን በማመንጨት ላይ {#generating-configurations}
 
-ለአንድ ጊዜ የሚጣሉ አካባቢያዊ አውታረ መረቦች, Kagami ይመርጣል ምክንያቱም የሚዛመዱ የ Iroha 3 ቅንብሮች, ጅምር, ስክሪፕቶች እና README ስለሚጽፍ:
+ለሚጣሉ የአካባቢ አውታረ መረቦች፣ Kagami ን ይምረጡ ምክንያቱም ተዛማጅ Iroha 3 ውቅሮችን፣ የብሎክቼይን ጀነሲስን፣ ስክሪፕቶችን እና README ስለሚጽፍ -
 
 ```bash
 cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-የተፈጠረውን `./localnet/client.toml` ከ CLI ጋር ይጠቀሙ:
+የተፈጠረውን `./localnet/client.toml` ከ CLI ጋር ይጠቀሙ -
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all

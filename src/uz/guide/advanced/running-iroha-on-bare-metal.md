@@ -3,16 +3,16 @@ translation_locale: uz
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
 translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Iroha Bare Metal bilan ishlaydi {#running-iroha-on-bare-metal}
+# Bare Metal-da Iroha ni ishga tushirish {#running-iroha-on-bare-metal}
 
-Ushbu ish oqimini Docker Compose orqali emas, balki hostida to'g'ridan-to'g'ri tengdoshlarni ishga tushirishni istasangiz foydalaning. Hozirgi manba daraxtida Kagami generatorlari mavjud bo'lib, ular moslashtirilgan genesis, tengdoshlar konfiguratsiyasi, mijozlar konfiguratsiyasi va boshlash / tugatish skriptlarini yozadi.
+Ushbu ish jarayonini tarmoq hamkorlarini to'g'ridan-to'g'ri mezonlarda ishlatmoqchi bo'lganingizda ishlating, Docker Compose orqali emas. Joriy manba daraxti mos keladigan blokcheyn boshlang‘ich fayli, tarmoq hamkorlari konfiguratsiyasi, mijoz konfiguratsiyasi va ishga tushirish/to‘xtatish skriptlarini yozadigan Kagami generatorlarini taqdim etadi.
 
-## 1. Ikkilamchilarni yaratish {#_1-build-the-binaries}
+## 1. Binarlarni yaratish {#_1-build-the-binaries}
 
-Iroha ish maydonidan:
+Upstream Iroha ish maydonidan:
 
 ```bash
 cargo build --release \
@@ -23,51 +23,51 @@ cargo build --release \
 
 Bu quyidagilarni hosil qiladi:
 
-- `target/release/iroha3d` tengdoshlari uchun
-- CLI uchun `target/release/iroha`
-- `target/release/kagami` kalit, genesis va localnet ishlab chiqarish uchun
+- `target/release/iroha3d` tarmoq tengdosh daemon uchun
+- `target/release/iroha` uchun CLI
+- `target/release/kagami` kalit, blokcheyn genesi va localnet yaratish uchun
 
-## 2. Mahalliy tarmoq yaratish {#_2-generate-a-local-network}
+## 2. Mahalliy Tarmoq Yaratish {#_2-generate-a-local-network}
 
-To'rt tengli Iroha 3 lokal tarmog'ini yaratish:
+To‘rtta tugundan iborat Iroha 3 mahalliy tarmog‘ini yarating:
 
 ```bash
 target/release/kagami localnet --peers 4 --out-dir ./localnet
 ```
 
-Ishlab chiqarish direktoriyasida `genesis.json`, `genesis.signed.nrt`, tengdoshi `config.toml` fayllari, `client.toml`, yordamchi skriptlar va ushbu to'plam uchun aniq buyruqlar mavjud bo'lgan `README.md` hosil qilingan direktoriyasi mavjud.
+Chiqish katalogida yaratilgan `genesis.json`, `genesis.signed.nrt`, tarmoq ho‘kizi `config.toml` fayllari, `client.toml`, yordamchi skriptlar va o‘sha paket uchun aniq buyruqlar bilan yaratilgan `README.md` mavjud.
 
-## 3. Tengdoshlar bilan ishlashni boshlash {#_3-start-peers}
+## 3. Tarmoq tengdoshlari ishga tushiriladi {#_3-start-peers}
 
-Yaratilgan bir martalik lokalnet uchun yaratilgan skriptdan foydalaning:
+Yaratilgan disposable localnet uchun, yaratilgan skriptdan foydalaning:
 
 ```bash
 ./localnet/start.sh
 ```
 
-Agar siz har bir tengdoshni systemd kabi jarayon boshqaruvchisiga ulashingiz kerak bo'lsa, har bir tengdoshi uchun `./localnet/README.md` da qayd etilgan ishga tushirish buyruqidan foydalaning. Har bir tengdoshining `config.toml`, xususiy kalitini, saqlash direktoriyasini va portlarini alohida saqlang.
+Agar siz har bir tarmoq ishtirokchisini systemd kabi jarayon boshqaruvchisiga ulashingiz kerak bo'lsa, har bir tarmoq ishtirokchisi uchun `./localnet/README.md` da yozilgan ishga tushirish buyrug'idan foydalaning. Har bir tarmoq ishtirokchisining `config.toml`, shaxsiy kaliti, saqlash katalogi va portlarini alohida saqlang.
 
 ## 4. Tarmoqni boshqarish {#_4-operate-the-network}
 
-&amp; amp; hosil qilingan mijoz konfiguratsiyasidan foydalanish:
+Yaratilgan mijoz konfiguratsiyasidan foydalaning:
 
 ```bash
 target/release/iroha --config ./localnet/client.toml ledger domain list all
 target/release/iroha --config ./localnet/client.toml --output-format text ops sumeragi status
 ```
 
-Ishlab chiqarilgan localnetni toʻxtatish:
+Yaratilgan localnetni to'xtatish uchun:
 
 ```bash
 ./localnet/stop.sh
 ```
 
-## 5. Ishlab chiqarish ma'lumotlari {#_5-production-notes}
+## 5. Ishlab chiqarish yozuvlari {#_5-production-notes}
 
-- Mahsulot uchun yangi xususiy kalitlarni ishlab chiqarish va ularni omborga tashqarida saqlash.
-- Har bir tengdoshning xuddi shu imzolangan genesis muomalasi, topologiya, ishonchli tengdoshlar va tasdiqlovchi PoPs bo'yicha kelishi kerak.
-- Tinglovchiga faqat boshqa mashinalardan ega bo'lmasligi kerak bo'lganda uylanuvchi-lokal interfeyslarga murojaatlarni bog'lash.
-- Torii ta'siri, bazaviy auth, TLS va tezlikni cheklash uchun orqaga o'tish proksi yoki firewalldan foydalaning.
-- Genesis yoki konsensus topologiyasining o'zgarishlarini bitta tengdosh fayl tahrirlari emas, balki muvofiqlashtirilgan migratsiyalar sifatida ko'rib chiqing.
+- Ishlab chiqarish uchun yangi shaxsiy kalitlarni yarating va ularni repozitoriyadan tashqarida saqlang.
+- Har bir tugun ayni imzolangan boshlang‘ich tranzaksiya, topologiya, ishonchli tugunlar va tasdiqlovchilarning PoPs qiymatlaridan foydalanishini ta’minlang.
+- Tarmoq hamkori boshqa mashinalardan yetib bo‘lmasligi kerak bo‘lgan holda, tinglovchi manzillarni faqat host-local interfeyslariga bog‘lang.
+- Torii ochiqligi, asosiy autentifikatsiya, TLS va tezlik chegaralash uchun teskari proksi yoki firewalldan foydalaning.
+- Boshlang‘ich holat yoki konsensus topologiyasi o‘zgarishlarini bitta tugun faylini tahrirlash emas, muvofiqlashtirilgan ko‘chirish deb qarang.
 
-Konteynerizatsiya qilingan mahalliy rivojlanish uchun [Launch Iroha 3](../../get-started/launch-iroha.md) Docker Compose ish oqimini ishlating.
+Konteynerlashtirilgan mahalliy rivojlanish uchun, [Ishga tushurish Iroha 3](../../get-started/launch-iroha.md) Docker Compose ish oqimini ishlating.

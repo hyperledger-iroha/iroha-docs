@@ -3,16 +3,16 @@ translation_locale: uz
 translation_source: /guide/tutorials/javascript.md
 translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # JavaScript va TypeScript {#javascript-and-typescript}
 
-Joriy JavaScript SDK bo ' lmoqda `@iroha/iroha-js` toʻplamda Iroha manbai daraxt. Bu Node.js- Birinchidan SDK uchun Torii, Norito Builderlar, imzolash, sahifalashtirish, Connect previews va Kagemusha buyruq transport.
+Hozirgi JavaScript SDK Iroha manba daraxtidagi `@iroha/iroha-js` paketidir. Bu Torii, Norito quruvchilar, imzolash, sahifalash, Connect ko‘rinishlari va Kagemusha buyruq uzatish uchun Node.js-birinchi SDK hisoblanadi.
 
-## Manbaiga asoslanib quring {#build-from-source}
+## Manbadan Qurish {#build-from-source}
 
-To'plam hozirda npm davlat ro'yxatidan mavjud emas. Uni maqsadli bo'lgan nod bilan bir xil biriktirilgan Iroha manba o'zgarishidan quring:
+Paket hozirda ommaviy npm reyestrida mavjud emas. Uni siz mo‘ljallayotgan tugun bilan bir xil mahkamlashgan Iroha manba rejimidan qurish:
 
 ```bash
 git clone https://github.com/hyperledger-iroha/iroha.git
@@ -22,9 +22,9 @@ npm run build:native
 npm run build:dist
 ```
 
-Yerli qurilmalar toʻplami `cargo build -p iroha_js_host` va platformasiga oid tekshiruvlar summasini qayd etadi; SDK boshlang'ich. Manba o'rnatilgan joylar `native/`. Oʻrnatilgan `IROHA_JS_NATIVE_DIR` faqat alohida qurilgan, checksum-verified uy egasi bilan qasddan ta'minlangan holda. ESM- faqat; CommonJS, foydalanish dinamikasi `import()`.
+Mahalliy qurilish `cargo build -p iroha_js_host` ni o'rab, SDK ishga tushirilganda ishlatiladigan platformaga xos tekshiruv yig'indisini yozadi. Manba qurilishi tekshirilgan xostni `native/` ga joylashtiradi. Faqat alohida qurilgan, tekshirilgan xostni ataylab taqdim etilganda `IROHA_JS_NATIVE_DIR` ni belgilang. Paket faqat ESM; CommonJS dan dinamik `import()` dan foydalaning.
 
-## Tez ishga tushirish {#quickstart}
+## Tez boshlash {#quickstart}
 
 ```js
 import { ToriiClient } from "@iroha/iroha-js/torii";
@@ -38,9 +38,9 @@ const keys = generateKeyPair();
 console.log(keys.publicKey);
 ```
 
-## Taira Faqat o'qishga harakat qiling {#try-taira-read-only}
+## Urining Taira Faqat O'qish Uchun {#try-taira-read-only}
 
-Imzolash va Norito muomala kodini qo'shishdan oldin Taira ni tekshirish uchun Node.js 24 da o'rnatilgan `fetch`dan foydalaning:
+Node.js 24 da imzolash va Norito tranzaksiya kodini qo'shishdan oldin Taira ni tekshirish uchun o'rnatilgan `fetch` dan foydalaning:
 
 ```js
 const root = "https://taira.sora.org";
@@ -67,15 +67,15 @@ for (const asset of assets.items) {
 }
 ```
 
-Uni `taira-readonly.mjs` sifatida saqlash, so'ngra uni ishga tushirish:
+Uni `taira-readonly.mjs` sifatida saqlang, keyin uni ishga tushiring:
 
 ```bash
 node taira-readonly.mjs
 ```
 
-SDK imzolangan qo'ng'iroqlarga faqat ushbu o'qish-o'qish tekshiruvlari ishlagandan so'ng o'ting. Umumiy Taira vaqtincha to'yilgan navbat yoki darvoza xatosiga qaytishi mumkin, shuning uchun jonli tarmoq sinovlarini CI ga kirishga ruxsat bering.
+Faqat ushbu faqat o‘qish uchun tekshiruvlar ishlagandan so‘ng imzolangan SDK texnik chaqiriqlarga o‘ting. Jamoat Taira vaqtincha to‘la navbat yoki gateway xatosini qaytarishi mumkin, shuning uchun jonli tarmoq testlarini CI da ixtiyoriy saqlang.
 
-Foydalanuvchi kichik yo'l importlari:
+Foydali subyo‘l importlari:
 
 ```js
 import { ToriiClient } from "@iroha/iroha-js/torii";
@@ -83,25 +83,25 @@ import { noritoEncodeInstruction } from "@iroha/iroha-js/norito";
 import { generateKeyPair } from "@iroha/iroha-js/crypto";
 ```
 
-Faqat brauzerda ishlaydigan Connect bootstrap uchun Node-first `ToriiClient` yuzasini import qilish o'rniga `@iroha/iroha-js/connect-browser` dan foydalaning.
+Faqat brauzer uchun Connect bootstrap ishlatganda, Node-dastlabki `ToriiClient` sathini import qilish o‘rniga `@iroha/iroha-js/connect-browser` dan foydalaning.
 
-## Native escrow {#native-escrow}
+## Mahalliy Garov {#native-escrow}
 
-JavaScript va TypeScript ilovalari Kotodama shartnomalari orqali natiy escrowdan foydalanishlari mumkin. `@iroha/iroha-js/kotodama-compiler` bilan escrow host qo'ng'iroqlarini tuzish; to'g'ridan-to'g'ri natiy escro JavaScript SDK tomonidan amal qiluvchilar hozirda ekspozitsiya qilinmaydi. [Native Asset Escrow](/uz/blockchain/escrow.md#javascript-and-typescript-kotodama) ni ko'rib chiqing.
+JavaScript va TypeScript ilovalar Kotodama shartnomalari orqali mahalliy eskroudan foydalanishi mumkin. Eskrou host-funksiyasi chaqiruvlarini `@iroha/iroha-js/kotodama-compiler` bilan kompilyatsiya qiling; to‘g‘ridan-to‘g‘ri Mahalliy depozit operatsiyasi yaratkichlari hozirda JavaScript SDK tomonidan ochilmagan. Depozit xosti-texnik chaqirish misoli uchun [Mahalliy aktivlar garov hisobvarag‘i](/uz/blockchain/escrow.md#javascript-and-typescript-kotodama) ga qarang.
 
 ## Joriy qamrov {#current-coverage}
 
 SDK quyidagilarga e'tibor qaratadi:
 
-- Torii HTTP va WebSocket yordamchilari
-- Norito tranzaksiyalar va ko'rsatmalar quruvchilari
-- Kotodama to'plami, shu jumladan depozit uyasi qo'ng'iroqlar o'rnatilishi
-- Ed25519 imzolash va kalit avlodi
-- sahifalashtirish va qayta urinish yordamchilari
-- Browserni ishga tushirish yordamchilarini ulash
-- Kagemusha tayyorgarligi, to'ldirish, sotib olish va faoliyat ko'rsatishi holatidagi transport yordamchilari
+- Torii HTTP va WebSocket yordamchilar
+- Norito tranzaksiya va ko‘rsatma quruvchilari
+- Kotodama kompilyatsiyasi, escrow host-texnik chaqirish built-in funksiyalarini o'z ichiga oladi
+- Ed25519 imzolash va kalit yaratish
+- sahifalash va qayta urinib ko‘rish yordamchilari
+- Brauzer bootstrap yordamchilariga ulaning
+- Kagemusha tayyorgarlik, to'ldirish, qaytarib olish va operatsiya-holati tashish yordamchilari
 
-## Yuqori yo'nalishdagi referentlar {#upstream-references}
+## Oliy darajadagi manbalar {#upstream-references}
 
 - `javascript/iroha_js/README.md`
 - `javascript/iroha_js/package.json`

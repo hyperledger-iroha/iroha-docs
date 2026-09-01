@@ -9,6 +9,49 @@ function localeHref(locale: DocsLocale, publicPath: string): string {
   return `${publicPath}${locale.path ? `${locale.path}/` : ''}`
 }
 
+function navigationHtml(locale: DocsLocale, publicPath: string): string {
+  const prefix = localeHref(locale, publicPath)
+  const links = [
+    [`${prefix}get-started/`, locale.navigation.getStarted],
+    [`${prefix}cookbook/`, locale.navigation.cookbook],
+    [`${prefix}guide/`, locale.navigation.guides],
+    [`${prefix}blockchain/iroha-explained.html`, locale.navigation.architecture],
+    [`${prefix}reference/`, locale.navigation.reference],
+    [`${prefix}help/`, locale.navigation.help],
+  ]
+  return `<nav>${links
+    .map(([href, label]) => `<a class="VPNavBarMenuLink" href="${href}">${label}</a>`)
+    .join('')}</nav>`
+}
+
+function localizedShellHtml(locale: DocsLocale, publicPath: string): string {
+  const prefix = localeHref(locale, publicPath)
+  const installLabel = locale === ROOT_LOCALE ? 'Install Iroha 3' : `localized-install-${locale.key}`
+  return `<html lang="${locale.lang}" dir="${locale.direction}"><body>
+    ${navigationHtml(locale, publicPath)}
+    <span id="main-nav-aria-label">${locale.theme.mainNavigation}</span>
+    <button class="VPNavBarHamburger" aria-label="${locale.theme.mobileNavigation}"></button>
+    <div class="VPNavBarExtra"><button class="button" aria-label="${locale.theme.extraNavigation}"></button></div>
+    <a class="VPSkipLink">${locale.theme.skipToContent}</a>
+    <div class="VPNavBarTranslations"><button aria-label="${locale.theme.changeLanguage}"></button></div>
+    <div class="VPNavBarExtra"><div class="appearance"><p class="label">${locale.theme.appearance}</p></div></div>
+    <div class="VPLocalNav"><button class="menu"><span class="menu-text">${locale.theme.menu}</span></button><div class="VPLocalNavOutlineDropdown"><button>${locale.theme.returnToTop}</button></div></div>
+    <aside class="VPSidebar">
+      <span id="sidebar-aria-label">${locale.theme.sidebarNavigation}</span>
+      <div class="VPSidebarItem"><a href="${prefix}get-started/"><span class="text">${locale.navigation.getStarted}</span></a></div>
+      <div class="VPSidebarItem"><a href="${prefix}get-started/install-iroha.html"><span class="text">${installLabel}</span></a></div>
+    </aside>
+    <div class="VPDocAsideOutline"><div class="outline-title">${locale.theme.outline}</div></div>
+    <a class="header-anchor" aria-label="${locale.theme.permalinkTo} &quot;Heading&quot;"></a>
+    <footer class="VPDocFooter">
+      <span id="doc-footer-aria-label">${locale.theme.pager}</span>
+      <a class="edit-link-button">${locale.theme.editLink}</a>
+      <p class="VPLastUpdated">${locale.theme.lastUpdated}: 2026-08-31</p>
+      <a class="pager-link next"><span class="desc">${locale.theme.nextPage}</span></a>
+    </footer>
+  </body></html>`
+}
+
 function rootHtml(
   publicPath: string,
   options: { omittedLocale?: DocsLocale; revision?: string; wrongLabelLocale?: DocsLocale } = {},
@@ -24,7 +67,7 @@ function rootHtml(
   const revision = options.revision
     ? `<head><meta name="iroha-docs-revision" content="${options.revision}"></head>`
     : ''
-  return `<html lang="en" dir="ltr">${revision}<body><div class="VPNavBarTranslations"><button aria-label="Change language"></button>${links}</div></body></html>`
+  return `<html lang="en" dir="ltr">${revision}<body>${navigationHtml(ROOT_LOCALE, publicPath)}<div class="VPNavBarTranslations"><button aria-label="Change language"></button>${links}</div></body></html>`
 }
 
 async function writeLocaleFixture(
@@ -39,8 +82,11 @@ async function writeLocaleFixture(
       const html =
         locale === ROOT_LOCALE
           ? rootHtml(publicPath, options)
-          : `<html lang="${locale.lang}" dir="${locale.direction}"><body></body></html>`
+          : `<html lang="${locale.lang}" dir="${locale.direction}"><body>${navigationHtml(locale, publicPath)}</body></html>`
       await writeFile(path.join(directory, 'index.html'), html)
+      const getStartedDirectory = path.join(directory, 'get-started')
+      await mkdir(getStartedDirectory, { recursive: true })
+      await writeFile(path.join(getStartedDirectory, 'index.html'), localizedShellHtml(locale, publicPath))
     }),
   )
 }
@@ -164,6 +210,56 @@ describe('built locale validation', () => {
     await withFixture('/', async (root) => {
       await writeFile(path.join(root, arabic.path, 'index.html'), '<html lang="ar" dir="ltr"></html>')
       expect(await scanBuiltLocales({ root })).toContain('العربية locale index has dir=ltr; expected rtl')
+    })
+  })
+
+  test('reports translated pages that fall back to the English navigation', async () => {
+    const arabic = ALL_LOCALES.find((locale) => locale.key === 'ar')!
+    await withFixture('/', async (root) => {
+      await writeFile(
+        path.join(root, arabic.path, 'index.html'),
+        `<html lang="ar" dir="rtl"><body>${navigationHtml(ROOT_LOCALE, '/')}</body></html>`,
+      )
+      expect(await scanBuiltLocales({ root })).toContain('العربية navigation is missing البدء: /ar/get-started/')
+    })
+  })
+
+  test('reports translated sidebars that fall back to English', async () => {
+    const arabic = ALL_LOCALES.find((locale) => locale.key === 'ar')!
+    await withFixture('/', async (root) => {
+      const file = path.join(root, arabic.path, 'get-started', 'index.html')
+      const html = localizedShellHtml(arabic, '/').replace('localized-install-ar', 'Install Iroha 3')
+      await writeFile(file, html)
+      expect(await scanBuiltLocales({ root })).toContain(
+        'العربية sidebar falls back to the English Install Iroha 3 label',
+      )
+    })
+  })
+
+  test('reports translated shell labels that fall back to English', async () => {
+    const arabic = ALL_LOCALES.find((locale) => locale.key === 'ar')!
+    await withFixture('/', async (root) => {
+      const file = path.join(root, arabic.path, 'get-started', 'index.html')
+      const html = localizedShellHtml(arabic, '/').replace(arabic.theme.editLink, ROOT_LOCALE.theme.editLink)
+      await writeFile(file, html)
+      expect(await scanBuiltLocales({ root })).toContain(
+        `العربية edit link is labelled ${ROOT_LOCALE.theme.editLink}; expected ${arabic.theme.editLink}`,
+      )
+    })
+  })
+
+  test('reports untranslated hidden shell labels', async () => {
+    const arabic = ALL_LOCALES.find((locale) => locale.key === 'ar')!
+    await withFixture('/', async (root) => {
+      const file = path.join(root, arabic.path, 'get-started', 'index.html')
+      const html = localizedShellHtml(arabic, '/').replace(
+        arabic.theme.mainNavigation,
+        ROOT_LOCALE.theme.mainNavigation,
+      )
+      await writeFile(file, html)
+      expect(await scanBuiltLocales({ root })).toContain(
+        `العربية main-navigation label is ${ROOT_LOCALE.theme.mainNavigation}; expected ${arabic.theme.mainNavigation}`,
+      )
     })
   })
 })

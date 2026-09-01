@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /reference/iroha3d-cli.md
-translation_source_hash: d621aa09f50cb44cb99af372100f418c44c3714b879a556038e47598949a3a6f
+translation_source_hash: bf4a63b05a149f0c935190b63cdb838b0a0265e99baedfc9b5bf00a9e621b108
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -14,7 +14,7 @@ translation_engine: nllb-200-ct2
 cargo run -p irohad --bin iroha3d -- --config path/to/config.toml
 ```
 
-پبلک Taira ٹیسٹ نیٹ کے لیے، ریلیز تصویر میں `iroha3d_taira` کا استعمال کیا جاتا ہے. یہ ایک ہی CLI کو قبول کرتا ہے۔ اس میں کینیکل Taira چین، ویلیڈیٹر سیٹ، اسٹوریج کی ترتیبات، اور رن ٹائم سائننگ چابیاں بھی نافذ ہوتی ہیں۔ Taira ترتیب کی توثیق کریں بغیر اس طرح کے رن ٹائم اسناد کھولنے کے:
+عوامی Taira ٹیسٹ نیٹ کے لیے ریلیز امیج میں `iroha3d_taira` استعمال ہوتا ہے۔ یہ وہی CLI قبول کرتا ہے اور کینونیکل Taira چین، توثیق کنندہ سیٹ، اسٹوریج ترتیبات اور رن ٹائم دستخطی کلیدیں بھی نافذ کرتا ہے۔ رن ٹائم اسناد کھولے بغیر Taira ترتیب کی توثیق کریں:
 
 ```shell
 iroha3d_taira --sora \
@@ -35,7 +35,7 @@ iroha3d_taira --sora \
 
 - قسم: فائل کا راستہ
 
-رضامندی کی توثیق کے لئے استعمال شدہ اختیاری پیدائش کا مظاہرہ JSON۔
+رضامندی کی توثیق کے لئے استعمال شدہ اختیاری پیدائش کا مینی فیسٹ JSON۔
 
 ## `--check-config` {#arg-check-config}
 
@@ -59,7 +59,7 @@ iroha3d_taira --sora \
 
 ## `--config-blake3` {#arg-config-blake3}
 
-- قسم: 64 ہندسوں کا ہیکساڈیسیمل BLAKE3 ہضم
+- قسم: 64 ہندسوں کا ہیکساڈیسیمل BLAKE3 ڈائجسٹ
 - ضروریات: `--config`
 
 ترتیب فائل بائٹس کو فراہم کردہ ڈائجسٹ سے ملنے کی ضرورت ہے۔ ایک سالمیت کے پابند فائل کو فلیٹ کرنا ضروری ہے؛ اس میں `extends` نہیں ہوسکتا ہے۔
@@ -85,7 +85,7 @@ iroha3d_taira --sora \
 
 سورا Nexus پروفائل کو فعال کریں۔ اس پروفائل میں SoraFS ، SoraNet ہینڈ شٹ، اور کثیر لین اتفاق رائے ترتیب دیا جاتا ہے. ہمیشہ اس پرچم کے ساتھ Taira لانچر کو استعمال کریں.
 
-## FastPQ overrides {#fastpq-overrides}
+## FastPQ اوور رائیڈز {#fastpq-overrides}
 
 `--fastpq-execution-mode <MODE>` اور `--fastpq-poseidon-mode <MODE>` صرف `cpu` یا `gpu` کو قبول کرتے ہیں۔ باقی اختیارات ٹیلی میٹری لیبلز کو ختم کرتے ہیں:
 
@@ -105,6 +105,8 @@ iroha3d --fastpq-execution-mode gpu \
 
 ## پیدا ہونے والی مدد {#generated-help}
 
-ذیل میں مکمل آؤٹ پٹ Iroha منسلک ماخذ کمیٹ سے پیدا کیا جاتا ہے.
+اوپر دیے گئے اختیارات کے خلاصے کی موجودہ `iroha3d` آرگومنٹ تعریفوں سے تصدیق کی جاتی ہے۔ ریپوزٹری میں محفوظ کردہ تیار شدہ مدد کا اسنیپ شاٹ جان بوجھ کر اس وقت تک نہیں دکھایا جاتا جب تک اس کی اصل کی حیثیت زیرِ التوا ہے۔ اپنے سورس چیک آؤٹ کے لیے درست مدد دیکھنے کے لیے چلائیں:
 
-<<< @/snippets/iroha3d-help.md
+```shell
+cargo run --locked -p irohad --bin iroha3d -- --help
+```

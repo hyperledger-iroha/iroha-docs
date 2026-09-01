@@ -1,20 +1,20 @@
 ---
 translation_locale: az
 translation_source: /reference/iroha3d-cli.md
-translation_source_hash: d621aa09f50cb44cb99af372100f418c44c3714b879a556038e47598949a3a6f
+translation_source_hash: bf4a63b05a149f0c935190b63cdb838b0a0265e99baedfc9b5bf00a9e621b108
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # `iroha3d` CLI {#iroha3d-cli}
 
-`iroha3d` standart Iroha 3 peer daemondur. Cargo paketi `irohad` adlanır, buna görə də ikili bir mənbə hesabından çağırın:
+`iroha3d` standart Iroha 3 şəbəkə iştirakçısı demonudur. Cargo paketi `irohad` adlanır; buna görə ikili faylı mənbə kodu iş nüsxəsindən belə başladın:
 
 ```shell
 cargo run -p irohad --bin iroha3d -- --config path/to/config.toml
 ```
 
-İctimaiyyət üçün Taira testnet, buraxılış görüntüsü `iroha3d_taira` istifadə edir. Eyni CLI qəbul edir. O, həmçinin kanonik Taira zəncirini, təsdiqləyici dəstini, saxlama parametrlərini və icra vaxtının imzalanması açarlarını tətbiq edir. Taira konfigürasiyasını aşağıdakı kimi icra vaxtının təsdiqini açmadan təsdiqləyin:
+İctimai Taira testnet üçün buraxılış görüntüsü `iroha3d_taira` istifadə edir. O, eyni CLI-ü qəbul edir, lakin əlavə olaraq tək protokol-standartını tətbiq edir Taira zəncir, doğrulayıcı, yaddaş və iş vaxtı- imzalayan profili. Proqram icrası mühitinin etimadnamələrini açmadan Taira konfiqurasiyasını belə yoxlayın:
 
 ```shell
 iroha3d_taira --sora \
@@ -22,72 +22,72 @@ iroha3d_taira --sora \
   --check-config
 ```
 
-İstifadəçi istifadədən əvvəl kanonik Taira profilini təqdim etməlidir. Qeydiyyatdan keçmiş şablonun nümunə parametrləri var. Operator bütün nümunə parametrlərini əvəz etməlidir. Taira ilə müqayisədə test edərkən ümumi Nexus və ya istehsal SoraFS parametrlərindən istifadə etməyin.
+Tək protokol-standart Taira profilinin operator tərəfindən təqdim olunan formasından istifadə edin; qeydiyyata alınmış şablon hələ də yerləşdirmə yerlərini ehtiva edir. Taira-ə qarşı test edərkən ümumi Nexus və ya istehsal SoraFS parametrlərini əvəz etməyin.
 
 ## `--config` {#arg-config}
 
-- Tipi: fayl yolu
-- Alias: `-c`
+- Növ: fayl yolu
+- Ləqəb: `-c`
 
-[ peer konfigurasiyasına gedən yol ](/az/reference/peer-config/index.md).
+[şəbəkə tərəfdaşının konfiqurasiyası](/az/reference/peer-config/index.md) üçün yol.
 
 ## `--genesis-manifest-json` {#arg-genesis-manifest-json}
 
-- Tipi: fayl yolu
+- Növ: fayl yolu
 
-Konsensus təsdiqlənməsi üçün istifadə olunan seçməli genesis manifestı JSON.
+Konsensusun təsdiqi üçün istifadə olunan könüllü blokzincir genesis texniki manifesti JSON.
 
 ## `--check-config` {#arg-check-config}
 
-Qeydiyyatlı konfigüratsiyanı və mövcud genesis materialını təsdiqləyin, sonra bağlanmayan şəbəkə socketləri olmadan çıxın.
+Həll olunmuş konfiqurasiyanı və mövcud blokçeyn başlanğıc materialını yoxlayın, sonra şəbəkə soketlərinə bağlanmadan çıxın.
 
-## Kagemusha təsnifat möhürləri {#kagemusha-qualification-seals}
+## Kagemusha ixtisas möhürləri {#kagemusha-qualification-seals}
 
-Bu sənəd yolu seçimləri `--check-config` tələb edir və kanonik möhür yazmadan əvvəl tam Kagemusha ixtisasını yerinə yetirir:
+Bu fayl yolu seçimləri `--check-config` tələb edir və tək bir protokol-standart möhür yazmadan əvvəl tam Kagemusha sertifikatlaşdırmasını həyata keçirir:
 
-- `--write-kagemusha-catalog-qualification-seal <PATH>` kataloqa uyğunlaşdırır.
-- `--write-kagemusha-validator-qualification-seal <PATH>` yerli təsdiqləyicini konfiqurasiya edilmiş imzalanan promosyon rezervasyonuna uyğunlaşdırır.
+- `--write-kagemusha-catalog-qualification-seal <PATH>` kataloqu təsdiqləyir.
+- `--write-kagemusha-validator-qualification-seal <PATH>` yerli yoxlayıcını konfiqurasiya edilmiş imzalanmış təşviq rezervi ilə təsdiqləyir.
 
-İki möhür seçimi bir-biri ilə ziddiyyət təşkil edir.
+İki möhür variantı bir-biri ilə ziddiyyət təşkil edir.
 
 ## `--trace-config` {#arg-trace-config}
 
-- Tip: bayraq
-- Ətraf mühit: `TRACE_CONFIG`
+- Növ: bayraq
+- Mühit: `TRACE_CONFIG`
 
-Konfiqurasiya təbəqələrinin oxunduğu və təhlil edildiyi müddətdə izləmə qeydlərini aktivləşdirin.
+Konfiqurasiya təbəqələri oxunub təhlil edilərkən iz yazılarını aktiv edin.
 
 ## `--config-blake3` {#arg-config-blake3}
 
-- Tip: 64 rəqəmli hexadecimal BLAKE3 həzm
-- Tələblər: `--config`
+- Növ: 64-rəqəmli onaltılıq BLAKE3 kriptoqrafik xülasə dəyəri
+- Tələb olunur: `--config`
 
-Konfiqurasiya faylının baytlarını təqdim edilmiş digestə uyğunlaşdırmaq üçün tələb edin. Bütünlüklə bağlı bir fayl düzləşdirilməlidir; `extends` içərisində ola bilməz.
+Konfiqurasiya faylının baytlarının verilmiş kriptoqrafik diqest dəyəri ilə uyğun olmasını tələb edin. Bütövlüyə bağlı fayl düzləşdirilməlidir; o, `extends` ehtiva edə bilməz.
 
 ## `--terminal-colors` {#arg-terminal-colors}
 
-- Tipi: `--terminal-colors=true` və ya `--terminal-colors=false` kimi qəbul edilmiş boolean
-- Standart: terminal qabiliyyətinin aşkarlanması
-- Ətraf mühit: `TERMINAL_COLORS`
+- Növ: Boolean, `--terminal-colors=true` və ya `--terminal-colors=false` kimi ötürülür
+- Defolt: terminalların imkanlarını aşkar etmək
+- Mühit: `TERMINAL_COLORS`
 
-Kontrol ANSI rəngli çıxışı.
+ANSI-rəngli çıxışı idarə edin.
 
 ## `--language` {#arg-language}
 
-- Tip: xətti
+- Növ: mətn
 
-Daemon mesajları üçün istifadə olunan sistem dilini ləğv edin.
+Daemon mesajları üçün istifadə olunan sistemi dilini dəyişdirin.
 
 ## `--sora` {#arg-sora}
 
-- Tip: bayraq
-- Ətraf mühit: `IROHA_SORA_PROFILE`
+- Növ: bayraq
+- Mühit: `IROHA_SORA_PROFILE`
 
-Sora Nexus profilini aktivləşdirin. Bu profil SoraFS, SoraNet əl sıxışını və bir çox yollu konsensusı qurur. Həmişə bu bayraqla Taira fırlatıcıya müraciət edin.
+SoraFS tərəfindən istifadə olunan Sora Nexus profilini, SoraNet əl sıxışmasını və çoxsəviyyəli konsensusu aktiv edin. Taira işə salıcısı həmişə bu bayraqla çağırılır.
 
-## FastPQ üstünlükləri {#fastpq-overrides}
+## FastPQ ləğv edir {#fastpq-overrides}
 
-`--fastpq-execution-mode <MODE>` və `--fastpq-poseidon-mode <MODE>` yalnız `cpu` və ya `gpu` qəbul edir. Qalan variantlar telemetriya etiketlərinə üstünlük verir:
+`--fastpq-execution-mode <MODE>` və `--fastpq-poseidon-mode <MODE>` yalnız `cpu` və ya `gpu` qəbul edir. Qalan seçimlər telemetriya etiketlərini üstələyir:
 
 - `--fastpq-device-class <LABEL>`
 - `--fastpq-chip-family <LABEL>`
@@ -103,8 +103,10 @@ iroha3d --fastpq-execution-mode gpu \
   --fastpq-gpu-kind integrated
 ```
 
-## İstehsal olunmuş yardım {#generated-help}
+## Yaradılmış kömək {#generated-help}
 
-Aşağıda göstərilən tam çıxış Iroha mənbə komitindən əldə edilir.
+Yuxarıdakı seçim xülasəsi mövcud `iroha3d` arqument tərifləri ilə yoxlanılıb. Yoxlanılmış yaradılan kömək nöqtəsindəki məlumat görünüşü, mənşəyinin statusu gözləmə vəziyyətində olduğu üçün qəsdən göstərilmir. Çıxarmanız üçün dəqiq kömək məlumatını yoxlamaq üçün aşağıdakı əmri icra edin:
 
-<<< @/snippets/iroha3d-help.md
+```shell
+cargo run --locked -p irohad --bin iroha3d -- --help
+```

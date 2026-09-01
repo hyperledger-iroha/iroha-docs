@@ -1,23 +1,23 @@
 ---
 translation_locale: az
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: 67778f9fc4f2b6fa0288f5921402cf5509515aae678e98b8192e103dfe284db3
+translation_source_hash: f1ea542f7a710830cd32465d141db8452e6418d426500995b9df7c9c4e1fd597
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Ağıllı müqavilə qurun və tətbiq edin {#build-and-deploy-a-smart-contract}
+# Ağıllı müqavilə yaradın və yerləşdirin {#build-and-deploy-a-smart-contract}
 
 ## Nəticə {#outcome}
 
-Kotodama V1 müqaviləsinin yoxlanılması və tərtib edilməsi, onun ictimai giriş nöqtəsini yerli səviyyədə icra etmək; təsdiqlənmiş IVM artefaktı yerləşdirin, yerləşdirilmiş giriş nöqtəsini təxmin edin; və açıq şəkildə qeyd olunan bir orqan tərəfindən ödənilən ödənişlə təqdim edilir.
+Kotodama V1 müqaviləsini yoxlayın və tərtib edin, onun ictimai giriş nöqtəsini yerli olaraq icra edin, təsdiqlənmiş IVM artefaktını yerləşdirin, yerləşdirilmiş giriş nöqtəsini simulyasiya edin və əməliyyatın imzalanma hesabı tərəfindən ödənilən açıq şəkildə göstərilmiş ödəniş qiyməti ilə təqdim edin.
 
-## Əvvəlki şərtlər {#prerequisites}
+## Tələb olunan əvvəlcədən şərtlər {#prerequisites}
 
-- Iroha, `0010c5a70039eac101a4846499ba9ceaf43eb65c`, Rust və Cargo ünvanlarında bir mənbə yoxlama.
-- Gündəlik `iroha` CLI əlavə maliyyələşdirilmiş Taira müştəri [Bağlantı Taira](./connect-to-taira.md).
-- Mümkün olmayan yollar `IROHA_CONFIG` və `IROHA_PRIVATE_KEY_FILE`. Klavye faylı mode ilə sahibinin saxladığı, bir bağlantılı müntəzəm fayl olmalıdır `0600`; İstifadəçi məqsədyönlü olaraq gizli açarlı heç bir mübahisə etməyib.
-- Taira operatorun təsdiqlənməsi. Müqavilə kodunun qeydiyyatı `CanRegisterSmartContractCode` tələb edir və qorunan yerləşdirmələr idarəetmə təyinatı və qanunvericiliyi tələb edə bilər. Əgər Taira bu giriş təmin etməyibsə, icazəni verilən mənşəli yerli şəbəkədə yerləşdirilməsini həyata keçirsin.
+- `0010c5a70039eac101a4846499ba9ceaf43eb65c`, Rust və Cargo-da protokolun yekunlaşdırılması zamanı Iroha mənbə kodunun işlək nüsxəsi.
+- Hazırkı `iroha` CLI ilə birlikdə [Taira-ə qoşul](./connect-to-taira.md) -dən maliyyələşdirilmiş Taira müştəri.
+- `IROHA_CONFIG` və `IROHA_PRIVATE_KEY_FILE`də tam yollar. Açar fayl sahibi tərəfindən saxlanılan, tək-linkli adi fayl olmalı və rejimi `0600` olmalıdır; yerləşdirmə köməkçisi bilərəkdən heç bir inline şəxsi açar arqumentinə malik deyil.
+- Taira operator təsdiqi. Müqavilə kodunun qeydiyyatı `CanRegisterSmartContractCode` tələb edir və qorunan yerləşdirmələr idarəetmə təhlili və icrasını tələb edə bilər. Əgər Taira bu girişi verməyibsə, icazəni təmin edən blokçeyn başlanğıcı olan yaradılmış yerli şəbəkədə yerləşdirməni yerinə yetirin.
 
 ```bash
 TORII_URL=https://taira.sora.org
@@ -38,11 +38,11 @@ PY
 })"
 ```
 
-## Dərslər {#steps}
+## Addımlar {#steps}
 
-### 1. Məlum olan müqavilənin Kotodama V1 nüsxəsi {#_1-copy-a-known-good-kotodama-v1-contract}
+### 1. Məlum-olar yaxşı Kotodama V1 müqaviləni kopyalayın {#_1-copy-a-known-good-kotodama-v1-contract}
 
-Bağlanmış Iroha kassa daxilində çalışın və tərtibçinin tuple-return nümunəsini kopyalayın ki, mənbə və vasitə zəncirləri eyni komitdə qalsınlar.
+Pinlənmiş Iroha çekaut daxilində işləyin və mənbə və alət dəstinin eyni protokol yekunlaşmasında qalması üçün tərtibçinin cüt-təkrarlanan qaytarış nümunəsini kopyalayın.
 
 ```bash
 cd "$IROHA_SOURCE"
@@ -51,7 +51,7 @@ cp ./crates/kotodama_lang/src/samples/tuple_return_demo.ko \
   ./contracts/tuple_return_demo.ko
 ```
 
-Tam mənbə kiçikdir və hazırkı `seiyaku`/`kotoage` sintaksından istifadə edir:
+Tam mənbə kiçikdir və mövcud `seiyaku`/`kotoage` sintaksisini istifadə edir:
 
 ```kotodama
 seiyaku TupleReturnDemo {
@@ -67,9 +67,9 @@ seiyaku TupleReturnDemo {
 }
 ```
 
-Kotodama Iroha Virtual Maşını və onun hazırkı ABI hədəfidir. Bu, WASM və EVM mənbə dili deyil.
+Kotodama Iroha Virtual Maşını və onun cari ABI-ini hədəfləyir. Bu, WASM və ya EVM mənbə dili deyil.
 
-### 2. Əsərləri yoxlayın, tikin və təsdiqləyin. {#_2-check-build-and-verify-the-artifact}
+### 2. Artefakti yoxlayın, yaradın və təsdiqləyin {#_2-check-build-and-verify-the-artifact}
 
 ```bash
 cargo run -p ivm --bin koto -- \
@@ -89,11 +89,11 @@ cargo run -p ivm --bin koto -- \
   ./contracts/tuple_return_demo.ko
 ```
 
-Birinci quraşdırma artefaktı və təsdiqlənmiş yan maşınları yayımlayır. İkincisi yalnız oxunma `--verify` rejimində işləyir və mövcud olan hər hansı bir çıxışı cari mənbə ilə tam uyğun deyilsə, uğursuz olur. `.to` faylını və manifestini nəzərdən keçirilən bir quraşdırma çıxışı kimi qəbul edin.
+Birinci quruluş artefaktı və təsdiqlənmiş yan yük maşınlarını yayımlayır. İkincisi yalnız oxuma rejimində `--verify` işləyir və mövcud çıxışlardan hər hansı biri cari mənbə ilə tam uyğun deyilsə, uğursuz olur. `.to` faylını və onun texniki manifestini bir baxılmış quruluş çıxışı kimi nəzərdən keçirin.
 
-### 3. Byte kodunu yerli olaraq icra edin. {#_3-run-the-bytecode-locally}
+### 3. Baytkodu yerli olaraq işə salın {#_3-run-the-bytecode-locally}
 
-`compute` ictimai `kotoage` giriş nöqtəsidir. Bir əməliyyat üçün təqdim etmədən və ya ödəmədən yerli qurğulara qarşı icra edən `debug-call` ilə idarə edin.
+`compute` bir ictimai `kotoage` giriş nöqtəsidir. Onu `debug-call` ilə işlədin, bu isə əməliyyatı təqdim etmədən və ya ödəniş etmədən yerli test artefaktları üzərində icra edir.
 
 ```bash
 iroha --config "$IROHA_CONFIG" --machine contract debug-call \
@@ -105,11 +105,11 @@ jq -e '.ok == true and .result == ["3", "5"]' \
   ./build/local-call.json
 ```
 
-Kotodama tam rəqəmləri JSON simvolları kimi tərcümə olunur, belə ki, kəşf edilmiş tuple `["3", "5"]` olur.
+Kotodama tam ədədlər JSON sətrlər kimi göstərilir, buna görə dekodlanmış tuple `["3", "5"]` olur.
 
-### 4. Yerli köməkçi vasitəsilə yerləşdirin. {#_4-deploy-through-the-native-helper}
+### 4. Yerli köməkçi vasitəsilə yerləşdirin {#_4-deploy-through-the-native-helper}
 
-Yardımçı bytecode parçalarını yükləyir, imzalanan manifestı qeydiyyatdan keçirir və bir `CommitContractDeployment` əməliyyatı təqdim edir. Hər bir əməliyyat üçün ödəniş quote verir və seçilmiş ödəyicini və ya qaz bağını dəyişdirən bir təklifdən imtina edir.
+Köməkçi bayt kodu parçalarını yükləyir, imzalanmış texniki manifesto qeydiyyatdan keçirir və bir `CommitContractDeployment` əməliyyatı təqdim edir. O, hər əməliyyat üçün ödəniş təklifini təqdim edir və seçilmiş ödəyici və ya əməliyyatın icra xərci həddini dəyişən təklifi qəbul etmir.
 
 ```bash
 printf '%s\n' \
@@ -131,11 +131,11 @@ jq '{contract_address, code_hash_hex, final, fee_quotes}' \
   ./build/deployment.json
 ```
 
-Boş `charge_limits` tələbi kopyalanmış aktiv kimliyi deyil: köməkçi imzalanmadan əvvəl dəqiq canlı quote qəbul edir. Geri qaytarılmış ödəniş aktivini Müqavilə çağırışları ödəniş seçimini yalnız tapılmış canlı quote vasitəsilə qəbul edir; `gas_asset_id` əməliyyat metadataları ilk buraxılış müqaviləsinin tərkib hissəsi deyil.
+Boş `charge_limits` sorğusu kopyalanmış aktiv identifikatoru deyil: köməkçi imzalamaqdan əvvəl dəqiq canlı təklifi qəbul edir. Qaytarılmış ödəniş aktivini cari testnet maliyyələşdirmə xidməti cavabı ilə müqayisə edin. Kontrakt çağırışları yalnız tipli canlı təklif vasitəsilə ödəniş seçimini qəbul edir; `gas_asset_id` əməliyyat metadatası ilk buraxılış kontraktının bir hissəsi deyil.
 
-### 5. İstifadə olunmuş giriş nöqtəsini simulyasiya edin və çağırın. {#_5-simulate-and-call-the-deployed-entrypoint}
+### 5. Yerləşdirilmiş giriş nöqtəsini simulasiya edin və çağırın {#_5-simulate-and-call-the-deployed-entrypoint}
 
-Simulyasiya ictimai giriş nöqtəsini Torii daxil etmədən icra edir. Aşağıdakı çağırış bir əməliyyatdır və buna görə də səlahiyyət haqqı ödəyicisini açıq şəkildə seçir. Hər iki əmr 1500,000 qaz həddini bağlayır.
+Simulyasiya Torii üzərində ictimai giriş nöqtəsini təqdim etmədən işə salır. Aşağıdakı texniki çağırış bir əməliyyatdır və buna görə də səlahiyyət verən əsas ödənişçini açıq şəkildə seçir. Hər iki əmr 1,500,000 əməliyyat icra xərcləri limitini bağlayır.
 
 ```bash
 iroha --config "$IROHA_CONFIG" --machine contract call \
@@ -162,9 +162,9 @@ iroha --config "$IROHA_CONFIG" \
 jq -e '.terminal_kind == "Applied"' ./build/deployed-call.json
 ```
 
-## Tətbiq edin {#verify}
+## Yoxla {#verify}
 
-Əksi adı həll edin, silsilədəki manifestı qaytarılmış kod həşi ilə əldə edin və eyni ictimai giriş nöqtəsini kanonik ünvanla simulyasiya edin:
+Əvəzinə keçidi həll edin, qaytarılan kod kriptoqrafik xashı ilə blokzincirdəki texniki manifesti əldə edin və eyni ictimai giriş nöqtəsini tək bir protokol-standart ünvanla simulyasiya edin:
 
 ```bash
 CODE_HASH="$({ jq -er '.code_hash_hex' ./build/deployment.json; })"
@@ -191,23 +191,23 @@ jq -e '.ok == true and .result == ["3", "5"]' \
   ./build/address-simulation.json
 ```
 
-İstifadə yalnız alias geri qaytarılmış ünvana uyğunlaşdıqda tamamlanır, manifest eyni kod hash altında oxuna bilər. yerli və Torii simulyasiyaların qaytarılması `["3", "5"]`, və təqdim edilən çağırış `Applied`.
+Yerləşdirmə yalnız alias qaytarılan ünvana həll olunduqda, texniki manifest eyni kod kriptoqrafik hash altında oxuna bildikdə, lokal və Torii simulyasiyaları `["3", "5"]` nəticəsini verdikdə və təqdim edilmiş texniki çağırış `Applied`-ə çatdıqda tamamlanır.
 
-## Problemlərin həlli {#troubleshooting}
+## Problemlərin aradan qaldırılması {#troubleshooting}
 
-- `CanRegisterSmartContractCode` uğursuzluqları üçün Taira operator grantı və ya localnet-də genesis/bootstrap dəyişikliyi tələb olunur.
-- İdarəetmə və ya qorunan zolağın rədd edilməsi deməkdir ki, tətbiq həmin şəbəkənin tələb etdiyi dəqiq təsdiqləyici təyinatına ehtiyac duyur. Təsdiqləyici siyahısını əlaqələndirin; hesab IDs icad etməyin.
-- Manifest və ya ABI uyğunsuzluq deməkdir ki, bytecode, manifest və node runtime eyni artefakt təsvir etmir. `--verify`.
-- `fee quote changed ... gas bound` tələb olunan yazılmış niyyət və canlı quote razı deyil. İmzalanmış bir əməliyyat dəyişdirmək əvəzinə yenidən əvvəlcədən.
-- Deploy köməkçisi şəbəkə təqdim etməzdən əvvəl xətti açarları, icazəli açar fayl rejimlərini, simlinkləri və əlaqəli sənədləri çoxaldır.
-- Yalnız görünüş giriş nöqtəsindəki bir səhv `compute` yanlış əmr ailəsi vasitəsilə yönəldilir. Bu nümunə `kotoage` elan edir, buna görə də zəng simulyasiyasından və ya təqdimatdan istifadə edin.
-- Müqavilə çağırışları müsbət tapılmış qaz məhdudiyyətini tələb edir. Birinci buraxılış çağırış müqaviləsi ən yüksək səviyyəli qaz və ya ödəniş aktivləri metadata rədd edir.
+- `CanRegisterSmartContractCode` xətaları Taira operator izni və ya localnet üzərində genesis/bootstrap dəyişiklik tələb edir. Adi hesab sonra bu icazəni öz-özünə verə bilməz.
+- İdarəetmə və ya qorunan zolaq rədd edilməsi o deməkdir ki, yerləşdirmə həmin şəbəkə tərəfindən tələb olunan dəqiq təsdiqləyici təyin edilməsini tələb edir. Təsdiqləyici siyahısını koordinasiya edin; hesab ID-ləri icad etməyin.
+- Texniki manifest və ya ABI uyğunsuzluğu, baytkodun, texniki manifestin və node proqram təminatı icra mühitinin eyni artefaktı təsvir etmədiyi deməkdir. `--verify` ilə qeyd olunmuş source-code reviziyasında yenidən qurun.
+- `fee quote changed ... gas bound` tələb olunan yazılmış niyyət və canlı təklifin uyğun gəlmədiyini göstərir. İmzalanmış əməliyyatı dəyişdirmək yerine yenidən yoxlayın.
+- Yerləşdirmə köməkçisi, şəbəkəyə göndərilmədən əvvəl daxili açarları, icazəli açar-fayl rejimlərini, simvolik keçidləri və çoxlu əlaqəli faylları rədd edir.
+- Yalnız baxış giriş nöqtəsi xətası o deməkdir ki, `compute` səhv əmrlər ailəsi vasitəsilə yönləndirilib. Bu nümunə `kotoage`-i elan edir, buna görə texniki çağırış simulyasiyasından və ya təqdimatından istifadə edin.
+- Müqavilə çağırışları müsbət tipli əməliyyat icra xərci limiti tələb edir. Birinci buraxılış texniki çağırış müqaviləsi üst səviyyə əməliyyat icra xərci və ya ödəniş-aktiv metadatasını rədd edir.
 
 ## Mənbə və əlaqəli sənədlər {#source-and-related-docs}
 
-- [Kotodama V1 əmrinin bağlanmış komitdə icrası ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/src/bin/koto.rs)
-- [Tüple-return mənbə nümunəsi sabitləşdirilmiş komitdə](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
-- [Bağlanmış komitdə yerli yerləşdirmə köməkçisi](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
-- [Müqavilə inteqrasiya sınaqları bağlanmış komitdə ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs)
+- [Kotodama V1 əmrinin tətbiqi möhkəmlədilmiş mənbə kodu versiyasında](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/src/bin/koto.rs)
+- [Sabitlənmiş mənbə kodu versiyasında tuple qaytaran mənbə nümunəsi](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
+- [Sabitlənmiş mənbə kodu revisiyasında yerli yerləşdirmə köməkçisi](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
+- [Sabitlənmiş mənbə kodu reviziyasında müqavilə inteqrasiya testləri](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs)
 - [Ağıllı müqavilələr](/az/blockchain/smart-contracts.md)
-- [CLI istinadı](/az/get-started/operate-iroha-via-cli.md)
+- [CLI istinad](/az/get-started/operate-iroha-via-cli.md)

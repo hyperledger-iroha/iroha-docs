@@ -3,41 +3,34 @@ translation_locale: ka
 translation_source: /guide/security/generating-cryptographic-keys.md
 translation_source_hash: f3d08a8e7fe7569ef783b93bccdc900ca74b85179a749b48b96c32028c749233
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2
 ---
 
 # კრიპტოგრაფიული გასაღების გენერაცია {#generating-cryptographic-keys}
 
-გამოიყენეთ `kagami keys`, რათა Iroha 3-ის კლიენტის, peer-ისა და ვალიდატორის გასაღების მასალა შექმნათ.
+გამოიყენეთ `kagami keys` კლიენტის, ქსელის კვანძის და ვალიდატორის საკვანძო მასალის შესაქმნელად Iroha 3.
 
 ## ძირითადი გამოყენება {#basic-usage}
 
-From the Iroha source checkout:
+Iroha წყარო კოდის სამუშაო ასულიდან:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-The parent directory must already exist. The target must be new or already
-owned by the current user, mode `0700`, free of symbolic links, and empty.
-`kagami` writes `public.key` and `private.key` with mode `0600` and does not
-print key material. With `--pop`, it also writes `pop.hex`.
+მშობლიური დირექტორი უნდა არსებობდეს. სამიზნე უნდა იყოს ახალი ან უკვე არსებული მომხმარებლის საკუთრება, რეჟიმი `0700`, თავისუფალი სიმბოლური ბმულებისაგან და ცარიელი. `kagami` წერს `public.key` და `private.key` რეჟიმით `0600` და არ დაბეჭდის საკვანძო მასალას. `--pop`, ის ასევე წერს `pop.hex`.
 
-`--out-dir` fails closed on platforms where Kagami cannot enforce these
-owner-only filesystem rules. The private-key file is an unencrypted export,
-not a hardware or non-exportable production signer. Import it into the
-approved custody boundary and remove the export according to the deployment's
-procedure.
+`--out-dir` არ არის ჩაკეტილი პლატფორმებზე, სადაც Kagami ვერ ახორციელებს ამ ფაილების სისტემის წესებს მხოლოდ მფლობელებისთვის. კერძო გასაღები ფაილი არის გაუმშიფრებელი ექსპორტი და არა აპარატურა ან არაექსპორტირებადი წარმოების კრიპტოგრაფიული ხელმოწერა. იმპორტირება დამტკიცებული შენახვის საზღვრებში და ექსპორტის ამოღება განლაგების პროცედურის შესაბამისად.
 
 ## ალგორითმები {#algorithms}
 
-Common algorithms are:
+საერთო ალგორითმები არიან:
 
-- `ed25519` for client accounts and streaming identities.
-- `secp256k1` when a client account requires a secp256k1 identity.
-- `bls_normal` for every node or peer consensus identity.
+- `ed25519` კლიენტების ანგარიშებისა და სტრიმინგის იდენტობისთვის.
+- `secp256k1`, როდესაც კლიენტის ანგარიშს სჭირდება secp256k1 იდენტობა.
+- `bls_normal` თითოეული კვანძის ან ქსელის კვანძე კონსენსუსის იდენტობისთვის.
 
-Check the exact algorithms supported by your build with:
+შეამოწმეთ ზუსტი ალგორითმები, რომლებიც მხარდაჭერილნი არიან თქვენი მშენებლობით:
 
 ```bash
 cargo run --bin kagami -- keys --help
@@ -45,8 +38,7 @@ cargo run --bin kagami -- keys --help
 
 ## დეტერმინისტური განვითარების გასაღები {#deterministic-development-keys}
 
-For reproducible fixtures, pass a 32-byte seed encoded as 64 hexadecimal
-characters. An optional `0x` prefix is accepted:
+რეპროდუქციული საცდელი არტეფაქტებისათვის, გადასცეს 32-ბაიტიანი მარცვალი კოდირებული 64 ჰექსადეციმალური ხასიათით. ნებაყოფლობითი `0x` პრეფიქსი მიიღება:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 \
@@ -54,40 +46,28 @@ cargo run --bin kagami -- keys --algorithm ed25519 \
   --out-dir ./fixture-client-key
 ```
 
-The seed is private-key material. Use deterministic seeds only for local
-development and tests. Omit `--seed-hex` to generate a production key from
-operating-system randomness.
+თესლი არის კერძო გასაღები მასალა. გამოიყენეთ დეტერმინისტური თესლები მხოლოდ ადგილობრივი განვითარებისა და ტესტებისათვის. გამორიცხეთ `--seed-hex` საწარმოო გასაღების წარმოება ოპერაციული სისტემის შემთხვევითობის შედეგად.
 
 ## BLS კონსენსუსის გასაღები და ფლობის მტკიცებულებები {#bls-consensus-keys-and-proofs-of-possession}
 
-Iroha 3 node and peer consensus identities use BLS-normal keys. Generate a
-BLS-normal key and proof-of-possession (PoP) with:
+Iroha 3 კვანძისა და ქსელის კვანძთა კონსენსუსის იდენტობები იყენებენ BLS- ნორმალურ საკიდებს. გამოიმუშავეთ BLS- ნორმალური საკიდები და მფლობელობის დამტკიცება (PoP) შემდეგნაირი:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm bls_normal --pop \
   --out-dir ./validator-key
 ```
 
-`--pop` is valid only with `bls_normal`; it adds `pop.hex` to the custody
-directory.
-Signed genesis requires a matching PoP for every voting validator. In peer
-configuration, a non-empty `trusted_peers_pop` map selects the validator
-subset; trusted peers omitted from that non-empty map are observers. If the map
-is empty, all BLS-normal trusted peers enter the bootstrap candidate set, with
-voter PoPs still supplied by signed genesis.
+`--pop` ვრცელდება მხოლოდ: `bls_normal`; ეს ემატება `pop.hex` ბლოკჩეინზე ხელმოწერილი გენეზისისთვის საჭიროა შედარება PoP თითოეული კენჭისყრის ვალიდატორისთვის. ქსელის კვანძების კონფიგურაციაში, არა ცარიელი არ არის `trusted_peers_pop` რუკა ირჩევს ვალიდატორის ქვეჯგუფს; ნდობის ქსელის კვანძები, რომლებიც გამორიცხულია ამ არაცარიელი რუკიდან, არიან დამკვირვებლები. თუ რუკა ცარიელია, ყველა BLS- ნორმალური საიმედო ქსელის კვანძები შედიან საწყისი გამართვა კანდიდატების ნაკრებში, ამომრჩეველთან ერთად PoPs ჯერ კიდევ უზრუნველყოფილია ხელმოწერილი ბლოკჩეინის გენეზისით.
 
-## Custody Output {#custody-output}
+## მფლობელობის შემოსავალი {#custody-output}
 
-`kagami keys` requires `--out-dir` and never writes private key material to
-standard output. Read `public.key`, `private.key`, and optional `pop.hex` from
-the generated directory. Each file contains one canonical value followed by a
-newline, which makes explicit file-based automation straightforward:
+`kagami keys` მოითხოვს `--out-dir` და არასოდეს წერს პირადი გასაღები მასალა სტანდარტული გამონადენი. წაიკითხეთ `public.key`, `private.key` და ვარიანტიური `pop.hex` გენერირებული დირექტორი. თითოეული ფაილი შეიცავს კანონიკურ ღირებულებას, რომელსაც მოჰყვება ახალი ხაზი, რაც ხელს უწყობს ფაილზე დაფუძნებულ ავტომატიზაციას მარტივად:
 
 ```bash
 PUBLIC_KEY=$(tr -d '\n' < ./client-key/public.key)
 ```
 
-For full generated Kagami help:
+სრულად წარმოქმნილი Kagami დახმარებისათვის:
 
 ```bash
 cargo run -p iroha_kagami -- advanced markdown-help > crates/iroha_kagami/CommandLineHelp.md

@@ -3,16 +3,16 @@ translation_locale: mn
 translation_source: /guide/tutorials/javascript.md
 translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# JavaScript болон TypeScript {#javascript-and-typescript}
+# JavaScript ба TypeScript {#javascript-and-typescript}
 
-Одоогийн JavaScript SDK нь Iroha эх үүсвэрийн мод дахь `@iroha/iroha-js` багц юм. Энэ бол Node.js-р SDK нь Torii, Norito бүтээн байгуулагчид, гарын үсэг зурах, хуудаслах, Connect урьдчилсан үзлэг, Kagemusha командын тээвэрлэлийн .
+Одоогийн JavaScript SDK нь Iroha эх үүсвэр модны `@iroha/iroha-js` багц юм. Энэ нь Torii, Norito баригчид, гарын үсэг зурах, хуудаслах, Connect урьдчилсан үзэлт, болон Kagemusha команд дамжуулалтын хувьд Node.js-р SDK юм.
 
-## Эх сурвалжаас бариарай {#build-from-source}
+## Эх сурвалжаас бүтээх {#build-from-source}
 
-Энэ багцыг одоогоор npm нийтийн бүртгэлээс ашиглаж чадахгүй. Та зорилт тавьсан түймэртэй ижил Iroha эх үүсвэрийн шинэчилсэн найруулгаас бариарай:
+Энэ багц одоогоор олон нийтийн npm бүртгэлээс авах боломжтойгүй байна. Та зорьж буй node-той адил бэхлэгдсэн Iroha эх хувилбараас үүнийг бүтээ:
 
 ```bash
 git clone https://github.com/hyperledger-iroha/iroha.git
@@ -22,9 +22,9 @@ npm run build:native
 npm run build:dist
 ```
 
-Нүүдэлчдийн бүтээн байгуулалтын хувцас `cargo build -p iroha_js_host` болон платформын хувьд ашигласан хяналтын хэмжээг бүртгэж, SDK эх үүсвэр нь хостийг баталгаажуулсан байршлыг `native/`. Тоглолт `IROHA_JS_NATIVE_DIR` Зөвхөн бие даасан баригдсан, хяналтын дүнгээр баталгаажуулсан хостын зориулалттай нийлүүлэлт хийх тохиолдолд л байна. ESM- зөвхөн; CommonJS, хэрэглээний динамик `import()`.
+Улсын түвшний бүтээл `cargo build -p iroha_js_host`-г ороож, платформтой холбоотой шалгалтын нийлбэрийг SDK эхлэлтэд бүртгэдэг. Эх кодоор бүтээгдсэн хувилбар баталгаажсан серверийг `native/`-д байрлуулдаг. Зөвхөн тусдаа бүтээгдсэн, шалгалттай хостыг зориудаар нийлүүлж байвал `IROHA_JS_NATIVE_DIR`-г тохируулна уу. Багц нь зөвхөн ESM; CommonJS-ээс `import()`-ийг динамикаар ашиглана уу.
 
-## Удахгүй эхлэх {#quickstart}
+## Хурдан эхлэлт {#quickstart}
 
 ```js
 import { ToriiClient } from "@iroha/iroha-js/torii";
@@ -38,9 +38,9 @@ const keys = generateKeyPair();
 console.log(keys.publicKey);
 ```
 
-## Taira уншигчдаа л үзээрэй {#try-taira-read-only}
+## Оролдоно уу Taira Зөвхөн унших {#try-taira-read-only}
 
-Node.js 24-ийн дотор `fetch` багтаан ашиглаж, гарын үсэг зурах болон Norito гүйлгээний код нэмэхээс өмнө Taira-ийг шалгах:
+Гарын авлагад буй `fetch`-г Node.js 24-д ашиглан Taira-ийг шалгаад дараа нь гарын үсэглэлт болон Norito гүйлгээний кодыг нэмнэ:
 
 ```js
 const root = "https://taira.sora.org";
@@ -67,15 +67,15 @@ for (const asset of assets.items) {
 }
 ```
 
-`taira-readonly.mjs` гэж хадгалж, дараа нь ажиллуул:
+Үүнийг `taira-readonly.mjs` гэж хадгалаад, дараа нь ажиллуул:
 
 ```bash
 node taira-readonly.mjs
 ```
 
-SDK дуудлагад гарын үсэг зурсны дараа л энэ уншилт цорын ганц шалгалтын ажиллана. Олон нийтийн Taira нь түр хугацаагаар дүүрэн шуурхай эсвэл хаалганы алдааг буцааж болно, тиймээс амьд сүлжээний туршилтыг сонгох CI-д байлгана.
+Эдгээр зөвхөн уншдаг шалгалтууд ажилласны дараа зөвшөөрөгдсөн SDK техникийн дуудах функцууд руу шилж. Олон нийтийн Taira түр хугацаанд дүүрсэн ээлж эсвэл гарцын алдаа буцааж магадгүй тул амьд сүлжээний туршилтуудыг CI дээр сонгон хэрэгжүүлэх хэрэгтэй.
 
-Ашигтай дэд замны импортууд:
+Ашигтай дэд замын импорт:
 
 ```js
 import { ToriiClient } from "@iroha/iroha-js/torii";
@@ -83,25 +83,25 @@ import { noritoEncodeInstruction } from "@iroha/iroha-js/norito";
 import { generateKeyPair } from "@iroha/iroha-js/crypto";
 ```
 
-Зөвхөн браузер ашиглах Connect bootstrap-ийн хувьд Node-first `ToriiClient` давхаргыг импортлох оронд `@iroha/iroha-js/connect-browser` -ийг ашиглаарай.
+Зөвхөн браузерт зориулсан Connect bootstrap-ийн хувьд Node-first `ToriiClient` гадаргууг импортлохын оронд `@iroha/iroha-js/connect-browser` ашиглана уу.
 
-## Үндэсний хадгаламж {#native-escrow}
+## Эх нутгийн хадгаламж {#native-escrow}
 
-JavaScript болон TypeScript нэвтрүүлэгүүд нь гаралтай хадгаламж ашиглах боломжтой Kotodama гэрээ. Хөтөлбөрийн хөтөчийн дуудлага `@iroha/iroha-js/kotodama-compiler`; шууд эх оронч хадгаламжийн гүйлгээний бүтээн байгуулагчдыг одоогийн байдлаар JavaScript SDK. Та үзээрэй. [Тухайн хөрөнгийн хяналт тавих](/mn/blockchain/escrow.md#javascript-and-typescript-kotodama) Хөдөлмөрийн хөтөчийн дуудлагын жишээ.
+JavaScript ба TypeScript програмууд Kotodama гэрээнүүдээр дамжуулан нутгийн хадгаламжийг ашиглаж болно. Хадгаламжийн хост-функцийн дуудлагуудыг `@iroha/iroha-js/kotodama-compiler` ашиглан бүрдүүлнэ; шууд Төрөлх escrow гүйлгээ бүтээгчүүд одоогоор JavaScript SDK-аар илэрхийлэгдээгүй байна. Escrow хост-техникийн дуудах жишээг үзэхийн тулд [Уугуул хөрөнгийн хадгаламж](/mn/blockchain/escrow.md#javascript-and-typescript-kotodama)-ийг харна уу.
 
-## Одоогоор хамааралтай {#current-coverage}
+## Өнөөгийн хамрах хүрээ {#current-coverage}
 
-SDK нь дараахь чиглэлээр ажилладаг:
+SDK нь дараах зүйлд төвлөрдөг:
 
-- Torii HTTP болон WebSocket туслах
-- Norito бүтээн байгуулалтын болон сургалтын бүтээн байгуулагч
-- Kotodama хуримтлагыг эс тооцвол, хадгаламжийн хөтөч дуудлага
-- Ed25519 гарын үсэг зурах, цөмөгний үе
-- Pagination болон дахин туршиж үзэх туслах
-- Бrowser bootstrap туслагчдыг холбох
-- Кагемушагийн бэлэн байдал, нөхөн сэргээлт, төлбөр тооцоо, үйл ажиллагааны байдлын санхүүжилт
+- Torii HTTP ба WebSocket туслагчид
+- Norito гүйлгээ ба заавар үүсгэгчид
+- Kotodama цуглуулга, төлбөр зуучлагч хост-техникийн дуудах бүрэлдэхүүнүүдийг багтаасан
+- Ed25519 гарын үсэг зуралт ба түлхүүр үүсгэх
+- хуудаслал болон дахин оролдох туслагчид
+- Хөтчийн bootstrap туслах хэрэгслүүдтэй холбох
+- Кагемуша бэлэн байдал, нөхөх, буцаан авах, ба үйлдлийн төлөвийг тээвэрлэх туслахууд
 
-## Урьдчилсан нэвтрүүлэг {#upstream-references}
+## Дээшээ чиглэсэн лавлагаа {#upstream-references}
 
 - `javascript/iroha_js/README.md`
 - `javascript/iroha_js/package.json`

@@ -1,11 +1,10 @@
 ---
 translation_locale: uz
 translation_source: /guide/tutorials/musubi.md
-translation_source_hash: 4a76626522ecb9fe32e98e9c1e4552223cf820d40d0de16690dc589b0f40c901
+translation_source_hash: 621d1795fd1c3cc62462a9a91af68fe684c0ff5293f5e77801420dc8318bac38
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Musubi Kotodama Paketlar {#musubi-kotodama-packages}
 
 Musubi - Kotodama manba paketlari uchun birinchi chiqarilgan paketa menejeri. U zanjirda to'g'ri bog'liqlik grafiyasini hal qiladi, SoraFS ni tasdiqlaydi manba arxivlari, tanlangan ish maydonini to'playdi va sinab ko'radi, kanonik CAR arxivlarini yaratadi va Iroha orqali o'zgarmas nashrlarni chop etadi.
@@ -32,9 +31,9 @@ Toʻgʻri chiqarilish identifikatorlari versiyani qoʻshadi:
 namespace/package@version
 ```
 
-Nom maydonidan oldin `@` ko'rsatkichi yo'q. Nomlar maydonasi yoki ma'lumotlar maydonining ildizidir: `universal` yoki domenlarga moslashtirilgan ma'lumotlar maydonchasi, masalan: `dex.universal`. Katakchi ushbu tarkibiy nomlar maydonini paketni talab qilishdan oldin bitta barqaror uy ma'lumotlar maydonida bog'laydi.
+Nom maydonidan oldin `@` ko'rsatkichi yo'q. Nomlar maydonasi yoki ma’lumotlar makonining ildizidir: `universal` yoki domenlarga moslashtirilgan ma'lumotlar maydonchasi, masalan: `dex.universal`. Katakchi ushbu tarkibiy nomlar maydonini paketni talab qilishdan oldin bitta barqaror uy ma’lumotlar makonida bog'laydi.
 
-## Manifest va Lockfile {#manifest-and-lockfile}
+## Manifest va qulflash fayli {#manifest-and-lockfile}
 
 Bir paketda yopilgan birinchi nashrdan foydalaniladi . `Musubi.toml` sxema. Manifestoda deklaratsiya qilinishi kerak `manifest-version = 1`, Kotodama nashr `"1"`, va IVM ABI versiyasi `1`; o'zgaruvchan ma'lumotlar mavjud emas; yoki ABI yo'nalish.
 
@@ -59,11 +58,11 @@ version = "^1.0.0"
 
 Tavakkalchiliklar to'g'ri versiyalardan, parvarishlash yoki tilde talablaridan foydalanishlari mumkin. `1.*`, va komma bilan ajratiladigan taqqoslash to'plamlari: `>=1.0.0,<2.0.0`. Tavakkalchilik jadvali kalitlari - mahalliy import nomli alias; `package` har doim kanonik reyestr tanlovi hisoblanadi.
 
-`Musubi.lock` grafikni to'g'ri genesisdan kelib chiqqan `NetworkId` va yakuniy reyestr fotosuratlariga bog'laydi. U tanlangan ish maydonining ildizlari va o'zgaruvchan bo'lmagan chiqarish nodlarini yozib oladi. maxfiylik, manba, interfeys, arxiv, ABI va to'g'ri bog'liqlik chegarasi majburiyatlari o'z ichiga oladi.
+`Musubi.lock` grafikni to'g'ri genesisdan kelib chiqqan `NetworkId` va yakuniy reyestr snapshotlariga bog'laydi. U tanlangan ish maydonining ildizlari va o'zgaruvchan bo'lmagan chiqarish nodlarini yozib oladi. maxfiylik, manba, interfeys, arxiv, ABI va to'g'ri bog'liqlik chegarasi majburiyatlari o'z ichiga oladi.
 
 ## Taira SoraFS olib kelishni sozlash {#configure-taira-sorafs-fetching}
 
-Taira bu ish oqimi uchun ommaviy test tarmog'idir. Taira mijoz konfiguratsiyasidan boshlab, ro'yxatdan o'tgan zanjir va tarmoq identifikatsiyasi bilan boshlang, so'ngra quyida provayderga mos bo'lgan tasdiqlangan to'ldirish bog'liqliklarini qo'shing. Hisobvaraq imzolash materiallari va provayder operator kalitlari faqat egalik qiluvchilarning ish vaqti fayllarida qolishi kerak.
+Taira bu ish oqimi uchun ommaviy test tarmog'idir. Taira Xizmatchi konfiguratsiyasi bilan cheklangan zanjir va joriy to'g'rilashtirilgan genesisdan kelib chiqadigan tarmoq identifikatsiyasi; so'ngra pastki provayderga mos tasdiqlangan xarid bog'liqlarini qo'shing. A Taira Oʻrnatish oʻzgartirish mumkin `NetworkId`; uni mustahkam zanjirdan xulosa qilishning o'rniga imzolangan joylashtirish profilidan yangilash UUID. Hisobvaraq imzolash materiallari va provayder operator kalitlari faqat egalik qiluvchilarning ish vaqti fayllarida qolishi kerak.
 
 ```toml
 torii_url = "https://taira.sora.org/"
@@ -135,7 +134,7 @@ cargo run --manifest-path ../../Cargo.toml -p musubi -- \
   cache prune --dry-run --config client.toml
 ```
 
-`cache repair` karantin ishonchli avlodlarni buzuq qiladi va to'g'ri arxivni qayta o'zgartiradi, agar yakuniy provayder dalillari bunga ruxsat beradi. Musubi jonli bo'sh bo'lmagan kesish mutatsiyasini rad etadi. `--dry-run` dan foydalanib sinflashtirilgan nomzodlarni tekshirish uchun foydalaning.
+`cache repair` karantinlar ishonchli avlodlarni buzuq qiladi va so'nggi provayder dalillari ruxsat berganida aniq arxivni qayta tiklaydi. Hayotsiz bo'sh mutatsiya uchun kesish niyat bilan yopiladi; `--dry-run` dan foydalanib, tasniflangan nomzodlarni tekshiradi.
 
 ## Qopish va nashr etish {#packaging-and-publishing}
 
@@ -151,14 +150,14 @@ cargo run --manifest-path ../../Cargo.toml -p musubi -- \
 
 `package` `target/package/<namespace>-<name>-<version>.car` deb yozadi. CAR kanonik paket manifestini, semantik chiqarilish manifestini, aniq tekshiruv qulfini, manba daraxtini, interfeysni bog'laydi digest va SoraFS arxiv majburiyati. Birinchi nashrda `pack`, `--car-out`, `--sorafs-manifest-out` yoki `--source-plan-out` bo'yicha alohida buyruqlar yo'q CLI.
 
-Joriy nashr imzolangan, qayta tiklanishi mumkin bo'lgan tarmoq ish oqimidir. Tanlangan `client.toml` tarkibida ishlab chiqarish `[musubi.publication]` bog'lanishlari, shuningdek, hisob va Taira tarmoq konfiguratsiyasi bo'lishi kerak.
+Joriy nashr imzolangan, qayta tiklanishi mumkin bo'lgan tarmoq ish oqimidir. Tanlangan `client.toml` tarkibida kerakli `[musubi.publication]` bog'lanishlari, shuningdek, hisob va Taira tarmoq konfiguratsiyasi bo'lishi kerak.
 
 ```bash
 cargo run --manifest-path ../../Cargo.toml -p musubi -- \
   publish -p dex.universal/swap-core --locked --config client.toml
 ```
 
-Foydalanish `--detach` Operatsiya jurnali va urug'lar kirish chegarasi uzoq muddatli bo'lganidan keyin qaytish uchun. `publish --resume <operation-id> --config client.toml`. Eng chiroyli `--recover <operation-id>` yo'nalish faqat yo'qolgan o'zgaruvchan bo'lmagan yon mashinalar uchun mukammal kirishdan oldin jurnal rekonstruksiya qiladi. `--dry-run` yoki umumiy ommaviy yuklash to'siqlari; ishga tushirish `package --list` va `package` mahalliy parvozdan oldin.
+Foydalanish `--detach` Operatsiya jurnali va urug'lar kirish chegarasi uzoq muddatli bo'lganidan keyin qaytish uchun. `publish --resume <operation-id> --config client.toml`. Eng chiroyli `--recover <operation-id>` yo'nalish faqat yo'qolgan o'zgaruvchan bo'lmagan yordamchi yozuvlar uchun mukammal kirishdan oldin jurnal rekonstruksiya qiladi. `--dry-run` yoki umumiy ommaviy yuklash to'siqlari; ishga tushirish `package --list` va `package` mahalliy parvozdan oldin.
 
 ## Ro'yxatdan o'tish va hayot davri {#registry-queries-and-lifecycle}
 
@@ -194,7 +193,7 @@ Ushbu holatni o'zgartirish uchun `unyank` ni bir xil paket, versiya va yangi o'q
 Musubi birinchi nashrdagi V1 ko'rsatmalar va so'rovlarni ishlatadi:
 
 |Yer yuzi | Maqsad                                                        |
-| -------------------------------------------------- | -------------------------------------------------------------- |
+| ---------------------------------------------------- | -------------------------------------------------------------- |
 |`RegisterMusubiNamespaceBindingV1` |Nomlar maydonini uning barqaror uy ma'lumot maydonlariga bog'lash. |
 |`RegisterMusubiArchiveV1` |Oʻzgarmas autentifikatsiya qilingan manba arxivini roʻyxatga olish. |
 |`AddMusubiArchiveLocationV1` |SoraFS arxivning tasdiqlangan joyini qo'shish yoki yangilash. |
@@ -204,9 +203,9 @@ Musubi birinchi nashrdagi V1 ko'rsatmalar va so'rovlarni ishlatadi:
 |`RegisterMusubiAliasV1` / `RetargetMusubiAliasV1` |Boshqaruvli global aliasni ro'yxatdan o'tkazish yoki qayta maqsad qilish. |
 |`AssertMusubiReleaseDigestV1` |To'g'ri o'zgaruvchan bo'lmagan chiqarib tashlashni tasdiqlang. |
 |`FindMusubiExactPackageV1` |To'g'ri paket va uni qayta ko'rib chiqish. |
-|`FindMusubiExactReleaseV1` |To'g'ri bo'lgan bir fotosuratni o'qing. |
+|`FindMusubiExactReleaseV1` |To'g'ri bo'lgan bir snapshotni o'qing. |
 |`FindMusubiResolverIndexV1` / `FindMusubiVersionsV1` |To'xtatish yoki yakuniy ravishda chiqarilgan nomzodlarni ro'yxatga olish. |
 |`FindMusubiArchiveLocationsV1` |Amalga oshirilgan provayder tomonidan qo'llab-quvvatlanadigan arxiv joylarini o'qing. |
 |`FindMusubiAliasV1` / `FindMusubiAliasHistoryV1` |Hozirgi alias maqsadini yoki uning o'zgarmas tarixini o'qing. |
 
-Torii `/v1/musubi/` ostida dastur yo'nalishlari oilasini ochib beradi. MCP vositalarida joriy `iroha.musubi.queries.` va `iroha.musubi.instructions.*` nomlari ishlatiladi. kengroq API xaritasi uchun [Torii oxirgi nuqtalarini ](/uz/reference/torii-endpoints.md) va [ so'rov ma'lumotini ](/uz/reference/queries.md) ko'ring.
+Torii `/v1/musubi/*` ostida dastur yo'nalishlari oilasini ochib beradi. MCP vositalarida joriy `iroha.musubi.queries.*` va `iroha.musubi.instructions.*` nomlari ishlatiladi. kengroq API xaritasi uchun [Torii oxirgi nuqtalarini ](/uz/reference/torii-endpoints.md) va [ so'rov ma'lumotini ](/uz/reference/queries.md) ko'ring.

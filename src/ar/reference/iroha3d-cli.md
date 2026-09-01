@@ -1,20 +1,20 @@
 ---
 translation_locale: ar
 translation_source: /reference/iroha3d-cli.md
-translation_source_hash: d621aa09f50cb44cb99af372100f418c44c3714b879a556038e47598949a3a6f
+translation_source_hash: bf4a63b05a149f0c935190b63cdb838b0a0265e99baedfc9b5bf00a9e621b108
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # `iroha3d` CLI {#iroha3d-cli}
 
-`iroha3d` هو ديمون النظير القياسي Iroha 3. يتم تسمية حزمة Cargo `irohad`، لذلك استدعاء الثنائي من التسجيل المصدر مع:
+`iroha3d` هو خادم النظراء القياسي لشبكة Iroha 3. حزمة Cargo تُسمى `irohad`، لذا نفّذ البرنامج الثنائي من نسخة عمل الشيفرة المصدرية باستخدام:
 
 ```shell
 cargo run -p irohad --bin iroha3d -- --config path/to/config.toml
 ```
 
-بالنسبة للشبكة الاختبارية العامة Taira، تستخدم الصورة الإفراجية `iroha3d_taira`. تقبل نفس CLI. كما أنه يفرض سلسلة Taira القانونية، ومجموعة المحققين، وإعدادات التخزين، وأرقام توقيع وقت التشغيل. تأكيد تشكيل Taira دون فتح إثباتات وقت التشغيل مثل هذا:
+بالنسبة لشبكة الاختبار العامة Taira، تستخدم نسخة الإصدار `iroha3d_taira`. فهي تقبل نفس CLI ولكنها بالإضافة إلى ذلك تفرض سلسلة Taira الكانونية، والمصادق، والتخزين، وملف تعريف موقع التشغيل. تحقق من تكوين Taira بدون فتح بيانات اعتماد تشغيل البرنامج بهذه الطريقة:
 
 ```shell
 iroha3d_taira --sora \
@@ -22,78 +22,78 @@ iroha3d_taira --sora \
   --check-config
 ```
 
-يجب على المشغل أن يعرض ملف Taira القنوني قبل الاستخدام. نموذج التسجيل لديه إعدادات مثالية يجب على المشغل استبدال كل إعداد مثالي. لا تستخدم إعدادات Nexus العامة أو الإنتاجية SoraFS عند الاختبار ضد Taira.
+استخدم النموذج الذي تم إنشاؤه بواسطة المشغل للملف الشخصي القياسي Taira؛ لا يزال القالب المحفوظ يحتوي على عناصر نائب للنشر. لا تقم باستبدال الإعدادات العامة Nexus أو إعدادات الإنتاج SoraFS عند الاختبار مقابل Taira.
 
 ## `--config` {#arg-config}
 
-- نوع: مسار الملف
-- الاسم الخارجي: `-c`
+- النوع: مسار الملف
+- الاسم المستعار: `-c`
 
-المسار إلى تشكيل [ الأقارب ](/ar/reference/peer-config/index.md).
+المسار إلى [تكوين نظير الشبكة](/ar/reference/peer-config/index.md).
 
 ## `--genesis-manifest-json` {#arg-genesis-manifest-json}
 
-- نوع: مسار الملف
+- النوع: مسار الملف
 
-المخطط الاختياري للإنتاج JSON يستخدم للتحقق من التوافق.
+المستند الفني الاختياري لأصل البلوكتشين JSON المستخدم للتحقق من التوافق.
 
 ## `--check-config` {#arg-check-config}
 
-تأكيد التكوين المحل والمواد المتاحة للجنيس، ثم الخروج دون ربط مصدرات الشبكة.
+تحقق من صحة التكوين المحلَّل ومواد التكوين الأساسية للبلوكتشين المتاحة، ثم اخرج دون ربط مآخذ الشبكة.
 
-## علامات تصنيف كاغيموشا {#kagemusha-qualification-seals}
+## أختام مؤهلات كاجيموشا {#kagemusha-qualification-seals}
 
-هذه خيارات طريق الملف تتطلب `--check-config` وإجراء مؤهل الكاغيموشا الكامل قبل كتابة ختم القنوني:
+تتطلب خيارات مسار الملف هذه `--check-config` وتقوم بإجراء التأهيل الكامل لكاجيموشا قبل كتابة الختم الرسمي:
 
-- `--write-kagemusha-catalog-qualification-seal <PATH>` تصحيح الكتالوج.
-- `--write-kagemusha-validator-qualification-seal <PATH>` يؤهل المؤكّد المحلي على حجز الترقية الموقّع الموضّح.
+- `--write-kagemusha-catalog-qualification-seal <PATH>` يؤهل الكتالوج.
+- `--write-kagemusha-validator-qualification-seal <PATH>` يؤهل المدقق المحلي مقابل حجز الترقية الموقع المكون.
 
-خيارات الخيطين تتعارض مع بعضها البعض.
+خياري الختم يتعارضان مع بعضهما البعض.
 
 ## `--trace-config` {#arg-trace-config}
 
-- النوع: العلم
+- النوع: علم
 - البيئة: `TRACE_CONFIG`
 
-تمكين السجلات أثناء قراءة طبقات التكوين وتحليلها.
+تمكين سجلات التتبع أثناء قراءة وتحليل طبقات التكوين.
 
 ## `--config-blake3` {#arg-config-blake3}
 
-- النوع: هضم الـ 64 رقمًا BLAKE3
-- متطلبات: `--config`
+- النوع: قيمة تجزئة تشفيرية سداسية عشرية مكونة من 64 رقمًا BLAKE3
+- يتطلب: `--config`
 
-تطلب بايتات ملف التشغيل لتتطابق مع الجهاز المزود. يجب تسطح ملف متصل بالنزاهة؛ لا يمكن أن يحتوي على `extends`.
+يتطلب أن تتطابق بايتات ملف التكوين مع قيمة الملخص التشفيري المقدم. يجب أن يكون الملف المرتبط بالنزاهة مسطّحاً؛ لا يمكن أن يحتوي على `extends`.
 
 ## `--terminal-colors` {#arg-terminal-colors}
 
-- النموذج: بولي، تم إرسالها باسم `--terminal-colors=true` أو `--terminal-colors=false`
-- الافتراضي: اكتشاف قدرة المحطة
+- النوع: بوليان، يُمرر كـ `--terminal-colors=true` أو `--terminal-colors=false`
+- الوضع الافتراضي: الكشف عن قدرة الطرفية
 - البيئة: `TERMINAL_COLORS`
 
-التحكم في الناتج ANSI الملون.
+تحكم في المخرجات الملونة ANSI.
 
 ## `--language` {#arg-language}
 
-- نوع: سلسلة
+- النوع: نص
 
-قم بإلغاء لغة النظام المستخدمة لإرسال رسائل الشيطان.
+تجاوز لغة النظام المستخدمة لرسائل الخادم.
 
 ## `--sora` {#arg-sora}
 
-- النوع: العلم
+- النوع: علم
 - البيئة: `IROHA_SORA_PROFILE`
 
-تمكين ملف Sora Nexus. هذا الملف يضبط SoraFS ، ومصافحة اليد SoraNet، والاتفاق متعدد المسارات. استدعاء إطلاق Taira دائما مع هذا العلم.
+قم بتمكين ملف تعريف Sora Nexus المستخدم بواسطة SoraFS، والمصافحة SoraNet، والتوافق متعدد المسارات. يتم دائمًا استدعاء مشغل Taira مع هذا العلم.
 
-## FastPQ تفضيلها {#fastpq-overrides}
+## FastPQ يتجاوز {#fastpq-overrides}
 
-`--fastpq-execution-mode <MODE>` و `--fastpq-poseidon-mode <MODE>` لا تقبل سوى `cpu` أو `gpu`. الخيارات المتبقية تفوق على علامات التلفاز:
+`--fastpq-execution-mode <MODE>` و `--fastpq-poseidon-mode <MODE>` يقبلان فقط `cpu` أو `gpu`. الخيارات المتبقية تتجاوز ملصقات القياس عن بعد:
 
 - `--fastpq-device-class <LABEL>`
 - `--fastpq-chip-family <LABEL>`
 - `--fastpq-gpu-kind <LABEL>`
 
-على سبيل المثال
+على سبيل المثال:
 
 ```shell
 iroha3d --fastpq-execution-mode gpu \
@@ -103,8 +103,10 @@ iroha3d --fastpq-execution-mode gpu \
   --fastpq-gpu-kind integrated
 ```
 
-## المساعدة المتولدة {#generated-help}
+## مساعدة مولدة {#generated-help}
 
-يتم إنتاج الناتج الكامل أدناه من الإتصال المصدر Iroha المثبت.
+يتم التحقق من ملخص الخيار أعلاه مقابل تعريفات الوسيط الحالية `iroha3d`. لا يتم عرض عرض بيانات المساعدة المولدة والمحقق أثناء تسجيل الدخول بشكل متعمد بينما تكون حالة مصدرها قيد الانتظار. لفحص المساعدة الدقيقة لعملية تسجيل الخروج الخاصة بك، قم بتشغيل:
 
-<<< @/snippets/iroha3d-help.md
+```shell
+cargo run --locked -p irohad --bin iroha3d -- --help
+```

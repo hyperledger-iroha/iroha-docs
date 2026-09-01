@@ -1,163 +1,163 @@
 ---
 translation_locale: ja
 translation_source: /reference/glossary.md
-translation_source_hash: fe3bc2d62ca81b5e6e30023407f3c900eb4026b6668f0d422728a8eedd436148
+translation_source_hash: ab484310e7e0b0662c1d4bb133e7ae337c71b09b5fdc8e678581234d74ee9b29
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# 字典 <!-- omit in toc --> {#glossary}
+# 用語集 <!-- omit in toc --> {#glossary}
 
-Iroha に関連したすべてのエンティティの定義は,ここにあります.
+ここでは、すべての Iroha 関連のエンティティの定義を見つけることができます。
 
-- [同級者](#peer)
+- [ネットワークピア](#peer)
 - [資産](#asset)
-- [バイザントの故障耐容性 (BFT) ](#byzantine-fault-tolerance-bft)
-- [Iroha 構成要素](#iroha-components)
-  - [Sumeragi (皇帝)](#sumeragi-emperor)
-  - [Torii (ゲート)](#torii-gate)
-  - [Kura (倉庫)](#kura-warehouse)
-  - [Kagami(教師と模範と/または鏡]](#kagami-teacher-and-exemplar-and-or-looking-glass)
-  - [メークル樹 (ハッシュ樹) ](#merkle-tree-hash-tree)
-  - [スマート契約](#smart-contracts)
-  - [触発機](#triggers)
-  - [バージョン](#versioning)
-  - [ヒジリ (同等評価システム) ](#hijiri-peer-reputation-system)
+- [ビザンチン障害耐性（BFT）](#byzantine-fault-tolerance-bft)
+- [Iroha コンポーネント](#iroha-components)
+  - [Sumeragi（天皇）](#sumeragi-emperor)
+  - [Torii（ゲート）](#torii-gate)
+  - [Kura（倉庫）](#kura-warehouse)
+  - [Kagami(教師と模範および/または鏡)](#kagami-teacher-and-exemplar-and-or-looking-glass)
+  - [マークルツリー（暗号ハッシュツリー）](#merkle-tree-hash-tree)
+  - [スマートコントラクト](#smart-contracts)
+  - [トリガー](#triggers)
+  - [バージョン管理](#versioning)
+  - [聖（ネットワークピア評価システム）](#hijiri-peer-reputation-system)
 - [Iroha モジュール](#iroha-modules)
-- [Iroha 特別指示 (ISI) ](#iroha-special-instructions-isi)
-  - [ユーティリティ Iroha 特殊指示](#utility-iroha-special-instructions)
-  - [核心 Iroha 特別の指示](#core-iroha-special-instructions)
-  - [ドメイン特有の Iroha 特殊指示](#domain-specific-iroha-special-instructions)
-  - [カスタム Iroha 特殊指示](#custom-iroha-special-instruction)
-- [Iroha 問い合わせ](#iroha-query)
-- [ビュー変更](#view-change)
-- [世界状態の見方 (WSV) ](#world-state-view-wsv)
+- [Iroha 命令操作 (ISI)](#iroha-special-instructions-isi)
+  - [ユーティリティ Iroha 操作手順](#utility-iroha-special-instructions)
+  - [コア Iroha 命令操作](#core-iroha-special-instructions)
+  - [ドメイン固有の Iroha 命令操作](#domain-specific-iroha-special-instructions)
+  - [カスタム Iroha 特別指示](#custom-iroha-special-instruction)
+- [Iroha クエリ](#iroha-query)
+- [ビューの変更](#view-change)
+- [世界状態ビュー（WSV）](#world-state-view-wsv)
 - [リーダー](#leader)
 
-## ブロックチェーンのレジャー {#blockchain-ledgers}
+## ブロックチェーン台帳 {#blockchain-ledgers}
 
-ブロックチェーンのレジャーとは,ブロックチェーン技術を用いて財務記録を保存するデジタル記録システムである.これらは価格やニュース,取引情報などの金融記録に使用された旧式の書籍にちなんで名付けられている.
+ブロックチェーン台帳は、財務記録を保持するためにブロックチェーン技術を使用するデジタル記録管理システムです。これらは、価格、ニュース、取引情報などの財務記録に使用されていた昔ながらの帳簿にちなんで名付けられました。
 
-中世時代には,レジャー・ブックが公開され,閲覧および正確性の検証が行われました.この考えは,保存されたデータの有効性を確認できるブロックチェーンベースのシステムに反映されています.
+中世の時代には、ブロックチェーンの元帳は公開されており、一般の人々が閲覧して正確性を確認することができました。この考え方は、保存されたデータの有効性を確認できるブロックチェーンベースのシステムに反映されています。
 
-## 同級者 {#peer}
+## ネットワークピア {#peer}
 
-Iroha のペアとは,他の Iroha プロセスおよびクライアントアプリケーションが接続できる Iroha プロセスのインスタンスを意味します.単一のマシンでは複数の Iroha ペアをホストすることができます.Iroha ネットワークのブートストラップ段階での生成ブロックを実行するピアは,重要な例外を除いて,資源と能力に関して等しい.
+Iroha のネットワークピアとは、他の Iroha プロセスおよびクライアントアプリケーションが接続できる Iroha プロセスインスタンスを意味します。単一のマシンは複数の Iroha ネットワークピアをホストすることができます。ネットワークのピアは、そのリソースと能力に関しては平等ですが、重要な例外があります：Iroha ネットワークのブートストラップ段階では、ネットワークのピアのうちの一つだけがブロックチェーンのジェネシスブロックを実行します。
 
-他のブロックチェーンは,ノードや検証器と同じ概念を指す可能性があります.
+他のブロックチェーンでは、同じ概念をノードやバリデーターと呼ぶことがあります。
 
-ピアは宿主システム上のプロセスであり,また Docker コンテナとKubernetes ポッドに収められる.
+ネットワークピアは、そのホストシステム上のプロセスであることがあります。また、Docker コンテナや Kubernetes ポッドに含まれることもあります。
 
 ## 資産 {#asset}
 
-ブロックチェーンの文脈では,資産はブロックチェーン上の価値あるオブジェクトを表すものです.
+ブロックチェーンの文脈において、資産とはブロックチェーン上で価値のある対象を表現したものです。
 
-資産に関する追加情報については [で](/ja/blockchain/assets.md).
+資産に関する追加情報は[ここ](/ja/blockchain/assets.md)で入手可能です。
 
-### 浮動資産 {#fungible-assets}
+### 代替可能な資産 {#fungible-assets}
 
-これらの資産は,交換可能であるため,同じタイプの他の資産に容易に交換することができる.
+これらの資産は、交換可能であるため、同じ種類の他の資産と簡単に交換することができます。
 
-例として,同じ通貨のすべての単位は価値で平等であり,商品を購入するために使用できます.通常,銀貨やコインの磨損を除いて,浮動資産は外観的に同一です.
+例として、同じ通貨のすべての単位は価値が等しく、商品を購入するために使用することができます。一般的に、代替可能な資産は、紙幣や硬貨の摩耗を除けば、外見上同一です。
 
-### 変形性でない資産 {#non-fungible-assets}
+### 非代替性資産 {#non-fungible-assets}
 
-変形性でない資産は,特殊な特徴と希少性のためにユニークで価値があり,その価値は他の資産と比較することはできません.
+非代替性資産は、その特定の特徴と希少性により独自で価値があり、その価値は他の資産と比較することはできません。
 
-- 絵画の価値は芸術家,その描かれた時期,そして大衆の興味によって異なる.
-- 同じ通りにある2軒の家は 維持レベルが違うかもしれません
-- ジュエリーメーカーは通常,さまざまなデザインを提供します.
+- 絵画の価値は、画家、描かれた時期、そしてその絵に対する人々の関心によって変わることがあります。
+- 同じ通りにある二軒の家でも、維持管理のレベルは異なる場合があります。
+- 宝飾品メーカーは通常、さまざまなデザインの範囲を提供しています。
 
-### 保存可能な資産 {#mintable-assets}
+### 鋳造可能な資産 {#mintable-assets}
 
-同じタイプの複数の資産が発行される場合,資産は製造可能である.
+資産は、同じ種類のものをさらに発行できる場合、発行可能です。
 
-### 貯蔵できない資産 {#non-mintable-assets}
+### 非鋳造資産 {#non-mintable-assets}
 
-資産の初期額が1回指定され,変更されない場合,それは不可能なものとみなされます.
+資産の初期量が一度指定されて変更されない場合、それは非発行可能と見なされます。
 
-[Genesisブロック](/ja/guide/configure/genesis.md)は,この情報を Iroha 構成に設定する.
+[ブロックチェーンのジェネシスブロック](/ja/guide/configure/genesis.md) は、この情報を Iroha の設定に設定します。
 
-## BFT バイザントの故障耐容性 {#byzantine-fault-tolerance-bft}
+## ビザンチン障害耐性（BFT） {#byzantine-fault-tolerance-bft}
 
-特定の数の悪意のあるアクターを含むネットワークで適切に機能する能力の特性. Iroha は,ピアツーピアネットワークで最大33%の悪意のあるアクターと機能する能力がある.
+ネットワーク内に一定割合の悪意ある参加者が含まれていても適切に機能できる特性。Iroha は、そのピアツーピアネットワーク内で最大33%の悪意ある参加者がいても機能することができる。
 
-## Iroha 部品 {#iroha-components}
+## Iroha コンポーネント {#iroha-components}
 
-Rust 機能を含むモジュール Iroha.
+Rust は Iroha の機能を含むモジュールです。
 
-### Sumeragi (皇帝) {#sumeragi-emperor}
+### Sumeragi（天皇） {#sumeragi-emperor}
 
-Iroha モジュールは,合意に責任を負う.
+コンセンサスを担当する Iroha モジュール。
 
-### Torii ゲート {#torii-gate}
+### Torii（ゲート） {#torii-gate}
 
-[peer](#peer) の受信リクエスト処理論理を有するモジュールは,受信指示や HTTP 查询,および実行時間の設定更新を受信し,転送するために使用されます.
+[ネットワークピア](#peer)のための着信リクエスト処理ロジックを持つモジュールです。これは、着信指示および HTTP クエリを受信、受理、ルーティングするため、および実行時の設定更新を行うために使用されます。
 
-### Kura (倉庫) {#kura-warehouse}
+### Kura（倉庫） {#kura-warehouse}
 
-継続的なブロックストレージ. Kura は,ディスク上の署名ブロック,ブロックハッシュ,高度インデックス,復元サイドカー,およびコミットロスターメタデータを保存します. [World State View](#world-state-view-wsv)は,ステート・スナップショットが利用できないときまたはローカルブロックストアの後ろで Kura のブロックから再構築されます.[Kura 貯蔵](/ja/blockchain/world.md#kura-storage)を参照してください.
+永続ブロックストレージ。Kura は署名付きブロック、ブロック暗号ハッシュ、高さインデックス、回復補助レコード、およびブロック確定を保存しますディスク上のロスターメタデータ。[ワールド・ステート・ビュー](#world-state-view-wsv)は、ステートデータのスナップショットが利用できない場合やローカルブロックストアより遅れている場合に、Kura ブロックから再構築されます。[Kura ストレージ](/ja/blockchain/world.md#kura-storage)を参照してください。
 
-### Kagami 教師と模範と/または鏡) {#kagami-teacher-and-exemplar-and-or-looking-glass}
+### Kagami(教師および模範および/または鏡) {#kagami-teacher-and-exemplar-and-or-looking-glass}
 
-一般に使用されるデータ生成器.暗号鍵ペア,ゲネスブロック,ドキュメントなどを生成できます.
+一般的に使用されるデータのジェネレーターです。暗号鍵ペア、ブロックチェーンのジェネシスブロック、ドキュメントなどを生成できます。
 
-### メークル樹 (ハッシュ樹) {#merkle-tree-hash-tree}
+### マークルツリー（暗号ハッシュツリー） {#merkle-tree-hash-tree}
 
-Iroha の現在の実装は二重木である.詳細については[ウィキペディア](https://en.wikipedia.org/wiki/Merkle_tree)を参照してください.
+各ブロック高での状態を検証および確認するために使用されるデータ構造。Iroha の現在の実装は二分木です。詳細については[ウィキペディア](https://en.wikipedia.org/wiki/Merkle_tree)を参照してください。
 
-### スマート契約 {#smart-contracts}
+### スマートコントラクト {#smart-contracts}
 
-スマート契約は,特定の条件が満たされたときに実行されるブロックチェーンベースのプログラムです. Iroha スマート契約は, [核 Iroha 特殊指示](#core-iroha-special-instructions).
+スマートコントラクトは、特定の条件が満たされたときに実行されるブロックチェーンベースのプログラムです。Iroha では、スマートコントラクトは[コア Iroha 命令操作](#core-iroha-special-instructions)を使用して実装されています。
 
-### 触発機 {#triggers}
+### トリガー {#triggers}
 
-事件のタイプで, Iroha 特定のブロックコンビート,時間 (いくつかの注意事項を含む) などに関する特別な指示 [ここに](/ja/blockchain/triggers.md).
+特定のブロックの完了時や時間（いくつかの注意点あり）などに Iroha 特別命令を呼び出すことを可能にするイベントタイプ。トリガーの詳細は [ここ](/ja/blockchain/triggers.md) を参照してください。
 
-### バージョン {#versioning}
+### バージョン管理 {#versioning}
 
-各リクエストは,属している API バージョンでラベル付けされている.これは, Iroha クライアント/ピアソフトウェアの異なるバイナリーバージョンの組み合わせが相互操作することを可能にするため,その一方で, Iroha ネットワークにおけるソフトウェアアップグレードを可能にします.
+各リクエストには、それが属する API バージョンのラベルが付けられています。これにより、Iroha クライアント/ピアソフトウェアの異なるバイナリバージョンの組み合わせが相互運用できるようになり、結果として Iroha ネットワークでのソフトウェアアップグレードが可能になります。
 
-### ヒジリ (同等評判システム) {#hijiri-peer-reputation-system}
+### 聖（ネットワークピア評価システム） {#hijiri-peer-reputation-system}
 
-Iroha コミュニケーションの優先順位を設定できる [同級者](#peer) 良きトラック記録を持ち,悪意のある行為による損害を減らす [同級者](#peer).
+Iroha の評価システム。これは、実績のある[ネットワークピア](#peer)とのコミュニケーションを優先し、悪意のある[ネットワークピア](#peer)によって引き起こされる被害を減らすことを可能にします。
 
 ## Iroha モジュール {#iroha-modules}
 
-Iroha への第三者の拡張機能が,カスタム機能を提供する.
+Iroha に対するカスタム機能を提供するサードパーティの拡張機能。
 
-## Iroha 特殊指示 (ISI) {#iroha-special-instructions-isi}
+## Iroha 命令操作 (ISI) {#iroha-special-instructions-isi}
 
-Iroha を備えたスマートコントラクトのライブラリ.これらの契約は,取引または登録されたイベント聴衆を通じて呼び出すことができます.詳細は ISI [で](/ja/blockchain/instructions.md)
+Iroha に付属するスマートコントラクトのライブラリ。これらはトランザクションまたは登録済みのイベントリスナー経由で呼び出すことができます。ISI [ここ](/ja/blockchain/instructions.md) についての詳細。
 
-#### 便利性 Iroha 特殊指示 {#utility-iroha-special-instructions}
+#### ユーティリティ Iroha 操作手順 {#utility-iroha-special-instructions}
 
-[isi](#iroha-special-instructions-isi)のこのセットには, `If`のような論理的指示, `Notify`のようなI/O関連および `Sequence`などの組成が含まれています.それらは主に [カスタム指示](#custom-iroha-special-instruction)として使用されます.
+この[イシ](#iroha-special-instructions-isi)のセットには、`If`のような論理的指示、`Notify`のような入出力関連、`Sequence`のような構成があります。それらは主に[カスタム指示](#custom-iroha-special-instruction)として使用されます。
 
-### 核心 Iroha 特殊指示 {#core-iroha-special-instructions}
+### コア Iroha 命令操作 {#core-iroha-special-instructions}
 
-[Iroha の部署ごとに提供される特別指示](#iroha-special-instructions-isi).これらの中には, [ドメイン特有の](#domain-specific-iroha-special-instructions)と [ユーティリティ指令](#utility-iroha-special-instructions)が含まれます.
+[特別な指示](#iroha-special-instructions-isi) はすべての Iroha 配備に付属しています。これにはいくつかの [ドメイン特化](#domain-specific-iroha-special-instructions) および [ユーティリティの指示](#utility-iroha-special-instructions) が含まれます。
 
-### Iroha ドメイン特別の特別指示 {#domain-specific-iroha-special-instructions}
+### ドメイン固有の Iroha 命令操作 {#domain-specific-iroha-special-instructions}
 
-域特有の活動に関する指示:資産,アカウント,ドメイン,ピアマネジメント) [World State View](#world-state-view-wsv)に安全かつ安全な方法で変更を行うために必要なツールを提供します.
+ドメイン固有の活動に関連する指示：資産、アカウント、ドメイン、ネットワークピア管理など。これらは、[ワールド・ステート・ビュー](#world-state-view-wsv) に対して安全かつ確実に変更を加えるために必要なツールを提供します。
 
-### カスタム Iroha 特殊指示 {#custom-iroha-special-instruction}
+### カスタム Iroha 特別指示 {#custom-iroha-special-instruction}
 
-指示は [Iroha モジュール](#iroha-modules), クライアントや第三者によって作られる. [核心説明書](#core-iroha-special-instructions). フォークリングと修正 Iroha ソースコードは推奨されない,特別指示が [同級者](#peer) 1 年間 Iroha 配備は故障として扱われるので, [同級者](#peer) 変更されたインスタンスを実行すると アクセスが撤回される.
+[Iroha モジュール](#iroha-modules)で提供された指示、クライアントまたは第三者によるもの。これらは[コア指示](#core-iroha-special-instructions)を使用してのみ構築できます。Iroha のソースコードをフォークして変更することは推奨されません。指示操作が Iroha の展開において[ネットワークピア](#peer)によって合意されていない場合、それは障害として扱われるため、修正版のインスタンスを実行している[ネットワークピア](#peer)のアクセスは取り消されます。
 
-## Iroha 問い合わせ {#iroha-query}
+## Iroha クエリ {#iroha-query}
 
-世界状態ビューを修正することなく読む要求. 查询については[ここで](/ja/blockchain/queries.md).
+世界状態ビューを変更せずに読み取る要求。[ここ](/ja/blockchain/queries.md)のクエリについての詳細。
 
-## 変更表示 {#view-change}
+## ビューの変更 {#view-change}
 
-合意の試みが失敗した場合に行われるプロセス.これは通常,新しい [リーダー](#leader) の選出を伴う.
+合意の試みが失敗した場合に行われるプロセス。通常、これには新しい[リーダー](#leader)の選出が伴います。
 
-## 世界状態の見方 (WSV) {#world-state-view-wsv}
+## 世界状態ビュー（WSV） {#world-state-view-wsv}
 
-ブロックチェーンの現在の状態を内存で表現します WSV 含有する `World`, 約束されたブロックハッシュ,トランザクションインデックス,コンセンサストポロジー,クエリで使用される誘導インデックスは.更新されるのは約束されたブロックのみで, [Kura](#kura-warehouse). 見て下さい [世界 状態 の 見方](/ja/blockchain/world.md#world-state-view-wsv).
+現在のブロックチェーンの状態のインメモリ表現。WSV には`World`、確定済みブロックの暗号ハッシュ、トランザクションのインデックスが含まれます。コンセンサストポロジー、およびクエリで使用される派生インデックス。これは確定済みブロックを通じてのみ更新され、[Kura](#kura-warehouse) から再構築することができます。[ワールド・ステート・ビュー](/ja/blockchain/world.md#world-state-view-wsv) を参照してください。
 
 ## リーダー {#leader}
 
-イロハネットワークでは,ペアがランダムに選択され,次のブロックを形成する特別な特権を与えられる.この特権は, [ビザンチン故障タレランス](#byzantine-fault-tolerance-bft) を達成したネットワークで [ビュー変更](#view-change)を通じて取り消すことができる.
+中で Iroha ネットワークでは、ネットワークのピアがランダムに選ばれ、特別な特権が与えられます 次のブロックを形成すること。この特権は、達成するネットワークでは取り消される可能性があります [ビザンチン障害耐性](#byzantine-fault-tolerance-bft) 経由 [ビューの変更](#view-change).

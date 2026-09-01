@@ -13,39 +13,39 @@ Operational readiness ဆိုသည်မှာ validator host များသ
 ## လေ့လာနိုင်မှု {#observability}
 
 - Telemetry Profiles တွေကို ရည်ရွယ်ချက်ရှိစွာ enable လုပ်ပါ။ `/metrics` လိုအပ်တဲ့အခါ `extended` နဲ့ `full` ကို အသေးစိတ် Sumeragi operator routes များလိုအပ်တဲ့ စမ်းသပ်မှုတွေမှာ အသုံးပြုပါ။
-- ဒက်ရှ်ဘုတ်က လက်ခံတဲ့ ထုတ်ကုန်၊ ပယ်ချထားတဲ့ ထုတ်ကုန်၊ commit latency, queue depth, queue saturation, view changes, dropped consensus messages နဲ့ storage pressure တွေကို သုံးပါတယ်။
-- အခြေအနေ snapshots များ၊ metrics scrapes များ၊ log များနှင့် deployment configuration များကို incident သို့မဟုတ် benchmark artifact set တစ်ခုတည်းတွင် သိမ်းထားပါ။
-- အတန်းတွေ ဆက်လက်တိုးလာတာ၊ မမျှော်လင့်တဲ့ ငြင်းပယ်မှု မြင့်တက်တာတွေ၊ ရပ်တန့်နေတဲ့ ဘလော့ပ်အမြင့်၊ ရှုထောင့်ပြောင်းလဲခြင်းနဲ့ တူညီသူတွေရဲ့ ကျန်းမာရေး ပြောင်းလဲမှုတွေ သတိထားပါ။
+- Dashboard က လက်ခံတဲ့ throughput၊ ပယ်ချလိုက်တဲ့ throughput, protocol finalisation latency, queue depth, queue saturation, view changes, dropped consensus messages နဲ့ storage pressure တွေကို သုံးပါတယ်။
+- Status point-in-time data views များ၊ metrics scrapes များ၊ logs များနှင့် deployment configuration များကို incident သို့မဟုတ် benchmark artifact set တစ်ခုတည်းတွင် ထိန်းသိမ်းပါ။
+- အတန်းတွေ ဆက်လက် ကြီးထွားလာတာ၊ မမျှော်လင့်တဲ့ ပယ်ချမှု မြင့်တက်မှု၊ ရပ်တန့်နေတဲ့ ဘလော့ အမြင့်၊ ရှုခင်း ပြောင်းလဲခြင်းနဲ့ ကွန်ရက် အဖော်တွေရဲ့ ကျန်းမာရေး အပြောင်းအလဲတွေကို သတိပေးပါ။
 
-[ စွမ်းဆောင်ရည်နှင့် မက်ထရစ်များ](/my/guide/advanced/metrics.md) ကိုကြည့်ပါ။
+[စွမ်းဆောင်ရည်နှင့် မက်ထရစ်များ](/my/guide/advanced/metrics.md) ကို ကြည့်ပါ။
 
 ## လမ်းလျှောက်စာအုပ်များ {#runbooks}
 
-- peer restart, Torii degradation, key compromise, permission errors, fee sponsor depletion, stuck queues, and network partition symptoms အတွက် runbooks ရေးသားပါ။
-- စာရေးခြင်း လုပ်ငန်းတွေ မလုပ်ခင် တိကျတဲ့ ဖတ်ရှုမှုသာ စစ်ဆေးမှုကို ထည့်သွင်းပါ၊ အထူးသဖြင့် အတန်းတူ မှတ်ပုံတင်မှု၊ ခွင့်ပြုချက်ပေးခြင်း၊ ပြောင်မြောက်မှု ပြောင်းလဲမှုတွေအတွက်ပါ။
+- Network peer restart, Torii degradation, key compromise, permission errors, fee sponsor depletion, stuck queues နဲ့ network partition ရောဂါလက္ခဏာတွေအတွက် runbook တွေရေးပါ။
+- စာရေးခြင်း လုပ်ငန်းများမတိုင်မီ တိကျသော ဖတ်ရှုမှုသာ စစ်ဆေးမှုကို ထည့်သွင်းပါ၊ အထူးသဖြင့် ကွန်ရက် တူညီသူ မှတ်ပုံတင်မှု၊ ခွင့်ပြုချက်ပေးခြင်း၊ ပြောင်မြောက်မှု ပြောင်းလဲမှုများအတွက်ပါ။
 - အရေးပေါ်ဆက်သွယ်မှုတွေနဲ့ တိုးတက်ရေး စည်းမျဉ်းတွေကို Docs repo ထဲမှာ ထည့်သွင်းထားရင် သီးသန့် လုပ်ငန်းဆိုင်ရာ ဒေတာတွေ ပါဝင်ပါက ထားပါ။
 - ဖြစ်ရပ်တိုင်း၊ လေ့ကျင့်မှုတိုင်း၊ အကြီးမားဆုံး အဆင့်မြှင့်မှုတိုင်းနောက်မှာ လမ်းညွှန်စာအုပ်တွေကို စစ်ဆေးပါ။
 
-[ လုပ်ငန်းလုံခြုံရေး ](/my/guide/security/operational-security.md) ကို ကြည့်ပါ။
+[လုပ်ငန်းလုံခြုံရေး](/my/guide/security/operational-security.md) ကို ကြည့်ပါ။
 
 ## Backup နှင့် ပြန်လည်ထူထောင်ခြင်း {#backups-and-recovery}
 
-- Deployment အတွက်လိုအပ်တဲ့ Recovery Point ကိုလိုက်ပြီး peer storage ကို back up လုပ်ပါ။ non-production host တွေမှာ validate restores လုပ်ပါ။
-- လက်မှတ်ထိုးထားတဲ့ ဇာစ်မြစ်၊ metadata ထုတ်ပေးခြင်း၊ peer config နဲ့ key custody records တွေကို validator host မပါသေးတောင် ပြန်လည်ရရှိနိုင်အောင် ထိန်းသိမ်းပါ။
-- ပြန်လည်ထူထောင်ရေး လုပ်ငန်းစဉ်တစ်ခုက မျိုးရိုးဗီဇကနေ ဆောက်လုပ်၊ snapshot ကနေ ပြန်လည်တည်ဆောက်တာ (သို့) ကျရှုံးတဲ့ တူညီသူကို ကိုယ်ပိုင်လက္ခဏာသစ်နဲ့ အစားထိုးပေးလားဆိုတာ မှတ်တမ်းတင်ပါ။
+- Network peer storage ကို deployment အတွက်လိုအပ်တဲ့ recovery point ကိုအလိုက် back up လုပ်ပါ။ non-production host တွေမှာ validate restores လုပ်ပါ။
+- လက်မှတ်ရေးထိုးထားတဲ့ blockchain မျိုးဆက်ကို ထိန်းသိမ်း၊ metadata ထုတ်လွှတ်ခြင်း၊ ကွန်ရက် peer config နဲ့ key custody မှတ်တမ်းတွေကို validator host မပါရှိတောင် ပြန်လည်ရရှိနိုင်အောင်ပါ။
+- ပြန်လည်ထူထောင်ရေး လုပ်ငန်းစဉ်တစ်ခုက blockchain မျိုးဆက်ကနေ ပြန်တည်ဆောက်တာ၊ အချိန်ကာလအတွင်း ဒေတာအမြင်ကနေ ပြန်လည်ဖန်တီးတာ (သို့) ကျရှုံးတဲ့ ကွန်ရက်တူညီသူကို ကိုယ်ပိုင်လက္ခဏာသစ်နဲ့ အစားထိုးတာဆိုတာကို မှတ်တမ်းတင်ပါ။
 - ထုတ်လုပ်မှုဖြစ်စဉ်တစ်ခုအတွင်းမှာ ပထမဆုံးအကြိမ် ပြန်လည်ပြုပြင်တဲ့ လုပ်ငန်းစဉ်တွေကို ဘယ်တော့မှ မစမ်းသပ်ပါနဲ့။
 
 ## အပြောင်းအလဲ စီမံခန့်ခွဲမှု {#change-management}
 
 - On-chain configuration အပြောင်းအလဲတွေကို review, preflight read, authorization နဲ့ post-change verification လိုတဲ့ ငွေကြေးပူးပေါင်းဆောင်ရွက်မှုအဖြစ် မှတ်ယူပါ။
-- Compatibility plan နဲ့ rollback decision point တွေနဲ့အတူ peer binary upgrades ကိုဖြန့်ချိပါ။
-- ရွှေ့ပြောင်းရေး အစီအစဉ်က မလိုအပ်ရင် တူညီတဲ့ ထိန်းသိမ်းမှု ပြူတင်းပေါက်မှာ တူညီတဲ့ topology၊ သဘောတူညီချက် အချိန်ဆွဲမှု၊ လုပ်ဆောင်ချက် အလုပ်ချိန်ကို ပြောင်းဖို့ ရှောင်ရှားပါ။
-- လုပ်ငန်းဆိုင်ရာ အပြောင်းအလဲများအတွက် ငွေပေးချေမှု ဟက်ရှ်နှင့် ဘလော့ အမြင့်များကို မှတ်တမ်းတင်ပါ။
+- Network peer binary upgrades တွေကို compatibility plan နဲ့ rollback decision point နဲ့ ဖြန့်ချိပေးပါ။
+- Network peer topology, consensus timing နဲ့ application workload တွေကို maintenance window တစ်ခုတည်းမှာ ပြောင်းဖို့ ရှောင်ကြဉ်ပါ။ ရွှေ့ပြောင်းရေး အစီအစဉ်က မလိုအပ်ဘူးဆိုရင်ပေါ့။
+- ငွေလဲလှယ်မှု cryptographic hashes တွေကို မှတ်တမ်းတင်ပြီး လုပ်ဆောင်ချက် အပြောင်းအလဲများအတွက် ဘလော့အမြင့်တွေကို မှတ်တမ်းတင်ပါ။
 
-ကြည့်ပါ။ [အပူပြန်တင်ခြင်း](/my/guide/advanced/hot-reload.md) နှင့် [ကိုက်ညီမှု Matrix](/my/reference/compatibility-matrix.md).
+[အပူပြန်တင်ခြင်း](/my/guide/advanced/hot-reload.md) နှင့် [ကိုက်ညီမှု Matrix](/my/reference/compatibility-matrix.md) ကိုကြည့်ပါ။
 
 ## စွမ်းဆောင်ရည် သုံးသပ်ချက်များ {#capacity-reviews}
 
 - validator count, hardware, network placement, workload mix, or consensus parameters တွေ ပြောင်းလဲတဲ့အခါ load checks ကိုပြန်လည် run လုပ်ပါ။
 - အပူချိန်၊ တည်ငြိမ်မှုအခြေအနေနဲ့ မျှော်မှန်းထားတဲ့ အမြင့်ဆုံးဝန်ဆောင်မှုကို အတိုချိုအကောင်းဆုံးဖြစ်စဉ်ထုတ်လုပ်မှုနမူနာကို အားကိုးခြင်းအစား တိုင်းတာပါ။
-- လက်ခံတဲ့ ထုတ်ကုန်ကို ကတိပြုထားတဲ့ ထုတ်ကုန်နဲ့ တန်းစီအနက်နဲ့ နှိုင်းယှဉ်ပါ။ ပေးပို့ထားတာက TPS ကတိပေးထားတဲ့ TPS ကိုကျော်ပြီး တန်းစီတွေ တိုးလာရင် ကွန်ရက်ဟာ ၎င်းရဲ့ ရေရှည်တည်တံ့တဲ့ အဝှေ့အလွှာကို ကျော်ဖြတ်သွားတာပါ။
+- လက်ခံရရှိသော ထုတ်လွှင့်မှုများကို နောက်ဆုံးထုတ်လွှင့်မှုနှင့် အတန်းအနက်ကို နှိုင်းယှဉ်ပါ။ ပေးပို့ထားသည့် TPS သည် နောက်ဆုံးထုတ် TPS ကိုကျော်ပြီး အတန်းများ တိုးလာပါက ကွန်ရက်သည် ၎င်း၏ ရေရှည်တည်တံ့သော လုပ်ဆောင်မှု ကန့်သတ်ချက်ကို ကျော်ဖြတ်ခဲ့သည်။

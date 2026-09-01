@@ -10,70 +10,70 @@ translation_engine: nllb-200-ct2
 
 `World` ဆိုသည်မှာ အခြားအဖွဲ့အစည်းများပါဝင်သော ကမ္ဘာလုံးဆိုင်ရာ အဖွဲ့အစည်းဖြစ်သည်။ `World` သည် အောက်ပါအရာများကို ပြုလုပ်ထားသည်။
 
-- Iroha [configuration parameters](/my/guide/configure/client-configuration.md)
-- မှတ်ပုံတင်ထားတဲ့ အဖော်များ
+- Iroha [configuration parameters များ](/my/guide/configure/client-configuration.md)
+- မှတ်ပုံတင်ထားသော ကွန်ရက် အဖော်များ
 - မှတ်ပုံတင် domain များ
-- မှတ်ပုံတင်ထားသော [ trigger များ](/my/blockchain/triggers.md)
-- မှတ်ပုံတင်ထားသော [အခန်းကဏ္ဍများ ](/my/blockchain/permissions.md#permission-groups-roles)
-- မှတ်ပုံတင်ထားသော [ခွင့်ပြုလက်မှတ် အဓိပ္ပါယ်ဖွင့်ဆိုချက်များ ](/my/blockchain/permissions.md#permission-tokens)
+- မှတ်ပုံတင်ထားသော [trigger များ](/my/blockchain/triggers.md)
+- မှတ်ပုံတင်ထားသော [ကဏ္ဍများ](/my/blockchain/permissions.md#permission-groups-roles)
+- မှတ်ပုံတင်ထားသော [permission token အနက်ဖွင့်ချက်များ](/my/blockchain/permissions.md#permission-tokens)
 - အကောင့်အားလုံးအတွက် ခွင့်ပြုချက် လက်မှတ်များ
-- [Runtime validator တွေရဲ့ ချိတ်ဆက်ချက် ](/my/blockchain/permissions.md#runtime-validators)
+- [ဆော့ဝဲ အကောင်အထည်ဖော်မှု ပတ်ဝန်းကျင် validator တွေရဲ့ ချိတ်ဆက်ချက်](/my/blockchain/permissions.md#runtime-validators)
 
-Domain များ၊ peers များ သို့မဟုတ် role များကို မှတ်ပုံတင်ထားခြင်း (သို့မဟုတ်) မှတ်ပုံတင်မထားခြင်းတွင် `World` မှတ်ပုံတင်ကို ဖျက်သိမ်းခြင်းရဲ့ ရည်မှန်းချက်ပါ။ [ညွှန်ကြားချက်](/my/blockchain/instructions.md).
+Domain များ၊ network peers များ သို့မဟုတ် role များကို မှတ်ပုံတင်ထားခြင်း (သို့မဟုတ်) မမှတ်ပုံတင်ထားသည့်အခါ `World` သည် (un) register [ညွှန်ကြားချက်](/my/blockchain/instructions.md) ၏ ရည်မှန်းချက်ဖြစ်သည်။
 
 ## ကမ္ဘာ့အမြင် (WSV) {#world-state-view-wsv}
 
-World State View သည် လက်ရှိ blockchain အခြေအနေ၏ မှတ်ဉာဏ်တွင်း ကိုယ်စားပြုမှုဖြစ်သည်။ ၎င်းတွင် `World`, ကတိပြုထားတဲ့ block hashes, transaction indexes နှင့်လက်ရှိခေတ်အတွက်ရွေးချယ်သော peers တို့ပါဝင်သည်။ အပြည့်အဝ block payload များကို Kura မှရယူထားသည်အစားပြောင်းလဲနိုင်သော WSV ဒေတာအဖြစ် duplicated လုပ်ခြင်း။
+World State View သည် လက်ရှိ blockchain အခြေအနေ၏ မှတ်ဉာဏ်အတွင်းမှ ကိုယ်စားပြုမှုဖြစ်သည်။ ၎င်းတွင် `World`, နောက်ဆုံးသတ်မှတ်ထားသော block cryptographic hashes, transaction indexes နှင့်လက်ရှိခေတ်အတွက်ရွေးချယ်ထားသော network peers တို့ပါဝင်သည်။ Full block payloads တွေကို Kura ကနေ ဖြန့်ချိပေးရမယ့်အစား ပြောင်းလဲနိုင်တဲ့ WSV ဒေတာအဖြစ် duplicated လုပ်ပေးတယ်။
 
-WSV ဆိုသည်မှာ မေးမြန်းချက်များကို ဖတ်ရှုပြီး ဘလော့ကို အကောင်အထည်ဖော်သည့် အခြေအနေဖြစ်သည်။ ၎င်းသည် အမှန်တရား၏ ရေရှည်တည်တံ့သော အရင်းအမြစ်မဟုတ်ပေ။ တည်တံ့သောသမိုင်းကို [Kura](#kura-storage) တွင် သိမ်းထားသည်။ WSV ကို Kura ဘလော့ကဒ်များမှ ပြန်လည်တည်ဆောက်နိုင်သည် (သို့) အခြေအနေ snapshot မှ load လုပ်ပြီးနောက် ပိုမိုသစ်သော Kura ဘလော့များကို playback ဖြင့်ဖမ်းယူနိုင်သည်။
+WSV က query တွေကို ဖတ်ပြီး block execution တွေ ပြောင်းသွားတဲ့ အခြေအနေပါ။ ဒါဟာ အမှန်တရားရဲ့ တည်တံ့တဲ့ အရင်းအမြစ်မဟုတ်ပါဘူး။ တည်တံ့သော သမိုင်းကို [Kura](#kura-storage) မှာ သိမ်းထားတယ်။ WSV ကို Kura ဘလော့ကများမှ ပြန်လည်တည်ဆောက်နိုင်သည် (သို့) State point-in-time data view မှထည့်သွင်းနိုင်ပြီးနောက် ပိုမိုသစ်သော Kura ဘလော့များကို ပြန်လည်ကစားခြင်းဖြင့် ဖမ်းယူနိုင်သည်။
 
 ### WSV ရဲ့ ခြေရာတွေက ဘာလဲ။ {#what-the-wsv-tracks}
 
 WSV သည် `World` အရာဝတ္ထုထက် ပိုကျယ်ပြန့်ပြီး လက်တွေ့တွင် အောက်ပါအတိုင်းပါဝင်သည်-
 
-- `World`: parameters, peers, domains, accounts, assets, NFTs, roles, permissions, triggers, executor data, and other registered data-model objects
-- commited block hashs နှင့် နောက်ဆုံး commited height
-- မေးမြန်းချက်များနှင့် လက်ခံစာရင်းများတွင် အသုံးပြုသော ငွေလဲလှယ်မှုမှ ဘလော့ကို သတ်မှတ်သည့် အညွှန်းကိန်းများ
-- လက်ရှိနှင့် အရင်က သဘောတူညီချက်ဖြင့် အသုံးပြုသော commit topology
-- commited blocks များမှ ရယူထားသော in-memory index များ၊ ဥပမာ data availability commitments, receipt cursors, pin intent နှင့် query projection markers တို့။
-- deterministic block execution အတွက် လိုအပ်တဲ့ runtime configuration snapshots များ၊ ဥပမာ cryptography, governance, pipeline, content, settlement နဲ့ Nexus setting တွေ။
+- `World`: parameters, network peers, domains, accounts, assets, NFTs, roles, permissions, triggers, executor data, and other registered data-model objects
+- နောက်ဆုံးသတ်မှတ်ထားသော block cryptographic hashs နှင့် နောက်ဆုံးသတ်မှတ်ထားတဲ့ အမြင့်
+- Query တွေနဲ့ Protocol Result Record တွေမှာ အသုံးပြုတဲ့ transaction-to-block index တွေ
+- လက်ရှိနှင့် အရင်က သဘောတူညီချက်ဖြင့် အသုံးပြုသော ပရိုတိုကောလီးယား နောက်ဆုံးသတ်မှတ်မှု ထိပ်တန်းစနစ်
+- data-availability cryptographic commitment values, protocol result record cursors, pin intent and query projection markers တို့လို နောက်ဆုံးသတ်မှတ်ထားတဲ့ blocks များမှ ရယူထားသော in-memory index များ။
+- Software execution environment configuration deterministic block execution အတွက် လိုအပ်တဲ့ point-in-time data views တွေကို၊ ဥပမာ cryptography, governance, software processing workflow, content, financial transaction settlement နဲ့ Nexus setting တွေကို
 
-မေးမြန်းချက်များတွင် ပုံမှန်အားဖြင့် ဤဖွဲ့စည်းမှုများကို ဖတ်ခြင်းသာ `StateView` ရရှိသည်။ ကြည့်ရှုမှုကမေးမြန်းမှု အကောင်အထည်ဖော်ရန်အတွက်ညီညွတ်သော snapshot ဖြစ်သည်; ၎င်းသည် WSV ၏ တိုက်ရိုက်ပြောင်းလဲမှုကိုမခွင့်ပြုပါ။
+မေးမြန်းချက်များတွင် ပုံမှန်အားဖြင့် ဤဖွဲ့စည်းမှုများကို ဖတ်ခြင်းသာ `StateView` ကို ရရှိသည်။ ကြည့်ရှုမှုက မေးမြန်းမှု အကောင်အထည်ဖော်ရန်အတွက် အချိန်ကာလအတွင်း အချက်အလက် အမြင်တစ်ခုဖြစ်သည်၊ ၎င်းသည် WSV ၏ တိုက်ရိုက်ပြောင်းလဲမှုကို မခွင့်ပြုပါ။
 
 ### WSV ပြောင်းလဲပုံ {#how-the-wsv-changes}
 
-WSV အပြောင်းအလဲများကို ၎င်းတို့မပြုလုပ်မီ အဆင့်သတ်မှတ်ထားသည်။ ဘလော့က အကောင်အထည်ဖော်မှုသည် ဘလော့စကပါအခြေအနေ overlay ကိုဖန်တီးပြီး လက်ခံသော ငွေပေးချေမှုတစ်ခုစီသည် ၎င်း၏ညွှန်ကြားချက်များကို transaction-scoped overlay တွင်အသုံးပြုသည်။ ထိုငွေပေးချေခြင်းများမှခေါ်ယူသည့်ဒေတာ trigger များကို same block context ထဲတွင် run လုပ်ပါသည်။ အချိန် trigger တွေကို ဘလော့ကအတွက် ငွေကြေးဆိုင်ရာ သက်ရောက်မှုအပြီး အကဲဖြတ်ပေးပါတယ်။
+WSV အပြောင်းအလဲများကို နောက်ဆုံးမပြုလုပ်မီ အဆင့်သတ်မှတ်ထားသည်။ ဘလော့ကတ် အကောင်အထည်ဖော်မှုသည်ဘလော့ Scope State Overlay ကိုဖန်တီးပြီးလက်ခံသော ငွေချေးမှုတိုင်းမှာ ၎င်း၏ညွှန်ကြားချက်များကို Transaction-scoped overlay. ထို transactions များမှခေါ်ယူထားသော data trigger များသည် block context တစ်ခုတည်းတွင် run ဖြစ်ပါသည်။ time trigger များကို block အတွက် transaction effects များအပြီး evaluable ပြုလုပ်သည်။
 
-Consensus commits a block အပြီးမှာ peer က Kura ထဲက committed block ကို ပထမဦးဆုံး sequence လုပ်တယ်။ ဒီ sequence step ကျရှုံးရင် WSV ကို ရှေ့ဆက်မသွားတော့ဘဲ consensus loop က block ရဲ့ payload ကို retries (သို့) sequence လုပ်ပါတယ်။ Block ကို Kura ရဲ့ queue ထဲမှာ လက်ခံတဲ့အခါ Iroha က execution နောက်ပိုင်း block effects တွေကို အသုံးချပြီး derived index တွေကို update လုပ်ပြီး state-view lock အောက်မှာ အဆင့်လိုက် WSV အပြောင်းအလဲတွေကို commit ပြုလုပ်ပါတယ်။ ဒါက စာဖတ်သူတွေကို တစ်စိတ်တစ်ပိုင်း commit လုပ်ထားတဲ့ block ကို သတိမထားမိစေတာပါ။
+သဘောတူညီချက်က ဘလော့ကို အဆုံးသတ်ပြီးနောက်၊ ကွန်ရက် peer က နောက်ဆုံးသတ်မှတ်ထားတဲ့ ဘလော့ကို ပထမဦးဆုံးထည့်သွင်းတယ်။ Kura. ဒီချိတ်ဆက်မှု ခြေလှမ်း ကျရှုံးရင် WSV ဘလော့ကို လက်ခံပြီးနောက် အညီအမျှ loop က block payload ကို retries သို့မဟုတ် requesters လုပ်ပါတယ်။ Kura တန်းစီမှာ၊ Iroha အကောင်အထည်ဖော်ပြီးနောက် Block Effect တွေကို အသုံးချခြင်း၊ ထုတ်ယူထားတဲ့ index တွေကို update လုပ်ခြင်းနဲ့ အဆင့်သတ်မှတ်ထားတဲ့ WSV state-view lock အောက်မှာ ပြုလုပ်တဲ့ အပြောင်းအလဲတွေက စာဖတ်သူတွေကို တစ်စိတ်တစ်ပိုင်း ပြီးဆုံးထားတဲ့ ဘလော့ကို သတိမထားမိစေတယ်။
 
-Consensus-critical rule က တူညီတဲ့ WSV ကိုတူညီတဲ့ commited blocks တွေကနေရောက်ရှိဖို့လိုတာပါ။ WSV ဒေတာ bypass ညွှန်ကြားချက်တွေကို ဒေသတွင်း ပြင်ဆင်မှု တိုက်ရိုက်လုပ်ပြီး validation (သို့မဟုတ်) replay လုပ်နေစဉ် တူညီမှုမရှိစေမှာပါ။
+သဘောတူညီချက်အရေးကြီးတဲ့ စည်းမျဉ်းက ကွန်ရက် peers တွေဟာ နောက်ဆုံးသတ်မှတ်ထားတဲ့ ဘလော့တွေထဲက WSV ကိုပဲရောက်ရှိဖို့လိုတာပါ။ ဒေတာ bypass ညွှန်ကြားချက်တွေကို WSV ကို ဒေသတွင်းအပြောင်းအလဲ တိုက်ရိုက်လုပ်ပြီး validation (သို့မဟုတ်) replay လုပ်နေစဉ်မှာ ကွန်ရက် peer တွေ သဘောမတူစေပါလိမ့်မယ်။
 
 ### Startup နှင့် RePlay {#startup-and-replay}
 
-Start လုပ်တဲ့အခါ Iroha က Kura ကို အစပြုပြီး သိမ်းထားတဲ့ block အမြင့်ကို သင်ယူပါတယ်။ ပြီးရင် state snapshot ကို load လုပ်ဖို့ကြိုးစားတယ်။ snapshot မရှိဘူးဆိုရင် (သို့) recoveryable အဖြစ် reject လုပ်လိုက်ရင် Iroha ဟာ initial state ကို ဖန်တီးပြီး commit blocks တွေကို Kura မှ replay လုပ်ပေးပါတယ်။ Kura နောက်မှာရှိတဲ့ snapshot ကို valid လုပ်ထားရင် ပျောက်နေတဲ့ အမြင့်အကွာအဝေးကိုပဲ ပြန်လည်ရိုက်ကူးပေးပါတယ်။
+Start မှာ Iroha က Kura ကို အစပြုပြီး သိမ်းဆည်းထားသော block အမြင့်ကို သိရှိသည်။ ထို့နောက် state snapshot ကို load လုပ်ရန်ကြိုးပမ်းတယ်။ point-in-time data view မရှိပါက (သို့) point-in time data view ကို recoverable အဖြစ် ပယ်ချပါက။ Iroha သည်စတင်အခြေအနေကိုဖန်တီးပြီး Kura မှ နောက်ဆုံးသတ်မှတ်ထားသောဘလော့များကိုပြန်လည်ဖြည့်သည် point-in-time ဒေတာမြင်ကွင်းတစ်ခု မှန်ကန်သော်လည်း Kura နောက်မှာရှိပါက ပျောက်ဆုံးသည့်အမြင့်အတန်းသာ ပြန်လည်ဖြည့်သည်။
 
-Replay သည် သိမ်းထားသော block တစ်ခုစီကို validates, ထိုအမြင့်အတွက် commit roster ကိုပြန်လည်ဖန်တီးသည်, WSV သို့ block သက်ရောက်မှုများကိုသတ်မှတ်ပြီးရလဒ်အခြေအနေကို committed လုပ်သည်။ ဆိုလိုသည်မှာ Kura သည် WSV အတွက်ပြန်လည်ထူထောင်ရေးလမ်းကြောင်းဖြစ်သည်၊ snapshots သည်ကွင်းဆက်တစ်ခုလုံးကို playback မလုပ်စေသည့်ကောင်းမွန်ခြင်းဖြစ်သည်။
+Replay သည် သိုလှောင်ထားသော ဘလော့တစ်ခုစီကို အတည်ပြုပြီး ထိုအမြင့်အတွက် ပရိုတိုကောအဆုံးသတ်ရေးစာရင်းကို ပြန်လည်ဖန်တီးကာ WSV သို့ဘလော့အကျိုးဆက်များကို သက်ရောက်စေပြီး ရလဒ်ဖြစ်ပေါ်သောအခြေအနေကို ပြီးမြောက်စေသည်။ ဆိုလိုတာက Kura ဟာ WSV အတွက် ပြန်လည်ထူထောင်ရေးလမ်းကြောင်းဖြစ်ပြီး point-in-time ဒေတာအမြင်တွေဟာ ချိတ်ဆက်မှုတစ်ခုလုံးကို ပြန်လည်ကစားတာရှောင်ရှားတဲ့ အကောင်းဆုံးဖြစ်တာပါ။
 
 ## Kura သိုလှောင်ခြင်း {#kura-storage}
 
 Kura သည် Iroha ၏ တည်ငြိမ်သော Block Storage ဖြစ်သည်။ ၎င်းသည် လက်မှတ်ထိုးထားသော block များနှင့် ပြန်လည်ထူထောင်ရေး metadata များကို သိမ်းဆည်းသည်။ WSV ၏ ဒုတိယပြောင်းလဲနိုင်သော copy ကို မသိမ်းဆည်းပါ။
 
-Kura သိုလှောင်မှုကို [`kura.store_dir`](/my/reference/peer-config/params.md#param-kura-store-dir) တွင် root လုပ်ထားသည်။ ထို root အတွင်းတွင် block ဒေတာကို lane သို့မဟုတ် segment သို့ခွဲခြားထားသည်။ segment အတွက် အဓိကဖိုင်များမှာ:
+Kura သိုလှောင်ခြင်းသည် rooted at [`kura.store_dir`](/my/reference/peer-config/params.md#param-kura-store-dir). အဲဒီ root ထဲမှာ block data တွေကို execution lane (သို့) segment နဲ့ ခွဲခြားထားပါတယ်။ segment တစ်ခုအတွက် အဓိက file တွေက:
 
-|လမ်းကြောင်း|ရည်ရွယ်ချက် |
+|လမ်းကြောင်း|ရည်ရွယ်ချက်|
 | --- | --- |
 |`blocks/<segment>/blocks.data` |Norito ဖွဲ့စည်းထားသော လက်မှတ်ထိုးထားတဲ့ အစုအဝေး အသုံးဝင်ပစ္စည်းများ။ |
 |`blocks/<segment>/blocks.index` |Fixed-sized `(start, length)` entries that map block height to bytes in `blocks.data`. |
-|`blocks/<segment>/blocks.hashes` |အမြန်ရှာဖွေခြင်းနှင့် စတင်စစ်ဆေးမှုအတွက် အမြင့်အလိုက် hash ကိုပိတ်ပါ။ |
-|`blocks/<segment>/blocks.count.norito` |ခိုင်ခံ့တဲ့ commit marker ကတော့ block index entries တွေကို အသုံးပြုဖို့ လုံခြုံမှုရှိတာကို မှတ်တမ်းတင်ပါတယ်။ |
+|`blocks/<segment>/blocks.hashes` |အမြန်ရှာဖွေခြင်းနှင့် စတင်စစ်ဆေးမှုအတွက်အမြင့်အလိုက် cryptographic hashes ကိုပိတ်ပါ။ |
+|`blocks/<segment>/blocks.count.norito` |ရေရှည်တည်တံ့တဲ့ block-finalisation marker တွေကို မှတ်တမ်းတင်ပြီး Block index entries ဘယ်နှစ်ပုံသုံးဖို့ လုံခြုံတယ်ဆိုတာပါ။ |
 |`blocks/<segment>/da_blocks/` |`blocks.data` အပြင်မှာ ထိန်းသိမ်းထားသော block payloads ကို disk-budget enforcement သည် hot ဖိုင်မှအဟောင်းအလောင်းများကိုပြောင်းတဲ့အခါတွင်။ |
-|`blocks/<segment>/pipeline/sidecars.norito` နှင့် `sidecars.index` |ပိုက်လိုင်း ပြန်လည်ထူထောင်ရေး ဘက်ထရီတွေကို ဘလော့ကီအမြင့်နဲ့ ခလုတ်တပ်ထားပါတယ်။ |
-|`blocks/<segment>/pipeline/roster_sidecars.norito` နှင့် `roster_sidecars.index` |Block sync နဲ့ replay တွေမှာ အသုံးပြုတဲ့ မကြာသေးခင်က commit-roster sidecar တွေပါ။ |
-|`merge_ledger/<segment>.log` |ကတိပြုထားတဲ့ ဘလော့တွေနဲ့ ညှိနှိုင်းထားတဲ့ ပေါင်းစပ်စာရင်းဝင်ငွေတွေ။|
-|`commit-rosters.norito` |မကြာသေးခင်က ဘလော့များအတွက် ကတိပြုချက် လက်မှတ်များနှင့် အတည်ပြုသူ စစ်ဆေးရေးဂိတ်များကို ထိန်းသိမ်းထားသည်။ |
+|`blocks/<segment>/pipeline/sidecars.norito` နှင့် `sidecars.index` |ဆော့ဖ်ဝဲ စီမံခန့်ခွဲမှု အလုပ်ခွင် ပြန်လည်ထူထောင်ရေး အထောက်အပံ့ မှတ်တမ်းများကို ဘလော့ အမြင့်ဖြင့် ကီးတပ်ထားသည်။ |
+|`blocks/<segment>/pipeline/roster_sidecars.norito` နှင့် `roster_sidecars.index` |Block sync နဲ့ replay တွေမှာ အသုံးပြုတဲ့ မကြာသေးခင်က protocol finalisation-roster အကူအညီမှတ်တမ်းတွေ။|
+|`merge_ledger/<segment>.log` |နောက်ဆုံးသတ်မှတ်ထားတဲ့ ဘလော့တွေနဲ့ ညှိနှိုင်းထားတဲ့ blockchain ပေါင်းစပ်ခြင်း log entries များ။ |
+|`commit-rosters.norito` |မကြာသေးခင်က ဘလော့များအတွက် သဘောတူညီချက် နောက်ဆုံးသတ်မှတ်ချက်များနှင့် အတည်ပြုသူ စစ်ဆေးရေးဂိတ်များကို သိမ်းထားသည်။ |
 
-Kura သည်ကွင်းဆက်အတွက် Compact in-memory vector ကိုထိန်းသိမ်းထားသည် - အမြင့်တိုင်းမှာ block hash နှင့် optionally, block body တို့ရှိသည်။ genesis block သည် cached ဖြစ်နေဆဲဖြစ်ပြီးနောက်ဆုံး [ `kura.blocks_in_memory`](/my/reference/peer-config/params.md#param-kura-blocks-in-memory) non-genesis blocks များသည်သူတို့၏ခန္ဓာကိုယ်များကိုမှတ်ဉာဏ်တွင် ထိန်းသိမ်းထားပါသည်။ ပိုကြီးမားတဲ့ ဘလော့ကော်တွေကို မှတ်ဉာဏ်ကနေ ပစ်ချပြီး လိုအပ်တဲ့အခါ Kura ဖိုင်တွေကနေ ပြန်သွင်းတယ်။
+Kura ကွင်းဆက်အတွက် memory vector တစ်ခုကို ထိန်းထားပါတယ် အမြင့်တစ်ခုစီမှာ block cryptographic hash နဲ့ optionally block body ပါပါတယ်။ blockchain ဘလော့ကုတ်ကို ကေရှ်ထားဆဲဖြစ်ပြီး [`kura.blocks_in_memory`](/my/reference/peer-config/params.md#param-kura-blocks-in-memory) non-genesis blocks တွေက သူတို့ရဲ့ ကိုယ်ခန္ဓာတွေကို မှတ်ဉာဏ်ထဲမှာ ထိန်းထားတယ်။ ပိုကြီးတဲ့ ကိုယ်ခန္ဓာတွေဟာ မှတ်ဉာဏ်ကနေ ပစ်ချပြီး Kura လိုအပ်တဲ့အခါမှာ ဖိုင်တွေပါ။
 
-အစပျိုးစဉ်တွင် `strict` mode သည် block payload များမှ သိမ်းဆည်းထားသော blocks ကို validates နှင့်လိုအပ်ပါက hash ဖိုင်ကို rewrites။ `fast` mode သည်သိမ်းဆည်းထားသည့် hash / index metadata မှစ၍ ထို metadata ကွဲပြားမှုရှိပါက တင်းကျပ်သော အစပျိုးခြင်းသို့ ကျဆင်းသည်။ Kura က အညစ်အကြေးရှိတဲ့ အမြီးကို ရှာတွေ့ရင် နောက်ဆုံး စစ်ဆေးထားတဲ့ ဘလော့ကွင်းအထိ သိုလှောင်မှုကို ချိုးချိုးတယ်။
+အစပျိုးစဉ်တွင် `strict` mode သည် block payload များမှ သိုလှောင်ထားသော blocks ကို validates နှင့်လိုအပ်ပါက cryptographic hash ဖိုင်ကို rewrites ။ `fast` mode က stored မှစသည်။ hash/index metadata တွေဟာ မညီညွတ်တဲ့ metadata ဆိုရင် တင်းကျပ်တဲ့ initialization ကို ပြန်ရောက်သွားပါတယ်။ Kura က အပျက်အစီးရှိတဲ့ အမြီးကို ရှာတွေ့တယ်ဆိုရင်တော့ နောက်ဆုံး validated block အထိ storage ကို prunes လုပ်ပေးတယ်။
 
-Kura သည်နောက်ခံစာရေးသူမှတစ်ဆင့်ပုံးအသစ်များကိုရေးသားသည်။ စာရေးသူသည်ပုံးအကူအညီများ၊ ဟက်ရှ်များနှင့်ညွှန်းကိန်းဝင်မှုများကိုထည့်သွင်းပြီး ဖွဲ့စည်းထားသော fsync မူဝါဒအရ ရေရှည်ရေတွက်မှုမှတ်တံဆိပ်ကိုတိုးတက်စေသည်။ Disk-budget enforcement လုပ်တဲ့အခါ Kura ဟာ အငြိမ်းစားယူထားတဲ့ segment တွေကို ရှင်းလင်းနိုင်တယ် (သို့) ဟက်ရှ်တွေနဲ့ index entries တွေကို validation နဲ့ search အတွက်ရရှိအောင် ထိန်းထားရင်း older block bodies ကို `da_blocks/` ထဲကို ပစ်ထုတ်နိုင်ပါတယ်။
+Kura သည်နောက်ခံစာရေးသူမှတစ်ဆင့်ပုံးအသစ်များကိုရေးသားသည်။ စာရေးသူသည်ပုံးအကူအညီများ၊ cryptographic hashes များနှင့်ညွှန်းကိန်းဝင်မှုများကိုထည့်သွင်းပြီး configured fsync မူဝါဒကိုလိုက်နာ၍တည်တံ့သောရေတွက်ချက်မှတ်တံဆိပ်ကိုတိုးတက်စေသည်။ disk-budget enforcement လုပ်တဲ့အခါ Kura က ဖျက်သိမ်းထားတဲ့ segment တွေကို ရှင်းလင်းနိုင်တယ် ဒါမှမဟုတ် older block bodies တွေကို `da_blocks/` ထဲက ထုတ်ပစ်လို့ရတယ် တစ်ချိန်တည်းမှာ cryptographic hash နဲ့ index entries တွေကို validation နဲ့ search အတွက်တော့ ရယူနိုင်တယ်

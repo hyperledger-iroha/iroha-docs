@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: 62d6f434e5af4213420c456ee27ebdc260c8b0e9f7a85bc3ba955ee9c79a058d
+translation_source_hash: f2411fec1cc35b1bf7795a7ab5a0eb7a8eb6b60b4799ebf3db47208b902f87e6
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -45,7 +45,7 @@ dependencies {
 
 ## Kotlin နှင့် Java Compatibility {#kotlin-and-java-compatibility}
 
-အများပြည်သူ API သည် Kotlin-ပထမဆုံးဖြစ်ပြီး JVM ဖုန်းခေါ်ဆိုသူများလိုအပ်သည့်နေရာတွင် Java interop ကိုပေးသည်။ ညီမျှသောပြောင်းလဲမှုများသည် သက်ဆိုင်ရာ `java/` အကောင်အထည်ဖော်မှုမှာ ထင်ဟပ်သည်။ အသစ် Android ပေါင်းစပ်ခြင်းများသည် Kotlin လက်ရာများနှင့်စသင့်သည်။
+အများပြည်သူ API သည် Kotlin-ပထမဆုံးဖြစ်ပြီး JVM တောင်းဆိုသောဖောက်သည်များလိုအပ်သည့်နေရာတွင် Java interop ကိုပေးသည်။ ညီမျှသောအပြောင်းအလဲများကို သက်ဆိုင်ရာ `java/` အကောင်အထည်ဖော်မှုတွင် ထင်ဟပ်စေသည်။ အသစ်သော Android ပေါင်းစပ်ခြင်းများသည် အထက်ပါ Kotlin လက်ရာပစ္စည်းများနှင့်စသင့်သည်။
 
 အားလုံး Kotlin မော်ဂျူးများအား ထိန်းချုပ် JDK 8 API compile အချိန်မှာ Compatibility ကို `-Xjdk-release=8`, ဆောက်လုပ်ရေး toolchain ကိုကိုယ်၌အသုံးပြုသော်လည်း JDK (၂၁) မသုံးပါ။ JDK 9+ APIs အထဲမှာ SDK ကုဒ်။
 
@@ -70,11 +70,11 @@ Android လက်ရာတွေကို ဆောက်လုပ်ပါ။
 Kotlin SDK တွင် အောက်ပါအချက်များပါဝင်သည် -
 
 - Norito ကုဒ်သွင်းခြင်းနှင့် ကုဒ်ဖော်ထုတ်ခြင်း
-- ဘဏ္ဍာရေးစာရင်းများနှင့် အရင်းအမြစ်လိပ်စာများကို စီမံခန့်ခွဲခြင်း
-- ငွေပေးချေမှု တည်ဆောက်ခြင်း၊ လက်မှတ်ရေးထိုးခြင်းနှင့် offline envelopes များ
+- Single Protocol Standard Account နဲ့ Asset Address ကို စီမံခန့်ခွဲမှု
+- Transaction building၊ signing နဲ့ offline data containers တွေကို
 - Torii HTTP၊ WebSocket နှင့် SSE ဝန်ထမ်းများ
 - multisignature, subscription, SoraFS, Nexus နှင့် Connect ပုံစံများ
 - Android key store နှင့် device telemetry integration များ
 - Android အွန်လိုင်း QR၊ နီးစပ်ရာနှင့် NFC သယ်ယူပို့ဆောင်ရေး
 
-[Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/kotlin/README.md) ကို ကြည့်ပါ module-specific APIs နှင့် exact build command များအတွက်။
+[Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/kotlin/README.md) ကို ကြည့်ပြီး module-specific APIs နဲ့ exact build command တွေကို ကြည့်ပါ။

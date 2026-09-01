@@ -1,37 +1,37 @@
 ---
 translation_locale: ja
 translation_source: /documenting/snippets.md
-translation_source_hash: e188082e05db85d5e514b782f93648fb402a09740840c9201e47db353f2192f5
+translation_source_hash: 48d6670f100c7c6368fa03f163c9ff9e0322d36e51c22f89562b23b0e2ee2a2f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# コードスニッペット {#code-snippets}
+# コードスニペット {#code-snippets}
 
-生成されたスニッペットは,それらを作成した Iroha の修正からコード,構成,およびスケーマに結合した例を保持します.
+生成されたスニペットは、それらを生成した Iroha リビジョンのコード、設定、およびスキーマに例を結びつけたままにします。
 
-## リフレッシング Iroha アーティファクト {#refreshing-iroha-artifacts}
+## リフレッシュ中 Iroha アーティファクト {#refreshing-iroha-artifacts}
 
-Iroha から派生したスニッペットは,通常のサイトビルドでネットワークアクセスや兄弟レポジトリを必要としないようにチェックされます.それらを明示的に更新します:
+Iroha 派生したスニペットはチェックインされるため、通常のサイトビルドではネットワークアクセスや兄弟リポジトリを必要としません。 それらを明示的に更新してください:
 
 ```bash
 pnpm refresh:iroha --source /path/to/iroha
 ```
 
-チェックインした [`etc/refresh-iroha.ts`](https://github.com/hyperledger-iroha/iroha-docs/blob/main/etc/refresh-iroha.ts) ワークフローは,クリーンソースのチェックアウトを `provenance/iroha.json`, 再生する `/src/snippets` そして Torii OpenAPI スナップショット,更新情報 SHA-256 ハッシュ. コンテンツと起源の変更を一緒にレビューする. 通常依存性インストールおよび VitePress 組み込みは変形可能なブランチを集めずにチェックインしたファイルを消費します.
+チェックインされた`etc/refresh-iroha.ts`ワークフローは、クリーンなソースチェックアウトを`provenance/iroha.json`と照合し、`/src/snippets`および Torii OpenAPI のデータスナップショットを再生成します。および SHA-256 暗号ハッシュを更新します。コンテンツと出所の変更を一緒に確認してください。通常の依存関係のインストールと VitePress ビルドは、可変ブランチを取得せずにチェックインされたファイルを使用します。
 
-## スニッペットを含む {#including-snippets}
+## スニペットを含む {#including-snippets}
 
-[VitePress コードスニペット構文](https://vitepress.dev/guide/markdown#import-code-snippets) を使用して生成されたまたはローカルソースを含む:
+生成されたソースまたはローカルソースを含めるには、[VitePress コードスニペットの構文](https://vitepress.dev/guide/markdown#import-code-snippets) を使用してください:
 
 ```md
 <<< @/snippets/client.template.toml
 ```
 
-指定されたコード領域は,その地域名を添加することで追加することができる.
+名前付きコード領域は、その領域名を追加することで含めることができます:
 
 ```md
 <<< @/example_code/lorem.rs#ipsum
 ```
 
-手書きの例を小さくしてください.公開インターフェース,構成テンプレート,生成されたスケーマ,コマンド出力のために更新したソースアーテファクトを好みます.
+手書きの例は小さく保ちます。公開インターフェース、設定テンプレート、生成されたスキーマ、およびコマンド出力には、更新されたソースアーティファクトを優先します。

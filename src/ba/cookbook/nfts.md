@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /cookbook/nfts.md
-translation_source_hash: 5eb6a349b815afbac9717f7b44c499adc78b1280625388656015ff4b133b9085
+translation_source_hash: db99dab483d4e2fb3fd84be84f6e4ef9f8373f0c16eb2f34952f1232c4587561
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -63,7 +63,7 @@ NEW_OWNER="$(
 
 ### 3. NFT исемлеген тәүге йөкмәткеһе менән теркәгеҙ. {#_3-register-the-nft-with-initial-content}
 
-CLI башланғыс JSON объектты стандарт кертеүҙән уҡый. Хәҙерге власть хужаһына әйләнә.
+CLI башланғыс JSON объектты стандарт кертеүҙән уҡый. Хәҙерге вәкәләтле иҫәп хужаһына әйләнә.
 
 ```bash
 printf '%s\n' \
@@ -106,7 +106,7 @@ Taira, һәр яҙыу шулай уҡ кәрәк `--metadata ./taira.tx-metadat
 
 :::
 
-Контрактҡа ҡараған эш ағымдары өсөн Kotodama NFT тип яҙылған хост шылтыратыуҙарын асыҡлай. түбәндәгеләр - фиксированная жизненный цикл фиксация һәм үтәлгән фиктив IVM документация һынауы:
+Контрактҡа ҡараған эш ағымдары өсөн Kotodama NFT тип яҙылған хост саҡырыуҙарын асыҡлай. түбәндәгеләр - фиксированная тормош циклының һынау мәғлүмәттәре һәм үтәлгән фиктив IVM документация һынауы:
 
 ```kotodama
 seiyaku NftFlow {
@@ -134,7 +134,7 @@ seiyaku NftFlow {
 }
 ```
 
-Ике даими I105 ҡиммәттәре - ташҡынға тиклемге һынау ҡулайламалары; арнес үтәлгәнгә тиклем тәғәйенләнешен теркәп бара. Улар `CURRENT_OWNER` һәм `NEW_OWNER` түгел, улар CLI аша үткәндән. Ҡулланыу килешеүе өсөн, уның ысын каноник иҫәп-хисаптарын тапшырығыҙ, һуңынан уны [Аҡыллы контракттар](./smart-contracts.md) аша йыяғыҙ, һынап ҡарағыҙ, урынлаштырығыҙ һәм саҡырығыҙ. Тикшерелмәгән байткодты Taira адресына ебәрмәгеҙ һәм иҫегеҙгә төшөрөгөҙ: контракт үтәлеше әле лә ғәмәлгә ашырыу ваҡытын раҫлай.
+Ике нығытылған I105 ҡиммәте — төп проекттың һынау мәғлүмәттәре; һынау мөхите башҡарыу алдынан тәғәйенләнеш иҫәбен теркәй. Улар CLI ҡулланмаһындағы `CURRENT_OWNER` һәм `NEW_OWNER` түгел. Ҡушымта килешеүе өсөн уның ысын каноник иҫәптәрен күрһәтегеҙ, һуңынан [Аҡыллы килешеүҙәр](./smart-contracts.md) аша уны компиляциялағыҙ, һынағыҙ, урынлаштырығыҙ һәм саҡырығыҙ. Тикшерелмәгән байт-кодты Taira-ға ебәрмәгеҙ; килешеүҙең үтәлеше һаман да башҡарыу мөхите авторизацияһын үтеүен иҫтә тотоғоҙ.
 
 ## Тикшереү {#verify}
 
@@ -164,7 +164,7 @@ jq -e --arg owner "$NEW_OWNER" \
 
 - [NFT интеграция һынауҙары ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/nft.rs)
 - [Kotodama NFT Ҡунаҡсы саҡырыу һынауҙар ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
-- [Дөрөҫ Kotodama NFT тормош циклы фиксировкаһы ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/docs/examples/12_nft_flow.ko)
+- [Дөрөҫ Kotodama NFT тормош циклының һынау мәғлүмәттәре ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/docs/examples/12_nft_flow.ko)
 - [NFTs](/ba/blockchain/nfts.md)
 - [Метамәғлүмәттәре](/ba/blockchain/metadata.md)
 - [Инструкциялар](/ba/blockchain/instructions.md)

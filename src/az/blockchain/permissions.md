@@ -3,24 +3,24 @@ translation_locale: az
 translation_source: /blockchain/permissions.md
 translation_source_hash: 1a12b47fa14bb011c9a916e70a1a8b5c083061880e1564a0be861c13cf562a77
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# icazələr {#permissions}
+# İcazələr {#permissions}
 
-Hesablar bir blok kateqoriyasında müxtəlif hərəkətlər üçün icazə tokenlarına ehtiyac duyurlar, məsələn, aktivləri mint və ya yandırmaq.
+Hesablar blokçeyn üzərində müxtəlif əməliyyatlar üçün icazə tokenlərinə ehtiyac duyur, məsələn, aktivləri buraxmaq və ya məhv etmək üçün.
 
-İstifadəçilərə verilən icazələr baxımından ictimai və özəl blok zinciri arasında fərq var. Ictimai blok zincirdə əksər hesablarda eyni icazələr var. Xüsusi bir blok zincirində əksər hesablar müvafiq icazə verilmədiyi təqdirdə, onlara verilmiş səlahiyyətdən kənarda heç nə edə bilməyəcəklər.
+İstifadəçilərə verilən icazələr baxımından ictimai və özəl blokçeyn arasında fərq var. İctimai blokçeyndə, əksər hesablar eyni icazə dəstinə malikdir. Özəl blokçeyndə, əksər hesabların onlara verilmiş səlahiyyət prinsipi xaricində heç nə edə bilməyəcəyi güman edilir, ancaq müvafiq icazə açıq şəkildə verildikdə istisna təşkil olunur.
 
-Bir şey etmək üçün icazə almaq hesabın müvafiq `Permission` olduğunu göstərir. İzinlər bir sıra icazələri qruplaşdıran bir [`Role`](#permission-groups-roles) vasitəsilə və ya birbaşa verilə bilər. İzinlərin verilməsi `Grant` təlimatı ilə edilir. İzinlər və rollar sona çatmır; `Revoke` təlimatı ilə çıxarın.
+Bir şeyi etmək icazəsinə sahib olmaq deməkdir ki, hesabın müvafiq icazəsi var `Permission`. İcazələr birbaşa və ya vasitəsilə verilə bilər [`Role`](#permission-groups-roles), icazələr dəsti qruplaşdırır. İcazələr verilir `Grant` təlimat. İcazələr və rollar bitmir; onları ilə silin `Revoke` təlimat.
 
-## İzin simvolları {#permission-tokens}
+## İcazə Jetonları {#permission-tokens}
 
-İzin tokenləri aktiv icraçı tərəfindən müəyyən edilmiş tiplənmiş obyektlərdir. Bəzi tokenlar qlobaldır, məsələn `CanManagePeers`, digərləri isə bir hesab, aktiv, aktiv tərifi, domen, NFT, rol və ya tetikçi kimi xüsusi bir nəşr obyekti üçün məhdudlaşdırılır.
+İcazə tokenləri aktiv icraçı tərəfindən müəyyən edilmiş tiplənmiş obyektlərdir. Bəzi tokenlər qlobaldır, məsələn `CanManagePeers`, digərləri isə müəyyən bir blokçeyn dəftəri obyektinə aid olur, məsələn hesab, aktiv, aktiv tərifi, domen, NFT, rol və ya tetikleyici.
 
-Burada müxtəlif icazə simvolları üçün istifadə olunan parametrlərin bir neçə nümunəsi var:
+Budur müxtəlif icazə tokenləri üçün istifadə olunan parametrlərin bəzi nümunələri:
 
-- Müəyyən bir hesab üçün meta məlumatları dəyişdirməyə icazə verən bir token `account` sahəsini daşıyır:
+- Müəyyən bir hesab üçün metadata dəyişdirmək icazəsi verən token aşağıdakı `account` sahəsini daşıyır:
 
   ```json
   {
@@ -28,7 +28,7 @@ Burada müxtəlif icazə simvolları üçün istifadə olunan parametrlərin bir
   }
   ```
 
-- Müəyyən bir aktiv tərifinə görə aktivlərin köçürülməsinə icazə verən bir token `asset_definition` sahəsini daşıyır:
+- Müəyyən bir aktiv tərifi üçün aktivlərin köçürülməsinə icazə verən token `asset_definition` sahəsini daşıyır:
 
   ```json
   {
@@ -36,27 +36,27 @@ Burada müxtəlif icazə simvolları üçün istifadə olunan parametrlərin bir
   }
   ```
 
-- `CanManagePeers` kimi qlobal bir simvolda heç bir sahə yoxdur:
+- `CanManagePeers` kimi qlobal tokenin heç bir sahəsi yoxdur:
 
   ```json
   {}
   ```
 
-### Əvvəlcədən konfiqurasiya edilmiş icazə nömrələri {#pre-configured-permission-tokens}
+### Əvvəlcədən Təyin Olunmuş İcazə Tokenləri {#pre-configured-permission-tokens}
 
-[Reference](/az/reference/permissions) bölməsində əvvəlcədən konfiqurasiya edilmiş icazə tokenlərinin siyahısını tapa bilərsiniz.
+Siz əvvəlcədən konfiqurasiya edilmiş icazə tokenlərinin siyahısını [İstinad](/az/reference/permissions) fəsildə tapa bilərsiniz.
 
-## Müvəffəqiyyət qrupları (rollen) {#permission-groups-roles}
+## İcazə Qrupları (Rollar) {#permission-groups-roles}
 
-İzinlərin bir dəstinə rol deyilir. İzin nömrələrinə bənzər olaraq, `Grant` təlimatı istifadə edərək və `Revoke` təlimatını istifadə edərək rolllər verilə bilər.
+İcazələr dəstinə rol deyilir. İcazə tokenlərinə bənzər şəkildə, rollar `Grant` təlimatından istifadə edərək verilə bilər və `Revoke` təlimatı ilə geri götürülə bilər.
 
-Hesablara rol verilmədən əvvəl rolun ilk növbədə qeydiyyatdan keçirilməsi lazımdır.
+Hesaba rol verilməzdən əvvəl, rol əvvəlcə qeydiyyatdan keçirilməlidir.
 
-Bir neçə hesabın eyni icazə dəstini alması lazım olduqda rollar faydalıdır. Rolu bir dəfə qeyd edin, rolu icazə verin və sonra fərdi hesablar üçün rolu versin və ya ləğv edin.
+Rollar bir neçə hesabın eyni icazə dəstini alması lazım olduğunda faydalıdır. Rol bir dəfə qeydiyyatdan keçirin, rola icazələr verin, sonra isə fərdi hesablar üçün rolu verin və ya ləğv edin.
 
-### Yeni rolu qeyd edin. {#register-a-new-role}
+### Yeni rol qeydiyyatdan keçirin {#register-a-new-role}
 
-Yeni bir rol qeyd edək ki, veriləndə Mouse hesabındakı [metadata ](/az/blockchain/metadata.md) başqa bir hesabın girişinə imkan verəcək:
+Gəlin, verildiyi zaman başqa bir hesabın Mouse-in hesabındakı [metaməlumat](/az/blockchain/metadata.md)-a giriş imkanı verəcək yeni bir rol qeydiyyatdan keçirək:
 
 ```rust
 let role_id = RoleId::from_str("ACCESS_TO_MOUSE_METADATA")?;
@@ -67,9 +67,9 @@ let role = iroha_data_model::role::Role::new(role_id.clone(), mouse_id.clone())
 let register_role = Register::role(role);
 ```
 
-### Bir rolu ver {#grant-a-role}
+### Rolu ver {#grant-a-role}
 
-Rolu qeydiyyatdan keçdikdən sonra Mouse onu Alice-yə verə bilər:
+Rol qeydiyyatdan keçirildikdən sonra, Mouse onu Alice-ə verə bilər:
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
@@ -78,30 +78,30 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
     .sign(mouse_private_key);
 ```
 
-## İzin təsdiqləyiciləri {#permission-validators}
+## İcazə Yoxlayıcıları {#permission-validators}
 
-İzinlər mövcuddur ki, yalnız tələb olunan icazə nişanı olan hesablar qorunmuş bir hərəkət edə bilər. Varsayılan icraçı təlimat, sorğu və ifadə icrası zamanı icazələri yoxlayır.
+İcazələr yalnız tələb olunan icazə tokeninə malik olan hesabların qorunan əməliyyatı yerinə yetirməsinə imkan vermək üçün mövcuddur. Varsayılan icraçı təlimat, sorğu və ifadə icrası zamanı icazələri yoxlayır.
 
-Standart təsdiqləyici səthləri kitab sahəsi üzrə qruplaşdırılır:
+Əsas doğrulayıcı səthi blokçeyn dəftər sahəsinə görə qruplaşdırılır:
 
-- Tərəflər arasında idarəetmə
+- şəbəkə tərəfdaşının idarə edilməsi
 - domenlər və hesablar
-- aktivlər, NFTs, və əmanətlər
-- başlatıcılar
-- rolu və icazələri
-- icraçı / iş vaxtı, sübutlar, köprülər və SORA/Nexus modulları
+- aktivlər, NFTs və depozitlər
+- tetikləyicilər
+- rol və icazələr
+- icraçi/vaxt mühiti, sübutlar, körpülər və SORA/Nexus modulları
 
-[Permission Tokens istinadında ](/az/reference/permissions.md) mənbə ilə təsdiqlənən dəqiq token siyahısı.
+Dəqiq token siyahısı [İcazə Tokenləri istinadı](/az/reference/permissions.md)-da mənbə tərəfindən dəstəklənir.
 
-### İndirmə vaxtı təsdiqləyiciləri {#runtime-validators}
+### proqram icra mühiti Təsdiqləyicilər {#runtime-validators}
 
-İzin yoxlamaları aktiv icraçı tərəfindən həyata keçirilir. Varsayılan icraçı daxili icazə təsdiqçilərini və nişan təriflərini təmin edir və bir şəbəkə istifadə etdiyi icraçını yeniləyərək siyasəti dəyişə bilər.
+İcazə yoxlamaları aktiv icraçı tərəfindən həyata keçirilir. Varsayılan icraçı daxili icazə yoxlayıcıları və token təriflərini təmin edir, və şəbəkə istifadə etdiyi icraçını yeniləməklə siyasəti dəyişə bilər.
 
-Validatorlar təsdiqləmə hökmünü qaytarırlar. Validator bir əməliyyatı icazə verə bilər, səbəbi ilə rədd edə bilər və ya əməliyyat həmin validatorun əhatə dairəsindən kənarda qalsa onu atlaya bilər. Seçilmiş hakim bu hökmləri birləşdirərək təlimatın, sorğunun və ya ifadənin davam etməsinə qərar verə bilər.
+Təsdiqləyicilər təsdiq hökmü verirlər. Bir təsdiqləyici əməliyyatın icazəsini verə, səbəblə rədd edə, yaxud əməliyyat onun səlahiyyət sahəsinin xaricindədirsə onu ötürə bilər. Seçilmiş hakim bu hökmərin birləşməsini təmin edərək təlimatın, sorğunun və ya ifadənin davam edib-etməyəcəyinə qərar verir.
 
-## Dəstəklənmiş suallar {#supported-queries}
+## Dəstəklənən Sorğular {#supported-queries}
 
-Ruxs və icazə simvolları sorula bilər.
+İcazə tokenləri və rollar sorğulanıla bilər.
 
 Rollar üçün sorğular:
 
@@ -109,6 +109,6 @@ Rollar üçün sorğular:
 - [`FindRoleIds`](/az/reference/queries.md#accounts-and-permissions)
 - [`FindRolesByAccountId`](/az/reference/queries.md#accounts-and-permissions)
 
-icazə simvolları üçün sorğular:
+İcazə tokenləri üçün sorğular:
 
 - [`FindPermissionsByAccountId`](/az/reference/queries.md#accounts-and-permissions)

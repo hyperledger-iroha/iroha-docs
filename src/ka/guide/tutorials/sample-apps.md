@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: 71258f4da9afcd94afce2fc2a53ce43540d8f67054ea789f0b2d105daba26006
+translation_source_hash: 4979ab2c52eba4040d7f003f3da73dbc333fa7e047b0259816d0d34f97377749
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,12 +12,12 @@ Iroha წყარო რეპოზიტორი შეიცავს SDK �
 
 ## JavaScript რეცეპტები {#javascript-recipes}
 
-[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes) შეიცავს კონკრეტულ მაგალითებს დეტერმინისტური ტრანზაქციების გადანაწილების შესახებ; Nexus აპლიკაციის გადარიცხვა, NFT და ანგარიშის განმეორება, ISO ხიდების ნაკადები და Torii ყველა რეცეპტი დოკუმენტებს, თუ ის მუშაობს ოფლაინ ან საჭიროებს პირდაპირი Torii საბოლოო წერტილი.
+[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes) შეიცავს კონკრეტულ მაგალითებს დეტერმინისტური ტრანზაქციების გადანაწილების შესახებ; Nexus აპლიკაციის გადარიცხვა, NFT და ანგარიშის განმეორება, ISO ხიდების ნაკადები და Torii ყველა რეცეპტი დოკუმენტებს, თუ ის მუშაობს ოფლაინ ან საჭიროებს პირდაპირი Torii API საბოლოო წერტილი.
 
 ## Swift და iOS {#swift-and-ios}
 
-გამოიყენეთ `IrohaSwift/Tests/IrohaSwiftTests` იმ მაგალითებისათვის, რომლებიც გადამოწმებულია მიმდინარე Swift SDK. იხილეთ [Swift და iOS](/ka/guide/tutorials/swift.md) შეფუთვისა და ხიდის კონსტრუქციის შესახებ.
+გამოიყენეთ `IrohaSwift/Tests/IrohaSwiftTests` იმ მაგალითებისათვის, რომლებიც გადამოწმებულია დენის Swift SDK მიმართულებით. იხილეთ [Swift და iOS](/ka/guide/tutorials/swift.md) შეფუთვისა და ხიდის მოწყობის შესახებ.
 
 ## Android {#android}
 
-ახალი Android სამუშაოსთვის გამოიყენეთ Kotlin-პირველი `core-jvm`, `client-android` და `offline-wallet-android` მოდულები, რომლებიც აღწერილია [Kotlin, Android და Java](/ka/guide/tutorials/kotlin-java.md). Kotlin SDK არის კანონიკური საწყისი წერტილი Android მომხმარებლებისთვის.
+ახალი Android მუშაობა, გამოიყენეთ Kotlin-პირველად `core-jvm`, `client-android`, და `offline-wallet-android` მოდულები აღწერილია: [Kotlin, Android, და ჯავა](/ka/guide/tutorials/kotlin-java.md). სააგენტო Kotlin SDK არის კანონიკური საწყისი წერტილი Android მომხმარებლისთვის.

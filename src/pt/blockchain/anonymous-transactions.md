@@ -1,59 +1,59 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/anonymous-transactions.md
-translation_source_hash: aabeb00dd0e94278177707c50e0a73e6e3c0ca47ef5005d9c79ee0dc892cc47e
+translation_source_hash: c5f10d1395e0b7704d29f4a535dd317b2cabe9c838208f76b7b776dd029089c0
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Transações Anônimas {#anonymous-transactions}
 
-As transações anônimas em Iroha são construídas a partir de operações confidenciais de ativos. Em vez de escrever transferências de conta para conta públicas com valores públicos, uma carteira muda o valor para um livro-razão protegido e, em seguida, gasta notas opacas com provas de conhecimento zero.
+Transações anônimas em Iroha são construídas a partir de operações de ativos confidenciais. Em vez de registrar transferências públicas de conta para conta com valores públicos, uma carteira move o valor para um livro-razão blockchain protegido e, em seguida, gasta notas opacas com provas de conhecimento zero.
 
-O livro-razão público ainda registra que uma operação confidencial ocorreu. Ele registra compromissos, anulações, hashes de prova e eventos, mas não registra o proprietário da nota, destinatário ou quantia para movimento protegido a protegido. O envelope de transação normal pode ainda revelar a conta que submete, por isso "anônimo" significa aqui o movimento anónimo dos activos, e não o anonimato automático no nível da rede ou do nível da conta.
+O livro razão público da blockchain ainda registra que uma operação confidencial ocorreu. Ele registra compromissos, anuladores, hashes criptográficos de prova e eventos, mas não registra o proprietário da nota, o destinatário ou o valor para movimentações de protegido para protegido. O contêiner de dados de transação normal ainda pode revelar a conta que está submetendo, então "anônimo" aqui significa movimento de ativos anônimo, não anonimato automático em nível de rede ou de conta.
 
-## Blocos de construção {#building-blocks}
+## Blocos de Construção {#building-blocks}
 
-|Conceptos|Representação do Ledger |
+|Conceito|representação de livro-razão em blockchain|
 | ------------------ | ------------------------------------------------------------------------------------------------------------------ |
-|Nota protegida |Um registro de carteira privada contendo um ativo, montante, dados do proprietário e aleatoriedade.|
-|Compromisso |Um valor público de 32 bytes que compromete-se a uma nota sem revelar seus campos. |
-|Anulador |Um valor público de 32 bytes derivado quando uma nota é gasto. Iroha rejeita anuladores repetidos para evitar o duplo gasto. |
-|Raiz de Merkle |Uma raiz recente da árvore de compromisso do ativo. As provas usam-na para mostrar que as notas gastadas existem. |
-|Ficha de prova |Um `ProofAttachment` que contenha bytes de prova mais uma referência da chave de verificação ou a chave de verificación em linha. |
-|Evento confidencial .|Um evento do livro de conta, tal como `ConfidentialEvent::Shielded`, `Transferred` ou `Unshielded`. |
+|Nota protegida|Um registro de carteira privada contendo um ativo, valor, dados do proprietário e aleatoriedade.|
+|Compromisso|Um valor público de 32 bytes que se compromete com uma nota sem revelar seus campos.|
+|Anulador|Um valor público de 32 bytes derivado quando uma nota é gasta. Iroha rejeita nullifiers repetidos para prevenir gasto duplo.|
+|Raiz de Merkle|Uma raiz recente da árvore de compromisso do ativo. Provas a utilizam para mostrar que notas gastas existem.|
+|Anexo de prova|Um `ProofAttachment` contendo bytes de prova mais uma referência à chave de verificação ou chave de verificação inline.|
+|Evento confidencial|Um evento de registro em blockchain como `ConfidentialEvent::Shielded`, `Transferred` ou `Unshielded`.|
 
-As principais instruções são:
+As instruções principais são:
 
-- `RegisterZkAsset`: registra um ativo como ZK-capaz e liga as chaves de verificação de transferência, escudo e não escudo.
-- `Shield`: depõe um saldo público e anexa um compromisso de notas protegidas.
+- `RegisterZkAsset`: registra um ativo como capaz de ZK e vincula as chaves de verificação de transferência, proteção e desproteção.
+- `Shield`: debita um saldo público e adiciona um compromisso de nota protegido.
 - `ZkTransfer`: gasta notas protegidas em novos compromissos de notas protegidas.
-- `Unshield`: gasta notas protegidas e acredita um saldo da conta pública.
-- `ScheduleConfidentialPolicyTransition` e `CancelConfidentialPolicyTransition`: alterar a política de confidencialidade de um ativo através da governação.
+- `Unshield`: gasta notas protegidas e credita um saldo de conta pública.
+- `ScheduleConfidentialPolicyTransition` e `CancelConfidentialPolicyTransition`: alterar a política confidencial de um ativo por meio da governança.
 
-Uma definição de ativo também contém um [`AssetConfidentialPolicy`](/pt/reference/data-model-schema.md). Os controles do modo de política que controlam os fluxos são válidos:
+Uma definição de ativo também carrega um [`AssetConfidentialPolicy`](/pt/reference/data-model-schema.md). O modo de política controla quais fluxos são válidos:
 
-|Modo |Que significa ?|
+|Modo|Significado|
 | ----------------- | ---------------------------------------------------------------- |
-|`TransparentOnly` |Só são aceitos saldos públicos normais e transferências. |
-|`Convertible` |Os utilizadores podem mover o valor entre os saldos públicos e as notas protegidas. |
-|`ShieldedOnly` |A emissão de activos e as transferências devem permanecer no livro-razão protegido. |
+| `TransparentOnly` |Apenas saldos e transferências públicas normais são aceitos.|
+| `Convertible`     |Os usuários podem transferir valores entre saldos públicos e notas protegidas.|
+| `ShieldedOnly`    |A emissão e a transferência de ativos devem permanecer no registro blockchain protegido.|
 
-## Como usá-las {#how-to-use-them}
+## Como Usá-los {#how-to-use-them}
 
-1. Habilitar suporte confidencial em nós validadores. Os validadores devem concordar no backend do verificador, as chaves de verificação ativas, o parâmetro Poseidon/Pedersen IDs, e a versão das regras confidenciais. Os nós rejeitam pares ou blocos com digestões confidenciais incompatíveis.
-2. Publicar ou registar as chaves de verificação e os conjuntos de parâmetros utilizados pelos circuitos. As carteiras e os operadores devem referir-se às chaves em `VerifyingKeyId`, por exemplo, `halo2/ipa:vk_transfer`.
-3. Registrar o activo como ZK-Capaz de `RegisterZkAsset`, ou realizar uma transição política de `TransparentOnly` para `Convertible` ou `ShieldedOnly`.
-4. Proteger os fundos públicos com `Shield`. A carteira cria um compromisso de nota e carga útil criptografada para o destinatário antes de enviar a transação.
-5. Transferir em privado com `ZkTransfer`. A carteira constrói uma prova de que possui as notas de entrada, que os valores de entrada e saída são equilibrados e que cada nota gastada está ancorada em uma árvore de compromisso recente.
-6. Desbloquear apenas quando a política de activos o permitir. `Unshield` revela o montante público e a conta do destinatário, gasta o anulador de notas privadas e pode criar saídas de troca privadas.
-7. Auditoria por meio da leitura de eventos confidenciais, registos de prova, status de anulador e registos de garantia anônimos através de consultas digitadas e endpoints Torii.
+1. Habilite suporte confidencial nos nós validadores. Os validadores devem concordar com o backend do verificador, chaves de verificação ativas, IDs dos parâmetros Poseidon/Pedersen e versão das regras confidenciais. Os nós rejeitam pares de rede ou blocos com resumos criptográficos de recursos confidenciais divergentes.
+2. Publique ou registre as chaves de verificação e conjuntos de parâmetros usados pelos circuitos. Carteiras e operadores devem se referir às chaves por `VerifyingKeyId`, por exemplo `halo2/ipa:vk_transfer`.
+3. Registre o ativo como capaz de ZK com `RegisterZkAsset`, ou realize uma transição de política de `TransparentOnly` para `Convertible` ou `ShieldedOnly`.
+4. Proteja os fundos públicos com `Shield`. A carteira cria um compromisso de nota e um payload criptografado para o destinatário antes de enviar a transação.
+5. Transfira privadamente com `ZkTransfer`. A carteira cria uma prova de que possui as notas de entrada, de que os valores de entrada e saída estão equilibrados e de que cada nota gasta está ancorada em uma árvore de compromissos recente.
+6. Desproteja apenas quando a política do ativo permitir. `Unshield` revela o valor público e a conta do destinatário, gasta o anulador da nota privada e pode criar saídas de troco privadas.
+7. Auditoria lendo eventos confidenciais, registros de provas, status do anulador e registros de custódia anônima por meio de consultas digitadas e endpoints Torii API.
 
-## CLI exemplos {#cli-examples}
+## CLI Exemplos {#cli-examples}
 
-Os comandos ZK CLI são destinados aos fluxos de operação e testes. As carteiras de produção devem gerar compromissos, cargas úteis criptografadas e provas com uma biblioteca de carteira/provador antes de enviar as instruções resultantes.
+Os comandos ZK CLI destinam-se a fluxos de operador e testes. Carteiras de produção devem gerar compromissos, cargas criptografadas e provas com uma biblioteca de carteira/provedor antes de enviar as instruções resultantes.
 
-Registrar um ativo com capacidade híbrida ZK:
+Registrar um ativo capaz de hybrid ZK:
 
 ```bash
 iroha app zk register-asset \
@@ -65,7 +65,7 @@ iroha app zk register-asset \
   --vk-shield halo2/ipa:vk_shield
 ```
 
-Construir um envelope de carga útil criptografado versão para a nota protegida:
+Construa um contêiner de dados de payload criptografado versionado para a nota protegida:
 
 ```bash
 iroha app zk envelope \
@@ -76,18 +76,9 @@ iroha app zk envelope \
   --output note-envelope.bin
 ```
 
-Proteção de fundos públicos no livro-razão protegido do activo:
+O CLI prepara a política de ativos, verificando referências-chave e o contêiner de dados de notas criptografadas. Ele não expõe os subcomandos de transação `shield` ou `unshield`. Construa essas instruções com um SDK e envie-as como uma transação comum com tarifa cotada e assinada.
 
-```bash
-iroha app zk shield \
-  --asset <asset-definition-id> \
-  --from <account-id> \
-  --amount 1000 \
-  --note-commitment ABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABAB \
-  --enc-payload note-envelope.bin
-```
-
-Desbloqueado com uma fixação de prova JSON:
+Um anexo de prova sem proteção tem esta forma:
 
 ```bash
 cat > unshield-proof.json <<'JSON'
@@ -100,18 +91,11 @@ cat > unshield-proof.json <<'JSON'
   }
 }
 JSON
-
-iroha app zk unshield \
-  --asset <asset-definition-id> \
-  --to <account-id> \
-  --amount 1000 \
-  --inputs DEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEF \
-  --proof-json unshield-proof.json
 ```
 
-## SDK {#sdk-example}
+## SDK Exemplo {#sdk-example}
 
-Os bytes de prova exatos vêm do backend de prova configurado. A carga útil da transação só precisa das entradas públicas e do anexo de prova:
+Os bytes exatos da prova vêm do backend de prova configurado. A carga útil da transação precisa apenas das entradas públicas e do anexo da prova:
 
 ```rust
 use iroha_data_model::{
@@ -167,94 +151,94 @@ fn unshield_instruction(
 }
 ```
 
-## Escrow de ativos anônimos {#anonymous-asset-escrow}
+## Escrow de Ativos Anônimo {#anonymous-asset-escrow}
 
-O escrow de ativos anônimos usa a mesma máquina de transferência protegida para o valor depositado. As partes e o estado do escrow ainda são registrados no registro do escrow, mas as pernas de financiamento, liberação, cancelamento e resolução usam anuladores protegidos e compromissos de saída.
+O escrow de ativos anônimo usa o mesmo mecanismo de transferência protegido para valor em escrow. As partes e o estado do escrow ainda são registrados no registro do escrow, mas os estágios de financiamento, liberação, cancelamento e resolução usam anuladores e compromissos de saída protegidos.
 
-Para obter informações detalhadas sobre o comportamento e os exemplos do escrow ISI, ver [Native Asset Escrow](/pt/blockchain/escrow.md#anonymous-escrow).
+Para detalhes sobre o comportamento e exemplos de escrow ISI, consulte [Escrow de Ativo Nativo](/pt/blockchain/escrow.md#anonymous-escrow).
 
 O ciclo de vida é:
 
 1. `OpenAnonymousAssetEscrow` gasta notas de financiamento protegidas e cria um compromisso de custódia.
-2. `AcceptAnonymousAssetEscrow` registar o comprador.
-3. `MarkAnonymousEscrowPaymentSent` constata que o comprador enviou um pagamento fora da cadeia.
-4. O `ReleaseAnonymousAssetEscrow` gasta o compromisso de garantia para os compromissos de saída do comprador.
-5. `CancelAnonymousAssetEscrow` gasta o compromisso de garantia de volta para os compromissos de saída do vendedor quando o pagamento não tiver sido marcado.
-6. O `OpenAnonymousEscrowDispute` e o `ResolveAnonymousEscrowDispute` tratam de depósitos controversos com hashes de evidências e uma divisão controlada por um resolvedor.
+2. `AcceptAnonymousAssetEscrow` registra o comprador.
+3. `MarkAnonymousEscrowPaymentSent` registra que o comprador enviou o pagamento fora da cadeia.
+4. `ReleaseAnonymousAssetEscrow` gasta o compromisso de depósito em garantia nos compromissos de saída do comprador.
+5. `CancelAnonymousAssetEscrow` devolve o compromisso de caução para os compromissos de saída do vendedor quando o pagamento não foi marcado.
+6. `OpenAnonymousEscrowDispute` e `ResolveAnonymousEscrowDispute` lidam com depósitos em disputa com provas de hashes criptográficos e uma divisão controlada por um resolvedor.
 
-Utilize as consultas anônimas de garantia enumeradas em [Questions](/pt/reference/queries.md#escrow-and-proof-records) para inspecionar os registos e status de garantia.
+Use as consultas de custódia anônimas listadas em [Consultas](/pt/reference/queries.md#escrow-and-proof-records) para inspecionar registros e status de custódia.
 
 ## Matemática {#math}
 
-A notação abaixo descreve o fluxo de ativos confidenciais. As implementações usam o circuito ativo e o parâmetro IDs da política de ativos e do registro de verificadores, por isso os clientes devem tratar compromissos, anuladores e bytes de prova como saídas opacas da carteira / provador.
+A notação abaixo descreve o fluxo de ativos confidenciais. As implementações usam o circuito ativo e os IDs de parâmetros da política de ativos e do registro de verificadores, portanto os clientes devem tratar compromissos, aniquiladores e bytes de prova como saídas opacas da carteira/provedor.
 
-Uma nota de escudo pode ser descrita como:
+Uma nota protegida pode ser descrita como:
 
 $$
 n = (\mathsf{asset}, \mathsf{amount}, \mathsf{owner}, \rho)
 $$
 
-onde `owner` é derivado do material de visualização ou gastos do destinatário e `rho` é nota aleatoriedade.
+onde `owner` é derivado do material de visualização ou gasto do destinatário e `rho` é aleatoriedade de notas.
 
-O compromisso de nota é um compromisso oculto:
+O compromisso da nota é um compromisso de ocultação:
 
 $$
 C = \mathsf{Commit}(\mathsf{asset}, \mathsf{amount}, \mathsf{owner}, \rho)
 $$
 
-Para os circuitos de transferência confidenciais atuais, as entradas públicas incluem compromissos de notas, anuladores, uma raiz Merkle, uma etiqueta de ativo e uma etiqueta da cadeia.
+Para os atuais circuitos de transferência confidenciais, as entradas públicas incluem compromissos de nota, anuladores, uma raiz de Merkle, uma etiqueta de ativo e uma etiqueta de cadeia. O circuito impõe uma relação de compromisso desta forma:
 
 $$
 C = H_c(\mathsf{amount}, \rho, \mathsf{owner\_tag}, \mathsf{asset\_tag})
 $$
 
-Quando uma nota é gastada, a carteira obtém um anulador:
+Quando uma nota é gasta, a carteira deriva um anulador:
 
 $$
 N = H_n(\mathsf{spend\_key}, \rho, \mathsf{asset\_tag}, \mathsf{chain\_tag})
 $$
 
-`N` é público. Não revela a nota, mas é estável para essa nota e cadeia, de modo que Iroha pode rejeitar um segundo gasto com o mesmo anulador .
+`N` é público. Ele não revela a nota, mas é estável para essa nota e cadeia, então Iroha pode rejeitar um segundo gasto com o mesmo nulificador.
 
-A árvore de compromissos prova a existência da nota. Se uma carteira gasta compromisso `C_i`, a prova inclui um caminho Merkle privado de `C_i` para uma raiz pública recente:
+A árvore de compromisso prova a existência da nota. Se uma carteira gasta o compromisso `C_i`, a prova inclui um caminho Merkle privado de `C_i` até uma raiz pública recente:
 
 $$
 \mathsf{MerkleRoot}(C_i, \mathsf{path}) = R
 $$
 
-Para uma transferência protegida para protegida, a prova impõe também a conservação do valor:
+Para uma transferência de protegido para protegido, a prova também garante a conservação do valor:
 
 $$
 \sum \mathsf{inputs} = \sum \mathsf{outputs}
 $$
 
-No caso de um produto sem escudo, o montante público é incluído:
+Para um não protegido, o valor público está incluído:
 
 $$
 \sum \mathsf{inputs} = \mathsf{public\_amount} + \sum \mathsf{private\_change}
 $$
 
-A prova apresentada pode ser resumida como:
+A prova submetida pode ser resumida da seguinte forma:
 
 $$
 \mathsf{Verify}(\mathsf{vk}, \mathsf{public\_inputs}, \pi) = \mathsf{true}
 $$
 
-onde `public_inputs` são os compromissos, anuladores, raiz, etiqueta de ativo, etiqueta da cadeia e qualquer montante público não protegido. A testemunha contém os montantes das notas, aleatoriedade, material gasto e caminhos Merkle. Os validadores verificam a prova e, em seguida, mutam o estado do livro-razão adicionando compromissos de saída e marcando os anuladores de entrada como gastos.
+onde `public_inputs` estão os compromissos, anuladores, raiz, etiqueta de ativo, etiqueta de cadeia e qualquer valor público não protegido. A testemunha contém os valores das notas, aleatoriedade, gastar material e caminhos de Merkle. Os validadores verificam a prova e então alteram o estado do registro do blockchain adicionando compromissos de saída e marcando os anuladores de entrada como gastos.
 
-## O que é público {#what-is-public}
+## O Que É Público {#what-is-public}
 
-As transações anônimas não tornam todos os fatos observáveis privados. Os seguintes dados podem ainda ser públicos:
+Transações anônimas não tornam todos os fatos observáveis privados. Os seguintes dados ainda podem ser públicos:
 
-- o hash da transação, a altura do bloco e a ordem
-- A autoridade de transação submetente, a menos que o pedido utilize um padrão privado de entrada ou relayer.
-- A definição de ativo utilizada
-- Anuladores e compromissos de saída
-- hashes de prova, referências de chave de verificação e hashes opcionais de envelope
-- montante público e conta do destinatário para `Unshield`
-- Vendedor, comprador, status, timestamps e hashes de evidências anônimos
+- o hash criptográfico da transação, altura do bloco e ordenação
+- o principal de autorização de envio de transação, a menos que a aplicação utilize um ponto de entrada privado ou padrão de retransmissor
+- a definição de ativo que está sendo usada
+- anuladores e compromissos de saída
+- provas de hashes criptográficos, referências de chaves de verificação e hashes criptográficos de contêineres de dados opcionais
+- valor público e conta do destinatário para `Unshield`
+- vendedor de escrow anônimo, comprador, status, carimbos de data e hora e hashes criptográficos de evidência
 
-Projetar aplicações para que estes metadados públicos não revelem o relacionamento de negócios que você está a tentar proteger.
+Projete aplicativos de forma que esses metadados públicos não revelem o relacionamento comercial que você está tentando proteger.
 
 ## Referência Relacionada {#related-reference}
 
@@ -262,4 +246,4 @@ Projetar aplicações para que estes metadados públicos não revelem o relacion
 - [`ConfidentialEvent`](/pt/reference/data-model-schema.md)
 - [`ProofAttachment`](/pt/reference/data-model-schema.md)
 - [`SignedTransaction.attachments`](/pt/reference/data-model-schema.md)
-- [Questões de garantia e prova](/pt/reference/queries.md#escrow-and-proof-records)
+- [Consultas de caução e prova](/pt/reference/queries.md#escrow-and-proof-records)

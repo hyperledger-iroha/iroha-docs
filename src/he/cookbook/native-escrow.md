@@ -1,32 +1,32 @@
 ---
 translation_locale: he
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: aa8e079684879bdcda2b4439e9c12742d4ab477e6f560f7c326a59b6be5bf666
+translation_source_hash: 576e03924f19b63681cdfafa641b996672e35a992478fc9eaf5b83f0e7baa6da
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# אבטחה של נכסים מקומיים {#native-asset-escrow}
+# נאמנות מובנית לנכסים {#native-asset-escrow}
 
 ## התוצאה {#outcome}
 
-בחר בין מאבטחה בשוק לבין מנעול נכס קשור ליעד, תפעיל את מחזור החיים המטופל הנוכחי עם Rust או Python, תקשר כל ניסיון חוזר של מנעול לכמות השאר שקיבלת בפועל, ותחבר את שטח מאבטחת מקורי Kotodama מ- JavaScript.
+בחרו בין נאמנות שוק לבין נעילת נכס הקשורה ליעד, הפעילו את מחזור החיים הנוכחי בעל הטיפוסים המוגדרים באמצעות Rust או Python, קשרו כל ניסיון חוזר של נעילה לסכום שנותר ושנצפה בפועל, והדרו את ממשק הנאמנות המובנה של Kotodama מ־JavaScript.
 
 ## תנאים מוקדמים {#prerequisites}
 
-- הגדרה מספרית של נכס ופתוח/מכר שיש לו כמות מספקת.
-- לקוחות I105 בעלים מפתח אחד עבור כל צד המגיש צעד. השתמשו בכוונה `fee_payment` בתשלום ישיר של הסמכות אשר נכסי העלות שלה מתאימים לתגובה הטנק הנוכחית Taira; אל תשתלבו נכס ID מתוך המסמך.
-- ההתחייבויות המתמשכות Rust או Python SDK מ Iroha `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
-- עבור JavaScript דוגמה של קומפיילר, Node.js 24 ועוד אחד שנבנה מקומית. `@iroha/iroha-js` חבילה ומוצאתו `iroha_js_host`; לעקוב אחרי [JavaScript SDK הגדרת מבנה מקור](/he/guide/tutorials/javascript.md#build-from-source). בניית הדפדפן חייבת לספק `compilerUrl` במקום לטעין את המארח המקומי.
-- Taira חייב להודות בהוראות העברת נכסים ולקחת כספים. בעלי נכסים יכולים להשתמש במחזור החיים הרגיל כאשר מדיניות הנכסים שלהם מאפשרת זאת; פתרון מחלוקת דורש רשות גלובלית `CanResolveEscrowDispute`.
+- הגדרת נכס מספרית ופותח/מוכר שבבעלותו כמות מספקת.
+- לקוחות I105 ממומנים בעלי מפתח יחיד עבור כל צד ששולח שלב. השתמשו בכוונת `fee_payment` עדכנית שבה הסמכות משלמת, ושנכס העמלה שלה תואם לתגובה הנוכחית של פוסיט Taira; אל תטמיעו asset ID מתוך התיעוד.
+- גרסת ה־SDK הנוכחית ל־Rust או ל־Python מתוך commit ‏Iroha ‏`0010c5a70039eac101a4846499ba9ceaf43eb65c`.
+- לדוגמת המהדר ב־JavaScript נדרשים Node.js 24, החבילה `@iroha/iroha-js` שנבנתה מקומית והמארח המובנה שלה `iroha_js_host`; פעלו לפי [הגדרת בנייה מקוד המקור של SDK ל־JavaScript](/he/guide/tutorials/javascript.md#build-from-source). גרסאות לדפדפן חייבות לספק `compilerUrl` במקום לטעון את המארח המובנה.
+- על Taira לקבל את הוראות העברת הנכס והנאמנות. בעלי נכסים יכולים להשתמש במחזור החיים הרגיל כאשר מדיניות הנכס שלהם מאפשרת זאת; פתרון מחלוקת דורש את ההרשאה הגלובלית `CanResolveEscrowDispute`. השתמשו ברשת מקומית שנוצרה אם הסמכות הדרושה אינה זמינה ברשת הציבורית.
 
-דוגמאות שכר, קונה, תשלום מחוץ שרשרת ושחרור. מנעולים גנריים מכנים יעד ואופשונלי סמכות השחרור נפרדת; הם תומכים בסכום חלקי, ביטול וסיפוק.
+נאמנות בזירת מסחר מייצגת מוכר, קונה, תשלום מחוץ לשרשרת ושחרור. נעילה כללית מציינת יעד, ואפשר גם סמכות שחרור נפרדת; היא תומכת במשיכה חלקית, ביטול ותפוגה.
 
 ## צעדים {#steps}
 
-### 1. למלא מאובטח בשוק עם Rust {#_1-complete-a-marketplace-escrow-with-rust}
+### 1. השלמת נאמנות בזירת מסחר באמצעות Rust {#_1-complete-a-marketplace-escrow-with-rust}
 
-פונקציה זו מקבלת טופס אמיתי IDs ולקוחות. היא פותחת 40 יחידות, מאפשרת לקונה לקבל ולצביע על תשלום מחוץ למשרשרת, ולאחר מכן מאפשרת למכיר לשחרר את השמורת. כל הצעה מזמינה את משלמת עמלות הסמכות דרך `FeePaymentIntent`.
+פונקציה זו מקבלת IDs ולקוחות בעלי טיפוס ממשי. היא פותחת 40 יחידות, מאפשרת לקונה לקבל את ההצעה ולסמן שהתשלום מחוץ לשרשרת נשלח, ואז מאפשרת למוכר לשחרר את המשמורת. כל שליחה מציינת באמצעות `FeePaymentIntent` את הסמכות המשלמת את העמלה.
 
 ```rust
 use eyre::{Result, ensure};
@@ -70,11 +70,11 @@ fn complete_marketplace_escrow(
 }
 ```
 
-חשבון השמורת ניהל על ידי ספרים גדולים. היתר של טוקן נורמלי להעברה נכסים לא הופך את השמורת הפעילה לבלתי אפשרית מחוץ למעגל החיים של הבטחון.
+חשבון המשמורת מנוהל בידי ספר החשבונות. הענקת אסימון רגיל להעברת נכס אינה מאפשרת לרוקן משמורת פעילה מחוץ למחזור החיים של הנאמנות.
 
-### 2. לפתוח ולמשוך חלקית מנעול כללי עם Python {#_2-open-and-partially-draw-a-generic-lock-with-python}
+### 2. פתיחה ומשיכה חלקית של נעילה כללית באמצעות Python {#_2-open-and-partially-draw-a-generic-lock-with-python}
 
-רשות השחרור מבקשת את הרשומות המקוריות החותמות לפני הסכום. העברת `remaining_amount` המדויקת מספקת שוויון אופטימי: בקשה מקביל קדומה נדחתה במקום חיוב אחזקה פעמיים.
+סמכות השחרור מבצעת שאילתה על הרשומה המובנית החתומה לפני המשיכה. העברת הערך המדויק של `remaining_amount` מספקת בקרת מקביליות אופטימית: בקשה מקבילה מיושנת נדחית במקום לחייב את המשמורת פעמיים.
 
 ```python
 import secrets
@@ -145,9 +145,9 @@ def open_and_draw_lock(
     return escrow_id, after
 ```
 
-Python SDK יכול לבקש באופן אוטומטי כאשר `expected_remaining_amount` נמחק, אך העברת הערך המופלא הופכת את התנאי הכלכלי החותם להיראות בקוד היישום.
+ה־Python SDK יכול לבצע את השאילתה אוטומטית כאשר `expected_remaining_amount` מושמט, אך העברת הערך שנצפה מציגה במפורש בקוד היישום את התנאי הכלכלי המוקדם שעליו חותמים.
 
-עבור זלילים של Rust, הבניינים הנוכחיים דורשים גם את הסכום הנצפה:
+בתהליכי נעילה ב־Rust, הבונים הנוכחיים דורשים גם את הסכום שנצפה:
 
 ```rust
 let before = opener.query_single(FindAssetEscrowById::new(lock_id))?;
@@ -167,13 +167,13 @@ opener.submit_blocking(
 )?;
 ```
 
-`DrawdownAssetLock::new` לוקח שלושה ערכים; `CancelAssetLock::new` לוקח שניים. החליפה של הסכום הנותר צפוי מתארת צורת שיחה ישנה ולא בטוחה.
+`DrawdownAssetLock::new` מקבל שלושה ערכים; `CancelAssetLock::new` מקבל שניים. השמטת הסכום הנותר הצפוי היא צורת קריאה ישנה ולא בטוחה.
 
-### 3. לעבר את פני השטח של Kotodama מ- JavaScript {#_3-compile-the-kotodama-escrow-surface-from-javascript}
+### 3. הידור ממשק הנאמנות של Kotodama מתוך JavaScript {#_3-compile-the-kotodama-escrow-surface-from-javascript}
 
-JavaScript לא צריך להמציא הוראות ילידיות ללא סוג. הקאמפיילר הנוכחי חושף את ה-Ledger escrow המובנים ל- Kotodama; הפעלת וקריאות עוקבות אחר כך [בניית ומפיצת חוזה חכם ](./smart-contracts.md).
+JavaScript אינו צריך להמציא הוראות מובנות ללא טיפוס. המהדר הנוכחי חושף ל־Kotodama את פעולות הנאמנות המובנות של ספר החשבונות; הפריסה והקריאות מתבצעות לאחר מכן לפי [בנייה ופריסה של חוזה חכם](./smart-contracts.md).
 
-שמור את זה כ- `native_escrow.ko`:
+שמרו זאת בשם `native_escrow.ko`:
 
 ```kotodama
 seiyaku NativeEscrowAitai {
@@ -196,7 +196,7 @@ seiyaku NativeEscrowAitai {
 }
 ```
 
-שמור את הדברים הבאים כ- `compile-native-escrow.mjs` ושימשו אותו כדי לערוך את המקור המדויק הזה מ- Node.js:
+שמרו את הקוד הבא בשם `compile-native-escrow.mjs` והשתמשו בו כדי להדר את קוד המקור המדויק הזה מתוך Node.js:
 
 ```js
 import { readFile } from 'node:fs/promises'
@@ -216,15 +216,15 @@ console.log({
 })
 ```
 
-תפעילו אותו מהסביבה של החבילה המוצרת במקור המתוארת בתנאים הראשונים:
+הריצו אותו מסביבת החבילה שנבנתה מקוד המקור ומתוארת בתנאים המוקדמים:
 
 ```bash
 node ./compile-native-escrow.mjs
 ```
 
-## לאמת {#verify}
+## אימות {#verify}
 
-עבור אבטחה בשוק, תשאלו `FindAssetEscrowById` ואת אחזקות נכסים של שני הצדדים לאחר שחרור. הרישוי חייב להיות `Released`, שם הקונה המקבל, ולא להראות שום אחזקה נותרת. עבור המנעול Python למעלה, לשמור את החזרת ID וחזור על השאלת חתומה:
+בנאמנות של זירת מסחר, בצעו שאילתה באמצעות `FindAssetEscrowById` ובדקו את החזקות הנכס של שני הצדדים לאחר השחרור. הרשומה חייבת להיות במצב `Released`, לציין את הקונה שקיבל את ההצעה ולא להציג סכום שנותר במשמורת. עבור נעילת Python לעיל, שמרו את ה־ID שהוחזר וחזרו על השאילתה החתומה:
 
 ```python
 record = client.get_asset_escrow(
@@ -236,23 +236,23 @@ assert escrow_status(record) == "Locked"
 assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 ```
 
-גם לשאול את אחזקות הנכסים של היעד ולבטיח כי הוא עלה ב-4 יחידות. קבלה עסקה ללא תיעוד הבטחון והמדינה לאחר היעד היא אימות לא מלא.
+בצעו שאילתה גם על החזקת הנכס של היעד ואשרו שהיא גדלה בארבע יחידות. קבלת עסקה ללא רשומת הנאמנות והמצב שלאחר העסקה של היעד היא אימות חלקי בלבד.
 
 ## פתרון בעיות {#troubleshooting}
 
-- `Not permitted` בזמן פתיחה בדרך כלל אומר שהרשות לא יכולה להעביר את הנכס שנבחר לפיקוח. לפתרון הסכסוכים יש שער עולמי נפרד `CanResolveEscrowDispute`.
-- דחייה `expected remaining amount` היא סכסוך אופטימי-דיווידני. לבקש מחדש את התיק, להחליט אם התכוונתי למשוך אחר/ביטול, ולחתום על הוראה חדשה רק אם המצב החדש הוא מקובל.
-- רק סמכות השחרור המוגדרת יכולה לצייר נעילה אמינה. היעד לא יכול לשחרר אותו רק כי הוא יקבל את הכספים.
-- השחרור בשוק הוא תקף רק לאחר קבלת התשלום והשלוח; ביטול מוגבל למדינות של מחזור החיים הקודמים.
-- תקופת הספירה משתמשת בזמנים רשמיים. אל תתייחסו לתקופה מקומית של שעון הקיר כהוכחה כי `ExpireAssetLock` יעבור.
-- חוסר תשלום שייך לצד המגיש את צעד מחזור החיים הזה. קונה קרן, מכר/פתוח, ושלטון השחרור באופן עצמאי ב Taira.
+- `Not permitted` בעת הפתיחה משמעו בדרך כלל שהסמכות אינה יכולה להעביר את הנכס שנבחר אל המשמורת. לפתרון מחלוקת יש שער גלובלי נפרד, `CanResolveEscrowDispute`.
+- דחייה מסוג `expected remaining amount` היא התנגשות של מקביליות אופטימית. בצעו שוב שאילתה על הרשומה, החליטו אם המשיכה או הביטול האחרים היו מכוונים, וחתמו על הוראה חדשה רק אם המצב החדש מקובל.
+- רק סמכות השחרור שהוגדרה יכולה למשוך מנעילה מהימנה. היעד אינו יכול לשחרר אותה רק משום שהוא עתיד לקבל את הכספים.
+- שחרור בזירת מסחר תקף רק לאחר מצב של קבלה ושליחת תשלום; ביטול מוגבל למצבים מוקדמים יותר במחזור החיים.
+- תפוגה משתמשת בזמן הסמכותי של ספר החשבונות. אל תתייחסו לפקיעת timeout מקומי לפי שעון המערכת כהוכחה ש־`ExpireAssetLock` יתקבל.
+- כשל עמלה מיוחס לצד ששולח את השלב במחזור החיים. מַמנו בנפרד את הקונה, המוכר/הפותח וסמכות השחרור ב־Taira.
 
 ## מקור ומסמכים קשורים {#source-and-related-docs}
 
-- [מודל ההוראות של הבטחון המקומי בביצוע הקבלה ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
-- [בדיקות אינטגרציה של הבטוחים המקומיים בהתחייבויות קשורות ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
-- [Python שיטות לקוחות מאובטחים בביצוע ההתחייבויות הקשורות ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama דגימה של אבטחה ילידית בביצוע הקבילת ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
-- [סכום הנכס המקומי ](/he/blockchain/escrow.md)
-- [נכסים פונגביים](./fungible-assets.md)
-- [רשיונות ותפקידים ](./permissions-and-roles.md)
+- [מודל הוראות הנאמנות המובנית ב־commit המקובע](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
+- [בדיקות שילוב של נאמנות מובנית ב־commit המקובע](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
+- [שיטות לקוח Python לנאמנות ב־commit המקובע](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
+- [דוגמת נאמנות מובנית ב־Kotodama ב־commit המקובע](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [נאמנות מובנית לנכסים](/he/blockchain/escrow.md)
+- [נכסים בני־חליפין](./fungible-assets.md)
+- [הרשאות ותפקידים](./permissions-and-roles.md)

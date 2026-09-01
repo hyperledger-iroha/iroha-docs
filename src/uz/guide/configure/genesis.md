@@ -3,15 +3,14 @@ translation_locale: uz
 translation_source: /guide/configure/genesis.md
 translation_source_hash: a6b8b2b02e0074e6c90d9aa9337af3e2496a02beb2f57f575dc0780014df04b2
 translation_status: machine-validated
-translation_engine: google-translate
+translation_engine: bing-translator-llm
 ---
 
-# Ibtido {#genesis}
+# blokcheyn janesis {#genesis}
 
-Genesis boshlang'ich zanjir holatini belgilaydi.Tahrirlanadigan manba a JSON manifest,
-va an Iroha 3 tugun imzolanganni iste'mol qiladi Norito tranzaksiya fayli.
+blockchain genesis boshlang'ich zanjir holatini belgilaydi. Tahrir qilinadigan manba JSON manifest bo'lib, va Iroha 3 tugun imzolangan Norito tranzaksiya faylini ishlatadi.
 
-::: details Birlamchi genezis manifest
+::: details Standart blokcheyn boshlang‘ich manifesti
 
 <<< @/snippets/genesis.json
 
@@ -19,21 +18,17 @@ va an Iroha 3 tugun imzolanganni iste'mol qiladi Norito tranzaksiya fayli.
 
 ## Fayllar {#files}
 
-Yuqori oqim ombori standart manifestni jo'natadi `defaults/genesis.json`.
-Kagami-Yaratilgan tarmoqlar o'zlarining manifest va imzolangan tranzaktsiyalarini yozadilar
-chiqish katalogi:
+Uptream repository `defaults/genesis.json` da standart manifest yuboradi. Kagami tomonidan yaratilgan tarmoqlar o'z manifesti va imzolangan tranzaksiyasini chiqish katalogiga yozadi:
 
 ```bash
 cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-Yaratilgan `README.md` bu katalogda aniq fayllarni yozib oladi va ishga tushiradi
-tanlangan profil uchun buyruqlar.
+Ushbu katalogda yaratilgan `README.md` tanlangan profil uchun aniq fayllar va ishga tushirish buyruqlarini yozadi.
 
-## Tengdosh konfiguratsiyasi {#peer-configuration}
+## tarmoq tengdoshini sozlash {#peer-configuration}
 
-Tengdoshlar imzolangan genezis bitimiga ishora qiladilar `[genesis]` bo'limi
-`config.toml`:
+tarmoq tengdoshlar `config.toml` bo‘limidagi `[genesis]` qismida imzolangan blokcheyn boshlang‘ich tranzaksiyasiga ishora qiladi:
 
 ```toml
 [genesis]
@@ -41,12 +36,11 @@ file = "./genesis.signed.nrt"
 public_key = "ed0120..."
 ```
 
-Tarmoqdagi barcha tengdoshlar imzolangan genezis bitimi va bitim bo'yicha kelishib olishlari kerak
-genezis ochiq kaliti.
+Tarmoqdagi barcha tarmoq tengdoshlar imzolangan blokcheyn asosiy tranzaksiyasi va blokcheyn asosiy ochiq kaliti bo‘yicha kelishib olishlari kerak.
 
-## Ibtidoni imzolash {#signing-genesis}
+## Blokcheynning dastlabki imzolanishi {#signing-genesis}
 
-Agar siz manifestni qo'lda tahrir qilsangiz, tengdoshlarni ishga tushirishdan oldin uni tasdiqlang va imzolang:
+Manifestni qo‘lda tahrirlasangiz, tugunlarni ishga tushirishdan oldin uni tekshiring va imzolang:
 
 ```bash
 cargo run --bin kagami -- genesis validate ./genesis.json
@@ -55,18 +49,10 @@ cargo run --bin kagami -- genesis sign ./genesis.json \
   --out-file ./genesis.signed.nrt
 ```
 
-`GENESIS_PRIVATE_KEY_FILE` egasining rejimi bo'lishi kerak`0600`, yagona bo'g'inli
-bitta kanonik shaxsiy kalit multihash va yakuniy kalitni o'z ichiga olgan oddiy fayl
-yangi qator. Kagami ramziy aloqalarni rad etadi va hech qachon xom genezni xususiy qabul qilmaydi
-buyruq satridagi tugmachani bosing.
+`GENESIS_PRIVATE_KEY_FILE` egasi tomonidan ushlab turiladigan moda-`0600`, bitta protokol-standart xususiy kalitli multihash va yakuniy yangi qatorni o‘z ichiga olgan bitta ulanadigan oddiy fayl bo‘lishi kerak. Kagami ramziy havolalarni rad etadi va buyruq satrida xom blokcheyn boshlang‘ich xususiy kalitni hech qachon qabul qilmaydi.
 
-NPoS uchun yoki Nexus profillar, topologiyani o'z ichiga oladi va BLS Egalik guvohnomalari
-yaratilgan profil tomonidan talab qilinadi. Kagami `localnet`, `wizard`, va profil
-avlod buyruqlari ushbu tafsilotlarni avtomatik ravishda boshqaradi.
+NPoS yoki Nexus profillari uchun, yaratilgan profil tomonidan talab qilinadigan to‘plam va BLS Ega-Bo‘lish-Dalillari (Proofs-of-Possession) ni qo‘shing. Kagami `localnet`, `wizard` va profil yaratish buyruqlari bu tafsilotlarni avtomatik ravishda boshqaradi.
 
-## Ibtidoni takrorlash {#recommitting-genesis}
+## Blokcheyn asosini qayta tasdiqlash {#recommitting-genesis}
 
-Tengdosh faqat saqlash joyi bo'sh bo'lganda genezisni amalga oshiradi.Yangi genezisni sinab ko'rish uchun
-bir martalik mahalliy tarmoq, tengdoshlarni to'xtating, ularning yaratilgan davlat katalogini olib tashlang,
-va yangi imzolangan genezisdan boshlang.Yugurishda genezisni almashtirmang
-har bir validator bir xil migratsiyani muvofiqlashtirmasa, tarmoq.
+Tugun boshlang‘ich holatni faqat saqlovi bo‘sh bo‘lsa qabul qiladi. Yangi boshlang‘ich holatni vaqtinchalik mahalliy tarmoqda sinash uchun tugunlarni to‘xtating, yaratilgan holat kataloglarini o‘chiring va yangi imzolangan boshlang‘ich holatdan ishga tushiring. Har bir tasdiqlovchi ayni ko‘chishni muvofiqlashtirmaguncha ishlayotgan tarmoqning boshlang‘ich holatini almashtirmang.

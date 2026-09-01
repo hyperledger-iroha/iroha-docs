@@ -71,9 +71,9 @@ iroha = { git = "https://github.com/hyperledger-iroha/iroha.git", rev = "<IROHA_
 - `crates/iroha/README.md`
 - `crates/iroha_cli/README.md`
 
-עבור זרימות עבודה של אבטחויות מנוהלות במספרים, ראה [ אבטחת נכסים מקומיים ](/he/blockchain/escrow.md#rust-sdk). מודל הנתונים של Rust כולל כיום את הכיתוב המלא ביותר עבור אבטחה בשוק, סגרות נכסים גנריות, אבטחה אנונימית, שאילויים ואירועים.
+לתהליכי escrow המנוהלים ב-ledger, ראו [escrow מובנה לנכסים](/he/blockchain/escrow.md#rust-sdk). מודל הנתונים של Rust מספק כיום את הכיסוי המלא ביותר בעל טיפוסים עבור escrow של שוק, נעילות נכסים כלליות, escrow אנונימי, שאילתות ואירועים.
 
-אתה יכול לשחזר תמונה של עזרה מקומית CLI עם:
+אתה יכול לשחזר תמונת מצב של עזרה מקומית CLI עם:
 
 ```bash
 cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/CommandLineHelp.md

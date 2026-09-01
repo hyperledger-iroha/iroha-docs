@@ -12,32 +12,25 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 
 ## Հիմնական օգտագործումը {#basic-usage}
 
-From the Iroha source checkout:
+Iroha-ի սկզբնաղբյուրի checkout-ից.
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-The parent directory must already exist. The target must be new or already
-owned by the current user, mode `0700`, free of symbolic links, and empty.
-`kagami` writes `public.key` and `private.key` with mode `0600` and does not
-print key material. With `--pop`, it also writes `pop.hex`.
+Ծնող գրացուցակը պետք է նախապես գոյություն ունենա։ Նպատակային գրացուցակը պետք է լինի նոր կամ արդեն պատկանի ընթացիկ օգտատիրոջը, ունենա `0700` ռեժիմ, չպարունակի խորհրդանշական հղումներ և լինի դատարկ։ `kagami`-ն `0600` ռեժիմով գրում է `public.key` և `private.key` ֆայլերը և չի արտածում բանալու նյութը։ `--pop`-ի դեպքում այն նաև գրում է `pop.hex`։
 
-`--out-dir` fails closed on platforms where Kagami cannot enforce these
-owner-only filesystem rules. The private-key file is an unencrypted export,
-not a hardware or non-exportable production signer. Import it into the
-approved custody boundary and remove the export according to the deployment's
-procedure.
+`--out-dir`-ը անվտանգ կերպով մերժում է գործողությունը այն հարթակներում, որտեղ Kagami-ն չի կարող պարտադրել միայն սեփականատիրոջ համար նախատեսված ֆայլային համակարգի այս կանոնները։ Մասնավոր բանալու ֆայլը չգաղտնագրված արտահանում է, այլ ոչ ապարատային կամ չարտահանվող արտադրական ստորագրող։ Ներմուծեք այն հաստատված պահպանման սահման և հեռացրեք արտահանումը՝ տեղակայման ընթացակարգի համաձայն։
 
 ## Ալգորիթմներ {#algorithms}
 
-Common algorithms are:
+Տարածված ալգորիթմներն են.
 
-- `ed25519` for client accounts and streaming identities.
-- `secp256k1` when a client account requires a secp256k1 identity.
-- `bls_normal` for every node or peer consensus identity.
+- `ed25519`՝ հաճախորդի հաշիվների և հոսքային նույնությունների համար։
+- `secp256k1`՝ երբ հաճախորդի հաշվին անհրաժեշտ է secp256k1 նույնություն։
+- `bls_normal`՝ յուրաքանչյուր հանգույցի կոնսենսուսի նույնության համար։
 
-Check the exact algorithms supported by your build with:
+Ձեր build-ի աջակցած ճշգրիտ ալգորիթմները ստուգեք հետևյալ հրամանով.
 
 ```bash
 cargo run --bin kagami -- keys --help
@@ -45,8 +38,7 @@ cargo run --bin kagami -- keys --help
 
 ## Դետերմինիստական զարգացման բանալիները {#deterministic-development-keys}
 
-For reproducible fixtures, pass a 32-byte seed encoded as 64 hexadecimal
-characters. An optional `0x` prefix is accepted:
+Վերարտադրելի թեստային տվյալներ-ների համար փոխանցեք 32-բայթանոց seed՝ կոդավորված 64 տասնվեցական նիշերով։ Ընդունվում է ոչ պարտադիր `0x` նախածանցը.
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 \
@@ -54,40 +46,28 @@ cargo run --bin kagami -- keys --algorithm ed25519 \
   --out-dir ./fixture-client-key
 ```
 
-The seed is private-key material. Use deterministic seeds only for local
-development and tests. Omit `--seed-hex` to generate a production key from
-operating-system randomness.
+Seed-ը մասնավոր բանալու նյութ է։ Դետերմինիստական seed-եր օգտագործեք միայն տեղային մշակման և թեստերի համար։ Արտադրական բանալին օպերացիոն համակարգի պատահականությունից ստեղծելու համար բաց թողեք `--seed-hex`-ը։
 
 ## BLS Համաձայնության բանալիները եւ սեփականության ապացույցները {#bls-consensus-keys-and-proofs-of-possession}
 
-Iroha 3 node and peer consensus identities use BLS-normal keys. Generate a
-BLS-normal key and proof-of-possession (PoP) with:
+Iroha 3-ի հանգույցների կոնսենսուսի նույնություններն օգտագործում են BLS-normal բանալիներ։ BLS-normal բանալի և տիրապետման ապացույց (PoP) ստեղծեք հետևյալ հրամանով.
 
 ```bash
 cargo run --bin kagami -- keys --algorithm bls_normal --pop \
   --out-dir ./validator-key
 ```
 
-`--pop` is valid only with `bls_normal`; it adds `pop.hex` to the custody
-directory.
-Signed genesis requires a matching PoP for every voting validator. In peer
-configuration, a non-empty `trusted_peers_pop` map selects the validator
-subset; trusted peers omitted from that non-empty map are observers. If the map
-is empty, all BLS-normal trusted peers enter the bootstrap candidate set, with
-voter PoPs still supplied by signed genesis.
+`--pop`-ը վավեր է միայն `bls_normal`-ի հետ և պահպանման գրացուցակում ավելացնում է `pop.hex`։ Ստորագրված genesis-ը պահանջում է համապատասխան PoP յուրաքանչյուր քվեարկող վալիդատորի համար։ Peer-ի կոնֆիգուրացիայում ոչ դատարկ `trusted_peers_pop` քարտեզն ընտրում է վալիդատորների ենթաբազմությունը. այդ ոչ դատարկ քարտեզից բաց թողնված վստահելի հանգույցները դիտորդներ են։ Եթե քարտեզը դատարկ է, բոլոր վստահելի BLS-normal հանգույցները մտնում են bootstrap թեկնածուների բազմություն, իսկ քվեարկողների PoPs-ը շարունակում է տրամադրել ստորագրված genesis-ը։
 
-## Custody Output {#custody-output}
+## Պահպանման ելքային տվյալներ {#custody-output}
 
-`kagami keys` requires `--out-dir` and never writes private key material to
-standard output. Read `public.key`, `private.key`, and optional `pop.hex` from
-the generated directory. Each file contains one canonical value followed by a
-newline, which makes explicit file-based automation straightforward:
+`kagami keys`-ը պահանջում է `--out-dir` և երբեք մասնավոր բանալու նյութ չի գրում ստանդարտ ելքում։ Ստեղծված գրացուցակից կարդացեք `public.key`, `private.key` և ոչ պարտադիր `pop.hex` ֆայլերը։ Յուրաքանչյուր ֆայլ պարունակում է մեկ կանոնական արժեք, որին հաջորդում է նոր տող, ինչը պարզեցնում է բացահայտ ֆայլային ավտոմատացումը.
 
 ```bash
 PUBLIC_KEY=$(tr -d '\n' < ./client-key/public.key)
 ```
 
-For full generated Kagami help:
+Kagami-ի ամբողջական ստեղծված օգնության համար.
 
 ```bash
 cargo run -p iroha_kagami -- advanced markdown-help > crates/iroha_kagami/CommandLineHelp.md

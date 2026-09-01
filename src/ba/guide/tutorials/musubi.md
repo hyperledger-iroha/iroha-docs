@@ -1,11 +1,10 @@
 ---
 translation_locale: ba
 translation_source: /guide/tutorials/musubi.md
-translation_source_hash: 4a76626522ecb9fe32e98e9c1e4552223cf820d40d0de16690dc589b0f40c901
+translation_source_hash: 621d1795fd1c3cc62462a9a91af68fe684c0ff5293f5e77801420dc8318bac38
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Musubi Kotodama Пакеттар {#musubi-kotodama-packages}
 
 Musubi - Kotodama сығанаҡ пакеттары өсөн беренсе тапҡыр сығарылған пакет менеджеры. Ул сылбырҙа бәйлелек графикаһын асыҡлай, SoraFS-ны раҫлай сығанаҡ архивтары, һайлап алынған эш майҙанын йыя һәм һынап ҡарай, CAR каноник архивтар төҙөй, һәм Iroha аша үҙгәрешһеҙ релиздар баҫтыра.
@@ -59,11 +58,11 @@ version = "^1.0.0"
 
 Тейешле версиялар, ҡарау йәки тилде талаптары, wildcards кеүек ҡулланырға мөмкин. `1.*`, һәм комета менән айырылған сағыштырыу йыйылмалары, мәҫәлән: `>=1.0.0,<2.0.0`. Яҡшылыҡ таблицаһы асҡысы - ата-әсә урындағы импорт исемдәре; `package` һәр ваҡыт канонический реестр һайлаусыһы.
 
-`Musubi.lock` графты теүәл генезистарҙан алынған `NetworkId` һәм тамамланған реестр фотоһүрәтенә бәйләй. Ул һайлап алынған эш урыны тамырҙарын һәм үҙгәрешһеҙ сығарыу узелдарын теркәп бара, релиз, сығанаҡ, интерфейс, архив, ABI һәм теүәл бәйлелек сигендәге йөкләмәләрҙе үҙ эсенә ала.
+`Musubi.lock` графты теүәл генезистарҙан алынған `NetworkId` һәм тамамланған реестр снапшотына бәйләй. Ул һайлап алынған эш урыны тамырҙарын һәм үҙгәрешһеҙ сығарыу узелдарын теркәп бара, релиз, сығанаҡ, интерфейс, архив, ABI һәм теүәл бәйлелек сигендәге йөкләмәләрҙе үҙ эсенә ала. Resolved graph талап иткәндә parallel versions рөхсәт ителә.
 
 ## Конфигурация Taira SoraFS Ашырыу {#configure-taira-sorafs-fetching}
 
-Taira был эш ағымы өсөн асыҡ тест селтәре булып тора. Taira клиент конфигурацияһынан башланып, теркәлгән сылбыр һәм селтәр идентификаторы менән, һуңынан түбәндәге провайдер-белгесле аутентификацияланған алыу бәйләнештәрен өҫтәгеҙ. Мәҡәләгә ҡул ҡуйыу материалдары һәм провайдер оператор асҡыстары бары тик хужалар өсөн генә иҫәпләнгән файлдарҙа һаҡланырға тейеш.
+Taira — был эш ағымы өсөн асыҡ testnet. Checked-in chain һәм хәҙерге pinned genesis-derived network identity булған Taira client configuration-ынан башлап, аҫтағы provider-specific authenticated fetch bindings-ты өҫтәгеҙ. Taira reset `NetworkId`-ны үҙгәртә ала; уны stable chain UUID-нан сығармағыҙ, signed deployment profile-дан яңыртығыҙ. Иҫәпкә ҡултамға ҡуйыу материалы һәм провайдер оператор асҡыстары хужа ғына уҡый алған runtime файлдарында һаҡланырға тейеш.
 
 ```toml
 torii_url = "https://taira.sora.org/"
@@ -122,7 +121,7 @@ cargo run --manifest-path ../../Cargo.toml -p musubi -- package --config client.
 
 ## Кэшты тикшереү һәм ремонтлау {#cache-verification-and-repair}
 
-Йәмәғәт кеши командалары үҙгәрешһеҙ, реестр йөкмәтелгән архивтарҙа эшләй:
+Йәмәғәт кеши командалары үҙгәрешһеҙ, реестр commit ителгән архивтарҙа эшләй:
 
 ```bash
 cargo run --manifest-path ../../Cargo.toml -p musubi -- \
@@ -135,7 +134,7 @@ cargo run --manifest-path ../../Cargo.toml -p musubi -- \
   cache prune --dry-run --config client.toml
 ```
 
-`cache repair` карантин ышаныслы нәҫелдәрҙе боҙоу һәм аныҡ архивтарҙы үҙгәртеү, әгәр раҫланған тәьмин итеүсе иҫбатлау быны рөхсәт итә. Musubi тере буш булмаған ҡырҡыу мутацияһын кире ҡаға. Квалификацияланған кандидаттарҙы тикшереү өсөн `--dry-run` ҡулланығыҙ.
+`cache repair` карантин ышаныслы нәҫелдәрҙе боҙоу һәм аныҡ архивтарҙы үҙгәртеү, әгәр раҫланған тәьмин итеүсе иҫбатлау быны рөхсәт итә. тере буш булмаған мутация өсөн ҡырҡыу атама менән ябыла; классификацияланған кандидаттарҙы тикшереү өсөн `--dry-run` ҡулланалар.
 
 ## Баҫмалар һәм баҫмалар {#packaging-and-publishing}
 
@@ -151,14 +150,14 @@ cargo run --manifest-path ../../Cargo.toml -p musubi -- \
 
 `package` яҙа `target/package/<namespace>-<name>-<version>.car`. CAR каноник пакет манифест, семантик сығарыу манифест бәйләй, теүәл тикшереү бикләү, сығанаҡ ағасы, интерфейс. digest һәм SoraFS архив йөкләмәһе. Тәүге сығарылышта `pack`, `--car-out`, `--sorafs-manifest-out` йәки `--source-plan-out` бойороҡтары юҡ CLI.
 
-Публикация - ҡул ҡуйылған, ҡабатланырға мөмкин булған селтәрҙең эш аҙымы. һайлап алынған `client.toml` составында `[musubi.publication]` етештереү бәйләнештәрен, шулай уҡ иҫәп һәм Taira селтәр конфигурацияһы булырға тейеш.
+Баҫтырып сығарыу — ҡултамғалы һәм дауам иттерелә алған network workflow. Һайланған `client.toml` талап ителгән `[musubi.publication]` binding-тарын, account һәм Taira network configuration-ды үҙ эсенә алырға тейеш. Workspace-тың тап бер member-ын package итегеҙ:
 
 ```bash
 cargo run --manifest-path ../../Cargo.toml -p musubi -- \
   publish -p dex.universal/swap-core --locked --config client.toml
 ```
 
-Ҡулланыу `--detach` Эшләү журналы һәм орлоҡ инеү сиге оҙайлы булғандан һуң кире ҡайтыу өсөн. `publish --resume <operation-id> --config client.toml`. Тарраҡ `--recover <operation-id>` Юл ғына үҙгәрмәй торған сираттағы вагондар юғалған pristine инеү алдында журнал өсөн реконструкциялай. `--dry-run` йәки дөйөм йәмәғәт йөкмәткеһе fallback; йүгереү `package --list` һәм `package` урындағы рейс алдынан.
+`--detach` флагын операция журналы һәм seed-ingress сиге тотороҡло һаҡланғандан һуң ғына кире ҡайтыу өсөн ҡулланығыҙ. Тотороҡло операцияны `publish --resume <operation-id> --config client.toml` командаһы менән дауам итегеҙ. Тарыраҡ `--recover <operation-id>` юлы pristine pre-ingress журналы өсөн юғалған үҙгәрмәҫ sidecar-ҙарҙы ғына яңынан төҙөй. Publication өсөн `--dry-run` мөмкинлеге юҡ. Дөйөм public upload fallback та юҡ. Урындағы preflight тикшереүе өсөн `package --list` һәм `package` командаларын эшләтегеҙ.
 
 ## Теркәү һорауҙары һәм ғүмер циклы {#registry-queries-and-lifecycle}
 
@@ -194,13 +193,13 @@ cargo run --manifest-path ../../Cargo.toml -p musubi -- \
 Musubi беренсе тапҡыр сығарылған V1 күрһәтмәләрен һәм һорауҙарын ҡуллана:
 
 |Йөҙөлөш |Маҡсат |
-| -------------------------------------------------- | -------------------------------------------------------------- |
+| ---------------------------------------------------- | -------------------------------------------------------------- |
 |`RegisterMusubiNamespaceBindingV1` |Исемдәр киңлеген уның тотороҡло йорт мәғлүмәттәр киңлегенә бәйләү. |
 |`RegisterMusubiArchiveV1` |Үҙгәрмәсле аутентификацияланған сығанаҡ архивы йөкләмәһен теркәгеҙ. |
 |`AddMusubiArchiveLocationV1` |SoraFS архивының иҫбатланған урынын өҫтәү йәки яңыртыу. |
 |`PublishMusubiReleaseV1` |Пакетты талап итегеҙ йәки яңыртығыҙ һәм бер үҙгәрешһеҙ версияны баҫтырығыҙ. |
 |`SetMusubiReleaseYankV1` |Сағыштырығыҙ һәм туранан-тура иреккә сығарыуҙың тартылған торошон билдәләгеҙ|
-|`InviteMusubiPackageMaintainerV1` |Яуаплы пакет роле саҡырыу ағымын башларға. |
+|`InviteMusubiPackageMaintainerV1` |Яуаплы пакет роле саҡырыу ағымын башлағыҙ. |
 |`RegisterMusubiAliasV1` / `RetargetMusubiAliasV1` |Хакимлыҡ иткән глобаль алфавитты теркәү йәки яңынан адреслау. |
 |`AssertMusubiReleaseDigestV1` |Дөрөҫ, үҙгәрешһеҙ сығартыуҙы раҫлау. |
 |`FindMusubiExactPackageV1` |Дөрөҫ генә бер пакетты һәм уның үҙгәртеп ҡороуҙарын уҡығыҙ. |
@@ -209,4 +208,4 @@ Musubi беренсе тапҡыр сығарылған V1 күрһәтмәлә�
 |`FindMusubiArchiveLocationsV1` |Провайдер ярҙамында архив ҡуйылған урындарҙы уҡығыҙ. |
 |`FindMusubiAliasV1` / `FindMusubiAliasHistoryV1` |Хәҙерге алфавитты йәки уның үҙгәрешһеҙ тарихын уҡығыҙ. |
 
-Torii ҡушымта маршруты ғаиләһен `/v1/musubi/` аҫтында асыҡлай. MCP инструменттар хәҙерге `iroha.musubi.queries.` һәм `iroha.musubi.instructions.*` исемдәрен ҡуллана. киңрәк API картаһы өсөн [Torii һуңғы нөктәләрен](/ba/reference/torii-endpoints.md) һәм [ һорау шиғырын](/ba/reference/queries.md) ҡарағыҙ.
+Torii ҡушымта маршруты ғаиләһен `/v1/musubi/*` аҫтында асыҡлай. MCP инструменттар хәҙерге `iroha.musubi.queries.*` һәм `iroha.musubi.instructions.*` исемдәрен ҡуллана. киңрәк API картаһы өсөн [Torii һуңғы нөктәләрен](/ba/reference/torii-endpoints.md) һәм [ һорау шиғырын](/ba/reference/queries.md) ҡарағыҙ.

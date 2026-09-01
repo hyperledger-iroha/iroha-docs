@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /cookbook/fungible-assets.md
-translation_source_hash: 669b5a1c12e9ab6ffb64e149148993e7b924feb29c6fa4db883a2065f58ecd7e
+translation_source_hash: 29f2bdb390fc93b97f8ed9108634f70e21ba747c8606fb84093d37e9586516c1
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,19 +10,19 @@ translation_engine: nllb-200-ct2
 
 ## 結果 {#outcome}
 
-現場檢查 Taira 資產定義和完成一個註冊表,硬幣,轉賬,燃燒和平衡驗證在生成的本地網絡上流動.該配方使用了可信無序Base58資產定義 IDs, 域名類別,無域名 I105 賬戶 IDs, 和明確的費用支付.
+現場檢查 Taira 資產定義和完成一個登錄檔,鑄造,轉賬,銷毀和餘額驗證在生成的本地網路上流動.該操作指南使用了可信無序Base58資產定義 IDs, 域名類別,無域名 I105 帳戶 IDs, 和明確的費用支付.
 
 ## 預先條件 {#prerequisites}
 
 - `curl`, `jq`, Python 3.11或以後, Node.js 24,和目前的 `iroha` CLI.
 - 僅可讀的 Taira 訪問.
-- 對於寫入通行,一個來自 [發射 Iroha](/zh-hant/get-started/launch-iroha.md), 與 `./localnet/client.toml` 和 Torii 在 `http://127.0.0.1:8080`.
+- 對於寫入演練,一個來自 [啟動 Iroha](/zh-hant/get-started/launch-iroha.md), 與 `./localnet/client.toml` 和 Torii 在 `http://127.0.0.1:8080`.
 
 ## 步驟 {#steps}
 
 ### 1. 檢查 Taira 的定義,沒有簽字者 {#_1-inspect-taira-definitions-without-a-signer}
 
-資產定義包含一個不透明的Base58 ID,顯示名稱,可選性政策,數量尺度,可選別名,所有者和總數.具體餘額還包括其持有人帳戶和可選數據空間範圍.
+資產定義包含一個不透明的Base58 ID,顯示名稱,可選性政策,數量尺度,可選別名,所有者和總數.具體餘額還包括其持有人帳戶和可選資料空間範圍.
 
 ::: code-group
 
@@ -54,11 +54,11 @@ for (const definition of items) {
 
 :::
 
-運行 JavaScript 表格使用 `node taira-assets.mjs`.公共資產 IDs 是空白的Base58值;可讀的值如 `cookbook_credit#wonderland.universal`是一個以其中一個 IDs 爲代號的代號.
+執行 JavaScript 版本使用 `node taira-assets.mjs`.公共資產 IDs 是空白的Base58值;可讀的值如 `cookbook_credit#wonderland.universal`是一個以其中一個 IDs 為代號的代號.
 
-### 2. 準備地方政府和目的地 {#_2-prepare-the-local-authority-and-destination}
+### 2. 準備本地授權帳戶和目的地 {#_2-prepare-the-local-authority-and-destination}
 
-從生成的配置中公鑰中提取本地當局,然後選擇另一個註冊帳戶作爲接收者.
+從生成的設定中取得公鑰並據此推導本機 authority，然後選擇另一個已註冊帳戶作為接收者。此操作不會輸出任何私鑰。
 
 ```bash
 LOCAL_ROOT='http://127.0.0.1:8080'
@@ -84,7 +84,7 @@ DESTINATION_ACCOUNT="$(
 
 ### 3. 記錄一個數字定義 {#_3-register-a-numeric-definition}
 
-這個僅在本地使用的 ID 是一個有效的無前置 Base58 資產定義地址.這個別名提供了人類可讀的 `domain.dataspace`投影.尺度 `2`允許兩個分數數字;省略`--mint-once`則保持默認的 `Infinitely` 政策.
+這個僅在本地使用的 ID 是一個有效的無前置 Base58 資產定義地址.這個別名提供了人類可讀的 `domain.dataspace`投影.尺度 `2`允許兩個分數數字;省略`--mint-once`則保持預設的 `Infinitely` 政策.
 
 ```bash
 ASSET_DEFINITION_ID='66owaQmAQMuHxPzxUN3bqZ6FJfDa'
@@ -101,11 +101,11 @@ iroha --config "$LOCAL_CONFIG" \
   --scale 2
 ```
 
-在 Taira 上不要再使用 ID. 公共網絡註冊需要新的法典文件 ID,爲您的申請分配的域名/代號,費用資金和運行期的資產註冊許可.
+在 Taira 上不要再使用 ID. 公共網路註冊需要新的規範檔案 ID,為您的申請分配的域名/代號,費用資金和執行期的資產註冊許可.
 
-### 4. 薄荷,轉移和燃燒 {#_4-mint-transfer-and-burn}
+### 4. 鑄造,轉移和銷毀 {#_4-mint-transfer-and-burn}
 
-所有寫字命令都明確選擇權威作爲費用付款人. CLI 在簽署之前引用了準確的交易,並默認等待.
+所有寫入命令都明確選擇授權主體作為費用付款人. CLI 在簽署之前報價了準確的交易,並預設等待.
 
 ```bash
 iroha --config "$LOCAL_CONFIG" \
@@ -131,17 +131,17 @@ iroha --config "$LOCAL_CONFIG" \
   --quantity 10.00
 ```
 
-在燃燒後,預計來源餘額 `64.50`,目的地餘額 `25.50`和總量 `90.00`.
+在銷毀後,預計來源餘額 `64.50`,目的地餘額 `25.50`和總量 `90.00`.
 
 ::: warning 許可範圍
 
-在 Taira 上,添加自龍頭衍生的 `taira.tx-metadata.json`並使用`--fee-payer authority`爲每次寫.註冊和造需要活躍驗證者的許可;轉移和燒燬需要對源餘額的權威.一個由龍頭資助的賬戶不會自動成爲發行人.
+在 Taira 上,新增自水龍頭衍生的 `taira.tx-metadata.json`並使用`--fee-payer authority`為每次寫.註冊和造需要活躍驗證者的許可;轉移和燒燬需要對源餘額的授權主體.一個由水龍頭資助的帳戶不會自動成為發行人.
 
 :::
 
 ## 驗證 {#verify}
 
-閱讀兩個具體的平衡和定義. 這些國家後的查詢是成功標準;提交收據本身並非.
+先讀取兩個實際餘額，再讀取資產定義。這些 post-state 查詢才是成功標準；僅有 submission receipt 並不足以證明成功。
 
 ```bash
 iroha --config "$LOCAL_CONFIG" ledger asset get \
@@ -156,21 +156,21 @@ iroha --config "$LOCAL_CONFIG" ledger asset definition get \
   --id "$ASSET_DEFINITION_ID"
 ```
 
-應用聲明應比較數字值作爲固定點數,而不是二進制浮點值,並應當驗證定義 ID 以及帳戶.
+應用宣告應比較數字值作為固定點數,而不是二進位制浮點值,並應當驗證定義 ID 以及帳戶.
 
 ## 解決問題 {#troubleshooting}
 
-- 包含 ID 的 `#` 是一個字面別名或混凝土平衡字母,而不是一項常規資產定義 ID.使用`--definition`的裸體Base58值,或者通過`--definition-alias`的綁定別名.
-- `Scale` 錯誤意味着一個數量比定義允許的多個分數.
+- 包含 ID 的 `#` 是一個字面別名或具體餘額字面值,而不是一項規範資產定義 ID.使用`--definition`的裸體Base58值,或者透過`--definition-alias`的繫結別名.
+- `Scale` 錯誤意味著一個數量比定義允許的多個分數.
 - `Mintability`拒絕是指`Once`, `Not`或 `Limited(n)`的政策已經耗盡或禁止造.不要重寫歷史記錄;使用定義查詢返回的政策.
-- 如果資產入口爲 `ExplicitOnly`,通過授權的賬戶提供目標餘額.轉移前的流量.同樣名爲 CLI 的監視器不記錄賬戶或餘額;它取消,而不是添加另一個指示.
-- 在正常指示成功之前,收費被拒絕. 選擇付款人,使用網絡的收費資產元數據,並驗證其餘額.
-- 如果固定的本地定義已經存在於之前的運行中,請啓動新生成的本地網絡或繼續其現有的狀態.永遠不要替代錯誤成形的隨機字符串爲 Base58 ID.
+- 第 2 步刻意選擇已註冊的目標帳戶。如果資產准入原則為 `ExplicitOnly`，請在轉帳前透過授權流程預置目標餘額。名稱相似的 CLI 保護選項不會註冊帳戶或餘額；它會中止操作，而不是再加入一條指令。
+- 在正常指示成功之前,收費被拒絕. 選擇付款人,使用網路的收費資產後設資料,並驗證其餘額.
+- 如果固定的本地定義已經存在於之前的執行中,請啟動新生成的本地網路或繼續其現有的狀態.永遠不要替代錯誤成形的隨機字串為 Base58 ID.
 
-## 來源及相關文件 {#source-and-related-docs}
+## 來源及相關檔案 {#source-and-related-docs}
 
-- [資產生命週期集成測試在固定的承諾](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/asset.rs)
-- [Rust 固定承諾的資產構建例子](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/examples/tutorial.rs)
+- [資產生命週期整合測試在固定的提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/asset.rs)
+- [Rust 固定提交的資產構建例子](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/examples/tutorial.rs)
 - [資產](/zh-hant/blockchain/assets.md)
 - [指示](/zh-hant/blockchain/instructions.md)
 - [許可證代幣](/zh-hant/reference/permissions.md)

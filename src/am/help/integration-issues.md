@@ -3,30 +3,30 @@ translation_locale: am
 translation_source: /help/integration-issues.md
 translation_source_hash: c5f169e423806fa2a9e9d198971588d1aa0b199a28d64e8b089b9f81727550a5
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# የመዋሃድ ችግሮች {#troubleshooting-integration-issues}
+# የውህደት ጉዳዮችን መላ መፈለግ {#troubleshooting-integration-issues}
 
-ይህ ክፍል ለ Iroha 3 ውህደት የችግር መፍታት ጠቃሚ ምክሮችን ይሰጣል ። የሚያጋጥማችሁት ችግር እዚህ ያልተገለጸ ከሆነ በቴሌግራም [ ቴሌግራም](https://t.me/hyperledgeriroha) በኩል ያነጋግሩን ።
+ይህ ክፍል ለ Iroha 3 ውህደት የመላ መፈለጊያ ምክሮችን ይሰጣል። እያጋጠመዎት ያለው ችግር እዚህ ካልተገለጸ፣ በ[ቴሌግራም](https://t.me/hyperledgeriroha) በኩል ያግኙን።
 
-## ደንበኛው መገናኘት አይችልም {#client-cannot-connect}
+## ደንበኛ መገናኘት አይችልም {#client-cannot-connect}
 
-የደንበኛው ውቅር ወደ ባልደረባው Torii አድራሻ የሚያመለክት መሆኑን ያረጋግጡ:
+የደንበኛው ውቅር ወደ አውታረ መረብ አቻ Torii አድራሻ እንደሚያመለክት ያረጋግጡ -
 
 ```toml
 torii_url = "http://127.0.0.1:8080/"
 ```
 
-ለ CLI ምርመራዎች ተመሳሳይ ፋይል በግልጽ አሳልፉ:
+ለ CLI ቼኮች፣ ተመሳሳዩን ፋይል በግልፅ ያስተላልፉ -
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 ```
 
-እኩዮቹ ከገቡ Docker ወይም Kubernetes፣ ከደንበኛው ሂደት ተደራሽ የሆነውን አስተናጋጅ ወይም የአገልግሎት አድራሻ ይጠቀሙ። `127.0.0.1` በአንድ መያዣ ውስጥ ያለው አስተናጋጅ ማሽን አይደለም።
+የአውታረ መረብ አቻው በ Docker ወይም Kubernetes ውስጥ የሚሰራ ከሆነ ከደንበኛው ሂደት ሊደረስበት የሚችለውን አስተናጋጅ ወይም የአገልግሎት አድራሻ ይጠቀሙ። `127.0.0.1` በኮንቴይነር ውስጥ የአስተናጋጅ ማሽን አይደለም።.
 
-ለሕዝብ ሙከራዎች Taira ፣ ያልተፈረመ የጨረታ ነጥብ ምርመራ ይጀምሩ
+ለህዝብ Taira ሙከራዎች፣ ባልተፈረመ API የመጨረሻ ነጥብ ምርመራ ይጀምሩ -
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -36,18 +36,18 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=5' \
   | jq -r '.items[].id'
 ```
 
-እነዚህ ትዕዛዞች `502`, TLS, DNS ወይም የጊዜ ገደብ ስህተቶች ካልተሳካላቸው የአውታረ መረብ ተደራሽነትን ያስተካክሉ ወይም የሂሳብ ቁልፎችን ወይም የግብይት ጥቅማጥቅሞችን ከማስተካከልዎ በፊት ለህዝባዊ የሙከራ አውታረመረብ መጨረሻ ነጥብ ይጠብቁ።
+እነዚህ ትዕዛዞች በ`502`፣ TLS፣ DNS ወይም የጊዜ ማብቂያ ስህተቶች ካልተሳኩ የመለያ ቁልፎችን ወይም የግብይት ጭነቶችን ከማረምዎ በፊት የአውታረ መረብ ተደራሽነትን ያስተካክሉ ወይም ይፋዊ ቴስትኔት API የመጨረሻ ነጥብ ይጠብቁ።
 
-## ግብይቶች ውድቅ ይደረጋሉ። {#transactions-are-rejected}
+## ግብይቶች ውድቅ ተደርገዋል {#transactions-are-rejected}
 
-አብዛኛዎቹ የግብይት ውድቀቶች የሚከሰቱት በማንነት ወይም በፈቃድ መዛባት ምክንያት ነው
+አብዛኛዎቹ የግብይት ውድቀቶች የሚከሰቱት በማንነት ወይም በፍቃድ አለመመጣጠን ነው -
 
-- በደንበኛው ውቅር ውስጥ ያለው የመለያ የህዝብ ቁልፍ ለመፈረም ጥቅም ላይ የዋለው የግል ቁልፍ ጋር አይመሳሰልም።
-- ሂሳቡ በጀነሲስ ወይም በቀደመ ግብይት የተመዘገበ አይደለም
-- ሂሳቡ በስራ ሰዓት ማረጋገጫው የሚፈለገው የመፈቀደለት ምልክት ወይም ሚና የለውም ።
-- አንድ ጎራ ID እንደ `domain.dataspace` የመረጃ ቦታ ማረጋገጫ የጎደለው ነው
+- በደንበኛው ውቅር ውስጥ ያለው የመለያ ይፋዊ ቁልፍ ለመፈረም ጥቅም ላይ ከሚውለው የግል ቁልፍ ጋር አይዛመድም
+- መለያው በብሎክቼይን ጀነሲስ ወይም በቀደመው ግብይት አልተመዘገበም
+- መለያው በሶፍትዌር ማስፈጸሚያ አካባቢ አረጋጋጭ የሚፈለገው የፍቃድ ቶከን ወይም ሚና የለውም
+- የጎራ መታወቂያ እንደ `domain.dataspace` ያሉ የውሂብ ቦታ መመዘኛዎች ይጎድላሉ
 
-ስህተቶች ለማንበብ ቀላል እንዲሆን የ `--output-format text` ትዕዛዞችን ሳያስተካክሉ CLI ይጠቀሙ:
+ስህተቶች ለማንበብ ቀላል እንዲሆኑ CLI ትዕዛዞችን በሚያርሙበት ጊዜ `--output-format text`ን ይጠቀሙ -
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ledger transaction ping --msg "hello"
@@ -55,26 +55,26 @@ cargo run --bin iroha -- --config ./localnet/client.toml --output-format text le
 
 ## መጠይቆች ባዶ ውጤቶችን ይመልሳሉ {#queries-return-empty-results}
 
-ባዶ መጠይቅ ውጤቶች ሁልጊዜ ጥያቄው አልተሳካም ማለት አይደለም. ያረጋግጡ:
+ባዶ የመጠይቅ ውጤቶች ሁልጊዜ መጠይቁ አልተሳካም ማለት አይደለም። ይፈትሹ
 
-- ዕቃውን ሊፈጥር የሚገባው ግብይት የተፈጸመ ነው
-- የተጠየቀው ጎራ፣ የንብረት ትርጉም ወይም መለያ ID ቀኖናዊ ነው
-- ገጾች ወይም ማጣሪያዎች የሚጠበቁትን ረድፍ አያካትቱም
-- ደንበኛው ከተፈለገው አውታረመረብ ጋር የተገናኘ ነው እንጂ ሌላ አካባቢያዊ አውታረ መረብ አይደለም።
+- እቃውን መፍጠር ያለበት ግብይት ተጠናቅቋል
+- የተጠየቀው ጎራ፣ የንብረት ፍቺ ወይም የመለያ መታወቂያ ነጠላ ፕሮቶኮል-መደበኛ ነው።
+- አጀንዳ ወይም ማጣሪያዎች የሚጠበቀውን ረድፍ አያካትቱም
+- ደንበኛው ከታሰበው አውታረ መረብ ጋር የተገናኘ ነው እንጂ ሌላ የአካባቢ አውታረ መረብ አይደለም
 
-ለጎራ ፍተሻዎች በጣም ሰፊውን ጥያቄ ይጀምሩ:
+ለጎራ ፍተሻዎች፣ በሰፊው መጠይቅ ይጀምሩ -
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 ```
 
-## ክስተት ወይም ማገድ ዥረቶች ቀደም ብለው ያቆማሉ {#event-or-block-streams-stop-early}
+## የክስተት ወይም የብሎክ ዥረቶች ቀደም ብለው ይቆማሉ {#event-or-block-streams-stop-early}
 
-የብሎክ እና ክስተት ዥረት ምሳሌዎች በ Torii ዥረት መጨረሻ ነጥቦች ላይ የተመሰረቱ ናቸው ። የእኩዮች አሁንም እየሰራ መሆኑን ያረጋግጡ ፣ ከዚያ ጊዜ ቆይታን ይሞክሩ-
+ብሎክ እና የክስተት ዥረት ምሳሌዎች በ Torii ዥረት API የመጨረሻ ነጥቦች ላይ ይተማመናሉ። የአውታረ መረብ አቻው አሁንም እየሰራ መሆኑን ያረጋግጡ፣ ከዚያ በጊዜ ማብቂያ ይሞክሩ -
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger blocks 1 --timeout 30s
 cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 ```
 
-HTTP ውህደቶች, የአሁኑ [Torii መጨረሻ ነጥብ ማጣቀሻ ጋር የእርስዎን የመጨረሻ ነጥብ ዱካዎች ለማወዳደር ](/am/reference/torii-endpoints.md).
+ለ HTTP ውህደቶች፣ የእርስዎን API የመጨረሻ ነጥብ መንገዶች አሁን ካለው [Torii API የመጨረሻ ነጥብ ማጣቀሻ](/am/reference/torii-endpoints.md) ጋር ያወዳድሩ።

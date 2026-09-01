@@ -14,16 +14,16 @@ Iroha ကို တည်ဆောက်၊ လည်ပတ် (သို့) �
 
 |ကဏ္ဍ |ဒါကို အသုံးပြုပါ။|
 | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
-| [SDK သင်ကြားချက်များ](/my/guide/tutorials/) |ဘာသာစကားဆိုင်ရာ Client Setup နှင့် sample applications များ |
-| [အကောင်းဆုံးကျင့်ဝတ်များ](/my/guide/best-practices/) |ဖွံ့ဖြိုးတိုးတက်မှု၊ ဖြန့်ချိခြင်း၊ လုပ်ငန်းများ၊ လုံခြုံရေးနှင့် ထုတ်လွှင့်မှုများအတွက် ထုတ်လုပ်မှု လမ်းညွှန်ချက်များ |
-| [ဖွဲ့စည်းပုံနှင့် စီမံခန့်ခွဲမှု](/my/guide/configure/overview.md)|Local peer configuration, genesis, client configuration, keys နဲ့ peer management တွေကို ပြုလုပ်ပေးပါ။|
-| [လုံခြုံရေး ](/my/guide/security/) |Key handling, operational security, VPNs, လှည့်စားမှု စောင့်ကြည့်ခြင်းနှင့် ခွင့်ပြုချက် သန့်ရှင်းရေး |
-| [အဆင့်မြင့် လုပ်ငန်းများ ](/my/guide/advanced/metrics.md) |မက်ထရစ်များ၊ စွမ်းဆောင်မှု စစ်ဆေးမှုများ၊ ဆူညံသံမဏိ စမ်းသပ်မှုများ၊ အပူချိန် ပြန်လည်သွင်းခြင်းနှင့် ပိုးလစ် သတ္တုဖြင့် အလုပ်လုပ်ခြင်း |
+|[SDK သင်တန်းများ](/my/guide/tutorials/) |ဘာသာစကားဆိုင်ရာ Client Setup နှင့် sample applications များ |
+|[အကောင်းဆုံး ကျင့်ဝတ်များ](/my/guide/best-practices/) |ဖွံ့ဖြိုးတိုးတက်မှု၊ ဖြန့်ချိခြင်း၊ လုပ်ငန်းများ၊ လုံခြုံရေးနှင့် ထုတ်လွှင့်မှုများအတွက် ထုတ်လုပ်မှု လမ်းညွှန်ချက်များ |
+|[ဖွဲ့စည်းပုံနှင့် စီမံခန့်ခွဲမှု](/my/guide/configure/overview.md) |Local network peer configuration, blockchain genesis, client configuration, keys, and network peer management  ဒေသတွင်းကွန်ရက်များ၏ peer ဖွဲ့စည်းပုံ၊ ဘလော့ခ်ကို ဖန်တီးခြင်း|
+|[လုံခြုံရေး](/my/guide/security/) |Key handling, operational security, VPNs, လှည့်ကွက်စောင့်ကြည့်ခြင်းနှင့် ခွင့်ပြုချက် သန့်ရှင်းရေး |
+|[အဆင့်မြင့် လုပ်ငန်းများ](/my/guide/advanced/metrics.md) |မက်ထရစ်များ၊ စွမ်းဆောင်မှု စစ်ဆေးမှုများ၊ ဆူညံသံမဏိ စမ်းသပ်မှုများ၊ အပူချိန် ပြန်လည်သွင်းခြင်းနှင့် ပိုးလစ် သတ္တုဖြင့် အလုပ်လုပ်ခြင်း |
 
 ## အကြံပြုသော လမ်းကြောင်း {#recommended-path}
 
-1. [Iroha 3](/my/get-started/install-iroha.md) ကို တပ်ဆင်ပြီး [ ဒေသတွင်းကွန်ရက် ](/my/get-started/launch-iroha.md) ကို စတင်ပါ။
-2. [SDK သင်ရိုးညွှန်းတမ်း ](/my/guide/tutorials/) ကိုရွေးပြီး ငွေပေးချေမှု အသေးစားကို တင်ပါ။
+1. [တပ်ဆင်ရန် Iroha 3](/my/get-started/install-iroha.md) နှင့် [ဒေသတွင်းကွန်ရက်ကို စတင်ရန်](/my/get-started/launch-iroha.md).
+2. [SDK သင်ခန်းစာ](/my/guide/tutorials/) ကို ရွေးပြီး အသေးစား ငွေပေးချေမှုတစ်ခု တင်ပြပါ။
 3. ပြန်လည်သုံးသပ်ခြင်း [အသုံးချမှု ဖွံ့ဖြိုးတိုးတက်ရေး](/my/guide/best-practices/application-development.md) နှင့် [ဒေတာပုံစံထုတ်ခြင်း](/my/guide/best-practices/data-modeling.md) လျှောက်လွှာကို ပုံဖော်မလုပ်ခင် API.
-4. [Network Deployment](/my/guide/best-practices/network-deployment.md), [Operations](/my/guide/best-practices/operations.md) နှင့် [Security and Access](/my/guide/best-practices/security-and-access.md) တို့ကို မျှဝေထားသော (သို့) ထုတ်လုပ်ရေးကွန်ရက်ကို မစတင်ခင် အသုံးပြုပါ။
-5. [Release Readiness](/my/guide/best-practices/release-readiness.md) ကိုလိုက်နာပါ ဒေသတွင်းဖွံ့ဖြိုးတိုးတက်မှုမှ Taira၊ Minamoto သို့မဟုတ် အခြား တိုက်ရိုက်စတင်ခြင်းသို့ တိုးမြှင့်တဲ့အခါ။
+4. [ကွန်ရက် ဖြန့်ချိခြင်း](/my/guide/best-practices/network-deployment.md), [လုပ်ငန်းများ](/my/guide/best-practices/operations.md) နှင့် [လုံခြုံရေးနှင့် ဝင်ရောက်ခွင့်](/my/guide/best-practices/security-and-access.md) တို့ကို မျှဝေထားသော (သို့) ထုတ်လုပ်ရေးကွန်ရက်များ မောင်းနှင်မီ အသုံးပြုပါ။
+5. ဒေသတွင်း ဖွံ့ဖြိုးတိုးတက်မှုမှ Taira၊ Minamoto သို့မဟုတ် အခြား တိုက်ရိုက် ဖြန့်ချိခြင်းသို့ တိုးမြှင့်ရာတွင် [လွတ်မြောက်ရန် အသင့်ရှိခြင်း](/my/guide/best-practices/release-readiness.md) ကို လိုက်နာပါ။

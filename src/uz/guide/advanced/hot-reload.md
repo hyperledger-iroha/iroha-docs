@@ -3,33 +3,33 @@ translation_locale: uz
 translation_source: /guide/advanced/hot-reload.md
 translation_source_hash: 96505bdba910beb902c399004f5cd24f5e5b0773f01df9cdcfdb49d019830d03
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Docker konteynerida issiq qayta yuklash Iroha {#hot-reload-iroha-in-a-docker-container}
+# Issiq Qayta Yuklash Iroha bir Docker konteynerda {#hot-reload-iroha-in-a-docker-container}
 
-Faqat mahalliy debug qilish uchun issiq qayta yuklashdan foydalaning. Oddiy lokal rivojlanish uchun rasmni qayta qurish yoki hosil qilingan Docker Compose to'plamini yangi Kagami paketidan qayta ishga tushirishni afzal ko'ring.
+Faqat mahalliy nosozlikni tuzatishda hot reload-dan foydalaning. Oddiy mahalliy rivojlantirish uchun esa, tasvirni qayta qurish yoki yaratilgan Docker Compose stekni yangi Kagami paketidan qayta ishga tushirishni afzal ko‘ring.
 
-## Tengdoshlar binary oʻrniga {#replace-the-peer-binary}
+## Tarmoq qo‘shnisi Binary ni almashtiring {#replace-the-peer-binary}
 
-Yuqori oqimdagi ish maydonidan Linux-ga mos boʻlgan daemon ikkilamchiini yaratish:
+Yuqori oqim ish maydonchasidan Linux-ga mos daemon ikkilik faylini tuzing:
 
 ```bash
 cargo build --release -p irohad --bin iroha3d --target x86_64-unknown-linux-musl
 ```
 
-Uni ishlayotgan tengdosh konteynerga nusxa ko'chirib, keyin konteynerni qayta ishga tushiring:
+Uni ishlayotgan tugun konteyneriga ko‘chiring, so‘ng o‘sha konteynerni qayta ishga tushiring:
 
 ```bash
 docker cp target/x86_64-unknown-linux-musl/release/iroha3d <container>:/usr/local/bin/iroha3d
 docker restart <container>
 ```
 
-Konteyner nomini tasdiqlash uchun `docker ps` dan foydalaning. Ishlab chiqarilgan to'plamda tengdoshlari `./docker-compose.yml` bilan belgilanadi.
+`docker ps` dan konteyner nomini tasdiqlash uchun foydalaning. Yaratilgan stekda tarmoq tengdoshlari konteynerlari `./docker-compose.yml` tomonidan aniqlanadi.
 
-## Bir martalik tarmog'da Genesisni qayta ishga tushiring {#recommit-genesis-in-a-disposable-network}
+## Bir martalik Tarmoqda blockchain asosini qayta majbur qilish {#recommit-genesis-in-a-disposable-network}
 
-Bir tengdoshi genesisni faqat uning saqlanishi bo'sh bo'lganda amalga oshiradi. bir martalik Docker tarmog'i uchun to'plamni to'xtatish, hosil qilingan holatni olib tashlash, imzolangan genesis paketini qayta tiklash yoki almashtirish va yana boshlash:
+Tarmoq uzviyosi blockchain genesisini faqat saqlash joyi bo'sh bo'lganda yakunlaydi. Bir martalik Docker tarmoq uchun stakni to'xtating, yaratilgan holatni o'chiring, imzolangan blockchain genesis paketini qayta yarating yoki almashtiring va yana ishga tushiring:
 
 ```bash
 docker compose -f ./docker-compose.yml down
@@ -38,8 +38,8 @@ cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyper
 docker compose -f ./docker-compose.yml up
 ```
 
-O'z holatini saqlab qolish kerak bo'lgan tarmoqda genesis o'rniga olmang.
+Holati saqlanishi kerak bo‘lgan tarmoqda blokcheyn genizisini almashtirmang.
 
-## Andoza sozlash {#use-custom-configuration}
+## Maxsus Sozlamalardan Foydalaning {#use-custom-configuration}
 
-Joriy tenglamchi konfiguratsiyasi TOML hisoblanadi. Ishlab chiqarilgan `config.toml`, `genesis.signed.nrt` va tegishli kalit fayllarni rasm kutib turgan konteyner yo'nalishlariga bog'lash yoki nusxa olish, so'ngra tenglamchini qayta ishga tushiring. Ishlab chiqarilgan fayllarni birlashtiring; turli xil Kagami ishlardan fayllarni aralashtirish deserializatsiya yoki konsensus muvaffaqiyatsizligiga olib kelishi mumkin.
+Joriy tugun konfiguratsiyasi TOML formatida. Yaratilgan `config.toml`, `genesis.signed.nrt` va tegishli kalit fayllarini tasvir kutgan konteyner yo‘llariga ulang yoki ko‘chiring, keyin tugunni qayta ishga tushiring. Yaratilgan fayllarni birga saqlang; turli Kagami ishlaridagi fayllarni aralashtirish deserializatsiya yoki konsensus xatolariga olib kelishi mumkin.

@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: 71258f4da9afcd94afce2fc2a53ce43540d8f67054ea789f0b2d105daba26006
+translation_source_hash: 4979ab2c52eba4040d7f003f3da73dbc333fa7e047b0259816d0d34f97377749
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---

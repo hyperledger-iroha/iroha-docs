@@ -6,9 +6,9 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Туған активтар иҫәбенә кредит {#native-asset-escrow}
+# Протоколға индерелгән актив эскроуы {#native-asset-escrow}
 
-Native escrow - һанлы активтар өсөн иҫәп-хисап менән идара ителгән һаҡланыу механизмы. Аҡсаларҙы ҡушымтаға ҡараған иҫәбкә ебәреү урынына һәм был иҫәбен һаҡлау өсөн ҡушымта кодына таяныу урынына, escrow ISIs ҡиммәтен детерминистик протокол һаҡсылыҡ иҫәбенә күсерә һәм бөтә донъя дәүләтендә Escrow ғүмере циклын теркәп бара.
+Native escrow — һанлы активтар өсөн ledger идара иткән һаҡлау механизмы. Активтарҙы ҡушымтаға ҡараған иҫәпкә ебәреп, уны һаҡлау өсөн ҡушымта кодына таяныу урынына, escrow ISIs ҡиммәтте детерминистик протокол һаҡлау иҫәбенә күсерә һәм escrow-ҙың йәшәү циклын донъя торошонда теркәй.
 
 Баҙарҙа иҫәп-хисап өсөн урындағы эскровынан файҙаланығыҙ, Атай стилендәге сираттан тыш түләүҙәр буйынса координация, мөһим ваҡиғаларҙың бикләүҙәре һәм һаҡланған эскроу эштәрен ҡулланығыҙ.
 
@@ -20,7 +20,7 @@ Native escrow - һанлы активтар өсөн иҫәп-хисап мен�
 |`AssetEscrowRecord` |Транспарентлы һанлы активтар иҫәбенә һаҡланыу йәки бикләү. |
 |`AnonymousAssetEscrowRecord` |Һаҡланған депозит иҫәбен юҡҡа сығарыусы документтар, йөкләмәләр һәм раҫлауҙар менән тәьмин ителгән. |
 |Һаҡлыҡ иҫәбе |ID, ID һәм активтар билдәләмәһенән алынған детерминистик протокол иҫәбенә. |
-|Дәлилдәрҙең һешы |Дәлилдәр һешы фактураларҙы, хөкөмдәрҙе, хәбәрҙәрҙе, һаҡлау манифесттарын йәки башҡа сылбырҙан тыш иҫбатлауҙарҙы асыҡлай ала.|
+| Дәлил hash-тары | Дәлил hash-тары invoice, judgment, message, storage manifest йәки башҡа off-chain evidence-ты идентификациялай ала. Evidence payload үҙе escrow record эсендә һаҡланмай. |
 
 Транспарентлы яҙмаларҙа һатыусы, факультатив һатып алыусы, активтар билдәләмәһе, дөйөм сумма, һаҡ аҫтында тотоу иҫәбенең торошо, ғүмер циклы, тәртибе төрө, ҡалған сумма, ирекле сығарыу хоҡуғы, ирекле ваҡыттың тамамланыуы мөһерҙәре, иҫбатлау хэштәре, ваҡыт мөһәрҙәре һәм ирекле хәл итеү мәғлүмәттәре бар.
 
@@ -50,10 +50,10 @@ stateDiagram-v2
 |`MarkEscrowPaymentSent` |Ҡабул ителгән һатып алыусы |`Accepted` -ға күсә `PaymentSent` һатып алыусы селтәрҙән тыш түләү ебәргәндән һуң. |
 |`ReleaseAssetEscrow` |Һатыусы |`PaymentSent` менән `Released` күсерә һәм һатып алыусыға тотош суммаһын тапшыра. |
 |`CancelAssetEscrow` |Һатыусы |`Open` йәки `Accepted`-ны `Cancelled`-гә күсерә һәм һатыусыға түләү билдәләнмәйенсә кире ҡайтара. |
-|`OpenEscrowDispute` |Һатыусы йәки ҡабул ителгән һатып алыусы |`Accepted` йәки `PaymentSent`-ны `Disputed`-ға күсерә һәм иҫбатлау хэштегтарын ҡуша. |
+|`OpenEscrowDispute` |Һатыусы йәки ҡабул ителгән һатып алыусы |`Accepted` йәки `PaymentSent`-ны `Disputed`-ға күсерә һәм иҫбатлау хештарын ҡуша. |
 |`ResolveEscrowDispute` |`CanResolveEscrowDispute` менән иҫәп|`Disputed` менән `Resolved` күсә һәм сумманы һатып алыусы менән һатыусы араһында бүленә. |
 
-Низағдарҙы хәл итеү күләме кире түгел, ә `buyer_amount + seller_amount` депозит суммаһына тиң булырға тейеш. Һөнәрле аяҡтар рөхсәт ителә, әммә бөтә бүленеше ябыҡ балансты иҫәпкә алырға тейеш.
+Низағдарҙы хәл итеү күләме кире түгел, ә `buyer_amount + seller_amount` депозит суммаһына тиң булырға тейеш. Һөнәрле этаптар рөхсәт ителә, әммә бөтә бүленеше ябыҡ балансты иҫәпкә алырға тейеш.
 
 ### Rust Миҫал {#rust-example}
 
@@ -283,17 +283,17 @@ fn open_anonymous_escrow(
 }
 ```
 
-Нигеҙҙә һаҡланған транзакция моделе өсөн [Anonymous Transactions](/ba/blockchain/anonymous-transactions.md) ҡарағыҙ.
+Нигеҙҙә һаҡланған транзакция моделе өсөн [Аноним транзакциялар](/ba/blockchain/anonymous-transactions.md) ҡарағыҙ.
 
 ## SDK Ҡулланыу {#sdk-usage}
 
-Эскроу ярҙамы төрлөсә асыҡлана SDKs. Rust каноник типланған мәғлүмәттәр моделе бар. Python Хәҙерге ваҡытта активтарҙы бикләүгә ярҙам итеүселәрҙе асыҡлай. JavaScript һәм TypeScript ҡулланыу Kotodama Ҡунаҡсыларҙың шылтыратыуҙарына ышаныслылыҡ һала. Kotlin/JVM һәм Swift баҙар өсөн типографик файҙалы йөк төҙөүселәр һәм аноним ышаныс менән тәьмин итеүсе.
+Эскроу ярҙамы төрлөсә асыҡлана SDKs. Rust каноник типланған мәғлүмәттәр моделе бар. Python Хәҙерге ваҡытта активтарҙы бикләүгә ярҙам итеүселәрҙе асыҡлай. JavaScript һәм TypeScript ҡулланыу Kotodama Ҡунаҡсыларҙың саҡырыуҙарына ышаныслылыҡ һала. Kotlin/JVM һәм Swift баҙар өсөн типографик файҙалы йөк төҙөүселәр һәм аноним ышаныс менән тәьмин итеүсе.
 
 |SDK |Был өҫкө йөҙөн ҡулланығыҙ.|Күләмдәре |
 | --- | --- | --- |
 | [Rust](#rust-sdk) |`iroha::data_model::isi::escrow` |Баҙарҙа депозит, дөйөм йоҙаҡтар, анонимные депозит, һорауҙар һәм ваҡиғалар. |
 | [Python](#python-asset-locks) |`Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock` һәм клиент ярҙамсылары `*_and_wait` |Дөйөм активтар бикләү. Баҙар һәм аноним ышаныслы ярҙамсылары әлегә беренсе класлы Python алымдар түгел. |
-| [JavaScript / TypeScript](#javascript-and-typescript-kotodama) |`compileKotodamaProgram` от `@iroha/iroha-js/kotodama-compiler` |Kotodama килешеүҙәр эсендә эскроу хостинг шылтыратыуҙар. |
+| [JavaScript / TypeScript](#javascript-and-typescript-kotodama) |`compileKotodamaProgram` от `@iroha/iroha-js/kotodama-compiler` |Kotodama килешеүҙәр эсендә эскроу хостинг саҡырыуҙар. |
 | [Kotlin / JVM](#kotlin-and-jvm) |`InstructionTemplate` кластары менән `org.hyperledger.iroha.sdk.core.model.instructions` |Баҙар майҙаны һәм аноним эскроу ҡулайлаштырылған инструкция шаблондары. |
 | [Swift / iOS](#swift-and-ios) |`NativeEscrowInstructionBuilders` һәм `IrohaSDK.build*Escrow*` ярҙамсылары |Баҙар һәм аноним депозит Norito JSON инструкция йөкләмәләре. |
 
@@ -365,7 +365,7 @@ client.expire_asset_lock_and_wait(
 
 JavaScript SDK әлеге ваҡытта туранан-тура урындағы эскроу транзакция төҙөүселәрҙе асыҡламай. Kotodama килешеүҙәрен урынлаштырыусы JavaScript йәки TypeScript ҡушымталары өсөн, Kotodama компиляторы менән экстроу хостинг саҡырыуҙарын төҙөгеҙ.
 
-Туған эскроу хостинг шылтыратыуҙарына асыҡтан-асыҡ инеү күрһәткестәре кәрәк, сөнки компилятор ISIs үтә күренмәле эскроуға тарраҡ инеү йыйылмаларын ала алмай. Экспорт ителгән инеү нөктәләрендә `escrow_*` ингредиенттарын саҡырыусы wildcard иҫкәртеүҙәре ҡулланығыҙ.
+Протоколға индерелгән эскроу host-саҡырыуҙарына асыҡ инеү күрһәткестәре кәрәк, сөнки компилятор opaque escrow ISIs өсөн тарыраҡ инеү йыйылмаларын сығара алмай. `escrow_*` built-in-дарын саҡырған экспортланған инеү нөктәләрендә wildcard күрһәткестәр ҡулланығыҙ.
 
 ```js
 import { compileKotodamaProgram } from "@iroha/iroha-js/kotodama-compiler";
@@ -397,7 +397,7 @@ if (compiled.diagnostics.length > 0) {
 }
 ```
 
-Низағ өсөн ҡулланыу `escrow_open_dispute(offer, evidence)` һәм `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)`. Аноним конфискация хостинг шылтыратыуҙар ҡабул итә Norito файҙалы йөкләмә байттарын һорап, мәҫәлән: `anonymous_escrow_open_offer(request)`.
+Низағ өсөн ҡулланыу `escrow_open_dispute(offer, evidence)` һәм `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)`. Аноним конфискация хостинг саҡырыуҙар ҡабул итә Norito файҙалы йөкләмә байттарын һорап, мәҫәлән: `anonymous_escrow_open_offer(request)`.
 
 ### Kotlin һәм JVM {#kotlin-and-jvm}
 
@@ -431,7 +431,7 @@ println(open.arguments)
 println(NativeEscrowPermissions.CAN_RESOLVE_ESCROW_DISPUTE)
 ```
 
-Аноним шаблондар түбәндәгесә була: `OpenAnonymousAssetEscrowInstruction`, `AcceptAnonymousAssetEscrowInstruction`, `MarkAnonymousEscrowPaymentSentInstruction`, `ReleaseAnonymousAssetEscrowInstruction`, `CancelAnonymousAssetEscrowInstruction`, `OpenAnonymousEscrowDisputeInstruction`, һәм `ResolveAnonymousEscrowDisputeInstruction`. Android Ява шылтыратыусылар тап килә ҡулланырға мөмкин `NativeEscrowInstructions.*` Төҙөүселәр Android артефакт.
+Аноним шаблондар түбәндәгесә була: `OpenAnonymousAssetEscrowInstruction`, `AcceptAnonymousAssetEscrowInstruction`, `MarkAnonymousEscrowPaymentSentInstruction`, `ReleaseAnonymousAssetEscrowInstruction`, `CancelAnonymousAssetEscrowInstruction`, `OpenAnonymousEscrowDisputeInstruction`, һәм `ResolveAnonymousEscrowDisputeInstruction`. Android Ява саҡырыусылар тап килә ҡулланырға мөмкин `NativeEscrowInstructions.*` Төҙөүселәр Android артефакт.
 
 ### Swift һәм iOS {#swift-and-ios}
 

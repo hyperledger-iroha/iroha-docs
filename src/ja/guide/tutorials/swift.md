@@ -3,18 +3,18 @@ translation_locale: ja
 translation_source: /guide/tutorials/swift.md
 translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Swift およびiOS {#swift-and-ios}
+# Swift と iOS {#swift-and-ios}
 
-労働組合 Swift SDK アウトストリームワークスペースで運送されるのは `IrohaSwift` Swift 下のパッケージ `IrohaSwift/`. そのパッケージマニストでは3つの図書館製品が定義されています`IrohaSwift`, `IrohaSwiftMobileTransports`, そして `IrohaSwiftTransferUI`およびiOS 15+とmacOS 12+を対象とする Swift 道具 5.9.
+上流ワークスペースから出荷された Swift SDK は、`IrohaSwift/`の下にある`IrohaSwift` Swift パッケージです。そのパッケージの技術マニフェストは、`IrohaSwift`、`IrohaSwiftMobileTransports`、`IrohaSwiftTransferUI`の3つのライブラリ製品を定義しており、Swift ツール5.9でiOS 15+およびmacOS 12+をターゲットにしています。
 
-パッケージはネイティブ `NoritoBridge` バイナリーターゲットに依存します.パッケージ解像度は構築前に `../dist/NoritoBridge.xcframework` を有効化し,ネイティブシンボルがロードされていない場合,トランザクションまたはConnect暗号経路はブリッジ利用できないエラーを投げ出します.
+このパッケージはネイティブの `NoritoBridge` バイナリターゲットに依存しています。パッケージ解決はビルド前に `../dist/NoritoBridge.xcframework` を検証し、ネイティブシンボルがロードされていない場合、トランザクションや Connect の暗号パスは bridge-unavailable エラーを投げます。
 
-## Swift パッケージ管理者 {#swift-package-manager}
+## Swift パッケージマネージャー {#swift-package-manager}
 
-チェックアウトされたワークスペースに対して開発する場合,地元の `IrohaSwift/` パッケージディレクトリに SwiftPM を点灯します. `Package.swift` によって使用されるパケットアイデンティティは `IrohaSwift` です:
+チェックアウトされたワークスペースで開発する場合、SwiftPM をローカルの `IrohaSwift/` パッケージディレクトリに向けます。`Package.swift` が使用するパッケージの識別子は `IrohaSwift` です:
 
 ```swift
 dependencies: [
@@ -30,22 +30,22 @@ targets: [
 ]
 ```
 
-アプリのパスを変更する.現在の `examples/ios/ConnectMinimalApp` パスをコピーしないでください.そのマニフェストは `../../IrohaSwift` を `examples/IrohaSwift` に解決します.
+アプリのパスを調整してください。現在の `examples/ios/ConnectMinimalApp` パスをそのままコピーしないでください。その技術的マニフェストは `../../IrohaSwift` を `examples/IrohaSwift` に解決します。
 
-パッケージを解く前に,ブリッジがワークスペースのルーツに存在していることを確認してください:
+パッケージを解決する前に、ブリッジがワークスペースのルートに存在することを確認してください：
 
 ```bash
 cd /path/to/iroha
 make bridge-xcframework
 ```
 
-これは `dist/NoritoBridge.xcframework`を生成し, `IrohaSwift/Package.swift` は `../dist/NoritoBridge.xcframework` と参照する.
+これは `dist/NoritoBridge.xcframework` を生成します；`IrohaSwift/Package.swift` はそれを `../dist/NoritoBridge.xcframework` として参照します。
 
 ## CocoaPods {#cocoapods}
 
-また,コードベースには `IrohaSwift/IrohaSwift.podspec`. 宣言する `IrohaSwift` カプセル Swift 5.9とiOS 15で,podspecが引っ張ります Swift メインリポジトリからの情報源;ネイティブブリッジはまだ存在しなければならない 取引暗号化,非Ed25519署名,およびConnect暗号にリンクされています.
+コードベースには `IrohaSwift/IrohaSwift.podspec` も含まれています。`IrohaSwift` ポッド、Swift 5.9、そして iOS 15 を宣言しています。ポッドスペックはメインリポジトリから Swift ソースを取得します；トランザクションのエンコード、非 Ed25519 の署名、および Connect 暗号のために、ネイティブブリッジは依然として存在しリンクされている必要があります。
 
-## スピードスタート {#quickstart}
+## クイックスタート {#quickstart}
 
 ```swift
 import Foundation
@@ -63,9 +63,9 @@ if #available(iOS 15.0, macOS 12.0, *) {
 }
 ```
 
-## Taira 試聴する {#try-taira-read-only}
+## 試す Taira 読み取り専用 {#try-taira-read-only}
 
-デバイスまたはシミュレーターが公共の Taira エンドポイントに到達できることを確認するために,シンプルな HTTP 探査機から開始します:
+まず、プレーンな HTTP プローブを使用して、デバイスまたはシミュレーターがパブリック Taira API エンドポイントに到達できることを確認します:
 
 ```swift
 import Foundation
@@ -83,9 +83,9 @@ if #available(iOS 15.0, macOS 12.0, *) {
 }
 ```
 
-同じ使い方 `URLSession` チェック `https://taira.sora.org/v1/assets/definitions?limit=5` あなたが建てる間に UI 行動に切り替える `IrohaSDK` アップが安全なストレージから署名資料をアップロードし,アカウントが資金調達された後のみ Taira.
+UI と再試行動作を構築している間、`https://taira.sora.org/v1/assets/definitions?limit=5` に対しても同じ `URLSession` チェックを使用してください。Taira 上でアカウントに資金が入金され、安全なストレージから暗号署名者のマテリアルがアプリに読み込まれた後にのみ、`IrohaSDK` 送信ヘルパーに切り替えてください。
 
-トランザクションを作成し,送信するには `IrohaSDK` ヘルパーを使用します.これらはネイティブブリッジサポートのトランザクションエンコードを呼びます:
+トランザクションを構築して送信するには、`IrohaSDK` ヘルパーを使用します。これらはネイティブブリッジ対応のトランザクションエンコーダーを呼び出します。
 
 ```swift
 let transfer = TransferRequest(
@@ -107,15 +107,15 @@ if #available(iOS 15.0, macOS 12.0, *) {
 }
 ```
 
-`TransferRequest`, `MintRequest`, `BurnRequest`, `ShieldRequest`, そして `UnshieldRequest` カノニカル・アカウントを検証する IDs また,法典的な未定のBase58資産定義 IDs 署名する前に
+`TransferRequest`、`MintRequest`、`BurnRequest`、`ShieldRequest`、および `UnshieldRequest` は、署名前に標準的なアカウントIDおよび標準的な接頭辞なしのBase58資産定義IDを検証します。
 
-## 国産エスクロー {#native-escrow}
+## ネイティブエスクロー {#native-escrow}
 
-Swift 市場と匿名のエスクロー指示を構築する Norito JSON 経路での有用荷物 `NativeEscrowInstructionBuilders` またはそれと同等 `IrohaSDK.build*Escrow*` 助手者 [国産資産のエスクロー](/ja/blockchain/escrow.md#swift-and-ios) 例として,匿名証明フィールドと紛争解決許可トークン.
+Swift は、`NativeEscrowInstructionBuilders` または同等の `IrohaSDK.build*Escrow*` ヘルパーを通じて、Norito JSON ペイロードとしてマーケットプレイスおよび匿名エスクロ指示を構築します。例、匿名証明フィールド、および紛争解決者権限トークンについては [ネイティブ資産エスクロー](/ja/blockchain/escrow.md#swift-and-ios) を参照してください。
 
 ## 署名 {#signing}
 
-`Keypair` エド25519の便利性です API. 他のアルゴリズムでは, `IrohaSDK` と `defaultSigningAlgorithm` そして使用 `generateSigningKey()` または `signingKey(fromSeed:)`:
+`Keypair` は Ed25519 の便利な API です。他のアルゴリズムの場合は、`defaultSigningAlgorithm` を使って `IrohaSDK` を構築し、`generateSigningKey()` または `signingKey(fromSeed:)` を使用してください:
 
 ```swift
 let pqSdk = IrohaSDK(
@@ -125,11 +125,11 @@ let pqSdk = IrohaSDK(
 let signingKey = try pqSdk.generateSigningKey()
 ```
 
-`SigningAlgorithm` enum は現在,Ed25519, secp256k1, BLS 正常および小変数, ML-DSA, GOST R 34.10-2012パラメータセット,および SM2 を含む. Ed25519便利経路の外ではネイティブブリッジサポートが必要である.
+`SigningAlgorithm` 列挙型には現在、Ed25519、secp256k1、BLS の標準および小型バリアント、ML-DSA、GOST R 34.10-2012 パラメータセット、および SM2 が含まれています。Ed25519 の簡易パス以外では、ネイティブブリッジのサポートが必要です。
 
-## 接続する {#connect}
+## 接続 {#connect}
 
-Connect クライアントは Swift ソースで実装され, `NoritoBridge` によってサポートされている暗号およびフレームコデックがあります.
+Connectクライアントは Swift ソースで実装されており、暗号化およびフレームコーデックは`NoritoBridge`によってサポートされています。
 
 ```swift
 let sessionID = Data(repeating: 0, count: 32) // replace with the session bytes
@@ -148,27 +148,27 @@ let session = ConnectSession(sessionID: sessionID, client: client)
 let keyPair = try ConnectCrypto.generateKeyPair()
 ```
 
-`ConnectSession` は開閉制御,暗号化された封筒読み取り,方向鍵,流れ制御,イベントストリーム,バランスストリーム,診断ジャーナルを操作します
+`ConnectSession` は、開閉操作、暗号化データコンテナの読み取り、方向キー、フロー制御、イベントストリーム、残高ストリーム、および診断ジャーナルを処理します。
 
-## 現在 の 対象 {#current-coverage}
+## 現在のカバレッジ {#current-coverage}
 
-Swift ソースは,現在以下のものを含む.
+現在、Swift ソースには以下が含まれています:
 
-- `ToriiClient` HTTP アカウント,資産,ニックネーム,探索者ページ, RWA,契約,マルチシグ,ガバナンス,サブスクリプション,データ利用可能性,機密資産,ノード/ランタイム状態,健康,メトリック,および SSE ストリーム
-- `IrohaSDK`トランザクション作成者および移転,ミント,バーン,シールド,アンシールド, ZK 移転, ZK 資産登録,メタデータ,識別請求,マルチシグ登録,ガバナンス指示の提出/投票援助者
-- `PendingTransactionQueue`と `FilePendingTransactionQueue`経由で取引のキューサポートを待機している
-- `AccountAddress`と `AccountId`経由で口座アドレスおよび I105 助手
-- Ed25519, secp256k1, ML-DSA, BLS, GOST,および SM2 の署名表面,必要に応じてネイティブブリッジサポートで
-- 市場用のネイティブエスクロー指示用荷物の構築者および匿名エスクロー
-- 接続 WebSocket,フレーム,暗号,セッション,キュー,リプレイ,および診断ヘルパー
-- カゲムシャの準備,入力された補充および償還,運行状態,メモ,ピアバンドル,領収書,および QR ストリームモデル
-- SoraFS,データ可用性,証明添付補助者
+- `ToriiClient` HTTP アカウント、資産、エイリアス、エクスプローラページ、RWA、コントラクト、マルチシグ、ガバナンス、サブスクリプション、データ可用性、機密資産、ノード/ランタイムのステータス、ヘルス、メトリクス、そして SSE ストリーム用のヘルパー
+- `IrohaSDK` 転送、発行、破棄、シールド、アンシールドのためのトランザクションビルダーおよび送信／ポーリングヘルパー、ZK 転送、ZK 資産登録、メタデータ、識別子クレーム、マルチシグ登録、およびガバナンスの指示
+- `PendingTransactionQueue`および`FilePendingTransactionQueue`を通じた保留中のトランザクションキューのサポート
+- account-address と I105 ヘルパーを `AccountAddress` と `AccountId` を通して
+- Ed25519、secp256k1、ML-DSA、BLS、GOST、および SM2 の署名面で、必要に応じてネイティブブリッジサポート付き
+- マーケットプレイスおよび匿名エスクロー用のネイティブエスクロー指示ペイロードビルダー
+- WebSocket、フレーム、暗号、セッション、キュー、リプレイ、および診断ヘルパーを接続する
+- 影武者の準備、入力したチャージと償還、操作状況、メモ、ネットワークピアバンドル、プロトコル結果記録、および QR ストリームモデル
+- SoraFS、データ利用可能性、および証明添付ヘルパー
 
 ## API 例 {#api-examples}
 
-`IrohaSwift/Sources/IrohaSwift` を公共の実装で使用し,同じソース修正からテストされた利用例では `IrohaSwift/Tests/IrohaSwiftTests` を使用する.
+同じソース改訂からの公開実装には`IrohaSwift/Sources/IrohaSwift`を使用し、テスト済みの使用例には`IrohaSwift/Tests/IrohaSwiftTests`を使用してください。
 
-## ソース参照 {#source-references}
+## 参考文献 {#source-references}
 
 - `IrohaSwift/Package.swift`
 - `IrohaSwift/IrohaSwift.podspec`

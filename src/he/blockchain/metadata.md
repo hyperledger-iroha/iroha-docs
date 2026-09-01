@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # מטאדאטה {#metadata}
 
-מטאדאטה היא מפה של ערך מפתח מבוקש הקשורת לאובייקטים במספר. המפתחות הן ערכים `Name` והערכים הם עומסי תועלת JSON (`Json`).
+מטאדאטה היא מפה של ערך מפתח מבוקש הקשורת לאובייקטים במספר. המפתחות הן ערכים `Name` והערכים הם מטענים JSON (`Json`).
 
 האובייקטים הבאים יכולים להכיל מטא נתונים:
 
@@ -18,16 +18,16 @@ translation_engine: nllb-200-ct2
 - הגדרות נכסים
 - NFTs
 - RWAs
-- תפעילים
+- טריגרים
 - עסקאות
 
-השתמשו בתנתונים מטא עבור שדות תיאוריים או אינדקסינג קטנים שייכים למצב ספריה. עומסים מועילים גדולים צריכים להיות מאוחסנים מחוץ ל- WSV ומועדגים על ידי מסלול דיג'סט, URI, או SoraFS.
+השתמשו ב־metadata עבור שדות תיאוריים או שדות אינדוקס קטנים ששייכים למצב ספר החשבונות. Payloads גדולים צריכים להישמר מחוץ ל־WSV ולהיות מופנים באמצעות digest, URI או נתיב SoraFS.
 
-לקבלת הוראות על בחירת נתונים מטאטא, נכסים NFTs, RWAs או אחסון מחוץ לרשת, ראה [הבחירות לאחסון נתונים מטטאטא ונתונים ספריים ](/he/guide/configure/metadata-and-store-assets.md).
+לקבלת הוראות על בחירת מטא-נתונים, נכסים NFTs, RWAs או אחסון מחוץ לרשת, ראה [הבחירות לאחסון מטא-נתוניםטא ונתונים ספריים ](/he/guide/configure/metadata-and-store-assets.md).
 
 ## נסה את זה על Taira {#try-it-on-taira}
 
-נתונים מטאטא נראים באמצעות קריאת משאבים רגילה. פקודה זו רשימה הגדרות נכסים Taira שיש להם כיום נתונים מטטא:
+מטא-נתונים נראים באמצעות קריאת משאבים רגילה. פקודה זו רשימה הגדרות נכסים Taira שיש להם כיום מטא-נתונים:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=100' \
@@ -48,9 +48,9 @@ curl -fsS 'https://taira.sora.org/v1/accounts?limit=20' \
 
 מתייחס לתוצאת ריקה כתוצאה תקפה. זה אומר שהדף הנוכחי של Taira אובייקטים אינו מכיל מטא נתונים, לא כי נקודת הסיום נכשלה.
 
-## עדכון נתונים מטאטא {#updating-metadata}
+## עדכון מטא-נתונים {#updating-metadata}
 
-הנתונים המטאטאליים משתנים עם הוראות מיוחדות Iroha:
+המטא-נתונים משתנים עם הוראות מיוחדות Iroha:
 
 - [`SetKeyValue`](/he/blockchain/instructions.md#setkeyvalue-removekeyvalue) מדביקים או מחליפים מפתח
 - [`RemoveKeyValue`](/he/blockchain/instructions.md#setkeyvalue-removekeyvalue) מסיר מפתח
@@ -83,8 +83,8 @@ MetadataChanged --> DomainMetadataChanged
 
 השתמשו ב- [filters של אירועים נתונים ](/he/blockchain/filters.md#data-event-filters) כדי לחתום רק על אירועי מטא נתונים עבור סוג הארגון או אובייקט ID החשוב לאינטגרציה.
 
-## שאלות {#queries}
+## שאילתות {#queries}
 
-נתונים מטאטא חוזרים כחלק מהאובייקט שאל. לדוגמה, השתמש [`FindAccountById`](/he/reference/queries.md#accounts-and-permissions), [`FindDomainById`](/he/reference/queries.md#domains-and-peers), או [`FindAssetDefinitionById`](/he/reference/queries.md#assets-nfts-and-rwas). השתמש [`FindNfts`](/he/reference/queries.md#assets-nfts-and-rwas) או [`FindNftsByAccountId`](/he/reference/queries.md#assets-nfts-and-rwas) עבור NFTs, ו [`FindRwas`](/he/reference/queries.md#assets-nfts-and-rwas) עבור RWA הרבה. ואז לקרוא את שדה הנתונים המתאים של האובייקט. תשובות השאלות של NFT חושפות את המפה NFT `content` כמטאטא נתונים רשומים.
+מטא-נתונים מוחזרים כחלק מהאובייקט שעליו בוצעה השאילתה. לדוגמה, השתמשו ב-[`FindAccountById`](/he/reference/queries.md#accounts-and-permissions), ב-[`FindDomainById`](/he/reference/queries.md#domains-and-peers) או ב-[`FindAssetDefinitionById`](/he/reference/queries.md#assets-nfts-and-rwas). השתמשו ב-[`FindNfts`](/he/reference/queries.md#assets-nfts-and-rwas) או ב-[`FindNftsByAccountId`](/he/reference/queries.md#assets-nfts-and-rwas) עבור NFTs, וב-[`FindRwas`](/he/reference/queries.md#assets-nfts-and-rwas) עבור אצוות RWA. לאחר מכן קראו את שדה הנתונים המתאים של האובייקט. תשובות לשאילתות NFT חושפות את מפת ה-`content` של ה-NFT כמטא-נתונים רשומים.
 
-מפתחות הנתונים מטאטא הם חלק ממצב הספרים, אז לשמור אותם יציבים ולהימנע מקודד גרסה ספציפית יישום ל-churn לתוך שם המפתח כאשר ערך JSON יכול לשאת את הגרסה הזו באופן בולט.
+מפתחות המטא-נתונים הם חלק ממצב הספרים, אז לשמור אותם יציבים ולהימנע מקודד גרסה ספציפית יישום ל-churn לתוך שם המפתח כאשר ערך JSON יכול לשאת את הגרסה הזו באופן בולט.

@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /cookbook/connect-to-taira.md
-translation_source_hash: 263e058a0877e1a3c48b6514b127bc56022e3d244284e0b72881743a4aee0f58
+translation_source_hash: e14be7d9314f26f40f6aa30678fddcfcfea39eda9b98016f1b2f84838203c548
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,13 +10,13 @@ translation_engine: nllb-200-ct2
 
 ## ရလဒ် {#outcome}
 
-Taira ကိုရောက်ရှိနိုင်ကြောင်း အတည်ပြုခြင်း၊ ဒေသခံဖောက်သည် ဖွဲ့စည်းမှုတစ်ခုမှ ကန်နီကလစ် I105 အကောင့် ID ကို ရယူခြင်း၊ စာချုပ်ထိုးသူအား testnet XOR ဖြင့် ငွေကြေးထောက်ပံ့ခြင်းနှင့် အခွန်တင်ဒါဖြင့် ကန်နာရီရောင်းချမှုတစ်ခုကို တင်သွင်းခြင်း။ ဤနည်းပြချက်သည် Minamoto သို့စာရင်းတစ်စောင်မျှ မပို့ပါ။
+Taira ကိုရောက်ရှိနိုင်ကြောင်း အတည်ပြုခြင်း၊ ဒေသခံဖောက်သည်ကွန်ဖိုင်နံပါတ်မှ Single Protocol-Standard I105 အကောင့် ID ကိုထုတ်ယူခြင်း၊ testnet XOR ဖြင့် cryptographic signer ကိုထောက်ပံ့ခြင်းနှင့် fee quoted canary ငွေပေးချေမှုတစ်ခုတင်သွင်းခြင်း။ ဤနည်းပြချက်သည် Minamoto သို့ စာရေးသားခြင်းတစ်ခါမျှ မပို့ပါ။
 
 ## လိုအပ်ချက်များ {#prerequisites}
 
 - `curl`, `jq`, Python 3.11 သို့မဟုတ်နောက်ဆုံး၊နှင့် လက်ရှိ `iroha` နှင့် `kagami` ဘိုင်နရီများ။
-- Taira ကွင်းဆက်၊ အဆုံးအသတ်မှတ်ချက်၊ အကောင့်ပရိုဖိုင်နှင့် သီးသန့် testnet ခလုတ်ဖြင့်ဖန်တီးထားသော `taira.client.toml` ကိုလိုက်နာပါ။ [ ကိုလိုက်နာပြီး Taira Client Config](/my/get-started/sora-nexus-dataspaces.md#_3-create-a-taira-client-config) ကိုဖန်တီး၍ ရင်းမြစ်ထိန်းချုပ်မှုမှ ဖိုင်ကိုရှောင်ရှားပါ။
-- Run-ready `taira_faucet_claim.py` from [Get Testnet XOR on Taira](/my/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira), saved next to the client configuration ကိုနှိပ်ပါ။
+- A ကို `taira.client.toml` ဖန်တီးခဲ့သည် Taira သံကြိုး၊ API endpoint, account profile နဲ့ testnet key ကို လိုက်နာပါ။ [A ကို ဖန်တီးပါ။ Taira Client Config ကို](/my/get-started/sora-nexus-dataspaces.md#_3-create-a-taira-client-config) ပြီးတော့ ဖိုင်ကို အရင်းအမြစ် ထိန်းချုပ်မှုကနေ ထုတ်ပစ်ပါ။
+- Run-ready `taira_faucet_claim.py` from [Testnet XOR ကို Taira သို့ခေါ်ယူပါ။](/my/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) ကနေ client configuration အနားမှာ သိမ်းထားတယ်။
 
 ## ခြေလှမ်း {#steps}
 
@@ -38,17 +38,17 @@ curl -sS -H 'Accept: application/json' \
 
 ### (၂) ပြည်သူလူထုရဲ့ ရောဂါစစ်ဆေးမှုကို ဆောင်ရွက်ပါ။ {#_2-run-the-public-diagnostics}
 
-ဤစစ်ဆေးမှုက ဖတ်နိုင်မှုသာရှိပြီး လက်မှတ်ရေးထိုးသူကွန်ဖိုင်ကို မထည့်ပါ။
+ဤစစ်ဆေးချက်သည် ဖတ်နိုင်မှုသာရှိပြီး cryptographic signer configuration ကို မတင်ပါ
 
 ```bash
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-DNS, TLS၊ ကွင်းဆက် (သို့) အဆုံးသတ်မှတ်ချက် ကျရှုံးမှုအကြောင်း ဆရာဝန်က အစီရင်ခံတဲ့အခါ စာကို ဆက်မရေးပါနဲ့။ ပြည့်သိပ်တဲ့ အများပြည်သူတန်းဟာ ယာယီဖြစ်တယ်၊ နယ်နိမိတ်ထားတဲ့ မူဝါဒတစ်ခုနဲ့ စောင့်ပြီး ထပ်စမ်းပါ။
+DNS ၊ TLS၊ ကွင်းဆက် (သို့) API အဆုံးသတ်မှတ်ချက် ပျက်ကွက်မှုအကြောင်း ဆရာဝန်က အစီရင်ခံတဲ့အခါ စာကို ဆက်မရေးပါနဲ့။ ပြည့်ဝတဲ့ အများပြည်သူတန်းဟာ ယာယီဖြစ်တယ်၊ နယ်နိမိတ်ထားတဲ့ မူဝါဒတစ်ခုနဲ့ စောင့်ပြီး ထပ်မံ စမ်းပါ။
 
-### (၃) လျှို့ဝှက်ချက် မနှိပ်ဘဲ Taira အကောင့်ကို ID မှထုတ်ယူပါ။ {#_3-derive-the-taira-account-id-without-printing-a-secret}
+### (၃) လျှို့ဝှက်ချက် မနှိပ်ဘဲ Taira အကောင့် ID ကို ရယူပါ။ {#_3-derive-the-taira-account-id-without-printing-a-secret}
 
-Config ထဲက Public Key ကိုပဲ ဖတ်ပြီး Code လုပ်ပါ။ Taira I105 Profile ကို `[account].domain` value supplies routing context ဆိုသည်မှာ ငွေစာရင်း၏ အစိတ်အပိုင်း မဟုတ်ပါ။ ID.
+config ထဲက public key ကိုသာ ဖတ်ပြီး Taira I105 profile နဲ့ encode လုပ်ပါ။ `[account].domain` value က routing context ကို ပေးပါတယ်။ account ID မှာ မပါဝင်ပါဘူး။
 
 ```bash
 TAIRA_PUBLIC_KEY="$(python3 - <<'PY'
@@ -65,11 +65,11 @@ export TAIRA_ACCOUNT_ID="$(
 printf '%s\n' "$TAIRA_ACCOUNT_ID"
 ```
 
-output သည် domainless canonical I105 လိပ်စာဖြစ်သည်။ `wallet@payments.universal` ကဲ့သို့သောအမည်များသည် aliases များဖြစ်ပြီး တင်းကျပ်သောစာရင်းကွင်းများတွင်မအသုံးပြုမီဖြေရှင်းရန်လိုအပ်သည်။
+Output သည် domainless single protocol-standard I105 အမည်ဖြစ်သည်။ `wallet@payments.universal` ကဲ့သို့သောအမည်များသည် aliases များဖြစ်ပြီး တင်းကျပ်သောစာရင်းကွင်းများတွင်မသုံးမီ ဖြေရှင်းရန်လိုအပ်သည်။
 
 ### (၄) လက်ရှိ Taira အခွန်လိုင်စင်ကို တောင်းဆိုခြင်း {#_4-claim-the-current-taira-fee-asset}
 
-Faucet Response သည် fee asset သတ်မှတ်ချက်အတွက် အမှန်တရား၏ အရင်းအမြစ်ဖြစ်သည်။ အခြားကွန်ရက်တစ်ခုမှ ID ကိုကူးယူခြင်းအစား ပြန်လည်ပို့သော Base58 ID ကိုသိမ်းပါ။
+testnet ငွေကြေးထောက်ပံ့မှု ဝန်ဆောင်မှု တုံ့ပြန်မှုက အခွန်လက်ဝယ် သတ်မှတ်ချက်အတွက် အမှန်တရားရဲ့ အရင်းအမြစ်ပါ။ အခြားကွန်ရက်တစ်ခု (သို့) ရှေးဟောင်း run တစ်ခုမှ ID ကို ကူးယူမယ့်အစား ပြန်လည်ပေးပို့ထားတဲ့ Base58 ID ကို သိမ်းထားပါ။
 
 ```bash
 python3 ./taira_faucet_claim.py "$TAIRA_ACCOUNT_ID" \
@@ -80,7 +80,7 @@ jq -n --arg gas_asset_id "$TAIRA_FEE_ASSET" \
   '{gas_asset_id: $gas_asset_id}' > taira.tx-metadata.json
 ```
 
-အများဆုံး တစ်မိနစ်လောက် ဟန်ချက်ညီမှုကို စစ်ဆေးပါ။ ရေပိုက်က ငွေကြေးထောက်ပံ့မှုလုပ်ငန်းကို မမြင်ရခင် `202 Accepted` ပြန်ပို့နိုင်သည်။
+အများဆုံး တစ်မိနစ်လောက် ဟန်ချက်ညီမှုကို စစ်ဆေးပါ။ testnet ငွေကြေးထောက်ပံ့မှု ဝန်ဆောင်မှုက ငွေကြေးပေးချေမှုကို မြင်နိုင်မချင်း `202 Accepted` ပြန်ပို့နိုင်ပါတယ်။
 
 ```bash
 funded=false
@@ -96,11 +96,11 @@ done
 test "$funded" = true
 ```
 
-`gas_asset_id` သည် ငွေပေးချေမှု metadata ဖြစ်သည်။ ရှင်းလင်းသော `--fee-payer authority` ရွေးချယ်မှုက လက်မှတ်ဖြင့် ချည်နှောင်ထားပြီး CLI သည် လက်မှတ်မထိုးခင်မှာ တိကျတဲ့ အခွန် quote ကိုရယူသည်။
+`gas_asset_id` သည် ငွေပေးချေမှု metadata ဖြစ်သည်။ ရှင်းလင်းသော `--fee-payer authority` ရွေးချယ်မှုက လက်မှတ်ဖြင့် ချည်နှောင်ထားပြီး CLI သည် လက်မှတ်မထိုးမီမှာ အခွန်စျေးနှုန်းခန့်မှန်းချက်ကို တိကျစွာရရှိသည်။
 
 ## စစ်ဆေးပါ {#verify}
 
-JSON လက်မှတ်ကို သိမ်းထားပြီး Applied Finality ကို စောင့်ပါ။ `--no-wait` ကို ထုတ်ပေးခြင်းသည်လည်း အစပိုင်းတင်သွင်းမှုကို အတည်ပြုမှုအတွက်စောင့်စေသည်။ ရှင်းလင်းသောအခြေအနေဖတ်ခြင်းက နောက်ဆုံး pipeline အခြေအနေကို သက်သေပြသည်။
+JSON ပရိုတိုကောရဲ့ ရလဒ် မှတ်တမ်းကို သိမ်းထားပြီး Applied Finality ကို စောင့်ပါ။ `--no-wait` ကို ထုတ်ပစ်ခြင်းက အစပိုင်း တင်သွင်းမှုကို အတည်ပြုမှုအတွက် စောင့်ခိုင်းစေတယ်။ ရှင်းလင်းတဲ့ အခြေအနေဖတ်ခြင်းဟာ နောက်ဆုံး ဆော့ဝဲ စီမံခန့်ခွဲရေး လုပ်ငန်းစဉ်အခြေအနေကို သက်သေပြပါတယ်။
 
 ```bash
 iroha --config ./taira.client.toml \
@@ -121,21 +121,21 @@ iroha --config ./taira.client.toml \
   --timeout-ms 60000
 ```
 
-နောက်ဆုံးအမိန့်က ငွေပေးချေမှုသည် default `Applied` terminal state ကိုရောက်ရှိပြီးနောက်မှသာအောင်မြင်သည်။ hash ကိုစမ်းသပ်မှုသက်သေများတွင် သိမ်းဆည်းထားပါ။ ပုဂ္ဂလိက key သို့မဟုတ် client အပြည့်အဝ config ကိုနှင့်အတူ ဘယ်တော့မှသိမ်းဆည်းမထားပါ။
+နောက်ဆုံးအမိန့်က ငွေကြေးပူးပေါင်းမှုသည် default `Applied` terminal state ကိုရောက်ရှိပြီးနောက်မှသာ အောင်မြင်သည်။ cryptographic hash ကို test evidence တွင် သိမ်းထားပါ။ private key သို့မဟုတ် complete client config ကို ဘယ်တော့မှ မသိမ်းဆည်းပါနဲ့။
 
 ## ပြဿနာဖြေရှင်းခြင်း {#troubleshooting}
 
-- `/livez` ပြန်လည်ပေးသွင်းခြင်း `406` တောင်းဆိုတဲ့အခါမှာ JSON အကြောင်းက အဲဒီအဆုံးသတ်မှတ်ချက်က `text/plain`. ပို့ပေးပါ `Accept: text/plain` အထက်က ပြထားသလိုပါ။
+- `/livez` ပြန်လည်ပေးသွင်းခြင်း `406` တောင်းဆိုတဲ့အခါမှာ JSON ဘာလို့လဲဆိုတော့ API အဆုံးသတ်မှတ်ချက်က `text/plain`. ပို့ပေးပါ `Accept: text/plain` အထက်က ပြထားသလိုပါ။
 - `/health` သို့မဟုတ် `/readyz` တို့သည် `/livez` နှင့် `/status` တို့ အလုပ်လုပ်နေစဉ်တွင်တောင် စက်ဖတ်လို့ရတဲ့ ဘလော့ကာဖြင့် `503` ကိုပြန်ပို့နိုင်သည်။ ထိုဘလော့ကာကို ပြင်ဆင်ရန် (သို့မဟုတ်) စောင့်ဆိုင်းရန်; ပြန်လည်ပြုပြင်ရေးခလုတ်များသည် node အသင့်ရှိမှုကို မပြောင်းလဲစေပါ။
-- `502` faucet (သို့) timeout (သို့) ခေတ်နောက်ကျနေတဲ့ proof-of-work anchor ဟာ အများပြည်သူဝန်ဆောင်မှု ပျက်ကွက်မှုပါ။ ပဟေဠိအသစ်တစ်ခုယူပြီး နောက်မှာ ထပ်စမ်းပါ။
+- testnet ဘဏ္ဍာရေးဝန်ဆောင်မှု `502`, အချိန်ကုန်ဆုံးခြင်း (သို့) အလုပ်အကိုင်သက်သေခံမှု ခေတ်ဟောင်းသည် အများပြည်သူ ဝန်ဆောင်မှု ကျရှုံးမှုဖြစ်သည်။ ပဟေဠိအသစ်တစ်ခုယူပြီး နောက်တစ်ကြိမ် ထပ်ကြိုးစားပါ။
 - I105 ကြိုတင်အမှားဆိုသည်မှာ အများသုံးသော့ကို မှားယွင်းသောပရိုဖိုင်ဖြင့် ကုဒ်သွင်းထားခြင်းဖြစ်သည်။ `iroha tools address convert --profile taira` ကိုပြန်လည် run လုပ်ပါ။
-- အခွန်တင်ဒါကို ငြင်းပယ်ခြင်းဆိုသည်မှာ အာဏာပိုင်က ငွေကြေးထောက်ပံ့မှုမရှိ၊ အခွန်လက်မှတ် metadata က ခေတ်နောက်ကျနေသည် သို့မဟုတ် ရှင်းလင်းသော အခွန်ပေးသွင်းသူတစ်ဦးမှ ရွေးချယ်ခြင်း မရှိခြင်းဖြစ်သည်။
-- မှတ်ပုံတင်ခြင်း၊ minting သို့မဟုတ် namespace ကို စီမံခန့်ခွဲခြင်းသည် ဤ canary သည်အောင်မြင်ပြီးနောက်ပင် ငြင်းပယ်နိုင်သည်။ ထိုလုပ်ဆောင်ချက်များသည် သီးခြား runtime ခွင့်ပြုချက်များကိုလိုအပ်သည်။ Taira ဝင်ရောက်ခွင့်မပေးသည့်အခါထုတ်လုပ်ထားသော ဒေသတွင်းကွန်ရက်တွင်သင်ယူပါ။
+- အခွန် quote ကို ငြင်းပယ်ခြင်းဆိုသည်မှာ ခွင့်ပြုချက် အရင်းအမြစ်ကို ငွေကြေးမထောက်ပံ့ခဲ့ခြင်း၊ အခွန်အရင်းအမြစ် metadata များက မသုံးစွဲနေခြင်း သို့မဟုတ် ရှင်းလင်းသော အခွန်ပေးသူတစ်ဦးမှ ရွေးချယ်ခြင်း မရှိခြင်းဖြစ်သည်။
+- ဒီ canary အောင်မြင်ပြီးနောက်မှာ မှတ်ပုံတင်ခြင်း၊ ထုတ်လွှင့်ခြင်း သို့မဟုတ် နာမည်နေရာ စီမံခန့်ခွဲမှုများကို ပယ်ချနိုင်သည်။ ထိုလုပ်ဆောင်ချက်များသည် သီးခြားသော ဆော့ဝဲ အကောင်အထည်ဖော်မှု ပတ်ဝန်းကျင် ခွင့်ပြုချက်များလိုအပ်သည်; Taira ဝင်ရောက်ခွင့်မပေးသည့်အခါထုတ်လုပ်ထားသော ဒေသတွင်းကွန်ရက်တွင်သင်ယူပါ။
 
 ## အရင်းအမြစ်နှင့် ဆက်စပ်သော စာတမ်းများ {#source-and-related-docs}
 
-- [Taira CLI ရောဂါစစ်ဆေးခြင်းနှင့် ပိတ်ထားသော commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/taira.rs) တွင်ရှိသည့် ကန်နာရီ အရင်းအမြစ်
-- [အခွန်ရွေးချယ်ခြင်းနှင့် CLI တင်ပြမှု အရင်းအမြစ်ကို ချိတ်ဆက်ထားသော ကတိပြုချက်](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
-- [Taira စာရင်းနှင့်ရေချိုးလမ်းညွှန်](/my/get-started/sora-nexus-dataspaces.md)
+- [Taira CLI ရောဂါစစ်ဆေးခြင်းနှင့် ပိတ်ထားသော အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှုတွင် ကန်နာရီရင်းမြစ်](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/taira.rs)
+- [ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်ချက်မှာ အခွန် ရွေးချယ်မှုနဲ့ CLI တင်ပြမှု အရင်းအမြစ်ကို ရှင်းလင်းစွာရွေးချယ်ပါ။](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
+- [Taira အကောင့်နှင့် testnet ထောက်ပံ့ရေး ဝန်ဆောင်မှု လမ်းညွှန်ချက်](/my/get-started/sora-nexus-dataspaces.md)
 - [Client ဖွဲ့စည်းမှု](/my/guide/configure/client-configuration.md)
 - [ငွေပေးချေမှု](/my/blockchain/transactions.md)

@@ -3,30 +3,30 @@ translation_locale: ar
 translation_source: /reference/torii-api-console.md
 translation_source_hash: a277d8c03a3909eb80d124f0bfed7b78e7c3ed886e443c72effe007d454718bf
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 
 aside: false
 pageClass: torii-api-console-page
 ---
 
-# Torii API أجهزة التحكم {#torii-api-console}
+# Torii API وحدة التحكم {#torii-api-console}
 
-استخدم وثيقة OpenAPI الحية من نقطة نهاية تعمل Torii للتفتيش على الطرق وإرسال طلبات الاختبار ونسخ أوامر curl وإنشاء رمز العميل.
+استخدم المستند الحي OpenAPI من نقطة النهاية API لـ Torii قيد التشغيل لفحص المسارات، إرسال طلبات اختبار، نسخ أوامر curl، وإنشاء كود العميل.
 
 <ToriiApiConsole />
 
-## المتطلبات {#requirements}
+## متطلبات {#requirements}
 
-- يجب على نقطة نهاية Torii أن تكشف `/openapi.json`.
-- اختبار المتصفح يتطلب CORS للسماح لهذه الوثائق من أصل.
-- يجب أن يكون المتصفح قادراً على الوصول مباشرة إلى نقطة النهاية.
-- يتطلب توليد الشفرة Node.js، pnpm، وقتا تشغيل جاوا لجهاز توليد OpenAPI.
+- يجب أن يكشف نقطة النهاية Torii API عن `/openapi.json`.
+- اختبار المتصفح يتطلب CORS للسماح بهذا الأصل للوثائق.
+- يجب أن يكون المتصفح قادرًا على الوصول إلى نقطة النهاية API مباشرة.
+- تتطلب توليد الكود Node.js و pnpm وبيئة تشغيل برنامج جافا لـ OpenAPI Generator.
 
-الجهاز الافتراضي هو `https://taira.sora.org`. التطوير المحلي عادة ما يعمل مع `http://127.0.0.1:8080` عند تشغيل Torii على جهازك.
+تقوم وحدة التحكم بالتعيين الافتراضي إلى `https://taira.sora.org`. عادةً ما يعمل التطوير المحلي مع `http://127.0.0.1:8080` عند تشغيل Torii على جهازك.
 
-## حاول Taira أولاً {#try-taira-first}
+## جرب Taira أولاً {#try-taira-first}
 
-قبل إنشاء عميل، تحقق من إمكانية الوصول إلى وثيقة OpenAPI العامة من جهازك:
+قبل إنشاء عميل، تحقق من أن المستند العام OpenAPI يمكن الوصول إليه من جهازك:
 
 ```bash
 curl -fsS https://taira.sora.org/openapi.json -o /tmp/taira-openapi.json
@@ -34,15 +34,15 @@ jq '{title: .info.title, version: .info.version, paths: (.paths | length)}' \
   /tmp/taira-openapi.json
 ```
 
-ثم ضعي `https://taira.sora.org/openapi.json` في جهاز الاشتراك ومحاولة طريق القراءة فقط مثل `GET /status`، `GET /v1/domains`، أو `GET /v1/assets/definitions`. حفظ المعاملات الموقعة وتدفقات المفاتيح الخاصة لعميل SDK أو CLI الذي يحمل الأسرار من بيئة وقت التشغيل الخاص بك .
+ثم الصق `https://taira.sora.org/openapi.json` في وحدة التحكم وجرب مساراً للقراءة فقط مثل `GET /status`، `GET /v1/domains`، أو `GET /v1/assets/definitions`. احفظ تدفقات المعاملات الموقعة والمفتاح الخاص لعميل SDK أو CLI الذي يقوم بتحميل الأسرار من بيئة تشغيل البرنامج الخاص بك.
 
-## العملاء المولودين {#generated-clients}
+## العملاء الناتجون {#generated-clients}
 
-يستخدم أمر المولد نفس وثيقة OpenAPI الحية التي تحملها جهاز التحكم. هذا مفيدًا لمشغل JSON ، والمستكشف ، والتطبيقات ، والطرق التلفازية.
+يستخدم أمر المولد نفس مستند OpenAPI الحي الذي يقوم الكونسول بتحميله. هذا مفيد لمسار المشغل JSON، المستكشف، التطبيق، والقياسات عن بُعد.
 
-بالنسبة للمعاملات الموقعة في دفتر التسجيل ، والمسائل الموقعة ، و Norito - الحمولة الفائدة الأصلية ، تفضل الرسمية Iroha SDKs. لا يقوم عملاء OpenAPI بتجميع توقيعات أو إدارة مفاتيح الحسابات ، أو تشفير أجسام المعاملات Norito لك. .
+للمعاملات المدرجة في دفتر الأستاذ على البلوك تشين الموقعة، والاستفسارات الموقعة، والتحميلات الأصلية من نوع Norito، يفضل استخدام Iroha الرسمي SDKs. عملاء OpenAPI لا يجمعون التواقيع، ولا يديرون مفاتيح الحساب، ولا يشفرون أجسام المعاملات من نوع Norito نيابة عنك.
 
-للتفتيش على كل مولد يدعمها مولد OpenAPI، قم بتشغيل:
+لفحص كل مولد مدعوم بواسطة مولد OpenAPI، قم بتشغيل:
 
 ```bash
 pnpm dlx @openapitools/openapi-generator-cli list

@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: 62d6f434e5af4213420c456ee27ebdc260c8b0e9f7a85bc3ba955ee9c79a058d
+translation_source_hash: f2411fec1cc35b1bf7795a7ab5a0eb7a8eb6b60b4799ebf3db47208b902f87e6
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -45,7 +45,7 @@ dependencies {
 
 ## Kotlin اور جاوا مطابقت {#kotlin-and-java-compatibility}
 
-عوام API ہے Kotlin- سب سے پہلے اور جاوا انٹروپ فراہم کرتا ہے جہاں JVM کال کرنے والوں کو اس کی ضرورت ہے۔ مساوی تبدیلیاں `java/` لاگو کرنا۔ نیا Android انضمام کے ساتھ شروع کرنا چاہئے Kotlin مندرجہ بالا آثار قدیمہ.
+عوام API ہے Kotlin- سب سے پہلے اور جاوا انٹروپ فراہم کرتا ہے جہاں JVM کال کرنے والوں کو اس کی ضرورت ہے۔ مساوی تبدیلیاں `java/` لاگو کرنا۔ نیا Android انضمام کے ساتھ شروع کرنا چاہئے Kotlin مندرجہ بالا آرٹی فیکٹس.
 
 سب Kotlin ماڈیولز نافذ کریں JDK 8 API مرتب کرنے کے وقت ہم آہنگی `-Xjdk-release=8`, اگرچہ تعمیر کے ٹولچین خود استعمال کرتا ہے JDK 21۔ استعمال نہ کریں JDK 9+ APIs میں SDK کوڈ.
 
@@ -77,4 +77,4 @@ Kotlin SDK میں شامل ہیں:
 - Android کیسٹ اسٹور اور ڈیوائس ٹیلی میٹری انضمام۔
 - Android آف لائن QR، قریب اور NFC ٹرانسپورٹ
 
-ماڈیول مخصوص APIs اور عین مطابق بلڈ کمانڈز کے لئے [Kotlin SDK README ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/kotlin/README.md) دیکھیں.
+ماڈیول سے مخصوص APIs اور عین بلڈ کمانڈز کے لیے [Kotlin SDK کی README فائل](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/kotlin/README.md) دیکھیں۔

@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # တပ်ဆင်မှု ပြဿနာများ ဖြေရှင်းခြင်း {#troubleshooting-installation-issues}
 
-ဤအခန်းတွင် Iroha 3 တပ်ဆင်မှုအတွက်ပြဿနာဖြေရှင်းနည်းများကိုပေးထားသည်။ သင်တွေ့နေသည့် ပြဿနာကိုဤနေရာတွင်ဖော်ပြခြင်းမရှိပါက [Telegram](https://t.me/hyperledgeriroha) မှ ဆက်သွယ်ပါ။
+ဤအခန်းတွင် Iroha 3 တပ်ဆင်မှုအတွက်ပြဿနာဖြေရှင်းရေး အကြံပေးချက်များကို ဖော်ပြထားပါသည်။ သင်တွေ့ရှိနေသည့် ပြဿနာကို ဒီမှာဖော်ပြခြင်းမရှိပါက [အွန်လိုင်း](https://t.me/hyperledgeriroha) မှတစ်ဆင့် ဆက်သွယ်ပါ။
 
 ## အလျင်အမြန် စစ်ဆေးခြင်း {#quick-checks}
 
@@ -19,7 +19,7 @@ translation_engine: nllb-200-ct2
 - C compiler, `pkg-config` သို့မဟုတ် CMake ကဲ့သို့သော missing system building tools များ
 - အရင်းအမြစ် ပြင်ဆင်ချက်များကို ပြောင်းလဲပြီးနောက် ရှေးဟောင်းထုတ်လုပ်သော snippets သို့မဟုတ် ဒေသတွင်းတည်ဆောက်မှုလက်ရာများ
 
-Iroha အရင်းအမြစ် စစ်ဆေးမှုကနေ စတင်ပါ-
+Iroha အရင်းအမြစ်ကုဒ်အလုပ်လုပ်စာရွက်စာတမ်းကနေ အောက်ပါအတိုင်း စတင်ပါ။
 
 ```bash
 rustup show
@@ -36,7 +36,7 @@ cargo metadata --no-deps
 
 <div class="flex justify-center">
 
-![Python ပတ်ဝန်းကျင်ပြဿနာဖြေရှင်းရေး comic](/img/install-troubles.png)
+![Python ပတ်ဝန်းကျင်ပြဿနာဖြေရှင်းရေး ကာတွန်း](/img/install-troubles.png)
 
 </div>
 
@@ -137,7 +137,7 @@ $ rustup toolchain install stable
 
 ## Python ကိရိယာကွင်းဆက်ကို ပြဿနာဖြေရှင်း {#troubleshooting-python-toolchain}
 
-Python Wheel Package ကို [Python client setup](/my/guide/tutorials/python.md) အတွင်းမှာ pip ကိုသုံးပြီး install လုပ်တဲ့အခါ "iroha_python-*.whl သည် ဤပလက်ဖောင်းပေါ်တွင် မထောက်ခံသော wheel မဟုတ်ပါ" လိုအမှားတစ်ခု ကြုံတွေ့နိုင်သည်။
+Python Wheel Package ကို [Python ဖောက်သည် setting](/my/guide/tutorials/python.md) ကာလအတွင်း pip ကိုသုံးပြီး install လုပ်တဲ့အခါ "iroha_python-*whl သည် ဤပလက်ဖောင်းတွင်ထောက်ပံ့သော wheel မဟုတ်ပါ" လိုအမှားတစ်ခု ကြုံတွေ့နိုင်သည်။
 
 ဤအမှားသည် pip သည်သက်တမ်းလွန်နေပြီဖြစ်သောကြောင့်၎င်းကို update လုပ်ရန်လိုအပ်သည်။ ပထမဦးဆုံးအနေနဲ့ OS ကို update များအတွက်စစ်ဆေးပြီးစနစ် upgrade လုပ်ရန်အကြံပြုပါသည်။
 
@@ -147,7 +147,7 @@ Python Wheel Package ကို [Python client setup](/my/guide/tutorials/python.
 
 သေချာအောင်လုပ်ပါ။ `pip` Home Directory ထဲမှာ တပ်ဆင်ထားတာပါ။ ဒါကိုလုပ်ဖို့ Run `whereis pip` နောက်ပြီး စစ်ဆေးပါ `/home/username/.local/bin/pip` လမ်းကြောင်းတွေအကြားမှာရှိတယ် မဟုတ်ရင် သင့်ရဲ့ shell ကို update လုပ်လိုက်ပါ။ `PATH` အပြောင်းအလဲပါ။
 
-ဒီပြဿနာက ဆက်ရှိနေရင် ကျေးဇူးပြုပြီး [ကျွန်တော်တို့နဲ့ ဆက်သွယ်ပါ။](/my/help/) ပြီးတော့ ထုတ်ကုန်တွေကို အစီရင်ခံပါ။
+ဒီပြဿနာ ဆက်ရှိနေရင် [ကျွန်တော်တို့နဲ့ ဆက်သွယ်ပါ။](/my/help/) နဲ့ ထုတ်ကုန်တွေကို အစီရင်ခံပေးပါ။
 
 ```
 python --version

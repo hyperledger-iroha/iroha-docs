@@ -1,23 +1,23 @@
 ---
 translation_locale: ar
 translation_source: /reference/binaries.md
-translation_source_hash: 5a36877954bec97691e45697680bfbd6e0a7c7695e48a796bc7c9a41d4756644
+translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # العمل مع الثنائيات Iroha {#working-with-iroha-binaries}
 
-سير عمل عامل Iroha 3 يدور حول أربع ثنائيات أساسية:
+تدور سير عمل مشغل Iroha 3 حول أربعة ثنائيات أساسية:
 
-- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) لإدارة ديمون زميل
-- `iroha3d_taira` لمطلق المصادقة القنوني Taira
+- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) لتشغيل خادم نظير الشبكة
+- `iroha3d_taira` لمشغّل مصدّق Taira للبروتوكول الموحّد الفردي
 - [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli) لـ CLI وأوامر المشغل
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami) للمفاتيح والجنيس والشبكات المحلية والملفات الشخصية.
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami) للمفاتيح، ونشأة البلوكشين، والشبكات المحلية، والملفات الشخصية
 
-## بناء من مصدر {#build-from-source}
+## البناء من المصدر {#build-from-source}
 
-من الجذر في مساحة العمل الصعودية:
+من جذر مساحة العمل العليا:
 
 ```bash
 cargo build --release \
@@ -26,9 +26,9 @@ cargo build --release \
   -p iroha_kagami --bin kagami
 ```
 
-ثنائيات الإفراج متوفرة بعد ذلك في `target/release/`.
+ثم تتوفر الملفات التنفيذية للإصدار في `target/release/`.
 
-للتفتيش على سطح القيادة:
+لفحص واجهة الأوامر:
 
 ```bash
 ./target/release/iroha3d --help
@@ -37,9 +37,9 @@ cargo build --release \
 ./target/release/kagami --help
 ```
 
-## تشغيل مباشرة من مخزن {#run-directly-from-the-repository}
+## تشغيل مباشرة من المستودع {#run-directly-from-the-repository}
 
-إذا كنت لا تريد تثبيت أي شيء عالميا، استخدم `cargo run`:
+إذا كنت لا تريد تثبيت أي شيء على مستوى النظام، استخدم `cargo run`:
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --help
@@ -50,21 +50,21 @@ cargo run --bin kagami -- --help
 
 ## Docker صورة {#docker-image}
 
-يستخدم مساحة العمل المباشرة `kagami localnet` و `kagami docker` لتوليد ملفات Docker Compose تتطابق مع الرمز الذي تم التحقق منه. يمكن استخدام صورة `hyperledger/iroha:dev` مع تلك الملفات التي يتم إنشاؤها.
+يستخدم مساحة العمل العليا `kagami localnet` و `kagami docker` لتوليد ملفات Docker Compose التي تتطابق مع الكود الذي تم سحبه. يمكن استخدام صورة `hyperledger/iroha:dev` مع تلك الملفات المولدة.
 
-إدراج CLI في حاوية:
+شغّل CLI في حاوية:
 
 ```bash
 docker run -t hyperledger/iroha:dev iroha --help
 ```
 
-إدارة Kagami في حاوية:
+شغّل Kagami في حاوية:
 
 ```bash
 docker run -t hyperledger/iroha:dev kagami --help
 ```
 
-لتشغيل الزملاء ، قم بتوليد شبكة محلية وتجميع الملف أولاً:
+لبدء تشغيل نظير الشبكة، قم أولاً بإنشاء شبكة محلية وملف Compose:
 
 ```bash
 cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
@@ -72,9 +72,9 @@ cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyper
 docker compose -f ./docker-compose.yml up
 ```
 
-## أي ثنائي يجب أن أستخدم؟ {#which-binary-should-i-use}
+## أي النسخ الثنائية يجب أن أستخدم؟ {#which-binary-should-i-use}
 
-- استخدم `iroha3d` عند بدء أو تشغيل الأقران خارج إصدار المؤكد العام Taira.
-- استخدم `iroha3d_taira --sora` فقط لتنفيذ مؤكد Taira القنوني؛ فإنه يفرض سلسلة Taira، وتخزين، وموقع التوقيع في وقت تشغيله.
-- استخدم `iroha` عندما تحتاج إلى استفسار دفتر الرسوم الكبرى أو تقديم المعاملات أو فحص نقاط النهاية للمشغل.
-- استخدم `kagami` عندما تحتاج إلى مفاتيح أو إشعارات التكوين أو مجموعات الملفات الشخصية أو أصول localnet.
+- استخدم `iroha3d` عندما تبدأ أو تشغّل أقران الشبكة خارج إصدار المحقق العام Taira.
+- استخدم `iroha3d_taira --sora` فقط لنشر مدقق واحد لبروتوكول قياسي Taira؛ فهو يفرض سلسلة Taira والتخزين وملف توقيع وقت التشغيل.
+- استخدم `iroha` عندما تحتاج إلى استعلام دفتر الأستاذ الخاص بالبلوكتشين، أو تقديم المعاملات، أو فحص نقاط نهاية المشغل API.
+- استخدم `kagami` عندما تحتاج إلى مفاتيح أو بيانات genesis أو حزم ملفات التعريف أو أصول الشبكة المحلية.

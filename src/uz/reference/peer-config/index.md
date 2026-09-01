@@ -3,18 +3,18 @@ translation_locale: uz
 translation_source: /reference/peer-config/index.md
 translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f29469aaf4
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Iroha ni sozlash {#configuring-iroha}
 
-Mahalliy tengdosh konfiguratsiyasi TOML fayllarida o'rnatilgan. Bu [`SetParameter`](/uz/blockchain/instructions.md#setparameter) ko'rsatmalari orqali o'zgartirilgan zanjirdagi konfiguratsiyadan farq qiladi. Mahsulot xatti-harakati konfiguratsiya fayli yoki zanjirdagi parametrda ifoda etilishi kerak; atrof muhit o'zgaruvchilari xususiyat darvozalari emas.
+Mahalliy tarmoq tengdosh konfiguratsiyasi quyida o‘rnatilgan TOML fayllar. Bu zanjir ustida o‘zgartirilgan konfiguratsiyadan farq qiladi [`SetParameter`](/uz/blockchain/instructions.md#setparameter) ko'rsatmalar. Ishlab chiqarish xatti-harakati konfiguratsiyada ifodalanishi kerak fayl yoki on-chain parametr; muhit o'zgaruvchilari xususiyat eshiklari emas.
 
-Konfiguratsiya fayliga yo'lni aniqlash uchun [`--config`](../iroha3d-cli#arg-config) CLI argumentidan foydalaning.
+Foydalanish [`--config`](../iroha3d-cli#arg-config) CLI konfiguratsiya faylining yo‘lini ko‘rsatish uchun argument.
 
-## Namuna {#template}
+## Shablon {#template}
 
-Har bir parametrning batafsil tavsifi uchun [Parameterlar](./params.md) ko'rsatkichini ko'rib chiqing.
+Har bir parametrning batafsil tasnifi uchun iltimos, [Parametrlar](./params.md) manbasiga murojaat qiling.
 
 ::: details `peer.template.toml`
 
@@ -24,7 +24,7 @@ Har bir parametrning batafsil tavsifi uchun [Parameterlar](./params.md) ko'rsatk
 
 ## Konfiguratsiya fayllarini tuzish {#composing-configuration-files}
 
-TOML konfiguratsiya fayllarida `extends` qo'shimcha maydoni mavjud bo'lib, boshqa TOML fayllariga ishora qiladi. Bu bitta yo'l yoki ko'p yo'l bo'lishi mumkin:
+TOML konfiguratsiya fayllarida qo'shimcha `extends` maydon mavjud bo'lib, u boshqa TOML fayl(lar)ga ishora qiladi. Bu bitta yo'l yoki bir nechta yo'llar bo'lishi mumkin:
 
 ::: code-group
 
@@ -38,7 +38,7 @@ extends = ["file1.toml", "file2.toml"]
 
 :::
 
-Iroha `extends` da ko'rsatilgan barcha fayllarni takror o'qib, ularni qatlamlarga ajratadi va oxirgi qatlamlar oldingilarini parametr darajasida qayta yozadi. Masalan, agar `config.toml` o'qigan bo'lsa:
+Iroha `extends` ichida ko‘rsatilgan barcha fayllarni rekursiv ravishda o‘qiydi va ularni qatlamlarga joylashtiradi, bunda keyingilari parametr darajasida oldingilar ustiga yoziladi. Masalan, `config.toml` ni o‘qishda:
 
 ::: code-group
 
@@ -61,8 +61,8 @@ max_content_len = 2048
 
 :::
 
-Natijada `a.toml` dan `chain`, `max_content_len` dan `b.toml` va `torii.address` dan `config.toml` (o'chirishlar `b.toml`) konfiguratsiya qilinadi.
+Hosil bo‘lgan konfiguratsiya `a.toml` dan `chain`, `b.toml` dan `max_content_len`, va `config.toml` dan `torii.address` bo‘ladi (`b.toml` ustiga yoziladi).
 
-## Muammolarni hal qilish {#troubleshooting}
+## Muammolarni bartaraf etish {#troubleshooting}
 
-Konfiguratsiya qanday o'qilishi va tahlil qilinishini ko'rish uchun [`--trace-config`](../iroha3d-cli#arg-trace-config) CLI bayroqini o'tkazib yuboring.
+O'tkazish [`--trace-config`](../iroha3d-cli#arg-trace-config) CLI konfiguratsiya qanday o‘qilganini va tahlil qilinganini kuzatish uchun bayroq.

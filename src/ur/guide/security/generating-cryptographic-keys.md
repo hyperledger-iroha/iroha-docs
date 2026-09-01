@@ -8,36 +8,29 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 
 # کرپٹوگرافک چابیاں پیدا کرنا {#generating-cryptographic-keys}
 
-Iroha 3 کے لئے کلائنٹ، ہم مرتبہ اور توثیق کنندہ کلیدی مواد پیدا کرنے کے لئے `kagami keys` کا استعمال کریں۔
+Iroha 3 کے لئے کلائنٹ، نیٹ ورک نوڈ اور توثیق کنندہ کلیدی مواد پیدا کرنے کے لئے `kagami keys` کا استعمال کریں۔
 
 ## بنیادی استعمال {#basic-usage}
 
-From the Iroha source checkout:
+Iroha ماخذ checkout سے:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-The parent directory must already exist. The target must be new or already
-owned by the current user, mode `0700`, free of symbolic links, and empty.
-`kagami` writes `public.key` and `private.key` with mode `0600` and does not
-print key material. With `--pop`, it also writes `pop.hex`.
+اصل ڈائریکٹری پہلے سے موجود ہونی چاہیے۔ ہدف نئی ہو یا پہلے ہی موجودہ صارف کی ملکیت ہو، اس کا mode `0700` ہو، اس میں symbolic link نہ ہوں، اور وہ خالی ہو۔ `kagami`، `public.key` اور `private.key` کو mode `0600` کے ساتھ لکھتا ہے اور کلیدی مواد پرنٹ نہیں کرتا۔ `--pop` کے ساتھ یہ `pop.hex` بھی لکھتا ہے۔
 
-`--out-dir` fails closed on platforms where Kagami cannot enforce these
-owner-only filesystem rules. The private-key file is an unencrypted export,
-not a hardware or non-exportable production signer. Import it into the
-approved custody boundary and remove the export according to the deployment's
-procedure.
+جن پلیٹ فارموں پر Kagami صرف مالک کے لیے مخصوص فائل سسٹم کے ان قواعد کو نافذ نہیں کر سکتا، وہاں `--out-dir` محفوظ طور پر ناکام ہو کر کچھ نہیں لکھتا۔ نجی کلید کی فائل ایک غیر مرموز برآمد ہے، ہارڈ ویئر یا ناقابلِ برآمد پیداواری دستخط کنندہ نہیں۔ اسے منظور شدہ تحویلی حد میں درآمد کریں اور تعیناتی کے طریقۂ کار کے مطابق برآمد شدہ نقل ہٹا دیں۔
 
 ## الگورتھم {#algorithms}
 
-Common algorithms are:
+عام الگورتھم یہ ہیں:
 
-- `ed25519` for client accounts and streaming identities.
-- `secp256k1` when a client account requires a secp256k1 identity.
-- `bls_normal` for every node or peer consensus identity.
+- کلائنٹ اکاؤنٹس اور streaming شناختوں کے لیے `ed25519`۔
+- جب کلائنٹ اکاؤنٹ کو secp256k1 شناخت درکار ہو تو `secp256k1`۔
+- ہر node یا peer اتفاقِ رائے کی شناخت کے لیے `bls_normal`۔
 
-Check the exact algorithms supported by your build with:
+اپنی تعمیر کے تعاون یافتہ عین algorithms اس طرح دیکھیں:
 
 ```bash
 cargo run --bin kagami -- keys --help
@@ -45,8 +38,7 @@ cargo run --bin kagami -- keys --help
 
 ## متعین ترقیاتی چابیاں {#deterministic-development-keys}
 
-For reproducible fixtures, pass a 32-byte seed encoded as 64 hexadecimal
-characters. An optional `0x` prefix is accepted:
+قابلِ تکرار آزمائشی ڈیٹا کے لیے 32-byte seed دیں جسے 64 hexadecimal حروف میں encode کیا گیا ہو۔ اختیاری `0x` سابقہ قبول کیا جاتا ہے:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 \
@@ -54,40 +46,28 @@ cargo run --bin kagami -- keys --algorithm ed25519 \
   --out-dir ./fixture-client-key
 ```
 
-The seed is private-key material. Use deterministic seeds only for local
-development and tests. Omit `--seed-hex` to generate a production key from
-operating-system randomness.
+seed نجی کلید کا مواد ہے۔ deterministic seeds صرف مقامی development اور tests کے لیے استعمال کریں۔ operating-system randomness سے پیداواری کلید بنانے کے لیے `--seed-hex` شامل نہ کریں۔
 
 ## BLS اتفاق رائے کی چابیاں اور مالکیت کے ثبوت۔ {#bls-consensus-keys-and-proofs-of-possession}
 
-Iroha 3 node and peer consensus identities use BLS-normal keys. Generate a
-BLS-normal key and proof-of-possession (PoP) with:
+Iroha 3 کے node اور peer اتفاقِ رائے کی شناختیں BLS-normal کلیدیں استعمال کرتی ہیں۔ BLS-normal کلید اور proof-of-possession (PoP) اس طرح بنائیں:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm bls_normal --pop \
   --out-dir ./validator-key
 ```
 
-`--pop` is valid only with `bls_normal`; it adds `pop.hex` to the custody
-directory.
-Signed genesis requires a matching PoP for every voting validator. In peer
-configuration, a non-empty `trusted_peers_pop` map selects the validator
-subset; trusted peers omitted from that non-empty map are observers. If the map
-is empty, all BLS-normal trusted peers enter the bootstrap candidate set, with
-voter PoPs still supplied by signed genesis.
+`--pop` صرف `bls_normal` کے ساتھ درست ہے؛ یہ تحویلی ڈائریکٹری میں `pop.hex` شامل کرتا ہے۔ دستخط شدہ genesis کو ہر ووٹ دینے والے validator کے لیے مماثل PoP درکار ہے۔ peer configuration میں غیر خالی `trusted_peers_pop` map validator کی ذیلی مجموعہ منتخب کرتا ہے؛ اس غیر خالی map میں شامل نہ کیے گئے trusted peers مبصر ہوتے ہیں۔ اگر map خالی ہو تو تمام BLS-normal trusted peers bootstrap candidate set میں داخل ہوتے ہیں، جبکہ ووٹر PoPs بدستور دستخط شدہ genesis فراہم کرتا ہے۔
 
-## Custody Output {#custody-output}
+## تحویلی آؤٹ پٹ {#custody-output}
 
-`kagami keys` requires `--out-dir` and never writes private key material to
-standard output. Read `public.key`, `private.key`, and optional `pop.hex` from
-the generated directory. Each file contains one canonical value followed by a
-newline, which makes explicit file-based automation straightforward:
+`kagami keys` کے لیے `--out-dir` لازمی ہے اور یہ نجی کلید کا مواد کبھی standard output پر نہیں لکھتا۔ بنائی گئی ڈائریکٹری سے `public.key`، `private.key` اور اختیاری `pop.hex` پڑھیں۔ ہر فائل میں ایک canonical قدر اور اس کے بعد newline ہوتا ہے، جس سے واضح file-based automation آسان ہو جاتی ہے:
 
 ```bash
 PUBLIC_KEY=$(tr -d '\n' < ./client-key/public.key)
 ```
 
-For full generated Kagami help:
+مکمل تیار شدہ Kagami مدد کے لیے:
 
 ```bash
 cargo run -p iroha_kagami -- advanced markdown-help > crates/iroha_kagami/CommandLineHelp.md

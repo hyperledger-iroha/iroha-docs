@@ -3,14 +3,14 @@ translation_locale: mn
 translation_source: /index.md
 translation_source_hash: 3b2ad4ee285a821b56c9cf6fd3f4a8431f1cfa478e88082b45788765d68ed833
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 
 layout: home
 
 hero:
   name: Hyperledger Iroha 3
-  text: "Документирэл"
-  tagline: "SORA Nexus, SDKs болон операторын ажлын урсгалд зориулсан блокчейн платформ"
+  text: "Баримт бичиг"
+  tagline: "SORA Nexus, SDKs болон операторын ажлын урсгалд зориулсан шийдвэрлэх чадвартай блокчэйн платформ"
   image:
     src: /icon.svg
     alt: "Hyperledger Iroha 3 лого"
@@ -21,53 +21,53 @@ hero:
 
 nexusPortal:
   eyebrow: SORA Nexus
-  title: "Iroha 3 / SORA Nexus дээр барилдаж байна"
-  details: "Taira туршилтын сүлжээгээр эхэлж, одоогийн гүйлгээний урсгалыг судалж, үйлдвэрлэлийн бэлэн хэрэгслийг бий болгохын тулд төвлөрсөн рецепт ашигла."
+  title: "Iroha 3 / SORA Nexus дээр барих"
+  details: "Taira тестнет дээр эхлээд, одоогийн гүйлгээний урсгалыг судалж, үйлдвэрлэлд бэлэн програмуудыг бүтээхийн тулд төвлөрсөн жоруудыг ашиглаарай."
   primaryAction:
-    text: "Taira дээр эхэлнэ."
+    text: "Taira дээр эхлүүлэх"
     link: /mn/get-started/sora-nexus-dataspaces
   secondaryAction:
-    text: "Багшийн номыг үзнэ үү"
+    text: "Өндөр ном үзэх"
     link: /mn/cookbook/
   recipes:
-    title: "Олон нийтийн рецепт"
+    title: "Алдартай жорнууд"
     items:
-      - title: "Арилжаа ирүүлнэ, шалгана"
+      - title: "Гүйлгээг илгээж, баталгаажуулна уу"
         link: /mn/cookbook/submit-and-verify-transactions
-      - title: "Хөдөлмөрийн хөрөнгийг шилжүүлнэ"
+      - title: "Шилжүүлж болох хөрөнгийг шилжүүлэх"
         link: /mn/cookbook/fungible-assets
-      - title: "Судалгааны номын жагсаалтын байдал"
+      - title: "Блокчэйн бүртгэлийн төлвийг лавлах"
         link: /mn/cookbook/query-ledger-state
-      - title: "Хэвлэлийн үйл явдлууд"
+      - title: "Өргөдөл болгох арга хэмжээ"
         link: /mn/cookbook/stream-events
 
 features:
   - icon:
       dark: /start.svg
       light: /start-light.svg
-    title: "Анх эхлээрэй"
-    details: "Одоогийн ажлын хэсгийг барьж, орон нутгийн сүлжээг эхлүүлж, Iroha 3 CLI"
+    title: "Эхлэх"
+    details: "Одоогийн ажлын орчныг барьж, орон нутгийн сүлжээг эхлүүлж, Iroha 3 CLI-ыг ашиглаж эхэлнэ үү"
     link: /mn/get-started/
   - icon:
       dark: /build.svg
       light: /build-light.svg
-    title: "Дасгалжуулагч"
-    details: "SDKs, шилдэг үйл ажиллагаа, конфигурац, аюулгүй байдал, операторны ажлын урсгалыг олох"
+    title: "Хөтөч"
+    details: "SDKs-г олж мэдэх, шилдэг туршлага, тохиргоо, аюулгүй байдал, операторын ажлын урсгалыг"
     link: /mn/guide/
   - icon:
       dark: /explained.svg
       light: /explained-light.svg
-    title: "Архитектура"
-    details: "Урьдчилгаа Torii, Sumeragi, Norito, IVM, болон Nexus Мэдээллийн орон зайн загвар"
+    title: "Архитектур"
+    details: "Танилц Torii, Sumeragi, Norito, IVM, ба Nexus өгөгдлийн сангийн загварт"
     link: /mn/blockchain/iroha-explained
   - icon:
       dark: /reference.svg
       light: /reference-light.svg
-    title: "Сэтгэмжлэл"
-    details: "Одоогийн бинар, генез, Torii болон нийцүүлэлтийн сэнслэлийн хуудсыг үзнэ үү."
+    title: "Лавлагаа"
+    details: "Одоогийн хоёртын файлын, блокчэйн эхлэл, Torii, болон нийцлийн лавлах хуудсуудтай зөвлөлд."
     link: /mn/reference/
 footer: true
 ---
 
 <hr style="margin-top: 3rem;">
-<p style="font-weight: 200; font-size: 0.875rem;">Hyperledger Iroha Энэ нь <a href="https://www.lfdecentralizedtrust.org/projects/tag/ledger-technology" target="_blank">LF Decentralized Trust</a>. Дэлгэрэнгүй <a href="https://iroha.tech/" target="_blank">iroha.tech</a>.</p>
+<p style="font-weight: 200; font-size: 0.875rem;">Hyperledger Iroha нь <a href="https://www.lfdecentralizedtrust.org/projects/tag/ledger-technology" target="_blank">LF Decentralized Trust</a>-ын нэг хэсэг юм. Илүү ихийг сурахыг хүсвэл <a href="https://iroha.tech/" target="_blank">iroha.tech</a>.</p> дээр очно уу.

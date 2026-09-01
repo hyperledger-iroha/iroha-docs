@@ -14,9 +14,9 @@ Rust အကောင်အထည်ဖော်မှုက အဓိက အလ�
 
 Upstream repository မှာ လက်ရှိမှာ ဖော်ပြထားတာက-
 
-- `iroha` Rust ဝယ်သူသေတ္တာ
+- `iroha` Rust ဖောက်သည် ဆော့ဝဲအစီအစဉ်
 - `iroha` CLI ကို အပြည့်အဝဆုံး ရည်ညွှန်းသော ဖောက်သည်အဖြစ်။
-- SDK အလွှာမှာ အသုံးပြုတဲ့ မျှဝေထားတဲ့ ဒေတာပုံစံ၊ crypto နှင့် Norito သေတ္တာများ
+- SDK အလွှာမှာ အသုံးပြုတဲ့ မျှဝေထားသော ဒေတာပုံစံ၊ crypto နှင့် Norito ဆော့ဝဲပက်ကတ်များ
 
 ## အကြံပြုချက် {#recommended-starting-point}
 
@@ -54,9 +54,9 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=5' \
   | jq -r '.items[] | [.id, .name, .total_quantity] | @tsv'
 ```
 
-`taira.client.toml` ကိုဖန်တီးပြီးနောက်၊ တူညီတဲ့ binary က Taira အပေါ် လက်မှတ်ထိုးထားတဲ့ canary commands တွေကို run လုပ်နိုင်သည်။ ဒါတွေကို သာမန် unit test တွေကနေ သီးခြားထားပါ။ အကြောင်းက ၎င်းတို့အတွက် faucet ငွေကြေးထောက်ပံ့တဲ့ အကောင့်တစ်ခုနဲ့ live testnet ရရှိမှုလိုအပ်လို့ပါ။
+`taira.client.toml` ကိုဖန်တီးပြီးနောက် တူညီတဲ့ binary က Taira အပေါ် လက်မှတ်ထိုးထားတဲ့ canary commands တွေကို run လုပ်နိုင်ပါတယ်။ testnet မှထောက်ပံ့တဲ့ account နဲ့ live testnet ရရှိနိုင်မှုလိုအပ်တာကြောင့် သာမန် unit testing တွေကနေ သီးခြားထားပါ။
 
-## Rust Client Crate ကို အသုံးပြုခြင်း {#using-the-rust-client-crate}
+## Rust Client Software Package ကို အသုံးပြုခြင်း {#using-the-rust-client-crate}
 
 သင့်ကွန်ရက် အသုံးပြုတဲ့ Iroha Git revision ကို Pin လုပ်ပါ။
 
@@ -71,9 +71,9 @@ Rust မျက်နှာပြင်တွေကို လက်တွေ့�
 - `crates/iroha/README.md`
 - `crates/iroha_cli/README.md`
 
-စာရင်းအင်းမှာ စီမံခန့်ခွဲတဲ့ အလှူခံ လုပ်ငန်းခွင်များအတွက် ကြည့်ပါ။ [Native Asset Escrow](/my/blockchain/escrow.md#rust-sdk). နိုင်ငံတကာ Rust ဒေတာမော်ဒယ်မှာ လက်ရှိတွင် စျေးကွက်အမှတ်တံဆိပ်၊ ယေဘုယျအရင်းအမြစ်ပိတ်၊ အမည်မဲ့အမှတ်တံ ဆိပ်၊ မေးမြန်းချက်များအတွက် အပြည့်အစုံဆုံး အမျိုးအစားကာကွယ်မှုရှိသည်။ အဖြစ်အပျက်တွေပေါ့။
+blockchain ledger မှစီမံခန့်ခွဲသော escrow အလုပ်ဖြစ်စဉ်များအတွက် [Native Asset Escrow](/my/blockchain/escrow.md#rust-sdk) ကိုကြည့်ပါ။ Rust ဒေတာမော်ဒယ်သည် လက်ရှိတွင်စျေးကွက် escrow၊ ယေဘုယျအရင်းအမြစ် lock များ, အမည်မသိ escrow, မေးမြန်းချက်များနှင့်ဖြစ်ရပ်များအတွက်အပြည့်အဝရိုက်ကူးထားသည့်ကာကွယ်မှုတစ်ခုဖြစ်သည်။
 
-ဒေသတွင်း CLI အကူအညီ snapshot ကို ပြန်လည်ဖန်တီးနိုင်ပါတယ်:
+ဒေသခံ CLI အကူအညီ point-in-time data view ကို ပြန်လည်ဖန်တီးနိုင်သည်:
 
 ```bash
 cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/CommandLineHelp.md
@@ -81,5 +81,5 @@ cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/Com
 
 ## မှတ်ချက်များ {#notes}
 
-- CLI သည် လက်ရှိတွင် standalone box doc များထက် ပိုမိုကောင်းမွန်သောအကာအကွယ်ပေးသည်။
+- CLI သည် လက်ရှိတွင် standalone software package doc များထက် ပိုမိုကောင်းမွန်သောအကာအကွယ်ပေးသည်။
 - လုပ်ငန်းရှင်ပုံစံ စီးဆင်းမှုအတွက် CLI စာရွက်စာတမ်းဟာ လက်ရှိဆုံး အရင်းအမြစ်ပါ။

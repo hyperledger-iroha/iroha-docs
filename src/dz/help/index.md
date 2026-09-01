@@ -3,9 +3,8 @@ translation_locale: dz
 translation_source: /help/index.md
 translation_source_hash: 2a9211efa691d8be17d1cdd99082d11c62389da846fb29ee2d2acb8dc7b7c81a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: human-reviewed
 ---
-
 # རྒྱབ་སྐྱོར་ཐོབ་ནི་ {#receive-support}
 
 འཕྲལ་འཕྲལ་ར་ ཁྱོད་ཀྱིས་ Iroha གི་སྐོར་ལས་དྲི་བ་ཡོད་དེ་ གཞན་ཚུ་དང་གཅིག་ཁར་ གསལ་ཏོག་ཏོ་སྦེ་ གྲོས་བསྟུན་འབད་དགོ་འོང་། ང་བཅས་རའི་སྡེ་ཚན་ལུ་མགྱོགས་པར་འབྲེལ་བ་འཐབ་ནིའི་ཐབས་ལམ་གསུམ་ཡོད། Telegram, Discord དང་ GitHub.

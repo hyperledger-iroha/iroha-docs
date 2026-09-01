@@ -1,28 +1,28 @@
 ---
 translation_locale: uz
 translation_source: /cookbook/fungible-assets.md
-translation_source_hash: 669b5a1c12e9ab6ffb64e149148993e7b924feb29c6fa4db883a2065f58ecd7e
+translation_source_hash: 29f2bdb390fc93b97f8ed9108634f70e21ba747c8606fb84093d37e9586516c1
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# O'zgaruvchan aktivlar {#fungible-assets}
+# O‘zaro almashtiriladigan aktivlar {#fungible-assets}
 
 ## Natija {#outcome}
 
-Toʻgʻri tekshirib koʻring Taira aktivlarning ta'riflari va ro'yxatni to'ldirish, mint, o'tkazish, yoqish va balans tekshiruvi generated lokal tarmoqda oqim. retsept kanonik prefikssiz Base58 aktiv ta'rifidan foydalanadi IDs, domensiz nomlar, domensiz I105 hisob IDs, va to'lovni to'lash.
+Taira-dagi jonli aktiv ta’riflarini tekshiring va yaratilgan mahalliy tarmoqda ro‘yxatdan o‘tkazish, chiqarish, o‘tkazish, yoqish hamda balansni tekshirish jarayonini to‘liq bajaring. Retsept kanonik prefikssiz Base58 aktiv ta’rifi identifikatorlari, domen bilan aniqlashtirilgan taxalluslar, domensiz I105 hisob identifikatorlari va aniq to‘lov niyatidan foydalanadi.
 
-## Oldingi shartlar {#prerequisites}
+## Oldindan shartlar {#prerequisites}
 
 - `curl`, `jq`, Python 3.11 yoki undan keyin, Node.js 24, va joriy `iroha` CLI.
-- Faqat o'qish uchun Taira kirish.
-- Yozib o'tish uchun [Lunch Iroha](/uz/get-started/launch-iroha.md) orqali yaratilgan mahalliy tarmoq, `./localnet/client.toml` va Torii bilan `http://127.0.0.1:8080`da.
+- Taira-ga faqat o‘qish huquqi bilan kirish.
+- Yozish amaliyoti uchun [Iroha-ni ishga tushirish](/uz/get-started/launch-iroha.md) bo‘limida yaratilgan, `./localnet/client.toml` fayliga va `http://127.0.0.1:8080` manzilidagi Torii-ga ega mahalliy tarmoq.
 
-## qadamlar {#steps}
+## Qadamlar {#steps}
 
-### 1. Taira ta'riflarini imzolamaydigan holda tekshirish {#_1-inspect-taira-definitions-without-a-signer}
+### 1. Taira ta’riflarini imzolovchisiz tekshirish {#_1-inspect-taira-definitions-without-a-signer}
 
-Asset ta'riflari shaffof bo'lmagan Base58 ID, ko'rsatuv nomiga ega; mintaqaviylik siyosati, raqamli ko'rsatkichlar, tanlov aliaslari, egasi va umumiy miqdor. Konkret balansda shuningdek uning egasi hisob raqami va ma'lumotlar maydonining ko'rsatkichlari ham mavjud.
+Aktiv ta’rifida shaffof bo‘lmagan Base58 ID, ko‘rsatiladigan nom, chiqarish siyosati, raqamli aniqlik, ixtiyoriy taxallus, egasi va umumiy miqdor bo‘ladi. Muayyan qoldiqda uni saqlovchi hisob va ixtiyoriy ma’lumotlar makoni doirasi ham mavjud.
 
 ::: code-group
 
@@ -54,11 +54,11 @@ for (const definition of items) {
 
 :::
 
-JavaScript shaklini `node taira-assets.mjs` bilan ishga tushiring. Umumiy aktivlar IDs to'liq Base58 qiymatlari; `cookbook_credit#wonderland.universal` kabi o'qiladigan qiymat ushbu qiymatlardan biriga tegishli bo'lgan alias hisoblanadi IDs .
+JavaScript misolini `node taira-assets.mjs` bilan ishga tushiring. Ochiq aktiv identifikatorlari prefikssiz Base58 qiymatlaridir; `cookbook_credit#wonderland.universal` kabi o‘qiladigan qiymat shunday identifikatorlardan biriga bog‘langan taxallusdir.
 
-### 2. Mahalliy hokimiyat va yo'nalishlarni tayyorlash {#_2-prepare-the-local-authority-and-destination}
+### 2. Mahalliy vakolat va qabul qiluvchini tayyorlash {#_2-prepare-the-local-authority-and-destination}
 
-Mahalliy hokimiyatni yaratilgan konfigdagi jamoatchilik kalitidan olib tashlang va boshqa ro'yxatdan o'tgan hisobni qabul qiluvchi sifatida tanlang.
+Mahalliy vakolat hisobini yaratilgan sozlamadagi ochiq kalitdan hosil qiling va boshqa ro‘yxatdan o‘tgan hisobni qabul qiluvchi sifatida tanlang. Maxfiy kalit chiqarilmaydi.
 
 ```bash
 LOCAL_ROOT='http://127.0.0.1:8080'
@@ -82,9 +82,9 @@ DESTINATION_ACCOUNT="$(
 )"
 ```
 
-### 3. Raqamli ma'lumotni qayd qiling {#_3-register-a-numeric-definition}
+### 3. Sonli aktiv ta’rifini ro‘yxatdan o‘tkazish {#_3-register-a-numeric-definition}
 
-Bu faqat mahalliy ID o'rnatilmagan haqiqiy Base58 aktiv ta'rif manzili hisoblanadi. `domain.dataspace` ko'rsatkichlar `2` ikki qismli raqamlarga ruxsat beradi; `--mint-once` defaultni saqlaydi `Infinitely` siyosat.
+Bu faqat mahalliy tarmoq uchun yaroqli prefikssiz Base58 aktiv ta’rifi manzilidir. Taxallus odam o‘qiy oladigan `domain.dataspace` proyeksiyasini beradi. `2` aniqligi ikkita kasr raqamiga ruxsat beradi; `--mint-once` ni bermaslik standart `Infinitely` siyosatini saqlaydi.
 
 ```bash
 ASSET_DEFINITION_ID='66owaQmAQMuHxPzxUN3bqZ6FJfDa'
@@ -101,11 +101,11 @@ iroha --config "$LOCAL_CONFIG" \
   --scale 2
 ```
 
-ID-ni Taira da qayta ishlatmang. Jamoat tarmog'ida ro'yxatdan o'tish uchun yangi kanonik ID, sizning arizangizga ajratilgan domen/alias, to'lov mablag'lari va ish vaqti aktivlarni ro'yxatga olish ruxsatnomasi talab etiladi.
+Bu ID-ni Taira-da qayta ishlatmang. Ommaviy tarmoqda ro‘yxatdan o‘tkazish yangi kanonik ID, ilovangizga ajratilgan domen/taxallus, to‘lov mablag‘i va bajarish muhitining aktivni ro‘yxatdan o‘tkazish ruxsatini talab qiladi.
 
-### 4. Mint, o'tkazish va yoqish {#_4-mint-transfer-and-burn}
+### 4. Chiqarish, o‘tkazish va muomaladan chiqarish {#_4-mint-transfer-and-burn}
 
-Barcha yozish buyruqlari vakolatli organni to'lov to'lovchi sifatida aniq tanlaydi. CLI imzolashdan oldin aniq operatsiyani ko'rsatadi va default bo'yicha kutadi.
+Barcha yozish buyruqlari vakolat hisobini to‘lovchi sifatida aniq tanlaydi. CLI imzolashdan oldin tranzaksiyaning aniq narxini oladi va standart holatda uning yakunlanishini kutadi.
 
 ```bash
 iroha --config "$LOCAL_CONFIG" \
@@ -131,17 +131,17 @@ iroha --config "$LOCAL_CONFIG" \
   --quantity 10.00
 ```
 
-Yonilgandan so'ng, manba balansini `64.50`, belgilangan balansni `25.50` va umumiy miqdorni `90.00` kuting.
+Muomaladan chiqargach, manba qoldig‘i `64.50`, qabul qiluvchi qoldig‘i `25.50` va umumiy miqdor `90.00` bo‘lishi kerak.
 
 ::: warning Ruxsatlar chegaralari
 
-Taira da krandan olingan `taira.tx-metadata.json` ni qo'shing va har bir yozish uchun `--fee-payer authority` dan foydalaning. Ro'yxatga olish va qalinlashtirish faol tasdiqlovchining ruxsatlarini talab qiladi; o'tkazish va yoqish manba balansini boshqarish huquqiga ega bo'lishi kerak.
+Taira-da krandan olingan `taira.tx-metadata.json` ni qo‘shing va har bir yozuv uchun `--fee-payer authority` dan foydalaning. Ro‘yxatdan o‘tkazish va chiqarish faol tekshiruvchining ruxsatlarini talab qiladi; o‘tkazish va muomaladan chiqarish esa manba qoldig‘i ustidan vakolatni talab qiladi. Kran moliyalashtirgan hisob avtomatik ravishda emitent bo‘lib qolmaydi.
 
 :::
 
 ## Tekshirish {#verify}
 
-Ikkala aniq balansni o'qing va keyin ma'lumotni o'qing. Ushbu davlatdan keyingi so'rovlar muvaffaqiyat mezonidir; taqdimot rasmining o'zi bunday emas.
+Ikkala muayyan qoldiqni, so‘ng ta’rifni o‘qing. Amaldan keyingi shu so‘rovlar muvaffaqiyat mezonidir; yuborish kvitansiyasining o‘zi yetarli emas.
 
 ```bash
 iroha --config "$LOCAL_CONFIG" ledger asset get \
@@ -156,22 +156,22 @@ iroha --config "$LOCAL_CONFIG" ledger asset definition get \
   --id "$ASSET_DEFINITION_ID"
 ```
 
-Qo'llanmalarning ta'kidlashicha, raqamli qiymatlarni qat'iy nuqtalik o'nlar sifatida solishtirish kerak va ikkilamchi ko'chma nuqta qiymatlari emas, balki ID tanlovi hamda hisobni tekshirish kerak.
+Ilova tekshiruvlari sonli qiymatlarni ikkilik suzuvchi nuqtali qiymatlar emas, sobit nuqtali o‘nliklar sifatida taqqoslashi, shuningdek hisob bilan birga ta’rif ID-sini ham tekshirishi kerak.
 
 ## Muammolarni hal qilish {#troubleshooting}
 
-- O ' zbekiston Respublikasi ID tarkibida `#` bir alias yoki aniq balans literal, kanonik aktiv ta'rif emas ID. Base58 qiymatidan foydalaning `--definition`, yoki bogʻlangan alias bilan `--definition-alias`.
-- `Scale` xatolar: miqdorning tanlovi ruxsat etganidan ko'ra ko'proq qismli raqamlari bor.
-- `Mintability` rad etish - bu `Once`, `Not` yoki `Limited(n)` siyosatining sozlash muddati tugagan yoki ruxsat etilmaganligini anglatadi. Tarixni qayta yozma; tanlov so'rovida qaytarilgan siyosatni ishlating.
-- 2-bosqich tasodifiy qayd etilgan maqsadli hisobni tanlaydi. Agar aktiv qabul qilinishi `ExplicitOnly` bo'lsa, maqsadli qoldiqni ruxsatnoma orqali ajrating o'tkazishdan oldin oqim. Shunga o'xshash nom bilan CLI qo'riqchi hisobvaraq yoki balansni ro'yxatga olmaydi; u boshqa ko'rsatma qo'shmasdan abort qiladi.
-- To'lovni rad etish odatiy topshiriq muvaffaqiyatli bo'lishidan oldin sodir bo'ladi. To'lovchini tanlang, tarmoqning to'lov aktivlari metadatalaridan foydalaning va uning balansini tekshirish.
-- Agar o'rnatilgan mahalliy ta'rif allaqachon avvalgi ishga tushirilgandan keyin mavjud bo'lsa, yangi hosil qilingan lokalnetni ishga tushiring yoki mavjud holatini davom ettiring. Base58 ID uchun hech qachon noto'g'ri shakllangan tasodifiy satrni almashtirmang.
+- Tarkibida `#` bo‘lgan ID taxallus yoki muayyan qoldiq literalidir, kanonik aktiv ta’rifi ID-si emas. `--definition` bilan prefikssiz Base58 qiymatini ishlating yoki `--definition-alias` bilan bog‘langan taxallusni bering.
+- `Scale` xatosi miqdorda ta’rif ruxsat berganidan ko‘proq kasr raqami borligini anglatadi.
+- `Mintability` rad etilishi `Once`, `Not` yoki `Limited(n)` siyosati chiqarish imkonini tugatgani yoxud taqiqlaganini anglatadi. Tarixni qayta yozmang; ta’rif so‘rovi qaytargan siyosatga amal qiling.
+- 2-bosqich ataylab ro‘yxatdan o‘tgan qabul qiluvchi hisobni tanlaydi. Aktivni qabul qilish siyosati `ExplicitOnly` bo‘lsa, o‘tkazishdan oldin vakolatli jarayon orqali qabul qiluvchi qoldig‘ini yarating. O‘xshash nomli CLI himoyasi hisob yoki qoldiqni ro‘yxatdan o‘tkazmaydi; u boshqa ko‘rsatma qo‘shish o‘rniga amalni to‘xtatadi.
+- To‘lov rad etilishi odatiy ko‘rsatma bajarilishidan oldin yuz beradi. To‘lovchini tanlang, tarmoqning to‘lov aktivi metama’lumotidan foydalaning va uning qoldig‘ini tekshiring.
+- Belgilangan mahalliy ta’rif oldingi ishga tushirishdan allaqachon mavjud bo‘lsa, yangi yaratilgan mahalliy tarmoqni ishga tushiring yoki uning mavjud holatidan davom eting. Base58 ID o‘rniga hech qachon noto‘g‘ri shakllangan tasodifiy satr qo‘ymang.
 
 ## Manba va u bilan bog'liq hujjatlar {#source-and-related-docs}
 
-- [Asset lifecycle integratsiyasi sinovlari biriktirilgan commitda](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/asset.rs)
-- [Rust o'rnatilgan majburiyatdagi aktivni qurish misollari](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/examples/tutorial.rs)
+- [Mahkamlangan commitdagi aktiv hayot sikli integratsiya sinovlari](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/asset.rs)
+- [Mahkamlangan commitdagi Rust aktiv tuzish misollari](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/examples/tutorial.rs)
 - [Aktivlar](/uz/blockchain/assets.md)
 - [Ko'rsatmalar](/uz/blockchain/instructions.md)
-- [Ruxsat kodlari](/uz/reference/permissions.md)
+- [Ruxsat tokenlari](/uz/reference/permissions.md)
 - [JavaScript va TypeScript](/uz/guide/tutorials/javascript.md)

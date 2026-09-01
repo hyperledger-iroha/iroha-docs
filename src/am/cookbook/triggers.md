@@ -1,22 +1,22 @@
 ---
 translation_locale: am
 translation_source: /cookbook/triggers.md
-translation_source_hash: 6c8f436b5a41cf41c0ac37aeed6b6cd8c73009cfcca2fe7f5642cef1ad115e6f
+translation_source_hash: 5267fb9bb232d52d9df4bedee414d745ccc30dd52cbc30993df3c5b975a0bc38
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# ማነቃቂያዎች {#triggers}
+# ቀስቅሴዎች {#triggers}
 
-## ውጤቱ {#outcome}
+## ውጤት {#outcome}
 
-በ Taira ላይ የተወሰነ የዝውውር ጥሪ ማነሳሻ ይመዝገቡ ፣ አንድ ጊዜ ያካሂዱት ፣ ለተተገበረ ፍፃሜ ይጠብቁ እና ከተቀማጭ ብሎክ ታሪክ ውስጥ በተሳካ ሁኔታ መጠናቀቁን ያረጋግጡ።
+በ Taira ላይ የተወሰነ የቴክኒክ ጥሪ ቀስቅሴ ያስመዝግቡ፣ አንድ ጊዜ ያስፈጽሙት፣ የተተገበረውን የመጨረሻነት ይጠብቁ እና ከተጠናቀቀው የብሎክ ታሪክ በተሳካ ሁኔታ መጠናቀቁን ያረጋግጡ።
 
 ## ቅድመ ሁኔታዎች {#prerequisites}
 
-- የገንዘብ ድጋፍ ያለው ፊርማ፣ `taira.client.toml`, `taira.tx-metadata.json`, እና `TAIRA_ACCOUNT_ID` ከ [ጋር ይገናኙ Taira](./connect-to-taira.md).
-- Taira ለ ማስነሻ ለማስመዝገብ ፈቃድ `TAIRA_ACCOUNT_ID` የሚመለከታቸው ምልክቶች ናቸው `CanRegisterTrigger` በ `authority` እና `CanExecuteTrigger` በ `trigger`.
-- እነዚህ ድጎማዎች የማይገኙ ከሆነ የተፈጠረውን አካባቢያዊ አውታረመረብ እና የአስተዳዳሪ ደንበኞቹን ይጠቀሙ። አስነሳው ባለሥልጣን ደግሞ አስነሳው የሚፈጽመው መመሪያ በሚጠይቀው እያንዳንዱ ፈቃድ ይፈልጋል።
+- በገንዘብ የተደገፈ ምስጠራ ፈራሚ፣ `taira.client.toml`፣ `taira.tx-metadata.json` እና `TAIRA_ACCOUNT_ID` ከ[ከ Taira ጋር ይገናኙ](./connect-to-taira.md)።
+- Taira ለ`TAIRA_ACCOUNT_ID` ቀስቅሴ ለመመዝገብ እና የተገኘውን ቀስቅሴ ለማስፈጸም ፍቃድ. አግባብነት ያላቸው ምልክቶች `CanRegisterTrigger` በ`authority` እና `CanExecuteTrigger` በ`trigger` የተወሰኑ ናቸው።
+- እነዚያ ድጋፎች የማይገኙ ከሆነ፣ የመነጨ የአካባቢ አውታረ መረብ እና የአስተዳዳሪ ደንበኛውን ይጠቀሙ። ቀስቅሴው ፈቃድ ርእሰ መምህሩ ቀስቅሴው በሚፈጽማቸው መመሪያዎች የሚፈለገውን እያንዳንዱን ፍቃድ ይፈልጋል።
 
 ```bash
 CONFIG=./taira.client.toml
@@ -27,9 +27,9 @@ test -n "$TAIRA_ACCOUNT_ID"
 
 ## እርምጃዎች {#steps}
 
-### 1. በትዕዛዝ የተደገፈ ማነቃቂያ መመዝገብ። {#_1-register-an-instruction-backed-trigger}
+### 1. በመመሪያ የተደገፈ ቀስቅሴ ይመዝገቡ {#_1-register-an-instruction-backed-trigger}
 
-`--instructions-stdin` የ JSON መመሪያዎች ቅደም ተከተል ይቀበላል. አንድ `Log` መመሪያ ይህ ምሳሌ በሁለተኛው መቁጠሪያ ዕቃ ፍቃዶች ይልቅ አስነሳሽነት ፈቃድ ላይ ያተኮረ ነው.
+`--instructions-stdin` JSON መመሪያዎችን ይቀበላል። የ`Log` መመሪያ ይህ ምሳሌ ከሁለተኛው የብሎክቼይን መዝገብ ነገር ፈቃዶች ይልቅ ቀስቅሴ ፍቃድ ላይ እንዲያተኩር ያደርገዋል።
 
 ```bash
 printf '%s\n' \
@@ -45,20 +45,20 @@ printf '%s\n' \
     --filter execute
 ```
 
-አስጀማሪው በከፍተኛ ደረጃ ሦስት ጊዜ ሊሠራ ይችላል። የተገለጸው ሥልጣኑ እንጂ የሚፈጽመው አድራጊው ሳይሆን እርምጃው ውስጥ ያሉትን መመሪያዎች ይፈቅዳል.
+ቀስቅሴው ቢበዛ ሶስት ጊዜ ሊሠራ ይችላል. የታወጀው የፍቃድ ርእሰ መምህሩ እንጂ እሱን ለማስፈጸም የሚከሰተው ጠያቂ ደንበኛ አይደለም፣ በድርጊቱ ውስጥ ያሉትን መመሪያዎች ይፈቅዳል።
 
-### 2. አዋጁን ከመፈጸሙ በፊት ያረጋግጡ {#_2-inspect-the-declaration-before-execution}
+### 2. ከመፈጸሙ በፊት ሐሳቡን ይፈትሹ {#_2-inspect-the-declaration-before-execution}
 
 ```bash
 iroha --config "$CONFIG" ledger trigger get --id "$TRIGGER_ID"
 iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
 ```
 
-ሌላ ክፍያ ከመክፈልዎ በፊት I105 ባለሥልጣንን ፣ የሂደቱን ማጣሪያ ፣ የቀሩትን ድግግሞሾችን እና ነጠላውን `Log` መመሪያ ያረጋግጡ።
+ሌላ ክፍያ ከማውጣትዎ በፊት የ I105 የፈቃድ ባለቤትን፣ የማስፈጸሚያ ማጣሪያውን፣ የተቀሩትን ድግግሞሾች እና ነጠላ `Log` መመሪያን ያረጋግጡ።
 
-### 3. ሁለቱንም ንብርብሮች ማከናወንና መጠበቅ። {#_3-execute-and-wait-for-both-layers}
+### 3. ሁለቱንም ንብርብሮች ያስፈጽሙ እና ይጠብቁ {#_3-execute-and-wait-for-both-layers}
 
-የአፈፃፀም ግብይት እና የማስነሳት እርምጃ የተለዩ ማስረጃዎች አሉት ። `--wait` ለተተገበረው የግብይት ፍፃሜ ይጠብቃል; `--trace` በተጨማሪም የስራ ሰዓት ማጠናቀቂያ ምርመራዎችን ሪፖርት ያደርጋል ።
+የማስፈጸሚያ ግብይቱ እና ቀስቅሴው እርምጃ የተለየ ማስረጃ አላቸው። `--wait` የተተገበረ ግብይት መጨረሻውን ይጠብቃል; `--trace` እንዲሁም የሶፍትዌር ማስፈጸሚያ አካባቢ ማጠናቀቂያ ምርመራዎችን ሪፖርት ያደርጋል።
 
 ```bash
 iroha --config "$CONFIG" \
@@ -71,7 +71,7 @@ iroha --config "$CONFIG" \
   "$TRIGGER_ID"
 ```
 
-Rust ደንበኞች ተመሳሳይ ሁለት የተጻፉ መመሪያዎችን ይገነባሉ. እዚህ ላይ `authority` እንደ መለያ አንድ `AccountId` እና `client` ምልክቶች ነው:
+Rust ደንበኞች ተመሳሳይ ሁለት የተተየቡ መመሪያዎችን ይገነባሉ። እዚህ `authority` እንደ መለያ `AccountId` እና `client` ምልክቶች አሉ -
 
 ```rust
 use iroha::data_model::{prelude::*, transaction::FeePaymentIntent};
@@ -91,9 +91,9 @@ client.submit_blocking(Register::trigger(Trigger::new(trigger_id.clone(), action
 client.submit_blocking(ExecuteTrigger::new(trigger_id), fee)?;
 ```
 
-## ያረጋግጡ {#verify}
+## አረጋግጥ {#verify}
 
-ለተጠናቀቀው የተሰማሩ ብሎኮች ታሪክን ይቃኙ እና የመደመር ድግግሞሽ ብዛት ይመልከቱ:
+ለማጠናቀቅ የተጠናቀቀውን የብሎክ ታሪክን ይቃኙ እና የተቀነሰውን የድግግሞሽ ብዛት ይፈትሹ -
 
 ```bash
 iroha --config "$CONFIG" ledger trigger completed list \
@@ -104,21 +104,21 @@ iroha --config "$CONFIG" ledger trigger completed list \
 iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
 ```
 
-ቢያንስ አንድ ማጠናቀቅ ስኬታማ መሆኑን ሪፖርት ማድረግ አለበት ። ማስነሻው ሁለት አፈፃፀም ሲቀሩ ንቁ ሆኖ መቆየት አለበት ። ያለ ስኬታማ ማስነሻ ማጠናቀቅ የተሳካ ማረጋገጫ አይደለም ።
+ቢያንስ አንድ ማጠናቀቂያ ስኬትን ሪፖርት ማድረግ አለበት። ቀስቅሴው ሁለት አፈጻጸሞች ሲቀሩ ንቁ ሆኖ መቆየት አለበት። የተሳካ ቀስቅሴ ሳይጠናቀቅ የተሳካ ማስረከብ በቂ ማረጋገጫ አይደለም።
 
-## ችግሮችን መፍታት {#troubleshooting}
+## መላ ፍለጋ {#troubleshooting}
 
-- ምዝገባው አልተፈቀደለትም ተብሎ ውድቅ ተደርጓል ማለት ፊርማው ለታወጀው ባለስልጣን `CanRegisterTrigger` የጎደለው ነው ። አፈፃፀሙ በተናጠል የተቀመጠውን `CanExecuteTrigger` ቶከን ይጠይቃል ።
-- አንድ ግብይት የተተገበረውን መድረስ ይችላል ሳለ አስነሳው እርምጃ አለመሳካቱን ሪፖርት ያደርጋል. የማጠናቀቂያ ውጤት እና ስህተት ያንብቡ; ከዚያ እያንዳንዱን የተቀረጸ መመሪያ ለማግኘት አስነሳው ባለስልጣን ፍቃዶችን ይፈትሹ.
-- `trigger not found` ማለት የምዝገባው ግብይት ውድቅ ተደርጓል ወይም ለመፈፀም የተለየ Torii / ሰንሰለት ውቅር ጥቅም ላይ ውሏል ማለት ነው ።
-- ድግግሞሾቹ ወደ ዜሮ ሲደርሱ ተጨማሪ ድግግመቶችን ማቀናበር ሌላ ልዩ ጽሑፍ ነው። ይህን የምግብ አዘገጃጀት መመሪያ ለዘለቄታው አትቀይር።
-- ለጽዳት `ledger trigger unregister --id "$TRIGGER_ID"` ለዚያ አስነሳሽነት እና ግልፅ ክፍያ ምርጫ `CanUnregisterTrigger` ይጠይቃል ።
+- ያልተፈቀደ ተብሎ ውድቅ የተደረገው ምዝገባ ማለት ክሪፕቶግራፊክ ፈራሚው ለታወጀው የፈቃድ ባለቤት `CanRegisterTrigger` ይጎድለዋል ማለት ነው። አፈፃፀም በተናጥል የተስተካከለ `CanExecuteTrigger` ቶከን ያስፈልገዋል።
+- ቀስቅሴው እርምጃ አለመሳካቱን ሪፖርት ሲያደርግ ግብይቱ ተተግብሯል። የማጠናቀቂያ ውጤቱን እና ስህተቱን ያንብቡ; ከዚያ ለእያንዳንዱ የተከተተ መመሪያ የቀስቅሴ ፈቃድ የርእሰ መምህሩን ፈቃዶች ያረጋግጡ።
+- `trigger not found` የምዝገባ ግብይቱ ውድቅ ተደርጓል ወይም የተለየ Torii/ሰንሰለት ውቅር ለአፈፃፀም ጥቅም ላይ ውሏል ማለት ሊሆን ይችላል።
+- ድግግሞሾች ዜሮ ሲደርሱ፣ ተጨማሪ ድግግሞሾችን መስጠት ሌላው ልዩ መብት ያለው የመጻፍ ክዋኔ ነው። ይህንን የተግባር መመሪያ በጸጥታ ወደ ላልተወሰነ ቀስቅሴ አይቀይሩት።
+- ለማጽዳት፣ `ledger trigger unregister --id "$TRIGGER_ID"` ለዚያ ቀስቅሴ እና ግልጽ የሆነ የክፍያ ምርጫ `CanUnregisterTrigger` ያስፈልገዋል።
 
 ## ምንጭ እና ተዛማጅ ሰነዶች {#source-and-related-docs}
 
-- [በተጣበቀ የኮሚት ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/triggers/by_call_trigger.rs) ላይ በዝውውር ጥሪ ተነሳሽነት ውህደት ሙከራዎች
-- [የዝግጅት እና ተነሳሽነት ውህደት ሙከራዎች በተጣበቀ ኮሚቴ ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events_and_triggers.rs)
-- [በፒን የተቀመጠው ኮምፕዩተር ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs) ላይ የማስነሳት መመሪያ አፈፃፀም
-- [መንስኤዎች](/am/blockchain/triggers.md)
-- [ማስነሳት ምሳሌዎች](/am/blockchain/trigger-examples.md)
+- [በቴክኒካል ጥሪ ቀስቅሴ የውህደት ሙከራዎች በተሰካው የምንጭ-ኮድ ክለሳ ላይ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/triggers/by_call_trigger.rs)
+- [በተሰካው የምንጭ-ኮድ ክለሳ ላይ የክስተት እና ቀስቅሴ የውህደት ሙከራዎች](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events_and_triggers.rs)
+- [በተሰካው የምንጭ-ኮድ ክለሳ ላይ የመመሪያ አፈፃፀምን ቀስቅሴ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs)
+- [ቀስቅሴዎች](/am/blockchain/triggers.md)
+- [ቀስቅሴ ምሳሌዎች](/am/blockchain/trigger-examples.md)
 - [ክስተቶች](./stream-events.md)

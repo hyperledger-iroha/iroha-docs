@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /reference/glossary.md
-translation_source_hash: fe3bc2d62ca81b5e6e30023407f3c900eb4026b6668f0d422728a8eedd436148
+translation_source_hash: ab484310e7e0b0662c1d4bb133e7ae337c71b09b5fdc8e678581234d74ee9b29
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 在此,您可以找到所有与 Iroha 有关的实体的定义.
 
-- [同行](#peer)
+- [对等节点](#peer)
 - [资产](#asset)
 - [拜占庭的故障耐受性 (BFT) ](#byzantine-fault-tolerance-bft)
 - [Iroha 组件](#iroha-components)
@@ -22,7 +22,7 @@ translation_engine: nllb-200-ct2
   - [智能合同](#smart-contracts)
   - [触发器](#triggers)
   - [版本](#versioning)
-  - [希吉里 (同行声誉系统) ](#hijiri-peer-reputation-system)
+  - [希吉里 (对等节点声誉系统) ](#hijiri-peer-reputation-system)
 - [Iroha 模块](#iroha-modules)
 - [Iroha 特别指示 (ISI)](#iroha-special-instructions-isi)
   - [实用性 Iroha 特殊指令](#utility-iroha-special-instructions)
@@ -40,13 +40,13 @@ translation_engine: nllb-200-ct2
 
 在中世纪期间,账本开放以供公众查看和验证准确性.这种想法反映在基于区块链的系统中,可以检查存储的数据是否有效.
 
-## 同龄人 {#peer}
+## 对等节点 {#peer}
 
-在 Iroha 中的同行是指其他 Iroha 进程和客户端应用程序可以连接到的 Iroha 过程实例. 一台机器可以容纳多个 Iroha 同行.同龄人在资源和能力方面是平等的,但有一个重要例外:只有一个同龄人在 Iroha 网络启动阶段运行基因块.
+在 Iroha 中的对等节点是指其他 Iroha 进程和客户端应用程序可以连接到的 Iroha 过程实例. 一台机器可以容纳多个 Iroha 对等节点.对等节点在资源和能力方面是平等的,但有一个重要例外:只有一个对等节点在 Iroha 网络启动阶段运行创世块.
 
 其他区块链可能与节点或验证符相同的概念.
 
-一个同行可以是其主机系统上的过程. 它也可以包含在一个 Docker 容器和 Kubernetes 子中.
+一个对等节点可以是其主机系统上的过程. 它也可以包含在一个 Docker 容器和 Kubernetes 子中.
 
 ## 资产 {#asset}
 
@@ -68,13 +68,13 @@ translation_engine: nllb-200-ct2
 - 一条街上的两个房子可能有不同的维护水平.
 - 珠宝制造商通常提供各种不同的设计.
 
-### 可存储的资产 {#mintable-assets}
+### 可铸造资产 {#mintable-assets}
 
-如果可以发行更多相同类型的资产,该资产是可创建的.
+如果可以发行更多相同类型的资产，该资产就是可铸造的。
 
-### 不可提现的资产 {#non-mintable-assets}
+### 不可铸造资产 {#non-mintable-assets}
 
-如果资产的初始金额被指定一次,并且没有变化,则将其视为不可取消.
+如果资产的初始数量只指定一次且不再更改，该资产就被视为不可铸造。
 
 [Genesis块](/zh-hans/guide/configure/genesis.md)为 Iroha 配置设置了此信息.
 
@@ -92,15 +92,15 @@ translation_engine: nllb-200-ct2
 
 ### Torii (门) {#torii-gate}
 
-该模块为 [peer](#peer)的输入请求处理逻辑. 它用于接收,接受和路由输入指示,以及 HTTP 查询,以及运行时间配置更新.
+包含[对等节点](#peer)传入请求处理逻辑的模块。它用于接收、接受和路由传入的指令及 HTTP 查询，也用于处理运行时配置更新。
 
 ### Kura (仓库) {#kura-warehouse}
 
-一个持续的块存储. Kura 存储签名区块,区块哈希,高度指数,恢复侧车和在磁盘上提交列表的元数据. [世界状况的看法](#world-state-view-wsv) 是从 Kura 当状态快照不可或在本地区块商店后面. [Kura 存储](/zh-hans/blockchain/world.md#kura-storage).
+一个持续的块存储. Kura 存储签名区块,区块哈希,高度索引,恢复辅助记录和在磁盘上提交列表的元数据. [世界状况的看法](#world-state-view-wsv) 是从 Kura 当状态快照不可或在本地区块商店后面. [Kura 存储](/zh-hans/blockchain/world.md#kura-storage).
 
 ### Kagami(教师和示范者及/或镜子) {#kagami-teacher-and-exemplar-and-or-looking-glass}
 
-通常使用的数据生成器. 它可以生成加密密钥对,创始区块,文档等.
+通常使用的数据生成器. 它可以生成加密密钥对,创世区块,文档等.
 
 ### 梅克尔树 (树) {#merkle-tree-hash-tree}
 
@@ -116,11 +116,11 @@ translation_engine: nllb-200-ct2
 
 ### 版本化 {#versioning}
 
-每个请求都标记着它属于的 API 版本. 它允许 Iroha 客户端/同行软件的不同二进制版本的组合相互操作,这反过来可以在 Iroha 网络中进行软件升级.
+每个请求都标记着它属于的 API 版本. 它允许 Iroha 客户端/对等节点软件的不同二进制版本的组合相互操作,这反过来可以在 Iroha 网络中进行软件升级.
 
-### 希吉里 (同行声誉系统) {#hijiri-peer-reputation-system}
+### 希吉里 (对等节点声誉系统) {#hijiri-peer-reputation-system}
 
-Iroha 的声誉系统.它允许优先与具有良好的轨迹记录的[同行](#peer)进行沟通,并减少恶意的[同行](#peer)造成的伤害.
+Iroha 的声誉系统.它允许优先与具有良好的轨迹记录的[对等节点](#peer)进行沟通,并减少恶意的[对等节点](#peer)造成的伤害.
 
 ## Iroha 模块 {#iroha-modules}
 
@@ -140,11 +140,11 @@ Iroha 的第三方扩展,提供了定制功能.
 
 ### 特定领域的特殊指示 Iroha {#domain-specific-iroha-special-instructions}
 
-与特定领域的活动相关的指令:资产,账户,域名,同行管理).这些指令提供了安全和安全的方式对[世界状态视图](#world-state-view-wsv)进行变更所需的工具.
+与特定领域的活动相关的指令:资产,账户,域名,对等节点管理).这些指令提供了安全和安全的方式对[世界状态视图](#world-state-view-wsv)进行变更所需的工具.
 
 ### 关税 Iroha 特殊指示 {#custom-iroha-special-instruction}
 
-提供指令 [Iroha 模块](#iroha-modules), 通过客户或第三方. [核心指令](#core-iroha-special-instructions). 叉和修改 Iroha 源代码不建议,因为特别指示未经同意的 [同龄人](#peer) 在一个 Iroha 部署将被视为故障,因此 [同龄人](#peer) 运行修改实例将被取消访问权限.
+由 [Iroha 模块](#iroha-modules)、客户端或第三方提供的指令。这些指令只能使用[核心指令](#core-iroha-special-instructions)构建。不建议分叉和修改 Iroha 源代码，因为 Iroha 部署中的[对等节点](#peer)未达成一致的特殊指令会被视为故障，因此运行修改实例的[对等节点](#peer)将被撤销访问权限。
 
 ## Iroha 查询 {#iroha-query}
 
@@ -156,8 +156,8 @@ Iroha 的第三方扩展,提供了定制功能.
 
 ## 世界状态的视角 (WSV) {#world-state-view-wsv}
 
-目前的区块链状态在内存中表示. WSV 包含了 `World`, 已承诺的区块哈希,交易指数,共识拓和被查询所使用的衍生指数.它只有通过承诺的区块更新,可以从 [Kura](#kura-warehouse). 查看 [世界状况的看法](/zh-hans/blockchain/world.md#world-state-view-wsv).
+目前的区块链状态在内存中表示. WSV 包含了 `World`, 已提交的区块哈希,交易索引,共识拓和被查询所使用的派生索引.它只有通过提交的区块更新,可以从 [Kura](#kura-warehouse). 查看 [世界状况的看法](/zh-hans/blockchain/world.md#world-state-view-wsv).
 
 ## 领导者 {#leader}
 
-在Iroha网络中,一个同行被随机选择并获得特殊特权.这种特权可以被撤销在实现 [拜占庭的故障度](#byzantine-fault-tolerance-bft) 通过 [视图的变化](#view-change).
+在 Iroha 网络中，系统会随机选出一个对等节点，并授予其创建下一个区块的特殊权限。在实现[拜占庭容错](#byzantine-fault-tolerance-bft)的网络中，可以通过[视图变更](#view-change)撤销该权限。

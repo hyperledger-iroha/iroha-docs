@@ -1,20 +1,20 @@
 ---
 translation_locale: he
 translation_source: /reference/iroha3d-cli.md
-translation_source_hash: d621aa09f50cb44cb99af372100f418c44c3714b879a556038e47598949a3a6f
+translation_source_hash: bf4a63b05a149f0c935190b63cdb838b0a0265e99baedfc9b5bf00a9e621b108
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # `iroha3d` CLI {#iroha3d-cli}
 
-`iroha3d` הוא הדיימון הסטנדרטי Iroha 3 של השותפים. חבילת המטען נקראת `irohad`, אז הזמינו את הבינרי ממבחר מקור עם:
+`iroha3d` הוא הדיימון הסטנדרטי Iroha 3 של הצמתים. חבילת המטען נקראת `irohad`, אז הזמינו את הבינרי ממבחר מקור עם:
 
 ```shell
 cargo run -p irohad --bin iroha3d -- --config path/to/config.toml
 ```
 
-עבור רשת הבדיקה הציבורית Taira, תמונת השחרור משתמשת ב- `iroha3d_taira`. הוא מקבל את אותו CLI. זה גם מכיל את שרשרת הקנוניקה Taira, קבוצת מבטיחות, הגדרות אחסון, ומפתחות חתימה של זמן הפעלה. אישור קונפיגורת Taira מבלי לפתוח תעודות אישורי זמן הפעלה כמו זו:
+עבור רשת הבדיקה הציבורית Taira, תמונת הגרסה משתמשת ב־`iroha3d_taira`. היא מקבלת את אותו CLI ומכילה גם את השרשרת הקנונית של Taira, את קבוצת המאמתים, את הגדרות האחסון ואת מפתחות החתימה בזמן ריצה. אמתו את תצורת Taira בלי לחשוף את פרטי ההזדהות של זמן הריצה באופן הבא:
 
 ```shell
 iroha3d_taira --sora \
@@ -22,20 +22,20 @@ iroha3d_taira --sora \
   --check-config
 ```
 
-המפעיל חייב להציג את הפרופיל הקנוני Taira לפני השימוש. הטמבל הנבדק מכיל הגדרות דוגמה. המפעיל חייב להחליף כל הגדרת דוגמה. לא להשתמש בהגדרות גנריות Nexus או הייצור SoraFS בעת ניסוי נגד Taira.
+על המפעיל ליצור את פרופיל Taira הקנוני לפני השימוש. התבנית השמורה במאגר כוללת הגדרות לדוגמה, ועל המפעיל להחליף כל אחת מהן. אל תשתמשו בהגדרות כלליות של Nexus או בהגדרות ייצור של SoraFS בעת בדיקה מול Taira.
 
 ## `--config` {#arg-config}
 
 - סוג: מסלול הקובץ
 - פרופיל: `-c`
 
-נתיב לקונפיגוריית השותפים [ ](/he/reference/peer-config/index.md).
+נתיב לקונפיגוריית הצמתים [ ](/he/reference/peer-config/index.md).
 
 ## `--genesis-manifest-json` {#arg-genesis-manifest-json}
 
 - סוג: מסלול הקובץ
 
-מוניסט הגנזיס אופציונלי JSON המשמש לאישור הסכמה.
+מניפסט genesis אופציונלי ב־JSON המשמש לאתחול הקונצנזוס.
 
 ## `--check-config` {#arg-check-config}
 
@@ -43,7 +43,7 @@ iroha3d_taira --sora \
 
 ## סימני אישור Kagemusha {#kagemusha-qualification-seals}
 
-אפשרויות הנתיב הקובץ אלה דורשות `--check-config` ולפעול אישור קגמושה מלא לפני כתיבת חותם קנוני:
+אפשרויות נתיב הקובץ האלה דורשות `--check-config` ומבצעות הסמכת Kagemusha מלאה לפני כתיבת חותם קנוני:
 
 - `--write-kagemusha-catalog-qualification-seal <PATH>` מספקת את ההסדר.
 - `--write-kagemusha-validator-qualification-seal <PATH>` מספקת אישור לאישור מקומי על ההזמנה של קידום חתומה המוגדרת.
@@ -105,6 +105,8 @@ iroha3d --fastpq-execution-mode gpu \
 
 ## עזרה שנוצרה {#generated-help}
 
-ההוצאת המלאה בהמשך נוצרת מהשילוב מקור Iroha שמוקבע.
+סיכום האפשרויות שלעיל מאומת מול הגדרות הארגומנטים הנוכחיות של `iroha3d`. תמונת המצב של העזרה שנוצרה ונשמרה במאגר אינה מוצגת בכוונה כל עוד מצב המקור שלה ממתין. כדי להציג את העזרה המדויקת עבור עותק קוד המקור שלך, הריצו:
 
-<<< @/snippets/iroha3d-help.md
+```shell
+cargo run --locked -p irohad --bin iroha3d -- --help
+```

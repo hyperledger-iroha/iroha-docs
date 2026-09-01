@@ -1,55 +1,55 @@
 ---
 translation_locale: fr
 translation_source: /guide/best-practices/network-deployment.md
-translation_source_hash: 312f9cb3c6fd937b3e7c30ea27d1876ea7901cfa79eced352611db99bbca4a70
+translation_source_hash: 7839268b8c1f6700b0c26652e3308fa4e8acef4717d8527c609b6f30fb8c84ab
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Déploiement du réseau {#network-deployment}
 
-Traiter un réseau Iroha comme un système coordonné. Les validateurs doivent se mettre d'accord sur la génèse, la topologie, les pairs de confiance et la configuration pertinente au consensus avant que le réseau puisse commencer et continuer à finaliser des blocs.
+Traitez un réseau Iroha comme un système coordonné. Les validateurs doivent s'accorder sur la genèse de la blockchain, la topologie, les pairs de réseau de confiance et la configuration pertinente pour le consensus avant que le réseau puisse démarrer et continuer à finaliser les blocs.
 
 ## Séparation de l'environnement {#environment-separation}
 
-- Maintenir des paquets de configuration distincts pour le développement local, le testnet partagé, la mise en scène et la production.
-- Générer de nouvelles clés pour chaque environnement non jetable. Ne réutilisez pas le localnet ou Taira dans la production.
-- Gardez la configuration des pairs, la configuration du client, la génèse signée, les scripts et les notes de déploiement ensemble comme un artefact de libération versionné.
-- Conserver les clés privées en dehors des dépôts et des modèles de déploiement.
+- Maintenez des ensembles de configuration séparés pour le développement local, le testnet partagé, la mise en scène et la production.
+- Générez de nouvelles clés pour chaque environnement non jetable. Ne réutilisez pas le matériel de clé localnet ou Taira en production.
+- Conservez la configuration des pairs réseau, la configuration du client, le genesis de la blockchain signé, les scripts et les notes de déploiement ensemble en tant qu'artéfact de version.
+- Stockez les clés privées en dehors des dépôts et des modèles de déploiement.
 
-Voir [Les clés pour le déploiement du réseau ](/fr/guide/configure/keys-for-network-deployment.md).
+Voir [Clés pour le déploiement réseau](/fr/guide/configure/keys-for-network-deployment.md).
 
-## Genèse et topologie {#genesis-and-topology}
+## genèse et topologie de la blockchain {#genesis-and-topology}
 
-- Faites en sorte que chaque validateur utilise la même transaction de génèse signée, un ensemble de pairs fiables, une topologie et des preuves de possession du validateur lorsque le profil les exige.
-- Utilisez au moins quatre validateurs pour un déploiement minimum de tolérance à la faute byzantine.
-- Séparer les validateurs des observateurs dans la planification des capacités. Les observateurs ne votent pas, ne proposent pas ou ne collectent pas, mais ils consomment toujours le stockage, la synchronisation de blocs et la bande passante réseau.
-- Traiter les changements de génèse, d'exécuteur et de topologie comme des migrations coordonnées plutôt que des modifications uniques.
+- Faites en sorte que chaque validateur utilise la même transaction de genèse de blockchain signée, le même ensemble de pairs de réseau de confiance, la même topologie et les mêmes preuves de possession du validateur lorsque le profil les exige.
+- Utilisez au moins quatre validateurs pour un déploiement tolérant aux pannes byzantines minimal.
+- Séparez les validateurs des observateurs dans la planification de la capacité. Les observateurs ne votent pas, ne proposent pas et ne collectent pas, mais ils consomment néanmoins du stockage, la synchronisation des blocs et la bande passante réseau.
+- Traitez les changements de genèse, d’exécuteur et de topologie comme des migrations coordonnées, non comme des modifications propres à un seul pair.
 
-Voir [Genèse](/fr/reference/genesis.md), [ Gestion des pairs](/fr/guide/configure/peer-management.md) et [ Performance and Metrics ](/fr/guide/advanced/metrics.md#node-count-and-quorum).
+Voir [genèse de la blockchain](/fr/reference/genesis.md), [Gestion des pairs réseau](/fr/guide/configure/peer-management.md), et [Performance et mesures](/fr/guide/advanced/metrics.md#node-count-and-quorum).
 
-## Torii et l'accès au réseau {#torii-and-network-access}
+## Torii et Accès au Réseau {#torii-and-network-access}
 
-- Mettre Torii derrière un proxy inverse ou un pare-feu lorsqu'il est exposé à l'extérieur du réseau hôte ou privé.
-- Terminer TLS et appliquer les contrôles d'authentification de base, de limitation des taux et de taille requise à l'extrémité lorsque le déploiement en exige.
-- Les itinéraires d'opérateur et de télémétrie devraient être plus restreints que les itinéraires publics réservés à la lecture seule.
-- Lier les adresses de l'auditeur aux interfaces locales de l'hôte lorsque les pairs ne devraient pas accepter le trafic à distance directement.
+- Placez Torii derrière un proxy inverse ou un pare-feu lorsqu'il est exposé en dehors de l'hôte ou du réseau privé.
+- Terminez TLS et appliquez l'authentification de base, la limitation du débit et les contrôles de taille des requêtes à la périphérie lorsque le déploiement l'exige.
+- Publiez uniquement les points de terminaison API nécessaires à l'environnement. Les routes opérateur et télémétrie devraient être plus restreintes que les routes publiques en lecture seule.
+- Lier les adresses des écouteurs aux interfaces locales de l'hôte lorsque les pairs du réseau ne doivent pas accepter directement le trafic distant.
 
-Voir [Torii Endpoints](/fr/reference/torii-endpoints.md) et [ Réseaux privés virtuels ](/fr/guide/security/vpn.md).
+Voir [Torii API points de terminaison](/fr/reference/torii-endpoints.md) et [Réseaux Privés Virtuels](/fr/guide/security/vpn.md).
 
-## Consensus et capacité {#consensus-and-capacity}
+## Consensus et Capacité {#consensus-and-capacity}
 
-- Mesurer le déploiement avant d'ajuster les timers de consensus. Des délais plus faibles ne peuvent réduire la latence que pendant que les couches réseau, stockage et exécution sont en phase.
-- Regardez la direction de la file d'attente, pas seulement les échantillons courts de débit. Une file d'attente croissante pendant la charge constante signifie que le réseau est surchargé.
-- Enregistrer les paramètres Sumeragi effectifs, le profil de télémétrie, le nombre de validateurs, le réseau RTT, la forme de la charge de travail et les détails matériels pour chaque référence.
-- Augmentez la résistance du collecteur uniquement après avoir comparé les signaux de latence, de trafic et de contrainte.
+- Mesurez le déploiement avant d'ajuster les minuteries de consensus. Des délais d'attente plus courts peuvent réduire la latence seulement si les couches réseau, de stockage et d'exécution suivent.
+- Surveillez la direction de la file d'attente, pas seulement de courts échantillons de débit. Une file d'attente qui augmente pendant une charge constante signifie que le réseau est surchargé.
+- Enregistrez les paramètres effectifs Sumeragi, le profil de télémétrie, le nombre de validateurs, le réseau RTT, la forme de la charge de travail et les détails du matériel pour chaque benchmark.
+- Changez une limite de file d'attente bornée ou de récupération de charge utile à la fois, et conservez les preuves de latence, de trafic, de mémoire et de contre-pression avant et après.
 
-Voir [Performance et métriques](/fr/guide/advanced/metrics.md).
+Voir [Performance et mesures](/fr/guide/advanced/metrics.md).
 
-## Gestion des métaux et des procédés {#bare-metal-and-process-management}
+## Gestion du matériel nu et des processus {#bare-metal-and-process-management}
 
-- Gardez séparément les `config.toml`, la clé privée, le répertoire de stockage et les ports de chacun.
-- Utilisez des gestionnaires de processus tels que systemd avec des politiques explicites de redémarrage, d'enregistrement et de ressources.
-- Préserver les commandes générées README et démarrer des paquets de localnet Kagami lors de la traduction d'une topologie de test vers des hôtes gérés.
+- Gardez séparés le `config.toml`, la clé privée, le répertoire de stockage et les ports de chaque pair du réseau.
+- Utilisez des gestionnaires de processus tels que systemd avec des politiques explicites de redémarrage, de journalisation et de ressources.
+- Conserver les commandes générées README et de démarrage provenant des bundles localnet Kagami lors de la traduction d'une topologie de test vers des hôtes gérés.
 
-Voir [Running Iroha sur le métal nu](/fr/guide/advanced/running-iroha-on-bare-metal.md).
+Voir [Exécution de Iroha sur du matériel nu](/fr/guide/advanced/running-iroha-on-bare-metal.md).

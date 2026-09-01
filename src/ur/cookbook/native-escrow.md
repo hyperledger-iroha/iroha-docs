@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: aa8e079684879bdcda2b4439e9c12742d4ab477e6f560f7c326a59b6be5bf666
+translation_source_hash: 576e03924f19b63681cdfafa641b996672e35a992478fc9eaf5b83f0e7baa6da
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,15 +10,15 @@ translation_engine: nllb-200-ct2
 
 ## نتیجہ {#outcome}
 
-ایک مارکیٹ پلیس ایسرو اور ایک منزل مقصود سے منسلک اثاثہ لاک کے درمیان انتخاب کریں، Rust یا Python کے ساتھ موجودہ ٹائپ کردہ زندگی کی مدت کو انجام دیں، ہر لاک دوبارہ کوشش کو باقی رقم پر پابند کریں جو آپ نے اصل میں مشاہدہ کیا ہے، اور مقامی Kotodama اسرو سطح کو JavaScript سے مرتب کریں۔
+ایک مارکیٹ پلیس ایسرو اور ایک منزل مقصود سے منسلک اثاثہ لاک کے درمیان انتخاب کریں، Rust یا Python کے ساتھ موجودہ ٹائپ کردہ زندگی کی مدت کو انجام دیں، ہر لاک دوبارہ کوشش کو باقی رقم پر پابند کریں جو آپ نے اصل میں مشاہدہ کیا ہے، اور مقامی Kotodama ایسکرو سطح کو JavaScript سے مرتب کریں۔
 
 ## لازمی شرائط {#prerequisites}
 
 - ایک عددی اثاثہ کی تعریف اور ایک کھولنے والا / بیچنے والا جو کافی مقدار کا مالک ہے.
-- ہر پارٹی کے لئے مالی اعانت یافتہ ، واحد کلید I105 کلائنٹ جو ایک قدم پیش کرتے ہیں۔ براہ راست حکام کی طرف سے ادا کردہ `fee_payment` ارادے کا استعمال کریں جس کی فیس اثاثہ موجودہ Taira نل کے جواب سے ملتا ہے۔ دستاویزات میں اثاثہ ID کو شامل نہ کریں۔
-- موجودہ Rust یا Python SDK سے Iroha کی ذمہ داری `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
+- ہر پارٹی کے لئے مالی اعانت یافتہ ، واحد کلید I105 کلائنٹ جو ایک قدم پیش کرتے ہیں۔ براہ راست مجاز اکاؤنٹس کی طرف سے ادا کردہ `fee_payment` ارادے کا استعمال کریں جس کی فیس اثاثہ موجودہ Taira فوسیٹ کے جواب سے ملتا ہے۔ دستاویزات میں اثاثہ ID کو شامل نہ کریں۔
+- موجودہ Rust یا Python SDK سے Iroha کی commit داری `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
 - کے لئے JavaScript کمپائلر کی مثال، Node.js 24 پلس ایک مقامی طور پر تعمیر `@iroha/iroha-js` پیکج اور اس کی اصل `iroha_js_host`; مندرجہ ذیل [JavaScript SDK ماخذ کی تعمیر کا ترتیب](/ur/guide/tutorials/javascript.md#build-from-source). براؤزر کی تعمیرات فراہم کرنا ضروری ہے `compilerUrl` مقامی میزبان کو لوڈ کرنے کے بجائے.
-- Taira کو اثاثہ جات کی منتقلی اور اسکرور ہدایات کا اعتراف کرنا ہوگا۔ اثاثوں کے مالکان عام زندگی سائیکل کا استعمال کرسکتے ہیں جب ان کی اثاثہ پالیسی اس کی اجازت دیتی ہے۔ تنازعہ حل کرنے کے لئے عالمی `CanResolveEscrowDispute` اجازت کی ضرورت ہوتی ہے۔ جب ضروری عوامی نیٹ ورک اتھارٹی غائب ہو تو ایک مقامی نیٹ ورک کا استعمال کریں.
+- Taira کو اثاثہ جات کی منتقلی اور ایسکرو ہدایات کا اعتراف کرنا ہوگا۔ اثاثوں کے مالکان عام زندگی سائیکل کا استعمال کرسکتے ہیں جب ان کی اثاثہ پالیسی اس کی اجازت دیتی ہے۔ تنازعہ حل کرنے کے لئے عالمی `CanResolveEscrowDispute` اجازت کی ضرورت ہوتی ہے۔ جب ضروری عوامی نیٹ ورک اتھارٹی غائب ہو تو ایک مقامی نیٹ ورک کا استعمال کریں.
 
 مارکیٹ پلیس ایسرو ماڈل بیچنے والے ، خریدار ، آف چین ادائیگی اور ریلیز۔ عام تالے ایک منزل کا نام دیتے ہیں اور اختیاری طور پر ایک علیحدہ ریلیز اتھارٹی؛ وہ جزوی واپسی ، منسوخی اور ختم ہونے کی حمایت کرتے ہیں۔
 
@@ -70,7 +70,7 @@ fn complete_marketplace_escrow(
 }
 ```
 
-ہولڈری اکاؤنٹ لیجر کے ذریعہ منظم کیا جاتا ہے۔ ایک عام اثاثہ ٹرانسفر ٹوکن دینے سے فعال ہولڈرے کو اسرو لائف سائیکل سے باہر ختم نہیں ہوتا ہے.
+ہولڈری اکاؤنٹ لیجر کے ذریعہ منظم کیا جاتا ہے۔ ایک عام اثاثہ ٹرانسفر ٹوکن دینے سے فعال ہولڈرے کو ایسکرو لائف سائیکل سے باہر ختم نہیں ہوتا ہے.
 
 ### Python کے ساتھ ایک عام لاک کھولیں اور جزوی طور پر کھینچیں۔ {#_2-open-and-partially-draw-a-generic-lock-with-python}
 
@@ -147,7 +147,7 @@ def open_and_draw_lock(
 
 Python SDK خود بخود استفسار کر سکتا ہے جب `expected_remaining_amount` چھوڑ دیا جاتا ہے، لیکن مشاہدہ کردہ قدر کو منتقل کرنے سے درخواست کے کوڈ میں دستخط شدہ معاشی پیشگی حالت نظر آتی ہے.
 
-Rust لاک فلو کے ل the ، موجودہ کنسٹرکٹرز کو بھی مشاہدہ شدہ مقدار کی ضرورت ہوتی ہے:
+Rust lock flows کے لیے موجودہ constructors کو مشاہدہ شدہ مقدار بھی درکار ہوتی ہے:
 
 ```rust
 let before = opener.query_single(FindAssetEscrowById::new(lock_id))?;
@@ -169,9 +169,9 @@ opener.submit_blocking(
 
 `DrawdownAssetLock::new` تین اقدار لیتا ہے؛ `CancelAssetLock::new` دو لیتا ہے۔ متوقع باقی رقم کو خارج کرنا ایک پرانی، غیر محفوظ کال فارم کی وضاحت کرتا ہے۔
 
-### JavaScript سے Kotodama اسکرور سطح مرتب کریں۔ {#_3-compile-the-kotodama-escrow-surface-from-javascript}
+### JavaScript سے Kotodama ایسکرو سطح مرتب کریں۔ {#_3-compile-the-kotodama-escrow-surface-from-javascript}
 
-JavaScript کو غیر ٹائپ شدہ مقامی ہدایات کی ایجاد کرنے کی ضرورت نہیں ہے۔ موجودہ مرتب کنندہ لیجر اسکرور بلٹ ان کو Kotodama کے سامنے رکھتا ہے؛ تعیناتی اور کالز پھر [بنانے اور ایک سمارٹ معاہدہ کو تعینات کرنے کے بعد ](./smart-contracts.md).
+JavaScript کو غیر ٹائپ شدہ مقامی ہدایات کی ایجاد کرنے کی ضرورت نہیں ہے۔ موجودہ مرتب کنندہ لیجر ایسکرو بلٹ ان کو Kotodama کے سامنے رکھتا ہے؛ تعیناتی اور کالز پھر [بنانے اور ایک سمارٹ معاہدہ کو تعینات کرنے کے بعد ](./smart-contracts.md).
 
 اس کو `native_escrow.ko` کے طور پر محفوظ کریں:
 
@@ -250,8 +250,8 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 ## ماخذ اور متعلقہ دستاویزات {#source-and-related-docs}
 
 - [پنڈٹ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs) پر native escrow instruction model
-- [مقررہ کمیٹ پر مقامی ایسکرو انٹیگریشن ٹیسٹ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
-- [Python مقررہ ذمہ داری پر اسرو کلائنٹ کے طریقے](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
+- [مقررہ کمیٹ پر مقامی ایایسکرو انٹیگریشن ٹیسٹ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
+- [Python مقررہ commit داری پر ایسکرو کلائنٹ کے طریقے](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
 - [Kotodama پنڈ commit پر native escrow sample](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [مقامی اثاثہ جات کا حامی ](/ur/blockchain/escrow.md)
 - [فنگبل اثاثے](./fungible-assets.md)

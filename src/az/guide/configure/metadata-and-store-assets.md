@@ -3,51 +3,51 @@ translation_locale: az
 translation_source: /guide/configure/metadata-and-store-assets.md
 translation_source_hash: b538b2cad11d4fd3b2b7d201a20882389049d3e4453f11baa6f854861bda6b51
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Metadatalar və Ledger saxlama seçimləri {#metadata-and-ledger-storage-choices}
+# Meta məlumatlar və blokçeyn dəftərxanası Saxlama Seçimləri {#metadata-and-ledger-storage-choices}
 
-Iroha 3 məlumat modeli key-value məlumatları üçün ayrı bir `Store` aktiv növünə malik deyil. Aşağıdakı saxlama seçimlərindən istifadə edin.
+Iroha 3 məlumat modeli ixtiyari açar-dəyər məlumatları üçün ayrıca `Store` aktiv növü yoxdur. Aşağıdakı saxlama seçimlərindən istifadə edin.
 
-## Metadatalar {#metadata}
+## Metaməlumat {#metadata}
 
-Lider obyektinə aid olan kiçik JSON sahələr üçün [metadata](/az/blockchain/metadata.md) istifadə edin:
+Blokçeyn dəftər obyektinə aid kiçik JSON sahələr üçün [metaməlumat](/az/blockchain/metadata.md) -dan istifadə edin:
 
-- adları və etiketləri göstərmək
-- inteqrasiya IDs
-- Kiçik siyasət bayraqları
-- URIs, CIDs və ya SoraFS yolları daha böyük faydalı yüklərə yönləndirən hashlər
+- göstərilən adlar və etiketlər
+- inteqrasiya identifikatorları
+- kiçik siyasət bayraqları
+- kriptoloji xəşlər, URIs, CIDs və ya SoraFS yolları ki, daha böyük yükə işarə edir
 
-Metadata dünya vəziyyətinin bir hissəsidir və sahib olduğu obyektlə qaytarılır. Anahtarları sabit saxlayın, dəyərlər kompakt olsun və icazələr açıq olsun. Böyük sənədləri, jurnalları və ya yüksək sürətli tətbiqetmə dövlətlərini birbaşa metadata saxlamayın.
+Metaməlumat dünya vəziyyətinin bir hissəsidir və ona sahib olan obyektlə birlikdə qaytarılır. Açarları sabit saxlayın, dəyərləri sıxlaşdırın və icazələri açıq şəkildə göstərin. Böyük sənədləri, qeydləri və ya yüksək dəyişkən tətbiq vəziyyətini birbaşa metaməlumatda saxlamayın.
 
-## Saylı vəsaitlər və NFTs {#numeric-assets-and-nfts}
+## Rəqəmsal Aktivlər və NFTs {#numeric-assets-and-nfts}
 
-İstifadə [aktivlər](/az/blockchain/assets.md) və [NFTs](/az/blockchain/nfts.md) Dövlət dəyərləndirici olduqda:
+Dövlət dəyər daşıdıqda [aktivlər](/az/blockchain/assets.md) və [NFTs](/az/blockchain/nfts.md)-dən istifadə edin:
 
-- Fungible balanslar üçün rəqəmli aktivlər
-- NFTs yalnız mülkiyyətdə olan qeydlər üçün
-- [RWAs](/az/blockchain/rwas.md) və aktiv məlumat modeli onları aşkar edərkən digər domenə aid obyektlər
+- dəyişdirilə bilən balanslar üçün rəqəmsal aktivlər
+- NFTs unikal olaraq sahib olunan qeydlər üçün
+- [RWAs](/az/blockchain/rwas.md) və digər domenə xas obyektlər aktiv məlumat modeli onları göstərdikdə
 
-Varlıqlar və NFTs öz IDs, həyat dövrü hadisələri, köçürmə davranışları və icazə yoxlamalarına malikdir. Mülkiyyət, çatışmazlıq və ya köçürmə tarixi məsələlərində meta məlumatlardan daha yaxşıdırlar.
+Aktivlər və NFTs öz şəxsiyyət nömrələrinə, həyat dövrü hadisələrinə, ötürülmə davranışına və icazə yoxlamalarına malikdirlər. Sahibliyin, çatışmazlığın və ya ötürmə tarixçəsinin vacib olduğu hallarda onlar metadan daha yaxşıdır.
 
-## Zəngindən kənar məlumatlar {#off-chain-data}
+## Zəncirdənkənar Məlumat {#off-chain-data}
 
-Böyük və ya dəyişə bilən paylı yüklər üçün zəncirdən kənarda saxlanılmalıdır.
+Böyük və ya dəyişkən məlumatlar üçün off-chain yaddaşdan istifadə edin. Yalnız stabil bir istinadı on-chain yadda saxlayın, məsələn:
 
-- məzmun hashı
+- məzmun kriptoqrafik xeş
 - a URI
-- bir SoraFS yol və ya manifest istinad
-- Ərizə sübutuna əsaslanan kompakt öhdəlik
+- bir SoraFS yol və ya texniki manifest istinadı
+- tətbiq sübutu tərəfindən istifadə olunan kompakt kriptoqrafik öhdəlik dəyəri
 
-Bu, WSV kiçik saxlayır və eyni zamanda tətbiqlərə zəncirdən kənar pay yükünün zəncirlə bağlı istinadla uyğun olub olmadığını yoxlamağa imkan verir.
+Bu, WSV-i kiçik saxlayır və eyni zamanda tətbiqlərin zəncirdənkənar məlumatın zəncirdəki istinada uyğun olduğunu yoxlamağa imkan verir.
 
-## Yer seçmək {#choosing-a-location}
+## Yerləşməyi Seçmək {#choosing-a-location}
 
-Bu qaydalardan istifadə edin:
+Bu qaydaya əməl edin:
 
-- Əgər bu bir kitab obyektinin kompakt xüsusiyyətidirsə, meta məlumatlardan istifadə edin.
-- Qiymətli və ya ötürülə bilən bir obyektdirsə, onu aktiv, NFT və ya domen xüsusi obyekti kimi modelləşdirin.
-- Böyük, yüksək həcmli və ya tətbiqi xüsusi olan varsa WSV xaricində saxlayın və yoxlana bilən bir istinad silsiləsinə qoyun.
+- Əgər bu, blokçeyn jurnal obyektinin kompakt atributudursa, metadatalardan istifadə edin.
+- Əgər onun dəyəri varsa və ya ötürülə bilirsə, onu aktiv, NFT və ya domen-özəl obyekt kimi modelləşdirin.
+- Əgər o, böyükdürsə, yüksək dövriyyəlidirsə və ya tətbiq-özəlidisə, onu WSV-dən kənarda saxlayın və zəncirdə yoxlanıla bilən bir istinad qoyun.
 
-Metadata icazələri üçün [Mətn vəsiqələri ](/az/reference/permissions.md) baxın.
+Metaməlumat icazələri üçün baxın [İcazə Jetonları](/az/reference/permissions.md).

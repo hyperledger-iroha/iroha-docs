@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # NFTs {#nfts}
 
-א Iroha NFT הוא אובייקט ספרים ייחודי עם בעל אחד. NFTs כאשר תיק זקוק לזהות משלו, נתונים מטאטא, אירועים במחזור החיים, וסימנטיקה של העברת הבעלות, אבל לא צריך איזון מספרי.
+א Iroha NFT הוא אובייקט ספרים ייחודי עם בעל אחד. NFTs כאשר תיק זקוק לזהות משלו, מטא-נתונים, אירועים במחזור החיים, וסימנטיקה של העברת הבעלות, אבל לא צריך יתרה מספרי.
 
 שלא כמו מספר. [נכס](/he/blockchain/assets.md), ע"י NFT אין לו מדויק, יכולת להכנת או כמויות לכל חשבון. NFT קיימת כאובייקט רשום אחד, והיכולת להיות בעלת היא מעקב ישירות על האובייקט.
 
@@ -20,7 +20,7 @@ translation_engine: nllb-200-ct2
 - `content`: מטא נתונים המתארים את NFT
 - `owned_by`: החשבון שייך ל- NFT
 
-שדה `content` הוא מפה של `Metadata`. שמור אותו קומפקטי: שמור שם את השדות המתארים, התייחסויות יציבות, האשיזים, URIs או SoraFS דרכים. שמור מסמכים גדולים, מדיה או מצב היישום עם צ'ורן גבוה מחוץ למשרשרת ותשמור רק על התייחסות אפשרית לאמת על NFT.
+השדה `content` הוא מפה מסוג `Metadata`. שמרו אותו קומפקטי: אחסנו בו שדות תיאוריים, הפניות יציבות, גיבובים, ‏URIs או נתיבי SoraFS. אחסנו מסמכים גדולים, מדיה או מצב יישום המשתנה תכופות מחוץ לשרשרת, ושמרו ב־NFT רק הפניה הניתנת לאימות.
 
 ## נסה את זה על Taira {#try-it-on-taira}
 
@@ -130,11 +130,11 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft unregister --id "$NFT_ID"
 ```
 
-## שאלות ואירועים {#queries-and-events}
+## שאילתות ואירועים {#queries-and-events}
 
 שימוש [`FindNfts`](/he/reference/queries.md#assets-nfts-and-rwas) לרשום NFTs ו [`FindNftsByAccountId`](/he/reference/queries.md#assets-nfts-and-rwas) לרשום NFTs בבעלות חשבון.
 
-עדכונים NFT של רישום, חיסול, העברה ונתונים מטאטא יוצרים אירועי נתונים NFT. השתמשו ב-filter של אירועי מידע `Nft` בעת ההרשאה לשינויים בספר הספרים או בבניית גורמים המגיבים לאירועים של מחזור החיים NFT.
+עדכונים NFT של רישום, חיסול, העברה ומטא-נתונים יוצרים אירועי נתונים NFT. השתמשו ב-filter של אירועי מידע `Nft` בעת ההרשאה לשינויים בספר הספרים או בבניית גורמים המגיבים לאירועים של מחזור החיים NFT.
 
 ## רשיונות {#permissions}
 
@@ -161,6 +161,6 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
 ראו גם:
 
 - [נכסים](/he/blockchain/assets.md)
-- [נתונים מטאטא](/he/blockchain/metadata.md)
+- [מטא-נתונים](/he/blockchain/metadata.md)
 - [הוראות](/he/blockchain/instructions.md)
-- [שאלות](/he/blockchain/queries.md)
+- [שאילתות](/he/blockchain/queries.md)

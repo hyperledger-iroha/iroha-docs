@@ -1,28 +1,28 @@
 ---
 translation_locale: ja
 translation_source: /cookbook/fungible-assets.md
-translation_source_hash: 669b5a1c12e9ab6ffb64e149148993e7b924feb29c6fa4db883a2065f58ecd7e
+translation_source_hash: 29f2bdb390fc93b97f8ed9108634f70e21ba747c8606fb84093d37e9586516c1
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# 浮動資産 {#fungible-assets}
+# 代替可能資産 {#fungible-assets}
 
-## 成果 {#outcome}
+## 結果 {#outcome}
 
-直接検査 Taira 資産の定義とレジスタ,ミント,転送,燃焼,およびバランスチェックを完了するこのレシピは,カノニカルな未定のBase58資産定義を使用する. IDs, 域名限定のニックネーム,ドメインレス I105 口座 IDs, そして明示的な手数料の支払い.
+生成されたローカルネットワーク上で、ライヴの Taira 資産定義を確認し、登録、発行、転送、破棄、および残高確認のフローを完了する。このレシピでは、正規の接頭辞なしのBase58資産定義ID、ドメイン付きのエイリアス、ドメインなしの I105 アカウントID、および明示的な手数料支払いを使用します。
 
-## 必須条件 {#prerequisites}
+## 前提条件 {#prerequisites}
 
-- `curl`,`jq`, Python 3.11 またはそれ以降, Node.js 24,および電流 `iroha` CLI.
-- Taira 読み込みのみアクセス
-- 作成されたローカルネットワークから [打ち上げ Iroha](/ja/get-started/launch-iroha.md), と `./localnet/client.toml` そして Torii について `http://127.0.0.1:8080`.
+- `curl`、`jq`、Python 3.11以降、Node.js 24、そして現在の`iroha` CLI。
+- 読み取り専用 Taira アクセス。
+- 書き込みの手順については、[Iroha を起動](/ja/get-started/launch-iroha.md) から生成されたローカルネットワークで、`http://127.0.0.1:8080` 上に `./localnet/client.toml` と Torii がいます。
 
 ## ステップ {#steps}
 
-### 1. Taira の定義を署名者なしでチェックする. {#_1-inspect-taira-definitions-without-a-signer}
+### 1. 暗号署名者なしで Taira 定義を検査する {#_1-inspect-taira-definitions-without-a-signer}
 
-資産定義には不透明なBase58 ID,表示名, mintabilityポリシー,数値スケール,オプションのニックネーム,所有者,および総量が含まれています.具体的なバランスはまた保有者のアカウントとオプションのデータスペース範囲を含みます.
+資産の定義には、不透明なBase58 ID、表示名、資産発行ポリシー、数値スケール、オプションの別名、所有者、および総数量が含まれます。具体的な残高には、保有しているアカウントとオプションのデータスペーススコープも含まれます。
 
 ::: code-group
 
@@ -54,11 +54,11 @@ for (const definition of items) {
 
 :::
 
-JavaScript フォームを `node taira-assets.mjs` で実行する.公的資産 IDs は,裸のBase58値である; `cookbook_credit#wonderland.universal` のような読み取れる値は,それらの IDs の1つに解決する異名です.
+`node taira-assets.mjs`で JavaScript フォームを実行します。公開資産IDは素のBase58値です。`cookbook_credit#wonderland.universal`のような読みやすい値は、これらのIDのいずれかに解決されるエイリアスです。
 
-### 2. 地方自治体と目的地を準備する {#_2-prepare-the-local-authority-and-destination}
+### 2. ローカル認証プリンシパルと宛先を準備する {#_2-prepare-the-local-authority-and-destination}
 
-作成された設定の公開鍵から地方自治体を誘導し,受信者として別の登録アカウントを選択します.プライベート鍵は印刷されません.
+生成された設定の公開鍵からローカル認証プリンシパルを導出し、他の登録済みアカウントを受信者として選択します。秘密鍵は表示されません。
 
 ```bash
 LOCAL_ROOT='http://127.0.0.1:8080'
@@ -82,9 +82,9 @@ DESTINATION_ACCOUNT="$(
 )"
 ```
 
-### 3. 番号の定義を登録する {#_3-register-a-numeric-definition}
+### 3. 数値定義を登録する {#_3-register-a-numeric-definition}
 
-このローカルのみの ID は,有効な未設定Base58資産定義アドレスである.このニックネームは人間に読み取れる `domain.dataspace` プロジェクションを提供します.スケール `2`は2つの割引数字を許可し,`--mint-once` を省略するとデフォルトの `Infinitely` ポリシーを維持します.
+このローカル専用IDは、有効な接頭辞なしのBase58資産定義アドレスです。エイリアスは、人間が読みやすい`domain.dataspace`プロジェクションを提供します。スケール`2`は2桁の小数を許可します。`--mint-once`を省略すると、デフォルトの`Infinitely`ポリシーが維持されます。
 
 ```bash
 ASSET_DEFINITION_ID='66owaQmAQMuHxPzxUN3bqZ6FJfDa'
@@ -101,11 +101,11 @@ iroha --config "$LOCAL_CONFIG" \
   --scale 2
 ```
 
-ID を Taira で再利用しないでください.公共ネットワークの登録には,新しい法典的な ID,あなたの申請に割り当てられたドメイン/エイリアス,料金の資金提供,および実行時の資産登録許可が必要です.
+そのIDを Taira で再利用しないでください。パブリックブロックチェーンネットワークへの登録には、新しい標準的なID、アプリケーションに割り当てられたドメイン/エイリアス、手数料の資金、そしてソフトウェアランタイムの資産登録権限が必要です。
 
-### 4. ミント,移転,焼却 {#_4-mint-transfer-and-burn}
+### 4. 発行、譲渡、および破棄 {#_4-mint-transfer-and-burn}
 
-すべての書き込みコマンドは,手数料の支払者として権限を明示的に選択します. CLI は署名前に正確な取引を引用し,デフォルトで待機する.
+すべての書き込みコマンドでは、手数料支払者として認可主体を明示的に指定します。CLI は署名前に対象トランザクションの正確な手数料見積もりを提示し、既定では完了を待機します。
 
 ```bash
 iroha --config "$LOCAL_CONFIG" \
@@ -131,17 +131,17 @@ iroha --config "$LOCAL_CONFIG" \
   --quantity 10.00
 ```
 
-燃焼後,ソースバランス `64.50`,目的地バランس `25.50`,および総量 `90.00`を予想する.
+破壊後、元の残高 `64.50`、宛先の残高 `25.50`、および合計数量 `90.00` を確認してください。
 
-::: warning 許可制限
+::: warning 許可境界
 
-Taira に, faucet-derived `taira.tx-metadata.json` を添付し,すべての書き込みのために `--fee-payer authority` を使用する.登録と鋳造にはアクティブ検証者の許可が必要です.転送および燃焼はソースバランスの権限を必要とします. faucet 資金の口座は自動的に発行者ではありません.
+オン Taira, 蛇口由来のものを取り付ける `taira.tx-metadata.json` そして使う `--fee-payer authority` すべての書き込みに対して。登録および発行には、アクティブなバリデーターの権限が必要です； 転送と破棄には、元の残高に対する認可権限が必要です。 テストネットで資金提供されたアカウントは、自動的に発行者になるわけではありません。
 
 :::
 
 ## 確認する {#verify}
 
-具体的なバランスと定義の両方を読んでください. これらのポストステートクエリは成功基準であり,提出領収書自体はそうではありません.
+両方の具体的な残高を読み、その後に定義を読みなさい。これらの事後状態のクエリが成功基準であり、提出プロトコルの結果記録だけでは成功基準とはなりません。
 
 ```bash
 iroha --config "$LOCAL_CONFIG" ledger asset get \
@@ -156,21 +156,21 @@ iroha --config "$LOCAL_CONFIG" ledger asset definition get \
   --id "$ASSET_DEFINITION_ID"
 ```
 
-アプリケーションの主張は,二重浮動点値ではなく,定位点数値として数値値を比較し,定義 ID とアカウントを検証すべきである.
+アプリケーションのアサーションは、バイナリ浮動小数点値ではなく固定小数点の値として数値を比較し、アカウントだけでなく定義IDも検証する必要があります。
 
-## 問題を解く {#troubleshooting}
+## トラブルシューティング {#troubleshooting}
 
-- ア ID 含有する `#` 代名詞または具体的なバランス文字ではなく,法典的な資産定義です ID. 単に Base58 の値で `--definition`, 結ばれた偽名で `--definition-alias`.
-- `Scale` 誤りとは,定義が許容するよりも多くの割引数を持つ量です.
-- `Mintability` 拒否とは, `Once`, `Not`,または `Limited(n)` のポリシーが鋳造を枯渇させたり許さないことを意味します.履歴を再書きしないでください;定義クエリで返されたポリシーを使用してください.
-- ステップ 2 は故意に登録された目的地口座を選択します.資産入口が `ExplicitOnly`である場合は,許可された経由で目的地余分を預算する CLI 類似の名前のガードは,口座やバランスを記録せず,別の指示を追加する代わりに流失します.
-- 料金拒否は,通常の指示の成功前に発生します. 支払者を選択し,ネットワークの料金の資産メタデータを使用し,その余分を確認します.
-- 固定ローカル定義が以前の実行から既に存在している場合は,新しく生成されたローカルネットを起動するか,既存の状態で継続してください. バース58 ID に誤ったランダム文字列を置き換えることは決してありません.
+- `#` を含む ID はエイリアスまたは具体的な残高リテラルであり、標準的な資産定義 ID ではありません。`--definition` にはベアの Base58 値を使用するか、`--definition-alias` にはバウンドされたエイリアスを渡してください。
+- `Scale` エラーは、数量が定義で許可されているよりも多くの小数桁を持っていることを意味します。
+- `Mintability` の拒否とは、`Once`、`Not`、または `Limited(n)` のポリシーが発行を使い果たしたか、許可されていないことを意味します。履歴を書き換えないでください。定義クエリで返されたポリシーを使用してください。
+- ステップ2では、登録済みの宛先アカウントを意図的に選択します。資産の入金が`ExplicitOnly`の場合、承認された方法で宛先残高を供給します転送する前にフロー。同様の名前の CLI ガードはアカウントや残高を登録せず、別の命令を追加する代わりに中止します。
+- 手数料の拒否は、通常の指示が成功する前に発生します。支払者を選択し、ネットワークの手数料資産のメタデータを使用し、その残高を確認してください。
+- 以前の実行から固定のローカル定義がすでに存在する場合は、新たに生成されたローカルネットを起動するか、既存の状態を継続してください。Base58 IDの代わりに不正なランダム文字列を置き換えてはいけません。
 
-## ソースおよび関連文書 {#source-and-related-docs}
+## ソースと関連ドキュメント {#source-and-related-docs}
 
-- [固定されたコミット](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/asset.rs)での資産ライフサイクル統合テスト
-- [Rust 固定されたコミットで資産構築例](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/examples/tutorial.rs)
+- [固定されたソースコードリビジョンでのアセットライフサイクル統合テスト](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/asset.rs)
+- [Rust ピン留めされたソースコードのリビジョンでのアセット構築例](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/examples/tutorial.rs)
 - [資産](/ja/blockchain/assets.md)
 - [指示](/ja/blockchain/instructions.md)
 - [許可トークン](/ja/reference/permissions.md)

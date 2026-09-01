@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /cookbook/wallet-connect.md
-translation_source_hash: 38283321d51ddbb528272bb4429906eb41545ed3933ae695fb05a24675bff9c8
+translation_source_hash: 81b370bdc73a40ff2dbb8df0f91547ab4c279ed94600bdd6df367f29a949ec71
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,7 +16,7 @@ translation_engine: nllb-200-ct2
 
 - 使用 `@iroha/iroha-js`和 HTTPS 的浏览器应用程序.
 - 一个实现 Iroha 连接v1的钱包,并控制一个单键Ed25519 I105 帐户.
-- 目前的 Taira 链 ID 和链分辨器,钱包注册的小字母Ed25519公钥六字符号,拥有可转移资产,以及正规的 I105 目的地
+- 目前的 Taira 链 ID 和链分辨器,钱包注册的小字母Ed25519公钥六字符号,拥有可转移资产,以及规范的 I105 目的地
 - 费用资产 ID 由当前的 Taira faucet响应返回.该例子验证了现场费用报价与 ID;它从来没有嵌入复制的资产标识符.
 - 在选择的 Torii 上必须启用连接. 在显示一个 QR 或深度链接之前,请检查:
 
@@ -31,7 +31,7 @@ curl -fsS \
 
 ## 步骤 {#steps}
 
-### 1. 提供一个钱包发射控制 {#_1-provide-one-wallet-launch-control}
+### 1. 提供一个钱包启动控件 {#_1-provide-one-wallet-launch-control}
 
 下面的 JavaScript 在申请页面中预计这一元素:
 
@@ -43,7 +43,7 @@ curl -fsS \
 
 ### 2. 创建,批准,签署和提交 {#_2-create-approve-sign-and-submit}
 
-这个浏览器模块从您的应用程序状态中接受具体值.第一个 `POST /v1/assets/transfer` 省略了签字字段,返回了一个引用,版本的交易架子.第二个只添加钱包的公钥和单独的签名到相同的转移请求.
+这个浏览器模块从您的应用程序状态中接受具体值.第一个 `POST /v1/assets/transfer` 省略了签字字段,返回了一个报价,版本的交易结构.第二个只添加钱包的公钥和单独的签名到相同的转移请求.
 
 ```js
 import { AccountAddress } from '@iroha/iroha-js/address'
@@ -251,7 +251,7 @@ fn seal_wallet_signature(
 }
 ```
 
-存储库的 `connect_app` 和 `connect_wallet`示例是协议固定器:它们使用确定性运输密钥,在输出中暴露代币,而钱包固定器返回了一个假签名.仅用于研究框架,永远不会作为 Taira 钱包实现.
+存储库的 `connect_app` 和 `connect_wallet`示例是协议测试资源:它们使用确定性运输密钥,在输出中暴露代币,而钱包测试资源返回了一个假签名.仅用于研究框架,永远不会作为 Taira 钱包实现.
 
 ## 验证 {#verify}
 
@@ -266,16 +266,16 @@ curl -fsS -G \
   jq .
 ```
 
-验证只有当 JavaScript 服务员对提交的交易哈希观察到 `Applied`,而目的地持有者反映了转移时才会取得成功.仅接受或批准 HTTP 钱包并不是账本的最终性.
+验证只有当 JavaScript 等待辅助程序对提交的交易哈希观察到 `Applied`,而目的地持有者反映了转移时才会取得成功.仅接受或批准 HTTP 钱包并不是账本的最终性.
 
 ## 解决问题 {#troubleshooting}
 
-- `404`, `503`,或`enabled: false`从连接状态意味着在该节点上不能创建继电话. 切换到启用的本地网络;不要自行运输应用程序或管理代币.
+- `404`, `503`,或`enabled: false`从连接状态意味着在该节点上不能创建中继会话. 切换到启用的本地网络;不要自行运输应用程序或管理代币.
 - `USER_DENIED`是一个钱包的决定. 保存它作为终端用户结果,而不是打开反复批准提示.
 - 批准账户不一致或无效的批准签名必须结束会议. 在身份绑定失败后,永远不要要求钱包签名.
 - `public_key_hex does not control authority`指注册数据和批准的 I105 身份异议.在此领域不能使用短暂的钱包运输密钥.
-- 一个签名或架子拒绝通常意味着在准备和提交之间改变的请求字段或现场费用报价. 构建一个新的请求;永远不要移植旧的签名.
-- 已接受的签署请求的复制是无效的.查询返回的交易哈希,然后把时间作为重新开始的理由.
+- 一个签名或结构拒绝通常意味着在准备和提交之间改变的请求字段或现场费用报价. 构建一个新的请求;永远不要移植旧的签名.
+- 对已接受签名请求的精确重放具有幂等性。在把超时当作重新开始的理由之前，请查询其返回的交易哈希。
 
 ## 来源及相关文件 {#source-and-related-docs}
 

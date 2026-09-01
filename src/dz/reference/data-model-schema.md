@@ -1,13 +1,19 @@
 ---
 translation_locale: dz
 translation_source: /reference/data-model-schema.md
-translation_source_hash: 30235305046e4d9e7fd76b7dcf8859f9de0fe2182c61e1e96f455f6c5c4dbda6
+translation_source_hash: cf27b1f313a695b648ae450564a51120af0e3e39641ed140a187d128b930da97
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: human-reviewed
 ---
-
 # ཌའི་ཊ་གི་རྣམ་གཞག་འཆར་གཞི། {#data-model-schema}
 
-འ་ནི་ཤོག་ལེབ་འདི་ `kagami advanced schema` དང་གཅིག་ཁར་ བཟོ་སྐྲུན་འབད་ཡོདཔ་ཨིན། ཡིག་སྣོད་བསྐྱར་བཟོ་ཐངས་ལས་ ཐོ་བཀོད་འབད་ཡོད་མི་ [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) བསྐྱར་ཞིབ་ནང་ལས་ཨིན། བསྒྱུར་བཅོས་འབད་ཡོད་པའི་ snapshot འདི་ archive ནང་ཐོ་བཀོད་འབདཝ་ཨིན། དེ་འབདཝ་ལས་ཡིག་སྣོད་བཟོ་བཀོད་ལམ་ལུགས་ནང་ལུ་ Iroha source checkout དགོས་མཁོ་མེད་ཨིན།
+ཁྱོད་ཀྱི་འབྲེལ་མཐུད་ཀྱི་དམིགས་གཏད་ཚུ་ ཕྲང་བའི་ཨེབ་ཐག་ནང་ལས་ ཐིག་ཁྲམ་འཚོལ་ཐབས། Torii གིས་ ས་ཁུདཔ་འདི་བཟོ་བཀོད་འབད་ཚར་ཞིནམ་ལས་ `GET /v1/schema` ལུ་ གནད་སྡུད་དཔེ་ཚད གཞི་བཀོད འདི་ལག་ལེན་འཐབ་འོང་།
 
-<DataModelSchema />
+```bash
+export TORII_URL=http://127.0.0.1:8180
+
+curl -fsS -H 'Accept: application/json' "$TORII_URL/v1/schema" \
+  > iroha-data-model-schema.json
+```
+
+ཐོ་བཀོད་འབད་ཡོད་པའི་ཡིག་ཆའི་དུམ་གྲ་ནང་ལས་ བསྡུ་སྒྲིག་ཚུ་ བཟོ་མ་ཚུགས། འདི་ཚུ་གི་འབྱུང་ཁུངས་ཀྱི་གནས་སྟངས་འདི་ སྒུག་སྟེ་ཡོད་པའི་བར་ན་ཨིན། ཕྲང་ལམ་གྱི་ལན་དེ་ ཐོ་བཀོད་ཀྱི་ གནད་སྡུད་རྣམ་གཞག་ལུ་ ཆ་རྐྱེན་ཅན་ཅིག་ཨིན་; ཁྱོད་ཀྱི་མཐུན་སྒྲིལ་གིས་ལག་ལེན་འཐབ་མི་ ལྡེ་མིག་བཟོ་སྐྲུན་དང་མཉམ་འབྲེལ་སྦེ་བཞག་འོང་།

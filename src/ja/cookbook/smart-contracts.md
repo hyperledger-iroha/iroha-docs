@@ -1,23 +1,23 @@
 ---
 translation_locale: ja
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: 67778f9fc4f2b6fa0288f5921402cf5509515aae678e98b8192e103dfe284db3
+translation_source_hash: f1ea542f7a710830cd32465d141db8452e6418d426500995b9df7c9c4e1fd597
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# 賢明 な 契約 を 作っ て 展開 する {#build-and-deploy-a-smart-contract}
+# スマートコントラクトを構築してデプロイする {#build-and-deploy-a-smart-contract}
 
-## 成果 {#outcome}
+## 結果 {#outcome}
 
-Kotodama V1 契約をチェック・コンパイルし,その公開エントリーポイントを現地で実行し,検証された IVM アーテファクトを展開し,導入したエントリーポイントのシミュレーションを行い,当局が明示的に報じた手数料で提出.
+チェックしてコンパイルする Kotodama V1 契約、公開エントリーポイントをローカルで実行、検証済みをデプロイ IVM 成果物、デプロイされたエントリポイントをシミュレートし、それを提出する 取引署名アカウントによって支払われる明示的な手数料見積もり。
 
-## 必須条件 {#prerequisites}
+## 前提条件 {#prerequisites}
 
-- Iroha のソースチェックアウトは,commit `0010c5a70039eac101a4846499ba9ceaf43eb65c`, Rust,および Cargoで.
-- 流れ `iroha` CLI 資金提供された Taira 顧客から [接続する Taira](./connect-to-taira.md).
-- 絶対的な経路 `IROHA_CONFIG` そして `IROHA_PRIVATE_KEY_FILE`. キーファイルは,モード付きの単リンクで所有者が持てる通常のファイルである必要があります. `0600`; 部署助手が意図的に 秘密鍵の議論をしていない.
-- Taira オペレーターの承認.契約コードの登録は `CanRegisterSmartContractCode` を要求し,保護された展開には管理属性と法令が必要になる. Taira がそのアクセスを許可しなかった場合,生成されたローカルネットワークで展開を実行する.
+- プロトコルの最終段階 `0010c5a70039eac101a4846499ba9ceaf43eb65c`、Rust、および Cargo における Iroha ソースコード作業コピー。
+- 現在の `iroha` CLI に加えて、[Taira に接続する](./connect-to-taira.md) からの資金提供された Taira クライアント。
+- `IROHA_CONFIG` および `IROHA_PRIVATE_KEY_FILE` の絶対パス。`0600` モードの所有者保有の単一リンク通常ファイルである必要があります。デプロイヘルパーには意図的にインラインの秘密鍵引数はありません。
+- Taira オペレーターの承認。契約コードの登録には `CanRegisterSmartContractCode` が必要であり、保護されたデプロイメントではガバナンスの帰属と実行が必要になる場合があります。Taira がそのアクセスを許可していない場合は、その権限を付与するブロックチェーンのジェネシスを持つ生成されたローカルネットワークでデプロイメントを実行してください。
 
 ```bash
 TORII_URL=https://taira.sora.org
@@ -40,9 +40,9 @@ PY
 
 ## ステップ {#steps}
 
-### 1. 既知の良い契約のコピー Kotodama V1 {#_1-copy-a-known-good-kotodama-v1-contract}
+### 1. 動作確認済みの Kotodama V1 契約をコピーする {#_1-copy-a-known-good-kotodama-v1-contract}
 
-固定された Iroha チェックアウトの内側で作業し,コンパイレーターのタップルリターンサンプルをコピーして,ソースとツールのチェーンが同じコミットに留まるようにします
+固定された Iroha チェックアウト内で作業し、コンパイラのタプル返却サンプルをコピーして、ソースとツールチェーンが同じプロトコルの完了状態に保たれるようにしてください。
 
 ```bash
 cd "$IROHA_SOURCE"
@@ -51,7 +51,7 @@ cp ./crates/kotodama_lang/src/samples/tuple_return_demo.ko \
   ./contracts/tuple_return_demo.ko
 ```
 
-完全なソースは小さくて,現在の `seiyaku`/`kotoage` の構文を使用しています.
+完全なソースは小さく、現在の `seiyaku`/`kotoage` 構文を使用しています:
 
 ```kotodama
 seiyaku TupleReturnDemo {
@@ -67,9 +67,9 @@ seiyaku TupleReturnDemo {
 }
 ```
 
-Kotodama 対象となる Iroha 仮想マシンとその現在の ABI. それは WASM または EVM ソース言語
+Kotodama は Iroha 仮想マシンとその現在の ABI を対象としています。これは WASM または EVM のソース言語ではありません。
 
-### 2. 遺物 を 確認 し,製造 し,検証 する {#_2-check-build-and-verify-the-artifact}
+### 2. アーティファクトをチェック、ビルド、検証する {#_2-check-build-and-verify-the-artifact}
 
 ```bash
 cargo run -p ivm --bin koto -- \
@@ -89,11 +89,11 @@ cargo run -p ivm --bin koto -- \
   ./contracts/tuple_return_demo.ko
 ```
 
-最初のビルドはアーティファクトと認証されたサイドカーを公開します.第2弾は読み込みのみ `--verify` モードで実行され,既存の出力が現在のソースに正確に一致しない場合は失敗します. `.to` ファイルとそのマニフェストをレビューしたビルド出力として処理してください.
+最初のビルドでは、成果物と認証済みの付随ファイルを生成します。2 回目のビルドは読み取り専用の `--verify` モードで実行され、既存の出力が現在のソースと完全に一致しない場合は失敗します。`.to` ファイルとそのマニフェストは、レビュー済みの 1 つのビルド出力として扱ってください。
 
-### 3. バイトコードを本地で実行する {#_3-run-the-bytecode-locally}
+### 3. バイトコードをローカルで実行する {#_3-run-the-bytecode-locally}
 
-`compute`は公開の `kotoage`エントリーポイントで,取引を提出したり支払ったりせずに地元の固定装置に対して実行する `debug-call` を使用して実行します.
+`compute` は公開されている `kotoage` エントリーポイントです。`debug-call` を使って実行してください。これはトランザクションを送信したり支払ったりすることなく、ローカルのテストアーティファクトに対して実行されます。
 
 ```bash
 iroha --config "$IROHA_CONFIG" --machine contract debug-call \
@@ -105,11 +105,11 @@ jq -e '.ok == true and .result == ["3", "5"]' \
   ./build/local-call.json
 ```
 
-Kotodama の整数は, JSON の文字列で表現されるので,解読されたチュープルは `["3", "5"]` である.
+Kotodama 整数は JSON 文字列として表されるので、デコードされたタプルは `["3", "5"]` です。
 
-### 4. 地元の助手を通じて配備する {#_4-deploy-through-the-native-helper}
+### 4. ネイティブヘルパーを通じてデプロイする {#_4-deploy-through-the-native-helper}
 
-助手はバイトコードのブロックをアップロードし,署名したマニフェストを登録し,1つの `CommitContractDeployment` オペレーションを送信します.すべての取引に料金を引用し,選択された支払者またはガスバインドを変更する報奨を拒否します.
+ヘルパーはバイトコードのチャンクをアップロードし、署名済みのテクニカルマニフェストを登録し、1つの`CommitContractDeployment`操作を提出します。すべてのトランザクションに手数料見積もりを行い、選択された支払者やトランザクション実行コストの上限を変更する見積もりを拒否します。
 
 ```bash
 printf '%s\n' \
@@ -131,11 +131,11 @@ jq '{contract_address, code_hash_hex, final, fee_quotes}' \
   ./build/deployment.json
 ```
 
-空き `charge_limits` リクエストはコピーされた資産識別子ではありません. 援助者は署名前に正確なライブオートを受け入れます.返済請求資産と 比較します 契約電話は,入力されたライブオートを通してのみ料金を選択することを認めます. `gas_asset_id`トランザクションメタデータは,最初のリリース契約の一部ではありません.
+空の `charge_limits` リクエストはコピーされたアセット識別子ではありません：ヘルパーは署名前に正確なライブ見積もりを受け入れます。返されたチャージアセットを現在のテストネット資金サービスのレスポンスと比較してください。契約の呼び出しは、型付きライブ見積もりを通じてのみ手数料の選択を受け付けます。`gas_asset_id` 取引メタデータは、初回リリースの契約の一部ではありません。
 
-### 5. 部署されたエントリーポイントをシミュレートし,呼び出す {#_5-simulate-and-call-the-deployed-entrypoint}
+### 5. 展開されたエントリーポイントをシミュレートして呼び出す {#_5-simulate-and-call-the-deployed-entrypoint}
 
-シミュレーションは公開エントリーポイントを Torii で提出することなく実行します.次の呼び出しは取引であり,したがって当局料金を支払う者を明示的に選択します.両コマンドは1,500,000のガス制限を拘束しています.
+シミュレーションは、送信なしで Torii のパブリックエントリーポイントを実行します。次の技術的な呼び出しはトランザクションであり、したがって承認主体の手数料支払者を明示的に選択します。両方のコマンドは、1,500,000のトランザクション実行コスト上限を設定します。
 
 ```bash
 iroha --config "$IROHA_CONFIG" --machine contract call \
@@ -164,7 +164,7 @@ jq -e '.terminal_kind == "Applied"' ./build/deployed-call.json
 
 ## 確認する {#verify}
 
-アニックネームを解決し,返済コードハッシュでオンチェーンマニフェストを取得し,同じ公開エントリーポイントをカノニカルアドレスでシミュレーションします.
+エイリアスを解決し、返されたコードの暗号ハッシュによってオンチェーンの技術マニフェストを取得し、正規アドレスによって同じ公開エントリーポイントをシミュレートする:
 
 ```bash
 CODE_HASH="$({ jq -er '.code_hash_hex' ./build/deployment.json; })"
@@ -191,23 +191,23 @@ jq -e '.ok == true and .result == ["3", "5"]' \
   ./build/address-simulation.json
 ```
 
-配備は,返信されたアドレスに別名が解決され,マニフェストが同じコードハッシュ,ローカルおよび Torii シミュレーション返信 `["3", "5"]` で読み取れる時のみ完了し,送信された呼び出しは `Applied` に達します.
+デプロイメントは、エイリアスが返されたアドレスに解決され、技術的マニフェストが同じコード暗号ハッシュの下で読み取可能であり、ローカルおよび Torii シミュレーションが`["3", "5"]`を返し、提出された技術的呼び出しが`Applied`に到達したときにのみ完了します。
 
-## 問題を解く {#troubleshooting}
+## トラブルシューティング {#troubleshooting}
 
-- `CanRegisterSmartContractCode`の故障は, Taira オペレーター補助金またはローカルネットでのゲネス/ブートストラップ変更を必要とします.通常のアカウントは,この許可を事実後に自主的に認めることはできません.
-- 管理または保護されたレーンの拒否は,部署がそのネットワークが要求する正確な承認属性を必要とすることを意味します.承認者リストを調整します;アカウント IDs を発明しないでください.
-- マネスティフまたは ABI の不一致とは,バイトコード,マネスティフ,ノードランタイムが同じアーテファクトを記述しないことを意味します. `--verify` でピンされた commit に再構築します.
-- `fee quote changed ... gas bound` は,要求された入力した意図とライブオートが一致しないことを意味します. 署名された取引を修正する代わりに再開します.
-- 部署ヘルパーは,ネットワークの送信前にインラインキー,許容鍵ファイルモード,シンボルリンク,およびリンクされたファイルを倍増する.
-- ビューのみエントリーポイントのエラーは, `compute` が誤ったコマンドファミリーを通過されたことを意味します.このサンプルでは `kotoage` を宣言しますので,呼び出しシミュレーションまたは送信を使用します.
-- 契約通話には,正型タイプされたガス制限が必要です.最初のリリース通話契約は最高レベルのガスまたは料金の資産メタデータを拒否します.
+- `CanRegisterSmartContractCode` の障害は、Taira オペレーターの権限付与、またはローカルネットでのジェネシス/ブートストラップの変更が必要です。通常のアカウントは、事後に自分自身にこの権限を付与することはできません。
+- ガバナンスまたは保護レーンでの拒否は、デプロイメントがそのネットワークで必要とされる正確な承認者の属性を必要とすることを意味します。承認者リストを調整し、アカウントIDを作成しないでください。
+- 技術的マニフェストまたは ABI の不一致は、バイトコード、技術的マニフェスト、およびノードソフトウェアのランタイムが同じアーティファクトを説明していないことを意味します。`--verify`を使用して固定されたソースコードのリビジョンで再構築してください。
+- `fee quote changed ... gas bound` は、要求されたタイプの意図とライブ見積もりが一致しないことを意味します。署名済みのトランザクションを変更するのではなく、再プレビューを行ってください。
+- デプロイヘルパーは、ネットワーク送信前にインラインキー、寛容なキーファイルモード、シンボリックリンク、および複数リンクされたファイルを拒否します。
+- 参照専用のエントリポイントエラーは、`compute` が誤ったコマンドファミリーを通ってルーティングされたことを意味します。このサンプルは `kotoage` を宣言しているため、技術的呼び出しのシミュレーションまたは提出を使用してください。
+- コントラクト呼び出しには、正の型付き取引実行コスト上限が必要です。最初のリリースの技術的呼び出しコントラクトは、トップレベルの取引実行コストや手数料資産のメタデータを拒否します。
 
-## ソースおよび関連文書 {#source-and-related-docs}
+## ソースと関連ドキュメント {#source-and-related-docs}
 
-- [Kotodama V1 コマンドの実行 固定されたコミット](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/src/bin/koto.rs)
-- [固定された commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/tuple_return_demo.ko) の tuple-return source サンプル
-- [固定されたコミットでネイティブデプロイメントヘルパー](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
-- [](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs) 固定されたコミットでの契約統合テスト
-- [スマート契約](/ja/blockchain/smart-contracts.md)
+- [Kotodama V1 ピン留めされたソースコードのリビジョンでのコマンド実装](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/src/bin/koto.rs)
+- [固定されたソースコードのリビジョンでのタプル返却のソースサンプル](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
+- [固定されたソースコードリビジョンでのネイティブ展開ヘルパー](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
+- [固定されたソースコードのリビジョンでの契約統合テスト](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs)
+- [スマートコントラクト](/ja/blockchain/smart-contracts.md)
 - [CLI 参照](/ja/get-started/operate-iroha-via-cli.md)

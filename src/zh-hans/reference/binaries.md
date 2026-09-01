@@ -1,19 +1,19 @@
 ---
 translation_locale: zh-hans
 translation_source: /reference/binaries.md
-translation_source_hash: 5a36877954bec97691e45697680bfbd6e0a7c7695e48a796bc7c9a41d4756644
+translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# 与 Iroha 二进制货币合作 {#working-with-iroha-binaries}
+# 使用 Iroha 二进制程序 {#working-with-iroha-binaries}
 
 Iroha 3 操作员的工作流程围绕四个主要二进制:
 
-- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad)用于运行一个同类妖怪
-- `iroha3d_taira` 对于法典 Taira 验证器发射器
+- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad)用于运行一个对等节点守护进程
+- `iroha3d_taira` 对于规范 Taira 验证器启动器
 - [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli)用于 CLI 和操作员指令
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami)用于密钥,基因,局域网和个人资料
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami)用于密钥,创世,局域网和个人资料
 
 ## 建立从源头 {#build-from-source}
 
@@ -64,7 +64,7 @@ docker run -t hyperledger/iroha:dev iroha --help
 docker run -t hyperledger/iroha:dev kagami --help
 ```
 
-为同行启动,先生成一个本地网,然后编写文件:
+为对等节点启动,先生成一个本地网,然后编写文件:
 
 ```bash
 cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
@@ -72,9 +72,9 @@ cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyper
 docker compose -f ./docker-compose.yml up
 ```
 
-## 我应该使用哪个二元货币? {#which-binary-should-i-use}
+## 我应该使用哪个二进制程序？ {#which-binary-should-i-use}
 
-- 使用 `iroha3d` 当您在公共 Taira 验证器版本之外启动或运行同行时.
-- 使用 `iroha3d_taira --sora` 仅用于常规的 Taira 验证器部署;它强制执行 Taira 的链,存储和运行时间签字符配置文件.
-- 在需要查询本书,提交交易或检查运营商终端点时使用 `iroha`.
-- 使用 `kagami`当您需要密钥,基因表格,个人资料捆绑或本地网资产时.
+- 使用 `iroha3d` 当您在公共 Taira 验证器版本之外启动或运行对等节点时.
+- 使用 `iroha3d_taira --sora` 仅用于规范的 Taira 验证器部署;它强制执行 Taira 的链,存储和运行时签字符配置文件.
+- 在需要查询账本,提交交易或检查运营商端点时使用 `iroha`.
+- 使用 `kagami`当您需要密钥,创世清单,个人资料捆绑或本地网资产时.

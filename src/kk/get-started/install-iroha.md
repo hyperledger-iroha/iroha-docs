@@ -3,37 +3,37 @@ translation_locale: kk
 translation_source: /get-started/install-iroha.md
 translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Iroha 3 орнату {#install-iroha-3}
+# Iroha 3 орнатыңыз {#install-iroha-3}
 
-Бұл бетте Iroha 3 құралдар тізбегі мен бинарлар үшін ағымдағы монтаждау жұмыс барысы көрсетіледі, ол `hyperledger-iroha/iroha` жоғары ағыстағы жұмыс кеңістігін пайдаланады.
+Бұл бетте Iroha 3 құралдар жинағы мен бинарлық файлдарды жоғары деңгейлі `hyperledger-iroha/iroha` жұмыс кеңістігін пайдалана отырып қазіргі орнату жұмыс ағымы көрсетілген.
 
 ## 1. Алдын ала талаптар {#_1-prerequisites}
 
-Алдымен мыналарды орнатыңыз:
+Бұларды бірінші орнатыңыз:
 
-- [rustup](https://www.rust-lang.org/tools/install), сондықтан тігілген `rust-toolchain.toml` құрал-жабдықтар (`1.93.1`) автоматты түрде орнатылады
+- [rustup](https://www.rust-lang.org/tools/install), сондықтан бекітілген `rust-toolchain.toml` құралдар жиынтығы (`1.93.1`) автоматты түрде орнатылды
 - `git`
-- Docker және Docker Compose жергiлiктi көп қатарлы тез бастау үшін
+- қалауы бойынша, жергілікті көпсерверлі жылдам бастау үшін Docker және Docker Compose
 
-## 2. Жұмыс орнын клондау {#_2-clone-the-workspace}
+## 2. Жұмыс алаңын көшіру {#_2-clone-the-workspace}
 
 ```bash
 git clone https://github.com/hyperledger-iroha/iroha.git
 cd iroha
 ```
 
-## 3. Жұмыс орнын құру {#_3-build-the-workspace}
+## 3. Жұмыс алаңын құру {#_3-build-the-workspace}
 
-Барлығын құраңыз:
+Барлығын салу:
 
 ```bash
 cargo build --workspace
 ```
 
-Операторға бағытталған кіші build үшін тек негізгі бинарлықтарды жинақтаңыз:
+Кіші операторға бағытталған жинақ үшін тек негізгі бинарларды біріктіріңіз:
 
 ```bash
 cargo build --release \
@@ -42,9 +42,9 @@ cargo build --release \
   -p iroha_kagami --bin kagami
 ```
 
-Нәтижесіндегі бинарлар `target/debug/` немесе `target/release/` деген нөмірге жазылады.
+Соңында алынған бинарлық файлдар `target/debug/` немесе `target/release/` мекенжайына жазылады.
 
-## 4. Құралдарды тексеріңіз. {#_4-verify-the-installed-tools}
+## 4. Орнатылған құралдарды тексеру {#_4-verify-the-installed-tools}
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --help
@@ -53,18 +53,18 @@ cargo run --bin iroha -- --help
 cargo run --bin kagami -- --help
 ```
 
-Әдетте пайдаланатын төрт бинарлық жүйе:
+Сіз әдетте пайдаланатын төрт екілік файл мыналар:
 
-- `iroha3d` стандартты теңгерімдік дэймон үшін
-- `iroha3d_taira` - каноникалық Taira растаушы іске қосушы
-- `iroha` үшін CLI Torii және оператордың соңғы нүктелері
-- `kagami` кілттер, генез манифесттері және локальдік желі профилі үшін
+- `iroha3d` стандартты желілік тіркелім демоны үшін
+- `iroha3d_taira` бір протокол-стандарт Taira валидаторын іске қосу үшін
+- `iroha` Torii және оператор API ендіру нүктелеріне CLI кіру үшін
+- `kagami` кілттерге, блокчейн бастауының техникалық манифесттеріне және localnet профильдеріне
 
-## 5. Факультативті Localnet және Docker жолы {#_5-optional-localnet-and-docker-path}
+## 5. Таңдамалы Localnet және Docker жолы {#_5-optional-localnet-and-docker-path}
 
-Қазiргi ресурсқа қолдау көрсетiлетiн локалнет ағыны Kagami арқылы жасалады. Ол теңгершiлiк конфигурацияларды, генез артефакттарын, клиент конфигурацияларын, көмекшi скрипттердi және тексерген кодқа сәйкес келетiн таңдаулы Compose файлын жазады:
+Ағымдағы бастапқы кодқа негізделген жергілікті желі ағынын Kagami жасайды. Ол желі түйіндерінің конфигурацияларын, genesis артефактілерін, клиент конфигурациясын, көмекші сценарийлерді және жұмыс көшірмесіндегі кодқа сәйкес келетін міндетті емес Compose файлын жазады:
 
-- `kagami localnet` жергiлiктi еркiлiктердiң жазбалары үшiн
-- `kagami docker` үшін Docker Compose локальдік желілер каталогынан жасалған
+- `kagami localnet` жергілікті желідегі түпнұсқа процесс әріптестерінің скрипттері үшін
+- `kagami docker` үшін Docker Compose локальді желі каталогынан жасалған
 
-[Бастауы Iroha 3](/kk/get-started/launch-iroha.md) жалғасын табады.
+[Жіберу Iroha 3](/kk/get-started/launch-iroha.md) арқылы жалғастырыңыз.

@@ -3,37 +3,37 @@ translation_locale: fr
 translation_source: /get-started/install-iroha.md
 translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# L'installation Iroha 3 {#install-iroha-3}
+# Installer Iroha 3 {#install-iroha-3}
 
-Cette page couvre le flux de travail d'installation actuel pour la chaîne d'outils Iroha 3 et les binaires utilisant l'espace de travail en amont `hyperledger-iroha/iroha`.
+Cette page couvre le flux d'installation actuel pour la chaîne d'outils et les binaires Iroha 3 en utilisant l'espace de travail en amont `hyperledger-iroha/iroha`.
 
-## 1. Les prérequis {#_1-prerequisites}
+## 1. Prérequis {#_1-prerequisites}
 
-Installez-les d'abord:
+Installez ceux-ci en premier :
 
-- [rustup](https://www.rust-lang.org/tools/install), de sorte que la chaîne d'outils fixée `rust-toolchain.toml` (`1.93.1`) est installée automatiquement
+- [rustup](https://www.rust-lang.org/tools/install), donc la chaîne d'outils `rust-toolchain.toml` épinglée (`1.93.1`) est installée automatiquement
 - `git`
-- optionnellement, Docker et Docker Compose pour le démarrage rapide local multi-peer
+- éventuellement, Docker et Docker Compose pour le démarrage rapide d’un réseau local à plusieurs pairs
 
-## 2. Cloner l'espace de travail {#_2-clone-the-workspace}
+## 2. Cloner l’espace de travail {#_2-clone-the-workspace}
 
 ```bash
 git clone https://github.com/hyperledger-iroha/iroha.git
 cd iroha
 ```
 
-## 3. Construisez l'espace de travail {#_3-build-the-workspace}
+## 3. Construire l'espace de travail {#_3-build-the-workspace}
 
-Construisez tout:
+Construis tout :
 
 ```bash
 cargo build --workspace
 ```
 
-Pour une structure plus petite axée sur l'opérateur, compilez uniquement les principaux binaires:
+Pour une version plus petite axée sur l'opérateur, compilez uniquement les principaux binaires :
 
 ```bash
 cargo build --release \
@@ -42,9 +42,9 @@ cargo build --release \
   -p iroha_kagami --bin kagami
 ```
 
-Les binaires résultants sont rédigés à `target/debug/` ou `target/release/`.
+Les binaires résultants sont écrits dans `target/debug/` ou `target/release/`.
 
-## 4. Vérifiez les outils installés {#_4-verify-the-installed-tools}
+## 4. Vérifier les outils installés {#_4-verify-the-installed-tools}
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --help
@@ -53,18 +53,18 @@ cargo run --bin iroha -- --help
 cargo run --bin kagami -- --help
 ```
 
-Les quatre binaires que vous utiliserez habituellement sont:
+Les quatre fichiers binaires que vous utiliserez habituellement sont :
 
-- `iroha3d` pour un daemon par rapport à l'autre
+- `iroha3d` pour un démon pair réseau standard
 - `iroha3d_taira` pour le lanceur de validateur canonique Taira
-- `iroha` pour CLI l'accès à Torii et les points finaux de l'opérateur
-- `kagami` pour les clés, les manifestes de génèse et les profils du localnet
+- `iroha` pour accéder par la CLI à Torii et aux points de terminaison de l’opérateur
+- `kagami` pour les clés, les manifestes de genèse et les profils de réseau local
 
-## 5. Localnet optionnel et chemin Docker {#_5-optional-localnet-and-docker-path}
+## 5. Réseau local optionnel et chemin Docker {#_5-optional-localnet-and-docker-path}
 
-Le flux localnet actuel soutenu par la source est généré par Kagami. Il écrit des configurations de pairs, des artefacts de génèse, des configurations du client, des scripts d'assistance et un fichier Compose optionnel qui correspond au code vérifié:
+Le flux localnet actuel basé sur une source est généré par Kagami. Il écrit les configurations des pairs du réseau, les artefacts de genèse de la blockchain, la configuration du client, les scripts d'aide et un fichier Compose optionnel qui correspond au code extrait :
 
-- `kagami localnet` pour les scripts locaux natifs par rapport à leurs pairs
-- `kagami docker` pour le Docker Compose généré à partir d'un répertoire localnet
+- `kagami localnet` pour les scripts des pairs locaux natifs du réseau
+- `kagami docker` pour Docker Compose généré à partir d'un répertoire localnet
 
-Continuez avec [Déploiement Iroha 3](/fr/get-started/launch-iroha.md).
+Continuez avec [Lancer Iroha 3](/fr/get-started/launch-iroha.md).

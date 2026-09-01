@@ -13,7 +13,7 @@ Iroha 查询可以读取账本状态而不对其进行更改。当前数据模�
 - **单项查询**：返回一个对象或一个值
 - **可迭代查询**：返回数据流或集合；如果查询类型支持，还可以结合筛选、排序、投影和分页
 
-请使用 SDK 的强类型构建器或 CLI，不要手动构造查询信封。以下名称是 `iroha_data_model::query` 当前公开的查询类型。
+请使用 SDK 的强类型构建器或 CLI，不要手动构造查询封装。以下名称是 `iroha_data_model::query` 当前公开的查询类型。
 
 ## 运行时与配置 {#runtime-and-configuration}
 
@@ -96,7 +96,7 @@ Iroha 查询可以读取账本状态而不对其进行更改。当前数据模�
 | `FindDaPinIntentByManifest` | 按清单引用查找固定意图。 |
 | `FindDaPinIntentByAlias` | 按别名查找固定意图。 |
 | `FindDaPinIntentByLaneEpochSequence` | 按通道、纪元和序号查找固定意图。 |
-| `FindLaneRelayEnvelopeByRef` | 查找经过验证的通道中继信封。 |
+| `FindLaneRelayEnvelopeByRef` | 查找经过验证的通道中继封装。 |
 | `FindSorafsProviderOwner` | 解析 SoraFS 提供商的所有者。 |
 | `FindDataspaceNameOwnerById` | 解析数据空间名称的所有者。 |
 |`FindMusubiExactPackageV1`|阅读一个精确的包装记录及其当前修订.|

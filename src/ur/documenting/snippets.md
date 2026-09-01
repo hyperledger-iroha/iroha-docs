@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /documenting/snippets.md
-translation_source_hash: e188082e05db85d5e514b782f93648fb402a09740840c9201e47db353f2192f5
+translation_source_hash: 48d6670f100c7c6368fa03f163c9ff9e0322d36e51c22f89562b23b0e2ee2a2f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 جنریٹڈ ٹکڑے ٹکڑے کو Iroha ترمیم سے مثالیں جو ان کو پیدا کرنے والے کوڈ، ترتیب اور اسکیموں سے منسلک رکھی جاتی ہیں.
 
-## تازہ کاری کرنے والے Iroha آثار قدیمہ {#refreshing-iroha-artifacts}
+## تازہ کاری کرنے والے Iroha آرٹی فیکٹس {#refreshing-iroha-artifacts}
 
 Iroha سے اخذ کردہ ٹکڑے ٹکڑے کو اس طرح چیک کیا جاتا ہے کہ عام سائٹ کی تعمیر میں نیٹ ورک تک رسائی یا ایک بہن بھائی ذخیرہ کی ضرورت نہیں ہوتی ہے۔ انہیں صریح طور پر تازہ کاری کریں:
 
@@ -18,7 +18,7 @@ Iroha سے اخذ کردہ ٹکڑے ٹکڑے کو اس طرح چیک کیا جا
 pnpm refresh:iroha --source /path/to/iroha
 ```
 
-داخل ہونے والے [`etc/refresh-iroha.ts`](https://github.com/hyperledger-iroha/iroha-docs/blob/main/etc/refresh-iroha.ts) کام کا بہاؤ صاف ذریعہ چیک آؤٹ کے مقابلے میں تصدیق کرتا ہے `provenance/iroha.json`, دوبارہ پیدا ہوتا ہے `/src/snippets` اور Torii OpenAPI اسنیپ شاٹ، اور اپ ڈیٹس SHA-256 hashes. مواد اور اصل کی تبدیلیوں کو ایک ساتھ چیک کریں. عام انحصار تنصیب اور VitePress تعمیرات کو تبدیل کرنے والی شاخ کے بغیر چیک ان فائلوں کا استعمال کرتے ہیں.
+داخل ہونے والے `etc/refresh-iroha.ts` کام کا بہاؤ صاف ذریعہ چیک آؤٹ کے مقابلے میں تصدیق کرتا ہے `provenance/iroha.json`, دوبارہ پیدا ہوتا ہے `/src/snippets` اور Torii OpenAPI اسنیپ شاٹ، اور اپ ڈیٹس SHA-256 hashes. مواد اور اصل کی تبدیلیوں کو ایک ساتھ چیک کریں. عام انحصار تنصیب اور VitePress تعمیرات کو تبدیل کرنے والی شاخ کے بغیر چیک ان فائلوں کا استعمال کرتے ہیں.
 
 ## اسنیپٹس سمیت {#including-snippets}
 

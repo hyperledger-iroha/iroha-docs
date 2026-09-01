@@ -3,30 +3,30 @@ translation_locale: kk
 translation_source: /get-started/launch-iroha.md
 translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Ұшыру Iroha 3 {#launch-iroha-3}
+# Жіберу Iroha 3 {#launch-iroha-3}
 
-Бұл бетте Iroha 3 үшін ағымдағы жергілікті желі ағындарының үстіндегі қоймадан әдеттегі жұмыс кеңістігі активтерін пайдалана отырып өтуі тиіс.
+Бұл бет Iroha 3 үшін ағымдағы жергілікті желі ағынын тізбектеп көрсетеді, используя жоғарғы репозиторийден алынған әдепкі жұмыс кеңістігі активтерін.
 
-## 1. Жергiлiктi көп теңгершiлiк желiс құру {#_1-generate-a-local-multi-peer-network}
+## 1. Жергілікті көпсерверлі желіні жасаңыз {#_1-generate-a-local-multi-peer-network}
 
-Ағымдағы Kagami кодынан төрт жұптық локальдік желіні құру:
+Ағымдағы Kagami кодынан төрт түйінді локальді желіні жасаңыз:
 
 ```bash
 cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-Шығу каталогында сәйкес келетін теңгерімдік конфигурациялар, `genesis.json`, `genesis.signed.nrt`, `client.toml` және көмекші скрипттер бар.
+Шығару каталогында сәйкес желілік әріптес конфигурациялары, `genesis.json`, `genesis.signed.nrt`, `client.toml` және көмекші скрипттер бар.
 
-Жергiлiктi түтiк сынағы үшiн өндiрiлген теңгершiлердi тiкелей бастаңыз:
+Жергілікті тірі түтін тесті үшін, жасалған желі түйіндерін тікелей іске қосыңыз:
 
 ```bash
 ./localnet/start.sh
 ```
 
-Контейнерлік орындалу үшін Localnet каталогынан Compose генерациялаңыз:
+Контейнерленген іске қосу үшін бірдей localnet директориясынан Compose жасаңыз:
 
 ```bash
 cargo run --bin kagami -- docker \
@@ -39,27 +39,27 @@ cargo run --bin kagami -- docker \
 docker compose -f ./docker-compose.yml up
 ```
 
-Әдетті пайдаланған ұяшықта:
+Әдепкіде жасалған стек келесілерді көрсетеді:
 
-- P2P порты `1337` - `1340`
-- Torii HTTP порттары `8080` - `8083`
-- дайын клиент конфигурациясы `./localnet/client.toml`
+- желі әріптесі P2P порттары `1337` дейін `1340`
+- Torii HTTP порттары `8080` дейін `8083`
+- `./localnet/client.toml` мекенжайында дайын клиент конфигурациясы
 
-## 2. Желідің жұмыс істеп жатқанын тексеріңіз {#_2-verify-that-the-network-is-up}
+## 2. Желінің жұмыс істеп тұрғанын тексеріңіз {#_2-verify-that-the-network-is-up}
 
-Бірінші теңгерімдегі жай-күйін тексеру:
+Бірінші желі түйініндегі API соңғы нүктенің күйін тексеріңіз:
 
 ```bash
 curl http://127.0.0.1:8080/status
 ```
 
-Әдеттегі денсаулық тексерулерінде сондай-ақ:
+Әдепкі денсаулық тексерулері сондай-ақ келесі әдістерді пайдаланады:
 
 ```bash
 curl http://127.0.0.1:8080/status/blocks
 ```
 
-Сіз бірден CLI топталған клиент конфигурациясына бағыттауыңыз мүмкін:
+Сіз тіркелген клиенттік конфигурацияға CLI-ді бірден бағыттай аласыз:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
@@ -67,28 +67,28 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 
 ## 3. Nexus Профиль {#_3-nexus-profile}
 
-Сондай-ақ, депозитарий SORA Nexus-қа бағдарланған конфигурациялық профильді `defaults/nexus/` бойынша жібереді.
+Репозиторий сонымен қатар `defaults/nexus/` астында SORA Nexus-бағытталған конфигурациялық профильді жеткізеді.
 
-Nexus профилі бар түпкiлiктi теңгершiн жүргiзу үшiн:
+Nexus профилімен жергілікті желі серіктесін іске қосу үшін:
 
 ```bash
 ./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
 ```
 
-Осы профильге CLI қатынау үшін `defaults/nexus/client.toml` қолданылсын.
+Ол профильге қол жеткізу үшін `defaults/nexus/client.toml` пайдаланыңыз CLI.
 
-## 4. Жергілікті желілерді тоқтату {#_4-stop-the-local-network}
+## 4. Жергілікті желіні тоқтату {#_4-stop-the-local-network}
 
-Жергілікті желі үшін:
+Туған жерінде жасалған жергілікті желі үшін:
 
 ```bash
 ./localnet/stop.sh
 ```
 
-Жаратылған Compose ұяшығы үшін:
+Жасалған Compose стегі үшін:
 
 ```bash
 docker compose -f ./docker-compose.yml down
 ```
 
-Желі жұмыс істегеннен кейін [мен жалғастырыңыз Iroha 3 арқылы CLI](/kk/get-started/operate-iroha-via-cli.md) арқылы әрекет ету.
+Желінің жұмыс істеуін бастағаннан кейін, [CLI арқылы Iroha 3 жұмыс істеңіз](/kk/get-started/operate-iroha-via-cli.md) жалғастырыңыз.

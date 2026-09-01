@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /cookbook/nfts.md
-translation_source_hash: 5eb6a349b815afbac9717f7b44c499adc78b1280625388656015ff4b133b9085
+translation_source_hash: db99dab483d4e2fb3fd84be84f6e4ef9f8373f0c16eb2f34952f1232c4587561
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -75,7 +75,7 @@ printf '%s\n' \
 
 ### עדכן את מפת התוכן. {#_4-update-the-content-map}
 
-ערכי הנתונים המטאטאליים הם JSON. הגדרת מפתח מכניס או מחליף את הכתיבה הזאת אחת; היא לא מחליפה את כל הקלט NFT.
+ערכי המטא-נתונים הם JSON. הגדרת מפתח מכניס או מחליף את הכתיבה הזאת אחת; היא לא מחליפה את כל הקלט NFT.
 
 ```bash
 printf '%s\n' '{"color":"blue","version":1}' \
@@ -106,7 +106,7 @@ iroha --config "$LOCAL_CONFIG" \
 
 :::
 
-עבור זלילי עבודה בבעלות חוזה, Kotodama חושף טפסים NFT שיחות מארח. הבא הוא קישור מחזור חיים מדויק הועבר והוצא על ידי מבחן התיעוד IVM:
+עבור תהליכי עבודה שבבעלות חוזה, Kotodama מספק קריאות מארח NFT מטיפוסות. להלן מקרה הבדיקה המדויק של מחזור החיים, שאותו מבחן התיעוד המקובע של IVM מהדר ומריץ:
 
 ```kotodama
 seiyaku NftFlow {
@@ -134,7 +134,7 @@ seiyaku NftFlow {
 }
 ```
 
-שני הערכים הקבועים I105 הם ציוד ניסוי מקדימה; הרנז רשום את היעד לפני ההפעלה. הם אינם `CURRENT_OWNER` ו `NEW_OWNER` מהדרך CLI . עבור חוזה יישום, לספק את החשבונות הקנוניים האמיתיים שלו, ולאחר מכן לעסוק, לבחון, לפרסם ולהתקשר אליו באמצעות [חוזים חכמים](./smart-contracts.md). אל תגיש קוד בייט לא הושקף ל- Taira, ותזכור כי ביצוע החוזה עדיין עובר אישור זמן פועל.
+שני ערכי I105 הקבועים הם נתוני בדיקה מפרויקט המקור; סביבת הבדיקה רושמת את היעד לפני ההרצה. אלה אינם `CURRENT_OWNER` ו־`NEW_OWNER` מהמדריך של CLI. עבור חוזה יישום, ספקו את החשבונות הקנוניים בפועל, ולאחר מכן הדרו אותו, בדקו אותו, פרסו אותו וקראו לו באמצעות [חוזים חכמים](./smart-contracts.md). אל תשלחו bytecode שלא נבדק אל Taira; ביצוע החוזה עדיין כפוף להרשאת זמן הריצה.
 
 ## לאמת {#verify}
 
@@ -155,17 +155,17 @@ jq -e --arg owner "$NEW_OWNER" \
 
 - `name$domain` יכול להתאים באופן מקובל למרחב נתונים אוניברסלי במספר מספקים מסוימים, אך ספר הבישול והיישום IDs צריכים להשתמש בטופס מפורסם `name$domain.dataspace`.
 - רישום חוזר של אותו NFT ID השתמשו ברשת מקומית חדשה או בחרו רשת ID "לכתבה מובהקת".
-- הכניסת הנתונים המטאטאיות חייבת להיות תקנה JSON על כניסה סטנדרטית. שרשרת קליפה ללא ציטוט JSON אינה ערך נתונים מטאטאטיים.
+- הכניסת הנתונים המטאטאיות חייבת להיות תקנה JSON על כניסה סטנדרטית. שרשרת קליפה ללא ציטוט JSON אינה ערך מטא-נתוניםטיים.
 - העברה שנחתמה על ידי חשבון אחר מאשר הבעלים הנוכחי זקוקה לרשות מדויקת; שינוי `--from` לא משנה את המחתם.
 - לאחר העברה, הלקוח המקורי לא רשאי יותר לשנות או לבטל את רישום NFT. השתמשו בתחתום של הבעלים החדש או במפקד מורשה.
-- Taira יכול להחזיר אספקה ריקה של NFT. אל תיייחסו ל- `items: []` כראיה לכך שאיננו זמינים הוראות NFT.
+- Taira יכולה להחזיר אוסף NFT ריק. אל תתייחסו ל־`items: []` כהוכחה לכך שהוראות NFT אינן זמינות.
 
 ## מקור ומסמכים קשורים {#source-and-related-docs}
 
-- [ניסויים של אינטגרציה NFT בביצוע ההתחייבויות הקשורות ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/nft.rs)
+- [ניסויים של אינטגרציה NFT בביצוע commit הקשורות ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/nft.rs)
 - [Kotodama NFT ניסויים בקריאה מארח בביצוע הקשב](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
-- [בדיוק. Kotodama NFT קישור מחזור החיים ב- commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/docs/examples/12_nft_flow.ko)
+- [מקרה הבדיקה המדויק של מחזור החיים של Kotodama NFT ב־commit המקובע](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/docs/examples/12_nft_flow.ko)
 - [NFTs](/he/blockchain/nfts.md)
-- [נתונים מטאטא](/he/blockchain/metadata.md)
+- [מטא-נתונים](/he/blockchain/metadata.md)
 - [הוראות](/he/blockchain/instructions.md)
 - [סימני רשות ](/he/reference/permissions.md)

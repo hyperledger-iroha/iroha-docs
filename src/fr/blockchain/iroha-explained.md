@@ -3,75 +3,75 @@ translation_locale: fr
 translation_source: /blockchain/iroha-explained.md
 translation_source_hash: ba591b2c1aa819837177625b1ae457b5fa492197576dc690b19ca2897562a436
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Iroha Expliqué {#iroha-explained}
 
-Iroha 3 est la plateforme Hyperledger Iroha de première sortie. Le même noyau prend en charge les réseaux auto-hébergés et le modèle d'exécution SORA Nexus pour les espaces de données et le routage multiligneux.
+Iroha 3 est la plateforme Hyperledger Iroha de première version. Le même noyau prend en charge les réseaux auto-hébergés et le modèle d'exécution SORA Nexus pour les espaces de données et le routage multi-voies.
 
-## Blocs de construction fondamentaux {#core-building-blocks}
+## Blocs de construction de base {#core-building-blocks}
 
-- `iroha3d` mène des pairs
-- Torii est la passerelle du client et de l'exploitant
+- `iroha3d` exécute des pairs réseau
+- Torii est la passerelle client et opérateur
 - Sumeragi gère le consensus
-- Norito est le format binaire canonique de [](/fr/reference/norito.md)
-- IVM exécute des contrats intelligents portables et un code octal
-- Kotodama compile les contrats de haut niveau `.ko` avec le code octal IVM `.to`
-- Kagami prépare les clés, l'origine, les profils et les réseaux locaux
-- SORA Nexus ajouter des avions de service Soracloud, À l'intérieur, SoraNet, SoraFS, et SoraDNS pour l'hébergement d'applications, le transport de la vie privée, le stockage et la dénomination
+- Norito est le [format binaire canonique](/fr/reference/norito.md)
+- IVM exécute des contrats intelligents portables et du bytecode
+- Kotodama compile des contrats `.ko` de haut niveau en bytecode `.to` IVM
+- Kagami prépare des clés, la genèse de la blockchain, des profils et des réseaux locaux
+- SORA Nexus les plans de service ajoutent Soracloud, Inrou, SoraNet, SoraFS, et SoraDNS pour l'hébergement d'applications, le transport privé, le stockage et la nomination
 
 ## Modèle d'exécution {#execution-model}
 
-Chaque changement dans l'état du monde se produit toujours par des transactions. Les transactions contiennent des instructions ou IVM code octal, et Torii est la principale façon dont les clients les soumettent ou observent leurs effets.
+Chaque changement de l'état du monde se produit toujours par le biais de transactions. Les transactions contiennent des instructions ou du bytecode IVM, et Torii est le principal moyen pour les clients de les soumettre ou d'en observer les effets.
 
-- Les configurations Nexus-conscientes peuvent définir plusieurs voies
-- les espaces de données isolent les charges de travail tout en restant partie du même modèle de registre
-- la politique de routage détermine quelle voie et l'espace de données gérer une classe de travail
+- Les configurations conscientes de Nexus peuvent définir plusieurs voies d'exécution
+- les espaces de données isolent les charges de travail tout en restant partie du même modèle de registre de blockchain
+- La politique de routage décide quelle voie d'exécution et quel espace de données gèrent une catégorie de travail
 
-## L'architecture multi-espace de données {#multi-dataspace-architecture}
+## Architecture Multi-Espaces de Données {#multi-dataspace-architecture}
 
-Un espace de données est une limite de routage et d'espace de noms, pas une blockchain séparée. Le temps d'exécution a encore un `World`, un modèle de transaction et un pipeline de consensus. Nexus ajoute des catalogues qui indiquent au nœud comment partager le travail entre les voies et comment nommer les espaces de données que ces voies servent.
+Un espace de données délimite le routage et l’espace de noms ; ce n’est pas une blockchain distincte. L’environnement d’exécution conserve un seul `World`, un seul modèle de transaction et un seul pipeline de consensus. Nexus ajoute des catalogues qui indiquent au nœud comment répartir le travail entre les voies et comment nommer les espaces de données desservis par ces voies.
 
-À l'heure d'exécution, un espace de données est représenté par un métadonnées numérique `DataSpaceId` et catalogue. `DataSpaceId::UNIVERSAL` est réservé comme `0`; le catalogue par défaut contient l'espace de données `universal`. Chaque espace de donnée configuré a:
+Lors de l'exécution du logiciel, un espace de données est représenté par un `DataSpaceId` numérique et des métadonnées du catalogue. `DataSpaceId::UNIVERSAL` est réservé en tant que `0` ; le catalogue par défaut contient l'espace de données `universal`. Chaque espace de données configuré possède :
 
-- un chiffre unique ID
-- un pseudonyme unique tel que `universal`, `governance` ou `zk`;
-- une description facultative des surfaces de l'opérateur
-- une valeur non nulle `fault_tolerance` utilisée pour mesurer les comités de relais
+- un identifiant numérique unique
+- un alias unique tel que `universal`, `governance` ou `zk`
+- une description optionnelle pour les surfaces de l'opérateur
+- une valeur non nulle `fault_tolerance` utilisée pour dimensionner les comités de relais
 
-Les files d'attente sont les routes d'exécution et de stockage liées à ces espaces de données. Une entrée de file porte un `LaneId`, le `DataSpaceId` qu'elle sert, un alias, la visibilité (`public` ou `restricted`), le profil de stockage (`full_replica`, `commitment_only`, ou `split_replica`), le schéma de preuve et la gouvernance facultative, la règlementation, et les métadonnées du planificateur. Le temps d'exécution dérive de la géométrie de stockage par voie de ce catalogue, y compris les noms des segments Kura et les préfixes de clé déterministe.
+Les voies d’exécution sont les routes d’exécution et de stockage rattachées à ces espaces de données. Une entrée de voie comporte un `LaneId`, le `DataSpaceId` qu’elle dessert, un alias, une visibilité (`public` ou `restricted`), un profil de stockage (`full_replica`, `commitment_only` ou `split_replica`), un schéma de preuve ainsi que, facultativement, des métadonnées de gouvernance, de règlement et de planification. L’environnement d’exécution déduit de ce catalogue la géométrie de stockage de chaque voie, notamment les noms des segments Kura et les préfixes de clés déterministes.
 
-Le parcours est le suivant:
+Le chemin de routage est :
 
-1. La configuration construit un `DataSpaceCatalog`, `LaneCatalog` et `LaneRoutingPolicy` validés. Plusieurs voies, plusieurs espaces de données ou routage non par défaut nécessitent `nexus.enabled = true`.
-2. La file d'attente des transactions demande au routeur de la voie active une `RoutingDecision` qui contient une voie ID et un espace de données ID.
-3. Les règles explicites de routage peuvent correspondre par autorité/compte ou par étiquette d'instructions. Sans une règle de correspondance, le routeur peut dériver l'espace de données du domaine IDs, des projections de définition d'actif, des autorisations étendues par espace de données, des pattes de règlement ou la portée du compte lié de l'autorité.
-4. L'itinéraire résolu est vérifié par rapport aux deux catalogues. Si une transaction s'adresse à deux cibles différentes de l'espace de données, elle est rejetée en tant que route conflictuelle; le règlement entre les espaces de données DVP/PVP est parcouru dans la voie du coordinateur universel.
-5. Sumeragi et la télémétrie maintiennent l'affectation visible sous forme d'activités de voie et d'espace de données, de backlogs et d'engagements.
+1. La configuration crée un `DataSpaceCatalog`, `LaneCatalog` et `LaneRoutingPolicy` validé. Plusieurs voies d'exécution, plusieurs espaces de données ou un routage non par défaut nécessitent `nexus.enabled = true`.
+2. La file d'attente des transactions demande au routeur de voie d'exécution active un `RoutingDecision` contenant un ID de voie d'exécution et un ID d'espace de données.
+3. Les règles de routage explicites peuvent correspondre par autorité/compte ou par étiquette d'instruction. En l'absence d'une règle correspondante, le routeur peut dériver l'espace de données à partir des identifiants de domaine, des projections de définition d'actifs, des autorisations limitées à l'espace de données, des parties de transfert de règlement ou de la portée du compte lié du principal d'autorisation.
+4. La route résolue est vérifiée par rapport aux deux catalogues. Les voies d'exécution inconnues, les espaces de données inconnus et les incompatibilités voie/espace de données sont des erreurs de routage déterministes. Si une transaction écrit sur deux cibles de l'espace de données différentes, elle est rejetée en tant que route conflictuelle ; le règlement inter-espaces de données DVP/PVP est acheminé via la voie d'exécution du coordinateur universel.
+5. Sumeragi et la télémétrie maintiennent l'affectation visible comme voie d'exécution et activité de l'espace de données, rétrospective des arriérés et des engagements.
 
-C'est pourquoi les identifiants d'objets sont importants. Les domaines incluent l'alias espace de données dans leur ID, par exemple `payments.universal`, de sorte que les écrits à scope de domaine peuvent être routés. Les comptes restent canoniques et sans domaine, de sorte qu'un même compte peut être lié à différents champs d'application sans changer son `AccountId`. Les définitions d'actifs peuvent contenir une projection de domaine/espace de données, ce qui permet aux opérations d'actif d'hériter de la bonne route de l'espace de data.
+C'est pourquoi les identifiants d'objet sont importants. Les domaines incluent l'alias de l'espace de données dans leur ID, par exemple `payments.universal`, afin que les écritures limitées au domaine puissent être acheminées. Les comptes restent canoniques et sans domaine. de sorte que le même compte peut être lié à différents périmètres d'application sans changer son `AccountId`. Les définitions d'actifs peuvent porter une projection de domaine/espace de données, ce qui permet aux opérations sur les actifs d'hériter du chemin correct de l'espace de données.
 
-Sans Nexus surcharges, le nœud utilise une seule voie et l'espace de données `universal`. Le profil SORA regroupé la remplace par un catalogue à trois voies: `core` pour la voie publique universelle, `governance` pour le trafic de gouvernance et `zk` pour le trafic d'attachement à connaissance zéro et de déploiement contractuel.
+Sans les remplacements de Nexus, le nœud utilise une seule voie d'exécution et l'espace de données `universal`. Le profil SORA inclus remplace cela par un catalogue à trois voies : `core` pour la voie d'exécution publique universelle, `governance` pour le trafic de gouvernance, et `zk` pour le trafic de pièces jointes à connaissance zéro et de déploiement de contrats.
 
-Ces trois paramètres existent pour séparer les classes de charge de travail:
+Ces trois valeurs par défaut existent pour séparer les classes de charge de travail :
 
-|espace de données |Lane .|Pourquoi il existe ?|
+|Espace de données|voie d'exécution|Pourquoi cela existe|
 | ------------ | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-|`universal` |`core` |Espace de données par défaut réservé (`DataSpaceId::UNIVERSAL == 0`) pour le trafic public ordinaire du registre et l'itinéraire de retour. |
-|`governance` |`governance` |L'activité du plan de contrôle n'est donc pas mélangée à l'application générale. |
-|`zk` |`zk` |Lane restreint pour les preuves de connaissance zéro, les pièces jointes et le routage du déploiement contractuel, en gardant les flux de travail lourds en preuve séparés des écritures normales. |
+|`universal`| `core`       |Espace de données par défaut réservé (`DataSpaceId::UNIVERSAL == 0`) pour le trafic du grand livre public ordinaire de la blockchain et le routage de secours.|
+| `governance` | `governance` |Voie d'exécution restreinte pour le trafic de gouvernance et du parlement, afin que l'activité du plan de contrôle ne soit pas mélangée avec les écritures des applications générales.|
+| `zk`         |`zk`|Voie d'exécution restreinte pour les preuves à divulgation nulle de connaissance, les pièces jointes et le routage du déploiement de contrats, gardant les flux de travail lourds en preuves séparés des écritures normales.|
 
-Seule `universal` est la ligne de base réservée. `governance` et `zk` sont des choix de profil SORA codés dans le catalogue groupé et la politique de routage; les opérateurs peuvent définir un catalogue différent lorsqu'ils ont besoin de limites différentes de l'espace de données.
+Seul `universal` est la ligne de base réservée. `governance` et `zk` sont des choix de profil SORA encodés dans le catalogue et la politique de routage inclus ; les opérateurs peuvent définir un catalogue différent lorsqu'ils ont besoin de limites de dataverse différentes.
 
-Sumeragi utilise toujours la disponibilité des données et une diffusion fiable. Ces chemins font partie du protocole de consensus Iroha 3 et ne peuvent pas être désactivés par un profil de déploiement.
+Sumeragi utilise toujours la disponibilité des données et la diffusion fiable. Ces chemins font partie du protocole de consensus Iroha 3 et ne peuvent pas être désactivés par un profil de déploiement.
 
-Le comportement en temps d'exécution est basé sur les fichiers de configuration et les paramètres de la chaîne. Les variables environnementales ne sont pas des portes de caractéristiques de production.
+Le comportement d'exécution du logiciel provient des fichiers de configuration et des paramètres en chaîne. Les variables d'environnement ne sont pas des commutateurs de fonctionnalités en production.
 
-## Lire la suite {#read-next}
+## Lire ensuite {#read-next}
 
-- [Les services SORA Nexus ](/fr/blockchain/sora-nexus-services.md)
-- [Lancement Iroha 3](/fr/get-started/launch-iroha.md)
-- [Le monde, WSV et le stockage Kura ](/fr/blockchain/world.md)
-- [Référencement de la Genèse](/fr/reference/genesis.md)
-- [points d'extrémité Torii](/fr/reference/torii-endpoints.md)
+- [Services de SORA Nexus](/fr/blockchain/sora-nexus-services.md)
+- [Lancer Iroha 3](/fr/get-started/launch-iroha.md)
+- [Monde, WSV, et stockage Kura](/fr/blockchain/world.md)
+- [référence de genèse de la blockchain](/fr/reference/genesis.md)
+- [Torii API points de terminaison](/fr/reference/torii-endpoints.md)

@@ -3,23 +3,23 @@ translation_locale: az
 translation_source: /reference/compatibility-matrix.md
 translation_source_hash: 5928eaf7e65023ad1867ca8d125efa61da6d8fe505b91e71b2c2121b183ce06e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Müvafiqlik matrisi {#compatibility-matrix}
+# Uyğunluq Matrisi {#compatibility-matrix}
 
-Müvafiqlik matrisində mövcud Iroha 3 sənədlər dəstinin çapraz SDK ssenari örtüyü göstərilir. Varsayılan olaraq səhifə sabitləşdirilmiş [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) yenidənqurmadan əldə edilmiş birləşmiş sürətnaməni yükləyir.
+Uyğunluq matrisi qarşılıqlı göstərir-SDK mövcud üçün ssenari əhatəsi Iroha 3 sənədlər dəsti. Varsayılan olaraq, səhifə, möhkəmləndirilmişdən yaradılan paketlənmiş mövqe-vaxt məlumat görünüşünü yükləyir [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) təkrar baxış.
 
-Matrix aşağıdakılardan ibarətdir:
+Matris aşağıdakılardan ibarətdir:
 
 - Birinci sütundakı hekayələr
-- SDKs qalan sütunlarda
-- Gizli, uğursuz və itkin olan məlumatlar üçün status simvolları
+- SDKs qalan sütunlar boyunca
+- Qapalı, uğursuz və itkin məlumatlar üçün vəziyyət simvolları
 
-Yeniləmə iş axını ilə təsdiqlənən yalnız nəticələr əhatə olunmuş və ya uğursuz olduğu bildirilir. Qapalı yenidənqurma üçün sübut olmayan ssenarilər başqa bir mənbə yenidənqurmasının nəticələrini irs etmək əvəzinə itirilmiş məlumat kimi göstərilmişdir.
+Yalnız təzələmə iş prosesi ilə təsdiqlənmiş nəticələr əhatə olunan və ya uğursuz kimi hesabat edilir. Pinslənmiş versiya üçün sübutu olmayan ssenarilər digər mənbə versiyasından nəticələri miras qoymaq əvəzinə məlumat çatışmazlığı kimi göstərilir.
 
 <CompatibilityMatrixTable />
 
 ::: info
-`VITE_COMPAT_MATRIX_URL` yalnız uyğun canlı backend ilə birləşdirilmiş sürət görüntüsünü əvəz etmək üçün təyin edin. Bu dəyişən olmadan səhifə yüklənir `src/public/compat-matrix.json`.
+`VITE_COMPAT_MATRIX_URL` dəyişənini yalnız uyğun canlı backend ilə birləşdirilmiş vaxt nöqtəsi məlumat görünüşünü üstələmək üçün təyin edin. Bu dəyişən olmadan səhifə `src/public/compat-matrix.json` yüklənir.
 :::

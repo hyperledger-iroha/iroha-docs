@@ -1,18 +1,16 @@
 ---
 translation_locale: zh-hans
 translation_source: /reference/genesis.md
-translation_source_hash: 1312e80d9e662cc3e8cf4d0668ff4bb9e6ce3f74a60bb5287205aeeb5afd5de8
+translation_source_hash: ac6bad693ed382dede0818132b8649fe14726283508da897a32eea417e5bbb28
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # 创世记参考 {#genesis-reference}
 
-在当前 Iroha 3 工作流程，一个 `genesis.json` 清单描述了第一个
-网络启动时将应用的事务和参数。
+在当前 Iroha 3 工作流程，一个 `genesis.json` 清单描述了第一个 网络启动时将应用的事务和参数。
 
-分发给同级的签名工件是 Norito-编码的 `.nrt` 文件
-生产者 `kagami genesis sign`.
+分发给同级的签名工件是 Norito-编码的 `.nrt` 文件 生产者 `kagami genesis sign`.
 
 ## 主要领域 {#main-fields}
 
@@ -45,9 +43,7 @@ cargo run -p iroha_kagami -- genesis generate \
   --genesis-public-key <PUBLIC_KEY> > genesis.json
 ```
 
-对于公众 SORA Nexus 数据空间， `npos` 是预期的共识模式。
-其他 Iroha 3 根据目标，部署可以使用许可或 NPoS
-轮廓。
+对于公众 SORA Nexus 数据空间， `npos` 是预期的共识模式。 其他 Iroha 3 根据目标，部署可以使用许可或 NPoS 轮廓。
 
 ## 签署舱单 {#sign-the-manifest}
 
@@ -59,12 +55,7 @@ cargo run -p iroha_kagami -- genesis sign genesis.json \
   --out-file genesis.signed.nrt
 ```
 
-`kagami genesis sign` 从清单中读取创世公钥并使用
-来自所有者持有的单链接常规文件的私钥，以生成
-可部署的签名块。该文件必须包含一个规范的私钥
-多哈希后跟换行符； Kagami 拒绝符号链接和模式其他
-比 `0600`. 命令行不接受原始私钥。结果
-是对等方应从其配置中引用的文件。
+`kagami genesis sign` 从清单读取创世公钥，并使用由所有者保管、硬链接数为 1 的普通文件中的私钥来生成可部署的签名区块。该文件必须包含一个规范的私钥 multihash，后接一个换行符；Kagami 拒绝符号链接以及权限模式不是 `0600` 的文件。命令行不接受原始私钥。生成的文件就是对等节点应在配置中引用的文件。
 
 ## 配置 `iroha3d` {#configure-iroha3d}
 
@@ -84,5 +75,4 @@ public_key = "<PUBLIC_KEY>"
 - `kagami localnet`
 - `cargo xtask kagami-profiles`
 
-有关生成器的实现和命令详细信息，请参阅
-[Kagami README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami/README.md).
+有关生成器的实现和命令详细信息，请参阅 [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami/README.md).

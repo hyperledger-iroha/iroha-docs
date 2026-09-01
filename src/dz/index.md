@@ -3,7 +3,7 @@ translation_locale: dz
 translation_source: /index.md
 translation_source_hash: 3b2ad4ee285a821b56c9cf6fd3f4a8431f1cfa478e88082b45788765d68ed833
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: human-reviewed
 
 layout: home
 
@@ -27,10 +27,10 @@ nexusPortal:
     text: "Taira ལུ་འགོ་བཙུགས་དགོ།"
     link: /dz/get-started/sora-nexus-dataspaces
   secondaryAction:
-    text: "བཞེས་སྒོའི་དཔེ་དེབ་འདི་བལྟ་གནང་།"
+    text: "ལག་ལེན་ལམ་སྟོན་གྱི་དཔེ་དེབ་འདི་བལྟ་གནང་།"
     link: /dz/cookbook/
   recipes:
-    title: "ཡོངས་གྲགས་ཅན་གྱི་ བཞེས་སྒོ་ཚུ་"
+    title: "ཡོངས་གྲགས་ཅན་གྱི་ ལག་ལེན་ལམ་སྟོན་ཚུ་"
     items:
       - title: "ཚོང་འབྲེལ་ཚུ་ བཏང་ནི་དང་ བདེན་དཔྱད་འབད་ནི།"
         link: /dz/cookbook/submit-and-verify-transactions

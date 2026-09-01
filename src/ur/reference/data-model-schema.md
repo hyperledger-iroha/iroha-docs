@@ -1,13 +1,19 @@
 ---
 translation_locale: ur
 translation_source: /reference/data-model-schema.md
-translation_source_hash: 30235305046e4d9e7fd76b7dcf8859f9de0fe2182c61e1e96f455f6c5c4dbda6
+translation_source_hash: cf27b1f313a695b648ae450564a51120af0e3e39641ed140a187d128b930da97
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # ڈیٹا ماڈل اسکیم {#data-model-schema}
 
-یہ صفحہ `kagami advanced schema` کے ساتھ تیار کیا گیا ہے جو دستاویزات کی تازہ کاری ورک فلو کے ذریعہ ریکارڈ کردہ [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) ترمیم سے منسلک ہے۔ رینڈر شدہ اسنیپ شاٹ کو اس ذخیرے میں چیک کیا جاتا ہے لہذا عام دستاویزات کے بلڈز کو Iroha ماخذ چیک آؤٹ کی ضرورت نہیں ہوتی ہے۔
+اپنے انٹیگریشن کے اہداف کے عین مطابق نوڈ سے اسکیما کو دریافت کریں۔ Torii فعال ڈیٹا ماڈل اسکیم کو `GET /v1/schema` پر خدمت کرتا ہے جب اس سطح کو چالو کیا گیا ہو:
 
-<DataModelSchema />
+```bash
+export TORII_URL=http://127.0.0.1:8180
+
+curl -fsS -H 'Accept: application/json' "$TORII_URL/v1/schema" \
+  > iroha-data-model-schema.json
+```
+
+چیک ان دستاویزات کے ٹکڑے سے پابندیاں پیدا نہ کریں جب تک کہ اس کی اصل کی حیثیت زیر التواء ہو۔ براہ راست نوڈ کا جواب اس نوڈ کے مرتب کردہ ڈیٹا ماڈل کے لئے بااختیار ہے۔ اسے اپنے انضمام کے ذریعہ استعمال ہونے والے نوڈ بلڈ کے ساتھ منسلک رکھیں.

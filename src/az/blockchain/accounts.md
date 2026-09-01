@@ -3,32 +3,32 @@ translation_locale: az
 translation_source: /blockchain/accounts.md
 translation_source_hash: 015a85d81c44b7ef7f13cdafb2ed8e493ef512b94dc500939655c70285eac3bd
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Hesablar {#accounts}
 
-Hesab, əməliyyatları imzalaya bilən və öz kitabının dövlətinin sahibi olan bir orqandır. Hal-hazırda Iroha 3 məlumat modelində `AccountId` kanonik və domensizdir: hesab nəzarətçisindən alınır və kanonik olaraq [I105](/az/reference/i105.md) kimi kodlanır. İnsan oxuya bilən domen və məlumat məkanı kontekstinin ayrı hesab-alias bağlamalara aiddir.
+Hesab, əməliyyatları imzalaya bilən və blokçeyn reyestrindəki vəziyyətə sahib ola bilən səlahiyyət sahibidir. Mövcud Iroha 3 məlumat modelində `AccountId` kanonikdir və domen daşımır: o, hesab nəzarətçisindən törədilir və [I105](/az/reference/i105.md) kimi kanonik kodlanır. İnsan tərəfindən oxuna bilən domen və məlumat məkanı konteksti ayrıca hesab ləqəbi bağlamalarına aiddir.
 
-## Struktura {#structure}
+## Struktur {#structure}
 
-qeydiyyatdan keçmiş `Account` əlamətləri aşağıdakılardır:
+Qeydiyyatdan keçmiş `Account` aşağıdakıları ehtiva edir:
 
-- `id`: kanonik `AccountId`
-- `metadata`: keyfiyyətli hesab metadataları
-- `label`: seçməli sabit əlifba
-- `uaid`: Nexus axınlarında istifadə olunan fakultativ Universal Hesabı ID
-- `opaque_ids`: Hesabın UAID hesabına bağlanmış qeyri-şəffaf identifikatorlar
+- `id`: tək protokol-standart `AccountId`
+- `metadata`: ixtiyari hesab metadatası
+- `label`: isteğe bağlı sabit ləqəb
+- `uaid`: Nexus axınları tərəfindən istifadə edilən seçimli Universal Hesab ID-si
+- `opaque_ids`: hesabın UAID ilə bağlı şəffaf olmayan identifikatorlar
 
-Hesabın yaradılması üçün istifadə olunan əməliyyat pay yükü `NewAccount`dir. O, qeydiyyatdan keçmiş hesabda istifadə edilən eyni şəxsiyyət, meta məlumatlar, etiket, UAID və qeyri-aşkar ID sahələrini daşıyır.
+Hesab yaratmaq üçün istifadə olunan əməliyyat yükü `NewAccount` şəklindədir. O, qeydiyyatdan keçmiş hesab tərəfindən istifadə olunan eyni şəxsiyyət, metaveri, etiket, UAID və qeyri-şəffaf ID sahələrini daşıyır.
 
-`uaid` Kanoniki əlavə edir `AccountId`; Bu, əvəz etmir. Nexus xidmətin verilənlər sahələrində sabit bir istifadəçi və ya təşkilat idarəçiliyinə, məxfiliyini qorumağa ehtiyacı var. İndirmə vaxtı bir-birlə əlaqə saxlayır UAID- hesabla indeks, qeyri-aşkar identifikatorların bir vasitə ilə əlavə edilməsi tələb olunur UAID, və ikili və ya toqquşma qeyri-şəffaf identifikatorları rədd edir. [FHE və UAID](/az/blockchain/sora-nexus-services.md#fhe-and-uaid) üçün Nexus xidmət qatı axını.
+`uaid` kanonik `AccountId`-ni tamamlayır, onu əvəz etmir. Nexus xidmətlərində məlumat məkanları arasında sabit istifadəçi və ya təşkilat identifikatoru, məxfiliyi qoruyan qeydiyyat və ya xidmət imkanlarının axtarışı tələb olunduqda ondan istifadə edin. İcra mühiti UAID ilə hesab arasında bir-bir uyğunluqlu indeks saxlayır, qeyri-şəffaf identifikatorların UAID vasitəsilə qoşulmasını tələb edir və təkrarlanan və ya toqquşan qeyri-şəffaf identifikatorları rədd edir. Nexus xidmət səviyyəsi axını üçün [FHE və UAID](/az/blockchain/sora-nexus-services.md#fhe-and-uaid) bölməsinə baxın.
 
 ## Hesab nəzarətçiləri {#account-controllers}
 
-Controller hesabın hərəkətlərə necə icazə verdiyini təyin edir. Varsayılan müştəri axını bir Ed25519 açar cütündən istifadə edir, lakin məlumat modeli həmçinin çox imza siyasət nəzarətçiləri kimi daha zəngin nəzarətçiləri dəstəkləyir.
+Kontroller hesabın hərəkətləri necə təsdiqləyəcəyini müəyyən edir. Əsas müştəri axını Ed25519 açar cütündən istifadə edir, lakin məlumat modeli həmçinin çox imzalı siyasət kontrollerləri kimi daha zəngin kontrollerləri də dəstəkləyir.
 
-Müştəri konfigurasiyası imzalanma səlahiyyətini həmkar konfigurasiyasından ayrı saxlayır:
+Müştəri konfiqurasiyası imzalama səlahiyyətini şəbəkə yoldaşı konfiqurasiyasından ayrıca saxlayır:
 
 ```toml
 [account]
@@ -36,18 +36,18 @@ public_key = "ed0120..."
 private_key = { digest_function = "ed25519", payload = "..." }
 ```
 
-Mövcud açar formatları üçün [client konfigurasiyasına](/az/guide/configure/client-configuration.md) və [key generation](/az/guide/security/generating-cryptographic-keys.md) baxın.
+Cari açar formatları üçün [müştəri konfiqurasiyası](/az/guide/configure/client-configuration.md) və [açarin yaradılması](/az/guide/security/generating-cryptographic-keys.md)-ə baxın.
 
-## Taira üzərində sınayın. {#try-it-on-taira}
+## Bu iş axınını Taira üzərində işə sal {#try-it-on-taira}
 
-İctimai Taira testnetdən bir neçə kanonik hesabı IDs göstərin:
+İctimai Taira testnet-dən bir neçə tək protokol-standart hesab ID-lərini siyahıya alın:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/accounts?limit=5' \
   | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
 ```
 
-Hesab aktivlərini yoxlamaq üçün hesabı kopyalayın. ID ilk zəngdən və URL- Yolda yerləşdirmədən əvvəl kodlaşdırın. Python snippet ilk siyahıya alınmış hesab üçün belə edir:
+Hesab aktivlərini yoxlamaq üçün, ilk texniki çağırışdan bir hesab ID-sini kopyalayın və yolu daxil etməzdən əvvəl onu URL-kodlayın. Bu Python parçası siyahıda ilk olan hesab üçün bunu edir:
 
 ```bash
 python3 - <<'PY'
@@ -67,33 +67,33 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-Hesabın yaradılması və ya yenilənməsi imzalanmış bir əməliyyatdır və faucet maliyyələşdirilməsi tələb olunur Taira təsvir edilən quruluş [Bağlantı SORA Nexus Məlumat sahələri](/az/get-started/sora-nexus-dataspaces.md).
+Bunlar ictimai oxumalardır. Hesab yaratmaq və ya yeniləmək imzalanmış əməliyyatdır və [SORA Nexus Məlumat Məkanlarına qoşulun](/az/get-started/sora-nexus-dataspaces.md)-da təsvir olunan testnet tərəfindən maliyyələşdirilmiş Taira qurğusunu tələb edir.
 
-## qeydiyyat və icazələr {#registration-and-permissions}
+## Qeydiyyat və icazələr {#registration-and-permissions}
 
-Hesablar ümumi [`Register` və `Unregister`](/az/blockchain/instructions.md#un-register) təlimatları ilə qeydiyyatdan keçirilir və qeydiyyata alınmır. Aktiv icra vaxtının təsdiqçisi hesabları kimin yarada biləcəyini və hansı icazə simvollarının və ya rolların tələb olunduğunu müəyyənləşdirir.
+Hesablar ümumi ilə qeydiyyatdan keçirilir və qeydə alınmır [`Register` və `Unregister`](/az/blockchain/instructions.md#un-register) təlimatlar. Aktiv proqram təminatının icra mühiti yoxlayıcısı qərar verir hesabları kim yarada bilər və hansı icazə tokenləri və ya rollar tələb olunur.
 
-Hesab qeydiyyatdan sonra aşağıdakıları edə bilər:
+Qeydiyyatdan sonra hesab edə bilər:
 
 - əməliyyatları imzalamaq
 - aktivləri saxlamaq
-- öz domenləri
-- rolları və icazə simvollarını qəbul etmək
-- Metadata saxlamaq
-- Bu xüsusiyyətləri aktivləşdirildikdə, alias, rekey, bərpa və Nexus kimlik axınlarında iştirak edin.
+- öz domenlər
+- rol və icazə tokenlərini almaq
+- metadataları saxlamaq
+- bu xüsusiyyətlər aktiv olduqda alias, rekey, bərpa və Nexus kimlik axınlarında iştirak edin
 
-## Kimlik problemlərinin həlli {#troubleshooting-identity-issues}
+## Şəxsiyyət problemlərinin aradan qaldırılması {#troubleshooting-identity-issues}
 
-Əgər bir əməliyyat gözlənilməz olaraq rədd edilirsə, yoxlayın ki:
+Əgər əməliyyat gözlənilmədən rədd olunarsa, yoxlayın ki:
 
-- Müştəri ictimai açarı imzalanmaq üçün istifadə olunan özəl açarına uyğun gəlir.
-- Hesabın başlanğıcda və ya öhdəlik götürülmüş bir əməliyyatla qeydiyyatdan keçirilməsi
-- orqanın təlimatda tələb olunan icazələri var
-- sərt hesab sahələrində kanonik I105 hesabı ID istifadə olunur, oxuna bilən adlar isə aktiv hesab-alias bağlayıcı vasitəsilə həll edilir.
+- müştərinin açıq açarı imzalamaq üçün istifadə olunan şəxsi açarla uyğundur
+- hesab blockchain başlanğıcında və ya yekunlaşdırılmış əməliyyatla qeydiyyatdan keçib
+- avtorizasiya prinsipi təlimatın tələb etdiyi icazələrə malikdir
+- sıx hesab sahələri tək protokol-standart I105 hesab ID-sindən istifadə edir, oxunaqlı adlar isə aktiv hesab-əlavə bağlaması vasitəsilə həll olunur
 
-Həmçinin bax:
+Bax həmçinin:
 
-- [İzinlər](/az/blockchain/permissions.md)
-- [Metadata](/az/blockchain/metadata.md)
+- [İcazələr](/az/blockchain/permissions.md)
+- [Metaməlumat](/az/blockchain/metadata.md)
 - [Müştəri konfiqurasiyası](/az/guide/configure/client-configuration.md)
-- [SORA Nexus məlumat sahələri](/az/get-started/sora-nexus-dataspaces.md)
+- [SORA Nexus məlumat məkanları](/az/get-started/sora-nexus-dataspaces.md)

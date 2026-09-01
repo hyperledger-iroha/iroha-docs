@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /reference/iroha3d-cli.md
-translation_source_hash: d621aa09f50cb44cb99af372100f418c44c3714b879a556038e47598949a3a6f
+translation_source_hash: bf4a63b05a149f0c935190b63cdb838b0a0265e99baedfc9b5bf00a9e621b108
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -43,7 +43,7 @@ iroha3d_taira --sora \
 
 ## "Кагемуша" квалификация маркалары {#kagemusha-qualification-seals}
 
-Был файл юлдары варианттары `--check-config` талап итә һәм кагемуша квалификацияһын тулыһынса үтәп, ҡануни мөһөр яҙыр алдынан:
+Был файл юлдары варианттары `--check-config` талап итә һәм кагемуша квалификацияһын тулыһынса үтәп, каноник мөһөр яҙыр алдынан:
 
 - `--write-kagemusha-catalog-qualification-seal <PATH>` каталогҡа квалификация бирә.
 - `--write-kagemusha-validator-qualification-seal <PATH>` урындағы валидаторҙы конфигурацияланған ҡул ҡуйылған продвижение резервацияһы буйынса квалификация бирә.
@@ -60,7 +60,7 @@ iroha3d_taira --sora \
 ## `--config-blake3` {#arg-config-blake3}
 
 - Тип: 64-шәр һанлы BLAKE3 гексадецимал биҙрәлеү
-- `--config`
+- **Талап итә:** `--config`
 
 Конфигурация файлы байттарҙы тәьмин ителгән дигес менән тап килеү өсөн кәрәк. Берҙәмлек менән бәйләнгән файл яҫыланырға тейеш; ул `extends` эсенә инә алмай.
 
@@ -105,6 +105,8 @@ iroha3d --fastpq-execution-mode gpu \
 
 ## Төҙөлгән ярҙам {#generated-help}
 
-Түбәндәге тулы сығанаҡ ҡуйылған Iroha сығанаҡ commit-тан барлыҡҡа килә.
+Өҫтәге параметрҙар йомғағы `iroha3d` аргументтарының ағымдағы билдәләмәләре менән сағыштырып тикшерелә. Репозиторийҙа теркәлгән автоматик ярҙам күсермәһе уның сығанаҡ статусы көтөлгәндә махсус күрһәтелмәй. Сығанаҡ код күсермәһе өсөн теүәл ярҙамды ҡарау өсөн эшләтегеҙ:
 
-<<< @/snippets/iroha3d-help.md
+```shell
+cargo run --locked -p irohad --bin iroha3d -- --help
+```

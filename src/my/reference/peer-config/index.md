@@ -8,13 +8,13 @@ translation_engine: nllb-200-ct2
 
 # Iroha ကို ဖွဲ့စည်းခြင်း {#configuring-iroha}
 
-Local peer configuration ကို TOML ဖိုင်များတွင်သတ်မှတ်ထားသည်။ ဤသည်မှာ [`SetParameter`](/my/blockchain/instructions.md#setparameter) ညွှန်ကြားချက်များဖြင့်ပြောင်းလဲသော on-chain configuration မှခြားနားသည်။ ထုတ်လုပ်မှုအပြုအမူကို configure file သို့မဟုတ် on-chain parameter တွင်ဖော်ပြရမည်ဖြစ်သည်။ ပတ်ဝန်းကျင်ကိန်းရှင်များသည် feature gates မဟုတ်ပါ။
+Local network peer configuration ကို set လုပ်ထားသည် TOML ဖိုင်တွေ။ ဒါက on-chain configuration ကွဲပြားပါတယ်။ [`SetParameter`](/my/blockchain/instructions.md#setparameter) ညွှန်ကြားချက်။ ထုတ်လုပ်မှု အပြုအမူကို ဖွဲ့စည်းပုံတစ်ခုမှာ ကိုယ်စားပြုဖို့လိုတယ်။ file သို့မဟုတ် on-chain parameter တစ်ခု၊ Environment variables တွေမှာ feature gates မရှိပါ။
 
-[`--config`](../iroha3d-cli#arg-config)CLI ဆွေးနွေးချက်ကို အသုံးပြုပြီး ဖွဲ့စည်းမှုဖိုင်သို့ လမ်းကြောင်းကို သတ်မှတ်ပါ။
+အသုံးပြုခြင်း [`--config`](../iroha3d-cli#arg-config) CLI ဖွဲ့စည်းမှုဖိုင်သို့ လမ်းကြောင်းကို သတ်မှတ်ရန် argument ကို။
 
 ## Template ကို {#template}
 
-ပါရီမီတာတိုင်းရဲ့ အသေးစိတ်ဖော်ပြချက်အတွက် [Parameters](./params.md) ကိုကြည့်ပါ။
+ပါရမီတာတိုင်းရဲ့ အသေးစိတ်ဖော်ပြချက်အတွက် [ပမာဏများ](./params.md) ကို ကြည့်ပါ။
 
 ::: details `peer.template.toml`
 
@@ -65,4 +65,4 @@ max_content_len = 2048
 
 ## ပြဿနာဖြေရှင်းခြင်း {#troubleshooting}
 
-[`--trace-config`](../iroha3d-cli#arg-trace-config)CLI အလံကို ဖြတ်ပြီး ဖွဲ့စည်းပုံဖတ်ခြင်းနှင့် စာရင်းစစ်ခြင်းနည်းလမ်း၏ ခြေရာကို မြင်နိုင်ရန်။
+ခွင့်ပြုချက် [`--trace-config`](../iroha3d-cli#arg-trace-config) CLI ဖွဲ့စည်းပုံကို ဖတ်ပြီး စာရင်းခွဲစိတ်ပုံကို ခြေရာခံဖို့ အလံပါ။

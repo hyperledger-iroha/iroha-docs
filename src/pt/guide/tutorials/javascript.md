@@ -3,16 +3,16 @@ translation_locale: pt
 translation_source: /guide/tutorials/javascript.md
 translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # JavaScript e TypeScript {#javascript-and-typescript}
 
-A corrente JavaScript SDK é o `@iroha/iroha-js` embalagem no Iroha A árvore de origem. Node.js- Primeiro. SDK para Torii, Norito Construtores, assinatura, paginação, visualizações do Connect e transporte de comando Kagemusha.
+O atual JavaScript SDK é o pacote `@iroha/iroha-js` na árvore de origem Iroha. É o Node.js-primeiro SDK para Torii, construtores Norito, assinatura, paginação, visualizações do Connect e transporte de comando Kagemusha.
 
-## Construir com base na fonte {#build-from-source}
+## Construir a partir do código-fonte {#build-from-source}
 
-O pacote não está atualmente disponível no registro público npm. Construa-o a partir da mesma revisão de fonte Iroha fichada que o nó que você pretende:
+O pacote não está atualmente disponível no registro público npm. Construa-o a partir da mesma revisão de origem fixada Iroha que o nó que você está visando:
 
 ```bash
 git clone https://github.com/hyperledger-iroha/iroha.git
@@ -22,9 +22,9 @@ npm run build:native
 npm run build:dist
 ```
 
-A construção nativa envolve `cargo build -p iroha_js_host` e registar o montante de verificação específico da plataforma utilizado em SDK A fonte constrói locais que verificaram o host em `native/`. Conjunto `IROHA_JS_NATIVE_DIR` Só se for fornecido intencionalmente um anfitrião construído separadamente, verificado em quantidade de verificação. ESM- somente; CommonJS, Dinâmica de utilização `import()`.
+A versão nativa envolve `cargo build -p iroha_js_host` e registra o checksum específico da plataforma usado na inicialização de SDK. A versão de origem coloca esse host verificado em `native/`. Defina `IROHA_JS_NATIVE_DIR` apenas quando estiver fornecendo intencionalmente um host construído separadamente e com verificação de checksum. O pacote é apenas ESM; a partir de CommonJS, use `import()` dinâmico.
 
-## Rapido arranque {#quickstart}
+## Início Rápido {#quickstart}
 
 ```js
 import { ToriiClient } from "@iroha/iroha-js/torii";
@@ -38,9 +38,9 @@ const keys = generateKeyPair();
 console.log(keys.publicKey);
 ```
 
-## Tente Taira Apenas leitura {#try-taira-read-only}
+## Tentar Taira Somente Leitura {#try-taira-read-only}
 
-Usar `fetch` embutido no Node.js 24 para sondar Taira antes de adicionar o código de assinatura e transação Norito:
+Use o `fetch` embutido em Node.js 24 para sondar Taira antes de adicionar a assinatura e o código de transação Norito:
 
 ```js
 const root = "https://taira.sora.org";
@@ -67,15 +67,15 @@ for (const asset of assets.items) {
 }
 ```
 
-Salva-o como `taira-readonly.mjs`, em seguida, execute:
+Salve como `taira-readonly.mjs`, depois execute:
 
 ```bash
 node taira-readonly.mjs
 ```
 
-Mover para as chamadas assinadas SDK somente depois que essas verificações de somente leitura funcionem. O público Taira pode retornar temporariamente uma fila saturada ou um erro de gateway, então mantenha os testes da rede ao vivo opt-in em CI.
+Mude para chamadas assinadas SDK apenas depois que essas verificações somente leitura funcionarem. O público Taira pode retornar temporariamente uma fila saturada ou erro de gateway, portanto mantenha os testes em rede ao vivo como opt-in em CI.
 
-Importações úteis de subcaminhos:
+Importações úteis de subcaminho:
 
 ```js
 import { ToriiClient } from "@iroha/iroha-js/torii";
@@ -83,25 +83,25 @@ import { noritoEncodeInstruction } from "@iroha/iroha-js/norito";
 import { generateKeyPair } from "@iroha/iroha-js/crypto";
 ```
 
-No caso do bootstrap Connect de navegador exclusivo, use `@iroha/iroha-js/connect-browser` em vez de importar a superfície do nó-primeiro `ToriiClient`.
+Para inicialização do Connect apenas no navegador, use `@iroha/iroha-js/connect-browser` em vez de importar a superfície `ToriiClient` priorizando o Node.
 
-## Empréstimo Nativo {#native-escrow}
+## Depósito em garantia nativo {#native-escrow}
 
-JavaScript e TypeScript As aplicações podem usar o escrow nativo através Kotodama Comparar chamadas de hospedeiros em custódia com `@iroha/iroha-js/kotodama-compiler`; Os construtores directos de transacções em escrow native não estão atualmente expostos pela JavaScript SDK. Veja . [Escrow de ativos nativos](/pt/blockchain/escrow.md#javascript-and-typescript-kotodama) Para o exemplo da chamada de hospedeiro em custódia.
+As aplicações JavaScript e TypeScript podem usar escrow nativo através dos contratos Kotodama. Compile chamadas de host de escrow com `@iroha/iroha-js/kotodama-compiler`; construtores diretos de transações de escrow nativo não estão atualmente expostos pelo JavaScript SDK. Veja [Escrow de Ativo Nativo](/pt/blockchain/escrow.md#javascript-and-typescript-kotodama) para o exemplo de chamada de host de escrow.
 
-## Cobertura atual {#current-coverage}
+## Cobertura Atual {#current-coverage}
 
-O SDK concentra-se em:
+O SDK foca em:
 
-- Auxiliares Torii HTTP e WebSocket
-- Norito Construtores de transações e instruções
-- Compilação Kotodama, incluindo as edificações de chamadas host escrow
-- Ed25519 assinatura e geração de chaves
-- auxiliares de paginação e retest
-- Conectar auxiliares de arranque do navegador
-- Preparação de Kagemusha, reabastecimento, resgate e assistentes de transporte em estado de operação
+- Torii HTTP e WebSocket ajudantes
+- Norito construtores de transações e instruções
+- Kotodama compilação, incluindo funções internas de chamada de host de escrow
+- Assinatura e geração de chave Ed25519
+- auxiliares de paginação e tentativa
+- Conectar helpers de inicialização do navegador
+- Assistentes de transporte de prontidão, recarga, resgate e status de operação do Kagemusha
 
-## Referências a montante {#upstream-references}
+## Referências a Montante {#upstream-references}
 
 - `javascript/iroha_js/README.md`
 - `javascript/iroha_js/package.json`

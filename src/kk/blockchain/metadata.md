@@ -3,31 +3,31 @@ translation_locale: kk
 translation_source: /blockchain/metadata.md
 translation_source_hash: 20e78492bf757147f2c9afed2d3b51639bc79913d3d8e4351193b6011f5469c2
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Метамәліметтер {#metadata}
+# Метадеректер {#metadata}
 
-Метадеректер - кітапша объектілеріне қоса берілген тексерілген кілті-құндылық картасы. Кілттер `Name` мәндері, ал мәндер JSON (`Json`) пайдалы жүктемелер.
+Метадеректер – блокчейн тізбелік объектілеріне тіркелген тексерілген кілт-мағына картасы. Кілттер – `Name` мәндер, ал мәндер – JSON (`Json`) жүктемелер.
 
-Келесі нысандар метамәліметтерді жеткізе алады:
+Келесі объектілер метадеректерді тасымалдауы мүмкін:
 
 - домендер
-- есеп айырысу
+- есептер
 - активтер
-- активтер анықтамасы
+- активтер анықтамалары
 - NFTs
 - RWAs
-- қозғалтқыштар
-- операциялар
+- қоздырғыштар
+- транзакциялар
 
-Кітаптық түрдегі кішкентай сипаттамалық немесе индекстік өрістер үшін метамәліметтерді қолдану. Үлкен пайдалы жүктемелерді WSV (Құранның) айтары мынау: URI, немесе SoraFS Жол.
+Блокчейн регистрінің күйінде болу керек шағын сипаттамалық немесе индекстік өрістер үшін метадеректерді пайдаланыңыз. Үлкен жүктемелер WSV сыртында сақталуы керек және криптографиялық хеш мәні, URI немесе SoraFS жолы арқылы көрсетілуі тиіс.
 
-Метадеректерді, активтерді NFTs, RWAs немесе тізбектен тыс сақтауды таңдау бойынша нұсқаулар үшін [Метадеректі және бухгалтерлік есептік жазбаларды сақтауды таңдауды қараңыз](/kk/guide/configure/metadata-and-store-assets.md).
+Метадеректерді, активтерді, NFTs, RWAs немесе офф-чейн сақтау орнын таңдауға арналған нұсқаулар үшін [Метадеректер және блокчейн тіркелімін сақтау таңдау](/kk/guide/configure/metadata-and-store-assets.md) қараңыз.
 
-## Taira арқылы сынап көріңіз. {#try-it-on-taira}
+## Осы жұмыс ағынын Taira бойынша іске қосыңыз {#try-it-on-taira}
 
-Метамәліметтер әдеттегі ресурстарды оқу арқылы көрінеді. Бұл командада Taira активтердің анықтамалары бар:
+Метадеректер әдеттегі ресурс оқу арқылы көрінеді. Бұл команда қазіргі уақытта метадеректері бар Taira активтер анықтамаларын көрсетеді:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=100' \
@@ -36,7 +36,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=100' \
     | {id, name, metadata}'
 ```
 
-Домендер мен тіркелгілер үшін бірдей үлгі қолданылсын:
+Домендер мен есептік жазбалар үшін сол үлгіні пайдаланыңыз:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
@@ -46,20 +46,20 @@ curl -fsS 'https://taira.sora.org/v1/accounts?limit=20' \
   | jq '.items[] | select((.metadata // {} | length) > 0)'
 ```
 
-Бос шығысқа жарамды нәтиже ретінде қараңыз. Бұл Taira нысандарының ағымдағы беті метамәлімен қамтылмаған дегенді білдіреді, бірақ соңғы нүкте сәтсіздікке ұшыраған жоқ.
+Бос нәтижені заңды нәтиже ретінде қарастырыңыз. Бұл Taira объектілерінің ағымдағы бетінде метадеректер жоқ екенін білдіреді, API ұшар нүктесінің сәтсіз болғанын емес.
 
-## Метамәдени деректерді жаңарту {#updating-metadata}
+## Мета деректерді жаңарту {#updating-metadata}
 
-Метамәліметтер Iroha арнайы нұсқаулықпен ауыстырылады:
+Метадеректер Iroha нұсқаулық операциялары арқылы өзгереді:
 
-- [`SetKeyValue`](/kk/blockchain/instructions.md#setkeyvalue-removekeyvalue) кілтті қосады немесе ауыстырады
-- [`RemoveKeyValue`](/kk/blockchain/instructions.md#setkeyvalue-removekeyvalue) кілтті алып тастайды
+- [`SetKeyValue`](/kk/blockchain/instructions.md#setkeyvalue-removekeyvalue) кілтті қояды немесе ауыстырады
+- [`RemoveKeyValue`](/kk/blockchain/instructions.md#setkeyvalue-removekeyvalue) перненi алып тастайды
 
-Транзакцияны ұсынған орган белсенді орындау уақытын растаушының талап еткен рұқсатына ие болуы керек. Әдетті рұқсат беті үшін [Permission Tokens ](/kk/reference/permissions.md) қараңыз.
+Транзакцияны жіберетін авторизациялау бастығы активті бағдарламалық қамтамасыз ету орындалу ортасын тексеруші талап ететін рұқсаты болуы керек. Әдепкі рұқсат беті үшін қараңыз [Рұқсат белгішелері](/kk/reference/permissions.md).
 
 ## Оқиғалар {#events}
 
-Деректер оқиғалары метамәдени деректердің өзгеруі кезінде жіберіледі. Жалпы оқиғаның пайдалы жүктемесі `MetadataChanged<Id>`:
+Метадеректер өзгергенде деректер оқиғалары туындайды. Жалпы оқиға жүктемесі `MetadataChanged<Id>` болып табылады:
 
 ```mermaid
 classDiagram
@@ -81,10 +81,10 @@ MetadataChanged --> AssetDefinitionMetadataChanged
 MetadataChanged --> DomainMetadataChanged
 ```
 
-[дерек оқиғалары сүзгілерін ](/kk/blockchain/filters.md#data-event-filters) пайдалану арқылы интеграцияға мән беретін субъекті түрі немесе объектісі ID үшін тек метамәдени оқиғаларға жазылу.
+Интеграцияға маңызды болатын объектінің түрі немесе объектінің идентификаторы үшін тек метадеректер оқиғаларына жазылу үшін [деректер оқиғасы сүзгілері](/kk/blockchain/filters.md#data-event-filters) пайдаланыңыз.
 
-## Сұрақтар {#queries}
+## Сұраулар {#queries}
 
-Метамәліметтер сұралған объектінің бөлігі ретінде қайтарылады. Мысалы, [`FindAccountById`](/kk/reference/queries.md#accounts-and-permissions), [`FindDomainById`](/kk/reference/queries.md#domains-and-peers), немесе [`FindAssetDefinitionById`](/kk/reference/queries.md#assets-nfts-and-rwas) қолданыңыз. [`FindNfts`](/kk/reference/queries.md#assets-nfts-and-rwas) немесе [`FindNftsByAccountId`](/kk/reference/queries.md#assets-nfts-and-rwas) NFTs, және [`FindRwas` ](/kk/reference/queries.md#assets-nfts-and-rwas) RWA партияларын пайдаланыңыз. Содан кейін нысанның метамәліметрі өрісін оқыңыз. NFT сұраныс жауаптары NFT `content` картасын жазба метамәлімелімелі ретінде көрсетеді.
+Метадеректер сұралған объектінің бөлігі ретінде қайтарылады. Мысалы, пайдаланыңыз [`FindAccountById`](/kk/reference/queries.md#accounts-and-permissions), [`FindDomainById`](/kk/reference/queries.md#domains-and-peers), немесе [`FindAssetDefinitionById`](/kk/reference/queries.md#assets-nfts-and-rwas). Пайдалану [`FindNfts`](/kk/reference/queries.md#assets-nfts-and-rwas) немесе [`FindNftsByAccountId`](/kk/reference/queries.md#assets-nfts-and-rwas) үшін NFTs, және [`FindRwas`](/kk/reference/queries.md#assets-nfts-and-rwas) үшін RWA көп. Содан кейін объектінің метадеректер өрісін оқыңыз. NFT сұрау жауаптары көрсетеді NFT `content` жазбаның метадеректері ретінде карта.
 
-Метамәліметтер кілтілері бухгалтерлік жазбаның бір бөлігі болып табылады, сондықтан оларды тұрақты ұстаңыз және JSON мәні сол нұсқаны айқын алып жүрсе, қолданбаға сәйкес нұсқаны кодтаудан аулақ болу керек.
+Метадеректер кілттері блокчейн тізілім күйінің бөлігі болып табылады, сондықтан оларды тұрақты ұстаңыз және JSON мәні сол нұсқаны айқын түрде жеткізе алатын кезде қосымшалық нұсқа өзгерістерін кілт атына енгізуден аулақ болыңыз.

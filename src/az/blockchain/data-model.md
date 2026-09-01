@@ -3,19 +3,19 @@ translation_locale: az
 translation_source: /blockchain/data-model.md
 translation_source_hash: 147562d2286bf11e60a941969e6d52bffc1534c3cfc04d440e0bcf78598a1ca7
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Məlumat modeli {#data-model}
+# Məlumat Modeli {#data-model}
 
-Iroha `World` kitabının dövlətini saxlayır. Onun ilk buraxılış məlumat modeli aşağıdakı kanonik kimlikləri və qurumları istifadə edir:
+Iroha blokçeyn jurnal vəziyyətini `World`da saxlayır. Onun ilk buraxılış məlumat modeli aşağıdakı tək protokol-standart identitetlər və vahidləri istifadə edir:
 
-- domenlər məlumat məkanına uyğunlaşdırılır, məsələn `payments.universal`
-- Hesablar kanonik və domensizdir; hesab ID hesab nəzarətçidən alınır.
-- aktiv tərifləri bir domen / ad proyeksiyasını saxlaya bilər, lakin onların kanoniki mətni ünvanı qeyri-aşkar Base58 identifikatorudur.
-- aktivlər müəyyən bir aktiv təyinatı üzrə hesablarda saxlanan balanslardır.
-- NFTs domen təsdiqlənmiş IDs və metadata məzmunlu xüsusi mülkiyyətdə olan qeydlərdir.
-- RWAs mövcud sahib, miqdar, mənşəlilik, metadata, saxlama, dondurma və həyat dövrü nəzarətləri ilə zəncirdən kənarda olan aktivləri təmsil edən ID lotlar yaranır.
+- domenlər məlumat sahəsi-səlahiyyətli olur, məsələn `payments.universal`
+- hesablar tək protokol-standart və domensizdir; hesab ID-si hesab nəzarətçisindən alınır
+- aktiv tərifləri bir domen/ad proyeksiyasını saxlaya bilər, amma onların tək protokol-standart mətn ünvanı şəffaf olmayan Base58 identifikatorudur
+- aktivlər müəyyən bir aktiv tərifi üçün hesablar tərəfindən saxlanılan balanslardır
+- NFTs domenlə dəqiqləşdirilmiş ID-yə və metadata məzmununa malik, hər birinin yalnız bir sahibi olan qeydlərdir
+- RWAs mövcud sahib, miqdar, mənşə, metadatalar, saxlama, dondurma və həyat dövrü idarəetmələri ilə off-chain aktivləri təmsil edən yaradılmış ID-lərdir
 
 ```mermaid
 classDiagram
@@ -83,9 +83,9 @@ Nft --> Account : owned_by
 Rwa --> Account : owned_by
 ```
 
-## Misal {#example}
+## Nümunə {#example}
 
-Bir Iroha 3 şəbəkə, `wonderland.universal` daxilində bir domendir `universal` Bu nümunədəki kanonik hesablar öz açarları və ya siyasətləri ilə idarə olunur və domensiz kimi kodlanır I105 hesab IDs. Oxucu etiketlər: `alice@wonderland.universal` olan şəxslərə bağlı ayrı-ayrı adlar IDs. Proqnozlaşdırılmış aktiv təyinatı hələ də bir domen və addan qurula bilər, məsələn `rose` ədəd `wonderland.universal`, Qəzetdə istifadə olunan kanonik aktiv təyinatının ünvanı generated Base58 adresidir.
+Iroha 3 şəbəkəsində, `wonderland.universal` `universal` məlumat sahəsinin içində bir domendir. Bu nümunədəki tək protokol-standart hesablar öz açarları və ya siyasətləri ilə idarə olunur və domen-siz I105 hesab ID-ləri kimi kodlaşdırılır. Oxuna bilən etiketlər, məsələn, `alice@wonderland.universal`, həmin ID-lərə bağlı ayrı təxəllüslərdir. Domen və ad əsasında proqnozlaşdırılmış bir əmlak tərifi hələ də yaradıla bilər. məsələn, `rose` `wonderland.universal`-də, protokol ötürülməsində istifadə olunan tək protokol-standart aktiv təyinat ünvanı isə yaradılmış Base58 ünvanıdır.
 
 ```mermaid
 classDiagram
@@ -112,34 +112,34 @@ account_alice --> asset_rose : holds balance
 account_rabbit --> asset_rose : may receive balance
 ```
 
-## Əlifbalar {#aliases}
+## Ləqəblər {#aliases}
 
-Əksi adlar kanonik kitabxana identifikatorlarının üstündə təbəqələnmiş insan üzü olan adlardır. Onlar API, CLI, cüzdan və kəşfçi sərhədlərində faydalıdırlar. Lakin kanonik IDs sabit identifikatorlar olaraq qalır və ciddi kitabxana sahələrində saxlanılır.
+Aliaslər insan qarşısında görünən adlardır və tək protokol-standartlı blokçeyn dəftər identifikatorlarının üzərinə yerləşdirilir. Onlar API, CLI, cüzdan və kəşfiyyat sərhədlərində faydalıdır, lakin tək protokol-standartlı ID-lər sərt blokçeyn dəftəri sahələrində saxlanan sabit identifikator olaraq qalır.
 
-|Hədəf |Kanonik hədəf |Alias əslən |Dəstəklənmə modeli |
+|Hədəf|tək protokol-standart hədəf| Ləqəb sözün mənası |Dəstək modeli|
 | -------------- | --------------------------------------------------- | ------------------------------------------------------ | ----------------------------------------------------------------------------- |
-|İstifadəçi hesabı |I105 ünvanı kimi kodlanmış domensiz `AccountId` |`name@domain.dataspace` və ya `name@dataspace` |`AccountAlias`; əsas alias `Account.label`, əlavə aliases bağlayıcıdır |
-|Mülkiyyətin təyinatı|`AssetDefinitionId` Base58-ci ünvanı |`name#domain.dataspace` və ya `name#dataspace` |`AssetDefinitionAlias` bir aktiv tərifinə bağlıdır |
-|Müqavilə |canonical Bech32m `ContractAddress` |`name::domain.dataspace` və ya `name::dataspace` |`ContractAlias` tətbiq olunan müqavilə ünvanına bağlanmışdır |
-|Domen adı |`DomainId` `domain.dataspace` formasında |`domain.dataspace` |SNS `domain` ad məkanının qeyd edilməsi |
-|Məlumat sahəsi adı |aktiv Nexus kataloqundan sayı `DataSpaceId` |`universal`, `paynet` və ya `zk` kimi məlumat məkanı aliləri |SNS `dataspace` ad məkanı qeydləri və aktiv məlumat məkanı kataloqları |
+|İstifadəçi hesabı|domen olmayan `AccountId` kimi kodlanmış I105 ünvanı olaraq| `name@domain.dataspace` və ya `name@dataspace`            | `AccountAlias`; əsas ləqəb `Account.label`dir, əlavə ləqəblər isə bindings-dir |
+|Aktivin tərifi|tək protokol-standart `AssetDefinitionId` Base58 ünvan| `name#domain.dataspace` və ya `name#dataspace`            | `AssetDefinitionAlias` bir aktiv tərifinə bağlı |
+|Müqavilə|tək protokol-standart Bech32m `ContractAddress`| `name::domain.dataspace` və ya `name::dataspace`          | `ContractAlias` yerləşdirilmiş müqavilə ünvanına bağlandı|
+|Domen adı| `DomainId` `domain.dataspace` formasında| `domain.dataspace` | SNS `domain` ad sahəsi qeydi|
+|Məlumat məkanı adı|aktiv Nexus kataloqdan rəqəmsal `DataSpaceId`| `universal`, `paynet` və ya `zk` kimi məlumat məkanı aliası|SNS `dataspace` ad sahəsi qeydi ilə birlikdə aktiv məlumat sahəsi kataloqu|
 
-Hesab aliasları istifadəçiyə qarşı hesab adlarıdır. Onlar aktiv hesabı ID dünya dövləti indeksləri və hesab rekay qeydləri vasitəsilə göstərdiyi üçün hesab geri qaytarılmasına davam edirlər. Hesabın əsas etiketi üçün `SetPrimaryAccountAlias`, əlavə qeyri-başlı adlar üçün `SetAccountAliasBinding` və oxunmalar üçün `FindAccountByAlias` və ya `FindAliasesByAccountId` istifadə edin. Hesab aliasları normal olaraq `AcquireAccountAliasLease` ilə əldə edilmiş və `RenewAccountAliasLease` ilə yenilənmiş aktiv SNS hesab alias kirayəsi tələb edir.
+Hesab ləqəbləri istifadəçiyə görünən hesab adlarıdır. Onlar hesabın açarlarının dəyişdirilməsindən qorunur, çünki ləqəb aktiv hesab ID-sinə dünya vəziyyəti indeksləri və hesab açar dəyişdirmə qeydləri vasitəsilə işarə edir. `SetPrimaryAccountAlias` hesabın əsas etiketi üçün, `SetAccountAliasBinding` əlavə qeyri-əsas ləqəblər üçün, və `FindAccountByAlias` və ya `FindAliasesByAccountId` isə oxumaq üçün istifadə edin. Hesab ləqəbləri adətən aktiv SNS hesab-ləqəb icarəsi tələb edir, bu icarə `AcquireAccountAliasLease` ilə əldə edilir və `RenewAccountAliasLease` ilə yenilənir.
 
-Əmlak aliases, ayrı-ayrı hesab balansları deyil, ad aktivləri tərifləridir. Əsasnamə aliases `SetAssetDefinitionAlias` ilə təyin edilir; alias adı bölməsi aktivin tərif göstərici adına və ya proqnozlaşdırılmış tərif adına uyğun olmalıdır. Müqavilə aliases, `SetContractAlias` ilə təyin olunur; alias məlumat boşluğu müqavilə ünvanında kodlanmış məlumat boşluğuna uyğun olmalıdır. Hər iki bağlama `lease_expiry_ms` daşıya bilər; müddəti bitdikdən sonra zəiflik pəncərəsi keçdikdə həllini dayandırır və dünya dövlətləri indekslərindən silinir.
+Əmlak ləqəbləri fərdi hesab balanslarını deyil, əmlak təyinatlarını adlandırır. Əmlak ləqəbləri və müqavilə ləqəbləri oxuna bilən bir addan mövcud olan tək bir protokol-standart hədəfə birbaşa bağlamalardır. Aktiv ləqəbləri `SetAssetDefinitionAlias` ilə təyin edilir; ləqəb adı seqmenti aktiv tərifi göstərilən adla və ya proqnozlaşdırılmış tərif adı ilə uyğun olmalıdır. Müqavilə ləqəbləri `SetContractAlias` ilə təyin edilir; Təxəllüs dataspace müqavilə ünvanında kodlaşdırılmış dataspace ilə uyğun olmalıdır. Hər iki bağlama `lease_expiry_ms` daşıya bilər; müddət başa çatdıqdan sonra, güzəşt pəncərəsi bitdikdə həll etməyi dayandırır və dünya vəziyyəti indekslərindən silinir.
 
-Domenlərin ayrı bir `DomainAlias` obyekti yoxdur. Bir domen tanıtıcısı artıq `payments.universal` kimi məlumat məkanına uyğun bir addır. SNS `domain` ad sahəsindəki domen adları üçün və `dataspace` ad sahəsində olan məlumat məkanı aliasları üçün icarə mülkiyyətini izləyir. Qeydiyyatlı `universal` məlumat məkanı aliyi müəyyənləşdirilməməlidir.
+Domenlərin ayrıca `DomainAlias` obyekti yoxdur. Domen identifikatoru artıq `payments.universal` kimi dataspace-ə uyğunlaşdırılmış addır. SNS kirayə mülkiyyətini izləyir `domain` ad sahəsindəki domen adları üçün və `dataspace` ad sahəsindəki verilənlər məkanı ləqəbləri üçün. Qorunan `universal` verilənlər məkanı ləqəbi müəyyən edilmiş olaraq qalmalıdır.
 
 ## Əlaqəli sənədlər {#related-docs}
 
-|Mövzu |Haraya getmək lazımdır?|
+|Mövzu|Haraya getmək|
 | -------------------------------------- | ------------------------------------------- |
-|Domenlər | [Domenlər](/az/blockchain/domains.md) |
-|Hesablar | [Hesablar](/az/blockchain/accounts.md) |
-|Əmlaklar | [Əmlaklar](/az/blockchain/assets.md) |
-|NFTs | [NFTs](/az/blockchain/nfts.md) |
-|Real dünya aktivləri | [Əsl dünya aktivləri](/az/blockchain/rwas.md) |
-|Metadata | [Metadata](/az/blockchain/metadata.md) |
-|qeydiyyat və köçürmə təlimatları | [Təlimatlar](/az/blockchain/instructions.md) |
-|İndirmə vaxtı icazələri | [icazələr](/az/blockchain/permissions.md) |
-|Adlandırma qaydaları | [Adlandırma qaydaları](/az/reference/naming.md) |
+|Domenlər| [Domenlər](/az/blockchain/domains.md)           |
+|Hesablar| [Hesablar](/az/blockchain/accounts.md)         |
+|Aktivlər| [Aktivlər](/az/blockchain/assets.md)             |
+| NFTs | [NFTs](/az/blockchain/nfts.md)                 |
+|Real dünya aktivləri| [Həqiqi Dünyada Aktivlər](/az/blockchain/rwas.md)    |
+|Metaməlumat| [Metaməlumat](/az/blockchain/metadata.md)         |
+|Qeydiyyat və köçürmə təlimatları| [Təlimatlar](/az/blockchain/instructions.md) |
+|proqram icra mühiti icazələri| [İcazələr](/az/blockchain/permissions.md) |
+|Adlandırma qaydaları| [Adlandırma qaydaları](/az/reference/naming.md)        |

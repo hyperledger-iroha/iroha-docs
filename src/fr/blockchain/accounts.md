@@ -3,32 +3,32 @@ translation_locale: fr
 translation_source: /blockchain/accounts.md
 translation_source_hash: 015a85d81c44b7ef7f13cdafb2ed8e493ef512b94dc500939655c70285eac3bd
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Comptes {#accounts}
 
-Un compte est une autorité qui peut signer des transactions et son propre état de registre. Dans le modèle de données actuel Iroha 3, `AccountId` est canonique et sans domaine: il est dérivé du contrôleur du compte et codé canoniquement comme [I105](/fr/reference/i105.md). Le contexte du domaine et de l'espace de données lisibles par l'homme appartient à des liaisons séparées sous le nom d'alias compte.
+Un compte est un principal d'autorisation qui peut signer des transactions et posséder l'état du registre blockchain. Dans le modèle de données actuel Iroha 3, `AccountId` est canonique et sans domaine : il est dérivé du contrôleur de compte et encodé de manière canonique comme [I105](/fr/reference/i105.md). Le domaine lisible par l'homme et le contexte de l'espace de données appartiennent à des liaisons séparées d'alias de compte.
 
-## La structure {#structure}
+## Structure {#structure}
 
-Un `Account` enregistré contient:
+Un `Account` enregistré contient :
 
-- `id`: le texte canonique `AccountId`
-- `metadata`: métadonnées de comptes arbitraires
-- `label`: un nom de famille stable facultatif
-- `uaid`: compte universel optionnel ID utilisé par les flux Nexus
-- `opaque_ids`: identifiants opaques liés au UAID du compte.
+- `id` : le `AccountId` canonique
+- `metadata` : métadonnées arbitraires du compte
+- `label` : un alias stable optionnel
+- `uaid` : un identifiant de compte universel optionnel utilisé par les flux Nexus
+- `opaque_ids` : identifiants opaques liés au UAID du compte
 
-La charge utile de transaction utilisée pour créer un compte est `NewAccount`. Elle contient les mêmes champs d'identité, de métadonnées, d'étiquette, UAID et opaques ID utilisés par le compte enregistré.
+La charge utile de la transaction utilisée pour créer un compte est `NewAccount`. Elle comporte les mêmes champs d'identité, métadonnées, étiquette, UAID et ID opaque utilisés par le compte enregistré.
 
-`uaid` complète le canonique `AccountId`; il ne le remplace pas. Utilisez-le lorsque les services Nexus ont besoin d'un gestionnaire stable de l'utilisateur ou de l'organisation sur des espaces de données, d'une inscription préservant la vie privée ou d'une recherche de capacités de service. Le temps d'exécution maintient un indice UAID à compte, exige que des identifiants opaques soient attachés via un UAID, et rejette les identifiants opacs dupliqués ou en collision. Voir [FHE et UAID](/fr/blockchain/sora-nexus-services.md#fhe-and-uaid) pour le flux de couche de service Nexus .
+`uaid` complète le `AccountId` canonique ; il ne le remplace pas. Utilisez-le lorsque les services Nexus ont besoin d’un identifiant stable d’utilisateur ou d’organisation entre plusieurs espaces de données, d’une inscription respectueuse de la vie privée ou d’une recherche de capacités de service. L’environnement d’exécution maintient un index bijectif entre UAID et compte, exige que les identifiants opaques soient rattachés au moyen d’un UAID et rejette les doublons ou collisions. Voir [FHE et UAID](/fr/blockchain/sora-nexus-services.md#fhe-and-uaid) pour le flux de la couche de services Nexus.
 
-## Responsables du contrôle des comptes {#account-controllers}
+## Contrôleurs de comptes {#account-controllers}
 
-Le contrôleur définit la façon dont le compte autorise les actions. Le flux client par défaut utilise une paire de clés Ed25519, mais le modèle de données prend également en charge des contrôleurs plus riches tels que les contrôleurs de politique multisignatures.
+Le contrôleur définit la manière dont le compte autorise les actions. Le flux client par défaut utilise une paire de clés Ed25519, mais le modèle de données prend également en charge des contrôleurs plus riches tels que les contrôleurs de politique multisignature.
 
-La configuration du client stocke l'autorité de signature séparément de la configuration des pairs:
+La configuration du client stocke le principal d'autorisation de signature séparément de la configuration des pairs réseau :
 
 ```toml
 [account]
@@ -36,18 +36,18 @@ public_key = "ed0120..."
 private_key = { digest_function = "ed25519", payload = "..." }
 ```
 
-Vous voyez ? [configuration du client](/fr/guide/configure/client-configuration.md) et [génération clé](/fr/guide/security/generating-cryptographic-keys.md) pour les formats clés actuels.
+Voir [configuration du client](/fr/guide/configure/client-configuration.md) et [génération de clé](/fr/guide/security/generating-cryptographic-keys.md) pour les formats de clés actuels.
 
-## Essayez le sur Taira {#try-it-on-taira}
+## Essayez-le sur Taira {#try-it-on-taira}
 
-Listez quelques comptes canoniques IDs du réseau de test public Taira:
+Listez quelques identifiants de compte canoniques du testnet public Taira :
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/accounts?limit=5' \
   | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
 ```
 
-Pour vérifier les actifs du compte, copier un compte ID à partir du premier appel et URL- le code avant de le mettre dans le chemin. Python snippet le fait pour le premier compte inscrit:
+Pour inspecter les actifs d'un compte, copiez un identifiant de compte depuis le premier appel et codez-le en URL avant de le placer dans le chemin. Cet extrait Python le fait pour le premier compte listé :
 
 ```bash
 python3 - <<'PY'
@@ -67,33 +67,33 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-Il s'agit de lectures publiques. La création ou la mise à jour d'un compte est une transaction signée et nécessite la configuration Taira financée par robinet décrite dans [Connectez-vous aux bases de données SORA Nexus](/fr/get-started/sora-nexus-dataspaces.md). "
+Ce sont des lectures publiques. La création ou la mise à jour d'un compte est une transaction signée et nécessite la configuration Taira financée par le testnet décrite dans [Connecter à SORA Nexus Espaces de données](/fr/get-started/sora-nexus-dataspaces.md).
 
 ## Enregistrement et autorisations {#registration-and-permissions}
 
-Les comptes sont enregistrés et non enregistrés avec les instructions génériques [`Register` et `Unregister`](/fr/blockchain/instructions.md#un-register). Le validateur de temps d'exécution actif décide qui peut créer des comptes et quels jetons ou rôles d'autorisation sont requis.
+Les comptes sont enregistrés et non enregistrés avec le générique [`Register` et `Unregister`](/fr/blockchain/instructions.md#un-register) instructions. Le validateur d'exécution logiciel actif décide qui peut créer des comptes et quels jetons ou rôles de permission sont nécessaires.
 
-Une fois enregistré, un compte peut:
+Après l'inscription, un compte peut :
 
-- signer les transactions
+- signer des transactions
 - détenir des actifs
-- propriété de domaine
-- recevoir des rôles et des jetons d'autorisation
-- stockage de métadonnées
-- participer à des flux d'alias, de rekey, de récupération et d'identité Nexus lorsque ces caractéristiques sont activées
+- domaines propres
+- recevoir des rôles et des jetons de permission
+- stocker les métadonnées
+- participer aux flux d'identité alias, rekey, récupération et Nexus lorsque ces fonctionnalités sont activées
 
 ## Résolution des problèmes d'identité {#troubleshooting-identity-issues}
 
-Si une transaction est rejetée de manière inattendue, vérifiez que:
+Si une transaction est refusée de manière inattendue, vérifiez que :
 
-- la clé publique du client correspond à la clé privée utilisée pour signer
-- le compte a été enregistré à l'origine ou par une transaction engagée
-- l'autorité dispose des autorisations requises par l'instruction
-- Les champs de compte strict utilisent le compte canonique I105 ID, tandis que les noms lisibles sont résolus par un alias de compte actif liant.
+- la clé publique du client correspond à la clé privée utilisée pour la signature
+- le compte a été enregistré dans la genèse de la blockchain ou par une transaction engagée
+- le mandataire d'autorisation possède les permissions requises par l'instruction
+- les champs de compte stricts utilisent l'ID de compte canonique I105, tandis que les noms lisibles sont résolus via une liaison d'alias de compte active
 
-Voir aussi:
+Voir aussi :
 
-- [Autorisations ](/fr/blockchain/permissions.md)
-- [Metadonnées ](/fr/blockchain/metadata.md)
-- [Configuration du client ](/fr/guide/configure/client-configuration.md)
+- [Autorisations](/fr/blockchain/permissions.md)
+- [Métadonnées](/fr/blockchain/metadata.md)
+- [Configuration du client](/fr/guide/configure/client-configuration.md)
 - [SORA Nexus espaces de données](/fr/get-started/sora-nexus-dataspaces.md)

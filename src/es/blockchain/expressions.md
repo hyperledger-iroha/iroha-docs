@@ -3,13 +3,13 @@ translation_locale: es
 translation_source: /blockchain/expressions.md
 translation_source_hash: 8ad29a13df0efcc68b21323a48cfbcd71ab25b97c063709c827b08422cd9aad0
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Expresiones, condiciones y lógica. {#expressions-conditionals-logic}
+# Expresiones, Condicionales, Lógica {#expressions-conditionals-logic}
 
-Todo el mundo [Iroha Instrucciones especiales](./instructions.md) Cada expresión tiene una `EvaluatesTo`, Si bien se puede especificar el nombre de la cuenta directamente, también se puede especifica la cuenta ID Puede comprobar si una cuenta está registrada en la cadena de bloques también.
+Todos los [Iroha Operaciones de instrucción](./instructions.md) operan sobre expresiones. Cada expresión tiene un `EvaluatesTo`, que se utiliza en la ejecución de instrucciones. Aunque podrías especificar el nombre de la cuenta Directamente, también podrías especificar el ID de la cuenta mediante alguna operación matemática o de cadena. También puedes comprobar si una cuenta está registrada en la cadena de bloques.
 
-Usando expresiones que implementan `EvaluatesTo<bool>`, se puede configurar la lógica condicional y ejecutar operaciones más sofisticadas en cadena. Por ejemplo, se puede enviar una instrucción `Mint` sólo si se registra una cuenta específica.
+Usando expresiones que implementan `EvaluatesTo<bool>`, puedes configurar lógica condicional y ejecutar operaciones más sofisticadas en la cadena. Por ejemplo, puedes enviar una instrucción `Mint` solo si una cuenta específica está registrada.
 
-Recuerde que se puede combinar esto con consultas, y como tal puede programar la cadena de bloques para hacer algunas cosas increíbles. Esto es lo que llamamos contratos inteligentes, la característica definidora del uso avanzado de la tecnología blockchain.
+Recuerda que puedes combinar esto con consultas, y como tal puedes programar la cadena de bloques para hacer cosas asombrosas. Esto es lo que llamamos contratos inteligentes, la característica definitoria del uso avanzado de la tecnología blockchain.

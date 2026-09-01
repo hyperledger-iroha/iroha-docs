@@ -3,45 +3,45 @@ translation_locale: fr
 translation_source: /guide/security/index.md
 translation_source_hash: ec7fc2f950b007f52d837473ad7021565923e537df1d18b86055fb483cda375c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Sécurité {#security}
 
-Sécurisez un déploiement Iroha comme vous le feriez pour tout système qui gère des données sensibles et de la valeur. Protégez les clés de signature, l'accès au réseau, les opérations de nœuds, la surveillance et la réponse aux incidents. Un registre ne supprime pas le besoin de ces contrôles.
+Sécurisez un déploiement Iroha comme vous le feriez pour tout système qui traite des données sensibles et des valeurs. Protégez les clés de signature, l'accès au réseau, les opérations des nœuds, la surveillance et la réponse aux incidents. Un registre blockchain n'élimine pas le besoin de ces contrôles.
 
-### La navigation {#navigation}
+### Navigation {#navigation}
 
-Dans cette section, vous trouverez des renseignements sur les différents aspects de la sécurité de votre réseau Iroha:
+Dans cette section, vous pouvez en apprendre davantage sur divers aspects de la sécurisation de votre réseau Iroha. Pour en savoir plus, choisissez l'un des sujets suivants :
 
-- [Principaux de sécurité](./security-principles):
+- [Principes de sécurité](./security-principles):
 
-Principaux principes de base pour la protection des données et la réduction du risque de violation.
+Principes fondamentaux pour protéger les données et réduire le risque de violation.
 
-- [Les réseaux privés virtuels ](./vpn.md):
+- [Réseaux privés virtuels](./vpn.md):
 
-Comment utiliser un VPN pour restreindre l'accès entre pairs, Torii et les opérateurs dans des déploiements privés ou de consortiums.
+Comment utiliser un VPN pour restreindre l'accès pair-à-pair, Torii, et l'accès des opérateurs dans des déploiements privés ou en consortium.
 
 - [Sécurité opérationnelle](./operational-security.md):
 
-Contrôles quotidiennes pour l'accès, le suivi, la réponse aux incidents et les postes de travail des opérateurs.
+Contrôles quotidiens pour l'accès, la surveillance, la réponse aux incidents et les postes de travail des opérateurs.
 
-- [Surveillance des fraudes ](./fraud-monitoring.md):
+- [Surveillance de la fraude](./fraud-monitoring.md):
 
-Comment utiliser les événements du registre, les requêtes, les autorisations et les signaux opérationnels pour détecter une activité suspecte et préserver des preuves de réponse.
+Comment utiliser les événements, les requêtes, les autorisations et les signaux opérationnels du registre blockchain pour détecter une activité suspecte et préserver les preuves de réponse.
 
 - [Sécurité des mots de passe](./password-security.md):
 
-Entropie de mot de passe, construction de mots de passe forts et modes d'échec communs.
+Entropie des mots de passe, construction de mots de passe forts et modes de défaillance courants.
 
-- [La cryptographie de la clé publique ](./public-key-cryptography.md):
+- [Cryptographie à clé publique](./public-key-cryptography.md):
 
-Le chiffrement à clé publique, les signatures et la communication authentifiée.
+Chiffrement à clé publique, signatures et communication authentifiée.
 
   - [Génération de clés cryptographiques](./generating-cryptographic-keys.md):
 
-Générer des clés cryptographiques prises en charge avec `kagami`.
+Générez des clés cryptographiques prises en charge avec `kagami`.
 
-  - [Réglage des clés cryptographiques](./storing-cryptographic-keys.md):
+  - [Stockage des clés cryptographiques](./storing-cryptographic-keys.md):
 
-Conserver les clés cryptographiques à l'aide de commandes en couches appropriées au déploiement.
+Stockez les clés cryptographiques en utilisant des contrôles par couches appropriés au déploiement.

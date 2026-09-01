@@ -1,31 +1,30 @@
 ---
 translation_locale: dz
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: 62d6f434e5af4213420c456ee27ebdc260c8b0e9f7a85bc3ba955ee9c79a058d
+translation_source_hash: f2411fec1cc35b1bf7795a7ab5a0eb7a8eb6b60b4799ebf3db47208b902f87e6
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: human-reviewed
 ---
-
 # Kotlin, Android དེ་ལས་ Java {#kotlin-android-and-java}
 
-Kotlin SDK འདི་ default client stack འདི་ JVM དང་ Android གི་ལག་ལེན་ཚུ་གི་དོན་ལུ་ཨིན། འདི་གིས་ Iroha སྒྲིག་མཛོད་ནང་ལུ་ `kotlin/` ཀྱི་འོག་ལུ་སྡོད་དོ་ཡོདཔ་དང་ དེ་ནང་ platformགིས་བགོ་བཤའ་རྐྱབ་ཡོདཔ་ལས་ portable code གིས་ Android dependencies མ་ཐོབ་པར་ཡོདཔ་ཨིན།
+Kotlin SDK འདི་ སྔོན་སྒྲིག ཞབས་ཏོག་ལེན་མི བང་བསྒྲིག འདི་ JVM དང་ Android གི་ལག་ལེན་ཚུ་གི་དོན་ལུ་ཨིན། འདི་གིས་ Iroha སྒྲིག་མཛོད་ནང་ལུ་ `kotlin/` ཀྱི་འོག་ལུ་སྡོད་དོ་ཡོདཔ་དང་ དེ་ནང་ སྟེགས་བུགིས་བགོ་བཤའ་རྐྱབ་ཡོདཔ་ལས་ འབག་བཏུབ ལས་རིམ་ཨང་རྟགས གིས་ Android བརྟེན་ས མ་ཐོབ་པར་ཡོདཔ་ཨིན།
 
 ## ཚད་གཞི་ཚུ་ {#modules}
 
-|རིག་རྩལ་ |ཐིག་ཁྲམ་ |ལག་ལེན་འཐབ་ནི་|
+| དངོས་རྫས་ | དབྱེ་བ་ | ལག་ལེན་ |
 | --- | --- | --- |
-|`org.hyperledger.iroha.sdk:core-jvm` |JAR |Pure Kotlin/JVM Norito, data model, crypto, transaction, Torii, and protocol code ཌའི་ཊ་གི་བཟོ་རྣམ་དང་རྩིས་ཁྲམ་ཚུ་|
-|`org.hyperledger.iroha.sdk:client-android` |AAR |Android keystore, device telemetry, དང་ JNI གིས་རྒྱབ་སྐྱོར་འབད་མི་ client integrates |
-|`org.hyperledger.iroha.sdk:offline-wallet-android` |AAR |Android Offline Wallet གྱི་སྐྱེལ་འདྲེན་དང་འབྲེལ་བའི་མཐུན་རྐྱེན་ཚུ་ `client-android` ལུ་ གཞི་བཙུགས་འབདཝ་ཨིན།|
+| `org.hyperledger.iroha.sdk:core-jvm` | JAR | གཙང༌མ༌ Kotlin/JVM Norito, གནད་སྡུད་དཔེ་ཚད་, ཀིརིཔ་ཊོ་, ཚོང་འབྲེལ་, Torii, དང་མཐུན་སྒྲིག་ཨང་རྟགས་ |
+| `org.hyperledger.iroha.sdk:client-android` | AAR | Android ལྡེ་མིག་མཛོད་ཁང་དང་ ཐབས་འཕྲུལ་གྱི་ བརྡ་འཕྲིན་ཚད་འཇལ་ དེ་ལས་ JNI རྒྱབ་སྐྱོར་འབད་མི་ མཁོ་སྤྲོད་འབད་མི་ མཉམ་བསྡོམས་ཚུ་ |
+| `org.hyperledger.iroha.sdk:offline-wallet-android` | AAR | `client-android` གུ་བཟོ་བསྐྲུན་འབད་མི་ Android ཨོཕ་ལའིན་-དངུལ་ཁུག་སྐྱེལ་འདྲེན་དང་ མཉམ་བསྡོམས་འབད་ཡོདཔ། |
 
-དངོས་པོ་ཚུ་ Maven Central ལུ་ གསལ་བསྒྲགས་མ་འབད་བར་ཡོདཔ་ཨིན། འདི་ཚུ་ཡང་ Iroha གཞི་རྟེན་བསྐྱར་བཅོས་ནང་ལས་བཟོ་སྟེ་ ས་གནས་ནང་ལུ་གསལ་སྒྲགས་འབད་:
+དངོས་པོ་དེ་དག་ད་དུང་ Maven དབུས་སུ་པར་སྐྲུན་བྱས་མེད། བཙུགས་ཡོད་པའི་ Iroha འབྱུང་ཁུངས་བསྐྱར་ཞིབ་ལས་ ས་གནས་ནང་ བཟོ་བསྐྲུན་འབད་དེ་ དཔར་བསྐྲུན་འབད།
 
 ```bash
 cd kotlin
 ./gradlew publishToMavenLocal
 ```
 
-དེ་ལས་ཁྱོད་ཀྱིས་ལག་ལེན་གྱི་དོན་ལུ་ དགོས་མཁོ་ཅན་གྱི་ ལག་ཆས་འདི་ གདམ་ཁ་རྐྱབས་:
+དེ་ལས་ ཁྱོད་རའི་གློག་རིམ་ལུ་དགོ་པའི་ བརྡ་མཚོན་རྐྱངམ་ཅིག་སེལ་འཐུ་འབད།
 
 ```kotlin
 repositories {
@@ -41,13 +40,13 @@ dependencies {
 }
 ```
 
-`core-jvm` ནང་འཁོད་ལུ་མེད་ Android འབྲེལ་བ་འཐབ་ནི་ཚུ་བཞག་ནི། Android client དང་ keystore code འདི་ནང་ལུ་ `client-android`, ལག་ལེན་འཐབ་ནི་ `offline-wallet-android` དོན་ལུ་ Android-རྐྱངམ་ཅིག་ Offline-wallet དང་ JNI འཁྱིད་འགྱོ་དོ་ཡོདཔ་ཨིན།
+`core-jvm` ནང་ Android བརྟེན་པ་མེད། Android མཁོ་སྤྲོད་འབད་མི་དང་ལྡེ་མིག་མཛོད་ཁང་གི་ཨང་རྟགས་འདི་ `client-android` ནང་ལུ་བཞག་ཞིནམ་ལས་ Android-རྐྱངམ་ཅིག་ ཨོཕ་ལའིན་-དངུལ་ཁུག་དང་ JNI རྒྱུན་འགྲུལ་གྱི་དོན་ལུ་ `offline-wallet-android` ལག་ལེན་འཐབ།
 
 ## Kotlin དང་ Java གི་མཐུན་རྐྱེན་ {#kotlin-and-java-compatibility}
 
-མི་མང་གི་ API གིས་ Kotlin དང་པ་འབདཝ་ཨིན་ དེ་ལས་ Java Interop འདི་ JVM འབོ་མི་ཚུ་གིས་ དགོས་མཁོ་བསྐྱེད་སའི་ས་གནས་ལུ་ བཏོན་དོ་ཡོདཔ་ཨིན། དེ་དང་འདྲན་འདྲ་འགྱུར་བཅོས་ཚུ་ `java/` ལག་ལེན་ནང་ལུ་ གསལ་སྟོན་འབད་ཡོདཔ་ཨིན། གསར་འགྱུར་གྱི་ Android འབྲེལ་མཐུད་འདི་ Kotlin གི་ལག་ཆས་ཚུ་ལས་འགོ་འདྲེན་འཐབ་དགོ།
+མི་མང་ API འདི་ Kotlin-དང་པ་ཨིནམ་དང་ JVM ཁ་སླབ་མི་ཚུ་ལུ་དགོ་ས་ལུ་ ཇ་བ་ཨིན་ཊར་ཨོ་པི་བྱིནམ་ཨིན། འདྲ་མཉམ་གྱི་བསྒྱུར་བཅོས་ཚུ་ འབྲེལ་མཐུན་ `java/` ལག་ལེན་འཐབ་ཐངས་ནང་ མཐོང་སྣང་འབདཝ་ཨིན། Android མཉམ་བསྡོམས་གསརཔ་ཚུ་ གོང་འཁོད་ཀྱི་ Kotlin དངོས་པོ་ཚུ་ལས་འགོ་བཙུགས་དགོ།
 
-ག་ར་ Kotlin modules enforce JDK 8 API བསྡུ་སྒྲིག་འབད་བའི་སྐབས་ གྲ་སྒྲིག་འབད་ནི་དང་ `-Xjdk-release=8`, མ་གཞི་བཟོ་སྐྲུན་གྱི་ལག་ཆས་ཐོ་བཀོད་འདི་གིས་རང་ ལག་ལེན་འཐབ་ཨིན། JDK 21. ལག་ལེན་འཐབ་ནི་མི་འོང་། JDK 9+ APIs ནང་ SDK ཀོ་ཌིཀ་
+Kotlin ཚད་གཞི་ཆ་མཉམ་གྱིས་ བཟོ་སྐྲུན་ལག་ཆས་ཀྱིས་ JDK 21 ལག་ལེན་འཐབ་རུང་ བསྡུ་སྒྲིག་སྐབས་ `-Xjdk-release=8` གི་ཐོག་ལས་ JDK 8 API མཐུན་འབྲེལ་བཙན་ཐབས་འབདཝ་ཨིན། SDK ཀོཌ་ནང་ JDK 9+ APIs ཚུ་ལག་ལེན་མ་འཐབ།
 
 ## བཟོ་སྐྲུན་དང་ བརྟག་དཔྱད་ {#build-and-test}
 
@@ -65,15 +64,15 @@ Android བཟོ་ཆས་ཚུ་བཟོ་ནི།
   :offline-wallet-android:assembleRelease --quiet
 ```
 
-## ད་ལྟོའི་ཁེ་ཕན་ {#current-coverage}
+## ད་ལྟོའི་ཁྱབ་ཚད་ {#current-coverage}
 
 Kotlin SDK འདི་ནང་ལུ་:
 
 - Norito ཨེབ་གཏང་དང་ཨེབ་གཏང་འབད་ཐབས།
-- རྩིས་ཁྲ་དང་ རྒྱུ་དངོས་ཀྱི་ཁ་བྱང་ལག་ལེན་
-- ཚོང་འབྲེལ་བཟོ་སྐྲུན་དང་ མཚམས་འཇོག་འབད་ནི་ དེ་ལས་ ཕྱིར་ཚོང་འཐབ་མི་ ཡིག་ཚང་ཚུ་
+- རྩིས་ཐོ་དང་ རྒྱུ་དངོས་ཀྱི་ཁ་བྱང་ལག་ལེན་
+- ཚོང་འབྲེལ་སྒྲིང་ཁྱིམ་དང་མིང་རྟགས་ དེ་ལས་ ཡོངས་འབྲེལ་མེད་པའི་ཡིག་ཤུབས་ཚུ།
 - Torii HTTP, WebSocket དང་ SSE གྱི་མགྲོན་པ་ཚུ་
-- མང་སྡེ་མཚན་རྟགས་དང་ ཐོ་བཀོད་ SoraFS, Nexus དེ་ལས་ Connect བཟོ་རྣམ་ཚུ་ཨིན།
+- མང་སྡེ་མཚན་རྟགས་དང་ ཐོ་བཀོད་ SoraFS, Nexus དེ་ལས་ མཐུད་སྦྲེལ བཟོ་རྣམ་ཚུ་ཨིན།
 - Android ཀི་ཝིན་ཌོ་ར་དང་ སེལ་འཐུ་འབད་ཡོད་པའི་ གློག་ཐག་ར་བ་ཚུ་ གཅིག་སྒྲིལ་འབདཝ་ཨིན།
 - Android ཕྱི་ཁ་ལུ་སྐྱེལ་འདྲེན་འབད་ QR, ཉེ་འདབས་ལུ་སྐྱེལ་འདྲེན་འབད་ནི་དང་ NFC
 

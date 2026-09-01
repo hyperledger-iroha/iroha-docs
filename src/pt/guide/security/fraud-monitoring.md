@@ -3,103 +3,103 @@ translation_locale: pt
 translation_source: /guide/security/fraud-monitoring.md
 translation_source_hash: 4739a0bfe80f14545a51c804abbe6a2dfa5497d546192f76096f938a0af70184
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Monitoramento da fraude {#fraud-monitoring}
+# Monitoramento de Fraudes {#fraud-monitoring}
 
-O monitoramento de fraudes para uma implantação Iroha é um controle operacional construído em torno dos eventos do registro, consultas, permissões e contexto de aplicação. Iroha registra o que foi enviado, aceito, rejeitado e cometido. O seu sistema de monitorização decide quais padrões são suspeitos para o seu processo empresarial e encaminha esses casos para revisores ou controles automatizados de resposta.
+O monitoramento de fraudes para uma implementação Iroha é um controle operacional construído em torno de eventos do livro-razão blockchain, consultas, permissões e contexto do aplicativo. Iroha registra o que foi enviado, aceito, rejeitado e compromissado. Seu sistema de monitoramento decide quais padrões são suspeitos para o seu processo de negócios e encaminha esses casos para revisores ou controles de resposta automatizados.
 
-Trate o monitoramento de fraudes como um serviço separado em vez de uma lógica incorporada num validador. O serviço deve subscrever a atividade do livro-razão, enriquecê-lo com um contexto de risco fora da cadeia, persistir na evidência e enviar transações de resposta apenas através de contas que tenham permissões explícitas.
+Trate o monitoramento de fraudes como um serviço separado, em vez de lógica incorporada em um validador. O serviço deve se inscrever na atividade do livro razão da blockchain, enriquecê-la com contexto de risco fora da cadeia, persistir evidências e enviar transações de resposta apenas por meio de contas que tenham permissões explícitas.
 
-## Modelo de acompanhamento {#monitoring-model}
+## Modelo de Monitoramento {#monitoring-model}
 
-A função de acompanhamento útil tem quatro etapas:
+Um pipeline de processamento de monitoramento útil possui quatro estágios:
 
-1. Recolher os sinais do livro principal e do operador a partir de fluxos, consultas e métricas de eventos Torii.
-2. Enriquecer os eventos com contexto fora da cadeia, tais como status do cliente, listas de contrapartes, identificadores de sessões de aplicação, limites esperados e caso IDs.
-3. Detectar comportamento suspeito com regras deterministas, filas de revisores ou pontuação de risco.
-4. Responda alertando os operadores, interrompendo os fluxos de trabalho do lado das aplicações, revogando permissões desnecessárias ou apresentando transações compensatórias quando o seu processo de governança o permitir.
+1. Coletar registros de blockchain e sinais de operadores de fluxos de eventos, consultas e métricas de Torii.
+2. Enriqueça eventos com contexto fora da cadeia, como status do cliente, listas de contrapartes, identificadores de sessão de aplicativo, limites esperados e IDs de caso.
+3. Detecte comportamentos suspeitos com regras determinísticas, filas de revisores ou pontuação de risco.
+4. Responda alertando os operadores, pausando fluxos de trabalho do lado do aplicativo, revogando permissões desnecessárias ou submetendo transações compensatórias quando seu processo de governança permitir.
 
-Mantenha as decisões de política fora do consenso, a menos que cada validador deva reproduzir a mesma decisão. A validação em tempo de execução deve impor permissões e validade das transações. O monitoramento da fraude deve explicar o risco, preservar evidências e ajudar os operadores a agir rapidamente.
+Mantenha as decisões de política fora do consenso, a menos que todos os validadores precisem reproduzir a mesma decisão. A validação em tempo de execução do software deve impor permissões e a validade das transações. O monitoramento de fraudes deve explicar o risco, preservar evidências e ajudar os operadores a agir rapidamente.
 
-## Os sinais a recolher {#signals-to-collect}
+## Sinais para Coletar {#signals-to-collect}
 
-Comece com assinaturas estreitas e adicione fluxos mais amplos apenas para a investigação:
+Comece com assinaturas restritas e adicione fluxos mais amplos apenas para investigação:
 
-|O sinal .|Fonte |Utilização |
+|Sinal|Fonte| Usar |
 | --- | --- | --- |
-|Estatuto da transacção |Eventos do gasoduto |Detetar rejeições repetidas, tentativas falhadas de autorização e padrões incomuns de submissão |
-|Ciclo de vida da conta e metadados |Eventos de dados e consultas de contas |Detectar novas contas, alterações de alias, atualizações de identidade e edições inesperadas de metadados |
-|Saldos de activos e transferências |Eventos de dados sobre activos e consultas de activos |Detectar movimentos de alto valor, ventilação rápida, esgotos de equilíbrio e contrapartes incomuns |
-|Funções e permissões |Questões de função e permissão, eventos de dados de função |Detectar a escalada dos privilégios, as subvenções de emergência e o acesso ultrapassado de alto risco |
-|Mudanças de desencadeamento e contrato |Eventos de desencadeamento, contrato e executor |Detectar nova automação, alterar os caminhos de execução e atividade suspeita de atualização |
-|Configuração e mudanças de pares |Configuração e eventos entre pares |Detectar alterações de governança que afetem a validação, rede ou visibilidade do operador |
-|Saúde do operador |As rotas de status `/metrics` e Sumeragi |Separar o comportamento suspeito do usuário da sobrecarga de nós, pressão na fila ou falhas da rede |
+|Status da transação|eventos do pipeline de processamento|Detectar rejeições repetidas, tentativas de autorização falhadas e padrões de envio incomuns|
+|Ciclo de vida da conta e metadados|Eventos de dados e consultas de conta|Detectar novas contas, alterações de alias, atualizações de identidade e edições inesperadas de metadados|
+|Saldos e transferências de ativos|Eventos de dados de ativos e consultas de ativos|Detectar movimentações de alto valor, rápida dispersão, drenagens de saldo e contrapartes incomuns|
+|Funções e permissões|Consultas de funções e permissões, eventos de dados de funções|Detectar escalonamento de privilégios, concessões de emergência e acessos de alto risco obsoletos|
+|Alterações de gatilho e contrato|Eventos de gatilho, contrato e executor|Detectar novas automações, caminhos de execução alterados e atividades suspeitas de atualização|
+|Configuração e alterações de pares de rede|Configuração e eventos de pares de rede|Detectar mudanças na governança que afetam validação, rede ou visibilidade do operador|
+|Saúde do operador|rotas de status `/metrics` e Sumeragi|Separe o comportamento suspeito do usuário de sobrecarga do nó, pressão na fila ou falhas na rede|
 
-Utilização [filtros de eventos](/pt/blockchain/filters.md) Para evitar o processamento de todo o fluxo de eventos quando uma regra requer apenas contas, ativos, funções ou alterações de configuração. Para a reconciliação periódica, combine o fluxo com paginado [Questões](/pt/blockchain/queries.md) Para que o monitor se recupere depois do tempo de inatividade.
+Use [filtros de eventos](/pt/blockchain/filters.md) para evitar processar todo o fluxo de eventos quando uma regra precisa apenas de contas, ativos, funções ou alterações de configuração. Para reconciliação periódica, combine o fluxo com [consultas](/pt/blockchain/queries.md) paginado para que o monitor possa se recuperar após um período de inatividade.
 
-## Regras de detecção {#detection-rules}
+## Regras de Detecção {#detection-rules}
 
 As famílias de regras comuns incluem:
 
-|Família de regras |Condição de exemplo |Resposta típica |
+|Família de regras|Condição de exemplo|Resposta típica|
 | --- | --- | --- |
-|Velocidade .|Uma conta transfere mais do que o montante esperado ou contagem num curto período de tempo |Os revisores de alertas e a pausa das retiradas no lado da aplicação para essa conta |
-|A expansão .|Os fundos são transferidos de uma conta para muitas contas recém-conhecidas |Requer a aprovação manual antes de permitir transferências adicionais |
-|Desgaste de equilíbrio .|Uma grande parte do saldo da conta sai logo após uma alteração de chave, alias ou metadados |Escalada da possível aquisição de contas |
-|Escalada de privilégios |Uma autorização ou um papel de alto risco é concedido fora de uma janela de mudança |Alerta os operadores e revisa a operação de subvenção |
-|Rejeição explodiu |Um assinante ou cliente produz transações repetidas e rejeitadas |Verifique se há abuso de credenciais, erros de integração ou investigação |
-|Mudança de automação |Um desencadeador, contrato ou executor-relacionado objecto muda inesperadamente |Pausa os fluxos de trabalho dependentes até que a alteração seja revisada |
-|Mudanças sensíveis à governação |Mudanças no estado de peer, configuração ou tempo de execução ocorrem sem um bilhete aprovado |Comparar com o registo de governança e o processo de incidentes |
+|Velocidade|Uma conta transfere mais do que a quantia ou a quantidade esperada em um curto período|Alertar os avaliadores e pausar os saques do lado do aplicativo para essa conta|
+|Distribuição|Os fundos se movem de uma conta para muitas contas recém-vistas|Exigir aprovação manual antes de permitir transferências adicionais|
+|Drenagem de saldo|Uma grande parte do saldo de uma conta é retirada logo após uma mudança de chave, pseudônimo ou metadados|Escalar como possível tomada de conta de conta|
+|Escalada de privilégios|Uma permissão ou função de alto risco é concedida fora de uma janela de mudança|Alertar os operadores e revisar a transação de concessão|
+|Explosão de rejeição|Um signatário criptográfico ou cliente produz transações repetidamente rejeitadas|Verifique abuso de credenciais, erros de integração ou sondagem|
+|Mudança na automação|Um gatilho, contrato ou objeto relacionado ao executor muda inesperadamente|Pausar fluxos de trabalho dependentes até que a mudança seja revisada|
+|Mudança sensível à governança|ocorrem alterações em par de rede, configuração ou estado de execução do software sem um ticket aprovado|Compare com o registro de governança e o processo de incidentes|
 
-As regras devem ser explícitas sobre as provas que exigem, o período de tempo em que avaliam, a ação que tomam e a pessoa ou sistema que pode encerrar o caso. Os limites que dependem do risco do cliente, do tipo de ativo ou da jurisdição pertencem à configuração do seu serviço de monitorização e não aos scripts ad hoc.
+As regras devem ser explícitas sobre as evidências que exigem, a janela de tempo que avaliam, a ação que realizam e a pessoa ou sistema que pode finalizar o caso. Limiares que dependem do risco do cliente, tipo de ativo ou jurisdição pertencem à configuração do seu serviço de monitoramento, e não a scripts ad hoc.
 
-## Controles de resposta {#response-controls}
+## Controles de Resposta {#response-controls}
 
-Projetar ações de resposta antes de ativar as alertas. Um caso de fraude de elevada gravidade deve ter um caminho documentado desde a detecção até à contenção:
+Projete ações de resposta antes de ativar alertas. Um caso de fraude de alta gravidade deve ter um caminho documentado desde a detecção até a contenção:
 
-- notificar os titulares de valores mobiliários, operações e empresas responsáveis pela definição do domínio ou dos ativos afectados;
-- preservar o cursor de evento, hash do bloco, hash da transação, autoridade, carga útil e imagem instantânea da consulta usada pela regra de detecção
-- Pausa as ações do lado da aplicação que estão fora do livro, tais como fluxos de trabalho de checkout, retirada, assinatura, ponte ou liquidação.
-- Revocar as funções ou permissões que não são mais justificadas pelo plano de resposta a incidentes
-- somente apresentar transações de acompanhamento em contabilidade quando a política de governança ativa e o modelo de permissão os permitirem;
-- rotar as chaves quando a evidência sugere um compromisso com o signatário
+- notificar a segurança, operações e os responsáveis pelo negócio pela definição do domínio ou ativo afetado
+- preserve o cursor de eventos, o hash do bloco, o hash da transação, a autoridade, a carga útil e o instantâneo de consulta usados pela regra de detecção
+- pausar ações do lado do aplicativo que estão fora do registro da blockchain, como checkout, saque, assinatura, ponte ou fluxos de trabalho de liquidação
+- revogar funções ou permissões que não sejam mais justificadas pelo plano de resposta a incidentes
+- envie transações de registro em blockchain de acompanhamento apenas quando a política de governança ativa e o modelo de permissões permitirem
+- gire as chaves quando as evidências sugerirem comprometimento do signatário criptográfico
 
-Evite dar ao serviço de monitorização um acesso de escrita amplo.Use uma conta técnica dedicada com o menor conjunto de permissões necessárias para as ações de resposta que lhe é permitido realizar. A aprovação humana deve continuar a fazer parte de qualquer fluxo de trabalho que possa mover ativos, alterar permissões ou alterar a configuração orientada para validador.
+Evite dar ao serviço de monitoramento um amplo acesso de escrita. Use uma conta técnica dedicada com o menor conjunto de permissões necessárias para as ações de resposta é permitido realizar. A aprovação humana deve permanecer parte de qualquer fluxo de trabalho que possa mover ativos, alterar permissões ou modificar a configuração voltada para o validador.
 
-## Evidência e retenção {#evidence-and-retention}
+## Evidência e Retenção {#evidence-and-retention}
 
-Armazenar as evidências de monitorização num sistema exclusivo do apêndice, separado do diretório de dados do validador.
+Armazene evidências de monitoramento em um sistema somente de acréscimo que seja separado do diretório de dados do validador. Cada alerta deve incluir:
 
-- Nome do fluxo de eventos e cursor
-- altura do bloco ou hash de bloco, quando disponível
-- hash de transação e autoridade
-- Conta, domínio, ativo, função, desencadeador ou configuração afetada ID
-- Carga útil de evento bruto ou um hash canônico dele
-- Impressões de consulta usadas para enriquecer o alerta
-- Nome da regra, versão, limite, pontuação e decisão do revisor
+- nome do fluxo de eventos e cursor
+- altura do bloco ou hash criptográfico do bloco quando disponível
+- hash criptográfico da transação e principal de autorização
+- conta, domínio, ativo, função, gatilho ou ID de configuração afetados
+- payload de evento bruto ou um hash criptográfico canônico dele
+- consultar visualizações de dados em um ponto no tempo usadas para enriquecer o alerta
+- nome da regra, versão, limite, pontuação e decisão do revisor
 
-Não armazenar notas de investigação sensíveis como metadados do registro público, a menos que a política de governança de dados da rede o permita explicitamente. Se você precisar vincular um caso off-chain ao estado on-chain, prefira um identificador de caso, atestado assinado ou compromisso hash que não expõe detalhes privados.
+Não armazene notas de investigação sensíveis como metadados do livro-razão público da blockchain, a menos que a política de governança de dados da rede permita explicitamente. Se você precisar vincular um caso off-chain ao estado on-chain, preferencialmente um identificador de caso, atestado assinado ou compromisso de hash criptográfico que não exponha detalhes privados.
 
-## Lista de verificação da implementação {#implementation-checklist}
+## Lista de Verificação de Implementação {#implementation-checklist}
 
-- Capacitar o perfil de telemetria necessário para as rotas `/metrics` e do operador.
-- Subscreva-se a fluxos de eventos Torii com filtros estreitos para os objetos que monitorizas.
-- Persistem os cursores de eventos para que o monitor possa retomar sem lacunas.
-- Reconciliar fluxos com consultas em páginas em um cronograma regular.
-- Manter limites de risco e permitir listas em configuração controlada por versões.
-- Regras de alerta de ensaio contra blocos históricos antes de habilitar ações automatizadas.
-- Utilização de contas técnicas específicas para ações de resposta.
-- Revisão do papel e das concessões de permissão em calendário recorrente.
-- Incluir alertas de monitorização de fraudes no processo de resposta a incidentes.
+- Ative o perfil de telemetria necessário para `/metrics` e rotas do operador.
+- Assine os fluxos de eventos Torii com filtros estreitos para os objetos que você monitora.
+- Persistir cursores de eventos para que o monitor possa retomar sem lacunas.
+- Conciliar fluxos com consultas paginadas em uma programação regular.
+- Mantenha os limites de risco e as listas de permissão em configuração controlada por versão.
+- Teste as regras de alerta contra blocos históricos antes de habilitar ações automatizadas.
+- Use contas técnicas dedicadas para ações de resposta.
+- Reveja funções e concessões de permissão em uma programação recorrente.
+- Inclua alertas de monitoramento de fraude no processo de resposta a incidentes.
 
-## Páginas relacionadas {#related-pages}
+## Páginas Relacionadas {#related-pages}
 
 - [Eventos](/pt/blockchain/events.md)
 - [Filtros](/pt/blockchain/filters.md)
-- [Questões](/pt/blockchain/queries.md)
+- [Consultas](/pt/blockchain/queries.md)
 - [Permissões](/pt/blockchain/permissions.md)
-- [Desempenho e métricas](/pt/guide/advanced/metrics.md)
-- [Pontos finais Torii](/pt/reference/torii-endpoints.md)
-- [Segurança operacional](/pt/guide/security/operational-security.md)
+- [Desempenho e Métricas](/pt/guide/advanced/metrics.md)
+- [Torii API pontos de extremidade](/pt/reference/torii-endpoints.md)
+- [Segurança Operacional](/pt/guide/security/operational-security.md)

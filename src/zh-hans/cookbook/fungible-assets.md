@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /cookbook/fungible-assets.md
-translation_source_hash: 669b5a1c12e9ab6ffb64e149148993e7b924feb29c6fa4db883a2065f58ecd7e
+translation_source_hash: 29f2bdb390fc93b97f8ed9108634f70e21ba747c8606fb84093d37e9586516c1
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,13 +10,13 @@ translation_engine: nllb-200-ct2
 
 ## 结果 {#outcome}
 
-现场检查 Taira 资产定义和完成一个注册表,硬币,转账,燃烧和平衡验证在生成的本地网络上流动.该配方使用了可信无序Base58资产定义 IDs, 域名类别,无域名 I105 账户 IDs, 和明确的费用支付.
+现场检查 Taira 资产定义和完成一个注册表,铸造,转账,销毁和余额验证在生成的本地网络上流动.该操作指南使用了可信无序Base58资产定义 IDs, 域名类别,无域名 I105 账户 IDs, 和明确的费用支付.
 
 ## 预先条件 {#prerequisites}
 
 - `curl`, `jq`, Python 3.11或以后, Node.js 24,和目前的 `iroha` CLI.
 - 仅可读的 Taira 访问.
-- 对于写入通行,一个来自 [发射 Iroha](/zh-hans/get-started/launch-iroha.md), 与 `./localnet/client.toml` 和 Torii 在 `http://127.0.0.1:8080`.
+- 对于写入演练,一个来自 [启动 Iroha](/zh-hans/get-started/launch-iroha.md), 与 `./localnet/client.toml` 和 Torii 在 `http://127.0.0.1:8080`.
 
 ## 步骤 {#steps}
 
@@ -54,11 +54,11 @@ for (const definition of items) {
 
 :::
 
-运行 JavaScript 表格使用 `node taira-assets.mjs`.公共资产 IDs 是空白的Base58值;可读的值如 `cookbook_credit#wonderland.universal`是一个以其中一个 IDs 为代号的代号.
+运行 JavaScript 版本使用 `node taira-assets.mjs`.公共资产 IDs 是空白的Base58值;可读的值如 `cookbook_credit#wonderland.universal`是一个以其中一个 IDs 为代号的代号.
 
-### 2. 准备地方政府和目的地 {#_2-prepare-the-local-authority-and-destination}
+### 2. 准备本地授权账户和目的地 {#_2-prepare-the-local-authority-and-destination}
 
-从生成的配置中公钥中提取本地当局,然后选择另一个注册帐户作为接收者.
+从生成的配置中取得公钥并据此推导本地 authority，然后选择另一个已注册账户作为接收者。此操作不会输出任何私钥。
 
 ```bash
 LOCAL_ROOT='http://127.0.0.1:8080'
@@ -101,11 +101,11 @@ iroha --config "$LOCAL_CONFIG" \
   --scale 2
 ```
 
-在 Taira 上不要再使用 ID. 公共网络注册需要新的法典文件 ID,为您的申请分配的域名/代号,费用资金和运行期的资产注册许可.
+在 Taira 上不要再使用 ID. 公共网络注册需要新的规范文件 ID,为您的申请分配的域名/代号,费用资金和运行期的资产注册许可.
 
-### 4. 薄荷,转移和燃烧 {#_4-mint-transfer-and-burn}
+### 4. 铸造,转移和销毁 {#_4-mint-transfer-and-burn}
 
-所有写字命令都明确选择权威作为费用付款人. CLI 在签署之前引用了准确的交易,并默认等待.
+所有写入命令都明确选择授权主体作为费用付款人. CLI 在签署之前报价了准确的交易,并默认等待.
 
 ```bash
 iroha --config "$LOCAL_CONFIG" \
@@ -131,17 +131,17 @@ iroha --config "$LOCAL_CONFIG" \
   --quantity 10.00
 ```
 
-在燃烧后,预计来源余额 `64.50`,目的地余额 `25.50`和总量 `90.00`.
+在销毁后,预计来源余额 `64.50`,目的地余额 `25.50`和总量 `90.00`.
 
 ::: warning 许可范围
 
-在 Taira 上,添加自龙头衍生的 `taira.tx-metadata.json`并使用`--fee-payer authority`为每次写.注册和造需要活跃验证者的许可;转移和烧毁需要对源余额的权威.一个由龙头资助的账户不会自动成为发行人.
+在 Taira 上,添加自水龙头衍生的 `taira.tx-metadata.json`并使用`--fee-payer authority`为每次写.注册和造需要活跃验证者的许可;转移和烧毁需要对源余额的授权主体.一个由水龙头资助的账户不会自动成为发行人.
 
 :::
 
 ## 验证 {#verify}
 
-阅读两个具体的平衡和定义. 这些国家后的查询是成功标准;提交收据本身并非.
+先读取两个实际余额，再读取资产定义。这些 post-state 查询才是成功标准；仅有 submission receipt 并不足以证明成功。
 
 ```bash
 iroha --config "$LOCAL_CONFIG" ledger asset get \
@@ -160,17 +160,17 @@ iroha --config "$LOCAL_CONFIG" ledger asset definition get \
 
 ## 解决问题 {#troubleshooting}
 
-- 包含 ID 的 `#` 是一个字面别名或混凝土平衡字母,而不是一项常规资产定义 ID.使用`--definition`的裸体Base58值,或者通过`--definition-alias`的绑定别名.
+- 包含 ID 的 `#` 是一个字面别名或具体余额字面值,而不是一项规范资产定义 ID.使用`--definition`的裸体Base58值,或者通过`--definition-alias`的绑定别名.
 - `Scale` 错误意味着一个数量比定义允许的多个分数.
 - `Mintability`拒绝是指`Once`, `Not`或 `Limited(n)`的政策已经耗尽或禁止造.不要重写历史记录;使用定义查询返回的政策.
-- 如果资产入口为 `ExplicitOnly`,通过授权的账户提供目标余额.转移前的流量.同样名为 CLI 的监视器不记录账户或余额;它取消,而不是添加另一个指示.
+- 第 2 步有意选择已注册的目标账户。如果资产准入策略为 `ExplicitOnly`，请在转账前通过授权流程预置目标余额。名称相似的 CLI 保护选项不会注册账户或余额；它会中止操作，而不是再添加一条指令。
 - 在正常指示成功之前,收费被拒绝. 选择付款人,使用网络的收费资产元数据,并验证其余额.
 - 如果固定的本地定义已经存在于之前的运行中,请启动新生成的本地网络或继续其现有的状态.永远不要替代错误成形的随机字符串为 Base58 ID.
 
 ## 来源及相关文件 {#source-and-related-docs}
 
-- [资产生命周期集成测试在固定的承诺](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/asset.rs)
-- [Rust 固定承诺的资产构建例子](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/examples/tutorial.rs)
+- [资产生命周期集成测试在固定的提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/asset.rs)
+- [Rust 固定提交的资产构建例子](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/examples/tutorial.rs)
 - [资产](/zh-hans/blockchain/assets.md)
 - [指示](/zh-hans/blockchain/instructions.md)
 - [许可证代币](/zh-hans/reference/permissions.md)

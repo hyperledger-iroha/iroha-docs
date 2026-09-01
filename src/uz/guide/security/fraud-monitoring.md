@@ -3,103 +3,103 @@ translation_locale: uz
 translation_source: /guide/security/fraud-monitoring.md
 translation_source_hash: 4739a0bfe80f14545a51c804abbe6a2dfa5497d546192f76096f938a0af70184
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Kamchiliklarni nazorat qilish {#fraud-monitoring}
+# Firibgarlikni nazorat qilish {#fraud-monitoring}
 
-Iroha ishga tushirilishi uchun firibgarlikni kuzatish - bu katta kitob voqealari, so'rovlar, ruxsatnomalar va dastur kontekstida qurilgan operatsion nazoratdir. Iroha taqdim etilgan, qabul qilingan, rad etilgan va amalga oshirilgan narsalarni qayd etadi . Monitoring tizimingiz sizning biznes jarayoningiz uchun qaysi modellar shubhali bo'lishini hal qiladi va bu holatlarni tahlilchilarga yoki avtomatlashtirilgan javob nazoratlariga yuboradi.
+Iroha joylashtirilishida firibgarlikni kuzatish — reyestr hodisalari, so‘rovlar, ruxsatlar va ilova kontekstiga tayangan operatsion nazoratdir. Iroha nimalar yuborilgani, qabul qilingani, rad etilgani va yakuniy ravishda yozilganini qayd etadi. Kuzatuv tizimingiz biznes jarayoningiz uchun qaysi andozalar shubhali ekanini belgilaydi va bunday holatlarni tekshiruvchilarga yoki avtomatik javob nazoratlariga yo‘naltiradi.
 
-Xizmatni tasdiqlash uchun to'g'ridan-to'g'ri yo'l qo'yilmagan logikadan ko'ra alohida xizmat sifatida qabul qiling. Xizmat katta ma'lumotlar ro'yxatiga obuna bo'lishi, uni zanjirdan tashqaridagi tavakkalchilik kontekstiga boyitishi, dalillarni saqlab qolishi va faqat ochiq ruxsatnomalarga ega hisob raqamlar orqali javob berish tranzaksiyalarini taqdim etish kerak.
+Firibgarlikni kuzatishni validatorga joylashtirilgan mantiq sifatida emas, alohida xizmat sifatida ko‘rib chiqing. Xizmat reyestrdagi faoliyatga obuna bo‘lishi, uni off-chain xavf konteksti bilan boyitishi, dalillarni saqlashi va javob tranzaksiyalarini faqat aniq ruxsatlarga ega hisoblar orqali yuborishi kerak.
 
 ## Monitoring modeli {#monitoring-model}
 
-Foydali monitoring tizimining to'rt bosqichidan iborat:
+Foydali monitoring dasturiy ta'minotini qayta ishlash ish jarayoni to'rtta bosqichga ega:
 
-1. Torii hodisa oqimlari, so'rovlar va ma'lumotlardan katta daftar va operator signallarini yig'ish.
-2. O'yin-kulgilarni xaridorlar holati, qarshi tomonlar ro'yxatlari, ariza seansining identifikatorlari, kutilayotgan cheklovlar va holat IDs kabi zaxiralardan tashqari kontekst bilan boyitish.
-3. Deterministik qoidalar, sharhchilar navbatlari yoki xavf-xatarni belgilash orqali shubhali xatti-harakatlarni aniqlash.
-4. Operatorlarni ogohlantirib, dastur tarafidagi ish oqimlarini to'xtatish, zaruriy bo'lmagan ruxsatnomalarni bekor qilish yoki boshqaruv jarayoni sizga imkon berganida kompensatsiya tranzaksiyalarini taqdim etish orqali javob bering.
+1. Torii voqea oqimlari, so‘rovlar va metrikalardan reyestr va operator signallarini yig‘ing.
+2. Voqealarni mijoz holati, qarama-qarshi tomon ro‘yxatlari, ilova sessiyasi identifikatorlari, kutilayotgan chegaralar va ish IDlari kabi off-chain kontekst bilan boyiting.
+3. Shubhali xatti-harakatlarni aniqlash uchun deterministik qoidalar, ko‘rib chiquvchi navbatlari yoki xavf baholashidan foydalaning.
+4. Boshqaruv jarayoningiz bunga imkon berganda, operatorlarni ogohlantirish, ilova tomonidagi ish jarayonlarini to‘xtatish, keraksiz ruxsatlarni bekor qilish yoki kompensatsion operatsiyalarni yuborish orqali javob bering.
 
-Siyosat qarorlarini konsensusdan tashqarida saqlang, agar har bir tasdiqlovchi bir xil qarorni takrorlashi shart bo'lmasa. Ish vaqti bilan tasdiqlash ruxsatnomalar va tranzaksiyalarning haqiqiyligini qo'llab-quvvatlashi kerak. Xatolarni nazorat qilish xavfni tushuntirish, dalillarni saqlash va operatorlarga tezkor harakat qilishga yordam berishlari kerak.
+Har bir tasdiqlovchi ayni qarorni takrorlashi shart bo‘lmasa, siyosat qarorlarini konsensusdan tashqarida saqlang. Bajarish muhiti ruxsatlar va tranzaksiya yaroqliligini tekshirishi kerak. Firibgarlik monitoringi xavfni tushuntirishi, dalillarni saqlashi va operatorlarga tez harakat qilishda yordam berishi lozim.
 
 ## To'plash uchun signallar {#signals-to-collect}
 
-Kichik obunalar bilan boshlang va faqat tekshirish uchun kengroq oqimlarni qo'shing:
+Tor obunalar bilan boshlang va faqat tekshiruv uchun kengroq oqimlarni qo'shing:
 
-|Signal |Manba: |Foydalanish |
+|Signal|Manba|Foydalanish|
 | --- | --- | --- |
-|Transaksiya holati |Pipeline hodisalari |Takrorlanayotgan rad etishlarni, muvaffaqiyatsizlikka uchragan ruxsat berishga urinishlarni va odatiy bo'lmagan topshiriqlarni aniqlash. |
-|Hisobot hayoti davri va metadatalar |Maʼlumotlar hodisalari va hisoblar soʻrovlari |Yangi hisoblarni , alias o'zgarishlarini , shaxsni yangilash va kutilmagan metadata tahrirlarini aniqlash |
-|Asset balanslari va transferlar |Aktiv maʼlumotlari hodisalari va aktivlar soʻrovlari |Yuqori qiymatli harakatlarni aniqlash, tezlik bilan ventilatorni o'chirib tashlash, muvozanat oqimlari va odatiy hollarga ega bo'lmagan to'lovlarni aniqlash |
-|O ' rinlar va ruxsatnomalar |Roli va ruxsatnoma so'rovlari, rola ma'lumotlari hodisalari |Maxsus imtiyozlarni kuchaytirish, favqulodda yordamlarni aniqlash va yuqori tavakkalchilikli kirishning keskinligi |
-|Trigger va shartnoma o ' zgarishi |Trigger, kontrakt va ijrochi hodisalari |Yangi avtomatlashtirish, o'zgargan ijro yo'nalishlari va shubhali yangilanish faoliyati aniqlang |
-|Konfiguratsiya va tengdoshlar oʻzgarishi |Konfiguratsiya va tengdoshlar tadbirlari |Validatsiyalash , tarmoqlashtirish yoki operatorning koʻrinishini taʼsir etuvchi boshqaruv oʻzgarishlarini aniqlash |
-|Operatorning sogʻligi |`/metrics` va Sumeragi holati yo'nalishlari |Foydalanuvchilarning shubhali xatti-harakatlarini nodning ortiqcha yuklanishi , navbatdagi bosim yoki tarmoq xatolaridan ajratish |
+|Tranzaksiya holati|dasturiy ta'minot ishlov berish ish oqimi voqealari|Takroriy rad etishlarni, muvaffaqiyatsiz avtorizatsiya urinishlarini va g‘ayrioddiy topshirish shakllarini aniqlang|
+|Hisob yuritish muddati va metadata|Ma'lumot voqealari va hisob so'rovlari|Yangi hisoblarni, taxallus o‘zgarishlarini, shaxsiyat yangilanishlarini va kutilmagan metadata tahrirlarini aniqlang|
+|Aktivlar balanslari va o'tkazmalar|Mol-mulk ma'lumotlari voqealari va mol-mulk so'rovlari|Yu yuqori qiymatli harakatlarni, tez tarqalishni, balans oqimlarini va g‘ayrioddiy shaxslarni aniqlang|
+|Rollar va ruxsatlar|Rol va ruxsat so'rovlari, rol ma'lumotlari voqealari|Imtiyozlarni ko‘tarishni, favqulodda ruxsatlarni va eskirgan yuqori xavfli kirishni aniqlash|
+|Tetik va shartnoma o‘zgarishlari|Trigger, shartnoma va ijrochi hodisalari|Yangi avtomatlashtirishni, o'zgartirilgan bajarish yo'llarini va shubhali yangilanish faoliyatini aniqlang|
+|Konfiguratsiya va tarmoq tengdosh o'zgarishlari|Konfiguratsiya va tarmoq tengdosh voqealari|Tekshirish, tarmoq yoki operator ko‘rinishini ta’sir qiluvchi boshqaruv o‘zgarishlarini aniqlang|
+|Operator salomatligi| `/metrics` va Sumeragi holat yo‘llari |Shubhali foydalanuvchi xatti-harakatlarini tugun ortiqcha yuklanishi, navbat bosimi yoki tarmoq xatolaridan ajrating|
 
-Foydalanish [hodisa filtrlari](/uz/blockchain/filters.md) qoidaga faqat hisoblar, aktivlar, rollar yoki konfiguratsiya o'zgarishlari kerak bo'lganda, butun hodisalarni qayta ishlashdan qo'rqish. Vaqti-vaqti bilan kelishish uchun oqishni sahifalar bilan birlashtiring [savollar](/uz/blockchain/queries.md) so'ng monitor o'z vaqtida tiklanishi mumkin.
+Qoidal faqat hisoblar, aktivlar, rollar yoki konfiguratsiya o‘zgarishlariga ehtiyoj sezganda, butun tadbir oqimini qayta ishlashdan qochish uchun [tadbir filtrlari](/uz/blockchain/filters.md) dan foydalaning. Davriy moslashtirish uchun, monitor ishlamay qolganidan keyin tiklanishi uchun oqimni sahifalangan [so'rovlar](/uz/blockchain/queries.md) bilan birlashtiring.
 
-## Qidiruv qoidalari {#detection-rules}
+## Aniqlash qoidalari {#detection-rules}
 
-Umumiy qoidalar oilalari quyidagilarni o'z ichiga oladi:
+Umumiy qoida oilalariga quyidagilar kiradi:
 
-|Qoidalar oilasi |Misol uchun shart |Oddiy javob |
+|Qoidalar oilasi|Misol shart|Odatdagi javob|
 | --- | --- | --- |
-|Tezlik |Hisobvaraq koʻp vaqt ichida kutilayotgan miqdordan ortiq mablagʻni oʻtkazadi |Ogohlantirish tekshiruvchilari va ushbu hisob uchun ariza tarafidagi mablag ' larni toʻxtatish |
-|Oʻchirish |Toʻlovlar bitta hisobdan koʻpgina yangi hisobvaraqlarga oʻtadi . |Qoʻshimcha oʻtkazib berishga ruxsat berishdan oldin qoʻllanma tasdiqlashni talab qiling |
-|O ' lchash bilan taqqoslash |Hisobot balansining katta qismi kalit, alias yoki metadata o'zgarishidan ko'p o'tmay qoladi. |Muhokamalarni imkon qadar koʻpaytirish |
-|Imtiyozlarni kuchaytirish |Yuqori tavakkalchilikli ruxsatnoma yoki rol o ' zgarish oynasidan tashqarida beriladi |Operatorlarni ogohlantirib , grant operatsiyasini koʻrib chiqish |
-|Tanqid boʻlib chiqdi |Bir imzochi yoki mijoz qayta-qayta rad etilgan bitimlarni amalga oshiradi |Sertifikatlarni suiiste'mol qilish, integratsiya xatolari yoki tekshiruvdan o'tish uchun tekshirish |
-|Avtomatsiya oʻzgarishi |Trigger , kontrakt yoki ijrochi bilan bogʻliq obʼekt kutilmagan tarzda oʻzgaradi |Oʻzgarish qayta koʻrib chiqilguniga qadar bogʻliq ish oqimlarini toʻxtatish |
-|Boshqaruvga taalluqli oʻzgarishlar |Tengdoshlar, konfiguratsiya yoki ishga tushirish vaqti holati oʻzgarishi tasdiqlangan chiptasiz sodir boʻladi |Boshqaruv rejimi va hodisalar jarayoni bilan taqqoslash |
+|Tezlik|Hisob qisqa vaqt ichida kutilgan miqdor yoki hisobdan ko'proq pul o'tkazadi|Sharhlovchilarni ogohlantiring va ushbu hisob uchun ilova tomonidagi yechib olishlarni to'xtating|
+|Tarqalish|Vositachim hisobdan ko‘plab yangi ko‘rilgan hisoblarga mablag‘larni yuboradi|Qo‘shimcha o‘tkazmalarni ruxsat berishdan oldin qo‘l bilan tasdiqlashni talab qil|
+|Balansni kamaytirish|Hisob balansining katta qismi kalit, taxallus yoki metadata o‘zgarganidan qisqa vaqt o‘tib ketadi|Hisob egasini qo'lga kiritish imkoniyatini oshirish|
+|Imtiyoz oshirish|Oʻzgartirish oynasi tashqarisida yuqori xavfli ruxsat yoki rol beriladi|Operatorlarni ogohlantiring va grant tranzaksiyasini ko'rib chiqing|
+|Takroriy rad etilishlarning oshishi|Bir imzolovchi yoki mijoz takrorlangan rad etilgan tranzaksiyalarni ishlab chiqaradi|Kredential suiiste'moli, integratsiya xatolari yoki sinovlarni tekshiring|
+|Avtomatlashtirish o'zgarishi|Bir trigger, shartnoma yoki ijrochi bilan bog‘liq obyekt kutilmaganda o‘zgaradi|O'zgarish ko'rib chiqilmaguncha bog'liq ish jarayonlarini to'xtating|
+|Boshqaruvga sezgir o‘zgarish|tarmoq hamkori, konfiguratsiya yoki dastur ijro muhitining holati tasdiqlangan chiptasiz o‘zgaradi|Boshqaruv yozuvlari va hodisa jarayoni bilan solishtiring|
 
-Qoidalar ular uchun zarur bo'lgan dalillar, ularni baholash vaqti, ular qanday chora ko'rishlari va ishni tugatishi mumkin bo'lgan shaxs yoki tizim haqida aniq bo'lishi kerak. Mijoz tavakkalchiligiga, aktiv turiga yoki yurisdiksiyaga bog'liq bo'lgan chegaralar ad hoc skriptlarda emas, balki monitoring xizmati konfiguratsiyasida mavjud.
+Qoidalar ular talab qiladigan dalillar, baholaydigan vaqt oynasi, amalga oshiradigan harakatlari va yopishi mumkin bo‘lgan shaxs yoki tizim haqida aniq bo‘lishi kerak hollat. Mijozning xavfi, aktiv turi yoki yurisdiktsiyaga bog‘liq bo‘lgan chegaralar sizning monitoring xizmatining sozlamalarida bo‘lishi kerak, tasodifiy skriptlarda emas.
 
-## Javoblarni nazorat qilish {#response-controls}
+## Javob nazorati {#response-controls}
 
-Ogohlantirishlarni qo'llashdan oldin javob berish choralarini loyihalashtirish. Yuqori jiddiylikdagi firibgarlik ishi aniqlanishidan to cheklovgacha hujjatlashtirilgan yo'nalishga ega bo'lishi kerak:
+Ogohlantirishlarni yoqishdan oldin javob choralarini rejalashtiring. Yuqori darajadagi firibgarlik holati aniqlashdan to cheklashgacha hujjatlashtirilgan yo'lga ega bo‘lishi kerak:
 
-- tegishli domen yoki aktivni belgilash uchun mas'ul bo'lgan xavfsizlik, operatsiya va biznes egalarini xabardor qilish
-- aniqlanish qoidasi tomonidan ishlatiladigan hodisa kursorini, blok hashini, transaksiya hashini, vakolatni, foydali yukni va so'rov fotosuratini saqlash
-- dasturiy ta'minot ro'yxatidan tashqarida bo'lgan dastur tarafidagi harakatlarni to'xtatish, masalan, checkout, withdrawal, signing, bridge yoki settlement ish oqimlari
-- hodisalarga qarshi kurashish rejasi bilan endi asoslanmagan rollar yoki ruxsatnomalarni bekor qilish;
-- aktiv boshqaruv siyosati va ruxsatnoma modeli ularga yo'l qo'ygan hollarda, faqat kuzatuv daftaridagi operatsiyalarni taqdim etish
-- dalillarga koʻra imzochi kelishmovchilikka duchor boʻlganda kalitlarni aylantirish
+- ta'sirlangan domen yoki aktiv ta'rifi uchun mas'ul bo'lgan xavfsizlik, operatsiyalar va biznes egalariga xabar bering
+- aniqlash qoidasi ishlatgan hodisa kursori, blok xeshi, tranzaksiya xeshi, vakolat hisobi, foydali yuk va so‘rov oniy nusxasini saqlang
+- blockchain ledgeridan tashqaridagi ilova tomonidagi harakatlarni to‘xtatish, masalan, chekaut, pul yechib olish, imzolash, ko‘prik yoki moliyaviy tranzaksiya hisob-kitob ishlari
+- voqeaga javob berish rejasi tomonidan endi asoslanmaydigan rollar yoki ruxsatlarni bekor qilish
+- faol boshqaruv siyosati va ruxsat modeli ularga ruxsat berganidagina keyingi reyestr tranzaksiyalarini yuboring
+- kalitlarni aylantiring agar dalillar imzolovchining buzilganligini ko‘rsatganda
 
-Monitoring xizmatiga keng yozma kirish huquqini bermaslik kerak. javob harakatlari uchun zarur bo'lgan eng kichik ruxsatnomalar to'plami bilan maxsus texnik hisobdan foydalaning. Insonning roziligi aktivlarni ko'chirish, ruxsatnomalarni o'zgartirish yoki validatorga qaratilgan konfiguratsiyani o'zgartirishi mumkin bo'lgan har qanday ish oqimining bir qismi bo'lishi kerak.
+Monitoring xizmatiga keng yozish huquqini bermang. Javob choralarini bajarishga yetarli eng kam ruxsatlar to‘plamiga ega maxsus texnik hisobdan foydalaning. Aktivlarni o‘tkazishi, ruxsatlarni yoki tasdiqlovchilarga oid konfiguratsiyani o‘zgartirishi mumkin bo‘lgan har qanday ish jarayonida inson tasdig‘i saqlansin.
 
-## Dalillar va saqlanish {#evidence-and-retention}
+## Dalillar va saqlash {#evidence-and-retention}
 
-Monitoring ma'lumotlarini validator ma'lumotlar direktoriyasidan alohida bo'lgan faqat qo'shimcha tizimda saqlash. Har bir ogohlantirish quyidagilarni o'z ichiga oladi:
+Monitoring dalillarini tasdiqlovchi ma'lumotlar katalogidan alohida bo‘lgan faqat qo‘shishga mo‘ljallangan tizimda saqlang. Har bir ogohlantirish quyidagilarni o‘z ichiga olishi kerak:
 
-- hodisalar oqimi nomi va kursor
-- blok balandligi yoki mavjud bo'lganda blok hash
-- Transaksiya hash va vakolatlari
-- Ta'sirlangan hisobvaraq, domen, aktiv, vazifa, qo'zg'atuvchi yoki konfiguratsiya ID
-- xom hodisa payload yoki uning kanonik hash
-- Ogohlantirishni boyitish uchun ishlatiladigan soʻrov darrovlari
-- Qoida nomi, versiyasi, chegara, ball va sharhlovchining qarori
+- voqealar oqimi nomi va kursor
+- blok balandligi yoki mavjud bo'lsa blok kriptografik xeshi
+- tranzaksiya kriptografik xash va vakolat hisobi
+- ta’sirlangan hisob, domen, aktiv, rol, tetiklovchi yoki konfiguratsiya ID si
+- xom voqea yuklamasi yoki uning kanonikli kriptografik xeshi
+- xabarnomani boyitish uchun foydalanilgan punkt-vaqt ma'lumotlari ko'rinishlarini so'rov qilish
+- qoidaning nomi, versiyasi, chegarasi, ball, va sharhlovchi qarori
 
-Agar siz tarmoqning ma'lumotlarni boshqarish siyosati aniq ruxsat bermaganicha, o'ziga xos tekshiruv notlarini ommaviy metadata sifatida saqlashingiz kerak emas. Agar siz zaxira tashqaridagi holatni zaxira bo'lgan holat bilan bog'lashingiz kerak bo'lsa, shaxsiy ma'lumotni oshkor etmaydigan holat identifikatorini, imzolangan guvohnomani yoki hash majburiyatini afzal ko'ring.
+Tarmoqning maʼlumotlarni boshqarish siyosati aniq ruxsat bermasa, sezgir tergov yozuvlarini jamoat blokcheyn reestri metamaʼlumotlari sifatida saqlamang. Agar sizga ulanishingiz kerak bo‘lsa zanjirdan tashqari holatni zanjirli holatga o'tkazishda, shaxsiy tafsilotlarni oshkor qilmaydigan holat identifikatori, imzolangan guvohnoma yoki kriptografik xesh kriptografik majburiyat qiymatini afzal ko'ring.
 
-## Amalga oshirishni tekshirish ro'yxati {#implementation-checklist}
+## Ishga tushirish ro'yxati {#implementation-checklist}
 
-- `/metrics` va operator yo'nalishlari uchun zarur bo'lgan telemetriya profilini qo'llash.
-- Siz kuzatayotgan ob'ektlar uchun tor filtrlar bilan Torii hodisa oqimlariga obuna bo'ling.
-- Monitor bo'shliqsiz qayta tiklanishi uchun hodisalar kursorlarini saqlang.
-- O'tkazib yuborilgan so'rovlarni muntazam jadvalga qo'shing.
-- Xavflar darajasini saqlang va ro'yxatlarni versiya nazoratli konfiguratsiyalarda qo'yish mumkin.
-- Avtomatik harakatlarni qo'llashdan oldin tarixiy bloklarga qarshi ogohlantirish qoidalarini sinab ko'ring.
-- Javob chora-tadbirlari uchun maxsus texnik hisobotlardan foydalaning.
-- Tekshiruv roli va ruxsatnomalarni qayta tiklanuvchi jadvalga ko'ra berish.
-- Hujjatlarga javob berish jarayoniga firibgarlik monitoringini ogohlantirishlarni kiritish.
+- `/metrics` va operator marshrutlari uchun kerakli telemetriya profilini yoqing.
+- Siz kuzatayotgan obyektlar uchun tor filtrlarga ega bo‘lgan Torii voqea oqimlariga obuna bo‘ling.
+- Kuzatuvchi bo‘shliqlarsiz davom eta olishi uchun voqea kursorlarini saqlang.
+- Oqimlarni muntazam jadval bo‘yicha sahifalangan so‘rovlar bilan uyg‘unlashtiring.
+- Xavf chegaralari va ruxsat berilgan ro‘yxatlarni versiya nazoratidagi konfiguratsiyada saqlang.
+- Avtomatlashtirilgan harakatlarni yoqishdan oldin test ogohlantirish qoidalarini tarixiy bloklarga nisbatan sinab ko‘ring.
+- Javob choralari uchun maxsus texnik hisoblardan foydalaning.
+- Vazifa va ruxsat berish huquqlarini takroriy jadval bo‘yicha ko‘rib chiqing.
+- Hodisaga javob berish jarayoniga firibgarlikni kuzatish ogohlantirishlarini kiriting.
 
-## Bogʻliq sahifalar {#related-pages}
+## Tegishli sahifalar {#related-pages}
 
-- [O'zgarishlar](/uz/blockchain/events.md)
-- [Filterlar](/uz/blockchain/filters.md)
+- [Tadbirlar](/uz/blockchain/events.md)
+- [Filtrlar](/uz/blockchain/filters.md)
 - [So'rovlar](/uz/blockchain/queries.md)
-- [Ruxsatnomalar](/uz/blockchain/permissions.md)
-- [Ishlab chiqarish va ko'rsatkichlar](/uz/guide/advanced/metrics.md)
-- [Torii oxirgi nuqtalari](/uz/reference/torii-endpoints.md)
-- [Operatsiyaviy xavfsizlik](/uz/guide/security/operational-security.md)
+- [Ruxsatlar](/uz/blockchain/permissions.md)
+- [Ijro etish va o‘lchovlar](/uz/guide/advanced/metrics.md)
+- [Torii API oxir nuqtalar](/uz/reference/torii-endpoints.md)
+- [Operatsion Xavfsizlik](/uz/guide/security/operational-security.md)

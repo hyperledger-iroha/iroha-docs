@@ -36,7 +36,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
 
 ## 试看 Taira 只阅读 {#try-taira-read-only}
 
-在同一个工作场所的现金库中,尝试公共诊断助理 Taira:
+在同一工作区检出目录中，尝试公共 Taira 诊断助手：
 
 ```bash
 cargo run --bin iroha -- taira doctor \
@@ -54,7 +54,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=5' \
   | jq -r '.items[] | [.id, .name, .total_quantity] | @tsv'
 ```
 
-在创建 `taira.client.toml`后,同一个二进制器可以对 Taira 执行签署的加拿大命令. 保持这些单元测试与普通的测试分开,因为它们需要采用水龙头资助的帐户和现场测试网可用性.
+在创建 `taira.client.toml`后,同一个二进制器可以对 Taira 执行已签名的 canary 命令. 保持这些单元测试与普通的测试分开,因为它们需要采用水龙头资助的帐户和现场测试网可用性.
 
 ## 使用 Rust 客户端盒 {#using-the-rust-client-crate}
 

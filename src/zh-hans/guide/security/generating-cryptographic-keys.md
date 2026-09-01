@@ -12,32 +12,25 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 
 ## 基本使用 {#basic-usage}
 
-From the Iroha source checkout:
+在 Iroha 源码检出目录中：
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-The parent directory must already exist. The target must be new or already
-owned by the current user, mode `0700`, free of symbolic links, and empty.
-`kagami` writes `public.key` and `private.key` with mode `0600` and does not
-print key material. With `--pop`, it also writes `pop.hex`.
+父目录必须已存在。目标目录必须是新目录或已归当前用户所有，权限模式为 `0700`，不含符号链接且为空。`kagami` 以 `0600` 模式写入 `public.key` 和 `private.key`，并且不会打印密钥材料。使用 `--pop` 时，它还会写入 `pop.hex`。
 
-`--out-dir` fails closed on platforms where Kagami cannot enforce these
-owner-only filesystem rules. The private-key file is an unencrypted export,
-not a hardware or non-exportable production signer. Import it into the
-approved custody boundary and remove the export according to the deployment's
-procedure.
+如果 Kagami 无法在某个平台上强制执行这些仅限所有者访问的文件系统规则，`--out-dir` 会以安全关闭方式拒绝操作。私钥文件是未加密的导出副本，并非硬件签名器或不可导出的生产签名器。请将其导入获准的托管边界，并按照部署规程删除该导出副本。
 
 ## 算法 {#algorithms}
 
-Common algorithms are:
+常用算法包括：
 
-- `ed25519` for client accounts and streaming identities.
-- `secp256k1` when a client account requires a secp256k1 identity.
-- `bls_normal` for every node or peer consensus identity.
+- `ed25519`：用于客户端账户和流式传输身份。
+- `secp256k1`：用于需要 secp256k1 身份的客户端账户。
+- `bls_normal`：用于每个节点或对等节点的共识身份。
 
-Check the exact algorithms supported by your build with:
+使用以下命令查看当前构建确切支持的算法：
 
 ```bash
 cargo run --bin kagami -- keys --help
@@ -45,8 +38,7 @@ cargo run --bin kagami -- keys --help
 
 ## 确定性开发密钥 {#deterministic-development-keys}
 
-For reproducible fixtures, pass a 32-byte seed encoded as 64 hexadecimal
-characters. An optional `0x` prefix is accepted:
+对于可复现的测试数据，请传入一个 32 字节的种子，并将其编码为 64 个十六进制字符。可以带上可选的 `0x` 前缀：
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 \
@@ -54,40 +46,28 @@ cargo run --bin kagami -- keys --algorithm ed25519 \
   --out-dir ./fixture-client-key
 ```
 
-The seed is private-key material. Use deterministic seeds only for local
-development and tests. Omit `--seed-hex` to generate a production key from
-operating-system randomness.
+种子属于私钥材料。确定性种子只能用于本地开发和测试。生成生产密钥时请省略 `--seed-hex`，以使用操作系统的随机源。
 
 ## BLS 共识密钥和持有证明 {#bls-consensus-keys-and-proofs-of-possession}
 
-Iroha 3 node and peer consensus identities use BLS-normal keys. Generate a
-BLS-normal key and proof-of-possession (PoP) with:
+Iroha 3 的节点和对等节点共识身份使用 BLS-normal 密钥。使用以下命令生成 BLS-normal 密钥和持有证明 (PoP)：
 
 ```bash
 cargo run --bin kagami -- keys --algorithm bls_normal --pop \
   --out-dir ./validator-key
 ```
 
-`--pop` is valid only with `bls_normal`; it adds `pop.hex` to the custody
-directory.
-Signed genesis requires a matching PoP for every voting validator. In peer
-configuration, a non-empty `trusted_peers_pop` map selects the validator
-subset; trusted peers omitted from that non-empty map are observers. If the map
-is empty, all BLS-normal trusted peers enter the bootstrap candidate set, with
-voter PoPs still supplied by signed genesis.
+`--pop` 仅可与 `bls_normal` 一起使用；它会在托管目录中添加 `pop.hex`。签名的创世配置要求每个投票验证器都有匹配的 PoP。在对等节点配置中，非空的 `trusted_peers_pop` 映射用于选择验证器子集；未列入该非空映射的受信任对等节点是观察者。如果映射为空，所有使用 BLS-normal 的受信任对等节点都会进入引导候选集，而投票者的 PoPs 仍由签名的创世配置提供。
 
-## Custody Output {#custody-output}
+## 托管输出 {#custody-output}
 
-`kagami keys` requires `--out-dir` and never writes private key material to
-standard output. Read `public.key`, `private.key`, and optional `pop.hex` from
-the generated directory. Each file contains one canonical value followed by a
-newline, which makes explicit file-based automation straightforward:
+`kagami keys` 要求提供 `--out-dir`，并且绝不会将私钥材料写入标准输出。请从生成的目录读取 `public.key`、`private.key` 以及可选的 `pop.hex`。每个文件都包含一个规范值，后跟一个换行符，因此可以直接实现显式的文件自动化：
 
 ```bash
 PUBLIC_KEY=$(tr -d '\n' < ./client-key/public.key)
 ```
 
-For full generated Kagami help:
+要获取完整生成的 Kagami 帮助：
 
 ```bash
 cargo run -p iroha_kagami -- advanced markdown-help > crates/iroha_kagami/CommandLineHelp.md

@@ -1,28 +1,28 @@
 ---
 translation_locale: az
 translation_source: /cookbook/submit-and-verify-transactions.md
-translation_source_hash: 01907ea433e711cb0b1aa327d46c44744aad0a7571a65430dddd7a8aed3df373
+translation_source_hash: 98e5c7e9db1ba8468cfd5409409b0e8d02251311dc85492f7b71675e983dc4fd
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Transaksiyaların təqdim edilməsi və təsdiqlənməsi {#submit-and-verify-transactions}
+# Əməliyyatları təqdim et və təsdiqlə {#submit-and-verify-transactions}
 
 ## Nəticə {#outcome}
 
-Taira əməliyyatı əvvəlcədən həyata keçirin, dəqiq bir ödəniş təklifini qəbul edin, imzalayın və göndərin, tətbiq olunmuş yekunluğu gözləyin və öhdəlik götürülmüş əməliyyatın hashlə yoxlanılmasını təmin edin.
+Bir Taira əməliyyatını əvvəlcədən yoxlayın, dəqiq ödəniş qiymətinin təxminini qəbul edin, imzalayın və göndərin, Tətbiq edilmiş sonluğun gözləyin və kriptoqrafik həş vasitəsilə yekunlaşmış əməliyyatı yoxlayın.
 
-## Əvvəlki şərtlər {#prerequisites}
+## Tələb olunan əvvəlcədən biliklər {#prerequisites}
 
-- [ tərəfindən istehsal olunan və maliyyələşdirilən `taira.client.toml`, `taira.tx-metadata.json` və `TAIRA_ACCOUNT_ID` Taira](./connect-to-taira.md) ilə əlaqə saxlanılır.
-- `iroha` CLI və `jq` axını.
-- Birbaşa istifadə edilə bilən Taira imzalanıcısı. Onun açarını və ya bu əmrləri Minamoto -də yazmaqdan çəkinin.
+- Maliyyələşdirilən `taira.client.toml`, `taira.tx-metadata.json` və `TAIRA_ACCOUNT_ID`, [Taira-ə qoşul](./connect-to-taira.md) tərəfindən istehsal olunub.
+- Cari `iroha` CLI və `jq`.
+- Bir dəfəlik istifadə olunan Taira kriptoqrafik imzalayıcı. Onun açarını və ya bu yazma əmrlərini Minamoto üzərində yenidən istifadə etməyin.
 
-## Dərslər {#steps}
+## Addımlar {#steps}
 
-### 1. Son nöqtə, səlahiyyət və ödəniş balansını əvvəlcədən təyin edin. {#_1-preflight-the-endpoint-authority-and-fee-balance}
+### 1. API son nöqtəsini, səlahiyyət prinsipalını və ödəniş balansını əvvəlcədən yoxlayın {#_1-preflight-the-endpoint-authority-and-fee-balance}
 
-İlk növbə sürətini oxuyun, sonra orqanın ödəniş balansının görünür olduğunu sübut edin. Bağlantı resepti tərəfindən yaradılan metadadan Base58 aktiv tərifini ID oxuyun.
+Əvvəlcə növbənin zaman nöqtəsi məlumat baxışını oxuyun, sonra təsdiqləyin ki, səlahiyyət prinsiplərinin ödəniş balansı görünəndir. Əlaqə resepti tərəfindən yaradılan metadatalardan Base58 aktiv-tərif ID-sini oxuyun.
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -38,11 +38,11 @@ iroha --config ./taira.client.toml ledger asset get \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-Hesab və ya ödəniş balansı yoxdursa, dayandırın. Müvafiq göstərici ödəniş edə bilmədiyi təqdirdə ödəniş haqqını qəbul edə bilməz.
+Hesab və ya ödəniş balansı yoxdursa dayanın. Ödənişi ödəmək səlahiyyəti olmayan bir təlimat, ödəniş qəbulunu keçə bilməz.
 
-### 2. Bir dəfə qeyd edin, imzalayın və göndərin {#_2-quote-sign-and-submit-once}
+### 2. Ödənişi hesabladın, imzalayın və bir dəfə təqdim edin {#_2-quote-sign-and-submit-once}
 
-CLI ödəniş qiymətləri üçün dəqiq imzalanmamış payload göndərir, qəbul edilmiş ödəmə niyyətini əməliyyatla bağlayır, imzalar və təqdim edir. JSON rejimi əməliyyat hashini, imzalanan əməliyyatı və qəbul edilmiş qiyməti birlikdə qaytarır.
+CLI dəqiq imzasız yükü ödəniş qiymətinə görə göndərir, qəbul edilmiş ödəniş niyyətini əməliyyata bağlayır, imzalayır və təqdim edir. JSON rejimi əməliyyatın kriptoqrafik xəşini, imzalanmış əməliyyatı və qəbul edilmiş təklifi birlikdə qaytarır.
 
 ```bash
 iroha --config ./taira.client.toml \
@@ -56,11 +56,11 @@ jq '{hash, fee_quote}' taira-submission.json
 TAIRA_TX_HASH="$(jq -er '.hash' taira-submission.json)"
 ```
 
-Bu reseptdə `--no-wait` istifadə etməyin. Komanda uğurlu bir qəbulu yazmadan əvvəl təsdiqlənməsini gözləyir.
+Bu reseptdə `--no-wait` istifadə etməyin. Əmr, uğurlu protokol nəticəsi qeydi yazmazdan əvvəl təsdiq gözləyir.
 
-### 3. Terminal boru kəmərinin vəziyyətini gözləyin {#_3-wait-for-terminal-pipeline-state}
+### 3. Terminal proqram təminatı işləmə vəziyyətinin tamamlanmasını gözləyin {#_3-wait-for-terminal-pipeline-state}
 
-HTTP qəbulundan və ya növbə girişindən uğur əldə etmək əvəzinə yazdırılmış status köməkçisini istifadə edin. `--wait` ilə təhlükəsiz istiqamət sahəsi avtomatik olaraq seçilir və standart hədəf tətbiq edilən yekunluqdır.
+HTTP qəbulundan və ya sıra qəbulundan uğuru çıxarmaq əvəzinə yazılmış status köməkçisini istifadə edin. `--wait` ilə təhlükəsiz yönləndirmə sahəsi avtomatik seçilir və standart hədəf Tətbiq edilmiş yekunluqdur.
 
 ```bash
 iroha --config ./taira.client.toml \
@@ -74,11 +74,11 @@ iroha --config ./taira.client.toml \
 jq . taira-final-status.json
 ```
 
-`Rejected` və `Expired` terminal uğursuzluqlardır, geri çəkilə bilən uğurlu vəziyyətlər deyil. Müqaviləni dəyişdirmədən və ya yenidən qurmadan əvvəl onların səbəbini qeyd edin.
+`Rejected` və `Expired` təkrar cəhd edilə bilən uğur vəziyyətləri deyil, son uğursuzluqlardır. Əməliyyatı dəyişdirmədən və ya yenidən qurmazdan əvvəl səbəblərini qeyd edin.
 
-### 4. Saxlanan əməliyyatı oxuyun. {#_4-read-the-stored-transaction}
+### 4. Saxlanmış əməliyyatı oxuyun {#_4-read-the-stored-transaction}
 
-Boru kəmərinin statusu işlənməsinin bitdiyini və bitmədiyini göstərir. Bir əməliyyat sorğusu qəbul edilmiş əməliyyatın eyni hash altında saxlandığını təsdiqləyir.
+Proqram təminatı işləmə iş axını statusu işləmənin bitib-bitmədiyini cavablandırır. Bir əməliyyat sorğusu qəbul edilmiş əməliyyatın eyni kriptoqrafik xas altında saxlanıldığını təsdiqləyir.
 
 ```bash
 iroha --config ./taira.client.toml \
@@ -89,7 +89,7 @@ iroha --config ./taira.client.toml \
 jq . taira-transaction.json
 ```
 
-Eksplorator ikinci, yalnız oxumaq üçün müşahidə sahəsidir. Bu, boru kəmərinin bitməsindən bir müddət geridə qala bilər.
+Kəşfiyyatçı ikinci, yalnız oxumaq üçün nəzərdə tutulmuş müşahidə səthidir. O, proqram təminatı emal iş axınının sonluğu qarşısında qısa müddət gecikə bilər.
 
 ```bash
 curl -fsS -H 'Accept: application/json' \
@@ -97,11 +97,11 @@ curl -fsS -H 'Accept: application/json' \
   | jq '{hash, block, status, authority, executable}'
 ```
 
-Dövlət dəyişdirmə təlimatı üçün, mutasiya edilmiş obyektin sorğusunu bitir. [Metadata](./metadata.md), [Fungible assets](./fungible-assets.md) və [NFTs](./nfts.md) reseptləri bu post-dövlət oxumalarını ehtiva edir.
+Dövlət dəyişdirən təlimat üçün dəyişdirilmiş obyektin sorğusu ilə başa çatdırın. [Metaməlumat](./metadata.md), [Mübadilə edilə bilən aktivlər](./fungible-assets.md) və [NFTs](./nfts.md) reseptləri həmin post-dövlət oxumalarını əhatə edir.
 
-## Tətbiq edin {#verify}
+## Yoxla {#verify}
 
-Hər üç qeydin eyni hash üzərində razılaşdığını yoxlayın və kəşfiyyatçı artıq gözləməyən bir vəziyyətdən xəbər vermir:
+Bütün üç qeydin eyni kriptoqrafik xəşdə razılaşdığını və tədqiqatçının artıq gözləmə vəziyyətini göstərmədiyini yoxlayın:
 
 ```bash
 test "$(jq -r '.hash' taira-submission.json)" = "$TAIRA_TX_HASH"
@@ -112,21 +112,21 @@ curl -fsS -H 'Accept: application/json' \
     '.hash == $hash and .status == "Committed"'
 ```
 
-Müraciət qəbulu və son statusunu sınaq sübutları kimi saxlayın. Onlarda imza açarı yox, ictimai əməliyyat materialı var.
+Təqdimat protokolu nəticəsi yazısını və son vəziyyəti test sübutu kimi saxlayın. Onlar imza açarı deyil, ictimai əməliyyat materialını əhatə edir.
 
-## Problemlərin həlli {#troubleshooting}
+## Problemlərin aradan qaldırılması {#troubleshooting}
 
-- HTTP `202` və ya növbədə olan status yalnız qəbul olduğunu sübut edir. tətbiq olunana, rədd edilənə, başa çatana və ya məhdud müddətə qədər tiplənmiş statusu seçməyə davam edin.
-- Bir hash qaytarıldıqdan sonra göndərmə vaxtları sona çatırsa, başqa bir əməliyyat qurmadan əvvəl bu hashdən soruşun. Kör yenidən göndərmə yeni bir sitat və imzalanmış pay yükü yaradır.
-- İmzalanmadan əvvəl bir ödəniş təklifini rədd etmək olar. `--fee-payer authority`, `gas_asset_id`, orqanın balansını və şəbəkə zəncirini yoxlayın ID.
-- `Rejected` ümumiyyətlə təlimatların təsdiqlənməsini, icazələrini, ödənişləri və ya köhnə vəziyyətini göstərir. Bu uğursuz icra edilməsinin güvənli sübutudur və nəqliyyatın yenidən sınağı kimi yenidən təsnif edilməlidir.
-- Bir kəşfiyyatçı `404` tətbiqdən dərhal sonra indeksləmə gecikməsi ola bilər. Oxunuşu yenidən sınayın; əməliyyatı yenidən təqdim etməyin.
-- Əgər xüsusi təlimat istehsal olunan lokal şəbəkədə işləyir, lakin Taira onu rədd edərsə, dəqiq Taira icazəsi və ya idarə edilən ad məkanı təyin etməsini alın.
+- HTTP `202` və ya növbədə olan status yalnız qəbul olunmağı təsdiqləyir. Tətbiq olunmuş, rədd edilmiş, müddəti bitmiş və ya məhdud zaman hüduduna çatana qədər yazılmış statusu yoxlamağa davam edin.
+- Təqdimetmə heş qaytardıqdan sonra vaxt aşımına uğrayarsa, başqa əməliyyat yaratmazdan əvvəl həmin heşi sorğulayın. Kor-koranə təkrar təqdimetmə ödənişi yenidən hesablanmış və imzalanmış yeni faydalı yük yaradır.
+- Ödəniş qiyməti təklifi imzalanmadan əvvəl rədd edilə bilər. `--fee-payer authority`, `gas_asset_id`, səlahiyyət verən şəxsin balansını və şəbəkə zənciri ID-sini yoxlayın.
+- `Rejected` adətən təlimatın doğrulanması, icazələr, ödənişlər və ya köhnəlmiş vəziyyəti göstərir. Bu, uğursuz icranın yekun sübutudur və onu çatdırılma təkrarına yenidən təsnifləşdirməmək lazımdır.
+- Bir kəşfiyyatçı `404` Tətbiq edildikdən dərhal sonra indeksləşdirmədə gecikmə ola bilər. Oxumağı yenidən sınayın; əməliyyatı yenidən təqdim etməyin.
+- Əgər üstünlük verilmiş əməliyyat yaradılmış localnet-də işləyirsə, lakin Taira onu rədd edirsə, dəqiq Taira icazəsini və ya tənzimlənmiş ad məkanının təyinini əldə edin. Lokal nəticə ictimai blokçeyn şəbəkəsi səlahiyyətini vermir.
 
 ## Mənbə və əlaqəli sənədlər {#source-and-related-docs}
 
-- [Əməliyyatların təqdim edilməsi və sabitləşdirilmiş öhdəlikdə ödəniş kvotası həyata keçirilməsi ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
-- [Əməliyyatın təsdiqlənməsi sınaqları bağlanmış komitdə](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/src/client.rs)
+- [Əməliyyat göndərilməsi və ödəniş-qiymət təklifinin sabitlənmiş mənbə kodu reviziyasında tətbiqi](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
+- [Əməliyyat təsdiqi tətbiqi və yoxlamaları pinlənmiş mənbə kodu reviziyasında](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/src/client.rs)
 - [Əməliyyatlar](/az/blockchain/transactions.md)
-- [CLI rəhbərliyi](/az/get-started/operate-iroha-via-cli.md)
-- [Torii son nöqtələri](/az/reference/torii-endpoints.md)
+- [CLI bələdçi](/az/get-started/operate-iroha-via-cli.md)
+- [Torii API son nöqtələr](/az/reference/torii-endpoints.md)

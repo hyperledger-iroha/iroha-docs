@@ -1,20 +1,20 @@
 ---
 translation_locale: my
 translation_source: /reference/iroha3d-cli.md
-translation_source_hash: d621aa09f50cb44cb99af372100f418c44c3714b879a556038e47598949a3a6f
+translation_source_hash: bf4a63b05a149f0c935190b63cdb838b0a0265e99baedfc9b5bf00a9e621b108
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # `iroha3d` CLI {#iroha3d-cli}
 
-`iroha3d` ဟာ စံချိန်တင် Iroha 3 peer daemon ပါ။ Cargo package ကို `irohad` လို့အမည်ပေးထားတော့ source checkout ကနေ binary ကိုခေါ်ယူပါ
+`iroha3d` သည် Iroha 3 network peer daemon ဖြစ်သည်။ Cargo package ကို `irohad` ဟုအမည်ပေးထားသည်၊ ထို့ကြောင့် ဘိုင်နရီကို အောက်ပါအတိုင်း source code အလုပ် copy မှခေါ်ယူပါ-
 
 ```shell
 cargo run -p irohad --bin iroha3d -- --config path/to/config.toml
 ```
 
-အများပြည်သူအတွက် Taira testnet အတွက် release image မှာ `iroha3d_taira` ကို သုံးပါတယ်။ တူညီသော CLI ကို လက်ခံသည်။ Taira ကွင်းဆက်၊ validator set၊ storage settings နဲ့ runtime signing keys တွေကိုလည်း ချမှတ်ပေးပါတယ်။ Taira Configuration ကို Runtime Credentials တွေ မဖွင့်ဘဲ အတည်ပြုပါ
+အများပြည်သူအတွက် Taira testnet အတွက် release image က `iroha3d_taira` ကို အသုံးပြုပါတယ်။ ၎င်းက တူညီတဲ့ CLI ကို လက်ခံပေမဲ့ ထပ်မံ single protocol-standard ကို ထိုးဖောက်ပေးတယ်။ Taira ကွင်းဆက်၊ validator, storage နှင့် runtime-signer profile ကိုဖွင့်ရန်။ ဤကဲ့သို့သော software execution environment credentials များကိုမဖွင့်ဘဲ Taira configuration ကိုစစ်ဆေးပါ။
 
 ```shell
 iroha3d_taira --sora \
@@ -22,28 +22,28 @@ iroha3d_taira --sora \
   --check-config
 ```
 
-အသုံးပြုမှုမတိုင်မီ operator က Canonical Taira profile ကို render လုပ်ရပါမယ်။ Check-in template မှာ Example Settings တွေရှိပါတယ် Operator က နမူနာ setting တစ်ခုစီကို အစားထိုးပေးရပါမယ်။ Taira နှင့် စမ်းသပ်ရာတွင် ယေဘုယျ Nexus သို့မဟုတ် ထုတ်လုပ်ရေး SoraFS သတ်မှတ်ချက်များကို မသုံးရပါ။
+Single protocol-standard ရဲ့ operator ရောင်ပြန်ကြားထားတဲ့ ပုံစံကို သုံးပါ။ Taira Profile: check-in template မှာ deployment placeholder တွေ ရှိနေဆဲပါ။ Nexus ဒါမှမဟုတ် ထုတ်လုပ်မှု SoraFS စစ်ဆေးရာတွင် setting များ Taira.
 
 ## `--config` {#arg-config}
 
 - အမျိုးအစား: ဖိုင်လမ်းကြောင်း
 - အမည်အမည်: `-c`
 
-[ peer configuration ](/my/reference/peer-config/index.md) သို့သွားသောလမ်းကြောင်း
+[ကွန်ရက် peer ဖွဲ့စည်းမှု](/my/reference/peer-config/index.md) သို့ လမ်းကြောင်း။
 
 ## `--genesis-manifest-json` {#arg-genesis-manifest-json}
 
 - အမျိုးအစား: ဖိုင်လမ်းကြောင်း
 
-သဘောတူညီချက် အတည်ပြုမှုအတွက် အသုံးပြုသော ရွေးချယ်စရာ မျိုးဆက်ထုတ်ပြန်ချက် JSON ။
+သဘောတူညီချက် အတည်ပြုမှုအတွက် အသုံးပြုသော ရွေးချယ်စရာ blockchain genesis technical manifest JSON။
 
 ## `--check-config` {#arg-check-config}
 
-ဖြေရှင်းထားတဲ့ ဖွဲ့စည်းပုံနဲ့ ရယူနိုင်တဲ့ ဂျင်းစီစ် ပစ္စည်းကို အတည်ပြုပြီး ကွန်ရက် ဆော့ကက်တွေ မချိတ်ဆက်ဘဲ ထွက်ပါ။
+ဖြေရှင်းထားတဲ့ ဖွဲ့စည်းပုံနဲ့ ရနိုင်တဲ့ blockchain genesis ပစ္စည်းကို အတည်ပြုပြီး ကွန်ရက် sockets တွေ မချိတ်ဆက်ဘဲ ထွက်ပါ။
 
 ## Kagemusha အရည်အချင်း တံဆိပ်များ {#kagemusha-qualification-seals}
 
-ဤဖိုင်လမ်းကြောင်းရွေးချယ်မှုများသည် `--check-config` ကိုလိုအပ်ပြီး တရားဝင် တံဆိပ်မရေးခင် Kagemusha အရည်အချင်းပြည့်စုံကိုပြုလုပ်သည်:
+ဒီဖိုင်လမ်းကြောင်းရွေးချယ်မှုများသည် `--check-config` ကိုလိုအပ်ပြီး တစ်ခုတည်းသော ပရိုတိုကောစံညွှန်း တံဆိပ်မရေးခင် Kagemusha အရည်အချင်းပြည့်စုံအောင်မြင်ခြင်း:
 
 - `--write-kagemusha-catalog-qualification-seal <PATH>` က စာရင်းကို အရည်အသွေးပေးတယ်။
 - `--write-kagemusha-validator-qualification-seal <PATH>` ကော်မတီက လက်မှတ်ထိုးထားတဲ့ တိုးမြှင့်မှု မှတ်ပုံတင်ချက်အတွက် ဒေသခံ အတည်ပြုသူကို သတ်မှတ်ပေးတယ်။
@@ -59,10 +59,10 @@ iroha3d_taira --sora \
 
 ## `--config-blake3` {#arg-config-blake3}
 
-- အမျိုးအစား - ၆၄ ဂဏန်း hexadecimal BLAKE3 digest
+- အမျိုးအစား: 64-digit hexadecimal value BLAKE3 cryptographic digest value
 - လိုအပ်ချက်များ: `--config`
 
-Configuration file bytes တွေကို ပေးပို့ထားတဲ့ digest နဲ့ ကိုက်ညီဖို့ တောင်းဆိုပါ။ integrity bound ဖိုင်ကို flat လုပ်ဖို့လိုပါတယ်။ `extends` မပါနိုင်ပါဘူး။
+Configuration file bytes တွေကို ပေးပို့ထားတဲ့ cryptographic digest value နဲ့ ကိုက်ညီအောင် တောင်းဆိုပါ။ integrity bound ဖိုင်ကို flat လုပ်ရပါမယ်၊ `extends` မပါနိုင်ပါဘူး။
 
 ## `--terminal-colors` {#arg-terminal-colors}
 
@@ -83,7 +83,7 @@ Daemon စာတိုများအတွက် အသုံးပြုသေ
 - အမျိုးအစား: အလံ
 - ပတ်ဝန်းကျင်: `IROHA_SORA_PROFILE`
 
-Sora Nexus Profile ကို Activate လုပ်ပါ။ ဒီပရိုဖိုင်မှာ SoraFS, SoraNet လက်ဆွဲခြင်းနဲ့ multi-lane သဘောတူညီချက်တွေကို သတ်မှတ်ထားတယ်။ ဒီအလံနဲ့ Taira လွှတ်တင်ကိရိယာကို အမြဲတမ်းခေါ်ယူပါ။
+SoraFS မှအသုံးပြုသော Sora Nexus ပရိုဖိုင်၊ SoraNet လက်ဆွဲခြင်းနှင့် multi-lane သဘောတူညီချက်များကို Activate လုပ်ပါ။ Taira လွှတ်တင်စက်ကို ဤအလံဖြင့်အမြဲတမ်းခေါ်ယူသည်။
 
 ## FastPQ အပိုဒ်များ {#fastpq-overrides}
 
@@ -105,6 +105,8 @@ iroha3d --fastpq-execution-mode gpu \
 
 ## ရလာသော အကူအညီ {#generated-help}
 
-အောက်ပါအပြည့်အစုံထုတ်လုပ်မှုသည် Iroha ပိတ်ထားတဲ့ အရင်းအမြစ် commit မှထုတ်လုပ်ထားသည်။
+အထက်ပါ option summary ကို လက်ရှိ `iroha3d` argument definition တွေနဲ့ စစ်ဆေးပါတယ်။ check-in လုပ်ထားတဲ့ help point-in-time data view ကို ၎င်းရဲ့ provenance status ကို စောင့်ဆိုင်းနေတုန်းမှာ ရည်ရွယ်ချက်အရ render မလုပ်ပါဘူး။ checkout အတွက် တိကျတဲ့ အကူအညီကို စစ်ဆေးဖို့ run:
 
-<<< @/snippets/iroha3d-help.md
+```shell
+cargo run --locked -p irohad --bin iroha3d -- --help
+```

@@ -1,29 +1,28 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/sora-nexus-services.md
-translation_source_hash: 0dcdda5185d25e113fb636b8b2aede6081ca8ee89b8b38c50b69fed88622df49
+translation_source_hash: 9fa38abe42ede1b40d92b79dfc7fb6fe8eae7375275a7a3e2bf22e05713026c7
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Serviços SORA Nexus {#sora-nexus-services}
+# SORA Nexus Serviços {#sora-nexus-services}
 
+SORA Nexus adiciona planos de serviço voltados para aplicativos em torno de Iroha 3. Esses serviços não são livros contábeis separados de blockchain. Eles são ancorados pelo estado mundial de Iroha, manifestos técnicos de Norito, registros de governança e famílias de rotas de Torii.
 
-SORA Nexus Adiciona aviões de serviço voltados para aplicativos em torno Iroha 3. Estes serviços não são registros separados, mas ancorados por Iroha Estado mundial, Norito Manifestos, registos de governança e Torii As famílias de rota.
+A disponibilidade depende da versão do nó e do perfil da rede. Use [`/openapi.json`](/pt/reference/torii-endpoints.md#app-and-sora-route-families) descobrir aplicativo gerado API rotas no nó de destino. Local público SoraFS CID e rotas bem conhecidas são montadas fora desse documento gerado, então verifique essas rotas diretamente ao checar uma implantação.
 
-A disponibilidade depende da construção do nó e do perfil da rede. [`/openapi`](/pt/reference/torii-endpoints.md#app-and-sora-route-families) para descobrir aplicações geradas...API rotas no nó de destino. local público SoraFS CID e rotas bem conhecidas são montadas fora desse documento gerado, por isso pesquise essas rotas diretamente ao verificar uma implantação.
+## Mapa de Componentes {#component-map}
 
-## Mapa de componentes {#component-map}
-
-|Componente |Função |Superfícies principais |
+|Componente|Função|Superfícies principais|
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-|Soracloud |Implementação de aplicações, serviços hospedados, modelo privado/estado de tempo de execução e controlo do ciclo de vida do serviço. |`/v1/soracloud/`, `/api/`, `iroha app soracloud ...` |
-|No interior .|Soracloud hospedado HTTP tempo de execução para revisões de serviço que necessitem de um avião HTTP ao vivo. |Soracloud Configuração de tempo de execução, anúncios de capacidade de hospedagem, replica do estado do tempo de execução |
-|SoraNet |Privacidade e sobreposição de transporte para circuitos, tráfego de relés, VPN, sessões de ligação e rotas de streaming. |Metadados da rota `/v1/connect/`, `/v1/vpn/`, SoraNet |
-|Disponibilidade de dados (DA) |Evidência de disponibilidade, compromisso e camada de intenção para cargas úteis referenciadas pelas vias Nexus, manifestos SoraFS e fluxos de prova. |`/v1/da/`, `FindDaPinIntent`, `[sumeragi.da]` |
-|SoraFS |Tecido de armazenamento com endereço de conteúdo para os manifestos, cargas úteis CAR, conteúdo fixado, captações de gateway e fluxos de prova de recuperabilidade. |`/v1/sorafs/`, `/sorafs/`, `FindSorafsProviderOwner` |
-|SoraDNS |Determinista de nomeação e camada de atestamento do resolutor para os serviços e conteúdos hospedados em SORA. |`/v1/soradns/`, `/soradns/`, eventos do diretório resolvedores |
-|Aitai |Corredor de liquidação fiduciária e de ativos no nível do aplicativo, apoiado por registos de custódia nativos, não por um livro maior separado. | `OpenAssetEscrow`, `FindAssetEscrow*`, `EscrowEventFilter`, Kotodama `escrow_*` edifícios |
+| Soracloud              |Implantação de aplicativos, serviços hospedados, estado privado do modelo/tempo de execução e controle do ciclo de vida do serviço.| `/v1/soracloud/*`, `/api/*`, `iroha soracloud service ...` |
+|Inrou|Ambiente HTTP hospedado no Soracloud para revisões de serviços que exigem um plano HTTP ativo.|Configuração do ambiente Soracloud, anúncios de capacidade do host e estado de execução das réplicas|
+| SoraNet                |Privacidade e sobreposição de transporte para circuitos, tráfego de relé, VPN, sessões de conexão e rotas de streaming.| `/v1/connect/*`, `/v1/vpn/*`, SoraNet metadados de rota|
+|Disponibilidade de Dados (DA)|Evidência de disponibilidade, compromisso e camada de intenção de pino para cargas úteis que são referenciadas por pistas de execução Nexus, manifestos técnicos SoraFS e fluxos de prova.| `/v1/da/*`, `FindDaPinIntent*`, `[nexus.da]`                                             |
+| SoraFS                 |Estrutura de armazenamento endereçada por conteúdo para manifestos técnicos, cargas CAR, conteúdo fixado, buscas de gateway e fluxos de prova de recuperabilidade.| `/v1/sorafs/*`, `/sorafs/*`, `FindSorafsProviderOwner` |
+| SoraDNS                |Camada de nomeação determinística e atestação de resolvedor para serviços e conteúdo hospedados em SORA.| `/v1/soradns/*`, `/soradns/*`, resolver eventos do diretório|
+|Aitai|Corredor da aplicação para liquidar moeda fiduciária e ativos, respaldado por registros nativos de garantia e não por outro livro-razão.| `OpenAssetEscrow`, `FindAssetEscrow*`, `EscrowEventFilter`, funções `escrow_*` incorporadas do Kotodama |
 
 ```mermaid
 flowchart LR
@@ -46,68 +45,68 @@ flowchart LR
     escrow --> ledger
 ```
 
-## Fluxos comuns {#common-flows}
+## Fluxos Comuns {#common-flows}
 
-### Aplicação Split hospedada {#hosted-split-application}
+### Aplicativo Dividido Hospedado {#hosted-split-application}
 
 Um aplicativo típico de plano misto usa todas as peças juntas:
 
-1. Os ativos estáticos do frontend são embalados e fixados em SoraFS.
-2. O anfitrião público, por exemplo `<app>.sora`, é registrado através de SoraDNS.
-3. As rotas Soracloud `/api/v1/search` ou `/api/v1/stream` para um serviço Inrou HTTP.
-4. As rotas Soracloud `/api/auth` e `/api/v1/user` para os manipuladores deterministas IVM.
-5. Os clientes que precisam de privacidade podem acessar o mesmo conteúdo ou a rota API através de um circuito SoraNet.
+1. Os arquivos estáticos do frontend são empacotados e fixados através do SoraFS.
+2. O host público, por exemplo `<app>.sora`, está registrado através de SoraDNS.
+3. Soracloud direciona `/api/v1/search` ou `/api/v1/stream` para um serviço Inrou HTTP.
+4. Soracloud direciona `/api/auth` e `/api/v1/user` para os manipuladores determinísticos IVM.
+5. Clientes que precisam de privacidade podem acessar o mesmo conteúdo ou rota API através de um circuito SoraNet.
 
-|Caminho .|Avião de apoio .|Porquê ?|
+|Caminho|Plano de suporte|Por que|
 | ----------------- | --------------------- | ------------------------------------------------- |
-| `/`               |SoraFS conteúdo estático |Reprodução de conteúdo root e gateway caching |
-|`/assets/*` |SoraFS conteúdo estático |Ativos direcionados ao conteúdo e provas de manifesto |
-|`/api/auth*` |Soracloud IVM |Reprodução segura de autor e desafio de carteira |
-|`/api/v1/user*` |Soracloud IVM |Mutações de estado sensíveis à governança |
-|`/api/v1/search*` |Soracloud Inrou |Serviço HTTP ao vivo, cache, SSE ou estado coletor |
+| `/`               | SoraFS conteúdo estático |Cache de raiz de conteúdo e gateway reproduzível|
+| `/assets/*`       | SoraFS conteúdo estático |Ativos endereçados por conteúdo e provas de manifesto técnico|
+| `/api/auth*`      | Soracloud IVM         |Estado de desafio seguro contra replay de autenticação e carteira|
+| `/api/v1/user*`   | Soracloud IVM         |Mutações estatais sensíveis à governança|
+| `/api/v1/search*` | Soracloud Inrou       |Serviço ao vivo HTTP, cache, SSE ou estado do coletor|
 
-### Publicação de conteúdo {#content-publication}
+### Publicação de Conteúdo {#content-publication}
 
-A publicação SoraFS produz artefatos duráveis antes de um nome apontar para eles:
+SoraFS a publicação produz artefatos duráveis antes que um nome aponte para eles:
 
-1. Construir uma carga útil ou um diretório.
-2. Encoste-o num arquivo CAR e um plano de pedaços.
-3. Construa um manifesto Norito com dados de política de pin e governança.
-4. Enviar o manifesto a Torii.
-5. Registrar uma intenção ou um compromisso de disponibilidade do pin DA quando o perfil-alvo requer evidências explícitas.
-6. Estabelecer o manifesto com um nome SoraDNS ou com uma rota estática de frente Soracloud.
+1. Construir um payload ou diretório.
+2. Empacote em um arquivo CAR e planeje em partes.
+3. Construa um manifesto técnico Norito com política de PIN e dados de governança.
+4. Envie o manifesto técnico para Torii.
+5. Registre uma intenção ou compromisso de disponibilidade de pino DA quando o perfil alvo exigir evidência explícita.
+6. Vincule o manifesto técnico a um nome SoraDNS ou a uma rota estática de frontend Soracloud.
 
-### Tráfego privado ou rota de transmissão {#private-fetch-or-streaming-route}
+### Rota Privada de Busca ou Streaming {#private-fetch-or-streaming-route}
 
-SoraNet pode sentar-se na frente de SoraFS ou Soracloud:
+SoraNet pode ficar à frente do SoraFS ou do Soracloud:
 
-1. O cliente resolve o nome ou o manifesto.
-2. Um diretório de guarda ou um manifesto de rota escolhe os relés de entrada e saída.
-3. O tráfego é revestido e enviado através do circuito SoraNet.
-4. O relevo de saída atinge a entrada SoraFS, o fluxo Torii ou a rota Soracloud.
+1. O cliente resolve o nome ou o manifesto técnico.
+2. Um diretório de guardas ou manifesto técnico de rota escolhe os relays de entrada e saída.
+3. O tráfego é preenchido e enviado através do circuito SoraNet.
+4. O relé de saída alcança o gateway SoraFS, o fluxo Torii ou a rota Soracloud.
 
 ## Aitai {#aitai}
 
-Aitai é o corredor de aplicativos SORA para a liquidação no mercado, onde um comprador e um vendedor coordenam um pagamento fora da cadeia enquanto Iroha controla a transacção. Custódia de ativos em cadeia. Deve utilizar a família nativa de instruções de custódia em vez de uma conta de custódie de propriedade contratual para novos fluxos de custódía numérica dos activos.
+Aitai é o corredor de aplicativos SORA para liquidações de mercado nas quais um comprador e um vendedor coordenam um pagamento fora da cadeia enquanto a Iroha mantém a custódia dos ativos na cadeia. Para novos fluxos de custódia de ativos numéricos, use a família de instruções de custódia nativas em vez de uma conta de custódia controlada por contrato.
 
-A fiança nativa mantém a custódia no livro de contabilidade. `OpenAssetEscrow`, O comprador aceita e marca o pagamento fora da cadeia com: `AcceptAssetEscrow` e `MarkEscrowPaymentSent`, e o vendedor liberta com `ReleaseAssetEscrow` Se o comprador e o vendedor não estiverem de acordo, qualquer das partes pode abrir uma disputa e resolver a questão com `CanResolveEscrowDispute` Pode dividir a quantidade bloqueada.
+O escrow nativo mantém a custódia no livro razão da blockchain. O vendedor abre uma oferta com `OpenAssetEscrow`, o comprador aceita e marca o pagamento off-chain com `AcceptAssetEscrow` e `MarkEscrowPaymentSent`, e o vendedor libera com `ReleaseAssetEscrow` ou cancela antes que o pagamento seja marcado. Se comprador e vendedor discordarem, qualquer uma das partes pode abrir uma disputa e um solucionador com `CanResolveEscrowDispute` pode dividir o valor bloqueado.
 
-Para o ciclo de vida inteiro, bloqueios genéricos de ativos, garantia anónima, consultas, eventos e exemplos Rust, ver [Reserva de ativos nativos ](/pt/blockchain/escrow.md).
+Para o ciclo de vida completo, bloqueios de ativos genéricos, custódia anônima, consultas, eventos e exemplos Rust, veja [Escrow de Ativo Nativo](/pt/blockchain/escrow.md).
 
-|Superfície Aitai |Usá-lo para |
+|Superfície Aitai|Use para|
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`                                                    |Ofertas de activos numéricos transparentes, incluindo fluxos de liquidação denominados em XOR. |
-| `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`       |As ofertas protegidas utilizam anexos de prova para financiamento e fechamento dos movimentos. |
-|`OpenEscrowDispute`, `ResolveEscrowDispute`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |Introdução a litígios e resolução judicial. |
-|`FindAssetEscrowById`, `FindAssetEscrowsBySeller`, `FindAssetEscrowsByBuyer`, `FindAssetEscrowsByStatus` |Páginas de status do aplicativo, funções de reconciliação e ferramentas de suporte. |
-|`EscrowEventFilter` |Subscrições de escrow transparentes ao vivo por identificação de escrow, vendedor, comprador, status ou tipo de evento. |
-| Kotodama `escrow_open_offer`, `escrow_accept`, `escrow_mark_payment_sent`, `escrow_release`, `escrow_cancel`, `escrow_open_dispute`, `escrow_resolve_dispute` |Kotodama ligações contratuais apoiadas pelos sistemas de custódia V1. |
+| `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`                                                    |Ofertas de ativos numéricos transparentes, incluindo fluxos de liquidação denominados em XOR.|
+| `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`       |Ofertas protegidas usam anexos de prova para movimentos de financiamento e fechamento.|
+| `OpenEscrowDispute`, `ResolveEscrowDispute`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute`                                                    |Entrada de disputa e resolução no estilo judicial.|
+| `FindAssetEscrowById`, `FindAssetEscrowsBySeller`, `FindAssetEscrowsByBuyer`, `FindAssetEscrowsByStatus`                                                      |Páginas de status do aplicativo, trabalhos de reconciliação e ferramentas de suporte.|
+| `EscrowEventFilter` |Assinaturas de depósito em garantia ao vivo por ID do depósito em garantia, vendedor, comprador, status ou tipo de evento.|
+| Kotodama `escrow_open_offer`, `escrow_accept`, `escrow_mark_payment_sent`, `escrow_release`, `escrow_cancel`, `escrow_open_dispute`, `escrow_resolve_dispute` | Kotodama chamadas de contrato garantidas pelos syscalls de escrow V1.                                 |
 
-Para uso público Taira ou Minamoto, trate a linha de pagamento fora da cadeia e qualquer fluxo de trabalho de suporte ou tribunal como política de aplicação. Iroha registra o estado de custódia, eventos do ciclo de vida, hashes de evidências e movimento final de ativos; não verifica a liquidação fiduciária por si só.
+Para uso público Taira ou Minamoto, trate o sistema de pagamento off-chain e qualquer fluxo de trabalho de suporte ou judicial como política do aplicativo. Iroha registra o estado de custódia, eventos do ciclo de vida, hashes criptográficos de evidências e o movimento final de ativos; ele não verifica a liquidação em moeda fiduciária por si só.
 
-## Verifique um Nodo alvo {#check-a-target-node}
+## Verificar um Nó de Destino {#check-a-target-node}
 
-Antes de usar exemplos desta página, confirme que a família de rotas existe no nó que você está direcionando:
+Antes de usar exemplos desta página, confirme se a família de rotas existe no nó que você está mirando:
 
 ```bash
 export TORII_URL=https://taira.sora.org
@@ -118,19 +117,17 @@ curl -fsS "$TORII_URL/openapi.json" \
 curl -fsS -H 'Accept: application/json' "$TORII_URL/status" | jq .
 ```
 
-Se o `/openapi.json` não for exposto pelo perfil, tente `/openapi`. A disponibilidade exacta da rota depende das características de construção e configuração da rede. O documento não enumera as rotas locais públicas SoraFS CID e conhecidas; verifique esses pontos finais diretamente como descrito abaixo.
+`/openapi.json` é o endpoint canônico OpenAPI API. A disponibilidade exata da rota depende dos recursos de compilação e da configuração da rede. O documento não enumera os SoraFS CID locais públicos e rotas conhecidas; verifique diretamente aqueles endpoints API, conforme descrito abaixo.
 
-### Taira Cheques de fumaça apenas para leitura {#taira-read-only-smoke-checks}
+### Taira Verificações de Fumaça Somente Leitura {#taira-read-only-smoke-checks}
 
-O endpoint público Taira é útil para as verificações do lado de leitura, mas não o use para exemplos de mutação a menos que esteja operando uma conta autorizada e pretenda alterar o estado da rede de teste pública.
+O endpoint público Taira API é útil para verificações do lado de leitura, mas não o utilize para exemplos de mutação a menos que você esteja operando uma conta autorizada e pretenda alterar o estado do testnet público.
 
 ```bash
 export TORII_URL=https://taira.sora.org
 
 curl -fsS -H 'Accept: application/json' "$TORII_URL/status" \
   | jq '{version: .build.version, peers, blocks, lanes: (.teu_lane_commit | length)}'
-
-curl -fsS "$TORII_URL/v1/connect/status" | jq '{enabled, sessions_active}'
 
 curl -fsS "$TORII_URL/v1/vpn/profile" \
   | jq '{available, relay_endpoint, supported_exit_classes}'
@@ -142,111 +139,127 @@ curl -fsS -H 'Accept: application/json' "$TORII_URL/v1/soracloud/status" \
   | jq '.control_plane | {service_count, services: [.services[] | {service_name, current_version}]}'
 ```
 
-A Taira pode expor rotas de plano de controlo específicas para a implantação que não estejam listadas no mapa de percurso da OpenAPI. Trate a `/openapi` como o contrato gerado para as rotas que contém, em seguida confirme diretamente antes de documentá-las como disponíveis as rotas locais e específicas para a implementação SoraFS.
+Taira pode expor rotas de plano de controle específicas da implantação que não estão listadas no mapa de caminhos OpenAPI. Trate `/openapi.json` como o contrato gerado para as rotas que ele contém e, em seguida, confirme diretamente as rotas locais SoraFS específicas da implantação e públicas antes de registrá-las como disponíveis.
 
 ## Soracloud {#soracloud}
 
-Soracloud é o plano de controle da aplicação SORA. Ele acompanha os pacotes de implantação, revisões de serviços, roteamento, estado de implementação, entradas de configuração autorizadas, segredos de serviço criptografados, registros do registo de modelos, sessões privadas de inferência e recibos de tempo de execução.
+Soracloud é o plano de controle de aplicação SORA. Ele rastreia pacotes de implantação, revisões de serviço, roteamento, estado de lançamento, entradas de configuração autorizadas, segredos de serviço criptografados, registros do registro de modelo, sessões de inferência privadas e registros de resultados de protocolo de tempo de execução de software.
 
-Soracloud utiliza dois aviões de execução:
+Soracloud utiliza dois planos de execução:
 
-|Avião de execução |Tempo de execução .|Usá-lo para |
+|Plano de execução|tempo de execução de software|Use-o para|
 | ---------------------- | ------- | -------------------------------------------------------------------------------------------- |
-|`DeterministicService` |`Ivm` |Autoria, estado do cofre, leituras certificadas, gestores de caixas de correio ordenados, mutações sensíveis à governança |
-|`HttpService` |`Inrou` |Live HTTP APIs, trabalho pesado de colecionador, serviços com cache-backed, SSE, fluxos assistidos por navegador |
+| `DeterministicService` | `Ivm`   |Autenticação, estado do cofre, leituras certificadas, manipuladores de caixa de correio ordenados, mutações sensíveis à governança|
+| `HttpService`          | `Inrou` |Ao vivo HTTP APIs, trabalho pesado de coletor, serviços com cache, SSE, fluxos assistidos pelo navegador|
 
-O plano de controle é autoritário. Deploy, upgrade, rollback, config, secret, model e status comandos enviam através Torii e ler estado mundial comprometido; eles não dependem de um espelho local separado CLI . O roteamento público é baseado no prefixo mais longo, de modo que um host registado pode dividir o tráfego entre as rotas HTTP hospedadas e as rotas determinísticas API.
+O plano de controle é autoritativo. Comandos de implantar, atualizar, reverter, configurar, segredo, modelo e status são enviados através de Torii e leem o estado mundial comprometido; eles não dependem de um espelho local separado CLI. O roteamento público é baseado no prefixo mais longo, portanto, um host registrado pode dividir o tráfego entre rotas hospedadas HTTP e rotas determinísticas API.
 
-### Escafar um aplicativo dividido {#scaffold-a-split-app}
+### estrutura inicial gerada de um App Dividido {#scaffold-a-split-app}
 
-O modelo de aplicativo dividido cria um frontend estático mais um hospedado ao vivo API e um serviço determinístico vault/API:
+O modelo split-app cria um frontend estático mais um serviço ao vivo hospedado API e um serviço de cofre determinístico/API:
 
 ```bash
-iroha app soracloud app init \
+iroha soracloud app init \
   --template split-app \
   --app-name solswap_indexer \
   --app-version 0.1.0 \
   --public-host solswap-indexer.sora \
   --output-dir ./apps/solswap-indexer
 
-iroha app soracloud app local-plan \
+iroha soracloud app plan \
   --manifest ./apps/solswap-indexer/app_manifest.json
 
-iroha app soracloud app doctor \
+iroha soracloud app doctor \
   --manifest ./apps/solswap-indexer/app_manifest.json
 ```
 
-`local-plan` imprime a divisão de rota, os manifestos de serviço infantil, os caminhos do script do espaço de trabalho e o modo de publicação esperado no frontend. `doctor` valida o contrato de lançamento local antes que você envolva Torii.
+`plan` mostra a divisão das rotas, os manifestos dos serviços filhos, os caminhos dos scripts do espaço de trabalho e o modo esperado de publicação do frontend. `doctor` valida o contrato de lançamento local antes de envolver a Torii.
 
-### Estabelecer e inspecionar o estado da aplicação {#deploy-and-inspect-app-state}
+### Implantar e Inspecionar Estado do App {#deploy-and-inspect-app-state}
+
+Reutilize uma futura época de retenção SoraFS para cada tentativa de lançamento. Como o modelo de aplicativo dividido contém um serviço Inrou, qualifique seu artefato exato nas lojas de provedor offline selecionadas antes da mutação online:
 
 ```bash
 export SORACLOUD_TORII_URL=https://<soracloud-enabled-torii>
+export SORAFS_RETENTION_EPOCH=<future-unix-seconds>
 
-iroha app soracloud app deploy \
+iroha soracloud app preseed \
   --manifest ./apps/solswap-indexer/app_manifest.json \
+  --sorafs-retention-epoch "$SORAFS_RETENTION_EPOCH" \
+  --inrou-preseed-target <validator-account,peer-id,absolute-store-path> \
+  --inrou-preseed-max-capacity-bytes <bytes> \
+  --inrou-preseed-helper /absolute/path/to/sorafs-node \
+  --inrou-preseed-helper-sha256 <lowercase-sha256> \
+  --receipt-out /absolute/path/to/solswap-inrou-preseed.json
+
+iroha soracloud app release \
+  --manifest ./apps/solswap-indexer/app_manifest.json \
+  --sorafs-retention-epoch "$SORAFS_RETENTION_EPOCH" \
+  --inrou-preseed-receipt /absolute/path/to/solswap-inrou-preseed.json \
   --torii-url "$SORACLOUD_TORII_URL"
 
-iroha app soracloud app status \
+iroha soracloud app status \
   --manifest ./apps/solswap-indexer/app_manifest.json \
   --torii-url "$SORACLOUD_TORII_URL"
 ```
 
-Para um serviço já implantado, utilize comandos de escala de serviço:
+Repita `--inrou-preseed-target` para cada loja de provedor exigida pela política de implantação. `release` cria e sincroniza os manifestos técnicos, executa o app doctor, submete uma mutação de infraestrutura de aplicativo canônica, reconcilia o status autorizado e verifica os alvos ativos declarados. Um registro de resultado do protocolo preseed não é opcional quando o aplicativo contém artefatos Inrou.
+
+Para um serviço já implantado, use comandos com escopo de serviço:
 
 ```bash
-iroha app soracloud status \
+iroha soracloud service status \
   --service-name solswap_indexer_live \
   --torii-url "$SORACLOUD_TORII_URL"
 
-iroha app soracloud rollback \
+iroha soracloud service rollback \
   --service-name solswap_indexer_live \
   --target-version 0.1.0 \
   --torii-url "$SORACLOUD_TORII_URL"
 ```
 
-### Material config e secreto {#config-and-secret-material}
+### Configuração e Material Secreto {#config-and-secret-material}
 
-As entradas config e secretas Soracloud fazem parte do estado de implantação autorizado. Deploy, upgrade e rollback falham fechados quando as configurações ou ligações secretas necessárias faltam ou são inconsistentes com os manifestos ativos.
+Soracloud entradas de configuração e segredo fazem parte do estado de implantação autorizado. Implantação, atualização e reversão falham de forma segura quando bindings de configuração ou segredo necessários estão ausentes ou inconsistentes com os manifests técnicos ativos.
 
 ```bash
-iroha app soracloud config-set \
+iroha soracloud service config-set \
   --service-name solswap_indexer_live \
   --config-name indexer/public_config \
   --value-file ./config/public-config.json \
   --torii-url "$SORACLOUD_TORII_URL"
 
-iroha app soracloud secret-set \
+iroha soracloud service secret-set \
   --service-name solswap_indexer_live \
   --secret-name indexer/api_key \
   --secret-file ./secrets/api-key.envelope.json \
   --torii-url "$SORACLOUD_TORII_URL"
 ```
 
-Usar a ajuda CLI para obter as bandeiras de credenciais exatas exigidas pelo seu perfil:
+Use a ajuda CLI para os indicadores de credenciais exatos exigidos pelo seu perfil:
 
 ```bash
-iroha app soracloud config-set --help
-iroha app soracloud secret-set --help
+iroha soracloud service config-set --help
+iroha soracloud service secret-set --help
 ```
 
 ## Inrou {#inrou}
 
-Inrou é o tempo de execução HTTP hospedado usado por Soracloud. Um nó Iroha com os projetos de tempo de execução embutidos Soracloud admitidos no estado Soracloud para um O plano de materialização local, inicia as réplicas do serviço hospedado atribuídas como serviços loopback e relata o estado da replicação em tempo de execução de volta para o modelo autoritário.
+Inrou é o tempo de execução de software hospedado HTTP usado por Soracloud. Um nó Iroha com o tempo de execução de software Soracloud incorporado projeta o estado Soracloud admitido em um plano de materialização local, inicia réplicas de serviço hospedado designadas como serviços de loopback e relata o estado de execução do software da réplica de volta ao modelo autoritário.
 
-Use o Inrou para cargas de trabalho que necessitam de uma superfície HTTP ao vivo, tais como fluxos pesados no coletor APIs, SSE, processadores com cache ou serviços assistidos pelo navegador.
+Use o Inrou para cargas de trabalho que precisam de uma superfície HTTP ativa, como APIs intensivos em coletores, fluxos SSE, manipuladores com cache ou serviços assistidos por navegador.
 
-### Requisitos relativos ao tempo de execução {#runtime-requirements}
+### Requisitos de tempo de execução de software {#runtime-requirements}
 
-- O tempo de execução do manifesto de contêineres deve ser `Inrou`.
-- O plano de execução do manifesto de serviço deve ser `HttpService`.
-- O `HttpService + Inrou` requer exatamente um `PersistentRootLeaseVolume` montado no `/`.
-- Os serviços Inrou replicados também precisam de um serviço compartilhado ou armazenamento confidencial de arrendamento quando mantêm o estado compartilhado mutável.
+- O tempo de execução do software do manifesto técnico do contêiner deve ser `Inrou`.
+- O plano de execução do manifesto técnico de serviço deve ser `HttpService`.
+- `HttpService + Inrou` requer exatamente um `PersistentRootLeaseVolume` montado em `/`.
+- Os serviços Inrou replicados também precisam de serviço compartilhado ou armazenamento de locação confidencial quando mantêm estado compartilhado mutável.
 - Os nós de hospedagem de produção devem anunciar a capacidade real do Inrou em vez de operar apenas como um proxy.
 
-### Fragmento Manifestado {#manifest-fragment}
+### fragmento de manifesto técnico {#manifest-fragment}
 
-O exemplo abaixo mostra a forma dos dois manifestos. É um fragmento, não um conjunto completo de implantação.
+O exemplo abaixo mostra a forma dos dois manifests técnicos. É um fragmento, não um pacote de implantação completo.
 
 ```jsonc
 // container_manifest.json
@@ -320,7 +333,7 @@ O exemplo abaixo mostra a forma dos dois manifestos. É um fragmento, não um co
 }
 ```
 
-No período de execução, cada volume montado do arrendamento é exposto através de variáveis ambientais derivadas do nome do volume:
+Durante a execução do software, cada volume de licença montado é exposto por meio de variáveis de ambiente derivadas do nome do volume:
 
 ```text
 SORACLOUD_LEASE_VOLUME_ROOT_DISK_DIR
@@ -331,13 +344,13 @@ SORACLOUD_LEASE_VOLUME_INDEX_STATE_MOUNT_PATH
 
 ## SoraNet {#soranet}
 
-SoraNet é a camada de privacidade e transporte que fornece rotas baseadas em relés para o tráfego que não devem se conectar diretamente ao gateway ou serviço-alvo. O projeto de transporte usa funções de relevo de entrada, meio e saída, transporte QUIC, um aperto de mão híbrido baseado em ruído, negociação de capacidade, metadados do diretório de relevo e células revestidas de tamanho fixo.
+SoraNet é a camada de privacidade e transporte. Ela fornece rotas baseadas em retransmissão para o tráfego que não deve se conectar diretamente ao gateway ou serviço alvo. O design de transporte utiliza funções de retransmissão de entrada, intermediária e de saída, transporte QUIC, um handshake híbrido baseado em ruído, negociação de capacidades, metadados de diretório de retransmissão e células preenchidas de tamanho fixo.
 
-No Nexus implantações, SoraNet pode transportar retalhos de conteúdo, tráfego de gateway, VPN ou sessões Connect, e Norito As entradas do diretório podem marcar relés que suportam o `norito-stream`, o que permite aos clientes preferir rotas adequadas para Torii RPC ou o tráfego de streaming.
+Em implantações Nexus, SoraNet pode transportar buscas de conteúdo, tráfego de gateway, VPN ou sessões Connect, e rotas de streaming Norito. Entradas de diretório podem marcar relays que suportam `norito-stream`, o que permite que os clientes prefiram rotas adequadas para Torii RPC ou tráfego de streaming.
 
-### Configuração de streaming {#streaming-configuration}
+### Configuração de Streaming {#streaming-configuration}
 
-O perfil Nexus permite o provisionamento de SoraNet para as rotas de transmissão:
+O perfil Nexus habilita o provisionamento SoraNet para rotas de streaming:
 
 ```toml
 [streaming]
@@ -354,11 +367,11 @@ provision_window_segments = 4
 provision_queue_capacity = 256
 ```
 
-Use `access_kind = "read-only"` para as rotas de conteúdo que não exigem autenticação do espectador. Use `authenticated` quando o relevo de saída deve fazer cumprir os bilhetes ou a identidade do espectador antes de se conectar com Torii ou um serviço hospedado.
+Use `access_kind = "read-only"` para rotas de conteúdo que não exigem autenticação do visualizador. Use `authenticated` quando o relé de saída deve aplicar tickets ou a identidade do visualizador antes de conectar a Torii ou a um serviço hospedado.
 
-### SoraNet-Consciente SoraFS Trazer {#soranet-aware-sorafs-fetch}
+### SoraNet-Consciente SoraFS Buscar {#soranet-aware-sorafs-fetch}
 
-A Comissão SoraFS trazer CLI pode emitir um local proxy manifesto e bobina SoraNet Metadados de rota para extensões do navegador ou SDK O orquestrador. JSON deve definir `local_proxy` com `"emit_browser_manifest": true`, e o CLI devem ser construídas com `local-quic-proxy` Apoio. Taira, inspeccionar o catálogo do prestador admitido na raiz pública da rede de teste, em seguida, preencher o tuple do prestador protegido emitido para esse prestador:
+O SoraFS fetch CLI pode emitir um manifesto técnico de proxy local e enfileirar SoraNet metadados de rota para extensões de navegador ou SDK adaptadores. O orquestrador JSON deve definir `local_proxy` com `"emit_browser_manifest": true`, e o CLI deve ser construído com suporte a `local-quic-proxy`. Em Taira, inspecione o catálogo de provedores admitidos na raiz do testnet público, em seguida, preencha a tupla de provedores protegida emitida para esse provedor:
 
 ```bash
 export TAIRA_ROOT=https://taira.sora.org
@@ -386,132 +399,127 @@ cargo run -p sorafs_orchestrator --features=local-quic-proxy --bin=sorafs_cli --
   --retry-budget=4
 ```
 
-Os relatórios do fornecedor de registos resumidos, recibos em pedaços, metadados proxy locais e as configurações efetivas da rota usadas para a busca.
+O provedor de registros resumidos relata, os registros de resultado do protocolo de fragmentos, os metadados do proxy local e as configurações de rota efetivas usadas para a busca.
 
-### Lista de Verificadores de Incentivos para Relais {#relay-incentive-verifier-roster}
+### Lista de Verificadores de Incentivo de Revezamento {#relay-incentive-verifier-roster}
 
-A ingestão de incentivos ao relé rejeita as provas a menos que todas as verificações exigidas sejam bem-sucedidas. `incentives.enable` É verdade. `incentives.trusted_verifier_ids` deve conter pelo menos um relato canônico ID. A lista nunca deve exceder 64 inscrições, mesmo que os incentivos estejam desactivados. O runtime armazena-o como um conjunto ordenado determinista, e rejeita a geometria inválida do roster durante a inicialização do relevo.
+A ingestão de incentivo de retransmissão está com falha fechada. Quando `incentives.enable` for verdadeiro, `incentives.trusted_verifier_ids` deve conter pelo menos um ID de conta canônico. A lista nunca deve exceder 64 entradas, mesmo quando os incentivos estão desativados. O tempo de execução do software o armazena como um conjunto ordenado determinístico e rejeita a geometria de lista inválida durante a inicialização do relé.
 
-Cada `RelayBandwidthProofV1` é decodificado sob um quadro fixo/orçamento de atribuição e deve consumir o quadro completo. A conta verificadora da prova deve estar presente na lista configurada, e `RelayBandwidthProofV1::verify_signature()` deve ser bem sucedida, antes que o relay bloqueie ou mude seu acumulador de desempenho. O relevo ignora um assinante não confiável ou uma prova de que a assinatura é inválida/manipulada. Tal prova não adiciona qualquer medida e não pode produzir um instantâneo de incentivo.
+Cada `RelayBandwidthProofV1` é decodificado sob um orçamento fixo de quadro/alocação e deve consumir o quadro completo. A conta do verificador da prova deve estar presente na lista configurada, e `RelayBandwidthProofV1::verify_signature()` deve ser bem-sucedido, antes que o relé bloqueie ou altere seu acumulador de desempenho. Um signatário criptográfico não confiável ou uma prova com assinatura inválida/adulterada, portanto, não contribui com nenhuma medição e não pode produzir um instantâneo de incentivo.
 
-## Disponibilidade de dados (DA) {#data-availability-da}
+## Disponibilidade de Dados (DA) {#data-availability-da}
 
-DA é a camada de evidência da disponibilidade para cargas úteis que são muito grandes, demasiado sensíveis à privacidade ou muito específicas do serviço para colocarem-se diretamente no estado mundial. Ele registra compromissos deterministas e obrigações de recuperação para que os validadores, gateways e clientes possam concordar sobre quais bytes foram prometidos, qual é a política aplicável e quais evidências foram observadas.
+DA é a camada de evidência de disponibilidade para cargas úteis que são grandes demais, muito sensíveis à privacidade ou muito específicas do serviço para serem colocadas diretamente no estado do mundo. Ele registra compromissos determinísticos e obrigações de recuperação para que validadores, gateways e clientes possam concordar sobre quais bytes foram prometidos, qual política se aplica e quais evidências foram observadas.
 
-O DA não substitui o Kura nem o SoraFS:
+DA não substitui Kura ou SoraFS:
 
-- Kura armazena os dados de recuperação de blocos finalizados e de consenso.
-- SoraFS armazena e serve bytes com endereço de conteúdo, cargas úteis CAR e manifestos.
-- DA registra compromissos, políticas de prova, aberturas de prova e intenções de pin que permitem que esses bytes sejam agendados, auditados e ligados ao estado do livro.
+- Kura armazena o fluxo de blocos finalizado e os dados de recuperação de consenso.
+- SoraFS armazena e fornece bytes endereçados por conteúdo, CAR cargas úteis e manifestos técnicos.
+- DA registra compromissos, políticas de prova, aberturas de prova e intenções de PIN que permitem que esses bytes sejam programados, auditados e vinculados de volta ao estado do livro razão do blockchain.
 
-Usar DA quando um aplicativo ou uma faixa Nexus precise de uma promessa visível no livro-razão de que os dados fora da cadeia continuam a ser recuperáveis. Exemplos comuns incluem compromissos de carga útil na faixa para fluxos de liquidação, intenções de pin SoraFS para conteúdo publicado, Pacotes de provas que devem ser conservados para verificação posterior, e artefatos de aplicação cujo estado público deve ser um digesto em vez da carga útil completa.
+Use DA quando um aplicativo ou pista de execução Nexus precisar de uma promessa visível no livro razão de que os dados fora da cadeia continuarão recuperáveis. Exemplos comuns incluem compromissos de carga útil da pista de execução para fluxos de liquidação, intenções de fixação SoraFS para conteúdo publicado, pacotes de prova que devem ser mantidos para verificação posterior, e artefatos de aplicação cujo estado público deve ser um valor de resumo criptográfico em vez do payload completo.
 
 ### Ciclo de vida {#lifecycle}
 
-|Estágio .|O que é registrado |
+|Palco|O que está registrado|
 | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-|Intenção .|Um bilhete, referência manifesto, alias, referência de faixa/epoca/sequência, política de retenção ou alvo de replicação. |
-|Compromisso |Digestar material que liga o manifesto, carregamento de faixa útil, comprovação ou raiz do conteúdo ao registro visível no livro. |
-|Evidências .|Votos de disponibilidade, aberturas de prova, atestados de fornecedores ou outras provas específicas do perfil aceitas pela rede-alvo. |
-|Pergunta .|Pesquisas de fixação por meio de `FindDaPinIntentByTicket`, `FindDaPinIntentByManifest`, `FindDaPinIntentByAlias` ou `FindDaPinIntentByLaneEpochSequence`. |
+|Intenção|Um tíquete, referência de manifesto técnico, alias, referência de pista/época/sequência, política de retenção ou destino de replicação.|
+|Compromisso|Material de resumo que vincula o manifesto, a carga útil da via, o pacote de provas ou a raiz do conteúdo ao registro visível na cadeia.|
+|Evidência|Votos de disponibilidade, aberturas de prova, atestações de provedores ou outras evidências específicas do perfil aceitas pela rede alvo.|
+|Consulta|Pesquisas por intenção de pin através de `FindDaPinIntentByTicket`, `FindDaPinIntentByManifest`, `FindDaPinIntentByAlias` ou `FindDaPinIntentByLaneEpochSequence`.|
 
 Um fluxo de publicação típico apoiado por DA é:
 
-1. Construir ou receber a carga útil fora da WSV, por exemplo, um arquivo SoraFS CAR ou uma carga útil na faixa Nexus.
-2. Descrever a carga útil em um manifesto Norito ou registro de compromisso específico da rota.
-3. Enviar o manifesto, a intenção do pin ou o compromisso através de `/v1/da/*` quando essa família de rotas estiver habilitada, ou através do caminho de transacção assinado da rede.
-4. Permitir que os validadores ou prestadores de disponibilidade recolham as provas exigidas pela política de prova ativa.
-5. Pergunte a intenção ou o compromisso do pin resultante antes de promover um alias, prova de liquidação ou rota de gateway que depende da carga útil.
+1. Construa ou receba a carga útil fora do WSV, por exemplo, um arquivo SoraFS CAR ou uma carga útil da pista de execução Nexus.
+2. hash criptográfico e descrever o payload em um manifesto técnico Norito ou registro de compromisso específico da rota.
+3. Envie o manifesto técnico, a intenção de fixar ou o compromisso através de `/v1/da/*` quando aquela família de rotas estiver habilitada, ou através do caminho de transação assinada da rede.
+4. Permita que validadores ou provedores de disponibilidade coletem as evidências exigidas pela política de prova ativa.
+5. Consulte a intenção ou compromisso do pino resultante antes de promover um alias, prova de liquidação ou rota de gateway que dependa do payload.
 
-### Modelo algorítmico {#algorithmic-model}
+### Modelo Algorítmico {#algorithmic-model}
 
-DA transforma uma carga útil em um compromisso assinado, protegido pela repetição, indexado por blocos. Os algoritmos importantes são deterministas para que os validadores e gateways possam recomputar os mesmos digestos dos mesmos bytes.
+DA transforma uma carga útil em um compromisso assinado, protegido contra repetição e indexado por blocos. Os algoritmos importantes são determinísticos, para que validadores e gateways possam recalcular os mesmos resumos criptográficos a partir dos mesmos bytes.
 
-1. Canonizar a carga útil submetida. Torii aceita um pedido de ingestão com `(lane_id, epoch, sequence)`, bytes da carga útil, metadados de compressão, tamanho do pedaço, perfil de apagamento, Política de retenção e assinatura do enviador. O nó descomprime as cargas úteis gzip, deflate ou Zstandard quando solicitado, verificando então que o comprimento de byte canônico é igual a `total_size`.
-2. Validar os parâmetros de faixa e pedaço. A faixa deve existir no catálogo de faixa Nexus. `chunk_size` deve ter uma potência não zero de dois, pelo menos dois bytes, e não superior ao máximo configurado. O perfil de apagamento deve incluir fragmentos de dados e, pelo menos, dois fragmentos de paridade. O catálogo da faixa seleciona o esquema de prova `merkle_sha256` ou `kzg_bls12_381`.
-3. Aplicar a política da rede. O nó impõe a linha de base de replicação e retenção configurada para a classe blob. Os metadados públicos devem permanecer em texto simples; os metadados apenas de governança são criptografados com a chave de metadados de governância configurada do nó antes de serem escritos no manifesto.
-4. A carga útil canónica é dividida num perfil de tamanho fixo derivado do `chunk_size`. Torii computa a digestão da carga útil, a raiz da árvore de prova de recuperabilidade e os compromissos por pedaço. BLAKE3 compromissos sobre os seus bytes.
-5. Adicionar compromissos de exclusão. `data_shards`. As células que faltam na faixa final são empolhadas para o cálculo da paridade. RS(16) paridade cria linhas de paridade global; opcional `row_parity_stripes` adicionar a paridade de faixa em estilo coluna através da matriz. BLAKE3 Digestões de amêndoas `u16` Os símbolos.
-6. Construir o manifesto. `DaManifestV1` registra a faixa, época, classe de manchas, codec, digest da carga útil, raiz de pedaço, tamanho do pedaço, perfil de apagamento, política de retenção, cotização de aluguel, compromissos no pedaço, compromisso opcional IPA, metadados e tempo de emissão. . O bilhete de armazenamento é determinista: o nó primeiro hashes um modelo do manifesto com um bilhete vazio, em seguida, escreve essa impressão digital como a final `storage_ticket`.
-7. Rejeitar conflitos de reprodução. A chave de reprodução é `(lane_id, epoch, sequence, manifest_fingerprint)`. Um duplicado com a mesma impressão digital é idempotente. Uma sequência obsoleta ou a mesma seqüência com uma impressão digital diferente é rejeitada.
-8. Emitir artefatos assinados. Torii calcula um compromisso de PDP, assina um `DaIngestReceipt`, constrói um `DaCommitmentRecord` e escreve artefatos de bobina para o manifesto; PDP compromisso, registro de compromisso, cronograma de compromissos, intenção do pin, arquivo de recibo e registro de receitas. O cursor de receita avança monotonicamente por `(lane_id, epoch)`.
+1. Normalize a carga útil enviada em forma canônica. Torii aceita uma solicitação de ingestão com `(lane_id, epoch, sequence)`, bytes da carga útil, metadados de compressão, tamanho do fragmento, perfil de apagamento, política de retenção e assinatura do remetente. O nó descompacta cargas gzip, deflate ou Zstandard quando solicitado e então verifica se o comprimento canônico em bytes é igual a `total_size`.
+2. Validar os parâmetros de pista de execução e bloco. A pista de execução deve existir no catálogo de pistas de execução Nexus. `chunk_size` deve ser uma potência de dois diferente de zero, de pelo menos dois bytes, e não maior do que o máximo configurado. O perfil de apagamento deve incluir fragmentos de dados e pelo menos dois fragmentos de paridade. O catálogo de pistas de execução seleciona o esquema de prova, seja `merkle_sha256` ou `kzg_bls12_381`.
+3. Aplicar política de rede. O nó aplica a linha de base de replicação e retenção configurada para a classe de blob. Os metadados públicos devem permanecer em texto simples; os metadados apenas de governança são criptografados com a chave de metadados de governança configurada no nó antes de serem gravados no manifesto técnico.
+4. Divida e confirme. A carga útil canônica é dividida em blocos com um perfil de tamanho fixo derivado de `chunk_size`. Torii calcula o valor do resumo criptográfico da carga útil, a raiz da árvore de prova de recuperabilidade e as confirmações por bloco. Os blocos de dados carregam confirmações BLAKE3 sobre seus bytes.
+5. Adicione compromissos de apagamento. Os blocos são agrupados em faixas de `data_shards`. Células ausentes na faixa final são preenchidas com zeros para o cálculo de paridade. RS(16) de paridade cria fragmentos de paridade de linha/global; opcional `row_parity_stripes` adicionar paridade em faixa no estilo de coluna através da matriz. Os compromissos de fragmento de paridade são BLAKE3 resumos criptográficos de símbolos `u16` em little-endian.
+6. Construa o manifesto técnico. `DaManifestV1` registra a pista de execução, época, classe do blob, codec, valor de resumo criptográfico da carga, raiz do chunk, tamanho do chunk, perfil de eliminação, política de retenção, cotação de aluguel, compromissos do chunk, compromisso opcional IPA, metadados e hora de emissão. O ticket de armazenamento é determinístico: o nó primeiro gera um hash criptográfico de um modelo de manifesto técnico com um ticket vazio, e então escreve essa impressão digital de volta como o `storage_ticket` final.
+7. Rejeite conflitos de repetição. A chave de repetição é `(lane_id, epoch, sequence, manifest_fingerprint)`. Um duplicado com a mesma impressão digital é idempotente. Uma sequência obsoleta ou a mesma sequência com uma impressão digital diferente é rejeitada.
+8. Emitir artefatos assinados. Torii calcula um compromisso PDP, assina um `DaIngestReceipt`, constrói um `DaCommitmentRecord` e grava artefatos de spool para o manifesto, o compromisso PDP, o registro e o cronograma de compromissos, a intenção de pin, o arquivo de recibo e o log de recibos. O cursor de recibos avança monotonicamente para cada `(lane_id, epoch)`.
 
-Os registos de compromissos são o que os blocos carregam.
+Registros de compromisso são o que os blocos carregam. Um registro vincula:
 
-- Faixa, época e sequência
-- Blob de chamada ID e hash do manifesto canônico
-- Esquema de prova de faixa
-- raiz de pedaços
-- O compromisso opcional KZG para as pistas KZG
-- PDP/digestão de prova
-- Classe de retenção e bilhete de armazenamento
+- faixa de execução, época e sequência
+- ID do blob do chamador e hash criptográfico do manifesto técnico canônico
+- esquema de prova de pista de execução
+- raiz do fragmento
+- compromisso opcional KZG para faixas de execução KZG
+- PDP/provar valor de resumo criptográfico
+- classe de retenção e ticket de armazenamento
 - Torii DA assinatura de reconhecimento
 
-Antes de um bloco incorporar registos DA, o caminho de montagem do bloco valida o pacote:
+Antes que um bloco incorpore registros DA, o caminho de montagem do bloco valida o pacote:
 
-- O `(lane_id, epoch, sequence)` deve ser único dentro do pacote.
-- Os hashes manifestos devem ser não-zero e únicos dentro do pacote.
-- O regime de comprovação do compromisso deve corresponder à política da faixa configurada.
-- As vias de Merkle rejeitam KZG compromissos; KZG as vias exigem um número não-zero KZG O compromisso.
-- As intenções de pin são canonizadas, classificadas e filtradas por faixa, hash do manifesto, bilhete de armazenamento, conta do proprietário e regras de colisão de alias.
+- `(lane_id, epoch, sequence)` deve ser único dentro do pacote.
+- os hashes criptográficos do manifesto técnico devem ser diferentes de zero e únicos dentro do pacote.
+- O esquema de prova de compromisso deve corresponder à política de execução da linha configurada.
+- As vias Merkle rejeitam compromissos KZG; as vias KZG exigem um compromisso KZG diferente de zero.
+- As intenções de fixação são normalizadas em forma canônica, ordenadas e filtradas por via, hash do manifesto, tíquete de armazenamento, conta proprietária e regras de colisão de aliases.
 
-O bloco de cabeçalho armazena hashes para DA As políticas, compromissos e intenções são comprovados. O pacote de compromissos também expõe uma raiz Merkle cujas folhas são hashes de canônico Norito- codificado `DaCommitmentRecord` valores. Os nós-mães hash a concatenação dos filhos esquerdo e direito; uma folha ímpar é promovida inalterada para a camada seguinte.
+O cabeçalho do bloco armazena hashes criptográficos para DA políticas de prova, compromissos e intenções de PIN. Para provas de associação, o pacote de comprometimento também expõe uma raiz de Merkle cujas folhas são hashes criptográficos de valores `DaCommitmentRecord` codificados de forma canônica Norito. Nós pais hash criptograficamente a concatenação dos filhos esquerdo e direito; uma folha ímpar é promovida inalterada para a camada seguinte.
 
-### Verificação da prova {#proof-verification}
+### Verificação de Prova {#proof-verification}
 
-`/v1/da/commitments/prove` pode produzir uma prova de um compromisso em um bloco. A prova contém o compromisso, altura do bloco, índice no pacote, hash do pacote, comprimento do pacote , raiz Merkle e caminho irmão. Verificação verifica:
+`/v1/da/commitments/prove` pode produzir uma prova para um compromisso em um bloco. A prova contém o compromisso, altura do bloco, índice no pacote, hash criptográfico do pacote, comprimento do pacote, raiz de Merkle e caminho dos irmãos. A verificação verifica:
 
-1. O hash do pacote de prova corresponde ao hash do compromisso DA do cabeçalho do bloco.
-2. A altura do bloco de prova corresponde ao cabeçalho do bloco referido.
-3. O índice está em limites e o compromisso é igual à entrada no pacote desse índice.
-4. A política de prova de pista aceita o compromisso.
-5. Dobrar o caminho dos irmãos da folha de compromisso reconstitui a raiz fornecida.
-6. A raiz reconstruída é igual à raiz do pacote.
+1. O hash criptográfico do pacote de prova corresponde ao hash criptográfico do compromisso DA do cabeçalho do bloco.
+2. A altura do bloco de prova corresponde ao cabeçalho do bloco referenciado.
+3. O índice está dentro dos limites e o compromisso é igual à entrada do pacote naquele índice.
+4. A política de prova da linha de execução aceita o compromisso.
+5. Dobrando o caminho do irmão a partir da folha de compromisso reconstrói a raiz fornecida.
+6. A raiz reconstruída é igual à raiz do conjunto.
 
-Isto prova que um compromisso específico de disponibilidade foi incluído numa carga útil específica do bloco; não demonstra que todas as cópias estejam atualmente em linha. A recuperabilidade ao vivo é verificada separadamente através de verificações de fornecedores SoraFS, verificações PDP/PoTR, ou evidências de disponibilidade específicas do perfil.
+Isso prova que um compromisso específico de disponibilidade foi incluído em um payload de bloco específico; isso não prova que todas as réplicas estão atualmente online. A recuperabilidade ao vivo é verificada separadamente por meio de buscas do provedor SoraFS, verificações PDP/PoTR ou evidências de disponibilidade específicas do perfil.
 
-### Interação de consenso {#consensus-interaction}
+### Interação de Consenso {#consensus-interaction}
 
-DA é acoplado a Sumeragi através de uma transmissão confiável (RBC), mas não é um segundo protocolo de finalidade. RBC divulga e recupera cargas úteis de propostas: O proponente anuncia uma sessão para `(height, view, payload_hash)`, peer exchange chunks e os sinais `READY`/`DELIVER` rastream se suficientes validadores observaram a mesma carga útil.
+A disponibilidade da carga útil de consenso é obrigatória, mas não é um protocolo de segunda finalidade. O líder transmite um `PayloadManifest` assinado para todo o comitê `3f + 1`. O primeiro corpo e a ocorrência do fragmento RS16 têm como alvo o Conjunto A, cujos membros `2f + 1` incluem o líder e o rabo proxy. Uma retransmissão delimitada de mesma visão expande o serviço de corpo e fragmento para todo o comitê.
 
-Em Iroha 3, um peer considera que a carga útil pendente do bloco está disponível quando:
+Um manifesto técnico ou conjunto parcial de fragmentos não é suficiente para votar. Antes da Preparação, cada validador deve autenticar os pedaços, reconstruir o corpo canônico completo, verificar seu comprimento, raiz do bloco, e hash criptográfico do corpo, persista esse corpo, e finalize a validação determinística do bloco. O validador mantém o corpo exato através da aplicação CommitQC ou recuperação certificada.
 
-- o hash do bloco pendente local para o hash da carga útil esperada, ou
-- RBC recuperou uma carga útil que corresponde ao hash do bloco, altura, visão e carga útil.
+Quando um par de rede aprende um certificado antes de ter o corpo, ele primeiro solicita pedaços autenticados ou o corpo canônico dos signatários criptográficos do certificado, e então expande a recuperação para o comitê congelado. Cada resposta permanece vinculada ao contexto de altura exato, rodada de proposta, manifesto técnico e assunto do corpo. O bloco é aplicado apenas após o corpo reconstruído localmente corresponder ao certificado.
 
-Se nenhuma das condições for válida, o peer record `missing_local_data`, continua a tentar recuperar a carga útil através de RBC ou sincronização de bloco e informa o portal DA em status e telemetria. Na implementação atual, estes sinais DA são consultivos para a finalidade: um bloco ainda termina a partir do certificado de compromisso mais a carga útil local correspondente, e não a partir de um certificado de quórum separado DA.
+### Notas do Operador {#operator-notes}
 
-DA O tempo de recuperação amplia as janelas. DA O quorum timeout é derivado do bloco configurado e das datas de compromissos, multiplicadas por: `sumeragi.advanced.da.quorum_timeout_multiplier`. O prazo de disponibilidade é: `max(quorum_timeout, availability_timeout_floor_ms) * availability_timeout_multiplier`. Antes da expiração do prazo de disponibilidade, o nó favorece a recuperação da carga útil e evita um reprogramamento prematuro; Após a sua expiração, podem prosseguir os caminhos normais de recuperação e alteração da visão.
+Iroha 3 perfis de consenso sempre incluem manifesto técnico assinado e RS16 disseminação de payload, validação completa do corpo antes do Prepare, DA validação do bundle e telemetria de recuperação limitada. O layout e os limites do protocolo estão congelados no contexto de altura assinado; não há troca local nem perfil de tempo limite que possa desativá-los ou redefini-los. Os limites de bloco e fila locais do nó ainda precisam se ajustar ao layout e à carga de trabalho assinados da implantação.
 
-### Notas do operador {#operator-notes}
-
-Os perfis de consenso Iroha 3 incluem a disseminação da carga útil apoiada por RBC, proteções manifestas, validação do pacote DA e telemetria de recuperação. O modelo peer expõe limites `[sumeragi.da]` para compromissos e aberturas de prova por bloco, mais multiplicadores de tempo `[sumeragi.advanced.da]` para o comportamento do quórum e da disponibilidade. Mantenha estas configurações consistentes entre os validadores num único perfil de rede.
-
-Para a descoberta da rota, comece com o documento OpenAPI do nó:
+Para a descoberta de rotas, comece com o documento OpenAPI do nó:
 
 ```bash
 curl -fsS "$TORII_URL/openapi.json" \
   | jq '.paths | keys[] | select(startswith("/v1/da/"))'
 ```
 
-Usar o [Referência de consulta](/pt/reference/queries.md#nexus-data-availability-and-packages) para a corrente DA nome de consulta, e o [Modelo de configuração de pares](/pt/reference/peer-config/) para o local `[sumeragi.da]` botões expostos pela sua construção.
+Use o [referência de consulta](/pt/reference/queries.md#nexus-data-availability-and-packages) para os nomes de consultas DA atuais, e o [modelo de configuração de par de rede](/pt/reference/peer-config/) para ingestão, amostragem, auditoria e limites de recuperação de `[nexus.da]` em nível de aplicação, além dos limites locais de bloco e fila de Sumeragi.
 
 ## SoraFS {#sorafs}
 
-SoraFS é o tecido de armazenamento descentralizado com endereço de conteúdo. Ele empacotam bytes em pedaços deterministas, arquivos CAR e manifestos Norito que ligam raízes de conteúdo, Os fornecedores de armazenamento anunciam a capacidade e a disponibilidade do conteúdo, enquanto os gateways verificam os manifestos e compromissos de fragmentos antes de servir o conteúdo.
+SoraFS é a estrutura de armazenamento descentralizado endereçada por conteúdo. Ele empacota bytes em blocos determinísticos, arquivos CAR, e manifestos técnicos Norito que vinculam raízes de conteúdo, perfis de fragmentação, políticas de fixação e atestações de governança. Os provedores de armazenamento anunciam capacidade e disponibilidade de conteúdo, enquanto os gateways verificam manifestos técnicos e compromissos de blocos antes de fornecer o conteúdo.
 
-Os usos típicos do SoraFS incluem ativos de aplicativos estáticos, edificações de documentação, bundles de zonas, referências de modelos ou artefatos e bundles de evidências de governança. O modelo de dados Iroha expõe os eventos do gateway SoraFS e uma consulta [`FindSorafsProviderOwner`](/pt/reference/queries.md#nexus-data-availability-and-packages) para resolução da propriedade do provedor.
+Típico SoraFS os usos incluem ativos de aplicação estática, compilações de documentação, zona pacotes, referências de modelo ou artefato e pacotes de evidências de governança. O Iroha modelo de dados expõe SoraFS eventos de gateway e um [`FindSorafsProviderOwner`](/pt/reference/queries.md#nexus-data-availability-and-packages) consulta para resolução de propriedade do provedor.
 
-### Profisso da rede de teste Taira {#taira-testnet-profile}
+### Taira Perfil da Testnet {#taira-testnet-profile}
 
-A Taira é a rede de teste pública canônica SoraFS. O seu perfil de validador verificado utiliza cadeia `fc56984b-2be7-431d-840e-21514d1883f0` e discriminante de cadeia `369`. As configurações publicadas SoraFS são:
+Taira é a testnet pública canônica SoraFS. Seu perfil de validador registrado usa a cadeia `fc56984b-2be7-431d-840e-21514d1883f0` e o discriminante da cadeia `369`. O `NetworkId` abaixo é a identidade exata do gênesis da blockchain Taira atualmente fixada. Um Taira reset pode alterar esse hash criptográfico enquanto mantém o rótulo da cadeia, então atualize-o a partir do perfil de implantação assinado atual e nunca o derive da cadeia UUID. As configurações efetivas de Taira SoraFS são:
 
-- rede ID: `hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94`
-- Base de gateway URL: `https://taira.sora.org`
-- Pin Torii URLs: `https://taira-validator-1.sora.org` através de `https://taira-validator-4.sora.org`
-- Capacidades de detecção: `torii_gateway`, `chunk_range_fetch` e `potr_mldsa`.
-- Origem do conteúdo isolado: `https://{cid}.sorafs.taira.sora.org/{path}`
-- Políticas públicas: sem autorização e com um limite de tarifa, com `require_council_signatures = false`
+- ID da rede: `hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94`
+- base do gateway URL: `https://taira.sora.org`
+- pino Torii URLs: `https://taira-validator-1.sora.org` através de `https://taira-validator-4.sora.org`
+- capacidades de descoberta: `torii_gateway`, `chunk_range_fetch` e `potr_mldsa`
+- origem de conteúdo isolado: `https://{cid}.sorafs.taira.sora.org/{path}`
+- política de pin público: sem permissão e com taxa, com `require_council_signatures = false`
 
 ```toml
 [sorafs.storage]
@@ -522,6 +530,11 @@ max_capacity_bytes = 13743895347
 discovery_enabled = true
 known_capabilities = ["torii_gateway", "chunk_range_fetch", "potr_mldsa"]
 
+[sorafs.discovery.admission]
+envelopes_dir = "configs/soranexus/taira/sorafs_admission"
+trusted_council_keys = ["REPLACE_WITH_TAIRA_SORAFS_COUNCIL_PUBLIC_KEY"]
+signature_threshold = "REPLACE_WITH_TAIRA_SORAFS_COUNCIL_SIGNATURE_THRESHOLD"
+
 [sorafs.discovery.publish]
 gateway_base_url = "https://taira.sora.org"
 pin_torii_urls = [
@@ -531,48 +544,63 @@ pin_torii_urls = [
   "https://taira-validator-4.sora.org",
 ]
 
+[sorafs.gateway]
+require_manifest_envelope = true
+enforce_admission = true
+enforce_capabilities = true
+
 [sorafs.gateway.untrusted_hosting]
 enabled = true
 path_gateway_redirect = true
 redirect_html_only = true
 
 [sorafs.gateway.untrusted_hosting.cid_host_suffixes]
+live = "sorafs.sora.org"
 taira = "sorafs.taira.sora.org"
 
 [sorafs.repair]
 enabled = false
+claim_ttl_secs = 900
+heartbeat_interval_secs = 60
+max_attempts = 3
+worker_concurrency = 4
 
 [sorafs.gc]
 enabled = false
+interval_secs = 900
+max_deletions_per_run = 500
+retention_grace_secs = 86400
 
 [gov.sorafs_pin_policy]
 require_council_signatures = false
 ```
 
-A Comissão Taira os validadores estão incorporados SoraFS A capacidade de armazenamento, reparação e recolha de resíduos é desativada. a verificação do orçamento de disco do validador; isso não significa que o validador seja um fornecedor de armazenamento. `GET /v1/sorafs/storage/peers?limit=4` Para a leitura do gateway e dos pontos de destino atualmente configurados antes de um teste.
+Os três valores de gateway de nível superior são padrões herdados com falha ao fechar; todos os outros valores no trecho são explícitos no perfil registrado de Taira. Um operador deve substituir os espaços reservados de descoberta-admissão pelo material de implantação assinado. Cada solicitação atendida deve conter um contêiner de dados de manifesto técnico, passar pela admissão do provedor e usar uma capacidade anunciada.
 
-A Comissão `sorafs.sora.org` CID O suffixo é o perfil de produção ao vivo, não Taira. Não o coloque . Taira As instalações de produção devem utilizar a sua própria identidade de rede, chaves de governança, Material de admissão do fornecedor, pontos finais dos pinos e política de capacidade/reparação; nunca copie Taira as credenciais ou as suposições de pontos finais numa configuração de produção.
+Os validadores Taira têm armazenamento SoraFS embutido, reparo e coleta de lixo desativados. A capacidade configurada deles continua sendo parte do validador verificação de orçamento de disco; isso não significa que o validador seja um provedor de armazenamento. Use `GET /v1/sorafs/storage/peers?limit=4` para ler o gateway configurado e os destinos de pinagem atuais antes de um teste.
 
-### Portal público local CID e site gateways {#public-local-cid-and-site-gateways}
+A configuração de esquema de Taira aceita tanto as chaves de sufixo CID-host `live` quanto `taira`. Manifests técnicos do public-testnet, verificações de origem e testes de navegador devem usar `sorafs.taira.sora.org` para que sua origem esteja visivelmente vinculada a Taira; não trate a chave aceita `live` como uma recomendação para publicar conteúdo de testnet sob uma origem com aparência de produção. Outras implantações devem usar sua própria identidade de rede, chaves de governança, material de admissão de provedores, endpoints pin API e política de capacidade/reparo.
 
-Todos os nós Torii habilitados para SoraFS montam estas rotas públicas anônimas, mesmo quando o aplicativo opcional API não é construído:
+### Local Público CID e Portais do Site {#public-local-cid-and-site-gateways}
 
-|Método e ponto final |Propósito |
+Cada nó SoraFS habilitado para Torii monta essas rotas públicas anônimas mesmo quando o aplicativo opcional API não está construído:
+
+|Método e endpoint API|Propósito|
 | ---------------------------------- | -------------------------------------------------------------------- |
-|`GET /.well-known/sorafs/manifest` |Retorna o manifesto selecionado pelo anfitrião da solicitação canônica |
-|`GET /v1/sorafs/cid/{cid}` |Retorna os metadados do manifesto local e as entradas de arquivo para um CID |
-|`GET /sorafs/cid/{cid}` |Servir o documento raiz para um site local com endereço de conteúdo |
-|`GET /sorafs/cid/{cid}/{*path}` |Servir um caminho normalizado, ou uma faixa de bytes limitada, sob esse CID |
+| `GET /.well-known/sorafs/manifest` |Retornar o manifesto técnico selecionado pelo host de solicitação canônico|
+| `GET /v1/sorafs/cid/{cid}`         |Retornar metadados de manifesto técnico local delimitados e entradas de arquivo para um CID|
+| `GET /sorafs/cid/{cid}`            |Servir o documento raiz para um site local com endereço de conteúdo|
+| `GET /sorafs/cid/{cid}/{*path}`    |Serve um caminho normalizado, ou um intervalo de bytes limitado, sob aquele CID|
 
-Estas rotas nunca aceitam `x-sorafs-stream-token` ou `x-sorafs-token-id`. A presença de qualquer cabeçalho é um pedido ruim. Um manifesto canônico já presente na loja local autorizada do nó é o capacidade de leitura pública; uma falta de cache não autoriza a hidratação do provedor remoto. CAR E as rotas fragmentadas continuam a ser superfícies de protocolo autenticadas separadas.
+Estas rotas nunca aceitam `x-sorafs-stream-token` ou `x-sorafs-token-id`. A presença de qualquer um dos cabeçalhos é uma solicitação incorreta. Um manifesto técnico canônico já está presente no armazenamento local autoritativo do nó é a capacidade de leitura pública; uma falha de cache não autoriza a hidratação pelo provedor remoto. O provedor protegido CAR e as rotas de fragmentos permanecem superfícies de protocolo autenticadas separadas.
 
-Antes de ler bytes, Torii valida a codificação canônica do manifesto local, restrições semânticas, digest e raiz CID. Em seguida, requer a identidade autorizada do provedor local, admissão de governança e conformidade regida para o manifesto, CID e o provedor. A política de taxa/ban do gateway usa o endereço efetivo do cliente, honrando os endereços encaminhados apenas por meio de proxies confiáveis configurados. Se falta a política, conformidade, identidade ou estado de admissão, Torii rejeita o pedido.
+Antes de ler bytes, Torii valida a codificação canônica, as restrições semânticas, o valor do resumo criptográfico e a raiz CID do manifesto técnico local. Ele então requer a identidade do provedor local autorizado, admissão de governança e conformidade governada para o manifesto técnico, CID, e provedor. A política de taxa/proibição do gateway usa o endereço efetivo do cliente, respeitando endereços encaminhados apenas por meio de proxies confiáveis configurados. A falta de política, conformidade, identidade ou estado de admissão resulta em falha fechada.
 
-Um pedido possui uma licença de entrada pública de ponta a ponta; o limite para todo o processo é de 64 leituras simultâneas, com excesso de pedidos de devolução `503 Service Unavailable` e `Retry-After: 1`. As respostas manifestas são limitadas a 16 MiB, Listagens de arquivos por defeito para 50 entradas e retornar no máximo 500, e um arquivo completo ou intervalo de byte único é limitado a 8 MiB. A análise da consulta depende da construção. `app_api` construção aceita um decodificado sem assinatura de 32 bits `limit`, Ignora outras chaves de consulta, permite que a última seja repetida `limit` ganha, e fixa o valor em `1..=500`. Uma construção mínima de características sem `app_api` aceita apenas um canónico `limit=1..500` par e rejeita formas desconhecidas, repetidas, codificadas por cento ou não-canônicas. Enviar exatamente uma `limit=<1..500>` par para o comportamento que é portátil através de construções. CIDs, os anfitriões, caminhos e cabeçalhos de faixa permanecem canônicos e com um único valor em ambas as construções. HTML, CSS, JavaScript, SVG, XML, PDF, O conteúdo de Wasm é servido apenas a partir de um configurado CID- origem isolada derivada (ou redirecionada para lá), impedindo a execução de conteúdos não confiáveis por meio de um caminho-gateway compartilhado.
+Uma solicitação possui uma permissão de gateway público de ponta a ponta; o limite de processo é de 64 leituras simultâneas, com solicitações excedentes retornando `503 Service Unavailable` e `Retry-After: 1`. As respostas do manifesto técnico são limitadas a 16 MiB, as listagens de arquivos padrão são de 50 entradas e retornam no máximo 500, e um arquivo completo ou intervalo de bytes único é limitado a 8 MiB. A análise de consultas depende da compilação. A versão de produção `app_api` aceita um `limit` de 32 bits sem sinal decodificado, ignora outras chaves de consulta, deixa o último `limit` repetido vencer e limita o valor em `1..=500`. Uma versão mínima de recursos sem `app_api` aceita apenas um par canônico `limit=1..500` e rejeita formas desconhecidas, repetidas, codificadas em porcentagem ou não canônicas. Envie exatamente um par `limit=<1..500>` para um comportamento que seja portátil entre versões. CIDs, hosts, caminhos e cabeçalhos de intervalo permanecem canônicos e de valor único em ambas as versões. Ativo HTML, CSS, JavaScript, SVG, XML, PDF, ou o conteúdo Wasm é servido apenas a partir de uma origem isolada derivada de CID configurada (ou redirecionado para lá), impedindo que uma origem gateway de caminho compartilhado execute conteúdo não confiável.
 
-### Embaixar, construir e submeter {#pack-build-and-submit}
+### Empacotar, Construir e Enviar {#pack-build-and-submit}
 
-O seguinte exemplo de mutação usa o check-in. Taira `NetworkId`, Identificar o ponto final, o piso de replicação e a política de governança. Use uma conta da rede de teste financiada e um arquivo de chave disponível apenas para proprietários. Taira admite pines sem autorização sem assinaturas do Conselho, mas ainda assim cobra a taxa regulada.
+O seguinte exemplo de mutação usa os atuais Taira `NetworkId` fixados, o endpoint de fixação API, o piso de replicação e a política de governança. Use um financiado conta de testnet e um arquivo de chave exclusivo para o proprietário descartável. Taira admite pins sem permissão sem assinaturas do conselho, mas ainda cobra a taxa governada.
 
 ```bash
 cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
@@ -609,11 +637,11 @@ cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
   --response-out=artifacts/site.manifest.submit.body
 ```
 
-`manifest submit` requer `/v1/sorafs/pin/register`. Se o nó-alvo não o encaminhar, o comando falha; a primeira versão CLI não retorna ao ponto final genérico `/transaction`.
+`manifest submit` requer `/v1/sorafs/pin/register`. Se o nó de destino não encaminhá-lo, o comando falha; a primeira versão CLI não recai sobre o genérico `/transaction` API endpoint.
 
-### Verifique e traga {#verify-and-fetch}
+### Verificar e Buscar {#verify-and-fetch}
 
-Obtenha o seu fornecedor ID e base anunciada URL do catálogo de provedores Taira, e obtenha a chave de gateway e token de fluxo através desse fluxo de admissão do fornecedor. Estes valores não são configurações de armazenamento do validador. Os validadores Taira verificados têm armazenamento incorporado desativado, por isso não substitua um pin de validação URL para um fornecedor URL.
+A tupla de busca protegida é específica do provedor. Obtenha seu ID de provedor e a base anunciada URL no catálogo de provedores de Taira, e obtenha a chave do gateway e o token de stream através desse provedor. fluxo de admissão. Esses valores não são configurações de armazenamento do validador. Os validadores Taira registrados têm armazenamento incorporado desativado, portanto, não substitua um PIN de validador URL por um provedor URL.
 
 ```bash
 export TAIRA_ROOT=https://taira.sora.org
@@ -640,9 +668,9 @@ cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
   --json-out=artifacts/site.fetch.json
 ```
 
-### Verificações de comprovação da recuperabilidade {#proof-of-retrievability-checks}
+### Verificações de Prova de Recuperabilidade {#proof-of-retrievability-checks}
 
-Os operadores podem inspecionar, exportar e relatar os resultados da prova de recuperabilidade. Os desafios são programados pelo pipeline de prova da rede; o CLI apresenta os seus resultados.
+Operadores podem inspecionar, exportar e relatar os resultados da prova de recuperabilidade. Os desafios são agendados pelo pipeline de processamento de provas da rede; o CLI apresenta seus resultados.
 
 ```bash
 cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
@@ -661,22 +689,22 @@ cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
 
 ## SoraDNS {#soradns}
 
-SoraDNS é a camada de nomeação determinista para os serviços e conteúdos SORA. Normaliza nomes, ancora atualizações do diretório resolvedor em Iroha, e distribui pacotes de zonas ou resolvedores assinados através SoraFS. Os resolvedores e gateways verificam os documentos de atestamento do resolvedor antes de confiar em metadados de descoberta.
+SoraDNS é a camada de nomeação determinística para serviços e conteúdo SORA. Ela normaliza nomes, ancora atualizações do diretório de resolução em Iroha, e distribui pacotes de zona ou resolvedor assinados através do SoraFS. Resolvedores e gateways verificam documentos de atestado do resolvedor antes de confiar nos metadados de descoberta.
 
-Para o acesso ao navegador, SoraDNS deriva os hosts de gateway a partir de um FQDN registado. O host de vaidade registrado continua a ser a origem da aplicação canônica, enquanto os perfis de gateway implantados expõem as rotas do navegador e de retrocesso Torii para aquela origem.
+Para acesso via navegador, SoraDNS deriva hosts de gateway a partir de um FQDN registrado. O host personalizado registrado permanece como a origem canônica do aplicativo, enquanto os perfis de gateway implantados expõem rotas de fallback para navegador e Torii para essa origem.
 
-### Formulários de hospedagem {#host-forms}
+### Formulários de Host {#host-forms}
 
-|Formulário|Exemplo |Propósito |
-| --- | --- | --- |
-|Origem de vaidade |`https://<fqdn>/<path>` |Aplicação canónica URL registada em manifestos e notas de liberação |
-|Taira navegador gateway |`https://<fqdn>.mon.taira.sora.net/<path>` |Portal de navegador público para um alias ativo |
-|Torii caminho de retorno |`https://taira.sora.org/soradns/<fqdn>/<path>` |Torii Debug e retorno de rota para um alias ativo |
-|Canônica hash gateway |`<base32(blake3(name))>.gw.sora.id` |Identidade do gateway determinista e verificação GAR |
+|Formulário|Exemplo|Propósito|
+| ---------------------- | ---------------------------------------------- | --------------------------------------------------------- |
+|Origem da vaidade| `https://<fqdn>/<path>`                        |Aplicativo canônico URL registrado em manifestos técnicos e notas de versão|
+|Taira gateway do navegador| `https://<fqdn>.mon.taira.sora.net/<path>`     |Gateway de navegador público para um alias ativo|
+| Torii caminho de fallback    | `https://taira.sora.org/soradns/<fqdn>/<path>` | Torii rota de depuração e fallback para um alias ativo        |
+|Gateway de hash criptográfico canônico| `<base32(blake3(name))>.gw.sora.id`            |Verificação determinística de identidade de gateway e GAR|
 
-O fallback `/soradns/<alias>/...` não é o público preferido URL. Ferramentas, manifestos de aplicativos e configuração frontend devem preferi-lo ao próprio host vanity. Se um alias não estiver ativo em Taira, o gateway do navegador ou o caminho de retorno pode retornar `404` ou falhar TLS antes da iniciação do roteamento das aplicações.
+A substituição `/soradns/<alias>/...` não é o URL público preferido. Ferramentas, manifestos técnicos de aplicativos e configuração de frontend devem preferir o próprio host personalizado. Se um alias não estiver ativo em Taira, o gateway do navegador ou o caminho de fallback podem retornar `404` ou falhar TLS antes que o roteamento da aplicação comece.
 
-### Derivação Gateway hosts {#derive-gateway-hosts}
+### Derivar Hosts de Gateway {#derive-gateway-hosts}
 
 ```ts
 import {
@@ -701,9 +729,9 @@ const patterns = [
 console.log(hostPatternsCoverDerivedHosts(patterns, derived))
 ```
 
-GAR As cargas úteis devem cobrir o host hash canônico, o wildcard canônico e o host bonito selecionado.
+GAR os payloads devem cobrir o host de hash criptográfico canônico, o curinga canônico e o host bonito selecionado.
 
-### Traga um Resolver Directory Snapshot {#fetch-a-resolver-directory-snapshot}
+### Buscar uma visualização de dados pontual do Diretório de Resolvedores {#fetch-a-resolver-directory-snapshot}
 
 ```bash
 curl -i "$TORII_URL/v1/soradns/directory/latest"
@@ -717,44 +745,44 @@ soradns_resolver rad verify \
   --rad ./state/soradns-directory/rad/resolver-a.norito
 ```
 
-Gateways deve rejeitar resolvers cujo documento de atestado do resolver está faltando, expirado, sem assinatura ou não ancorado no último diretório Merkle root. Em uma rede onde nenhum diretório do resolver ainda foi publicado, `/v1/soradns/directory/latest` pode retornar `404` mesmo que a rota seja habilitada.
+Os gateways devem rejeitar resolvedores cujo documento de autenticação do resolvedor esteja ausente, expirado, não assinado ou não ancorado na raiz Merkle do diretório mais recente. Em uma rede onde nenhum diretório de resolvedores tenha sido publicado ainda, `/v1/soradns/directory/latest` pode retornar `404` mesmo que a rota esteja habilitada.
 
-### Delegação pública DNS {#public-dns-delegation}
+### Delegação Pública DNS {#public-dns-delegation}
 
-A derivação do host SoraDNS não substitui a delegação regular da internet DNS. Se um nome público DNS apontar para uma porta de entrada SoraDNS:
+SoraDNS a derivação do host não substitui a delegação regular de DNS internet. Se um nome público DNS deve apontar para um gateway SoraDNS:
 
-- Para subdomínios, publicar um CNAME para o host bonito selecionado
-- Para as denominações de ápice, utilizar os registos ALIAS/ANAME ou A/AAAA para o gateway anycast IPs
-- Manter o host hash canônico sob o domínio de entrada SoraDNS para as verificações GAR
+- para subdomínios, publique um CNAME no host bonito selecionado
+- para nomes apex, use registros ALIAS/ANAME ou A/AAAA para o gateway anycast IPs
+- mantenha o host de hash criptográfico canônico sob o domínio do gateway SoraDNS para verificações de GAR
 
 ## FHE e UAID {#fhe-and-uaid}
 
-As superfícies relacionadas com FHE disponíveis para os serviços de Nexus incluem:
+As superfícies relacionadas a FHE disponíveis para os serviços Nexus incluem:
 
-- `iroha_crypto::fhe_bfv` implementa o suporte determinístico BFV para a avaliação de texto criptográfico escalar. A resolução do identificador usa `BfvIdentifierPublicParameters` e `BfvIdentifierCiphertext`, onde o slot 0 armazena o comprimento de byte de entrada e os slots posteriores armazenam um byte criptografado cada.
-- Soracloud estado e esquemas de trabalho modelo FHE cargas de trabalho de texto cifrado com conjuntos de parâmetros gerenciados pela governança, políticas de execução, compromissos de texto cifre, envelopes de consultas e pedidos de divulgação.
+- `iroha_crypto::fhe_bfv` implementa suporte determinístico a BFV para avaliação de texto cifrado escalar. A resolução de identificadores utiliza `BfvIdentifierPublicParameters` e `BfvIdentifierCiphertext`, onde o slot 0 armazena o comprimento do byte de entrada e os slots seguintes armazenam um byte criptografado cada.
+- Soracloud os esquemas de estado e de trabalho modelam FHE cargas de trabalho cifradas com conjuntos de parâmetros gerenciados pela governança, políticas de execução, compromissos de texto cifrado, contêineres de dados de consulta e solicitações de divulgação.
 
-A Comissão BFV O padrão de identificação é utilizado para a inscrição, preservando a privacidade. Torii O resolvedor avalia-o sob a política de identificador ativo, obtém um `OpaqueAccountId`, E emite um recibo. `ClaimIdentifier` em seguida, liga esse recibo ao UAID Anexo à conta-alvo.
+O caminho do identificador BFV é usado para inscrição que preserva a privacidade. Um cliente pode enviar um identificador criptografado para o resolvedor Torii. O resolvedor o avalia sob o política de identificador ativo, deriva um `OpaqueAccountId` e emite um registro de resultado de protocolo. `ClaimIdentifier` então vincula esse registro de resultado de protocolo ao UAID anexado à conta de destino.
 
-A Comissão UAID É o ancoramento da identidade e das capacidades em torno desse fluxo. `UniversalAccountId` é apoiado por hash e mostra-se como `uaid:<hash>`. Os analisadores aceitam qualquer um deles. `uaid:<hash>` Ou a digestão cruda de 64 hex. `Account` e `NewAccount` incluir opcionais `uaid` e `opaque_ids` O registo de tempo de execução impõe um UAID- índice de conta, rejeita identificadores opacos duplicados ou em colisão e rejeita os identificadores UAID. Sempre que um UAID mudanças de ligação da conta, o tempo de execução reconstrói Space Directory database ligações para esse UAID.
+O UAID é o ancoradouro de identidade e capacidade em torno desse fluxo. No modelo de dados, `UniversalAccountId` é suportado por hash e aparece como `uaid:<hash>`. Os analisadores aceitam tanto `uaid:<hash>` quanto o valor bruto do resumo criptográfico de 64 dígitos hexadecimais. `Account` e `NewAccount` incluem os campos opcionais `uaid` e `opaque_ids`. o registro de tempo de execução do software aplica um índice um-para-um UAID-para-conta, rejeita identificadores opacos duplicados ou conflitantes e rejeita opacos identificadores sem um UAID. Sempre que uma ligação de conta UAID muda, o tempo de execução do software reconstrói as ligações do espaço de dados do Diretório do Espaço para esse UAID.
 
-O Directório Espacial manifesta capacidades de ligação a um UAID. Um `AssetPermissionManifest` Os nomes dos UAID, Espaço de dados, período de ativação e expiração opcional, e entradas permitidas/recusadas ordenadas por espaço de dados, programa, método, ativo, e AMX A avaliação é negativa-ganha: a primeira negação de correspondência rejeita o pedido, Caso contrário, o último candidato autorizado a correspondência é verificado em relação a qualquer limite de montante. A publicação, expiração e revogação destes manifestos são protegidos por: `CanPublishSpaceDirectoryManifest`.
+Os manifestos técnicos do Diretório Espacial anexam capacidades a um UAID. Um `AssetPermissionManifest` nomeia o UAID, espaço de dados, ativação e época de expiração opcional, e entradas de permitir/negar ordenadas com escopo por espaço de dados, programa, método, ativo e função AMX. A avaliação é deny-wins: a primeira negação correspondente rejeita a solicitação, caso contrário, o último candidato permitido correspondente é verificado quanto a qualquer limite de quantidade. Publicar, expirar e revogar esses manifestos técnicos é protegido por `CanPublishSpaceDirectoryManifest`.
 
-Para o estado de Soracloud FHE, os regimes implementados são:
+Para o estado Soracloud FHE, os esquemas implementados são:
 
-|Esquema|O que ela controla .|
+|Esquema|O que ele controla|
 | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-|`SoraStateBindingV1` com o `FheCiphertext` |Declara que os valores sob um prefixo de chave de estado são FHE textos codificados. |
-|`FheParamSetV1` |Nomes do esquema, backend, cadeia de módulos, grau polinômico, contagem de slots, alvo de segurança, ciclo de vida e digestão de parâmetros. |
-|`FheExecutionPolicyV1` |Limita o tamanho do texto criptográfico, o tamanho de texto plano, a contagem de entrada/saída, a profundidade da multiplicação, as rotações, os bootstraps e o modo de arredondamento. |
-|`FheGovernanceBundleV1` |Casa um parâmetro definido com uma política de execução para validação de admissão. |
-|`FheJobSpecV1` |Descreve o trabalho determinista `Add`, `Multiply`, `RotateLeft` ou `Bootstrap` sobre chaves e compromissos de estado do texto cifrado. |
-|`CiphertextQuerySpecV1` |As consultas são expressas apenas em código-texto por serviço, vinculação, prefixo de chave, limite de resultados, nível de metadados e prova opcional de inclusão. |
-|`DecryptionRequestV1` |Solicita divulgação para um compromisso de texto criptográfico no âmbito de uma política de autorização de desciframento. |
+| `SoraStateBindingV1` com `FheCiphertext` |Declara que os valores sob um prefixo de chave de estado são cifras FHE.|
+| `FheParamSetV1`                           |Nomes do esquema, backend, cadeia de módulo, grau do polinômio, contagem de slots, meta de segurança, ciclo de vida e valor do resumo criptográfico do parâmetro.|
+| `FheExecutionPolicyV1`                    |Limita os tamanhos do texto cifrado e do texto simples, o número de entradas e saídas, a profundidade de multiplicação, as rotações, os bootstraps e o modo de arredondamento.|
+| `FheGovernanceBundleV1`                   |Combina um conjunto de parâmetros com uma política de execução para validação de admissão.|
+| `FheJobSpecV1`                            |Descreve trabalho determinístico `Add`, `Multiply`, `RotateLeft` ou `Bootstrap` sobre chaves de estado de cifra e compromissos.|
+| `CiphertextQuerySpecV1`                   |Consulta o estado apenas de texto cifrado por serviço, vínculo, prefixo de chave, limite de resultados, nível de metadados e prova de inclusão opcional.|
+| `DecryptionRequestV1`                     |Solicita a divulgação de um compromisso de texto cifrado sob uma política de autoridade de descriptografia.|
 
-`FheJobSpecV1::validate_for_execution` verifica que a função, a política de execução e o conjunto de parâmetros concordam antes da admissão. rotar e bootstrap precisam de exatamente uma entrada, e a profundidade requerida, contagem de rotação, contagão de bootstrap, contagens de entrada, bytes de carga útil e tamanho de saída determinista devem permanecer dentro dos limites das políticas.
+`FheJobSpecV1::validate_for_execution` verifica se o trabalho, a política de execução e o conjunto de parâmetros concordam antes da admissão. Ele também aplica regras específicas de operação: adicionar e multiplicar precisam de pelo menos duas entradas, rotacionar e bootstrap precisam de exatamente uma entrada, e a profundidade solicitada, contagem de rotações, contagem de bootstraps, contagem de entradas, bytes de carga útil e tamanho de saída determinística devem permanecer dentro dos limites da política. Os resultados da consulta de texto cifrado não devem retornar linhas em texto claro.
 
-UAID não é o texto criptográfico e não a própria política FHE. É a âncora de capacidade da conta estável usada para encontrar a conta, reivindicações de identificador opaco e vinculações do diretório de espaço que autorizam um fluxo de serviço ou espaço de dados. Os esquemas FHE regem a admissão e execução de cargas úteis criptografadas separadamente por meio de conjuntos de parâmetros, políticas de execução, compromissos com texto cifrado e políticas de autoridade de desciframento.
+UAID não é o texto cifrado nem a própria política FHE. É a âncora de capacidade de conta estável usada para encontrar a conta, reivindicações de identificador opaco e associações do Diretório de Espaço que autorizam um serviço ou fluxo de espaço de dados. FHE os esquemas governam a admissão e a execução de cargas criptografadas separadamente por meio de conjuntos de parâmetros, políticas de execução, compromissos de texto cifrado e políticas de principal de autorização de descriptografia.
 
 As superfícies Torii relevantes incluem:
 
@@ -765,25 +793,25 @@ As superfícies Torii relevantes incluem:
 - `/v1/accounts/{uaid}/portfolio`
 - `/v1/space-directory/uaids/{uaid}`
 - `/v1/space-directory/uaids/{uaid}/manifests`
-- `/v1/soracloud/model/run-private`
-- `/v1/soracloud/model/run-private/finalize`
-- `/v1/soracloud/model/decrypt-output`
+- `/v1/soracloud/fhe/job/run`
+- `/v1/soracloud/ciphertext/query`
+- `/v1/soracloud/decrypt/request`
 
-A limitação dos metadados públicos é explícita nos esquemas: ligações UAID, registos de identificadores opacos, ciclo de vida do manifesto, digestões de chave de estado, tamanhos de texto cifrado, compromissos com o texto cipherado, nomes de políticas, versões definidas por parâmetros, operações de trabalho, chaves de estado de saída, E os metadados de solicitação de divulgação podem ser visíveis. Os textos simples identificadores, o estado descifrado, as entradas e saídas do modelo e as chaves secretas FHE estão fora desses registros de consulta pública.
+O limite de metadados públicos é explícito nos esquemas: ligações UAID, registros de identificador opaco, ciclo de vida do manifesto técnico, resumos criptográficos de chave de estado, tamanhos de texto cifrado, compromissos de texto cifrado, nomes de políticas, versões do conjunto de parâmetros, operações de trabalho, chaves de estado de saída, e os metadados da solicitação de divulgação podem ser visíveis. Textos simples de identificadores, estado descriptografado, entradas e saídas do modelo e chaves secretas FHE estão fora desses registros públicos de consultas.
 
-## Lista de verificação operacional {#operational-checklist}
+## Lista de Verificação Operacional {#operational-checklist}
 
-- Confirmar as famílias de serviços geradas com `/openapi` no nó-alvo Torii e sondar diretamente as rotas locais públicas SoraFS CID e bem conhecidas.
-- Tratar os manifestos de implantação Soracloud, os manifestos SoraFS, os registros do diretório de resolvedores SoraDNS, os registos do directório de relevo SoraNet e as intenções de pin ou compromissos de disponibilidade DA como artefatos sensíveis à governação.
-- Utilize o mesmo perfil SORA Nexus de forma consistente em todos os validadores numa rede.
-- Mantenha o Inrou root e os volumes de arrendamento compartilhados em manifestos, em vez de depender dos caminhos ad hoc node-local.
-- Use a verificação de prova SoraFS antes de promover os pseudónimos do conteúdo.
-- Monitor SoraNet falhas de aperto de mão, DA Quórum ou períodos de disponibilidade, SoraFS Recusos de entrada, SoraDNS RAD Frescosidade, e Soracloud A saúde da implantação.
-- Para o uso da rede de teste pública, utilize o perfil Taira e comece com [Conecte-se aos bancos de dados SORA Nexus ](/pt/get-started/sora-nexus-dataspaces.md).
+- Confirme as famílias de serviço geradas com `/openapi.json` no nó de destino Torii, e probe rotas públicas locais SoraFS CID e bem conhecidas diretamente.
+- Trate os manifests técnicos de implantação Soracloud, os manifests técnicos SoraFS, os registros de diretório do resolvedor SoraDNS, os registros de diretório de retransmissão SoraNet e as intenções de fixação ou compromissos de disponibilidade DA como artefatos sensíveis à governança.
+- Use o mesmo perfil SORA Nexus de forma consistente entre os validadores em uma rede.
+- Mantenha os volumes Inrou root e shared lease nos manifests técnicos, em vez de depender de caminhos locais de nó ad hoc.
+- Use a verificação de prova SoraFS antes de promover aliases de conteúdo.
+- Monitore falhas de handshake SoraNet, estado do corpo e recuperação de payload ausente Sumeragi, recusas de gateway SoraFS, frescor SoraDNS RAD e saúde do rollout Soracloud.
+- Para uso em testnet público, use o perfil Taira e comece com [Conectar-se aos dataspaces SORA Nexus](/pt/get-started/sora-nexus-dataspaces.md).
 
 Veja também:
 
-- [Pontos finais Torii](/pt/reference/torii-endpoints.md)
+- [Torii API pontos de extremidade](/pt/reference/torii-endpoints.md)
 - [Filtros de eventos de dados](/pt/blockchain/filters.md#data-event-filters)
-- [Referência à consulta](/pt/reference/queries.md#nexus-data-availability-and-packages)
-- [Configuração de validador canônico Taira no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/configs/soranexus/taira/config.toml)
+- [Referência de consulta](/pt/reference/queries.md#nexus-data-availability-and-packages)
+- [Configuração do validador canônico Taira no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/configs/soranexus/taira/config.toml)

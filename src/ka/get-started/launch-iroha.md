@@ -12,15 +12,15 @@ translation_engine: nllb-200-ct2
 
 ## 1. შექმნას ადგილობრივი მრავალმხრივი ქსელი {#_1-generate-a-local-multi-peer-network}
 
-გენერირება ოთხი peer localnet მოქმედი Kagami კოდიდან:
+მიმდინარე Kagami კოდიდან შექმენით ოთხკვანძიანი ლოკალური ქსელი:
 
 ```bash
 cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-გამოშვების დირექტორი შეიცავს შესაბამის პარტნიორთა კონფიგურაციებს, `genesis.json`, `genesis.signed.nrt`, `client.toml` და დამხმარე სკრიპტები.
+გამომავალი დირექტორი შეიცავს შედარებულ ქსელის კვანძთა კონფიგურაციებს, `genesis.json`, `genesis.signed.nrt`, `client.toml` და დამხმარე სcripts.
 
-ადგილობრივი სიგარეტის ტესტისთვის, დაუწყეთ წარმოქმნილი თანატოლების პირდაპირი:
+ადგილობრივი სიგარეტის ტესტისთვის, დაიწყეთ წარმოქმნილი ქსელის კვანძები პირდაპირ:
 
 ```bash
 ./localnet/start.sh
@@ -41,13 +41,13 @@ docker compose -f ./docker-compose.yml up
 
 გათვალისწინებით გენერირებული სტეიკი აჩვენებს:
 
-- პარტნიორი P2P პორტები `1337` - `1340`
+- კვანძების P2P პორტები `1337`-დან `1340`-მდე
 - Torii HTTP პორტები `8080` - `8083`
 - მზა კლიენტის კონფიგურაცია `./localnet/client.toml`
 
 ## 2. შეამოწმეთ, არის თუ არა ქსელი მოქმედი {#_2-verify-that-the-network-is-up}
 
-შეამოწმეთ სტატუსის საბოლოო წერტილი პირველ პარტნიორზე:
+შეამოწმეთ სტატუსის API საბოლოო წერტილი პირველი ქსელის თანასწორზე:
 
 ```bash
 curl http://127.0.0.1:8080/status
@@ -69,7 +69,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 
 რეპოზიტორი ასევე გზავნის SORA Nexus ორიენტირებულ კონფიგურაციის პროფილი `defaults/nexus/` ქვეშ.
 
-Nexus პროფილის მქონე მშობლიური პარტნიორის ჩასატარებლად:
+Nexus პროფილის მქონე მშობლიური ქსელის პერის ჩასატარებლად:
 
 ```bash
 ./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
@@ -91,4 +91,4 @@ Nexus პროფილის მქონე მშობლიური პ�
 docker compose -f ./docker-compose.yml down
 ```
 
-შემდეგ, რაც ქსელი მუშაობს, განაგრძეთ [Operate Iroha 3 მეშვეობით CLI](/ka/get-started/operate-iroha-via-cli.md).
+შემდეგ, რაც ქსელი ამოქმედდება, განაგრძეთ [ოპერირება Iroha 3 მეშვეობით CLI](/ka/get-started/operate-iroha-via-cli.md).

@@ -1,20 +1,20 @@
 ---
 translation_locale: am
 translation_source: /reference/iroha3d-cli.md
-translation_source_hash: d621aa09f50cb44cb99af372100f418c44c3714b879a556038e47598949a3a6f
+translation_source_hash: bf4a63b05a149f0c935190b63cdb838b0a0265e99baedfc9b5bf00a9e621b108
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # `iroha3d` CLI {#iroha3d-cli}
 
-`iroha3d` መደበኛ ነው Iroha 3 peer daemon. የ Cargo ፓኬጅ ስም ነው `irohad`, ስለዚህ ከ ምንጭ ቼክ አወጣጥ ላይ በሁለትዮሽ መጠየቅ ጋር:
+`iroha3d` መደበኛው Iroha 3 የአውታረ መረብ አቻ ዴሞን ነው። የጭነት ፓኬጁ `irohad` የሚል ስያሜ ተሰጥቶታል፣ ስለዚህ ሁለትዮሽውን ከምንጭ-ኮድ የሚሰራ ቅጂ ከሚከተለው ጋር ይጥራሉ -
 
 ```shell
 cargo run -p irohad --bin iroha3d -- --config path/to/config.toml
 ```
 
-ለህዝብ Taira የሙከራ አውታረመረብ፣ የመልቀቂያ ምስሉ `iroha3d_taira` ይጠቀማል። ተመሳሳይ CLI ይቀበላል ። በተጨማሪም የካኖኒካል Taira ሰንሰለት ፣ የማረጋገጫ ስብስብ ፣ የማከማቻ ቅንብሮች እና የሂደት ጊዜ ፊርማ ቁልፎችን ያስገድዳል ። የ Taira ውቅርን እንደነዚህ ያሉ የአሂድ ጊዜ ማረጋገጫዎችን ሳይከፍቱ ያረጋግጡ:
+ለህዝብ Taira የሙከራ መረብ፣ የተለቀቀው ምስል `iroha3d_taira` ይጠቀማል። ተመሳሳዩን ይቀበላል CLI ነገር ግን በተጨማሪ ነጠላ ፕሮቶኮል-ደረጃውን ያስፈጽማል Taira ሰንሰለት፣ አረጋጋጭ፣ ማከማቻ እና የአሂድ ጊዜ ፈራሚ መገለጫ። እንደዚህ አይነት የሶፍትዌር ማስፈጸሚያ አካባቢ ምስክርነቶችን ሳይከፍቱ የ Taira ውቅረትን ያረጋግጡ
 
 ```shell
 iroha3d_taira --sora \
@@ -22,78 +22,78 @@ iroha3d_taira --sora \
   --check-config
 ```
 
-ኦፕሬተሩ ከመጠቀምዎ በፊት የካኖኒክ Taira መገለጫን ማቅረብ አለበት ። የተቀበለው አብነት ምሳሌ ቅንብሮች አሉት. ኦፕሬተሩ እያንዳንዱን ምሳሌ ቅንብር መተካት አለበት ። ከ Taira ጋር በሚፈተንበት ጊዜ የጄኔሪክ Nexus ወይም የምርት SoraFS ቅንጅቶችን አይጠቀሙ።
+ነጠላ ፕሮቶኮል-ስታንዳርድ Taira መገለጫ በኦፕሬተር የተሰራውን ቅጽ ይጠቀሙ; ተመዝግቦ የገባው አብነት አሁንም የማሰማራት ቦታ ያዢዎችን ይዟል። በ Taira ላይ ሲሞክሩ አጠቃላይ Nexus ወይም የምርት SoraFS ቅንብሮችን አይተኩ።
 
 ## `--config` {#arg-config}
 
-- አይነት: የፋይል መንገድ
-- ስያሜ: `-c`
+- አይነት የፋይል መንገድ
+- ተለዋጭ ስም `-c`
 
-ወደ [ peer configuration ](/am/reference/peer-config/index.md) የሚወስደው መንገድ።
+ወደ [የአውታረ መረብ አቻ ውቅር](/am/reference/peer-config/index.md) የሚወስደው መንገድ።
 
 ## `--genesis-manifest-json` {#arg-genesis-manifest-json}
 
-- አይነት: የፋይል መንገድ
+- አይነት የፋይል መንገድ
 
-ለስምምነት ማረጋገጫ ጥቅም ላይ የዋለው አማራጭ የመግቢያ መግለጫ JSON።
+አማራጭ የብሎክቼይን ጀነሲስ ቴክኒካል ማኒፌስት JSON ለስምምነት ማረጋገጫ ጥቅም ላይ ይውላል።
 
 ## `--check-config` {#arg-check-config}
 
-የተፈታውን ውቅር እና የሚገኝ የጄኔሲስ ቁሳቁስ ያረጋግጡ, ከዚያም አውታረ መረብ ሶኬቶችን ሳይያያዙ መውጣት.
+የተፈታውን ውቅር እና የሚገኘውን የብሎክቼይን ጀነሲስ ቁሳቁስ ያረጋግጡ፣ ከዚያ ያለ አስገዳጅ የአውታረ መረብ ሶኬቶች ይውጡ።
 
-## የካጌሙሻ ማረጋገጫ ማህተሞች {#kagemusha-qualification-seals}
+## የካጌሙሻ ብቃት ማኅተሞች {#kagemusha-qualification-seals}
 
-እነዚህ የፋይል-መንገድ አማራጮች `--check-config` ይጠይቃሉ እና ቀኖናዊ ማህተም ከመጻፍዎ በፊት ሙሉ የካጌሙሻ ማረጋገጫ ያካሂዳሉ:
+እነዚህ የፋይል-መንገድ አማራጮች `--check-config` ያስፈልጋቸዋል እና አንድ ፕሮቶኮል-መደበኛ ማህተም ከመጻፍዎ በፊት ሙሉ የ Kagemusha መመዘኛን ያከናውናሉ -
 
-- `--write-kagemusha-catalog-qualification-seal <PATH>` ካታሎጉን ያመቻቻል.
-- `--write-kagemusha-validator-qualification-seal <PATH>` የአካባቢውን ማረጋገጫ ሰጪው ከተዋቀረው የተፈረመ የማስተዋወቂያ ማስያዣ ጋር ይመሳሰላል ።
+- `--write-kagemusha-catalog-qualification-seal <PATH>` ካታሎጉን ብቁ ያደርገዋል።
+- `--write-kagemusha-validator-qualification-seal <PATH>` ከተዋቀረው የተፈረመ የማስተዋወቂያ ቦታ ማስያዝ ላይ የአካባቢውን አረጋጋጭ ብቁ ያደርገዋል።
 
-ሁለቱ የፍተሻ አማራጮች እርስ በእርሳቸው ይጋጫሉ።
+ሁለቱ የማኅተም አማራጮች እርስ በርስ ይጋጫሉ.
 
 ## `--trace-config` {#arg-trace-config}
 
-- አይነት: ባንዲራ
-- አካባቢ: `TRACE_CONFIG`
+- ዓይነት ባንዲራ
+- አካባቢ `TRACE_CONFIG`
 
-የኮንፊግሬሽን ንብርብሮች በሚነበቡበትና በሚመረመሩበት ጊዜ የመከታተያ መዝገቦችን ማግበር።
+የማዋቀሪያ ንብርብሮች ሲነበቡ እና ሲተነተኑ የመከታተያ ምዝግብ ማስታወሻዎችን ያንቁ።
 
 ## `--config-blake3` {#arg-config-blake3}
 
-- አይነት: 64-digit hexadecimal BLAKE3 digest
-- መስፈርቶች: `--config`
+- ዓይነት ባለ 64-አሃዝ ሄክሳዴሲማል BLAKE3 ክሪፕቶግራፊያዊ ዳይጀስት
+- ያስፈልገዋል `--config`
 
-የቅንብሪ ፋይል ባይቶች ከተቀረበው ዳይጀስት ጋር እንዲዛመዱ ይጠይቁ። የአንፃራዊነት የተገደበ ፋይል ጠፍጣፋ መሆን አለበት ፣ `extends` ሊኖረው አይችልም ።
+ከቀረበው የክሪፕቶግራፊያዊ ዳይጀስት ጋር እንዲዛመድ የማዋቀሪያውን ፋይል ባይት ይጠይቁ። ከታማኝነት ጋር የተያያዘ ፋይል ጠፍጣፋ መሆን አለበት; `extends` ሊይዝ አይችልም።
 
 ## `--terminal-colors` {#arg-terminal-colors}
 
-- አይነት: `--terminal-colors=true` ወይም `--terminal-colors=false` ተብሎ የተላለፈ ቡሊን
-- ነባሪ: የደረጃ አቅም ማረጋገጫ
-- አካባቢ: `TERMINAL_COLORS`
+- ዓይነት ቡሊያን፣ እንደ `--terminal-colors=true` ወይም `--terminal-colors=false` ተላልፏል።
+- ነባሪ የተርሚናል አቅም ማወቂያ
+- አካባቢ `TERMINAL_COLORS`
 
-የቁጥጥር ANSI ቀለም ያለው ውፅዓት.
+ANSI ቀለም ያለው ውፅዓት ይቆጣጠሩ።
 
 ## `--language` {#arg-language}
 
-- አይነት: ገመድ
+- ዓይነት ሕብረቁምፊ
 
-ለዴይሞን መልዕክቶች ጥቅም ላይ የዋለውን የስርዓት ቋንቋ አስወግድ።
+ለዴሞን መልዕክቶች ጥቅም ላይ የዋለውን የስርዓት ቋንቋ መሻር
 
 ## `--sora` {#arg-sora}
 
-- አይነት: ባንዲራ
-- አካባቢ: `IROHA_SORA_PROFILE`
+- ዓይነት ባንዲራ
+- አካባቢ `IROHA_SORA_PROFILE`
 
-የሶራ Nexus መገለጫን አክቲቭ አድርግ። ይህ መገለጫ SoraFS, የ SoraNet እጅ መንሻ, እና ባለብዙ መስመሮች ስምምነት ያቀርባል. ሁልጊዜ ይህን ባንዲራ ጋር Taira ተኳሽ ይደውሉ.
+በ SoraFS፣ በ SoraNet የእጅ መጨባበጥ እና ባለብዙ መስመር መግባባት ጥቅም ላይ የዋለውን የሶራ Nexus መገለጫ አንቃ። የ Taira አስጀማሪው ሁል ጊዜ በዚህ ባንዲራ ይጠራል።
 
-## FastPQ አሻራዎች {#fastpq-overrides}
+## FastPQ ይሽራል {#fastpq-overrides}
 
-`--fastpq-execution-mode <MODE>` እና `--fastpq-poseidon-mode <MODE>` መቀበል ብቻ `cpu` ወይም `gpu`. ቀሪዎቹ አማራጮች የቴሌሜትሪ መለያዎችን ይተካሉ
+`--fastpq-execution-mode <MODE>` እና `--fastpq-poseidon-mode <MODE>` የሚቀበሉት `cpu` ወይም `gpu` ብቻ ነው። የተቀሩት አማራጮች የቴሌሜትሪ መለያዎችን ይሽራሉ
 
 - `--fastpq-device-class <LABEL>`
 - `--fastpq-chip-family <LABEL>`
 - `--fastpq-gpu-kind <LABEL>`
 
-ለምሳሌ፡-
+ለምሳሌ:
 
 ```shell
 iroha3d --fastpq-execution-mode gpu \
@@ -103,8 +103,10 @@ iroha3d --fastpq-execution-mode gpu \
   --fastpq-gpu-kind integrated
 ```
 
-## የተፈጠረ እርዳታ {#generated-help}
+## የተፈጠረ እገዛ {#generated-help}
 
-ከዚህ በታች ያለው የተሟላ ውፅዓት ከታሸገ Iroha ምንጭ ኮሚቴ የተገኘ ነው ።
+ከላይ ያለው የአማራጭ ማጠቃለያ አሁን ካለው `iroha3d` የክርክር ትርጓሜዎች አንጻር ተረጋግጧል። ተመዝግቦ የገባው የእገዛ ነጥብ-በጊዜ ውሂብ እይታ የመነሻ ሁኔታው በመጠባበቅ ላይ እያለ ሆን ተብሎ አልተሰራም። ለቼክ መውጫዎ ትክክለኛውን እገዛ ለመፈተሽ ያሂዱ -
 
-<<< @/snippets/iroha3d-help.md
+```shell
+cargo run --locked -p irohad --bin iroha3d -- --help
+```

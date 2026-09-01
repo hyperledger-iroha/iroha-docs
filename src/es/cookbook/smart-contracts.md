@@ -1,23 +1,23 @@
 ---
 translation_locale: es
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: 67778f9fc4f2b6fa0288f5921402cf5509515aae678e98b8192e103dfe284db3
+translation_source_hash: f1ea542f7a710830cd32465d141db8452e6418d426500995b9df7c9c4e1fd597
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Construir y implementar un contrato inteligente {#build-and-deploy-a-smart-contract}
+# Construir y desplegar un contrato inteligente {#build-and-deploy-a-smart-contract}
 
-## El resultado {#outcome}
+## Resultado {#outcome}
 
-Verificar y compilar un contrato Kotodama V1, ejecutar su punto de entrada público localmente, desplegar el artefacto verificado IVM, simular el punto de entrada desplegado y presentarlo con una cuota explicitamente cotizada pagada por las autoridades.
+Verificar y compilar un contrato Kotodama V1, ejecutar su punto de entrada público localmente, desplegar el artefacto IVM verificado, simular el punto de entrada desplegado y enviarlo con una tarifa pagada por la autoridad y cotizada explícitamente.
 
-## Los requisitos previos {#prerequisites}
+## Requisitos previos {#prerequisites}
 
-- Un chequeo de fuente Iroha en el punto de entrega `0010c5a70039eac101a4846499ba9ceaf43eb65c`, Rust y Cargo.
-- El cliente actual `iroha` CLI más un cliente financiado Taira de [ se conecta con Taira](./connect-to-taira.md).
-- Caminos absolutos en `IROHA_CONFIG` y `IROHA_PRIVATE_KEY_FILE`. El archivo clave debe ser un archivo regular de un solo enlace con el modo `0600`; el ayudante de implementación intencionalmente no tiene ningún argumento de llave privada en línea.
-- Aprobación del operador Taira. El registro del código de contrato requiere `CanRegisterSmartContractCode`, y las implementaciones protegidas pueden requerir atribución y promulgación de gobernanza. Si Taira no ha concedido ese acceso, realice la implementación en una red local generada cuya genesis otorga el permiso.
+- Una copia de trabajo del código fuente Iroha en el commit `0010c5a70039eac101a4846499ba9ceaf43eb65c`, Rust, y Cargo.
+- El `iroha` CLI actual más un cliente Taira financiado de [Conectar a Taira](./connect-to-taira.md).
+- Rutas absolutas en `IROHA_CONFIG` y `IROHA_PRIVATE_KEY_FILE`. El archivo clave debe ser un archivo regular de enlace único propiedad del propietario con modo `0600`; el asistente de despliegue intencionalmente no tiene un argumento de clave privada en línea.
+- Taira aprobación del operador. El registro del código del contrato requiere `CanRegisterSmartContractCode`, y los despliegues protegidos pueden requerir atribución y ejecución de gobernanza. Si Taira no ha concedido ese acceso, realice el despliegue en una red local generada cuyo génesis de blockchain otorgue el permiso.
 
 ```bash
 TORII_URL=https://taira.sora.org
@@ -38,11 +38,11 @@ PY
 })"
 ```
 
-## Los pasos {#steps}
+## Pasos {#steps}
 
-### 1. Copiar un contrato de bien conocido Kotodama V1 {#_1-copy-a-known-good-kotodama-v1-contract}
+### 1. Copiar un contrato Kotodama V1 conocido como bueno {#_1-copy-a-known-good-kotodama-v1-contract}
 
-Trabaje dentro del chequeo fijado Iroha y copie la muestra tuple-retorno del compilador para que la fuente y la cadena de herramientas permanezcan en el mismo commit.
+Trabaja dentro del Iroha de pago fijado y copia el ejemplo de retorno de tupla del compilador para que la fuente y la cadena de herramientas permanezcan en el mismo commit.
 
 ```bash
 cd "$IROHA_SOURCE"
@@ -51,7 +51,7 @@ cp ./crates/kotodama_lang/src/samples/tuple_return_demo.ko \
   ./contracts/tuple_return_demo.ko
 ```
 
-La fuente completa es pequeña y utiliza la sintaxis actual `seiyaku`/`kotoage`:
+El código fuente completo es pequeño y utiliza la sintaxis actual `seiyaku`/`kotoage`:
 
 ```kotodama
 seiyaku TupleReturnDemo {
@@ -67,9 +67,9 @@ seiyaku TupleReturnDemo {
 }
 ```
 
-Kotodama se dirige a la Máquina Virtual Iroha y su corriente ABI. No es un lenguaje fuente WASM o EVM.
+Kotodama apunta a la Máquina Virtual Iroha y su ABI actual. No es un lenguaje fuente WASM ni EVM.
 
-### 2. Comprobar, construir y verificar el artefacto. {#_2-check-build-and-verify-the-artifact}
+### 2. Verificar, construir y comprobar el artefacto {#_2-check-build-and-verify-the-artifact}
 
 ```bash
 cargo run -p ivm --bin koto -- \
@@ -89,11 +89,11 @@ cargo run -p ivm --bin koto -- \
   ./contracts/tuple_return_demo.ko
 ```
 
-La primera construcción publica el artefacto y los sidecars autenticados. La segunda se ejecuta en modo de sólo lectura `--verify` y falla si cualquier salida existente no coincide exactamente con la fuente actual. Trata el archivo `.to` y su manifiesto como una salida revisada de la construcción.
+La primera compilación publica el artefacto y los sidecars autenticados. La segunda se ejecuta en modo de solo lectura `--verify` y falla si cualquier salida existente no coincide exactamente con la fuente actual. Trate el archivo `.to` y su manifiesto técnico como una salida de compilación revisada única.
 
-### 3. Ejecutar el código de byte localmente {#_3-run-the-bytecode-locally}
+### 3. Ejecuta el bytecode localmente {#_3-run-the-bytecode-locally}
 
-`compute` es un punto de entrada público `kotoage`. ejecutarlo con `debug-call`, que se ejecuta contra dispositivos locales sin enviar ni pagar por una transacción.
+`compute` es un punto de entrada público de `kotoage`. Ejecútalo con `debug-call`, que se ejecuta contra artefactos de prueba locales sin enviar ni pagar por una transacción.
 
 ```bash
 iroha --config "$IROHA_CONFIG" --machine contract debug-call \
@@ -105,11 +105,11 @@ jq -e '.ok == true and .result == ["3", "5"]' \
   ./build/local-call.json
 ```
 
-Los números enteros Kotodama se traducen en cadenas JSON, por lo que el tuple decodificado es `["3", "5"]`.
+Kotodama los enteros se representan como JSON cadenas, por lo que la tupla decodificada es `["3", "5"]`.
 
-### 4. Despliegue a través del ayudante nativo. {#_4-deploy-through-the-native-helper}
+### 4. Implementar a través del asistente nativo {#_4-deploy-through-the-native-helper}
 
-El ayudante carga trozos de código de byte, registra el manifiesto firmado y presenta una operación `CommitContractDeployment`. Citación de tarifas para cada transacción y rechaza una cotización que cambie el pagador seleccionado o la vinculación al gas.
+El asistente sube fragmentos de bytecode, registra el manifiesto técnico firmado y envía una operación `CommitContractDeployment`. Cotiza las tarifas de cada transacción y rechaza una cotización que cambie el pagador seleccionado o el límite de costo de ejecución de la transacción.
 
 ```bash
 printf '%s\n' \
@@ -131,11 +131,11 @@ jq '{contract_address, code_hash_hex, final, fee_quotes}' \
   ./build/deployment.json
 ```
 
-La solicitud vacía `charge_limits` no es un identificador de activo copiado: el ayudante acepta la cotización exacta en vivo antes de firmar. Respuesta actual del grifo. Las llamadas de contrato aceptan la selección de tarifas solo a través de la cotización en vivo tipificada; los metadatos de transacción `gas_asset_id` no forman parte del contrato de primera emisión.
+La solicitud con `charge_limits` vacío no contiene un identificador de activo copiado: el auxiliar acepta la cotización activa exacta antes de firmar. Compare el activo cobrado que devuelve con la respuesta actual del dispensador. Las llamadas al contrato solo aceptan la selección de tarifas mediante la cotización activa tipada; los metadatos de transacción `gas_asset_id` no forman parte del contrato de primera versión.
 
-### 5. Simula y llama al punto de entrada desplegado. {#_5-simulate-and-call-the-deployed-entrypoint}
+### 5. Simular y llamar al punto de entrada desplegado {#_5-simulate-and-call-the-deployed-entrypoint}
 
-La simulación ejecuta el punto de entrada público en Torii sin presentar. La siguiente llamada es una transacción y, por lo tanto, selecciona explícitamente al pagador de las tarifas de autoridad. Ambos comandos vinculan el límite de 1,500,000 gas.
+La simulación ejecuta el punto de entrada público en Torii sin enviarlo. La llamada siguiente es una transacción y, por tanto, selecciona explícitamente a la autoridad como pagadora de la tarifa. Ambos comandos fijan el límite de gas en 1.500.000.
 
 ```bash
 iroha --config "$IROHA_CONFIG" --machine contract call \
@@ -164,7 +164,7 @@ jq -e '.terminal_kind == "Applied"' ./build/deployed-call.json
 
 ## Verificar {#verify}
 
-Resolver el alias, buscar el manifiesto en la cadena con el hash de código devuelto y simular el mismo punto de entrada público por dirección canónica:
+Resuelve el alias, obtén el manifiesto técnico en cadena mediante el hash criptográfico del código devuelto y simula el mismo punto de entrada público mediante la dirección canónica:
 
 ```bash
 CODE_HASH="$({ jq -er '.code_hash_hex' ./build/deployment.json; })"
@@ -191,23 +191,23 @@ jq -e '.ok == true and .result == ["3", "5"]' \
   ./build/address-simulation.json
 ```
 
-El despliegue es completo solo cuando el alias se resuelve a la dirección devuelta, el manifiesto es legible bajo el mismo código hash, las simulaciones locales y Torii retornan `["3", "5"]`, y la llamada enviada llega a `Applied`.
+La implementación se considera completa solo cuando el alias se resuelve a la dirección devuelta, el manifiesto técnico es legible bajo el mismo hash criptográfico del código, las simulaciones locales y Torii devuelven `["3", "5"]`, y la llamada enviada llega a `Applied`.
 
 ## Solución de problemas {#troubleshooting}
 
-- Las fallas `CanRegisterSmartContractCode` requieren una concesión del operador Taira o un cambio de genesis/bootstrap en localnet. Una cuenta normal no puede otorgar este permiso después del hecho.
-- Gobernanza o rechazo de carril protegido significa que la implementación necesita la atribución exacta de aprobación requerida por esa red. Coordinar la lista de aprobadores; no inventar cuenta IDs.
-- Un manifiesto o ABI no coincide significa que el código de byte, manifiesto y tiempo de ejecución del nodo no describen el mismo artefacto. Reconstruir en el commit fijado con `--verify`.
-- `fee quote changed ... gas bound` significa el desacuerdo entre la intención tipografiada solicitada y la cotización en vivo.
-- El ayudante de implementación rechaza las claves en línea, los modos permisivos de archivos clave, los vínculos simétricos y multiplica los archivos vinculados antes de la presentación de la red.
-- Un error de punto de entrada solo para visualización significa que `compute` fue enrutado a través de la familia de comandos incorrecta. Esta muestra declara `kotoage`, por lo que use simulación de llamada o presentación.
-- Las llamadas contractuales requieren un límite de gas tipado positivo. El contrato de llamada de primera liberación rechaza los metadatos de alto nivel sobre el gas o el activo de tarifa.
+- `CanRegisterSmartContractCode` los fallos requieren una concesión de operador Taira o un cambio de génesis/bootstrap en la red local. Una cuenta normal no puede otorgarse este permiso por sí misma después del hecho.
+- El rechazo por gobernanza o carril protegido significa que el despliegue necesita la atribución exacta del aprobador requerida por esa red. Coordine la lista de aprobadores; no invente IDs de cuentas.
+- Un manifiesto técnico o un desajuste ABI significa que el bytecode, el manifiesto técnico y el tiempo de ejecución del software del nodo no describen el mismo artefacto. Reconstruya en el commit fijado con `--verify`.
+- `fee quote changed ... gas bound` significa que la intención escrita solicitada y la cotización en vivo no coinciden. Vuelva a realizar la verificación previa en lugar de modificar una transacción firmada.
+- El asistente de despliegue rechaza las claves en línea, los modos de archivo de claves permisivos, los enlaces simbólicos y los archivos con múltiples enlaces antes de la entrega a la red.
+- Un error de punto de entrada de solo vista significa que `compute` fue dirigido a través de la familia de comandos incorrecta. Esta muestra declara `kotoage`, por lo que use simulación de llamadas o envío.
+- Las llamadas de contrato requieren un límite de gas tipado y positivo. El contrato de llamada de la primera versión rechaza el gas de nivel superior y los metadatos del activo de tarifa.
 
 ## Fuente y documentos relacionados {#source-and-related-docs}
 
-- [Kotodama V1 Implementación del comando en el compromiso fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/src/bin/koto.rs)
-- [Muestra de fuente de retorno dupla en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
+- [Kotodama V1 implementación del comando en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/src/bin/koto.rs)
+- [Ejemplo de fuente de retorno de tupla en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
 - [Asistente de despliegue nativo en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
-- [Pruebas de integración del contrato en el compromiso fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs)
-- [Los contratos inteligentes ](/es/blockchain/smart-contracts.md)
-- [Referencia CLI](/es/get-started/operate-iroha-via-cli.md)
+- [Pruebas de integración de contratos en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs)
+- [Contratos inteligentes](/es/blockchain/smart-contracts.md)
+- [CLI referencia](/es/get-started/operate-iroha-via-cli.md)

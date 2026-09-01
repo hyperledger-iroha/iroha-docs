@@ -1,22 +1,22 @@
 ---
 translation_locale: ba
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: aa8e079684879bdcda2b4439e9c12742d4ab477e6f560f7c326a59b6be5bf666
+translation_source_hash: 576e03924f19b63681cdfafa641b996672e35a992478fc9eaf5b83f0e7baa6da
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Туған активтар иҫәбенә кредит {#native-asset-escrow}
+# Протоколға индерелгән актив эскроуы {#native-asset-escrow}
 
 ## Һөҙөмтә {#outcome}
 
-Баҙарҙа депозит һәм маҡсатҡа бәйле актив бикләү араһында һайлау, ғәмәлдәге типланған ғүмере циклын башҡарыу менән Rust йәки Python, бәйләп, һәр йоҙаҡ ҡабаттан һеҙ ысынлап та күҙәткән ҡалған суммаға, һәм тыуған Kotodama Һаҡлыҡтың өҫкө йөҙө JavaScript.
+Баҙар эскроуы менән тәғәйен урынға бәйле актив йоҙағы араһында һайлағыҙ, ағымдағы типланған тормош циклын Rust йәки Python менән үтәгеҙ, һәр ҡабатлауҙы үҙегеҙ күҙәткән ҡалған суммаға бәйләгеҙ һәм JavaScript аша протоколға индерелгән Kotodama эскроу интерфейсын компиляциялағыҙ.
 
 ## Шарттар {#prerequisites}
 
 - Санлы активтар билдәләмәһе һәм етерлек күләмдә булған асыусы/сатыусы.
-- Берҙән-бер асҡыс менән финансланған I105 клиенттар өсөн һәр партияһы баҫҡыс тапшыра. ҡулланыу туранан-тура власть түләүле `fee_payment` маҡсат, уның түләү активы ағымдағы Taira кранға яуап биреү; активты ҡуймағыҙ ID документтарҙан.
-- Хәҙерге Rust йәки Python SDK Iroha йөкләмәһе `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
+- Берҙән-бер асҡыс менән финансланған I105 клиенттар өсөн һәр партияһы баҫҡыс тапшыра. ҡулланыу туранан-тура вәкәләтле иҫәп түләүле `fee_payment` маҡсат, уның түләү активы ағымдағы Taira faucet-ҡа яуап биреү; активты ҡуймағыҙ ID документтарҙан.
+- Хәҙерге Rust йәки Python SDK Iroha commit `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
 - өсөн JavaScript компилятор миҫалы, Node.js 24 плюс урындағы төҙөлгән `@iroha/iroha-js` пакеты һәм уның сығышы `iroha_js_host`; күҙәтеү [JavaScript SDK сығанаҡ төҙөлөшөн көйләү](/ba/guide/tutorials/javascript.md#build-from-source). Браузер төҙөү тәьмин ителергә тейеш `compilerUrl` урындағы хужаны йөкләү урынына.
 - Taira активтар күсереү һәм һаҡланыу инструкцияларын ҡабул итергә тейеш. Аҡса хужалары ғәҙәттәгесә йәшәү циклын ҡуллана ала, әгәр уларҙың актив сәйәсәте рөхсәт итһә; бәхәстәрҙе хәл итеү өсөн глобаль `CanResolveEscrowDispute` рөхсәтен талап итә.
 
@@ -167,7 +167,7 @@ opener.submit_blocking(
 )?;
 ```
 
-`DrawdownAssetLock::new` өс баһа ала; `CancelAssetLock::new` ике. көтөлгән ҡалған сумманы ситләтеү иҫке, хәүефһеҙ булмаған шылтыратыу формаһын һүрәтләй.
+`DrawdownAssetLock::new` өс баһа ала; `CancelAssetLock::new` ике. көтөлгән ҡалған сумманы ситләтеү иҫке, хәүефһеҙ булмаған саҡырыу формаһын һүрәтләй.
 
 ### 3. Kotodama иҫәбенә JavaScript иҫәбен алыу. {#_3-compile-the-kotodama-escrow-surface-from-javascript}
 
@@ -224,7 +224,7 @@ node ./compile-native-escrow.mjs
 
 ## Тикшереү {#verify}
 
-Баҙарҙа һаҡланған аҡса өсөн һорау `FindAssetEscrowById` һәм ике яҡтың да активтарын сығарылғандан һуң тотоу. `Released`, Ҡабул итеүсе һатып алыусы исемен атағыҙ, һәм ҡалмаған һаҡсылыҡ күрһәтегеҙ. Python өҫтәмә бикләү, кире ҡайтарылған ID һәм ҡул ҡуйылған һорауҙы ҡабатла:
+Баҙар escrow-һы өсөн release-тан һуң `FindAssetEscrowById` һәм ике яҡтың да asset holdings-тарын query итегеҙ. Яҙма `Released` хәлдә булырға, ҡабул иткән һатып алыусыны атарға һәм custody ҡалмағанын күрһәтергә тейеш. Өҫтәге Python lock өсөн ҡайтарылған ID-ны һаҡлап, signed query-ҙы ҡабатлағыҙ:
 
 ```python
 record = client.get_asset_escrow(
@@ -244,15 +244,15 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 - `expected remaining amount` кире ҡағыу оптимистик-конкуренция конфликты булып тора. рекорды ҡабаттан һорағыҙ, башҡа түләтеү / бөтөрөү ҡаралғанмы икәнен хәл итегеҙ һәм яңы күрһәтмәгә ҡул ҡуйығыҙ, тик әгәр яңы дәүләт ҡабул ителә икән.
 - Бары тик конфигурацияланған иреккә сығарыу органы ғына ышаныслы бик төшөрә ала. Юлға сығыу урыны аҡсаны аласаҡ өсөн генә уны иреккә сығара алмай.
 - Баҙарҙа сығарыу ҡабул итеү һәм түләү ебәреү дәүләтенән һуң ғына ғәмәлдә була; ғәмәлдән сығарыу тәүге йәшәү циклы дәүләттәренә генә сикләнә.
-- Иҫәпкә алыу ваҡыты иҫәбенә ҡулланыу. `ExpireAssetLock` үтәсәгенә дәлил итеп урындағы стена сәғәтенең ваҡытын ҡарамағыҙ.
+- Иҫәпкә алыу ваҡыты иҫәбенә ҡулланыу. `ExpireAssetLock` үтәсәгенә дәлил итеп урындағы система сәғәтеенең ваҡытын ҡарамағыҙ.
 - Аҡсаны түләмәй ҡалһа, был ғүмер циклы этабын тапшырған яҡҡа ҡарай. Фонд һатып алыусыһы, һатыусы/асыҡлаусы һәм иреккә сығарыу власы үҙ аллы Taira.
 
 ## Сығанаҡ һәм уның менән бәйле документтар {#source-and-related-docs}
 
-- [Туған эскроу инструкцияһы моделе ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
-- [Туған эскроу интеграцияһы һынауҙары ҡуйылған йөкләмә буйынса](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
-- [Python конфиденциаль клиенттарҙың билдәләнгән йөкләмә буйынса алымдары](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
+- [Ҡатырылған commit-та протокол эскроуының инструкция моделе](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
+- [Ҡатырылған commit-та протокол эскроуының интеграция һынауҙары](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
+- [Python конфиденциаль клиенттарҙың билдәләнгән commit буйынса алымдары](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
 - [Kotodama фиктив commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko) буйынса урындағы депозит өлгөһө
-- [Тыуған милке менән һаҡланған активтар](/ba/blockchain/escrow.md)
+- [Протоколға индерелгән актив эскроуы](/ba/blockchain/escrow.md)
 - [Функциональ активтар](./fungible-assets.md)
 - [Рөхсәт һәм ролдәр](./permissions-and-roles.md)

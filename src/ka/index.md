@@ -36,7 +36,7 @@ nexusPortal:
         link: /ka/cookbook/submit-and-verify-transactions
       - title: "გადაადგილება ფუნგებადი აქტივების შესახებ"
         link: /ka/cookbook/fungible-assets
-      - title: "გამოკითხვის რეგისტრაციის მდგომარეობა"
+      - title: "საკვანძო ბლოკჩეინების ლიდერის მდგომარეობა"
         link: /ka/cookbook/query-ledger-state
       - title: "გადაცემის მოვლენები"
         link: /ka/cookbook/stream-events
@@ -64,7 +64,7 @@ features:
       dark: /reference.svg
       light: /reference-light.svg
     title: "რეფერენცია"
-    details: "იხილეთ მიმდინარე ბინარული, გენეზიის, Torii, და თავსებადობის რეფერენციის გვერდები."
+    details: "კონსულტაციები მიმდინარე ბინარული, blockchain genesis, Torii, და თავსებადობის რეფერენციური გვერდები"
     link: /ka/reference/
 footer: true
 ---

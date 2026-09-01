@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /cookbook/nfts.md
-translation_source_hash: 5eb6a349b815afbac9717f7b44c499adc78b1280625388656015ff4b133b9085
+translation_source_hash: db99dab483d4e2fb3fd84be84f6e4ef9f8373f0c16eb2f34952f1232c4587561
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 ## نتیجہ {#outcome}
 
-معائنہ Taira NFT اسٹیٹ، پھر رجسٹر، اپ ڈیٹ، منتقلی، اور ایک منفرد سوال NFT تخلیق کردہ مقامی نیٹ ورک پر کام کے بہاؤ کو مکمل طور پر اہل `name$domain.dataspace` NFT ID اور کینونیکل I105 مالک IDs.
+Taira کی NFT state کا معائنہ کریں، پھر generated local network پر ایک منفرد NFT کو register، update اور transfer کریں اور اس پر استفسار کریں۔ workflow مکمل qualified `name$domain.dataspace` NFT ID اور canonical I105 owner IDs استعمال کرتا ہے۔
 
 ## لازمی شرائط {#prerequisites}
 
@@ -30,7 +30,7 @@ curl -fsS -H 'Accept: application/json' \
   | jq '{total, nfts: [.items[] | {id, owned_by, content}]}'
 ```
 
-NFTs منفرد ریکارڈ ہیں، عددی توازن نہیں. ان کے پاس ایک ID ہے، ایک مالک، اور ایک کمپیکٹ `content` میٹا ڈیٹا نقشہ.
+NFTs منفرد ریکارڈ ہیں، عددی بیلنس نہیں. ان کے پاس ایک ID ہے، ایک مالک، اور ایک کمپیکٹ `content` میٹا ڈیٹا نقشہ.
 
 ### مقامی مالک کو تیار کریں IDs {#_2-prepare-local-owner-ids}
 
@@ -102,11 +102,11 @@ iroha --config "$LOCAL_CONFIG" \
 
 ::: warning اجازت کی حد
 
-پر Taira, ہر لکھنے کی بھی ضرورت ہے `--metadata ./taira.tx-metadata.json` رجسٹریشن، منتقلی، ہٹانے اور میٹا ڈیٹا اپ ڈیٹس کو فعال رن ٹائم کے ذریعہ چیک کیا جاتا ہے (`CanRegisterNft`, `CanTransferNft`, `CanUnregisterNft`, اور `CanModifyNftMetadata` پہلے سے طے شدہ اجازت کی سطح میں). اپنی درخواست کو تفویض کردہ ڈومین کا استعمال کریں یا لوکل نیٹ پر اس کے ذریعے چلیں۔
+Taira پر ہر تحریری عمل کے لیے `--metadata ./taira.tx-metadata.json` اور ایک صریح fee payer بھی درکار ہے۔ رجسٹریشن، منتقلی، اخراج اور میٹا ڈیٹا کی تازہ کاریوں کو فعال runtime جانچتا ہے (پہلے سے طے شدہ permission surface میں `CanRegisterNft`، `CanTransferNft`، `CanUnregisterNft` اور `CanModifyNftMetadata`)۔ اپنی ایپلیکیشن کو تفویض کردہ ڈومین استعمال کریں، یا اس walkthrough کو localnet تک محدود رکھیں۔
 
 :::
 
-معاہدے کی ملکیت کے ورک فلوز کے لئے ، Kotodama ٹائپ کردہ NFT میزبان کالز کو بے نقاب کرتا ہے۔ مندرجہ ذیل ہے عین مطابق لائف سائیکل فکسچر مرتب اور پنڈڈ IVM دستاویزات ٹیسٹ کے ذریعہ انجام دیا گیا ہے:
+معاہدے کی ملکیت والے ورک فلوز کے لیے Kotodama ٹائپ شدہ NFT میزبان کالز فراہم کرتا ہے۔ ذیل میں لائف سائیکل کا وہ عین آزمائشی ڈیٹا ہے جسے مقررہ IVM دستاویزی ٹیسٹ کمپائل کر کے چلاتا ہے:
 
 ```kotodama
 seiyaku NftFlow {
@@ -134,7 +134,7 @@ seiyaku NftFlow {
 }
 ```
 
-I105 کی دو مقررہ اقدار بہاؤ سے اوپر ٹیسٹ فکسچر ہیں؛ ہینس عملدرآمد سے پہلے منزل کو رجسٹر کرتا ہے۔ وہ `CURRENT_OWNER` اور `NEW_OWNER` سے نہیں ہیں CLI چلنے کے ذریعے. درخواست کے معاہدے کے ل its ، اس کے اصل کینونیکل اکاؤنٹس فراہم کریں ، پھر اسے مرتب کریں ، ٹیسٹ کریں ، تعینات کریں اور اسے [ہوشیار معاہدوں ](./smart-contracts.md) کے ذریعہ کال کریں۔ غیر نظر ثانی شدہ بائٹ کوڈ کو Taira میں پیش نہ کریں ، اور یاد رکھیں کہ معاہدہ کی کارکردگی ابھی بھی رن ٹائم اجازت سے گزرتی ہے۔
+دونوں مقررہ I105 قدریں اپ اسٹریم پروجیکٹ کا آزمائشی ڈیٹا ہیں؛ آزمائشی نظام عمل درآمد سے پہلے منزل کو رجسٹر کرتا ہے۔ یہ CLI رہنما میں موجود `CURRENT_OWNER` اور `NEW_OWNER` نہیں ہیں۔ ایپلیکیشن کنٹریکٹ کے لیے اس کے اصل کینونیکل اکاؤنٹس فراہم کریں، پھر اسے [اسمارٹ کنٹریکٹس](./smart-contracts.md) کے ذریعے کمپائل کریں، جانچیں، تعینات کریں اور کال کریں۔ غیر جائزہ شدہ bytecode کو Taira پر جمع نہ کریں؛ یاد رکھیں کہ کنٹریکٹ پر عمل درآمد اب بھی runtime authorization سے گزرتا ہے۔
 
 ## تصدیق کریں {#verify}
 
@@ -164,7 +164,7 @@ jq -e --arg owner "$NEW_OWNER" \
 
 - [NFT پنڈ commit پر انٹیگریشن ٹیسٹ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/nft.rs)
 - [Kotodama NFT پنڈ commit پر میزبان کال ٹیسٹ ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
-- [عین مطابق Kotodama NFT پنڈ commit پر زندگی سائیکل فکسچر](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/docs/examples/12_nft_flow.ko)
+- [مقررہ commit پر Kotodama NFT لائف سائیکل کا عین آزمائشی ڈیٹا](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/docs/examples/12_nft_flow.ko)
 - [NFTs](/ur/blockchain/nfts.md)
 - [میٹا ڈیٹا](/ur/blockchain/metadata.md)
 - [ہدایات](/ur/blockchain/instructions.md)

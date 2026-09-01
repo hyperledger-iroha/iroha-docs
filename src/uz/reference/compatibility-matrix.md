@@ -3,23 +3,23 @@ translation_locale: uz
 translation_source: /reference/compatibility-matrix.md
 translation_source_hash: 5928eaf7e65023ad1867ca8d125efa61da6d8fe505b91e71b2c2121b183ce06e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Qo'shish matrisi {#compatibility-matrix}
+# Moslik Matrisi {#compatibility-matrix}
 
-Qo'shilish matrisi joriy Iroha 3 hujjatlari to'plami uchun keskin SDK stsenariy qoplamasini ko'rsatadi. Andoza bo'yicha sahifa [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) o'zgarishidan hosil bo'lgan butlangan fotosuratni yuklaydi.
+Moslik matritsasi kesishmani ko'rsatadi SDK joriy uchun stsenariy qamrovi Iroha 3 hujjatlar to'plami. Standart bo'lib, sahifa pinlanganidan yaratilgan bir nuqtada vaqt ma'lumotlar ko'rinishini yuklaydi [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) tahrir.
 
-Matrix quyidagilardan iborat:
+Matritsa quyidagilardan iborat:
 
 - Birinchi ustundagi hikoyalar
-- SDKs qolgan ustunlarda
-- Yopiq, xato va yo'qolgan ma'lumotlar uchun status belgilari
+- SDKs qolgan ustunlar bo‘ylab
+- Qoplangan, muvaffaqiyatsiz bo‘lgan va yetishmayotgan ma’lumotlar uchun holat ramzlari
 
-Faqat yangilanish ish oqimida tasdiqlangan natijalar qoplangan yoki muvaffaqiyatsizlikka uchragan deb xabar qilinadi. Quyida o'rnatilgan qayta ko'rib chiqish uchun dalillar bo'lmagan va boshqa manbalarni qayta ko'rish natijasini meros qilib olishning o'rniga yo'qolgan ma'lumotlar sifatida namoyish etiladi.
+Faqat yangilash ish jarayoni tomonidan tasdiqlangan natijalar qamrab olingan yoki muvaffaqiyatsiz sifatida hisobot qilinadi. Belgilangan tahrir uchun dalilga ega bo‘lmagan stsenariylar boshqa manba tahriridan natijalarni meros qilib olish o‘rniga yetishmayotgan ma’lumot sifatida ko‘rsatiladi.
 
 <CompatibilityMatrixTable />
 
 ::: info
-`VITE_COMPAT_MATRIX_URL` ni faqat mos keladigan jonli orqa tomonni o'rnatish uchun qo'yish. Ushbu o'zgaruvchi bo'lmasa, sahifa `src/public/compat-matrix.json` yuklanadi.
+`VITE_COMPAT_MATRIX_URL` ni faqat mos keluvchi jonli backend bilan birga kelgan vaqti-vaqti bilan ma'lumotlar ko‘rinishini o‘zgartirish uchun belgilash kerak. Shu o‘zgaruvchisiz, sahifa `src/public/compat-matrix.json` ni yuklaydi.
 :::

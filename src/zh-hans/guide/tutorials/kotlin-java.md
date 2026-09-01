@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: 62d6f434e5af4213420c456ee27ebdc260c8b0e9f7a85bc3ba955ee9c79a058d
+translation_source_hash: f2411fec1cc35b1bf7795a7ab5a0eb7a8eb6b60b4799ebf3db47208b902f87e6
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -18,14 +18,14 @@ Kotlin SDK 是 JVM 和 Android 应用程序的默认客户端堆.它在 Iroha �
 |`org.hyperledger.iroha.sdk:client-android`|AAR|Android 关键存储,设备远程测量和 JNI 支持的客户端集成|
 |`org.hyperledger.iroha.sdk:offline-wallet-android`|AAR|Android 基于`client-android`的离线钱包运输和集成|
 
-这些文物还没有在Maven Central上发布. 从注入的 Iroha 来源修改中构建并本地发布:
+这些构件还没有在Maven Central上发布. 从注入的 Iroha 来源修改中构建并本地发布:
 
 ```bash
 cd kotlin
 ./gradlew publishToMavenLocal
 ```
 
-然后选择您的应用程序需要的文物:
+然后只选择应用程序所需的构件：
 
 ```kotlin
 repositories {
@@ -45,7 +45,7 @@ dependencies {
 
 ## Kotlin 和Java兼容性 {#kotlin-and-java-compatibility}
 
-公共 API 是 Kotlin 的首个,在 JVM 调用者需要时提供Java间接.相等变化反映在相应的 `java/`实现中.新的 Android 集成应该从上述 Kotlin 文物开始.
+公共 API 是 Kotlin 的首个,在 JVM 调用者需要时提供Java间接.相等变化反映在相应的 `java/`实现中.新的 Android 集成应该从上述 Kotlin 构件开始.
 
 所有的 Kotlin 模块执行 JDK 8 API 编译时与 `-Xjdk-release=8`, 尽管构建工具链本身使用 JDK 21. 不要使用 JDK 9+ APIs 在 SDK 这个代码.
 
@@ -58,7 +58,7 @@ cd kotlin
 ./gradlew :core-jvm:test --console=plain
 ```
 
-建造 Android 的文物:
+建造 Android 的构件:
 
 ```bash
 ./gradlew :client-android:assembleRelease \
@@ -71,7 +71,7 @@ cd kotlin
 
 - Norito 编码和解码
 - 规范账户和资产地址处理
-- 交易构建,签署和离线包裹
+- 交易构建,签署和离线封装
 - Torii HTTP,WebSocket 和 SSE 的客户
 - 多签名,订阅, SoraFS, Nexus 和连接型号
 - Android 键存储和设备远程测量集成

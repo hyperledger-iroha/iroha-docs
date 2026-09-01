@@ -1,23 +1,23 @@
 ---
 translation_locale: uz
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: 71258f4da9afcd94afce2fc2a53ce43540d8f67054ea789f0b2d105daba26006
+translation_source_hash: 4979ab2c52eba4040d7f003f3da73dbc333fa7e047b0259816d0d34f97377749
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Namunalar va retseptlar {#samples-and-recipes}
+# Namunalari va Retseptlar {#samples-and-recipes}
 
-Iroha manbali ma'muriyada SDK retseptlari va test paketlari mavjud bo'lib, ular nod bilan bir xil qayta ko'rib chiqilgan.
+Iroha manba ombori SDK retseptlar va test toʻplamlarini oʻz ichiga oladi, ular tugun bilan bir xil tahririyatni kuzatadi.
 
-## JavaScript retseptlar {#javascript-recipes}
+## JavaScript Retseptlar {#javascript-recipes}
 
-[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes) deterministik operatsiyalar partiyasi bo'yicha aniqlangan misollar mavjud; Nexus dasturlarni o'tkazish, NFT va hisobni takrorlash; ISO ko'prik oqimlari va Torii har bir retsept offline ishlaydi yoki jonli foydalanish kerak Torii yakuniy nuqta.
+[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes) aniq tranzaksiya to'plamini guruhlash uchun mo'ljallangan misollarni o'z ichiga oladi, Nexus ilova uzatmalari, NFT va hisob qayta ishlash, ISO ko‘prik oqadi, va Torii oqim. Har bir retsept uning oflayn ishlashini yoki jonli kerakligini hujjatlashtiradi Torii API yakun nuqtasi.
 
 ## Swift va iOS {#swift-and-ios}
 
-Foydalanish `IrohaSwift/Tests/IrohaSwiftTests` to'g'riligi bilan tasdiqlangan misollar uchun Swift SDK. Koʻring [Swift va iOS](/uz/guide/tutorials/swift.md) paketlar va ko'priklarni o'rnatish uchun.
+Ayni Swift SDK ga nisbatan tasdiqlangan misollar uchun `IrohaSwift/Tests/IrohaSwiftTests` dan foydalaning. Paket va ko'prik sozlamalari uchun [Swift va iOS](/uz/guide/tutorials/swift.md) ga qarang.
 
 ## Android {#android}
 
-Yangi Android ish uchun Kotlin-birinchi `core-jvm`, `client-android` va `offline-wallet-android` modullaridan foydalaning [Kotlin, Android va Java](/uz/guide/tutorials/kotlin-java.md). Kotlin SDK Android iste'molchilari uchun kanonik boshlang'ich nuqta hisoblanadi.
+Yangi Android ishlari uchun [Kotlin, Android, va Java](/uz/guide/tutorials/kotlin-java.md) da tavsiflangan Kotlin-birinchi `core-jvm`, `client-android` va `offline-wallet-android` modullaridan foydalaning. Kotlin SDK Android iste'molchilari uchun kanonik boshlang'ich nuqtadir.

@@ -3,16 +3,16 @@ translation_locale: ja
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
 translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Iroha を Bare Metal で 実行する {#running-iroha-on-bare-metal}
+# ベアメタル上で Iroha を実行する {#running-iroha-on-bare-metal}
 
-このワークフローを Docker Compose の代わりにホストでペアを直接実行したいときに使用します.現在のソースツリーでは,マッチングジェネシス,ピア設定,クライアント設定,およびスタート/ストップスクリプトを書く Kagami 発電機が提供されます.
+ネットワークピアを Docker Compose 経由ではなくホスト上で直接実行したい場合は、このワークフローを使用してください。現在のソースツリーには、ブロックチェーンのジェネシス、ネットワークピアの設定、クライアント設定、起動/停止スクリプトに対応する Kagami ジェネレーターが用意されています。
 
-## 1. バイナリー を 作る {#_1-build-the-binaries}
+## 1. バイナリを構築する {#_1-build-the-binaries}
 
-Iroha 上流作業場から:
+上流の Iroha ワークスペースから：
 
 ```bash
 cargo build --release \
@@ -21,53 +21,53 @@ cargo build --release \
   -p iroha_kagami --bin kagami
 ```
 
-これは:
+これは次のものを生成します:
 
-- `target/release/iroha3d` ピアダイモン
-- `target/release/iroha`について CLI
-- `target/release/kagami` キー,ゲネス,ローカルネット生成
+- ネットワークピアデーモン用の`target/release/iroha3d`
+- CLI のための `target/release/iroha`
+- `target/release/kagami` キー、ブロックチェーンのジェネシス、そしてローカルネットの生成のために
 
-## 2. ローカル・ネットワークを作成する {#_2-generate-a-local-network}
+## 2. ローカルネットワークを生成する {#_2-generate-a-local-network}
 
-4ペアを生成する Iroha 3 ローカルネット
+4ピアの Iroha 3 ローカルネットを生成する:
 
 ```bash
 target/release/kagami localnet --peers 4 --out-dir ./localnet
 ```
 
-出力ディレクトリには,生成された `genesis.json`, `genesis.signed.nrt`,ペア`config.toml`ファイル,`client.toml`,ヘルパースクリプト,および生成された `README.md` が含まれ,そのバンドルに対する正確なコマンドが表示されます.
+出力ディレクトリには、生成された`genesis.json`、`genesis.signed.nrt`、ネットワークピア`config.toml`ファイル、`client.toml`、ヘルパースクリプト、およびそのバンドルの正確なコマンドを含む生成された`README.md`が含まれています。
 
-## 3. 同級者 を 開始 する {#_3-start-peers}
+## 3. ネットワークピアを開始する {#_3-start-peers}
 
-生成された使い捨てローカルネットでは,生成したスクリプトを使用します.
+生成された使い捨てローカルネットワークの場合、生成されたスクリプトを使用してください：
 
 ```bash
 ./localnet/start.sh
 ```
 
-各ペアを systemd などのプロセス管理器にワイヤリングする必要がある場合は,各ペアに対して `./localnet/README.md` で記録された起動コマンドを使用します.それぞれのペアの `config.toml` プライベートキー,ストレージディレクトリ,ポートを別々に保持してください.
+各ネットワークピアを systemd のようなプロセスマネージャに接続する必要がある場合は、各ネットワークピアのために `./localnet/README.md` に記録された起動コマンドを使用してください。各ネットワークピアの `config.toml`、秘密鍵、ストレージディレクトリ、およびポートは別々に保管してください。
 
-## 4. ネットワークを運営する {#_4-operate-the-network}
+## 4. ネットワークを操作する {#_4-operate-the-network}
 
-作成されたクライアント設定を使用します:
+生成されたクライアント設定を使用してください:
 
 ```bash
 target/release/iroha --config ./localnet/client.toml ledger domain list all
 target/release/iroha --config ./localnet/client.toml --output-format text ops sumeragi status
 ```
 
-生成されたローカルネットを:
+生成されたローカルネットを次で停止してください:
 
 ```bash
 ./localnet/stop.sh
 ```
 
-## 5. 生産記号 {#_5-production-notes}
+## 5. 製作ノート {#_5-production-notes}
 
-- 生産のための新鮮なプライベートキーを生成し,リポジトリの外に保管します.
-- 同じ署名されたジェネシス取引,トポロジー,信頼される同級生,検証者 PoPs に一致させる
-- 他のマシンからピアがアクセスできない場合にのみ,ホストローカルインターフェースに聴衆のアドレスを結合する.
-- Torii 曝露,基本的な auth, TLS,および速度の制限のために逆代理またはファイアウォールを使用します.
-- ジェネスやコンセンサスのトポロジーへの変更は,単同ファイルの編集ではなく,調整された移行とみなす.
+- 本番用に新しいプライベートキーを生成し、それらをリポジトリの外に保存してください。
+- すべてのネットワークピアが、同じ署名付きブロックチェーンのジェネシストランザクション、トポロジー、信頼できるネットワークピア、およびバリデーター PoPs に同意するようにします。
+- ネットワークピアが他のマシンから到達できない場合にのみ、リスナーアドレスをホストローカルインターフェースにバインドします。
+- Torii の露出、基本認証、TLS、およびレート制限のためにリバースプロキシまたはファイアウォールを使用してください。
+- ブロックチェーンのジェネシスやコンセンサストポロジーへの変更は、単一のピアによるファイル編集ではなく、協調された移行として扱うべきです。
 
-コンテナ化されたローカル開発では, [ランニング Iroha 3](../../get-started/launch-iroha.md) Docker Compose ワークフローを使用します.
+コンテナ化されたローカル開発には、[Iroha 3 を起動](../../get-started/launch-iroha.md) Docker Compose ワークフローを使用してください。

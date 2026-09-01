@@ -3,18 +3,18 @@ translation_locale: ja
 translation_source: /reference/peer-config/index.md
 translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f29469aaf4
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Iroha を構成する {#configuring-iroha}
+# Iroha の設定 {#configuring-iroha}
 
-TOML ファイルでローカルピア構成が設定されている.これは,[`SetParameter`](/ja/blockchain/instructions.md#setparameter)指示によって変更されたオンチェーン構成とは異なります.生産行動は構成ファイルまたはオンチェーンパラメータで表示されなければならない.環境変数は機能ゲートではありません.
+ローカルネットワークピアの構成は次で設定されます TOML ファイル。これは、チェーン上での構成変更によるものとは異なります [`SetParameter`](/ja/blockchain/instructions.md#setparameter) 指示。生産の動作は設定で表現されなければなりません ファイルまたはオンチェーンのパラメータ; 環境変数は機能ゲートではありません。
 
-設定ファイルへの経路を指定するには [`--config`](../iroha3d-cli#arg-config)CLI アレグメントを使用します.
+使う [`--config`](../iroha3d-cli#arg-config) CLI 設定ファイルへのパスを指定するための引数。
 
 ## テンプレート {#template}
 
-各パラメータの詳細な記述については, [パラメーター](./params.md)参照を参照してください.
+各パラメータの詳細な説明については、[パラメータ](./params.md) の参考資料をご参照ください。
 
 ::: details `peer.template.toml`
 
@@ -22,9 +22,9 @@ TOML ファイルでローカルピア構成が設定されている.これは,[
 
 :::
 
-## 構成ファイルを作成する {#composing-configuration-files}
+## 設定ファイルの作成 {#composing-configuration-files}
 
-TOML コンフィギュレーションファイルには,他の TOML ファイルを指す追加的な `extends` フィールドがあります.これは単行パスまたは複数のパスである可能性があります.
+TOML の設定ファイルには、他の TOML ファイルを指す追加の `extends` フィールドがあります。これは単一のパスでも複数のパスでも構いません:
 
 ::: code-group
 
@@ -38,7 +38,7 @@ extends = ["file1.toml", "file2.toml"]
 
 :::
 
-Iroha は, `extends` で指定されたすべてのファイルをリクシブ的に読み取り,レイヤーに分類し,後者はパラメータレベルで前のファイルを重書きします.例えば, `config.toml` を読み上げると:
+Iroha は `extends` で指定されたすべてのファイルを再帰的に読み取り、それらをレイヤーにまとめます。後のレイヤーはパラメータレベルで前のレイヤーを上書きします。例えば、`config.toml` を読み込む場合:
 
 ::: code-group
 
@@ -61,8 +61,8 @@ max_content_len = 2048
 
 :::
 
-構成は, `chain` から `a.toml`, `max_content_len` から `b.toml`, そして `torii.address` から `config.toml` (上記書) `b.toml`).
+生成された構成は、`a.toml` から `chain`、`b.toml` から `max_content_len`、および `config.toml` から `torii.address`（`b.toml` を上書き）になります。
 
-## 問題を解く {#troubleshooting}
+## トラブルシューティング {#troubleshooting}
 
-[`--trace-config`](../iroha3d-cli#arg-trace-config)CLI フラグをパスして,構成が読み取られ解析される方法の痕跡を見ることができます.
+通過 [`--trace-config`](../iroha3d-cli#arg-trace-config) CLI 構成がどのように読み取られ解析されるかの追跡を表示するフラグ。

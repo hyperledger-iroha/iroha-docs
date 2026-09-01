@@ -1,163 +1,163 @@
 ---
 translation_locale: fr
 translation_source: /reference/glossary.md
-translation_source_hash: fe3bc2d62ca81b5e6e30023407f3c900eb4026b6668f0d422728a8eedd436148
+translation_source_hash: ab484310e7e0b0662c1d4bb133e7ae337c71b09b5fdc8e678581234d74ee9b29
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Le glossaire <!-- omit in toc --> {#glossary}
+# Glossaire <!-- omit in toc --> {#glossary}
 
-Vous trouverez ici les définitions de toutes les entités Iroha liées.
+Ici, vous pouvez trouver des définitions de toutes les entités liées à Iroha.
 
-- [Peer](#peer)
-- [Actifs ](#asset)
-- [Tolérance aux défauts byzantine (BFT) ](#byzantine-fault-tolerance-bft)
-- [Iroha Les composants](#iroha-components)
-  - [Sumeragi (empereur)](#sumeragi-emperor)
-  - [Torii (porte)](#torii-gate)
-  - [Kura (entrepôt)](#kura-warehouse)
-  - [Kagami(L'enseignant et l'exemple et/ou le miroir)](#kagami-teacher-and-exemplar-and-or-looking-glass)
-  - [Arbre de mercule (arbre de hasch) ](#merkle-tree-hash-tree)
-  - [Contrats intelligents ](#smart-contracts)
-  - [Les déclencheurs ](#triggers)
-  - [Rédaction de versions](#versioning)
-  - [Hijiri (système de réputation par les pairs) ](#hijiri-peer-reputation-system)
-- [Les modules Iroha](#iroha-modules)
-- [Iroha Instructions spéciales (ISI) ](#iroha-special-instructions-isi)
-  - [Utilisation Iroha Instructions spéciales](#utility-iroha-special-instructions)
-  - [Le noyau Iroha Instructions particulières](#core-iroha-special-instructions)
-  - [Spécificité de domaine Iroha Instructions spéciales](#domain-specific-iroha-special-instructions)
-  - [À l'usage Iroha Instruction spéciale](#custom-iroha-special-instruction)
-- [Iroha Recherche](#iroha-query)
-- [Modification de la vue ](#view-change)
-- [Voir l'état mondial (WSV) ](#world-state-view-wsv)
-- [Directeur ](#leader)
+- [pair réseau](#peer)
+- [Actif](#asset)
+- [Tolérance aux fautes byzantines (BFT)](#byzantine-fault-tolerance-bft)
+- [Iroha Composants](#iroha-components)
+  - [Sumeragi (Empereur)](#sumeragi-emperor)
+  - [Torii (Porte)](#torii-gate)
+  - [Kura (Entrepôt)](#kura-warehouse)
+  - [Kagami(Enseignant et Modèle et/ou miroir)](#kagami-teacher-and-exemplar-and-or-looking-glass)
+  - [Arbre de Merkle (arbre de hachage cryptographique)](#merkle-tree-hash-tree)
+  - [Contrats intelligents](#smart-contracts)
+  - [Déclencheurs](#triggers)
+  - [Gestion des versions](#versioning)
+  - [Hijiri (système de réputation des pairs du réseau)](#hijiri-peer-reputation-system)
+- [modules fonctionnels d’Iroha](#iroha-modules)
+- [Iroha Opérations d'instruction (ISI)](#iroha-special-instructions-isi)
+  - [Opérations d'instruction de l'utilitaire Iroha](#utility-iroha-special-instructions)
+  - [Opérations d'instruction de base Iroha](#core-iroha-special-instructions)
+  - [Opérations d'instruction spécifiques au domaine Iroha](#domain-specific-iroha-special-instructions)
+  - [Personnalisé Iroha Instruction spéciale](#custom-iroha-special-instruction)
+- [Iroha Requête](#iroha-query)
+- [Changer de vue](#view-change)
+- [Vue de l'état mondial (WSV)](#world-state-view-wsv)
+- [Leader](#leader)
 
-## Les comptes de la blockchain {#blockchain-ledgers}
+## Registres de blockchain {#blockchain-ledgers}
 
-Les livres principaux de la blockchain sont des systèmes numériques qui utilisent la technologie blockchain pour enregistrer les documents financiers. Ils sont nommés d'après des livres à l'ancienne qui ont été utilisés pour les dossiers financiers tels que les prix, les nouvelles, et des informations sur les transactions.
+Les registres blockchain sont des systèmes de tenue de registres numériques qui utilisent la technologie blockchain pour conserver les dossiers financiers. Ils tirent leur nom des livres anciens utilisés pour les registres financiers tels que les prix, les actualités et les informations sur les transactions.
 
-À l'époque médiévale, les livres étaient ouverts au public pour la consultation et la vérification de l'exactitude. Cette idée se reflète dans les systèmes basés sur une blockchain qui peuvent vérifier la validité des données stockées.
+Pendant le Moyen Âge, les registres de la blockchain étaient ouverts à la consultation publique et à la vérification de leur exactitude. Cette idée se reflète dans les systèmes basés sur la blockchain qui peuvent vérifier la validité des données stockées.
 
-## Les pairs {#peer}
+## pair réseau {#peer}
 
-Un peer dans Iroha désigne une instance de processus Iroha à laquelle d'autres processus et applications clients Iroha peuvent se connecter. Une seule machine peut héberger plusieurs peers Iroha. Les pairs sont égaux en ce qui concerne leurs ressources et capacités, à l'exception d'une exception importante: un seul des pairs exécute le bloc de génèse au stade du démarrage du réseau Iroha.
+Un pair réseau dans Iroha signifie une instance de processus Iroha à laquelle d'autres processus Iroha et applications clientes peuvent se connecter. Une seule machine peut héberger plusieurs pairs réseau Iroha. Les pairs du réseau sont égaux en ce qui concerne leurs ressources et leurs capacités, avec une exception importante : un seul des pairs du réseau exécute le bloc de genèse de la blockchain lors de l'étape de démarrage du réseau Iroha.
 
-D'autres chaînes de blocs peuvent faire référence au même concept qu'un nœud ou un validateur.
+D'autres blockchains peuvent se référer au même concept en tant que nœud ou validateur.
 
-Un peer peut être un processus sur son système hôte, il peut également être contenu dans un conteneur Docker et une capsule Kubernetes.
+Un pair réseau peut être un processus sur son système hôte. Il peut également être contenu dans un conteneur Docker et un pod Kubernetes.
 
-## Les actifs {#asset}
+## Actif {#asset}
 
-Dans le contexte des chaînes de blocs, un actif est la représentation d'un objet précieux sur la blockchain.
+Dans le contexte des blockchains, un actif est la représentation d'un objet de valeur sur la blockchain.
 
-Des informations supplémentaires sur les actifs sont disponibles ici [](/fr/blockchain/assets.md).
+Des informations supplémentaires sur les actifs sont disponibles [ici](/fr/blockchain/assets.md).
 
-### Les actifs fonciers {#fungible-assets}
+### Actifs fongibles {#fungible-assets}
 
-Ces actifs peuvent être facilement échangés contre d'autres actifs du même type, car ils sont interchangeables.
+De tels actifs peuvent être facilement échangés contre d'autres actifs du même type parce qu'ils sont interchangeables.
 
-À titre d'exemple, toutes les unités de la même monnaie sont égales en valeur et peuvent être utilisées pour acheter des biens. En règle générale, les actifs fungibles ont une apparence identique, à l'exception de l'usure des billets et pièces.
+À titre d'exemple, toutes les unités de la même monnaie sont égales dans leur valeur et peuvent être utilisées pour acheter des biens. En général, les actifs fongibles sont identiques en apparence, à l'exception de l'usure des billets et des pièces de monnaie.
 
-### Actifs non volatils {#non-fungible-assets}
+### Actifs non fongibles {#non-fungible-assets}
 
-Les actifs non volatils sont uniques et précieux en raison de leurs caractéristiques spécifiques et de leur rareté; leur valeur ne peut pas être comparée à d'autres actifs.
+Les actifs non fongibles sont uniques et précieux en raison de leurs caractéristiques spécifiques et de leur rareté ; leur valeur ne peut pas être comparée à celle d'autres actifs.
 
-- La valeur d'une peinture peut varier en fonction de l'artiste, du temps qu'elle a été peinte et de l'intérêt que le public porte à elle.
-- Deux maisons sur la même rue peuvent avoir des niveaux d'entretien différents.
-- Les fabricants de bijoux offrent généralement une variété de modèles différents.
+- La valeur d'une peinture peut varier en fonction de l'artiste, de la période à laquelle elle a été peinte et de l'intérêt que le public lui porte.
+- Deux maisons dans la même rue peuvent avoir des niveaux d'entretien différents.
+- Les fabricants de bijoux proposent généralement une gamme de différents modèles.
 
-### Actifs à conserver {#mintable-assets}
+### Actifs pouvant être créés {#mintable-assets}
 
-Un actif peut être émis si plusieurs d'un même type peuvent être émises.
+Un actif est frappable si davantage du même type peut être émis.
 
-### Les actifs non exploitables {#non-mintable-assets}
+### Actifs non frappables {#non-mintable-assets}
 
-Si le montant initial d'un actif est spécifié une fois et ne change pas, il est considéré comme non négociable.
+Si le montant initial d'un actif est spécifié une fois et ne change pas, il est considéré comme non-mintable.
 
-Le bloc [Genèse](/fr/guide/configure/genesis.md) définit cette information pour la configuration Iroha.
+Le [bloc genesis de la blockchain](/fr/guide/configure/genesis.md) définit ces informations pour la configuration Iroha.
 
-## tolérance aux défauts byzantine (BFT) {#byzantine-fault-tolerance-bft}
+## Tolérance aux fautes byzantines (BFT) {#byzantine-fault-tolerance-bft}
 
-Propriété de pouvoir fonctionner correctement avec un réseau contenant un certain pourcentage d'acteurs malveillants. Iroha est capable de fonctionner avec jusqu'à 33% d'actifs malveillantes dans son réseau peer-to-peer.
+Propriété qui permet de fonctionner correctement dans un réseau comportant une certaine proportion d’acteurs malveillants. Iroha tolère jusqu’à 33 % d’acteurs malveillants dans son réseau pair-à-pair.
 
-## Components Iroha {#iroha-components}
+## Iroha Composants {#iroha-components}
 
-Les modules Rust contenant la fonctionnalité Iroha.
+Rust modules contenant la fonctionnalité Iroha.
 
 ### Sumeragi (Empereur) {#sumeragi-emperor}
 
-Le module Iroha chargé du consensus.
+Le module Iroha responsable du consensus.
 
-### Torii (porte) {#torii-gate}
+### Torii (Porte) {#torii-gate}
 
-Module avec la logique de traitement des requêtes entrantes pour le [peer](#peer). Il est utilisé pour recevoir, accepter et diriger les instructions entrantes et les requêtes HTTP, ainsi que les mises à jour de configuration en cours d'exécution.
+Module avec la logique de gestion des requêtes entrantes pour le [pair réseau](#peer). Il est utilisé pour recevoir, accepter et acheminer les instructions entrantes, ainsi que les requêtes HTTP, ainsi que les mises à jour de configuration en temps réel.
 
-### Kura (entrepôt) {#kura-warehouse}
+### Kura (Entrepôt) {#kura-warehouse}
 
-Stockage en bloc persistant. Kura stocke des blocs signés, des hashes de blocs, des indices d'altitude, des sidecars de récupération et des métadonnées de commit-roster sur le disque. [World State View](#world-state-view-wsv) est reconstruit à partir de blocs Kura lorsqu'un instantané d'état n'est pas disponible ou derrière le magasin local de blocs. Voir [Kura stockage ](/fr/blockchain/world.md#kura-storage).
+Stockage persistant des blocs. Kura conserve sur disque les blocs signés, les hachages de blocs, les index de hauteur, les fichiers annexes de récupération et les métadonnées de la liste de validation. La [vue de l’état mondial](#world-state-view-wsv) est reconstruite à partir des blocs Kura lorsqu’aucun instantané de l’état n’est disponible ou que celui-ci est en retard sur le stockage local des blocs. Voir [Stockage Kura](/fr/blockchain/world.md#kura-storage).
 
-### Kagami(L'enseignant et l'exemple et/ou le miroir) {#kagami-teacher-and-exemplar-and-or-looking-glass}
+### Kagami(Enseignant et Modèle et/ou miroir) {#kagami-teacher-and-exemplar-and-or-looking-glass}
 
-Générateur pour les données couramment utilisées. Il peut générer des paires de clés cryptographiques, des blocs de génèse, une documentation, etc.
+Générateur de données couramment utilisées. Il peut générer des paires de clés cryptographiques, des blocs genesis de blockchain, de la documentation, etc.
 
-### Arbre de mercule (arbre du hasch) {#merkle-tree-hash-tree}
+### Arbre de Merkle (arbre de hachage cryptographique) {#merkle-tree-hash-tree}
 
-Une structure de données utilisée pour valider et vérifier l'état à chaque hauteur de bloc. La mise en œuvre actuelle de Iroha est un arbre binaire. Voir [ Wikipédia](https://en.wikipedia.org/wiki/Merkle_tree) pour plus de détails.
+Une structure de données utilisée pour valider et vérifier l'état à chaque hauteur de bloc. L'implémentation actuelle de Iroha est un arbre binaire. Voir [Wikipédia](https://en.wikipedia.org/wiki/Merkle_tree) pour plus de détails.
 
 ### Contrats intelligents {#smart-contracts}
 
-Les contrats intelligents sont des programmes basés sur la chaîne de blocs qui s'exécutent lorsqu'un certain nombre de conditions sont remplies. Iroha les contrats intelligents sont mis en œuvre en utilisant [le noyau Iroha instructions spéciales](#core-iroha-special-instructions).
+Les contrats intelligents sont des programmes basés sur la blockchain qui s'exécutent lorsque qu'un ensemble spécifique de conditions est rempli. Dans Iroha, les contrats intelligents sont mis en œuvre en utilisant [opérations d'instruction du noyau Iroha](#core-iroha-special-instructions).
 
-### Les déclencheurs {#triggers}
+### Déclencheurs {#triggers}
 
-Un type d'événement qui permet d'invoquer une instruction spéciale Iroha à un bloc spécifique, à l'heure (avec quelques précautions), etc. Plus sur les déclencheurs [ ici](/fr/blockchain/triggers.md).
+Un type d'événement qui permet d'invoquer une instruction spéciale Iroha lors du commit d'un bloc spécifique, à un moment donné (avec certaines réserves), etc. Plus d'informations sur les déclencheurs [ici](/fr/blockchain/triggers.md).
 
-### Rédaction {#versioning}
+### Gestion des versions {#versioning}
 
-Chaque demande est étiquetée avec la version API à laquelle elle appartient. Elle permet une combinaison de différentes versions binaires du logiciel client/peer Iroha d'interagir, ce qui permet à son tour des mises à niveau logicielles dans le réseau Iroha.
+Chaque requête porte la version d’API à laquelle elle appartient. Différentes versions binaires des logiciels clients et pairs d’Iroha peuvent ainsi interopérer, ce qui permet de mettre à niveau le logiciel au sein du réseau Iroha.
 
-### Hijiri (système de réputation par les pairs) {#hijiri-peer-reputation-system}
+### Hijiri (système de réputation des pairs du réseau) {#hijiri-peer-reputation-system}
 
-Iroha Il permet d'accorder la priorité à la communication avec les [les pairs](#peer) qui ont une bonne track-record, et de réduire les dommages qui peuvent être causés par la malveillance [les pairs](#peer).
+Le système de réputation de Iroha. Il permet de donner la priorité à la communication avec [pairs du réseau](#peer) ayant un bon historique, et de réduire les dommages pouvant être causés par des [pairs du réseau](#peer) malveillants.
 
-## Les modules Iroha {#iroha-modules}
+## Modules fonctionnels d’Iroha {#iroha-modules}
 
-Extensions tierces à Iroha qui fournissent une fonctionnalité personnalisée.
+Extensions tierces pour Iroha qui fournissent des fonctionnalités personnalisées.
 
-## Iroha Instructions spéciales (ISI) {#iroha-special-instructions-isi}
+## Iroha Opérations d'instruction (ISI) {#iroha-special-instructions-isi}
 
-Une bibliothèque de contrats intelligents fournie par Iroha. Ils peuvent être invoqués par des transactions ou par des auditeurs d'événements enregistrés. ISI [Je suis là.](/fr/blockchain/instructions.md).
+Une bibliothèque de contrats intelligents fournie avec Iroha. Ceux-ci peuvent être invoqués soit via des transactions, soit via des écouteurs d'événements enregistrés. Plus d'informations sur ISI [ici](/fr/blockchain/instructions.md).
 
-#### Utilisation Iroha Instructions spéciales {#utility-iroha-special-instructions}
+#### Opérations d'instruction de l'utilitaire Iroha {#utility-iroha-special-instructions}
 
-Cet ensemble de [à l'intérieur](#iroha-special-instructions-isi) contient des instructions logiques telles que `If`, Résultats de l'enquête `Notify` et des compositions comme `Sequence`. Ils sont principalement utilisés comme [les instructions personnalisées](#custom-iroha-special-instruction).
+Cet ensemble de [isi](#iroha-special-instructions-isi) contient des instructions logiques comme `If`, liées à l'E/S comme `Notify` et des compositions comme `Sequence`. Ils sont principalement utilisés comme [instructions personnalisées](#custom-iroha-special-instruction).
 
-### Instructions spéciales du noyau Iroha {#core-iroha-special-instructions}
+### Opérations d'instruction de base Iroha {#core-iroha-special-instructions}
 
-[Des instructions spéciales ](#iroha-special-instructions-isi) fournies avec chaque déploiement de Iroha comprennent certaines [domaines spécifiques](#domain-specific-iroha-special-instructions) ainsi que des instructions d'utilité [](#utility-iroha-special-instructions).
+[Instructions spéciales](#iroha-special-instructions-isi) fourni avec chaque déploiement Iroha. Ceux-ci incluent certains [spécifique au domaine](#domain-specific-iroha-special-instructions) ainsi que [instructions d'utilisation](#utility-iroha-special-instructions).
 
-### Instructions spéciales spécifiques au domaine Iroha {#domain-specific-iroha-special-instructions}
+### Opérations d'instruction spécifiques au domaine Iroha {#domain-specific-iroha-special-instructions}
 
-Instructions relatives aux activités spécifiques à un domaine: actifs, comptes, domaines, gestion par les pairs). Ils fournissent les outils nécessaires pour apporter des changements à la [Le point de vue sur l'état du monde](#world-state-view-wsv) d'une manière sûre et sûre.
+Instructions liées aux activités spécifiques au domaine : actifs, comptes, domaines, gestion des pairs du réseau). Celles-ci fournissent les outils nécessaires pour apporter des modifications au [Vue de l'État mondial](#world-state-view-wsv) de manière sûre et sécurisée.
 
-### L'instruction spéciale sur les douanes Iroha {#custom-iroha-special-instruction}
+### Personnalisé Iroha Instruction spéciale {#custom-iroha-special-instruction}
 
-Instructions fournies dans [Iroha Les modules](#iroha-modules), Il ne peut être construit que par des clients ou d'autres. [Les instructions de base](#core-iroha-special-instructions). Forcage et modification de la Iroha le code source n'est pas recommandé, car des instructions spéciales ne sont pas convenues par [les pairs](#peer) dans une Iroha le déploiement sera traité comme des défauts, donc [les pairs](#peer) l'exécution d'une instance modifiée aura leur accès révoqué.
+Instructions fournies dans [modules fonctionnels d’Iroha](#iroha-modules), par des clients ou des tiers. Celles-ci ne peuvent être créées qu'en utilisant [les Instructions de Base](#core-iroha-special-instructions). Il n'est pas recommandé de forker et de modifier le code source de Iroha, les opérations d'instruction non convenues par [pairs du réseau](#peer) lors d'un déploiement Iroha seront considérées comme des fautes, ainsi [pairs du réseau](#peer) exécutant une instance modifiée verra son accès révoqué.
 
-## Iroha Enquête {#iroha-query}
+## Iroha Requête {#iroha-query}
 
-Une demande de lecture du World State View sans modifier cette vue. [Je suis là.](/fr/blockchain/queries.md).
+Une demande de lecture de la vue de l'État mondial sans modifier ladite vue. Plus d'informations sur les requêtes [ici](/fr/blockchain/queries.md).
 
-## Vue de changement {#view-change}
+## Changer de vue {#view-change}
 
-Un processus qui se déroule en cas d'échec d'une tentative de consensus. [Le chef](#leader).
+Un processus qui a lieu en cas de tentative échouée de consensus. Cela implique généralement l'élection d'un nouveau [Leader](#leader).
 
-## Vue de l'état du monde (WSV) {#world-state-view-wsv}
+## Vue de l'état mondial (WSV) {#world-state-view-wsv}
 
-Représentation en mémoire de l'état actuel de la blockchain. WSV contient le `World`, les hashs de bloc engagés, les indices de transaction, la topologie consensuelle et les indices dérivés utilisés par les requêtes. Il est mis à jour uniquement par le biais de blocs engagés et peut être reconstruit à partir de [Kura](#kura-warehouse). Voir [ World State View](/fr/blockchain/world.md#world-state-view-wsv).
+Représentation en mémoire de l'état actuel de la blockchain. Le WSV contient le `World`, les hachages cryptographiques des blocs validés, les index de transactions, topologie de consensus et index dérivés utilisés par les requêtes. Il n'est mis à jour que par des blocs validés et peut être reconstruit à partir de [Kura](#kura-warehouse). Voir [Vue de l'État du Monde](/fr/blockchain/world.md#world-state-view-wsv).
 
-## Le chef {#leader}
+## Leader {#leader}
 
-Dans un réseau iroha, un paire est sélectionné au hasard et il lui est accordé le privilège spécial de former le prochain bloc. Ce privilège peut être révoqué dans les réseaux qui atteignent [ la résistance à la faille byzantine ](#byzantine-fault-tolerance-bft) via [view change](#view-change).
+Dans un réseau Iroha, un pair du réseau est sélectionné au hasard et reçoit le privilège spécial de former le bloc suivant. Ce privilège peut être révoqué dans les réseaux qui atteignent [Tolérance aux fautes byzantines](#byzantine-fault-tolerance-bft) via [changer de vue](#view-change).

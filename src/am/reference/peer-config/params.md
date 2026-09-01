@@ -3,26 +3,26 @@ translation_locale: am
 translation_source: /reference/peer-config/params.md
 translation_source_hash: 027486a17e7624cc301f939429baf9ea9ed1259564c3b99b8dc63cce17a7b26e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 
-outline: [ 2, 3 ]
+outline: [2, 3]
 ---
 
 <script setup>
 import ParamTable from './ParamTable.vue';
 </script>
 
-# የግንባታ መለኪያዎች {#configuration-parameters}
+# የውቅረት መለኪያዎች {#configuration-parameters}
 
-[toc]
+[[TOC]]
 
-## ሥር-ደረጃ {#root}
+## የ ስርወ-ደረጃ {#root}
 
 ### `chain` <Badge text="required" /> {#param-chain-id}
 
-በእያንዳንዱ ግብይት ውስጥ መካተት ያለበት ሰንሰለት ID።
+በእያንዳንዱ ግብይት ውስጥ መካተት ያለበት ሰንሰለት መታወቂያ። የመልሶ ማጫወት ጥቃቶችን ለመከላከል ጥቅም ላይ ይውላል።
 
-የመልሶ ማጫወት ጥቃት ከተፈለገበት የተለየ አውታረመረብ ጋር ትክክለኛውን ግብይት ለማቅረብ የሚደረግ ሙከራ ነው። `chain` የተፈረመው የግብይት ጥቅማጥቅሞች አካል ስለሆነ ለአንድ ሰንሰለት የተፈረመ ግብይት በሌላ ሰንሰለት ID በሚጠቀሙ እኩዮች ውድቅ ይደረጋል።
+የድጋሚ አጫውት ጥቃት ትክክለኛ ግብይት ከታሰበው የተለየ አውታረ መረብ ለማስገባት የሚደረግ ሙከራ ነው። `chain` የተፈረመው የግብይት ጭነት አካል ስለሆነ፣ ለአንድ ሰንሰለት የተፈረመ ግብይት ሌላ የሰንሰለት መታወቂያ በሚጠቀሙ የአውታረ መረብ እኩዮች ውድቅ ይደረጋል።
 
 <param-table type=string env=CHAIN />
 
@@ -40,7 +40,7 @@ CHAIN="00000000-0000-0000-0000-000000000000"
 
 ### `public_key` <Badge text="required" /> {#param-public-key}
 
-የጋራ ቁልፍ: የጋራ ስምምነት ማረጋገጫ መሳሪያዎች BLS - መደበኛ ቁልፎችን መጠቀም አለባቸው።
+የእኩዩ ይፋዊ ቁልፍ። የጋራ ስምምነት አረጋጋጭ እኩዮች BLS-Normal ቁልፎችን መጠቀም አለባቸው።
 
 <param-table type="public-key" env="PUBLIC_KEY" />
 
@@ -58,7 +58,7 @@ PUBLIC_KEY="ea01309060D021340617E9554CCBC2CF3CC3DB922A9BA323ABDF7C271FCC6EF69BE7
 
 ### `private_key` <Badge text="required" /> {#param-private-key}
 
-የባልደረባው የግል ቁልፍ: `public_key` ጋር የሚመሳሰል መሆን አለበት; የስምምነት ማረጋገጫ ባልደረባዎች BLS - መደበኛ ቁልፎችን መጠቀም አለባቸው.
+የአውታረ መረብ አቻ የግል ቁልፍ. ከ `public_key` ጋር መዛመድ አለበት; የጋራ መግባባት አረጋጋጭ አውታረ መረብ እኩዮች BLS-መደበኛ ቁልፎችን መጠቀም አለባቸው።
 
 <param-table type="private-key" env="PRIVATE_KEY" />
 
@@ -76,14 +76,14 @@ PRIVATE_KEY="8926201CA347641228C3B79AA43839DEDC85FA51C0E8B9B6A00F6B0D6B0423E9029
 
 ### `trusted_peers` {#param-trusted-peers}
 
-አስቀድሞ የተገለጹ የታመኑ እኩዮች ዝርዝር።
+አስቀድሞ የተገለጹ የታመኑ የአውታረ መረብ እኩዮች ዝርዝር።
 
-የስምምነት ማረጋገጫ ሰጪዎች BLS- መደበኛ የእኩዮች ቁልፎችን መጠቀም አለባቸው ለእያንዳንዱ ማረጋገጫ አቅራቢም ተመጣጣኝ የሆነ [`trusted_peers_pop`](#param-trusted-peers-pop) ግቤት ያቅርቡ ።
+የጋራ መግባባት አረጋጋጮች መጠቀም አለባቸው BLS- መደበኛ የአውታረ መረብ አቻ ቁልፎች። ለእያንዳንዱ አረጋጋጭ፣ እንዲሁም ተዛማጅ ያቅርቡ [`trusted_peers_pop`](#param-trusted-peers-pop) ግቤት.
 
 <param-table env="TRUSTED_PEERS">
 <template #type>
 
-P2P አድራሻ በሚታወቅበት ጊዜ `PUBLIC_KEY@ADDRESS` ን ይጠቀሙ; ባዶ `PUBLIC_KEY`ም ተቀባይነት አለው እና የባልደረባ አድራሻውን ከጨዋው እንዲገኝ ያስችለዋል ።
+የአውታረ መረብ አቻ ሕብረቁምፊዎች ድርድር. የ P2P አድራሻ በሚታወቅበት ጊዜ `PUBLIC_KEY@ADDRESS` ይጠቀሙ; ባዶ `PUBLIC_KEY` እንዲሁ ተቀባይነት አለው እና የአውታረ መረብ አቻ አድራሻ ከሐሜት እንዲገኝ ያስችለዋል።
 
 </template>
 </param-table>
@@ -109,12 +109,12 @@ TRUSTED_PEERS='[
 
 ### `trusted_peers_pop` {#param-trusted-peers-pop}
 
-BLS የማረጋገጫ ወረቀቶች ለቫሊዲተሮች የታመኑ እኩዮች።
+BLS ለአረጋጋጭ የታመኑ የአውታረ መረብ እኩዮች የይዞታ ማረጋገጫ ግቤቶች።
 
 <param-table env="TRUSTED_PEERS_POP">
 <template #type>
 
-የ `public_key` እና `pop_hex` መስኮች ያሉት የዕቃዎች ሰንጠረዥ
+የ እቃዎች ማዘጋጃ ከ `public_key` እና `pop_hex` ሜዳዎች ጋር
 
 </template>
 </param-table>
@@ -138,11 +138,11 @@ TRUSTED_PEERS_POP='[
 
 :::
 
-## ዘፍጥረት {#genesis}
+## blockchain ጀነሲስ {#genesis}
 
 ### `genesis.file` {#param-genesis-file}
 
-በ የተፈጠረ የፊርማ ጀነሲስ ብሎክ ጥቅማጥቅሞች ፋይል መንገድ `kagami genesis sign`. የተፈጠሩ መገለጫዎች በተለምዶ ይህን እንደ ይጽፉ Norito `.nrt` መዝገብ።
+በ`kagami genesis sign` ወደ ተፈጠረው የተፈረመው blockchain genesis የብሎክ ጭነት የፋይል መንገድ የመነጩ መገለጫዎች በተለምዶ ይህንን እንደ Norito `.nrt` ፋይል ይጽፋሉ።
 
 <param-table type="file-path" env="GENESIS" />
 
@@ -161,7 +161,7 @@ GENESIS="./genesis.signed.nrt"
 
 ### `genesis.public_key` <Badge text="required" /> {#param-genesis-public-key}
 
-የጄኔሲስ ቁልፍ ጥንድ የሕዝብ ቁልፍ።
+የብሎክቼይን ጀነሲስ ቁልፍ ጥንድ የህዝብ ቁልፍ።
 
 <param-table type="public-key" env="GENESIS_PUBLIC_KEY" />
 
@@ -178,11 +178,11 @@ GENESIS_PUBLIC_KEY="ed01208BA62848CF767D72E7F7F4B9D2D7BA07FEE33760F79ABE5597A515
 
 :::
 
-## አውታረመረብ {#network}
+## አውታረ መረብ {#network}
 
 ### `network.address` <Badge text="required" /> {#param-network-address}
 
-ለስምምነት (sumeragi) እና ለብሎክ ማመሳሰል (block_sync) ዓላማዎች የፒ 2 ፒ ግንኙነት አድራሻ።
+ለጋራ ስምምነት (sumeragi) እና ለብሎክ ማመሳሰል (block_sync) የ p2p ግንኙነት አድራሻ።
 
 <param-table type="socket-addr" env="P2P_ADDRESS" />
 
@@ -201,9 +201,9 @@ P2P_ADDRESS=0.0.0.0:1337
 
 ### `network.public_address` <Badge text="required" /> {#param-network-public-address}
 
-የእኩዮች-ወደ-እኩዮች አድራሻ (ሌሎች እኩዮች እንደሚመለከቱት ውጫዊ) ።
+የአቻ-ለ-አቻ አድራሻ (ውጫዊ፣ በሌሎች የአውታረ መረብ እኩዮች እንደሚታየው)።
 
-ለሌሎች እኩዮችም ሹክሹክ አድርገው እንዲነግሯቸው የተገናኙ እኩዮቻቸው ይነጋገራሉ።
+ከሌሎች የአውታረ መረብ እኩዮች ጋር ማጋራት እንዲችሉ ከተገናኙ የአውታረ መረብ እኩዮች ጋር ይጋራል።
 
 <param-table type="socket-addr" env="P2P_PUBLIC_ADDRESS" />
 
@@ -222,7 +222,7 @@ P2P_PUBLIC_ADDRESS=0.0.0.0:5000
 
 ### `network.block_gossip_size` {#param-network-block-gossip-size}
 
-በአንድ የማመሳሰል መልዕክት ውስጥ ሊላኩ የሚችሉትን የብሎኮች ብዛት።
+በአንድ የማመሳሰል መልእክት ውስጥ ሊላኩ የሚችሉ ብሎኮች መጠን።
 
 <param-table type=number default-value=4 />
 
@@ -237,9 +237,9 @@ block_gossip_size = 256
 
 ### `network.block_gossip_period_ms` {#param-network-block-gossip-period-ms}
 
-ለቅርብ ጊዜው ብሎክ ከባልደረቦቹ ጋር ለሚደረጉ ጥያቄዎች መካከል ያለው የጊዜ ልዩነት.
+ለቅርብ ጊዜ ብሎክ ለአውታረ መረብ እኩዮች በሚቀርቡ ጥያቄዎች መካከል ያለው የጊዜ ክፍተት።
 
-በተደጋጋሚ የሚነገር ወሬ የማመሳሰል ጊዜን ያጠርጣል፤ ነገር ግን አውታረ መረቡን ከመጠን በላይ ሊሞላ ይችላል።
+ብዙ ጊዜ ሐሜት የማመሳሰል ጊዜን ያሳጥራል, ነገር ግን አውታረ መረቡን ከመጠን በላይ መጫን ይችላል.
 
 <param-table type=millis default-value=10_000 default-note="10 seconds" />
 
@@ -254,9 +254,9 @@ block_gossip_period_ms = 1_000
 
 ### `network.transaction_gossip_size` {#param-network-transaction-gossip-size}
 
-በሐሜት ስብስብ መልዕክት ውስጥ ከፍተኛ የግብይቶች ብዛት።
+በወሬ ባች መልእክት ውስጥ ከፍተኛው የግብይቶች ብዛት።
 
-አነስተኛ መጠን ለማመሳሰል ረዘም ያለ ጊዜ ያስከትላል, ነገር ግን ከፍተኛ የፓኬት ኪሳራ ካለዎት ጠቃሚ ነው.
+አነስተኛ መጠን ለማመሳሰል ረጅም ጊዜ ይመራል, ነገር ግን ከፍተኛ የፓኬት ኪሳራ ካለብዎ ጠቃሚ ነው.
 
 <param-table type=number default-value=500 />
 
@@ -271,9 +271,9 @@ transaction_gossip_size = 256
 
 ### `network.transaction_gossip_period_ms` {#param-network-transaction-gossip-period-ms}
 
-በእኩዮች መካከል የሚደረገውን ግብይት በመጠባበቅ ላይ ወሬ የመናገር ጊዜ።
+በአውታረ መረብ እኩዮች መካከል በመጠባበቅ ላይ ያለ ግብይት የሐሜት ጊዜ።
 
-በተደጋጋሚ የሚነገር ወሬ የማመሳሰል ጊዜን ያጠርጣል፤ ነገር ግን አውታረ መረቡን ከመጠን በላይ ሊሞላ ይችላል።
+ብዙ ጊዜ ሐሜት የማመሳሰል ጊዜን ያሳጥራል, ነገር ግን አውታረ መረቡን ከመጠን በላይ መጫን ይችላል.
 
 <param-table type=millis default-value=1_000 default-note="1 second" />
 
@@ -288,7 +288,7 @@ transaction_gossip_period_ms = 5_000
 
 ### `network.idle_timeout_ms` {#param-network-idle-timeout-ms}
 
-ከባልደረባው ጋር ያለው ግንኙነት ካልተቋረጠ በኋላ የሚቆየው ጊዜ።
+የአውታረ መረብ አቻ ስራ ፈትቶ ከሆነ ከአውታረ መረብ አቻ ጋር ያለው ግንኙነት የሚቋረጥበት የጊዜ ቆይታ።
 
 <param-table type=millis default-value=300_000 default-note="5 minutes" />
 
@@ -305,7 +305,7 @@ idle_timeout_ms = 300_000
 
 ### `torii.address` <Badge text="required" /> {#param-torii-address}
 
-የ Torii አገልጋይ ማዳመጥ ያለበት እና ደንበኛው ጥያቄዎቹን የሚያቀርብበት አድራሻ።
+Torii አገልጋዩ ማዳመጥ ያለበት እና ደንበኛው (ዎች) ጥያቄያቸውን የሚያቀርቡበት አድራሻ።
 
 <param-table type=socket-addr env=API_ADDRESS />
 
@@ -324,19 +324,19 @@ API_ADDRESS=0.0.0.0:8080
 
 ### `torii.max_content_len` {#param-torii-max-content-len}
 
-በ [Torii መጨረሻ ነጥቦች ](/am/reference/torii-endpoints.md) ተቀባይነት ባለው ጥሬ ጥያቄ አካል ውስጥ ከፍተኛው የባይት ቁጥር።
+በጥሬ የጥያቄ አካል ውስጥ ያለው ከፍተኛው የባይት ብዛት በ [Torii API የመጨረሻ ነጥቦች](/am/reference/torii-endpoints.md) ተቀባይነት አለው።
 
-ይህ ገደብ የ DOS ጥቃቶችን ለመከላከል ጥቅም ላይ ይውላል።
+ይህ ገደብ DOS ጥቃቶችን ለመከላከል ይጠቅማል።
 
 <param-table>
 <template #type>
 
-ቁጥር (የባይቶች)
+ቁጥር (የባይት)
 
 </template>
 <template #default-value>
 
-`64_000_000` (64 ሚሊዮን ባይት)
+`64_000_000` (64 ሚሊዮን ባይቶች)
 
 </template>
 </param-table>
@@ -352,7 +352,7 @@ max_content_len = 64_000_000
 
 ### `torii.query_idle_time_ms` {#param-torii-query-idle-time-ms}
 
-አንድ ጥያቄ ካልተደረሰም በመደብሩ ውስጥ ሊቆይ የሚችልበት ጊዜ።
+መጠይቁ ካልደረሰ በመደብሩ ውስጥ ሊቆይ የሚችልበት ጊዜ።
 
 <param-table type=millis default-value=10_000 default-note="10 seconds" />
 
@@ -367,7 +367,7 @@ query_idle_time_ms = 10_000
 
 ### `torii.query_store_capacity` {#param-torii-query-store-capacity}
 
-የቀጥታ መጠይቆች ብዛት ከፍተኛ ገደብ.
+የቀጥታ መጠይቆች ብዛት የላይኛው ገደብ።
 
 <param-table type=number default-value=128 />
 
@@ -382,7 +382,7 @@ query_store_capacity = 128
 
 ### `torii.query_store_capacity_per_user` {#param-torii-query-store-capacity-per-user}
 
-ለአንድ ተጠቃሚ የቀጥታ መጠይቆች ብዛት ከፍተኛ ገደብ።
+ለአንድ ተጠቃሚ የሚፈቀደው ከፍተኛው የቀጥታ መጠይቆች ብዛት።
 
 <param-table type=number default-value=128 />
 
@@ -395,24 +395,24 @@ query_store_capacity_per_user = 128
 
 :::
 
-## የእንጨት ሰሪ {#logger}
+## ሎገር {#logger}
 
 ### `logger.level` {#param-logger-level}
 
-አጠቃላይ የመመዝገቢያ ግስጋሴ (ለተሻሻለ ውቅር [`logger.filter`](#param-logger-filter) ይመልከቱ) ።
+አጠቃላይ የምዝግብ ማስታወሻ ቃል (ይመልከቱ) [`logger.filter`](#param-logger-filter) ለተጣራ ውቅር) ።
 
 <param-table default-value=INFO env=LOG_LEVEL>
 <template #type>
 
-ገመድ፣ ሊሆኑ የሚችሉ እሴቶች
+ሕብረቁምፊ፣ ሊሆኑ የሚችሉ እሴቶች
 
-- `TRACE`: በዝቅተኛ ደረጃ የሚከናወኑትን ጨምሮ ሁሉም ክስተቶች።
-- `DEBUG`: ለዲያግኖስቲክስ ጠቃሚ የሆኑ የድብርት ደረጃ መልዕክቶች.
-- `INFO`: አጠቃላይ መረጃ ሰጭ መልዕክቶች።
-- `WARN`: ሊከሰቱ የሚችሉ ጉዳዮችን የሚያመለክቱ ማስጠንቀቂያዎች።
-- `ERROR`: መደበኛ ተግባርን የሚያስተጓጉሉ ግን ቀጣይነት ያለው ሥራን የሚፈቅዱ ስህተቶች።
+- `TRACE` ሁሉም ክስተቶች፣ ዝቅተኛ ደረጃ ስራዎችን ጨምሮ።
+- `DEBUG` የማረም ደረጃ መልዕክቶች፣ ለምርመራ ይጠቅማሉ።
+- `INFO` አጠቃላይ የመረጃ መልዕክቶች።
+- `WARN` ሊከሰቱ የሚችሉ ጉዳዮችን የሚያመለክቱ ማስጠንቀቂያዎች።
+- `ERROR` መደበኛውን ተግባር የሚያበላሹ ነገር ግን ቀጣይ ስራን የሚፈቅዱ ስህተቶች።
 
-ለአጠቃቀም ጉዳይዎ በጣም የሚስማማውን ደረጃ ይምረጡ. የተለያዩ የሎግ ደረጃዎችን እንዴት እንደሚጠቀሙ ተጨማሪ ዝርዝሮችን ለማግኘት ወደ [Stack Overflow](https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels) ይመልከቱ።
+ለአጠቃቀም ጉዳይዎ በጣም የሚስማማውን ደረጃ ይምረጡ። የተለያዩ የምዝግብ ማስታወሻ ደረጃዎችን እንዴት መጠቀም እንደሚቻል ተጨማሪ ዝርዝሮችን ለማግኘት [Stack Overflow](https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels) ይመልከቱ።
 
 </template>
 </param-table>
@@ -430,28 +430,28 @@ LOG_LEVEL=INFO
 
 :::
 
-::: tip የስራ ሰዓት ዝመና
+::: tip የሶፍትዌር ማስፈጸሚያ አካባቢ ዝመና
 
-ይህ መለኪያ በ Torii ኦፕሬተር መጨረሻ ነጥቦች አማካኝነት የስራ ሰዓት ውቅር ዝማኔን ያካትታል.
+ይህ ግቤት በ Torii ኦፕሬተር API የመጨረሻ ነጥቦች በኩል ለሶፍትዌር ማስፈጸሚያ አካባቢ ውቅር ማሻሻያ ተገዢ ነው።
 
 :::
 
 ### `logger.filter` {#param-logger-filter}
 
-ከ [ `logger.level`](#param-logger-level) በተጨማሪ የተሻሻሉ የሎግ ማጣሪያዎች። በዒላማው ላይ የመመዝገብ አነጋገርን ለማበጀት ያስችለዋል.
+የተጣራ የምዝግብ ማስታወሻ ማጣሪያዎች በተጨማሪ [`logger.level`](#param-logger-level). በአንድ ዒላማ የምዝግብ ማስታወሻዎችን ማበጀት ያስችላል።
 
 <param-table type=string env=LOG_FILTER>
 <template #type>
 
-አንድ ወይም ከዚያ በላይ በኮማ የተለዩ መመሪያዎችን ያቀፈ string፣ እያንዳንዱ መመሪያ የሚዛመደው ከፍተኛ የቃላት መጠን ሊኖረው ይችላል ይህም (ለምሳሌ ይምረጣል) የሚስማሙ ርዝመቶችን እና ክስተቶችን ያስችላል። Iroha ያነሰ ውስንነት ያላቸው ደረጃዎች (እንደ `trace` ወይም `info`) የበለጠ ውስንነት ካላቸው ደረጃዎች (ለምሳሌ `error` ወይም `warn`) የበለጠ አነጋገር ናቸው ብሎ ይቆጥረዋል።
+ሕብረቁምፊ፣ አንድ ወይም ከዚያ በላይ በነጠላ ሰረዝ የተለዩ መመሪያዎችን ያቀፈ ነው። እያንዳንዱ መመሪያ የሚዛመዱ ስኬቶችን እና ክስተቶችን የሚያስችል (ለምሳሌ፣ የሚመርጥ) ተጓዳኝ ከፍተኛ የቃላት ደረጃ ሊኖረው ይችላል። Iroha ያነሱ ልዩ ደረጃዎችን (እንደ `trace` ወይም `info`) ከልዩ ደረጃዎች (እንደ `error` ወይም `warn` ያሉ) የበለጠ የቃላት መሆናቸውን ይቆጥራል።
 
-በከፍተኛ ደረጃ የዲሬክቲቭ አገባብ በርካታ ክፍሎችን ያቀፈ ነው-
+በከፍተኛ ደረጃ፣ የመመሪያዎች አገባብ በርካታ ክፍሎችን ያቀፈ ነው-
 
 ```
 target[span{field=value}]=level
 ```
 
-ተጨማሪ ዝርዝሮችን ለማግኘት [`tracing-subscriber` ሰነድ ](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/filter/struct.EnvFilter.html) ይመልከቱ።
+ለተጨማሪ ዝርዝሮች ይመልከቱ [`tracing-subscriber` ሰነድ](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/filter/struct.EnvFilter.html).
 
 </template>
 
@@ -470,35 +470,35 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 
 :::
 
-::: info [`logger.level`](#param-logger-level) ጋር በጋራ መጠቀም
+::: info ቅንብር ከ ጋር [`logger.level`](#param-logger-level)
 
-`logger.filter` ከ [`logger.level` ](#param-logger-level) ጋር አብሮ ይሠራል እና አንዳቸውም ሌላውን አይሸፍኑም ።
+`logger.filter` አብሮ ይሰራል [`logger.level`](#param-logger-level) እና አንዳቸውም ሌላውን አይጽፉም.
 
-ለምሳሌ፣ `logger.level` ተዘጋጅቷል `INFO` እና `logger.filter` ተዘጋጅቷል `iroha_core=debug`, የተገኘው የማጣሪያ ስብስብ ይሆናል `info,iroha_core=debug` (ማለትም `info` ለሁሉም ሞጁሎች፣ `debug` ለ `iroha_core`).
+ለምሳሌ፣ `logger.level` ወደ `INFO` እና `logger.filter` ወደ `iroha_core=debug` ከተዋቀረ፣ የተገኘው የማጣሪያ ስብስብ `info,iroha_core=debug` ይሆናል (ማለትም `info` ለሁሉም ሞጁሎች፣ `debug` ለ `iroha_core`)።
 
 :::
 
-::: tip የስራ ሰዓት ዝመና
+::: tip የሶፍትዌር ማስፈጸሚያ አካባቢ ዝመና
 
-ይህ መለኪያ በ Torii ኦፕሬተር መጨረሻ ነጥቦች አማካኝነት የስራ ሰዓት ውቅር ዝማኔን ያካትታል.
+ይህ ግቤት በ Torii ኦፕሬተር API የመጨረሻ ነጥቦች በኩል ለሶፍትዌር ማስፈጸሚያ አካባቢ ውቅር ማሻሻያ ተገዢ ነው።
 
 :::
 
 ### `logger.format` {#param-logger-format}
 
-መዝገብ ቅርጸት.
+የምዝግብ ማስታወሻዎች ቅርጸት.
 
 <param-table default-value=full env=LOG_FORMAT>
 <template #type>
 
-ገመድ፣ ሊሆኑ የሚችሉ እሴቶች
+ሕብረቁምፊ፣ ሊሆኑ የሚችሉ እሴቶች
 
-- `full`: ነባሪው ቅርጸት. ይህ የሚከሰተው ለእያንዳንዱ ክስተት የሰው ሊነበብ የሚችል ፣ የአንድ መስመር መዝገቦችን ያወጣል ፣ የአሁኑ የጊዜ ሰሌዳ አውድ ከታየበት ክስተቱ ቅርጸት የተሰጠው መግለጫ በፊት ይታያል ።
-- `compact`: ለጥቂት የመስመር ርዝመቶች የተመቻቸ ነባሪ ቅርጸት አቀራረብ። አሁን ካለው የጊዜ ሰሌዳ አውድ ውስጥ ያሉ መስኮች ወደ የተቀረፀው ክስተት መስኮች ተያይዘዋል ፣ እና የጊዜ ሰፈሩ ስሞች አይታዩም; የቃላት ደረጃ ወደ አንድ ቁምፊ አጭር ነው ።
-- `pretty`: እጅግ በጣም ቆንጆ, ባለብዙ መስመር መዝገቦችን ያወጣል, ለሰው ልጅ ሊነበብ የሚችል. ይህ በዋናነት በአካባቢያዊ ልማት ውስጥ ጥቅም ላይ ይውላል የአውቶማቲክ ትንተና እና የታሸጉ መዝገቦችን ማከማቸት ከአንባቢነት እና ከዓይን አግባብነት ያነሰ ቅድሚያ የሚሰጠው የትእዛዝ መስመር መተግበሪያዎች ላይ።
-- `json`: አዲስ መስመር-የተገደበ JSON መዝገቦችን ያወጣል ። ይህ የተዋቀሩ መዝገቦች በትንታኔ እና በመመልከቻ መሳሪያዎች እንደ JSON በሚጠቀሙባቸው ስርዓቶች ውስጥ ለማምረት የታሰበ ነው ። የ JSON ውፅዓት ለሰው ልጅ ሊነበብ የሚችል አይደለም ።
+- `full` ነባሪው ቅርጸት። ለእያንዳንዱ ክስተት በሰው ሊነበብ የሚችል፣ ባለ አንድ መስመር ምዝግብ ማስታወሻዎችን ያወጣል፣ ይህም ከተቀረጸው የክስተት ውክልና በፊት የአሁኑን የስፔን አውድ ያሳያል።
+- `compact`፦ ለአጭር መስመሮች የተመቻቸ የነባሪው ቅርጸት አቀናባሪ ልዩነት። የአሁኑ ስፓን አውድ መስኮች በተቀረጸው ክስተት መስኮች ላይ ይታከላሉ፣ የስፓን ስሞች አይታዩም፤ የዝርዝር ደረጃውም ወደ አንድ ቁምፊ ይጠራል።
+- `pretty` ለሰው ልጅ ተነባቢነት የተመቻቸ ከመጠን በላይ ቆንጆ፣ ባለብዙ መስመር ምዝግብ ማስታወሻዎችን ያመነጫል። ይህ በዋነኝነት የታሰበው በአከባቢው ልማት ውስጥ ጥቅም ላይ እንዲውል እና ማረም፣ ወይም ለትእዛዝ መስመር አፕሊኬሽኖች፣ አውቶማቲክ ትንተና እና የታመቀ የምዝግብ ማስታወሻዎች ከተነባቢነት እና ከእይታ ማራኪነት ያነሰ አስፈላጊ ናቸው።
+- `json` አዲስ መስመር የተገደቡ JSON ምዝግብ ማስታወሻዎችን ያወጣል። ይህ የተዋቀሩ ምዝግብ ማስታወሻዎች እንደ JSON በመተንተን እና በመመልከቻ መሳሪያዎች ከሚጠቀሙባቸው ስርዓቶች ጋር ለምርት ጥቅም ላይ እንዲውል የታሰበ ነው። የ JSON ውፅዓት ለሰው ተነባቢነት የተመቻቸ አይደለም።
 
-ተጨማሪ ዝርዝሮች እና የናሙና ውጤቶች ለማግኘት [`tracing-subscriber` ሰነድ ](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/format/index.html) ይመልከቱ።
+ለተጨማሪ ዝርዝሮች እና የናሙና ውጤቶች ይመልከቱ [`tracing-subscriber` ሰነድ](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/format/index.html).
 
 </template>
 </param-table>
@@ -518,13 +518,13 @@ LOG_FORMAT=json
 
 ## Kura {#kura}
 
-Kura የ Iroha ቀጣይነት ያለው የማከማቻ ሞተር ነው (ጃፓንኛ ለ መጋዘን) ።
+Kura የ Iroha (ጃፓንኛ ለመጋዘን) የማያቋርጥ የማከማቻ ሞተር ነው።
 
 ### `kura.blocks_in_memory` {#param-kura-blocks-in-memory}
 
-ቢያንስ N የመጨረሻ ብሎኮች ትውስታ ውስጥ ይቀመጣሉ.
+ቢበዛ N የመጨረሻ ብሎኮች በማህደረ ትውስታ ውስጥ ይቀመጣሉ።
 
-አሮጌዎቹ ብሎኮች ከሜሞሪ ውስጥ ይወርዳሉ እና አስፈላጊ ከሆነ ከዲስኩ ይጫናሉ።
+የቆዩ ብሎኮች ከማህደረ ትውስታ ይጣላሉ እና አስፈላጊ ከሆነ ከዲስክ ይጫናሉ.
 
 <param-table type=number default-value=1024 env=KURA_BLOCKS_IN_MEMORY />
 
@@ -543,21 +543,21 @@ KURA_BLOCKS_IN_MEMORY=1024
 
 ### `kura.init_mode` {#param-kura-init-mode}
 
-Kura የመነሻ ሁነታ. `strict` መደበኛ እና ነባሪ ሁነታ ነው: አገናኙ ንቁ ከመሆኑ በፊት የካኖኒካል ታሪክ, የማገገም ቅርሶች, ረዳት ማውጫዎች እና ማከማቻ ሂሳብን ያረጋግጣል.
+Kura የማስጀመሪያ ሁነታ. `strict` መደበኛ እና ነባሪ ሁነታ ነው ኖድ ንቁ ከመሆኑ በፊት ነጠላ ፕሮቶኮል-መደበኛ ታሪክን፣ የመልሶ ማግኛ አርቲፋክቶችን፣ ረዳት ኢንዴክሶችን እና የማከማቻ ሂሳብን ያረጋግጣል።
 
-`fast` የተሟላ የጅምር ኦዲት መቋረጥ አደጋ ላይ በሚወድቅበት ጊዜ የአሠራር ታይነትን ለመመለስ የሚያስችል የአደጋ ጊዜ ዝቅተኛ አገልግሎት ሁነታ ነው ። ቀደም ሲል በ `strict` ተጀምሮ የተቀመጠ ማከማቻ እና በትክክል አምስት ቅርሶችን የያዘ የአሁኑ ቅጽበታዊ ገጽ እይታ ትውልድ ይጠይቃል- `snapshot.data`, `snapshot.sha256`, `snapshot.sig`, `snapshot.fast.norito`, እና `snapshot.merkle.json`። የጎራ-የተለዩ ኦፕሬተር ፊርማ ማስታወቂያ የተሰጠውን የፍጆታ ጭነት ዲጀስት እና የተገደበ ማንፊስ ይያዛል; ማንፊስቱ የፍጆታ ሸክሙን ርዝመት ፣ ሰንሰለት / አውታረ መረብ ማንነት ፣ የterminal height/hash ፣ SCCP ፖሊሲ ሃሽ ፣ እና የመነሻ መስመር መኖርን ያገናኛል ። ፈጣን የመነሻ መስመርን ውድቅ ያደርጋል እና ከጠንካራው Kura ተመሳሳይ ትክክለኛ ማርከር / መቁጠር / ጫፍ ወሰን ይፈልጋል። የመጀመሪያ ልቀት ኖዶች በትክክል እነዚያን አምስት ቅርሶች ይቀበላሉ እና ሁሉንም ሌሎች የቅርፃ ቅርጾች ብዛት ወይም የፋይል ስም ስብስቦችን ይጥላሉ ።
+`fast` የተሟላ የጅምር ኦዲት መቋረጥን አደጋ ላይ በሚጥልበት ጊዜ የአሠራር ታይነትን ወደነበረበት ለመመለስ የአደጋ ጊዜ የተበላሸ የአገልግሎት ሁነታ ነው። ከዚህ ቀደም በ`strict` የተጀመረ ማከማቻ እና በትክክል አምስት አርቲፋክቶችን የያዘ የአሁኑን የውሂብ እይታ ማመንጨት ይፈልጋል። `snapshot.data`፣ `snapshot.sha256`፣ `snapshot.sig`፣ `snapshot.fast.norito` እና `snapshot.merkle.json`። በጎራ የተለየ ኦፕሬተር ፊርማ የማስታወቂያውን ጭነት ክሪፕቶግራፊያዊ ዳይጀስት እና የታሰረውን ቴክኒካዊ ማኒፌስት ያገናኛል። ቴክኒካል ማኒፌስት የጭነት ርዝመትን፣ ሰንሰለት/የአውታረ መረብ ማንነትን፣ የተርሚናል ቁመት/ሃሽን፣ SCCP ፖሊሲ ምስጠራ ሃሽ እና ቡትስትራፕ-የዘር መገኘትን ያገናኛል። ፈጣን የማስነሻ የተከታታይነትን ውድቅ ያደርጋል እና ትክክለኛውን ተመሳሳይ ምልክት ማድረጊያ/ቆጠራ/ጫፍ ድንበር ከረጅም ጊዜ Kura ይፈልጋል። የመጀመሪያ ልቀት አንጓዎች በትክክል እነዚያን አምስት አርቲፋክቶች ይቀበላሉ እና እያንዳንዱን ሌላ የአርቲፋክት ብዛት ወይም የፋይል ስም ስብስብ ውድቅ ያደርጋሉ።
 
-ፈጣን ክምችት እነዚህ አምስት ስሞች እና ሜታዳታ-የተጠቃሚ ጭነት እና Merkle ፋይሎች ያገናኛል, ነገር ግን ማንበብ አይደለም, ሃሽ, ፓነል, ወይም ይዘታቸውን ዲኮድ. ይህ የተፈረመ ማኒፌስት ከ አነስተኛ ዓለም ይገነባል / Nexus, ትክክለኛውን ካርታዎች ያስቀምጣል Kura የሃሽ ቅድመ-እይታን ብቻ, እና ቅጽበታዊ ገጽ እይታዎች የዓለም, ብሎክ-ሀሽ አደረጃጀት ትቶ, የግብይት ታሪክ፣ የተገኙ መረጃ ጠቋሚዎች እና ዘላቂ መልሶ ማግኛ መጽሔቶች ያልተከፈቱ። ሜርክል ፣ የካኖኒካል እና ሴማንቲክ ቅጽበታዊ ገጽ እይታ ኦዲት ፣ ታሪካዊ ብሎኮች / ፍጻሜ / SCCP ማመሳሰል ፣ Sumeragi ንቁ ቁመት መልሶ ማገገም ፣ ውህደት እና መጠይቅ መጽሔቶች ፣ የመንገድ መገለጫ / ተገዢነት ምንጮች ፣ በ Kura የተደገፉ SoraFS መዝገቦች ፣ ተደጋጋሚ ማከማቻ ሂሳብ እና አማራጭ የአገልግሎት ማስተካከያዎች ወደኋላ ቀርተዋል ። አካባቢያዊ የግብይት ምዝገባ ፣ ጥቆማዎች ፣ ድምጽ መስጠት ፣ የካኖኒካል ጽሁፎች እና ረዳት አምራቾች አሁንም ተሰናክለዋል። Kura ራሱ የደራሲውን ጅምር እና ዘላቂ ለውጦችን ውድቅ ያደርጋል; ቧንቧ እና FASTPQ የማያቋርጥ ረድፎች ሥራውን ከማቆየት ወይም ከመተርጎም ይልቅ ወዲያውኑ ውድቅ ያደርጉታል. Kura APIs ን ያንብቡ እንዲሁም የጥገና እና ዘላቂነት-ማመሳሰል ባህሪን ያሰናክሉ: ጊዜያዊ የጎን ተሽከርካሪዎች አይስተዋወቁም ፣ የጎደለው የመንገድ ዕቃዎች አይታተሙም ፣ እና የእድገት መሰናክሎች አልተሰነዘሩም ። Sumeragi እና የግብይት ወሬ አይጀመርም። Torii የጤና, ተለዋዋጭነት, ዝግጁነት, የእኩዮች እና ውቅር ስራዎችን ብቻ ያጋልጣል; API - ስሪት, ሁኔታ, መለኪያዎች, እና ሁሉም መደበኛ ሁኔታ / ታሪክ መስመሮች አይገኙም.
+እነዚያን አምስት ስሞች በፍጥነት ያቆምጣል እና ሜታዳታ ጭነቱን እና የሜርክል ፋይሎችን ያገናኛል፣ ነገር ግን ይዘታቸውን አያነብም፣ ምስጠራ አያደርግም፣ አይተነትንም ወይም አይፈታም። ከተፈረመው ቴክኒካል ማኒፌስት አነስተኛውን ዓለም/Nexus ይገነባል፣ ትክክለኛውን Kura ምስጠራ ሃሽ ቅድመ ቅጥያ ተነባቢ ብቻ ካርታ ያዘጋጃል፣ እና የነጥብ-በ-ጊዜ የውሂብ እይታ ዓለም፣ የብሎክ-ሃሽ ድርድር፣ የግብይት ታሪክ፣ የተገኙ ኢንዴክሶች እና ዘላቂ የመልሶ ማግኛ መጽሔቶች ሳይከፈቱ ይተዋል።. ሜርክል፣ ነጠላ ፕሮቶኮል-ስታንዳርድ እና የትርጓሜ ነጥብ-በ-ጊዜ የውሂብ እይታ ኦዲቶች፣ ታሪካዊ ብሎክ/የመጨረሻ/SCCP እርቅ፣ Sumeragi ንቁ-ቁመት መልሶ ማግኛ፣ ውህደት እና መጠይቅ መጽሔቶች፣ የማስፈጸሚያ መስመር አንጸባራቂ/ተገዢነት ምንጮች፣ Kura የሚደገፉ SoraFS ማህደሮች፣ ተደጋጋሚ የማከማቻ ሂሳብ እና አማራጭ አገልግሎት ማስታረቅ ለሌላ ጊዜ ተላልፈዋል። የአካባቢ ግብይት መግቢያ፣ ፕሮፖዛል፣ ድምጽ መስጠት፣ ነጠላ ፕሮቶኮል-መደበኛ የመጻፍ ክዋኔዎች እና ረዳት አምራቾች ተሰናክለዋል። Kura ራሱ የጸሐፊ ጅምር እና ዘላቂ ሚውቴሽን ውድቅ ያደርጋል; የሶፍትዌር ማቀነባበሪያ የስራ ፍሰት እና FASTPQ የጽናት ወረፋዎች ስራን ከማቆየት ወይም ከመቀየር ይልቅ ወዲያውኑ ውድቅ ያደርጋሉ።. Kura አንብብ APIs እንዲሁም የጥገና እና የመቆየት ማመሳሰል ባህሪን ያሰናክሉ ጊዜያዊ ረዳት መዝገቦች አይተዋወቁም፣ የጎደሉ የማስፈጸሚያ ሌይን አርቲፋክቶች አልታተሙም፣ እና የሂደት መሰናክሎች አልተመሳሰሉም። Sumeragi እና የግብይት ወሬ አልተጀመረም። Torii ጤናን፣ ሕያውነትን፣ ዝግጁነትን፣ የአውታረ መረብ አቻ እና የማዋቀር ስራዎችን ብቻ ያጋልጣል። API-ስሪት፣ ሁኔታ፣ መለኪያዎች እና ሁሉም መደበኛ የሁኔታ/ታሪክ መስመሮች አይገኙም። ጥብቅ ዳግም እስኪጀምር ድረስ ዝግጁነት አይገኝም።
 
-`fast` ን ለአንድ ክስተት ብቻ ይጠቀሙ። አገልግሎት ከተረጋጋ በኋላ አገናኙን ያቁሙ ፣ `strict` ን መልሰው ያስጀምሩ እና እያንዳንዱ የተዘገየ የቼክ እና የመረጃ ጠቋሚ ዳግም ግንባታ ምርት ከመጀመሩ በፊት ይሠራል። ፈጣን ሁነታ የተዘገየውን ማዋሃድ መዝገብ አያስፈልገውም እንዲሁም ቀኖናዊ ማከማቻን አይፈጥርም ፣ አያስተካክልም ፣ አይቆርጥም ወይም አይያስገባም ፤ ያልታተሙ ድጋፎችን እና የሚጠብቁ ረዳት መልሶ ማግኛ ደረጃዎች ሳይነበቡ ወይም ሳይለወጡ ችላ ይባላሉ ፣ ከዚያ ለጠንካራ መልሶ ማገገም ይተፋሉ ። ከውጭ የሚመጣው የሃሽ-ብቻ ቅጽበታዊ ገጽ እይታ መስመር አሁንም አይገኝም ። የጎደለው ወይም ልክ ያልሆነ የአሁኑ ቅጽበታዊ እይታ ወዲያውኑ ይወድቃል። ፈጣን በጭራሽ ወደ ባዶ ዓለም ወይም ታሪካዊ መልሶ ማጫወት እንደገና ለመገንባት ወደኋላ አይገባም።
+`fast`ን ለአንድ ክስተት ብቻ ይጠቀሙ። አንዴ አገልግሎቱ ከተረጋጋ አንዴ ኖዱን ያቁሙ፣ `strict`ን ወደነበረበት ይመልሱ እና እንደገና ያስጀምሩ ስለዚህ እያንዳንዱ የዘገየ ቼክ እና ኢንዴክስ መልሶ መገንባት ምርት ከመቀጠሉ በፊት ይሰራል። ፈጣን ሁነታ የዘገየውን የውህደት ምዝግብ ማስታወሻ አይፈልግም እና ነጠላ ፕሮቶኮል-መደበኛ ማከማቻን አይፈጥርም፣ አይጠግንም፣ አይቆርጥም ወይም አያስመጣም። ያልታተሙ ቅጥያዎች እና በመጠባበቅ ላይ ያሉ ረዳት መልሶ ማግኛ ደረጃዎች ሳይነበቡ ወይም ሳይሻሻሉ ችላ ይባላሉ፣ ከዚያም ለጥብቅ መልሶ ማግኛ ይቀራሉ። ከውጭ የመጣ ሃሽ-ብቻ ነጥብ-በ-ጊዜ ውሂብ view የተከታታይነት አይገኝም። የጎደለ ወይም ልክ ያልሆነ የአሁኑ ነጥብ-በ-ጊዜ ውሂብ እይታ ወዲያውኑ አይሳካም; በፍጥነት ወደ ባዶ-አለም ወይም ታሪካዊ ድጋሚ መልሶ መገንባት አይወድቅም።
 
 <param-table default-value=strict>
 <template #type>
 
-ገመድ፣ ሊሆኑ የሚችሉ እሴቶች
+ሕብረቁምፊ፣ ሊሆኑ የሚችሉ እሴቶች
 
-- `strict`: ሙሉ ማረጋገጫ እና መደበኛ ምርት
-- `fast`: የተገደበ የአደጋ ጊዜ ጅምር እና ምርቱ እስከ ጥብቅ ዳግም ማስጀመር ድረስ በኳራንቲን ውስጥ
+- `strict` የተሟላ ማረጋገጫ እና መደበኛ ምርት
+- `fast` ጥብቅ ዳግም ማስጀመር እስኪጀምር ድረስ የታሰረ የአደጋ ጊዜ ጅምር ከምርት ጋር ተገልሏል
 
 </template>
 </param-table>
@@ -573,9 +573,9 @@ init_mode = "fast"
 
 ### `kura.store_dir` {#param-kura-store-dir}
 
-ብሎኮቹ የሚቀመጡበትን ማውጫ [^paths] ያመለክታል.
+ብሎኮች የሚቀመጡበትን ማውጫ[^paths] መወሰኛ
 
-በተጨማሪም ተመልከት: [`snapshot.store_dir`](#param-snapshot-store-dir).
+በተጨማሪ አንብበው [`snapshot.store_dir`](#param-snapshot-store-dir).
 
 <param-table env=KURA_STORE_DIR type=file-path default-value=./storage />
 
@@ -594,7 +594,7 @@ KURA_STORE_DIR=/path/to/storage
 
 ### `kura.debug.output_new_blocks` <Badge type="warning" text="debug" /> {#param-kura-debug-output-new-blocks}
 
-ለኮንሶል አዲስ ብሎኮችን ማተም እንዲቻል ባንዲራ።
+አዲስ ብሎኮችን ወደ ኮንሶል ማተምን ለማንቃት ባንዲራ ያድርጉ።
 
 <param-table env=KURA_DEBUG_OUTPUT_NEW_BLOCKS type=bool default-value=false />
 
@@ -611,11 +611,11 @@ KURA_DEBUG_OUTPUT_NEW_BLOCKS=true
 
 :::
 
-## ረድፍ {#queue}
+## ወረፋ {#queue}
 
 ### `queue.capacity` {#param-queue-capacity}
 
-ረድፍ ላይ የሚጠብቁ ግብይቶች ብዛት ከፍተኛ ገደብ።
+ወረፋው ውስጥ የሚጠብቁ ግብይቶች ብዛት የላይኛው ገደብ.
 
 <param-table type=number default-value=65_536 />
 
@@ -630,9 +630,9 @@ capacity = 1_048_576
 
 ### `queue.capacity_per_user` {#param-queue-capacity-per-user}
 
-ለአንድ ተጠቃሚ ረድፍ ውስጥ የሚጠብቁ ግብይቶች ብዛት ከፍተኛ ገደብ።
+ለአንድ ተጠቃሚ ወረፋ ውስጥ የሚጠብቁ ከፍተኛው የግብይቶች ብዛት።
 
-ይህን አማራጭ ተጠቅመህ ማሽቆልቆልን ተግባራዊ አድርግ።
+ስሮትሊንግን ለመተግበር ይህንን አማራጭ ይጠቀሙ።
 
 <param-table type=number default-value=65_536 />
 
@@ -647,7 +647,7 @@ capacity_per_user = 1_048_576
 
 ### `queue.transaction_time_to_live_ms` {#param-queue-transaction-time-to-live-ms}
 
-ግብይቱ ከዚህ ጊዜ በኋላ አሁንም ረድፍ ውስጥ ከሆነ ይቋረጣል.
+ግብይቱ አሁንም ወረፋው ውስጥ ከሆነ ከዚህ ጊዜ በኋላ ይቋረጣል።
 
 <param-table type=millis default-value=86_400_000 default-note="24 hours" />
 
@@ -664,7 +664,7 @@ transaction_time_to_live_ms = 43_200_000
 
 ### `sumeragi.debug.force_soft_fork` <Badge type="warning" text="debug" /> {#param-sumeragi-debug-force-soft-fork}
 
-Sumeragi ለስላሳ-ፎርክ አያያዝ መንገዶችን ለመለማመድ ዲቦግ-ብቻ ማብሪያ። ይህንን ከቁጥጥር ምርመራዎች ውጭ ያሰናክሉ; በሂደት ላይ ባለው የምርት አውታረመረብ ላይ መለወጥ የእኩዮቹን ስምምነት ባህሪ በተመለከተ አለመግባባት ሊያመጣ ይችላል ።
+Sumeragi ለስላሳ ፎርክ አያያዝ መንገዶችን ለመለማመድ ማረም-ብቻ ማብሪያ / ማጥፊያ። ይህንን ከቁጥጥር ውጭ ከሚደረግባቸው ሙከራዎች ውጭ ተሰናክሏል; በሚሰራ የምርት አውታረመረብ ላይ መቀየር የአውታረ መረብ እኩዮች ስለ መግባባት ባህሪ እንዳይስማሙ ሊያደርግ ይችላል።
 
 <param-table type=bool default-value=false />
 
@@ -677,40 +677,40 @@ force_soft_fork = true
 
 :::
 
-## Nexus የአቶሚክ የግል ስምምነት {#nexus-atomic-private-settlement}
+## Nexus አቶሚክ የግል የፋይናንስ ግብይት ማጠናቀቂያ {#nexus-atomic-private-settlement}
 
-`[nexus.atomic_private_settlement]` የተለየውን `AtomicPrivateSettlementV1` ዱካ ይቆጣጠራል። እሱ በነባሪነት ተሰናክሏል ። `enabled = true` ማዘጋጀትም እንዲሁ `activation_height` ይጠይቃል; በሰንሰለት ላይ ያለው አቅም ፣ የማስጠንቀቂያ ጊዜ ፣ ቋሚ ማስረጃ መገለጫ እና የመጠባበቂያ / ኦዲት አስተዳደር ካልተንቀሳቀሱ በስተቀር መግቢያ አሁንም አይዘጋም።
+`[nexus.atomic_private_settlement]` የተለየውን `AtomicPrivateSettlementV1` መንገድ ይቆጣጠራል። በነባሪ ጠፍቷል። `enabled = true` ማድረግ `activation_height`ንም ይጠይቃል፤ በሰንሰለት ላይ ያለው ብቃት፣ የማስታወቂያ ጊዜ፣ የተወሰነው የማረጋገጫ መገለጫ እና የፑል/ኦዲት አስተዳደር ንቁ ካልሆኑ፣ መግቢያው በአስተማማኝ ሁኔታ ውድቅ ይሆናል።
 
-ዋናዎቹ ድንበሮች `max_participants`, `max_expiry_blocks`, `audit_timeout_blocks`, `prepare_timeout_blocks`, `commit_timeout_blocks`, `max_proof_bytes`, `max_capsule_bytes`, `max_carrier_bytes`, `sidecar_retention_blocks`, `sidecar_max_records`, እና `sidecar_max_total_bytes`. `capsule_padding_classes_bytes` በጥብቅ እየጨመረ የሚሄድ ንዑስ ቡድን መሆን አለበት V1 የፓዲንግ ትምህርቶች። `permitted_policy_versions` ብቻ ይቀበላል V1.
+ዋናዎቹ ድንበሮች `max_participants`፣ `max_expiry_blocks`፣ `audit_timeout_blocks`፣ `prepare_timeout_blocks`፣ `commit_timeout_blocks`፣ `max_proof_bytes`፣ `max_capsule_bytes`፣ `max_carrier_bytes`፣ `sidecar_retention_blocks`፣ `sidecar_max_records` እና `sidecar_max_total_bytes` ናቸው። `capsule_padding_classes_bytes` የ V1 ንጣፍ ክፍሎች በጥብቅ እየጨመረ የሚሄድ ንዑስ ስብስብ መሆን አለበት። `permitted_policy_versions` የሚቀበለው V1 ብቻ ነው።
 
-`max_capsule_bytes` የቅዱሳን መጻሕፍት Norito የጠቅላላው ባይት `PrivateSettlementAuditCapsuleV1`, ጨምሮ AAD, የኖንሴ፣ የሲፊር ጽሑፍ፣ የቬክተር ማዕቀፍ፣ እና እያንዳንዱ ኦዲተር የታሸገ...DEK ሁሉም የተፈቀደ የሽፋን ክፍሎች ለ  ቢያንስ `default_min_auditor_approvals` ኦዲተሮች ይህ የምስክር ወረቀት መስፈርት እንዲሁ የተስተካከለ ደረጃ ነው: Torii አዲስ ተቀባይነት ያገኘውን ፖሊሲ ዝቅተኛ ዋጋ ያለው `min_approvals` ከካኖኒካል ባይት ገደብ በላይ የሆነ ማንኛውንም እውነተኛ ካፕሱል ውድቅ ያደርጋል።
+`max_capsule_bytes` AAD፣ ምስጠራ ኖስ እሴት፣ ምስጢራዊ ጽሑፍ፣ የቬክተር ፍሬም እና እያንዳንዱን ኦዲተር የተጠቀለለ-DEK ረድፍ ጨምሮ የሙሉ `PrivateSettlementAuditCapsuleV1` ነጠላ ፕሮቶኮል-ስታንዳርድ Norito ባይት ይለካል። የምስጢር-ጽሑፍ ብቻ ገደብ አይደለም። እያንዳንዱ የነቃ የፓዲንግ ክፍል ቢያንስ ለ`default_min_auditor_approvals` ኦዲተሮች ወግ አጥባቂ ሙሉ-ካፕሱል ዳታ ኮንቴይነር መገጣጠም አለበት። ያ የማጽደቅ መቼት እንዲሁ የሚተዳደር ወለል ነው - Torii ዝቅተኛ `min_approvals` እሴት ያለው አዲስ ተቀባይነት ያለው ፖሊሲን ውድቅ ያደርጋል እና ከነጠላ ፕሮቶኮል-መደበኛ ባይት ገደብ በላይ ማንኛውንም ትክክለኛ ካፕሱል ውድቅ ያደርጋል።.
 
-እነዚህ ቅንብሮች የምርት አካባቢ-ተለዋዋጭ ማግበር bypass የላቸውም. [የአቶሚክ የግል የመረጃ-መተላለፊያ ቦታ ማስተካከያ ያካሂዱ](/am/get-started/atomic-private-settlement) የተሟላ የግንባታ ምሳሌ እና የአሠራር መስፈርቶች። መንገድ ሰነድ ውጫዊ የመልቀቂያ በሮች ያልፋሉ ድረስ ምርት-የተረጋገጠ አይደለም.
+እነዚህ መቼቶች የምርት አካባቢ-ተለዋዋጭ የማግበር ማለፊያ የላቸውም። ለተሟላ ውቅር [አቶሚክ የግል አቋራጭ-ዳታስፔስ የፋይናንስ ግብይት ማጠናቀቂያን ያሂዱ](/am/get-started/atomic-private-settlement) ይመልከቱ እና የአሠራር መስፈርቶች. የተመዘገቡት የውጭ መልቀቂያ በሮች እስኪያልፉ ድረስ መንገዱ ለምርት ብቁ አይደለም።
 
-## ፈጣን ፎቶግራፍ {#snapshot}
+## ነጥብ-በ-ጊዜ የውሂብ እይታ {#snapshot}
 
-ይህ ሞጁል የ [World State View](/am/blockchain/world#world-state-view-wsv) ቅጽበታዊ ገጽ እይታዎችን ለማንበብ እና ለመጻፍ ኃላፊነት አለበት.
+ይህ ሞጁል የ [የየዓለም ሁኔታ እይታ](/am/blockchain/world#world-state-view-wsv) ነጥብ-በ-ጊዜ የውሂብ እይታዎችን የማንበብ እና የመፃፍ ሃላፊነት አለበት።
 
-ቅጽበታዊ ገጽ እይታዎች የዓለምን ሁኔታ እይታ ተከታታይ የፍተሻ ነጥብ ያስቀምጣሉ ስለሆነም አንድ እኩይ ከ Kura እያንዳንዱን ብሎክ እንደገና ሳይጫወት ዳግም ማስጀመር ይችላል ። Kura ዘላቂው የብሎክ ታሪክ እና ለድጋሚ መጫወት የእውነት ምንጭ ሆኖ ይቆያል ፣ ቅጽበታዊ እይታዎች የማፋጠን መንገድ ናቸው። በመጀመር ላይ Iroha ቅጽበታዊ ገጽ እይታ ሜታዳታዎችን ከተዋቀረው ሰንሰለት እና ከተከማቹ ብሎኮች ጋር ከመፈተሽዎ በፊት ቅጽበታዊ እይታን ለመጫን ወይም እንደገና ለመጫወት መመለስዎን ይወስናል ።
+ነጥብ-በጊዜ ውሂብ እይታዎች ተከታታይ የፍተሻ ነጥብ ያከማቻሉ ስለዚህ የአውታረ መረብ አቻ እያንዳንዱን ብሎክ ከ Kura ሳያጫውት እንደገና መጀመር ይችላል። Kura ዘላቂ የብሎክ ታሪክ እና የእውነት ምንጭ ሆኖ ይቆያል። ነጥብ-በጊዜ ውሂብ እይታዎች የፍጥነት መንገድ ናቸው። በሚነሳበት ጊዜ፣ Iroha የነጥብ-በ-ጊዜ ውሂብ እይታ ሜታዳታ ከተዋቀረው ሰንሰለት እና ከተከማቹ ብሎኮች ጋር ይፈትሻል።
 
-::: tip ቅጽበታዊ ገጽ እይታዎችን ማጽዳት
+::: tip ነጥብ-በጊዜ የውሂብ እይታዎችን ይጥረጉ
 
-በቅጽበታዊ ገጽ እይታዎች ስርዓት ውስጥ የሆነ ችግር ካለ እና ከባዶ ገጽ (በቅጽበታዊ እይታዎች) መጀመር ከፈለጉ ፣ በ [`snapshot.store_dir`](#param-snapshot-store-dir) የተጠቀሰውን ማውጫ ማስወገድ ይችላሉ ።
+በነጥብ-በጊዜ የውሂብ እይታዎች ስርዓት ላይ የሆነ ችግር ካለ፣ እና ከባዶ ገጽ መጀመር ይፈልጋሉ (በጊዜ ዳታ እይታዎች አንፃር) የተገለጸውን ማውጫ ማስወገድ ይችላሉ [`snapshot.store_dir`](#param-snapshot-store-dir).
 
 :::
 
 ### `snapshot.mode` {#param-snapshot-mode}
 
-የ Snapshot ሥርዓት የሚሠራበት ሁነታ።
+የጊዜ ነጥብ ውሂብ ሁነታ view ስርዓት የሚሰራው.
 
 <param-table default-value=read_write env=SNAPSHOT_MODE>
 <template #type>
 
-ገመድ፣ ሊሆኑ የሚችሉ እሴቶች
+ሕብረቁምፊ፣ ሊሆኑ የሚችሉ እሴቶች
 
-- `read_write`: Iroha የጊዜ ሰሌዳዎችን ያዘጋጃል [`snapshot.create_every_ms`](#param-snapshot-create-every-ms). በመጀመር ላይ, Iroha ነባር ቅጽበታዊ ገጽ እይታን (የሚገኝ ከሆነ) ያነባል እንዲሁም ከብሎኮች ማከማቻ ጋር ወቅታዊ መሆኑን ያረጋግጣል ።
-- `readonly`: ልክ እንደ `read_write` ነገር ግን Iroha ምንም ቅጽበታዊ ገጽ እይታዎች መፍጠር አይደለም.
-- `disabled`: Iroha አዲስ ቅጽበታዊ ገጽ እይታዎችን አይፈጥርም ወይም ሲጀምር ነባር ቅጽበታዊ እይታን አያነብም.
+- `read_write`: Iroha የጊዜ ገደብ ከ ጊዜ ጋር የ ነጥብ ዳታ እይታዎችን ይፈጥራል [`snapshot.create_every_ms`](#param-snapshot-create-every-ms). በሚነሳበት ጊዜ ፣ Iroha ነባር ነጥብ-በ-ጊዜ የውሂብ እይታ (ካለ) ያነባል እና ከብሎኮች ማከማቻ ጋር ወቅታዊ መሆኑን ያረጋግጣል።
+- `readonly` ከ `read_write` ጋር ተመሳሳይ ነገር ግን Iroha ምንም ቅጽበታዊ ገጽ እይታ አይፈጥርም።
+- `disabled` Iroha አዲስ ነጥብ-በ-ጊዜ የውሂብ እይታዎችን አይፈጥርም ወይም በሚነሳበት ጊዜ ያለውን አያነብም።.
 
 </template>
 </param-table>
@@ -730,7 +730,7 @@ SNAPSHOT_MODE=readonly
 
 ### `snapshot.create_every_ms` {#param-snapshot-create-every-ms}
 
-የፎቶግራፍ ድግግሞሽ።
+የየነጥብ-በ-ጊዜ ውሂብ እይታዎች ድግግሞሽ።
 
 <param-table type=millis default-value=600_000 default-note="10 minutes" />
 
@@ -745,9 +745,9 @@ create_every_ms = 60_000
 
 ### `snapshot.store_dir` {#param-snapshot-store-dir}
 
-ቅጽበታዊ ፎቶዎችን የማከማቸት ማውጫ።
+የነጥብ-በ-ጊዜ ውሂብ እይታዎችን የት እንደሚከማቹ ማውጫ።
 
-በተጨማሪም ተመልከት: [`kura.store_dir`](#param-kura-store-dir)
+በተጨማሪ አንብበው [`kura.store_dir`](#param-kura-store-dir)
 
 <param-table type=file-path default-value=./storage/snapshot env=SNAPSHOT_STORE_DIR />
 
@@ -766,15 +766,15 @@ SNAPSHOT_STORE_DIR="/path/to/storage"
 
 ## ቴሌሜትሪ {#telemetry}
 
-ቴሌሜትሪ የእኩዮች ምርመራን ወደ ውጫዊ የቴሌሜትሪክ ሰብሳቢ ያወጣል። አንድ እኩያ ለሰብሳቢ ሪፖርት ማድረግ በሚገባበት ጊዜ `telemetry.name` እና `telemetry.url` ሁለቱንም ያዋቅሩ; ቴሌሜትር ጥቅም ላይ ካልዋለ ክፍሉን ያስወግዱ.
+ቴሌሜትሪ የአውታረ መረብ አቻ ምርመራዎችን ወደ ውጫዊ የቴሌሜትሪ ሰብሳቢ ይልካል። የአውታረ መረብ አቻ ለሰብሳቢ ሪፖርት ማድረግ ሲገባው ሁለቱንም `telemetry.name` እና `telemetry.url` ያዋቅሩ; ቴሌሜትሪ ጥቅም ላይ በማይውልበት ጊዜ ክፍሉን ይተዉት።
 
-`name` እና `url` በፓር መሆን አለባቸው።
+`name` እና `url` ማጣመር አለባቸው።
 
 ሁሉም `telemetry` ክፍል አማራጭ ነው።
 
 ### `telemetry.name` {#param-telemetry-name}
 
-በቴሌሜትሪው ላይ የሚታየው የአገናኙ ስም ነው።
+በቴሌሜትሪ ላይ የሚታየው የኖድ ስም።
 
 <param-table type=string />
 
@@ -789,7 +789,7 @@ name = "iroha"
 
 ### `telemetry.url` {#param-telemetry-url}
 
-የቴሌሜትሪ ሰብሳቢው WebSocket URL።
+WebSocket URL የቴሌሜትሪ ሰብሳቢ።
 
 <param-table type=string />
 
@@ -804,7 +804,7 @@ url = "ws://telemetry.example.com/submit"
 
 ### `telemetry.min_retry_period_ms` {#param-telemetry-min-retry-period-ms}
 
-እንደገና ከመገናኘቱ በፊት መጠበቅ ያለበት ዝቅተኛ ጊዜ።
+እንደገና ከመገናኘትዎ በፊት ለመጠበቅ ዝቅተኛው ጊዜ።
 
 <param-table type=millis default-value=1_000  default-note="1 second" />
 
@@ -819,7 +819,7 @@ min_retry_period_ms = 5_000
 
 ### `telemetry.max_retry_delay_exponent` {#param-telemetry-max-retry-delay-exponent}
 
-በግንኙነቶች መካከል ያለውን መዘግየት ለመጨመር ጥቅም ላይ የሚውለው የ 2 ከፍተኛ ጠቋሚ።
+በድጋሚ ግንኙነቶች መካከል መዘግየትን ለመጨመር ጥቅም ላይ የሚውለው ከፍተኛው የ 2 ገላጭ።
 
 <param-table type=number default-value=4 />
 
@@ -834,7 +834,7 @@ max_retry_delay_exponent = 4
 
 ### `dev_telemetry.out_file` {#param-dev-telemetry-out-file}
 
-ወደ dev-ቴሌሜትሪ ለመጻፍ የፋይልፓት
+ዴቭ-ቴሌሜትሪ ለመጻፍ የፋይል መንገድ
 
 <param-table type=file-path />
 

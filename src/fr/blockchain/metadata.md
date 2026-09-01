@@ -3,31 +3,31 @@ translation_locale: fr
 translation_source: /blockchain/metadata.md
 translation_source_hash: 20e78492bf757147f2c9afed2d3b51639bc79913d3d8e4351193b6011f5469c2
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Les métadonnées {#metadata}
+# Métadonnées {#metadata}
 
-Les métadonnées sont une carte de la valeur des clés vérifiée attachée aux objets du registre. `Name` Les valeurs et les valeurs JSON (`Json`) des charges utiles.
+Les métadonnées sont une carte clé-valeur vérifiée attachée aux objets du grand livre blockchain. Les clés sont des valeurs `Name` et les valeurs sont des charges utiles JSON (`Json`).
 
-Les objets suivants peuvent contenir des métadonnées:
+Les objets suivants peuvent contenir des métadonnées :
 
-- les domaines
+- domaines
 - comptes
 - actifs
-- définitions d'actifs
+- définitions des actifs
 - NFTs
 - RWAs
 - déclencheurs
-- des opérations
+- transactions
 
-Utilisez des métadonnées pour de petits champs descriptifs ou d'indexation qui appartiennent à l'état du registre. Les grandes charges utiles doivent être stockées en dehors de la WSV et référencées par un digest, URI, ou SoraFS chemin.
+Utilisez des métadonnées pour de petits champs descriptifs ou d'indexation qui appartiennent à l'état du registre de la blockchain. Les charges utiles volumineuses doivent être stockées en dehors du WSV et référencées par une valeur de résumé cryptographique, URI, ou un chemin SoraFS.
 
-Pour les conseils sur le choix des métadonnées, des actifs, NFTs, RWAs, ou de stockage hors chaîne, voir [Les options de stockage des métadonnées et du registre](/fr/guide/configure/metadata-and-store-assets.md).
+Pour des conseils sur le choix des métadonnées, des ressources, NFTs, RWAs, ou du stockage hors chaîne, voir [Choix de stockage des métadonnées et du registre blockchain](/fr/guide/configure/metadata-and-store-assets.md).
 
-## Essayez le sur Taira {#try-it-on-taira}
+## Essayez-le sur Taira {#try-it-on-taira}
 
-Les métadonnées sont visibles à travers des lectures de ressources normales. Cette commande répertorie les définitions d'actifs Taira qui contiennent actuellement des métadonnées:
+Les métadonnées sont visibles via les lectures normales des ressources. Cette commande répertorie les définitions d'actifs Taira qui ont actuellement des métadonnées :
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=100' \
@@ -36,7 +36,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=100' \
     | {id, name, metadata}'
 ```
 
-Utilisez le même schéma pour les domaines et comptes:
+Utilisez le même modèle pour les domaines et les comptes :
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
@@ -46,20 +46,20 @@ curl -fsS 'https://taira.sora.org/v1/accounts?limit=20' \
   | jq '.items[] | select((.metadata // {} | length) > 0)'
 ```
 
-Traiter la sortie vide comme un résultat valide. Cela signifie que la page actuelle des objets Taira ne contient pas de métadonnées, ce qui ne veut pas dire que le point final n'a pas fonctionné.
+Considérez une sortie vide comme un résultat valide. Cela signifie que la page actuelle des objets Taira ne contient pas de métadonnées, et non que le point de terminaison API a échoué.
 
 ## Mise à jour des métadonnées {#updating-metadata}
 
-Les métadonnées sont modifiées par Iroha Instructions spéciales:
+Les métadonnées sont modifiées avec les opérations d'instruction Iroha :
 
-- [`SetKeyValue`](/fr/blockchain/instructions.md#setkeyvalue-removekeyvalue) insère ou remplace une clé.
-- [`RemoveKeyValue`](/fr/blockchain/instructions.md#setkeyvalue-removekeyvalue) enlève une clé
+- [`SetKeyValue`](/fr/blockchain/instructions.md#setkeyvalue-removekeyvalue) insère ou remplace une clé
+- [`RemoveKeyValue`](/fr/blockchain/instructions.md#setkeyvalue-removekeyvalue) supprime une clé
 
-L'autorité qui soumet la transaction doit avoir l'autorisation requise par le validateur d'exécution actif. Pour la surface d'autorisations par défaut, voir [Permission Tokens](/fr/reference/permissions.md).
+Le principal autorisé soumettant la transaction doit avoir la permission requise par le validateur d'exécution logiciel actif. Pour la surface de permission par défaut, voir [Jetons de permission](/fr/reference/permissions.md).
 
-## Les événements {#events}
+## Événements {#events}
 
-Les événements de données sont émis lorsque les métadonnées changent. `MetadataChanged<Id>`:
+Les événements de données sont émis lorsque les métadonnées changent. La charge utile générique de l'événement est `MetadataChanged<Id>` :
 
 ```mermaid
 classDiagram
@@ -81,10 +81,10 @@ MetadataChanged --> AssetDefinitionMetadataChanged
 MetadataChanged --> DomainMetadataChanged
 ```
 
-Utilisez les filtres d'événements de données [ ](/fr/blockchain/filters.md#data-event-filters) pour souscrire uniquement à des événements de métadonnées pour le type d'entité ou l'objet ID qui sont importants pour une intégration.
+Utilisez [filtres d'événements de données](/fr/blockchain/filters.md#data-event-filters) pour vous abonner uniquement aux événements de métadonnées pour le type d'entité ou l'ID d'objet qui importe pour une intégration.
 
-## Questions posées {#queries}
+## Requêtes {#queries}
 
-Les métadonnées sont renvoyées dans le cadre de l'objet recherché. Par exemple, utilisez [`FindAccountById`](/fr/reference/queries.md#accounts-and-permissions), [`FindDomainById`](/fr/reference/queries.md#domains-and-peers) ou [`FindAssetDefinitionById` ](/fr/reference/queries.md#assets-nfts-and-rwas). Utilisez [`FindNfts`](/fr/reference/queries.md#assets-nfts-and-rwas) ou [`FindNftsByAccountId`](/fr/reference/queries.md#assets-nfts-and-rwas) pour NFTs, et [`FindRwas`](/fr/reference/queries.md#assets-nfts-and-rwas) pour les lots RWA. Ensuite, lisez le champ de métadonnées de l'objet. Les réponses à la requête NFT exposent la carte NFT `content` comme les métadonnées enregistrées.
+Les métadonnées sont renvoyées dans le cadre de l'objet interrogé. Par exemple, utilisez [`FindAccountById`](/fr/reference/queries.md#accounts-and-permissions), [`FindDomainById`](/fr/reference/queries.md#domains-and-peers), ou [`FindAssetDefinitionById`](/fr/reference/queries.md#assets-nfts-and-rwas). Utiliser [`FindNfts`](/fr/reference/queries.md#assets-nfts-and-rwas) ou [`FindNftsByAccountId`](/fr/reference/queries.md#assets-nfts-and-rwas) pour NFTs, et [`FindRwas`](/fr/reference/queries.md#assets-nfts-and-rwas) pour RWA beaucoup. Ensuite, lisez le champ de métadonnées de l'objet. NFT les réponses aux requêtes exposent le NFT `content` carte en tant que métadonnées de l'enregistrement.
 
-Les clés de métadonnées font partie de l'état du registre, alors gardez-les stables et évitez d'encoder la version spécifique à l'application dans le nom de la clé lorsqu'une valeur JSON peut contenir explicitement cette version.
+Les clés de métadonnées font partie de l'état du grand livre blockchain, il faut donc les maintenir stables et éviter d'encoder les changements de version spécifiques à l'application dans le nom de la clé lorsqu'une valeur JSON peut porter cette version explicitement.

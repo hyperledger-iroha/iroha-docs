@@ -12,8 +12,8 @@ Ushbu misol Iroha 3 ma'lumotlar modelidagi kanonik domensiz hisob IDs va ko'zda 
 
 Aytaylik , tarmoqda:
 
-- Alisaning kaliti tomonidan boshqariladigan kanonik hisob
-- Mad Hatterning kaliti bilan nazorat qilinadigan kanonik hisob
+- Alice’ning kaliti tomonidan boshqariladigan kanonik hisob
+- Mad Hatter’ning kaliti bilan nazorat qilinadigan kanonik hisob
 - `wonderland.universal` bo'yicha `tea` deb taxmin qilingan aktivni belgilash
 - har bir hisobda saqlanadigan ushbu aktivning balanslari
 
@@ -29,9 +29,9 @@ asset definition projection: tea in wonderland.universal
 holder accounts: AccountId(controller=alice_key), AccountId(controller=mad_hatter_key)
 ```
 
-Asset ta'rifida hali ham kanonik ko'rinmas manzil mavjud. Bu manzilni ro'yxatdan o'tgandan so'ng saqlash yoki so'rovlash va uni qo'zg'atish harakatida ishlating.
+Aktiv ta’rifining kanonik oshkor etilmaydigan manzili mavjud. Ro‘yxatdan o‘tkazgach shu manzilni saqlang yoki so‘rov bilan oling va uni trigger amalida ishlating.
 
-## 2. Ishtirokchi hokimiyatini tanlang. {#_2-choose-the-trigger-authority}
+## 2. Ishtirokchi vakolatini tanlang. {#_2-choose-the-trigger-authority}
 
 Agar iloji bo'lsa, triggerning texnik hisobini maxsus hisobga o'rnating. O'ziga xos hisobda triggerni bajarish uchun qaysi ruxsatnomalar kerakligi aniqlanadi va triggerni operatorning shaxsiy imzolash kaliti bilan bog'lashni oldini oladi.
 
@@ -62,7 +62,7 @@ EventFilterBox::Data(
 )
 ```
 
-Filterlarni amaliy bo'lganidek aniq saqlang. `AcceptAll` filtrlari xatolar uchun foydali, ammo u har bir moslashish hodisasi trigger baholash xarajatini to'laydi.
+Filtrlarni imkon qadar aniq belgilang. `AcceptAll` filtri nosozlikni aniqlashda foydali, ammo har bir mos hodisa triggerni baholash xarajatini keltirib chiqaradi.
 
 ## 5. Ishtirokchini ro'yxatga oling {#_5-register-the-trigger}
 
@@ -84,6 +84,6 @@ Bir blok bajarilganda:
 1. Oddiy operatsiya yo'l-yo'riqlari birinchi o'rinni egallaydi.
 2. Ushbu ko'rsatmalar bilan hosil bo'lgan voqealar ma'lumotlari to'planadi.
 3. Filterlari o'sha tadbirlarga mos bo'lgan triggerlar rejalashtirilgan.
-4. Trigger tomonidan ishlab chiqariladigan ta'sirlar blokni ijro etish to'g'risidagi tizimda cheksiz rekursiv triggerni amalga oshirishga yo'l qo'ymagan holda hal etiladi.
+4. Trigger hosil qilgan ta’sirlar blokni bajarish konveyerida, triggerlarning cheksiz rekursiv bajarilishiga yo‘l qo‘ymasdan qayta ishlanadi.
 
 Agar qo'zg'atuvchidan `Repeats::Exactly(n)` foydalangan bo'lsa, hisob-kitob tugaganda va xuddi shunday xulq-atvor kerak bo'lganda yangi qo'ng'iroqni ro'yxatga oling.

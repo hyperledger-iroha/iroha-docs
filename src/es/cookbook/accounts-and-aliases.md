@@ -1,28 +1,28 @@
 ---
 translation_locale: es
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: 429535e5bb4ad1d3110f29a5b3896c0d3ce39264dbd357fa932fcc2a5f48d0f1
+translation_source_hash: 6d36784afef0ef10113cabc995ddfb45fd8d382d7c32c553d77cf03ba5c1f65f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Cuentas y alias {#accounts-and-aliases}
+# Cuentas y Alias {#accounts-and-aliases}
 
-## El resultado {#outcome}
+## Resultado {#outcome}
 
-Trabajar de forma segura con canonical sin dominio I105 cuentas IDs y alias legibles por el hombre vinculados separadamente, tales como: `treasury@payments.universal`. Usted inspeccionará Taira las cuentas, derivar su propio canónico ID, y resolver los alias sin confundir el contexto de enrutamiento con la identidad.
+Trabaje de manera segura con identificadores de cuenta canónicos sin dominio I105 y alias legibles por humanos vinculados por separado, como `treasury@payments.universal`. Inspeccionará cuentas Taira, derivará su propio identificador canónico y resolverá alias sin confundir el contexto de enrutamiento con la identidad.
 
-## Los requisitos previos {#prerequisites}
+## Requisitos previos {#prerequisites}
 
-- `curl`, `jq`, Python 3.11 o más tarde, y la corriente `iroha` CLI.
-- Una `taira.client.toml` de [Conectar a Taira](./connect-to-taira.md) al inspeccionar su propia cuenta.
-- Una cuenta proporcionada a través del grifo Taira o de la ruta de incorporación regulada de la red antes de esperar que una lectura específica de la cuenta tenga éxito.
+- `curl`, `jq`, Python 3.11 o posterior, y el actual `iroha` CLI.
+- Un `taira.client.toml` de [Conectar a Taira](./connect-to-taira.md) al inspeccionar tu propia cuenta.
+- Una cuenta aprovisionada a través del servicio de financiación de la red de prueba Taira o la ruta de incorporación gobernada de la red antes de esperar que una lectura específica de la cuenta tenga éxito.
 
-## Los pasos {#steps}
+## Pasos {#steps}
 
-### 1. Inspeccionar las cuentas canónicas de Taira {#_1-inspect-canonical-accounts-on-taira}
+### 1. Inspeccionar las cuentas canónicas en Taira {#_1-inspect-canonical-accounts-on-taira}
 
-En la lista de cuentas públicas siempre se devuelve el canonico I105 IDs. El alias primario es opcional y se informa por separado.
+La lista de cuentas públicas siempre devuelve IDs canónicos I105. Un alias principal es opcional y se informa por separado.
 
 ```bash
 curl -fsS -H 'Accept: application/json' \
@@ -30,11 +30,11 @@ curl -fsS -H 'Accept: application/json' \
   | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
 ```
 
-Un ID de `.id` es válido para campos estrictos de cuentas. No añadir un dominio a él. Un alias de `.primary_alias` es una clave de búsqueda orientada al usuario, no otra identidad canónica.
+Un ID de `.id` es válido para campos de cuenta estrictos. No le agregue un dominio. Un alias de `.primary_alias` es una clave de búsqueda visible para el usuario, no otra identidad canónica.
 
-### 2. Derivar y normalizar su Taira I105 ID {#_2-derive-and-normalize-your-taira-i105-id}
+### 2. Derive y normaliza tu ID Taira I105 {#_2-derive-and-normalize-your-taira-i105-id}
 
-La misma clave pública está codificada de manera diferente para diferentes perfiles de redes públicas, así que seleccione `taira` explícitamente.
+Lea solo la clave pública desde la configuración local. La misma clave pública se codifica de manera diferente para diferentes perfiles de red pública, así que seleccione `taira` explícitamente.
 
 ```bash
 TAIRA_PUBLIC_KEY="$(python3 - <<'PY'
@@ -53,11 +53,11 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID" \
   | iroha tools address normalize --profile taira
 ```
 
-El valor normalizado debe ser idéntico a `TAIRA_ACCOUNT_ID`. La configuración de `[account].domain` en el archivo TOML puede ser `wonderland.universal`, pero ese valor afecta solo al contexto de enrutamiento y alias.
+El valor normalizado debe ser idéntico a `TAIRA_ACCOUNT_ID`. La configuración `[account].domain` en el archivo TOML puede ser `wonderland.universal`, pero ese valor afecta únicamente el enrutamiento y el contexto de alias.
 
-### 3. Leer la cuenta y sus activos {#_3-read-the-account-and-its-assets}
+### 3. Lea la cuenta y sus activos {#_3-read-the-account-and-its-assets}
 
-Después de que se proporciona la cuenta, consulte directamente y enumere una página de activos limitados. URL-encode el valor I105 antes de utilizarlo en un camino.
+Después de que se provisiona la cuenta, consúltala directamente y lista una página de activos limitados. URL-codifica el valor I105 antes de usarlo en una ruta.
 
 ```bash
 iroha --config ./taira.client.toml ledger account get \
@@ -73,9 +73,9 @@ curl -fsS -H 'Accept: application/json' \
   | jq '{total, items}'
 ```
 
-### 4. Busque alias vinculados a la cuenta. {#_4-look-up-aliases-bound-to-the-account}
+### 4. Buscar alias vinculados a la cuenta {#_4-look-up-aliases-bound-to-the-account}
 
-El resolver inverso acepta una cuenta canónica exacta ID. Las filas del espacio de datos público se pueden leer sin encabezados de firma de solicitud; los espacios de datos restringidos requieren una solicitud firmada autorizada.
+El resolvedor inverso acepta un ID de cuenta canónica exacto. Las filas del espacio de datos público se pueden leer sin encabezados de firma de solicitud; los espacios de datos restringidos requieren una solicitud firmada autorizada.
 
 ```bash
 jq -nc --arg account_id "$TAIRA_ACCOUNT_ID" \
@@ -89,7 +89,7 @@ curl -fsS -H 'Accept: application/json' \
   | jq '{account_id, total, items}'
 ```
 
-`total: 0` es válido: una cuenta no necesita un alias. Cuando exista un alias vinculante, resuelva su alias exacto y comparar la cuenta devuelta ID:
+`total: 0` es válido: una cuenta no necesita un alias. Cuando existe un enlace, resuelve su alias completo exacto y compara el ID de cuenta devuelto:
 
 ```bash
 ALIAS_WAS_RESOLVED=false
@@ -109,13 +109,13 @@ else
 fi
 ```
 
-::: warning Límites de los permisos
+::: warning Límite de permisos
 
-El Consejo Taira la empresa puede proveer su cuenta del solicitante, pero eso no otorga a los Autoridad de registro de cuentas o autoridad de gestión de alias. `CanRegisterAccount` Los alias de las cuentas normalmente requieren también un SNS el contrato de arrendamiento y los permisos de alias apropiados. o ensayar el registro con respecto a la red local generada.
+El servicio de financiación de testnet Taira puede aprovisionar su cuenta reclamante, pero eso no otorga autorización general para el registro de cuentas o la gestión de alias. Registrar otra cuenta requiere `CanRegisterAccount` bajo el validador activo. Los alias de cuenta normalmente también requieren un contrato de arrendamiento SNS activo y los permisos de alias apropiados. Use el planificador de incorporación/alias gobernado, o practique el registro contra la red local generada.
 
 :::
 
-En una red local, una vez que un paso seguro de suministro de firmas haya exportado una nueva canónica `NEW_ACCOUNT_ID`, la superficie de registro es:
+En una red local, una vez que un paso seguro de aprovisionamiento de firmantes ha exportado un nuevo `NEW_ACCOUNT_ID` canónico, la superficie de registro es:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -127,11 +127,11 @@ iroha --config ./localnet/client.toml ledger account get \
   --id "$NEW_ACCOUNT_ID"
 ```
 
-Generar y almacenar la clave privada correspondiente fuera del repositorio de documentación o aplicaciones. Registrar un ID cuya clave controladora fue desechada crea una cuenta inutilizable.
+Genere y almacene la clave privada correspondiente fuera de la documentación o del repositorio de la aplicación. Registrar una identificación cuya clave de controlador fue descartada crea una cuenta inutilizable.
 
 ## Verificar {#verify}
 
-Demostrar que la clave pública de configuración, el código I105 y los alias de unión convergen en una cuenta canónica ID:
+Demuestra que la clave pública de configuración, la codificación I105 y la vinculación de alias convergen en un único ID de cuenta canónico:
 
 ```bash
 NORMALIZED_ACCOUNT_ID="$(
@@ -145,22 +145,22 @@ if test "${ALIAS_WAS_RESOLVED:-false}" = true; then
 fi
 ```
 
-Guarde la cuenta canónica IDs. Utilice la IDs canónica para firmas, permisos e instrucciones de transacción. Resolva un alias en el límite de la aplicación. Mantenga la cuenta canonica ID utilizada para la operación.
+Almacenar IDs de cuenta canónicos. Usar IDs canónicos para firmas, permisos e instrucciones de transacción. Resolver un alias en el límite de la aplicación. Conservar el ID de cuenta canónico utilizado para la operación.
 
 ## Solución de problemas {#troubleshooting}
 
-- Un error de análisis o prefijo generalmente significa que una dirección fue codificada para un perfil de red diferente. Normaliza con `--profile taira` y rechaza las discrepancias.
-- Una cuenta `404` después de un grifo `202` puede ser un retraso en la propagación. Revisar la cuenta o el activo financiado antes de enviar una nota.
-- `total: 0` desde el resolver inverso significa que no hay alias visible vinculado; no se trata de una falla en la búsqueda de cuenta.
-- `401` o `403` de una ruta alias indica un espacio de datos restringido o un permiso de resolución exacta insuficiente. No utilice la búsqueda de prefijos amplios como retroceso.
-- Un valor legible `name@domain.dataspace` no es aceptado en todos los lugares donde se requiere un canónico I105 ID.
-- Si el registro local de la cuenta tiene éxito pero Taira lo rechaza, la diferencia es la autorización. Obtenga `CanRegisterAccount`; no cambie la cuenta ID para evitar la validación.
+- Un error de análisis o de prefijo generalmente significa que una dirección fue codificada para un perfil de red diferente. Normalice con `--profile taira` y rechace las discrepancias.
+- Una cuenta `404` después de un servicio de financiación de testnet `202` puede tener un retraso de propagación. Consulte la cuenta o el activo financiado antes de enviar una escritura.
+- `total: 0` del resolvedor inverso significa que no hay un alias visible vinculado; no es un error de búsqueda de cuenta.
+- `401` o `403` desde una ruta alias indica un espacio de datos restringido o permisos insuficientes de resolución exacta. No use la búsqueda de prefijos amplia como recurso alternativo.
+- Un valor `name@domain.dataspace` legible no se acepta en todas partes donde se requiere un ID I105 canónico. Resuélvelo primero.
+- Si el registro de la cuenta local tiene éxito pero Taira lo rechaza, la diferencia es la autorización. Obtenga `CanRegisterAccount`; no cambie el ID de la cuenta para eludir la validación.
 
 ## Fuente y documentos relacionados {#source-and-related-docs}
 
-- [Implementación de la dirección de cuenta canónica en el compromiso fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs)
+- [Implementación de la dirección de cuenta canónica en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs)
 - [Pruebas de cuenta y alias Torii en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs)
-- [Cuentas ](/es/blockchain/accounts.md)
-- [Los alias del modelo de datos](/es/blockchain/data-model.md#aliases)
-- [Convenciones de nombramiento](/es/reference/naming.md)
-- [Los tokens de autorización ](/es/reference/permissions.md)
+- [Cuentas](/es/blockchain/accounts.md)
+- [Alias de modelos de datos](/es/blockchain/data-model.md#aliases)
+- [Convenciones de nombres](/es/reference/naming.md)
+- [Tokens de permiso](/es/reference/permissions.md)

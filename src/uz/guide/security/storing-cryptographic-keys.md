@@ -3,85 +3,85 @@ translation_locale: uz
 translation_source: /guide/security/storing-cryptographic-keys.md
 translation_source_hash: 168ee24e84f9225e81365658018717155476ae1508fefba5e0234e0bf6feefbd
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: bing-translator-llm
 ---
 
-# Kriptografik kalitlarni saqlash {#storing-cryptographic-keys}
+# Kryptografik Kalitlarni Saqlash {#storing-cryptographic-keys}
 
-Xususiy kalit o'zi tegishli vakolatga ruxsat etilgan har qanday amalni tasdiqlashi mumkin. Xususiy kalitni hech qachon ulashmang. Seed materialini, tiklash sirlarini, bearer tokenlarni va eksport qilingan kalit fayllarini bir xil ehtiyotkorlik bilan himoya qiling.
+Shaxsiy kalit uning avtorizatsiya qiluvchisi uchun ruxsat berilgan har bir amalni bajarishga vakolat berishi mumkin. Hech qachon shaxsiy kalitni ulashmang. Urug‘lik materiallari, tiklash sirlarini, egasi tokenlarini va eksport qilingan kalit fayllarini bir xil ehtiyotkorlik bilan himoya qiling.
 
-Ishlab chiqarishni boshlashdan oldin kalitlarni saqlash modelini tanlang. Model xavf ostidagi qiymatga, hisob boshqaruvchisi siyosatiga va joylashtirishning tiklash jarayoniga mos kelishi kerak.
+Ishlab chiqarishni boshlashdan oldin saqlash dizaynini tanlang. Dizayn xavf ostidagi qiymat, hisobni boshqarish siyosati va joylashtirishning tiklash jarayoni bilan mos kelishi kerak.
 
-## Qo'riqlash chegaralarini aniqlang {#define-the-custody-boundary}
+## Qamoq chegarasini aniqlang {#define-the-custody-boundary}
 
-- Har bir vakolat, ochiq kalit, algoritm, muhit, maqsad, saqlovchi, saqlash joyi, zaxira nusxa va almashtirish tartibi inventarini yuriting.
-- Ishlab chiqish, sinov, ishlab chiqarish, odatiy tranzaksiyalar, boshqaruv, joylashtirish va tiklash uchun alohida kalitlardan foydalaning.
-- Odamlar va jarayonlarga faqat ularning vazifasi uchun zarur kalitlarga kirish huquqini bering.
-- Xavf modeli talab qilsa, yuqori qiymatli yoki boshqaruv imzolari uchun mustaqil tasdiq talab qiling.
-- Imzolovchi qaysi tarmoq va vakolatlardan foydalanishi mumkinligini qayd etish. Imzolash xizmati ushbu doiradan tashqaridagi arizalarni rad qilishi kerak.
+- Har bir ruxsat etilgan shaxs, ochiq kalit, algoritm, muhit, maqsad, mas'ul shaxs, saqlash joyi, zahiralash va almashtirish tartibini inventarizatsiya qiling.
+- Rivojlanish, test, ishlab chiqarish, kundalik tranzaksiyalar, boshqaruv, joylashtirish va tiklash uchun alohida kalitlardan foydalaning.
+- Odamlar va jarayonlarga faqat ularning roli talab qiladigan kalitlarga kirish huquqini bering.
+- Xavf modeli talab qilganda yuqori qiymatli yoki boshqaruv imzolash uchun mustaqil tasdiq talab qilinsin.
+- Imzolovchi qaysi tarmoq va avtorizatsiya shaxsini ishlatishi mumkinligini qayd eting. Imzolash xizmati shu doiradan tashqari bo‘lgan so‘rovlarni rad etishi kerak.
 
-## O'rinli saqlash usulini tanlang {#choose-an-appropriate-storage-method}
+## Mos Keladigan Saqlash Usulini Tanlang {#choose-an-appropriate-storage-method}
 
-Mahalliy ishlab chiqish, nazorat qilinadigan sinovlar yoki xavfsiz saqlovchiga topshirish uchun kalit ruxsatlari cheklangan faylga eksport qilinishi mumkin. Qo'llab-quvvatlanadigan Unix platformasida `kagami` bilan yangi kalit katalogini yarating:
+Mahalliy rivojlanish, nazorat qilinadigan testlar yoki xavfsiz saqlash topshirig‘i uchun kalit ruxsatlari cheklangan faylga eksport qilinishi mumkin. Qo‘llab-quvvatlanadigan Unix platformasida yangi kalit katalogini `kagami` bilan yarating:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-Ota katalog mavjud bo'lishi kerak. Nishon katalog yangi yoki joriy foydalanuvchiga tegishli, `0700` rejimli, ramziy havolalarsiz va bo'sh bo'lishi kerak. Kagami `public.key` va `private.key` fayllarini `0600` rejimida yozadi; `--pop` `pop.hex` faylini ham yozadi. Kagami faqat egaga tegishli fayl tizimi qoidalarini ta'minlay olmaydigan platformalarda buyruq xato bilan yakunlanadi.
+Ota papka mavjud bo‘lishi kerak. Maqsad yangi bo‘lishi yoki hozirgi foydalanuvchi tomonidan allaqachon egalik qilinishi kerak, rejim `0700`, simvolik havolalardan xoli va bo‘sh bo‘lishi kerak. Kagami yozadi `public.key` va `private.key` bilan `0600` rejimida; `--pop` shuningdek `pop.hex` yozadi. Bu buyruq Kagami egalik qiluvchi fayl tizimi qoidalarini majburlay olmaydigan platformalarda bajarilmaydi.
 
-Xususiy kalit fayli shifrlanmagan eksportdir. Uni manba nazorati, ulashilgan jildlar, jurnallar, chiptalar, chat va build artefaktlaridan tashqarida saqlang. Ishlab chiqarish kalitini tasdiqlangan saqlash chegarasiga import qiling, so'ng eksport faylini joylashtirish tartibiga muvofiq olib tashlang. Ishlab chiqish kalitini ishlab chiqarishda qayta ishlatmang.
+Shaxsiy kalit fayli shifrlanmagan eksport hisoblanadi. Uni manba nazorati, umumiy papkalar, loglar, chiptalar, chat va qurilish artefaktlaridan uzoqda saqlang. Ishlab chiqarish kalitini uning tasdiqlangan saqlash chegarasiga import qiling, so‘ngra eksportni joylashtirish protsedurasiga muvofiq olib tashlang. Ishlab chiqarishda rivojlantirish kalitidan qayta foydalanmang.
 
-Ishlab chiqarish uchun quyidagilar kabi audit qilingan saqlash chegarasini afzal ko'ring:
+Ishlab chiqarishda, quyidagilar kabi auditi o‘tkazilgan saqlash chegarasini afzal ko‘ring:
 
-- asbob-uskunalar xavfsizligi moduli yoki uskunalarga asoslangan kalit do'kon
-- operatsion tizim yoki mobil kalit do'kon
-- alohida imzolash xizmati
-- kaliti faqat ruxsat etilgan ish yuklariga chiqarilgan sirli menejer
+- apparat xavfsizlik moduli yoki apparat tomonidan qoʻllab-quvvatlanadigan kalit saqlash joyi
+- operatsion tizim yoki mobil kalitxona
+- yolg‘iz imzolash xizmati
+- faqat ruxsat berilgan ish yuklamasiga kalitni chiqaradigan maxfiy boshqaruvchi
 
-Tanlangan integratsiya ushbu xususiyatni qo'llab-quvvatlagan taqdirda kalit materialni eksport qilinmaydigan qilib saqlang. Qo'riqlash tizimi Iroha organi tomonidan talab etiladigan algoritm va imzolash operatsiyasini qo'llab - quvvatlayotganini tasdiqlang.
+Tanlangan integratsiya ushbu xususiyatni qo‘llab-quvvatlaganda, kalit materialini eksport qilib bo‘lmaydigan qilib saqlang. Saqlash tizimi Iroha vakolat hisobasi talab qiladigan algoritm va imzolash operatsiyasini qo‘llab-quvvatlashini tasdiqlang.
 
-Saqlangan holatdagi shifrlash faqat saqlangan nusxani himoya qiladi. Ruxsatsiz jarayon yoki operator shifri ochilgan baytlarni olgach, u kalitni himoya qilmaydi. Hostni mustahkamlang, bajarilish vaqtidagi kirishni cheklang va imzolash faoliyatini kuzating.
+Dam olayotganda shifrlash saqlangan nusxani himoya qiladi. U ruxsatsiz jarayon yoki operator deshifrlangan baytlarni olganidan keyin kalitni himoya qilmaydi. Mezbonni mustahkamlang, dasturiy ta'minot ishga tushirish muhitiga kirishni cheklang va imzolash faoliyatini kuzating.
 
-## Imzolash ish jarayonlarini himoya qiling {#protect-signing-workflows}
+## Imzolash Ish Jarayonlarini Himoya Qilish {#protect-signing-workflows}
 
-- Operatorning nomi bilan identifikatsiyalash, kuchli tasdiqlanish va imzolash tizimlariga auditli kirish.
-- Xom kalitlarni buyruq satri argumentlari, shell tarixi, muhit dump-lari, jarayon ro'yxatlari, crash hisobotlari va dastur loglaridan tashqarida saqlang.
-- Imzolovchini faqat zarur amal uchun qulfdan chiqaring. Ishlatgandan keyin sessiyani yoping yoki muddati tugashini ta'minlang.
-- Ruxsatdan oldin vakolat, tarmoq, ko'rsatmalar, aktivlar va to'lovlarni ko'rsatish.
-- Maxsus imtiyozli yoki yuqori qiymatli bitimlar uchun aniq tasdiqlash talab etiladi.
-- Moslashtirilgan mijoz integratsiyasi imzolashni topshira olsa, xom xususiy kalitlarni brauzer sahifalari va umumiy maqsadli dastur jarayonlaridan tashqarida saqlang.
+- Imzolash tizimlariga kirishda nomlangan operator shaxsini aniqlash, kuchli autentifikatsiya va tekshirilgan kirishni ishlating.
+- Xom kalitlarni buyruq satri argumentlaridan, shell tarixidan, muhitisni chiqarishlardan, jarayon ro‘yxatlaridan, xatolik hisobotlaridan va ilova yozuvlaridan uzoq tuting.
+- Faqat kerakli operatsiya uchun kriptografik imzolchining blokirovkasini oching. Foydalanishdan so‘ng sessiyani yoping yoki muddati o‘tsin.
+- Tasdiqlashdan oldin vakolatli shaxsni, tarmoqni, ko'rsatmalarni, aktivlarni va to'lovlarni ko'rsating.
+- Imtiyozli yoki yuqori qiymatli tranzaksiyalar uchun aniq tasdiqni talab qiling.
+- Agar maxsus mijoz integratsiyasi imzolashni topshirishi mumkin bo'lsa, xom shaxsiy kalitlarni brauzer sahifalari va umumiy maqsadli dastur jarayonlaridan tashqarida saqlang.
 
-Oddiy matnli mijoz konfiguratsiyasi faqat mahalliy ishlab chiqish va nazorat qilinadigan sinovlar uchun mos. Ishlab chiqarish integratsiyasi imzolarni tasdiqlangan saqlash chegarasi orqali olishi kerak. Standart Iroha CLI xususiy kalitni mijoz konfiguratsiyasidan o'qiydi va umumiy tashqi imzolovchi adapterini taqdim etmaydi. Moslashtirilgan mijozlar tranzaksiya payload heshini tuzib, tashqi imzolovchi yaratgan imzoni biriktirishi mumkin.
+Oddiy matnli mijoz konfiguratsiyasi faqat mahalliy rivojlantirish va nazorat qilinadigan testlar uchun mos keladi. Ishlab chiqarish integratsiyasi imzolarni tasdiqlangan saqlash chegarasi orqali olishi kerak. Aksiya Iroha CLI mijoz konfiguratsiyasidan shaxsiy kalitni o‘qiydi va umumiy tashqi kriptografik imzolash-xizmati adapterini taqdim etmaydi. Maxsus mijozlar tranzaksiya yuklamasining kriptografik xeshini yaratishi va tashqi imzolovchi tomonidan ishlab chiqarilgan imzoni qo‘shishi mumkin.
 
-## Kalitlarni zaxiralang va tiklang {#back-up-and-recover-keys}
+## Kalitlarni Zaxiralash va Tiklash {#back-up-and-recover-keys}
 
-- Faqat tiklash siyosati zaxira nusxani talab qiladigan kalitlarni zaxiralang.
-- Zaxira nusxalarni shifrlang va faol imzolovchidan alohida saqlang.
-- Zaxira nusxaga faol kalitdagi kabi kirish va tasdiqlash nazoratlarini qo'llang.
-- Vazifalarni ajratish talab qilinsa, tiklash hisob ma'lumotlarini mustaqil saqlov ostida tuting.
-- Ishlab chiqarish kalit materialini oshkor qilmasdan tiklashni sinang.
-- Har bir zaxira nusxani yaratish, unga kirish, tiklash va yo'q qilishni qayd eting hamda ko'rib chiqing.
+- Faqat tiklash siyosati zaxira qilishni talab qiladigan kalitlarni zaxiralang.
+- Zaxira nusxalarni shifrlang va ularni jonli imzolovchidan alohida saqlang.
+- Zaxira nusxaga ham jonli kalitga qo‘llaniladigan kirish va tasdiqlash nazoratlarini qo‘llang.
+- Majburiy vazifalar ajratilganida tiklash kredensiallarini mustaqil nazorat ostida saqlang.
+- Ishlab chiqarish kalit materialini ochmasdan testni tiklash.
+- Har bir zahira nusxasini yaratish, unga kirish, tiklash va yo‘q qilishni yozib boring va ko‘rib chiqing.
 
-Iroha maxfiy kaliti bilan bog'liq bo'lmagan portfeli mnemonik formatini ifodalashi mumkin deb taxmin qilmang. Faqat tanlangan saqlash tizimi tomonidan qo'llab-quvvatlanadigan va sinovdan o'tkazilgan tiklash formatidan foydalaning.
+Aloqasi bo‘lmagan hamyon mnemonik formatining Iroha shaxsiy kalitini ifodalashi mumkin deb o‘ylamang. Faqat tanlangan saqlash tizimi tomonidan qo‘llab-quvvatlangan va sinovdan o‘tkazilgan tiklash formatidan foydalaning.
 
-## Oshkor bo'lgan yoki foydalanishdan chiqarilgan kalitlarni almashtiring {#replace-exposed-or-retired-keys}
+## Ochiq yoki ishlatilmayotgan kalitlarni almashtirish {#replace-exposed-or-retired-keys}
 
-Hodisa yuz berishidan oldin almashtirishga tayyorlaning. Tartib quyidagilarni belgilashi kerak:
+Voqea sodir bo‘lishidan oldin zaxirani tayyorlang. Jarayon quyidagilarni aniqlashi kerak:
 
-1. kalitni kim oshkor bo'lgan yoki foydalanishdan chiqarilgan deb e'lon qilishi mumkinligi
-2. ta'sirlangan imzolovchi qanday ajratib qo'yilishi
-3. yangi kalit qanday yaratilishi va tasdiqlangan saqlovga joylashtirilishi
-4. hisob uchun vakolatli boshqaruvchini almashtirish yoki ijtimoiy tiklash yangi kanonik `AccountId` ni qanday yaratishi va bog'liq holatni qanday ko'chirishi
-5. node yoki peer uchun vakolatli on-chain konsensus kalitini aylantirish yoki o'chirish BLS PoP, faollashtirish va ustma-ust ishlash siyosati, mahalliy kalit konfiguratsiyasi, `trusted_peers_pop` va joylashtirish topologiyasi bilan qanday muvofiqlashtirilishi
-6. bog'liq konfiguratsiyalar, ilovalar va operatorlar yangi `AccountId`, ochiq kalit yoki peer identifikatorini qanday qabul qilishi
-7. eski kalit vakolati qanday olib tashlanishi va uning nusxalari qanday arxivlanishi yoki yo'q qilinishi
-8. undan keyin tarmoq va bog'liq ilovalar qanday tekshirilishi
+1. kalitni oshkor qilingan yoki xizmatdan chiqarilgan deb kim e'lon qilishi mumkin
+2. ta’sirlangan imzolovchi qanday ajratilgan
+3. yangi kalit qanday yaratiladi va tasdiqlangan saqlovga joylashtiriladi
+4. hisob uchun, qanday ruxsat etilgan boshqaruvchi almashtirish yoki ijtimoiy tiklash almashtirish kanonik `AccountId` yaratadi va bog‘langan holatni ko‘chiradi
+5. tugun yoki tarmoq hamkori uchun, qanday qilib ruxsat berilgan zanjir ustidagi konsensus kalitining aylantirilishi yoki o‘chirilishi BLS PoP, faollashtirish va qamrov siyosati, mahalliy kalit konfiguratsiyasi, `trusted_peers_pop` va joylashtirish topologiyasi bilan muvofiqlashtiriladi
+6. qanday bog‘liq konfiguratsiyalar, ilovalar va operatorlar yangi `AccountId`, ochiq kalit yoki tarmoq hamkori identifikatsiyasini qabul qiladi
+7. qanday qilib eski kalitning ruxsatnoma prinsipi olib tashlanadi va uning nusxalari arxivlanadi yoki yo‘q qilinadi
+8. tarmoq va unga bog‘liq ilovalar keyinchalik qanday tasdiqlanishi
 
 ::: warning
 
-Shifrlash yoki yangi parol nusxalangan xususiy kalitni yana xavfsiz qila olmaydi. Oshkor bo'lganidan shubhalansangiz, kalitdan foydalanishni to'xtating va tasdiqlangan almashtirish yoki bekor qilish tartibiga rioya qiling.
+Shifrlash yoki yangi parol nusxalangan xususiy kalitni yana xavfsiz qilmaydi. Agar oshkor bo‘lish gumon qilinsa, kalitni ishlatishni to‘xtating va tasdiqlangan almashtirish yoki bekor qilish tartibiga rioya qiling.
 
 :::
 
-[Generating Cryptographic Keys](./generating-cryptographic-keys.md), [Operatsion xavfsizlik](./operational-security.md) va [Xavfsizlik tamoyillari](./security-principles.md)-ni ko'ring.
+Qarang [Kriptografik Kalitlarni Yaratish](./generating-cryptographic-keys.md), [Operatsion xavfsizlik](./operational-security.md), va [Xavfsizlik printsiplari](./security-principles.md).

@@ -1,22 +1,22 @@
 ---
 translation_locale: es
 translation_source: /guide/tutorials/musubi.md
-translation_source_hash: 4a76626522ecb9fe32e98e9c1e4552223cf820d40d0de16690dc589b0f40c901
+translation_source_hash: 621d1795fd1c3cc62462a9a91af68fe684c0ff5293f5e77801420dc8318bac38
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Musubi Kotodama Envases {#musubi-kotodama-packages}
+# Musubi Kotodama Paquetes {#musubi-kotodama-packages}
 
-Musubi es el gestor de paquetes de primera edición para los paquetes fuentes Kotodama. Resulta un gráfico exacto de dependencia en la cadena, autentica SoraFS archivos de origen, compila y prueba el espacio de trabajo seleccionado, construye archivos canónicos CAR y publica versiones inmutables a través de Iroha.
+Musubi es el gestor de paquetes de primera versión para paquetes fuente Kotodama. Resuelve un gráfico de dependencias exacto en la cadena y autentica SoraFS archiva las fuentes, compila y prueba el espacio de trabajo seleccionado, construye archivos canónicos CAR y publica versiones inmutables a través de Iroha.
 
-Utilice Musubi cuando sea necesario:
+Usa Musubi cuando necesites:
 
-- Publicar bibliotecas de funciones reutilizables Kotodama
-- pin un gráfico transitivo exacto en `Musubi.lock`
-- reconstruir la fuente de dependencia a partir de los compromisos de archivo SoraFS finalizados
-- Construir y probar un paquete o un espacio de trabajo multipaquetado
-- inspeccionar, publicar, extraer, mantener o alias de paquetes a través del registro en cadena
+- publicar bibliotecas de funciones Kotodama reutilizables
+- fijar un gráfico transitivo exacto en `Musubi.lock`
+- reconstruir la fuente de dependencias a partir de los compromisos archivados finalizados SoraFS
+- construir y probar un paquete o un espacio de trabajo de varios paquetes
+- inspeccionar, publicar, eliminar, mantener o alias de paquetes a través del registro en cadena
 
 ## Nombres de paquetes {#package-names}
 
@@ -26,17 +26,17 @@ Los selectores de paquetes canónicos utilizan:
 namespace/package
 ```
 
-Los identificadores de liberación exactos agregan una versión:
+Los identificadores de lanzamiento exactos agregan una versión:
 
 ```text
 namespace/package@version
 ```
 
-No hay una dirección `@` antes de un espacio de nombres. Un espacio de nombres es ya sea una raíz del espacio de datos como el `universal` o un espacio de datos calificado por dominio como el `dex.universal`. El libro mayor une ese espacio de nombres estructural a un espacio de información doméstico estable antes de que se pueda reclamar un paquete.
+No hay un `@` inicial antes de un espacio de nombres. Un espacio de nombres es o bien una raíz de espacio de datos como `universal` o un espacio de datos calificado por dominio como `dex.universal`. El libro mayor de la blockchain vincula ese espacio de nombres estructural a un espacio de datos de hogar estable antes de que se pueda reclamar un paquete.
 
-## Manifiesto y archivo de bloqueo {#manifest-and-lockfile}
+## manifiesto técnico y archivo de bloqueo {#manifest-and-lockfile}
 
-Un paquete utiliza la primera edición cerrada `Musubi.toml` El manifiesto debe declarar `manifest-version = 1`, Kotodama Edición `"1"`, y IVM ABI la versión `1`; no hay un manifiesto alternativo, o ABI el modo.
+Un paquete utiliza el esquema cerrado de primera versión `Musubi.toml`. El manifiesto técnico debe declarar `manifest-version = 1`, Kotodama edición `"1"`, y IVM ABI versión `1`; no existe un manifiesto técnico alternativo ni modo ABI.
 
 ```toml
 manifest-version = 1
@@ -57,13 +57,13 @@ package = "std.universal/math"
 version = "^1.0.0"
 ```
 
-Las dependencias pueden utilizar versiones exactas, requisitos de cuidado o tilde, wildcards como `1.*`, y conjuntos de comparador separados por vírgenes como `>=1.0.0,<2.0.0`. La clave de la tabla de dependencias es el alias de importación parental-local; `package` es siempre el selector del registro canónica.
+Las dependencias pueden usar versiones exactas, requisitos con caret o tilde, comodines como `1.*`, y conjuntos de comparadores separados por comas como `>=1.0.0,<2.0.0`. La clave de la tabla de dependencias es el alias de importación local del padre; `package` siempre es el selector de registro canónico.
 
-`Musubi.lock` une el gráfico a la genesis exacta derivada de `NetworkId` y una instantánea del registro finalizado. Registra las raíces seleccionadas del espacio de trabajo y los nodos de liberación inmutables, incluidos los compromisos de liberación, fuente, interfaz, archivo, ABI y límite exacto de dependencia. Las versiones paralelas se permiten cuando el gráfico resuelto las requiere.
+`Musubi.lock` vincula el gráfico al `NetworkId` derivado de la génesis exacta y a una instantánea de registro finalizada. Registra las raíces de espacio de trabajo seleccionadas y los nodos de lanzamiento inmutables, incluyendo lanzamiento, fuente, interfaz, archivo, ABI y compromisos exactos de dependencia. Se permiten versiones paralelas cuando el gráfico resuelto las requiere.
 
-## Configuración de Taira SoraFS Recogiendo {#configure-taira-sorafs-fetching}
+## Configurar Taira SoraFS Recuperando {#configure-taira-sorafs-fetching}
 
-Taira es la red de prueba pública para este flujo de trabajo. Comience a partir de una configuración del cliente Taira con la cadena y identidad de red registradas, luego añada los vínculos de búsqueda autenticados específicos del proveedor a continuación. El material de firma de la cuenta y las claves del operador del proveedor deberán permanecer en los archivos de tiempo de ejecución exclusivos para el propietario.
+Taira es la testnet pública para este flujo de trabajo. Comience desde una configuración de cliente Taira con la cadena registrada y la identidad de red derivada del génesis actualmente fijada, luego agregue las vinculaciones de búsqueda autenticadas específicas del proveedor a continuación. Un reinicio de Taira puede cambiar el `NetworkId`; actualícelo desde el perfil de implementación firmado en lugar de inferirlo de la cadena estable UUID. El material de firma de la cuenta y las claves del operador del proveedor deben permanecer en archivos de ejecución de software solo para el propietario.
 
 ```toml
 torii_url = "https://taira.sora.org/"
@@ -82,20 +82,20 @@ operator_public_key = "REPLACE_WITH_PROVIDER_AUTHORIZED_OPERATOR_PUBLIC_KEY"
 operator_private_key_file = "./secrets/taira-sorafs-provider.key"
 ```
 
-Descubra los proveedores admitidos de Taira a partir de la raíz pública de testnet:
+Descubre los proveedores admitidos de Taira desde la raíz de la testnet pública:
 
 ```bash
 export TAIRA_ROOT=https://taira.sora.org
 curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
 ```
 
-El catálogo del proveedor suministra las identidades del proveedor y los puntos finales anunciados. Obtenga la autorización del operador correspondiente del proveedor elegido. El tiempo de ejecución utiliza esa clave para solicitar tokens de flujo limitados; los tokens no son argumentos CLI ni contenido de archivo de bloqueo.
+El catálogo de proveedores suministra identidades de proveedores y puntos finales API anunciados. Obtenga la autorización del operador correspondiente del proveedor elegido. El tiempo de ejecución del software utiliza esa clave para solicitar tokens de flujo acotado; los tokens no son argumentos CLI ni contenido de archivo de bloqueo.
 
-No utilice una Taira pin del validador URL como `url`. Los validadores registrados han incorporado: SoraFS el almacenamiento ha sido desactivado. `https://taira-validator-{1,2,3,4}.sora.org` los puntos finales aceptan el registro de pin, mientras que las lecturas de archivo utilizan la opción del proveedor admitido seleccionado HTTPS de origen.
+No utilice un pin de validador Taira URL como `url`. Los validadores registrados tienen deshabilitado el almacenamiento SoraFS incorporado. Sus puntos de conexión `https://taira-validator-{1,2,3,4}.sora.org` API aceptan el registro de pins, mientras que las lecturas de archivo utilizan el origen HTTPS del proveedor admitido seleccionado.
 
 ## Flujo de trabajo local {#local-workflow}
 
-A partir de la raíz del espacio de trabajo Iroha upstream, cree o ingrese el directorio de paquetes y ejecute Musubi a través de Cargo:
+Desde la raíz del espacio de trabajo Iroha aguas arriba, crea o entra en el directorio del paquete y ejecuta Musubi a través de Cargo:
 
 ```bash
 mkdir -p examples/swap-core
@@ -114,15 +114,15 @@ cargo run --manifest-path ../../Cargo.toml -p musubi -- test --config client.tom
 cargo run --manifest-path ../../Cargo.toml -p musubi -- package --config client.toml
 ```
 
-`fetch` resuelve el gráfico de registro finalizado, actualizaciones `Musubi.lock` cuando sea permitido, y llena el caché local inmutable de autenticado SoraFS las ubicaciones. `check`, `build`, `test`, y `package` realizar las mismas comprobaciones de gráficos y caché antes de su propio trabajo.
+`fetch` resuelve el gráfico del registro finalizado, actualiza `Musubi.lock` cuando se permite y llena la caché local inmutable desde las ubicaciones SoraFS autenticadas. `check`, `build`, `test` y `package` realizan las mismas verificaciones del gráfico y de la caché antes de su propio trabajo.
 
-Use `--locked` para rechazar cualquier cambio en el archivo de bloqueo. Utilice `--offline` solo cuando tanto el índice de registro como todos los archivos requeridos ya estén almacenados en caché. `--frozen` combina esas dos restricciones. Una caché fuera de línea falla; Musubi nunca escribe un archivo de bloques no resuelto.
+Usa `--locked` para rechazar cualquier cambio en el archivo de bloqueo. Usa `--offline` solo cuando tanto el índice del registro como todos los archivos necesarios ya estén en caché. `--frozen` combina esas dos restricciones. Un fallo de caché fuera de línea falla; Musubi nunca escribe un archivo de bloqueo irresuelto.
 
-Las fuentes de dependencia se vinculan reescribiendo llamadas calificadas como `math::add()` a nombres internos deterministas Kotodama. Una llamada de dependencia a una función no exportada es rechazada. las bibliotecas importadas exponen funciones; los objetivos locales `[[contract]]` y `[[test]]` siguen siendo objetivos explícitos del paquete.
+Las fuentes de dependencia están vinculadas mediante la reescritura de llamadas calificadas como `math::add()` a nombres internos deterministas Kotodama. Se rechaza una llamada de dependencia a una función no exportada. Las bibliotecas importadas exponen funciones; los objetivos locales `[[contract]]` y `[[test]]` permanecen como objetivos de paquete explícitos.
 
-## Verificación de caché y reparación {#cache-verification-and-repair}
+## Verificación y reparación de caché {#cache-verification-and-repair}
 
-Los comandos de caché público funcionan en archivos inmutables y comprometidos con el registro:
+Los comandos de caché pública operan sobre archivos inmutables, comprometidos en el registro:
 
 ```bash
 cargo run --manifest-path ../../Cargo.toml -p musubi -- \
@@ -135,11 +135,11 @@ cargo run --manifest-path ../../Cargo.toml -p musubi -- \
   cache prune --dry-run --config client.toml
 ```
 
-`cache repair` las cuarentenas corrompen a descendientes de confianza y revitaliza los archivos exactos cuando la evidencia del proveedor finalizada lo permite. Musubi rechaza una mutación de poda viva no vacía. Utilice `--dry-run` para inspeccionar a los candidatos clasificados.
+`cache repair` pone en cuarentena a los descendientes confiables corruptos y vuelve a obtener los archivos exactos cuando la evidencia del proveedor finalizado lo permite. La poda está deliberadamente cerrada por fallos para la mutación no vacía en vivo; use `--dry-run` para inspeccionar los candidatos clasificados.
 
-## Envasado y publicación {#packaging-and-publishing}
+## Empaquetado y Publicación {#packaging-and-publishing}
 
-Inspectar el conjunto de archivos positivos limpios antes de escribir un archivo, luego construir el paquete canónico:
+Inspeccione el conjunto de archivos positivos limpios antes de escribir un archivo, luego construya el paquete canónico:
 
 ```bash
 cargo run --manifest-path ../../Cargo.toml -p musubi -- \
@@ -149,20 +149,20 @@ cargo run --manifest-path ../../Cargo.toml -p musubi -- \
   package --locked --config client.toml
 ```
 
-`package` escribe `target/package/<namespace>-<name>-<version>.car`. El Consejo CAR se une al manifiesto de paquete canónico, al manifieste de liberación semántica, a la cerradura exacta de verificación, al árbol fuente, al digesto de interfaz y SoraFS No hay compromisos de archivo. `pack`, `--car-out`, `--sorafs-manifest-out`, o `--source-plan-out` los comandos en la primera versión CLI.
+`package` escribe `target/package/<namespace>-<name>-<version>.car`. El CAR enlaza el manifiesto técnico del paquete canónico, el manifiesto técnico de la versión semántica, el bloqueo de verificación exacta, el árbol de fuentes, valor de resumen criptográfico de la interfaz y compromiso de archivo SoraFS. No existen comandos separados `pack`, `--car-out`, `--sorafs-manifest-out` o `--source-plan-out` en la primera versión CLI.
 
-La publicación es un flujo de trabajo de red firmado y reanudable. El `client.toml` seleccionado debe contener los vínculos de producción `[musubi.publication]`, así como la configuración de cuenta y de red Taira.
+La publicación es un flujo de trabajo de red firmado y susceptible de reanudación. El `client.toml` seleccionado debe contener las vinculaciones requeridas de `[musubi.publication]`, así como la configuración de la cuenta y de la red de Taira. Empaquete exactamente un miembro del espacio de trabajo:
 
 ```bash
 cargo run --manifest-path ../../Cargo.toml -p musubi -- \
   publish -p dex.universal/swap-core --locked --config client.toml
 ```
 
-Utilice `--detach` para regresar después de que el diario de operación y el límite de entrada de la semilla sean duraderos. Continúe una operación duradera con `publish --resume <operation-id> --config client.toml`. El camino más estrecho `--recover <operation-id>` sólo se reconstruye No hay ninguna publicación `--dry-run` o descarga pública genérica fallback; ejecuta `package --list` y `package` para el vuelo local previo.
+Usa `--detach` para regresar después de que el diario de operaciones y el límite de ingreso de semillas sean duraderos. Continúa una operación duradera con `publish --resume <operation-id> --config client.toml`. El camino más estrecho `--recover <operation-id>` solo reconstruye faltan registros auxiliares inmutables para un diario previo al ingreso impecable. No hay publicación `--dry-run` ni carga pública genérica de respaldo; ejecute `package --list` y `package` para la revisión previa local.
 
-## Preguntas de registro y ciclo de vida {#registry-queries-and-lifecycle}
+## Consultas de registro y ciclo de vida {#registry-queries-and-lifecycle}
 
-Buscar e inspeccionar el registro final con la misma configuración de cliente Taira:
+Busque e inspeccione el registro finalizado con la misma configuración del cliente Taira:
 
 ```bash
 cargo run --manifest-path ../../Cargo.toml -p musubi -- \
@@ -175,7 +175,7 @@ cargo run --manifest-path ../../Cargo.toml -p musubi -- \
   alias resolve swap --config client.toml
 ```
 
-Yanking excluye una liberación inmutable de las nuevas resoluciones mientras que las cerraduras exactas existentes siguen siendo reproducibles. Lea primero la revisión de yank actual, y luego envíe una mutación para comparar y establecer:
+El arrancado excluye una versión inmutable de nuevas resoluciones mientras los bloqueos exactos existentes siguen siendo reproducibles. Lea primero la revisión de arrancado actual y luego envíe una mutación de comparar y establecer:
 
 ```bash
 : "${EXPECTED_YANK_REVISION:?set the current non-zero yank revision}"
@@ -187,26 +187,26 @@ cargo run --manifest-path ../../Cargo.toml -p musubi -- \
   --config client.toml
 ```
 
-Use `unyank` con el mismo paquete, versión y revisión de lectura reciente para revertir ese estado. Los roles de propiedad y mantenimiento del paquete controlan los permisos de publicación, extracción, metadatos y ubicación de archivos. Los alias globales tienen su propio registro a precios, historial de retargeting, y revisiones de comparación y fijación; no son atajos a la propiedad del paquete.
+Use `unyank` con el mismo paquete, versión y revisión recién leída para revertir ese estado. La propiedad del paquete y los roles de mantenedor controlan la publicación, eliminación y metadatos, y permisos de ubicación de archivo. Los alias globales tienen su propio registro con precio, historial de reorientación y revisiones de comparar y establecer; no son accesos directos de propiedad de paquetes.
 
 ## Iroha Superficies {#iroha-surfaces}
 
-Musubi utiliza instrucciones y consultas de la primera edición V1:
+Musubi utiliza las instrucciones y consultas de primera versión V1:
 
-|Superficie .|Propósito |
-| -------------------------------------------------- | -------------------------------------------------------------- |
-|`RegisterMusubiNamespaceBindingV1` |Enlazar un espacio de nombres con su espacio de datos estable en casa.|
-|`RegisterMusubiArchiveV1` |Registrar un compromiso de archivo fuente autenticado inmutable. |
-|`AddMusubiArchiveLocationV1` |Añadir o renovar una ubicación de archivo comprobada SoraFS. |
-|`PublishMusubiReleaseV1` |Reclamar o actualizar un paquete y publicar una versión inmutable. |
-|`SetMusubiReleaseYankV1` |Comparar y establecer el estado tirado de una liberación exacta.|
-|`InviteMusubiPackageMaintainerV1` |Iniciar el flujo explícito de invitación al papel del paquete. |
-|`RegisterMusubiAliasV1` / `RetargetMusubiAliasV1` |Registro o retargeting un alias global gobernado. |
-|`AssertMusubiReleaseDigestV1` |Afirmar la digestión exacta de liberación inmutable.|
-|`FindMusubiExactPackageV1` |Lea un paquete exacto y sus revisiones. |
-|`FindMusubiExactReleaseV1` |Lea una instantánea exacta de liberación. |
-|`FindMusubiResolverIndexV1` / `FindMusubiVersionsV1` |Resolver o hacer una lista de candidatos a liberación finalizados. |
-|`FindMusubiArchiveLocationsV1` |Lea las ubicaciones de archivos finalizadas respaldadas por el proveedor. |
-|`FindMusubiAliasV1` / `FindMusubiAliasHistoryV1` |Lea el alias actual del objetivo o su historia inmutable. |
+|Superficie|Propósito|
+| ---------------------------------------------------- | -------------------------------------------------------------- |
+| `RegisterMusubiNamespaceBindingV1`                   |Vincule un espacio de nombres a su espacio de datos estable.|
+| `RegisterMusubiArchiveV1`                            |Registrar un compromiso de archivo de fuente autenticada inmutable.|
+| `AddMusubiArchiveLocationV1`                         |Agregar o renovar una ubicación de archivo SoraFS comprobada.|
+| `PublishMusubiReleaseV1`                             | Reclama o actualiza un paquete y publica una versión inmutable. |
+| `SetMusubiReleaseYankV1`                             |Comparar y establecer el estado retirado de una versión exacta.|
+| `InviteMusubiPackageMaintainerV1`                    |Iniciar el flujo de invitación de rol de paquete explícito.|
+| `RegisterMusubiAliasV1` / `RetargetMusubiAliasV1`    |Registrar o reenfocar un alias global gobernado.|
+| `AssertMusubiReleaseDigestV1`                        |Afirmar el valor exacto inmutable del digest criptográfico de la versión.|
+| `FindMusubiExactPackageV1`                           |Lea un paquete exacto y sus revisiones.|
+| `FindMusubiExactReleaseV1`                           |Leer una instantánea de versión exacta.|
+| `FindMusubiResolverIndexV1` / `FindMusubiVersionsV1` |Resolver o listar candidatos de lanzamiento finalizados.|
+| `FindMusubiArchiveLocationsV1`                       |Lea las ubicaciones de archivo respaldadas por el proveedor finalizadas.|
+| `FindMusubiAliasV1` / `FindMusubiAliasHistoryV1`     | Lea el objetivo de alias actual o su historial inmutable.        |
 
-Torii expone la familia de rutas de aplicaciones en `/v1/musubi/`. MCP las herramientas utilizan la corriente `iroha.musubi.queries.` y `iroha.musubi.instructions.*` Los nombres. [Torii puntos finales](/es/reference/torii-endpoints.md) y el [referencia de la consulta](/es/reference/queries.md) para el más amplio API El mapa.
+Torii expone la familia de rutas de la aplicación bajo `/v1/musubi/*`. Las herramientas MCP usan los nombres actuales de `iroha.musubi.queries.*` y `iroha.musubi.instructions.*`. Consulte [Torii API puntos finales](/es/reference/torii-endpoints.md) y el [referencia de consulta](/es/reference/queries.md) para el mapa más amplio de API.

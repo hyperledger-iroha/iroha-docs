@@ -3,23 +3,23 @@ translation_locale: ja
 translation_source: /help/installation-issues.md
 translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c054c85a2a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# 設置問題解決 {#troubleshooting-installation-issues}
+# インストールの問題のトラブルシューティング {#troubleshooting-installation-issues}
 
-このセクションでは, Iroha 3 のインストールに関するトラブルシューティングのヒントを提供しています.あなたが経験している問題はここで説明されていない場合は, [テレグラム](https://t.me/hyperledgeriroha) を介して連絡してください.
+このセクションでは、Iroha 3 のインストールに関するトラブルシューティングのヒントを提供します。ここに記載されていない問題が発生した場合は、[テレグラム](https://t.me/hyperledgeriroha) を通じてお問い合わせください。
 
-## 迅速なチェック {#quick-checks}
+## 迅速な確認 {#quick-checks}
 
-装置の故障は4つの場所から発生します
+ほとんどのインストールの失敗は、次の4つのうちの1つの原因です：
 
-- Rust ツールチェーンは,上流作業空間で固定されたバージョンよりも古い.
-- `cargo` または `rustc` 異なる装置に解決する `rustup`
-- 欠けているシステム構築ツールであるCコンパイラ, `pkg-config`,またはCMake
-- 源修正変更後,古い生成されたスニペットまたはローカルビルドアーテファクト
+- 上流ワークスペースによって指定されたバージョンより古い Rust ツールチェーン
+- `cargo` または `rustc` が `rustup` とは異なるインストール先に解決される
+- Cコンパイラ、`pkg-config`、またはCMakeのようなシステムビルドツールが不足しています
+- ソースのリビジョンを変更した後の古くなった生成スニペットやローカルビルド成果物
 
-Iroha ソースのチェックアウトから,次のことを開始します:
+Iroha ソースコードの作業コピーから、次のものを開始してください:
 
 ```bash
 rustup show
@@ -28,126 +28,126 @@ rustc --version
 cargo metadata --no-deps
 ```
 
-`cargo metadata` が失敗した場合,現在のデータモデルスキーマを生成するためにリフレッシュが Kagami を呼び出すことができるため, `pnpm refresh:iroha --source /path/to/iroha` を実行する前にローカルツールチェーンを修正してください.
+もし `cargo metadata` が失敗した場合は、`pnpm refresh:iroha --source /path/to/iroha` を実行する前にローカルのツールチェーンを修正してください。リフレッシュによって現在のデータモデルスキーマを生成するために Kagami が呼び出される可能性があるからです。
 
 ## トラブルシューティング Rust ツールチェーン {#troubleshooting-rust-toolchain}
 
-時々,計画通りには行かないシステムに `rust` があったがアップグレードしていない場合 特に似たような問題は Python: XKCD これはよく知られている例です
+時には、物事は計画通りに進まないことがあります。特に、しばらく前にシステムに`rust`を入れたことがあるが、アップグレードしていなかった場合はなおさらです。Python でも同様の問題が発生する可能性があります：XKCD には、それがどのようなものかの有名な例があります。
 
 <div class="flex justify-center">
 
-![Python 環境のトラブルシューティングコミック](/img/install-troubles.png)
+![Python 環境トラブルシューティング漫画](/img/install-troubles.png)
 
 </div>
 
-### Rust バージョンをチェックする {#check-rust-version}
+### Rust のバージョンを確認してください {#check-rust-version}
 
-`cargo` の正しいバージョンと `rustc` の適切なバージョンを組み合わせて,あなたの健康と私たちの健全性を保つため,当時の上流作業空間は `rust-version = "1.92"` を宣言し,ツールチェーンのチャンネルを `rust-toolchain.toml` にピンします.バージョンを示するには,
+あなたと私たちの両方の正気を保つために、`cargo`の適切なバージョンが`rustc`の適切なバージョンと組み合わされていることを確認してください。現在の上流ワークスペースでは`rust-version = "1.92"`が宣言され、`rust-toolchain.toml`でツールチェーンチャネルが固定されています。バージョンを表示するには、次を実行してください
 
 ```bash
 $ cargo -V
 $ cargo 1.93.1 (...)
 ```
 
-そして...
+そしてそれから
 
 ```bash
 $ rustc --version
 $ rustc 1.93.1 (...)
 ```
 
-もっと高いバージョンなら大丈夫です低いバージョンがあるなら更新するには次のコマンドを実行できます.
+もしより新しいバージョンを持っていれば問題ありません。もしより古いバージョンを持っている場合は、以下のコマンドを実行して更新できます:
 
 ```bash
 $ rustup toolchain update stable
 ```
 
-### 設置場所を確認する {#check-installation-location}
+### インストール場所を確認 {#check-installation-location}
 
-ツールチェーンの更新がうまくいきませんでした. それは一般的な問題ですが,共通の解決方法はありません.
+もしより低いバージョン番号が出て、ツールチェーンを更新してもうまくいかなかった場合…これはよくある問題だと言えますが、一般的な解決策はありません。
 
-まず,使いたいバージョンがどこにインストールされているか確認する必要があります.
+まず、使用したいバージョンがどこにインストールされているかを確認する必要があります。
 
 ```bash
 $ rustup which rustc
 $ rustup which cargo
 ```
 
-ツールチェーンのユーザインストールは通常, `~/.rustup/toolchains/stable-*/bin/` であります.
+ツールチェーンのユーザーインストールは通常 `~/.rustup/toolchains/stable-*/bin/` にあります。その場合は、実行できるはずです
 
 ```bash
 $ rustup toolchain update stable
 ```
 
-そしてそれはあなたの問題を解決する
+そしてそれであなたの問題は解決するはずです。
 
-### デフォルトバージョン Rust を確認する {#check-the-default-rust-version}
+### デフォルトの Rust バージョンを確認してください {#check-the-default-rust-version}
 
-別のオプションは,最新の `stable` ツールチェーンが設定されていることですが,デフォルトでは設定されていません.実行:
+もう一つの選択肢として、最新の `stable` ツールチェーンを持っているが、デフォルトとして設定されていない場合があります。次を実行してください:
 
 ```bash
 $ rustup default stable
 ```
 
-`nightly` バージョンをインストールするか,後にアンセッティングせずに特定の Rust バージョンの設定は,この問題を引き起こします.
+`nightly` バージョンをインストールするか、特定の Rust バージョンを設定した後にそれを解除しないままにすると、この問題が発生する可能性があります。
 
-### Rust の他のバージョンがあるかどうかを確認する {#check-if-there-are-other-rust-versions}
+### 他の Rust バージョンがあるか確認してください {#check-if-there-are-other-rust-versions}
 
-イルカ穴のトラブルシューティングを続けるなら シェル・アライスもできるわ
+トラブルシューティングの迷路をさらに進めると、シェルエイリアスがあるかもしれません:
 
 ```bash
 $ type rustc
 $ type cargo
 ```
 
-`rustup which *` を実行する際に見た場所以外の場所を指している場合は,問題があります.このようなニックネームを追加することは十分ではありません:
+これらが、`rustup which *` を実行したときに見た場所とは異なる場所を指している場合、問題があります。次のようなエイリアスを追加するだけでは不十分であることに注意してください:
 
 ```bash
 $ alias rustc "~/.rustup/toolchains/stable-*/bin/rustc"
 $ alias cargo "~/.rustup/toolchains/stable-*/bin/cargo"
 ```
 
-内部の論理は 解消されることもあります シェル・アライズの仕方に関係なく
+シェルのエイリアスをどのように配置しても、内部ロジックは依然として壊れる可能性があります。
 
-最も簡単な解決策は,使用していないバージョンを削除することです
+最も簡単な解決策は、使用していないバージョンを削除することです。
 
-rustup の インストール さ れ て いる すべて の バージョン を 追跡 する こと が でき ます.通常,その は 2 つ だけ です:このチュートリアルの初めにコマンドを実行したときに,ホームフォルダの標準位置にインストールされたシステムパッケージマネージャーバージョンと.前者については,あなたの (Linux) ディストリビューションs マニュアル (`apt remove rust` を参照してください.後者の場合は実行:
+しかし、インストールされて利用可能なすべての rustup のバージョンを追跡することを伴うため、言うは易く行うは難しいです。通常、バージョンは2つだけです：システムのパッケージマネージャーのバージョンと、このチュートリアルの最初にコマンドを実行したときにホームフォルダの標準の場所にインストールされたバージョン。前者については、（Linux）ディストリビューションのマニュアルを参照してください、(`apt remove rust`)。後者については、次を実行してください:
 
 ```bash
 $ rustup toolchain list
 ```
 
-そして,すべての `<toolchain>` に対して (もちろん角括弧を除く)
+そして、その後、すべての `<toolchain>` に対して（もちろん角括弧は付けずに）:
 
 ```bash
 $ rustup remove <toolchain>
 ```
 
-ツールチェーンを取り除いた後,このコマンドはコマンドが見つからないエラーを報告します:
+ツールチェーンを削除した後、このコマンドはコマンドが見つからないというエラーを報告するはずです:
 
 ```bash
 $ cargo --help
 ```
 
-Rust ツールチェーンがまだインストールされていないことを確認します.
+そのエラーは、アクティブな Rust ツールチェーンがインストールされていないことを確認します。その後、次を実行してください:
 
 ```bash
 $ rustup toolchain install stable
 ```
 
-## Python ツールチェーンのトラブルシューティング {#troubleshooting-python-toolchain}
+## トラブルシューティング Python ツールチェーン {#troubleshooting-python-toolchain}
 
-[Python クライアント設定](/ja/guide/tutorials/python.md)中に pip を使用した Python 휠パッケージをインストールすると, "iroha_python-*.whl はこのプラットフォームでサポートされている車輪ではない"のようなエラーが発生する可能性があります.
+[Python クライアント設定](/ja/guide/tutorials/python.md)の間にpipを使用して Python Wheelパッケージをインストールすると、次のようなエラーが発生することがあります: "iroha_python-*.whlはこのプラットフォームではサポートされていないホイールです"。
 
-このエラーは, pip が時代遅れであることを意味し,更新する必要がある. OS 更新やシステムアップグレードを行う.
+このエラーは、pipが古くなっていることを意味するので、更新する必要があります。まず最初に、OS の更新を確認し、システムのアップグレードを行うことが推奨されます。
 
-`pip` をユーザーディレクトリで更新してみてください.
+もしこれがうまくいかない場合は、ユーザーディレクトリのために `pip` を更新してみることができます。
 
 `python -m pip install --upgrade pip`
 
-確認してください `pip` 家庭のディレクトリにインストールされている. `whereis pip` チェックする `/home/username/.local/bin/pip` もしそうでないなら シェルの更新 `PATH` 変数
+自分のホームディレクトリに `pip` がインストールされていることを確認してください。そのためには、`whereis pip` を実行し、パスの中に `/home/username/.local/bin/pip` があるか確認してください。もしなければ、シェルの `PATH` 変数を更新してください。
 
-問題が続ければ, [ に連絡して](/ja/help/) の出荷を報告してください.
+問題が続く場合は、[お問い合わせ](/ja/help/) を実行して結果を報告してください。
 
 ```
 python --version

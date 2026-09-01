@@ -1,39 +1,39 @@
 ---
 translation_locale: az
 translation_source: /reference/instructions.md
-translation_source_hash: 9ba8e06d10f0896169feddbdad32f4fed7a8d46effa2293c64df578c197c970e
+translation_source_hash: 9999816502505026fb35d2ddaf4033f54768be697ca5b03550e1cf5949ada36c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Iroha Xüsusi təlimatlar {#iroha-special-instructions}
+# Iroha Təlimat əməliyyatları {#iroha-special-instructions}
 
-Mövcud məlumat modeli bu daxili təlim ailələrini aşkar edir:
+Hazırkı məlumat modeli bu daxili təlimat ailələrini göstərir:
 
-|Təlimat |Variantlar |
+|Təlimat|Variantlar|
 | --- | --- |
 | [`RegisterBox`](/az/blockchain/instructions.md#un-register) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Role`, `Trigger`, `RegisterPeerWithPop` |
 | [`UnregisterBox`](/az/blockchain/instructions.md#un-register) | `Peer`, `Domain`, `Account`, `AssetDefinition`, `Nft`, `Role`, `Trigger` |
-| [`MintBox`](/az/blockchain/instructions.md#mint-burn) |rəqəmsal `Asset`, təkrarlamaları başlatır |
-| [`BurnBox`](/az/blockchain/instructions.md#mint-burn) |rəqəmsal `Asset`, təkrarlamaları başlatır |
-| [`TransferBox`](/az/blockchain/instructions.md#transfer) |`Domain`, `AssetDefinition`, nömrəli `Asset`, `Nft` |
-| [`SetKeyValueBox`](/az/blockchain/instructions.md#setkeyvalue-removekeyvalue) |`Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` metadataları |
-| [`RemoveKeyValueBox`](/az/blockchain/instructions.md#setkeyvalue-removekeyvalue) |`Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` metadataları |
+| [`MintBox`](/az/blockchain/instructions.md#mint-burn) |rəqəmsal `Asset`, təkrarları işə sal|
+| [`BurnBox`](/az/blockchain/instructions.md#mint-burn) |rəqəmsal `Asset`, təkrarları işə sal|
+| [`TransferBox`](/az/blockchain/instructions.md#transfer) | `Domain`, `AssetDefinition`, rəqəmli `Asset`, `Nft` |
+| [`SetKeyValueBox`](/az/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` metadatalar |
+| [`RemoveKeyValueBox`](/az/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` metadatalar |
 | [`GrantBox`](/az/blockchain/instructions.md#grant-revoke) | `Permission` (`Grant<Permission, Account>`), `Role` (`Grant<RoleId, Account>`), `RolePermission` (`Grant<Permission, Role>`) |
 | [`RevokeBox`](/az/blockchain/instructions.md#grant-revoke) | `Permission` (`Revoke<Permission, Account>`), `Role` (`Revoke<RoleId, Account>`), `RolePermission` (`Revoke<Permission, Role>`) |
-| [`SetParameter`](/az/blockchain/instructions.md#setparameter) |zəncir parametrlərinin yenilənməsi |
-| [`ExecuteTrigger`](/az/blockchain/instructions.md#executetrigger) |başlatma |
-| [`Upgrade`](/az/blockchain/instructions.md#other-instructions) |icraçı yüksəldilməsi |
-| [`Log`](/az/blockchain/instructions.md#other-instructions) |icraçı qeydə alınması |
-| [`CustomInstruction`](/az/blockchain/instructions.md#other-instructions) |icraçı xüsusi JSON pay yükü |
-| [Yerli aktivlərin əmanəti ](/az/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
-| [Ümumi aktivlər bağlamaları](/az/blockchain/escrow.md#generic-asset-locks) |`OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, `ExpireAssetLock` |
-| [Anonymous asset escrow](/az/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
-| [Atomik məxfi hesablaşma](/az/blockchain/instructions.md#atomic-private-settlement) | `ActivatePrivateSettlementPoolV1`, `RotatePrivateSettlementPoolPolicyV1`, `FinalizeAtomicPrivateSettlementV1`, `AbortAtomicPrivateSettlementV1` |
+| [`SetParameter`](/az/blockchain/instructions.md#setparameter) |zəncir parametrinin yenilənməsi|
+| [`ExecuteTrigger`](/az/blockchain/instructions.md#executetrigger) |trigerin icrasını başlatmaq|
+| [`Upgrade`](/az/blockchain/instructions.md#other-instructions) |icraçı yeniləməsi|
+| [`Log`](/az/blockchain/instructions.md#other-instructions) |icraçı jurnal qeydi|
+| [`CustomInstruction`](/az/blockchain/instructions.md#other-instructions) | icraçıya xas JSON faydalı yük |
+| [Yerli aktiv depoziti](/az/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
+| [Ümumi aktiv kilidləri](/az/blockchain/escrow.md#generic-asset-locks) | `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, `ExpireAssetLock` |
+| [Anonim aktiv depoziti](/az/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
+| [Atomik şəxsi maliyyə əməliyyatının həlli](/az/blockchain/instructions.md#atomic-private-settlement) | `ActivatePrivateSettlementPoolV1`, `RotatePrivateSettlementPoolPolicyV1`, `FinalizeAtomicPrivateSettlementV1`, `AbortAtomicPrivateSettlementV1` |
 
-Əlavə Iroha 3 modulları təlimat qeydiyyatı vasitəsilə domen xüsusi təlimat növlərini qeyd edə bilərlər. Hazırda mənbə ağacından yaradılan sxem səviyyəsi siyahısı üçün [Data Model Schema](./data-model-schema.md) baxın.
+Əlavə Iroha 3 modullar təlimat reyestri vasitəsilə domen-spesifik təlimat tiplərini qeydiyyatdan keçirə bilərlər. Node-avtoritativ sxem və bunu əks etdirən bir komanda üçün baxın [Məlumat Modeli SXeması](./data-model-schema.md).
 
-::: details Şəkil: Əsas təlimat ailələri
+::: details Diaqram: Əsas Təlim Ailələri
 
 ```mermaid
 classDiagram

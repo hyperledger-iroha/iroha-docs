@@ -3,50 +3,42 @@ translation_locale: ja
 translation_source: /guide/security/generating-cryptographic-keys.md
 translation_source_hash: f3d08a8e7fe7569ef783b93bccdc900ca74b85179a749b48b96c32028c749233
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: bing-translator-llm
 ---
 
-# 暗号鍵を生成する {#generating-cryptographic-keys}
+# 暗号鍵の生成 {#generating-cryptographic-keys}
 
-Iroha 3 のクライアント、ピア、バリデーターの鍵素材を生成するには、`kagami keys` を使用します。
+`kagami keys` を使用して Iroha 3 のクライアント、ネットワークピア、バリデータの鍵素材を生成します。
 
-## 基本的使用 {#basic-usage}
+## 基本的な使い方 {#basic-usage}
 
-From the Iroha source checkout:
+Iroha ソースコード作業用コピーから：
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-The parent directory must already exist. The target must be new or already
-owned by the current user, mode `0700`, free of symbolic links, and empty.
-`kagami` writes `public.key` and `private.key` with mode `0600` and does not
-print key material. With `--pop`, it also writes `pop.hex`.
+親ディレクトリは既に存在している必要があります。ターゲットは新規であるか、既に現在のユーザーが所有している必要があり、モード`0700`で、シンボリックリンクがなく、空でなければなりません。`kagami`は`public.key`および`private.key`をモード`0600`で書き込み、キー情報は出力しません。`--pop`を使用すると、`pop.hex`も書き込みます。
 
-`--out-dir` fails closed on platforms where Kagami cannot enforce these
-owner-only filesystem rules. The private-key file is an unencrypted export,
-not a hardware or non-exportable production signer. Import it into the
-approved custody boundary and remove the export according to the deployment's
-procedure.
+`--out-dir` は、Kagami がこれらのオーナー専用のファイルシステムルールを強制できないプラットフォームでは閉じた状態になります。プライベートキーのファイルは暗号化されていないエクスポートであり、ではありません ハードウェアまたは輸出不可能な生産用暗号署名器。それを承認された保管境界にインポートし、展開手順に従って輸出を削除してください。
 
 ## アルゴリズム {#algorithms}
 
-Common algorithms are:
+一般的なアルゴリズムは次の通りです:
 
-- `ed25519` for client accounts and streaming identities.
-- `secp256k1` when a client account requires a secp256k1 identity.
-- `bls_normal` for every node or peer consensus identity.
+- `ed25519` はクライアントアカウントおよびストリーミングID用です。
+- `secp256k1` クライアントアカウントが secp256k1 アイデンティティを必要とする場合。
+- `bls_normal` は、すべてのノードまたはネットワークピアのコンセンサスIDに対して適用されます。
 
-Check the exact algorithms supported by your build with:
+使用しているビルドでサポートされている正確なアルゴリズムを次のコマンドで確認してください:
 
 ```bash
 cargo run --bin kagami -- keys --help
 ```
 
-## 決定論的な開発用鍵 {#deterministic-development-keys}
+## 決定論的開発キー {#deterministic-development-keys}
 
-For reproducible fixtures, pass a 32-byte seed encoded as 64 hexadecimal
-characters. An optional `0x` prefix is accepted:
+再現可能なテスト成果物のために、64桁の16進数でエンコードされた32バイトのシードを渡してください。オプションで `0x` プレフィックスも使用可能です:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 \
@@ -54,40 +46,28 @@ cargo run --bin kagami -- keys --algorithm ed25519 \
   --out-dir ./fixture-client-key
 ```
 
-The seed is private-key material. Use deterministic seeds only for local
-development and tests. Omit `--seed-hex` to generate a production key from
-operating-system randomness.
+シードは秘密鍵の材料です。決定的なシードはローカル開発やテストのみに使用してください。`--seed-hex` を省略すると、オペレーティングシステムの乱数から本番用の鍵を生成できます。
 
-## BLS 合意の鍵と所有権証明書 {#bls-consensus-keys-and-proofs-of-possession}
+## BLS コンセンサスキーと所持証明 {#bls-consensus-keys-and-proofs-of-possession}
 
-Iroha 3 node and peer consensus identities use BLS-normal keys. Generate a
-BLS-normal key and proof-of-possession (PoP) with:
+Iroha 3 ノードおよびネットワークピアのコンセンサスIDは BLS-標準キーを使用します。次を使って BLS-標準キーおよび所有証明 (PoP) を生成してください:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm bls_normal --pop \
   --out-dir ./validator-key
 ```
 
-`--pop` is valid only with `bls_normal`; it adds `pop.hex` to the custody
-directory.
-Signed genesis requires a matching PoP for every voting validator. In peer
-configuration, a non-empty `trusted_peers_pop` map selects the validator
-subset; trusted peers omitted from that non-empty map are observers. If the map
-is empty, all BLS-normal trusted peers enter the bootstrap candidate set, with
-voter PoPs still supplied by signed genesis.
+`--pop` は `bls_normal` と組み合わせた場合だけ有効で、保管ディレクトリに `pop.hex` を追加します。署名済みジェネシスでは、投票する各バリデーターに対応する PoP が必要です。ピア設定で空でない `trusted_peers_pop` マップを指定すると、バリデーターの部分集合が選ばれます。そのマップに含まれない信頼済みピアはオブザーバーです。マップが空の場合は、すべての BLS-Normal 信頼済みピアがブートストラップ候補集合に入り、投票者の PoPs は引き続き署名済みジェネシスから提供されます。
 
-## Custody Output {#custody-output}
+## 拘禁出力 {#custody-output}
 
-`kagami keys` requires `--out-dir` and never writes private key material to
-standard output. Read `public.key`, `private.key`, and optional `pop.hex` from
-the generated directory. Each file contains one canonical value followed by a
-newline, which makes explicit file-based automation straightforward:
+`kagami keys` は `--out-dir` を必要とし、プライベートキーの内容を標準出力に書き込むことは決してありません。生成されたディレクトリから `public.key`、`private.key`、およびオプションの `pop.hex` を読み取ります。各ファイルには 1 つの正規化された値が改行付きで含まれており、ファイルベースの自動化を明示的に行いやすくしています:
 
 ```bash
 PUBLIC_KEY=$(tr -d '\n' < ./client-key/public.key)
 ```
 
-For full generated Kagami help:
+完全に生成された Kagami のヘルプについては:
 
 ```bash
 cargo run -p iroha_kagami -- advanced markdown-help > crates/iroha_kagami/CommandLineHelp.md

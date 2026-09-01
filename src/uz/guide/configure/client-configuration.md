@@ -45,7 +45,7 @@ Iroha nomlari kanonik tahlildan so'ng holatga mos keladi. Misol uchun, `wonderla
 
 ## Asosiy autentifikatsiya {#basic-authentication}
 
-Opsional `[basic_auth]` bo'limi mijoz so'rovlariga HTTP `Authorization` boshliqini qo'shadi. Iroha tengdoshlar ushbu ma'lumotnomalarni to'g'ridan-to'g'ri talqin qilmaydilar; ularni Torii Nginx kabi terma proksi ortida bo'lganda ishlating .
+Opsional `[basic_auth]` bo'limi mijoz so'rovlariga HTTP `Authorization` boshliqini qo'shadi. Iroha tugunlar ushbu ma'lumotnomalarni to'g'ridan-to'g'ri talqin qilmaydilar; ularni Torii Nginx kabi terma proksi ortida bo'lganda ishlating .
 
 ```toml
 [basic_auth]
@@ -66,7 +66,7 @@ nonce = false
 
 - `time_to_live_ms` - milisekundlarda operatsiya muddati.
 - `status_timeout_ms` mijoz tranzaksiya holatini qancha vaqt kutishini nazorat qiladi.
-- `nonce = true` mijozdan takrorlanayotgan operatsiyalar turli xil hashlarni keltirib chiqarishi uchun bitta notni kiritishni so'raydi.
+- `nonce = true` mijozdan takrorlanayotgan operatsiyalar turli xil hashlarni keltirib chiqarishi uchun nonce qiymatini kiritishni so'raydi.
 
 ## Chegara moslamalarini ulash {#connect-queue-settings}
 

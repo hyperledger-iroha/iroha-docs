@@ -1,22 +1,22 @@
 ---
 translation_locale: he
 translation_source: /cookbook/multisig.md
-translation_source_hash: 9654923faf6c84dfd21a428ebe3c53dbd074b8e3274c12c8aa41bf31884686f7
+translation_source_hash: e1b57e1c4310dd0db8be8d9f5a15e1d4f693abb90b634772857eb4b1e86e4baf
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# משקל Multisig {#weighted-multisig}
+# ריבוי חתימות משוקלל {#weighted-multisig}
 
 ## התוצאה {#outcome}
 
-רשום חשבון multisig משקל של שלושה בני אדם ב Taira, תציע הוראה למתנתונים, מאשר אותה עם משקל מספיק כדי לעמוד בקוורום, ותבדוק את ההשפעה מהמדינה של החשבון multisig.
+רשמו ב־Taira חשבון multisig משוקלל בן שלושה חברים, הציעו הוראת metadata, אשרו אותה במשקל מספיק להשגת quorum, ואמתו את הביצוע מתוך מצב חשבון ה־multisig.
 
 ## תנאים מוקדמים {#prerequisites}
 
 - שלוש קנוניקות I105 חתימה IDs ב `SIGNER_A`, `SIGNER_B`, ו `SIGNER_C`.
 - סיבובים Taira מיומנים עבור החותמים A ו-C. המציע וכל האישור משלם את העסקה שלהם.
-- `taira.tx-metadata.json` נבנתה מתוך תגובת המזרקה הנוכחית, אף פעם לא מתוך נכס תשלום משותף ID.
+- `taira.tx-metadata.json` נבנתה מתוך תגובת faucet הנוכחית, אף פעם לא מתוך נכס תשלום משותף ID.
 - א Rust פרויקט הלקוח מחובר לאותו Iroha תיקון מקור כ Taira שלב ההסכמה וההצעת הצעה לאחר מכן משתמש CLI.
 - תכונה multisig של המפעיל הנוכחי מופעלת. הרישום זמין לחשבונות רגילים בזמן הפתיחה הנדרש Iroha 3, אם כי עדיין תקף מדיניות ושימוש בתשלום Taira; השתמש ב-localnet אם ההפעלה הציבורית מכחישה זאת.
 
@@ -195,8 +195,8 @@ iroha --config "$SIGNER_A_CONFIG" ledger multisig inspect \
 
 - `signatory is not part of multisig` פירושו שהלקוח המציע או המאשר אינו מתאים לאחד מ- I105 IDs המפורסם בפוליס.
 - אישור סופי ניתן לסרב כאשר החשבון multisig חסר רשות לבצע את ההוראות המוצעות. להעניק סמכות לחשבון multisig, ולא רק לחתימיו הפרטיים, ואז לתת לחתום שנותר לנסות שוב.
-- הצעת חקירה שנעדרת עשויה להביע כי כבר הגיעו לקורום, TTL נגמר, או השתמשו בחירת ההוראות הלא נכונה של האש/החשבונות. שאל את הפוסט-מדינה לפני שאתה מבקש שוב.
-- אישורים כפולים לא מוסיפים משקל. כל חתום רשום מספק את המשקל המוגדר שלו לפחות פעם אחת.
+- הצעה ממתינה שחסרה עשויה להעיד שכבר הושג quorum, שה־TTL פג או שנעשה שימוש בגיבוב הוראה או בורר חשבון שגויים. בדקו את ה־post-state לפני שמציעים שוב.
+- אישורים כפולים אינם מוסיפים משקל. כל חותם רשום תורם את המשקל שהוגדר לו לכל היותר פעם אחת.
 - חתימה ישירה של עסקאות נורמליות כמעבד אסורה. תמיד להשתמש `MultisigPropose` ו `MultisigApprove`.
 - אם פקודות מאוחר יותר לא מצאו את החשבון המודפס במהלך הרישום של CLI, אתה תפס את הזרע הזמני. להוציא את החשבון הקנוני מהפוליטיקה המוזמנת ולהרשם עם ערך זה כפי שמראה למעלה.
 
@@ -204,6 +204,6 @@ iroha --config "$SIGNER_A_CONFIG" ledger multisig inspect \
 
 - [בדיקות אינטגרציה מולטי-סיג'ים בקביט הנתקע ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/multisig.rs)
 - [מודל נתונים Multisig ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/isi.rs)
-- [CLI יישום מרוב סיג'ים בביצוע מחויבות קשורת ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
+- [CLI יישום מרוב סיג'ים בביצוע commit קשורת ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
 - [עסקים](/he/blockchain/transactions.md)
 - [רשיונות ותפקידים ](./permissions-and-roles.md)

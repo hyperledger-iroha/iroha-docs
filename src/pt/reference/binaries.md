@@ -1,23 +1,23 @@
 ---
 translation_locale: pt
 translation_source: /reference/binaries.md
-translation_source_hash: 5a36877954bec97691e45697680bfbd6e0a7c7695e48a796bc7c9a41d4756644
+translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Trabalhar com binários Iroha {#working-with-iroha-binaries}
+# Trabalhando com Binários Iroha {#working-with-iroha-binaries}
 
-O fluxo de trabalho do operador Iroha 3 gira em torno de quatro binários primários:
+O fluxo de trabalho do operador Iroha 3 gira em torno de quatro binários principais:
 
-- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) para a execução de um daemon peer
-- `iroha3d_taira` para o lançador de validador canônico Taira
-- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli) para os comandos de CLI e operador
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami) para chaves, gênese, redes locais e perfis
+- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) para executar um daemon de par de rede
+- `iroha3d_taira` para o inicializador do validador canônico Taira
+- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli) para CLI e comandos do operador
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami) para chaves, gênese de blockchain, redes locais e perfis
 
-## Construir com base na fonte {#build-from-source}
+## Construir a partir do código-fonte {#build-from-source}
 
-A partir da raiz do espaço de trabalho ascendente:
+A partir da raiz do espaço de trabalho upstream:
 
 ```bash
 cargo build --release \
@@ -26,9 +26,9 @@ cargo build --release \
   -p iroha_kagami --bin kagami
 ```
 
-Os binários de liberação são então disponíveis em `target/release/`.
+Os binários de lançamento estão então disponíveis em `target/release/`.
 
-Para inspecionar a superfície de comando:
+Para inspecionar a superfície do comando:
 
 ```bash
 ./target/release/iroha3d --help
@@ -37,9 +37,9 @@ Para inspecionar a superfície de comando:
 ./target/release/kagami --help
 ```
 
-## Execução direta do repositório {#run-directly-from-the-repository}
+## Executar Diretamente do Repositório {#run-directly-from-the-repository}
 
-Se não quiser instalar qualquer coisa globalmente, utilize `cargo run`:
+Se você não quiser instalar nada globalmente, use `cargo run`:
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --help
@@ -48,23 +48,23 @@ cargo run --bin iroha -- --help
 cargo run --bin kagami -- --help
 ```
 
-## Docker Image {#docker-image}
+## Docker Imagem {#docker-image}
 
-O espaço de trabalho upstream utiliza `kagami localnet` e `kagami docker` para gerar Docker Compose Os arquivos que correspondem ao código de saída. `hyperledger/iroha:dev` A imagem pode ser usada com os arquivos gerados.
+O espaço de trabalho upstream usa `kagami localnet` e `kagami docker` para gerar arquivos Docker Compose que correspondem ao código retirado do repositório. A imagem `hyperledger/iroha:dev` pode ser usada com esses arquivos gerados.
 
-Coloque o CLI num recipiente:
+Execute o CLI em um contêiner:
 
 ```bash
 docker run -t hyperledger/iroha:dev iroha --help
 ```
 
-Caminhar Kagami num recipiente:
+Execute Kagami em um contêiner:
 
 ```bash
 docker run -t hyperledger/iroha:dev kagami --help
 ```
 
-Para inicialização de pares, gerar um localnet e Compose arquivo primeiro:
+Para o inicialização do par de rede, gere primeiro um localnet e um arquivo Compose:
 
 ```bash
 cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
@@ -72,9 +72,9 @@ cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyper
 docker compose -f ./docker-compose.yml up
 ```
 
-## Que Binário Devo Usar? {#which-binary-should-i-use}
+## Qual binário devo usar? {#which-binary-should-i-use}
 
-- Use `iroha3d` quando estiver a iniciar ou a operar pares fora da versão pública de validador Taira.
-- Utilize `iroha3d_taira --sora` apenas para uma implantação de validador canônico Taira; impõe o perfil de cadeia, armazenamento e assinatura de tempo de execução do Taira.
-- Usar `iroha` quando precisar consultar o livro-razão, enviar transações ou inspecionar os pontos finais do operador.
-- Use `kagami` quando precisar de chaves, manifestos de gênese, pacotes de perfis ou ativos localnet.
+- Use `iroha3d` quando estiver iniciando ou operando pares de rede fora da versão pública do validador Taira.
+- Use `iroha3d_taira --sora` apenas para uma implantação de validador Taira canônica; ele aplica o perfil de cadeia, armazenamento e assinante de tempo de execução de Taira.
+- Use `iroha` quando você precisar consultar o livro-razão da blockchain, enviar transações ou inspecionar os endpoints do operador API.
+- Use `kagami` quando precisar de chaves, manifestos de gênese, pacotes de perfil ou ativos da rede local.

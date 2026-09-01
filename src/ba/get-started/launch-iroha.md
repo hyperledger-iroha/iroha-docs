@@ -20,7 +20,7 @@ cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 
 Сығарылыш каталогы буйынса, `genesis.json`, `genesis.signed.nrt`, `client.toml` һәм ярҙамсы скрипттар.
 
-Тыуған урындағы төтөн һынауы өсөн, туранан-тура барлыҡҡа килгән тиҫтерҙәрҙе башларға кәрәк:
+Локаль native smoke testы өсөн Iroha пирҙарын туранан-тура эшләтеп ебәрегеҙ:
 
 ```bash
 ./localnet/start.sh
@@ -47,7 +47,7 @@ docker compose -f ./docker-compose.yml up
 
 ## 2. Интернет селтәренең эшләнеүен тикшерегеҙ {#_2-verify-that-the-network-is-up}
 
-Беренсе тиҫтерҙәге статус тамамлау нөктәһен тикшерегеҙ:
+Беренсе пирҙаге статус тамамлау нөктәһен тикшерегеҙ:
 
 ```bash
 curl http://127.0.0.1:8080/status
@@ -69,7 +69,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 
 Шулай уҡ SORA Nexus йүнәлешендәге конфигурация профилен `defaults/nexus/` исемлегенә ебәреү.
 
-Nexus профиле менән туған тиҫтерҙе файҙаланыу өсөн:
+Nexus профиле менән native пирҙы эшләтеү өсөн:
 
 ```bash
 ./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
@@ -79,7 +79,7 @@ Nexus профиле менән туған тиҫтерҙе файҙаланыу
 
 ## 4. Урындағы селтәрҙе туҡтатайыҡ {#_4-stop-the-local-network}
 
-Тыумыштан барлыҡҡа килгән локаль селтәр өсөн:
+Туранан-тура генерацияланған локаль селтәр өсөн:
 
 ```bash
 ./localnet/stop.sh

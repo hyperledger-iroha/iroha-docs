@@ -3,16 +3,16 @@ translation_locale: ar
 translation_source: /guide/tutorials/javascript.md
 translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # JavaScript و TypeScript {#javascript-and-typescript}
 
-الحالي JavaScript SDK هو حزمة `@iroha/iroha-js` في شجرة المصدر Iroha. إنها Node.js-أول SDK لبنائه Torii ، Norito ، والتوقيع ، والصفحات ، ومشاهدات سابقة Connect ، ونقل الأوامر كاغيموشا.
+الحزمة الحالية JavaScript SDK هي الحزمة `@iroha/iroha-js` في شجرة مصدر Iroha. إنها Node.js-الأولى SDK لـ Torii، وبناة Norito، والتوقيع، والتقسيم إلى صفحات، ومعاينات Connect، ونقل أوامر Kagemusha.
 
-## بناء من مصدر {#build-from-source}
+## البناء من المصدر {#build-from-source}
 
-الحزمة غير متوفرة حاليًا من سجل npm العام. قم ببناءها من نفس مراجعة المصدر المثبتة Iroha مثل العقدة التي تستهدفها:
+الحزمة غير متوفرة حاليًا من السجل العام npm. قم ببنائها من نفس مراجعة المصدر المثبتة Iroha كما هو الحال بالنسبة للعقدة التي تستهدفها:
 
 ```bash
 git clone https://github.com/hyperledger-iroha/iroha.git
@@ -22,9 +22,9 @@ npm run build:native
 npm run build:dist
 ```
 
-يقوم البناء الأصلي بتغطية `cargo build -p iroha_js_host` ويُسجل مبلغ التحقق المحدد للنظام الأساسي المستخدم في بدء SDK. يُسجل البناء المصدر أماكن التي تؤكد استضافة في `native/`. تعيين `IROHA_JS_NATIVE_DIR` فقط عند توفير مستضيف مبني بشكل منفصل معتمد على مبلغ التحقق. الحزمة هي ESM فقط؛ من CommonJS، استخدام ديناميكي `import()`.
+البناء الأصلي يلف `cargo build -p iroha_js_host` ويسجل مجموع الاختيار الخاص بالمنصة المستخدم عند بدء تشغيل SDK. البناء المصدر يضع المضيف الذي تم التحقق منه في `native/`. قم بتعيين `IROHA_JS_NATIVE_DIR` فقط عند توفير مضيف تم بناؤه بشكل منفصل وتم التحقق من المجموع الاختباري له عن قصد. الحزمة هي ESM-فقط؛ من CommonJS، استخدم `import()` الديناميكي.
 
-## بداية سريعة {#quickstart}
+## البدء السريع {#quickstart}
 
 ```js
 import { ToriiClient } from "@iroha/iroha-js/torii";
@@ -38,9 +38,9 @@ const keys = generateKeyPair();
 console.log(keys.publicKey);
 ```
 
-## جرب Taira القراءة فقط {#try-taira-read-only}
+## حاول Taira للقراءة فقط {#try-taira-read-only}
 
-استخدم `fetch` متكامل في Node.js 24 لتحقيق Taira قبل إضافة رمز التوقيع و Norito لعملية المعاملات:
+استخدم `fetch` المدمج في Node.js 24 لفحص Taira قبل إضافة توقيع و Norito رمز المعاملة:
 
 ```js
 const root = "https://taira.sora.org";
@@ -67,15 +67,15 @@ for (const asset of assets.items) {
 }
 ```
 
-حفظها على `taira-readonly.mjs` ، ثم تشغيلها:
+احفظه باسم `taira-readonly.mjs`، ثم شغّله:
 
 ```bash
 node taira-readonly.mjs
 ```
 
-الانتقال إلى المكالمات الموقعة SDK فقط بعد أن تعمل هذه التحققات القائمة على القراءة فقط. يمكن للجمهور Taira إرجاع خطوة مكتظة أو خطأ بوابة مؤقتًا ، لذلك حافظ على اختبارات الشبكة الحية اختيار الدخول في CI.
+انتقل إلى الاستدعاءات الفنية الموقعة SDK فقط بعد أن تعمل هذه الفحوصات للقراءة فقط. يمكن لـ Taira العام إرجاع خطأ في طابور ممتلئ أو بوابة مؤقتًا، لذلك احتفظ باختبارات الشبكة الحية اختيارية في CI.
 
-الواردات المفيدة للطريق الفرعي:
+استيرادات المسار الفرعي المفيدة:
 
 ```js
 import { ToriiClient } from "@iroha/iroha-js/torii";
@@ -83,25 +83,25 @@ import { noritoEncodeInstruction } from "@iroha/iroha-js/norito";
 import { generateKeyPair } from "@iroha/iroha-js/crypto";
 ```
 
-لاستخدام `@iroha/iroha-js/connect-browser` بدلاً من استيراد سطح Node-first `ToriiClient` لـ Connect bootstrap المتصفح فقط
+لاستخدام Connect bootstrap المخصص للمتصفح فقط، استخدم `@iroha/iroha-js/connect-browser` بدلًا من استيراد واجهة `ToriiClient` المخصصة للنود أولاً.
 
-## الخصم الأصلي {#native-escrow}
+## الضمان المحلي {#native-escrow}
 
-يمكن أن تستخدم تطبيقات JavaScript و TypeScript الاحتفاظ الأصلي من خلال عقود Kotodama. قم بتجميع مكالمات استضافة الاحتفاض مع `@iroha/iroha-js/kotodama-compiler`; الاحتفاذ الأصلي المباشر لا يتعرض بناء المعاملات حاليًا لخطر JavaScript SDK. انظر [ الاحتفاظ بالأصول الأصلية ](/ar/blockchain/escrow.md#javascript-and-typescript-kotodama) لمثال استدعاء المضيف الاحتفاضي.
+يمكن لتطبيقات JavaScript و TypeScript استخدام الضمانة الأصلية من خلال عقود Kotodama. قم بتجميع استدعاءات وظائف المضيف للضمانة باستخدام `@iroha/iroha-js/kotodama-compiler`; مباشر منشئو معاملات الضمان الأصليون غير مكشوفين حاليًا بواسطة JavaScript SDK. انظر [ضمان الأصل الأصلي](/ar/blockchain/escrow.md#javascript-and-typescript-kotodama) لمثال الاستدعاء التقني لمضيف الضمان.
 
 ## التغطية الحالية {#current-coverage}
 
-SDK يركز على:
+يركز SDK على:
 
-- Torii HTTP و WebSocket المساعدين
-- Norito صانعي المعاملات والتعليمات
-- Kotodama التجميع، بما في ذلك مدخلات دعوة استضافة الاحتفاظ بها
-- إد 25519 توقيع وتوليد المفاتيح
-- المساعدون في تصفية الصفحات وإعادة المحاولة
-- قم بتوصيل مساعدات تشغيل المتصفح .
-- إعداد كاغيموشا ومكملاتها وإفراجها ومساعدات النقل في حالة تشغيلها
+- Torii HTTP و WebSocket مساعدين
+- Norito منشئو المعاملات والتعليمات
+- Kotodama التجميع، بما في ذلك الاستدعاءات التقنية للمضيف بواسطة نظام الضمان
+- توقيع Ed25519 وتوليد المفاتيح
+- مساعدو الترقيم وإعادة المحاولة
+- الاتصال بمساعدي التمهيد للمتصفح
+- مساعدو نقل جاهزية كاجيموشا، التعبئة، الاسترداد، وحالة التشغيل
 
-## الإشارات المتقدمة {#upstream-references}
+## المراجع العليا {#upstream-references}
 
 - `javascript/iroha_js/README.md`
 - `javascript/iroha_js/package.json`

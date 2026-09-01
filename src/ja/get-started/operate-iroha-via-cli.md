@@ -1,84 +1,84 @@
 ---
 translation_locale: ja
 translation_source: /get-started/operate-iroha-via-cli.md
-translation_source_hash: 0a0a0735015dee015da76d5a9f5d174f8ae8b2ad67ff8924d9596850a33fc1c1
+translation_source_hash: c070c86b715b36079a7b6a47de2e31144187d7ebc6309f294a346be61a372660
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# 動作する Iroha 3 経由 CLI {#operate-iroha-3-via-cli}
+# CLI を介して Iroha 3 を操作する {#operate-iroha-3-via-cli}
 
-`iroha`バイナリは, Iroha 3 のコマンドライン クライアントです.それを使ってレジャー状態を查询し,トランザクションを送信し,オペレーターエンドポイントをチェックします.
+`iroha` バイナリは Iroha 3 のコマンドラインクライアントです。これを使用してブロックチェーンの台帳状態を照会し、トランザクションを送信し、オペレーターの API エンドポイントを検査します。
 
-## 1. 必須条件 {#_1-prerequisites}
+## 1. 前提条件 {#_1-prerequisites}
 
-まずローカルネットワークを起動します
+まずローカルネットワークを始めてください:
 
-- [打ち上げ Iroha 3](./launch-iroha.md)
+- [Iroha 3 を起動](./launch-iroha.md)
 
-以下の例では, [Launch Iroha 3](./launch-iroha.md)で作成されたローカルネットから生成されたクライアント構成を想定します.
+以下の例は、[Iroha 3 を起動](./launch-iroha.md)で作成されたローカルネットから生成されたクライアント構成を前提としています。
 
 ```bash
 ./localnet/client.toml
 ```
 
-## 2. 基本の CLI 設定 {#_2-basic-cli-setup}
+## 2. 基本 CLI 設定 {#_2-basic-cli-setup}
 
-最高級の支援を
+最上位のヘルプを表示する:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml --help
 ```
 
-CLI は,次の最高レベルのコマンドグループに分かれています.
+CLI は、これらの最上位の指揮グループに編成されています:
 
-- `account` - 口座向けショートカット
-- `tx` 取引レベルの援助者
-- `ledger` 帳簿の読み書きのための
-- `ops` オペレーターの診断
-- `app` アプリ API 支援者
-- `contract` 契約部署と通話
-- `tools` 診断および開発施設
-- `taira` に関する Taira そして Nexus- 方向性的な作業流程
+- `account` アカウント指向のショートカット用
+- `tx` トランザクションレベルのヘルパー用
+- `ledger` ブロックチェーン台帳の読み書き用
+- `ops` オペレーター診断用
+- API アプリの `app` ヘルパー
+- 契約展開および技術的呼び出しのための`contract`
+- `tools` は診断および開発者用ユーティリティ向けです
+- Taira および Nexus 指向のワークフロー向けの`taira`
 
-`ledger`グループには, `ledger transaction`などのドメイン特有の取引支援者も含まれています.
+`ledger` グループには、`ledger transaction` のようなドメイン固有のトランザクションヘルパーも含まれています。
 
-人に読み取れるオペレーターの出力のために `--output-format text` と,厳格な自動化モードのために `--machine` を使用します.
+人間が読みやすいオペレーター出力には`--output-format text`を使用し、厳密な自動化モードには`--machine`を使用してください。
 
-## 3. 公衆のテストネット Taira を 試す {#_3-try-the-public-taira-testnet}
+## 3. パブリック Taira テストネットを試す {#_3-try-the-public-taira-testnet}
 
-読みだけ試す Taira ローカルピアを実行したり,サインを作成する前にチェックします. Torii JSON 経路とテストネットを費やさない XOR.
+ローカルネットワークピアを実行したり、暗号署名者を作成したりする前に、読み取り専用の Taira チェックを試すことができます。これらのコマンドは公開の Torii JSON ルートを使用し、テストネットの XOR を消費しません。
 
-Taira 状態を確認する:
+Taira のステータスを確認してください:
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 ```
 
-`universal`データスペースの公開ドメインをリストする.
+`universal` データスペースのパブリックドメインを一覧表示してください:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=10' \
   | jq -r '.items[].id'
 ```
 
-資産の定義と現在の供給をいくつか挙げてください
+いくつかの資産の定義と現在の供給量をリストしてください：
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=10' \
   | jq -r '.items[] | [.id, .name, .mintable, .total_quantity] | @tsv'
 ```
 
-現在の `iroha`バイナリがある場合は, Taira 診断ヘルパーを実行してください.
+もし現在の `iroha` バイナリを持っている場合は、Taira 診断ヘルパーを実行してください:
 
 ```bash
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-作成する `taira.client.toml` 署名された命令をテストする準備ができている時だけ [接続する SORA Nexus データベース](/ja/get-started/sora-nexus-dataspaces.md) コンフィギュア, faucet,およびカナリーフローのために. Taira 口座は faucet fee資産で資金提供されるまで.
+`taira.client.toml`は、署名付きコマンドをテストする準備ができたときにのみ作成してください。[SORA Nexus データスペースに接続](/ja/get-started/sora-nexus-dataspaces.md)で構成、テストネットの資金提供サービス、およびカナリアフローを確認してください。Taira に対して書き込みコマンドを実行するのは、アカウントがテストネットの資金提供サービスの手数料資産で資金提供されるまで行わないでください。
 
-料金を支払う場合 Taira CLI 例えば,水槽のヘルパーを [テストネットを入手 XOR について Taira](/ja/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) のように `taira_faucet_claim.py`, その後,請求テストネット XOR まず:
+任意の料金支払い Taira CLI の例について、テストネット資金提供サービスヘルパーを[Taira でテストネット XOR を入手する](/ja/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)から`taira_faucet_claim.py`として保存し、次にテストネット XOR を最初に取得してください:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
@@ -92,9 +92,9 @@ iroha --config ./taira.client.toml ledger asset get \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-ポンプパズルまたはクレーム経路が `502` を返信した場合,待って再試してください.これは公開テストネットの利用性の問題であり,アカウントキーを再生するための信号ではありません.
+テストネットの資金提供サービスのパズルや請求ルートが `502` を返す場合は、待ってから再試行してください。それはアカウントキーを再生成するサインではなく、パブリックテストネットの可用性の問題です。
 
-余分が表示された後,手数料資産のメタデータを添付して次のように記述します:
+残高が表示されたら、書き込みに手数料資産のメタデータを添付します:
 
 ```bash
 printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
@@ -104,15 +104,15 @@ iroha --config ./taira.client.toml \
   ledger transaction ping --msg "hello from faucet-funded taira"
 ```
 
-## 4. 基本のレジャーコマンド {#_4-basic-ledger-commands}
+## 4. 基本的なブロックチェーン台帳コマンド {#_4-basic-ledger-commands}
 
-すべてのドメインをリスト:
+すべてのドメインをリストする:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 ```
 
-通常のドメイン作成では,宣言名プランナーを使用します. `ledger domain` コマンドには`register`サブコマンドはありません. `docs.universal` に対する秘密フリー `AliasSetupPlanRequestV1` 意図を SDK またはオンボードサービスで準備し,それを計画して適用してください.
+通常のドメイン作成は宣言的エイリアスプランナーを使用します。`ledger domain` コマンドには `register` サブコマンドはありません。`AliasSetupPlanRequestV1` を `docs.universal` 用に、SDK またはオンボーディングサービスでシークレットなしのインテントを準備し、それから計画して適用してください。
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml \
@@ -124,55 +124,69 @@ cargo run --bin iroha -- --config ./localnet/client.toml \
   app alias setup apply --plan-file ./docs-domain.plan.json
 ```
 
-意図パインは,データスペース ID,カノニカルオーナーのアカウント,リース期限,現在の引用保護.プランナーがライブ状態を確認し,提出する正確な原子計画 `EnsureAlias` を返します.他のネットワークから守備値を手書きコピーしないでください.
+インテントはデータスペースID、標準オーナーアカウント、リース期間、および現在の料金価格検証ガードを固定します。プランナーはライブ状態を検証し、提出する正確なアトミック`EnsureAlias`プランを返します。他のネットワークからガード値を手でコピーしないでください。
 
-シンプルなピン取引を送信する
+シンプルなピングトランザクションを送信します:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger transaction ping --msg "hello from iroha"
 ```
 
-最近のブロックを読み取ったり,ブロックイベントを登録したりします.
+最近のブロックを読み取るか、ブロックイベントを購読してください:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger blocks 1 --timeout 30s
 cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 ```
 
-## 5. 操作者のコマンド {#_5-operator-commands}
+## 5. オペレーターコマンド {#_5-operator-commands}
 
-合意の状況:
-
-```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi status
-```
-
-段階間遅延スナップショット
+コンセンサスオペレーターのコマンドには、許可リストに登録されたソフトウェアランタイムキーが必要です。`client.toml`に入れず、所有者専用ファイルを明示的に渡してください:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi phases
+: "${OPERATOR_KEY_FILE:=./secrets/operator.key}"
+
+cargo run --bin iroha -- \
+  --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format text ops sumeragi status
 ```
 
-入手可能性,収集者, RBC バックログ,および VRF スナップショット:
+非権威的なキュー、ソフトウェア処理のワークフロー、選挙、および実行レーンの診断：
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi telemetry
+cargo run --bin iroha -- \
+  --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format text ops sumeragi diagnostics
 ```
 
-チェーン上のコンセンサスパラメータ:
+最高かつロックされたコンセンサスクォーラム証明書:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ops sumeragi params
+cargo run --bin iroha -- \
+  --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format text ops sumeragi qc
 ```
 
-## 6. 次 に どこ へ 行ける か {#_6-where-to-go-next}
+オンチェーンのコンセンサスパラメータ：
+
+```bash
+cargo run --bin iroha -- \
+  --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format text ops sumeragi params
+```
+
+## 6. 次に行く場所 {#_6-where-to-go-next}
 
 - [SDK チュートリアル](/ja/guide/tutorials/)
-- [Torii エンドポイント](/ja/reference/torii-endpoints.md)
-- [Iroha バイナリ](/ja/reference/binaries.md)で作業する
+- [Torii API エンドポイント](/ja/reference/torii-endpoints.md)
+- [Iroha バイナリを扱う](/ja/reference/binaries.md)
 - [CLI README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/README.md)
 
-ソースのチェックアウトから完全なマークダウンヘルプスナップショットを再生するには:
+ソースの作業ツリーから完全な Markdown ヘルプのスナップショットを再生成するには、次を実行します:
 
 ```bash
 cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/CommandLineHelp.md

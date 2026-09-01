@@ -3,37 +3,37 @@ translation_locale: az
 translation_source: /get-started/install-iroha.md
 translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Iroha 3 quraşdırma {#install-iroha-3}
+# Iroha 3 quraşdır {#install-iroha-3}
 
-Bu səhifə Iroha 3 vasitələr silsiləsi və yuxarıda `hyperledger-iroha/iroha` iş məkanından istifadə edən ikililər üçün hazırkı quraşdırma iş axını əhatə edir.
+Bu səhifə yuxarı axın `hyperledger-iroha/iroha` iş sahəsini istifadə edərək Iroha 3 alət dəsti və ikili faylların cari quraşdırma iş axışını əhatə edir.
 
-## 1. Əvvəlki şərtlər {#_1-prerequisites}
+## 1. Tələblər {#_1-prerequisites}
 
-Əvvəlcə bunları quraşdır:
+İlk olaraq bunları quraşdırın:
 
-- [rustup](https://www.rust-lang.org/tools/install), belə ki, bağlanmış `rust-toolchain.toml` alət zənciri (`1.93.1`) avtomatik olaraq quraşdırılır.
+- [rustup](https://www.rust-lang.org/tools/install), buna görə də bərkidilmiş `rust-toolchain.toml` alət zənciri (`1.93.1`) avtomatik olaraq quraşdırılır
 - `git`
-- Docker və Docker Compose yerli bir çox cüt sürətli start üçün seçilir.
+- istəyə görə, yerli çoxnövlü sürətli başlatma üçün Docker və Docker Compose
 
-## 2. İş sahəsini klonlaşdırın. {#_2-clone-the-workspace}
+## 2. İş sahəsini klonlayın {#_2-clone-the-workspace}
 
 ```bash
 git clone https://github.com/hyperledger-iroha/iroha.git
 cd iroha
 ```
 
-## 3. İş məkanını qurun {#_3-build-the-workspace}
+## 3. İş sahəsini qurun {#_3-build-the-workspace}
 
-Hər şeyi qur:
+Hər şeyi qurun:
 
 ```bash
 cargo build --workspace
 ```
 
-Daha kiçik operator mərkəzləşdirilmiş bir quruluş üçün yalnız əsas ikililəri tərtib edin:
+Daha kiçik operator yönümlü bir quruluş üçün yalnız əsas ikilikləri tərtib edin:
 
 ```bash
 cargo build --release \
@@ -42,9 +42,9 @@ cargo build --release \
   -p iroha_kagami --bin kagami
 ```
 
-Nəticədə əldə edilən ikililər `target/debug/` və ya `target/release/` ünvanına yazılır.
+Alınan ikili fayllar `target/debug/` və ya `target/release/` ünvanına yazılır.
 
-## 4. Qurulmuş vasitələri yoxlayın. {#_4-verify-the-installed-tools}
+## 4. Quraşdırılmış Alətləri Yoxlayın {#_4-verify-the-installed-tools}
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --help
@@ -53,18 +53,18 @@ cargo run --bin iroha -- --help
 cargo run --bin kagami -- --help
 ```
 
-Ümumiyyətlə istifadə edəcəyiniz dörd ikili:
+Siz adətən istifadə edəcəyiniz dörd ikilik bunlardır:
 
-- `iroha3d` standart peer daemon üçün
-- `iroha3d_taira` canoniki Taira təsdiqləyici fırlatıcısı üçün
-- Torii və operatorun son nöqtələrinə giriş üçün CLI `iroha`
-- `kagami` açarlar, genesis manifestları və localnet profilləri üçün
+- standart şəbəkə iştirakçısı demonu üçün `iroha3d`
+- `iroha3d_taira` tək protokol-standart Taira təsdiqedicisi başlatıcısı üçün
+- `iroha` üçün CLI Torii və operator API son nöqtələrinə giriş
+- `kagami` açarlar, blokçeyn genesis texniki göstərişləri və lokalnet profilləri üçün
 
-## 5. Yerli şəbəkə və Docker yolun seçim yolu {#_5-optional-localnet-and-docker-path}
+## 5. İxtiyari Localnet və Docker Yolu {#_5-optional-localnet-and-docker-path}
 
-Mövcud mənbə dəstəklənən localnet axını Kagami tərəfindən yaradılır. O, həmyaşıd konfiqurasiyaları, genesis artefaktları, müştəri konfiqurasiyası, köməkçi skriptləri və yoxlanılan kodla uyğunlaşan bir komposi faylı yazır:
+Cari mənbə dəstəklənən lokalnet axını Kagami tərəfindən yaradılır. Bu, şəbəkə həmkarı konfiqurasiyalarını, blockchain genesis sənədlərini, müştəri konfiqurasiyasını, köməkçi skriptləri və çıxarılan kodla uyğunlaşan istəyə bağlı Compose faylını yazır:
 
-- `kagami localnet` yerli yerli rəfiqə yazıları üçün
-- `kagami docker` üçün Docker Compose localnet dizaynından əldə edilmişdir
+- `kagami localnet` yerli yerli şəbəkə həmkarı skriptləri üçün
+- `kagami docker` üçün Docker Compose localnet qovluğundan yaradıldı
 
-[Lunch Iroha 3](/az/get-started/launch-iroha.md) ilə davam edin.
+[Başlat Iroha 3](/az/get-started/launch-iroha.md) ilə davam et.

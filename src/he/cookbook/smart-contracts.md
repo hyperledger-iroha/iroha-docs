@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: 67778f9fc4f2b6fa0288f5921402cf5509515aae678e98b8192e103dfe284db3
+translation_source_hash: f1ea542f7a710830cd32465d141db8452e6418d426500995b9df7c9c4e1fd597
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -67,7 +67,7 @@ seiyaku TupleReturnDemo {
 }
 ```
 
-Kotodama מכוון למכונה וירטואלית Iroha ואת המערכת הנוכחית שלה ABI. היא אינה שפת מקור WASM או EVM.
+Kotodama מיועדת למכונה הווירטואלית של Iroha ול־ABI הנוכחי שלה. היא אינה שפת מקור של WASM או EVM.
 
 ### 2. לבדוק, לבנות ולמתקן את האריפקט {#_2-check-build-and-verify-the-artifact}
 
@@ -89,11 +89,11 @@ cargo run -p ivm --bin koto -- \
   ./contracts/tuple_return_demo.ko
 ```
 
-הבניין הראשון מפרסם את הארטפקט והסיידקארים המאודנים. השני פועל בקריאה בלבד `--verify` מצב וכישלון אם כל יצירה קיימת לא תואמת בדיוק את המקור הנוכחי. `.to` הקובץ והמניפסט שלו כוצאת מבנה בודדת אחת.
+הבניין הראשון מפרסם את הארטפקט וקובצי העזר המאומתים. השני פועל בקריאה בלבד `--verify` מצב וכישלון אם כל יצירה קיימת לא תואמת בדיוק את המקור הנוכחי. `.to` הקובץ והמניפסט שלו כוצאת מבנה בודדת אחת.
 
 ### 3. להפעיל את קוד הביט מקומו {#_3-run-the-bytecode-locally}
 
-`compute` הוא נקודת כניסה ציבורית `kotoage`. תפעיל אותה עם `debug-call`, אשר מתבצעת נגד ציוד מקומי מבלי להגיש או לשלם על עסקאות.
+`compute` היא נקודת כניסה ציבורית של `kotoage`. הפעילו אותה באמצעות `debug-call`, שפועל על נתוני בדיקה מקומיים בלי לשלוח עסקה או לשלם עליה.
 
 ```bash
 iroha --config "$IROHA_CONFIG" --machine contract debug-call \
@@ -105,11 +105,11 @@ jq -e '.ok == true and .result == ["3", "5"]' \
   ./build/local-call.json
 ```
 
-מספרים של Kotodama נפרסמים בתור חוטים של JSON, כך שהטופל המפורסם הוא `["3", "5"]`.
+מספרים של Kotodama מוצגים כמחרוזות JSON, ולכן ה־tuple המפוענח הוא `["3", "5"]`.
 
-### 4. המשיכה באמצעות עוזר ילידי {#_4-deploy-through-the-native-helper}
+### 4. המשיכה באמצעות עוזר native {#_4-deploy-through-the-native-helper}
 
-העוזר מעלה חתיכות קוד בייט, רשום את המניפסט הנחתם ומגיש מבצע אחד `CommitContractDeployment`. הוא מציין על כל עסקאות ומסרב על ציטוט שמשנה את משלם או מחויבת הגז שנבחר.
+העוזר מעלה חתיכות קוד בייט, רשום את המניפסט הנחתם ומגיש מבצע אחד `CommitContractDeployment`. הוא מציין על כל עסקאות ומסרב על תמחור שמשנה את משלם או מחויבת הגז שנבחר.
 
 ```bash
 printf '%s\n' \
@@ -131,7 +131,7 @@ jq '{contract_address, code_hash_hex, final, fee_quotes}' \
   ./build/deployment.json
 ```
 
-בקשה ריקה `charge_limits` היא לא מזהה נכס משותף: העוזר מקבל את הציטוט החי המדויק לפני חתימה. התגובה הנוכחית למזרקה. שיחות חוזה מקבלות בחירה של דמי רק באמצעות הציטוט חי מודפס; `gas_asset_id` מטא נתוני עסקאות אינם חלק מחוזה שחרור ראשון.
+בקשת `charge_limits` ריקה אינה מזהה נכס שהועתק: כלי העזר מקבל את הצעת המחיר החיה המדויקת לפני החתימה. השוו את נכס העמלה שהוחזר לתגובה הנוכחית של ה-faucet. קריאות חוזה מקבלות בחירת עמלה רק באמצעות הצעת המחיר החיה המוקלדת; מטא-נתוני הטרנזקציה `gas_asset_id` אינם חלק מהחוזה בגרסה הראשונה.
 
 ### 5. סימול ולהתקשר לנקודת כניסה המוצבת. {#_5-simulate-and-call-the-deployed-entrypoint}
 
@@ -196,18 +196,18 @@ jq -e '.ok == true and .result == ["3", "5"]' \
 ## פתרון בעיות {#troubleshooting}
 
 - כישלונות `CanRegisterSmartContractCode` דורשים תורם למפעיל Taira או שינוי גנז / סטראפ ב-localnet. חשבון נורמלי לא יכול לתת את הזכות זו לאחר העובדה.
-- ניהול או סירוב מסלול מוגנת פירושו שההתקפה זקוקה לאישור מדויק סיפוק הנדרש על ידי הרשת הזאת. IDs.
-- מסמך או ABI חוסר התאמה פירושו כי בייטקוד, מוניסט ו- node runtime לא מתארים את אותו פריט. `--verify`.
-- `fee quote changed ... gas bound` פירושו את התכוון הנדרש והציטוט חי לא מסכימים. תחזור לדרך במקום לשנות עסקאות חתומות.
+- דחייה מצד הממשל או מצד נתיב מוגן פירושה שהפריסה זקוקה לייחוס המדויק של המאשרים שאותה רשת דורשת. יש לתאם את רשימת המאשרים; אין להמציא מזהי חשבון (account IDs).
+- אי־התאמה בין מניפסט ל־ABI פירושה שה־bytecode, המניפסט וסביבת הריצה של הצומת אינם מתארים את אותו ארטיפקט. השתמשו ב־`--verify`.
+- `fee quote changed ... gas bound` פירושו את התכוון הנדרש והתמחור חי לא מסכימים. תחזור לדרך במקום לשנות עסקאות חתומות.
 - העוזר להגדיר דוחה מפתחות קבועות, אופנים של קבצים מפתח מורשים, סימלינקים ומפחידים קבצים מקושרים לפני הגשת רשת.
-- טעות בנקודת כניסה תצפית בלבד פירושה `compute` נשלח דרך משפחת הפקודות הלא נכונה. הדגימה זו מכריז על `kotoage`, אז השתמשו בסימולציה של שיחה או העברה.
-- שיחות חוזה דורשות גבול של גז טופס חיובי. החוזה של שיחת הזמנה לשחרור הראשון מסירב את הנתונים הגזים או המטא-מכסים ברמה העליונה.
+- טעות בנקודת כניסה תצפית בלבד פירושה `compute` נשלח דרך משפחת הפקודות הלא נכונה. הדגימה זו מכריז על `kotoage`, אז השתמשו בסימולציה של קריאה או העברה.
+- קריאות חוזה דורשות גבול של גז טופס חיובי. החוזה של קריאת הזמנה לשחרור הראשון מסירב את הנתונים הגזים או המטא-מכסים ברמה העליונה.
 
 ## מקור ומסמכים קשורים {#source-and-related-docs}
 
 - [Kotodama V1 יישום פקודה בקימת קישור](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/src/bin/koto.rs)
 - [דגימה של מקור ההחזרת כפולה ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
-- [עוזר הפעלת ילידי ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
-- [בדיקות אינטגרציה של החוזה בביצוע ההתחייבויות ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs)
+- [עוזר הפעלת native ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
+- [בדיקות אינטגרציה של החוזה בביצוע commit ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs)
 - [חוזים חכמים](/he/blockchain/smart-contracts.md)
 - [דף CLI ](/he/get-started/operate-iroha-via-cli.md)

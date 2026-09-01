@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: 62d6f434e5af4213420c456ee27ebdc260c8b0e9f7a85bc3ba955ee9c79a058d
+translation_source_hash: f2411fec1cc35b1bf7795a7ab5a0eb7a8eb6b60b4799ebf3db47208b902f87e6
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -43,7 +43,7 @@ dependencies {
 
 `core-jvm` לא מכיל Android תלויות. Android קוד הלקוח ומחסור המפתח `client-android`, ושימוש `offline-wallet-android` עבור Android-רק ארנק מקוון ו JNI זורמים.
 
-## Kotlin ו- Java Compatibility {#kotlin-and-java-compatibility}
+## תאימות Kotlin ו-Java {#kotlin-and-java-compatibility}
 
 הקהל API הוא Kotlin-ראשון ומספק אינטרופ ג'אבה כאשר מתקשרים JVM זקוקים לו. שינויים מקבילים משתקפים בהתאם `java/` יישום. האינטגרציות חדשות Android צריכות להתחיל עם האריפקטים של Kotlin למעלה .
 
@@ -77,4 +77,4 @@ cd kotlin
 - Android אינטגרציות טלמטריה של מחסן מפתח ומכשיר
 - Android תחבורה מקוונת QR, קרובה NFC
 
-תראו את [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/kotlin/README.md) עבור מודל ספציפי APIs והוראות של בנייה מדויקות.
+לעיון ב־APIs ייחודיים למודולים ובפקודות הבנייה המדויקות, ראו את [קובץ README של Kotlin SDK](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/kotlin/README.md).

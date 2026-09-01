@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hans
 translation_source: /reference/norito.md
-translation_source_hash: 5196decc9e42428b787285d9e0f763bfcedabea2b19af618612f4509492c87fc
+translation_source_hash: b3b7c03bc0df3f7fa3df7e44b0ec8d755d615f9edca66bbcfe5613c33c8afbfe
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review
 ---
-
 # Norito {#norito}
 
 Norito 是 Iroha 的规范序列化层。当对等节点、SDKs、CLI 工具、Torii、Kura 和生成的工件必须对完全相同的载荷达成一致时，使用的就是这种字节格式。
@@ -22,9 +21,9 @@ Norito 是 Iroha 的规范序列化层。当对等节点、SDKs、CLI 工具、T
 | SDKs | Rust、Python、JavaScript、Kotlin/Java、Swift 和 Android 客户端使用 Norito 构建器或绑定，而不是手动组装字节。 |
 | Kura 存储 | 区块载荷、恢复辅助文件、名册和提交标记以 Norito 帧数据的形式存储。 |
 | 清单 | Nexus、数据可用性、SoraFS、流媒体和面向应用的清单在需要签名或哈希时使用 Norito。 |
-| 流媒体 | Norito Streaming 使用 Norito 清单、分段头、控制帧和一致性测试夹具。 |
+| 流媒体 | Norito Streaming 使用 Norito 清单、分段头、控制帧和一致性测试数据。 |
 
-Norito 不是智能合约语言。它是承载交易、合约调用、清单和类型化 API 载荷的确定性信封与编解码器。
+Norito 不是智能合约语言。它是承载交易、合约调用、清单和类型化 API 载荷的确定性封装与编解码器。
 
 ## 载荷模型 {#payload-model}
 
@@ -78,7 +77,7 @@ Norito 对 Iroha 数据模型中的常见数据形状使用确定性布局：
 
 类型化 Norito 载荷的头部包含 16 字节模式哈希。默认哈希由完全限定类型名称派生；启用结构化模式哈希的构建则改为从规范模式派生哈希。
 
-类型化解码器会拒绝模式不匹配。这可防止客户端意外地将有效 Norito 帧解码为错误类型；当 SDK 测试夹具包与节点数据模型不同步时，通常会以这种方式失败。
+类型化解码器会拒绝模式不匹配。这可防止客户端意外地将有效 Norito 帧解码为错误类型；当 SDK 测试数据包与节点数据模型不同步时，通常会以这种方式失败。
 
 ## 压缩和加速 {#compression-and-acceleration}
 
@@ -101,7 +100,7 @@ Norito 包含原生 JSON 栈，使需要 JSON 的端点和工具无需离开 Nor
 | JSON 功能 | 用例 |
 | --- | --- |
 | `norito::json::{to_json, from_json}` | 确定性的类型化 JSON 编码与解码。 |
-| 美化输出和 writer 辅助函数 | CLI 输出、测试夹具和流式 `std::io` 集成。 |
+| 美化输出和 writer 辅助函数 | CLI 输出、测试数据和流式 `std::io` 集成。 |
 | DOM 值 | 通过 Norito 的 JSON 值模型进行编程操作。 |
 | 快速类型化 JSON | 基于结构磁带，为高频 DTO 路径进行解码和编码。 |
 | 零拷贝读取器 | 扫描 token，并在可行时直接借用输入中的字符串。 |
@@ -109,7 +108,7 @@ Norito 包含原生 JSON 栈，使需要 JSON 的端点和工具无需离开 Nor
 
 Iroha 代码处理类型化 API 载荷时，应优先使用 `norito::json` 辅助函数。在生产路径中直接添加 `serde_json`，可能偏离 SDKs 和 Torii extractor 预期的模式及字段处理行为。
 
-## Derive 支持 {#derive-support}
+## 派生功能支持 {#derive-support}
 
 Rust 数据类型通常使用 derive 宏，而不是手写编解码代码。derive 层可以生成 Norito 二进制编解码器、模式和 JSON 辅助函数。
 
@@ -124,7 +123,7 @@ Rust 数据类型通常使用 derive 宏，而不是手写编解码代码。deri
 
 在可行时，derive 实现还会公开编码长度提示和精确长度计算。编码器使用这些提示预留缓冲区并避免额外拷贝。
 
-## Crate 功能族 {#crate-feature-families}
+## Rust 软件包功能系列 {#crate-feature-families}
 
 从源代码构建 Iroha 或 SDK 绑定时，Norito 功能决定可用的辅助函数和加速器：
 
@@ -169,7 +168,7 @@ Accept: application/x-norito, application/json
 
 Norito RPC 传输由传输配置选择。运维仪表板应跟踪请求延迟、失败、活动连接、响应字节和 `torii_norito_decode_failures_total`，并与 JSON 流量分开统计。
 
-## Norito Streaming {#norito-streaming}
+## Norito 流式传输 {#norito-streaming}
 
 Norito Streaming 将同样的确定性方法扩展到媒体和实时传输接口。其关键组成如下：
 
@@ -182,17 +181,17 @@ Norito Streaming 将同样的确定性方法扩展到媒体和实时传输接口
 | HPKE 密钥更新 | 使用协商后的套件和单调递增计数器轮换传输秘密。 |
 | 能力协商 | 对受支持的功能位、数据报限制、反馈频率和隐私要求取交集。 |
 | FEC 与反馈 | 对有损实时路径使用确定性的接收方报告和奇偶校验决策。 |
-| 一致性向量 | 跨语言测试夹具证明各 SDKs 会解码出相同的清单、分段和熵数据流。 |
+| 一致性向量 | 跨语言测试数据证明各 SDKs 会解码出相同的清单、分段和熵数据流。 |
 
 流媒体专用编解码器和熵配置文件与核心 Norito 交易／查询格式相互独立，但其清单和控制数据仍使用 Norito，因此路由、计费、重放和审计证据保持可重现。
 
 ## 运维指南 {#operational-guidance}
 
 - 优先使用 SDK 构建器和生成的绑定，而不是手工制作 Norito 字节。
-- 将模式不匹配视为版本或测试夹具问题，而不是暂时性网络故障。
+- 将模式不匹配视为版本或测试数据问题，而不是暂时性网络故障。
 - 将 `.nrt`、`.norito` 和清单工件归档到生成它们的发布包或事件包中。
 - 对于已签名、已哈希或持久化的数据，以 Norito 为事实来源；JSON 投影仅用于仪表板和手动检查。
-- 添加新的类型化 Torii 端点时，记录它接受 JSON、Norito 还是两者，并在 `/openapi` 中公开受支持的内容类型。
+- 在添加一个新型的 Torii 端点时,记录它是否接受 JSON, Norito 或两者,并在 `/openapi.json` 中暴露支持的内容类型.
 - 启用加速器前，请针对标量输出运行一致性测试。如果加速器失败，请使用确定性的标量回退；载荷语义必须保持不变。
 
 ## 相关页面 {#related-pages}
@@ -200,11 +199,11 @@ Norito Streaming 将同样的确定性方法扩展到媒体和实时传输接口
 - [Torii 端点](/zh-hans/reference/torii-endpoints.md)
 - [创世区块参考](/zh-hans/reference/genesis.md)
 - [数据模型模式](/zh-hans/reference/data-model-schema.md)
-- [JavaScript/TypeScript SDK](/zh-hans/guide/tutorials/javascript.md)
+- [JavaScript / TypeScript SDK](/zh-hans/guide/tutorials/javascript.md)
 - [Python SDK](/zh-hans/guide/tutorials/python.md)
 - [Swift 与 iOS SDK](/zh-hans/guide/tutorials/swift.md)
 
 ## 上游参考 {#upstream-references}
 
-- [Norito 格式规格](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/norito.md)
+- [Norito 格式的规范](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/norito.md)
 - [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/norito/README.md)

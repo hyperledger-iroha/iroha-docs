@@ -3,74 +3,74 @@ translation_locale: ja
 translation_source: /get-started/sora-nexus-dataspaces.md
 translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# SORA 3 に基づいて構築する: Taira と Minamoto {#build-on-sora-3-taira-and-minamoto}
+# SORA 3 を基にして: Taira と Minamoto {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3は, Iroha 3 と SORA Nexus で構築されたアプリ面の公開展開トラックです. まず Taira で構築して練習し,その後同じクライアント形を Minamoto に移動するだけで,異なるメインネットキーがあり,料金は実際の XOR と生産承認がある場合にのみです.
+SORA 3 は、Iroha 3 と SORA Nexus に基づいて構築されたアプリ向けの公開デプロイトラックです。まず Taira でビルドとリハーサルを行い、その後に個別のメインネットキー、手数料用の実際の XOR、および本番承認がある場合にのみ、同じクライアント形状を Minamoto に移動してください。
 
-このチュートリアルでは,公共の SORA 3つのネットワークのための Iroha クライアントを設定する方法を示します.
+このチュートリアルでは、パブリック SORA 3ネットワーク用の Iroha クライアントの設定方法を示します。
 
-- Taira テストネットは, `https://taira.sora.org`
-- Minamoto メインネットは `https://minamoto.sora.org`
+- Taira のテストネットは `https://taira.sora.org` にあります
+- Minamoto メインネットは `https://minamoto.sora.org` にて
 
-Taira を統合テスト, faucet 資金による書き込みカナリー,および展開練習に使用する. Minamoto を生産準備のメインネット活動のみで使用する.両方のネットワークは XOR で手数料を請求します:
+統合テスト、テストネット資金でのライトキャナリー、デプロイリハーサルには Taira を使用してください。製品準備が整ったメインネットの活動には Minamoto のみを使用してください。両方のネットワークは XOR で手数料を請求します。
 
-- Taira は,公共のポンプからテストネット XOR を使用します.
-- Minamoto リアルを使用 XOR. 存在しません Minamoto ポンプ
+- Taira は、パブリックテストネット資金提供サービスからテストネット XOR を使用します。
+- Minamoto は実際の XOR を使用します。Minamoto のテストネット資金提供サービスはありません。
 
-## 建設者 の 道 {#builder-path}
+## ビルダーパス {#builder-path}
 
-|ステップ|Taira テストネット|Minamoto メインネット|
+|ステップ| Taira テストネット| Minamoto メインネット |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|ネットワーク状態を読み始めます |鍵のない問い合わせ `/status`|鍵のない問い合わせ `/status`|
-|データベースを選択する|`universal` を公開して,アプリに管理されたレーンが必要ない限り使用します |メインネットの承認後のみ同じデータスペースを使用します |
-|料金の資産を手に入れる|公共の Taira faucet を使用する|資金調達された Minamoto 口座または承認された財務金流から XOR を取得する|
-|テストは書いています|XOR faucet-financed test を使用する|テストツールを使用しないでください. 書き込みは実際の支出 XOR |
-|促進する|ロジック,モニタリング,サイン処理を繰り返す|切り離されたキー,資金調達,リリース制御を使用する|
+|ネットワーク状態の読み取りを開始|キーなしのクエリ `/status`|キーなしのクエリ `/status`|
+|データスペースを選択してください|アプリが管理された実行レーンを必要としない限り、パブリック`universal`を使用してください|メインネットの承認後にのみ同じデータスペースを使用してください|
+| 手数料資産を取得 | 公開 Taira の faucet を使用 | 資金提供済みの Minamoto アカウントまたは承認済みのトレジャリー経路から XOR を受け取る |
+| 書き込みをテスト | faucet で取得した testnet XOR を使用 | テスト用ツールを使わない。書き込みでは実際の XOR を消費する |
+|促進する|リトライロジック、監視、および暗号署名処理を維持する|別々の鍵、資金、リリース管理を使用してください|
 
-実践的な流れは:
+実際の流れは次のとおりです：
 
-1. Taira に対してクライアントを構築し,公共の `universal` データスペースを使用する.
-2. 署名者を追加して Taira faucetで資金提供します.
-3. Taira に対して アプリの論理を練習する. 失敗が退屈で観察できるまで.
-4. 別々の Minamoto 署名を作成し,実際の XOR で資金提供し,同じ証明されたオペレーションのみをメインネットに移動します.
+1. クライアントを Taira に対して構築し、パブリック `universal` データスペースを使用してください。
+2. 暗号署名者を追加し、Taira テストネット資金提供サービスで資金を提供します。
+3. 障害が退屈で観察可能になるまで、Taira に対してアプリのロジックを実行してください。
+4. 別の Minamoto 暗号署名者を作成し、それに実際の XOR を資金として供給し、検証済みの操作のみをメインネットに移動してください。
 
-## 料理 本 を 読み続ける {#continue-with-the-cookbook}
+## 料理本を続ける {#continue-with-the-cookbook}
 
-このガイドを使用して,ネットワークを選択し,サインを設定し,手数料を支払ってください.次に,作成したいアプリケーションの行動に一致するレシピで続きます:
+このガイドを使用してネットワークを選択し、暗号署名者を設定し、手数料に資金を供給してください。その後、構築したいアプリケーションの動作に合ったレシピを続けてください:
 
-|目標|レシピ|
+|ゴール|レシピ|
 | --- | --- |
-|Taira をチェックし,クライアントを設定する| [Taira](/ja/cookbook/connect-to-taira.md) に接続する|
-|最初の書き込みを送って結果を確認する| [取引を提出し確認する](/ja/cookbook/submit-and-verify-transactions.md) |
-|登録,硬貨,移動価値| [浮動資産](/ja/cookbook/fungible-assets.md) |
-|フィルタリングされたアプリケーション状態を読み取る| [クエリ レジャーステート](/ja/cookbook/query-ledger-state.md) |
-|約束された変化に反応する| [ストリームイベント](/ja/cookbook/stream-events.md) |
+| 確認 Taira クライアントを設定する | [Taira に接続する](/ja/cookbook/connect-to-taira.md) |
+|最初に書き込みを行い、その結果を確認してください| [取引を提出して確認する](/ja/cookbook/submit-and-verify-transactions.md) |
+|登録、発行、そして価値を移動する| [代替可能資産](/ja/cookbook/fungible-assets.md) |
+|フィルタリングされたアプリケーション状態を読み取る| [ブロックチェーン台帳の状態を照会する](/ja/cookbook/query-ledger-state.md) |
+|確定した変更に反応する| [ストリームイベント](/ja/cookbook/stream-events.md) |
 
-Taira の資金や SORA Nexus のネットワーク・コンテキストが必要な時,コックブックは各ワークフローを集中してここにリンクします.
+このクックブックは各ワークフローの焦点を維持し、必要に応じてここに戻って Taira の資金や SORA Nexus のネットワークコンテキストにリンクします。
 
-## 1. 自分 が 設定 し て いる こと を 理解 する {#_1-understand-what-you-are-setting-up}
+## 1. 設定しているものを理解する {#_1-understand-what-you-are-setting-up}
 
-SORA Nexus では,データスペースはネットワークレーンとルーティングカタログの一部です.クライアントは,単に `client.toml` を変更することによって新しい公共データ空間を作成しません. クライアント設定は2つのことをします.
+「SORA Nexus」では、データスペースはネットワーク実行レーンおよびルーティングカタログの一部です。クライアントは`client.toml`を変更するだけで新しいパブリックデータスペースを作成することはありません。クライアント設定は次の2つのことを行います:
 
-1. 顧客を右の端点 Torii に指す
-2. ドメインとデータスペースのルーティングコンテキストをキャノニカルアカウントに選択します
+1. クライアントを正しい Torii API エンドポイントに向ける
+2. 正規アカウントのためのドメインとデータスペースのルーティングコンテキストを選択する
 
-`AccountId` それは常に法定であり 領域のないものです `[account].domain` 値 `client.toml` ルーティングとエイリアスコンテキストを提供し,アカウントのアイデンティティの一部にはなれない.大抵のアプリケーションでは,公衆から始めます `universal` データスペース.ドメインのコンテキストを使用する `domain.dataspace` 形式など:
+`AccountId`は常に標準でドメインなしです。`client.toml`内の`[account].domain`の値はルーティングおよびエイリアスのコンテキストを提供しますが、アカウントの識別情報の一部にはなりません。ほとんどのアプリケーションでは、公開の`universal`データスペースから開始してください。ドメインコンテキストは`domain.dataspace`形式を使用します。たとえば:
 
 ```text
 wonderland.universal
 ```
 
-新しい組織データスペースが必要な場合は,通常のクライアントアカウントから登録しようとするのではなくカタログとルーティング提案を準備してください. [New Datapace](#_8-provision-a-new-dataspace)の提供については下記を参照してください.
+新しい組織のデータスペースが必要な場合は、通常のクライアントアカウントから登録しようとするのではなく、カタログとルーティング提案を準備してください。以下の [新しいデータスペースをプロビジョニングする](#_8-provision-a-new-dataspace) を参照してください。
 
-## 2. 公衆 Torii 終点を確認する {#_2-check-the-public-torii-endpoint}
+## 2. 公開 Torii API エンドポイントを確認する {#_2-check-the-public-torii-endpoint}
 
-シグナーを設定する前に,ターゲットエンドポイントがライブであることを確認します.
+暗号署名者を設定する前に、対象の API エンドポイントが稼働していることを確認してください。
 
-Taira について:
+〜のために Taira:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -78,7 +78,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
-Minamoto について:
+Minamoto の場合：
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
@@ -86,7 +86,7 @@ curl -fsS https://minamoto.sora.org/status \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
-ノードが暴露したデータスペースとレーンビューをチェックする:
+ノードによって公開されるデータスペースと実行レーンのビューを確認してください:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -94,20 +94,20 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-メインネットでは `https://minamoto.sora.org/status` と同じコマンドを使用します.
+メインネットの場合は、同じコマンドを `https://minamoto.sora.org/status` と一緒に使用してください。
 
-## 代理人 Taira MCP {#taira-mcp-for-agents}
+## Taira MCP エージェント用 {#taira-mcp-for-agents}
 
-Taira はまた,エージェントの実行時間のために Torii-ネイティブモデルコンテキスト プロトコル (MCP) ブリッジを暴露します.エージェントが最初にカスタム Torii クライアントを構築せずにライブテストネット読み込み,スクリプト診断,または厳密にレビューされた書き込みレハーサルを必要とするときに使用します.
+Taira は、エージェントソフトウェアランタイム向けに Torii ネイティブのモデルコンテキストプロトコル (MCP) ブリッジも公開します。エージェントがカスタム Torii クライアントを最初に構築せずに、ライブのテストネット読み取り、スクリプト化された診断、または厳密にレビューされた書き込みリハーサルを行う必要がある場合に使用してください。
 
 |設定|価値|
 | --- | --- |
-|MCP エンドポイント|`https://taira.sora.org/v1/mcp`|
-|ネットワークルーツ|`https://taira.sora.org`|
-|意図された用途|Taira テストネットの読書と faucet資金による書き込み練習|
-|生産等価|この項目を Minamoto に指さないで,メインネット MCP エンドポイントと放出制御が明示的に承認された場合を除く. |
+| MCP API エンドポイント | `https://taira.sora.org/v1/mcp` |
+|ネットワークルート| `https://taira.sora.org` |
+|意図された使用|Taira テストネットの読み取りとテストネット資金提供による書き込みリハーサル|
+|生産相当|メインネットの MCP API エンドポイントおよびリリース制御が明示的に承認されない限り、このエントリを Minamoto に向けないでください|
 
-署名材料を追加する前に,橋のメタデータをチェックする:
+署名素材を追加する前に、ブリッジのメタデータを確認してください：
 
 ```bash
 curl -fsS https://taira.sora.org/v1/mcp \
@@ -115,30 +115,30 @@ curl -fsS https://taira.sora.org/v1/mcp \
   | jq '{protocolVersion, server: .serverInfo.name, tools: .capabilities.tools.count}'
 ```
 
-URL をエージェント実行時にユーザローカル MCP サーバーとして設定する.このドキュメント repoまたはアプリケーション repoにエージェント MCP コンフィギュレーション, API トークン,転送された著作者ヘッダー, `authority` または `private_key` の値をコミットしないでください.
+エージェントソフトウェアランタイムで URL をユーザーローカルの MCP サーバーとして構成します。エージェント MCP の設定、API トークン、転送認証ヘッダー、`authority`、または `private_key` の値を、このドキュメントリポジトリやアプリケーションリポジトリにソース管理として保存しないでください。
 
-Taira でうまく動作するエージェントプロンプトルール:
+Taira でうまく機能するエージェントプロンプトのルール：
 
-- MCP サーバーからのツールを見つけ,それらを呼び出す前に;サーバが報告する場合は再発見 `listChanged`.
-- キュレーションされた `iroha.`ツールは,原材料の `torii.` ツールを好む.
-- アカウント,資産,ニセ字,ブロック,ガバナンス状態,トランザクションの状態を提案する前にチェックします.
-- 生体テストネット変異前に,人間の明示的な指示を要求する.事前署名されたトランザクション封筒の場合, `iroha.transactions.submit_and_wait` を使用して,エージェントはただ提出するのではなく結果を待つようにします.
-- エージェント応答でトランザクションハッシュ,最終ステータス,サーバー検証エラーをまとめます.
+- 呼び出す前に MCP サーバーのツールを確認してください；サーバーが`listChanged`を報告した場合は再確認してください。
+- 生の`torii.*`ツールよりも、キュレーションされた`iroha.*`ツールを好んでください。
+- 読み取り専用で開始：書き込みを提案する前に、ステータス、アカウント、資産、エイリアス、ブロック、ガバナンス状態、およびトランザクションステータスを確認してください。
+- ライブテストネットの変更を行う前に、明示的な人間の指示を要求してください。事前署名済みのトランザクションデータコンテナには、`iroha.transactions.submit_and_wait` を使用して、エージェントが送信するだけでなく結果を待つようにしてください。
+- エージェントの応答で、取引の暗号ハッシュ、最終ステータス、およびサーバーの検証エラーを要約してください。
 
-### 代理人との開発作業 {#development-workflow-with-agents}
+### エージェントを使った開発ワークフロー {#development-workflow-with-agents}
 
-Iroha クライアント,トランザクションビルダー,診断スクリプト,テストネットランブックの開発支援者としてエージェントを使用します.エージェントの権限を狭く保つ:Taira 状態を読み,変更を提案し,ローカルテストを実行できますが 人間が正確な操作を承認するまで ライブネットワークを変異させることはできません.
+Iroha クライアント、トランザクションビルダー、診断スクリプト、テストネット実行用マニュアルの開発支援としてエージェントを使用します。エージェントの認可プリンシパルは限定的に維持してください:コードを検査し、Taira の状態を読み取り、変更を提案し、ローカルテストを実行することはできますが、人間が正確な操作を承認するまではライブネットワークを変更してはいけません。
 
-実践的なワークフローは:
+実用的なワークフローは次の通りです:
 
-1. SDK コード, CLI コマンド,または MCP ツール・スケーマを入力する前に,関連ドックスを検査するようエージェントに依頼します.
-2. まず最小のクライアント経路を 代理人に書き込むようにしてください. 状態チェック,アカウント検索,別名解析,またはバランス検索.
-3. トランザクション・ビルディングコードを Taira に対して読み込みのみの呼び出しが動作した後で追加する.
-4. `TAIRA_LIVE=1`の後ろで,例えばライブネットワークテストのオプトインを保持するので,通常のユニットテスト実行ではテストネット資金が決して費やされず,ネットワーク利用量に依存しない.
-5. 取引を提出する前に,ネットワークルート,チェーン,権限アカウント,指示概要,料金の資産,および予想される状態変化を報告するようエージェントに要求する.
-6. CI またはメインネットワークフローにプロモーションする前に,秘密操作,再試行動,無効性および拒否処理のための生成されたコードをレビューする.
+1. エージェントにコードを書く前に、関連するドキュメント、SDK コード、CLI コマンド、または MCP ツールスキーマを確認するよう依頼してください。
+2. エージェントに、最小のクライアントパスを最初に書かせる：ステータス確認、アカウント検索、エイリアス解決、または残高確認。
+3. トランザクション構築コードは、読み取り専用の API リクエストが Taira に対して機能するようになった後にのみ追加してください。
+4. ライブネットワークのテストはオプトインのままにしておきます。例えば `TAIRA_LIVE=1` の背後で、通常のユニットテストの実行ではテストネットの資金を消費したり、ネットワークの可用性に依存したりすることがないようにします。
+5. エージェントがトランザクションを提出する前に、ネットワークリート、チェーン、認証のプリンシパルアカウント、指示の概要、手数料資産、および予想される状態の変化を報告するよう要求する。
+6. 生成されたコードを、CI またはメインネットワークのワークフローに昇格させる前に、秘密情報の処理、リトライ動作、冪等性、拒否処理について確認してください。
 
-MCP 開発のための有用な読み込みのみツールには,アカウント資産検索,アライアス解像度,ブロック検索,トランザクション検索,取引リスト,パイプライン状態チェックが含まれます.署名した役に立たない荷物を送信する前に信頼を築くためにそれらを使用します.
+開発のための便利な読み取り専用 MCP ツールには、アカウント資産の照会、エイリアスの解決、ブロック照会、トランザクション照会、トランザクションリスト、ソフトウェア処理ワークフローのステータス確認などがあります。署名済みのペイロードを送信する前に、これらを使用して信頼性を高めてください。
 
 ```text
 Use Taira MCP as a read-only inspector while developing this Iroha feature.
@@ -147,33 +147,33 @@ then update the client code. Do not submit transactions unless I explicitly
 say "submit this transaction".
 ```
 
-### 代理人によるトランザクションワークフロー {#transaction-workflow-through-agents}
+### 代理店を通じた取引のワークフロー {#transaction-workflow-through-agents}
 
-MCP ブリッジは署名された Iroha トランザクションを提出できるが,通常のトランザクション要件を除去しない.取引には依然として正しい権限,許可,料金の資金提供,チェーン ID,メタデータ,署名が必要です.
+MCP ブリッジは署名済みの Iroha トランザクションを送信できますが、通常のトランザクションの要件を取り除くものではありません。トランザクションには依然として正しい認可主体、権限、手数料の資金、チェーンID、メタデータ、および署名が必要です。
 
-原作 Iroha 取引については,まず SDK または CLI でトランザクション包装を組み立てて署名し,その後,代理人に定例のみを与えます `body_base64`と暗号化された署名された取引バイト.エージェントは,封筒を`iroha.transactions.submit_and_wait`で提出するか,または `iroha.transactions.submit`で提出し,アンケートも `iroha.transactions.wait`で提出することができます.
+生の Iroha 取引については、まず SDK または CLI で取引データコンテナを構築および署名し、その後エージェントには正規のものだけを渡してください署名済みトランザクションのバイトは`body_base64`としてエンコードされます。エージェントは`iroha.transactions.submit_and_wait`でデータコンテナを送信することも、`iroha.transactions.submit`で送信し`iroha.transactions.wait`でポーリングすることもできます。
 
-エージェントのプロンプトにプライベートキーを貼ってはいけません.エージェントがトランザクションを作成する必要がある場合,ユーザの実行時間の秘密をロードするローカルコードに指示してください.環境,キーチェイン,ハードウェアシグナー,または無視されたテストネット設定ファイル.エージェントは決してマークダウン,フィクチュア,ログ,またはコンミットに鍵を書き込むべきではありません.
+秘密鍵をエージェントのプロンプトに貼り付けないでください。エージェントがトランザクションを作成する必要がある場合は、ユーザーのソフトウェア実行環境から秘密を読み込むローカルコードを指し示してください。環境、キーチェーン、ハードウェア暗号署名者、または無視されたテストネットの設定ファイル。エージェントはキー素材をMarkdown、テスト成果物、ログ、または最終化に書き込むべきではありません。
 
-取引を提出する前に,エージェントに短い取引プランを作成してください.
+取引を提出する前に、エージェントに短い取引計画を作成させてください：
 
-- `network`: Taira テストネットのルーツとチェーン ID
-- `authority`:署名し,手数料を支払う口座
-- `instructions`:レジスタ,ミント,バーン,転送,メタデータ,許可,または契約呼び出しのまとめ
-- `fee asset`: Taira で請求される資産
-- `preflight reads`:既に実施された口座,資産バランス,許可,別名またはブロックチェック
-- `expected result`: 確認後,見える状態
-- `idempotency`:同じ要求が再検討されたらどうなるか
+- `network`： Taira テストネットのルートとチェーンID
+- `authority`：手数料に署名して支払うアカウント
+- `instructions`: 登録、発行、破棄、譲渡、メタデータ、権限、または契約技術呼び出しの概要
+- `fee asset`： Taira に請求される資産
+- `preflight reads`: アカウント、資産残高、権限、エイリアス、またはブロックの確認はすでに実行済みです
+- `expected result`: 確認後に表示されるべき状態
+- `idempotency`: 同じリクエストが再試行された場合、何が起こりますか
 
-送信後,エージェントに端末状態を待機させ,読み取りクエリでステートの変更を確認します.有用な完了レポートには:
+提出後、エージェントを終了ステータスになるまで待機させ、次に読み取りクエリで状態変更を確認します。役立つ完了レポートには次の項目が含まれます。
 
-- 取引ハッシュ
-- `Committed`,`Applied`, `Rejected`,または `Expired`などの端末状態.
-- ブロックや探査機の詳細が利用可能である場合
-- 検証読書の結果
-- 拒否メッセージと失敗は許可,料金,認証,ステッド状態またはエンドポイントの利用可能性に似ているかどうか.
+- 取引暗号ハッシュ
+- 端末のステータス、例えば `Committed`、`Applied`、`Rejected`、または `Expired`
+- 利用可能な場合はブロックまたはエクスプローラーの詳細
+- 検証読取結果
+- 拒否メッセージと、失敗が権限、料金、検証、古い状態、または API エンドポイントの可用性のいずれに見えるか
 
-保護された速報の例:
+例の保護されたプロンプト：
 
 ```text
 Prepare a Taira transaction plan, but do not submit yet. Use MCP reads to
@@ -183,7 +183,7 @@ expected post-state. Wait for my explicit "submit" message before calling
 iroha.transactions.submit_and_wait.
 ```
 
-署名された封筒が既に作成された場合:
+署名付きデータコンテナがすでに用意されている場合:
 
 ```text
 Submit this pre-signed Taira transaction envelope with
@@ -193,13 +193,13 @@ state with read-only iroha.* tools and report the hash, status, and
 verification result.
 ```
 
-Taira MCP を公共のテストネット制御表面として扱う. Taira キー,テストネット XOR, faucetアカウント,およびカナリーサインは使い捨てであり, Minamoto キーと生産リリースワークフローから分離する必要があります.
+Taira MCP をパブリックテストネットのコントロールサーフェスとして扱います。Taira キー、テストネット XOR、テストネット資金提供サービスアカウント、およびカナリア暗号署名者は使い捨てであり、Minamoto キーおよび本番リリースワークフローとは分けておく必要があります。
 
-## 今 で 試す こと が できる おもちゃ の 例 {#toy-examples-you-can-try-now}
+## 今すぐ試せるおもちゃの例 {#toy-examples-you-can-try-now}
 
-これらの例は,注記しない限り読み込みのみです. 鍵を生成する前に動作し,公共ネットワークの両方に安全です.
+これらの例は、注記がない限り読み取り専用です。キーを生成する前でも動作し、公開ネットワークに対して実行しても安全です。
 
-Taira テストネットと Minamoto メインネットの健康を比較する.
+Taira テストネットと Minamoto メインネットのヘルスを比較：
 
 ```bash
 for network in taira minamoto; do
@@ -211,7 +211,7 @@ for network in taira minamoto; do
 done
 ```
 
-Taira に暴露された公共データスペースの行列をリストする:
+Taira によって公開されているパブリックデータスペース実行レーンを一覧表示してください:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -221,7 +221,7 @@ curl -fsS https://taira.sora.org/status \
     | @tsv'
 ```
 
-Minamoto に関する同じコマンドを実行して,メインネットビューが必要とする場合:
+メインネットのビューが必要な場合は、同じコマンドを Minamoto に対して実行してください。
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
@@ -231,7 +231,7 @@ curl -fsS https://minamoto.sora.org/status \
     | @tsv'
 ```
 
-ダッシュボード,ボット,またはデプロイメントチェックのための小さな Node.js 状態探査機を作成する:
+ダッシュボード、ボット、またはデプロイメントチェック用に、非常に小さな Node.js ステータスプローブを作成する:
 
 ```bash
 node --input-type=module <<'EOF'
@@ -256,17 +256,17 @@ for (const [name, root] of Object.entries(roots)) {
 EOF
 ```
 
-最初の書き方玩具は Taira faucet claim でなければならない. testnet XOR を使用し,決して Minamoto に指向してはならない.
+最初の小さな書き込み例には、Taira faucet への請求を使用します。これは testnet XOR を使用するため、Minamoto を決して参照させないでください。
 
 ## 3. Taira クライアント設定を作成する {#_3-create-a-taira-client-config}
 
-キーペアを生成する
+まだキーペアを持っていない場合は、キーペアを生成してください：
 
 ```bash
 kagami keys --algorithm ed25519 --out-dir ./taira-client-key
 ```
 
-`taira.client.toml` を作成する:
+`taira.client.toml`を作成する:
 
 ```toml
 chain = "fc56984b-2be7-431d-840e-21514d1883f0"
@@ -284,23 +284,23 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-最上位レベル `chain` 正確な Taira 取引チェーン ID. 労働組合 `[account].profile = "taira"` 設定が独立して選択する Taira I105 鎖の差別剤. ID 口座プロフィールを選択しない.
+最上位の`chain`は、正確な Taira トランザクションチェーンIDです。`[account].profile = "taira"`の設定は、独立して Taira I105 チェーン識別子を選択します。チェーンIDはアカウントプロファイルを選択しません。
 
-読み込みのみのチェックを実行する:
+読み取り専用チェックを実行する:
 
 ```bash
 iroha --config ./taira.client.toml --output-format text ops sumeragi status
 ```
 
-Taira の公開診断を書き込みテストの前に実行する.
+書き込みテストの前に、公開 Taira の診断を実行してください。
 
 ```bash
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-Taira アカウントは,手数料の支払いの書き込みを実行する前に faucet 経由で資金提供します. faucet の直接的な流れは [Get Testnet XOR で Taira](#_4-get-testnet-xor-on-taira)です.
+手数料がかかる書き込みを実行する前に、テストネットの資金提供サービスを通じて Taira アカウントに資金を供給してください。直接のテストネット資金提供サービスのフローは[Taira でテストネット XOR を入手する](#_4-get-testnet-xor-on-taira)にあります。
 
-Taira カナリアは, faucet claimが受け入れられ,アカウントが資金提供された後,オプションの書き込み煙テストとなります.
+テストネット資金提供サービスの請求が承認され、アカウントに資金が提供された後、Taira カナリアはオプションの書き込みスモークテストとなります:
 
 ```bash
 iroha --config ./taira.client.toml taira write-canary \
@@ -309,9 +309,9 @@ iroha --config ./taira.client.toml taira write-canary \
   --json
 ```
 
-`--write-config`が提供されたとき,カナリは署名したピンを送信し,確認を待て,実行時のサイン設定を書きます. Taira は公開テストネットです.排列の飽和性によって, faucet が機能している場合でも署名されたping が失敗する可能性があります.もし `taira doctor` が飽和した排列を報告するか,カナリーが `PRTRY:NEXUS_FEE_ADMISSION_REJECTED` を返信した場合,クライアント設定エラーとして処理する前に待て再試してください.
+カナリアは署名付きのピンを提出し、確認を待ち、`--write-config` が提供されたときにソフトウェア実行時の暗号署名者設定を書き込みます。Taira はパブリックテストネットです。したがって、キューの飽和により、テストネット資金提供サービス自体が動作していても、署名付きピンが失敗する可能性があります。`taira doctor` がキューの飽和を報告する場合や、カナリアが `PRTRY:NEXUS_FEE_ADMISSION_REJECTED` を返す場合は、それをクライアント構成エラーとして扱う前に、待機して再試行してください。
 
-監視されていない煙の試験では,カナリーを制限された再試行ループに包み込む.
+無人のスモークテストでは、カナリアを制限付きリトライループで囲みます:
 
 ```bash
 ok=false
@@ -327,66 +327,66 @@ done
 test "$ok" = true
 ```
 
-`iroha taira doctor`が重篤な失敗を示している場合は再テストを停止します. 排列の飽和度と料金受付拒否は公共テストネットでの一時的な条件です; DNS, TLS,または `status = "fail"`診断はありません.
+もし`iroha taira doctor`がハードフェイルを示した場合、再試行を停止してください。キューの飽和や手数料による受け入れ拒否は一時的なパブリックテストネットの状況です；DNS、TLS、または`status = "fail"`の診断はそうではありません。
 
-## SORA Nexus アカウント ID を作成する {#generate-a-sora-nexus-account-id}
+## SORA Nexus アカウントIDを生成する {#generate-a-sora-nexus-account-id}
 
-A SORA Nexus 口座 ID は,法典的な I105 アドレスはアカウントパブリックキーとターゲットネットワークプレフィックスから得られる. `[account].domain` クライアントの値 TOML. 同じ公開鍵が異なるコードに IDs について Taira そして Minamoto, 生産利用者は別々のキーペアを Minamoto.
+SORA Nexus アカウントIDは、アカウントの公開鍵と対象ネットワークの接頭辞から派生した標準的な I105 アドレスです。それは `[account].domain` の値ではありません。クライアント TOML。Taira と Minamoto では同じ公開鍵が異なるIDにエンコードされ、本番ユーザーは Minamoto 用に別のキー ペアを生成する必要があります。
 
-アカウントを制御する Ed25519 キーパーの生成またはロード:
+アカウントを管理する Ed25519 キーペアを生成するか、読み込んでください:
 
 ```bash
 kagami keys --algorithm ed25519 --out-dir ./nexus-account-key
 ```
 
-公钥を Taira 口座 ID に変換する:
+公開鍵を Taira アカウントID に変換します:
 
 ```bash
 iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 ```
 
-Minamoto 公共鍵をメインネットプレフィックスで変換する:
+メインネットのプレフィックスを持つ Minamoto 公開鍵を変換する:
 
 ```bash
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-取得したアカウントを使用する ID どちらにしても Nexus API または CLI 命令は聖典的な説明を求めます ID, 例えば, Taira ポンプ `account_id`, バランスの取材,厳格なアカウントフィールド,または別名結合. 匹配を保持するクライアント設定のプライベートキーで,同じ公共ネットワークを `[account].profile = "taira"` または `[account].profile = "minamoto"`.
+生成されたアカウントIDを、Nexus、API、または CLI のコマンドが正規のアカウントIDを求める場合に使用してください。例えば、Taira テストネット資金提供サービス `account_id` の場合です。残高照会、厳格なアカウントフィールド、またはエイリアスのバインディング。`[account].profile = "taira"` または `[account].profile = "minamoto"` で同じパブリックネットワークを選択し、クライアント設定に一致する秘密鍵を保持してください。
 
-ID を生成するだけでは,連鎖で資金提供されたアカウントを作成することはありません. Taira では, faucetがテストネットの書き込みのための口座を作成して資金を調達できます. Minamoto では,承認されたメインネットオンボードまたは財務流を使用します.
+ID を生成するだけでは、それ自体で資金が入ったオンチェーンアカウントは作成されません。Taira では、テストネットの資金提供サービスがアカウントを作成してテストネット用の書き込みに資金を提供することができます。Minamoto では、承認されたメインネットのオンボーディングまたは財務フローを使用してください。
 
-### 鍵の保管とバックアップ {#key-storage-and-backup}
+### キーの保存とバックアップ {#key-storage-and-backup}
 
-ID アカウントと公開鍵は共有できる.一致するプライベートキー,パスワード,種子,復元資料は秘密扱いされなければならない.
+アカウントIDと公開鍵は共有できます。対応する秘密鍵、パスフレーズ、シード、およびリカバリ資料は秘密として扱う必要があります。
 
-SORA Nexus 口座について,これらの慣行を使用する.
+SORA Nexus アカウントには、これらの方法を使用してください。
 
-- 暗号化されたパスワード管理器,ハードウェアサポートされたキーストア,または専用のサインサービスにプライベートキーを保存する.ソースコントロールに鍵を委ねたり,シェル履歴,ログ,チャット,チケット,または暗号化されていないバックアップに生産キーを残さないこと.
-- キーフットやプロダクションシグナーごとにユニークな高エントロピーのパスワードを使用します.パスワード管理器または分割保管プロセスでパスワードを保存する暗号化されたプライベートキーと同じファイルやバックアップバンドにはない.
-- Taira と Minamoto の鍵を別々に保持する. Taira の鍵は使い捨てテストネット材料として, Minamoto の鍵は生産資金管理機関として扱う.
-- 署名者を復元するために必要な個人鍵,公開鍵,アカウントプロフィール ID,およびすべてのアカウント復旧または保管メモをバックアップします.ネットワークコンテキストのないプライベート鍵は復元中に悪用することが容易です.
-- プロダクションシグナーには少なくとも1つの暗号化されたオフラインバックアップと地理的に別々の暗号化されたバックアップを保持します.バックアップに依存する前に,読み込みのみの小さな操作で復元をテストします.
-- プライベートキー,パスワードフレーズ,バックアップメディア,または署名ホストが暴露された場合,サインを回すか交換する.
+- 秘密鍵は、暗号化されたパスワードマネージャ、ハードウェア対応のキーストア、または専用の署名サービスに保管してください。プロトコルの最終化キーをソース管理に置いたり、本番用キーをシェル履歴、ログ、チャット、チケット、または暗号化されていないバックアップに残したりしないでください。
+- 各ボールトまたは本番用暗号署名者ごとに、ユニークで高エントロピーのパスフレーズを使用してください。パスフレーズはパスワードマネージャーや分割管理プロセスで保管し、暗号化された秘密鍵と同じファイルやバックアップバンドルには保存しないでください。
+- Taira キーと Minamoto キーは分けて保管してください。Taira キーは使い捨てのテストネット用として扱い、Minamoto キーは本番資金の承認主体として扱ってください。
+- 暗号署名者を復元するために必要な秘密鍵、公開鍵、アカウントID、アカウントプロファイル、およびアカウント回復または管理に関するメモをバックアップしてください。ネットワークのコンテキストがない秘密鍵は、復元時に誤用されやすいです。
+- 本番用暗号署名者のために、少なくとも1つの暗号化されたオフラインバックアップと1つの地理的に分離された暗号化バックアップを保持してください。バックアップに依存する前に、小さな読み取り専用操作で回復をテストしてください。
+- 秘密鍵、パスフレーズ、バックアップメディア、または署名ホストが漏洩した可能性がある場合は、暗号署名者を回転させるか交換してください。
 
-詳細については, [ 暗号鍵の保存](/ja/guide/security/storing-cryptographic-keys.md)と [ パスワードセキュリティ](/ja/guide/security/password-security.md)を参照してください.
+詳細については、[暗号鍵の保存](/ja/guide/security/storing-cryptographic-keys.md) および [パスワードのセキュリティ](/ja/guide/security/password-security.md) を参照してください。
 
-## 4. テストネット XOR を Taira に取得する. {#_4-get-testnet-xor-on-taira}
+## 4. Taira でテストネット XOR を入手する {#_4-get-testnet-xor-on-taira}
 
-公共の水槽を直接使用する
+パブリックテストネットの資金提供サービスを直接利用してください。手順は以下の通りです：
 
-1. 署名者を生成またはロードし,その法典的な Taira アカウント ID を計算する.
-2. ポンプのパズルを持ってきて
-3. `difficulty_bits`が `0`より大きい場合,パズルを解決する.
-4. ポンプの申請を提出する
-5. 請求書を送信する前に,口座または資産の余分が表示されるのを待つ.
+1. 暗号署名者を生成またはロードし、その正準の Taira アカウントIDを計算します。
+2. 現在のテストネット資金提供サービスのパズルを取得してください。
+3. `difficulty_bits`が`0`より大きい場合は、パズルを解いてください。
+4. テストネット資金提供サービスの請求を提出してください。
+5. 手数料がかかる書き込みを送信する前に、アカウントまたは資産の残高が表示されるのを待ってください。
 
-公開鍵を Taira I105 口座 ID faucetによって予想される:
+公開鍵をテストネット資金提供サービスが要求する Taira I105 アカウントID に変換してください:
 
 ```bash
 iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 ```
 
-パズルを 持ってきて
+パズルを取ってください：
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
@@ -394,9 +394,9 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
   | jq .
 ```
 
-ポンプは公共のテストネットサービスです.パズルまたはクレームエンドポイントが `502`,タイムアウト,または他のゲートウェイレベルのエラーを返信した場合,鍵やクライアント設定を変更する前に待って再試してください.
+テストネット資金提供サービスは公開テストネットサービスです。パズルまたはクレーム API エンドポイントが `502`、タイムアウト、または他のゲートウェイレベルのエラーを返す場合、キーやクライアント設定を変更する前に、待って再試行してください。
 
-反応はこんな感じです
+応答はこの形をしています：
 
 ```json
 {
@@ -412,7 +412,7 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
 }
 ```
 
-`difficulty_bits`が `0`である場合,ただ単に ID の口座を提出する:
+`difficulty_bits` が `0` のとき、アカウントIDのみを提出してください:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
@@ -423,7 +423,7 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet \
   | jq .
 ```
 
-`difficulty_bits`が `0`より大きい場合は,パズルを解き,アンカー高度とノンスを含みます.
+`difficulty_bits` が `0` より大きい場合、パズルを解き、アンカーの高さと暗号化ナンスの値を含めます:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
@@ -438,25 +438,25 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet \
   | jq .
 ```
 
-パズルのアルゴリズムは:
+パズルのアルゴリズムは次の通りです:
 
-1. 課題を SHA-256 として構築する.
-   - `iroha:accounts:faucet:pow:v2` のバイト
-   - UTF-8 の口座 ID
-   - `anchor_height` のような大きなエンディアン `u64`
-   - `anchor_block_hash_hex`をバイトとして解読する
-   - `challenge_salt_hex` をバイトとして解読する.
-2. `u64` ノンチェスを試して Big-endian 8バイト値としてコードする.
-3. 各ノンスでスクリプトを実行する:
-   - パスワード: 8バイトのノンス
-   - 塩: 32バイトの挑戦
+1. チャレンジを SHA-256 の上に構築する:
+   - `iroha:accounts:faucet:pow:v2`のバイト
+   - UTF-8 アカウントID
+   - `anchor_height` をビッグエンディアンとして `u64`
+   - `anchor_block_hash_hex` をバイトとしてデコードしました
+   - 存在する場合、`challenge_salt_hex` はバイトとしてデコードされます
+2. ビッグエンディアンの8バイト値としてエンコードされた`u64`暗号化ノンス値を試してください。
+3. 各暗号化ノンス値について、次の設定でscryptを実行します：
+   - パスワード：8バイトの暗号用ナンス値
+   - ソルト：32バイトのチャレンジ
    - `N = 2^scrypt_log_n`
    - `r = scrypt_r`
    - `p = scrypt_p`
-   - 輸出長さ: 32バイト
-4. 勝利するノンセは,少なくとも `difficulty_bits` がゼロビットに先行した最初の消化です.
+   - 出力長さ：32バイト
+4. 勝利する暗号ナンス値は、少なくとも`difficulty_bits`個の先頭ゼロビットを持つ最初の暗号ダイジェスト値です。
 
-ポンプ応答には,資金調達資産とキュー取引ハッシュが含まれます.
+テストネット資金提供サービスの応答には、提供された資産とキューに入れられたトランザクションの暗号ハッシュが含まれます:
 
 ```json
 {
@@ -469,9 +469,9 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet \
 }
 ```
 
-回答は現在 HTTP `202 Accepted` で返信されている.その `asset_definition_id` は,公用 faucet によって資金提供される現在の Taira 料金資産である. ID の例をコピーする代わりに応答から導き出す. faucet が返信したときに要求を受け入れた `tx_hash_hex` と `status: "QUEUED"`.
+レスポンスは現在、HTTP `202 Accepted` と共に返されます。その `asset_definition_id` は、パブリックテストネット資金提供サービスによって資金提供された現在の Taira 手数料資産です；例のIDをコピーするのではなく、レスポンスからそれを導き出してください。テストネットの資金提供サービスは、`tx_hash_hex`および`status: "QUEUED"`を返すとリクエストを受け入れます。
 
-資金提供された資産を調査する前に 自分の手数料の支払いをします
+次に、自分の手数料を支払う取引を送信する前に、資金提供された資産の投票を行ってください:
 
 ```bash
 TAIRA_FEE_ASSET_DEFINITION=$(
@@ -483,9 +483,9 @@ iroha --config ./taira.client.toml ledger asset get \
   --account <TAIRA_I105_ACCOUNT_ID>
 ```
 
-もし faucet 請求が受け入れられたが,アカウントまたは資産はまだ表示されない場合,取引は依然として公開テストネットのキュー処理の後にある.送信書き前に読み取りを待て,再試します.
+もしテストネットの資金提供サービスの申請が承認されたが、アカウントや資産がまだ表示されない場合、トランザクションはまだ公開テストネットのキュープロセスの後ろにあります。書き込みを送信する前に、待ってから読み取りを再試行してください。
 
-実行準備ができている直接のチェック API のために,これを `taira_faucet_claim.py`として保存し, Taira I105 の口座 ID を渡す.
+すぐに実行できる直接の API チェックのために、これを`taira_faucet_claim.py`として保存し、Taira I105 アカウントIDを渡してください:
 
 ```python
 #!/usr/bin/env python3
@@ -551,13 +551,13 @@ with urllib.request.urlopen(request) as res:
     print(json.dumps(json.load(res), indent=2))
 ```
 
-ポンプは Taira テストネットは使用しないでください. XOR, faucet 口座,または Taira カナリーサイン Minamoto 流れる
+テストネット資金提供サービスは、Taira のテストネット資金専用です。テストネット XOR、テストネット資金提供サービスのアカウント、または Taira のカナリー暗号署名者を Minamoto のフローで使用しないでください。
 
 ## 5. Minamoto クライアント設定を作成する {#_5-create-a-minamoto-client-config}
 
-Minamoto に対して別々のキーペアを使用する. メインネットのために Taira キーを再利用しないでください.
+Minamoto には別のキーペアを使用してください。Taira のキーをメインネットで再利用しないでください。
 
-`minamoto.client.toml` を作成する:
+`minamoto.client.toml`を作成する:
 
 ```toml
 chain = "00000000-0000-0000-0000-000000000753"
@@ -575,39 +575,39 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-最上位レベル `chain` は電流である Nexus メインネットチェーン ID. `[account].profile = "minamoto"` 選択する Minamoto I105 チェーン識別子;エンドポイントのホスト名とチェーン ID 暗黙に選択しないでください.
+最上位の`chain`は現在の Nexus メインネットチェーンIDです。`[account].profile = "minamoto"`は Minamoto I105 チェーン識別子を選択します。API エンドポイントのホスト名とチェーンIDは暗黙的にそれを選択しません。
 
-変換する Minamoto 公的な鍵をその聖典に I105 口座 ID メインネット前記:
+Minamoto の公開鍵を、メインネット接頭辞付きの標準的な I105 アカウントIDに変換する:
 
 ```bash
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-メインネットオンボードまたはガバナンスフローを通じてアカウントが配置され,資金提供されるまで,読み方チェックのみを実行します.
+アカウントがメインネットのオンボーディングまたはガバナンスフローを通じてプロビジョニングされ、資金が投入されるまで、読み取り専用のチェックのみを実行してください：
 
 ```bash
 iroha --config ./minamoto.client.toml --output-format text ops sumeragi status
 ```
 
-Taira faucet または write-canary ヘルパーを, Minamoto に対して動かさないこと.
+Minamoto に対して Taira テストネット資金提供サービスやライターカナリアヘルパーを実行しないでください。
 
-## 6. XOR で Minamoto 口座を資金提供する {#_6-fund-a-minamoto-account-with-xor}
+## 6. Minamoto アカウントに XOR を入金する {#_6-fund-a-minamoto-account-with-xor}
 
-Minamoto 手数料は,生産 XOR で支払われ,Minamoto には公共の faucetがありません.承認されたメインネットオンボードまたは財務金転送を通じて構成されたアカウントを資金提供するか,既存の資金調達した Minamoto 口座から XOR を受け取る.
+Minamoto の手数料は生産された XOR で支払われ、Minamoto にはパブリックテストネットの資金提供サービスはありません。承認されたメインネットのオンボーディングまたは財務移転を通じて設定されたアカウントに資金を提供するか、既存の資金提供済み Minamoto アカウントから XOR を受け取ってください。
 
-ID のカノニカル・アカウントと資金は,書き込みを提出する前に読み取りのみのチェックで確認してください. Minamoto XOR を生産資金として扱ってください:最初に Taira で同じ操作を練習し,別々の生産キーを保持し,メインネット取引がリセット可能であると仮定しないでください.
+書き込みを送信する前に、読み取り専用のチェックで正規のアカウントIDと資金を確認してください。Minamoto XOR は本番資金として扱い、最初に Taira で同じ操作をリハーサルし、本番用のキーは別に保管し、メインネットのトランザクションをリセットできるとは考えないでください。
 
-Taira XOR は Minamoto 手数料を支払えない.テストネットの余分と faucetの請求は, Minamoto に転送されない.
+Taira XOR は Minamoto の手数料を支払うことができません。テストネットの残高およびテストネット資金提供サービスの請求は Minamoto に引き継がれません。
 
-## 7. 既存のデータ領域内での作業 {#_7-work-inside-an-existing-dataspace}
+## 7. 既存のデータスペース内で作業する {#_7-work-inside-an-existing-dataspace}
 
-データベース内にある本簿オブジェクトに完全に資格のあるドメイン名を使用します.例えば,公開データ領域のプロジェクトドメインは:
+データスペース内に存在するブロックチェーン台帳オブジェクトには、完全修飾ドメイン名を使用してください。例えば、パブリックデータスペースのプロジェクトドメインは次のように使用する必要があります:
 
 ```text
 apps.universal
 ```
 
-アカウントが必須の許可を取得した後,ドメインのための秘密のない意図 `AliasSetupPlanRequestV1` を作成し,宣言プランナーを使用します:
+アカウントに必要な権限が付与されたら、ドメイン用にシークレットなしの `AliasSetupPlanRequestV1` インテントを作成し、宣言型プランナーを使用してください。
 
 ```bash
 iroha --config ./taira.client.toml \
@@ -620,7 +620,7 @@ iroha --config ./taira.client.toml \
   app alias setup apply --plan-file ./taira-apps-domain.plan.json
 ```
 
-Minamoto については,別々のメインネットの意図と計画を生成し承認する.プランは,そのチェーン,権限,ライブステートアンカー,および期限に縛られているため, Taira プランを推進したり再演出することもできない:
+Minamoto について、別のメインネット意図および計画を生成して承認してください。計画はそれぞれのチェーン、認可主体、ライブステートアンカー、締め切りに結び付けられているため、Taira の計画を昇格させたり再実行したりすることはできません。
 
 ```bash
 iroha --config ./minamoto.client.toml \
@@ -632,20 +632,20 @@ iroha --config ./minamoto.client.toml \
   app alias setup apply --plan-file ./minamoto-apps-domain.plan.json
 ```
 
-アカウント・アリスは同じデータスペースサフィックスを使用します:
+アカウント別名は同じデータスペースの接尾辞を使用します:
 
 ```text
 alice@apps.universal
 alice@universal
 ```
 
-厳格なアカウントフィールドは依然としてカノニカルを使用します I105 口座 IDs. 人に読める結合として異名詞を扱う. IDs.
+厳密なアカウントフィールドは依然として標準の I105 アカウントIDを使用します。エイリアスは、標準のアカウントIDに解決される人間が読みやすい結びつきとして扱ってください。
 
-## 8. 新しい データ スペース を 提供 する {#_8-provision-a-new-dataspace}
+## 8. 新しいデータスペースを提供する {#_8-provision-a-new-dataspace}
 
-新しいデータ領域は,オペレーターとガバナンス変更である.公共の Torii エンドポイントは,構成されたデータ領域へのトラフィックをルーティングできるが,未知のデータ領域のニックネームを拒絶する.
+新しいデータスペースはオペレーターおよびガバナンスの変更です。パブリック Torii API エンドポイントはトラフィックを設定されたデータスペースにルーティングできますが、未知のデータスペースエイリアスは拒否します。
 
-変更を準備する前に,現在のライブカタログをキャプチャする:
+変更を準備する前に、現在のライブカタログをキャプチャしてください：
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -653,24 +653,24 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-運行者のアカウントについては,レーンマニストの姿勢も確認してください.
+オペレーターアカウントの場合、実行レーンの技術マニフェストの姿勢も確認してください：
 
 ```bash
 iroha --config ./operator.client.toml app nexus lane-report --summary
 ```
 
-レーン ID,データスペース ID,検証器セット,故障許容性,マニフェスト,ルーティング規則,および運用所有者が一緒にレビューされていない限り,新しい仮名をプロモートしないでください.必要な権限を持つ通常のユーザーアカウントは,既存のデータスペース内にドメインを取得し, SNS のレンタルをアライスプランナーを通じて行うことができる.新しい公共データ空間を安全に追加することはできません.
+実行レーンID、データスペースID、バリデータセット、耐障害性、技術マニフェスト、ルーティングルール、および運用オーナーが一緒に確認されていない限り、新しいエイリアスを促進しないでください。必要な権限を持つ通常のユーザーアカウントは、エイリアスプランナーを通じて既存のデータスペース内でドメインとその SNS リースを取得できますが、新しいパブリックデータスペースを安全に追加することはできません。
 
-プライベートまたは組織的なデータスペースについては,以下のようなカタログ変更を準備してください.
+個人用または組織用のデータスペースの場合、次の内容でカタログ変更を準備してください:
 
-- 単一のデータスペース・アライスと数値 `id`
-- 適合するレーン入口または既存のレーン割り当て
-- `fault_tolerance` データスペース
-- そこに着陸すべき指示やアカウントの範囲のためのルーティング規則
-- UAID 機能が暴露された場合,スペースディレクトリマニストまたは同等の展開証明書
-- バリダーター,コンプライアンス,決済およびモニタリング政策のためのガバナンスの承認
+- ユニークなデータスペースのエイリアスと数値 `id`
+- 一致する実行レーンのエントリまたは既存の実行レーン割り当て
+- データスペース `fault_tolerance`
+- そこに届くべき指示やアカウントの範囲のルーティングルール
+- データスペースが UAID 機能を公開する場合の、宇宙ディレクトリの技術マニフェストまたは同等の展開証拠
+- バリデーターのガバナンス承認、コンプライアンス、金融取引決済、およびモニタリング方針
 
-確認可能なコンフィギュレーションフラグメントはこんな感じです
+レビュー可能な設定フラグメントは次のようになります:
 
 ```toml
 [[nexus.lane_catalog]]
@@ -695,13 +695,13 @@ account_prefix = "payments."
 description = "Route payments domains to the payments dataspace"
 ```
 
-オペレーターの受け入れには以下のゲートが含まれます.
+オペレーターの受け入れには、これらのゲートを含めるべきです。
 
-- `iroha3d --sora --config <config.toml> --trace-config` は解決されたノード構成を転送します
-- 生成されたまたはレビューされたマニフェストはハッシュと署名でアーカイブされます
-- 煙のテストが合格 Taira その前に Minamoto 昇進
-- 変更後のカタログ `/status` では,意図されたレーンとデータスペースが表示されます.
-- `iroha app nexus lane-report --summary`は,欠けている必要の明示書を報告していない.
+- `iroha3d --sora --config <config.toml> --trace-config` は解決されたノード構成を渡します
+- 生成またはレビューされた技術マニフェストは、暗号ハッシュと署名とともにアーカイブされます
+- いかなる Minamoto への昇格の前に、Taira でスモークテストが合格する
+- 変更後の `/status` カタログは、意図された実行レーンとデータスペースを示しています
+- `iroha app nexus lane-report --summary` は必要な技術マニフェストが欠落していることを報告しません
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -709,12 +709,12 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | select(.dataspace_alias == "payments")'
 ```
 
-同じデータ空間を Minamoto に促進するのは, Taira の展開,煙のテスト,モニタリング,およびガバナンスの証拠が完了した後のみです.
+Taira のデプロイメント、スモークテスト、モニタリング、およびガバナンスの証拠が完了した後にのみ、同じデータスペースを Minamoto に昇格させてください。
 
 ## 関連ページ {#related-pages}
 
-- [Iroha 3](/ja/get-started/install-iroha.md)をインストールする
-- [動作する Iroha 3 経由 CLI](/ja/get-started/operate-iroha-via-cli.md)
-- [プライベートデータスペースのスポンサー料金](/ja/get-started/private-dataspace-fee-sponsor.md)
-- [Torii エンドポイント](/ja/reference/torii-endpoints.md)
-- [創世記参照](/ja/reference/genesis.md)
+- [Iroha 3 をインストールする](/ja/get-started/install-iroha.md)
+- [CLI を介して Iroha 3 を操作する](/ja/get-started/operate-iroha-via-cli.md)
+- [プライベートデータスペースのスポンサー料](/ja/get-started/private-dataspace-fee-sponsor.md)
+- [Torii API エンドポイント](/ja/reference/torii-endpoints.md)
+- [ブロックチェーンのジェネシス参照](/ja/reference/genesis.md)

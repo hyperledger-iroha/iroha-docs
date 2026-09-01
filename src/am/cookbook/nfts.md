@@ -1,28 +1,28 @@
 ---
 translation_locale: am
 translation_source: /cookbook/nfts.md
-translation_source_hash: 5eb6a349b815afbac9717f7b44c499adc78b1280625388656015ff4b133b9085
+translation_source_hash: db99dab483d4e2fb3fd84be84f6e4ef9f8373f0c16eb2f34952f1232c4587561
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # NFTs {#nfts}
 
-## ውጤቱ {#outcome}
+## ውጤት {#outcome}
 
-ምርመራ Taira NFT መግለጫ, ከዚያም መመዝገብ, ማዘመን, ማስተላለፍ, እና ጥያቄ አንድ ልዩ NFT በተፈጠረው አካባቢያዊ አውታረመረብ ላይ የስራ ፍሰት ሙሉ ብቃት ያለው `name$domain.dataspace` NFT ID እና የካኖኒክ I105 ባለቤት IDs.
+Taira NFT ሁኔታን ይፈትሹ፣ ከዚያ በመነጨ የአካባቢ አውታረ መረብ ላይ ልዩ NFT ይመዝገቡ፣ ያዘምኑ፣ ያስተላልፉ እና ይጠይቁ። የስራ ሂደቱ ሙሉ ብቃት ያለው `name$domain.dataspace` NFT መታወቂያ እና ነጠላ ፕሮቶኮል-ደረጃ I105 የባለቤት መታወቂያዎችን ይጠቀማል።
 
 ## ቅድመ ሁኔታዎች {#prerequisites}
 
-- `curl`, `jq`, Python 11 ወይም ከዚያ በኋላ, እና የአሁኑ `iroha` CLI.
-- Taira የንባብ-ብቻ መዳረሻ።
-- ለጽሁፎች ከ [የተፈጠረ አካባቢያዊ አውታረመረብ Iroha](/am/get-started/launch-iroha.md) ይጀምራል፣ በ `./localnet/client.toml` እና Torii ላይ `http://127.0.0.1:8080`።
+- `curl`፣ `jq`፣ Python 3.11 ወይም ከዚያ በኋላ፣ እና የአሁኑ `iroha` CLI።
+- ተነባቢ ብቻ Taira መዳረሻ።
+- ለመጻፍ፣ ከ[አስጀምር Iroha](/am/get-started/launch-iroha.md)፣ `./localnet/client.toml` እና Torii በ`http://127.0.0.1:8080` ላይ የመነጨ የአካባቢ አውታረ መረብ።
 
 ## እርምጃዎች {#steps}
 
-### 1. የህዝብ Taira ስብስብ መመርመር። {#_1-inspect-the-public-taira-collection}
+### 1. የህዝብን Taira ስብስብ ይፈትሹ {#_1-inspect-the-public-taira-collection}
 
-ባዶ ገጽ የተሳካ ንባብ ነው: ይህ ማለት በተጠየቀው ገጽ ውስጥ ምንም የሚታይ NFTs አይገኙም.
+ባዶ ገጽ የተሳካ ንባብ ነው በተጠየቀው ገጽ ላይ ምንም የሚታይ NFTs የለም ማለት ነው።
 
 ```bash
 curl -fsS -H 'Accept: application/json' \
@@ -30,11 +30,11 @@ curl -fsS -H 'Accept: application/json' \
   | jq '{total, nfts: [.items[] | {id, owned_by, content}]}'
 ```
 
-NFTs ልዩ መዝገቦች ናቸው ፣ የቁጥር ሚዛኖች አይደሉም ። እነሱ ID ፣ አንድ ባለቤት እና ትናንሽ `content` ሜታዳታ ካርታ አላቸው ።
+NFTs ልዩ መዝገቦች እንጂ የቁጥር ቀሪ ሒሳቦች አይደሉም።. መታወቂያ፣ ነጠላ ባለቤት እና የታመቀ `content` ሜታዳታ ካርታ አላቸው።
 
-### 2. የአካባቢውን ባለቤት IDs ያዘጋጁ። {#_2-prepare-local-owner-ids}
+### 2. የአካባቢ ባለቤት መታወቂያዎችን ያዘጋጁ {#_2-prepare-local-owner-ids}
 
-የጻፍ ምሳሌ የተረጋገጠ `wonderland.universal` ጎራ ይጠቀማል. የግል ቁልፉን ሳያጋልጥ የተቀየሰውን ባለስልጣን ያመነጫሉ, ከዚያም ለሌላ የተመዘገበ መለያ እንደ ዝውውር መድረሻ ይምረጡ.
+የመፃፍ ምሳሌ ተመዝግቦ የገባውን `wonderland.universal` ጎራ ይጠቀማል። የግል ቁልፉን ሳያጋልጡ የተዋቀረውን የፈቃድ ባለቤት ያውጡ፣ ከዚያ ሌላ የተመዘገበ መለያ እንደ ማስተላለፊያ መድረሻ ይምረጡ።
 
 ```bash
 LOCAL_ROOT='http://127.0.0.1:8080'
@@ -59,11 +59,11 @@ NEW_OWNER="$(
 )"
 ```
 
-የ `$` መለዋወጫው ወደ NFT የጽሑፍ ቅጽ ይተካል። የተሟላውን `wonderland.universal` ጎራ እና የመረጃ ቦታ ድብልቅ ይጠብቁ።
+የ `$` መለያያ የ NFT ጽሑፍ ቅርጽ አካል ነው። ሙሉውን `wonderland.universal` የጎራ እና የመረጃ ቦታ ቅጥያ ይጠብቁ።
 
-### 3. የ NFT የመጀመሪያ ይዘት ይመዝገቡ {#_3-register-the-nft-with-initial-content}
+### 3. NFT በመጀመሪያው ይዘት ያስመዝግቡ {#_3-register-the-nft-with-initial-content}
 
-CLI የመጀመሪያውን JSON ንጥረ ነገር ከተለመደው ግብዓት ያነባል. አሁን ያለው ባለስልጣን ባለቤት ይሆናል.
+CLI የመጀመሪያውን JSON ነገር ከመደበኛ ግቤት ያነባል። የአሁኑ የፍቃድ ዋና ባለቤት ይሆናል።
 
 ```bash
 printf '%s\n' \
@@ -73,9 +73,9 @@ printf '%s\n' \
       ledger nft register --id "$NFT_ID"
 ```
 
-### 4. የይዘት ካርታውን ዘምኗል። {#_4-update-the-content-map}
+### 4. የይዘት ካርታውን ያዘምኑ {#_4-update-the-content-map}
 
-የሜታዳታ እሴቶች JSON ናቸው። አንድ ቁልፍ ያስገቡ ወይም ያንን አንድ ማስገቢያ ይተካሉ; ይህ መላውን NFT መዝገብ አይተካም ።
+የሜታዳታ እሴቶች JSON ናቸው። ቁልፍ ማቀናበር ያንን አንድ ግቤት ያስገባል ወይም ይተካዋል; ሙሉውን NFT መዝገብ አይተካም።
 
 ```bash
 printf '%s\n' '{"color":"blue","version":1}' \
@@ -87,9 +87,9 @@ iroha --config "$LOCAL_CONFIG" ledger nft meta get \
   --id "$NFT_ID" --key traits
 ```
 
-### 5. የባለቤትነት ማስተላለፍ {#_5-transfer-ownership}
+### 5. ባለቤትነትን ያስተላልፉ {#_5-transfer-ownership}
 
-I105 ካኖኒካል መለያ IDs ማቅረብ። አንድ ቅጽል ስም `--from` ወይም `--to` ሆኖ ከመጠቀምዎ በፊት መፍታት አለበት.
+ሁለቱንም ነጠላ ፕሮቶኮል-መደበኛ I105 መለያ መታወቂያዎችን ያቅርቡ። ተለዋጭ ስም እንደ `--from` ወይም `--to` ከመጠቀሙ በፊት መፈታት አለበት።
 
 ```bash
 iroha --config "$LOCAL_CONFIG" \
@@ -100,13 +100,13 @@ iroha --config "$LOCAL_CONFIG" \
   --to "$NEW_OWNER"
 ```
 
-::: warning የተፈቀደለት ገደብ
+::: warning የፍቃድ ወሰን
 
-በ Taira ላይ, እያንዳንዱ መጻፍ ደግሞ `--metadata ./taira.tx-metadata.json` እና ግልፅ ክፍያ የሚከፍል ሰው ያስፈልገዋል. ምዝገባ, ማስተላለፍ, መሰረዝ, እና ሜታዳታ ዝማኔዎች በ ንቁ ሩጫ ጊዜ ይመረምራሉ (`CanRegisterNft`, `CanTransferNft`, `CanUnregisterNft`, እና `CanModifyNftMetadata` በነባሪ ፍቃድ ወለል ውስጥ) የእርስዎን መተግበሪያ የተመደበ ጎራ ይጠቀሙ ወይም በ localnet ላይ ይህን ማለፍ ይጠብቁ.
+በ Taira ላይ፣ እያንዳንዱ የመጻፍ ክዋኔ `--metadata ./taira.tx-metadata.json` እና ግልጽ ክፍያ ከፋይ ያስፈልገዋል። ምዝገባ፣ ማስተላለፍ፣ ማስወገድ እና ሜታዳታ ዝመናዎች በነቃ የሶፍትዌር አፈፃፀም የተረጋገጡ ናቸው አካባቢ (`CanRegisterNft`፣ `CanTransferNft`፣ `CanUnregisterNft` እና `CanModifyNftMetadata` በነባሪው የፍቃድ ወለል ላይ)። ለመተግበሪያዎ የተመደበውን ጎራ ይጠቀሙ ወይም ይህን የእግር ጉዞ በlocalnet ላይ ያቆዩት።
 
 :::
 
-ለውል ባለቤትነት ላላቸው የስራ ፍሰቶች Kotodama የተጻፉትን NFT አስተናጋጅ ጥሪዎችን ይገልጻል። የሚከተለው በፒን IVM ሰነድ ሙከራ የተጠናቀቀው እና የተከናወነው ትክክለኛ የሕይወት ዑደት ቅንብር ነው:
+በኮንትራት ባለቤትነት ለተያዙ የስራ ፍሰቶች፣ Kotodama የተተየቡ NFT የአስተናጋጅ ተግባር ጥሪዎችን ያጋልጣል። የሚከተለው በተሰካው IVM የሰነድ ሙከራ የተጠናቀረ እና የተተገበረው ትክክለኛው የህይወት ኡደት የሙከራ አብነት ነው።
 
 ```kotodama
 seiyaku NftFlow {
@@ -134,11 +134,11 @@ seiyaku NftFlow {
 }
 ```
 
-ሁለቱ ተስተካክለው I105 እሴቶች የቅድመ ፍሰት የሙከራ ማያ ገጾች ናቸው ፣ ቀበቶው ከመተግበር በፊት መድረሻውን ይመዘግባል። `CURRENT_OWNER` እና `NEW_OWNER` ከ CLI አፕሊኬሽን ኮንትራት ለማግኘት ትክክለኛውን የካኖኒክ ሂሳቡን ያቅርቡ, ከዚያም ያጠናቅቁ, ይሞክሩ, ማሰማራት እና በመደወል በኩል [ብልህ ኮንትራቶች](./smart-contracts.md). ያልተመለከቱትን የባይት ኮድ ወደ Taira, እና ያስታውሱ የውል አፈፃፀም አሁንም የአፈፃፀም ጊዜ ፈቃድ ማለፍ አለበት.
+ሁለቱ ቋሚ I105 እሴቶች የላይኛው ተፋሰስ የሙከራ አብነቶች ናቸው; የሙከራ ሯጩ ከመፈጸሙ በፊት መድረሻውን ይመዘግባል. እነሱ `CURRENT_OWNER` እና `NEW_OWNER` ከ CLI የእግር ጉዞ አይደሉም። ለመተግበሪያ ውል ትክክለኛውን ነጠላ ፕሮቶኮል-መደበኛ መለያዎችን ያቅርቡ፣ ከዚያ ያጠናቅሩ፣ ይፈትሹ፣ ያሰማሩ እና በ[ብልጥ ኮንትራቶች](./smart-contracts.md) በኩል ይጥራሉ። ያልተገመገመ ባይት ኮድ ለ Taira አያስገቡ፣ እና የኮንትራት አፈፃፀም አሁንም የሶፍትዌር ማስፈጸሚያ አካባቢ ፍቃድ እንደሚያልፍ ያስታውሱ።
 
-## ያረጋግጡ {#verify}
+## አረጋግጥ {#verify}
 
-NFT ን በቀጥታ ያንብቡ እና ይዘቱ ተያይዞ በሚቆይበት ጊዜ ባለቤቱ እንደተለወጠ ያረጋግጡ:
+NFT ን በቀጥታ ያንብቡ እና ይዘቱ ተያይዞ እያለ ባለቤቱ እንደተለወጠ ያረጋግጡ -
 
 ```bash
 iroha --config "$LOCAL_CONFIG" --machine ledger nft get --id "$NFT_ID" \
@@ -149,23 +149,23 @@ jq -e --arg owner "$NEW_OWNER" \
   cookbook-nft.json
 ```
 
-የ CLI መዝገቡን በውጤት ፖስታ ውስጥ ይሸፍናል፣ JSON አንድ ጊዜ እና የያዘውን ማረጋገጫ ተግባራዊ NFT ኦፊሴላዊ ተለዋዋጮች ናቸው `id`, `owned_by`, እና `content`.
+CLI መዝገቡን በውጤት ውሂብ መያዣ ውስጥ ካጠቀለለ፣ JSON ን አንድ ጊዜ ይፈትሹ እና ማረጋገጫውን በያዘው NFT ነገር ላይ ይተግብሩ። ስልጣን ያላቸው የማይለዋወጡ `id`፣ `owned_by` እና `content` ናቸው።
 
-## ችግሮችን መፍታት {#troubleshooting}
+## መላ ፍለጋ {#troubleshooting}
 
-- `name$domain` በአንዳንድ ፓርሰሮች ውስጥ በዋነኝነት ወደ ሁለንተናዊ የመረጃ ቦታ ሊገባ ይችላል ፣ ግን የምግብ አሰራር መጽሐፍ እና መተግበሪያ IDs ግልፅ የሆነውን `name$domain.dataspace` ቅጽ መጠቀም አለባቸው።
-- ተመሳሳይ NFT ID ተደጋጋሚ ምዝገባ ውድቅ ተደርጓል። የተለየ መዝገብ ለመመዝገብ አዲስ አካባቢያዊ መረብ ይጠቀሙ ወይም የተረጋጋ አዲስ ID ይምረጡ ።
-- የሜታዳታ ግብዓት በመደበኛ ግብዓት ላይ ትክክለኛ JSON መሆን አለበት ። ያለ JSON ጥቅስ የ ‹shell string› አንድ ሜታዳታ ዋጋ አይደለም።
-- የአሁኑ ባለቤት ካልሆነ ሌላ አካውንት የተፈረመበት ዝውውር ትክክለኛ ፈቃድ ይፈልጋል፤ `--from` መቀየር ፊርማውን አይቀይረም።
-- ከተላለፈ በኋላ የመጀመሪያው ደንበኛ NFT ን እንዲቀይር ወይም እንዳይመዘገብ አይፈቀድለትም። የአዲሱ ባለቤት ፊርማ ወይም የተፈቀደ ተቆጣጣሪን ይጠቀሙ ።
-- Taira ባዶ የሆነ NFT ስብስብ ሊመልስ ይችላል። `items: []` የ NFT መመሪያዎች አለመኖራቸውን የሚያረጋግጥ ማስረጃ አድርገው አያዩት።
+- `name$domain` በአንዳንድ ተንታኞች ውስጥ ወደ ሁለንተናዊ የውሂብ ቦታ ነባሪ ሊሆን ይችላል፣ ነገር ግን የተግባር መመሪያ ስብስብ እና የመተግበሪያ መታወቂያዎች ግልጽ የሆነውን `name$domain.dataspace` ቅጽ መጠቀም አለባቸው።.
+- ተመሳሳይ NFT መታወቂያ ተደጋጋሚ ምዝገባ ውድቅ ተደርጓል። አዲስ localnet ይጠቀሙ ወይም ለተለየ መዝገብ የተረጋጋ አዲስ መታወቂያ ይምረጡ።
+- ሜታዳታ ግቤት በመደበኛ ግቤት ላይ የሚሰራ መሆን አለበት JSON JSON መጥቀስ የሌለበት የሼል ሕብረቁምፊ የሜታዳታ እሴት አይደለም።.
+- ከአሁኑ ባለቤት በሌላ መለያ የተፈረመ ዝውውር ግልጽ ፈቃድ ያስፈልገዋል; `--from`ን መቀየር ምስጠራ ፈራሚውን አይለውጠውም።
+- ከተላለፈ በኋላ፣ ዋናው ደንበኛ NFT እንዲቀይር ወይም እንዲመዘገብ ላይፈቀድለት ይችላል። የአዲሱን ባለቤት ምስጠራ ፈራሚ ወይም የተፈቀደለት ተቆጣጣሪ ይጠቀሙ።
+- Taira ባዶ NFT ስብስብ መመለስ ይችላል። `items: []` NFT መመሪያዎች አለመገኙን እንደ ማረጋገጫ አይያዙ።
 
 ## ምንጭ እና ተዛማጅ ሰነዶች {#source-and-related-docs}
 
-- [NFT ተጣብቆ በተቀመጠበት ኮምፕርት ላይ የተዋሃዱ ሙከራዎች](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/nft.rs)
-- [Kotodama NFT በተቆራኘው ኮሚት ላይ አስተናጋጅ ጥሪ ሙከራዎች](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
-- [ትክክለኛ Kotodama NFT የህይወት ዑደት ቅንብር በፒን የተቀመጠ ኮሚቴ ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/docs/examples/12_nft_flow.ko)
+- [NFT በተሰካው የምንጭ-ኮድ ክለሳ ላይ የውህደት ሙከራዎች](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/nft.rs)
+- [Kotodama NFT በተሰካው የምንጭ-ኮድ ክለሳ ላይ የአስተናጋጅ-ቴክኒካዊ ጥሪ ሙከራዎች](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
+- [ትክክለኛው Kotodama NFT የህይወት ዑደት የሙከራ አብነት በተሰካው የምንጭ-ኮድ ክለሳ ላይ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/docs/examples/12_nft_flow.ko)
 - [NFTs](/am/blockchain/nfts.md)
-- [ሜታ መረጃዎች](/am/blockchain/metadata.md)
+- [ሜዳዳታ](/am/blockchain/metadata.md)
 - [መመሪያዎች](/am/blockchain/instructions.md)
-- [የፈቃድ ማስያዣዎች](/am/reference/permissions.md)
+- [የፍቃድ ምልክቶች](/am/reference/permissions.md)

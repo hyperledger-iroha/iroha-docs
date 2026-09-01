@@ -3,68 +3,68 @@ translation_locale: ja
 translation_source: /blockchain/nfts.md
 translation_source_hash: 6dd2d21a29f352a14cb17046c66cfa541ef501b733b95bb6874d2d3f86ec0504
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # NFTs {#nfts}
 
-Iroha NFT は,単一の所有者を持つユニークな本簿オブジェクトである.レコードが独自のアイデンティティ,メタデータ,ライフサイクルイベント,所有権転送セマンティックを必要とする場合 NFTs を使用する.しかし,数値バランスを必要としていない.
+「Iroha NFT」は、所有者が1人のユニークなブロックチェーン台帳オブジェクトです。記録に独自のID、メタデータ、ライフサイクルイベント、および所有権移転の意味を持たせたい場合に NFTs を使用しますが、数値の残高は必要ありません。
 
-数値的な [資産](/ja/blockchain/assets.md)とは異なり, NFT には精度や mintability,または毎アカウントの量がありません. NFT は登録されたオブジェクトとして存在し,所有権はそのオブジェクトに直接追記されます.
+数値の[資産](/ja/blockchain/assets.md)とは異なり、NFT には精度、資産発行ポリシー、またはアカウントごとの数量はありません。NFT は1つの登録されたオブジェクトとして存在し、そのオブジェクト上で所有権が直接追跡されます。
 
 ## 構造 {#structure}
 
-登録された `Nft` には:
+登録された`Nft`には以下が含まれます:
 
-- `id`: a `NftId`
-- `content`: NFT を記述するメタデータ
-- `owned_by`: NFT の所有者口座
+- `id`：1つの`NftId`
+- `content`： NFT を説明するメタデータ
+- `owned_by`：NFT を所有しているアカウント
 
-`content`フィールドは`Metadata`地図である.コンパクトに保存する:記述フィールド,安定参照,ハッシュ, URIs,または SoraFS 経路をそこに保管する.大きな文書,メディア,または高速度のアプリケーション状態をオフチェーンで保存し,確認可能な参照のみを NFT に保持する.
+`content` フィールドは `Metadata` マップです。コンパクトに保ちましょう：そこには説明フィールド、安定した参照、暗号ハッシュ、URIs、または SoraFS パスを保存します。大きな文書、メディア、または変動の激しいアプリケーション状態はオフチェーンに保存し、NFT には検証可能な参照のみを保持します。
 
-## Taira で試してみてください {#try-it-on-taira}
+## Taira でこのワークフローを実行してください {#try-it-on-taira}
 
-公開の Taira テストネットに現在 NFT の記録があるかどうかを確認する.
+現在、パブリック Taira テストネットに NFT 件の記録があるかどうかを確認してください:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/nfts?limit=5' \
   | jq '{total, nft_ids: [.items[].id]}'
 ```
 
-ノードが暴露した NFT 経路について,ライブ OpenAPI ドキュメントを確認する.
+ノードによって公開されている NFT ルートについては、ライブ OpenAPI ドキュメントを確認してください:
 
 ```bash
 curl -fsS https://taira.sora.org/openapi.json \
   | jq -r '.paths | keys[] | select(startswith("/v1/nfts") or startswith("/v1/explorer/nfts"))'
 ```
 
-空っぽの `items` アレイは,公開テストネット上の有効な応答である.これは現在のページに NFTs が存在しないことを意味し, NFT の指示が利用できないということではない.
+空の `items` 配列は、パブリックテストネットで有効な応答です。これは現在のページに NFTs が存在しないことを意味し、NFT の指示が利用できないことを意味するわけではありません。
 
-## NFT IDs {#nft-ids}
+## NFT ID {#nft-ids}
 
-`NftId`は以下のテキスト形式を使用します.
+`NftId` はこのテキスト形式を使用します:
 
 ```text
 name$domain
 name$domain.dataspace
 ```
 
-たとえば, `badge$docs.universal` は`badge` NFT を `docs.universal` ドメインで識別する.データスペースが省略された場合,現在の解析器は `universal` データスペースを使用しているので, `badge$docs` は `badge$docs.universal` に解消される.
+例えば、`badge$docs.universal` は `docs.universal` ドメイン内の `badge` NFT を識別します。データスペースが省略された場合、現在のパーサーは `universal` データスペースを使用するため、`badge$docs` は `badge$docs.universal` に解決されます。
 
-NFT IDs に対して安定した名前を使用します. ID は,指示,クエリ,許可,イベントフィルター,アプリケーション参照で使用されるオブジェクトアイデンティティです.
+NFT IDには安定した名前を使用してください。このIDは、命令、クエリ、権限、イベントフィルター、およびアプリケーション参照で使用されるオブジェクト識別子です。
 
 ## ライフサイクル {#lifecycle}
 
-NFT ライフサイクル運用使用 Iroha 特殊指示:
+NFT ライフサイクル操作は Iroha 指示操作を使用します:
 
-- [`Register`](/ja/blockchain/instructions.md#un-register) は,最初の `content` で NFT を作成します.
-- [`Unregister`](/ja/blockchain/instructions.md#un-register)は, NFT を削除する.
-- [`Transfer`](/ja/blockchain/instructions.md#transfer)の変更は, `owned_by`.
-- [`SetKeyValue`と `RemoveKeyValue`](/ja/blockchain/instructions.md#setkeyvalue-removekeyvalue)の更新された NFT メタデータ.
+- [`Register`](/ja/blockchain/instructions.md#un-register) 作る NFT 最初の状態で `content`.
+- [`Unregister`](/ja/blockchain/instructions.md#un-register) を取り除く NFT.
+- [`Transfer`](/ja/blockchain/instructions.md#transfer) 変化 `owned_by`.
+- [`SetKeyValue` そして `RemoveKeyValue`](/ja/blockchain/instructions.md#setkeyvalue-removekeyvalue) 更新 NFT メタデータ。
 
-## 地元 で 試す {#try-it-locally}
+## ローカルで試す {#try-it-locally}
 
-これらの例では,ローカルネットワークを起動し, [CLI ガイド](/ja/get-started/operate-iroha-via-cli.md)からクライアントの設定が生成されていることを仮定します:
+これらの例は、ローカルネットワークを起動し、[CLI ガイド](/ja/get-started/operate-iroha-via-cli.md) から生成されたクライアント設定を持っていることを前提としています。
 
 ```bash
 export IROHA_CONFIG=./localnet/client.toml
@@ -72,9 +72,9 @@ export NFT_DOMAIN=wonderland.universal
 export NFT_ID='badge_intro$wonderland.universal'
 ```
 
-生成されたローカルネットは既に設定されています `wonderland.universal` そしてその SNS 異なるドメインを使用するには,最初に宣言式で作成してください. `app alias setup plan` そして `app alias setup apply` ワークフローについて [ドメイン](/ja/blockchain/domains.md#registration).
+生成されたローカルネットはすでに`wonderland.universal`とその SNS リースを設定しています。別のドメインを使用するには、まず[ドメイン](/ja/blockchain/domains.md#registration)に記載されている宣言型`app alias setup plan`および`app alias setup apply`ワークフローでドメインを作成してください。
 
-NFT を登録する.登録は,標準入力から初期コンテンツ JSON を読み取る:
+NFT を登録します。登録は標準入力から初期内容 JSON を読み取ります:
 
 ```bash
 printf '{"kind":"badge","level":"intro","issuer":"docs"}\n' |
@@ -82,7 +82,7 @@ printf '{"kind":"badge","level":"intro","issuer":"docs"}\n' |
   ledger nft register --id "$NFT_ID"
 ```
 
-NFT を直接検査し,すべての NFTs を完全なエントリでリストする.
+直接 NFT を検査し、次にすべての NFTs を完全なエントリ付きで一覧にしてください:
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -92,7 +92,7 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft list all --verbose
 ```
 
-メタデータキーを追加して, NFT を再読み:
+メタデータキーを追加して、再度 NFT を読み取ります:
 
 ```bash
 printf '{"color":"blue","rarity":"tutorial"}\n' |
@@ -110,7 +110,7 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft meta remove --id "$NFT_ID" --key traits
 ```
 
-選択的に NFT を転送する.現在の所有者を `owned_by`から読み取るために `ledger nft get` を使用し,宛先口座 ID を探すために `ledger account list all` を使用する.
+オプションで NFT を転送します。`owned_by`から現在の所有者を読み取るには`ledger nft get`を使用し、宛先アカウントIDを見つけるには`ledger account list all`を使用します。
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -123,44 +123,44 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
-NFT の例をウォークアウト後削除します.転送した場合は,転送して戻すか,または現在の所有者のアカウント設定で登録解除命令を送信してください.
+ウォークスルーの後に例 NFT を削除してください。もし転送した場合は、元に戻すか、現在の所有者のアカウント設定で登録解除コマンドを送信してください。
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft unregister --id "$NFT_ID"
 ```
 
-## 疑問と出来事 {#queries-and-events}
+## クエリとイベント {#queries-and-events}
 
-使用 [`FindNfts`](/ja/reference/queries.md#assets-nfts-and-rwas) リストにする NFTs そして [`FindNftsByAccountId`](/ja/reference/queries.md#assets-nfts-and-rwas) リストにする NFTs 口座の所有者
+使う [`FindNfts`](/ja/reference/queries.md#assets-nfts-and-rwas) 一覧にする NFTs そして [`FindNftsByAccountId`](/ja/reference/queries.md#assets-nfts-and-rwas) 一覧にする NFTs アカウントに所有されている。
 
-NFT 登録,削除,転送,およびメタデータ更新は, NFT データイベントを発信します. 本簿の変更または NFT ライフサイクル イベントに反応するビルドトリガーを購読するとき, `Nft` データのイベントフィルターを使用してください.
+NFT の登録、削除、移転、およびメタデータの更新は NFT データイベントを発行します。ブロックチェーン台帳の変更を購読する場合や NFT ライフサイクルイベントに反応するトリガーを作成する場合は、`Nft` データイベントフィルターを使用してください。
 
-## 許可 {#permissions}
+## 権限 {#permissions}
 
-デフォルト許可表には NFT 特定のトークンが含まれます.
+デフォルトの権限範囲には、NFT 固有のトークンが含まれます:
 
 - `CanRegisterNft`
 - `CanUnregisterNft`
 - `CanTransferNft`
 - `CanModifyNftMetadata`
 
-許可確認は,アクティブランタイム検証器によって実行されるため,ネットワークが執行プログラムをアップグレードすることにより権限をカスタマイズすることができます.現在のデフォルトトークンリストについては [Permission Tokens](/ja/reference/permissions.md)を参照してください.
+権限チェックはアクティブなソフトウェアランタイムバリデータによって強制されるため、ネットワークは実行者をアップグレードすることで認可をカスタマイズできます。現在のデフォルトのトークンリストについては、[許可トークン](/ja/reference/permissions.md) を参照してください。
 
 ## NFTs を選択する {#choosing-nfts}
 
-NFT を使って,独占性と所有権が重要である記録について:
+一意性と所有権が重要な記録には、NFT を使用してください:
 
-- 証明書,バッジ,ライセンス,証明書
-- 会員またはアクセス記録
-- アイデンティティに縛られたまたは口座所有の申請記録
-- チェーン外メディア,文書,またはマニフェストへの参照
+- 証明書、バッジ、ライセンス、および証明書類
+- 会員情報またはアクセス記録
+- IDに紐づいたまたはアカウント所有のアプリケーション記録
+- オフチェーンのメディア、文書、または技術マニフェストへの参照
 
-フンジブルバランスのために数値資産を使用し,データが既存のレジャーオブジェクトのコンパクト属性だけである場合,単純な [メタデータ](/ja/blockchain/metadata.md) を使用します.
+代替可能な残高には数値資産を使用し、データが既存のブロックチェーン台帳オブジェクトのコンパクトな属性に過ぎない場合は、通常の [メタデータ](/ja/blockchain/metadata.md) を使用します。
 
-参照:
+参照：
 
 - [資産](/ja/blockchain/assets.md)
 - [メタデータ](/ja/blockchain/metadata.md)
 - [指示](/ja/blockchain/instructions.md)
-- [問い合わせ](/ja/blockchain/queries.md)
+- [クエリ](/ja/blockchain/queries.md)

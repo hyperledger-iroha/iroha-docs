@@ -3,35 +3,35 @@ translation_locale: pt
 translation_source: /guide/security/vpn.md
 translation_source_hash: 020591f0d7c5560dfb2e9f3f4537f429cbeba864c3eb022856d42addcf32e225
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Redes privadas virtuais {#virtual-private-networks}
+# Redes Privadas Virtuais {#virtual-private-networks}
 
-Um <abbr title="Virtual Private Network">VPN</abbr> é um controle de rede que limita quem pode acessar os serviços Iroha. É mais útil para implementações privadas e de consórcios onde validadores, backends de aplicativos e operadores devem se comunicar através de endereços privados em vez de rotas abertas de internet.
+Um <abbr title="Virtual Private Network">VPN</abbr> é um controle de rede que limita quem pode acessar os serviços Iroha. Ele é mais útil para implantações privadas e de consórcio, onde validadores, backends de aplicativos e operadores devem se comunicar por endereços privados em vez de rotas pela internet aberta.
 
-A. VPN não substitui Iroha Chaves de peer, chaves de conta, permissões, regras de firewall, monitoramento ou armazenamento seguro de chaves. Tratá-lo como uma camada no limite de implantação: o VPN Reduz a acessibilidade da rede, enquanto Iroha Configuração e governança decidem em quais pares e contas são confiáveis.
+Um VPN não substitui as chaves de pares de rede Iroha, chaves de conta, permissões, regras de firewall, monitoramento ou armazenamento seguro de chaves. Trate-o como uma camada dentro do limite de implantação: o VPN restringe a acessibilidade da rede, enquanto a configuração e governança do Iroha decidem quais pares de rede e contas são confiáveis.
 
-## Quando utilizar um VPN {#when-to-use-a-vpn}
+## Quando Usar um VPN {#when-to-use-a-vpn}
 
 Use um VPN quando:
 
-- Os validadores são operados por diferentes organizações ou em ambientes de hospedagem diferentes
-- O Torii só deve ser acessível por backend de aplicações, operadores ou clientes de confiança
-- As métricas, registos, SSH ou outros pontos finais de administração devem permanecer numa rede de operadores privados.
-- Uma rede de ensaio ou fase deve parecer com controles de acesso à produção sem expor pontos finais públicos.
+- os validadores são operados por diferentes organizações ou em diferentes ambientes de hospedagem
+- Torii deve ser acessível apenas pelos backends da aplicação, operadores ou clientes confiáveis
+- métricas, logs, SSH ou outros endpoints de administração API devem permanecer em uma rede privada do operador
+- uma rede de teste ou de preparo deve se assemelhar aos controles de acesso de produção sem expor endpoints públicos API
 
-Uma VPN não é necessária para cada implantação. As redes públicas podem expor intencionalmente a Torii através de um gateway público, balanceador de carga ou proxy inverso. Mesmo nesse caso, mantenha o tráfego peer-to-peer e os endpoints de administração do validador em uma rede restrita sempre que possível.
+Um VPN não é necessário para cada implantação. Redes públicas podem intencionalmente expor Torii por meio de um gateway público, balanceador de carga ou proxy reverso. Mesmo nesse caso, mantenha o tráfego peer-to-peer de validadores e os endpoints de administração API em uma rede restrita sempre que possível.
 
 ::: tip
 
-Um navegador VPN só protege o tráfego desse navegador. Não protege `iroha3d`, CLI, SDK, SSH, métricas ou tráfego de backup a menos que esses processos sejam encaminhados através da mesma rede privada.
+Um navegador VPN protege apenas o tráfego desse navegador. Ele não protege `iroha3d`, CLI, SDK, SSH, métricas ou tráfego de backup, a menos que esses processos sejam roteados através da mesma rede privada.
 
 :::
 
-## Padrão de implantação {#deployment-pattern}
+## Padrão de Implantação {#deployment-pattern}
 
-Para uma rede de validadores privados, indique a cada validador um endereço estável VPN ou nome privado DNS. Configure os pares para que os seus endereços peer-to-peer anunciados sejam acessíveis dos outros validadores através dessa rede:
+Para uma malha de validadores privada, dê a cada validador um endereço estável VPN ou um nome privado DNS. Configure os pares da rede para que seus endereços de ponto a ponto anunciados sejam alcançáveis pelos outros validadores através dessa rede:
 
 ```toml
 trusted_peers = [
@@ -49,46 +49,46 @@ public_address = "10.20.0.11:1337"
 address = "10.20.0.11:8080"
 ```
 
-Use o endereço atribuído ao peer atual em `network.address` e `network.public_address`. Cada peer deve enumerar as mesmas identidades de pares confiáveis, mas com endereços acessíveis a partir da sua própria tabela de rotas VPN.
+Use o endereço atribuído ao par de rede atual em `network.address` e `network.public_address`. Cada par de rede deve listar as mesmas identidades de pares de rede confiáveis, mas com endereços que sejam acessíveis a partir de sua própria tabela de rotas VPN.
 
-As configurações do cliente e CLI devem apontar para um ponto final Torii acessível através do VPN ou através de um gateway interno controlado:
+As configurações do Cliente e CLI devem apontar para um endpoint API Torii acessível através do VPN ou através de um gateway interno controlado:
 
 ```toml
 torii_url = "http://10.20.0.11:8080"
 ```
 
-Se o Torii for disponível fora do VPN, coloque-o atrás de um proxy inverso ou balançador de carga que forneça a autenticação, limitação de taxa e registro TLS. Evite expor as portas peer-to-peer cruas ou os pontos finais da administração diretamente à internet pública.
+Se Torii precisar estar disponível fora do VPN, coloque-o atrás de um proxy reverso ou balanceador de carga que forneça TLS, autenticação, limitação de taxa e registro de logs. Evite expor portas peer-to-peer brutas ou endpoints de administração API diretamente à internet pública.
 
 ## Regras de Firewall {#firewall-rules}
 
-Use as regras do firewall host e da nuvem mesmo quando estiver presente um VPN:
+Use regras de firewall do host e da nuvem mesmo quando um VPN estiver presente:
 
-|Serviço |Acesso recomendado |
+|Serviço|Acesso recomendado|
 | --- | --- |
-|Portos de peer-to-peer|Outros validadores VPN só têm endereços |
-|Torii |Backend de aplicação, operadores ou clientes confiáveis VPN rangos |
-|Métricas e verificações de saúde |Sistemas de monitorização na rede do operador |
-|SSH e administração |Bastion host, privileged operator VPN range, ou processamento de quebra-vidro |
-|Backups e replicação de armazenamento |Sistemas de backup numa rede privada |
+|Porta ponto a ponto|Outros endereços de validador VPN apenas|
+| Torii |Backends de aplicação, operadores ou clientes confiáveis VPN intervalos|
+|Métricas e verificações de saúde|Sistemas de monitoramento na rede do operador|
+|SSH e administração|Host bastião, operador privilegiado VPN faixa, ou processo de quebra de vidro|
+|Backups e replicação de armazenamento|Sistemas de backup em uma rede privada|
 
-As regras de negação por defeito são mais fáceis de auditar do que as regras gerais de permissão. Quando um novo peer se junta à rede, atualize a lista de permissões VPN, o firewall e a configuração de peer confiável Iroha como uma mudança coordenada.
+Regras de negação padrão são mais fáceis de auditar do que regras amplas de permissão. Quando um novo par de rede se junta à rede, atualize a associação VPN, a lista de permissões do firewall e a configuração do par de rede confiável Iroha como uma alteração coordenada.
 
-## Lista de verificação operacional {#operational-checklist}
+## Lista de Verificação Operacional {#operational-checklist}
 
-- Escolher uma implementação VPN auditada e mantida ativamente, como WireGuard, IPsec ou uma rede privada gerenciada aprovada pela organização.
-- Use credenciais únicas VPN para cada hospedeiro e operador. Não compartilhe chaves VPN entre validadores.
-- Manter as credenciais VPN separadas das chaves privadas Iroha e do material de assinatura da gênese.
-- Monitorar VPN latência, perda de pacotes, reconectas e mudanças de rota. Consenso é sensível à instabilidade da rede sustentada.
-- Teste a efetiva MTU. A fragmentação de pacotes pode parecer falhas intermitentes entre pares ou Torii.
-- Documentos que permitem atingir os intervalos VPN peer-to-peer, Torii, métricas, SSH e pontos finais de backup.
-- Rotear as credenciais VPN quando um host, conta de operador ou organização deixar a rede.
-- Evite um único portal VPN como única rota entre os validadores. Planeje gateways redundantes ou rotas site-to-site para redes de produção.
-- Incluir falhas VPN em exercícios de resposta a incidentes para que os operadores saibam quando distinguir uma partição de rede de uma falha de processo Iroha.
+- Escolha uma implementação VPN auditada e ativamente mantida, como WireGuard, IPsec, ou uma rede privada gerenciada aprovada pela organização.
+- Use credenciais VPN únicas para cada host e operador. Não compartilhe chaves VPN entre validadores.
+- Mantenha as credenciais VPN separadas das chaves privadas Iroha e do material de assinatura do blockchain genesis.
+- Monitore a latência VPN, perda de pacotes, reconexões e alterações de rota. O consenso é sensível à instabilidade contínua da rede.
+- Teste o MTU eficaz. A fragmentação de pacotes pode parecer falhas intermitentes no par de rede ou Torii.
+- Documento que especifica quais intervalos VPN podem se conectar ponto a ponto, Torii, métricas, SSH, e pontos de extremidade de backup API.
+- Gire as credenciais VPN quando um host, conta de operador ou organização sair da rede.
+- Evite um único gateway VPN como a única rota entre os validadores. Planeje gateways redundantes ou rotas site a site para redes de produção.
+- Inclua falhas VPN nos exercícios de resposta a incidentes para que os operadores saibam quando distinguir uma partição de rede de uma falha de processo Iroha.
 
-## Páginas relacionadas {#related-pages}
+## Páginas Relacionadas {#related-pages}
 
-- [Princípios de segurança](/pt/guide/security/security-principles.md)
-- [Segurança operacional](/pt/guide/security/operational-security.md)
-- [Chaves para a implantação da rede ](/pt/guide/configure/keys-for-network-deployment.md)
-- [Gerenciamento entre pares ](/pt/guide/configure/peer-management.md)
-- [Referência de configuração entre pares ](/pt/reference/peer-config/index.md)
+- [Princípios de Segurança](/pt/guide/security/security-principles.md)
+- [Segurança Operacional](/pt/guide/security/operational-security.md)
+- [Chaves para Implantação de Rede](/pt/guide/configure/keys-for-network-deployment.md)
+- [Gerenciamento de pares de rede](/pt/guide/configure/peer-management.md)
+- [Referência de Configuração de Par de Rede](/pt/reference/peer-config/index.md)

@@ -1,14 +1,13 @@
 ---
 translation_locale: mn
 translation_source: /blockchain/rwas.md
-translation_source_hash: cbdc6d766fb90bea7e68dc67f2c705bb1638340feeb2fca9f2dd43a727ac03e7
+translation_source_hash: 8d64a9a17c93f60306c279e8656e6edde8ce5dd024e742218bfb9572b7438bb0
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review
 ---
-
 # Байгаль орчин үеийн хөрөнгө {#real-world-assets}
 
-Үнэн ертөнцөд хөрөнгө (RWAs) нь зах зээлийн гадаад хөрөнгийн загвар бөгөөд түүний эзэмшилт эсвэл хяналт нь зах зээл дээр ажиглагддаг. Iroha -д RWA бол бүртгэлтэй номын сан, үүсгэн бүтээсэн тодруулга, эзэмшигчдийн данс, хэмжээ, бизнесийн метабарууд, эх үүсвэр, болон сонголттой амьдралын мөрийн хяналтаар байдаг.
+Бодит ертөнцийн хөрөнгө (RWAs) нь эзэмшил эсвэл хяналтыг нь on-chain хянадаг off-chain хөрөнгийг загварчилна. Iroha-д RWA гэдэг нь үүсгэсэн identifier, owner account, quantity, business metadata, provenance болон сонголттой lifecycle control бүхий бүртгэлд бүртгэсэн lot юм.
 
 RWAs нь санхүүгийн хөрөнгийн үлдэгдэлээс ялгаатай:
 
@@ -16,7 +15,7 @@ RWAs нь санхүүгийн хөрөнгийн үлдэгдэлээс ялг�
 - NFT нь нэг эзэмшигчтэй цорын ганц зангилааны бүртгэл юм
 - RWA нь бизнесийн метабараа, тоо хэмжээ, хадгаламж, хүйтэнжилт, төлбөрийн байдал, эх үүсвэр, хяналтын байгууллагын бодлоготой байж болно.
 
-RWAs нь зөвхөн мөрийн тэнцвэрт орчмын оронд тухайн зангилаасаа гадуур хэсгийг төлөөлөх шаардлагатай үед ашиглана.
+Бүртгэл зөвхөн fungible үлдэгдэл бус, тодорхой off-chain lot-ийг төлөөлөх шаардлагатай үед RWAs ашиглана.
 
 ## RWA бүлэг {#rwa-lot}
 
@@ -51,7 +50,7 @@ RWA ID-ийн текст хэлбэр нь:
 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef$commodities.universal
 ```
 
-Хэрэглэгчид `primary_reference` эсвэл `metadata`-д аж ахуйн тодорхойлолтыг хадгалах, дараа нь `RwaEvent::Created`, `FindRwas`, `/v1/rwas`, эсвэл гүйлгээний үүрэг гүйцэтгээс хойш тогтоосон хайгуулын замаар үүссэн `RwaId`-ийг олж харах ёстой.
+Хэрэглэгчид `primary_reference` эсвэл `metadata`-д аж ахуйн тодорхойлолтыг хадгалах, дараа нь `RwaEvent::Created`, `FindRwas`, `/v1/rwas`, эсвэл гүйлгээний commit хийсний хойш тогтоосон хайгуулын замаар үүссэн `RwaId`-ийг олж харах ёстой.
 
 ## Амьдралын мөчлөл {#lifecycle}
 
@@ -68,16 +67,16 @@ RWA ID-ийн текст хэлбэр нь:
 |`RedeemRwa` |Эргэлтэд буй тоо хэмжээг бүрмөсөн хасна. `redeem_enabled` нь `true` үед эзэмшигч эсвэл хянагч үүнийг илгээж болно.|
 |`MergeRwas` |Тухайн бүс нутаг дэвсгэртэй эцэг эх хэсгийн хэмжээг нийлүүлж, төрөлжсөн хүүхдийн хэсгийг бүрдүүлэх. |
 |`ForceTransferRwa` |Томоохон хэмжээг хяналтын тоног төхөөрөмжийн урсгалд дамжуулахад тохируулсан хяналт болон `force_transfer_enabled` .|
-|`SetRwaControls` |Хөдөлмөрийн эзэмшигч эсвэл хяналтын ажилтан шаарддаг.|
+|`SetRwaControls` |Лотын хяналтын бодлогыг солино. Эзэмшигч эсвэл хянагч шаардлагатай. |
 |`SetKeyValue<Rwa>` / `RemoveKeyValue<Rwa>` |Тоног төхөөрөмжийн метабараа шинэчлэх. Хувь эсвэл хяналтын ажилтан шаарддаг; мөсөн хувьцааг хяналт тавих ажилтан шаардаж байна. |
 
 Одоогийн кодт `UnregisterRwa` заавар байхгүй. Төлөөлөн хэмжээг нийлүүлж, хэрэглэж, тохирсон эсвэл эргэлтээс өөрөөр нь гаргахдаа `RedeemRwa`-ийн хамт зах зээлийн гадаад хэсгийг буцааж өгөх.
 
-## Metadata болон хяналт {#metadata-and-controls}
+## Мета өгөгдөл ба хяналт {#metadata-and-controls}
 
 Нэвтрүүлэгт хэсгийг тодорхойлж, баталгаажуулахэд туслах цогц баримтын метабараа ашиглах:
 
-- Ашигт малтмалын анги, эмитент, хадгаламжлагч, бүртгэлийн сүлжээ
+- Хөрөнгийн анги, эмитент, хадгаламжлагч, бүртгэлийн сүлжээ
 - хадгаламж, хаалтын сан, ISIN, фактурын болон гэрчилгээний тодруулагч
 - Гэрчилгээ, эрх зүйн баримт бичгийн агуулгын хэшүүд
 - SoraFS томоохон гэрчилгээний багцын замыг эсвэл явдлын сүлжээ
@@ -96,22 +95,13 @@ RWA ID-ийн текст хэлбэр нь:
 }
 ```
 
-Хянагч данс болон үүргүүд зөвхөн харгалзах Boolean тугаар
-идэвхжүүлсэн үйлдлүүдийг хийж чадна. Одоогийн хяналтын payload нь
-хянагчийн таних мэдээлэл болон үйлдлийн тугуудыг агуулна. Шилжүүлгийн
-allow-list болон дотроо давхарласан `transfers` дүрмүүд энэ payload-д
-хамаарахгүй.
+Хянагч данс болон үүргүүд зөвхөн харгалзах Boolean тугаар идэвхжүүлсэн үйлдлүүдийг хийж чадна. Одоогийн хяналтын payload нь хянагчийн таних мэдээлэл болон үйлдлийн тугуудыг агуулна. Шилжүүлгийн allow-list болон дотроо давхарласан `transfers` дүрмүүд энэ payload-д хамаарахгүй.
 
-## Судалгаа, үйл явдал, APIs {#queries-events-and-apis}
+## Асуулга, үйл явдал, APIs {#queries-events-and-apis}
 
-Бүртгэгдсэн RWA багцуудыг жагсаахдаа
-[`FindRwas`](/mn/reference/queries.md#assets-nfts-and-rwas)-г ашиглана.
-Шууд шинэчлэлт хэрэгтэй хэрэглээ нь үүсгэсэн, эзэмшигч өөрчилсөн,
-хуваасан, нэгтгэсэн, эргэлтээс хассан, царцаасан, царцаалтыг цуцалсан,
-барьцаалсан, барьцааг чөлөөлсөн, албадан шилжүүлсэн, хяналтыг өөрчилсөн
-болон метадатагийн [`Rwa` өгөгдлийн үйл явдлууд](/mn/blockchain/filters.md#data-event-filters)-д захиалж болно.
+Бүртгэгдсэн RWA багцуудыг жагсаахдаа [`FindRwas`](/mn/reference/queries.md#assets-nfts-and-rwas)-г ашиглана. Шууд шинэчлэлт хэрэгтэй хэрэглээ нь үүсгэсэн, эзэмшигч өөрчилсөн, хуваасан, нэгтгэсэн, эргэлтээс хассан, царцаасан, царцаалтыг цуцалсан, барьцаалсан, барьцааг чөлөөлсөн, албадан шилжүүлсэн, хяналтыг өөрчилсөн болон метадатагийн [`Rwa` өгөгдлийн үйл явдлууд](/mn/blockchain/filters.md#data-event-filters)-д захиалж болно.
 
-Torii зах зээлийн чиглэлийг илрүүлнэ: `/v1/rwas` болон `/v1/rwas/query`, болон судлаачдын чиглэлүүд `/v1/explorer/rwas` болон `/v1/explorer/rwas/{rwa_id}` Энэ чиглэлийн гэр бүл идэвхтэй байх үед. [`/openapi`](/mn/reference/torii-endpoints.md#common-endpoints) Нөөц нь тодорхой хариу хэлбэртэй баримт бичиг.
+Torii зах зээлийн чиглэлийг илрүүлнэ: `/v1/rwas` болон `/v1/rwas/query`, болон судлаачдын чиглэлүүд `/v1/explorer/rwas` болон `/v1/explorer/rwas/{rwa_id}` Энэ чиглэлийн гэр бүл идэвхтэй байх үед. [`/openapi.json`](/mn/reference/torii-endpoints.md#common-endpoints) Нөөц нь тодорхой хариу хэлбэртэй баримт бичиг.
 
 ### Taira дээр туршиж үзээрэй. {#try-it-on-taira}
 
@@ -143,7 +133,7 @@ curl -fsS https://taira.sora.org/openapi.json \
 from iroha_python import create_torii_client
 
 client = create_torii_client("https://taira.sora.org")
-openapi = client.request_json("GET", "/openapi", expected_status=(200,))
+openapi = client.request_json("GET", "/openapi.json", expected_status=(200,))
 
 rwa_paths = sorted(
     path for path in openapi.get("paths", {}) if path.startswith("/v1/rwas")
@@ -198,7 +188,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Транзакцын үүрэг гүйцэтгээс хойш жагсаалтыг үүсгэдэг RWA IDs. Хадгалын орчны чиглэлүүд IDs-ийг илрүүлнэ; үйл явдлыг ашиглах эсвэл хайгуулын дэлгэрэнгүй чиглэлийг хэрэглэх нь ID-ийн эргэн ирэхэд `primary_reference` эсвэл метадандоо тохируулах шаардлагатай үед:
+Транзакцын commit хийсний хойш жагсаалтыг үүсгэдэг RWA IDs. Хадгалын орчны чиглэлүүд IDs-ийг илрүүлнэ; үйл явдлыг ашиглах эсвэл хайгуулын дэлгэрэнгүй чиглэлийг хэрэглэх нь ID-ийн эргэн ирэхэд `primary_reference` эсвэл метадандоо тохируулах шаардлагатай үед:
 
 ```python
 page = client.list_rwas_typed(limit=20, offset=0)
@@ -237,8 +227,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Сүлжээнээс гадуурх процесс амжилттай дууссаны дараа `ReleaseRwa`-г
-илгээнэ үү:
+Сүлжээнээс гадуурх процесс амжилттай дууссаны дараа `ReleaseRwa`-г илгээнэ үү:
 
 ```python
 draft = TransactionDraft(
@@ -283,11 +272,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### Хувьцаа авах, тэтгэврийн хэмжээ {#redeem-or-retire-quantity}
 
-Төлөөлж буй сүлжээнээс гадуурх хөрөнгийг хүргэсэн, хэрэглэсэн,
-ашиглалтаас гаргасан эсвэл өөр байдлаар эргэлтээс хассан бол
-`RedeemRwa`-г илгээнэ үү. Энэ нь илгээсэн хэмжээг багцаас бүрмөсөн
-хасна. Багцын `redeem_enabled` нь идэвхтэй, гарын үсэг зурагч нь
-эзэмшигч эсвэл хянагч байх ёстой.
+Төлөөлж буй сүлжээнээс гадуурх хөрөнгийг хүргэсэн, хэрэглэсэн, ашиглалтаас гаргасан эсвэл өөр байдлаар эргэлтээс хассан бол `RedeemRwa`-г илгээнэ үү. Энэ нь илгээсэн хэмжээг багцаас бүрмөсөн хасна. Багцын `redeem_enabled` нь идэвхтэй, гарын үсэг зурагч нь эзэмшигч эсвэл хянагч байх ёстой.
 
 ```python
 draft = TransactionDraft(
@@ -301,9 +286,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### Нөхцөл байдлын хяналт шалгалтын үеэр хасах {#freeze-during-compliance-review}
 
-Сүлжээнээс гадуурх шалгалтын үеэр эзэмшигчийн ердийн үйлдлүүдийг
-хаах шаардлагатай бол `FreezeRwa`-г илгээнэ үү. Гарын үсэг зурагч нь
-хянагч, багцын `freeze_enabled` нь идэвхтэй байх ёстой.
+Сүлжээнээс гадуурх шалгалтын үеэр эзэмшигчийн ердийн үйлдлүүдийг хаах шаардлагатай бол `FreezeRwa`-г илгээнэ үү. Гарын үсэг зурагч нь хянагч, багцын `freeze_enabled` нь идэвхтэй байх ёстой.
 
 ```python
 draft = TransactionDraft(
@@ -396,8 +379,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Сүлжээнээс гадуурх тооцоо хийгдсэний дараа төлөөлж буй хэмжээг
-эргэлтээс хасна уу:
+Сүлжээнээс гадуурх тооцоо хийгдсэний дараа төлөөлж буй хэмжээг эргэлтээс хасна уу:
 
 ```python
 draft = TransactionDraft(
@@ -411,9 +393,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### Уул уурхайн зээлийн тэтгэврийн {#carbon-credit-retirement}
 
-Нэхэмжилсэн нүүрстөрөгчийн кредитийг эргэлтээс хасахын тулд
-`RedeemRwa`-г илгээнэ үү. Сүлжээнээс гадуурх гэрчилгээ эсвэл бүртгэлийн
-нотолгоог метадатад хадгална:
+Нэхэмжилсэн нүүрстөрөгчийн кредитийг эргэлтээс хасахын тулд `RedeemRwa`-г илгээнэ үү. Сүлжээнээс гадуурх гэрчилгээ эсвэл бүртгэлийн нотолгоог метадатад хадгална:
 
 ```python
 carbon_lot_id = (
@@ -469,12 +449,12 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Python гүйлгээний томоохон жишээг үзвэл [Real-World Assets](/mn/guide/tutorials/python.md#real-world-assets).
+Python гүйлгээний томоохон жишээг үзвэл [Байгаль орчин үеийн хөрөнгө](/mn/guide/tutorials/python.md#real-world-assets).
 
 ## Холбогдсон баримт бичиг {#related-docs}
 
 - [Байгууллага](/mn/blockchain/assets.md)
 - [Metadata](/mn/blockchain/metadata.md)
 - [Iroha Ардчилсан удирдамж](/mn/blockchain/instructions.md)
-- [Судалгаа](/mn/reference/queries.md#assets-nfts-and-rwas)
+- [Асуулга](/mn/reference/queries.md#assets-nfts-and-rwas)
 - [Torii эцсийн цэгүүд](/mn/reference/torii-endpoints.md#app-and-sora-route-families)

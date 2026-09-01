@@ -3,24 +3,24 @@ translation_locale: az
 translation_source: /guide/configure/overview.md
 translation_source_hash: 24eae3295459781d774369521241f1c2da5b24fe51eb8a2b086911b923395846
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Konfiqurasiya və idarəetmə {#configuration-and-management}
+# Konfiqurasiya və İdarəetmə {#configuration-and-management}
 
-Iroha konfiqurasiyasının iki təsdiqləyici qatı vardır:
+Iroha konfiqurasiyanın iki səlahiyyətli qatmanı var:
 
-- TOML fayllarında saxlanılan və prosesin başlanğıcında oxunan yerli həmyaşıd və müştəri konfigurasiyası.
-- [ `SetParameter`](/az/blockchain/instructions.md#setparameter) vasitəsilə əməliyyatlar nəticəsində dəyişdirilən zəncirlə bağlı konfigurassiya
+- yerli şəbəkə bərabəri və müştəri konfiqurasiyası, TOML fayllarında saxlanılır və proses başlanğıcında oxunur
+- zəncir üzrə konfiqurasiya, əməliyyatlar vasitəsilə dəyişdirilir [`SetParameter`](/az/blockchain/instructions.md#setparameter)
 
-Kütlə kimliyi, ünvanları, qeydə alınması, saxlanılması və müştəri imzalanma açarları üçün yerli quruluşdan istifadə edin. Şəbəkə tərəfindən razılaşdırılmalı və təyin edilməli olan dəyərlər üçün zəncir üzərində quruluşdan istifadə edin.
+Node kimliyi, ünvanlar, jurnallaşdırma, yaddaş və müştəri imza açarları üçün yerli konfiqurasiyadan istifadə edin. Şəbəkənin razılaşdırmalı və deterministik şəkildə təkrar icra etməli olduğu dəyərlər üçün zəncirdaxili konfiqurasiyadan istifadə edin.
 
-İstehsalat davranışı bu konfigürasiya təbəqələrindən gəlməlidir. Ətraf mühit dəyişiklikləri yerli alətlərə test girişlərini təmin etmək üçün əlverişli ola bilər, lakin onlar istehsal xüsusiyyət qapıları deyil və öhdəlikdən gələn konfigürasiyanı əvəz etmirlər.
+İstehsal davranışı bu konfiqurasiya qatlarından gəlməlidir. Ətraf mühit dəyişənləri yerli alətlərə test girişlərini təmin etmək üçün əlverişli ola bilər, amma onlar istehsal xüsusiyyət qapıları deyil və yekunlaşmış konfiqurasiyanı əvəz etmir.
 
-Konfiqurasiya giriş nöqtələri aşağıdakılardır:
+Əsas konfiqurasiya giriş nöqtələri bunlardır:
 
-- [Genesis](/az/guide/configure/genesis.md)
+- [blokçeyn genesis](/az/guide/configure/genesis.md)
 - [Müştəri konfiqurasiyası](/az/guide/configure/client-configuration.md)
-- [Şəbəkənin tətbiqi üçün açarlar](/az/guide/configure/keys-for-network-deployment.md)
-- [Çılpaq metal üzərində işləyir](/az/guide/advanced/running-iroha-on-bare-metal.md)
-- [Peer konfigurasiyası istinadı](/az/reference/peer-config/index.md)
+- [Şəbəkə yerləşdirilməsi üçün açarlar](/az/guide/configure/keys-for-network-deployment.md)
+- [Çıplak metaldə işləmək](/az/guide/advanced/running-iroha-on-bare-metal.md)
+- [şəbəkə həmkarı konfiqurasiya istinadı](/az/reference/peer-config/index.md)

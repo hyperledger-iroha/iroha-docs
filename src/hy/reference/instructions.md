@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /reference/instructions.md
-translation_source_hash: 9ba8e06d10f0896169feddbdad32f4fed7a8d46effa2293c64df578c197c970e
+translation_source_hash: 9999816502505026fb35d2ddaf4033f54768be697ca5b03550e1cf5949ada36c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -31,7 +31,7 @@ translation_engine: nllb-200-ct2
 | [Անանուն ակտիվների պահպանումը](/hy/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
 | [Ատոմային մասնավոր հաշվարկ](/hy/blockchain/instructions.md#atomic-private-settlement) | `ActivatePrivateSettlementPoolV1`, `RotatePrivateSettlementPoolPolicyV1`, `FinalizeAtomicPrivateSettlementV1`, `AbortAtomicPrivateSettlementV1` |
 
-Iroha 3 լրացուցիչ մոդուլները կարող են գրանցել տիրույթի հատուկ հրահանգների տեսակներ հրահանգների ռեգիստրիի միջոցով: Ներկայիս աղբյուրային ծառից ստեղծված սխեմայի մակարդակի ցուցակի համար դիտեք [Տվյալների մոդելի սխեման](./data-model-schema.md).
+Iroha 3 լրացուցիչ մոդուլները կարող են գրանցել տիրույթի հատուկ հրահանգների տեսակներ հրահանգների ռեգիստրիի միջոցով: Հանգույցի տրամադրած սխեմայի և այն պահպանելու համար օգտագործվող հրամանի համար տես [Տվյալների մոդելի սխեման](./data-model-schema.md):
 
 ::: details Սցենար. Հիմնական ուսուցման ընտանիքներ
 

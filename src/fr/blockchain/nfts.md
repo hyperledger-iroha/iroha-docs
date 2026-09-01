@@ -3,68 +3,68 @@ translation_locale: fr
 translation_source: /blockchain/nfts.md
 translation_source_hash: 6dd2d21a29f352a14cb17046c66cfa541ef501b733b95bb6874d2d3f86ec0504
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # NFTs {#nfts}
 
-Un Iroha NFT est un objet de registre unique avec un propriétaire. Utilisez NFTs lorsqu'un enregistrement a besoin de sa propre identité, de métadonnées, d'événements du cycle de vie et de la sémantique de transfert de propriété, mais n'a pas besoin d'un équilibre numérique.
+Un Iroha NFT est un objet de registre blockchain unique avec un seul propriétaire. Utilisez NFTs lorsqu'un enregistrement a besoin de sa propre identité, de ses métadonnées, de ses événements de cycle de vie et de sa sémantique de transfert de propriété, mais n'a pas besoin d'un solde numérique.
 
-Contrairement à un actif numérique [](/fr/blockchain/assets.md), un NFT n'a pas de précision, de mintabilité ou de quantités par compte. Le NFT existe comme un seul objet enregistré et la propriété est suivie directement sur cet objet.
+Contrairement à un [atout](/fr/blockchain/assets.md) numérique, un NFT n'a pas de précision, de politique d'émission d'actifs, ni de quantités par compte. Le NFT existe en tant qu'objet enregistré unique, et la propriété est suivie directement sur cet objet.
 
-## La structure {#structure}
+## Structure {#structure}
 
-Un `Nft` enregistré contient:
+Un `Nft` enregistré contient :
 
-- `id`: une `NftId`
-- `content`: métadonnées qui décrivent le NFT
-- `owned_by`: le compte qui détient le NFT
+- `id` : un `NftId`
+- `content` : métadonnées qui décrivent le NFT
+- `owned_by` : le compte qui possède le NFT
 
-Le champ `content` est une carte `Metadata`. Gardez-le compact: stockez les champs descriptifs, les références stables, les hachages, les chemins URIs ou SoraFS là-bas. Stoquez les grands documents, médias ou l'état de l'application à haute fréquence hors chaîne et gardez uniquement une référence vérifiable sur le NFT.
+Le champ `content` est une carte `Metadata`. Gardez-le compact : stockez-y des champs descriptifs, des références stables, des hachages cryptographiques, URIs ou des chemins SoraFS. Stockez les gros documents, les médias ou l'état de l'application à forte rotation hors chaîne et ne conservez qu'une référence vérifiable sur le NFT.
 
-## Essayez le sur Taira {#try-it-on-taira}
+## Essayez-le sur Taira {#try-it-on-taira}
 
-Vérifiez que le réseau de test public Taira possède actuellement des enregistrements NFT:
+Vérifiez si le testnet public Taira contient actuellement NFT enregistrements :
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/nfts?limit=5' \
   | jq '{total, nft_ids: [.items[].id]}'
 ```
 
-Vérifiez le document OpenAPI en direct pour les itinéraires NFT exposés par le nœud:
+Vérifiez le document en direct OpenAPI pour les itinéraires NFT exposés par le nœud :
 
 ```bash
 curl -fsS https://taira.sora.org/openapi.json \
   | jq -r '.paths | keys[] | select(startswith("/v1/nfts") or startswith("/v1/explorer/nfts"))'
 ```
 
-Un tableau `items` vide est une réponse valide sur un réseau de test public. Cela signifie qu'il n'y a pas de NFTs dans la page en cours, pas que les instructions NFT ne soient pas disponibles.
+Un tableau vide `items` est une réponse valide sur un testnet public. Cela signifie qu'il n'y a pas de NFTs dans la page actuelle, et non que les instructions NFT sont indisponibles.
 
-## NFT IDs {#nft-ids}
+## NFT Identifiants {#nft-ids}
 
-`NftId` utilise le formulaire suivant:
+`NftId` utilise cette forme de texte :
 
 ```text
 name$domain
 name$domain.dataspace
 ```
 
-Par exemple, `badge$docs.universal` désigne les `badge` NFT dans le `docs.universal` Si l'espace de données est omis, l'analyseur actuel utilise le `universal` l'espace de données, donc `badge$docs` décide de `badge$docs.universal`.
+Par exemple, `badge$docs.universal` identifie le `badge` NFT dans le domaine `docs.universal`. Si l'espace de données est omis, l'analyseur actuel utilise l'espace de données `universal`, donc `badge$docs` se résout en `badge$docs.universal`.
 
-Utilisez des noms stables pour NFT IDs. L'identité d'objet utilisée par les instructions, les requêtes, les autorisations, les filtres d'événements et les références d'application est le ID.
+Utilisez des noms stables pour les identifiants NFT. L'identifiant est l'identité de l'objet utilisée par les instructions, les requêtes, les permissions, les filtres d'événements et les références d'application.
 
 ## Cycle de vie {#lifecycle}
 
-NFT utilisation des opérations du cycle de vie Iroha Instructions particulières:
+NFT les opérations du cycle de vie utilisent Iroha Opérations d'instruction :
 
-- [`Register`](/fr/blockchain/instructions.md#un-register) crée le NFT avec l'original `content`.
-- [`Unregister`](/fr/blockchain/instructions.md#un-register) élimine le NFT.
-- [Les modifications de `Transfer`](/fr/blockchain/instructions.md#transfer) à `owned_by`.
-- [La mise à jour des métadonnées `SetKeyValue` et `RemoveKeyValue`](/fr/blockchain/instructions.md#setkeyvalue-removekeyvalue) NFT
+- [`Register`](/fr/blockchain/instructions.md#un-register) crée le NFT avec initial `content`.
+- [`Unregister`](/fr/blockchain/instructions.md#un-register) supprime le NFT.
+- [`Transfer`](/fr/blockchain/instructions.md#transfer) changements `owned_by`.
+- [`SetKeyValue` et `RemoveKeyValue`](/fr/blockchain/instructions.md#setkeyvalue-removekeyvalue) mettre à jour NFT métadonnées.
 
-## Essayez de le faire localement {#try-it-locally}
+## Essayez-le localement {#try-it-locally}
 
-Ces exemples supposent que vous avez lancé un réseau local et que la configuration du client a été générée à partir du guide [CLI ](/fr/get-started/operate-iroha-via-cli.md):
+Ces exemples supposent que vous avez lancé un réseau local et que vous disposez de la configuration client générée à partir du [guide de la CLI](/fr/get-started/operate-iroha-via-cli.md) :
 
 ```bash
 export IROHA_CONFIG=./localnet/client.toml
@@ -72,9 +72,9 @@ export NFT_DOMAIN=wonderland.universal
 export NFT_ID='badge_intro$wonderland.universal'
 ```
 
-Le localnet généré définit déjà `wonderland.universal` et son bail SNS. Pour utiliser un domaine différent, créez-le d'abord avec le flux de travail déclaratif `app alias setup plan` et `app alias setup apply` décrit dans [Domains](/fr/blockchain/domains.md#registration).
+Le localnet généré configure déjà `wonderland.universal` et son bail SNS. Pour utiliser un domaine différent, créez-le d'abord avec le flux de travail déclaratif `app alias setup plan` et `app alias setup apply` décrit dans [Domaines](/fr/blockchain/domains.md#registration).
 
-Enregistrer un NFT. L'enregistrement lit le contenu initial JSON à partir de l'entrée standard:
+Enregistrez un NFT. L'enregistrement lit le contenu initial JSON depuis l'entrée standard :
 
 ```bash
 printf '{"kind":"badge","level":"intro","issuer":"docs"}\n' |
@@ -82,7 +82,7 @@ printf '{"kind":"badge","level":"intro","issuer":"docs"}\n' |
   ledger nft register --id "$NFT_ID"
 ```
 
-Inspecter directement le NFT puis répertorier tous les NFTs avec des entrées complètes:
+Inspectez directement le NFT puis énumérez tous les NFTs avec des entrées complètes :
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -92,7 +92,7 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft list all --verbose
 ```
 
-Ajoutez une clé de métadonnées et lisez à nouveau le NFT:
+Ajoutez une clé de métadonnées et lisez de nouveau le NFT :
 
 ```bash
 printf '{"color":"blue","rarity":"tutorial"}\n' |
@@ -103,14 +103,14 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft get --id "$NFT_ID"
 ```
 
-Supprimer la clé de métadonnées:
+Supprimez la clé des métadonnées :
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft meta remove --id "$NFT_ID" --key traits
 ```
 
-Transfert optionnellement le NFT. Utilisez `ledger nft get` pour lire le propriétaire actuel de `owned_by`, et utilisez `ledger account list all` pour trouver un compte de destination ID.
+Transférez éventuellement le NFT. Utilisez `ledger nft get` pour lire le propriétaire actuel à partir de `owned_by`, et utilisez `ledger account list all` pour trouver un ID de compte de destination.
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -123,44 +123,44 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
-Retirez l'exemple NFT après le passage. Si vous l'avez transféré, transférez-le de nouveau ou soumettez la commande non enregistrée avec la configuration du compte actuel du propriétaire.
+Supprimez l'exemple NFT après le tutoriel. Si vous l'avez transféré, soit transférez-le de nouveau, soit soumettez la commande de désenregistrement avec la configuration du compte du propriétaire actuel.
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft unregister --id "$NFT_ID"
 ```
 
-## Des questions et des événements {#queries-and-events}
+## Requêtes et événements {#queries-and-events}
 
-Utilisez [`FindNfts`](/fr/reference/queries.md#assets-nfts-and-rwas) pour répertorier NFTs et [`FindNftsByAccountId`](/fr/reference/queries.md#assets-nfts-and-rwas) pour répertorian NFTs détenus par un compte.
+Utiliser [`FindNfts`](/fr/reference/queries.md#assets-nfts-and-rwas) lister NFTs et [`FindNftsByAccountId`](/fr/reference/queries.md#assets-nfts-and-rwas) lister NFTs appartenant à un compte.
 
-NFT Les mises à jour de l'enregistrement, de la suppression, du transfert et des métadonnées émettent NFT les événements de données. `Nft` Filtre d'événements de données lors de l'abonnement à des modifications du registre ou à des déclencheurs de construction qui réagissent NFT événements du cycle de vie.
+NFT l'enregistrement, la suppression, le transfert et les mises à jour des métadonnées émettent des événements de données NFT. Utilisez le filtre d'événements de données `Nft` lors de l'abonnement aux modifications du registre blockchain ou lors de la création de déclencheurs qui réagissent aux événements du cycle de vie NFT.
 
 ## Autorisations {#permissions}
 
-La surface d'autorisation par défaut comprend les jetons spécifiques à NFT:
+La surface d'autorisation par défaut inclut des jetons spécifiques à NFT :
 
 - `CanRegisterNft`
 - `CanUnregisterNft`
 - `CanTransferNft`
 - `CanModifyNftMetadata`
 
-Les contrôles d'autorisation sont exécutés par le validateur de temps d'exécution actif, afin qu'un réseau puisse personnaliser l'autonomisation en mettant à jour l'exécuteur. Voir [Permission Tokens](/fr/reference/permissions.md) pour la liste actuelle des jetons par défaut.
+Les contrôles d'autorisation sont appliqués par le validateur d'exécution logicielle actif, de sorte qu'un réseau peut personnaliser l'autorisation en mettant à niveau l'exécuteur. Voir [Jetons de permission](/fr/reference/permissions.md) pour la liste actuelle des jetons par défaut.
 
-## Le choix de NFTs {#choosing-nfts}
+## Choisir NFTs {#choosing-nfts}
 
-Utiliser un NFT pour les enregistrements où l'unicité et la propriété sont importantes:
+Utilisez un NFT pour les enregistrements où l'unicité et la propriété sont importantes :
 
 - certificats, badges, licences et attestations
-- enregistrements d'adhésion ou d'accès
-- enregistrements des demandes liés à l'identité ou détenus par le compte
-- des références à des médias, documents ou manifestes hors chaîne
+- dossiers d'adhésion ou d'accès
+- enregistrements d'applications liés à l'identité ou appartenant à un compte
+- références à des médias hors chaîne, des documents ou des manifestes techniques
 
-Utilisez un actif numérique pour les soldes fungibles, et utilisez des métadonnées [ simples ](/fr/blockchain/metadata.md) lorsque les données ne sont qu'un attribut compact d'un objet de registre existant.
+Utilisez un actif numérique pour les soldes fongibles, et utilisez simplement [métadonnées](/fr/blockchain/metadata.md) lorsque les données ne sont qu’un attribut compact d’un objet existant du registre de la blockchain.
 
-Voir aussi:
+Voir aussi :
 
-- [Les actifs ](/fr/blockchain/assets.md)
-- [Metadonnées ](/fr/blockchain/metadata.md)
-- [Instructions ](/fr/blockchain/instructions.md)
-- [Les questions ](/fr/blockchain/queries.md)
+- [Actifs](/fr/blockchain/assets.md)
+- [Métadonnées](/fr/blockchain/metadata.md)
+- [Instructions](/fr/blockchain/instructions.md)
+- [Requêtes](/fr/blockchain/queries.md)

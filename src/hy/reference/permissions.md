@@ -16,8 +16,8 @@ translation_engine: nllb-200-ct2
 
 |թույլտվության նշան|Կատեգորիա|Օպերացիա|
 | --- | --- | --- |
-|`CanManagePeers` |Զուգընկերներ|Գրանցվել, չգրանցվել կամ այլ կերպ կառավարել զուգընկերները: |
-|`CanManageLaneRelayEmergency` |Զուգընկերներ|Կառավարեք շտապ ճամփորդի ռեալի վերահսկողությունը: |
+|`CanManagePeers` |Հանգույցներ|Գրանցվել, չգրանցվել կամ այլ կերպ կառավարել հանգույցները: |
+|`CanManageLaneRelayEmergency` |Հանգույցներ|Կառավարեք շտապ ճամփորդի ռեալի վերահսկողությունը: |
 |`CanRegisterDomain` |Դոմեյն |Գրանցեք դոմեյն:|
 |`CanUnregisterDomain` |Դոմեյն |Դոմենի գրանցումը չեղարկեք: |
 |`CanModifyDomainMetadata` |Դոմեյն |Փոխել դոմեյնային մետադատա: |
@@ -29,9 +29,9 @@ translation_engine: nllb-200-ct2
 |`CanMintAssetWithDefinition` |Գույք |Մինետային ակտիվներ՝ հատուկ սահմանման համար: |
 |`CanBurnAssetWithDefinition` |Գույք |Սառել ակտիվները հատուկ սահմանման համար: |
 |`CanTransferAssetWithDefinition` |Գույք |Տրանսֆերային ակտիվներ՝ հատուկ սահմանման համար: |
-|`CanMintAsset` |Գույք |Տեղադրեք որոշակի ակտիվների հավասարակշռություն: |
-|`CanBurnAsset` |Գույք |Պարզ ակտիվների հավասարակշռությունը այրեք:|
-|`CanTransferAsset` |Գույք |Տեղափոխել հատուկ ակտիվների հավասարակշռությունը: |
+|`CanMintAsset` |Գույք |Տեղադրեք որոշակի ակտիվների մնացորդ: |
+|`CanBurnAsset` |Գույք |Պարզ ակտիվների մնացորդը այրեք:|
+|`CanTransferAsset` |Գույք |Տեղափոխել հատուկ ակտիվների մնացորդը: |
 |`CanRegisterNft` |NFT |Գրանցել NFT: |
 |`CanUnregisterNft` |NFT |Բաց թողնել NFT. |
 |`CanTransferNft` |NFT |Փոխանցել NFT. |

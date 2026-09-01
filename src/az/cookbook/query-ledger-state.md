@@ -1,29 +1,29 @@
 ---
 translation_locale: az
 translation_source: /cookbook/query-ledger-state.md
-translation_source_hash: ca76923f5ae35b96c52a6a4c23c5d9e69549d1ca91d6d1507e7b9a1aee1f1676
+translation_source_hash: 68ef931f3d37b9bd40fcf61c9a77313539ca0bd648405834d161a018debb491a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Query Ledger Dövlət {#query-ledger-state}
+# Blokçeyn dəftərçəsinin vəziyyətini sorğulamaq {#query-ledger-state}
 
 ## Nəticə {#outcome}
 
-Taira JSON resurslarını oxuyun və layihələndirin, sonra filterlər, məntiqi səhifələşdirmə, sıralama, alınma ölçüləri və yalnız irəliləyən kursor davamçılığı ilə tiplənmiş Iroha sorğularından istifadə edin. Server ötürülmüş `--select` tuple-ni qiymətləndirmədən əvvəl seçicilərin proyeksiyasına da güvənməkdən qaçınırsınız.
+Oxuyun və Taira JSON resurslarını layihələndirin, sonra isə süzgəclər, məntiqi səhifələmə, sıralama, alma ölçüləri və yalnız irəli göstərici kursor davamlılığı ilə yazılmış Iroha sorğularından istifadə edin. Siz həmçinin yönləndirilmiş `--select` tuple server tərəfindən qiymətləndiriləndən əvvəl seçici layihələndirməyə güvənməkdən çəkinəcəksiniz.
 
-## Əvvəlki şərtlər {#prerequisites}
+## Tələb olunan əvvəlcədən biliklər {#prerequisites}
 
-- `curl`, `jq`, Node.js 24 və axın `iroha` CLI.
-- Yalnız oxumaq üçün Taira giriş.
-- İmzalanmış tapılan sorğu nümunələri üçün Taira üçün müştəri konfiqurasiyası və ya istehsal edilmiş yerli şəbəkə.
-- Rust nümunəsi üçün, hədəf şəbəkə ilə eyni Iroha mənbə tənzimlənməsinə bağlanmış layihə.
+- `curl`, `jq`, Node.js 24 və indiki `iroha` CLI.
+- Yalnız oxumaq üçün Taira girişi.
+- İmzalı yazılı sorğu nümunələri üçün, Taira və ya yaradılmış lokal şəbəkə üçün bir müştəri konfiqurasiyası.
+- Rust nümunəsi üçün, hədəf şəbəkə ilə eyni Iroha mənbə reviziyasına bərkidilmiş bir layihə.
 
-## Dərslər {#steps}
+## Addımlar {#steps}
 
-### 1. Taira ictimai mənbədən səhifə keçin {#_1-page-through-a-public-taira-resource}
+### 1. Ümumi Taira resursda səhifələyin {#_1-page-through-a-public-taira-resource}
 
-Mənbə yolları idarəetmə paneli və duman yoxlamaları üçün faydalıdır. JSON tələb edin, hər səhifəni bağlayın və cavabı yoxladıqdan sonra yalnız tətbiqə lazım olan sahələri proqnozlaşdırın.
+Resurs yolları dashboardlar və qısa yoxlamalar üçün faydalıdır. JSON üçün soruşun, hər səhifəyə bağlayın və cavabı yoxladıqdan sonra tətbiqin ehtiyacı olan sahələri layihələndirin.
 
 ::: code-group
 
@@ -69,11 +69,11 @@ for (let offset = 0; ; offset += limit) {
 
 :::
 
-Bu HTTP səthdə `limit` və `offset` istifadə olunur. Marşrutda daha ucuz hesablama rejimi tətbiq edildikdə buraxılmış və ya məhdudlaşdırılmış `total` normal olaraq qəbul edin.
+Bu HTTP səth `limit` və `offset` istifadə edir. Əgər marşrut daha ucuz sayma rejimi istifadə edirsə, buraxılmış və ya məhdudlaşdırılmış `total` normal kimi qəbul olunmalıdır.
 
-### 2. CLI sorğusunu filtrləyin və toplayın. {#_2-filter-and-batch-a-typed-cli-query}
+### 2. Yığılmış CLI sorğunu süzün və partiyalara ayırın {#_2-filter-and-batch-a-typed-cli-query}
 
-CLI tiplənmiş təkrarlana bilən sorğu seriallaşdırır və server davamlılığı kursorlarını daxili olaraq izləyir. Burada məntiqi nəticə bir sıra ilə məhdudlaşır, `--fetch-size 1` isə hər gəzintiyə ən çox toplanılan partiyanı idarə edir.
+CLI tipli təkrarlana bilən sorğunu ardıcıllıqla saxlayır və daxili olaraq serverin davamlı göstəricilərini izləyir. Burada məntiqi nəticə bir sətr ilə məhdudlaşdırılır, `--fetch-size 1` isə hər gediş-gəlişdə götürülən maksimum partiyanı idarə edir.
 
 ```bash
 DOMAIN_PREDICATE='{"equals":[{"field":"id","value":"wonderland.universal"}]}'
@@ -85,11 +85,11 @@ iroha --config ./localnet/client.toml \
   --fetch-size 1
 ```
 
-Filtrləmə səhifələşdirilmədən əvvəl baş verir. Sorğuda xüsusi tiplənmiş predikatlardan istifadə edin; bir hesab və ya aktiv üçün bir predikat təhlükəsiz şəkildə bir domen üçün yenidən istifadə edilə bilməz.
+Filtrləmə səhifələnmədən əvvəl baş verir. Sorğuya xas tipli predikatlardan istifadə edin; bir hesab və ya aktiv üçün predikat təhlükəsiz şəkildə bir domen üçün yenidən istifadə oluna bilməz.
 
-### 3. Dayanıqlı metadata açarı ilə sıralama {#_3-sort-by-a-stable-metadata-key}
+### 3. Sabit metadata açarına görə sıralayın {#_3-sort-by-a-stable-metadata-key}
 
-Tiplənmiş sorğu sıralaması bir metadata açarı üzərində leksikografikdir. Bu açarı olmayan maddələr icra vaxtının müəyyən edilmiş sıralamasını izləyir, buna görə də kolleksiya boyunca ardıcıl olaraq doldurulmuş bir açardan istifadə edin.
+Daxil edilmiş sorğunun sıralaması bir metadata açarı üzrə leksioqrafikdir. O açara sahib olmayan elementlər proqram təminatı icra mühitinin müəyyən etdiyi qaydada sıralanır, buna görə bütün kolleksiya üzrə eyni şəkildə doldurulmuş açardan istifadə edin.
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -104,11 +104,11 @@ iroha --config ./localnet/client.toml \
   | jq '[.[] | {id, metadata}]'
 ```
 
-Çeklənmiş CLI `--select` JSON parses və seçicisi tuple ötürür, lakin hazırkı yüngül sual DSL serverdə bu seçicini qiymətləndirmir. Onun ətrafında proqnoz müqaviləsi hələ qurmayın. SDK proyeksiyasını yalnız hədəf iş vaxtı dəstəklədikdən sonra istifadə edin və ya yuxarıdakı kimi təsdiqlənmiş nəticə müştəri tərəfini `jq` və ya JavaScript ilə proqnozlaşdırın.
+Qeydiyyatdan keçmiş CLI `--select` JSON analiz edir və seçici tuple-ni yönləndirir, lakin hazırkı yüngül sorğu DSL həmin seçicini serverdə qiymətləndirmir. Hələ bunun ətrafında bir proyeksiya müqaviləsi qurmayın. Yalnız hədəf proqram təminatı icra mühiti bunu dəstəklədikdən sonra yazılı SDK proyeksiyasından istifadə edin, ya da təsdiqlənmiş nəticəni yuxarıdakı kimi `jq` və ya JavaScript ilə müştəri tərəfdə proyeksiya edin.
 
-### 4. Rust təkrarlatıcısının qeyri-aşkar kursorları izləməsinə icazə verin. {#_4-let-the-rust-iterator-follow-opaque-cursors}
+### 4. Rust iterator-a qeyri-şəffaf kursorları izləməyə icazə verin {#_4-let-the-rust-iterator-follow-opaque-cursors}
 
-`Pagination` məntiqi nəticə dəstini məhdudlaşdırır. `FetchSize` hər bir server partiyasını idarə edir. Geri qaytarılan iterator server tərəfindən istehsal olunan kursordan istifadə edərək davamlılıq tələblərini şəffaf şəkildə göndərir.
+`Pagination` məntiqi nəticə dəstini məhdudlaşdırır. `FetchSize` hər bir server partiyasını idarə edir. Qaytarılan iterator server tərəfindən yaradılan kursoru istifadə edərək davametmə sorğularını şəffaf şəkildə göndərir.
 
 ```rust
 use std::num::NonZeroU64;
@@ -132,11 +132,11 @@ for definition in definitions {
 }
 ```
 
-`ForwardCursor` səlahiyyətli, proses yerli və yalnız irəliləyişlidir. Onu heç vaxt təhlil etməyin, sintez edin, idarəetmə orqanları arasında bölüşün və ya Torii nümunələrində portativ bir resume token kimi davam etdirin. Əgər sona çatırsa, orijinal sorğu məqsədyönlü bir tətbiq səviyyəsində yoxlama nöqtəsi ilə yenidən başlatın.
+Bir `ForwardCursor` səlahiyyətlə bağlıdır, prosesə məxsusdur və yalnız irəli yönlüdür. Onu heç vaxt təhlil etməyin, sintetikləşdirməyin, avtorizasiya əsasları arasında paylaşmayın və ya onu Torii nümunələri arasında daşına bilən CV tokeni kimi saxlamayın. Əgər müddəti bitirsə, ilkin sorğunu qəsdən tətbiq səviyyəsində yoxlama nöqtəsi ilə yenidən başlayın.
 
-## Tətbiq edin {#verify}
+## Yoxla {#verify}
 
-Tam domen filtrini yalnız `wonderland.universal` qaytarmaq lazımdır. Yalnız uğurlu CLI çıxışı saymaqdansa nəticəni yoxlayın:
+Dəqiq domen filtri yalnız `wonderland.universal`-ı qaytarmalıdır. Yalnız uğurlu CLI çıxışı saymaqla yox, nəticəni yoxlayın:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -146,23 +146,23 @@ iroha --config ./localnet/client.toml \
   | jq -e 'length == 1 and .[0] == "wonderland.universal"'
 ```
 
-Səhifələşdirilmiş tətbiq sorğuları üçün IDs səhifələr arasında təkrarlanmamasını, tələb olunan məntiqi həddin heç vaxt aşılmamasını və keçmiş bir kursordan sonra yenidən çalışmanın sənədli bir yoxlama nöqtəsindən bərpa edilməsini yoxlayın.
+Səhifələnmiş tətbiq sorğuları üçün, həmçinin test edin ki, ID-lər səhifələrdə təkrarlanmır, tələb olunan məntiqi limit heç vaxt aşılmır və başa çatmış kursorun ardından təkrar cəhd etmə sənədləşdirilmiş yoxlama nöqtəsindən başlayır.
 
-## Problemlərin həlli {#troubleshooting}
+## Problemlərin aradan qaldırılması {#troubleshooting}
 
-- Yalnız bir sorğu təkrarlanan filtr, sıralama, səhifələşdirmə və ya alınma parametrlərini qəbul etmir. Bu nəzarətlərə ehtiyac duyulduqda müvafiq siyahı sorğusundan istifadə edin.
-- `fetch_size` ümumi nəticə məhdudluğu deyil, sıfır olmayan bir partiya göstəricisidir. Hazırdaki standart `100`dir və icra vaxtı maksimumdan yuxarı dəyərləri rədd edir.
-- Bilinməyən, keçmiş və ya xarici bir kursor məqsədyönlü olaraq yenidən istifadə edilə bilməz. Sualı yenidən başlatın; qeyri-şəffaf dəyərini təmir etməyə çalışmayın.
-- Metadata sıralama ümumi sahə sıralaması deyil. Hər bir maddə seçilmiş açarı daşıymazsa, yox olan açar sırasını sənədləşdirin və ya başqa strategiya seçin.
-- CLI proqnozlaşdırır və ötürür `--select`, lakin cari server yüngül seçicisi tuplunu qiymətləndirmir. Server tərəfində seçicinin dəstəyi tətbiq olunan iş vaxtı üçün yoxlanılmadığı təqdirdə müştəri tərəfi proyeksiyası tətbiq edin.
-- Geniş sərhədsiz sorğular həmkar işləri, müştəri yaddaşı və kursorun ömür boyu riskini artırır. İstehlakçıya uyğun bir məntiqi məhdudluq və əlavənin ölçüsünü müəyyənləşdirin.
-- İctimai JSON mənbə parametrləri və imzalanmış tiplənmiş sorğu parametrləri əlaqəli, lakin mübadiləsiz tel formatları deyil. Tiplənmiş sual pultları üçün SDK və ya CLI üçün üstünlük verin.
+- Tək sorğu təkrarlana bilən filter, sıralama, səhifələmə və ya əldə etmə parametrlərini qəbul etmir. Bu nəzarətlər lazım olduqda müvafiq siyahı sorğusundan istifadə edin.
+- `fetch_size` sıfır olmayan toplu göstəricidir, total nəticə limiti deyil. Hazırkı standart `100`-dir və proqram təminatı işləmə mühiti maksimum dəyərdən yuxarı olan qiymətləri rədd edir.
+- Naməlum, müddəti bitmiş və ya xarici kursor qəsdən yenidən istifadə edilə bilməz. Sorğunu yenidən başladın; şəffaf olmayan dəyəri təmir etməyə cəhd etməyin.
+- Metadatanın sıralanması ümumi sahə sıralaması deyil. Əgər hər bir element seçilmiş açarı daşımırsa, açarı çatmayanların sırasını sənədləşdirin və ya başqa bir strategiya seçin.
+- CLI `--select` analiz edir və ötürür, lakin mövcud server yüngül çəkili seçici tuplonu qiymətləndirmir. İstifadəçi tərəfi layihəsi tətbiq edin, əgər server tərəfi seçici dəstəyi yerləşdirilmiş proqram icra mühiti üçün təsdiqlənməyibsə.
+- Geniş və məhdudiyyəti olmayan sorğular şəbəkə yoldaşı işini, müştəri yaddaşını və kursorun ömrü riskini artırır. Məntiqi bir limit və istehlakçıya uyğun bir götürmə ölçüsü təyin edin.
+- İctimai JSON resurs parametrləri və imzalanmış tipli sorğu parametrləri əlaqəlidir, lakin əvəz edilə bilən seriyalaşdırma formatları deyildir. Tipli sorğu verilənləri konteynerləri üçün SDK və ya CLI-dən istifadə edin.
 
 ## Mənbə və əlaqəli sənədlər {#source-and-related-docs}
 
-- [Kursor dəstəkləyən səhifələşmə inteqrasiyası testləri bağlanmış komitdə](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/pagination.rs)
-- [Soruşma qurucusu və seçicisi davranışı bağlanmış komitdə](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/builder/mod.rs)
-- [Qeydiyyat parametrləri və bağlanmış commit-də kursor modeli](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/parameters.rs)
-- [Suallar](/az/blockchain/queries.md)
-- [Məlumat istintaq](/az/reference/queries.md)
-- [JavaScript və TypeScript ](/az/guide/tutorials/javascript.md)
+- [Pinned mənbə kodu reviziyasında kursora əsaslanan səhifələmə inteqrasiya testləri](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/pagination.rs)
+- [Möhkəmlənmiş mənbə kodu reviziyasında sorğu qurucusu və seçici davranışı](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/builder/mod.rs)
+- [Sorğu parametrləri və pinlənmiş mənbə kodu reviziyasında kursor modeli](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/parameters.rs)
+- [Sorğular](/az/blockchain/queries.md)
+- [Sorğu istinadı](/az/reference/queries.md)
+- [JavaScript və TypeScript](/az/guide/tutorials/javascript.md)

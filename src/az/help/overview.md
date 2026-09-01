@@ -3,24 +3,24 @@ translation_locale: az
 translation_source: /help/overview.md
 translation_source_hash: d0e20c3784c9456f74a68821530920043b0ed5d65890e97d488be304c1249f3b
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Problemlərin həlli {#troubleshooting}
+# Problemlərin aradan qaldırılması {#troubleshooting}
 
-Bu bölmə işləyərkən problemlərlə üzləşsəniz kömək etmək üçün nəzərdə tutulub. Iroha. Əgər bir şey səhv olarsa, xahiş edirəm. [açarları yoxlayın](#check-the-keys) Əgər bu kömək etmirsə, hər mərhələ üçün problemlərin həlli təlimatlarına baxın:
+Bu bölmə Iroha ilə işləyərkən problemlə qarşılaşsanız kömək etmək üçün nəzərdə tutulub. Bir şey səhv gedərsə, lütfən əvvəlcə [açarları yoxlayın](#check-the-keys) edin. Əgər bu kömək etməzsə, hər mərhələ üçün problemlərin aradan qaldırılması təlimatlarını yoxlayın:
 
-- [quraşdırma məsələləri](./installation-issues.md)
-- [Konfiqurasiya məsələləri](./configuration-issues.md)
-- [İstifadə məsələləri](./deployment-issues.md)
-- [İnteqrasiya məsələləri](./integration-issues.md)
+- [Quraşdırma problemləri](./installation-issues.md)
+- [Konfiqurasiya problemləri](./configuration-issues.md)
+- [Yerləşdirmə problemləri](./deployment-issues.md)
+- [İnteqrasiya problemləri](./integration-issues.md)
 
-Əgər yaşadığınız problem burada təsvir olunmursa, [Teleqram ](https://t.me/hyperledgeriroha) vasitəsilə bizimlə əlaqə saxlayın.
+Əgər qarşılaşdığınız problem burada təsvir edilməyibsə, bizimlə [Telegram](https://t.me/hyperledgeriroha) vasitəsilə əlaqə saxlayın.
 
-## Anahtarları yoxlayın. {#check-the-keys}
+## Açarları yoxlayın {#check-the-keys}
 
-Əksər problemlər eşqi olmayan açarların nəticəsində yaranır. Ona görə də məsləhət görürük ki, bu qaydalara əməl olun: Əgər bir şey səhv olarsa, əvvəlcə açarları yoxlayın.
+Əksər problemlər uyğunsuz açarların nəticəsində yaranır. Buna görə də biz bu qaydaya əməl etməyi tövsiyə edirik: Bir şey səhv gedərsə, əvvəlcə açarları yoxlayın.
 
-Burada bir sürətli izah: həmyaşıdların açarları etibarlı həmyaşıdalar arasında olan açarlarla uyğunlaşmadıqda yaranan səhv mesajlarını fərqləndirmək mümkün deyil, çünki bu həmyaşıdın ictimai açarını aşkar edəcəkdir. Beləliklə, ətraf mühit dəyişənləri vasitəsilə müəyyən edilmiş açarları olan Helm xəritələriniz və ya Kubernetes yerləşdirmələriniz varsa, daha yüksək səviyyəli uğursuzluqları araşdırmadan əvvəl [`public_key`](/az/reference/peer-config/params.md#param-public-key), [`private_key`](/az/reference/peer-config/params.md#param-private-key) və [`trusted_peers`](/az/reference/peer-config/params.md#param-trusted-peers) qiymətlərini müqayisə edin.
+Budur qısa izah: Şəbəkə tərəfdaşlarının açarları uyğun gəlmədikdə yaranan səhv mesajlarını ayırd etmək mümkün deyil etibar olunan şəbəkə iştirakçılarının massivi içindəki açarlarla uyğunlaşdırmaq, çünki bu, şəbəkə iştirakçılarının açıq açarını ortaya çıxarardı. Beləliklə, əgər sizin Helm chart-larınız və ya Kubernetes yerləşdirmələriniz mühit dəyişənləri vasitəsilə təyin olunmuş açarlarla varsa, konfiqurasiya edilmişləri müqayisə edin [`public_key`](/az/reference/peer-config/params.md#param-public-key), [`private_key`](/az/reference/peer-config/params.md#param-private-key), və [`trusted_peers`](/az/reference/peer-config/params.md#param-trusted-peers) yuxarı səviyyəli uğursuzluqları araşdırmazdan əvvəl dəyərləri.
 
-Şübhə varsa, [ yeni bir düymə açarları ](/az/guide/security/generating-cryptographic-keys.md) istehsal edin.
+Şübhə halında, [yeni bir açar cütlüyü yaradın](/az/guide/security/generating-cryptographic-keys.md).

@@ -3,66 +3,66 @@ translation_locale: ar
 translation_source: /blockchain/assets.md
 translation_source_hash: c80e6025007653b355d373394465d04adefc1221c8f34d9008f1c9cbabd3dc40
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # الأصول {#assets}
 
-أصل Iroha هو رصيد عددي يحتفظ به حساب. يشير كل رصيد ملموس إلى `AssetDefinition` ، ويتصف التعريف كيف يمكن تسمية هذا الأصول، وتصنيفها، وعرضها، وقسمها.
+الأصل Iroha هو رصيد رقمي يحتفظ به حساب. كل رصيد ملموس يشير إلى `AssetDefinition`، وتعبر التعريفات عن كيفية تسمية هذا الأصل وإصداره وعرضه وتقسيمه.
 
-## تعريف الأصول {#asset-definition}
+## تعريف الأصل {#asset-definition}
 
-يحتوي `AssetDefinition` على:
+يشمل `AssetDefinition`:
 
-- `id`: عنوان تعريف الأصول القنونية
-- `name`: اسم عرض يمكن القراءة من قبل الإنسان
-- `description`: وصف افتراضي يمكن قراءته من قبل الإنسان
-- `alias`: مستعار اختياري في نموذج `<name>#<domain>.<dataspace>` أو `<name>#<dataspace>`
-- `spec`: الدقة الرقمية والقيود المتعلقة بالموازنة
-- `mintable`: سياسة الامتناع
+- `id`: عنوان تعريف الأصل الموحد وفق المعيار البروتوكولي
+- `name`: اسم عرض يمكن للإنسان قراءته
+- `description`: وصف اختياري قابل للقراءة من قبل الإنسان
+- `alias`: الاسم المستعار الاختياري في شكل `<name>#<domain>.<dataspace>` أو `<name>#<dataspace>`
+- `spec`: الدقة الرقمية والقيود على الأرصدة
+- `mintable`: سياسة إصدار الأصول
 - `logo`: اختياري `SoraFS` URI
-- `metadata`: بيانات أساسية تعسفية.
-- `balance_scope_policy`: ما إذا كانت الرصيدات عالمية أم محدودة بمجال البيانات.
-- `owned_by`: الحساب الذي سجل أو يملك التعريف.
-- `total_quantity`: إجمالي الكمية المصدرة
+- `metadata`: بيانات وصفية عشوائية على شكل مفتاح-قيمة
+- `balance_scope_policy`: سواء كانت الأرصدة عامة أو مقيدة بمساحة البيانات
+- `owned_by`: الحساب الذي سجل أو يملك التعريف
+- `total_quantity`: إجمالي الكمية المُصدرة
 - `confidential_policy`: سياسة عمليات الأصول المحمية
 
-تعريف الأصول IDs هي عناوين غير شفافة قائمة. عندما يتم بناء تعريف من نطاق واسم ، يمكن ل Iroha حفظ هذا النطاق / توقيع الاسم ل UX والاستفسارات ، ولكن شكل النص القائم هو العنوان المولود.
+معرّفات تعريف الأصول هي عناوين غامضة ذات معيار بروتوكول واحد. عندما يتم إنشاء تعريف من نطاق واسم، يمكن لـ Iroha الاحتفاظ بإسقاط النطاق/الاسم ذلك من أجل UX والاستفسارات، لكن شكل النص الواحد المعياري للبروتوكول هو العنوان المُنشأ.
 
-## ميزان الأصول {#asset-balance}
+## رصيد الأصول {#asset-balance}
 
-يحتوي `Asset` على:
+يشمل `Asset`:
 
-- `id`: مؤشر `AssetId`، يجمع بين تعريف الأصول وحساب حاملها ونطاق الميزانية الاختيارية
-- `value`: رصيد في `Numeric`
+- `id`: `AssetId`، الذي يجمع بين تعريف الأصل، وحساب الحامل، ونطاق رصيد الأصل الاختياري
+- `value`: رصيد `Numeric`
 
-الحساب المحتفظ به كانونيكي ودون نطاق. يمكن أن يتم عرض تعريف الأصول تحت نطاق مؤهل لمجال البيانات، على سبيل المثال `payments.universal`.
+حساب الحامل هو بروتوكول قياسي مفرد وخالي من النطاق. يمكن عرض تعريف الأصل تحت نطاق مؤهل بمساحة البيانات، على سبيل المثال `payments.universal`.
 
-## إمكانية التخزين {#mintability}
+## سياسة إصدار الأصول {#mintability}
 
-تعريفات الأصول تدعم هذه أنظمة الوصول إلى الخدمة:
+تدعم تعريفات الأصول أوضاع سياسات إصدار الأصول هذه:
 
 |الوضع|المعنى|
 | ------------ | ----------------------------------------------------------------- |
-|`Infinitely` |إمدادات مرنة، ويمكن تصنيع الأصول وحرقها مراراً وتكراراً. |
-|`Once` |إشارة الإمدادات الثابتة، يمكن صياغتها مرة واحدة ثم حرقها|
-|`Not` |علامة إمدادات ثابتة يمكن حرقها ولكن لا يتم صياغتها مرة أخرى.|
-|`Limited(n)` |وتسمح هذه السياسة بإصدار وحدات أصول جديدة في عدد محدود من العمليات الإضافية. |
+| `Infinitely` |العرض المرن. يمكن إصدار الأصل وتدميره بشكل متكرر.|
+| `Once`       |رمز ذو عرض ثابت. يمكن إصداره مرة واحدة ثم تدميره.|
+| `Not`        |رمز ذو عرض ثابت يمكن تدميره ولكن لا يمكن إصداره مرة أخرى.|
+| `Limited(n)` |تسمح السياسة بإصدار وحدات أصول جديدة في عدد محدود من العمليات الإضافية.|
 
-استخدم `Infinitely` للأصول المرنة العادية و `Once` أو `Limited(n)` لأصول التوريد الثابت أو المحدود. لا تستخدم `Not` كسياسة أولية إلا إذا تم تأسيس إمدادات الأصول بالفعل.
+استخدم `Infinitely` للأصول المرنة العادية و`Once` أو `Limited(n)` للأصول ذات العرض الثابت أو المحدود. لا تستخدم `Not` كسياسة أولية إلا إذا كان عرض الأصول محددًا مسبقًا.
 
-## نطاق التوازن {#balance-scope}
+## نطاق رصيد الأصول {#balance-scope}
 
-يسيطر `balance_scope_policy` على كيفية وضع الميزانات:
+الـ `balance_scope_policy` يتحكم في كيفية تقسيم الأرصدة:
 
-- `Global`: علبة رصيد واحدة لكل حساب وتعريف الأصول
-- `DataspaceRestricted`: يتم تقسيم الرصيدات حسب سياق مساحة البيانات
+- `Global`: قسم رصيد واحد لكل حساب وتحديد الأصل
+- `DataspaceRestricted`: يتم تقسيم الأرصدة حسب سياق مساحة البيانات
 
-تُعد الرصيدات المحدودة لمجال البيانات مفيدة عندما يتم استخدام نفس تعريف الأصول عبر مكاتب بيانات متعددة Nexus ولكن يجب أن تبقى الرصادات معزولة.
+الرصيد المحدود بمساحة البيانات مفيد عندما يتم استخدام تعريف الأصول نفسه عبر عدة مساحات بيانات Nexus ولكن يجب أن تظل الأرصدة معزولة.
 
-## جربوا ذلك على Taira {#try-it-on-taira}
+## شغّل سير العمل هذا على Taira {#try-it-on-taira}
 
-تظهر هذه المكالمات التي يتم قراءتها فقط تعريفات أصول حقيقية على شبكة اختبار Taira العامة:
+تُظهر هذه الطلبات للقراءة فقط API تعريفات الأصول الحقيقية على شبكة الاختبار العامة Taira:
 
 ```bash
 TAIRA_ROOT=https://taira.sora.org
@@ -71,7 +71,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=10" \
   | jq -r '.items[] | [.id, .name, .mintable, .total_quantity] | @tsv'
 ```
 
-العثور على تعريف أصول الرسوم الحالية Taira XOR
+ابحث عن تعريف أصل رسوم Taira XOR الحالي:
 
 ```bash
 curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
@@ -80,7 +80,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, total_quantity, mintable, confidential_policy: .confidential_policy.mode}'
 ```
 
-ابحث عن التعريفات التي تحمل البيانات المعدنية:
+ابحث عن التعريفات التي تحتوي على بيانات وصفية:
 
 ```bash
 curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
@@ -89,9 +89,9 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-جميع الأمثلة الثلاثة هي القراءة. لقطع، حرق أو نقل الأصول على Taira, استخدام حساب تمويله من النوافذ والدفق المحافظ في [التواصل مع SORA Nexus مساحات البيانات](/ar/get-started/sora-nexus-dataspaces.md).
+جميع الأمثلة الثلاثة هي للقراءة. لإصدار أو تدمير أو نقل الأصول على Taira، استخدم حسابًا ممولًا من الشبكة الاختبارية وتدفق محمي في [الاتصال بمساحات البيانات SORA Nexus](/ar/get-started/sora-nexus-dataspaces.md).
 
-لمثال الأصول المدفوعة الرسوم Taira، حفظ مساعدة الصنبور من [حصل على Testnet XOR على Taira](/ar/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) ك `taira_faucet_claim.py` ، ثم المطالبة بأصول الصنبور أولاً واستخدامه كأصول غاز المعاملة:
+لمثال على أصل في Taira يتطلب دفع رسوم، احفظ أداة خدمة تمويل الاختبار من [الحصول على XOR لشبكة Taira التجريبية](/ar/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) باسم `taira_faucet_claim.py`، ثم اطلب أصل الاختبار أولًا واستخدمه أصلًا لرسوم تنفيذ المعاملة:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
@@ -101,22 +101,22 @@ python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
 printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
 ```
 
-ثم قم بإدراج `--metadata ./taira.tx-metadata.json` في الأوامر `ledger asset mint`، `ledger asset burn`، و `ledger asset transfer`.
+ثم قم بتضمين `--metadata ./taira.tx-metadata.json` على أوامر `ledger asset mint` و `ledger asset burn` و `ledger asset transfer`.
 
-## التعليمات {#instructions}
+## تعليمات {#instructions}
 
-يمكن تسجيل الأصول وتصنيعها وحرقها ونقلها باستخدام Iroha التعليمات الخاصة:
+يمكن تسجيل الأصول وإصدارها وتدميرها ونقلها باستخدام عمليات تعليمات Iroha:
 
-- [`Register` و`Unregister` ](/ar/blockchain/instructions.md#un-register)
-- [`Mint` و`Burn` ](/ar/blockchain/instructions.md#mint-burn)
+- [`Register` و `Unregister`](/ar/blockchain/instructions.md#un-register)
+- [`Mint` و `Burn`](/ar/blockchain/instructions.md#mint-burn)
 - [`Transfer`](/ar/blockchain/instructions.md#transfer)
-- [`SetKeyValue` و`RemoveKeyValue` ](/ar/blockchain/instructions.md#setkeyvalue-removekeyvalue)
+- [`SetKeyValue` و `RemoveKeyValue`](/ar/blockchain/instructions.md#setkeyvalue-removekeyvalue)
 
-انظر أيضاً:
+انظر أيضًا:
 
-- [دليل CLI](/ar/get-started/operate-iroha-via-cli.md)
-- [Rust التعليمية](/ar/guide/tutorials/rust.md)
-- [Python التعليمية](/ar/guide/tutorials/python.md)
-- [JavaScript/TypeScript دراسة التعليمية ](/ar/guide/tutorials/javascript.md)
+- [CLI دليل](/ar/get-started/operate-iroha-via-cli.md)
+- [Rust درس تعليمي](/ar/guide/tutorials/rust.md)
+- [Python درس تعليمي](/ar/guide/tutorials/python.md)
+- [دروس JavaScript/TypeScript](/ar/guide/tutorials/javascript.md)
 - [نموذج البيانات](/ar/blockchain/data-model.md)
 - [NFTs](/ar/blockchain/nfts.md)

@@ -3,16 +3,16 @@ translation_locale: fr
 translation_source: /guide/tutorials/javascript.md
 translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # JavaScript et TypeScript {#javascript-and-typescript}
 
-Le courant JavaScript SDK est le `@iroha/iroha-js` l'emballage dans Iroha l'arbre source, c'est le Node.js- d'abord SDK pour Torii, Norito Les constructeurs, la signature, la pagination, les prévisualisations Connect et le transport de commandes Kagemusha
+Le JavaScript SDK actuel est le package `@iroha/iroha-js` dans l'arborescence source Iroha. C'est le Node.js-premier SDK pour Torii, les constructeurs Norito, la signature, la pagination, les aperçus Connect et le transport de commandes Kagemusha.
 
-## Construisez à partir de la source {#build-from-source}
+## Construire à partir du source {#build-from-source}
 
-Le paquet n'est pas actuellement disponible dans le registre public npm. Construisez-le à partir de la même révision de source fichée Iroha que le nœud visé:
+Le package n'est actuellement pas disponible à partir du registre public npm. Construisez-le à partir de la même révision source verrouillée Iroha que le nœud que vous ciblez :
 
 ```bash
 git clone https://github.com/hyperledger-iroha/iroha.git
@@ -22,7 +22,7 @@ npm run build:native
 npm run build:dist
 ```
 
-Les enveloppes de construction natives `cargo build -p iroha_js_host` et enregistre la somme de contrôle spécifique à la plateforme utilisée aux SDK La source construit des endroits qui ont vérifié l'hôte dans `native/`. Réglage `IROHA_JS_NATIVE_DIR` Il ne s'agit que lorsque vous fournissez intentionnellement un hébergeur construit séparément, vérifié par la somme de contrôle. ESM- uniquement; CommonJS, dynamique d'utilisation `import()`.
+La version native enveloppe `cargo build -p iroha_js_host` et enregistre la somme de contrôle spécifique à la plateforme utilisée au démarrage de SDK. La version source place cet hôte vérifié dans `native/`. Définir `IROHA_JS_NATIVE_DIR` uniquement lorsque vous fournissez intentionnellement un hôte construit séparément et vérifié par somme de contrôle. Le paquet est uniquement ESM ; à partir de CommonJS, utilisez `import()` dynamique.
 
 ## Démarrage rapide {#quickstart}
 
@@ -38,9 +38,9 @@ const keys = generateKeyPair();
 console.log(keys.publicKey);
 ```
 
-## Essayez Taira En lisant seulement {#try-taira-read-only}
+## Essayer Taira Lecture seule {#try-taira-read-only}
 
-Utilisez `fetch` intégré dans Node.js 24 pour sonder Taira avant d'ajouter le code de signature et de transaction Norito:
+Utilisez `fetch` intégré dans Node.js 24 pour sonder Taira avant d'ajouter le code de signature et de transaction Norito :
 
 ```js
 const root = "https://taira.sora.org";
@@ -67,15 +67,15 @@ for (const asset of assets.items) {
 }
 ```
 
-Sauvegarder comme `taira-readonly.mjs`, puis exécuter:
+Enregistrez-le sous `taira-readonly.mjs`, puis exécutez-le :
 
 ```bash
 node taira-readonly.mjs
 ```
 
-Passer aux appels signés SDK seulement après que ces vérifications en lecture seule aient fonctionné. Le public Taira peut temporairement retourner une file d'attente saturée ou une erreur de passerelle, alors conservez l'opt-in des tests de réseau en direct dans CI.
+Passez aux appels signés SDK uniquement après que ces vérifications en lecture seule fonctionnent. Le Taira public peut temporairement renvoyer une file d'attente saturée ou une erreur de passerelle, donc gardez les tests sur le réseau en direct en option dans CI.
 
-Importations utiles par sous-route:
+Importations de sous-chemins utiles :
 
 ```js
 import { ToriiClient } from "@iroha/iroha-js/torii";
@@ -83,23 +83,23 @@ import { noritoEncodeInstruction } from "@iroha/iroha-js/norito";
 import { generateKeyPair } from "@iroha/iroha-js/crypto";
 ```
 
-Pour la bande de démarrage Connect à navigateur uniquement, utilisez `@iroha/iroha-js/connect-browser` au lieu d'importer la surface du nœud-premier `ToriiClient`.
+Pour le bootstrap Connect uniquement pour navigateur, utilisez `@iroha/iroha-js/connect-browser` au lieu d'importer la surface `ToriiClient` orientée Node.
 
-## Réservation de fonds propres {#native-escrow}
+## Séquestre natif {#native-escrow}
 
-JavaScript et TypeScript les applications peuvent utiliser l'escrow native via Kotodama Compiler les appels de l'hôte avec `@iroha/iroha-js/kotodama-compiler`; Les constructeurs d'opérations de garantie directe native ne sont pas actuellement exposés par les JavaScript SDK. Vous voyez ? [Réservation des actifs natifs](/fr/blockchain/escrow.md#javascript-and-typescript-kotodama) pour l'exemple de l'appel d'accueil en escrow.
+Les applications JavaScript et TypeScript peuvent utiliser l'entiercement natif via les contrats Kotodama. Compilez les appels hôtes d'entiercement avec `@iroha/iroha-js/kotodama-compiler` ; les constructeurs de transactions d'entiercement natif directs ne sont actuellement pas exposés par le JavaScript SDK. Consultez [Compte séquestre d'actifs natifs](/fr/blockchain/escrow.md#javascript-and-typescript-kotodama) pour l'exemple d'appel hôte d'entiercement.
 
 ## Couverture actuelle {#current-coverage}
 
-Le SDK se concentre sur:
+Le SDK se concentre sur :
 
-- Auxiliaires Torii HTTP et WebSocket
+- Torii HTTP et WebSocket aides
 - Norito constructeurs de transactions et d'instructions
-- Kotodama compilation, y compris les intégrations d'appels à l'hôte de la fiducie
-- Ed25519 signature et génération de clé
-- les aides à la pagination et à la réessayer
-- Connectez les aides de démarrage du navigateur
-- Les aides à la préparation, au remplissage, au rachat et à l'exploitation des services de transport Kagemusha.
+- Kotodama compilation, y compris les fonctions intégrées d'appel d'hôte en séquestre
+- Signature et génération de clés Ed25519
+- assistants de pagination et de réessai
+- Connecter les assistants de démarrage du navigateur
+- Aides au transport pour la préparation de Kagemusha, le rechargement, le remboursement et l'état de fonctionnement
 
 ## Références en amont {#upstream-references}
 

@@ -1,37 +1,37 @@
 ---
 translation_locale: uz
 translation_source: /documenting/snippets.md
-translation_source_hash: e188082e05db85d5e514b782f93648fb402a09740840c9201e47db353f2192f5
+translation_source_hash: 48d6670f100c7c6368fa03f163c9ff9e0322d36e51c22f89562b23b0e2ee2a2f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Kod parchalari {#code-snippets}
 
-Ishlab chiqarilgan snippetlar ularni ishlab chiqaradigan Iroha o'zgarishidan kod, konfiguratsiya va sxemalarga bog'liq bo'lgan misollar saqlanadi.
+Yaratilgan qisqacha misollar ularni ishlab chiqqan Iroha tahriridan kod, sozlamalar va sxemalarga bog‘laydi.
 
-## O'zgartiruvchi Iroha artefaktlar {#refreshing-iroha-artifacts}
+## Yangilanmoqda Iroha Artefaktlar {#refreshing-iroha-artifacts}
 
-Iroha-dan kelib chiqqan snippetlar oddiy sayt qurilmalarida tarmoqga kirish yoki aka-uka ma'muriyati talab qilinmaydigan tarzda tekshirilgan.
+Iroha-dan olingan bo‘lakchalar tekshiriladi, shuning uchun oddiy sayt qurilishlari tarmoqga yoki qo‘shni omborga kirishni talab qilmaydi. Ularni aniq yangilang:
 
 ```bash
 pnpm refresh:iroha --source /path/to/iroha
 ```
 
-Ro'yxatdan o'tganlar [`etc/refresh-iroha.ts`](https://github.com/hyperledger-iroha/iroha-docs/blob/main/etc/refresh-iroha.ts) ish oqimi toza manba bilan bogʻliq hisob-kitobni tekshirish `provenance/iroha.json`, qayta tiklanadi `/src/snippets` va Torii OpenAPI tezkor fotosurat va yangilanishlar SHA-256 hashlar. tarkib va kelib chiqishi o'zgarishlarini birgalikda ko'rib chiqish. Oddiy bog'liqlik o'rnatish va VitePress Buildlar o'zgaruvchan bo'limiga ega bo'lmasdan checked-in fayllar iste'mol qiladi.
+Tekshirilgan `etc/refresh-iroha.ts` ish jarayoni toza manba nusxasini `provenance/iroha.json` ga qarshi tekshiradi, `/src/snippets` va Torii OpenAPI vaqt-ko‘rsatkichli ma’lumotlar ko‘rinishini qayta yaratadi, va yangilaydi SHA-256 kriptografik xeshlarni. Mazmun va kelib chiqish o'zgarishlarini birgalikda ko'rib chiqing. Normal bog'liqlik o'rnatilishi va VitePress qurilishlar o'zgartirilishi mumkin bo'lgan shoxni yuklamasdan tekshirilgan fayllardan foydalanadi.
 
-## Snippets-lar ham kiradi {#including-snippets}
+## Qismchalarni o'z ichiga oladi {#including-snippets}
 
-[VitePress kod-snippet sintaksasi ](https://vitepress.dev/guide/markdown#import-code-snippets) dan foydalanib, generatsiya qilingan yoki mahalliy manbalarni o'z ichiga oling:
+[VitePress kod-qism sintaksisi](https://vitepress.dev/guide/markdown#import-code-snippets) dan foydalanib, yaratilgan yoki mahalliy manbalarni qo'shing:
 
 ```md
 <<< @/snippets/client.template.toml
 ```
 
-Nomlangan kod mintaqasini o'z mintaqa nomi bilan qo'shish mumkin:
+Nomlangan kod hududi uning hudud nomini qo‘shish orqali kiritilishi mumkin:
 
 ```md
 <<< @/example_code/lorem.rs#ipsum
 ```
 
-Qo'lda yozilgan misollarni kichik saqlang. Jamoat interfeyslari, konfiguratsiya namunalari, ishlab chiqarilgan sxemalar va buyruq chiqarish uchun yangilangan manba artefaktlarini afzal ko'ring.
+Qo'lda yozilgan misollarni kichik tuting. Jamoat interfeyslari, sozlash shablonlari, yaratilgan sxemalar va buyruq natijalari uchun yangilangan manba ob'ektlarini afzal qiling.

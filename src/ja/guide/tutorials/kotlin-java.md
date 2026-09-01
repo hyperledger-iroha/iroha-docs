@@ -1,31 +1,31 @@
 ---
 translation_locale: ja
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: 62d6f434e5af4213420c456ee27ebdc260c8b0e9f7a85bc3ba955ee9c79a058d
+translation_source_hash: f2411fec1cc35b1bf7795a7ab5a0eb7a8eb6b60b4799ebf3db47208b902f87e6
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Kotlin,Android,およびJava {#kotlin-android-and-java}
+# Kotlin、Android、そしてJava {#kotlin-android-and-java}
 
-労働組合 Kotlin SDK のデフォルトクライアントスタックです. JVM そして Android 適用される. `kotlin/` について Iroha リポジトリとプラットフォームによって分割されているので,ポータブルコードは取得しない Android 依存性について
+Kotlin SDK は、JVM および Android アプリケーションのデフォルトのクライアントスタックです。これは Iroha リポジトリの`kotlin/`の下にあり、プラットフォームごとに分割されているため、ポータブルコードは Android 依存関係を取得しません。
 
 ## モジュール {#modules}
 
-|芸術品|タイプ|使用する|
+|人工遺物|タイプ|使用する|
 | --- | --- | --- |
-|`org.hyperledger.iroha.sdk:core-jvm`|JAR|純粋 Kotlin/JVM Norito,データモデル,暗号化,取引, Torii,およびプロトコルコード |
-|`org.hyperledger.iroha.sdk:client-android`|AAR|Android キーストア,デバイステレメトリ,および JNI サポートされたクライアント統合 |
-|`org.hyperledger.iroha.sdk:offline-wallet-android`|AAR|Android `client-android` に基づいたオフライン財布輸送と統合|
+| `org.hyperledger.iroha.sdk:core-jvm` | JAR |ピュア Kotlin/JVM Norito、データモデル、暗号、トランザクション、Torii、およびプロトコルコード|
+| `org.hyperledger.iroha.sdk:client-android` | AAR | Android キーストア、デバイステレメトリ、および JNI 支持のクライアント統合|
+| `org.hyperledger.iroha.sdk:offline-wallet-android` | AAR | Android オフラインウォレットの輸送および統合は `client-android` 上に構築されています|
 
-文物はまだマヴェン・セントラルに公開されていません. 固定された Iroha ソース修正から本地で構築して公開してください:
+これらのアーティファクトはまだ Maven Central に公開されていません。固定された Iroha ソースリビジョンからローカルでビルドして公開してください:
 
 ```bash
 cd kotlin
 ./gradlew publishToMavenLocal
 ```
 
-その後,アプリケーションが必要とするアーテファクトのみを選択します:
+次に、アプリケーションに必要なアーティファクトだけを選択します:
 
 ```kotlin
 repositories {
@@ -41,40 +41,40 @@ dependencies {
 }
 ```
 
-`core-jvm` には Android 依存関係がない. Android クライアントおよびキーストアコードを `client-android` に保存し, Android オフラインウォレットと JNI ストリームにのみ `offline-wallet-android` を使用する.
+`core-jvm` は Android の依存関係を含みません。Android クライアントとキーストアのコードは `client-android` に保持し、`offline-wallet-android` を Android 専用のオフラインウォレットおよび JNI フローに使用してください。
 
-## Kotlin とJavaの互換性 {#kotlin-and-java-compatibility}
+## Kotlin と Java の互換性 {#kotlin-and-java-compatibility}
 
-公衆 API は Kotlin- はじめにJavaのインターオップを提供します JVM 連絡先は必要だ 同等の変更は,対応する `java/` の実施で反映されます. Android の新しい統合は,上記の Kotlin アーテファクトから開始されるべきである.
+公開されている API は Kotlin-優先で、JVM の要求するクライアントが必要とする場所でJavaの相互運用性を提供します。対応する`java/`の実装にも同等の変更が反映されています。新しい Android の統合は、上記の Kotlin アーティファクトから始めるべきです。
 
-全員 Kotlin モジュールは執行する JDK 8 API 作成時に互換性 `-Xjdk-release=8`, 組み立てツールチェーン自体は使用する JDK 21. 使用しないでください JDK 9+ APIs 中 SDK コードだ
+すべての Kotlin モジュールは、ビルドツールチェーン自体が JDK 21 を使用しているにもかかわらず、コンパイル時に `-Xjdk-release=8` との JDK 8 API 互換性を強制します。SDK コードでは JDK 9+ APIs を使用しないでください。
 
-## 建設 し,試す {#build-and-test}
+## 構築とテスト {#build-and-test}
 
-携帯型 JVM テストを実行する.
+ポータブル JVM テストを実行する：
 
 ```bash
 cd kotlin
 ./gradlew :core-jvm:test --console=plain
 ```
 
-Android 文具を造る:
+Android アーティファクトを構築する:
 
 ```bash
 ./gradlew :client-android:assembleRelease \
   :offline-wallet-android:assembleRelease --quiet
 ```
 
-## 現在 の 対象 {#current-coverage}
+## 現在のカバレッジ {#current-coverage}
 
-Kotlin SDK は以下のものを含む.
+Kotlin SDK には以下が含まれます：
 
-- Norito 暗号化および解読
-- カノニカル・アカウントと資産アドレスの管理
-- 取引構築,署名,オフライン封筒
-- Torii HTTP, WebSocket,および SSE の顧客
-- マルチサイン,サブスクリプション, SoraFS, Nexus,そしてConnectモデル
-- Android キーストアとデバイスのテレメトリ統合
-- Android オフライン QR,近辺,および NFC 輸送
+- Norito エンコードとデコード
+- 標準的なアカウントおよび資産アドレスの処理
+- トランザクションの作成、署名、オフラインデータコンテナ
+- Torii、HTTP、WebSocket、および SSE のクライアント
+- マルチシグネチャ、サブスクリプション、SoraFS、Nexus、およびConnectモデル
+- Android キーストアおよびデバイステレメトリ統合
+- Android オフライン QR、近く、および NFC 輸送
 
-[Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/kotlin/README.md)は,モジュール特有の APIs と正確なビルドコマンドを参照してください.
+モジュール固有の APIs や正確なビルドコマンドについては、[Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/kotlin/README.md)を参照してください。

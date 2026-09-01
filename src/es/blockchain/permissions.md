@@ -3,24 +3,24 @@ translation_locale: es
 translation_source: /blockchain/permissions.md
 translation_source_hash: 1a12b47fa14bb011c9a916e70a1a8b5c083061880e1564a0be861c13cf562a77
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Las autorizaciones {#permissions}
+# Permisos {#permissions}
 
-Las cuentas necesitan tokens de permiso para varias acciones en una cadena de bloques, por ejemplo, para acuñar o quemar activos.
+Las cuentas necesitan tokens de permiso para varias acciones en una cadena de bloques, por ejemplo, para emitir o quemar activos.
 
-Hay una diferencia entre una cadena de bloques pública y una privada en términos de permisos otorgados a los usuarios. En una cadena de bloques privada, se supone que la mayoría de las cuentas no pueden hacer nada fuera de la autoridad otorgada a ellas a menos que se les conceda explícitamente el permiso pertinente.
+Hay una diferencia entre una blockchain pública y una privada en términos de permisos otorgados a los usuarios. En una blockchain pública, la mayoría de las cuentas tienen el mismo conjunto de permisos. En una blockchain privada, se asume que la mayoría de las cuentas no pueden hacer nada fuera del principio de autorización que se les ha otorgado, a menos que se les conceda explícitamente el permiso relevante.
 
-Tener un permiso para hacer algo significa que la cuenta tiene el correspondiente `Permission`. Los permisos pueden concederse directamente o a través de un [`Role`](#permission-groups-roles), Los permisos se otorgan con el `Grant` Los permisos y los roles no expiran; `Revoke` la instrucción.
+Tener un permiso para hacer algo significa que la cuenta tiene el correspondiente `Permission`. Los permisos pueden otorgarse directamente o a través de un [`Role`](#permission-groups-roles), que agrupa un conjunto de permisos. Los permisos se conceden con el `Grant` instrucción. Los permisos y roles no caducan; elimínalos con el `Revoke` instrucción.
 
-## Tokens de autorización {#permission-tokens}
+## Tokens de permiso {#permission-tokens}
 
-Las fichas de permiso son objetos tipados definidos por el ejecutor activo. Algunas fichas son globales, como `CanManagePeers`, y otras tienen un alcance específico para un objeto del libro mayor, como una cuenta, activo, definición de activo, dominio, NFT, papel o desencadenante.
+Los tokens de permiso son objetos tipados definidos por el ejecutor activo. Algunos tokens son globales, como `CanManagePeers`, y otros están limitados a un objeto específico del libro mayor de la blockchain, como una cuenta, un activo, una definición de activo, un dominio, NFT, un rol o un desencadenador.
 
-Estos son algunos ejemplos de parámetros utilizados para varios tokens de permisos:
+Aquí hay algunos ejemplos de parámetros utilizados para varios tokens de permiso:
 
-- Una ficha que otorga permiso para modificar metadatos de una cuenta específica tiene un campo `account`:
+- Un token que otorga permiso para modificar los metadatos de una cuenta específica contiene un campo `account`:
 
   ```json
   {
@@ -28,7 +28,7 @@ Estos son algunos ejemplos de parámetros utilizados para varios tokens de permi
   }
   ```
 
-- Un token que conceda permiso para transferir activos para una definición específica de activo tiene un campo `asset_definition`:
+- Un token que otorga permiso para transferir activos para una definición de activo específica lleva un campo `asset_definition`:
 
   ```json
   {
@@ -42,21 +42,21 @@ Estos son algunos ejemplos de parámetros utilizados para varios tokens de permi
   {}
   ```
 
-### Tokens de autorización preconfigurados {#pre-configured-permission-tokens}
+### Tokens de permiso preconfigurados {#pre-configured-permission-tokens}
 
-Puede encontrar la lista de fichas de permiso preconfiguradas en el capítulo [Referencia](/es/reference/permissions).
+Puede encontrar la lista de tokens de permiso preconfigurados en el capítulo [Referencia](/es/reference/permissions).
 
-## Grupos de permisos (funciones) {#permission-groups-roles}
+## Grupos de Permisos (Roles) {#permission-groups-roles}
 
-Un conjunto de permisos se llama un rol. `Grant` la instrucción y revocada utilizando el `Revoke` la instrucción.
+Un conjunto de permisos se llama un rol. De manera similar a los tokens de permisos, los roles pueden ser otorgados usando la instrucción `Grant` y revocados usando la instrucción `Revoke`.
 
-Antes de conceder una función a una cuenta, la función debe registrarse primero.
+Antes de otorgar un rol a una cuenta, el rol debe ser registrado primero.
 
-Los roles son útiles cuando varias cuentas deben recibir el mismo conjunto de permisos. Registrar el papel una vez, otorgar permisos al rol y luego conceder o revocar el papel para las cuentas individuales.
+Los roles son útiles cuando varias cuentas deben recibir el mismo conjunto de permisos. Registre el rol una vez, otorgue permisos al rol y luego otorgue o revoque el rol para cuentas individuales.
 
-### Registro de un nuevo papel {#register-a-new-role}
+### Registrar un nuevo rol {#register-a-new-role}
 
-Registramos un nuevo papel que, una vez otorgado, permitirá el acceso de otra cuenta a los metadatos [ ](/es/blockchain/metadata.md) en la cuenta de Mouse:
+Vamos a registrar un nuevo rol que, cuando se otorgue, permitirá a otra cuenta acceder al [metadatos](/es/blockchain/metadata.md) en la cuenta de Mouse:
 
 ```rust
 let role_id = RoleId::from_str("ACCESS_TO_MOUSE_METADATA")?;
@@ -67,9 +67,9 @@ let role = iroha_data_model::role::Role::new(role_id.clone(), mouse_id.clone())
 let register_role = Register::role(role);
 ```
 
-### Asigna un papel {#grant-a-role}
+### Conceder un rol {#grant-a-role}
 
-Después de que el papel está registrado, Mouse puede otorgarlo a Alice:
+Después de que se registre el rol, Mouse puede otorgárselo a Alice:
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
@@ -80,35 +80,35 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 
 ## Validadores de permisos {#permission-validators}
 
-Los permisos existen para que sólo las cuentas con el token de permiso requerido puedan realizar una acción protegida. El ejecutor predeterminado verifica los permisos durante la ejecución de instrucciones, consultas y expresiones.
+Los permisos existen para que solo las cuentas con el token de permiso requerido puedan realizar una acción protegida. El ejecutor predeterminado verifica los permisos durante la ejecución de instrucciones, consultas y expresiones.
 
-La superficie predeterminada del validador se agrupará por área de registro:
+La superficie de validación predeterminada está agrupada por área del libro mayor de la blockchain:
 
-- Gestión entre pares
+- gestión de pares de red
 - dominios y cuentas
-- activos, NFTs, y garantías
+- activos, NFTs, y cuentas de depósito en garantía
 - desencadenantes
-- funciones y permisos
+- roles y permisos
 - ejecutor/tiempo de ejecución, pruebas, puentes y módulos SORA/Nexus
 
-La lista exacta de tokens está respaldada por la fuente en la referencia [Permission Tokens](/es/reference/permissions.md).
+La lista exacta de tokens está respaldada por la fuente en el [Referencia de Tokens de Permiso](/es/reference/permissions.md).
 
-### Validadores de tiempo de ejecución {#runtime-validators}
+### Validadores de tiempo de ejecución de software {#runtime-validators}
 
-El ejecutor predeterminado proporciona los validadores de permisos incorporados y las definiciones de tokens, y una red puede cambiar la política mediante la actualización del ejecutor que utiliza.
+Las comprobaciones de permisos son aplicadas por el ejecutor activo. El ejecutor predeterminado proporciona los validadores de permisos integrados y las definiciones de tokens, y una red puede cambiar la política al actualizar el ejecutor que utiliza.
 
-Los validadores devuelven un veredicto de validación. Un validador puede permitir una operación, negarla con razón o omitirla si la operación está fuera del alcance de ese validador. El juez seleccionado combina esos veredictos para decidir si la instrucción, consulta o expresión pueden continuar.
+Los validadores devuelven un veredicto de validación. Un validador puede permitir una operación, denegarla con una razón, o saltarla si la operación está fuera del ámbito de ese validador. El juez seleccionado combina esos veredictos para decidir si la instrucción, consulta o expresión puede continuar.
 
-## Las consultas apoyadas {#supported-queries}
+## Consultas compatibles {#supported-queries}
 
-Los tokens de permiso y los roles pueden ser consultados.
+Se pueden consultar los tokens de permiso y los roles.
 
-Las consultas para los roles:
+Consultas para roles:
 
 - [`FindRoles`](/es/reference/queries.md#accounts-and-permissions)
 - [`FindRoleIds`](/es/reference/queries.md#accounts-and-permissions)
 - [`FindRolesByAccountId`](/es/reference/queries.md#accounts-and-permissions)
 
-Las consultas para los tokens de permiso:
+Consultas para tokens de permiso:
 
 - [`FindPermissionsByAccountId`](/es/reference/queries.md#accounts-and-permissions)

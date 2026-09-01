@@ -1,18 +1,16 @@
 ---
 translation_locale: he
 translation_source: /reference/genesis.md
-translation_source_hash: 1312e80d9e662cc3e8cf4d0668ff4bb9e6ce3f74a60bb5287205aeeb5afd5de8
+translation_source_hash: ac6bad693ed382dede0818132b8649fe14726283508da897a32eea417e5bbb28
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # הפניה בראשית {#genesis-reference}
 
-בזרם Iroha 3 זרימת עבודה, א `genesis.json` מניפסט מתאר את הראשון
-עסקאות ופרמטרים שיופעלו כאשר הרשת תתחיל.
+בזרם Iroha 3 זרימת עבודה, א `genesis.json` מניפסט מתאר את הראשון עסקאות ופרמטרים שיופעלו כאשר הרשת תתחיל.
 
-החפץ החתום שחולק לעמיתים הוא א Norito-מוּצפָּן `.nrt` קוֹבֶץ
-מיוצר על ידי `kagami genesis sign`.
+הארטיפקט החתום שחולק לצמתים הוא א Norito-מוּצפָּן `.nrt` קוֹבֶץ מיוצר על ידי `kagami genesis sign`.
 
 ## שדות עיקריים {#main-fields}
 
@@ -25,7 +23,7 @@ translation_engine: nllb-200-ct2
 - `transactions` עבור עדכוני פרמטרים מסודרים, הוראות, טריגרים וטופולוגיה
 - `crypto` עבור תמונת המצב הקריפטו הראשונית
 
-בְּתוֹך `transactions`, ערכי טופולוגיה צמד מזהי עמיתים ו PoPs יַחַד:
+בְּתוֹך `transactions`, ערכי טופולוגיה צמד מזהי צמתים ו PoPs יַחַד:
 
 ```json
 {
@@ -45,9 +43,7 @@ cargo run -p iroha_kagami -- genesis generate \
   --genesis-public-key <PUBLIC_KEY> > genesis.json
 ```
 
-למען הציבור SORA Nexus מרחב נתונים, `npos` הוא מצב הקונצנזוס הצפוי.
-אַחֵר Iroha 3 פריסות עשויות להשתמש בהרשאה או NPoS בהתאם ליעד
-פּרוֹפִיל.
+למען הציבור SORA Nexus מרחב נתונים, `npos` הוא מצב הקונצנזוס הצפוי. אַחֵר Iroha 3 פריסות עשויות להשתמש בהרשאה או NPoS בהתאם ליעד פּרוֹפִיל.
 
 ## חתמו על המניפסט {#sign-the-manifest}
 
@@ -59,12 +55,7 @@ cargo run -p iroha_kagami -- genesis sign genesis.json \
   --out-file genesis.signed.nrt
 ```
 
-`kagami genesis sign` קורא את המפתח הציבורי בראשית מהמניפסט ומשתמש
-המפתח הפרטי מקובץ רגיל בעל קישור יחיד להפקת ה-
-בלוק חתום שניתן לפריסה.הקובץ חייב להכיל מפתח פרטי קנוני אחד
-multihash ואחריו שורה חדשה; Kagami דוחה קישורים סמליים ואופנים אחרים
-מֵאֲשֶׁר `0600`. מפתחות פרטיים גולמיים אינם מתקבלים בשורת הפקודה.התוצאה
-הוא הקובץ שאליו עמיתים צריכים להפנות מהתצורה שלהם.
+`kagami genesis sign` קורא את המפתח הציבורי בראשית מהמניפסט ומשתמש המפתח הפרטי מקובץ רגיל בעל קישור יחיד להפקת ה- בלוק חתום שניתן לפריסה.הקובץ חייב להכיל מפתח פרטי קנוני אחד multihash ואחריו שורה חדשה; Kagami דוחה קישורים סמליים ואופנים אחרים מֵאֲשֶׁר `0600`. מפתחות פרטיים גולמיים אינם מתקבלים בשורת הפקודה.התוצאה הוא הקובץ שאליו צמתים צריכים להפנות מהתצורה שלהם.
 
 ## הגדר `iroha3d` {#configure-iroha3d}
 
@@ -84,5 +75,4 @@ public_key = "<PUBLIC_KEY>"
 - `kagami localnet`
 - `cargo xtask kagami-profiles`
 
-ליישום המחולל ופרטי הפקודה, ראה את
-[Kagami README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami/README.md).
+לפרטי מימוש המחולל והפקודות, ראו את [קובץ README של Kagami](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami/README.md).

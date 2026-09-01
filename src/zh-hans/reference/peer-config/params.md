@@ -22,7 +22,7 @@ import ParamTable from './ParamTable.vue';
 
 链 ID 必须在每个交易中包含. 用于防止重复攻击.
 
-复制攻击是试图将有效的交易提交给与其目的网络不同的网络. `chain` 是签署的交易实用负载的一部分,为一条链签署的事务被使用另一条链的同行拒绝 ID.
+复制攻击是试图将有效的交易提交给与其目的网络不同的网络. `chain` 是签署的交易实用负载的一部分,为一条链签署的事务被使用另一条链的对等节点拒绝 ID.
 
 <param-table type=string env=CHAIN />
 
@@ -40,7 +40,7 @@ CHAIN="00000000-0000-0000-0000-000000000000"
 
 ### `public_key` <Badge text="required" /> {#param-public-key}
 
-共识验证器的同行必须使用 BLS-Normal键.
+共识验证器的对等节点必须使用 BLS-Normal键.
 
 <param-table type="public-key" env="PUBLIC_KEY" />
 
@@ -76,14 +76,14 @@ PRIVATE_KEY="8926201CA347641228C3B79AA43839DEDC85FA51C0E8B9B6A00F6B0D6B0423E9029
 
 ### `trusted_peers` {#param-trusted-peers}
 
-预先定义的可信同行列表.
+预先定义的可信对等节点列表.
 
-共识验证器必须使用 BLS-Normal peer keys.对于每个验证器,也提供相匹配的 [`trusted_peers_pop`](#param-trusted-peers-pop)入口.
+共识验证器必须使用 BLS-Normal 对等节点密钥。还要为每个验证器提供匹配的 [`trusted_peers_pop`](#param-trusted-peers-pop) 条目。
 
 <param-table env="TRUSTED_PEERS">
 <template #type>
 
-在 P2P 地址已知时使用`PUBLIC_KEY@ADDRESS`;裸体 `PUBLIC_KEY`也被接受,并允许从言中发现同龄人地址.
+在 P2P 地址已知时使用`PUBLIC_KEY@ADDRESS`;裸体 `PUBLIC_KEY`也被接受,并允许从言中发现对等节点地址.
 
 </template>
 </param-table>
@@ -109,7 +109,7 @@ TRUSTED_PEERS='[
 
 ### `trusted_peers_pop` {#param-trusted-peers-pop}
 
-BLS 验证者可信任的同行所有权证明条目.
+BLS 验证者可信任的对等节点所有权证明条目.
 
 <param-table env="TRUSTED_PEERS_POP">
 <template #type>
@@ -142,7 +142,7 @@ TRUSTED_PEERS_POP='[
 
 ### `genesis.file` {#param-genesis-file}
 
-文件路径到由 `kagami genesis sign`生成的签署基因区块有效载荷.生成的个人资料通常将此写成 Norito `.nrt`文件.
+文件路径到由 `kagami genesis sign`生成的签署创世区块有效载荷.生成的个人资料通常将此写成 Norito `.nrt`文件.
 
 <param-table type="file-path" env="GENESIS" />
 
@@ -161,7 +161,7 @@ GENESIS="./genesis.signed.nrt"
 
 ### `genesis.public_key` <Badge text="required" /> {#param-genesis-public-key}
 
-基因关键对的公钥.
+创世关键对的公钥.
 
 <param-table type="public-key" env="GENESIS_PUBLIC_KEY" />
 
@@ -201,9 +201,9 @@ P2P_ADDRESS=0.0.0.0:1337
 
 ### `network.public_address` <Badge text="required" /> {#param-network-public-address}
 
-同等地址 (外部,其他同龄人看到的).
+同等地址 (外部,其他对等节点看到的).
 
-他们会向相关的同龄人传说八,以便他们可以向其他同龄人传播.
+他们会向相关的对等节点传说八,以便他们可以向其他对等节点传播.
 
 <param-table type="socket-addr" env="P2P_PUBLIC_ADDRESS" />
 
@@ -222,7 +222,7 @@ P2P_PUBLIC_ADDRESS=0.0.0.0:5000
 
 ### `network.block_gossip_size` {#param-network-block-gossip-size}
 
-单个同步消息中可以发送的块量.
+单条同步消息中可以发送的区块数量。
 
 <param-table type=number default-value=4 />
 
@@ -237,7 +237,7 @@ block_gossip_size = 256
 
 ### `network.block_gossip_period_ms` {#param-network-block-gossip-period-ms}
 
-最新区块的同行请求之间的时间间隔.
+最新区块的对等节点请求之间的时间间隔.
 
 频繁的八缩短了同步时间,但可以加载网络.
 
@@ -271,7 +271,7 @@ transaction_gossip_size = 256
 
 ### `network.transaction_gossip_period_ms` {#param-network-transaction-gossip-period-ms}
 
-在同龄人之间进行交易等待言的时间.
+在对等节点之间进行交易等待言的时间.
 
 频繁的八缩短了同步时间,但可以加载网络.
 
@@ -288,7 +288,7 @@ transaction_gossip_period_ms = 5_000
 
 ### `network.idle_timeout_ms` {#param-network-idle-timeout-ms}
 
-如果同行无事,则终止与同行的连接时间.
+如果对等节点无事,则终止与对等节点的连接时间.
 
 <param-table type=millis default-value=300_000 default-note="5 minutes" />
 
@@ -324,7 +324,7 @@ API_ADDRESS=0.0.0.0:8080
 
 ### `torii.max_content_len` {#param-torii-max-content-len}
 
-在 [Torii 终端点](/zh-hans/reference/torii-endpoints.md)所接受的原始请求体中最大字节数.
+在 [Torii 端点](/zh-hans/reference/torii-endpoints.md)所接受的原始请求体中最大字节数.
 
 这一限制用于防止 DOS 攻击.
 
@@ -430,15 +430,15 @@ LOG_LEVEL=INFO
 
 :::
 
-::: tip 运行时间更新
+::: tip 运行时更新
 
-该参数通过 Torii 操作员终端点进行运行时间配置更新.
+该参数通过 Torii 操作员端点进行运行时配置更新.
 
 :::
 
 ### `logger.filter` {#param-logger-filter}
 
-除了 [`logger.level`](#param-logger-level)之外,还可以进行精细的日志过器.
+除 [`logger.level`](#param-logger-level) 外，还可设置更精细的日志过滤器，并按 target 自定义日志详细程度。
 
 <param-table type=string env=LOG_FILTER>
 <template #type>
@@ -474,13 +474,13 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 
 `logger.filter`与 [`logger.level`](#param-logger-level)一起工作,没有一个覆盖另一个.
 
-例如,如果 `logger.level` 设置为 `INFO` 和 `logger.filter` 设置为 `iroha_core=debug`, 产生的过器组将是: `info,iroha_core=debug` (也就是说 `info` 对于所有模块, `debug` 对于 `iroha_core`).
+例如,如果 `logger.level` 设置为 `INFO` 和 `logger.filter` 设置为 `iroha_core=debug`, 产生的过滤器组将是: `info,iroha_core=debug` (也就是说 `info` 对于所有模块, `debug` 对于 `iroha_core`).
 
 :::
 
-::: tip 运行时间更新
+::: tip 运行时更新
 
-该参数通过 Torii 操作员终端点进行运行时间配置更新.
+该参数通过 Torii 操作员端点进行运行时配置更新.
 
 :::
 
@@ -493,9 +493,9 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 
 字符串,可能值:
 
-- `full`:默认格式化器. 它为每次事件发出可读的单行日志,在格式化的演示之前显示当前跨度文本.
+- `full`：默认格式化器。它为每个事件输出易读的单行日志，并在事件的格式化表示之前显示当前 span 上下文。
 - `compact`:为短线长度优化的默认格式器的一种变体.当前跨度文本中的字段添加到格式事件的字段中,并没有显示跨度名称;语法性水平缩写成单个字符.
-- `pretty`: 发射过度漂亮的多行日志,优化为人类可读性.调试,或用于命令行应用程序,自动分析和日志的紧存储比可读性和视觉吸引力少于优先考虑.
+- `pretty`：输出针对人类可读性优化的美化多行日志。主要适用于本地开发、调试或命令行应用；在这些场景中，可读性和视觉效果比自动分析及紧凑存储更重要。
 - `json`:输出新线界限的 JSON 日志. 这用于生产系统中使用结构化日志作为 JSON 通过分析和查看工具消耗. JSON 输出并未为人类可读性优化的.
 
 更多详细信息和样本输出,请见 [`tracing-subscriber`文档](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/format/index.html).
@@ -543,13 +543,13 @@ KURA_BLOCKS_IN_MEMORY=1024
 
 ### `kura.init_mode` {#param-kura-init-mode}
 
-Kura 启动模式. `strict`是正常和默认的模式:它在节点激活之前验证了正规历史,恢复文物,辅助索引和存储会计.
+Kura 启动模式. `strict`是正常和默认的模式:它在节点激活之前验证了规范历史,恢复构件,辅助索引和存储会计.
 
-`fast`是恢复运营可见性的紧急降级服务模式,当一个完整的启动审计可能会出现停机时.它需要先前由 `strict`初始化的存储和包含五件精品的当前快照生成:`snapshot.data`,`snapshot.sha256`, `snapshot.sig`, `snapshot.fast.norito`,和 `snapshot.merkle.json`.一个域分开的运营商签名绑定广告的有效载荷消化和有限的表格;表格绑定了有效载荷长度,链/网络身份,终端高度/hash,SCCP 政策hash,以及启动线条存在.快速拒绝了启动线条,并需要从耐用 Kura 的相同的标记/计数/尖端界限.首次发布节点完全接受这些五件文物,并且拒绝了其他所有文物的数量或文件名集.
+`fast` 是在完整启动审计可能导致停机时用于恢复操作可见性的紧急降级服务模式。它要求存储此前已由 `strict` 初始化，并要求当前一代快照恰好包含五个工件：`snapshot.data`、`snapshot.sha256`、`snapshot.sig`、`snapshot.fast.norito` 和 `snapshot.merkle.json`。采用域分离的操作员签名将声明的载荷摘要与有界清单绑定；清单则绑定载荷长度、链/网络身份、终端高度/哈希、SCCP 策略哈希，以及是否存在引导沿袭。Fast 模式拒绝引导沿袭，并要求持久 Kura 提供完全相同的标记/计数/尖端边界。首发版本节点只接受这五个工件，任何其他工件数量或文件名集合都会被拒绝。
 
-快速库存这些五个名字和元数据 - 绑定有效载荷和Merkle文件,但不会读取,哈希,解析或解码其内容.它从签署的表格构建一个最小的世界/Nexus,映射了精确的 Kura 哈希前仅阅读,并离开快照世界,区块-哈希阵列,交易历史,衍生指数和持久恢复日志未开放. Merkle,正义和语义快照审计,历史区块/最终性/SCCP 调整, Sumeragi 活跃高度恢复,合并和查询日志,行径表/合规来源,Kura 支持的 SoraFS 档案,递归存储会计和可选服务调整器仍然被推迟.本地交易录取,提议,投票,正文书籍和辅助生产商仍被禁用.Kura 本身拒绝了作者启动和持久突变;管道和 FASTPQ 持续性队列立即拒绝工作,而不是保留或编码它.Kura 阅读 APIs 也禁用维修和耐久性-同步行为:暂时侧车不推广,缺失的车道文物不公布,进步障碍也没有同步. Sumeragi 和交易八不发行.Torii 仅暴露了健康,活力,准备,同行和配置操作; API-版本,状态,指标以及所有普通状态/历史路线仍然不可使用. 准备直到严格重新启动才不提供.
+`fast` 会盘点这五个名称，并通过元数据绑定载荷文件和 Merkle 文件，但不会读取、哈希、解析或解码其内容。它根据签名清单构建最小 World/Nexus，将精确的 Kura 哈希前缀映射为只读，并且不打开快照 World、区块哈希数组、交易历史、派生索引或持久恢复日志。Merkle 审计、规范与语义快照审计、历史区块/终局性/SCCP 协调、Sumeragi 活跃高度恢复、合并和查询日志、泳道清单/合规源、Kura 支持的 SoraFS 归档、递归存储计量以及可选服务协调器均继续延后。本地交易准入、提案、投票、规范写入和辅助生产器仍保持禁用。Kura 自身拒绝启动写入器和持久变更；流水线和 FASTPQ 持久化队列会立即拒绝任务，而不会保留或编码。Kura 读取 APIs 也会禁用修复和持久性同步行为：临时辅助记录不会提升，缺失的泳道工件不会发布，进度屏障也不会 fsync。Sumeragi 和交易 gossip 均不启动。Torii 只公开健康、存活、就绪、对等节点和配置操作；API 版本、状态、指标以及所有常规状态/历史路由都不可用。在以 `strict` 重新启动前，节点始终不会就绪。
 
-使用 `fast` 一旦服务稳定,停止节点,恢复 `strict`, 在恢复生产之前,每次推迟的检查和指数重建都会运行.快速模式不需要推迟合并日志,也不创建,修复,切断或进口正规存储器;无公布的后尾和未发布的辅助恢复阶段被忽视,没有读取或突变;进口的仅使用哈希的快照流程仍然不可用.一个失踪或无效的当前快照立即失败; 快速永远不会回到一个空世界或历史重演重建.
+仅在事故期间使用 `fast`。服务稳定后，请停止节点、恢复 `strict` 并重新启动，以便在恢复生产之前执行所有延后的检查和索引重建。Fast 模式不要求存在延后的合并日志，也不会创建、修复、截断或导入规范存储；它不会读取或变更未发布的后缀和待处理的辅助恢复阶段，而是忽略它们并留待 Strict 模式恢复。导入的仅哈希快照沿袭仍不可用。缺失或无效的当前快照会立即导致失败；Fast 模式绝不会回退到空 World 或历史重放重建。
 
 <param-table default-value=strict>
 <template #type>
@@ -557,7 +557,7 @@ Kura 启动模式. `strict`是正常和默认的模式:它在节点激活之前�
 字符串,可能值:
 
 - `strict`:完整验证和正常生产
-- `fast`:有限的紧急启动,生产被隔离到严格重启.
+- `fast`：有界的紧急启动；在以 `strict` 模式重启之前，生产功能保持隔离
 
 </template>
 </param-table>
@@ -664,7 +664,7 @@ transaction_time_to_live_ms = 43_200_000
 
 ### `sumeragi.debug.force_soft_fork` <Badge type="warning" text="debug" /> {#param-sumeragi-debug-force-soft-fork}
 
-仅用于炼的调试开关 Sumeragi 软叉处理路径.将其禁用在控制测试之外;在运行的生产网络上更改可能会导致同龄人对共识行为产生分歧.
+仅用于炼的调试开关 Sumeragi 软叉处理路径.将其禁用在控制测试之外;在运行的生产网络上更改可能会导致对等节点对共识行为产生分歧.
 
 <param-table type=bool default-value=false />
 
@@ -679,19 +679,19 @@ force_soft_fork = true
 
 ## Nexus 原子核私人和解 {#nexus-atomic-private-settlement}
 
-`[nexus.atomic_private_settlement]`控制了单独的 `AtomicPrivateSettlementV1`路径.它默认禁用.设置`enabled = true`也需要一个 `activation_height`;除非连锁功能,通知期限,固定的证据配置文件和池/审计治理是活跃的,否则录取仍然无法关闭.
+`[nexus.atomic_private_settlement]` 管理独立的 `AtomicPrivateSettlementV1` 路径。它默认禁用。设置 `enabled = true` 还需要 `activation_height`；除非链上功能、通知期、固定证明配置文件以及池/审计治理均处于活动状态，否则准入仍会采用失败关闭策略。
 
 主要限制是: `max_participants`, `max_expiry_blocks`, `audit_timeout_blocks`, `prepare_timeout_blocks`, `commit_timeout_blocks`, `max_proof_bytes`, `max_capsule_bytes`, `max_carrier_bytes`, `sidecar_retention_blocks`, `sidecar_max_records`, 和 `sidecar_max_total_bytes`. `capsule_padding_classes_bytes` 必须是一个严格增长的子集 V1 装课. `permitted_policy_versions` 仅接受 V1.
 
-`max_capsule_bytes`测量了完整的 `PrivateSettlementAuditCapsuleV1`中正规 Norito 字节,包括 AAD,nonce,加密文本,向量框架以及每一个包装为 DEK 行的审计员;这不是仅限于加密文体.每个启用的填充类别都必须适用于至少 `default_min_auditor_approvals`审计员的保守整体囊.该批准设置也是一个规定的层次:Torii 拒绝具有较低 `min_approvals`值的新被允许政策,并拒绝任何超越法定字节限量的实际囊.
+`max_capsule_bytes` 衡量完整 `PrivateSettlementAuditCapsuleV1` 的规范 Norito 字节数，其中包括 AAD、nonce、密文、向量帧和每个审计员的 wrapped-DEK 行；它不是仅针对密文的限制。每个启用的填充类别都必须能容纳至少 `default_min_auditor_approvals` 个审计员的保守完整 capsule envelope。此批准设置也是强制下限：Torii 会拒绝 `min_approvals` 较低的新许可策略，也会拒绝任何超出规范字节上限的实际 capsule。
 
-这些设置没有生产环境变量激活绕行.查看[Run Atomic Private Cross-Dataspace Settlement](/zh-hans/get-started/atomic-private-settlement),了解完整的配置示例和操作要求.直到文档化外部释放门通过,路径不会获得生产资格.
+这些设置没有生产环境变量激活绕行.查看[运行跨数据空间的私密原子结算](/zh-hans/get-started/atomic-private-settlement),了解完整的配置示例和操作要求.直到文档化外部释放门通过,路径不会获得生产资格.
 
 ## 快照 {#snapshot}
 
 该模块负责阅读和编写[世界状态视图](/zh-hans/blockchain/world#world-state-view-wsv)的快照.
 
-快照存储了世界状态视图的序列化检查点,这样一个同行可以重新启动而不需要重播从 Kura 的每个块. Kura 仍然是持续的区块历史和重播的真相来源;快照是一种加速路径.在启动时, Iroha 检查了设置链和存储的区块之间的快照元数据,然后决定是否要加载快照或重新播放.
+快照存储了世界状态视图的序列化检查点,这样一个对等节点可以重新启动而不需要重播从 Kura 的每个块. Kura 仍然是持续的区块历史和重播的真相来源;快照是一种加速路径.在启动时, Iroha 检查了设置链和存储的区块之间的快照元数据,然后决定是否要加载快照或重新播放.
 
 ::: tip 删除快照
 
@@ -766,7 +766,7 @@ SNAPSHOT_STORE_DIR="/path/to/storage"
 
 ## 电测仪 {#telemetry}
 
-远程测量将同行诊断输出到外部远程测量的收集器.当同行报告给收藏器时,设置`telemetry.name` 和 `telemetry.url`;如果不使用远程测试时,省略该节目.
+远程测量将对等节点诊断输出到外部远程测量的收集器.当对等节点报告给收藏器时,设置`telemetry.name` 和 `telemetry.url`;如果不使用远程测试时,省略该节目.
 
 `name`和 `url`必须配对.
 

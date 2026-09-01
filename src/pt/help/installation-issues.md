@@ -3,23 +3,23 @@ translation_locale: pt
 translation_source: /help/installation-issues.md
 translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c054c85a2a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Resolução de problemas de instalação {#troubleshooting-installation-issues}
+# Solução de Problemas na Instalação {#troubleshooting-installation-issues}
 
-Esta seção oferece dicas de solução de problemas para a instalação do Iroha 3. Se o problema que você está experimentando não for descrito aqui, entre em contato conosco através do [Telegram](https://t.me/hyperledgeriroha).
+Esta seção oferece dicas de solução de problemas para a instalação de Iroha 3. Se o problema que você está enfrentando não estiver descrito aqui, entre em contato conosco via [Telegram](https://t.me/hyperledgeriroha).
 
 ## Verificações rápidas {#quick-checks}
 
-A maior parte das falhas de instalação ocorrem em um dos quatro lugares:
+A maioria das falhas de instalação vem de um dos quatro lugares:
 
-- Uma cadeia de ferramentas Rust mais velha do que a versão fixada pelo espaço de trabalho ascendente
-- `cargo` ou `rustc` de resolução em uma instalação diferente da `rustup`;
-- Falta ferramentas de construção do sistema, como um compilador C, `pkg-config`, ou CMake
-- Esneptos ou artefatos de construção local gerados obsoletos após mudança de revisões da fonte
+- uma cadeia de ferramentas Rust mais antiga do que a versão fixada pelo workspace upstream
+- `cargo` ou `rustc` resolvendo para uma instalação diferente de `rustup`
+- ferramentas de compilação do sistema ausentes, como um compilador C, `pkg-config` ou CMake
+- trechos gerados obsoletos ou artefatos de compilação local após alterar as revisões do código-fonte
 
-A partir do checkout da fonte Iroha, comece com:
+A partir da cópia de trabalho do código-fonte Iroha, comece com:
 
 ```bash
 rustup show
@@ -28,126 +28,126 @@ rustc --version
 cargo metadata --no-deps
 ```
 
-Se `cargo metadata` falhar, corrija a cadeia de ferramentas local antes de executar `pnpm refresh:iroha --source /path/to/iroha`, porque a atualização pode invocar Kagami para gerar o esquema atual do modelo de dados.
+Se `cargo metadata` falhar, corrija a cadeia de ferramentas local antes de executar `pnpm refresh:iroha --source /path/to/iroha`, porque a atualização pode invocar Kagami para gerar o esquema do modelo de dados atual.
 
-## Resolução de problemas Rust Cadeia de ferramentas {#troubleshooting-rust-toolchain}
+## Solução de problemas Rust Toolchain {#troubleshooting-rust-toolchain}
 
-Às vezes, as coisas não vão como planejado. Especialmente se você tinha `rust` no seu sistema há algum tempo, mas não atualizou. Um problema similar pode ocorrer em Python: XKCD tem um exemplo famoso do que isso poderia parecer:
+Às vezes, as coisas não saem como planejado. Especialmente se você teve `rust` no seu sistema há algum tempo, mas não atualizou. Um problema semelhante pode ocorrer em Python: XKCD tem um exemplo famoso de como isso poderia ser:
 
 <div class="flex justify-center">
 
-![Python ambiente de solução de problemas comics](/img/install-troubles.png)
+![Python história em quadrinhos de solução de problemas de ambiente](/img/install-troubles.png)
 
 </div>
 
-### Verificação da versão Rust {#check-rust-version}
+### Verifique a versão Rust {#check-rust-version}
 
-No interesse de preservar tanto a sua como a nossa sanidade, certifique-se de que você tem a versão certa de `cargo` emparelhada com a versão correta de `rustc`. O espaço de trabalho upstream atual declara `rust-version = "1.92"` e pin o canal da cadeia de ferramentas em `rust-toolchain.toml`. Para mostrar as versões, fazer
+No interesse de preservar tanto a sua sanidade quanto a nossa, certifique-se de que você tem a versão correta de `cargo` combinada com a versão correta de `rustc`. O workspace upstream atual declara `rust-version = "1.92"` e fixa o canal da ferramenta em `rust-toolchain.toml`. Para mostrar as versões, faça
 
 ```bash
 $ cargo -V
 $ cargo 1.93.1 (...)
 ```
 
-E depois ...
+e então
 
 ```bash
 $ rustc --version
 $ rustc 1.93.1 (...)
 ```
 
-Se você tem versões mais altas, você está bem. Se você tiver versões mais baixas, você pode executar o seguinte comando para atualizar:
+Se você tiver versões mais altas, está tudo bem. Se você tiver versões mais baixas, pode executar o seguinte comando para atualizá-la:
 
 ```bash
 $ rustup toolchain update stable
 ```
 
-### Verificar o local da instalação {#check-installation-location}
+### Verificar local de instalação {#check-installation-location}
 
-Se você conseguir números de versão mais baixos e você atualizar a cadeia de ferramentas e não funcionou... vamos dizer que é um problema comum, mas não tem uma solução comum.
+Se você obtiver números de versão mais baixos e atualizou o conjunto de ferramentas e isso não funcionou... digamos apenas que é um problema comum, mas não tem uma solução comum.
 
-Em primeiro lugar, você deve estabelecer onde a versão que deseja usar está instalada:
+Primeiramente, você deve determinar onde a versão que deseja usar está instalada:
 
 ```bash
 $ rustup which rustc
 $ rustup which cargo
 ```
 
-As instalações do usuário das cadeias de ferramentas são geralmente em `~/.rustup/toolchains/stable-*/bin/`.
+As instalações do usuário das toolchains geralmente estão em `~/.rustup/toolchains/stable-*/bin/`. Se for esse o caso, você deve conseguir executar
 
 ```bash
 $ rustup toolchain update stable
 ```
 
-E isso vai resolver os teus problemas.
+e isso deve resolver seus problemas.
 
 ### Verifique a versão padrão Rust {#check-the-default-rust-version}
 
-Outra opção é que você tem a corrente de ferramentas `stable` atualizada, mas não está definida como padrão.
+Outra opção é que você tenha o conjunto de ferramentas `stable` atualizado, mas ele não está definido como padrão. Execute:
 
 ```bash
 $ rustup default stable
 ```
 
-Instalar uma versão `nightly` ou configurar uma versão específica de Rust sem a desinstalar posteriormente pode causar esse problema.
+Instalar uma versão `nightly` ou definir uma versão específica Rust sem depois desfazê-la pode causar esse problema.
 
-### Verificar se existem outras versões Rust {#check-if-there-are-other-rust-versions}
+### Verifique se existem outras versões Rust {#check-if-there-are-other-rust-versions}
 
-Continuando a solucionar problemas no buraco do coelho, poderíamos ter alias de conchas:
+Continuando pelo buraco do coelho da solução de problemas, poderíamos ter aliases de shell:
 
 ```bash
 $ type rustc
 $ type cargo
 ```
 
-Se estes apontam para outros locais que não o que você viu ao executar `rustup which *`, então tem um problema. Observe que adicionar pseudónimos como estes não é suficiente:
+Se estes apontarem para locais diferentes daquele que você viu ao executar `rustup which *`, então você tem um problema. Note que adicionar aliases como estes não é suficiente:
 
 ```bash
 $ alias rustc "~/.rustup/toolchains/stable-*/bin/rustc"
 $ alias cargo "~/.rustup/toolchains/stable-*/bin/cargo"
 ```
 
-A lógica interna ainda pode quebrar, independentemente da forma como arranjas os teus pseudónimos.
+A lógica interna ainda pode quebrar independentemente de como você organiza seus aliases de shell.
 
-A solução mais simples seria remover as versões que não usam.
+A solução mais simples seria remover as versões que você não usa.
 
-No entanto, é mais fácil dizer do que fazer, uma vez que implica o acompanhamento de todas as versões de rustup instaladas e disponíveis para você. A versão do gerenciador de pacotes do sistema e a que foi instalada no local padrão em sua pasta inicial quando você executou o comando no início deste tutorial. Para o primeiro, consulte seu manual de distribuição (Linux), `apt remove rust` .
+É mais fácil falar do que fazer, no entanto, já que isso envolve rastrear todas as versões de rustup instaladas e disponíveis para você. Normalmente, existem apenas duas: a versão do gerenciador de pacotes do sistema e aquela que foi instalada no local padrão na sua pasta home quando você executou o comando no início deste tutorial. Para a primeira, consulte o manual da sua distribuição (Linux), (`apt remove rust`). Para a segunda, execute:
 
 ```bash
 $ rustup toolchain list
 ```
 
-E, em seguida, para cada `<toolchain>` (sem as parênteses de ângulo claro):
+E então, para cada `<toolchain>` (sem os colchetes angulares, é claro):
 
 ```bash
 $ rustup remove <toolchain>
 ```
 
-Após a remoção das cadeias de ferramentas, este comando deve relatar um erro de comando não encontrado:
+Após remover as toolchains, este comando deve informar um erro de comando não encontrado:
 
 ```bash
 $ cargo --help
 ```
 
-Esse erro confirma que nenhuma cadeia de ferramentas Rust ativa permanece instalada.
+Esse erro confirma que nenhuma toolchain Rust ativa permanece instalada. Então execute:
 
 ```bash
 $ rustup toolchain install stable
 ```
 
-## Solução de problemas Python cadeia de ferramentas {#troubleshooting-python-toolchain}
+## Solução de problemas da cadeia de ferramentas Python {#troubleshooting-python-toolchain}
 
-Quando instalar o Python Embalagem de rodas com tubo durante [Python configuração do cliente](/pt/guide/tutorials/python.md), Você pode encontrar um erro como: "iroha_Pitão...*.Não é uma roda com suporte nesta plataforma".
+Quando você instala o pacote Python Wheel usando pip durante [Python configuração do cliente](/pt/guide/tutorials/python.md), você pode encontrar um erro como: "iroha_python-*.whl não é um wheel compatível com esta plataforma".
 
-Este erro significa que o pip está desatualizado, por isso você precisa atualizá-lo. Primeiro de tudo, recomenda-se verificar a sua OS para atualizações e executar uma atualização do sistema.
+Este erro significa que o pip está desatualizado, então você precisa atualizá-lo. Primeiro de tudo, é recomendado verificar seu OS por atualizações e realizar uma atualização do sistema.
 
-Se isto não funcionar, você pode tentar atualizar `pip` para o seu diretório de usuários.
+Se isso não funcionar, você pode tentar atualizar `pip` para o seu diretório de usuário.
 
 `python -m pip install --upgrade pip`
 
-Certifique-se de que `pip` está instalado no seu diretório doméstico. Para fazer isso, execute `whereis pip` e verifique se `/home/username/.local/bin/pip` está entre os caminhos. Se não, atualize a variável `PATH` do seu shell.
+Certifique-se de que `pip` esteja instalado no seu diretório pessoal. Para fazer isso, execute `whereis pip` e verifique se `/home/username/.local/bin/pip` está entre os caminhos. Caso contrário, atualize a variável `PATH` do seu shell.
 
-Se o problema persistir, por favor. [Contacte-nos .](/pt/help/) e relatar os resultados.
+Se o problema persistir, por favor [contate-nos](/pt/help/) e reporte os resultados.
 
 ```
 python --version

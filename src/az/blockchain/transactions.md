@@ -3,24 +3,24 @@ translation_locale: az
 translation_source: /blockchain/transactions.md
 translation_source_hash: 6381e93ada6191d15b11f7359e983e5c3dac49e69323b20da09959d5e04331f9
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Əməliyyatlar {#transactions}
 
-Bir əməliyyat blockchain üzərində iş yerinə yetirmək üçün imzalanmış bir tələbdir. İcra edilə bilən payload [ təlimatların ](./instructions.md), müqavilə çağırışı, IVM bytecode və ya sübut edilmiş IVM icrasının sifarişlənmiş ardıcıllığı ola bilər. Mövcud müqavilənin icrası modeli üçün [Ağıllı Müqavilələr](./smart-contracts.md)-ə baxın.
+Əməliyyat blokçeyn üzərində iş yerinə yetirmək üçün imzalanmış sorğudur. Yerinə yetirilə bilən yük [təlimatlar](./instructions.md)-ın sıralanmış ardıcıllığı, müqavilənin texniki çağırışı, IVM baytkodu və ya sübut edilmiş IVM icra ola bilər. Mövcud müqavilə icra modelini görmək üçün [Ağıllı Müqavilələr](./smart-contracts.md)-ə baxın.
 
-Transaksiyalar vəziyyəti dəyişdirən və ya icra edilə bilən işləri həyata keçirir. Yalnız oxumaqla yoxlama imzalanan sorğuları və ya ictimai oxuma son nöqtələrindən istifadə edir və bir əməliyyat yaratmır.
+Əməliyyatlar vəziyyəti dəyişdirən və ya icra edilə bilən işləri yerinə yetirir. Yalnız oxumaq üçün müfəttişlik imzalı sorğular və ya ümumi oxuma API son nöqtələrindən istifadə edir və əməliyyat yaratmır.
 
-Ödəniş blokuna daxil edilmiş bir əməliyyat onun icrasının nəticəsi ilə, o cümlədən icra edilməsinin rədd olunması ilə saxlanılır. Bloq qəbulundan əvvəl rədd edilən müraciətlər, məsələn, etibarsız müqavilə və ya növbədə rədd edilmiş əməliyyat; blokda saxlanılmır.
+Tamamlanmış bloka daxil edilmiş əməliyyat, icra nəticəsi ilə birlikdə, icranın rədd edilməsi də daxil olmaqla, saxlanılır. Bloka daxil edilmədən əvvəl rədd edilmiş sorğular, məsələn, etibarsız məlumat konteyneri və ya növbə tərəfindən rədd edilmiş əməliyyat, blokda saxlanılmır.
 
-Məxfiliyini qoruyub saxlayan aktivlərin hərəkəti üçün [Anonymous Transactions](./anonymous-transactions.md) baxın. Anonim əməliyyatlar ictimai hesab-hesab balansında dəyişikliklər əvəzinə qorunan aktiv notları, öhdəlikləri, ləğv edən və sıfır bilik sübutlarını istifadə edir.
+Məxfilik qoruyucu aktiv köçürmələri üçün baxın [Anonim Əməliyyatlar](./anonymous-transactions.md). Anonim əməliyyatlar açıq hesabdan hesab balans dəyişiklikləri əvəzinə qorunan aktiv qeydləri, kriptoqrafik öhdəlik dəyərləri, nullifierlər və sıfır-bilik sübutlarından istifadə edir.
 
-Seçilmiş şəffaf icra effektlərinə dair sübut əlamətləri üçün [FastPQ](./fastpq.md) baxın. FastPQ normal əməliyyat icrasından sonra icra şahidlərini istehlak edir və dəstəklənmiş dövlət keçidləri üçün deterministik sübut partiyaları qurur.
+Seçilmiş şəffaf icra təsirləri üzərində sübut üçün baxın [FastPQ](./fastpq.md). FastPQ normal əməliyyat icrasından sonra icra şahidlərini istifadə edir və dəstəklənən vəziyyət keçidləri üçün deterministik sübut paketləri yaradır.
 
-## Taira üzərində sınayın. {#try-it-on-taira}
+## Bu iş axınını Taira üzərində işə sal {#try-it-on-taira}
 
-Axırıncı açıq Taira blokları və əməliyyat statuslarını imzalama hesabı olmadan yoxlamaq üçün kəşfçi marşrutlarından istifadə edin:
+İmza hesabı olmadan son ictimai Taira bloklarını və əməliyyat vəziyyətlərini yoxlamaq üçün kəşfiyyat marşrutlarından istifadə edin:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/explorer/blocks?page=1&per_page=3' \
@@ -30,7 +30,7 @@ curl -fsS 'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=5' \
   | jq '{pagination, txs: [.items[] | {hash, block, status, executable}]}'
 ```
 
-Əvvəlcədən təqdim etdiyiniz bir əməliyyatı izləmək üçün siyahıdan `hash` nüsxəsini kopyalayın və kəşfiyyatçının detal marşrutunu yoxlayın:
+Əvvəl göndərdiyiniz əməliyyatı izləmək üçün siyahıdan `hash` kodunu kopyalayın və araşdırıcı detallar marşrutunu yoxlayın:
 
 ```bash
 TX_HASH='<transaction-hash>'
@@ -39,9 +39,9 @@ curl -fsS "https://taira.sora.org/v1/explorer/transactions/$TX_HASH" \
   | jq '{hash, block, status, authority, executable}'
 ```
 
-Bu, hələ də yalnız oxunur. Transaksiyanın təqdim edilməsi üçün imzalanmış Norito zarf, düzgün bir zəncir ID, ödəniş metadataları və faucet maliyyələşdirilmiş Taira hesabı tələb olunur.
+Bu hələ də yalnız oxunandır. Əməliyyatı təqdim etmək üçün imzalanmış Norito məlumat konteyneri, düzgün zəncir ID-si, ödəniş metadatasi və testnet ilə maliyyələşdirilmiş Taira hesab tələb olunur.
 
-Taira-də ödənişli nümunələr üçün faucet köməkçisini [-dən saxlayın Testnet XOR-i Taira](/az/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)-də `taira_faucet_claim.py` olaraq alın, sonra əvvəlcə imzalananı ictimai faucet vasitəsilə maliyyələşdirin:
+Ödənişli nümunələr üçün Taira üzərində, testnet maliyyələşdirmə xidmət köməkçisini [Taira üzərində Testnet XOR əldə edin](/az/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)-dən `taira_faucet_claim.py` kimi yadda saxlayın, sonra kriptoqrafik imzalayanı əvvəlcə ictimai testnet maliyyələşdirmə xidməti vasitəsilə maliyyələşdirin:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
@@ -55,9 +55,9 @@ iroha --config ./taira.client.toml ledger asset get \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-Əgər faucet puzzle və ya iddia yolu `502` qaytarılırsa, əməliyyatın özünü debug etmədən əvvəl gözləyin və yenidən cəhd edin.
+Əgər testnet maliyyələşdirmə xidməti tapmacası və ya tələb yolu `502` qaytarırsa, tranzaksiyanı özü debug etməzdən əvvəl gözləyin və yenidən cəhd edin.
 
-Bundan sonra əməliyyatın təqdim edilməsində Taira ödəniş aktivinin metadatalarını əlavə edin:
+Sonra əməliyyatı təqdim edərkən Taira rüsum aktiv metadatasını əlavə edin:
 
 ```bash
 printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
@@ -67,24 +67,24 @@ iroha --config ./taira.client.toml \
   ledger transaction ping --msg "faucet-funded taira transaction"
 ```
 
-## Offline əməliyyatlar {#offline-transactions}
+## Offline Əməliyyatlar {#offline-transactions}
 
-Iroha iki offline əməliyyat iş axını var:
+Iroha-ın iki oflayn əməliyyat iş axını var:
 
-- Offline imzalanması imzalanma qurğusu bağlanmadan normal imzalanan bir əməliyyat yaratır. Əməliyyat onlayn müştəri imzalanmış zarfı Torii -a göndərənə qədər icra edilmir, buna görə də hələ də düzgün zəncir ID, səlahiyyət, icazələr, ödənişlər və əməliyyat ömrü lazımdır.
-- Kagemusha offline pul cüzdanı onlayn olduğu müddətdə toplayır, hər iki cüzdan offline ikən alıcı tərəfindən başlanılmış cüzdan-cüzdan çatdırılmalarını dəstəkləyir və alıcının onlayn qayıdanda nəticəli qeyd vəziyyətini əvəz edir.
+- Offline imzalama cihaz bağlandıqda normal imzalanmış əməliyyat yaradır. Əməliyyat, imzalanmış məlumat konteynerini Torii ünvanına göndərən onlayn müştəri təqdim edənə qədər işlənmir, buna görə də hələ də düzgün zəncir ID-si, avtorizasiya prinsipi, icazələr, ödənişlər tələb olunur, və əməliyyat ömrü.
+- Kagemusha oflayn nağd pulları onlayn olduqda cüzdana yükləyir, hər iki cüzdan oflayn olduqda alıcı tərəfindən başlanan cüzdandan cüzdana keçidləri dəstəkləyir və alıcı onlayna qayıtdıqda yaranmış qeyd vəziyyətini istifadə edir.
 
-Torii Kagemusha-nın tam həyat dövrünü `/v1/offline/*` altında göstərir:
+Torii `/v1/offline/*` altında tam Kagemusha həyat dövranını göstərir:
 
-|Metod və son nöqtə |Məqsəd|
+|Metod və API son nöqtə|Məqsəd|
 | --- | --- |
-|`GET /v1/offline/readiness` |`asset_definition_id` üçün Kagemusha hazırlığını qiymətləndirmək |
-|`POST /v1/offline/receiver-lineage` |İmzalanmış alıcı tələbi üçün təsdiqləyici aktiv qeydiyyat soyunu həll etmək |
-|`POST /v1/offline/top-up` |İmzalanmış onlayn-offline toplama əməliyyatını təqdim edin |
-|`POST /v1/offline/redeem` |İmzalanmış offline ödəniş əməliyyatını təqdim edin |
-|`GET /v1/offline/operations/{operation_id}` |Yeniləmə və ya töhfənin kanonik statusunu oxuyun |
+| `GET /v1/offline/readiness` |Kagemusha-nın bir `asset_definition_id` üçün hazırlığını qiymətləndirin|
+| `POST /v1/offline/receiver-lineage` |İmzalı qəbulçu sorğusu üçün sübut-a sahib aktiv qeydiyyat mənşəyini həll edin|
+| `POST /v1/offline/top-up` |İmzalı onlayn-dən-oflayna yükləmə əməliyyatını təqdim edin|
+| `POST /v1/offline/redeem` |İmzalanmış oflayn geri ödəmə əməliyyatını təqdim edin|
+| `GET /v1/offline/operations/{operation_id}` |Yeniləmə və ya çıxarışın tək protokol-standart statusunu oxuyun|
 
-Offline əməliyyat qurmadan əvvəl aktivin hazırlığını yoxlayın:
+Əməliyyata keçmədən əvvəl aktivin hazır olub-olmadığını yoxlayın:
 
 ```bash
 curl -fsS --get https://taira.sora.org/v1/offline/readiness \
@@ -92,18 +92,18 @@ curl -fsS --get https://taira.sora.org/v1/offline/readiness \
   | jq '{ready, blockers, artifact_set}'
 ```
 
-Hazırlıq pul cüzdanı aktiv körpü ABI 21 və təsdiqlənmiş V4 artefakt dəstinə bağlayır. soy, toplama və fidye tələbləri `application/x-norito` arxivlərindən istifadə edir. İşləmə mənbəsinə işarə edən `Location` başlığı ilə toplama və ödəniş qaytarılması `202 Accepted`; yerləşdirilmiş sıfır olmayan əməliyyat ID idempotency açarını təmin edir.
+Hazır vəziyyət pulqabını aktiv körpü ABI 21 və təsdiqlənmiş V4 artefakt dəsti ilə bağlayır. Soy, yükləmə və geri alma sorğuları yazılmış `application/x-norito` arxivlərdən istifadə edir. Əlavə ödəniş və geri ödəmə qaytarılması `202 Accepted` əməliyyat resursuna işarə edən `Location` başlığı ilə; daxil edilmiş sıfır olmayan əməliyyat ID-si idempotentlik açarını təmin edir.
 
-Tipik axın:
+Tipik axın belədir:
 
-1. `ready` səhvdirsə və ya hər hansı bir bloker tətbiq olunduğu təqdirdə hazırlığı soruşun və dayandırın.
-2. Təsvir edilmiş bir istifadə edin Swift və ya JVM Canonical top-up arxivini qurmaq, təqdim etmək və giriş qeydinin vəziyyətini və fəaliyyətini saxlamaq üçün cüzdan. ID əməliyyatın sonuncu zəncir vəziyyətinə çatana qədər.
-3. Lazım olduqda alıcının qeydiyyat soyunu həll edin, hər bir peer transferini yerli olaraq qurun və yoxlayın və köçürülməni təsdiqləməkdən əvvəl şifrələnmiş qeyd vəziyyətini davam etdirin .
-4. Alıcı onlayn olduqda, qanuni fidye arxivini qurun, göndərin və sonluq üçün əməliyyat resursunu sorğulayın.
+1. Sorğuya hazır olmağı yoxlayın və əgər `ready` yanlışdırsa və ya hər hansı bir bloklayıcı tətbiq olunursa dayandırın.
+2. Tək protokol-standart doldurma arxivi yaratmaq üçün yazılı Swift və ya JVM cüzdanından istifadə edin, bunu təqdim edin və əməliyyat son zəncir vəziyyətinə çatana qədər həm giriş notu vəziyyətini, həm də əməliyyat ID-sini saxlayın.
+3. Tələb olunduqda qəbul edənin qeydiyyat soy ağacını həll edin, hər bir şəbəkə qonşu ötürməsini yerli olaraq qurun və yoxlayın, və ötürməni təsdiqləməzdən əvvəl şifrəli qeyd vəziyyətini saxlayın.
+4. Qəbul edici onlayndaykən, tək protokol-standart geri ödəmə arxivini qurun, təqdim edin və onun əməliyyat resursunu yekunlaşana qədər sorğu edin.
 
-Qeydiyyat rejissoru onlayn həyat dövrü boyunca qeyd vəziyyətini qaytarana qədər ziddiyyətli bir offline ötürülməni müşahidə edə bilməz. Bu səbəbdən cüzdan və operator siyasəti qiymət məhdudiyyətlərini, müddətin bitməsini, qəbul edilmiş emitentləri, davamlı yerli saxlamaları tətbiq etməlidir. və barışıq pəncərələri.
+Blokçeyn dəftəri, qeyd vəziyyəti onlayn həyat dövrü vasitəsilə qayıtmayana qədər ziddiyyətli oflayn ötürməni görə bilməz. Buna görə də, cüzdan və operator siyasəti dəyər məhdudiyyətlərini, müddət bitməsini, qəbul edilmiş buraxanları, davamlı yerli saxlama və uyğunlaşdırma pəncərələrini tətbiq etməlidir.
 
-Burada yeni bir əməliyyatın yaradılması nümunəsi `Grant` Bu əməliyyatda Mouse Alice-ə müəyyən edilmiş rolu verəcək.`role_id`Çəkim). [tam nümunə](./permissions.md#register-a-new-role).
+Burada `Grant` təlimatı ilə yeni bir əməliyyat yaratmaq nümunəsi var. Bu əməliyyatda, Mouse Alice-ə müəyyən edilmiş rol (`role_id`) verir. [tam nümunə](./permissions.md#register-a-new-role)-ni yoxlayın.
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);

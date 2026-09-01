@@ -3,35 +3,35 @@ translation_locale: es
 translation_source: /blockchain/domains.md
 translation_source_hash: 5e52579436a181d76c83fa549991e56064ae57349b7109d5c41ec7953e5cbb2e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Los dominios {#domains}
+# Dominios {#domains}
 
-Los dominios son nombres de espacios registrados en el `World`. En el modelo de datos actual Iroha 3 un dominio está calificado por su espacio de datos principal, por lo que el identificador canónico es:
+Los dominios son espacios de nombres con nombre registrados en el `World`. En el modelo de datos actual de Iroha 3, un dominio se califica por su espacio de datos principal, por lo que el identificador canónico es:
 
 ```text
 domain.dataspace
 ```
 
-Por ejemplo, `payments.universal` nombra el dominio de `payments` dentro del espacio de datos `universal`.
+Por ejemplo, `payments.universal` nombra el dominio `payments` dentro del espacio de datos `universal`.
 
-## La estructura {#structure}
+## Estructura {#structure}
 
 Un `Domain` registrado contiene:
 
-- `id`: el espacio de datos calificado `DomainId`
-- `logo`: una opción `SoraFS` URI para un logotipo de dominio
-- `metadata`: metadatos arbitrarios sobre el valor clave
-- `owned_by`: la cuenta que posee el dominio, normalmente la cuenta que lo registró.
+- `id`: el `DomainId` calificado por espacio de datos
+- `logo`: un `SoraFS` URI opcional para un logo de dominio
+- `metadata`: metadatos arbitrarios de clave-valor
+- `owned_by`: la cuenta que posee el dominio, normalmente la cuenta que lo registró
 
-La carga útil de bootstrap utilizada para materializar un dominio es `NewDomain`. Lleva la carga útil `id`, opcional `logo` y inicial `metadata`. El tiempo de ejecución llena `owned_by` de la autoridad.
+La carga útil de arranque utilizada para materializar un dominio es `NewDomain`. Contiene el `id`, el `logo` opcional y el `metadata` inicial. El tiempo de ejecución del software llena `owned_by` a partir del principal de autorización. Los clientes ordinarios no envían esta carga útil directamente.
 
 ## Registro {#registration}
 
-La creación de dominios ordinarios utiliza el flujo de configuración del alias declarativo. Esto mantiene el contrato de arrendamiento SNS, las capacidades del propietario, la guardia de cotización y la fila de dominio en una transacción atómica `EnsureAlias`. `Register::Domain` sigue siendo una superficie genesis/bootstrap, y el comando `ledger domain` no tiene subcomando `register`.
+La creación ordinaria de dominios utiliza el flujo de configuración de alias declarativo. Esto mantiene el arrendamiento SNS, las capacidades del propietario, la protección de presupuesto y la fila del dominio en una sola transacción atómica `EnsureAlias`. `Register::Domain` sigue siendo una superficie de génesis/bootstrap, y el comando `ledger domain` no tiene subcomando `register`.
 
-Crea una intención `AliasSetupPlanRequestV1` libre de secretos con un SDK o servicio de incorporación, luego haz que el CLI la planifique contra el estado en vivo y envíe ese plan exacto:
+Cree una intención `AliasSetupPlanRequestV1` sin secretos con un SDK o servicio de incorporación, luego haga que el CLI la planifique contra el estado en vivo y envíe ese plan exacto:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -45,20 +45,20 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
 ```
 
-La intención se identifica `payments.universal`, su espacio de datos numérico, canónico I105 el propietario, el término de adquisición del arrendamiento y la política actual/cuota de pago. `POST /v1/aliases/setup/plan`; su plan de devolución está vinculado a la cadena, autoridad, estado y plazo. [`Unregister`](/es/blockchain/instructions.md#un-register).
+La intención identifica `payments.universal`, su espacio de datos numérico, canónico I105 propietario, plazo de adquisición del arrendamiento y cotización actual de póliza/pago. El planificador API el punto final es `POST /v1/aliases/setup/plan`; su plan devuelto está limitado por la cadena, la autoridad, el estado y el plazo. La eliminación del dominio todavía usa [`Unregister`](/es/blockchain/instructions.md#un-register).
 
-La creación o eliminación de un dominio requiere el permiso apropiado de administración del dominio bajo el validador activo de tiempo de ejecución. Los metadatos del dominio se pueden actualizar con [`SetKeyValue` y `RemoveKeyValue`](/es/blockchain/instructions.md#setkeyvalue-removekeyvalue) cuando la autoridad tiene permiso para modificar ese dominio.
+Crear o eliminar un dominio requiere la gestión de dominio apropiada permiso bajo el validador de tiempo de ejecución de software activo. Los metadatos del dominio se pueden actualizar con [`SetKeyValue` y `RemoveKeyValue`](/es/blockchain/instructions.md#setkeyvalue-removekeyvalue) cuando el principal de autorización tiene permiso para modificar ese dominio.
 
 ## Pruébalo en Taira {#try-it-on-taira}
 
-Enumera los dominios actualmente visibles en la red de pruebas pública Taira:
+Enumere los dominios actualmente visibles en la testnet pública Taira:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
   | jq -r '.items[].id'
 ```
 
-Mapear el catálogo de carriles públicos hacia atrás a los alias del espacio de datos:
+Mapea el catálogo de la vía de ejecución pública de nuevo a los alias del espacio de datos:
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -67,9 +67,9 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
     | @tsv'
 ```
 
-Use el primer comando cuando una aplicación necesita verificar si existe un dominio. Utilice el catálogo de carriles cuando necesite confirmar si un espacio de datos es público, restringido o se queda atrás del carril principal.
+Utiliza el primer comando cuando una aplicación necesite comprobar si un dominio existe. Utiliza el catálogo de la vía de ejecución cuando necesites confirmar si un espacio de datos es público, restringido o está rezagado respecto a la vía de ejecución principal.
 
-La configuración del dominio es una escritura de pago antes de intentarlo Taira, salvo el ayudante del grifo de [Obtenga el Testnet XOR en el Taira](/es/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) como `taira_faucet_claim.py`, financiar al firmante a través del grifo público y adjuntar metadatos de las tarifas:
+Configurar un dominio es una escritura con tarifa. Antes de probarla en Taira, guarde el auxiliar de [Obtener XOR de prueba en Taira](/es/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) como `taira_faucet_claim.py`, financie al firmante mediante el dispensador público y adjunte los metadatos de tarifa:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
@@ -88,15 +88,15 @@ iroha --config ./taira.client.toml \
   app alias setup apply --plan-file ./taira-domain.plan.json
 ```
 
-Construir la intención de un nombre de dominio único en repetidas pruebas de red, y utilizar la política actual de Taira y el protector de cotizaciones del activo. No reutilizar un plan producido para localnet o Minamoto.
+Construya la intención para un nombre de dominio único en ejecuciones repetidas de testnet, y use la política actual de Taira y la protección de cotización de activos por tarifas. No reutilice un plan producido para localnet o Minamoto.
 
 ## Relación con otras entidades {#relationship-to-other-entities}
 
-Los dominios agrupan objetos de registro y proporcionan un espacio de nombres para los datos escaneados por dominio. Las definiciones de activos utilizan identificadores calificados por dominio, y las consultas pueden enumerar dominios o encontrar Las cuentas en sí mismas no tienen dominio en el modelo de datos actual, pero las cuentas pueden poseer dominios y mantener activos cuyas definiciones viven bajo los dominios.
+Los dominios agrupan objetos del libro mayor de la blockchain y proporcionan un espacio de nombres para los datos con alcance de dominio. Las definiciones de activos usan identificadores calificados por dominio, y las consultas pueden listar dominios o encontrar objetos limitados a un dominio. Las cuentas en sí mismas no tienen dominio en el modelo de datos actual, pero las cuentas pueden poseer dominios y tener activos cuyas definiciones existen bajo los dominios.
 
 Véase también:
 
-- [El mundo](/es/blockchain/world.md)
-- [Activos ](/es/blockchain/assets.md)
-- [Metadatos ](/es/blockchain/metadata.md)
-- [Reglas de denominación](/es/reference/naming.md)
+- [Mundo](/es/blockchain/world.md)
+- [Activos](/es/blockchain/assets.md)
+- [Metadatos](/es/blockchain/metadata.md)
+- [Reglas de nomenclatura](/es/reference/naming.md)

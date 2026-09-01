@@ -1,210 +1,210 @@
 ---
 translation_locale: es
 translation_source: /reference/norito.md
-translation_source_hash: 5196decc9e42428b787285d9e0f763bfcedabea2b19af618612f4509492c87fc
+translation_source_hash: b3b7c03bc0df3f7fa3df7e44b0ec8d755d615f9edca66bbcfe5613c33c8afbfe
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Norito {#norito}
 
-Norito es Iroha es la capa de serialización canónica. Es el formato de byte utilizado cuando pares, SDKs, CLI herramientas, Torii, Kura, y los artefactos generados tienen que acordar exactamente la misma carga útil.
+Norito es la capa de serialización canónica de Iroha. Es el formato de bytes utilizado cuando los pares de red, SDKs, las herramientas CLI, Torii, Kura y los artefactos generados necesitan coincidir exactamente en la misma carga útil.
 
-Utilización Norito Cuando los datos forman parte del consenso, la firma, el hashing, la persistencia o la cruz-SDK Interoperabilidad: uso JSON cuando un punto final ofrece explícitamente una proyección legible para los operadores, paneles de control o depuración rápida.
+Use Norito cuando los datos son parte del consenso, la firma, el hash, la persistencia o la interoperabilidad cruzada SDK. Use JSON cuando un endpoint API ofrece explícitamente una proyección legible por humanos para operadores, paneles o depuración rápida.
 
-## En el que aparece Norito {#where-norito-appears}
+## Dónde aparece Norito {#where-norito-appears}
 
-|Superficie .|Cómo se utiliza Norito |
+|Superficie|Cómo se utiliza Norito|
 | --- | --- |
-|Transacciones y consultas |Las cargas útiles de las transacciones firmadas y las consultas presentadas a través de Torii se codifican como Norito.|
-|Génesis |`kagami genesis sign` produce un bloque firmado `.nrt` que comparte la carga al inicio. |
-|Torii las respuestas tipografadas |Los puntos finales que admiten respuestas binarias de tipografía utilizan `Accept: application/x-norito`. |
-|SDKs | Rust, Python, JavaScript, Kotlin/Java, Swift, y Android los clientes utilizan Norito constructores o enlaces en lugar de bytes montados a mano. |
-|almacenamiento Kura |Las cargas útiles de bloqueo, los sidecars de recuperación, las listas y los marcadores de compromiso se almacenan como datos enmarcados con Norito. |
-|Manifestos |Nexus, disponibilidad de datos, SoraFS, transmisión y manifiestos orientados a aplicaciones utilizan Norito cuando el manifiesto debe ser firmado o hashed. |
-|En streaming .|Norito La transmisión utiliza manifiestos Norito, encabezados de segmentos, marcos de control y accesorios de conformidad. |
+|Transacciones y consultas|Los pagos de transacciones firmadas y consultas enviadas a través de Torii se codifican como Norito.|
+|génesis de la blockchain| `kagami genesis sign` produce un bloque `.nrt` firmado que los pares de la red cargan al iniciar.|
+|respuestas escritas Torii| API los endpoints que soportan respuestas binarias tipadas usan `Accept: application/x-norito`. |
+| SDKs |Los clientes Rust, Python, JavaScript, Kotlin/Java, Swift y Android usan constructores o enlaces Norito en lugar de bytes ensamblados a mano.|
+|Almacenamiento Kura|Las cargas de bloques, los anexos de recuperación, las listas y los marcadores de confirmación se almacenan en tramas Norito.|
+|manifiestos técnicos| Nexus, disponibilidad de datos, SoraFS, transmisión y manifiestos técnicos orientados a aplicaciones usan Norito cuando el manifiesto técnico debe ser firmado o hashed.|
+| Transmisión | Norito Streaming utiliza manifiestos de Norito, encabezados de segmento, tramas de control y vectores de prueba de conformidad. |
 
-Norito no es un lenguaje de contratos inteligentes. Es el envelope determinista y el codec que lleva las transacciones, llamadas contractuales, manifiesta y escribe cargas útiles API.
+Norito no es un lenguaje de contratos inteligentes. Es el contenedor de datos determinista y el códec que transporta transacciones, llamadas a contratos, manifiestos técnicos y cargas útiles tipadas API.
 
 ## Modelo de carga útil {#payload-model}
 
-Cada carga útil en cable o en disco Norito está enmarcada por un encabezado seguido de los bytes de carga útil codificados. Las cargas útiles sin encabezado, o desnudas, se reservan para el hashing interno, los puntos de referencia y el ayudante APIs que envuelven inmediatamente el resultado en una cabecera antes del transporte.
+Cada carga útil de Norito en tránsito o en disco está enmarcada por un encabezado seguido de los bytes codificados de la carga útil. Las cargas útiles sin encabezado, o desnudas, se reservan para hash internos, pruebas de rendimiento y APIs auxiliares que envuelven inmediatamente el resultado con un encabezado antes de transportarlo.
 
-|Campo de encabezado |Tamaño .|Propósito |
+|Campo de encabezado|Tamaño|Propósito|
 | --- | ---: | --- |
-|La magia .|4 bytes |ASCII `NRT0`, utilizado para rechazar anticipadamente los datos no relacionados con Norito. |
-|Mayor .|1 byte |Formatar la versión principal. las cargas útiles actuales utilizan `0`. |
-|Menores .|1 byte |Decodificación de la pista para V1. El valor actual es `0x00`. Las banderas describen el diseño.|
-|El esquema hash |16 bytes |Identidad de tipo utilizada por los decodificadores de tipografía para rechazar cargas útiles inesperadas |
-|Compresión |1 byte |`0 = None`, `1 = Zstd`. Los valores desconocidos se rechazan. |
-|longitud de la carga útil |8 bytes |longitud de carga útil no comprimida como pequeña endianas `u64`. |
-|CRC64 |8 bytes |CRC64-XZ suma de comprobación de la carga útil sin comprimir. |
-|Banderas .|1 byte |Las banderas de diseño para longitudes compactas, secuencias envasadas y estructos envasados. |
+|Magia|4 bytes| ASCII `NRT0`, se utiliza para rechazar datos no Norito de manera temprana. |
+|Mayor|1 byte|Formato de versión principal. Las cargas útiles actuales usan `0`.|
+|Menor|1 byte|Decodificar pista para v1. El valor actual es `0x00`. Las banderas describen la disposición.|
+|Esquema de hash criptográfico|16 bytes|Identidad de tipo utilizada por decodificadores tipados para rechazar cargas útiles inesperadas.|
+|Compresión|1 byte| `0 = None`, `1 = Zstd`. Los valores desconocidos son rechazados. |
+|Longitud de la carga|8 bytes|Longitud de la carga útil sin comprimir en formato little-endian `u64`. |
+| CRC64 |8 bytes| CRC64-XZ suma de verificación de la carga útil descomprimida. |
+|Banderas|1 byte|Banderas de diseño para longitudes compactas, secuencias empaquetadas y estructuras empaquetadas.|
 
-El encabezado es de 40 bytes. Los decodificadores validan la magia, la versión, la máscara de bandera compatible, la longitud de carga útil, la suma de comprobación y el hash del esquema antes de reconstruir el valor mecanografiado.
+El encabezado tiene 40 bytes. Los decodificadores validan la magia, la versión, la máscara de banderas soportadas, la longitud de la carga útil, la suma de verificación y el hash criptográfico del esquema antes de reconstruir el valor tipado.
 
 ## Banderas de diseño {#layout-flags}
 
-Norito almacena las opciones de diseño en el byte final del encabezado. Los asistentes v1 predeterminados emiten `COMPACT_LEN` (`0x02`) para prefijos de longitud por valor compactos. Los prefijos explícitos de longitud de ancho fijo permanecen legibles cuando los llamantes codifican con `flags = 0x00`.
+Norito almacena las opciones de diseño en el byte final del encabezado. Los asistentes predeterminados v1 emiten `COMPACT_LEN` (`0x02`) para prefijos de longitud por valor compactos. Los prefijos de longitud de ancho fijo explícito permanecen legibles cuando los llamadores codifican con `flags = 0x00`.
 
-|Bandera .|Hex |El estado |El efecto |
+|Bandera|Hex|Estado|Efecto|
 | --- | ---: | --- | --- |
-|`PACKED_SEQ` |`0x01` |Apoyados |Codifica las colecciones de tamaño variable con una tabla offset más un bloque de datos contiguo. |
-|`COMPACT_LEN` |`0x02` |Por defecto .|Utiliza barantes no firmados canónicos para los prefijos de longitud por valor. |
-|`PACKED_STRUCT` |`0x04` |Apoyados |Los códigos generados por las estructuras derivadas son cargas útiles de campo envasadas. |
-|`VARINT_OFFSETS` |`0x08` |Reservado .|Rechazado en v1; las compensaciones de secuencias empaquetadas son de anchura fija `u64`. |
-|`COMPACT_SEQ_LEN` |`0x10` |Reservado .|Rechazado en v1; los encabezados de longitud de secuencia de nivel superior son de ancho fijo `u64`. |
-|`FIELD_BITSET` |`0x20` |Apoyados con requisitos |Añade un conjunto de bits para estructuras empaquetadas, por lo que sólo los campos que necesitan tamaños explícitos tienen prefijos de tamaño. Requiere `PACKED_STRUCT` y `COMPACT_LEN`. |
+| `PACKED_SEQ` | `0x01` |Admitido|Codifica colecciones de tamaño variable con una tabla de desplazamiento más un bloque de datos contiguo.|
+| `COMPACT_LEN` | `0x02` |predeterminada|Utiliza varints sin signo canónicos para prefijos de longitud por valor.|
+| `PACKED_STRUCT` | `0x04` |Admitido|Codifica estructuras generadas por derive como cargas útiles de campos empaquetados.|
+| `VARINT_OFFSETS` | `0x08` |reservada|Rechazado en v1; los desplazamientos de la secuencia empaqueta son de ancho fijo `u64`.|
+| `COMPACT_SEQ_LEN` | `0x10` |reservada|Rechazado en v1; los encabezados de longitud de secuencia de nivel superior tienen ancho fijo `u64`.|
+| `FIELD_BITSET` | `0x20` |Respaldado con requisitos|Agrega un conjunto de bits para estructuras empaquetadas de modo que solo los campos que requieren tamaños explícitos lleven prefijos de tamaño. Requiere `PACKED_STRUCT` y `COMPACT_LEN`.|
 
-Las banderas son explícitas. Los decodificadores no deducen el diseño de la forma de la carga útil, la versión menor o las heurísticas. Se rechazan combinaciones desconocidas o inválidas para que todos los pares interpreten una carga útil de la misma manera.
+Las banderas son explícitas. Los decodificadores no infieren la disposición a partir de la forma de la carga, la versión menor o las heurísticas. Las combinaciones desconocidas o inválidas son rechazadas para que todos los pares de la red interpreten una carga de la misma manera.
 
 ## Reglas de codificación {#encoding-rules}
 
-Norito utiliza diseños determinísticos para las formas de datos comunes que aparecen en el modelo de datos Iroha:
+Norito utiliza diseños deterministas para las formas de datos comunes que aparecen en el modelo de datos Iroha:
 
-- Las cuerdas son `[len][utf8-bytes]`; `len` sigue a `COMPACT_LEN` cuando esté activada.
-- Cuando se establece `COMPACT_LEN`, una longitud por valor utiliza un varínte compacto.
-- En caso de ausencia de `COMPACT_LEN`, una longitud por valor es un pequeño endio de 8 bytes `u64`.
-- Los encabezados de longitud de secuencia se fijan en un pequeño endio `u64` de 8 bytes en v1.
-- `Vec<u8>` está codificado como `[len_u64][raw-bytes]` en vez de una longitud por byte.
-- Las secuencias envasadas utilizan compensaciones monótonas `(len + 1)` `u64` seguidas de las cargas útiles del elemento concatenado.
-- Los mapas codifican los recuentos de entradas con fijo `u64` y usan el orden determinístico de la clave. Las entradas `HashMap` se clasifican por llave antes de codificar; `BTreeMap` utiliza su orden natural.
-- `BigInt` utiliza pequeños bytes de complemento de dos enedianos con una longitud de byte `u32` y un límite de 512 bits.
-- `Numeric` se codifica como `(mantissa, scale)`, donde la mantissa almacena el valor del número entero y la escala almacena el número de dígitos fraccionarios.
+- Las cadenas son `[len][utf8-bytes]`; `len` sigue a `COMPACT_LEN` cuando está habilitado.
+- Cuando se establece `COMPACT_LEN`, una longitud por valor utiliza un varint compacto.
+- Cuando `COMPACT_LEN` está ausente, una longitud por valor es un `u64` de 8 bytes en orden little-endian.
+- Los encabezados de longitud de secuencia son de 8 bytes en little-endian `u64` en v1.
+- `Vec<u8>` está codificado como `[len_u64][raw-bytes]` en lugar de una longitud por byte.
+- Las secuencias empaquetadas usan desplazamientos `(len + 1)` monótonos `u64` seguidos de las cargas útiles de los elementos concatenados.
+- Los mapas codifican los recuentos de entradas con `u64` fijo y usan un orden de clave determinista. Las entradas `HashMap` se ordenan por clave antes de codificar; `BTreeMap` usa su orden natural.
+- `BigInt` utiliza bytes en complemento a dos de little-endian con una longitud de byte de `u32` y un límite de 512 bits.
+- `Numeric` se codifica como `(mantissa, scale)`, donde la mantisa almacena el valor entero y la escala almacena el número de dígitos fraccionarios.
 
-Estas reglas importan para las firmas y hashes. Dos SDKs que construyen la misma transacción lógica deben producir los mismos bytes canónicos.
+Estas reglas son importantes para las firmas y los hashes criptográficos. Dos SDKs que construyan la misma transacción lógica deben producir los mismos bytes canónicos.
 
-## Esquema de Hashes {#schema-hashes}
+## Esquema de hashing criptográfico {#schema-hashes}
 
-Las cargas útiles de tipo Norito llevan un hash de esquema de 16 bytes en el encabezado. El hash predeterminado se deriva del nombre de tipo totalmente calificado. Los constructos que permiten el hash de esquemas estructurales derivan el hash del esquema canónico en su lugar.
+Los payloads tipados Norito llevan un hash criptográfico de esquema de 16 bytes en el encabezado. El hash criptográfico predeterminado se deriva del nombre de tipo completamente calificado. Las compilaciones que habilitan el hash de esquema estructural derivan el hash criptográfico del esquema canónico en su lugar.
 
-Los decodificadores de tipo rechazan las incompatibilidades del esquema. Esto protege a los clientes de descodificar accidentalmente un marco válido Norito como el tipo incorrecto y es el modo de falla habitual cuando un paquete de fijación SDK se deriva del modelo de datos del nodo.
+Los decodificadores tipados rechazan las incompatibilidades de esquema. Esto protege a los clientes de decodificar accidentalmente un cuadro Norito válido como el tipo incorrecto y es el modo de falla habitual cuando un paquete de artefactos de prueba SDK se desvía del modelo de datos del nodo.
 
-## Compresión y aceleración {#compression-and-acceleration}
+## Compresión y Aceleración {#compression-and-acceleration}
 
-Norito admite compresión explícita y adaptativa sin cambiar la carga útil lógica:
+Norito soporta compresión explícita y adaptativa sin cambiar la carga útil lógica:
 
-|Características |Propósito |
+|Función|Propósito|
 | --- | --- |
-|`to_bytes` |Encode un encabezado seguido de una carga útil no comprimida. |
-|`to_compressed_bytes` |Encode con Zstd y graba la etiqueta de compresión en el encabezado. |
-|`to_bytes_auto` |Aplicar heurísticas deterministas para decidir si la compresión vale la pena. |
-|Aceleración CRC64 |Utiliza portable CRC64-XZ en todas partes, con CLMUL en x86_64 o PMULL en aarch64, cuando esté disponible. |
-|GPU CRC64 y compresión|El metal opcional o los auxiliares CUDA pueden acelerar las grandes cargas útiles, y luego volver a caer en los caminos CPU. |
+| `to_bytes` |Codifica un encabezado seguido de una carga útil sin comprimir.|
+| `to_compressed_bytes` |Codificar con Zstd y registrar la etiqueta de compresión en el encabezado.|
+| `to_bytes_auto` |Aplica heurísticas deterministas para decidir si la compresión vale la pena.|
+|CRC64 aceleración|Usa CRC64-XZ portátil en todas partes, con CLMUL en x86_64 o PMULL en aarch64 cuando esté disponible.|
+|GPU CRC64 y compresión|Los ayudantes opcionales de Metal o CUDA pueden acelerar cargas útiles grandes y luego volver a los caminos de CPU.|
 
-La aceleración del hardware nunca cambia el contenido decodificado. Los aceleradores CRC y JSON deben coincidir con los bits por bits de salida portátiles. Los bytes de marco Zstd pueden diferir entre los codificadores CPU y GPU, pero la carga útil decodificada y los metadatos de encabezado Norito siguen siendo deterministas para la validación.
+La aceleración de hardware nunca cambia el contenido decodificado. Los aceleradores CRC y JSON deben coincidir con la salida portátil bit a bit. Los bytes del marco Zstd pueden diferir entre los codificadores CPU y GPU, pero la carga útil decodificada y los metadatos del encabezado Norito permanecen deterministas para la validación.
 
-## JSON Apoyo {#json-support}
+## JSON Soporte {#json-support}
 
-Norito incluye una pila nativa JSON para puntos finales y herramientas que necesitan JSON sin salir del sistema de tipo Norito.
+Norito incluye una pila nativa JSON para endpoints API y herramientas que necesitan JSON sin salir del sistema de tipos Norito.
 
-|La función JSON |Caso de uso |
+|JSON característica|Caso de uso|
 | --- | --- |
-|`norito::json::{to_json, from_json}` |Codificación/decodificación determinística de JSON. |
-|Hermosas y ayudantes de escritores |CLI de salida, accesorios y la integración de transmisión `std::io`. |
-|Los valores de DOM |La manipulación programática mediante el modelo de valor JSON de Norito. |
-|Tipo rápido JSON |Decodificación/código basado en cintas estructurales para los caminos calientes DTO. |
-|Lector de copia cero |El escaneo de tokens que toma prestadas las cadenas de la entrada cuando sea posible. |
-|Aceleradores de etapa 1 |Indicación estructural opcional AVX2, NEON, Metal o CUDA con retroceso escalar. |
+| `norito::json::{to_json, from_json}` |Codificación/decodificación tipada determinista JSON.|
+|Bonitos y ayudantes de escritor| CLI salida, artefactos de prueba y transmisión `std::io` integración. |
+|DOM valores|Manipulación programática a través del modelo de valores JSON de Norito.|
+|Escribió rápido JSON|Decodificación/codificación basada en cinta estructural para rutas calientes DTO.|
+|Lector sin copia|Escaneo de tokens que toma prestadas cadenas de la entrada cuando es posible.|
+|Aceleradores de etapa 1|Opcional AVX2, NEON, Metal, o CUDA indexación estructural con retorno a escalar.|
 
-Iroha el código debe preferirse `norito::json` auxiliares para la tipografía API Cargas útiles. Adición de playa `serde_json` a las vías de producción los riesgos que divergen del esquema y el comportamiento de manejo en el campo esperados por SDKs y Torii los extractores.
+El código Iroha debería preferir los auxiliares `norito::json` para cargas útiles tipadas API. Agregar `serde_json` simple a las rutas de producción arriesga divergir del esquema y del comportamiento de manejo de campos esperado por los extractores SDKs y Torii.
 
-## Apoyo derivado {#derive-support}
+## Derivar soporte {#derive-support}
 
-Los tipos de datos Rust generalmente utilizan macros derivados en lugar de código codec manual. La capa derivada puede generar códecs binarios Norito, esquemas y ayudantes JSON.
+Los tipos de datos Rust generalmente usan macros derive en lugar de código de códec manual. La capa derive puede generar códecs binarios Norito, esquemas y ayudantes JSON.
 
-Los atributos de campo comunes son:
+Los atributos comunes de campo son:
 
-|El atributo |El efecto |
+|Atributo|Efecto|
 | --- | --- |
-|`#[norito(rename = "other")]` |Utiliza un nombre serializado estable para el esquema y la compatibilidad JSON. |
-|`#[norito(skip)]` |El codificador omite el campo. El decodificador proporciona su valor `Default`. |
-|`#[norito(default)]` |Utiliza `Default` cuando una carga útil descifrada no lleva el campo. |
-|`#[norito(skip_serializing_if = "...")]` |Elimina campos de JSON cuando el predicado coincide, mientras se conservan los valores predeterminados para la decodificación. |
+| `#[norito(rename = "other")]` |Utiliza un nombre serializado estable para el esquema y la compatibilidad JSON.|
+| `#[norito(skip)]` |El codificador omite el campo. El decodificador suministra su valor `Default`.|
+| `#[norito(default)]` |Usa `Default` cuando una carga útil decodificada no contiene el campo.|
+| `#[norito(skip_serializing_if = "...")]` |Omite campos de JSON cuando el predicado coincide, mientras conserva los valores predeterminados de decodificación determinista.|
 
-Los derivados también exponen señales de longitud codificada y cálculos de longitud exacta cuando sea posible. Los codificadores utilizan estas pistas para reservar los amortiguadores y evitar copias adicionales.
+Los derivados también exponen pistas de longitud codificada y cálculos de longitud exacta cuando es posible. Los codificadores utilizan esas pistas para reservar buffers y evitar copias adicionales.
 
-## Familias de la caja {#crate-feature-families}
+## paquete de software Familias de Funciones {#crate-feature-families}
 
-Cuando se construyan enlaces Iroha o SDK desde la fuente, las características de Norito seleccionan qué auxiliares y aceleradores están disponibles:
+Al construir enlaces Iroha o SDK desde el código fuente, las funciones de Norito permiten seleccionar qué ayudantes y aceleradores están disponibles:
 
-|Familias de características |¿ Qué permite ?|
+|Familia de características|Lo que permite|
 | --- | --- |
-|`derive` |Las macros de procedimiento reexportados para derivados binarios, esquemas y JSON. |
-|`compression` |Zstd soporte para las cargas útiles con encabezado. |
-|`packed-seq` |Disposiciones de la colección empaquetadas con tablas de compensación. |
-|`packed-struct` |Los diseños de estructuras generados por derivados empaquetados.|
-|`compact-len` |Varint prefijos de longitud por valor. |
-|`columnar` |Bloques de columna Norito, códec de filas adaptativos AoS/NCB y vistas prestadas para caminos pesados en la exploración; incluidos en el conjunto predeterminado de características `node-codec`. |
-|`strict-safe` |Convierte los pánicos de decodificación en caminos fallidos en errores estructurados. |
-|`simd-accel` |CPU aceleración cuando esté disponible, con retroceso determinista. |
-|`json` |Parser nativo JSON, escritor, DOM, derivaciones de tipografía y vías rápidas. |
-|`json-std-io` |Auxiliadores de lectores y escritores en capas sobre la pila JSON. |
-|`metal-stage1`, `cuda-stage1` |Los retrocesos de índice estructural GPU JSON son opcionales. |
-|`metal-stage2` |Clasificación de metadatos metálicos opcionales para la cinta estructural JSON. |
-|`metal-crc64`, `cuda-crc64` |Auxiliares opcionales GPU CRC64 para las grandes cargas útiles. |
-|`gpu-compression` |Aceleración opcional de metal o CUDA Zstd para grandes cargas útiles. |
-|`stage1-validate` |Validación de defecto que compara los índices estructurales JSON acelerados con la salida escalar. |
+| `derive` |Macros procedimentales reexportadas para binario, esquema y derives JSON.|
+| `compression` |Soporte de Zstd para cargas útiles con encabezado enmarcado.|
+| `packed-seq` |Diseños de colecciones empaquetadas usando tablas de desplazamiento.|
+| `packed-struct` |Diseños de estructuras generadas derivadas empaquetadas.|
+| `compact-len` |Prefijos de longitud por valor de Varint.|
+| `columnar` | Norito Bloques de columnas, AoS/NCB códecs de fila adaptativos y vistas prestadas para rutas con alta frecuencia de escaneo; incluidos en el conjunto de funciones predeterminado `node-codec`. |
+| `strict-safe` |Convierte los errores de decodificación en rutas fallibles en errores estructurados.|
+| `simd-accel` |CPU aceleración cuando esté disponible, con sustitución determinista.|
+| `json` |Analizador nativo JSON, escritor, DOM, derivados tipados y rutas rápidas.|
+| `json-std-io` |Ayudantes de lector y escritor en capas sobre la pila JSON.|
+| `metal-stage1`, `cuda-stage1` |Opcional GPU JSON backends de índice estructural.|
+| `metal-stage2` |Clasificación opcional de metadatos Metal para la cinta estructural JSON.|
+| `metal-crc64`, `cuda-crc64` |Opcionales GPU CRC64 ayudantes para cargas útiles grandes.|
+| `gpu-compression` |Aceleración opcional de Metal o CUDA Zstd para cargas útiles grandes.|
+| `stage1-validate` |Depuración de validación que compara los índices estructurales acelerados JSON con la salida escalar.|
 
-La disponibilidad de características puede diferir entre SDKs y perfiles de lanzamiento. El formato del cable sigue siendo regido por el encabezado y esquema, no por las banderas locales de construcción.
+La disponibilidad de funciones puede diferir entre SDKs y los perfiles de lanzamiento. El formato de intercambio sigue estando regido por el encabezado y el esquema, no por las banderas de compilación locales.
 
 ## Torii y Norito RPC {#torii-and-norito-rpc}
 
-Torii expone JSON para muchas rutas de operador, pero las rutas binarias tipografizadas utilizan Norito. El tipo de medio para los cuerpos de corriente tipografizados Norito HTTP es `application/x-norito`.
+Torii expone JSON para muchas rutas de operador, pero las rutas binarias tipadas usan Norito. El tipo de medio para los cuerpos actuales tipados Norito HTTP es `application/x-norito`.
 
-Utilice estos encabezados cuando un punto final acepte o devuelva el tipo Norito:
+Use estos encabezados cuando un endpoint API acepte o devuelva Norito tipados:
 
 ```http
 Content-Type: application/x-norito
 Accept: application/x-norito
 ```
 
-Cuando un punto final admite ambas representaciones, los clientes pueden enviar una lista de preferencias explícita:
+Cuando un endpoint API admite ambas representaciones, los clientes pueden enviar una lista de preferencias explícita:
 
 ```http
 Accept: application/x-norito, application/json
 ```
 
-Las fallas de decodificación aparecen como errores de tipografía Torii y se cuentan por telemetría. Las razones comunes incluyen magia inválida, versión no soportada, bandera de características no soportadas, falta de coincidencia en la cantidad de checksum, error de formato UTF-8, etiqueta enum invalida y falta de coincisión en el esquema.
+Los fallos de decodificación se presentan como errores tipados Torii y se cuentan mediante telemetría. Las razones comunes incluyen magia inválida, versión no soportada, bandera de función no soportada, error de suma de verificación, UTF-8 mal formado, etiqueta de enumeración inválida y discrepancia de esquema.
 
-Norito RPC El transporte se selecciona a través de la configuración del transporte. debe realizar un seguimiento de la latencia de las solicitudes, fallos, conexiones activas, bytes de respuesta y `torii_norito_decode_failures_total` separadamente de JSON El tráfico.
+Norito RPC se selecciona a través de la configuración de transporte. Los paneles de control del operador deben rastrear la latencia de las solicitudes, fallos, conexiones activas, bytes de respuesta y `torii_norito_decode_failures_total` por separado del tráfico de JSON.
 
-## Norito Transmisiones en directo {#norito-streaming}
+## Norito Transmisión {#norito-streaming}
 
-Norito El streaming amplía el mismo enfoque determinista a los medios y las superficies de transporte en tiempo real.
+Norito La transmisión extiende el mismo enfoque determinista a los medios y superficies de transporte en tiempo real. Sus piezas clave son:
 
-|Función de transmisión |Propósito |
+|Función de transmisión|Propósito|
 | --- | --- |
-|Manifestos |Declarar los compromisos del segmento, las rutas de privacidad, las capacidades, el perfil del codec, la suite de cifrado y los metadatos clave del contenido. |
-|Cabezas de segmentos |Enlace el número del segmento, duración, recuento de piezas, tiempo, modo entropía, resumen de audio y raíces Merkle. |
-|Compromisos por piezas |Deje que los espectadores y relés verifiquen las piezas de carga útil contra el manifiesto antes de servir o decodificar. |
-|Cuadrados de control |Llevar anuncios manifiestos, retroalimentación, actualizaciones clave y negociación de capacidad. |
-|HPKE actualizaciones clave |Gira los secretos de transporte utilizando la suite negociada y contadores crecientes monotonicamente. |
-|Negociación de la capacidad |Intersecta bits de características compatibles, límites de datagramas, cadencia de retroalimentación y requisitos de privacidad. |
-|FEC y retroalimentación |Utiliza informes deterministas de receptores y decisiones de paridad para las vías en tiempo real de pérdida. |
-|Vectores de conformidad |Los dispositivos interlinguísticos demuestran que SDKs decodifican los mismos manifestos, segmentos y flujos de entropía. |
+|manifiestos técnicos|Declarar compromisos de segmento, rutas de privacidad, capacidades, perfil de códec, conjunto de cifrado y metadatos de clave de contenido.|
+|Encabezados de segmento|Vincular número de segmento, duración, recuento de fragmentos, sincronización, modo de entropía, resumen de audio y raíces de Merkle.|
+|Compromisos por bloques|Permita que los espectadores y repetidores verifiquen los fragmentos de la carga útil contra el manifiesto técnico antes de servirlos o decodificarlos.|
+|Marcos de control|Llevar anuncios de manifiesto técnico, retroalimentación, actualizaciones clave y negociación de capacidades.|
+| HPKE actualizaciones de clave |Girar secretos de transporte usando el conjunto negociado y contadores que aumentan monótonamente.|
+|Negociación de capacidades|Interseca las funciones compatibles, los límites de datagramas, la cadencia de retroalimentación y los requisitos de privacidad.|
+| FEC y comentarios |Utiliza informes deterministas del receptor y decisiones de paridad para rutas en tiempo real con pérdidas.|
+|Vectores de conformidad|Los artefactos de prueba entre idiomas demuestran que SDKs decodifica los mismos manifiestos técnicos, segmentos y flujos de entropía.|
 
-Los códecs y perfiles de entropía específicos para la transmisión están separados del formato central Norito de transacción/ consulta, pero sus manifiestos y datos de control siguen utilizando Norito por lo que el enrutamiento, la facturación, la reproducción y las pruebas de auditoría permanecen reproducibles.
+Los códecs específicos para streaming y los perfiles de entropía están separados del formato central de transacción/consulta Norito, pero sus manifiestos técnicos y datos de control aún usan Norito, por lo que el enrutamiento, la facturación, la repetición y la evidencia de auditoría siguen siendo reproducibles.
 
-## Orientación de las operaciones {#operational-guidance}
+## Guía Operativa {#operational-guidance}
 
-- Se prefieren los constructores SDK y los enlaces generados a los bytes Norito hechos a mano.
-- Trate la falta de coincidencia del esquema como un problema de versión o fijación, no como una falla transitoria de red.
-- Archivo `.nrt`, `.norito`, y artefactos manifestos en el paquete de liberación o incidente que los produjo.
-- Utilización Norito como la fuente de verdad para los datos firmados, hashed o persistentes. JSON proyecciones para tablas de control y inspección manual.
-- Cuando se añada un nuevo punto final Torii de tipo, documentar si acepta JSON, Norito o ambos, y exponer los tipos de contenido soportados en `/openapi`.
-- Antes de activar un acelerador, ejecuta pruebas de paridad contra la salida escalar. Si un aceleradora falla, utiliza el fallback escalar determinista. La semántica de carga útil debe permanecer sin cambios.
+- Prefiere los constructores SDK y los enlaces generados sobre los bytes Norito hechos a mano.
+- Trata la descoordinación del esquema como un problema de versión o artefacto de prueba, no como un fallo transitorio de la red.
+- Archivar `.nrt`, `.norito` y los artefactos de manifiesto técnico en el paquete de lanzamiento o incidente que los produjo.
+- Use Norito como la fuente de verdad para datos firmados, con hash o persistidos. Use proyecciones JSON para tableros y revisión manual.
+- Al agregar un nuevo endpoint tipeado Torii API, documente si acepta JSON, Norito o ambos, y exponga los tipos de contenido soportados en `/openapi.json`.
+- Antes de habilitar un acelerador, ejecute pruebas de paridad contra la salida escalar. Si un acelerador falla, utilice la alternativa escalar determinista. La semántica de la carga útil debe permanecer sin cambios.
 
 ## Páginas relacionadas {#related-pages}
 
-- [Puntos finales Torii](/es/reference/torii-endpoints.md)
-- [Referencia de Génesis](/es/reference/genesis.md)
-- [Esquema de modelo de datos ](/es/reference/data-model-schema.md)
-- [JavaScript / TypeScript SDK ](/es/guide/tutorials/javascript.md)
-- [Python SDK ](/es/guide/tutorials/python.md)
+- [Torii API puntos finales](/es/reference/torii-endpoints.md)
+- [referencia de génesis de blockchain](/es/reference/genesis.md)
+- [Esquema del modelo de datos](/es/reference/data-model-schema.md)
+- [JavaScript / TypeScript SDK](/es/guide/tutorials/javascript.md)
+- [Python SDK](/es/guide/tutorials/python.md)
 - [Swift y iOS SDK](/es/guide/tutorials/swift.md)
 
-## Referencias de aguas arriba {#upstream-references}
+## Referencias ascendentes {#upstream-references}
 
-- [Especificación del formato Norito](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/norito.md)
-- [Cisterna Norito README ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/norito/README.md)
+- [Norito especificación de formato](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/norito.md)
+- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/norito/README.md)

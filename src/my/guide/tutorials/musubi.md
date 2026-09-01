@@ -1,26 +1,26 @@
 ---
 translation_locale: my
 translation_source: /guide/tutorials/musubi.md
-translation_source_hash: 4a76626522ecb9fe32e98e9c1e4552223cf820d40d0de16690dc589b0f40c901
+translation_source_hash: 621d1795fd1c3cc62462a9a91af68fe684c0ff5293f5e77801420dc8318bac38
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Musubi Kotodama အိတ်များ {#musubi-kotodama-packages}
 
-Musubi သည် Kotodama အရင်းအမြစ်အိတ်များအတွက်ပထမဦးဆုံးထုတ်ဝေမှု package manager ဖြစ်သည်။ ၎င်းသည်ချည်နှောင်ပေါ်တွင်တိကျသော မှီခိုမှုဂရပ်ကိုဖြေရှင်းပြီး SoraFS ကို စစ်ဆေးတယ်။ source archives ကို compiles and tests the selected workspace, builds canonical CAR archives, and publishes immutable releases through Iroha တို့ကို ပြုစုပြီး စမ်းသပ်ပါတယ်။
+Musubi သည် Kotodama အရင်းအမြစ်အိတ်များအတွက်ပထမဦးဆုံးထုတ်ဝေမှု package manager ဖြစ်သည်။ ၎င်းသည်အတိအကျ on-chain မှီခိုမှုဂရပ်ကိုဖြေရှင်းပြီး SoraFS အရင်းအမြစ်ကိုစစ်ဆေးသည်။ မှတ်တမ်းတင်ခြင်း၊ ရွေးချယ်ထားတဲ့ အလုပ်ခွင်ကို စုစည်းပြီး စမ်းသပ်ခြင်းများ၊ Single Protocol-Standard CAR စာရွက်စာတမ်းများကို တည်ဆောက်ခြင်းနှင့် မပြောင်းလဲနိုင်သော ထုတ်ပြန်ချက်များကို Iroha မှတစ်ဆင့် ဖော်ပြခြင်း။
 
 Musubi ကို အသုံးပြုပါ-
 
 - ပြန်လည်သုံးနိုင်တဲ့ Kotodama function libraries ကို ထုတ်ဝေပါ။
 - `Musubi.lock` တွင် တိကျသော အပြောင်းအလဲ ဂရပ်တစ်ခုကို ရိုက်ထည့်ပါ။
-- နောက်ဆုံးသတ်မှတ်ထားသော SoraFS စာရွက်စာတမ်းဆိုင်ရာ တာဝန်ယူချက်များမှ မှီခိုမှု အရင်းအမြစ်ကို ပြန်လည်ပြုပြင်ပါ။
+- နောက်ဆုံးသတ်မှတ်ထားသော SoraFS Archive cryptographic commitment တန်ဖိုးများမှ မှီခိုမှု အရင်းအမြစ်ကို ပြန်လည်ပြုပြင်ပါ။
 - Package တစ်ခု (သို့) multi-package အလုပ်ခွင်ကို တည်ဆောက်ပြီး စမ်းသပ်ပါ။
 - On-chain registry ကနေ package တွေကို စစ်ဆေး၊ ထုတ်ဝေ၊ ဆွဲထုတ်၊ ထိန်းသိမ်း (သို့) အမည်မဖော်လိုပါ။
 
-## အိတ်အမည်များ {#package-names}
+## Package အမည်များ {#package-names}
 
-Canonical Package Selectors တွေမှာ အောက်ပါအတိုင်း သုံးပါတယ်။
+Single Protocol Standard Package Selectors တွေကို သုံးပါတယ်။
 
 ```text
 namespace/package
@@ -32,11 +32,11 @@ namespace/package
 namespace/package@version
 ```
 
-ဦးဆောင်မှုမရှိဘူး။ `@` Namepace က data space root လိုမျိုးပါ။ `universal` (သို့) ဒိုမင်အလိုက် ကျွမ်းကျင်တဲ့ ဒေတာနေရာတစ်ခု၊ ဥပမာ `dex.universal`. စာရင်းအင်းက ဒီဖွဲ့စည်းမှု နာမည်နေရာကို package တစ်ခု တောင်းဆိုနိုင်ခင်မှာ တည်ငြိမ်တဲ့ home data space တစ်ခုနဲ့ ချိတ်ဆက်ပေးပါတယ်။
+ဦးဆောင်မှုမရှိဘူး။ `@` Namepace က data space root လိုမျိုးပါ။ `universal` (သို့) ဒိုမင်အလိုက် ကျွမ်းကျင်တဲ့ ဒေတာနေရာတစ်ခု၊ ဥပမာ `dex.universal`. blockchain ledger က package တစ်ခုကို claim မလုပ်ခင်မှာ ဒီတည်ဆောက်တဲ့ နာမည်နေရာကို တည်ငြိမ်တဲ့ home data space တစ်ခုနဲ့ ချိတ်ဆက်တယ်။
 
-## Manifest နှင့် Lockfile {#manifest-and-lockfile}
+## Technical Manifesto နှင့် Lockfile {#manifest-and-lockfile}
 
-Package တစ်ခုမှာ ပိတ်ထားတဲ့ ပထမထုတ်ဝေမှုကို သုံးပါတယ်။ `Musubi.toml` schema. Manifesto က ကြေညာဖို့လိုတယ်။ `manifest-version = 1`, Kotodama ထုတ်ပြန်ချက် `"1"`, နှင့် IVM ABI မူကွဲ `1`; အပြောင်းအလဲ ထုတ်ပြန်ချက် မရှိဘူး။ ABI ပုံစံပါ။
+Package တစ်ခုမှာ ပိတ်ထားတဲ့ ပထမထုတ်ဝေမှုကို သုံးပါတယ်။ `Musubi.toml` Schema: Technical Manifesto မှာ ကြေညာဖို့လိုပါတယ်။ `manifest-version = 1`, Kotodama ထုတ်ပြန်ချက် `"1"`, နှင့် IVM ABI မူကွဲ `1`; အခြားနည်းပညာထုတ်ပြန်ချက်မရှိဘူး ABI ပုံစံပါ။
 
 ```toml
 manifest-version = 1
@@ -57,13 +57,13 @@ package = "std.universal/math"
 version = "^1.0.0"
 ```
 
-Dependencies များသည် တိကျသောဗားရှင်းများ၊ caret သို့မဟုတ် tilde လိုအပ်ချက်များ၊ `1.*` ကဲ့သို့သော wildcard များနှင့် `>=1.0.0,<2.0.0` ကဲ့သို့သော comma-separated comparator sets များကို အသုံးပြုနိုင်သည်။ dependence table key သည် parent-local import alias ဖြစ်သည်။ `package` သည်အမြဲတမ်း canonical registry selector ဖြစ်ပါသည်။
+Dependencies များသည် တိကျသောဗားရှင်းများ၊ caret သို့မဟုတ် tilde လိုအပ်ချက်များ၊ `1.*` ကဲ့သို့သော wildcards များနှင့် `>=1.0.0,<2.0.0` ကဲ့သို့သော comma-separated comparator sets များကို အသုံးပြုနိုင်သည်။ dependence table key သည် parent-local import alias ဖြစ်ပြီး `package` သည်အမြဲတမ်း single protocol-standard registry selector ဖြစ်သည်။
 
-`Musubi.lock` က ဂရပ်ကို တိကျတဲ့ ပင်မဖြစ်စဉ်မှ ရယူထားသော `NetworkId` နှင့် နောက်ဆုံးပြုစုထားတဲ့ မှတ်ပုံတင် snapshot သို့ ချိတ်ဆက်ပေးသည်။ ရွေးချယ်ထားသော workspace root များနှင့် မပြောင်းလဲနိုင်သော release node များကို မှတ်တမ်းတင်ပေးသည်။ release, source, interface, archive, ABI နှင့် exact dependency-edge commitments တို့ကိုပါ ၀ င်သည်။ ဖြေရှင်းသောဂရပ်သည်လိုအပ်သည့်အခါ Parallel versions များကိုခွင့်ပြုထားသည်။
+`Musubi.lock` က ဂရပ်ကို တိကျတဲ့ ပင်မဖြစ်စဉ်မှ ရယူထားသော `NetworkId` နှင့် နောက်ဆုံးပြုစုထားတဲ့ မှတ်ပုံတင် snapshot သို့ ချိတ်ဆက်ပေးသည်။ ရွေးချယ်ထားသော workspace root များနှင့် မပြောင်းလဲနိုင်သော release node များကို မှတ်တမ်းတင်ပေးသည်။ release, source, interface, archive, ABI နှင့် dependency-edge exact cryptographic commitment values တို့ကိုပါ ၀ င်သည်။ ဖြေရှင်းသောဂရပ်သည်လိုအပ်သည့်အခါ Parallel versions များကိုခွင့်ပြုသည်။
 
 ## Configure Taira SoraFS ဆွဲယူခြင်း {#configure-taira-sorafs-fetching}
 
-Taira သည် ဤအလုပ်ဖြစ်စဉ်အတွက် အများပြည်သူစစ်ဆေးရေးကွန်ရက်ဖြစ်သည်။ ချိတ်ဆက်ထားသောချိတ်ဆက်မှုနှင့်ကွန်ရက်အမည်ရှိ Taira ဖောက်သည် သတ်မှတ်ချက်မှစ၍ အောက်ပါပေးသွင်းသူသတ်မှတ်ထားတဲ့ စစ်ဆေးခြင်းရယူရန်ဘောင်များကိုထည့်ပါ။ Account signing material နဲ့ provider operator keys တွေဟာ ပိုင်ရှင်တစ်ဦးတည်းရဲ့ runtime file တွေထဲမှာပဲ ကျန်နေရပါမယ်။
+Taira ဒီအလုပ်ဖြစ်စဉ်အတွက် အများပြည်သူ စမ်းသပ်ရေးကွန်ရက်ပါ။ Taira စစ်ဆေးထားတဲ့ ကွင်းဆက်နဲ့ လက်ရှိ pinned genesis-derived network identity နဲ့ client configuration ကို ပြီးရင် ပေးသွင်းသူအတွက် သီးသန့် စစ်ဆေးထားတဲ့ ကောက်ယူမှု ချည်နှောင်ချက်တွေကို အောက်မှာထည့်ပါ။ Taira Reset ကိုပြောင်းနိုင်ပါတယ် `NetworkId`; လက်မှတ်ရေးထိုးထားတဲ့ deployment profile ကနေ update လုပ်လိုက်ပြီး stable chain ကနေ ထုတ်ယူမယ့်အစား UUID. Account signing material နဲ့ provider operator keys တွေကို ပိုင်ရှင်သာ software execution environment ဖိုင်တွေထဲမှာ ဆက်ထားရမှာပါ။
 
 ```toml
 torii_url = "https://taira.sora.org/"
@@ -89,11 +89,11 @@ export TAIRA_ROOT=https://taira.sora.org
 curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
 ```
 
-Provider Catalog provides provider identities and advertised endpoints. ရွေးချယ်သော Provider မှ match operator authorization ကိုရရှိပါ။ runtime သည်ချိတ်ဆက်ထားသည့် stream tokens များကိုတောင်းဆိုရန် key ကိုအသုံးပြုသည်။ tokens တို့သည် CLI argument သို့မဟုတ် lockfile အကြောင်းအရာမဟုတ်ပေ။
+Provider Catalog provides provider identities and advertised API endpoints. ရွေးချယ်ထားသော Provider မှ matching operator authorization ကိုရယူပါ။ software execution environment သည်ချိန်းသတ်မှတ်ထားသော stream tokens များကိုတောင်းဆိုရန် key ကိုအသုံးပြုသည်။ tokens တို့သည် CLI အငြင်းပွားချက်များ သို့မဟုတ် lockfile အကြောင်းအရာမဟုတ်ပါ။
 
-Taira validator pin URL ကို `url` အဖြစ်မသုံးပါနဲ့။ စစ်ဆေးထားသော validators များသည် SoraFS သိုလှောင်မှု disabled ကိုထည့်သွင်းထားသည်။ ၎င်းတို့၏ `https://taira-validator-{1,2,3,4}.sora.org` အဆုံးမှတ်များတွင် pin မှတ်ပုံတင်ခြင်းကိုလက်ခံကြပြီး အာကာသဖတ်ရှုချက်များသည် ရွေးချယ်ခံရသောလက်ခံပေးသူ၏ HTTPS မူရင်းကို အသုံးပြုသည်။
+A ကို မသုံးပါ Taira validator pin ကို URL အတိုင်း `url`. Check-in validators တွေက embedded လုပ်ထားပါတယ် SoraFS သိုလှောင်မှု မသန်စွမ်းခြင်း။ `https://taira-validator-{1,2,3,4}.sora.org` API endpoints တွေက pin registration ကို လက်ခံကြပြီး archive read တွေက ရွေးချယ်ထားတဲ့ admitted provider ရဲ့ HTTPS မူရင်း။
 
-## ဒေသတွင်း အလုပ်ဖြစ်စဉ် {#local-workflow}
+## ဒေသတွင်း အလုပ်ခွင် {#local-workflow}
 
 Upstream Iroha workspace root မှ package directory ကိုဖန်တီး (သို့မဟုတ်ထည့်သွင်းပြီး Cargo ကနေ Musubi ကို run လုပ်ပါ:
 
@@ -118,11 +118,11 @@ cargo run --manifest-path ../../Cargo.toml -p musubi -- package --config client.
 
 `--locked` ကိုသုံးပြီး lockfile အပြောင်းအလဲတစ်ခုခုကိုငြင်းပယ်ပါ။ မှတ်ပုံတင်စာရင်းညွှန်းကိန်းနှင့်လိုအပ်သောသိမ်းဆည်းမှုအားလုံး cache ထားရှိထားပါကသာ `--offline` ကိုအသုံးပြုပါ။ `--frozen` သည်ဤစည်းကမ်းနှစ်ခုကို ပေါင်းစပ်သည်။ offline cache ပျက်ကွက်သည်; Musubi သည်ဖြေရှင်းခြင်းမရှိသော lockfile ကိုတစ်ခါမှမရေးသားပါ။
 
-`math::add()` ကဲ့သို့သော အရည်အချင်းပြည့်စုံသောခေါ်ဆိုမှုများကို deterministic internal Kotodama နာမည်များနှင့်ပြန်ရေးသားခြင်းဖြင့်မှီခိုမှုအရင်းအမြစ်များကိုဆက်သွယ်သည်။ မတင်ပို့သည့်လုပ်ဆောင်ချက်အားမှီခိုချက်ခေါ်ဆိုမှုကို ပယ်ချသည်။ တင်သွင်းထားသောစာကြည့်တိုက်များသည် လုပ်ဆောင်ချက်များကိုဖေါ်ပြသည်၊ ဒေသတွင်း `[[contract]]` နှင့် `[[test]]` ရည်မှန်းချက်များသည် ရှင်းလင်းသောပိတ်ရက်ရည်မှန်းချက်များအဖြစ် ဆက်လက်ရှိနေပါသည်။
+`math::add()` လို အရည်အချင်းပြည့်မီတဲ့ နည်းပညာဆိုင်ရာခေါ်ဆိုချက်တွေကို deterministic internal Kotodama နာမည်တွေနဲ့ ပြန်ရေးသားခြင်းဖြင့် ချို့ယွင်းမှုအရင်းအမြစ်တွေကို ဆက်စပ်ပေးပါတယ်။ တင်ပို့မှုမရှိတဲ့ လုပ်ဆောင်ချက်တစ်ခုအတွက်ခေါ်ဆိုမှုကို ပယ်ချလိုက်ပါတယ်။ တင်သွင်းထားတဲ့ စာကြည့်တိုက်တွေက လုပ်ဆောင်ချက်တွေကို ဖော်ပြတယ်။ ဒေသတွင်း `[[contract]]` နှင့် `[[test]]` ရည်မှန်းချက်တွေဟာ ရှင်းလင်းတဲ့ ပက်ကတ်ရည်မှန်းချက်တွေ ဖြစ်နေတုန်းပါ။
 
 ## Cache စစ်ဆေးခြင်းနှင့် ပြင်ဆင်ခြင်း {#cache-verification-and-repair}
 
-အများပြည်သူ cache commands တွေဟာ မပြောင်းလဲနိုင်တဲ့ registry-committed archives တွေမှာ အလုပ်လုပ်ပါတယ်။
+အများပြည်သူ cache command တွေကို registry archive ထဲမှာ ထုတ်ဝေထားတဲ့ immutable မှာ လုပ်ပါတယ်။
 
 ```bash
 cargo run --manifest-path ../../Cargo.toml -p musubi -- \
@@ -135,11 +135,11 @@ cargo run --manifest-path ../../Cargo.toml -p musubi -- \
   cache prune --dry-run --config client.toml
 ```
 
-`cache repair` Quarantine တွေက ယုံကြည်ရတဲ့ မျိုးရိုးသားတွေကို အညစ်အကြေးဖြစ်စေပြီး နောက်ဆုံးသတ်မှတ်ထားတဲ့ ပေးသွင်းသူ အထောက်အထားတွေ ခွင့်ပြုတဲ့အခါ တိကျတဲ့ မှတ်တမ်းတွေကို ပြန်လည်စစ်ဆေးတယ်။ Musubi သက်ရှိအလွတ်မဟုတ်တဲ့ လှီးခြင်း ဗီဇပြောင်းမှုကို ပယ်ချပါတယ်။ လျှို့ဝှက်ထားသော ကိုယ်စားလှယ်လောင်းတွေကို စစ်ဆေးဖို့ `--dry-run` ကိုသုံးပါ။
+`cache repair` ကွာရန်တင်းက ယုံကြည်စိတ်ချရတဲ့ မျိုးဆက်တွေကို ဖျက်ဆီးပြီး နောက်ဆုံးသတ်မှတ်ထားတဲ့ ပေးသွင်းသူ အထောက်အထားတွေ ခွင့်ပြုတဲ့အခါ တိကျတဲ့ မှတ်တမ်းတွေကို ပြန်လည်စစ်ဆေးတယ်။ သက်ရှိအလွတ်မဟုတ်တဲ့ အပြောင်းအလဲအတွက် ကြံစည်စွာဖြတ်တောက်မှု ပိတ်ထားတယ်၊ လျှို့ဝှက်ထားသော ကိုယ်စားလှယ်လောင်းများကို စစ်ဆေးဖို့ `--dry-run` ကိုသုံးပါ။
 
 ## ထုပ်ပိုးခြင်းနှင့် ထုတ်ဝေခြင်း {#packaging-and-publishing}
 
-Archive မရေးခင် clean positive file set ကို စစ်ဆေးပြီး Canonical package ကို တည်ဆောက်ပါ။
+Archive မရေးခင် Clean Positive file set ကို စစ်ဆေးပြီး Single Protocol Standard Package ကို တည်ဆောက်ပါ။
 
 ```bash
 cargo run --manifest-path ../../Cargo.toml -p musubi -- \
@@ -149,16 +149,16 @@ cargo run --manifest-path ../../Cargo.toml -p musubi -- \
   package --locked --config client.toml
 ```
 
-`package` စာရေးသည် `target/package/<namespace>-<name>-<version>.car`. နိုင်ငံတကာ CAR Canonical package manifest ကို၊ semantic release manifest ကို၊ exact verification lock ကို၊ source tree ကို၊ interface digest ကို ချိတ်ဆက်ပေးပြီး SoraFS စာရွက်စာတမ်းဆိုင်ရာ တာဝန်ရှိမှု မရှိပါ။ `pack`, `--car-out`, `--sorafs-manifest-out`, ဒါမှမဟုတ် `--source-plan-out` ပထမဦးဆုံးထုတ်ပြန်မှုမှာ Commands CLI.
+`package` စာရေးသည် `target/package/<namespace>-<name>-<version>.car`. နိုင်ငံတကာ CAR Single Protocol Standard Package Technical Manifesto, Semantic Release Technical ကို ချိတ်ဆက်ပေးတယ်။ manifest၊ တိကျတဲ့ စစ်ဆေးရေး Lock, source tree, interface cryptographic digest value နဲ့ SoraFS Archive cryptographic commitment value ရှိသည် `pack`, `--car-out`, `--sorafs-manifest-out`, ဒါမှမဟုတ် `--source-plan-out` ပထမဦးဆုံးထုတ်ပြန်မှုမှာ Commands CLI.
 
-ထုတ်ဝေခြင်းသည် လက်မှတ်ထိုး၍ ပြန်လည်စတင်နိုင်သောကွန်ရက်အလုပ်ဖြစ်စဉ်တစ်ခုဖြစ်သည်။ ရွေးချယ်ထားသော `client.toml` တွင်ထုတ်လုပ်မှု `[musubi.publication]` ချိတ်ဆက်ချက်များအပြင် အကောင့်နှင့် Taira ကွန်ရက်ပြုပြင်မှုကိုပါ ၀ င်ရမည်။ အလုပ်ခွင်အဖွဲ့ဝင်တစ် ဦး ကိုတိကျစွာ package:
+ထုတ်ဝေခြင်းသည် လက်မှတ်ထိုး၍ ပြန်လည်သုံးနိုင်သော ကွန်ရက် အလုပ်ဖြစ်စဉ်တစ်ခုဖြစ်သည်။ ရွေးချယ်ထားသော `client.toml` တွင်လိုအပ်သော `[musubi.publication]` ချိတ်ဆက်ချက်များအပြင် အကောင့်နှင့် Taira ကွန်ရက် ညွှန်ကြားချက်ကိုပါ ၀ င်ရမည်ဖြစ်သည်။ Package workspace အဖွဲ့ဝင်တစ်ဦးကိုတိကျစွာပါဝင်ရမည်။
 
 ```bash
 cargo run --manifest-path ../../Cargo.toml -p musubi -- \
   publish -p dex.universal/swap-core --locked --config client.toml
 ```
 
-အသုံးပြုခြင်း `--detach` လုပ်ငန်းစာရင်းနဲ့ မျိုးစေ့ဝင်ရောက်မှု နယ်နိမိတ်ဟာ ရေရှည်ခံပြီးနောက် ပြန်လာဖို့ပါ။ ရေရှည်တည်တံ့တဲ့ လုပ်ငန်းကို ဆက်လုပ်ပါ။ `publish --resume <operation-id> --config client.toml`. ကျဉ်းမြောင်းတဲ့ `--recover <operation-id>` Path ဟာ မပြောင်းလဲနိုင်တဲ့ ဘေးကားတွေ ပျောက်ဆုံးနေတာကို ပိတ်ရက်မတိုင်ခင်က စင်ကြယ်တဲ့ ဂျာနယ်တစ်ခုအတွက် ပြန်လည်တည်ဆောက်တာပါ။ ထုတ်ဝေမှုမရှိဘူး။ `--dry-run` (သို့) အထွေထွေ အများပြည်သူ upload backback ကို run လုပ်ပါ။ `package --list` နှင့် `package` ဒေသတွင်း ကြိုတင်ပျံသန်းမှုအတွက်ပါ။
+အသုံးပြုခြင်း `--detach` လုပ်ငန်းစာရင်းနဲ့ မျိုးစေ့ဝင်ရောက်မှု နယ်နိမိတ်ဟာ ရေရှည်ခံပြီးနောက် ပြန်လာဖို့ပါ။ ရေရှည်တည်တံ့တဲ့ လုပ်ငန်းကို ဆက်လုပ်ပါ။ `publish --resume <operation-id> --config client.toml`. ကျဉ်းမြောင်းတဲ့ `--recover <operation-id>` path ဟာ မပြောင်းလဲနိုင်တဲ့ ပံ့ပိုးမှု မှတ်တမ်းတွေ ပျောက်နေတဲ့ pristine pre-entry ဂျာနယ်အတွက် ပြန်လည်ဖန်တီးတာပါ။ ထုတ်ဝေခြင်းမရှိဘူး။ `--dry-run` (သို့) အထွေထွေ အများပြည်သူ upload backback ကို run လုပ်ပါ။ `package --list` နှင့် `package` ဒေသတွင်း ကြိုတင်ပျံသန်းမှုအတွက်ပါ။
 
 ## မှတ်ပုံတင် မေးမြန်းချက်များနှင့် သက်တမ်း စက်ဝန်း {#registry-queries-and-lifecycle}
 
@@ -194,19 +194,19 @@ cargo run --manifest-path ../../Cargo.toml -p musubi -- \
 Musubi သည် ပထမထုတ်ပြန်ချက် V1 ညွှန်ကြားချက်များနှင့် မေးမြန်းချက်များကို အသုံးပြုသည် -
 
 |မျက်နှာပြင်|ရည်ရွယ်ချက်|
-| -------------------------------------------------- | -------------------------------------------------------------- |
+| ---------------------------------------------------- | -------------------------------------------------------------- |
 |`RegisterMusubiNamespaceBindingV1` |နာမည်နေရာကို ၎င်းရဲ့ တည်ငြိမ်တဲ့ နေအိမ် ဒေတာ နေရာနဲ့ ချိတ်ဆက်ပါ။ |
-|`RegisterMusubiArchiveV1` |မပြောင်းလဲနိုင်တဲ့ စစ်ဆေးထားတဲ့ source archive commitment ကို မှတ်ပုံတင်ပါ။ |
+|`RegisterMusubiArchiveV1` |မပြောင်းလဲနိုင်တဲ့ စစ်ဆေးထားတဲ့ source archive cryptographic commitment value ကို မှတ်တမ်းတင်ပါ။ |
 |`AddMusubiArchiveLocationV1` |သက်သေပြထားတဲ့ SoraFS မှတ်တမ်းနေရာကို ထည့်သွင်း (သို့) မွမ်းမံပါ။ |
 |`PublishMusubiReleaseV1` |Package တစ်ခုကို တောင်းဆိုခြင်း (သို့) update လုပ်ပြီး မပြောင်းလဲနိုင်တဲ့ ထုတ်ပြန်ချက်တစ်ခုကို ထုတ်ဝေပါ။ |
 |`SetMusubiReleaseYankV1` |တိကျတဲ့ လွတ်မြောက်မှုရဲ့ ဆွဲထုတ်ထားတဲ့ အခြေအနေကို နှိုင်းယှဉ်ပြီး သတ်မှတ်ပါ။|
 |`InviteMusubiPackageMaintainerV1` |ရှင်းလင်းတဲ့ Package Role ဖိတ်ကြားမှု စီးဆင်းမှုကိုစတင်ပါ။ |
 |`RegisterMusubiAliasV1` / `RetargetMusubiAliasV1` |ထိန်းချုပ်ထားတဲ့ ကမ္ဘာလုံးဆိုင်ရာ အမည်မဖော်လိုသူကို မှတ်ပုံတင် (သို့) ပြန်လည်မှတ်တမ်းတင်ပါ။|
-|`AssertMusubiReleaseDigestV1` |အတိအကျ မပြောင်းလဲနိုင်တဲ့ လွတ်မြောက်မှု အရည်အသွေးကို သတ်မှတ်ပါ။|
+|`AssertMusubiReleaseDigestV1` |အတိအကျ မပြောင်းလဲနိုင်တဲ့ release cryptographic digest value ကို သတ်မှတ်ပါ။ |
 |`FindMusubiExactPackageV1` |Package တစ်ခုနဲ့ ပြင်ဆင်ချက်တွေကို ဖတ်ပါ။ |
 |`FindMusubiExactReleaseV1` |တိကျတဲ့ ထုတ်လွှင့်ချက် တစ်ပုံကို ဖတ်ပါ။|
 |`FindMusubiResolverIndexV1` / `FindMusubiVersionsV1` |အဆုံးသတ်ထားတဲ့ လွတ်မြောက်ရေး ကိုယ်စားလှယ်လောင်းတွေကို ဖြေရှင်းဖို့ (သို့) စာရင်းပေးပါ။|
 |`FindMusubiArchiveLocationsV1` |ပေးသွင်းသူက ထောက်ပံ့တဲ့ နောက်ဆုံးသတ်မှတ်ထားတဲ့ လက်မှတ်နေရာတွေကို ဖတ်ပါ။ |
 |`FindMusubiAliasV1` / `FindMusubiAliasHistoryV1` |လက်ရှိ အမည်မဖော်လိုတဲ့ ပစ်မှတ် (သို့) ၎င်းရဲ့ မပြောင်းလဲနိုင်တဲ့ သမိုင်းကို ဖတ်ပါ။ |
 
-Torii သည် app route မိသားစုကို `/v1/musubi/` အောက်တွင်ဖေါ်ပြထားသည်။ MCP ကိရိယာများသည် လက်ရှိ `iroha.musubi.queries.` နှင့် `iroha.musubi.instructions.*` အမည်များကိုအသုံးပြုသည်။ ပိုကျယ်ပြန့်သော API မြေပုံအတွက် [Torii အဆုံးအသတ်မှတ်တိုင်များ](/my/reference/torii-endpoints.md) နှင့် [ မေးမြန်းချက်ညွှန်ကြားချက်](/my/reference/queries.md) ကိုကြည့်ပါ။
+Torii သည် app route မိသားစုကို `/v1/musubi/*` အောက်တွင် ဖော်ပြထားသည်။ MCP ကိရိယာများသည် လက်ရှိ `iroha.musubi.queries.*` နှင့် `iroha.musubi.instructions.*` နာမည်များကိုအသုံးပြုသည်။ ပိုကျယ်ပြန့်သော API မြေပုံအတွက် [Torii API အဆုံးသတ်မှတ်ချက်များ](/my/reference/torii-endpoints.md) နှင့် [မေးမြန်းချက် အချက်အလက်များ](/my/reference/queries.md) ကိုကြည့်ပါ။

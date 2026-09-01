@@ -3,9 +3,8 @@ translation_locale: dz
 translation_source: /guide/configure/overview.md
 translation_source_hash: 24eae3295459781d774369521241f1c2da5b24fe51eb8a2b086911b923395846
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: human-reviewed
 ---
-
 # བཟོ་སྐྲུན་དང་ འཛིན་སྐྱོང་ {#configuration-and-management}
 
 Iroha བཟོ་བཀོད་འདི་ ཁྱད་ཚད་ཅན་གྱི་གནས་རིམ་གཉིས་ཡོདཔ་ཨིན།
@@ -22,5 +21,5 @@ Iroha བཟོ་བཀོད་འདི་ ཁྱད་ཚད་ཅན་ག�
 - [འགོ་བཙུགས་](/dz/guide/configure/genesis.md)
 - [སྲོལ་འཛིན་གྱི་སྒྲིག་གཞི་](/dz/guide/configure/client-configuration.md)
 - [མཐུན་རྐྱེན་ལག་ལེན་འཐབ་ནིའི་ལྡེ་མིག་ཚུ་ ](/dz/guide/configure/keys-for-network-deployment.md)
-- [bare metal](/dz/guide/advanced/running-iroha-on-bare-metal.md) ལུ་ལག་ལེན་འཐབ་དོ་ཡོདཔ་ཨིན།
-- [འདྲན་འདྲ་བཟོ་རྣམ་གི་ཁ་བྱང་](/dz/reference/peer-config/index.md)
+- [སྲ་ཆས་གུ་ཐད་ཀར](/dz/guide/advanced/running-iroha-on-bare-metal.md) ལུ་ལག་ལེན་འཐབ་དོ་ཡོདཔ་ཨིན།
+- [མཐུད་མཚམས་བཟོ་རྣམ་གི་ཁ་བྱང་](/dz/reference/peer-config/index.md)

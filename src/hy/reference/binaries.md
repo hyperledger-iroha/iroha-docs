@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /reference/binaries.md
-translation_source_hash: 5a36877954bec97691e45697680bfbd6e0a7c7695e48a796bc7c9a41d4756644
+translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 Iroha 3 օպերատորի աշխատանքային հոսքը պտտվում է չորս հիմնական բինարների շուրջ.
 
-- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) զուգընկերային դեյմոնի գործարկման համար
+- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) հանգույցային դեյմոնի գործարկման համար
 - `iroha3d_taira` քանոնիկ Taira վավերացնող արձակիչի համար
 - [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli)՝ CLI եւ օպերատորի հրամանների համար
 - [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami) բանալիների, գենեզիզի, տեղական ցանցերի եւ պրոֆիլների համար:
@@ -74,7 +74,7 @@ docker compose -f ./docker-compose.yml up
 
 ## Ո՞ր երկկողմը պետք է օգտագործեմ: {#which-binary-should-i-use}
 
-- Օգտագործեք `iroha3d`, երբ սկսում եք գործարկել կամ գործում եք զուգընկերները հանրային Taira վավերացողի թողարկմանից դուրս:
+- Օգտագործեք `iroha3d`, երբ սկսում եք գործարկել կամ գործում եք հանգույցները հանրային Taira վավերացողի թողարկմանից դուրս:
 - Օգտագործեք `iroha3d_taira --sora` միայն քանոնիկ Taira հավաստիացնողի տեղակայման համար: Այն պարտադրում է Taira շղթայի, պահեստավորման եւ վազքի ժամանակի ստորագրող պրոֆիլը.
-- Օգտագործեք `iroha` այն ժամանակ, երբ պետք է հարցաքննեք գլխավոր գրասենյակը, ներկայացնեք գործարքներ կամ ստուգեք օպերատորի վերջային կետերը:
+- Օգտագործեք `iroha` այն ժամանակ, երբ պետք է կատարեք հարցում գլխավոր գրասենյակը, ներկայացնեք գործարքներ կամ ստուգեք օպերատորի վերջային կետերը:
 - Օգտագործեք `kagami` այն ժամանակ, երբ ձեզ անհրաժեշտ է բանալիներ, գենեզիզային մանիֆեսներ, պրոֆիլների փաթեթներ կամ տեղական ցանցի ակտիվներ:

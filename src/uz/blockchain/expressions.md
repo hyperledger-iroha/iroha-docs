@@ -8,8 +8,8 @@ translation_engine: nllb-200-ct2
 
 # Iboralar, shartlar, mantiq {#expressions-conditionals-logic}
 
-Barcha [Iroha Maxsus yo'l-yo'riqlar ](./instructions.md) ifodalarga ishlamoqda. Har bir ifodada ko'rsatmalarni bajarish uchun ishlatiladigan `EvaluatesTo` bo'ladi. Agar siz hisobning nomini to'g'ridan-to'g'ri belgilashingiz mumkin bo'lsa-da, siz ham ID hisobini matematik yoki simli operatsiya orqali belgilashingiz kerak. Siz ham blokchaynda hisob qayd etilganligini tekshirishingiz mumkin.
+Barcha [Iroha maxsus ko‘rsatmalari](./instructions.md) ifodalar ustida ishlaydi. Har bir ifodada ko‘rsatmani bajarishda ishlatiladigan `EvaluatesTo` bor. Hisob nomini bevosita ko‘rsatish bilan birga, hisob identifikatorini matematik yoki satr amali orqali ham belgilash mumkin. Hisob blokcheynda ro‘yxatdan o‘tkazilganini ham tekshirish mumkin.
 
-`EvaluatesTo<bool>` ni amalga oshiruvchi ifodalardan foydalanib, siz shartli mantiqan o'rnatishingiz va zanjirda yanada murakkab operatsiyalarni bajarishingiz mumkin. Masalan, siz `Mint` ko'rsatmasini faqat ma'lum bir hisob qayd etilgan bo'lsa yuborishingiz mumkin.
+`EvaluatesTo<bool>` ni amalga oshiradigan ifodalar yordamida shartli mantiq tuzish va zanjirda murakkabroq amallarni bajarish mumkin. Masalan, `Mint` ko‘rsatmasini faqat muayyan hisob ro‘yxatdan o‘tkazilgan bo‘lsa yuborish mumkin.
 
-Esingizda bo'lsin, siz buni so'rovlar bilan birlashtirishingiz mumkin va shunga ko'ra blokchainni ajoyib ishlarni bajarish uchun dasturlashingiz mumkin. Biz bularni aqlli shartnomalar deb ataymiz, bu blockchain texnologiyasidan ilg'or foydalanishning aniq xususiyati.
+Buni so‘rovlar bilan birlashtirib, blokcheynni murakkab ishlarni bajarishga dasturlash mumkin. Bu _aqlli shartnomalar_ deb ataladi va blokcheyn texnologiyasidan ilg‘or foydalanishning asosiy xususiyatidir.

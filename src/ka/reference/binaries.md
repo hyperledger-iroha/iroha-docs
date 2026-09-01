@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /reference/binaries.md
-translation_source_hash: 5a36877954bec97691e45697680bfbd6e0a7c7695e48a796bc7c9a41d4756644
+translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,10 +10,10 @@ translation_engine: nllb-200-ct2
 
 Iroha 3 ოპერატორის სამუშაო მიმდინარეობა ოთხი ძირითადი ბინარის ირგვლივ ბრუნავს:
 
-- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) peer daemon-ის მართვისთვის
-- `iroha3d_taira` კანონიკური Taira ვალიდატორის გამშვები აპარატისთვის
-- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli) for CLI and operator commands
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami) გასაღების, გენეზის, ლოკალურ ქსელებისა და პროფილისათვის
+- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) ქსელის კვანძის დემონის გასაშვებად
+- `iroha3d_taira` ერთპიროვნული პროტოკოლური სტანდარტის Taira ვალიდატორის გამშვებ აპარატისთვის
+- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli) სამედიცინო CLI და ოპერატორის ბრძანებები
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami) საკვანძოების, ბლოკჩეინის წარმოქმნის, ლოკალურ ქსელებისა და პროფილებისთვის
 
 ## შენება წყაროდან {#build-from-source}
 
@@ -64,7 +64,7 @@ docker run -t hyperledger/iroha:dev iroha --help
 docker run -t hyperledger/iroha:dev kagami --help
 ```
 
-პარტნიორის სტარტაპისთვის, შეიქმნას localnet და შეადგინოს ფაილი ჯერ:
+ქსელის კვანძის სტარტაპისთვის, შეიქმნას localnet და შეადგინეთ ფაილი ჯერ:
 
 ```bash
 cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
@@ -74,7 +74,7 @@ docker compose -f ./docker-compose.yml up
 
 ## რომელი ბინარი უნდა გამოვიყენო? {#which-binary-should-i-use}
 
-- გამოიყენეთ `iroha3d` როდესაც იწყებთ ან ოპერირებთ პარტნიორებს საჯარო Taira ვალიდატორის გამოშვების გარეთ.
-- გამოიყენეთ `iroha3d_taira --sora` მხოლოდ კანონიკური Taira ვალიდატორის განთავსებისათვის; იგი აამოქმედებს Taira ჯაჭვის, შენახვის და გამშვები დროის ხელმოწერის პროფილის გამოყენებას.
-- გამოიყენეთ `iroha` როდესაც საჭიროა გამოკითხვა მთავარ წიგნში, ტრანზაქციების წარდგენა ან ოპერატორის საბოლოო წერტილების შემოწმება.
-- გამოიყენეთ `kagami` როდესაც გჭირდებათ გასაღები, გენეზიის მანიფესტები, პროფილის ბუნდები ან ლოკალური ქსელის აქტივები.
+- გამოიყენეთ `iroha3d` როდესაც აწყობთ ან ოპერირებთ ქსელის კვანძებს საჯარო Taira ვალიდატორის გამოშვების გარეთ.
+- გამოიყენეთ `iroha3d_taira --sora` მხოლოდ ერთი პროტოკოლური სტანდარტის Taira ვალიდატორის განთავსებისათვის; იგი აამოქმედებს Taira ჯაჭვის, შენახვის და გამშვები დროის ხელმომწერის პროფილს.
+- გამოიყენეთ `iroha` როდესაც თქვენ უნდა გამოკითხოთ ბლოკჩეინის რეესტრი, წარადგინოთ ტრანზაქციები ან შეამოწმოთ ოპერატორის API საბოლოო წერტილები.
+- გამოიყენეთ `kagami`, როდესაც გასაღებები, გენეზისის მანიფესტები, პროფილების პაკეტები ან ლოკალური ქსელის აქტივები გჭირდებათ.

@@ -3,54 +3,54 @@ translation_locale: az
 translation_source: /blockchain/events.md
 translation_source_hash: 16b8cacc9bdf156d4b1e1a93b720085adcabb0002a34b9dc564a9926f573de63
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Hadisələr {#events}
+# Tədbirlər {#events}
 
-Tədbirlər blok kateqoriyasında müəyyən hadisələr baş verdiyi zaman yayılır, məsələn yeni bir hesab yaradıldıqda və ya blok bağlandıqdan sonra.
+Typed event bildirişləri blokzincir daxilində müəyyən hadisələr baş verdikdə göndərilir, məsələn, yeni hesab yaradıldı və ya blok yekunlaşdırıldı. Müxtəlif hadisə növləri vardır:
 
-- boru kəməri hadisələri
-- məlumat hadisələri
-- Zaman hadisələri
-- icra hadisələrini başlatmaq
+- proqram təminatı işləmə iş axını hadisələri
+- veri hadisələri
+- vaxt əsaslı hadisə bildirişləri
+- icra hadisələrini tetiklemek
 
-## Pipeline hadisələri {#pipeline-events}
+## proqram təminatı işləmə iş axını Hadisələr {#pipeline-events}
 
-Pipeline hadisələri bir blok üçün əməliyyatların təqdim edilməsi, icrası və ya öhdəlik verilməsi zamanı yayılır. Bir boru xəttində baş verən hadisə aşağıdakı məlumatları ehtiva edir: bir hadisənin (transaksiyanın və ya blokun) səbəbi olan subyekt növü, hash və statusunu. Vəziyyət `Validating` (təkrarlanan təsdiqlənmə), `Rejected` və ya `Committed` ola bilər. Əgər bir müəssisə rədd edilibsə, rəddin səbəbi göstərilmişdir.
+Proqram təminatı işləmə iş axını hadisələri, əməliyyatlar təqdim edildikdə, icra edildikdə və ya blokda yekunlaşdıqda yayımlanır. Proqram təminatı işləmə iş axını hadisəsi aşağıdakı məlumatları özündə ehtiva edir: hadisəyə səbəb olan obyektin növü (əməliyyat və ya blok), onun kriptoqrafik xəşi və statusu. Status ya `Validating` (təsdiqləmə davam edir), ya `Rejected`, ya da `Committed` ola bilər. Əgər bir vahid rədd edilibsə, rədd edilmə səbəbi göstərilir.
 
-### Taira üzərində sınayın. {#try-it-on-taira}
+### Bu iş axınını Taira üzərində işə sal {#try-it-on-taira}
 
-İctimai boru xəttinin hadisələr axınının quraşdırıldığını yoxlayın:
+İctimai proqram təminatı emal iş axını hadisə axınının qoşulduğunu yoxlayın:
 
 ```bash
 curl -fsSI https://taira.sora.org/v1/events/sse \
   | sed -n '1,12p'
 ```
 
-Bir axını açıq saxlamadan yoxlaya biləcəyiniz bir anlıq şəkil üçün son araşdırmaçı əməliyyatlarını oxuyun:
+Axını açıq saxlamadan yoxlaya biləcəyiniz zaman nöqtəsində məlumat görüntüsü üçün, son tədqiqatçı əməliyyatlarını oxuyun:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=5' \
   | jq '{pagination, txs: [.items[] | {hash, block, status, executable}]}'
 ```
 
-Canlı tədbirlərə ehtiyac duyduğunuz zaman terminalda SSE marşrutunu açın:
+Canlı hadisələrə ehtiyacınız olduqda terminalda SSE marşrutunu açın:
 
 ```bash
 curl -fsS -N https://taira.sora.org/v1/events/sse
 ```
 
-Axın açıq olduğu müddətdə heç bir əməliyyat təqdim edilmirsə, yol sağlam olsa da əmr sakit qala bilər.
+Əgər axın açıq olduğu müddətdə heç bir əməliyyat göndərilmirsə, marşrut sağlam olsa belə, əmrlə əlaqədar hər hansı bir xəbərdarlıq verilməyə bilər.
 
-## Məlumat hadisələri {#data-events}
+## Məlumat Hadisələri {#data-events}
 
-Məlumat hadisələri, həmyaşıdlar, domenlər, hesablar, aktivlər, aktiv tərifləri, NFTs, tetikləyicilər, rollar, zəncirdə quruluş, icraçı dövləti, sübutlar, məxfi aktivlər, körpülər və ya SORA/Nexus-specific obyektlərlə əlaqəli bir dəyişiklik olduqda yayılır. Bu cür hadisələr [ məlumat hadisələri filtrlərində istifadə olunur ](./filters.md#data-event-filters).
+Data hadisələri blokçeyn dəftər məlumatları ilə əlaqəli dəyişiklik olduqda, məsələn, şəbəkə iştirakçıları, domenlər, hesablar, aktivlər, aktiv tərifləri, NFTs, tetikleyicilər ilə əlaqədar olaraq yayımlanır, rollar, zəncirdaxili konfiqurasiya, icraçı vəziyyəti, sübutlar, məxfi aktivlər, körpülər və ya SORA/Nexus-xüsusi obyektlər. Bu tip hadisələr [məlumat hadisəsi filtrləri](./filters.md#data-event-filters)-da istifadə olunur.
 
-## Vaxt hadisələri {#time-events}
+## vaxt əsaslı hadisə bildirişləri {#time-events}
 
-Zaman hadisələri dünya vəziyyəti görünüşü [ vaxt tetikleyiciləri ](./triggers.md#time-triggers) idarə etməyə hazır olduqda yayılır.
+Vaxt əsaslı hadisə bildirişləri dünya vəziyyəti görünüşü [zaman tetikleyiciləri](./triggers.md#time-triggers)-ı işlətməyə hazır olduqda yayımlanır.
 
-## Trigger icra hadisələri {#trigger-execution-events}
+## Tətik İcrası Hadisələri {#trigger-execution-events}
 
-Trigger icra hadisələri [`ExecuteTrigger`](./instructions.md#executetrigger) təlimatının icrası zamanı yayılır. Trigger əməliyyatının bitməsindən sonra tetikləyici tamamlama hadisələri yayılır.
+Tetik icra hadisələri o zaman yayımlanır ki [`ExecuteTrigger`](./instructions.md#executetrigger) Təlimat yerinə yetirilir. Sürətləyici başa çatdıqdan sonra tetik tamamlama hadisələri yayımlanır.

@@ -3,50 +3,50 @@ translation_locale: uz
 translation_source: /guide/best-practices/release-readiness.md
 translation_source_hash: 984957526424a4e0ec9f29a6da1bb64699245bb135e8157bbe684bc3d87de4cc
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: bing-translator-llm
 ---
 
-# Boʻshash uchun tayyorlik {#release-readiness}
+# Chiqarishga tayyorgarlik {#release-readiness}
 
-Iroha dasturini yoki tarmoq o'zgarishini targ'ib qilishdan oldin, tegishli tavakkalchilikni ko'rsatishi mumkin bo'lgan eng kichik muhitda xatti-harakatni isbotlang va keyin birgalikda sinov tarmog'i va ishlab chiqarish darvozalari orqali bila turib harakat qiling.
+Iroha ilovasini yoki tarmoq o'zgarishini ilgari surishdan oldin, tegishli xavfni ochib beradigan eng kichik muhitda xulq-atvorni isbotlang, so'ngra ulashilgan testnet va ishlab chiqarish darvozalari orqali ongli tarzda harakat qiling.
 
-## Yerli tarmoq darvozalari {#localnet-gate}
+## Localnet Shlyuzi {#localnet-gate}
 
-- O'sha Iroha yo'nalish va eng yaqin amaliy validatorlar soni bilan bir martalik mahalliy tarmoqni ishga tushirish.
-- Transaction builderlari uchun birlik sinovlarini o'tkazing, so'rovlarni tahlil qilish, rad etishni boshqarish va konfiguratsiya yuklash.
-- Ilova keyinchalik ishlatadigan SDK yoki CLI shakli orqali eng kichik muvaffaqiyatli o'qish va yozish yo'llarini mashq qiling.
-- Tekshiruv artefaktlarida kutilayotgan tranzaksiya hashlari, statuslari, hodisalar va holat o'qishlarini ushlab turing.
+- Vaqtinchalik mahalliy tarmoqni ayni Iroha yo‘nalishi va amalda imkon qadar yaqin tasdiqlovchilar soni bilan ishga tushiring.
+- Tranzaksiya tuzuvchilari, so'rovni tahlil qilish, rad etishni boshqarish va konfiguratsiyani yuklash uchun birlik testlarini ishga tushiring.
+- Keyinchalik ilova foydalanadigan bir xil SDK yoki CLI shakl orqali eng kichik muvaffaqiyatli o‘qish va yozish yo‘llarini mashq qiling.
+- Kutilayotgan tranzaksiya kriptografik xeshlarini, holatlarini, voqealarni va holat o‘qishlarini test artefaktlarida saqlang.
 
-Koʻring [Ishga tushish Iroha 3](/uz/get-started/launch-iroha.md) va [SDK Dasturlar](/uz/guide/tutorials/).
+Buni [Ishga tushurish Iroha 3](/uz/get-started/launch-iroha.md) va [SDK Darsliklar](/uz/guide/tutorials/) ko‘ring.
 
-## Bajarilgan testnet darvozalari {#shared-testnet-gate}
+## Ulashilgan Testnet Darvoza {#shared-testnet-gate}
 
-- Endpoint xatti-harakati uchun Taira yoki boshqa qo'shma testnetdan foydalanish, to'lovlar, hisob mablag'lari, kechikish va operatsion mashg'ulotlar.
-- Jonli testnetga yozishni faqat alohida rozilik bilan yoqing, shunda odatiy testlar tarmoq mavjudligiga bog'lanmaydi va testnet mablag'larini sarflamaydi.
-- Har bir jonli test operatsiyasini taqdim etishdan oldin imzochi mablag'larini, to'lov aktivlari metadatalarini, vakolatlarga ruxsatnomalarni va kutilayotgan holatni tekshirish.
-- Terminal holatini kuting, so'ngra natijali holatni faqat o'qish uchun so'rov bilan tasdiqlang.
+- API endpoint xatti-harakati, to‘lovlar, hisobni moliyalashtirish, kechikish va operatsion mashqlar uchun Taira yoki boshqa umumiy testnetdan foydalaning.
+- Jonli testnet yozuvlarini ixtiyoriy qilganda, odatiy test ishlari tarmoq mavjudligiga bog‘liq bo‘lmaydi yoki testnet mablag‘larini sarflamaydi.
+- Har bir jonli test tranzaksiyasini yuborishdan oldin imzolovchi mablag‘ini, to‘lov aktivining metadata ma’lumotlarini, ruxsat beruvchi asosiy huquqlarni va kutilayotgan holatni tekshiring.
+- Terminal holatni kuting, so‘ng natijaviy holatni faqat o‘qish uchun so‘rov bilan tekshiring.
 
-Qarang [SORA 3-da qurilgan: Taira va Minamoto](/uz/get-started/sora-nexus-dataspaces.md).
+Buni [SORA 3 ustida qurish: Taira va Minamoto](/uz/get-started/sora-nexus-dataspaces.md) ko‘ring.
 
-## Mainnet yoki ishlab chiqarish darvozalari {#mainnet-or-production-gate}
+## Asosiy tarmoq yoki Ishlab chiqarish eshigi {#mainnet-or-production-gate}
 
-- Ishlab chiqarish uchun alohida imzolovchilar, mablag'lar, domenlar va konfiguratsiya yo'llaridan foydalaning. Testnet kalitlarini yoki faucet haqidagi taxminlarni ishlab chiqarishga ko'chirmang.
-- Zarur SDK o'rtasidagi ssenariylarni [Moslik matritsasi](/uz/reference/compatibility-matrix.md) bilan tasdiqlang. Joylashtirishda ishlatiladigan aniq CLI, peer binary, konfiguratsiya va tarmoq relizini alohida mahkamlang va sinovdan o'tkazing.
-- Tekshiruv ruxsatnomalari, to'lovlarni qo'llab-quvvatlash, stavkalar chegaralari, monitoring, ehtiyot saqlash holati va chiqarilish oynasidan oldin tiklanish mezonlari.
-- Yuqori ta'sirli qog'ozlar uchun yozma bitim yoki migratsiya rejasi talab etiladi.
+- Ishlab chiqarish uchun alohida imzolovchilar, mablag‘lar, domenlar va konfiguratsiya yo‘llaridan foydalaning. Sinov tarmog‘i kalitlari yoki kran haqidagi taxminlarni ishlab chiqarishga ko‘chirmang.
+- Zarur SDK o‘rtasidagi ssenariylarni [Moslik matritsasi](/uz/reference/compatibility-matrix.md) yordamida tasdiqlang. Joylashtirishda ishlatiladigan aniq CLI, tugun ikkilik fayli, konfiguratsiya va tarmoq relizini alohida mahkamlang va sinang.
+- Chiqarish oynasidan oldin ruxsatlarni, to‘lov homiyligini, stavka cheklovlarini, monitoringni, zaxira holatini va qaytarish mezonlarini ko‘rib chiqing.
+- Yuqori ta’sirga ega yozuvlar uchun yozma tranzaksiya yoki migratsiya rejasini talab qiling.
 
-## Orqaga qaytish va tiklanish {#rollback-and-recovery}
+## Qaytarish va Tiklash {#rollback-and-recovery}
 
-- Kodni ishga tushirish orqali qaysi o'zgarishlarni qaytarib olish mumkinligini, ular uchun zanjirdagi bitimlar kerak bo'lganini va ularni to'g'ridan-to'g'ri bekor qilolmaydiganlarini aniqlang.
-- Zaryaddagi ma'lumotlar o'zgarishi uchun birinchi ishlab chiqarish yozishdan oldin kompensatsiya tranzaksiyalari yoki migratsiya skriptlarini tayyorlang.
-- Tarmoq o'zgarishlari uchun avvalgi ikkilamchi, konfiguratsiya to'plami, imzolangan genesis va operatsion ishga tushirish daftarini chiqarishda saqlang.
-- Ruxsatni rad etish darajasi, navbat o'sishi, kechikish yoki tengdoshlar sog'lig'i kabi ob'ektiv signallarga asoslanib ishga tushirishni bekor qilish uchun qaror nuqtasini belgilash.
+- Kod joylashtirish orqali qaysi o‘zgarishlarni bekor qilish mumkinligini, qaysi o‘zgarishlar zanjirda tranzaksiya talab qilishini va qaysi o‘zgarishlarni to‘g‘ridan-to‘g‘ri bekor qilib bo‘lmasligini aniqlang.
+- Zanjir ustidagi ma'lumot o'zgarishlari uchun birinchi ishlab chiqarish yozuvidan oldin kompensatsion tranzaksiyalar yoki ko'chirish skriptlarini tayyorlang.
+- Tarmoq o'zgarishlari uchun, chiqarilish vaqtida avvalgi ikkilik fayl, konfiguratsiya paketi, imzolanmış blokcheyn genesis va operatsion ishlash qo'llanmasini mavjud holda saqlang.
+- Radd etish darajasi, navbat o‘sishi, kechikish yoki tarmoq hamkorining sog‘lig‘i kabi obyektiv signallarga asoslanib rolloutni to‘xtatish uchun qaror nuqtasini belgilang.
 
-## So'nggi tekshiruv ro'yxati {#final-checklist}
+## Yakuni ro‘yxat {#final-checklist}
 
-- Konfiguratsiya atrof-muhitga mos va faqat sinov uchun sirlarni o'z ichiga olmaydi.
-- Transaksiyalarni qayta sinab ko'rish xatti-harakati idempotent yoki ochiqchasiga cheklangan.
-- Ilova rad etish, muddati o'tishi, vaqt uzilishi va oxirgi nuqtalar mavjudligi xatolarini ajratib ko'rish mumkin.
-- Monitoring o'tkazib berish, kechikish, navbat chuqurligi, rad etishlar, ko'rinishda o'zgarishlar va tegishli biznes hodisalarini qamrab oladi.
-- Operatorlar kutilayotgan xato rejimlari uchun yo'lboshxonalarga ega.
-- Xavfsizlik tekshiruvi kalitlarni saqlash, ruxsatnomalar, tarmoqlarga egalik qilish va avtomatlashtirish vakolatlarini qamrab oldi.
+- Konfiguratsiya muhitga xos va faqat test uchun mo‘ljallangan maxfiy ma’lumotlarni o‘z ichiga olmaydi.
+- Tranzaksiya takrorlash xulq-atvori idempotent yoki aniq chegaralangan.
+- Ilova rad etish, muddati tugash, vaqt tugashi va API tugun mavjud emasligi xatolarini ajrata oladi.
+- Monitoring oqim tezligi, kechikish, navbat chuqurligi, rad etishlar, ko‘rinish o‘zgarishlari va tegishli biznes voqealarini o‘z ichiga oladi.
+- Operatorlar kutilgan nosozlik holatlari uchun ish qo'llanmalarga ega.
+- Xavfsizlik tekshiruvi asosiy saqlash, ruxsatlar, tarmoqga ochiqlik va avtomatlashtirish ruxsat tamoyilini qamrab oldi.

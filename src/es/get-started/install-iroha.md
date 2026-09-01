@@ -3,20 +3,20 @@ translation_locale: es
 translation_source: /get-started/install-iroha.md
 translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Instalar Iroha 3 {#install-iroha-3}
 
-Esta página cubre el flujo de trabajo de instalación actual para la cadena de herramientas Iroha 3 y los binarios que utilizan el espacio de trabajo `hyperledger-iroha/iroha` upstream.
+Esta página cubre el flujo de trabajo de instalación actual para la cadena de herramientas y binarios Iroha 3 utilizando el espacio de trabajo upstream `hyperledger-iroha/iroha`.
 
-## 1.Los requisitos previos {#_1-prerequisites}
+## 1. Prerrequisitos {#_1-prerequisites}
 
-Instala esto primero:
+Instala estos primero:
 
-- [rustup](https://www.rust-lang.org/tools/install), por lo que se instala automáticamente la cadena de herramientas fijada `rust-toolchain.toml` (`1.93.1`)
+- [rustup](https://www.rust-lang.org/tools/install), por lo que la cadena de herramientas fijada `rust-toolchain.toml` (`1.93.1`) se instala automáticamente
 - `git`
-- opcionalmente, Docker y Docker Compose para el arranque rápido local multi-peer.
+- opcionalmente, Docker y Docker Compose para el inicio rápido multi-par de la localidad
 
 ## 2. Clonar el espacio de trabajo {#_2-clone-the-workspace}
 
@@ -33,7 +33,7 @@ Construye todo:
 cargo build --workspace
 ```
 
-Para una construcción más pequeña centrada en el operador, compilar sólo los binarios principales:
+Para una compilación más pequeña centrada en el operador, compile solo los binarios principales:
 
 ```bash
 cargo build --release \
@@ -42,7 +42,7 @@ cargo build --release \
   -p iroha_kagami --bin kagami
 ```
 
-Los binarios resultantes se escribirán a `target/debug/` o a `target/release/`.
+Los binarios resultantes se escriben en `target/debug/` o `target/release/`.
 
 ## 4. Verificar las herramientas instaladas {#_4-verify-the-installed-tools}
 
@@ -53,18 +53,18 @@ cargo run --bin iroha -- --help
 cargo run --bin kagami -- --help
 ```
 
-Los cuatro binarios que usualmente usará son:
+Los cuatro binarios que usualmente usarás son:
 
-- `iroha3d` para un daimón de par estándar
-- `iroha3d_taira` para el lanzador de validadores canónicos Taira
-- `iroha` para el acceso de CLI a Torii y puntos finales del operador
-- `kagami` para las claves, los manifestos de génesis y los perfiles de localnet
+- `iroha3d` para un demonio de par de red estándar
+- `iroha3d_taira` para el lanzador de validador canónico Taira
+- `iroha` para acceder mediante la CLI a Torii y a los endpoints de operador
+- `kagami` para claves, manifiestos de génesis y perfiles de red local
 
-## 5. Localnet y ruta Docker opcionales. {#_5-optional-localnet-and-docker-path}
+## 5. Localnet opcional y ruta Docker {#_5-optional-localnet-and-docker-path}
 
-El flujo localnet actual respaldado por la fuente es generado por Kagami. Escribe configuraciones de pares, artefactos genesis, configuración del cliente, scripts auxiliares y un archivo Compose opcional que coincide con el código eliminado:
+El flujo actual de red local respaldado por el origen es generado por Kagami. Escribe configuraciones de pares de red, artefactos de génesis de blockchain, configuración del cliente, scripts auxiliares y un archivo Compose opcional que coincide con el código revisado:
 
-- `kagami localnet` para las escrituras locales nativas por igual
-- `kagami docker` para Docker Compose generado a partir de un directorio localnet.
+- `kagami localnet` para scripts de pares de red local nativos
+- `kagami docker` para Docker Compose generado desde un directorio localnet
 
-Sigue con [Lanzamiento Iroha 3 ](/es/get-started/launch-iroha.md).
+Continúa con [Lanzar Iroha 3](/es/get-started/launch-iroha.md).

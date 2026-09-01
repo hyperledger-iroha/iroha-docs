@@ -8,19 +8,19 @@ translation_engine: nllb-200-ct2
 
 # Ruxsatlar {#permissions}
 
-Hisobvaraqlarga blokcheynda turli harakatlar uchun ruxsatnoma tokenlari kerak, masalan, aktivlarni to'ldirish yoki yoqish uchun.
+Hisoblar blokcheynda aktiv chiqarish yoki yoqish kabi turli amallarni bajarishi uchun ruxsat tokenlariga muhtoj.
 
-Foydalanuvchilarga berilgan ruxsatnomalar bo'yicha davlat va xususiy blokchain o'rtasidagi farq bor. Umumiy blokcheynda aksariyat hisobvaraqlar bir xil ruxsatlarga ega. Xususiy blokchainda , aksariyat hisoblar ularga berilgan vakolatdan tashqari hech narsa qila olmaydi deb taxmin qilinadi , agar ular tegishli ruxsatnoma ma'lum ravishda berilgan.
+Ochiq va xususiy blokcheynlar foydalanuvchilarga beriladigan ruxsatlar bilan farqlanadi. Ochiq blokcheynda hisoblarning aksariyati bir xil ruxsatlarga ega bo‘ladi. Xususiy blokcheynda esa hisob tegishli ruxsat aniq berilmaguncha o‘ziga topshirilgan vakolatdan tashqari hech narsa qila olmaydi.
 
-Ba'zi narsalarni amalga oshirish uchun ruxsatnomaga ega bo'lish hisobda tegishli `Permission` mavjudligini anglatadi. Ruxsatnomalar to'g'ridan-to'g'ri yoki [`Role`](#permission-groups-roles) orqali beriladi, bu bir qator ruxsatnomalarni jamlaydi. Ruxmatlar `Grant` ko'rsatmasi bilan beriladi. Ruxsatlar va vaziyatlar o'tmaydi; ularni `Revoke` ko'rsatmasi bilan olib tashlang.
+Biror amalni bajarishga ruxsatli bo‘lish hisobda tegishli `Permission` borligini anglatadi. Ruxsatlar bevosita yoki ruxsatlar majmuasini birlashtiradigan [`Role`](#permission-groups-roles) orqali berilishi mumkin. Ular `Grant` ko‘rsatmasi bilan beriladi. Ruxsat va rollarning muddati tugamaydi; ularni `Revoke` ko‘rsatmasi bilan olib tashlang.
 
-## Ruxsat belgisi {#permission-tokens}
+## Ruxsat tokenlari {#permission-tokens}
 
-To'g'rilik tokenlari faol ijrochi tomonidan belgilangan ob'ektlar hisoblanadi. Ba'zi tokenlar global, masalan `CanManagePeers`, va boshqalar hisob raqami, aktiv, aktiv ta'riflanishi, domen, NFT, rol yoki qo'zg'atuvchi kabi ma'lum bir kitob obyektiga doir.
+Ruxsat tokenlari faol ijrochi belgilaydigan tiplashtirilgan obyektlardir. `CanManagePeers` kabi ayrim tokenlar global, boshqalari esa hisob, aktiv, aktiv ta’rifi, domen, NFT, rol yoki qo‘zg‘atuvchi kabi muayyan reyestr obyekti doirasida amal qiladi.
 
-Quyidagilar turli ruxsatnoma belgisi uchun ishlatiladigan parametrlarning ba'zi misollari:
+Quyida turli ruxsat tokenlarida ishlatiladigan parametrlarga misollar keltirilgan:
 
-- Ma'lum bir hisob uchun metadatalarni o'zgartirishga ruxsat beruvchi token `account` maydonini ko'radi:
+- Muayyan hisob metama’lumotini o‘zgartirishga ruxsat beruvchi token `account` maydonini olib yuradi:
 
   ```json
   {
@@ -28,7 +28,7 @@ Quyidagilar turli ruxsatnoma belgisi uchun ishlatiladigan parametrlarning ba'zi 
   }
   ```
 
-- Ma'lum bir aktivni belgilash uchun aktivlarni o'tkazishga ruxsat beruvchi token `asset_definition` maydonini ko'rsatadi:
+- Muayyan aktiv ta’rifi bo‘yicha aktivlarni o‘tkazishga ruxsat beruvchi token `asset_definition` maydonini olib yuradi:
 
   ```json
   {
@@ -36,27 +36,27 @@ Quyidagilar turli ruxsatnoma belgisi uchun ishlatiladigan parametrlarning ba'zi 
   }
   ```
 
-- `CanManagePeers` kabi global tokenda quyidagi maydonlar mavjud emas:
+- `CanManagePeers` kabi global token hech qanday maydonga ega emas:
 
   ```json
   {}
   ```
 
-### Oldindan moslashtirilgan ruxsat berish tokenlari {#pre-configured-permission-tokens}
+### Oldindan sozlangan ruxsat tokenlari {#pre-configured-permission-tokens}
 
-Siz [Reference](/uz/reference/permissions) bobida oldindan moslashtirilgan ruxsat belgilari ro'yxatini topishingiz mumkin.
+Oldindan sozlangan ruxsat tokenlari ro‘yxati [Ruxsat tokenlari ma’lumotnomasida](/uz/reference/permissions) berilgan.
 
-## Ruxsat beruvchi guruhlar (rolllar) {#permission-groups-roles}
+## Ruxsat guruhlari (rollar) {#permission-groups-roles}
 
-Ruxsatlar to'plami rol deb ataladi. Ruxsat tokenlariga o'xshab, `Grant` ko'rsatmasini qo'llab rolalarni berish va `Revoke` ko'rsatmasi yordamida bekor qilish mumkin.
+Ruxsatlar majmuasi **rol** deb ataladi. Ruxsat tokenlari singari rollarni `Grant` ko‘rsatmasi bilan berish va `Revoke` ko‘rsatmasi bilan bekor qilish mumkin.
 
-Hisobvaraqga rol berishdan oldin roli birinchi navbatda ro'yxatga olinishi kerak.
+Hisobga rol berishdan oldin uni ro‘yxatdan o‘tkazish kerak.
 
-Bir nechta hisob raqamlari bir xil ruxsatnomani olishi kerak bo'lganda rollar foydali. Roli bir marta ro'yxatdan o'tkazilsin, roliga ruxsatnomalar berilsin, so'ngra alohida hisobotlar uchun rolni berish yoki bekor qilish kerak.
+Bir nechta hisob ayni ruxsatlarni olishi kerak bo‘lganda rollar qulay. Rolni bir marta ro‘yxatdan o‘tkazing, unga ruxsatlarni biriktiring, so‘ng alohida hisoblarga rolni bering yoki ulardan bekor qiling.
 
 ### Yangi rolni ro'yxatdan o'tkazish {#register-a-new-role}
 
-Keling, Mouse hisobidagi [ metadatalarga ](/uz/blockchain/metadata.md) boshqa hisobga kirish imkonini beradigan yangi rolni ro'yxatdan o'tkazaylik:
+Mouse hisobidagi [metama’lumotga](/uz/blockchain/metadata.md) boshqa hisob kirishini ta’minlaydigan yangi rolni ro‘yxatdan o‘tkazamiz:
 
 ```rust
 let role_id = RoleId::from_str("ACCESS_TO_MOUSE_METADATA")?;
@@ -67,9 +67,9 @@ let role = iroha_data_model::role::Role::new(role_id.clone(), mouse_id.clone())
 let register_role = Register::role(role);
 ```
 
-### Oʻrinni tanlang . {#grant-a-role}
+### Rol bering {#grant-a-role}
 
-Roli ro'yxatdan o'tkazilgandan so'ng, Mouse uni Alicega berishi mumkin:
+Rol ro‘yxatdan o‘tkazilgach, Mouse uni Alice’ga berishi mumkin:
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
@@ -78,37 +78,37 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
     .sign(mouse_private_key);
 ```
 
-## Ruxsatnomalarni tasdiqlash vositasi {#permission-validators}
+## Ruxsat tekshiruvchilari {#permission-validators}
 
-Ruxsatlar mavjud, shuning uchun faqat kerakli ruxsat belgisi bo'lgan hisob raqamlari himoyalangan harakatni amalga oshirishi mumkin. Andoza ijrochi ko'rsatma, so'rov va ifodalarni bajarish paytida ruxsatlarni tekshiradi.
+Ruxsatlar himoyalangan amalni faqat kerakli ruxsat tokeniga ega hisob bajarishini ta’minlaydi. Standart ijrochi ko‘rsatma, so‘rov va ifodalarni bajarishda ruxsatlarni tekshiradi.
 
-Dastlabki tasdiqlovchi yuzi guruhi maydoni bo'yicha guruhlanadi:
+Standart tekshiruvchilar reyestr sohasi bo‘yicha guruhlanadi:
 
-- tengdoshlarni boshqarish
-- domenlar va hisobotlar
-- aktivlar, NFTs, va depozitlar
-- qo'zg'atuvchilar
-- rola va ruxsatnomalar
-- ijrochi / ish vaqti, dalillar, ko'priklar va SORA/Nexus modullari
+- tugunlarni boshqarish
+- domenlar va hisoblar
+- aktivlar, NFTs va eskroular
+- qo‘zg‘atuvchilar
+- rollar va ruxsatlar
+- ijrochi/bajarish muhiti, isbotlar, ko‘priklar va SORA/Nexus modullari
 
-To'g'ri tokenlar ro'yxati [ Permission Tokens ko'rsatkichida ](/uz/reference/permissions.md) manba tomonidan tasdiqlangan.
+Tokenlarning aniq, manba bilan tasdiqlangan ro‘yxati [Ruxsat tokenlari ma’lumotnomasida](/uz/reference/permissions.md) berilgan.
 
-### Ish vaqtini tasdiqlovchi vositalar {#runtime-validators}
+### Bajarish muhiti tekshiruvchilari {#runtime-validators}
 
-To'g'rilik tekshiruvlari faol ijrochi tomonidan amalga oshiriladi. Andoza ijrochi o'rnatilgan ruxsatnomalarni tasdiqlovchi va token belgilarini taqdim etadi va tarmoq foydalanayotgan ijrochini yangilab, siyosatni o'zgartirishi mumkin.
+Ruxsat tekshiruvlarini faol ijrochi majburiy qo‘llaydi. Standart ijrochi ichki ruxsat tekshiruvchilari va token ta’riflarini taqdim etadi; tarmoq foydalanayotgan ijrochini yangilash orqali siyosatini o‘zgartirishi mumkin.
 
-Validatorlar tasdiqlash hukmini qaytaradi. Validator bir operatsiyani ruxsat berishi, sabab bilan rad qilishi yoki agar operatsiya ushbu validatorning doirasidan tashqarida bo'lsa uni qoldirishi mumkin. Tanlangan hakam bu hukmlarni qo'shib, ko'rsatma, so'rov yoki ifodani davom ettirish mumkinmi yoki yo'qmi degan qarorni chiqaradi.
+Tekshiruvchilar **tekshiruv hukmini** qaytaradi. Tekshiruvchi amalga ruxsat berishi, uni sabab bilan rad etishi yoki amal o‘z doirasidan tashqarida bo‘lsa o‘tkazib yuborishi mumkin. Tanlangan hakam shu hukmlarni birlashtirib, ko‘rsatma, so‘rov yoki ifoda davom etishiga ruxsat berish-bermaslikni hal qiladi.
 
-## Qo'llab-quvvatlanadigan so'rovlar {#supported-queries}
+## Qo‘llab-quvvatlanadigan so‘rovlar {#supported-queries}
 
-Ruxsat kodlari va rollar so'ralishi mumkin.
+Ruxsat tokenlari va rollarni so‘rov orqali olish mumkin.
 
-O'rinlarga doir so'rovlar:
+Rollar uchun so‘rovlar:
 
 - [`FindRoles`](/uz/reference/queries.md#accounts-and-permissions)
 - [`FindRoleIds`](/uz/reference/queries.md#accounts-and-permissions)
 - [`FindRolesByAccountId`](/uz/reference/queries.md#accounts-and-permissions)
 
-Ruxsat kodlari uchun soʻrovlar:
+Ruxsat tokenlari uchun so‘rovlar:
 
 - [`FindPermissionsByAccountId`](/uz/reference/queries.md#accounts-and-permissions)

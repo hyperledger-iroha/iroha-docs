@@ -3,96 +3,96 @@ translation_locale: az
 translation_source: /guide/security/operational-security.md
 translation_source_hash: 042673aca63962b4b3f91e59c29bc5030ada7d63f082991899951301cb1f6887
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: bing-translator-llm
 ---
 
-# Əməliyyat təhlükəsizliyi {#operational-security}
+# Əməliyyat Təhlükəsizliyi {#operational-security}
 
-Əməliyyat təhlükəsizliyi Iroha yerləşdirilməsi ətrafında insanları, aparıcıları, etibarnamələri və prosedurları qoruyur. Başlıq qeydləri dövlət dəyişikliklərini qəbul edir. Operatorlar iş stansiyalarını, imza açarlarını və hadisə cavabı prosesini ayrı-ayrı təmin etməlidirlər.
+Əməliyyat təhlükəsizliyi Iroha yerləşdirilməsi ətrafındakı insanları, hostları, sertifikatları və prosedurları qoruyur. Blokçeyn dəftəri qəbul edilmiş vəziyyət dəyişikliklərini qeyd edir. Operatorlar öz iş stansiyalarını, imzalama açarlarını və hadisələrə cavab prosesini ayrıca təmin etməlidirlər.
 
-Aşağıdakı idarəetmələrdən istifadə edin və onları risk dəyərinə və təşkilatınızın tələblərinə uyğunlaşdırın.
+Aşağıdakı nəzarətləri yerləşdirmə əsas xətti kimi istifadə edin. Onları risk dəyərinə və təşkilatınızın tələblərinə uyğun tənzimləyin.
 
-## Əməliyyat əsasını müəyyənləşdirin {#establish-an-operational-baseline}
+## Əməliyyat Əsasını Təsis Etmək {#establish-an-operational-baseline}
 
-- Validator hostlarının, həmyaşıdların kimliklərinin, hesab hakimiyyətinin, imzalanma cihazlarının, ictimai son nöqtələrin və məsuliyyətli şəxslərin siyahısını saxlamaq.
-- İnkişaf, sınaq və istehsal üçün ayrı-ayrı etibarnamələrdən istifadə edin. Hər bir imzalanıcını, sahibini və xüsusi açarı bir mühitə təyin edin.
-- Konfiqurasiya və tətbiq avtomatlaşdırılmasını nəzərdən keçirilə bilən versiyanın nəzarətində saxlayın. İşləmə vaxtı təsdiqlənmiş gizli mağaza və ya imzalama cihazından sirləri enjekte edin.
-- İstifadə əşyalarının gözlənilən hash və ya imzalarını qeyd edin. Onları tətbiq etməzdən əvvəl yoxlayın. Binaryləri, genesis materialını, konfigurasiyanı və ya xidmət təriflərini kim əvəz edə biləcəyini məhdudlaşdırın.
-- Operativ sistem hesablarına, Iroha icazələrinə və şəbəkə idarəetməsinə ən az imtiyaz tətbiq edin. Hər bir vəzifəyə yalnız onun işinə lazım olan səlahiyyəti ver.
-- İstehsalatın başlanğıcından əvvəl test yedekləmə, bərpa, açarların əvəz edilməsi və rəfiqələrin bərpası prosedurları.
+- Doğrulayıcı hostların, şəbəkə yoldaşlarının şəxsiyyətlərinin, hesab səlahiyyət prinsiplərinin, imzalama cihazlarının, ictimai API son nöqtələrinin və məsul şəxslərin inventarını saxlayın.
+- İnkişaf, test və istehsal üçün ayrı giriş məlumatlarından istifadə edin. Hər bir kriptoqrafik imzalayanı, daşıyıcı tokeni və xüsusi açarı bir mühitə təyin edin.
+- Konfiqurasiya və yerləşdirmə avtomatlaşdırılmasını nəzərdən keçirilə bilən versiya nəzarətində saxlayın. Sirrləri təsdiqlənmiş sirr anbarından və ya imzalama cihazından proqramın işləmə mühitinə daxil edin.
+- Buraxılış artefaktlarının gözlənilən kriptoqrafik xeşlərini və ya imzalarını qeyd edin. Onları yerləşdirmədən əvvəl yoxlayın. Kimin ikili faylları, blokçeyn başlanğıc materialını, konfiqurasiyanı və ya xidmət təriflərini əvəz edə biləcəyini məhdudlaşdırın.
+- Əməliyyat sistemi hesablarına, Iroha icazələrinə və şəbəkə idarəsinə minimal səlahiyyət tətbiq edin. Hər bir rol yalnız işinə lazım olan səlahiyyəti əldə etsin.
+- İstehsal işə başlamazdan əvvəl ehtiyat nüsxə, bərpa, açar dəyişdirmə və həmyaşı bərpa prosedurlarını sınayın.
 
-Tədqiqat [Təhlükəsizlik prinsipləri](./security-principles.md) və [İstifadə üçün hazırlıq](../best-practices/release-readiness.md) əsas xəttini müəyyənləşdirərkən.
+Əsas xətti təyin edərkən [Təhlükəsizlik Prinsipləri](./security-principles.md) və [Buraxılış Hazırlığı](../best-practices/release-readiness.md)-i nəzərdən keçirin.
 
-## Anahtarları və imzalarını qoruyun {#protect-keys-and-signers}
+## Açarları və kriptoqrafik imzalayanları qoruyun {#protect-keys-and-signers}
 
-- Xüsusi açarları, toxum materialını, sahibləri nömrələrini, icazə başlıqlarını və bərpa sirlərini mənbə nəzarətindən kənarda saxlayın, izləyiciləri buraxın, söhbət transkripsiyalarını, ekran görüntülərini və ictimai sənədləri.
-- Yüksək dəyərli hakimiyyətlər üçün hardverlə dəstəklənmiş və ya təcrid edilmiş imzadan istifadə edin. Müştəri imzanı icra edə biləcəyi zaman çiçək açıcı materialı brauzerlərdən və ümumi məqsədli tətbiqi proseslərindən kənarda saxlayın.
-- Rutin əməliyyatlar, idarəetmə, yerləşdirmə və bərpa üçün ayrı-ayrı səlahiyyətlərdən istifadə edin.
-- Gizli saxlama və ehtiyatlarını şifrələyin. Yaşayış açarı ilə eyni giriş nəzarətlərini xüsusi açarlı ehtiyatlara tətbiq edin.
-- Təcrübəli əvəz və ya ləğv prosedurunu qoruyun. Siyasət tələb etdikdə və ya məruz qalma şübhəsi olduqda bir açarı dəyişdirin.
-- Validator üzvlüyündəki dəyişikliklər, imtiyazlı rollar və ya yüksək dəyərli aktivlər üçün müstəqil bir araşdırma tələb olunur.
+- Şəxsi açarları, toxum materialını, daşıyıcı tokenləri, avtorizasiya başlıqlarını və bərpa sirlərini mənbə idarəetməsindən, problem izləyicilərindən, chat transkriptlərindən, ekran görüntülərindən və ictimai sənədlərdən kənarda saxlayın.
+- Yüksək dəyərli səlahiyyət prinsipləri üçün aparat dəstəklı və ya izolyasiya olunmuş imza istifadəsi edin. Müştəri imzanı təhvil verə bildikdə, xam açar materialını brauzerlərin və ümumi məqsədli tətbiq proseslərinin xaricində saxlayın.
+- Adi əməliyyatlar, idarəetmə, yerləşdirmə və bərpa üçün ayrı səlahiyyət əsaslarından istifadə edin.
+- Gizli yaddaşı və onun ehtiyat nüsxələrini şifrələyin. Canlı açara tətbiq olunan eyni giriş nəzarətlərini şəxsi açar ehtiyat nüsxəsinə də tətbiq edin.
+- Sınaqdan keçirilmiş əvəz etmə və ya ləğv prosedurunu qoruyun. Siyasət tələb etdikdə və ya açığın ola biləcəyi şübhəsi olduqda açarı dəyişdirin.
+- Valideyn üzvlüyü, imtiyazlı rollar və ya yüksək dəyərli aktivlərdəki dəyişikliklər üçün müstəqil yoxlama tələb edin.
 
-[Key xüsusi göstərici üçün ](./generating-cryptographic-keys.md) və [Storing Cryptographic Keys](./storing-cryptographic-keys.md) nömrələrini yaratmaq.
+Əsas-aid göstəriş üçün [Kriptoqrafik Açarların Yaradılması](./generating-cryptographic-keys.md) və [Kriptoqrafik Açarların Saxlanması](./storing-cryptographic-keys.md)-ə baxın.
 
-## Hardinq qovşaqları və operatorlara giriş {#harden-nodes-and-operator-access}
+## Nöqtələri və Operator Girişini Möhkəmləndirin {#harden-nodes-and-operator-access}
 
-- Hal-hazırda istehsalçı tərəfindən dəstəklənmiş, düzəldilmiş sistemlərdə qovşaqları və operator vasitələrini işlətmək. Lazımsız xidmətləri söndürmək.
-- Adlı operatorlara yalnız yoxlanılmış, şifrələnmiş kanallar vasitəsilə inzibati giriş imkanı verin.
-- İctimai olmayan interfeysləri özəl şəbəkədə və ya [VPN](./vpn.md) qoyun.
-- Yalnız Torii, monitorinq və tətbiq yollarını göstərin ki, yerləşdirmə üçün tələb olunur.
-- Ətraf mühitə uyğun tarif məhdudiyyətləri və nəqliyyat təhlükəsizliyi ilə hər bir ictimaiyyətin girişini qorumaq.
-- Konfiqurasiya fayllarını və xidmət təsdiqlərini məhdud sənəd icazələri ilə qoruyun. Əmr xətti, proses siyahıları və qabıq tarixindən gizli saxlayın.
-- Risk modelinin müstəqil nəzarəti tələb etdiyi zaman müvafiq təsdiqçi, müştəri, monitorinq və yedek funksiyaları.
-- Güvənilən mənbələrdən vaxt sinxronlaşdırın və araşdırma üçün kifayət qədər sistem, xidmət və şəbəkə qeydlərini qoruyun.
+- Cari təchizatçı tərəfindən dəstəklənən, yamalanmış sistemlərdə node-ları və operator alətlərini işlədin. Lazımsız xidmətləri söndürün.
+- Adlandırılmış operatorlara yalnız yoxlanılmış, şifrələnmiş kanallar vasitəsilə inzibati giriş verin.
+- Qeyri-ictimai interfeysləri özəl şəbəkədə və ya [VPN](./vpn.md) yerləşdirin.
+- Yalnız yerləşdirmə tərəfindən tələb olunan Torii, monitorinq və tətbiq yollarını açıq edin.
+- Hər bir ictimai girişin qorunmasını mühitə uyğun sürət məhdudiyyətləri və daşıma təhlükəsizliyi ilə təmin edin.
+- Konfiqurasiya fayllarını və xidmət etimadnamələrini məhdudlaşdırıcı fayl icazələri ilə qoruyun. Sirrləri əmr sətrlərində, proses siyahılarında və shell tarixçəsində saxlamayın.
+- Risk modeli müstəqil nəzarəti tələb etdikdə, təsdiqedici, müştəri, monitorinq və ehtiyat nüsxə vəzifələrini ayırın.
+- Vaxtı etibarlı mənbələrdən sinxronlaşdırın. Araşdırma üçün kifayət qədər sistem, xidmət və şəbəkə jurnallarını qoruyun.
 
-## Təhlükəsiz Browser və Admin iş axınları {#secure-browser-and-admin-workflows}
+## Təhlükəsiz Brauzer və İdarəçi İş Axınları {#secure-browser-and-admin-workflows}
 
 Veb interfeysindən istifadə edən operator üçün:
 
-- Hazırda idarə olunan bir iş stansiyasında satıcı tərəfindən dəstəklənən, tam yenilənmiş brauzerdən istifadə edin.
-- Yalnız tələb olunan uzantıları olan xüsusi operator profilindən və ya cihazdan istifadə edin.
-- Sorğunu təsdiqləməzdən əvvəl mənşəyi və sertifikatı yoxlayın.
-- Eyni görünüşdə olan domenləri, gözlənilməmiş yönləndirmələri və əsas xammal üçün müraciətləri hadisə kimi qəbul edin.
-- Aktiv operator seansından əlaqəsi olmayan saytları və uzantıları bloklayın.
-- Qısa müddətli seanslardan istifadə edin və imtiyazlı hərəkətlər üçün yenidən təsdiqlənməni tələb edin.
-- Əməliyyat təfərrüatlarını imzalayana göstərin. Operator təsdiqdən əvvəl səlahiyyəti, şəbəkəni, təlimatları, aktivləri və ödənişləri yoxlaya bilməlidir.
+- İdarə olunan iş stansiyasında hazırda satıcı tərəfindən dəstəklənən, tam yenilənmiş brauzerdən istifadə edin.
+- Yalnız tələb olunan əlavələrlə xüsusi operator profili və ya cihazdan istifadə edin.
+- Bir tələbi təsdiqləməzdən əvvəl mənşəyi və sertifikatı yoxlayın.
+- Oxşar domenləri, gözlənilməz yönləndirmələri və xam açar materialı ilə bağlı tələbləri hadisə kimi qiymətləndirin.
+- Aktiv operator sessiyasından əlaqəsiz saytları və uzantıları bloklayın.
+- Qısa müddətli sessiyalardan istifadə edin. Səlahiyyətli əməliyyatlar üçün yenidən təsdiqləmə tələb edin.
+- Əməliyyat detallarını kriptoqrafik imzalayan şəxslə göstərin. Operator təsdiqdən öncə səlahiyyət prinsipialını, şəbəkəni, təlimatları, aktivləri və haqları yoxlaya bilməlidir.
 
-Browser təcrid edilməsi məruz qalmağı azaldır. Operatorlar hələ də əməliyyatları nəzərdən keçirməli və təhlükəsiz imzalanma istifadə etməlidirlər.
+Brauzer təcridi məruz qalmanı azaldır. Operatorlar hələ də əməliyyatları nəzərdən keçirməli və təhlükəsiz imzalama istifadə etməlidirlər.
 
-## Nəzarət edin və cavab verin {#monitor-and-respond}
+## İzləyin və Cavab Verin {#monitor-and-respond}
 
 Bu siqnalları izləyin:
 
-- Validator və həmkar üzvlüyündəki dəyişikliklər
-- Təkrarlanan icazə çatışmazlığı və ya qeyri-adi xüsusi təlimatlar
-- Gözlənilməz proqram təminatı, konfiqurasiya və ya marşrut dəyişiklikləri
-- İmzalama, sorğu və əməliyyat səhvləri normal əsas xəttdən kənarda
-- resursların tükənməsi, sabitləşmiş razılaşma və ya gözlənilən həmyaşıdların itkisi
-- Xəyanət qaydalarına uyğun olan aktivlər, icazə və hesab dəyişiklikləri
+- təsdiqləyici və şəbəkə həmkarı üzvlük dəyişiklikləri
+- təkrarlanan səlahiyyət uğursuzluqları və ya qeyri-adi üstün hüquqlu əmrlər
+- gözlənilməz proqram təminatı, konfiqurasiya və ya marşrut dəyişiklikləri
+- imzalama, sorğu və əməliyyat xətaları adi əsas səviyyədən kənarda
+- resursların tükənməsi, konsensusun dayanması və ya gözlənilən şəbəkə yoldaşlarının itirilməsi
+- fırıldaq qaydalarına uyğun aktiv, icazə və hesab dəyişiklikləri
 
-Xəbərdarlıqları təsirlənən hostdan asılı olmayan kanala göndərin. Müvafiq jurnalları, konfiqurasiya ani görüntülərini, reyestr hadisələrini və əməliyyat heşlərini vaxt möhürləri ilə qoruyun. [Fırıldaqçılıq monitorinqi](./fraud-monitoring.md) və [Performans və metrikalar](../advanced/metrics.md) bölmələrinə baxın.
+Təsirlənmiş hostdan asılı olmayan kanala xəbərdarlıqlar göndərin. Əlaqədar qeydləri, konfiqurasiya zaman nöqtəsindəki məlumat baxışlarını, blokçeyn dəftərxana hadisələrini və əməliyyat kriptoqrafik xəşlərini zaman möhürləri ilə qoruyun. Baxın [Fırıldaqçılığın Monitorinqi](./fraud-monitoring.md) və [Performans və Ölçülər](../advanced/metrics.md).
 
-## Bərpa planı {#recovery-plan}
+## Bərpa Planı {#recovery-plan}
 
-İstehsalatın başlanmasından əvvəl bərpa planı hazırlayın. Bərpa planında aşağıdakılar müəyyən edilməlidir:
+İstehsalın başlamasından əvvəl bərpa planını hazırlayın. Bərpa planı aşağıdakıları müəyyən etməlidir:
 
-- bir hadisəni elan edə və əlaqələndirə bilən şəxs
-- təsdiqləyicilər, infrastruktur operatorları, tətbiq sahibləri və təsirlənən istifadəçilərlə necə əlaqə saxlamaq olar;
-- hansı hakimiyyətlər icazələri ləğv edə bilər, açarları əvəz edə və ya həmyaşıd üzvlüyünü dəyişə bilər
-- etibarlı ikitərəflilərin, konfiqurasiyanın, genesis qeydlərinin, ehtiyatların və açar inventarlarının saxlandığı yer
-- Şəbəkənin və asılı tətbiqlərin bərpasından sonra necə təsdiqlənməsi;
+- kim hadisəni elan edə və əlaqələndirə bilər
+- doğrulayıcılarla, infrastruktur operatorlarıyla, tətbiq sahibləri ilə və təsirlənmiş istifadəçilərlə necə əlaqə saxlamaq
+- hansı səlahiyyət əsasları icazələri ləğv edə, açarları dəyişdirə və ya şəbəkə tərəfdaşının üzvlüyünü dəyişdirə bilər
+- etibarlı ikili fayllar, konfiqurasiya, blokçeyn başlanğıc qeydləri, ehtiyat nüsxələr və açar inventarlarının saxlandığı yer
+- bərpadan sonra şəbəkəni və asılı tətbiqləri necə yoxlamaq
 
-Hadisə baş verdikdə:
+Hadisə baş verəndə:
 
-1. Təsirlənmiş hostu, etimadnaməni, marşrutu və ya səlahiyyəti təcrid edin. Sübutları qoruyun.
-2. Gündəliklər və kitabxana istinadları saxlayın, bütün bərpa hərəkətlərini qeyd edin.
-3. Təsdiqlənmiş idarəetmə prosesi vasitəsilə açıqlanmış etimad və icazələri ləğv etmək və ya əvəz etmək.
-4. Proqram təminatını və konfiqurasiyanı yoxlanmış artefaktlardan bərpa edin.
-5. Həmyaşıd üzvlüyünü, konsensusun sağlamlığını, ictimai marşrutları, monitorinqi və tətbiq oxunuşlarını təsdiqləyin. Yazma əməliyyatlarını yalnız bu yoxlamalar uğurla başa çatdıqdan sonra bərpa edin.
-6. Əsas səbəbi sənədləşdirin. Nəzarət, avtomatlaşdırma və məşqləri yeniləyin
+1. Təsirlənmiş hostu, hesab məlumatını, marşrutu və ya təsdiq prinsipini təcrid edin. Sübutları qoruyun.
+2. Jurnalları və blokçeyn dəftəri istinadlarını qoruyun. Hər bərpa hərəkətini qeyd edin.
+3. Təsdiqlənmiş idarəetmə prosesi vasitəsilə açıqlanmış etimadnamələri və icazələri ləğv edin və ya əvəz edin.
+4. Təsdiqlənmiş artefaktlardan proqram təminatını və konfiqurasiyanı bərpa edin.
+5. Şəbəkə üzvlüyünü, konsensus sağlamlığını, ictimai marşrutları, monitorinqi və tətbiq oxumalarını təsdiqləyin. Bu yoxlamalar keçdikdən sonra yazmaları yenidən başlatın.
+6. Əsas səbəbi sənədləşdirin. Nəzarətləri, avtomatlaşdırmanı və məşqləri yeniləyin.
 
 ::: warning
 
-Geri qaytarılması mümkün olmayan reyestr əməliyyatları üçün əvvəlcədən nəzərdən keçirilmiş prosedurlara əməl edin. Təsirlənən səlahiyyət və aktivlərə uyğun təsdiqləri tələb edin.
+Geri dönməz blokçeyn dəftəri əməliyyatları üçün əvvəlcədən nəzərdən keçirilmiş prosedurlara əməl edin. Təsir olunan səlahiyyət əsasına və aktivlərə uyğun təsdiqləri tələb edin.
 
 :::

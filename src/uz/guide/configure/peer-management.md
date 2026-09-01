@@ -3,59 +3,59 @@ translation_locale: uz
 translation_source: /guide/configure/peer-management.md
 translation_source_hash: f085fa1587595414f95705bbe2cd285752b0fe12cffb9ef29a33399f9a1f3f86
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Tengdoshlarni boshqarish {#peer-management}
+# tarmoq tengdoshlarini boshqarish {#peer-management}
 
-Agar siz tilga oid yo'l-yo'riqlarga amal qilgan bo'lsangiz, endi odamlar qo'shilmoqchi bo'lgan yaxshi faoliyat ko'rsatadigan tarmog'ingiz mavjud.
+Agar siz tilga xos qo'llanmalardan birortasini kuzatgan bo'lsangiz, endi odamlar qo'shilmoqchi bo'ladigan yaxshi ishlaydigan tarmog'ingiz bor.
 
-## Ommaviy blokchain {#public-blockchain}
+## Ommaviy blokcheyn {#public-blockchain}
 
-Ochiq tarmoqda tengdoshlarni qabul qilish hali ham zanjir siyosati qarori hisoblanadi. Bir nod to'g'ri dasturiy ta'minotni ishga tushirib, Torii bilan bog'lanishi mumkin, ammo u faqat tarmoq o'z tengdoshini tan olganidan so'ng konsensusga qo'shilishi mumkin.
+Ochiq tarmoqda, tarmoq hamkorini qabul qilish hali ham zanjir siyosati qarori hisoblanadi. Tugun to‘g‘ri dasturiy ta’minotni ishga tushirishi va Torii ga ulanishi mumkin, lekin u tarmoq uning tarmoq hamkorligi identifikatorini qabul qilgandan keyingina konsensusda ishtirok etadi.
 
-## Xususiy blokchain {#private-blockchain}
+## Xususiy Blockchain {#private-blockchain}
 
-Bank sharoitida har kimning o'z xohishi bo'yicha qo'shilishi xavfsizlik xavfi hisoblanadi. Xavfsizlik uchun xususiy Iroha ishga tushirishlar odatda ochiq kashfiyotga tayanishning o'rniga tengdosh topologiyasini konfiguratsiya va paydo bo'lishda pin qiladi.
+Bank muhitida har kimning xohlagan payt qo‘shilishiga ruxsat berish xavfsizlik xataridir. Shu sabab yopiq Iroha joylashtirishlari odatda ochiq topishga tayanmay, tugunlar topologiyasini konfiguratsiya va boshlang‘ich holatda qat’iy belgilaydi.
 
-### Tengdoshlarni ro'yxatga olish {#registering-peers}
+### Tarmoq sheriklarini ro'yxatdan o'tkazish {#registering-peers}
 
-Tarmoqga tengdosh qo'shish uchun u qo'lda ro'yxatdan o'tkazilishi kerak. Keling, bu jarayonni yakunlash uchun qanday qadamlar qo'yilishi kerakligini muhokama qilaylik.
+Tarmoqdagi tarmoq hamkasbini qo'shish uchun uni qo'lda ro'yxatdan o'tkazish kerak. Keling, bu jarayonni yakunlash uchun qaysi qadamlarni bajarish kerakligini muhokama qilaylik.
 
-#### 1. Foydalanuvchiga ruxsatnomalar berish {#_1-grant-the-user-permissions}
+#### 1. Foydalanuvchiga ruxsatlarni berish {#_1-grant-the-user-permissions}
 
-Tengdoshlarni ro'yxatdan o'tkazadigan hisobda tegishli `Permission` bo'lishi kerak. Bu `Role` orqali yoki to'g'ridan-to'g'ri ruxsat berish sifatida beriladi.
+Tarmoq tengdoshini ro‘yxatdan o‘tkazadigan hisobda mos keladigan `Permission` bo‘lishi kerak. Bu `Role` orqali yoki bevosita ruxsat berish shaklida berilishi mumkin.
 
-Bir vaqtning o'zida tengdoshlarni boshqaradigan hisobda rol qo'shing. Tengdoshlarni boshqacha tarzda boshqarmaydigan hisobda bir martalik ro'yxatdan o'tish uchun to'g'ridan-to'g'ri ruxsat berishdan foydalaning.
+Akkount vaqt o'tishi bilan tarmoq tengdoshlarini boshqaradigan bo'lsa, rol bering. Tarmoq tengdoshlarini boshqa holda boshqarmaydigan akkount tomonidan bir martalik ro'yxatdan o'tkazish uchun to'g'ridan-to'g'ri ruxsat bering.
 
 ::: info
 
-Dastlabki ijrochi `CanManagePeers` ruxsatnoma belgisini ro'yxatdan o'tish va ro'yxatga olmagan tengdoshlar uchun ishlatadi.
+Standart ijrochi tarmoq peerlarini ro‘yxatdan o‘tkazish va ro‘yxatdan chiqarish uchun `CanManagePeers` ruxsat tokenidan foydalanadi.
 
 :::
 
-[ bo'limida ](/uz/blockchain/permissions.md) ruxsatnomalar va rollarni batafsil muhokama qilamiz.
+Biz ruxsatlar va rollarni [alohida bob](/uz/blockchain/permissions.md) da batafsil muhokama qilamiz.
 
-#### 2. Tengdoshlar bilan muloqot qiling {#_2-set-up-a-peer}
+#### 2. Tarmoq hamkasbini sozlash {#_2-set-up-a-peer}
 
-Yangi tengdoshga ruxsatnoma berilganidan so'ng, u o'rnatilishi kerak.
+Yangi tarmoq ishtirokchisiga ruxsatlar berilgandan so‘ng, u o‘rnatilishi kerak.
 
-Torii bu maqsadda nod parametrlari va qobiliyat oxirgi nuqtalarini ochib beradi. ushbu qiymatlarni avtomatik ravishda muzokara qilmaydi: operatorlar timeouts, partiya o'lchamlari va boshqa konsensusga bog'liq sozlamalarning tarmoq bilan mosligini tekshirishlari kerak.
+Tugunni qabul qilishdan oldin joriy tugun konfiguratsiyasini so‘rang. Torii shu maqsadda tugun parametrlari va imkoniyatlari yakuniy nuqtalarini taqdim etadi. Tugunni dastlabki ishga tushirish bu qiymatlarni avtomatik kelishtirmaydi: operatorlar taymautlar, to‘plam hajmlari va konsensusga daxldor boshqa sozlamalar tarmoqqa mosligini tekshirishi kerak.
 
-Bu jarayonni soddalashtirish uchun siz tarmoq boshqaruvchisidan `config.toml` ning tahrirlangan versiyasini so'rashingiz mumkin, bu esa tengdoshlari xususiy kalitlari kabi imtiyozli ma'lumotlarni istisno qiladi.
+Jarayonni soddalashtirish uchun, tarmoq administratoridan `config.toml`ning maxfiy ma'lumotlar, masalan tarmoq tengdosh shaxsiy kalitlarini o'z ichiga olmaydigan qisqartirilgan versiyasini so'rashingiz mumkin.
 
-#### 3. Ko'rsatmalarni taqdim etish {#_3-submit-the-instruction}
+#### 3. Ko‘rsatmani taqdim eting {#_3-submit-the-instruction}
 
-O'zingizning tengdoshingiz ish boshlaganidan so'ng, ro'yxatga o'tish uchun tengdoshlar ko'rsatmalarini taqdim etishingiz kerak. Tengdoshlar qo'l urish jarayonidan o'tadilar va tarmoq bilan suhbatlashishni boshlaydi.
+Tugun ishga tushgach, uni ro‘yxatdan o‘tkazish ko‘rsatmasini yuboring. Tugun aloqa o‘rnatish jarayonidan o‘tib, tarmoq bilan xabar almasha boshlaydi.
 
 ::: tip
 
-Tengdoshlarni ro'yxatdan o'tkazish bo'yicha yo'l-yo'riqni taqdim etish yangi tengdoshlar jarayonini boshlashni anglatmaydi (va amalga oshirolmaydi).
+Tarmoq qo‘shnisi ro‘yxatdan o‘tkazish ko‘rsatmasini yuborish yangi tarmoq qo‘shnisi jarayonini ishga tushirmaydi (va ishga tushira olmaydi).
 
 :::
 
-### Ro'yxatdan o'tmagan tengdoshlar {#unregistering-peers}
+### Tarmoq ishtirokchilarini ro'yxatdan chiqarish {#unregistering-peers}
 
-O'z tengdoshlariga ro'yxatdan o'tmaslik haqida nima deyish mumkin? xavfsizlik sabablaridan ko'ra, bu jarayon bir tomonlama. Tarmoq tengdoshlari olib tashlanmoqchi bo'lganligi to'g'risida kelishuvga erishadi, ammo tengdoshlarning o'zi hech kim bilan nima uchun gaplashayotganini bilmaydi.
+Tarmoq ishtirokchilarini ro‘yxatdan o‘tkazmaslik haqida nima deyish mumkin? Xavfsizlik sabablariga ko‘ra, bu jarayon bir tomonlama amalga oshiriladi. Tarmoq, tarmoq ishtirokchisini olib tashlamoqchi ekanligini kelishib oladi, lekin tarmoq ishtirokchisi o‘zi, nima uchun hech kim uning bilan gaplashmayotganini ko‘p bilmaydi.
 
-Aksariyat holatlarda, agar siz tengdoshni ro'yxatdan chiqarishni istasangiz, bu bizanslik xato bo'lgani uchun shunday qilishingiz kerak. Ushbu tengdoshning "ro'zg'orlanishi" netdagi zararli aktyorning hayotini og'irlashtiradi.
+Ko'p hollarda, agar siz tarmoq hamkasbini ro'yxatdan chiqarishni xohlasangiz, buni Bizans xatosi sababli qilishingiz kerak. Faqat shu tarmoq hamkasbini “g'oyib qilish” tarmoqdagi zararli shaxsning hayotini qiyinlashtiradi.

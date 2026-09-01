@@ -1,55 +1,55 @@
 ---
 translation_locale: az
 translation_source: /guide/best-practices/network-deployment.md
-translation_source_hash: 312f9cb3c6fd937b3e7c30ea27d1876ea7901cfa79eced352611db99bbca4a70
+translation_source_hash: 7839268b8c1f6700b0c26652e3308fa4e8acef4717d8527c609b6f30fb8c84ab
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Şəbəkənin tətbiqi {#network-deployment}
+# Şəbəkə İstismarı {#network-deployment}
 
-Bir Iroha şəbəkəsinə əlaqəli bir sistem kimi yanaşın. Validatorlar, şəbəkənin blokları başlamaq və bitirməyə davam etmədən əvvəl təməl, topologiya, etibarlı həmyaşıllılar və konsensusla əlaqədar quruluş barədə razılığa gəlməlidirlər.
+Iroha şəbəkəsini əlaqələndirilmiş sistem kimi qəbul edin. Şəbəkə başlaya bilmədən və blokları yekunlaşdırmağa davam edə bilmədən əvvəl təsdiqləyicilər blockchain başlanğıcını, topologiyanı, etibarlı şəbəkə iştirakçılarını və konsensusa aid konfiqurasiyanı razılaşdırmalıdırlar.
 
-## Ətraf mühitin ayrılması {#environment-separation}
+## Mühitlərin ayrılması {#environment-separation}
 
-- Yerli inkişaf, paylaşılan test şəbəkəsi, mərhələləşdirmə və istehsal üçün ayrı-ayrı konfig paketləri saxlamaq.
-- Hər bir birbaşa istifadə edilməyən mühit üçün yeni açarlar istehsal edin. Taira istehsalda əsas material.
-- Peer konfig, müştəri konfig, imzalanmış genesis, skriptlər və yerləşdirmə qeydlərini versiyalaşdırılmış buraxılış artefaktı kimi bir yerdə saxlayın.
-- Xüsusi açarları anbar və yerləşdirmə şablonlarının xaricində saxlayın.
+- Yerli inkişaf, paylaşılan testnet, səhnələşdirmə və istehsalat üçün ayrı konfiqurasiya paketlərini saxlayın.
+- Hər bir istifadə olunmayan mühit üçün yeni açarlar yaradın. Lokalnet və ya Taira açar materialını istehsalda təkrar istifadə etməyin.
+- Şəbəkə həmkarının konfiqurasiyasını, müştəri konfiqurasiyasını, imzalanmış genezisi, skriptləri və yerləşdirmə qeydlərini versiyalanmış buraxılış artefaktı kimi birlikdə saxlayın.
+- Şəxsi açarları depos və yerləşdirmə şablonlarının xaricində saxlayın.
 
-[Ağ tətbiqi üçün açarlar ](/az/guide/configure/keys-for-network-deployment.md) bax.
+Bax [Şəbəkə Yerləşdirilməsi üçün Açarlar](/az/guide/configure/keys-for-network-deployment.md).
 
-## Qədim və topologiya {#genesis-and-topology}
+## blokçeyn mənşəyi və topologiya {#genesis-and-topology}
 
-- Hər bir təsdiqləyici eyni imzalanmış genesis əməliyyatını, etibarlı həmyaşıd dəstini, topologiyasını və təsdiqləyicisini Proof-of-Possession istifadə etməsini tələb edir.
-- Ən azı dörd validatordan istifadə edin Bizans səhv tolerantlığı üçün.
-- Müşahidəçilər səs vermirlər, təklif etmirlər və ya toplayırlar, lakin yenə də saxlama, blok sinxronizasiyası və şəbəkə bant genişliyini istehlak edirlər.
-- Başlangıç, icraçı və topoloji dəyişiklikləri tək-tərəfli redaktələrin əvəzinə koordinasiya edilmiş köçürmələr kimi müalicə edin.
+- Profil onları tələb etdikdə, hər bir doğrulayıcı eyni imzalanmış blokçeyn başlanğıc əməliyyatından, etibarlı şəbəkə qohum dəstindən, topologiyadan və doğrulayıcı Sahiblik Sübutlarından istifadə etməlidir.
+- Minimum Bizans-səhv-tolerant yerləşdirmə üçün ən azı dörd təsdiqləyici istifadə edin.
+- Kapasitet planlamasında yoxlayıcıları müşahidəçilərdən ayırın. Müşahidəçilər səs vermir, təklif etmir və yığmır, amma hələ də yaddaş, blok sinxronizasiyası və şəbəkə keçidini istifadə edirlər.
+- Blokçeyn başlanğıcını, icraçısını və topologiya dəyişikliklərini tək paylı redaktələrdən daha çox koordinasiyalı köçlər kimi qəbul edin.
 
-[Genesis](/az/reference/genesis.md), [Peer Management](/az/guide/configure/peer-management.md) və [Performance and Metrics](/az/guide/advanced/metrics.md#node-count-and-quorum) baxın.
+Baxın [blokçeyn genesis](/az/reference/genesis.md), [şəbəkə tərəfdaşının idarə edilməsi](/az/guide/configure/peer-management.md) və [Performans və Ölçülər](/az/guide/advanced/metrics.md#node-count-and-quorum).
 
-## Torii və şəbəkə giriş {#torii-and-network-access}
+## Torii və Şəbəkəyə Giriş {#torii-and-network-access}
 
-- Host və ya özəl şəbəkədən kənarda məruz qaldıqda Torii bir geri proxy və ya firewall arxasında qoyun.
-- TLS -i ləğv etmək və tətbiq edilmə üçün tələb olunduğu zaman əsas təsdiqləmə, dərəcə məhdudiyyəti və istək ölçüsü nəzarətlərini kənarda tətbiq etmək.
-- Yalnız ətraf mühitin ehtiyac duyduğu son nöqtələri dərc edin. Operator və telemetri marşrutları yalnız oxu üçün istifadə olunan ictimai marşrutlardan daha məhdudlaşdırılmalıdır.
-- Tərəfdaşlar birbaşa uzaqdan trafik qəbul etmədikləri zaman dinləyicinin ünvanlarını host-lokal interfeyslərə bağlayın.
+- Torii hostun və ya şəxsi şəbəkənin xaricində açıq olduqda onu ters proksi və ya firewall arxasında yerləşdirin.
+- Yerləşdirmə onları tələb etdikdə TLS-i dayandırın və kənarda əsas autentifikasiyanı, sürət məhdudiyyətlərini və sorğu ölçüsü nəzarətlərini tətbiq edin.
+- Yalnız mühit tərəfindən lazım olan API son nöqtələrini dərc edin. Operator və telemetriya marşrutları ictimai oxumaq üçün olan marşrutlardan daha məhdud olmalıdır.
+- Şəbəkə tərəfdaşları uzaqdan birbaşa trafik qəbul etməməli olduqda dinləyici ünvanları host-lokal interfeyslərə bağlayın.
 
-Bax [Torii Son nöqtələr](/az/reference/torii-endpoints.md) və [ Virtual Xüsusi Şəbəkələr ](/az/guide/security/vpn.md).
+Baxın [Torii API son nöqtələr](/az/reference/torii-endpoints.md) və [Virtual Özəl Şəbəkələr](/az/guide/security/vpn.md).
 
-## Konsensus və imkanlar {#consensus-and-capacity}
+## Razılıq və Bacarıq {#consensus-and-capacity}
 
-- Konsensus vaxtlarını tənzimləmədən əvvəl yerləşdirilməni ölçün. Daha aşağı vaxtlar yalnız şəbəkə, saxlama və icra təbəqələrinin davam etdiyi müddətdə gecikməyi azalda bilər.
-- Qeyri-bərabər yükləmə zamanı növbənin böyüməsi şəbəkənin həddindən artıq yükləndiyini göstərir.
-- Sumeragi effektiv parametrlərini, telemetri profilini, təsdiqləyici sayını, şəbəkəni RTT, iş yükünün formasını və hər bir istinad göstəricisi üçün hardver detallarını qeyd edin.
-- Yalnız gecikmə, trafik və geri təzyiq siqnallarını müqayisə etdikdən sonra kollektor faylını artırın.
+- Razılaşma taymerlərini tənzimləmədən əvvəl yerləşdirməni ölçün. Zəif vaxt limitləri yalnız şəbəkə, yaddaş və icra qatları ayaq uydurduqda gecikməni azalda bilər.
+- Yalnız ötürmə sürətinin qısa nümunələrinə baxmayın, növbənin istiqamətinə baxın. Sabit yük zamanı böyüyən növbə şəbəkənin yükləndiyini göstərir.
+- Hər bir benchmark üçün effektiv Sumeragi parametrləri, telemetriya profili, təsdiqləyici sayı, şəbəkə RTT, iş yükü forması və aparat detalları qeyd edin.
+- Hər dəfə bir məhdud növbəni və ya yük-qaytarma limitini dəyişdirin və əvvəl və sonra gecikmə, trafik, yaddaş və geritənzim sübutlarını saxlayın.
 
-Bax [Fəaliyyət və Metriklər ](/az/guide/advanced/metrics.md).
+Bax [Performans və Ölçülər](/az/guide/advanced/metrics.md).
 
-## Çılpaq metal və proseslərin idarə edilməsi {#bare-metal-and-process-management}
+## Çıplak Metal və Proses İdarəetməsi {#bare-metal-and-process-management}
 
-- Hər bir qohumun `config.toml`, özəl açarı, saxlama dizini və limanları ayrı saxlayın.
-- systemd kimi proses menecerlərini açıq şəkildə yenidən başlatma, qeyd və resurs siyasətləri ilə istifadə edin.
-- Test topologiyasını idarə olunan hostlara tərcümə edərkən istehsal edilmiş README və Kagami localnet paketlərindən əmrləri saxlayın.
+- Hər bir şəbəkə həmkarının `config.toml`, özəl açarı, saxlama qovluğu və portlarını ayrı saxlayın.
+- Aydın yenidən başlatma, qeydiyyat və resurs siyasətləri ilə systemd kimi proses idarəedicilərindən istifadə edin.
+- Test topologiyasını idarə olunan hostlara tərcümə edərkən yaradılmış README və Kagami localnet paketlərindən başlanğıc əmrləri qoruyun.
 
-Bax [Bare Metal](/az/guide/advanced/running-iroha-on-bare-metal.md) üzərində işləmək Iroha.
+Bax [Sırf Metalda Iroha işlətmək](/az/guide/advanced/running-iroha-on-bare-metal.md).

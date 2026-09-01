@@ -3,15 +3,14 @@ translation_locale: fr
 translation_source: /guide/configure/genesis.md
 translation_source_hash: a6b8b2b02e0074e6c90d9aa9337af3e2496a02beb2f57f575dc0780014df04b2
 translation_status: machine-validated
-translation_engine: google-translate
+translation_engine: bing-translator-llm
 ---
 
-# Genèse {#genesis}
+# genèse de la blockchain {#genesis}
 
-Genesis définit l'état initial de la chaîne.La source modifiable est un JSON manifeste,
-et un Iroha 3 le nœud consomme un signé Norito fichier de transactions.
+La genèse de la blockchain définit l'état initial de la chaîne. La source modifiable est un manifeste technique JSON, et un nœud Iroha 3 consomme un fichier de transaction signé Norito.
 
-::: details Manifeste de genèse par défaut
+::: details Manifeste technique génésique de la blockchain par défaut
 
 <<< @/snippets/genesis.json
 
@@ -19,21 +18,17 @@ et un Iroha 3 le nœud consomme un signé Norito fichier de transactions.
 
 ## Fichiers {#files}
 
-Le référentiel en amont expédie un manifeste par défaut à `defaults/genesis.json`.
-Kagami-les réseaux générés écrivent leur propre manifeste et leur transaction signée dans
-le répertoire de sortie :
+Le dépôt en amont fournit un manifeste technique par défaut à `defaults/genesis.json`. Les réseaux générés par Kagami écrivent leur propre manifeste technique et leur transaction signée dans le répertoire de sortie :
 
 ```bash
 cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-Le généré `README.md` dans ce répertoire enregistre les fichiers exacts et lance
-commandes pour le profil sélectionné.
+Le `README.md` généré dans ce répertoire enregistre les fichiers exacts et les commandes de lancement pour le profil sélectionné.
 
-## Configuration homologue {#peer-configuration}
+## Configuration du pair réseau {#peer-configuration}
 
-Les pairs soulignent la transaction Genesis signée dans le `[genesis]` section de
-`config.toml`:
+Les pairs pointent vers la transaction de genèse signée dans la section `[genesis]` de `config.toml` :
 
 ```toml
 [genesis]
@@ -41,12 +36,11 @@ file = "./genesis.signed.nrt"
 public_key = "ed0120..."
 ```
 
-Tous les pairs du réseau doivent être d'accord sur la transaction Genesis signée et sur le
-clé publique de genèse.
+Tous les pairs du réseau doivent utiliser la même transaction de genèse signée et la même clé publique de genèse.
 
-## Signature de Genèse {#signing-genesis}
+## Signature de la genèse {#signing-genesis}
 
-Si vous modifiez un manifeste manuellement, validez-le et signez-le avant de démarrer les pairs :
+Si vous modifiez manuellement un manifeste, validez-le et signez-le avant de démarrer les pairs :
 
 ```bash
 cargo run --bin kagami -- genesis validate ./genesis.json
@@ -55,18 +49,10 @@ cargo run --bin kagami -- genesis sign ./genesis.json \
   --out-file ./genesis.signed.nrt
 ```
 
-`GENESIS_PRIVATE_KEY_FILE` doit être un mode détenu par le propriétaire-`0600`, lien unique
-fichier normal contenant un multihash canonique de clé privée et un final
-nouvelle ligne. Kagami rejette les liens symboliques et n'accepte jamais une genèse brute et privée
-clé sur la ligne de commande.
+`GENESIS_PRIVATE_KEY_FILE` doit être un fichier ordinaire à lien unique, appartenant à l’utilisateur et de mode `0600`, contenant un seul multihash canonique de clé privée suivi d’un saut de ligne. Kagami rejette les liens symboliques et n’accepte jamais de clé privée brute de genèse sur la ligne de commande.
 
-Pour NPoS ou Nexus profils, incluent la topologie et BLS Preuves de possession
-requis par le profil généré. Kagami `localnet`, `wizard`, et profil
-les commandes de génération gèrent ces détails automatiquement.
+Pour les profils NPoS ou Nexus, incluez la topologie et les preuves de possession BLS requises par le profil généré. Kagami `localnet`, `wizard` et les commandes de génération de profil gèrent ces détails automatiquement.
 
-## Réengager Genesis {#recommitting-genesis}
+## Nouvelle validation de la genèse {#recommitting-genesis}
 
-Un homologue n'engage la genèse que lorsque son stockage est vide.Pour tester une nouvelle genèse dans
-un localnet jetable, arrêter les pairs, supprimer leur répertoire d'état généré,
-et repartir de la nouvelle genèse signée.Ne remplacez pas Genesis sur un
-réseau à moins que chaque validateur coordonne la même migration.
+Un pair ne valide la genèse que lorsque son stockage est vide. Pour tester une nouvelle genèse dans un réseau local jetable, arrêtez les pairs, supprimez leur répertoire d’état généré et redémarrez avec la nouvelle genèse signée. Ne remplacez pas la genèse d’un réseau actif, sauf si tous les validateurs coordonnent la même migration.

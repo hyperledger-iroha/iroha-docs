@@ -3,45 +3,45 @@ translation_locale: uz
 translation_source: /guide/security/index.md
 translation_source_hash: ec7fc2f950b007f52d837473ad7021565923e537df1d18b86055fb483cda375c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Xavfsizlik {#security}
 
-Xavfsiz ma'lumotlar va qiymatlarni boshqaradigan har qanday tizim kabi Iroha ishga tushirishni xavfsizlashtiring. Imzolash kalitlarini, tarmoqga kirish huquqini, nod operatsiyalarini, monitoring va hodisalarga javob berishni himoya qiling.
+Maxfiy ma’lumotlar va qiymatni boshqaradigan har qanday tizim kabi Iroha joylashtirishni xavfsiz qilishingiz kerak. Imzolash kalitlarini, tarmoqga kirishni, tugun operatsiyalarini, monitoringni va hodisalarga javob berishni himoya qiling. Blokcheyn rejistri bu nazoratlarni talab qilmasligini anglatmaydi.
 
 ### Navigatsiya {#navigation}
 
-Ushbu bo'limda siz Iroha tarmog'ingizni himoya qilishning turli jihatlari haqida bilib olishingiz mumkin. Ko'proq ma'lumot olish uchun quyidagi mavzulardan birini tanlang:
+Ushbu bo‘limda siz o‘z Iroha tarmog‘ingizni himoya qilishning turli jihatlari haqida ma’lumot olishingiz mumkin. Batafsil ma’lumot olish uchun quyidagi mavzulardan birini tanlang:
 
-- [Xavfsizlik tamoyillari](./security-principles):
+- [Xavfsizlik printsiplari](./security-principles):
 
-Ma'lumotlarni himoya qilish va buzilish xavfini kamaytirish uchun asosiy prinsiplar.
+Ma'lumotlarni himoya qilish va buzilish xavfini kamaytirish bo'yicha asosiy tamoyillar.
 
-- [Virtual xususiy tarmoqlar](./vpn.md):
+- [Virtual Shaxsiy Tarmoqlar](./vpn.md):
 
-VPN-ni xususiy yoki konsorsium ishga tushirishlarida tengdoshlardan tengdoshlarga, Torii va operatorga kirish huquqini cheklash uchun qanday ishlatish kerak.
+Shaxsiy yoki konsortsium joylashtirishlarda tengdoshdan-tengdoshga, Torii va operatorga kirishni cheklash uchun VPN dan qanday foydalanish kerak.
 
-- [Operatsiyaviy xavfsizlik](./operational-security.md):
+- [Operatsion Xavfsizlik](./operational-security.md):
 
-Kirish, kuzatish, hodisalarga javob berish va operator ishchi stansiyalari uchun kundalik nazoratlar.
+Kirish, nazorat, hodisalarga javob berish va operator ish stantsiyalari uchun kunlik nazoratlar.
 
-- [Xatolarni nazorat qilish](./fraud-monitoring.md):
+- [Firibgarlikni kuzatish](./fraud-monitoring.md):
 
-Shubhasiz faoliyatni aniqlash va javob dalillarini saqlab qolish uchun daftar voqealari, so'rovlar, ruxsatnomalar va operatsion signallardan qanday foydalanish kerak.
+Blockchain daftaridagi hodisalar, so‘rovlar, ruxsatlar va operatsion signallarni shubhali faollikni aniqlash va javob dalillarini saqlash uchun qanday ishlatishni.
 
-- [Maxfiy so'z xavfsizligi](./password-security.md):
+- [Parol xavfsizligi](./password-security.md):
 
-Maxfiy so'z entropiyasi, kuchli maxfiy so'zlar qurilishi va keng tarqalgan muvaffaqiyatsizlik usullari.
+Parol entropiyasi, kuchli parol yaratish va umumiy muvaffaqiyatsizlik holatlari.
 
-- [Umumiy kalit kriptografiyasi](./public-key-cryptography.md):
+- [Ommaviy Kalitli Kriptografiya](./public-key-cryptography.md):
 
-Umumiy kalitli shifrlash, imzolar va tasdiqlangan aloqa.
+Ommaviy kalit shifrlash, imzolar va tasdiqlangan aloqalar.
 
-  - [Kriptografik kalitlarni yaratish](./generating-cryptographic-keys.md):
+  - [Kriptografik Kalitlarni Yaratish](./generating-cryptographic-keys.md):
 
-`kagami` bilan qo'llab-quvvatlanadigan kriptografik kalitlarni yaratish.
+    `kagami` bilan qo‘llab-quvvatlangan kriptografik kalitlarni yarating.
 
-  - [Kriptografik kalitlarni saqlash](./storing-cryptographic-keys.md):
+  - [Kryptografik Kalitlarni Saqlash](./storing-cryptographic-keys.md):
 
-Kriptografik kalitlarni ishga tushirish uchun mos qatlamli nazoratlardan foydalangan holda saqlash.
+Kriptografik kalitlarni joylashtirishga mos qatlamli nazorat vositalaridan foydalangan holda saqlang.

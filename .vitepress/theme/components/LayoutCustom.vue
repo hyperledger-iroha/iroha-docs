@@ -2,6 +2,7 @@
 import { computed, defineAsyncComponent } from 'vue'
 import { useData } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
+import LocalizedShellA11y from './LocalizedShellA11y.vue'
 import NexusBuildPortal, { type NexusBuildPortalContent } from './NexusBuildPortal.vue'
 
 const { Layout } = DefaultTheme
@@ -14,6 +15,7 @@ const nexusPortal = computed(() => frontmatter.value.nexusPortal as NexusBuildPo
 </script>
 
 <template>
+  <LocalizedShellA11y />
   <Layout>
     <template #home-features-before>
       <NexusBuildPortal

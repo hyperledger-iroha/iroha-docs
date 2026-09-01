@@ -21,7 +21,7 @@ translation_engine: nllb-200-ct2
    - [Kotlin, Android һәм Java](/ba/guide/tutorials/kotlin-java.md)
    - [Swift һәм iOS](/ba/guide/tutorials/swift.md)
 4. [ өлгөләге ҡушымталарҙы](/ba/guide/tutorials/sample-apps.md) тикшереп ҡарағыҙ, әгәр тулы клиент ҡушымтаһы шиғырын теләйһегеҙ икән.
-5. [Embed Kaigi](/ba/guide/tutorials/kaigi.md) ҡуллан, әгәр һеҙ үҙ ҡушымтаһына аҡса янсығы менән тәьмин ителгән аудио / видео осрашыуҙар өҫтәргә теләйһегеҙ.
+5. [Kaigi-ҙы индереү](/ba/guide/tutorials/kaigi.md) ҡуллан, әгәр һеҙ үҙ ҡушымтаһына аҡса янсығы менән тәьмин ителгән аудио / видео осрашыуҙар өҫтәргә теләйһегеҙ.
 6. Ҡулланығыҙ [Musubi пакеттары](/ba/guide/tutorials/musubi.md), әгәр һеҙ кәрәк ҡабаттан ҡулланыла торған Kotodama сығанаҡ китапханалары менән бәйләнгән сылбырлы реестр бәйлелектәре.
 
 ## Үлсәүҙәр {#samples}

@@ -1,37 +1,37 @@
 ---
 translation_locale: az
 translation_source: /documenting/snippets.md
-translation_source_hash: e188082e05db85d5e514b782f93648fb402a09740840c9201e47db353f2192f5
+translation_source_hash: 48d6670f100c7c6368fa03f163c9ff9e0322d36e51c22f89562b23b0e2ee2a2f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Şifrə snippets {#code-snippets}
+# Kod Parçaları {#code-snippets}
 
-İstehsal olunan bölmələr onları istehsal edən Iroha yenidənqurmadan kod, konfiqurasiya və sxemlərlə bağlı nümunələri saxlayır.
+Yaradılmış parçalar nümunələri onları hazırlayan Iroha təkmilləşdirməsindən olan kod, konfiqurasiya və sxemlərə bağlı saxlayır.
 
-## Təmizləyici Iroha artefaktlar {#refreshing-iroha-artifacts}
+## Iroha Artefaktları Yeniləyir {#refreshing-iroha-artifacts}
 
-Iroha-dən alınan parçalar adi sayt quruluşlarında şəbəkə girişinin və ya qardaş anbarın tələb olunmaması üçün yoxlanılır. Onları açıq şəkildə yeniləyin:
+Iroha-dən törədilmiş parçalar daxil edilir ki, adi sayt quruluşları şəbəkə bağlantısı və ya qardaş depo tələb etməsin. Onları açıq şəkildə yeniləyin:
 
 ```bash
 pnpm refresh:iroha --source /path/to/iroha
 ```
 
-Qeydiyyatdan keçmişlər. [`etc/refresh-iroha.ts`](https://github.com/hyperledger-iroha/iroha-docs/blob/main/etc/refresh-iroha.ts) iş axını təmiz mənbəyə qarşı verilişini təsdiq edir `provenance/iroha.json`, bərpa edir `/src/snippets` və Torii OpenAPI sürətli şəkil və yeniləmələr SHA-256 hashlər. Məzmun və mənşəli dəyişiklikləri birlikdə baxın. Normal asılılıq quraşdırılması və VitePress Buildlər dəyişdirilə bilən bir şöbənin alınmadan qeyd olunmuş faylları istehlak edir.
+Qeydiyyatdan keçmiş `etc/refresh-iroha.ts` iş axını təmiz mənbə yoxlamasını `provenance/iroha.json` ilə yoxlayır, `/src/snippets` və Torii OpenAPI məqam-vaxt məlumat baxışını yenidən yaradır, və yeniləyir SHA-256 kriptoqrafik xeşləri. Məzmunu və mənşə dəyişikliklərini birlikdə nəzərdən keçirin. Normal asılılıq quraşdırılması və VitePress kompilyasiyalar dəyişdirilə bilən bir şaxəni götürmədən daxil edilmiş fayllardan istifadə edir.
 
-## Snippets də daxil olmaqla {#including-snippets}
+## Parçaları daxil etmək {#including-snippets}
 
-Yaradılmış və ya yerli mənbəyi daxil etmək üçün [VitePress kod-snippet sintaksını ](https://vitepress.dev/guide/markdown#import-code-snippets) istifadə edin:
+[VitePress kod-parçacığının sintaksisi](https://vitepress.dev/guide/markdown#import-code-snippets) istifadə edərək yaradılmış və ya yerli mənbəni daxil edin:
 
 ```md
 <<< @/snippets/client.template.toml
 ```
 
-Adlı bir kod bölgəsinin adının əlavə edilməsi ilə daxil edilə bilər:
+Adlandırılmış kod bölgəsi onun bölgə adını əlavə etməklə daxil edilə bilər:
 
 ```md
 <<< @/example_code/lorem.rs#ipsum
 ```
 
-Əli yazılmış nümunələri kiçik saxlayın. İctimai interfeyslər, konfigurasiya şablonları, yaradılan sxemlər və əmr çıxışı üçün yenilənmiş mənbə əşyalarına üstünlük verin .
+Əl ilə yazılmış nümunələri kiçik saxlayın. İctimai interfeyslər, konfiqurasiya şablonları, yaradılmış sxemlər və əmr çıxışı üçün yenilənmiş mənbə nümunələrinə üstünlük verin.

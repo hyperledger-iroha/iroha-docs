@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /documenting/snippets.md
-translation_source_hash: e188082e05db85d5e514b782f93648fb402a09740840c9201e47db353f2192f5
+translation_source_hash: 48d6670f100c7c6368fa03f163c9ff9e0322d36e51c22f89562b23b0e2ee2a2f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -18,7 +18,7 @@ Iroha-тан алынған өҙөктәре ябай сайттар төҙөү 
 pnpm refresh:iroha --source /path/to/iroha
 ```
 
-Иҫәпкә алынғандар [`etc/refresh-iroha.ts`](https://github.com/hyperledger-iroha/iroha-docs/blob/main/etc/refresh-iroha.ts) эш ағымы саф сығанаҡ иҫкәртеү менән раҫлай `provenance/iroha.json`, регенерация `/src/snippets` һәм Torii OpenAPI фотоһүрәт һәм яңылыҡтар SHA-256 hashes. йөкмәтке һәм килеп сығыу үҙгәрештәрен бергә тикшереү. ғәҙәти бәйлелек ҡуйыу һәм VitePress төҙөлөштәр теркәлгән файлдарҙы үҙгәреүсән тармаҡ алып килмәйенсә ҡулланыу.
+Checked-in `etc/refresh-iroha.ts` workflow clean source checkout-ты `provenance/iroha.json` менән verify итә, `/src/snippets` һәм Torii OpenAPI snapshot-ты яңынан generate итә һәм SHA-256 hashes-ты яңырта. Content һәм provenance changes-ты бергә review итегеҙ. Normal dependency install һәм VitePress build checked-in files-ты mutable branch fetch итмәйенсә ҡуллана.
 
 ## Сниппеттар ҙа шул иҫәптән {#including-snippets}
 

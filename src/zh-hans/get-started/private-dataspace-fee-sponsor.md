@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # 提供私人数据空间的赞助费 {#sponsor-fees-for-a-private-dataspace}
 
-费用赞助允许用户在没有持有 XOR 的情况下提交私人数据空间交易.用户仍然签署了交易.交易的元数据指向赞助商账户,运行时间为网络费用借款赞助商的余额 XOR.
+费用赞助允许用户在不持有 XOR 的情况下提交私有数据空间交易。用户仍需签署交易。交易元数据指向赞助者账户，运行时从该账户的 XOR 余额中扣除网络费用。
 
 集成有三个移动部分:
 
@@ -26,7 +26,7 @@ translation_engine: nllb-200-ct2
 
 这个页面显示了两个常见的模式:
 
-- 免费用户写道:赞助商支付 XOR 而用户没有支付.
+- 用户免手续费写入:赞助商支付 XOR 而用户没有支付.
 - 地方代币费用:用户以应用代币支付赞助商,赞助商则以 XOR 支付网络.
 
 首先使用 Taira 或私有测试网络. 新的私人数据空间是运营商和治理变化;它不是由客户端配置创建的.
@@ -50,11 +50,11 @@ export EMAIL_POLICY="email#team"
 export POLICY_OWNER="<IDENTIFIER_POLICY_OWNER_ACCOUNT_I105>"
 ```
 
-使用常规 I105 帐户 IDs,除非您的部署对相同账户有活跃账户号.
+使用规范 I105 帐户 IDs,除非您的部署对相同账户有活跃账户号.
 
 ## 1. 准备数据空间 {#_1-prepare-the-dataspace}
 
-从 [中描述的私人数据空间目录和路由工作开始连接到 SORA Nexus 数据域](/zh-hans/get-started/sora-nexus-dataspaces.md#_8-provision-a-new-dataspace).一个面向操作员的碎片看起来像这样:
+从 [中描述的私人数据空间目录和路由工作开始连接到 SORA Nexus 数据域](/zh-hans/get-started/sora-nexus-dataspaces.md#_8-provision-a-new-dataspace).一个面向操作员的片段看起来像这样:
 
 ```toml
 [[nexus.lane_catalog]]
@@ -81,7 +81,7 @@ description = "Route team domains to the private dataspace"
 
 在转移到用户交易之前,请检查:
 
-- 在 `/status` 节点响应中显示私人车道
+- 在 `/status` 节点响应中显示私人通道
 - 用户帐户由您的私人登录流程接入
 - 赞助商账户存在
 - XOR 费用资产和费用清算账户在网络上有效
@@ -95,7 +95,7 @@ description = "Route team domains to the private dataspace"
 usage#billing.team
 ```
 
-首先设置拥有资产名称空间的域名和 SNS 租协议.为 `$BILLING_DOMAIN`创建一个无秘密的 `AliasSetupPlanRequestV1`意图,包括数值 `team`数据空间 ID,法定所有者,租期限和当前报价保护:
+首先设置拥有资产命名空间的域和 SNS 租约。为 `$BILLING_DOMAIN` 创建一个不含秘密信息的 `AliasSetupPlanRequestV1` 意图，其中包括数字型 `team` 数据空间 ID、规范所有者、租期和当前报价保护条件：
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -128,7 +128,7 @@ iroha --config ./operator.client.toml \
   --quantity 100
 ```
 
-检查用户的平衡:
+检查用户的余额:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -137,11 +137,11 @@ iroha --config ./operator.client.toml \
   --account "$USER"
 ```
 
-使用数据空间中的应用资产的模式相同. 每个代币注册一个资产定义,给每个代码一个数据空间别名,并引用 SDK 代码的代号而不是硬编码的正规资产定义 IDs.
+使用数据空间中的应用资产的模式相同. 每个代币注册一个资产定义,给每个代码一个数据空间别名,并引用 SDK 代码的代号而不是硬编码的规范资产定义 IDs.
 
 ## 3. 登记用户姓名 {#_3-register-user-aliases}
 
-账户仍然是常规的 I105 帐户 IDs.面向用户的名称是账户号,而号应是不敏感的手柄,如`alice@team`或`alice@members.team`.不要用电话号码或电子邮件地址作为号.这些都属于下一节的私人识别器流中.
+账户仍然是规范的 I105 帐户 IDs.面向用户的名称是账户号,而号应是不敏感的手柄,如`alice@team`或`alice@members.team`.不要用电话号码或电子邮件地址作为号.这些都属于下一节的私人识别器流中.
 
 姓名设置使用与域名设置相同的声明规划器.让 SDK 或登录服务创建一个无秘密的 `AliasSetupPlanRequestV1`意图,其帐户代号输入 目标 `$USER`,选择主要角色,键入数值数据空间 ID,并执行当前租报价保护.然后规划并将其作为一个原子交易:
 
@@ -169,11 +169,11 @@ iroha --config ./operator.client.toml \
   --dataspace "$DATASPACE"
 ```
 
-对于创建新账户,最好使用稳定 `uaid`和必要时初始 `label`构建 `NewAccount` 的安装服务.简单的 `ledger account register --id`命令只会记录正规帐户 ID.
+对于创建新账户,最好使用稳定 `uaid`和必要时初始 `label`构建 `NewAccount` 的安装服务.简单的 `ledger account register --id`命令只会记录规范帐户 ID.
 
 ## 4. 通过 FHE 私下登记电话和电子邮件. {#_4-register-phone-and-email-privately-with-fhe}
 
-使用电话号码和电子邮件地址作为私人识别器索赔,而不是公开姓氏.支持 FHE 的流量将原始识别器排除在账户姓氏,交易元数据和世界状态之外:
+使用电话号码和电子邮件地址作为私人识别器索赔,而不是公开别名.支持 FHE 的流量将原始识别器排除在账户别名,交易元数据和世界状态之外:
 
 1. 运营商注册[RAM-LFE/FHE 电话和电子邮件项目政策](/zh-hans/blockchain/ram-lfe.md)
 2. 运营商注册活跃标识策略,如 `phone#team`和 `email#team`
@@ -181,7 +181,7 @@ iroha --config ./operator.client.toml \
 4. 钱包将加密值发送到解决器
 5. 解析器返回一个 `IdentifierResolutionReceipt`
 6. 使用者将 `ClaimIdentifier` 附收据提交
-7. 链存储一个不透明的标识符和收件哈希,而不是原始电话或电子邮件值.
+7. 链存储一个不透明的标识符和回执哈希,而不是原始电话或电子邮件值.
 
 运营商方策略设置是 SDK 或服务任务.为每个标识符类型构建并提交这些指令对:
 
@@ -258,7 +258,7 @@ printf '["<BASE64_CLAIM_IDENTIFIER_INSTRUCTION_BOX>"]\n' |
 
 ## 5. 启用节点上的赞助 {#_5-enable-sponsorship-on-the-node}
 
-费用赞助是节点/运行时间政策. 在 Nexus 费用配置中启用:
+费用赞助是节点/运行时政策. 在 Nexus 费用配置中启用:
 
 ```toml
 [nexus.fees]
@@ -272,9 +272,9 @@ sponsorship_enabled = true
 sponsor_max_fee = "0"
 ```
 
-`fee_asset_id`是网络费用资产.对于 SORA Nexus,这是 XOR.使用您的网络所曝光的活跃 XOR 号或常规 XOR 资产定义 ID
+`fee_asset_id`是网络费用资产.对于 SORA Nexus,这是 XOR.使用您的网络所曝光的活跃 XOR 号或规范 XOR 资产定义 ID
 
-`sponsor_max_fee = "0"`意味着没有每笔交易的赞助商上限. 在您知道数据空间交易的正常规模和气体配置后,设置非零限量.
+`sponsor_max_fee = "0"`意味着没有每笔交易的赞助商上限. 在您知道数据空间交易的正常大小和gas配置后,设置非零限量.
 
 在正常操作程序中重新启动或滚动这个配置.
 
@@ -337,9 +337,9 @@ iroha --config ./operator.client.toml \
 
 ## 7. 让用户访问赞助商 {#_7-grant-a-user-access-to-the-sponsor}
 
-赞助商必须允许每个用户向其收取费用.补贴是阻止用户命名任意赞助商账户的原因.
+赞助商必须授予每个用户向其收取费用的权限。该授权可防止用户指定任意赞助商账户。
 
-运行这个作为赞助商账户,或者作为一个经营帐户允许的运行时间政策:
+运行这个作为赞助商账户,或者作为一个经营帐户允许的运行时政策:
 
 ```bash
 printf '{
@@ -359,7 +359,7 @@ printf '{
 - 数据空间或应用
 - 批准票或治理决定
 
-检查用户的资助:
+检查用户的授权：
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -376,7 +376,7 @@ printf '{
 }\n' "$SPONSOR" > sponsored-fee.json
 ```
 
-用此元数据提交的任何笔记本将向赞助商收取:
+使用此元数据提交的任何写操作都会向赞助商收费：
 
 ```bash
 iroha --config ./alice.client.toml \
@@ -384,9 +384,9 @@ iroha --config ./alice.client.toml \
   ledger transaction ping --msg "sponsored private-dataspace write"
 ```
 
-对于 SDKs,将相同的交易元数据对象添加到签署的交易中.用户用用户密钥签署交易.赞助商不会签署每个用户交易,因为之前的`CanUseFeeSponsor`授予是授权.
+对于 SDKs，将相同的交易元数据对象添加到已签名交易中。用户使用自己的密钥签署交易。赞助商不会签署每一笔用户交易，因为此前授予的 `CanUseFeeSponsor` 本身就是授权。
 
-## 第一个模式:用户免费付款 {#pattern-1-users-pay-no-fees}
+## 模式 1：用户不支付费用 {#pattern-1-users-pay-no-fees}
 
 在应用程序或运营商收取所有网络费时使用此方法.
 
@@ -417,7 +417,7 @@ usage#billing.team
 2. 执行所要求的应用程序操作
 3. 包含`fee_sponsor`元数据,因此赞助商支付 XOR
 
-一个最小的 CLI 烟雾测试仅仅是由 XOR 赞助的本地代币转移:
+一个最小的 CLI 冒烟测试仅仅是由 XOR 赞助的本地代币转移:
 
 ```bash
 iroha --config ./alice.client.toml \
@@ -429,18 +429,18 @@ iroha --config ./alice.client.toml \
   --quantity 1
 ```
 
-对于真正的应用程序,不要将本地代币支付作为一个单独的最佳努力交易.构建包含支付和业务指令的签名交易,或者在运行业务之前暴露收取本地代码的合同入口点.
+对于实际应用，不要把本地代币付款作为单独的尽力而为交易提交。应构建一笔同时包含付款和业务指令的已签名交易，或者公开一个合约入口点，在执行业务操作之前收取本地代币。
 
 在您的应用程序或合同中保存转换政策:
 
 - 哪个操作成本多少个本地代币单位
 - 如何支持本地代币输入地图 XOR 补充
-- 如果用户平衡太低,会发生什么?
+- 如果用户余额太低,会发生什么?
 - 当赞助商 XOR 余额太低时会发生什么?
 
 ::: warning
 
-不要使用 `gas_asset_id` 除非您希望赞助商在该气体资产中也收取费用. 在当前的运行时间, `fee_sponsor` 也使赞助商为配置管道气体资产借款的付款人.对于本地代币用户费用,通过转让或合同规则,明确收集代币.
+不要使用 `gas_asset_id` 除非您希望赞助商在该gas资产中也收取费用. 在当前的运行时, `fee_sponsor` 也使赞助商为配置管道gas资产借款的付款人.对于本地代币用户费用,通过转让或合同规则,明确收集代币.
 
 :::
 
@@ -453,11 +453,11 @@ iroha --config ./alice.client.toml \
 |`fee sponsorship is disabled`| `nexus.fees.sponsorship_enabled` 现在还在 `false` 在节点上. |
 |`fee sponsor is not authorized`|用户没有 `CanUseFeeSponsor`用于此赞助商. |
 |`fee asset ... is missing`|赞助商没有配置的 XOR 费用资产. |
-|`fee balance ... is insufficient`| 补充赞助商的 XOR 保持平衡. |
-|`fee exceeds sponsor_max_fee`|增加 `sponsor_max_fee`或减少交易规模/气体. |
+|`fee balance ... is insufficient`| 补充赞助商的 XOR 保持余额. |
+|`fee exceeds sponsor_max_fee`|增加 `sponsor_max_fee`或减少交易规模/gas. |
 |`invalid nexus fee asset id`|固定 `nexus.fees.fee_asset_id`或 XOR 资产别名.|
 
-在调试模式2时,检查两个平衡:
+在调试模式2时,检查两个余额:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -476,7 +476,7 @@ iroha --config ./operator.client.toml \
 处理赞助商作为一个财政账户:
 
 - 保持测试网,阶段化和主网的分别赞助钥匙
-- 提醒赞助商 XOR 余额到达入学楼层
+- 在 sponsor 的 XOR 余额降至 admission floor 之前发出警报
 - 一旦交通特征化,设置非零限 `sponsor_max_fee`
 - 在您的应用程序或网关中赞助的笔记
 - 当用户离开数据空间时,取消 `CanUseFeeSponsor`
@@ -497,7 +497,7 @@ printf '{
 
 ## 相关页面 {#related-pages}
 
-- [连接到 SORA Nexus 数据库](/zh-hans/get-started/sora-nexus-dataspaces.md)
+- [连接到 SORA Nexus 数据空间](/zh-hans/get-started/sora-nexus-dataspaces.md)
 - [通过 CLI](/zh-hans/get-started/operate-iroha-via-cli.md)运行 Iroha 3
 - [资产](/zh-hans/blockchain/assets.md)
 - [许可证](/zh-hans/blockchain/permissions.md)

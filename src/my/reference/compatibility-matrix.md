@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # ကိုက်ညီမှု Matrix {#compatibility-matrix}
 
-Compatibility Matrix က လက်ရှိ Iroha 3 Docs set အတွက် cross-SDK စင်တီယာရိုင်းအကာအကွယ်ကိုပြသသည်။ အလိုလျောက်အားဖြင့်, စာမျက်နှာသည် pinned [ `hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) ပြင်ဆင်မှုမှထုတ်လုပ်ထားသော bundled snapshot ကိုထည့်သွင်းသည်။
+ကိုက်ညီမှု မေထရစ်က Cross-SDK လက်ရှိအခြေအနေအတွက် စင်္ကြန်အကာအကွယ် Iroha 3 Docs set ကို default အနေနဲ့ စာမျက်နှာက pinned ကနေထုတ်လုပ်ထားတဲ့ bundled point-in-time data view ကို load လုပ်ပေးပါတယ်။ [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) ပြင်ဆင်ခြင်း။
 
 Matrix က အောက်ပါအတိုင်း ပါဝင်ပါတယ်။
 
@@ -21,5 +21,5 @@ Refresh workflow ကနေ စစ်ဆေးထားတဲ့ ရလဒ်တ�
 <CompatibilityMatrixTable />
 
 ::: info
-`VITE_COMPAT_MATRIX_URL` ကို ချိတ်ဆက်ထားတဲ့ snapshot ကို လိုက်ဖက်တဲ့ live backend နဲ့ override လုပ်ဖို့သာ သတ်မှတ်ပါ။ အဲဒီ variable ကင်းမဲ့ရင် စာမျက်နှာဟာ `src/public/compat-matrix.json` ကို load လုပ်ပါတယ်။
+`VITE_COMPAT_MATRIX_URL` ကို ချိတ်ဆက်ထားသော point-in-time data view ကို လိုက်ဖက်တဲ့ live backend ဖြင့် override လုပ်ရန်သာ သတ်မှတ်ပါ။ ထိုကိန်းရှင်မရှိရင် စာမျက်နှာကို load `src/public/compat-matrix.json` ဖြစ်စေသည်။
 :::

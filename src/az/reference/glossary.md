@@ -1,163 +1,163 @@
 ---
 translation_locale: az
 translation_source: /reference/glossary.md
-translation_source_hash: fe3bc2d62ca81b5e6e30023407f3c900eb4026b6668f0d422728a8eedd436148
+translation_source_hash: ab484310e7e0b0662c1d4bb133e7ae337c71b09b5fdc8e678581234d74ee9b29
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Glosary <!-- omit in toc --> {#glossary}
+# Lüğət <!-- omit in toc --> {#glossary}
 
-Burada Iroha ilə bağlı bütün subyektlərin təriflərini tapa bilərsiniz.
+Burada siz bütün Iroha-ilə əlaqəli obyektlərin təriflərini tapa bilərsiniz.
 
-- [Peer](#peer)
-- [Əməl](#asset)
-- [Bizans səhv tolerantlığı (BFT) ](#byzantine-fault-tolerance-bft)
+- [şəbəkə əlaqəsi](#peer)
+- [Əmlak](#asset)
+- [Bizans səhv-dözümlülüyü (BFT)](#byzantine-fault-tolerance-bft)
 - [Iroha Komponentlər](#iroha-components)
-  - [Sumeragi ( İmperator)](#sumeragi-emperor)
-  - [Torii (Gate)](#torii-gate)
-  - [Kura (Gömrük) ](#kura-warehouse)
-  - [Kagami(Müəllim və nümunə və/və ya ayna) ](#kagami-teacher-and-exemplar-and-or-looking-glass)
-  - [Merkle ağacı (hash ağac) ](#merkle-tree-hash-tree)
+  - [Sumeragi (İmperator)](#sumeragi-emperor)
+  - [Torii (Qapı)](#torii-gate)
+  - [Kura (Anbar)](#kura-warehouse)
+  - [Kagami(Müəllim və Nümunə və/və ya güzgü)](#kagami-teacher-and-exemplar-and-or-looking-glass)
+  - [Merkle ağacı (kriptoqrafik hash ağacı)](#merkle-tree-hash-tree)
   - [Ağıllı müqavilələr](#smart-contracts)
-  - [Triggerlər](#triggers)
+  - [Səbəblər](#triggers)
   - [Versiyalaşdırma](#versioning)
-  - [Hijiri (tərəfdaş nüfuz sistemi) ](#hijiri-peer-reputation-system)
+  - [Hijiri (şəbəkə həmkarının nüfuz sistemi)](#hijiri-peer-reputation-system)
 - [Iroha Modullar](#iroha-modules)
-- [Iroha Xüsusi təlimatlar (ISI) ](#iroha-special-instructions-isi)
-  - [İstifadə Iroha Xüsusi təlimatlar](#utility-iroha-special-instructions)
-  - [Əsas Iroha Xüsusi təlimatlar](#core-iroha-special-instructions)
-  - [Döminə aid Iroha Xüsusi Təlimatlar](#domain-specific-iroha-special-instructions)
-  - [Gömrük Iroha Xüsusi təlimat](#custom-iroha-special-instruction)
-- [Iroha Sual](#iroha-query)
-- [Görüş dəyişikliyi](#view-change)
-- [Dünya vəziyyətinə baxış (WSV) ](#world-state-view-wsv)
+- [Iroha Təlimat əməliyyatları (ISI)](#iroha-special-instructions-isi)
+  - [Kommunal Iroha Təlimat əməliyyatları](#utility-iroha-special-instructions)
+  - [Əsas Iroha Təlimat əməliyyatları](#core-iroha-special-instructions)
+  - [Sahə-spesifik Iroha Təlim əməliyyatları](#domain-specific-iroha-special-instructions)
+  - [Xüsusi Iroha Xüsusi Təlimat](#custom-iroha-special-instruction)
+- [Iroha Sorğu](#iroha-query)
+- [Baxış dəyişdir](#view-change)
+- [Dünya dövlət baxışı (WSV)](#world-state-view-wsv)
 - [Lider](#leader)
 
-## Blockchain kitabları {#blockchain-ledgers}
+## Blokçeyn dəftərləri {#blockchain-ledgers}
 
-Blockchain kitabları maliyyə qeydlərini saxlamaq üçün blockchain texnologiyasından istifadə edən rəqəmsal rekord saxlama sistemidir. Bunlar qiymətlər, xəbərlər və əməliyyat məlumatları kimi maliyyə qeydləri üçün istifadə olunan qədim kitablardan sonra adlandırılır.
+Blockchain dəftərləri maliyyə qeydlərini saxlamaq üçün blockchain texnologiyasından istifadə edən rəqəmsal qeyd sistemi kimi fəaliyyət göstərir. Bunlar qiymətlər, xəbərlər və əməliyyat məlumatları kimi maliyyə qeydləri üçün istifadə olunan qədim kitabların adını daşıyır.
 
-Orta əsrlərdə kütləvi kitablar ictimaiyyətə baxmaq və dəqiqliyi yoxlamaq üçün açıq idi. Bu fikir saxlanılan məlumatların etibarlılığını yoxlaya bilən blok zincirə əsaslanan sistemlərdə əksini tapır.
+Orta əsrlərdə mühasibat dəftərləri ictimai baxış və dəqiqlik yoxlaması üçün açıq idi. Bu fikir saxlanmış məlumatların etibarlılığını yoxlaya bilən blokçeyn əsaslı sistemlərdə də əks olunur.
 
-## Tərəfdaşlar {#peer}
+## şəbəkə əlaqəsi {#peer}
 
-Bir qohum Iroha deməkdir: Iroha proses nümunəsi, digər Iroha Proseslər və müştəri tətbiqləri birləşdirilə bilər. Iroha Tərəfdaşlar öz resursları və imkanları baxımından bərabərdirlər, mühüm istisna ilə: yalnız həmyaşıdlardan biri genesis blokunu idarə edir bootstrapping mərhələsi Iroha şəbəkə.
+Iroha-də bir şəbəkə həmkarı o deməkdir ki, digər Iroha prosesləri və müştəri tətbiqləri qoşula biləcəyi bir Iroha proses nümunəsidir. Bir maşın bir neçə Iroha şəbəkə həmkarına ev sahibliyi edə bilər. Şəbəkə iştirakçıları öz resursları və imkanları baxımından bərabərdirlər, lakin vacib bir istisna var: yalnız şəbəkə iştirakçılarından biri Iroha şəbəkəsinin başlanğıc mərhələsində blockchain başlanğıc blokunu işləyir.
 
-Digər blok zincirləri bir düyün və ya təsdiqçi kimi eyni konsepsiyaya istinad edə bilər.
+Digər blok zəncirləri eyni anlayışı bir node və ya təsdiqçi kimi istinad edə bilər.
 
-Peer öz ev sahibi sistemində bir proses ola bilər. O, həmçinin Docker konteyner və Kubernetes podda saxlana bilər.
+Şəbəkə tərəfdaşı onun host sistemində olan bir proses ola bilər. O həmçinin Docker konteynerində və Kubernetes podunda saxlanıla bilər.
 
-## Əmlaklar {#asset}
+## Əmlak {#asset}
 
-Blokçeyn kontekstində bir aktiv blokçeyndə dəyərli bir obyektin təmsilçiliyidir.
+Blokçeyn kontekstində aktiv, dəyərli bir obyektin blokçeyndə təmsil olunmasıdır.
 
-Əmlaklar haqqında əlavə məlumat [burda ](/az/blockchain/assets.md) mövcuddur.
+Əlavə məlumat aktivlər haqqında mövcuddur [burada](/az/blockchain/assets.md).
 
-### Fungible aktivlər {#fungible-assets}
+### Mübadilə edilə bilən aktivlər {#fungible-assets}
 
-Belə aktivlər bir-biri ilə əvəz edilə biləcəyi üçün eyni növ digər aktivlərə asanlıqla dəyişdirilə bilər.
+Belə aktivlər eyni tip digər aktivlərlə asanlıqla dəyişdirilə bilər, çünki onlar bir-birinin əvəzidir.
 
-Məsələn, eyni valyutanın bütün vahidləri qiymətlərində bərabərdir və mal almaq üçün istifadə edilə bilər. Ümumiyyətlə, pul və sikkələrin istifadəsi istisna olmaqla, gövdəli aktivlər eyni görünüşdədir.
+Məsələn, eyni valyutanın bütün vahidləri dəyər baxımından bərabərdir və malların alınmasında istifadə oluna bilər. Adətən, dəyişdirilə bilən aktivlər görünüşcə eynidir, banknot və sikkələrin aşınması istisna olmaqla.
 
 ### Fungible olmayan aktivlər {#non-fungible-assets}
 
-Fungible olmayan aktivlər öz xüsusiyyətləri və nadirliyi səbəbindən bənzərsizdir və dəyərlidir; onların dəyəri digər aktivlərlə müqayisə edilə bilməz.
+Fərqlənməyən aktivlər özünəməxsus xüsusiyyətlərinə və nadirliyinə görə unikal və qiymətlidir; onların dəyəri digər aktivlərlə müqayisə edilə bilməz.
 
-- Bir rəsmin dəyəri sənətkarın, onun çəkildiyi dövrün və ictimaiyyətin ona marağına görə dəyişə bilər.
-- Eyni küçədəki iki evin təmiri müxtəlif səviyyədə ola bilər.
-- Ziyarətçi istehsalçıları ümumiyyətlə müxtəlif dizaynlar təklif edirlər.
+- Bir rəsm əsərinin dəyəri, rəssamdan, rəsm edildiyi dövrdən və ictimaiyyətin ona olan marağından asılı olaraq dəyişə bilər.
+- Eyni küçədəki iki ev fərqli baxım səviyyələrinə sahib ola bilər.
+- Zinət əşyaları istehsalçıları adətən müxtəlif dizayn çeşidləri təklif edirlər.
 
-### Qalan vəsaitlər {#mintable-assets}
+### Yaradılabilən aktivlər {#mintable-assets}
 
-Bir aktiv eyni növdən daha çox nəşr edilə bilsə, istehsal oluna bilər.
+Bir əmlak daha eyni növdən buraxıla bilirsə, o, çap edilə biləndir.
 
-### Qeyri-qəsd edilən aktivlər {#non-mintable-assets}
+### Çap edilə bilməyən aktivlər {#non-mintable-assets}
 
-Əgər bir aktivin ilkin məbləği bir dəfə təyin edilmişdir və dəyişmirsə, o, hesab edilə bilməyəcəkdir.
+Əgər bir aktivin ilkin məbləği bir dəfə göstərilib və dəyişmirsə, bu, qeyri-mintable hesab olunur.
 
-[Genesis blok ](/az/guide/configure/genesis.md) bu məlumatı Iroha konfigurasiyası üçün təyin edir.
+[blokçeyn başlanğıc bloku](/az/guide/configure/genesis.md) bu məlumatı Iroha konfiqurasiyası üçün təyin edir.
 
-## Bizanslı səhv tolerantlığı (BFT) {#byzantine-fault-tolerance-bft}
+## Bizans səhv-dözümlülüyü (BFT) {#byzantine-fault-tolerance-bft}
 
-Zərərli aktyorların müəyyən bir faizini ehtiva edən şəbəkə ilə düzgün işləmək imkanı. Iroha öz peer-to-peer şəbəkəsində 33% -ə qədər zərərli aktyorla işləyə bilir.
+Şəbəkədə müəyyən faizdə zərərli iştirakçılar olsa belə düzgün işləyə bilmə xüsusiyyəti. Iroha bərabərhüquqlu şəbəkəndə 33%-ə qədər zərərli iştirakçı ilə işləyə bilir.
 
 ## Iroha Komponentlər {#iroha-components}
 
-Rust funksiyasını ehtiva edən Iroha modulları.
+Rust modulları Iroha funksionallığını ehtiva edir.
 
 ### Sumeragi (İmperator) {#sumeragi-emperor}
 
-Konsensus üçün məsul olan Iroha modul.
+Iroha konsensusdan məsul modul.
 
-### Torii (Gate) {#torii-gate}
+### Torii (Darvaza) {#torii-gate}
 
-[ peer](#peer) üçün daxil olan müraciətlərin idarə edilməsi məntiqinə malik modul. Gələn təlimatları və HTTP sorğularını qəbul etmək, qəbul etmək və yönləndirmək üçün, eləcə də icra vaxtı konfigüratsiyasının yeniləmələri üçün istifadə olunur.
+[şəbəkə əlaqəsi](#peer) üçün gələn sorğuların işlənməsi məntiqi moduludur. Bu modul gələn təlimatları və HTTP sorğularını qəbul etmək, yönləndirmək və işlətmək, eləcə də işləmə zamanı konfiqurasiya yeniləmələrini həyata keçirmək üçün istifadə olunur.
 
-### Kura (Gömrükxanada) {#kura-warehouse}
+### Kura (Anbar) {#kura-warehouse}
 
-Daimi blok saxlama. Kura diskdə imzalanmış blokları, blok həşləri, hündürlük indeksləri, bərpa kənar maşınları və komit-roster metadatalarını saxlayır. [World State View](#world-state-view-wsv) bir dövlət sürətnaməsi mövcud olmadıqda və ya yerli blok mağazasının arxasında Kura bloklardan yenidən qurulur. Bax [Kura saxlama](/az/blockchain/world.md#kura-storage).
+Davamlı blok yaddaşı. Kura imzalanmış blokları, blok kriptoqrafik hash-larını, hündürlük indekslərini, bərpa köməkçi qeydlərini və blokun yekunlaşdırılması roster metadatasını disklərdə saxlayır. Əgər bir vəziyyət nöqtəsi-vaxt məlumat baxışı mövcud deyilsə və ya yerli blok mağazasından geri qalırsa, [Dünya Dövlət Görünüşü](#world-state-view-wsv) Kura bloklarından yenidən qurulur. Baxa bilərsiniz [Kura saxlama](/az/blockchain/world.md#kura-storage).
 
-### Kagami(Müəllim və nümunə və/və ya güzgü) {#kagami-teacher-and-exemplar-and-or-looking-glass}
+### Kagami(Müəllim və Nümunə və/və ya güzgü) {#kagami-teacher-and-exemplar-and-or-looking-glass}
 
-Ümumiyyətlə istifadə olunan məlumatlar üçün generator. Kriptografik açar cütləri, genesis blokları, sənədlər və s.
+Tez-tez istifadə olunan məlumatlar üçün generator. O, kriptoqrafik açar cütlərini, blokçeyn başlanğıc bloklarını, sənədləri və s. yarada bilər.
 
-### Merkle ağacı (has ağacı) {#merkle-tree-hash-tree}
+### Merkle ağacı (kriptoqrafik hash ağacı) {#merkle-tree-hash-tree}
 
-Hər blok hündürlüyündə vəziyyətin təsdiqlənməsi və yoxlanılması üçün istifadə edilən məlumat quruluşu. Iroha-nin hazırda tətbiqi ikili ağacdır. Daha ətraflı məlumat üçün [Wikipedia](https://en.wikipedia.org/wiki/Merkle_tree)-yə baxın.
+Hər blok hündürlüyündə vəziyyəti yoxlamaq və təsdiqləmək üçün istifadə olunan verilənlər strukturu. Iroha-in hazırkı tətbiqi ikili ağacdır. Daha ətraflı məlumat üçün [Vikipediya](https://en.wikipedia.org/wiki/Merkle_tree)-a baxın.
 
-### Akıllı müqavilələr {#smart-contracts}
+### Ağıllı müqavilələr {#smart-contracts}
 
-Ağıllı müqavilələr müəyyən şərtlərin yerinə yetirilməsində işləyən blok zincirə əsaslanan proqramlardır. Iroha ağıllı kontraktlar [core Iroha xüsusi təlimatları istifadə edərək həyata keçirilir](#core-iroha-special-instructions).
+Ağıllı müqavilələr müəyyən bir şərtlər dəsti yerinə yetirildikdə işləyən blokçeyn əsaslı proqramlardır. Iroha-də ağıllı müqavilələr [əsas Iroha təlim əməliyyatları](#core-iroha-special-instructions) istifadə edərək həyata keçirilir.
 
-### Triggerlər {#triggers}
+### Səbəblər {#triggers}
 
-Tədbir növü bir Iroha Müəyyən blok təyinatında xüsusi təlimatlar, vaxt (bəzi ehtiyatlarla) və s. Daha çox tetikləyici haqqında [Burada.](/az/blockchain/triggers.md).
+Spesifik blokun başa çatdırılmasında, vaxtında (bəzi məhdudiyyətlərlə) və s. Iroha xüsusi təlimatı çağırmağa imkan verən bir hadisə növü. Aktivləşdiricilər haqqında daha ətraflı [burada](/az/blockchain/triggers.md).
 
 ### Versiyalaşdırma {#versioning}
 
-Hər bir tələb API versiyası ilə etiketlənir. Bu, Iroha müştəri / həmyaşıd proqramının müxtəlif ikili versiyalarının birləşməsinin qarşılıqlı fəaliyyət göstərməsinə imkan verir ki, bu da Iroha şəbəkəsində proqram təkmilləşdirilməsini təmin edir.
+Hər sorğu ona aid olan API versiyası ilə etiketlənir. Bu, Iroha müştəri/şəbəkə həmkarı proqramının fərqli ikili versiyalarının qarşılıqlı işləməsinə imkan verir ki, bu da öz növbəsində Iroha şəbəkəsində proqram təminatının yenilənməsinə imkan yaradır.
 
-### Hijiri (tərəfdaş nüfuz sistemi) {#hijiri-peer-reputation-system}
+### Hijiri (şəbəkə həmkarının nüfuz sistemi) {#hijiri-peer-reputation-system}
 
-Iroha Bu, ünsiyyətin prioritetləşdirilməsinə imkan verir. [həmyaşıdlar](#peer) yaxşı bir rekord olan və zərərli səbəb ola biləcək zərərin azaldılması üçün [həmyaşıdlar](#peer).
+Iroha-nin reputasiya sistemi. Bu, yaxşı keçmişi olan [şəbəkə əlaqəliləri](#peer) ilə ünsiyyəti prioritetləşdirməyə və zərərli [şəbəkə əlaqəliləri](#peer) tərəfindən yaradıla biləcək zərərləri azaltmağa imkan verir.
 
 ## Iroha Modullar {#iroha-modules}
 
-Iroha üçün xüsusi funksiyanı təmin edən üçüncü tərəf uzantıları.
+Iroha üçün xüsusi funksionallıq təmin edən üçüncü tərəf əlavələri.
 
-## Iroha Xüsusi təlimatlar (ISI) {#iroha-special-instructions-isi}
+## Iroha Təlimat əməliyyatları (ISI) {#iroha-special-instructions-isi}
 
-Ağıllı müqavilələrin kitabxanası Iroha. Bu, həm əməliyyatlar vasitəsilə, həm də qeydə alınmış tədbir dinləyiciləri vasitəsilə istinad edilə bilər. ISI [Burada.](/az/blockchain/instructions.md).
+Iroha ilə təmin edilmiş ağıllı müqavilələr kitabxanası. Bunlar ya əməliyyatlar vasitəsilə, ya da qeydiyyatdan keçmiş hadisə dinləyiciləri vasitəsilə çağırıla bilər. Daha çox məlumat üçün ISI [burada](/az/blockchain/instructions.md).
 
-#### İstifadə Iroha Xüsusi təlimatlar {#utility-iroha-special-instructions}
+#### Kommunal Iroha Təlimat əməliyyatları {#utility-iroha-special-instructions}
 
-Bu set [İsi](#iroha-special-instructions-isi) kimi məntiqi göstərişləri ehtiva edir `If`, I/O ilə əlaqəli `Notify` və kimi kompozisiyalar `Sequence`. Onlar əsasən istifadə olunur [xüsusi təlimatlar](#custom-iroha-special-instruction).
+Bu [iş](#iroha-special-instructions-isi) dəsti `If` kimi məntiqi təlimatları, `Notify` kimi giriş/çıxış ilə əlaqəli və `Sequence` kimi tərkibləri ehtiva edir. Onlar əsasən [xüsusi təlimatlar](#custom-iroha-special-instruction) kimi istifadə olunur.
 
-### Əsas Iroha Xüsusi təlimatlar {#core-iroha-special-instructions}
+### Əsas Iroha Təlim əməliyyatları {#core-iroha-special-instructions}
 
-[Xüsusi təlimatlar](#iroha-special-instructions-isi) hər bir Iroha Bu, bəzi [domen xüsusiyyəti](#domain-specific-iroha-special-instructions) və [İstifadə qaydaları](#utility-iroha-special-instructions).
+[Xüsusi təlimatlar](#iroha-special-instructions-isi) hər Iroha yerləşdirilməsi ilə təmin edilir. Bunlara bəzi [domenə xas](#domain-specific-iroha-special-instructions) və həmçinin [kommunal təlimatlar](#utility-iroha-special-instructions) daxildir.
 
-### Döminə aid xüsusi təlimatlar Iroha {#domain-specific-iroha-special-instructions}
+### Sahə-spesifik Iroha Təlim əməliyyatları {#domain-specific-iroha-special-instructions}
 
-[World State View](#world-state-view-wsv)-də təhlükəsiz və etibarlı şəkildə dəyişikliklər etmək üçün lazımi vasitələri təmin edən domen xüsusi fəaliyyətləri ilə bağlı təlimatlar: aktivlər, hesablar, domenlər, həmkarların idarə edilməsi.
+Domenə xas fəaliyyətlərlə əlaqəli təlimatlar: aktivlər, hesablar, domenlər, şəbəkə bərabər idarəsi). Bunlar [Dünya Dövlət Görünüşü](#world-state-view-wsv)-də dəyişikliklər etmək üçün lazım olan alətləri təhlükəsiz və etibarlı şəkildə təmin edir.
 
-### Gömrük Iroha Xüsusi təlimat {#custom-iroha-special-instruction}
+### Xüsusi Iroha Xüsusi Təlimat {#custom-iroha-special-instruction}
 
-Müqavilədə göstərilən təlimatlar [Iroha Modullar](#iroha-modules), Müştərilər tərəfindən və ya üçüncü tərəflər tərəfindən qurula bilər. [Əsas təlimatlar](#core-iroha-special-instructions). Forking və modifikasiya Iroha Mənbə kodu tövsiyə edilmir, çünki xüsusi təlimatlar [həmyaşıdlar](#peer) bir Iroha tətbiqi səhv kimi qəbul ediləcək, belə ki, [həmyaşıdlar](#peer) Dəyişdirilmiş nümunəni icra etməklə onların girişinin ləğv edilməsi təmin edilir.
+[Iroha Modullar](#iroha-modules)-da verilmiş təlimatlar, müştərilər və ya üçüncü şəxslər tərəfindən. Bunlar yalnız [Əsas Təlimatlar](#core-iroha-special-instructions) istifadə edilərək yaradıla bilər. Iroha mənbə kodunu forkladmaq və dəyişdirmək tövsiyə edilmir, Təlimat əməliyyatları Iroha yerləşdirməsində [şəbəkə əlaqəliləri](#peer) tərəfindən razılaşdırılmamış kimi hesab ediləcək və səhv kimi qiymətləndiriləcək, beləliklə [şəbəkə əlaqəliləri](#peer) dəyişdirilmiş nümunəni işlədərkən onların girişi ləğv ediləcək.
 
-## Iroha Sual {#iroha-query}
+## Iroha Sorğu {#iroha-query}
 
-Dünya vəziyyətinə baxışını dəyişdirmədən oxumağı xahiş etmək. [Burada.](/az/blockchain/queries.md).
+Dünya Dövlət Baxışını dəyişdirmədən oxumaq üçün sorğu. Sorğular haqqında daha çox [burada](/az/blockchain/queries.md).
 
-## Görünüş dəyişikliyi {#view-change}
+## Baxış dəyişdir {#view-change}
 
-Konsensus əldə etmək cəhdinin uğursuz olması halında baş verən proses. Adətən bu, yeni [Liderin ](#leader) seçilməsini tələb edir.
+Razılığın əldə olunmaması halında baş verən proses. Adətən bu, yeni [Lider](#leader)-in seçilməsini nəzərdə tutur.
 
-## Dünya vəziyyətinə baxış (WSV) {#world-state-view-wsv}
+## Dünya dövlət baxışı (WSV) {#world-state-view-wsv}
 
-WSV -da `World`, bağlı blok həşləri, əməliyyat indeksləri, konsensus topologiyası və sorğularda istifadə olunan mənşəli indekslər var. Bu, yalnız bağlı bloklar vasitəsilə yenilənir və [Kura](#kura-warehouse) [World State View](/az/blockchain/world.md#world-state-view-wsv)-dən yenidən qurula bilər.
+Cari blokçeyn vəziyyətinin yaddaşdakı təmsil olunması. WSV `World`, yekunlaşdırılmış blok kriptoqrafik xəşləri, əməliyyat indekslərini ehtiva edir, razılaşma topologiyası və sorğular tərəfindən istifadə olunan törədilmiş indekslər. O yalnız yekunlaşdırılmış bloklar vasitəsilə yenilənir və [Kura](#kura-warehouse)-dən bərpa edilə bilər. Bax [Dünya Dövlət Görünüşü](/az/blockchain/world.md#world-state-view-wsv).
 
 ## Lider {#leader}
 
-Bir iroha şəbəkəsində bir həmyaşıd təsadüfi olaraq seçilir və növbəti blokun formalaşdırılması xüsusi imtiyazına malikdir. Bu imtiyaz [Byzantine səhv torelance ](#byzantine-fault-tolerance-bft) vasitəsilə əldə edən şəbəkələrdə ləğv edilə bilər [view change](#view-change).
+Bir Iroha şəbəkəsində, şəbəkə iştirakçısı təsadüfi olaraq seçilir və növbəti bloku yaratmaq üçün xüsusi bir imtiyaz verilir. Bu imtiyaz, [baxış dəyişiklik](#view-change) vasitəsilə [Bizans səhv dözümlülüyü](#byzantine-fault-tolerance-bft)-a çatmış şəbəkələrdə ləğv edilə bilər.

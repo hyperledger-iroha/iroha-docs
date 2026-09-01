@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # 配置 Iroha {#configuring-iroha}
 
-当地同行配置设置在 TOML 文件中.这与通过[`SetParameter`](/zh-hans/blockchain/instructions.md#setparameter)指令改变的链上配置不同.生产行为必须在一个配置文件或链上参数中表示;环境变量不是特征门
+当地对等节点配置设置在 TOML 文件中.这与通过[`SetParameter`](/zh-hans/blockchain/instructions.md#setparameter)指令改变的链上配置不同.生产行为必须在一个配置文件或链上参数中表示;环境变量不是特征门
 
 使用[`--config`](../iroha3d-cli#arg-config) CLI 参数来指定配置文件的路径.
 

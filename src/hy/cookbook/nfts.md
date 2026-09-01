@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /cookbook/nfts.md
-translation_source_hash: 5eb6a349b815afbac9717f7b44c499adc78b1280625388656015ff4b133b9085
+translation_source_hash: db99dab483d4e2fb3fd84be84f6e4ef9f8373f0c16eb2f34952f1232c4587561
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 ## Արդյունքը {#outcome}
 
-Վերլուծություն Taira NFT Պետք է գրանցել, թարմացնել, փոխանցել եւ հարցնել եզակի NFT Աշխատանքային հոսքը օգտագործվում է լիարժեք որակավորված `name$domain.dataspace` NFT ID եւ կանոնական I105 սեփականատեր IDs.
+Վերլուծություն Taira NFT Պետք է գրանցել, թարմացնել, փոխանցել եւ հարցում կատարել եզակի NFT Աշխատանքային հոսքը օգտագործվում է լիարժեք որակավորված `name$domain.dataspace` NFT ID եւ կանոնական I105 սեփականատեր IDs.
 
 ## Նախադրյալներ {#prerequisites}
 
@@ -30,11 +30,11 @@ curl -fsS -H 'Accept: application/json' \
   | jq '{total, nfts: [.items[] | {id, owned_by, content}]}'
 ```
 
-NFTs-ը եզակի արձանագրություններ են, այլ ոչ թե թվային հավասարակշռություն: Նրանք ունեն ID, մեկ սեփականատեր եւ համապարփակ `content` մետադատա քարտեզ:
+NFTs-ը եզակի արձանագրություններ են, այլ ոչ թե թվային մնացորդ: Նրանք ունեն ID, մեկ սեփականատեր եւ համապարփակ `content` մետադատա քարտեզ:
 
 ### 2. Պատրաստեք տեղական սեփականատիրոջը IDs {#_2-prepare-local-owner-ids}
 
-Գրելու օրինակում օգտագործվում է մուտքագրված `wonderland.universal` տիրույթը: Տեղեկացրեք կոնֆիգուրացված իշխանությունը ՝ առանց դրա մասնավոր բանալին բացահայտելու, ապա ընտրեք այլ գրանցված հաշիվ որպես փոխանցման նպատակակետ:
+Գրելու օրինակում օգտագործվում է մուտքագրված `wonderland.universal` տիրույթը: Տեղեկացրեք կոնֆիգուրացված լիազոր հաշիվը ՝ առանց դրա մասնավոր բանալին բացահայտելու, ապա ընտրեք այլ գրանցված հաշիվ որպես փոխանցման նպատակակետ:
 
 ```bash
 LOCAL_ROOT='http://127.0.0.1:8080'
@@ -63,7 +63,7 @@ NEW_OWNER="$(
 
 ### 3. Գրանցել NFT սկիզբական բովանդակությամբ {#_3-register-the-nft-with-initial-content}
 
-CLI կարդում է սկզբնական JSON օբյեկտը ստանդարտ մուտքից: Ներկայիս իշխանությունը դառնում է սեփականատերը:
+CLI կարդում է սկզբնական JSON օբյեկտը ստանդարտ մուտքից: Ներկայիս լիազոր հաշիվը դառնում է սեփականատերը:
 
 ```bash
 printf '%s\n' \
@@ -106,7 +106,7 @@ Taira-ում յուրաքանչյուր գրառման համար անհրաժե
 
 :::
 
-Պայմանագրային սեփականության աշխատանքային հոսքերի համար Kotodama բացատրում է տիպված NFT հյուրընկալող զանգերը: Ստորեւ բերվում է ճշգրիտ կենսաշրջանի պարամետրը, որը կազմվել եւ գործարկվել է փաթեթավորված IVM փաստաթղթերի թեստով:
+Պայմանագրային սեփականության աշխատանքային հոսքերի համար Kotodama բացատրում է տիպված NFT հյուրընկալող զանգերը: Ստորեւ բերվում է ճշգրիտ կենսաշրջանի թեստային տվյալները, որը կազմվել եւ գործարկվել է փաթեթավորված IVM փաստաթղթերի թեստով:
 
 ```kotodama
 seiyaku NftFlow {
@@ -134,7 +134,7 @@ seiyaku NftFlow {
 }
 ```
 
-Երկու ֆիքսված I105 արժեքները նախօրոք փորձարկման սարքավորումներ են: Հաշվիչը գրանցում է նպատակակետը մինչեւ կատարումը: Նրանք չեն `CURRENT_OWNER` եւ `NEW_OWNER` CLI անցնելուց հետո: Օգտագործման պայմանագրի համար տրամադրեք իր իսկական կանոնիկ հաշիվները, ապա կազմեք, փորձարկեք, տեղադրեք եւ զանգահարեք այն [Smart contracts](./smart-contracts.md) միջոցով: Մի ուղարկեք չվերանայված բայթ կոդը Taira, եւ հիշեք, որ պայմանագրի կատարումը դեռ անցնում է վազքի ժամանակի թույլտվությունը:
+Երկու ֆիքսված I105 արժեքները վերին նախագծի թեստային տվյալներն են, իսկ թեստային միջավայրը կատարումից առաջ գրանցում է նպատակային հաշիվը։ Դրանք CLI ուղեցույցի `CURRENT_OWNER` և `NEW_OWNER` արժեքները չեն։ Հավելվածի պայմանագրի համար տրամադրեք դրա իրական կանոնական հաշիվները, ապա [Խելացի պայմանագրերի](./smart-contracts.md) միջոցով կոմպիլացրեք, փորձարկեք, տեղակայեք և կանչեք այն։ Չստուգված բայթկոդ մի ուղարկեք Taira-ին. պայմանագրի կատարումը դեռ անցնում է գործարկման ժամանակի թույլտվություն։
 
 ## Փորձարկել {#verify}
 
@@ -162,9 +162,9 @@ jq -e --arg owner "$NEW_OWNER" \
 
 ## Աղբյուրը եւ դրա հետ կապված փաստաթղթերը {#source-and-related-docs}
 
-- [NFT ինտեգրման փորձարկումները փակված հանձնաժողովի վրա](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/nft.rs)
-- [Kotodama NFT հյուրընկալող զանգի փորձարկումները փակված պարտավորության վրա ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
-- [Ճշգրիտ Kotodama NFT կյանքի շրջանի ֆիքսումը փակված հանձնաժողովում](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/docs/examples/12_nft_flow.ko):
+- [NFT ինտեգրման փորձարկումները փակված commit-ի վրա](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/nft.rs)
+- [Kotodama NFT հյուրընկալող զանգի փորձարկումները փակված commit վրա ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
+- [Ճշգրիտ Kotodama NFT կյանքի շրջանի թեստային տվյալները փակված commit-ում](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/docs/examples/12_nft_flow.ko):
 - [NFTs](/hy/blockchain/nfts.md)
 - [Մետադատա](/hy/blockchain/metadata.md)
 - [հրահանգներ](/hy/blockchain/instructions.md)

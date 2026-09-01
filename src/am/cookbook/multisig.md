@@ -1,24 +1,24 @@
 ---
 translation_locale: am
 translation_source: /cookbook/multisig.md
-translation_source_hash: 9654923faf6c84dfd21a428ebe3c53dbd074b8e3274c12c8aa41bf31884686f7
+translation_source_hash: e1b57e1c4310dd0db8be8d9f5a15e1d4f693abb90b634772857eb4b1e86e4baf
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # ክብደት ያለው Multisig {#weighted-multisig}
 
-## ውጤቱ {#outcome}
+## ውጤት {#outcome}
 
-በ Taira ላይ የሦስት አባላት ክብደት ያለው ባለብዙ-ሲግ መለያ ይመዝገቡ ፣ ሜታዳታ መመሪያ ያቅርቡ ፣ ለቁጥር ብዛት ለመሟላት በቂ ክብደትን ያጸድቁ እና ከ multisig መለያው ሁኔታ አፈፃፀምን ያረጋግጡ።
+በ Taira ላይ ባለ ሶስት አባላት ክብደት ያለው ባለብዙ ሲግ መለያ ያስመዝግቡ፣ የሜታዳታ መመሪያን ያቅርቡ፣ ምልአተ ጉባኤውን ለማሟላት በቂ ክብደት ያጽድቁት እና ከመልቲሲግ መለያ ሁኔታ አፈፃፀሙን ያረጋግጡ።
 
 ## ቅድመ ሁኔታዎች {#prerequisites}
 
-- በ `SIGNER_A` ፣ `SIGNER_B` እና `SIGNER_C` ውስጥ ሶስት የካኖኒክ I105 ፊርማዎች IDs ።
-- ለፊርማ ሰጪዎች A እና C የገንዘብ ድጋፍ የተደረገላቸው Taira ቅንብሮች. አቅራቢው እና እያንዳንዱ አጽድቃዊ ለግል ግብይቱ ይከፍላሉ.
-- `taira.tx-metadata.json` የተገነባው ከአሁኑ የቧንቧ ምላሽ ፣ በጭራሽ ከኮፒ የተደረገ ክፍያ ንብረት ID አይደለም።
-- ሀ Rust የደንበኛ ፕሮጀክት ተመሳሳይ ላይ ተጣብቋል Iroha እንደ ምንጭ ማሻሻያ Taira ለደንበኝነት ምዝገባ ደረጃ የኋለኛው ፕሮፖዛል እና ማጽደቅ ደረጃዎች CLI.
-- የአሁኑ አስፈፃሚ ባለብዙ ፊርማ ባህሪ ተቀባይነት አግኝቷል ። ምዝገባ መደበኛ ሂሳቦች በነባሪው Iroha 3 አሂድ ጊዜ ውስጥ ይገኛል ፣ ምንም እንኳን Taira ፖሊሲ እና የክፍያ መግቢያ አሁንም ይተገበራሉ ፤ የህዝብ ትግበራ ከከለከለው አካባቢያዊ ኔት ይጠቀሙ።
+- በ `SIGNER_A`፣ `SIGNER_B` እና `SIGNER_C` ውስጥ ሶስት ነጠላ ፕሮቶኮል-ስታንዳርድ I105 ፈራሚ መታወቂያዎች።
+- በገንዘብ የተደገፈ Taira ውቅሮች ለምስጠራ ፈራሚዎች A እና C። ፕሮፖዛል እና እያንዳንዱ አጽዳጊ ለራሳቸው ግብይት ይከፍላሉ።
+- `taira.tx-metadata.json` አሁን ካለው የቴስትኔት የገንዘብ ድጋፍ አገልግሎት ምላሽ የተገነባ፣ ከተገለበጠ የክፍያ ንብረት መታወቂያ በጭራሽ።
+- A Rust የደንበኛ ፕሮጀክት በተመሳሳይ ላይ ተጣብቋል Iroha ምንጭ ክለሳ እንደ Taira ለመመዝገቢያ ደረጃ. የኋለኛው ፕሮፖዛል እና የማጽደቅ ደረጃዎች CLI.
+- የአሁኑ አስፈፃሚ ባለብዙ ሲግ ባህሪ ነቅቷል። ምዝገባው በነባሪው Iroha 3 የሶፍትዌር ማስፈጸሚያ አካባቢ ውስጥ ለተራ መለያዎች ይገኛል፣ ምንም እንኳን Taira ፖሊሲ እና ክፍያ መግቢያ አሁንም ተፈጻሚ ይሆናል። የህዝብ ማሰማራቱ ከከለከለ localnetን ይጠቀሙ።
 
 ```bash
 SIGNER_A_CONFIG=./taira.signer-a.toml
@@ -31,9 +31,9 @@ test -n "$SIGNER_C"
 
 ## እርምጃዎች {#steps}
 
-### 1. ክብደት ያለው ፖሊሲ መመዝገብ {#_1-register-a-weighted-policy}
+### 1. ክብደት ያለው ፖሊሲ ይመዝገቡ {#_1-register-a-weighted-policy}
 
-ፊርማ C ክብደት 2 አለው; A እና B እያንዳንዳቸው ክብደት 1 አላቸው. ስለዚህ የ 3 ጥራዝ C ን ይጨምራል ወይም A ወይም B. ከመመዝገብዎ በፊት ትክክለኛውን ፖሊሲ ከካኖኒካል ሂሳብ ማውጣት, ከዚያም ተመሳሳይ ዋጋ ወደ `MultisigRegister::with_account` ማስተላለፍ:
+ክሪፕቶግራፊክ ፈራሚ C ክብደት አለው 2; A እና B እያንዳንዳቸው ክብደት 1 አላቸው. ስለዚህ የ 3 ምልአተ ጉባኤ C ሲደመር A ወይም B ያስፈልገዋል. ከመመዝገቡ በፊት ነጠላ ፕሮቶኮል-ደረጃውን የጠበቀ መለያ ከዚያ ትክክለኛ ፖሊሲ ያውጡ እና ከዚያ ተመሳሳይ እሴት ወደ `MultisigRegister::with_account` ያስተላልፉ -
 
 ```rust
 use std::{collections::BTreeMap, num::{NonZeroU16, NonZeroU64}};
@@ -84,18 +84,18 @@ registrar.submit_blocking::<InstructionBox>(
 println!("{}", multisig_account.canonical_i105()?);
 ```
 
-ለ CLI ደረጃዎች የታተመውን ዋጋ ያስቀምጡ:
+የታተመውን ዋጋ ለ CLI ደረጃዎች ያስቀምጡ
 
 ```bash
 MULTISIG_ACCOUNT='<POLICY_DERIVED_I105_ACCOUNT_ID>'
 test -n "$MULTISIG_ACCOUNT"
 ```
 
-በተጣራው ኮሚቴ ላይ የ CLI የምዝገባ ትዕዛዝ ጊዜያዊ ዘሩን ከመጫኑ በፊት ያትማል. ያንን ዘርን እንደ ተቆጣጣሪ ዳግም አይጠቀሙበት። የተቆጣጣሪ የግል ቁልፍ የለም: multisig ባለስልጣን ከፀደቁ ጥቆማዎች ብቻ ነው የሚመጣው።
+በተሰካው የምንጭ ኮድ ክለሳ፣ የ CLI የምዝገባ ትዕዛዙ የሶፍትዌር ማስፈጸሚያ አካባቢ እንደገና ከመክፈቱ በፊት ጊዜያዊ ዘሩን ያትማል። ያንን ዘር እንደ ተቆጣጣሪው እንደገና አይጠቀሙበት። የመቆጣጠሪያ የግል ቁልፍ የለም የባለብዙ ሲግ የፈቃድ ባለቤት የሚመጣው ከጸደቁ ሀሳቦች ብቻ ነው።
 
-### 2. አንድን መመሪያ ሳትሰጡ መገንባት {#_2-build-one-instruction-without-submitting-it}
+### 2. አንድ መመሪያ ሳያስገቡ ይገንቡ {#_2-build-one-instruction-without-submitting-it}
 
-ዓለም አቀፋዊው `-o` ማቀነባበሪያ የመመሪያ ቅጥያውን ወደ መደበኛ ውፅዓት ያደርሳል ። ግብይት አያቀርብም እናም ስለሆነም ምንም ክፍያ አይወጣም።
+ዓለም አቀፋዊ `-o` ማብሪያ / ማጥፊያ የመመሪያ ድርድርን ወደ መደበኛ ውፅዓት ተከታታይ ያደርገዋል። ግብይት አያቀርብም እና ስለዚህ ምንም ክፍያ አያወጣም።
 
 ```bash
 printf '"approved"\n' |
@@ -108,9 +108,9 @@ printf '"approved"\n' |
 jq . multisig-instructions.json
 ```
 
-### 3. እንደ ፊርማ A ያቅርቡ {#_3-propose-as-signer-a}
+### 3. እንደ ምስጠራ ፈራሚ ሀ ያቅርቡ {#_3-propose-as-signer-a}
 
-አቅራቢው በራስ-ሰር የራሱን ክብደት ይጨምራል. በ CLI የታተመውን ትክክለኛ መመሪያ ሃሽ ያግኙ; ማጽደቂያዎች በዚያ ሀሽ ጋር ይጣመራሉ.
+ፕሮፖዛሉ በራስ-ሰር የራሱን ክብደት ያበረክታል። በ CLI የታተመውን ትክክለኛውን መመሪያ ምስጠራ ሃሽ ይያዙ; ማጽደቆች ከዚያ ምስጠራ ሃሽ ጋር ይጣመራሉ።
 
 ```bash
 PROPOSE_OUTPUT="$({
@@ -132,16 +132,16 @@ INSTRUCTIONS_HASH="$({
 test -n "$INSTRUCTIONS_HASH"
 ```
 
-አሁንም በሂደት ላይ ያለውን ሀሳብ በግልጽ የተወሰነ ምርጫ ጋር ዘርዝሩ:
+አሁንም በመጠባበቅ ላይ ያለውን ፕሮፖዛል በግልጽ ውሱን መራጭ ይዘርዝሩ -
 
 ```bash
 iroha --config "$SIGNER_A_CONFIG" ledger multisig list all \
   --multisig-selector "$MULTISIG_ACCOUNT"
 ```
 
-### 4. እንደ ፊርማ C ተቀባይነት ያግኙ። {#_4-approve-as-signer-c}
+### 4. እንደ ምስጠራ ፈራሚ C ያጽድቁ {#_4-approve-as-signer-c}
 
-የ A ክብደት 1 እና C ክብደት 2 quorum 3 ይደርሳል እና multisig ሂሳብ እንደ የቀረበውን መመሪያ ይፈጽማል.
+የ A ክብደት 1 ሲደመር C ክብደት 2 ምልአተ ጉባኤ 3 ላይ ደርሷል እና የታቀደውን መመሪያ እንደ መልቲሲግ መለያ ያስፈጽማል።
 
 ```bash
 iroha --config "$SIGNER_C_CONFIG" \
@@ -152,7 +152,7 @@ iroha --config "$SIGNER_C_CONFIG" \
   --instructions-hash "$INSTRUCTIONS_HASH"
 ```
 
-Rust ደንበኛው ከላይ ከተጠቀሱት ሁለት የሕይወት ዑደት መመሪያዎች ጋር ተመሳሳይ የፖሊሲ-መነጭ ሂሳብን መቀጠል ይችላል:
+የ Rust ደንበኛ በተመሳሳይ ፖሊሲ የተገኘ መለያ እና ከላይ በተጠቀሱት ሁለት የህይወት ኡደት መመሪያዎች መቀጠል ይችላል።
 
 ```rust
 let instructions = vec![SetKeyValue::account(
@@ -171,9 +171,9 @@ signer_c_client.submit_blocking::<InstructionBox>(
 )?;
 ```
 
-## ያረጋግጡ {#verify}
+## አረጋግጥ {#verify}
 
-የፖስታ መግለጫውን አንብቡ እና ሀሳቡ ከእንግዲህ እየተካሄደ እንዳልሆነ ያረጋግጡ:
+የድህረ-ግዛቱን ያንብቡ እና ፕሮፖዛሉ በመጠባበቅ ላይ እንዳልሆነ ያረጋግጡ -
 
 ```bash
 iroha --config "$SIGNER_A_CONFIG" ledger account meta get \
@@ -189,21 +189,21 @@ iroha --config "$SIGNER_A_CONFIG" ledger multisig inspect \
   jq .
 ```
 
-የሜታዳታ እሴት መሆን አለበት `"approved"`, የተያዘው መመሪያ ሃሽ ከአሁን በኋላ እንደተጠበቀ ሆኖ መታየት የለበትም ፣ እና የተመረመረው ተቆጣጣሪ ክብደቶችን ማሳየት አለበት። `1, 1, 2` በቅደም ተከተል `3`.
+የሜታዳታ እሴቱ `"approved"` መሆን አለበት፣ የተያዘው መመሪያ ምስጠራ ሃሽ ከአሁን በኋላ በመጠባበቅ ላይ ሆኖ መታየት የለበትም፣ እና የተፈተሸው ተቆጣጣሪ ክብደቶችን `1, 1, 2` ከሸአተ ጉባኤ `3` ጋር ማሳየት አለበት።
 
-## ችግሮችን መፍታት {#troubleshooting}
+## መላ ፍለጋ {#troubleshooting}
 
-- `signatory is not part of multisig` የሚጠቁመው ወይም የሚያፀድቀው ደንበኛ በፖሊሲው ውስጥ ከተመዘገቡት I105 IDs አንዱ ጋር አይዛመድም.
-- አንድ ባለብዙ ፊርማ መለያ የቀረቡትን መመሪያዎች ለማከናወን ፍቃድ በሌለበት ጊዜ የመጨረሻው ማጽደቅ ውድቅ ሊደረግ ይችላል። ለባለብዙ ፊርሙ መለያ ብቻ ሳይሆን ለተቀሩት ፊርማ ፈላጊዎች ስልጣን ይስጡ.
-- አንድ የጎደለው የተጠበቀ ሀሳብ ቀድሞውኑ አቻነት ደርሷል ማለት ሊሆን ይችላል, TTL ጊዜው አልፏል, ወይም የተሳሳተ መመሪያ ሃሽ / መለያ ምርጫ ተጠቅሟል.
-- ዕጥፍ ማረጋገጫዎች ክብደት አይጨምሩም። እያንዳንዱ የተመዘገበ ፊርማ ሰጪ በዋነኝነት አንድ ጊዜ የተቀየረውን ክብደቱን ያቀርባል.
-- እንደተቆጣጣሪው መደበኛ ግብይትን በቀጥታ መፈረም የተከለከለ ነው። ሁልጊዜ `MultisigPropose` እና `MultisigApprove` ይጠቀሙ።
-- የኋለኛው ትዕዛዞች CLI ምዝገባ ወቅት የታተመውን መለያ ማግኘት ካልቻሉ ጊዜያዊ ዘርን ተይዘዋል ። ካኖኒካዊ ሂሳቡን ከታዘዘው ፖሊሲ ማውጣት እና ከላይ እንደተመለከተው በዚያ ዋጋ መመዝገብ።
+- `signatory is not part of multisig` ማለት ሀሳብ ያቀረበው ወይም የሚያፀድቀው ደንበኛ በፖሊሲው ውስጥ ከተመዘገቡት I105 መታወቂያዎች ጋር አይዛመድም ማለት ነው።.
+- የብዝሃ መለያው የታቀዱትን መመሪያዎች ለማስፈጸም ፍቃድ ከሌለው የመጨረሻው ማጽደቅ ውድቅ ሊደረግ ይችላል። ለግለሰብ ምስጠራ ፈራሚዎች ብቻ ሳይሆን ለመልቲሲግ መለያ የፈቃድ ባለቤትን ይስጡ እና ከዚያ የቀረው ምስጠራ ፈራሚ እንደገና እንዲሞክር ያድርጉ።
+- የጎደለ በመጠባበቅ ላይ ያለ ፕሮፖዛል ምልአተ ጉባኤው አስቀድሞ ደርሷል፣ TTL ጊዜው አልፎበታል ወይም የተሳሳተ መመሪያ ሃሽ/መለያ መራጭ ጥቅም ላይ ውሏል ማለት ነው። እንደገና ከማቅረቡ በፊት የድህረ-ግዛቱን ይጠይቁ።
+- የተባዙ ማጽደቆች ክብደት አይጨምሩም። እያንዳንዱ የተመዘገበ ፈራሚ የተዋቀረውን ክብደት ቢበዛ አንድ ጊዜ ያበረክታል።
+- መቆጣጠሪያው የተከለከለ ስለሆነ መደበኛ ግብይት በቀጥታ መፈረም። ሁልጊዜ `MultisigPropose` እና `MultisigApprove` ይጠቀሙ።
+- በኋላ ላይ ትዕዛዞች በ CLI ምዝገባ ወቅት የታተመውን መለያ ማግኘት ካልቻሉ ጊዜያዊ ዘሩን ያዙት። ነጠላ ፕሮቶኮል-ደረጃውን የጠበቀ መለያ ከታዘዘው ፖሊሲ ያውጡ እና ከላይ እንደሚታየው በዚያ ዋጋ ይመዝገቡ።
 
 ## ምንጭ እና ተዛማጅ ሰነዶች {#source-and-related-docs}
 
-- [በፒን የተቀመጠ ኮሚቴ ላይ Multisig ውህደት ሙከራዎች ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/multisig.rs)
-- [በፒን የተደረገባቸው ውሂብ ሞዴል ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/isi.rs)
-- [CLI በተሰቀለ ኮሚቴ ላይ ባለብዙ ምልክት ትግበራ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
+- [በተሰካው የምንጭ-ኮድ ክለሳ ላይ የመልቲሲግ ውህደት ሙከራዎች](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/multisig.rs)
+- [Multisig የውሂብ ሞዴል በተሰካው የምንጭ-ኮድ ክለሳ ላይ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/isi.rs)
+- [CLI በተሰካው የምንጭ-ኮድ ክለሳ ላይ ባለብዙ SIG ትግበራ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
 - [ግብይቶች](/am/blockchain/transactions.md)
-- [ፍቃዶች እና ሚናዎች](./permissions-and-roles.md)
+- [ፈቃዶች እና ሚናዎች](./permissions-and-roles.md)

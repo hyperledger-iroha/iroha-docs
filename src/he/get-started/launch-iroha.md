@@ -10,17 +10,17 @@ translation_engine: nllb-200-ct2
 
 דף זה מעביר את זרימת הרשת המקומית הנוכחית עבור Iroha 3 באמצעות נכסי החלל העבודה המקובלים מהמחסן העליון.
 
-## 1. ליצור רשת מקומית מרוב עמיתים {#_1-generate-a-local-multi-peer-network}
+## 1. ליצור רשת מקומית מרוב צמתים {#_1-generate-a-local-multi-peer-network}
 
-לייצר רשת מקומית של ארבעה משותפים מתוך הקוד הנוכחי Kagami:
+לייצר רשת מקומית של ארבעה צמתים מתוך הקוד הנוכחי Kagami:
 
 ```bash
 cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-תיווך ההוצא מכיל קונפיגציות עמיתות מתאימות, `genesis.json`, `genesis.signed.nrt`, `client.toml` וסריפטים של עוזר.
+תיווך ההוצא מכיל קונפיגציות הצומת שלות מתאימות, `genesis.json`, `genesis.signed.nrt`, `client.toml` וסריפטים של עוזר.
 
-עבור בדיקת עשן מקומית, תתחילו את העמיתים המובילים ישירות:
+עבור בדיקת עשן מקומית, תתחילו את הצמתים המובילים ישירות:
 
 ```bash
 ./localnet/start.sh
@@ -39,7 +39,7 @@ cargo run --bin kagami -- docker \
 docker compose -f ./docker-compose.yml up
 ```
 
-הסטק המוצא בד default חושף:
+המערך שנוצר כברירת מחדל חושף:
 
 - דלתות P2P `1337` ל- `1340`
 - דלתות Torii HTTP `8080` ל `8083`
@@ -47,7 +47,7 @@ docker compose -f ./docker-compose.yml up
 
 ## 2. בדוק אם הרשת פועלת {#_2-verify-that-the-network-is-up}
 
-בדוק את נקודת הסיום של המצב על הדירוג הראשון:
+בדקו את נקודת הקצה של המצב בצומת הראשון:
 
 ```bash
 curl http://127.0.0.1:8080/status
@@ -69,7 +69,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 
 האספקה שולחת גם פרופיל קונפיגציה של SORA Nexus תחת `defaults/nexus/`.
 
-כדי להפעיל עמיתי ילידי עם הפרופיל Nexus:
+כדי להפעיל צומתי native עם הפרופיל Nexus:
 
 ```bash
 ./target/release/iroha3d --sora --config ./defaults/nexus/config.toml

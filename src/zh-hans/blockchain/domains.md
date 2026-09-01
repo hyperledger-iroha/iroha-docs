@@ -25,11 +25,11 @@ domain.dataspace
 - `metadata`:任意的关键值元数据
 - `owned_by`:域名所有权的账户,通常是注册该域名的帐户
 
-启动带有效载荷用于实现域名是 `NewDomain`.它携带`id`,可选 `logo`和初始 `metadata`.运行时间从权威填写`owned_by`.普通客户不会直接提交这种有效载荷.
+启动带有效载荷用于实现域名是 `NewDomain`.它携带`id`,可选 `logo`和初始 `metadata`.运行时从授权主体填写`owned_by`.普通客户不会直接提交这种有效载荷.
 
 ## 登记 {#registration}
 
-通常的域名创建使用声明别名设置流程.这将 SNS 租协议,所有者功能,报价保护和域名行保持在一个原子 `EnsureAlias`交易中.`Register::Domain`仍然是基因/bootstrap表面,并且`ledger domain`命令没有`register`子命令.
+通常的域名创建使用声明别名设置流程.这将 SNS 租协议,所有者功能,报价保护和域名行保持在一个原子 `EnsureAlias`交易中.`Register::Domain`仍然是创世/bootstrap表面,并且`ledger domain`命令没有`register`子命令.
 
 通过 SDK 或登录服务创建一个无秘密的 `AliasSetupPlanRequestV1` 意图,然后让 CLI 与现实状态进行计划,并提交那个准确的计划:
 
@@ -45,9 +45,9 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
 ```
 
-意图确定`payments.universal`,其数值数据空间,正规 I105 所有者,租收购期限以及当前的政策/支付报价监护人.规划者终点是 `POST /v1/aliases/setup/plan`;其返回的计划是链,权威,州和截止日期.域移除仍然使用[`Unregister`](/zh-hans/blockchain/instructions.md#un-register).
+意图确定`payments.universal`,其数值数据空间,规范 I105 所有者,租收购期限以及当前的政策/支付报价监护人.规划者端点是 `POST /v1/aliases/setup/plan`;其返回的计划是链,授权主体,州和截止日期.域移除仍然使用[`Unregister`](/zh-hans/blockchain/instructions.md#un-register).
 
-创建或删除域名需要在主动运行时间验证器下获得适当的域管理权限. 当当局有权修改该域名时,域名元数据可以通过 [`SetKeyValue`和 `RemoveKeyValue`](/zh-hans/blockchain/instructions.md#setkeyvalue-removekeyvalue)更新.
+创建或删除域名需要在主动运行时验证器下获得适当的域管理权限. 当权限主体有权修改该域名时,域名元数据可以通过 [`SetKeyValue`和 `RemoveKeyValue`](/zh-hans/blockchain/instructions.md#setkeyvalue-removekeyvalue)更新.
 
 ## 在 Taira 试看. {#try-it-on-taira}
 
@@ -67,9 +67,9 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
     | @tsv'
 ```
 
-在应用程序需要检查域名是否存在时使用第一个命令.在需要确认数据空间是否是公开,限制或落后于核心线路时,使用行径目录.
+在应用程序需要检查域名是否存在时使用第一个命令.在需要确认数据空间是否是公开,限制或落后于核心线路时,使用通道目录.
 
-域名设置是一个付费的写作. Taira, 拯救水龙头助手 [获取测试网 XOR 在 Taira](/zh-hans/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) 作为 `taira_faucet_claim.py`, 通过公共水龙头为签署者提供资金,并附加费用元数据:
+配置域是一项需要付费的写入操作。在 Taira 上尝试之前，请将在[在 Taira 上获取测试网 XOR](/zh-hans/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)中提供的水龙头辅助脚本保存为 `taira_faucet_claim.py`，通过公共水龙头为签名者充值，并附加费用元数据：
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'

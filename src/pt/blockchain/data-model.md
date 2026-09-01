@@ -3,19 +3,19 @@ translation_locale: pt
 translation_source: /blockchain/data-model.md
 translation_source_hash: 147562d2286bf11e60a941969e6d52bffc1534c3cfc04d440e0bcf78598a1ca7
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Modelo de dados {#data-model}
+# Modelo de Dados {#data-model}
 
-Iroha armazena o estado do livro-razão no `World`. O modelo de dados da primeira edição utiliza as seguintes identidades e entidades canônicas:
+Iroha armazena o estado do livro-razão da blockchain no `World`. Seu modelo de dados da primeira versão utiliza as seguintes identidades e entidades canônicas:
 
-- Os domínios são qualificados para o espaço de dados, por exemplo `payments.universal`
-- As contas são canônicas e sem domínio; a conta ID é derivada do responsável pelo controlo da conta.
-- As definições de ativos podem manter uma projeção de domínio/nome, mas o seu endereço textual canônico é um identificador Base58 opaco
-- Ativos são saldos detidos por contas para uma definição específica de ativo.
-- NFTs são registos de propriedade exclusiva com conteúdo de metadados e domínio-qualified IDs
-- RWAs são gerados-ID lotes que representam ativos fora da cadeia com controle do proprietário atual, quantidade, proveniência, metadados, reservas, congelamento e ciclo de vida.
+- os domínios são qualificados por espaço de dados, por exemplo `payments.universal`
+- as contas são canônicas e sem domínio; o ID da conta é derivado do controlador da conta
+- definições de ativos podem manter uma projeção de domínio/nome, mas seu endereço textual canônico é um identificador opaco Base58
+- ativos são saldos mantidos por contas para uma definição específica de ativo
+- NFTs são registros exclusivamente possuídos com IDs qualificados por domínio e conteúdo de metadados
+- RWAs são lotes de ID gerados que representam ativos fora da cadeia com proprietário atual, quantidade, proveniência, metadados, retenções, congelamentos e controles de ciclo de vida
 
 ```mermaid
 classDiagram
@@ -85,7 +85,7 @@ Rwa --> Account : owned_by
 
 ## Exemplo {#example}
 
-Em uma rede Iroha 3, `wonderland.universal` é um domínio dentro do espaço de dados `universal`. As contas canônicas neste exemplo são controladas por suas chaves ou políticas e codificadas como conta sem domínio I105 IDs. Rótulos legíveis como `alice@wonderland.universal` são alias separados ligados a esses IDs. Uma definição de ativo projetada ainda pode ser construída a partir de um domínio e nome, como `rose` em `wonderland.universal`, enquanto o endereço canônico de definição do ativo utilizado no fio é o endereçamento Base58 gerado.
+Em uma rede Iroha 3, `wonderland.universal` é um domínio dentro do espaço de dados `universal`. As contas canônicas neste exemplo são controladas por suas chaves ou políticas e codificadas como IDs de conta I105 sem domínio. Rótulos legíveis, como `alice@wonderland.universal`, são aliases separados vinculados a esses IDs. Uma definição de ativo projetado ainda pode ser construída a partir de um domínio e nome, como `rose` em `wonderland.universal`, enquanto o endereço da definição de ativo canônica usado na transmissão do protocolo é o endereço Base58 gerado.
 
 ```mermaid
 classDiagram
@@ -112,34 +112,34 @@ account_alice --> asset_rose : holds balance
 account_rabbit --> asset_rose : may receive balance
 ```
 
-## Alias {#aliases}
+## Apelidos {#aliases}
 
-Os pseudónimos são nomes de pessoas em camadas sobre identificadores canônicos do livro maior. Eles são úteis nos limites API, CLI, carteira e explorador, mas os identificadores canónicos IDs permanecem os identificadores estáveis armazenados em campos rígidos do livro maior .
+Aliases são nomes voltados para humanos sobrepostos aos identificadores canônicos do livro-razão da blockchain. Eles são úteis em API, CLI, carteiras e limites de exploradores, mas os IDs canônicos continuam sendo os identificadores estáveis armazenados em campos rigorosos do livro-razão da blockchain.
 
-|Alvo .|Alvo canônico |Alias literalmente |Modelo de apoio |
+|Alvo| Alvo canônico |Também literal|Modelo de suporte|
 | -------------- | --------------------------------------------------- | ------------------------------------------------------ | ----------------------------------------------------------------------------- |
-|Conta de utilizador |sem domínio `AccountId` codificado como endereço de I105 |`name@domain.dataspace` ou `name@dataspace` |`AccountAlias`; alias primário é `Account.label`, aliases extras são vinculativos |
-|Definição de activos |canônico `AssetDefinitionId` Endereço Base58 |`name#domain.dataspace` ou `name#dataspace` |`AssetDefinitionAlias` vinculado a uma definição de ativo |
-|Contrato |canônica Bech32m `ContractAddress` |`name::domain.dataspace` ou `name::dataspace` |`ContractAlias` vinculado a um endereço de contrato implantado |
-|Nome de domínio |`DomainId` em formato `domain.dataspace` |`domain.dataspace` |SNS `domain` Registo do espaço de nomes |
-|Nome do espaço de dados |Número `DataSpaceId` do catálogo ativo Nexus |Alias de espaço de dados, como `universal`, `paynet` ou `zk` |SNS `dataspace` registro do espaço de nomes mais o catálogo ativo do espaço de dados |
+|Conta de usuário|domínio sem `AccountId` codificado como um endereço I105| `name@domain.dataspace` ou `name@dataspace`            | `AccountAlias`; alias principal é `Account.label`, aliases extras são bindings |
+|Definição de ativo|endereçamento Base58 canônico `AssetDefinitionId`| `name#domain.dataspace` ou `name#dataspace`            |`AssetDefinitionAlias` vinculado a uma definição de ativo|
+|Contrato|Bech32m canônico `ContractAddress`| `name::domain.dataspace` ou `name::dataspace`          | `ContractAlias` vinculado a um endereço de contrato implantado|
+|Nome de domínio| `DomainId` em `domain.dataspace` forma               | `domain.dataspace`                                    | SNS `domain` registro de namespace                                                 |
+|Nome do espaço de dados|numérico `DataSpaceId` do catálogo ativo Nexus|alias de espaço de dados como `universal`, `paynet` ou `zk`| SNS `dataspace` registro de namespace mais o catálogo de espaço de dados ativo|
 
-Os pseudónimos de conta são os nomes das contas orientadas para o usuário. Eles sobrevivem à redefinição da conta porque os pseudônimos apontam para a conta ativa ID através de índices do estado mundial e registros de redefinição de conta. Use `SetPrimaryAccountAlias` para o rótulo primário da conta, `SetAccountAliasBinding` para os pseudónimos não primários adicionais e `FindAccountByAlias` ou `FindAliasesByAccountId` para as leituras. Os pseudônimos da conta normalmente exigem um contrato de arrendamento activo do pseudónimo da conta SNS adquirido com `AcquireAccountAliasLease` e renovado com `RenewAccountAliasLease`.
+Aliases de conta são os nomes de conta visíveis ao usuário. Eles permanecem mesmo após a mudança de chave da conta porque o alias aponta para o ID da conta ativa através de índices do estado global e registros de mudança de chave da conta. Use `SetPrimaryAccountAlias` para o rótulo principal da conta, `SetAccountAliasBinding` para aliases adicionais não principais, e `FindAccountByAlias` ou `FindAliasesByAccountId` para leituras. Aliases de conta normalmente requerem um aluguel de alias de conta ativo SNS adquirido com `AcquireAccountAliasLease` e renovado com `RenewAccountAliasLease`.
 
-Ativos aliases nome definições de ativos, não saldos de contas individuais. Os pseudónimos dos ativos são definidos com `SetAssetDefinitionAlias`; o segmento de nome do pseudônimo deve corresponder ao nome de exibição da definição do ativo ou ao nome da definição projetada. Os pseudônimos dos contratos são definidos em `SetContractAlias`; o espaço de dados do pseudônomo deve corresponsar ao espaço de dados codificado no endereço do contrato. Ambas as ligações podem transportar `lease_expiry_ms`; após a expiração, elas deixam de se resolver quando a janela de graça passa e são varridas dos índices de estados mundiais.
+Aliases de ativos nomeiam definições de ativos, não saldos individuais de contas. Aliases de ativos e aliases de contrato são ligações diretas de um nome legível para um destino canônico existente. Os aliases de ativos são definidos com `SetAssetDefinitionAlias`; o segmento do nome do alias deve corresponder ao nome de exibição da definição do ativo ou ao nome da definição projetada. Os aliases de contrato são definidos com `SetContractAlias`; o alias dataspace deve corresponder ao dataspace codificado no endereço do contrato. Ambas as vinculações podem carregar `lease_expiry_ms`; após a expiração, elas deixam de resolver quando a janela de carência termina e são removidas dos índices do estado mundial.
 
-Os domínios não possuem um objeto `DomainAlias` separado. Um identificador de domínio já é um nome qualificado pelo espaço de dados, como `payments.universal`. SNS acompanha a propriedade do arrendamento dos nomes de domínio no espaço de nomes `domain` e para os alias do espaço de dados no espaço de nome `dataspace`. O alias `universal` de espaço de dados reservado deve permanecer definido.
+Domínios não possuem um objeto `DomainAlias` separado. Um identificador de domínio já é um nome qualificado por espaço de dados, como `payments.universal`. SNS rastreia a propriedade do aluguel para nomes de domínio no namespace `domain` e para aliases de espaço de dados no namespace `dataspace`. O alias de espaço de dados reservado `universal` deve permanecer definido.
 
 ## Documentos relacionados {#related-docs}
 
-|Tópico .|Para onde ir ?|
+| Tópico                                  |Para onde ir|
 | -------------------------------------- | ------------------------------------------- |
-|Domínios | [Domínios](/pt/blockchain/domains.md) |
-|Contas | [Contas](/pt/blockchain/accounts.md) |
-|Ativos | [Ativos](/pt/blockchain/assets.md) |
-|NFTs | [NFTs](/pt/blockchain/nfts.md)|
-|Ativos reais | [Ativos do mundo real](/pt/blockchain/rwas.md) |
-|Metadados | [Metadados](/pt/blockchain/metadata.md) |
-|Instruções de registo e transferência | [Instruções](/pt/blockchain/instructions.md) |
-|Permissões de execução | [Permissões ](/pt/blockchain/permissions.md) |
-|Regras de nomeação | [Regras de nomeação](/pt/reference/naming.md) |
+|Domínios| [Domínios](/pt/blockchain/domains.md)           |
+|Contas| [Contas](/pt/blockchain/accounts.md)         |
+|Ativos| [Ativos](/pt/blockchain/assets.md)             |
+| NFTs                                   | [NFTs](/pt/blockchain/nfts.md)                 |
+|Ativos do mundo real| [Ativos do Mundo Real](/pt/blockchain/rwas.md)    |
+|Metadados| [Metadados](/pt/blockchain/metadata.md)         |
+|Instruções de registro e transferência| [Instruções](/pt/blockchain/instructions.md) |
+|permissões de tempo de execução do software| [Permissões](/pt/blockchain/permissions.md)   |
+|Regras de nomenclatura| [Regras de nomenclatura](/pt/reference/naming.md)        |

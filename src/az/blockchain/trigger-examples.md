@@ -3,25 +3,25 @@ translation_locale: az
 translation_source: /blockchain/trigger-examples.md
 translation_source_hash: d40a0298466fdcbd30a9fdff979887b033e069646fcf3e437527d4d4ec2d0684
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Hadisə Trigger nümunəsi {#event-trigger-example}
+# Hadisə Tətikləyici Nümunəsi {#event-trigger-example}
 
-Bu nümunədə Iroha 3 məlumat modelində kanonik domensiz hesab IDs və proqnozlaşdırılmış aktiv təriflərindən istifadə olunur.
+Bu nümunə Iroha 3 məlumat modeli üzrə tək protokol-standart domen olmayan hesab identifikatorlarından və proqnozlaşdırılmış aktiv təriflərindən istifadə edir.
 
-Tutaq ki, bir şəbəkədə:
+Tutaq ki, bir şəbəkədə var:
 
-- Alice'in açarı ilə idarə olunan kanonik bir hesab
-- Çılğın Şapkaçının açarı ilə idarə olunan kanonik bir hesab.
-- `wonderland.universal` bölməsində `tea` olaraq proqnozlaşdırılan aktiv təyinatı.
-- Hər bir hesabda saxlanılan həmin aktivin balansı
+- Alice açarı tərəfindən idarə olunan tək bir protokol-standart hesab
+- bir protokol-standart hesab Mad Hatter-ın açarı tərəfindən idarə olunur
+- bir aktivin tərifi `wonderland.universal` altında `tea` kimi proqnozlaşdırılmış
+- hər hesabda saxlanılan həmin aktivin balansı
 
-Məqsəd, Alice-in çay balansını müşahidə edən və uyğun məlumat hadisəsi yayıldıqda Mad Hatter hesabından köçürmə göndərən bir tetikçi qeyd etməkdir.
+Məqsəd, Alice-ın çay balansını izləyən və uyğun məlumat hadisəsi baş verildikdə Mad Hatter hesabından köçürməni təqdim edən bir tetikleyici qeydiyyatdan keçirməkdir.
 
-## 1. Hesablar və aktivlər hazırlayın {#_1-prepare-accounts-and-assets}
+## 1. Hesabları və aktivləri hazırlayın {#_1-prepare-accounts-and-assets}
 
-Əvvəlcə iştirakçı hesabları və aktiv tərifini qeyd edin. cari Iroha-də, IDs hesabı hesab nəzarətçilərindən gəlir, proqnozlaşdırılmış domenlər isə `domain.dataspace` formasını istifadə edir:
+Əvvəlcə iştirak edən hesabları və aktiv təsvirini qeyd edin. Cari Iroha-də hesab identifikatorları hesab nəzarətçilərindən gəlir, projelənmiş domenlər isə `domain.dataspace` formasından istifadə edir:
 
 ```text
 domain: wonderland.universal
@@ -29,17 +29,17 @@ asset definition projection: tea in wonderland.universal
 holder accounts: AccountId(controller=alice_key), AccountId(controller=mad_hatter_key)
 ```
 
-Mülkiyyət tərifində hələ də kanonik qeyri-aşkar bir ünvan var. Bu ünvanı qeydiyyatdan sonra saxlayın və ya sorğu edin və onu tetikləyici hərəkətdə istifadə edin.
+Aktivin tərifi hələ də tək protokol-standartlı şəffaf olmayan ünvana malikdir. Qeydiyyatdan sonra həmin ünvani saxlayın və ya soruşun və onu tetikleyici hərəkətdə istifadə edin.
 
-## 2. Başlatıcı səlahiyyətini seçin {#_2-choose-the-trigger-authority}
+## 2. Tətik icazəsi əsasını seçin {#_2-choose-the-trigger-authority}
 
-Mümkün olduqda tetikçinin texniki hesabını xüsusi bir hesabla təyin edin. Təyinatlı hesab, tetikçini icra etmək üçün hansı icazələrin tələb olunduğunu aydınlaşdırır və tetikçini operatorun şəxsi imza açarı ilə bağlamadan çəkinir.
+Mümkün olduqda triggerin texniki hesabını xüsusi hesaba təyin edin. Xüsusi hesab triggerin icrası üçün hansı icazələrin tələb olunduğunu aydın şəkildə göstərir və triggeri operatorun şəxsi imza açarı ilə əlaqələndirməməyə imkan verir.
 
-Texniki hesab artıq mövcud olmalıdır və təlimatların icra edilə bilən tetikləyiciyə təqdim edilməsi üçün icazə verilməlidir.
+Texniki hesab artıq mövcud olmalıdır və trigger icra faylında göstərişləri təqdim etmək icazəsinə malik olmalıdır.
 
-## 3. İcra olunanı təyin edin. {#_3-define-the-executable}
+## 3. İcra edilə biləni təyin edin {#_3-define-the-executable}
 
-Fəaliyyət filtrinin uyğunlaşdığı zaman tetikleyici tərəfindən göndərilən təlimat ardıcıllığı icra oluna bilər. Bu nümunədə bir köçürmə var:
+İcra edilə bilən fayl, hadisə filtiri uyğun gəldikdə tetikleyicinin təqdim etdiyi təlimat ardıcıllığıdır. Bu nümunə üçün, o, bir köçürməni ehtiva edir:
 
 ```text
 Transfer(
@@ -49,11 +49,11 @@ Transfer(
 )
 ```
 
-Son əməliyyat pay yükü üçün SDK'nin hazırda yazdırılmış qurucularından istifadə edin. İcra edilə bilən qurulmadan əvvəl həddindən artıq köhnə mətni IDs-dən çəkinin. Parse və ya sorğu kanoniki IDs
+Son əməliyyat faylı üçün SDK-ın mövcud yazılmış qurucularından istifadə edin. Sürətli kodda köhnə mətn ID-lərini sərt şəkildə yazmaqdan çəkinin; icra edilə bilən faylı yaratmazdan əvvəl tək protokol-standart ID-ləri ayırın və ya sorğu edin.
 
-## 4. Hadisə filtrini təyin edin. {#_4-define-the-event-filter}
+## 4. Hadisə filtrini təyin edin {#_4-define-the-event-filter}
 
-Tədbirləri maraqlandığınız obyektə məhdudlaşdıran bir məlumat hadisələri filtrindən istifadə edin:
+Diqqət etdiyiniz obyektə aid hadisələri daraldan data-event filtrindən istifadə edin:
 
 ```text
 EventFilterBox::Data(
@@ -62,28 +62,28 @@ EventFilterBox::Data(
 )
 ```
 
-Filtrləri praktik kimi xüsusi saxlayın. `AcceptAll` filtr debugging üçün faydalıdır, lakin hər uyğunlaşma hadisəsi tetikləyici qiymətləndirmə xərclərini ödəyir.
+Filtrləri mümkün qədər konkret saxlayın. `AcceptAll` filtri səhvləri tapmaq üçün faydalıdır, lakin bu, hər uyğun gələn hadisəyə tetikleyici qiymətləndirilməsi xərci ödətir.
 
-## 5. Çıxışını qeyd edin. {#_5-register-the-trigger}
+## 5. Tetikleyiciyi qeydiyyatdan keçirin {#_5-register-the-trigger}
 
-Çıxartıcıyı qeyd edin:
+Trigleri ilə qeydiyyatdan keçin:
 
-- bir stəbil `TriggerId`
+- sabit `TriggerId`
 - icra edilə bilən təlimat ardıcıllığı
 - `Repeats::Indefinitely` və ya `Repeats::Exactly(n)`
 - texniki hesab
-- hadisələr filtrini
-- Seçilmiş metadatalar
+- hadisə filtri
+- seçimli metadatalar
 
-Trigger qeydiyyatı özü normal bir əməliyyatdır, buna görə qeydiyyata alma hesabına triggerləri qeyd etmək üçün icazə lazımdır. Texniki hesabın trigger icra edilməsi üçün tələb olunan icazələrə ehtiyacı var.
+Trigər qeydiyyatı özü normal bir əməliyyatdır, buna görə də trigərləri qeydiyyatdan keçirən hesabın trigərləri qeydiyyatdan keçirmək üçün icazəsi olmalıdır. Texniki hesab trigər icra faylı üçün tələb olunan icazələrə malik olmalıdır.
 
-## Döyüş əmri {#execution-order}
+## İcra qaydası {#execution-order}
 
-Bir blok icra edildikdə:
+Bir blok icra edilərkən:
 
-1. Əvvəlcə normal əməliyyat təlimatları işləyir.
-2. Bu göstərişlər nəticəsində meydana gələn hadisələr haqqında məlumatlar toplanır.
-3. Filtrləri bu hadisələrə uyğun olan tetikləyicilər planlaşdırılır.
-4. Trigger tərəfindən istehsal olunan təsirlər blok icra edilməsi kəmərində sərhədsiz rekursiv icra edilməsinə icazə vermədən idarə olunur.
+1. Normal əməliyyat təlimatları əvvəl həyata keçirilir.
+2. Həmin təlimatlar tərəfindən yaradılan məlumat hadisələri toplanır.
+3. Filtrləri həmin hadisələrlə uyğun gələn tetikleyicilər planlaşdırılır.
+4. Tetikləyici tərəfindən yaradılan effektlər, blok icra proqram təminatı işləmə iş axışında, qeyri-məhdud təkrarlanan tetikləyici icrasına imkan verilmədən idarə olunur.
 
-Bir tetikçi `Repeats::Exactly(n)` istifadə edərsə, sayın tükəndikdə və eyni davranışı yenidən tələb etdikdə yeni bir tetikçi qeyd edin.
+Əgər bir tetikleyici `Repeats::Exactly(n)` istifadə edirsə, say bitdikdə və eyni davranış yenidən lazım olduqda yeni bir tetikleyici qeyd edin.

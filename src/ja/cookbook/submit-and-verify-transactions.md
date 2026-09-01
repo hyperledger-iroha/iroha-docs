@@ -1,28 +1,28 @@
 ---
 translation_locale: ja
 translation_source: /cookbook/submit-and-verify-transactions.md
-translation_source_hash: 01907ea433e711cb0b1aa327d46c44744aad0a7571a65430dddd7a8aed3df373
+translation_source_hash: 98e5c7e9db1ba8468cfd5409409b0e8d02251311dc85492f7b71675e983dc4fd
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# 取引を提出し確認する {#submit-and-verify-transactions}
+# 取引を提出して確認する {#submit-and-verify-transactions}
 
 ## 結果 {#outcome}
 
-Taira トランザクションを先行して,正確な料金の申し出を受け入れて,署名し提出し,適用最終期限を待て,約束されたトランザクションをハッシュで検証します.
+プリフライト a Taira 取引、正確な手数料見積もりを受け入れ、署名して提出する、 適用の最終性を待ち、暗号ハッシュによって最終化されたトランザクションを検証します。
 
-## 必須条件 {#prerequisites}
+## 前提条件 {#prerequisites}
 
-- [によって生産された資金調達した `taira.client.toml`, `taira.tx-metadata.json`,および `TAIRA_ACCOUNT_ID`は, Taira](./connect-to-taira.md)とつながっています.
-- `iroha` CLI と `jq`の電流
-- Taira の使い捨てサイン.その鍵やこれらのコマンドを Minamoto に書き留めずに使用する.
+- [Taira に接続する](./connect-to-taira.md)によって制作された、資金提供された`taira.client.toml`、`taira.tx-metadata.json`、および`TAIRA_ACCOUNT_ID`。
+- 現在の`iroha`CLI と`jq`です。
+- 使い捨ての Taira 暗号署名者。Minamoto でそのキーやこれらの書き込みコマンドを再使用しないでください。
 
 ## ステップ {#steps}
 
-### 1. 目的地,権限,料金のバランスを優先する {#_1-preflight-the-endpoint-authority-and-fee-balance}
+### 1. API エンドポイント、認証プリンシパル、および手数料残高をプレフライトする {#_1-preflight-the-endpoint-authority-and-fee-balance}
 
-順番のスナップショットを最初に読み,その後に当局の手数料余分が可視であることを証明する.接続レシピで生成されたメタデータからBase58資産定義 ID を読み取る.
+まずキューのデータスナップショットを読み取り、その後、認証プリンシパルの手数料残高が表示されていることを確認します。接続レシピによって生成されたメタデータから、Base58の資産定義IDを読み取ります。
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -38,11 +38,11 @@ iroha --config ./taira.client.toml ledger asset get \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-アカウントまたは料金の余分がない場合,停止します.有効な指示は,その権限が支払えないとき,手数料入学を通過することはできません.
+口座または手数料の残高がない場合は停止してください。有効な指示は、認可の元本が支払いできない場合、手数料の承認を通過できません。
 
-### 2. 引用し,署名し,1回提出する {#_2-quote-sign-and-submit-once}
+### 2. 見積もりを出し、署名して、一度提出する {#_2-quote-sign-and-submit-once}
 
-CLI は,手数料報價に署名されていない正確な役に立たない負荷を送信し,受付された支払意向をトランザクションに結合し,サインして送信します. JSON モードでは,トランザクションハッシュ,署名したトランザクション,および受付された報价を一緒に返します.
+CLI は、手数料の見積もりのために正確な署名されていないペイロードを送信し、承認された支払い意図をトランザクションにバインドして、署名し、送信します。JSON モードは、トランザクションの暗号ハッシュ、署名済みトランザクション、承認された見積もりを一緒に返します。
 
 ```bash
 iroha --config ./taira.client.toml \
@@ -56,11 +56,11 @@ jq '{hash, fee_quote}' taira-submission.json
 TAIRA_TX_HASH="$(jq -er '.hash' taira-submission.json)"
 ```
 
-このレシピでは `--no-wait` を使用しないでください. コマンドは成功の領収書を書く前に確認を待っています.
+このレシピでは`--no-wait`を使用しないでください。コマンドは、成功したプロトコル結果の記録を書き込む前に確認を待ちます。
 
-### 3. 終端パイプライン状態を待機する {#_3-wait-for-terminal-pipeline-state}
+### 3. ターミナルソフトウェアの処理ワークフロー状態を待つ {#_3-wait-for-terminal-pipeline-state}
 
-HTTP の受付またはキューエントリーから成功を推論する代わりに,入力されたステータスヘルパーを使用します. `--wait`で,安全なルーティング範囲が自動的に選択され,デフォルトターゲットは適用最終性です.
+成功を HTTP の受理やキューへの受け入れから推測するのではなく、入力されたステータスヘルパーを使用してください。`--wait`では、安全なルーティング範囲が自動的に選択され、デフォルトのターゲットは適用された確定性です。
 
 ```bash
 iroha --config ./taira.client.toml \
@@ -74,11 +74,11 @@ iroha --config ./taira.client.toml \
 jq . taira-final-status.json
 ```
 
-`Rejected` と `Expired` は終末的な失敗であり,復旧可能な成功状態ではありません.取引を変更または再構築する前にその理由を記録します.
+`Rejected` と `Expired` は再試行可能な成功状態ではなく、末端での失敗です。トランザクションを変更または再構築する前に、その理由を記録してください。
 
 ### 4. 保存された取引を読む {#_4-read-the-stored-transaction}
 
-パイプライン状態は,処理が完了したか否かを答えます.トランザクションクエリでは,承認されたトランザクションが同じハッシュで保存されていることを確認します.
+ソフトウェア処理ワークフローのステータスは、処理が完了したかどうかを示します。トランザクエリは、承認されたトランザクションが同じ暗号ハッシュの下に保存されていることを確認します。
 
 ```bash
 iroha --config ./taira.client.toml \
@@ -89,7 +89,7 @@ iroha --config ./taira.client.toml \
 jq . taira-transaction.json
 ```
 
-探査機は2番目の 読み取りのみの観測表面で パイプラインの最終的な状態に 少し遅れをとる可能性があります.
+エクスプローラーは、第二の読み取り専用の観察面です。ソフトウェア処理のワークフロー完了に対して一時的に遅れることがあります。
 
 ```bash
 curl -fsS -H 'Accept: application/json' \
@@ -97,11 +97,11 @@ curl -fsS -H 'Accept: application/json' \
   | jq '{hash, block, status, authority, executable}'
 ```
 
-状態変更指示については,変異されたオブジェクトのクエリで終了します. [メタデータ](./metadata.md), [フンジブル資産](./fungible-assets.md),および [NFTs](./nfts.md)レシピには,そのポストステート読み込みが含まれます.
+状態を変更する命令の場合、変更されたオブジェクトのクエリで終了してください。[メタデータ](./metadata.md)、[代替可能な資産](./fungible-assets.md)、および [NFTs](./nfts.md) のレシピには、それらの状態後の読み取りが含まれています。
 
 ## 確認する {#verify}
 
-すべての3つの記録が同じハッシュで一致し,探検家はもはや待機状態を報告していないことを確認します:
+3つのレコードがすべて同じ暗号ハッシュで一致していること、およびエクスプローラーが保留状態を報告していないことを確認してください:
 
 ```bash
 test "$(jq -r '.hash' taira-submission.json)" = "$TAIRA_TX_HASH"
@@ -112,21 +112,21 @@ curl -fsS -H 'Accept: application/json' \
     '.hash == $hash and .status == "Committed"'
 ```
 
-提出の領収書と最終的な状態を試験証拠として保管する.これらは署名鍵ではなく,公開取引資料を含んでいる.
+提出プロトコルの結果の記録と最終ステータスをテスト証拠として保持してください。それらには公開取引資料が含まれており、署名キーは含まれていません。
 
-## 問題を解く {#troubleshooting}
+## トラブルシューティング {#troubleshooting}
 
-- HTTP `202`または並列状態は,入場のみを証明します. 適用された,拒否された,終了した,または制限されたタイムアウトまで入力された状態の投票を続けます.
-- ハッシュを返した後に送信が終了する場合は,別のトランザクションを作成する前にそのハッシュをクエリします.盲目再提出は新しい引用および署名された役に立たない荷物を作成します.
-- 署名前に手数料申し出を拒絶することができます. `--fee-payer authority`, `gas_asset_id`,当局のバランス,およびネットワークチェーン ID をチェックします.
-- `Rejected`は通常,指示の検証,許可,手数料,または時代遅れ状態を示します. 実行が失敗した証拠であり,輸送再試として再分類してはならない.
-- Applied の直後に探査機 `404` が 索引遅延 を 行うことができる.読み取りを再試し,取引を再提出しないでください.
-- 権限のある指示が生成されたローカルネットで動作するが Taira がそれを拒否する場合は,正確な Taira 許可または管理された名前空間割り当てを取得します.ローカル結果は公共ネットワークの権限を認めません.
+- HTTP `202` またはキュー状態は入場のみを証明します。指定された状態が Applied、Rejected、Expired になるか、または制限時間に達するまで、状態のポーリングを続けてください。
+- 送信処理がハッシュを返した後にタイムアウトした場合は、別のトランザクションを作成する前にそのハッシュを照会してください。確認せずに再送信すると、手数料見積もり済みで署名済みの新しいペイロードが作成されます。
+- 料金見積もりは署名前に拒否することができます。`--fee-payer authority`、`gas_asset_id`、承認者の残高、ネットワークチェーンIDを確認してください。
+- `Rejected` は通常、命令の検証、権限、手数料、または古い状態を示します。これは失敗した実行の確定的な証拠であり、通信の再試行として再分類されるべきではありません。
+- 探索者 `404` は Applied の直後にインデックス遅延が発生する可能性があります。読み取りを再試行してください。トランザクションを再送信しないでください。
+- 特権命令が生成されたローカルネットで動作する場合でも、Taira がこれを拒否する場合は、正確な Taira 権限または管理対象のネームスペースの割り当てを取得してください。ローカルの結果は、パブリックブロックチェーンネットワークの認可プリンシパルを付与するものではありません。
 
-## ソースおよび関連文書 {#source-and-related-docs}
+## ソースと関連ドキュメント {#source-and-related-docs}
 
-- [取引の提出と固定されたコミットメントで手数料配当を実施](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
-- [固定されたコミット](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/src/client.rs)で取引確認テスト
+- [固定されたソースコードのリビジョンでのトランザクション送信および手数料見積もりの実装](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
+- [ピン留めされたソースコードのリビジョンでの取引確認の実装とテスト](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/src/client.rs)
 - [取引](/ja/blockchain/transactions.md)
 - [CLI ガイド](/ja/get-started/operate-iroha-via-cli.md)
-- [Torii エンドポイント](/ja/reference/torii-endpoints.md)
+- [Torii API エンドポイント](/ja/reference/torii-endpoints.md)

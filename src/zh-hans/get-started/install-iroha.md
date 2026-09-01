@@ -16,7 +16,7 @@ translation_engine: nllb-200-ct2
 
 - [rustup](https://www.rust-lang.org/tools/install),因此固定的 `rust-toolchain.toml`工具链 (`1.93.1`) 已自动安装
 - `git`
-- 选项: Docker 和 Docker Compose 用于当地的多个同行快速启动
+- 选项: Docker 和 Docker Compose 用于当地的多个对等节点快速启动
 
 ## 2. 克隆工作场所 {#_2-clone-the-workspace}
 
@@ -55,16 +55,16 @@ cargo run --bin kagami -- --help
 
 您通常使用的四个二进制是:
 
-- `iroha3d`用于标准的同龄妖怪
-- `iroha3d_taira` 对于法典 Taira 验证器发射器
-- `iroha` 对于 CLI 访问 Torii 和运营商终端点
-- `kagami` 对于密钥,基因表和局域网配置文件
+- `iroha3d`用于标准的对等节点守护进程
+- `iroha3d_taira` 对于规范 Taira 验证器启动器
+- `iroha` 对于 CLI 访问 Torii 和运营商端点
+- `kagami` 对于密钥,创世表和局域网配置文件
 
 ## 5.可选的局域网和 Docker 路径 {#_5-optional-localnet-and-docker-path}
 
-目前源支持的本地网络流是由 Kagami 生成的.它编写了同行配置,创始文物,客户端配置,辅助脚本以及与检查出来的代码匹配的可选组合文件:
+目前源支持的本地网络流是由 Kagami 生成的.它编写了对等节点配置,创世构件,客户端配置,辅助脚本以及与检查出来的代码匹配的可选组合文件:
 
-- `kagami localnet`用于原生本地同龄脚本
+- `kagami localnet` 用于原生本地对等节点脚本
 - `kagami docker`为 Docker Compose 从局域网目录中生成
 
-继续使用 [发射 Iroha 3](/zh-hans/get-started/launch-iroha.md).
+继续使用 [启动 Iroha 3](/zh-hans/get-started/launch-iroha.md).

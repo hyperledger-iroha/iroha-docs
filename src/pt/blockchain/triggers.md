@@ -3,69 +3,69 @@ translation_locale: pt
 translation_source: /blockchain/triggers.md
 translation_source_hash: 9443b139623544fd3c54b324e54b7e06f57820c70ffd0856f05aacac9f7591a3
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Trigas {#triggers}
+# Gatilhos {#triggers}
 
-Os gatilhos ligam um filtro de evento a uma ação executável. Quando um evento corresponde ao filtro do gatilho, Iroha avalia a ação de gatilho como parte da execução do bloco.
+Os gatilhos vinculam um filtro de evento a uma ação executável. Quando um evento corresponde ao filtro do gatilho, Iroha avalia a ação do gatilho como parte da execução do bloco.
 
 ## Estrutura {#structure}
 
-Um `Trigger` registado contém:
+Um `Trigger` registrado contém:
 
-- `id`: um `TriggerId` envolvendo um `Name`
-- `action`: executável, autoridade, filtro, política de repetição, política de retest e metadados.
+- `id`: um `TriggerId` encapsulando um `Name`
+- `action`: o executável, o principal de autorização, o filtro, a política de repetição, a política de tentativa e os metadados
 
-A acção contém:
+A ação contém:
 
 - `executable`: `Instructions`, `ContractCall`, `Ivm` ou `IvmProved`
 - `repeats`: `Indefinitely` ou `Exactly(n)`
 - `authority`: a conta que invoca o executável
 - `filter`: um `EventFilterBox`
-- `retry_policy`: comportamento opcional de retest para os gatilhos de tempo programados
-- `metadata`: metadados de gatilho arbitrários
+- `retry_policy`: comportamento de nova tentativa opcional para gatilhos de horário agendados
+- `metadata`: metadados de gatilho arbitrário
 
-## Filtros de eventos {#event-filters}
+## Filtros de Evento {#event-filters}
 
-As condições de desencadeamento usam o mesmo modelo de filtro de eventos que as assinaturas. O filtro de evento de nível superior pode corresponder:
+As condições de gatilho usam o mesmo modelo de filtro de eventos que as assinaturas. O filtro de eventos de nível superior pode corresponder a:
 
-- acontecimentos do gasoduto
-- Eventos de dados
-- acontecimentos do tempo
-- desencadear eventos de execução
-- desencadear eventos de conclusão
+- eventos do pipeline de processamento
+- eventos de dados
+- eventos de tempo
+- disparar eventos de execução
+- disparar eventos de conclusão
 
-Preferimos o filtro mais estreito que corresponda ao fluxo de trabalho. Os filtros largos são úteis para diagnóstico, mas aumentam o trabalho durante a execução do bloco.
+Prefira o filtro mais estreito que corresponda ao fluxo de trabalho. Filtros amplos são úteis para diagnóstico, mas aumentam o trabalho durante a execução do bloco.
 
-Ver [Filtros ](/pt/blockchain/filters.md) para as famílias de filtros atuais.
+Veja [Filtros](/pt/blockchain/filters.md) para as famílias de filtros atuais.
 
-## Os gatilhos do tempo {#time-triggers}
+## Gatilhos de Tempo {#time-triggers}
 
-Os gatilhos de tempo usam um filtro de evento de tempo. Quando a visão do estado mundial atinge uma condição de tempo correspondente, Iroha executa a ação de gatilho sob a autoridade do gatilho. Os gatilhas de tempo são o tipo de gatilha que pode usar a política de retoma descrita abaixo.
+Os gatilhos de tempo utilizam um filtro de evento de tempo. Quando a visualização do estado do mundo atinge uma condição de tempo correspondente, Iroha executa a ação do gatilho sob o principal de autorização do gatilho. Os gatilhos de tempo são o tipo de gatilho que pode usar a política de reintento descrita abaixo.
 
 ## Repetição {#repetition}
 
-`Repeats::Indefinitely` mantém ativo um gatilho até que não seja registado.
+`Repeats::Indefinitely` mantém um gatilho ativo até que ele seja desregistrado.
 
-`Repeats::Exactly(n)` permite que o gatilho disparar um número fixo de vezes. Quando a contagem é esgotada, registre um novo gatilho se for necessário o mesmo comportamento novamente.
+`Repeats::Exactly(n)` permite que o gatilho dispare um número fixo de vezes. Quando a contagem se esgota, registre um novo gatilho se o mesmo comportamento for necessário novamente.
 
-## Autoridade e Permissões {#authority-and-permissions}
+## autorização principal e permissões {#authority-and-permissions}
 
-A autoridade do gatilho é a conta usada para invocar o executável. Use uma conta técnica dedicada para gatilhos de longa duração para que as permissões exigidas sejam explícitas e isoladas da conta pessoal de um operador.
+O principal de autorização do gatilho é a conta usada para invocar o executável. Use uma conta técnica dedicada para gatilhos de longa duração, para que as permissões necessárias sejam explícitas e isoladas da conta pessoal de um operador.
 
-A autoridade precisa das permissões exigidas pelas instruções executáveis ou pela chamada de contrato. A conta que regista o gatilho também precisa de permissão para registrar os gatilhos sob o validador ativo do tempo de execução.
+O principal de autorização precisa das permissões exigidas pelas instruções executáveis ou pela chamada de contrato. A conta que registra o gatilho também precisa de permissão para registrar gatilhos sob o validador de tempo de execução de software ativo.
 
-## Política de Reprovação {#retry-policy}
+## Política de Repetição {#retry-policy}
 
-Os gatilhos de tempo podem optar por uma política de retentagem.
+Gatilhos de tempo podem optar por uma política de nova tentativa. Uma política de nova tentativa define:
 
-- `max_retries`: quantas tentativas de retomada são permitidas após um lançamento inicial falhado
-- `retry_after_ms`: quanto tempo Iroha espera antes de uma nova prova ser elegível;
+- `max_retries`: quantas tentativas de repetição são permitidas após uma falha inicial de disparo
+- `retry_after_ms`: quanto tempo Iroha espera antes que uma nova tentativa se torne elegível
 
-Quando o orçamento da nova tentativa é esgotado, o gatilho não está registrado.
+Quando o orçamento de tentativas é esgotado, o acionador é desregistrado.
 
-## Questões {#queries}
+## Consultas {#queries}
 
 Use as consultas de gatilho atuais para inspecionar o estado do gatilho:
 
@@ -75,7 +75,7 @@ Use as consultas de gatilho atuais para inspecionar o estado do gatilho:
 
 Veja também:
 
-- [Exemplo de gatilho de evento](/pt/blockchain/trigger-examples.md)
+- [Exemplo de acionamento de evento](/pt/blockchain/trigger-examples.md)
 - [Eventos](/pt/blockchain/events.md)
-- [Instruções ](/pt/blockchain/instructions.md)
+- [Instruções](/pt/blockchain/instructions.md)
 - [Permissões](/pt/blockchain/permissions.md)

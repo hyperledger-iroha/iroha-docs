@@ -3,35 +3,35 @@ translation_locale: fr
 translation_source: /guide/security/vpn.md
 translation_source_hash: 020591f0d7c5560dfb2e9f3f4537f429cbeba864c3eb022856d42addcf32e225
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Les réseaux privés virtuels {#virtual-private-networks}
+# Réseaux privés virtuels {#virtual-private-networks}
 
-Un <abbr title="Virtual Private Network">VPN</abbr> est un contrôle réseau qui limite ceux qui peuvent accéder aux services Iroha. Il est le plus utile pour les déploiements privés et de consortiums où les validateurs, les backends d'applications et les opérateurs doivent communiquer via des adresses privées au lieu de routes Internet ouvertes.
+Un <abbr title="Virtual Private Network">VPN</abbr> est un contrôle de réseau qui limite qui peut accéder aux services Iroha. Il est le plus utile pour les déploiements privés et en consortium où les validateurs, les serveurs d'applications et les opérateurs devraient communiquer via des adresses privées plutôt que par des routes Internet ouvertes.
 
-Un VPN ne remplace pas les clés de pair Iroha, les clés du compte, les autorisations, les règles du pare-feu, la surveillance ou le stockage sécurisé des clés. le VPN réduit l'accessibilité du réseau, tandis que la configuration et la gouvernance de Iroha décident des pairs et comptes à qui on peut faire confiance.
+Un VPN ne remplace ni les clés des pairs Iroha, ni les clés de compte, les autorisations, les règles de pare-feu, la surveillance ou le stockage sécurisé des clés. Considérez-le comme une couche de la limite de déploiement : le VPN restreint l’accessibilité du réseau, tandis que la configuration et la gouvernance d’Iroha déterminent les pairs et comptes de confiance.
 
 ## Quand utiliser un VPN {#when-to-use-a-vpn}
 
-Utilisez un VPN lorsque:
+Utilisez un VPN lorsque :
 
-- Les validateurs sont exploités par différentes organisations ou dans différents environnements d'hébergement.
-- Torii ne devrait être accessible qu'aux backends, aux opérateurs ou aux clients de confiance des applications.
-- Les données métriques, les journaux, SSH ou autres points finaux d'administration doivent rester sur un réseau d'opérateur privé.
-- un réseau d'essai ou de mise en scène doit ressembler à des contrôles d'accès à la production sans exposer les terminaux publics
+- les validateurs sont exploités par différentes organisations ou dans différents environnements d'hébergement
+- Torii ne devrait être accessible que par les backends de l'application, les opérateurs ou les clients de confiance
+- les métriques, les journaux, SSH, ou d'autres points de terminaison d'administration API doivent rester sur un réseau privé de l'opérateur
+- un réseau de test ou de préproduction devrait ressembler aux contrôles d'accès en production sans exposer les points de terminaison publics API
 
-Un VPN n'est pas nécessaire pour chaque déploiement. Les réseaux publics peuvent intentionnellement exposer Torii via une passerelle publique, un équilibreur de charge ou un proxy inverse. Même dans ce cas, gardez les points d'arrêt du trafic et de l'administration des validateurs peer-to-peer sur un réseau restreint autant que possible.
+Un VPN n'est pas requis pour chaque déploiement. Les réseaux publics peuvent intentionnellement exposer Torii via une passerelle publique, un équilibreur de charge ou un proxy inverse. Même dans ce cas, gardez le trafic pair-à-pair des validateurs et les points de terminaison d'administration API sur un réseau restreint autant que possible.
 
 ::: tip
 
-Un navigateur VPN ne protège que le trafic de ce navigateur. Il ne protège pas `iroha3d`, CLI, SDK, SSH, les métriques ou le trafic de sauvegarde à moins que ces processus ne soient routés par le même réseau privé.
+Un navigateur VPN ne protège que le trafic de ce navigateur. Il ne protège pas `iroha3d`, CLI, SDK, SSH, les données de mesure ou le trafic de sauvegarde, à moins que ces processus ne soient acheminés par le même réseau privé.
 
 :::
 
-## Le modèle de déploiement {#deployment-pattern}
+## Modèle de déploiement {#deployment-pattern}
 
-Pour un réseau de validateurs privés, donnez à chaque validateur une adresse stable VPN ou un nom privé DNS. Configurez les pairs afin que leurs adresses peer-to-peer annoncées soient accessibles par les autres validateurs sur ce réseau:
+Pour un maillage de validateurs privé, donnez à chaque validateur une adresse stable VPN ou un nom privé DNS. Configurez les pairs du réseau afin que leurs adresses pair-à-pair annoncées soient accessibles par les autres validateurs sur ce réseau :
 
 ```toml
 trusted_peers = [
@@ -49,46 +49,46 @@ public_address = "10.20.0.11:1337"
 address = "10.20.0.11:8080"
 ```
 
-Utilisez l'adresse attribuée au paire actuel dans `network.address` et `network.public_address`. Chaque paire doit énumérer les mêmes identités de pairs fiables, mais avec des adresses accessibles à partir de sa propre table d'itinéraires VPN.
+Utilisez l'adresse attribuée au pair réseau actuel dans `network.address` et `network.public_address`. Chaque pair réseau doit répertorier les mêmes identités de pairs réseau de confiance, mais avec des adresses accessibles depuis sa propre table de routage VPN.
 
-Les configurations client et CLI doivent être dirigées vers un point d'extrémité Torii accessible par l'intermédiaire du VPN ou d'une passerelle interne contrôlée:
+Les configurations du client et de CLI doivent pointer vers un point de terminaison API Torii accessible via le VPN ou via une passerelle interne contrôlée :
 
 ```toml
 torii_url = "http://10.20.0.11:8080"
 ```
 
-Si Torii doit être disponible en dehors du VPN, mettez-le derrière un proxy inverse ou un équilibreur de charge qui fournit TLS, l'authentification, la limitation des tarifs et le dépistage. Évitez d'exposer directement les ports peer-to-peer ou les terminaux d'administration à Internet public.
+Si Torii doit être accessible hors du VPN, placez-le derrière un proxy inverse ou un répartiteur de charge qui fournit TLS, l’authentification, la limitation de débit et la journalisation. Évitez d’exposer directement sur Internet les ports pair-à-pair bruts ou les points de terminaison d’administration de l’API.
 
 ## Règles de pare-feu {#firewall-rules}
 
-Utilisez les règles d'hébergement et de pare-feu en nuage même lorsqu'un VPN est présent:
+Utilisez les règles de pare-feu de l'hôte et du cloud même lorsqu'un VPN est présent :
 
-|Service |Accès recommandé |
+|Service|Accès recommandé|
 | --- | --- |
-|Port de pair à pair |Autres adresses de validateur VPN uniquement |
-|Torii |Les arrière-plan d'application, les opérateurs ou les clients de confiance VPN |
-|Mesures et contrôles de santé |Systèmes de surveillance sur le réseau des opérateurs |
-|SSH et l'administration |L'hôte bastion, l'opérateur privilégié VPN ou le processus de rupture du verre |
-|Des sauvegardes et des répliques de stockage |Les systèmes de sauvegarde sur un réseau privé |
+|Port pair-à-pair|Accessible uniquement aux autres validateurs du VPN|
+| Torii |Backends d'application, opérateurs ou client de confiance VPN plages|
+|Métriques et contrôles de santé|Systèmes de surveillance sur le réseau de l'opérateur|
+| SSH et administration |Hôte bastion, opérateur privilégié VPN plage, ou processus de rupture d'urgence|
+|Sauvegardes et réplication de stockage|Systèmes de sauvegarde sur un réseau privé|
 
-Les règles de refus par défaut sont plus faciles à vérifier que les règles générales d'autorisation. Lorsqu'un nouveau paire rejoint le réseau, mettez à jour l'adhésion VPN, la liste des autorisations du pare-feu et la configuration de paires de confiance Iroha en tant que changement coordonné.
+Les règles de refus par défaut sont plus faciles à auditer que les règles d'autorisation larges. Lorsqu'un nouveau pair réseau rejoint le réseau, mettez à jour l'adhésion VPN, la liste d'autorisation du pare-feu et la configuration du pair réseau de confiance Iroha en un seul changement coordonné.
 
 ## Liste de contrôle opérationnelle {#operational-checklist}
 
-- Choisissez une mise en œuvre VPN vérifiée et maintenue activement, telle que WireGuard, IPsec ou un réseau privé géré approuvé par l'organisation.
+- Choisissez une implémentation VPN auditée et activement maintenue, telle que WireGuard, IPsec, ou un réseau privé géré approuvé par l'organisation.
 - Utilisez des identifiants VPN uniques pour chaque hôte et opérateur. Ne partagez pas les clés VPN entre les validateurs.
-- Gardez les identifiants VPN distincts des clés privées Iroha et du matériel de signature de la génèse.
-- Surveillez VPN la latence, la perte de paquets, les reconnections et les changements de route. Le consensus est sensible à l'instabilité du réseau soutenue.
-- Testez l'efficacité MTU. La fragmentation des paquets peut ressembler à des défaillances intermittentes ou Torii.
-- Document dans lequel les intervalles VPN sont autorisés à atteindre des points de repère par rapport aux autres, Torii, des mesures, SSH et des points d'extrémité de sauvegarde.
-- Retourner les identifiants VPN lorsqu'un hébergeur, un compte d'opérateur ou une organisation quitte le réseau.
-- Évitez une seule passerelle VPN en tant que seule voie entre les validateurs. Planifier des passerelles redondantes ou des routes de site à site pour les réseaux de production.
-- Incluez des défaillances VPN dans les exercices de réponse aux incidents afin que les opérateurs sachent quand distinguer une partition réseau d'une défaillance du processus Iroha.
+- Gardez les identifiants VPN séparés des clés privées Iroha et du matériel de signature de la genèse de la blockchain.
+- Surveillez la latence, la perte de paquets, les reconnexions et les changements de route de VPN. Le consensus est sensible à une instabilité réseau prolongée.
+- Testez l'efficacité de MTU. La fragmentation des paquets peut ressembler à des défaillances intermittentes du pair réseau ou de Torii.
+- Documentez quelles plages du VPN sont autorisées à joindre le réseau pair-à-pair, Torii, les métriques, SSH et les points de terminaison de sauvegarde de l’API.
+- Faites pivoter les identifiants VPN lorsqu'un hôte, un compte opérateur ou une organisation quitte le réseau.
+- Évitez qu'une seule passerelle VPN soit la seule route entre les validateurs. Prévoyez des passerelles redondantes ou des routes site à site pour les réseaux de production.
+- Inclure les pannes VPN dans les exercices de réponse aux incidents afin que les opérateurs sachent quand distinguer une partition réseau d'une panne de processus Iroha.
 
-## Pages connexes {#related-pages}
+## Pages liées {#related-pages}
 
-- [Principaux de sécurité](/fr/guide/security/security-principles.md)
-- [Sécurité opérationnelle ](/fr/guide/security/operational-security.md)
-- [Les clés pour le déploiement du réseau ](/fr/guide/configure/keys-for-network-deployment.md)
-- [Gestion par les pairs ](/fr/guide/configure/peer-management.md)
-- [Références pour la configuration par les pairs ](/fr/reference/peer-config/index.md)
+- [Principes de sécurité](/fr/guide/security/security-principles.md)
+- [Sécurité opérationnelle](/fr/guide/security/operational-security.md)
+- [Clés pour le déploiement réseau](/fr/guide/configure/keys-for-network-deployment.md)
+- [Gestion des pairs réseau](/fr/guide/configure/peer-management.md)
+- [Référence de configuration des pairs réseau](/fr/reference/peer-config/index.md)

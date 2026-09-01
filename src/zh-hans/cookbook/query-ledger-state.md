@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /cookbook/query-ledger-state.md
-translation_source_hash: ca76923f5ae35b96c52a6a4c23c5d9e69549d1ca91d6d1507e7b9a1aee1f1676
+translation_source_hash: 68ef931f3d37b9bd40fcf61c9a77313539ca0bd648405834d161a018debb491a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 ## 结果 {#outcome}
 
-阅读和投影 Taira JSON 资源,然后使用编写的 Iroha 查询以过器,逻辑页面化,排序,搜索尺寸和仅向前传导线程延续.您还将避免在服务器评估转发的`--select`tuple之前依靠选择器投影.
+阅读和投影 Taira JSON 资源,然后使用编写的 Iroha 查询以过滤器,逻辑页面化,排序,搜索尺寸和仅向前传导线程延续.您还将避免在服务器评估转发的`--select`tuple之前依靠选择器投影.
 
 ## 预先条件 {#prerequisites}
 
@@ -89,7 +89,7 @@ iroha --config ./localnet/client.toml \
 
 ### 3. 根据稳定的元数据密钥进行排序 {#_3-sort-by-a-stable-metadata-key}
 
-类型查询排序是对一个元数据密钥进行词汇化.没有该密钥的项目遵循运行时间的定义顺序,因此使用在整个集合中一致填充的密钥.
+类型查询排序是对一个元数据密钥进行词汇化.没有该密钥的项目遵循运行时的定义顺序,因此使用在整个集合中一致填充的密钥.
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -104,7 +104,7 @@ iroha --config ./localnet/client.toml \
   | jq '[.[] | {id, metadata}]'
 ```
 
-已注册的 CLI 解析`--select` JSON 并转发选择器tuple,但当前的轻量级查询 DSL 不评估服务器上的选择器.尚未围绕它构建投影合同.仅在目标运行时间支持后使用输入的 SDK 投影,或者用上述 `jq`或 JavaScript 来投影验证的结果客户端.
+已注册的 CLI 解析`--select` JSON 并转发选择器tuple,但当前的轻量级查询 DSL 不评估服务器上的选择器.尚未围绕它构建投影合同.仅在目标运行时支持后使用输入的 SDK 投影,或者用上述 `jq`或 JavaScript 来投影验证的结果客户端.
 
 ### 4. 让 Rust 回复器遵循不透明的线索. {#_4-let-the-rust-iterator-follow-opaque-cursors}
 
@@ -132,11 +132,11 @@ for definition in definitions {
 }
 ```
 
-一个 `ForwardCursor` 是受权威约束的,过程本地,只能向前进行分析.永远不要解析它,合成它,在当局之间分享它,或者在 Torii 实例中保留它作为一个便携式简历代币.如果它过期,请重新启动原始查询,使用了故意的应用级检查点.
+一个 `ForwardCursor` 是受授权主体约束的,过程本地,只能向前进行分析.永远不要解析它,合成它,在权限主体之间分享它,或者在 Torii 实例中保留它作为一个便携式简历代币.如果它过期,请重新启动原始查询,使用了故意的应用级检查点.
 
 ## 验证 {#verify}
 
-确切域名过器应该只返回 `wonderland.universal`. 验证结果,而不是单独计算成功的 CLI 出口:
+确切域名过滤器应该只返回 `wonderland.universal`. 验证结果,而不是单独计算成功的 CLI 出口:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -150,13 +150,13 @@ iroha --config ./localnet/client.toml \
 
 ## 解决问题 {#troubleshooting}
 
-- 一个单一查询不接受可重复过器,排序,页面化或搜索参数.在需要这些控制时使用相应的列表查询.
-- `fetch_size`是一个非零批量暗示,而不是总结果限制.当前默认是`100`,运行时间拒绝超过其最大值的值.
+- 一个单一查询不接受可重复过滤器,排序,页面化或搜索参数.在需要这些控制时使用相应的列表查询.
+- `fetch_size`是一个非零批量暗示,而不是总结果限制.当前默认是`100`,运行时拒绝超过其最大值的值.
 - 一个未知,过期或外国的缓冲器是故意无法重复使用的.重新启动查询;不要试图修复不透明值.
 - 大数据分类不是一般的场地分类.如果每个项目都没有所选的关键,请记录缺失关键顺序或选择另一个策略.
-- CLI 解析和转发`--select`,但当前的服务器不评估轻量级选择器.除非对部署的运行时间进行验证,否则应应用客户端投影.
-- 大范围的无限查询增加了同行工作,客户端内存和线索终身风险. 设定一个合乎消费者的逻辑限制和搜索量.
-- 公共 JSON 资源参数和签署的输入查询参数是相关的,但不是可互换的电缆格式.对于输入查詢封,更喜欢 SDK 或 CLI.
+- CLI 解析和转发`--select`,但当前的服务器不评估轻量级选择器.除非对部署的运行时进行验证,否则应应用客户端投影.
+- 大范围的无限查询增加了对等节点工作,客户端内存和线索终身风险. 设定一个合乎消费者的逻辑限制和搜索量.
+- 公共 JSON 资源参数与已签名的类型化查询参数彼此相关，但并不是可互换的序列化格式。对于类型化查询封装，请优先使用 SDK 或 CLI。
 
 ## 来源及相关文件 {#source-and-related-docs}
 

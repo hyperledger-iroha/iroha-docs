@@ -1,14 +1,13 @@
 ---
 translation_locale: uz
 translation_source: /reference/norito.md
-translation_source_hash: 5196decc9e42428b787285d9e0f763bfcedabea2b19af618612f4509492c87fc
+translation_source_hash: b3b7c03bc0df3f7fa3df7e44b0ec8d755d615f9edca66bbcfe5613c33c8afbfe
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review
 ---
-
 # Norito {#norito}
 
-Norito bo ' lmoqda Iroha Kanonik seriallashtirish qatlamidir. Bu tengdoshlar, SDKs, CLI asboblar, Torii, Kura, va ishlab chiqarilgan artefaktlar to'g'ri bir xil foydali yuk bo'yicha kelishib olishlari kerak.
+Norito bo ' lmoqda Iroha Kanonik seriallashtirish qatlamidir. Bu tugunlar, SDKs, CLI asboblar, Torii, Kura, va ishlab chiqarilgan artefaktlar to'g'ri bir xil foydali yuk bo'yicha kelishib olishlari kerak.
 
 Foydalanish Norito ma'lumotlar konsensus, imzolash, hashing, chidamlilik yoki o'zaro-SDK Interoperabilitet. Foydalanish JSON oxirgi nuqta operatorlar, dashboardlar yoki tezkor debugging uchun inson tomonidan o'qilishi mumkin bo'lgan proyeksiyani ochiqchasiga taqdim etganda.
 
@@ -17,18 +16,18 @@ Foydalanish Norito ma'lumotlar konsensus, imzolash, hashing, chidamlilik yoki o'
 |Yer yuzi |Norito qanday qilib ishlatiladi |
 | --- | --- |
 |Transaksiyalar va soʻrovlar |Torii orqali yuborilgan imzolangan tranzaksiyalar va so'rovlar faydali yuklari Norito deb kodiflanadi. |
-|Ibtido |`kagami genesis sign` boshlang'ichda yuklangan tengdoshlari bilan imzolangan `.nrt` blokini hosil qiladi. |
+|Ibtido |`kagami genesis sign` boshlang'ichda yuklangan tugunlari bilan imzolangan `.nrt` blokini hosil qiladi. |
 |Torii yozgan javoblar |`Accept: application/x-norito`dan foydalanib, ikkilamchi javoblarni yozishni qo'llab-quvvatlaydigan oxirgi nuqtalar. |
 |SDKs | Rust, Python, JavaScript, Kotlin/Java, Swift, va Android mijozlar foydalanadi Norito qo'lda yig'ilgan baytlar o'rniga quruvchilar yoki bog'lovchilar. |
-|Kura saqlash |Blok fayzli yuklar, tiklash yon mashinalari, ro'yxatlar va majburiyat belgilari Norito ramkalashtirilgan ma'lumotlar sifatida saqlanadi. |
+|Kura saqlash |Blok fayzli yuklar, tiklash yordamchi yozuvlari, ro'yxatlar va commit belgilari Norito ramkalashtirilgan ma'lumotlar sifatida saqlanadi. |
 |Manifestolar |Nexus, ma'lumotlar mavjudligi, SoraFS, oqim va ilovalarga ko'zlangan manifestlar manzili imzolangan yoki hash bo'lishi kerak bo'lganda Norito dan foydalanadi. |
-|Yoyish |Norito Streamingda Norito manifestlari, segment sarlavhalari, boshqaruv ramkalari va muvofiqlik fixurlaridan foydalanadi. |
+|Yoyish |Norito Streamingda Norito manifestlari, segment sarlavhalari, boshqaruv ramkalari va muvofiqlik sinov ma’lumotlaridan foydalanadi. |
 
 Norito aqlli shartnoma tili emas, balki bitimlar, kontrakt qo'ng'iroqlari, manifestlar va API faydali yuklarni olib boradigan deterministik qadoq va kodek hisoblanadi.
 
 ## Foydali yukning modeli {#payload-model}
 
-Har bir simli yoki diskdagi Norito fayzli yukni sarlavha, undan so'ng kodlangan fayzli yuk bytetlari o'rnatadi. Sarlavhasiz yoki yalang'och fayzli yuklar ichki hashing, ma'lumotlar va yordamchi APIs uchun mo'ljallangan bo'lib, natijani transportdan oldin darhol sarlavhaga o'rab oladi.
+Tarmoq orqali uzatiladigan yoki diskda saqlanadigan har bir Norito payload header bilan ramkalanadi, undan keyin kodlangan payload baytlari keladi. Headersiz yoki bare payloadlar ichki hashing, benchmarklar va natijani uzatishdan oldin darhol header ichiga o‘raydigan yordamchi APIs uchun saqlanadi.
 
 |Sarlavha maydoni |Oʻlcham |Maqsad|
 | --- | ---: | --- |
@@ -56,7 +55,7 @@ Norito so'nggi sarlavha bytida layout tanlovlarini saqlaydi. Dastlabki v1 yordam
 |`COMPACT_SEQ_LEN` |`0x10` |Qoʻriqlangan |V1-da rad etilgan; yuqori darajadagi ketma-ketlik uzunligi sarlavhalari qat'iy kenglik `u64`. |
 |`FIELD_BITSET` |`0x20` |talablar bilan qoʻllab-quvvatlanadi |To'plangan struektlar uchun bit setini qo'shadi, shuning uchun faqat aniq o'lchamlarga muhtoj bo'lgan maydonlarda o'lchov prefikslari mavjud. `PACKED_STRUCT` va `COMPACT_LEN` talab qiladi. |
 
-Bayroqlar aniqdir. Dekoderlar joylashishni foydali yukning shaklidan, kichik versiyadan yoki heuristikalardan xulosa qilmaydi. Noma'lum yoki haqiqiy bo'lmagan kombinatsiyalar rad etiladi, shuning uchun barcha tengdoshlar foydali yukni bir xil tarzda talqin qilishadi.
+Bayroqlar aniqdir. Dekoderlar joylashishni foydali yukning shaklidan, kichik versiyadan yoki heuristikalardan xulosa qilmaydi. Noma'lum yoki haqiqiy bo'lmagan kombinatsiyalar rad etiladi, shuning uchun barcha tugunlar foydali yukni bir xil tarzda talqin qilishadi.
 
 ## Kodlash qoidalari {#encoding-rules}
 
@@ -78,7 +77,7 @@ Ushbu qoidalar imzo va hash uchun muhimdir. Ikkita SDKs bir xil mantiqiy operats
 
 Norito fayl yuklari boshliqda 16 baytli sxema hashini o'z ichiga oladi. Andoza hash to'liq malakali tur nomidan kelib chiqadi. Struktural sxema hashingni qo'lga kiritadigan qurilmalar hashni kanonik sxemadan olib keladi.
 
-Tiplangan dekoderlar sxema mos kelmaydiganligini rad etadi. Bu mijozlarni noto'g'ri turdagi haqiqiy Norito ramkani to'satdan dekodlashdan himoya qiladi va SDK o'rnatish to'plami nod ma'lumotlar modelidan aylanib ketganda odatdagidek xato usuli hisoblanadi.
+Tiplangan dekoderlar sxema mos kelmaydiganligini rad etadi. Bu mijozlarni noto'g'ri turdagi haqiqiy Norito ramkani to'satdan dekodlashdan himoya qiladi va SDK sinov ma’lumotlari to‘plami nod ma'lumotlar modelidan aylanib ketganda odatdagidek xato usuli hisoblanadi.
 
 ## Kompressiya va tezlashtirish {#compression-and-acceleration}
 
@@ -101,7 +100,7 @@ Norito Norito turi tizimidan chiqib ketmasdan JSON kerak bo'lgan yakuniy nuqtala
 |JSON xususiyati |Foydalanish holati |
 | --- | --- |
 |`norito::json::{to_json, from_json}` |Deterministik JSON kodlash/dekodlash. |
-|Goʻzal va yozuvchi yordamchilari |CLI chiqindi, qurilmalar va streaming `std::io` integratsiyasi. |
+|Goʻzal va yozuvchi yordamchilari |CLI chiqishi, sinov ma’lumotlari va streaming `std::io` integratsiyasi. |
 |DOM qiymatlari |Norito ning JSON qiymat modeli orqali dasturiy ta'minot manipulyatsiyasi. |
 |Tez yozilgan JSON |Issiq DTO yo'nalishlari uchun tarkibiy lentga asoslangan dekodlash/kodlash. |
 |Null nusxa oʻquvchi |Agar iloji bo'lsa, kirishdan simlarni qarz oladigan belgini skanerlash. |
@@ -182,17 +181,17 @@ Norito Streaming ommaviy axborot vositalari va real vaqt transport yuzalariga ha
 |HPKE asosiy yangilanishlar |Transport sirlarini muzokaralar bo'yicha almashtirish va monoton ravishda ko'payib boruvchi hisob raqamlari yordamida aylantiring.|
 |Mulohazakorlik muzokaralari |Qo'llab-quvvatlanadigan xususiyat bitlari, datagram cheklovlari, takrorlash ketma-ketligi va maxfiylik talablarini kesishtiradi. |
 |FEC va fikr bildirish |Yo'qotish real vaqt yo'nalishlari uchun deterministik qabul qiluvchi hisobotlari va parity qarorlaridan foydalanadi. |
-|muvofiqlik vektorlari |Tillar bo'ylab qurilmalar SDKs bir xil manifestlar, segmentlar va entropiya oqimlarini dekodlashini isbotlaydi. |
+|muvofiqlik vektorlari |Tillararo sinov ma’lumotlari SDKs bir xil manifestlar, segmentlar va entropiya oqimlarini dekodlashini isbotlaydi. |
 
 Streamingga oid kodeklar va entropiya profillari asosiy Norito transaksiya/so'rov formatidan ajralib turadi, ammo ularning manifestlari va nazorat ma'lumotlaridan hali ham Norito foydalaniladi, shuning uchun yo'naltirish, hisob-kitob qilish, takrorlash va audit dalillarini qayta tiklash mumkin.
 
 ## Operativ yo'l-yo'riq {#operational-guidance}
 
 - SDK qurilmalari va hosil bo'lgan bog'lanishlarni qo'lda tayyorlangan Norito bytlarga qaraganda afzal ko'rish.
-- Shema mos kelmasligini o'tkinchi tarmoq muvaffaqiyatsizligi sifatida emas, balki versiya yoki qurilma muammosi sifatida ko'rib chiqish.
+- Shema mos kelmasligini o'tkinchi tarmoq muvaffaqiyatsizligi sifatida emas, balki versiya yoki sinov ma’lumotlari muammosi sifatida ko'rib chiqish.
 - `.nrt`, `.norito` va manifest artefaktlarini ularni yaratgan reliz yoki hodisa to'plamida arxivlang.
 - Imzolangan, hashlangan yoki doimiy saqlangan ma'lumot uchun Norito formatini haqiqat manbai sifatida saqlang. Dashboardlar va qo'lda tekshirish uchun JSON proyeksiyalaridan foydalaning.
-- Yangi Torii oxirgi nuqtani qo'shganingizda, u JSON, Norito yoki ikkalasi ham qabul qilinishini hujjatlashtiring va `/openapi` da qo'llab-quvvatlanadigan tarkib turlarini ko'rsating.
+- Yangi Torii oxirgi nuqtani qo'shganingizda, u JSON, Norito yoki ikkalasi ham qabul qilinishini hujjatlashtiring va `/openapi.json` da qo'llab-quvvatlanadigan tarkib turlarini ko'rsating.
 - Tezlatgichni yoqishdan oldin scalar natijaga nisbatan parity sinovlarini o'tkazing. Tezlatgich ishlamay qolsa, deterministik scalar fallbackdan foydalaning. Payload semantikasi o'zgarmasligi kerak.
 
 ## Bogʻliq sahifalar {#related-pages}
@@ -200,11 +199,11 @@ Streamingga oid kodeklar va entropiya profillari asosiy Norito transaksiya/so'ro
 - [Torii oxirgi nuqtalari](/uz/reference/torii-endpoints.md)
 - [Ibtido ko'rsatkichi](/uz/reference/genesis.md)
 - [Ma'lumotlar modeli sxemasi](/uz/reference/data-model-schema.md)
-- [JavaScript /TypeScript SDK ](/uz/guide/tutorials/javascript.md)
+- [JavaScript / TypeScript SDK](/uz/guide/tutorials/javascript.md)
 - [Python SDK](/uz/guide/tutorials/python.md)
 - [Swift va iOS SDK](/uz/guide/tutorials/swift.md)
 
 ## Yuqoridagi ma'lumotlar {#upstream-references}
 
 - [Norito formatining moslamalari](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/norito.md)
-- [Norito qutisi README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/norito/README.md)
+- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/norito/README.md)

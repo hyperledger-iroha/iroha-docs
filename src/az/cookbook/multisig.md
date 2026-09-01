@@ -1,24 +1,24 @@
 ---
 translation_locale: az
 translation_source: /cookbook/multisig.md
-translation_source_hash: 9654923faf6c84dfd21a428ebe3c53dbd074b8e3274c12c8aa41bf31884686f7
+translation_source_hash: e1b57e1c4310dd0db8be8d9f5a15e1d4f693abb90b634772857eb4b1e86e4baf
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Ağırlı Multisig {#weighted-multisig}
+# Çəkili Çoxsaylı İmza {#weighted-multisig}
 
 ## Nəticə {#outcome}
 
-Taira səhifəsində üç nəfərdən ibarət ağırlanmış multisig hesabı qeydiyyatdan keçirin, metadata təlimatı təklif edin, quorumunu təmin etmək üçün kifayət qədər ağırlıqla təsdiqləyin və multisig hesabının vəziyyətindən icra olunmasını yoxlayın.
+Taira üzərində üç üzvü olan ağırlıqlı çox imzalı hesab yaradın, bir metadata təlimatı təklif edin, kvorum tələbinə çatmaq üçün kifayət qədər çəki ilə təsdiqləyin və icranın çox imzalı hesabın vəziyyətindən yoxlandığını təsdiqləyin.
 
-## Əvvəlki şərtlər {#prerequisites}
+## Tələb olunan əvvəlcədən biliklər {#prerequisites}
 
-- Üç kanonik I105 İmzaçı IDs ilə `SIGNER_A`, `SIGNER_B`, və `SIGNER_C`.
-- A və C imzaçıları üçün maliyyələşdirilmiş Taira konfigürasiyalar. Təklifçi və hər təsdiqləyici öz əməliyyatlarını ödəyirlər.
-- `taira.tx-metadata.json` cari faucet cavabından inşa edilmişdir, heç vaxt kopyalanmış ödəniş aktivindən ID.
-- A Rust müştəri layihəsi eyni Iroha mənbə tərtib edilməsi Taira Daha sonrakı təklif və təsdiq mərhələlərində CLI.
-- Hal-hazırda icraçının multisig xüsusiyyəti aktivləşdirilib. qeydiyyat standart Iroha 3 iş vaxtı ilə adi hesablara mövcuddur, baxmayaraq ki, Taira siyasəti və ödəniş qəbul edilməsi hələ də tətbiq olunur; ictimaiyyət yayımı bunu rədd etsə lokalnet istifadə edin
+- `SIGNER_A`, `SIGNER_B` və `SIGNER_C` ünvanında üç tək protokol-standart I105 imzaçı ID-si.
+- Kriptoqrafik imzalayıcılar A və C üçün Taira konfiqurasiyaları maliyyələşdirildi. Təklifçi və hər bir təsdiqləyici öz əməliyyatlarını ödəyir.
+- `taira.tx-metadata.json` cari testnet maliyyələşdirmə xidməti cavabından yaradılıb, heç vaxt kopyalanmış ödəniş aktiv ID-dən yaradılmayıb.
+- Rust müştəri layihəsi qeydiyyat mərhələsi üçün Taira ilə eyni Iroha mənbə revizyonuna bağlanıb. Sonrakı təklif və təsdiq mərhələləri CLI-dən istifadə edir.
+- Cari icraçının multisig xüsusiyyəti aktivdir. Qeydiyyat, standart Iroha 3 proqram icra mühitində adi hesablar üçün mümkündür, baxmayaraq ki, Taira siyasəti və ödəniş qəbul olunması hələ də tətbiq olunur; ictimai yerləşdirmə bunu rədd edirsə, localnet-dən istifadə edin.
 
 ```bash
 SIGNER_A_CONFIG=./taira.signer-a.toml
@@ -29,11 +29,11 @@ test -n "$SIGNER_B"
 test -n "$SIGNER_C"
 ```
 
-## Dərslər {#steps}
+## Addımlar {#steps}
 
-### 1. Döyüşləndirilmiş siyasət qeydə alınır {#_1-register-a-weighted-policy}
+### 1. Çəkili siyasəti qeydiyyatdan keçirin {#_1-register-a-weighted-policy}
 
-İmzaçı C-nin çəkisi 2; A və B-nin hər biri 1 çəki var. 3 kvorumu buna görə C + ya A və ya B tələb edir. Kanonik hesabı qeydiyyatdan əvvəl bu dəqiq siyasətdən çıxarın, sonra eyni qiyməti `MultisigRegister::with_account` -yə keçin:
+kriptoloji imzalayan C-in çəkisi 2-dir; A və B-nin hər birinin çəkisi 1-dir. Beləliklə, 3-lük kvorum C ilə birlikdə ya A, ya da B tələb edir. Qeydiyyatdan əvvəl həmin dəqiq siyasətdən tək protokol-standart hesabı çıxarın, sonra eyni dəyəri `MultisigRegister::with_account`-a ötürün:
 
 ```rust
 use std::{collections::BTreeMap, num::{NonZeroU16, NonZeroU64}};
@@ -84,18 +84,18 @@ registrar.submit_blocking::<InstructionBox>(
 println!("{}", multisig_account.canonical_i105()?);
 ```
 
-CLI addımları üçün çap edilmiş qiyməti saxlayın:
+CLI addımlar üçün çap edilmiş dəyəri yadda saxlayın:
 
 ```bash
 MULTISIG_ACCOUNT='<POLICY_DERIVED_I105_ACCOUNT_ID>'
 test -n "$MULTISIG_ACCOUNT"
 ```
 
-Qeydiyyat komandanı CLI işlənmə vaxtından əvvəl müvəqqəti toxumunu yazdırırır. Bu toxumu nəzarətçi kimi istifadə etməyin. Mühafizəkarın xüsusi açarı yoxdur: çoxsaylı səlahiyyət yalnız təsdiq edilmiş təkliflərdən gəlir.
+Quraşdırılmış mənbə kodu versiyasında, CLI qeydiyyat əmri proqramın icra mühitində onu yenidən açmadan əvvəl müvəqqəti toxumunu çap edir. Həmin toxumu kontroller kimi təkrar istifadə etməyin. Kontroller üçün xüsusi açar yoxdur: multisig səlahiyyət əsasən yalnız təsdiqlənmiş təkliflərdən gəlir.
 
-### 2. Təklif etmədən bir təlimat yazın {#_2-build-one-instruction-without-submitting-it}
+### 2. Təsdiqləmədən bir təlimat hazırlayın {#_2-build-one-instruction-without-submitting-it}
 
-Qlobal `-o` keçid bir təlimat dizini standart çıxış üçün seriallaşdırır. O, bir əməliyyat təqdim etmir və buna görə də heç bir ödəniş ödəmir.
+Qlobal `-o` keçid təlimat massivini standart çıxışa seriallaşdırır. Bu, əməliyyat təqdim etmir və buna görə də heç bir rüsum xərcləmir.
 
 ```bash
 printf '"approved"\n' |
@@ -108,9 +108,9 @@ printf '"approved"\n' |
 jq . multisig-instructions.json
 ```
 
-### 3. İmzaçı olaraq A təklif edin. {#_3-propose-as-signer-a}
+### 3. Kriptoqrafik imzalayan kimi A təklif edin {#_3-propose-as-signer-a}
 
-Təklif edən avtomatik olaraq öz çəkisini verir. CLI ilə çap edilmiş dəqiq təlimat hashini ələ keçirin; təsdiqlər bu hashə bağlanır.
+Təklifçi avtomatik olaraq öz ağırlığını əlavə edir. CLI tərəfindən çap olunan dəqiq təlimat kriptoqrafik xəşini tutun; təsdiqlər həmin kriptoqrafik xəşinə bağlanır.
 
 ```bash
 PROPOSE_OUTPUT="$({
@@ -132,16 +132,16 @@ INSTRUCTIONS_HASH="$({
 test -n "$INSTRUCTIONS_HASH"
 ```
 
-Hələ təxirə salınmış təklifləri açıq bir məhdud seçicisi ilə qeyd edin:
+Hələ gözləmədə olan təklifi açıq sonlu seçici ilə siyahıya alın:
 
 ```bash
 iroha --config "$SIGNER_A_CONFIG" ledger multisig list all \
   --multisig-selector "$MULTISIG_ACCOUNT"
 ```
 
-### 4. İmzaçı kimi təsdiq olun C {#_4-approve-as-signer-c}
+### 4. Kriptoqrafik imzalayan C kimi təsdiqləyin {#_4-approve-as-signer-c}
 
-A'nın çəkisi 1 + C'nin çəkisi 2 3-cü quorumuna çatır və təklif olunan təlimatı multisig hesabı kimi icra edir.
+A-nın çəkisi 1 ilə C-nin çəkisi 2 çoğunluğu 3-ə çatır və təklif olunan əmri multisig hesabı kimi icra edir.
 
 ```bash
 iroha --config "$SIGNER_C_CONFIG" \
@@ -152,7 +152,7 @@ iroha --config "$SIGNER_C_CONFIG" \
   --instructions-hash "$INSTRUCTIONS_HASH"
 ```
 
-Rust müştəri eyni siyasət mənşəli hesabı və yuxarıda istifadə olunan iki həyat dövrü təlimatları ilə davam edə bilər:
+Rust müştəri eyni siyasətdən yaranan hesab və yuxarıda istifadə olunan iki həyat dövrü təlimatı ilə davam edə bilər:
 
 ```rust
 let instructions = vec![SetKeyValue::account(
@@ -171,9 +171,9 @@ signer_c_client.submit_blocking::<InstructionBox>(
 )?;
 ```
 
-## Tətbiq edin {#verify}
+## Yoxla {#verify}
 
-Poststatı oxuyun və təklifin artıq gözlənilir olmadığını təsdiqləyin:
+Post-dövləti oxuyun və təklifin artıq gözləmədə olmadığını təsdiqləyin:
 
 ```bash
 iroha --config "$SIGNER_A_CONFIG" ledger account meta get \
@@ -189,21 +189,21 @@ iroha --config "$SIGNER_A_CONFIG" ledger multisig inspect \
   jq .
 ```
 
-Metadata qiyməti `"approved"` olmalıdır, tutulan təlimat hashı artıq gözlənilir kimi görünməməlidir və yoxlanılan nəzarətçi ağırlıqları `1, 1, 2` quorum ilə `3` göstərməlidir.
+Metadatanın dəyəri `"approved"` olmalıdır, tutulan təlimatın kriptoqrafik xəşi artıq gözləmədə görünməməlidir və yoxlanılmış kontroller çəkiləri `1, 1, 2` və kvorumu `3` göstərməlidir.
 
-## Problemlərin həlli {#troubleshooting}
+## Problemlərin aradan qaldırılması {#troubleshooting}
 
-- `signatory is not part of multisig` - təklif edən və ya təsdiqləyən müştəri polisdə qeydiyyata alınmış I105 IDs müştərilərindən biri ilə uyğun gəlmir.
-- Mültisig hesabının təklif olunan təlimatların icrası üçün icazəsi olmadıqda son təsdiqdən imtina edilə bilər. Multisig hesabına səlahiyyət verin, yalnız fərdi imzalananlara yox, sonra qalan imzalanana yenidən cəhd edin.
-- Qəbul olan təklif artıq quorum əldə edildiyini, TTL müddəti başa çatdığını və ya səhv göstərici hash / hesab seçicisi istifadə edildiyini bildirə bilər. Yenidən təklif etməzdən əvvəl post-statini soruşun.
-- İkiqat təsdiqlər çəki əlavə etmir. Hər qeydiyyatdan keçmiş imzalanan şəxs ən çox bir dəfə öz qurulmuş çəkisini verir.
-- Düzgün əməliyyatın nəzarətçi olaraq imzalanması qadağandır. Hər zaman `MultisigPropose` və `MultisigApprove` istifadə edin.
-- Əgər sonrakı əmrlər CLI qeydiyyat zamanı çap edilmiş hesabı tapa bilmirsə, müvəqqəti toxum tutmusunuz. Kanonik hesabı sifariş olunmuş siyasətdən çıxarın və yuxarıda göstərildiyi kimi bu dəyərlə qeyd edin.
+- `signatory is not part of multisig` təklif edən və ya təsdiq edən müştərinin siyasətdə qeydiyyatdan keçmiş I105 identifikatorlarından biri ilə uyğun gəlmədiyini bildirir.
+- Təklif olunan təlimatları icra etmək üçün çox imzalı hesab icazəyə malik olmadıqda son təsdiq rədd edilə bilər. Avtorizasiya əsasını yalnız onun fərdi kriptoqrafik imzalayanlarına deyil, çox imzalı hesaba verin, sonra isə qalan kriptoqrafik imzalayanın yenidən cəhd etməsinə icazə verin.
+- İtkin gözləyən təklif, kvorumun artıq çatdığı, TTL müddətinin bitdiyi və ya səhv təlimat hash/hesab seçicisinin istifadə edildiyi mənasını verə bilər. Yenidən təklif verməzdən əvvəl son vəziyyəti sorğulayın.
+- Təkrarlanan təsdiqlər çəkini artırmır. Hər qeydiyyatdan keçmiş imzaçi ən çox bir dəfə öz konfiqurasiya olunmuş çəkisini əlavə edir.
+- Kontroller olaraq bir normal əməliyyatı birbaşa imzalamaq qadağandır. Həmişə `MultisigPropose` və `MultisigApprove`-dən istifadə edin.
+- Əgər sonrakı əmrlər CLI qeydiyyatı zamanı çap olunan hesabı tapa bilməzsə, siz müvəqqəti toxumu tutmusunuz. Sifariş edilmiş siyasətdən tək protokol-standart hesabı çıxarın və yuxarıda göstərildiyi kimi həmin dəyər ilə qeydiyyatdan keçin.
 
 ## Mənbə və əlaqəli sənədlər {#source-and-related-docs}
 
-- [Bağlanmış komitdə multisig inteqrasiya testləri](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/multisig.rs)
-- [Bağlanmış komitdə multisig məlumat modeli](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/isi.rs)
-- [CLI bağlanmış komitdə multisig icrası](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
+- [Sabitlənmiş mənbə kodu versiyasında multi-iktidar inteqrasiya testləri](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/multisig.rs)
+- [Sabitlənmiş mənbə kodu versiyasında multisig məlumat modeli](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/isi.rs)
+- [CLI pinlənmiş mənbə kodu reviziyasında multisig tətbiqi](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
 - [Əməliyyatlar](/az/blockchain/transactions.md)
-- [icazələr və rollar ](./permissions-and-roles.md)
+- [İcazələr və rollar](./permissions-and-roles.md)

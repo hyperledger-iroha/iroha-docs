@@ -3,59 +3,59 @@ translation_locale: az
 translation_source: /guide/configure/peer-management.md
 translation_source_hash: f085fa1587595414f95705bbe2cd285752b0fe12cffb9ef29a33399f9a1f3f86
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Tərəflər arasında idarəetmə {#peer-management}
+# şəbəkə tərəfdaşının idarə edilməsi {#peer-management}
 
-Əgər dilə aid təlimatlardan birini izləmisinizsə, indi insanların qoşulmaq istədikləri yaxşı işləyən bir şəbəkəniz var.
+Əgər siz hər hansı bir dilə xas təlimatı izləmisinizsə, indi insanların qoşulmaq istədiyi yaxşı işləyən bir şəbəkəniz var.
 
-## İctimai Blockchain {#public-blockchain}
+## İctimai Blokçeyn {#public-blockchain}
 
-Açıq şəbəkədə həmkarların qəbul edilməsi hələ də bir zəncir siyasəti qərarıdır. Bir nod düzgün proqramı icra edə bilər və Torii ilə qoşula bilər, lakin şəbəkə öz həmkarlarının kimliyini etiraf etdikdən sonra yalnız razılaşmada iştirak edir.
+Açıq şəbəkədə, şəbəkə həmkarının qəbul edilməsi hələ də zəncir siyasəti qərarıdır. Bir düyün düzgün proqram təminatını işlədə və Torii ilə bağlantı qura bilər, lakin yalnız şəbəkə onun şəbəkə həmkarı şəxsiyyətini qəbul etdikdən sonra razılaşmaya qatılır.
 
-## Xüsusi Blockchain {#private-blockchain}
+## Şəxsi Blokçeyn {#private-blockchain}
 
-Bank şəraitində hər kəsin boş vaxtlarında qoşulmasına icazə vermək təhlükəsizlik riski təşkil edir. Təhlükəsizlik üçün xüsusi Iroha yerləşdirmələr ümumiyyətlə açıq kəşflərə güvənmək əvəzinə həmyaşıd topologiyasını konfigüratsiyaya və mənbəyə bağlayırlar.
+Bank mühitində hər kəsin istədiyi vaxt qoşulmasına icazə vermək təhlükəsizlik risqidir. Təhlükəsizlik üçün, şəxsi Iroha yerləşdirmələri adətən şəbəkə həmkarı topologiyasını açıq aşkarlara güvənmək əvəzinə konfiqurasiyada və blokçeyn genesisində sabitləyir.
 
-### Tərəfdaşların qeydiyyata alınması {#registering-peers}
+### Şəbəkə həmkarlarını qeydiyyatdan keçirmək {#registering-peers}
 
-Şəbəkəyə həmyaşıd əlavə etmək üçün əl ilə qeydiyyatdan keçmək lazımdır. Gəlin bu prosesi başa çatdırmaq üçün nə addımlar atılmalı olduğunu müzakirə edək
+Şəbəkəyə bir şəbəkə iştirakçısını əlavə etmək üçün onu əl ilə qeydiyyatdan keçirmək lazımdır. Bu prosesi tamamlamaq üçün atılmalı olan addımları müzakirə edək.
 
-#### 1. İstifadəçiyə icazə verin. {#_1-grant-the-user-permissions}
+#### 1. İstifadəçiyə icazə verin {#_1-grant-the-user-permissions}
 
-Tərəfdaşları qeydiyyatdan keçirən hesabda müvafiq `Permission` olmalıdır və bu, `Role` vasitəsilə və ya birbaşa icazə verilməsi şəklində verilir.
+Şəbəkə yoldaşını qeydiyyatdan keçirən hesabın uyğun `Permission` olmalıdır. Bu, `Role` vasitəsilə və ya birbaşa icazə verilməsi şəklində təmin edilə bilər.
 
-Bir hesabın vaxt keçdikcə həmyaşıdları idarə edəcəyi zaman rol ver. Digər tərəfdən həmyaşıdları idarə etməyən hesab tərəfindən bir dəfə qeydiyyatdan keçmək üçün birbaşa icazə verildiyi istifadə edin.
+Hesab zamanla şəbəkə yoldaşlarını idarə edəcəkdə bir rol verin. Əks halda şəbəkə yoldaşlarını idarə etməyən hesab tərəfindən bir dəfəlik qeydiyyat üçün birbaşa icazə verin.
 
 ::: info
 
-Standart icraçı `CanManagePeers` icazə nişanını qeydiyyatdan keçmək və qeydiyyata alınmamaq üçün istifadə edir.
+Səhv etməyən icraçı şəbəkə yoldaşlarını qeydiyyatdan keçirmək və qeydiyyatdan silmək üçün `CanManagePeers` icazə tokenindən istifadə edir.
 
 :::
 
-[ ayrı bir fəsildə ](/az/blockchain/permissions.md) icazələri və rolları daha ətraflı müzakirə edirik.
+Biz icazələr və rolları daha ətraflı şəkildə [ayrı fəsil](/az/blockchain/permissions.md)də müzakirə edirik.
 
-#### 2. Bir həmyaşıd qurun {#_2-set-up-a-peer}
+#### 2. Şəbəkə qoşulması qurun {#_2-set-up-a-peer}
 
-Yeni bir həmyaşıdın icazəsi verildikdən sonra, qurulmalıdır.
+Yeni bir şəbəkə iştirakçısına icazələr verildikdən sonra, onun qurulması lazımdır.
 
-Torii bu məqsədlə node parametrini və imkan son nöqtələrini aşkar edir. Peer bootstrap bu dəyərləri avtomatik olaraq danışıqlar aparmır: operatorlar vaxtların, partiya ölçülərinin və konsensusla əlaqəli digər parametrlərin şəbəkə ilə uyğun olduğunu yoxlamalıdırlar.
+Bir node-u qəbul etməzdən əvvəl mövcud şəbəkə həmkarı konfiqurasiyasını tələb edin. Torii bu məqsəd üçün node parametrləri və imkanları API son nöqtələrini açır. Şəbəkə tərəfdaşının başlanğıc əlaqəsi bu dəyərləri avtomatik olaraq müzakirə etmir: operatorlar vaxt aşımı, toplu ölçülər və digər konsensusla əlaqəli parametrlərin şəbəkə ilə uyğunluğunu təsdiqləməlidirlər.
 
-Prosesi sadələşdirmək üçün şəbəkə idarəçisindən `config.toml` -nin redaksiyalı versiyasını xahiş edə bilərsiniz ki, bu da peer private key kimi xüsusi məlumatları istisna edir.
+Prosesi sadələşdirmək üçün, şəbəkə administratorundan `config.toml`-ın redaktə edilmiş versiyasını istəyə bilərsiniz, bu versiya şəbəkə bərabəri şəxsi açarları kimi xüsusi məlumatları istisna edir.
 
 #### 3. Təlimatı təqdim edin {#_3-submit-the-instruction}
 
-Tərəfdaşınız işlədikdən sonra, tərəfdaş təlimatını təqdim etməlisiniz. Tərəfdaşlar əl çəkmə prosesindən keçəcəklər və şəbəkə ilə söhbət etməyə başlayacaqlar.
+Şəbəkə yoldaşınız işlədikdən sonra, qeydiyyat yoldaşı təlimatını təqdim etməlisiniz. Şəbəkə yoldaşı əl sıxma prosesindən keçəcək və şəbəkə ilə ünsiyyətə başlayacaq.
 
 ::: tip
 
-Tərəfdaş qeydiyyatı təlimatının təqdim edilməsi yeni bir tərəfdaş prosesi təşkil etmir (və edə bilməz).
+Şəbəkə tərəfdaşının qeydiyyat təlimatını təqdim etmək yeni bir şəbəkə tərəfdaş prosesi yaratmır (və yarada bilməz).
 
 :::
 
-### qeydiyyatdan keçməyən yaşıtlar {#unregistering-peers}
+### Şəbəkə həmkarlarının qeydiyyatdan silinməsi {#unregistering-peers}
 
-Bəs qeydiyyatdan keçməyən yaşıtlar? Təhlükəsizlik səbəbləri ilə bu proses birmənalıdır. Şəbəkə həmyaşıdını çıxarmaq istədiyi barədə razılığa gəlir, amma Tərəfdaşın özü niyə heç kim onunla danışmadığını çox bilmir.
+Şəbəkə iştirakçılarının qeydiyyatının silinməsi nə olacaq? Təhlükəsizlik səbəblərinə görə bu proses bir tərəfli olur. Şəbəkə, bir şəbəkə iştirakçısını çıxarmaq istədiyi barədə konsensus əldə edir, amma şəbəkə iştirakçısı özü niyə heç kim onunla danışmadığını çox bilmir.
 
-Əksər hallarda, bir həmyaşıdın qeydiyyatını ləğv etmək istəyirsinizsə, bunu etmək istəyirsiniz, çünki bu Bizanslı səhvdir. Bu həmyaşıdın "axtarılması" şəbəkədəki zərərli aktyorun həyatını daha da çətinləşdirir.
+Çox şəraitdə, əgər siz bir şəbəkə həmkarını qeydiyyatdan çıxarmaq istəyirsinizsə, bunu etmək istəməyinizin səbəbi onun Bizans xətası olmasıdır. Sadəcə olaraq bu şəbəkə həmkarını “gözdən itirmək” şəbəkədəki zərərli aktorun həyatını çətinləşdirir.

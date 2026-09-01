@@ -3,32 +3,32 @@ translation_locale: es
 translation_source: /blockchain/escrow.md
 translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e217bc6ac9
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Aseguración de activos nativos {#native-asset-escrow}
+# Custodia de Activos Nativos {#native-asset-escrow}
 
-Native escrow es un mecanismo de custodia administrado por el libro mayor para activos numéricos. En lugar de enviar activos a una cuenta propiedad de la aplicación y depender del código de la aplicación para proteger esa cuenta, El escrow ISIs transferirá el valor a una cuenta de custodia del protocolo determinista y registrará el ciclo de vida del escrow en estado mundial.
+El depósito en garantía nativo es un mecanismo de custodia gestionado por un libro mayor para activos numéricos. En lugar de enviar activos a una cuenta propiedad de la aplicación y depender del código de la aplicación para proteger esa cuenta, depósito en garantía ISIs mover el valor a una cuenta de custodia de protocolo determinista y registrar el ciclo de vida del depósito en garantía en el estado mundial.
 
-Utilice el escrow nativo para la liquidación del mercado, la coordinación de pagos fuera de cadena al estilo Aitai, las cerraduras de hitos y los flujos de trabajo de escrow protegidos que requieren estado del ciclo de vida visible en un libro mayor.
+Utilice depósito en garantía nativo para la liquidación del mercado, coordinación de pagos fuera de la cadena al estilo Aitai, bloqueos por hitos y flujos de trabajo de depósito en garantía protegidos que necesitan un estado del ciclo de vida visible en el libro mayor.
 
 ## Conceptos {#concepts}
 
-|Concepto .|Descripción |
+|Concepto|Descripción|
 | --- | --- |
-|`EscrowId` |El identificador seleccionado por el llamador envuelve un hash. Debe ser único entre las garantías transparentes y anónimas. |
-|`AssetEscrowRecord` |Registro de garantía o bloqueo numérico transparente de activos. |
-|`AnonymousAssetEscrowRecord` |El registro de garantía protegido respaldado por anuladores, compromisos y adjuntos de prueba. |
-|Cuenta de custodia |Cuenta de protocolo determinístico derivada de la cadena ID, garantía ID, y definición de activo. |
-|La evidencia se hacha .|Los hashes de pruebas pueden identificar facturas, juicios, mensajes, manifiestos de almacenamiento u otras evidencias fuera de la cadena.|
+| `EscrowId` |Identificador seleccionado por el llamante que encapsula un hash criptográfico. Debe ser único en los depósitos en garantía transparentes y anónimos.|
+| `AssetEscrowRecord` |Registro transparente de fideicomiso o bloqueo de activos numéricos.|
+| `AnonymousAssetEscrowRecord` |Registro de custodia protegido respaldado por anuladores, compromisos y anexos de prueba.|
+|Cuenta de custodia|Cuenta de protocolo determinista derivada del ID de cadena, ID de depósito en garantía y definición de activo.|
+|Evidencia de hashes criptográficos|Las pruebas de hashes criptográficos pueden identificar facturas, sentencias, mensajes, manifiestos técnicos de almacenamiento u otras pruebas fuera de la cadena. La propia carga útil de la prueba no se almacena en el registro de depósito en garantía.|
 
-Los registros transparentes contienen al vendedor, comprador opcional, definición de activo, monto total, cuenta de custodia, estado del ciclo de vida, tipo de comportamiento, cantidad restante, autoridad de liberación opcional, sello de tiempo de vencimiento opcional, hashes de evidencia, sellas de tiempo y detalles de resolución opcionales.
+Los registros transparentes incluyen al vendedor, comprador opcional, definición del activo, monto total, cuenta de custodia, estado del ciclo de vida, tipo de comportamiento, monto restante, principal de autorización de liberación opcional, sello de tiempo de vencimiento opcional, hashes criptográficos de evidencia, sellos de tiempo y detalles de resolución opcionales.
 
-Las cantidades de escrow deben ser cantidades numéricas positivas de activos y deben coincidir con la especificación numérica de la definición de activo. Mientras que un escrow o bloqueo está activo, las transferencias genéricas de activos no pueden drenar la cuenta de custodia; las vías de salida de custodia son el escrow ISIs descrito a continuación.
+Los montos en custodia deben ser cantidades de activos numéricos positivas y deben coincidir con la especificación numérica de la definición del activo. Mientras un depósito en custodia o bloqueo esté activo, las transferencias genéricas de activos no pueden vaciar la cuenta de custodia; las vías de salida de la custodia son el depósito en custodia ISIs descrito a continuación.
 
-## Escrow en el mercado {#marketplace-escrow}
+## Depósito en garantía del mercado {#marketplace-escrow}
 
-El mercado de garantía coordina una liberación de activos en cadena con un flujo de trabajo de pago o entrega fuera de la cadena.
+El depósito en garantía del mercado coordina la liberación de un activo en la cadena con un flujo de trabajo de pago o entrega fuera de la cadena.
 
 ```mermaid
 stateDiagram-v2
@@ -43,21 +43,21 @@ stateDiagram-v2
     Disputed --> Resolved: ResolveEscrowDispute
 ```
 
-|ISI |¿ Quién lo presenta ?|El efecto |
+| ISI |Quién lo presenta|Efecto|
 | --- | --- | --- |
-|`OpenAssetEscrow` |Vendedor |Se bloquea el activo numérico del vendedor en custodia de protocolo y se crea un registro de mercado `Open`. |
-|`AcceptAssetEscrow` |Comprador |Registra al comprador y transfiere `Open` a `Accepted`. El vendedor no puede aceptar su propio garantía. |
-|`MarkEscrowPaymentSent` |Comprador aceptado |Trasladar `Accepted` a `PaymentSent` después de que el comprador envíe el pago fuera de la cadena. |
-|`ReleaseAssetEscrow` |Vendedor |Se traslada `PaymentSent` a `Released` y se transfiere al comprador el importe total garantizado. |
-|`CancelAssetEscrow` |Vendedor |Traslada `Open` o `Accepted` a `Cancelled` y reembolsa al vendedor antes de que se marque el pago. |
-|`OpenEscrowDispute` |Vendedor o comprador aceptado |Se mueve `Accepted` o `PaymentSent` a `Disputed` y se añaden hashes de pruebas. |
-|`ResolveEscrowDispute` |Cuenta con `CanResolveEscrowDispute` |Se traslada `Disputed` a `Resolved` y se divide la cantidad entre el comprador y el vendedor |
+| `OpenAssetEscrow` |vendedora|Bloquea el activo numérico del vendedor en la custodia del protocolo y crea un registro de mercado `Open`.|
+| `AcceptAssetEscrow` |compradora|Registra al comprador y mueve `Open` a `Accepted`. El vendedor no puede aceptar su propio depósito en garantía.|
+| `MarkEscrowPaymentSent` |Comprador aceptado|Traslada `Accepted` a `PaymentSent` después de que el comprador envíe el pago fuera de la cadena.|
+| `ReleaseAssetEscrow` |vendedora| Mueve `PaymentSent` a `Released` y transfiere el monto total en custodia al comprador. |
+| `CancelAssetEscrow` |vendedora|Mueve `Open` o `Accepted` a `Cancelled` y reembolsa al vendedor antes de que se marque el pago.|
+| `OpenEscrowDispute` |Vendedor o comprador aceptado|Mueve `Accepted` o `PaymentSent` a `Disputed` y agrega hashes criptográficos de evidencia.|
+| `ResolveEscrowDispute` |Cuenta con `CanResolveEscrowDispute`|Traslada `Disputed` a `Resolved` y divide la cantidad entre el comprador y el vendedor.|
 
-Los importes de resolución de litigios no deben ser negativos y `buyer_amount + seller_amount` deben ser iguales al importe de la garantía. Las piernas de valor cero están permitidas, pero toda la división debe tener en cuenta el saldo bloqueado.
+Los montos de resolución de disputas deben ser no negativos, y `buyer_amount + seller_amount` debe ser igual al monto en custodia. Se permiten tramos con valor cero, pero toda la división debe tener en cuenta el saldo bloqueado.
 
 ### Rust Ejemplo {#rust-example}
 
-Este ejemplo supone que las cuentas del vendedor y del comprador ya existen, la definición de activo se registra como numérica y el vendedor tiene un saldo suficiente.
+Este ejemplo asume que las cuentas del vendedor y del comprador ya existen, la definición del activo está registrada como numérica, y el vendedor tiene suficiente saldo.
 
 ```rust
 use iroha::{
@@ -98,18 +98,18 @@ fn release_marketplace_escrow(
 }
 ```
 
-## Bloques de activos genéricos {#generic-asset-locks}
+## Bloqueos de Activos Genéricos {#generic-asset-locks}
 
-Los bloqueos de activos utilizan el mismo tipo de registro de custodia, pero no son ofertas entre compradores y vendedores. Bloquean fondos para una cuenta de destino y opcionalmente requieren una autoridad de liberación separada para retirar los fondos.
+Los bloqueos de activos utilizan el mismo tipo de registro de custodia, pero no son ofertas de comprador-vendedor. Bloquean fondos para una cuenta de destino y, opcionalmente, requieren un principal de autorización de liberación separado para retirar los fondos.
 
-|ISI |¿ Quién lo presenta ?|Efecto .|
+| ISI |Quién lo presenta|Efecto|
 | --- | --- | --- |
-|`OpenAssetLock` |Cuenta de origen |Se fija una cantidad positiva, se registra el destino como comprador registrado y se establece el estado en `Locked`. |
-|`DrawdownAssetLock` |Autoridad de liberación, o destino cuando no se haya establecido ninguna autoridad de liberación |Transfiere parte o toda la custodia restante a su destino. |
-|`CancelAssetLock` |Abre la cerradura|Cancela una cerradura activa y devuelve el importe restante al abre. |
-|`ExpireAssetLock` |Cualquier autoridad de transacciones después del plazo |Expirará un bloqueo con `expires_at_ms` en el pasado y se reembolsará el importe restante al titular. |
+| `OpenAssetLock` |Cuenta de origen|Bloquea una cantidad positiva, registra el destino como el comprador registrado y establece el estado en `Locked`.|
+| `DrawdownAssetLock` |Autorización de liberación principal, o destino cuando no se establece una autorización de liberación principal|Transfiere parte o la totalidad de la custodia restante al destino.|
+| `CancelAssetLock` |Abridor de cerraduras|Cancela un bloqueo activo y devuelve la cantidad restante al que lo abrió.|
+| `ExpireAssetLock` |Cualquier autorización de transacción principal después del plazo|Expira un bloqueo con `expires_at_ms` en el pasado y reembolsa la cantidad restante al iniciador.|
 
-`DrawdownAssetLock` mantiene el registro en `Locked` mientras permanece cierta cantidad. Cuando la cantidad restante alcanza cero, el estado se convierte en `DrawnDown` y el registro se cierra.
+`DrawdownAssetLock` mantiene el registro en `Locked` mientras queda alguna cantidad. Cuando la cantidad restante llega a cero, el estado se convierte en `DrawnDown` y el registro se cierra.
 
 ```rust
 use iroha::{
@@ -174,11 +174,11 @@ fn drawdown_and_close_asset_locks(
 }
 ```
 
-Python En la actualidad expone a los auxiliares de alto nivel para cerraduras genéricas: `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, y `expire_asset_lock`. Para el mercado y la garantía anónima de Python, uso canónico `InstructionBox` JSON a través de la SDK- ¿ Qué ? JSON escape hatch, o someterse a través de un SDK que expone a los constructores de garantías de primera clase.
+Python actualmente expone ayudantes de alto nivel para bloqueos genéricos: `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock` y `expire_asset_lock`. Para el mercado y el depósito en garantía anónimo de Python, usa el `InstructionBox` JSON canónico a través de la escotilla de escape JSON de SDK, o envía a través de un SDK que expone a los constructores de depósito en garantía de primera clase.
 
-## Las disputas {#disputes}
+## Disputas {#disputes}
 
-Una garantía de mercado puede entrar en disputa desde: `Accepted` o `PaymentSent`. Sólo el comprador o vendedor registrado puede abrir la disputa. `CanResolveEscrowDispute`, Se otorgará directamente a la cuenta del resolver o se heredará a través de una función.
+Un depósito en garantía del mercado puede entrar en disputa desde `Accepted` o `PaymentSent`. Solo el vendedor o comprador registrado puede abrir la disputa. La resolución requiere `CanResolveEscrowDispute`, ya sea otorgada directamente a la cuenta del resolutor o heredada a través de un rol.
 
 ```rust
 use iroha::{
@@ -226,21 +226,21 @@ fn resolve_disputed_escrow(
 }
 ```
 
-## Escrow anónimo {#anonymous-escrow}
+## Fideicomiso Anónimo {#anonymous-escrow}
 
-El registro público aún almacena el vendedor, comprador, estado, hashes de evidencia, sellos de tiempo y registros de movimiento vinculados a pruebas. Las cantidades y los destinatarios dentro de los billetes protegidos están representados por compromisos, anuladores y adjuntos de prueba.
+El depósito en garantía anónimo utiliza el mismo ciclo de vida del mercado, pero la financiación y el movimiento de activos al cerrar están protegidos. El registro público aún almacena vendedor, comprador, estado, pruebas hashes criptográficos, sellos de tiempo y registros de movimiento vinculados a pruebas. Los montos y los destinatarios dentro de las notas protegidas se representan mediante compromisos, anuladores y adjuntos de prueba.
 
-|Transparencia ISI |Anónimo ISI |
+|Transparente ISI|Anónimo ISI|
 | --- | --- |
-|`OpenAssetEscrow` |`OpenAnonymousAssetEscrow` |
-|`AcceptAssetEscrow` |`AcceptAnonymousAssetEscrow` |
-|`MarkEscrowPaymentSent` |`MarkAnonymousEscrowPaymentSent` |
-|`ReleaseAssetEscrow` |`ReleaseAnonymousAssetEscrow` |
-|`CancelAssetEscrow` |`CancelAnonymousAssetEscrow` |
-|`OpenEscrowDispute` |`OpenAnonymousEscrowDispute` |
-|`ResolveEscrowDispute` |`ResolveAnonymousEscrowDispute` |
+| `OpenAssetEscrow` | `OpenAnonymousAssetEscrow` |
+| `AcceptAssetEscrow` | `AcceptAnonymousAssetEscrow` |
+| `MarkEscrowPaymentSent` | `MarkAnonymousEscrowPaymentSent` |
+| `ReleaseAssetEscrow` | `ReleaseAnonymousAssetEscrow` |
+| `CancelAssetEscrow` | `CancelAnonymousAssetEscrow` |
+| `OpenEscrowDispute` | `OpenAnonymousEscrowDispute` |
+| `ResolveEscrowDispute` | `ResolveAnonymousEscrowDispute` |
 
-La apertura crea un compromiso de garantía. la liberación, cancelación y resolución anónima de disputas deben gastar exactamente un compromiso de fianza y crear el comprador, vendedor o los compromisos de salida divididos requeridos por la acción.
+La cartera o las herramientas del verificador deben construir el adjunto de prueba y las entradas públicas. Al abrir se crea un compromiso de depósito en garantía. La liberación, cancelación y resolución anónima de disputas deben gastar exactamente un compromiso de depósito en garantía y crear los compromisos de salida del comprador, vendedor o divididos requeridos por la acción.
 
 ```rust
 use iroha::{
@@ -283,25 +283,25 @@ fn open_anonymous_escrow(
 }
 ```
 
-Para el modelo de transacciones protegidas subyacente, véase [Transformaciones anónimas ](/es/blockchain/anonymous-transactions.md).
+Para el modelo subyacente de transacción protegida, consulte [Transacciones anónimas](/es/blockchain/anonymous-transactions.md).
 
 ## SDK Uso {#sdk-usage}
 
-El apoyo a los depósitos es expuesto de manera diferente en todos los países. SDKs. Rust tiene el modelo de datos de tipo canónico. Python Actualmente expone a los ayudantes genéricos de bloqueo de activos. JavaScript y TypeScript el uso Kotodama Escrutar las llamadas del anfitrión. Kotlin/JVM y Swift proveer constructores de cargas útiles para el mercado y garantías anónimas.
+El soporte de depósito en garantía se expone de manera diferente a través de SDKs. Rust tiene el modelo de datos tipado canónico. Python actualmente expone helpers genéricos de bloqueo de activos. JavaScript y TypeScript utilizan llamadas de host de depósito en garantía Kotodama. Kotlin/JVM y Swift proporcionan constructores de carga útil tipados para el mercado y el depósito en garantía anónimo.
 
-|SDK |Utilice esta superficie .|Ámbito de aplicación|
+| SDK |Usa esta superficie|Alcance|
 | --- | --- | --- |
-| [Rust](#rust-sdk) |`iroha::data_model::isi::escrow` |Escrow de mercado, cerraduras genéricas, escro anónimas, consultas y eventos. |
-| [Python](#python-asset-locks) |`Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock`, y los ayudantes del cliente `*_and_wait` |Cerraduras genéricas de activos. El mercado y los ayudantes de fianza anónimos aún no son métodos Python de primera clase. |
-| [JavaScript / TypeScript](#javascript-and-typescript-kotodama) |`compileKotodamaProgram` de `@iroha/iroha-js/kotodama-compiler` |Las llamadas del anfitrión de garantía dentro de los contratos Kotodama. |
-| [Kotlin / JVM](#kotlin-and-jvm) |`InstructionTemplate` clases en `org.hyperledger.iroha.sdk.core.model.instructions` |Marketplace y plantillas de instrucciones personalizadas anónimas.|
-| [Swift / iOS](#swift-and-ios) |Los auxiliares `NativeEscrowInstructionBuilders` y `IrohaSDK.build*Escrow*` |Mercado y garantía anónima Norito JSON carga útil de instrucciones. |
+| [Rust](#rust-sdk) | `iroha::data_model::isi::escrow` |Depósito en garantía del mercado, cerraduras genéricas, depósito en garantía anónimo, consultas y eventos.|
+| [Python](#python-asset-locks) | `Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock`, y los ayudantes del cliente `*_and_wait` |Bloqueos de activos genéricos. Los asistentes de mercado y de depósito en garantía anónimo aún no son métodos de primera clase Python.|
+| [JavaScript / TypeScript](#javascript-and-typescript-kotodama) | `compileKotodamaProgram` de `@iroha/iroha-js/kotodama-compiler` |El anfitrión de custodia llama dentro de los contratos Kotodama.|
+| [Kotlin / JVM](#kotlin-and-jvm) | `InstructionTemplate` clases en `org.hyperledger.iroha.sdk.core.model.instructions` |Plantillas de instrucciones personalizadas de mercado y custodia anónima.|
+| [Swift / iOS](#swift-and-ios) |`NativeEscrowInstructionBuilders` y `IrohaSDK.build*Escrow*` ayudantes|Mercado y cargas útiles de instrucciones de depósito en garantía anónimo Norito JSON.|
 
-Los ejemplos siguientes se centran en la construcción de instrucciones. La financiación de cuentas, la gestión de firmas y la presentación de transacciones siguen el flujo normal para cada SDK.
+Los ejemplos a continuación se centran en la construcción de instrucciones. La financiación de cuentas, la gestión de firmas y la presentación de transacciones siguen el flujo normal para cada SDK.
 
 ### Rust SDK {#rust-sdk}
 
-Utilice el Rust SDK cuando necesite cobertura nativa completa o soporte de consultas/eventos. Los ejemplos anteriores muestran la liberación en el mercado, el desbloqueo genérico, la resolución de disputas y la construcción anónima de garantía con `iroha::data_model::isi::escrow`.
+Use el Rust SDK cuando necesite cobertura nativa completa o soporte de consultas/eventos. Los ejemplos anteriores muestran lanzamiento en el mercado, reducción genérica de bloqueo, resolución de disputas y construcción de fideicomiso anónimo con `iroha::data_model::isi::escrow`.
 
 ```rust
 use iroha::{
@@ -326,9 +326,9 @@ fn open_and_read(
 }
 ```
 
-### Python Cerraduras de activos {#python-asset-locks}
+### Python Bloqueos de activos {#python-asset-locks}
 
-La Python SDK expone a los ayudantes de primera clase para bloqueos genéricos de activos. Utilizarlos para pagos de hitos, retiros por una autoridad de liberación, cancelación por el abridor y reembolsos por vencimiento.
+El Python SDK expone ayudantes de primera clase para bloqueos de activos genéricos. Úselos para pagos por hitos, desembolsos por un principal de autorización de liberación, cancelación por el iniciador y reembolsos por vencimiento.
 
 ```python
 client.open_asset_lock_and_wait(
@@ -359,13 +359,13 @@ client.expire_asset_lock_and_wait(
 )
 ```
 
-En el caso de un bloqueo de dos partes, omita `release_authority`; la cuenta de destino podrá entonces enviar `drawdown_asset_lock`.
+Para un bloqueo de dos partes, omita `release_authority`; la cuenta de destino luego puede enviar `drawdown_asset_lock`.
 
 ### JavaScript y TypeScript Kotodama {#javascript-and-typescript-kotodama}
 
-El JavaScript SDK no expone actualmente a los constructores directos nativos de transacciones de escrow. Para las aplicaciones JavaScript o TypeScript que implementan contratos Kotodama, compilarán llamadas al host de escrow con el compilador Kotodama.
+El JavaScript SDK actualmente no expone constructores de transacciones de escrow nativos directos. Para aplicaciones JavaScript o TypeScript que despliegan contratos Kotodama, compile las llamadas del host de escrow con el compilador Kotodama.
 
-Las llamadas nativas de escrow host requieren sugerencias explícitas de acceso porque el compilador no puede derivar conjuntos de acceso más estrechos para escrow opaco ISIs. Utilice indicios de tarjeta salvaje en los puntos de entrada exportados que llaman a los built-ins `escrow_*`.
+Las llamadas nativas al anfitrión de depósito en garantía requieren indicaciones de acceso explícitas porque el compilador no puede derivar conjuntos de acceso más restringidos para depósitos opacos ISIs. Use indicaciones comodín en los puntos de entrada exportados que llamen a las funciones incorporadas `escrow_*`.
 
 ```js
 import { compileKotodamaProgram } from "@iroha/iroha-js/kotodama-compiler";
@@ -397,11 +397,11 @@ if (compiled.diagnostics.length > 0) {
 }
 ```
 
-En caso de disputas, utilice `escrow_open_dispute(offer, evidence)` y `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)`. Las llamadas anónimas del host escrow aceptan los bytes de carga útil de las solicitudes Norito, por ejemplo, `anonymous_escrow_open_offer(request)`.
+Para disputas, use `escrow_open_dispute(offer, evidence)` y `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)`. El anfitrión de depósito en garantía anónimo acepta llamadas de Norito con bytes de solicitud de carga útil, por ejemplo `anonymous_escrow_open_offer(request)`.
 
 ### Kotlin y JVM {#kotlin-and-jvm}
 
-El Kotlin/JVM SDK modela escrow nativo como plantillas de instrucciones personalizadas. Cada plantilla valida los campos requeridos y expone el mapa canónico del argumento utilizado por el constructor de transacciones.
+Los modelos Kotlin/JVM SDK modelan la custodia nativa como plantillas de instrucciones personalizadas. Cada plantilla valida los campos requeridos y expone el mapa de argumentos canónico utilizado por el generador de transacciones.
 
 ```kotlin
 import org.hyperledger.iroha.sdk.core.model.escrow.NativeEscrowPermissions
@@ -431,11 +431,11 @@ println(open.arguments)
 println(NativeEscrowPermissions.CAN_RESOLVE_ESCROW_DISPUTE)
 ```
 
-Las plantillas anónimas están disponibles como: `OpenAnonymousAssetEscrowInstruction`, `AcceptAnonymousAssetEscrowInstruction`, `MarkAnonymousEscrowPaymentSentInstruction`, `ReleaseAnonymousAssetEscrowInstruction`, `CancelAnonymousAssetEscrowInstruction`, `OpenAnonymousEscrowDisputeInstruction`, y `ResolveAnonymousEscrowDisputeInstruction`. Android Las llamadas de Java pueden usar la coincidencia `NativeEscrowInstructions.*` los constructores de la Android Un artefacto.
+Las plantillas anónimas están disponibles como `OpenAnonymousAssetEscrowInstruction`, `AcceptAnonymousAssetEscrowInstruction`, `MarkAnonymousEscrowPaymentSentInstruction`, `ReleaseAnonymousAssetEscrowInstruction`, `CancelAnonymousAssetEscrowInstruction`, `OpenAnonymousEscrowDisputeInstruction` y `ResolveAnonymousEscrowDisputeInstruction`. Los llamadores de Java Android pueden usar los constructores correspondientes `NativeEscrowInstructions.*` del artefacto Android.
 
 ### Swift y iOS {#swift-and-ios}
 
-El Swift SDK construye instrucciones de custodia como cargas útiles Norito JSON. Utilice `NativeEscrowInstructionBuilders` directamente, o llame al ayudante equivalente `IrohaSDK.build*Escrow*` cuando su aplicación ya tenga una instancia `IrohaSDK`.
+El Swift SDK crea instrucciones de depósito en garantía como cargas útiles Norito JSON. Use `NativeEscrowInstructionBuilders` directamente, o llame al asistente equivalente `IrohaSDK.build*Escrow*` cuando su aplicación ya tenga una instancia de `IrohaSDK`.
 
 ```swift
 import IrohaSwift
@@ -463,27 +463,27 @@ let resolve = try NativeEscrowInstructionBuilders.resolveEscrowDispute(
 )
 ```
 
-Anónimo Swift los constructores toman listas de anuladores, listas de compromisos de salida, un diccionario de prueba y opcionales `rootHint` El token de permiso para resolver disputas está disponible como: `NativeEscrowPermissions.canResolveEscrowDispute`.
+Los constructores anónimos Swift toman listas de anuladores, listas de compromisos de salida, un diccionario de pruebas y valores opcionales `rootHint`. El token de permiso del resolutor de disputas está disponible como `NativeEscrowPermissions.canResolveEscrowDispute`.
 
-## Las preguntas y los acontecimientos {#queries-and-events}
+## Consultas y Eventos {#queries-and-events}
 
-Utilice consultas de garantía para páginas de estado, trabajos de reconciliación y herramientas de soporte:
+Utilice consultas en custodia para páginas de estado, trabajos de conciliación y herramientas de soporte:
 
-|Pregunta .|El propósito .|
+|Consulta|Propósito|
 | --- | --- |
-|`FindAssetEscrowById` |Leer una fianza transparente o bloquear por `EscrowId`. |
-|`FindAssetEscrows` |Enumera los registros transparentes de garantía y bloqueo. |
-|`FindAssetEscrowsBySeller` |Lista de registros abiertos por un vendedor o abre cerraduras. |
-|`FindAssetEscrowsByBuyer` |Lista de garantías de mercado aceptadas por un comprador o bloqueos dirigidos a un destino. |
-|`FindAssetEscrowsByStatus` |Lista de los registros hasta `AssetEscrowStatus`. |
-|`FindAnonymousAssetEscrowById` |Leer una fianza anónima por `EscrowId`. |
-|`FindAnonymousAssetEscrows*` |Enumera las garantías anónimas por todos los registros, vendedor, comprador o estado. |
+| `FindAssetEscrowById` |Lea un depósito en garantía transparente o bloqueo por `EscrowId`.|
+| `FindAssetEscrows` |Listado de registros de fideicomiso transparente y bloqueo.|
+| `FindAssetEscrowsBySeller` |Lista de registros abiertos por un vendedor o abridor de cerraduras.|
+| `FindAssetEscrowsByBuyer` |Enumere las custodied de mercado aceptadas por un comprador o los bloqueos dirigidos a un destino.|
+| `FindAssetEscrowsByStatus` |Listar registros por `AssetEscrowStatus`.|
+| `FindAnonymousAssetEscrowById` |Lee un fideicomiso anónimo por `EscrowId`.|
+| `FindAnonymousAssetEscrows*` |Lista las cuentas de depósito en garantía anónimas por todos los registros, vendedor, comprador o estado.|
 
-`EscrowEventFilter` puede suscribirse a eventos nativos transparentes de garantía y bloqueo por garantía ID, el vendedor, el comprador, el estado y la máscara del evento. `Opened`, `Accepted`, `PaymentSent`, `Released`, `Cancelled`, `Expired`, `Disputed`, y `Resolved`. Los registros de fianza anónimos se inspeccionan a través de las consultas anónimas de fianza.
+`EscrowEventFilter` puede suscribirse a eventos de depósito en garantía nativo transparente y de bloqueo por ID de depósito, vendedor, comprador, estado y máscara de conjunto de eventos. La familia de eventos incluye `Opened`, `Accepted`, `PaymentSent`, `Released`, `Cancelled`, `Expired`, `Disputed` y `Resolved`. Los registros de fideicomiso anónimos se inspeccionan a través de las consultas de fideicomiso anónimas.
 
-## Notas de funcionamiento {#operational-notes}
+## Notas operativas {#operational-notes}
 
-- Almacenar grandes facturas, registros de chat, juicios o paquetes de auditoría fuera del registro de garantía y adjuntar sus hashes como evidencia.
-- Utilice la derivación estable `EscrowId` en las solicitudes para que los retos no puedan crear garantías duplicadas de la misma oferta.
-- Conceder `CanResolveEscrowDispute` únicamente a las cuentas o funciones que operan el proceso de litigio.
-- Tratar la verificación de pagos fuera de la cadena como una política de aplicación. Iroha registra la custodia y las transiciones del ciclo de vida; no verifica por sí solo las vías de pago fiduciarias o externas.
+- Almacene facturas grandes, registros de chat, sentencias o paquetes de auditoría fuera del registro de depósito en garantía y adjunte sus hashes criptográficos como evidencia.
+- Utilice la derivación estable `EscrowId` en las aplicaciones para que los reintentos no puedan crear depósitos en garantía duplicados para la misma oferta.
+- Conceda `CanResolveEscrowDispute` solo a cuentas o roles que operen el proceso de disputas.
+- Trate la verificación de pagos fuera de la cadena como una política de la aplicación. Iroha registra la custodia y las transiciones del ciclo de vida; no verifica por sí mismo las redes de pago en moneda fiduciaria o externas.

@@ -8,11 +8,11 @@ translation_engine: nllb-200-ct2
 
 # JavaScript ו TypeScript {#javascript-and-typescript}
 
-הזרם JavaScript SDK האם זה `@iroha/iroha-js` חבילה ב Iroha עץ מקור. Node.js-הראשון SDK עבור Torii, Norito בונה, חתימה, עמודי עמודים, תצפיות קונקט, ותחבורה של פקודות קגמושה.
+ערכת JavaScript SDK הנוכחית היא החבילה `@iroha/iroha-js` בעץ המקור של Iroha. זוהי ערכת SDK המיועדת בראש ובראשונה ל־Node.js, עם תמיכה ב־Torii, בוני Norito, חתימה, חלוקה לעמודים, תצפיות Connect והעברת פקודות Kagemusha.
 
 ## בנייה ממקור {#build-from-source}
 
-החבילה אינה זמינה כרגע מהרישום הציבורי npm. לבנות אותו מאותו תיקון מקור Iroha מחוברת כמו הערך שאתה מכוון:
+החבילה אינה זמינה כעת במאגר npm הציבורי. בנו אותה מאותה גרסת מקור מקובעת של Iroha שבה נבנה הצומת שאליו אתם פונים:
 
 ```bash
 git clone https://github.com/hyperledger-iroha/iroha.git
@@ -73,7 +73,7 @@ for (const asset of assets.items) {
 node taira-readonly.mjs
 ```
 
-לעבור לשיחות חתומות SDK רק לאחר שתבדקי קריאה בלבד האלה יעבודו. הציבורי Taira יכול להחזיר באופן זמני שורה מלאה או טעות כניסה, אז לשמור על בדיקות רשת חי בחירה ב CI.
+לעבור לקריאות חתומות SDK רק לאחר שתבדקי קריאה בלבד האלה יעבודו. הציבורי Taira יכול להחזיר באופן זמני שורה מלאה או טעות כניסה, אז לשמור על בדיקות רשת חי בחירה ב CI.
 
 מיבואים שימושיים:
 
@@ -87,7 +87,7 @@ import { generateKeyPair } from "@iroha/iroha-js/crypto";
 
 ## משכנתא מקומי {#native-escrow}
 
-JavaScript ו TypeScript יישומים יכולים להשתמש ב- native escrow דרך Kotodama מסדרת שיחות מארגני הסכום עם `@iroha/iroha-js/kotodama-compiler`; הבניינים של עסקאות אסקו יחידים ישירות אינם חשופים כרגע על ידי JavaScript SDK. תראו [אבטחה של נכסים מקומיים](/he/blockchain/escrow.md#javascript-and-typescript-kotodama) לדוגמא של שיחת המארח ב-escrow.
+יישומי JavaScript ו־TypeScript יכולים להשתמש ב־escrow המובנה באמצעות חוזי Kotodama. קמפלו קריאות מארח של escrow בעזרת `@iroha/iroha-js/kotodama-compiler`; בוני עסקאות ישירים ל־escrow מובנה אינם נחשפים כעת ב־JavaScript SDK. ראו [escrow מובנה לנכסים](/he/blockchain/escrow.md#javascript-and-typescript-kotodama) לדוגמה של קריאת מארח ל־escrow.
 
 ## הכיסוי הנוכחי {#current-coverage}
 
@@ -95,7 +95,7 @@ SDK מתמקד ב:
 
 - Torii HTTP ו WebSocket עוזרים
 - Norito יצרני עסקאות והנחיות
-- Kotodama קומפיילציה, כולל מבניית שיחות מארחת מאבטחה
+- הידור Kotodama, לרבות בניית קריאות מארח לנאמנות
 - Ed25519 חתימה ודור מפתח
 - סיועי דף וניסיון מחדש
 - קישור עוזרים לחיזוק הדפדפן

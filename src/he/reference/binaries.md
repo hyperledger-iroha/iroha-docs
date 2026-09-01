@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /reference/binaries.md
-translation_source_hash: 5a36877954bec97691e45697680bfbd6e0a7c7695e48a796bc7c9a41d4756644
+translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 זרימת העבודה של המפעיל Iroha 3 מסתובבת סביב ארבעה בינרים עיקריים:
 
-- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) לניהול דיימון משותף
+- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) לניהול דיימון צומת
 - `iroha3d_taira` למוצא ההסכם הקנוני Taira
 - [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli) עבור פקודות CLI ושל המפעיל
 - [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami) עבור מפתחות, גנזיס, רשתות מקומיות ופרופילים
@@ -26,7 +26,7 @@ cargo build --release \
   -p iroha_kagami --bin kagami
 ```
 
-משני השחרור זמינים לאחר מכן ב `target/release/`.
+קובצי ההפעלה של גרסת ההפצה זמינים לאחר מכן תחת `target/release/`.
 
 כדי לבדוק את פני השטח של הפקודה:
 
@@ -64,7 +64,7 @@ docker run -t hyperledger/iroha:dev iroha --help
 docker run -t hyperledger/iroha:dev kagami --help
 ```
 
-עבור ההתחלתה של השותפים, ליצור רשת מקומית ולהרכיב את הקובץ קודם:
+עבור ההתחלתה של הצמתים, ליצור רשת מקומית ולהרכיב את הקובץ קודם:
 
 ```bash
 cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
@@ -74,7 +74,7 @@ docker compose -f ./docker-compose.yml up
 
 ## איזה בינארי אני צריך להשתמש? {#which-binary-should-i-use}
 
-- השתמש `iroha3d` כאשר אתה מתחיל או מפעיל עמיתים מחוץ לשחרור האישור הציבורי Taira.
+- השתמש `iroha3d` כאשר אתה מתחיל או מפעיל צמתים מחוץ לשחרור האישור הציבורי Taira.
 - השתמש `iroha3d_taira --sora` רק לשימוש ב-validator Taira קנוני; זה מכיל את הפרופיל של שרשרת, אחסון ומחתרת זמן הפעלה של Taira.
 - השתמש `iroha` כאשר אתה צריך לדרוש את הספר הגדול, להגיש עסקאות או לבחון נקודות הסיום של המפעיל .
-- השתמש `kagami` כאשר אתה זקוק למפתחות, מוניסטים גנזיס, קבוצות פרופילים או נכסים של רשת מקומית.
+- השתמשו ב־`kagami` כאשר דרושים מפתחות, מניפסטים של genesis, חבילות פרופיל או ארטיפקטים של רשת מקומית.

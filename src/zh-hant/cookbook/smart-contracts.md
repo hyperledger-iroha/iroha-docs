@@ -1,23 +1,23 @@
 ---
 translation_locale: zh-hant
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: 67778f9fc4f2b6fa0288f5921402cf5509515aae678e98b8192e103dfe284db3
+translation_source_hash: f1ea542f7a710830cd32465d141db8452e6418d426500995b9df7c9c4e1fd597
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# 建立和部署智能合同 {#build-and-deploy-a-smart-contract}
+# 建立和部署智慧合同 {#build-and-deploy-a-smart-contract}
 
 ## 結果 {#outcome}
 
-檢查和編譯 Kotodama V1 合同,本地執行其公開入口點,部署驗證的 IVM 文物,模擬部署的入口點並以明確報價的機構支付費用提交.
+檢查和編譯 Kotodama V1 合同,本地執行其公開入口點,部署驗證的 IVM 構件,模擬部署的入口點並以明確報價的機構支付費用提交.
 
 ## 預先條件 {#prerequisites}
 
-- 在 Iroha, `0010c5a70039eac101a4846499ba9ceaf43eb65c`,Rust 和 Cargo 的源清算.
-- 目前的 `iroha` CLI 加上由 [資助的 Taira 客戶,連接到 Taira](./connect-to-taira.md).
-- 在 `IROHA_CONFIG` 和 `IROHA_PRIVATE_KEY_FILE` 中的絕對路徑. 關鍵文件必須是一個擁有者持有的,單鏈接常規文件,具有模式 `0600`;部署輔助器故意沒有內線私鑰參數.
-- Taira 運營商批准.合同代碼註冊需要 `CanRegisterSmartContractCode`,受保護的部署可能需要管理屬性和頒佈.如果 Taira 沒有授予該訪問,則在一個生成的本地網絡上執行部署,其起源授權了.
+- 簽出到提交 `0010c5a70039eac101a4846499ba9ceaf43eb65c` 的 Iroha 原始碼、Rust 和 Cargo。
+- 目前的 `iroha` CLI，以及透過[連線到 Taira](./connect-to-taira.md)取得的已注資 Taira 使用者端。
+- `IROHA_CONFIG` 和 `IROHA_PRIVATE_KEY_FILE` 中必須使用絕對路徑。金鑰檔案必須由擁有者保管，是硬連結數為 1、許可權模式為 `0600` 的一般檔案；部署輔助程式刻意不提供內嵌私鑰引數。
+- Taira 營運商批准。註冊合約程式碼需要 `CanRegisterSmartContractCode`，受保護的部署還可能需要治理歸屬和頒布。如果 Taira 尚未授予此存取權，請在創世設定已授予該許可權的產生式本地網路上執行部署。
 
 ```bash
 TORII_URL=https://taira.sora.org
@@ -67,9 +67,9 @@ seiyaku TupleReturnDemo {
 }
 ```
 
-Kotodama 針對 Iroha 虛擬機及其當前的 ABI.它不是一個 WASM 或 EVM 源語言.
+Kotodama 針對 Iroha 虛擬機器及其當前的 ABI.它不是一個 WASM 或 EVM 源語言.
 
-### 2. 檢查,建造和驗證文物 {#_2-check-build-and-verify-the-artifact}
+### 2. 檢查,建造和驗證構件 {#_2-check-build-and-verify-the-artifact}
 
 ```bash
 cargo run -p ivm --bin koto -- \
@@ -89,11 +89,11 @@ cargo run -p ivm --bin koto -- \
   ./contracts/tuple_return_demo.ko
 ```
 
-第一個構建發佈了文物和驗證的側車.第二個運行在只讀 `--verify` 模式下,如果任何現有輸出不完全匹配當前源頭,則失敗.將`.to`文件及其表格視爲一本複習的構建輸出.
+第一個構建釋出了構件和驗證的輔助記錄.第二個執行在只讀 `--verify` 模式下,如果任何現有輸出不完全匹配當前源頭,則失敗.將`.to`檔案及其清單視為一本複習的構建輸出.
 
-### 3. 在本地運行字節碼 {#_3-run-the-bytecode-locally}
+### 3. 在本地執行位元組碼 {#_3-run-the-bytecode-locally}
 
-`compute`是一個公開的 `kotoage`入口點.使用`debug-call`運行,該系統在沒有提交或支付交易的情況下執行與本地固定器件相對.
+`compute`是一個公開的 `kotoage`入口點.使用`debug-call`執行,該系統在沒有提交或支付交易的情況下執行與本機測試資料相對.
 
 ```bash
 iroha --config "$IROHA_CONFIG" --machine contract debug-call \
@@ -105,11 +105,11 @@ jq -e '.ok == true and .result == ["3", "5"]' \
   ./build/local-call.json
 ```
 
-Kotodama 整數被呈現爲 JSON 字符串,因此解碼的tuple是 `["3", "5"]`.
+Kotodama 整數被呈現為 JSON 字串,因此解碼的tuple是 `["3", "5"]`.
 
-### 4. 通過本地助手部署 {#_4-deploy-through-the-native-helper}
+### 4. 透過本地助手部署 {#_4-deploy-through-the-native-helper}
 
-助手上傳字節代碼塊,註冊簽署的表格,並提交一個 `CommitContractDeployment`操作.它收費報價每筆交易,拒絕改變選擇付款人或加油綁定的報價.
+助手上傳位元組程式碼塊,註冊簽署的清單,並提交一個 `CommitContractDeployment`操作.它收費報價每筆交易,拒絕改變選擇付款人或加油繫結的報價.
 
 ```bash
 printf '%s\n' \
@@ -131,11 +131,11 @@ jq '{contract_address, code_hash_hex, final, fee_quotes}' \
   ./build/deployment.json
 ```
 
-`charge_limits`空格請求不是複製的資產識別符:助手在簽署前接受準確的現場報價.合同調用只通過輸入現場報價接受收費選擇; `gas_asset_id`交易元數據不是首次發佈合同的一部分.
+空的 `charge_limits` 請求不是複製來的資產識別碼：輔助程式會在簽署前接受精確的即時報價。請將傳回的收費資產與目前的 faucet 回應比較。合約呼叫只透過具型別的即時報價接受費用選擇；`gas_asset_id` 交易 metadata 並非首個版本合約的一部分。
 
-### 5. 模擬並調用部署的入口點 {#_5-simulate-and-call-the-deployed-entrypoint}
+### 5. 模擬並呼叫部署的入口點 {#_5-simulate-and-call-the-deployed-entrypoint}
 
-模擬在 Torii 上運行公共入口點,沒有提交.下面的調用是交易,因此明確選擇權威費付款人.這兩項命令都綁定了1500000個氣體限制.
+模擬在 Torii 上執行公共入口點,沒有提交.下面的呼叫是交易,因此明確選擇授權主體費付款人.這兩項命令都繫結了1500000個gas限制.
 
 ```bash
 iroha --config "$IROHA_CONFIG" --machine contract call \
@@ -164,7 +164,7 @@ jq -e '.terminal_kind == "Applied"' ./build/deployed-call.json
 
 ## 驗證 {#verify}
 
-通過返回的代碼哈希來搜索鏈上的表格,並通過法典地址模擬相同的公開入口點:
+透過返回的程式碼雜湊來搜尋鏈上的清單,並透過規範地址模擬相同的公開入口點:
 
 ```bash
 CODE_HASH="$({ jq -er '.code_hash_hex' ./build/deployment.json; })"
@@ -191,23 +191,23 @@ jq -e '.ok == true and .result == ["3", "5"]' \
   ./build/address-simulation.json
 ```
 
-部署只有當別名解決返回地址時才完成,表格可在相同的代碼哈希下讀取,本地和 Torii 模擬返回 `["3", "5"]`,提交的呼叫達到 `Applied`.
+部署只有當別名解決返回地址時才完成,清單可在相同的程式碼雜湊下讀取,本地和 Torii 模擬返回 `["3", "5"]`,提交的呼叫達到 `Applied`.
 
 ## 解決問題 {#troubleshooting}
 
-- `CanRegisterSmartContractCode`失敗需要一個 Taira 運營商授權或在 localnet上發生/啓動鏈變化.正常賬戶不能自行授予此許可事實後.
-- 管理或受保護軌道拒絕意味着部署需要該網絡所要求的準確批准屬性.協調批准者列表;不要創作賬戶 IDs.
-- 一個明示或 ABI 不匹配意味着字節碼,明示和節點運行時間沒有描述相同的文物.重建與 `--verify` 固定的提交.
+- `CanRegisterSmartContractCode`失敗需要一個 Taira 運營商授權或在 localnet上發生/啟動鏈變化.正常帳戶不能自行授予此許可事實後.
+- 管理或受保護通道拒絕意味著部署需要該網路所要求的準確批准屬性.協調批准者列表;不要創作帳戶 IDs.
+- 一個明示或 ABI 不匹配意味著位元組碼,明示和節點執行階段沒有描述相同的構件.重建與 `--verify` 固定的提交.
 - `fee quote changed ... gas bound` 表示所要求的輸入意圖和現場報價不同意見.重新預期,而不是修改簽署交易.
-- 部署輔助器在網絡提交之前拒絕內線鍵,允許鍵文件模式,符號鏈接和複製鏈接的文件.
-- 只有視圖輸入點的錯誤意味着 `compute` 通過錯誤的命令家族進行了路由. 這個樣本聲明`kotoage`,所以使用調用模擬或提交.
-- 合同調用需要正型氣體限制.第一次發佈的呼叫合約拒絕最高級別的氣體或費用資產元數據.
+- 部署輔助器在網路提交之前拒絕內線鍵,允許鍵檔案模式,符號連結和複製連結的檔案.
+- 只有檢視輸入點的錯誤意味著 `compute` 透過錯誤的命令家族進行了路由. 這個樣本宣告`kotoage`,所以使用呼叫模擬或提交.
+- 合同呼叫需要正型gas限制.第一次釋出的呼叫合約拒絕最高階別的gas或費用資產後設資料.
 
-## 來源及相關文件 {#source-and-related-docs}
+## 來源及相關檔案 {#source-and-related-docs}
 
 - [Kotodama V1 命令的執行在固定提交上](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/src/bin/koto.rs)
 - [在固定提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)的雙重返回源樣本
 - [在固定提交中本地部署輔助員](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
-- [合同集成測試在固定承諾上](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs)
-- [智能合同](/zh-hant/blockchain/smart-contracts.md)
+- [合同整合測試在固定提交上](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs)
+- [智慧合同](/zh-hant/blockchain/smart-contracts.md)
 - [CLI 引用](/zh-hant/get-started/operate-iroha-via-cli.md)

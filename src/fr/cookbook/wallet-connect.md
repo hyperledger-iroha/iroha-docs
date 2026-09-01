@@ -1,24 +1,24 @@
 ---
 translation_locale: fr
 translation_source: /cookbook/wallet-connect.md
-translation_source_hash: 38283321d51ddbb528272bb4429906eb41545ed3933ae695fb05a24675bff9c8
+translation_source_hash: 81b370bdc73a40ff2dbb8df0f91547ab4c279ed94600bdd6df367f29a949ec71
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Connexion de portefeuille: approuver le transfert d'actifs {#wallet-connect-approve-an-asset-transfer}
+# Wallet Connect : Approuver un transfert d'actifs {#wallet-connect-approve-an-asset-transfer}
 
-## Le résultat {#outcome}
+## Résultat {#outcome}
 
-Créer une session de connexion Iroha dans un navigateur, obtenir l'approbation cryptographique pour une identité de portefeuille I105, demander à ce portefeuille de signer l'échafaudage exact du transfert d'actifs Torii, soumettre la signature détachée et attendre la finalisation appliquée.
+Créez une session Iroha Connect dans un navigateur, obtenez l'approbation cryptographique pour une identité de portefeuille I105, demandez à ce portefeuille de signer la structure de démarrage générée pour le transfert d'actifs exact de Torii, soumettez la signature détachée et attendez la finalité appliquée.
 
-## Conditions préalables {#prerequisites}
+## Prérequis {#prerequisites}
 
 - Une application de navigateur utilisant `@iroha/iroha-js` et HTTPS.
-- Un portefeuille qui met en œuvre Iroha Connect v1 et contrôle un compte Ed25519 I105 à clé unique.
-- La chaîne Taira actuelle ID et le distinguant de la chaîne, l'hex public-key en minuscules enregistré Ed25519 du portefeuille, un actif transférable détenu et une destination canonique I105.
-- L'actif de redevance ID renvoyé par la réponse du robinet Taira en cours. L'exemple vérifie la cotation des redevances en direct par rapport à celle de ID; il n'inclut jamais un identifiant d'actif copié.
-- La connexion doit être activée sur le Torii sélectionné. Vérifiez avant d'afficher un QR ou un lien profond:
+- Un portefeuille qui implémente Iroha Connect v1 et contrôle un compte I105 Ed25519 à clé unique.
+- L'ID de chaîne Taira actuel et le discriminant de chaîne, la clé publique Ed25519 en minuscules du portefeuille inscrite en hexadécimal, un actif transférable possédé, et une destination canonique I105.
+- L'ID de l'actif de frais retourné par la réponse du service de financement du testnet actuel Taira. L'exemple vérifie l'estimation du prix des frais en direct par rapport à cet ID ; il n'intègre jamais un identifiant d'actif copié.
+- La connexion doit être activée sur le Torii sélectionné. Vérifiez avant d'afficher un QR ou un lien profond :
 
 ```bash
 curl -fsS \
@@ -27,23 +27,23 @@ curl -fsS \
   jq -e '{enabled, sessions_active} | select(.enabled == true)'
 ```
 
-Si Taira rapporte Connect désactivé ou retourne `404`/`503`, utilisez un réseau local généré avec Connect activé. Un transfert d'actifs ordinaire exige également que le portefeuille possède suffisamment de quantité et de solde des frais transférables.
+Si Taira signale que Connect est désactivé ou renvoie `404`/`503`, utilisez un réseau local généré avec Connect activé. Un transfert d'actifs ordinaire nécessite également que le portefeuille possède suffisamment de quantité transférable et de solde pour les frais.
 
-## Les étapes {#steps}
+## Étapes {#steps}
 
-### 1. Fournir un contrôle de lancement du portefeuille {#_1-provide-one-wallet-launch-control}
+### 1. Fournir un contrôle de lancement de portefeuille {#_1-provide-one-wallet-launch-control}
 
-Le JavaScript ci-dessous s'attend à ce que cet élément apparaisse sur la page de demande:
+L'JavaScript ci-dessous attend cet élément dans la page de l'application :
 
 ```html
 <a id="wallet-connect" hidden>Open this request in my Iroha wallet</a>
 ```
 
-Render le même URI que le code QR pour un portefeuille sur un autre appareil. Le URI contient le jeton de relais scanné par portefeuille, alors ne le mettez pas dans les analyses, les journaux, les références ou les rapports d'accidents.
+Rendez le même URI qu'un code QR pour un portefeuille sur un autre appareil. Le URI contient le jeton de relais limité au portefeuille, donc ne le mettez pas dans les analyses, les journaux, les référents ou les rapports de plantage.
 
-### 2. Créer, approuver, signer et soumettre. {#_2-create-approve-sign-and-submit}
+### 2. Créer, approuver, signer et soumettre {#_2-create-approve-sign-and-submit}
 
-Ce module de navigateur accepte des valeurs concrètes de votre état d'application. Le premier `POST /v1/assets/transfer` omet les champs de signature et renvoie un échafaudage de transaction cité, versionné. Le second ajoute seulement la clé publique du portefeuille et la signature détachée à la même demande de transfert.
+Ce module de navigateur accepte des valeurs concrètes provenant de l'état de votre application. Le premier `POST /v1/assets/transfer` omet les champs de signature et renvoie une structure de démarrage de transaction citée et versionnée. Le second ajoute uniquement la clé publique du portefeuille et la signature détachée à la même demande de transfert.
 
 ```js
 import { AccountAddress } from '@iroha/iroha-js/address'
@@ -219,11 +219,11 @@ export async function transferWithWallet({
 }
 ```
 
-Gardez `token_app`, `token_management` et `token_relay` dans la mémoire de l'application. Seul le lancement du portefeuille URI/le jeton croise sur le portefeuille. L'approbation Connect est signée par l'identité du compte; le X25519 `walletPublicKey` dans l'approvisionnement est une clé de transport éphémère, pas la clé de signature Ed25519 du compte.
+Conservez `token_app`, `token_management` et `token_relay` dans la mémoire de l'application. Seul le lancement du portefeuille URI/le jeton passe au portefeuille. L'approbation Connect est signée par l'identité du compte ; le X25519 `walletPublicKey` dans l'approbation est une clé de transport éphémère, et non la clé de signature Ed25519 du compte.
 
-### 3. Utilisez les types de cadres Rust dans une mise en œuvre de portefeuille {#_3-use-the-rust-frame-types-in-a-wallet-implementation}
+### 3. Utilisez les types de trame Rust dans une implémentation de portefeuille {#_3-use-the-rust-frame-types-in-a-wallet-implementation}
 
-La surface du protocole Rust ne peut sceller une signature qu'après que le portefeuille a décodé la transaction demandée, affiché son intention exacte, sa politique appliquée et signé avec la clé de compte approuvée. Cet assistant accepte cette signature validée; il n'en fabrique pas:
+La surface du protocole Rust ne peut sceller une signature qu'après que le portefeuille a décodé la transaction demandée, affiché son intention exacte, appliqué la politique et signé avec la clé de compte approuvée. Cet assistant accepte cette signature validée ; il n'en fabrique pas :
 
 ```rust
 use iroha_crypto::{Algorithm, Signature};
@@ -251,11 +251,11 @@ fn seal_wallet_signature(
 }
 ```
 
-Le référentiel `connect_app` et `connect_wallet` Par exemple, les fixations de protocole: elles utilisent des clés de transport déterministiques, exposent des jetons en sortie, et l'appareil de portefeuille retourne une signature fausse. Utilisez-les pour étudier les cadres seulement, jamais comme un Taira mise en œuvre du portefeuille.
+Les exemples `connect_app` et `connect_wallet` du dépôt sont des artefacts de test de protocole : ils utilisent des clés de transport déterministes, exposent des jetons dans la sortie, et l’artefact de test de portefeuille renvoie une signature fictive. Utilisez-les uniquement pour étudier les trames, jamais comme une implémentation de portefeuille Taira.
 
-## Vérifiez {#verify}
+## Vérifier {#verify}
 
-Conserver le hash retourné et confirmer l'état post-détermination de la destination par l'intermédiaire du point d'extrémité public:
+Conservez le hachage cryptographique retourné et confirmez l'état postérieur de la destination via le point de terminaison des détenteurs publics API :
 
 ```bash
 curl -fsS -G \
@@ -266,24 +266,24 @@ curl -fsS -G \
   jq .
 ```
 
-La vérification ne s'effectue que lorsque le JavaScript le serveur observe `Applied` pour le hachage de la transaction présentée et l'exploitation de destination reflète le transfert. HTTP L'acceptation ou l'approbation du portefeuille ne sont pas les seules finalités du registre.
+La vérification ne réussit que lorsque le serveur JavaScript observe `Applied` pour le hash cryptographique de la transaction soumise et que le portefeuille de destination reflète le transfert. L'acceptation de HTTP ou l'approbation du portefeuille seule ne constitue pas la finalité du registre blockchain.
 
-## Résolution des problèmes {#troubleshooting}
+## Dépannage {#troubleshooting}
 
-- `404`, `503`, ou `enabled: false` depuis le statut Connect signifie qu'aucune session de relais ne peut être créée sur ce nœud. Passez à un localnet activé; ne recommencez pas à transporter vous-même les jetons d'application ou de gestion.
-- `USER_DENIED` est une décision de portefeuille. Conservez-la comme un résultat utilisateur terminal au lieu d'ouvrir des demandes d'approbation répétées.
-- Un défaut de correspondance entre le compte d'approbation ou une signature d'approvisionnement invalide doit mettre fin à la session.
-- `public_key_hex does not control authority` désigne les données d'inscription et le désaccord sur l'identité approuvé de I105. La clé de transport éphémère du portefeuille ne peut pas être utilisée dans ce domaine.
-- Un refus de signature ou d'échafaudage signifie généralement un champ de demande ou une cotation en direct modifiée entre la préparation et le dépôt.
-- Une répétition exacte d'une demande signée déjà acceptée est idempotente. Demandez son hash de transaction retournée avant de traiter un délai comme une raison de recommencer.
+- `404`, `503` ou `enabled: false` depuis le statut Connect signifie qu'aucune session de relais ne peut être créée sur ce nœud. Passez à un localnet activé ; ne revenez pas à transporter vous-même des jetons d'application ou de gestion.
+- `USER_DENIED` est une décision de portefeuille. Conservez-la comme un résultat utilisateur final au lieu d'ouvrir des invites d'approbation répétées.
+- Un désaccord entre le compte et l'approbation ou une signature d'approbation invalide doit fermer la session. Ne jamais demander au portefeuille de signer après un échec de liaison d'identité.
+- `public_key_hex does not control authority` signifie que les données d'inscription et l'identité I105 approuvée sont en désaccord. La clé de transport du portefeuille éphémère ne peut pas être utilisée dans ce domaine.
+- Un rejet de signature ou de structure de démarrage générée signifie généralement qu'un champ de demande ou une estimation du tarif en direct a changé entre la préparation et la soumission. Créez une nouvelle demande ; ne transposez jamais l'ancienne signature.
+- Une répétition exacte d’une demande signée déjà acceptée est idempotente. Interrogez son hash cryptographique de transaction retourné avant de considérer un délai d’attente comme une raison de recommencer.
 
-## Sources et documents connexes {#source-and-related-docs}
+## Source et documents connexes {#source-and-related-docs}
 
-- [Implémentation de connexion du navigateur à l'engagement fixé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/src/connect.browser.js)
-- [Tests de connexion du navigateur sur le commit fixé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/test/connect.browser.test.js)
-- [Exemple de cadre d'application Rust dans le commit fixé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_app.rs)
-- [Rust exemple de cadre de portefeuille à l'adresse fixée](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_wallet.rs)
-- [Pinned Torii OpenAPI schéma](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/artifacts/openapi/torii.json)
-- [Les services SORA Nexus ](/fr/blockchain/sora-nexus-services.md)
-- [Les actifs fonciers](./fungible-assets.md)
-- [Présentation et vérification des opérations ](./submit-and-verify-transactions.md)
+- [Implémentation de Browser Connect au commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/src/connect.browser.js)
+- [Tests de connexion du navigateur au commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/test/connect.browser.test.js)
+- [Rust exemple de cadre d'application à l'engagement épinglé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_app.rs)
+- [Rust exemple de cadre de portefeuille au commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_wallet.rs)
+- [Schema épinglé Torii OpenAPI](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/artifacts/openapi/torii.json)
+- [Services de SORA Nexus](/fr/blockchain/sora-nexus-services.md)
+- [Actifs fongibles](./fungible-assets.md)
+- [Soumettre et vérifier les transactions](./submit-and-verify-transactions.md)

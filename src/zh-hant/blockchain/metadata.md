@@ -6,14 +6,14 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# 超級數據 {#metadata}
+# 後設資料 {#metadata}
 
-密碼數據是連接到賬本對象的檢查關鍵值地圖.關鍵是`Name`值和值是 JSON (`Json`) 實用負載.
+後設資料是附加到帳本物件上的、經過檢查的鍵值映射。鍵是 `Name` 值，值是 JSON（`Json`）承載資料。
 
-下列對象可以攜帶元數據:
+下列物件可以攜帶後設資料:
 
 - 域名
-- 賬戶
+- 帳戶
 - 資產
 - 資產定義
 - NFTs
@@ -21,13 +21,13 @@ translation_engine: nllb-200-ct2
 - 觸發器
 - 交易
 
-使用在賬本狀態下屬於的小型描述或索引字段的元數據. 大型有效載荷應存儲在 WSV 外,並由一個消化, URI 或 SoraFS 路徑引用.
+使用在賬本狀態下屬於的小型描述或索引欄位的後設資料. 大型有效載荷應儲存在 WSV 外,並由一個摘要, URI 或 SoraFS 路徑引用.
 
-關於選擇元數據,資產 NFTs,RWAs 或鏈外存儲的指南,請參見 [元數據和賬本存儲選擇](/zh-hant/guide/configure/metadata-and-store-assets.md).
+關於選擇後設資料,資產 NFTs,RWAs 或鏈外儲存的指南,請參見 [後設資料和賬本儲存選擇](/zh-hant/guide/configure/metadata-and-store-assets.md).
 
 ## 在 Taira 試看. {#try-it-on-taira}
 
-通過正常的資源閱讀,可以看到元數據.該命令列出目前具有元數據的 Taira 資產定義:
+透過正常的資源閱讀,可以看到後設資料.該命令列出目前具有後設資料的 Taira 資產定義:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=100' \
@@ -46,20 +46,20 @@ curl -fsS 'https://taira.sora.org/v1/accounts?limit=20' \
   | jq '.items[] | select((.metadata // {} | length) > 0)'
 ```
 
-將空輸出視爲有效的結果. 這意味着 Taira 對象的當前頁面沒有元數據,而不是終點失敗了.
+將空輸出視為有效的結果. 這意味著 Taira 物件的當前頁面沒有後設資料,而不是端點失敗了.
 
-## 更新元數據 {#updating-metadata}
+## 更新後設資料 {#updating-metadata}
 
-用 Iroha 特殊指令更改元數據:
+用 Iroha 特殊指令更改後設資料:
 
 - [`SetKeyValue`](/zh-hant/blockchain/instructions.md#setkeyvalue-removekeyvalue)插入或取代一個鑰匙
 - [`RemoveKeyValue`](/zh-hant/blockchain/instructions.md#setkeyvalue-removekeyvalue) 刪除一個鑰匙
 
-提交交易的機構必須有所要求的許可.通過活躍的運行時間驗證器. [許可證代碼](/zh-hant/reference/permissions.md).
+提交交易的授權主體必須具備目前執行階段驗證器要求的權限。如需預設權限介面，請參閱[權限權杖](/zh-hant/reference/permissions.md)。
 
 ## 事件 {#events}
 
-隨着元數據的變化,數據事件發射.通用事件有效載荷爲 `MetadataChanged<Id>`:
+中繼資料發生變更時會發出資料事件。通用事件有效負載為 `MetadataChanged<Id>`：
 
 ```mermaid
 classDiagram
@@ -81,10 +81,10 @@ MetadataChanged --> AssetDefinitionMetadataChanged
 MetadataChanged --> DomainMetadataChanged
 ```
 
-使用 [數據事件過器](/zh-hant/blockchain/filters.md#data-event-filters),只會訂閱對集成重要的實體類型或對象 ID 的元數據事件.
+使用 [資料事件過濾器](/zh-hant/blockchain/filters.md#data-event-filters),只會訂閱對整合重要的實體型別或物件 ID 的後設資料事件.
 
-## 問題 {#queries}
+## 查詢 {#queries}
 
-例如,使用 [`FindAccountById`](/zh-hant/reference/queries.md#accounts-and-permissions),[`FindDomainById`](/zh-hant/reference/queries.md#domains-and-peers),或[`FindAssetDefinitionById`](/zh-hant/reference/queries.md#assets-nfts-and-rwas).使用 [`FindNfts`](/zh-hant/reference/queries.md#assets-nfts-and-rwas)或 [`FindNftsByAccountId`](/zh-hant/reference/queries.md#assets-nfts-and-rwas)爲 NFTs,和 [`FindRwas`](/zh-hant/reference/queries.md#assets-nfts-and-rwas)爲 RWA 批量.然後閱讀對象的元數據領域. NFT 查詢答案將 NFT `content` 地圖作爲記錄元數據.
+後設資料會作為被查詢物件的一部分傳回。例如，可使用 [`FindAccountById`](/zh-hant/reference/queries.md#accounts-and-permissions)、[`FindDomainById`](/zh-hant/reference/queries.md#domains-and-peers) 或 [`FindAssetDefinitionById`](/zh-hant/reference/queries.md#assets-nfts-and-rwas)。對於 NFTs，使用 [`FindNfts`](/zh-hant/reference/queries.md#assets-nfts-and-rwas) 或 [`FindNftsByAccountId`](/zh-hant/reference/queries.md#assets-nfts-and-rwas)；對於 RWA 批次，使用 [`FindRwas`](/zh-hant/reference/queries.md#assets-nfts-and-rwas)。然後讀取物件的後設資料欄位。NFT 查詢回應會將 NFT `content` 映射作為記錄的後設資料公開。
 
-大數據密鑰是賬本狀態的一部分,因此保持它們穩定,避免在 JSON 值可以明確地攜帶該版本時將應用程序特定版本編碼轉換到關鍵名稱中.
+後設資料鍵是帳本狀態的一部分，因此應保持穩定；如果 JSON 值能明確攜帶版本，就不要把應用程式特定的版本編碼到鍵名中。

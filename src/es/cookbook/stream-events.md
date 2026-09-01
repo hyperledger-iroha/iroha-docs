@@ -1,28 +1,28 @@
 ---
 translation_locale: es
 translation_source: /cookbook/stream-events.md
-translation_source_hash: 66d22cd3b913d1c097cf74cf322cd86b3b50e1165e221a153705cb393e2b156f
+translation_source_hash: 96f0a26000530fee15d121f815f9f5717a535dc3836cff9a2a447b1e5b70c41c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Eventos de transmisión {#stream-events}
 
-## El resultado {#outcome}
+## Resultado {#outcome}
 
-Consuma eventos en vivo de la tubería Taira sobre los eventos enviados por el servidor (SSE), vuelve a conectarse con una copia de seguridad limitada y actualiza el estado duradero después de que se abra el flujo de reemplazo. Debido a que el punto final no tiene cursor de reproducción, trate los eventos como notificaciones en lugar de un historial completo.
+Consume eventos del pipeline de procesamiento en vivo Taira a través de eventos enviados por el servidor (SSE), reconéctese con reintentos limitados y actualice el estado duradero después de que se abra el flujo de reemplazo. Dado que el endpoint API no tiene cursor de repetición, trate los eventos como notificaciones en lugar de un historial completo.
 
-## Los requisitos previos {#prerequisites}
+## Requisitos previos {#prerequisites}
 
-- `curl` para una prueba de humo pública.
-- Node.js 24 para el consumidor de JavaScript.
-- No se requiere firmar. `https://taira.sora.org/v1/events/sse` es una transmisión pública, sólo para lectura; esta receta no realiza ningún Minamoto o Taira escribe.
+- `curl` para una prueba pública de humo.
+- Node.js 24 para el consumidor JavaScript.
+- No se requiere un firmante criptográfico. `https://taira.sora.org/v1/events/sse` es un flujo público de solo lectura; esta receta no realiza escrituras de Minamoto ni de Taira.
 
-## Los pasos {#steps}
+## Pasos {#steps}
 
-### 1. Confirmar la respuesta SSE {#_1-confirm-the-sse-response}
+### 1. Confirme la respuesta SSE {#_1-confirm-the-sse-response}
 
-Taira negocia actualmente esta ruta solo cuando el encabezado de `Accept` incluye tanto la corriente de eventos preferida como un fallback de JSON. Deshabilitar el amortiguación de curl. El comando termina después de 15 segundos; sólo recibir comentarios de latido cardíaco durante un período tranquilo es válido.
+Taira actualmente negocia esta ruta solo cuando el encabezado `Accept` incluye tanto el flujo de eventos preferido como un respaldo JSON. Desactive el almacenamiento en búfer curl. El comando termina después de 15 segundos; recibir solo comentarios de latido durante un período de inactividad es válido.
 
 ```bash
 curl -sS -N --max-time 15 \
@@ -30,11 +30,11 @@ curl -sS -N --max-time 15 \
   https://taira.sora.org/v1/events/sse
 ```
 
-No envíe `Last-Event-ID`. Torii¿ Qué es ? SSE Endpoint es una transmisión en vivo de fans, no un registro de reproducción, y rechaza las solicitudes de repetición.
+No envíe `Last-Event-ID`. El endpoint SSE API de Torii es un flujo de fan-out en vivo, no un registro de repetición, y rechaza las solicitudes de repetición.
 
-### 2. Añadir un consumidor JavaScript filtrado {#_2-add-a-filtered-javascript-consumer}
+### 2. Agregar un consumidor filtrado JavaScript {#_2-add-a-filtered-javascript-consumer}
 
-Guarde los siguientes como `stream-taira.mjs`. Se utiliza Fetch directamente para que la solicitud puede enviar Taira Se requiere mezcla `Accept` La corriente `FilterExpr` selecciona los eventos de transacción aprobados, y el analizador consume SSE los marcos sin un cursor de reproducción.
+Guarde lo siguiente como `stream-taira.mjs`. Utiliza Fetch directamente para que la solicitud pueda enviar el encabezado mixto `Accept` requerido por Taira. El `FilterExpr` actual selecciona eventos de transacción aprobados, y el analizador consume tramas SSE sin un cursor de reproducción.
 
 ```js
 const baseUrl = 'https://taira.sora.org'
@@ -154,21 +154,21 @@ async function follow() {
 await follow()
 ```
 
-Se ejecuta hasta que al menos una transacción llegue a `Approved` en Taira:
+Ejecútalo hasta que al menos una transacción alcance `Approved` en Taira:
 
 ```bash
 node ./stream-taira.mjs
 ```
 
-SSE Los comentarios de los latidos cardíacos mantienen las conexiones ociosas vivas pero no establecen el orden del libro mayor. Utilice las alturas de los bloques, hashes de transacciones y consultas en el libro mayor cuando sea importante el orden o la integridad.
+SSE los comentarios de latido mantienen las conexiones inactivas vivas pero no establecen el orden en el libro mayor de la blockchain. Use alturas de bloque, hashes criptográficos de transacciones y consultas al libro mayor de la blockchain cuando el orden o la integridad sean importantes.
 
-La última solicitud de 25 exploradores es sólo un diagnóstico público. Un consumidor de producción debe reemplazar o ampliar `reconcile()` con consultas para sus recursos duraderos de aplicación y una recuperación limitada lo suficientemente grande como para su punto de control.
+La solicitud del explorador más reciente-25 es solo un diagnóstico público. Un consumidor en producción debe reemplazar o extender `reconcile()` con consultas para sus recursos de aplicación duraderos y un límite de recuperación suficientemente grande para su punto de control. La vista de datos en un punto del tiempo acotado por sí sola no puede demostrar que no se hayan perdido eventos.
 
-En el compromiso fijado, `ToriiClient.streamEvents()` envía sólo `Accept: text/event-stream`; vivo Taira rechaza ese encabezado más estrecho con `406`. Utilice el formulario Fetch crudo arriba hasta que el SDK y el punto final público negocien los mismos tipos de medios.
+En el commit fijado, `ToriiClient.streamEvents()` envía solo `Accept: text/event-stream`; el en vivo Taira rechaza ese encabezado más estrecho con `406`. Usa el formulario Fetch sin procesar arriba hasta que el SDK y el endpoint público API negocien los mismos tipos de medios.
 
 ## Verificar {#verify}
 
-En una terminal, ejecuta el consumidor JavaScript. en otra, lee la instantánea de transacción pública:
+En un terminal, ejecute el consumidor JavaScript. En otro, lea la vista de datos de punto en el tiempo de transacciones públicas:
 
 ```bash
 curl -fsS \
@@ -177,22 +177,22 @@ curl -fsS \
   jq .
 ```
 
-Para cada evento de transacción que le importe, localizar su hash en la instantánea o consultarlo directamente. La página limitada puede omitir las transacciones más antiguas. Luego detener y reiniciar al consumidor: debe volver a conectarse sin suministrar un evento ID e imprimir un nuevo diagnóstico después de que se abra el flujo de reemplazo.
+Para cada evento de transacción que te interese, localiza su hash criptográfico en la vista de datos en un punto en el tiempo o consúltalo directamente. La página limitada puede omitir transacciones más antiguas. Luego detenga y reinicie el consumidor: debe reconectarse sin proporcionar un ID de evento y debe imprimir un diagnóstico nuevo después de que se abra la transmisión de reemplazo.
 
 ## Solución de problemas {#troubleshooting}
 
-- Una conexión con los comentarios de latidos cardíacos pero ningún evento de datos es saludable; el estado de la tubería seleccionada puede simplemente ser silencioso.
-- `406 Not Acceptable` en vivo Taira significa, por lo general, la solicitud anunciada solamente `text/event-stream`. Envía `text/event-stream, application/json` exactamente como se muestra anteriormente.
-- Un evento `stream_error` indica que el servidor detectó un retraso u otra condición de flujo terminal. Torii envía ese evento una vez y cierra la corriente; reconcilia antes de volver a conectarse.
-- Un proxy puede amortiguar SSE incluso cuando Torii no. Deshabilitar el amortiguamiento y la compresión de respuesta en el proxy, y mantener `curl -N` en los diagnósticos.
-- Nunca llene una brecha de desconexión asumiendo que el siguiente evento sigue al anterior. El punto final no tiene cursor de repetición; consulta en su lugar el estado actual del libro mayor.
+- Una conexión con comentarios de latido cardíaco pero sin eventos de datos está saludable; el estado de la canalización de procesamiento seleccionada simplemente puede estar en silencio.
+- `406 Not Acceptable` en vivo Taira generalmente significa que la solicitud anunciada solo `text/event-stream`. Envíe `text/event-stream, application/json` exactamente como se muestra arriba.
+- Un evento `stream_error` indica que el servidor detectó retraso u otra condición de flujo terminal. Torii envía ese evento una vez y cierra el flujo; reconcíliese antes de reconectarse.
+- Un proxy puede almacenar en búfer SSE incluso cuando Torii no lo hace. Desactive el almacenamiento en búfer de respuestas y la compresión en el proxy, y mantenga `curl -N` en diagnósticos.
+- Nunca rellene un hueco de desconexión suponiendo que el siguiente evento sigue al anterior. El punto final API no tiene cursor de repetición; en su lugar, consulte el estado actual del libro mayor de la blockchain.
 
 ## Fuente y documentos relacionados {#source-and-related-docs}
 
-- [JavaScript receta de transmisión en el comit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes/streaming.mjs)
+- [JavaScript receta de transmisión en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes/streaming.mjs)
 - [Pruebas de integración SSE en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events/sse_smoke.rs)
-- [Torii FilterExpr parser en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/filter.rs)
-- [Torii Enrutamiento de eventos en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/routing.rs)
-- [Eventos ](/es/blockchain/events.md)
-- [Puntos finales Torii](/es/reference/torii-endpoints.md)
-- [Estado del libro mayor de consulta](./query-ledger-state.md)
+- [Torii FilterExpr analizador en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/filter.rs)
+- [Torii enrutamiento de eventos en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/routing.rs)
+- [Eventos](/es/blockchain/events.md)
+- [Torii API puntos finales](/es/reference/torii-endpoints.md)
+- [Consultar el estado del libro mayor de blockchain](./query-ledger-state.md)

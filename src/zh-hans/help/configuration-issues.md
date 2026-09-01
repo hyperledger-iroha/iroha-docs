@@ -12,35 +12,35 @@ translation_engine: nllb-200-ct2
 
 如果您所遇到的问题未被描述在这里,请通过 [电报](https://t.me/hyperledgeriroha)联系我们.
 
-## 在 Docker Compose 设置上过时的基因 {#outdated-genesis-on-a-docker-compose-setup}
+## 在 Docker Compose 设置上过时的创世 {#outdated-genesis-on-a-docker-compose-setup}
 
-当您使用 Docker Compose 的版本 Iroha, 你可能会遇到一个同等容器的故障问题 `Failed to deserialize raw genesis block` 这通常意味着同行,签署的基因交易和生成的配置是由不同的 Iroha 修订或个人资料.
+当您使用 Docker Compose 的版本 Iroha, 你可能会遇到一个对等节点容器的故障问题 `Failed to deserialize raw genesis block` 这通常意味着对等节点,签署的创世交易和生成的配置是由不同的 Iroha 修订或个人资料.
 
 通过以下步骤检查故障:
 
-1. 使用 `docker ps`来检查当前的容器.根据生成的配置文件,您通常会看到`hyperledger/iroha:dev`容器.默认的 Docker Compose 配置文件包含四个同行容器,尽管您生成的 `docker-compose.yml`可能不同.
+1. 使用 `docker ps`来检查当前的容器.根据生成的配置文件,您通常会看到`hyperledger/iroha:dev`容器.默认的 Docker Compose 配置文件包含四个对等节点容器,尽管您生成的 `docker-compose.yml`可能不同.
 
 2. 检查日志并寻找`Failed to deserialize raw genesis block`错误. 如果您启动了 Iroha 在 daemon模式中使用`docker compose up -d`,请使用 `docker compose logs`命令.
 
-解决此类问题的方法取决于使用 Iroha.如果这是一个基本的演示程序,并且不需要保存同行数据,请重建与 Kagami 相匹配的本地网络或 Docker Compose 捆绑:
+解决此类问题的方法取决于使用 Iroha.如果这是一个基本的演示程序,并且不需要保存对等节点数据,请重建与 Kagami 相匹配的本地网络或 Docker Compose 捆绑:
 
 ```bash
 cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
 ```
 
-然后从再生的 `genesis.signed.nrt`,同行`config.toml`和 `client.toml`文件中删除旧容器状态,重新启动.
+然后从再生的 `genesis.signed.nrt`,对等节点`config.toml`和 `client.toml`文件中删除旧容器状态,重新启动.
 
 如果您需要恢复 Iroha 实例数据,请执行以下操作:
 
-1. 连接第二个 Iroha 同行,将复制第一个 (失败) 同行的数据.
-2. 等新同行将数据与第一个同行同步.
-3. 让新同龄人活跃.
-4. 仅作为协调迁移的一部分更新第一个同行的生成和配置文件.
+1. 连接第二个 Iroha 对等节点,将复制第一个 (失败) 对等节点的数据.
+2. 等新对等节点将数据与第一个对等节点同步.
+3. 让新对等节点活跃.
+4. 仅作为协调迁移的一部分更新第一个对等节点的生成和配置文件.
 
 ::: info
 
-在现场网络上,没有一般的自动重写路径来替换基因.把它视为一个协调的迁移:保存旧状态,提起兼容的同行,并且只有经营者同意迁徙计划后才将验证器转移到新配置.
+在现场网络上,没有一般的自动重写路径来替换创世.把它视为一个协调的迁移:保存旧状态,提起兼容的对等节点,并且只有经营者同意迁徙计划后才将验证器转移到新配置.
 
 :::
 

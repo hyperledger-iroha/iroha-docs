@@ -1,6 +1,7 @@
 import { readFile, readdir } from 'node:fs/promises'
 import path from 'node:path'
 import { pathToFileURL } from 'node:url'
+import { markdownContainerDirectives } from './translate'
 
 interface ForbiddenTerm {
   label: string
@@ -222,6 +223,26 @@ export async function validateContentPolicy(repositoryRoot: string): Promise<str
       for (const term of FORBIDDEN_TERMS) {
         term.pattern.lastIndex = 0
         if (term.pattern.test(line)) errors.push(`${relative}:${index + 1}: ${term.label}`)
+      }
+    }
+
+    if (path.extname(file) === '.md') {
+      const openContainers: Array<{ keyword: string; lineIndex: number }> = []
+      for (const directive of markdownContainerDirectives(content)) {
+        if (directive.keyword) {
+          openContainers.push({ keyword: directive.keyword, lineIndex: directive.lineIndex })
+          continue
+        }
+        if (openContainers.length > 0) {
+          openContainers.pop()
+        } else {
+          errors.push(`${relative}:${directive.lineIndex + 1}: unmatched Markdown container closing directive`)
+        }
+      }
+      for (const directive of openContainers) {
+        errors.push(
+          `${relative}:${directive.lineIndex + 1}: unclosed Markdown container directive ${directive.keyword}`,
+        )
       }
     }
 

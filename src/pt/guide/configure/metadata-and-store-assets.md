@@ -3,51 +3,51 @@ translation_locale: pt
 translation_source: /guide/configure/metadata-and-store-assets.md
 translation_source_hash: b538b2cad11d4fd3b2b7d201a20882389049d3e4453f11baa6f854861bda6b51
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Metadados e opções de armazenamento do Ledger {#metadata-and-ledger-storage-choices}
+# Metadados e Escolhas de Armazenamento de Livro-Razão em Blockchain {#metadata-and-ledger-storage-choices}
 
-O modelo de dados Iroha 3 não possui um tipo de ativo `Store` separado para os dados arbitrários de valor-chave.
+O modelo de dados Iroha 3 não possui um tipo de ativo `Store` separado para dados arbitrários de chave-valor. Use as seguintes opções de armazenamento.
 
 ## Metadados {#metadata}
 
-Usar [metadados](/pt/blockchain/metadata.md) para pequenos campos JSON que pertencem a um objeto de contabilidade:
+Use [metadados](/pt/blockchain/metadata.md) para pequenos campos JSON que pertencem a um objeto de livro razão de blockchain:
 
-- Exibir nomes e rótulos
-- integração IDs
-- Pequenas bandeiras políticas
-- hashes, caminhos URIs, CIDs ou SoraFS que apontam para cargas úteis maiores
+- nomes de exibição e rótulos
+- IDs de integração
+- pequenas bandeiras de política
+- hashes criptográficos, URIs, CIDs ou SoraFS caminhos que apontam para cargas úteis maiores
 
-Os metadados fazem parte do estado mundial e são devolvidos com o objeto que os possui. Mantenha as chaves estáveis, os valores compactos e as permissões explícitas. Não armazene documentos grandes, registros ou um estado de aplicação de alta frequência diretamente em metadados.
+Metadados fazem parte do estado mundial e são retornados com o objeto que os possui. Mantenha as chaves estáveis, os valores compactos e as permissões explícitas. Não armazene documentos grandes, logs ou estado de aplicação com alta rotatividade diretamente em metadados.
 
-## Ativos numéricos e NFTs {#numeric-assets-and-nfts}
+## Ativos Numéricos e NFTs {#numeric-assets-and-nfts}
 
-Utilize os ativos [](/pt/blockchain/assets.md) e [NFTs](/pt/blockchain/nfts.md) quando o estado é valorizado:
+Use [ativos](/pt/blockchain/assets.md) e [NFTs](/pt/blockchain/nfts.md) quando o estado tiver valor:
 
-- Ativos numéricos para saldos fungíveis
-- NFTs para registos de propriedade exclusiva
-- [RWAs](/pt/blockchain/rwas.md) e outros objectos específicos de domínio quando o modelo de dados ativo os expõe.
+- ativos numéricos para saldos fungíveis
+- NFTs para registros de propriedade única
+- [RWAs](/pt/blockchain/rwas.md) e outros objetos específicos de domínio quando o modelo de dados ativo os expõe
 
-Os ativos e NFTs têm os seus próprios IDs, eventos do ciclo de vida, comportamento de transferência e verificações de permissões. Eles são melhores que metadados quando a propriedade, a escassez ou o histórico de transferência são importantes.
+Ativos e NFTs têm seus próprios IDs, eventos de ciclo de vida, comportamento de transferência e verificações de permissão. Eles são melhores do que metadados quando a propriedade, escassez ou histórico de transferência importa.
 
-## Dados fora da cadeia {#off-chain-data}
+## Dados Off-Chain {#off-chain-data}
 
-Utilize armazenamento fora da cadeia para cargas úteis grandes ou mutáveis.
+Use armazenamento off-chain para cargas grandes ou mutáveis. Armazene apenas uma referência estável on-chain, como:
 
-- um hash de conteúdo
-- a URI
-- um caminho ou referência manifesto SoraFS
-- Um compromisso compatível utilizado por uma prova de pedido
+- um hash criptográfico de conteúdo
+- uma URI
+- um caminho SoraFS ou referência de manifesto técnico
+- um compromisso compacto usado por uma prova de aplicação
 
-Isto mantém o WSV pequeno, permitindo ao mesmo tempo que as aplicações verifiquem se a carga útil fora da cadeia corresponde à referência na cadeia.
+Isso mantém o WSV pequeno, enquanto ainda permite que os aplicativos verifiquem se a carga útil fora da cadeia corresponde à referência na cadeia.
 
-## A escolha de um local {#choosing-a-location}
+## Escolhendo um Local {#choosing-a-location}
 
-Usar esta regra geral:
+Use esta regra prática:
 
-- Se for um atributo compacto de um objeto do livro, utilize metadados.
-- Se for carregável de valor ou transferível, modela-o como um ativo NFT, ou objeto específico do domínio.
-- Se for grande, de alta densidade ou de aplicações particulares, armazená-lo fora do WSV e coloque uma referência verificável na cadeia.
+- Se for um atributo compacto de um objeto do livro-razão da blockchain, use metadados.
+- Se for portador de valor ou transferível, modele-o como um ativo, NFT, ou objeto específico do domínio.
+- Se for grande, de alta rotatividade ou privado de aplicativo, armazene-o fora do WSV e coloque uma referência verificável na blockchain.
 
-Para as permissões de metadados, ver [Permissão Tokens ](/pt/reference/permissions.md).
+Para permissões de metadados, consulte [Tokens de Permissão](/pt/reference/permissions.md).

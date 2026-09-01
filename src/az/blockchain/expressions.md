@@ -3,13 +3,13 @@ translation_locale: az
 translation_source: /blockchain/expressions.md
 translation_source_hash: 8ad29a13df0efcc68b21323a48cfbcd71ab25b97c063709c827b08422cd9aad0
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# ifadələr, şərtlər, məntiq {#expressions-conditionals-logic}
+# İfadələr, Şərtlər, Məntiq {#expressions-conditionals-logic}
 
-Bütün [Iroha Xüsusi Təlimatlar ](./instructions.md) ifadələr üzərində işləyir. Hər bir ifadədə təlimat icrasında istifadə olunan `EvaluatesTo` var. Hesabın adını birbaşa təyin edə bilsəniz də, bəzi riyazi və ya silsilə əməliyyatları vasitəsilə ID hesabı da təyin edə bilərsiniz. Bir hesabın blok zincirdə qeydiyyatdan keçdiyini yoxlaya bilərsiniz.
+Bütün [Iroha Təlimat əməliyyatları](./instructions.md) ifadələr üzərində işləyir. Hər ifadənin icra təlimatında istifadə olunan bir `EvaluatesTo` var. Hesab adını müəyyən edə bilsən də birbaşa, həmçinin hesab ID-sini bəzi riyazi və ya mətn əməliyyatı ilə göstərə bilərsiniz. Həmçinin bir hesabın blokçeyndə qeydiyyatdan keçib-keçmədiyini yoxlaya bilərsiniz.
 
-`EvaluatesTo<bool>` tətbiq edən ifadələrdən istifadə edərək şərti məntiq qura bilərsiniz və daha mürəkkəb əməliyyatları zəncirdə icra edə bilərsiniz. Məsələn, yalnız müəyyən bir hesab qeydiyyatdan keçərkən `Mint` təlimatını təqdim edə bilərsiniz.
+`EvaluatesTo<bool>` ifadələrindən istifadə edərək, şəbəkə üzərində şərti məntiq qura bilərsiniz və daha mürəkkəb əməliyyatlar apara bilərsiniz. Məsələn, yalnız müəyyən bir hesab qeydiyyatdan keçibsə, `Mint` əmri təqdim edə bilərsiniz.
 
-Xatırladaq ki, bunu sorğularla birləşdirə bilərsiniz və beləliklə blok zincirini heyrətamiz şeylər etmək üçün proqramlaşdıra bilərsiniz. Biz bunu ağıllı müqavilələr olaraq adlandırırıq, bu da blok zincir texnologiyasının qabaqcıl istifadəsinin müəyyən xüsusiyyətidir.
+Yadda saxlayın ki, bunu sorğularla birləşdirə bilərsiniz və beləliklə blokçeynə möhtəşəm işlər görmək üçün proqram qura bilərsiniz. Biz bunu ağıllı müqavilələr adlandırırıq, bu da blokçeyn texnologiyasının inkişaf etmiş istifadəsinin müəyyənedici xüsusiyyətidir.

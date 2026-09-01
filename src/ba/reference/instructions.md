@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /reference/instructions.md
-translation_source_hash: 9ba8e06d10f0896169feddbdad32f4fed7a8d46effa2293c64df578c197c970e
+translation_source_hash: 9999816502505026fb35d2ddaf4033f54768be697ca5b03550e1cf5949ada36c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -26,12 +26,12 @@ translation_engine: nllb-200-ct2
 | [`Upgrade`](/ba/blockchain/instructions.md#other-instructions) |башҡарыусыны яңыртыу |
 | [`Log`](/ba/blockchain/instructions.md#other-instructions) |башҡарыусы журналына инеү |
 | [`CustomInstruction`](/ba/blockchain/instructions.md#other-instructions) |JSON башҡарыусыға ҡарата файҙалы йөкләмә |
-| [Тыуған милке менән һаҡланған активтар](/ba/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
+| [Протоколға индерелгән актив эскроуы](/ba/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
 | [Ғәҙәттәгесә, активты ябыу](/ba/blockchain/escrow.md#generic-asset-locks) |`OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, `ExpireAssetLock` |
 | [Аноним активтар иҫәбенә депозит](/ba/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
 | [Атом шәхси иҫәпләшеүе](/ba/blockchain/instructions.md#atomic-private-settlement) | `ActivatePrivateSettlementPoolV1`, `RotatePrivateSettlementPoolPolicyV1`, `FinalizeAtomicPrivateSettlementV1`, `AbortAtomicPrivateSettlementV1` |
 
-Өҫтәмә Iroha 3 модулдәре инструкция реестры аша доменға ярашлы инструкциялар типтарын теркәй ала. Хәҙерге сығанаҡ ағастан барлыҡҡа килгән схема кимәле исемлеге өсөн ҡарағыҙ [Дан моделе схемаһы](./data-model-schema.md).
+Өҫтәмә Iroha 3 модулдәре инструкция реестры аша доменға ярашлы инструкциялар типтарын теркәй ала. Узел тәҡдим иткән схема һәм уны һаҡлау өсөн ҡулланылған команда тураһында [Мәғлүмәт моделе схемаһы](./data-model-schema.md) бүлеген ҡарағыҙ.
 
 ::: details Диаграмма: Ғаиләләргә төп белем биреү
 

@@ -3,18 +3,18 @@ translation_locale: ar
 translation_source: /guide/tutorials/swift.md
 translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Swift و iOS {#swift-and-ios}
+# Swift ونظام iOS {#swift-and-ios}
 
-(الـ) Swift SDK يتم إرسالها من قبل مساحة العمل الصعودية هي `IrohaSwift` Swift حزمة تحت `IrohaSwift/`. يحدد قائمة الحزمة ثلاثة منتجات المكتبة`IrohaSwift`, `IrohaSwiftMobileTransports`, و `IrohaSwiftTransferUI`ويهدف إلى iOS 15+ و macOS 12+ مع Swift الأدوات 5.9.
+تم شحن Swift SDK من مساحة العمل العليا وهو حزمة `IrohaSwift` Swift تحت `IrohaSwift/`. يحدد بيان الحزمة الفني الخاص بها ثلاثة منتجات مكتبية — `IrohaSwift` و`IrohaSwiftMobileTransports` و`IrohaSwiftTransferUI` — ويستهدف iOS 15+ و macOS 12+ باستخدام أدوات Swift 5.9.
 
-تعتمد الحزمة على الهدف الثنائي الأصلي `NoritoBridge`. تصحيح قرار الحزمة `../dist/NoritoBridge.xcframework` قبل البناء ، وتلقي مسارات المعاملات أو الاتصال بالعملات الرقمية أخطاء غير متوفرة عند عدم تحميل رموز الأصلية.
+تعتمد الحزمة على الهدف الثنائي المحلي `NoritoBridge`. تتحقق عملية حل الحزمة من `../dist/NoritoBridge.xcframework` قبل البناء، وتؤدي مسارات المعاملات أو الاتصال المشفر إلى الأخطاء bridge-unavailable عندما لا يتم تحميل الرموز المحلية.
 
-## Swift مدير الحزمة {#swift-package-manager}
+## Swift مدير الحزم {#swift-package-manager}
 
-عند التطوير ضد مساحة عمل تم تسجيلها ، اشرح SwiftPM في دليل الحزمة المحلي `IrohaSwift/`. هوية الحزمة المستخدمة من قبل `Package.swift` هي `IrohaSwift`:
+عند التطوير ضد مساحة عمل تم سحبها، وجه SwiftPM إلى دليل حزمة `IrohaSwift/` المحلي. هوية الحزمة المستخدمة بواسطة `Package.swift` هي `IrohaSwift`:
 
 ```swift
 dependencies: [
@@ -30,22 +30,22 @@ targets: [
 ]
 ```
 
-قم بتعديل المسار لتطبيقك. لا تنسخ مسار `examples/ios/ConnectMinimalApp` الحالي كما هو؛ هذا المخطط يحل `../../IrohaSwift` إلى `examples/IrohaSwift`.
+قم بضبط المسار لتطبيقك. لا تنسخ المسار الحالي `examples/ios/ConnectMinimalApp` كما هو؛ هذا البيان الفني يحل `../../IrohaSwift` إلى `examples/IrohaSwift`.
 
-قبل حل الحزمة، تأكد من وجود الجسر في جذور مساحة العمل:
+قبل حل الحزمة، تأكد من أن الجسر موجود في جذر مساحة العمل:
 
 ```bash
 cd /path/to/iroha
 make bridge-xcframework
 ```
 
-هذا ينتج `dist/NoritoBridge.xcframework`؛ `IrohaSwift/Package.swift` يشير إليها باسم `../dist/NoritoBridge.xcframework`.
+هذا ينتج `dist/NoritoBridge.xcframework`؛ `IrohaSwift/Package.swift` يشير إليه باعتباره `../dist/NoritoBridge.xcframework`.
 
 ## CocoaPods {#cocoapods}
 
-يحتوي قاعدة الشفرة أيضًا على `IrohaSwift/IrohaSwift.podspec`. فإنه يعلن عن القنبلة `IrohaSwift` ، Swift 5.9 و iOS 15. سحب القنبلة المصادر Swift من المستودع الرئيسي. لا يزال يجب أن يكون الجسر الأصلي موجودًا ومرتبطًا لتشفير المعاملات وتوقيع غير Ed25519، وكريبتو Connect.
+يحتوي قاعدة الشيفرة أيضًا على `IrohaSwift/IrohaSwift.podspec`. يعلن عن البود `IrohaSwift`، Swift 5.9، وiOS 15. يقوم ملف البودسبيك بسحب المصادر Swift من المستودع الرئيسي؛ لا يزال من الضروري وجود الجسر الأصلي وربطه لترميز المعاملات، والتوقيع غير Ed25519، والتشفير باستخدام Connect.
 
-## بداية سريعة {#quickstart}
+## البدء السريع {#quickstart}
 
 ```swift
 import Foundation
@@ -63,9 +63,9 @@ if #available(iOS 15.0, macOS 12.0, *) {
 }
 ```
 
-## جرب Taira القراءة فقط {#try-taira-read-only}
+## حاول Taira للقراءة فقط {#try-taira-read-only}
 
-البدء بمساحة HTTP بسيطة للتأكد من أن الجهاز أو المحاكاة يمكن أن تصل إلى نقطة نهاية عامة Taira:
+ابدأ بمسبار عادي HTTP لتأكيد أن الجهاز أو المحاكي يمكنه الوصول إلى نقطة النهاية العامة Taira API:
 
 ```swift
 import Foundation
@@ -83,9 +83,9 @@ if #available(iOS 15.0, macOS 12.0, *) {
 }
 ```
 
-استخدم نفس الشيك `URLSession` لـ `https://taira.sora.org/v1/assets/definitions?limit=5` أثناء بناء UI وإعادة محاولة السلوك. الانتقال إلى `IrohaSDK` إرسال المساعدين فقط بعد أن يقوم التطبيق بتحميل مواد توقيع من مخزن آمن وتتم تمويل الحساب على Taira.
+استخدم نفس فحص `URLSession` لـ `https://taira.sora.org/v1/assets/definitions?limit=5` أثناء بناء UI وسلوك إعادة المحاولة. انتقل إلى مساعدي الإرسال `IrohaSDK` فقط بعد أن يقوم التطبيق بتحميل مواد توقيع التشفير من التخزين الآمن ويتم تمويل الحساب على Taira.
 
-لإنشاء وتقديم المعاملة، استخدم المساعدين `IrohaSDK`. هؤلاء يطلقون على رمز المعاملات المحلي المدعوم بالجسر:
+لبناء معاملة وإرسالها، استخدم المساعدين `IrohaSDK`. هذه تستدعي مشفر المعاملة المدعوم بالجسر الأصلي:
 
 ```swift
 let transfer = TransferRequest(
@@ -107,15 +107,15 @@ if #available(iOS 15.0, macOS 12.0, *) {
 }
 ```
 
-`TransferRequest`, `MintRequest`, `BurnRequest`, `ShieldRequest`, و `UnshieldRequest` تأكيد الحساب الكنسي IDs وتعريف الأصول القائمة على قاعدة58 غير المحددة IDs قبل التوقيع
+`TransferRequest` و `MintRequest` و `BurnRequest` و `ShieldRequest` و `UnshieldRequest` تتحقق من صحة معرفات الحساب القياسية ومعرفات تعريف الأصول Base58 غير المسبوقة القياسية قبل التوقيع.
 
-## الخصم الأصلي {#native-escrow}
+## الضمان المحلي {#native-escrow}
 
-Swift يقوم بإنشاء مساحة السوق وتعليمات الاحتفاظ بالأمانة المجهولة Norito JSON الحمولة المفيدة من خلال `NativeEscrowInstructionBuilders` أو ما يعادلها `IrohaSDK.build*Escrow*` المساعدين. [الاحتفاظ بالأصول الأصلية](/ar/blockchain/escrow.md#swift-and-ios) على سبيل المثال، حقول إثبات مجهولة، و رمز إذن حل النزاع.
+Swift يقوم ببناء السوق وتعليمات الضمان المجهول الهوية كحزم Norito JSON عبر `NativeEscrowInstructionBuilders` أو المساعدين المعادلين `IrohaSDK.build*Escrow*`. انظر [ضمان الأصل الأصلي](/ar/blockchain/escrow.md#swift-and-ios) للأمثلة وحقول الإثبات المجهول وهوية رمز إذن محل النزاع.
 
 ## التوقيع {#signing}
 
-`Keypair` هو الراحة Ed25519 API. بالنسبة إلى خوارزميات أخرى، قم ببناء `IrohaSDK` باستخدام `defaultSigningAlgorithm` واستخدم `generateSigningKey()` أو `signingKey(fromSeed:)`:
+`Keypair` هو ملحق الراحة لـ Ed25519 API. بالنسبة للخوارزميات الأخرى، قم بإنشاء `IrohaSDK` باستخدام `defaultSigningAlgorithm` واستخدم `generateSigningKey()` أو `signingKey(fromSeed:)`:
 
 ```swift
 let pqSdk = IrohaSDK(
@@ -125,11 +125,11 @@ let pqSdk = IrohaSDK(
 let signingKey = try pqSdk.generateSigningKey()
 ```
 
-يحتوي `SigningAlgorithm` enum حاليًا على Ed25519, secp256k1, BLS المتغيرات الطبيعية والصغيرة، ML-DSA، GOST مجموعات المعلمات R 34.10-2012, و SM2. مطلوب دعم الجسر الأصلي خارج مسار الراحة ED25519.
+تشمل تعداد `SigningAlgorithm` حاليًا Ed25519، secp256k1، المتغيرات العادية والصغيرة BLS، ML-DSA، مجموعات المعلمات R 34.10-2012 GOST، و SM2. يتطلب الدعم الأصلي للجسر خارج مسار الراحة Ed25519.
 
-## التواصل {#connect}
+## اتصل {#connect}
 
-يتم تنفيذ عميل Connect في مصدر Swift ، مع كوديكات العملات الرقمية والإطار المدعومة من قبل `NoritoBridge`:
+تم تنفيذ عميل Connect في مصدر Swift، مع تشفير وبرمجيات ترميز الإطارات مدعومة من `NoritoBridge`:
 
 ```swift
 let sessionID = Data(repeating: 0, count: 32) // replace with the session bytes
@@ -148,27 +148,27 @@ let session = ConnectSession(sessionID: sessionID, client: client)
 let keyPair = try ConnectCrypto.generateKeyPair()
 ```
 
-`ConnectSession` يتعامل مع التحكمات المفتوحة والغلقة، قراءة الغلاف المشفرة، مفاتيح الاتجاه، تحكم التدفق، تدفق الأحداث، تدفق التوازن، ومجلات التشخيص.
+`ConnectSession` يتعامل مع عناصر التحكم في الفتح والإغلاق، وقراءات حاوية البيانات المشفرة، ومفاتيح الاتجاه، والتحكم في التدفق، وتدفقات الأحداث، وتدفقات الرصيد، وسجلات التشخيص.
 
 ## التغطية الحالية {#current-coverage}
 
-المصدر Swift يشمل حالياً:
+مصدر Swift يشمل حالياً:
 
-- `ToriiClient` HTTP مساعدي الحسابات، الأصول، الأسماء المستعارة، صفحات المستكشفين، RWA، العقود، multisig، الحوكمة، الاشتراكات، توافر البيانات، أصول سرية، وضع العقدة/وقت التشغيل، الصحة، المعايير، وتدفقات SSE.
-- `IrohaSDK` صانعي المعاملات ومساعدين في تقديم/إجراء الاستطلاعات للتحويل والعقاقير والحرق والدرع وعدم الحماية ZK التحويل، ZK تسجيل الأصول، البيانات المعدنية، المطالبة بالتعرف، تسجيل متعددة العلامات والإرشادات الحوكمة.
-- دعم صف المعاملات المنتظر من خلال `PendingTransactionQueue` و `FilePendingTransactionQueue`
-- عنوان الحساب ومساعدين I105 عبر `AccountAddress` و `AccountId`
-- Ed25519, secp256k1, ML-DSA, BLS, GOST, و SM2 سطحات التوقيع، مع دعم جسر محلي عند الضرورة.
-- إرشادات الاحتفاظ بالأمانة الأصلية مُبني الحمولة المفيدة للسوق والاحتفاظ بالميانة المجهولة
-- ربط WebSocket ، الإطار، العملات الرقمية، الجلسة، الصف، إعادة التشغيل، ومساعدات التشخيص.
-- إعداد كاغيموشا ، وتكملات المخطوطة والتكييف ، وحالة التشغيل ، والملاحظة ، ومجموعة الأقران ، والحصول ، ونماذج سلسلة QR
-- SoraFS ، مساعدة في توفير البيانات، ومساعدة في إصدار الدليل.
+- `ToriiClient` HTTP مساعدين للحسابات، الأصول، الأسماء المستعارة، صفحات المستكشف، RWA، العقود، التوقيعات المتعددة، الحوكمة، الاشتراكات، توفر البيانات، الأصول السرية، حالة العقد/الخادم، الصحة، المقاييس، و SSE التدفقات
+- `IrohaSDK` منشئو المعاملات ومساعدو الإرسال/الاستطلاع للتحويل، الإصدار، الحرق، التشفير، فك التشفير، ZK التحويل، ZK تسجيل الأصول، البيانات الوصفية، مطالبات المعرف، تسجيل التوقيعات المتعددة، وتعليمات الحوكمة
+- دعم قائمة انتظار المعاملات المعلقة عبر `PendingTransactionQueue` و `FilePendingTransactionQueue`
+- عنوان الحساب و I105 المساعدين من خلال `AccountAddress` و`AccountId`
+- أسطح التوقيع Ed25519 وsecp256k1 و ML-DSA و BLS و GOST و SM2، مع دعم جسر أصلي حيثما كان مطلوبًا
+- بناة حمولة تعليمات الاحتجاز الأصلي للسوق والاحتجاز المجهول
+- الاتصال بـ WebSocket، الإطار، التشفير، الجلسة، الطابور، الإعادة، وأدوات التشخيص
+- استعداد كاجيموشا، تعبئة ورقية واسترداد، حالة العملية، ملاحظة، حزمة النظراء في الشبكة، سجل نتائج البروتوكول، ونماذج التدفق QR
+- SoraFS، توافر البيانات، ومساعدو إرفاق الأدلة
 
-## API مثال {#api-examples}
+## API أمثلة {#api-examples}
 
-استخدام `IrohaSwift/Sources/IrohaSwift` للتنفيذ العام و `IrohaSwift/Tests/IrohaSwiftTests` لمثال الاستخدام المختبر من نفس إصدار المصدر.
+استخدم `IrohaSwift/Sources/IrohaSwift` للتنفيذ العام و`IrohaSwift/Tests/IrohaSwiftTests` لأمثلة الاستخدام المختبرة من نفس مراجعة المصدر.
 
-## إشارات مصدر {#source-references}
+## المراجع المصدرية {#source-references}
 
 - `IrohaSwift/Package.swift`
 - `IrohaSwift/IrohaSwift.podspec`

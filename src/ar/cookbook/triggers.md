@@ -1,22 +1,22 @@
 ---
 translation_locale: ar
 translation_source: /cookbook/triggers.md
-translation_source_hash: 6c8f436b5a41cf41c0ac37aeed6b6cd8c73009cfcca2fe7f5642cef1ad115e6f
+translation_source_hash: 5267fb9bb232d52d9df4bedee414d745ccc30dd52cbc30993df3c5b975a0bc38
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # المحفزات {#triggers}
 
-## النتيجة {#outcome}
+## نتيجة {#outcome}
 
-سجل محفز المكالمة الإضافية المحدودة على Taira ، قم بتنفيذها مرة واحدة، وانتظر النهاية التطبيقية، وتؤكد إنجازها بنجاح من تاريخ الكتل المتعهده.
+سجّل محفّز استدعاء تقني محدود على Taira، نفّذه مرة واحدة، انتظر حتى يتم الإنجاز النهائي، وتأكد من إتمامه بنجاح من سجل الكتل النهائي.
 
-## الشروط المسبقة {#prerequisites}
+## المتطلبات الأساسية {#prerequisites}
 
-- الموقعة الممولة، `taira.client.toml`، `taira.tx-metadata.json`، و `TAIRA_ACCOUNT_ID` من [ربط إلى Taira](./connect-to-taira.md).
-- Taira الإذن لتسجيل محفز ل `TAIRA_ACCOUNT_ID` وتنفيذ المحفز الناتج. الوهميات ذات الصلة هي `CanRegisterTrigger` مدرجة من قبل `authority` و `CanExecuteTrigger` مدرجة عن طريق `trigger`.
-- إذا كانت هذه المنح غير متوفرة، استخدم شبكة محلية تم إنشاؤها ومركز مديرها. يحتاج سلطة الزناد أيضًا إلى كل الإذن المطلوب من قبل التعليمات التي سيتم تنفيذها.
+- موقّع تشفير ممول، `taira.client.toml`، `taira.tx-metadata.json`، و`TAIRA_ACCOUNT_ID` من [الاتصال بـ Taira](./connect-to-taira.md).
+- Taira الإذن بتسجيل مشغل لـ `TAIRA_ACCOUNT_ID` وتنفيذ المشغل الناتج. الرموز ذات الصلة هي `CanRegisterTrigger` ضمن نطاق `authority` و `CanExecuteTrigger` ضمن نطاق `trigger`.
+- إذا لم تكن تلك المنح متاحة، استخدم شبكة محلية منشأة وعميل المشرف الخاص بها. كما يحتاج المبدأ المخول للتشغيل إلى كل الإذنات المطلوبة من قبل التعليمات التي سينفذها المحفز.
 
 ```bash
 CONFIG=./taira.client.toml
@@ -25,11 +25,11 @@ TRIGGER_ID=cookbook_by_call_log
 test -n "$TAIRA_ACCOUNT_ID"
 ```
 
-## الخطوات {#steps}
+## خطوات {#steps}
 
-### 1 - تسجيل محفز مدعوم بإرشادات {#_1-register-an-instruction-backed-trigger}
+### 1. تسجيل مشغل مدعوم بالتعليمات {#_1-register-an-instruction-backed-trigger}
 
-`--instructions-stdin` يقبل مجموعة JSON من التعليمات. تتركز تعليمة `Log` هذه المثال على تفويض الزناد بدلاً من تصاريح كائن الكتيب الثاني.
+`--instructions-stdin` يقبل مصفوفة JSON من التعليمات. تعليمات `Log` تحافظ على تركيز هذا المثال على تفويض المشغّل بدلاً من أذونات كائن دفتر الأستاذ الثاني في البلوكشين.
 
 ```bash
 printf '%s\n' \
@@ -45,20 +45,20 @@ printf '%s\n' \
     --filter execute
 ```
 
-يمكن أن يعمل الزناد ثلاث مرات كحد أقصى. سلطته المعلنة، وليس المدعو الذي يحدث لتنفيذها، يسمح بالتعليمات داخل الإجراء.
+يمكن للمُحفِّز أن يعمل ثلاث مرات على الأكثر. الشخص المخوَّل المعلن عن طريقه، وليس العميل الذي يطلب تنفيذها، هو من يُفوِّض التعليمات داخل الإجراء.
 
-### 2 - تحقق من الإعلان قبل التنفيذ {#_2-inspect-the-declaration-before-execution}
+### 2. افحص الإعلان قبل التنفيذ {#_2-inspect-the-declaration-before-execution}
 
 ```bash
 iroha --config "$CONFIG" ledger trigger get --id "$TRIGGER_ID"
 iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
 ```
 
-تأكد من سلطة I105 ومصفح التنفيذ والتكرارات المتبقية والتعليمات الواحدة `Log` قبل أن تنفق رسوم أخرى.
+تأكد من صلاحية التفويض I105، وفلتر التنفيذ، والتكرارات المتبقية، والتعليمات الفردية `Log` قبل دفع أي رسوم أخرى.
 
-### 3. تنفيذ وانتظر كلتا الطبقتين {#_3-execute-and-wait-for-both-layers}
+### 3. نفّذ وانتظر كلا الطبقتين {#_3-execute-and-wait-for-both-layers}
 
-تمتلك المعاملة التنفيذية والإجراء المنفذ أدلة متميزة. `--wait` تنتظر نهائية المعاملة المطبقة؛ `--trace` أيضاً تقرير تشخيص إكمال وقت التشغيل.
+معاملة التنفيذ وإجراء الزناد لهما أدلة مميزة. `--wait` ينتظر حتمية المعاملة المطبقة؛ `--trace` يبلغ أيضًا عن تشخيصات اكتمال بيئة تنفيذ البرنامج.
 
 ```bash
 iroha --config "$CONFIG" \
@@ -71,7 +71,7 @@ iroha --config "$CONFIG" \
   "$TRIGGER_ID"
 ```
 
-يقوم عملاء Rust بإنشاء نفس التعليمات المكتوبة. هنا `authority` هو علامة `AccountId` و `client` كحساب:
+Rust يقوم العملاء ببناء نفس التعليمات المكتوبة مرتين. هنا `authority` هو `AccountId` و `client` يوقع باسم ذلك الحساب:
 
 ```rust
 use iroha::data_model::{prelude::*, transaction::FeePaymentIntent};
@@ -91,9 +91,9 @@ client.submit_blocking(Register::trigger(Trigger::new(trigger_id.clone(), action
 client.submit_blocking(ExecuteTrigger::new(trigger_id), fee)?;
 ```
 
-## التحقق {#verify}
+## تحقق {#verify}
 
-فحص تاريخ الكتل الملتزمة لإكمال وتفقد عدد التكرار المتخفض:
+افحص تاريخ الكتل النهائية للتحقق من الاكتمال وتفقد عدد التكرارات المُنخفض:
 
 ```bash
 iroha --config "$CONFIG" ledger trigger completed list \
@@ -104,21 +104,21 @@ iroha --config "$CONFIG" ledger trigger completed list \
 iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
 ```
 
-يجب أن يبلغ عن نجاح واحدة على الأقل. يجب أن يبقى الزناد نشطًا مع بقي اثنين من التنفيذات. الإرسال الناجح دون إنجاز الزناد الناجح ليس تحقيقا كافيا.
+يجب أن يبلغ إنهاء واحد على الأقل عن النجاح. يجب أن تظل الزناد نشطًا مع بقاء تنفيذين. لا تكفي عملية تقديم ناجحة بدون إتمام ناجح للزناد كتحقق.
 
-## حل المشاكل {#troubleshooting}
+## استكشاف الأخطاء وإصلاحها {#troubleshooting}
 
-- رفض التسجيل لأنه غير مسموح به يعني أن الموقع يفتقر إلى `CanRegisterTrigger` للسلطة المعلنة. يتطلب تنفيذ رمز `CanExecuteTrigger` المحدد بشكل منفصل.
-- يمكن للمعاملة الوصول إلى التطبيق في حين أن الإجراء الزناد يبلغ عن فشل. اقرأ نتيجة الانتهاء والخطأ؛ ثم تحقق من إذن سلطة الزناد لكل تعليمات متضمنة .
-- `trigger not found` يمكن أن يعني رفض صفقة التسجيل أو استخدام تشكيل مختلف Torii/سلسلة لتنفيذها.
-- عندما تصل التكرارات إلى الصفر، فإن صياغة المزيد من التكرارات هي كتابة خاصة أخرى. لا تغير هذه الوصفة بصمت إلى محفز لفترة غير محددة.
-- لتنظيفها، `ledger trigger unregister --id "$TRIGGER_ID"` يتطلب `CanUnregisterTrigger` لهذا المحفز بالإضافة إلى اختيار رسوم صريحة.
+- تم رفض التسجيل لعدم الإذن يعني أن الموقّع التشفيري يفتقر إلى `CanRegisterTrigger` للجهة المخولة المعلنة. يتطلب التنفيذ وجود رمز `CanExecuteTrigger` المحدد بشكل منفصل.
+- يمكن أن تصل المعاملة إلى حالة 'تم التطبيق' بينما يُبلغ إجراء الزناد عن فشل. اقرأ نتيجة الإكمال والخطأ؛ ثم تحقق من أذونات صاحب تفويض الزناد لكل تعليمات مضمنة.
+- `trigger not found` يمكن أن يعني أن عملية التسجيل قد تم رفضها أو تم استخدام Torii/تكوين سلسلة مختلف للتنفيذ.
+- عندما تصل التكرارات إلى الصفر، فإن إصدار المزيد من التكرارات هو كتابة مميزة أخرى. لا تغير هذه الوصفة بصمت إلى مشغل غير محدد.
+- للتنظيف، يتطلب `ledger trigger unregister --id "$TRIGGER_ID"` `CanUnregisterTrigger` لذلك الزناد بالإضافة إلى اختيار الرسوم الصريح.
 
-## المصدر والوثائق ذات الصلة {#source-and-related-docs}
+## المصدر والمستندات ذات الصلة {#source-and-related-docs}
 
-- [اختبارات تكامل محفز الدعوة الإضافية في الالتزام المثبت ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/triggers/by_call_trigger.rs)
-- [اختبارات إدماج الأحداث والتحفيز في الالتزام المتعلق ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events_and_triggers.rs)
-- [تنفيذ تعليمات التشغيل في الالتزام المثبت ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs)
+- [اختبارات التكامل التي يتم تشغيلها عبر الاستدعاء الفني عند النسخة المثبتة من كود المصدر](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/triggers/by_call_trigger.rs)
+- [اختبارات تكامل الأحداث والمحركات عند مراجعة الشيفرة المصدرية المثبتة](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events_and_triggers.rs)
+- [تشغيل تنفيذ التعليمات عند إصدار الشفرة المصدرية المثبت](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs)
 - [المحفزات](/ar/blockchain/triggers.md)
-- [أمثلة محفزات ](/ar/blockchain/trigger-examples.md)
+- [أمثلة على المشغلات](/ar/blockchain/trigger-examples.md)
 - [الأحداث](./stream-events.md)

@@ -1,28 +1,28 @@
 ---
 translation_locale: pt
 translation_source: /cookbook/submit-and-verify-transactions.md
-translation_source_hash: 01907ea433e711cb0b1aa327d46c44744aad0a7571a65430dddd7a8aed3df373
+translation_source_hash: 98e5c7e9db1ba8468cfd5409409b0e8d02251311dc85492f7b71675e983dc4fd
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Submitir e verificar as transações {#submit-and-verify-transactions}
+# Enviar e Verificar Transações {#submit-and-verify-transactions}
 
-## Resultados {#outcome}
+## Resultado {#outcome}
 
-Preencher uma transação Taira, aceitar uma cotação exata de taxa, assiná-la e enviá-la, esperar a finalidade aplicada e verificar a transação comprometida por hash.
+Pré-verifique uma transação Taira, aceite uma estimativa de preço de taxa exata, assine e envie-a, aguarde a finalização aplicada e verifique a transação confirmada pelo hash criptográfico.
 
 ## Pré-requisitos {#prerequisites}
 
-- Um `taira.client.toml`, `taira.tx-metadata.json` e `TAIRA_ACCOUNT_ID` financiados produzidos por [Conectar-se a Taira](./connect-to-taira.md).
-- A corrente `iroha` CLI e `jq`.
-- Uma assinatura descartável Taira. Não reutilize a sua chave ou estes comandos para escrever em Minamoto.
+- Um `taira.client.toml` financiado, `taira.tx-metadata.json` e `TAIRA_ACCOUNT_ID` produzido por [Conectar-se a Taira](./connect-to-taira.md).
+- O atual `iroha` CLI e `jq`.
+- Um signatário criptográfico descartável Taira. Não reutilize sua chave ou estes comandos de gravação em Minamoto.
 
 ## Passos {#steps}
 
-### 1. Prefire o ponto final, a autoridade e o saldo das taxas {#_1-preflight-the-endpoint-authority-and-fee-balance}
+### 1. Verifique previamente o endpoint API, o principal de autorização e o saldo de taxas {#_1-preflight-the-endpoint-authority-and-fee-balance}
 
-Leia primeiro o snapshot da fila, e depois comprova que o saldo das taxas da autoridade é visível. ID a partir dos metadados gerados pela receita de ligação.
+Leia primeiro a visualização de dados do ponto no tempo da fila, depois comprove que o saldo de taxas do principal de autorização está visível. Leia o ID de definição de ativo Base58 a partir dos metadados gerados pela receita de conexão.
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -38,11 +38,11 @@ iroha --config ./taira.client.toml ledger asset get \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-Uma instrução válida não pode passar a admissão de taxas quando a sua autoridade não pode pagar.
+Pare se a conta ou o saldo da taxa estiver ausente. Uma instrução válida não pode passar pela admissão de taxa quando seu principal de autorização não puder pagar.
 
-### 2. Citar, assinar e submeter uma vez {#_2-quote-sign-and-submit-once}
+### 2. Cotar, assinar e enviar uma vez {#_2-quote-sign-and-submit-once}
 
-A Comissão CLI Envia a carga útil exata sem assinatura para uma cotação de taxa, vincula a intenção de pagamento aceita à transacção, assina e envia. JSON modo retorna o hash da transação, a transação assinada e a cotação aceita juntas.
+O CLI envia o payload não assinado exato para uma estimativa de preço da taxa, vincula a intenção de pagamento aceita na transação, assina e envia. O modo JSON retorna o hash criptográfico da transação, a transação assinada e a cotação aceita juntos.
 
 ```bash
 iroha --config ./taira.client.toml \
@@ -56,11 +56,11 @@ jq '{hash, fee_quote}' taira-submission.json
 TAIRA_TX_HASH="$(jq -er '.hash' taira-submission.json)"
 ```
 
-Não use `--no-wait` nesta receita. O comando espera a confirmação antes de escrever um recibo bem sucedido.
+Não use `--no-wait` nesta receita. O comando aguarda confirmação antes de escrever um registro de resultado de protocolo bem-sucedido.
 
-### 3. Esperar o estado do gasoduto terminal {#_3-wait-for-terminal-pipeline-state}
+### 3. Aguarde o estado terminal do pipeline {#_3-wait-for-terminal-pipeline-state}
 
-Use o assistente de status digitalizado em vez de inferir sucesso da aceitação ou admissão na fila HTTP. Com `--wait`, o escopo de roteamento seguro é selecionado automaticamente e o objetivo padrão é finalidade aplicada.
+Use o assistente de status digitado em vez de inferir o sucesso a partir da aceitação ou admissão na fila de HTTP. Com `--wait`, o escopo de roteamento seguro é selecionado automaticamente e o alvo padrão é a finalização aplicada.
 
 ```bash
 iroha --config ./taira.client.toml \
@@ -74,11 +74,11 @@ iroha --config ./taira.client.toml \
 jq . taira-final-status.json
 ```
 
-`Rejected` e `Expired` são falhas terminais, não estados de sucesso retraiíveis. Registre a sua razão antes de alterar ou reconstruir a transação.
+`Rejected` e `Expired` são falhas terminais, não estados de sucesso que podem ser tentados novamente. Registre o motivo antes de alterar ou reconstruir a transação.
 
-### 4. Ler a transacção armazenada. {#_4-read-the-stored-transaction}
+### 4. Leia a transação armazenada {#_4-read-the-stored-transaction}
 
-O status do pipeline responde se o processamento foi concluído. Uma consulta de transação verifica que a transação admitida é armazenada sob o mesmo hash.
+O status do pipeline de processamento responde se o processamento foi concluído. Uma consulta de transação verifica se a transação admitida está armazenada sob o mesmo hash criptográfico.
 
 ```bash
 iroha --config ./taira.client.toml \
@@ -89,7 +89,7 @@ iroha --config ./taira.client.toml \
 jq . taira-transaction.json
 ```
 
-O explorador é uma segunda superfície de observação apenas para leitura, que pode ficar um pouco atrás da finalidade do oleoduto.
+O explorador é uma segunda superfície de observação somente leitura. Ele pode ficar brevemente atrás da finalização do pipeline.
 
 ```bash
 curl -fsS -H 'Accept: application/json' \
@@ -97,11 +97,11 @@ curl -fsS -H 'Accept: application/json' \
   | jq '{hash, block, status, authority, executable}'
 ```
 
-Para uma instrução de alteração de estado, termine com uma consulta do objeto que foi mutado. [Metadados](./metadata.md), [Ativos funcionais](./fungible-assets.md), e [NFTs](./nfts.md) As receitas incluem as leituras pós-estado.
+Para uma instrução que muda o estado, termine com uma consulta ao objeto que foi modificado. As receitas [Metadados](./metadata.md), [Ativos fungíveis](./fungible-assets.md) e [NFTs](./nfts.md) incluem essas leituras pós-estado.
 
 ## Verificar {#verify}
 
-Verifique se todos os três registos concordam no mesmo hash e que o explorador não mais relata um estado pendente:
+Verifique se todos os três registros concordam com o mesmo hash criptográfico e se o explorador não relata mais um estado pendente:
 
 ```bash
 test "$(jq -r '.hash' taira-submission.json)" = "$TAIRA_TX_HASH"
@@ -112,21 +112,21 @@ curl -fsS -H 'Accept: application/json' \
     '.hash == $hash and .status == "Committed"'
 ```
 
-Mantenha o recibo da submissão e o status final como prova de ensaio. Eles contêm material público de transacção, não a chave de assinatura.
+Mantenha o registro do resultado do protocolo de envio e o status final como evidência de teste. Eles contêm material de transação público, não a chave de assinatura.
 
-## Resolução de problemas {#troubleshooting}
+## Solução de problemas {#troubleshooting}
 
-- HTTP `202` ou um status em fila só provam admissão. Continuar a pesquisa do status tipado até aplicado, rejeitado, expirado ou o tempo limite.
-- Se o tempo de submissão terminar depois de retornar um hash, consulta esse hash antes de criar outra transação. A reenvio cego cria uma nova carga útil com citações e assinaturas.
-- Uma cotação pode ser rejeitada antes de assinar. `--fee-payer authority`, `gas_asset_id`, O equilíbrio da autoridade e a cadeia de redes ID.
-- `Rejected` geralmente indica a validação de instruções, permissões, taxas ou estado obsoleto. É prova comprometida de uma execução falhada e não deve ser reclassificada como uma nova tentativa de transporte.
-- Um explorador `404` imediatamente após o aplicado pode estar indexando lag. Repete a leitura; não re-submeter a transação.
-- Se uma instrução privilegiada funciona em uma rede local gerada, mas Taira a rejeita, obtenha a permissão exata Taira ou atribuição de espaço de nome governado. O resultado local não concede autoridade para rede pública.
+- HTTP `202` ou um status em fila prova apenas a admissão. Continue consultando o status digitado até Aplicado, Rejeitado, Expirado ou até o tempo limite definido.
+- Se o envio expirar após retornar um hash criptográfico, consulte esse hash criptográfico antes de construir outra transação. O reenviamento cego cria um novo payload cotado e assinado.
+- Uma estimativa de preço da taxa pode ser rejeitada antes da assinatura. Verifique `--fee-payer authority`, `gas_asset_id`, o saldo do principal de autorização e o ID da cadeia da rede.
+- `Rejected` geralmente indica validação de instrução, permissões, taxas ou estado obsoleto. É uma evidência comprovada de uma execução falha e não deve ser reclassificada como uma nova tentativa de transporte.
+- Um explorador `404` imediatamente após Aplicado pode estar com atraso de indexação. Tente ler novamente; não reenvie a transação.
+- Se uma instrução privilegiada funcionar em uma localnet gerada, mas Taira a rejeitar, obtenha a permissão exata Taira ou a atribuição de namespace governado. O resultado local não concede principal de autorização da rede pública.
 
 ## Fonte e documentos relacionados {#source-and-related-docs}
 
-- [Submissão de transações e implementação da taxa no compromisso fixado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
-- [Testes de confirmação de transações no compromisso fixado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/src/client.rs)
-- [Transações ](/pt/blockchain/transactions.md)
-- [Guia CLI](/pt/get-started/operate-iroha-via-cli.md)
-- [Pontos finais Torii](/pt/reference/torii-endpoints.md)
+- [Envio de transação e implementação de cotação de taxa no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
+- [Implementação e testes de confirmação de transação no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/src/client.rs)
+- [Transações](/pt/blockchain/transactions.md)
+- [CLI guia](/pt/get-started/operate-iroha-via-cli.md)
+- [Torii API pontos de extremidade](/pt/reference/torii-endpoints.md)

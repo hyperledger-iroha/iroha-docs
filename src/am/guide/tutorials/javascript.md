@@ -3,16 +3,16 @@ translation_locale: am
 translation_source: /guide/tutorials/javascript.md
 translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # JavaScript እና TypeScript {#javascript-and-typescript}
 
-የአሁኑ JavaScript SDK ነው `@iroha/iroha-js` ጥቅል ውስጥ Iroha ምንጭ ዛፍ. Node.js-በመጀመሪያ SDK ለ Torii, Norito ገንቢዎች, ፊርማ, pagination, አገናኝ ቅድመ እይታዎች, እና Kagemusha ትዕዛዝ ትራንስፖርት.
+የአሁኑ JavaScript SDK በ Iroha ምንጭ ዛፍ ውስጥ ያለው `@iroha/iroha-js` ጥቅል ነው። ለ Torii፣ Norito ግንበኞች፣ ፊርማ፣ ገጽ ማድረግ፣ ቅድመ እይታዎችን ያገናኙ እና የካጌሙሻ ትዕዛዝ መጓጓዣ Node.js-የመጀመሪያው SDK ነው።
 
-## ምንጭህን በመመርኮዝ መገንባት {#build-from-source}
+## ከምንጩ ይገንቡ {#build-from-source}
 
-ፓኬጁ በአሁኑ ጊዜ ከህዝብ npm መዝገብ ውስጥ አይገኝም. ከተመደቡት አገናኝ ጋር ተመሳሳይ የተጣራ Iroha ምንጭ ማሻሻያ ይገንቡ:
+ጥቅሉ በአሁኑ ጊዜ በሕዝባዊው npm መዝገብ አይገኝም። ያነጣጠሩት ኖድ ከተገነባበት ተመሳሳይ ቋሚ የ Iroha ምንጭ ክለሳ ይገንቡት፦
 
 ```bash
 git clone https://github.com/hyperledger-iroha/iroha.git
@@ -22,7 +22,7 @@ npm run build:native
 npm run build:dist
 ```
 
-የተፈጥሮ መገንባት `cargo build -p iroha_js_host` ይሸፍናል እና በ SDK ጅምር ላይ ጥቅም ላይ የዋለውን የመሣሪያ ስርዓት-ተኮር ቼክ አኃዝ ይመዘግባል። ምንጭ መገንባት በ `native/` ውስጥ አስተናጋጅ ያረጋገጡ ቦታዎችን ያስቀምጣል ። `IROHA_JS_NATIVE_DIR` በግለሰብ ደረጃ የተገነባ ፣ የቁጥር መጠን-የተረጋገጠ አስተናጋጅ ሆን ተብሎ በሚሰጥበት ጊዜ ብቻ ያዘጋጁ። ጥቅሉ ESM - ብቻ ነው; ከ CommonJS ጀምሮ ተለዋዋጭ `import()` ይጠቀሙ።
+ቤተኛ ግንባታው `cargo build -p iroha_js_host` ይጠቀለላል እና በ SDK ጅምር ላይ ጥቅም ላይ የዋለውን መድረክ-ተኮር ቼክ ድምር ይመዘግባል። ምንጩ በ`native/` ውስጥ አስተናጋጅ ያረጋገጠ ቦታዎችን ይገነባል። `IROHA_JS_NATIVE_DIR`ን ሆን ተብሎ በተናጠል የተገነባ፣ በቼክሰም የተረጋገጠ አስተናጋጅ ሲያቀርቡ ብቻ ያዘጋጁ። ጥቅሉ ESM-ብቻ ነው; ከ CommonJS፣ ተለዋዋጭ `import()` ይጠቀሙ።
 
 ## ፈጣን ጅምር {#quickstart}
 
@@ -38,9 +38,9 @@ const keys = generateKeyPair();
 console.log(keys.publicKey);
 ```
 
-## Taira ንባብ ብቻ ይሞክሩ {#try-taira-read-only}
+## ይሞክሩ Taira ተነባቢ-ብቻ {#try-taira-read-only}
 
-ፊርማ እና Norito የግብይት ኮድ ከመጨመርዎ በፊት Taira ን ለመፈተሽ በ Node.js 24 ውስጥ አብሮ የተሰራውን `fetch` ይጠቀሙ:
+ፊርማ እና Norito የግብይት ኮድ ከማከልዎ በፊት Taira ን ለመመርመር በ Node.js 24 ውስጥ አብሮ የተሰራ `fetch` ይጠቀሙ -
 
 ```js
 const root = "https://taira.sora.org";
@@ -67,15 +67,15 @@ for (const asset of assets.items) {
 }
 ```
 
-`taira-readonly.mjs` አድርገው ያስቀምጡት፤ ከዚያም ይሂዱት።
+እንደ `taira-readonly.mjs` አስቀምጡት እና ከዚያ ያሂዱት
 
 ```bash
 node taira-readonly.mjs
 ```
 
-SDK ከተፈረሙ ጥሪዎች ላይ ለመንቀሳቀስ እነዚህ የንባብ-ብቻ ምርመራዎች ከሠሩ በኋላ ብቻ ነው. የህዝብ Taira በጊዜያዊነት የተሞላ ረድፍ ወይም የጌትዌይ ስህተት ሊመልስ ይችላል ፣ ስለሆነም የቀጥታ አውታረመረብ ሙከራዎችን በ CI ውስጥ ይምረጡ።
+ወደ የተፈረመ SDK ቴክኒካል ጥሪዎች ይሂዱ እነዚህ ተነባቢ-ብቻ ቼኮች ከሰሩ በኋላ ብቻ ነው። ይፋዊ Taira ለጊዜው የተሞላ ወረፋ ወይም የመግቢያ ስህተት ሊመልስ ይችላል፣ ስለዚህ የቀጥታ አውታረ መረብ ሙከራዎችን በ CI ውስጥ መርጠው እንዲገቡ ያድርጉ።
 
-ጠቃሚ ንዑስ-መንገድ ግዥዎች:
+ጠቃሚ የንዑስ መንገድ ማስመጣት -
 
 ```js
 import { ToriiClient } from "@iroha/iroha-js/torii";
@@ -83,25 +83,25 @@ import { noritoEncodeInstruction } from "@iroha/iroha-js/norito";
 import { generateKeyPair } from "@iroha/iroha-js/crypto";
 ```
 
-ለአሳሽ-ብቻ Connect bootstrap የ Node-first `ToriiClient` ገጽን ከመግዛት ይልቅ `@iroha/iroha-js/connect-browser` ይጠቀሙ።
+ለአሳሽ-ብቻ የግንኙነት ቡት ማሰሪያ፣ የኖድ መጀመሪያ `ToriiClient` ገጽን ከማስመጣት ይልቅ `@iroha/iroha-js/connect-browser` ይጠቀሙ።
 
-## የአገር ውስጥ ኤስኮር {#native-escrow}
+## ቤተኛ Escrow {#native-escrow}
 
-JavaScript እና TypeScript አፕሊኬሽኖች አማካይነት የተፈጥሮ ኤስሮ መጠቀም ይችላሉ Kotodama ኮንትራቶች. `@iroha/iroha-js/kotodama-compiler`; በቀጥታ ተወላጅ የኤስኮር ግብይቶች ገንቢዎች በአሁኑ ወቅት በ JavaScript SDK. ተመልከት [የአገር ውስጥ ንብረት ማስከበሪያ](/am/blockchain/escrow.md#javascript-and-typescript-kotodama) ለኤስሮው አስተናጋጅ ጥሪ ምሳሌ።
+JavaScript እና TypeScript መተግበሪያዎች ቤተኛ escrow በ Kotodama ኮንትራቶች መጠቀም ይችላሉ። የ escrow አስተናጋጅ-ተግባር ጥሪዎችን በ `@iroha/iroha-js/kotodama-compiler` ያጠናቅሩ; ቀጥታ ቤተኛ የዋስትና ግብይት ግንበኞች በአሁኑ ጊዜ በ JavaScript SDK አይጋለጡም። ለ escrow አስተናጋጅ-ቴክኒካል ጥሪ ምሳሌ [ቤተኛ ንብረት Escrow](/am/blockchain/escrow.md#javascript-and-typescript-kotodama) ይመልከቱ።
 
-## ወቅታዊ ሽፋን {#current-coverage}
+## የአሁኑ ሽፋን {#current-coverage}
 
-SDK የሚከተሉትን ያተኩራል፦
+SDK በሚከተሉት ላይ ያተኩራል -
 
-- Torii HTTP እና WebSocket ረዳት
+- Torii HTTP እና WebSocket ረዳቶች
 - Norito የግብይት እና መመሪያ ገንቢዎች
-- Kotodama ማጠናከሪያ፣ የኤስኮር አስተናጋጅ ጥሪ ገንቢዎችን ጨምሮ
-- Ed25519 ፊርማ እና ቁልፍ ትውልድ
-- የገጽ ማጣሪያ እና ዳግም ሙከራ ረዳቶች
+- Kotodama ማጠናቀር፣ የ escrow አስተናጋጅ-ቴክኒካል ጥሪ አብሮገነቦችን ጨምሮ
+- Ed25519 ፊርማ እና ቁልፍ ማመንጨት
+- Pagination እና እንደገና ይሞክሩ ረዳቶች
 - የአሳሽ ማስነሻ ረዳቶችን ያገናኙ
-- የካጌሙሻ ዝግጁነት፣ ማሟያ፣ የመልቀቂያ እና የአሠራር ሁኔታ የትራንስፖርት ረዳቶች
+- የካጌሙሻ ዝግጁነት፣ መሙላት፣ መቤዠት እና የአሠራር ሁኔታ የትራንስፖርት ረዳቶች
 
-## የላይኛው መስመር ማጣቀሻዎች {#upstream-references}
+## የላይኛው ማጣቀሻዎች {#upstream-references}
 
 - `javascript/iroha_js/README.md`
 - `javascript/iroha_js/package.json`

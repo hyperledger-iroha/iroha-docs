@@ -1,35 +1,36 @@
 ---
 translation_locale: my
 translation_source: /guide/tutorials/python.md
-translation_source_hash: a87e8db2b77fa4952689276ae538e65b3b51070749dd0938a9e18d3a6a3dc5e4
+translation_source_hash: d0ecbade221ceba455730e80c6e12db930c65a4cbcf9e643c1c2d4cba47b0940
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Python {#python}
 
-Python SDK ကို Upstream Workspace တွင် `iroha-python` ဖြစ်ပါသည်။ ပထမဦးဆုံး Iroha 3 release သည်လက်ရှိ Torii နှင့် Norito မျက်နှာပြင်များကိုရည်ရွယ်သည်။ ပက်ကတ်ဗားရှင်းသို့မဟုတ်သင်၏ပေါင်းစပ်မှုမှအသုံးပြုသော အရင်းအမြစ်ပြုပြင်မှုကိုပိတ်ထားခြင်းဖြင့် SDK နှင့် node တို့သည်အတူတူသောကြိုးပုံစံ ပြုပြင်မှုတွင်နေထိုင်စေရန်။
+Python SDK ကို Upstream Workspace တွင် `iroha-python` ဖြစ်ပါသည်။ ပထမဦးဆုံး Iroha 3 ထုတ်ပြန်ချက်သည် လက်ရှိ Torii နှင့် Norito မျက်နှာပြင်များကို ရည်မှန်းထားသည်။ သင့်ပေါင်းစပ်မှုတွင်အသုံးပြုသော package version သို့မဟုတ် source revision ကို pin လုပ်ပါက SDK နှင့် node တို့သည် seriallization format revision တစ်ခုတည်းတွင်နေထိုင်စေရန်။
 
-Taira ကို အများပြည်သူနဲ့ `https://taira.sora.org` နှိုင်းယှဉ်ပြီး အောက်ပါဖတ်လို့သာရတဲ့ နမူနာတွေကို စစ်ဆေးခဲ့ပါတယ်။ အပြောင်းအလဲဖြစ်နေတဲ့ နမူနာတွေက ငွေကြေးပရိုဂျက်ပုံစံတွေပါ၊ ၎င်းတို့ကို တင်ပြနိုင်ခင်မှာ တကယ့် Taira အာဏာပိုင်၊ ပုဂ္ဂလိက သော့၊ ဓာတ်ငွေ့ မီတာဒေတာတွေနဲ့ ပစ်မှတ်ထားလမ်းကြောင်းအတွက် လိုအပ်တဲ့ လုပ်ငန်းရှင် လက်မှတ်တွေ လိုအပ်ပါတယ်။
+ရည်မှန်းချက် အများပြည်သူ အောက်က အမည်မသိ ဖတ်ပြမှု နမူနာများ Taira at ကို `https://taira.sora.org`. လမ်းကြောင်းတစ်ခုဟာ ဖတ်လို့သာ ရနိုင်ပြီး တစ်မူထူးတဲ့ ပရိုတိုကုတ်စံညွှန်းစာရင်း လက်မှတ် (သို့) အတိအကျကွန်ရက်စီမံခန့်ခွဲသူလက်မှတ်ကို လိုအပ်နေဆဲပါ။ အပြောင်းအလဲဥပမာများသည် ငွေကြေးပရိုဂရမ်ပုံစံများဖြစ်ပြီး အစစ် Taira ခွင့်ပြုချက် အရင်းအမြစ်၊ ပုဂ္ဂလိက သော့၊ ငွေပေးချေမှု ရည်ရွယ်ချက်ကို ရိုက်ထည့်ထားတယ်၊ လုံလောက်တဲ့ စမ်းသပ်ရေး ကွန်ရက် XOR, ခရီးသွားလမ်းကြောင်းအတွက် လိုအပ်တဲ့ အတည်ပြုချက်တွေကို တင်ပြနိုင်ဖို့ပါ။
 
-ဥပမာတွေကို ဒီအစီအစဉ်မှာ သုံးပါ။
+ဥပမာတွေကို ဒီအစီအစဉ်မှာ သုံးပါ-
 
-|အဆင့် | အများပြည်သူနဲ့ ပြိုင်ဆိုင်ပါ။ Taira? |မင်းလိုအပ်တာ|
-| --- | --- | --- |
-|ဖတ်လို့သာရတဲ့ ဖောက်သည်ခေါ်ဆိုချက်များ |ဟုတ်ပါတယ်|Python Package plus network access ကို|
-|ဒေသတွင်း လက်မှတ်ရေးထိုးခြင်းနှင့် ညွှန်ကြားမှု တည်ဆောက်သူများ |`submit()` အထိ ကွန်ရက် ဖုန်းခေါ်ဆိုမှု မရှိပါ။|Native extension နဲ့ သင့်ရဲ့ အဓိက ပစ္စည်းပါ။|
-|ငွေလဲလှယ်ရေးလုပ်ငန်းများနှင့် ဝန်ဆောင်မှုခေါ်ဆိုမှုများ |သင့်ကိုယ်ပိုင် ငွေကြေးထောက်ပံ့တဲ့ အကောင့်နဲ့သာ|အာဏာပိုင်စာရင်း၊ ပုဂ္ဂလိက သော့၊ ကွင်းဆက် ID၊ အခွန်မီတာဒေတာ၊ အခွန်အရင်းအမြစ်လက်ကျန်နဲ့ လမ်းကြောင်းလက္ခဏာများ |
+|အဆင့် |Taira လူထုကို ဆန့်ကျင်ဖို့ ပြိုင်လား။ |သင်လိုအပ်တာတွေကို|
+| --------------------------------------------- | ------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
+|အမည်မဲ့ စာဖတ်ဖုန်းတွေကို ဖတ်ပါ။|ဟုတ်ပါတယ်|Python Package plus network access ကို|
+|အကောင့် (သို့) လုပ်ငန်းရှင်က စစ်ဆေးတဲ့ စာဖတ်ခြင်း |သင့်ကိုယ်ပိုင် အသိအမှတ်ပြုထားတဲ့ ကိုယ်ပိုင်လက္ခဏာနဲ့သာ|အတိအကျ Taira `NetworkId` နှင့် သက်ဆိုင်သောစာရင်း (သို့) operator key ကို |
+|ဒေသတွင်း လက်မှတ်ရေးထိုးခြင်းနှင့် ညွှန်ကြားမှု တည်ဆောက်သူများ |`submit()` အထိကွန်ရက်ခေါ်ဆိုမှုမရှိဘူး။|Native extension နဲ့ သင့်ရဲ့ အဓိက ပစ္စည်းပါ။|
+|ငွေလဲလှယ်မှုနှင့် ဝန်ဆောင်မှုခေါ်ဆိုချက်များ |သင့်ကိုယ်ပိုင် ငွေကြေးထောက်ပံ့တဲ့ အကောင့်နဲ့သာပါ။|ခွင့်ပြုချက် အရင်းအမြစ်စာရင်း၊ ပုဂ္ဂလိက သော့၊ တိကျသော Taira `NetworkId`, ရိုက်နှိပ်ထားသည့် အခွန် ရည်ရွယ်ချက်၊ အခွန်လက်ဝယ်စုဆောင်းမှုနှင့် လမ်းညွှန်လက္ခဏာများ |
 |Frame codec တွေ၊ crypto နဲ့ GPU အကူတွေကို ချိတ်ဆက်ပါ။ |ဒေသတွင်းပဲ|GPU အကူအညီပေးသူများအတွက်လည်း CUDA- အရည်အသွေးရှိတဲ့ backend လိုပါတယ်။ |
 
 ## တပ်ဆင်ခြင်း {#install}
 
-Package metadata name is `iroha-python`. unpinned PyPI install ကို live Taira network ကိုက်ညီသည်မထင်ပါနဲ့။ သင်၏ပေါင်းစပ်မှုရည်မှန်းချက်များကို Upstream revision တစ်ခုတည်းမှတည်ဆောက်ထားသော wheel သို့မဟုတ် source checkout ကိုတပ်ဆင်ပါ။
+Package metadata နာမည်က `iroha-python` ပါ။ မတည်ငြိမ်ဘူးလို့ မယူဆပါနဲ့။ PyPI Install ကို Live နဲ့ လိုက်ဖက်ပါတယ်။ Taira ကွန်ရက်။ ဘီး (သို့) အရင်းအမြစ်ကုဒ်အလုပ်လုပ်မှုမူကွဲကိုသင်၏ပေါင်းစပ်ရေးရည်မှန်းချက်များကို Upstream revision တစ်ခုတည်းမှတည်ဆောက်ထားသည်:
 
 ```bash
 python -m pip install /path/to/iroha_python-*.whl
 ```
 
-သင့်စီမံကိန်းက Upstream အလုပ်ခွင်ကို တိုက်ရိုက်သုံးစွဲပါက Python မှီခိုမှုများကိုတပ်ဆင်ပြီး `Instruction`, `TransactionDraft`, လက်မှတ်ထိုးခြင်း, crypto, SoraFS ဒေသခံကူညီသူများ, GPU အကူအညီများ သို့မဟုတ် Connect frame codecs များကိုအသုံးပြုသောဥပမာများကိုမဖွင့်ခင် native extension ကိုတည်ဆောက်ပါ။ build command ကို upstream `python/iroha_python/README.md` မှသုံးပြီး native export load ကိုစစ်ဆေးပါ။
+သင့်စီမံကိန်းက Upstream အလုပ်ခွင်ကို တိုက်ရိုက်သုံးစွဲတယ်ဆိုရင် Python dependencies တွေကို run မလုပ်ခင်မှာ native extension ကို build လုပ်ပေးပါ။ `Instruction`, `TransactionDraft`, လက်မှတ်ထိုးခြင်း၊ crypto, SoraFS ဒေသခံ အကူအညီပေးသူတွေ၊ GPU build command ကို Upstream ကေနသံုးပါ။ `python/iroha_python/README.md`, အဲဒီနောက်မှာ ဒေသတွင်းတင်ပို့မှုအတွက် ဝန်ဆောင်မှုရှိတာကို စစ်ဆေးပါ။
 
 ```bash
 cd python/iroha_python
@@ -45,7 +46,7 @@ PY
 
 ## အမြန်စတင်ခြင်း {#quickstart}
 
-အများပြည်သူ ဖတ်နိုင်သော Taira အဆုံးမှတ်များဖြင့် စတင်ပါ-
+အများပြည်သူ ဖတ်နိုင်သော Taira API အကန့်အသတ်မှတ်ချက်များဖြင့် စတင်ပါ။
 
 ```python
 from iroha_python import (
@@ -65,21 +66,29 @@ for account in accounts.items:
 
 ## မျှဝေထားသော Setup {#shared-setup}
 
-အသွင်ပြောင်းတဲ့ Template တွေအတွက် ဒီ Setup ကိုသုံးပါ။ တင်မပေးခင် နေရာထိန်းထားသူတိုင်းကို Taira အာဏာ၊ ပုဂ္ဂလိက သော့၊ Token နဲ့ asset/account IDs ဖြင့် အစားထိုးလိုက်ပါ။
+အသွင်ပြောင်းတဲ့ Template တွေအတွက် ဒီ Setup ကိုသုံးပါ။ တင်မပေးခင် နေရာထိန်းထားသူတိုင်းကို Taira ခွင့်ပြုချက် အရင်းအမြစ်၊ ပုဂ္ဂလိက သော့၊ Token နဲ့ ပိုင်ဆိုင်မှု/စာရင်း ID များနဲ့ အစားထိုးလိုက်ပါ။
 
-`authority` သည် ငွေပေးချေမှုကို လက်မှတ်ရေးထိုးသည့် အကောင့်ဖြစ်သည်။ `private_key` သည် ထိုစာရင်းနှင့် ကိုက်ညီရမည်၊ `CHAIN_ID` သည် ရည်မှန်းချက်ကွန်ရက် နှင့် ကိုက်ညီရမည်။ `TX_METADATA` တွင်ကွန်ရက်မှမျှော်လင့်ထားသော အခကြေးနယ်များ ပါဝင်ရမည်။ အောက်ပါနေရာပိုင်ရှင်များသည် ကြံစည်အငြင်းမဲ့ဖြစ်သည် ဖြစ်၍ မတော်တဆ တင်သွင်းခြင်းမရှိပါ။
+`authority` သည် ငွေပေးချေမှုကို လက်မှတ်ရေးထိုးသည့်စာရင်းဖြစ်ပြီး `private_key` သည် ၎င်းနှင့် ကိုက်ညီရမည်ဖြစ်သည်။ ငွေကြေးမှုသည် Taira ၏ တိကျသော ဇစ်မြစ်မှ ရယူထားသော `NetworkId` သို့ ချိတ်ဆက်ခြင်းရှိသည်။ လိုင်း UUID သည် ငွေကြေးဆောင်ရွက်မှု တံဆိပ်တစ်ခုဖြစ်သည်၊ ငွေကြေးပူးပေါင်းဆောင်ရွက်မှု အမည်မဟုတ်ပါ။ အခွန်များတွင် လျှောက်ထားမှု metadata နှင့်အဆက်အသွယ်မရှိဘဲ ရိုက်နှိပ်ထားသော ငွေပေးချေမှုရည်ရွယ်ချက်နှင့် တိကျသော တိုက်ရိုက် quote ကိုအသုံးပြုသည်။ အောက်ပါစာရင်းနှင့် အဓိကနေရာပိုင်ရှင်များသည် ရည်ရွယ်ချက်အရ မတည်ငြိမ်ဖြစ်သည်၊ ထို့ကြောင့် ကျပန်းတင်သွင်းခြင်းမဟုတ်ပါ။
+
+စာလုံးသားအောက်မှာက လက်ရှိ pinned Taira blockchain genesis identity ပါ။ testnet reset တစ်ခုက ဒါကိုပြောင်းလဲနိုင်တယ်။ ဒီတော့ လက်မှတ်ထိုးထားတဲ့ deployment profile ကနေ update လုပ်ပြီး UUID ချိတ်ဆက်မှုကနေ ဘယ်တော့မှ မဆုံးဖြတ်ပါ။
 
 ```python
 from iroha_python import (
     Ed25519KeyPair,
     Instruction,
+    LocalSigningContext,
+    NetworkId,
+    ToriiClient,
+    ToriiCanonicalRequestAuth,
     TransactionConfig,
     TransactionDraft,
-    create_torii_client,
+    authority_fee_payment,
 )
 
 TORII_URL = "https://taira.sora.org"
-CHAIN_ID = "fc56984b-2be7-431d-840e-21514d1883f0"
+TAIRA_NETWORK_ID = NetworkId.parse(
+    "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+)
 AUTH_TOKEN = None
 
 # Replace these placeholders with the real signing keys for your accounts.
@@ -90,68 +99,83 @@ bob_pair = Ed25519KeyPair.from_private_key(bytes.fromhex("<bob-private-key-hex>"
 alice = "<alice-account-id>"
 bob = "<bob-account-id>"
 
+canonical_auth = ToriiCanonicalRequestAuth(
+    network_id=TAIRA_NETWORK_ID.literal,
+    account_id=alice,
+    signer=alice_pair.sign,
+)
+
 ROSE_DEFINITION = "rose#wonderland"
 ROSE_ASSET = "<rose-asset-id>"
 BADGE_NFT = "badge$wonderland"
 
-TX_METADATA = {
-    # Public Taira fee asset. Use the configured XOR asset on your network.
-    "gas_asset_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
-}
+APP_METADATA = {"source": "python-docs"}
+# Torii replaces the empty maxima with an exact, validated live fee quote before
+# anything is signed. The payer remains the transaction authority.
+BASE_FEE_PAYMENT = authority_fee_payment(charge_limits=[])
 
-client = create_torii_client(TORII_URL, auth_token=AUTH_TOKEN)
+client = ToriiClient(
+    TORII_URL,
+    local_signing_context=LocalSigningContext(TAIRA_NETWORK_ID),
+    canonical_request_auth=canonical_auth,
+    auth_token=AUTH_TOKEN,
+)
 
 
 def submit(*instructions):
-    # This is the network boundary: build, sign, submit, and wait for status.
-    return client.build_and_submit_transaction(
-        chain_id=CHAIN_ID,
-        authority=alice,
-        private_key=alice_pair.private_key,
-        instructions=list(instructions),
-        metadata=TX_METADATA,
-        wait=True,
+    draft = TransactionDraft(
+        TransactionConfig(
+            network_id=TAIRA_NETWORK_ID,
+            authority=alice,
+            fee_payment=BASE_FEE_PAYMENT,
+            metadata=APP_METADATA,
+        )
     )
+    draft.extend_instructions(instructions)
+
+    # Freeze one payload, obtain its exact fee limits, and sign that same payload.
+    envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
+    status = client.submit_transaction_envelope_and_wait(envelope)
+    return envelope, fee_quote, status
 ```
 
-`Instruction.*` သည် တည်ဆောက်မှု ညွှန်ကြားချက် သုံးစွဲသူများကိုသာ ခေါ်ဆိုသည်။ `submit()` သည် SDK သည် ငွေပေးချေမှုကို လက်မှတ်ထိုးပြီး Torii သို့ ပို့ပေးပြီး အခြေအနေကို စောင့်ဆိုင်းသည့်နေရာဖြစ်သည်။
+`Instruction.*` သည် တည်ဆောက်မှု ညွှန်ကြားချက် အသုံးဝင်ဝန်ဆောင်မှုများကိုသာ ခေါ်ဆိုသည်။ `submit()` သည် SDK သည်လက်ရှိစရိတ်ဈေးနှုန်းခန့်မှန်းချက်ကိုရယူခြင်း၊ စာရင်းသွင်းထားသော အတိအကျအသုံးဝင်ဝန်ဆောင်မှုကို လက်မှတ်ထိုးခြင်း၊ Torii သို့ပို့ပေးခြင်းနှင့် အခြေအနေကို စောင့်မျှော်ခြင်းဖြစ်သည်။
 
-## အခွန်များနှင့် ဓာတ်ငွေ့ {#fees-and-gas}
+## အခွန်များနှင့် ငွေပေးချေမှု အကုန်အကျများ {#fees-and-gas}
 
-ငွေပေးချေမှုစာရင်းကို ရေးသားရန်အတွက် အခွန် metadata နှင့် ဘဏ္ဍာငွေပေးချေထားသောခွန်အရင်းအမြစ် balance ကိုလိုအပ်သည်။ Taira, အခွန်လက်ဝယ်ကို အများပြည်သူ ရေပိုက်မှ ငွေကြေးထောက်ပံ့ပြီး ငွေပေးချေမှု မီတာဒေတာမှာ ပါဝင်ရမယ်။ `gas_asset_id`. အပေါ် Minamoto, အခကြေးငွေကို အရှိန်နဲ့ ပေးဆပ်ရမယ်။ XOR ပြီးတော့ အရင်းအမြစ် ID အဲဒီကွန်ရက်ရဲ့ ညွှန်ကြားချက်ကနေ လာတာပါ။
+စာရေးခြင်းလုပ်ငန်းများအတွက် `FeePaymentIntent` နှင့် ငွေကြေးထောက်ပံ့မှု အခွန်လက်ကျန်လိုအပ်သည်။ Taira တွင် အများပြည်သူ testnet ထောက်ပံ့မှုဝန်ဆောင်မှုငွေကြေး testnet XOR ကိုပို့ပေးသည်။ Python SDK သည် လက်မှတ်မထိုးထားသော တည်ငြိမ်စာရင်းကို ပို့ပေးသည် Torii သို့ အသုံးဝင် ကုန်ကျစရိတ်ကို တိကျတဲ့ စျေးနှုန်းခန့်မှန်းချက်တစ်ခုအတွက် တင်သွင်းပေးခြင်းသည် ပေးသူ သို့မဟုတ် အသုံးဝင်ကုန်ကျစရိတ်အား အစားထိုးမှုမရှိကြောင်း အတည်ပြုပြီး အဆိုပါ ရည်ရွယ်ချက်ကို လက်မှတ်ထိုးသည်။ ငွေကြေးရွေးချယ်မှုကို ငွေလဲလှယ်မှု မီတာဒေတာထဲ မထည့်ပါ။
 
-Fees metadata တွေဟာ တစ်ဦးချင်း ညွှန်ကြားချက်တွေ မဟုတ်ဘဲ ငွေပေးချေမှုအတွက်ပါ။ `submit()` အကူအညီက ၎င်းတည်ဆောက်တဲ့ ငွေလဲလှယ်မှုတိုင်းမှာ `TX_METADATA` ကို ချိတ်ဆက်ပါတယ်။
+အထက်ပါ `submit()` အကူသည် ငွေပေးချေမှု လက်မှတ်ရေးထိုးသူက ပေးဆပ်ထားသော အကောင့်ရည်ရွယ်ချက်နှင့်စတင်ပြီး လစာသတ်မှတ်ချက်တွေဟာ ရည်ရွယ်ချက်အရအလွတ်ရှိသည်။ `quote_and_sign()` ကလက်မှတ်မထိုးခင် တိုက်ရိုက် quote မှဖြည့်သည်:
 
 ```python
-TX_METADATA = {
-    # Taira expects the fee asset definition in transaction metadata.
-    "gas_asset_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
-}
-
-envelope, status = client.build_and_submit_transaction(
-    chain_id=CHAIN_ID,
-    authority=alice,
-    private_key=alice_pair.private_key,
-    # Fee metadata is attached to the transaction, not the instruction.
-    instructions=[
-        Instruction.set_account_key_value(
-            alice,
-            "python_fee_example",
-            "ready",
-        )
-    ],
-    metadata=TX_METADATA,
-    wait=True,
+draft = TransactionDraft(
+    TransactionConfig(
+        network_id=TAIRA_NETWORK_ID,
+        authority=alice,
+        fee_payment=authority_fee_payment(charge_limits=[]),
+        metadata={"source": "python-fee-example"},
+    )
 )
+draft.add_instruction(
+    Instruction.set_account_key_value(
+        alice,
+        "python_fee_example",
+        "ready",
+    )
+)
+envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
+status = client.submit_transaction_envelope_and_wait(envelope)
+
+for limit in fee_quote["intent"]["value"]["charge_limits"]:
+    print(limit["asset_definition_id"], limit["max_amount"])
 ```
 
-စာပို့ခြင်းမတိုင်မီ အာဏာပိုင်စာရင်းတွင် အခွန်အရင်းအမြစ်များ လုံလောက်စွာရှိကြောင်း သေချာစေရန်။ တိကျသော faucet နှင့် အရင်းအမြစ် ID သည်ကွန်ရက်အတွက် သီးသန့်ဖြစ်သည်၊ ဤသည်မှာ Taira ပုံစံဖြစ်သည်။
+စာသားပို့မပေးခင် ခွင့်ပြုချက်အဓိကစာရင်းမှာ အခွန်အရင်းအမြစ် လုံလောက်စွာရှိကြောင်း သေချာစေပါ။ တိကျတဲ့ testnet ဘဏ္ဍာရေး ၀ န်ဆောင်မှုနှင့် အရင်းအမြစ် ID သည်ကွန်ရက်အတွက် သီးသန့်ဖြစ်သည်၊ ဒါက Taira ပုံစံပါ။
 
 ```python
 FEE_ASSET_DEFINITION = "6TEAJqbb8oEPmLncoNiMRbLEK6tw"
 # The faucet returns the concrete account asset ID to check here.
 FEE_ASSET_ID = "<fee-asset-id-from-faucet-response>"
-TX_METADATA = {"gas_asset_id": FEE_ASSET_DEFINITION}
 
 # Fail before submitting if the signer cannot pay gas.
 fee_assets = client.list_account_assets_typed(
@@ -163,29 +187,28 @@ if not fee_assets.items:
     raise RuntimeError("fund the authority account with the Taira fee asset first")
 ```
 
-ဘိလပ်မြေစစ်ဆေးမှုအတွက် အသုံးပြုရန် ကွန်ကရစ် `asset_id` ကို faucet က ပြန်ပို့ပေးသည်။ `gas_asset_id` metadata field တွင် fee asset definition ID ကိုအသုံးပြုသည်။
+testnet ငွေကြေးထောက်ပံ့မှု ဝန်ဆောင်မှုသည် ဘိလပ်မြေ `asset_id` ကို balance check အတွက်အသုံးပြုရန်ပြန်ပေးသည်။ တိုက်ရိုက် quote ကစရိတ်များ `FEE_ASSET_DEFINITION` ရှိသည်ကိုစစ်ဆေးပါ; ငွေလွှဲပြောင်းမှုတွင် metadata မှတစ်ဆင့် အရင်းအမြစ်ကိုရွေးချယ်ခြင်းမရှိ။
 
-ငွေပေးချေမှု တည်ဆောက်ရာတွင် မြေပုံများကို ပေါင်းစပ်ခြင်းဖြင့် လျှောက်လွှာ metadata များကို fee metadataများမှ သီးခြားထားပါ။
+Application metadata ကတော့ ရွေးချယ်စရာဖြစ်ပြီး အခွန်မရှိတဲ့ semantics ကိုပါ သုံးပါတယ်။
 
 ```python
 APP_METADATA = {"source": "python-docs"}
-# Merge app metadata with required fee metadata before building the draft.
-metadata = {**TX_METADATA, **APP_METADATA}
 
 draft = TransactionDraft(
     TransactionConfig(
-        chain_id=CHAIN_ID,
+        network_id=TAIRA_NETWORK_ID,
         authority=alice,
-        metadata=metadata,
+        fee_payment=BASE_FEE_PAYMENT,
+        metadata=APP_METADATA,
     )
 )
 ```
 
-အကယ်၍ သင်ဟာ အခွန် metadata ကို ချန်ထားပါက၊ မှားယွင်းတဲ့ အခွန်အရင်းအမြစ်ကို သုံးပါက (သို့) ငွေမထောက်ပံ့တဲ့ အကောင့်တစ်ခုနဲ့ လက်မှတ်ထိုးပါက လက်တွေ့ကွန်ရက်ဟာ ညွှန်ကြားချက် အသုံးဝင်မှု ဝန်ဆောင်မှုက အခြားနည်းဖြင့် သက်ရောက်နေတောင်မှ ငွေပေးချေမှုကို ငြင်းပယ်သင့်ပါတယ်။
+ငွေကြေးကောက်ခံမှု ရည်ရွယ်ချက်ကို လျစ်လျူရှုပါက၊ မမျှော်လင့်တဲ့ အရင်းအမြစ်အတွက် အဆိုပြုချက်ကို လက်ခံပါက၊ အဆိုပြုပြီးနောက် အသုံးဝင်ဝန်ဆောင်မှုကို ပြောင်းလဲပါက (သို့) ဘဏ္ဍာငွေမရှိသော အကောင့်ဖြင့် လက်မှတ်ရေးထိုးပါက ငွေပေးချေမှုကို တင်ပြခြင်း မရှိရပါ။
 
-## Taira - စစ်ဆေးထားတဲ့ စာဖတ်ခြင်းသာ ခေါ်ဆိုမှု {#taira-checked-read-only-calls}
+## အမည်မသိ Taira ဖတ်နေသည် {#anonymous-taira-reads}
 
-Taira အများပြည်သူအပေါ် ဒီခေါ်ဆိုချက်တွေကို အောင်မြင်စွာ ပြန်လည်ဖြေကြားခဲ့တယ်။
+ဒီဖုန်းခေါ်ဆိုမှုတွေမှာ Taira လမ်းကြောင်းတွေသုံးပြီး ကက်သလစ်နယ်နိမိတ်မှာ အမည်မသိ စာဖတ်ခွင့်ပြုပါတယ်။
 
 ```python
 client = create_torii_client("https://taira.sora.org")
@@ -197,22 +220,18 @@ parameters = client.request_json("GET", "/v1/parameters", expected_status=(200,)
 # Typed helpers parse pagination and records into dataclasses.
 accounts = client.list_accounts_typed(limit=1)
 domains = client.list_domains_typed(limit=1)
-definitions = client.query_asset_definitions_typed(limit=1)
+definitions = client.list_asset_definitions_typed(limit=1)
 
 # These calls inspect live node subsystems without mutating state.
-time_now = client.get_time_now_typed()
-time_status = client.get_time_status_typed()
-sumeragi = client.get_sumeragi_status_typed()
-connect = client.get_connect_status_typed()
+time_now = client.get_time_now()
 
 print(status["build"]["version"])
-print(parameters["sumeragi"]["block_time_ms"])
+print(parameters["sumeragi"]["block_cadence_ms"])
 print(accounts.total, domains.total, definitions.total)
-print(time_now.now_ms, len(time_status.samples), sumeragi.leader_index)
-print(connect.enabled, connect.sessions_active)
+print(time_now.now_ms)
 ```
 
-လမ်းကြောင်းများ `/v1/status`, အများပြည်သူအချင်းချင်းစာရင်း၊ Sumeragi RBC နမူနာယူခြင်း၊ node admin snapshots များနှင့် Connect app registry administration တို့ကို Taira စစ်ဆေးမှုအတွင်းမှာ သုံးပါ။ `request_json("GET", "/status")` အများပြည်သူ node status သုံးစွဲမှုအတွက် Taira.
+`/v1/time/status` နှင့် `/v1/sumeragi/*` operator point-in-time data view တစ်ခုချင်းစီသည် အသေးစိတ်ကွန်ရက် operator လက်မှတ်ကိုလိုအပ်သော်လည်း ၎င်းတို့အနေအထားမပြောင်းလဲပါ။ အမည်မသိ node အတွက် `request_json("GET", "/status")` ကိုအသုံးပြုပါ။ Connect session status သည် သီးခြားပရိုတိုကောလမ်းကြောင်းတစ်ခုဖြစ်ပြီး ထိုအစည်းအဝေး၏ စီမံခန့်ခွဲမှုလက်မှတ်ကိုလိုအပ်သည်။
 
 ## သင်ကြားချက် ဆောက်လုပ်သူများ {#instruction-builders}
 
@@ -221,25 +240,25 @@ print(connect.enabled, connect.sessions_active)
 Python တန်ဖိုးများကို ပုံမှန်ပြုပြင်ပြီး မတည်ငြိမ်သောပုံစံများတွင် အစောပိုင်းတွင် ကျရှုံးစေသည်။ `Instruction.from_json` ကိုသင်သည် Python အကူမပါသေးသည့် ညွှန်ကြားချက်ကွဲပြားမှုတစ်ခုလိုအပ်သောအခါသာအသုံးပြုပါ။
 
 |သင်ကြားမှု မိသားစု |Python မျက်နှာပြင်|
-| --- | --- |
+| ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 |မှတ်ပုံတင် | `register_account`, `register_asset_definition_numeric`, `register_rwa`, `register_time_trigger`, `register_precommit_trigger`; `register_domain` genesis/bootstrap tooling အတွက်သာ သတ်မှတ်ထားပါသည်။ |
 |မှတ်ပုံတင်ခြင်း မပြုလုပ်ပါ။|`unregister_trigger`; အခြားဗားရှင်းများအတွက် `Instruction.from_json` ကို အသုံးပြုပါ။ |
 |Mint/Burn |`mint_asset_numeric`, `burn_asset_numeric`, `mint_trigger_repetitions`၊ `burn_trigger_repetitions` |
-|လွှဲပြောင်းခြင်း| `transfer_asset_numeric`, `transfer_domain`, `transfer_asset_definition`, `transfer_nft`, `transfer_rwa`, `force_transfer_rwa` |
-|မီတာဒေတာများနှင့် ထိန်းချုပ်မှုများ | `set_account_key_value`, `remove_account_key_value`, `set_rwa_controls`, `set_rwa_key_value`, `remove_rwa_key_value` |
-|RWA သက်တမ်း စက်ဝန်း| `merge_rwas`, `redeem_rwa`, `freeze_rwa`, `unfreeze_rwa`, `hold_rwa`, `release_rwa` |
+|လွှဲပြောင်းခြင်း| `transfer_asset_numeric`, `transfer_domain`, `transfer_asset_definition`, `transfer_nft`, `transfer_rwa`, `force_transfer_rwa`                                                              |
+|မီတာဒေတာများနှင့် ထိန်းချုပ်မှုများ |`set_account_key_value`, `remove_account_key_value`, `set_rwa_controls`, `set_rwa_key_value`, `remove_rwa_key_value` |
+|RWA သက်တမ်း စက်ဝန်း| `merge_rwas`, `redeem_rwa`, `freeze_rwa`, `unfreeze_rwa`, `hold_rwa`, `release_rwa`                                                                                                         |
 |ExecuteTrigger |`execute_trigger` |
-|Repo/ settlement extension များ|`repo_initiate`, `repo_unwind`, `repo_margin_call`, `settlement_dvp`, `settlement_pvp` |
-|Native asset lock တွေ| `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, `expire_asset_lock`, နောက်ပြီး ဖောက်သည် `*_and_wait` အကူအညီပေးသူများ |
-|Grant/Revocate, SetParameter, Log, Custom, Upgrade နဲ့ ပုံမှန်မဟုတ်တဲ့ Register/Unregister အမျိုးအစားတွေ | `Instruction.from_json` ဒါမှမဟုတ် `TransactionBuilder.add_instruction_json` Canonical နဲ့ `InstructionBox` JSON |
+|ပြန်လည်ထူထောင်ရေး/နေထိုင်မှုတိုးချဲ့ခြင်း |`repo_initiate`, `repo_unwind`, `repo_margin_call`, `settlement_dvp`, `settlement_pvp` |
+|Native asset lock တွေ| `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, `expire_asset_lock`, နောက်ပြီး ဖောက်သည် `*_and_wait` အကူအညီပေးသူများ                                                                        |
+|Grant/Revocate, SetParameter, Log, Custom, Upgrade နဲ့ ပုံမှန်မဟုတ်တဲ့ Register/Unregister ဗားရှင်းတွေ | `Instruction.from_json` ဒါမှမဟုတ် `TransactionBuilder.add_instruction_json` တစ်ခုတည်းသော ပရိုတိုကောလံနဲ့ `InstructionBox` JSON                                                                                   |
 
 အာမခံပုံစံအခြေခံငွေပေးချေမှုအတွက် ကြည့်ပါ။ [Native Asset Escrow](/my/blockchain/escrow.md#python-asset-locks). Python လက်ရှိတွင် ပထမတန်းစား အကူအညီပေးသူများကို ယေဘုယျအရင်းအမြစ်ပိတ်ခြင်းများအတွက် ဖွင့်လှစ်ထားသည်; စျေးကွက်နှင့် အမည်မသိ escrow အကူအညီ ပေးသူများသည် ပထမတန်းစားမဟုတ်ပါ။ Python နည်းစနစ်တွေ ရှိသေးတယ်
 
 ### ဒိုမီနန်းတွေ ဖန်တီးပြီး အကောင့်တွေနဲ့ အရင်းအမြစ်တွေကို မှတ်ပုံတင်ပါ။ {#set-up-domains-then-register-accounts-and-assets}
 
-သာမန်ဒိုမင်ဖန်တီးမှုသည်ကြေညာချက် alias စီမံခန့်ခွဲသူမှတစ်ဆင့်ဖြစ်သည်၊ ထို့ကြောင့် SNS ငှားရမ်းစာချုပ်, ပိုင်ရှင်စွမ်းဆောင်ရည်များ, အဆိုပြုချက်ကာကွယ်ရေးနှင့်ဒိုမိုင်းအခြေအနေကို အတူတကွစစ်ဆေးသည်။ သင့်ရဲ့ SDK သို့မဟုတ် Onboarding ဝန်ဆောင်မှုနှင့်အတူ လျှို့ဝှက်မဲ့ `AliasSetupPlanRequestV1` ရည်ရွယ်ချက်ကိုဖန်တီးပြီးနောက် `iroha app alias setup plan` နှင့် `iroha app alias setup apply` ကိုအသုံးပြုပါ။ `Instruction.register_domain` ကို application transaction တစ်ခုမှ မတင်ပါနဲ့၊ အဲဒီ builder က genesis/bootstrap tooling အတွက်ပဲ ကျန်နေပါသေးတယ်။
+သာမန်ဒိုမင်ဖန်တီးမှုသည် ကြေညာချက် alias စီမံကိန်းမှတစ်ဆင့်သွားသည် SNS ငှားရမ်းစာချုပ်၊ ပိုင်ရှင်စွမ်းဆောင်ရည်များ၊ အခွန်-စျေးအတည်ပြုစောင့်ရှောက်ရေးနှင့်ဒိုမိုင်းအခြေအနေကို အတူတကွစစ်ဆေးခြင်း။ SDK သို့မဟုတ် Onboarding ဝန်ဆောင်မှုဖြင့် လျှို့ဝှက်ချက်မဲ့ `AliasSetupPlanRequestV1` ရည်ရွယ်ချက်ကိုဖန်တီးပြီးနောက် `iroha app alias setup plan` နှင့် `iroha app alias setup apply` ကိုအသုံးပြုပါ။ လျှောက်လွှာလုပ်ငန်းစဉ်တစ်ခုမှ `Instruction.register_domain` ကိုမတင်ပါနဲ့။ ဒီတည်ဆောက်သူသည် genesis / bootstrap tooling အတွက်ကျန်ရစ်သည်။
 
-Domain setup plan က commit လုပ်ပြီးနောက် domain ပိုင်ဆိုင်တဲ့ အရာဝတ္ထုတွေကို မှတ်ပုံတင်ပါ။ Taira လို မျှဝေထားတဲ့ ကွန်ယက်မှာ သင့်အား သတ်မှတ်ထားတဲ့ domain နဲ့ account namespace ကို အသုံးပြုပါ။
+Domain setup plan ပြီးဆုံးပြီးနောက် domain ပိုင်ဆိုင်တဲ့ အရာဝတ္ထုတွေကို မှတ်ပုံတင်ပါ။ Taira လို မျှဝေထားတဲ့ ကွန်ယက်မှာ သင့်အတွက် သတ်မှတ်ထားတဲ့ ဒိုမင်နဲ့ အကောင့် နာမည်နေရာကို သုံးပါ။
 
 ```python
 # The domain and its SNS lease already exist before this transaction.
@@ -259,9 +278,9 @@ submit(
 
 `mintable` လက်ခံသည် `Infinitely`, `Once`, `Not`, ဒါမှမဟုတ် `Limited(n)` ဒေတာမော်ဒယ်က လက်ခံတဲ့ တန်ဖိုးများ `scale` ကန့်သတ်ချက်မရှိတဲ့ ကိန်းဂဏန်းအရင်းအမြစ်အတွက်ပါ။
 
-### ငွေကြေးပစ္စည်းများ၊ မီးရှို့ခြင်း၊ လွှဲပြောင်းခြင်း {#mint-burn-and-transfer-assets}
+### အရင်းအမြစ်များကို ထုတ်ပေးခြင်း၊ ဖျက်ဆီးခြင်းနှင့် လွှဲပြောင်းခြင်း {#mint-burn-and-transfer-assets}
 
-ဒီဖုန်းခေါ်ဆိုမှုတွေမှာ ရှိနေတဲ့ အရင်းအမြစ်ကို သုံးပါတယ်။ ID. အရင်းအမြစ် အဓိပ္ပါယ်ဖွင့်ဆိုမှုကို ပထမဆုံး မှတ်ပုံတင်ပါ၊ ပြီးရင် ကွန်ကရစ်အရင်းအမြစ် တည်ဆောက်ပါ။ ID အရင်းအမြစ်ပိုင်ဆိုင်တဲ့ အကောင့်အတွက်ပါ။
+ဒီဖုန်းခေါ်ဆိုမှုတွေမှာ လက်ရှိလက်ဝယ် ID ကိုသုံးပါတယ်။ အရင်းအမြစ်အဓိပ္ပါယ်ဖွင့်ဆိုချက်ကို ပထမဆုံး မှတ်ပုံတင်ပြီး အဲဒီနောက်မှာ လက်ဝယ်ပိုင်ဆိုင်တဲ့ အကောင့်အတွက် တိကျတဲ့ လက်ဝယ် ID တည်ဆောက်ပါ။
 
 ```python
 # Increase the account's asset balance.
@@ -276,7 +295,7 @@ submit(Instruction.burn_asset_numeric(ROSE_ASSET, "10.00"))
 
 ### လွှဲပြောင်းပိုင်ဆိုင်မှု {#transfer-ownership}
 
-ပိုင်ဆိုင်မှုလွှဲပြောင်းခြင်း domain ကိုထိန်းချုပ်သူ၊ အရင်းအမြစ်သတ်မှတ်ချက် (သို့) NFT ပြောင်းလဲပါ။ လက်ရှိပိုင်ရှင်ကို ငွေပေးချေမှုအာဏာအဖြစ် အသုံးပြုပါ။
+ပိုင်ဆိုင်မှုလွှဲပြောင်းခြင်းသည် ဒိုမင်ကိုထိန်းချုပ်သူ၊ အရင်းအမြစ်သတ်မှတ်ချက် (သို့မဟုတ်) NFT ကိုပြောင်းလဲစေသည်။ လက်ရှိပိုင်ရှင်ကို ငွေပေးချေခွင့်လိုင်စင်အဖြစ် အသုံးပြုပါ။
 
 ```python
 # The first argument is the current owner; the last is the new owner.
@@ -287,7 +306,7 @@ submit(Instruction.transfer_nft(alice, BADGE_NFT, bob))
 
 ### Metadata ကို Set နှင့် Remove လုပ်ပါ {#set-and-remove-metadata}
 
-metadata values တွေဟာ JSON- serializable ဖြစ်ဖို့လိုပါတယ်။ `TransactionDraft` ကိုသုံးတဲ့အခါ `TransactionConfig` ထဲက authority က default target account ဖြစ်လာတယ်။
+metadata values တွေဟာ JSON- serializable ဖြစ်ဖို့လိုပါတယ်။ `TransactionDraft` ကိုသုံးတဲ့အခါမှာ `TransactionConfig` ထဲက authorization principal က default target account ဖြစ်လာတယ်။
 
 ```python
 # Values are encoded as JSON metadata under the target account.
@@ -303,11 +322,16 @@ submit(
 submit(Instruction.remove_account_key_value(alice, "profile"))
 ```
 
-အဆင့်မြင့် အကူအညီပေးရေး မူကြမ်းက ငွေလဲလှယ်မှု အာဏာပိုင်ကို အလိုအလျောက် ပစ်မှတ်ထားတယ်။
+အဆင့်မြင့် အကူအညီပေးရေး မူကြမ်းက ငွေလဲလှယ်ခွင့်ပြုမှု အရေအတွက်ကို အလိုအလျောက် ပစ်မှတ်ထားတယ်။
 
 ```python
 draft = TransactionDraft(
-    TransactionConfig(chain_id=CHAIN_ID, authority=alice, metadata=TX_METADATA)
+    TransactionConfig(
+        network_id=TAIRA_NETWORK_ID,
+        authority=alice,
+        fee_payment=BASE_FEE_PAYMENT,
+        metadata=APP_METADATA,
+    )
 )
 # With a draft, account metadata methods default to the draft authority.
 draft.set_account_key_value("nickname", "Queen Alice")
@@ -316,11 +340,16 @@ draft.remove_account_key_value("nickname")
 
 ### လက်တွေ့ကမ္ဘာဆိုင်ရာ အရင်းအမြစ်များ {#real-world-assets}
 
-RWA အကူအညီပေးသူများသည် အရင်းအမြစ်ဆိုင်ရာ metadata၊ provenance နှင့် controller policy များအတွက် JSON-serializable payloads ကိုအသုံးပြုကြသည်။ `register_rwa` သည် `id` သို့မဟုတ် `owner` ကိုလက်မခံပါ။ runtime က `RwaId` ကိုဖန်တီးပြီး ငွေလွှဲပြောင်းမှုအာဏာပိုင်သည် မူလပိုင်ရှင်ဖြစ်လာသည်။
+RWA အကူအညီပေးသူများသည် asset-specific metadata၊ provenance နှင့် controller policy များအတွက် JSON - serializable payloads ကိုအသုံးပြုသည်။ `register_rwa` သည် `id` သို့မဟုတ် `owner` ကိုလက်မခံပါ။ ဆော့ဝဲ အကောင်အထည်ဖော်မှု ပတ်ဝန်းကျင်က `RwaId` ကို ဖန်တီးပြီး ငွေပေးချေခွင့်ပြုချက် အရင်းအမြစ်ဟာ မူလပိုင်ရှင် ဖြစ်လာတယ်။
 
 ```python
 draft = TransactionDraft(
-    TransactionConfig(chain_id=CHAIN_ID, authority=alice, metadata=TX_METADATA)
+    TransactionConfig(
+        network_id=TAIRA_NETWORK_ID,
+        authority=alice,
+        fee_payment=BASE_FEE_PAYMENT,
+        metadata=APP_METADATA,
+    )
 )
 
 # Register the lot in a domain. Store business identifiers in primary_reference
@@ -349,7 +378,7 @@ draft.register_rwa(
 )
 ```
 
-မှတ်ပုံတင် ငွေပေးချေမှု ကတိပြုပြီးနောက် အသုံးပြုခြင်း `FindRwas`, `/v1/rwas`, တစ် RWA ဖြစ်ရပ် (သို့) ရှာဖွေရေးလမ်းကြောင်းကိုထုတ်လုပ်ထားသော ID:
+`FindRwas`, `/v1/rwas`, RWA အဖြစ်အပျက် (သို့) ဖန်တီးထားတဲ့ ID ကိုရှာဖွေဖို့ သတ်မှတ်ထားသော Explorer လမ်းကြောင်းကို အသုံးပြုပါ။
 
 ```python
 page = client.list_rwas_typed(limit=20, offset=0)
@@ -358,7 +387,7 @@ for lot in page.items:
     print(lot.id)
 ```
 
-နောက်ဆက်တွဲလုပ်ငန်းစဉ်များတွင် ထုတ်လုပ်သော `hash$domain` ID ကို အသုံးပြုပါ-
+နောက်ဆက်တွဲလုပ်ငန်းများတွင် `hash$domain` ID ကို အသုံးပြုပါ-
 
 ```python
 registered_rwa_id = (
@@ -367,7 +396,12 @@ registered_rwa_id = (
 )
 
 draft = TransactionDraft(
-    TransactionConfig(chain_id=CHAIN_ID, authority=alice, metadata=TX_METADATA)
+    TransactionConfig(
+        network_id=TAIRA_NETWORK_ID,
+        authority=alice,
+        fee_payment=BASE_FEE_PAYMENT,
+        metadata=APP_METADATA,
+    )
 )
 
 # Transfer, hold, release, freeze, and redeem model the lot lifecycle.
@@ -475,7 +509,7 @@ details = client.get_trigger_typed("precommit_reward")
 
 Trigger inventory calls တွေက trigger record တွေကို ဖတ်ဖို့ (သို့) စစ်ဆေးဖို့ပဲဖြစ်ပါတယ်။ မှတ်ပုံတင်ခြင်း၊ လုပ်ဆောင်ခြင်း၊ ထပ်မံပြောင်းလဲခြင်းနဲ့ မမှတ်ပုံတင်ခြင်းတို့ဟာ အပြောင်းအလဲဖြစ်နေတဲ့ လုပ်ငန်းတွေပါ။
 
-### ပြန်လည်ထူထောင်ရေးနှင့် ငွေပေးချေမှု ညွှန်ကြားချက်များ {#repo-and-settlement-instructions}
+### Repo နှင့် ငွေရေးကြေးဖလှယ်မှု ဖြေရှင်းနည်းညွှန်ကြားချက်များ {#repo-and-settlement-instructions}
 
 Repo နှင့် နှစ်ဖက်ဖြေရှင်းရေး အကူအညီပေးသူများသည် လက်လုပ်လုပ် Norito အသုံးဝင်ဝန်ဆောင်မှုများမပါဘဲ ဒေသအလိုက် သီးခြားညွှန်ကြားချက် ဗားယန်းများကိုထည့်သွင်းခြင်း:
 
@@ -491,11 +525,12 @@ from iroha_python import (
 )
 
 config = TransactionConfig(
-    chain_id=CHAIN_ID,
+    network_id=TAIRA_NETWORK_ID,
     authority=alice,
+    fee_payment=BASE_FEE_PAYMENT,
     # Keep repo and settlement examples bounded by a short TTL.
     ttl_ms=120_000,
-    metadata=TX_METADATA,
+    metadata=APP_METADATA,
 )
 draft = TransactionDraft(config)
 
@@ -520,14 +555,8 @@ draft.repo_initiate(
     governance=governance,
 )
 draft.repo_margin_call("daily_repo")
-draft.repo_unwind(
-    agreement_id="daily_repo",
-    initiator=alice,
-    counterparty=bob,
-    cash_leg=cash,
-    collateral_leg=collateral,
-    settlement_timestamp_ms=1_704_086_400_000,
-)
+# Unwind uses the immutable counterparties, legs, and maturity stored on-chain.
+draft.repo_unwind("daily_repo")
 
 # DVP/PVP settlement plans encode ordering and atomicity for both legs.
 delivery = SettlementLeg(
@@ -561,16 +590,16 @@ draft.settlement_pvp(
     counter_leg=delivery,
 )
 
-envelope = draft.sign_with_keypair(alice_pair)
+envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
 ### JSON Escape Hatch {#json-escape-hatch}
 
-(က) Python အကူအညီမပေးသေးဘူး၊ ကန်နီကလစ် ဒေတာပုံစံကို ပေးသွင်းပါ။ `InstructionBox` JSON သို့ `Instruction.from_json` (သို့) တိုက်ရိုက် `TransactionBuilder.add_instruction_json`. ဒါက အကြံပြုတဲ့ လမ်းကြောင်းပါ။ `Grant`, `Revoke`, `SetParameter`, `Log`, `Custom`, `Upgrade`, peer/role/NFT မှတ်ပုံတင်ခြင်းနှင့် non-trigger unregister variant တွေကို ဒီအကူအညီတွေကို ရိုက်မသွင်းခင်အထိ။
+(က) Python အကူအညီမရဘူးဆိုပါတော့ Single Protocol Standard Data Model ကို feed လုပ်ပေးပါ။ `InstructionBox` JSON သို့ `Instruction.from_json`. ဒါက အကြံပြုတဲ့ လမ်းကြောင်းပါ။ `Grant`, `Revoke`, `SetParameter`, `Log`, `Custom`, `Upgrade`, peer/role/NFT မှတ်ပုံတင်ခြင်းနှင့် non-trigger unregister variant တွေကို ဒီအကူအညီတွေကို ရိုက်မသွင်းခင်အထိ။
 
 ```python
-from iroha_python import Instruction, TransactionBuilder
+from iroha_python import Instruction
 
 # Copy this payload from Rust/CLI tooling or from a pinned data-model schema.
 instruction_box_json = """
@@ -583,16 +612,11 @@ instruction_box_json = """
 
 instruction = Instruction.from_json(instruction_box_json)
 submit(instruction)
-
-# Use TransactionBuilder when you need lower-level control than TransactionDraft.
-builder = TransactionBuilder(CHAIN_ID, alice)
-builder.set_metadata(TX_METADATA)
-builder.add_instruction_json(instruction_box_json)
-envelope = builder.sign(alice_pair.private_key)
-client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-ထုတ်ပေးတဲ့ (သို့) မရှင်းလင်းတဲ့ ညွှန်ကြားချက်များအတွက် ပြင်ဆင်ပစ္စည်းများကို သိုလှောင်မထားမီ JSON မှတစ်ဆင့် ပြန်သွားရန်:
+လက်မှတ်ထိုးခြင်းမတိုင်မီ စာရင်းပေးသွင်းမှု မပြောင်းလဲနိုင်သည့် တိကျသော `NetworkId`၊ အခွန်ပေးချေမှုရည်ရွယ်ချက်နှင့်စာရင်းကို ထိန်းသိမ်းထားသည်။ တိုက်ရိုက် `TransactionBuilder` အသုံးပြုရန်အတွက် တူညီသောတန်ဖိုးများအပြင် တိုက်ရိုက်စာရင်းပေးသွင်းမှုကို ရှင်းလင်းစွာလက်ခံရန် လိုအပ်သည်၊ ထို့ကြောင့် လျှောက်လွှာကုဒ်အတွက် ဖြတ်လမ်းမဟုတ်ပါ။
+
+စမ်းသပ်မှုလက်ရာများကို သိုလှောင်ရန်မတိုင်မီ JSON မှတစ်ဆင့် ပြန်လည်သွားလာခြင်း သို့မဟုတ် မထင်ရှားသော ညွှန်ကြားချက်များအတွက်:
 
 ```python
 # Round trips are useful for validating fixtures generated by another tool.
@@ -607,35 +631,38 @@ print(same_instruction.as_dict())
 
 ```python
 config = TransactionConfig(
-    chain_id=CHAIN_ID,
+    network_id=TAIRA_NETWORK_ID,
     authority=alice,
+    fee_payment=BASE_FEE_PAYMENT,
     # TTL and nonce are transaction-level properties shared by all instructions.
     ttl_ms=120_000,
     nonce=1,
-    metadata={**TX_METADATA, "source": "python-docs"},
+    metadata=APP_METADATA,
 )
 
 draft = TransactionDraft(config)
 # Draft methods append instructions but do not submit anything yet. Domain
 # setup is a separate alias-planner flow and has already committed here.
 draft.register_account(bob, metadata={"role": "user"})
-draft.register_asset_definition_numeric(
+draft.register_asset_definition(
     ROSE_DEFINITION,
-    owner=alice,
+    owning_domain=None,
+    balance_scope_policy="Global",
+    name="Rose",
     scale=2,
     mintable="Infinitely",
 )
-draft.mint_asset_numeric(ROSE_ASSET, "100")
-draft.transfer_asset_numeric(ROSE_ASSET, "25", destination=bob)
+draft.mint_asset_quantity(ROSE_ASSET, "100")
+draft.transfer_asset_quantity(ROSE_ASSET, "25", bob)
 
-# Signing freezes the draft into an envelope ready for Torii.
-envelope = draft.sign_with_keypair(alice_pair)
+# Quoting freezes the draft, validates exact fee limits, and signs that payload.
+envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
 receipt = client.submit_transaction_envelope(envelope)
 status = client.wait_for_transaction_status(envelope.hash_hex(), timeout=30)
 print(receipt, status)
 ```
 
-စစ်ဆေးခြင်း၊ စာရင်းစစ်ဆေးခြင်း သို့မဟုတ် ငွေကြေးဝယ်လွှာပေးပို့မှုအတွက် သတ်မှတ်ချက်ထုတ်ပြန်ချက်များ:
+စစ်ဆေးခြင်း၊ စာရင်းစစ်ဆေးခြင်း သို့မဟုတ် ငွေကြေးဝယ်လွှာပေးပို့မှုအတွက် သတ်မှတ်ချက်ဆိုင်ရာ နည်းပညာထုတ်ပြန်ချက်ကို တင်ပို့ပါ
 
 ```python
 import json
@@ -651,7 +678,7 @@ Path("transaction_manifest.json").write_text(
 )
 ```
 
-လက်မှတ်မထိုးခင် လမ်းကြောင်းအတွင်းက ကိုယ်ရေးကိုယ်တာ လုံခြုံမှု အတည်ပြုချက်ကို ချိတ်ဆက်ပေးပါ
+အကောင်အထည်ဖော်ရေးလမ်းကြောင်းက တောင်းဆိုတဲ့အခါ လက်မှတ်ထိုးမတိုင်ခင် အကောင်အ ထည်ဖော်ရေး လမ်းကြောင်းရဲ့ ပိုင်ဆိုင်မှု သက်သေခံကို ချိတ်ဆက်ပါ။
 
 ```python
 # Attach the proof before signing so it is covered by the transaction hash.
@@ -659,12 +686,12 @@ draft.add_lane_privacy_merkle_proof(
     commitment_id=7,
     leaf=bytes.fromhex("aa" * 32),
     leaf_index=3,
-    audit_path=[bytes.fromhex("bb" * 32), None, bytes.fromhex("cc" * 32)],
+    audit_path=[bytes.fromhex("bb" * 32), bytes.fromhex("cc" * 32)],
     proof_backend="halo2/ipa",
     proof_bytes=b"...proof bytes...",
-    verifying_key_bytes=b"...verifying key bytes...",
+    verifying_key_name="lane_privacy_vk",
 )
-envelope = draft.sign_with_keypair(alice_pair)
+envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
 ```
 
 ## မေးခွန်းများ {#queries}
@@ -678,19 +705,26 @@ for account in accounts.items:
     print(account.id, account.metadata)
 
 domains = client.list_domains_typed(limit=10)
-definitions = client.query_asset_definitions_typed(limit=10)
+definitions = client.list_asset_definitions_typed(limit=10)
 print(domains.total, definitions.total)
 ```
 
-Torii အပြီးသတ်မှတ်ချက်တစ်ခုမှာ ရိုက်နှိပ်ထားတဲ့ ပုံးမပါသေးတဲ့အခါ အထွေထွေတောင်းဆိုမှု အကူအညီတွေကို အသုံးပြုပါ။
+Torii API အပြီးသတ်မှတ်ချက်မှာ software adapter ကို ရိုက်နှိပ်မထားသေးတဲ့အခါ generic request helpers ကိုသုံးပါ။
 
 ```python
+from urllib.request import Request, urlopen
+
 # Drop to raw JSON when you need an endpoint before a typed helper exists.
 payload = client.request_json("GET", "/v1/parameters", expected_status=(200,))
-metrics = client.get_metrics(as_text=True)
+
+# Prometheus exposition is served at `/metrics` when telemetry is `extended`
+# or `full`; it is text, not a `/v1` JSON resource.
+request = Request(f"{TORII_URL}/metrics", headers={"Accept": "text/plain"})
+with urlopen(request, timeout=5) as response:
+    metrics = response.read().decode("utf-8")
 ```
 
-Account inventory အကူအညီပေးသူများအတွက် Account ID ကို SDK ဒါက normalizer ပါ။ Canonical ကိုသုံးပါ။ I105 အကောင့် IDs (သို့) on-chain aliases များ; block explorer သို့မဟုတ် raw endpoint တစ်ခုက ပြန်ပို့ရင် ID အဲဒီ SDK ငြင်းပယ်တယ်ဆိုတာက Canonical account တစ်ခုကို ဖြေရှင်းဖို့ပါ။ ID ဒီကူညီပေးသူတွေကို မခေါ်ခင်မှာ-
+Account inventory assistants များအတွက် SDK ၏ normalizer ကလက်ခံထားသော account ID ကိုလိုအပ်သည်။ Single protocol-standard I105 account ID များ သို့မဟုတ် on-chain alias များကိုအသုံးပြုပါ။ Block explorer (သို့) raw API endpoint တစ်ခုက SDK က ပယ်ချလိုက်တဲ့ ID ကိုပြန်ပို့ရင် ဒီကူညီသူတွေကို ဖုန်းမခေါ်ခင်မှာ single protocol-standard account ID အဖြစ်ဖြေရှင်းပါ။
 
 ```python
 # These helpers expect a canonical account ID or an alias the SDK can normalize.
@@ -703,10 +737,10 @@ print(len(assets.items), len(transactions.items), len(permissions.items))
 
 ## ဖြစ်ရပ်များ {#events}
 
-Streaming helpers က JSON payload တွေကို အလိုအလျောက် decode လုပ်ပေးတယ်။ SSE event name, id, retry hint နဲ့ raw payload လိုတဲ့အခါ pass `with_metadata=True` ကိုနှိပ်ပါ။ နောက်ဆုံး event ID ကို ထိန်းသိမ်းဖို့ `EventCursor` နဲ့ streams တွေကိုတွဲပါ။ ဒီဥပမာတွေဟာ တိုက်ရိုက်ဖြစ်ရပ်တွေ စောင့်နေတော့ သက်ဆိုင်ရာ ဖြစ်ရပ်စီးကြောင်းကို ဖွင့်ပြီး တက်ကြွတဲ့ node တစ်ခုနဲ့ ပြေးပါ။
+Streaming helpers က JSON payload တွေကို အလိုအလျောက် decode လုပ်ပေးပါတယ်။ SSE event name, id, retry hint နဲ့ raw payload လိုတဲ့အခါ pass `with_metadata=True` ကို Pass လုပ်ပါ။ Single protocol-standard `/v1/events/sse` feed ဟာ live only ပါ။ ပြန်လည်ဖြန့်ဝေခြင်း ID ကိုမထုတ်ပေးဘဲ ပြန်လည်ဖြန့်ဝေခြင်း မှတ်တမ်းကို မသိမ်းဆည်းတော့တာမို့လို့ ဒီကူညီသူတွေဟာ ညွှန်ပြချက် (သို့) ငြင်းခုံမှုကို ပြန်လည်စတင်ခြင်းမရှိပါဘူး။ ပြန်လည်ဆက်သွယ်မှုတစ်ခုက ၀ ယ်ယူစာရင်းအသစ်တစ်ခုကို စတင်ပြီး ကွာဟချက်ရှိနိုင်သည်။ `/v1/blocks/stream` ကိုအသိအမှတ်ပြုထားတဲ့ အမြင့်ကနေ blockchain ledger သမိုင်းတစ်ခုလုံးကိုလိုအပ်တဲ့အခါ အသုံးပြုပါ။ ဒီဥပမာတွေဟာ တိုက်ရိုက်ဖြစ်ရပ်တွေ စောင့်နေတော့ စီးကြောင်းဖွင့်ပြီး တက်ကြွတဲ့ node တစ်ခုနဲ့ ပြသပါ။
 
 ```python
-from iroha_python import DataEventFilter, EventCursor
+from iroha_python import DataEventFilter, SseStreamError
 
 # Narrow the stream to proof events with the expected backend and proof hash.
 proof_filter = DataEventFilter.proof(
@@ -714,18 +748,14 @@ proof_filter = DataEventFilter.proof(
     proof_hash_hex="deadbeef" * 8,
 )
 
-# Persist the latest SSE id so a reconnect can resume from the same point.
-cursor = EventCursor()
-for event in client.stream_events(
-    filter=proof_filter,
-    cursor=cursor,
-    resume=True,
-    with_metadata=True,
-):
-    print(event.id, event.event, event.data)
-    break
+try:
+    for event in client.stream_events(filter=proof_filter, with_metadata=True):
+        print(event.id, event.event, event.data)
+        break
+except SseStreamError as error:
+    print(error.code, error.dropped_messages, error.replay_available)
 
-for event in client.stream_trigger_events(trigger_id="hourly_reward", resume=True):
+for event in client.stream_trigger_events(trigger_id="hourly_reward"):
     print(event)
     break
 
@@ -766,7 +796,7 @@ print(confidential.as_hex())
 print(hash_blake2b_32(b"payload").hex())
 ```
 
-`supported_crypto_algorithms()` ကိုသုံးပြီး သင့်ဘီးကဘာကိုထောက်ပံ့တယ်ဆိုတာကြည့်ပါ။ ယေဘုယျကူညီသူတွေက ကန်နီကန်အယ်လ်ဂိုရစ်သမ် တံဆိပ်တွေကိုသုံးပြီး Ed25519, secp256k1, ML-DSA, GOST, BLS နဲ့ SM2 တို့အတွက်အလုပ်လုပ်တယ်။ ဒီအယ်လ်ဂျော်ရီသမ်တွေကိုစုစည်းတဲ့အခါမှာ:
+`supported_crypto_algorithms()` ကိုသုံးပြီး သင့်ဘီးကဘာကိုထောက်ပံ့တယ်ဆိုတာကြည့်ပါ။ အထွေထွေကူညီသူတွေဟာ Single Protocol Standard Algorithm labels တွေကိုသုံးပြီး Ed25519, secp256k1, ML-DSA, GOST, BLS နဲ့ SM2 တို့အတွက်အလုပ်လုပ်တယ်။
 
 ```python
 from iroha_python import (
@@ -822,7 +852,7 @@ for algorithm in supported_crypto_algorithms():
     assert restored == keypair
 ```
 
-### တရုတ် SM လျှို့ဝှက်ရေး {#chinese-sm-cryptography}
+### တရုတ် SM လျှို့ဝှက်ချက် {#chinese-sm-cryptography}
 
 နိုင်ငံတကာ Python SDK အထွေထွေဆေး နှစ်ခုစလုံးကို ဖော်ပြပေးတယ်။ SM2 အကူအညီပေးသူများနှင့် SM2- သီးသန့် သက်တောင့်သက်သာ အကူအညီများ။ node အရည်အချင်း ကြော်ငြာကိုသုံးပြီး SM2 ရည်မှန်းချက်ကွန်ရက်မှ မျှော်လင့်ထားသော ခွဲခြားသတ်မှတ်ချက်:
 
@@ -838,7 +868,7 @@ from iroha_python import (
     verify_sm2,
 )
 
-capabilities = client.get_node_capabilities_typed()
+capabilities = client.get_node_capabilities_typed(canonical_auth=canonical_auth)
 sm = capabilities.crypto.sm if capabilities.crypto else None
 # Use the node's default SM2 distinguishing ID when the node advertises one.
 distid = sm.sm2_distid_default if sm else SM2_DEFAULT_DISTINGUISHED_ID
@@ -861,10 +891,10 @@ print(pair.public_key_sec1_hex)
 print(pair.public_key_multihash)
 ```
 
-`crypto.sm.enabled` node က လက်ခံလားဆိုတာ ပြောပြတယ်။ SM- မိသားစုအယ်လ်ဂိုရစ်သမ်များ၏ လက်ရှိ မူဝါဒ။ SM hash မူဝါဒနဲ့ အရှိန်မြှင့်မှုအခြေအနေကို ရွေးချယ်တဲ့အခါ အသုံးဝင်တဲ့ SM2- သီးသန့်စီးဆင်းမှု
+`crypto.sm.enabled` သည် node သည် SM-မိသားစုအယ်လ်ဂိုရစ်သမ်များကို လက်ရှိမူဝါဒတွင်လက်ခံသည်ဆိုသည်ကိုပြောပြသည်။ အလားတူကြော်ငြာတွင် SM cryptographic hash မူဝါဒနှင့် အရှိန်မြှင့်တင်မှုအခြေအနေပါ ၀ င်ပြီး SM2- သီးခြားစီးဆင်းမှုကိုဖွင့်ရန် ဆုံးဖြတ်ရာတွင် အသုံးဝင်သည်:
 
 ```python
-capabilities = client.get_node_capabilities_typed()
+capabilities = client.get_node_capabilities_typed(canonical_auth=canonical_auth)
 
 # `enabled` is the submit-time policy flag, not just local SDK support.
 if capabilities.crypto and capabilities.crypto.sm.enabled:
@@ -876,7 +906,7 @@ else:
     print("SM crypto is not enabled by this node")
 ```
 
-အများပြည်သူ Taira သည် စစ်ဆေးမှုအတွင်း SM အရည်အသွေးကြော်ငြာကို ဖော်ပြခဲ့သော်လည်း SM လက်မှတ်ရေးထိုးခြင်းသည် ထိုနေရာတွင် ပိတ်ထားခဲ့သည်။ ၎င်း၏ ကြော်ငြာလက်မှတ်ရေးထိုးသည့် အယ်လ်ဂိုရစ်သမ်များမှာ `ed25519`, `secp256k1` နှင့် `bls_normal` ဖြစ်သည်။ ထို့ကြောင့် SM2 လက်မှတ်ထိုးထားသော ငွေပေးချေမှုများကို စွမ်းဆောင်ရည်အကျိုးစီးပွား ပြောင်းလဲခြင်းမှလွဲ၍ ထိုတပ်ဆင်မှုကို မတင်ပြပါ။
+အသုံးချထားသော နိုဒ်အတွက် အထောက်အထားဖြင့် အတည်ပြုထားသည့် စွမ်းဆောင်ရည်ပေးလွှာကို အတည်ပြုရမည့် အခြေခံအချက်အလက်အဖြစ် မှတ်ယူပါ။ `crypto.sm.enabled` သည် true ဖြစ်ပြီး ကြေညာထားသော လက်မှတ်ရေးထိုးမူဝါဒက ခွင့်ပြုမှသာ SM2 ဖြင့် လက်မှတ်ရေးထိုးထားသော ငွေလွှဲမှုကို တင်သွင်းပါ။
 
 ### GOST နှင့် Post-Quantum Key များ {#gost-and-post-quantum-keys}
 
@@ -944,18 +974,15 @@ print(post_quantum_address.to_i105(CHAIN_DISCRIMINANT))
 print(mldsa_keypair.prefixed_public_key_multihash)
 ```
 
-Gate GOST နှင့် node ၏ ကြော်ငြာထားသော လက်မှတ်ရေးထိုးခြင်း အယ်လ်ဂိုရီသမ်များပေါ်တွင် post-quantum စီးဆင်းမှုများ။ ရှေ့ဆက်လိုက်လျောညီထွေသော အယ်လ်ဂျိုရစ်သမ်အမည်များအတွက် raw capability payload ကိုသုံးပါ:
+Gate GOST နှင့် node ၏ authenticated, typed capability ကြော်ငြာတွင် post-quantum flows များကို:
 
 ```python
-capabilities = client.request_json(
-    "GET",
-    "/v1/node/capabilities",
-    expected_status=(200,),
+capabilities = client.get_node_capabilities_typed(
+    canonical_auth=canonical_auth,
 )
-crypto = capabilities.get("crypto", {})
-sm = crypto.get("sm", {})
+sm = capabilities.crypto.sm if capabilities.crypto else None
 # Nodes advertise the signing algorithms they will accept for transactions.
-allowed = set(sm.get("allowed_signing", []))
+allowed = set(sm.allowed_signing if sm else ())
 
 GOST_ALGORITHMS = {
     "gost3410-2012-256-paramset-a",
@@ -968,7 +995,7 @@ GOST_ALGORITHMS = {
 # Local support is not enough; submit only when the node advertises support.
 supports_gost = bool(allowed & GOST_ALGORITHMS)
 supports_post_quantum = "ml-dsa" in allowed
-supports_sm2 = "sm2" in allowed and bool(sm.get("enabled", False))
+supports_sm2 = "sm2" in allowed and bool(sm and sm.enabled)
 
 print(supports_gost, supports_post_quantum, supports_sm2)
 ```
@@ -1017,11 +1044,11 @@ print(readiness["ready"])
 print(readiness["blockers"])
 ```
 
-Python သည် Kagemusha ထပ်မံဖြည့်စွက်ခြင်း (သို့) ပြန်လည်သိမ်းဆည်းမှုအခမ်းအနား တည်ဆောက်သူများကို ဖော်ပြမပေးပါ။ ကန်နီကလစ်များ V4 ကိုတည်ဆောက်ရန် Swift သို့မဟုတ် JVM Wallet ကိုသုံးပြီး အားပေးတဲ့ Kagemusha Torii ဝယ်ယူသူမှတစ်ဆင့်ပို့၍ စစ်တမ်းကောက်ယူပါ။
+Python သည် Kagemusha ထပ်မံဖြည့်စွက်ခြင်း (သို့) ပြန်လည်သိမ်းဆည်းမှုအခမ်းအနား တည်ဆောက်သူများကို မဖော်ထုတ်ပါ။ Single Protocol-Standard V4 အာကာသများတည်ဆောက်ရန် JVM သို့မဟုတ် Swift ကိုရိုက်ကူးထားသော ငွေကြေးအိတ်ကိုအသုံးပြုပြီးနောက်ထောက်ပံ့သည့် Kagemusha Torii ဝယ်သူမှတစ်ဆင့်တင်ပို့၍ စစ်တမ်းကောက်ယူပါ။
 
 ## စာရင်းသွင်းခြင်း {#subscriptions}
 
-Subscription helpers သည် `iroha_python.ToriiClient` အသုံးပြုသော မျှဝေထားသော Torii ဖောက်သည်မှ အမွေခံရသည့် ဝန်ဆောင်မှုခေါ်ဆိုမှုများကိုပြောင်းလဲစေသည်။ သင်ရည်မှန်းထားသောကွန်ရက်တွင်တည်ရှိသည့် IDs နှင့် အရင်းအမြစ်များကိုအသုံးပြုပါ။
+`iroha_python.ToriiClient` ကသုံးတဲ့ မျှဝေထားတဲ့ Torii ဖောက်သည်ကနေ စာရင်းစာဖတ်ခြင်းနဲ့ မူကြမ်းဆောက်လုပ်သူတွေကို အမွေခံရတယ်။ အပြောင်းအလဲတိုင်းကို ခန္ဓာကိုယ်က ချည်နှောင်ထားတဲ့ တစ်ခုတည်းနဲ့ လက်ခံပါတယ်။ Torii ဟာ ပုဂ္ဂလိက သော့ကို ဘယ်တော့မှ လက်မခံဘူး၊ ခင်ဗျားအတွက် မူကြမ်း မတင်ဘူး။
 
 ```python
 # The plan defines billing cadence, retry policy, and usage pricing.
@@ -1047,61 +1074,69 @@ usage_plan = {
     },
 }
 
-# The provider signs plan creation.
-client.create_subscription_plan(
+# The provider authorizes preparation of a plan-registration draft.
+plan_draft = client.create_subscription_plan(
     authority=alice,
-    private_key=alice_pair.private_key_hex,
     plan_id="compute#wonderland",
     plan=usage_plan,
+    canonical_auth=canonical_auth,
 )
 
-# The subscriber signs subscription creation.
-client.create_subscription(
+bob_canonical_auth = ToriiCanonicalRequestAuth(
+    network_id=TAIRA_NETWORK_ID.literal,
+    account_id=bob,
+    signer=bob_pair.sign,
+)
+
+# The subscriber authorizes preparation of a subscription-creation draft.
+subscription_draft = client.create_subscription(
     authority=bob,
-    private_key=bob_pair.private_key_hex,
     subscription_id="sub-001",
     plan_id="compute#wonderland",
+    canonical_auth=bob_canonical_auth,
 )
 
-# Usage is recorded by the provider and then charged on demand.
-client.record_subscription_usage(
+# Usage and charge-now operations also return unsigned transaction drafts.
+usage_draft = client.record_subscription_usage(
     "sub-001",
     authority=alice,
-    private_key=alice_pair.private_key_hex,
     unit_key="compute_ms",
     delta="3600000",
+    canonical_auth=canonical_auth,
 )
-client.charge_subscription_now(
+charge_draft = client.charge_subscription_now(
     "sub-001",
     authority=alice,
-    private_key=alice_pair.private_key_hex,
+    canonical_auth=canonical_auth,
 )
+
+for draft in (plan_draft, subscription_draft, usage_draft, charge_draft):
+    assert draft.submitted is False
+    print(draft.transaction_payload_b64, draft.signing_message_b64)
 ```
+
+မှန်ကန်တဲ့ အသုံးဝင် ဝန်ဆောင်မှုတစ်ခုစီနဲ့ လက်မှတ်ထိုးခြင်း သတင်းစကားတွေကို သက်ဆိုင်ရာ အကောင့်ရဲ့ ဒေသတွင်း ငွေကြေးအိတ်ကို ပေးပါ၊ အဲဒီမှာ တောင်းဆိုထားတဲ့ လုပ်ဆောင်ချက်ကို စစ်ဆေး၊ လက်မှတ်ထိုးထားတဲ့ ငွေပေးချေမှုကို စုစည်းပြီး ပုံမှန် ငွေလဲလှယ်ရေး ဆော့ဖ်ဝဲ စီမံခန့်ခွဲမှု အလုပ်ဖြစ်စဉ်ကနေ ပို့ပါ။ Python SDK သည် လက်မှတ်ရေးထိုးခြင်း သတင်းစကားသည် ပြန်လည်ပို့သော အသုံးဝင်ဝန်ဆောင်မှု၏ တစ်ခုတည်းသော ပရိုတိုကောလံစံညွှန်း cryptographic hash ဖြစ်သည်ကို အတည်ပြုသော်လည်း လက်မှတ်ရေးမတင်မီ ငွေကြေးအိတ်သည် ငွေပေးချေမှုကို ဖြေဆိုရန်နှင့် ခွင့်ပြုရန် တာဝန်ရှိဆဲဖြစ်သည်။
 
 ## ချိတ်ဆက်ခြင်း {#connect}
 
-Connect URIs ကို တည်ဆောက်ပြီး စစ်ဆေးပြီး Taira က ဖော်ပြတဲ့ အများပြည်သူ Connect အခြေအနေကို ဖတ်ပါ။
+ဒေသတွင်းတွင် Connect URIs ကိုတည်ဆောက်ပြီးစစ်ဆေးပါ။ Connect လက္ခဏာတစ်ခုသည် SID ကိုတိကျသော `NetworkId`, app အများသုံးသော့နှင့် cryptographic nonce တန်ဖိုးသို့ ချည်နှောင်သည်။
 
 ```python
-from iroha_python.connect import ConnectUri, build_connect_uri, parse_connect_uri
+from iroha_python.connect import create_connect_session_preview, parse_connect_uri
 
-# Connect URIs are what an app hands to a wallet to start a session.
-uri = build_connect_uri(
-    ConnectUri(
-        sid="base64url-session-id",
-        chain_id=CHAIN_ID,
-        node="taira.sora.org",
-    )
+# Generate consistent SID, key, nonce, and URI values as one bundle.
+preview = create_connect_session_preview(
+    network_id=TAIRA_NETWORK_ID,
+    node="taira.sora.org",
 )
-parsed = parse_connect_uri(uri)
-# Status tells you whether the node currently exposes Connect.
-status = client.get_connect_status_typed()
+parsed = parse_connect_uri(preview.wallet_uri)
 
-assert parsed.chain_id == CHAIN_ID
-print(status.enabled, status.sessions_active)
+assert parsed.sid == preview.sid_base64url
+assert parsed.network_id.literal == TAIRA_NETWORK_ID.literal
+assert parsed.app_public_key == preview.app_key_pair.public_key
 ```
 
-Frame codecs များ၊ Session key ကိုထုတ်ယူခြင်းနှင့် Session creation တို့သည် native extension နှင့် Connect session route ကို enable လုပ်ရန်လိုအပ်ပါသည်။
+အဆိုပါတိကျသော ကြိုတင်ကြည့်ရှုမှုကို ရည်မှန်းချက် node က Connect ကိုဖေါ်ပြသောအခါသာ မှတ်ပုံတင်ပါ။ Session creation သည် role-specific bearer tokens လေးခုကိုပြန်လည်ပို့ပေးသည်။ session တစ်ခုစီအခြေအနေလမ်းကြောင်းသည် စီမံခန့်ခွဲမှု token ကိုလိုအပ်သည်။ aggregate status သည် operator လမ်းကြောင်းတစ်ခုဖြစ်သည်။
 
 ```python
 from iroha_python import (
@@ -1110,37 +1145,53 @@ from iroha_python import (
     ConnectDirection,
     ConnectFrame,
     ConnectPermissions,
+    bootstrap_connect_preview_session,
     decode_connect_frame,
     encode_connect_frame,
-    generate_connect_keypair,
 )
 
-# The app keypair is separate from the account key used for transactions.
-connect_pair = generate_connect_keypair()
-info = client.create_connect_session_info(
-    {"role": "app", "sid": connect_pair.public_key.hex()}
+bootstrap = bootstrap_connect_preview_session(
+    client,
+    network_id=TAIRA_NETWORK_ID,
+    node="taira.sora.org",
 )
-print(info.app_uri, info.wallet_token, info.expires_at)
+info = bootstrap.session
+tokens = bootstrap.tokens
+assert info is not None and tokens is not None
+
+session_status = client.request_json(
+    "GET",
+    "/v1/connect/status",
+    params={"sid": info.sid},
+    headers={"Authorization": f"Bearer {tokens.management}"},
+    expected_status=(200,),
+)
+print(info.app_uri, session_status)
 
 # Control frames negotiate permissions before encrypted messages are sent.
 frame = ConnectFrame(
-    sid=bytes.fromhex("01" * 32),
+    sid=bootstrap.preview.sid_bytes,
     direction=ConnectDirection.APP_TO_WALLET,
     sequence=1,
     control=ConnectControlOpen(
-        app_public_key=connect_pair.public_key,
-        chain_id=CHAIN_ID,
+        app_public_key=bootstrap.preview.app_key_pair.public_key,
+        network_id=TAIRA_NETWORK_ID,
         permissions=ConnectPermissions(methods=["SIGN_REQUEST_TX"], events=[]),
     ),
 )
 payload = encode_connect_frame(frame)
 assert decode_connect_frame(payload) == frame
 
-# Closing the control channel is explicit and carries a reason code.
-client.send_connect_control_frame(
-    "base64url-session-id",
-    ConnectControlClose(role="App", code=4100, reason="finished", retryable=False),
+# Closing the control channel is explicit and also travels as a frame.
+close_frame = ConnectFrame(
+    sid=bootstrap.preview.sid_bytes,
+    direction=ConnectDirection.APP_TO_WALLET,
+    sequence=2,
+    control=ConnectControlClose(
+        role="App", code=4100, reason="finished", retryable=False
+    ),
 )
+close_payload = encode_connect_frame(close_frame)
 ```
 
 အတည်ပြုပြီးနောက် စာတိုများကို stateful session ဖြင့် encrypt လုပ်ပါ။
@@ -1171,61 +1222,56 @@ state = session.snapshot_state().to_dict()
 print(encrypted.sequence, state)
 ```
 
-## အုပ်ချုပ်မှု၊ Runtime နှင့် Admin Surfaces {#governance-runtime-and-admin-surfaces}
+## အုပ်ချုပ်ရေး၊ ဆော့ဝဲ အကောင်အထည်ဖော်မှု ပတ်ဝန်းကျင်နှင့် Admin Surfaces {#governance-runtime-and-admin-surfaces}
 
-Taira အများပြည်သူကို ပြန်လည်ခေါ်ဆိုမှုများကို အောင်မြင်စွာပြန်လည်ဖြေရှင်းခဲ့သည်
+[မျှဝေထားသော Setup](#shared-setup) မှ ခွင့်ပြုချက် မူရင်းနှင့် သော့စုံကို အသုံးပြု၍ အကူအညီခေါ်ဆိုမှုတစ်ခုစီကို Taira ၏ တိကျသော ပင်မဗီဇမှ ရယူထားသော `NetworkId` သို့ ချိတ်ဆက်ပါ။
 
 ```python
-client = create_torii_client("https://taira.sora.org")
-
 # Governance reads return either current settings or typed not-found wrappers.
-protected = client.get_protected_namespaces()
-referendum = client.get_governance_referendum_typed("ref-1")
-tally = client.get_governance_tally_typed("ref-1")
-locks = client.get_governance_locks_typed("ref-1")
-unlock_stats = client.get_governance_unlock_stats_typed()
+protected = client.get_protected_namespaces(canonical_auth=canonical_auth)
+referendum = client.get_governance_referendum_typed(
+    "ref-1", canonical_auth=canonical_auth
+)
+tally = client.get_governance_tally_typed("ref-1", canonical_auth=canonical_auth)
+locks = client.get_governance_locks_typed("ref-1", canonical_auth=canonical_auth)
+unlock_stats = client.get_governance_unlock_stats_typed(
+    canonical_auth=canonical_auth
+)
 
 print(protected, referendum.found)
 print(tally.approve, list(locks.locks), unlock_stats.expired_locks_now)
 
-# Runtime reads expose the active ABI and any pending upgrade records.
-abi = client.get_runtime_abi_active_typed()
+# Account-authenticated runtime reads use the same canonical request proof.
+abi = client.get_runtime_abi_active_typed(canonical_auth=canonical_auth)
+# The ABI hash itself is a public read.
 abi_hash = client.get_runtime_abi_hash_typed()
-runtime_metrics = client.get_runtime_metrics_typed()
-upgrades = client.list_runtime_upgrades_typed()
-capabilities = client.get_node_capabilities_typed()
+runtime_metrics = client.get_runtime_metrics_typed(canonical_auth=canonical_auth)
+capabilities = client.get_node_capabilities_typed(canonical_auth=canonical_auth)
 
 print(abi, abi_hash, runtime_metrics)
-print(upgrades.total, capabilities.abi_version)
+print(capabilities.abi_version)
 ```
 
-Runtime upgrade အကူအညီများသည် runtime upgrade API တွင်အသုံးပြုသော manifest ပုံစံကိုလက်ခံသည်။ ၎င်းတို့သည် operator လုပ်ဆောင်ချက်များဖြစ်သည်၊ ထို့ကြောင့်သင်၏အကောင့်နှင့် token ကိုခွင့်ပြုထားသည့် node တစ်ခုအပေါ်သာ အသုံးပြုပါ။
+operator read များအတွက် သီးခြား client ကိုဖန်တီးပါ။ allow-listed operator key ကို software execution environment မှာ load လုပ်ပြီး Taira ရဲ့ exact `NetworkId` နဲ့ ချိတ်ဆက်လိုက်ပါ။ bearer tokens တွေနဲ့ `x-api-token` တို့က ဒီလက်မှတ်ကို အစားထိုးမပေးပါနဲ့။
 
 ```python
-admin = create_torii_client(
+import os
+
+from iroha_python import Ed25519KeyPair, NetworkId, OperatorSigningContext
+
+operator_pair = Ed25519KeyPair.from_private_key(
+    bytes.fromhex(os.environ["IROHA_OPERATOR_PRIVATE_KEY_HEX"])
+)
+operator_client = create_torii_client(
     TORII_URL,
-    auth_token="admin-token",
-api_token="torii-token",
+    operator_signing_context=OperatorSigningContext(
+        TAIRA_NETWORK_ID,
+        operator_pair,
+    ),
 )
-
-# Propose creates the upgrade instructions; activation/cancel are operator actions.
-upgrade = admin.propose_runtime_upgrade(
-    {
-        "name": "Refresh runtime provenance",
-        "description": "Schedules a no-ABI-change runtime rollout.",
-        "abi_version": 1,
-        "abi_hash": "00" * 32,
-        "added_syscalls": [],
-        "added_pointer_types": [],
-        "start_height": 1_500_000,
-        "end_height": 1_500_256,
-    }
-)
-print(upgrade["tx_instructions"])
-
-admin.activate_runtime_upgrade("deadbeef" * 4)
-admin.cancel_runtime_upgrade("feedface" * 4)
 ```
+
+Runtime upgrade လမ်းကြောင်းတွေဟာ operator authenticated instruction building တွေပါ။ အောင်မြင်စွာ အဆိုပြုခြင်း၊ တက်ကြွခြင်း သို့မဟုတ် ဖျက်သိမ်းခြင်း တုံ့ပြန်မှုပြန်ကြားချက် `tx_instructions`; ဒါက upgrade ကို မတည်ထောင်ဘူး။ ပုံမှန် လက်မှတ်ထိုးထားတဲ့ ငွေချေးမှုနဲ့ အုပ်ချုပ်ရေးလမ်းကြောင်းကနေ ဒီပုံးကို တင်ပါ။ Python နည်းစနစ်များ `propose_runtime_upgrade`, `activate_runtime_upgrade`, နှင့် `cancel_runtime_upgrade` လက်ရှိတွင် ဖောက်သည်၏ တောင်းဆိုချက်များကို အသုံးချခြင်းအစား ရှင်းလင်းသော တောင်းဆိုချက်များ ထုတ်ပေးရန် `OperatorSigningContext`, ဒီတော့ ဒီသင်ခန်းစာက သူတို့ကို အလုပ်လုပ်သူ စီးဆင်းမှုအဖြစ် မတင်ပြဘူး။
 
 ## အခြေအနေ၊ သဘောတူညီချက်နှင့် ကွန်ရက် တယ်လီမီထရီ {#status-consensus-and-network-telemetry}
 
@@ -1234,20 +1280,27 @@ admin.cancel_runtime_upgrade("feedface" * 4)
 status = client.request_json("GET", "/status", expected_status=(200,))
 print(status["blocks"], status["txs_approved"])
 
-# Sumeragi and time endpoints expose consensus and clock diagnostics.
-sumeragi = client.get_sumeragi_status_typed()
-print(sumeragi.highest_qc.height, sumeragi.tx_queue.saturated)
+# Sumeragi and time-status endpoints use the operator client configured above.
+sumeragi = operator_client.get_sumeragi_status_typed()
+diagnostics = operator_client.get_sumeragi_diagnostics_typed()
+print(sumeragi.last_committed_height, diagnostics.tx_queue_saturated)
 
-time_now = client.get_time_now_typed()
-time_status = client.get_time_status_typed()
+time_now = client.get_time_now()
+time_status = operator_client.get_time_status()
 for sample in time_status.samples:
     print(sample.peer, sample.last_offset_ms, sample.last_rtt_ms)
 print(time_now.now_ms)
+
+# Connect aggregate status is operator-authenticated. Individual sessions use
+# `/v1/connect/status?sid=...` with their management bearer token instead.
+connect_status = operator_client.get_connect_status_typed()
+if connect_status is not None:
+    print(connect_status.enabled, connect_status.sessions_active)
 ```
 
 ## SoraFS၊ UAID နှင့် Kaigi အကူအညီပေးသူများ {#sorafs-uaid-and-kaigi-helpers}
 
-Nexus/SORA အဆုံးသတ်မှတ်ချက်တွေကို ရည်မှန်းထားတဲ့ node က ဖော်ပြတဲ့အခါ ဒီကူညီသူတွေဟာ ရနိုင်တာပါ။ အလွတ်စာရင်းတွေကို သက်ဝင်တဲ့ တုံ့ပြန်မှုတစ်ခုအဖြစ် සලකා බලන්න: အများပြည်သူ Taira မှာ နမူနာထုတ်ပြန်ချက် (သို့) UAID အတွက် ဒေတာမရှိဘဲ လမ်းကြောင်းဖွင့်ထားနိုင်တယ်။
+Nexus/SORA API အဆုံးသတ်မှတ်ချက်တွေကို ရည်မှန်းထားတဲ့ node က ဖော်ပြတဲ့အခါ ဒီကူညီသူတွေဟာ ရနိုင်တာပါ။ ပစ်လွတ်စာရင်းတွေကို သက်ဝင်တဲ့ တုံ့ပြန်မှုတစ်ခုအဖြစ် ဆက်ဆံပါ။ အများပြည်သူ Taira မှာ နမူနာနည်းပညာထုတ်ပြန်ချက် (သို့) UAID အတွက် ဒေတာမရှိဘဲ လမ်းကြောင်းဖွင့်ထားနိုင်ပါတယ်။
 
 ```python
 # SoraFS status queries are reads scoped by manifest and status.
@@ -1264,21 +1317,24 @@ manifests = client.list_space_directory_manifests_typed(
 )
 print(len(bindings.dataspaces), len(manifests.manifests))
 
-# Kaigi health summarizes relay availability when the route is enabled.
-health = client.get_kaigi_relays_health_typed()
+# Kaigi relay health is an operator snapshot, even though it is read-only.
+health = operator_client.get_kaigi_relays_health_typed()
 print(health.healthy_total, health.failovers_total)
 ```
 
 ## Norito RPC နှင့် GPU အကူအညီပေးသူများ {#norito-rpc-and-gpu-helpers}
 
-အသုံးပြုခြင်း `NoritoRpcClient` သင့်မှာ ရှိပြီးသား Norito bytes နှင့် binary ကိုခေါ်ရန်လိုအပ်သည် Torii Endpoint: ဥပမာမှာ အရင် Transaction Template တစ်ခုမှ လက်မှတ်ထိုးထားတဲ့ envelope ကို လိုအပ်ပါတယ်။
+Norito bytes ရှိပြီးသားမှာ `NoritoRpcClient` ကိုအသုံးပြုပြီး ဘိုင်နရီ Torii API အဆုံးမှတ်ကိုခေါ်ရန်လိုအပ်ပါက အသုံးပြုပါ။ ဥပမာတွင် ယခင် ငွေပေးချေမှုပုံစံမှ လက်မှတ်ထိုးထားသော ဒေတာအိုးတစ်ခု လိုအပ်သည်။
 
 ```python
 from iroha_python import NoritoRpcClient, NoritoRpcConfig
 
 # Use the binary RPC client for endpoints that expect Norito bytes.
 with NoritoRpcClient(NoritoRpcConfig(TORII_URL, timeout=5.0)) as rpc:
-    response_bytes = rpc.call("/v1/transaction", envelope.signed_transaction_versioned)
+    response_bytes = rpc.call(
+        "/v1/pipeline/transactions",
+        envelope.signed_transaction_versioned,
+    )
     print(len(response_bytes))
 ```
 
@@ -1299,12 +1355,12 @@ Python SDK တွင် အောက်ပါအတွက် အကူအညီ�
 
 - Torii တင်ပြမှု၊ အခြေအနေ၊ မေးမြန်းမှုနှင့် စီမံခန့်ခွဲရေး စီးဆင်းမှုများ
 - Common ISI နှင့် domain-specific extension များအတွက် typed instruction constructors များ
-- ငွေပေးချေမှု မူကြမ်းများ၊ ထုတ်ပြန်ချက်များ၊ လက်မှတ်ရေးထိုးခြင်းနှင့် လက်မှတ်ရေးဆွဲထားသော ငွေပေးချေးမှု အဝှေ့အလွှာ အလုပ်ဖြစ်စဉ်များ
-- streaming ဖြစ်ရပ်များ၊ filter များနှင့် resumable cursors များ
+- Transaction drafts, technical manifests, signing and signed transaction data container workflows များ၊ လက်မှတ်ရေးထိုးခြင်းနှင့် လက်မှတ်ရေးဆွဲထားသော ငွေပေးချေမှု အချက်အလက်များ
+- တိုက်ရိုက်ဖြစ်ရပ်စီးကြောင်းများနှင့် ရိုက်နှိပ်သော filter များ; နောက်ဆုံးသတ်မှတ်ထားသော block စီးကြောင်းများသည်အပြည့်အဝသမိုင်းကိုပေးသည်။
 - အထွေထွေ Kagemusha အသင့်ရှိမှု access နှင့် Torii subscription assistants များ၊ ထိပ်သွင်းထားတဲ့ top-up နှင့် redeem build တွေကို မဖွင့်လှစ်ပါ။
 - အကောင့်လိပ်စာ၊ အယ်လ်ဂိုရစ်သမ်အားလုံးရဲ့ လက်မှတ်ရေးထိုးမှု အကူအညီများ၊ SM2, GOST, ML-DSA, BLS နှင့် လျှို့ဝှက်သော့ကိုင်တွယ်ခြင်းအတွက် multi-hash round trip များ
 - URIs ကို ချိတ်ဆက်ခြင်း၊ အစည်းအဝေးများ၊ ဖေ့ခ်များ၊ ကုဒ်ရေးခြင်း အကူအညီများနှင့် မှတ်ပုံတင် အုပ်ချုပ်သူ
-- အုပ်ချုပ်မှု, runtime upgrade, Sumeragi, node-admin, SoraFS, UAID နှင့် Kaigi အဆုံးသတ်မှတ်ချက် wrappers များတွင် node သည်ဤလက္ခဏာများကိုဖေါ်ပြထားသည်။
+- စီမံခန့်ခွဲမှု, ဆော့ဝဲ အကောင်အထည်ဖော်ရေး ပတ်ဝန်းကျင် အဆင့်မြှင့်တင်ခြင်း, Sumeragi, node-admin, SoraFS, UAID နှင့် Kaigi API အဆုံးသတ်မှတ်ချက် ဆော့ဝယ်အက်ဒါပတာများတွင် node သည်ဤလက္ခဏာများကိုဖေါ်ပြသည်။
 
 ## အထက်ပိုင်းဆိုင်ရာ ရည်ညွှန်းချက်များ {#upstream-references}
 

@@ -256,7 +256,7 @@ domains = client.list_domains_typed(limit=1)
 definitions = client.list_asset_definitions_typed(limit=1)
 
 # These calls inspect live node subsystems without mutating state.
-time_now = client.get_time_now_typed()
+time_now = client.get_time_now()
 
 print(status["build"]["version"])
 print(parameters["sumeragi"]["block_cadence_ms"])
@@ -1424,8 +1424,8 @@ sumeragi = operator_client.get_sumeragi_status_typed()
 diagnostics = operator_client.get_sumeragi_diagnostics_typed()
 print(sumeragi.last_committed_height, diagnostics.tx_queue_saturated)
 
-time_now = client.get_time_now_typed()
-time_status = operator_client.get_time_status_typed()
+time_now = client.get_time_now()
+time_status = operator_client.get_time_status()
 for sample in time_status.samples:
     print(sample.peer, sample.last_offset_ms, sample.last_rtt_ms)
 print(time_now.now_ms)

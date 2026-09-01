@@ -1,23 +1,23 @@
 ---
 translation_locale: am
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: 71258f4da9afcd94afce2fc2a53ce43540d8f67054ea789f0b2d105daba26006
+translation_source_hash: 4979ab2c52eba4040d7f003f3da73dbc333fa7e047b0259816d0d34f97377749
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# ናሙናዎች እና የምግብ አዘገጃጀት {#samples-and-recipes}
+# ናሙናዎች እና የተግባር መመሪያዎች {#samples-and-recipes}
 
-የ Iroha ምንጭ መዝገብ እንደ ኖዱ ተመሳሳይ ማሻሻያ የሚከታተሉ SDK የምግብ አዘገጃጀት መመሪያዎች እና የሙከራ ስብስቦችን ይ containsል ።
+የ Iroha ምንጭ ማከማቻው ከኖድ ጋር ተመሳሳይ ክለሳ የሚከታተሉ SDK የተግባር መመሪያዎችን እና የሙከራ ስብስቦችን ይዟል።
 
-## JavaScript የምግብ አዘገጃጀት {#javascript-recipes}
+## JavaScript የተግባር መመሪያዎች {#javascript-recipes}
 
-[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes) ለምርመራ ግብይቶች ጭፍጨፋ የተወሰኑ ምሳሌዎችን ይ containsል ፣ Nexus የመተግበሪያ ማስተላለፊያዎች፣ NFT እና የሂሳብ ድግግሞሽ፣ ISO የድልድይ ፍሰቶች እና Torii እያንዳንዱ የምግብ አዘገጃጀት መስመር ላይ ይሰራል ወይም የቀጥታ ስርጭት ያስፈልገዋል Torii የመጨረሻ ነጥብ።
+[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes) ለዲተርሚኒስቲክ ግብይት ባች ያተኮሩ ምሳሌዎችን ይዟል፣ Nexus የመተግበሪያ ዝውውሮች ፣ NFT እና የመለያ ድግግሞሽ፣ ISO ድልድይ ፍሰቶች, እና Torii በዥረት መልቀቅ. እያንዳንዱ የተግባር መመሪያ ከመስመር ውጭ የሚሰራ ወይም የቀጥታ ግንኙነት የሚፈልግ መሆኑን ይመዘግባል Torii API የመጨረሻ ነጥብ.
 
 ## Swift እና iOS {#swift-and-ios}
 
-አጠቃቀም `IrohaSwift/Tests/IrohaSwiftTests` በወቅቱ በተረጋገጡ ምሳሌዎች ላይ Swift SDK. ተመልከት [Swift እና iOS](/am/guide/tutorials/swift.md) ለፓኬጅ እና ድልድይ ማዋቀር።
+ለ `IrohaSwift/Tests/IrohaSwiftTests` ተጠቀም ampአሁን ካለው Swift SDK ጋር የተረጋገጠ። ለጥቅል እና ድልድይ ማዋቀር [Swift እና iOS](/am/guide/tutorials/swift.md)ን ይመልከቱ።
 
 ## Android {#android}
 
-ለአዲሱ Android ሥራ, መጠቀም Kotlin-በመጀመሪያ `core-jvm`, `client-android`, እና `offline-wallet-android` በ ውስጥ የተገለጹ ሞጁሎች [Kotlin, Android, እና ጃቫ](/am/guide/tutorials/kotlin-java.md). የ Kotlin SDK የካኖኒክ መነሻ ነጥብ ነው Android ተጠቃሚዎች።
+ለአዲስ Android ስራ፣ በ[Kotlin፣ Android እና ጃቫ](/am/guide/tutorials/kotlin-java.md) ውስጥ የተገለጹትን Kotlin-የመጀመሪያ `core-jvm`፣ `client-android` እና `offline-wallet-android` ሞጁሎችን ይጠቀሙ። Kotlin SDK ለ Android ሸማቾች ነጠላ ፕሮቶኮል-መደበኛ መነሻ ነው።

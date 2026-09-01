@@ -1,40 +1,50 @@
 ---
 translation_locale: am
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: 5772bf7175b693fbbed54b59304859a33c2e19fef0c402141b6f4ad4cfd6714f
+translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # አፈጻጸም እና መለኪያዎች {#performance-and-metrics}
 
-Iroha አፈፃፀም በስራ ጭነት ፣ በማረጋገጫ ቶፖሎጂ ፣ በአውታረ መረብ ሁኔታዎች እና በስምምነት ቅንብሮች ላይ የተመሠረተ ነው። ስለዚህ አንድ ነጠላ TPS ቁጥር ጠቃሚ የሚሆነው ቋሚ ውቅር ካለው የማጣቀሻ ውጤት ጋር ሲገናኝ ብቻ ነው ።
+Iroha አፈጻጸም በስራ ጫና፣ በአረጋጋጭ ቶፖሎጂ፣ በአውታረ መረብ ሁኔታዎች እና በስምምነት ቅንጅቶች ላይ የተመሰረተ ነው።. ስለዚህ አንድ ነጠላ TPS ቁጥር ጠቃሚ የሚሆነው ከቋሚ ውቅር ጋር ካለው የቤንችማርክ ሩጫ ጋር ሲገናኝ ብቻ ነው።.
 
-ለአቅም እቅድ አፈፃፀምን እንደ የአሠራር ውስጣዊነት ይቆጥሩ:
+ለአቅም እቅድ፣ አፈጻጸምን እንደ ኦፕሬቲንግ ዳታ መያዣ ይያዙት -
 
-- አውታረመረብ የተጠየቀውን የግብይት ተመን ይቀበላል
-- በዒላማው በጀት ውስጥ የዘገየ ጊዜ ቆይታዎችን ያድርጉ
-- የግብይት ረድፎች የተገደቡ ሆነው ይቆያሉ።
-- ስምምነት በተደጋጋሚ እይታ ለውጦች ወይም መልሶ ማግኛ መንገዶችን ላይ አይተማመንም።
+- አውታረ መረቡ የተጠየቀውን የግብይት መጠን ይቀበላል
+- የፕሮቶኮል ማጠናቀቂያ መዘግየት በዒላማው በጀት ውስጥ ይቆያል
+- የግብይት ወረፋዎች ውስን ሆነው ይቆያሉ
+- መግባባት በተደጋጋሚ የእይታ ለውጦች ወይም የመልሶ ማግኛ መንገዶች ላይ አይተማመንም
 
-ይህ ገጽ የተሰጠውን የአገናኝ ብዛት ፣ የአውታረ መረብ መዘግየት ደመወዝ እና ዒላማ TPS ለስርጭቱ ከፍተኛ ፣ መካከለኛ ወይም ዝቅተኛ አፈፃፀም ሁኔታ ውስጥ መሆን አለመሆኑን ለመገመት ይጠቀሙ።
+ለተወሰነ የኖድ ብዛት፣ የአውታረ መረብ መዘግየት ገደብ እና ዒላማ TPS ማሰማራት በከፍተኛ፣ መካከለኛ ወይም ዝቅተኛ የአፈጻጸም ሁኔታ ውስጥ መሆኑን ለመገመት ይህን ገጽ ይጠቀሙ።
 
-## ምን መለካት አለብን? {#what-to-measure}
+## ምን እንደሚለካ {#what-to-measure}
 
-ከ Torii የተጋለጡ የአሠራር ወለሎች ጋር ይጀምሩ:
+በይፋዊ ኖድ ነጥብ-በ-ጊዜ የውሂብ እይታ እና ፕሮሜቲየስ መቧጨር ይጀምሩ፣ ከዚያ CLI ለኦፕሬተር የተረጋገጠ የጋራ ስምምነት ሁኔታ ይጠቀሙ። የኦፕሬተር ቁልፉ በታለመው ኖድ መፍቀድ አለበት እና የሚጫነው በሶፍትዌር ማስፈጸሚያ አካባቢ ላይ ብቻ ነው -
 
 ```bash
 export TORII=http://127.0.0.1:8180
+export OPERATOR_KEY_FILE=./secrets/operator.key
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
-curl -s -H 'Accept: application/json' "$TORII/v1/sumeragi/status" | jq .
-curl -s "$TORII/v1/sumeragi/phases" | jq .
-curl -s "$TORII/v1/sumeragi/rbc" | jq .
-curl -s "$TORII/v1/sumeragi/params" | jq .
 curl -s "$TORII/metrics" > metrics.prom
+
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi status
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi diagnostics
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi qc
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi params
 ```
 
-ተመሳሳይ የንባብ-ብቻ ንድፍ ከህዝብ Taira ጋር መሞከር ይችላሉ:
+ይፋዊ Taira ማንነታቸው ያልታወቁ የኖድ የነጥብ-በ-ጊዜ ውሂብ እይታዎችን ቅርፅ ለመማር ጠቃሚ ነው። የእሱ ኦፕሬተር ምርመራዎች ሆን ተብሎ ያለ Taira ኦፕሬተር ቁልፍ አይገኙም -
 
 ```bash
 TAIRA=https://taira.sora.org
@@ -42,214 +52,215 @@ TAIRA=https://taira.sora.org
 curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
-curl -fsS "$TAIRA/v1/time/status" \
-  | jq '{healthy: .health.healthy, peers, samples_used, rtt_count: .rtt.count}'
-
-curl -fsS "$TAIRA/metrics" \
-  | grep -E '^(block_height|queue_size|sumeragi_tx_queue_depth|txs|view_changes)' \
-  | head -n 20
+curl -fsS "$TAIRA/v1/time/now" \
+  | jq '{now_ms, offset_ms}'
 ```
 
-የሲግናል ስሞችን ለመማር የህዝብ Taira መለኪያዎች ጠቃሚ ናቸው። ለእራስዎ ማሰማራት እንደ የምርት አቅም ቁጥሮች አይጠቀሙባቸው።
+ለራስዎ ማሰማራት የህዝብ-ቴስትኔት ምልከታዎችን እንደ የማምረት አቅም ቁጥሮች አይጠቀሙ።
 
-ተመሳሳይ የስምምነት ቅጽበታዊ ገጽ እይታዎች በ CLI በኩል ይገኛሉ:
-
-```bash
-iroha --config ./localnet/client.toml --output-format text ops sumeragi status
-iroha --config ./localnet/client.toml --output-format text ops sumeragi phases
-iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetry
-iroha --config ./localnet/client.toml ops sumeragi params
-```
-
-የቴሌሜትሪ ተደራሽነት በተዋቀረው መገለጫ ላይ የተመሠረተ ነው። `extended` ሲያስፈልግዎት `/metrics` ይጠቀሙ ፣ እና በሙከራ ሩጫዎች ውስጥ ዝርዝር Sumeragi ኦፕሬተር መንገዶችን በሚፈልጉበት ጊዜ `full` ይጠቀሙ።
+የቴሌሜትሪ ታይነት በተዋቀረው መገለጫ ላይ የተመሰረተ ነው. `operator` የሁኔታውን እና የምርመራ የነጥብ-በ-ጊዜ ውሂብ እይታዎችን ያስችላል። `extended` `/metrics` እና ውድ ጊዜዎችን ይጨምራል፣ `developer` `/metrics` ሳያነቃ እንደ መሪ፣ QC፣ መለኪያዎች እና ማስረጃዎች ያሉ የገንቢ ነጥብ-በጊዜ ውሂብ እይታዎችን ሲጨምር። አንድ ሩጫ ሁለቱንም ስብስቦች ሲፈልግ `full` ይጠቀሙ። `telemetry_profile` ብቸኛው የመጀመሪያ ልቀት የቴሌሜትሪ መቀየሪያ ነው።
 
 ```toml
-telemetry_enabled = true
 telemetry_profile = "full"
 ```
 
-## የአፈፃፀም ባንዶች {#performance-bands}
+## የአፈጻጸም ባንዶች {#performance-bands}
 
-እነዚህን ባንዶች በዒላማው ፍሰት `Y` TPS እና መዘግየት የበጀት `L` ሚሊሰከንዶች ላይ ለተመለከቱት ሩጫ ይጠቀሙ ። ሙቀትን ፣ የተረጋጋ ሁኔታን እና ቢያንስ አንድ ጊዜ የሚጠበቀው ከፍተኛ ጭነት ለማካተት የስራ ጫናውን ለረጅም ጊዜ ያካሂዱ።
+እነዚህን ባንዶች በዒላማው የመተላለፊያ ይዘት `Y` TPS እና የመዘግየት በጀት `L` ሚሊሰከንዶች ለታየ ሩጫ ይጠቀሙ። ማሞቂያን፣ የተረጋጋ ሁኔታን እና ቢያንስ አንድ የሚጠበቀውን ከፍተኛ ጭነት ለማካተት የስራ ጫናውን በበቂ ሁኔታ ያሂዱ።
 
-|ባንድ |ሁኔታዎች |ትርጉም|
+|ባንድ|ሁኔታዎች|ትርጉም|
 | --- | --- | --- |
-|ከፍተኛ .|ተቀባይነት ያለው ፍሰት በ `Y` ወይም ከዚያ በላይ ነው ፣ p95 ተልእኮ መዘግየት ከ `0.8 * L` በታች ነው ፣ ረድፎቹ ከአቅም 10% በታች ሆነው ይቆያሉ ፣ እና የእይታ ለውጥ / መልሶ ማግኛ መቁጠሪያዎች ጠፍጣፋ ናቸው ።|ተልዕኮው ለተጠየቀው የስራ ጫና ቦታ አለው |
-|መካከለኛ|ተቀባይነት ያለው ፍሰት ወደ `Y` ቅርብ ነው ፣ p95 ተልእኮ መዘግየት ከ `L` በታች ነው ፣ ረድፎቹ ከአቅም 50% በታች የተረጋጉ ናቸው ፣ እና የእይታ ለውጦች እምብዛም አይከሰቱም።|ትግበራው ይሰራል, ነገር ግን የተገደበ ፍንዳታ መቻቻል አለ.|
-|ዝቅተኛ |ተቀባይነት ያለው ፍሰት ከ `Y` በታች ነው ፣ p95 ተልእኮ መዘግየት ከ `L` ይበልጣል ፣ ረድፎቹ በሚሮጡበት ጊዜ ይጨምራሉ ወይም የእይታ-ለውጥ / የኋላ ግፊት ቆጣሪዎች ያለማቋረጥ ይጨምራሉ።|የተጠየቀው የስራ ጫና ቢያንስ ከአንድ የመጠጥ አጥንት በላይ ነው |
+|ከፍ ያለ|ተቀባይነት ያለው የመተላለፊያ መጠን በ `Y` ወይም ከዚያ በላይ ነው፣ p95 ፕሮቶኮል ማጠናቀቂያ መዘግየት ከ`0.8 * L` በታች ነው፣ ወረፋዎች ከ10% አቅም በታች ይቆያሉ፣ እና የእይታ ለውጥ/መልሶ ማግኛ ቆጣሪዎች ጠፍጣፋ ናቸው|ማሰማራቱ ለተጠየቀው የስራ ጫና አቅም አለው|
+|መካከለኛ|ተቀባይነት ያለው የመተላለፊያ መጠን ወደ `Y` ቅርብ ነው፣ የp95 ፕሮቶኮል ማጠናቀቂያ መዘግየት ከ`L` በታች ነው፣ ወረፋዎች ከ50% አቅም በታች የተረጋጉ ናቸው፣ እና የእይታ ለውጦች እምብዛም አይደሉም|ማሰማራቱ ይሰራል፣ ነገር ግን የፍንዳታ መቻቻል ውስን ነው|
+|ዝቅተኛ|ተቀባይነት ያለው የመተላለፊያ መጠን ከ `Y` በታች ነው፣ p95 ፕሮቶኮል ማጠናቀቂያ መዘግየት ከ`L` ይበልጣል፣ ወረፋዎች በሩጫው ወቅት ያድጋሉ፣ ወይም የእይታ ለውጥ/የኋላ ግፊት ቆጣሪዎች ያለማቋረጥ ይነሳሉ|የተጠየቀው የስራ ጫና ቢያንስ ከአንድ ማነቆ ይበልጣል|
 
-ቁልፍው ደንብ ረድፍ አቅጣጫ ነው። የቀረበው TPS ከተቀበለው TPS በላይ ከሆነ እና ረድፉ እየጨመረ የሚሄድ ከሆነ አጭር ናሙናዎች ጤናማ ቢመስሉም እንኳ ልጥፉ ከመጠን በላይ ነው ።
+ዋናው ደንብ የወረፋ አቅጣጫ ነው. ከገባ TPS ከተጠናቀቀው TPS ይበልጣል እና ወረፋው እያደገ ከሄደ፣ አጫጭር ናሙናዎች ጤናማ ቢመስሉም ማሰማራቱ ከመጠን በላይ ተጭኗል።
 
-## የቁጥር ብዛት እና ጥራዝ {#node-count-and-quorum}
+## የኖድ ቆጠራ እና ሸንጎ {#node-count-and-quorum}
 
-ተጨማሪ ማረጋገጫዎች የችግር መቻቻል ያሻሽላሉ ነገር ግን የአውታረ መረብ ማስተባበሪያ, ፊርማ እና የውጭ ወጪን ይጨምራሉ. Sumeragi ትግበራ:
+ተጨማሪ አረጋጋጮች የስህተት መቻቻልን ያሻሽላሉ ነገር ግን ቅንጅትን፣ ፊርማ እና የአውታረ መረብ ደጋፊ ወጪዎችን ይጨምራሉ። የመጀመሪያው ልቀት Sumeragi ፕሮቶኮል የሚከተሉትን ይፈልጋል -
 
-- የማረጋገጫ መቁጠሪያ `n` የጉድለት በጀት `f = floor((n - 1) / 3)` ያወጣል
-- ለ `n >= 4` የኮሚቲ ክውሮም `2f + 1` ነው
-- ለ `n <= 3` ሁሉም ማረጋገጫ ሰጪዎች ተሳትፎ ለማድረግ ያስፈልጋሉ
-- የተመልካች እኩዮች የሲንክ ብሎኮችን ያመሳስላሉ ነገር ግን ድምጽ አይሰጡም ፣ አያቀርቡም ወይም አይሰበስቡም።
+- ትክክለኛ `n = 3f + 1` ድምጽ መስጫ ኮሚቴ
+- `4 <= n <= 31`፣ ስለዚህ ትክክለኛ መጠኖች 4፣ 7፣ 10 እና የመሳሰሉት ናቸው
+- የጋራ መግባባት ማጠናቀቂያ ምልአተ ጉባኤ `2f + 1`
+- የታዛቢ አውታረ መረብ እኩዮች ብሎኮችን ያመሳስላሉ ነገር ግን ድምጽ አይሰጡም፣ አያቀርቡም ወይም አይሰበስቡም
 
-|ማረጋገጫዎች |የበጀት ስህተት |የቁጥር ማረጋገጫ |የአቅም ማስታወሻ |
+|አረጋጋጮች|የተሳሳተ በጀት|የጋራ መግባባት ማጠናቀቂያ ምልአተ ጉባኤ|የአቅም ማስታወሻ|
 | --- | --- | --- | --- |
-|ከ1 እስከ 3 |0 ተግባራዊ ከመስመር ውጪ ነፃነት |ሁሉም ማረጋገጫ ሰጪዎች|ለልማት እና ለአነስተኛ ሙከራዎች ጠቃሚ ነው; ማንኛውም የጎደለው ማረጋገጫ ተልእኮዎችን ሊያቆይ ይችላል |
-| 4 | 1 | 3 |ለአንድ ስህተት መቻቻል የጋራ ዝቅተኛ መጠን |
-| 7 | 2 | 5 |የበለጠ ተጣጣፊነት፣ በበለጠ የድምፅ እና የማሰራጨት ትራፊክ |
-| 10 | 3 | 7 |ከፍተኛ የኮርዲኔሽን ወጪ; የአውታረ መረብ እና ሰብሳቢዎች ማስተካከያ የበለጠ አስፈላጊ ነው |
+| 4 | 1 | 3 |ለአንድ ስህተት መቻቻል የጋራ ዝቅተኛው|
+| 7 | 2 | 5 |የበለጠ ጠንካራ ፣ በበለጠ የድምጽ እና የስርጭት ትራፊክ|
+| 10 | 3 | 7 |ከፍተኛ የማስተባበር ወጪ; አውታረ መረብ እና የመግቢያ ማስተካከያ ጉዳይ የበለጠ|
+| 31 | 10 | 21 |ከፍተኛው የመጀመሪያ ልቀት ኮሚቴ; የቤንችማርክ ማስተባበር እና የፊርማ ዋጋ በጥንቃቄ|
 
-"X ኖዶችን" በሚገመግሙበት ጊዜ የድምፅ ማረጋገጫዎችን ከተመልካቾች ይለዩ ። የተመልካቾችን መጨመር ብዙውን ጊዜ ከማረጋገጫዎች ጋር ሲነፃፀር ያነሰ ዋጋ ያስከፍላል ፣ ግን ተመልካቾች አሁንም ብሎክ ወሬን ፣ የብሎክ ማመሳሰል ፣ ዲስክን እና የአውታረ መረብ ባንድዊድትን ይጠቀማሉ።
+የብሎክቼይን ጀነሲስ ማመንጨት እና ጅምር ማረጋገጫ የማይስማሙ የኮሚቴ መጠኖችን ውድቅ ያደርጋሉ; ልቀቱ ሊቀበለው የማይችለውን ቶፖሎጂ አያመካክቱ።
 
-## አፈጻጸም ላይ ተጽዕኖ የሚያሳድሩ ነገሮች {#factors-that-influence-performance}
+'X nodes' ሲገመግሙ የድምጽ መስጫ አረጋጋጮችን ከተመልካቾች ይለዩ። ታዛቢዎችን ማከል ብዙውን ጊዜ አረጋጋጮችን ከመጨመር ያነሰ ዋጋ ያስከፍላል፣ ነገር ግን ታዛቢዎች አሁንም ብሎክ ወሬ፣ ማመሳሰል፣ ዲስክ እና የአውታረ መረብ ባንድዊድዝ ይጠቀማሉ።
 
-### የስራ ጭነት ቅርጽ {#workload-shape}
+## በአፈፃፀም ላይ ተጽዕኖ የሚያሳድሩ ምክንያቶች {#factors-that-influence-performance}
 
-ተመሳሳይ TPS እያንዳንዱ ግብይት ምን እንደሚያደርግ በመመርኮዝ ርካሽ ወይም ውድ ሊሆን ይችላል።
+### የስራ ጫና ቅርጽ {#workload-shape}
 
-- በአንድ ግብይት የሚቀርቡት መመሪያዎች ብዛት
-- ፊርማዎች ብዛት እና ፊርማ ስልተ ቀመሮች
-- የግብይት ባይት መጠን እና የታመቀ የፍጆታ ጭነት መጠን
-- የንባብ/የጽሑፍ ጥምርታ
-- የሜታዳታ መጠን እና የአክሲዮን ስራዎች
-- የማሰብ ችሎታ ያለው ውል፣ አስነሳሽነት እና IVM አፈፃፀም ወጪ
-- ተመሳሳይ እኩዮች ላይ እየሮጠ ያለው የጥያቄ ጭነት
+እያንዳንዱ ግብይት በሚያደርገው ላይ በመመስረት ተመሳሳይ TPS ርካሽ ወይም ውድ ሊሆን ይችላል። መዝገብ
 
-ትናንሽ የዝውውር ግብይቶች ለኮንትራት ከባድ ወይም ሜታዳታ-ከባድ የሥራ ጫናዎች ምትክ አይደሉም.
+- በአንድ ግብይት የመመሪያዎች ብዛት
+- የፊርማ ቆጠራ እና ስልተ ቀመሮችን መፈረም
+- የግብይት ባይት መጠን እና ያልተጨመቀ የጭነት መጠን
+- ጥምርታ አንብብ/ፃፍ
+- ሜታዳታ መጠን እና የንብረት ስራዎች
+- ስማርት ኮንትራት፣ ቀስቅሴ እና IVM የማስፈጸሚያ ወጪ
+- በተመሳሳዩ የአውታረ መረብ እኩዮች ላይ የሚሰራ የጥያቄ ጭነት
 
-### የስምምነት ጊዜ {#consensus-timing}
+አነስተኛ የዝውውር ግብይቶች ለኮንትራት-ከባድ ወይም ሜታዳታ-ከባድ የስራ ጫናዎች ተኪ አይደሉም።
 
-Sumeragi ጊዜ የሚቆጣጠረው ውጤታማ በሆነው Sumeragi መለኪያዎች ነው:
+### የጋራ መግባባት ካዴንስ {#consensus-cadence}
 
-- `block_time_ms`
-- `commit_time_ms`
-- `min_finality_ms`
-- `pacing_factor_bps`
-- የ NPoS ሞድ ሲነቃ የ NPOS ምዕራፍ ጊዜ መውጫዎች
+ውጤታማው Sumeragi መለኪያ ነጥብ-በ-ጊዜ ውሂብ እይታ የተፈረመውን የማይለወጥ የብሎክ ምት እና የሰዓት-ተንሸራታች የታሰረ ይዟል -
 
-የሚከተሉትን ይፈትሹ፦
+- `block_cadence_ms`
+- `max_clock_drift_ms`
+
+በሚከተሉት ይፈትሹዋቸው -
 
 ```bash
-iroha --config ./localnet/client.toml ops sumeragi params
-curl -s "$TORII/v1/sumeragi/params" | jq .
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi params
 ```
 
-ዝቅተኛ የጊዜ ግቦች መዘግየትን ማሻሻል የሚችሉት የአውታረ መረብ ፣ የማከማቻ እና አፈፃፀም ንብርብሮች ወቅታዊ ሆነው በሚቆዩበት ጊዜ ብቻ ነው። ለውጦችን ካዩ በኋላ ፣ የጎደለው የክፍያ ጭነት ሲመጣ ወይም የመጠባበቂያ ጫና ከተከሰተ በኋላ የጊዜ ሰሌዳዎችን መቀነስ ብዙውን ጊዜ አፈፃፀምን ያባብሳል ።
+`block_cadence_ms` በተፈረመው የብሎክቼይን ጀነሲስ ተዘጋጅቶ በሚነሳበት ጊዜ ተቆልፏል; በቅጽበት ሊስተካከል አይችልም. አውታረ መረቦችን ከተለያዩ የተፈረሙ የብሎክቼይን ጀነሲስ ግብዓቶች ጋር እንደ የተለየ የቤንችማርክ ሁኔታዎች ብቻ ያወዳድሩ። አንዴ እይታ ከተቀየረ፣ የጎደለው ጭነት ወይም የኋላ ግፊት ከታየ፣ አጭር ጊዜ ያለው ፍጥነት ዘላቂ ፍጆታን ከመጨመር ይልቅ ከመጠን በላይ መጫኑን የበለጠ እንዲታይ ያደርገዋል።
 
-### ሰብሳቢ ፋኖት {#collector-fanout}
+### እጩ እና የመግቢያ ድንበሮች {#candidate-and-ingress-bounds}
 
-የመሰብሰቢያው ቅንብሮች የቃለ መጠይቅ ድምጾች ምን ያህል በፍጥነት እንደሚቀላቀሉ ይነካሉ:
+የኖድ አካባቢያዊ Sumeragi ድንበሮች አንድ አረጋጋጭ ምን ያህል እጩ እና የመልሶ ማግኛ ስራ እንደሚይዝ ይወስናሉ -
 
-- `sumeragi.collectors.k` በአንድ ቁመት ላይ ስንት ሰብሳቢዎች ድምጾችን እንደሚሰበስቡ ይቆጣጠራል
-- `sumeragi.collectors.redundant_send_r` ከአከባቢው የጊዜ ገደብ በኋላ ተጨማሪ ድምጽ መስጠት ይቆጣጠራል
-- `sumeragi.collectors.parallel_topology_fanout` ከቅጂዎች ጋር ጎን ለጎን ቶፖሎጂን ይጨምራል
+- `sumeragi.block.max_transactions`
+- `sumeragi.block.max_payload_bytes`
+- `sumeragi.block.proposal_queue_scan_multiplier`
+- `sumeragi.queues.commands`
+- `sumeragi.queues.bodies` እና `sumeragi.queues.body_bytes`
+- `sumeragi.queues.body_source_bytes`፣ `sumeragi.queues.chunks` እና `sumeragi.queues.ready_bodies`
 
-የ fanout መጨመር በትላልቅ ወይም በአነስተኛ አስተማማኝ አውታረ መረቦች ውስጥ የጀርባ መዘግየትን ሊቀንስ ይችላል ፣ ግን ትራፊክን ይጨምራል ። እነዚህን እሴቶች ከመቀየርዎ በፊት አጠቃላይ ተገኝነት እና የመሰብሰቢያ ቴሌሜትሪን ከዘግየት እና የኋላ ግፊት መለኪያዎች ጋር ያወዳድሩ:
+በጣም ትንሽ ድንበሮች ወረፋ ወይም ጭነት-መልሶ ማግኛ ግፊት ይፈጥራሉ; ከመጠን በላይ የሆኑ ድንበሮች የተያዘ ማህደረ ትውስታን እና ለተሳዳቢ አውታረመረብ ያለውን የስራ መጠን ይጨምራሉ አቻ. በአንድ ጊዜ አንድ ማሰሪያ ከመቀየርዎ በፊት የምርመራውን ነጥብ-በጊዜ ውሂብ እይታ ከሂደት ማህደረ ትውስታ፣ የመልእክት አያያዝ እና የጎደለው የውሂብ አካል መለኪያዎች ጋር ያወዳድሩ -
 
 ```bash
-iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetry
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi diagnostics
 ```
 
 ### የአውታረ መረብ ሁኔታዎች {#network-conditions}
 
-የጋራ ስምምነት አፈፃፀም የሚከተሉትን ነገሮች የሚመለከት ነው-
+የጋራ መግባባት አፈጻጸም ለሚከተሉት ስሜታዊ ነው -
 
-- RTT በመረጃ ማረጋገጫዎች መካከል
-- ጭንቀት እና የፓኬት ኪሳራ
-- የብሎክ ጥቅማጥቅሞች እና RBC ቁርጥራጮች የመተላለፊያ ይዘት
-- በክልሎች መካከል ያሉ ያልተዛመዱ አገናኞች
-- NAT, የእኩዮች ግንኙነትን የሚዘገይ የፋየርዎል ወይም ሪሌ ባህሪ።
+- RTT በአረጋጋጮች መካከል
+- የጅረት እና የፓኬት መጥፋት
+- የመተላለፊያ ይዘት ለጭነቶች እና የተፈረሙ RS16 ቁርጥራጮች
+- በክልሎች መካከል ያልተመጣጠነ አገናኞች
+- NAT፣ የአውታረ መረብ አቻ ግንኙነትን የሚያዘገይ ፋየርዎል ወይም የማስተላለፊያ ባህሪ
 
-እንደ እቅድ ደንብ ፣ በርካታ የማረጋገጫ ዙር ጉዞዎችን እና የአፈፃፀም እና የዲስክ ተሳትፎ ጊዜን ለመሸፈን የሚያስችል የላቲንሲ በጀት ከፍ ያድርጉ። p95 አውታረመረብ RTT ቀድሞውኑ ከሚፈለገው p95 ተሳትፎ መዘግየት ጋር ቅርብ ከሆነ ግቡ እውን አይደለም ።
+እንደ እቅድ ደንብ፣ ብዙ አረጋጋጭ የክብ ጉዞዎችን እና የማስፈጸሚያ እና የዲስክ ጽናት ጊዜን ለመሸፈን የመዘግየት በጀቱን ከፍ ያድርጉት። p95 አውታረ መረብ RTT ቀድሞውኑ ወደሚፈለገው የp95 ፕሮቶኮል ማጠናቀቂያ መዘግየት ቅርብ ከሆነ፣ ዒላማው እውን አይደለም።
 
-### ረድፎችና የመግቢያ ገደቦች {#queues-and-admission-limits}
+### ወረፋዎች እና የመግቢያ ገደቦች {#queues-and-admission-limits}
 
-የመግቢያ እና ረድፍ ቅንብሮች አንድ ባልደረባ ምን ያህል የበረራ ግፊት ሊወስድ እንደሚችል ይገልጻሉ:
+የመግቢያ እና የወረፋ ቅንጅቶች የአውታረ መረብ አቻ ምን ያህል የፍንዳታ ግፊት ሊወስድ እንደሚችል ይገልጻሉ -
 
 - `queue.capacity`
 - `queue.capacity_per_user`
+- `queue.max_retained_bytes`
 - `queue.transaction_time_to_live_ms`
-- የጄኔሲስ ግብይት ገደቦች እንደ ከፍተኛ ፊርማዎች ፣ መመሪያዎች ፣ ባይቶች እና የታመሙ ባይቶች ያሉ
-- p2p ረድፍ ገደቦች እና የጋራ የመግቢያ ገደቦች
+- እንደ ከፍተኛ ፊርማዎች፣ መመሪያዎች፣ ባይቶች እና የተጨመቁ ባይቶች ያሉ የብሎክቼይን ጀነሲስ የግብይት ገደቦች
+- P2P ወረፋ ካፕ እና የጋራ መግባባት የመግቢያ ገደቦች
 
-ከፍተኛ ረድፍ አቅም ለተወሰነ ጊዜ ከመጠን በላይ ጭነትን ሊደብቅ ይችላል ፣ ግን ዘላቂውን ፍሰት አይጨምርም ። የተረጋጋ ረድፍ ጤናማ ነው ፣ እየጨመረ የመጣው ረድፍ የኋላ ኋላ ነው።
+ከፍተኛ ወረፋ አቅም ለተወሰነ ጊዜ ከመጠን በላይ መጫንን ሊደብቅ ይችላል, ነገር ግን ዘላቂ የፍጆታ መጠን አይጨምርም. የተረጋጋ ወረፋ ጤናማ ነው; እያደገ ያለው ወረፋ የኋላ መዝገብ ነው።
 
 ### ሃርድዌር እና ማከማቻ {#hardware-and-storage}
 
-መሪውን ብቻ ሳይሆን እያንዳንዱን ማረጋገጫ ይለኩ:
+መሪውን ብቻ ሳይሆን እያንዳንዱን አረጋጋጭ ይለኩ -
 
-- CPU ማረጋገጫ፣ የፊርማ ማረጋገጫ እና አፈፃፀም ወቅት የተሞላበት
-- ረድፎች፣ ቅጽበታዊ ገጽ እይታዎች እና ንቁ RBC ክፍለ ጊዜዎች የመታሰቢያ ግፊት
-- ለብሎክ ማከማቻ እና ቅጽበታዊ ገጽ እይታዎች የዲስክ መፃፍ መዘግየት
-- የአውታረ መረብ የመላኪያ/የተቀባ saturation
-- በስራ ጭነት ሲጠቀሙ አማራጭ የሃርድዌር ማፋጠን ቅንጅቶች
+- CPU በማረጋገጫ፣ በፊርማ ማረጋገጫ እና በአፈፃፀም ወቅት ሙሌት
+- የማህደረ ትውስታ ግፊት ከወረፋዎች፣ ነጥብ-በ-ጊዜ የውሂብ እይታዎች እና ጭነት-መልሶ ማግኛ ቋቶች
+- ለብሎክ ማከማቻ እና ነጥብ-በ-ጊዜ የውሂብ እይታዎች የዲስክ መፃፍ መዘግየት
+- የአውታረ መረብ ማስተላለፊያ/ሙሌት
+- በስራ ጫናው ሲጠቀሙ አማራጭ የሃርድዌር ማጣደፍ ቅንጅቶች
 
-በጣም ቀርፋፋው የድምፅ ማረጋገጫ አውታረመረብን ኋላ መዘግየት ሊወስን ይችላል።
+በጣም ቀርፋፋው የድምጽ መስጫ አረጋጋጭ የአውታረ መረቡን ጅራት መዘግየት ሊወስን ይችላል።
 
-## የፕሮሜቴየስ ምልክቶች {#prometheus-signals}
+## የፕሮሜቲየስ ምልክቶች {#prometheus-signals}
 
-ሜትሪክ ስሞች በመገንባት መገለጫ እና ባህሪያት ስብስብ ላይ ሊለያዩ ይችላሉ. በመጀመሪያ `/metrics` ን በአገናኝዎ ላይ ይፈትሹ ፣ ከዚያ በሚገኙ ተከታታይ ዙሪያ ዳሽቦርዶችን ይገንቡ ።
+ሜትሪክ ስሞች ከተመዝግበው የቴሌሜትሪ ካታሎግ የመጡ ናቸው። ተከታታይ ተገኝነት እና ናሙና አሁንም በግንባታ ባህሪያት እና `telemetry_profile` ላይ የተመሰረተ ነው፣ ስለዚህ ዳሽቦርድ ከመገንባትዎ በፊት በዒላማው ኖድ ላይ `/metrics` ይፈትሹ።
 
-የተለመዱ ምልክቶች የሚከተሉትን ያካትታሉ:
+የተለመዱ ምልክቶች የሚከተሉትን ያካትታሉ
 
-|ምልክቱ |የፕሮሜቴዎስ ምሳሌዎች |ምን መመልከት |
+|ምልክት|የፕሮሜቲየስ ምሳሌዎች|ምን መታየት እንዳለበት|
 | --- | --- | --- |
-|ተቀባይነት ያለው ፍሰት |`sum(rate(txs{type="accepted"}[5m]))` |በተረጋጋ ሁኔታ ውስጥ ግቡን TPS ማሟላት ወይም አልፎ መሄድ አለበት |
-|ውድቅ ማድረግ |`sum(rate(txs{type="rejected"}[5m]))` |በምርመራው እቅድ ሊብራራ ይገባል።|
-|መዘግየትን ያድርጉ |`histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |p95/p99 ከዘግይቱ በጀት ጋር አወዳድር |
-|ረድፍ ጥልቀት |`queue_size` ፣ `sumeragi_tx_queue_depth` |በከፍተኛ ጭነት ወቅት መቆየት አለበት ።|
-|ረድፍ saturation |`sumeragi_tx_queue_saturated` |ከዜሮ በላይ ያልሆኑ ተከታታይ እሴቶች አማካይ ጭነት |
-|ለውጦችን ይመልከቱ |`view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` |እየጨመሩ ያሉት እሴቶች የጊዜ ሰሌዳ፣ ቶፖሎጂ፣ ጠቃሚ ጭነት ወይም የአውታረ መረብ ችግርን ይጠቁማሉ። |
-|የወደቁ መልዕክቶች |`dropped_messages` ፣ `sumeragi_consensus_message_handling_total` |በጭነት ወቅት መውደቅ አብዛኛውን ጊዜ የዘገየበትን ጫፎች ያብራራል ።|
-|RBC ግፊት |`sumeragi_rbc_store_pressure` ፣ `sumeragi_rbc_backpressure_deferrals_total` |ለጠቅላላ ጭነት ማግኛ ወይም ለማከማቻ ጠርሙስ መቆለፊያዎች ከዜሮ ውጭ ግፊት ነጥቦች |
-|የቁጥር ማረጋገጫ |`sumeragi_commit_signatures_counted` ፣ `sumeragi_commit_signatures_required` |የተዘረዘሩ ፊርማዎች በተፈለገው መጠን በፍጥነት መድረስ አለባቸው ።|
+|ተቀባይነት ያለው የመተላለፊያ ይዘት|`sum(rate(txs{type="accepted"}[5m]))`|በተረጋጋ ሁኔታ ዒላማውን TPS ማሟላት ወይም ማለፍ አለበት|
+|አለመቀበል|`sum(rate(txs{type="rejected"}[5m]))`|በፈተና እቅድ ሊገለጽ የሚችል መሆን አለበት|
+|የፕሮቶኮል ማጠናቀቂያ መዘግየት|`histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))`|p95/p99 ን ከመዘግየት በጀት ጋር ያወዳድሩ|
+|የወረፋ ጥልቀት|`queue_size`፣ `sumeragi_tx_queue_depth`|በከፍተኛ ጭነት ጊዜ ታስቦ መቆየት አለበት|
+|ወረፋ ሙሌት|`sumeragi_tx_queue_saturated`|ዘላቂ ዜሮ ያልሆኑ እሴቶች ማለት ከመጠን በላይ መጫን ማለት ነው|
+|ለውጦችን ይመልከቱ|`view_changes`፣ `sumeragi_view_change_suggest_total`፣ `sumeragi_view_change_install_total`|እየጨመረ የሚሄደው እሴቶች ጊዜን፣ ቶፖሎጂን፣ ጭነት ወይም የአውታረ መረብ ችግርን ያመለክታሉ|
+|የተጣሉ መልዕክቶች|`dropped_messages`፣ `sumeragi_consensus_message_handling_total`|በጭነት ጊዜ ጠብታዎች ብዙውን ጊዜ የመዘግየት ነጠብጣቦችን ያብራራሉ|
+|ጭነት እና DA መልሶ ማግኛ|`sumeragi_missing_block_requests`፣ `sumeragi_missing_block_oldest_ms`፣ `sumeragi_missing_block_fetch_total`፣ `sumeragi_da_gate_block_total`፣ `sumeragi_da_gate_satisfied_total`|የማያቋርጥ ጥያቄዎች፣ እድሜ መጨመር ወይም ተደጋጋሚ DA በሮች በውሂብ አካል ወይም ቁራጭ ማግኛ ላይ ችግሮችን ያመለክታሉ|
+|የጋራ መግባባት ማጠናቀቂያ ምልአተ ጉባኤ|`sumeragi_commit_signatures_counted`፣ `sumeragi_commit_signatures_required`|የተቆጠሩ ፊርማዎች ወደሚፈለገው ምልአተ ጉባኤ በፍጥነት መድረስ አለባቸው|
 
-አንድ መለኪያ `/v1/sumeragi/status` ውስጥ ብቻ በሚገኝበት ጊዜ, የ Prometheus scraping ጋር ተመሳሳይ አሂድ artefacts ውስጥ JSON ቅጽበታዊ ገጽ እይታ ይያዙ.
+መለኪያ በ`/v1/sumeragi/status` ውስጥ ብቻ ሲኖር፣ የ JSON ነጥብ-በ-ጊዜ የውሂብ እይታን እንደ ፕሮሜቲየስ መቧጨር በተመሳሳይ የሩጫ አርቲፋክቶች ይያዙ።
 
-## ግምታዊ የስራ ፍሰት {#estimation-workflow}
+## የግምት የስራ ፍሰት {#estimation-workflow}
 
-1. ሁኔታውን ግለጽ።
-   - የማረጋገጫ ሰጪዎች እና ታዛቢዎች ቁጥር
-   - የስምምነት ሁነታ
-   - ግቡ TPS
-   - p95 እና p99 የኃላፊነት መዘግየት በጀቶች
+1. ሁኔታውን ይግለጹ
+   - የማረጋገጫ ቆጠራ እና የታዛቢዎች ብዛት
+   - የጋራ መግባባት ሁነታ
+   - ዒላማ TPS
+   - P95 እና P99 ፕሮቶኮል ማጠናቀቂያ-መዘግየት በጀቶች
    - የግብይት ድብልቅ
-   - የሚጠበቀው አውታረመረብ RTT ፣ jitter እና ባንድዊድዝ
-2. ውጤታማውን ውቅር ይመዝገቡ:
+   - የሚጠበቀው አውታረ መረብ RTT፣ ጅረት እና የመተላለፊያ ይዘት
+2. ውጤታማውን ውቅር ይመዝግቡ -
 
    ```bash
-   iroha --config ./localnet/client.toml --output-format json ops sumeragi params \
+   iroha --config ./localnet/client.toml \
+     --operator-private-key-file "$OPERATOR_KEY_FILE" \
+     --output-format json ops sumeragi params \
      > artifacts/sumeragi-params.json
-   curl -s "$TORII/v1/sumeragi/collectors" \
-     > artifacts/sumeragi-collectors.json
+   iroha --config ./localnet/client.toml \
+     --operator-private-key-file "$OPERATOR_KEY_FILE" \
+     --output-format json ops sumeragi status \
+     > artifacts/sumeragi-status.json
+   iroha --config ./localnet/client.toml \
+     --operator-private-key-file "$OPERATOR_KEY_FILE" \
+     --output-format json ops sumeragi diagnostics \
+     > artifacts/sumeragi-diagnostics.json
    ```
 
-3. የስራ ጭነት በዒላማው TPS ላይ ይሂዱ.
-4. በሩጫው መጀመሪያ, አጋማሽ እና መጨረሻ ላይ ያለውን ሁኔታ እና መለኪያዎችን ይያዙ.
-5. የአፈፃፀም ባንድ ሰንጠረዥን በመጠቀም ሩጫውን ያከፋፍሉ.
-6. ባንድው መካከለኛ ወይም ዝቅተኛ ከሆነ በአንድ ጊዜ አንድን ነገር መለወጥ እና መድገም.
+3. የሥራውን ጫና በዒላማው ላይ ያሂዱ TPS.
+4. በሩጫው መጀመሪያ፣ መሃል እና መጨረሻ ላይ ሁኔታን እና መለኪያዎችን ይያዙ።
+5. ሩጫውን ከአፈጻጸም-ባንድ ሠንጠረዥ ጋር ይመድቡት።
+6. ባንዱ መካከለኛ ወይም ዝቅተኛ ከሆነ አንድ ምክንያት በአንድ ጊዜ ይቀይሩ እና ይድገሙት።
 
-## የማጣቀሻ ሪፖርት አብነት {#benchmark-report-template}
+## የቤንችማርክ ሪፖርት አብነት {#benchmark-report-template}
 
-የአፈፃፀም ቁጥሮችን ለማባዛት በቂ ዐውደ-ጽሑፍ ብቻ ያዘጋጁ:
+የአፈጻጸም ቁጥሮችን እንደገና ለማግኘት የሚያስችል በቂ አውድ ሲኖር ብቻ ያትሙ፦
 
-- Iroha የተዋጣለት፣ የተለቀቀ እና ባህሪ ባንዲራዎች
-- እውቅና ሰጪ እና ታዛቢዎች ቁጥር
-- የስምምነት ሁነታ እና Sumeragi መለኪያዎች
-- መሰብሰብ `k`, redundant መላክ `r`, እና የቶፖሎጂ fanout
+- Iroha ፕሮቶኮል ማጠናቀቅ፣ መልቀቅ እና የባህሪ ባንዲራዎች
+- አረጋጋጭ እና ታዛቢ ይቆጥራል
+- የጋራ ስምምነት ሁነታ፣ የተፈረመ የብሎክ ምት እና DA አቀማመጥ
+- ትክክለኛ `3f + 1` ኮሚቴ፣ ምልአተ ጉባኤ እና የታዛቢዎች ዝርዝር
+- `sumeragi.block`፣ `sumeragi.queues`፣ `sumeragi.limits`፣ የአውታረ መረብ መግቢያ እና የግብይት-ወረፋ ወሰን
 - የቴሌሜትሪ መገለጫ
-- የሃርድዌር ፣ የማከማቻ እና OS ዝርዝሮች
-- የአውታረ መረብ RTT, jitter, ኪሳራ እና የመተላለፊያ ይዘት ግምቶች
-- የግብይት ድብልቅ እና የፍጆታ ጭነት መጠን
-- የቀረበው TPS እና የስራ ፍጥነት
-- ተቀባይነት ያለው/የተከለከለ TPS
-- p50/p95/p99 የኮሚት መዘግየት
-- ረድፍ ጥልቀት እና መጨናነቅ
-- የመመልከቻ ለውጦች፣ የተጣሉ መልዕክቶች፣ RBC ግፊት እና የጎደለው የፍጆታ ጭነት መለኪያዎች
-- CPU, የማስታወሻ, ዲስክ እና የአውታረ መረብ አጠቃቀም በእያንዳንዱ ማረጋገጫ
+- ሃርድዌር፣ ማከማቻ እና OS ዝርዝሮች
+- አውታረ መረብ RTT፣ መንቀጥቀጥ፣ ኪሳራ እና የመተላለፊያ ይዘት ግምቶች
+- የግብይት ድብልቅ እና የጭነት መጠኖች
+- የቀረበ TPS እና የቆይታ ጊዜ አሂድ
+- ተቀባይነት አግኝቷል/ውድቅ ተደርጓል TPS
+- P50 / P95 / P99 ፕሮቶኮል ማጠናቀቂያ መዘግየት
+- የወረፋ ጥልቀት እና ሙሌት
+- ለውጦችን፣ የተጣሉ መልዕክቶችን፣ የጎደሉ-ብሎክ ማምጣቶችን እና DA-በር ቆጣሪዎችን ይመልከቱ
+- CPU፣ ማህደረ ትውስታ፣ ዲስክ እና የአውታረ መረብ አጠቃቀም በአንድ አረጋጋጭ
 
-እነዚህ ዝርዝሮች ከሌሉ የ TPS ቁጥር እንደ አስቂኝ ነገር ተደርጎ መወሰድ አለበት።
+እነዚህ ዝርዝሮች ከሌሉ TPS ቁጥር እንደ ተጨባጭ መታየት አለበት።
 
 ## ተዛማጅ ገጾች {#related-pages}
 
-- [ከኢዛናሚ ጋር ካኦስ ሙከራ ](./chaos-testing.md)
-- [Torii መጨረሻ ነጥቦች](../../reference/torii-endpoints.md)
-- [በ Iroha 3 በኩል ይሠራል CLI](../../get-started/operate-iroha-via-cli.md)
-- [የእኩዮች ውቅር ማጣቀሻ ](../../reference/peer-config/params.md)
+- [ከኢዛናሚ ጋር ትርምስ ሙከራ](./chaos-testing.md)
+- [Torii API የመጨረሻ ነጥቦች](../../reference/torii-endpoints.md)
+- [Iroha 3 በ CLI በኩል ያሂዱ](../../get-started/operate-iroha-via-cli.md)
+- [የአውታረ መረብ አቻ ውቅር ማጣቀሻ](../../reference/peer-config/params.md)

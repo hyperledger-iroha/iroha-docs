@@ -1,28 +1,28 @@
 ---
 translation_locale: az
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: 429535e5bb4ad1d3110f29a5b3896c0d3ce39264dbd357fa932fcc2a5f48d0f1
+translation_source_hash: 6d36784afef0ef10113cabc995ddfb45fd8d382d7c32c553d77cf03ba5c1f65f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Hesablar və ali-saytlar {#accounts-and-aliases}
+# Hesablar və Ləqəblər {#accounts-and-aliases}
 
 ## Nəticə {#outcome}
 
-Domainless Canonical ilə təhlükəsiz işləyin I105 hesab IDs və ayrı-ayrı bağlanmış insan tərəfindən oxuna bilən adlar, məsələn `treasury@payments.universal`. Sən yoxlayacaqsan. Taira hesablar, öz kanonik mənşəli ID, yollanma kontekstini şəxsiyyətlə qarışdırmadan aliasları həll etmək.
+Domeni olmayan tək protokol-standart I105 hesab identifikatorları və `treasury@payments.universal` kimi ayrıca bağlı insan tərəfindən oxuna bilən ləqəblərlə təhlükəsiz işləyin. Siz Taira hesablarını yoxlayacaqsınız, öz tək protokol-standart identifikatorunuzu əldə edəcəksiniz və yönləndirmə kontekstini şəxsiyyətlə qarışdırmadan ləqəbləri həll edəcəksiniz.
 
-## Əvvəlki şərtlər {#prerequisites}
+## Tələb olunan əvvəlcədən biliklər {#prerequisites}
 
-- `curl`, `jq`, Python 3.11 və ya daha sonrakı dövrlər və axın `iroha` CLI.
-- A `taira.client.toml` üçün [Bağlantı Taira](./connect-to-taira.md) Öz hesabınızı yoxlayarkən.
-- Taira kranı və ya şəbəkənin idarə olunan yüklənmə yolu vasitəsilə hesabın xüsusi oxunmasının uğur qazanacağını gözləmədən təmin edilmiş hesab.
+- `curl`, `jq`, Python 3.11 və daha sonrakı versiyaları, həmçinin cari `iroha` CLI.
+- Öz hesabınızı yoxlayarkən [Taira-ə qoşul](./connect-to-taira.md)-dən bir `taira.client.toml`.
+- Hesaba xas oxumağın uğurla baş tutmasını gözləmədən əvvəl Taira testnet maliyyələşdirmə xidməti vasitəsilə və ya şəbəkənin idarə olunan qoşulma yolu ilə təmin edilmiş bir hesab.
 
-## Dərslər {#steps}
+## Addımlar {#steps}
 
-### 1. Taira üzrə kanonik hesabları yoxlayın. {#_1-inspect-canonical-accounts-on-taira}
+### 1. Taira-də tək protokol-standart hesabları yoxlayın {#_1-inspect-canonical-accounts-on-taira}
 
-İctimai hesablar siyahısında hər zaman kanonik I105 IDs qaytarılır. Birincil əlifba seçimdir və ayrı-ayrı bildirilir.
+İctimai hesab siyahısı həmişə tək protokol-standart I105 ID-lərini qaytarır. Əsas ləqəb seçimi ixtiyari olub ayrıca bildirilir.
 
 ```bash
 curl -fsS -H 'Accept: application/json' \
@@ -30,11 +30,11 @@ curl -fsS -H 'Accept: application/json' \
   | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
 ```
 
-ID `.id` hesab sahələri üçün etibarlıdır. Ona bir domen əlavə etməyin. `.primary_alias` əlifbası istifadəçiyə yönəlmiş axtarış açarıdır, başqa bir kanonik kimlik deyil.
+`.id` -dan olan bir şəxsiyyət vəsiqəsi ciddi hesab sahələri üçün etibarlıdır. Ona bir domen əlavə etməyin. `.primary_alias` -dən olan bir təxəllüs istifadəçi qarşısında axtarış açarıdır, başqa bir protokol-standart şəxsiyyət deyil.
 
-### 2. Taira I105 ID -ni təyin edin və normallaşdırın. {#_2-derive-and-normalize-your-taira-i105-id}
+### 2. Taira I105 İD-nizi çıxarın və normallaşdırın {#_2-derive-and-normalize-your-taira-i105-id}
 
-Yalnız ictimai açarı yerli konfigüratsiyadan oxuyun. Eyni ictimai anahtar müxtəlif ictimai şəbəkə profilləri üçün fərqli şəkildə kodlanır, buna görə `taira` seçin.
+Yalnız yerli konfiqurasiyadan açıq açarı oxuyun. Eyni açıq açar fərqli ictimai blokçeyn şəbəkə profilləri üçün fərqli şəkildə kodlanır, buna görə `taira`-ı açıq şəkildə seçin.
 
 ```bash
 TAIRA_PUBLIC_KEY="$(python3 - <<'PY'
@@ -53,11 +53,11 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID" \
   | iroha tools address normalize --profile taira
 ```
 
-Normallaşdırılmış qiymət `TAIRA_ACCOUNT_ID` ilə eynidir. TOML faylında olan `[account].domain` parametrləri `wonderland.universal` ola bilər, lakin bu dəyər yalnız marşrutlama və alias kontekstinə təsir edir.
+Normallaşdırılmış dəyər `TAIRA_ACCOUNT_ID` ilə eyni olmalıdır. TOML faylındakı `[account].domain` parametri `wonderland.universal` ola bilər, lakin bu dəyər yalnız yönləndirmə və ləqəb kontekstinə təsir göstərir.
 
-### 3. Hesabı və aktivlərini oxuyun. {#_3-read-the-account-and-its-assets}
+### 3. Hesabı və onun aktivlərini oxuyun {#_3-read-the-account-and-its-assets}
 
-Hesabın təmin edilməsindən sonra, birbaşa sual verin və sərhədləndirilmiş aktiv səhifəsini siyahıya alın. URL - yolu istifadə etməzdən əvvəl I105 dəyərini kodlayın.
+Hesab təmin edildikdən sonra birbaşa onu sorğu edin və məhdudlaşdırılmış aktiv səhifəsini siyahıya alın. URL-dakı I105 dəyərini bir yolda istifadə etməzdən əvvəl kodlayın.
 
 ```bash
 iroha --config ./taira.client.toml ledger account get \
@@ -73,9 +73,9 @@ curl -fsS -H 'Accept: application/json' \
   | jq '{total, items}'
 ```
 
-### 4. Hesabla əlaqəli adları axtarın. {#_4-look-up-aliases-bound-to-the-account}
+### 4. Hesaba bağlı takma adlara baxın {#_4-look-up-aliases-bound-to-the-account}
 
-Əksinə həllçi bir dəqiq kanonik hesabı qəbul edir ID. İctimai məlumat sahəsi sətirləri müraciət imza başlıqları olmadan oxuna bilər; məhdud məlumat sahələri icazəli imzalanmış tələb tələb edir.
+Tərs rezolver bir dəqiq tək protokol-standart hesab ID-sini qəbul edir. İctimai məlumat sahələrinin sətirləri sorğu-imza başlıqları olmadan oxuna bilər; məhdud məlumat sahələri isə səlahiyyətli imzalı sorğu tələb edir.
 
 ```bash
 jq -nc --arg account_id "$TAIRA_ACCOUNT_ID" \
@@ -89,7 +89,7 @@ curl -fsS -H 'Accept: application/json' \
   | jq '{account_id, total, items}'
 ```
 
-`total: 0` etibarlıdır: bir hesabın aliyi lazım deyil. Bir bağlayıcı varsa, tam təsdiqlənmiş aliyini həll edin və qaytarılmış hesabı ID müqayisə edin:
+`total: 0` etibarlıdır: bir hesab üçün alias tələb olunmur. Bağlantı mövcud olduqda, onun tam olaraq təyin olunmuş aliasını müəyyən edin və qaytarılan hesab ID-sini müqayisə edin:
 
 ```bash
 ALIAS_WAS_RESOLVED=false
@@ -109,13 +109,13 @@ else
 fi
 ```
 
-::: warning Rəsmi sərhəd
+::: warning İcazə sərhədi
 
-Taira kranı iddiaçının hesabını təmin edə bilər, lakin bu ümumi hesab qeydiyyatına və ya alias idarəetmə səlahiyyətinə malik deyil. Başqa bir hesabın qeydiyyata alınması üçün aktiv təsdiqçi altında `CanRegisterAccount` tələb olunur. Hesab aliases ümumiyyətlə aktiv SNS icarə müqaviləsi və uyğun alias icazələri tələb edir. idarə edilən onboarding / alias planer istifadə edin, ya da istehsal olunan yerli şəbəkəyə qarşı qeydiyyat təcrübəsi.
+Taira testnet maliyyələşdirmə xidməti öz iddiaçı hesabını təmin edə bilər, lakin bu, ümumi hesab qeydiyyatı və ya aliase idarəetmə səlahiyyətini vermir. Başqa bir hesabın qeydiyyatı aktiv təsdiqləyici altında `CanRegisterAccount` tələb edir. Hesab təxəllüsləri adətən həmçinin aktiv SNS icarə və müvafiq təxəllüs icazələri tələb edir. İdarə olunan qeydiyyat/təxəllüs planlayıcısından istifadə edin və ya yaradılmış yerli şəbəkəyə qarşı qeydiyyatı məşq edin.
 
 :::
 
-Yerli şəbəkədə, təhlükəsiz imzalanma təchizatı mərhələsi yeni kanonik `NEW_ACCOUNT_ID` ixrac etdikdən sonra qeydiyyat səthinin:
+Yerel şəbəkədə, bir təhlükəsiz kriptoqrafik imza-açar təchizatı addımı yeni bir tək protokol-standart `NEW_ACCOUNT_ID` ixrac etdikdən sonra, qeydiyyat səthi belədir:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -127,11 +127,11 @@ iroha --config ./localnet/client.toml ledger account get \
   --id "$NEW_ACCOUNT_ID"
 ```
 
-Müvafiq xüsusi açarı sənəd və ya tətbiq anbarının xaricində istehsal etmək və saxlamaq. ID nəzarətçi açarı atılmış olan istifadəsi mümkün olmayan hesab yaratır.
+Uyğun şəxsi açarı sənədlərdən və ya tətbiq anbarından kənarda yaradın və saxlayın. İdarəçi açarı atılmış bir ID-ni qeydiyyatdan keçirmək istifadə edilə bilməyən hesab yaradır.
 
-## Tətbiq edin {#verify}
+## Yoxla {#verify}
 
-Konfigurasiya ictimai açarının, I105 kodlaşdırmanın və bağlayan aliasların hamısı bir kanonik hesabda ID birləşdiyini sübut edin:
+Sübut edin ki, konfiqurasiyanın açıq açarı, I105 kodlaşdırması və ləqəb bağlanması hamısı tək bir protokol-standart hesab ID-sində birləşir:
 
 ```bash
 NORMALIZED_ACCOUNT_ID="$(
@@ -145,22 +145,22 @@ if test "${ALIAS_WAS_RESOLVED:-false}" = true; then
 fi
 ```
 
-Kanonik hesabı saxlayın IDs. İmzalar, icazələr və əməliyyat təlimatları üçün kanonik IDs istifadə edin. Tətbiq sərhədində bir alias həll edin. Əməliyyat üçün istifadə olunan kanonik hesabı ID saxlayın.
+Tək protokol-standart hesab ID-lərini saxlayın. İmzalar, icazələr və əməliyyat təlimatları üçün tək protokol-standart ID-lərdən istifadə edin. Alias-ı tətbiq sərhədində həll edin. Əməliyyat üçün istifadə olunan tək protokol-standart hesab ID-sini saxlayın.
 
-## Problemlərin həlli {#troubleshooting}
+## Problemlərin aradan qaldırılması {#troubleshooting}
 
-- Parse və ya prefix səhvləri ümumiyyətlə bir ünvanın fərqli bir şəbəkə profili üçün kodlaşdırıldığını göstərir. `--profile taira` ilə normallaşdırın və uyğunsuzluqları rədd edin.
-- Hesab `404` bir faucet `202` sonra yayılma gecikməsi ola bilər. hesabı və ya maliyyələşdirilmiş aktiv göndərmədən əvvəl sorğu.
-- `total: 0` reverse resolver-dən görünən bir alias bağlanmamışdır; hesab axtarışında səhv yoxdur.
-- `401` və ya `403` bir alias marşrutdan məhdud məlumat sahəsi və ya kifayət qədər dəqiq həll icazəsi göstərir. Yuxarı prefiks axtarışını geri çəkilmək üçün istifadə etməyin.
-- Oxuna bilən `name@domain.dataspace` dəyəri hər yerdə qəbul edilmir. Kanonik I105 ID tələb olunur.
-- Əgər yerli hesabın qeydiyyatı uğurlu olsa, lakin Taira İzin verilməsini rədd edərsə, fərq icazədir. `CanRegisterAccount`; Hesabı dəyişdirməyin ID təsdiqlənmədən kənarda qalmaq.
+- Bir təhlil və ya prefiks xətası adətən ünvanın fərqli şəbəkə profili üçün kodlaşdırıldığını göstərir. `--profile taira` ilə normallaşdırın və uyğun gəlməyənləri rədd edin.
+- Testnet maliyyələşdirmə xidməti `202` sonra bir hesab `404` yayılma gecikməsi ola bilər. Yazını göndərmədən əvvəl hesabı və ya maliyyələşdirilmiş aktivləri sorğulayın.
+- `total: 0` tərs həll edicidən o deməkdir ki, görünən heç bir təxəllüs bağlı deyil; bu, hesab axtarışı uğursuzluğu deyil.
+- `401` və ya `403` bir təxəllüs marşrutundan məhdudlaşdırılmış verilənlər məkanını və ya kifayət qədər dəqiq həll icazəsinin olmadığını göstərir. Geri çəkilmə kimi geniş prefiks axtarışından istifadə etməyin.
+- Oxunaqlı `name@domain.dataspace` dəyər hər yerdə tək bir protokol-standart I105 ID tələb olunduğu halda qəbul edilmir. Əvvəlcə onu həll edin.
+- Əgər yerli hesabın qeydiyyatı uğurlu olarsa, amma Taira onu rədd edirsə, fərq səlahiyyətlə bağlıdır. `CanRegisterAccount`-u əldə edin; yoxlamanı keçmək üçün hesab ID-sini dəyişdirməyin.
 
 ## Mənbə və əlaqəli sənədlər {#source-and-related-docs}
 
-- [Qeydiyyatlı komitdə Canonical hesab ünvanının tətbiqi](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs)
-- [Hesab və alias testləri Torii sabitləşdirilmiş komitdə ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs)
+- [sabitləşdirilmiş mənbə kodu reviziyasında tək protokol-standart hesab ünvanının tətbiqi](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs)
+- [Hesab və təxəllüs Torii bərkidilmiş mənbə kodu versiyasında testlər](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs)
 - [Hesablar](/az/blockchain/accounts.md)
-- [Məlumat modelləri aliases](/az/blockchain/data-model.md#aliases)
-- [Adlandırma konvensiyaları](/az/reference/naming.md)
-- [Rəsmi nişanlar ](/az/reference/permissions.md)
+- [Məlumat-modeli təxəllüsləri](/az/blockchain/data-model.md#aliases)
+- [Adlandırma qaydaları](/az/reference/naming.md)
+- [İcazə tokenləri](/az/reference/permissions.md)

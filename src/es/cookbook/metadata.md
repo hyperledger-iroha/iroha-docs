@@ -1,28 +1,28 @@
 ---
 translation_locale: es
 translation_source: /cookbook/metadata.md
-translation_source_hash: 238595124cd0a1b71900020d650fb208f844e051d2db4427801fe6405ff591c8
+translation_source_hash: bb486994faabb29fb48609a886862e44e565148be4800ec1244218ef37e2e54b
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Metadatos {#metadata}
 
-## El resultado {#outcome}
+## Resultado {#outcome}
 
-Leer metadatos en Taira, fijar y verificar el valor de los metadatos de una cuenta con una transacción de pago explícito, y eliminar el valor nuevamente. Mantendrá los metadatos de objetos del libro mayor separados de los metadados de las tarifas de transacción.
+Lea los metadatos en Taira, establezca y verifique un valor de metadatos de cuenta con una transacción que pague explícitamente la tarifa, y vuelva a eliminar el valor. Mantendrá los metadatos del objeto del libro mayor separados de los metadatos de la tarifa de transacción.
 
-## Los requisitos previos {#prerequisites}
+## Requisitos previos {#prerequisites}
 
-- `curl`, `jq`, Python 3.11 o más tarde, y la corriente `iroha` CLI.
-- Un `taira.client.toml` y un `taira.tx-metadata.json` financiados desde [Conectar con Taira](./connect-to-taira.md).
-- Autoridad sobre los metadatos de la cuenta objetivo. El ejemplo está dirigido a la propia autoridad configurada; otra cuenta requiere un permiso exacto.
+- `curl`, `jq`, Python 3.11 o posterior, y el `iroha` CLI actual.
+- Un financiado `taira.client.toml` y `taira.tx-metadata.json` de [Conectar a Taira](./connect-to-taira.md).
+- principal de autorización sobre los metadatos de la cuenta objetivo. El ejemplo apunta al propio principal de autorización configurado; otra cuenta requiere un permiso exacto.
 
-## Los pasos {#steps}
+## Pasos {#steps}
 
-### 1. Leer metadatos sin firmante. {#_1-read-metadata-without-a-signer}
+### 1. Leer metadatos sin un firmante criptográfico {#_1-read-metadata-without-a-signer}
 
-Los metadatos son un mapa comprobado `Name` a JSON. mapas vacíos y salida filtrada vacía son resultados válidos.
+Los metadatos son un mapa verificado de `Name` a JSON. Los mapas vacíos y la salida filtrada vacía son resultados válidos.
 
 ```bash
 curl -fsS -H 'Accept: application/json' \
@@ -36,11 +36,11 @@ curl -fsS -H 'Accept: application/json' \
   | jq '.items[] | select((.metadata // {} | length) > 0)'
 ```
 
-Utilice metadatos para pequeños campos de descripción o indexación. Coloque las grandes cargas útiles fuera del libro y guarde un digesto, URI, o SoraFS referencia en su lugar
+Utilice metadatos para campos descriptivos o de indexación pequeños. Coloque cargas útiles grandes fuera del libro mayor y almacene un valor de resumen criptográfico, URI, o una referencia SoraFS en su lugar.
 
 ### 2. Derivar la cuenta objetivo {#_2-derive-the-target-account}
 
-Sólo puede leer la clave pública de la configuración Taira y convertirla en el formulario canónico sin dominio I105.
+Lea solo la clave pública de la configuración de Taira y conviértala a la forma canónica I105 sin dominio.
 
 ```bash
 TAIRA_PUBLIC_KEY="$(python3 - <<'PY'
@@ -55,9 +55,9 @@ export TAIRA_ACCOUNT_ID="$(
 )"
 ```
 
-### 3. Establezca un valor de JSON {#_3-set-one-json-value}
+### 3. Establecer un valor JSON {#_3-set-one-json-value}
 
-El JSON leído a partir de la entrada estándar se convierte en el valor `cookbook_profile` de la cuenta. Por el contrario, `--metadata ./taira.tx-metadata.json` adjunta campos de tarifas al sobre de transacción.
+El JSON leído desde la entrada estándar se convierte en el valor `cookbook_profile` de la cuenta. Por el contrario, `--metadata ./taira.tx-metadata.json` adjunta campos de tarifa al contenedor de datos de la transacción. Los dos mapas tienen objetivos y propósitos diferentes.
 
 ```bash
 printf '%s\n' \
@@ -71,17 +71,17 @@ printf '%s\n' \
       --key cookbook_profile
 ```
 
-El CLI cita la tasa, firma, presenta y espera por defecto. No agregue `--no-wait` cuando la próxima operación dependa de este valor.
+El CLI cotiza la tarifa, firma, envía y espera por defecto. No agregue `--no-wait` cuando la siguiente operación dependa de este valor.
 
-::: warning Límites de los permisos
+::: warning Límite de permisos
 
-El validador activo decide quién puede mutar cada objeto. Actualizar otra cuenta normalmente requiere `CanModifyAccountMetadata`; dominios, definiciones de activos, NFTs, y los activadores tienen sus propios permisos de metadatos específicos del objetivo. Si Taira no ha otorgado la autoridad requerida, ejecute los mismos comandos de cuenta con `./localnet/client.toml`, sustituya el canónico de la autoridad localnet generada I105 ID, y omita el archivo de metadatos de cuotas Taira.
+El validador activo decide quién puede modificar cada objeto. Actualizar otra cuenta normalmente requiere `CanModifyAccountMetadata`; los dominios, definiciones de activos, NFTs y los disparadores tienen sus propios permisos de metadatos específicos del objetivo. Si Taira no ha concedido el principal de autorización requerido, ejecute los mismos comandos de cuenta con `./localnet/client.toml`, sustituya el ID canónico I105 del principal de autorización de red local generado y omita el archivo de metadatos de tarifa Taira. Mantenga la selección explícita del pagador de tarifas local.
 
 :::
 
-### 4. Retira la llave. {#_4-remove-the-key}
+### 4. Retire la llave {#_4-remove-the-key}
 
-En primer lugar, lea el valor comprometido y luego envíe una transacción de remoción separada.
+Primero lee el valor comprometido, luego envía una transacción de eliminación por separado.
 
 ```bash
 iroha --config ./taira.client.toml --machine ledger account meta get \
@@ -100,11 +100,11 @@ iroha --config ./taira.client.toml \
   --key cookbook_profile
 ```
 
-Para las aplicaciones Python, los constructores de tipografía correspondientes son `Instruction.set_account_key_value` y `Instruction.remove_account_key_value`; envíelos con los metadatos de la transacción y el asistente de espera del tutorial [Python ](/es/guide/tutorials/python.md#shared-setup).
+Para las aplicaciones Python, los constructores tipados correspondientes son `Instruction.set_account_key_value` y `Instruction.remove_account_key_value`; preséntelos con los metadatos de la transacción y el asistente de espera de [tutorial de Python](/es/guide/tutorials/python.md#shared-setup).
 
 ## Verificar {#verify}
 
-Después de la transacción establecida, `meta get` debe devolver el objeto con `version: 1`. Tras su eliminación, una búsqueda directa ya no debe devolver un valor:
+Después de la transacción establecida, `meta get` debe devolver el objeto con `version: 1`. Después de la eliminación, una búsqueda directa ya no debe devolver un valor:
 
 ```bash
 iroha --config ./taira.client.toml --machine ledger account get \
@@ -120,22 +120,22 @@ else
 fi
 ```
 
-La lectura de la cuenta separada distingue una clave de metadatos faltante de una falla de red o cuenta. El código de producción también debe verificar todo el valor JSON después de establecerlo.
+La lectura de la cuenta separada distingue una clave de metadatos faltante de una falla de red o de cuenta. El código de producción también debería verificar todo el valor JSON después de configurarlo.
 
 ## Solución de problemas {#troubleshooting}
 
-- La entrada estándar debe contener un valor válido JSON. Las cadenas deben tener citas JSON; los objetos y matrices deben estar bien formados.
-- Las claves de metadatos son valores `Name` y son sensibles al caso después del análisis. Mantenga un vocabulario de clave estable en lugar de crear claves versionadas para cada cambio de esquema.
-- `--metadata` Se trata de metadatos de transacciones; no establece metadatos del objeto de un libro mayor. `meta set` el subcomandante de este último.
-- Una presentación exitosa seguida de una vieja lectura puede ser un retraso en la propagación. Espera a la finalidad aplicada y vuelve a intentar la consulta antes de volver a enviar.
-- Un rechazo de permisos identifica el objeto objetivo y la frontera de autoridad. Reanudar localmente o solicitar el token exacto; no mover los datos privados de la aplicación a un campo de metadatos públicos para evitar el control de acceso.
-- Nunca almacenes claves privadas, identificadores personales en bruto, fichas de acceso o documentos grandes en metadatos.
+- La entrada estándar debe contener un valor válido JSON. Las cadenas necesitan comillas JSON; los objetos y arreglos deben estar bien formados.
+- Las claves de metadatos son valores `Name` y distinguen entre mayúsculas y minúsculas después del análisis. Mantenga un vocabulario de claves estable en lugar de crear claves con versiones para cada cambio de esquema.
+- `--metadata` es metadatos de transacción; no establece metadatos de objetos del libro mayor. Use el subcomando `meta set` de la entidad para esto último.
+- Una presentación exitosa seguida de una lectura antigua puede ser un retraso de propagación. Espere la finalización aplicada y vuelva a intentar la consulta antes de volver a enviar.
+- Un rechazo de permiso identifica el objeto objetivo y el límite del principal de autorización. Ensaye localmente o solicite el token exacto; no mueva datos de aplicaciones privadas a un campo de metadatos público para evitar el control de acceso.
+- Nunca almacene claves privadas, identificadores personales sin procesar, tokens de acceso o documentos grandes en los metadatos.
 
 ## Fuente y documentos relacionados {#source-and-related-docs}
 
-- [Pruebas de integración de la consulta de metadatos en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/queries/metadata.rs)
-- [Python SDK los constructores de transacciones en el compromiso fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/README.md)
-- [Metadatos ](/es/blockchain/metadata.md)
-- [Metadatos y opciones de almacenamiento del libro mayor](/es/guide/configure/metadata-and-store-assets.md)
-- [Referencia de las instrucciones ](/es/reference/instructions.md)
-- [Los tokens de autorización ](/es/reference/permissions.md)
+- [Pruebas de integración de consultas de metadatos en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/queries/metadata.rs)
+- [Python SDK constructores de transacciones en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/README.md)
+- [Metadatos](/es/blockchain/metadata.md)
+- [Opciones de almacenamiento de metadatos y libro mayor en blockchain](/es/guide/configure/metadata-and-store-assets.md)
+- [Referencia de instrucción](/es/reference/instructions.md)
+- [Tokens de permiso](/es/reference/permissions.md)

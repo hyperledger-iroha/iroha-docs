@@ -1,11 +1,10 @@
 ---
 translation_locale: ur
 translation_source: /get-started/operate-iroha-via-cli.md
-translation_source_hash: 0a0a0735015dee015da76d5a9f5d174f8ae8b2ad67ff8924d9596850a33fc1c1
+translation_source_hash: c070c86b715b36079a7b6a47de2e31144187d7ebc6309f294a346be61a372660
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Iroha 3 کے ذریعے CLI پر کام کریں {#operate-iroha-3-via-cli}
 
 `iroha` بائنری Iroha 3 کے لئے کمانڈ لائن کلائنٹ ہے۔ اس کا استعمال لیجر کی حیثیت سے استفسار کرنے ، لین دین جمع کروانے اور آپریٹر اختتامی پوائنٹس کی جانچ پڑتال کرنے کے لئے کریں۔
@@ -76,9 +75,9 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=10' \
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-تخلیق کریں `taira.client.toml` صرف اس وقت جب آپ دستخط شدہ احکامات کی جانچ کرنے کے لئے تیار ہیں. [سے رابطہ کریں SORA Nexus ڈیٹا بیس](/ur/get-started/sora-nexus-dataspaces.md) config کے لئے، نل، اور کینری بہاؤ. Taira جب تک کہ اکاؤنٹ کو نل فیس اثاثہ سے فنڈ نہیں کیا جاتا۔
+`taira.client.toml` صرف اسی وقت بنائیں جب آپ دستخط شدہ کمانڈز آزمانے کے لیے تیار ہوں۔ ترتیب، faucet اور canary کے طریقۂ کار کے لیے [SORA Nexus ڈیٹا اسپیس سے رابطہ کریں](/ur/get-started/sora-nexus-dataspaces.md) دیکھیں۔ جب تک اکاؤنٹ کو faucet کے فیس اثاثے سے فنڈ نہ کر دیا جائے، Taira پر write کمانڈز نہ چلائیں۔
 
-کسی بھی فیس کی ادائیگی کے لئے Taira CLI مثال کے طور پر، نل کی مدد سے بچانے [ٹیسٹ نیٹ حاصل کریں XOR پر Taira](/ur/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) کے طور `taira_faucet_claim.py`, پھر دعویٰ ٹیسٹ نیٹ XOR پہلا:
+کسی بھی فیس کی ادائیگی کے لئے Taira CLI مثال کے طور پر، فوسیٹ کی مدد سے بچانے [ٹیسٹ نیٹ حاصل کریں XOR پر Taira](/ur/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) کے طور `taira_faucet_claim.py`, پھر دعویٰ ٹیسٹ نیٹ XOR پہلا:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
@@ -92,7 +91,7 @@ iroha --config ./taira.client.toml ledger asset get \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-اگر نل پزل یا دعوے کا راستہ `502` لوٹتا ہے تو ، انتظار کریں اور دوبارہ کوشش کریں۔ یہ عوامی ٹیسٹ نیٹ کی دستیابی کا مسئلہ ہے ، اکاؤنٹ کی چابیاں بحال کرنے کے لئے ایک اشارہ نہیں ہے۔
+اگر فوسیٹ پزل یا دعوے کا راستہ `502` لوٹتا ہے تو ، انتظار کریں اور دوبارہ کوشش کریں۔ یہ عوامی ٹیسٹ نیٹ کی دستیابی کا مسئلہ ہے ، اکاؤنٹ کی چابیاں بحال کرنے کے لئے ایک اشارہ نہیں ہے۔
 
 بیلنس دیکھنے کے بعد، فیس اثاثہ میٹا ڈیٹا لکھنے کے لئے منسلک کریں:
 
@@ -141,28 +140,42 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 
 ## 5۔ آپریٹر کمانڈز {#_5-operator-commands}
 
-اتفاق رائے کی حیثیت:
+اتفاق رائے آپریٹر کے احکامات میں اجازت کی فہرست میں رن ٹائم کلید کی ضرورت ہوتی ہے۔ اسے `client.toml` سے باہر رکھیں اور صریح طور پر صرف مالک فائل کو منتقل کریں:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi status
+: "${OPERATOR_KEY_FILE:=./secrets/operator.key}"
+
+cargo run --bin iroha -- \
+  --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format text ops sumeragi status
 ```
 
-فی مرحلہ تاخیر فوری شاٹ:
+غیر مجاز قطار، پائپ لائن، انتخابی اور لین تشخیص:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi phases
+cargo run --bin iroha -- \
+  --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format text ops sumeragi diagnostics
 ```
 
-دستیابی، جمع کرنے والا، RBC بیکلاگ، اور VRF سنیپ شاٹ:
+سب سے زیادہ اور بند کووروم سرٹیفکیٹ:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi telemetry
+cargo run --bin iroha -- \
+  --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format text ops sumeragi qc
 ```
 
 چین پر اتفاق رائے کے پیرامیٹرز:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ops sumeragi params
+cargo run --bin iroha -- \
+  --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format text ops sumeragi params
 ```
 
 ## 6۔ آگے کہاں جانا ہے؟ {#_6-where-to-go-next}
@@ -170,7 +183,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml ops sumeragi params
 - [SDK ٹیوٹوریلز](/ur/guide/tutorials/)
 - [Torii اختتام پوائنٹس](/ur/reference/torii-endpoints.md)
 - [Iroha بائنریوں کے ساتھ کام کرنا](/ur/reference/binaries.md)
-- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/README.md)
+- [CLI کی README فائل](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/README.md)
 
 ماخذ چیک آؤٹ سے مکمل مارک ڈاؤن امدادی سنیپ شاٹ کو بازیافت کرنے کے لئے، چلائیں:
 

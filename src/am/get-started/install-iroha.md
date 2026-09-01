@@ -3,37 +3,37 @@ translation_locale: am
 translation_source: /get-started/install-iroha.md
 translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Iroha 3 መጫን {#install-iroha-3}
+# Iroha 3 ን ጫን {#install-iroha-3}
 
-ይህ ገጽ የ Iroha 3 የመሳሪያ ሰንሰለት እና በሁለትዮሽ ክፍሎች የአሁኑን የመጫኛ የሥራ ፍሰት የሚሸፍን ሲሆን ይህም የ `hyperledger-iroha/iroha` የስራ ቦታውን ይጠቀማል።
+ይህ ገጽ የአሁኑን የመጫኛ የስራ ሂደት ለ Iroha 3 የመሳሪያ ሰንሰለት እና ሁለትዮሽ የላይኛውን `hyperledger-iroha/iroha` የስራ ቦታ ይሸፍናል።
 
 ## 1. ቅድመ ሁኔታዎች {#_1-prerequisites}
 
-መጀመሪያ እነዚህን ይጫኑ:
+መጀመሪያ እነዚህን ይጫኑ
 
-- [rustup](https://www.rust-lang.org/tools/install)፣ ስለዚህ የተጣራው `rust-toolchain.toml` የመሳሪያ ሰንሰለት (`1.93.1`) በራስ-ሰር ይጫናል።
+- [rustup](https://www.rust-lang.org/tools/install)፣ ስለዚህ የተሰካው `rust-toolchain.toml` የመሳሪያ ሰንሰለት (`1.93.1`) በራስ-ሰር ይጫናል
 - `git`
-- በአማራጭ, Docker እና Docker Compose ለአካባቢያዊ ባለብዙ እኩዮች ፈጣን ጅምር
+- እንደ አማራጭ፣ Docker እና Docker Compose ለአካባቢያዊ ባለብዙ አቻ ፈጣን ጅምር
 
-## 2. የስራ ቦታውን ክሎን ማድረግ {#_2-clone-the-workspace}
+## 2. የስራ ቦታውን መዝጋት {#_2-clone-the-workspace}
 
 ```bash
 git clone https://github.com/hyperledger-iroha/iroha.git
 cd iroha
 ```
 
-## 3. የስራ ቦታውን መገንባት {#_3-build-the-workspace}
+## 3. የስራ ቦታን ይገንቡ {#_3-build-the-workspace}
 
-ሁሉንም ነገር መገንባት:
+ሁሉንም ነገር ይገንቡ
 
 ```bash
 cargo build --workspace
 ```
 
-ለአነስተኛ የኦፕሬተር-ተኮር ግንባታ, ዋናዎቹን ሁለትዮሽ ብቻ ያጠናቅቁ:
+ለአነስተኛ ኦፕሬተር ላይ ያተኮረ ግንባታ፣ ዋናዎቹን ሁለትዮሽ ብቻ ያጠናቅሩ -
 
 ```bash
 cargo build --release \
@@ -42,9 +42,9 @@ cargo build --release \
   -p iroha_kagami --bin kagami
 ```
 
-የተገኙት ባናሪዎች በ `target/debug/` ወይም `target/release/` ላይ ይጻፉ።
+የተገኙት ሁለትዮሽ ወደ `target/debug/` ወይም `target/release/` ተጽፏል።
 
-## 4. የተጫኑትን መሣሪያዎች አረጋግጡ። {#_4-verify-the-installed-tools}
+## 4. የተጫኑትን መሳሪያዎች ያረጋግጡ {#_4-verify-the-installed-tools}
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --help
@@ -53,18 +53,18 @@ cargo run --bin iroha -- --help
 cargo run --bin kagami -- --help
 ```
 
-አብዛኛውን ጊዜ የሚጠቀሙባቸው አራት ባናሪዎች የሚከተሉት ናቸው
+ብዙውን ጊዜ የሚጠቀሙባቸው አራት ሁለትዮሽ -
 
-- `iroha3d` ለአንድ መደበኛ የእኩዮች ዳሞን
-- `iroha3d_taira` ለካኖኒካል Taira ማረጋገጫ ማስጀመሪያ
-- `iroha` ለ CLI ተደራሽነት ወደ Torii እና ለአስተናጋጅ መጨረሻ ነጥብ
-- `kagami` ለቁልፎች፣ የመነሻ መገለጫዎችና ለአካባቢያዊ አውታረመረብ መገለጫ
+- `iroha3d` ለመደበኛ አውታረ መረብ አቻ ዴሞን
+- `iroha3d_taira` ለነጠላ ፕሮቶኮል-ስታንዳርድ Taira አረጋጋጭ አስጀማሪ
+- `iroha` ለ CLI መዳረሻ ወደ Torii እና ኦፕሬተር API የመጨረሻ ነጥቦች
+- `kagami` ለቁልፎች፣ የብሎክቼይን ጀነሲስ ቴክኒካል ማኒፌስት እና የሎካልኔት መገለጫዎች
 
-## 5. አማራጭ Localnet እና Docker መንገድ። {#_5-optional-localnet-and-docker-path}
+## 5. አማራጭ Localnet እና Docker መንገድ {#_5-optional-localnet-and-docker-path}
 
-የአሁኑ ምንጭ የተደገፈ የሎካልኔት ፍሰት በ Kagami የሚመነጨ ነው። እሱ የእኩዮችን ውቅር ፣ የመነሻ ቅርፃ ቅርጾችን ፣ የደንበኞችን ውቅር ፣ ረዳት ስክሪፕቶችን እና ከተመረጠው ኮድ ጋር የሚዛመድ አማራጭ የኮምፖዝ ፋይል ይጽፋል:
+የአሁኑ ምንጭ የተደገፈ የሎካልኔት ፍሰት የሚመነጨው በ Kagami ነው። የአውታረ መረብ አቻ ውቅሮችን፣ የብሎክቼይን ጀነሲስ አርቲፋክቶችን፣ የደንበኛ ውቅረትን፣ አጋዥ ስክሪፕቶችን እና ከተፈተሸው ኮድ ጋር የሚዛመድ አማራጭ የጽሁፍ ፋይል ይጽፋል -
 
-- `kagami localnet` ለአፍ መፍቻ አካባቢያዊ የእኩዮች ስክሪፕቶች
-- `kagami docker` ለ Docker Compose ከ localnet ማውጫ የተፈጠረ
+- `kagami localnet` ለቤተኛ የአካባቢ አውታረ መረብ አቻ ስክሪፕቶች
+- `kagami docker` Docker Compose ከ Localnet ማውጫ የመነጨ
 
-[መጀመር ይቀጥሉ Iroha 3](/am/get-started/launch-iroha.md).
+በ [አስጀምር Iroha 3](/am/get-started/launch-iroha.md) ይቀጥሉ።

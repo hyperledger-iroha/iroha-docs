@@ -11,6 +11,32 @@ describe('content policy validation', () => {
     expect(await validateContentPolicy(root)).toEqual([])
   })
 
+  test('reports unbalanced Markdown containers while ignoring fenced examples', async () => {
+    const root = await mkdtemp(path.join(os.tmpdir(), 'iroha-docs-policy-'))
+    await writeFile(
+      path.join(root, 'README.md'),
+      [
+        '::: warning Release status This title accidentally contains the prose. :::',
+        '',
+        '```md',
+        '::: tip This literal example is not a real container.',
+        '```',
+      ].join('\n'),
+    )
+
+    expect(await validateContentPolicy(root)).toEqual(['README.md:1: unclosed Markdown container directive warning'])
+  })
+
+  test('accepts balanced and nested Markdown containers', async () => {
+    const root = await mkdtemp(path.join(os.tmpdir(), 'iroha-docs-policy-'))
+    await writeFile(
+      path.join(root, 'README.md'),
+      ['::: warning Release status', 'Body.', '::: details More', 'Nested.', ':::', ':::'].join('\n'),
+    )
+
+    expect(await validateContentPolicy(root)).toEqual([])
+  })
+
   test('reports retired repository and release guidance', async () => {
     const root = await mkdtemp(path.join(os.tmpdir(), 'iroha-docs-policy-'))
     await mkdir(path.join(root, 'src'))

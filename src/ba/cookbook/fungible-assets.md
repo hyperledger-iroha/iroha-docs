@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /cookbook/fungible-assets.md
-translation_source_hash: 669b5a1c12e9ab6ffb64e149148993e7b924feb29c6fa4db883a2065f58ecd7e
+translation_source_hash: 29f2bdb390fc93b97f8ed9108634f70e21ba747c8606fb84093d37e9586516c1
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -58,7 +58,7 @@ JavaScript формаһын `node taira-assets.mjs` менән үтәгеҙ. Й�
 
 ### 2. Урындағы хакимиәтте һәм тәғәйенләнешен әҙерләгеҙ {#_2-prepare-the-local-authority-and-destination}
 
-Урындағы хакимиәтте генерацияланған конфигурациялағы асыҡ асҡыстан сығарыу һәм башҡа теркәлгән иҫәпте алыусы итеп һайлау.
+Generated config-тағы public key нигеҙендә local authority-ны сығарығыҙ һәм икенсе registered account-ты recipient итеп һайлағыҙ. Бер ниндәй private key сығарылмай.
 
 ```bash
 LOCAL_ROOT='http://127.0.0.1:8080'
@@ -105,7 +105,7 @@ ID-ны ҡабаттан ҡулланырға ярамай Taira. Йәмәғәт
 
 ### 4. Минт, күсермә һәм яндырыу {#_4-mint-transfer-and-burn}
 
-Барлыҡ яҙыу командалары, түләү түләүсе булараҡ, власты асыҡтан-асыҡ һайлай. CLI килешеүгә ҡул ҡуйылғанға тиклем теүәл транзакцияны иҫкә ала һәм ҡағиҙә буйынса көтөп ҡала.
+Барлыҡ яҙыу командалары, түләүсе итеп вәкәләтле иҫәпте асыҡтан-асыҡ һайлай. CLI килешеүгә ҡул ҡуйылғанға тиклем теүәл транзакцияны иҫкә ала һәм ҡағиҙә буйынса көтөп ҡала.
 
 ```bash
 iroha --config "$LOCAL_CONFIG" \
@@ -135,7 +135,7 @@ iroha --config "$LOCAL_CONFIG" \
 
 ::: warning Рөхсәт сиктәре
 
-Taira буйынса, краннан сығарылған `taira.tx-metadata.json` ҡушып, һәр яҙыу өсөн `--fee-payer authority` ҡулланығыҙ. Теркәү һәм майлау актив раҫлаусының рөхсәтен талап итә; күсереү һәм янтыу сығанаҡ балансы өҫтөндә вәкәләт талап итә.
+Taira буйынса, faucet-тан алынған `taira.tx-metadata.json`-ды беркетегеҙ һәм һәр write өсөн `--fee-payer authority` ҡулланығыҙ. Registration һәм minting active validator-ҙың permissions-ын талап итә; transfer һәм burn source balance өҫтөндә authority талап итә. Faucet аша финансланған account автоматик рәүештә issuer булып китмәй.
 
 :::
 
@@ -160,9 +160,9 @@ iroha --config "$LOCAL_CONFIG" ledger asset definition get \
 
 ## Проблемаларҙы хәл итеү {#troubleshooting}
 
-- Һөҙөмтәлә ID составында `#` букмекер йәки конкрет баланс һүҙмә-һүҙ түгел, ҡануниаль актив билдәләмәһе ID. Base58 мәғәнәһен ҡулланығыҙ: `--definition`, йәки бәйләнгән прозвище менән `--definition-alias`.
+- Һөҙөмтәлә ID составында `#` букмекер йәки конкрет баланс һүҙмә-һүҙ түгел, каноник актив билдәләмәһе ID. Base58 мәғәнәһен ҡулланығыҙ: `--definition`, йәки бәйләнгән прозвище менән `--definition-alias`.
 - `Scale` хатаһы: ниндәйҙер күләмдә билдәләмә рөхсәт иткәндән күберәк өлөшлө һандар бар.
-- `Mintability` кире ҡағыу: `Once`, `Not` йәки `Limited(n)` сәйәсәте мылтыҡ һалыуҙы бөтөргән йәки рөхсәт итмәгән. Тарихты яңынан яҙырға ярамай; билдәләмә һорауы буйынса ҡайтарылған сәйәсәт ҡулланығыҙ.
+- `Mintability` кире ҡағыуы: `Once`, `Not` йәки `Limited(n)` сәйәсәте актив сығарыу мөмкинлеген бөтөргән йәки уны тыйған. Тарихты яңынан яҙырға ярамай; билдәләмә һорауы буйынса ҡайтарылған сәйәсәт ҡулланығыҙ.
 - 2-се аҙым иҫәбенә теркәлгән маҡсатлы иҫәп-хисап һайлай. әгәр активтар ҡабул итеү `ExplicitOnly`, тәғәйенләнгән баланс менән тәьмин итергә рөхсәт ителгән аша CLI шулай уҡ исемләнгән һаҡсы иҫәптә йәки баланста теркәлмәй; ул икенсе инструкция ҡушыу урынына аборттарҙы яһай.
 - Хаҡтарҙы кире ҡағыу ғәҙәттәгесә инструкция уңышҡа ирешер алдынан була. Түләүсене һайлағыҙ, селтәрҙең хаҡтар активтары метамәғлүмәттәрен файҙаланығыҙ һәм уның балансын тикшерегеҙ.
 - Әгәр ҙә урындағы билдәләмә элек тә булған булһа, яңы барлыҡҡа килгән локаль селтәрҙе ҡуҙғатыу йәки ғәмәлдәгеһе менән дауам итеү Бер ҡасан да яңылыш формалаштырылған осраҡлы ҡылды Base58 урынына алмаштырмағыҙ. ID.
@@ -170,7 +170,7 @@ iroha --config "$LOCAL_CONFIG" ledger asset definition get \
 ## Сығанаҡ һәм уның менән бәйле документтар {#source-and-related-docs}
 
 - [Аҡсаның ғүмере циклын интеграциялау һынауҙары ҡуйылған commit-та](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/asset.rs)
-- [Rust активтар төҙөлөшө миҫалдары ҡуйылған йөкләмә буйынса](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/examples/tutorial.rs)
+- [Rust активтар төҙөлөшө миҫалдары ҡуйылған commit буйынса](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/examples/tutorial.rs)
 - [Активтар](/ba/blockchain/assets.md)
 - [Инструкциялар](/ba/blockchain/instructions.md)
 - [Разрешение токендары](/ba/reference/permissions.md)

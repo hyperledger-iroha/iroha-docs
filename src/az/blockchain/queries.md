@@ -3,28 +3,28 @@ translation_locale: az
 translation_source: /blockchain/queries.md
 translation_source_hash: 234c831c97bb93996e6cf51505921ff509e233408cf2faf6a9b23641e5642040
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 <script setup>
 import WarningFatQuery from './WarningFatQuery.vue'
 </script>
 
-# Suallar {#queries}
+# Sorğular {#queries}
 
-Tədbir abunəçiləri və filtrlər blockchain vəziyyətindəki dəyişiklikləri izləyə bilər. Cari vəziyyətin birbaşa görünüşünə ehtiyac duyduğunuz zaman sorğu istifadə edin.
+Hadisə abunəçiləri və filtrler blokçeyn vəziyyətində baş verən dəyişiklikləri izləyə bilər. Cari vəziyyətə birbaşa baxış lazım olduğunda sorğu istifadə edin.
 
-Suallar kiçik təlimat kimi obyektlərdir. Iroha Müasir dünya vəziyyətindən ətraflı məlumat almaq üçün.
+Sorğular kiçik, təlimat kimi obyektlərdir. Cari dünya vəziyyəti baxışından məlumat almaq üçün birini Iroha şəbəkə tərəfdaşına göndərin.
 
-Bir şəbəkə digər məlumatları aşkar edə bilər. İstənilən dünya dövlətləri haqqında məlumat hər bir Iroha şəbəkədə mövcud olması təmin edilən yeganə növdür.
+Şəbəkə digər məlumatları ortaya çıxara bilər. Sorğulana bilən dünya vəziyyəti məlumatı, hər Iroha şəbəkəsində mövcud olacağı qarantiyalı yeganə məlumat növüdür.
 
-Iroha hər bir yerləşdirilməsi üçün digər məlumatlar da ola bilər. Məsələn, telemetri məlumatların mövcudluğu şəbəkə idarəçilərindən asılıdır. İstəyirlərsə, verməsinlərsə, bu onların qərarıdır. İşin yerinə yetirilməsi üçün istifadə etmək əvəzinə işi izləmək üçün emal gücü. Əksinə, bəzi funksiyalar həmişə tələb olunur, məsələn hesabınızın balansına giriş əldə etmək.
+Iroha hər yerləşdirmə üçün digər əlçatan məlumatlar ola bilər. Məsələn, telemetriya məlumatlarının əlçatanlığı şəbəkə inzibatçılarına bağlıdır. Onların işi izləmək üçün hesablama gücünü ayırmaq istəyib-istəməmələri tamamilə onların qərarına bağlıdır, əksinə onu faktiki işi görmək üçün istifadə edə bilərlər. Qarşılaşdırma üçün, bəzi funksiyalar həmişə tələb olunur, məsələn, hesab balansınıza çıxışın olması.
 
-Sualların nəticələri [sifariş edilmiş](#sorting), [səhifələri](#pagination) və [filtrlənmiş](#filters) Metadata açarları üzrə leksikografik olaraq sıralama aparılır. Filtrləmə müxtəlif prinsiplər əsasında həyata keçirilə bilər. IP adres filtr maskaları) kimi sub-satır üsullarına `begins_with` məntiqi əməliyyatlardan istifadə edərək birləşdirilmişdir.
+Sorğuların nəticələri eyni anda həmçinin [sıralanmış](#sorting), [səhifələnmiş](#pagination) və [süzülmüş](#filters) tərəfdaş tərəfindən ola bilər. Sıralama metadatanın açarları üzrə leksikoqrafik şəkildə aparılır. Filtrləmə edilə bilər müxtəlif prinsiplərə əsaslanaraq, domenə xas olan (fərdi IP ünvan filtrləmə maskaları) metodlardan `begins_with` kimi məntiqi əməliyyatlarla birləşdirilən alt-sətir metodlarına qədər.
 
-## Taira üzərində sınayın. {#try-it-on-taira}
+## Bu iş axınını Taira üzərində işə sal {#try-it-on-taira}
 
-Taira ümumi resurslar üçün JSON üzərində yalnız oxunmuş sorğu köməkçilərini aşkar edir. SDK birinin kabllaşdırılmasından əvvəl səhifələşdirmə və cavab idarəetməsi təcrübəsi üçün istifadə edin:
+Taira ümumi resurslar üçün JSON üzərində yalnız oxumaq üçün sorğu köməkçiləri təqdim edir. Bir SDK qoşmazdan əvvəl səhifələmə və cavab idarəsini təcrübə etmək üçün onlardan istifadə edin:
 
 ```bash
 TAIRA_ROOT=https://taira.sora.org
@@ -39,30 +39,30 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=3" \
   | jq '{total, assets: [.items[] | {id, name, total_quantity}]}'
 ```
 
-Tətbiq diaqnostikası üçün bu tüstü yoxlamaları imzalanmış əməliyyat testlərindən ayrı saxlayın. Yalnız oxunma sorğusunun uğursuzluğu adətən imzalayıcının quraşdırılmasına göstərmədən əvvəl son nöqtələrin mövcudluğuna, şəbəkənin əlçatmazlığına və ya marşrut uyğunluğuna işarədir.
+Tətbiq diaqnostikası üçün bu ilkin yoxlamaları imzalanmış əməliyyat testlərindən ayrı saxlayın. Yalnız oxuma sorğusunun uğursuzluğu adətən kriptoqrafik imzalayıcı qurulumuna işarə etməzdən əvvəl API son nöqtəsinin mövcudluğunu, şəbəkə əlçatanlığını və ya marşrut uyğunluğunu göstərir.
 
-## Bir sual yaratmaq {#create-a-query}
+## Sorğu yaradın {#create-a-query}
 
-SDK və ya CLI-dən tiplənmiş sorğu qurucularından istifadə edin. Məsələn, mövcud məlumat modeli `FindAccounts` siyahıyaalma hesabları üçün açıqlayır:
+SDK və ya CLI-dən tipli sorğu qurucularından istifadə edin. Məsələn, mövcud məlumat modeli hesabları siyahıya salmaq üçün `FindAccounts`-ı təqdim edir:
 
 ```rust
 let query = FindAccounts;
 ```
 
-Burada Alice'in aktivlərini tapa bilən bir sorğunun nümunəsi var:
+Budur Alice-ın aktivlərini tapan sorğunun bir nümunəsi:
 
 ```rust
 let alice_id = load_canonical_account_id_from_client_config()?;
 let query = FindAssetsByAccountId::new(alice_id);
 ```
 
-## Səhifələr {#pagination}
+## Səhifələmə {#pagination}
 
-Singular sualları və kiçik təkrarlana bilən suallar üçün `client.request` istifadə edərək bir sorğu göndərmək və nəticəni bir dəfə əldə etmək olar.
+Tək sorğular və kiçik təkrar olunan sorğular üçün, sorğunu təqdim etmək və nəticəni birbaşa əldə etmək üçün `client.request` istifadə edə bilərsiniz.
 
-Bununla birlikdə, `FindAccounts`, `FindAssets` və ya `FindBlocks` kimi geniş təkrarlana bilən sorğular böyük nəticə dəstlərini verə bilər. Peer və müştəri yükünü azaltmaq üçün səhifələşdirmədən istifadə edin.
+Bununla belə, `FindAccounts`, `FindAssets` və ya `FindBlocks` kimi geniş təkrarlana bilən sorğular böyük nəticə dəstləri qaytara bilər. Şəbəkə tərəfdaşında və müştəridə yüklənməni azaltmaq üçün səhifələmədən istifadə edin.
 
-Bir `Pagination` qurmaq üçün `client.request_with_pagination(query, pagination)` çağırmalısınız, burada `pagination` aşağıdakı kimi qurulur:
+`Pagination` qurmaq üçün, `client.request_with_pagination(query, pagination)`-i çağırmalısınız, burada `pagination` aşağıdakı kimi qurulur:
 
 ```rust
 let starting_result: u32 = _;
@@ -72,18 +72,18 @@ let pagination = Pagination::new(Some(starting_result), Some(limit));
 
 ## Filtrlər {#filters}
 
-Bir sorğu yaratarkən, yalnız müəyyən edilmiş filtrə uyğun olan nəticələri qaytarmaq üçün bir filterdən istifadə edə bilərsiniz.
+Sorğu yaratdığınız zaman yalnız müəyyən edilmiş filtrə uyğun nəticələri qaytarmaq üçün filtrdən istifadə edə bilərsiniz.
 
-Filterlər sorğu-specifikdir. Məsələn, hesab sorğuları hesab kimliyi və ya metadata ilə daraldıla bilər, asset sorğuları isə aktivə görə daralına bilər SDK'ın tapılmış sorğu qurucularından istifadə edin ki, filtr növü sorğunun çıxışı tipinə uyğun olsun.
+Filtrlər sorğuya xasdır. Məsələn, hesab sorğuları hesab şəxsiyyəti və ya metadatalar vasitəsilə daraldıla bilər, aktiv sorğuları isə aktiv tərəfindən daraldıla bilər. tərif, hesab sahibi və ya domen proyeksiyası. Filtr növünün sorğu çıxışı növü ilə uyğun olması üçün mümkün olduqda SDK tipli sorğu qurucularından istifadə edin.
 
-## Sortlaşdırma {#sorting}
+## Sıralama {#sorting}
 
-Iroha sualın qurulması zamanı sıralamaq üçün bir açar təqdim etsəniz, [ metadata](/az/blockchain/metadata.md) ilə elementləri leksikoqrafik olaraq sıralaya bilər. Tipik istifadə halı hesabların `registered-on` metadata girişinə malik olmasıdır.
+Iroha elementləri [metaməlumat](/az/blockchain/metadata.md) ilə leksikoqrafik qaydada sıraya sala bilər, əgər sorğunu qurarkən sıralanacaq açarı göstərsəniz. Tipik bir istifadə vəziyyəti odur ki, hesabların `registered-on` metadatası olsun, bu, sıraya alındığında hesab qeydiyyat tarixçəsini görməyə imkan verir.
 
-Sortlaşdırma yalnız [ metadata](/az/blockchain/metadata.md) olan subyektlərə tətbiq olunur, çünki meta məlumat açarı sorğu nəticələrini sıralamaq üçün istifadə olunur.
+Sıralama yalnız [metaməlumat](/az/blockchain/metadata.md) olan qurumlara tətbiq olunur, çünki metadata açarı sorğu nəticələrini sıralamaq üçün istifadə olunur.
 
-Səhifə sıralama və filtrləri birləşdirə bilərsiniz. Qeyd edək ki, sıralama seçim xüsusiyyətidir, səhifə sıralaması ilə əlaqədar əksər sorğularda buna ehtiyac yoxdur.
+Siz sıralamanı səhifələmə və filtrlərlə birləşdirə bilərsiniz. Qeyd edin ki, sıralama opsional bir xüsusiyyətdir, səhifələmə ilə olan əksər sorğulara buna ehtiyac olmayacaq.
 
-## Referensiya {#reference}
+## İstinad {#reference}
 
-Bu barədə ətraflı məlumat almaq üçün [ mövcud sorğuların siyahısını ](/az/reference/queries.md) yoxlayın.
+Onlar haqqında ətraflı məlumat üçün [mövcud sorğuların siyahısı](/az/reference/queries.md)-i yoxlayın.

@@ -2,6 +2,7 @@
 
 import { DefaultTheme, defineConfig, type HeadConfig } from 'vitepress'
 import footnote from 'markdown-it-footnote'
+import { readFileSync } from 'node:fs'
 import { resolve } from 'path'
 import ViteSvgLoader from 'vite-svg-loader'
 import ViteUnoCSS from 'unocss/vite'
@@ -18,6 +19,7 @@ import {
   type DocsLocale,
   type NavigationLabels,
 } from '../etc/locales'
+import { localizeShellA11yHtml } from '../etc/localize-shell'
 import { renderSearchHeadings, splitSearchHeadings } from '../etc/search-index'
 
 function nav(
@@ -573,9 +575,55 @@ function sidebarHelp(): DefaultTheme.SidebarItem[] {
   ]
 }
 
+const localizedSidebarTitleCache = new Map<string, string>()
+
+function localizedSidebarTitle(link: string, fallback: string, locale: DocsLocale): string {
+  const majorSection = new Map<string, string>([
+    ['/get-started/', locale.navigation.getStarted],
+    ['/guide/', locale.navigation.guides],
+    ['/blockchain/iroha-explained', locale.navigation.architecture],
+    ['/reference/', locale.navigation.reference],
+  ]).get(link)
+  if (majorSection) return majorSection
+
+  const cacheKey = `${locale.key}:${link}`
+  const cached = localizedSidebarTitleCache.get(cacheKey)
+  if (cached) return cached
+
+  const route = link.replace(/^\//u, '').replace(/\.html$/u, '.md')
+  const relativePath = route.endsWith('/') ? `${route}index.md` : route.endsWith('.md') ? route : `${route}.md`
+  try {
+    const markdown = readFileSync(resolve(__dirname, '../src', locale.path, relativePath), 'utf8')
+    const heading = markdown.match(/^#\s+(.+)$/mu)?.[1]
+    if (!heading) return fallback
+    const title = heading
+      .replace(/\s+\{#[^}]+\}\s*$/u, '')
+      .replace(/\[([^\]]+)\]\([^)]+\)/gu, '$1')
+      .replace(/`([^`]+)`/gu, '$1')
+      .replace(/<[^>]+>/gu, '')
+      .replace(/[*_~]/gu, '')
+      .trim()
+    if (!title) return fallback
+    localizedSidebarTitleCache.set(cacheKey, title)
+    return title
+  } catch {
+    return fallback
+  }
+}
+
 function localizeSidebarItems(items: DefaultTheme.SidebarItem[], locale: DocsLocale): DefaultTheme.SidebarItem[] {
+  const unlinkedGroupLabels = new Map<string, string>([
+    ['Operator Quick Links', locale.theme.sidebarGroups.operatorQuickLinks],
+    ['Ledger Objects', locale.theme.sidebarGroups.ledgerObjects],
+    ['Transactions and Queries', locale.theme.sidebarGroups.transactionsAndQueries],
+    ['Runtime', locale.theme.sidebarGroups.runtime],
+    ['Troubleshooting', locale.theme.sidebarGroups.troubleshooting],
+  ])
   return items.map((item) => ({
     ...item,
+    text: item.link
+      ? localizedSidebarTitle(item.link, item.text, locale)
+      : (unlinkedGroupLabels.get(item.text) ?? item.text),
     link: item.link ? prefixRoute(item.link, locale) : undefined,
     items: item.items ? localizeSidebarItems(item.items, locale) : undefined,
   }))
@@ -607,9 +655,40 @@ const THEME_LOCALES = Object.fromEntries(
       sidebar: sidebars(locale),
       editLink: {
         pattern: 'https://github.com/hyperledger-iroha/iroha-docs/edit/main/src/:path',
-        text: 'Edit this page on GitHub',
+        text: locale.theme.editLink,
+      },
+      lastUpdated: { text: locale.theme.lastUpdated },
+      outline: { label: locale.theme.outline },
+      docFooter: { prev: locale.theme.previousPage, next: locale.theme.nextPage },
+      darkModeSwitchLabel: locale.theme.appearance,
+      lightModeSwitchTitle: locale.theme.lightTheme,
+      darkModeSwitchTitle: locale.theme.darkTheme,
+      sidebarMenuLabel: locale.theme.menu,
+      returnToTopLabel: locale.theme.returnToTop,
+      langMenuLabel: locale.theme.changeLanguage,
+      skipToContentLabel: locale.theme.skipToContent,
+      shellA11y: {
+        mainNavigation: locale.theme.mainNavigation,
+        sidebarNavigation: locale.theme.sidebarNavigation,
+        pager: locale.theme.pager,
+        mobileNavigation: locale.theme.mobileNavigation,
+        extraNavigation: locale.theme.extraNavigation,
+        toggleSection: locale.theme.toggleSection,
+        permalinkTo: locale.theme.permalinkTo,
+        copyCode: locale.theme.copyCode,
+        copied: locale.theme.copied,
       },
     },
+  ]),
+)
+
+// VitePress resolves per-locale navigation from the top-level locale's
+// `themeConfig`. Keeping the same values only under `themeConfig.locales`
+// leaves translated pages on the root English navigation.
+const SITE_LOCALES_WITH_THEME = Object.fromEntries(
+  Object.entries(SITE_LOCALES).map(([key, locale]) => [
+    key,
+    key === ROOT_LOCALE.key ? locale : { ...locale, themeConfig: THEME_LOCALES[key] },
   ]),
 )
 
@@ -627,7 +706,7 @@ export default defineConfig({
   buildConcurrency: 2,
   metaChunk: true,
   cleanUrls: false,
-  locales: SITE_LOCALES,
+  locales: SITE_LOCALES_WITH_THEME,
   title: 'Hyperledger Iroha 3 Docs',
   description:
     'Documentation for Hyperledger Iroha 3 covering quickstart flows, SDK entry points, Torii, genesis, and operator tooling.',
@@ -636,6 +715,7 @@ export default defineConfig({
     hostname: 'https://docs.iroha.tech',
   },
   transformHead: ({ pageData }) => documentHead(pageData.relativePath),
+  transformHtml: (code, _id, { pageData }) => localizeShellA11yHtml(code, pageData.relativePath),
   vite: {
     plugins: [ViteUnoCSS('../uno.config.ts'), ViteSvgLoader()],
     envDir: resolve(__dirname, '../'),
@@ -708,6 +788,31 @@ export default defineConfig({
 
     lastUpdated: {
       text: 'Last Updated',
+    },
+
+    outline: { label: ROOT_LOCALE.theme.outline },
+    docFooter: {
+      prev: ROOT_LOCALE.theme.previousPage,
+      next: ROOT_LOCALE.theme.nextPage,
+    },
+    darkModeSwitchLabel: ROOT_LOCALE.theme.appearance,
+    lightModeSwitchTitle: ROOT_LOCALE.theme.lightTheme,
+    darkModeSwitchTitle: ROOT_LOCALE.theme.darkTheme,
+    sidebarMenuLabel: ROOT_LOCALE.theme.menu,
+    returnToTopLabel: ROOT_LOCALE.theme.returnToTop,
+    langMenuLabel: ROOT_LOCALE.theme.changeLanguage,
+    skipToContentLabel: ROOT_LOCALE.theme.skipToContent,
+
+    shellA11y: {
+      mainNavigation: ROOT_LOCALE.theme.mainNavigation,
+      sidebarNavigation: ROOT_LOCALE.theme.sidebarNavigation,
+      pager: ROOT_LOCALE.theme.pager,
+      mobileNavigation: ROOT_LOCALE.theme.mobileNavigation,
+      extraNavigation: ROOT_LOCALE.theme.extraNavigation,
+      toggleSection: ROOT_LOCALE.theme.toggleSection,
+      permalinkTo: ROOT_LOCALE.theme.permalinkTo,
+      copyCode: ROOT_LOCALE.theme.copyCode,
+      copied: ROOT_LOCALE.theme.copied,
     },
 
     nav: nav(),

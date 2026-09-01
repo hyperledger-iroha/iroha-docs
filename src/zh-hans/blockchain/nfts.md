@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # NFTs {#nfts}
 
-Iroha NFT 是一个具有一个所有者的独特账本对象. 使用 NFTs 当记录需要自己的身份,元数据,生命周期事件和所有权转移语义时,但不需要数字平衡时.
+Iroha NFT 是一个具有一个所有者的独特账本对象. 使用 NFTs 当记录需要自己的身份,元数据,生命周期事件和所有权转移语义时,但不需要数字余额时.
 
 与数值 [资产](/zh-hans/blockchain/assets.md)不同,一个 NFT 没有精度,可选性或每账户的数量. NFT 存在为一个注册对象,所有权直接追踪该对象.
 
@@ -20,7 +20,7 @@ Iroha NFT 是一个具有一个所有者的独特账本对象. 使用 NFTs 当�
 - `content`:描述 NFT 的元数据
 - `owned_by`:持有 NFT 的账户
 
-`content`字段是`Metadata`地图.保持紧:存储描述字段,稳定引用,哈希, URIs 或 SoraFS 路径在那里.存储大型文件,媒体或高率的应用状态离链,并只在 NFT 上保存可验证的参考.
+`content` 字段是 `Metadata` 映射。应保持紧凑：在其中存储描述性字段、稳定引用、哈希、URIs 或 SoraFS 路径。大型文档、媒体或频繁变动的应用状态应存储在链下，NFT 上只保留可验证的引用。
 
 ## 在 Taira 试看. {#try-it-on-taira}
 
@@ -42,7 +42,7 @@ curl -fsS https://taira.sora.org/openapi.json \
 
 ## NFT IDs {#nft-ids}
 
-`NftId`使用以下文本表格:
+`NftId`使用以下文本形式:
 
 ```text
 name$domain
@@ -51,7 +51,7 @@ name$domain.dataspace
 
 例如, `badge$docs.universal` 在 `docs.universal` 域中识别`badge` NFT.如果遗漏数据空间,当前的解析器使用`universal` 数据空间,因此 `badge$docs` 解决为`badge$docs.universal`.
 
-使用 NFT IDs 的稳定名称. ID 是指令,查询,权限,事件过器和应用参考所使用的对象身份.
+使用 NFT IDs 的稳定名称. ID 是指令,查询,权限,事件过滤器和应用参考所使用的对象身份.
 
 ## 生命周期 {#lifecycle}
 
@@ -130,11 +130,11 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft unregister --id "$NFT_ID"
 ```
 
-## 问题和事件 {#queries-and-events}
+## 查询和事件 {#queries-and-events}
 
 使用[`FindNfts`](/zh-hans/reference/queries.md#assets-nfts-and-rwas)列出 NFTs 和[`FindNftsByAccountId`](/zh-hans/reference/queries.md#assets-nfts-and-rwas)列出由账户所有的 NFTs.
 
-NFT 注册,删除,传输和元数据更新发出 NFT 数据事件. 订阅本书变更或构建反应 NFT 生命周期事件时使用`Nft`数据事件过器.
+NFT 注册,删除,传输和元数据更新发出 NFT 数据事件. 订阅账本变更或构建反应 NFT 生命周期事件时使用`Nft`数据事件过滤器.
 
 ## 许可证 {#permissions}
 
@@ -145,7 +145,7 @@ NFT 注册,删除,传输和元数据更新发出 NFT 数据事件. 订阅本书�
 - `CanTransferNft`
 - `CanModifyNftMetadata`
 
-通过活跃的运行时间验证器执行许可检查,因此一个网络可通过升级执行器来定制授权. [许可证代码](/zh-hans/reference/permissions.md) 对于当前默认代币列表.
+通过活跃的运行时验证器执行许可检查,因此一个网络可通过升级执行器来定制授权. [许可证代码](/zh-hans/reference/permissions.md) 对于当前默认代币列表.
 
 ## 选择 NFTs {#choosing-nfts}
 

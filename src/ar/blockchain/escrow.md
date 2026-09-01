@@ -3,32 +3,32 @@ translation_locale: ar
 translation_source: /blockchain/escrow.md
 translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e217bc6ac9
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# الاحتفاظ بالأصول الأصلية {#native-asset-escrow}
+# ضمان الأصل الأصلي {#native-asset-escrow}
 
-الاحتفاظ الأصلي هو آلية الحفاظ على الأصول الرقمية التي يتم إدارتها في دفتر التسجيل. بدلاً من إرسال الأصول إلى حساب مملوك للتطبيق والاعتماد على رمز التطبيق لحماية هذا الحساب ، الاحتفاظ ISIs تحويل القيمة إلى حساب حجز البروتوكول المحدد وتسجيل دورة حياة الاحتفاض في حالة العالم.
+الضمان الأصلي هو آلية حفظ تدار بواسطة دفتر حسابات البلوك تشين للأصول الرقمية. بدلاً من إرسال الأصول إلى حساب مملوك للتطبيق والاعتماد على كود التطبيق لحماية ذلك الحساب، حساب الضمان ISIs لنقل القيمة إلى حساب وصاية بروتوكول حتمي وتسجيل دورة حياة الضمان في الحالة العالمية.
 
-استخدم الاحتفاظ الأصلي للتسوية في السوق ، وتنسيق المدفوعات خارج السلسلة على غرار أيتاي ، وقفلات الأهداف ، وتدفقات عمل الاحتفاض المحمية التي تحتاج إلى حالة دورة الحياة المرئية من الكتب الرئيسية.
+استخدم الضمانة المحلية لتسوية المعاملات المالية في السوق، وتنسيق الدفع خارج السلسلة على طريقة Aitai، وأقفال المراحل، وسير عمل الضمانة المحمية التي تحتاج إلى أن تكون مرئية في حالة دورة حياة دفتر السجلات على البلوكشين.
 
-## المفاهيم {#concepts}
+## مفاهيم {#concepts}
 
-|المفهوم|وصف|
+|مفهوم|الوصف|
 | --- | --- |
-|`EscrowId` |الهوية المحددة من قبل المتصل الذي يحتوي على هاشش يجب أن تكون فريدة بين الأمانات الشفافة والمجهولة. |
-|`AssetEscrowRecord` |سجل الاحتفاظ بالأصول الرقمية الشفافة أو القفل. |
-|`AnonymousAssetEscrowRecord` |سجل الاحتفاظ بحماية مدعومة بإلغاء التزامات وثائق إثبات.|
-|حساب الاحتفاظ|حساب بروتوكول التحديد المستمد من سلسلة ID ، الاحتفاظ ID، وصف الأصول. |
-|الأدلة هيشيه |يمكن أن تتعرف أشكال الأدلة على الفواتير أو الأحكام أو الرسائل أو مظاهر التخزين، أو غيرها من الأدلة خارج السلسلة. لا يتم تخزين حمولة الأدلة نفسها في سجل الاحتفاظ. |
+| `EscrowId` |طلب معرف يحدده العميل ويحتوي على تجزئة تشفيرية. يجب أن يكون فريدًا بين الأمانات الشفافة والمجهولة.|
+| `AssetEscrowRecord` |سجل إيداع أو قفل للأصول الرقمية شفاف|
+| `AnonymousAssetEscrowRecord` |سجل الضمان المحمي مدعوم بالمُلغيّات، وقيم الالتزام التشفيري، ومرفقات الإثبات.|
+|حساب الحفظ|حساب البروتوكول الحتمي مشتق من معرف السلسلة، ومعرف الضمان، وتعريف الأصل.|
+|أدلة التجزئة التشفيرية|يمكن لتجزئات التشفير للأدلة تحديد الفواتير والأحكام والرسائل والمخطوطات التقنية للتخزين أو أي أدلة خارج السلسلة أخرى. لم يتم تخزين محتوى الأدلة نفسه في سجل الضمان.|
 
-السجلات الشفافة تحمل البائع، والمشتري الاختياري، وصف الأصول، والكمية الإجمالية، وحساب الاحتفاظ، وضع دورة الحياة، نوع السلوك، المبلغ المتبقي، وسلطة الإصدار الاختيرية، وتخميس انتهاء الصلاحية الاختيارتي، ومعطيات الأدلة، والخميسات الزمنية، وتفاصيل الحل الاختيري.
+تحمل السجلات الشفافة البائع، المشتري الاختياري، تعريف الأصل، المبلغ الإجمالي، حساب الحفظ، حالة دورة الحياة، نوع السلوك، المبلغ المتبقي، الموكل الاختياري لتفويض الإفراج، الطابع الزمني الاختياري لانتهاء الصلاحية، تجزئات التشفير للأدلة، الطوابع الزمنية، وتفاصيل الحل الاختيارية.
 
-يجب أن تكون مبالغ الاحتفاظ بأصول رقمية إيجابية ويجب أن تتطابق مع المواصفات الرقمية لتعريف الأصول. بينما يكون الاحتفاض أو القفل نشطًا ، لا يمكن لنقل الأصول العامة استنزاف حساب الحفظ ؛ فإن طرق الخروج من الاحتفاذ هي الاحتفال ISIs الموصوفة أدناه .
+يجب أن تكون مبالغ الضمان كميات أصول رقمية موجبة ويجب أن تتطابق مع المواصفة الرقمية لتعريف الأصل. بينما يكون الضمان أو القفل نشطًا، لا يمكن لتحويلات الأصول العامة استنزاف حساب الحراسة؛ مسارات الخروج من الحراسة هي الضمان ISIs الموضح أدناه.
 
-## الاحتفاظ بالسوق {#marketplace-escrow}
+## حساب الضمان في السوق {#marketplace-escrow}
 
-ينسق الاحتفاظ بالسوق إطلاق أصول داخل السلسلة مع تدفق عمل الدفع أو التسليم خارج سلسلة.
+تقوم خدمة الضمان في السوق بتنسيق إصدار الأصول على السلسلة مع سير عمل الدفع أو التسليم خارج السلسلة.
 
 ```mermaid
 stateDiagram-v2
@@ -43,21 +43,21 @@ stateDiagram-v2
     Disputed --> Resolved: ResolveEscrowDispute
 ```
 
-|ISI |من يقدمها ؟|التأثير|
+| ISI |من يقدمها|تأثير|
 | --- | --- | --- |
-|`OpenAssetEscrow` |البائع |يقفل الأصول الرقمية للبائع في الاحتفاظ بالبروتوكول وخلق سجل سوق `Open`. |
-|`AcceptAssetEscrow` |المشتري |سجل المشتري ويتحرك `Open` إلى `Accepted`. البائع لا يمكنه قبول الاحتفاظ بنفسه. |
-|`MarkEscrowPaymentSent` |المشتري المقبول |ينتقل `Accepted` إلى `PaymentSent` بعد أن يرسل المشتري الدفع خارج السلسلة. |
-|`ReleaseAssetEscrow` |البائع |يتحرك `PaymentSent` إلى `Released` ويحول المبلغ الكامل المتعهد به للمشتري. |
-|`CancelAssetEscrow` |البائع |ينتقل `Open` أو `Accepted` إلى `Cancelled` ويسترد البائع قبل أن يتم وضع علامة على الدفع .|
-|`OpenEscrowDispute` |البائع أو المشتري المقبول |ينتقل `Accepted` أو `PaymentSent` إلى `Disputed` ويضيف هاشات الأدلة. |
-|`ResolveEscrowDispute` |الحساب مع `CanResolveEscrowDispute` |يتحرك `Disputed` إلى `Resolved` ويقسم المبلغ بين المشتري والبائع. |
+| `OpenAssetEscrow` |بائع|يقوم بقفل الأصل الرقمي للبائع في وصاية البروتوكول وينشئ سجل سوقي `Open`.|
+| `AcceptAssetEscrow` |المشتري|يسجل المشتري وينقل `Open` إلى `Accepted`. لا يمكن للبائع قبول الضمان الخاص به.|
+| `MarkEscrowPaymentSent` |المشتري المقبول|ينقل `Accepted` إلى `PaymentSent` بعد أن يرسل المشتري الدفع خارج السلسلة.|
+| `ReleaseAssetEscrow` |بائع|ينقل `PaymentSent` إلى `Released` وينقل المبلغ المودَع بالكامل إلى المشتري.|
+| `CancelAssetEscrow` |بائع|ينقل `Open` أو `Accepted` إلى `Cancelled` ويعيد للبائع المبلغ قبل أن يتم تحديد الدفع.|
+| `OpenEscrowDispute` |البائع أو المشتري المقبول|ينقل `Accepted` أو `PaymentSent` إلى `Disputed` ويُلحق به هاشات التشفير للأدلة.|
+| `ResolveEscrowDispute` |حساب برقم `CanResolveEscrowDispute`|ينقل `Disputed` إلى `Resolved` ويقسم المبلغ بين المشتري والبائع.|
 
-يجب أن تكون مبالغ حل النزاعات غير سلبية، ويجب أن يكون `buyer_amount + seller_amount` مساوياً لمبلغ الاحتفاظ. يُسمح بالخلفات ذات القيمة الصفرية، ولكن يجب أن تعتبر التقسيم بأكمله الرصيد المحتجز.
+يجب أن تكون مبالغ تسوية النزاعات غير سالبة، ويجب أن يساوي `buyer_amount + seller_amount` مبلغ الضمان. يُسمح بأجزاء التحويل المالي بقيمة صفر، ولكن يجب أن يشمل التقسيم كله الرصيد المقفل.
 
 ### Rust مثال {#rust-example}
 
-هذا المثال يفترض أن حسابات البائع والمشتري موجودة بالفعل، وتسجل تعريف الأصول بأنها رقمية، والبائع لديه ميزان كافٍ.
+يفترض هذا المثال أن حسابات البائع والمشتري موجودة بالفعل، وأن تعريف الأصل مسجل كرقمي، وأن لدى البائع رصيد كافٍ.
 
 ```rust
 use iroha::{
@@ -98,18 +98,18 @@ fn release_marketplace_escrow(
 }
 ```
 
-## مقفلات الأصول العامة {#generic-asset-locks}
+## أقفال الأصول العامة {#generic-asset-locks}
 
-يستخدم قفل الأصول نفس نوع سجل الاحتفاظ، لكنها ليست عروض المشتري-البائع. فإنها تقفل الأموال لحساب الوجهة وتتطلب اختياريًا سلطة إطلاق منفصلة لسحب الأموال.
+تستخدم قفلات الأصول نفس نوع سجل الحفظ، لكنها ليست عروضًا بين المشتري والبائع. فهي تقفل الأموال لحساب الوجهة وقد تتطلب اختياريًا تفويضًا منفصلًا لرفع الأموال.
 
-|ISI |من يقدمها ؟|التأثير|
+| ISI |من يقدمها|تأثير|
 | --- | --- | --- |
-|`OpenAssetLock` |حساب المصدر |يحتجز مبلغ إيجابي، ويُسجل الوجهة كمشتري سجل، ويقوم بتعيين حالة `Locked`. |
-|`DrawdownAssetLock` |سلطة الإفراج ، أو الوجهة عندما لا يتم تحديد سلطة إفراج |تحويل جزء من الاحتجاز المتبقي أو كاملة إلى الوجهة. |
-|`CancelAssetLock` |مفتاح القفل|يقوم بإلغاء قفل نشط ويرجع المبلغ المتبقي إلى مفتاحه. |
-|`ExpireAssetLock` |أي سلطة معاملة بعد الموعد النهائي |تنتهي صلاحية القفل مع `expires_at_ms` في الماضي ويرجع المبلغ المتبقي إلى مفتاح. |
+| `OpenAssetLock` |الحساب المصدر|يقفل مبلغًا إيجابيًا، ويسجل الوجهة كمشتري السجل، ويضبط الحالة على `Locked`.|
+| `DrawdownAssetLock` |المخول بالإفراج، أو الوجهة عند عدم تعيين مخول بالإفراج|ينقل جزءًا أو كل ما تبقى من الوصاية إلى الوجهة.|
+| `CancelAssetLock` |مفتاح القفل|يلغي القفل النشط ويعيد المبلغ المتبقي إلى الشخص الذي قام بفتحه.|
+| `ExpireAssetLock` |أي تفويض لمعاملة بعد انتهاء الموعد النهائي|تنتهي صلاحية قفل بـ `expires_at_ms` في الماضي وتُعيد المبلغ المتبقي إلى الفاتح.|
 
-`DrawdownAssetLock` يحافظ على السجل في `Locked` بينما يبقى بعض المبالغ. عندما يصل المبلغ المتبقي إلى الصفر، يصبح الحالة `DrawnDown` ويتم إغلاق سجل.
+`DrawdownAssetLock` يحتفظ بالسجل في `Locked` بينما يبقى بعض المبلغ. عندما يصل المبلغ المتبقي إلى الصفر، يصبح الوضع `DrawnDown` ويتم إغلاق السجل.
 
 ```rust
 use iroha::{
@@ -174,11 +174,11 @@ fn drawdown_and_close_asset_locks(
 }
 ```
 
-Python يضع حاليًا مساعدي المستوى العالي في القفلات العامة: `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, و `expire_asset_lock`. للأسواق و الاحتفاظ بالأمانة من: Python, الاستخدام الكنسي `InstructionBox` JSON من خلال SDK- نعم . JSON الهروب من النافذة، أو تقديمها من خلال SDK التي تعرض بناء الاحتياطات من الدرجة الأولى.
+Python يوفّر حالياً مساعدين على مستوى عالٍ للأقفال العامة: `open_asset_lock`، `drawdown_asset_lock`، `cancel_asset_lock`، و`expire_asset_lock`. للسوق والضمان المجهول من Python، استخدم بروتوكولًا قياسيًا واحدًا `InstructionBox` JSON من خلال فتحة الهروب الخاصة بـ SDK JSON، أو قدّم من خلال SDK الذي يكشف عن منشئي الضمان من الدرجة الأولى.
 
 ## النزاعات {#disputes}
 
-يمكن أن يدخل الاحتفاظ بالسوق النزاع من `Accepted` أو `PaymentSent`. يمكن للبائع المسجل أو المشتري فقط فتح النزاع. يتطلب الحل `CanResolveEscrowDispute` ، إما تم توفيرها مباشرة إلى حساب القرار أو تتولى من خلال دور.
+يمكن لخدمة الضمان في السوق الدخول في نزاع من `Accepted` أو `PaymentSent`. يمكن فقط للبائع أو المشتري المسجل فتح النزاع. يتطلب الحل `CanResolveEscrowDispute`، سواء تم منحه مباشرة لحساب المحلّل أو تم توريثه من خلال دور.
 
 ```rust
 use iroha::{
@@ -226,21 +226,21 @@ fn resolve_disputed_escrow(
 }
 ```
 
-## الخصم المجهول {#anonymous-escrow}
+## حساب ضمان مجهول {#anonymous-escrow}
 
-تستخدم الاحتفاظ المجهول نفس دورة حياة السوق ، ولكن يتم حماية حركة التمويل وإغلاق الأصول. لا يزال سجل العام يحفظ البائع والمشتري والحالة ومحطات الأدلة والخنادق الزمنية وسجلات الحركة المتصلة بالدليل. يتم تمثيل المبالغ والمستلمين داخل النقود المحمية بالالتزامات والإلغاءات والأوراق المرفقة بالأدلة.
+الضمان المجهول يستخدم نفس دورة حياة السوق، لكن تمويل وتحويل الأصول عند الإغلاق تكون محمية. لا يزال السجل العام يخزن البائع، والمشتري، والحالة, الأدلة تشمل التجزئات التشفيرية، الطوابع الزمنية، وسجلات الحركة المرتبطة بالإثبات. يتم تمثيل المبالغ والمستلمين داخل الملاحظات المحمية من خلال قيم الالتزام التشفيرية، والمُبَطلات، وملحقات الإثبات.
 
-|شفافة ISI |مجهول ISI |
+|شفاف ISI|مجهول ISI|
 | --- | --- |
-|`OpenAssetEscrow` |`OpenAnonymousAssetEscrow` |
-|`AcceptAssetEscrow` |`AcceptAnonymousAssetEscrow` |
-|`MarkEscrowPaymentSent` |`MarkAnonymousEscrowPaymentSent` |
-|`ReleaseAssetEscrow` |`ReleaseAnonymousAssetEscrow` |
-|`CancelAssetEscrow` |`CancelAnonymousAssetEscrow` |
-|`OpenEscrowDispute` |`OpenAnonymousEscrowDispute` |
-|`ResolveEscrowDispute` |`ResolveAnonymousEscrowDispute` |
+| `OpenAssetEscrow` | `OpenAnonymousAssetEscrow` |
+| `AcceptAssetEscrow` | `AcceptAnonymousAssetEscrow` |
+| `MarkEscrowPaymentSent` | `MarkAnonymousEscrowPaymentSent` |
+| `ReleaseAssetEscrow` | `ReleaseAnonymousAssetEscrow` |
+| `CancelAssetEscrow` | `CancelAnonymousAssetEscrow` |
+| `OpenEscrowDispute` | `OpenAnonymousEscrowDispute` |
+| `ResolveEscrowDispute` | `ResolveAnonymousEscrowDispute` |
 
-يجب أن تقوم محفظة أو أدوات البيانات ببناء مرفق الأدلة والمدخلات العامة. يخلق الانفتاح التزامًا واحدًا في الاحتفاظ. يجب أن تنفق الإفراج والإلغاء وحل النزاعات المجهول بالضبط على التزام واحد في الاحتفال وتخلق المشتري أو البائع أو التزامات الإنتاج المنقسمة التي تتطلبها العمل.
+يجب على محفظة الأدوات أو أدوات المُثبِت بناء مرفق الإثبات والمدخلات العامة. الفتح ينشئ قيمة التزام تشفيرية واحدة لحساب الضمان. الإفراج، الإلغاء، ويجب أن تنفق آلية حل النزاعات المجهولة الهوية بالضبط قيمة واحدة من الالتزام التشفيري في الضمان وتُنشئ قيم الالتزام التشفيري المطلوبة للعملية للبائع، أو المشتري، أو لنتيجة التقسيم.
 
 ```rust
 use iroha::{
@@ -283,25 +283,25 @@ fn open_anonymous_escrow(
 }
 ```
 
-بالنسبة لنموذج المعاملات المحمية الأساسي، انظر [ المعاملات المجهولة ](/ar/blockchain/anonymous-transactions.md).
+للنموذج الأساسي للمعاملة المحمية، انظر [المعاملات المجهولة](/ar/blockchain/anonymous-transactions.md).
 
-## SDK استخدام {#sdk-usage}
+## SDK الاستخدام {#sdk-usage}
 
-يتم كشف دعم الاحتفاظ بشكل مختلف في جميع أنحاء SDKs. Rust لديه نموذج البيانات المطبوع القنوني. Python يعرض حاليًا مساعدي إغلاق الأصول العامة. JavaScript و TypeScript تستخدم مكالمات مضيف الاحتفاض Kotodama. Kotlin/JVM و Swift توفر صانعي الحمولة المفيدة للسلع السوقية والاحتفاظ بالشرف المجهول.
+يتم عرض دعم الحساب الضماني بشكل مختلف عبر SDKs. يحتوي Rust على نموذج بيانات من النوع الموحد للبروتوكول. يعرض Python حاليًا مساعدين لقفل الأصول العامة. JavaScript و TypeScript يستخدمان استدعاءات دالة المضيف الخاصة بالضمان Kotodama. Kotlin/JVM و Swift يوفرون منشئي بيانات محددة النوع للسوق والضمان المجهول.
 
-|SDK |استخدم هذه السطح|النطاق|
+| SDK |استخدم هذه السطح|نطاق|
 | --- | --- | --- |
-| [Rust](#rust-sdk) |`iroha::data_model::isi::escrow` |أمانة السوق، قفلات عامة، أمانة مجهولة، استفسارات وأحداث. |
-| [Python](#python-asset-locks) | `Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock`, و العميل `*_and_wait` المساعدين |مقفلات الأصول العادية. السوق ومساعدون الاحتفاظ المجهولين ليسوا أساليب من الدرجة الأولى Python حتى الآن. |
-| [JavaScript /TypeScript ](#javascript-and-typescript-kotodama) |`compileKotodamaProgram` من `@iroha/iroha-js/kotodama-compiler` |مكالمات استضافة الاحتفاظ داخل Kotodama العقود. |
-| [Kotlin /JVM ](#kotlin-and-jvm) |`InstructionTemplate` الفئات في `org.hyperledger.iroha.sdk.core.model.instructions` |أماكن السوق و نماذج التعليمات المخصصة للاستثمار الجهمي. |
-| [Swift / iOS](#swift-and-ios) |مساعدي `NativeEscrowInstructionBuilders` و `IrohaSDK.build*Escrow*` |السوق و الاحتفاظ مجهول Norito JSON تحميلات تعليمية مفيدة. |
+| [Rust](#rust-sdk) | `iroha::data_model::isi::escrow` |ضمان السوق، الأقفال العامة، الضمان المجهول، الاستفسارات، والأحداث.|
+| [Python](#python-asset-locks) |مساعدو `Instruction.open_asset_lock`، `TransactionDraft.open_asset_lock`، والعميل `*_and_wait`|قفل الأصول العامة. المساعدون في السوق والضمان المجهول ليسوا بعد طرقًا من الدرجة الأولى Python.|
+| [JavaScript / TypeScript](#javascript-and-typescript-kotodama) | `compileKotodamaProgram` من `@iroha/iroha-js/kotodama-compiler` |استدعاءات وظائف المضيف الضمانية داخل عقود Kotodama.|
+| [Kotlin / JVM](#kotlin-and-jvm) | `InstructionTemplate` الفصول في `org.hyperledger.iroha.sdk.core.model.instructions` |نماذج تعليمات مخصصة للسوق والضمان المجهول.|
+| [Swift / iOS](#swift-and-ios) |`NativeEscrowInstructionBuilders` و `IrohaSDK.build*Escrow*` المساعدون|بيانات تعليمات السوق ووكيل الضمان المجهول Norito JSON.|
 
-تركز الأمثلة أدناه على بناء التعليمات. تمويل الحساب، وإدارة التوقيعات، وتقديم المعاملات تتبع تدفق طبيعي لكل SDK.
+تركز الأمثلة أدناه على بناء التعليمات. تمويل الحساب، إدارة التوقيع، وإرسال المعاملات تتبع التدفق الطبيعي لكل SDK.
 
 ### Rust SDK {#rust-sdk}
 
-استخدم Rust SDK عندما تحتاج إلى تغطية وطنية كاملة أو دعم استفسار / حدث. تظهر الأمثلة أعلاه إطلاق السوق ، وتسجيل القفل العام ، وحل النزاعات ، وبناء الاحتفاظ المجهول مع `iroha::data_model::isi::escrow` .
+استخدم Rust SDK عندما تحتاج إلى تغطية أصلية كاملة أو دعم الاستعلام/الحدث. توضح الأمثلة أعلاه إصدار السوق، سحب القفل العام، حل النزاعات، وبناء الوساطة المجهولة مع `iroha::data_model::isi::escrow`.
 
 ```rust
 use iroha::{
@@ -326,9 +326,9 @@ fn open_and_read(
 }
 ```
 
-### Python قفل الأصول {#python-asset-locks}
+### Python أقفال الأصول {#python-asset-locks}
 
-يعرض Python SDK المساعدين من الدرجة الأولى لقفل الأصول العادية. استخدمهما لدفع الميزات، والسحب من قبل سلطة الإفراج، وإلغاء من قبل المفتاح، وتعويضات انتهاء الصلاحية.
+Python SDK يوفر أدوات مساعدة من الدرجة الأولى لأقفال الأصول العامة. استخدمها لمدفوعات المعالم، والسحب من قبل صاحب تفويض الإصدار، والإلغاء من قبل الفاتح، واسترداد الأموال عند انتهاء الصلاحية.
 
 ```python
 client.open_asset_lock_and_wait(
@@ -359,13 +359,13 @@ client.expire_asset_lock_and_wait(
 )
 ```
 
-في حالة القفل الثنائي، قم بإبعاد `release_authority`؛ ثم يمكن للحساب المقصود تقديم `drawdown_asset_lock`.
+بالنسبة للقفل ذو الطرفين، احذف `release_authority`؛ يمكن للحساب المستلم بعد ذلك تقديم `drawdown_asset_lock`.
 
 ### JavaScript و TypeScript Kotodama {#javascript-and-typescript-kotodama}
 
-لا يعرض JavaScript SDK حاليًا صانعي المعاملات الاحتفاظية الأصلية المباشرة. بالنسبة إلى تطبيقات JavaScript أو TypeScript التي تقوم بنشر عقود Kotodama ، قم بتجميع مكالمات استضافة الاحتفاضة مع مكوّم Kotodama.
+لا يكشف JavaScript SDK حاليًا عن منشئي معاملات الضمان الأصليين المباشرة. بالنسبة لتطبيقات JavaScript أو TypeScript التي تقوم بنشر عقود Kotodama، قم بترجمة استدعاءات وظائف الاستضافة للضمان باستخدام مترجم Kotodama.
 
-تتطلب المكالمات التي تستضيف الاحتفاظ الأصلي إشارات الوصول الصريحة لأن المؤلف لا يستطيع استنباط مجموعات وصول أصغر للاحتفاظ غير الشفاف ISIs. استخدم إشارات بطاقة الهوائية على نقاط الدخول المصدرة التي تدعو إلى مدخلات `escrow_*`.
+تتطلب استدعاءات دالة الاستضافة الأصلية للضمانات وصولاً صريحًا للإيحاءات لأن المترجم لا يمكنه اشتقاق مجموعات وصول أضيق للضمانات غير الشفافة ISIs. استخدم إيحاءات البدل على نقاط الدخول المصدرة التي قام الاستدعاء الفني `escrow_*` ببنائها.
 
 ```js
 import { compileKotodamaProgram } from "@iroha/iroha-js/kotodama-compiler";
@@ -397,11 +397,11 @@ if (compiled.diagnostics.length > 0) {
 }
 ```
 
-في حالة النزاعات، استخدام `escrow_open_dispute(offer, evidence)` و `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)`. تستقبل المكالمات التي يتصل بها مستضيف الأمانة المجهول Norito طلب البايتات الحمولة المفيدة، على سبيل المثال `anonymous_escrow_open_offer(request)`.
+للنزاعات، استخدم `escrow_open_dispute(offer, evidence)` و `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)`. تقبل استدعاءات وظيفة المضيف الأمانة المجهولة هوية بيانات حمولة الطلب Norito، على سبيل المثال `anonymous_escrow_open_offer(request)`.
 
 ### Kotlin و JVM {#kotlin-and-jvm}
 
-نموذج Kotlin/JVM SDK الاحتفاظ الأصلي كنموذجات تعليمات مخصصة. كل نماذج تؤكد الحقول المطلوبة وتكشف عن خريطة الحجج القانونية المستخدمة من قبل بناء المعاملات.
+نماذج Kotlin/JVM SDK تدعم الضمان الأصلي كنماذج تعليمات مخصصة. كل نموذج يتحقق من الحقول المطلوبة ويعرض خريطة الحجج القياسية للبروتوكول الوحيدة التي يستخدمها منشئ المعاملات.
 
 ```kotlin
 import org.hyperledger.iroha.sdk.core.model.escrow.NativeEscrowPermissions
@@ -431,11 +431,11 @@ println(open.arguments)
 println(NativeEscrowPermissions.CAN_RESOLVE_ESCROW_DISPUTE)
 ```
 
-النماذج المجهولة متاحة على `OpenAnonymousAssetEscrowInstruction`, `AcceptAnonymousAssetEscrowInstruction`, `MarkAnonymousEscrowPaymentSentInstruction`, `ReleaseAnonymousAssetEscrowInstruction`, `CancelAnonymousAssetEscrowInstruction`, `OpenAnonymousEscrowDisputeInstruction`, و `ResolveAnonymousEscrowDisputeInstruction`. Android يمكن للمتصلين في جاوا استخدام المقابلة `NativeEscrowInstructions.*` المهندسين من Android أثرية.
+القوالب المجهولة متاحة كـ `OpenAnonymousAssetEscrowInstruction`، `AcceptAnonymousAssetEscrowInstruction`، `MarkAnonymousEscrowPaymentSentInstruction`، `ReleaseAnonymousAssetEscrowInstruction`، `CancelAnonymousAssetEscrowInstruction`، `OpenAnonymousEscrowDisputeInstruction`، و`ResolveAnonymousEscrowDisputeInstruction`. يمكن لعملاء جافا الذين يطلبون Android استخدام البناة المطابقين `NativeEscrowInstructions.*` من القطعة Android.
 
-### Swift و iOS {#swift-and-ios}
+### Swift ونظام iOS {#swift-and-ios}
 
-يقوم Swift SDK بإنشاء تعليمات الاحتفاظ باعتبارها حمولة مفيدة Norito JSON. استخدم `NativeEscrowInstructionBuilders` مباشرة، أو اتصل بمساعد `IrohaSDK.build*Escrow*` المكافئ عندما يكون التطبيق الخاص بك يحتوي بالفعل على مثال `IrohaSDK`.
+يقوم Swift SDK بإنشاء تعليمات الضمان كحمولات Norito JSON. استخدم `NativeEscrowInstructionBuilders` مباشرة، أو استدعِ مساعد `IrohaSDK.build*Escrow*` المكافئ عندما يكون تطبيقك يمتلك بالفعل نسخة من `IrohaSDK`.
 
 ```swift
 import IrohaSwift
@@ -463,27 +463,27 @@ let resolve = try NativeEscrowInstructionBuilders.resolveEscrowDispute(
 )
 ```
 
-يأخذ البنّاء المجهولون Swift قوائم الإبطال، وقوائم التزام الخروج، قاموس إثبات، والقيم الاختيارية `rootHint`. تتوفر رمز إذن حل النزاع باسم `NativeEscrowPermissions.canResolveEscrowDispute`.
+البناؤون المجهولون Swift يأخذون قوائم الملغيات، ويخرجون قوائم قيم الالتزام التشفيري، وقاموس الإثبات، وقيم `rootHint` الاختيارية. رمز إذن محكم النزاع متاح كـ `NativeEscrowPermissions.canResolveEscrowDispute`.
 
-## الأسئلة والأحداث {#queries-and-events}
+## الاستفسارات والأحداث {#queries-and-events}
 
-استخدم استفسارات الاحتفاظ بالأمانات لصفحات الحالة، وظائف المصالحة، وأدوات الدعم:
+استخدم استفسارات الضمان لصفحات الحالة، ووظائف التسوية، وأدوات الدعم:
 
-|السؤال|الغرض|
+|استعلام|الغرض|
 | --- | --- |
-|`FindAssetEscrowById` |اقرأ الاحتفاظ الواضح أو القفل بحلول `EscrowId`. |
-|`FindAssetEscrows` |إدراج سجلات الاحتفاظ الشفافة والقفل. |
-|`FindAssetEscrowsBySeller` |قائمة سجلات فتحها البائع أو مفتاح القفل. |
-|`FindAssetEscrowsByBuyer` |إدراج الاحتفاظ بالسوق المقبول من قبل المشتري أو قفل استهدف وجهة. |
-|`FindAssetEscrowsByStatus` |سجلات قائمة بحلول `AssetEscrowStatus`. |
-|`FindAnonymousAssetEscrowById` |قراءة واحد الاحتفاظ مجهول عن طريق `EscrowId`. |
-|`FindAnonymousAssetEscrows*` |إدراج الاحتياطيات المجهولة حسب كل السجلات، البائع، المشتري، أو الحالة|
+| `FindAssetEscrowById` |اقرأ ضمان شفاف واحد أو قفل بواسطة `EscrowId`.|
+| `FindAssetEscrows` |قائمة بسجلات الضمان الشفافة والمقفلة.|
+| `FindAssetEscrowsBySeller` |قائمة السجلات المفتوحة بواسطة بائع أو فتَّاح الأقفال.|
+| `FindAssetEscrowsByBuyer` |قائمة الاحتجازات في السوق التي يقبلها المشتري أو الأقفال التي تستهدف وجهة معينة.|
+| `FindAssetEscrowsByStatus` |عرض السجلات حسب `AssetEscrowStatus`.|
+| `FindAnonymousAssetEscrowById` |اقرأ ضامنًا مجهول الهوية بواسطة `EscrowId`.|
+| `FindAnonymousAssetEscrows*` |قائمة الضمانات المجهولة حسب جميع السجلات، البائع، المشتري، أو الحالة.|
 
-`EscrowEventFilter` يمكن الاشتراك في أحداث الاحتفاظ الأساسي الشفافية والحجز عن طريق الاحتفاض ID, البائع، والمشتري، والحالة، ومجموعة الأحداث القناع. `Opened`, `Accepted`, `PaymentSent`, `Released`, `Cancelled`, `Expired`, `Disputed`, و `Resolved`. يتم تفتيش سجلات الوكالة المجهولة من خلال استفسارات الوكالة.
+`EscrowEventFilter` يمكنه الاشتراك في الحراسة الأصلية الشفافة وأحداث القفل حسب معرف الحراسة، البائع، المشتري، الحالة، وقناع مجموعة الأحداث. تشمل عائلة الأحداث `Opened`، `Accepted`، `PaymentSent`، `Released`، `Cancelled`، `Expired`، `Disputed`، و `Resolved`. يتم فحص سجلات الضمان المجهولة من خلال استفسارات الضمان المجهولة.
 
-## ملاحظات التشغيل {#operational-notes}
+## ملاحظات تشغيلية {#operational-notes}
 
-- تخزين الفواتير الكبيرة، سجلات الدردشة، الأحكام، أو مجموعات المراجعة خارج سجل الاحتفاظ ورفقها كدليل.
-- استخدام استنتاج مستقر `EscrowId` في الطلبات بحيث لا يمكن لإعادة المحاولات إنشاء ضمانات مزدوجة لنفس العرض.
-- تمنح `CanResolveEscrowDispute` فقط لحسابات أو أدوار تدير عملية النزاع.
-- يعتبر التحقق من الدفع خارج السلسلة سياسة التطبيق. Iroha يسجل الاحتفاظ والانتقالات في دورة الحياة؛ فإنه لا يتحقق من مسارات الدفع النقدية أو الخارجية لوحدها.
+- قم بتخزين الفواتير الكبيرة، وسجلات الدردشة، والأحكام، أو حزم التدقيق خارج سجل الضمان وأرفق تجزئاتها التشفيرية كدليل.
+- استخدم اشتقاق `EscrowId` المستقر في التطبيقات بحيث لا يمكن لإعادة المحاولة إنشاء حسابات ضمان مكررة لنفس العرض.
+- امنح `CanResolveEscrowDispute` فقط للحسابات أو الأدوار التي تدير عملية النزاع.
+- عامل التحقق من المدفوعات خارج السلسلة كسياسة تطبيق. تسجل Iroha الانتقالات المتعلقة بالاحتجاز ودورة الحياة؛ فهي لا تتحقق من العملات الورقية أو قنوات الدفع الخارجية بنفسها.

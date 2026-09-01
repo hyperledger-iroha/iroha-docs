@@ -1,14 +1,13 @@
 ---
 translation_locale: zh-hans
 translation_source: /guide/tutorials/musubi.md
-translation_source_hash: 4a76626522ecb9fe32e98e9c1e4552223cf820d40d0de16690dc589b0f40c901
+translation_source_hash: 621d1795fd1c3cc62462a9a91af68fe684c0ff5293f5e77801420dc8318bac38
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Musubi Kotodama 包装 {#musubi-kotodama-packages}
 
-Musubi 是 Kotodama 源包的首次发布包管理器.它解决了一个精确的链上依赖图表,验证 SoraFS 来源档案,编译和测试选定的工作空间,构建正规的 CAR 档案,并通过 Iroha 发布不可变的版本.
+Musubi 是 Kotodama 源包的首次发布包管理器.它解决了一个精确的链上依赖图表,验证 SoraFS 来源档案,编译和测试选定的工作空间,构建规范的 CAR 档案,并通过 Iroha 发布不可变的版本.
 
 使用 Musubi 当需要:
 
@@ -34,9 +33,9 @@ namespace/package@version
 
 没有领导者 `@` 名称空间是数据空间根,例如 `universal` 或一个域名合格的数据空间,如 `dex.universal`. 总账将结构名称空间绑定到一个稳定的家庭数据空间,然后才能索赔包.
 
-## 宣言和锁文件 {#manifest-and-lockfile}
+## 清单和锁文件 {#manifest-and-lockfile}
 
-一个包装使用封闭的第一版本 `Musubi.toml`方案.表格必须声明`manifest-version = 1`, Kotodama 版 `"1"`和 IVM ABI 版本 `1`;没有替代表格或 ABI 模式.
+一个包装使用封闭的第一版本 `Musubi.toml`方案.清单必须声明`manifest-version = 1`, Kotodama 版 `"1"`和 IVM ABI 版本 `1`;没有替代清单或 ABI 模式.
 
 ```toml
 manifest-version = 1
@@ -57,13 +56,13 @@ package = "std.universal/math"
 version = "^1.0.0"
 ```
 
-依赖性可以使用精确版本,关心或倾斜要求,像 `1.*`这样的野生卡和逗号分离比较组,如 `>=1.0.0,<2.0.0`.依赖度表键是母本地进口姓氏;`package`始终是正规注册表选择器.
+依赖性可以使用精确版本,关心或倾斜要求,像 `1.*`这样的野生卡和逗号分离比较组,如 `>=1.0.0,<2.0.0`.依赖度表键是母本地进口别名;`package`始终是规范注册表选择器.
 
-`Musubi.lock`将图表绑定到精确的基因来源 `NetworkId` 和一个最终的注册录像.它记录了选定的工作空间根和不可变的释放节点,包括发布,源代码,界面,档案, ABI 以及精确的依赖边缘承诺.当解决图所要求时,允许并行版本.
+`Musubi.lock`将图表绑定到精确的创世来源 `NetworkId` 和一个最终的注册录像.它记录了选定的工作空间根和不可变的释放节点,包括发布,源代码,界面,档案, ABI 以及精确的依赖边缘承诺.当解决图所要求时,允许并行版本.
 
 ## 配置 Taira SoraFS 取 {#configure-taira-sorafs-fetching}
 
-Taira 是此工作流的公开测试网络.从一个 Taira 客户端配置开始,以链接和网络身份进行检查,然后在下面添加供应商特定的认证搜索绑定.帐户签名材料和供应商运营商密钥必须保留在唯一的运行时间文件中.
+Taira 是此工作流的公开测试网络.从一个 Taira 客户端配置开始,包含已注册链接和当前固定的创世来源网络身份,然后在下面添加供应商特定的认证搜索键.一个 Taira 重置可以改变`NetworkId`;从签署的部署配置文件中更新它,而不是从稳定的链中推断它 UUID.帐户签名材料和供应商操作员密钥必须保留在仅所有者运行时文件中.
 
 ```toml
 torii_url = "https://taira.sora.org/"
@@ -89,9 +88,9 @@ export TAIRA_ROOT=https://taira.sora.org
 curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
 ```
 
-提供商目录提供提供商身份和广告终端点.从选择的提供商获得匹配操作员授权.运行时间使用该键请求有限流令牌;令牌既不是 CLI 参数也不是锁文件内容.
+提供商目录提供提供商身份和广告端点.从选择的提供商获得匹配操作员授权.运行时使用该键请求有限流令牌;令牌既不是 CLI 参数也不是锁文件内容.
 
-勿使用 Taira 验证器针 URL 作为 `url`. 已注册的验证器嵌入了 SoraFS 它们的存储设备已被禁用. `https://taira-validator-{1,2,3,4}.sora.org` 终端点接受PIN注册,而存档阅读使用已选定的被允许提供商的文件 HTTPS 的起源.
+请勿将 Taira 验证器的 pin URL 用作 `url`。签入的验证器已停用内嵌 SoraFS 存储。其 `https://taira-validator-{1,2,3,4}.sora.org` 端点接受 pin 注册，而 archive 读取则使用所选且已获准 provider 的 HTTPS origin。
 
 ## 地方工作流程 {#local-workflow}
 
@@ -135,11 +134,11 @@ cargo run --manifest-path ../../Cargo.toml -p musubi -- \
   cache prune --dry-run --config client.toml
 ```
 
-`cache repair`隔离腐败了值得信赖的后代,并在最终供应商证据允许时重新编写准确的档案. Musubi 拒绝了活不空的剪切突变.使用`--dry-run`检查被归类的候选人.
+`cache repair` 会隔离已损坏的受信任后代，并在最终确定的提供方证据允许时重新获取完全相同的归档。对于实时且非空的变更，修剪会刻意采用失败关闭策略；请使用 `--dry-run` 检查已分类的候选项。
 
 ## 包装和出版 {#packaging-and-publishing}
 
-在编写档案之前检查清洁的正文件集,然后构建法典包:
+在编写档案之前检查清洁的正文件集,然后构建规范包:
 
 ```bash
 cargo run --manifest-path ../../Cargo.toml -p musubi -- \
@@ -149,18 +148,18 @@ cargo run --manifest-path ../../Cargo.toml -p musubi -- \
   package --locked --config client.toml
 ```
 
-`package` 写作 `target/package/<namespace>-<name>-<version>.car`. 其他 CAR 结合了法典包装表,语义释放表,精确验证锁,源树,界面消化,以及 SoraFS 没有单独的文件. `pack`, `--car-out`, `--sorafs-manifest-out`, 或 `--source-plan-out` 在第一个版本中的命令 CLI.
+`package` 会写入 `target/package/<namespace>-<name>-<version>.car`。CAR 会绑定规范的软件包清单、语义化发布清单、精确的验证锁、源代码树、接口摘要和 SoraFS 归档承诺。首个版本的 CLI 中没有独立的 `pack`、`--car-out`、`--sorafs-manifest-out` 或 `--source-plan-out` 命令。
 
-发布是一个签署的,可重启的网络工作流程.所选的 `client.toml`必须包含生成`[musubi.publication]`绑定以及帐户和 Taira 网络配置. 包装准确一个工作空间成员:
+发布是一个已签名且可恢复的网络工作流。所选的 `client.toml` 必须包含所需的 `[musubi.publication]` 绑定，以及账户和 Taira 网络配置。仅打包一个 workspace member：
 
 ```bash
 cargo run --manifest-path ../../Cargo.toml -p musubi -- \
   publish -p dex.universal/swap-core --locked --config client.toml
 ```
 
-使用 `--detach` 恢复操作日志和种子入口边界是持久的.继续使用 `publish --resume <operation-id> --config client.toml` 进行持久的操作.较窄的路径只重建`--recover <operation-id>`没有出版物 `--dry-run`或通用公众上传后退;在本地前飞行中运行`package --list`和 `package`
+操作日志和种子输入边界持久化后，使用 `--detach` 返回。使用 `publish --resume <operation-id> --config client.toml` 继续持久化的操作。范围较窄的 `--recover <operation-id>` 路径只会为未受改动的输入前日志重建缺失且不可变的 sidecar。发布没有 `--dry-run` 或通用公共上传后备路径；请运行 `package --list` 和 `package` 进行本地预检。
 
-## 登记问题和生命周期 {#registry-queries-and-lifecycle}
+## 登记查询和生命周期 {#registry-queries-and-lifecycle}
 
 搜索和检查使用相同的 Taira 客户端配置的最终注册表:
 
@@ -194,7 +193,7 @@ cargo run --manifest-path ../../Cargo.toml -p musubi -- \
 Musubi 使用了首次发布的 V1 说明和查询:
 
 |表面| 用途                                                        |
-| -------------------------------------------------- | -------------------------------------------------------------- |
+| ---------------------------------------------------- | -------------------------------------------------------------- |
 |`RegisterMusubiNamespaceBindingV1`|绑定一个名字空间与其稳定的家庭数据空间.|
 |`RegisterMusubiArchiveV1`|注册不可变的身份认证源档案承诺. |
 |`AddMusubiArchiveLocationV1`|添加或更新已证明的 SoraFS 档案位置. |
@@ -202,11 +201,11 @@ Musubi 使用了首次发布的 V1 说明和查询:
 |`SetMusubiReleaseYankV1`|进行比较并设置精确释放的拉动状态.|
 |`InviteMusubiPackageMaintainerV1`|启动明确的包装角色邀请流. |
 |`RegisterMusubiAliasV1` / `RetargetMusubiAliasV1` |登记或重定位一个全球化名. |
-|`AssertMusubiReleaseDigestV1`|确立一个不变的释放消化.|
+|`AssertMusubiReleaseDigestV1`|确立一个不变的释放摘要.|
 |`FindMusubiExactPackageV1`|阅读一个精确的包装及其修订.|
 |`FindMusubiExactReleaseV1`|阅读一个准确的释放快照.|
 |`FindMusubiResolverIndexV1` / `FindMusubiVersionsV1` |解决或列出已完成的释放候选人.|
 |`FindMusubiArchiveLocationsV1`|阅读提供商支持的最终档案位置. |
 |`FindMusubiAliasV1` / `FindMusubiAliasHistoryV1` |阅读当前的名目标或其不可变的历史.|
 
-Torii 显示下面的应用程序路线家族 `/v1/musubi/`. MCP 工具使用电流 `iroha.musubi.queries.` 和 `iroha.musubi.instructions.*` 他们的名字. [Torii 终点](/zh-hans/reference/torii-endpoints.md) 和 [查询参考](/zh-hans/reference/queries.md) 为更广泛的 API 在地图上.
+Torii 显示下面的应用程序路线家族 `/v1/musubi/*`. MCP 工具使用电流 `iroha.musubi.queries.*` 和 `iroha.musubi.instructions.*` 他们的名字. [Torii 端点](/zh-hans/reference/torii-endpoints.md) 和 [查询参考](/zh-hans/reference/queries.md) 为更广泛的 API 在地图上.

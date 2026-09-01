@@ -1,20 +1,20 @@
 ---
 translation_locale: ja
 translation_source: /reference/iroha3d-cli.md
-translation_source_hash: d621aa09f50cb44cb99af372100f418c44c3714b879a556038e47598949a3a6f
+translation_source_hash: bf4a63b05a149f0c935190b63cdb838b0a0265e99baedfc9b5bf00a9e621b108
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # `iroha3d` CLI {#iroha3d-cli}
 
-`iroha3d` は標準の Iroha 3 ピアデモンです. Cargo パッケージは`irohad` と呼ばれるので,ソースチェックアウトからバイナリを呼び出します.
+`iroha3d` は標準の Iroha 3 ネットワークピアデーモンです。Cargo パッケージは `irohad` と名前が付けられているので、ソースコードの作業コピーからバイナリを呼び出してください:
 
 ```shell
 cargo run -p irohad --bin iroha3d -- --config path/to/config.toml
 ```
 
-公開 Taira テストネットでは,リリース画像は `iroha3d_taira` を使用します. 同様の CLI を受け入れる. また,カノニカル Taira チェーン,検証器セット,ストレージ設定,ランタイムサインキーも強制する. Taira 設定を実行時の認証を開くことなく検証する.
+パブリック Taira テストネットでは、リリースイメージは`iroha3d_taira`を使用します。同じ CLI を受け入れますが、さらに標準の Taira チェーン、バリデータ、ストレージ、およびランタイム署名者プロファイルを強制します。ソフトウェアランタイム資格情報を開かずに Taira 構成を検証するには、次のようにします:
 
 ```shell
 iroha3d_taira --sora \
@@ -22,78 +22,78 @@ iroha3d_taira --sora \
   --check-config
 ```
 
-操作者は使用前に,カノニカル Taira プロフィールを表示しなければならない. チェックインされたテンプレートは,例の設定があります. 操作者はすべての例の設定を交換しなければならない. Taira に対して試験する際には,一般的な Nexus または生産の SoraFS 設定を使用しないでください.
+標準的な Taira プロファイルのオペレーターがレンダリングした形式を使用してください。チェックインされたテンプレートにはまだデプロイメントのプレースホルダーが含まれています。Taira に対してテストする際に、汎用の Nexus や本番の SoraFS 設定を置き換えないでください。
 
 ## `--config` {#arg-config}
 
-- タイプ:ファイルパス
-- 名前: `-c`
+- 種類：ファイルパス
+- 別名: `-c`
 
-[ペア設定](/ja/reference/peer-config/index.md)へのパス.
+[ネットワークピアの設定](/ja/reference/peer-config/index.md)への道。
 
 ## `--genesis-manifest-json` {#arg-genesis-manifest-json}
 
-- タイプ:ファイルパス
+- 種類：ファイルパス
 
-合意の検証のために使用されたオプション生成表記 JSON.
+コンセンサス検証に使用されるオプショナルなブロックチェーンジェネシス技術マニフェスト JSON。
 
 ## `--check-config` {#arg-check-config}
 
-解消された構成と利用可能な生成材料を検証し,ネットワークソケットを結びつけずに終了します.
+解決された設定と利用可能なブロックチェーンのジェネシス資料を検証し、その後、ネットワークソケットをバインドせずに終了します。
 
-## カゲムシャ資格の封印 {#kagemusha-qualification-seals}
+## 影武者資格印 {#kagemusha-qualification-seals}
 
-これらのファイルパスオプションは `--check-config` を要求し,法典的な封印を書く前に完全な Kagemusha資格を実行します:
+これらのファイルパスオプションは `--check-config` を必要とし、正規の印章を書き込む前に完全な影武者資格を実行します:
 
-- `--write-kagemusha-catalog-qualification-seal <PATH>`はカタログを認定する.
-- `--write-kagemusha-validator-qualification-seal <PATH>`は,設定された署名したプロモーション予約に対してローカルバリダータを資格化します.
+- `--write-kagemusha-catalog-qualification-seal <PATH>` はカタログに適格です。
+- `--write-kagemusha-validator-qualification-seal <PATH>` は、構成された署名付きプロモーション予約に対してローカルバリデーターを検証します。
 
-封印の2つの選択肢は相互に衝突します
+その2つの封印オプションは互いに矛盾しています。
 
 ## `--trace-config` {#arg-trace-config}
 
-- タイプ:旗
+- タイプ: フラッグ
 - 環境: `TRACE_CONFIG`
 
-コンフィギュレーション層が読み取られ,解析される間に追跡ログを有効にします.
+設定レイヤーが読み込まれ解析される間、トレースログを有効にする。
 
 ## `--config-blake3` {#arg-config-blake3}
 
-- タイプ: 64桁のヘクサデシマルの消化 BLAKE3
-- 要求: `--config`
+- 種類: 64桁の16進数 BLAKE3 暗号学的ダイジェスト値
+- 必要: `--config`
 
-コンフィギュレーションファイルのバイトが提供されたダイジェストに一致するように要求します. 完整性に関するファイルはフラット化する必要があります; `extends` を含むことができません.
+構成ファイルのバイトが、提供された暗号学的ダイジェスト値と一致することを要求します。完全性が保証されたファイルは平坦化されている必要があり、`extends` を含むことはできません。
 
 ## `--terminal-colors` {#arg-terminal-colors}
 
-- タイプ: `--terminal-colors=true`または `--terminal-colors=false`として表記されたブルール
-- デフォルト:端末能力を検出する
+- 型: ブール値、`--terminal-colors=true` または `--terminal-colors=false` として渡されます
+- デフォルト：端末機能検出
 - 環境: `TERMINAL_COLORS`
 
-ANSI 色の出力を制御する.
+ANSI 色の出力を制御する。
 
 ## `--language` {#arg-language}
 
-- 文字列の種類
+- 型: 文字列
 
-デイモンメッセージに使われるシステム言語を覆す.
+デーモンメッセージに使用されるシステム言語を上書きします。
 
 ## `--sora` {#arg-sora}
 
-- タイプ:旗
+- 種類: 旗
 - 環境: `IROHA_SORA_PROFILE`
 
-Sora Nexus プロフィールを有効にします. このプロフィールでは SoraFS, SoraNet の握手を設定し,複数のレーンのコンセンサスを設定します. Taira 発射機を この旗で呼び出す.
+SoraFS によって使用される Sora Nexus プロファイル、SoraNet ハンドシェイク、およびマルチレーンコンセンサスを有効にします。Taira ランチャーは常にこのフラグで呼び出されます。
 
-## FastPQ の優先順位 {#fastpq-overrides}
+## FastPQ の上書き {#fastpq-overrides}
 
-`--fastpq-execution-mode <MODE>`と`--fastpq-poseidon-mode <MODE>`は, `cpu`または `gpu`だけが受け入れられる.残りのオプションはテレメトリラベルを優先する:
+`--fastpq-execution-mode <MODE>` と `--fastpq-poseidon-mode <MODE>` は `cpu` または `gpu` のみを受け入れます。残りのオプションはテレメトリラベルを上書きします:
 
 - `--fastpq-device-class <LABEL>`
 - `--fastpq-chip-family <LABEL>`
 - `--fastpq-gpu-kind <LABEL>`
 
-例えば:
+例えば：
 
 ```shell
 iroha3d --fastpq-execution-mode gpu \
@@ -103,8 +103,10 @@ iroha3d --fastpq-execution-mode gpu \
   --fastpq-gpu-kind integrated
 ```
 
-## 生成された援助 {#generated-help}
+## 生成されたヘルプ {#generated-help}
 
-下記の完全な輸出は,固定された Iroha ソースコンビットから生成されます.
+上記のオプションの概要は、現在の`iroha3d`引数定義と照合されています。チェックインされた生成済みヘルプデータのスナップショットは、出所ステータスが保留中の間、意図的に表示されません。チェックアウトの正確なヘルプを確認するには、次のコマンドを実行してください:
 
-<<< @/snippets/iroha3d-help.md
+```shell
+cargo run --locked -p irohad --bin iroha3d -- --help
+```

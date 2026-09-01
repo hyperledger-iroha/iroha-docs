@@ -1,23 +1,23 @@
 ---
 translation_locale: mn
 translation_source: /reference/binaries.md
-translation_source_hash: 5a36877954bec97691e45697680bfbd6e0a7c7695e48a796bc7c9a41d4756644
+translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Iroha бинартай ажиллах {#working-with-iroha-binaries}
+# Iroha Байнариудтай ажиллах {#working-with-iroha-binaries}
 
-Iroha 3 операторын ажлын урсгал дөрвөн үндсэн бинар дээр эргэн тойронд эргэж байна:
+Тэр Iroha 3 операторын ажлын урсгал дөрвөн үндсэн хоёртын системийн эргэн тойронд эргэлддэг:
 
-- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) зэрэглэлийн даемон ажиллуулахын тулд
-- `iroha3d_taira` нь санхүүгийн Taira баталгаажуулагч шуурхайн хувьд
-- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli) нь CLI болон үйлдвэрийн захиргааны хувьд
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami) нөөц, үүсэл, орон нутгийн сүлжээ, профилийн хувьд
+- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) сүлжээний ижил түвшнийDaemon ажиллуулахад
+- `iroha3d_taira` ганц протокол-стандарт Taira баталгаажуулагч эхлүүлэгчийн хувьд
+- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli) ийн тулд CLI ба операторын командууд
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami) түлхүүрүүд, блокчейн генезис, локалнетүүд, ба профайлууд
 
-## Барилгын эх үүсвэрээс бариарай {#build-from-source}
+## Эх сурвалжаас барих {#build-from-source}
 
-Хөдөлмөрийн талбайны түлхнээс:
+Дээд урсгалын ажлын орчны үндэснээс:
 
 ```bash
 cargo build --release \
@@ -26,9 +26,9 @@ cargo build --release \
   -p iroha_kagami --bin kagami
 ```
 
-Дараа нь `target/release/` хэлбэрээр нээлттэй хувилбарыг гаргах боломжтой.
+Нээлтийн бинар файлууд дараа нь `target/release/` дээр байрлах болно.
 
-Захиргааны давхаргыг шалгахын тулд:
+Командын самбарыг шалгахын тулд:
 
 ```bash
 ./target/release/iroha3d --help
@@ -37,9 +37,9 @@ cargo build --release \
 ./target/release/kagami --help
 ```
 
-## Тодруулгын сангаас шууд ажиллуулна {#run-directly-from-the-repository}
+## Сангаас шууд ажиллуул {#run-directly-from-the-repository}
 
-Хэрэв та дэлхийн хэмжээнд юуг ч байрлуулахыг хүсэхгүй байгаа бол `cargo run` -ийг ашигла:
+Хэрэв та ямар нэг зүйлийг дэлхий даяар суулгахыг хүсэхгүй бол `cargo run` ашиглаарай:
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --help
@@ -50,21 +50,21 @@ cargo run --bin kagami -- --help
 
 ## Docker Зураг {#docker-image}
 
-Өндөр урсгалын ажлын орон зай нь `kagami localnet` болон `kagami docker`-ийг ашиглаж, шалгарсан кодтой нийцсэн Docker Compose файлуудыг бий болгодог. `hyperledger/iroha:dev` зургийг эдгээр үүсгэсэн файлуудад ашиглах боломжтой.
+Дээд түвшний ажлын талбар нь шалгаж гаргаж авсан кодтой таарах Docker Compose файлуудыг үүсгэхийн тулд `kagami localnet` ба `kagami docker`-ийг ашигладаг. `hyperledger/iroha:dev` зургийг эдгээр үүсгэсэн файлуудтай ашиглаж болно.
 
-CLI -ийг контейнерийн дотор хэрэглэх:
+Контейнер дотор CLI-ийг ажиллуулна уу:
 
 ```bash
 docker run -t hyperledger/iroha:dev iroha --help
 ```
 
-Kagami нь контейнерд хэрэглэнэ:
+Контейнерт Kagami-г ажиллуулна:
 
 ```bash
 docker run -t hyperledger/iroha:dev kagami --help
 ```
 
-Хөгжлийн эхлүүлэхэд, локалийн сүлжээг үүсгэн байгуулж, хамгийн түрүүнд файлыг бүрдүүлээрэй:
+Сүлжээний ижил зэрэглэлийн системийг эхлүүлэхийн тулд эхлээд localnet ба Compose файлыг үүсгээрэй:
 
 ```bash
 cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
@@ -72,9 +72,9 @@ cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyper
 docker compose -f ./docker-compose.yml up
 ```
 
-## -Хайн дундаж хэлбэрийг ашиглах вэ? {#which-binary-should-i-use}
+## Али binary-г ашиглах ёстой вэ? {#which-binary-should-i-use}
 
-- Олон нийтийн Taira баталгаажуулагчны нэвтрүүлэгээс гадуур ижил хүйстнийг эхлүүлэх эсвэл ашиглахдаа `iroha3d` ашигла.
-- Taira баталгаажуулагчаар ашиглах зөвхөн `iroha3d_taira --sora`; энэ нь Taira-ийн зангил, хадгаламж, гүйлгээний хугацааны гарын үсэг зурагч профилийг хэрэгжүүлнэ.
-- `iroha` -ийг ашиглаж, томоохон бүртгэлээс асуух, гүйлгээ хийх эсвэл операторын төгсгөл хэсгийг шалгах шаардлагатай үед хэрэглэж болно.
-- `kagami` нэгийг хэрэглэнэ, генезис манифест, профилийн багц, эсвэл локаль сүлжээний хөрөнгийг хэрэгтэй үед.
+- Нийт олон Taira батлагчийн хувилбараас гадуур сүлжээний хамтрагчийг эхлүүлэх буюу ажиллуулах үед `iroha3d`-ыг ашиглана уу.
+- `iroha3d_taira --sora`-г зөвхөн каноник Taira баталгаажуулагч байршуулалтад ашиглана; энэ нь Taira-ийн сүлжээ, хадгалалт болон гүйцэтгэх орчны гарын үсэг зурагчийн профайлыг мөрдүүлнэ.
+- Blockchain бүртгэлийн түүхийг асууж, гүйлгээ явуулах эсвэл операторын API төгсгөлүүдийг шалгах хэрэгтэй бол `iroha`-ыг ашиглана уу.
+- Түлхүүр, блокчэйн genesis техникийн баримт бичиг, профайл багц, эсвэл localnet хөрөнгүүд хэрэгтэй бол `kagami` ашиглана уу.

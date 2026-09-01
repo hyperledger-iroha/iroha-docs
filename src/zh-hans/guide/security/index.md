@@ -20,7 +20,7 @@ translation_engine: nllb-200-ct2
 
 - [虚拟私人网络](./vpn.md):
 
-如何使用 VPN 来限制同行到同行, Torii,以及运营商在私人或联盟部署中的访问.
+如何使用 VPN 来限制对等节点到对等节点, Torii,以及运营商在私人或联盟部署中的访问.
 
 - [运营安全](./operational-security.md):
 
@@ -32,7 +32,7 @@ translation_engine: nllb-200-ct2
 
 - [密码安全](./password-security.md):
 
-密码缩,强密码构建和常见失败模式.
+密码熵、强密码构建方式和常见失败模式。
 
 - [公钥密码](./public-key-cryptography.md):
 
