@@ -1,0 +1,66 @@
+name: Pull Request CI
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.1
+          run_install: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install packages
+        run: pnpm install --frozen-lockfile
+
+      - name: Check formatting
+        run: pnpm format:check
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Type check
+        run: pnpm typecheck
+
+      - name: Run tests
+        run: pnpm test
+
+      - name: Validate content, locales, and provenance
+        run: pnpm validate
+
+      - name: Build
+        run: pnpm build
+
+      - name: Validate links
+        run: pnpm cli validate-links .vitepress/dist
+        env:
+          FORCE_COLOR: 2
+
+      - name: Validate language selector
+        run: pnpm cli validate-locales .vitepress/dist
+
+      - name: Build GitHub Pages backup
+        run: pnpm build
+        env:
+          FORCE_COLOR: 2
+          PUBLIC_PATH: /iroha-docs/
+
+      - name: Validate GitHub Pages backup
+        run: |
+          pnpm cli validate-links .vitepress/dist --public-path /iroha-docs/
+          pnpm cli validate-locales .vitepress/dist --public-path /iroha-docs/
+        env:
+          FORCE_COLOR: 2

@@ -1,0 +1,98 @@
+{
+  "source": {
+    "repo": "hyperledger-iroha/iroha",
+    "repo_url": "https://github.com/hyperledger-iroha/iroha",
+    "revision": "0010c5a70039eac101a4846499ba9ceaf43eb65c",
+    "revision_url": "https://github.com/hyperledger-iroha/iroha/commit/0010c5a70039eac101a4846499ba9ceaf43eb65c",
+    "generated_at": "2026-08-30",
+    "verification": "pending-signed-source-commit"
+  },
+  "included_sdks": [
+    {
+      "name": "Rust"
+    },
+    {
+      "name": "Python"
+    },
+    {
+      "name": "JavaScript / TypeScript"
+    },
+    {
+      "name": "Kotlin / Android"
+    },
+    {
+      "name": "Java / Android"
+    },
+    {
+      "name": "Swift"
+    }
+  ],
+  "stories": [
+    {
+      "name": "Canonical account identity and I105 rendering",
+      "results": [
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" }
+      ]
+    },
+    {
+      "name": "Canonical Torii request signing",
+      "results": [
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" }
+      ]
+    },
+    {
+      "name": "Norito payload and shared-fixture parity",
+      "results": [
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" }
+      ]
+    },
+    {
+      "name": "Transaction build, sign, submit, and status polling",
+      "results": [
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" }
+      ]
+    },
+    {
+      "name": "Queries, events, and subscription streams",
+      "results": [
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" }
+      ]
+    },
+    {
+      "name": "Offline wallet and payment flows",
+      "results": [
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" },
+        { "status": "no-data" }
+      ]
+    }
+  ]
+}

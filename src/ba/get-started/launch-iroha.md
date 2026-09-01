@@ -1,0 +1,94 @@
+---
+translation_locale: ba
+translation_source: /get-started/launch-iroha.md
+translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
+translation_status: machine-validated
+translation_engine: nllb-200-ct2
+---
+
+# Пуск Iroha 3 {#launch-iroha-3}
+
+Был бит Iroha 3 өсөн урындағы селтәрҙең ағымдағы ағымын күҙәтә, өҫкө ағымдағы репозиториянан эш урыны активтарын ҡуллана.
+
+## 1. Күп яҡлы урындағы селтәр булдырыу {#_1-generate-a-local-multi-peer-network}
+
+Хәҙерге Kagami кодынан дүрт парлы локаль селтәр булдырыу:
+
+```bash
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+```
+
+Сығарылыш каталогы буйынса, `genesis.json`, `genesis.signed.nrt`, `client.toml` һәм ярҙамсы скрипттар.
+
+Локаль native smoke testы өсөн Iroha пирҙарын туранан-тура эшләтеп ебәрегеҙ:
+
+```bash
+./localnet/start.sh
+```
+
+Контейнерлаштырылған йүгереү өсөн шул уҡ локаль селтәр каталогынан Композиция яһау:
+
+```bash
+cargo run --bin kagami -- docker \
+  --peers 4 \
+  --config-dir ./localnet \
+  --image hyperledger/iroha:dev \
+  --out-file ./docker-compose.yml \
+  --force
+
+docker compose -f ./docker-compose.yml up
+```
+
+Дефолт рәүештә барлыҡҡа килгән стек:
+
+- peer P2P порттары `1337` - `1340`
+- Torii HTTP порттары `8080` менән `8083`
+- `./localnet/client.toml` адресы буйынса клиенттың әҙер конфигурацияһы
+
+## 2. Интернет селтәренең эшләнеүен тикшерегеҙ {#_2-verify-that-the-network-is-up}
+
+Беренсе пирҙаге статус тамамлау нөктәһен тикшерегеҙ:
+
+```bash
+curl http://127.0.0.1:8080/status
+```
+
+Һаулыҡ һаҡлау тикшереүҙәрендә шулай уҡ түбәндәгеләр ҡулланыла:
+
+```bash
+curl http://127.0.0.1:8080/status/blocks
+```
+
+Һеҙ шунда уҡ CLI тупланған клиент конфигурацияһына йүнәлтергә мөмкин:
+
+```bash
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+```
+
+## 3. Nexus Профиль {#_3-nexus-profile}
+
+Шулай уҡ SORA Nexus йүнәлешендәге конфигурация профилен `defaults/nexus/` исемлегенә ебәреү.
+
+Nexus профиле менән native пирҙы эшләтеү өсөн:
+
+```bash
+./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
+```
+
+Был профилгә CLI инеү өсөн `defaults/nexus/client.toml` ҡулланығыҙ.
+
+## 4. Урындағы селтәрҙе туҡтатайыҡ {#_4-stop-the-local-network}
+
+Туранан-тура генерацияланған локаль селтәр өсөн:
+
+```bash
+./localnet/stop.sh
+```
+
+Булдырылған Композит стек өсөн:
+
+```bash
+docker compose -f ./docker-compose.yml down
+```
+
+Сеть эшләй башлағас, [ менән дауам итегеҙ Iroha 3 аша CLI](/ba/get-started/operate-iroha-via-cli.md).

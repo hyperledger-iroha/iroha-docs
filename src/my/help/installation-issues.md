@@ -1,0 +1,157 @@
+---
+translation_locale: my
+translation_source: /help/installation-issues.md
+translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c054c85a2a
+translation_status: machine-validated
+translation_engine: nllb-200-ct2
+---
+
+# တပ်ဆင်မှု ပြဿနာများ ဖြေရှင်းခြင်း {#troubleshooting-installation-issues}
+
+ဤအခန်းတွင် Iroha 3 တပ်ဆင်မှုအတွက်ပြဿနာဖြေရှင်းရေး အကြံပေးချက်များကို ဖော်ပြထားပါသည်။ သင်တွေ့ရှိနေသည့် ပြဿနာကို ဒီမှာဖော်ပြခြင်းမရှိပါက [အွန်လိုင်း](https://t.me/hyperledgeriroha) မှတစ်ဆင့် ဆက်သွယ်ပါ။
+
+## အလျင်အမြန် စစ်ဆေးခြင်း {#quick-checks}
+
+တပ်ဆင်မှု ကျရှုံးမှု အများစုဟာ နေရာ လေးခုထဲက တစ်ခုကနေ လာတာပါ။
+
+- a Rust toolchain ကို Upstream Workspace က ပိတ်ထားတဲ့ Version ထက် ပိုကြီးတဲ့
+- `cargo` သို့မဟုတ် `rustc` သည် `rustup` နှင့်မတူသောစက်ရုံတစ်ခုသို့ ဖြေရှင်းသည်။
+- C compiler, `pkg-config` သို့မဟုတ် CMake ကဲ့သို့သော missing system building tools များ
+- အရင်းအမြစ် ပြင်ဆင်ချက်များကို ပြောင်းလဲပြီးနောက် ရှေးဟောင်းထုတ်လုပ်သော snippets သို့မဟုတ် ဒေသတွင်းတည်ဆောက်မှုလက်ရာများ
+
+Iroha အရင်းအမြစ်ကုဒ်အလုပ်လုပ်စာရွက်စာတမ်းကနေ အောက်ပါအတိုင်း စတင်ပါ။
+
+```bash
+rustup show
+cargo --version
+rustc --version
+cargo metadata --no-deps
+```
+
+`cargo metadata` ပျက်ကွက်ပါက `pnpm refresh:iroha --source /path/to/iroha` ကိုမဖွင့်ခင် ဒေသတွင်း toolchain ကိုပြင်ဆင်ပါ။ အကြောင်းက update က လက်ရှိ data-model schema ကိုဖန်တီးဖို့ Kagami ကိုခေါ်ဆောင်နိုင်လို့ပါ။
+
+## Troubleshooting Rust Toolchain {#troubleshooting-rust-toolchain}
+
+တစ်ခါတစ်လေမှာ စီစဉ်ထားတဲ့အတိုင်း မဖြစ်တတ်ဘူး။ အထူးသဖြင့် သင်လုပ်ခဲ့ရင် `rust` သင့်ရဲ့စနစ်မှာ ခဏလောက်ရှိပေမဲ့ မတိုးတက်ခဲ့ဘူး။ အလားတူပြဿနာတစ်ခုက Python: XKCD ဒါက ဘယ်လိုပုံပေါက်မလဲဆိုတဲ့ နာမည်ကျော် နမူနာတစ်ခုရှိတယ်။
+
+<div class="flex justify-center">
+
+![Python ပတ်ဝန်းကျင်ပြဿနာဖြေရှင်းရေး ကာတွန်း](/img/install-troubles.png)
+
+</div>
+
+### Rust ဗားရှင်းကို စစ်ဆေးပါ။ {#check-rust-version}
+
+`cargo` ၏ မှန်ကန်သောဗားရှင်းနှင့်တွဲပြီး `rustc` ၏ မှန်ကန်သည့်ဗားရှင်းရှိသည်ကို သေချာအောင်လုပ်ပါ။ လက်ရှိအထက်စီးဆင်း အလုပ်ခွင်သည် `rust-version = "1.92"` ကိုကြေညာကာ toolchain channel ကို `rust-toolchain.toml` တွင်ပိတ်ထားသည်။ ဗားရှင်းများကိုပြရန်,
+
+```bash
+$ cargo -V
+$ cargo 1.93.1 (...)
+```
+
+ပြီးရင်
+
+```bash
+$ rustc --version
+$ rustc 1.93.1 (...)
+```
+
+ပိုမြင့်တဲ့ ဗားရှင်းတွေရှိရင် အဆင်ပြေပါတယ်။ ပိုနိမ့်တဲ့ဗားရှင်းတွေ ရှိရင် ဒါကို update လုပ်ဖို့ အောက်ပါ command ကို run လုပ်နိုင်ပါတယ်။
+
+```bash
+$ rustup toolchain update stable
+```
+
+### တပ်ဆင်တဲ့နေရာကို စစ်ဆေးပါ။ {#check-installation-location}
+
+ပိုနိမ့်တဲ့ ဗားရှင်း နံပါတ်တွေရပြီး toolchain ကို update လုပ်လိုက်ရင် အလုပ်မဖြစ်ခဲ့ဘူးဆိုပါစို့။ ဒါက ပုံမှန်ပြဿနာတစ်ခုပဲဆိုပါစို့၊ ဒါပေမဲ့ တူညီတဲ့ ဖြေရှင်းနည်း မရှိပါဘူး။
+
+ပထမဦးဆုံးအနေနဲ့ အသုံးပြုချင်တဲ့ ဗားရှင်းကို ဘယ်မှာ တပ်ဆင်ထားလဲဆိုတာ သတ်မှတ်သင့်ပါတယ်။
+
+```bash
+$ rustup which rustc
+$ rustup which cargo
+```
+
+Toolchains တွေရဲ့ User Installations တွေက `~/.rustup/toolchains/stable-*/bin/` မှာ ဖြစ်တတ်ပါတယ်။ ဒါဆိုရင် သင် ပြေးနိုင်သင့်ပါတယ်။
+
+```bash
+$ rustup toolchain update stable
+```
+
+ဒါက သင့်ပြဿနာတွေကို ဖြေရှင်းသင့်ပါတယ်။
+
+### မူရင်း Rust ကို စစ်ဆေးပါ။ {#check-the-default-rust-version}
+
+`stable` toolchain ကို update လုပ်ထားပေမယ့် default အနေနဲ့ set မလုပ်ရပါဘူး။ Run:
+
+```bash
+$ rustup default stable
+```
+
+`nightly` ဗားရှင်းတစ်ခု တပ်ဆင်ခြင်း (သို့) Rust ဗားရှင်းတစ်ခုကို နောက်ပိုင်း မဖွင့်ဘဲ သတ်မှတ်ထားခြင်းသည် ဒီပြဿနာကို ဖြစ်စေနိုင်ပါတယ်။
+
+### အခြား Rust ဗားရှင်းတွေရှိမရှိကို စစ်ဆေးပါ။ {#check-if-there-are-other-rust-versions}
+
+ပြဿနာဖြေရှင်းရေး rabbit hole ကို ဆက်လုပ်နေရင် shell aliases တွေရှိနိုင်ပါတယ်။
+
+```bash
+$ type rustc
+$ type cargo
+```
+
+`rustup which *` ကို Run လုပ်နေစဉ် တွေ့ခဲ့တဲ့ နေရာတွေထက် အခြားနေရာတွေကို ညွှန်ပြရင် ပြဿနာတစ်ခု ရှိပါသေးတယ်။ ဒီလို အမည်မတပ်တာ မလုံလောက်တာကို သတိပြုပါ။
+
+```bash
+$ alias rustc "~/.rustup/toolchains/stable-*/bin/rustc"
+$ alias cargo "~/.rustup/toolchains/stable-*/bin/cargo"
+```
+
+သင့်ရဲ့ shell aliases တွေကို ဘယ်လိုစီစဉ်ထားဖြစ် အတွင်းပိုင်း ဆင်ခြင်တုံတရားက ကျိုးဖောက်နိုင်တုန်းပါ။
+
+ရိုးစင်းဆုံး ဖြေရှင်းနည်းက သင်မသုံးတဲ့ ဗားရှင်းတွေကို ဖယ်ရှားဖို့ပါ။
+
+rustup ၏ တည်ထောင်ထားပြီး သင့်အတွက် ရယူနိုင်သော ဗားရှင်းအားလုံးကို ခြေရာခံခြင်းကြောင့် လုပ်တာထက် ပြောတာ ပိုလွယ်ပါတယ်။ ယေဘုယျအားဖြင့် နှစ်ခုပဲရှိပါတယ် ဒီသင်ခန်းစာရဲ့ အစမှာ Command ကို Run လုပ်တဲ့အခါ သင့်ရဲ့ Home Folder ထဲက Standard Location မှာ Install လုပ်ထားတဲ့ System Package Manager ဗားရှင်းနဲ့ပါ။ ပထမတစ်ခုအတွက် သင့်ရဲ့ (Linux) ဖြန့်ဖြူးမှု Manual ကို ကြည့်ပါ၊ (`apt remove rust`). နောက်တစ်ခုအတွက် run:
+
+```bash
+$ rustup toolchain list
+```
+
+အဲဒီနောက်မှာ `<toolchain>` တစ်ခုစီအတွက် ( angle brackets မပါဘဲ)
+
+```bash
+$ rustup remove <toolchain>
+```
+
+toolchains တွေကို ဖယ်ရှားပြီးနောက်မှာ ဒီအမိန့်က command-not-found error ကို ဖော်ပြသင့်ပါတယ်-
+
+```bash
+$ cargo --help
+```
+
+အဲဒီအမှားက active Rust toolchain တစ်ခုမှ မတပ်ထားသေးတာကို အတည်ပြုပေးပါတယ်။
+
+```bash
+$ rustup toolchain install stable
+```
+
+## Python ကိရိယာကွင်းဆက်ကို ပြဿနာဖြေရှင်း {#troubleshooting-python-toolchain}
+
+Python Wheel Package ကို [Python ဖောက်သည် setting](/my/guide/tutorials/python.md) ကာလအတွင်း pip ကိုသုံးပြီး install လုပ်တဲ့အခါ "iroha_python-*whl သည် ဤပလက်ဖောင်းတွင်ထောက်ပံ့သော wheel မဟုတ်ပါ" လိုအမှားတစ်ခု ကြုံတွေ့နိုင်သည်။
+
+ဤအမှားသည် pip သည်သက်တမ်းလွန်နေပြီဖြစ်သောကြောင့်၎င်းကို update လုပ်ရန်လိုအပ်သည်။ ပထမဦးဆုံးအနေနဲ့ OS ကို update များအတွက်စစ်ဆေးပြီးစနစ် upgrade လုပ်ရန်အကြံပြုပါသည်။
+
+ဒါက အလုပ်မဖြစ်ရင် `pip` ကို အသုံးပြုသူ direktorium အတွက် update လုပ်ကြည့်ပါ။
+
+`python -m pip install --upgrade pip`
+
+သေချာအောင်လုပ်ပါ။ `pip` Home Directory ထဲမှာ တပ်ဆင်ထားတာပါ။ ဒါကိုလုပ်ဖို့ Run `whereis pip` နောက်ပြီး စစ်ဆေးပါ `/home/username/.local/bin/pip` လမ်းကြောင်းတွေအကြားမှာရှိတယ် မဟုတ်ရင် သင့်ရဲ့ shell ကို update လုပ်လိုက်ပါ။ `PATH` အပြောင်းအလဲပါ။
+
+ဒီပြဿနာ ဆက်ရှိနေရင် [ကျွန်တော်တို့နဲ့ ဆက်သွယ်ပါ။](/my/help/) နဲ့ ထုတ်ကုန်တွေကို အစီရင်ခံပေးပါ။
+
+```
+python --version
+python3 --version
+pip --version
+pip3 --version
+```

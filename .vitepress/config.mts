@@ -1,0 +1,836 @@
+/// <reference types="vite/client" />
+
+import { DefaultTheme, defineConfig, type HeadConfig } from 'vitepress'
+import footnote from 'markdown-it-footnote'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'path'
+import ViteSvgLoader from 'vite-svg-loader'
+import ViteUnoCSS from 'unocss/vite'
+import { mermaid } from './md-mermaid'
+import { katex } from '@mdit/plugin-katex'
+import {
+  documentHead,
+  prefixRoute,
+  ROOT_LOCALE,
+  SEARCH_LOCALES,
+  SITE_LOCALES,
+  TRANSLATED_LOCALES,
+  type CookbookGroupLabels,
+  type DocsLocale,
+  type NavigationLabels,
+} from '../etc/locales'
+import { localizeShellA11yHtml } from '../etc/localize-shell'
+import { renderSearchHeadings, splitSearchHeadings } from '../etc/search-index'
+
+function nav(
+  labels: NavigationLabels = ROOT_LOCALE.navigation,
+  locale: DocsLocale = ROOT_LOCALE,
+): DefaultTheme.NavItem[] {
+  return [
+    {
+      text: labels.getStarted,
+      link: prefixRoute('/get-started/', locale),
+      activeMatch: prefixRoute('/get-started/', locale),
+    },
+    {
+      text: labels.cookbook,
+      link: prefixRoute('/cookbook/', locale),
+      activeMatch: prefixRoute('/cookbook/', locale),
+    },
+    {
+      text: labels.guides,
+      link: prefixRoute('/guide/', locale),
+      activeMatch: prefixRoute('/guide/', locale),
+    },
+    {
+      text: labels.architecture,
+      link: prefixRoute('/blockchain/iroha-explained', locale),
+      activeMatch: prefixRoute('/blockchain/', locale),
+    },
+    {
+      text: labels.reference,
+      link: prefixRoute('/reference/', locale),
+      activeMatch: `^${prefixRoute('/reference/', locale)}`,
+    },
+    {
+      text: labels.help,
+      link: prefixRoute('/help/', locale),
+      activeMatch: prefixRoute('/help/', locale),
+    },
+  ]
+}
+
+function sidebarStart(): DefaultTheme.SidebarItem[] {
+  return [
+    {
+      text: 'Get Started',
+      link: '/get-started/',
+      items: [
+        {
+          text: 'Install Iroha 3',
+          link: '/get-started/install-iroha',
+        },
+        {
+          text: 'Launch Iroha 3',
+          link: '/get-started/launch-iroha',
+        },
+        {
+          text: 'Operate Iroha 3 via CLI',
+          link: '/get-started/operate-iroha-via-cli',
+        },
+        {
+          text: 'Connect to SORA Nexus Dataspaces',
+          link: '/get-started/sora-nexus-dataspaces',
+        },
+        {
+          text: 'Sponsor Private Dataspace Fees',
+          link: '/get-started/private-dataspace-fee-sponsor',
+        },
+        {
+          text: 'Run Atomic Private Settlement',
+          link: '/get-started/atomic-private-settlement',
+        },
+      ],
+    },
+  ]
+}
+
+function sidebarCookbook(
+  labels: CookbookGroupLabels = ROOT_LOCALE.navigation.cookbookGroups,
+): DefaultTheme.SidebarItem[] {
+  return [
+    {
+      text: labels.start,
+      collapsed: false,
+      items: [
+        {
+          text: 'Overview',
+          link: '/cookbook/',
+        },
+        {
+          text: 'Connect to Taira',
+          link: '/cookbook/connect-to-taira',
+        },
+        {
+          text: 'Submit and Verify Transactions',
+          link: '/cookbook/submit-and-verify-transactions',
+        },
+      ],
+    },
+    {
+      text: labels.ledger,
+      collapsed: false,
+      items: [
+        {
+          text: 'Accounts and Aliases',
+          link: '/cookbook/accounts-and-aliases',
+        },
+        {
+          text: 'Fungible Assets',
+          link: '/cookbook/fungible-assets',
+        },
+        {
+          text: 'NFTs',
+          link: '/cookbook/nfts',
+        },
+        {
+          text: 'Metadata',
+          link: '/cookbook/metadata',
+        },
+        {
+          text: 'Query Ledger State',
+          link: '/cookbook/query-ledger-state',
+        },
+      ],
+    },
+    {
+      text: labels.accessAndAutomation,
+      collapsed: false,
+      items: [
+        {
+          text: 'Permissions and Roles',
+          link: '/cookbook/permissions-and-roles',
+        },
+        {
+          text: 'Stream Events',
+          link: '/cookbook/stream-events',
+        },
+        {
+          text: 'Triggers',
+          link: '/cookbook/triggers',
+        },
+        {
+          text: 'Multisig',
+          link: '/cookbook/multisig',
+        },
+        {
+          text: 'Smart Contracts',
+          link: '/cookbook/smart-contracts',
+        },
+      ],
+    },
+    {
+      text: labels.appPatterns,
+      collapsed: false,
+      items: [
+        {
+          text: 'Wallet Connect',
+          link: '/cookbook/wallet-connect',
+        },
+        {
+          text: 'Native Escrow',
+          link: '/cookbook/native-escrow',
+        },
+      ],
+    },
+  ]
+}
+
+function sidebarGuide(): DefaultTheme.SidebarItem[] {
+  return [
+    {
+      text: 'Guide',
+      link: '/guide/',
+      collapsed: false,
+      items: [
+        {
+          text: 'Overview',
+          link: '/guide/',
+        },
+      ],
+    },
+    {
+      text: 'SDK Tutorials',
+      link: '/guide/tutorials/',
+      collapsed: false,
+      items: [
+        {
+          text: 'Rust',
+          link: '/guide/tutorials/rust',
+        },
+        {
+          text: 'Python',
+          link: '/guide/tutorials/python',
+        },
+        {
+          text: 'JavaScript / TypeScript',
+          link: '/guide/tutorials/javascript',
+        },
+        {
+          text: 'Android / Kotlin / Java',
+          link: '/guide/tutorials/kotlin-java',
+        },
+        {
+          text: 'Swift / iOS',
+          link: '/guide/tutorials/swift',
+        },
+        {
+          text: 'Sample Apps',
+          link: '/guide/tutorials/sample-apps',
+        },
+        {
+          text: 'Embed Kaigi',
+          link: '/guide/tutorials/kaigi',
+        },
+        {
+          text: 'Musubi Packages',
+          link: '/guide/tutorials/musubi',
+        },
+        {
+          text: 'Compatibility Matrix',
+          link: '/reference/compatibility-matrix',
+        },
+      ],
+    },
+    {
+      text: 'Best Practices',
+      link: '/guide/best-practices/',
+      collapsed: false,
+      items: [
+        {
+          text: 'Overview',
+          link: '/guide/best-practices/',
+        },
+        {
+          text: 'Application Development',
+          link: '/guide/best-practices/application-development.md',
+        },
+        {
+          text: 'Data Modeling',
+          link: '/guide/best-practices/data-modeling.md',
+        },
+        {
+          text: 'Network Deployment',
+          link: '/guide/best-practices/network-deployment.md',
+        },
+        {
+          text: 'Operations',
+          link: '/guide/best-practices/operations.md',
+        },
+        {
+          text: 'Security and Access',
+          link: '/guide/best-practices/security-and-access.md',
+        },
+        {
+          text: 'Release Readiness',
+          link: '/guide/best-practices/release-readiness.md',
+        },
+      ],
+    },
+    {
+      text: 'Operator Quick Links',
+      collapsed: false,
+      items: [
+        {
+          text: 'Configuration Overview',
+          link: '/guide/configure/overview.md',
+        },
+        {
+          text: 'Genesis',
+          link: '/reference/genesis.md',
+        },
+        {
+          text: 'Client Configuration',
+          link: '/guide/configure/client-configuration.md',
+        },
+        {
+          text: 'Keys for Deployment',
+          link: '/guide/configure/keys-for-network-deployment.md',
+        },
+        {
+          text: 'Peer Management',
+          link: '/guide/configure/peer-management.md',
+        },
+        {
+          text: 'Metadata Storage Choices',
+          link: '/guide/configure/metadata-and-store-assets.md',
+        },
+        {
+          text: 'Torii Endpoints',
+          link: '/reference/torii-endpoints.md',
+        },
+        {
+          text: 'Torii API Console',
+          link: '/reference/torii-api-console.md',
+        },
+        {
+          text: 'Performance and Metrics',
+          link: '/guide/advanced/metrics.md',
+        },
+        {
+          text: 'Chaos Testing',
+          link: '/guide/advanced/chaos-testing.md',
+        },
+        {
+          text: 'Binaries',
+          link: '/reference/binaries.md',
+        },
+      ],
+    },
+    {
+      text: 'Security',
+      link: '/guide/security/',
+      collapsed: false,
+      items: [
+        {
+          text: 'Overview',
+          link: '/guide/security/',
+        },
+        {
+          text: 'Security Principles',
+          link: '/guide/security/security-principles.md',
+        },
+        {
+          text: 'Virtual Private Networks',
+          link: '/guide/security/vpn.md',
+        },
+        {
+          text: 'Operational Security',
+          link: '/guide/security/operational-security.md',
+        },
+        {
+          text: 'Fraud Monitoring',
+          link: '/guide/security/fraud-monitoring.md',
+        },
+        {
+          text: 'Password Security',
+          link: '/guide/security/password-security.md',
+        },
+        {
+          text: 'Public Key Cryptography',
+          link: '/guide/security/public-key-cryptography.md',
+        },
+        {
+          text: 'Generating Cryptographic Keys',
+          link: '/guide/security/generating-cryptographic-keys.md',
+        },
+        {
+          text: 'Storing Cryptographic Keys',
+          link: '/guide/security/storing-cryptographic-keys.md',
+        },
+      ],
+    },
+  ]
+}
+
+function sidebarChain(): DefaultTheme.SidebarItem[] {
+  return [
+    {
+      text: 'Architecture',
+      link: '/blockchain/iroha-explained',
+      items: [
+        {
+          text: 'Iroha 3 Overview',
+          link: '/blockchain/iroha-explained',
+        },
+        {
+          text: 'SORA Nexus Services',
+          link: '/blockchain/sora-nexus-services',
+        },
+        {
+          text: 'World, WSV, and Kura',
+          link: '/blockchain/world',
+        },
+        {
+          text: 'Data Model',
+          link: '/blockchain/data-model',
+        },
+      ],
+    },
+    {
+      text: 'Ledger Objects',
+      items: [
+        {
+          text: 'Domains',
+          link: '/blockchain/domains',
+        },
+        {
+          text: 'Accounts',
+          link: '/blockchain/accounts',
+        },
+        {
+          text: 'Assets',
+          link: '/blockchain/assets',
+        },
+        {
+          text: 'NFTs',
+          link: '/blockchain/nfts',
+        },
+        {
+          text: 'Real-World Assets',
+          link: '/blockchain/rwas',
+        },
+        {
+          text: 'Metadata',
+          link: '/blockchain/metadata',
+        },
+      ],
+    },
+    {
+      text: 'Transactions and Queries',
+      items: [
+        {
+          text: 'Transactions',
+          link: '/blockchain/transactions',
+        },
+        {
+          text: 'Anonymous Transactions',
+          link: '/blockchain/anonymous-transactions',
+        },
+        {
+          text: 'RAM-LFE',
+          link: '/blockchain/ram-lfe',
+        },
+        {
+          text: 'Native Asset Escrow',
+          link: '/blockchain/escrow',
+        },
+        {
+          text: 'Instructions',
+          link: '/blockchain/instructions',
+        },
+        {
+          text: 'Queries',
+          link: '/blockchain/queries',
+        },
+        {
+          text: 'Filters',
+          link: '/blockchain/filters',
+        },
+        {
+          text: 'Expressions',
+          link: '/blockchain/expressions',
+        },
+      ],
+    },
+    {
+      text: 'Runtime',
+      items: [
+        {
+          text: 'Permissions',
+          link: '/blockchain/permissions',
+        },
+        {
+          text: 'Events',
+          link: '/blockchain/events',
+        },
+        {
+          text: 'Triggers',
+          link: '/blockchain/triggers',
+        },
+        {
+          text: 'Trigger Examples',
+          link: '/blockchain/trigger-examples',
+        },
+        {
+          text: 'Smart Contracts',
+          link: '/blockchain/smart-contracts',
+        },
+        {
+          text: 'Consensus',
+          link: '/blockchain/consensus',
+        },
+        {
+          text: 'FastPQ',
+          link: '/blockchain/fastpq',
+        },
+      ],
+    },
+  ]
+}
+
+function sidebarReference(): DefaultTheme.SidebarItem[] {
+  return [
+    {
+      text: 'Reference',
+      items: [
+        {
+          text: 'Overview',
+          link: '/reference/',
+        },
+        {
+          text: 'I105 Account Addresses',
+          link: '/reference/i105.md',
+        },
+        {
+          text: 'Binaries',
+          link: '/reference/binaries.md',
+        },
+        {
+          text: 'Torii API',
+          link: '/reference/torii-endpoints.md',
+        },
+        {
+          text: 'Torii API Console',
+          link: '/reference/torii-api-console.md',
+        },
+        {
+          text: 'Norito',
+          link: '/reference/norito.md',
+        },
+        {
+          text: 'Compatibility Matrix',
+          link: '/reference/compatibility-matrix.md',
+        },
+        {
+          text: 'Genesis',
+          link: '/reference/genesis.md',
+        },
+      ],
+    },
+  ]
+}
+
+function sidebarHelp(): DefaultTheme.SidebarItem[] {
+  return [
+    {
+      text: 'Receive support',
+      link: '/help/',
+    },
+    {
+      text: 'Troubleshooting',
+      items: [
+        {
+          text: 'Overview',
+          link: '/help/overview',
+        },
+        {
+          text: 'Installation',
+          link: '/help/installation-issues',
+        },
+        {
+          text: 'Configuration',
+          link: '/help/configuration-issues',
+        },
+        {
+          text: 'Deployment',
+          link: '/help/deployment-issues',
+        },
+        {
+          text: 'Integration',
+          link: '/help/integration-issues',
+        },
+      ],
+    },
+  ]
+}
+
+const localizedSidebarTitleCache = new Map<string, string>()
+
+function localizedSidebarTitle(link: string, fallback: string, locale: DocsLocale): string {
+  const majorSection = new Map<string, string>([
+    ['/get-started/', locale.navigation.getStarted],
+    ['/guide/', locale.navigation.guides],
+    ['/blockchain/iroha-explained', locale.navigation.architecture],
+    ['/reference/', locale.navigation.reference],
+  ]).get(link)
+  if (majorSection) return majorSection
+
+  const cacheKey = `${locale.key}:${link}`
+  const cached = localizedSidebarTitleCache.get(cacheKey)
+  if (cached) return cached
+
+  const route = link.replace(/^\//u, '').replace(/\.html$/u, '.md')
+  const relativePath = route.endsWith('/') ? `${route}index.md` : route.endsWith('.md') ? route : `${route}.md`
+  try {
+    const markdown = readFileSync(resolve(__dirname, '../src', locale.path, relativePath), 'utf8')
+    const heading = markdown.match(/^#\s+(.+)$/mu)?.[1]
+    if (!heading) return fallback
+    const title = heading
+      .replace(/\s+\{#[^}]+\}\s*$/u, '')
+      .replace(/\[([^\]]+)\]\([^)]+\)/gu, '$1')
+      .replace(/`([^`]+)`/gu, '$1')
+      .replace(/<[^>]+>/gu, '')
+      .replace(/[*_~]/gu, '')
+      .trim()
+    if (!title) return fallback
+    localizedSidebarTitleCache.set(cacheKey, title)
+    return title
+  } catch {
+    return fallback
+  }
+}
+
+function localizeSidebarItems(items: DefaultTheme.SidebarItem[], locale: DocsLocale): DefaultTheme.SidebarItem[] {
+  const unlinkedGroupLabels = new Map<string, string>([
+    ['Operator Quick Links', locale.theme.sidebarGroups.operatorQuickLinks],
+    ['Ledger Objects', locale.theme.sidebarGroups.ledgerObjects],
+    ['Transactions and Queries', locale.theme.sidebarGroups.transactionsAndQueries],
+    ['Runtime', locale.theme.sidebarGroups.runtime],
+    ['Troubleshooting', locale.theme.sidebarGroups.troubleshooting],
+  ])
+  return items.map((item) => ({
+    ...item,
+    text: item.link
+      ? localizedSidebarTitle(item.link, item.text, locale)
+      : (unlinkedGroupLabels.get(item.text) ?? item.text),
+    link: item.link ? prefixRoute(item.link, locale) : undefined,
+    items: item.items ? localizeSidebarItems(item.items, locale) : undefined,
+  }))
+}
+
+function sidebars(locale: DocsLocale = ROOT_LOCALE): DefaultTheme.Sidebar {
+  const entries: [string, DefaultTheme.SidebarItem[]][] = [
+    ['/get-started/', sidebarStart()],
+    ['/cookbook/', sidebarCookbook(locale.navigation.cookbookGroups)],
+    ['/guide/', sidebarGuide()],
+    ['/blockchain/', sidebarChain()],
+    ['/reference/', sidebarReference()],
+    ['/help/', sidebarHelp()],
+  ]
+
+  return Object.fromEntries(
+    entries.map(([route, items]) => [
+      prefixRoute(route, locale),
+      locale === ROOT_LOCALE ? items : localizeSidebarItems(items, locale),
+    ]),
+  )
+}
+
+const THEME_LOCALES = Object.fromEntries(
+  TRANSLATED_LOCALES.map((locale) => [
+    locale.key,
+    {
+      nav: nav(locale.navigation, locale),
+      sidebar: sidebars(locale),
+      editLink: {
+        pattern: 'https://github.com/hyperledger-iroha/iroha-docs/edit/main/src/:path',
+        text: locale.theme.editLink,
+      },
+      lastUpdated: { text: locale.theme.lastUpdated },
+      outline: { label: locale.theme.outline },
+      docFooter: { prev: locale.theme.previousPage, next: locale.theme.nextPage },
+      darkModeSwitchLabel: locale.theme.appearance,
+      lightModeSwitchTitle: locale.theme.lightTheme,
+      darkModeSwitchTitle: locale.theme.darkTheme,
+      sidebarMenuLabel: locale.theme.menu,
+      returnToTopLabel: locale.theme.returnToTop,
+      langMenuLabel: locale.theme.changeLanguage,
+      skipToContentLabel: locale.theme.skipToContent,
+      shellA11y: {
+        mainNavigation: locale.theme.mainNavigation,
+        sidebarNavigation: locale.theme.sidebarNavigation,
+        pager: locale.theme.pager,
+        mobileNavigation: locale.theme.mobileNavigation,
+        extraNavigation: locale.theme.extraNavigation,
+        toggleSection: locale.theme.toggleSection,
+        permalinkTo: locale.theme.permalinkTo,
+        copyCode: locale.theme.copyCode,
+        copied: locale.theme.copied,
+      },
+    },
+  ]),
+)
+
+// VitePress resolves per-locale navigation from the top-level locale's
+// `themeConfig`. Keeping the same values only under `themeConfig.locales`
+// leaves translated pages on the root English navigation.
+const SITE_LOCALES_WITH_THEME = Object.fromEntries(
+  Object.entries(SITE_LOCALES).map(([key, locale]) => [
+    key,
+    key === ROOT_LOCALE.key ? locale : { ...locale, themeConfig: THEME_LOCALES[key] },
+  ]),
+)
+
+const PUBLIC_BASE = process.env.PUBLIC_PATH ?? '/'
+const publicAsset = (name: string): string => `${PUBLIC_BASE}${name}`
+const BUILD_REVISION = process.env.VERCEL_GIT_COMMIT_SHA ?? process.env.GITHUB_SHA
+const revisionHead: HeadConfig[] = BUILD_REVISION
+  ? [['meta', { name: 'iroha-docs-revision', content: BUILD_REVISION }]]
+  : []
+
+export default defineConfig({
+  base: PUBLIC_BASE,
+  srcDir: 'src',
+  srcExclude: ['snippets/*.md'],
+  buildConcurrency: 2,
+  metaChunk: true,
+  cleanUrls: false,
+  locales: SITE_LOCALES_WITH_THEME,
+  title: 'Hyperledger Iroha 3 Docs',
+  description:
+    'Documentation for Hyperledger Iroha 3 covering quickstart flows, SDK entry points, Torii, genesis, and operator tooling.',
+  lang: 'en',
+  sitemap: {
+    hostname: 'https://docs.iroha.tech',
+  },
+  transformHead: ({ pageData }) => documentHead(pageData.relativePath),
+  transformHtml: (code, _id, { pageData }) => localizeShellA11yHtml(code, pageData.relativePath),
+  vite: {
+    plugins: [ViteUnoCSS('../uno.config.ts'), ViteSvgLoader()],
+    envDir: resolve(__dirname, '../'),
+  },
+  vue: {
+    template: {
+      compilerOptions: {
+        isCustomElement: (tag: string) => tag === 'rapi-doc',
+      },
+    },
+  },
+  lastUpdated: true,
+
+  head: [
+    ...revisionHead,
+    // Based on: https://evilmartians.com/chronicles/how-to-favicon-in-2021-six-files-that-fit-most-needs
+    ['link', { rel: 'icon', href: publicAsset('favicon.ico'), sizes: 'any' }],
+    ['link', { rel: 'icon', href: publicAsset('icon.svg'), sizes: 'image/svg+xml' }],
+    ['link', { rel: 'apple-touch-icon', href: publicAsset('apple-touch-icon.png') }],
+    ['link', { rel: 'manifest', href: publicAsset('manifest.webmanifest') }],
+    // Google Analytics integration
+    ['script', { src: 'https://www.googletagmanager.com/gtag/js?id=G-D6ETK9TN47' }],
+    [
+      'script',
+      {},
+      `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-D6ETK9TN47');
+    `,
+    ],
+    // KaTeX stylesheet
+    ['link', { rel: 'stylesheet', href: 'https://esm.sh/katex@0.16.8/dist/katex.min.css' }],
+  ],
+
+  markdown: {
+    async config(md) {
+      md.use(footnote)
+        .use(mermaid)
+        // Note: Since vitepress@1.0.0-rc.14, it supports MathJax natively with `markdown.math = true`:
+        //   https://github.com/vuejs/vitepress/pull/2977
+        // Although KaTeX is more efficient, we might consider removing it in the future.
+        .use(katex)
+    },
+  },
+
+  themeConfig: {
+    logo: '/icon.svg',
+    siteTitle: 'Iroha 3',
+
+    socialLinks: [
+      { icon: 'github', link: 'https://github.com/hyperledger-iroha/iroha-docs' },
+      {
+        icon: {
+          /**
+           * https://icones.js.org/collection/material-symbols?s=bug
+           */
+          svg: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M12 21q-1.625 0-3.013-.8T6.8 18H4.975q-.425 0-.7-.288T4 17q0-.425.288-.713T5 16h1.1q-.075-.5-.088-1T6 14H4.975q-.425 0-.7-.288T4 13q0-.425.288-.713T5 12h1q0-.5.013-1t.087-1H4.975q-.425 0-.7-.288T4 9q0-.425.288-.713T5 8h1.8q.35-.575.788-1.075T8.6 6.05l-.925-.95q-.275-.3-.263-.713T7.7 3.7q.275-.275.7-.275t.7.275l1.45 1.45q.7-.225 1.425-.225t1.425.225l1.5-1.475q.3-.275.713-.262t.687.287q.275.275.275.7t-.275.7l-.95.95q.575.375 1.038.863T17.2 8h1.825q.425 0 .7.288T20 9q0 .425-.288.713T19 10h-1.1q.075.5.088 1T18 12h1.025q.425 0 .7.288T20 13q0 .425-.288.713T19 14h-1q0 .5-.013 1t-.087 1h1.125q.425 0 .7.288T20 17q0 .425-.288.713T19 18h-1.8q-.8 1.4-2.188 2.2T12 21Zm0-2q1.65 0 2.825-1.175T16 15v-4q0-1.65-1.175-2.825T12 7q-1.65 0-2.825 1.175T8 11v4q0 1.65 1.175 2.825T12 19Zm-1-3h2.025q.425 0 .7-.288T14 15q0-.425-.288-.713T13 14h-2.025q-.425 0-.7.288T10 15q0 .425.288.713T11 16Zm0-4h2.025q.425 0 .7-.288T14 11q0-.425-.288-.713T13 10h-2.025q-.425 0-.7.288T10 11q0 .425.288.713T11 12Zm1 1Z"/></svg>`,
+        },
+        link: 'https://github.com/hyperledger-iroha/iroha-docs/issues/new',
+      },
+    ],
+
+    editLink: {
+      pattern: 'https://github.com/hyperledger-iroha/iroha-docs/edit/main/src/:path',
+      text: 'Edit this page on GitHub',
+    },
+
+    lastUpdated: {
+      text: 'Last Updated',
+    },
+
+    outline: { label: ROOT_LOCALE.theme.outline },
+    docFooter: {
+      prev: ROOT_LOCALE.theme.previousPage,
+      next: ROOT_LOCALE.theme.nextPage,
+    },
+    darkModeSwitchLabel: ROOT_LOCALE.theme.appearance,
+    lightModeSwitchTitle: ROOT_LOCALE.theme.lightTheme,
+    darkModeSwitchTitle: ROOT_LOCALE.theme.darkTheme,
+    sidebarMenuLabel: ROOT_LOCALE.theme.menu,
+    returnToTopLabel: ROOT_LOCALE.theme.returnToTop,
+    langMenuLabel: ROOT_LOCALE.theme.changeLanguage,
+    skipToContentLabel: ROOT_LOCALE.theme.skipToContent,
+
+    shellA11y: {
+      mainNavigation: ROOT_LOCALE.theme.mainNavigation,
+      sidebarNavigation: ROOT_LOCALE.theme.sidebarNavigation,
+      pager: ROOT_LOCALE.theme.pager,
+      mobileNavigation: ROOT_LOCALE.theme.mobileNavigation,
+      extraNavigation: ROOT_LOCALE.theme.extraNavigation,
+      toggleSection: ROOT_LOCALE.theme.toggleSection,
+      permalinkTo: ROOT_LOCALE.theme.permalinkTo,
+      copyCode: ROOT_LOCALE.theme.copyCode,
+      copied: ROOT_LOCALE.theme.copied,
+    },
+
+    nav: nav(),
+    sidebar: sidebars(),
+    locales: THEME_LOCALES,
+
+    search: {
+      provider: 'local',
+      options: {
+        locales: SEARCH_LOCALES,
+        miniSearch: {
+          options: {
+            fields: ['title', 'titles'],
+          },
+          _splitIntoSections: splitSearchHeadings,
+        },
+        _render: renderSearchHeadings,
+      },
+    },
+  },
+})
